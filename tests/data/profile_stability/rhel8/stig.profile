@@ -422,7 +422,7 @@ selections:
 - sysctl_net_ipv6_conf_default_accept_ra
 - sysctl_net_ipv6_conf_default_accept_redirects
 - sysctl_net_ipv6_conf_default_accept_source_route
-- sysctl_user_max_user_namespaces
+- sysctl_user_max_user_namespaces_no_remediation
 - tftpd_uses_secure_mode
 - usbguard_generate_policy
 - wireless_disable_interfaces

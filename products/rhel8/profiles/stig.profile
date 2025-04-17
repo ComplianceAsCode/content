@@ -1171,7 +1171,7 @@ selections:
     - sysctl_kernel_kptr_restrict
 
     # RHEL-08-040284
-    - sysctl_user_max_user_namespaces
+    - sysctl_user_max_user_namespaces_no_remediation
 
     # RHEL-08-040285
     - sysctl_net_ipv4_conf_all_rp_filter
