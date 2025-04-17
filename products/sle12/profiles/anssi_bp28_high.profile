@@ -83,6 +83,7 @@ selections:
     - '!ensure_oracle_gpgkey_installed'
     - '!package_kea_removed'
     - '!audit_rules_file_deletion_events_renameat2'
+    - '!audit_rules_dac_modification_fchmodat2'
     - '!package_dnf-automatic_installed'
     - '!timer_dnf-automatic_enabled'
     - '!dnf-automatic_apply_updates'
