@@ -51,7 +51,7 @@ selections:
 - set_password_hashing_algorithm_systemauth
 - timer_dnf-automatic_enabled
 - var_password_hashing_algorithm=yescrypt
-- var_password_hashing_algorithm_pam=sha512
+- var_password_hashing_algorithm_pam=yescrypt
 - var_password_pam_unix_rounds=11
 - var_password_pam_minclass=4
 - var_accounts_maximum_age_root=365
