@@ -6,7 +6,9 @@ packages:
 - sssd
 - sssd-common
 - sssd-ipa
+- libpam-sss
 rules:
+- package_pam_sss_installed
 - package_sssd-ipa_installed
 - package_sssd_installed
 - service_sssd_enabled

@@ -11,6 +11,7 @@ packages:
 - pam_apparmor
 - libpam-runtime
 - libpam-modules
+- libpam-sss
 rules:
 - account_disable_inactivity_password_auth
 - account_disable_inactivity_system_auth
@@ -153,6 +154,7 @@ rules:
 - package_pam_modules_installed
 - package_pam_pwquality_installed
 - package_pam_runtime_installed
+- package_pam_sss_installed
 - package_pcsc-lite_installed
 - package_screen_installed
 - pam_disable_automatic_configuration

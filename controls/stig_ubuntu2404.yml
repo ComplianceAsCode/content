@@ -163,9 +163,10 @@ controls:
     title: Ubuntu 24.04 LTS must have the "SSSD" package installed.
     levels:
       - medium
-    related_rules:
+    rules:
+      - package_pam_sss_installed
       - package_sssd_installed
-    status: planned
+    status: automated
 
   - id: UBTU-24-100660
     title: Ubuntu 24.04 LTS must use the "SSSD" package for multifactor authentication
