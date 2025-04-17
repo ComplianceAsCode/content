@@ -24,3 +24,4 @@ selections:
   - enable_authselect
   - audit_rules_login_events
   - audit_rules_unsuccessful_file_modification
+  - configure_openssl_tls_crypto_policy
