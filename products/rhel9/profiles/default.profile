@@ -579,3 +579,4 @@ selections:
     - audit_rules_usergroup_modification
     - audit_rules_unsuccessful_file_modification
     - audit_rules_session_events
+    - kerberos_disable_no_keytab
