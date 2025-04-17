@@ -23,3 +23,4 @@ Account:
 EOF
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
+rm /usr/share/pam-configs/tmp_faillock /usr/share/pam-configs/tmp_faillock_notify
