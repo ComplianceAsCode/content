@@ -111,7 +111,7 @@ args:
   squid:
     pkgname: squid
   sssd:
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
       pkgname: sssd
     {{% else %}}
       pkgname: sssd-common
