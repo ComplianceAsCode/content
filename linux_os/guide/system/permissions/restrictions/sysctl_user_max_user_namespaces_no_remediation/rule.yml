@@ -20,21 +20,19 @@ warnings:
        This configuration baseline was created to deploy the base operating system for general purpose
        workloads. When the operating system is configured for certain purposes, such as to host Linux Containers,
        it is expected that <tt>user.max_user_namespaces</tt> will be enabled.
+        Note that this rule deliberately does not have remediations attached.
+       Use the <tt>sysctl_user_max_user_namespaces</tt> if you want to utilize remediation for this rule.
 
 severity: medium
 
 identifiers:
-    cce@rhcos4: CCE-82503-4
-    cce@rhel8: CCE-82211-4
-    cce@rhel9: CCE-83956-3
-    cce@rhel10: CCE-89527-6
+    cce@rhel8: CCE-86207-8
+    cce@rhel9: CCE-86209-4
 
 references:
     disa: CCI-000366
-    nist: SC-39,CM-6(a)
-    ospp: FMT_SMF_EXT.1
     srg: SRG-OS-000480-GPOS-00227
-    stigid@ol8: OL08-00-040284
+    stigid@rhel8: RHEL-08-040284
 
 ocil: |
     Verify that {{{ full_name }}} disables the use of user namespaces with the following commands:
@@ -62,11 +60,7 @@ template:
         sysctlvar: user.max_user_namespaces
         sysctlval: '0'
         datatype: int
-
-warnings:
-    - functionality: |-
-       Remediation of this rule might impair or prevent functionality of certain applications.
-       This stands especially for general container usage and for certain desktop applications.
-       There is an alternative rule which performs the same check but it intentionally lacks the remediation part.
-       If needed, you can use the rule <tt>sysctl_user_max_user_namespaces_no_remediation</tt>.
-       In that case, ensure that such use case is properly documented.
+        no_remediation: true
+    backends:
+        bash: 'off'
+        ansible: 'off'

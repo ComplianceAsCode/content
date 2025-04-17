@@ -515,7 +515,7 @@ selections:
 - sysctl_net_ipv6_conf_default_accept_ra
 - sysctl_net_ipv6_conf_default_accept_redirects
 - sysctl_net_ipv6_conf_default_accept_source_route
-- sysctl_user_max_user_namespaces
+- sysctl_user_max_user_namespaces_no_remediation
 - usbguard_generate_policy
 - use_pam_wheel_for_su
 - wireless_disable_interfaces
@@ -575,8 +575,6 @@ selections:
 - var_user_initialization_files_regex=all_dotfiles
 - login_banner_text=dod_banners
 - var_authselect_profile=sssd
-- sysctl_user_max_user_namespaces.role=unscored
-- sysctl_user_max_user_namespaces.severity=info
 unselected_groups: []
 platforms: !!set {}
 cpe_names: !!set {}
