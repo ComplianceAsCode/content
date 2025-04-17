@@ -3,11 +3,13 @@ groups:
 - sssd-ldap
 name: sssd
 packages:
+- libnss-sss
 - sssd
 - sssd-common
 - sssd-ipa
 - libpam-sss
 rules:
+- package_nss_sss_installed
 - package_pam_sss_installed
 - package_sssd-ipa_installed
 - package_sssd_installed

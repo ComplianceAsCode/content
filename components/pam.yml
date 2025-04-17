@@ -9,6 +9,7 @@ name: pam
 packages:
 - pam
 - pam_apparmor
+- libnss-sss
 - libpam-runtime
 - libpam-modules
 - libpam-sss
@@ -150,6 +151,7 @@ rules:
 - no_password_auth_for_systemaccounts
 - no_root_webbrowsing
 - no_shelllogin_for_systemaccounts
+- package_nss_sss_installed
 - package_pam_apparmor_installed
 - package_pam_modules_installed
 - package_pam_pwquality_installed
