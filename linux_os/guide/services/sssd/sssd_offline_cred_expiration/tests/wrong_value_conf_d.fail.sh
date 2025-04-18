@@ -1,4 +1,7 @@
 #!/bin/bash
+{{%- if product in ["rhel8"] %}}
+# platform = Not Applicable
+{{%- endif %}}
 # packages = sssd
 
 source common.sh
