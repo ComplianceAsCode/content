@@ -67,3 +67,18 @@ fixtext: |-
 
 srg_requirement:
     {{{ full_name }}} system commands must be group-owned by root or a system account.
+
+{{% if product in ["ubuntu2404"] %}}
+template:
+    name: file_groupowner
+    vars:
+        filepath:
+            - /bin/
+            - /sbin/ 
+            - /usr/bin/ 
+            - /usr/sbin/
+            - /usr/local/bin/
+            - /usr/local/sbin/
+        file_regex: .*
+        gid_or_name: 'root|daemon|adm|shadow|mail|crontab|_ssh'
+{{% endif %}}
