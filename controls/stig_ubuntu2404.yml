@@ -846,9 +846,11 @@ controls:
       an accepted trust anchor.
     levels:
       - medium
-    related_rules:
-      - smartcard_configure_ca
-    status: planned
+    rules:
+      - sssd_enable_pam_services
+      - sssd_enable_smartcards
+      - sssd_certification_path_trust_anchor
+    status: automated
 
   - id: UBTU-24-400370
     title: Ubuntu 24.04 LTS must map the authenticated identity to the user or group
