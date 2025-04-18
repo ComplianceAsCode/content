@@ -322,8 +322,7 @@ selections:
     - grub2_vsyscall_argument
 
     # RHEL-08-010423
-    - grub2_slub_debug_argument
-    - var_slub_debug_options=P
+    - grub2_init_on_free
 
     # RHEL-08-010430
     - sysctl_kernel_randomize_va_space
