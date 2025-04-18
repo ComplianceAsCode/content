@@ -15,6 +15,7 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_AIDE_CONF_PATH,
                         DEFAULT_AIDE_BIN_PATH,
                         DEFAULT_AUDIT_WATCHES_STYLE,
+                        DEFAULT_RSYSLOG_CAFILE,
                         DEFAULT_SSH_DISTRIBUTED_CONFIG,
                         DEFAULT_CHRONY_CONF_PATH,
                         DEFAULT_CHRONY_D_PATH,
@@ -99,6 +100,9 @@ def _get_implied_properties(existing_properties):
 
     if "audit_watches_style" not in existing_properties:
         result["audit_watches_style"] = DEFAULT_AUDIT_WATCHES_STYLE
+
+    if "rsyslog_cafile" not in existing_properties:
+        result["rsyslog_cafile"] = DEFAULT_RSYSLOG_CAFILE
 
     if "sshd_distributed_config" not in existing_properties:
         result["sshd_distributed_config"] = DEFAULT_SSH_DISTRIBUTED_CONFIG
