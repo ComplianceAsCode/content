@@ -8,4 +8,4 @@
 
 source ubuntu_common.sh
 
-echo "auth        sufficient       pam_unix.so" >> /etc/pam.d/common-auth
+sed -i '/# end of pam-auth-update config/i\auth        sufficient       pam_unix.so' /etc/pam.d/common-auth
