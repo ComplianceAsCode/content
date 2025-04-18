@@ -108,6 +108,7 @@ mypy_test("utils/check_eof.py" "normal")
 mypy_test("utils/import_disa_stig.py" "skip")
 mypy_test("tests/cces-removed.py" "normal")
 mypy_test("utils/build_control_from_reference.py" "skip")
+mypy_test("tests/rule_removal.py" "skip")
 
 if(Python_VERSION_MAJOR GREATER 2 AND Python_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
     mypy_test("utils/oscal/" "skip")
@@ -377,3 +378,25 @@ if(Python_VERSION_MAJOR GREATER 2 AND Python_VERSION_MINOR GREATER 9)
     )
 mypy_test("tests/validate_automatus_metadata.py" "normal")
 endif()
+
+macro(check_for_rule_removal PRODUCT)
+    if(ENABLE_CHECK_RULE_REMOVAL)
+        add_test(
+            NAME "rule-removal-${PRODUCT}"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/rule_removal.py" "--product" "${PRODUCT}" "--old-release-dir" "${OLD_RELEASE_DIR}" "--build-root" "${CMAKE_BINARY_DIR}"
+        )
+    endif()
+endmacro()
+
+if(SSG_PRODUCT_RHEL8)
+    check_for_rule_removal("rhel8")
+endif()
+
+if(SSG_PRODUCT_RHEL9)
+    check_for_rule_removal("rhel9")
+endif()
+
+if(SSG_PRODUCT_RHEL10)
+    check_for_rule_removal("rhel10")
+endif()
+
