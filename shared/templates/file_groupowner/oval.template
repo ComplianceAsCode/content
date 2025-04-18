@@ -16,22 +16,36 @@
 
   {{%- set GROUPS=GID_OR_NAME.split("|") %}}
   {{%- if GROUP_REPRESENTED_WITH_GID %}}
-  <local_variable id="var_file_groupowner{{{ FILEID }}}_{{{ GID_OR_NAME }}}_gid" comment="Set the gid to {{{ GID_OR_NAME }}}" datatype="int" version="1">
-    <literal_component datatype="int">{{{ GID_OR_NAME }}}</literal_component>
-  </local_variable>
-  {{%- else %}}
-  {{% for grp in GROUPS %}}
-    <ind:textfilecontent54_object id="object_file_groupowner{{{ FILEID }}}_{{{grp}}}_gid" version="1" comment="gid of the {{{grp}}} group">
-      <ind:filepath>/etc/group</ind:filepath>
-      <ind:pattern operation="pattern match">^{{{grp}}}:\w+:(\w+):.*</ind:pattern>
-      <ind:instance datatype="int" operation="equals">1</ind:instance>
-    </ind:textfilecontent54_object>
-    <local_variable id="var_file_groupowner{{{ FILEID }}}_{{{grp}}}_gid" datatype="int" version="1"
-                    comment="Retrieve the gid of {{{grp}}} group">
-      <object_component item_field="subexpression" object_ref="object_file_groupowner{{{ FILEID }}}_{{{grp}}}_gid"/>
+    <local_variable id="var_file_groupowner{{{ FILEID }}}_{{{ GID_OR_NAME }}}_gid" comment="Set the gid to {{{ GID_OR_NAME }}}" datatype="int" version="1">
+      <literal_component datatype="int">{{{ GID_OR_NAME }}}</literal_component>
     </local_variable>
-  {{% endfor %}}
-  {{% endif %}}
+  {{%- else %}}
+    {{% for grp in GROUPS %}}
+
+      <ind:textfilecontent54_object id="object_file_groupowner{{{ FILEID }}}_{{{grp}}}_gid_etc" version="1" comment="gid of the {{{grp}}} group (from /etc/group)">
+        <ind:filepath>/etc/group</ind:filepath>
+        <ind:pattern operation="pattern match">^{{{grp}}}:\w+:(\w+):.*</ind:pattern>
+        <ind:instance datatype="int" operation="equals">1</ind:instance>
+      </ind:textfilecontent54_object>
+
+      <ind:textfilecontent54_object id="object_file_groupowner{{{ FILEID }}}_{{{grp}}}_gid_usr" version="1" comment="gid of the {{{grp}}} group (from /usr/lib/group)">
+        <ind:filepath>/usr/lib/group</ind:filepath>
+        <ind:pattern operation="pattern match">^{{{grp}}}:\w+:(\w+):.*</ind:pattern>
+        <ind:instance datatype="int" operation="equals">1</ind:instance>
+      </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_file_groupowner{{{ FILEID }}}_{{{grp}}}_gid" version="1" comment="gid of the {{{grp}}} group (from /etc/group or /usr/lib/group)">
+    <set>
+      <object_reference>object_file_groupowner{{{ FILEID }}}_{{{grp}}}_gid_etc</object_reference>
+      <object_reference>object_file_groupowner{{{ FILEID }}}_{{{grp}}}_gid_usr</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+      <local_variable id="var_file_groupowner{{{ FILEID }}}_{{{grp}}}_gid" datatype="int" version="1" comment="Retrieve the gid of {{{grp}}} from either /etc/group or /usr/lib/group">
+        <object_component item_field="subexpression" object_ref="object_file_groupowner{{{ FILEID }}}_{{{grp}}}_gid"/>
+      </local_variable>
+    {{% endfor %}}
+  {{%- endif %}}
 
   {{% for filepath in FILEPATH %}}
     <unix:file_test check="all" check_existence="none_exist" comment="Testing group ownership of {{{ filepath }}}" id="test_file_groupowner{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
