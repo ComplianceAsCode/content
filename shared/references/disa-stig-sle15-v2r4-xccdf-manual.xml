@@ -513,7 +513,7 @@ Satisfies: SRG-OS-000066-GPOS-00034, SRG-OS-000384-GPOS-00167&lt;/VulnDiscussion
 
 Modify all of the cert_policy lines in "/etc/pam_pkcs11/pam_pkcs11.conf" to include "ca":
 
-cert_policy = ca,signature,oscp_on;
+cert_policy = ca,signature,ocsp_on;
 
 Note: Additional certificate validation polices are permitted.
 
@@ -523,7 +523,7 @@ Check that the certification path to an accepted trust anchor for multifactor au
 
 &gt; grep cert_policy /etc/pam_pkcs11/pam_pkcs11.conf
 
-cert_policy = ca,oscp_on,signature,crl_auto;
+cert_policy = ca,ocsp_on,signature,crl_auto;
 
 If "cert_policy" is not set to include "ca", this is a finding.</check-content></check></Rule></Group><Group id="V-234818"><title>SRG-OS-000074-GPOS-00042</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-234818r987796_rule" weight="10.0" severity="high"><version>SLES-15-010180</version><title>The SUSE operating system must not have the telnet-server package installed.</title><description>&lt;VulnDiscussion&gt;It is detrimental for SUSE operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked, and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.
 

@@ -8,7 +8,7 @@
         <extend_definition comment="esc package is installed" definition_ref="package_esc_installed" />
         <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       </criteria>
-      <criterion comment="cert_policy directive contains oscp_on" test_ref="test_pam_pkcs11_cert_policy_ocsp_on" />
+      <criterion comment="cert_policy directive contains ocsp_on" test_ref="test_pam_pkcs11_cert_policy_ocsp_on" />
       <criteria comment="smart card authentication is enabled or required in system-auth" operator="OR">
           <!-- Smartcard authentication enabled, but login is allowed also by other means -->
           <criterion comment="smart card authentication is enabled in /etc/pam.d/system-auth" test_ref="test_smart_card_enabled_system_auth" />

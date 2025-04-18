@@ -3504,7 +3504,7 @@ Satisfies: SRG-OS-000066-GPOS-00034, SRG-OS-000384-GPOS-00167&lt;/VulnDiscussion
 
 Modify all of the cert_policy lines in "/etc/pam_pkcs11/pam_pkcs11.conf" to include "ca":
 
-cert_policy = ca,signature,oscp_on;
+cert_policy = ca,signature,ocsp_on;
 
 Note: Additional certificate validation polices are permitted.
 
@@ -3514,7 +3514,7 @@ Check that the certification path to an accepted trust anchor for multifactor au
 
 &gt; grep cert_policy /etc/pam_pkcs11/pam_pkcs11.conf
 
-cert_policy = ca,oscp_on,signature,crl_auto;
+cert_policy = ca,ocsp_on,signature,crl_auto;
 
 If "cert_policy" is not set to include "ca", this is a finding.</check-content></check></Rule></Group><Group id="V-222386"><title>SRG-OS-000480-GPOS-00227</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-222386r991589_rule" weight="10.0" severity="high"><version>SLES-12-030611</version><title>The SUSE operating system must use a virus scan program.</title><description>&lt;VulnDiscussion&gt;Virus scanning software can be used to protect a system from penetration from computer viruses and to limit their spread through intermediate systems. 
 
