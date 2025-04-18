@@ -569,14 +569,6 @@ selections:
     # RHEL-08-020101
     - accounts_password_pam_pwquality_system_auth
 
-    # RHEL-08-020102
-    # This is only required for RHEL8 systems below version 8.4 where the
-    # retry parameter was not yet available on /etc/security/pwquality.conf.
-
-    # RHEL-08-020103
-    # This is only required for RHEL8 systems below version 8.4 where the
-    # retry parameter was not yet available on /etc/security/pwquality.conf.
-
     # RHEL-08-020104
     - accounts_password_pam_retry
 
