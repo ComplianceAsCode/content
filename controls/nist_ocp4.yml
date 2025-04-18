@@ -1814,7 +1814,7 @@ controls:
     $ oc delete oauthaccesstoken --all
 
     Since neither Kubernetes nor Red Hat OpenShift support CRLs or
-    OSCP, the advice is not to use x509 certificates. If certificates
+    OCSP, the advice is not to use x509 certificates. If certificates
     must absolutely be used, use very short-lived certificates and
     as a last resort, instead of preventing authentication, remove all
     RBAC rules associated with accounts that possess x509 certificates.

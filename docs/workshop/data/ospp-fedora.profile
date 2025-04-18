@@ -619,10 +619,10 @@ selections:
     ###       of the basicConstraints extension and that the CA flag is set to
     ###       TRUE for all CA certificates
     ###     - The OS shall validate the revocation status of the certificate
-    ###       using [selection: the Online Certificate Status Protocol (OSCP)
+    ###       using [selection: the Online Certificate Status Protocol (OCSP)
     ###       as specified RFC 2560, a Certificate Revocation List (CRL) as
     ###       specified in RFC 5759, an OCSP TLS Status Request Extension
-    ###       (i.e., OSCP stapling) as specified in RFC 6066].
+    ###       (i.e., OCSP stapling) as specified in RFC 6066].
     ###     - The OS shall validate the extendedKeyUsage field according to the
     ###       following rules:
     ###         * Certificates used for trusted updates and executable code
