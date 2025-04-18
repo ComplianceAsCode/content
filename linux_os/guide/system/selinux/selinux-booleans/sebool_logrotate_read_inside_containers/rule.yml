@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the logrotate_read_inside_containers SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>logrotate_read_inside_containers</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="logrotate_read_inside_containers") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="logrotate_read_inside_containers") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: logrotate_read_inside_containers

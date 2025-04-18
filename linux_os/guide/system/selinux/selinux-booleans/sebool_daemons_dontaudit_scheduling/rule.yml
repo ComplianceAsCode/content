@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Enable the daemons_dontaudit_scheduling SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>daemons_dontaudit_scheduling</tt> is enabled.
+    If this setting is disabled, it should be enabled.
+    {{{ describe_sebool_enable(sebool="daemons_dontaudit_scheduling") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="daemons_dontaudit_scheduling") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: daemons_dontaudit_scheduling

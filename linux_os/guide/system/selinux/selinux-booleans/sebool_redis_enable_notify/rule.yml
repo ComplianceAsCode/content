@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the redis_enable_notify SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>redis_enable_notify</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="redis_enable_notify") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="redis_enable_notify") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: redis_enable_notify

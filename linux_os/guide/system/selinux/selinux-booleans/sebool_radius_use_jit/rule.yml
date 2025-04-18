@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the radius_use_jit SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>radius_use_jit</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="radius_use_jit") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="radius_use_jit") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: radius_use_jit

@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the domain_can_write_kmsg SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>domain_can_write_kmsg</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="domain_can_write_kmsg") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="domain_can_write_kmsg") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: domain_can_write_kmsg

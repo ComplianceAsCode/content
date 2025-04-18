@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the dnsmasq_use_ipset SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>dnsmasq_use_ipset</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="dnsmasq_use_ipset") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="dnsmasq_use_ipset") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: dnsmasq_use_ipset

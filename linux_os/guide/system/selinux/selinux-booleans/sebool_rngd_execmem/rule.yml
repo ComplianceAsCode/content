@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the rngd_execmem SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>rngd_execmem</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="rngd_execmem") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="rngd_execmem") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: rngd_execmem

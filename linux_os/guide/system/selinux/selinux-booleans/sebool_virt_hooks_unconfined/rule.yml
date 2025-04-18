@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the virt_hooks_unconfined SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>virt_hooks_unconfined</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="virt_hooks_unconfined") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="virt_hooks_unconfined") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: virt_hooks_unconfined

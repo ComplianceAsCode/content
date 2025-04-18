@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the colord_use_nfs SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>colord_use_nfs</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="colord_use_nfs") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="colord_use_nfs") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: colord_use_nfs

@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Enable the init_create_dirs SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>init_create_dirs</tt> is enabled.
+    If this setting is disabled, it should be enabled.
+    {{{ describe_sebool_enable(sebool="init_create_dirs") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="init_create_dirs") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: init_create_dirs
