@@ -1214,6 +1214,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
           Auth-Type: Primary
           Auth:
             [default=die]                   pam_faillock.so authfail
+            sufficient                      pam_faillock.so authsucc
         force: yes
       when: not faillock_file_stat.stat.exists
 
