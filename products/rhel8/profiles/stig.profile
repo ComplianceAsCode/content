@@ -333,6 +333,9 @@ selections:
     # RHEL-08-010450
     - selinux_policytype
 
+    # RHEL-08-010455
+    - selinux_context_elevation_for_sudo
+
     # RHEL-08-010460
     - no_host_based_files
 
