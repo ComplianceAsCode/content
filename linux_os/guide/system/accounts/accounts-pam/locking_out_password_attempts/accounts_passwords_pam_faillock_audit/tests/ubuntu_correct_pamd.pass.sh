@@ -1,7 +1,7 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu
 
-cat << EOF > /usr/share/pam-configs/faillock
+cat << EOF > /usr/share/pam-configs/tmp_faillock
 Name: Enable pam_faillock to deny access
 Default: yes
 Priority: 0
@@ -10,7 +10,7 @@ Auth:
     [default=die]                   pam_faillock.so authfail audit
 EOF
 
-cat << EOF > /usr/share/pam-configs/faillock_notify
+cat << EOF > /usr/share/pam-configs/tmp_faillock_notify
 Name: Notify of failed login attempts and reset count upon success
 Default: yes
 Priority: 1024
@@ -23,3 +23,4 @@ Account:
 EOF
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
+rm /usr/share/pam-configs/tmp_faillock /usr/share/pam-configs/tmp_faillock_notify
