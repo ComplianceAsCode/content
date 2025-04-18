@@ -3,10 +3,9 @@ description: 'This profile contains configuration checks that align to the
     DISA STIG for Red Hat Enterprise Linux 8 V2R2.
 
 
-    In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
-    this
+    In addition to being applicable to Red Hat Enterprise Linux 8, this
 
-    configuration baseline as applicable to the operating system tier of
+    configuration baseline is applicable to the operating system tier of
 
     Red Hat technologies that are based on Red Hat Enterprise Linux 8, such as:
 
@@ -22,6 +21,7 @@ description: 'This profile contains configuration checks that align to the
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 extends: null
 hidden: ''
+status: ''
 metadata:
     version: V2R2
     SMEs:
@@ -242,10 +242,10 @@ selections:
 - grub2_admin_username
 - grub2_audit_argument
 - grub2_audit_backlog_limit_argument
+- grub2_init_on_free
 - grub2_page_poison_argument
 - grub2_password
 - grub2_pti_argument
-- grub2_slub_debug_argument
 - grub2_uefi_admin_username
 - grub2_uefi_password
 - grub2_vsyscall_argument
@@ -347,6 +347,7 @@ selections:
 - rsyslog_remote_access_monitoring
 - rsyslog_remote_loghost
 - security_patches_up_to_date
+- selinux_context_elevation_for_sudo
 - selinux_policytype
 - selinux_state
 - selinux_user_login_roles
@@ -423,7 +424,7 @@ selections:
 - sysctl_net_ipv6_conf_default_accept_redirects
 - sysctl_net_ipv6_conf_default_accept_source_route
 - sysctl_user_max_user_namespaces_no_remediation
-- tftpd_uses_secure_mode
+- tftp_uses_secure_mode_systemd
 - usbguard_generate_policy
 - wireless_disable_interfaces
 - xwindows_remove_packages
@@ -477,7 +478,6 @@ selections:
 - var_multiple_time_servers=stig
 - var_system_crypto_policy=fips
 - var_sudo_timestamp_timeout=always_prompt
-- var_slub_debug_options=P
 - var_user_initialization_files_regex=all_dotfiles
 - var_screensaver_lock_delay=5_seconds
 - var_logind_session_timeout=10_minutes
@@ -488,5 +488,6 @@ cpe_names: !!set {}
 platform: null
 filter_rules: ''
 policies: []
+single_rule_profile: false
 title: DISA STIG for Red Hat Enterprise Linux 8
 documentation_complete: true
