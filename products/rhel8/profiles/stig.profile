@@ -1201,7 +1201,7 @@ selections:
     - sshd_use_approved_kex_ordered_stig
 
     # RHEL-08-040350
-    - tftpd_uses_secure_mode
+    - tftp_uses_secure_mode_systemd
 
     # RHEL-08-040360
     - package_vsftpd_removed
