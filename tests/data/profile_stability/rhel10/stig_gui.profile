@@ -372,7 +372,6 @@ selections:
 - package_firewalld_installed
 - package_gnutls-utils_installed
 - package_gssproxy_removed
-- package_iprutils_removed
 - package_libreswan_installed
 - package_nss-tools_installed
 - package_opensc_installed

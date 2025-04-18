@@ -373,7 +373,6 @@ selections:
 - package_gdm_removed
 - package_gnutls-utils_installed
 - package_gssproxy_removed
-- package_iprutils_removed
 - package_libreswan_installed
 - package_nfs-utils_removed
 - package_nss-tools_installed
