@@ -77,7 +77,7 @@ option(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED "If enabled, schematron validation
 option(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED "If enabled, shellcheck validation of bash fixes will be performed as part of the ctest tests." TRUE)
 option(ENABLE_SCAPVAL13 "Set to ON to enable SCAPVal tests" OFF)
 option(FORCE_VALIDATE_EVERYTHING "If enabled, perform all validation tests regardless of oscap version requirements. By default, the build system may not perform validation of some content types if the openscap used to build it is not up-to-date" FALSE)
-option(ENABLE_CHECK_RULE_REMOVAL "If enabled, during ctest opted in products will be checked for rules that in the old release but not the current one." FALSE)
+option(ENABLE_CHECK_RULE_REMOVAL "If enabled, during ctest opted in products will be checked for rules that are present in the old release but not in the current one." FALSE)
 
 # SSG_PRODUCT_DEFAULT modifies the behavior of all other options. Products which should be built
 # by default should use the value ${SSG_PRODUCT_DEFAULT} instead of the boolean True. This allows
