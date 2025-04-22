@@ -126,7 +126,6 @@ selections:
 - audit_rules_privileged_commands_pkexec
 - audit_rules_privileged_commands_postdrop
 - audit_rules_privileged_commands_postqueue
-- audit_rules_privileged_commands_pt_chown
 - audit_rules_privileged_commands_rmmod
 - audit_rules_privileged_commands_ssh_agent
 - audit_rules_privileged_commands_ssh_keysign
