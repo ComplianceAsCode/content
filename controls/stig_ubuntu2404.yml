@@ -564,11 +564,11 @@ controls:
       or new passwords are established, pwquality must be used.
     levels:
       - medium
-    related_rules:
+    rules:
       - var_password_pam_retry=3
       - accounts_password_pam_enforcing
       - accounts_password_pam_retry
-    status: planned
+    status: automated
 
   - id: UBTU-24-300017
     title: Ubuntu 24.04 LTS must enforce a delay of at least four seconds between
