@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'The system must booted with init_on_free=1'
 
 description: |-
-    By setting <tt>init_on_free=1</tt> on boot guarantees that pages and heap objects are initialized right after they're freed, so it won't be possible to access stale data by using a dangling pointer.
+    Setting <tt>init_on_free=1</tt> on boot guarantees that pages and heap objects are initialized right after they're freed, so it won't be possible to access stale data by using a dangling pointer.
 
 
 rationale: |-
