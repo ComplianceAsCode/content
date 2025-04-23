@@ -130,7 +130,7 @@ jobs:
       -   name: Run Updates
           run: dnf update -y
       -   name: Install Deps
-          run: dnf install -y cmake make openscap-utils bats ansible python3-pip ShellCheck git python3-devel gcc-c++ libxml2-devel libxslt-devel python3-setuptools
+          run: dnf install -y cmake make openscap-utils bats ansible python3-pip ShellCheck git python3-devel gcc-c++ libxml2-devel libxslt-devel python3-setuptools gawk
       -   name: Checkout
           uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       -   name: Install deps python
