@@ -45,8 +45,6 @@ Noteworthy additions to these principles:
 
 * CodeClimate: Failures should be taken seriously, especially when they can be fixed easily &mdash; that includes issues related to the complexity of code.
   If code that looks reasonably complex is labelled as too complex, relaxation of the corresponding setting in CodeClimate can be proposed and discussed.
-* Openshift CI: As of 2022, those tests frequently fail because of infrastructure issues.
-  Their failing results don't have to be waived if the PR is clearly unrelated to those tests.
 
 ### Merging
 
