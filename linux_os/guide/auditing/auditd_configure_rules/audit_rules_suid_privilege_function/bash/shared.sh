@@ -7,16 +7,18 @@
 for ARCH in "${RULE_ARCHS[@]}"
 do
 	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
-    {{% if product in ["ubuntu2404"] %}}
-	OTHER_FILTERS="-C uid!=euid -F auid!=unset"
-    {{% elif product in ["ol8"] %}}
+    {{% if product in ["ol8"] %}}
 	OTHER_FILTERS="-C uid!=euid"
 	{{% else %}}
 	OTHER_FILTERS="-C uid!=euid -F euid=0"
 	{{% endif %}}
 	AUID_FILTERS=""
 	SYSCALL="execve"
+    {{% if product in ["ubuntu2404"] %}}
+	KEY="execpriv"
+	{{% else %}}
 	KEY="setuid"
+	{{% endif %}}
 	SYSCALL_GROUPING=""
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 	{{{ bash_fix_audit_syscall_rule("augenrules", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
@@ -26,16 +28,18 @@ done
 for ARCH in "${RULE_ARCHS[@]}"
 do
 	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
-    {{% if product in ["ubuntu2404"] %}}
-	OTHER_FILTERS="-C gid!=egid -F agid!=unset"
-    {{% elif product in ["ol8"] %}}
+    {{% if product in ["ol8"] %}}
 	OTHER_FILTERS="-C gid!=egid"
 	{{% else %}}
 	OTHER_FILTERS="-C gid!=egid -F egid=0"
 	{{% endif %}}
 	AUID_FILTERS=""
 	SYSCALL="execve"
+    {{% if product in ["ubuntu2404"] %}}
+	KEY="execpriv"
+	{{% else %}}
 	KEY="setgid"
+	{{% endif %}}
 	SYSCALL_GROUPING=""
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 	{{{ bash_fix_audit_syscall_rule("augenrules", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
