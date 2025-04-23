@@ -1,7 +1,7 @@
 #!/bin/bash
 # variables = var_password_pam_delay=4000000
 
-{{%- if product == "ubuntu2404" %}}
+{{%- if 'ubuntu' in product %}}
 cat << EOF > /usr/share/pam-configs/tmp_faildelay
 Name: Enable faildelay
 Conflicts: faildelay

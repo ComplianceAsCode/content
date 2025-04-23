@@ -1,7 +1,7 @@
 #!/bin/bash
 # variables = var_password_pam_delay=4000000
 
-{{%- if product == "ubuntu2404" %}}
+{{%- if 'ubuntu' in product %}}
 {{%- else %}}
 if [ ! -f "/etc/pam.d/common-auth" ] ; then
     touch /etc/pam.d/common-auth
