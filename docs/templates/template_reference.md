@@ -333,6 +333,9 @@ they must be of the same length.
         list of possible user names separated by |, e.g. "syslog|root".
         uids cannot be used with the '|' operator.
 
+    - **no_remediation** - this is a hint for templated test scenarios that the rule does not have remediation.
+        In this case, test scenarios are modified so that they do not expect the rule to be remediated.
+
 -   Languages: Ansible, Bash, OVAL
 
 Note that the interaction between **filepath** and **file_regex** is as such:
