@@ -129,7 +129,7 @@ and keep these guidelines in mind when writing new code.
 ## Project-level Coding Style
 
 * Include tests for your contribution.
-* Don't take part in making files longer -- files longer than 400 lines should be an exception.
+* Don't take part in making files longer &mdash; files longer than 400 lines should be an exception.
   Add your new code into a new file, and possibly move existing code to it in the same or in a follow-up PR.
 * Don't copy-paste code, use, e.g., Jinja macros to reduce duplication.
   Exception to this rule is code that is identical another piece of code only by coincidence, and there is a substantial probability that the code can diverge.
