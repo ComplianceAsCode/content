@@ -1,5 +1,7 @@
 #!/bin/bash
-
+{{%- if NO_REMEDIATION %}}
+# remediation = none
+{{%- endif %}}
 useradd testuser_123
 {{%- for own in OWNERS %}}
 id "{{{ own }}}" &>/dev/null || useradd {{{ own }}}
