@@ -1,7 +1,7 @@
 #!/bin/bash
 # packages = audit
 
-{{% if product in ["ol8", "ubuntu2404"] %}}
+{{% if product in ["ol8"] %}}
 OTHER_FILTERS_EUID=" -C uid!=euid"
 OTHER_FILTERS_EGID=" -C gid!=euid"
 {{% else %}}

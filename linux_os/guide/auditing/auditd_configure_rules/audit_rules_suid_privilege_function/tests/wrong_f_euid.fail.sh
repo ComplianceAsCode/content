@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = audit
-{{% if product in ["ol8", "ubuntu2404"] %}}
+{{% if product in ["ol8"] %}}
 # platform = Not Applicable
 {{% endif %}}
 
