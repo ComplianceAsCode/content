@@ -720,3 +720,4 @@ selections:
     - harden_sshd_macs_openssh_conf_crypto_policy
     - package_quagga_removed
     - audit_rules_session_events
+    - tftpd_uses_secure_mode

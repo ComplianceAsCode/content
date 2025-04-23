@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R2
+    version: V2R3
     SMEs:
         - mab879
         - ggbecker
@@ -12,7 +12,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V2R2.
+    DISA STIG for Red Hat Enterprise Linux 8 V2R3.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, this
     configuration baseline is applicable to the operating system tier of
@@ -322,8 +322,7 @@ selections:
     - grub2_vsyscall_argument
 
     # RHEL-08-010423
-    - grub2_slub_debug_argument
-    - var_slub_debug_options=P
+    - grub2_init_on_free
 
     # RHEL-08-010430
     - sysctl_kernel_randomize_va_space
@@ -333,6 +332,9 @@ selections:
 
     # RHEL-08-010450
     - selinux_policytype
+
+    # RHEL-08-010455
+    - selinux_context_elevation_for_sudo
 
     # RHEL-08-010460
     - no_host_based_files
@@ -566,14 +568,6 @@ selections:
 
     # RHEL-08-020101
     - accounts_password_pam_pwquality_system_auth
-
-    # RHEL-08-020102
-    # This is only required for RHEL8 systems below version 8.4 where the
-    # retry parameter was not yet available on /etc/security/pwquality.conf.
-
-    # RHEL-08-020103
-    # This is only required for RHEL8 systems below version 8.4 where the
-    # retry parameter was not yet available on /etc/security/pwquality.conf.
 
     # RHEL-08-020104
     - accounts_password_pam_retry
@@ -1207,7 +1201,7 @@ selections:
     - sshd_use_approved_kex_ordered_stig
 
     # RHEL-08-040350
-    - tftpd_uses_secure_mode
+    - tftp_uses_secure_mode_systemd
 
     # RHEL-08-040360
     - package_vsftpd_removed
