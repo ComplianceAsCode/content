@@ -313,7 +313,7 @@ selections:
     - grub2_vsyscall_argument
 
     # OL08-00-010423
-    - grub2_slub_debug_argument
+    - grub2_init_on_free
 
     # OL08-00-010424
     - grub2_mitigation_argument
