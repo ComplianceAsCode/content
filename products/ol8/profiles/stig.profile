@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R3
+    version: V2R4
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V2R3.
+    DISA STIG for Oracle Linux 8 V2R4.
 
 selections:
     ### Variables
@@ -537,19 +537,6 @@ selections:
     - logind_session_timeout
     - var_logind_session_timeout=15_minutes
 
-    # OL08-00-020039
-    - package_tmux_installed
-
-    # OL08-00-020040
-    - configure_tmux_lock_command
-    - configure_tmux_lock_keybinding
-
-    # OL08-00-020041
-    - configure_bashrc_tmux
-
-    # OL08-00-020042
-    - no_tmux_in_shells
-
     # OL08-00-020043
     - vlock_installed
 
@@ -558,9 +545,6 @@ selections:
 
     # OL08-00-020060
     - dconf_gnome_screensaver_idle_delay
-
-    # OL08-00-020070
-    - configure_tmux_lock_after_time
 
     # OL08-00-020080
     - dconf_gnome_screensaver_user_locks
