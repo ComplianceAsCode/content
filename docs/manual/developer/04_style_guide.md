@@ -45,8 +45,6 @@ Noteworthy additions to these principles:
 
 * CodeClimate: Failures should be taken seriously, especially when they can be fixed easily &mdash; that includes issues related to the complexity of code.
   If code that looks reasonably complex is labelled as too complex, relaxation of the corresponding setting in CodeClimate can be proposed and discussed.
-* Openshift CI: As of 2022, those tests frequently fail because of infrastructure issues.
-  Their failing results don't have to be waived if the PR is clearly unrelated to those tests.
 
 ### Merging
 
@@ -131,7 +129,7 @@ and keep these guidelines in mind when writing new code.
 ## Project-level Coding Style
 
 * Include tests for your contribution.
-* Don't take part in making files longer -- files longer than 400 lines should be an exception.
+* Don't take part in making files longer &mdash; files longer than 400 lines should be an exception.
   Add your new code into a new file, and possibly move existing code to it in the same or in a follow-up PR.
 * Don't copy-paste code, use, e.g., Jinja macros to reduce duplication.
   Exception to this rule is code that is identical another piece of code only by coincidence, and there is a substantial probability that the code can diverge.
@@ -423,12 +421,12 @@ Use:
   ansible.builtin.service:
     name: httpd
     state: started
-    enabled: yes
+    enabled: true
 ```
 Instead of:
 ```yaml
 - name: "{{{ rule_title }}} - Ensure httpd Service is Started"
-  ansible.builtin.service: name=httpd state=started enabled=yes
+  ansible.builtin.service: name=httpd state=started enabled=true
 ```
 * Shall be written to pass [ansible-lint](https://github.com/ansible-community/ansible-lint)
 * Shall use `true` for booleans values instead `True`, `yes` or `1`
