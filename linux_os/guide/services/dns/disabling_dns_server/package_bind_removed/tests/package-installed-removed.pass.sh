@@ -1,5 +1,10 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 8, Red Hat Enterprise Linux 10, multi_platform_fedora, multi_platform_debian, multi_platform_ol, multi_platform_sle
 
+{{% if product == "rhel9" -%}}
+dnf install -y bind9.18 || dnf install -y bind
+dnf remove -y bind9.18
+dnf -y remove bind
+{{% else -%}}
 {{{ bash_package_install("bind") }}}
 {{{ bash_package_remove("bind") }}}
+{{% endif -%}}
