@@ -575,10 +575,10 @@ controls:
       logon prompts following a failed logon attempt.
     levels:
       - low
-    related_rules:
+    rules:
       - var_password_pam_delay=4000000
       - accounts_passwords_pam_faildelay_delay
-    status: planned
+    status: automated
 
   - id: UBTU-24-300021
     title: Ubuntu 24.04 LTS must require users to reauthenticate for privilege escalation
