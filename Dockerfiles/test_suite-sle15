@@ -10,9 +10,10 @@ RUN zypper refresh
 
 RUN true \
         && zypper --non-interactive in openssh-clients openssh-server openscap-utils \
-        python3 python3-rpm tar gawk\
+        python311 python311-rpm python311-pip tar gawk\
         $ADDITIONAL_PACKAGES \
 && true
+RUN pip install ansible && ansible-galaxy collection install ansible.posix
 
 RUN true \
         && for key_type in rsa ecdsa; do ssh-keygen -N '' -t $key_type -f /etc/ssh/ssh_host_${key_type}_key; done \
