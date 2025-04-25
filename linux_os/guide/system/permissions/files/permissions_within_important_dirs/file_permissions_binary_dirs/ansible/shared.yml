@@ -4,7 +4,7 @@
 # complexity = medium
 # disruption = medium
 - name: "Read list of world and group writable system executables"
-  ansible.builtin.command: "find /bin /usr/bin /usr/local/bin /sbin /usr/sbin /usr/local/sbin /usr/libexec -perm /022 -type f"
+  ansible.builtin.command: "find -L /bin /usr/bin /usr/local/bin /sbin /usr/sbin /usr/local/sbin /usr/libexec -perm /022 \\( -type l -o -type f \\)"
   register: world_writable_library_files
   changed_when: False
   failed_when: False
