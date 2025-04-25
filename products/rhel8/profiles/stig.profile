@@ -202,10 +202,10 @@ selections:
     # RHEL-08-010287
     - configure_ssh_crypto_policy
 
-    # RHEL-08-010290
+    # RHEL-08-010296
     - harden_sshd_macs_opensshserver_conf_crypto_policy
 
-    # RHEL-08-010291
+    # RHEL-08-010297
     - harden_sshd_ciphers_opensshserver_conf_crypto_policy
 
     # RHEL-08-010292
