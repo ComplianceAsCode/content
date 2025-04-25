@@ -343,7 +343,6 @@ A rule may contain those reference-type attributes:
     <td><p>disa</p></td>
     <td><p>DISA Control Correlation Identifiers (catalog identifier)</p></td>
     <td><p>0-to-many</p></td>
-    <td><p>CCI-000018,CCI-000172,CCI-001403</p></td>
     </tr>
     <tr class="odd">
     <td><p>srg, etc.</p></td>
