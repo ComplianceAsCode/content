@@ -6,6 +6,7 @@ description: |-
     Sub-policies can be used to modify existing crypto policies.
     Some sub-policies such as <tt>NO-ENFORCE-EMS</tt> reduce the security of the system and should not be used.
     Other such as <tt>AD-SUPPORT</tt> should only be enabled if operationally required.
+    The <tt>OSPP</tt>, <tt>NO-SHA1</tt>, <tt>NO-CAMELLIA</tt>, and <tt>ECDHE-ONLY</tt> are allowed by this rule.
 
 
 rationale: |-
@@ -44,4 +45,7 @@ fixtext: |-
     $ sudo update-crypto-policies --set FIPS
     </pre>
 
+warnings:
+    - general: |-
+        This rule does not have a remedation.
 
