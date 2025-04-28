@@ -855,8 +855,9 @@ controls:
       account for PKI-based authentication.
     levels:
       - high
-    related_rules: []
-    status: planned
+    rules:
+      - sssd_enable_user_cert
+    status: automated
 
   - id: UBTU-24-400375
     title: Ubuntu 24.04 LTS, for PKI-based authentication, Privileged Access Management
