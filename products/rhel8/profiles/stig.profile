@@ -220,6 +220,12 @@ selections:
     # RHEL-08-010295
     - configure_gnutls_tls_crypto_policy
 
+    # RHEL-08-010296
+    - harden_sshd_macs_openssh_conf_crypto_policy
+
+    # RHEL-08-010297
+    - harden_sshd_ciphers_openssh_conf_crypto_policy
+
     # RHEL-08-010300
     - file_permissions_binary_dirs
 
