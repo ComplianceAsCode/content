@@ -1633,7 +1633,7 @@ Part of the grub2_bootloader_argument_absent template.
   ansible.builtin.lineinfile:
     path: "{{{ pam_file }}}"
     backrefs: true
-    regexp: ^(\s*{{{ group }}}\s+{{ pam_module_control | regex_escape() }}\s+{{{ module }}}\s+.*)({{{ option }}})=[0-9a-zA-Z]+\s*(.*)
+    regexp: ^(\s*{{{ group }}}\s+{{ pam_module_control | regex_escape() }}\s+{{{ module }}}\s+.*)({{{ option }}})=[0-9a-zA-Z]*\s*(.*)
     line: \1\2={{{ value }}} \3
   register: result_pam_{{{ rule_id }}}_edit
   when:
