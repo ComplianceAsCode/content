@@ -9,7 +9,7 @@
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("The password retry should meet minimum requirements") }}}
     <criteria operator="AND" comment="The password retry should meet minimum requirements">
-      {{% if 'debian' not in product %}}
+      {{% if 'debian' not in product and 'ubuntu' not in product %}}
       <extend_definition definition_ref="enable_authselect"/>
       {{% endif %}}
       <criteria operator="OR" comment="Conditions for retry are satisfied">

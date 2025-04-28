@@ -47,7 +47,11 @@ args:
   iptables:
     pkgname: iptables
   libpwquality:
+    {{% if 'ubuntu' in product %}}
+    pkgname: libpwquality1
+    {{% else %}}
     pkgname: libpwquality
+    {{% endif %}}
   libreswan:
     pkgname: libreswan
   libuser:
