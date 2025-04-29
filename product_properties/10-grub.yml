@@ -6,7 +6,11 @@ default:
 
 overrides:
 {{% if "rhel-like" in families and major_version_ordinal <= 8 %}}
+{{% if "almalinux" in product %}}
+  grub2_uefi_boot_path: "/boot/efi/EFI/almalinux"
+{{% else %}}
   grub2_uefi_boot_path: "/boot/efi/EFI/redhat"
+{{% endif %}}
 {{% endif %}}
 {{% if "suse" in families %}}
   grub_helper_executable: "grub2-mkconfig"

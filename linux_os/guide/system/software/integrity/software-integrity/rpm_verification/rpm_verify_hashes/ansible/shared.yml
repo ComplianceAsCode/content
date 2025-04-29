@@ -7,7 +7,7 @@
 - name: "Set fact: Package manager reinstall command"
   set_fact:
     package_manager_reinstall_cmd: {{{ pkg_manager }}} reinstall -y
-  when: ansible_distribution in [ "Fedora", "RedHat", "CentOS", "OracleLinux" ]
+  when: ansible_distribution in [ "Fedora", "RedHat", "CentOS", "OracleLinux", "AlmaLinux" ]
 
 - name: "Set fact: Package manager reinstall command (zypper)"
   set_fact:
