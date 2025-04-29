@@ -100,6 +100,7 @@ selections:
 
     # RHEL-08-010020
     - sysctl_crypto_fips_enabled
+    - fips_crypto_subpolicy
 
     # RHEL-08-010030
     - encrypt_partitions

@@ -248,6 +248,7 @@ selections:
 - file_permissions_var_log
 - file_permissions_var_log_audit
 - file_permissions_var_log_messages
+- fips_crypto_subpolicy
 - firewalld-backend
 - gnome_gdm_disable_automatic_login
 - grub2_admin_username

@@ -1,0 +1,51 @@
+documentation_complete: true
+
+title: 'FIPS Must Use a Supported Subpolicy'
+
+description: |-
+    Sub-policies can be used to modify existing crypto policies.
+    Some sub-policies such as <tt>NO-ENFORCE-EMS</tt> reduce the security of the system and should not be used.
+    Other such as <tt>AD-SUPPORT</tt> should only be enabled if operationally required.
+    The <tt>OSPP</tt>, <tt>NO-SHA1</tt>, <tt>NO-CAMELLIA</tt>, and <tt>ECDHE-ONLY</tt> are allowed by this rule.
+
+
+rationale: |-
+    Sub-policies can cause insecure ciphers to be used.
+
+identifiers:
+    cce@rhel8: CCE-86536-0
+    cce@rhel9: CCE-86538-6
+
+references:
+    srg: SRG-OS-000033-GPOS-00014
+    stigid@rhel8: RHEL-08-010020
+
+severity: medium
+
+ocil_clause: 'using an insecure sub-policy'
+
+ocil: |-
+    Show the configured systemwide cryptographic policy by running the following command:
+
+    $ sudo update-crypto-policies --show
+    FIPS
+
+fixtext: |-
+    Update the system crypto policy to use the plain crypto policy without a sub policy.
+    For example, if the system used the FIPS policy.
+
+    <pre>
+    $ sudo update-crypto-policies --show
+    FIPS:AD-SUPPORT
+    </pre>
+
+    Then you would run
+
+    <pre>
+    $ sudo update-crypto-policies --set FIPS
+    </pre>
+
+warnings:
+    - general: |-
+        This rule does not have a remedation.
+
