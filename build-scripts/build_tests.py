@@ -18,6 +18,7 @@ import ssg.templates
 SSG_ROOT = str(pathlib.Path(__file__).resolve().parent.parent.absolute())
 JOB_COUNT = multiprocessing.cpu_count()
 T = TypeVar("T")
+TESTS_CONFIG_NAME = "test_config.yml"
 
 
 def _create_arg_parser() -> argparse.ArgumentParser:
@@ -120,8 +121,14 @@ def _process_local_tests(product: str, env_yaml: dict, rule_output_path: pathlib
             _write_path(content, rule_output_path / test.name)
 
 
-def _should_skip_templated_tests(deny_templated_scenarios, test):
-    return not test.name.endswith(".sh") or test.name in deny_templated_scenarios
+def _get_test_dir_config(rule_path: pathlib.Path) -> Dict:
+    test_config = dict()
+    rule_root = rule_path.parent
+    tests_dir = rule_root / "tests"
+    test_config_path = tests_dir / TESTS_CONFIG_NAME
+    if test_config_path.exists():
+        test_config = ssg.yaml.open_raw(test_config_path)
+    return test_config
 
 
 def _process_templated_tests(env_yaml: Dict, rendered_rule_obj: Dict, templates_root: pathlib.Path,
@@ -136,18 +143,17 @@ def _process_templated_tests(env_yaml: Dict, rendered_rule_obj: Dict, templates_
     template_root = templates_root / template_name
     template_tests_root = template_root / "tests"
 
-    rule_root = rule_path.parent
-    rule_tests_root = rule_root / "tests"
-
     if not template_tests_root.exists():
         logger.debug("Template %s doesn't have tests. Skipping for rule %s.",
                      template_name, rule_id)
         return
-    test_config_path = rule_tests_root / "test_config.yml"
-    deny_templated_scenarios = _get_deny_templated_scenarios(test_config_path)
-    for test in template_tests_root.iterdir():  # type: pathlib.Path
-        if _should_skip_templated_tests(deny_templated_scenarios, test):
-            logger.warning("Skipping %s for %s as it is a denied test scenario",
+    test_config = _get_test_dir_config(rule_path)
+    all_templated_tests = set(x.name for x in template_tests_root.iterdir())
+    templated_tests = ssg.utils.select_templated_tests(test_config, all_templated_tests)
+    for test_name in templated_tests:  # type: str
+        test = template_tests_root / test_name
+        if not test.name.endswith(".sh"):
+            logger.warning("Skipping %s for %s as it isn't a test scenario",
                            test.name, rule_id)
             continue
         template = ssg.templates.Template.load_template(str(templates_root.absolute()),
