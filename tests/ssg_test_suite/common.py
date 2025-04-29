@@ -20,7 +20,7 @@ from ssg.constants import OSCAP_RULE
 from ssg.jinja import process_file_with_macros
 from ssg.products import product_yaml_path, load_product_yaml
 from ssg.rules import get_rule_dir_yaml
-from ssg.utils import mkdir_p
+from ssg.utils import mkdir_p, select_templated_tests
 from tests.ssg_test_suite.log import LogHelper
 
 import ssg.templates
@@ -371,31 +371,6 @@ def get_test_dir_config(test_dir, product_yaml):
     if os.path.exists(test_config_filename):
         test_config = ssg.yaml.open_and_expand(test_config_filename, product_yaml)
     return test_config
-
-
-def select_templated_tests(test_dir_config, available_scenarios_basenames):
-    deny_scenarios = set(test_dir_config.get("deny_templated_scenarios", []))
-    available_scenarios_basenames = {
-        test_name for test_name in available_scenarios_basenames
-        if test_name not in deny_scenarios
-    }
-
-    allow_scenarios = set(test_dir_config.get("allow_templated_scenarios", []))
-    if allow_scenarios:
-        available_scenarios_basenames = {
-            test_name for test_name in available_scenarios_basenames
-            if test_name in allow_scenarios
-        }
-
-    allowed_and_denied = deny_scenarios.intersection(allow_scenarios)
-    if allowed_and_denied:
-        msg = (
-            "Test directory configuration contain inconsistencies: {allowed_and_denied} "
-            "scenarios are both allowed and denied."
-            .format(allowed_and_denied=allowed_and_denied)
-        )
-        raise ValueError(msg)
-    return available_scenarios_basenames
 
 
 def fetch_templated_tests_paths(

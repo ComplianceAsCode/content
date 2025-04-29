@@ -900,3 +900,28 @@ def ensure_file_paths_and_file_regexes_are_correctly_defined(data):
                 "rule '{0}'".format(data["_rule_id"]))
 
     check_conflict_regex_directory(data)
+
+
+def select_templated_tests(test_dir_config, available_scenarios_basenames):
+    deny_scenarios = set(test_dir_config.get("deny_templated_scenarios", []))
+    available_scenarios_basenames = {
+        test_name for test_name in available_scenarios_basenames
+        if test_name not in deny_scenarios
+    }
+
+    allow_scenarios = set(test_dir_config.get("allow_templated_scenarios", []))
+    if allow_scenarios:
+        available_scenarios_basenames = {
+            test_name for test_name in available_scenarios_basenames
+            if test_name in allow_scenarios
+        }
+
+    allowed_and_denied = deny_scenarios.intersection(allow_scenarios)
+    if allowed_and_denied:
+        msg = (
+            "Test directory configuration contain inconsistencies: {allowed_and_denied} "
+            "scenarios are both allowed and denied."
+            .format(allowed_and_denied=allowed_and_denied)
+        )
+        raise ValueError(msg)
+    return available_scenarios_basenames
