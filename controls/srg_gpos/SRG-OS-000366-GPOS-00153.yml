@@ -21,5 +21,8 @@ controls:
             {{% if 'ol' in product %}}
             - ensure_oracle_gpgkey_installed
             {{% endif %}}
+            {{% if 'almalinux' in product %}}
+            - ensure_almalinux_gpgkey_installed
+            {{% endif %}}
 
         status: automated

@@ -16,6 +16,11 @@ description: |-
     <pre>$ sudo yum update</pre>
     If the system is not configured to use one of these sources, updates (in the form of RPM packages)
     can be manually downloaded from the ULN and installed using <tt>rpm</tt>.
+{{% elif 'almalinux' in product %}}
+    Run the following command to install updates:
+    <pre>$ sudo yum update</pre>
+    If the system is not configured to use repos, updates (in the form of RPM packages)
+    can be manually downloaded from the repos and installed using <tt>rpm</tt>.
 {{% elif product in ["sle12", "sle15", "slmicro5"] %}}
     If the system is configured for online updates, invoking the following command will list available
     security updates:
