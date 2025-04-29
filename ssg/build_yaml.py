@@ -1811,7 +1811,6 @@ class Rule(XCCDFEntity, Templatable):
         rule.validate_references(yaml_file)
         return rule
 
-
     def normalize(self, product):
         """
         Normalize the given product by making references and identifiers product-specific and
