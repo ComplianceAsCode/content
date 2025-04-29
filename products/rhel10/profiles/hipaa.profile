@@ -63,3 +63,5 @@ selections:
     - '!sshd_allow_only_protocol2'
     - '!sshd_disable_kerb_auth'
     - '!sshd_disable_gssapi_auth'
+    - '!service_rlogin_disabled'
+    - '!service_rsh_disabled'

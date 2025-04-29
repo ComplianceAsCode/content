@@ -27,3 +27,5 @@ selections:
   - configure_openssl_tls_crypto_policy
   - audit_rules_privileged_commands_pt_chown
   - package_iprutils_removed
+  - service_rlogin_disabled
+  - service_rsh_disabled
