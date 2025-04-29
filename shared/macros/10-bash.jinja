@@ -1164,7 +1164,7 @@ if [ -f $FAILLOCK_CONF ] || [ "$SKIP_FAILLOCK_CHECK" = "true" ]; then
 else
     for pam_file in "${AUTH_FILES[@]}"
     do
-        if ! grep -qE '^\s*auth.*pam_faillock\.so (preauth|authfail).*{{{ option }}}' "$pam_file"; then
+        if ! grep -qE '^\s*auth.*pam_faillock\.so\s+(preauth|authfail).*{{{ option }}}' "$pam_file"; then
             {{%- if value == '' %}}
             sed -i --follow-symlinks '/^auth.*required.*pam_faillock\.so.*preauth.*/ s/$/ {{{ option }}}/' "$pam_file"
             {{%- if authfail %}}
