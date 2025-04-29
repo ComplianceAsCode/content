@@ -5,41 +5,63 @@
 # disruption = low
 {{{ ansible_instantiate_variables("sshd_approved_macs") }}}
 
-- name: "{{{ rule_title }}}: Set facts"
-  set_fact:
-    path: /etc/crypto-policies/back-ends/opensshserver.config
-    correct_value: "-oMACs={{ sshd_approved_macs }}"
+-   name: "{{{ rule_title }}}: Set relevant paths and correct value"
+    ansible.builtin.set_fact:
+        opensshserver_path: /etc/crypto-policies/back-ends/opensshserver.config
+        local_path: /etc/crypto-policies/local.d/opensshserver-ssg.config
+        correct_value: "-oMACs={{ sshd_approved_macs }}"
 
-- name: "{{{ rule_title }}}: Stat"
-  stat:
-    path: "{{ path }}"
-    follow: yes
-  register: opensshserver_file
+-   name: "{{{ rule_title }}}: Ensure crypto config exists"
+    ansible.builtin.stat:
+        path: "{{ opensshserver_path }}"
+        follow: true
+    register: opensshserver_file
 
-- name: "{{{ rule_title }}}: Create"
-  lineinfile:
-    path: "{{ path }}"
-    line: "CRYPTO_POLICY='{{ correct_value }}'"
-    create: yes
-  when: not opensshserver_file.stat.exists or opensshserver_file.stat.size <= correct_value|length
+-   name: "{{{ rule_title }}}: Generate default config if missing or empty"
+    ansible.builtin.command: update-crypto-policies --no-reload
+    when: not opensshserver_file.stat.exists or opensshserver_file.stat.size == 0
 
-- name: "{{{ rule_title }}}"
-  block:
-    - name: "Existing value check"
-      lineinfile:
-        path: "{{ path }}"
-        create: false
-        regexp: "{{ correct_value }}"
-        state: absent
-      check_mode: true
-      changed_when: false
-      register: opensshserver
+-   name: "{{{ rule_title }}}: Read opensshserver.config content"
+    ansible.builtin.slurp:
+        src: "{{ opensshserver_path }}"
+    register: ssh_config_raw
 
-    - name: "Update/Correct value"
-      replace:
-        path: "{{ path }}"
-        regexp: (-oMACs=\S+)
-        replace: "{{ correct_value }}"
-      when: opensshserver.found is defined and opensshserver.found != 1
+-   name: "{{{ rule_title }}}: Extract last CRYPTO_POLICY line"
+    ansible.builtin.set_fact:
+        last_crypto_policy: "{{ (ssh_config_raw.content | b64decode).splitlines() | select('match', \"^\\s*CRYPTO_POLICY='[^']+'\") | list | last | default('') }}"
 
-  when: opensshserver_file.stat.exists and opensshserver_file.stat.size > correct_value|length
+-   name: "{{{ rule_title }}}: Check if correct_value is present"
+    ansible.builtin.set_fact:
+        mac_is_correct: "{{ correct_value in last_crypto_policy }}"
+
+-   name: "{{{ rule_title }}}: Extract current Ciphers if needed"
+    ansible.builtin.set_fact:
+        existing_mac: "{{ (last_crypto_policy | regex_findall('(-oMACs=\\S+)', '\\1')) | last | default('') }}"
+    when: not mac_is_correct and last_crypto_policy != ''
+
+-   name: "{{{ rule_title }}}: Build full updated CRYPTO_POLICY line"
+    set_fact:
+        updated_crypto_policy: >-
+            {% if last_crypto_policy == '' %}
+            CRYPTO_POLICY='{{ correct_value }}'
+            {% elif existing_mac != '' %}
+            {{ last_crypto_policy | regex_replace(existing_mac, correct_value) }}
+            {% else %}
+            {{ last_crypto_policy[:-1] ~ " " ~ correct_value ~ "'" }}
+            {% endif %}
+    when: not mac_is_correct
+
+-   name: "{{{ rule_title }}}: Ensure local.d dir exists"
+    ansible.builtin.file:
+        path: "{{ local_path | dirname }}"
+        state: directory
+
+-   name: "{{{ rule_title }}}: Write CRYPTO_POLICY to local config"
+    ansible.builtin.lineinfile:
+        path: "{{ local_path }}"
+        line: "{{ '\n' ~ updated_crypto_policy }}"
+        create: yes
+        insertafter: EOF
+
+-   name: "{{{ rule_title }}}: Apply updated crypto policies"
+    ansible.builtin.command: update-crypto-policies --no-reload
