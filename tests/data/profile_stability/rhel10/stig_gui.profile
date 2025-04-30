@@ -384,6 +384,7 @@ selections:
 - package_rsyslog-gnutls_installed
 - package_rsyslog_installed
 - package_s-nail_installed
+- package_sssd_installed
 - package_subscription-manager_installed
 - package_sudo_installed
 - package_telnet-server_removed
@@ -425,6 +426,7 @@ selections:
 - service_pcscd_enabled
 - service_rsyslog_enabled
 - service_sshd_enabled
+- service_sssd_enabled
 - service_systemd-coredump_disabled
 - service_systemd-journald_enabled
 - service_usbguard_enabled
