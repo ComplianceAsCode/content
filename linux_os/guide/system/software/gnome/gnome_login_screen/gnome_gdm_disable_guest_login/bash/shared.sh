@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol,multi_platform_almalinux
+# platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 10,multi_platform_fedora,multi_platform_ol,multi_platform_almalinux
 
 if rpm --quiet -q gdm
 then
