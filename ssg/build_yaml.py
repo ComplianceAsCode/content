@@ -1811,31 +1811,6 @@ class Rule(XCCDFEntity, Templatable):
         rule.validate_references(yaml_file)
         return rule
 
-    def _verify_disa_cci_format(self):
-        """
-        Verify that the DISA CCI format is correct.
-
-        This method checks if the CCI IDs in the 'disa' reference follow the expected format
-        'CCI-XXXXXX', where 'X' is a digit. If any CCI ID does not match this format, a ValueError
-        is raised.
-
-        Returns:
-            None
-
-        Raises:
-            ValueError: If any CCI ID is in the wrong format.
-        """
-        cci_id = self.references.get("disa", None)
-        if not cci_id:
-            return
-        cci_ex = re.compile(r'^CCI-[0-9]{6}$')
-        for cci in cci_id:
-            if not cci_ex.match(cci):
-                raise ValueError("CCI '{}' is in the wrong format! "
-                                 "Format should be similar to: "
-                                 "CCI-XXXXXX".format(cci))
-        self.references["disa"] = cci_id
-
     def normalize(self, product):
         """
         Normalize the given product by making references and identifiers product-specific and
@@ -2083,7 +2058,6 @@ class Rule(XCCDFEntity, Templatable):
             dic.update(new_items)
 
         self.references = general_references
-        self._verify_disa_cci_format()
         self.references.update(product_references)
 
     def validate_identifiers(self, yaml_file):
