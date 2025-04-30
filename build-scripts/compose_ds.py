@@ -3,7 +3,7 @@
 import argparse
 import os
 import sys
-import time
+import subprocess
 import glob
 import xml.etree.ElementTree as ET
 
@@ -300,6 +300,11 @@ def _compose_multiple_ds(args):
             os.makedirs(os.path.dirname(output))
 
         _store_ds(ds, output)
+        if not hasattr(ET, "indent"):
+            subprocess.run(
+                ["xmllint", "--nsclean", "--format", "--output", output, output],
+                check=True,
+            )
 
 
 if __name__ == "__main__":
