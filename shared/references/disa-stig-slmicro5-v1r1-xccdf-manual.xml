@@ -1988,14 +1988,14 @@ This requirement verifies that a certification path to an accepted trust anchor 
 
 Modify all of the cert_policy lines in "/etc/pam_pkcs11/pam_pkcs11.conf" to include "ca":
 
-cert_policy = ca,signature,ocsp_on;
+cert_policy = ca,signature,oscp_on;
 
 Note: Additional certificate validation polices are permitted.
 
 Additional information on the configuration of multifactor authentication on SLEM 5 can be found at https://www.suse.com/communities/blog/configuring-smart-card-authentication-suse-linux-enterprise/.</fixtext><fix id="F-65038r996621_fix" /><check system="C-65130r996620_chk"><check-content-ref href="SUSE_Linux_Enterprise_Micro_(SLEM)_5_STIG.xml" name="M" /><check-content>Verify SLEM 5 for PKI-based authentication had valid certificates by constructing a certification path (which includes status information) to an accepted trust anchor with the following command:
 
      &gt; grep cert_policy /etc/pam_pkcs11/pam_pkcs11.conf
-     cert_policy = ca,ocsp_on,signature,crl_auto;
+     cert_policy = ca,oscp_on,signature,crl_auto;
 
 If "cert_policy" is not set to include "ca" on all returned lines, this is a finding.</check-content></check></Rule></Group><Group id="V-261402"><title>SRG-OS-000480-GPOS-00227</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-261402r996624_rule" weight="10.0" severity="medium"><version>SLEM-05-631025</version><title>SLEM 5 must be configured to not overwrite Pluggable Authentication Modules (PAM) configuration on package changes.</title><description>&lt;VulnDiscussion&gt;The "pam-config" command line utility automatically generates a system PAM configuration as packages are installed, updated, or removed from the system. "pam-config" removes configurations for PAM modules and parameters that it does not know about. It may render ineffective PAM configuration by the system administrator and thus impact system security.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;&lt;/Responsibility&gt;&lt;IAControls&gt;&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target SUSE Linux Enterprise Micro (SLEM) 5</dc:title><dc:publisher>DISA</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>SUSE Linux Enterprise Micro (SLEM) 5</dc:subject><dc:identifier>5596</dc:identifier></reference><ident system="http://cyber.mil/cci">CCI-000366</ident><fixtext fixref="F-65039r996623_fix">Copy the PAM configuration files to their static locations and remove SLEM 5 soft links for the PAM configuration files with the following command:
 
