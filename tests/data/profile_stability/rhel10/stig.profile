@@ -46,8 +46,6 @@ selections:
 - accounts_password_pam_pwquality_retry
 - accounts_password_pam_pwquality_system_auth
 - accounts_password_pam_ucredit
-- accounts_password_pam_unix_rounds_password_auth
-- accounts_password_pam_unix_rounds_system_auth
 - accounts_password_set_max_life_existing
 - accounts_password_set_min_life_existing
 - accounts_passwords_pam_faillock_audit
