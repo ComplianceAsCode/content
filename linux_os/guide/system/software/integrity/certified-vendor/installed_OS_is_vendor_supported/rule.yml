@@ -65,6 +65,8 @@ ocil: |-
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
 {{% elif product in ["sle12", "sle15", "slmicro5"] %}}
     <pre>$ grep -i "suse" /etc/os-release</pre>
+{{% elif 'ubuntu' in product %}}
+    <pre>$ grep DISTRIB_DESCRIPTION /etc/lsb-release</pre>
 {{% endif %}}
     <pre>{{{ full_name }}}</pre>
 

@@ -1200,8 +1200,9 @@ controls:
     title: Ubuntu 24.04 LTS must be a vendor-supported release.
     levels:
       - medium
-    rules: []
-    status: planned
+    rules: 
+      - installed_OS_is_vendor_supported
+    status: automated
 
   - id: UBTU-24-900040
     title: Ubuntu 24.04 LTS must be configured so that audit configuration files are
