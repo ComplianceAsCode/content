@@ -53,7 +53,7 @@ controls:
             before granting local or remote access to the system via a command line user logon.
         rules:
             - banner_etc_issue
-            - login_banner_text=dod_banners
+            - login_banner_text=dod_default
         status: automated
 
     -   id: OL09-00-000020
@@ -2045,6 +2045,16 @@ controls:
         rules:
             - dconf_gnome_banner_enabled
         status: automated
+
+    -   id: OL09-00-002151
+        levels: 
+            - medium
+        title:
+            OL 9 must display the Standard Mandatory DOD Notice and Consent Banner before granting
+            local or remote access to the system via a graphical user logon.
+        rules:
+            - dconf_gnome_login_banner_text
+            - login_banner_text=dod_default
 
     -   id: OL09-00-002122
         levels:
