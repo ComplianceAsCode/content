@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Oracle Linux 7
+# platform = multi_platform_ol
 # profiles = xccdf_org.ssgproject.content_profile_ncp
 # packages = dconf,gdm
 
