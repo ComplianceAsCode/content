@@ -434,6 +434,7 @@ selections:
 - set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
 - set_password_hashing_min_rounds_logindefs
+- set_password_hashing_yescrypt_cost_factor_logindefs
 - ssh_client_rekey_limit
 - ssh_keys_passphrase_protected
 - sshd_disable_compression
@@ -524,6 +525,7 @@ selections:
 - var_accounts_maximum_age_login_defs=60
 - var_accounts_minimum_age_login_defs=1
 - var_password_hashing_algorithm_pam=yescrypt
+- var_password_yescrypt_cost_factor_login_defs=5
 - var_password_pam_difok=8
 - var_password_pam_maxrepeat=3
 - var_password_pam_minclass=4
