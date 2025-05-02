@@ -4,12 +4,6 @@ controls:
                 associated to a user.'
         levels:
             - medium
-        status: not applicable
-        fixtext: |-
-            The requirement is NA. No fix is required.
-        check: |-
-            This requirement is NA for {{{ full_name }}}.
-        rationale: |-
-            Disabling expired, inactive, or otherwise anomalous accounts supports the concepts of least privilege and least functionality which reduce the attack surface of the system.
-        status_justification:
-            This is a procedural-only requirement that is not enforced by the OS.
+        status: automated
+        rules:
+            - account_disable_post_pw_expiration
