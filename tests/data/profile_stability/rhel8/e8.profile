@@ -94,7 +94,6 @@ selections:
 - service_squid_disabled
 - service_telnet_disabled
 - service_xinetd_disabled
-- service_zebra_disabled
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
 - sshd_disable_rhosts
