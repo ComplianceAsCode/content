@@ -29,3 +29,4 @@ selections:
   - package_iprutils_removed
   - service_rlogin_disabled
   - service_rsh_disabled
+  - service_rexec_disabled

@@ -172,7 +172,6 @@ selections:
 - service_crond_enabled
 - service_debug-shell_disabled
 - service_kdump_disabled
-- service_rexec_disabled
 - service_rsyslog_enabled
 - service_telnet_disabled
 - sshd_disable_compression
