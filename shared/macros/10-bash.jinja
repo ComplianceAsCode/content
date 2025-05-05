@@ -2388,7 +2388,7 @@ if ! grep -qP "^\s*{{{ group }}}\s+{{{ control_regex }}}\s+{{{ module }}}\s*.*\s
 fi
 {{%- else %}}
 else
-    sed -i -E --follow-symlinks "s/(\s*{{{ group }}}\s+{{{ control_regex }}}\s+{{{ module }}}\s+.*)({{{ option }}}=)[[:alnum:]]+\s*(.*)/\1\2{{{ value }}} \3/" "{{{ pam_file }}}"
+    sed -i -E --follow-symlinks "s/(\s*{{{ group }}}\s+{{{ control_regex }}}\s+{{{ module }}}\s+.*)({{{ option }}}=)[[:alnum:]]*\s*(.*)/\1\2{{{ value }}} \3/" "{{{ pam_file }}}"
 fi
 {{%- endif %}}
 {{%- endmacro -%}}
