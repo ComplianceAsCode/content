@@ -13,10 +13,10 @@ description: |-
     If either is set, they must have the minimum value of {{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}.
 
 rationale: |-
-    Passwords need to be protected at all times, and encryption is the standard
-    method for protecting passwords. If passwords are not encrypted, they can
+    Passwords need to be protected at all times, and hashing is the standard
+    method for protecting passwords. If passwords are not hashed, they can
     be plainly read (i.e., clear text) and easily compromised. Passwords
-    that are encrypted with a weak algorithm are no more protected than if
+    that are hashed with a weak algorithm are no more protected than if
     they are kept in plain text.
     <br /><br />
     Using more hashing rounds makes password cracking attacks more difficult.
