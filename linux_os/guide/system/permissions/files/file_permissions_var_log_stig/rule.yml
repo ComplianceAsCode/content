@@ -25,6 +25,16 @@ rationale: |-
 
 severity: medium
 
+ocil_clause: 'not all log files have permission 640 or stricter'
+
+ocil: |-
+    Verify the operating system has all system log files except
+    [bw]tmp ad lastlog under the <pre>/var/log</pre> directory
+    with a permission set to 640, by using the following command:
+    <pre>
+    sudo find /var/log -perm /137 -type f ! -name '*[bw]tmp' ! -name '*lastlog' -exec stat -c "%n %a" {} \;
+    </pre>
+
 template:
     name: file_permissions
     vars:
