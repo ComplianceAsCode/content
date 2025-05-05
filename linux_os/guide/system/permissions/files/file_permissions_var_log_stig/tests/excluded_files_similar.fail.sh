@@ -1,4 +1,5 @@
 #!/bin/bash
+# platform = multi_platform_ubuntu
 
 find /var/log -exec chmod g-rwx,o-rwx {} \;
 
