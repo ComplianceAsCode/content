@@ -24,16 +24,16 @@
   {{{ test_remote_method(method="authpriv", test_ref="remote_method_monitoring_authpriv") }}}
   {{{ test_remote_method(method="daemon", test_ref="remote_method_monitoring_daemon") }}}
 
-  {{% macro object_remote_method(regex, test_ref) %}}
+  {{% macro object_remote_method(method, test_ref) %}}
   <ind:textfilecontent54_object id="obj_{{{ test_ref }}}" version="1">
     <ind:filepath operation="pattern match">^/etc/rsyslog\.(conf|d/.+\.conf)$</ind:filepath>
-    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
+    <ind:pattern operation="pattern match">^[^#\n]*{{{ method }}}(,\w+)*\.\*[^\n]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   {{% endmacro %}}
 
-  {{{ object_remote_method(regex="^[^#]*auth\.\*.*$", test_ref="remote_method_monitoring_auth") }}}
-  {{{ object_remote_method(regex="^[^#]*authpriv\.\*.*$", test_ref="remote_method_monitoring_authpriv") }}}
-  {{{ object_remote_method(regex="^[^#]*daemon\.\*.*$", test_ref="remote_method_monitoring_daemon") }}}
+  {{{ object_remote_method(method="auth", test_ref="remote_method_monitoring_auth") }}}
+  {{{ object_remote_method(method="authpriv", test_ref="remote_method_monitoring_authpriv") }}}
+  {{{ object_remote_method(method="daemon", test_ref="remote_method_monitoring_daemon") }}}
 
 </def-group>
