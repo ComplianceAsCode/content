@@ -208,7 +208,9 @@ selections:
 - dir_perms_world_writable_root_owned
 - dir_perms_world_writable_sticky_bits
 - directory_group_ownership_var_log_audit
+- directory_groupowner_sshd_config_d
 - directory_ownership_var_log_audit
+- directory_permissions_sshd_config_d
 - directory_permissions_var_log_audit
 - disable_ctrlaltdel_burstaction
 - disable_ctrlaltdel_reboot
@@ -223,6 +225,7 @@ selections:
 - ensure_gpgcheck_local_packages
 - ensure_gpgcheck_never_disabled
 - ensure_redhat_gpgkey_installed
+- fapolicy_default_deny
 - file_audit_tools_group_ownership
 - file_audit_tools_ownership
 - file_audit_tools_permissions
@@ -245,8 +248,10 @@ selections:
 - file_groupowner_etc_shadow
 - file_groupowner_grub2_cfg
 - file_groupowner_sshd_config
+- file_groupowner_sshd_drop_in_config
 - file_groupowner_var_log
 - file_groupowner_var_log_messages
+- file_groupownership_audit_configuration
 - file_groupownership_home_directories
 - file_groupownership_system_commands_dirs
 - file_owner_backup_etc_group
@@ -269,11 +274,13 @@ selections:
 - file_owner_sshd_config
 - file_owner_var_log
 - file_owner_var_log_messages
+- file_ownership_audit_configuration
 - file_ownership_binary_dirs
 - file_ownership_library_dirs
 - file_ownership_var_log_audit_stig
 - file_permission_user_init_files
 - file_permission_user_init_files_root
+- file_permissions_audit_configuration
 - file_permissions_backup_etc_group
 - file_permissions_backup_etc_gshadow
 - file_permissions_backup_etc_passwd
@@ -301,6 +308,8 @@ selections:
 - file_permissions_var_log
 - file_permissions_var_log_audit
 - file_permissions_var_log_messages
+- file_sshd_50_redhat_exists
+- firewalld-backend
 - firewalld_sshd_port_enabled
 - gid_passwd_group_same
 - gnome_gdm_disable_automatic_login
@@ -322,6 +331,7 @@ selections:
 - kernel_module_tipc_disabled
 - kernel_module_usb-storage_disabled
 - libreswan_approved_tunnels
+- logind_session_timeout
 - mount_option_boot_nodev
 - mount_option_boot_nosuid
 - mount_option_dev_shm_nodev
@@ -414,6 +424,7 @@ selections:
 - rsyslog_remote_access_monitoring
 - rsyslog_remote_loghost
 - selinux_all_devicefiles_labeled
+- selinux_context_elevation_for_sudo
 - selinux_policytype
 - selinux_state
 - service_auditd_enabled
@@ -452,6 +463,7 @@ selections:
 - sshd_enable_pubkey_auth
 - sshd_enable_strictmodes
 - sshd_enable_warning_banner
+- sshd_include_crypto_policy
 - sshd_print_last_log
 - sshd_rekey_limit
 - sshd_set_idle_timeout
@@ -509,13 +521,19 @@ selections:
 - use_pam_wheel_for_su
 - wireless_disable_interfaces
 - xwindows_runlevel_target
+- var_user_initialization_files_regex=all_dotfiles
+- var_networkmanager_dns_mode=explicit_default
+- var_accounts_tmout=15_min
+- var_sshd_set_keepalive=1
+- sysctl_net_ipv4_tcp_invalid_ratelimit_value=five_hundred
+- var_selinux_policy_name=targeted
+- var_selinux_state=enforcing
+- var_password_hashing_algorithm_pam=yescrypt
+- var_password_pam_unix_rounds=5
 - var_password_pam_maxclassrepeat=4
 - var_password_pam_dictcheck=1
-- var_password_pam_unix_rounds=5
 - var_password_pam_remember=5
 - var_password_pam_remember_control_flag=requisite_or_required
-- var_user_initialization_files_regex=all_dotfiles
-- var_networkmanager_dns_mode=none
 - var_sssd_certificate_verification_digest_function=sha512
 - var_multiple_time_servers=stig
 - var_auditd_admin_space_left_action=single
@@ -523,8 +541,6 @@ selections:
 - var_auditd_space_left_percentage=25pc
 - var_auditd_action_mail_acct=root
 - var_auditd_space_left_action=email
-- var_accounts_tmout=15_min
-- var_sshd_set_keepalive=1
 - var_accounts_maximum_age_login_defs=60
 - var_accounts_minimum_age_login_defs=1
 - var_password_hashing_algorithm_pam=yescrypt
@@ -538,8 +554,6 @@ selections:
 - inactivity_timeout_value=15_minutes
 - var_screensaver_lock_delay=5_seconds
 - var_time_service_set_maxpoll=18_hours
-- var_selinux_policy_name=targeted
-- var_selinux_state=enforcing
 - var_system_crypto_policy=fips
 - var_smartcard_drivers=cac
 - var_rekey_limit_size=1G
@@ -554,7 +568,6 @@ selections:
 - var_accounts_passwords_pam_faillock_unlock_time=never
 - var_accounts_user_umask=077
 - var_accounts_fail_delay=4
-- sysctl_net_ipv4_tcp_invalid_ratelimit_value=five_hundred
 - var_password_pam_ocredit=1
 - var_password_pam_dcredit=1
 - var_sshd_disable_compression=no
