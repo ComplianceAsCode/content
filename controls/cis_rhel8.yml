@@ -25,8 +25,6 @@ controls:
     notes: <-
       This is a helper rule to reload Dconf database correctly.
     status: automated
-    rules:
-      - dconf_db_up_to_date
 
   - id: enable_authselect
     title: Enable Authselect
@@ -73,8 +71,6 @@ controls:
       - l2_server
       - l2_workstation
     status: automated
-    rules:
-      - kernel_module_hfsplus_disabled
 
   - id: 1.1.1.5
     title: Ensure jffs2 kernel module is not available (Automated)
