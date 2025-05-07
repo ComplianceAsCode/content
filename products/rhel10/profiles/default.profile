@@ -30,3 +30,4 @@ selections:
   - service_rlogin_disabled
   - service_rsh_disabled
   - service_rexec_disabled
+  - package_scap-security-guide_installed
