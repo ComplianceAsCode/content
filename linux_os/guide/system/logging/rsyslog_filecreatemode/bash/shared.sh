@@ -4,27 +4,14 @@
 # complexity = low
 # disruption = low
 
-readarray -t targets < <(grep -H '^\s*$FileCreateMode' /etc/rsyslog.conf /etc/rsyslog.d/*)
+ sed -i '/^\s*$FileCreateMode/d' /etc/rsyslog.d/*
 
-# if $FileCreateMode set in multiple places
-if [ ${#targets[@]} -gt 1 ]; then
-    # delete all and create new entry with expected value
-    sed -i '/^\s*$FileCreateMode/d' /etc/rsyslog.conf /etc/rsyslog.d/*
-    echo '$FileCreateMode 0640' > /etc/rsyslog.d/99-rsyslog_filecreatemode.conf
-# if $FileCreateMode set in only one place
-elif [ "${#targets[@]}" -eq 1 ]; then
-    filename=$(echo "${targets[0]}" | cut -d':' -f1)
-    value=$(echo "${targets[0]}" | cut -d' ' -f2)
-    #convert to decimal and bitwise or operation
-    result=$((8#$value | 416))
-    # if more permissive than expected, then set it to 0640
-    if [ $result -ne 416 ]; then
-        # if value is wrong remove it
-        sed -i '/^\s*$FileCreateMode/d' $filename
-        echo '$FileCreateMode 0640' > $filename
+if ! grep -qE '^\s*\$FileCreateMode\s+0640' /etc/rsyslog.conf; then
+    if grep -qE '^\s*\$FileCreateMode' /etc/rsyslog.conf; then
+        sed -i '/^\s*\$FileCreateMode/ s/^/#/' /etc/rsyslog.conf
     fi
-else
-    echo '$FileCreateMode 0640' > /etc/rsyslog.d/99-rsyslog_filecreatemode.conf
+    ## Assume there is no filter named as 00-, otherwise those filters might be included before this configuration and create file with different permissions
+    echo '$FileCreateMode 0640' > /etc/rsyslog.d/00-rsyslog_filecreatemode.conf
 fi
 
 systemctl restart rsyslog.service
