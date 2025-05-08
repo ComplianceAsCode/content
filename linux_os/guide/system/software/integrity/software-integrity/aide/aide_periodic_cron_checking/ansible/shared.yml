@@ -25,6 +25,7 @@
     name: "{{ cron_pkg_name }}"
     state: present
 
+{{% if product != 'ubuntu2404' %}}
 - name: "{{{ rule_title }}}"
   cron:
 {{% if product in ["sle12", "sle15"] %}}
@@ -38,3 +39,18 @@
     weekday: 0
     user: root
     job: "{{{ aide_bin_path }}} --check"
+{{% else %}}
+
+- name: "{{{ rule_title }}}"
+  lineinfile:
+    path: /etc/cron.daily/dailyaidecheck
+    line: 'SCRIPT="/usr/share/aide/bin/dailyaidecheck"''
+  check_mode: yes
+  register: line_check
+
+- name: Install AIDE cron script
+  copy:
+    src: /usr/share/aide/config/cron.daily/dailyaidecheck
+    dest: /etc/cron.daily/dailyaidecheck
+  when: not line_check.found
+{{% endif %}}
