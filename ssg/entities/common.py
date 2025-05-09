@@ -204,30 +204,28 @@ class XCCDFEntity(object):
         that will constitute the new instance.
         """
         data = dict()
-
-        # Lets keep a list of the initial keys for alternative comparison
         initial_input_keys = input_contents.keys()
-        for key, default in cls.KEYS.items():
-            if key in input_contents:
-                if input_contents[key] is not None:
-                    if type(default()) is set:
-                        data[key] = set(input_contents[key])
-                    else:
-                        data[key] = input_contents[key]
-                del input_contents[key]
-                continue
 
+        def handle_existing_key(key, default):
+            if input_contents[key] is not None:
+                data[key] = set(input_contents[key]) if isinstance(default(), set) else input_contents[key]
+            del input_contents[key]
+
+        def handle_missing_key(key):
             if key not in cls.MANDATORY_KEYS:
                 data[key] = cls.KEYS[key]()
             elif key in cls.ALTERNATIVE_KEYS:
                 if cls.ALTERNATIVE_KEYS[key] in initial_input_keys:
                     data[key] = cls.KEYS[key]()
-                    continue
             else:
-                msg = (
-                    "Key '{key}' is mandatory for definition of '{class_name}'."
-                    .format(key=key, class_name=cls.__name__))
+                msg = f"Key '{key}' is mandatory for definition of '{cls.__name__}'."
                 raise ValueError(msg)
+
+        for key, default in cls.KEYS.items():
+            if key in input_contents:
+                handle_existing_key(key, default)
+            else:
+                handle_missing_key(key)
 
         return data
 
