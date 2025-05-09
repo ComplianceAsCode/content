@@ -27,7 +27,8 @@ class HtmlOutput(tables.table_renderer.TableHtmlOutput):
         if self.cached_rules:
             all_rules = self.cached_rules
         else:
-            all_rules = [ssg.build_yaml.Rule.from_compiled_json(f, self.env_yaml) for f in filenames]
+            all_rules = [
+                ssg.build_yaml.Rule.from_compiled_json(f, self.env_yaml) for f in filenames]
             self.cached_rules = all_rules
 
         rules = []
