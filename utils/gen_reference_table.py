@@ -23,11 +23,11 @@ class HtmlOutput(tables.table_renderer.TableHtmlOutput):
             r'<abbr title="${var}"><tt>{val}</tt></abbr>'.format(var=varname, val=value), text)
 
     def _get_eligible_rules(self, refcat):
-        filenames = glob.glob(os.path.join(self.rules_root, "*.yml"))
+        filenames = glob.glob(os.path.join(self.rules_root, "*.json"))
         if self.cached_rules:
             all_rules = self.cached_rules
         else:
-            all_rules = [ssg.build_yaml.Rule.from_yaml(f, self.env_yaml) for f in filenames]
+            all_rules = [ssg.build_yaml.Rule.from_compiled_json(f, self.env_yaml) for f in filenames]
             self.cached_rules = all_rules
 
         rules = []

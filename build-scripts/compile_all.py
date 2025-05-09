@@ -91,7 +91,7 @@ def load_benchmark_source_data_from_directory_tree(loader, env_yaml, product_yam
 
 def dump_compiled_profile(base_dir, profile):
     dest = os.path.join(base_dir, "profiles", "{name}.profile".format(name=profile.id_))
-    profile.dump_yaml(dest)
+    profile.dump_json(dest)
 
 
 def get_all_resolved_profiles_by_id(

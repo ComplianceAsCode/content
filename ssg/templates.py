@@ -443,8 +443,8 @@ class Builder(object):
             if lang.template_type == TemplateType.CHECK:
                 self.write_lang_contents_for_templatable(filled_template, lang, cpe)
         self.product_cpes.add_cpe_item(cpe)
-        cpe_path = os.path.join(self.cpe_items_dir, cpe.id_+".yml")
-        cpe.dump_yaml(cpe_path)
+        cpe_path = os.path.join(self.cpe_items_dir, cpe.id_ + ".json")
+        cpe.dump_json(cpe_path)
 
     def build_platform(self, platform):
         """
@@ -473,8 +473,8 @@ class Builder(object):
         for lang in langs_affecting_this_platform:
             if lang.template_type == TemplateType.REMEDIATION:
                 platform.update_conditional_from_cpe_items(lang.name, self.product_cpes)
-        platform_path = os.path.join(self.platforms_dir, platform.id_+".yml")
-        platform.dump_yaml(platform_path)
+        platform_path = os.path.join(self.platforms_dir, platform.id_ + ".json")
+        platform.dump_json(platform_path)
 
     def build_rule(self, rule):
         """
@@ -540,7 +540,7 @@ class Builder(object):
         """
         for platform_file in sorted(os.listdir(self.platforms_dir)):
             platform_path = os.path.join(self.platforms_dir, platform_file)
-            platform = ssg.build_yaml.Platform.from_yaml(platform_path, self.env_yaml,
+            platform = ssg.build_yaml.Platform.from_compiled_json(platform_path, self.env_yaml,
                                                          self.product_cpes)
             self.build_platform(platform)
 
@@ -563,7 +563,7 @@ class Builder(object):
         for rule_file in sorted(os.listdir(self.resolved_rules_dir)):
             rule_path = os.path.join(self.resolved_rules_dir, rule_file)
             try:
-                rule = ssg.build_yaml.Rule.from_yaml(rule_path, self.env_yaml, self.product_cpes)
+                rule = ssg.build_yaml.Rule.from_compiled_json(rule_path, self.env_yaml, self.product_cpes)
             except ssg.build_yaml.DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 continue
