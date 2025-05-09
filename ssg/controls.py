@@ -810,6 +810,17 @@ class ControlsManager():
         self.existing_rules = existing_rules
         self.policies = {}
 
+    def _load(self, format):
+        if not os.path.exists(self.controls_dir):
+            return
+        for filename in sorted(glob(os.path.join(self.controls_dir, "*." + format))):
+            filepath = os.path.join(self.controls_dir, filename)
+            policy = Policy(filepath, self.env_yaml)
+            policy.load()
+            self.policies[policy.id] = policy
+        self.check_all_rules_exist()
+        self.resolve_controls()
+
     def load(self):
         """
         Load policies from YAML files in the controls directory.
@@ -822,26 +833,10 @@ class ControlsManager():
         Returns:
             None
         """
-        if not os.path.exists(self.controls_dir):
-            return
-        for filename in sorted(glob(os.path.join(self.controls_dir, "*.yml"))):
-            filepath = os.path.join(self.controls_dir, filename)
-            policy = Policy(filepath, self.env_yaml)
-            policy.load()
-            self.policies[policy.id] = policy
-        self.check_all_rules_exist()
-        self.resolve_controls()
+        self._load("yml")
 
     def load_compiled(self):
-        if not os.path.exists(self.controls_dir):
-            return
-        for filename in sorted(glob(os.path.join(self.controls_dir, "*.json"))):
-            filepath = os.path.join(self.controls_dir, filename)
-            policy = Policy(filepath, self.env_yaml)
-            policy.load()
-            self.policies[policy.id] = policy
-        self.check_all_rules_exist()
-        self.resolve_controls()
+        self._load("json")
 
     def check_all_rules_exist(self):
         """
