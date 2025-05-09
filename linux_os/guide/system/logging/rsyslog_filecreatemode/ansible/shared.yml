@@ -35,7 +35,7 @@
 
 - name: "{{{ rule_title }}} - Add $FileCreateMode Parameter and Expected Value"
   ansible.builtin.lineinfile:
-    path: /etc/rsyslog.d/99-rsyslog_filecreatemode.conf
+    path: /etc/rsyslog.d/00-rsyslog_filecreatemode.conf
     line: '$FileCreateMode 0640'
     mode: 0640
     create: true
