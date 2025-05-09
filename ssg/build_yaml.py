@@ -328,8 +328,9 @@ class Value(XCCDFEntity):
         Raises:
             ValueError: If the operator in the input data is not one of the expected possible operators.
         """
-        input_contents["interactive"] = (
-            input_contents.get("interactive", "false").lower() == "true")
+        if "interactive" in input_contents and isinstance(input_contents["interactive"], str):
+            input_contents["interactive"] = (
+                input_contents.get("interactive", "false").lower() == "true")
 
         data = super(Value, cls).process_input_dict(input_contents, env_yaml)
 
@@ -3531,6 +3532,16 @@ class Platform(XCCDFEntity):
             Platform: A Platform object created from the YAML file.
         """
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
+        # If we received a product_cpes, we can restore also the original test object
+        # it can be later used e.g. for comparison
+        if product_cpes:
+            platform.test = product_cpes.algebra.parse(platform.original_expression, simplify=True)
+            product_cpes.add_resolved_cpe_items_from_platform(platform)
+        return platform
+
+    @classmethod
+    def from_compiled_json(cls, json_file_path, env_yaml=None, product_cpes=None):
+        platform = super(Platform, cls).from_compiled_json(json_file_path, env_yaml)
         # If we received a product_cpes, we can restore also the original test object
         # it can be later used e.g. for comparison
         if product_cpes:

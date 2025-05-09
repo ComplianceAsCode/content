@@ -121,6 +121,8 @@ def load_resolve_and_validate_profiles(
 def save_everything(base_dir, loader, controls_manager, profiles):
     controls_manager.save_everything(os.path.join(base_dir, "controls"))
     loader.save_all_entities(base_dir)
+    if not os.path.exists(os.path.join(base_dir, "profiles")):
+        os.makedirs(os.path.join(base_dir, "profiles"))
     for p in profiles:
         dump_compiled_profile(base_dir, p)
 
