@@ -21,6 +21,7 @@ from ..constants import (
     GLOBAL_REFERENCES
 )
 
+
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, set):
