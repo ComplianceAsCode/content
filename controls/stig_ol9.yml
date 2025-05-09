@@ -516,6 +516,22 @@ controls:
             - install_smartcard_packages
         status: automated
 
+    -   id: OL09-00-000285
+        levels:
+            - medium
+        title: OL 9 must have the SSSD package installed.
+        rules:
+            - package_sssd_installed
+        status: automated
+
+    -   id: OL09-00-000286
+        levels:
+            - medium
+        title: OL 9 must use the SSSD package for multifactor authentication services.
+        rules:
+            - service_sssd_enabled
+        status: automated
+
     -   id: OL09-00-000430
         levels:
             - medium
