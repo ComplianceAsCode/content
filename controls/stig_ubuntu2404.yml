@@ -469,8 +469,10 @@ controls:
       Standard Mandatory DOD Notice and Consent Banner for all SSH connections.
     levels:
       - medium
-    rules: []
-    status: planned
+    rules: 
+      - banner_etc_profiled_ssh_confirm
+      - var_ssh_confirm_text=dod_default
+    status: automated
 
   - id: UBTU-24-300001
     title: Ubuntu 24.04 LTS Advance Package Tool (APT) must be configured to prevent
