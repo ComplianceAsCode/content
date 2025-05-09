@@ -1,5 +1,5 @@
 #!/bin/bash
-# packages = aide{{% if product != 'ubuntu2404' %}},crontabs{{% endif %}}
+# packages = aide,crontabs
 {{% if product == 'ubuntu2404' %}}
 # platform = Not Applicable
 {{% endif %}}

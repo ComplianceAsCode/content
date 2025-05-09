@@ -1,29 +1,10 @@
 #!/bin/bash
-# packages = aide{{% if product != 'ubuntu2404' %}},crontabs{{% endif %}}
+# packages = aide,crontabs
 
 {{{ bash_package_remove("aide") }}}
 
 {{% if product == 'ubuntu2404' %}}
-cat << 'EOF' > /etc/crontab
-#!/bin/sh
-
-# Skip if systemd is running.
-if [ -d /run/systemd/system ]; then
-    exit 0
-fi
-
-SCRIPT="/usr/share/aide/bin/dailyaidecheck"
-if [ -x "${SCRIPT}" ]; then
-    if command -v capsh >/dev/null; then
-        capsh --caps="cap_dac_read_search,cap_audit_write+eip cap_setpcap,cap_setuid,cap_setgid+ep" --keep=1 --user=_aide --addamb=cap_dac_read_search,cap_audit_write -- -c "${SCRIPT} --crondaily"
-    else
-        # no capsh present, run with full capabilities
-        "${SCRIPT}" --crondaily
-    fi
-fi
-
-
-EOF
+echo 'SCRIPT="/usr/share/aide/bin/dailyaidecheck"' > /etc/crontab
 {{% else %}}
 echo '21    21    *    *    *    root    {{{ aide_bin_path }}} --check &>/dev/null' >> /etc/crontab
 {{% endif %}}
