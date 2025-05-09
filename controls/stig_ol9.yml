@@ -4141,3 +4141,13 @@ controls:
         rules:
             - configure_bind_crypto_policy
         status: automated
+
+    -   id: OL09-00-900140
+        levels:
+            - medium
+        title:
+            OL 9 must only allow the use of DOD PKI-established certificate authorities for
+            authentication in the establishment of protected sessions to OL 9.
+        rules:
+            - only_allow_dod_certs
+        status: manual
