@@ -3532,22 +3532,12 @@ class Platform(XCCDFEntity):
             Platform: A Platform object created from the YAML file.
         """
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
-        # If we received a product_cpes, we can restore also the original test object
-        # it can be later used e.g. for comparison
-        if product_cpes:
-            platform.test = product_cpes.algebra.parse(platform.original_expression, simplify=True)
-            product_cpes.add_resolved_cpe_items_from_platform(platform)
-        return platform
+        return restore_original_test_object(platform, product_cpes)
 
     @classmethod
     def from_compiled_json(cls, json_file_path, env_yaml=None, product_cpes=None):
         platform = super(Platform, cls).from_compiled_json(json_file_path, env_yaml)
-        # If we received a product_cpes, we can restore also the original test object
-        # it can be later used e.g. for comparison
-        if product_cpes:
-            platform.test = product_cpes.algebra.parse(platform.original_expression, simplify=True)
-            product_cpes.add_resolved_cpe_items_from_platform(platform)
-        return platform
+        return restore_original_test_object(platform, product_cpes)
 
     def get_fact_refs(self):
         """
@@ -3608,4 +3598,13 @@ def add_platform_if_not_defined(platform, product_cpes):
         if platform == p:
             return p
     product_cpes.platforms[platform.id_] = platform
+    return platform
+
+
+def restore_original_test_object(platform, product_cpes):
+    # If we received a product_cpes, we can restore also the original test object
+    # it can be later used e.g. for comparison
+    if product_cpes:
+        platform.test = product_cpes.algebra.parse(platform.original_expression, simplify=True)
+        product_cpes.add_resolved_cpe_items_from_platform(platform)
     return platform
