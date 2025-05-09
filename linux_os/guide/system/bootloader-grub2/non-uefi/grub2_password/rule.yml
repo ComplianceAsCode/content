@@ -27,7 +27,11 @@ description: |-
     Once the superuser password has been added,
     update the
     <tt>grub.cfg</tt> file by running:
+    {{%- if "rhel" in product %}}
+    <pre>grub-mkconfig -o /boot/grub2/grub.cfg</pre>
+    {{%- else %}}
     <pre>{{{ grub_command("update") }}}</pre>
+    {{%- endif %}}
     {{% endif %}}
 
 rationale: |-
@@ -109,6 +113,10 @@ fixtext: |-
 
     Once the superuser account has been added, update the grub.cfg file by running:
 
-    $ sudo {{{ grub_command("update") }}}
+    {{%- if "rhel" in product %}}
+    <pre>grub-mkconfig -o /boot/grub2/grub.cfg</pre>
+    {{%- else %}}
+    <pre>{{{ grub_command("update") }}}</pre>
+    {{%- endif %}}
 
 srg_requirement: '{{{ full_name }}} systems booted with a BIOS must require authentication upon booting into single-user and maintenance modes.'

@@ -19,7 +19,11 @@ description: |-
     Once the superuser account has been added,
     update the
     <tt>grub.cfg</tt> file by running:
+    {{%- if "rhel" in product %}}
+    <pre>grub-mkconfig -o /boot/grub2/grub.cfg</pre>
+    {{%- else %}}
     <pre>{{{ grub_command("update") }}}</pre>
+    {{%- endif %}}
 
 rationale: |-
     Having a non-default grub superuser username makes password-guessing attacks less effective.
@@ -81,6 +85,10 @@ fixtext: |-
 
     Once the superuser account has been added, update the grub.cfg file by running:
 
-    $ sudo {{{ grub_command("update") }}}
+    {{%- if "rhel" in product %}}
+    <pre>grub-mkconfig -o /boot/grub2/grub.cfg</pre>
+    {{%- else %}}
+    <pre>{{{ grub_command("update") }}}</pre>
+    {{%- endif %}}
 
 srg_requirement: '{{{ full_name }}} systems booted with United Extensible Firmware Interface (UEFI) must require a unique superusers name upon booting into single-user mode and maintenance.'
