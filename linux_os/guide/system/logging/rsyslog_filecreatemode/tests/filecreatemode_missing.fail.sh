@@ -1,5 +1,4 @@
 #!/bin/bash
 # packages = rsyslog
 
-rm -f /etc/rsyslog.d/*
-sed -i '/^\s*$FileCreateMode/d' /etc/rsyslog.conf
+sed -i '/^\s*$FileCreateMode/d' /etc/rsyslog.conf /etc/rsyslog.d/*
