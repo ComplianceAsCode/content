@@ -540,8 +540,8 @@ class Builder(object):
         """
         for platform_file in sorted(os.listdir(self.platforms_dir)):
             platform_path = os.path.join(self.platforms_dir, platform_file)
-            platform = ssg.build_yaml.Platform.from_compiled_json(platform_path, self.env_yaml,
-                                                         self.product_cpes)
+            platform = ssg.build_yaml.Platform.from_compiled_json(
+                platform_path, self.env_yaml, self.product_cpes)
             self.build_platform(platform)
 
     def build_all_rules(self):
@@ -563,7 +563,8 @@ class Builder(object):
         for rule_file in sorted(os.listdir(self.resolved_rules_dir)):
             rule_path = os.path.join(self.resolved_rules_dir, rule_file)
             try:
-                rule = ssg.build_yaml.Rule.from_compiled_json(rule_path, self.env_yaml, self.product_cpes)
+                rule = ssg.build_yaml.Rule.from_compiled_json(
+                    rule_path, self.env_yaml, self.product_cpes)
             except ssg.build_yaml.DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 continue
