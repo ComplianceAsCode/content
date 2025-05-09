@@ -40,16 +40,15 @@
     user: root
     job: "{{{ aide_bin_path }}} --check"
 {{% else %}}
-
 - name: "{{{ rule_title }}}"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/cron.daily/dailyaidecheck
-    line: 'SCRIPT="/usr/share/aide/bin/dailyaidecheck"''
+    line: 'SCRIPT="/usr/share/aide/bin/dailyaidecheck"'
   check_mode: yes
   register: line_check
 
 - name: Install AIDE cron script
-  copy:
+  ansible.builtin.copy:
     src: /usr/share/aide/config/cron.daily/dailyaidecheck
     dest: /etc/cron.daily/dailyaidecheck
   when: not line_check.found
