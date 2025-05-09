@@ -536,7 +536,7 @@ def install_packages(test_env, packages):
 
 def _match_rhel_version(cpe):
     rhel_cpe = {
-        "redhat:enterprise_linux": r":enterprise_linux:([^:]+):",
+        "redhat:enterprise_linux": r":enterprise_linux:([^:]+)",
         "centos:centos": r"centos:centos:([0-9]+)"}
     for cpe_item in rhel_cpe.keys():
         if cpe_item in cpe:
