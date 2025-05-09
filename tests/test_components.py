@@ -121,7 +121,7 @@ def iterate_over_resolved_rules(built_rules_dir):
     for file_name in os.listdir(built_rules_dir):
         file_path = os.path.join(built_rules_dir, file_name)
         try:
-            rule = ssg.build_yaml.Rule.from_yaml(file_path)
+            rule = ssg.build_yaml.Rule.from_compiled_json(file_path)
         except ssg.yaml.DocumentationNotComplete:
             pass
         yield rule
@@ -198,7 +198,7 @@ def get_rule_to_groups(groups_dir):
     rule_to_groups = collections.defaultdict(list)
     for file_name in os.listdir(groups_dir):
         group_file_path = os.path.join(groups_dir, file_name)
-        group = ssg.build_yaml.Group.from_yaml(group_file_path)
+        group = ssg.build_yaml.Group.from_compiled_json(group_file_path)
         for rule in group.rules:
             rule_to_groups[rule].append(group.id_)
     return rule_to_groups

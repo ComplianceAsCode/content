@@ -79,15 +79,17 @@ class ProductCPEs(object):
                 continue
 
             _, ext = os.path.splitext(os.path.basename(dir_item_path))
-            if ext != '.yml':
+            if ext == ".yml":
+                cpe_item = CPEItem.from_yaml(dir_item_path, env_yaml)
+            elif ext == ".json":
+                cpe_item = CPEItem.from_compiled_json(dir_item_path, env_yaml)
+            else:
                 sys.stderr.write(
                     "Encountered file '%s' while looking for content CPEs, "
                     "extension '%s' is unknown. Skipping..\n"
                     % (dir_item, ext)
                 )
                 continue
-
-            cpe_item = CPEItem.from_yaml(dir_item_path, env_yaml)
             self.add_cpe_item(cpe_item)
 
     def add_cpe_item(self, cpe_item):

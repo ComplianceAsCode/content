@@ -29,8 +29,8 @@ class HtmlOutput(tables.table_renderer.TableHtmlOutput):
 
     def _get_eligible_rules(self, refcat):
         eligible_rule_ids = self.profile.selected
-        filenames = [os.path.join(self.rules_root, rid + ".yml") for rid in eligible_rule_ids]
-        return [ssg.build_yaml.Rule.from_yaml(f, self.env_yaml) for f in filenames]
+        filenames = [os.path.join(self.rules_root, rid + ".json") for rid in eligible_rule_ids]
+        return [ssg.build_yaml.Rule.from_compiled_json(f, self.env_yaml) for f in filenames]
 
     def _generate_shortened_ref(self, reference, rule):
         shortened_ref = super(HtmlOutput, self)._generate_shortened_ref(reference, rule)

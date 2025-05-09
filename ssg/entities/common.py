@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
+import json
 import os
 import yaml
 from collections import defaultdict
@@ -19,6 +20,13 @@ from ..constants import (
     OSCAP_VALUE,
     GLOBAL_REFERENCES
 )
+
+
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, set):
+            return list(obj)  # Convert sets to lists
+        return super().default(obj)
 
 
 def extract_reference_from_product_specific_label(items_dict, full_label, value, allow_overwrites):
@@ -196,27 +204,28 @@ class XCCDFEntity(object):
         that will constitute the new instance.
         """
         data = dict()
-
-        # Lets keep a list of the initial keys for alternative comparison
         initial_input_keys = input_contents.keys()
-        for key, default in cls.KEYS.items():
-            if key in input_contents:
-                if input_contents[key] is not None:
-                    data[key] = input_contents[key]
-                del input_contents[key]
-                continue
 
+        def handle_existing_key(key, default):
+            if input_contents[key] is not None:
+                data[key] = set(input_contents[key]) if isinstance(default(), set) else input_contents[key]
+            del input_contents[key]
+
+        def handle_missing_key(key):
             if key not in cls.MANDATORY_KEYS:
                 data[key] = cls.KEYS[key]()
             elif key in cls.ALTERNATIVE_KEYS:
                 if cls.ALTERNATIVE_KEYS[key] in initial_input_keys:
                     data[key] = cls.KEYS[key]()
-                    continue
             else:
-                msg = (
-                    "Key '{key}' is mandatory for definition of '{class_name}'."
-                    .format(key=key, class_name=cls.__name__))
+                msg = f"Key '{key}' is mandatory for definition of '{cls.__name__}'."
                 raise ValueError(msg)
+
+        for key, default in cls.KEYS.items():
+            if key in input_contents:
+                handle_existing_key(key, default)
+            else:
+                handle_missing_key(key)
 
         return data
 
@@ -262,6 +271,16 @@ class XCCDFEntity(object):
         return processed_data
 
     @classmethod
+    def parse_json_into_processed_dict(cls, json_file_path, env_yaml=None, product_cpes=None):
+        with open(json_file_path, "r") as f:
+            json_data = json.load(f)
+        processed_data = cls.process_input_dict(json_data, env_yaml, product_cpes)
+        file_basename = os.path.basename(json_file_path)
+        entity_id = derive_id_from_file_name(file_basename)
+        processed_data["id_"] = entity_id
+        return processed_data
+
+    @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
         yaml_file = os.path.normpath(yaml_file)
 
@@ -278,6 +297,22 @@ class XCCDFEntity(object):
             msg = (
                 "Error loading a {class_name} from {filename}: {error}"
                 .format(class_name=cls.__name__, filename=yaml_file, error=str(exc)))
+            raise RuntimeError(msg)
+
+        result = cls.get_instance_from_full_dict(data_dict)
+
+        return result
+
+    @classmethod
+    def from_compiled_json(cls, json_file_path, env_yaml=None, product_cpes=None):
+        json_file_path = os.path.normpath(json_file_path)
+
+        try:
+            data_dict = cls.parse_json_into_processed_dict(json_file_path, None, product_cpes)
+        except Exception as exc:
+            msg = (
+                "Error loading a {class_name} from {filename}: {error}"
+                .format(class_name=cls.__name__, filename=json_file_path, error=str(exc)))
             raise RuntimeError(msg)
 
         result = cls.get_instance_from_full_dict(data_dict)
@@ -304,6 +339,11 @@ class XCCDFEntity(object):
         to_dump["documentation_complete"] = documentation_complete
         with open(file_name, "w+") as f:
             dump_yaml_preferably_in_original_order(to_dump, f)
+
+    def dump_json(self, file_name):
+        to_dump = self.represent_as_dict()
+        with open(file_name, "w+") as f:
+            json.dump(to_dump, f, cls=CustomJSONEncoder)
 
     def to_xml_element(self):
         raise NotImplementedError()

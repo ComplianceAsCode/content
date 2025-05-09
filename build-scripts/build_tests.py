@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import json
 import logging
 import os
 import pathlib
@@ -179,9 +180,10 @@ def _process_rules(env_yaml: Dict, output_path: pathlib.Path,
                    resolved_root: pathlib.Path) -> None:
     product = resolved_root.parent.name
     for rule_id in product_rules:
-        rule_file = resolved_root / f'{rule_id}.yml'
+        rule_file = resolved_root / f'{rule_id}.json'
 
-        rendered_rule_obj = ssg.yaml.open_raw(str(rule_file))
+        with open(rule_file, "r") as file:
+            rendered_rule_obj = json.load(file)
         rule_path = pathlib.Path(rendered_rule_obj["definition_location"])
         rule_root = rule_path.parent
 
@@ -197,7 +199,8 @@ def _get_rules_in_profile(built_profiles_root) -> Generator[str, None, None]:
     for profile_file in built_profiles_root.iterdir():  # type: pathlib.Path
         if not profile_file.name.endswith(".profile"):
             continue
-        profile_data = ssg.yaml.open_raw(str(profile_file.absolute()))
+        with open(str(profile_file.absolute()), "r") as file:
+            profile_data = json.load(file)
         for selection in profile_data["selections"]:
             if "=" not in selection:
                 yield selection
