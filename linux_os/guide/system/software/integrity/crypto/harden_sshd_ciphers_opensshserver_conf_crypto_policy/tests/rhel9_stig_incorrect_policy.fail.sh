@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 9
+# platform = Oracle Linux 9,Red Hat Enterprise Linux 9
 # variables = sshd_approved_ciphers=aes256-gcm@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr
 # remediation = none
 
