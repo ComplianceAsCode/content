@@ -1889,7 +1889,10 @@ controls:
         title:
             OL 9 SSH server must be configured to use only Message Authentication Codes
             (MACs) employing FIPS 140-3 validated cryptographic hash algorithms.
-        status: pending
+        rules:
+            - harden_sshd_macs_opensshserver_conf_crypto_policy
+            - sshd_approved_macs=stig_ol9
+        status: automated
 
     -   id: OL09-00-002357
         levels:

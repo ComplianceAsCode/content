@@ -16,7 +16,11 @@
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
     <ind:filepath>{{{ PATH }}}</ind:filepath>
+    {{%- if product in ["ol8", "rhel8"] -%}}
     <ind:pattern operation="pattern match">^(?!#).*(-oMACs=\S+).+$</ind:pattern>
+    {{%- else -%}}
+    <ind:pattern operation="pattern match">^(?!\s*#)(MACs\s+\S+)$</ind:pattern>
+    {{%- endif -%}}
     <ind:instance operation="greater than or equal" datatype="int">-1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -26,7 +30,11 @@
 
   <local_variable id="sshd_macs_crypto_opensshserver" datatype="string" comment="The regex of the directive" version="1">
     <concat>
+      {{%- if product in ["ol8", "rhel8"] -%}}
       <literal_component>-oMACs=</literal_component>
+      {{%- else -%}}
+      <literal_component>MACs </literal_component>
+      {{%- endif -%}}
       <variable_component var_ref="sshd_approved_macs"/>
     </concat>
   </local_variable>
