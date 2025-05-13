@@ -580,3 +580,6 @@ selections:
     - audit_rules_unsuccessful_file_modification
     - audit_rules_session_events
     - kerberos_disable_no_keytab
+    - package_ypserv_removed
+    - package_quagga_removed
+    - package_rsh-server_removed

@@ -469,17 +469,17 @@ controls:
         levels:
             - medium
         title: RHEL 9 must not have the ypserv package installed.
-        rules:
+        related_rules:
             - package_ypserv_removed
-        status: automated
+        status: not applicable # The ypserv package is not available in RHEL 9
 
     -   id: RHEL-09-215035
         levels:
             - medium
         title: RHEL 9 must not have the rsh-server package installed.
-        rules:
+        related_rules:
             - package_rsh-server_removed
-        status: automated
+        status: not applicable # The rsh-server package is not available in RHEL 9
 
     -   id: RHEL-09-215040
         levels:
@@ -527,9 +527,9 @@ controls:
         levels:
             - medium
         title: RHEL 9 must not have the quagga package installed.
-        rules:
+        related_rules:
             - package_quagga_removed
-        status: automated
+        status: not applicable # The quagga package is not available in RHEL 9
 
     -   id: RHEL-09-215070
         levels:
