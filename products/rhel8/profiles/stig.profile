@@ -972,9 +972,6 @@ selections:
     # RHEL-08-040004
     - grub2_pti_argument
 
-    # RHEL-08-040010
-    - package_rsh-server_removed
-
     # RHEL-08-040020
     - kernel_module_uvcvideo_disabled
 

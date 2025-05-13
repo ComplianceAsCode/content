@@ -724,3 +724,4 @@ selections:
     - service_rexec_disabled
     - service_rlogin_disabled
     - service_zebra_disabled
+    - package_rsh-server_removed

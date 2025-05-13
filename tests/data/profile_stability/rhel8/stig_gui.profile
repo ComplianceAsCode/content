@@ -331,7 +331,6 @@ selections:
 - package_postfix_installed
 - package_python3-abrt-addon_removed
 - package_rng-tools_installed
-- package_rsh-server_removed
 - package_rsyslog-gnutls_installed
 - package_rsyslog_installed
 - package_sendmail_removed
