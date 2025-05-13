@@ -257,7 +257,7 @@ def add_reference_title_elements(benchmark_el, env_yaml):
         reference.text = title
 
 
-def add_benchmark_metadata(element, contributors_file):
+def add_benchmark_metadata(element, include_contributors):
     """
     Adds benchmark metadata to an XML element.
 
@@ -266,7 +266,8 @@ def add_benchmark_metadata(element, contributors_file):
 
     Args:
         element (xml.etree.ElementTree.Element): The XML element to which the metadata will be added.
-        contributors_file (str): Path to the file containing contributors information.
+        include_contributors (bool): A flag indicating whether to include
+                                     contributors in the metadata.
 
     Returns:
         None
@@ -278,11 +279,12 @@ def add_benchmark_metadata(element, contributors_file):
 
     creator = ET.SubElement(metadata, "{%s}creator" % dc_namespace)
     creator.text = SSG_PROJECT_NAME
-
-    contrib_tree = parse_file(contributors_file)
-    for c in contrib_tree.iter('contributor'):
-        contributor = ET.SubElement(metadata, "{%s}contributor" % dc_namespace)
-        contributor.text = c.text
+    if include_contributors:
+        contributors_file = os.path.join(os.path.dirname(__file__), "../Contributors.xml")
+        contrib_tree = parse_file(contributors_file)
+        for c in contrib_tree.iter('contributor'):
+            contributor = ET.SubElement(metadata, "{%s}contributor" % dc_namespace)
+            contributor.text = c.text
 
     source = ET.SubElement(metadata, "{%s}source" % dc_namespace)
     source.text = SSG_BENCHMARK_LATEST_URI
@@ -905,7 +907,7 @@ class Benchmark(XCCDFEntity):
         version.text = self.version
         version.set('update', SSG_BENCHMARK_LATEST_URI)
 
-    def to_xml_element(self, env_yaml=None, product_cpes=None, components_to_not_include=None):
+    def to_xml_element(self, env_yaml=None, product_cpes=None, components_to_not_include=None, include_contributors=True):
         """
         Converts the current object to an XML element.
 
@@ -914,6 +916,8 @@ class Benchmark(XCCDFEntity):
             product_cpes (list, optional): List of product CPEs. Defaults to None.
             components_to_not_include (dict, optional): Components to exclude from the XML.
                                                         Defaults to None.
+            include_contributors (bool, optional): Whether to include contributors in the XML.
+                                                   Defaults to True.
 
         Returns:
             xml.etree.ElementTree.Element: The root XML element representing the object.
@@ -932,8 +936,7 @@ class Benchmark(XCCDFEntity):
 
         self._add_version_xml(root)
 
-        contributors_file = os.path.join(os.path.dirname(__file__), "../Contributors.xml")
-        add_benchmark_metadata(root, contributors_file)
+        add_benchmark_metadata(root, include_contributors)
 
         self._add_profiles_xml(root, components_to_not_include)
         self._add_values_xml(root, components_to_not_include)
@@ -1022,7 +1025,7 @@ class Benchmark(XCCDFEntity):
     def __str__(self):
         return self.id_
 
-    def get_benchmark_xml_for_profiles(self, env_yaml, profiles, rule_and_variables_dict):
+    def get_benchmark_xml_for_profiles(self, env_yaml, profiles, rule_and_variables_dict, include_contributors=True):
         """
         Generates the benchmark XML for the given profiles.
 
@@ -1054,7 +1057,8 @@ class Benchmark(XCCDFEntity):
             }
         return profiles_ids, self.to_xml_element(
             env_yaml,
-            components_to_not_include=components_to_not_include
+            components_to_not_include=components_to_not_include,
+            include_contributors=include_contributors
         )
 
 
@@ -3185,7 +3189,7 @@ class LinearLoader(object):
         for profile in self.benchmark.profiles:
             if profile.single_rule_profile == "true":
                 profiles_ids, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
-                    self.env_yaml, [profile], rule_and_variables_dict
+                    self.env_yaml, [profile], rule_and_variables_dict, include_contributors=False
                 )
                 yield profiles_ids.pop(), benchmark
 
