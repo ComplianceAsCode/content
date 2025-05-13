@@ -266,7 +266,8 @@ def add_benchmark_metadata(element, include_contributors):
 
     Args:
         element (xml.etree.ElementTree.Element): The XML element to which the metadata will be added.
-        include_contributors (bool): A flag indicating whether to include contributors in the metadata.
+        include_contributors (bool): A flag indicating whether to include
+                                     contributors in the metadata.
 
     Returns:
         None
