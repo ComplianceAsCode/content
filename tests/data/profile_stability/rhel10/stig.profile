@@ -475,7 +475,6 @@ selections:
 - sshd_set_idle_timeout
 - sshd_set_keepalive
 - sshd_set_loglevel_verbose
-- sshd_use_strong_macs
 - sshd_x11_use_localhost
 - sssd_certificate_verification
 - sssd_enable_certmap
