@@ -1,5 +1,4 @@
 cpe_names: []
-definition_location: /home/mburket/review/ComplianceAsCode/content2/products/rhel10/profiles/stig_gui.profile
 description: 'This is a profile based on what is expected in the RHEL 10 STIG.:
 
   It is not based on the DISA STIG for RHEL 10, because it was not available at time
