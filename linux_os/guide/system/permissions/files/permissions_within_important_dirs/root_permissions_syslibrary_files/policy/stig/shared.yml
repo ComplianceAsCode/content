@@ -9,7 +9,7 @@ vuldiscussion: |-
 checktext: |-
     Verify the systemwide shared library files are group-owned by "root" with the following command:
 
-    $ sudo find -L /lib /lib64 /usr/lib /usr/lib64 ! -group root -exec stat -L -c "%G %n" {} \;
+    $ sudo find -L /lib /lib64 /usr/lib /usr/lib64 ! -group root ! -type d -exec stat -L -c "%G %n" {} \;
 
     If any systemwide shared library file is returned and is not group-owned by a required system account, this is a finding.
 
@@ -19,5 +19,3 @@ fixtext: |-
     Run the following command, replacing "[FILE]" with any library file not group-owned by "root".
 
     $ sudo chgrp root [FILE]
-
-
