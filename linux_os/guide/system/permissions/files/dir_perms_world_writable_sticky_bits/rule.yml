@@ -97,3 +97,10 @@ warnings:
         amount of resources depending on the number of directories present on the system. It is
         not a problem in most cases, but especially systems with a large number of directories can
         be affected. See <code>https://access.redhat.com/articles/6999111</code>.
+    - general: |-
+        Please note that there might be cases where the rule remediation cannot fix directory permissions.
+        This can happen for example when running on a system with some immutable parts.
+        These immutable parts cannot be remediated because they are read-only.
+        Example of such directories can be OStree deployments located at <tt>/sysroot/ostree/deploy</tt>.
+        In such case, it is needed to make modifications to the underlying ostree snapshot and this is out of scope of regular rule remediation.
+
