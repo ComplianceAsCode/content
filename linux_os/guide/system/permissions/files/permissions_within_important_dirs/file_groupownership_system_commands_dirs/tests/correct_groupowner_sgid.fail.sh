@@ -1,8 +1,18 @@
 #!/bin/bash
+# platform = multi_platform_ubuntu
 
 {{% if product in ["ubuntu2404"] %}}
 useradd crontab
 {{% endif %}}
+
+{{% if 'ubuntu' in product %}}
+for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
+{{% else %}}
+for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin
+{{% endif %}}
+do
+  find -L  $SYSLIBDIRS \! -group root -type f -exec chgrp root '{}' \;
+done
 
 groupadd group_test
 
@@ -17,4 +27,5 @@ do
     touch $TESTFILE
   fi
   chgrp group_test $TESTFILE
+  chmod g+s $TESTFILE
 done
