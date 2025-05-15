@@ -329,6 +329,8 @@ selections:
 - grub2_vsyscall_argument
 - harden_sshd_ciphers_openssh_conf_crypto_policy
 - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+- harden_sshd_macs_openssh_conf_crypto_policy
+- harden_sshd_macs_opensshserver_conf_crypto_policy
 - install_smartcard_packages
 - installed_OS_is_vendor_supported
 - kernel_module_bluetooth_disabled
@@ -581,6 +583,8 @@ selections:
 - login_banner_text=dod_banners
 - var_authselect_profile=sssd
 - var_auditd_name_format=stig
+- sshd_approved_ciphers=stig_rhel9
+- sshd_approved_macs=stig_rhel9
 unselected_groups: []
 platforms: !!set {}
 cpe_names: !!set {}

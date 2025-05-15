@@ -323,6 +323,8 @@ selections:
 - grub2_vsyscall_argument
 - harden_sshd_ciphers_openssh_conf_crypto_policy
 - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+- harden_sshd_macs_openssh_conf_crypto_policy
+- harden_sshd_macs_opensshserver_conf_crypto_policy
 - install_smartcard_packages
 - installed_OS_is_vendor_supported
 - kernel_module_atm_disabled
@@ -576,6 +578,8 @@ selections:
 - var_user_initialization_files_regex=all_dotfiles
 - login_banner_text=dod_banners
 - var_authselect_profile=sssd
+- sshd_approved_ciphers=stig_rhel9
+- sshd_approved_macs=stig_rhel9
 unselected_groups: []
 platforms: !!set {}
 cpe_names: !!set {}
