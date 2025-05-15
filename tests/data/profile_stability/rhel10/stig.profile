@@ -579,8 +579,6 @@ selections:
 - var_password_pam_dcredit=1
 - var_sshd_disable_compression=no
 - var_password_hashing_algorithm=SHA512
-- sshd_approved_macs=stig_extended
-- sshd_approved_ciphers=stig_extended
 - sshd_idle_timeout_value=10_minutes
 - var_accounts_authorized_local_users_regex=rhel9
 - var_account_disable_post_pw_expiration=35
