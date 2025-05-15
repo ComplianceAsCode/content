@@ -395,9 +395,7 @@ selections:
 - package_policycoreutils-python-utils_installed
 - package_policycoreutils_installed
 - package_postfix_installed
-- package_quagga_removed
 - package_rng-tools_installed
-- package_rsh-server_removed
 - package_rsyslog-gnutls_installed
 - package_rsyslog_installed
 - package_s-nail_installed
@@ -409,7 +407,6 @@ selections:
 - package_tuned_removed
 - package_usbguard_installed
 - package_vsftpd_removed
-- package_ypserv_removed
 - partition_for_home
 - partition_for_tmp
 - partition_for_var
