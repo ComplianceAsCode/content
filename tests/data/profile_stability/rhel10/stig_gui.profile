@@ -209,6 +209,7 @@ selections:
 - dir_perms_world_writable_sticky_bits
 - directory_group_ownership_var_log_audit
 - directory_groupowner_sshd_config_d
+- directory_owner_sshd_config_d
 - directory_ownership_var_log_audit
 - directory_permissions_sshd_config_d
 - directory_permissions_var_log_audit
@@ -272,6 +273,7 @@ selections:
 - file_owner_etc_shadow
 - file_owner_grub2_cfg
 - file_owner_sshd_config
+- file_owner_sshd_drop_in_config
 - file_owner_var_log
 - file_owner_var_log_messages
 - file_ownership_audit_configuration
@@ -302,6 +304,7 @@ selections:
 - file_permissions_home_directories
 - file_permissions_library_dirs
 - file_permissions_sshd_config
+- file_permissions_sshd_drop_in_config
 - file_permissions_sshd_private_key
 - file_permissions_sshd_pub_key
 - file_permissions_ungroupowned
@@ -309,6 +312,7 @@ selections:
 - file_permissions_var_log_audit
 - file_permissions_var_log_messages
 - file_sshd_50_redhat_exists
+- fips_crypto_subpolicy
 - firewalld-backend
 - firewalld_sshd_port_enabled
 - gid_passwd_group_same
@@ -323,6 +327,8 @@ selections:
 - grub2_pti_argument
 - grub2_slub_debug_argument
 - grub2_vsyscall_argument
+- harden_sshd_ciphers_openssh_conf_crypto_policy
+- harden_sshd_ciphers_opensshserver_conf_crypto_policy
 - install_smartcard_packages
 - installed_OS_is_vendor_supported
 - kernel_module_bluetooth_disabled
@@ -519,13 +525,14 @@ selections:
 - wireless_disable_interfaces
 - var_user_initialization_files_regex=all_dotfiles
 - var_networkmanager_dns_mode=explicit_default
-- var_accounts_tmout=15_min
-- var_sshd_set_keepalive=1
-- sysctl_net_ipv4_tcp_invalid_ratelimit_value=five_hundred
 - var_selinux_policy_name=targeted
 - var_selinux_state=enforcing
+- sysctl_net_ipv4_tcp_invalid_ratelimit_value=five_hundred
+- var_accounts_tmout=15_min
+- var_sshd_set_keepalive=1
 - var_password_hashing_algorithm_pam=yescrypt
 - var_password_pam_unix_rounds=5
+- var_password_yescrypt_cost_factor_login_defs=5
 - var_password_pam_maxclassrepeat=4
 - var_password_pam_dictcheck=1
 - var_password_pam_remember=5
@@ -539,8 +546,6 @@ selections:
 - var_auditd_space_left_action=email
 - var_accounts_maximum_age_login_defs=60
 - var_accounts_minimum_age_login_defs=1
-- var_password_hashing_algorithm_pam=yescrypt
-- var_password_yescrypt_cost_factor_login_defs=5
 - var_password_pam_difok=8
 - var_password_pam_maxrepeat=3
 - var_password_pam_minclass=4
