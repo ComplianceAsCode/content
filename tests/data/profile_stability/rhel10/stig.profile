@@ -1,22 +1,28 @@
+cpe_names: []
+definition_location: /home/mburket/review/ComplianceAsCode/content2/products/rhel10/profiles/stig.profile
 description: 'This is a profile based on what is expected in the RHEL 10 STIG.
 
-    It is not based on the DISA STIG for RHEL 10, because it was not available at
-    time of
+  It is not based on the DISA STIG for RHEL 10, because it was not available at time
+  of
 
-    the release.
+  the release.
 
 
-    In addition to being applicable to Red Hat Enterprise Linux 10, this
+  In addition to being applicable to Red Hat Enterprise Linux 10, this
 
-    configuration baseline is applicable to the operating system tier of
+  configuration baseline is applicable to the operating system tier of
 
-    Red Hat technologies that are based on Red Hat Enterprise Linux 10.'
+  Red Hat technologies that are based on Red Hat Enterprise Linux 10.'
 extends: null
+filter_rules: ''
 hidden: ''
-status: ''
 metadata:
-    SMEs:
-    - mab879
+  SMEs:
+  - mab879
+platform: null
+platforms: []
+policies:
+- srg_gpos
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
 - account_disable_post_pw_expiration
@@ -322,10 +328,10 @@ selections:
 - grub2_audit_argument
 - grub2_audit_backlog_limit_argument
 - grub2_disable_interactive_boot
+- grub2_init_on_free
 - grub2_page_poison_argument
 - grub2_password
 - grub2_pti_argument
-- grub2_slub_debug_argument
 - grub2_vsyscall_argument
 - harden_sshd_ciphers_openssh_conf_crypto_policy
 - harden_sshd_ciphers_opensshserver_conf_crypto_policy
@@ -529,6 +535,8 @@ selections:
 - use_pam_wheel_for_su
 - wireless_disable_interfaces
 - xwindows_runlevel_target
+- sshd_approved_ciphers=stig_rhel9
+- sshd_approved_macs=stig_rhel9
 - var_user_initialization_files_regex=all_dotfiles
 - var_networkmanager_dns_mode=explicit_default
 - var_selinux_policy_name=targeted
@@ -543,40 +551,40 @@ selections:
 - var_password_pam_dictcheck=1
 - var_password_pam_remember=5
 - var_password_pam_remember_control_flag=requisite_or_required
-- var_sssd_certificate_verification_digest_function=sha512
+- inactivity_timeout_value=15_minutes
+- var_screensaver_lock_delay=5_seconds
 - var_multiple_time_servers=stig
+- var_accounts_maximum_age_login_defs=60
+- var_password_pam_retry=3
+- var_password_pam_ucredit=1
+- var_sssd_certificate_verification_digest_function=sha512
+- var_time_service_set_maxpoll=18_hours
 - var_auditd_admin_space_left_action=single
 - var_auditd_admin_space_left_percentage=5pc
 - var_auditd_space_left_percentage=25pc
 - var_auditd_action_mail_acct=root
 - var_auditd_space_left_action=email
-- var_accounts_maximum_age_login_defs=60
 - var_accounts_minimum_age_login_defs=1
 - var_password_pam_difok=8
 - var_password_pam_maxrepeat=3
 - var_password_pam_minclass=4
 - var_password_pam_lcredit=1
-- var_password_pam_retry=3
-- var_password_pam_ucredit=1
-- inactivity_timeout_value=15_minutes
-- var_screensaver_lock_delay=5_seconds
-- var_time_service_set_maxpoll=18_hours
-- var_system_crypto_policy=fips
 - var_smartcard_drivers=cac
+- var_system_crypto_policy=fips
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - var_accounts_max_concurrent_login_sessions=10
-- var_password_pam_minlen=15
-- var_auditd_freq=100
-- var_postfix_root_mail_alias=mil_sysadmin
-- var_audit_failure_mode=panic
 - var_accounts_passwords_pam_faillock_deny=3
 - var_accounts_passwords_pam_faillock_fail_interval=900
 - var_accounts_passwords_pam_faillock_unlock_time=never
 - var_accounts_user_umask=077
 - var_accounts_fail_delay=4
 - var_password_pam_ocredit=1
+- var_password_pam_minlen=15
 - var_password_pam_dcredit=1
+- var_auditd_freq=100
+- var_postfix_root_mail_alias=mil_sysadmin
+- var_audit_failure_mode=panic
 - var_sshd_disable_compression=no
 - var_password_hashing_algorithm=SHA512
 - sshd_idle_timeout_value=10_minutes
@@ -585,15 +593,7 @@ selections:
 - login_banner_text=dod_banners
 - var_authselect_profile=sssd
 - var_auditd_name_format=stig
-- sshd_approved_ciphers=stig_rhel9
-- sshd_approved_macs=stig_rhel9
-unselected_groups: []
-platforms: !!set {}
-cpe_names: !!set {}
-platform: null
-filter_rules: ''
-policies:
-- srg_gpos
 single_rule_profile: false
+status: ''
 title: Red Hat STIG for Red Hat Enterprise Linux 10
-documentation_complete: true
+unselected_groups: []
