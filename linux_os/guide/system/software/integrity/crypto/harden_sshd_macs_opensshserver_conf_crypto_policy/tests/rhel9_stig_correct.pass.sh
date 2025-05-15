@@ -12,7 +12,7 @@ test -d /etc/crypto-policies/back-ends || mkdir -p /etc/crypto-policies/back-end
 
 # Proceed when file exists
 if [[ -f $configfile ]]; then
-    sed -i -r "s/^(?!\s*#)MACs\s+\S+/${correct_value}/" $configfile
+    sed -i -r "s/MACs\s+\S+/${correct_value}/" $configfile
 else
     echo "${correct_value}" > "$configfile"
 fi
