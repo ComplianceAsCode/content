@@ -135,7 +135,8 @@ def main():
     for platform_file in os.listdir(args.platforms_dir):
         platform_path = os.path.join(args.platforms_dir, platform_file)
         try:
-            platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml, product_cpes)
+            platform = ssg.build_yaml.Platform.from_compiled_json(
+                platform_path, env_yaml, product_cpes)
         except ssg.build_yaml.DocumentationNotComplete:
             # Happens on non-debug build when a platform is
             # "documentation-incomplete"
@@ -145,7 +146,7 @@ def main():
     for rule_file in os.listdir(args.resolved_rules_dir):
         rule_path = os.path.join(args.resolved_rules_dir, rule_file)
         try:
-            rule = ssg.build_yaml.Rule.from_yaml(rule_path, env_yaml)
+            rule = ssg.build_yaml.Rule.from_compiled_json(rule_path, env_yaml)
         except ssg.build_yaml.DocumentationNotComplete:
             # Happens on non-debug build when a rule is
             # "documentation-incomplete"

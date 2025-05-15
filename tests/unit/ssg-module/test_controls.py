@@ -85,7 +85,7 @@ def compiled_controls_dir_py3(tmp_path):
 def compiled_controls_manager(env_yaml, controls_manager,compiled_controls_dir_py2):
     controls_manager.save_everything(compiled_controls_dir_py2)
     controls_manager = ssg.controls.ControlsManager(compiled_controls_dir_py2, env_yaml)
-    controls_manager.load()
+    controls_manager.load_compiled()
     return controls_manager
 
 

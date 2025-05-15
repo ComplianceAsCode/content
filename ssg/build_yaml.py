@@ -330,8 +330,9 @@ class Value(XCCDFEntity):
         Raises:
             ValueError: If the operator in the input data is not one of the expected possible operators.
         """
-        input_contents["interactive"] = (
-            input_contents.get("interactive", "false").lower() == "true")
+        if "interactive" in input_contents and isinstance(input_contents["interactive"], str):
+            input_contents["interactive"] = (
+                input_contents.get("interactive", "false").lower() == "true")
 
         data = super(Value, cls).process_input_dict(input_contents, env_yaml)
 
@@ -578,7 +579,7 @@ class Benchmark(XCCDFEntity):
                 continue
 
             try:
-                new_profile = ProfileWithInlinePolicies.from_yaml(
+                new_profile = ProfileWithInlinePolicies.from_compiled_json(
                     dir_item_path, env_yaml, product_cpes)
             except DocumentationNotComplete:
                 continue
@@ -2867,9 +2868,9 @@ class DirectoryLoader(object):
         if not entities:
             return
         for entity in entities:
-            basename = entity.id_ + ".yml"
+            basename = entity.id_ + ".json"
             dest_filename = os.path.join(destdir, basename)
-            entity.dump_yaml(dest_filename)
+            entity.dump_json(dest_filename)
 
 
 class BuildLoader(DirectoryLoader):
@@ -3097,18 +3098,18 @@ class LinearLoader(object):
 
     def load_entities_by_id(self, filenames, destination, cls):
         """
-        Loads entities from a list of YAML files and stores them in a destination dictionary by their ID.
+        Loads entities from a list of JSON files and stores them in a destination dictionary by their ID.
 
         Args:
-            filenames (list of str): List of file paths to YAML files.
+            filenames (list of str): List of file paths to JSON files.
             destination (dict): Dictionary to store the loaded entities, keyed by their ID.
-            cls (type): Class type that has a `from_yaml` method to create an instance from a YAML file.
+            cls (type): Class type that has a `from_yaml` method to create an instance from a JSON file.
 
         Returns:
             None
         """
         for fname in filenames:
-            entity = cls.from_yaml(fname, self.env_yaml, self.product_cpes)
+            entity = cls.from_compiled_json(fname, self.env_yaml, self.product_cpes)
             destination[entity.id_] = entity
 
     def add_fixes_to_rules(self):
@@ -3187,7 +3188,7 @@ class LinearLoader(object):
             )
 
         for profile in self.benchmark.profiles:
-            if profile.single_rule_profile == "true":
+            if profile.single_rule_profile:
                 profiles_ids, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
                     self.env_yaml, [profile], rule_and_variables_dict, include_contributors=False
                 )
@@ -3225,16 +3226,16 @@ class LinearLoader(object):
 
         self.fixes = ssg.build_remediations.load_compiled_remediations(self.fixes_dir)
 
-        filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.yml"))
+        filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.json"))
         self.load_entities_by_id(filenames, self.rules, Rule)
 
-        filenames = glob.glob(os.path.join(self.resolved_groups_dir, "*.yml"))
+        filenames = glob.glob(os.path.join(self.resolved_groups_dir, "*.json"))
         self.load_entities_by_id(filenames, self.groups, Group)
 
-        filenames = glob.glob(os.path.join(self.resolved_values_dir, "*.yml"))
+        filenames = glob.glob(os.path.join(self.resolved_values_dir, "*.json"))
         self.load_entities_by_id(filenames, self.values, Value)
 
-        filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.yml"))
+        filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.json"))
         self.load_entities_by_id(filenames, self.platforms, Platform)
         self.product_cpes.platforms = self.platforms
 
@@ -3253,7 +3254,7 @@ class LinearLoader(object):
             str: The benchmark data in XML format.
         """
         if ignore_single_rule_profiles:
-            profiles = [p for p in self.benchmark.profiles if p.single_rule_profile == "false"]
+            profiles = [p for p in self.benchmark.profiles if not p.single_rule_profile]
         else:
             profiles = self.benchmark.profiles
         _, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
@@ -3535,12 +3536,12 @@ class Platform(XCCDFEntity):
             Platform: A Platform object created from the YAML file.
         """
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
-        # If we received a product_cpes, we can restore also the original test object
-        # it can be later used e.g. for comparison
-        if product_cpes:
-            platform.test = product_cpes.algebra.parse(platform.original_expression, simplify=True)
-            product_cpes.add_resolved_cpe_items_from_platform(platform)
-        return platform
+        return restore_original_test_object(platform, product_cpes)
+
+    @classmethod
+    def from_compiled_json(cls, json_file_path, env_yaml=None, product_cpes=None):
+        platform = super(Platform, cls).from_compiled_json(json_file_path, env_yaml)
+        return restore_original_test_object(platform, product_cpes)
 
     def get_fact_refs(self):
         """
@@ -3601,4 +3602,13 @@ def add_platform_if_not_defined(platform, product_cpes):
         if platform == p:
             return p
     product_cpes.platforms[platform.id_] = platform
+    return platform
+
+
+def restore_original_test_object(platform, product_cpes):
+    # If we received a product_cpes, we can restore also the original test object
+    # it can be later used e.g. for comparison
+    if product_cpes:
+        platform.test = product_cpes.algebra.parse(platform.original_expression, simplify=True)
+        product_cpes.add_resolved_cpe_items_from_platform(platform)
     return platform
