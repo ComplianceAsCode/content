@@ -184,7 +184,6 @@ selections:
 - configure_kerberos_crypto_policy
 - configure_libreswan_crypto_policy
 - configure_opensc_card_drivers
-- configure_ssh_crypto_policy
 - configure_usbguard_auditbackend
 - configured_firewalld_default_deny
 - coredump_disable_backtraces
@@ -323,6 +322,8 @@ selections:
 - grub2_vsyscall_argument
 - harden_sshd_ciphers_openssh_conf_crypto_policy
 - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+- harden_sshd_macs_openssh_conf_crypto_policy
+- harden_sshd_macs_opensshserver_conf_crypto_policy
 - install_smartcard_packages
 - installed_OS_is_vendor_supported
 - kernel_module_atm_disabled
@@ -470,7 +471,6 @@ selections:
 - sshd_set_idle_timeout
 - sshd_set_keepalive
 - sshd_set_loglevel_verbose
-- sshd_use_strong_macs
 - sshd_x11_use_localhost
 - sssd_certificate_verification
 - sssd_enable_certmap
@@ -568,7 +568,6 @@ selections:
 - var_sshd_set_keepalive=1
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
-- sshd_strong_macs=stig_rhel9
 - sshd_approved_ciphers=stig_rhel9
 - var_networkmanager_dns_mode=explicit_default
 - var_multiple_time_servers=stig
@@ -576,6 +575,8 @@ selections:
 - var_user_initialization_files_regex=all_dotfiles
 - login_banner_text=dod_banners
 - var_authselect_profile=sssd
+- sshd_approved_ciphers=stig_rhel9
+- sshd_approved_macs=stig_rhel9
 unselected_groups: []
 platforms: !!set {}
 cpe_names: !!set {}
