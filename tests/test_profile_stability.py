@@ -95,7 +95,8 @@ def inform_and_append_fix_based_on_reference_compiled_profile(ref, build_root, f
         comprehensive_profile_name = get_profile_name_from_reference_filename(ref)
         stability.report_comparison(comprehensive_profile_name, difference, describe_change)
         fix_commands.append(
-            "cp '{compiled}' '{reference}'"
+            "python -c 'import sys, yaml, json; yaml.dump(json.load(sys.stdin)"
+            ", sys.stdout)' < '{compiled}' > '{reference}'"
             .format(compiled=compiled_profile, reference=ref)
         )
 
@@ -118,7 +119,7 @@ def main():
     if fix_commands:
         msg = (
             "If changes to mentioned profiles are intentional, "
-            "copy those compiled files, so they become the new reference:\n{fixes}\n"
+            "update the profile stability data, so they become the new reference:\n{fixes}\n"
             "Please remember that if you change a profile that is extended by other profiles, "
             "changes propagate to derived profiles. "
             "If those changes are unwanted, you have to supress them "
