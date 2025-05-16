@@ -81,7 +81,7 @@ def test_ansible_class(env_yaml, cpe_platforms):
         os.path.join(DATADIR, "ansible.yml"), os.path.join(DATADIR, "file_owner_grub2_cfg.yml")
     )
 
-    remediation.parse_from_file_with_jinja(env_yaml, cpe_platforms)
+    remediation.parse_from_file(env_yaml, cpe_platforms)
 
     assert remediation.metadata["reboot"] == 'false'
     assert remediation.metadata["strategy"] == 'configure'
@@ -95,7 +95,7 @@ def test_ansible_conformance(env_yaml, cpe_platforms):
     )
     ref_remediation_dict = ordered_load(open(os.path.join(DATADIR, "ansible-resolved.yml")))
 
-    remediation.parse_from_file_with_jinja(env_yaml, cpe_platforms)
+    remediation.parse_from_file(env_yaml, cpe_platforms)
     # The comparison has to be done this way due to possible order variations,
     # which don't matter, but they make tests to fail.
     assert set(remediation.body[0]["tags"]) == set(ref_remediation_dict[0]["tags"])
