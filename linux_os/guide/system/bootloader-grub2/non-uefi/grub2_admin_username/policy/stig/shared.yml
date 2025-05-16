@@ -27,6 +27,9 @@ fixtext: |-
 
     Once the superuser account has been added, update the grub.cfg file by running:
 
-    $ sudo grubby --update-kernel=ALL
+    Regenerate the GRUB configuration:
 
+    $ sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 
+    Reboot the system:
+    $ sudo reboot

@@ -9,7 +9,7 @@ vuldiscussion: |-
 checktext: |-
     Verify the systemwide shared library files are owned by "root" with the following command:
 
-    $ sudo find -L /lib /lib64 /usr/lib /usr/lib64 ! -user root -exec stat -L -c "%U %n" {} \;
+    $ sudo find -L /lib /lib64 /usr/lib /usr/lib64 ! -user root ! -type d -exec stat -L -c "%U %n" {} \;
 
     If any systemwide shared library file is not owned by root, this is a finding.
 
@@ -19,5 +19,3 @@ fixtext: |-
     Run the following command, replacing "[FILE]" with any library file not owned by "root".
 
     $ sudo chown root [FILE]
-
-

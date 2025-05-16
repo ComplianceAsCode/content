@@ -1,32 +1,37 @@
+cpe_names: []
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 9 V2R4.
+  DISA STIG for Red Hat Enterprise Linux 9 V2R4.
 
 
-    In addition to being applicable to Red Hat Enterprise Linux 9, this
+  In addition to being applicable to Red Hat Enterprise Linux 9, this
 
-    configuration baseline is applicable to the operating system tier of
+  configuration baseline is applicable to the operating system tier of
 
-    Red Hat technologies that are based on Red Hat Enterprise Linux 9, such as:
+  Red Hat technologies that are based on Red Hat Enterprise Linux 9, such as:
 
 
-    - Red Hat Enterprise Linux Server
+  - Red Hat Enterprise Linux Server
 
-    - Red Hat Enterprise Linux Workstation and Desktop
+  - Red Hat Enterprise Linux Workstation and Desktop
 
-    - Red Hat Enterprise Linux for HPC
+  - Red Hat Enterprise Linux for HPC
 
-    - Red Hat Storage
+  - Red Hat Storage
 
-    - Red Hat Containers with a Red Hat Enterprise Linux 9 image'
+  - Red Hat Containers with a Red Hat Enterprise Linux 9 image'
 extends: null
+filter_rules: ''
 hidden: ''
-status: ''
 metadata:
-    version: V2R4
-    SMEs:
-    - mab879
-    - ggbecker
+  SMEs:
+  - mab879
+  - ggbecker
+  version: V2R4
+platform: null
+platforms: []
+policies:
+- stig_rhel9
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
 - account_disable_post_pw_expiration
@@ -54,8 +59,8 @@ selections:
 - accounts_password_pam_minlen
 - accounts_password_pam_ocredit
 - accounts_password_pam_pwquality_password_auth
-- accounts_password_pam_pwquality_system_auth
 - accounts_password_pam_pwquality_retry
+- accounts_password_pam_pwquality_system_auth
 - accounts_password_pam_ucredit
 - accounts_password_pam_unix_rounds_password_auth
 - accounts_password_pam_unix_rounds_system_auth
@@ -208,10 +213,10 @@ selections:
 - dir_permissions_library_dirs
 - dir_perms_world_writable_root_owned
 - dir_perms_world_writable_sticky_bits
-- directory_groupowner_sshd_config_d
 - directory_group_ownership_var_log_audit
-- directory_ownership_var_log_audit
+- directory_groupowner_sshd_config_d
 - directory_owner_sshd_config_d
+- directory_ownership_var_log_audit
 - directory_permissions_sshd_config_d
 - disable_ctrlaltdel_burstaction
 - disable_ctrlaltdel_reboot
@@ -315,10 +320,10 @@ selections:
 - grub2_audit_argument
 - grub2_audit_backlog_limit_argument
 - grub2_disable_interactive_boot
+- grub2_init_on_free
 - grub2_page_poison_argument
 - grub2_password
 - grub2_pti_argument
-- grub2_slub_debug_argument
 - grub2_vsyscall_argument
 - harden_sshd_ciphers_openssh_conf_crypto_policy
 - harden_sshd_ciphers_opensshserver_conf_crypto_policy
@@ -565,6 +570,7 @@ selections:
 - var_sshd_set_keepalive=1
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
+- sshd_approved_macs=stig_rhel9
 - sshd_approved_ciphers=stig_rhel9
 - var_networkmanager_dns_mode=explicit_default
 - var_multiple_time_servers=stig
@@ -572,15 +578,7 @@ selections:
 - var_user_initialization_files_regex=all_dotfiles
 - login_banner_text=dod_banners
 - var_authselect_profile=sssd
-- sshd_approved_ciphers=stig_rhel9
-- sshd_approved_macs=stig_rhel9
-unselected_groups: []
-platforms: !!set {}
-cpe_names: !!set {}
-platform: null
-filter_rules: ''
-policies:
-- stig_rhel9
 single_rule_profile: false
+status: ''
 title: DISA STIG for Red Hat Enterprise Linux 9
-documentation_complete: true
+unselected_groups: []
