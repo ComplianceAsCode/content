@@ -5,7 +5,6 @@ controls:
         title: {{{ full_name }}} must implement cryptography to protect the integrity
             of remote access sessions.
         rules:
-            - configure_ssh_crypto_policy
             - file_sshd_50_redhat_exists
             - sshd_include_crypto_policy
             - harden_sshd_ciphers_openssh_conf_crypto_policy
