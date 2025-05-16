@@ -30,6 +30,7 @@ function make_grub_password {
 
 function set_superusers {
 	set_superusers_unquoted "\"$1\""
+	echo "export superusers" >> "$GRUB_CFG_ROOT/grub.cfg"
 }
 
 
@@ -42,4 +43,8 @@ function set_superusers_unquoted {
 function set_root_unquoted {
 	mkdir -p "$GRUB_CFG_ROOT"
 	echo "set root=$1" > "$GRUB_CFG_ROOT/grub.cfg"
+}
+
+function set_superusers_no_export {
+	set_superusers_unquoted "\"$1\""
 }

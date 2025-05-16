@@ -15,11 +15,18 @@ description: |-
     <br /><br />
     Change the superuser to a different username (The default is 'root').
     <pre>$ sed -i 's/\(set superusers=\).*/\1"&lt;unique user ID&gt;"/g' /etc/grub.d/01_users</pre>
+    The line mentioned above must be followed by the line
+    <pre>export superusers</pre>
+    so that the <tt>superusers</tt> is honored.
     <br /><br />
     Once the superuser account has been added,
     update the
     <tt>grub.cfg</tt> file by running:
+    {{%- if "rhel" in product %}}
+    <pre>grub-mkconfig -o /boot/grub2/grub.cfg</pre>
+    {{%- else %}}
     <pre>{{{ grub_command("update") }}}</pre>
+    {{%- endif %}}
 
 rationale: |-
     Having a non-default grub superuser username makes password-guessing attacks less effective.
@@ -78,6 +85,10 @@ fixtext: |-
 
     Once the superuser account has been added, update the grub.cfg file by running:
 
-    $ sudo {{{ grub_command("update") }}}
+    {{%- if "rhel" in product %}}
+    <pre>grub-mkconfig -o /boot/grub2/grub.cfg</pre>
+    {{%- else %}}
+    <pre>{{{ grub_command("update") }}}</pre>
+    {{%- endif %}}
 
 srg_requirement: '{{{ full_name }}} systems booted with a BIOS must require a unique superusers name upon booting into single-user and maintenance modes.'
