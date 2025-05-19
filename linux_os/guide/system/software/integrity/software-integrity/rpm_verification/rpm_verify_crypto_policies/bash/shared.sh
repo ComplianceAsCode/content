@@ -1,4 +1,4 @@
-# platform =multi_platform_ol
+# platform = multi_platform_ol
 
 files_with_incorrect_hash="$(rpm -V crypto-policies)"
 
