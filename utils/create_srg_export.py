@@ -10,7 +10,6 @@ import re
 import sys
 import typing
 
-import yaml
 from typing import TextIO
 import xml.etree.ElementTree as ET
 
@@ -273,11 +272,26 @@ def no_selections_row(control, srgs, product: str) -> typing.Dict[str, str]:
     row["STIGID"] = ""
     return row
 
+
 def get_rule_srg_refs(srgs: typing.List[str], product) -> typing.Generator[str, None, None]:
     for srg in srgs:
         if '-ctr-' in srg and product != 'ocp4':
             continue
         yield srg
+
+
+def _get_cci(rule_srgs, srg, srgs):
+    if rule_srgs:
+        rule_ccis = set()
+        for rule_srg in rule_srgs:
+            if rule_srg not in srgs:
+                continue
+            rule_ccis.add(srgs[rule_srg].get('cci'))
+        cci = ','.join(rule_ccis)
+    else:
+        cci = srg['cci']
+    return cci
+
 
 def create_base_row(item: ssg.controls.Control, srgs: dict,
                     rule_object: ssg.build_yaml.Rule, product: str) -> dict:
@@ -288,21 +302,14 @@ def create_base_row(item: ssg.controls.Control, srgs: dict,
         exit(4)
     srg = srgs[srg_id]
 
-    rule_srgs =  None
+    rule_srgs = None
+
     if 'srg' in rule_object.references:
         rule_srgs = list(get_rule_srg_refs(rule_object.references['srg'], product))
         row['SRGID'] = ",".join(rule_srgs)
     else:
         row['SRGID'] = srg_id
-    if rule_srgs:
-        rule_ccis = set()
-        for rule_srg in rule_srgs:
-            if rule_srg not in srgs:
-                continue
-            rule_ccis.add(srgs[rule_srg].get('cci'))
-        row['CCI'] = ','.join(rule_ccis)
-    else:
-        row['CCI'] = srg['cci']
+    row['CCI'] = _get_cci(rule_srgs, srg, srgs)
     row['SRG Requirement'] = srg['title']
     row['SRG VulDiscussion'] = html_plain_text(srg['vuln_discussion'])
     row['SRG Check'] = html_plain_text(srg['check'])
