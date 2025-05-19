@@ -2,10 +2,9 @@ from __future__ import print_function
 
 import argparse
 import fnmatch
+import json
 import os.path
 import sys
-
-import ssg.yaml
 
 from tests.common import stability
 
@@ -59,8 +58,21 @@ def get_matching_compiled_profile_filename(build_dir, reference_fname):
         return matching_filename
 
 
-def get_selections_key_from_yaml(yaml_fname):
-    return ssg.yaml.open_raw(yaml_fname)["selections"]
+def get_selections_key_from_json(json_fname):
+    with open(json_fname, "r") as json_file:
+        data = json.load(json_file)
+        return data["selections"]
+
+
+def get_reference_selections(reference_fname):
+    with open(reference_fname, "r") as f:
+        selections = f.read().splitlines()
+    if selections != sorted(selections):
+        msg = (
+            f"The selections in the reference profile {reference_fname} are "
+            f"not sorted. Please sort them before running this script.")
+        raise RuntimeError(msg)
+    return selections
 
 
 def get_profile_name_from_reference_filename(fname):
@@ -73,8 +85,8 @@ def get_profile_name_from_reference_filename(fname):
 
 
 def get_reference_vs_built_difference(reference_fname, built_fname):
-    ref_selections = get_selections_key_from_yaml(reference_fname)
-    built_selections = get_selections_key_from_yaml(built_fname)
+    ref_selections = get_reference_selections(reference_fname)
+    built_selections = get_selections_key_from_json(built_fname)
     difference = compare_sets(ref_selections, built_selections)
     return difference
 
@@ -95,8 +107,7 @@ def inform_and_append_fix_based_on_reference_compiled_profile(ref, build_root, f
         comprehensive_profile_name = get_profile_name_from_reference_filename(ref)
         stability.report_comparison(comprehensive_profile_name, difference, describe_change)
         fix_commands.append(
-            "python -c 'import sys, yaml, json; yaml.dump(json.load(sys.stdin)"
-            ", sys.stdout)' < '{compiled}' > '{reference}'"
+            "jq -r '.selections|sort[]' < '{compiled}' > '{reference}'"
             .format(compiled=compiled_profile, reference=ref)
         )
 
