@@ -20,8 +20,18 @@ checktext: |-
 
     If there is no evidence that unauthorized peripherals are being blocked before establishing a connection, this is a finding.
 
+    If the system is virtual machine with no virtual or physical USB peripherals attached, this is not a finding.
+
 fixtext: |-
     Install the usbguard package with the following command:
 
     $ sudo dnf install usbguard
 
+    Enable the service to start on boot and then start it with the following commands:
+    $ sudo systemctl enable usbguard
+    $ sudo systemctl start usbguard
+
+    Verify the status of the service with the following command:
+    $ sudo systemctl status usbguard
+
+    Note: usbguard will need to be configured to allow authorized devices once it is enabled on {{{ full_name }}}.

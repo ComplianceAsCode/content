@@ -1,26 +1,26 @@
 srg_requirement: |-
-    {{{ full_name }}} Must Implement Dod-Approved Encryption To Protect The Confidentiality Of Remote Access Sessions.
+    {{{ full_name }}} must force a frequent session key renegotiation for SSH connections to the server.
 
 vuldiscussion: |-
-    By decreasing the limit based on the amount of data and enabling
-    time-based limit, effects of potential attacks against
-    encryption keys are limited.
+    Without protection of the transmitted information, confidentiality and integrity may be compromised because unprotected communications can be intercepted and either read or altered.
+
+    This requirement applies to both internal and external networks and all types of information system components from which information can be transmitted (e.g., servers, mobile devices, notebook computers, printers, copiers, scanners, and facsimile machines). Communication paths outside the physical protection of a controlled boundary are exposed to the possibility of interception and modification.
+
+    Protecting the confidentiality and integrity of organizational information can be accomplished by physical means (e.g., employing physical distribution systems) or by logical means (e.g., employing cryptographic techniques). If physical means of protection are employed, then logical means (cryptography) do not have to be employed, and vice versa.
+
+    Session key regeneration limits the chances of a session key becoming compromised.
 
 checktext: |-
-    To check if RekeyLimit is set correctly, run the
-    following command:
+    Verify the SSH server is configured to force frequent session key renegotiation with the following command:
 
-     $ sudo grep RekeyLimit /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+    $ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*rekeylimit'
 
-    If configured properly, output should be
-     RekeyLimit 1G 1h
+    RekeyLimit 1G 1h
 
     If it is commented out or is not set, then this is a finding.
 
 fixtext: |-
-
-    Configure {{{ full_name }}} to force a frequent session key renegotiation for SSH connections to the server by adding or modifying the following line in the "/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf" file:
-
+    Configure {{{ full_name }}} to force a frequent session key renegotiation for SSH connections to the server by adding or modifying the following line in the "/etc/ssh/sshd_config" or in a file in "/etc/ssh/sshd_config.d":
 
     RekeyLimit 1G 1h
 
