@@ -7,7 +7,7 @@ import argparse
 import ssg.jinja
 
 
-SUBS_DICT = ssg.jinja.load_macros()
+SUBS_DICT = {}
 
 
 def expand_jinja(filepath):

@@ -88,6 +88,18 @@ class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
         return contents, template, uptodate
 
 
+def preload_macros(env):
+    for filename in sorted(os.listdir(JINJA_MACROS_DIRECTORY)):
+        if filename.endswith(".jinja"):
+            macros_file = os.path.join(JINJA_MACROS_DIRECTORY, filename)
+            template = env.get_template(macros_file)
+            module = template.module
+            for name in dir(module):
+                item = getattr(module, name)
+                if callable(item) and not name.startswith("_"):
+                    env.globals[name] = item
+
+
 def _get_jinja_environment(substitutions_dict):
     """
     Initializes and returns a Jinja2 Environment with custom settings and filters.
@@ -125,6 +137,7 @@ def _get_jinja_environment(substitutions_dict):
             loader=AbsolutePathFileSystemLoader(),
             bytecode_cache=bytecode_cache
         )
+        add_python_functions(substitutions_dict)
         _get_jinja_environment.env.filters['banner_anchor_wrap'] = banner_anchor_wrap
         _get_jinja_environment.env.filters['banner_regexify'] = banner_regexify
         _get_jinja_environment.env.filters['escape_id'] = escape_id
@@ -132,11 +145,17 @@ def _get_jinja_environment(substitutions_dict):
         _get_jinja_environment.env.filters['escape_yaml_key'] = escape_yaml_key
         _get_jinja_environment.env.filters['quote'] = shell_quote
         _get_jinja_environment.env.filters['sha256'] = sha256
+        _get_jinja_environment.env.globals.update(substitutions_dict)
+        preload_macros(_get_jinja_environment.env)
 
     return _get_jinja_environment.env
 
 
 _get_jinja_environment.env = None
+
+
+def initialize(substitutions_dict):
+    _get_jinja_environment(substitutions_dict)
 
 
 def raise_exception(message):
@@ -317,7 +336,6 @@ def process_file_with_macros(filepath, substitutions_dict):
     See also:
         process_file: A function that processes a file with the given substitutions.
     """
-    substitutions_dict = load_macros(substitutions_dict)
     assert 'indent' not in substitutions_dict
     return process_file(filepath, substitutions_dict)
 
