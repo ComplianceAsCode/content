@@ -3,11 +3,7 @@ documentation_complete: true
 title: 'Ensure All Logs are Rotated by logrotate'
 
 description: |-
-    {{% if product in ['ubuntu1604'] %}}
-    Edit the file <tt>/etc/logrotate.d/rsyslog</tt>. Find the first
-    {{% else %}}
     Edit the file <tt>/etc/logrotate.d/syslog</tt>. Find the first
-    {{% endif %}}
     line, which should look like this (wrapped for clarity):
     <pre>/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler \
       /var/log/boot.log /var/log/cron {</pre>

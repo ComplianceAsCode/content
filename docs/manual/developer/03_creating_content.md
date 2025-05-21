@@ -160,7 +160,7 @@ multiple benchmarks in our project:
 
 The **Linux OS** benchmark describes Linux Operating System in general.
 This benchmark is used by multiple ComplianceAsCode products, eg.
-`rhel9`, `fedora`, `ubuntu1604`, `sle15` etc. The benchmark is located
+`rhel9`, `fedora`, `ubuntu2404`, `sle15` etc. The benchmark is located
 in `/linux_os/guide`.
 
 The products specify which benchmark they use as a source of content in
@@ -242,7 +242,7 @@ layout:
 -   **Do not** use capital letters
 
 -   If product versions are required, use major or LTS versions only. For
-    example, `rhel9`, `ubuntu2004`, etc.
+    example, `rhel9`, `ubuntu2404`, etc.
 
 -   If the content does not depend on specific versions,
     **do not** add version numbers. For example: `fedora`, `firefox`, etc.
@@ -365,7 +365,7 @@ all_cmake_products=(
 ...
 product_directories = ['debian11', 'fedora', 'ol7', 'ol8', 'opensuse',
                        'rhel8', 'rhel9', 'sle12',
-                       'ubuntu1604', 'ubuntu1804', 'rhosp13',
+                       'ubuntu2404', 'rhosp13',
                        'chromium', 'eap6', 'firefox',
                        'example'<b>, 'custom6'</b>]
 ...
@@ -1405,7 +1405,7 @@ These divergences are the most common in the project since we support a wide ran
 These divergences are handled in the content
 
 - Jinja conditionals (e.g.: [{{{% if product in ... }}}](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/linux_os/guide/system/software/integrity/fips/enable_fips_mode/rule.yml#L8)) - commonly used in rule descriptions and remediations.
-- Product identifiers (e.g.: [attribute@ubuntu1604](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/linux_os/guide/system/auditing/package_audit_installed/rule.yml#LL62C9-L62C9)) - commonly used in templated rules and when defining references.
+- Product identifiers (e.g.: [attribute@ubuntu2404](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/linux_os/guide/system/auditing/package_audit_installed/rule.yml#LL62C9-L62C9)) - commonly used in templated rules and when defining references.
 - Product properties (in [product.yml](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/products/rhel8/product.yml#LL32C35-L32C35) file or `product_properties` directory) - useful for more generic properties, applicable to different rules.
 - Product-specific files (e.g.: [sle12.yml](https://github.com/ComplianceAsCode/content/blob/master/linux_os/guide/system/auditing/auditd_configure_rules/audit_privileged_commands/audit_rules_privileged_commands_kmod/ansible/sle12.yml)) - Less common option which is usually used when the differences are drastic and it is not worth using the other options.
 
