@@ -3,7 +3,18 @@
 # packages = libpam-pkcs11
 
 {{% if 'ubuntu' in product %}}
-sed -i '/^auth.*pam_unix.so/i aauth [success=2 default=ignore] pam_pkcs11.so' /etc/pam.d/common-auth
+cat << EOF > /usr/share/pam-configs/tmp_pkcs11
+Name: Enable pkcs11
+Conflicts: pkcs11
+Default: yes
+Priority: 511
+Auth-Type: Primary
+Auth:
+    [success=end default=ignore]	ppam_pkcs11.so
+EOF
+
+DEBIAN_FRONTEND=noninteractive pam-auth-update --enable tmp_pkcs11
+rm -f /usr/share/pam-configs/tmp_pkcs11
 {{% else %}}
 echo 'aauth sufficient pam_pkcs11.so' > /etc/pam.d/common-auth
 {{% endif %}}
