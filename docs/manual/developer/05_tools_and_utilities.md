@@ -269,11 +269,11 @@ To execute:
 For example:
 
 ```bash
-    $ ./utils/refchecker.py ubuntu2004 cis_level1_server cis
+    $ ./utils/refchecker.py ubuntu2404 cis_level1_server cis
 ```
 
 This utility has some knowledge of which references are product-specific
-(checking for `cis@ubuntu2004` in the above example) and which are
+(checking for `cis@ubuntu2404` in the above example) and which are
 product-independent.
 
 Note that this utility does not modify the rule directories at all.
