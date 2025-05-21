@@ -1305,7 +1305,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       ansible.builtin.lineinfile:
         path: "{{ item }}"
         backrefs: true
-        regexp: (^\s*auth\s+)(.+)(\s+pam_faillock.so preauth.*)
+        regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so preauth.*)
         {{%- if faillock_var_name == '' %}}
         line: \1required\3 {{{ parameter }}}
         {{%- else %}}
@@ -1323,7 +1323,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       ansible.builtin.lineinfile:
         path: "{{ item }}"
         backrefs: true
-        regexp: (^\s*auth\s+)(.+)(\s+pam_faillock.so authfail.*)
+        regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so authfail.*)
         {{%- if faillock_var_name == '' %}}
         line: \1required\3 {{{ parameter }}}
         {{%- else %}}
@@ -1342,7 +1342,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       ansible.builtin.lineinfile:
         path: "{{ item }}"
         backrefs: true
-        regexp: (^\s*auth\s+)(.+)(\s+pam_faillock.so preauth.*)({{{ parameter }}})=\S+\b(.*)
+        regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so preauth.*)({{{ parameter }}})=[0-9]+(.*)
         line: \1required\3\4={{ {{{ faillock_var_name }}} }}\5
         state: present
       loop:
@@ -1356,7 +1356,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       ansible.builtin.lineinfile:
         path: "{{ item }}"
         backrefs: true
-        regexp: (^\s*auth\s+)(.+)(\s+pam_faillock.so authfail.*)({{{ parameter }}})=\S+\b(.*)
+        regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so authfail.*)({{{ parameter }}})=[0-9]+(.*)
         line: \1required\3\4={{ {{{ faillock_var_name }}} }}\5
         state: present
       loop:
@@ -1721,9 +1721,9 @@ Part of the grub2_bootloader_argument_absent template.
   ansible.builtin.replace:
     dest: "{{{ pam_file }}}"
     {{%- if control == '' %}}
-    regexp: (.*{{{ group }}}.*{{{ module }}}.*)\b{{{ option }}}\b(?:=\S+\b|\s+)(.*)
+    regexp: (.*{{{ group }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[0-9a-zA-Z]*(.*)
     {{%- else %}}
-    regexp: (.*{{{ group }}}.*{{ pam_module_control | regex_escape() }}.*{{{ module }}}.*)\b{{{ option }}}\b(?:=\S+\b|\s+)(.*)
+    regexp: (.*{{{ group }}}.*{{ pam_module_control | regex_escape() }}.*{{{ module }}}.*)\b{{{ option }}}\b=?[0-9a-zA-Z]*(.*)
     {{%- endif %}}
     replace: '\1\2'
   register: result_pam_option_removal
