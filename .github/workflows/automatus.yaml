@@ -67,7 +67,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Install Deps
-        run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml ansible-lint podman
+        run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-pip python3-yaml podman
+      - name: Install deps python
+        run: pip install ansible setuptools
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Get cached CTF output
