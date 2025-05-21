@@ -20,3 +20,8 @@ description: |-
 
 selections:
     - e8:all
+    - '!package_ypbind_removed'
+    - '!package_rsh-server_removed'
+    - '!package_rsh_removed'
+    - package_rear_installed
+    - package_audit_installed
