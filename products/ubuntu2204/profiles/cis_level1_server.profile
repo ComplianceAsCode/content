@@ -789,7 +789,7 @@ selections:
     - sshd_use_strong_macs
 
     ### 5.2.15 Ensure only strong Key Exchange algorithms are used (Automated)
-    - sshd_strong_kex=cis_ubuntu2004
+    - sshd_strong_kex=cis_ubuntu2204
     - sshd_use_strong_kex
 
     ### 5.2.16 Ensure SSH AllowTcpForwarding is disabled (Automated)

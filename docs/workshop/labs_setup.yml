@@ -101,8 +101,8 @@
       chdir: "{{ LAB_DIR }}"
     when: EXERCISE == TRACK_1_LABEL or EXERCISE == TRACK_5_LABEL
 
-  - name: "Build the ubuntu2004 content to be used in exercise 2"
-    command: "./build_product ubuntu2004"
+  - name: "Build the ubuntu2404 content to be used in exercise 2"
+    command: "./build_product ubuntu2404"
     args:
       chdir: "{{ LAB_DIR }}"
     when: EXERCISE == TRACK_2_LABEL

@@ -26,7 +26,6 @@ identifiers:
 references:
     cis@sle12: 2.2.12
     cis@sle15: 2.2.12
-    cis@ubuntu2004: 2.2.11
     cis@ubuntu2204: 2.2.10
 
 {{% if 'ubuntu' not in product %}}
@@ -39,8 +38,5 @@ template:
     name: package_removed
     vars:
         pkgname: dovecot
-        pkgname@ubuntu1604: dovecot-core
-        pkgname@ubuntu1804: dovecot-core
-        pkgname@ubuntu2004: dovecot-core
         pkgname@ubuntu2204: dovecot-core
         pkgname@ubuntu2404: dovecot-core
