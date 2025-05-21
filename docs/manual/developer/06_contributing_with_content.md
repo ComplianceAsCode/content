@@ -838,7 +838,7 @@ are unique to SCE:
 For an example of SCE content, consider the check:
 
 ```bash
-$ cat ./linux_os/guide/system/accounts/accounts-session/accounts_users_own_home_directories/sce/ubuntu2004.sh
+$ cat ./linux_os/guide/system/accounts/accounts-session/accounts_users_own_home_directories/sce/ubuntu.sh
 #!/bin/bash
 #
 # Contributed by Canonical.

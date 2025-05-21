@@ -551,7 +551,7 @@ def get_rule_dir_remediations(dir_path, remediation_type, product=None):
                 # Here, the filename is a subset of the product, but isn't
                 # the full product. Product here is both the product name
                 # (e.g., ubuntu) and its version (2004). Filename could be
-                # either "ubuntu" or "ubuntu2004" so we want this branch
+                # either "ubuntu" or "ubuntu2404" so we want this branch
                 # to trigger when it is the former, not the latter. It is
                 # the highest priority of common results, so insert it
                 # before any shared ones.
