@@ -19,62 +19,62 @@ chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 components_root: ../../components
 cpes:
-- rhel8:
-    check_id: installed_OS_is_rhel8
-    name: cpe:/o:redhat:enterprise_linux:8
-    title: Red Hat Enterprise Linux 8
-- rhel8.0:
-    check_id: installed_OS_is_rhel8_0
-    name: cpe:/o:redhat:enterprise_linux:8.0
-    title: Red Hat Enterprise Linux 8.0
-- rhel8.1:
-    check_id: installed_OS_is_rhel8_1
-    name: cpe:/o:redhat:enterprise_linux:8.1
-    title: Red Hat Enterprise Linux 8.1
-- rhel8.2:
-    check_id: installed_OS_is_rhel8_2
-    name: cpe:/o:redhat:enterprise_linux:8.2
-    title: Red Hat Enterprise Linux 8.2
-- rhel8.3:
-    check_id: installed_OS_is_rhel8_3
-    name: cpe:/o:redhat:enterprise_linux:8.3
-    title: Red Hat Enterprise Linux 8.3
-- rhel8.4:
-    check_id: installed_OS_is_rhel8_4
-    name: cpe:/o:redhat:enterprise_linux:8.4
-    title: Red Hat Enterprise Linux 8.4
-- rhel8.5:
-    check_id: installed_OS_is_rhel8_5
-    name: cpe:/o:redhat:enterprise_linux:8.5
-    title: Red Hat Enterprise Linux 8.5
-- rhel8.6:
-    check_id: installed_OS_is_rhel8_6
-    name: cpe:/o:redhat:enterprise_linux:8.6
-    title: Red Hat Enterprise Linux 8.6
-- rhel8.7:
-    check_id: installed_OS_is_rhel8_7
-    name: cpe:/o:redhat:enterprise_linux:8.7
-    title: Red Hat Enterprise Linux 8.7
-- rhel8.8:
-    check_id: installed_OS_is_rhel8_8
-    name: cpe:/o:redhat:enterprise_linux:8.8
-    title: Red Hat Enterprise Linux 8.8
-- rhel8.9:
-    check_id: installed_OS_is_rhel8_9
-    name: cpe:/o:redhat:enterprise_linux:8.9
-    title: Red Hat Enterprise Linux 8.9
-- rhel8.10:
-    check_id: installed_OS_is_rhel8_10
-    name: cpe:/o:redhat:enterprise_linux:8.10
-    title: Red Hat Enterprise Linux 8.10
+  - rhel8:
+      check_id: installed_OS_is_rhel8
+      name: cpe:/o:redhat:enterprise_linux:8
+      title: Red Hat Enterprise Linux 8
+  - rhel8.0:
+      check_id: installed_OS_is_rhel8_0
+      name: cpe:/o:redhat:enterprise_linux:8.0
+      title: Red Hat Enterprise Linux 8.0
+  - rhel8.1:
+      check_id: installed_OS_is_rhel8_1
+      name: cpe:/o:redhat:enterprise_linux:8.1
+      title: Red Hat Enterprise Linux 8.1
+  - rhel8.2:
+      check_id: installed_OS_is_rhel8_2
+      name: cpe:/o:redhat:enterprise_linux:8.2
+      title: Red Hat Enterprise Linux 8.2
+  - rhel8.3:
+      check_id: installed_OS_is_rhel8_3
+      name: cpe:/o:redhat:enterprise_linux:8.3
+      title: Red Hat Enterprise Linux 8.3
+  - rhel8.4:
+      check_id: installed_OS_is_rhel8_4
+      name: cpe:/o:redhat:enterprise_linux:8.4
+      title: Red Hat Enterprise Linux 8.4
+  - rhel8.5:
+      check_id: installed_OS_is_rhel8_5
+      name: cpe:/o:redhat:enterprise_linux:8.5
+      title: Red Hat Enterprise Linux 8.5
+  - rhel8.6:
+      check_id: installed_OS_is_rhel8_6
+      name: cpe:/o:redhat:enterprise_linux:8.6
+      title: Red Hat Enterprise Linux 8.6
+  - rhel8.7:
+      check_id: installed_OS_is_rhel8_7
+      name: cpe:/o:redhat:enterprise_linux:8.7
+      title: Red Hat Enterprise Linux 8.7
+  - rhel8.8:
+      check_id: installed_OS_is_rhel8_8
+      name: cpe:/o:redhat:enterprise_linux:8.8
+      title: Red Hat Enterprise Linux 8.8
+  - rhel8.9:
+      check_id: installed_OS_is_rhel8_9
+      name: cpe:/o:redhat:enterprise_linux:8.9
+      title: Red Hat Enterprise Linux 8.9
+  - rhel8.10:
+      check_id: installed_OS_is_rhel8_10
+      name: cpe:/o:redhat:enterprise_linux:8.10
+      title: Red Hat Enterprise Linux 8.10
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 dynamic_uid_max: 65519
 dynamic_uid_min: 61184
 faillock_path: /var/log/faillock
 families:
-- rhel
-- rhel-like
+  - rhel
+  - rhel-like
 full_name: Red Hat Enterprise Linux 8
 gid_min: 1000
 groups:
@@ -135,6 +135,7 @@ reference_uris:
   pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
   stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://public.cyber.mil/stigs/srg-stig-tools/
+  suse-general: not_publicly_available
 release_key_fingerprint: 567E347AD0044ADE55BA8A5F199E2F91FD431D51
 rsyslog_cafile: /etc/pki/tls/cert.pem
 sshd_distributed_config: 'false'
@@ -142,7 +143,7 @@ sysctl_remediate_drop_in_file: 'false'
 type: platform
 uid_min: 1000
 xwindows_packages:
-- xorg-x11-server-Xorg
-- xorg-x11-server-common
-- xorg-x11-server-utils
-- xorg-x11-server-Xwayland
+  - xorg-x11-server-Xorg
+  - xorg-x11-server-common
+  - xorg-x11-server-utils
+  - xorg-x11-server-Xwayland
