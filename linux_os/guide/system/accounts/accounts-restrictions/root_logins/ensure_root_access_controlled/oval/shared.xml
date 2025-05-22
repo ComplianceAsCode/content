@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure root account access is controlled") }}}
+    {{{ oval_metadata("Ensure root account access is controlled", title=rule_title) }}}
     <criteria>
       <criterion comment="verify root password is set"
           test_ref="test_root_access_controlled_etc_shadow" />

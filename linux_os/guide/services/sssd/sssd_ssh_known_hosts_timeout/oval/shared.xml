@@ -1,6 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="sssd_ssh_known_hosts_timeout" version="1">
-    {{{ oval_metadata("SSSD should be configured to expire keys from known SSH hosts after 1 day.") }}}
+    {{{ oval_metadata("SSSD should be configured to expire keys from known SSH hosts after 1 day.", title=rule_title) }}}
     <criteria operator="OR">
       <criterion comment="Check ssh_known_hosts_timeout in /etc/sssd/sssd.conf"
       test_ref="test_sssd_ssh_known_hosts_timeout" />

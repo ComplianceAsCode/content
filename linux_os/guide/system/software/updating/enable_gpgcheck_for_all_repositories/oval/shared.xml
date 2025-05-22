@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure gpgcheck Is Enabled for All Package Repositories") }}}
+    {{{ oval_metadata("Ensure gpgcheck Is Enabled for All Package Repositories", title=rule_title) }}}
     <criteria comment="Ensure gpgcheck Is Enabled for All Package Repositories" operator="AND">
       <criterion comment="verify all repos in /etc/yum.repos.d have gpgcheck enabled" test_ref="test_{{{ rule_id }}}_all_enabled" />
       <criterion comment="verify no repo in /etc/yum.repos.d has gpgcheck disabled" test_ref="test_{{{ rule_id }}}_no_disabled" />

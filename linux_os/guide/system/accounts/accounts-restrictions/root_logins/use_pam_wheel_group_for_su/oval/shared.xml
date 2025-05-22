@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Only members of the group set in variable 'var_pam_wheel_group_for_su' should be able to authenticate through the su command.") }}}
+    {{{ oval_metadata("Only members of the group set in variable 'var_pam_wheel_group_for_su' should be able to authenticate through the su command.", title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_use_pam_wheel_group_for_su" />
     </criteria>

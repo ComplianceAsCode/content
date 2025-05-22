@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="aide_verify_acls" version="1">
-    {{{ oval_metadata("AIDE should be configured to verify Access Control Lists (ACLs).") }}}
+    {{{ oval_metadata("AIDE should be configured to verify Access Control Lists (ACLs).", title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
       <criterion comment="acl is set in {{{ aide_conf_path }}}" test_ref="test_aide_verify_acls" />

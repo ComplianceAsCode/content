@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="kerberos_disable_no_keytab" version="1">
-    {{{ oval_metadata("Check that there is no Kerberos keytab file present in /etc") }}}
+    {{{ oval_metadata("Check that there is no Kerberos keytab file present in /etc", title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_kerberos_disable_no_keytab"
         comment="Restrict Kerberos operation by removing keytab files" />

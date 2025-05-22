@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="xwindows_runlevel_target" version="1">
-    {{{ oval_metadata("Ensure that the default runlevel target is set to multi-user.target.") }}}
+    {{{ oval_metadata("Ensure that the default runlevel target is set to multi-user.target.", title=rule_title) }}}
     <criteria>
       <criterion comment="default.target systemd softlink exists" test_ref="test_disable_xwindows_runlevel_target" />
     </criteria>

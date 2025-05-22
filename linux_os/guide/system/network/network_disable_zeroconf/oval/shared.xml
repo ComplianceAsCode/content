@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="network_disable_zeroconf" version="1">
     {{{ oval_metadata("Disable Zeroconf automatic route assignment in the
-      169.254.0.0 subnet.") }}}
+      169.254.0.0 subnet.", title=rule_title) }}}
     <criteria>
       <criterion comment="Look for NOZEROCONF=yes in /etc/sysconfig/network"
       test_ref="test_sysconfig_nozeroconf_yes" />

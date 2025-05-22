@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("User Bash History File Has Correct Permissions") }}}
+        {{{ oval_metadata("User Bash History File Has Correct Permissions", title=rule_title) }}}
         <criteria>
             <criterion comment="User Bash History File Has Correct Permissions"
                 test_ref="test_{{{ rule_id }}}" />

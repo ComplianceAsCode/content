@@ -1,7 +1,7 @@
 {{% if product not in ['ubuntu2404'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("All files should be owned by a user") }}}
+    {{{ oval_metadata("All files should be owned by a user", title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_no_files_unowned_by_user"
         comment="Check all files and make sure they are owned by a user"/>

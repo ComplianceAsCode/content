@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="xwindows_remove_packages" version="1">
-    {{{ oval_metadata("Ensure that the default runlevel target is set to multi-user.target.") }}}
+    {{{ oval_metadata("Ensure that the default runlevel target is set to multi-user.target.", title=rule_title) }}}
     <criteria operator="AND" comment="Make sure all xwindows packages are removed">
 {{% for package in xwindows_packages %}}
   <criterion comment="package {{{ package }}} is removed"

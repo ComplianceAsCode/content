@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="6">
-    {{{ oval_metadata(DESCRIPTION) }}}
+    {{{ oval_metadata(DESCRIPTION, title=rule_title) }}}
 
     {{% if 'debian' in product or 'ubuntu' in product %}}
 

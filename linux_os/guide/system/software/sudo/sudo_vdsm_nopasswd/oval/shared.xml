@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="sudo_vdsm_nopasswd" version="1">
-    {{{ oval_metadata("Checks sudo usage for the vdsm user without a password") }}}
+    {{{ oval_metadata("Checks sudo usage for the vdsm user without a password", title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="NOPASSWD only exists for vdsm user in /etc/sudoers" test_ref="test_vdsm_nopasswd_etc_sudoers" />
       <criterion comment="NOPASSWD only exists for vdsm user in /etc/sudoers.d" test_ref="test_vdsm_nopasswd_etc_sudoers_d" />

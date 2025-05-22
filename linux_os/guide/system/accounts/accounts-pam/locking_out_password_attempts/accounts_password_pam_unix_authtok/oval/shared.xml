@@ -2,7 +2,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Configure the system to include use_authtok in pam common_password configuration file") }}}
+    {{{ oval_metadata("Configure the system to include use_authtok in pam common_password configuration file", title=rule_title) }}}
     <criteria operator="AND">
         <criterion test_ref="test_{{{ rule_id }}}_pam_unix_exists"
         comment="at least one pam_unix line exists in common_password file"/>

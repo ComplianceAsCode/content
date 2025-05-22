@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_minimum_age_login_defs" version="3">
-    {{{ oval_metadata("The minimum password age policy should be set appropriately.") }}}
+    {{{ oval_metadata("The minimum password age policy should be set appropriately.", title=rule_title) }}}
     <criteria comment="The value of PASS_MIN_DAYS should be set appropriately in /etc/login.defs">
       <criterion test_ref="test_pass_min_days" />
     </criteria>

@@ -1,6 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="smartcard_configure_crl" version="1">
-    {{{ oval_metadata("Enable local cache of revocation data for PKI-based authentication") }}}
+    {{{ oval_metadata("Enable local cache of revocation data for PKI-based authentication", title=rule_title) }}}
     <criteria comment="smart card local cache of revocation date is configured" operator="AND">
       <extend_definition comment="smartcard package is installed" definition_ref="install_smartcard_packages" />
       <criterion comment="cert_policy directive contains crl_auto or crl_offline" test_ref="test_pam_pkcs11_cert_policy_crl" />

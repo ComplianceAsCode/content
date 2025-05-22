@@ -1,7 +1,7 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
            {{{ oval_metadata("SSSD should be configured with the correct ocsp_dgst
-            digest function") }}}
+            digest function", title=rule_title) }}}
         <criteria>
             <criterion comment="check value of certificate_verification in sssd configuration"
                        test_ref="test_{{{rule_id}}}" />

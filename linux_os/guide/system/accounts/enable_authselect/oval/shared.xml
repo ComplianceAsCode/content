@@ -7,7 +7,7 @@
 } -%}}
 <def-group>
 	<definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Check that authselect is enabled") }}}
+    {{{ oval_metadata("Check that authselect is enabled", title=rule_title) }}}
     <criteria operator="AND" comment="Check that authselect symlinks are set up properly.">
       {{%- for name_element, filename in pam_config_map.items() -%}}
 	    <criterion comment="The '{{{ filename }}}' PAM config is a symlink to its authselect counterpart"

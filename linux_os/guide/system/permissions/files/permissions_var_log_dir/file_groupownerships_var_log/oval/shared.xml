@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-      {{{ oval_metadata("Group owner of /var/log/* should be root or adm.") }}}
+      {{{ oval_metadata("Group owner of /var/log/* should be root or adm.", title=rule_title) }}}
     <criteria comment="Check group ownership of /var/log/*">
      <criterion test_ref="test_group_ownership_var_log" />
     </criteria>

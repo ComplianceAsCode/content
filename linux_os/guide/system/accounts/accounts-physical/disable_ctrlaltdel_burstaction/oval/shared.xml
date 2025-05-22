@@ -2,7 +2,7 @@
   <definition class="compliance" id="disable_ctrlaltdel_burstaction" version="1">
     {{{ oval_metadata("Configure the CtrlAltDelBurstAction setting in /etc/systemd/system.conf
       or /etc/systemd/system.conf.d/* to none to prevent a reboot if Ctrl-Alt-Delete is
-      pressed more than 7 times in 2 seconds.") }}}
+      pressed more than 7 times in 2 seconds.", title=rule_title) }}}
     <criteria>
       <criterion comment="check CtrlAltDelBurstAction is set to none"
       test_ref="test_disable_ctrlaltdel_burstaction" />

@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="gnome_gdm_disable_guest_login" version="2">
     {{{ oval_metadata("Disable the GNOME Display Manager (GDM) ability to allow guest users
-      to login.") }}}
+      to login.", title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="gdm installed" definition_ref="package_gdm_installed" negate="true" />
       <criterion comment="Disable GDM Guest Login" test_ref="test_disable_guest_login" />

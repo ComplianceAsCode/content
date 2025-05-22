@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="banner_etc_issue" version="2">
-    {{{ oval_metadata("The system login banner text should be set correctly.") }}}
+    {{{ oval_metadata("The system login banner text should be set correctly.", title=rule_title) }}}
     <criteria>
       <criterion comment="/etc/issue is set appropriately" test_ref="test_banner_etc_issue" />
     </criteria>

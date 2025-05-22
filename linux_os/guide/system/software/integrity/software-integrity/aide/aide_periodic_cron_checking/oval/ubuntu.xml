@@ -3,7 +3,7 @@
     {{{ oval_metadata("By default, AIDE does not install itself for periodic
       execution. Periodically running AIDE is necessary to reveal
       unexpected changes in installed files.
-      ") }}}
+      ", title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
       <criteria operator="OR">

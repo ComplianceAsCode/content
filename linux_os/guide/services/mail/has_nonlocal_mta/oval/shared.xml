@@ -5,7 +5,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Verify MTA is not listening on any non-loopback address") }}}
+    {{{ oval_metadata("Verify MTA is not listening on any non-loopback address", title=rule_title) }}}
     <criteria operator="AND">
       {{{ generate_criteria_listening_port("25")}}}
 {{% if 'ubuntu' in product %}}

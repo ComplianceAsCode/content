@@ -1,6 +1,6 @@
 <def-group>
 <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-  {{{ oval_metadata("The " + pkg_system|upper + " package " + PACKAGES | join(" and ") + " should be removed.", affected_platforms=["multi_platform_all"]) }}}
+  {{{ oval_metadata("The " + pkg_system|upper + " package " + PACKAGES | join(" and ") + " should be removed.", title=rule_title) }}}
   <criteria>
   {{% for package in PACKAGES %}}
     <criterion comment="package {{{ package }}} is removed" test_ref="test_package_{{{ package }}}_removed" />

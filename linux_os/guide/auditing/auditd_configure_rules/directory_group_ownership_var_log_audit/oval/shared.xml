@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="directory_group_ownership_var_log_audit" version="1">
-    {{{ oval_metadata("Checks that all /var/log/audit directories are group owned by the root user.") }}}
+    {{{ oval_metadata("Checks that all /var/log/audit directories are group owned by the root user.", title=rule_title) }}}
     <criteria operator="OR">
       <criteria operator="AND" comment="log_file set">
         <extend_definition comment="log_file set in auditd.conf"

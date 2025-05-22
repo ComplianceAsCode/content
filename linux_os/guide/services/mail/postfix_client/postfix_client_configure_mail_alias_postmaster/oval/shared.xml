@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Check if postmaster has the correct mail alias.") }}}
+    {{{ oval_metadata("Check if postmaster has the correct mail alias.", title=rule_title) }}}
     <criteria comment="Check if postmaster has the correct mail alias.">
       <criterion comment="Check if postmaster has the correct mail alias."
       test_ref="test_postfix_client_configure_mail_alias_postmaster"/>

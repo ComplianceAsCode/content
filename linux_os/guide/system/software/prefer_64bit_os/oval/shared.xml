@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="prefer_64bit_os" version="1">
-    {{{ oval_metadata("Check if the system supports a 64-bit Operating System") }}}
+    {{{ oval_metadata("Check if the system supports a 64-bit Operating System", title=rule_title) }}}
     <criteria
         comment="Either the OS is 64-bit, or the CPU doesn't support 64-bit (it is 32 or 16 bit)"
         operator="OR">

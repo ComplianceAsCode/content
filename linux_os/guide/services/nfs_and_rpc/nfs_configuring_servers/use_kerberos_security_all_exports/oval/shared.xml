@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="use_kerberos_security_all_exports" version="3">
     {{{ oval_metadata("Using Kerberos Security allows to cryptography authenticate a
-      valid user to an NFS share.") }}}
+      valid user to an NFS share.", title=rule_title) }}}
     <criteria operator="OR">
       <criterion comment="Check for Kerberos settings in /etc/exports"
       test_ref="test_use_kerberos_security_all_exports" />

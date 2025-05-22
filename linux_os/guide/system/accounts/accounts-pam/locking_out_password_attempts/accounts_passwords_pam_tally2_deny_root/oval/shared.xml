@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("The root account should be configured to deny access after the number of
-    defined failed attempts has been reached.") }}}
+    defined failed attempts has been reached.", title=rule_title) }}}
     <criteria operator="AND" comment="Checks common to both scenarios">
       <criterion test_ref="test_accounts_passwords_pam_tally2_even_deny_root"
       comment="Verify deny root configuation of pam_tally2 in common-auth" />

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("The PAM module pam_pwquality is used in system-auth") }}}
+    {{{ oval_metadata("The PAM module pam_pwquality is used in system-auth", title=rule_title) }}}
     <criteria comment="Condition for pam_pwquality in system-auth is satisfied">
       <criterion comment="pam_pwquality system-auth"
                  test_ref="test_accounts_password_pam_pwquality_system_auth"/>

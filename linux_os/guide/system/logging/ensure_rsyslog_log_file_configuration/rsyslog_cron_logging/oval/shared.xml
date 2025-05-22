@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance"
   id="rsyslog_cron_logging" version="1">
-    {{{ oval_metadata("Rsyslog should be configured to capture cron messages.") }}}
+    {{{ oval_metadata("Rsyslog should be configured to capture cron messages.", title=rule_title) }}}
     <criteria operator="OR">
       <criterion comment="cron is configured in /etc/rsyslog.conf"
       test_ref="test_cron_logging_rsyslog" />

@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="bios_enable_execution_restrictions" version="2">
-        {{{ oval_metadata("The NX (no-execution) bit flag should be set on the system.") }}}
+        {{{ oval_metadata("The NX (no-execution) bit flag should be set on the system.", title=rule_title) }}}
         <criteria operator="AND">
             <criterion comment="NX bit is set" test_ref="test_NX_cpu_support" />
             <criterion comment="NX is not disabled in the kernel command line" test_ref="test_noexec_cmd_line" />

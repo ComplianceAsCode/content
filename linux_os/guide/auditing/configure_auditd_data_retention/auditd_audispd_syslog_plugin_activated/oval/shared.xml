@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="auditd_audispd_syslog_plugin_activated" version="1">
-    {{{ oval_metadata("active setting in " + audisp_conf_path + "/plugins.d/syslog.conf is set to 'yes'") }}}
+    {{{ oval_metadata("active setting in " + audisp_conf_path + "/plugins.d/syslog.conf is set to 'yes'", title=rule_title) }}}
 
     <criteria>
         <criterion comment="active setting in syslog.conf" test_ref="test_auditd_audispd_syslog_plugin_activated" />

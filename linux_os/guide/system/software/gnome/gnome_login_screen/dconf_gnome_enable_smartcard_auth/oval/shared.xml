@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="dconf_gnome_enable_smartcard_auth" version="1">
-    {{{ oval_metadata("Enable smartcard authentication in the GNOME3 Login GUI.") }}}
+    {{{ oval_metadata("Enable smartcard authentication in the GNOME3 Login GUI.", title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="Enable smartcard authentication and prevent user from changing it" operator="AND">

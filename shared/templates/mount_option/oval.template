@@ -8,7 +8,7 @@
        about it if it is not configured). -->
 
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
-    {{{ oval_metadata(MOUNTPOINT ~ " should be mounted with mount option " ~ MOUNTOPTION ~ ".") }}}
+    {{{ oval_metadata(MOUNTPOINT ~ " should be mounted with mount option " ~ MOUNTOPTION ~ ".", title=rule_title) }}}
     <criteria operator="AND">
       <criteria operator="OR">
          <criterion comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}}"

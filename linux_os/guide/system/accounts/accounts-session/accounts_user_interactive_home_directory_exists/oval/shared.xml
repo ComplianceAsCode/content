@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("All Interactive Users Home Directories Must Exist") }}}
+    {{{ oval_metadata("All Interactive Users Home Directories Must Exist", title=rule_title) }}}
     <criteria operator="OR">
       <criterion test_ref="test_accounts_user_interactive_home_directory_exists"
                  comment="All Interactive Users Home Directories Must Exist"/>

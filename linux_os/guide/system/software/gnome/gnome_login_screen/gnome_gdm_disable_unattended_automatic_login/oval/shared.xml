@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="gnome_gdm_disable_unattended_automatic_login" version="2">
     {{{ oval_metadata("Disable the GNOME Display Manager (GDM) ability to allow users to
-      automatically login.") }}}
+      automatically login.", title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="Disable GDM Automatic Login" test_ref="test_disable_unattended_automatic_login" />
       <criterion comment="Disable GDM Password Less Login" test_ref="test_disable_unattended_login" />

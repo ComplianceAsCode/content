@@ -5,7 +5,7 @@
 {{%- endif -%}}
 <def-group>
   <definition class="compliance" id="accounts_tmout" version="3">
-    {{{ oval_metadata("Checks interactive shell timeout") }}}
+    {{{ oval_metadata("Checks interactive shell timeout", title=rule_title) }}}
     <criteria operator="AND">
       {{% if "ubuntu" in product %}}
       <criterion comment="TMOUT value in /etc/bash.bashrc &lt;= var_accounts_tmout" test_ref="test_etc_bashrc_tmout" />

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("All interactive user's Home Directories must be group-owned by its user") }}}
+    {{{ oval_metadata("All interactive user's Home Directories must be group-owned by its user", title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_file_groupownership_home_directories"
                  comment="All interactive user's Home Directories must be group-owned by its user"/>

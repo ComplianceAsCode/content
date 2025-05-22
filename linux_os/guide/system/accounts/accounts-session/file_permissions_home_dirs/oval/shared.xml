@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure that User Home Directories are not Group-Writable or World-Readable") }}}
+    {{{ oval_metadata("Ensure that User Home Directories are not Group-Writable or World-Readable", title=rule_title) }}}
     <criteria >
       <criterion comment="home directories" test_ref="test_file_permissions_home_dirs"/>
     </criteria>

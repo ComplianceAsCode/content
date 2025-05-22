@@ -1,7 +1,7 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata(
-        "Configure the use of the pam_faillock.so module in the /etc/pam.d/password-auth file.")
+        "Configure the use of the pam_faillock.so module in the /etc/pam.d/password-auth file.", title=rule_title)
     }}}
         <criteria operator="AND">
             <!-- pam_unix.so is a control module present in all realistic scenarios and also used

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("FileCreateMode setting controls permissions applied to newly created files.") }}}
+    {{{ oval_metadata("FileCreateMode setting controls permissions applied to newly created files.", title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="tst_filecreatemode_declared"
           comment="FileCreateMode declared once in either /etc/rsyslog.conf or /etc/rsyslog.d/*"/>

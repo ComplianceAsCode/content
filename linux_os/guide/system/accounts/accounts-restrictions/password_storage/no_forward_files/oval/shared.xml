@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="no_forward_files" version="1">
-    {{{ oval_metadata("The .forward file specifies an email address to forward the user's mail to. Any .forward files should be removed.") }}}
+    {{{ oval_metadata("The .forward file specifies an email address to forward the user's mail to. Any .forward files should be removed.", title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_accounts_users_home_forward_file_existance" negate="true" />
     </criteria>

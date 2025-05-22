@@ -5,7 +5,7 @@
 {{% endif %}}
 <def-group>
   <definition class="compliance" id="accounts_umask_etc_bashrc" version="2">
-    {{{ oval_metadata("The default umask for users of the bash shell") }}}
+    {{{ oval_metadata("The default umask for users of the bash shell", title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="Get value of var_accounts_user_umask variable as octal number"
       definition_ref="var_accounts_user_umask_as_number" />

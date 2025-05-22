@@ -6,7 +6,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("The passwords to remember should be set correctly.") }}}
+    {{{ oval_metadata("The passwords to remember should be set correctly.", title=rule_title) }}}
     <criteria operator="OR" comment="Check if pam_pwhistory.so or pam_unix.so are configured">
       <criteria operator="AND" comment="Check if pam_pwhistory.so is properly configured">
 	<!--

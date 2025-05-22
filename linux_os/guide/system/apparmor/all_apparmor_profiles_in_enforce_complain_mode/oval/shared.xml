@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure AppArmor profiles are in enforce complain mode") }}}
+    {{{ oval_metadata("Ensure AppArmor profiles are in enforce complain mode", title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="Check sum of complaining and enforced profiles equals all profiles"
         test_ref="{{{ rule_id }}}_test_sum_complain_n_enforced_equal_all" />

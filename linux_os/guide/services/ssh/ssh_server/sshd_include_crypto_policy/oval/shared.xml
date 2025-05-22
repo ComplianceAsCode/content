@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("Ensure SSHD to include the system crypto policy") }}}
+        {{{ oval_metadata("Ensure SSHD to include the system crypto policy", title=rule_title) }}}
         <criteria>
             <criterion test_ref="test_{{{ rule_id }}}_include_sshd_drop_in"></criterion>
             <criterion test_ref="test_{{{ rule_id }}}_include_sshd_include_system_crypto"></criterion>

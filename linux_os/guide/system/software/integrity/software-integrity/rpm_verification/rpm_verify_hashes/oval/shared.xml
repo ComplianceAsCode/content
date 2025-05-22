@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="3">
-    {{{ oval_metadata("Verify the RPM digests of system binaries using the RPM database.") }}}
+    {{{ oval_metadata("Verify the RPM digests of system binaries using the RPM database.", title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_rpm_verify_hashes" comment="verify file md5 hashes"/>
     </criteria>

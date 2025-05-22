@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("Ensure system-auth and password-auth files are symbolic links pointing to system-auth-local and password-auth-local") }}}
+        {{{ oval_metadata("Ensure system-auth and password-auth files are symbolic links pointing to system-auth-local and password-auth-local", title=rule_title) }}}
         <criteria operator="AND" comment="password-auth and system-auth are symlinks">
             <criterion comment="/etc/pam.d/password-auth is a symlink and
                 points to /etc/pam.d/password-auth-local"

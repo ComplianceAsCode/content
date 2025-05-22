@@ -8,7 +8,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-  {{{ oval_metadata(description) }}}
+  {{{ oval_metadata(description, title=rule_title) }}}
   <criteria comment="sshd is configured correctly or is not installed" operator="OR">
     {{{- application_not_required_or_requirement_unset() }}}
     {{{- application_required_or_requirement_unset() }}}

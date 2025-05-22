@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("Ensure that McAfee Endpoint Security for Linux (ENSL) is running.") }}}
+        {{{ oval_metadata("Ensure that McAfee Endpoint Security for Linux (ENSL) is running.", title=rule_title) }}}
         <criteria>
             <criterion comment="McAfee ENSL is running" test_ref="test_{{{ rule_id }}}"/>
         </criteria>

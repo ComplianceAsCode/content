@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="gid_passwd_group_same" version="2">
-    {{{ oval_metadata("All GIDs referenced in /etc/passwd must be defined in /etc/group.") }}}
+    {{{ oval_metadata("All GIDs referenced in /etc/passwd must be defined in /etc/group.", title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_gid_passwd_group_same" />
     </criteria>

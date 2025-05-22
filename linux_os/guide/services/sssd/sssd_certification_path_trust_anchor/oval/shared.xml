@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-           {{{ oval_metadata("SSSD should be configured with trust path to an accepted trust anchor.") }}}
+           {{{ oval_metadata("SSSD should be configured with trust path to an accepted trust anchor.", title=rule_title) }}}
         <criteria>
             <criterion comment="check value of certificate_verification in sssd configuration"
                        test_ref="test_{{{rule_id}}}" />

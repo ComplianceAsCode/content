@@ -1,6 +1,6 @@
 <def-group>
      <definition class="compliance" id="{{{ rule_id }}}" version="1">
-     {{{ oval_metadata("Check that sudoers doesn't contain commands without arguments specified") }}}
+     {{{ oval_metadata("Check that sudoers doesn't contain commands without arguments specified", title=rule_title) }}}
      <criteria operator="AND">
 	     <criterion comment="Make sure that no commands are without arguments" test_ref="test_{{{ rule_id }}}" />
      </criteria>

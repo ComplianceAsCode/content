@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="disable_users_coredumps" version="1">
-    {{{ oval_metadata("Core dumps for all users should be disabled") }}}
+    {{{ oval_metadata("Core dumps for all users should be disabled", title=rule_title) }}}
     <criteria operator="OR">
       <criterion comment="Are core dumps disabled in /etc/security/limits.d/*" test_ref="test_core_dumps_limits_d" />
       <criteria operator="AND">

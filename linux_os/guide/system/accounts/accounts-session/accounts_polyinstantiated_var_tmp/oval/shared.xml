@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_polyinstantiated_var_tmp" version="1">
-    {{{ oval_metadata("") }}}
+    {{{ oval_metadata("", title=rule_title) }}}
     <criteria operator="AND" comment="Check Polyinstantiation of /tmp Directories">
       <criterion comment="Check that /var/tmp/tmp-inst doesn't exist or it exists and has mode 000" test_ref="test_var_tmp_tmp_inst" />
       <criterion comment="Check configuration of /var/tmp in /etc/security/namespace.conf file" test_ref="test_var_tmp_in_namespace_conf" />

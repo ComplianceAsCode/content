@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="file_ownership_var_log_audit" version="3">
-    {{{ oval_metadata("Checks that all /var/log/audit files and directories are owned by the root user and group.") }}}
+    {{{ oval_metadata("Checks that all /var/log/audit files and directories are owned by the root user and group.", title=rule_title) }}}
     <criteria operator="OR">
       <criteria operator="AND" comment="directories are root owned">
         <criterion test_ref="test_ownership_var_log_audit_files" />

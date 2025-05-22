@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("Configure Firewalld to Restrict Loopback Traffic") }}}
+        {{{ oval_metadata("Configure Firewalld to Restrict Loopback Traffic", title=rule_title) }}}
         <criteria operator="OR">
             <criteria operator="AND">
                 <!-- The test_firewalld_trusted_zone_not_overridden test is defined in the

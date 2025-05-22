@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("All Interactive User Home Directories Must Have mode 0750 Or Less Permissive") }}}
+    {{{ oval_metadata("All Interactive User Home Directories Must Have mode 0750 Or Less Permissive", title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_file_permissions_home_directories"
                  comment="All interactive user's Home Directories must have proper permissions"/>

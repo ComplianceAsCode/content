@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{rule_id}}}" version="1">
-    {{{ oval_metadata("The root account should have primary group of 0") }}}
+    {{{ oval_metadata("The root account should have primary group of 0", title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="tests that the root account's gid is equal to 0" test_ref="test_{{{rule_id}}}" />
       {{% if 'ubuntu' in product or 'rhel' in product %}}

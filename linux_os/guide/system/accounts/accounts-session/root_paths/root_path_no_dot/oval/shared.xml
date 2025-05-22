@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="root_path_no_dot" version="2">
     {{{ oval_metadata("The environment variable PATH should be set correctly for
-      the root user.") }}}
+      the root user.", title=rule_title) }}}
     <criteria comment="environment variable PATH contains dangerous path" operator="AND">
       <criterion comment="environment variable PATH starts with : or ." test_ref="test_env_var_begins" />
       <criterion comment="environment variable PATH contains : twice in a row" test_ref="test_env_var_contains_doublecolon" />

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="kernel_module_ipv6_option_disabled" version="1">
-    {{{ oval_metadata("The disable option will allow the IPv6 module to be inserted, but prevent address assignment and activation of the network stack.") }}}
+    {{{ oval_metadata("The disable option will allow the IPv6 module to be inserted, but prevent address assignment and activation of the network stack.", title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_kernel_module_ipv6_option_disabled" comment="ipv6 disabled any modprobe conf file"/>
     </criteria>

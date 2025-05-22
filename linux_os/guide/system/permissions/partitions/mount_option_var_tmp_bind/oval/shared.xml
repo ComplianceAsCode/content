@@ -2,7 +2,7 @@
   <definition class="compliance" id="mount_option_var_tmp_bind" version="1">
     {{{ oval_metadata("The /var/tmp directory should be bind mounted to /tmp in
       order to consolidate temporary storage into one location protected by the
-      same techniques as /tmp.") }}}
+      same techniques as /tmp.", title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="Ensure /var/tmp is configured to bind mount to /tmp"
       test_ref="test_configure_mount_option_var_tmp_bind_tmp" />

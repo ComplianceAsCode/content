@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="dconf_gnome_screensaver_lock_delay" version="2">
     {{{ oval_metadata("Idle activation of the screen lock should be enabled immediately or
-      after a delay.") }}}
+      after a delay.", title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="Enable screensaver lock and prevent user from changing it" operator="AND">

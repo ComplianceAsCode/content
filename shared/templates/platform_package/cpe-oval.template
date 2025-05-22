@@ -6,7 +6,7 @@
     {{%- else -%}}
       {{%- set entity = " package " + PKGNAME -%}}
     {{%- endif -%}}
-    {{{ oval_metadata("The " + pkg_system|upper + entity + " should be installed.", affected_platforms=["multi_platform_all"]) }}}
+    {{{ oval_metadata("The " + pkg_system|upper + entity + " should be installed.", title=rule_title) }}}
     <criteria>
     {{% for spec in VER_SPECS %}}
       <criterion comment="Platform package {{{ PKGNAME }}} of version {{{ spec.evr_op }}} {{{ spec.ver }}} is installed"

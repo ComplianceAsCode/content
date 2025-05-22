@@ -2,7 +2,7 @@
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("
         Check if selinux=0 OR enforcing=0 within the GRUB2 configuration files, fail if found.
-      ") }}}
+      ", title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_selinux_default_grub"
         comment="check value selinux|enforcing=0 in /etc/default/grub, fail if found"/>

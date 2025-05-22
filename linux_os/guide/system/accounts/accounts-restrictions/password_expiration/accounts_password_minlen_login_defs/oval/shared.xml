@@ -1,7 +1,7 @@
 <def-group>
 
   <definition class="compliance" id="accounts_password_minlen_login_defs" version="3">
-    {{{ oval_metadata("The password minimum length should be set appropriately.") }}}
+    {{{ oval_metadata("The password minimum length should be set appropriately.", title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_pass_min_len" />
     </criteria>

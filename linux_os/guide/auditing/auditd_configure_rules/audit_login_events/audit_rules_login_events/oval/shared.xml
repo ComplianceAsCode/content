@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_login_events" version="2">
-    {{{ oval_metadata("Audit rules should be configured to log successful and unsuccessful login and logout events.") }}}
+    {{{ oval_metadata("Audit rules should be configured to log successful and unsuccessful login and logout events.", title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="audit tallylog" definition_ref="audit_rules_login_events_tallylog" />
       <extend_definition comment="audit faillock" definition_ref="audit_rules_login_events_faillock" />

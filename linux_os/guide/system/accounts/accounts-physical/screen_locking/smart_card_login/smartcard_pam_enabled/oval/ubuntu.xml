@@ -1,6 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="smartcard_pam_enabled" version="3">
-   {{{ oval_metadata("Enable Smart Card logins using PAM") }}}
+   {{{ oval_metadata("Enable Smart Card logins using PAM", title=rule_title) }}}
 
     <criteria operator="AND" comment="smart card authentication is configured">
       <extend_definition comment="packages needed for smartcard support are installed" definition_ref="install_smartcard_packages" />
