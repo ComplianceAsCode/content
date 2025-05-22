@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
+# platform = Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 8,multi_platform_almalinux
 
 # Clean sysctl config directories
 rm -rf /usr/lib/sysctl.d/* /run/sysctl.d/* /etc/sysctl.d/*
