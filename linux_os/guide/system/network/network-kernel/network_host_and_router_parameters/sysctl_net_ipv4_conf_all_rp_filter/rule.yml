@@ -47,8 +47,9 @@ ocil: |-
     <pre>$ sysctl net.ipv4.conf.all.rp_filter</pre>
     The output of the command should indicate either:
     <code>net.ipv4.conf.all.rp_filter = 1</code>
-    or:
+    {{% if product not in ['ol9','rhel9'] %}}or:
     <code>net.ipv4.conf.all.rp_filter = 2</code>
+    {{% endif %}}
     The output of the command should not indicate:
     <code>net.ipv4.conf.all.rp_filter = 0</code>
 
@@ -61,12 +62,14 @@ ocil: |-
     <pre>$ grep -r '^\s*net.ipv4.conf.all.rp_filter\s*=' /etc/sysctl.conf /etc/sysctl.d</pre>
     The command should not find any assignments other than:
     net.ipv4.conf.all.rp_filter = 1
-    or:
+    {{% if product not in ['ol9','rhel9'] %}}or:
     net.ipv4.conf.all.rp_filter = 2
+    {{% endif %}}
 
     Conflicting assignments are not allowed.
 
-ocil_clause: "the net.ipv4.conf.all.rp_filter is not set to 1 or 2 or is configured to be 0"
+ocil_clause: |-
+    the net.ipv4.conf.all.rp_filter is not set to {{% if product not in ['ol9','rhel9'] %}}1 or 2 or is configured to be 0{{% else %}}1 or is configured to be 0 or 2{{% endif %}}
 
 fixtext: |-
     Configure {{{ full_name }}} to use reverse path filtering on all IPv4 interfaces.
@@ -78,10 +81,11 @@ template:
     name: sysctl
     vars:
         sysctlvar: net.ipv4.conf.all.rp_filter
-        {{% if 'ol' in product or 'rhel' in product %}}
+        {{% if ('ol' in families or 'rhel' in product) and product not in ['ol9','rhel9'] %}}
         sysctlval:
         - '1'
         - '2'
-        wrong_sysctlval_for_testing: "0"
+        wrong_sysctlval_for_testing: 
+        - '0'
         {{% endif %}}
         datatype: int
