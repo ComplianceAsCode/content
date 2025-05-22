@@ -15,18 +15,18 @@ bootable_containers_supported: 'false'
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 cpes:
-- ol9:
-    check_id: installed_OS_is_ol9
-    name: cpe:/o:oracle:linux:9
-    title: Oracle Linux 9
+  - ol9:
+      check_id: installed_OS_is_ol9
+      name: cpe:/o:oracle:linux:9
+      title: Oracle Linux 9
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: local.d
 dynamic_uid_max: 65519
 dynamic_uid_min: 61184
 faillock_path: /var/log/faillock
 families:
-- rhel-like
-- ol
+  - rhel-like
+  - ol
 full_name: Oracle Linux 9
 gid_min: 1000
 groups:
@@ -88,6 +88,7 @@ reference_uris:
   pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
   stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://public.cyber.mil/stigs/srg-stig-tools/
+  suse-general: not_publicly_available
 release_key_fingerprint: 3E6D826D3FBAB389C2F38E34BC4D06A08D8B756F
 rsyslog_cafile: /etc/pki/tls/cert.pem
 sshd_distributed_config: 'false'
@@ -95,7 +96,7 @@ sysctl_remediate_drop_in_file: 'false'
 type: platform
 uid_min: 1000
 xwindows_packages:
-- xorg-x11-server-Xorg
-- xorg-x11-server-common
-- xorg-x11-server-utils
-- xorg-x11-server-Xwayland
+  - xorg-x11-server-Xorg
+  - xorg-x11-server-common
+  - xorg-x11-server-utils
+  - xorg-x11-server-Xwayland

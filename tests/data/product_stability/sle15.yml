@@ -12,21 +12,21 @@ bootable_containers_supported: 'false'
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 cpes:
-- sle15-server:
-    check_id: installed_OS_is_sle15
-    name: cpe:/o:suse:linux_enterprise_server:15
-    title: SUSE Linux Enterprise Server 15
-- sle15-desktop:
-    check_id: installed_OS_is_sle15
-    name: cpe:/o:suse:linux_enterprise_desktop:15
-    title: SUSE Linux Enterprise Desktop 15
+  - sle15-server:
+      check_id: installed_OS_is_sle15
+      name: cpe:/o:suse:linux_enterprise_server:15
+      title: SUSE Linux Enterprise Server 15
+  - sle15-desktop:
+      check_id: installed_OS_is_sle15
+      name: cpe:/o:suse:linux_enterprise_desktop:15
+      title: SUSE Linux Enterprise Desktop 15
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 dynamic_uid_max: 65519
 dynamic_uid_min: 61184
 faillock_path: /var/run/faillock
 families:
-- suse
+  - suse
 full_name: SUSE Linux Enterprise 15
 gid_min: 1000
 groups: {}
@@ -88,6 +88,7 @@ reference_uris:
   pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
   stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://public.cyber.mil/stigs/srg-stig-tools/
+  suse-general: not_publicly_available
 release_key_fingerprint: FEAB502539D846DB2C0961CA70AF9E8139DB7C82
 rsyslog_cafile: /etc/pki/tls/cert.pem
 sshd_distributed_config: 'false'
@@ -95,7 +96,7 @@ sysctl_remediate_drop_in_file: 'true'
 type: platform
 uid_min: 1000
 xwindows_packages:
-- xorg-x11-server
-- xorg-x11-server-extra
-- xorg-x11-server-Xvfb
-- xwayland
+  - xorg-x11-server
+  - xorg-x11-server-extra
+  - xorg-x11-server-Xvfb
+  - xwayland
