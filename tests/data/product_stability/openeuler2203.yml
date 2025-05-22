@@ -6,23 +6,30 @@ audisp_conf_path: /etc/audit
 audit_watches_style: legacy
 auid: 1000
 basic_properties_derived: true
-benchmark_id: EXAMPLE
+benchmark_id: OPENEULER2203
 benchmark_root: ../../linux_os/guide
 bootable_containers_supported: 'false'
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
-components_root: ../../components
 cpes:
-  - example:
-      check_id: installed_OS_is_part_of_Unix_family
-      name: cpe:/o:example
-      title: Example
+  - openeuler2203lts:
+      check_id: installed_OS_is_openeuler2203
+      name: cpe:/o:openEuler:openEuler:22.03LTS:ga:server
+      title: openEuler 22.03 LTS
+  - openeuler2203lts-sp1:
+      check_id: installed_OS_is_openeuler2203
+      name: cpe:/o:openEuler:openEuler:22.03LTS_SP1:ga:server
+      title: openEuler 22.03 LTS SP1
+  - openeuler2203lts-sp2:
+      check_id: installed_OS_is_openeuler2203
+      name: cpe:/o:openEuler:openEuler:22.03LTS_SP2:ga:server
+      title: openEuler 22.03 LTS SP2
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 dynamic_uid_max: 65519
 dynamic_uid_min: 61184
 faillock_path: /var/run/faillock
-full_name: Example
+full_name: openEuler 2203
 gid_min: 1000
 groups: {}
 grub2_boot_path: /boot/grub2
@@ -32,7 +39,7 @@ init_system: systemd
 nobody_gid: 65534
 nobody_uid: 65534
 pkg_manager: dnf
-pkg_manager_config_file: /etc/dnf/dnf.conf
+pkg_manager_config_file: /etc/yum.conf
 pkg_system: rpm
 platform_package_overrides:
   aarch64_arch: null
@@ -48,7 +55,7 @@ platform_package_overrides:
   sssd-ldap: null
   uefi: null
   zipl: s390utils-base
-product: example
+product: openeuler2203
 profiles_root: ./profiles
 reference_uris:
   anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
