@@ -299,8 +299,6 @@ controls:
             - var_accounts_passwords_pam_faillock_fail_interval=900
             - accounts_passwords_pam_faillock_unlock_time
             - var_accounts_passwords_pam_faillock_unlock_time=never
-            - enable_authselect
-            - var_authselect_profile=minimal
         status: automated
 
     -   id: FIA_UAU.1
@@ -313,8 +311,6 @@ controls:
             - require_singleuser_auth
             - service_debug-shell_disabled
             - no_empty_passwords
-            - enable_authselect
-            - var_authselect_profile=minimal
             - grub2_disable_recovery
             - grub2_systemd_debug-shell_argument_absent
             - grub2_password
