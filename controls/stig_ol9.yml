@@ -4125,7 +4125,9 @@ controls:
         levels:
             - high
         title: OL 9 crypto policy files must match files shipped with the operating system.
-        status: pending
+        rules:
+            - rpm_verify_crypto_policies
+        status: automated
 
     -   id: OL09-00-000242
         levels:
