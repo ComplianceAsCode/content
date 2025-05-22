@@ -1,18 +1,4 @@
 {{#
-Generates the :code:`<affected>` tag for OVAL check using correct product platforms.
-
-:param products: Name of products
-:type products: str
-
-#}}
-{{%- macro oval_affected(products) %}}
-<affected family="unix">
-{{{ product_to_platform(products)|indent(2) }}}
-</affected>
-{{%- endmacro %}}
-
-
-{{#
   Constants.
 
 #}}
@@ -945,26 +931,14 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type description: str
 :param title: Optional, the associated rule title is used by default
 :type title: str
-:param affected_platforms: Optional, list of unix platform strings (e.g. "Fedora") to put under the affected element. Uses the oval_affected macro by default under the hood.
-:type affected_platforms: list[str]
 
 #}}
-{{%- macro oval_metadata(description, title="", affected_platforms=None) -%}}
+{{%- macro oval_metadata(description, title="") -%}}
     <metadata>
-{{%- if title %}}
         <title>{{{ title }}}</title>
-{{%- else %}}
-        <title>{{{ rule_title }}}</title>
-{{%- endif -%}}
-{{%- if affected_platforms %}}
             <affected family="unix">
-{{%- for platform in affected_platforms %}}
-                <platform>{{{ platform }}}</platform>
-{{%- endfor %}}
+                <platform>multi_platform_all</platform>
             </affected>
-{{%- else %}}
-        {{{ oval_affected(products) | indent -}}}
-{{%- endif %}}
         <description>{{{ description }}}{{{ caller() if caller else '' }}}</description>
     </metadata>
 {{%- endmacro %}}
