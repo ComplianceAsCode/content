@@ -1,18 +1,4 @@
 {{#
-Generates the :code:`<affected>` tag for OVAL check using correct product platforms.
-
-:param products: Name of products
-:type products: str
-
-#}}
-{{%- macro oval_affected(products) %}}
-<affected family="unix">
-{{{ product_to_platform(products)|indent(2) }}}
-</affected>
-{{%- endmacro %}}
-
-
-{{#
   Constants.
 
 #}}
@@ -58,7 +44,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata(description) }}}
+    {{{ oval_metadata(description, title=rule_title) }}}
     {{%- if missing_config_file_fail %}}
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
     operator="AND">
@@ -132,7 +118,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
+    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path, title=rule_title) }}}
     {{% set dir_path = path + ".d" %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
@@ -533,7 +519,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- macro oval_argument_value_in_line(filepath, name, value, line_prefix='', line_suffix='') -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("Ensure argument " + name + "=" + value + " is present"+ (" in the line starting with '" + line_prefix + "'" if line_prefix else "") + " in file(s) '" + filepath + "'") }}}
+    {{{ oval_metadata("Ensure argument " + name + "=" + value + " is present"+ (" in the line starting with '" + line_prefix + "'" if line_prefix else "") + " in file(s) '" + filepath + "'", title=rule_title) }}}
     <criteria operator="AND">
       {{{- oval_argument_value_in_line_criterion(filepath, name, value, application) }}}
     </criteria>
@@ -603,7 +589,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- macro oval_check_dropin_file(path, dropin_dir, section='', parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, prefix_regex='^[ \\t]*', separator_regex='=') %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
+    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path, title=rule_title) }}}
     {{%- if missing_config_file_fail %}}
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
     operator="AND">
@@ -909,7 +895,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- macro oval_file_contents(filepath='', filepath_id='', contents='') -%}}
   <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-      {{{ oval_metadata("Inspect the contents of " + filepath) }}}
+      {{{ oval_metadata("Inspect the contents of " + filepath, title=rule_title) }}}
       <criteria>
           <criterion comment="Check contents of file" test_ref="{{{ rule_id }}}_test_whole_file_contents_{{{ filepath_id }}}" />
       </criteria>
@@ -945,26 +931,14 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type description: str
 :param title: Optional, the associated rule title is used by default
 :type title: str
-:param affected_platforms: Optional, list of unix platform strings (e.g. "Fedora") to put under the affected element. Uses the oval_affected macro by default under the hood.
-:type affected_platforms: list[str]
 
 #}}
-{{%- macro oval_metadata(description, title="", affected_platforms=None) -%}}
+{{%- macro oval_metadata(description, title="") -%}}
     <metadata>
-{{%- if title %}}
         <title>{{{ title }}}</title>
-{{%- else %}}
-        <title>{{{ rule_title }}}</title>
-{{%- endif -%}}
-{{%- if affected_platforms %}}
             <affected family="unix">
-{{%- for platform in affected_platforms %}}
-                <platform>{{{ platform }}}</platform>
-{{%- endfor %}}
+                <platform>multi_platform_all</platform>
             </affected>
-{{%- else %}}
-        {{{ oval_affected(products) | indent -}}}
-{{%- endif %}}
         <description>{{{ description }}}{{{ caller() if caller else '' }}}</description>
     </metadata>
 {{%- endmacro %}}
@@ -999,7 +973,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
+    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path, title=rule_title) }}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="AND">
         {{{- oval_line_in_file_criterion(path, parameter) }}}
@@ -1060,7 +1034,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-   {{{ oval_metadata(description) }}}
+   {{{ oval_metadata(description, title=rule_title) }}}
    <criteria comment="sshd is configured correctly or is not installed" operator="OR">
      <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
@@ -1471,7 +1445,7 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
 {{%- macro etc_shadow_test(regex, regex_empty) %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="3">
-      {{{ oval_metadata("Set Existing Passwords Maximum Age") }}}
+      {{{ oval_metadata("Set Existing Passwords Maximum Age", title=rule_title) }}}
     <criteria operator="AND">
         <criterion test_ref="test_{{{ rule_id }}}_password_max_life_existing"
           comment="Passwords must be restricted to the appropriate maximum age for existing accounts."/>
@@ -1566,7 +1540,7 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
 {{%- macro test_etc_shadow_password_variable(regex, external_variable_id, operation, description) -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata(description) }}}
+    {{{ oval_metadata(description, title=rule_title) }}}
     <criteria operator="OR">
       <criterion test_ref="test_{{{ rule_id }}}"
         comment="Passwords must be configured to the appropriate value"/>

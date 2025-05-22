@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="sudo_remove_no_authenticate" version="1">
-    {{{ oval_metadata("Checks sudo usage without authentication") }}}
+    {{{ oval_metadata("Checks sudo usage without authentication", title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="!authenticate does not exist in /etc/sudoers" test_ref="test_no_authenticate_etc_sudoers" />
       <criterion comment="!authenticate does not exist in /etc/sudoers.d" test_ref="test_no_authenticate_etc_sudoers_d" />

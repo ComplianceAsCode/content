@@ -35,7 +35,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
-    {{{ oval_metadata("Ensure " + ARG_NAME_VALUE + " is configured in the kernel line in /etc/default/grub.") }}}
+    {{{ oval_metadata("Ensure " + ARG_NAME_VALUE + " is configured in the kernel line in /etc/default/grub.", title=rule_title) }}}
     <criteria operator="OR">
     <criteria operator="AND">
       {{% if bootable_containers_supported == "true" %}}

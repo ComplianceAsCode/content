@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("admin_space_left setting in /etc/audit/auditd.conf is set to at least a certain value") }}}
+    {{{ oval_metadata("admin_space_left setting in /etc/audit/auditd.conf is set to at least a certain value", title=rule_title) }}}
 
     <criteria>
         <criterion comment="admin_space_left setting in auditd.conf" test_ref="test_auditd_data_retention_admin_space_left_percentage" />

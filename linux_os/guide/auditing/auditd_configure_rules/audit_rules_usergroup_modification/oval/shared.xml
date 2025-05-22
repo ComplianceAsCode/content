@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_usergroup_modification" version="1">
-    {{{ oval_metadata("Audit rules should detect modification to system files that hold information about users and groups.") }}}
+    {{{ oval_metadata("Audit rules should detect modification to system files that hold information about users and groups.", title=rule_title) }}}
     <criteria operator="OR">
       <criteria operator="AND">
         <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />

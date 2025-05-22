@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="sssd_ldap_start_tls" version="1">
-    {{{ oval_metadata("LDAP should be used for authentication and use STARTTLS") }}}
+    {{{ oval_metadata("LDAP should be used for authentication and use STARTTLS", title=rule_title) }}}
     <criteria>
       <criterion comment="LDAP uses STARTTLS set within /etc/sssd/sssd.conf" test_ref="test_use_starttls" />
     </criteria>

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="zipl_bls_entries_only" version="1">
-    {{{ oval_metadata("Check if /etc/zipl.conf configures any boot entry") }}}
+    {{{ oval_metadata("Check if /etc/zipl.conf configures any boot entry", title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_zipl_bls_entries_only"
       comment="Test presence of image configuration in /etc/zipl.conf" />

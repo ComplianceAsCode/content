@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="file_permissions_var_log_audit" version="2">
-    {{{ oval_metadata("Checks for correct permissions for all audit log files.") }}}
+    {{{ oval_metadata("Checks for correct permissions for all audit log files.", title=rule_title) }}}
     <criteria operator="OR">
       {{% if 'ol' not in product and "rhel" not in product and "rhcos4" not in product %}}
       <criteria operator="AND" comment="log_file set">

@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="kernel_config_default_mmap_min_addr"
   version="1">
-    {{{ oval_metadata("The kernel config CONFIG_DEFAULT_MMAP_MIN_ADDR should have value 65536 on x86_64 and 32768 on aarch64", affected_platforms=["multi_platform_all"]) }}}
+    {{{ oval_metadata("The kernel config CONFIG_DEFAULT_MMAP_MIN_ADDR should have value 65536 on x86_64 and 32768 on aarch64", title=rule_title) }}}
     <criteria operator="AND">
       <criteria operator="OR">
         <criteria operator="AND">

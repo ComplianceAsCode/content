@@ -6,7 +6,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="3">
-    {{{ oval_metadata("Configure PAM module") }}}
+    {{{ oval_metadata("Configure PAM module", title=rule_title) }}}
     <criteria operator="AND" comment="Make sure arguments are properly configured">
 {{% for arg in ARGUMENTS %}}
 {{% if arg['variable']|length %}}

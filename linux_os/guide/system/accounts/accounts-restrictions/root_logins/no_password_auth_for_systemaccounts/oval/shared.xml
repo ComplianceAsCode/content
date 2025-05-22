@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("Ensure that System Accounts Are Locked") }}}
+        {{{ oval_metadata("Ensure that System Accounts Are Locked", title=rule_title) }}}
         <criteria >
             <criterion test_ref="test_{{{ rule_id }}}"
                 comment="system accounts must not have a password defined"/>

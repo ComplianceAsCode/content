@@ -1,7 +1,7 @@
 
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("Rsyslogd must encrypt the off-loading of logs off of the system.") }}}
+        {{{ oval_metadata("Rsyslogd must encrypt the off-loading of logs off of the system.", title=rule_title) }}}
         <criteria operator="AND">
             <criteria operator="OR">
                 <criterion comment="Check if $ActionSendStreamDriverMode 1 is set in /etc/rsyslog.conf"

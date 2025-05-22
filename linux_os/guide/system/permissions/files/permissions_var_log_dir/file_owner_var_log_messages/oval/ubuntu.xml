@@ -1,7 +1,7 @@
 {{%- if product in ['ubuntu2404'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-      {{{ oval_metadata("Owner of /var/log/messages should be root or syslog.") }}}
+      {{{ oval_metadata("Owner of /var/log/messages should be root or syslog.", title=rule_title) }}}
     <criteria comment="Check file ownership of /var/log/messages">
      <criterion test_ref="test_file_ownership_var_log_messages" />
     </criteria>

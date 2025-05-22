@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="logind_session_timeout" version="1">
-    {{{ oval_metadata("Ensure 'StopIdleSessionSec' is configured with desired value in section 'Login' in /etc/systemd/logind.conf") }}}
+    {{{ oval_metadata("Ensure 'StopIdleSessionSec' is configured with desired value in section 'Login' in /etc/systemd/logind.conf", title=rule_title) }}}
     <criteria comment="logind is configured correctly and configuration file exists" operator="AND">
       <criterion comment="Check the StopIdleSessionSec in /etc/systemd/logind.conf" test_ref="test_logind_session_timeout"/>
       <criterion comment="test if configuration file /etc/systemd/logind.conf exists for logind_session_timeout" test_ref="test_logind_session_timeout_config_file_exists"/>

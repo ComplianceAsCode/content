@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="aide_scan_notification" version="1">
     {{{ oval_metadata("AIDE should notify appropriate personnel of the details
-      of a scan after the scan has been run.") }}}
+      of a scan after the scan has been run.", title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
       <criteria operator="OR">

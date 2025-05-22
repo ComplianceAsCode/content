@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="configure_crypto_policy" version="1">
-    {{{ oval_metadata("Ensure crypto policy is correctly configured in /etc/crypto-policies/config, and the policy is current.") }}}
+    {{{ oval_metadata("Ensure crypto policy is correctly configured in /etc/crypto-policies/config, and the policy is current.", title=rule_title) }}}
     <criteria operator="AND">
 {{% if product == "sle15" %}}
       <criterion comment="package crypto-policies-scripts is installed"

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="configure_ssh_crypto_policy" version="1">
-    {{{ oval_metadata("SSH should be configured to use the system-wide crypto policy setting.") }}}
+    {{{ oval_metadata("SSH should be configured to use the system-wide crypto policy setting.", title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_configure_ssh_crypto_policy"
       comment="Check that the SSH configuration mandates usage of system-wide crypto policies." />

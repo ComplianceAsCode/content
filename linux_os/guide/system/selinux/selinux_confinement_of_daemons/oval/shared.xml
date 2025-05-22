@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="selinux_confinement_of_daemons" version="1">
-    {{{ oval_metadata("All pids in /proc should be assigned an SELinux security context other than 'unconfined_service_t'.") }}}
+    {{{ oval_metadata("All pids in /proc should be assigned an SELinux security context other than 'unconfined_service_t'.", title=rule_title) }}}
     <criteria>
       <criterion comment="no unconfined_service_t in /proc" test_ref="test_selinux_confinement_of_daemons" />
     </criteria>

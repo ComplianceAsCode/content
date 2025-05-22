@@ -24,7 +24,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="3">
-    {{{ oval_metadata("The '" + SYSCTLVAR + "' kernel parameter should be set to the appropriate value in system configuration" + (" and system runtime." if CHECK_RUNTIME == "true" else ".")) }}}
+    {{{ oval_metadata("The '" + SYSCTLVAR + "' kernel parameter should be set to the appropriate value in system configuration" + (" and system runtime." if CHECK_RUNTIME == "true" else "."), title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="{{{ SYSCTLVAR }}} configuration setting check"
                          definition_ref="{{{ rule_id }}}_static"/>
@@ -40,7 +40,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="4">
-    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to the appropriate value in system configuration" + (" and system runtime." if CHECK_RUNTIME == "true" else ".")) }}}
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to the appropriate value in system configuration" + (" and system runtime." if CHECK_RUNTIME == "true" else "."), title=rule_title) }}}
     <criteria comment="IPv6 disabled or {{{ SYSCTLVAR }}} set correctly" operator="OR">
 {{% if product in ["ubuntu1604", "ubuntu1804"] %}}
       <extend_definition comment="is IPv6 enabled?"
@@ -66,7 +66,7 @@
 {{% if CHECK_RUNTIME == "true" %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}_runtime" version="3">
-    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system runtime.") }}}
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system runtime.", title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}}"
                  test_ref="test_{{{ rule_id }}}_runtime"/>
@@ -123,7 +123,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}_static" version="3">
-    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system configuration.") }}}
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system configuration.", title=rule_title) }}}
 
     <criteria operator="OR">
       <!--  Processing differently files in /usr/lib/sysctl.d/ as they are managed by packages and

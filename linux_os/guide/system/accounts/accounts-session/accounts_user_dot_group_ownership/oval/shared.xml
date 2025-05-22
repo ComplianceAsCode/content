@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("User Initialization Files Must Be Group-Owned By The Primary Group") }}}
+    {{{ oval_metadata("User Initialization Files Must Be Group-Owned By The Primary Group", title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_accounts_user_dot_group_ownership"
                  comment="User Initialization Files Must Be Group-Owned By The Primary Group"/>

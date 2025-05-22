@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("The accounts should be configured to expire automatically following"
-    ~ " password expiration.") }}}
+    ~ " password expiration.", title=rule_title) }}}
     <criteria
     comment="the value for the inactive parameter should be set appropriately in /etc/pam.d/system-auth">
       <criterion test_ref="test_system_auth_inactive" />

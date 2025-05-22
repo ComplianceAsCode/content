@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="install_mcafee_cma_rt"
   version="1">
-    {{{ oval_metadata("Install the McAfee Runtime Libraries (MFErt) and Linux Agent (MFEcma).", affected_platforms=["multi_platform_all"]) }}}
+    {{{ oval_metadata("Install the McAfee Runtime Libraries (MFErt) and Linux Agent (MFEcma).", title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="McAfee runtime library package installed"
       test_ref="test_mcafee_runtime_installed" />

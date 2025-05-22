@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="accounts_root_path_dirs_no_write" version="2">
     {{{ oval_metadata("Check each directory in root's path and make use it does
-      not grant write permission to group and other") }}}
+      not grant write permission to group and other", title=rule_title) }}}
     <criteria comment="Check that write permission to group and other in root's path is denied">
       <criterion comment="Check for write permission to group and other in root's path"
       test_ref="test_accounts_root_path_dirs_no_group_other_write" />

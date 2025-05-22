@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="sshd_use_strong_kex" version="1">
-    {{{ oval_metadata("Limit the Key Exchange Algorithms to those which are FIPS-approved.") }}}
+    {{{ oval_metadata("Limit the Key Exchange Algorithms to those which are FIPS-approved.", title=rule_title) }}}
     <criteria comment="SSH is configured correctly or is not installed"
         operator="OR">
       <criteria comment="sshd is not installed" operator="AND">

@@ -20,7 +20,7 @@
 
 <def-group>
   <definition class="compliance" id="ensure_fedora_gpgkey_installed" version="2">
-    {{{ oval_metadata("The Fedora release key package is required to be installed.") }}}
+    {{{ oval_metadata("The Fedora release key package is required to be installed.", title=rule_title) }}}
     <criteria comment="Fedora Vendor keys" operator="AND">
       <extend_definition comment="Fedora installed" definition_ref="installed_OS_is_fedora" />
       <criteria comment="Supported Fedora key is installed" operator="OR">

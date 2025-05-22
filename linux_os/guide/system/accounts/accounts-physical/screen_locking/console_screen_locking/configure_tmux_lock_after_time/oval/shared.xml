@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="configure_tmux_lock_after_time" version="1">
-    {{{ oval_metadata("Check if tmux is configured to lock sessions after period of inactivity.") }}}
+    {{{ oval_metadata("Check if tmux is configured to lock sessions after period of inactivity.", title=rule_title) }}}
     <criteria comment="Configure tmux to lock session after inactivity" operator="AND">
       <criterion comment="check lock-after-time is set to 900 in /etc/tmux.conf"
         test_ref="test_configure_tmux_lock_after_time" />

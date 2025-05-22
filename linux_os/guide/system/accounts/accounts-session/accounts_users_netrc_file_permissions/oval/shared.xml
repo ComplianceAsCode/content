@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Netrc User File In The Home Directory Must Not be group or world
-    accessible") }}}
+    accessible", title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_accounts_users_home_netrc_file_permissions"
                  comment="Netrc User File In The Home Directory Must Not be group or world

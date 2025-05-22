@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="gui_login_dod_acknowledgement" version="1">
-    {{{ oval_metadata("Display of a standardized and approved use notification before granting access to the SUSE operating system ensures privacy and security notification verbiage used is consistent with applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance.") }}}
+    {{{ oval_metadata("Display of a standardized and approved use notification before granting access to the SUSE operating system ensures privacy and security notification verbiage used is consistent with applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance.", title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="gdm installed" definition_ref="package_gdm_installed" negate="true" />
       <criteria comment="GUI Banner acknowledgement" operator="AND">

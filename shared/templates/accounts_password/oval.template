@@ -5,7 +5,7 @@
 {{% endif %}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="3">
-    {{{ oval_metadata("The password " + VARIABLE + " should meet minimum requirements") }}}
+    {{{ oval_metadata("The password " + VARIABLE + " should meet minimum requirements", title=rule_title) }}}
     <criteria operator="AND" comment="conditions for {{{ VARIABLE }}} are satisfied">
       <extend_definition comment="pwquality.so exists in system-auth" definition_ref="accounts_password_pam_pwquality" />
       <criteria operator="OR">

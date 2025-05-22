@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_passwords_pam_tally2" version="4">
-    {{{ oval_metadata("The number of allowed failed logins should be set correctly.") }}}
+    {{{ oval_metadata("The number of allowed failed logins should be set correctly.", title=rule_title) }}}
     <criteria operator="AND" comment="Checks common to both scenarios">
       <criterion test_ref="test_accounts_passwords_pam_tally2_deny_auth"
       comment="Verify deny configuation of pam_tally2 in common-auth" />

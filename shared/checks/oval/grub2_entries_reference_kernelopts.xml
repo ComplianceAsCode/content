@@ -2,8 +2,7 @@
   <definition class="compliance" id="grub2_entries_reference_kernelopts" version="2">
   {{{ oval_metadata(
 	  "Ensure that grubenv-defined kernel options are referenced in individual boot loader entries",
-	  title="Use $kernelopts in /boot/loader/entries/*.conf",
-	  affected_platforms=["multi_platform_all"]) }}}
+	  title="Use $kernelopts in /boot/loader/entries/*.conf") }}}
     <criteria operator="AND">
         <criterion test_ref="test_grub2_entries_reference_kernelopts"
         comment="check kernel command line parameters for referenced boot entries reference the $kernelopts variable." />

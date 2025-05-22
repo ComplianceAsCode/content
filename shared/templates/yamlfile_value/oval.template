@@ -1,7 +1,7 @@
 {{% if target_oval_version >= [5, 11] %}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-    {{% call oval_metadata("In the YAML/JSON file '" + FILEPATH + "' at path '" + YAMLPATH + "' " + (ENTITY_CHECK if ENTITY_CHECK else "all") + ": ") %}}
+    {{% call oval_metadata("In the YAML/JSON file '" + FILEPATH + "' at path '" + YAMLPATH + "' " + (ENTITY_CHECK if ENTITY_CHECK else "all") + ": ", title=rule_title) %}}
       {{%- for val in VALUES -%}}
         {{{- "key '" + val.key + "' " if val.key is defined else "" }}}value{{{ (" of type '" + val.type + "' ") if type in val else " " }}}
           {{{- val.operation if operation in val else "equals" }}} '{{{ val.value }}}'{{% if not loop.last %}} and {{% endif %}}

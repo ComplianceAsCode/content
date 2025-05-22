@@ -1,7 +1,7 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
         {{{ oval_metadata("If inbound SSH access is needed, the firewall should allow access to
-        the SSH service.") }}}
+        the SSH service.", title=rule_title) }}}
         <criteria operator="AND">
             <criteria operator="OR">
                 <criteria operator="AND">

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="sssd_ldap_configure_tls_ca_dir" version="1">
-    {{{ oval_metadata("Configure SSSD to implement cryptography to protect the integrity of LDAP remote access sessions.") }}}
+    {{{ oval_metadata("Configure SSSD to implement cryptography to protect the integrity of LDAP remote access sessions.", title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_sssd_ldap_tls_ca_dir" />
     </criteria>

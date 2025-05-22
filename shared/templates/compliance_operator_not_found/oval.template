@@ -1,7 +1,7 @@
 {{% if target_oval_version >= [5, 11] %}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-    {{{ oval_metadata("In the Compliance Operator-generated file '" + FILEPATH + "' the `not found` annotation should be set") }}}
+    {{{ oval_metadata("In the Compliance Operator-generated file '" + FILEPATH + "' the `not found` annotation should be set", title=rule_title) }}}
     <criteria>
       <criterion {{{ {'comment': "In the Compliance Operator-generated file '" + FILEPATH + "' the `not found` annotation should be set"} |xmlattr }}} test_ref="test_{{{ rule_id }}}"/>
       <criterion comment="Make sure that the file '{{{ FILEPATH }}}' exists." test_ref="test_file_for_{{{ rule_id }}}"/>

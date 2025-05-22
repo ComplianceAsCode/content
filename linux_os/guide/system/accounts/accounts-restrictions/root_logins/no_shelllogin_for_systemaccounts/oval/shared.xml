@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="no_shelllogin_for_systemaccounts" version="2">
     {{{ oval_metadata("The root account is the only system account that should have
-      a login shell.") }}}
+      a login shell.", title=rule_title) }}}
     <criteria operator="OR">
       <!-- If SYS_UID_MIN and SYS_UID_MAX is not defined in /etc/login.defs
            perform the check that any /etc/passwd entry with shell defined

@@ -2,7 +2,7 @@
   <definition class="compliance" id="{{{ rule_id }}}" version="3">
     {{{ oval_metadata("Verify ownership of installed packages by comparing the installed files
       with information about the files taken from the package metadata stored in the RPM
-      database.") }}}
+      database.", title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_rpm_verify_ownership_verify_all_rpms_ownership"
         comment="user ownership of all files matches local rpm database"/>

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="tmux_conf_readable_by_others" version="1">
-    {{{ oval_metadata("Check /etc/tmux.conf is readable by others", affected_platforms=["multi_platform_all"]) }}}
+    {{{ oval_metadata("Check /etc/tmux.conf is readable by others", title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="Check /etc/tmux.conf is readable by others" test_ref="test_tmux_conf_readable_by_others"/>
     </criteria>

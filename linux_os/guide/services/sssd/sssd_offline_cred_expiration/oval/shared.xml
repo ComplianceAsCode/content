@@ -1,6 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="sssd_offline_cred_expiration" version="1">
-    {{{ oval_metadata("SSSD should be configured to expire offline credentials after 1 day.") }}}
+    {{{ oval_metadata("SSSD should be configured to expire offline credentials after 1 day.", title=rule_title) }}}
     <criteria operator="OR">
       <criterion comment="Check offline_credentials_expiration in /etc/sssd/sssd.conf"
       test_ref="test_sssd_offline_cred_expiration" />

@@ -5,7 +5,7 @@
 {{%- endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Limit the KexAlgorithms to those which are FIPS-approved.") }}}
+    {{{ oval_metadata("Limit the KexAlgorithms to those which are FIPS-approved.", title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
       <criteria comment="sshd is configured correctly or is not installed" operator="OR">

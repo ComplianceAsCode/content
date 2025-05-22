@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_kernel_module_loading" version="1">
-    {{{ oval_metadata("The audit rules should be configured to log information about kernel module loading and unloading.") }}}
+    {{{ oval_metadata("The audit rules should be configured to log information about kernel module loading and unloading.", title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="audit init_module" definition_ref="audit_rules_kernel_module_loading_init" />
       <extend_definition comment="audit delete_module" definition_ref="audit_rules_kernel_module_loading_delete" />

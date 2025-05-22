@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="aide_build_database" version="2">
-    {{{ oval_metadata("The aide database must be initialized.") }}}
+    {{{ oval_metadata("The aide database must be initialized.", title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
       <!-- Only the configuration when location of the Aide database file is specified in the

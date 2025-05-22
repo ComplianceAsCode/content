@@ -19,7 +19,7 @@
 
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("All system wide cryptopolicy symblinks should point to FIPS policy") }}}
+        {{{ oval_metadata("All system wide cryptopolicy symblinks should point to FIPS policy", title=rule_title) }}}
         <criteria operator="AND" comment="All crypto-policies symlinks should poin to FIPS">
             {{% for symlink in expected_symlinks_src_files %}}
             <criterion comment="Symlink from {{{ expected_symlinks_src_dir ~ symlink }}}"

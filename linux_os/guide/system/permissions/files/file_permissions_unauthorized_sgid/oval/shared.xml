@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("Evaluates to true if all files with SGID set are owned by RPM packages.") }}}
+        {{{ oval_metadata("Evaluates to true if all files with SGID set are owned by RPM packages.", title=rule_title) }}}
         <criteria>
             <criterion test_ref="test_file_permissions_unauthorized_sgid"
                 comment="Check if all sgid files present in the system are authorized"/>

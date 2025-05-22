@@ -2,7 +2,7 @@
 
   <definition class="compliance" id="install_mcafee_hbss"
   version="1">
-    {{{ oval_metadata("Install McAfee Host-Based Intrusion Detection Software (HBSS)") }}}
+    {{{ oval_metadata("Install McAfee Host-Based Intrusion Detection Software (HBSS)", title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="McAfee HBSS" definition_ref="install_mcafee_cma_rt" />
       <extend_definition comment="McAfee HBSS" definition_ref="install_mcafee_hbss_accm" />
@@ -13,7 +13,7 @@
 
   <definition class="compliance" id="install_hids"
   version="1">
-    {{{ oval_metadata("Intrusion detection software or SELinux should be installed and enabled.") }}}
+    {{{ oval_metadata("Intrusion detection software or SELinux should be installed and enabled.", title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="McAfee HBSS" definition_ref="install_mcafee_hbss" />
       <criterion comment="SELinux enabled" test_ref="test_selinux_enforcing" />

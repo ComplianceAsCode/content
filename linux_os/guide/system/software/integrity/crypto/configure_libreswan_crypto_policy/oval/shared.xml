@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="configure_libreswan_crypto_policy" version="1">
-    {{{ oval_metadata("Libreswan should be configured to use the system-wide crypto policy setting.") }}}
+    {{{ oval_metadata("Libreswan should be configured to use the system-wide crypto policy setting.", title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="Check if package libreswan is not installed" definition_ref="package_libreswan_installed" negate="true" />
       <criterion test_ref="test_configure_libreswan_crypto_policy"

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Configure OpenSSL library to use TLS Encryption") }}}
+    {{{ oval_metadata("Configure OpenSSL library to use TLS Encryption", title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_{{{ rule_id }}}"
       comment="OpenSSL library is configured to use only TLS v1.2 or newer encryption" />

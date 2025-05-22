@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("One of the following parameters of the sshd configuration file is set:  AllowUsers, DenyUsers, AllowGroups, DenyGroups.") }}}
+    {{{ oval_metadata("One of the following parameters of the sshd configuration file is set:  AllowUsers, DenyUsers, AllowGroups, DenyGroups.", title=rule_title) }}}
     <criteria operator="OR">
       <criterion test_ref="test_allow_user_is_configured" />
       <criterion test_ref="test_allow_group_is_configured" />

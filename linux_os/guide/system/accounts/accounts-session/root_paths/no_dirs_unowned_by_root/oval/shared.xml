@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("Check each directory in root's path and make sure it is owned by root") }}}
+    {{{ oval_metadata("Check each directory in root's path and make sure it is owned by root", title=rule_title) }}}
     <criteria comment="Check that each directory in root's path is owned by root">
       <criterion comment="Check for directories not owned by root in root's path"
       test_ref="test_accounts_root_path_dirs_owned_by_root" />

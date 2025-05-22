@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance"
   id="network_ipv6_disable_rpc" version="1">
-    {{{ oval_metadata("Disable ipv6 based rpc services") }}}
+    {{{ oval_metadata("Disable ipv6 based rpc services", title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="Disable udp6" test_ref="test_network_ipv6_disable_rpc_udp6" />
       <criterion comment="Disable tcp6" test_ref="test_network_ipv6_disable_rpc_tcp6" />

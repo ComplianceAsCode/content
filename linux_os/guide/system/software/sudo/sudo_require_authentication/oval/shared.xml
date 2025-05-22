@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="sudo_require_authentication" version="1">
-    {{{ oval_metadata("Checks sudo usage without password") }}}
+    {{{ oval_metadata("Checks sudo usage without password", title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition definition_ref="sudo_remove_no_authenticate" />
       <extend_definition definition_ref="sudo_remove_nopasswd" />

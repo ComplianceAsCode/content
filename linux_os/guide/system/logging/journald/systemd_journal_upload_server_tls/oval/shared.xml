@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="systemd_journal_upload_server_tls" version="2">
-    {{{ oval_metadata("systemd-journal-upload server TLS configuration in /etc/systemd/journal-upload.conf") }}}
+    {{{ oval_metadata("systemd-journal-upload server TLS configuration in /etc/systemd/journal-upload.conf", title=rule_title) }}}
     <criteria operator="AND">
         <criterion comment="systemd-journal-upload ServerKeyFile in /etc/systemd/journal-upload.conf"
         test_ref="test_systemd_journal_upload_server_key_file" />

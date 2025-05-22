@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata("Home mount points should be mounted with mount option " +
-    MOUNTOPTION + ".") }}}
+    MOUNTOPTION + ".", title=rule_title) }}}
     <criteria operator="AND"
     comment="All mount points which contain home directories are in expected location and {{{
     MOUNTOPTION }}} is set">

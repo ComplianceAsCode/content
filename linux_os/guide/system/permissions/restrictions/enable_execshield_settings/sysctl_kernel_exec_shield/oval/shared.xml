@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="sysctl_kernel_exec_shield" version="2">
-    {{{ oval_metadata("The kernel runtime parameter 'kernel.exec-shield' should not be disabled and set to 1 on 32-bit systems.") }}}
+    {{{ oval_metadata("The kernel runtime parameter 'kernel.exec-shield' should not be disabled and set to 1 on 32-bit systems.", title=rule_title) }}}
     <criteria operator="OR">
       {{# products that are available also in a 32 bits form #}}
       {{% if "rhel" not in product and product != "fedora" and "ol" not in families %}}

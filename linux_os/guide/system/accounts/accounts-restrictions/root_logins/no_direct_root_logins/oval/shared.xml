@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Preventing direct root logins help ensure accountability for actions
-      taken on the system using the root account.") }}}
+      taken on the system using the root account.", title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="serial ports /etc/securetty" test_ref="test_no_direct_root_logins" />
       <criterion comment="serial ports /etc/securetty" test_ref="test_etc_securetty_exists" />

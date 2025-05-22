@@ -1,7 +1,7 @@
 {{% set inet_protos = ['tcp', 'udp'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Make sure firewall rules exist for all open network ports,listening on non-loopback interfaces.") }}}
+    {{{ oval_metadata("Make sure firewall rules exist for all open network ports,listening on non-loopback interfaces.", title=rule_title) }}}
     <criteria operator="AND">
 {{% for proto in inet_protos %}}
       <criteria operator="OR">

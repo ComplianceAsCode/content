@@ -5,7 +5,7 @@
       as character or block devices. Legitimate character and block devices
       should exist in the /dev directory on the root partition or within chroot
       jails built for system services. All other locations should not allow
-      character and block devices.") }}}
+      character and block devices.", title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="nodev on local filesystems"
       test_ref="test_nodev_nonroot_local_partitions" negate="true" />

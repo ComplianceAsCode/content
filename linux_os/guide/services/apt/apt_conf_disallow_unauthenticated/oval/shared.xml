@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Accessing a repository should be allowed only when the repository is authenticated.") }}}
+    {{{ oval_metadata("Accessing a repository should be allowed only when the repository is authenticated.", title=rule_title) }}}
 
     <criteria comment="Check if allow-unauthenticated is set to false or is undefined" operator="AND">
       <criterion comment="Check if allow-unauthenticated is set to false or is undefined"

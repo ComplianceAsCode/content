@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("The number of rounds for password hashing should be set correctly.") }}}
+    {{{ oval_metadata("The number of rounds for password hashing should be set correctly.", title=rule_title) }}}
     <criteria comment="Check if rounds option of pam_unix is as expected" operator="OR">
       <criterion comment="The value of rounds is set correctly in pam_unix.so" test_ref="test_system_auth_pam_unix_rounds_is_set" />
     </criteria>

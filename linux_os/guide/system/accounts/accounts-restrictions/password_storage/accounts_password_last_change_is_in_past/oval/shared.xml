@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("All passwords last change date is in the past.") }}}
+    {{{ oval_metadata("All passwords last change date is in the past.", title=rule_title) }}}
     <criteria operator="OR">
       <criterion test_ref="test_accounts_password_last_change_is_in_past"
         comment="All passwords last change date is in the past"/>

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="auditd_offload_logs" version="1">
-    {{{ oval_metadata("Check if a script for audit offload exists in /etc/cron.weekly/") }}}
+    {{{ oval_metadata("Check if a script for audit offload exists in /etc/cron.weekly/", title=rule_title) }}}
     <criteria operator="AND">
         <criterion comment="audit offload script" test_ref="test_etc_cron_weekly_audit_offload_exists" />
     </criteria>

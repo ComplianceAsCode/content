@@ -3,7 +3,7 @@
     {{{ oval_metadata("
         Checks that directories /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
         are owned by root.
-      ") }}}
+      ", title=rule_title) }}}
     <criteria operator="AND" comment="system commands directories are root owned"  >
       <criterion test_ref="test_ownership_system_commands_directory_bin" />
       <criterion test_ref="test_ownership_system_commands_directory_sbin" />

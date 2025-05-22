@@ -5,7 +5,7 @@
 {{% if target_oval_version >= [5, 11] %}}
 
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-    {{{ oval_metadata("The " + SERVICENAME + " service should be enabled if possible.") }}}
+    {{{ oval_metadata("The " + SERVICENAME + " service should be enabled if possible.", title=rule_title) }}}
     <criteria comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start" operator="AND">
     <criterion comment="{{{ PACKAGENAME }}} installed" test_ref="{{{ package_installed_test_id }}}" />
       <criteria comment="service {{{ SERVICENAME }}} is configured to start and is running" operator="AND">
@@ -56,7 +56,7 @@
 
   <definition class="compliance" id="{{{ _RULE_ID }}}"
   version="1">
-    {{{ oval_metadata("The " + SERVICENAME + " service should be enabled if possible.") }}}
+    {{{ oval_metadata("The " + SERVICENAME + " service should be enabled if possible.", title=rule_title) }}}
     <criteria comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start" operator="AND">
     <criterion comment="{{{ PACKAGENAME }}} installed" test_ref="{{{ package_installed_test_id }}}" />
     <criteria operator="OR" comment="service {{{ SERVICENAME }}} is configured to start">

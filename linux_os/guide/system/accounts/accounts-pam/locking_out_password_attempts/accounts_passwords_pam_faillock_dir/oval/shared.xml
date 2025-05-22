@@ -1,7 +1,7 @@
 {{% set default_dir = "/var/run/faillock" %}}
 <def-group>
       <definition class="compliance" id="{{{ rule_id }}}" version="5">
-            {{{ oval_metadata(" Persist lockout account after reboot") }}}
+            {{{ oval_metadata(" Persist lockout account after reboot", title=rule_title) }}}
             <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf whenever
                   possible. But due to backwards compatibility, they are also allowed in pam files
                   directly. In case they are defined in both places, pam files have precedence and this

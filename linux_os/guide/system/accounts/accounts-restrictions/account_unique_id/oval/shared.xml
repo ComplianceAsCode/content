@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="account_unique_id" version="1">
-    {{{ oval_metadata("All accounts on the system should have unique IDs for proper accountability.") }}}
+    {{{ oval_metadata("All accounts on the system should have unique IDs for proper accountability.", title=rule_title) }}}
       <criteria comment="There should not exist duplicate user IDs entries in /etc/passwd">
         <criterion test_ref="test_etc_passwd_no_duplicate_user_ids" />
       </criteria>

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="logwatch_configured_splithosts" version="1">
-    {{{ oval_metadata("Check if SplitHosts line in logwatch.conf is set appropriately.") }}}
+    {{{ oval_metadata("Check if SplitHosts line in logwatch.conf is set appropriately.", title=rule_title) }}}
     <criteria>
       <criterion comment="Test value of SplitHosts" test_ref="test_logwatch_configured_splithosts" />
     </criteria>

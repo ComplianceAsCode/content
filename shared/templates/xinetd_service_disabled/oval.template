@@ -6,7 +6,7 @@
 {{%- set service_path = "/etc/xinetd.d/" + SERVICENAME -%}}
 
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-    {{{ oval_metadata("The xinetd " + SERVICENAME + " service should be disabled.", affected_platforms=["multi_platform_sle"]) }}}
+    {{{ oval_metadata("The xinetd " + SERVICENAME + " service should be disabled.", title=rule_title) }}}
     <criteria comment="package {{{ PACKAGENAME }}} removed or service {{{ SERVICENAME }}} is not configured to start" operator="OR">
       <criterion comment="{{{ PACKAGENAME }}} removed" test_ref="{{{ package_removed_test_id }}}" />
         <criterion comment="check for disable = yes in {{{ service_path }}}" test_ref="{{{ xinetd_disabled_test_id }}}" />

@@ -1,6 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="{{{_RULE_ID }}}" version="1">
-    {{{ oval_metadata("All syslog log files should have appropriate ownership.") }}}
+    {{{ oval_metadata("All syslog log files should have appropriate ownership.", title=rule_title) }}}
     <criteria operator="AND">
       {{% if product in ["debian11", "debian12", "ubuntu1604"] %}}
       <extend_definition definition_ref="package_rsyslog_installed"

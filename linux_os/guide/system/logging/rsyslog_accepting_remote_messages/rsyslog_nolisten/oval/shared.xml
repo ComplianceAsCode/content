@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="2">
-        {{{ oval_metadata("rsyslogd should reject remote messages") }}}
+        {{{ oval_metadata("rsyslogd should reject remote messages", title=rule_title) }}}
         <criteria operator="AND">
             <criterion test_ref="test_rsyslog_nolisten_legacy"
                 comment="rsyslog legacy syntax is not configured to accept remote messages"/>

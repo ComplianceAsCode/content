@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="dconf_gnome_screensaver_idle_delay" version="2">
-    {{{ oval_metadata("The allowed period of inactivity before the screensaver is activated.") }}}
+    {{{ oval_metadata("The allowed period of inactivity before the screensaver is activated.", title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="check screensaver idle delay and prevent user from changing it" operator="AND">

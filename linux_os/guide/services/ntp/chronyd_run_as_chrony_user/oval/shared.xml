@@ -7,7 +7,7 @@
 {{%- if ok_by_default %}}
 <def-group oval_version="5.11">
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure that no other user than chrony is configured to run the chrony service") }}}
+    {{{ oval_metadata("Ensure that no other user than chrony is configured to run the chrony service", title=rule_title) }}}
 
       <criteria comment="chronyd enabled and multiple remote servers specified" operator="AND">
         <criterion comment="The default chrony user hasn't been overriden" test_ref="test_no_user_override" />
