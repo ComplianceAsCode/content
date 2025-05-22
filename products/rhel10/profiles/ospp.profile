@@ -25,4 +25,3 @@ selections:
     - '!package_scap-security-guide_installed'
     # Currently not working RHEL 10, changes are being made to FIPS mode. Investigation is recommended.
     - '!enable_dracut_fips_module'
-    - '!enable_authselect'
