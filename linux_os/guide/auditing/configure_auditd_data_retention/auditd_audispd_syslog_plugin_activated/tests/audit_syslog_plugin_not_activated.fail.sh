@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = audit
-# platform = Oracle Linux 8,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
+# platform = Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
 # remediation = bash
 
 . $SHARED/auditd_utils.sh
