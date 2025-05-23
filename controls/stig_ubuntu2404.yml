@@ -65,9 +65,10 @@ controls:
       30 days or less to check file integrity is the default one.
     levels:
       - medium
-    related_rules:
+    rules:
+      - aide_periodic_checking_systemd_timer
       - aide_periodic_cron_checking
-    status: planned
+    status: automated
 
   - id: UBTU-24-100130
     title: Ubuntu 24.04 LTS must notify designated personnel if baseline configurations
