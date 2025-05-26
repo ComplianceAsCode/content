@@ -53,8 +53,8 @@ class TableHtmlOutput(template_renderer.Renderer):
         return self._get_var_value_from_default(varname)
 
     def _get_var_value_from_default(self, varname):
-        var_path = os.path.join(self.var_root, varname + ".yml")
-        var = ssg.build_yaml.Value.from_yaml(var_path, self.env_yaml)
+        var_path = os.path.join(self.var_root, varname + ".json")
+        var = ssg.build_yaml.Value.from_compiled_json(var_path, self.env_yaml)
         return var.options["default"]
 
     def _fix_var_sub_in_text(self, text, varname, value):

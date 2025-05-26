@@ -2,7 +2,10 @@
 
 useradd testUser
 
-dirs=("/bin" "/sbin" "/usr/bin" "/usr/sbin" "/usr/libexec" "/usr/local/bin" "/usr/local/sbin")
+dirs=("/bin" "/sbin" "/usr/bin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin")
+{{% if 'ubuntu' not in product %}}
+dirs+=("/usr/libexec")
+{{% endif %}}
 
 for directory in "${dirs[@]}"; do
 

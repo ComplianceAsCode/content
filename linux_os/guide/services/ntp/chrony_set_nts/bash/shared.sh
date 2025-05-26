@@ -1,23 +1,19 @@
 # platform = multi_platform_all
 
-{{% if 'sle' in product or 'ubuntu' in product %}}
-pof="/bin/pidof"
-{{% else %}}
-pof="/usr/sbin/pidof"
-{{% endif %}}
+config_files=(/etc/ntp.conf)
+config_files+=("{{{ chrony_conf_path }}}")
 
-CONFIG_FILES="/etc/ntp.conf"
-$pof ntpd || {
-    CHRONY_D_PATH={{{ chrony_d_path }}}
-    mapfile -t CONFIG_FILES < <(find ${CHRONY_D_PATH}.* -type f -name '*.conf')
-    CONFIG_FILES+=({{{ chrony_conf_path }}})
-}
+chrony_d_path={{{ chrony_d_path }}}
+if [[ -d $chrony_d_path ]]; then
+    while IFS= read -r filename; do
+        config_files+=("$filename")
+    done < <(find "$chrony_d_path" -type f -name '*.conf')
+fi
 
-# get list of ntp files
-
-for config_file in "${CONFIG_FILES[@]}" ; do
-    # Add maxpoll to server, pool or peer entries without maxpoll
-    grep "^\(server\|pool\|peer\)" "$config_file" | grep -v maxpoll | while read -r line ; do
-        sed -i "s/$line/& nts/" "$config_file"
-    done
+for config_file in "${config_files[@]}"; do
+    [[ -e $config_file ]] || continue
+    # if the line doesn't start with 'server/pool/peer ', just print it
+    # if the line does contain ' nts' already, skip it
+    # else append ' nts' to it
+    sed "/^\(server\|pool\|peer\) /! b; / nts/ b; s/$/ nts/" -i "$config_file"
 done

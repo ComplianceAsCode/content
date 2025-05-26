@@ -4,6 +4,8 @@ srg_requirement: |-
 vuldiscussion: |-
     By enabling the fs.protected_symlinks kernel parameter, symbolic links are permitted to be followed only when outside a sticky world-writable directory, or when the user identifier (UID) of the link and follower match, or when the directory owner matches the symlink's owner. Disallowing such symlinks helps mitigate vulnerabilities based on insecure file system accessed by privileged programs, avoiding an exploitation vector exploiting unsafe use of open() or creat().
 
+
+
 checktext: |-
     Verify {{{ full_name }}} is configured to enable DAC on symlinks.
 
@@ -33,4 +35,5 @@ fixtext: |-
     Load settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
 

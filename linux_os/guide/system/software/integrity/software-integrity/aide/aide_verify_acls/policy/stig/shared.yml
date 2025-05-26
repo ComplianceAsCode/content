@@ -7,9 +7,9 @@ vuldiscussion: |-
     ACLs can provide permissions beyond those permitted through the file mode and must be verified by the file integrity tools.
 
 checktext: |-
-    Verify that that AIDE is verifying ACLs with the following command:
+    Verify that AIDE is verifying ACLs with the following command:
 
-    $ grep acl /etc/aide.conf
+    $ sudo grep acl /etc/aide.conf
 
     All= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
 
@@ -19,4 +19,3 @@ fixtext: |-
     Configure the file integrity tool to check file and directory ACLs.
 
     If AIDE is installed, ensure the "acl" rule is present on all uncommented file and directory selection lists.
-

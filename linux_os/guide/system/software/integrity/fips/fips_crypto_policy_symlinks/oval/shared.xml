@@ -1,0 +1,48 @@
+{{% set expected_symlinks_src_dir = "/etc/crypto-policies/back-ends/" %}}
+{{% set expected_symlinks_dest_dir = "/usr/share/crypto-policies/FIPS/" %}}
+{{% set expected_symlinks_src_files = [ "bind",
+                                        "gnutls",
+                                        "java",
+                                        "javasystem",
+                                        "krb5",
+                                        "libreswan",
+                                        "libssh",
+                                        "openssh",
+                                        "opensshserver",
+                                        "opensslcnf",
+                                        "openssl",
+                                        "openssl_fips"
+                                        ] %}}
+
+{{% set symlinks_src_ext = ".config" %}}
+{{% set symlinks_dest_ext = ".txt" %}}
+
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("All system wide cryptopolicy symblinks should point to FIPS policy") }}}
+        <criteria operator="AND" comment="All crypto-policies symlinks should poin to FIPS">
+            {{% for symlink in expected_symlinks_src_files %}}
+            <criterion comment="Symlink from {{{ expected_symlinks_src_dir ~ symlink }}}"
+                test_ref="test_symlink_from_{{{ symlink | escape_id }}}" />
+            {{% endfor %}}
+        </criteria>
+    </definition>
+
+    {{% for symlink in expected_symlinks_src_files %}}
+    <unix:symlink_test check="all" check_existence="all_exist"
+            comment="{{{ expected_symlinks_src_dir ~ symlink }}} points to fips" version="1"
+            id="test_symlink_from_{{{ symlink | escape_id }}}">
+        <unix:object object_ref="object_symlink_from_{{{ symlink | escape_id }}}" />
+        <unix:state state_ref="state_symlink_from_{{{ symlink | escape_id }}}" />
+    </unix:symlink_test>
+    <unix:symlink_object comment="{{{ expected_symlinks_src_dir ~ symlink }}}" version="1"
+            id="object_symlink_from_{{{ symlink | escape_id }}}">
+        <unix:filepath>{{{ expected_symlinks_src_dir ~ symlink ~ symlinks_src_ext}}}</unix:filepath>
+    </unix:symlink_object>
+    <unix:symlink_state comment="{{{ expected_symlinks_src_dir ~ symlink }}} points to fips" version="1"
+            id="state_symlink_from_{{{ symlink | escape_id }}}">
+        <unix:canonical_path operation="equals">{{{ expected_symlinks_dest_dir
+            ~ symlink ~ symlinks_dest_ext }}}</unix:canonical_path>
+    </unix:symlink_state>
+    {{% endfor %}}
+</def-group>

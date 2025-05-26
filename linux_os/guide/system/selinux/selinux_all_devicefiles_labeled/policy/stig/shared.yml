@@ -6,7 +6,7 @@ fixtext: |-
 
     $ sudo restorecon -v &lt;device_path&gt;
 
-    Substituting "&lt;device_path&gt;" with the path to the affected device file (from the output of the previous commands). An example device file path would be "/dev/ttyUSB0". If the output of the above command does not indicate that the device was relabeled to a more specific SELinux type label, then the SELinux policy of the system must be updated with more specific policy for the device class specified. If a package was used to install support for a device class, that package could be reinstalled using the following command:
+    Substitute "&lt;device_path&gt;" with the path to the affected device file (from the output of the previous commands). An example device file path would be "/dev/ttyUSB0". If the output of the above command does not indicate that the device was relabeled to a more specific SELinux type label, then the SELinux policy of the system must be updated with more specific policy for the device class specified. If a package was used to install support for a device class, that package could be reinstalled using the following command:
 
     $ sudo dnf reinstall &lt;package_name&gt;
 

@@ -4,10 +4,12 @@ srg_requirement: |-
 vuldiscussion: |-
     rsyslogd is a system utility providing support for message logging. Support for both internet and Unix domain sockets enables this utility to support both local and remote logging. Couple this utility with "gnutls" (which is a secure communications library implementing the SSL, TLS, and DTLS protocols), to create a method to securely encrypt and offload auditing.
 
+
+
 checktext: |-
     Verify that {{{ full_name }}} has the rsyslogd package installed with the following command:
 
-    $ sudo dnf list --installed rsyslog
+    $ dnf list --installed rsyslog
 
     Example output:
 
@@ -19,4 +21,5 @@ fixtext: |-
     The rsyslogd package can be installed with the following command:
 
     $ sudo dnf install rsyslogd
+
 

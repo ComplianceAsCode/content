@@ -7,18 +7,26 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/var/log/tallylog" with the following command:
 
-    $ sudo auditctl -l | grep /var/log/tallylog
+    $ sudo auditctl -l | grep /var/log/tallylog
 
-    -w /var/log/tallylog -p wa -k logins
+{{% if audit_watches_style == "modern" %}}
+    -a always,exit -F arch=b32 -F path=/var/log/tallylog -F perm=wa -F key=logins
+    -a always,exit -F arch=b64 -F path=/var/log/tallylog -F perm=wa -F key=logins
+{{% else %}}
+    -w /var/log/tallylog -p wa -k logins
+{{% endif %}}
 
-    If the command does not return a line, or the line is commented out, this is a finding.
+    If the command does not return a line, or the line is commented out, is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that affect "/var/log/tallylog".
 
     Add or update the following file system rule to "/etc/audit/rules.d/audit.rules":
-
+{{% if audit_watches_style == "modern" %}}
+    -a always,exit -F arch=b32 -F path=/var/log/tallylog -F perm=wa -F key=logins
+    -a always,exit -F arch=b64 -F path=/var/log/tallylog -F perm=wa -F key=logins
+{{% else %}}
     -w /var/log/tallylog -p wa -k logins
+{{% endif %}}
 
     The audit daemon must be restarted for the changes to take effect.
-

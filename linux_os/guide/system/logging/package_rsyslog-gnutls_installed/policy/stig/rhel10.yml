@@ -1,0 +1,24 @@
+checktext: |-
+    Verify that {{{ full_name }}} has the rsyslog-gnutls package installed with the following command:
+
+    $ dnf list --installed rsyslog-gnutls
+
+    Example output:
+
+    rsyslog-gnutls.x86_64          8.2412.0-1.el10
+
+    If the "rsyslog-gnutls" package is not installed, this is a finding.
+
+srg_requirement: |-
+    {{{ full_name }}} must have the packages required for encrypting offloaded audit logs installed.
+
+vuldiscussion: |-
+    The rsyslog-gnutls package provides Transport Layer Security (TLS) support for the rsyslog daemon, which enables secure remote logging.
+
+
+fixtext: |-
+    The  rsyslog-gnutls package can be installed with the following command:
+
+    $ sudo dnf install rsyslog-gnutls
+
+

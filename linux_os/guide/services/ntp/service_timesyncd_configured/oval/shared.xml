@@ -30,7 +30,11 @@
 
   <ind:textfilecontent54_object comment="Ensure at least one NTP server is set"
     id="{{{ rule_id }}}_object_systemd_timesyncd_dropin_configuration" version="1">
+{{% if "ubuntu" in product %}}
+    <ind:path>/etc/systemd/timesyncd.conf.d</ind:path>
+{{% else %}}
     <ind:path>/etc/systemd/timesyncd.d</ind:path>
+{{% endif %}}
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match" var_ref="{{{ rule_id }}}_variable_test_servers"/>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>

@@ -4,6 +4,8 @@ srg_requirement: |-
 vuldiscussion: |-
     A locally logged-on user who presses Ctrl-Alt-Delete when at the console can reboot the system. If accidentally pressed, as could happen in the case of a mixed OS environment, this can create the risk of short-term loss of availability of systems due to unintentional reboot. In a graphical user environment, risk of unintentional reboot from the Ctrl-Alt-Delete sequence is reduced because the user will be prompted before any action is taken.
 
+
+
 checktext: |-
     Verify {{{ full_name }}} is configured to not reboot the system when Ctrl-Alt-Delete is pressed seven times within two seconds with the following command:
 
@@ -21,4 +23,5 @@ fixtext: |-
     Reload the daemon for this change to take effect.
 
     $ sudo systemctl daemon-reload
+
 

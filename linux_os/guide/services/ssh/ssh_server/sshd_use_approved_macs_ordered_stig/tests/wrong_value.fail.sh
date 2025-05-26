@@ -1,7 +1,5 @@
 #!/bin/bash
 
-if grep -q "^MACs" /etc/ssh/sshd_config; then
-	sed -i "s/^MACs.*/MACs hmac-sha2-512,hmac-sha2-256,blahblah/" /etc/ssh/sshd_config
-else
-	echo "MACs hmac-sha2-512,hmac-sha2-256,blahblah" >> /etc/ssh/sshd_config
-fi
+source common.sh
+
+echo "MACs ${sshd_approved_macs},blahblah" >> /etc/ssh/sshd_config

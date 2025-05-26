@@ -33,7 +33,7 @@ def get_used_policies(built_product_dir: str) -> set:
     profiles_dir = os.path.join(built_product_dir, "profiles")
     for profile_file_name in os.listdir(profiles_dir):
         profile_file_path = os.path.join(profiles_dir, profile_file_name)
-        profile = ssg.entities.profile_base.Profile.from_yaml(profile_file_path)
+        profile = ssg.entities.profile_base.Profile.from_compiled_json(profile_file_path)
         for policy_id in profile.policies:
             policies.add(policy_id)
     return policies
@@ -44,7 +44,7 @@ def get_rules(root_abspath: str, built_product_dir: str) -> dict:
     rules = dict()
     for r_file in os.listdir(resolved_rules_dir):
         r_file_path = os.path.join(resolved_rules_dir, r_file)
-        rule = ssg.build_yaml.Rule.from_yaml(r_file_path)
+        rule = ssg.build_yaml.Rule.from_compiled_json(r_file_path)
         rule.relative_definition_location = rule.definition_location.replace(
             root_abspath, "")
         rules[rule.id_] = rule
@@ -56,7 +56,7 @@ def get_values(root_abspath: str, built_product_dir: str) -> dict:
     values = dict()
     for v_file in os.listdir(resolved_values_dir):
         v_file_path = os.path.join(resolved_values_dir, v_file)
-        val = ssg.build_yaml.Value.from_yaml(v_file_path)
+        val = ssg.build_yaml.Value.from_compiled_json(v_file_path)
         val.relative_definition_location = val.definition_location.replace(
             root_abspath, "")
         values[val.id_] = val
@@ -64,7 +64,7 @@ def get_values(root_abspath: str, built_product_dir: str) -> dict:
 
 
 def load_policy(controls_dir: str, policy_id: str) -> ssg.controls.Policy:
-    policy_file = os.path.join(controls_dir, policy_id + ".yml")
+    policy_file = os.path.join(controls_dir, policy_id + ".json")
     policy = ssg.controls.Policy(policy_file)
     policy.load()
     return policy

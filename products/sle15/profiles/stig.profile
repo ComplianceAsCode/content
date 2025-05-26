@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R2
+    version: V2R4
     SMEs:
         - abergmann
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 15'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 15 V2R2.
+    DISA STIG for SUSE Linux Enterprise 15 V2R4.
 
 
 selections:
@@ -250,6 +250,7 @@ selections:
     - service_sshd_enabled
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_systemauth
+    - var_password_hashing_min_rounds_login_defs=100000
     - set_password_hashing_min_rounds_logindefs
     - smartcard_configure_ca
     - smartcard_configure_cert_checking
@@ -264,8 +265,8 @@ selections:
     - sshd_print_last_log
     - sshd_idle_timeout_value=10_minutes
     - sshd_set_idle_timeout
-    - var_sshd_set_keepalive=0
-    - sshd_set_keepalive_0
+    - var_sshd_set_keepalive=1
+    - sshd_set_keepalive
     - sshd_set_loglevel_verbose
     - sshd_use_approved_ciphers_ordered_stig
     - sshd_use_approved_kex_ordered_stig

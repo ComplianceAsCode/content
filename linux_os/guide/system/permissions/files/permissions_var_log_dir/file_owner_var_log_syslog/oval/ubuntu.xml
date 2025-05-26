@@ -1,0 +1,33 @@
+{{%- if product in ['ubuntu2404'] %}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+      {{{ oval_metadata("Owner of /var/log/syslog should be root or syslog.") }}}
+    <criteria comment="Check file ownership of /var/log/syslog">
+     <criterion test_ref="test_file_ownership_var_log_syslog" />
+    </criteria>
+  </definition>
+
+  <unix:password_object id="object_syslog_uid" version="1">
+    <unix:username operation="pattern match">syslog</unix:username>
+  </unix:password_object>
+  <local_variable id="var_syslog_uid" comment="Retrieve the uid of syslog" datatype="int" version="1">
+    <object_component item_field="user_id" object_ref="object_syslog_uid" />
+  </local_variable>
+
+  <unix:file_test check_existence="any_exist" check="all" comment="/var/log/syslog owner is root|syslog"
+      id="test_file_ownership_var_log_syslog" state_operator="OR" version="1">
+    <unix:object object_ref="object_file_ownership_var_log_syslog" />
+    <unix:state state_ref="state_file_ownership_syslog_var_log_syslog"/>
+    <unix:state state_ref="state_file_ownership_root_var_log_syslog"/>
+  </unix:file_test>
+  <unix:file_object comment="/var/log/syslog" id="object_file_ownership_var_log_syslog" version="1">
+    <unix:filepath>/var/log/syslog</unix:filepath>
+  </unix:file_object>
+  <unix:file_state id="state_file_ownership_syslog_var_log_syslog" version="1">
+    <unix:user_id datatype="int" operation="equals" var_ref="var_syslog_uid"/>
+  </unix:file_state>
+  <unix:file_state id="state_file_ownership_root_var_log_syslog" version="1">
+    <unix:user_id datatype="int" operation="equals">0</unix:user_id>
+  </unix:file_state>
+ </def-group>
+{{%- endif %}}

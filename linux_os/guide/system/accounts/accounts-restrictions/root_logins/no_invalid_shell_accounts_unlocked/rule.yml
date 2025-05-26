@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Verify Non-Interactive Accounts Are Locked'
+
+description: |-
+    Accounts meant for non-interactive purposes should be locked to prevent
+    unauthorized access. Accounts with non-standard shells (those not defined in
+    <tt>/etc/shells</tt>) should be locked using <tt>usermod -L</tt>.
+
+rationale: |-
+    Locking non-interactive accounts improves security by preventing potential
+    misuse. While many systems configure these accounts with invalid strings,
+    setting the shell field to <tt>nologin</tt> is also suggested
+
+severity: medium
+
+warnings:
+    - general: |-
+        Automatic remediation of this control is not recommended. Locking system accounts
+        could be highly disruptive.

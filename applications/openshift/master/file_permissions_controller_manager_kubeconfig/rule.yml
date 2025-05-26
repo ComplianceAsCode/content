@@ -29,8 +29,7 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-
 ocil: |-
   {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/configmaps/controller-manager-kubeconfig/kubeconfig", perms="-rw-------") }}}
 
-platforms:
-  - ocp4-master-node
+platform: ocp4-master-node
 
 warnings:
   - dependency: |-

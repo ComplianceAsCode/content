@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R13
+    version: V3R2
     SMEs:
         - abergmann
 
@@ -11,14 +11,14 @@ title: 'DISA STIG for SUSE Linux Enterprise 12'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 12 V2R13.
+    DISA STIG for SUSE Linux Enterprise 12 V3R2.
 
 selections:
     - sshd_approved_macs=stig
     - sshd_approved_ciphers=stig
     - var_account_disable_post_pw_expiration=35
     - var_accounts_fail_delay=4
-    - var_accounts_tmout=15_min
+    - var_accounts_tmout=10_min
     - inactivity_timeout_value=15_minutes
     - var_password_pam_dcredit=1
     - var_password_pam_delay=4000000
@@ -26,7 +26,6 @@ selections:
     - var_password_pam_lcredit=1
     - var_password_pam_minlen=15
     - var_password_pam_ocredit=1
-    - var_password_pam_remember=5
     - var_password_pam_retry=3
     - var_password_pam_ucredit=1
     - var_accounts_maximum_age_login_defs=60
@@ -59,7 +58,6 @@ selections:
     - accounts_password_all_shadowed_sha512
     - accounts_passwords_pam_faildelay_delay
     - accounts_passwords_pam_tally2
-    - accounts_password_pam_pwhistory_remember
     - accounts_password_set_max_life_existing
     - accounts_password_set_min_life_existing
     - accounts_tmout
@@ -70,7 +68,6 @@ selections:
     - accounts_user_interactive_home_directory_defined
     - accounts_user_interactive_home_directory_exists
     - account_temp_expire_date
-    - agent_mfetpd_running
     - aide_build_database
     - aide_check_audit_tools
     - aide_periodic_cron_checking
@@ -182,7 +179,6 @@ selections:
     - encrypt_partitions
     - ensure_gpgcheck_globally_activated
     - ensure_rtc_utc_configuration
-    - file_etc_security_opasswd
     - file_groupownership_home_directories
     - file_groupownership_system_commands_dirs
     - file_ownership_binary_dirs
@@ -223,7 +219,6 @@ selections:
     - package_audit-audispd-plugins_installed
     - package_audit_installed
     - package_mailx_installed
-    - package_mcafeetp_installed
     - package_pam_apparmor_installed
     - package_SuSEfirewall2_installed
     - package_telnet-server_removed
@@ -245,6 +240,7 @@ selections:
     - service_SuSEfirewall2_enabled
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_systemauth
+    - var_password_hashing_min_rounds_login_defs=100000
     - set_password_hashing_min_rounds_logindefs
     - smartcard_pam_enabled
     - smartcard_configure_ca

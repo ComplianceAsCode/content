@@ -11,12 +11,12 @@ checktext: |-
 
     $ grep -i sha_crypt /etc/login.defs
 
-    If "SHA_CRYPT_MIN_ROUNDS" or "SHA_CRYPT_MAX_ROUNDS" is less than "5000", this is a finding.
+    If "SHA_CRYPT_MIN_ROUNDS" or "SHA_CRYPT_MAX_ROUNDS" is less than "{{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}", this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to encrypt all stored passwords with a strong cryptographic hash.
 
-    Edit/modify the following line in the "/etc/login.defs" file and set "SHA_CRYPT_MIN_ROUNDS" to a value no lower than "5000":
+    Edit/modify the following line in the "/etc/login.defs" file and set "SHA_CRYPT_MIN_ROUNDS" to a value no lower than "{{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}":
 
-    SHA_CRYPT_MIN_ROUNDS 5000
+    SHA_CRYPT_MIN_ROUNDS {{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}
 

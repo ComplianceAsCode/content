@@ -1,3 +1,8 @@
+{{%- if product == 'ubuntu2404' %}}
+{{%- set sshd_approved_kexalgorithms = "ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group14-sha256" %}}
+{{%- else %}}
+{{%- set sshd_approved_kexalgorithms = "ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256" %}}
+{{%- endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Limit the KexAlgorithms to those which are FIPS-approved.") }}}
@@ -59,7 +64,7 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
-      <ind:subexpression datatype="string" operation="pattern match">ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256</ind:subexpression>
+    <ind:subexpression datatype="string" operation="equals">{{{ sshd_approved_kexalgorithms }}}</ind:subexpression>
   </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_{{{ rule_id }}}" version="1">

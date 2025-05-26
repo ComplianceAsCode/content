@@ -1,6 +1,6 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu,multi_platform_rhel
-# packages = openssl-pkcs11
+# packages = openssl-pkcs11,libpam-pkcs11
 
 if [ ! -f /etc/pam_pkcs11/pam_pkcs11.conf ]; then
     cp /usr/share/doc/libpam-pkcs11/examples/pam_pkcs11.conf.example /etc/pam_pkcs11/pam_pkcs11.conf

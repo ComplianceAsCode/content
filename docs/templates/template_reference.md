@@ -41,6 +41,8 @@
 
     -   **attr** - value of `-S` argument in Audit rule, eg. `chmod`
 
+    -   **key** - audit key. If this isn't specified then the default value `perm_mod` is used.
+
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
 #### audit_rules_file_deletion_events
@@ -51,17 +53,6 @@
     -   **name** - value of `-S` argument in Audit rule, eg. `unlink`
 
 -   Languages: Ansible, Bash, OVAL
-
-#### audit_rules_login_events
--   Checks if there are Audit rules that record attempts to alter logon
-    and logout events.
-
--   Parameters:
-
-    -   **path** - value of `-w` in the Audit rule, eg.
-        `/var/run/faillock`
-
--   Languages: Ansible, Bash, OVAL, Kubernetes
 
 #### audit_rules_path_syscall
 -   Check if there are Audit rules to record events that modify
@@ -161,26 +152,19 @@
 
 -   Languages: OVAL
 
-#### audit_rules_usergroup_modification
--   Check if Audit is configured to record events that modify account
-    changes.
-
--   Parameters:
-
-    -   **path** - path that should be part of the audit rule as a value
-        of `-w` argument, eg. `/etc/group`.
-
--   Languages: Ansible, Bash, OVAL
-
 #### audit_rules_watch
 -   Check if there are file system watches configured in audit rules for the given path.
+    Supports both legacy and modern watch style.
+    The style used is selected by the `audit_watches_style` product property.
 
 -   Parameters:
 
     -   **path** - path that should be part of the audit watch rule as a value
-        of `-w` argument, eg. `/etc/group`.
+        of `-w` (legacy) or the `-F path=` (modern) argument, eg. `/etc/group`.
+    -   **key** - The key in the the audit rules that is a part of `-k` (legacy) or `-F key` (modern). If this parameter isn't specified the rule ID is used as a key.
+    -   **path_is_variable** - whether the `path` argument isn't a path but it's an XCCDF Value name
 
--   Languages: Ansible, Bash, OVAL
+-   Languages: Ansible, Bash, Kubernetes, OVAL
 
 
 #### argument_value_in_line
@@ -306,7 +290,9 @@
     -   **gid_or_name** - group ID (GID) or a group name.
         If the parameter is an integer, it is treated as group ID. If the
         parameter is not an integer, it is treated as a group name and it is
-        converted to GID by reading /etc/group.
+        converted to GID by reading /etc/group. gid_or_name can also be a 
+        list of possible group names separated by |, e.g. "syslog|root".
+        gids cannot be used with the '|' operator.
 
 -   Languages: Ansible, Bash, OVAL
 
@@ -340,7 +326,15 @@ they must be of the same length.
         subdirectories under the directory specified by **filepath**. Default
         value is `"false"`.
 
-    -   **fileuid** - user ID (UID)
+    -   **uid_or_name** - user ID (UID) or a user name.
+        If the parameter is an integer, it is treated as user ID. If the
+        parameter is not an integer, it is treated as a user name and it is
+        converted to UID by reading /etc/passwd. uid_or_name can also be a 
+        list of possible user names separated by |, e.g. "syslog|root".
+        uids cannot be used with the '|' operator.
+
+    - **no_remediation** - this is a hint for templated test scenarios that the rule does not have remediation.
+        In this case, test scenarios are modified so that they do not expect the rule to be remediated.
 
 -   Languages: Ansible, Bash, OVAL
 
@@ -576,11 +570,12 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 -   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Blueprint, Kickstart, Bootc
 
 #### package_removed
--   Checks if the given package is not installed.
+-   Checks if the given package(s) are not installed.
 
 -   Parameters:
 
-    -   **pkgname** - name of the RPM or DEB package, eg. `tmux`
+    -   **pkgname** - name of the RPM or DEB package, eg. `tmux`.
+        Can be either a name of a single package or a list of names.
 
 -   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Kickstart, Bootc
 
@@ -609,8 +604,19 @@ When the remediation is applied duplicate occurrences of `key` are removed.
 
     - **value** - the value the key should have in the specified path
 
+    - **xccdf_variable** - use value stored in an XCCDF variable instead of hardcoded value
+
     - **app** - optional. If not set the check will use the default text `The respective application or service`.
       If set, the `app` is used within sentences like: "`application` is configured correctly and configuration file exists"
+
+    - **test_correct_value** - optional. If set, it will be used in test scenarios as a correct value.
+      If not set, the "value" parameter of the template will be used.
+      If XCCDF variable is used and the this option is not set, then a string "corect_value" will be used.
+      This parameter should be used in case the value is defined by an XCCDF variable and the value must be chosen from a strictly defined set of options.
+
+    - **test_wrong_value** - optional. If set, this value will be used test scenarios as a incorrect value.
+      If not set, a string "wrong_value" will be used.
+      This parameter can be used in case that the value has to be chosen from strictly defined set of options.
 
 #### pam_account_password_faillock
 -   Checks if the pam_faillock is enabled in PAM and if the specified
@@ -949,10 +955,13 @@ The selected value can be changed in the profile (consult the actual variable fo
     the remediation scripts will set the variable with correct value to a drop-in file in
     `/etc/sysctl.d/var_name.conf` file.
 
+    - **no_remediation** - this is a hint for templated test scenarios that the rule does not have remediation.
+        In this case, test scenarios are modified so that they do not expect the rule to be remediated.
+
 -   Languages: Ansible, Bash, OVAL, SCE
 
 #### systemd_dropin_configuration
-- checks if a Systemd-style configuration exists either in the main file or in any file within specified dropin directory.
+- checks if a Systemd-style configuration exists either in the main file or in a file with a `.conf` extension within specified dropin directory.
     The remediation tries to modify already existing configuration.
     If the correct section is found and the parameter exists, its value is changed to match the desired one.
     If the section is found but the parameter does not exist, it is added to this section.
@@ -968,11 +977,24 @@ The selected value can be changed in the profile (consult the actual variable fo
 
     - **value** - the value of the parameter
 
-    - **no_quotes** - if set to "true", the value will not be enclosed in quotes
+    - **no_quotes** - if set to "true", the value will not be enclosed in quotes. Default is "false".
 
     - **missing_parameter_pass** - effective only in OVAL checks, if
         set to `"false"` and the parameter is not present in the
         configuration file, the OVAL check will return false (default value: `"false"`).
+
+    - **application** - used only in OVAL, this inserts the entered string into
+        some description tags, making it easier to read. Default is empty string.
+
+    - **missing_config_file_fail** - a boolean which is used in OVAL. In case it
+        is set to true, the rule will fail in case the master configuration file
+        is not present. Default is true.
+
+    - **remediation_xccdf_variable** - if specified, then the given XCCDF
+        variable is used during remediation instead of hardcoded value. The
+        variable is NOT used during checking. But you can specify multiple values
+        separated by | as a `value` parameter and they wil be used during
+        checking.
 
 -   Languages: Ansible, Bash, OVAL
 

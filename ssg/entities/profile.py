@@ -102,3 +102,4 @@ class ProfileWithInlinePolicies(ResolvableProfile):
 
             for c in controls:
                 self.update_with(c)
+        self._subtract_refinements()

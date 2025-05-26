@@ -73,6 +73,7 @@ selections:
     - sysctl_kernel_perf_event_paranoid
     - sysctl_user_max_user_namespaces
     - sysctl_kernel_unprivileged_bpf_disabled_accept_default
+    - sysctl_kernel_unprivileged_bpf_disabled_value=2
     - service_kdump_disabled
 
     ### Audit
@@ -106,7 +107,7 @@ selections:
     - package_gnutls-utils_installed
 
     ### Login
-    - sysctl_kernel_core_pattern
+    - sysctl_kernel_core_pattern_empty_string
     - sysctl_kernel_core_uses_pid
     - service_systemd-coredump_disabled
     - use_pam_wheel_for_su
@@ -173,14 +174,11 @@ selections:
 
     ## Enable Screen Lock
     ## FMT_MOF_EXT.1
-    - package_tmux_installed
-    - configure_bashrc_exec_tmux
-    - no_tmux_in_shells
-    - configure_tmux_lock_command
-    - configure_tmux_lock_after_time
+    - logind_session_timeout
 
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
     ## AC-11(a) / FMT_MOF_EXT.1
+    - var_logind_session_timeout=30_minutes
     ## We deliberately set sshd timeout to 1 minute before tmux lock timeout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
@@ -277,6 +275,8 @@ selections:
     - audit_modify_success
     - audit_access_failed
     - audit_access_success
+    - audit_access_success.severity=info
+    - audit_access_success.role=unscored
     - audit_delete_failed
     - audit_delete_success
     - audit_perm_change_failed

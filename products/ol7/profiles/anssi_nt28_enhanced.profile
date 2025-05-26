@@ -21,6 +21,7 @@ selections:
     - '!rsyslog_remote_tls'
     - '!timer_logrotate_enabled'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!package_dnf-automatic_installed'
     - '!audit_rules_privileged_commands_rmmod'
     - '!grub2_mds_argument'
@@ -47,3 +48,5 @@ selections:
     - '!sysctl_net_core_bpf_jit_harden'
     - '!grub2_pti_argument'
     - '!package_kea_removed'
+    - '!audit_rules_file_deletion_events_renameat2'
+    - '!audit_rules_dac_modification_fchmodat2'

@@ -4,4 +4,5 @@
 
 {{{ setup_auditctl_environment() }}}
 
-. $SHARED/audit_rules_login_events/auditctl_remove_all_rules.fail.sh
+filter_type="path"
+. $SHARED/audit_rules_watch/auditctl_remove_all_rules.fail.sh

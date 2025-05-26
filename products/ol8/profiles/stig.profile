@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R2
+    version: V2R4
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V2R2.
+    DISA STIG for Oracle Linux 8 V2R4.
 
 selections:
     ### Variables
@@ -19,6 +19,7 @@ selections:
     - var_password_pam_difok=8
     - var_password_pam_maxrepeat=3
     - var_password_hashing_algorithm=SHA512
+    - var_password_hashing_algorithm_pam=sha512
     - var_password_pam_maxclassrepeat=4
     - var_password_pam_minclass=4
     - var_accounts_minimum_age_login_defs=1
@@ -61,6 +62,7 @@ selections:
     - var_sssd_certificate_verification_digest_function=sha1
     - login_banner_text=dod_banners
     - var_authselect_profile=sssd
+    - var_multiple_time_servers=stig
 
     ### Enable / Configure FIPS
     - enable_fips_mode
@@ -86,8 +88,6 @@ selections:
 
     # OL08-00-010020
     - sysctl_crypto_fips_enabled
-    - harden_sshd_ciphers_openssh_conf_crypto_policy
-    - harden_sshd_ciphers_openssh_conf_crypto_policy.severity=high
 
     # OL08-00-010030
     - encrypt_partitions
@@ -125,6 +125,7 @@ selections:
 
     # OL08-00-010130
     - set_password_hashing_min_rounds_logindefs
+    - var_password_hashing_min_rounds_login_defs=100000
 
     # OL08-00-010140
     - grub2_uefi_password
@@ -194,7 +195,6 @@ selections:
     - configure_ssh_crypto_policy
 
     # OL08-00-010290
-    - harden_sshd_macs_openssh_conf_crypto_policy
     - harden_sshd_macs_opensshserver_conf_crypto_policy
 
     # OL08-00-010291
@@ -313,7 +313,7 @@ selections:
     - grub2_vsyscall_argument
 
     # OL08-00-010423
-    - grub2_slub_debug_argument
+    - grub2_init_on_free
 
     # OL08-00-010424
     - grub2_mitigation_argument
@@ -467,7 +467,7 @@ selections:
     - accounts_have_homedir_login_defs
 
     # OL08-00-010770
-    - file_permission_user_init_files
+    - file_permission_user_init_files_root
 
     # OL08-00-010780
     - no_files_unowned_by_user
@@ -537,19 +537,6 @@ selections:
     - logind_session_timeout
     - var_logind_session_timeout=15_minutes
 
-    # OL08-00-020039
-    - package_tmux_installed
-
-    # OL08-00-020040
-    - configure_tmux_lock_command
-    - configure_tmux_lock_keybinding
-
-    # OL08-00-020041
-    - configure_bashrc_tmux
-
-    # OL08-00-020042
-    - no_tmux_in_shells
-
     # OL08-00-020043
     - vlock_installed
 
@@ -558,9 +545,6 @@ selections:
 
     # OL08-00-020060
     - dconf_gnome_screensaver_idle_delay
-
-    # OL08-00-020070
-    - configure_tmux_lock_after_time
 
     # OL08-00-020080
     - dconf_gnome_screensaver_user_locks

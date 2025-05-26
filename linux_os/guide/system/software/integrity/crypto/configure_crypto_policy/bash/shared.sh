@@ -1,6 +1,14 @@
 # platform = multi_platform_all
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
 
 {{{ bash_instantiate_variables("var_system_crypto_policy") }}}
+
+{{% if product == "sle15" %}}
+{{{ bash_package_install("crypto-policies-scripts") }}}
+{{% endif %}}
 
 stderr_of_call=$(update-crypto-policies --set ${var_system_crypto_policy} 2>&1 > /dev/null)
 rc=$?

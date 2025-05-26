@@ -5,7 +5,7 @@ metadata:
         - marcusburghardt
         - vojtapolasek
 
-title: 'DRAFT - ANSSI-BP-028 (intermediary)'
+title: 'ANSSI-BP-028 (intermediary)'
 
 description: |-
     This is a draft profile for experimental purposes.
@@ -22,7 +22,9 @@ description: |-
 
 selections:
     - anssi:all:intermediary
+    - var_password_hashing_algorithm_pam=yescrypt
     # Following rules are incompatible with rhel10 product
+    - '!enable_authselect'
     # tally2 is deprecated, replaced by faillock
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!accounts_passwords_pam_tally2'
@@ -35,8 +37,9 @@ selections:
     - '!cracklib_accounts_password_pam_ocredit'
     # umask is configured at a different place in RHEL 10
     - '!sudo_add_umask'
-    # Oracle key is not relevant on RHEL 10
+    # Non-Red Hat keys are irrelevant on RHEL 10
     - '!ensure_oracle_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     # this rule is not automated anymore
     - '!security_patches_up_to_date'
     # these packages do not exist in rhel10 (R62)
@@ -55,3 +58,5 @@ selections:
     - '!sssd_enable_pam_services'
     - '!sssd_ldap_configure_tls_reqcert'
     - '!sssd_ldap_start_tls'
+    # RHEL 10 unified the paths for grub2 files. This rule is selected in control file by R5.
+    - '!grub2_uefi_password'

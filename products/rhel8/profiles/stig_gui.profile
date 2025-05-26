@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R1
+    version: V2R3
     SMEs:
         - mab879
         - ggbecker
@@ -12,10 +12,10 @@ title: 'DISA STIG with GUI for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG with GUI for Red Hat Enterprise Linux 8 V2R1.
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V2R3.
 
-    In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
-    configuration baseline as applicable to the operating system tier of
+    In addition to being applicable to Red Hat Enterprise Linux 8, this
+    configuration baseline is applicable to the operating system tier of
     Red Hat technologies that are based on Red Hat Enterprise Linux 8, such as:
 
     - Red Hat Enterprise Linux Server
@@ -41,11 +41,6 @@ selections:
 
     # RHEL-08-040001
     - '!package_libreport-plugin-rhtsupport_removed'
-
-    # RHEL-08-040284
-    # Limiting user namespaces cause issues with user apps, such as Firefox and Cheese
-    # https://issues.redhat.com/browse/RHEL-10416
-    - '!sysctl_user_max_user_namespaces'
 
     # locking of idle sessions is handled by screensaver when GUI is present, the following rule is therefore redundant
     - '!logind_session_timeout'

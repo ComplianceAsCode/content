@@ -3,10 +3,12 @@
 # strategy = disable
 # complexity = low
 # disruption = low
-include remove_{{{ PKGNAME }}}
+{{% for package in PACKAGES %}}
+include remove_{{{ package }}}
 
-class remove_{{{ PKGNAME }}} {
-  package { '{{{ PKGNAME }}}':
+class remove_{{{ package }}} {
+  package { '{{{ package }}}':
     ensure => 'purged',
   }
 }
+{{% endfor %}}

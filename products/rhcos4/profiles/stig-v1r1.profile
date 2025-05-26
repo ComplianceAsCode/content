@@ -1,5 +1,6 @@
 documentation_complete: true
 
+status: deprecated
 metadata:
     version: V1R1
     SMEs:

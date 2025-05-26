@@ -1,6 +1,5 @@
 #!/bin/bash
 # platform = Red Hat Enterprise Linux 8
-# remediation = none
 
 touch /etc/zipl.conf
 touch /boot/loader/entries/*.conf # Update current existing entries

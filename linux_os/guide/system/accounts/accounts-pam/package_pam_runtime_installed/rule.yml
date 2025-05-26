@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Install pam-runtime Package'
+
+description: |-
+    {{{ describe_package_install(package="libpam-runtime") }}}
+
+rationale: |-
+    libpam-runtime contains configuration that is needed
+    by other rules when configuring PAM options.
+
+severity: medium
+
+template:
+    name: package_installed
+    vars:
+        pkgname: libpam-runtime
+        evr: 0:1.5.3-5

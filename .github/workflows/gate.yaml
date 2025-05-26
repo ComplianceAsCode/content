@@ -83,25 +83,6 @@ jobs:
         working-directory: ./build
         run: ctest -j2 --output-on-failure -E unique-stigids
 
-  validate-ubuntu:
-    name: Build, Test on Ubuntu 20.04
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Install Deps
-        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
-      - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - name: Install deps python
-        run: pip3 install -r requirements.txt -r test-requirements.txt
-      - name: Build
-        env:
-          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
-        run: |-
-          ./build_product ubuntu1604 ubuntu1804 ubuntu2004 ubuntu2404
-      - name: Test
-        run: ctest -j2 --output-on-failure -E unique-stigids
-        working-directory: ./build
-
   validate-ubuntu-22-04:
     name: Build, Test on Ubuntu 22.04
     runs-on: ubuntu-22.04
@@ -116,7 +97,7 @@ jobs:
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
-          ./build_product ubuntu2204
+          ./build_product ubuntu1604 ubuntu1804 ubuntu2004 ubuntu2204
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -149,7 +130,7 @@ jobs:
       -   name: Run Updates
           run: dnf update -y
       -   name: Install Deps
-          run: dnf install -y cmake make openscap-utils bats ansible python3-pip ShellCheck git python3-devel gcc-c++ libxml2-devel libxslt-devel python3-setuptools
+          run: dnf install -y cmake make openscap-utils bats ansible python3-pip ShellCheck git python3-devel gcc-c++ libxml2-devel libxslt-devel python3-setuptools gawk
       -   name: Checkout
           uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       -   name: Install deps python
@@ -175,29 +156,3 @@ jobs:
       -   name: Test
           run: ctest -j2 --output-on-failure -E unique-stigids
           working-directory: ./build
-
-  validate-windows:
-    name: Build on Windows
-    runs-on: windows-latest
-    env:
-      OPENSCAP_VERSION: "1.4.2"
-      OPENSCAP_ROOT_DIR: "C:\\Program Files\\OpenSCAP 1.4.2"
-    steps:
-        - name: Install Deps
-          run: choco install xsltproc
-        - name: Get Latest OpenSCAP
-          shell: powershell
-          run: "Invoke-WebRequest -Uri https://nightly.link/OpenSCAP/openscap/workflows/build/main/openscap-win64.zip -OutFile ${{ github.workspace }}\\openscap-win.zip"
-        - name: Extract Latest OpenSCAP
-          shell: powershell
-          run: "Expand-Archive -LiteralPath ${{ github.workspace }}\\openscap-win.zip -DestinationPath ${{ github.workspace }}\\openscap-win -Verbose:$true"
-        - name: Install OpenSCAP
-          shell: powershell
-          run: "msiexec.exe /norestart /q /i ${{ github.workspace }}\\openscap-win\\OpenSCAP-${env:OPENSCAP_VERSION}-win64.msi"
-        - name: Checkout
-          uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-        - name: Install Python Deps
-          run: pip install -r requirements.txt -r test-requirements.txt
-        - name: Build
-          shell: bash
-          run: ./build_product -j2 fedora

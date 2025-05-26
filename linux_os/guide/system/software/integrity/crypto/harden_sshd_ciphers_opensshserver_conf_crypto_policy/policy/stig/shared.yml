@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} must implement DOD-approved encryption ciphers to protect the confidentiality of SSH server connections.
+    The {{{ full_name }}} SSH server must be configured to use only DOD-approved encryption ciphers employing FIPS 140-3 validated cryptographic hash algorithms to protect the confidentiality of SSH server connections.
 
 vuldiscussion: |-
     Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
@@ -8,21 +8,29 @@ vuldiscussion: |-
 
     Cryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.
 
-    {{{ full_name }}} incorporates system-wide crypto policies by default. The SSH configuration file has no effect on the ciphers, MACs, or algorithms unless specifically defined in the /etc/sysconfig/sshd file. The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/opensshserver.config file.
+    {{{ full_name }}} incorporates systemwide crypto policies by default. The SSH configuration file has no effect on the ciphers, MACs, or algorithms unless specifically defined in the /etc/sysconfig/sshd file. The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/opensshserver.config file.
 
 checktext: |-
-    Verify the SSH client is configured to use only ciphers employing FIPS 140-3 approved algorithms with the following command:
+    Verify the SSH server is configured to use only ciphers employing FIPS 140-3 approved algorithms.
 
-    $ sudo grep -i ciphers /etc/crypto-policies/back-ends/openssh.config
+    To verify the ciphers in the systemwide SSH configuration file, use the following command:
 
-    Ciphers aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr
+    $ sudo grep -i Ciphers /etc/crypto-policies/back-ends/opensshserver.config
+    Ciphers aes256-gcm@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr
 
-    If the cipher entries in the "openssh.config" file have any ciphers other than "aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr", the order differs from the example above, they are missing, or commented out, this is a finding.
+    If the cipher entries in the "opensshserver.config" file have any ciphers other than "aes256-gcm@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr", or they are missing or commented out, this is a finding.
 
 fixtext: |-
-    Configure the {{{ full_name }}} SSH client to use only ciphers employing FIPS 140-3 approved algorithms by updating the "/etc/crypto-policies/back-ends/openssh.config" file with the following line:
+    Configure the {{{ full_name }}} SSH server to use only ciphers employing FIPS 140-3 approved algorithms.
 
-    Ciphers aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr
+    Reinstall crypto-policies with the following command:
 
-    A reboot is required for the changes to take effect.
+    $ sudo dnf -y reinstall crypto-policies
 
+    Set the crypto-policy to FIPS with the following command:
+
+    $ sudo update-crypto-policies --set FIPS
+
+    Setting system policy to FIPS
+
+    Note: Systemwide crypto policies are applied on application startup. It is recommended to restart the system for the change of policies to fully take place.

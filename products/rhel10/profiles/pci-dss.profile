@@ -9,7 +9,7 @@ metadata:
 
 reference: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0_1.pdf
 
-title: 'DRAFT - PCI-DSS v4.0.1 Control Baseline for Red Hat Enterprise Linux 10'
+title: 'PCI-DSS v4.0.1 Control Baseline for Red Hat Enterprise Linux 10'
 
 description: |-
     This is a draft profile for experimental purposes.
@@ -27,11 +27,16 @@ selections:
     - var_password_hashing_algorithm=yescrypt
     - var_password_hashing_algorithm_pam=yescrypt
 
+    # RHEL 10 uses a different rule for auditing changes to selinux configuration (PCI-DSSv4 - 10.3.4)
+    - '!audit_rules_mac_modification'
+    - audit_rules_mac_modification_etc_selinux
+
     # More tests are needed to identify which rule is conflicting with rpm_verify_permissions.
     # https://github.com/ComplianceAsCode/content/issues/11285
     - '!rpm_verify_permissions'
 
     # these rules do not apply to RHEL 10
+    - '!enable_authselect'
     - '!package_audit-audispd-plugins_installed'
     - '!package_dhcp_removed'
     - '!package_ypserv_removed'
@@ -65,6 +70,8 @@ selections:
     - '!set_ip6tables_default_rule'
     - '!set_loopback_traffic'
     - '!set_password_hashing_algorithm_commonauth'
+    # Following rule are excluded since, "so far" no CCEs were defined for them and maybe irrelevant for rhel10
+    - '!enable_dconf_user_profile'
 
     # Following are incompatible with the rhel10 product (based on RHEL9)
     - '!service_chronyd_or_ntpd_enabled'

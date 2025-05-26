@@ -11,7 +11,7 @@
   check_mode: no
 
 - name: "Add default domain group (if no domain there)"
-  ini_file:
+  community.general.ini_file:
     path: /etc/sssd/sssd.conf
     section: "{{ item.section }}"
     option: "{{ item.option }}"
@@ -26,7 +26,7 @@
     - test_grep_domain.stdout | length < 1
 
 - name: "Enable Smartcards in SSSD"
-  ini_file:
+  community.general.ini_file:
     dest: /etc/sssd/sssd.conf
     section: pam
     option: pam_cert_auth
@@ -47,7 +47,7 @@
     replace: 'pam_cert_auth = True'
   with_items: "{{ sssd_conf_d_files.files }}"
 
-{{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
+{{% if product in ["fedora", "ol8", "ol9"] or 'rhel' in product %}}
 - name: '{{{ rule_title }}} - Check if system relies on authselect'
   ansible.builtin.stat:
     path: /usr/bin/authselect

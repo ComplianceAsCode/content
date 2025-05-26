@@ -34,5 +34,9 @@ template:
     vars:
         pkgname: systemd-journal-remote
 
+{{% if product in ['ubuntu2404'] %}}
+platform: service_disabled[rsyslog]
+{{% endif %}}
+
 fixtext: |-
     {{{ describe_package_install(package="systemd-journal-remote") }}}

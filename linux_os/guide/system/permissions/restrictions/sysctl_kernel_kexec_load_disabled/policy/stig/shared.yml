@@ -6,6 +6,8 @@ vuldiscussion: |-
 
     Disabling kexec_load prevents an unsigned kernel image (that could be a windows kernel or modified vulnerable kernel) from being loaded. Kexec can be used subvert the entire secureboot process and should be avoided at all costs especially since it can load unsigned kernel images.
 
+
+
 checktext: |-
     Verify {{{ full_name }}} is configured to disable kernel image loading.
 
@@ -33,4 +35,5 @@ fixtext: |-
     Load settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
 

@@ -1,6 +1,5 @@
 #!/bin/bash
 # packages = audit
-# remediation = bash
 # variables = var_accounts_passwords_pam_faillock_dir=/var/log/faillock
 
 echo "-w /var/log/faillock -p wa -k logins" >> /etc/audit/rules.d/logins.rules

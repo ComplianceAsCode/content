@@ -9,14 +9,15 @@ vuldiscussion: |-
 checktext: |-
     Verify that the quagga package is not installed with the following command:
 
-    $ sudo dnf list --installed quagga
+    $ dnf list --installed quagga
 
     Error: No matching Packages to list
 
-    If the "quagga" package is installed, and is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.
+    If the "quagga" package is installed and is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.
 
 fixtext: |-
     Remove the quagga package with the following command:
 
     $ sudo dnf remove quagga
+
 

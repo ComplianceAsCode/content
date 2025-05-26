@@ -29,8 +29,7 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-
 ocil: |-
   {{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/*/*/*/*.crt", group="root") }}}
 
-platforms:
-  - ocp4-master-node
+platform: ocp4-master-node
 
 warnings:
   - dependency: |-

@@ -7,22 +7,21 @@ vuldiscussion: |-
 checktext: |-
     Verify that the kdump service is disabled in system boot configuration with the following command:
 
-    $ systemctl is-enabled  kdump
+    $ sudo systemctl is-enabled  kdump
 
     disabled
 
     Verify that the kdump service is not active (i.e., not running) through current runtime configuration with the following command:
 
-    $ systemctl is-active kdump
+    $ sudo systemctl is-active kdump
 
-    inactive
+    masked
 
     Verify that the kdump service is masked with the following command:
 
     $ sudo systemctl show  kdump  | grep "LoadState\|UnitFileState"
 
     LoadState=masked
-
     UnitFileState=masked
 
     If the "kdump" service is loaded or active, and is not masked, this is a finding.
@@ -37,4 +36,5 @@ fixtext: |-
     To mask the kdump service run the following command:
 
     $ sudo systemctl mask --now kdump
+
 

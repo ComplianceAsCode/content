@@ -1,3 +1,4 @@
+{{% if product not in ['ubuntu2404'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("The world-write permission should be disabled for all files.") }}}
@@ -49,3 +50,4 @@
     <unix:object object_ref="object_file_permissions_unauthorized_world_write" />
   </unix:file_test>
 </def-group>
+{{% endif %}}

@@ -15,7 +15,7 @@ vuldiscussion: |-
 checktext: |-
     Check that AIDE is properly configured to protect the integrity of the audit tools with the following command:
 
-    $ sudo cat /etc/aide.conf | grep /usr/sbin/au
+    $ sudo grep /usr/bin/au /etc/aide.conf
 
     /usr/sbin/auditctl p+i+n+u+g+s+b+acl+xattrs+sha512
     /usr/sbin/auditd p+i+n+u+g+s+b+acl+xattrs+sha512
@@ -26,7 +26,9 @@ checktext: |-
 
     If AIDE is not installed, ask the system administrator (SA) how file integrity checks are performed on the system.
 
-    If any of the audit tools listed above do not have a corresponding line, ask the SA to indicate what cryptographic mechanisms are being used to protect the integrity of the audit tools.  If there is no evidence of integrity protection, this is a finding.
+    If any of the audit tools listed above do not have a corresponding line, ask the SA to indicate what cryptographic mechanisms are being used to protect the integrity of the audit tools.
+
+    If there is no evidence of integrity protection, this is a finding.
 
 fixtext: |-
     Add or update the following lines to "/etc/aide.conf", to protect the integrity of the audit tools.

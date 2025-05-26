@@ -1,5 +1,4 @@
 #!/bin/bash
-# remediation = none
 
 {{{ bash_package_install("chrony") }}}
 {{{ bash_package_install("systemd-timesyncd") }}}

@@ -7,7 +7,7 @@
       <criteria operator="AND">
         <extend_definition definition_ref="bootc" comment="The system is RHEL Image Mode"/>
         <extend_definition definition_ref="installed_env_is_a_container" comment="The system is container"/>
-        {{%- if product not in ["rhel10"] -%}}
+        {{%- if product not in ["rhel10", "rhel9"] -%}}
         <extend_definition definition_ref="enable_dracut_fips_module"
           comment="dracut FIPS module is enabled"/>
         {{%- endif -%}}
@@ -34,7 +34,7 @@
           comment="check contents of /proc/sys/crypto/fips_enabled"/>
         <extend_definition definition_ref="sysctl_crypto_fips_enabled"
           comment="check option crypto.fips_enabled = 1 in sysctl"/>
-        {{%- if product not in ["rhel10"] -%}}
+        {{%- if product not in ["rhel10", "rhel9"] -%}}
         <extend_definition definition_ref="enable_dracut_fips_module"
           comment="dracut FIPS module is enabled"/>
         {{%- endif -%}}

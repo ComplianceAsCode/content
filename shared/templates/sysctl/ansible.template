@@ -34,6 +34,14 @@
     replace: '#{{{ SYSCTLVAR }}}'
   loop: "{{ find_sysctl_d.files }}"
 
+{{% if product in [ "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
+- name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/ufw/sysctl.conf
+  replace:
+    path: "/etc/ufw/sysctl.conf"
+    regexp: '(^[\s]*{{{ SYSCTLVAR }}}.*$)'
+    replace: '# \1'
+{{% endif %}}
+
 {{% if sysctl_remediate_drop_in_file == "true" %}}
 - name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.conf
   replace:

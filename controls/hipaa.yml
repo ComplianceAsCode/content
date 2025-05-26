@@ -56,6 +56,7 @@ controls:
             - audit_rules_dac_modification_chown
             - audit_rules_dac_modification_fchmod
             - audit_rules_dac_modification_fchmodat
+            - audit_rules_dac_modification_fchmodat2
             - audit_rules_dac_modification_fchown
             - audit_rules_dac_modification_fchownat
             - audit_rules_dac_modification_fremovexattr
@@ -71,6 +72,7 @@ controls:
             - audit_rules_execution_setsebool
             - audit_rules_file_deletion_events_rename
             - audit_rules_file_deletion_events_renameat
+            - audit_rules_file_deletion_events_renameat2
             - audit_rules_file_deletion_events_rmdir
             - audit_rules_file_deletion_events_unlink
             - audit_rules_file_deletion_events_unlinkat
@@ -117,15 +119,13 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
-            {{% if product == "rhel10" %}}
-            - audit_rules_mac_modification_etc_selinux
-            {{% else %}}
             - audit_rules_mac_modification
-            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
-            - audit_rules_session_events
+            - audit_rules_session_events_utmp
+            - audit_rules_session_events_btmp
+            - audit_rules_session_events_wtmp
             - audit_rules_sysadmin_actions
             - audit_rules_system_shutdown
             - audit_rules_usergroup_modification_group
@@ -206,7 +206,6 @@ controls:
             - addressable
         rules:
             - coreos_nousb_kernel_argument
-            - grub2_nousb_argument
             - kernel_module_usb-storage_disabled
             - service_autofs_disabled
         status: automated
@@ -221,6 +220,7 @@ controls:
             - audit_rules_dac_modification_chown
             - audit_rules_dac_modification_fchmod
             - audit_rules_dac_modification_fchmodat
+            - audit_rules_dac_modification_fchmodat2
             - audit_rules_dac_modification_fchown
             - audit_rules_dac_modification_fchownat
             - audit_rules_dac_modification_fremovexattr
@@ -236,6 +236,7 @@ controls:
             - audit_rules_execution_setsebool
             - audit_rules_file_deletion_events_rename
             - audit_rules_file_deletion_events_renameat
+            - audit_rules_file_deletion_events_renameat2
             - audit_rules_file_deletion_events_rmdir
             - audit_rules_file_deletion_events_unlink
             - audit_rules_file_deletion_events_unlinkat
@@ -282,15 +283,13 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
-            {{% if product == "rhel10" %}}
-            - audit_rules_mac_modification_etc_selinux
-            {{% else %}}
             - audit_rules_mac_modification
-            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
-            - audit_rules_session_events
+            - audit_rules_session_events_utmp
+            - audit_rules_session_events_btmp
+            - audit_rules_session_events_wtmp
             - audit_rules_sysadmin_actions
             - audit_rules_system_shutdown
             - audit_rules_usergroup_modification_group
@@ -305,7 +304,6 @@ controls:
             - audit_rules_time_watch_localtime
             - auditd_data_retention_flush
             - coreos_nousb_kernel_argument
-            - grub2_nousb_argument
             - kernel_module_usb-storage_disabled
             - service_autofs_disabled
         status: automated
@@ -358,8 +356,10 @@ controls:
             - service_rexec_disabled
             - service_rlogin_disabled
             - service_rsh_disabled
+            {{%- if "rhel" not in product %}}
             - package_talk-server_removed
             - package_talk_removed
+           {{%- endif %}}
             - package_telnet-server_removed
             - package_telnet_removed
             - service_telnet_disabled
@@ -417,6 +417,7 @@ controls:
             - audit_rules_dac_modification_chown
             - audit_rules_dac_modification_fchmod
             - audit_rules_dac_modification_fchmodat
+            - audit_rules_dac_modification_fchmodat2
             - audit_rules_dac_modification_fchown
             - audit_rules_dac_modification_fchownat
             - audit_rules_dac_modification_fremovexattr
@@ -432,6 +433,7 @@ controls:
             - audit_rules_execution_setsebool
             - audit_rules_file_deletion_events_rename
             - audit_rules_file_deletion_events_renameat
+            - audit_rules_file_deletion_events_renameat2
             - audit_rules_file_deletion_events_rmdir
             - audit_rules_file_deletion_events_unlink
             - audit_rules_file_deletion_events_unlinkat
@@ -478,15 +480,13 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
-            {{% if product == "rhel10" %}}
-            - audit_rules_mac_modification_etc_selinux
-            {{% else %}}
             - audit_rules_mac_modification
-            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
-            - audit_rules_session_events
+            - audit_rules_session_events_utmp
+            - audit_rules_session_events_btmp
+            - audit_rules_session_events_wtmp
             - audit_rules_sysadmin_actions
             - audit_rules_system_shutdown
             - audit_rules_usergroup_modification_group
@@ -1039,7 +1039,6 @@ controls:
             - grub2_uefi_admin_username
             - grub2_uefi_password
             - coreos_nousb_kernel_argument
-            - grub2_nousb_argument
             - kernel_module_usb-storage_disabled
             - service_autofs_disabled
         status: automated
@@ -1054,7 +1053,6 @@ controls:
             - base
         rules:
             - coreos_nousb_kernel_argument
-            - grub2_nousb_argument
             - kernel_module_usb-storage_disabled
             - service_autofs_disabled
         status: automated
@@ -1133,7 +1131,6 @@ controls:
             - base
         rules:
             - coreos_nousb_kernel_argument
-            - grub2_nousb_argument
             - kernel_module_usb-storage_disabled
             - service_autofs_disabled
             - encrypt_partitions
@@ -1151,6 +1148,7 @@ controls:
             - audit_rules_dac_modification_chown
             - audit_rules_dac_modification_fchmod
             - audit_rules_dac_modification_fchmodat
+            - audit_rules_dac_modification_fchmodat2
             - audit_rules_dac_modification_fchown
             - audit_rules_dac_modification_fchownat
             - audit_rules_dac_modification_fremovexattr
@@ -1166,6 +1164,7 @@ controls:
             - audit_rules_execution_setsebool
             - audit_rules_file_deletion_events_rename
             - audit_rules_file_deletion_events_renameat
+            - audit_rules_file_deletion_events_renameat2
             - audit_rules_file_deletion_events_rmdir
             - audit_rules_file_deletion_events_unlink
             - audit_rules_file_deletion_events_unlinkat
@@ -1212,15 +1211,13 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
-            {{% if product == "rhel10" %}}
-            - audit_rules_mac_modification_etc_selinux
-            {{% else %}}
             - audit_rules_mac_modification
-            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
-            - audit_rules_session_events
+            - audit_rules_session_events_utmp
+            - audit_rules_session_events_btmp
+            - audit_rules_session_events_wtmp
             - audit_rules_sysadmin_actions
             - audit_rules_system_shutdown
             - audit_rules_usergroup_modification_group
@@ -1273,7 +1270,6 @@ controls:
             - addressable
         rules:
             - coreos_nousb_kernel_argument
-            - grub2_nousb_argument
             - kernel_module_usb-storage_disabled
             - service_autofs_disabled
             - encrypt_partitions
@@ -1291,6 +1287,7 @@ controls:
             - audit_rules_dac_modification_chown
             - audit_rules_dac_modification_fchmod
             - audit_rules_dac_modification_fchmodat
+            - audit_rules_dac_modification_fchmodat2
             - audit_rules_dac_modification_fchown
             - audit_rules_dac_modification_fchownat
             - audit_rules_dac_modification_fremovexattr
@@ -1306,6 +1303,7 @@ controls:
             - audit_rules_execution_setsebool
             - audit_rules_file_deletion_events_rename
             - audit_rules_file_deletion_events_renameat
+            - audit_rules_file_deletion_events_renameat2
             - audit_rules_file_deletion_events_rmdir
             - audit_rules_file_deletion_events_unlink
             - audit_rules_file_deletion_events_unlinkat
@@ -1352,15 +1350,13 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
-            {{% if product == "rhel10" %}}
-            - audit_rules_mac_modification_etc_selinux
-            {{% else %}}
             - audit_rules_mac_modification
-            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
-            - audit_rules_session_events
+            - audit_rules_session_events_utmp
+            - audit_rules_session_events_btmp
+            - audit_rules_session_events_wtmp
             - audit_rules_sysadmin_actions
             - audit_rules_system_shutdown
             - audit_rules_usergroup_modification_group
@@ -1382,7 +1378,6 @@ controls:
             - service_auditd_enabled
             - rsyslog_remote_loghost
             - coreos_nousb_kernel_argument
-            - grub2_nousb_argument
             - kernel_module_usb-storage_disabled
             - service_autofs_disabled
             - encrypt_partitions
@@ -1461,6 +1456,7 @@ controls:
             - audit_rules_dac_modification_chown
             - audit_rules_dac_modification_fchmod
             - audit_rules_dac_modification_fchmodat
+            - audit_rules_dac_modification_fchmodat2
             - audit_rules_dac_modification_fchown
             - audit_rules_dac_modification_fchownat
             - audit_rules_dac_modification_fremovexattr
@@ -1476,6 +1472,7 @@ controls:
             - audit_rules_execution_setsebool
             - audit_rules_file_deletion_events_rename
             - audit_rules_file_deletion_events_renameat
+            - audit_rules_file_deletion_events_renameat2
             - audit_rules_file_deletion_events_rmdir
             - audit_rules_file_deletion_events_unlink
             - audit_rules_file_deletion_events_unlinkat
@@ -1522,15 +1519,13 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
-            {{% if product == "rhel10" %}}
-            - audit_rules_mac_modification_etc_selinux
-            {{% else %}}
             - audit_rules_mac_modification
-            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
-            - audit_rules_session_events
+            - audit_rules_session_events_utmp
+            - audit_rules_session_events_btmp
+            - audit_rules_session_events_wtmp
             - audit_rules_sysadmin_actions
             - audit_rules_system_shutdown
             - audit_rules_usergroup_modification_group
@@ -1559,6 +1554,7 @@ controls:
             - audit_rules_dac_modification_chown
             - audit_rules_dac_modification_fchmod
             - audit_rules_dac_modification_fchmodat
+            - audit_rules_dac_modification_fchmodat2
             - audit_rules_dac_modification_fchown
             - audit_rules_dac_modification_fchownat
             - audit_rules_dac_modification_fremovexattr
@@ -1574,6 +1570,7 @@ controls:
             - audit_rules_execution_setsebool
             - audit_rules_file_deletion_events_rename
             - audit_rules_file_deletion_events_renameat
+            - audit_rules_file_deletion_events_renameat2
             - audit_rules_file_deletion_events_rmdir
             - audit_rules_file_deletion_events_unlink
             - audit_rules_file_deletion_events_unlinkat
@@ -1620,15 +1617,13 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
-            {{% if product == "rhel10" %}}
-            - audit_rules_mac_modification_etc_selinux
-            {{% else %}}
             - audit_rules_mac_modification
-            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
-            - audit_rules_session_events
+            - audit_rules_session_events_utmp
+            - audit_rules_session_events_btmp
+            - audit_rules_session_events_wtmp
             - audit_rules_sysadmin_actions
             - audit_rules_system_shutdown
             - audit_rules_usergroup_modification_group

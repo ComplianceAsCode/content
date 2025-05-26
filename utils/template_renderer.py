@@ -98,6 +98,7 @@ class Renderer(object):
             abs_basedir = os.path.join(lookup_dirs[0], template_basedir)
             lookup_dirs.append(abs_basedir)
 
+        ssg.jinja._get_jinja_environment(dict())
         ssg.jinja._get_jinja_environment.env.loader = FlexibleLoader(lookup_dirs)
         return ssg.jinja.process_file(html_jinja_template, subst_dict)
 

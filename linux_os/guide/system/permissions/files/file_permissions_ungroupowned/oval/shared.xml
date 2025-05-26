@@ -1,3 +1,4 @@
+{{% if product not in ['ubuntu2404'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("All files should be owned by a group") }}}
@@ -106,3 +107,4 @@
     <unix:object object_ref="object_file_permissions_ungroupowned_with_usrlib"/>
   </unix:file_test>
 </def-group>
+{{% endif %}}

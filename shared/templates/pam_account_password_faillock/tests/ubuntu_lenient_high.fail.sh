@@ -1,7 +1,7 @@
 #!/bin/bash
+{{{ tests_init_faillock_vars("lenient_high") }}}
 # platform = multi_platform_ubuntu
 
-{{{ tests_init_faillock_vars("lenient_high") }}}
 
 {{{ bash_enable_pam_faillock_directly_in_pam_files() }}}
 

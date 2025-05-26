@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
 # reboot = false
 # strategy = enable
 # complexity = low
@@ -16,7 +16,7 @@
   changed_when: False
 
 - name: Set gpgcheck=1 for each {{{ pkg_manager }}} repo
-  ini_file:
+  community.general.ini_file:
     path: "{{ item[0] }}"
     section: "{{ item[1] }}"
     option: gpgcheck

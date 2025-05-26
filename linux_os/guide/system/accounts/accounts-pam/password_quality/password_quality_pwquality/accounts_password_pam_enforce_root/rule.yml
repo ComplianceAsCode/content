@@ -13,7 +13,7 @@ rationale: |-
     Use of a complex password helps to increase the time and resources required to compromise
     the password. Password complexity, or strength, is a measure of the effectiveness of a
     password in resisting attempts at guessing and brute-force attacks.
-    
+
     Password complexity is one factor of several that determines how long it takes to crack a
     password. The more complex the password, the greater the number of possible combinations
     that need to be tested before the password is compromised.
@@ -26,7 +26,6 @@ identifiers:
     cce@rhel10: CCE-90134-8
 
 references:
-    disa: CCI-004066
     nist: IA-5(c),IA-5(1)(a),CM-6(a),IA-5(4)
     srg: SRG-OS-000072-GPOS-00040,SRG-OS-000071-GPOS-00039,SRG-OS-000070-GPOS-00038,SRG-OS-000266-GPOS-00101,SRG-OS-000078-GPOS-00046,SRG-OS-000480-GPOS-00225,SRG-OS-000069-GPOS-00037
 
@@ -51,12 +50,12 @@ fixtext: |-
 srg_requirement: |-
     {{{ full_name }}} must enforce password complexity rules for the root account.
 
-platform: package[pam]
+platform: package[libpwquality]
 
 template:
     name: "lineinfile"
     vars:
         text: "enforce_for_root"
         path: "/etc/security/pwquality.conf"
-        oval_extend_definitions:
-            - accounts_password_pam_pwquality
+    backends:
+        oval: off

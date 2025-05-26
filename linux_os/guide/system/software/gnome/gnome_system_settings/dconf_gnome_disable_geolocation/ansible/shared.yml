@@ -1,10 +1,10 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_almalinux
 # reboot = false
 # strategy = unknown
 # complexity = low
 # disruption = medium
 - name: "Disable Geolocation in GNOME3 - location tracking"
-  ini_file:
+  community.general.ini_file:
     dest: /etc/dconf/db/local.d/00-security-settings
     section: org/gnome/system/location
     option: enabled
@@ -13,7 +13,7 @@
     no_extra_spaces: yes
 
 - name: "Disable Geolocation in GNOME3 - clock location tracking"
-  ini_file:
+  community.general.ini_file:
     dest: /etc/dconf/db/local.d/00-security-settings
     section: org/gnome/clocks
     option: gelocation

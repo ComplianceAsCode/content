@@ -3,6 +3,7 @@ packages:
 - shadow-utils
 rules:
 - account_disable_post_pw_expiration
+- accounts_authorized_local_users
 - accounts_have_homedir_login_defs
 - accounts_logon_fail_delay
 - accounts_maximum_age_login_defs
@@ -13,4 +14,6 @@ rules:
 - file_groupownership_lastlog
 - file_ownership_lastlog
 - file_permissions_lastlog
+- gid_passwd_group_same
+- no_empty_passwords_etc_shadow
 - set_password_hashing_algorithm_logindefs

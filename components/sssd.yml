@@ -3,17 +3,23 @@ groups:
 - sssd-ldap
 name: sssd
 packages:
+- libnss-sss
 - sssd
 - sssd-common
 - sssd-ipa
+- libpam-sss
 rules:
+- package_nss_sss_installed
+- package_pam_sss_installed
 - package_sssd-ipa_installed
 - package_sssd_installed
 - service_sssd_enabled
 - sssd_certificate_verification
+- sssd_certification_path_trust_anchor
 - sssd_enable_certmap
 - sssd_enable_pam_services
 - sssd_enable_smartcards
+- sssd_enable_user_cert
 - sssd_has_trust_anchor
 - sssd_ldap_configure_tls_ca
 - sssd_ldap_configure_tls_ca_dir

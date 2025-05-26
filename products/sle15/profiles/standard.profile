@@ -82,7 +82,6 @@ selections:
     - var_accounts_passwords_pam_faillock_unlock_time=never
     - var_password_pam_retry=3
     - accounts_logon_fail_delay
-    - accounts_password_pam_retry
     - service_httpd_disabled
     - package_httpd_removed
     - package_firewalld_installed

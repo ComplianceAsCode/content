@@ -57,3 +57,10 @@ selections:
     # Packages not available in OL
     - "!package_libdnf-plugin-subscription-manager_installed"
     - "!package_subscription-manager_installed"
+    
+    # These rules are introduced by ism_o control
+    - "!grub2_enable_fips_mode"
+    - "!package_pcsc-lite-ccid_installed"
+    - "!system_booted_in_fips_mode"
+    - "var_password_hashing_algorithm_pam=sha512"
+    - "enable_fips_mode"

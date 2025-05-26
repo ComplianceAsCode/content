@@ -1,6 +1,5 @@
 #!/bin/bash
 # packages = audit
-# remediation = bash
 
 {{{ setup_auditctl_environment() }}}
 

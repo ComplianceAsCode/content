@@ -9,17 +9,19 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} remote access using SSH prevents logging on with a blank password with the following command:
 
-    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*permitemptypasswords'
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*permitemptypasswords'
 
-    PermitEmptyPassword no
+    PermitEmptyPasswords no
 
-    If the "PermitEmptyPassword" keyword is set to "yes", is missing, or is commented out, this is a finding.
+    If the "PermitEmptyPasswords" keyword is set to "yes", is missing, or is commented out, this is a finding.
 
 fixtext: |-
-    To configure the system to prevent SSH users from logging on with blank passwords edit the following line in "etc/ssh/sshd_config":
+    To configure the system to prevent SSH users from logging on with blank passwords edit the following line in "/etc/ssh/sshd_config" or in a file in "/etc/ssh/sshd_config.d":
 
     PermitEmptyPasswords no
 
     Restart the SSH daemon for the settings to take effect:
 
     $ sudo systemctl restart sshd.service
+
+

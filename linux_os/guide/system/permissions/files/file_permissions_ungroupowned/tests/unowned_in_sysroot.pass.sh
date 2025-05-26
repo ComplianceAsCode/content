@@ -1,6 +1,8 @@
 #!/bin/bash
 #
-# remediation = none
+{{% if 'ubuntu' in product %}}
+# platform = Not Applicable
+{{% endif %}}
 
 UNOWNED_FILES=$(df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nogroup)
 

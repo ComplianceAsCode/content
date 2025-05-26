@@ -7,7 +7,7 @@ vuldiscussion: |-
 checktext: |-
     Verify that the sudoers security policy is configured to use the invoking user's password for privilege escalation with the following command:
 
-    $ sudo egrep -ir '(!rootpw|!targetpw|!runaspw)' /etc/sudoers /etc/sudoers.d/* | grep -v '#'
+    $ sudo egrep -ir '(!rootpw|!targetpw|!runaspw)' /etc/sudoers /etc/sudoers.d/ | grep -v '#'
 
     /etc/sudoers:Defaults !targetpw
     /etc/sudoers:Defaults !rootpw
@@ -29,4 +29,3 @@ fixtext: |-
     Defaults !targetpw
     Defaults !rootpw
     Defaults !runaspw
-

@@ -1,7 +1,7 @@
 policy: CIS Benchmark for Ubuntu 24.04 LTS
 title: CIS Benchmark for Ubuntu 24.04 LTS
 id: cis_ubuntu2404
-version: Draft
+version: '1.0.0'
 source: https://www.cisecurity.org/cis-benchmarks
 levels:
   - id: l1_server
@@ -77,36 +77,35 @@ controls:
       - l2_workstation
     related_rules:
       - kernel_module_squashfs_disabled
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/1.1.1.2.
+    status: inherently met
+    notes: |
+      This control passes if squashfs is precompiled into the kernel,
+      which is the case for all Noble builds.
 
   - id: 1.1.1.8
     title: Ensure udf kernel module is not available (Automated)
     levels:
       - l2_server
       - l2_workstation
-    related_rules:
+    rules:
       - kernel_module_udf_disabled
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/1.1.1.3.
+    status: automated
 
   - id: 1.1.1.9
     title: Ensure usb-storage kernel module is not available (Automated)
     levels:
       - l1_server
       - l2_workstation
-    related_rules:
+    rules:
       - kernel_module_usb-storage_disabled
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/1.1.10.
+    status: automated
 
   - id: 1.1.1.10
     title: Ensure unused filesystems kernel modules are not available (Manual)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    status: manual
 
   - id: 1.1.2.1.1
     title: Ensure /tmp is a separate partition (Automated)
@@ -347,8 +346,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/1.2.2.
+    status: manual
 
   - id: 1.2.1.2
     title: Ensure package manager repositories are configured (Manual)
@@ -362,8 +360,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/1.9.
+    status: manual
 
   - id: 1.3.1.1
     title: Ensure AppArmor is installed (Automated)
@@ -390,13 +387,17 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - var_apparmor_mode=enforce
+      - var_apparmor_mode=keep_existing_mode
       - all_apparmor_profiles_in_enforce_complain_mode
-    status: partial
+    status: automated
     notes: |
-      Current implementation does not adequately address the nuances
-      of various profiles, including snap, disabled, force-complain,
-      and unconfined.
+      CIS recommendation does not adequately address the nuances
+      of various profiles, including disabled, force-complain,
+      and unconfined. Currently, the control changes the default apparmor
+      mode for all profiles in /etc/apparmor.d which can
+      break certain applications. See https://workbench.cisecurity.org/benchmarks/18959/tickets/23987
+      The remediation for this rule is currently disabled via
+      var_apparmor_mode=keep_existing_mode
 
   - id: 1.3.1.4
     title: Ensure all AppArmor Profiles are enforcing (Automated)
@@ -404,13 +405,14 @@ controls:
       - l2_server
       - l2_workstation
     rules:
-      - var_apparmor_mode=enforce
       - all_apparmor_profiles_enforced
-    status: partial
+    status: automated
     notes: |
-      Current implementation does not adequately address the nuances
-      of various profiles, including snap, disabled, force-complain,
-      and unconfined.
+      CIS recommendation does not adequately address the nuances
+      of various profiles, including disabled, force-complain,
+      and unconfined. Currently, the control changes the default apparmor
+      mode for all profiles in /etc/apparmor.d which can
+      break certain applications. See https://workbench.cisecurity.org/benchmarks/18959/tickets/23987
 
   - id: 1.4.1
     title: Ensure bootloader password is set (Automated)
@@ -484,7 +486,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - cis_banner_text=cis
       - banner_etc_motd_cis
     status: automated
@@ -621,10 +623,10 @@ controls:
     levels:
       - l1_server
       - l2_workstation
-    status: automated
     rules:
       - dconf_gnome_disable_automount
       - dconf_gnome_disable_automount_open
+    status: automated
     notes: |
       The rules satisfy both controls 1.7.6 and 1.7.7
 
@@ -745,7 +747,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_nfs-kernel-server_removed
       - service_nfs_disabled
     status: automated
@@ -876,8 +878,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/2.4.
+    status: manual
 
   - id: 2.2.1
     title: Ensure NIS Client is not installed (Automated)
@@ -912,6 +913,7 @@ controls:
       - l1_server
       - l1_workstation
     rules:
+      - package_inetutils-telnet_removed
       - package_telnet_removed
     status: automated
 
@@ -940,28 +942,39 @@ controls:
       - l1_server
       - l1_workstation
     rules:
+      - var_timesync_service=systemd-timesyncd
+      - package_chrony_installed
+      - service_chronyd_enabled
+      - service_chronyd_disabled
+      - package_timesyncd_installed
+      - service_timesyncd_enabled
+      - service_timesyncd_disabled
       - ntp_single_service_active
     status: automated
+    notes: |
+      To select which timesync daemon to install and configure, use the
+      profile variable var_timesync_service.
 
   - id: 2.3.2.1
     title: Ensure systemd-timesyncd configured with authorized timeserver (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: automated
     rules:
       - var_multiple_time_servers=ubuntu
       - service_timesyncd_configured
+    status: automated
 
   - id: 2.3.2.2
     title: Ensure systemd-timesyncd is enabled and running (Automated)
     levels:
       - l1_server
       - l1_workstation
-    rules:
-      - service_chronyd_disabled
+    related_rules:
       - service_timesyncd_enabled
+      - service_timesyncd_disabled
     status: automated
+    notes: Implemented in 2.3.1.1
 
   - id: 2.3.3.1
     title: Ensure chrony is configured with authorized timeserver (Automated)
@@ -977,7 +990,6 @@ controls:
       Rule does not check or remediate config files included via
       confdir and sourcedir directives.
 
-
   - id: 2.3.3.2
     title: Ensure chrony is running as user _chrony (Automated)
     levels:
@@ -992,10 +1004,11 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    rules:
-      - "!service_chronyd_enabled"
-      - "!service_timesyncd_disabled"
+    related_rules:
+      - service_chronyd_enabled
+      - service_chronyd_disabled
     status: automated
+    notes: Implemented in 2.3.1.1
 
   - id: 2.4.1.1
     title: Ensure cron daemon is enabled and active (Automated)
@@ -1013,6 +1026,7 @@ controls:
       - l1_server
       - l1_workstation
     rules:
+      - file_cron_allow_exists
       - file_groupowner_crontab
       - file_owner_crontab
       - file_permissions_crontab
@@ -1107,8 +1121,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/3.1.1.
+    status: manual
 
   - id: 3.1.2
     title: Ensure wireless interfaces are disabled (Automated)
@@ -1281,10 +1294,11 @@ controls:
       - l1_workstation
     rules:
       - firewall_single_service_active
+      - var_network_filtering_service=nftables
     status: automated
     notes: |
-      Remediation is not automated.
-
+      Remediation is not automated. To select which firewall to
+      install and configure, use the profile variable var_network_filtering_service.
 
   - id: 4.2.1
     title: Ensure ufw is installed (Automated)
@@ -1328,8 +1342,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/3.5.1.5.
+    status: manual
 
   - id: 4.2.6
     title: Ensure ufw firewall rules exist for all open ports (Automated)
@@ -1372,8 +1385,6 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    rules:
-      - ensure_iptables_are_flushed
     status: manual
 
   - id: 4.3.4
@@ -1415,8 +1426,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/3.5.2.7.
+    status: manual
 
   - id: 4.3.8
     title: Ensure nftables default deny firewall policy (Automated)
@@ -1441,11 +1451,14 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - var_nftables_master_config_file=etc
       - nftables_rules_permanent
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/3.5.2.10.
+    status: automated
+    notes: |
+      Audit procedure for 4.3.10 depends on local site policy thus
+      it cannot be fully automated. Upstream ticket:
+      https://workbench.cisecurity.org/benchmarks/18959/tickets/23190
 
   - id: 4.4.1.1
     title: Ensure iptables packages are installed (Automated)
@@ -1463,7 +1476,6 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - package_nftables_removed
       - service_nftables_disabled
     status: automated
 
@@ -1499,8 +1511,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/3.5.3.2.3.
+    status: manual
 
   - id: 4.4.2.4
     title: Ensure iptables firewall rules exist for all open ports (Automated)
@@ -1534,8 +1545,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/3.5.3.3.3.
+    status: manual
 
   - id: 4.4.3.4
     title: Ensure ip6tables firewall rules exist for all open ports (Automated)
@@ -1832,16 +1842,21 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - package_pam_runtime_installed
+    status: automated
+    notes: |
+      The CIS control checks that version >= 1.5.3-5 and not that
+      it is the latest version as the title suggests.
 
   - id: 5.3.1.2
     title: Ensure libpam-modules is installed (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - package_pam_modules_installed
+    status: automated
 
   - id: 5.3.1.3
     title: Ensure libpam-pwquality is installed (Automated)
@@ -1903,18 +1918,20 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated
     rules:
       - var_accounts_passwords_pam_faillock_unlock_time=900
       - accounts_passwords_pam_faillock_unlock_time
+    status: automated
 
   - id: 5.3.3.1.3
     title: Ensure password failed attempts lockout includes root account (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - var_accounts_passwords_pam_faillock_unlock_time=900
+      - accounts_passwords_pam_faillock_root_unlock_time
+    status: automated
 
   - id: 5.3.3.2.1
     title: Ensure password number of changed characters is configured (Automated)
@@ -2036,7 +2053,7 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - no_empty_passwords
+      - no_empty_passwords_unix
     status: automated
 
   - id: 5.3.3.4.2
@@ -2208,8 +2225,11 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - no_invalid_shell_accounts_unlocked
+    status: automated
+    notes: |
+      Remediation is not automated.
 
   - id: 5.4.3.1
     title: Ensure nologin is not listed in /etc/shells (Automated)
@@ -2256,16 +2276,14 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/4.2.1.7.
+    status: manual
 
   - id: 6.1.1.3
     title: Ensure journald log file rotation is configured (Manual)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/4.2.1.6.
+    status: manual
 
   - id: 6.1.1.4
     title: Ensure only one logging system is in use (Automated)
@@ -2297,17 +2315,19 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/4.2.1.1.2.
+    rules:
+      - systemd_journal_upload_server_tls
+      - systemd_journal_upload_url
+    status: automated
 
   - id: 6.1.2.1.3
     title: Ensure systemd-journal-upload is enabled and active (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: automated
     rules:
       - service_systemd-journal-upload_enabled
+    status: automated
 
   - id: 6.1.2.1.4
     title: Ensure systemd-journal-remote service is not in use (Automated)
@@ -2386,8 +2406,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/4.2.2.5.
+    status: manual
 
   - id: 6.1.3.6
     title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
@@ -2416,18 +2435,60 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    status: manual
 
   - id: 6.1.4.1
     title: Ensure access to all logfiles has been configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:  
+      - file_groupownerships_var_log_apt
+      - file_groupownerships_var_log_gdm
+      - file_groupownerships_var_log_gdm3
+      - file_groupownerships_var_log_sssd
+      - file_groupowner_var_log_auth
+      - file_groupowner_var_log_cloud_init
+      - file_groupowner_var_log_journal
+      - file_groupowner_var_log_lastlog
+      - file_groupowner_var_log_localmessages
+      - file_groupowner_var_log_messages
+      - file_groupowner_var_log_secure
+      - file_groupowner_var_log_syslog
+      - file_groupowner_var_log_waagent
+      - file_groupowner_var_log_wbtmp
+      - file_ownerships_var_log_apt
+      - file_ownerships_var_log_gdm
+      - file_ownerships_var_log_gdm3
+      - file_ownerships_var_log_sssd
+      - file_owner_var_log_auth
+      - file_owner_var_log_cloud_init
+      - file_owner_var_log_journal
+      - file_owner_var_log_lastlog
+      - file_owner_var_log_localmessages
+      - file_owner_var_log_messages
+      - file_owner_var_log_secure
+      - file_owner_var_log_syslog
+      - file_owner_var_log_waagent
+      - file_owner_var_log_wbtmp
+      - file_permissions_var_log_apt
+      - file_permissions_var_log_auth
+      - file_permissions_var_log_cloud-init
+      - file_permissions_var_log_gdm
+      - file_permissions_var_log_gdm3
+      - file_permissions_var_log_lastlog
+      - file_permissions_var_log_cloud-init
+      - file_permissions_var_log_localmessages
+      - file_permissions_var_log_messages
+      - file_permissions_var_log_secure
+      - file_permissions_var_log_sssd
+      - file_permissions_var_log_syslog
+      - file_permissions_var_log_waagent
+      - file_permissions_var_log_wbtmp
+      - file_groupownerships_var_log
+      - file_ownerships_var_log
       - permissions_local_var_log
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/4.2.3.
+    status: automated
 
   - id: 6.2.1.1
     title: Ensure auditd packages are installed (Automated)
@@ -2534,7 +2595,7 @@ controls:
       - l2_server
       - l2_workstation
     rules:
-      - audit_rules_suid_privilege_function
+      - audit_rules_suid_auid_privilege_function
     status: automated
 
   - id: 6.2.3.3
@@ -2572,28 +2633,9 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    related_rules:
-      - audit_rules_privileged_commands_at
-      - audit_rules_privileged_commands_chage
-      - audit_rules_privileged_commands_chfn
-      - audit_rules_privileged_commands_chsh
-      - audit_rules_privileged_commands_crontab
-      - audit_rules_privileged_commands_gpasswd
-      - audit_rules_privileged_commands_mount
-      - audit_rules_privileged_commands_newgidmap
-      - audit_rules_privileged_commands_newgrp
-      - audit_rules_privileged_commands_newuidmap
-      - audit_rules_privileged_commands_postdrop
-      - audit_rules_privileged_commands_postqueue
-      - audit_rules_privileged_commands_ssh_agent
-      - audit_rules_privileged_commands_ssh_keysign
-      - audit_rules_privileged_commands_su
-      - audit_rules_privileged_commands_sudo
-      - audit_rules_privileged_commands_sudoedit
-      - audit_rules_privileged_commands_umount
-      - audit_rules_privileged_commands_unix_chkpwd
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/4.1.3.6.
+    rules:
+      - audit_rules_privileged_commands
+    status: automated
 
   - id: 6.2.3.7
     title: Ensure unsuccessful file access attempts are collected (Automated)
@@ -2740,9 +2782,10 @@ controls:
     rules:
       - audit_rules_kernel_module_loading_delete
       - audit_rules_kernel_module_loading_init
-      - audit_rules_privileged_commands_insmod
-      - audit_rules_privileged_commands_modprobe
-      - audit_rules_privileged_commands_rmmod
+      - audit_rules_kernel_module_loading_finit
+      - audit_rules_kernel_module_loading_create
+      - audit_rules_kernel_module_loading_query
+      - audit_rules_privileged_commands_kmod
     status: automated
 
   - id: 6.2.3.20
@@ -2759,8 +2802,7 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/4.1.3.21.
+    status: manual
 
   - id: 6.2.4.1
     title: Ensure audit log files mode is configured (Automated)
@@ -2805,6 +2847,7 @@ controls:
       - l2_workstation
     rules:
       - file_permissions_etc_audit_auditd
+      - file_permissions_etc_audit_rules
       - file_permissions_etc_audit_rulesd
     status: automated
 
@@ -2999,29 +3042,26 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - file_permissions_unauthorized_world_writable
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/6.1.9.
+    status: automated
 
   - id: 7.1.12
     title: Ensure no files or directories without an owner and a group exist (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - file_permissions_ungroupowned
+    rules:
       - no_files_unowned_by_user
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/6.1.11,6.1.10.
+      - file_permissions_ungroupowned
+    status: automated
 
   - id: 7.1.13
     title: Ensure SUID and SGID files are reviewed (Manual)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/6.1.12,6.1.13.
+    status: manual
 
   - id: 7.2.1
     title: Ensure accounts in /etc/passwd use shadowed passwords (Automated)
@@ -3118,6 +3158,8 @@ controls:
       - no_netrc_files
       - accounts_user_dot_user_ownership
       - accounts_user_dot_group_ownership
+      - var_user_initialization_files_regex=all_dotfiles
       - file_permission_user_init_files
       - file_permission_user_bash_history
     status: automated
+

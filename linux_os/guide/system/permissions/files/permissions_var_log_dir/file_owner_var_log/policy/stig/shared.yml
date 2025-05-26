@@ -9,9 +9,9 @@ vuldiscussion: |-
 checktext: |-
     Verify the "/var/log" directory is owned by root with the following command:
 
-    $ ls -ld /var/log
+    $ stat -c "%U %n" /var/log
 
-    drwxr-xr-x. 16 root root 4096 July 11 11:34 /var/log
+    root /var/log
 
     If "/var/log" does not have an owner of "root", this is a finding.
 
@@ -19,4 +19,5 @@ fixtext: |-
     Configure the owner of the directory "/var/log" to "root" by running the following command:
 
     $ sudo chown root /var/log
+
 

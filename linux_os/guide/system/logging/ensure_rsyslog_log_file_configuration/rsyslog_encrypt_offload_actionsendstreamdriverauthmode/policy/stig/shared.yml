@@ -14,14 +14,18 @@ vuldiscussion: |-
     x509/certvalid - certificate validation only
     x509/name - certificate validation and subject name authentication
 
+
+
 checktext: |-
     Verify {{{ full_name }}} authenticates the remote logging server for offloading audit logs with the following command:
 
-    $ sudo grep -i '$ActionSendStreamDriverAuthMode' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
+    $ grep -i 'StreamDriver[\.]*AuthMode' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
 
-     /etc/rsyslog.conf:$ActionSendStreamDriverAuthMode x509/name
+    /etc/rsyslog.conf:$ActionSendStreamDriverAuthMode x509/name
 
-    If the value of the "$ActionSendStreamDriverAuthMode" option is not set to "x509/name" or the line is commented out, ask the system administrator (SA) to indicate how the audit logs are offloaded to a different system or media.
+    If the variable name "StreamDriverAuthMode" is present in an omfwd statement block, this is not a finding. However, if the "StreamDriverAuthMode" variable is in a module block, this is a finding.
+
+    If the value of the "$ActionSendStreamDriverAuthMode or StreamDriver.AuthMode" option is not set to "x509/name" or the line is commented out, ask the system administrator (SA) to indicate how the audit logs are offloaded to a different system or media.
 
     If there is no evidence that the transfer of the audit logs being offloaded to another system or media is encrypted, this is a finding.
 
@@ -29,4 +33,5 @@ fixtext: |-
     Configure {{{ full_name }}} to authenticate the remote logging server for offloading audit logs by setting the following option in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf":
 
     $ActionSendStreamDriverAuthMode x509/name
+
 

@@ -38,3 +38,7 @@ fixtext: |-
     $FileCreateMode 0640
     Restart the service:
     # systemctl restart rsyslog
+
+{{% if product in ['ubuntu2404'] %}}
+platform: not service_disabled[rsyslog]
+{{% endif %}}

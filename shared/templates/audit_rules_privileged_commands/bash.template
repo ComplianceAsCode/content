@@ -1,14 +1,27 @@
-{{%- if product in ["fedora", "ol7", "ol8", "ol9", "ol10", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404", "debian12"] %}}
+{{%- if product in ["almalinux9", "debian12", "fedora", "ol7", "ol8", "ol9", "ol10", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
   {{%- set perm_x=" -F perm=x" %}}
 {{%- endif %}}
 # platform = multi_platform_all
 
-ACTION_ARCH_FILTERS="-a always,exit"
+# Retrieve hardware architecture of the underlying system
 OTHER_FILTERS="-F path={{{ PATH }}}{{{ perm_x }}}"
 AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
 SYSCALL=""
 KEY="privileged"
 SYSCALL_GROUPING="{{{ SYSCALL_GROUPING }}}"
+
+{{% if product == "rhel10" %}}
+[ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
+for ARCH in "${RULE_ARCHS[@]}"
+do
+  ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+  # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
+  {{{ bash_fix_audit_syscall_rule("augenrules", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
+  {{{ bash_fix_audit_syscall_rule("auditctl", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
+done
+{{% else %}}
+ACTION_ARCH_FILTERS="-a always,exit"
 # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 {{{ bash_fix_audit_syscall_rule("augenrules", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
 {{{ bash_fix_audit_syscall_rule("auditctl", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
+{{% endif %}}

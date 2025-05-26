@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_ol,multi_platform_rhel
+# platform = Red Hat Virtualization 4,multi_platform_ol,multi_platform_rhel,multi_platform_ubuntu,multi_platform_almalinux
 
 {{{ bash_instantiate_variables("var_auditd_disk_error_action") }}}
 

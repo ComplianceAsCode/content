@@ -36,7 +36,7 @@ def create_parser():
 
 def add_rule_attributes(main_dir, output_dict, rule_id):
     rule_filename = os.path.join(main_dir, "rules", rule_id + ".yml")
-    r = build_yaml.Rule.from_yaml(rule_filename)
+    r = build_yaml.Rule.from_compiled_json(rule_filename)
     platform_names = r.cpe_platform_names.union(r.inherited_cpe_platform_names)
     output_dict["platform_names"] = sorted(list(platform_names))
 
@@ -64,7 +64,7 @@ def add_profile_data(output_dict, main_dir):
     profiles_glob = os.path.join(main_dir, "profiles", "*.profile")
     filenames = glob(profiles_glob)
     for path in sorted(filenames):
-        p = profile.Profile.from_yaml(path)
+        p = profile.Profile.from_compiled_json(path)
         output_dict[p.id_] = dict()
         output_dict[p.id_]["rules"] = sorted(p.selected)
 

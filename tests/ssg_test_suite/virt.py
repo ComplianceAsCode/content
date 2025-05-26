@@ -59,13 +59,13 @@ class SnapshotStack(object):
             self.domain.revertToSnapshot(snapshot,
                                          self.REVERT_FLAGS)
             if delete:
-                logging.debug(("Hard revert of snapshot "
+                logging.debug(("Hard revert to snapshot "
                                "'{0}' successful").format(snapshot.getName()))
                 snapshot.delete()
             else:
                 # this is soft revert - we are keeping the snapshot for
                 # another use
-                logging.debug(("Soft revert of snapshot "
+                logging.debug(("Soft revert to snapshot "
                                "'{0}' successful").format(snapshot.getName()))
                 self.snapshot_stack.append(snapshot)
 
@@ -85,7 +85,7 @@ class SnapshotStack(object):
         while self.snapshot_stack:
             snapshot = self.snapshot_stack.pop()
             snapshot_name = snapshot.getName()
-            logging.debug("Reverting of snapshot '{0}'".format(snapshot_name))
+            logging.debug("Reverting to snapshot '{0}'".format(snapshot_name))
             self.domain.revertToSnapshot(snapshot,
                                          self.REVERT_FLAGS)
             snapshot.delete()

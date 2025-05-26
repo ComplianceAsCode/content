@@ -16,6 +16,9 @@ def set_variables_for_test_scenarios(data):
             if data['xccdf_variable'] == 'var_sshd_set_maxstartups':
                 data["wrong_value"] = "30:10:110"
                 data["correct_value"] = "10:30:60"
+            elif data["xccdf_variable"] == "var_sshd_disable_compression":
+                data["wrong_value"] = "delayed"
+                data["correct_value"] = "no"
             else:
                 data["wrong_value"] = "wrong_value"
                 data["correct_value"] = "correct_value"

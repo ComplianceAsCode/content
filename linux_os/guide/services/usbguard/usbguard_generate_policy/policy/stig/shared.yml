@@ -7,9 +7,11 @@ vuldiscussion: |-
     The system administrator (SA) must work with the site information system security officer (ISSO) to determine a list of authorized peripherals and establish rules within the USBGuard software framework to allow only authorized devices.
 
 checktext: |-
+    Note: If the system is virtual machine with no virtual or physical USB peripherals attached, this is Not Applicable.
+
     Verify the USBGuard has a policy configured with the following command:
 
-    $ usbguard list-rules
+    $ sudo usbguard list-rules
 
     allow id 1d6b:0001 serial
 
@@ -17,13 +19,13 @@ checktext: |-
 
     If there is no evidence that unauthorized peripherals are being blocked before establishing a connection, this is a finding.
 
-    If the system is virtual machine with no virtual or physical USB peripherals attached, this is not a finding.
-
 fixtext: |-
     Configure the operating system to enable the blocking of unauthorized peripherals with the following command:
 
-    Note: This command must be run from a root shell and will create an allow list for any usb devices currently connect to the system.
+    Note: This command must be run from a root shell and will create an allow list for any usb devices currently connected to the system.
 
     # usbguard generate-policy --no-hash &gt; /etc/usbguard/rules.conf
 
     Note: Enabling and starting usbguard without properly configuring it for an individual system will immediately prevent any access over a usb device such as a keyboard or mouse.
+
+

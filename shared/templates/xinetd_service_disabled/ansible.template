@@ -1,0 +1,27 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: Disable xinetd service {{{ SERVICENAME }}}
+  block:
+  - name: Gather the package facts
+    package_facts:
+      manager: auto
+
+  - name: "{{{ rule_title }}} - Ensure /etc/xinetd.d/{{{ SERVICENAME }}} exists"
+    ansible.builtin.stat:
+      path: "/etc/xinetd.d/{{{ SERVICENAME }}}"
+    register: xinetd_service
+
+  - name: "{{{ rule_title }}} - Configure 'disable = yes' in /etc/xinetd.d/{{{ SERVICENAME }}}"
+    ansible.builtin.lineinfile:
+      dest: "/etc/xinetd.d/{{{ SERVICENAME }}}"
+      regexp: '^[\s]*disable[\s]*=[\s]*no'
+      line: "disable = yes"
+      insertbefore: "}"
+      state: present
+    when:
+    - '"{{{ PACKAGENAME }}}" in ansible_facts.packages'
+    - xinetd_service.stat.exists

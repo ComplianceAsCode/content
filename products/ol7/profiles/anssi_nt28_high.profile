@@ -23,6 +23,7 @@ selections:
     - '!kernel_config_legacy_vsyscall_none'
     - '!kernel_config_hardened_usercopy_fallback'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!aide_periodic_checking_systemd_timer'
     - '!kernel_config_gcc_plugin_latent_entropy'
     - '!package_dnf-automatic_installed'
@@ -73,3 +74,5 @@ selections:
     - '!kernel_config_modify_ldt_syscall'
     - '!grub2_pti_argument'
     - '!package_kea_removed'
+    - '!audit_rules_file_deletion_events_renameat2'
+    - '!audit_rules_dac_modification_fchmodat2'

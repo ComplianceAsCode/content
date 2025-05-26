@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /var/log/waagent.log(.*) Files'
+
+description: |-
+    {{{ describe_file_permissions(file="/var/log/waagent.log", perms="0644") }}}
+
+rationale: |-
+    The <tt>/var/log/waagent.log</tt> file contains Azure Linux Guest Agent records
+    events that can be used for troubleshooting and should only be accessed by authorized personnel.
+
+severity: medium
+
+
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/waagent.log", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/log/waagent.log", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/log/
+        file_regex: .*waagent.log([^\/]+)?$
+        filemode: '0644'
+
+fixtext: |-
+    {{{ fixtext_file_permissions("/var/log/waagent.log", "0644") | indent(4) }}}

@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Remove ufw Package'
 
 description: |-
@@ -20,10 +19,21 @@ ocil_clause: 'the package is installed'
 
 ocil: '{{{ ocil_package(package="ufw") }}}'
 
+platform: system_with_kernel
+
+{{%- if product in [ "ubuntu2404" ] %}}
+template:
+    name: package_removed_guard_var
+    vars:
+        pkgname: ufw
+        variable: var_network_filtering_service
+        value: ufw
+{{%- else %}}
 template:
     name: package_removed
     vars:
         pkgname: ufw
+{{%- endif %}}
 
 fixtext: |-
     {{{ describe_package_remove(package="ufw") }}}

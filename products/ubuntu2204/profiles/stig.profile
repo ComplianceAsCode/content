@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide (STIG) V2R1'
+title: 'Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide (STIG) V2R3'
 
 description: |-
     This Security Technical Implementation Guide is published as a tool to
@@ -85,11 +85,9 @@ selections:
     - sshd_enable_warning_banner_net
 
     # UBTU-22-255055 The Ubuntu operating system must configure the SSH daemon to use Message Authentication Codes (MACs) employing FIPS 140-3 approved cryptographic hashes to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.
-    - sshd_approved_macs=stig_ubuntu2204
     - sshd_use_approved_macs_ordered_stig
 
     # UBTU-22-255050 The Ubuntu operating system must configure the SSH daemon to use FIPS 140-3 approved ciphers to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.
-    - sshd_approved_ciphers=stig_ubuntu2204
     - sshd_use_approved_ciphers_ordered_stig
 
     # UBTU-22-255060 The Ubuntu operating system SSH server must be configured to use only FIPS-validated key exchange algorithms.
@@ -531,9 +529,6 @@ selections:
 
     # UBTU-22-651015 The Ubuntu operating system must use a file integrity tool to verify correct operation of all security functions.
     - aide_build_database
-
-    # UBTU-22-412015 The Ubuntu operating system must display the date and time of the last successful account logon upon logon.
-    - display_login_attempts
 
     # UBTU-22-251015 The Ubuntu operating system must enable and run the Uncomplicated Firewall (ufw).
     - check_ufw_active

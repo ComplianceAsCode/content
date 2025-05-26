@@ -1,7 +1,7 @@
 # platform = multi_platform_ubuntu
 
 if [ ! -f /etc/rsyslog.d/50-default.conf ]; then
-    # Something is not right, create the file
+    mkdir -p /etc/rsyslog.d/
     touch /etc/rsyslog.d/50-default.conf
 fi
 

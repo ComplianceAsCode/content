@@ -4,6 +4,26 @@
 # complexity = low
 # disruption = low
 
+{{%- set ns=namespace(find_users="") %}}
+{{%- set OWNERS=UID_OR_NAME.split("|") %}}
+{{%- for own in OWNERS %}}
+{{%- set ns.find_users=ns.find_users ~ " ! -user " ~ own %}}
+{{%- if loop.first %}}
+if id "{{{ own }}}" >/dev/null 2>&1; then
+  newown="{{{ own }}}"
+{{%- else %}}
+elif id "{{{ own }}}" >/dev/null 2>&1; then
+  newown="{{{ own }}}"
+{{%- endif %}}
+{{%- if loop.last %}}
+fi
+{{%- endif %}}
+{{%- endfor %}}
+if [[ -z ${newown} ]]; then
+  echo "{{{ UID_OR_NAME|replace("|", " and ") }}} is not a defined user on the system"
+  exit 1
+fi
+
 {{%- if RECURSIVE %}}
 {{%- set FIND_RECURSE_ARGS_DEP="" %}}
 {{%- set FIND_RECURSE_ARGS_SYM="" %}}
@@ -16,11 +36,11 @@
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
 
-find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f ! -uid {{{ FILEUID }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown -L {{{ FILEUID }}} {} \;
+find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{{ ns.find_users }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown -L $newown {} \;
 {{%- else %}}
-find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d -exec chown -L {{{ FILEUID }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d {{{ ns.find_users }}} -exec chown -L $newown {} \;
 {{%- endif %}}
 {{%- else %}}
-chown {{{ FILEUID }}} {{{ path }}}
+chown $newown {{{ path }}}
 {{%- endif %}}
 {{%- endfor %}}

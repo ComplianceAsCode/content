@@ -1,0 +1,58 @@
+documentation_complete: true
+
+title: 'Set yescrypt Cost Factor in /etc/login.defs'
+
+description: |-
+    In <tt>/etc/login.defs</tt>, ensure <tt>YESCRYPT_COST_FACTOR</tt> has the minimum value of <tt>{{{ xccdf_value("var_password_yescrypt_cost_factor_login_defs") }}}</tt>.
+    For example:
+    <pre>YESCRYPT_COST_FACTOR {{{ xccdf_value("var_password_yescrypt_cost_factor_login_defs") }}}
+    YESCRYPT_COST_FACTOR {{{ xccdf_value("var_password_yescrypt_cost_factor_login_defs") }}}</pre>
+    Notice that if is not set, it already has the default value of 5.
+    If it is set, it must have the minimum value of {{{ xccdf_value("var_password_yescrypt_cost_factor_login_defs") }}}.
+
+rationale: |-
+    Passwords need to be protected at all times, and hashing is the standard
+    method for protecting passwords. If passwords are not hashed, they can
+    be plainly read (i.e., clear text) and easily compromised. Passwords
+    that are hashed with a weak algorithm are no more protected than if
+    they are kept in plain text.
+    <br /><br />
+    Using a higher cost factor makes password cracking attacks more difficult.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-86594-9
+
+references:
+    nist: IA-5(1)(c),IA-5(1).1(v),IA-7,IA-7.1
+    srg: SRG-OS-000073-GPOS-00041,SRG-OS-000120-GPOS-00061
+
+ocil_clause: 'the cost factor is too low'
+
+ocil: |-
+    Inspect <tt>/etc/login.defs</tt> and ensure that if
+    <tt>YESCRYPT_COST_FACTOR</tt>
+    is set, it must have the minimum value of <tt>{{{ xccdf_value("var_password_yescrypt_cost_factor_login_defs") }}}</tt>.
+
+srg_requirement: '{{{ full_name }}} shadow password suite must be configured to use a sufficient cost factor.'
+
+fixtext: |-
+    Configure {{{ full_name }}} to encrypt all stored passwords with a strong cryptographic hash.
+
+    Edit/modify the following line in the "/etc/login.defs" file and set "YESCRYPT_COST_FACTOR" to a value no lower than "5":
+
+    YESCRYPT_COST_FACTOR {{{ xccdf_value("var_password_yescrypt_cost_factor_login_defs") }}}
+
+
+template:
+    name: 'key_value_pair_in_file'
+    vars:
+        path: "/etc/login.defs"
+        key: "YESCRYPT_COST_FACTOR"
+        xccdf_variable: "var_password_yescrypt_cost_factor_login_defs"
+        sep: " "
+        sep_regex: "\\s*"
+        app: 'login.defs'
+        test_correct_value: 5
+        test_wrong_value: 1

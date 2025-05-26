@@ -513,17 +513,43 @@ controls:
     levels:
     - standard
     description: >-
-      A container runtime and any instantiated containers SHOULD only be executed by a non-
+      (1) A container runtime and any instantiated containers SHOULD only be executed by a non-
       privileged system account that does not have (and cannot gain) elevated rights to the
-      container service or host operating system. The container runtime SHOULD be encapsulated
+      container service or host operating system. (2) The container runtime SHOULD be encapsulated
       by additional measures, such as using the virtualisation extensions of CPUs.
-      If containers are to take over tasks of the host system in exceptional cases, privileges on the
-      host system SHOULD be limited to the minimum necessary. Exceptions SHOULD be
+      (3) If containers are to take over tasks of the host system in exceptional cases, privileges on the
+      host system SHOULD be limited to the minimum necessary. (4)Exceptions SHOULD be
       adequately documented.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: With OpenShift, application containers run in the Security Context Constraint (SCC) “restricted” by default.
+      Section 2: OpenShift supports encapsulation by using SELinux. If necessary,
+      entire nodes can also be encapsulated via underlying virtualization.
+      This is always necessary when application containers require extended security context constraints (SCCs).
+      With the sandbox function based on Kata Containers, OpenShift provides a convenient way to isolate containers
+      using virtualization technology.
+      Section 3: OpenShift offers several SCC to restrict access to the network,
+      file system or the host itself. This should only be allowed for administrative applications
+      such as SIEM scanners or other infrastructure services that require access to the host.
+      These SCCs should never be given to application containers.
+      Section 4: These exceptions must be documented in the operational documentation.
+      A list of pods with the corresponding SCC annotation can serve as the basis for the documentation.
+    status: partial
+    rules:
+    # Section 1 and 3
+      - scc_drop_container_capabilities
+      - scc_limit_container_allowed_capabilities
+      - scc_limit_host_dir_volume_plugin
+      - scc_limit_host_ports
+      - scc_limit_ipc_namespace
+      - scc_limit_net_raw_capability
+      - scc_limit_network_namespace
+      - scc_limit_privilege_escalation
+      - scc_limit_privileged_containers
+      - scc_limit_process_id_namespace
+      - scc_limit_root_containers
+      # Section 2
+      - sandboxed_containers_operator_exists
+      - sandboxed_containers_operator_configured
 
   - id: SYS.1.6.A18
     title: Application Services Accounts
@@ -757,13 +783,18 @@ controls:
     levels:
     - elevated
     description: >-
-      If further isolation and encapsulation of containers is required, the following measures
+      (1) If further isolation and encapsulation of containers is required, the following measures
       SHOULD be considered for increased effectiveness:
-      • Fixed assignment of containers to container hosts
-      • Execution of the individual containers and/or the container host by means of
+      (2) • Fixed assignment of containers to container hosts
+      (3) • Execution of the individual containers and/or the container host by means of
       hypervisors
-      • Fixed assignment of a single container to a single container host
+      (4) • Fixed assignment of a single container to a single container host
     notes: >-
-      ToDo
+      Section 1,2,4: OpenShift offers the option of binding containers (in pods) to specific nodes using node labels and node selectors in the deployment descriptors. Section 3: These can also be made available as virtual machines via hypervisors (via IaaS or via OpenShift Sandboxes). This implements all three assignments mentioned in the requirement.
     status: manual
-    #rules:
+    rules:
+      # Section 1,2,4
+      - general_node_separation
+      # Section 3
+      - sandboxed_containers_operator_exists
+      - sandboxed_containers_operator_configured

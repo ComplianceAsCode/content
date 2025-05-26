@@ -9,9 +9,8 @@ import subprocess
 import sys
 import time
 
-import ssg_test_suite
-from ssg_test_suite import common
-from ssg_test_suite.log import LogHelper
+from tests.ssg_test_suite import common
+from tests.ssg_test_suite.log import LogHelper
 
 
 class SavedState(object):
@@ -302,7 +301,7 @@ class VMTestEnv(TestEnv):
         return state
 
     def _delete_saved_state(self, snapshot):
-        self.snapshot_stack.revert()
+        self.snapshot_stack.delete()
 
     def _local_oscap_check_base_arguments(self):
         return ['oscap-vm', "domain", self.domain_name, 'xccdf', 'eval']

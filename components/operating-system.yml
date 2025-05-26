@@ -2,6 +2,10 @@ name: operating-system
 packages:
 - operating-system
 rules:
+- accounts_tmout
+- accounts_user_home_paths_only
+- accounts_user_interactive_home_directory_defined
+- accounts_user_interactive_home_directory_exists
 - bios_assign_password
 - bios_disable_usb_boot
 - bios_enable_execution_restrictions
@@ -9,6 +13,11 @@ rules:
 - disable_prelink
 - encrypt_partitions
 - ensure_iptables_are_flushed
+- file_groupownership_home_directories
+- file_permission_user_init_files
+- file_permission_user_init_files_root
+- file_permissions_home_directories
+- file_permissions_home_dirs
 - has_nonlocal_mta
 - install_antivirus
 - install_endpoint_security_software
@@ -23,10 +32,12 @@ rules:
 - network_disable_zeroconf
 - network_nmcli_permissions
 - network_sniffer_disabled
+- no_forward_files
 - no_host_based_files
 - no_rsh_trust_files
 - no_user_host_based_files
 - prefer_64bit_os
+- root_path_no_dot
 - set_ip6tables_default_rule
 - set_iptables_default_rule
 - set_iptables_default_rule_forward

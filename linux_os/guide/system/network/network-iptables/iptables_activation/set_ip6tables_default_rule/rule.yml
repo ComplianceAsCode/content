@@ -38,7 +38,6 @@ references:
     cis-csc: 11,14,3,9
     cis@sle12: 3.5.3.4
     cis@sle15: 3.5.3.3.1
-    cis@slmicro5: 3.5.3.3.1
     cis@ubuntu2004: 3.5.3.3.1
     cis@ubuntu2204: 3.5.3.3.1
     cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS06.06
@@ -57,3 +56,11 @@ ocil: |-
     Inspect the file <tt>/etc/sysconfig/ip6tables</tt> to determine
     the default policy for the INPUT chain. It should be set to DROP:
     <pre>$ sudo grep ":INPUT" /etc/sysconfig/ip6tables</pre>
+
+{{% if 'ubuntu' in product %}}
+warnings:
+    - general: |-
+        Automated remediation for this rule is disabled.
+        Changing firewall settings while connected over network can
+        result in being locked out of the system.
+{{% endif %}}

@@ -73,6 +73,8 @@ def _set_metadata_default_values(metadata):
 
     if 'platform' in metadata:
         metadata['platform'] = metadata['platform'].split(',')
+    else:
+        metadata['platform'] = ['multi_platform_all']
 
     if "environment" not in metadata:
         metadata["environment"] = "any"
@@ -110,30 +112,6 @@ def load_sce_and_metadata_parsed(raw_content):
     sce_content = _modify_sce_with_environment(sce_content, metadata["environment"])
     sce_content = shebang + "\n" + sce_content
     return sce_content, metadata
-
-
-def _check_is_applicable_for_product(metadata, product):
-    """
-    Validates whether or not the specified check is applicable for this
-    product. Different from build_ovals.py in that this operates directly
-    on the parsed metadata and doesn't have to deal with matching XML
-    elements.
-    """
-
-    if 'platform' not in metadata:
-        return True
-
-    product, product_version = utils.parse_name(product)
-
-    multi_product = 'multi_platform_{0}'.format(product)
-    if product in ['macos', 'ubuntu']:
-        product_version = product_version[:2] + "." + product_version[2:]
-
-    return ('multi_platform_all' in metadata['platform'] or
-            (multi_product in metadata['platform'] and
-             product in MULTI_PLATFORM_LIST) or
-            (product in metadata['platform'] and
-             product_version in metadata['platform']))
 
 
 def _check_is_loaded(already_loaded, filename):
@@ -190,7 +168,7 @@ class SCEBuilder():
         metadata['filename'] = filename
         product = utils.required_key(self.env_yaml, "product")
 
-        if not _check_is_applicable_for_product(metadata, product):
+        if not utils.is_applicable_for_product(",".join(metadata["platform"]), product):
             return
         if _check_is_loaded(self.already_loaded, rule_id):
             return
@@ -237,7 +215,7 @@ class SCEBuilder():
 
         # Skip the check if it isn't applicable for this product.
         product = utils.required_key(self.env_yaml, "product")
-        if not _check_is_applicable_for_product(metadata, product):
+        if not utils.is_applicable_for_product(",".join(metadata["platform"]), product):
             return
 
         write_sce_file(sce_content, self.output_dir, filename)

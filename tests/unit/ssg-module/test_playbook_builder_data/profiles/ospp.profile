@@ -1,19 +1,30 @@
-documentation_complete: true
-
-title: 'OSPP - Protection Profile for General Purpose Operating Systems'
-
-description: |-
-    This profile reflects mandatory configuration controls identified in the
-    NIAP Configuration Annex to the Protection Profile for General Purpose
-    Operating Systems (Protection Profile Version 4.2).
-
-    As Fedora OS is moving target, this profile does not guarantee to provide
-    security levels required from US National Security Systems. Main goal of
-    the profile is to provide Fedora developers with hardened environment
-    similar to the one mandated by US National Security Systems.
-
-selections:
-    - selinux_state
-    - var_selinux_state=enforcing
-    - package_abrt_removed
-    - configure_crypto_policy
+{
+  "description": "This profile is part of Red Hat Enterprise Linux 9 Common Criteria Guidance\ndocumentation for Target of Evaluation based on Protection Profile for\nGeneral Purpose Operating Systems (OSPP) version 4.3 and Functional\nPackage for SSH version 1.0.\n\nWhere appropriate, CNSSI 1253 or DoD-specific values are used for\nconfiguration, based on Configuration Annex to the OSPP.",
+  "extends": null,
+  "hidden": "",
+  "status": "",
+  "metadata": {
+    "version": 4.3,
+    "SMEs": [
+      "ggbecker",
+      "matusmarhefka"
+    ]
+  },
+  "reference": "https://www.niap-ccevs.org/Profile/Info.cfm?PPID=469&id=469",
+  "selections": [
+    "package_abrt_removed",
+    "configure_crypto_policy",
+    "selinux_state",
+    "var_selinux_state=enforcing",
+    "var_selinux_policy_name=targeted"
+  ],
+  "unselected_groups": [],
+  "platforms": [],
+  "cpe_names": [],
+  "platform": null,
+  "filter_rules": "",
+  "policies": [],
+  "single_rule_profile": false,
+  "title": "Protection Profile for General Purpose Operating Systems",
+  "definition_location": "products/rhel9/profiles/ospp.profile"
+}

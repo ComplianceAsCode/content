@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: "Set Password Hashing Algorithm for PAM"
+
+{{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
+
+description: |-
+    The PAM system service can be configured to only store encrypted representations of passwords.
+    In "{{{ pam_passwd_file_path }}}", the <tt>password</tt> section of the file controls which
+    PAM modules to execute during a password change.
+
+    Set the <tt>pam_unix.so</tt> module in the <tt>password</tt> section to include the option
+    <tt>sha512</tt> and no other hashing algorithms as shown below:
+    <br />
+    <pre>password    [success=1 default=ignore]   pam_unix.so sha512 <i>other arguments...</i></pre>
+    <br />
+    This will help ensure that new passwords for local users will be stored using the sha512 algorithm.
+
+rationale: |-
+    Passwords need to be protected at all times, and encryption is the standard method for
+    protecting passwords. If passwords are not encrypted, they can be plainly read
+    (i.e., clear text) and easily compromised. Passwords that are encrypted with a weak algorithm
+    are no more protected than if they are kept in plain text.
+    <br /><br />
+    This setting ensures user and group account administration utilities are configured to store
+    only encrypted representations of passwords.
+
+severity: medium
+
+platform: package[pam]

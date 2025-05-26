@@ -9,17 +9,19 @@ checktext: |-
 
     Check what the SSH daemon's "LogLevel" option is set to with the following command:
 
-    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*loglevel'
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*loglevel'
 
     LogLevel VERBOSE
 
     If a value of "VERBOSE" is not returned or the line is commented out or missing, this is a finding.
 
 fixtext: |-
-    Configure {{{ full_name }}} to log connection attempts add or modify the following line in "/etc/ssh/sshd_config".
+    Configure {{{ full_name }}} to log connection attempts add or modify the following line in "/etc/ssh/sshd_config" or in a file in "/etc/ssh/sshd_config.d".
 
     LogLevel VERBOSE
 
     Restart the SSH daemon for the settings to take effect:
 
     $ sudo systemctl restart sshd.service
+
+

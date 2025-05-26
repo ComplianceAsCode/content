@@ -4,4 +4,11 @@ controls:
                 of long passwords and passphrases, including spaces and all printable characters.'
         levels:
             - medium
-        status: pending
+        status: inherently met
+        rationale: |-
+            A long passphrase is better than a shorter complex password. By not allowing spaces or other printable
+            charters it limits users choice to create a long, memorable passwords.
+        artifact_description:
+            PAM and shadow-utils don't provide facilitates to limit the characters used in passwords.
+        status_justification:
+            The password change facilities in {{{ full_name }}} allow for the use of all printable characters including spaces.

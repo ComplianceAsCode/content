@@ -33,10 +33,8 @@ identifiers:
 references:
     cis@sle12: 4.2.3
     cis@sle15: 4.2.3
-    cis@slmicro5: 4.2.3
     cis@ubuntu2004: 4.2.3
     cis@ubuntu2204: 4.2.3
-    disa: CCI-001312
     nist: SI-11(a),SI-11(b),SI-11.1(iii)
     nist-csf: PR.AC-4,PR.DS-5
     srg: SRG-OS-000205-GPOS-00083
@@ -59,8 +57,9 @@ template:
     vars:
         excluded_files@sle15: ['*[bw]tmp', '*lastlog']
         excluded_files@slmicro5: ['*[bw]tmp', '*lastlog']
-        excluded_files@ubuntu2004: ['history.log', 'eipp.log.xz', '*[bw]tmp', '*lastlog']
-        excluded_files@ubuntu2204: ['history.log', 'eipp.log.xz', '*[bw]tmp', '*lastlog']
+        excluded_files@ubuntu2004: ['history.log*', 'eipp.log.xz*', '[bw]tmp', '[bw]tmp.*', '[bw]tmp-*', 'lastlog', 'lastlog.*']
+        excluded_files@ubuntu2204: ['history.log*', 'eipp.log.xz*', '[bw]tmp', '[bw]tmp.*', '[bw]tmp-*', 'lastlog', 'lastlog.*']
+        excluded_files@ubuntu2404: ['history.log*', 'eipp.log.xz*', '[bw]tmp', '[bw]tmp.*', '[bw]tmp-*', 'lastlog', 'lastlog.*', 'cloud-init.log*', 'localmessages*', 'waagent.log*']
         file_regex: '.*'
         filemode: '0640'
         filepath: /var/log/
@@ -69,3 +68,4 @@ template:
         recursive@slmicro5: 'true'
         recursive@ubuntu2004: 'true'
         recursive@ubuntu2204: 'true'
+        recursive@ubuntu2404: 'true'

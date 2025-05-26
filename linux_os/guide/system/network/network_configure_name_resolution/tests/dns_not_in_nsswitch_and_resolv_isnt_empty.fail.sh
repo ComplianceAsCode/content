@@ -1,4 +1,6 @@
-# platform = multi_platform_ol,multi_platform_rhel
+#!/bin/bash
+# platform = multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
+# remediation = none
 
 source common.sh
 

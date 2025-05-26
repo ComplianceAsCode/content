@@ -5,5 +5,7 @@
 # disruption = low
 
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
-"$SYSTEMCTL_EXEC" start '{{{ TIMERNAME }}}.timer'
+if [[ $("$SYSTEMCTL_EXEC" is-system-running) != "offline" ]]; then
+  "$SYSTEMCTL_EXEC" start '{{{ TIMERNAME }}}.timer'
+fi
 "$SYSTEMCTL_EXEC" enable '{{{ TIMERNAME }}}.timer'

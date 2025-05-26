@@ -1,0 +1,34 @@
+documentation_complete: true
+
+
+title: 'Set Root Lockout Time for Failed Password Attempts'
+
+description: |-
+    This rule configures the system to lock out root during a specified time period after a
+    number of incorrect login attempts using <tt>pam_faillock.so</tt>.
+
+    Ensure that the file <tt>/etc/security/faillock.conf</tt> contains the following entry:
+    <tt>root_unlock_time=&lt;interval-in-seconds&gt;</tt> where
+    <tt>interval-in-seconds</tt> is <tt>{{{xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
+
+    If <tt>root_unlock_time</tt> is set to <tt>0</tt>, it may enable attacker to
+    apply denial of service to legitimate users.
+
+rationale: |-
+    By limiting the number of failed logon attempts the risk of unauthorized root
+    access via password guessing, otherwise known as brute-forcing, is reduced.
+    Limits are imposed by locking the account.
+
+severity: medium
+
+platform: package[pam]
+
+template:
+  name: pam_account_password_faillock
+  vars:
+    prm_name: root_unlock_time
+    prm_regex_conf: ^[\s]*root_unlock_time[\s]*=[\s]*([0-9]+)
+    prm_regex_pamd: ^[\s]*auth[\s]+.+[\s]+pam_faillock.so[\s]+[^\n]*root_unlock_time=([0-9]+)
+    ext_variable: var_accounts_passwords_pam_faillock_unlock_time
+    description: The unlock time after number of failed logins should be set correctly.
+    variable_lower_bound: use_ext_variable

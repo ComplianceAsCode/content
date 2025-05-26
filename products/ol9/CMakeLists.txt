@@ -8,3 +8,7 @@ set(PRODUCT "ol9")
 ssg_build_product(${PRODUCT})
 
 ssg_build_html_profile_table("table-${PRODUCT}-nistrefs-standard" "${PRODUCT}" "standard" "nist")
+
+ssg_build_html_stig_tables(${PRODUCT})
+ssg_build_html_stig_tables_per_profile(${PRODUCT} "stig")
+ssg_build_html_stig_tables_per_profile(${PRODUCT} "stig_gui")

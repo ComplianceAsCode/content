@@ -5,6 +5,14 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_system_crypto_policy") }}}
 
+{{% if product == "sle15" %}}
+- name: "{{{ rule_title }}} - Ensure crypto-policies-scripts package installed"
+  become: yes
+  package:
+    name: crypto-policies-scripts
+    state: present
+{{% endif %}}
+
 - name: "{{{ rule_title }}}"
   lineinfile:
     path: /etc/crypto-policies/config

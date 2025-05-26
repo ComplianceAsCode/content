@@ -6,12 +6,14 @@ vuldiscussion: |-
 
     Password complexity is one factor of several that determines how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.
 
+
+
 checktext: |-
     Verify that {{{ full_name }}} enforces password complexity rules for the root account.
 
     Check if root user is required to use complex passwords with the following command:
 
-    $ grep enforce_for_root /etc/security/pwquality.conf /etc/security/pwquality.conf/*.conf
+    $ grep enforce_for_root /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf
 
     /etc/security/pwquality.conf:enforce_for_root
 
@@ -20,7 +22,8 @@ checktext: |-
 fixtext: |-
     Configure {{{ full_name }}} to enforce password complexity on the root account.
 
-    Add or update the following line in /etc/security/pwquality.conf:
+    Add or update the following line in the "/etc/security/pwquality.conf" file or a configuration file in the "/etc/security/pwquality.conf.d/" directory to contain the "enforce_for_root" parameter:
 
     enforce_for_root
+
 

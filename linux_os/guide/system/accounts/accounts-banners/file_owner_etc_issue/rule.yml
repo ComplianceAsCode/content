@@ -26,7 +26,6 @@ identifiers:
 references:
     cis@sle12: 1.8.1.5
     cis@sle15: 1.8.1.5
-    cis@slmicro5: 1.8.1.5
     cis@ubuntu2004: 1.8.1.5
     cis@ubuntu2204: 1.7.5
 
@@ -40,7 +39,7 @@ template:
     name: file_owner
     vars:
         filepath: /etc/issue.d/
-        fileuid: '0'
+        uid_or_name: '0'
         file_regex: ^.*$
         recursive: 'true'
 {{%- else %}}
@@ -48,5 +47,5 @@ template:
     name: file_owner
     vars:
         filepath: /etc/issue
-        fileuid: '0'
+        uid_or_name: '0'
 {{%- endif -%}}

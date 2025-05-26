@@ -13,6 +13,8 @@ description: |-
 
 selections:
     - anssi:all:minimal
+    - var_password_hashing_algorithm=SHA512
+    - var_password_pam_unix_rounds=65536
     # Following rules once had a prodtype incompatible with the ol8 product
     - '!cracklib_accounts_password_pam_minlen'
     - '!accounts_passwords_pam_tally2_deny_root'
@@ -23,4 +25,5 @@ selections:
     - '!cracklib_accounts_password_pam_ocredit'
     - '!accounts_passwords_pam_tally2_unlock_time'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!package_kea_removed'

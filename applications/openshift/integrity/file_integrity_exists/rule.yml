@@ -1,6 +1,8 @@
 
 title: Ensure that File Integrity Operator is scanning the cluster
 
+platform: not aarch64_arch and not ocp4-on-hypershift
+
 description: |-
   {{{ weblink(link="https://docs.openshift.com/container-platform/4.7/security/file_integrity_operator/file-integrity-operator-understanding.html",
               text="The File Integrity Operator") }}}
@@ -22,8 +24,6 @@ references:
   nist: SC-4(23),SI-6,SI-7,SI-7(1),CM-6(a),SI-7(2),SI-4(24)
   pcidss: Req-10.5.5,Req-11.5
   srg: SRG-APP-000516-CTR-001325
-
-platform: not ocp4-on-hypershift
 
 ocil_clause: 'File integrity Operator is not installed'
 

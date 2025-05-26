@@ -9,7 +9,7 @@
 {{% endif %}}
 if /usr/sbin/visudo -qcf /etc/sudoers; then
     cp /etc/sudoers /etc/sudoers.bak
-    if ! grep -P '^[\s]*Defaults[\s]*\b{{{ OPTION_REGEX }}}\b.*$' /etc/sudoers; then
+    if ! grep -P '^[\s]*Defaults\b[^!\n]*\b{{{ OPTION_REGEX }}}.*$' /etc/sudoers; then
         # sudoers file doesn't define Option {{{ OPTION }}}
         echo "Defaults {{{ OPTION_VALUE }}}" >> /etc/sudoers
     {{%- if not VARIABLE_NAME %}}

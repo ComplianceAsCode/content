@@ -9,7 +9,7 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} does not have a "tftp-server" package installed with the following command:
 
-    $ sudo dnf list --installed | grep tftp-server
+    $ dnf list --installed | grep tftp-server
 
     If the "tftp-server" package is installed, this is a finding.
 
@@ -17,3 +17,5 @@ fixtext: |-
     The "tftp-server" package can be removed with the following command:
 
     $ sudo dnf remove tftp-server
+
+

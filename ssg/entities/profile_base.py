@@ -1,3 +1,5 @@
+import copy
+
 from xml.sax.saxutils import escape
 
 from ..build_cpe import CPEDoesNotExist
@@ -25,9 +27,12 @@ def rule_filter_from_def(filterdef):
         return noop_rule_filterfunc
 
     def filterfunc(rule):
+        c = copy.copy(rule)
+        if c.platform is None:
+            c.platform = ''
         # Remove globals for security and only expose
         # variables relevant to the rule
-        return eval(filterdef, {"__builtins__": None}, rule.__dict__)
+        return eval(filterdef, {"__builtins__": None}, c.__dict__)
     return filterfunc
 
 
@@ -38,6 +43,7 @@ class Profile(XCCDFEntity, SelectionHandler):
         description=lambda: "",
         extends=lambda: "",
         hidden=lambda: "",
+        status=lambda: "",
         metadata=lambda: None,
         reference=lambda: None,
         selections=lambda: list(),
@@ -47,6 +53,7 @@ class Profile(XCCDFEntity, SelectionHandler):
         platform=lambda: None,
         filter_rules=lambda: "",
         policies=lambda: list(),
+        single_rule_profile=lambda: False,
         ** XCCDFEntity.KEYS
     )
 
@@ -79,6 +86,12 @@ class Profile(XCCDFEntity, SelectionHandler):
                         .format(platform=platform))
                     raise CPEDoesNotExist(msg)
 
+        allowed_profile_statuses = ["draft", "interim", "accepted", "deprecated"]
+        if input_contents["status"] and input_contents["status"] not in allowed_profile_statuses:
+            msg = ("Profile status must be one of the following values: "
+                   f"{allowed_profile_statuses}"
+                   )
+            raise ValueError(msg)
         return input_contents
 
     @property
@@ -118,6 +131,8 @@ class Profile(XCCDFEntity, SelectionHandler):
 
         element = ET.Element('{%s}Profile' % XCCDF12_NS)
         element.set("id", OSCAP_PROFILE + self.id_)
+        if self.status:
+            add_sub_element(element, "status", XCCDF12_NS, str(self.status))
         if self._should_have_version():
             add_sub_element(element, "version", XCCDF12_NS, str(self.metadata["version"]))
         if self.extends:

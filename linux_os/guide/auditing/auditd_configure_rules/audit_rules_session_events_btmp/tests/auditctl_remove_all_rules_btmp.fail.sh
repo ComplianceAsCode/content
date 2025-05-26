@@ -1,5 +1,0 @@
-#!/bin/bash
-# packages = audit
-
-rm -f /etc/audit/audit.rules
-sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/system/auditd.service

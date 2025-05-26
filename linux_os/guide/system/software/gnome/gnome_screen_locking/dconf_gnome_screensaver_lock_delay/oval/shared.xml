@@ -8,6 +8,9 @@
         <extend_definition comment="dconf user profile exists" definition_ref="enable_dconf_user_profile" />
         <criterion comment="screensaver lock delay is configured" test_ref="test_screensaver_lock_delay" />
         <criterion comment="lock delay is set correctly" test_ref="test_screensaver_lock_delay_setting" />
+        {{% if 'ubuntu' in product %}}
+        <criterion comment="screensaver lock delay setting is locked" test_ref="test_screensaver_lock_delay_locked" />
+        {{% endif %}}
       </criteria>
     </criteria>
   </definition>
@@ -51,4 +54,18 @@
 
   <external_variable comment="screensaver lock delay variable" datatype="int"
   id="var_screensaver_lock_delay" version="1" />
+
+{{% if 'ubuntu' in product %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+      comment="screensaver lock delay setting is locked"
+      id="test_screensaver_lock_delay_locked" version="1">
+    <ind:object object_ref="obj_screensaver_lock_delay_locked" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_screensaver_lock_delay_locked" version="1">
+    <ind:path>/etc/dconf/db/local.d/locks/</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^/org/gnome/desktop/screensaver/lock-delay$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endif %}}
 </def-group>

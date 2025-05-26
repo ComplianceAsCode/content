@@ -1,0 +1,19 @@
+srg_requirement: |-
+    {{{ full_name }}} "/etc/audit/" must be group-owned by root.
+
+fixtext: |-
+    Change the group of the file "/etc/audit/" to "root" by running the following command:
+
+    $ sudo chgrp root /etc/audit/
+
+checktext: |-
+    Verify the group ownership of the "/etc/audit/" directory with the following command:
+
+    $ sudo stat -c "%G %n" /etc/audit/
+
+    root /etc/audit/
+
+    If "/etc/audit/" does not have a group owner of "root", this is a finding.
+
+vuldiscussion: |-
+    The "/etc/audit/" directory contains files that ensure the proper auditing of command execution, privilege escalation, file manipulation, and more. Protection of this directory is critical for system security.

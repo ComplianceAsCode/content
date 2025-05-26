@@ -1,0 +1,19 @@
+srg_requirement: |-
+    {{{ full_name }}} "/etc/audit/" must be owned by root.
+
+fixtext: |-
+    Change the owner of the file "/etc/audit/" to "root" by running the following command:
+
+    $ sudo chown root /etc/audit/
+
+checktext: |-
+    Verify the ownership of the "/etc/audit/" directory with the following command:
+
+    $ sudo stat -c "%U %n" /etc/audit/
+
+    root /etc/audit/
+
+    If the "/etc/audit/" directory does not have an owner of "root", this is a finding.
+
+vuldiscussion: |-
+    The "/etc/audit/" directory contains files that ensure the proper auditing of command execution, privilege escalation, file manipulation, and more. Protection of this directory is critical for system security.

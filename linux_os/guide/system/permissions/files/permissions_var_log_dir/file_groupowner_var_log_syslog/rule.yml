@@ -2,7 +2,11 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns /var/log/syslog File'
 
+{{%- if product in ['ubuntu2404'] %}}
+description: '{{{ describe_file_group_owner(file="/var/log/syslog", group="adm|root") }}}'
+{{%- else %}}
 description: '{{{ describe_file_group_owner(file="/var/log/syslog", group="adm") }}}'
+{{%- endif %}}
 
 rationale: |-
     The <tt>/var/log/syslog</tt> file contains logs of error messages in
@@ -11,18 +15,32 @@ rationale: |-
 severity: medium
 
 references:
-    disa: CCI-001314
     srg: SRG-OS-000206-GPOS-00084
     stigid@ubuntu2004: UBTU-20-010420
     stigid@ubuntu2204: UBTU-22-232135
 
+{{%- if product in ['ubuntu2404'] %}}
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/syslog", group="adm|root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/log/syslog", group="adm|root") }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /var/log/syslog
+        gid_or_name: 'adm|root'
+{{%- else %}}
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/syslog", group="adm") }}}'
 
 ocil: |-
     {{{ ocil_file_group_owner(file="/var/log/syslog", group="adm") }}}
+
+platform: package[rsyslog]
 
 template:
     name: file_groupowner
     vars:
         filepath: /var/log/syslog
         gid_or_name: '4'
+{{%- endif %}}

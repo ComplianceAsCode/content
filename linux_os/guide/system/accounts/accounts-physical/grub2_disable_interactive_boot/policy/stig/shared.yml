@@ -14,7 +14,8 @@ checktext: |-
     If any output is returned, this is a finding.
 
 fixtext: |-
-    Configure {{{ full_name }}} to allocate sufficient audit_backlog_limit to disable the ability of systemd to spawn an interactive boot process with the following command:
+    Configure the current GRUB 2 configuration to disable the ability of systemd to spawn an interactive boot process with the following command:
 
     $ sudo grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"
+
 

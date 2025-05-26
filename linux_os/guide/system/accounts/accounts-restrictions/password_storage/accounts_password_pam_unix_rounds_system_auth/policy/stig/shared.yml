@@ -6,19 +6,23 @@ vuldiscussion: |-
 
     Using more hashing rounds makes password cracking attacks more difficult.
 
+
+
 fixtext: |-
-    Configure {{{ full_name }}} to use 5000 hashing rounds for hashing passwords.
+    Configure {{{ full_name }}} to use 100000 hashing rounds for hashing passwords.
 
-    Add or modify the following line in "/etc/pam.d/system-auth" and set "rounds" to 5000.
+    Add or modify the following line in "/etc/pam.d/system-auth" and set "rounds" to 100000.
 
-    password sufficient pam_unix.so sha512 rounds=5000'
+    password sufficient pam_unix.so sha512 rounds=100000
+
+    Note: Running authselect will overwrite this value unless a custom authselect policy is created.
 
 checktext: |-
     Verify the number of rounds for the password hashing algorithm is configured with the following command:
 
     $ sudo grep rounds /etc/pam.d/system-auth
 
-    password sufficient pam_unix.so sha512 rounds=5000
+    password sufficient pam_unix.so sha512 rounds=100000
 
-    If a matching line is not returned or "rounds" is less than 5000, this a finding.
+    If a matching line is not returned or "rounds" is less than 100000, this a finding.
 

@@ -1,0 +1,80 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure Accounts Without Valid Login Shell Are Locked") }}}
+    <criteria>
+      <criterion comment="Check that the accounts do not have valid shells" test_ref="test_{{{ rule_id }}}_no_invalid_shell_accounts" negate="true" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_no_invalid_shell_accounts" check="all" check_existence="at_least_one_exists"
+    version="1" comment="Verify there is no account with invalid shell which is not locked exists">
+    <ind:object object_ref="obj_{{{ rule_id }}}_shells" />
+    <ind:state state_ref="state_{{{ rule_id }}}_valid_shells" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_valid_shells" version="1">
+    <ind:subexpression datatype="string" operation="not equal" var_check="all" var_ref="var_{{{ rule_id }}}_valid_shells" ></ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <local_variable id="var_{{{ rule_id }}}_valid_shells" datatype="string" version="1" comment="Local variable which includes all valid shells">
+      <object_component item_field="text" object_ref="obj_{{{ rule_id }}}_valid_shells" />
+  </local_variable>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_valid_shells" version="1">
+      <ind:filepath>/etc/shells</ind:filepath>
+      <ind:pattern operation="pattern match">^\/[^\n\r]*$</ind:pattern>
+      <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+      <filter action="exclude">filter_{{{ rule_id }}}_not_valid_shell</filter>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="filter_{{{ rule_id }}}_not_valid_shell" version="1"
+  comment="The nologin shell can be safely ignored" >
+    <ind:pattern operation="pattern match">^.*\bnologin\b.*$</ind:pattern>
+  </ind:textfilecontent54_state>
+
+  <!-- OVAL object to collect shell of local interactive users -->
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_shells" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <!--  Shell from /etc/passwd (7th column) captured as subexpression of this object -->
+    <ind:pattern operation="pattern match" var_ref="variable_{{{ rule_id }}}_regex" var_check="at least one"/>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="variable_{{{ rule_id }}}_regex" datatype="string" version="1" comment="shell rows retrieved from /etc/passwd">
+    <concat>
+      <literal_component>^(?:</literal_component>
+      <object_component item_field="subexpression" object_ref="obj_{{{ rule_id }}}_local_interactive_users" />
+      <literal_component>):(?:[^:]*:){5}([^:]+)$</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- OVAL object to collect user names of local interactive users -->
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_local_interactive_users" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match">^([^:]*):[^:]*:\d+:(?:[^:]*:){3}(?!(\/usr)?(\/sbin\/nologin|\/bin\/false))[^:]*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_{{{ rule_id }}}_users_ignored</filter>
+    <filter action="exclude">state_{{{ rule_id }}}_locked_accounts</filter>
+  </ind:textfilecontent54_object>
+
+  {{%- set ignored_users_list="(nobody|nfsnobody|root)" %}}
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_users_ignored" version="1">
+    <ind:subexpression operation="pattern match">^{{{ ignored_users_list }}}$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_locked_accounts" version="1">
+    <ind:subexpression datatype="string" operation="equals" var_check="at least one" var_ref="var_{{{ rule_id }}}_locked_accounts" ></ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <local_variable id="var_{{{ rule_id }}}_locked_accounts" datatype="string" version="1" comment="Account name of locked acounts">
+      <object_component item_field="subexpression" object_ref="obj_{{{ rule_id }}}_locked_accounts" />
+  </local_variable>
+
+  <!-- The indicator characters for locked accounts are referenced from man 5 crypt -->
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_locked_accounts" version="1">
+      <ind:filepath>/etc/shadow</ind:filepath>
+      <ind:pattern operation="pattern match">^([^:]*):(?:[ \t\n\r\:\;\*\!\\]*):(?:[^:]*:){6}$</ind:pattern>
+      <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

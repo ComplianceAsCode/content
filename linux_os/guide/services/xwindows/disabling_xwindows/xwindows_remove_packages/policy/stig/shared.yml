@@ -7,11 +7,10 @@ vuldiscussion: |-
 checktext: |-
     Verify that a graphical user interface is not installed with the following command:
 
-    $ sudo dnf list --installed "xorg*common"
-
+    $ dnf list --installed "xorg-x11-server-common"
     Error: No matching Packages to list
 
-    If the "x11-server-common" package is installed, and the use of a graphical user interface has not been documented with the information system security officer (ISSO) as an operational requirement, this is a finding.
+    If the "xorg-x11-server-common" package is installed, and the use of a graphical user interface has not been documented with the information system security officer (ISSO) as an operational requirement, this is a finding.
 
 fixtext: |-
     Document the requirement for a graphical user interface with the ISSO or remove all xorg packages with the following command:
@@ -24,3 +23,5 @@ fixtext: |-
 
     $ sudo dnf remove "xorg*"
     $ sudo systemctl set-default multi-user.target
+
+

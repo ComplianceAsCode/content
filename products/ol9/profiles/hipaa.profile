@@ -43,6 +43,7 @@ selections:
     - package_talk-server_removed
     - package_telnet_removed
     - package_telnet-server_removed
+    - package_cron_installed
     - service_crond_enabled
     - service_rlogin_disabled
     - service_telnet_disabled
@@ -57,7 +58,7 @@ selections:
     - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
-    - var_sshd_set_keepalive=0
+    - var_sshd_set_keepalive=1
     - encrypt_partitions
     - var_system_crypto_policy=fips
     - configure_crypto_policy

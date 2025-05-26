@@ -16,10 +16,10 @@ jobs:
     steps:
       - name: Update CA certificates
         run: update-ca-certificates
-      - name: Zypper refs  
+      - name: Zypper refs
         run: zypper refs
-      - name: Zypper refresh  
-        run: zypper refresh 
+      - name: Zypper refresh
+        run: zypper refresh
       - name: Install deps
         run: zypper --non-interactive in cmake ninja expat openssh-clients openssh-server openscap-utils tar gzip git python3 python3-rpm python3-pip python3-devel libxml2-tools libxslt-tools python3-PyYAML
       - name: Upgrade pip python
@@ -74,7 +74,7 @@ jobs:
   validate-ubuntu:
     name: Run Tests
     needs: build-content
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml ansible-lint podman

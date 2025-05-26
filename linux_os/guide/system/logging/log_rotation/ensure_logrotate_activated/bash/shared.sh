@@ -17,7 +17,9 @@ sed -i '/^\s*\(weekly\|monthly\|yearly\).*$/d' $LOGROTATE_CONF_FILE
 {{% if 'sle' in product or product == 'slmicro5' %}}
 # enable logrotate timer service
 "$SYSTEMCTL_EXEC" unmask 'logrotate.timer'
-"$SYSTEMCTL_EXEC" start 'logrotate.timer'
+if [[ $("$SYSTEMCTL_EXEC" is-system-running) != "offline" ]]; then
+  "$SYSTEMCTL_EXEC" start 'logrotate.timer'
+fi
 "$SYSTEMCTL_EXEC" enable 'logrotate.timer'
 {{% else %}}
 # configure cron.daily if not already

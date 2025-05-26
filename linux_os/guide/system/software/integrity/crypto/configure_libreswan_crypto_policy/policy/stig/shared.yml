@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} IP tunnels must use FIPS 140-2/140-3 approved cryptographic algorithms.
+    {{{ full_name }}} IP tunnels must use FIPS 140-3 approved cryptographic algorithms.
 
 vuldiscussion: |-
     Overriding the system crypto policy makes the behavior of the Libreswan service violate expectations, and makes system configuration more fragmented.
@@ -21,4 +21,3 @@ fixtext: |-
     Add the following line to "/etc/ipsec.conf":
 
     include /etc/crypto-policies/back-ends/libreswan.config
-

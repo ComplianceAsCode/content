@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} SSH server configuration file must have mode 0600 or less permissive.
+    {{{ full_name }}} SSH server configuration files' permissions must not be modified.
 
 vuldiscussion: |-
     Service configuration files enable or disable features of their respective services that if configured incorrectly can lead to insecure and vulnerable configurations. Therefore, service configuration files should be owned by the correct group to prevent unauthorized changes.
@@ -7,14 +7,13 @@ vuldiscussion: |-
 checktext: |-
     Verify the permissions of the "/etc/ssh/sshd_config" file with the following command:
 
-    $ ls -al /etc/ssh/sshd_config
+    $ sudo rpm --verify openssh-server
 
-    rw-------. 1 root root 3669 Feb 22 11:34 /etc/ssh/sshd_config
-
-    If the "/etc/ssh/sshd_config" permissions are not "0600", this is a finding.
+    If the command returns any output, this is a finding.
 
 fixtext: |-
-    Configure the "/etc/ssh/sshd_config" permissions to be "0600" with the following command:
+    Run the following commands to restore the correct permissions of OpenSSH server configuration files:
 
-    $ sudo chmod 0600 /etc/ssh/sshd_config
-
+    $ sudo dnf reinstall -y openssh-server
+    $ rpm --setugids openssh-server
+    $ rpm --setperms openssh-server

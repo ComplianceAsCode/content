@@ -9,10 +9,14 @@
       <description>The operating system installed on the system is
       Red Hat Enterprise Linux CoreOS release 4</description>
     </metadata>
-    <criteria>
+    <criteria operator="OR">
       <criteria operator="AND">
-        <criterion comment="RHCOS is installed" test_ref="test_rhcos" />
+        <criterion comment="RHCOS is installed (ID='rhcos')" test_ref="test_rhcos" />
         <criterion comment="RHCOS version 4 is installed" test_ref="test_rhcos4" />
+      </criteria>
+      <criteria operator="AND">
+        <criterion comment="CoreOS variant" test_ref="test_rhel_coreos_variant" />
+        <criterion comment="Major version is 9" test_ref="test_rhel_coreos_version9" />
       </criteria>
     </criteria>
   </definition>
@@ -29,6 +33,33 @@
   <ind:textfilecontent54_state id="state_rhcos" version="1">
     <ind:subexpression operation="pattern match">rhcos</ind:subexpression>
   </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" id="test_rhel_coreos_variant" comment="Check for variant=CoreOS" version="1">
+    <ind:object object_ref="obj_rhel_coreos_variant" />
+    <ind:state state_ref="state_rhel_coreos_variant" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_rhel_coreos_variant" version="1">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^VARIANT_ID=(\S+)$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_rhel_coreos_variant" version="1">
+    <ind:subexpression operation="pattern match">coreos</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" id="test_rhel_coreos_version9" comment="Check if VERSION_ID=9.x" version="1">
+    <ind:object object_ref="obj_rhel_coreos_version9" />
+    <ind:state state_ref="state_rhel_coreos_version9" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_rhel_coreos_version9" version="1">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^VERSION_ID=&quot;(\d+\.\d+)&quot;$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_rhel_coreos_version9" version="1">
+    <ind:subexpression operation="pattern match">^9\.</ind:subexpression>
+  </ind:textfilecontent54_state>
+
 
   <ind:textfilecontent54_test check="all" comment="rhcoreos is version 4" id="test_rhcos4" version="1">
     <ind:object object_ref="obj_rhcos4" />

@@ -28,6 +28,7 @@ selections:
     - '!cracklib_accounts_password_pam_ocredit'
     - '!accounts_passwords_pam_tally2_unlock_time'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!sudo_add_umask'
     # this rule is not automated anymore
     - '!security_patches_up_to_date'
@@ -39,3 +40,5 @@ selections:
     - '!package_talk_removed'
     - '!package_talk-server_removed'
     - '!package_xinetd_removed'
+    # OL 10 unified the paths for grub2 files. This rule is selected in control file by R5.
+    - '!grub2_uefi_password'

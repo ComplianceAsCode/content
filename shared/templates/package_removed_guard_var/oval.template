@@ -7,7 +7,7 @@
   {{% endif %}}
   <definition class="compliance" id="{{{ _RULE_ID }}}"
   version="1">
-    {{{ oval_metadata("The " + pkg_system|upper + " package " + PKGNAME + " should be removed.", affected_platforms=["multi_platform_sle"]) }}}
+    {{{ oval_metadata("The " + pkg_system|upper + " package " + PKGNAME + " should be removed.", affected_platforms=["multi_platform_all"]) }}}
     <criteria operator="OR" comment="package {{{ PKGNAME }}} is removed or not needed">
       <criteria comment="{{{ PKGNAME }}} is needed" operator="AND">
         <criterion comment="variable {{{ VARIABLE }}} is set to {{{ VALUE }}}"

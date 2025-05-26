@@ -1,0 +1,40 @@
+{{% set pam_file = "/etc/pam.d/common-password" %}}
+{{% set line_pattern = "^[\s]*password[\s]+(?:\[success=\d+\s+default=ignore\])[\s]+pam_unix\.so[\s]+" %}}
+
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    {{{ oval_metadata("The password hashing algorithm should be set correctly in {{{ pam_file }}}.") }}}
+    <criteria operator="AND">
+      <criterion test_ref="test_pam_unix_hashing_algorithm_commonauth" />
+    </criteria>
+  </definition>
+
+  {{% set pam_unix_algorithms = "\\b(sha512|yescrypt|gost_yescrypt|blowfish|sha256|md5|bigcrypt)\\b" %}}
+  {{% set hashing_pattern = line_pattern + "(?!.*" + pam_unix_algorithms + "[^#]*" + pam_unix_algorithms + ")[^#]*" + pam_unix_algorithms + ".*$" %}}
+
+  <!--
+    This regex will only match if any of the hashing algorithm options is defined only once.
+    If two options for hashing algorithms are defined, the system behavior may be unexpected.
+    Therefore, the regex won't match and the rule check will fail. If only one option is defined,
+    it will be comprared with the value defined.
+  -->
+
+  <ind:textfilecontent54_test id="test_pam_unix_hashing_algorithm_commonauth" version="2"
+    check="all" check_existence="at_least_one_exists"
+    comment="check if pam_unix.so hashing algorithm option is correct and specified only once in {{{ pam_file }}}">
+    <ind:object object_ref="object_pam_unix_hashing_algorithm_commonauth"/>
+    <ind:state state_ref="state_pam_unix_hashing_algorithm_commonauth"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_pam_unix_hashing_algorithm_commonauth" version="1"
+    comment="only one hashing algorithm option for pam_unix.so is found in {{{ pam_file }}}">
+    <ind:filepath>{{{ pam_file }}}</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ hashing_pattern }}}</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_pam_unix_hashing_algorithm_commonauth" version="1">
+    <ind:subexpression operation="equals" datatype="string">sha512</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

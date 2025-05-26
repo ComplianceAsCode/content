@@ -1,6 +1,0 @@
-# platform = multi_platform_all
-
-# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-
-{{{ bash_fix_audit_watch_rule("auditctl", PATH, "wa", "audit_rules_usergroup_modification") }}}
-{{{ bash_fix_audit_watch_rule("augenrules", PATH, "wa", "audit_rules_usergroup_modification") }}}

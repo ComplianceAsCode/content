@@ -13,7 +13,7 @@ umask u=rw,go=
 
 umask $OLD_UMASK
 
-{{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
+{{% if product in ["fedora", "ol8", "ol9"] or 'rhel' in product %}}
 if [ -f /usr/bin/authselect ]; then
     {{{ bash_enable_authselect_feature('with-smartcard') | indent(4) }}}
 else

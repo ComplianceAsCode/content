@@ -29,10 +29,13 @@ checktext: |-
 
     If "AuditBackend" is not set to "LinuxAudit", this is a finding.
 
+    If the system is virtual machine with no virtual or physical USB peripherals attached, this is not a finding.
+
 fixtext: |-
     Configure {{{ full_name }}} USBGuard AuditBackend to use the audit system.
 
     Add or edit the following line in /etc/usbguard/usbguard-daemon.conf
 
     AuditBackend=LinuxAudit
+
 

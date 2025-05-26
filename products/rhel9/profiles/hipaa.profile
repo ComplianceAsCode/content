@@ -21,8 +21,11 @@ description: |-
     Use of this profile in no way guarantees or makes claims against legal compliance against the HIPAA Security Rule(s).   
 
 selections:
+    # No need to keep the UEFI rules here since RHEL9 unified the BIOS/UEFI config
+    - '!grub2_uefi_admin_username'
+    - '!grub2_uefi_password'
+
     - grub2_password
-    - grub2_uefi_password
     - file_groupowner_grub2_cfg
     - file_owner_grub2_cfg
     - grub2_disable_interactive_boot
@@ -42,8 +45,6 @@ selections:
     - sshd_disable_root_login
     - libreswan_approved_tunnels
     - no_rsh_trust_files
-    - package_talk_removed
-    - package_talk-server_removed
     - package_telnet_removed
     - package_telnet-server_removed
     - package_cron_installed
@@ -139,7 +140,9 @@ selections:
     - audit_rules_privileged_commands_umount
     - audit_rules_privileged_commands_unix_chkpwd
     - audit_rules_privileged_commands_userhelper
-    - audit_rules_session_events
+    - audit_rules_session_events_utmp
+    - audit_rules_session_events_btmp
+    - audit_rules_session_events_wtmp
     - audit_rules_sysadmin_actions
     - audit_rules_system_shutdown
     - var_audit_failure_mode=panic

@@ -1,24 +1,9 @@
-{{%- if product in ["fedora", "sle12", "sle15", "ubuntu2004", "ubuntu2204", "ubuntu2404"] or 'ol' in families or 'rhel' in product %}}
-  {{%- set perm_x="-F perm=x " %}}
-{{%- endif %}}
-
-
 documentation_complete: true
-
 
 title: 'Record Any Attempts to Run seunshare'
 
 description: |-
-    At a minimum, the audit system should collect any execution attempt
-    of the <tt>seunshare</tt> command for all users and root. If the <tt>auditd</tt>
-    daemon is configured to use the <tt>augenrules</tt> program to read audit rules
-    during daemon startup (the default), add the following lines to a file with suffix
-    <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-a always,exit -F path=/usr/sbin/seunshare {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
-    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
-    utility to read audit rules during daemon startup, add the following lines to
-    <tt>/etc/audit/audit.rules</tt> file:
-    <pre>-a always,exit -F path=/usr/sbin/seunshare {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    {{{ describe_arpc("/usr/sbin/seunshare")}}}
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by
@@ -41,7 +26,6 @@ identifiers:
     cce@rhel10: CCE-86735-8
 
 references:
-    disa: CCI-000172
     nist: AU-2(d),AU-12(c),AC-6(9),CM-6(a)
 
 ocil: |-

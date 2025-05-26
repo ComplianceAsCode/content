@@ -1,23 +1,9 @@
-{{%- if product in ["fedora", "sle12", "sle15", "ubuntu2004", "ubuntu2204", "ubuntu2404"] or 'ol' in families or 'rhel' in products %}}
-  {{%- set perm_x="-F perm=x " %}}
-{{%- endif %}}
-
 documentation_complete: true
-
 
 title: 'Ensure auditd Collects Information on the Use of Privileged Commands - at'
 
 description: |-
-    At a minimum, the audit system should collect the execution of
-    privileged commands for all users and root. If the <tt>auditd</tt> daemon is
-    configured to use the <tt>augenrules</tt> program to read audit rules during
-    daemon startup (the default), add a line of the following form to a file with
-    suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-a always,exit -F path=/usr/bin/at {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
-    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
-    utility to read audit rules during daemon startup, add a line of the following
-    form to <tt>/etc/audit/audit.rules</tt>:
-    <pre>-a always,exit -F path=/usr/bin/at {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    {{{ describe_arpc("/usr/bin/at") }}}
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by
@@ -41,7 +27,6 @@ identifiers:
 references:
     cis@ubuntu2004: 4.1.11
     cis@ubuntu2204: 4.1.3.6
-    disa: CCI-000172
     nist: AU-2(d),AU-12(c),AC-6(9),CM-6(a)
 
 ocil_clause: '{{{ ocil_clause_audit() }}}'

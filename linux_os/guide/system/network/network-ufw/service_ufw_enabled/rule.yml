@@ -13,7 +13,6 @@ severity: medium
 references:
     cis@ubuntu2004: 3.5.1.3
     cis@ubuntu2204: 3.5.1.3
-    disa: CCI-002314
     srg: SRG-OS-000297-GPOS-00115
     stigid@ubuntu2004: UBTU-20-010434
     stigid@ubuntu2204: UBTU-22-251020
@@ -23,9 +22,19 @@ ocil_clause: 'the service is not enabled'
 ocil: |-
     {{{ ocil_service_enabled(service="ufw") }}}
 
+platform: system_with_kernel and package[ufw]
+
+{{%- if product in [ "ubuntu2404" ] %}}
+template:
+    name: service_enabled_guard_var
+    vars:
+        packagename: ufw
+        servicename: ufw
+        variable: var_network_filtering_service
+        value: ufw
+{{%- else %}}
 template:
     name: service_enabled
     vars:
         servicename: ufw
-
-platform: system_with_kernel and package[ufw]
+{{%- endif %}}

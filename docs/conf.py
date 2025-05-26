@@ -48,6 +48,7 @@ extensions = ['myst_parser',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
+    'sphinx.ext.napoleon',
     'sphinxcontrib.jinjadomain',
     'sphinxcontrib.autojinja.jinja',
 ]

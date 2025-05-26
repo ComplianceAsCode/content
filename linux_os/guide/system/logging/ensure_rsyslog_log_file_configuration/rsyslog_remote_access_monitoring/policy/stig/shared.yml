@@ -9,18 +9,19 @@ checktext: |-
 
     Check that remote access methods are being logged by running the following command:
 
-    $ grep -rE '(auth.\*|authpriv.\*|daemon.\*)' /etc/rsyslog.conf
+    $ grep -rE '(auth.\*|authpriv.\*|daemon.\*)' /etc/rsyslog.conf /etc/rsyslog.d/
 
     /etc/rsyslog.conf:authpriv.*
 
     If "auth.*", "authpriv.*" or "daemon.*" are not configured to be logged, this is a finding.
 
 fixtext: |-
-    Add or update the following lines to the "/etc/rsyslog.conf" file:
+    Add or update the following lines to the "/etc/rsyslog.conf" file or a file in "/etc/rsyslog.d":
 
     auth.*;authpriv.*;daemon.* /var/log/secure
 
     The "rsyslog" service must be restarted for the changes to take effect with the following command:
 
     $ sudo systemctl restart rsyslog.service
+
 

@@ -6,8 +6,9 @@ description: |-
     If the <tt>auditd</tt> daemon is configured to use the
     <tt>augenrules</tt> program to read audit rules during daemon startup (the
     default), add the following lines to a file with suffix <tt>.rules</tt> in the
-    directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
-    appropriate for your system:
+    directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 for
+    32-bit system, or having two lines for both b32 and b64 in case your system
+    is 64-bit:
     <pre>-a always,exit -F arch=ARCH -S sethostname,setdomainname -F key=audit_rules_networkconfig_modification
     -w /etc/issue -p wa -k audit_rules_networkconfig_modification
     -w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
@@ -23,8 +24,9 @@ description: |-
     {{% endif %}}
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
-    <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
-    appropriate for your system:
+    <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 for
+    32-bit system, or having two lines for both b32 and b64 in case your system
+    is 64-bit:
     <pre>-a always,exit -F arch=ARCH -S sethostname,setdomainname -F key=audit_rules_networkconfig_modification
     -w /etc/issue -p wa -k audit_rules_networkconfig_modification
     -w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
@@ -56,7 +58,6 @@ references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
     cis@sle12: 4.1.5
     cis@sle15: 4.1.5
-    cis@slmicro5: 4.1.5
     cis@ubuntu2004: 4.1.5
     cis@ubuntu2204: 4.1.3.5
     cjis: 5.4.1.1

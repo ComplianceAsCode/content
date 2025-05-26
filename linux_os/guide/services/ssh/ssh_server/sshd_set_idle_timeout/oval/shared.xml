@@ -34,7 +34,7 @@
           {{%- endif %}}
           <criterion comment="the configuration exists" test_ref="test_clientaliveinterval_present" />
         </criteria>
-        {{%- if product not in ["ol8", "ol9", "rhel8", "rhel9"] %}}
+        {{%- if product not in ["ol8", "ol9"] and "rhel" not in product %}}
         <extend_definition comment="The SSH ClientAliveCountMax is set to zero" definition_ref="sshd_set_keepalive" />
         {{% endif %}}
       </criteria>

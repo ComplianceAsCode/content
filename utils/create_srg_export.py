@@ -8,8 +8,8 @@ import pathlib
 import os
 import re
 import sys
+import typing
 
-import yaml
 from typing import TextIO
 import xml.etree.ElementTree as ET
 
@@ -34,7 +34,7 @@ RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
 BUILD_CONFIG = os.path.join(SSG_ROOT, "build", "build_config.yml")
 OUTPUT = os.path.join(SSG_ROOT, 'build',
                       f'{datetime.datetime.now().strftime("%s")}_stig_export.csv')
-SRG_PATH = os.path.join(SSG_ROOT, 'shared', 'references', 'disa-os-srg-v3r1.xml')
+SRG_PATH = os.path.join(SSG_ROOT, 'shared', 'references', 'disa-os-srg-v3r2.xml')
 NS = {'scap': ssg.constants.datastream_namespace,
       'xccdf-1.2': ssg.constants.XCCDF12_NS,
       'xccdf-1.1': ssg.constants.XCCDF11_NS}
@@ -98,26 +98,26 @@ def html_plain_text(source: str) -> str:
 
 def get_variable_value(root_path: str, product: str, name: str, selector: str) -> str:
     product_value_full_path = pathlib.Path(root_path).joinpath('build').joinpath(product)\
-        .joinpath('values').joinpath(f'{name}.yml').absolute()
+        .joinpath('values').joinpath(f'{name}.json').absolute()
     if not product_value_full_path.exists():
-        sys.stderr.write(f'Undefined variable {name}\n')
+        sys.stderr.write(f'Undefined variable {name} at {product_value_full_path}\n')
         exit(7)
     with open(product_value_full_path, 'r') as f:
-        var_yaml = yaml.load(Loader=yaml.BaseLoader, stream=f)
-        if 'options' not in var_yaml:
+        var_json = json.load(f)
+        if 'options' not in var_json:
             sys.stderr.write(f'No options for {name}\n')
             exit(8)
-        if not selector and 'default' not in var_yaml['options']:
+        if not selector and 'default' not in var_json['options']:
             sys.stderr.write(f'No default selector for {name}\n')
             exit(10)
         if not selector:
-            return str(var_yaml['options']['default'])
+            return str(var_json['options']['default'])
 
-        if selector not in var_yaml['options']:
+        if selector not in var_json['options']:
             sys.stderr.write(f'Option {selector} does not exist for {name}\n')
             exit(9)
         else:
-            return str(var_yaml['options'][selector])
+            return str(var_json['options'][selector])
 
 
 def replace_variables(source: str, variables: dict, root_path: str, product: str) -> str:
@@ -234,7 +234,7 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
         for selection in control.selections:
             if selection not in used_rules and selection in control.selected:
                 rule_object = handle_rule_yaml(product, rule_json[selection]['dir'], env_yaml)
-                row = create_base_row(control, srgs, rule_object)
+                row = create_base_row(control, srgs, rule_object, product)
                 if control.levels is not None:
                     row['Severity'] = ssg.build_stig.get_severity(control.levels[0])
                 requirement = get_policy_specific_content('srg_requirement', rule_object)
@@ -259,11 +259,11 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
         return rows
 
     else:
-        return [no_selections_row(control, srgs)]
+        return [no_selections_row(control, srgs, product)]
 
 
-def no_selections_row(control, srgs):
-    row = create_base_row(control, srgs, ssg.build_yaml.Rule('null'))
+def no_selections_row(control, srgs, product: str) -> typing.Dict[str, str]:
+    row = create_base_row(control, srgs, ssg.build_yaml.Rule('null'), product)
     row['Requirement'] = control.title
     row['Status'] = DisaStatus.from_string(control.status)
     row['Fix'] = control.fixtext
@@ -273,8 +273,28 @@ def no_selections_row(control, srgs):
     return row
 
 
+def get_rule_srg_refs(srgs: typing.List[str], product) -> typing.Generator[str, None, None]:
+    for srg in srgs:
+        if '-ctr-' in srg and product != 'ocp4':
+            continue
+        yield srg
+
+
+def _get_cci(rule_srgs, srg, srgs):
+    if rule_srgs:
+        rule_ccis = set()
+        for rule_srg in rule_srgs:
+            if rule_srg not in srgs:
+                continue
+            rule_ccis.add(srgs[rule_srg].get('cci'))
+        cci = ','.join(rule_ccis)
+    else:
+        cci = srg['cci']
+    return cci
+
+
 def create_base_row(item: ssg.controls.Control, srgs: dict,
-                    rule_object: ssg.build_yaml.Rule) -> dict:
+                    rule_object: ssg.build_yaml.Rule, product: str) -> dict:
     row = dict()
     srg_id = item.id
     if srg_id not in srgs:
@@ -282,20 +302,20 @@ def create_base_row(item: ssg.controls.Control, srgs: dict,
         exit(4)
     srg = srgs[srg_id]
 
+    rule_srgs = None
+
     if 'srg' in rule_object.references:
-        row['SRGID'] = ','.join(rule_object.references['srg'])
+        rule_srgs = list(get_rule_srg_refs(rule_object.references['srg'], product))
+        row['SRGID'] = ",".join(rule_srgs)
     else:
         row['SRGID'] = srg_id
-    if 'disa' in rule_object.references:
-        row['CCI'] = ','.join(rule_object.references['disa'])
-    else:
-        row['CCI'] = srg['cci']
+    row['CCI'] = _get_cci(rule_srgs, srg, srgs)
     row['SRG Requirement'] = srg['title']
     row['SRG VulDiscussion'] = html_plain_text(srg['vuln_discussion'])
     row['SRG Check'] = html_plain_text(srg['check'])
     row['SRG Fix'] = srg['fix']
     row['Severity'] = ssg.build_stig.get_severity(srg.get('severity'))
-    row['IA Control'] = get_iacontrol(row['SRGID'])
+    row['IA Control'] = get_iacontrol(row['SRGID'].split(','))
     row['Mitigation'] = item.mitigation
     row['Artifact Description'] = item.artifact_description
     row['Status Justification'] = item.status_justification
@@ -352,8 +372,6 @@ def handle_csv_output(output: str, results: list) -> str:
 
 def handle_xlsx_output(output: str, product: str, results: list) -> str:
     output = output.replace('.csv', '.xlsx')
-    for row in results:
-        row['IA Control'] = get_iacontrol(row['SRGID'])
     xlsx.handle_dict(results, output, f'{product} SRG Mapping')
     return output
 

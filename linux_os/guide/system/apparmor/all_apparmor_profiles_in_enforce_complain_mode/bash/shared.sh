@@ -34,6 +34,11 @@ then
   {{% endif %}}
 fi
 
+if [ "$APPARMOR_MODE" = "keep_existing_mode" ]
+then
+  echo "***WARNING***: This remediation will not modify any existing AppArmor profiles."
+fi
+
 {{% if 'ubuntu' in product %}}
 UNCONFINED=$(aa-status | grep "processes are unconfined" | awk '{print $1;}')
 if [ $UNCONFINED -ne 0 ];

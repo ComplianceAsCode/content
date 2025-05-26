@@ -29,8 +29,7 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/manifests/etcd-po
 ocil: |-
     {{{ ocil_file_owner(file="/etc/kubernetes/manifests/etcd-pod.yaml", owner="root") }}}
 
-platforms:
-    - ocp4-master-node
+platform: ocp4-master-node
 
 warnings:
     - dependency: |-
@@ -42,5 +41,5 @@ template:
     name: file_owner
     vars:
         filepath: ^/etc/kubernetes/manifests/etcd-pod.yaml$
-        fileuid: '0'
+        uid_or_name: '0'
         filepath_is_regex: "true"

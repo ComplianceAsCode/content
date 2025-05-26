@@ -93,7 +93,6 @@ def new_stig_overlay(xccdftree, ssgtree, outfile, quiet):
             release = svkey_raw.strip()[10:-5]
             version = element_value("version", rule)
             rule_title = element_value("title", rule)
-            ident = element_value("ident", rule).strip("CCI-").lstrip("0")
 
         if not ssgtree:
             mapped_id = "XXXX"
@@ -104,7 +103,7 @@ def new_stig_overlay(xccdftree, ssgtree, outfile, quiet):
                 mapped_id = "XXXX"
 
         overlay = ET.SubElement(new_stig_overlay, "overlay", owner=owner,
-                                ruleid=mapped_id, ownerid=version, disa=ident,
+                                ruleid=mapped_id, ownerid=version,
                                 severity=severity)
         vmsinfo = ET.SubElement(overlay, "VMSinfo", VKey=vkey,
                                 SVKey=svkey, VRelease=release)

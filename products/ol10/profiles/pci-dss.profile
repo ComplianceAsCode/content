@@ -46,6 +46,7 @@ selections:
     - '!ensure_firewall_rules_for_open_ports'
     - '!ensure_shadow_group_empty'
     - '!ensure_suse_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!install_PAE_kernel_on_x86-32'
     - '!mask_nonessential_services'
     - '!nftables_ensure_default_deny_policy'
@@ -68,3 +69,9 @@ selections:
     # Add oracle gpg key rule
     - 'ensure_oracle_gpgkey_installed'
     - '!ensure_redhat_gpgkey_installed'
+
+    # OL 10 uses a different rule for auditing changes to selinux configuration
+    - '!audit_rules_mac_modification'
+    - audit_rules_mac_modification_etc_selinux
+    #  Irrelevant for ol10
+    - '!enable_dconf_user_profile'

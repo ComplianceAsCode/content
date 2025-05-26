@@ -205,7 +205,11 @@
     </set>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_object id="object_static_sysctl_{{{ rule_id }}}" version="1">
+{{% if "ubuntu" in product %}}
+    <ind:filepath operation="pattern match">/etc(/ufw){0,1}/sysctl.conf$</ind:filepath>
+{{% else %}}
     <ind:filepath>/etc/sysctl.conf</ind:filepath>
+{{% endif %}}
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
 

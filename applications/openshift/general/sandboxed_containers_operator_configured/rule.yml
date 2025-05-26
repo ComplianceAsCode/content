@@ -1,0 +1,41 @@
+
+title: Ensure that Sandboxed Containers Operator is Configured
+
+description: |-
+    {{{ weblink(link="https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.7",
+                text="The Sandboxed Containers Operator") }}}
+    provides containers with a dedicated kernel by running them in a virtual machine. This allows for extended separation, as no kernel is shared. This is done by using RHCOS cluster extension and is only available on RHCOS nodes.
+
+    It is only active, if it is correctly configured with a KataConfig AND you configured each pod spec with <pre>runtimeClassName: kata</pre>.
+
+    Be advised, that on AWS, Azure, IBM Z and IBM LinuxOne you need to enable PeerPods and confiugre additional resources.
+
+rationale: |-
+    Using separate kernels for each container provides for better isolation, and makes it harder for adveseries to move laterally to other containers or the container-host.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-87430-5
+
+ocil_clause: 'Sandboxed Containers Operator is not configured'
+
+ocil: |-
+    Run the following command to check if a KataConfig for the cluster exists:
+    <pre>$ oc get kataconfigs openshift-sandboxed-containers-operator</pre>
+    Make sure at least one KataConfig exists.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/kataconfiguration.openshift.io/v1/kataconfigs?limit=5") | indent(4) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: /apis/kataconfiguration.openshift.io/v1/kataconfigs?limit=5
+        yamlpath: ".items[:].metadata.name"
+        entity_check: "at least one"
+        values:
+            - value: ".*"
+              operation: "pattern match"

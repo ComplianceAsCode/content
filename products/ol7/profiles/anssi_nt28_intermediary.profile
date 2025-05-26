@@ -17,6 +17,7 @@ selections:
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!sysctl_kernel_unprivileged_bpf_disabled'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!package_dnf-automatic_installed'
     - '!grub2_mds_argument'
     - '!dnf-automatic_security_updates_only'

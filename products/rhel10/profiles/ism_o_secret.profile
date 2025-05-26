@@ -10,7 +10,7 @@ metadata:
 
 reference: https://www.cyber.gov.au/ism
 
-title: 'DRAFT - Australian Cyber Security Centre (ACSC) ISM Official - Secret'
+title: 'Australian Cyber Security Centre (ACSC) ISM Official - Secret'
 
 description: |-
     This is a draft profile for experimental purposes.
@@ -31,6 +31,7 @@ extends: e8
 selections:
     - ism_o:all:secret
     # these rules do not work properly on RHEL 10 for now
+    - '!enable_authselect'
     - '!enable_dracut_fips_module'
     - '!firewalld_sshd_port_enabled'
     - '!require_singleuser_auth'

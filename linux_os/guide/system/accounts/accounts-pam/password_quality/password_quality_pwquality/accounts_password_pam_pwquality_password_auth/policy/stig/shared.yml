@@ -4,14 +4,18 @@ srg_requirement: |-
 vuldiscussion: |-
     Enabling PAM password complexity permits enforcement of strong passwords and consequently makes the system less prone to dictionary attacks.
 
+
+
 checktext: |-
     Verify {{{ full_name }}} uses "pwquality" to enforce the password complexity rules in the password-auth file with the following command:
 
-    $ cat /etc/pam.d/password-auth | grep pam_pwquality
+    $ grep pam_pwquality /etc/pam.d/password-auth
 
     password required pam_pwquality.so
 
     If the command does not return a line containing the value "pam_pwquality.so", or the line is commented out, this is a finding.
+
+    If the system administrator (SA) can demonstrate that the required configuration is contained in a PAM configuration file included or substacked from the system-auth file, this is not a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to use "pwquality" to enforce password complexity rules.
@@ -19,4 +23,5 @@ fixtext: |-
     Add the following line to the "/etc/pam.d/password-auth" file (or modify the line to have the required value):
 
     password required pam_pwquality.so
+
 

@@ -22,7 +22,6 @@ identifiers:
     cce@rhel8: CCE-83364-0
 
 references:
-    disa: CCI-000015
     nist: AC-2(1)
     srg: SRG-OS-000001-GPOS-00001
 
@@ -33,7 +32,7 @@ ocil: |-
     <pre>$ grep local_users_only /etc/security/pwquality.conf</pre>
     The output should return <tt>local_users_only</tt> uncommented.
 
-platform: package[pam]
+platform: package[libpwquality]
 
 warnings:
     - management: |-

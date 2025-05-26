@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Disable systemd_timesyncd Service'
 
 description: |-
@@ -18,8 +17,18 @@ severity: medium
 
 platform: package[systemd-timesyncd]
 
+{{%- if product in [ "ubuntu2404" ] %}}
+template:
+    name: service_disabled_guard_var
+    vars:
+        packagename: systemd-timesyncd
+        servicename: systemd-timesyncd
+        variable: var_timesync_service
+        value: systemd-timesyncd
+{{%- else %}}
 template:
     name: service_disabled
     vars:
         servicename: systemd-timesyncd
         packagename: systemd-timesyncd
+{{%- endif %}}

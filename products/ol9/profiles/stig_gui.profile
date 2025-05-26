@@ -1,15 +1,15 @@
 documentation_complete: true
 
 metadata:
-    version: TBD
+    version: V1R1
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
-title: 'DRAFT - DISA STIG with GUI for Oracle Linux 9'
+title: 'DISA STIG with GUI for Oracle Linux 9'
 
 description: |-
     This profile contains configuration checks that align to the
-    [DRAFT] DISA STIG for Oracle Linux 9.
+    DISA STIG for Oracle Linux 9 V1R1.
 
     Warning: The installation and use of a Graphical User Interface (GUI)
     increases your attack vector and decreases your overall security posture. If
@@ -21,9 +21,9 @@ extends: stig
 
 selections:
     # Unselect rules that remove packages required by "server with GUI" installation
-    # 215070
+    # OL09-00-000145
     - '!xwindows_remove_packages'
-    # 215025
+    # OL09-00-000100
     - '!package_nfs-utils_removed'
-    # 211030
+    # OL09-00-000020
     - '!xwindows_runlevel_target'

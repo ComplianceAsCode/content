@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 # platform = Not Applicable
 # This test is not runnable by automatus tool
 

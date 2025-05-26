@@ -1,0 +1,40 @@
+srg_requirement: |-
+    {{{ full_name }}} must ensure the password complexity module in the system-auth file is configured for three retries or less.
+
+vuldiscussion: |-
+    Use of a complex password helps to increase the time and resources required
+    to compromise the password. Password complexity, or strength, is a measure
+    of the effectiveness of a password in resisting attempts at guessing and
+    brute-force attacks. "pwquality" enforces complex password construction
+    configuration and has the ability to limit brute-force attacks on the
+    system.
+
+    {{{ full_name }}} uses "pwquality" as a mechanism to enforce password
+    complexity. This is set in both:
+
+    <tt>/etc/pam.d/password-auth</tt>
+    <tt>/etc/pam.d/system-auth</tt>
+
+    By limiting the number of attempts to meet the pwquality module complexity
+    requirements before returning with an error, the system will audit abnormal
+    attempts at password changes.
+
+checktext: |-
+    Verify {{{ full_name }}} is configured to limit the "pwquality" retry option to "3".
+
+    Check for the use of the retry option in the security directory with the following command:
+
+    <pre>$ grep -w retry /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf</pre>
+
+    <pre>retry = 3</pre>
+
+    If the value of "retry" is set to "0" or greater than "3", or is missing,
+    this is a finding.
+
+
+fixtext: |-
+    Add or update the following line in the "/etc/security/pwquality.conf" file
+    or a file in the "/etc/security/pwquality.conf.d/" directory to contain the
+    "retry" parameter:
+
+    <pre>retry = 3</pre>

@@ -19,7 +19,6 @@ identifiers:
     cce@rhel10: CCE-86823-2
 
 references:
-    disa: CCI-000366
     nist: CM-6 b
     srg: SRG-OS-000480-GPOS-00227
 
@@ -37,5 +36,5 @@ template:
     name: file_owner
     vars:
         filepath: /etc/cron.deny
-        fileuid: '0'
+        uid_or_name: '0'
 

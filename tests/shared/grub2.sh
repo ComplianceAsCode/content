@@ -1,16 +1,22 @@
+{{% if 'ubuntu' in product %}}
+test -n "$GRUB_CFG_ROOT" || GRUB_CFG_ROOT=/boot/grub
+{{% else %}}
 test -n "$GRUB_CFG_ROOT" || GRUB_CFG_ROOT=/boot/grub2
+{{% endif %}}
 
 function set_grub_uefi_root {
 	if grep NAME /etc/os-release | grep -iq fedora; then
 		GRUB_CFG_ROOT=/boot/grub2
 	elif grep NAME /etc/os-release | grep -iq "Red Hat"; then
-		if grep VERSION /etc/os-release | grep -q '9\.0'; then
+		if grep VERSION /etc/os-release | grep -q '9\.'; then
 			GRUB_CFG_ROOT=/boot/grub2
 		else
 			GRUB_CFG_ROOT=/boot/efi/EFI/redhat
 		fi
 	elif grep NAME /etc/os-release | grep -iq "Oracle"; then
 		GRUB_CFG_ROOT=/boot/efi/EFI/redhat
+	elif grep NAME /etc/os-release | grep -iq "Ubuntu"; then
+		GRUB_CFG_ROOT=/boot/grub
 	fi
 }
 
@@ -24,6 +30,7 @@ function make_grub_password {
 
 function set_superusers {
 	set_superusers_unquoted "\"$1\""
+	echo "export superusers" >> "$GRUB_CFG_ROOT/grub.cfg"
 }
 
 
@@ -36,4 +43,8 @@ function set_superusers_unquoted {
 function set_root_unquoted {
 	mkdir -p "$GRUB_CFG_ROOT"
 	echo "set root=$1" > "$GRUB_CFG_ROOT/grub.cfg"
+}
+
+function set_superusers_no_export {
+	set_superusers_unquoted "\"$1\""
 }

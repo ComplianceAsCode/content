@@ -5,9 +5,11 @@
     <criteria operator="AND">
       <criterion comment="Check pam_cert_auth in /etc/sssd/sssd.conf"
                  test_ref="test_sssd_enable_smartcards"/>
-      {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
+      {{% if product in ["fedora", "ol8", "ol9"] or 'rhel' in product %}}
       <criterion comment="Check allow_missing_name in /etc/pam.d/smartcard-auth"
                  test_ref="test_sssd_enable_smartcards_allow_missing_name_smartcard_auth"/>
+      {{% endif %}}
+      {{% if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
       <criterion comment="Check try_cert_auth or require_cert_auth in /etc/pam.d/system-auth"
                  test_ref="test_sssd_enable_smartcards_cert_auth_system_auth"/>
       {{% endif %}}
@@ -30,7 +32,7 @@
     <ind:subexpression operation="pattern match">(?i)true</ind:subexpression>
   </ind:textfilecontent54_state>
 
-  {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
+  {{% if product in ["fedora", "ol8", "ol9"] or 'rhel' in product %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="tests the presence of try_cert_auth or require_cert_auth in /etc/pam.d/smartcard-auth"
   id="test_sssd_enable_smartcards_allow_missing_name_smartcard_auth" version="2">
@@ -38,18 +40,23 @@
     <ind:state state_ref="state_sssd_enable_smartcards_allow_missing_name" />
   </ind:textfilecontent54_test>
 
+  <ind:textfilecontent54_object id="obj_sssd_enable_smartcards_smartcard_auth_options" version="2">
+    <ind:filepath>/etc/pam.d/smartcard-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*auth.*?pam_sss\.so(.*)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_sssd_enable_smartcards_allow_missing_name" version="1">
+    <ind:subexpression operation="pattern match">^.*allow_missing_name.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+  {{% endif %}}
+  {{% if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="tests the presence of try_cert_auth or require_cert_auth in /etc/pam.d/system-auth"
   id="test_sssd_enable_smartcards_cert_auth_system_auth" version="2">
     <ind:object object_ref="obj_sssd_enable_smartcards_system_auth_options" />
     <ind:state state_ref="state_sssd_enable_smartcards_cert_auth" />
   </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="obj_sssd_enable_smartcards_smartcard_auth_options" version="2">
-    <ind:filepath>/etc/pam.d/smartcard-auth</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*auth.*?pam_sss\.so(.*)</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="obj_sssd_enable_smartcards_system_auth_options" version="2">
     <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
@@ -60,10 +67,6 @@
   <ind:textfilecontent54_state id="state_sssd_enable_smartcards_cert_auth" version="1">
     <ind:subexpression
     operation="pattern match">^.*(try_cert_auth|require_cert_auth).*$</ind:subexpression>
-  </ind:textfilecontent54_state>
-
-  <ind:textfilecontent54_state id="state_sssd_enable_smartcards_allow_missing_name" version="1">
-    <ind:subexpression operation="pattern match">^.*allow_missing_name.*$</ind:subexpression>
   </ind:textfilecontent54_state>
   {{% endif %}}
 

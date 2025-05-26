@@ -24,5 +24,5 @@
 - name: "{{{ rule_title }}}: Ensure non-root local partitions are present with nodev option in /etc/fstab"
   ansible.builtin.replace:
     path: /etc/fstab
-    regexp: '^\s*(?!#)(/dev/\S+|UUID=\S+)\s+(/\w\S*)\s+(\S+)\s+(?!nodev)(\S+)(.*)$'
+    regexp: '^\s*(?!#)(/dev/\S+|UUID=\S+)\s+(/\w\S*)\s+(\S+)\s+(?!.*\bnodev\b)(\S+)(.*)$'
     replace: '\1 \2 \3 \4,nodev \5'

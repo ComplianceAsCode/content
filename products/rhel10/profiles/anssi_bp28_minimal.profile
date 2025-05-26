@@ -5,7 +5,7 @@ metadata:
         - marcusburghardt
         - vojtapolasek
 
-title: 'DRAFT - ANSSI-BP-028 (minimal)'
+title: 'ANSSI-BP-028 (minimal)'
 
 description: |-
     This is a draft profile for experimental purposes.
@@ -22,7 +22,9 @@ description: |-
 
 selections:
     - anssi:all:minimal
+    - var_password_hashing_algorithm_pam=yescrypt
     # Following rules are incompatible with rhel10 product
+    - '!enable_authselect'
     # tally2 is deprecated, replaced by faillock
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!accounts_passwords_pam_tally2'
@@ -33,8 +35,9 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     - '!cracklib_accounts_password_pam_lcredit'
     - '!cracklib_accounts_password_pam_ocredit'
-    # Oracle key is not relevant on RHEL 10
+    # Non-Red Hat keys are irrelevant on RHEL 10
     - '!ensure_oracle_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     # this rule is not automated anymore
     - '!security_patches_up_to_date'
     # these packages do not exist in rhel10 (R62)

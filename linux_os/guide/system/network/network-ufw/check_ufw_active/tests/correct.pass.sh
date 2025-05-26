@@ -1,3 +1,4 @@
+#!/bin/bash
 # packages = ufw
 
 systemctl enable --now ufw

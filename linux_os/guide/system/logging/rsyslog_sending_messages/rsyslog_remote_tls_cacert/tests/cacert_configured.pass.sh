@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo 'global(DefaultNetstreamDriverCAFile="/etc/pki/tls/cert.pem")' >> /etc/rsyslog.conf
+echo 'global(DefaultNetstreamDriverCAFile="{{{ rsyslog_cafile }}}")' >> /etc/rsyslog.conf

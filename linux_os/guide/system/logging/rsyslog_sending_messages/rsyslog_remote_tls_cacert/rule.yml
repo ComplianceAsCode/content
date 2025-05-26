@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Configure CA certificate for rsyslog remote logging'
 
 description: |-
@@ -8,8 +7,8 @@ description: |-
     to remote server using Transport Layer Security (TLS)
     using correct path for the <tt>DefaultNetstreamDriverCAFile</tt>
     global option in <tt>/etc/rsyslog.conf</tt>, for example with the following command:
-    <pre>echo 'global(DefaultNetstreamDriverCAFile="/etc/pki/tls/cert.pem")' >> /etc/rsyslog.conf</pre>
-    Replace the <tt>/etc/pki/tls/cert.pem</tt> in the above command with the path to the file with CA certificate generated for the purpose of remote logging.
+    <pre>echo 'global(DefaultNetstreamDriverCAFile="{{{ rsyslog_cafile }}}")' >> /etc/rsyslog.conf</pre>
+    Replace the <tt>{{{ rsyslog_cafile }}}</tt> in the above command with the path to the file with CA certificate generated for the purpose of remote logging.
 
 rationale: |-
     The CA certificate needs to be set or <tt>rsyslog.service</tt>
@@ -36,8 +35,8 @@ ocil: |-
     configured for its TLS connections to remote server, run the following command:
     <pre>$ grep DefaultNetstreamDriverCAFile /etc/rsyslog.conf /etc/rsyslog.d/*.conf</pre>
     The output should include record similar to
-    <pre>global(DefaultNetstreamDriverCAFile="/etc/pki/tls/cert.pem")</pre>
-    where the path to the CA file (<tt>/etc/pki/tls/cert.pem</tt> in case above) must point to the correct CA certificate.
+    <pre>global(DefaultNetstreamDriverCAFile="{{{ rsyslog_cafile }}}")</pre>
+    where the path to the CA file (<tt>{{{ rsyslog_cafile }}}</tt> in case above) must point to the correct CA certificate.
 
 warnings:
     - general: |-

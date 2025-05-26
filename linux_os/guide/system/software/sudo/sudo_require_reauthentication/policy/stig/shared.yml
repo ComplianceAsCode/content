@@ -11,7 +11,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} requires reauthentication when using the "sudo" command to elevate privileges with the following command:
 
-    $ sudo grep -ir 'timestamp_timeout' /etc/sudoers /etc/sudoers.d/*
+    $ sudo grep -ir 'timestamp_timeout' /etc/sudoers /etc/sudoers.d/
 
     /etc/sudoers:Defaults timestamp_timeout=0
 
@@ -22,7 +22,6 @@ checktext: |-
 fixtext: |-
     Configure {{{ full_name }}} to reauthenticate "sudo" commands after the specified timeout:
 
-    Add the following line to "/etc/sudoers":
+    Add the following line to "/etc/sudoers" or a file in "/etc/sudoers.d":
 
     Defaults timestamp_timeout=0
-

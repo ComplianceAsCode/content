@@ -144,6 +144,7 @@ selections:
     - configure_crypto_policy
     - dconf_gnome_remote_access_credential_prompt
     - dconf_gnome_remote_access_encryption
+    - enable_dconf_user_profile
     - ensure_gpgcheck_local_packages
     - grub2_disable_interactive_boot
     - libreswan_approved_tunnels

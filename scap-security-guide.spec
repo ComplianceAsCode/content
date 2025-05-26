@@ -97,8 +97,8 @@ rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
 
 %files
 %{_datadir}/xml/scap/ssg/content
-# No kickstarts for Fedora
-%if 0%{?_rhel_like}
+# No kickstarts for Fedora or CentOS Stream 10+
+%if 0%{?_rhel_like} && 0%{?_rhel_like} < 10
 %{_datadir}/%{name}/kickstart
 %endif
 %{_datadir}/%{name}/ansible/*.yml

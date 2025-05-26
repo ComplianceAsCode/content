@@ -31,4 +31,8 @@ chmod 0644 /etc/systemd/system/aidecheck.*
 # enable the aide related services
 systemctl daemon-reload
 systemctl enable aidecheck.service
-systemctl --now enable aidecheck.timer
+systemctl enable aidecheck.timer
+
+if [[ $(systemctl is-system-running) != "offline" ]]; then
+  systemctl start aidecheck.timer
+fi

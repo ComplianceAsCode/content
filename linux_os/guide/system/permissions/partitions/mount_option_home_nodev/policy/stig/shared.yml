@@ -13,10 +13,11 @@ checktext: |-
 
     $ mount | grep /home
 
-    tmpfs on /home type tmpfs (rw,nodev,nosuid,noexec,seclabel)
+    tmpfs on /home type xfs (rw,nodev,nosuid,noexec,seclabel)
 
     If the "/home" file system is mounted without the "nodev" option, this is a finding.
 
 fixtext: |-
     Modify "/etc/fstab" to use the "nodev" option on the "/home" directory.
+
 

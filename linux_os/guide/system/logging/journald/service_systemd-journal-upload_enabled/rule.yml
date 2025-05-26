@@ -29,7 +29,7 @@ fixtext: |-
 
 srg_requirement: '{{{ srg_requirement_service_enabled("systemd-journal-upload") }}}'
 
-platform: machine
+platform: machine and package[systemd-journal-remote]
 
 template:
     name: service_enabled

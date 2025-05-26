@@ -1,3 +1,4 @@
+#!/bin/bash
 # platform = Red Hat Enterprise Linux 9, Red Hat Enterprise Linux 10
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 

@@ -6,5 +6,7 @@
 
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 "$SYSTEMCTL_EXEC" unmask '{{{ MOUNTNAME }}}.mount'
-"$SYSTEMCTL_EXEC" start '{{{ MOUNTNAME }}}.mount'
+if [[ $("$SYSTEMCTL_EXEC" is-system-running) != "offline" ]]; then
+  "$SYSTEMCTL_EXEC" start '{{{ MOUNTNAME }}}.mount'
+fi
 "$SYSTEMCTL_EXEC" enable '{{{ MOUNTNAME }}}.mount'

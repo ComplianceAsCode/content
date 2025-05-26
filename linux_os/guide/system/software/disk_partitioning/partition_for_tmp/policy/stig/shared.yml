@@ -9,7 +9,7 @@ checktext: |-
 
     $ mount | grep /tmp
 
-    tmpfs /tmp tmpfs noatime,mode=1777 0 0
+    /dev/mapper/rhel-tmp on /tmp type xfs (rw,nodev,nosuid,noexec,seclabel)
 
     If a separate entry for "/tmp" is not in use, this is a finding.
 

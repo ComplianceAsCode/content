@@ -59,6 +59,8 @@ description: |-
         {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_basic_system_settings/configuring-time-synchronization_configuring-basic-system-settings") }}}
     {{% elif product == "rhel9" %}}
         {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_basic_system_settings/configuring-time-synchronization_configuring-basic-system-settings") }}}
+    {{% elif product == "rhel10" %}}
+        {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/10/html/configuring_basic_system_settings/configuring-time-synchronization_configuring-basic-system-settings") }}}
     {{% elif "ubuntu" in product  %}}
         {{{ weblink(link="https://help.ubuntu.com/lts/serverguide/NTP.html") }}}
     {{% elif "debian" in product %}}
@@ -68,7 +70,7 @@ description: |-
     {{% elif "al2023" in product %}}
         {{{ weblink(link="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html") }}}
     {{% else %}}
-        {{{ weblink(link="https://docs.fedoraproject.org/en-US/fedora/latest/system-administrators-guide/servers/Configuring_NTP_Using_the_chrony_Suite/") }}}
+        {{{ weblink(link="https://en.wikipedia.org/wiki/Network_Time_Protocol") }}}
     {{% endif %}}
     for more detailed comparison of features of <tt>chronyd</tt>
     and <tt>ntpd</tt> daemon features respectively, and for further guidance how to

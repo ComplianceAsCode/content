@@ -1,7 +1,7 @@
 documentation_complete: true
 
 platform: ocp4
-
+status: deprecated
 metadata:
     version: V1R1
     SMEs:
@@ -19,7 +19,7 @@ description: |-
     This profile contains configuration checks that align to the DISA STIG for
     Red Hat OpenShift Container Platform 4.
 
-filter_rules: '"ocp4-node" not in platforms and "ocp4-master-node" not in platforms and "ocp4-node-on-sdn" not in platforms and "ocp4-node-on-ovn" not in platforms'
+filter_rules: '"ocp4-node" not in platform and "ocp4-master-node" not in platform and "ocp4-node-on-sdn" not in platform and "ocp4-node-on-ovn" not in platform'
 
 selections:
     - stig_ocp4:all
@@ -58,9 +58,7 @@ selections:
     - api_server_insecure_port
     - api_server_kubelet_certificate_authority
     - api_server_kubelet_client_cert
-    - api_server_kubelet_client_cert_pre_4_9
     - api_server_kubelet_client_key
-    - api_server_kubelet_client_key_pre_4_9
     - api_server_no_adm_ctrl_plugins_disabled
     - api_server_oauth_https_serving_cert
     - api_server_openshift_https_serving_cert

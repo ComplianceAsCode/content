@@ -7,7 +7,7 @@ metadata:
 
 reference: https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers
 
-title: 'DRAFT - Australian Cyber Security Centre (ACSC) Essential Eight'
+title: 'Australian Cyber Security Centre (ACSC) Essential Eight'
 
 description: |-
     This is a draft profile for experimental purposes.
@@ -22,6 +22,7 @@ description: |-
 
 selections:
     - e8:all
+    - '!enable_authselect'
     # nosha1 crypto policy does not exist in RHEL 10
     - var_system_crypto_policy=default_policy
     # More tests are needed to identify which rule is conflicting with rpm_verify_permissions.
@@ -36,5 +37,3 @@ selections:
     - '!package_rsh_removed'
     - '!package_rsh-server_removed'
     - '!security_patches_up_to_date'
-    # this rule fails after being remediated through Ansible
-    - '!audit_rules_usergroup_modification'

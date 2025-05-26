@@ -1,5 +1,9 @@
 #!/bin/bash
 
+{{%- if VARIABLE %}}
+# variables = {{{ VARIABLE }}}=correct_value
+{{%- endif %}}
+
 source common.sh
 
 # pass1 is the plain expected pass scenario
@@ -9,7 +13,6 @@ source common.sh
 sed -i "/^{{{ CONFIG }}}.*/d" /boot/config-*
 {{% else %}}
 {{%- if VARIABLE %}}
-# variables = {{{ VARIABLE }}}=correct_value
 {{%- set VALUE="correct_value" %}}
 {{%- endif %}}
 for file in /boot/config-* ; do

@@ -2,13 +2,12 @@
 
 # platform = Oracle Linux 8,Red Hat Enterprise Linux 8
 # packages = grub2,grubby
-
-source common.sh
-
 {{%- if ARG_VARIABLE %}}
 # variables = {{{ ARG_VARIABLE }}}=correct_value
 {{%- set ARG_NAME_VALUE= ARG_NAME ~ "=correct_value" %}}
 {{%- endif %}}
+
+source common.sh
 
 for entry in /boot/loader/entries/*.conf; do
   if ! grep -q '\$kernelopts' "$entry"; then

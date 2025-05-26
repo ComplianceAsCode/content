@@ -6,39 +6,34 @@ vuldiscussion: |-
 
     For U.S. Government systems, system use notifications are required only for access via login interfaces with human users and are not required when such human interfaces do not exist.
 
-checktext: |-
-    Verify {{{ full_name }}} prevents a user from overriding settings for graphical user interfaces.
 
+
+checktext: |-
     Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
 
-    Determine which profile the system database is using with the following command:
+    Verify {{{ full_name }}} prevents a user from overriding settings for graphical user interfaces.
 
-    $ sudo grep system-db /etc/dconf/profile/user
+    Determine if the org.gnome.login-screen banner-message-enable key is writable with the following command:
 
-    system-db:local
+    $ gsettings writable org.gnome.login-screen banner-message-enable
 
-    Check that graphical settings are locked from nonprivileged user modification with the following command:
+    false
 
-    Note: The example below is using the database "local" for the system, so the path is "/etc/dconf/db/local.d". This path must be modified if a database other than "local" is being used.
-
-    $ sudo grep banner-message-enable /etc/dconf/db/local.d/*
-
-    /org/gnome/login-screen/banner-message-enable
-
-    If the output is not "/org/gnome/login-screen/banner-message-enable", the line is commented out, or the line is missing, this is a finding.
+    If "banner-message-enable" is writable or the result is "true", this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to prevent a user from overriding the banner setting for graphical user interfaces.
 
-    Create a database to contain the system-wide graphical user logon settings (if it does not already exist) with the following command:
+    Create a database to contain the systemwide graphical user logon settings (if it does not already exist) with the following command:
 
     $ sudo touch /etc/dconf/db/local.d/locks/session
 
     Add the following setting to prevent nonprivileged users from modifying it:
 
-    banner-message-enable
+    /org/gnome/login-screen/banner-message-enable
 
     Run the following command to update the database:
 
     $ sudo dconf update
+
 

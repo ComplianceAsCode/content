@@ -5,7 +5,11 @@
 # disruption = low
 
 -   name: "{{{ rule_title }}} - Search if cron configuration exists"
-    ansible.builtin.command: 'grep -s "^\s*cron\.\*\s*/var/log/cron$" /etc/rsyslog.conf /etc/rsyslog.d/*.conf'
+    {{% if 'ol' in families %}}
+    ansible.builtin.command: grep -Pzo '(?m)^\s*(cron|\*)\.\*\s*(/var/log/(cron|messages)|action\(\s*.*(?i:\btype\b)="omfile"\s*.*(?i:\bfile\b)="/var/log/(cron|messages)"\s*\))\s*$' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
+    {{% else %}}
+    ansible.builtin.command: grep -Pzo '(?m)^\s*cron\.\*\s*(/var/log/cron|action\(\s*.*(?i:\btype\b)="omfile"\s*.*(?i:\bfile\b)="/var/log/cron"\s*\))\s*$' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
+    {{% endif %}}
     register: cron_log_config_exists
     failed_when: false
 

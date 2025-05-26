@@ -42,8 +42,16 @@ warnings:
        is disabled by the following line: <tt>disable = yes</tt>. Note that the xinetd file for
        telnet is not created automatically, therefore it might have different names.
 
+{{% if "sle15" in product or "rhel" in product %}}
+template:
+    name: socket_disabled
+    vars:
+        socketname: telnet
+        packagename: telnet-server
+{{% else %}}
 template:
     name: service_disabled
     vars:
         servicename: telnet
         packagename: telnet-server
+{{% endif %}}

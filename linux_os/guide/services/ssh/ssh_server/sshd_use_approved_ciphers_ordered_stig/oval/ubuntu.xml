@@ -1,3 +1,10 @@
+{{%- if product == 'ubuntu2404' %}}
+{{%- set sshd_approved_ciphers = "aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes128-ctr" %}}
+{{%- elif product == 'ubuntu2204' %}}
+{{%- set sshd_approved_ciphers = "aes256-ctr,aes256-gcm@openssh.com,aes192-ctr,aes128-ctr,aes128-gcm@openssh.com" %}}
+{{%- else %}}
+{{%- set sshd_approved_ciphers = "aes256-ctr,aes192-ctr,aes128-ctr" %}}
+{{%- endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Limit the ciphers to those which are FIPS-approved.") }}}
@@ -59,10 +66,8 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
-    <ind:subexpression datatype="string" operation="pattern match" var_ref="sshd_approved_ciphers"/>
+    <ind:subexpression datatype="string" operation="equals">{{{ sshd_approved_ciphers }}}</ind:subexpression>
   </ind:textfilecontent54_state>
-
-  <external_variable comment="sshd approved ciphers" datatype="string" id="sshd_approved_ciphers" version="1" />
 
   <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_{{{ rule_id }}}" version="1">
     <set>

@@ -4,19 +4,26 @@ srg_requirement: |-
 vuldiscussion: |-
     ExecShield uses the segmentation feature on all x86 systems to prevent execution in memory higher than a certain address. It writes an address as a limit in the code segment descriptor, to control where code can be executed, on a per-process basis. When the kernel places a process's memory regions such as the stack and heap higher than this address, the hardware prevents execution in that address range. This is enabled by default on the latest Red Hat and Fedora systems if supported by the hardware.
 
+    Checking dmesg will return a false-positive if the system has generated enough kernel messages that the "(Execute Disable) protection: active" line is no longer present in the output from dmesg(1). A better way to ensure that ExecShield is enabled is to first ensure all processors support the NX feature, and then to check that noexec was not passed to the kernel command line.
+
 checktext: |-
-    Verify ExecShield is enabled on 64-bit {{{ full_name }}} systems with the following command:
-
-    $ sudo dmesg | grep '[NX|DX]*protection'
-
-    [ 0.000000] NX (Execute Disable) protection: active
-
-    If "dmesg" does not show "NX (Execute Disable) protection" active, this is a finding.
-
-fixtext: |-
-    Update the GRUB 2 bootloader configuration.
+    Verify ExecShield is enabled on 64-bit {{{ full_name }}} systems.
 
     Run the following command:
 
-    $ sudo grubby --update-kernel=ALL --remove-args=noexec
+    $ grep ^flags /proc/cpuinfo | grep -Ev '([^[:alnum:]])(nx)([^[:alnum:]]|$)'
 
+    If any output is returned, this is a finding.
+
+    Next, run the following command:
+
+    $ sudo grubby --info=ALL | grep args | grep -E '([^[:alnum:]])(noexec)([^[:alnum:]])'
+
+    If any output is returned, this is a finding.
+
+fixtext: |-
+    If /proc/cpuinfo shows that one or more processors do not enable ExecShield (lack the "nx" feature flag), verify that the NX/XD feature is not disabled in the BIOS or UEFI. If it is disabled, enable it.
+
+    If the noexec option is present on the kernel command line, update the GRUB 2 bootloader configuration to remove it by running the following command:
+
+    $ sudo grubby --update-kernel=ALL --remove-args=noexec

@@ -10,7 +10,7 @@ metadata:
 
 reference: https://www.cyber.gov.au/ism
 
-title: 'DRAFT - Australian Cyber Security Centre (ACSC) ISM Official - Base'
+title: 'Australian Cyber Security Centre (ACSC) ISM Official - Base'
 
 description: |-
     This draft profile contains configuration checks for Red Hat Enterprise Linux 10
@@ -29,6 +29,7 @@ extends: e8
 selections:
     - ism_o:all:base
     # these rules do not work properly on RHEL 10 for now
+    - '!enable_authselect'
     - '!enable_dracut_fips_module'
     - '!firewalld_sshd_port_enabled'
     - '!require_singleuser_auth'

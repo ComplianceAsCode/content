@@ -1,0 +1,48 @@
+{
+  "description": "The SELinux state should be set to <tt><sub idref=\"var_selinux_state\" /></tt> at\nsystem boot time.  In the file <tt>/etc/selinux/config</tt>, add or correct the\nfollowing line to configure the system to boot into enforcing mode:\n<pre>SELINUX=<sub idref=\"var_selinux_state\" /></pre>",
+  "rationale": "Setting the SELinux state to enforcing ensures SELinux is able to confine\npotentially compromised processes to the security policy, which is designed to\nprevent them from causing damage to the system or further elevating their\nprivileges.",
+  "severity": "high",
+  "references": {
+    "stigid": [
+      "RHEL-09-431010"
+    ]
+  },
+  "components": [
+    "selinux"
+  ],
+  "identifiers": {
+    "cce": "CCE-84079-3"
+  },
+  "ocil_clause": "SELINUX is not set to enforcing",
+  "ocil": "Ensure that Red Hat Enterprise Linux 9 verifies correct operation of security functions.\n\nCheck if \"SELinux\" is active and in \"<sub idref=\"var_selinux_state\" />\" mode with the following command:\n\n$ sudo getenforce\n<sub idref=\"var_selinux_state\" />",
+  "oval_external_content": null,
+  "fixtext": "Configure Red Hat Enterprise Linux 9 to verify correct operation of security functions.\n\nEdit the file <tt>/etc/selinux/config</tt> and add or modify the following line:\n<pre>SELINUX=<sub idref=\"var_selinux_state\" /></pre>\n\nA reboot is required for the changes to take effect.",
+  "checktext": "",
+  "vuldiscussion": "",
+  "srg_requirement": "Red Hat Enterprise Linux 9 must use a Linux Security Module configured to enforce limits on system services.",
+  "warnings": [],
+  "conflicts": [],
+  "requires": [],
+  "policy_specific_content": {
+    "stig": {
+      "srg_requirement": "Red Hat Enterprise Linux 9 must use a Linux Security Module configured to enforce limits on system services.",
+      "vuldiscussion": "Without verification of the security functions, security functions may not operate correctly and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.\n\nThis requirement applies to operating systems performing security function verification/testing and/or systems and environments that require this functionality.",
+      "checktext": "Ensure that Red Hat Enterprise Linux 9 verifies correct operation of security functions through the use of SELinux with the following command:\n\n$ getenforce\n\nEnforcing\n\nIf SELINUX is not set to \"Enforcing\", this is a finding.\n\nVerify that SELinux is configured to be enforcing at boot.\n\ngrep \"SELINUX=\" /etc/selinux/config\n# SELINUX= can take one of these three values:\n# NOTE: In earlier Fedora kernel builds, SELINUX=disabled would also\nSELINUX=enforcing\n\nIf SELINUX line is missing, commented out, or not set to \"enforcing\", this is a finding.",
+      "fixtext": "Configure Red Hat Enterprise Linux 9 to verify correct operation of security functions.\n\nEdit the file \"/etc/selinux/config\" and add or modify the following line:\n SELINUX=enforcing\n\nA reboot is required for the changes to take effect."
+    }
+  },
+  "platform": null,
+  "platforms": [],
+  "sce_metadata": {},
+  "inherited_platforms": [
+    "system_with_kernel"
+  ],
+  "cpe_platform_names": [],
+  "inherited_cpe_platform_names": [
+    "system_with_kernel"
+  ],
+  "bash_conditional": null,
+  "fixes": {},
+  "title": "Ensure SELinux State is Enforcing",
+  "template": null
+}

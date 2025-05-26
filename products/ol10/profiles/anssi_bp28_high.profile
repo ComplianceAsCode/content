@@ -22,6 +22,7 @@ selections:
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!install_PAE_kernel_on_x86-32'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!aide_periodic_checking_systemd_timer'
     - '!package_dracut-fips-aesni_installed'
     - '!cracklib_accounts_password_pam_lcredit'
@@ -69,3 +70,8 @@ selections:
     - '!kernel_config_refcount_full'
     - '!kernel_config_retpoline'
     - '!kernel_config_security_writable_hooks'
+    # OL 10 uses a different rule for auditing changes to selinux configuration (R73)
+    - '!audit_rules_mac_modification'
+    - audit_rules_mac_modification_etc_selinux
+    # OL 10 unified the paths for grub2 files. This rule is selected in control file by R5.
+    - '!grub2_uefi_password'

@@ -26,8 +26,7 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resour
 ocil: |-
     {{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/kube-controller-manager-pod.yaml", owner="root") }}}
 
-platforms:
-    - ocp4-master-node
+platform: ocp4-master-node
 
 warnings:
     - dependency: |-
@@ -40,4 +39,4 @@ template:
     vars:
         filepath: '^/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-.*/kube-controller-manager-pod.yaml$'
         filepath_is_regex: 'true'
-        fileuid: '0'
+        uid_or_name: '0'

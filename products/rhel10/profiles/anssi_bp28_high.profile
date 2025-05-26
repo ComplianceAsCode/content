@@ -5,7 +5,7 @@ metadata:
         - marcusburghardt
         - vojtapolasek
 
-title: 'DRAFT - ANSSI-BP-028 (high)'
+title: 'ANSSI-BP-028 (high)'
 
 description: |-
     This is a draft profile for experimental purposes.
@@ -22,9 +22,11 @@ description: |-
 
 selections:
     - anssi:all:high
+    - var_password_hashing_algorithm_pam=yescrypt
     # the following rule renders UEFI systems unbootable
     - '!sebool_secure_mode_insmod'
     # Following rules are incompatible with rhel10 product
+    - '!enable_authselect'
     # tally2 is deprecated, replaced by faillock
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!accounts_passwords_pam_tally2'
@@ -43,8 +45,9 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     # umask is configured at a different place in RHEL 10
     - '!sudo_add_umask'
-    # Oracle key is not relevant on RHEL 10
+    # Non-Red Hat keys are irrelevant on RHEL 10
     - '!ensure_oracle_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     # this rule is not automated anymore
     - '!security_patches_up_to_date'
     # There is only chrony package on RHEL 10, no ntpd
@@ -57,6 +60,8 @@ selections:
     - '!file_groupowner_efi_user_cfg'
     - '!file_owner_efi_user_cfg'
     - '!file_permissions_efi_user_cfg'
+    # RHEL 10 unified the paths for grub2 files. This rule is selected in control file by R5.
+    - '!grub2_uefi_password'
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'
@@ -73,6 +78,9 @@ selections:
     - '!package_xinetd_removed'
     - '!package_ypbind_removed'
     - '!package_ypserv_removed'
+    # RHEL 10 uses a different rule for auditing changes to selinux configuration (R73)
+    - '!audit_rules_mac_modification'
+    - audit_rules_mac_modification_etc_selinux
     # these rules are failing when they are remediated with Ansible, removing them temporarily until they are fixed
     - '!accounts_password_pam_retry'
     # These rules are being modified and they are causing trouble in their current state (R67)

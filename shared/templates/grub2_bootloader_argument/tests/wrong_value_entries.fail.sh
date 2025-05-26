@@ -2,9 +2,6 @@
 
 # platform = multi_platform_fedora,multi_platform_rhel
 # packages = grub2,grubby
-
-source common.sh
-
 {{%- if ARG_VARIABLE %}}
 # variables = {{{ ARG_VARIABLE }}}=correct_value
 {{%- set ARG_NAME_VALUE= ARG_NAME ~ "=correct_value" %}}
@@ -12,6 +9,8 @@ source common.sh
 {{%- else %}}
 {{%- set ARG_NAME_VALUE_WRONG= "wrong_variable" %}}
 {{%- endif %}}
+
+source common.sh
 
 {{{ grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) }}}
 

@@ -11,8 +11,15 @@ checktext: |-
 
     If output is produced, this is a finding.
 
+    If the system administrator (SA) can demonstrate that the required configuration is contained in a PAM configuration file included or substacked from the system-auth file, this is not a finding.
+
 fixtext: |-
-    Remove any instances of the "nullok" option in the "/etc/pam.d/password-auth" and "/etc/pam.d/system-auth" files to prevent logons with empty passwords.
+    If PAM is managed with authselect, use the following command to remove instances of "nullok":
+
+    $ sudo authselect enable-feature without-nullok
+
+    Otherwise, remove any instances of the "nullok" option in the "/etc/pam.d/password-auth" and "/etc/pam.d/system-auth" files to prevent logons with empty passwords.
 
     Note: Manual changes to the listed file may be overwritten by the "authselect" program.
+
 

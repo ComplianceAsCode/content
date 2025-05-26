@@ -175,7 +175,10 @@ A rule itself contains these attributes:
 
     It is possible to specify multiple platforms in the list. In that case, they are implicitly connected with "OR" operator.
 
-    > ⚠ **Deprecated!** List of platforms feature is being phased out, use boolean expressions.
+    ```{important}
+    ⚠ **Deprecated!**
+    List of platforms feature is being phased out, use boolean expressions.
+    ```
 
     Platforms from groups are inherited by rules for the whole group hierarchy. They are implicitly joined with rule's platforms using "AND" operator.
 
@@ -340,7 +343,6 @@ A rule may contain those reference-type attributes:
     <td><p>disa</p></td>
     <td><p>DISA Control Correlation Identifiers (catalog identifier)</p></td>
     <td><p>0-to-many</p></td>
-    <td><p>CCI-000018,CCI-000172,CCI-001403</p></td>
     </tr>
     <tr class="odd">
     <td><p>srg, etc.</p></td>

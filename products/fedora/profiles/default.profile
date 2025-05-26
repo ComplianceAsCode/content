@@ -543,3 +543,4 @@ selections:
     - enable_dracut_fips_module
     - accounts_password_pam_pwhistory_remember_system_auth
     - mount_option_var_log_nodev
+    - configure_gnutls_tls_crypto_policy

@@ -7,7 +7,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} restricts privilege elevation to authorized personnel with the following command:
 
-    $ sudo sh -c 'grep -iw ALL /etc/sudoers /etc/sudoers.d/*'
+    $ sudo grep -riw ALL /etc/sudoers /etc/sudoers.d/
 
     If the either of the following entries are returned, this is a finding:
     ALL     ALL=(ALL) ALL
@@ -18,4 +18,3 @@ fixtext: |-
 
     ALL     ALL=(ALL) ALL
     ALL     ALL=(ALL:ALL) ALL
-

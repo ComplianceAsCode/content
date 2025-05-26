@@ -5,4 +5,9 @@ controls:
                 that the device meets organization-defined strength of mechanism requirements.'
         levels:
             - medium
-        status: pending
+        status: automated
+        rules:
+            - install_smartcard_packages
+            - package_sssd_installed
+            - service_sssd_enabled
+

@@ -109,6 +109,19 @@ The {{{ full_name }}} {{{ file }}} file must be owned by {{{ owner }}}.
 
 
 {{#
+SRG requirement for setting the owner on files in a directory.
+
+:param directory: The directory containing files to set the owner on
+:type directory: str
+:param owner: The owner to be set
+:type owner: str
+
+#}}
+{{% macro srg_requirement_files_in_directory_owner(directory, owner) %}}
+The {{{ full_name }}} files in {{{ directory }}} must be owned by {{{ owner }}}.
+{{%- endmacro %}}
+
+{{#
 SRG requirement for setting the group owner on a file.
 
 :param file: The file to set the group owner on
@@ -119,6 +132,19 @@ SRG requirement for setting the group owner on a file.
 #}}
 {{% macro srg_requirement_file_group_owner(file, group) %}}
 The {{{ full_name }}} {{{ file }}} file must be group-owned by {{{ group }}}.
+{{%- endmacro %}}
+
+{{#
+SRG requirement for setting the group owner on files in a directory.
+
+:param directory: The directory containing files to set the group owner on
+:type directory: str
+:param group: The group to be set
+:type group: str
+
+#}}
+{{% macro srg_requirement_files_in_directory_group_owner(directory, group) %}}
+The {{{ full_name }}} files in {{{ directory }}} must be group-owned by {{{ group }}}.
 {{%- endmacro %}}
 
 
@@ -177,6 +203,19 @@ SRG requirement for setting permissions on a directory
 The {{{ full_name }}} {{{ file }}} directory must have mode {{{ mode }}} or less permissive.
 {{%- endmacro %}}
 
+
+{{#
+SRG requirement for setting permissions on files in a directory
+
+:param directory: The directory containing files to set the permissions on
+:type directory: str
+:param mode: The permissions to be set
+:type mode: str
+
+#}}
+{{% macro srg_requirement_files_in_directory_permissions(directory, mode) %}}
+The {{{ full_name }}} files in {{{ directory }}} must have mode {{{ mode }}} or less permissive to prevent unauthorized access.
+{{%- endmacro %}}
 
 {{#
 SRG requirement for mount point options

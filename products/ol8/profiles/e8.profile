@@ -28,6 +28,7 @@ selections:
   - service_avahi-daemon_disabled
   - package_squid_removed
   - service_squid_disabled
+  - package_ypbind_removed
 
   ### Software update
   - ensure_oracle_gpgkey_installed

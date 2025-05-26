@@ -4,6 +4,26 @@
 # complexity = low
 # disruption = low
 
+{{%- set ns=namespace(find_groups="") %}}
+{{%- set GROUPS=GID_OR_NAME.split("|") %}}
+{{%- for grp in GROUPS %}}
+{{%- set ns.find_groups=ns.find_groups ~ " ! -group " ~ grp %}}
+{{%- if loop.first %}}
+if getent group "{{{grp}}}" >/dev/null 2>&1; then
+  newgroup="{{{grp}}}"
+{{%- else %}}
+elif getent group "{{{grp}}}" >/dev/null 2>&1; then
+  newgroup="{{{grp}}}"
+{{%- endif %}}
+{{%- if loop.last %}}
+fi
+{{%- endif %}}
+{{%- endfor %}}
+if [[ -z ${newgroup} ]]; then
+  echo "{{{ GID_OR_NAME|replace("|", " and ") }}} is not a defined group on the system"
+  exit 1
+fi
+
 {{%- if RECURSIVE %}}
 {{%- set FIND_RECURSE_ARGS_DEP="" %}}
 {{%- set FIND_RECURSE_ARGS_SYM="" %}}
@@ -16,11 +36,11 @@
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
 
-find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f ! -group {{{ GID_OR_NAME }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chgrp -L {{{ GID_OR_NAME }}} {} \;
+find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{{ ns.find_groups }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chgrp -L $newgroup {} \;
 {{%- else %}}
-find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d -exec chgrp -L {{{ GID_OR_NAME }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d {{{ ns.find_groups }}} -exec chgrp -L $newgroup {} \;
 {{%- endif %}}
 {{%- else %}}
-chgrp {{{ GID_OR_NAME }}} {{{ path }}}
+chgrp $newgroup {{{ path }}}
 {{%- endif %}}
 {{%- endfor %}}

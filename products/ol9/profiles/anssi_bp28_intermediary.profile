@@ -13,6 +13,8 @@ description: |-
 
 selections:
     - anssi:all:intermediary
+    - var_password_hashing_algorithm=SHA512
+    - var_password_pam_unix_rounds=65536
     # Following rules once had a prodtype incompatible with the ol9 product
     - '!package_ypbind_removed'
     - '!partition_for_opt'
@@ -29,6 +31,7 @@ selections:
     - '!enable_pam_namespace'
     - '!accounts_passwords_pam_tally2_unlock_time'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!sudo_add_umask'
     - '!sudo_add_ignore_dot'
     - '!sudo_add_env_reset'

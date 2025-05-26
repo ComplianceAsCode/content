@@ -1,20 +1,21 @@
 srg_requirement: |-
-    {{{ full_name }}} SSH server configuration file must be owned by root.
+    The {{{ full_name }}} SSH server configuration file must be owned by root.
 
 vuldiscussion: |-
     Service configuration files enable or disable features of their respective services, which if configured incorrectly, can lead to insecure and vulnerable configurations. Therefore, service configuration files must be owned by the correct group to prevent unauthorized changes.
 
 checktext: |-
-    Verify the ownership of the "/etc/ssh/sshd_config" file with the following command:
+    Verify the ownership of the "/etc/ssh/sshd_config" file and the contents of "/etc/ssh/sshd_config.d" with the following command:
 
-    $ ls -al /etc/ssh/sshd_config
+    $ sudo find /etc/ssh/sshd_config /etc/ssh/sshd_config.d -exec stat -c "%U %n" {} \;
 
-    rw-------. 1 root root 3669 Feb 22 11:34 /etc/ssh/sshd_config
+    root /etc/ssh/sshd_config
+    root /etc/ssh/sshd_config.d
+    root /etc/ssh/sshd_config.d/50-cloud-init.conf
+    root /etc/ssh/sshd_config.d/50-redhat.conf
 
-    If the "/etc/ssh/sshd_config" file does not have an owner of "root", this is a finding.
-
+    If the "/etc/ssh/sshd_config" file or "/etc/ssh/sshd_config.d" or any files in the "sshd_config.d" directory do not have an owner of "root", this is a finding.
 fixtext: |-
-    Configure the "/etc/ssh/sshd_config" file to be owned by root with the following command:
+    Configure the "/etc/ssh/sshd_config" file and the contents of "/etc/ssh/sshd_config.d" to be owned by root with the following command:
 
-    $ sudo chown root /etc/ssh/sshd_config
-
+    $ sudo chown -R root /etc/ssh/sshd_config /etc/ssh/sshd_config.d

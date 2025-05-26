@@ -18,6 +18,7 @@ extends: stig
 
 selections:
     - '!xwindows_remove_packages'
+    - '!package_gdm_removed'
 
     - '!xwindows_runlevel_target'
 

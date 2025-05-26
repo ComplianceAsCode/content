@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Install nss-sss Package'
+
+description: |-
+    {{{ describe_package_install(package="libnss-sss") }}}
+
+rationale: |-
+    libnss-sss contains library that is needed
+    by SSSD (System Security Services Daemon)..
+
+severity: medium
+
+template:
+    name: package_installed
+    vars:
+        pkgname: libnss-sss
+        pkgname@ubuntu2404: libnss-sss

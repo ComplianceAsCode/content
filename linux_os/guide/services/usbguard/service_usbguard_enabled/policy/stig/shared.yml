@@ -17,8 +17,11 @@ checktext: |-
 
     If there is no evidence that unauthorized peripherals are being blocked before establishing a connection, this is a finding.
 
+    If the system is virtual machine with no virtual or physical USB peripherals attached, this is not a finding.
+
 fixtext: |-
     To enable the USBGuard service run the following command:
 
     $ sudo systemctl enable --now usbguard
+
 

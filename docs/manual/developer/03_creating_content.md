@@ -172,6 +172,7 @@ their `product.yml` file using `benchmark_root` key. For example,
     full_name: Red Hat Enterprise Linux 9
     type: platform
 
+    benchmark_id: RHEL-9
     benchmark_root: "../linux_os/guide"
 
     .....
@@ -431,6 +432,7 @@ product: $NEW_PRODUCT
 full_name: $FULL_NAME
 type: platform
 
+benchmark_id: $CAPITAL_NAME-$VERSION
 benchmark_root: "../../linux_os/guide"
 
 components_root: "../../components"
@@ -608,6 +610,9 @@ requirements or how it is applied.
 
 -   `reference`: URL pointing to page or organization that publishes the
     policy.
+
+-   `status`: The maturity and consensus level of the profile.
+    Accepted values are: `draft`, `interim`, `accepted` and `deprecated`.
 
 -   `version`: Version of the policy implemented by the profile.
 
@@ -1258,7 +1263,7 @@ In order for export for DISA the IDs of your control must be SRG ID form the Gen
 
 If you have an existing product that you want to base your new STIG you can create the skeleton with the following command:
 
-    $ ./utils/build_stig_control.py --split -p rhel9 -m shared/references/disa-os-srg-v3r1.xml -o controls/srg_gpos.yml
+    $ ./utils/build_stig_control.py --split -p rhel9 -m shared/references/disa-os-srg-v3r2.xml -o controls/srg_gpos.yml
 
 The manual (`-m`) should be an SRG XML from DISA.
 

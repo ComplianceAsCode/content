@@ -7,8 +7,9 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} disables the ability to load the ATM kernel module with the following command:
 
-    $ sudo grep -r atm /etc/modprobe.conf /etc/modprobe.d/*
+    $ grep -r atm /etc/modprobe.conf /etc/modprobe.d/*
 
+    install atm /bin/false
     blacklist atm
 
     If the command does not return any output, or the line is commented out, and use of ATM is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.
@@ -18,4 +19,5 @@ fixtext: |-
 
     install atm /bin/false
     blacklist atm
+
 

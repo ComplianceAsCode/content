@@ -6,8 +6,17 @@ title: "Set kernel parameter 'crypto.fips_enabled' to 1"
 description: |-
     System running in FIPS mode is indicated by kernel parameter
     <tt>'crypto.fips_enabled'</tt>. This parameter should be set to <tt>1</tt> in FIPS mode.
+    {{% if 'rhel' not in product %}}
     To enable FIPS mode, run the following command:
     <pre>fips-mode-setup --enable</pre>
+    {{% else %}}
+    {{{ full_name }}} has an installation-time kernel flag that can enable FIPS mode.
+    The installer must be booted with <tt>fips=1</tt> for the system to have FIPS mode
+    enabled. Enabling FIPS mode on a preexisting system is not supported. If
+    this rule fails on an installed system, then this is a permanent
+    finding and cannot be fixed.
+    {{% endif %}}
+
 
     To enable strict FIPS compliance, the fips=1 kernel option needs to be added to the kernel boot
     parameters during system installation so key generation is done with FIPS-approved algorithms
@@ -27,12 +36,10 @@ identifiers:
     cce@rhel10: CCE-89047-5
 
 references:
-    disa: CCI-002450,CCI-000068,CCI-002418,CCI-000877
     nerc-cip: CIP-003-8 R4.2,CIP-007-3 R5.1
     nist: SC-12(2),SC-12(3),IA-7,SC-13,CM-6(a),SC-12
     srg: SRG-OS-000033-GPOS-00014,SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173,SRG-OS-000394-GPOS-00174,SRG-OS-000396-GPOS-00176,SRG-OS-000423-GPOS-00187,SRG-OS-000478-GPOS-00223
     stigid@ol8: OL08-00-010020
-    stigid@rhel8: RHEL-08-010020
 
 ocil_clause: 'crypto.fips_enabled is not 1'
 

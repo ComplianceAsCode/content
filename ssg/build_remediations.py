@@ -128,8 +128,11 @@ class Remediation(object):
         self.local_env_yaml["rule_id"] = self.associated_rule.id_
         self.local_env_yaml["cce_identifiers"] = self.associated_rule.identifiers
 
-    def parse_from_file_with_jinja(self, env_yaml, cpe_platforms):
-        return parse_from_file_with_jinja(self.file_path, env_yaml)
+    def parse_from_file(self, env_yaml, cpe_platforms):
+        if "fixes_from_templates" in self.file_path:
+            return parse_from_file_without_jinja(self.file_path)
+        else:
+            return parse_from_file_with_jinja(self.file_path, env_yaml)
 
     def get_inherited_cpe_platform_names(self):
         inherited_cpe_platform_names = set()
@@ -188,7 +191,7 @@ def process(remediation, env_yaml, cpe_platforms):
     if not is_supported_filename(remediation.remediation_type, remediation.file_path):
         return
 
-    result = remediation.parse_from_file_with_jinja(env_yaml, cpe_platforms)
+    result = remediation.parse_from_file(env_yaml, cpe_platforms)
     platforms = result.config['platform']
 
     if not platforms:
@@ -215,9 +218,9 @@ class BashRemediation(Remediation):
     def __init__(self, file_path):
         super(BashRemediation, self).__init__(file_path, "bash")
 
-    def parse_from_file_with_jinja(self, env_yaml, cpe_platforms):
+    def parse_from_file(self, env_yaml, cpe_platforms):
         self.local_env_yaml.update(env_yaml)
-        result = super(BashRemediation, self).parse_from_file_with_jinja(
+        result = super(BashRemediation, self).parse_from_file(
             self.local_env_yaml, cpe_platforms)
 
         # Avoid platform wrapping empty fix text
@@ -266,9 +269,9 @@ class AnsibleRemediation(Remediation):
 
         self.body = None
 
-    def parse_from_file_with_jinja(self, env_yaml, cpe_platforms):
+    def parse_from_file(self, env_yaml, cpe_platforms):
         self.local_env_yaml.update(env_yaml)
-        result = super(AnsibleRemediation, self).parse_from_file_with_jinja(
+        result = super(AnsibleRemediation, self).parse_from_file(
             self.local_env_yaml, cpe_platforms)
 
         if not self.associated_rule:

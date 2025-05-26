@@ -11,14 +11,15 @@ vuldiscussion: |-
 checktext: |-
     Verify that all software repositories defined in "/etc/yum.repos.d/" have been configured with "gpgcheck" enabled:
 
-    $ grep gpgcheck {{{ pkg_manager_repos }}}/*.repo | more
+    $ grep -w gpgcheck /etc/yum.repos.d/*.repo | more
 
     gpgcheck = 1
 
     If "gpgcheck" is not set to "1" for all returned lines, this is a finding.
 
 fixtext: |-
-    Configure all software repositories defined in "{{{ pkg_manager_repos }}}/" to have "gpgcheck" enabled:
+    Configure all software repositories defined in "/etc/yum.repos.d/" to have "gpgcheck" enabled:
 
-    $ sudo sed -i 's/gpgcheck\s*=.*/gpgcheck=1/g' {{{ pkg_manager_repos }}}/*
+    $ sudo sed -i 's/gpgcheck\s*=.*/gpgcheck=1/g' /etc/yum.repos.d/*
+
 

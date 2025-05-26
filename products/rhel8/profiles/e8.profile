@@ -5,7 +5,7 @@ metadata:
         - shaneboulden
         - tjbutt58
 
-reference: https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers 
+reference: https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers
 
 title: 'Australian Cyber Security Centre (ACSC) Essential Eight'
 
@@ -21,18 +21,12 @@ description: |-
 selections:
 
   ### Remove obsolete packages
-  - package_talk_removed
-  - package_talk-server_removed
   - package_xinetd_removed
   - service_xinetd_disabled
   - package_ypbind_removed
   - package_telnet_removed
   - service_telnet_disabled
   - package_telnet-server_removed
-  - package_rsh_removed
-  - package_rsh-server_removed
-  - service_zebra_disabled
-  - package_quagga_removed
   - service_avahi-daemon_disabled
   - package_squid_removed
   - service_squid_disabled
@@ -109,7 +103,6 @@ selections:
   - audit_rules_login_events_tallylog
   - audit_rules_login_events_faillock
   - audit_rules_login_events_lastlog
-  - audit_rules_login_events
   - audit_rules_time_adjtimex
   - audit_rules_time_clock_settime
   - audit_rules_time_watch_localtime
@@ -123,7 +116,11 @@ selections:
   - audit_rules_execution_seunshare
   - audit_rules_sysadmin_actions
   - audit_rules_networkconfig_modification
-  - audit_rules_usergroup_modification
+  - audit_rules_usergroup_modification_group
+  - audit_rules_usergroup_modification_gshadow
+  - audit_rules_usergroup_modification_opasswd
+  - audit_rules_usergroup_modification_passwd
+  - audit_rules_usergroup_modification_shadow
   - audit_rules_dac_modification_chmod
   - audit_rules_dac_modification_chown
   - audit_rules_kernel_module_loading

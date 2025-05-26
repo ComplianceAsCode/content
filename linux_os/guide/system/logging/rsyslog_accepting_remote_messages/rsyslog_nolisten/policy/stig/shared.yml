@@ -10,30 +10,48 @@ checktext: |-
     Verify that {{{ full_name }}} is not configured to receive remote logs using rsyslog with the following commands:
 
     $ grep -i modload /etc/rsyslog.conf /etc/rsyslog.d/*
+
     $ModLoad imtcp
     $ModLoad imrelp
+    $ModLoad imudp
+
+    $ grep -i 'load="imtcp"' /etc/rsyslog.conf /etc/rsyslog.d/*
+
+    $ grep -i 'load="imrelp"' /etc/rsyslog.conf /etc/rsyslog.d/*
 
     $ grep -i serverrun /etc/rsyslog.conf /etc/rsyslog.d/*
+
     $InputTCPServerRun 514
     $InputRELPServerRun 514
+    $InputUDPServerRun 514
 
-    Note: An error about no files or directories may be returned. This is not a finding.
+    $ grep -i 'port="\S*"' /etc/rsyslog.conf /etc/rsyslog.d/*
 
-    If any lines are returned by the command, then rsyslog is configured to receive remote messages, and this is a finding.
+    /etc/rsyslog.conf:#input(type="imudp" port="514")
+    /etc/rsyslog.conf:#input(type="imtcp" port="514")
+    /etc/rsyslog.conf:#Target="remote_host" Port="XXX" Protocol="tcp")
+
+    If any uncommented lines are returned by the commands, rsyslog is configured to receive remote messages, and this is a finding.
+
+    Note: An error about no files or directories from the above commands may be returned. This is not a finding.
+
+    If any modules are being loaded in the "/etc/rsyslog.conf" file or in the "/etc/rsyslog.d" subdirectories, ask to see the documentation for the system being used for log aggregation.
+
+    If the documentation does not exist or does not specify the server as a log aggregation system, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to not receive remote logs using rsyslog.
 
     Remove the lines in /etc/rsyslog.conf and any files in the /etc/rsyslog.d directory that match any of the following:
-
-    $ModLoad imtcp
-    $ModLoad imudp
-    $ModLoad imrelp
-    $InputTCPServerRun [0-9]*
-    $UDPServerRun [0-9]*
-    $InputRELPServerRun [0-9]*
+    module(load="imtcp")
+    module(load="imudp")
+    module(load="imrelp")
+    input(type="imudp" port="514")
+    input(type="imtcp" port="514")
+    input(type="imrelp" port="514")
 
     The rsyslog daemon must be restarted for the changes to take effect:
 
     $ sudo systemctl restart rsyslog.service
+
 

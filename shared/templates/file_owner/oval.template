@@ -1,18 +1,34 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
   {{% if FILEPATH is not string %}}
-    {{{ oval_metadata("This test makes sure that " + FILEPATH|join(", ") + " is owned by " + FILEUID + ".") }}}
+    {{{ oval_metadata("This test makes sure that " + FILEPATH|join(", ") + " is owned by " + UID_OR_NAME|replace("|", " or ") + ".") }}}
      <criteria>
    {{% for filepath in FILEPATH %}}
      <criterion comment="Check file ownership of {{{ filepath }}}" test_ref="test_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}" />
    {{% endfor %}}
   {{% else %}}
-    {{{ oval_metadata("This test makes sure that " + FILEPATH + " is owned by " + FILEUID + ".") }}}
+    {{{ oval_metadata("This test makes sure that " + FILEPATH + " is owned by " + UID_OR_NAME|replace("|", " or ") + ".") }}}
     <criteria>
       <criterion comment="Check file ownership of {{{ FILEPATH }}}" test_ref="test_file_owner{{{ FILEID }}}" />
   {{% endif %}}
     </criteria>
   </definition>
+
+  {{%- set OWNERS=UID_OR_NAME.split("|") %}}
+  {{%- if OWNER_REPRESENTED_WITH_UID %}}
+  <local_variable id="var_file_owner{{{ FILEID }}}_{{{ UID_OR_NAME }}}_uid" comment="Set the uid to {{{ UID_OR_NAME }}}" datatype="int" version="1">
+    <literal_component datatype="int">{{{ UID_OR_NAME }}}</literal_component>
+  </local_variable>
+  {{%- else %}}
+  {{%- for own in OWNERS %}}
+  <unix:password_object id="object_file_owner{{{ FILEID }}}_{{{ own }}}_uid" version="1">
+    <unix:username operation="pattern match">{{{ own }}}</unix:username>
+  </unix:password_object>
+  <local_variable id="var_file_owner{{{ FILEID }}}_{{{ own }}}_uid" comment="Retrieve the uid of {{{ own }}}" datatype="int" version="1">
+    <object_component item_field="user_id" object_ref="object_file_owner{{{ FILEID }}}_{{{ own }}}_uid" />
+  </local_variable>
+  {{%- endfor %}}
+  {{%- endif %}}
 
   {{% for filepath in FILEPATH %}}
   <unix:file_test check="all" check_existence="none_exist" comment="Testing user ownership of {{{ filepath }}}" id="test_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
@@ -33,16 +49,18 @@
     {{%- else %}}
       <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ filepath }}}</unix:filepath>
     {{%- endif %}}
-    <filter action="exclude">symlink_file_owner{{{ FILEID }}}_uid_{{{ FILEUID }}}</filter>
-    <filter action="exclude">state_file_owner{{{ FILEID }}}_uid_{{{ FILEUID }}}_{{{ loop.index0 }}}</filter>
+    <filter action="exclude">symlink_file_owner</filter>
+    {{% for own in OWNERS %}}
+      <filter action="exclude">state_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}_{{{ own }}}</filter>
+    {{% endfor %}}
   </unix:file_object>
-
-  <unix:file_state id="state_file_owner{{{ FILEID }}}_uid_{{{ FILEUID }}}_{{{ loop.index0 }}}" version="1">
-    <unix:user_id datatype="int">{{{ FILEUID }}}</unix:user_id>
-  </unix:file_state>
+  {{% for own in OWNERS %}}
+    <unix:file_state id="state_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}_{{{ own }}}" version="1">
+      <unix:user_id datatype="int" operation="equals" var_ref="var_file_owner{{{ FILEID }}}_{{{ own }}}_uid"></unix:user_id>
+    </unix:file_state>
   {{% endfor %}}
-
-  <unix:file_state id="symlink_file_owner{{{ FILEID }}}_uid_{{{ FILEUID }}}" version="1">
+  {{% endfor %}}
+  <unix:file_state id="symlink_file_owner" version="1">
     <unix:type operation="equals">symbolic link</unix:type>
   </unix:file_state>
 </def-group>

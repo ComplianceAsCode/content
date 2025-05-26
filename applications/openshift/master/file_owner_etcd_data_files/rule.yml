@@ -27,8 +27,7 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/var/lib/etcd/member/wal/*", owne
 ocil: |-
     {{{ ocil_file_owner(file="/var/lib/etcd/member/wal/*", owner="root") }}}
 
-platforms:
-    - ocp4-master-node
+platform: ocp4-master-node
 
 warnings:
     - dependency: |-
@@ -40,5 +39,5 @@ template:
     name: file_owner
     vars:
         filepath: ^/var/lib/etcd/member/wal/.*$
-        fileuid: '0'
+        uid_or_name: '0'
         filepath_is_regex: "true"

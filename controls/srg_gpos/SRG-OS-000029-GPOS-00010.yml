@@ -5,7 +5,6 @@ controls:
         title: {{{ full_name }}} must initiate a session lock after a 15-minute period
             of inactivity for all connection types.
         rules:
-            - configure_tmux_lock_after_time
             - dconf_gnome_screensaver_idle_delay
             - dconf_gnome_session_idle_user_locks
             - inactivity_timeout_value=15_minutes

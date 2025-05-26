@@ -25,7 +25,9 @@ def _parse_args() -> argparse.Namespace:
 
 
 def get_files(root: str):
-    result = glob.glob("linux_os/**/tests/*.sh", recursive=True, root_dir=root)
+    result = list()
+    result.extend(glob.glob("linux_os/**/tests/*.sh", recursive=True, root_dir=root))
+    result.extend(glob.glob("shared/templates/*/tests/*.sh", recursive=True, root_dir=root))
     return result
 
 

@@ -3,6 +3,9 @@ documentation_complete: true
 
 title: 'Configure A Unique CA Certificate for etcd'
 
+{{% set etcd_ca_pre_417_path = '/host/etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt' %}}
+{{% set etcd_ca_post_417_path = '/host/etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-all-bundles/server-ca-bundle.crt' %}}
+
 description: |-
   A unique CA certificate should be created for <tt>etcd</tt>.  OpenShift by
   default creates separate PKIs for etcd and the Kubernetes API server. The
@@ -24,8 +27,7 @@ references:
   nist: CM-6,CM-6(1)
   srg: SRG-APP-000516-CTR-001325
 
-platforms:
-  - ocp4-master-node
+platform: ocp4-master-node
 
 warnings:
   - dependency: |-
@@ -36,8 +38,13 @@ warnings:
 ocil_clause: 'The etcd CA certificate is not unique'
 
 ocil: |-
-  Run the following command:
-  <pre>oc debug node/$NODE -- diff /host/etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt /host/etc/kubernetes/static-pod-resources/kube-apiserver-certs/configmaps/client-ca/ca-bundle.crt</pre>
+  Run the following command based on your OpenShift version:
+  For OpenShift 4.16 and lower:
+  <pre>oc debug node/$NODE -- diff {{{ etcd_ca_pre_417_path }}} /host/etc/kubernetes/static-pod-resources/kube-apiserver-certs/configmaps/client-ca/ca-bundle.crt</pre>
+
+  For OpenShift 4.17 and higher:
+  <pre>oc debug node/$NODE -- diff {{{ etcd_ca_post_417_path }}} /host/etc/kubernetes/static-pod-resources/kube-apiserver-certs/configmaps/client-ca/ca-bundle.crt</pre>
+
   where <tt>$NODE</tt> is a master node. If you don't see diff output
   the differences, you might have a compromise and should isolate the cluster.
   OpenShift will use separate PKIs by default.

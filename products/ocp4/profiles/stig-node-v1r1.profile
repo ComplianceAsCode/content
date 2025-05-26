@@ -1,7 +1,7 @@
 documentation_complete: true
 
 platform: ocp4-node
-
+status: deprecated
 metadata:
     version: V1R1
     SMEs:
@@ -19,7 +19,7 @@ description: |-
     This profile contains configuration checks that align to the DISA STIG for
     Red Hat OpenShift Container Platform 4.
 
-filter_rules: '"ocp4-node" in platforms or "ocp4-master-node" in platforms or "ocp4-node-on-sdn" in platforms or "ocp4-node-on-ovn" in platforms'
+filter_rules: '"ocp4-node" in platform or "ocp4-master-node" in platform or "ocp4-node-on-sdn" in platform or "ocp4-node-on-ovn" in platform'
 
 selections:
     - stig_ocp4:all
@@ -43,10 +43,11 @@ selections:
     - file_groupowner_openshift_sdn_cniserver_config
     - file_groupowner_ovn_cni_server_sock
     - file_groupowner_ovn_db_files
-    - file_groupowner_ovs_conf_db
-    - file_groupowner_ovs_conf_db_lock
+    - file_groupowner_ovs_conf_db_openvswitch
+    - file_groupowner_ovs_conf_db_hugetlbfs
+    - file_groupowner_ovs_conf_db_lock_openvswitch
+    - file_groupowner_ovs_conf_db_lock_hugetlbfs
     - file_groupowner_ovs_pid
-    - file_groupowner_ovs_sys_id_conf
     - file_groupowner_ovs_vswitchd_pid
     - file_groupowner_ovsdb_server_pid
     - file_groupowner_scheduler_kubeconfig

@@ -20,6 +20,6 @@ fixtext: |-
     -a always,exit -F arch=b32 -S unlink -F auid>={{{ uid_min }}} -F auid!=unset -k delete
     -a always,exit -F arch=b64 -S unlink -F auid>={{{ uid_min }}} -F auid!=unset -k delete
 
-    It's allowed to group this system call within the same line as "rename", "unlink", "rmdir", "renameat", and "unlinkat".
+    It's allowed to group this system call within the same line as "rename", "unlink", "rmdir", "renameat", "renameat2" and "unlinkat".
 
     The audit daemon must be restarted for the changes to take effect.

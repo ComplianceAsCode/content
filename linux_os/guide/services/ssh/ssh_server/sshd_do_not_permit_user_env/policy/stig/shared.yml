@@ -7,7 +7,7 @@ vuldiscussion: |-
 checktext: |-
     Verify that unattended or automatic logon via SSH is disabled with the following command:
 
-    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*permituserenvironment'
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*permituserenvironment'
 
     PermitUserEnvironment no
 
@@ -16,12 +16,12 @@ checktext: |-
     If the required value is not set, this is a finding.
 
 fixtext: |-
-    Configure the {{{ full_name }}} SSH daemon to not allow unattended or automatic logon to the system.
-
-    Add or edit the following line in the "/etc/ssh/sshd_config" file:
+    Configure the {{{ full_name }}} SSH daemon to not allow unattended or automatic logon to the system by editing the following line in the "/etc/ssh/sshd_config" or in a file in "/etc/ssh/sshd_config.d":
 
     PermitUserEnvironment no
 
     Restart the SSH daemon  for the setting to take effect:
 
     $ sudo systemctl restart sshd.service
+
+

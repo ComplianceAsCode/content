@@ -54,9 +54,10 @@ rule_results:
     default_result: PASS
   e2e-stig-node-master-file-groupowner-ovn-db-files:
     default_result: PASS
-  e2e-stig-node-master-file-groupowner-ovs-conf-db:
-    default_result: PASS
-    result_after_remediation: PASS
+  e2e-stig-node-master-file-groupowner-ovs-conf-db-openvswitch:
+    default_result: PASS or NOT-APPLICABLE
+  e2e-stig-node-master-file-groupowner-ovs-conf-db-hugetlbfs:
+    default_result: PASS or NOT-APPLICABLE
   e2e-stig-node-master-file-groupowner-ovs-conf-db-lock:
     default_result: PASS
     result_after_remediation: PASS
@@ -365,9 +366,10 @@ rule_results:
     default_result: PASS
   e2e-stig-node-worker-file-groupowner-ovn-db-files:
     default_result: PASS
-  e2e-stig-node-worker-file-groupowner-ovs-conf-db:
-    default_result: PASS
-    result_after_remediation: PASS
+  e2e-stig-node-worker-file-groupowner-ovs-conf-db-openvswitch:
+    default_result: PASS or NOT-APPLICABLE
+  e2e-stig-node-worker-file-groupowner-ovs-conf-db-hugetlbfs:
+    default_result: PASS or NOT-APPLICABLE
   e2e-stig-node-worker-file-groupowner-ovs-conf-db-lock:
     default_result: PASS
     result_after_remediation: PASS
@@ -621,3 +623,19 @@ rule_results:
   e2e-stig-node-worker-reject-unsigned-images-by-default:
     default_result: FAIL
     result_after_remediation: PASS
+  e2e-stig-node-master-file-groupowner-ovs-conf-db-lock-hugetlbfs:
+    default_result: PASS or NOT-APPLICABLE
+  e2e-stig-node-master-file-groupowner-ovs-conf-db-lock-openvswitch:
+    default_result: PASS or NOT-APPLICABLE
+  e2e-stig-node-master-file-groupowner-ovs-sys-id-conf-hugetlbfs:
+    default_result: PASS or NOT-APPLICABLE
+  e2e-stig-node-master-file-groupowner-ovs-sys-id-conf-openvswitch:
+    default_result: PASS or NOT-APPLICABLE
+  e2e-stig-node-worker-file-groupowner-ovs-conf-db-lock-hugetlbfs:
+    default_result: PASS or NOT-APPLICABLE
+  e2e-stig-node-worker-file-groupowner-ovs-conf-db-lock-openvswitch:
+    default_result: PASS or NOT-APPLICABLE
+  e2e-stig-node-worker-file-groupowner-ovs-sys-id-conf-hugetlbfs:
+    default_result: PASS or NOT-APPLICABLE
+  e2e-stig-node-worker-file-groupowner-ovs-sys-id-conf-openvswitch:
+    default_result: PASS or NOT-APPLICABLE

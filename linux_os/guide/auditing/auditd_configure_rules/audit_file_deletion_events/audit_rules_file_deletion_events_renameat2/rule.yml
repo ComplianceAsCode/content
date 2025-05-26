@@ -1,0 +1,50 @@
+documentation_complete: true
+
+title: 'Ensure auditd Collects File Deletion Events by User - renameat2'
+
+description: |-
+    At a minimum, the audit system should collect file deletion events
+    for all users and root. If the <tt>auditd</tt> daemon is configured to use the
+    <tt>augenrules</tt> program to read audit rules during daemon startup (the
+    default), add the following line to a file with suffix <tt>.rules</tt> in the
+    directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 for 32-bit
+    system, or having two lines for both b32 and b64 in case your system is 64-bit:
+    <pre>-a always,exit -F arch=ARCH -S renameat2 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=delete</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following line to
+    <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 for 32-bit
+    system, or having two lines for both b32 and b64 in case your system is 64-bit:
+    <pre>-a always,exit -F arch=ARCH -S renameat2 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=delete</pre>
+
+rationale: |-
+    Auditing file deletions will create an audit trail for files that are removed
+    from the system. The audit trail could aid in system troubleshooting, as well as, detecting
+    malicious processes that attempt to delete log files to conceal their presence.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-86188-0
+
+references:
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
+    srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215,SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00211,SRG-OS-000468-GPOS-00212,SRG-APP-000495-CTR-001235,SRG-APP-000499-CTR-001255,SRG-APP-000501-CTR-001265,SRG-APP-000502-CTR-001270
+
+
+{{{ complete_ocil_entry_audit_syscall(syscall="renameat2") }}}
+
+template:
+    name: audit_rules_file_deletion_events
+    vars:
+        name: renameat2
+        syscall_grouping:
+          - unlink
+          - unlinkat
+          - rename
+          - renameat
+          - renameat2
+          - rmdir
+fixtext: |-
+    {{{ fixtext_audit_rules_file_deletion_events("renameat2") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("renameat2") }}}'

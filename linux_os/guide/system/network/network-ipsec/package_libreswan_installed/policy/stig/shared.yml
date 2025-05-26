@@ -4,12 +4,14 @@ srg_requirement: |-
 vuldiscussion: |-
     Providing the ability for remote users or systems to initiate a secure VPN connection protects information when it is transmitted over a wide area network.
 
+
+
 checktext: |-
     Verify that {{{ full_name }}} libreswan service package is installed.
 
     Check that the libreswan service package is installed with the following command:
 
-    $ sudo dnf list --installed libreswan
+    $ dnf list --installed libreswan
 
     Example output:
 
@@ -21,4 +23,5 @@ fixtext: |-
     Install the libreswan service (if it is not already installed) with the following command:
 
     $ sudo dnf install libreswan
+
 

@@ -2,6 +2,10 @@
   <definition class="compliance" id="configure_crypto_policy" version="1">
     {{{ oval_metadata("Ensure crypto policy is correctly configured in /etc/crypto-policies/config, and the policy is current.") }}}
     <criteria operator="AND">
+{{% if product == "sle15" %}}
+      <criterion comment="package crypto-policies-scripts is installed"
+      test_ref="test_package_crypto-policies-scripts_installed" />
+{{% endif %}}
       <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/config"
       test_ref="test_configure_crypto_policy" />
       <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/state/current"
@@ -10,6 +14,10 @@
       <criterion comment="Check if /etc/crypto-policies/back-ends/nss.config exists" test_ref="test_crypto_policy_nss_config" />
     </criteria>
   </definition>
+
+{{% if product == "sle15" %}}
+  {{{ oval_test_package_installed(package="crypto-policies-scripts", test_id="test_package_crypto-policies-scripts_installed") }}}
+{{% endif %}}
 
   <unix:file_object id="crypto_policies_current_file" comment="crypto-policies current state" version="1">
     <unix:filepath>/etc/crypto-policies/state/current</unix:filepath>
@@ -85,7 +93,6 @@ id="object_crypto_policies_config_file_modified_time" version="1">
     <unix:filepath>/etc/crypto-policies/back-ends/nss.config</unix:filepath>
   </unix:file_object>
 
-  <external_variable comment="defined crypto policy" datatype="string"
-  id="var_system_crypto_policy" version="1" />
+  <external_variable comment="defined crypto policy" datatype="string" id="var_system_crypto_policy" version="1" />
 
 </def-group>

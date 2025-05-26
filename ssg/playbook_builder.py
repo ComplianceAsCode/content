@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import json
 import os
 import re
 import sys
@@ -118,9 +119,10 @@ class PlaybookBuilder():
                     yield (xccdf_value.id_, options,)
 
     def _find_rule_title(self, rule_id):
-        rule_path = os.path.join(self.rules_dir, rule_id + ".yml")
-        rule_yaml = ssg.yaml.open_raw(rule_path)
-        return rule_yaml["title"]
+        rule_path = os.path.join(self.rules_dir, rule_id + ".json")
+        with open(rule_path, "r") as rule_file:
+            rule = json.load(rule_file)
+        return rule["title"]
 
     def create_playbook(self, snippet_path, rule_id, variables,
                         refinements, output_dir):
@@ -184,7 +186,7 @@ class PlaybookBuilder():
             )
 
         env_yaml = ssg.environment.open_environment(self.build_config_yaml, self.product_yaml_path)
-        profile = ssg.build_yaml.Profile.from_yaml(profile_path, env_yaml)
+        profile = ssg.build_yaml.Profile.from_compiled_json(profile_path, env_yaml)
         if not profile:
             raise RuntimeError("Could not parse profile %s.\n" % profile_path)
         return profile

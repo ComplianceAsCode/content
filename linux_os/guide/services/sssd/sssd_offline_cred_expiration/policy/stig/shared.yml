@@ -7,11 +7,11 @@ vuldiscussion: |-
 checktext: |-
     Verify that the System Security Services Daemon (SSSD) prohibits the use of cached authentications after one day.
 
-    Note: If smart card authentication is not being used on the system, this requirement is Not Applicable.
+    Note: Cached authentication settings should be configured even if smart card authentication is not used on the system.
 
     Check that SSSD allows cached authentications with the following command:
 
-    $ sudo grep cache_credentials /etc/sssd/sssd.conf
+    $ sudo grep -ir cache_credentials /etc/sssd/sssd.conf /etc/sssd/conf.d/
 
     cache_credentials = true
 
@@ -19,7 +19,7 @@ checktext: |-
 
     If "cache_credentials" is set to "true", check that SSSD prohibits the use of cached authentications after one day with the following command:
 
-    $ sudo grep offline_credentials_expiration  /etc/sssd/sssd.conf
+    $ sudo grep -ir offline_credentials_expiration /etc/sssd/sssd.conf /etc/sssd/conf.d/
 
     offline_credentials_expiration = 1
 
@@ -28,7 +28,8 @@ checktext: |-
 fixtext: |-
     Configure the SSSD to prohibit the use of cached authentications after one day.
 
-    Add or change the following line in "/etc/sssd/sssd.conf" just below the line [pam]:
+    Edit the file "/etc/sssd/sssd.conf" or a configuration file in "/etc/sssd/conf.d" and add or edit the following line just below the line [pam]:
 
     offline_credentials_expiration = 1
+
 

@@ -14,19 +14,19 @@
 
     <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_include_sshd_drop_in" version="1">
         <ind:filepath operation="pattern match">/etc/ssh/sshd_config</ind:filepath>
-        <ind:pattern operation="pattern match">^Include /etc/ssh/sshd_config.d/\*.conf$</ind:pattern>
+        <ind:pattern operation="pattern match">^[ \t]*(?i)Include(?-i)[ \t]+/etc/ssh/sshd_config\.d/\*.conf$</ind:pattern>
         <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 
 
     <ind:textfilecontent54_test id="test_{{{ rule_id }}}_include_sshd_include_system_crypto"
                                 comment="Ensure that drop in config files are included" version="1" check="all">
-        <ind:object object_ref="obj_{{{ rule_id }}}_include_sshd_drop_in"/>
+        <ind:object object_ref="obj_{{{ rule_id }}}_include_sshd_include_system_crypto"/>
     </ind:textfilecontent54_test>
 
     <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_include_sshd_include_system_crypto" version="1">
-        <ind:filepath operation="pattern match">/etc/ssh/sshd_config</ind:filepath>
-        <ind:pattern operation="pattern match">^Include /etc/crypto-policies/back-ends/opensshserver\.config</ind:pattern>
+        <ind:filepath operation="pattern match">/etc/ssh/(sshd_config|sshd_config\.d/.*\.conf)</ind:filepath>
+        <ind:pattern operation="pattern match">^[ \t]*(?i)Include(?-i)[ \t]+/etc/crypto-policies/back-ends/opensshserver\.config$</ind:pattern>
         <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 </def-group>
