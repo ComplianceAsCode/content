@@ -119,7 +119,10 @@ fi
 {{%- endmacro -%}}
 
 
-{{%- set in_chrooted_environment = 'test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"' -%}}
+{{%- macro in_chrooted_environment() -%}}
+test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
+{{%- endmacro -%}}
+
 {{#
     Set a parameter
 
