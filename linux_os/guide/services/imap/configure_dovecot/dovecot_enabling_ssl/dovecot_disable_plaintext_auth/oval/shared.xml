@@ -1,7 +1,7 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="dovecot_disable_plaintext_auth"
   version="1">
-    {{{ oval_metadata("Plaintext authentication of mail clients should be disabled.") }}}
+    {{{ oval_metadata("Plaintext authentication of mail clients should be disabled.", rule_title=rule_title) }}}
     <criteria comment="Disable Plaintext Authentication in Dovecot" operator="OR">
       <extend_definition comment="dovecot service is disabled" definition_ref="service_dovecot_disabled" />
       <criterion test_ref="test_dovecot_disable_plaintext_auth" />

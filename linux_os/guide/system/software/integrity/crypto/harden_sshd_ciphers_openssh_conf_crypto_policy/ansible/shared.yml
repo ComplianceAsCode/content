@@ -11,6 +11,5 @@
         parameter='Ciphers',
         value="{{ sshd_approved_ciphers }}",
         create='yes',
-        prefix_regex='^.*'
-    )
+        prefix_regex='^.*', rule_title=rule_title)
 }}}

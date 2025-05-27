@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-    {{{ oval_metadata("The " + MOUNTOPTIONID + " option should be enabled for all NFS mounts in /etc/fstab.") }}}
+    {{{ oval_metadata("The " + MOUNTOPTIONID + " option should be enabled for all NFS mounts in /etc/fstab.", rule_title=rule_title) }}}
     <criteria operator="OR">
       <criterion comment="remote nfs filesystems" test_ref="test_nfs_{{{ MOUNTOPTIONID }}}_etc_fstab" />
     </criteria>

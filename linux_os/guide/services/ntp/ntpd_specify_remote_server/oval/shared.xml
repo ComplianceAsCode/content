@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="ntpd_specify_remote_server" version="2">
     {{{ oval_metadata("A remote ntpd NTP Server for time synchronization should be
-      specified (and dependencies are met)") }}}
+      specified (and dependencies are met)", rule_title=rule_title) }}}
     <criteria comment="ntp.conf conditions are met">
       <criterion test_ref="test_ntp_remote_server" />
     </criteria>

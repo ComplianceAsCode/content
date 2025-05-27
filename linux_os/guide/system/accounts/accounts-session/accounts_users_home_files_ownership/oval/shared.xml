@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("All User Files and Directories In The Home Directory Must Have a Valid Owner") }}}
+    {{{ oval_metadata("All User Files and Directories In The Home Directory Must Have a Valid Owner", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_accounts_users_home_files_ownership"
                  comment="All User Files and Directories In The Home Directory Must Have a Valid Owner"/>

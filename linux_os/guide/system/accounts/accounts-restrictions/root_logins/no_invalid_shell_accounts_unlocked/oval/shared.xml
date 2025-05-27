@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure Accounts Without Valid Login Shell Are Locked") }}}
+    {{{ oval_metadata("Ensure Accounts Without Valid Login Shell Are Locked", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="Check that the accounts do not have valid shells" test_ref="test_{{{ rule_id }}}_no_invalid_shell_accounts" negate="true" />
     </criteria>

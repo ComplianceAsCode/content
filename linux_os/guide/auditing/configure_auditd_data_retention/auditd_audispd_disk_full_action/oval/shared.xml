@@ -1,7 +1,7 @@
 {{% set audisp_config_file_path = audisp_conf_path + "/audisp-remote.conf" %}}
 <def-group>
   <definition class="compliance" id="auditd_audispd_disk_full_action" version="1">
-    {{{ oval_metadata("remote_server setting in " + audisp_config_file_path + " is set to a certain IP address or hostname") }}}
+    {{{ oval_metadata("remote_server setting in " + audisp_config_file_path + " is set to a certain IP address or hostname", rule_title=rule_title) }}}
     <criteria>
         <criterion comment="remote_server setting in audisp-remote.conf" test_ref="test_auditd_audispd_disk_full_action" />
     </criteria>

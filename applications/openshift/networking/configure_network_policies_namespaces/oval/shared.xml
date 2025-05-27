@@ -4,7 +4,7 @@
 {{% set networkpolicies_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default" and ({{if ne .var_network_policies_namespaces_exempt_regex "None"}}.metadata.namespace | test("{{.var_network_policies_namespaces_exempt_regex}}") | not{{else}}true{{end}})) | .metadata.namespace] | unique' %}}
 {{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default" and ({{if ne .var_network_policies_namespaces_exempt_regex "None"}}.metadata.name | test("{{.var_network_policies_namespaces_exempt_regex}}") | not{{else}}true{{end}}))]' %}}
   <definition class="compliance" id="configure_network_policies_namespaces" version="1">
-    {{{ oval_metadata("Ensure that application Namespaces have Network Policies defined") }}}
+    {{{ oval_metadata("Ensure that application Namespaces have Network Policies defined", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="Make sure that the file '{{{ openshift_filtered_path(networkpolicies_api_path, networkpolicies_for_non_ctlplane_namespaces_filter) }}} exists."
                  test_ref="test_file_for_configure_network_policies_namespaces"/>

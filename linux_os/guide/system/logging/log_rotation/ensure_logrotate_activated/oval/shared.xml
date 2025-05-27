@@ -2,7 +2,7 @@
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("
       The frequency of automatic log files rotation performed by the logrotate utility should be configured to run daily
-      ") }}}
+      ", rule_title=rule_title) }}}
     <criteria comment="/etc/logrotate.conf contains daily setting and /etc/cron.daily/logrotate file exists" operator="AND">
       <extend_definition comment="package logrotate installed" definition_ref="package_logrotate_installed" />
       <criterion comment="Check if daily is set in /etc/logrotate.conf"

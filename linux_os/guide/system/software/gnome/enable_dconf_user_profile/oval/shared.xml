@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="enable_dconf_user_profile" version="1">
-    {{{ oval_metadata("The DConf User profile should have the local DB configured.") }}}
+    {{{ oval_metadata("The DConf User profile should have the local DB configured.", rule_title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criterion comment="dconf user profile exists" test_ref="test_dconf_user_profile" />

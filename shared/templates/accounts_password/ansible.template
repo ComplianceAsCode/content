@@ -25,12 +25,12 @@
                                   'password',
                                   '',
                                   'pam_pwquality.so',
-                                  VARIABLE)
+                                  VARIABLE, rule_title=rule_title)
 }}}
 {{% endif %}}
 
 {{% if "ubuntu" in product %}}
-{{{ ansible_pam_pwquality_enable('/usr/share/pam-configs/cac_pwquality') }}}
+{{{ ansible_pam_pwquality_enable('/usr/share/pam-configs/cac_pwquality', rule_title=rule_title) }}}
 {{% endif %}}
 
 - name: {{{ rule_title }}} - Ensure PAM variable {{{ VARIABLE }}} is set accordingly

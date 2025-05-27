@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="dconf_gnome_screensaver_user_info" version="1">
-    {{{ oval_metadata("GNOME3 screen splash shield should not display full name of logged in user.") }}}
+    {{{ oval_metadata("GNOME3 screen splash shield should not display full name of logged in user.", rule_title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="Disable screensaver user info and prevent user from changing it" operator="AND">

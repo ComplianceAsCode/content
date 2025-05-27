@@ -1,6 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="ensure_rtc_utc_configuration" version="1">
-   {{{ oval_metadata("Ensure RTC is using UTC as its time base") }}}
+   {{{ oval_metadata("Ensure RTC is using UTC as its time base", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="Check softlink exists for /etc/localtime and look for UTC pattern" test_ref="test_ensure_rtc_utc_configuration" />
     </criteria>

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure loopback traffic is configured in nft") }}}
+    {{{ oval_metadata("Ensure loopback traffic is configured in nft", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_{{{ rule_id }}}_file"
         comment="Check the existence of top level nftables configuration file" />

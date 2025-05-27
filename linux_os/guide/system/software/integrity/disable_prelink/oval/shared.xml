@@ -4,7 +4,7 @@
     {{{ oval_metadata("The prelinking feature can interfere with the operation of
       checksum integrity tools (e.g. AIDE), mitigates the protection provided
       by ASLR, and requires additional CPU cycles by software upgrades.
-      ") }}}
+      ", rule_title=rule_title) }}}
     <criteria operator="OR" comment="Conditions for prelinking disabled are satisfied">
       <extend_definition comment="prelink RPM package not installed" definition_ref="package_prelink_removed" />
       <criterion comment="Prelinking is disabled" test_ref="test_prelinking_disabled" />

@@ -3,18 +3,18 @@
 set -pu
 
 function call_set_config_file_create_false {
-    {{{ set_config_file("$1", "Compression", "no", False) | indent(4) }}}
+    {{{ set_config_file("$1", "Compression", "no", False, rule_id=rule_id) | indent(4) }}}
 }
 
 
 function call_set_config_file {
-    {{{ set_config_file("$1", "Compression", "no", True) | indent(4) }}}
+    {{{ set_config_file("$1", "Compression", "no", True, rule_id=rule_id) | indent(4) }}}
 }
 
 function call_set_config_file_rsyslog {
     {{{ set_config_file(path="$1",
             parameter="\$DefaultNetstreamDriver", value="gtls",
-            create=true, separator=" ", separator_regex=" ") }}}
+            create=true, separator=" ", separator_regex=" ", rule_id=rule_id) }}}
 }
 
 is_old_bats=0
@@ -140,7 +140,7 @@ teardown() {
     printf "%s\n" "Protocol 2" "COMPRESSION YES" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\nCOMPRESSION YES\nPort 22\nCompression no\n"
 
-    {{{ set_config_file("$tmp_file", "Compression", "no", True, "", "", False) | indent(4) }}}
+    {{{ set_config_file("$tmp_file", "Compression", "no", True, "", "", False, rule_id=rule_id) | indent(4) }}}
 
     run diff -U2 "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -150,7 +150,7 @@ teardown() {
     printf "%s\n" "something=foo" > "$tmp_file"
     expected_output="something='va lue'\n"
 
-    {{{ bash_shell_file_set("$tmp_file", "something", "va lue") | indent(4) }}}
+    {{{ bash_shell_file_set("$tmp_file", "something", "va lue", rule_id=rule_id) | indent(4) }}}
 
     run diff -U2 "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -160,7 +160,7 @@ teardown() {
     printf "%s\n" "something=bar" > "$tmp_file"
     expected_output='something="$value"'"\n"
 
-    {{{ bash_shell_file_set("$tmp_file", "something", '$value') | indent(4) }}}
+    {{{ bash_shell_file_set("$tmp_file", "something", '$value', rule_id=rule_id) | indent(4) }}}
 
     run diff -U2 "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -170,7 +170,7 @@ teardown() {
     printf "%s\n" "something=foo" > "$tmp_file"
     expected_output="something=va lue\n"
 
-    {{{ bash_shell_file_set("$tmp_file", "something", "va lue", no_quotes=true) | indent(4) }}}
+    {{{ bash_shell_file_set("$tmp_file", "something", "va lue", no_quotes=true, rule_id=rule_id) | indent(4) }}}
 
     run diff -U2 "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -180,7 +180,7 @@ teardown() {
     printf "%s\n" "something=bar" > "$tmp_file"
     expected_output='something=$value'"\n"
 
-    {{{ bash_shell_file_set("$tmp_file", "something", '$value', no_quotes=true) | indent(4) }}}
+    {{{ bash_shell_file_set("$tmp_file", "something", '$value', no_quotes=true, rule_id=rule_id) | indent(4) }}}
 
     run diff -U2 "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="sshd_use_strong_macs" version="1">
-    {{{ oval_metadata("Ensure only strong MAC algorithms are used") }}}
+    {{{ oval_metadata("Ensure only strong MAC algorithms are used", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criteria comment="SSH is configured correctly or is not installed"
       operator="OR">

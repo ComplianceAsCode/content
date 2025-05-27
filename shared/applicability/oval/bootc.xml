@@ -1,6 +1,6 @@
 <def-group>
   <definition class="inventory" id="bootc" version="1">
-    {{{ oval_metadata("Bootable container or bootc system", affected_platforms=["multi_platform_all"]) }}}
+    {{{ oval_metadata("Bootable container or bootc system", affected_platforms=["multi_platform_all"], rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="kernel is installed" test_ref="bootc_platform_test_kernel_installed" />
       <criterion comment="rpm-ostree is installed" test_ref="bootc_platform_test_rpm_ostree_installed" />

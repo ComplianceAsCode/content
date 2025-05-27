@@ -6,7 +6,7 @@
       printer list broadcasts, or remote users will still be able to see the
       locally configured printers, even if they cannot actually print to them.
       To limit print serving to a particular set of users, use the Policy
-      directive.") }}}
+      directive.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="Don't use port directive" test_ref="test_cups_disable_printserver_disable_port" />
       <criterion comment="Do use the listen directive" test_ref="test_cups_disable_printserver_use_listen" />

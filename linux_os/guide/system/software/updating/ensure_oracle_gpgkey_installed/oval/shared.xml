@@ -2,7 +2,7 @@
 {{# If pkg_version isn't defined, then the rule should be NOTCHECKED, because we don't have data needed for the check #}}
 <def-group>
   <definition class="compliance" id="ensure_oracle_gpgkey_installed" version="1">
-    {{{ oval_metadata("The Oracle Linux key packages are required to be installed.") }}}
+    {{{ oval_metadata("The Oracle Linux key packages are required to be installed.", rule_title=rule_title) }}}
     <criteria comment="Oracle Vendor Keys" operator="AND">
       <criteria comment="Oracle Installed" operator="OR">
         <extend_definition comment="{{{ product }}} installed" definition_ref="installed_OS_is_{{{ product }}}" />

@@ -7,7 +7,7 @@ KEX_ALGOS="ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellm
 {{%- endif %}}
 
 {{%- if 'ubuntu' in product %}}
-{{{ bash_sshd_remediation(parameter="KexAlgorithms", value="$KEX_ALGOS", config_is_distributed=sshd_distributed_config) }}}
+{{{ bash_sshd_remediation(parameter="KexAlgorithms", value="$KEX_ALGOS", config_is_distributed=sshd_distributed_config, rule_id=rule_id) }}}
 {{%- else %}}
 
 if grep -q -P '^\s*KexAlgorithms\s+' /etc/ssh/sshd_config; then

@@ -136,7 +136,7 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
 :type no_quotes: bool
 
 #}}
-{{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false) -%}}
+{{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false, rule_id=None) -%}}
 {{% if no_quotes -%}}
   {{% if "$" in value %}}
     {{% set value = '%s' % value.replace("$", "\\$") %}}
@@ -158,7 +158,7 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
         insensitive=false,
         separator="=",
         separator_regex="\s*=\s*",
-        prefix_regex="^\s*")
+        prefix_regex="^\s*", rule_id=rule_id)
     }}}
 {{%- endmacro -%}}
 
@@ -172,7 +172,7 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
 :type value: str
 
 #}}
-{{%- macro bash_sshd_config_set(parameter, value) -%}}
+{{%- macro bash_sshd_config_set(parameter, value, rule_id=None) -%}}
 {{{ set_config_file(
         path="/etc/ssh/sshd_config",
         parameter=parameter,
@@ -183,7 +183,7 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
         insensitive=true,
         separator=" ",
         separator_regex="\s\+",
-        prefix_regex="^\s*")
+        prefix_regex="^\s*", rule_id=rule_id)
     }}}
 {{%- endmacro -%}}
 
@@ -201,7 +201,7 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
 :type config_basename: str
 
 #}}
-{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="00-complianceascode-hardening.conf") -%}}
+{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="00-complianceascode-hardening.conf", rule_id=None) -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
 
@@ -213,7 +213,7 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
 mkdir -p {{{ sshd_config_dir }}}
 touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
 chmod 0600 {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
-{{{ lineinfile_absent(sshd_config_path, line_regex, insensitive=true) }}}
+{{{ lineinfile_absent(sshd_config_path, line_regex, insensitive=true, rule_id=rule_id) }}}
 {{{ lineinfile_absent_in_directory(sshd_config_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
 {{{ set_config_file(
         path=sshd_config_dir ~ "/" ~ hardening_config_basename,
@@ -225,7 +225,7 @@ chmod 0600 {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
         insensitive=true,
         separator=" ",
         separator_regex=separator_regex,
-        prefix_regex=prefix_regex)
+        prefix_regex=prefix_regex, rule_id=rule_id)
     }}}
 {{%- else %}}
 {{% if product in ["ol8", "ol9"] %}}
@@ -233,10 +233,10 @@ chmod 0600 {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
 # And if it is a relative path prepend '/etc/ssh/'
 included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*include\s*//I' | sed -e 's|^[^/]|/etc/ssh/&|')
 for included_file in ${included_files} ; do
-    {{{ lineinfile_absent("$included_file", "^\s*" ~ parameter, insensitive=true) | indent(4) }}}
+    {{{ lineinfile_absent("$included_file", "^\s*" ~ parameter, insensitive=true, rule_id=rule_id) | indent(4) }}}
 done
 {{% endif %}}
-{{{ bash_sshd_config_set(parameter=parameter, value=value) }}}
+{{{ bash_sshd_config_set(parameter=parameter, value=value, rule_id=rule_id) }}}
 {{%- endif %}}
 {{%- endmacro %}}
 
@@ -267,7 +267,7 @@ EOF
 :type value: str
 
 #}}
-{{%- macro bash_auditd_config_set(parameter, value) -%}}
+{{%- macro bash_auditd_config_set(parameter, value, rule_id=None) -%}}
 {{{ set_config_file(
         path="/etc/audit/auditd.conf",
         parameter=parameter,
@@ -278,7 +278,7 @@ EOF
         insensitive=true,
         separator=" = ",
         separator_regex="\s*=\s*",
-        prefix_regex="^\s*")
+        prefix_regex="^\s*", rule_id=rule_id)
     }}}
 {{%- endmacro -%}}
 
@@ -316,7 +316,7 @@ fi
 :type value: str
 
 #}}
-{{%- macro bash_selinux_config_set(parameter, value) -%}}
+{{%- macro bash_selinux_config_set(parameter, value, rule_id=None) -%}}
 {{{ set_config_file(
         path="/etc/selinux/config",
         parameter=parameter,
@@ -327,7 +327,7 @@ fi
         insensitive=true,
         separator="=",
         separator_regex="=",
-        prefix_regex="^")
+        prefix_regex="^", rule_id=rule_id)
     }}}
 {{%- endmacro -%}}
 
@@ -609,7 +609,7 @@ fi
     If files contain ibus or distro, ignore them.
 
 #}}
-{{%- macro bash_dconf_settings(path, key, value, db, setting_file) -%}}
+{{%- macro bash_dconf_settings(path, key, value, db, setting_file, rule_id=None) -%}}
 # Check for setting in any of the DConf db directories
 # If files contain ibus or distro, ignore them.
 # The assignment assumes that individual filenames don't contain :
@@ -1266,12 +1266,12 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 :type sed_path_separator: char
 
 #}}
-{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/") -%}}
+{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/", rule_id=None) -%}}
     {{%- set new_line = parameter+separator~value -%}}
     {{#- An escaped dollar in the parameter is escaped because of its significance for the shell, so when making a regex out of the parameter, we remove the shell escape, as the regex escape will do its thing. -#}}
     {{%- set line_regex = prefix_regex + ((parameter | replace("\\$", "$") | escape_regex) | replace("/", "\/")) + separator_regex -%}}
 if [ -e "{{{ path }}}" ] ; then
-    {{{ lineinfile_absent(path, line_regex, insensitive, sed_path_separator=sed_path_separator) | indent(4) }}}
+    {{{ lineinfile_absent(path, line_regex, insensitive, sed_path_separator=sed_path_separator, rule_id=rule_id) | indent(4) }}}
 else
     {{%- if create %}}
     touch "{{{ path }}}"
@@ -1283,7 +1283,7 @@ fi
 {{%- endmacro -%}}
 
 
-{{%- macro lineinfile_absent(path, regex, insensitive=true, sed_path_separator="/") -%}}
+{{%- macro lineinfile_absent(path, regex, insensitive=true, sed_path_separator="/", rule_id=None) -%}}
     {{%- if insensitive -%}}
         {{%- set modifier="Id" -%}}
     {{%- else -%}}
@@ -1407,7 +1407,7 @@ EOF
 {{%- endmacro %}}
 
 
-{{% macro bash_ini_file_set(filename, section, key, value) -%}}
+{{% macro bash_ini_file_set(filename, section, key, value, rule_id=None) -%}}
 {{% set config_dir = "/".join(filename.split("/")[:-1]) %}}
 # Try find '[{{{ section }}}]' and '{{{ key }}}' in '{{{ filename }}}', if it exists, set
 # to '{{{ value }}}', if it isn't here, add it, if '[{{{ section }}}]' doesn't exist, add it there
@@ -1447,7 +1447,7 @@ for f in /etc/sudoers /etc/sudoers.d/* ; do
 done
 {{%- endmacro -%}}
 
-{{% macro bash_sssd_ldap_config(parameter, value) -%}}
+{{% macro bash_sssd_ldap_config(parameter, value, rule_id=None) -%}}
 SSSD_CONF="/etc/sssd/sssd.conf"
 LDAP_REGEX='[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*{{{ parameter }}}'
 AD_REGEX='[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*id_provider[[:space:]]*=[[:space:]]*((?i)ad)[[:space:]]*$'
@@ -1502,7 +1502,7 @@ rpm --quiet -q "{{{ pkgname }}}"
     product this remediation is being built for, or it is empty.
 
 #}}
-{{%- macro set_cce_value() -%}}
+{{%- macro set_cce_value(cce_identifiers=None) -%}}
 {{% if cce_identifiers and 'cce' in cce_identifiers -%}}
 cce="{{{ cce_identifiers['cce'] }}}"
 {{%- endif %}}
@@ -1535,15 +1535,15 @@ fi
 
       With default format of 'key = value'::
 
-        {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2') }}}
+        {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2', cce_identifiers=cce_identifiers) }}}
 
       With custom key/value format::
 
-        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '%s=%s') }}}
+        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '%s=%s', cce_identifiers=cce_identifiers) }}}
 
       With a variable::
 
-        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
+        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s', cce_identifiers=cce_identifiers) }}}
 
 :param config_file: Configuration file that will be modified
 :type config_file: str
@@ -1567,7 +1567,7 @@ fi
 
 
 
-{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
+{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s', cce_identifiers=None) -%}}
 # Strip any search characters in the key arg so that the key can be replaced without
 # adding any search characters to the config file.
 stripped_key=$(sed 's/[\^=\$,;+]*//g' <<< "{{{ key }}}")
@@ -1584,7 +1584,7 @@ if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}\\>" "{{{ config_file }}}"; then
 else
     {{{ bash_ensure_nl_at_eof(config_file) | indent }}}
     {{%- if cce_identifiers and 'cce' in cce_identifiers %}}
-    {{{ set_cce_value() }}}
+    {{{ set_cce_value(cce_identifiers=cce_identifiers) }}}
     printf '# Per %s: Set %s in %s\n' "${cce}" "${formatted_output}" "{{{ config_file }}}" >> "{{{ config_file }}}"
     {{%- endif %}}
     printf '%s\n' "$formatted_output" >> "{{{ config_file }}}"

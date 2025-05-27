@@ -3,7 +3,7 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-{{{ ansible_pam_faillock_enable() }}}
+{{{ ansible_pam_faillock_enable(rule_title=rule_title) }}}
 
 - name: {{{ rule_title }}} - Check the presence of /etc/security/faillock.conf file
   ansible.builtin.stat:

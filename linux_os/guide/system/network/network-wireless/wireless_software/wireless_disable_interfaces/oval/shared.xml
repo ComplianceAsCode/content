@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="wireless_disable_interfaces" version="1">
-    {{{ oval_metadata("All wireless interfaces should be disabled.") }}}
+    {{{ oval_metadata("All wireless interfaces should be disabled.", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="check if wifi interfaces are disabled" test_ref="test_wireless_disable_interfaces" negate="true" />
     </criteria>

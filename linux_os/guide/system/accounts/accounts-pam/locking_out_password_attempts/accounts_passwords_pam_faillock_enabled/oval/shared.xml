@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="6">
-    {{{ oval_metadata(description) }}}
+    {{{ oval_metadata(description, rule_title=rule_title) }}}
     <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
       <!-- pam_unix.so is a control module present in all realistic scenarios and also used
            as reference for the correct position of pam_faillock.so in auth section. If the

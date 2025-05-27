@@ -48,7 +48,7 @@
   {{% endmacro %}}
 
   <definition class="compliance" id="dconf_db_up_to_date" version="2">
-    {{{ oval_metadata("Make sure that the dconf databases are up-to-date with regards to respective keyfiles.") }}}
+    {{{ oval_metadata("Make sure that the dconf databases are up-to-date with regards to respective keyfiles.", rule_title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="check that all DBs in question are up-to-date" operator="AND">

@@ -12,11 +12,11 @@
 {{% endif %}}
 
 {{% if audit_watches_style == "modern" %}}
-{{{ ansible_audit_augenrules_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style, arch='b32', filter_type=FILTER_TYPE) }}}
-{{{ ansible_audit_augenrules_add_watch_rule(path=path, permissions='wa', key=KEY,style=audit_watches_style, arch='b64', filter_type=FILTER_TYPE) }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style, arch='b32', filter_type=FILTER_TYPE) }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style, arch='b64', filter_type=FILTER_TYPE) }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style, arch='b32', filter_type=FILTER_TYPE, rule_title=rule_title) }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path=path, permissions='wa', key=KEY,style=audit_watches_style, arch='b64', filter_type=FILTER_TYPE, rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style, arch='b32', filter_type=FILTER_TYPE, rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style, arch='b64', filter_type=FILTER_TYPE, rule_title=rule_title) }}}
 {{% else %}}
-{{{ ansible_audit_augenrules_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style) }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style) }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style, rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style, rule_title=rule_title) }}}
 {{% endif %}}

@@ -9,4 +9,4 @@ option="^enable_krb5"
 value="yes"
 {{% endif %}}
 
-{{{ bash_replace_or_append("$AUDISP_REMOTE_CONFIG", "$option", "$value") }}}
+{{{ bash_replace_or_append("$AUDISP_REMOTE_CONFIG", "$option", "$value", cce_identifiers=cce_identifiers) }}}

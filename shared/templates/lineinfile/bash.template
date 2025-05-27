@@ -5,7 +5,7 @@
 # disruption = low
 
 {{% if SED_PATH_SEPARATOR %}}
-    {{{ set_config_file(PATH, TEXT, value="", create='yes', insert_after="", insert_before="", separator="", separator_regex="", prefix_regex="^\s*", sed_path_separator=SED_PATH_SEPARATOR) -}}}
+    {{{ set_config_file(PATH, TEXT, value="", create='yes', insert_after="", insert_before="", separator="", separator_regex="", prefix_regex="^\s*", sed_path_separator=SED_PATH_SEPARATOR, rule_id=rule_id) -}}}
 {{% else %}}
-    {{{ set_config_file(PATH, TEXT, value="", create='yes', insert_after="", insert_before="", separator="", separator_regex="", prefix_regex="^\s*") -}}}
+    {{{ set_config_file(PATH, TEXT, value="", create='yes', insert_after="", insert_before="", separator="", separator_regex="", prefix_regex="^\s*", rule_id=rule_id) -}}}
 {{% endif %}}

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Check if sudo includes only the default includedir") }}}
+    {{{ oval_metadata("Check if sudo includes only the default includedir", rule_title=rule_title) }}}
     <criteria operator="OR">
       <criteria operator="AND">
         <criterion comment="Check /etc/sudoers doesn't have any #include or @include" test_ref="test_sudoers_without_include" />

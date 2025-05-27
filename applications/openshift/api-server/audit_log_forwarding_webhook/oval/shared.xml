@@ -1,6 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="{{{ rule_id }}}" version="1"> {{{
-    oval_metadata("Audit webhook should be configure, regardless of which API") }}} <criteria
+    oval_metadata("Audit webhook should be configure, regardless of which API", rule_title=rule_title) }}} <criteria
       operator="OR">
       <extend_definition comment="ClusterlogForwarder from observability.openshift.io (6.0)"
         definition_ref="audit_log_forwarding_webhook_observability_api" />

@@ -5,7 +5,7 @@
 {{% endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Configure the system to notify users of last login/access using pam_lastlog.") }}}
+    {{{ oval_metadata("Configure the system to notify users of last login/access using pam_lastlog.", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_display_login_attempts"
         comment="conditions for pam_lastlog are satisfied"/>

@@ -2,7 +2,7 @@
   <definition class="compliance" id="securetty_root_login_console_only" version="1">
     {{{ oval_metadata("Preventing direct root login to virtual console devices
       helps ensure accountability for actions taken on the system using the
-      root account.") }}}
+      root account.", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="virtual consoles /etc/securetty" test_ref="test_virtual_consoles_etc_securetty" />
     </criteria>

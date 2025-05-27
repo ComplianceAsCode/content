@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_maximum_age_login_defs" version="3">
-    {{{ oval_metadata("The maximum password age policy should meet minimum requirements.") }}}
+    {{{ oval_metadata("The maximum password age policy should meet minimum requirements.", rule_title=rule_title) }}}
     <criteria comment="The value PASS_MAX_DAYS should be set appropriately in /etc/login.defs">
       <criterion test_ref="test_pass_max_days" />
     </criteria>

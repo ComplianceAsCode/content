@@ -13,6 +13,6 @@ fi
 {{{- delete_line_in_sudoers_d("Defaults rootpw") }}}
 {{{- delete_line_in_sudoers_d("Defaults runaspw") }}}
 
-{{{ set_config_file(path="/etc/sudoers", parameter="Defaults !targetpw", value="", create=true, insensitive=false, separator="", separator_regex="", prefix_regex="") }}}
-{{{ set_config_file(path="/etc/sudoers", parameter="Defaults !rootpw", value="", create=true, insensitive=false, separator="", separator_regex="", prefix_regex="") }}}
-{{{ set_config_file(path="/etc/sudoers", parameter="Defaults !runaspw", value="", create=true, insensitive=false, separator="", separator_regex="", prefix_regex="") }}}
+{{{ set_config_file(path="/etc/sudoers", parameter="Defaults !targetpw", value="", create=true, insensitive=false, separator="", separator_regex="", prefix_regex="", rule_id=rule_id) }}}
+{{{ set_config_file(path="/etc/sudoers", parameter="Defaults !rootpw", value="", create=true, insensitive=false, separator="", separator_regex="", prefix_regex="", rule_id=rule_id) }}}
+{{{ set_config_file(path="/etc/sudoers", parameter="Defaults !runaspw", value="", create=true, insensitive=false, separator="", separator_regex="", prefix_regex="", rule_id=rule_id) }}}

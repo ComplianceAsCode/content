@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Verify the crypto-policies package using the RPM database.") }}}
+    {{{ oval_metadata("Verify the crypto-policies package using the RPM database.", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_rpm_verify_crypto_policies" comment="verify crypto-policies package"/>
     </criteria>

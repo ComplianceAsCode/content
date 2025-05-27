@@ -5,17 +5,17 @@
 # disruption = low
 
 {{% if audit_watches_style == "modern" %}}
-{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', style='modern', arch='b32', filter_type='path') }}}
-{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', style='modern', arch='b64', filter_type='path') }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', style='modern', arch='b32', filter_type='path') }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', style='modern', arch='b64', filter_type='path') }}}
-{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', style='modern', arch='b32', filter_type='dir') }}}
-{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', style='modern', arch='b64', filter_type='dir') }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', style='modern', arch='b32', filter_type='dir') }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', style='modern', arch='b64', filter_type='dir') }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', style='modern', arch='b32', filter_type='path', rule_title=rule_title) }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', style='modern', arch='b64', filter_type='path', rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', style='modern', arch='b32', filter_type='path', rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', style='modern', arch='b64', filter_type='path', rule_title=rule_title) }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', style='modern', arch='b32', filter_type='dir', rule_title=rule_title) }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', style='modern', arch='b64', filter_type='dir', rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', style='modern', arch='b32', filter_type='dir', rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', style='modern', arch='b64', filter_type='dir', rule_title=rule_title) }}}
 {{% else %}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions') }}}
-{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions') }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions') }}}
-{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', rule_title=rule_title) }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', rule_title=rule_title) }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', rule_title=rule_title) }}}
 {{% endif %}}

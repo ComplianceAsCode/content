@@ -11,7 +11,7 @@ if [[ -z "$current_min_rounds" || "$current_min_rounds" -le "$var_password_hashi
                 parameter="SHA_CRYPT_MIN_ROUNDS",
                 value="$var_password_hashing_min_rounds_login_defs",
                 separator=" ",
-                separator_regex="\s*") | indent(4) }}}
+                separator_regex="\s*", rule_id=rule_id) | indent(4) }}}
 fi
 
 if [[ -n "$current_max_rounds" && "$current_max_rounds" -le "$var_password_hashing_min_rounds_login_defs" ]]; then
@@ -19,5 +19,5 @@ if [[ -n "$current_max_rounds" && "$current_max_rounds" -le "$var_password_hashi
                     parameter="SHA_CRYPT_MAX_ROUNDS",
                     value="$var_password_hashing_min_rounds_login_defs",
                     separator=" ",
-                    separator_regex="\s*") | indent(4) }}}
+                    separator_regex="\s*", rule_id=rule_id) | indent(4) }}}
 fi

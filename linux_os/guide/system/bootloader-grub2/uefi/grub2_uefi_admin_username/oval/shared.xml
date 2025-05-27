@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="grub2_uefi_admin_username" version="1">
     {{{ oval_metadata(
-              "The grub2 boot loader superuser should have a username that is hard to guess.") }}}
+              "The grub2 boot loader superuser should have a username that is hard to guess.", rule_title=rule_title) }}}
 
     <criteria operator="OR">
       <criterion comment="Superuser is defined in {{{ grub2_uefi_boot_path }}}/grub.cfg and it

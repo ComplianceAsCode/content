@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="banner_etc_motd" version="2">
-    {{{ oval_metadata("The system motd banner text should be set correctly.") }}}
+    {{{ oval_metadata("The system motd banner text should be set correctly.", rule_title=rule_title) }}}
     <criteria operator="OR">
       <criterion comment="/etc/motd is absent" test_ref="test_banner_etc_motd_exists" negate="true"/>
       <criterion comment="/etc/motd is set appropriately" test_ref="test_banner_etc_motd" />

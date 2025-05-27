@@ -16,7 +16,7 @@
 
 - name: '{{{ rule_title }}} - Remediate using authselect'
   block:
-    {{{ ansible_enable_authselect_feature('without-nullok') | indent(4) }}}
+    {{{ ansible_enable_authselect_feature('without-nullok', rule_title=rule_title) | indent(4) }}}
   when:
     - result_authselect_present.stat.exists
 

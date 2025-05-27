@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
       {{{ oval_metadata("Make sure that there is permanent nftables configuration file used
-          to save and re-apply rules on reboot") }}}
+          to save and re-apply rules on reboot", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_etc_nftables_conf_file"
           comment="/etc/nftables.conf exists and include entry present" />

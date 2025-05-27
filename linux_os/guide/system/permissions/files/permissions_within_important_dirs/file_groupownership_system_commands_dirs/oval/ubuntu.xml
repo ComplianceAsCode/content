@@ -3,7 +3,7 @@
     {{{ oval_metadata("
         Checks that system commands in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin 
         are owned by root group.
-      ") }}}
+      ", rule_title=rule_title) }}}
     <criteria >
       <criterion test_ref="test_groupownership_system_commands_dirs" />
     </criteria>

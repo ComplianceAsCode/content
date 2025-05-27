@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="chronyd_specify_remote_server" version="1">
     {{{ oval_metadata("A remote NTP Server for time synchronization should be
-      specified (and dependencies are met)") }}}
+      specified (and dependencies are met)", rule_title=rule_title) }}}
     <criteria comment="chrony.conf conditions are met">
       <criterion test_ref="test_chronyd_remote_server" />
     </criteria>

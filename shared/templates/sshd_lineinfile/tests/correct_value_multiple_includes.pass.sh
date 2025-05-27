@@ -4,7 +4,7 @@
 
 source common.sh
 
-{{{ bash_replace_or_append("/etc/ssh/sshd_config", "   InCLude", "sshd_config.d/*.conf", "%s %s") }}}
+{{{ bash_replace_or_append("/etc/ssh/sshd_config", "   InCLude", "sshd_config.d/*.conf", "%s %s", cce_identifiers=cce_identifiers) }}}
 echo "   INclUde /etc/dummy" >> "/etc/ssh/sshd_config"
 
 {{%- if XCCDF_VARIABLE %}}

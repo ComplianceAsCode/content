@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_password_warn_age_login_defs" version="3">
-    {{{ oval_metadata("The password expiration warning age should be set appropriately.") }}}
+    {{{ oval_metadata("The password expiration warning age should be set appropriately.", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_pass_warn_age" />
     </criteria>

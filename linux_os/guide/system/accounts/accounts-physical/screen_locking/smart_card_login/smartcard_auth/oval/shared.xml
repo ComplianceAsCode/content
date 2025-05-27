@@ -1,6 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="smartcard_auth" version="3">
-    {{{ oval_metadata("Enable Smart Card logins") }}}
+    {{{ oval_metadata("Enable Smart Card logins", rule_title=rule_title) }}}
     <criteria comment="smart card authentication is configured" operator="AND">
       <extend_definition comment="packages needed for smartcard support are installed" definition_ref="install_smartcard_packages" />
       <extend_definition comment="pcscd service is enabled" definition_ref="service_pcscd_enabled" />

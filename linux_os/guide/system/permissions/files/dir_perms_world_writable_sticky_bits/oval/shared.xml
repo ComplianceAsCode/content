@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("The sticky bit should be set for all world-writable directories.") }}}
+    {{{ oval_metadata("The sticky bit should be set for all world-writable directories.", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_dir_perms_world_writable_sticky_bits"
         comment="All local world-writable directories have sticky bit set"/>
@@ -13,7 +13,7 @@
   </unix:file_state>
 
   {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
-  {{{ create_local_mount_points_list(var_local_mount_points) }}}
+  {{{ create_local_mount_points_list(var_local_mount_points, rule_id=rule_id) }}}
 
   <!--
     This file_object will only find files located in local and not special file systems. The

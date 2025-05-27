@@ -6,7 +6,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("Enforce password history for root of pam_pwhistory.") }}}
+    {{{ oval_metadata("Enforce password history for root of pam_pwhistory.", rule_title=rule_title) }}}
       <criteria operator="AND" comment="Check if pam_pwhistory.so is properly configured">
         <criterion test_ref="test_accounts_password_pam_pwhistory_enforce_root_enabled"
                    comment="pam_pwhistory.so is properly defined in password section of PAM file"/>

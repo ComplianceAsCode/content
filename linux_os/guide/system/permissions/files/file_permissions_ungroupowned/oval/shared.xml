@@ -1,7 +1,7 @@
 {{% if product not in ['ubuntu2404'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("All files should be owned by a group") }}}
+    {{{ oval_metadata("All files should be owned by a group", rule_title=rule_title) }}}
     <criteria operator="OR">
       <criteria operator="AND">
         <criterion test_ref="test_file_permissions_ungroupowned_nsswitch_uses_altfiles" negate="true"
@@ -64,7 +64,7 @@
   </unix:file_state>
 
   {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
-  {{{ create_local_mount_points_list(var_local_mount_points) }}}
+  {{{ create_local_mount_points_list(var_local_mount_points, rule_id=rule_id) }}}
 
   <!-- This file_object will only find files located in local and not special file systems. The
        recurse_file_system parameter is set to defined in order to make sure the probe doesn't
@@ -93,7 +93,7 @@
     <filter action="exclude">state_file_permissions_ungroupowned_sysroot</filter>
   </unix:file_object>
 
-{{{ oval_test_nsswitch_uses_altfiles() }}}
+{{{ oval_test_nsswitch_uses_altfiles(rule_id=rule_id) }}}
 
   <unix:file_test id="test_file_permissions_ungroupowned" version="1"
     check="all" check_existence="none_exist"

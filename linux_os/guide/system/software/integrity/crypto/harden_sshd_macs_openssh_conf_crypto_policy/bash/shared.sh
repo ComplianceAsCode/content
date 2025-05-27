@@ -8,6 +8,5 @@
         value="${sshd_approved_macs}",
         create=true,
         insensitive=false,
-        prefix_regex="^.*"
-	)
+        prefix_regex="^.*", rule_id=rule_id)
 }}}

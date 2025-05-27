@@ -1,7 +1,7 @@
 <def-group>
   <!-- Check that one logging service is active -->
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure one logging service is in use") }}}
+    {{{ oval_metadata("Ensure one logging service is in use", rule_title=rule_title) }}}
     <criteria>
         <criterion comment="one logging service is active"
             test_ref="test_{{{ rule_id }}}_single_active_logging_service"/>

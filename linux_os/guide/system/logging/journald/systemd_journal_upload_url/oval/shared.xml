@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="systemd_journal_upload_url" version="2">
-    {{{ oval_metadata("systemd-journal-upload URL in /etc/systemd/journal-upload.conf is configured") }}}
+    {{{ oval_metadata("systemd-journal-upload URL in /etc/systemd/journal-upload.conf is configured", rule_title=rule_title) }}}
     <criteria>
         <criterion comment="systemd-journal-upload URL in /etc/systemd/journal-upload.conf"
         test_ref="test_systemd_journal_upload_url" />

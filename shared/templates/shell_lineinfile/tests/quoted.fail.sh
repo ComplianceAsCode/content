@@ -12,6 +12,6 @@ echo "{{{ PARAMETER }}}=\"{{{ VALUE }}}\"" > "{{{ PATH }}}"
 
 {{% else %}}
 
-{{{ bash_shell_file_set(path=PATH, parameter=PARAMETER, value="badval", no_quotes=NO_QUOTES) }}}
+{{{ bash_shell_file_set(path=PATH, parameter=PARAMETER, value="badval", no_quotes=NO_QUOTES, rule_id=rule_id) }}}
 
 {{% endif %}}

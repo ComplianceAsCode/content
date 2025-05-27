@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("Evaluates to true if all files with SUID set are owned by RPM packages.") }}}
+        {{{ oval_metadata("Evaluates to true if all files with SUID set are owned by RPM packages.", rule_title=rule_title) }}}
         <criteria>
             <criterion test_ref="test_file_permissions_unauthorized_suid"
                 comment="Check if all suid files present in the system are authorized"/>
@@ -18,7 +18,7 @@
     </unix:file_state>
 
     {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
-    {{{ create_local_mount_points_list(var_local_mount_points) }}}
+    {{{ create_local_mount_points_list(var_local_mount_points, rule_id=rule_id) }}}
 
     <!-- This file_object will only find files located in local and not special file systems. The
          recurse_file_system parameter is set to defined in order to make sure the probe doesn't

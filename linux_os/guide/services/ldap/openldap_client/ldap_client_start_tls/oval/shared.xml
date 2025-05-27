@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="ldap_client_start_tls" version="1">
-    {{{ oval_metadata("Require the use of TLS for LDAP clients.") }}}
+    {{{ oval_metadata("Require the use of TLS for LDAP clients.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="LDAP is in use"
       definition_ref="enable_ldap_client" />

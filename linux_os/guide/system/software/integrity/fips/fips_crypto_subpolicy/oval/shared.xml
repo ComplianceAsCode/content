@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id}}}" version="1">
-    {{{ oval_metadata("No or the correct crypto sub-policy must be configured.") }}}
+    {{{ oval_metadata("No or the correct crypto sub-policy must be configured.", rule_title=rule_title) }}}
       <criteria>
           <criterion comment="Correct sub policy enabled" test_ref="test_{{{ rule_id }}}" />
       </criteria>

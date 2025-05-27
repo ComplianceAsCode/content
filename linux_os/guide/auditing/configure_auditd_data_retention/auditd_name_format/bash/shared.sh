@@ -22,6 +22,6 @@ var_auditd_name_format="$(echo $var_auditd_name_format | cut -d \| -f 1)"
                   insensitive=true,
                   separator=" = ",
                   separator_regex="\s*=\s*",
-                  prefix_regex="^\s*")}}}
+                  prefix_regex="^\s*", rule_id=rule_id)}}}
 
 

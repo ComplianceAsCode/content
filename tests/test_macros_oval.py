@@ -30,8 +30,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed 100",
         "true"
     )
@@ -47,8 +46,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed 100 # be very fast",
         "true"
     )
@@ -64,8 +62,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "\n\n\n\n\n\nspeed 100",
         "true"
     )
@@ -81,8 +78,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed\t100",
         "true"
     )
@@ -98,8 +94,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed 80",
         "false"
     )
@@ -115,8 +110,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed 1000",
         "false"
     )
@@ -132,8 +126,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "# speed 80",
         "false"
     )
@@ -149,8 +142,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed100",
         "false"
     )
@@ -166,8 +158,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed ",
         "false"
     )
@@ -183,8 +174,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "sspeed 100",
         "false"
     )
@@ -200,8 +190,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed\n100",
         "false"
     )
@@ -217,8 +206,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "\n\nspeed\n\n\n100\n\n\n\n",
         "false"
     )
@@ -234,8 +222,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed 100 50 8",
         "false"
     )
@@ -251,8 +238,7 @@ def main():
             application='',
             multi_value=true,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed 100",
         "true"
     )
@@ -268,8 +254,7 @@ def main():
             application='',
             multi_value=true,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed 100 #comment",
         "true"
     )
@@ -285,8 +270,7 @@ def main():
             application='',
             multi_value=true,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed 100 50 8",
         "true"
     )
@@ -302,8 +286,7 @@ def main():
             application='',
             multi_value=true,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed abcd 333 100 50 8",
         "true"
     )
@@ -319,8 +302,7 @@ def main():
             application='',
             multi_value=true,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed 2 4 6 8 10 14 100",
         "true"
     )
@@ -336,8 +318,7 @@ def main():
             application='',
             multi_value=true,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed\n\n100",
         "false"
     )
@@ -353,8 +334,7 @@ def main():
             application='',
             multi_value=true,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed 2 4 6 8 10 14 100 # astonishing",
         "true"
     )
@@ -370,8 +350,7 @@ def main():
             application='',
             multi_value=true,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed 1001000",
         "false"
     )
@@ -387,8 +366,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed # 100",
         "false"
     )
@@ -404,8 +382,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "lights on",
         "false"
     )
@@ -421,8 +398,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "lights on",
         "true"
     )
@@ -438,8 +414,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         """speed 100
         speed 60""",
         "false"
@@ -456,8 +431,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         """speed 100
         #speed 60""",
         "true"
@@ -474,8 +448,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=true,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         None,
         "false"
     )
@@ -491,8 +464,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         None,
         "true"
     )
@@ -508,8 +480,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=true,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         None,
         "false"
     )
@@ -525,8 +496,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         None,
         "false"
     )
@@ -546,8 +516,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed=100",
         "true"
     )
@@ -563,8 +532,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed  =  100",
         "true"
     )
@@ -580,8 +548,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "    speed  =  100      ",
         "true"
     )
@@ -597,8 +564,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "\tspeed\t=\t100",
         "true"
     )
@@ -614,8 +580,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed=100 # be very fast",
         "true"
     )
@@ -631,8 +596,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed=800 # be extremely fast",
         "false"
     )
@@ -648,8 +612,7 @@ def main():
             application='',
             multi_value=false,
             missing_config_file_fail=false,
-            section=''
-        ) }}}""",
+            section='', rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed= # 100",
         "false"
     )
@@ -667,8 +630,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """[vehicle]
         speed = 100""",
         "true"
@@ -683,8 +645,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """[vehicle]
         speed = 100               """,
         "true"
@@ -699,8 +660,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         "[vehicle]\nspeed=100",
         "true"
     )
@@ -714,8 +674,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         "[vehicle]\n\tspeed\t=\t100",
         "true"
     )
@@ -729,8 +688,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """[vehicle]
         #speed = 100""",
         "false"
@@ -745,8 +703,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         "#[vehicle]\nspeed = 100",
         "false"
     )
@@ -760,8 +717,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """[vehicle]
         color = red
         speed = 100
@@ -778,8 +734,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """[vehicle]
         color = red
         #speed = 100
@@ -796,8 +751,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """[vehicle]
         speed = 200""",
         "false"
@@ -812,8 +766,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """[vehicle]
         speed = 10000""",
         "false"
@@ -828,8 +781,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """[vehicle]
         speed = 100
         speed = 200""",
@@ -845,8 +797,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """[house]
         speed = 100""",
         "false"
@@ -861,8 +812,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         "[vehicle]\n[house]\nspeed = 100",
         "false"
     )
@@ -876,8 +826,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         "speed = 100",
         "false"
     )
@@ -891,8 +840,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         "[vehicle]\nspeed =\n100",
         "false"
     )
@@ -905,8 +853,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         "# SHELL=/bin/bash\n",
         "false"
     )
@@ -919,8 +866,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         " SHELL=/bin/bash\n",
         "true"
     )
@@ -933,8 +879,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         " SHELL='/bin\"/bash'\n",
         "true"
     )
@@ -947,8 +892,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """ SHELL="  /bin/bash"\n""",
         "true"
     )
@@ -962,8 +906,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """ SHELL="  /bin/bash"\n""",
         "false"
     )
@@ -977,8 +920,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         " SHELL='/bin\"/bash'\n",
         "false"
     )
@@ -991,8 +933,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """ SHELL= "/bin/bash"\n""",
         "false"
     )
@@ -1005,8 +946,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """ Shell="/bin/bash"\n""",
         "false"
     )
@@ -1019,8 +959,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """ SHELL="/bin/Bash"\n""",
         "false"
     )
@@ -1033,8 +972,7 @@ def main():
             missing_parameter_pass=false,
             application='',
             multi_value=false,
-            missing_config_file_fail=false,
-        ) }}}""",
+            missing_config_file_fail=false,rule_id=rule_id, rule_title=rule_title) }}}""",
         """ SHELL="/bin/bash'\n""",
         "false"
     )

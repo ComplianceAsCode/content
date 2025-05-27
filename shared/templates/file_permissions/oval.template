@@ -3,7 +3,7 @@
   {{% if FILEPATH is not string %}}
     {{{ oval_metadata("This test makes sure that " + FILEPATH|join(", ") + " has mode " + FILEMODE + ".
       If the target file or directory has an extended ACL, then it will fail the mode check.
-      ") }}}
+      ", rule_title=rule_title) }}}
     <criteria>
   {{% for filepath in FILEPATH %}}
       <criterion comment="Check file mode of {{{ filepath }}}" test_ref="test_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}"/>
@@ -11,7 +11,7 @@
   {{% else %}}
     {{{ oval_metadata("This test makes sure that " +  FILEPATH + " has mode " + FILEMODE + ".
       If the target file or directory has an extended ACL, then it will fail the mode check.
-      ") }}}
+      ", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="Check file mode of {{{ FILEPATH }}}" test_ref="test_file_permissions{{{ FILEID }}}"/>
   {{% endif %}}

@@ -4,5 +4,5 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_pam_faillock_enable() }}}
-{{{ ansible_pam_faillock_parameter_value("audit", authfail=False)}}}
+{{{ ansible_pam_faillock_enable(rule_title=rule_title) }}}
+{{{ ansible_pam_faillock_parameter_value("audit", authfail=False, rule_title=rule_title)}}}

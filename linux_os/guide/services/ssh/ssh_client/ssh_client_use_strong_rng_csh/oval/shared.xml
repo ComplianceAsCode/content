@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure the SSH_USE_STRONG_RNG environment variable is exported in /etc/profile.d/cc-ssh-strong-rng.csh and is not overridden in /etc/profile") }}}
+    {{{ oval_metadata("Ensure the SSH_USE_STRONG_RNG environment variable is exported in /etc/profile.d/cc-ssh-strong-rng.csh and is not overridden in /etc/profile", rule_title=rule_title) }}}
     <criteria comment="ssh client is configured to use strong entropy" operator="AND">
       <criterion comment="check configuration in /etc/profile.d/cc-ssh-strong-rng.csh" test_ref="test_ssh_client_strong_rng_csh" />
       <criterion comment="check that the configuration is not overridden in /etc/profile" test_ref="test_ssh_client_strong_rng_csh_not_overridden" />

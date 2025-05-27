@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="accounts_logon_fail_delay" version="1">
     {{{ oval_metadata("The delay between failed authentication attempts should be
-      set for all users specified in /etc/login.defs") }}}
+      set for all users specified in /etc/login.defs", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_accounts_logon_fail_delay" />
     </criteria>

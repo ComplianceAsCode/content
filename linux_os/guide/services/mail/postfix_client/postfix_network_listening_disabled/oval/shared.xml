@@ -1,6 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="postfix_network_listening_disabled" version="2">
-    {{{ oval_metadata("Postfix network listening should be disabled") }}}
+    {{{ oval_metadata("Postfix network listening should be disabled", rule_title=rule_title) }}}
     <criteria operator="OR">
       <!-- postfix package not installed or postfix service not configured to start -->
       <extend_definition comment="Postfix installed and configured to start" negate="true" definition_ref="service_postfix_enabled" />

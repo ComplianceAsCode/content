@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="3">
-    {{{ oval_metadata("Make sure systemd timer is defined to run perodic AIDE check.") }}}
+    {{{ oval_metadata("Make sure systemd timer is defined to run perodic AIDE check.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="Aide is installed" definition_ref="package_aide_installed"/>
       <criteria operator="AND">

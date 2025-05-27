@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="passwd_system-auth_substack" version="1">
-    {{{ oval_metadata("PAMs passwd module must implement the system-auth substack when changing passwords.") }}}
+    {{{ oval_metadata("PAMs passwd module must implement the system-auth substack when changing passwords.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_passwd_system-auth_substack" />
     </criteria>

@@ -2,7 +2,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-   {{{ oval_metadata("foo") }}}
+   {{{ oval_metadata("foo", rule_title=rule_title) }}}
    <criteria comment="sshd is configured correctly or is not installed" operator="OR">
      <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
@@ -18,12 +18,12 @@
         <criteria comment="sshd is configured correctly" operator="AND">
           <extend_definition comment="sshd includes config files from its .d directory"
             definition_ref="sshd_includes_config_files" />
-          {{{- oval_line_in_file_criterion(config_path, "match", missing_parameter_pass=true) | indent(8) }}}
+          {{{- oval_line_in_file_criterion(config_path, "match", missing_parameter_pass=true, rule_id=rule_id) | indent(8) }}}
         </criteria>
       </criteria>
     </criteria> 
   </definition>
-  {{{ oval_line_in_file_test(config_path, "match", missing_parameter_pass=true) | indent (2) }}}
-  {{{ oval_line_in_file_object(config_path, parameter="match", missing_parameter_pass=true, prefix_regex="^[ \\t]*(?i)", separator_regex="(?-i)\s+\S+") | indent (2) }}}
+  {{{ oval_line_in_file_test(config_path, "match", missing_parameter_pass=true, rule_id=rule_id) | indent (2) }}}
+  {{{ oval_line_in_file_object(config_path, parameter="match", missing_parameter_pass=true, prefix_regex="^[ \\t]*(?i)", separator_regex="(?-i)\s+\S+", rule_id=rule_id) | indent (2) }}}
 </def-group>
 

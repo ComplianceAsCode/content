@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("The SSH confirmation banner text should be set correctly.") }}}
+    {{{ oval_metadata("The SSH confirmation banner text should be set correctly.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="/etc/profile.d/ssh_confirm.sh must exist" test_ref="test_banner_etc_profiled_ssh_confirm_exists"/>
       <criterion comment="/etc/profile.d/ssh_confirm.sh is set appropriately" test_ref="test_banner_etc_profiled_ssh_confirm" />

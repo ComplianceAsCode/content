@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-  {{{ oval_metadata("Ensure systemd.debug-shell option is not configured in the 'options' line in /boot/loader/entries/*.conf. Make sure that newly installed kernels won't have this option, it should not be configured in /etc/kernel/cmdline.") }}}
+  {{{ oval_metadata("Ensure systemd.debug-shell option is not configured in the 'options' line in /boot/loader/entries/*.conf. Make sure that newly installed kernels won't have this option, it should not be configured in /etc/kernel/cmdline.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="Check if argument systemd.debug-shell for Linux kernel is not present in /boot/loader/entries/.*.conf"
       test_ref="test_zipl_systemd_debug-shell_argument_in_boot_loader_entries_conf" negate="true"/>

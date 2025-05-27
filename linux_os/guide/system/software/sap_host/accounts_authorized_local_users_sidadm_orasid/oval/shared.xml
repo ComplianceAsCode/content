@@ -4,7 +4,7 @@
       users besides the authorized usrs listed in var_accounts_authorized_local_users_regex
       that exist locally on the operating system.
       Limitation: only works with zero to one SAP system on each OS/VM. 
-      ") }}}
+      ", rule_title=rule_title) }}}
     <criteria operator="AND">
       <!-- users in the external list -->
       <criterion test_ref="test_accounts_authorized_local_users_sidadm_orasid"
