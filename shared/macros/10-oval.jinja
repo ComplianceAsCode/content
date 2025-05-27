@@ -963,7 +963,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endfor %}}
             </affected>
 {{%- else %}}
-        {{{ oval_affected(products) | indent -}}}
+        {{{ oval_affected(product) | indent -}}}
 {{%- endif %}}
         <description>{{{ description }}}{{{ caller() if caller else '' }}}</description>
     </metadata>
