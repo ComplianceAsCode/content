@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Oracle Linux 9,Red Hat Enterpise Linux 9
+# platform = Oracle Linux 9,Red Hat Enterprise Linux 9
 
 # Clean sysctl config directories
 rm -rf /usr/lib/sysctl.d/* /run/sysctl.d/* /etc/sysctl.d/*
