@@ -1,8 +1,8 @@
 #!/bin/bash
 # packages = aide,crontabs
-{{% if product == 'ubuntu2404' %}}
+{{%- if product == 'ubuntu2404' %}}
 # platform = Not Applicable
-{{% endif %}}
+{{%- endif %}}
 
 # aide installs automatically a file that is periodically run on /etc/cron.daily/aide
 rm -f /etc/cron.daily/aide
