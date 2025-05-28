@@ -1170,7 +1170,7 @@ The kernel arguments should be set in <tt>/usr/lib/bootc/kargs.d</tt> in a TOML 
 # /usr/lib/bootc/kargs.d/10-example.toml
 kargs = ["{{{ arg_name_value }}}"]
 </pre>
-For more details on configuring kernel arguments in bootable container images, please refer to {{{ weblink(link="https://containers.github.io/bootc/building/kernel-arguments.html", text="Bootc documentation") }}}.
+For more details on configuring kernel arguments in bootable container images, please refer to {{{ weblink(link="https://bootc-dev.github.io/bootc//building/kernel-arguments.html", text="Bootc documentation") }}}.
 {{%- endif -%}}
 {{%- endmacro -%}}
 
@@ -1188,7 +1188,7 @@ Run the following command to update command line for already installed kernels:
 {{% if bootable_containers_supported == "true" %}}
 If the system is distributed as a bootable container image, GRUB2 can't be configured using the method described above, but the kernel arguments should be configured using TOML files located in the <tt>/usr/lib/bootc/kargs.d</tt> directory.
 Remove all occurences of <tt>{{{ arg_name }}}</tt> from all files in <tt>/usr/lib/bootc/kargs.d</tt>.
-For more details on configuring kernel arguments in bootable container images, please refer to {{{ weblink(link="https://containers.github.io/bootc/building/kernel-arguments.html", text="Bootc documentation") }}}.
+For more details on configuring kernel arguments in bootable container images, please refer to {{{ weblink(link="https://bootc-dev.github.io/bootc//building/kernel-arguments.html", text="Bootc documentation") }}}.
 {{%- endif -%}}
 {{%- endmacro -%}}
 
