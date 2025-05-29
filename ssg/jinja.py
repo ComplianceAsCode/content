@@ -88,16 +88,21 @@ class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
         return contents, template, uptodate
 
 
+def _preload_macros_from_file(env, macros_file):
+    template = env.get_template(macros_file)
+    module = template.module
+    for name in dir(module):
+        item = getattr(module, name)
+        if callable(item) and not name.startswith("_"):
+            env.globals[name] = item
+
+
 def preload_macros(env):
     for filename in sorted(os.listdir(JINJA_MACROS_DIRECTORY)):
-        if filename.endswith(".jinja"):
-            macros_file = os.path.join(JINJA_MACROS_DIRECTORY, filename)
-            template = env.get_template(macros_file)
-            module = template.module
-            for name in dir(module):
-                item = getattr(module, name)
-                if callable(item) and not name.startswith("_"):
-                    env.globals[name] = item
+        if not filename.endswith(".jinja"):
+            continue
+        macros_file = os.path.join(JINJA_MACROS_DIRECTORY, filename)
+        _preload_macros_from_file(env, macros_file)
 
 
 def _get_jinja_environment(substitutions_dict):
