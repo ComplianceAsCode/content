@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Permissions on /var/log/messages File'
 
-{{%  if product in ['ubuntu2404','ol9','ol8','rhel9'] %}}
+{{%  if product in ['ubuntu2404','ol9','ol8'] %}}
     {{% set target_perms_octal="0640" %}}
     {{% set target_perms="-rw-r-----" %}}
 {{% else %}}
