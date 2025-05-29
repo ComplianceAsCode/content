@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="disable_ctrlaltdel_reboot" version="1">
     {{{ oval_metadata("By default, the system will reboot when the
-      Ctrl-Alt-Del key sequence is pressed.") }}}
+      Ctrl-Alt-Del key sequence is pressed.", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="Disable Ctrl-Alt-Del systemd softlink exists" test_ref="test_disable_ctrlaltdel_exists" />
     </criteria>

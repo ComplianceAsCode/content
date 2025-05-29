@@ -126,6 +126,7 @@ def main():
 
     env_yaml = ssg.environment.open_environment(
         args.build_config_yaml, args.product_yaml)
+    ssg.jinja.initialize(env_yaml)
 
     product = ssg.utils.required_key(env_yaml, "product")
     output_dirs = prepare_output_dirs(args.output_dir, args.remediation_type)

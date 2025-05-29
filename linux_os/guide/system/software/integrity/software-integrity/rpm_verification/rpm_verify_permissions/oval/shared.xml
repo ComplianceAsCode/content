@@ -2,7 +2,7 @@
   <definition class="compliance" id="{{{ rule_id }}}" version="3">
     {{{ oval_metadata("Verify the permissions of installed packages by comparing the installed
         files with information about the files taken from the package metadata stored in the RPM
-        database.") }}}
+        database.", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_rpm_verify_permissions"
         comment="mode of all files matches local rpm database"/>

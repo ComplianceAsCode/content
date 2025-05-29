@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure Chrony has time sources configured with server directive") }}}
+    {{{ oval_metadata("Ensure Chrony has time sources configured with server directive", rule_title=rule_title) }}}
     <criteria comment="chrony.conf only has server directive">
       <criterion test_ref="test_chronyd_server_directive_with_server" />
       <criterion test_ref="test_chronyd_server_directive_no_pool" />

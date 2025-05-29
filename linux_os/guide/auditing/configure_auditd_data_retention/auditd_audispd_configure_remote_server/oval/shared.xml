@@ -2,7 +2,7 @@
 {{% set auremoteconfig = audisp_conf_path + "/plugins.d/au-remote.conf" %}}
 <def-group>
   <definition class="compliance" id="auditd_audispd_configure_remote_server" version="1">
-    {{{ oval_metadata("remote_server setting in " + audisp_config_file_path + " is set to a certain IP address or hostname") }}}
+    {{{ oval_metadata("remote_server setting in " + audisp_config_file_path + " is set to a certain IP address or hostname", rule_title=rule_title) }}}
     <criteria>
         <criterion comment="remote_server setting in audisp-remote.conf" test_ref="test_auditd_audispd_configure_remote_server" />
         {{% if 'ubuntu' in product %}}

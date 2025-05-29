@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_have_homedir_login_defs" version="1">
-    {{{ oval_metadata("CREATE_HOME should be enabled") }}}
+    {{{ oval_metadata("CREATE_HOME should be enabled", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="Check CREATE_HOME in /etc/login.defs" test_ref="test_accounts_have_homedir_login_defs" />
     </criteria>

@@ -13,7 +13,7 @@
 {{%- endif %}}
 
 {{{ ansible_instantiate_variables("var_password_hashing_algorithm_pam") }}}
-{{{ ansible_ensure_pam_module_configuration(pam_file, 'password', control, 'pam_unix.so', '{{ var_password_hashing_algorithm_pam }}', '', '') }}}
+{{{ ansible_ensure_pam_module_configuration(pam_file, 'password', control, 'pam_unix.so', '{{ var_password_hashing_algorithm_pam }}', '', '', rule_id=rule_id, rule_title=rule_title) }}}
 
 - name: '{{{ rule_title }}} - Check if {{{ pam_file }}} File is Present'
   ansible.builtin.stat:
@@ -22,7 +22,7 @@
 
 - name: '{{{ rule_title }}} - Check The Proper Remediation For The System'
   block:
-    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file, rule_title=rule_title) | indent(4) }}}
 
     - name: '{{{ rule_title }}} - Ensure That Only the Correct Hashing Algorithm Option For pam_unix.so Is Used in {{{ pam_file }}}'
       ansible.builtin.replace:
@@ -41,7 +41,7 @@
         - 'bigcrypt'
       register: result_pam_hashing_options_removal
 
-    {{{ ansible_apply_authselect_changes() | indent(4) }}}
+    {{{ ansible_apply_authselect_changes(rule_title=rule_title) | indent(4) }}}
       when:
         - result_authselect_present.stat.exists
         - result_pam_hashing_options_removal is changed

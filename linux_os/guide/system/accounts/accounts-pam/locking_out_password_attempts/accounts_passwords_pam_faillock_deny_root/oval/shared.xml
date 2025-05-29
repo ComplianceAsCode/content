@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="5">
     {{{ oval_metadata("The root account should be configured to deny access after the number of
-      defined failed attempts has been reached.") }}}
+      defined failed attempts has been reached.", rule_title=rule_title) }}}
     <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
       <criteria operator="AND" comment="Check if pam_faillock.so is properly enabled">
         <!-- pam_unix.so is a control module present in all realistic scenarios and also used

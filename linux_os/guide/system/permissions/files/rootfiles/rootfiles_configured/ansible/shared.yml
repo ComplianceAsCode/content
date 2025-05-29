@@ -22,5 +22,5 @@
     regexp: '^C\s+/root/\.{{{ file }}}.+$'
     state: absent
   loop: "{{ {{{ rule_id }}}_{{{ file }}}_found_files.files }}"
-{{{ ansible_lineinfile(msg='', path='/etc/tmpfiles.d/rootfiles.conf', new_line=new_line, create='yes', state='present', insert_after='', insert_before='', regex=source_path)  -}}}
+{{{ ansible_lineinfile(msg='', path='/etc/tmpfiles.d/rootfiles.conf', new_line=new_line, create='yes', state='present', insert_after='', insert_before='', regex=source_path, rule_title=rule_title)  -}}}
 {{%- endfor %}}

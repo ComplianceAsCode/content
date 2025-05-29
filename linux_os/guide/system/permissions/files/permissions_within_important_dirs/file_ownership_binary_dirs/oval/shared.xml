@@ -3,7 +3,7 @@
     {{{ oval_metadata("
         Checks that /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin,
         /usr/local/sbin, /usr/libexec, and objects therein, are owned by root.
-      ") }}}
+      ", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_ownership_binary_directories" />
       <criterion test_ref="test_ownership_binary_files" />

@@ -9,7 +9,7 @@
                     value="root",
                     create=true,
                     separator=": ",
-                    separator_regex="\s*:\s*") }}}
+                    separator_regex="\s*:\s*", rule_id=rule_id) }}}
 
 if [ -f /usr/bin/newaliases ]; then
     newaliases

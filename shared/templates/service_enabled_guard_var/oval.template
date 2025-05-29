@@ -8,7 +8,7 @@
   {{%- set variable_value_op = "equals" -%}}
 {{% endif %}}
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-    {{{ oval_metadata("The " + SERVICENAME + " service should be enabled if possible.") }}}
+    {{{ oval_metadata("The " + SERVICENAME + " service should be enabled if possible.", rule_title=rule_title) }}}
     <criteria operator="OR" comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start or not needed">
       <criteria comment="service {{{ SERVICENAME }}} is not needed" operator="AND">
         <criterion comment="variable {{{ VARIABLE }}} is set to {{{ VALUE }}}"

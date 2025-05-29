@@ -2,7 +2,7 @@
   <definition class="compliance" id="installed_OS_is_vendor_supported" version="1">
     {{{ oval_metadata("
         The operating system installed on the system is supported by a vendor that provides security patches.
-      ") }}}
+      ", rule_title=rule_title) }}}
     <criteria comment="Installed operating system is supported by a vendor" operator="OR">
       <extend_definition comment="Installed OS is ALMALINUX9" definition_ref="installed_OS_is_almalinux9" />
       <extend_definition comment="Installed OS is RHEL8" definition_ref="installed_OS_is_rhel8" />

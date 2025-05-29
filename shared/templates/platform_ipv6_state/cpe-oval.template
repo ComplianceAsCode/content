@@ -1,6 +1,6 @@
 <def-group>
     <definition class="inventory" id="{{{ _RULE_ID }}}" version="1">
-        {{{ oval_metadata("", title="IPv6 is " + STATE + " on system", affected_platforms=[full_name]) }}}
+        {{{ oval_metadata("", title="IPv6 is " + STATE + " on system", affected_platforms=[full_name], rule_title=rule_title) }}}
         <criteria operator="OR">
             <criterion test_ref="test_grub2_ipv6_disable_is_correct"
                 comment="check if ipv6.disable argument is correct in GRUB_CMDLINE_LINUX"/>

@@ -6,7 +6,7 @@
 
 {{%- if 'ubuntu' in product %}}
 {{{ ansible_instantiate_variables('sshd_approved_ciphers') }}}
-{{{ ansible_sshd_set(parameter="Ciphers", value="{{ sshd_approved_ciphers }}", config_is_distributed=sshd_distributed_config) }}}
+{{{ ansible_sshd_set(parameter="Ciphers", value="{{ sshd_approved_ciphers }}", config_is_distributed=sshd_distributed_config, rule_title=rule_title) }}}
 {{%- else %}}
 - name: "Configure sshd to use approved ciphers"
   lineinfile:

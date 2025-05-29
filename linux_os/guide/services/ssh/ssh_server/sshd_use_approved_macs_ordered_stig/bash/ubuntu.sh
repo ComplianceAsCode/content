@@ -8,4 +8,4 @@ sshd_approved_macs="hmac-sha2-512,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hm
 sshd_approved_macs="hmac-sha2-512,hmac-sha2-256"
 {{%- endif %}}
 
-{{{ bash_sshd_remediation(parameter="MACs", value="$sshd_approved_macs", config_is_distributed=sshd_distributed_config) }}}
+{{{ bash_sshd_remediation(parameter="MACs", value="$sshd_approved_macs", config_is_distributed=sshd_distributed_config, rule_id=rule_id) }}}

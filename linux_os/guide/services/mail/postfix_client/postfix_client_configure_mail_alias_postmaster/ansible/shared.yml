@@ -9,7 +9,7 @@
                             separator=': ',
                             separator_regex='\s*:\s*',
                             value='root',
-                            create='yes') }}}
+                            create='yes', rule_title=rule_title) }}}
 
 - name: 'Check if newaliases command is available'
   ansible.builtin.stat:

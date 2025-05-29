@@ -5,4 +5,4 @@
 # disruption = medium
 
 {{{ ansible_instantiate_variables("var_password_pam_unix_rounds") }}}
-{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/system-auth', 'password', 'sufficient', 'pam_unix.so', 'rounds', '{{ var_password_pam_unix_rounds }}', '') }}}
+{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/system-auth', 'password', 'sufficient', 'pam_unix.so', 'rounds', '{{ var_password_pam_unix_rounds }}', '', rule_id=rule_id, rule_title=rule_title) }}}

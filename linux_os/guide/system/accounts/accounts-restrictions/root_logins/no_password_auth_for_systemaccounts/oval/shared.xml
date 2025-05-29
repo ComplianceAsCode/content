@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("Ensure that System Accounts Are Locked") }}}
+        {{{ oval_metadata("Ensure that System Accounts Are Locked", rule_title=rule_title) }}}
         <criteria >
             <criterion test_ref="test_{{{ rule_id }}}"
                 comment="system accounts must not have a password defined"/>
@@ -8,7 +8,7 @@
     </definition>
 
     {{%- set system_accounts_object = "object_" ~ rule_id ~ "_objects" -%}}
-    {{{ create_system_accounts_list_object(system_accounts_object) }}}
+    {{{ create_system_accounts_list_object(system_accounts_object, rule_id=rule_id) }}}
 
     <local_variable id="var_{{{ rule_id }}}_usernames" datatype="string" version="1"
         comment="Variable including usernames of system accounts">

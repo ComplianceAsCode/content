@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_no_uid_except_zero" version="1">
-    {{{ oval_metadata("Only the root account should be assigned a user id of 0.") }}}
+    {{{ oval_metadata("Only the root account should be assigned a user id of 0.", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="tests that there are no accounts with UID 0 except root in the /etc/passwd file" test_ref="test_accounts_no_uid_except_root" />
     </criteria>

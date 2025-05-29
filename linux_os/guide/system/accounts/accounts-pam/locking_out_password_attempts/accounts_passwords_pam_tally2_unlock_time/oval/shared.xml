@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("The unlock time after number of failed logins should be set correctly.") }}}
+    {{{ oval_metadata("The unlock time after number of failed logins should be set correctly.", rule_title=rule_title) }}}
     <criteria operator="AND" comment="Checks common to both scenarios">
       <criterion test_ref="test_accounts_passwords_pam_tally2_unlock_time"
       comment="Verify unlock time configuation of pam_tally2 in common-auth" />

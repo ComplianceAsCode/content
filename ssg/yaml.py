@@ -13,7 +13,6 @@ import yaml
 from collections import OrderedDict
 
 from .jinja import (
-    load_macros,
     load_macros_from_content_dir,
     process_file,
 )
@@ -217,7 +216,6 @@ def open_and_macro_expand(yaml_file, substitutions_dict=None):
     Returns:
         dict: The expanded content of the YAML file with macros substituted.
     """
-    substitutions_dict = load_macros(substitutions_dict)
     return open_and_expand(yaml_file, substitutions_dict)
 
 

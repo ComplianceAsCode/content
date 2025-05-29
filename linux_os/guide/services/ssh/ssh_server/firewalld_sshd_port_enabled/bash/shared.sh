@@ -31,7 +31,7 @@ if {{{ bash_bootc_build() }}}; then
 
     firewall-offline-cmd --zone="$firewalld_sshd_zone" --add-service=ssh
 else
-    if {{{ in_chrooted_environment }}}; then
+    if {{{ in_chrooted_environment() }}}; then
         # TODO: NM (nmcli) now has --offline mode support, and it could operate without NM service.
         # See: https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/merge_requests/1183
         # The feature is not quite straighforward (and probably incomplete), though.

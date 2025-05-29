@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="network_sniffer_disabled" version="1">
-    {{{ oval_metadata("Disable the network sniffer") }}}
+    {{{ oval_metadata("Disable the network sniffer", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="promisc interfaces" test_ref="test_promisc_interfaces" negate="true" />
     </criteria>

@@ -6,7 +6,7 @@
 
 {{%- if 'ubuntu' in product %}}
 {{{ ansible_instantiate_variables('sshd_approved_macs') }}}
-{{{ ansible_sshd_set(parameter="Macs", value="{{ sshd_approved_macs }}", config_is_distributed=sshd_distributed_config) }}}
+{{{ ansible_sshd_set(parameter="Macs", value="{{ sshd_approved_macs }}", config_is_distributed=sshd_distributed_config, rule_title=rule_title) }}}
 {{%- else %}}
 - name: "Configure sshd to use approved MACs"
   lineinfile:

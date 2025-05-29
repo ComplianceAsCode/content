@@ -1,7 +1,7 @@
 {{% set file_stem = ["auth","account","password","session"] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-  {{{ oval_metadata("Ensure pam_unix.so is properly configured in PAM configuration files") }}}
+  {{{ oval_metadata("Ensure pam_unix.so is properly configured in PAM configuration files", rule_title=rule_title) }}}
     <criteria operator="AND" comment="Check if pam_unix.so is properly defined in all PAM files">      
       {{% for stem in file_stem %}}
       <criterion test_ref="test_pam_unix_common_{{{ stem }}}"

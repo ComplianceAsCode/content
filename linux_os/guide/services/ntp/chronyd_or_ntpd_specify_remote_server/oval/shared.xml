@@ -1,6 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="chronyd_or_ntpd_specify_remote_server" version="1">
-    {{{ oval_metadata("A remote chronyd or ntpd NTP Server for time synchronization should be specified (and dependencies are met)") }}}
+    {{{ oval_metadata("A remote chronyd or ntpd NTP Server for time synchronization should be specified (and dependencies are met)", rule_title=rule_title) }}}
 
     <criteria operator="OR">
       <extend_definition comment="chronyd remote server specified" definition_ref="chronyd_specify_remote_server" />

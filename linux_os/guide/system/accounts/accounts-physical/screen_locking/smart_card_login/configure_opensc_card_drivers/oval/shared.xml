@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="configure_opensc_card_drivers" version="1">
     {{{ oval_metadata("Configure the organization's smart card driver so that only
-      the smart card in use by the organization will be recognized by the system.") }}}
+      the smart card in use by the organization will be recognized by the system.", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_configure_opensc_card_drivers"
       comment="Check that card_drivers is configured for opensc" />

@@ -6,6 +6,6 @@ else
   FILE="/var/log/audit/audit.log"
 fi
 
-{{{ bash_auditd_config_set("log_group", "root") }}}
+{{{ bash_auditd_config_set("log_group", "root", rule_id=rule_id) }}}
 
 chgrp root $FILE

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("All password hashes should be shadowed.") }}}
+    {{{ oval_metadata("All password hashes should be shadowed.", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="password hashes are shadowed using sha512"
                  test_ref="test_accounts_password_all_shadowed_sha512" negate="true"/>

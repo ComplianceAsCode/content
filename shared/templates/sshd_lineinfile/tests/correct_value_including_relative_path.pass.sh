@@ -4,7 +4,7 @@
 
 source common.sh
 
-{{{ bash_replace_or_append("/etc/ssh/sshd_config", "Include", "sshd_config.d/*.conf", "%s %s") }}}
+{{{ bash_replace_or_append("/etc/ssh/sshd_config", "Include", "sshd_config.d/*.conf", "%s %s", cce_identifiers=cce_identifiers) }}}
 
 {{%- if XCCDF_VARIABLE %}}
 # variables = {{{ XCCDF_VARIABLE }}}={{{ CORRECT_VALUE }}}

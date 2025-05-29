@@ -9,6 +9,5 @@
     ansible_sshd_set(
         parameter="RekeyLimit",
         value="{{ var_rekey_limit_size }} {{ var_rekey_limit_time }}",
-        config_is_distributed=sshd_distributed_config
-    )
+        config_is_distributed=sshd_distributed_config, rule_title=rule_title)
 }}}

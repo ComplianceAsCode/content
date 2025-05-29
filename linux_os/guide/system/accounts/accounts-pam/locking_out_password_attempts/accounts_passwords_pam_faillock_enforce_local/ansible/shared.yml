@@ -3,5 +3,5 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-{{{ ansible_pam_faillock_enable() }}}
-{{{ ansible_pam_faillock_parameter_value("local_users_only", "") }}}
+{{{ ansible_pam_faillock_enable(rule_title=rule_title) }}}
+{{{ ansible_pam_faillock_parameter_value("local_users_only", "", rule_title=rule_title) }}}

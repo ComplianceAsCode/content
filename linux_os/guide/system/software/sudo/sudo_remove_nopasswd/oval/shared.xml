@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="sudo_remove_nopasswd" version="1">
-    {{{ oval_metadata("Checks sudo usage without password") }}}
+    {{{ oval_metadata("Checks sudo usage without password", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="NOPASSWD is not configured in /etc/sudoers" test_ref="test_nopasswd_etc_sudoers" />
       <criterion comment="NOPASSWD is not configured in /etc/sudoers.d" test_ref="test_nopasswd_etc_sudoers_d" />

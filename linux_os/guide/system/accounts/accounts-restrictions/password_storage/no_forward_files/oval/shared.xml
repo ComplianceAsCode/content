@@ -1,13 +1,13 @@
 <def-group>
   <definition class="compliance" id="no_forward_files" version="1">
-    {{{ oval_metadata("The .forward file specifies an email address to forward the user's mail to. Any .forward files should be removed.") }}}
+    {{{ oval_metadata("The .forward file specifies an email address to forward the user's mail to. Any .forward files should be removed.", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_accounts_users_home_forward_file_existance" negate="true" />
     </criteria>
   </definition>
 
   {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
-  {{{ create_interactive_users_list_object(interactive_users_object) }}}
+  {{{ create_interactive_users_list_object(interactive_users_object, rule_id=rule_id) }}}
 
   <local_variable id="var_accounts_users_home_forward_file_existance_dirs" datatype="string" version="1"
                   comment="Variable including all home dirs from interactive users">

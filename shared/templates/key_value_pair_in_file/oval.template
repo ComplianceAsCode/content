@@ -1,5 +1,5 @@
 {{%- if XCCDF_VARIABLE -%}}
-{{{ oval_check_config_file(PATH, prefix_regex=PREFIX_REGEX, parameter=KEY, separator_regex=SEP_REGEX, xccdf_variable=XCCDF_VARIABLE, application=APP, missing_config_file_fail=true) }}}
+{{{ oval_check_config_file(PATH, prefix_regex=PREFIX_REGEX, parameter=KEY, separator_regex=SEP_REGEX, xccdf_variable=XCCDF_VARIABLE, application=APP, missing_config_file_fail=true, rule_id=rule_id, rule_title=rule_title) }}}
 {{%- else -%}}
-{{{ oval_check_config_file(PATH, prefix_regex=PREFIX_REGEX, parameter=KEY, separator_regex=SEP_REGEX, value=VALUE, application=APP, missing_config_file_fail=true) }}}
+{{{ oval_check_config_file(PATH, prefix_regex=PREFIX_REGEX, parameter=KEY, separator_regex=SEP_REGEX, value=VALUE, application=APP, missing_config_file_fail=true, rule_id=rule_id, rule_title=rule_title) }}}
 {{%- endif -%}}

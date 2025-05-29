@@ -60,10 +60,10 @@
 
 {{{ ansible_pam_pwhistory_enable(pam_file,
                                  'requisite',
-                                 '^password.*requisite.*pam_pwquality\.so') }}}
+                                 '^password.*requisite.*pam_pwquality\.so', rule_title=rule_title) }}}
 
 {{{ ansible_pam_pwhistory_parameter_value(pam_file,
                                           'remember',
-                                          '{{ var_password_pam_unix_remember }}') }}}
+                                          '{{ var_password_pam_unix_remember }}', rule_title=rule_title, rule_id=rule_id) }}}
 
 {{% endif %}}

@@ -2,7 +2,7 @@
   <definition class="compliance" id="sysconfig_networking_bootproto_ifcfg"
   version="2">
     {{{ oval_metadata("DHCP configuration should be static for all
-      interfaces.") }}}
+      interfaces.", rule_title=rule_title) }}}
     <criteria comment="Test for BOOTPROTO=(static|none) across all interfaces">
       <criterion test_ref="test_sysconfig_networking_bootproto_ifcfg" />
     </criteria>

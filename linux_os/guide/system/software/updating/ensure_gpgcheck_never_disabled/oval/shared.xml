@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="ensure_gpgcheck_never_disabled"
   version="1">
-    {{{ oval_metadata("Ensure all yum or dnf repositories utilize signature checking.") }}}
+    {{{ oval_metadata("Ensure all yum or dnf repositories utilize signature checking.", rule_title=rule_title) }}}
     <criteria comment="ensure all yum or dnf repositories utilize signiature checking" operator="AND">
       <criterion comment="verify no gpgpcheck=0 present in /etc/yum.repos.d files"
       test_ref="test_ensure_gpgcheck_never_disabled" />

@@ -4,5 +4,5 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_audit_augenrules_add_watch_rule(path='/sbin/modprobe', permissions='x', key='modules') }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/sbin/modprobe', permissions='x', key='modules') }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/sbin/modprobe', permissions='x', key='modules', rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/sbin/modprobe', permissions='x', key='modules', rule_title=rule_title) }}}

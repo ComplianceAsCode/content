@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Check if FIPS mode is enabled on the system") }}}
+    {{{ oval_metadata("Check if FIPS mode is enabled on the system", rule_title=rule_title) }}}
 
     {{% if bootable_containers_supported == "true" %}}
     <criteria operator="OR">

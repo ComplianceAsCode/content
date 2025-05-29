@@ -5,7 +5,7 @@
     {{%- else -%}}
       {{%- set description = "The installed operating system is " + OS_NAME + " version " + VER_SPECS_TITLE -%}}
     {{%- endif -%}}
-    {{{ oval_metadata(description, affected_platforms=["multi_platform_all"]) }}}
+    {{{ oval_metadata(description, affected_platforms=["multi_platform_all"], rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="The operating system installed on the system is {{{ OS_NAME }}}"
       test_ref="test_os_id_is_{{{ ID }}}" />

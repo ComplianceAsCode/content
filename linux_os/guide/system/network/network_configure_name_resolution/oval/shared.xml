@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="network_configure_name_resolution" version="1">
     {{{ oval_metadata("Multiple Domain Name System (DNS) Servers should be configured
-      in /etc/resolv.conf.") }}}
+      in /etc/resolv.conf.", rule_title=rule_title) }}}
     <criteria operator="OR">
       {{% if "ol" in product or "rhel" in product %}}
       <criteria comment="If the DNS entry is found on the host's line of the /etc/nsswitch.conf

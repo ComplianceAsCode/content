@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("Disallow Configuration to Bypass Password Requirements for Privilege Escalation.") }}}
+        {{{ oval_metadata("Disallow Configuration to Bypass Password Requirements for Privilege Escalation.", rule_title=rule_title) }}}
         <criteria>
             <criterion comment="Check absence of conf pam_succeed_if in /etc/pam.d/sudo"
             test_ref="test_disallow_bypass_password_sudo" />

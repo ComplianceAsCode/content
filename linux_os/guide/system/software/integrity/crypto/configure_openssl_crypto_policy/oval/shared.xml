@@ -5,7 +5,7 @@
 {{%- endif %}}
 <def-group>
   <definition class="compliance" id="configure_openssl_crypto_policy" version="1">
-    {{{ oval_metadata("OpenSSL should be configured to use the system-wide crypto policy setting.") }}}
+    {{{ oval_metadata("OpenSSL should be configured to use the system-wide crypto policy setting.", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_configure_openssl_crypto_policy"
       comment="Check that the configuration mandates usage of system-wide crypto policies." />

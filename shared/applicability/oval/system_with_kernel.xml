@@ -1,6 +1,6 @@
 <def-group>
   <definition class="inventory" id="system_with_kernel" version="1">
-    {{{ oval_metadata("The kernel is installed", affected_platforms=["multi_platform_all"]) }}}
+    {{{ oval_metadata("The kernel is installed", affected_platforms=["multi_platform_all"], rule_title=rule_title) }}}
     <criteria operator="OR">
       <criterion comment="kernel is installed" test_ref="inventory_test_kernel_installed" />
       {{% if "ol" in families %}}

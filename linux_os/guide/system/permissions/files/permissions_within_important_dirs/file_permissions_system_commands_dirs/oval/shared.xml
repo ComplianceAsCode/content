@@ -3,7 +3,7 @@
     {{{ oval_metadata("
         Checks that system commands under /bin, /sbin, /usr/bin, /usr/sbin,
         /usr/local/bin, and /usr/local/sbin are not group-writable or world-writable.
-      ") }}}
+      ", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_perms_system_commands_dirs" />
     </criteria>

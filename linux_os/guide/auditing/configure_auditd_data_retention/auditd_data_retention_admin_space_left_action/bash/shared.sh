@@ -6,4 +6,4 @@ var_auditd_admin_space_left_action="$(echo $var_auditd_admin_space_left_action |
 
 AUDITCONFIG=/etc/audit/auditd.conf
 
-{{{ bash_replace_or_append("$AUDITCONFIG", '^admin_space_left_action', "$var_auditd_admin_space_left_action") }}}
+{{{ bash_replace_or_append("$AUDITCONFIG", '^admin_space_left_action', "$var_auditd_admin_space_left_action", cce_identifiers=cce_identifiers) }}}

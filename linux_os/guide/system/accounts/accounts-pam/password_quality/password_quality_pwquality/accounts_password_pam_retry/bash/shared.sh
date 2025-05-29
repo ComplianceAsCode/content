@@ -13,7 +13,7 @@
 	{{{ bash_replace_or_append('/etc/security/pwquality.conf',
 							   '^retry',
 							   '$var_password_pam_retry',
-							   '%s = %s') }}}
+							   '%s = %s', cce_identifiers=cce_identifiers) }}}
 	{{% for cfile in configuration_files %}}
 		{{{ bash_remove_pam_module_option_configuration(pam_file='/etc/pam.d/' ~ cfile,
 									  	  				group='password',

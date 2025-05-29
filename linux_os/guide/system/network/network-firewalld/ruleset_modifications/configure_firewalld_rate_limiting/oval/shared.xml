@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="configure_firewalld_rate_limiting" version="1">
-    {{{ oval_metadata("Create a direct firewall rule to protect against DoS attacks by rate limiting incoming connections.") }}}
+    {{{ oval_metadata("Create a direct firewall rule to protect against DoS attacks by rate limiting incoming connections.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="check if the file /etc/firewalld/direct.xml contains correct rule" test_ref="test_firewalld_rate_limiting"/>
     </criteria>

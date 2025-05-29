@@ -21,7 +21,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-	  {{{ oval_metadata("The system sshd key is owned by root:root and has the 0600 permission" ~ (", or by a root:" ~ dedicated_ssh_groupname ~ " with the 0640 permission") if dedicated_ssh_groupname) }}}
+	  {{{ oval_metadata("The system sshd key is owned by root:root and has the 0600 permission" ~ (", or by a root:" ~ dedicated_ssh_groupname ~ " with the 0640 permission") if dedicated_ssh_groupname, rule_title=rule_title) }}}
 
     <criteria operator="AND">
       <criterion comment="No keys that have unsafe ownership/permissions combination exist"

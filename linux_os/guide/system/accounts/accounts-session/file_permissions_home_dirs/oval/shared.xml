@@ -1,13 +1,13 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure that User Home Directories are not Group-Writable or World-Readable") }}}
+    {{{ oval_metadata("Ensure that User Home Directories are not Group-Writable or World-Readable", rule_title=rule_title) }}}
     <criteria >
       <criterion comment="home directories" test_ref="test_file_permissions_home_dirs"/>
     </criteria>
   </definition>
 
   {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
-  {{{ create_interactive_users_list_object(interactive_users_object) }}}
+  {{{ create_interactive_users_list_object(interactive_users_object, rule_id=rule_id) }}}
 
   <!-- #### prepare for test_file_permissions_home_dirs #### -->
   <local_variable id="var_file_permissions_home_dirs_dirs" datatype="string" version="1"

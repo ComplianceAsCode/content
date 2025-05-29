@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="accounts_authorized_local_users" version="1">
     {{{ oval_metadata("Besides the default operating system user, there should be no other users
-      except the users that are authorized to exist locally on the operating system.") }}}
+      except the users that are authorized to exist locally on the operating system.", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_accounts_authorized_local_users"
       comment="only root user and explicitly authorized users are allowed in /etc/passwd" />

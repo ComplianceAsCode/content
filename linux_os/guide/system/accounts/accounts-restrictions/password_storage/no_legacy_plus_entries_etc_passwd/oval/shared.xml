@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="no_legacy_plus_entries_etc_passwd" version="1">
-    {{{ oval_metadata("No lines starting with + are in /etc/passwd") }}}
+    {{{ oval_metadata("No lines starting with + are in /etc/passwd", rule_title=rule_title) }}}
     <criteria comment="no lines starting with + are in /etc/passwd">
       <criterion test_ref="test_no_legacy_plus_entries_etc_passwd" />
     </criteria>

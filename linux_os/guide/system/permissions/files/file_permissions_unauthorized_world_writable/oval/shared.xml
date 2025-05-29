@@ -1,7 +1,7 @@
 {{% if product not in ['ubuntu2404'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("The world-write permission should be disabled for all files.") }}}
+    {{{ oval_metadata("The world-write permission should be disabled for all files.", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_file_permissions_unauthorized_world_write"/>
     </criteria>
@@ -24,7 +24,7 @@
   </unix:file_state>
 
   {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
-  {{{ create_local_mount_points_list(var_local_mount_points) }}}
+  {{{ create_local_mount_points_list(var_local_mount_points, rule_id=rule_id) }}}
 
   <!--
     This file_object will only find files located in local and not special file systems. The

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="auditd_data_retention_max_log_file" version="2">
-    {{{ oval_metadata("max_log_file setting in /etc/audit/auditd.conf is set to at least a certain value") }}}
+    {{{ oval_metadata("max_log_file setting in /etc/audit/auditd.conf is set to at least a certain value", rule_title=rule_title) }}}
 
     <criteria>
         <criterion comment="max_log_file setting in auditd.conf" test_ref="test_auditd_data_retention_max_log_file" />

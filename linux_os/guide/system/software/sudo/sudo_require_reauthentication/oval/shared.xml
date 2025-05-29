@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("'Ensure sudo timestamp_timeout is appropriate - sudo timestamp_timeout") }}}
+    {{{ oval_metadata("'Ensure sudo timestamp_timeout is appropriate - sudo timestamp_timeout", rule_title=rule_title) }}}
     <criteria comment="The timestamp_timeout should be configured" operator="AND">
       <criterion comment="check configuration in /etc/sudoers" test_ref="test_sudo_timestamp_timeout" />
       <criterion comment="check for - sign in configuration" test_ref="test_sudo_timestamp_timeout_no_signs" />

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Check that " + FILEPATH + " does not contain OS and version information") }}}
+    {{{ oval_metadata("Check that " + FILEPATH + " does not contain OS and version information", rule_title=rule_title) }}}
     <criteria operator="AND" comment="check">
       {{% if BANNER_MUST_BE_SET == "true" %}}
       <criterion comment="Check {{{ FILEPATH }}} contains a banner" test_ref="test_{{{ rule_id }}}_file_nonempty" />

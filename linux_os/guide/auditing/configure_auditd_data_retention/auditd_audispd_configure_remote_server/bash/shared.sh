@@ -7,7 +7,7 @@ AUDITCONFIG={{{ audisp_conf_path }}}/audisp-remote.conf
 {{% if 'ubuntu' in product %}}
 AUREMOTECONFIG={{{ audisp_conf_path }}}/plugins.d/au-remote.conf
 
-{{{ set_config_file("$AUREMOTECONFIG", 'active', 'yes', insensitive="true", separator=" = ", separator_regex="\s*=\s*") }}}
+{{{ set_config_file("$AUREMOTECONFIG", 'active', 'yes', insensitive="true", separator=" = ", separator_regex="\s*=\s*", rule_id=rule_id) }}}
 {{% endif %}}
 
-{{{ set_config_file("$AUDITCONFIG", 'remote_server', "$var_audispd_remote_server", insensitive="true", separator=" = ", separator_regex="\s*=\s*") }}}
+{{{ set_config_file("$AUDITCONFIG", 'remote_server', "$var_audispd_remote_server", insensitive="true", separator=" = ", separator_regex="\s*=\s*", rule_id=rule_id) }}}

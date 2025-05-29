@@ -1,7 +1,7 @@
 <def-group>
 
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("/etc/chrony.keys should be owned by chrony group") }}}
+    {{{ oval_metadata("/etc/chrony.keys should be owned by chrony group", rule_title=rule_title) }}}
     <criteria operator="OR">
       <criteria operator="AND">
         <criterion test_ref="test_file_groupowner_etc_chrony_keys_nsswitch_uses_altfiles" negate="true"
@@ -18,7 +18,7 @@
     </criteria>
   </definition>
 
-{{{ oval_test_nsswitch_uses_altfiles() }}}
+{{{ oval_test_nsswitch_uses_altfiles(rule_id=rule_id) }}}
 
   <unix:file_test id="test_file_groupowner_etc_chrony_keys" version="1" check="all" comment="Testing group ownership of /etc/chrony.keys" check_existence="none_exist" state_operator="AND">
     <unix:object object_ref="object_file_groupowner_etc_chrony_keys" />

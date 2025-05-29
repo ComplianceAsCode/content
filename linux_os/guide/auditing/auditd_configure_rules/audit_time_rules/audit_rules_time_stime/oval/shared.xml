@@ -2,7 +2,7 @@
   <definition class="compliance" id="audit_rules_time_stime" version="1">
     {{{ oval_metadata("Record attempts to alter time through stime. Note that on
       64-bit architectures the stime system call is not defined in the audit
-      system calls lookup table.") }}}
+      system calls lookup table.", rule_title=rule_title) }}}
 
     <criteria operator="AND">
       <!-- System is 32-bit or 64-bit -->

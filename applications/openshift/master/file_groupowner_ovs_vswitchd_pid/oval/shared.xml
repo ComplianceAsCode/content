@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="file_groupowner_ovs_vswitchd_pid" version="1">
-    {{{ oval_metadata("This test makes sure that /var/run/openvswitch/ovs-vswitchd.pid is group owned by 800 or 801.") }}}
+    {{{ oval_metadata("This test makes sure that /var/run/openvswitch/ovs-vswitchd.pid is group owned by 800 or 801.", rule_title=rule_title) }}}
     <criteria operator="OR">
       <criterion comment="Check file group ownership of /var/run/openvswitch/ovs-vswitchd.pid belongs to group 800" test_ref="test_file_groupowner_var_run_ovs_vswitchd_pid_800" />
       <criterion comment="Check file group ownership of /var/run/openvswitch/ovs-vswitchd.pid belongs to group 801" test_ref="test_file_groupowner_var_run_ovs_vswitchd_pid_801" />

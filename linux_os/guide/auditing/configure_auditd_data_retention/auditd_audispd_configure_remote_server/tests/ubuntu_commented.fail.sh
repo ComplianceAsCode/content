@@ -6,12 +6,12 @@
 {{{ set_config_file(path=audisp_conf_path + "/audisp-remote.conf",
                     parameter="Remote_server",
                     value="logcollector",
-                    separator=" = ") }}}
+                    separator=" = ", rule_id=rule_id) }}}
 
 {{{ set_config_file(path=audisp_conf_path + "/plugins.d/au-remote.conf",
                     parameter="Active",
                     value="yes",
-                    separator=" = ") }}}
+                    separator=" = ", rule_id=rule_id) }}}
 
 echo "#Remote_server = logcollector" > {{{ audisp_conf_path ~ "/audisp-remote.conf" }}}
 echo "#Active = yes" > {{{ audisp_conf_path ~ "/plugins.d/au-remote.conf" }}}

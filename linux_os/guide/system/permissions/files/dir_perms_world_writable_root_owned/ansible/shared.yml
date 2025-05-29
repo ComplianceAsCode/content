@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 
-{{{ ansible_create_list_of_local_paths(list_name="search_paths") }}}
+{{{ ansible_create_list_of_local_paths(list_name="search_paths", rule_title=rule_title) }}}
 
 - name: "{{{ rule_title }}} - Define Rule Specific Facts"
   ansible.builtin.set_fact:

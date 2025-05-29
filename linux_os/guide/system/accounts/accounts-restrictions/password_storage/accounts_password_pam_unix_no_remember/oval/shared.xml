@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("The pam_unix module should not include remember option") }}}
+    {{{ oval_metadata("The pam_unix module should not include remember option", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="make sure the remember option is not used in pam_unix.so module"
                  test_ref="test_pam_unix_no_remember" />

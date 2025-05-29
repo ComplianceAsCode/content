@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("The file /etc/pam.d/common-* should not contain the nullok option") }}}
+    {{{ oval_metadata("The file /etc/pam.d/common-* should not contain the nullok option", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="make sure the nullok option is not used in /etc/pam.d/common-*"
                  test_ref="test_{{{ rule_id }}}" />

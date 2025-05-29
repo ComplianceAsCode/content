@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="file_etc_security_opasswd" version="2">
-    {{{ oval_metadata("Verify Permissions and Ownership of Old Passwords File", title="Verify Permissions and Ownership of Old Passwords File") }}}
+    {{{ oval_metadata("Verify Permissions and Ownership of Old Passwords File", title="Verify Permissions and Ownership of Old Passwords File", rule_title=rule_title) }}}
     <criteria comment="root should own /etc/security/opasswd">
       <criterion test_ref="test_file_etc_security_opasswd" />
     </criteria>

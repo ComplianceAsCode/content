@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Syslog logs should be configured") }}}
+    {{{ oval_metadata("Syslog logs should be configured", rule_title=rule_title) }}}
 
     <criteria operator="AND">
       {{% if product in ["debian11", "ubuntu1604", "ubuntu1804"] %}}

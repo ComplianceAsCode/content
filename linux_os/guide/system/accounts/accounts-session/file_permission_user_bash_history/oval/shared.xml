@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("User Bash History File Has Correct Permissions") }}}
+        {{{ oval_metadata("User Bash History File Has Correct Permissions", rule_title=rule_title) }}}
         <criteria>
             <criterion comment="User Bash History File Has Correct Permissions"
                 test_ref="test_{{{ rule_id }}}" />
@@ -35,7 +35,7 @@
 
 
     {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
-    {{{ create_interactive_users_list_object(interactive_users_object) }}}
+    {{{ create_interactive_users_list_object(interactive_users_object, rule_id=rule_id) }}}
 
     <local_variable id="var_{{{ rule_id }}}_home_dirs" datatype="string" version="1"
                     comment="Variable including all home dirs from interactive users">

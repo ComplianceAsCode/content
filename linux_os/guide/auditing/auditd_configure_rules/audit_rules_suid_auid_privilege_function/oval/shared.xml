@@ -5,7 +5,7 @@
 {{% set rx_end = "(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$" %}}
 <def-group>
   <definition class="compliance" id="audit_rules_suid_auid_privilege_function" version="1">
-    {{{ oval_metadata("Ensure audit rule for all uses of privileged functions is enabled") }}}
+    {{{ oval_metadata("Ensure audit rule for all uses of privileged functions is enabled", rule_title=rule_title) }}}
 
     <criteria operator="OR">
 

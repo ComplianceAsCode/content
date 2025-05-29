@@ -8,14 +8,14 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-  {{{ oval_metadata(description) }}}
+  {{{ oval_metadata(description, rule_title=rule_title) }}}
   <criteria comment="sshd is configured correctly or is not installed" operator="OR">
     {{{- application_not_required_or_requirement_unset() }}}
     {{{- application_required_or_requirement_unset() }}}
       <criteria comment="sshd is configured correctly" operator="OR">
-        {{{- oval_line_in_file_criterion(sshd_config_path, parameter) }}}
+        {{{- oval_line_in_file_criterion(sshd_config_path, parameter, rule_id=rule_id) }}}
         {{%- if sshd_distributed_config == "true" %}}
-        {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter) | indent(8) }}}
+        {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, rule_id=rule_id) | indent(8) }}}
         {{%- endif %}}
       </criteria>
     </criteria><!-- macro application_required_or_requirement_unset() leaves an open criteria element-->

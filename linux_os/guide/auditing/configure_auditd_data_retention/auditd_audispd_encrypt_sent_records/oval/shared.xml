@@ -3,9 +3,9 @@
 <def-group>
   <definition class="compliance" id="auditd_audispd_encrypt_sent_records" version="1">
     {{% if product in ["rhel8", "fedora", "ol8", "rhv4", "sle15"] %}}
-    {{{ oval_metadata("transport setting in " + audisp_config_file_path + " is set to 'KRB5'") }}}
+    {{{ oval_metadata("transport setting in " + audisp_config_file_path + " is set to 'KRB5'", rule_title=rule_title) }}}
     {{% else %}}
-    {{{ oval_metadata("enable_krb5 setting in " + audisp_config_file_path + " is set to 'yes'") }}}
+    {{{ oval_metadata("enable_krb5 setting in " + audisp_config_file_path + " is set to 'yes'", rule_title=rule_title) }}}
     {{% endif %}}
 
     <criteria>

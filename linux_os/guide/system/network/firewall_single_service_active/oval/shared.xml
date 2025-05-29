@@ -1,7 +1,7 @@
 <def-group>
   <!-- Check that exactly one firewall service is active -->
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure Only One Firewall Service is Active") }}}
+    {{{ oval_metadata("Ensure Only One Firewall Service is Active", rule_title=rule_title) }}}
     <criteria>
         <criterion comment="exactly one firewall service is active" 
             test_ref="test_{{{ rule_id }}}_single_active_firewall"/>
