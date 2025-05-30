@@ -5,39 +5,48 @@ aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
 audit_watches_style: legacy
 auid: 1000
+aux_pkg_release: ''
+aux_pkg_version: ''
+auxiliary_key_fingerprint: ''
 basic_properties_derived: true
-benchmark_id: EXAMPLE
+benchmark_id: OL-10
 benchmark_root: ../../linux_os/guide
 bootable_containers_supported: 'false'
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
-components_root: ../../components
 cpes:
-  - example:
-      check_id: installed_OS_is_part_of_Unix_family
-      name: cpe:/o:example
-      title: Example
+  - ol10:
+      check_id: installed_OS_is_ol10
+      name: cpe:/o:oracle:linux:10
+      title: Oracle Linux 10
 cpes_root: ../../shared/applicability
-dconf_gdm_dir: gdm.d
+dconf_gdm_dir: local.d
 dynamic_uid_max: 65519
 dynamic_uid_min: 61184
-faillock_path: /var/run/faillock
-full_name: Example
+faillock_path: /var/log/faillock
+families:
+  - ol
+full_name: Oracle Linux 10
 gid_min: 1000
-groups: {}
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
 grub2_boot_path: /boot/grub2
 grub2_uefi_boot_path: /boot/grub2
 grub_helper_executable: grubby
 init_system: systemd
+major_version_ordinal: 10
 nobody_gid: 65534
 nobody_uid: 65534
 pkg_manager: dnf
 pkg_manager_config_file: /etc/dnf/dnf.conf
+pkg_release: ''
 pkg_system: rpm
+pkg_version: ''
 platform_package_overrides:
   aarch64_arch: null
   grub2: grub2-common
-  login_defs: login
+  login_defs: shadow-utils
   no_ovirt: null
   non-uefi: null
   not_aarch64_arch: null
@@ -48,13 +57,14 @@ platform_package_overrides:
   sssd-ldap: null
   uefi: null
   zipl: s390utils-base
-product: example
+product: ol10
 profiles_root: ./profiles
 reference_uris:
   anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
   app-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
   app-srg-ctr: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=container-platform
   bsi: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
+  cis: ''
   cis-csc: https://www.cisecurity.org/controls/
   cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
   cobit5: https://www.isaca.org/resources/cobit
@@ -76,7 +86,8 @@ reference_uris:
   stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://public.cyber.mil/stigs/srg-stig-tools/
   suse-general: not_publicly_available
-rsyslog_cafile: /etc/pki/tls/cert.pem
+release_key_fingerprint: ''
+rsyslog_cafile: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
 sshd_distributed_config: 'false'
 sysctl_remediate_drop_in_file: 'false'
 type: platform
