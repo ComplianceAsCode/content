@@ -34,6 +34,7 @@ from .utils import merge_dicts, required_key
 from .yaml import open_raw, ordered_dump, open_and_expand
 from .jinja import AbsolutePathFileSystemLoader
 
+
 def _validate_product_oval_feed_url(contents):
     """
     Validates if the 'oval_feed_url' in the given contents dictionary uses https.
