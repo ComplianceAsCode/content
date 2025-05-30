@@ -1,0 +1,41 @@
+product: debian13
+full_name: Debian 13
+type: platform
+
+families:
+  - debian
+  - debian-like
+
+major_version_ordinal: 13
+
+benchmark_id: DEBIAN-13
+benchmark_root: "../../linux_os/guide"
+
+components_root: "../../components"
+profiles_root: "./profiles"
+
+pkg_manager: "apt_get"
+init_system: "systemd"
+
+oval_feed_url: "https://www.debian.org/security/oval/oval-definitions-trixie.xml.bz2"
+
+chrony_conf_path: "/etc/chrony/chrony.conf"
+chrony_d_path: "/etc/chrony/chrony.d/"
+aide_conf_path: "/etc/aide/aide.conf"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - debian13:
+      name: "cpe:/o:debian:debian_linux:13"
+      title: "Debian Linux 13"
+      check_id: installed_OS_is_debian13
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  gdm: gdm3
+  grub2: grub2-common
+  net-snmp: snmp
+  nss-pam-ldapd: libpam-ldap
+  pam: libpam-runtime
+  shadow: login
+  sssd: sssd-common
