@@ -1258,7 +1258,11 @@ Part of the grub2_bootloader_argument(_absent) templates.
 {{%- if "update-grub" in grub_helper_executable -%}}
     {{%- set grub_helper_args = [] -%}}
 {{%- elif "grub2-mkconfig" in grub_helper_executable -%}}
+    {{%- if 'suse' in families -%}}
+    {{%- set grub_helper_args = ["-o " ~ grub2_boot_path ~ "/grub.cfg"] -%}}
+    {{%- else -%}}
     {{%- set grub_helper_args = ["-o " ~ grub2_boot_path ~ "/grub2.cfg"] -%}}
+    {{%- endif -%}}
 {{%- elif "grubby" in grub_helper_executable -%}}
     {{%- if action == "update" -%}}
         {{%- set grub_helper_args = ["--update-kernel=ALL"] -%}}
