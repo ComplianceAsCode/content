@@ -8,6 +8,30 @@
   setup:
     gather_subset: mounts
 
+- name: "{{{ rule_title }}}: Define excluded (non-local) file systems"
+  ansible.builtin.set_fact:
+    excluded_fstypes:
+      - afs
+      - autofs
+      - ceph
+      - cifs
+      - smb3
+      - smbfs
+      - sshfs
+      - ncpfs
+      - ncp
+      - nfs
+      - nfs4
+      - gfs
+      - gfs2
+      - glusterfs
+      - gpfs
+      - pvfs2
+      - ocfs2
+      - lustre
+      - davfs
+      - fuse.sshfs
+
 - name: "{{{ rule_title }}}: Ensure non-root local partitions are mounted with nodev option"
   mount:
     path: "{{ item.mount }}"
@@ -18,6 +42,7 @@
   when:
     - "item.mount is match('/\\w')"
     - "item.options is not search('nodev')"
+    - "item.fstype not in excluded_fstypes"
   with_items:
     - "{{ ansible_facts.mounts }}"
 
