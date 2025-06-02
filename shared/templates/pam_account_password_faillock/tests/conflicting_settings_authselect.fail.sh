@@ -2,7 +2,7 @@
 # packages = authselect,pam
 # platform = Oracle Linux 8,Oracle Linux 9,multi_platform_rhel
 
-{{{ tests_init_faillock_vars("correct") }}}
+{{{ tests_init_faillock_vars("correct", prm_name=PRM_NAME, ext_variable=EXT_VARIABLE, variable_lower_bound=VARIABLE_LOWER_BOUND, variable_upper_bound=VARIABLE_UPPER_BOUND) }}}
 
 pam_files=("password-auth" "system-auth")
 
