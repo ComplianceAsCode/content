@@ -1,0 +1,37 @@
+product: slmicro6
+full_name: SUSE Linux Enterprise Micro 6
+type: platform
+
+families:
+  - suse
+
+major_version_ordinal: 6
+
+benchmark_id: SLMICRO6
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+init_system: "systemd"
+
+pkg_manager: "zypper"
+pkg_manager_config_file: "/etc/zypp/zypp.conf"
+
+aide_bin_path: "/usr/bin/aide"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - slmicro-6.1:
+      name: "cpe:/o:suse:sl-micro:6.1"
+      title: "SLE Micro 6.1"
+      check_id: installed_OS_is_slmicro6
+
+platform_package_overrides:
+  login_defs: "shadow"
+  grub2: "grub2"
+  sssd: "sssd"
+  passwd: "shadow"
+
+
+sysctl_remediate_drop_in_file: "true"
+journald_conf_dir_path: /etc/systemd/journal.conf.d
