@@ -5,13 +5,11 @@ Common functions for processing Products in SSG
 from __future__ import absolute_import
 from __future__ import print_function
 
-import jinja2
 import os
 import yaml
 from collections import namedtuple
 from glob import glob
 
-from .build_cpe import ProductCPEs
 from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_DCONF_GDM_DIR,
                         DEFAULT_AIDE_CONF_PATH,
@@ -31,8 +29,8 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         XCCDF_PLATFORM_TO_PACKAGE,
                         SSG_REF_URIS)
 from .utils import merge_dicts, required_key
-from .yaml import open_raw, ordered_dump, open_and_expand
-from .jinja import AbsolutePathFileSystemLoader
+from .yaml import open_raw, ordered_dump, yaml_SafeLoader
+from .jinja import JinjaEnvironment
 
 
 def _validate_product_oval_feed_url(contents):
@@ -347,18 +345,10 @@ class Product(object):
         for f in sorted(filenames):
             substitutions_dict = dict()
             substitutions_dict.update(self)
-            env = jinja2.Environment(
-                block_start_string="{{%",
-                block_end_string="%}}",
-                variable_start_string="{{{",
-                variable_end_string="}}}",
-                comment_start_string="{{#",
-                comment_end_string="#}}",
-                loader=AbsolutePathFileSystemLoader(),
-            )
+            env = JinjaEnvironment()
             template = env.get_template(f)
             rendered_template = template.render(substitutions_dict)
-            new_defs = yaml.load(rendered_template, Loader=yaml.SafeLoader)
+            new_defs = yaml.load(rendered_template, Loader=yaml_SafeLoader)
             new_symbols = self.transform_default_and_overrides_mappings_to_mapping(new_defs)
             self.expand_by_acquired_data(new_symbols)
 
