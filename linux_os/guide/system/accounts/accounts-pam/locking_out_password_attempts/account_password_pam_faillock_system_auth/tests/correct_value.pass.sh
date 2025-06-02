@@ -8,4 +8,4 @@ authselect select "custom/test_profile" --force
 authselect enable-feature with-faillock
 
 authselect apply-changes
-# a test
+echo "tesT"
