@@ -17,98 +17,106 @@ the external variable and parameter value to a desired state.
 
 :param state:         correct, stricter, lenient_high, lenient_low
 :type state: str
+:param prm_name: name of faillock parameter
+:type prm_name: str
+:param variable_lower_bound: lower boundary for allowed parameter value
+:type variable_lower_bound: str
+:param variable_upper_bound: upper boundary for allowed parameter value
+:type variable_upper_bound: str
+:param ext_variable: external XCCDF variable used to define interval boundaries and the value used in the remediation
+:param ext_variable: str
 #}}
 
-{{%- macro tests_init_faillock_vars(state) -%}}
+{{%- macro tests_init_faillock_vars(state, prm_name, ext_variable, variable_lower_bound, variable_upper_bound) -%}}
 
 {{% if state not in ["correct", "stricter", "lenient_high", "lenient_low"] %}}
 echo "Unsupported value for argument 'state': {{{ state }}}"
 exit 2
 
-{{% elif VARIABLE_UPPER_BOUND == "use_ext_variable" and VARIABLE_LOWER_BOUND == "use_ext_variable" %}}
+{{% elif variable_upper_bound == "use_ext_variable" and variable_lower_bound == "use_ext_variable" %}}
 {{% if state == "correct" %}}
-# variables = {{{ EXT_VARIABLE }}}=5
+# variables = {{{ ext_variable }}}=5
 TEST_VALUE=5
 {{% elif state == "stricter" %}}
-# variables = {{{ EXT_VARIABLE }}}=5
+# variables = {{{ ext_variable }}}=5
 TEST_VALUE=5
 {{% elif state == "lenient_high" %}}
-# variables = {{{ EXT_VARIABLE }}}=5
+# variables = {{{ ext_variable }}}=5
 TEST_VALUE=6
 {{% elif state == "lenient_low" %}}
-# variables = {{{ EXT_VARIABLE }}}=5
+# variables = {{{ ext_variable }}}=5
 TEST_VALUE=4
 {{% endif %}}
 
-{{% elif VARIABLE_UPPER_BOUND == "use_ext_variable" and VARIABLE_LOWER_BOUND is number %}}
+{{% elif variable_upper_bound == "use_ext_variable" and variable_lower_bound is number %}}
 {{% if state == "correct" %}}
-# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_LOWER_BOUND }}}
-TEST_VALUE={{{ VARIABLE_LOWER_BOUND }}}
+# variables = {{{ ext_variable }}}={{{ variable_lower_bound }}}
+TEST_VALUE={{{ variable_lower_bound }}}
 {{% elif state == "stricter" %}}
-# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_LOWER_BOUND + 2 }}}
-TEST_VALUE={{{ VARIABLE_LOWER_BOUND + 1 }}}
+# variables = {{{ ext_variable }}}={{{ variable_lower_bound + 2 }}}
+TEST_VALUE={{{ variable_lower_bound + 1 }}}
 {{% elif state == "lenient_high" %}}
-# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_LOWER_BOUND }}}
-TEST_VALUE={{{ VARIABLE_LOWER_BOUND + 1 }}}
+# variables = {{{ ext_variable }}}={{{ variable_lower_bound }}}
+TEST_VALUE={{{ variable_lower_bound + 1 }}}
 {{% elif state == "lenient_low" %}}
-# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_LOWER_BOUND }}}
-TEST_VALUE={{{ VARIABLE_LOWER_BOUND - 1 }}}
+# variables = {{{ ext_variable }}}={{{ variable_lower_bound }}}
+TEST_VALUE={{{ variable_lower_bound - 1 }}}
 {{% endif %}}
 
-{{% elif VARIABLE_UPPER_BOUND == "use_ext_variable" and VARIABLE_LOWER_BOUND is none %}}
+{{% elif variable_upper_bound == "use_ext_variable" and variable_lower_bound is none %}}
 {{% if state == "correct" %}}
-# variables = {{{ EXT_VARIABLE }}}=5
+# variables = {{{ ext_variable }}}=5
 TEST_VALUE=5
 {{% elif state == "stricter" %}}
-# variables = {{{ EXT_VARIABLE }}}=5
+# variables = {{{ ext_variable }}}=5
 TEST_VALUE=4
 {{% elif state == "lenient_high" %}}
-# variables = {{{ EXT_VARIABLE }}}=5
+# variables = {{{ ext_variable }}}=5
 TEST_VALUE=6
 {{% elif state == "lenient_low" %}}
 # there is no lower limit so the test should be not-applicable
 # platform = Not Applicable (rule does not set a lower boundary for '{{{ PRM_NAME }}}')
 {{% endif %}}
 
-{{% elif VARIABLE_LOWER_BOUND == "use_ext_variable" and VARIABLE_UPPER_BOUND is number %}}
+{{% elif variable_lower_bound == "use_ext_variable" and variable_upper_bound is number %}}
 {{% if state == "correct" %}}
-# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_UPPER_BOUND | default(100) }}}
-TEST_VALUE={{{ VARIABLE_UPPER_BOUND | default(100) }}}
+# variables = {{{ ext_variable }}}={{{ variable_upper_bound | default(100) }}}
+TEST_VALUE={{{ variable_upper_bound | default(100) }}}
 {{% elif state == "stricter" %}}
-# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_UPPER_BOUND | default(100) - 2 }}}
-TEST_VALUE={{{ VARIABLE_UPPER_BOUND | default(100) - 1 }}}
+# variables = {{{ ext_variable }}}={{{ variable_upper_bound | default(100) - 2 }}}
+TEST_VALUE={{{ variable_upper_bound | default(100) - 1 }}}
 {{% elif state == "lenient_high" %}}
-# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_UPPER_BOUND }}}
-TEST_VALUE={{{ VARIABLE_UPPER_BOUND + 1 }}}
+# variables = {{{ ext_variable }}}={{{ variable_upper_bound }}}
+TEST_VALUE={{{ variable_upper_bound + 1 }}}
 {{% elif state == "lenient_low" %}}
-# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_UPPER_BOUND }}}
-TEST_VALUE={{{ VARIABLE_UPPER_BOUND - 1 }}}
+# variables = {{{ ext_variable }}}={{{ variable_upper_bound }}}
+TEST_VALUE={{{ variable_upper_bound - 1 }}}
 {{% endif %}}
 
-{{% elif VARIABLE_LOWER_BOUND == "use_ext_variable" and VARIABLE_UPPER_BOUND is none %}}
+{{% elif variable_lower_bound == "use_ext_variable" and variable_upper_bound is none %}}
 {{% if state == "correct" %}}
-# variables = {{{ EXT_VARIABLE }}}=5
+# variables = {{{ ext_variable }}}=5
 TEST_VALUE=5
 {{% elif state == "stricter" %}}
-# variables = {{{ EXT_VARIABLE }}}=5
+# variables = {{{ ext_variable }}}=5
 TEST_VALUE=6
 {{% elif state == "lenient_high" %}}
 # there is no upper limit so the test should be not-applicable
 # platform = Not Applicable (rule does not set an upper boundary for '{{{ PRM_NAME }}}')
 {{% elif state == "lenient_low" %}}
-# variables = {{{ EXT_VARIABLE }}}=5
+# variables = {{{ ext_variable }}}=5
 TEST_VALUE=4
 {{% endif %}}
 
 {{% else %}}
 echo "The combination of template parameters is not supported by the test:"
-echo "  variable_upper_bound={{{ VARIABLE_UPPER_BOUND }}}"
-echo "  variable_lower_bound={{{ VARIABLE_LOWER_BOUND }}}"
-echo "  ext_variable={{{ EXT_VARIABLE }}}"
+echo "  variable_upper_bound={{{ variable_upper_bound }}}"
+echo "  variable_lower_bound={{{ variable_lower_bound }}}"
+echo "  ext_variable={{{ ext_variable }}}"
 exit 2
 {{% endif %}}
 
-PRM_NAME={{{ PRM_NAME }}}
+PRM_NAME={{{ prm_name }}}
 
 {{%- endmacro -%}}
 
