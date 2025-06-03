@@ -1,16 +1,15 @@
 #!/bin/bash
-{{% if 'ubuntu' in product %}}
-# platform = Not Applicable
+{{% if product in ["ubuntu2404"] %}}
+test_group="_ssh"
+{{% else %}}
+test_group="root"
 {{% endif %}}
 
-# gid of sshd group is 74
-test_group="sshd"
-
-for TESTFILE in /bin/test_me /sbin/test_me /usr/bin/test_me /usr/sbin/test_me /usr/local/bin/test_me /usr/local/sbin/test_me
+for TESTFILE in /bin/test_me /sbin/test_me /usr/bin/test_me /usr/sbin/test_me /usr/local/bin/test_me
 do
-   if [[ ! -f $TESTFILE ]]
-   then
-     touch $TESTFILE
-   fi
-   chgrp "$test_group" $TESTFILE
+  if [[ ! -f $TESTFILE ]]
+  then
+    touch $TESTFILE
+  fi
+  chgrp "$test_group" $TESTFILE
 done
