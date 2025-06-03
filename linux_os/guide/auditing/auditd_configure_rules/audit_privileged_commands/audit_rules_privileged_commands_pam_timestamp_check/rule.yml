@@ -1,4 +1,4 @@
-{{% if product in ["sle12", "sle15", "slmicro5"] %}}
+{{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
 {{% set pam_bin_path = "/sbin/pam_timestamp_check" %}}
 {{% else %}}
 {{% set pam_bin_path = "/usr/sbin/pam_timestamp_check" %}}
@@ -52,7 +52,7 @@ references:
     stigid@ubuntu2004: UBTU-20-010178
     stigid@ubuntu2204: UBTU-22-654075
 
-{{% if product not in ["sle12", "sle15", "slmicro5"] %}}
+{{% if product not in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
 {{{ ocil_fix_srg_privileged_command("pam_timestamp_check", "/usr/sbin/") }}}
 {{% endif %}}
 
