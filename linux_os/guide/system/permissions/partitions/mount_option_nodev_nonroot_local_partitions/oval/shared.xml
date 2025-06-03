@@ -21,13 +21,33 @@
   </linux:partition_test>
   <linux:partition_object id="object_non_root_partitions" version="1">
     <!--
-      Look at all partitions except / (root), /boot and /efi. The / is
+      Look at all local partitions except / (root), /boot and /efi. The / is
       excluded because nodev is allowed on / by the rule text. The /boot and
       /efi are excluded because they are special paritions that are
       usually handled by a systemd mount which causes troubles if the rule is
       used in operating system installation.
       -->
     <linux:mount_point operation="pattern match">^/(?!boot|efi)\w.*$</linux:mount_point>
+    <linux:fstype operation="not equal">afs</linux:fstype>
+    <linux:fstype operation="not equal">autofs</linux:fstype>
+    <linux:fstype operation="not equal">ceph</linux:fstype>
+    <linux:fstype operation="not equal">cifs</linux:fstype>
+    <linux:fstype operation="not equal">smb3</linux:fstype>
+    <linux:fstype operation="not equal">smbfs</linux:fstype>
+    <linux:fstype operation="not equal">sshfs</linux:fstype>
+    <linux:fstype operation="not equal">ncpfs</linux:fstype>
+    <linux:fstype operation="not equal">ncp</linux:fstype>
+    <linux:fstype operation="not equal">nfs</linux:fstype>
+    <linux:fstype operation="not equal">nfs4</linux:fstype>
+    <linux:fstype operation="not equal">gfs</linux:fstype>
+    <linux:fstype operation="not equal">gfs2</linux:fstype>
+    <linux:fstype operation="not equal">glusterfs</linux:fstype>
+    <linux:fstype operation="not equal">gpfs</linux:fstype>
+    <linux:fstype operation="not equal">pvfs2</linux:fstype>
+    <linux:fstype operation="not equal">ocfs2</linux:fstype>
+    <linux:fstype operation="not equal">lustre</linux:fstype>
+    <linux:fstype operation="not equal">davfs</linux:fstype>
+    <linux:fstype operation="not equal">fuse.sshfs</linux:fstype>
     <filter action="include">state_local_nodev</filter>
   </linux:partition_object>
   <linux:partition_state id="state_local_nodev" version="1">
