@@ -3356,7 +3356,8 @@ class LinearLoader(object):
         Returns:
             A list of rules that are selected in all profiles of the given benchmark.
         """
-        return [self.rules[rule_id] for rule_id in sorted(benchmark.get_rules_selected_in_all_profiles())]
+        ids = sorted(benchmark.get_rules_selected_in_all_profiles())
+        return [self.rules[rule_id] for rule_id in ids]
 
     def export_ocil_to_xml(self, benchmark=None):
         """
