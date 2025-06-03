@@ -105,6 +105,20 @@ def preload_macros(env):
         _preload_macros_from_file(env, macros_file)
 
 
+class JinjaEnvironment(jinja2.Environment):
+    def __init__(self, bytecode_cache=None):
+        super(JinjaEnvironment, self).__init__(
+            block_start_string="{{%",
+            block_end_string="%}}",
+            variable_start_string="{{{",
+            variable_end_string="}}}",
+            comment_start_string="{{#",
+            comment_end_string="#}}",
+            loader=AbsolutePathFileSystemLoader(),
+            bytecode_cache=bytecode_cache
+        )
+
+
 def _get_jinja_environment(substitutions_dict):
     """
     Initializes and returns a Jinja2 Environment with custom settings and filters.
@@ -132,16 +146,7 @@ def _get_jinja_environment(substitutions_dict):
             )
 
         # TODO: Choose better syntax?
-        _get_jinja_environment.env = jinja2.Environment(
-            block_start_string="{{%",
-            block_end_string="%}}",
-            variable_start_string="{{{",
-            variable_end_string="}}}",
-            comment_start_string="{{#",
-            comment_end_string="#}}",
-            loader=AbsolutePathFileSystemLoader(),
-            bytecode_cache=bytecode_cache
-        )
+        _get_jinja_environment.env = JinjaEnvironment(bytecode_cache=bytecode_cache)
         add_python_functions(substitutions_dict)
         _get_jinja_environment.env.filters['banner_anchor_wrap'] = banner_anchor_wrap
         _get_jinja_environment.env.filters['banner_regexify'] = banner_regexify
