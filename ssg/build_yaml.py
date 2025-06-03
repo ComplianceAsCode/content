@@ -786,9 +786,10 @@ class Benchmark(XCCDFEntity):
 
         cpe_platform_spec = ET.Element(
             "{%s}platform-specification" % PREFIX_TO_NS["cpe-lang"])
-        for platform_id, platform in self.product_cpes.platforms.items():
+        for platform_id in sorted(self.product_cpes.platforms):
             if platform_id in cpe_platforms_to_not_include:
                 continue
+            platform = self.product_cpes.platforms[platform_id]
             cpe_platform_spec.append(platform.to_xml_element())
 
         if len(cpe_platform_spec) > 0:
@@ -3355,7 +3356,7 @@ class LinearLoader(object):
         Returns:
             A list of rules that are selected in all profiles of the given benchmark.
         """
-        return [self.rules[rule_id] for rule_id in benchmark.get_rules_selected_in_all_profiles()]
+        return [self.rules[rule_id] for rule_id in sorted(benchmark.get_rules_selected_in_all_profiles())]
 
     def export_ocil_to_xml(self, benchmark=None):
         """
