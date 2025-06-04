@@ -1,7 +1,12 @@
-{{%- if "sle" in product or "slmicro" in product or "ubuntu" in product %}}
+{{%- if "sle" in product or "slmicro5" in product or "ubuntu" in product %}}
 {{%- set pam_lastlog_path = "/etc/pam.d/login" %}}
+{{%- set pam_lastlog = "pam_lastlog.so" %}}
+{{%- elif product == 'slmicro6' %}}
+{{%- set pam_lastlog_path = "/etc/pam.d/postlogin-session" %}}
+{{%- set pam_lastlog = "pam_lastlog2.so" %}}
 {{%- else %}}
 {{%- set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
+{{%- set pam_lastlog = "pam_lastlog.so" %}}
 {{%- endif %}}
 
 {{%- if "ol" in product or "slmicro" in product or "ubuntu" in product %}}
@@ -20,7 +25,7 @@ description: |-
     To configure the system to notify users of last logon/access using <tt>pam_lastlog</tt>,
     add or correct the <tt>pam_lastlog</tt> settings in <tt>{{{ pam_lastlog_path }}}</tt>
     to include <tt>showfailed</tt> option, such as:
-    <pre>session     {{{ control }}}    pam_lastlog.so showfailed</pre>
+    <pre>session     {{{ control }}}    {{{ pam_lastlog }}} showfailed</pre>
     And make sure that the <tt>silent</tt> option is not set for this specific line.
 
 rationale: |-
@@ -58,21 +63,21 @@ references:
 
 platform: package[pam]
 
-ocil_clause: '"pam_lastlog.so" is not properly configured in "{{{ pam_lastlog_path }}}" file'
+ocil_clause: '"{{{ pam_lastlog }}}" is not properly configured in "{{{ pam_lastlog_path }}}" file'
 
 ocil: |-
     Verify users are provided with feedback on when account accesses last occurred with the following command:
 
     <pre>$ sudo grep pam_lastlog {{{ pam_lastlog_path }}}
 
-    session {{{ control }}} pam_lastlog.so showfailed</pre>
+    session {{{ control }}} {{{ pam_lastlog }}} showfailed</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to provide users with feedback on when account accesses last occurred by setting the required configuration options in "{{{ pam_lastlog_path }}}".
 
     Add the following line to the top of "{{{ pam_lastlog_path }}}":
 
-    session {{{ control }}} pam_lastlog.so showfailed
+    session {{{ control }}} {{{ pam_lastlog }}} showfailed
 
 srg_requirement: '{{{ full_name }}} must display the date and time of the last successful account logon upon logon.'
 
@@ -85,7 +90,7 @@ warnings:
        be shown in the remediation report.
     - general: |-
        <tt>authselect</tt> contains an authselect feature to easily and properly enable Last Logon
-       notifications with <tt>pam_lastlog.so</tt> module. If a custom profile was created and used
+       notifications with <tt>{{{ pam_lastlog }}}</tt> module. If a custom profile was created and used
        in the system before this authselect feature was available, the new feature can't be used
        with this custom profile and the remediation will fail. In this case, the custom profile
        should be recreated or manually updated.
