@@ -1,6 +1,6 @@
 #!/bin/bash
 {{% if sshd_distributed_config == "false" %}}
-# platform = Not Applicable (sshd_distributed_config=false)
+# platform = Not Applicable
 {{% else %}}
 # platform = multi_platform_all
 {{% endif %}}
