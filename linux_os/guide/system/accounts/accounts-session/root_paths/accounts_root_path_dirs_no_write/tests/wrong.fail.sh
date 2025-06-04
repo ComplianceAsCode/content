@@ -1,4 +1,5 @@
 #!/bin/bash
+# remediation = ansible
 
 ( IFS=:
   for p in $PATH; do
