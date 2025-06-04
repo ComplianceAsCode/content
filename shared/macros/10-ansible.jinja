@@ -1064,6 +1064,47 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 
 {{#
+    Ensure pam_lastlog.so PAM module shows the failed logins according to the system capabilities.
+    If authselect is present and the "with-silent-lastlog" feature is available, the feature will be disabled.
+    If authselect is present but the "with-silent-lastlog" feature is not yet available, a custom profile will be used.
+    If authselect is not present, PAM files will be directly edited.
+
+:param pam_file:    PAM config file.
+:type pam_file: str
+:param control:     PAM control flags.
+:type control: str
+:param after_match: Regex used as reference to append a line, if necessary. Optional parameter.
+                    Note: For this macro, there is a special value used to include a line at
+                    the beginning of the file: "BOF"
+:type after_match: str
+
+#}}
+{{%- macro ansible_pam_lastlog2_enable_showfailed(pam_file, control, after_match='', rule_title=None, rule_id=None) -%}}
+{{{ ansible_check_authselect_presence(rule_title=rule_title) }}}
+
+- name: '{{{ rule_title }}} - Collect the Available authselect Features'
+  ansible.builtin.command:
+    cmd: authselect list-features sssd
+  register: result_authselect_available_features
+  changed_when: false
+  when:
+    - result_authselect_present.stat.exists
+
+- name: '{{{ rule_title }}} - Configure pam_lastlog2.so Using authselect Feature'
+  block:
+    {{{ ansible_disable_authselect_feature('with-silent-lastlog', rule_title=rule_title) | indent(4) }}}
+  when:
+    - result_authselect_present.stat.exists
+    - result_authselect_available_features.stdout is search("with-silent-lastlog")
+
+- name: '{{{ rule_title }}} - Configure pam_lastlog2.so in appropriate PAM files'
+  block:
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file, rule_title=rule_title) | indent(4) }}}
+    {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', 'session', control, 'pam_lastlog2.so', 'showfailed', '', after_match, rule_id=rule_id, rule_title=rule_title) | indent(4) }}}
+    {{{ ansible_remove_pam_module_option('{{ pam_file_path }}', 'session', control, 'pam_lastlog2.so', 'silent', rule_title=rule_title) | indent(4) }}}
+{{%- endmacro -%}}
+
+{{#
     Enable pam_pwhistory.so PAM module according to the system capabilities.
     If authselect is present and the "with-pwhistory" feature is available, the feature will be enabled.
     If authselect is present but the "with-pwhistory" feature is not yet available, a custom profile will be used.
