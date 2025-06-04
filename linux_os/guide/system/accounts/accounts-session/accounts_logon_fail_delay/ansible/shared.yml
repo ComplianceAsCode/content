@@ -1,13 +1,18 @@
-# platform = Red Hat Virtualization 4,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro5,multi_platform_almalinux
+# platform = Red Hat Virtualization 4,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
 # disruption = low
 # strategy = restrict
 # complexity = low
 # reboot = true
 {{{ ansible_instantiate_variables("var_accounts_fail_delay") }}}
+{{% if product == 'slmicro6' %}}
+{{% set login_defs_path = "/usr/etc/login.defs" %}}
+{{% else %}}
+{{% set login_defs_path = "/etc/login.defs" %}}
+{{% endif %}}
 
 - name: Set accounts logon fail delay
   lineinfile:
-    dest: /etc/login.defs
+    dest: {{{ login_defs_path }}}
     regexp: ^FAIL_DELAY
     line: "FAIL_DELAY {{ var_accounts_fail_delay }}"
     create: yes
