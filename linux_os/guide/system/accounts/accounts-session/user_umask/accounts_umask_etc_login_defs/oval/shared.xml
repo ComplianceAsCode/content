@@ -1,6 +1,11 @@
+{{% if product == 'slmicro6' %}}
+{{% set login_defs_path = "/usr/etc/login.defs" %}}
+{{% else %}}
+{{% set login_defs_path = "/etc/login.defs" %}}
+{{% endif %}}
 <def-group>
   <definition class="compliance" id="accounts_umask_etc_login_defs" version="2">
-    {{{ oval_metadata("The default umask for all users specified in /etc/login.defs", rule_title=rule_title) }}}
+    {{{ oval_metadata("The default umask for all users specified in {{{ login_defs_path }}}", rule_title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="Get value of var_accounts_user_umask variable as octal number"
       definition_ref="var_accounts_user_umask_as_number" />
@@ -9,14 +14,14 @@
   </definition>
 
   <ind:textfilecontent54_object id="obj_umask_from_etc_login_defs"
-  comment="Umask value from /etc/login.defs" version="1">
-    <ind:filepath>/etc/login.defs</ind:filepath>
+  comment="Umask value from {{{ login_defs_path }}}" version="1">
+    <ind:filepath>{{{ login_defs_path }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*UMASK[\s]+([^#\s]*)</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <local_variable id="var_first_digit_of_umask_from_etc_login_defs"
-  comment="First octal digit of umask from /etc/login.defs"
+  comment="First octal digit of umask from {{{ login_defs_path }}}"
   datatype="int" version="1">
     <substring substring_start="1" substring_length="1">
       <object_component item_field="subexpression" object_ref="obj_umask_from_etc_login_defs" />
@@ -24,7 +29,7 @@
   </local_variable>
 
   <local_variable id="var_second_digit_of_umask_from_etc_login_defs"
-  comment="Second octal digit of umask from /etc/login.defs"
+  comment="Second octal digit of umask from {{{ login_defs_path }}}"
   datatype="int" version="1">
     <substring substring_start="2" substring_length="1">
       <object_component item_field="subexpression" object_ref="obj_umask_from_etc_login_defs" />
@@ -32,7 +37,7 @@
   </local_variable>
 
   <local_variable id="var_third_digit_of_umask_from_etc_login_defs"
-  comment="Third octal digit of umask from /etc/login.defs"
+  comment="Third octal digit of umask from {{{ login_defs_path }}}"
   datatype="int" version="1">
     <substring substring_start="3" substring_length="1">
       <object_component item_field="subexpression" object_ref="obj_umask_from_etc_login_defs" />
@@ -40,7 +45,7 @@
   </local_variable>
 
   <local_variable id="var_etc_login_defs_umask_as_number"
-  comment="/etc/login.defs umask converted from string to a number"
+  comment="{{{ login_defs_path }}} umask converted from string to a number"
   datatype="int" version="1">
     <arithmetic arithmetic_operation="add">
       <arithmetic arithmetic_operation="multiply">
@@ -56,7 +61,7 @@
   </local_variable>
 
   <ind:variable_test id="tst_accounts_umask_etc_login_defs" version="1" check="all"
-  comment="Test the retrieved /etc/login.defs umask value(s) match the var_accounts_user_umask requirement">
+  comment="Test the retrieved {{{ login_defs_path }}} umask value(s) match the var_accounts_user_umask requirement">
     <ind:object object_ref="obj_accounts_umask_etc_login_defs" />
     <ind:state state_ref="ste_accounts_umask_etc_login_defs" />
   </ind:variable_test>
