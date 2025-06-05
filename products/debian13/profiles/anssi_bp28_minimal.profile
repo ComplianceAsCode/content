@@ -20,7 +20,7 @@ selections:
   # PAM honour login.defs file for algorithm
   - 'set_password_hashing_algorithm_logindefs'
 
-  # Following rules once had a prodtype incompatible with the debian12 product
+  # Following rules once had a prodtype incompatible with the debian13 product
   - '!accounts_passwords_pam_tally2_deny_root'
   - '!ensure_redhat_gpgkey_installed'
   - '!set_password_hashing_algorithm_systemauth'
