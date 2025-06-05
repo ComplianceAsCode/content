@@ -1,4 +1,9 @@
 #!/bin/bash
+{{% if product == 'slmicro6' %}}
+LOGIN_DEFS_PATH=/usr/etc/login.defs
+{{% else %}}
+LOGIN_DEFS_PATH=/etc/login.defs
+{{% endif %}}
 
 useradd --system --shell /sbin/nologin -u 999 sysuser
 useradd -u {{{ uid_min }}} testuser
@@ -11,4 +16,4 @@ sed -Ei '
 '"$key"' {{{ uid_min }}}
 }
 /^(SYS_)?UID_(MIN|MAX)/d;
-' /etc/login.defs
+' "${LOGIN_DEFS_PATH}"
