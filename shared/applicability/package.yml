@@ -75,7 +75,11 @@ args:
       pkgname: libpam-ldapd
     {{% endif %}}
   ntp:
+    {{% if product == "debian13" %}}
+    pkgname: ntpsec
+    {{% else %}}
     pkgname: ntp
+    {{% endif %}}
     title: NTP daemon and utilities
   openssh:
     pkgname: openssh
