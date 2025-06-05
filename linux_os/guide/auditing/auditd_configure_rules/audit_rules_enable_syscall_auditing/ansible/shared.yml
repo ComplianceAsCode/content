@@ -34,7 +34,7 @@
 - name: Enable syscall auditing (augenrules)
   lineinfile:
     path: "{{ item.path }}"
-    regex: ^(?i)(\s*-a\s+task,never)\s*$
+    regex: (?i)^(\s*-a\s+task,never)\s*$
     line: '#-a task,never'
   with_items: "{{ find_audit_rules_result.files }}"
   when:
@@ -45,7 +45,7 @@
 - name: Enable syscall auditing (auditctl)
   lineinfile:
     path: /etc/audit/audit.rules
-    regex: ^(?i)(\s*-a\s+task,never)\s*$
+    regex: (?i)^(\s*-a\s+task,never)\s*$
     line: '#-a task,never'
   when:
     - '"auditd.service" in ansible_facts.services'
