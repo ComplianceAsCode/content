@@ -7,7 +7,7 @@ description: |-
     but does not have an assigned password, it may be possible to log
     into the account without authentication. Remove any instances of the
     <tt>nullok</tt> in
-    {{% if product in ["sle12", "sle15", "slmicro5"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
     password authentication configurations in <tt>/etc/pam.d/</tt>
     {{% elif 'ubuntu' in product %}}
     <tt>/etc/pam.d/common-password</tt>
@@ -59,7 +59,7 @@ ocil_clause: 'NULL passwords can be used'
 
 ocil: |-
     To verify that null passwords cannot be used, run the following command:
-    {{% if product in ["sle12", "sle15", "slmicro5"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
     <pre>$ grep pam_unix.so /etc/pam.d/* | grep nullok</pre>
     {{% elif 'ubuntu' in product %}}
     <pre>grep nullok /etc/pam.d/common-password</pre>
@@ -77,8 +77,8 @@ fixtext: |-
     Remove any instances of the "nullok" option in "/etc/pam.d/common-password"
     {{% else %}}
     Remove any instances of the "nullok" option in the "/etc/pam.d/system-auth" and
-    "/etc/pam.d/password-auth" files 
-    {{% endif %}} 
+    "/etc/pam.d/password-auth" files
+    {{% endif %}}
     to prevent logons with empty passwords.
 
     Note: Manual changes to the listed file may be overwritten by the "authselect" program.
