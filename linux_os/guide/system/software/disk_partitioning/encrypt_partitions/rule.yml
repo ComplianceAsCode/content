@@ -177,3 +177,10 @@ checktext: |-
 
     Every persistent disk partition present must be of type "crypto_LUKS". If any partitions other than the boot partition or pseudo file systems (such as /proc or /sys) or temporary file systems (that are tmpfs) are not type "crypto_LUKS", ask the administrator to indicate how the partitions are encrypted.  If there is no evidence that these partitions are encrypted, this is a finding.
     {{% endif -%}}
+
+{{% if 'ol' in families %}}
+warnings:
+    - general: |-
+        Due to different needs, possibilities, and passphrase requirement automated remediation is
+        not available for this configuration check.
+{{% endif %}}
