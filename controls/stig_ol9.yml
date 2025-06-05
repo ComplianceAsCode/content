@@ -3388,17 +3388,6 @@ controls:
             - var_auditd_admin_space_left_percentage=5pc
         status: automated
 
-    -   id: OL09-00-000875
-        levels:
-            - medium
-        title:
-            OL 9 must take action when allocated audit record storage volume reaches
-            95 percent of the repository maximum audit record storage capacity.
-        rules:
-            - auditd_data_retention_admin_space_left_action
-            - var_auditd_admin_space_left_action=halt
-        status: automated
-
     -   id: OL09-00-000770
         levels:
             - medium
@@ -3511,8 +3500,8 @@ controls:
         levels:
             - medium
         title:
-             OL 9 must act when allocated audit record storage volume reaches 95 percent of the
-             repository maximum audit record storage capacity.
+            OL 9 must act when allocated audit record storage volume reaches 95 percent of the
+            repository maximum audit record storage capacity.
         rules:
             - auditd_data_retention_admin_space_left_action
             - var_auditd_admin_space_left_action=single
