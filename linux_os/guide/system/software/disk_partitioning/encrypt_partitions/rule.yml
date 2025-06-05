@@ -13,7 +13,7 @@ description: |-
     option is selected the system will prompt for a passphrase to use in
     decrypting the partition. The passphrase will subsequently need to be entered manually
     every time the system boots.
-    {{% if product not in ["sle12", "sle15", "slmicro5",  "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
+    {{% if product not in ["sle12", "sle15", "slmicro5", "ubuntu2204", "ubuntu2404"] %}}
     <br /><br />
     For automated/unattended installations, it is possible to use Kickstart by adding
     the <tt>--encrypted</tt> and <tt>--passphrase=</tt> options to the definition of each partition to be
@@ -81,7 +81,6 @@ references:
     stigid@ol8: OL08-00-010030
     stigid@sle12: SLES-12-010450
     stigid@sle15: SLES-15-010330
-    stigid@ubuntu2004: UBTU-20-010414
     stigid@ubuntu2204: UBTU-22-231010
 
 ocil_clause: 'partitions do not have a type of crypto_LUKS'
