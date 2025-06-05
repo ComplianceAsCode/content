@@ -10,3 +10,6 @@ description: |-
 
 selections:
   - stig_slmicro5:all
+  - '!accounts_passwords_pam_tally2'
+  - '!accounts_passwords_pam_tally2_file'
+  - '!accounts_passwords_pam_tally2_file_selinux'
