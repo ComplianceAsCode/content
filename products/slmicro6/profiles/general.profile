@@ -15,4 +15,5 @@ selections:
   - '!accounts_passwords_pam_tally2_file'
   - '!accounts_passwords_pam_tally2_file_selinux'
   - '!gnome_gdm_disable_unattended_automatic_login'
+  - '!smartcard_configure_cert_checking'
  
