@@ -47,7 +47,7 @@ args:
   iptables:
     pkgname: iptables
   libpwquality:
-    {{% if 'ubuntu' in product %}}
+    {{% if 'ubuntu' in product or 'debian' in product %}}
     pkgname: libpwquality1
     {{% else %}}
     pkgname: libpwquality
@@ -75,7 +75,11 @@ args:
       pkgname: libpam-ldapd
     {{% endif %}}
   ntp:
+    {{% if product == "debian13" %}}
+    pkgname: ntpsec
+    {{% else %}}
     pkgname: ntp
+    {{% endif %}}
     title: NTP daemon and utilities
   openssh:
     pkgname: openssh

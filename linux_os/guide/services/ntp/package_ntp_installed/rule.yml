@@ -26,9 +26,15 @@ references:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ ocil_package(package="ntp") }}}'
-
+ocil: |-
+  {{% if product == "debian13" %}}
+  {{{ ocil_package(package="ntpsec") }}}
+  {{% else %}}
+  {{{ ocil_package(package="ntp") }}}
+  {{% endif %}}
+  
 template:
     name: package_installed
     vars:
         pkgname: ntp
+        pkgname@debian13: ntpsec

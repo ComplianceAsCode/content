@@ -39,12 +39,17 @@ references:
     pcidss: Req-10.4
 
 ocil: |-
+    {{% if product == "debian13" %}}
+    {{{ ocil_service_enabled(service="ntpsec") }}}
+    {{% else %}}
     {{{ ocil_service_enabled(service="ntp") }}}
-
+    {{% endif %}}
+    
 template:
     name: service_enabled
     vars:
         servicename: ntp
+        servicename@debian13: ntpsec
 
 {{% if product in ["sle15"] or 'rhel' in product %}}
 warnings:
