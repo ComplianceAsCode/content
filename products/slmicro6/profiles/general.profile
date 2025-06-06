@@ -10,6 +10,7 @@ description: |-
 
 selections:
   - stig_slmicro5:all
+  - var_user_initialization_files_regex=all_dotfiles
   - '!accounts_passwords_pam_tally2'
   - '!accounts_passwords_pam_tally2_file'
   - '!accounts_passwords_pam_tally2_file_selinux'
