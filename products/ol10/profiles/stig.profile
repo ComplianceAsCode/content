@@ -15,3 +15,4 @@ selections:
     - '!enable_dracut_fips_module'
     # Package not available in OL10
     - '!package_subscription-manager_installed'
+    - var_authselect_profile=local

@@ -66,3 +66,4 @@ selections:
     # OL 10 uses a different rule for auditing changes to selinux configuration
     - '!audit_rules_mac_modification'
     - audit_rules_mac_modification_etc_selinux
+    - var_authselect_profile=local
