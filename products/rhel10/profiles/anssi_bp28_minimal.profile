@@ -23,6 +23,7 @@ description: |-
 selections:
     - anssi:all:minimal
     - var_password_hashing_algorithm_pam=yescrypt
+    - var_authselect_profile=local
     # Following rules are incompatible with rhel10 product
     - '!enable_authselect'
     # tally2 is deprecated, replaced by faillock

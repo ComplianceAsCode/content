@@ -45,7 +45,7 @@ selections:
 
     # ISM 1277,1552
     # Not applicable to OL10 as per openssl man page
-    - "!openssl_use_strong_entropy"     
+    - "!openssl_use_strong_entropy"
 
     # ISM 0988,1405
     # Always use chronyd
@@ -64,7 +64,7 @@ selections:
     - "!audit_access_success_aarch64"
     - "!audit_access_success_ppc64le"
 
-    # Doesn't cover the expected requirement 
+    # Doesn't cover the expected requirement
     # 1319 "Static addressing is not used..."
     - "!network_ipv6_static_address"
 
@@ -72,3 +72,4 @@ selections:
     # Packages not available in OL
     - "!package_libdnf-plugin-subscription-manager_installed"
     - "!package_subscription-manager_installed"
+    - var_authselect_profile=local

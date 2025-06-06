@@ -75,3 +75,4 @@ selections:
     - audit_rules_mac_modification_etc_selinux
     #  Irrelevant for ol10
     - '!enable_dconf_user_profile'
+    - var_authselect_profile=local

@@ -415,6 +415,7 @@ var_auditd_disk_full_action=cis_rhel8
 var_auditd_max_log_file=6
 var_auditd_max_log_file_action=keep_logs
 var_auditd_space_left_action=cis_rhel8
+var_authselect_profile=local
 var_multiple_time_servers=rhel
 var_pam_wheel_group_for_su=cis
 var_password_hashing_algorithm=yescrypt

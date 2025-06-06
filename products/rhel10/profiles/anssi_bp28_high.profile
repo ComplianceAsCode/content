@@ -23,6 +23,7 @@ description: |-
 selections:
     - anssi:all:high
     - var_password_hashing_algorithm_pam=yescrypt
+    - var_authselect_profile=local
     # the following rule renders UEFI systems unbootable
     - '!sebool_secure_mode_insmod'
     # Following rules are incompatible with rhel10 product

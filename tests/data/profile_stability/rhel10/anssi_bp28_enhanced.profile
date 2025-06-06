@@ -326,6 +326,7 @@ var_accounts_passwords_pam_faillock_unlock_time=900
 var_accounts_passwords_pam_tally2_unlock_time=1800
 var_accounts_tmout=10_min
 var_accounts_user_umask=077
+var_authselect_profile=local
 var_l1tf_options=full_force
 var_logind_session_timeout=10_minutes
 var_mds_options=full_nosmt
