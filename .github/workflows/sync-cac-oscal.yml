@@ -13,7 +13,7 @@ jobs:
   check-pr-message:
     runs-on: ubuntu-latest
     outputs:
-      run_job_check_update: ${{ steps.check_pr.outputs.run_job_check_update }}
+      run_job_check_update: ${{ steps.check-pr.outputs.run_job_check_update }}
     steps:
     - name: Check if the PR comes from the sync of OSCAL content
       id: check-pr
