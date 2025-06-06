@@ -13,7 +13,7 @@ description: |-
     option is selected the system will prompt for a passphrase to use in
     decrypting the partition. The passphrase will subsequently need to be entered manually
     every time the system boots.
-    {{% if product not in ["sle12", "sle15", "slmicro5", "ubuntu2204", "ubuntu2404"] %}}
+    {{% if product not in ["sle12", "sle15", "slmicro5", "slmicro6", "ubuntu2204", "ubuntu2404"] %}}
     <br /><br />
     For automated/unattended installations, it is possible to use Kickstart by adding
     the <tt>--encrypted</tt> and <tt>--passphrase=</tt> options to the definition of each partition to be
@@ -42,6 +42,8 @@ description: |-
         {{{ weblink(link="https://documentation.suse.com/sles/15-SP2/html/SLES-all/cha-security-cryptofs.html") }}}
     {{% elif product == "slmicro5" %}}
         {{{ weblink(link="https://documentation.suse.com/sles/15-SP3/html/SLES-all/cha-security-cryptofs.html") }}}
+    {{% elif product == "slmicro6" %}}
+        {{{ weblink(link="https://documentation.suse.com/sle-micro/6.0/html/Micro-deployment-raw-images/index.html#deployment-jeos-firstboot") }}}
     {{% elif 'ubuntu' in product %}}
         {{{ weblink(link="https://help.ubuntu.com/community/Full_Disk_Encryption_Howto_2019") }}}
     {{% elif product == "fedora" %}}
