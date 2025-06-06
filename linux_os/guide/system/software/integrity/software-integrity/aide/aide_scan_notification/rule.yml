@@ -53,7 +53,7 @@ ocil_clause: 'AIDE has not been configured or has not been configured to notify 
 
 ocil: |-
     To determine that periodic AIDE execution has been scheduled, run the following command:
-{{% if product in ["sle15", "slmicro5"] %}}
+{{% if product in ["sle15", "slmicro5", "slmicro6"] %}}
     <pre>$ sudo systemctl status  aidecheck-notify|grep loaded</pre>
     The output should return that the service is loaded.
     Also we should make sure that notification service is started by the check:
@@ -72,7 +72,7 @@ fixtext: |-
     The AIDE tool can be configured to email designated personnel with the use of the cron system.
 
     The following example output is generic. It will set cron to run AIDE daily and to send email at the completion of the analysis.
-{{% if product in ["sle15", "slmicro5"] %}}
+{{% if product in ["sle15", "slmicro5", "slmicro6"] %}}
     $ cat > /etc/systemd/system/aidecheck-notify.service <<NOTIFYEOF
     [Unit]
         Description=Status email for AIDE check result
