@@ -151,6 +151,10 @@ find_program(XMLLINT_EXECUTABLE NAMES xmllint REQUIRED)
 find_program(XSLTPROC_EXECUTABLE NAMES xsltproc REQUIRED)
 find_program(YAMLLINT_EXECUTABLE NAMES yamllint)
 
+if(SSG_PRODUCT_RHEL9 OR SSG_PRODUCT_RHEL10 OR SSG_PRODUCT_UBUNTU2004 OR SSG_PRODUCT_UBUNTU2204 OR SSG_PRODUCT_UBUNTU2404)
+set(SSG_SCE_ENABLED ON)
+endif()
+
 message(STATUS "")
 message(STATUS "SCAP Security Guide ${SSG_VERSION}")
 message(STATUS "(see ${CMAKE_SOURCE_DIR}/docs/manual/developer_guide.adoc for build instructions)")
