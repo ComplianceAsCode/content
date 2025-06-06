@@ -24,8 +24,8 @@ NS = {'scap': ssg.constants.datastream_namespace,
 PROFILE = 'stig'
 
 
-def get_profile(product, profile_name):
-    ds_root = ET.parse(os.path.join(SSG_ROOT, 'build', 'ssg-{product}-ds.xml'
+def get_profile(product, profile_name, build_root):
+    ds_root = ET.parse(os.path.join(build_root, 'ssg-{product}-ds.xml'
                                     .format(product=product))).getroot()
     profiles = ds_root.findall(
         './/{{{scap}}}component/{{{xccdf}}}Benchmark/{{{xccdf}}}Profile'.format(
@@ -177,7 +177,7 @@ def create_tailoring(args):
                                         args.build_root)
     needed_rules = filter_out_implemented_rules(known_rules, NS, benchmark_root)
     needed_rule_names_set = set(rulename for ruleset in needed_rules.values() for rulename in ruleset)
-    profile_root = get_profile(args.product, args.profile)
+    profile_root = get_profile(args.product, args.profile, args.build_root)
     selections = profile_root.findall('xccdf-1.2:select', NS)
     tailoring_profile = setup_tailoring_profile(args.profile_id, profile_root)
     for selection in selections:
@@ -268,6 +268,7 @@ def main():
     tree.write(out)
     if not args.quiet:
         print("Wrote tailoring file to {out}.".format(out=out))
+    return 0
 
 
 if __name__ == '__main__':
