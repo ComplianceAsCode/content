@@ -12,18 +12,18 @@ bootable_containers_supported: 'false'
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 cpes:
-- eks:
-    check_id: installed_app_is_eks
-    name: cpe:/a:amazon:elastic_kubernetes_service:1
-    title: Amazon Elastic Kubernetes Service
-- eks-node:
-    check_id: installed_app_is_eks_node
-    name: cpe:/o:amazon:elastic_kubernetes_service_node:1
-    title: Amazon Elastic Kubernetes Service Node
-- eks-1.21:
-    check_id: installed_app_is_eks_1_21
-    name: cpe:/a:amazon:elastic_kubernetes_service_node:1.21
-    title: Amazon Elastic Kubernetes Service 1.21
+  - eks:
+      check_id: installed_app_is_eks
+      name: cpe:/a:amazon:elastic_kubernetes_service:1
+      title: Amazon Elastic Kubernetes Service
+  - eks-node:
+      check_id: installed_app_is_eks_node
+      name: cpe:/o:amazon:elastic_kubernetes_service_node:1
+      title: Amazon Elastic Kubernetes Service Node
+  - eks-1.21:
+      check_id: installed_app_is_eks_1_21
+      name: cpe:/a:amazon:elastic_kubernetes_service_node:1.21
+      title: Amazon Elastic Kubernetes Service 1.21
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 dynamic_uid_max: 65519
@@ -81,13 +81,14 @@ reference_uris:
   pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
   stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://public.cyber.mil/stigs/srg-stig-tools/
+  suse-general: not_publicly_available
 rsyslog_cafile: /etc/pki/tls/cert.pem
 sshd_distributed_config: 'false'
 sysctl_remediate_drop_in_file: 'false'
 type: platform
 uid_min: 1000
 xwindows_packages:
-- xorg-x11-server-Xorg
-- xorg-x11-server-common
-- xorg-x11-server-utils
-- xorg-x11-server-Xwayland
+  - xorg-x11-server-Xorg
+  - xorg-x11-server-common
+  - xorg-x11-server-utils
+  - xorg-x11-server-Xwayland

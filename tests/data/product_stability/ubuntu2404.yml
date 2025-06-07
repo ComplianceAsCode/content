@@ -14,18 +14,18 @@ chrony_conf_path: /etc/chrony/chrony.conf
 chrony_d_path: /etc/chrony/conf.d/
 components_root: ../../components
 cpes:
-- ubuntu2404:
-    check_id: installed_OS_is_ubuntu2404
-    name: cpe:/o:canonical:ubuntu_linux:24.04::~~lts~~~
-    title: Ubuntu release 24.04 (Noble Numbat)
+  - ubuntu2404:
+      check_id: installed_OS_is_ubuntu2404
+      name: cpe:/o:canonical:ubuntu_linux:24.04::~~lts~~~
+      title: Ubuntu release 24.04 (Noble Numbat)
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 dynamic_uid_max: 65519
 dynamic_uid_min: 61184
 faillock_path: /var/run/faillock
 families:
-- debian-like
-- ubuntu
+  - debian-like
+  - ubuntu
 full_name: Ubuntu 24.04
 gid_min: 1000
 groups: {}
@@ -93,13 +93,14 @@ reference_uris:
   pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
   stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://public.cyber.mil/stigs/srg-stig-tools/
+  suse-general: not_publicly_available
 rsyslog_cafile: /etc/pki/tls/cert.pem
 sshd_distributed_config: 'true'
 sysctl_remediate_drop_in_file: 'false'
 type: platform
 uid_min: 1000
 xwindows_packages:
-- xorg-x11-server-Xorg
-- xorg-x11-server-common
-- xorg-x11-server-utils
-- xorg-x11-server-Xwayland
+  - xorg-x11-server-Xorg
+  - xorg-x11-server-common
+  - xorg-x11-server-utils
+  - xorg-x11-server-Xwayland

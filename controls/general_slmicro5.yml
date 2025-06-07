@@ -1,0 +1,1424 @@
+policy: General System Security Profile forSUSE Linux Enterprise Micro (SLEM) 5
+title: General System Security Profile SUSE Linux Enterprise Micro (SLEM) 5
+id: general_slmicro5
+version: '1.0'
+source: not_publicly_available
+reference_type: suse-general
+levels:
+    - id: high
+    - id: medium
+    - id: low
+
+controls:
+  - id: SLEM-5-SET-01020000
+    title: Ensure /tmp Located On Separate Partition
+    levels:
+      - low
+    status: automated
+    rules:
+      - partition_for_tmp
+
+  - id: SLEM-5-SET-01040000
+    title: Add nodev Option to /tmp
+    levels:
+      - medium
+    status: automated
+    rules:
+      - mount_option_tmp_nodev
+
+  - id: SLEM-5-SET-01050000
+    title: Add nosuid Option to /tmp
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - mount_option_tmp_nosuid
+
+  - id: SLEM-5-SET-01060000
+    title: Configure /dev/shm
+    levels:
+      - low
+    status: automated
+    rules:
+      - partition_for_dev_shm
+
+  - id: SLEM-5-SET-01070000
+    title: Add noexec Option to /dev/shm
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - mount_option_dev_shm_noexec
+
+  - id: SLEM-5-SET-01080000
+    title: Add nodev Option to /dev/shm
+    levels:
+      - medium
+    status: automated
+    rules:
+      - mount_option_dev_shm_nodev
+
+  - id: SLEM-5-SET-01090000
+    title: Add nosuid Option to /dev/shm
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - mount_option_dev_shm_nosuid
+
+  - id: SLEM-5-SET-01100000
+    title: Ensure /var Located On Separate Partition
+    levels:
+      - medium
+    rules:
+      - partition_for_var
+    status: automated
+
+  - id: SLEM-5-SET-01160000
+    levels:
+        - medium
+    title: Ensure /var/log/audit Located On Separate Partition
+    rules:
+        - partition_for_var_log_audit
+    status: automated
+
+  - id: SLEM-5-SET-01170000
+    title: Ensure /home Located On Separate Partition
+    levels:
+        - medium    
+    rules:
+        - partition_for_home
+    status: automated
+
+  - id: SLEM-5-SET-01100000
+    title: Ensure /var Located On Separate Partition
+    levels:
+        - medium
+    rules:
+        - partition_for_var
+    status: automated
+
+  - id: SLEM-5-SET-01180000
+    title: Add nodev Option to /home
+    levels:
+      - medium
+    status: automated
+    rules:
+      - mount_option_home_nodev
+
+  - id: SLEM-5-SET-01190000
+    title: Add noexec Option to Removable Media Partitions
+    levels:
+      - medium    
+    status: automated
+    rules:
+      - mount_option_noexec_removable_partitions
+
+  - id: SLEM-5-SET-01200000
+    title: Add nodev Option to Removable Media Partitions
+    levels:
+      - medium
+    status: automated
+    rules:
+      - mount_option_nodev_removable_partitions
+
+  - id: SLEM-5-SET-01210000
+    title: Add nosuid Option to Removable Media Partitions
+    levels:
+        - medium
+    rules:
+        - mount_option_nosuid_removable_partitions
+    status: automated
+
+  - id: SLEM-5-SET-01220000
+    title: Verify that All World-Writable Directories Have Sticky Bits Set
+    levels:
+        - medium
+    rules:
+        - dir_perms_world_writable_sticky_bits
+    status: automated
+
+  - id: SLEM-5-SET-01240000
+    title: Disable Modprobe Loading of USB Storage Driver
+    levels:
+        - medium
+    rules:
+        - kernel_module_usb-storage_disabled
+    status: automated
+
+  - id: SLEM-5-SET-02010000
+    title: Configure GPG keys
+    levels:
+      - medium     
+    status: manual  
+    rules:
+      - ensure_GPG_keys_are_configured
+
+  - id: SLEM-5-SET-02020000
+    title: Configure package manager repositories
+    levels:
+    - medium
+    status: manual
+    rules:
+    - ensure_package_repositories_are_configured
+
+  - id: SLEM-5-SET-02030000
+    title: Ensure gpgcheck Enabled In Main zypper Configuration
+    levels:
+        - high
+    rules:
+        - ensure_gpgcheck_globally_activated
+    status: automated
+
+  - id: SLEM-5-SET-03010000
+    title: Install sudo Package
+    levels:
+      - medium
+    status: automated
+    rules:
+      - package_sudo_installed
+
+  - id: SLEM-5-SET-03020000
+    title: Ensure Only Users Logged In To Real tty Can Execute Sudo - sudo use_pty
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - sudo_add_use_pty
+
+  - id: SLEM-5-SET-03030000
+    title: Ensure Sudo Logfile Exists - sudo logfile
+    levels:
+      - low
+    status: automated
+    rules:
+      - var_sudo_logfile=var_log_sudo_log
+      - sudo_custom_logfile
+
+  - id: SLEM-5-SET-03030000
+    title: Configure grup.cfg Group/User Ownership and Permissions
+    levels:
+      - medium
+    status: automated
+    rules:
+      - file_groupowner_grub2_cfg
+      - file_owner_grub2_cfg
+      - file_permissions_grub2_cfg
+
+  - id: SLEM-5-SET-04010000
+    title: The AIDE package must be installed if it is to be available for integrity checking
+    levels:
+        - medium
+    rules:
+        - package_aide_installed
+        - aide_build_database
+    status: automated
+
+  - id: SLEM-5-SET-04020000
+    title: Configure Systemd Timer Execution of AIDE
+    levels:
+        - medium
+    rules:
+        - aide_periodic_checking_systemd_timer
+    status: automated
+
+  - id: SLEM-5-SET-05010000
+    title: Set the Boot Loader Password
+    levels:
+        - high
+    rules:
+        - grub2_password
+        - grub2_uefi_password
+    status: automated
+
+  - id: SLEM-5-SET-05030000
+    title: Require Authentication for Emergency and Single User mode 
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - require_emergency_target_auth
+      - require_singleuser_auth
+
+  - id: SLEM-5-SET-06020000
+    title: Enable NX/XD Support
+    levels:
+      - medium
+    automated: partially
+    rules:
+      - bios_enable_execution_restrictions
+      - install_PAE_kernel_on_x86-32
+
+  - id: SLEM-5-SET-06030000
+    title: Enable Randomized Layout of Virtual Address Space
+    levels:
+        - medium
+    rules:
+        - sysctl_kernel_randomize_va_space
+    status: automated
+
+  - id: SLEM-5-SET-08010100
+    title: Modify the System Message of the Day Banner
+    levels:
+      - medium     
+    status: automated
+    rules:
+      - banner_etc_motd
+      - motd_banner_text=cis_banners
+
+  - id: SLEM-5-SET-08010200
+    title: Modify the System Login Banner
+    levels:
+      - medium
+    status: automated
+    rules:
+      - banner_etc_issue
+      - login_banner_text=cis_banners
+
+  - id: SLEM-5-SET-08010300
+    title: Modify the System Login Banner for Remote Connections
+    levels:
+      - medium
+    status: automated
+    rules:
+      - banner_etc_issue_net
+      - remote_login_banner_text=cis_banners
+
+  - id: SLEM-5-SET-08010400
+    title: Verify Ownership and Permissions of/on Message of the Day Banner 
+    levels:
+      - medium
+    status: automated
+    rules:
+      - file_groupowner_etc_motd
+      - file_owner_etc_motd
+      - file_permissions_etc_motd
+
+  - id: SLEM-5-SET-08010500
+    title: Verify Ownership and Permissions of/on System Login Banner
+    levels:
+      - medium
+    status: automated
+    rules:
+      - file_groupowner_etc_issue
+      - file_owner_etc_issue
+      - file_permissions_etc_issue
+
+  - id: SLEM-5-SET-08010600
+    title: Verify Ownership and Permissions of/on System Login Banner for Remote Connections
+    levels:
+      - medium
+    status: automated
+    rules:
+      - file_groupowner_etc_issue_net
+      - file_owner_etc_issue_net
+      - file_permissions_etc_issue_net
+
+  - id: SLEM-5-SET-09000000
+    title: Ensure Software Patches Installed
+    levels:
+        - medium
+    rules:
+        - security_patches_up_to_date
+    status: automated
+
+  - id: SLEM-5-SER-01010000
+    title: The xinetd package is uninstalled, and its service is disabled
+    levels:
+      - low
+    status: automated
+    rules:
+      - package_xinetd_removed
+      - service_xinetd_disabled
+      - package_tcp_wrappers_removed
+
+  - id: SLEM-5-SER-02010100
+    title: The Chrony package is installed
+    levels:
+      - medium
+    status: automated
+    rules:
+      - package_chrony_installed
+
+  - id: SLEM-5-SER-02010300
+    title: Configure the Chrony
+    levels:
+      - medium
+    status: automated
+    rules:
+      - chronyd_run_as_chrony_user
+      - chronyd_configure_pool_and_server
+      - var_multiple_time_servers=suse
+      - var_multiple_time_pools=suse      
+
+  - id: SLEM-5-SER-02030000
+    title: Uninstall Avahi Server 
+    levels:
+      - medium
+    status: automated
+    rules:
+      - service_avahi-daemon_disabled
+      - package_avahi_removed
+      - package_avahi-autoipd_removed
+
+  - id: SLEM-5-SER-02040000
+    title: Uninstall CUPS
+    levels:
+      - medium
+    status: automated
+    rules:
+      - service_cups_disabled
+      - package_cups_removed
+
+  - id: SLEM-5-SER-02050000
+    title: Uninstall DHCP Server
+    levels:
+      - medium
+    status: automated
+    rules:
+      - package_dhcp_removed
+      - package_dhcp_client_removed
+      - service_dhcpd_disabled
+
+  - id: SLEM-5-SER-02060000
+    title: Uninstall openldap-servers
+    levels:
+      - low     
+    status: automated
+    rules:
+      - package_openldap-servers_removed
+
+  - id: SLEM-5-SER-02070000
+    title: Uninstall nfs-utils
+    levels:
+      - medium
+    status: automated
+    rules:
+      - service_nfs_disabled
+      - package_nfs-utils_removed
+
+  - id: SLEM-5-SER-02080000
+    title: Uninstall rpcbind
+    levels:
+      - low
+    status: automated
+    rules:
+      - service_rpcbind_disabled
+      - package_rpcbind_removed
+
+  - id: SLEM-5-SER-02090000
+    title: Uninstall bind
+    levels:
+      - medium
+    status: automated
+    rules:
+      - service_named_disabled
+      - package_bind_removed
+
+  - id: SLEM-5-SER-02100000
+    title: Uninstall vsftpd
+    levels:
+      - medium
+    status: automated
+    rules:
+      - service_vsftpd_disabled
+      - package_vsftpd_removed
+
+  - id: SLEM-5-SER-02120000
+    title: Uninstall dovecot (IMAP/POP3)
+    levels:
+      - medium
+    status: automated
+    rules:
+      - service_dovecot_disabled
+      - package_dovecot_removed
+
+  - id: SLEM-5-SER-02130000
+    title: Uninstall samba
+    levels:
+      - low
+    status: automated
+    rules:
+      - service_smb_disabled
+      - package_samba_removed
+
+  - id: SLEM-5-SER-02150000
+    title: Uninstall net-snmp
+    levels:
+      - low
+    status: automated
+    rules:
+      - service_snmpd_disabled
+      - package_net-snmp_removed
+
+  - id: SLEM-5-SER-02190000
+    title: Uninstall telnet-server Package
+    levels:
+        - high
+    rules:
+        - package_telnet-server_removed
+    status: automated
+
+  - id: SLEM-5-SER-03020000
+    title: Uninstall rsh
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - package_rsh_removed
+
+  - id: SLEM-5-SER-03030000
+    title: Uninstall talk
+    levels:
+      - medium
+    status: automated
+    rules:
+      - package_talk_removed
+
+  - id: SLEM-5-SER-04000000
+    title: Uninstall nonessential services
+    levels:
+      - medium
+    status: manual
+
+  - id: SLEM-5-NET-01020000
+    title: Deactivate Wireless Network Interfaces
+    levels:
+        - medium
+    rules:
+        - wireless_disable_interfaces
+    status: automated
+
+  - id: SLEM-5-NET-02010000
+    title: Disable IP Forwarding
+    levels:
+        - medium
+    rules:
+        - sysctl_net_ipv4_conf_default_accept_source_route
+        - sysctl_net_ipv4_ip_forward
+        - sysctl_net_ipv6_conf_all_forwarding
+    status: automated
+
+  - id: SLEM-5-NET-02020000
+    title: Disable Packet Redirect Sending
+    levels:
+        - medium
+    rules:
+        - sysctl_net_ipv4_conf_all_send_redirects
+        - sysctl_net_ipv4_conf_default_send_redirects
+    status: automated
+
+  - id: SLEM-5-NET-03010000
+    title: Disable forwarding source-routed packets
+    levels:
+        - medium
+    rules:
+        - sysctl_net_ipv4_conf_all_accept_source_route
+        - sysctl_net_ipv6_conf_all_accept_source_route
+        - sysctl_net_ipv6_conf_default_accept_source_route
+    status: automated
+
+  - id: SLEM-5-NET-03020000
+    title: Disable accepting Internet Control Message Protocol (ICMP) redirects
+    levels:
+        - medium
+    rules:
+        - sysctl_net_ipv4_conf_all_accept_redirects
+        - sysctl_net_ipv6_conf_all_accept_redirects
+        - sysctl_net_ipv6_conf_default_accept_redirects
+    status: automated
+
+  - id: SLEM-5-NET-03030000
+    title: Disable Kernel Parameter for Accepting ICMP Redirects by Default on IPv4 Interfaces
+    levels:
+        - medium
+    rules:
+        - sysctl_net_ipv4_conf_default_accept_redirects
+    status: automated
+
+  - id: SLEM-5-NET-03040000
+    title: Log suspicious packets on all IPv4 interfaces
+    levels:
+      - medium
+    status: automated
+    rules:
+      - sysctl_net_ipv4_conf_all_log_martians
+      - sysctl_net_ipv4_conf_all_log_martians_value=enabled
+      - sysctl_net_ipv4_conf_default_log_martians
+      - sysctl_net_ipv4_conf_default_log_martians_value=enabled
+
+  - id: SLEM-5-NET-03050000
+    title: Enable Kernel Parameter to Ignore ICMP Broadcast Echo Requests on IPv4 Interfaces
+    levels:
+      - medium
+    status: automated
+    rules:
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
+
+  - id: SLEM-5-NET-03060000
+    title: Enable Kernel Parameter to Ignore Bogus ICMP Error Responses on IPv4 Interfaces
+    levels:
+      - medium
+    status: automated
+    rules:
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
+
+  - id: SLEM-5-NET-03070000
+    title: Enable Reverse Path Filtering on all IPv4 Interfaces
+    levels:
+      - medium
+    status: automated
+    rules:
+      - sysctl_net_ipv4_conf_all_rp_filter
+      - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
+      - sysctl_net_ipv4_conf_default_rp_filter
+      - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
+
+  - id: SLEM-5-NET-03080000
+    title: Enable Kernel Parameter to Use TCP Syncookies on Network Interfaces
+    levels:
+        - medium
+    rules:
+        - sysctl_net_ipv4_tcp_syncookies
+    status: automated
+
+  - id: SLEM-5-NET-03090000
+    title: Disable Accepting Router Advertisements on all IPv6 Interfaces
+    levels:
+      - medium
+    status: automated
+    rules:
+      - sysctl_net_ipv6_conf_all_accept_ra
+      - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
+      - sysctl_net_ipv6_conf_default_accept_ra
+      - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
+
+  - id: SLEM-5-NET-04020000
+    title: Disable SCTP Support
+    levels:
+      - high      
+    status: automated
+    rules:
+      - kernel_module_sctp_disabled
+
+  - id: SLEM-5-NET-05010100
+    title: Install firewalld
+    levels:
+      - medium
+    status: automated
+    rules:
+      - package_firewalld_installed
+
+  - id: SLEM-5-NET-05010300
+    title: Verify firewalld Enabled
+    levels:
+        - medium
+    rules:
+        - service_firewalld_enabled
+    status: automated
+
+  - id: SLEM-5-NET-05010400
+    title: Set Default firewalld Zone for Incoming Packets
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - set_firewalld_default_zone
+
+  - id: SLEM-5-NET-05010500
+    title: Ensure firewalld network interfaces are assigned to appropriate zone
+    levels:
+      - medium
+    status: manual
+    rules:
+      - set_firewalld_appropriate_zone
+
+  - id: SLEM-5-NET-05010600
+    title: Ensure firewalld Unnecessary Services and Ports Are Not Accepted
+    levels:
+      - medium
+    status: manual
+    rules:
+      - unnecessary_firewalld_services_ports_disabled
+
+  - id: SLEM-5-AUD-01010100
+    title: Ensure the audit Subsystem is Installed
+    levels:
+        - medium
+    rules:
+        - package_audit_installed
+    status: automated
+
+  - id: SLEM-5-AUD-01010200
+    title: Enable auditd Service
+    levels:
+        - medium
+    rules:
+        - service_auditd_enabled
+    status: automated
+
+  - id: SLEM-5-AUD-01020100
+    title: Configure auditd Max Log File Size
+    levels:
+      - high
+    status: automated
+    rules:
+      - auditd_data_retention_max_log_file
+      - var_auditd_max_log_file=6
+
+  - id: SLEM-5-AUD-01020200
+    title: Configure auditd max_log_file_action Upon Reaching Maximum Log Size
+    levels:
+      - high
+    status: automated
+    rules:
+      - auditd_data_retention_max_log_file_action
+      - var_auditd_max_log_file_action=keep_logs
+
+  - id: SLEM-5-AUD-01020300
+    title: Configure auditd actions on Low Disk Space
+    levels:
+      - high
+    status: automated
+    rules:
+      - auditd_data_retention_space_left_action
+      - var_auditd_space_left_action=email
+      - auditd_data_retention_action_mail_acct
+      - var_auditd_action_mail_acct=root
+      - auditd_data_retention_admin_space_left_action
+      - var_auditd_admin_space_left_action=halt
+
+  - id: SLEM-5-AUD-01030000
+    title: Record attempts to modify the date and time
+    levels:
+      - high
+    automated: partially # we do not have rule for clock_settime
+    rules:
+      - audit_rules_time_adjtimex
+      - audit_rules_time_settimeofday
+      - audit_rules_time_stime
+      - audit_rules_time_watch_localtime
+
+  - id: SLEM-5-AUD-01040000
+    title: Collect events that modify user/group information
+    levels:
+        - medium
+    rules:
+        - audit_rules_usergroup_modification_group
+        - audit_rules_usergroup_modification_opasswd
+        - audit_rules_usergroup_modification_passwd
+        - audit_rules_usergroup_modification_shadow
+    status: automated
+
+  - id: SLEM-5-AUD-01050000
+    title: Record Events that Modify the System's Network Environment
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - audit_rules_networkconfig_modification
+
+  - id: SLEM-5-AUD-01060000
+    title: Record Events that Modify the System''s Mandatory Access Control
+    levels:
+      - medium
+    status: automated
+    rules:
+      - audit_rules_mac_modification
+      - audit_rules_mac_modification_usr_share
+
+  - id: SLEM-5-AUD-01060000
+    title: Collect login and logout events
+    levels:
+        - medium
+    rules:
+        - audit_rules_login_events_lastlog
+        - audit_rules_login_events_tallylog
+    status: automated
+
+  - id: SLEM-5-AUD-01090000
+    levels:
+        - medium
+    title: Collect discretionary access control permission modification events
+    rules:
+        - audit_rules_dac_modification_fchmod
+        - audit_rules_dac_modification_lchown
+        - audit_rules_dac_modification_fremovexattr
+    status: automated
+
+  - id: SLEM-5-AUD-01100000
+    title: Record Unsuccessful Access Attempts to Files - open
+    levels:
+        - medium
+    rules:
+        - audit_rules_unsuccessful_file_modification_open
+    status: automated
+
+  - id: SLEM-5-AUD-01011000
+    title: Ensure auditd Collects Information on the Use of Privileged Commands
+    levels:
+      - medium     
+    status: manual # we have audit_rules_privileged_commands, but it does not set perm=x
+    notes: >-
+      Additional rules for priviliged commands are available and can be enabled.
+    related_rules:
+      - audit_rules_privileged_commands
+
+  - id: SLEM-5-AUD-01012000
+    title: Ensure auditd Collects Information on Exporting to Media (successful)
+    levels:
+        - medium
+    rules:
+        - audit_rules_media_export
+    status: automated
+
+  - id: SLEM-5-AUD-01013000
+    title: Ensure auditd Collects File Deletion Events by Users
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - audit_rules_file_deletion_events_rename
+      - audit_rules_file_deletion_events_renameat
+      - audit_rules_file_deletion_events_unlink
+      - audit_rules_file_deletion_events_unlinkat
+
+  - id: SLEM-5-AUD-01014000
+    title: Ensure auditd Collects System Administrator Actions
+    levels:
+        - medium
+    rules:
+        - audit_rules_sysadmin_actions
+    status: automated
+
+  - id: SLEM-5-AUD-01015000
+    title: Record Attempts to perform maintenance activities
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - audit_sudo_log_events
+
+  - id: SLEM-5-AUD-01016000
+    title: Collect kernel module loading and unloading
+    levels:
+        - medium
+    rules:
+        - audit_rules_privileged_commands_insmod
+        - audit_rules_privileged_commands_modprobe
+        - audit_rules_privileged_commands_rmmod
+        - audit_rules_kernel_module_loading_delete
+    status: automated
+
+  - id: SLEM-5-AUD-02010500
+    title: Configure systemd-journal-remote to send logs to a remote log host
+    levels:
+        - medium
+    rules:
+        - package_systemd-journal-remote_installed
+        - service_systemd-journal-upload_enabled
+        - systemd_journal_upload_url
+        - systemd_journal_upload_server_tls
+    status: manual # do not assume anything set external variables before use
+
+  - id: SLEM-5-AUD-02030000
+    title: Verify permissions of log files
+    levels:
+        - medium
+    rules:
+        - permissions_local_var_log
+    status: automated
+
+  - id: SLEM-5-AAA-02010000
+    title: Verify Ownership and Permissions of/on SSH Server config file
+    levels:
+      - medium
+    status: automated
+    rules:
+      - file_groupowner_sshd_config
+      - file_owner_sshd_config
+      - file_permissions_sshd_config
+
+  - id: SLEM-5-AAA-02020000
+    title: Verify Permissions on SSH Server Private *_key Key Files
+    levels:
+        - medium
+    rules:
+        - file_permissions_sshd_private_key
+    status: automated
+
+  - id: SLEM-5-AAA-02030000
+    title: Verify Permissions on SSH Server Public *.pub Key Files
+    levels:
+        - medium
+    rules:
+        - file_permissions_sshd_pub_key
+    status: automated
+
+  - id: SLEM-5-AAA-02040000
+    title: Limit Users' SSH Access
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - sshd_limit_user_access
+
+  - id: SLEM-5-AAA-02050000
+    title: Set SSH Daemon LogLevel to VERBOSE
+    levels:
+        - medium
+    rules:
+        - sshd_set_loglevel_verbose
+    status: automated
+
+  - id: SLEM-5-AAA-02060000
+    title: Disable X11 Forwarding
+    levels:
+        - medium
+    rules:
+        - sshd_disable_x11_forwarding
+    status: automated
+
+  - id: SLEM-5-AAA-02070000
+    title: Set SSH authentication attempt limit
+    levels:
+      - medium
+    status: automated
+    rules:
+      - sshd_set_max_auth_tries
+      - sshd_max_auth_tries_value=4
+
+  - id: SLEM-5-AAA-02080000
+    title: Disable SSH Support for .rhosts Files
+    levels:
+      - medium
+    status: automated
+    rules:
+      - sshd_disable_rhosts
+
+  - id: SLEM-5-AAA-02090000
+    title: Disable Host-Based Authentication
+    levels:
+      - medium
+    status: automated
+    rules:
+      - disable_host_auth
+
+  - id: SLEM-5-AAA-02100000
+    title: Disable SSH Root Login
+    levels:
+        - medium
+    rules:
+        - sshd_disable_root_login
+    status: automated
+
+  - id: SLEM-5-AAA-02110000
+    title: Disable SSH Access via Empty Passwords
+    levels:
+        - high
+    rules:
+        - sshd_disable_empty_passwords
+    status: automated
+
+  - id: SLEM-5-AAA-02120000
+    title: Do Not Allow SSH Environment Options
+    levels:
+        - high
+    rules:
+        - sshd_do_not_permit_user_env
+    status: automated
+
+  - id: SLEM-5-AAA-02130000
+    title: Use only strong Ciphers
+    levels:
+        - high
+    rules:
+        - sshd_use_approved_ciphers_ordered_stig
+        - sshd_use_approved_ciphers
+    status: automated
+
+  - id: SLEM-5-AAA-02140000
+    title: Use only strong MAC algorithms
+    levels:
+        - high
+    rules:
+        - sshd_use_approved_macs_ordered_stig
+        - sshd_use_approved_macs
+    status: automated
+
+  - id: SLEM-5-AAA-02150000
+    title: Use Only Strong Key Exchange algorithms
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - sshd_use_strong_kex
+      - sshd_strong_kex=cis_sle15
+
+  - id: SLEM-5-AAA-02160000
+    title: Configure SSH Idle Timeout Interval
+    levels:
+        - medium
+    rules:
+        - sshd_set_keepalive
+        - var_sshd_set_keepalive=1
+        - sshd_set_idle_timeout
+        - sshd_idle_timeout_value=10_minutes
+    status: automated
+
+  - id: SLEM-5-AAA-02170000
+    title: Ensure SSH LoginGraceTime is configured
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - sshd_set_login_grace_time
+      - var_sshd_set_login_grace_time=60
+
+  - id: SLEM-5-AAA-02180000
+    title: Configure SSH warning banner
+    levels:
+        - medium
+    rules:
+        - banner_etc_issue
+        - login_banner_text=dod_banners
+        - sshd_enable_warning_banner
+    status: automated
+
+  - id: SLEM-5-AAA-02190000
+    title: Enable SSH PAM
+    levels:
+      - medium
+    status: automated
+    rules:
+      - sshd_enable_pam
+
+  - id: SLEM-5-AAA-02200000
+    title: Disable SSH TCP Forwarding
+    levels:
+      - high      
+    status: automated
+    rules:
+      - sshd_disable_tcp_forwarding
+
+  - id: SLEM-5-AAA-02210000
+    title: Ensure SSH MaxStartups is configured
+    levels:
+      - medium
+    status: automated
+    rules:
+      - sshd_set_maxstartups
+      - var_sshd_set_maxstartups=10:30:60
+
+  - id: SLEM-5-AAA-02220000
+    title: Set SSH MaxSessions limit
+    levels:
+      - medium
+    status: automated
+    rules:
+      - sshd_set_max_sessions
+      - var_sshd_max_sessions=10
+
+  - id: SLEM-5-AAA-03010000
+    title: Configure password creation requirements
+    levels:
+        - medium
+    rules:
+        - cracklib_accounts_password_pam_ucredit
+        - cracklib_accounts_password_pam_lcredit
+        - cracklib_accounts_password_pam_dcredit
+        - cracklib_accounts_password_pam_ocredit
+        - cracklib_accounts_password_pam_retry
+        - var_password_pam_retry=3
+        - cracklib_accounts_password_pam_minlen
+    status: automated
+
+  - id: SLEM-5-AAA-03020000
+    levels:
+        - medium
+    title: Set Deny For Failed Password Attempts
+    rules:
+        - accounts_passwords_pam_tally2
+        - var_password_pam_tally2=3
+    status: automated
+
+  - id: SLEM-5-AAA-03030000
+    title: Limit Password Reuse
+    levels:
+        - medium
+    rules:
+      - accounts_password_pam_pwhistory_remember
+      - var_password_pam_remember_control_flag=requisite
+      - var_password_pam_remember=5
+    status: automated
+
+  - id: SLEM-5-AAA-04010100
+    title: Verify All Account Password Hashes are Shadowed with SHA512
+    levels:
+        - high
+    rules:
+        - accounts_password_all_shadowed_sha512
+        - set_password_hashing_algorithm_logindefs
+        - var_password_hashing_algorithm=SHA512
+    status: automated
+
+  - id: SLEM-5-AAA-04010200
+    title: Set Existing Passwords Maximum Age
+    levels:
+        - medium
+    rules:
+        - accounts_password_set_max_life_existing
+        - var_accounts_maximum_age_login_defs=60
+        - accounts_maximum_age_login_defs
+    status: automated
+
+  - id: SLEM-5-AAA-04010300
+    title: Set Existing Passwords Minimum Age
+    levels:
+        - medium
+    rules:
+        - accounts_password_set_min_life_existing
+        - var_accounts_minimum_age_login_defs=1
+        - accounts_minimum_age_login_defs
+    status: automated
+
+  - id: SLEM-5-AAA-04010400
+    title: Set and Apply Password Warning Age
+    levels:
+      - medium
+    status: automated
+    rules:
+      - accounts_password_warn_age_login_defs
+      - var_accounts_password_warn_age_login_defs=7
+      - accounts_password_set_warn_age_existing
+
+  - id: SLEM-5-AAA-04010500
+    title: Set Account Expiration Following Inactivity
+    levels:
+        - medium
+    rules:
+        - account_disable_post_pw_expiration
+    status: automated
+
+  - id: SLEM-5-AAA-04010600
+    title: Ensure all users last password change date is in the past
+    levels:
+      - medium
+    automated: partially
+    rules:
+      - accounts_password_last_change_is_in_past
+
+  - id: SLEM-5-AAA-04020000
+    title: Ensure that System Accounts Do Not Run a Shell Upon Login
+    levels:
+        - medium
+    rules:
+        - no_shelllogin_for_systemaccounts
+    status: automated
+
+  - id: SLEM-5-AAA-04030000
+    title: Verify Root Has A Primary GID 0
+    levels:
+      - high
+    status: automated
+    rules:
+      - accounts_root_gid_zero
+
+  - id: SLEM-5-AAA-04040000
+    title: Set Interactive Session Timeout
+    levels:
+      - medium
+    automated: partially # we check only for value of tmout variable, no export or readonly and we do not check /etc/bashrc
+    rules:
+      - accounts_tmout
+      - var_accounts_tmout=15_min
+
+  - id: SLEM-5-AAA-04050000
+    title: Ensure the Default Umask is Set Correctly in login.defs
+    levels:
+        - medium
+    rules:
+        - accounts_umask_etc_login_defs
+    status: automated
+
+  - id: SLEM-5-AAA-05050000
+    title: Restrict direct and virtual console Root Logins
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - no_direct_root_logins
+      - securetty_root_login_console_only
+
+  - id: SLEM-5-AAA-05060000
+    title: Enforce Usage of pam_wheel on the System for su Authentication
+    levels:
+      - medium
+    automated: partially # we check only for usage of use_uid with pam_su, not for the group
+    rules:
+      - ensure_pam_wheel_group_empty
+      - use_pam_wheel_group_for_su
+      - var_pam_wheel_group_for_su=cis
+
+  - id: SLEM-5-SMA-01010000
+    title: Verify and Correct Ownership and File Permissions with RPM
+    levels:
+      - high
+    status: manual
+    related_rules:
+      - rpm_verify_permissions
+      - rpm_verify_ownership
+
+  - id: SLEM-5-SMA-01020000
+    title: Configure permissions on /etc/passwd
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - file_groupowner_etc_passwd
+      - file_owner_etc_passwd
+      - file_permissions_etc_passwd
+      - file_permissions_etc_gshadow
+      - file_groupowner_etc_gshadow
+      - file_owner_etc_gshadow
+
+  - id: SLEM-5-SMA-01030000
+    title: Configure permissions on /etc/shadow
+    levels:
+      - medium
+    status: automated
+    rules:
+      - file_groupowner_etc_shadow
+      - file_owner_etc_shadow
+      - file_permissions_etc_shadow
+
+  - id: SLEM-5-SMA-01040000
+    title: Configure permissions on /etc/group
+    levels:
+      - medium
+    status: automated
+    rules:
+      - file_groupowner_etc_group
+      - file_owner_etc_group
+      - file_permissions_etc_group
+
+  - id: SLEM-5-SMA-01050000
+    title: Configure permissions on /etc/passwd-
+    levels:
+      - medium
+    status: automated
+    rules:
+      - file_groupowner_backup_etc_passwd
+      - file_owner_backup_etc_passwd
+      - file_permissions_backup_etc_passwd
+      - file_permissions_backup_etc_gshadow
+      - file_groupowner_backup_etc_gshadow
+      - file_owner_backup_etc_gshadow
+
+  - id: SLEM-5-SMA-01060000
+    title: Configure permissions on /etc/shadow-
+    levels:
+      - medium
+    status: automated
+    rules:
+      - file_groupowner_backup_etc_shadow
+      - file_owner_backup_etc_shadow
+      - file_permissions_backup_etc_shadow
+
+  - id: SLEM-5-SMA-01070000
+    title: Configure permissions on /etc/group-
+    levels:
+      - medium
+    status: automated
+    rules:
+      - file_groupowner_backup_etc_group
+      - file_owner_backup_etc_group
+      - file_permissions_backup_etc_group
+
+  - id: SLEM-5-SMA-01080000
+    title: Ensure No World-Writable Files Exist
+    levels:
+      - medium
+    status: automated
+    rules:
+      - file_permissions_unauthorized_world_writable
+
+  - id: SLEM-5-SMA-01090000
+    title: Ensure All Files Are Owned by a Use
+    levels:
+        - medium
+    rules:
+        - no_files_unowned_by_user
+    status: automated
+
+  - id: SLEM-5-SMA-01100000
+    title: Ensure All Files Are Owned by a Group
+    levels:
+        - medium
+    rules:
+        - file_permissions_ungroupowned
+    status: automated
+
+  - id: SLEM-5-SMA-01110000
+    title: Ensure All SUID Executables Are Authorized
+    levels:
+      - medium      
+    status: manual
+    related_rules:
+      - file_permissions_unauthorized_suid
+
+  - id: SLEM-5-SMA-01120000
+    title: Ensure All SGID Executables Are Authorized
+    levels:
+      - medium
+    status: manual
+    related_rules:
+      - file_permissions_unauthorized_sgid
+
+  - id: SLEM-5-SMA-02010000
+    title: Verify All Account Password Hashes are Shadowed
+    levels:
+      - medium
+    status: automated
+    rules:
+      - accounts_password_all_shadowed
+
+  - id: SLEM-5-SMA-02020000
+    title: Ensure there are no legacy NIS entries in /etc/passwd and /etc/shadow
+    levels:
+      - medium
+    status: automated
+    rules:
+      - no_legacy_plus_entries_etc_passwd
+      - no_legacy_plus_entries_etc_shadow
+
+  - id: SLEM-5-SMA-02030000
+    title: Verify Only Root Has UID 0
+    levels:
+        - high
+    rules:
+        - accounts_no_uid_except_zero
+    status: automated
+
+  - id: SLEM-5-SMA-02040000
+    title: Ensure Root's path Integrity
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - accounts_root_path_dirs_no_write
+      - root_path_no_dot
+
+  - id: SLEM-5-SMA-02050000
+    title: All Interactive Users Home Directories Must Exist
+    levels:
+        - medium
+    rules:
+        - accounts_user_interactive_home_directory_exists
+    status: automated
+
+  - id: SLEM-5-SMA-02060000
+    title: All Interactive User Home Directories Must Have mode 0750 Or Less Permissive
+    levels:
+        - medium
+    rules:
+        - file_permissions_home_directories
+    status: automated
+
+  - id: SLEM-5-SMA-02070000
+    title: All Interactive User Home Directories Must Be Group-Owned By The Primary Group
+    levels:
+        - medium
+    rules:
+        - file_groupownership_home_directories
+    status: automated
+
+  - id: SLEM-5-SMA-02080000
+    title: User Initialization Files Must Not Run World-Writable Programs
+    levels:
+        - medium
+    rules:
+        - accounts_user_dot_no_world_writable_programs
+    status: automated
+
+  - id: SLEM-5-SMA-02090000
+    title: Verify No .forward Files Exist
+    levels:
+      - medium
+    status: automated
+    rules:
+      - no_forward_files
+
+  - id: SLEM-5-SMA-02100000
+    title: Verify No netrc Files Exist
+    levels:
+      - medium
+    status: automated
+    rules:
+      - no_netrc_files
+
+  - id: SLEM-5-SMA-02110000
+    title: Ensure users' .netrc Files are not group or world accessible
+    levels:
+      - medium
+    status: automated
+    rules:
+      - accounts_users_netrc_file_permissions
+
+  - id: SLEM-5-SMA-02120000
+    title: Remove Rsh Trust Files
+    levels:
+      - high
+    status: manual # we have a rule but it removes additionally /etc/hosts.equiv
+    related_rules:
+      - no_rsh_trust_files
+
+  - id: SLEM-5-SMA-02130000
+    title: Ensure all GIDs referenced in /etc/passwd are defined in /etc/group
+    levels:
+      - low
+    status: automated
+    rules:
+      - gid_passwd_group_same
+
+  - id: SLEM-5-SMA-02140000
+    title: Ensure All Accounts on the System Have Unique User IDs
+    levels:
+        - medium
+    rules:
+        - account_unique_id
+    status: automated
+
+  - id: SLEM-5-SMA-02150000
+    title: Ensure All Groups on the System Have Unique Group ID
+    levels:
+      - medium
+    status: automated
+    rules:
+      - group_unique_id
+
+  - id: SLEM-5-SMA-02160000
+    title: Ensure All Accounts on the System Have Unique Names
+    levels:
+      - medium
+    status: automated
+    rules:
+      - account_unique_name
+
+  - id: SLEM-5-SMA-02170000
+    title: Ensure All Groups on the System Have Unique Group Names
+    levels:
+      - medium
+    status: automated
+    rules:
+      - group_unique_name
+
+  - id: SLEM-5-SMA-02180000
+    title: Ensure shadow Group on the System is Empty
+    levels:
+      - medium      
+    status: automated
+    rules:
+      - ensure_shadow_group_empty
