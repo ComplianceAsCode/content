@@ -11,6 +11,7 @@ description: |-
 selections:
   - stig_slmicro5:all
   - var_user_initialization_files_regex=all_dotfiles
+  - var_accounts_authorized_local_users_regex=slmicro6
   - '!accounts_passwords_pam_tally2'
   - '!accounts_passwords_pam_tally2_file'
   - '!accounts_passwords_pam_tally2_file_selinux'
