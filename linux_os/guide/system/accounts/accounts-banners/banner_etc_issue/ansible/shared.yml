@@ -5,7 +5,7 @@
 # disruption = medium
 {{{ ansible_instantiate_variables("login_banner_text") }}}
 
-{{%- if product not in ['sle15', 'slmicro5'] -%}}
+{{%- if product not in ['sle15', 'slmicro5', 'slmicro6'] -%}}
 - name: "{{{ rule_title }}} - Ensure Correct Banner"
   copy:
     dest: /etc/issue

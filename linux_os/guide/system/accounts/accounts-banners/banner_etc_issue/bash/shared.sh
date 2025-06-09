@@ -16,7 +16,7 @@
 {{{ bash_deregexify_banner_backslash("login_banner_text") }}}
 formatted=$(echo "$login_banner_text" | fold -sw 80)
 
-{{%- if product not in ['sle15', 'slmicro5'] %}}
+{{%- if product not in ['sle15', 'slmicro5', 'slmicro6'] %}}
 cat <<EOF >/etc/issue
 $formatted
 EOF
