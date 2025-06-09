@@ -39,7 +39,11 @@
   <!-- OVAL object to collect filename for Aide build database -->
   <ind:textfilecontent54_object id="object_aide_operational_database_filepath" version="1">
     <ind:filepath>/etc/aide/aide.conf</ind:filepath>
+    {{% if product == "debian13" %}}
+    <ind:pattern operation="pattern match">^database_in=file:(?:@@{DBDIR}/)?([a-z./]+)$</ind:pattern>
+    {{% else %}}
     <ind:pattern operation="pattern match">^database=file:(?:@@{DBDIR}/)?([a-z./]+)$</ind:pattern>
+    {{% endif %}}
     <!-- From aide.conf(5) - "If there are multiple database lines, then the first one is used" =>
                   therefore we will retrieve only the first instance -->
     <ind:instance operation="equals" datatype="int">1</ind:instance>
