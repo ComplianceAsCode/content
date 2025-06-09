@@ -31,3 +31,4 @@ selections:
   - service_rsh_disabled
   - service_rexec_disabled
   - package_scap-security-guide_installed
+  - set_password_hashing_yescrypt_cost_factor_logindefs
