@@ -54,6 +54,10 @@ jobs:
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: |
+            content
+            oscal-content
       # Step 5: Detect the updates of CAC content
       - name: Detect files changed by PR
         id: changed-files
