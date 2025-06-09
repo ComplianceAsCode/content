@@ -33,7 +33,7 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/issue", group="root") 
 ocil: |-
     {{{ ocil_file_group_owner(file="/etc/issue", group="root") }}}
 
-{{%- if product in ['sle15', 'slmicro5'] %}}
+{{%- if product in ['sle15', 'slmicro5', 'slmicro6'] %}}
 template:
     name: file_groupowner
     vars:
