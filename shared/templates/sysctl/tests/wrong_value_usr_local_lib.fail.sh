@@ -7,7 +7,7 @@
 {{% endif %}}
 
 # Clean sysctl config directories
-{{% if product not in ["sle12", "sle15", "slmicro5"] %}}
+{{% if product not in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
 {{% if "ubuntu" in product %}}
 rm -rf /usr/lib/sysctl.d/* /run/sysctl.d/* /etc/sysctl.d/* /etc/ufw/sysctl.conf
 {{% else %}}
