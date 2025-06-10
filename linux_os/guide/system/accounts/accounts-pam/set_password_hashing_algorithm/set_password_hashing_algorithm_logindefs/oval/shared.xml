@@ -1,6 +1,11 @@
+{{% if product == 'slmicro6' %}}
+{{% set login_defs_path = "/usr/etc/login.defs" %}}
+{{% else %}}
+{{% set login_defs_path = "/etc/login.defs" %}}
+{{% endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("The password hashing algorithm should be set correctly in /etc/login.defs.", rule_title=rule_title) }}}
+	  {{{ oval_metadata("The password hashing algorithm should be set correctly in /usr/etc/login.defs.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_set_password_hashing_algorithm_logindefs"/>
     </criteria>
@@ -15,7 +20,7 @@
   <ind:textfilecontent54_object id="object_last_encrypt_method_from_etc_login_defs" version="1">
     <!-- Read whole /etc/login.defs as single line so we can retrieve last ENCRYPT_METHOD directive occurrence -->
     <ind:behaviors singleline="true"/>
-    <ind:filepath>/etc/login.defs</ind:filepath>
+    <ind:filepath>{{{ login_defs_path }}}</ind:filepath>
     <!-- Retrieve last (uncommented) occurrence of ENCRYPT_METHOD directive -->
     <ind:pattern operation="pattern match">.*\n[^#]*(ENCRYPT_METHOD\s+\w+)\s*\n</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
@@ -49,5 +54,5 @@
   </local_variable>
 
   <external_variable id="var_password_hashing_algorithm" version="1"
-    datatype="string" comment="hashing algorithm for /etc/login.defs"/>
+    datatype="string" comment="hashing algorithm for {{{ login_defs_path }}}"/>
 </def-group>

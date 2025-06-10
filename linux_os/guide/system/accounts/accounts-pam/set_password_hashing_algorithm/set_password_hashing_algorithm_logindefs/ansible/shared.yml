@@ -3,11 +3,18 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+
+{{% if product == 'slmicro6' %}}
+{{% set login_defs_path = "/usr/etc/login.defs" %}}
+{{% else %}}
+{{% set login_defs_path = "/etc/login.defs" %}}
+{{% endif %}}
+
 {{{ ansible_instantiate_variables("var_password_hashing_algorithm") }}}
 
-- name: Set Password Hashing Algorithm in /etc/login.defs
+- name: Set Password Hashing Algorithm in {{{ login_defs_path }}}
   lineinfile:
-      dest: /etc/login.defs
+      dest: {{{ login_defs_path }}}
       regexp: ^#?ENCRYPT_METHOD
       line: ENCRYPT_METHOD {{ var_password_hashing_algorithm.split('|')[0] }}
       state: present
