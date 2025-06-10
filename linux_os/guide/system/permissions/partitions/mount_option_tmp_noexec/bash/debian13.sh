@@ -7,14 +7,14 @@
 unit=tmp.mount
 mount_option=noexec
 
-# check wether unit is in use
+# check whether unit is in use
 unit_check=$(systemctl -q list-units $unit | grep active)
 
 if [ "x$unit_check" == "x" ]; then
     exit 0
 fi
 
-# check wether mount option is present
+# check whether mount option is present
 current_options=$(systemctl show $unit -P Options)
 option_check=$(echo $current_options | grep $mount_option | wc -l)
 
