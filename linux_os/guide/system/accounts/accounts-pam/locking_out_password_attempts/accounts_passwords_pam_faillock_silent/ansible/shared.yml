@@ -21,8 +21,8 @@
 
 - name: {{{ rule_title }}} - Ensure the pam_faillock.so silent parameter not in PAM files
   block:
-    {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/system-auth','auth','','pam_faillock.so',silent, rule_title=rule_title) | indent(4) }}}
-    {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/password-auth','auth','','pam_faillock.so',silent, rule_title=rule_title) | indent(4) }}}
+    {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/system-auth','auth','','pam_faillock.so','silent', rule_title=rule_title) | indent(4) }}}
+    {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/password-auth','auth','','pam_faillock.so','silent', rule_title=rule_title) | indent(4) }}}
   when:
     - result_faillock_conf_check.stat.exists
 
