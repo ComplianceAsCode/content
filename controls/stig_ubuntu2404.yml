@@ -926,7 +926,7 @@ controls:
       with SSH traffic at the end of the session or after 10 minutes of inactivity.
     levels:
       - medium
-    related_rules:
+    rules:
       - sshd_idle_timeout_value=10_minutes
       - sshd_set_idle_timeout
     status: automated
