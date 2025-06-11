@@ -3,35 +3,12 @@ permissions:
   contents: write
   pull-requests: read
 on:
-  pull_request:
-    types:
-      - closed
+  push:
     branches:
       - master
-
 jobs:
-  check-pr-message:
+  sync-cac-updates-to-oscal-content:
     runs-on: ubuntu-latest
-    outputs:
-      run_job_check_update: ${{ steps.check-pr.outputs.run_job_check_update }}
-    steps:
-    - name: Check if the PR comes from the sync of OSCAL content
-      id: check-pr
-      run: |
-        PR_TITLE="${{ github.event.pull_request.title }}"
-        echo "PR Title: $PR_TITLE"
-        if [[ "$PR_TITLE" == *"Auto-generated PR from OSCAL content"* ]]; then
-          echo "The PR comes from OSCAL content. The task of Sync CaC content to OSCAL will exit."
-          echo "Skipping further checks."
-          exit 0
-        else
-          echo "::set-output name=run_job_check_update::true"
-        fi
-  
-  check-cac-content-update-and-sync-oscal-content:
-    runs-on: ubuntu-latest
-    needs: check-pr-message
-    if: ${{ needs.check-pr-message.outputs.run_job_check_update == 'true' }}
     steps:
       # Step 1: Set up Python 3
       - name: Set up Python 3
@@ -47,8 +24,30 @@ jobs:
         with:
           repository: ${{ github.repository }}
           path: cac-content
+      - name: Get the commit message and PR number
+        run: |
+          cd cac-content
+          # Get the latest commit message
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          # Extract the PR number from the commit message (if it's a merge commit)
+          PR_NUMBER=$(echo "$COMMIT_MSG" | grep -oP '#\K\d+')
+          if [ -n "$PR_NUMBER" ]; then
+            echo "Found PR number: $PR_NUMBER"
+            echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+            echo "SKIP=false" >> $GITHUB_ENV
+            PR_INFO=$(curl -s "https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}")
+            # Extract PR title from the response
+            PR_TITLE=$(echo "$PR_INFO" | jq -r .title)
+            echo "PR Title: $PR_TITLE"
+            if [[ "$PR_TITLE" == *"Auto-generated PR from OSCAL content"* ]]; then
+              echo "The PR comes from OSCAL content. The task of Sync CaC content to OSCAL will exit."
+              echo "Skipping further checks."
+              echo "SKIP=true" >> $GITHUB_ENV
+            fi
+          fi
       # Step 4: Get the access token for content write permission to OSCAL content
       - name: Get GitHub app token
+        if: ${{ env.SKIP == 'false' }}
         uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
         id: app-token
         with:
@@ -60,12 +59,12 @@ jobs:
             oscal-content
       # Step 5: Detect the updates of CAC content
       - name: Detect files changed by PR
+        if: ${{ env.SKIP == 'false' }}
         id: changed-files
         run: |
-          pr_number=${{ github.event.pull_request.number }}
           repo=${{ github.repository }}
           # Fetch all pages of the files for the pull request
-          url="repos/$repo/pulls/$pr_number/files"
+          url="repos/$repo/pulls/${{ env.PR_NUMBER }}/files"
           response=$(gh api "$url" --paginate)
           echo "$response" | jq -r '.[].filename' > filenames.txt
           echo "CHANGE_FOUND=false" >> $GITHUB_ENV
@@ -165,8 +164,7 @@ jobs:
       - name: Check if the OSCAL content branch exists
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
-          pr_number="${{ github.event.pull_request.number }}"
-          BRANCH_NAME="sync_cac_pr$pr_number"
+          BRANCH_NAME="sync_cac_pr${{ env.PR_NUMBER }}"
           cd oscal-content
           branches=$(git branch -r | grep 'origin/sync_cac' | sed 's/origin\///')
           exist="false"
@@ -175,7 +173,7 @@ jobs:
             if [[ "$branch" == "$BRANCH_NAME" ]]; then
               echo "OSCAL content branch $BRANCH_NAME exists"
               git fetch --all
-              git checkout -b sync_cac_pr$pr_number origin/sync_cac_pr$pr_number
+              git checkout -b sync_cac_pr${{ env.PR_NUMBER }} origin/sync_cac_pr${{ env.PR_NUMBER }}
               exist="true"
               break
             fi
@@ -189,7 +187,7 @@ jobs:
         run: |
           cd trestle-bot && source venv/bin/activate
           RH_PRODUCTS=${{ env.RH_PRODUCTS }}
-          pr_number="${{ github.event.pull_request.number }}"
+          pr_number="${{ env.PR_NUMBER }}"
           # 1.1 Get the updated controls to array
           file="updated_controls"
           if [ -f "$file" ] && [ -s "$file" ]; then
@@ -224,7 +222,7 @@ jobs:
         run: |
           cd trestle-bot && source venv/bin/activate
           RH_PRODUCTS=${{ env.RH_PRODUCTS }}
-          pr_number="${{ github.event.pull_request.number }}"
+          pr_number="${{ env.PR_NUMBER }}"
           # 1. Get the updated profiles
           # 2. Sync the updated profiles to OSCAL profile and component-definition
           for product in "${RH_PRODUCTS[@]}"; do
@@ -253,7 +251,7 @@ jobs:
         run: |
           cd trestle-bot && source venv/bin/activate
           RH_PRODUCTS=${{ env.RH_PRODUCTS }}
-          pr_number="${{ github.event.pull_request.number }}"
+          pr_number="${{ env.PR_NUMBER }}"
           # 1. Get the rule impacted controls
           file="rule_impacted_controls"
           if [ -f "$file" ] && [ -s "$file" ]; then
@@ -284,8 +282,7 @@ jobs:
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
           cd oscal-content
-          pr_number="${{ github.event.pull_request.number }}"
-          BRANCH_NAME="sync_cac_pr$pr_number"
+          BRANCH_NAME="sync_cac_pr${{ env.PR_NUMBER }}"
           OWNER="ComplianceAsCode" 
           REPO="oscal-content"
           # Check if the PR exists
@@ -298,10 +295,10 @@ jobs:
           else
             echo "Creating PR for new branch: $BRANCH_NAME"
             gh pr create --repo $OWNER/$REPO \
-              --title "Auto-generated PR from CAC $pr_number" \
+              --title "Auto-generated PR from CAC ${{ env.PR_NUMBER }}" \
               --head "$BRANCH_NAME" \
               --base "main" \
-              --body "This is an auto-generated PR from CAC $pr_number updates"
+              --body "This is an auto-generated PR from CAC ${{ env.PR_NUMBER }} updates"
           fi
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
