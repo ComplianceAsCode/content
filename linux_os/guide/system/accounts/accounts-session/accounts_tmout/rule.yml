@@ -5,8 +5,9 @@ title: 'Set Interactive Session Timeout'
 
 description: |-
     Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that
-    all user sessions will terminate based on inactivity.
-    The value of TMOUT should be exported and read only.
+    all user sessions will terminate based on inactivity. A value of <tt>0</tt> (zero)
+    disables the automatic logout feature and is therefore not a compliant setting.
+    The value of TMOUT should be a positive integer, exported, and read only.
     The <tt>TMOUT</tt>
     {{% if product in ["sle12", "sle15", "slmicro5"] %}}
     setting in <tt>/etc/profile.d/autologout.sh</tt> should read as follows:
@@ -65,7 +66,7 @@ references:
     stigid@sle15: SLES-15-010130
     stigid@ubuntu2204: UBTU-22-412030
 
-ocil_clause: 'value of TMOUT is not less than or equal to expected setting'
+ocil_clause: 'the TMOUT value is not configured, is set to 0, or is not less than or equal to the expected setting'
 
 ocil: |-
     Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
