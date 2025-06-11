@@ -1130,7 +1130,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 #}}
 {{%- macro ansible_pam_faillock_enable(rule_title=None) -%}}
-
+{{% if 'ubuntu' not in product %}}
 {{{ ansible_check_authselect_presence(rule_title=rule_title) }}}
 
 - name: {{{ rule_title }}} - Remediation where authselect tool is present
@@ -1187,6 +1187,61 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
         - result_pam_faillock_is_enabled.found == 0
   when:
     - not result_authselect_present.stat.exists
+
+{{% else %}}
+{{{ ansible_check_pam_auth_update_presence(rule_title=rule_title) }}}
+
+- name: {{{ rule_title }}} - Remediation where pam-auth-update tool is present
+  block:
+    - name: {{{ rule_title }}} - Check the presence of cac_faillock file
+      ansible.builtin.stat:
+        path: /usr/share/pam-configs/cac_faillock
+      register: faillock_file_stat
+
+    - name: {{{ rule_title }}} - Check the presence of cac_faillock_notify file
+      ansible.builtin.stat:
+        path: /usr/share/pam-configs/cac_faillock_notify
+      register: faillock_notify_file_stat
+
+    - name: {{{ rule_title }}} - Put the content into cac_faillock if it does not exist
+      ansible.builtin.copy:
+        dest: /usr/share/pam-configs/cac_faillock
+        content: |+
+          Name: Enable pam_faillock to deny access
+          Default: yes
+          Priority: 0
+          Conflicts: faillock
+          Auth-Type: Primary
+          Auth:
+            [default=die]                   pam_faillock.so authfail
+            sufficient                      pam_faillock.so authsucc
+        force: yes
+      when: not faillock_file_stat.stat.exists
+
+    - name: {{{ rule_title }}} - Put the content into cac_faillock_notify if it does not exist
+      ansible.builtin.copy:
+        dest: /usr/share/pam-configs/cac_faillock_notify
+        content: |+
+          Name: Notify of failed login attempts and reset count upon success
+          Default: yes
+          Priority: 1025
+          Conflicts: faillock_notify
+          Auth-Type: Primary
+          Auth:
+            requisite                       pam_faillock.so preauth
+          Account-Type: Primary
+          Account:
+            required                        pam_faillock.so
+        force: yes
+      when: not faillock_notify_file_stat.stat.exists
+
+    {{{ ansible_apply_pam_auth_update_changes('cac_faillock') | indent(4) }}}
+    {{{ ansible_apply_pam_auth_update_changes('cac_faillock_notify') | indent(4) }}}
+
+  when:
+    - result_pam_auth_update_present.stat.exists
+
+{{% endif -%}}
 {{%- endmacro -%}}
 
 

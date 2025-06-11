@@ -1,6 +1,6 @@
 #!/bin/bash
 
-authselect create-profile testingProfile --base-on minimal
+authselect create-profile testingProfile --base-on local || authselect create-profile testingProfile --base-on minimal
 
 CUSTOM_PAM_FILE="/etc/authselect/custom/testingProfile/password-auth"
 
