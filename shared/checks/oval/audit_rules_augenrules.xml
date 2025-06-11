@@ -22,8 +22,13 @@
     <ind:filepath>/usr/lib/systemd/system/audit-rules.service</ind:filepath>
     <ind:pattern operation="pattern match">^ExecStart=(\/usr|)?\/sbin\/augenrules.*$</ind:pattern>
   {{% else %}}
-    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
-    <ind:pattern operation="pattern match">^(ExecStartPost=\-\/sbin\/augenrules.*$|Requires=augenrules.service)</ind:pattern>
+    {{% if product in ['debian13'] %}}
+      <ind:filepath>/usr/lib/systemd/system/audit-rules.service</ind:filepath>
+      <ind:pattern operation="pattern match">^ExecStart=\/usr\/sbin\/augenrules.*$</ind:pattern>
+    {{% else %}}
+      <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+      <ind:pattern operation="pattern match">^(ExecStartPost=\-\/sbin\/augenrules.*$|Requires=augenrules.service)</ind:pattern>
+    {{% endif %}}
 {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
