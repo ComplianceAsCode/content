@@ -1,10 +1,9 @@
 documentation_complete: true
 
-title: 'DRAFT - ANSSI-BP-028 (enhanced)'
+title: 'ANSSI-BP-028 (enhanced)'
 
 description: |-
-    This is a draft profile for experimental purposes.
-    This draft profile contains configurations that align to ANSSI-BP-028 v2.0 at the enhanced hardening level.
+    This profile contains configurations that align to ANSSI-BP-028 v2.0 at the enhanced hardening level.
 
     ANSSI is the French National Information Security Agency, and stands for Agence nationale de la sécurité des systèmes d'information.
     ANSSI-BP-028 is a configuration recommendation for GNU/Linux systems.
@@ -17,6 +16,7 @@ description: |-
 
 selections:
     - anssi:all:enhanced
+    - var_password_hashing_algorithm_pam=yescrypt
     - '!package_ypserv_removed'
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!install_PAE_kernel_on_x86-32'
@@ -32,6 +32,8 @@ selections:
     - '!sudo_add_umask'
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
+    # authselect is enabled by default
+    - '!enable_authselect'
     # this rule is not automated anymore
     - '!security_patches_up_to_date'
     # There is only chrony package on OL 10, no ntpd
