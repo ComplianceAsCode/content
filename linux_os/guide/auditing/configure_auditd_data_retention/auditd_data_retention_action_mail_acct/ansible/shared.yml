@@ -5,10 +5,10 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_auditd_action_mail_acct") }}}
 
-- name: Configure auditd mail_acct Action on Low Disk Space
-  lineinfile:
-    dest: /etc/audit/auditd.conf
-    line: "action_mail_acct = {{ var_auditd_action_mail_acct }}"
-    state: present
-    create: yes
-  #notify: reload auditd
+-   name: Configure auditd mail_acct Action on Low Disk Space
+    ansible.builtin.lineinfile:
+        dest: /etc/audit/auditd.conf
+        regexp: "^action_mail_acct"
+        line: "action_mail_acct = {{ var_auditd_action_mail_acct }}"
+        state: present
+        create: yes
