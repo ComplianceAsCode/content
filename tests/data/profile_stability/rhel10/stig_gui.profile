@@ -432,7 +432,6 @@ set_password_hashing_algorithm_logindefs
 set_password_hashing_algorithm_passwordauth
 set_password_hashing_algorithm_systemauth
 set_password_hashing_min_rounds_logindefs
-set_password_hashing_yescrypt_cost_factor_logindefs
 ssh_client_rekey_limit
 ssh_keys_passphrase_protected
 sshd_approved_ciphers=stig_rhel9
@@ -531,7 +530,7 @@ var_authselect_profile=sssd
 var_multiple_time_servers=stig
 var_networkmanager_dns_mode=explicit_default
 var_password_hashing_algorithm=SHA512
-var_password_hashing_algorithm_pam=yescrypt
+var_password_hashing_algorithm_pam=sha512
 var_password_pam_dcredit=1
 var_password_pam_dictcheck=1
 var_password_pam_difok=8
@@ -545,8 +544,7 @@ var_password_pam_remember=5
 var_password_pam_remember_control_flag=requisite_or_required
 var_password_pam_retry=3
 var_password_pam_ucredit=1
-var_password_pam_unix_rounds=5
-var_password_yescrypt_cost_factor_login_defs=5
+var_password_pam_unix_rounds=100000
 var_postfix_root_mail_alias=mil_sysadmin
 var_rekey_limit_size=1G
 var_rekey_limit_time=1hour
