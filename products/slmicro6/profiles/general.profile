@@ -16,4 +16,5 @@ selections:
   - '!accounts_passwords_pam_tally2_file'
   - '!accounts_passwords_pam_tally2_file_selinux'
   - '!gnome_gdm_disable_unattended_automatic_login'
- 
+  - '!partition_for_var_log_audit'
+
