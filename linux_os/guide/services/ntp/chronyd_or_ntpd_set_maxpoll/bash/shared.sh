@@ -12,7 +12,11 @@ pof="/usr/sbin/pidof"
 CONFIG_FILES="/etc/ntp.conf"
 $pof ntpd || {
     CHRONY_D_PATH={{{ chrony_d_path }}}
+    {{% if 'slmicro' in product %}}
+    mapfile -t CONFIG_FILES < <(find ${CHRONY_D_PATH} -type f -name '*.conf')
+    {{% else %}}
     mapfile -t CONFIG_FILES < <(find ${CHRONY_D_PATH}.* -type f -name '*.conf')
+    {{% endif %}}
     CONFIG_FILES+=({{{ chrony_conf_path }}})
 }
 
