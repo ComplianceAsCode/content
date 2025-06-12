@@ -44,7 +44,9 @@ template:
     name: service_enabled
     vars:
         servicename: ntpd
+        servicename@debian13: ntpsec
         packagename: ntp
+        packagename@debian13: ntpsec
 
 platform: package[ntp]
 
