@@ -21,3 +21,5 @@ selections:
   - '!mount_option_nosuid_remote_filesystems'
   - '!mount_option_noexec_remote_filesystems'
   - '!service_autofs_disabled'
+  - '!grub2_password'
+  - '!grub2_uefi_password'
