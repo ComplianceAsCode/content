@@ -23,6 +23,7 @@ selections:
   - anssi:all:intermediary
   - var_password_hashing_algorithm=SHA512
   - var_password_pam_unix_rounds=65536
+  - var_mount_option_proc_hidepid=rhel9_ol9_2
   # Following rules once had a prodtype incompatible with the rhel9 product
   - '!partition_for_opt'
   - '!cracklib_accounts_password_pam_minlen'

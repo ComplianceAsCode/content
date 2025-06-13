@@ -20,12 +20,8 @@ interactive: false
 
 options:
     "0": "0"
-    {{% if product in ['rhel9','ol9'] %}}
-    1: noaccess
-    2: invisible
-    default: invisible
-    {{% else %}}
+    rhel9_ol9_1: noaccess
+    rhel9_ol9_2: invisible
     1: 1
     2: 2
     default: 2
-    {{% endif %}}

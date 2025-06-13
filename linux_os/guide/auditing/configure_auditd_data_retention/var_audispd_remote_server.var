@@ -3,11 +3,8 @@ documentation_complete: true
 title: 'Remote server for audispd to send audit records'
 
 description: |-
-{{% if product in ["rhel8", "fedora"] %}}
-    The setting for remote_server in /etc/audit/audisp-remote.conf
-{{% else %}}
-    The setting for remote_server in /etc/audisp/audisp-remote.conf
-{{% endif %}}
+    For "rhel8" and "fedora" product, the setting for remote_server in /etc/audit/audisp-remote.conf
+    For other products, the setting for remote_server in /etc/audisp/audisp-remote.conf
 
 type: string
 

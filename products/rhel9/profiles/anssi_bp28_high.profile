@@ -23,6 +23,7 @@ selections:
     - anssi:all:high
     - var_password_hashing_algorithm=SHA512
     - var_password_pam_unix_rounds=65536
+    - var_mount_option_proc_hidepid=rhel9_ol9_2
     # the following rule renders UEFI systems unbootable
     - '!sebool_secure_mode_insmod'
     # Following rules once had a prodtype incompatible with the rhel9 product
