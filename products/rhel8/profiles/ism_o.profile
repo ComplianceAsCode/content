@@ -80,4 +80,4 @@ selections:
     - '!system_booted_in_fips_mode'
     # Adjust variables to match the origianl RHEL 8 profiles
     - var_password_hashing_algorithm_pam=sha512
-    - var_accounts_password_minlen_login_defs=default
+    - var_accounts_password_minlen_login_defs=15
