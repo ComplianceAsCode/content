@@ -248,8 +248,10 @@ controls:
       Codes (MACs) employing FIPS 140-3 validated cryptographic hash algorithms.
     levels:
       - medium
+    rules:
+      - ssh_approved_macs=stig_ubuntu2404
+      - ssh_use_approved_macs_ordered_stig
     status: automated
-    notes: Duplicate of UBTU-24-100830
 
   - id: UBTU-24-100900
     title: Ubuntu 24.04 LTS must accept Personal Identity Verification (PIV) credentials.

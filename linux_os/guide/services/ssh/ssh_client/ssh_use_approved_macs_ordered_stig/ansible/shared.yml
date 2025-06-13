@@ -1,0 +1,8 @@
+# platform = multi_platform_ubuntu
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables('ssh_approved_macs') }}}
+{{{ ansible_ssh_set(parameter="Macs", value="{{ ssh_approved_macs }}", config_is_distributed=ssh_distributed_config, rule_title=rule_title) }}}
