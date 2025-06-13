@@ -26,4 +26,3 @@ selections:
     - '!package_rsh_removed'
     - '!sshd_use_directory_configuration'
     - '!package_rsh-server_removed'
-    - 'service_xinetd_disabled'
