@@ -2,11 +2,9 @@ documentation_complete: true
 
 reference: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0_1.pdf
 
-title: 'DRAFT - PCI-DSS v4.0.1 Control Baseline for Oracle Linux 10'
+title: 'PCI-DSS v4.0.1 Control Baseline for Oracle Linux 10'
 
 description: |-
-    This is a draft profile for experimental purposes.
-
     Payment Card Industry - Data Security Standard (PCI-DSS) is a set of
     security standards designed to ensure the secure handling of payment card
     data, with the goal of preventing data breaches and protecting sensitive
@@ -54,6 +52,8 @@ selections:
     - '!set_ip6tables_default_rule'
     - '!set_loopback_traffic'
     - '!set_password_hashing_algorithm_commonauth'
+    # authselect is enabled by default
+    - '!enable_authselect'
 
     # Following are incompatible with the ol10 product
     - '!service_chronyd_or_ntpd_enabled'
