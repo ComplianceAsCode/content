@@ -4,6 +4,9 @@ on:
     workflows: ["Compare DS Build Content"]
     types:
       - completed
+permissions:
+    pull-requests: write
+    contents: read
 jobs:
   build-content:
     name: Generate Diff
