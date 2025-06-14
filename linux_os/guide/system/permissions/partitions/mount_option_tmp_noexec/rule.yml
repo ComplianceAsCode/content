@@ -23,6 +23,7 @@ identifiers:
     cce@rhel10: CCE-87095-6
     cce@sle12: CCE-91586-8
     cce@sle15: CCE-91272-5
+    cce@slmicro5: CCE-94079-1
 
 references:
     cis-csc: 11,13,14,3,8,9
@@ -39,7 +40,12 @@ references:
     srg: SRG-OS-000368-GPOS-00154
     stigid@ol8: OL08-00-040125
 
+{{% if product == 'slmicro5' %}}
+platform: system_with_kernel
+{{% else %}}
 platform: mount[tmp]
+{{% endif %}}
+
 
 template:
     name: mount_option
