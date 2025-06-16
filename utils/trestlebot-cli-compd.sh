@@ -29,19 +29,19 @@ if [ $# -lt 6 ]; then
 fi
 
 while IFS= read -r line; do
-  map=${line//\'/\"}
+  map=$(echo "$line" | sed "s/'/\"/g")
   policy_id=$(echo "$map" | jq -r '.policy_id')
   profile=$(echo "$map" | jq -r '.profile_name')
-  if [[ "$flag" == "true" ]]; then
+  echo "$map" | jq -r '.levels[]' > levels
+  if [ "$flag" = "true" ]; then
     param="$policy_id"
   else
     param="$profile"
   fi
-  if [[ "$policy_or_profile" == "$param" ]]; then
-    levels=($(echo "$map" | jq -r '.levels[]'))
-    for level in "${levels[@]}"; do
+  if [ "$policy_or_profile" = "$param" ]; then
+    while IFS= read -r level; do
       oscal_profile=$product-$policy_id-$level
-      if [[ "$product" == *'rhel'* ]] ; then
+      if echo "$product" | grep -q 'rhel'; then
         type="software"
       else
         type="service"
@@ -50,6 +50,6 @@ while IFS= read -r line; do
       poetry run trestlebot sync-cac-content component-definition --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$workspace_path/cac-content" --product "$product" --component-definition-type "$type" --cac-profile "$profile" --oscal-profile "$oscal_profile"
       type="validation"
       poetry run trestlebot sync-cac-content component-definition --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$workspace_path/cac-content" --product "$product" --component-definition-type "$type" --cac-profile "$profile" --oscal-profile "$oscal_profile"
-    done
+    done < levels
   fi
 done < "$product_mapping_file"
