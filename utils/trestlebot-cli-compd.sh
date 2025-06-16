@@ -28,11 +28,11 @@ if [ $# -lt 6 ]; then
     exit 1
 fi
 
+sed -i "s/'/\"/g" "$product_mapping_file"
 while IFS= read -r line; do
-  map=$(echo "$line" | sed "s/'/\"/g")
-  policy_id=$(echo "$map" | jq -r '.policy_id')
-  profile=$(echo "$map" | jq -r '.profile_name')
-  echo "$map" | jq -r '.levels[]' > levels
+  policy_id=$(echo "$line" | jq -r '.policy_id')
+  profile=$(echo "$line" | jq -r '.profile_name')
+  echo "$line" | jq -r '.levels[]' > levels
   if [ "$flag" = "true" ]; then
     param="$policy_id"
   else

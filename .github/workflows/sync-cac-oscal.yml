@@ -153,9 +153,9 @@ jobs:
                 # then convert them to impacted controls and profiles
                 rules=($line)
                 for rule in "${rules[@]}"; do
-                  python scripts/get_rule_impacted_files.py $RH_PRODUCTS "$GITHUB_WORKSPACE/cac-content" $value control >> rule_impacted_controls 2>&1
+                  python scripts/get_rule_impacted_files.py rh-products "$GITHUB_WORKSPACE/cac-content" $rule control >> rule_impacted_controls 2>&1
                   for product in "${RH_PRODUCTS[@]}"; do
-                    python scripts/get_rule_impacted_files.py $product "$GITHUB_WORKSPACE/cac-content" $value profile >> $product"_rule_impacted_profiles" 2>&1
+                    python scripts/get_rule_impacted_files.py $product "$GITHUB_WORKSPACE/cac-content" $rule profile >> $product"_rule_impacted_profiles" 2>&1
                   done
                 done
               fi
@@ -195,23 +195,20 @@ jobs:
             # Output all the updated controls in the PR
             echo "The updated controls: ${updated_controls[@]}"
           fi
-          # 1.2 Sync the updated controls to OSCAL catalog
-          for policy_id in "${updated_controls[@]}"; do
-            poetry run trestlebot sync-cac-content catalog  --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$GITHUB_WORKSPACE/cac-content" --cac-policy-id "$policy_id" --oscal-catalog "$policy_id"
-          done
-          # 1.3 Sync the updated controls to OSCAL profiles and component-definition
+          # 1.2 Sync the updated controls to OSCAL content
           for product in "${RH_PRODUCTS[@]}"; do
             for policy_id in "${updated_controls[@]}"; do
-              # 1.3.1 Sync the updated controls to OSCAL profile
               # This sync depends on the specific product available controls
               available_controls=($(cat $product"_controls")) # Get all the available controls of the product
-              IFS=' ' read -r -a controls_a <<< "$available_controls"
-              for pc in "${controls_a[@]}"; do
+              for pc in "${available_controls[@]}"; do
                 if [[ "$pc" == "$policy_id" ]]; then
+                  # 1.2.1 Sync the updated controls to OSCAL catalog
+                  poetry run trestlebot sync-cac-content catalog  --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$GITHUB_WORKSPACE/cac-content" --cac-policy-id "$policy_id" --oscal-catalog "$policy_id"
+                  # 1.2.2 Sync the updated controls to OSCAL profile
                   poetry run trestlebot sync-cac-content profile  --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$GITHUB_WORKSPACE/cac-content" --product "$product" --cac-policy-id "$policy_id" --oscal-catalog "$policy_id"
                 fi
               done
-              # 1.3.2 Sync the updated controls to OSCAL component-definition
+              # 1.2.3 Sync the updated controls to OSCAL component-definition
               # This sync depends on the control assoicated profile and levels
               sh ../cac-content/utils/trestlebot-cli-compd.sh true $policy_id $product $pr_number $GITHUB_WORKSPACE $product"_map.json"
             done
