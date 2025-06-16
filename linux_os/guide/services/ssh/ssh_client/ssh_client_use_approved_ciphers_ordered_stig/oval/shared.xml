@@ -1,0 +1,63 @@
+{{%- if product == 'ubuntu2404' %}}
+{{%- set ssh_approved_ciphers="aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes128-ctr" %}}
+{{%- endif %}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Limit the ciphers to those which are FIPS-approved.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
+      <criteria comment="the configuration is correct if it exists" operator="AND">
+        <criterion comment="Check the ciphers in /etc/ssh/ssh_config if any"
+          test_ref="test_{{{ rule_id }}}" />
+        <criterion comment="Check the ciphers in /etc/ssh/ssh_config.d if any"
+          test_ref="test_{{{ rule_id }}}_config_dir" />
+        <criterion comment="the configuraton exists" test_ref="test_ciphers_present_{{{ rule_id }}}" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="tests the value of ciphers setting in the /etc/ssh/ssh_config file"
+    id="test_{{{ rule_id }}}" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:filepath>/etc/ssh/ssh_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)ciphers(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="tests the value of ciphers setting in the /etc/ssh/ssh_config.d file"
+    id="test_{{{ rule_id }}}_config_dir" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}_config_dir" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_config_dir" version="1">
+    <ind:path>/etc/ssh/ssh_config.d</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)ciphers(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
+    <ind:subexpression datatype="string" operation="equals">{{{ ssh_approved_ciphers }}}</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_{{{ rule_id }}}" version="1">
+    <set>
+      <object_reference>obj_{{{ rule_id }}}</object_reference>
+      <object_reference>obj_{{{ rule_id }}}_config_dir</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_ciphers_present_{{{ rule_id }}}" version="1"
+                              check="all" check_existence="at_least_one_exists"
+                              comment="Verify that the value of ciphers is present">
+    <ind:object object_ref="obj_collection_obj_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+</def-group>
