@@ -1,7 +1,9 @@
 name: Compare DS
 on:
-  pull_request_target:
-    branches: [ master, 'stabilization*' ]
+  workflow_run:
+    workflows: ["Compare DS Build Content"]
+    types:
+      - completed
 jobs:
   build-content:
     name: Generate Diff
@@ -13,10 +15,11 @@ jobs:
         run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 git python3-deepdiff python3-requests jq python3-pip python3-setuptools
       - name: Install deps python
         run: pip install gitpython xmldiff
-      - name: Checkout
+      - name: Checkout master
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          repo: ComplianceAsCode/content
+          ref: master
           fetch-depth: 0
       # https://github.com/actions/checkout/issues/766
       - name: Set git safe directory
@@ -26,11 +29,6 @@ jobs:
           BASE_BRANCH: ${{ github.base_ref }}
         run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
         id: fork_point
-      - name: Checkout fork point
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-        with:
-          ref: ${{ steps.fork_point.outputs.FORK_POINT }}
-          fetch-depth: 0
       - name: Checkout (CTF)
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -51,24 +49,21 @@ jobs:
         with:
           path: 'output.json'
           prop_path: 'product'
-      - name: Build product ${{ github.base_ref }} (${{ steps.fork_point.outputs.FORK_POINT }})
+      - name: Download built product ${{ github.base_ref }} (${{ steps.fork_point.outputs.FORK_POINT }})
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: ./build_product ${{steps.product.outputs.prop}} --datastream-only
-      - name: Copy built datastream stream to be compared
-        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: cp build/ssg-${{steps.product.outputs.prop}}-ds.xml ssg-${{steps.product.outputs.prop}}-ds.xml
-      - name: Checkout
-        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        uses: actions/download-artifact@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          clean: false
+            name: pr-artifact-${{ github.event.workflow_run.head_sha }}
+            path: pr_artifacts
+      - name: Unpack built artifacts
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        run: tar -xvzf pr_artifacts/artifacts.tar.gz -C pr_artifacts/unpacked_artifacts
       - name: Build product
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: ./build_product ${{steps.product.outputs.prop}} --datastream-only
       - name: Compare datastreams
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: utils/compare_ds.py ssg-${{steps.product.outputs.prop}}-ds.xml build/ssg-${{steps.product.outputs.prop}}-ds.xml | tee diff.log
+        run: utils/compare_ds.py pr_artifacts/unpacked_artifacts/ssg-${{steps.product.outputs.prop}}-ds.xml build/ssg-${{steps.product.outputs.prop}}-ds.xml | tee diff.log
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Test if there are datastream changes
