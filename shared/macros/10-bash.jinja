@@ -240,61 +240,6 @@ done
 {{%- endif %}}
 {{%- endmacro %}}
 
-{{#
-        Set set a parameter in /etc/sshd_config or /etc/ssh/sshd_config.d/
-
-:parameter parameter: Parameter to set
-:type parameter: str
-:parameter value: The value to set
-:type value: str
-:parameter config_is_distributed: If true, will ok look in /etc/ssh/sshd_config.d
-:type config_is_distributed: str
-:parameter config_basename: Filename of configuration file when using distributed configuration
-:type config_basename: str
-
-#}}
-{{% macro bash_ssh_remediation(parameter, value, config_is_distributed="false", config_basename="00-complianceascode-hardening.conf", rule_id=None) -%}}
-{{%- set ssh_config_path = "/etc/ssh/ssh_config" %}}
-{{%- set ssh_config_dir = "/etc/ssh/ssh_config.d" -%}}
-
-{{%- if config_is_distributed == "true" %}}
-{{%- set prefix_regex = "^\s*" -%}}
-{{%- set separator_regex = "\s\+" -%}}
-{{%- set hardening_config_basename = config_basename %}}
-{{%- set line_regex = prefix_regex ~ parameter ~ separator_regex %}}
-mkdir -p {{{ ssh_config_dir }}}
-touch {{{ ssh_config_dir }}}/{{{ hardening_config_basename }}}
-chmod 0600 {{{ ssh_config_dir }}}/{{{ hardening_config_basename }}}
-{{{ lineinfile_absent(ssh_config_path, line_regex, insensitive=true, rule_id=rule_id) }}}
-{{{ lineinfile_absent_in_directory(ssh_config_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
-{{{ set_config_file(
-        path=ssh_config_dir ~ "/" ~ hardening_config_basename,
-        parameter=parameter,
-        value=value,
-        create=true,
-        insert_after="",
-        insert_before="BOF",
-        insensitive=true,
-        separator=" ",
-        separator_regex=separator_regex,
-        prefix_regex=prefix_regex, rule_id=rule_id)
-    }}}
-{{%- else %}}
-{{{ set_config_file(
-        path="/etc/ssh/ssh_config",
-        parameter=parameter,
-        value=value,
-        create=true,
-        insert_after="",
-        insert_before="BOF",
-        insensitive=true,
-        separator=" ",
-        separator_regex="\s\+",
-        prefix_regex="^\s*", rule_id=rule_id)
-    }}}
-{{%- endif %}}
-{{%- endmacro %}}
-
 
 {{#
     Macro that copies the audit rules into a file.

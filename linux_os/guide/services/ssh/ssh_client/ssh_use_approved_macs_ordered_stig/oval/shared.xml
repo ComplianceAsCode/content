@@ -1,33 +1,14 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Limit the Message Authentication Codes (MACs) to those which are FIPS-approved.", rule_title=rule_title) }}}
-    <criteria operator="AND">
-      <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
-      <criteria comment="ssh is configured correctly or is not installed" operator="OR">
-        <criteria comment="ssh is not installed" operator="AND">
-          <extend_definition comment="ssh is not required or requirement is unset"
-            definition_ref="ssh_not_required_or_unset" />
-          <extend_definition comment="package openssh-server removed"
-            definition_ref="package_openssh-server_removed" />
-        </criteria>
-
-        <criteria comment="ssh is installed and configured" operator="AND">
-          <extend_definition comment="ssh is required or requirement is unset"
-            definition_ref="ssh_required_or_unset" />
-          <extend_definition comment="package openssh-server installed"
-            definition_ref="package_openssh-server_installed" />
-          <criteria comment="ssh is configured correctly" operator="AND">
-            <criteria comment="the configuration is correct if it exists" operator="AND">
-              <criterion comment="Check the MACs in /etc/ssh/ssh_config if any"
-                test_ref="test_{{{ rule_id }}}" />
-              <criterion comment="Check the MACs in /etc/ssh/ssh_config.d if any"
-                test_ref="test_{{{ rule_id }}}_config_dir" />
-            </criteria>
-            <criterion comment="the configuraton exists" test_ref="test_MACs_present_{{{ rule_id }}}" />
-          </criteria>
-        </criteria>
-
+    <criteria comment="ssh is configured correctly" operator="AND">
+      <criteria comment="the configuration is correct if it exists" operator="AND">
+        <criterion comment="Check the MACs in /etc/ssh/ssh_config if any"
+          test_ref="test_{{{ rule_id }}}" />
+        <criterion comment="Check the MACs in /etc/ssh/ssh_config.d if any"
+          test_ref="test_{{{ rule_id }}}_config_dir" />
       </criteria>
+      <criterion comment="the configuraton exists" test_ref="test_MACs_present_{{{ rule_id }}}" />
     </criteria>
   </definition>
 
@@ -48,7 +29,7 @@
     comment="tests the value of MACs setting in the /etc/ssh/ssh_config.d file"
     id="test_{{{ rule_id }}}_config_dir" version="1">
     <ind:object object_ref="obj_{{{ rule_id }}}_config_dir" />
-    <ind:state state_ref="state_{{{ rule_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}_config_dir" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_config_dir" version="1">
@@ -59,7 +40,11 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
-    <ind:subexpression datatype="string" operation="equals">{{{ ssh_approved_macs }}}</ind:subexpression>
+    <ind:subexpression operation="equals" datatype="string" var_ref="ssh_approved_macs" var_check="at least one" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_config_dir" version="1">
+    <ind:subexpression operation="equals" datatype="string" var_ref="ssh_approved_macs" var_check="at least one" />
   </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_{{{ rule_id }}}" version="1">
@@ -74,5 +59,7 @@
                               comment="Verify that the value of MACs is present">
     <ind:object object_ref="obj_collection_obj_{{{ rule_id }}}" />
   </ind:textfilecontent54_test>
+
+  <external_variable comment="SSH Approved MACs by FIPS" datatype="string" id="ssh_approved_macs" version="1" />
 
 </def-group>

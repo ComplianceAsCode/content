@@ -251,28 +251,13 @@ value: :code:`Setting={{ varname1 }}`
 {{%- if config_is_distributed == "true" %}}
 {{% set config_dir = "/etc/ssh/ssh_config.d" %}}
 {{% set config_file = "/etc/ssh/ssh_config.d" ~ "/" ~ config_basename %}}
-{{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/ssh_config", config_dir=config_dir, set_file=config_file, parameter=parameter, separator_regex="\s+", value=value, prefix_regex="(?i)^\s*", create='yes', validate='/usr/sbin/ssh -t -f %s', insert_after='', insert_before="BOF", rule_title=rule_title) }}}
+{{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/ssh_config", config_dir=config_dir, set_file=config_file, parameter=parameter, separator_regex="\s+", value=value, prefix_regex="(?i)^\s*", create='yes', validate='', insert_after='', insert_before="BOF", rule_title=rule_title) }}}
 - name: {{{ rule_title }}} - set file mode for {{{ config_file }}}
   ansible.builtin.file:
     path: {{{ config_file }}}
     mode: '0600'
 {{%- else %}}
-{{% if product in ["ol8", "ol9"] %}}
-- name: "Find ssh_config included files"
-  shell: |-
-    included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/ssh_config | sed -e 's/\s*Include\s*//i' | sed -e 's|^[^/]|/etc/ssh/&|')
-    [[ -n $included_files ]] && ls $included_files || true
-  register: ssh_config_included_files
-
-- name: "Comment conf from included files"
-  replace:
-    path: '{{ item }}'
-    regexp: '^(\s*{{{ parameter }}}.*)$'
-    replace: '# \1'
-  loop: "{{ ssh_config_included_files.stdout_lines }}"
-
-{{% endif %}}
-{{{ ansible_set_config_file(msg, "/etc/ssh/ssh_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/ssh -t -f %s", insert_before="BOF", rule_title=rule_title) }}}
+{{{ ansible_set_config_file(msg, "/etc/ssh/ssh_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="", insert_before="BOF", rule_title=rule_title) }}}
 {{%- endif %}}
 {{%- endmacro %}}
 
