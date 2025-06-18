@@ -88,3 +88,6 @@ selections:
     - '!timer_dnf-automatic_enabled'
     - '!dnf-automatic_apply_updates'
     - '!dnf-automatic_security_updates_only'
+
+    # The following rules are not applicable to SLE 12
+    - '!logind_session_timeout'

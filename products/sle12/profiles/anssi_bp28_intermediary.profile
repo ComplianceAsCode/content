@@ -22,40 +22,43 @@ description: |-
     Manual review is required to assess if the installed services are minimal.
 
 selections:
-  - anssi:all:intermediary
-  - var_multiple_time_servers=suse
-  - var_multiple_time_pools=suse
-  - var_sudo_dedicated_group=root
-  - '!accounts_password_pam_unix_rounds_system_auth'
-  - '!accounts_password_pam_unix_rounds_password_auth'
-  -  set_password_hashing_min_rounds_logindefs
-  # Following rules once had a prodtype incompatible with the sle12 product
-  - '!accounts_password_pam_dcredit'
-  - '!sysctl_kernel_unprivileged_bpf_disabled'
-  - '!accounts_passwords_pam_faillock_deny'
-  - '!ensure_redhat_gpgkey_installed'
-  - '!ensure_almalinux_gpgkey_installed'
-  - '!accounts_passwords_pam_faillock_unlock_time'
-  - '!accounts_passwords_pam_faillock_interval'
-  - '!grub2_mds_argument'
-  - '!accounts_passwords_pam_faillock_deny_root'
-  - '!accounts_password_pam_ocredit'
-  - '!accounts_password_pam_lcredit'
-  - '!grub2_slub_debug_argument'
-  - '!sysctl_fs_protected_regular'
-  - '!accounts_password_pam_minlen'
-  - '!sysctl_net_ipv4_conf_all_drop_gratuitous_arp'
-  - '!grub2_page_poison_argument'
-  - '!enable_authselect'
-  - '!sysctl_fs_protected_fifos'
-  - '!grub2_page_alloc_shuffle_argument'
-  - '!accounts_password_pam_ucredit'
-  - '!sysctl_net_core_bpf_jit_harden'
-  - '!sysctl_net_ipv6_conf_all_autoconf'
-  - '!grub2_pti_argument'
-  - '!ensure_oracle_gpgkey_installed'
-  - '!package_kea_removed'
-  - '!package_dnf-automatic_installed'
-  - '!timer_dnf-automatic_enabled'
-  - '!dnf-automatic_apply_updates'
-  - '!dnf-automatic_security_updates_only'
+    - anssi:all:intermediary
+    - var_multiple_time_servers=suse
+    - var_multiple_time_pools=suse
+    - var_sudo_dedicated_group=root
+    - '!accounts_password_pam_unix_rounds_system_auth'
+    - '!accounts_password_pam_unix_rounds_password_auth'
+    -  set_password_hashing_min_rounds_logindefs
+    # Following rules once had a prodtype incompatible with the sle12 product
+    - '!accounts_password_pam_dcredit'
+    - '!sysctl_kernel_unprivileged_bpf_disabled'
+    - '!accounts_passwords_pam_faillock_deny'
+    - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
+    - '!accounts_passwords_pam_faillock_unlock_time'
+    - '!accounts_passwords_pam_faillock_interval'
+    - '!grub2_mds_argument'
+    - '!accounts_passwords_pam_faillock_deny_root'
+    - '!accounts_password_pam_ocredit'
+    - '!accounts_password_pam_lcredit'
+    - '!grub2_slub_debug_argument'
+    - '!sysctl_fs_protected_regular'
+    - '!accounts_password_pam_minlen'
+    - '!sysctl_net_ipv4_conf_all_drop_gratuitous_arp'
+    - '!grub2_page_poison_argument'
+    - '!enable_authselect'
+    - '!sysctl_fs_protected_fifos'
+    - '!grub2_page_alloc_shuffle_argument'
+    - '!accounts_password_pam_ucredit'
+    - '!sysctl_net_core_bpf_jit_harden'
+    - '!sysctl_net_ipv6_conf_all_autoconf'
+    - '!grub2_pti_argument'
+    - '!ensure_oracle_gpgkey_installed'
+    - '!package_kea_removed'
+    - '!package_dnf-automatic_installed'
+    - '!timer_dnf-automatic_enabled'
+    - '!dnf-automatic_apply_updates'
+    - '!dnf-automatic_security_updates_only'
+
+    # The following rules are not applicable to SLE 12
+    - '!logind_session_timeout'

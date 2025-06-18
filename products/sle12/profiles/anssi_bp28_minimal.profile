@@ -22,29 +22,29 @@ description: |-
     Manual review is required to assess if the installed services are minimal.
 
 selections:
-  - anssi:all:minimal
-  - var_multiple_time_servers=suse
-  - var_multiple_time_pools=suse
-  - var_sudo_dedicated_group=root
-  - '!accounts_password_pam_unix_rounds_system_auth'
-  - '!accounts_password_pam_unix_rounds_password_auth'
-  -  set_password_hashing_min_rounds_logindefs
-  # Following rules once had a prodtype incompatible with the sle12 product
-  - '!accounts_password_pam_dcredit'
-  - '!accounts_passwords_pam_faillock_deny_root'
-  - '!accounts_password_pam_ocredit'
-  - '!accounts_password_pam_lcredit'
-  - '!ensure_redhat_gpgkey_installed'
-  - '!ensure_almalinux_gpgkey_installed'
-  - '!accounts_passwords_pam_faillock_deny'
-  - '!accounts_passwords_pam_faillock_unlock_time'
-  - '!accounts_passwords_pam_faillock_interval'
-  - '!accounts_password_pam_ucredit'
-  - '!accounts_password_pam_minlen'
-  - '!ensure_oracle_gpgkey_installed'
-  - '!enable_authselect'
-  - '!package_kea_removed'
-  - '!package_dnf-automatic_installed'
-  - '!timer_dnf-automatic_enabled'
-  - '!dnf-automatic_apply_updates'
-  - '!dnf-automatic_security_updates_only'
+    - anssi:all:minimal
+    - var_multiple_time_servers=suse
+    - var_multiple_time_pools=suse
+    - var_sudo_dedicated_group=root
+    - '!accounts_password_pam_unix_rounds_system_auth'
+    - '!accounts_password_pam_unix_rounds_password_auth'
+    -  set_password_hashing_min_rounds_logindefs
+    # Following rules once had a prodtype incompatible with the sle12 product
+    - '!accounts_password_pam_dcredit'
+    - '!accounts_passwords_pam_faillock_deny_root'
+    - '!accounts_password_pam_ocredit'
+    - '!accounts_password_pam_lcredit'
+    - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
+    - '!accounts_passwords_pam_faillock_deny'
+    - '!accounts_passwords_pam_faillock_unlock_time'
+    - '!accounts_passwords_pam_faillock_interval'
+    - '!accounts_password_pam_ucredit'
+    - '!accounts_password_pam_minlen'
+    - '!ensure_oracle_gpgkey_installed'
+    - '!enable_authselect'
+    - '!package_kea_removed'
+    - '!package_dnf-automatic_installed'
+    - '!timer_dnf-automatic_enabled'
+    - '!dnf-automatic_apply_updates'
+    - '!dnf-automatic_security_updates_only'

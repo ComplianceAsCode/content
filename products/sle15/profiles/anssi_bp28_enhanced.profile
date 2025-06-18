@@ -68,3 +68,6 @@ selections:
     - '!accounts_password_pam_retry'
     - '!file_groupowner_etc_chrony_keys'
     - accounts_password_pam_pwhistory_remember
+
+    # The following rules are not applicable to SLE 15
+    - '!logind_session_timeout'
