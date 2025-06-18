@@ -806,10 +806,8 @@ controls:
       ANSSI doesn't specify the length of the inactivity period, we are choosing 10 minutes as reasonable number.
     status: automated
     rules:
-    {{% if "rhel" in product or "ol" in families %}}
     - logind_session_timeout
     - var_logind_session_timeout=10_minutes
-    {{% endif %}}
     - accounts_tmout
     - var_accounts_tmout=10_min
 
