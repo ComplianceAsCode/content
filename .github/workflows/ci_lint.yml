@@ -43,7 +43,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install yamllint
-        if : ${{ env.CONTROLS_CHANGES == 'true' || env.PROFILES_CHANGES == 'true' }}
+        if: ${{ env.CONTROLS_CHANGES == 'true' || env.PROFILES_CHANGES == 'true' }}
         run: pip install yamllint
 
       - name: Run yamllint in Control Files Modified by PR
