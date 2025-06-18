@@ -3,7 +3,7 @@ import re
 
 from ssg.rule_yaml import find_section_lines, get_yaml_contents
 from ssg.utils import read_file_list
-from . import create_output, write_output
+from utils.srg_utils import create_output, write_output
 
 
 def add_replacement_to_result(replacement, result):
