@@ -29,12 +29,12 @@ jobs:
           echo "$response" | jq -r '.[].filename' > filenames.txt
           cat filenames.txt
 
-          if grep "controls/" filenames.txt; then
+          if grep -q "controls/" filenames.txt; then
             echo "CONTROLS_CHANGES=true" >> $GITHUB_ENV
           else
             echo "CONTROLS_CHANGES=false" >> $GITHUB_ENV
           fi
-          if grep "\.profile" filenames.txt; then
+          if grep -q "\.profile" filenames.txt; then
             echo "PROFILES_CHANGES=true" >> $GITHUB_ENV
           else
             echo "PROFILES_CHANGES=false" >> $GITHUB_ENV
