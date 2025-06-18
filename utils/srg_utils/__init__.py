@@ -8,6 +8,7 @@ import yaml
 from ssg.utils import mkdir_p
 from ssg.yaml import yaml_SafeLoader
 from ssg.build_stig import SEVERITY
+from utils.srg_utils.yaml import replace_yaml_key
 
 def get_full_name(root_dir: str, product: str) -> str:
     product_yml_path = os.path.join(root_dir, 'products', product, 'product.yml')
