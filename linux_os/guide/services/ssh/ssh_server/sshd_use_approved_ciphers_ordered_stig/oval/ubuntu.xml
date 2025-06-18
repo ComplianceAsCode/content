@@ -8,33 +8,30 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Limit the ciphers to those which are FIPS-approved.", rule_title=rule_title) }}}
-    <criteria operator="AND">
-      <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
-      <criteria comment="sshd is configured correctly or is not installed" operator="OR">
-        <criteria comment="sshd is not installed" operator="AND">
-          <extend_definition comment="sshd is not required or requirement is unset"
-            definition_ref="sshd_not_required_or_unset" />
-          <extend_definition comment="package openssh-server removed"
-            definition_ref="package_openssh-server_removed" />
-        </criteria>
-
-        <criteria comment="sshd is installed and configured" operator="AND">
-          <extend_definition comment="sshd is required or requirement is unset"
-            definition_ref="sshd_required_or_unset" />
-          <extend_definition comment="package openssh-server installed"
-            definition_ref="package_openssh-server_installed" />
-          <criteria comment="sshd is configured correctly" operator="AND">
-            <criteria comment="the configuration is correct if it exists" operator="AND">
-              <criterion comment="Check the ciphers in /etc/ssh/sshd_config if any"
-                test_ref="test_{{{ rule_id }}}" />
-              <criterion comment="Check the ciphers in /etc/ssh/sshd_config.d if any"
-                test_ref="test_{{{ rule_id }}}_config_dir" />
-            </criteria>
-            <criterion comment="the configuraton exists" test_ref="test_ciphers_present_{{{ rule_id }}}" />
-          </criteria>
-        </criteria>
-
+    <criteria comment="sshd is configured correctly or is not installed" operator="OR">
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+          definition_ref="sshd_not_required_or_unset" />
+        <extend_definition comment="package openssh-server removed"
+          definition_ref="package_openssh-server_removed" />
       </criteria>
+
+      <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset"
+          definition_ref="sshd_required_or_unset" />
+        <extend_definition comment="package openssh-server installed"
+          definition_ref="package_openssh-server_installed" />
+        <criteria comment="sshd is configured correctly" operator="AND">
+          <criteria comment="the configuration is correct if it exists" operator="AND">
+            <criterion comment="Check the ciphers in /etc/ssh/sshd_config if any"
+              test_ref="test_{{{ rule_id }}}" />
+            <criterion comment="Check the ciphers in /etc/ssh/sshd_config.d if any"
+              test_ref="test_{{{ rule_id }}}_config_dir" />
+          </criteria>
+          <criterion comment="the configuraton exists" test_ref="test_ciphers_present_{{{ rule_id }}}" />
+        </criteria>
+      </criteria>
+
     </criteria>
   </definition>
 
