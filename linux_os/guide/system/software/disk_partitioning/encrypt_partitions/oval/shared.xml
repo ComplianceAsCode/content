@@ -22,11 +22,16 @@
         <!-- Collect all partition but /boot and /boot/efi -->
         <linux:mount_point operation="pattern match">^(?!\/boot(?:\/efi)?$).*</linux:mount_point>
         <filter action="exclude">state_encrypted_partitions</filter>
+        <filter action="include">state_non_temporary_partitions</filter>
         <filter action="include">state_non_pseudo_file_systems</filter>
     </linux:partition_object>
 
     <linux:partition_state id="state_encrypted_partitions" version="1">
         <linux:device operation="equals" var_check="at least one" var_ref="var_crypttab_partitions" />
+    </linux:partition_state>
+
+    <linux:partition_state id="state_non_temporary_partitions" version="1">
+        <linux:mount_options operation="not equal">bind</linux:mount_options>
     </linux:partition_state>
 
     <linux:partition_state id="state_non_pseudo_file_systems" version="1">
