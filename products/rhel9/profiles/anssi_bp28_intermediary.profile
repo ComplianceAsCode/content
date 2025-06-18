@@ -47,3 +47,5 @@ selections:
   - '!package_xinetd_removed'
   - '!package_ypbind_removed'
   - '!package_ypserv_removed'
+  # RHEL9 unified the paths for grub2 files. These rules are selected in control file by R5.
+  - '!grub2_uefi_password'
