@@ -29,7 +29,7 @@
     comment="tests the value of MACs setting in the /etc/ssh/ssh_config.d file"
     id="test_{{{ rule_id }}}_config_dir" version="1">
     <ind:object object_ref="obj_{{{ rule_id }}}_config_dir" />
-    <ind:state state_ref="state_{{{ rule_id }}}_config_dir" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_config_dir" version="1">
@@ -43,9 +43,6 @@
     <ind:subexpression operation="equals" datatype="string" var_ref="ssh_approved_macs" var_check="at least one" />
   </ind:textfilecontent54_state>
 
-  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_config_dir" version="1">
-    <ind:subexpression operation="equals" datatype="string" var_ref="ssh_approved_macs" var_check="at least one" />
-  </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_{{{ rule_id }}}" version="1">
     <set>
