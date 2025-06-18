@@ -51,3 +51,4 @@ Unnecessary macros are removed by the following PRs:
 - https://github.com/ComplianceAsCode/content/pull/13573
 - https://github.com/ComplianceAsCode/content/pull/13584
 - https://github.com/ComplianceAsCode/content/pull/13592
+- https://github.com/ComplianceAsCode/content/pull/13593
