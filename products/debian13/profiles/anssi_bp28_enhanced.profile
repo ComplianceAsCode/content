@@ -73,3 +73,6 @@ selections:
   - '!package_dracut-fips-aesni_installed'
   - '!audit_rules_file_deletion_events_renameat2'
   - '!audit_rules_dac_modification_fchmodat2'
+
+  # The following rule is not applicable to Debian 13
+  - '!logind_session_timeout'
