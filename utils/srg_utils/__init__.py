@@ -7,7 +7,7 @@ import yaml
 
 from ssg.utils import mkdir_p
 from ssg.yaml import yaml_SafeLoader
-
+from ssg.build_stig import SEVERITY
 
 def get_full_name(root_dir: str, product: str) -> str:
     product_yml_path = os.path.join(root_dir, 'products', product, 'product.yml')
@@ -57,3 +57,34 @@ def write_output(path: str, result: tuple) -> None:
                 line = re.sub(r'^\n', '', result[0])
             f.write(line.rstrip())
             f.write('\n')
+
+def get_last_content_index(lines):
+    last_content_index = len(lines)
+    lines.reverse()
+    for line in lines:
+        if line == '\n':
+            last_content_index -= 1
+        else:
+            break
+    lines.reverse()
+    return last_content_index
+
+
+def cleanup_end_of_file(rule_dir: str) -> None:
+    path = create_output(rule_dir)
+    with open(path, 'r') as f:
+        lines = f.readlines()
+    last_content_index = get_last_content_index(lines)
+    lines = lines[:last_content_index]
+
+    with open(path, 'w') as f:
+        f.writelines(lines)
+
+def get_cac_status(disa: str) -> str:
+    return SEVERITY.get(disa, 'Unknown')
+
+def update_severity(changed, current, rule_dir_json):
+    if changed.Severity != current.Severity and changed.Severity is not None and \
+            current.Severity is not None:
+        cac_severity = get_cac_status(changed.Severity)
+        replace_yaml_key('severity', cac_severity, rule_dir_json)
