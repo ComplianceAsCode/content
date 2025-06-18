@@ -65,6 +65,7 @@ selections:
     - '!package_xinetd_removed'
     - '!package_ypbind_removed'
     - '!package_ypserv_removed'
+
     # RHEL9 unified the paths for grub2 files. These rules are selected in control file by R5 and R29.
     - '!file_groupowner_efi_grub2_cfg'
     - '!file_owner_efi_grub2_cfg'
@@ -73,3 +74,7 @@ selections:
     - '!file_owner_efi_user_cfg'
     - '!file_permissions_efi_user_cfg'
     - '!grub2_uefi_password'
+
+    # Following rules are not applicable to RHEL
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
