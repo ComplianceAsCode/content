@@ -1,7 +1,7 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
         {{{ oval_metadata("Verify all partitions are encrypted except /boot /boot/efi",
-                            affected_platforms=["multi_platform_ol"], rule_title=rule_title) }}}
+                            affected_platforms=["multi_platform_ol", "multi_platform_ubuntu"], rule_title=rule_title) }}}
         <criteria>
             <criterion test_ref="test_encrypted_partitions" comment="Check all partitions are encrypted" />
             <!-- Needed to collect the obj_crypttab_partitions object -->
