@@ -5,7 +5,9 @@ title: 'UEFI GRUB2 bootloader configuration'
 description: |-
     UEFI GRUB2 bootloader configuration
 
+{{%- if grub2_boot_path != grub2_uefi_boot_path -%}}
 platform: uefi
+{{%- endif -%}}
 
 warnings:
     - functionality: |-
