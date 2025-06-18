@@ -35,7 +35,6 @@ SSG_REF_URIS = {
     'app-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
     'app-srg-ctr': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=container-platform',
     'stigref': 'https://public.cyber.mil/stigs/srg-stig-tools/',
-    'suse-general': 'not_publicly_available',
 }
 
 product_directories = [
