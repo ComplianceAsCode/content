@@ -11,10 +11,8 @@ controls:
             - base
         title: 'Application and operating system patching'
         rules:
-            {{%- if "rhel" not in product %}}
             - package_talk_removed
             - package_talk-server_removed
-            {{%- endif %}}
             - package_ypbind_removed
             - package_telnet_removed
             - service_telnet_disabled
