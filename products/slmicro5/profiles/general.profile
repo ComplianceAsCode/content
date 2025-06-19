@@ -16,4 +16,4 @@ description: |-
     General System Security Profile for SUSE Linux Enterprise Micro (SLEM) 5.
 
 selections:
-  - general_slmicro5:all
+    - general_slmicro5:all
