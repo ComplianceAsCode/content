@@ -40,6 +40,7 @@ template:
         filepath: /var/log/
         gid_or_name: '0'
         gid_or_name@ubuntu2204: syslog
+        gid_or_name@ubuntu2404: syslog
 
 fixtext: |-
     {{{ describe_file_group_owner(file="/var/log", group=gid) }}}
