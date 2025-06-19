@@ -1,1647 +1,1660 @@
+---
 policy: 'ANSSI-BP-028'
 title: 'Configuration Recommendations of a GNU/Linux System'
 id: anssi
 version: '2.0'
 source: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
+
 levels:
-  - id: minimal
-  - id: intermediary
-    inherits_from:
-    - minimal
-  - id: enhanced
-    inherits_from:
-    - intermediary
-  - id: high
-    inherits_from:
-    - enhanced
+    - id: minimal
+    - id: intermediary
+      inherits_from:
+          - minimal
+    - id: enhanced
+      inherits_from:
+          - intermediary
+    - id: high
+      inherits_from:
+          - enhanced
+
 reference_type: anssi
 
 controls:
-  - id: R1
-    title: Hardware Support
-    levels:
-    - enhanced
-    description: >-
-      It is recommended to apply the configuration recommendations for Hardware support
-      mentioned in ANSSI DAT-24.
-    notes: >-
-      This requirement can be checked, but remediation requires manual reinstall of the OS.
-      The content automation cannot really configure the BIOS, but can in some cases,
-      check settings that are visible to the OS. Like for example the NX/DX setting.
-    status: automated
-    rules:
-    # From ANSSI DAT-24
-    # R1 and R2 Prefer 64 bit OS
-    - prefer_64bit_os
-    # R3 If using 32 bit OS, PAE mode should be enabled
-    - install_PAE_kernel_on_x86-32
-    # R5 It is recommended to use hardware and OS that support SMEP
-    - grub2_nosmep_argument_absent
-    # R6 It is recommended to use hardware and OS that support SMAP
-    - grub2_nosmap_argument_absent
-    # R7 It is recommended to use hardware and OS that support AES-NI
-    - package_dracut-fips-aesni_installed
+    - id: R1
+      title: Hardware Support
+      levels:
+          - enhanced
+      description: >-
+          It is recommended to apply the configuration recommendations for Hardware support
+          mentioned in ANSSI DAT-24.
+      notes: >-
+          This requirement can be checked, but remediation requires manual reinstall of the OS.
+          The content automation cannot really configure the BIOS, but can in some cases,
+          check settings that are visible to the OS. Like for example the NX/DX setting.
+      status: automated
+      rules:
+          # From ANSSI DAT-24
+          # R1 and R2 Prefer 64 bit OS
+          - prefer_64bit_os
+          # R3 If using 32 bit OS, PAE mode should be enabled
+          - install_PAE_kernel_on_x86-32
+          # R5 It is recommended to use hardware and OS that support SMEP
+          - grub2_nosmep_argument_absent
+          # R6 It is recommended to use hardware and OS that support SMAP
+          - grub2_nosmap_argument_absent
+          # R7 It is recommended to use hardware and OS that support AES-NI
+          - package_dracut-fips-aesni_installed
 
     # R8 It is recommended to use hardware with support for hardware random number generator
     # R9 Disable VT-x AMD-V technologies
     # TODO: can we reliably check cpuinfo flags?
     # R10 IOMMU must enabled if the hardware supports it
+    - id: R2
+      title: Hardware configuration
+      levels:
+          - intermediary
+      description: >-
+          It is recommended to apply the configuration recommendations for BIOS/UEFI mentioned in
+          ANSSI DAT-24.
+      notes: >-
+          Configurations recommended for this requirement are to be performed at the BIOS level.
+      status: manual
 
-  - id: R2
-    title: Hardware configuration
-    levels:
-    - intermediary
-    description: >-
-      It is recommended to apply the configuration recommendations for BIOS/UEFI mentioned in
-      ANSSI DAT-24.
-    notes: >-
-      Configurations recommended for this requirement are to be performed at the BIOS level.
-    status: manual
-    #rules:
     # From ANSSI DAT-24
     # R11 Password protect the BIOS
     # R12 Deactivate peripherals not needed
     # R13 The boot order list should give highest preference to component on which final OS is installed
     # R14 Enable NX/XD bit
-    # - bios_enable_execution_restrictions # Doesn't have check
+    # - bios_enable_execution_restrictions  # Doesn't have check
     # R15 Disable VT-x/AMD-V functionality
     # R16 Enable IOMMU
-
-  - id: R3
-    title: UEFI Secure boot activation
-    levels:
-    - intermediary
-    description: >-
-      It is recommended to apply UEFI Secure Boot configuration of the distribution.
-    notes: >-
-      Secure Boot needs to be enabled in the UEFI Setup program.
-      Enabling Secure Boot can't be accomplished from the operating system.
-      Also, OVAL doesn't provide any reliable ways to detect the Secure Boot status.
-      Therefore, we will not provide any rules to automate this requirement.
-      We recommend checking the Secure Boot status using the `mokutil --sb-state` or `bootctl status` commands.
-    status: manual
-
-  - id: R4
-    title: Replacing of preloaded keys
-    levels:
-    - high
-    description: >-
-      It is recommended to replace the UEFI preloaded keys with new keys used to sign;
-      the bootloader and Linux kernel, or; the image of the Linux kernel in EFI format.
-    notes: >-
-      This requirement is not generally automatable. The Machine Owner Key (MOK) could
-      be used to add keys to the Secure Boot db key database but manual interaction is
-      required to navigate the UEFI console and input the key password.
-      On systems where MOK utility is not supported, one will need to access the UEFI
-      firmware interface to add new keys.
-      We have no automation support for UEFI interfaces and the steps for each hardware
-      manufacturer can vary.
-    status: manual
-
-  - id: R5
-    title: Boot loader password
-    levels:
-    - intermediary
-    description: >-
-      A password protecting the boot loader must exist.
-      This password must prevent any user from changing their configuration options.
-    status: automated
-    rules:
-    - grub2_password
-    - grub2_uefi_password
-
-  - id: R6
-    title: Protecting kernel command line parameters
-    levels:
-    - high
-    description: >-
-      It is recommended that UEFI Secure Boot is used to protect the Linux Kernel
-      command line parameters during boot.
-    notes: >-
-      To protect the Linux Kernel command line one needs to create an Unified Kernel Image and use
-      it with the UEFI Secure Boot mechanism.
-      To check if the Kernel image contains the kernel command one needs to inspect the binary, on
-      the command line one can use the objdump command. But unfortunately OVAL is not able to
-      inspect kernel images.
-      Also, it is not trivial to automate creation of such image or configuration of the
-      Secure Boot mechanism.
-    status: manual
-
-  - id: R7
-    title: IOMMU Configuration Guidelines
-    levels:
-    - enhanced
-    description: >-
-      The iommu = force directive must be added to the list of kernel parameters
-      during startup in addition to those already present in the configuration
-      files of the bootloader (/boot/grub/menu.lst or /etc/default/grub).
-    status: automated
-    rules:
-    - grub2_enable_iommu_force
-
-  - id: R8
-    title: Memory configuration options
-    levels:
-    - intermediary
-    status: automated
-    rules:
-    # l1tf=full,force to enable countermeasure for L1 Terminal Fault vulnerability, or
-    # l1tf=off to maximize performance, when system is not a hypervisor or VMs are trusted
-    - grub2_l1tf_argument
-    - var_l1tf_options=full_force
-
-    # page_poison=on: activate the poisoning of the pages of the page allocator (buddy allocator)
-    - grub2_page_poison_argument
-
-    # pti=on: force the use of Page Table Isolation (PTI) including on processors claiming not to
-    # be affected by the Meltdown vulnerability;
-    - grub2_pti_argument
-
-    # slab_nomerge=yes (equivalent to CONFIG_SLAB_MERGE_DEFAULT=n): disables the merging of slab
-    # caches (dynamic memory allocations) of identical size.
-    - grub2_slab_nomerge_argument
-
-    # slub_debug=F,Z,P: activate certain options for checking slabs caches (dynamic memory allocation)
-    - grub2_slub_debug_argument
-    - var_slub_debug_options=FZP
-
-    # spec_store_bypass_disable=seccomp: force the system to use the default countermeasure
-    # (on an x86 system supporting seccomp) for the Specter v4 (Speculative Store Bypass) vulnerability
-    - grub2_spec_store_bypass_disable_argument
-    - var_spec_store_bypass_disable_options=seccomp
-
-    # spectre_v2=on: force the system to use a countermeasure for the Specter v2 (Branch Target Injection) vulnerability.
-    - grub2_spectre_v2_argument
-
-    # mds=full,nosmt: force the system to use Microarchitectural Data Sampling (MDS) to mitigate
-    # the vulnerabilities of Intel processors.
-    - grub2_mds_argument
-    - var_mds_options=full_nosmt
-
-    # mce=0: force a kernel panic on uncorrected errors reported by Machine Check support.
-    - grub2_mce_argument
-
-    # page_alloc.shuffle=1: enables Page allocator randomization
-    - grub2_page_alloc_shuffle_argument
-
-    # rng_core.default_quality=500: increase confidence in TPM's HWRNG for robust and fast Linux
-    # CSPRNG initialization by crediting half of the entropy it provides.
-    - grub2_rng_core_default_quality_argument
-    - var_rng_core_default_quality=500
-
-    # Forbidden to map memory in low addresses (0)
-    # vm.mmap_min_addr = 65536
-    - sysctl_vm_mmap_min_addr
-
-
-  - id: R9
-    title: Kernel configuration options
-    levels:
-    - intermediary
-    status: automated
-    rules:
-    # Restrict access to the dmesg buffer (equivalent to
-    # CONFIG_SECURITY_DMESG_RESTRICT=y)
-    - sysctl_kernel_dmesg_restrict
-
-    # Hide kernel addresses in /proc and various other interfaces,
-    # including from privileged users
-    - sysctl_kernel_kptr_restrict
-    - sysctl_kernel_kptr_restrict_value=2
-
-    # Explicitly specify the process id space supported by the kernel,
-    # 65536 being an example value
-     # kernel.pid_max=65536
-    - sysctl_kernel_pid_max
-
-    # Restricts the use of the perf system
-    # kernel.perf_event_max_sample_rate = 1
-    # kernel.perf_cpu_time_max_percent = 1
-    - sysctl_kernel_perf_event_max_sample_rate
-    - sysctl_kernel_perf_cpu_time_max_percent
-
-    # Prohibit unprivileged access to the perf_event_open () system call.
-    # With a value greater than 2, we impose the possession of
-    # CAP_SYS_ADMIN, in order to collect the perf events.
-    # kernel.perf_event_paranoid = 2
-    - sysctl_kernel_perf_event_paranoid
-
-    # Activate ASLR
-    - sysctl_kernel_randomize_va_space
-
-    # Disable Magic System Request Key combinations
-    # kernel.sysrq = 0
-    - sysctl_kernel_sysrq
-
-    # Restrict kernel BPF usage to privileged users
-    # kernel.unprivileged_bpf_disabled=1
-    - sysctl_kernel_unprivileged_bpf_disabled
-
-    # Completely shut down the system if the Linux kernel behaves
-    # unexpectedly
-    # kernel.panic_on_oops=1
-    - sysctl_kernel_panic_on_oops
-
-  - id: R10
-    title: Disabling the loading of kernel modules
-    levels:
-    - enhanced
-    description: >-
-      The loading of the kernel modules can be blocked by the activation of the
-      sysctl kernel.modules_disabled:
-      Prohibition of loading modules (except those already loaded to this point)
-      kernel.modules_disabled = 1
-    status: automated
-    rules:
-    - sysctl_kernel_modules_disabled
-
-  - id: R11
-    title: Yama module sysctl configuration
-    levels:
-    - intermediary
-    description: >-
-      It is recommended to load the Yama security module at startup (by example
-      passing the security = yama argument to the kernel) and configure the
-      sysctl kernel.yama.ptrace_scope to a value of at least 1.
-    status: automated
-    rules:
-    - sysctl_kernel_yama_ptrace_scope
-
-  - id: R12
-    title: IPv4 configuration options
-    levels:
-    - intermediary
-    status: automated
-    rules:
-    # Mitigation of the dispersion effect of the kernel JIT at the cost of a
-    # compromise on  the associated performance.
-    # net.core.bpf_jit_harden=2
-    - sysctl_net_core_bpf_jit_harden
-
-    # No routing between interfaces
-    # net.ipv4.ip_forward = 0
-    - sysctl_net_ipv4_ip_forward
-
-    # Consider as invalid the packets received from outside whose source
-    # is the 127/8 network.
-    # net.ipv4.conf.all.accept_local=0
-    - sysctl_net_ipv4_conf_all_accept_local
-
-    # Deny receipt of ICMP redirect packets
-    # net.ipv4.conf.all.accept_redirects = 0
-    - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
-    - sysctl_net_ipv4_conf_all_accept_redirects
-
-    # net.ipv4.conf.default.accept_redirects = 0
-    - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
-    - sysctl_net_ipv4_conf_default_accept_redirects
-
-    # net.ipv4.conf.all.secure_redirects = 0
-    - sysctl_net_ipv4_conf_all_secure_redirects
-    # net.ipv4.conf.default.secure_redirects = 0
-    - sysctl_net_ipv4_conf_default_secure_redirects
-
-    # net.ipv4.conf. all.shared_media=0
-    - sysctl_net_ipv4_conf_all_shared_media
-    - sysctl_net_ipv4_conf_all_shared_media_value=disabled
-
-    - sysctl_net_ipv4_conf_default_shared_media
-    - sysctl_net_ipv4_conf_default_shared_media_value=disabled
-
-    # Deny the source routing header information supplied by the
-    # packet to determine its route.
-    # net.ipv4.conf.all.accept_source_route = 0
-    - sysctl_net_ipv4_conf_all_accept_source_route
-    # net.ipv4.conf.default.accept_source_route = 0
-    - sysctl_net_ipv4_conf_default_accept_source_route
-
-    # Prevent the Linux kernel from handling the ARP table globally.
-    - sysctl_net_ipv4_conf_all_arp_filter
-
-    # Respond to ARP requests only if the source and destination address are on the
-    # same network and come from the same interface on which the packet was received.
-    # Note that the configuration of this option is to be studied according to the
-    # use case.
-    - sysctl_net_ipv4_conf_all_arp_ignore
-    - sysctl_net_ipv4_conf_all_arp_ignore_value=2
-
-    # Refuse the routing of packets whose source or destination address is that
-    # of the local loopback.
-    # net.ipv4.conf.all.route_localnet=0
-    - sysctl_net_ipv4_conf_all_route_localnet
-
-    # Ignore gratuitous ARP requests.
-    # net.ipv4.conf.all.drop_gratuitous_arp=1
-    - sysctl_net_ipv4_conf_all_drop_gratuitous_arp
-
-    # Check that the source address of packets received on a given interface
-    # would have been contacted via this same interface.
-    # net.ipv4.conf.all.rp_filter = 1
-    - sysctl_net_ipv4_conf_all_rp_filter
-    # net.ipv4.conf.default.rp_filter = 1
-    - sysctl_net_ipv4_conf_default_rp_filter
-
-    # A non-routing equipment has no reason to receive a flow for which it is not the recipient
-    # and therefore to send an ICMP redirect packet.
-    # net.ipv4.conf.all.send_redirects = 0
-    - sysctl_net_ipv4_conf_all_send_redirects
-    # net.ipv4.conf.default.send_redirects = 0
-    - sysctl_net_ipv4_conf_default_send_redirects
-
-    # Ignore responses that do not comply with RFC 1122
-    # net.ipv4.icmp_ignore_bogus_error_responses = 1
-    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
-
-    # Increase the range for ephemeral ports
-    # net.ipv4.ip_local_port_range = 32768 65535
-    - sysctl_net_ipv4_ip_local_port_range
-
-    # RFC 1337
-    # net.ipv4.tcp_rfc1337 = 1
-    - sysctl_net_ipv4_tcp_rfc1337
-
-    # Use SYN cookies
-    # net.ipv4.tcp_syncookies = 1
-    - sysctl_net_ipv4_tcp_syncookies
-
-  - id: R13
-    title: Disabling IPv6
-    levels:
-    - intermediary
-    notes: >-
-      When IPv6 is not in use, disable it, otherwise secure the IPv6 stack.
-      This control hardens the IPv6 stack, to disable it use the related rules instead.
-    status: automated
-    rules:
-    # Disable support for "router solicitations"
-    # net.ipv6.conf.all.router_solicitations = 0
-    # net.ipv6.conf.default.router_solicitations = 0
-    - sysctl_net_ipv6_conf_all_router_solicitations
-    - sysctl_net_ipv6_conf_default_router_solicitations
-
-    # Do not accept "router preferences" by "router advertisements"
-    # net.ipv6.conf.all.accept_ra_rtr_pref = 0
-    # net.ipv6.conf.default.accept_ra_rtr_pref = 0
-    - sysctl_net_ipv6_conf_all_accept_ra_rtr_pref
-    - sysctl_net_ipv6_conf_default_accept_ra_rtr_pref
-
-    # No auto configuration of prefixes by router advertisements
-    # net.ipv6.conf.all.accept_ra_pinfo = 0
-    # net.ipv6.conf.default.accept_ra_pinfo = 0
-    - sysctl_net_ipv6_conf_all_accept_ra_pinfo
-    - sysctl_net_ipv6_conf_default_accept_ra_pinfo
-
-    # No default router learning by router advertisements
-    # net.ipv6.conf.all.accept_ra_defrtr = 0
-    # net.ipv6.conf.default.accept_ra_defrtr = 0
-    - sysctl_net_ipv6_conf_all_accept_ra_defrtr
-    - sysctl_net_ipv6_conf_default_accept_ra_defrtr
-
-    # No auto configuration of addresses from "routers" advertisements
-    # net.ipv6.conf.all.autoconf = 0
-    # net.ipv6.conf.default.autoconf = 0
-    - sysctl_net_ipv6_conf_all_autoconf
-    - sysctl_net_ipv6_conf_default_autoconf
-
-    # Do not accept ICMPs of redirect type
-    # net.ipv6.conf.all_accept_redirects = 0
-    - sysctl_net_ipv6_conf_all_accept_redirects
-
-    # net.ipv6.conf.default.accept_redirects = 0
-    - sysctl_net_ipv6_conf_default_accept_redirects
-
-    # Deny routing source packets
-    # net.ipv6.conf.all.accept_source_route = 0
-    - sysctl_net_ipv6_conf_all_accept_source_route
-
-    # net.ipv6.conf.default.accept_source_route = 0
-    - sysctl_net_ipv6_conf_default_accept_source_route
-
-    # Maximum number of autoconfigured addresses per interface
-    # net.ipv6.conf.all.max_addresses = 1
-    # net.ipv6.conf.default.max_addresses = 1
-    - sysctl_net_ipv6_conf_all_max_addresses
-    - sysctl_net_ipv6_conf_default_max_addresses
-
-    related_rules:
-    # Rules to select when disabling the IPv6 stack.
-    - sysctl_net_ipv6_conf_all_disable_ipv6
-    - sysctl_net_ipv6_conf_default_disable_ipv6
-
-  - id: R14
-    title: File system configuration options
-    levels:
-    - intermediary
-    notes: >-
-      The rule for the /proc file system is not implemented
-    status: automated
-    rules:
-    # Disable coredump creation for setuid executables
-    - sysctl_fs_suid_dumpable
-
-    # Available from version 4.19 of the Linux kernel, allows to prohibit
-    # opening FIFOs and "regular" files that are not owned by the user
-    # in sticky folders for everyone to write.
-    # fs.protected_fifos=2
-    - sysctl_fs_protected_fifos
-    # fs.protected_regular=2
-    - sysctl_fs_protected_regular
-
-    # Restrict the creation of symbolic links to files that the user owns.
-    - sysctl_fs_protected_symlinks
-
-    # Restrict the creation of hard links to files whose user is owner.
-    - sysctl_fs_protected_hardlinks
-
-  - id: R15
-    title: Compile options for memory management
-    levels:
-    - high
-    status: automated
-    notes: >-
-      The special case of direct access to physical memory is not handled.
-    rules:
-    - kernel_config_strict_kernel_rwx
-    - kernel_config_debug_wx
-    - kernel_config_debug_fs
-    - kernel_config_stackprotector
-    - kernel_config_stackprotector_strong
-    - kernel_config_sched_stack_end_check
-    - kernel_config_hardened_usercopy
-    - kernel_config_hardened_usercopy_fallback
-    - kernel_config_vmap_stack
-    - kernel_config_refcount_full
-    - kernel_config_fortify_source
-    - kernel_config_acpi_custom_method
-    - kernel_config_devkmem
-    - kernel_config_proc_kcore
-    - kernel_config_compat_vdso
-    - kernel_config_security_dmesg_restrict
-    - kernel_config_retpoline
-    - kernel_config_legacy_vsyscall_none
-    - kernel_config_legacy_vsyscall_emulate
-    - kernel_config_legacy_vsyscall_xonly
-    - kernel_config_x86_vsyscall_emulation
-
-  - id: R16
-    title: Compile options for kernel data structures
-    levels:
-    - high
-    status: automated
-    rules:
-    - kernel_config_debug_credentials
-    - kernel_config_debug_notifiers
-    - kernel_config_debug_list
-    - kernel_config_debug_sg
-    - kernel_config_bug_on_data_corruption
-
-  - id: R17
-    title: Compile options for the memory allocator
-    levels:
-    - high
-    status: automated
-    rules:
-    - kernel_config_slab_freelist_random
-    - kernel_config_slab_freelist_hardened
-    - kernel_config_slab_merge_default
-    - kernel_config_slub_debug
-    - kernel_config_page_poisoning
-    - kernel_config_page_poisoning_no_sanity
-    - kernel_config_page_poisoning_zero
-    - kernel_config_compat_brk
-
-  - id: R18
-    title: Compile options for the management of kernel module
-    levels:
-    - high
-    status: automated
-    rules:
-    - kernel_config_strict_module_rwx
-    - kernel_config_module_sig
-    - kernel_config_module_sig_force
-    - kernel_config_module_sig_all
-    - kernel_config_module_sig_sha512
-    - kernel_config_module_sig_hash
-    - kernel_config_module_sig_key
-
-  - id: R19
-    title: Compile options for abnormal situations
-    levels:
-    - high
-    status: automated
-    rules:
-    - kernel_config_bug
-    - kernel_config_panic_on_oops
-    - kernel_config_panic_timeout
-
-  - id: R20
-    title: Compile options for kernel security functions
-    levels:
-    - high
-    status: automated
-    rules:
-    - kernel_config_seccomp
-    - kernel_config_seccomp_filter
-    - kernel_config_security
-    - kernel_config_security_yama
-    - kernel_config_security_writable_hooks
-
-  - id: R21
-    title: Compile options for the compiler plugins
-    levels:
-    - high
-    status: automated
-    rules:
-    - kernel_config_gcc_plugin_latent_entropy
-    - kernel_config_gcc_plugin_stackleak
-    - kernel_config_gcc_plugin_structleak
-    - kernel_config_gcc_plugin_structleak_byref_all
-    - kernel_config_gcc_plugin_randstruct
-
-  - id: R22
-    title: Compile options for the IP stack
-    levels:
-    - high
-    notes: >-
-      This control doesn't disable the IPv6 stack, to disable it select the related rule.
-    status: automated
-    rules:
-    - kernel_config_syn_cookies
-    related_rules:
-    - kernel_config_ipv6
-
-  - id: R23
-    title: Compile options for various kernel behaviors
-    levels:
-    - high
-    notes: >-
-      If the system can function without support for kernel modules, module support should be disabled by setting CONFIG_MODULES=n.
-    status: automated
-    rules:
-    - kernel_config_kexec
-    - kernel_config_hibernation
-    - kernel_config_binfmt_misc
-    - kernel_config_legacy_ptys
-
-
-  - id: R24
-    title: Compile options for 32-bit architectures
-    levels:
-    - high
-    notes: >-
-      Unless a X86 32bit kernel is explicitly supported by one of products in the project, this
-      requirement is set to not applicable.
-    status: not applicable
-
-  - id: R25
-    title: Compile options for x86_64 architectures
-    levels:
-    - high
-    status: automated
-    rules:
-    # TODO: add support for variable for config_default_mmap_min_addr
-    # CONFIG_DEFAULT_MMAP_MIN_ADDR=65536
-    - kernel_config_default_mmap_min_addr
-    - kernel_config_randomize_base
-    - kernel_config_randomize_memory
-    - kernel_config_page_table_isolation
-    - kernel_config_ia32_emulation
-    - kernel_config_modify_ldt_syscall
-
-  - id: R26
-    title: Compile options for ARM architectures
-    levels:
-    - high
-    notes: >-
-      Unless a ARM 32bit kernel is explicitly supported by one of products in the project, this
-      requirement is set to not applicable.
-    status: not applicable
-
-  - id: R27
-    title: Compile options for ARM 64 architectures
-    levels:
-    - high
-    status: automated
-    rules:
-    # CONFIG_DEFAULT_MMAP_MIN_ADDR=32768
-    - kernel_config_default_mmap_min_addr
-    - kernel_config_randomize_base
-    - kernel_config_arm64_sw_ttbr0_pan
-    - kernel_config_unmap_kernel_at_el0
-
-  - id: R28
-    title: Partitioning type
-    levels:
-    - intermediary
-    status: automated
-    rules:
-    # this covers nodev options
-    - mount_option_nodev_nonroot_local_partitions
-    # The recommended partitioning type is as follows:
-    # / <without option> Root partition, contains the rest of the tree
-    # /boot nosuid, nodev, noexec (optional noauto) Contains the kernel and the bootloader. No access required once the boot finished (except update)
-    - partition_for_boot
-    - mount_option_boot_nosuid
-    - mount_option_boot_noexec
-    # The noauto option rule breaks checking of the other mount options
-    # Commented until rules for /boot mount_option handles this use case
-    # - mount_option_boot_noauto
-
-    # /opt nosuid, nodev (optional ro) Additional packages to the system.  Read-only editing if not used
-    - partition_for_opt
-    - mount_option_opt_nosuid
-
-    # /tmp nosuid, noexec temporary files. Must contain only non-executable elements. Cleaned after reboot. Prefferred tmpfs.
-    - systemd_tmp_mount_enabled
-    - mount_option_tmp_nosuid
-    - mount_option_tmp_noexec
-
-    # /srv nosuid, nodev (noexec, optional ro) Contains files served by a service type web, ftp, etc
-    - partition_for_srv
-    - mount_option_srv_nosuid
-
-    # /home nosuid, nodev, noexec Contains the HOME users.  Read-only editing if not in use
-    - partition_for_home
-    - mount_option_home_nosuid
-    - mount_option_home_noexec
-
-    # /usr nodev Contains the majority of utilities and system files
-    - partition_for_usr
-
-    # /var nosuid, nodev, noexec Partition containing variable files during the life of the system (mails, PID files, databases of a service)
-    - partition_for_var
-    - mount_option_var_nosuid
-    - mount_option_var_noexec
-
-    # /var/log nosuid, nodev, noexec Contains system logs
-    - partition_for_var_log
-    - mount_option_var_log_noexec
-    - mount_option_var_log_nosuid
-
-    # /var/tmp nosuid, nodev, noexec Temporary files kept after extinction
-    - partition_for_var_tmp
-    - mount_option_var_tmp_nosuid
-    - mount_option_var_tmp_noexec
-
-    related_rules:
-    # /proc hidepid = 2 Contains process information and the system
-    - mount_option_proc_hidepid
-    - var_mount_option_proc_hidepid=2
-
-  - id: R29
-    title: Access Restrictions on /boot
-    levels:
-      - enhanced
-    description: >-
-      When possible, it is recommended not to automatically mount the /boot partition.
-      In any case, access to the /boot folder should only be allowed for the root user.
-    notes: >-
-      The /boot partition mounted is essential to perform certain administrative actions, for
-      example updating the kernel. Therefore, for better stability, in this requirement only rules
-      to restrict the access to /boot are selected. It is not changed how the /boot is mounted.
-    status: automated
-    rules:
-      - file_groupowner_efi_grub2_cfg
-      - file_groupowner_grub2_cfg
-      - file_owner_efi_grub2_cfg
-      - file_owner_grub2_cfg
-      - file_permissions_efi_grub2_cfg
-      - file_permissions_grub2_cfg
-      - file_groupowner_efi_user_cfg
-      - file_groupowner_user_cfg
-      - file_owner_efi_user_cfg
-      - file_owner_user_cfg
-      - file_permissions_efi_user_cfg
-      - file_permissions_user_cfg
-      - file_groupowner_systemmap
-      - file_owner_systemmap
-      - file_permissions_systemmap
-    related_rules:
-      - mount_option_boot_noauto
-
-  - id: R30
-    title: Removal of unused user accounts
-    levels:
-    - minimal
-    description: >-
-      Unused user accounts must be deleted from the system.
-    notes: >-
-      The definition of unused user accounts is broad. It can include accounts
-      whose owners don't use the system anymore, or users created by services
-      or applications that should not be used.
-      Automation by itself cannot discern which accounts are used or not.
-    status: manual
-
-  - id: R31
-    title: User password strength
-    levels:
-    - minimal
-    notes: >-
-      The rules selected below establish a general password strength baseline
-      of 100 bits, based on the recommendations of the technical note
-      "Recommandations relatives à l'authentification multifacteur et aux mots de passe"
-      (https://cyber.gouv.fr/publications/recommandations-relatives-lauthentification-multifacteur-et-aux-mots-de-passe)
-
-      The baseline should be reviewed and tailored to the system's use case and needs.
-    status: automated
-    rules:
-    # enable authselect to support following rules
-    - enable_authselect
-
-    # Set the maximum password age for the root account to 1 year
-    - var_accounts_maximum_age_root=365
-    - accounts_password_set_max_life_root
-
-    # Ensure passwords with minimum of 15 characters
-    - var_password_pam_minlen=15
-    - accounts_password_pam_minlen
-    - cracklib_accounts_password_pam_minlen
-    # Enforce password lenght for new accounts
-    - var_accounts_password_minlen_login_defs=15
-    - accounts_password_minlen_login_defs
-    # Require at Least 1 Special Character in Password
-    - var_password_pam_ocredit=1
-    - accounts_password_pam_ocredit
-    - cracklib_accounts_password_pam_ocredit
-    # Require at Least 1 Numeric Character in Password
-    - var_password_pam_dcredit=1
-    - cracklib_accounts_password_pam_dcredit
-    - accounts_password_pam_dcredit
-    # Require at Least 1 Uppercase Character in Password
-    - var_password_pam_ucredit=1
-    - accounts_password_pam_ucredit
-    - cracklib_accounts_password_pam_ucredit
-    # Require at Least 1 Lowercase Character in Password
-    - var_password_pam_lcredit=1
-    - cracklib_accounts_password_pam_lcredit
-    - accounts_password_pam_lcredit
-
-    # Lock out users after 3 failed authentication attempts within 15 min
-    - var_accounts_passwords_pam_faillock_fail_interval=900
-    - accounts_passwords_pam_faillock_interval
-    - var_accounts_passwords_pam_faillock_deny=3
-    - accounts_passwords_pam_faillock_deny
-    - accounts_passwords_pam_faillock_deny_root
-    # same as above but for pam_tally2 module
-    - accounts_passwords_pam_tally2_deny_root
-    - var_password_pam_tally2=5
-    - accounts_passwords_pam_tally2
-    - accounts_passwords_pam_tally2_unlock_time
-    - var_accounts_passwords_pam_tally2_unlock_time=1800
-    # Automatically unlock users after 15 min to prevent DoS
-    - var_accounts_passwords_pam_faillock_unlock_time=900
-    - accounts_passwords_pam_faillock_unlock_time
-
-    # Do not reuse last two passwords
-    - var_password_pam_unix_remember=2
-    - accounts_password_pam_unix_remember
-
-  - id: R32
-    title: Configuring a timeout on local user sessions
-    levels:
-    - intermediary
-    description: >-
-      Local user sessions (console TTY, graphical session) must be locked after a certain period of inactivity.
-    notes: >-
-      ANSSI doesn't specify the length of the inactivity period, we are choosing 10 minutes as reasonable number.
-    status: automated
-    rules:
-    - logind_session_timeout
-    - var_logind_session_timeout=10_minutes
-    - accounts_tmout
-    - var_accounts_tmout=10_min
-
-  - id: R33
-    title: Use of dedicated administration accounts
-    levels:
-    - intermediary
-    notes: >-
-      By disabling direct root logins proper accountability is ensured.
-      Users will login first, then escalate to privileged (root) access.
-      Change of privilege operations must be based on executables to monitor the activities
-      performed (for example sudo).
-      Nonetheless, the content automation cannot ensure that each administrator was given a
-      nominative administration account separate from his normal user account.
-    status: automated
-    rules:
-    - no_direct_root_logins
-    - sshd_disable_root_login
-    - package_sudo_installed
-    - audit_rules_privileged_commands_sudo
-    - service_auditd_enabled
-    - package_audit_installed
-
-  - id: R34
-    title: Deactivation of service accounts
-    levels:
-    - intermediary
-    notes: >-
-      It is difficult to generally identify the system's service accounts.
-      UIDs of such accounts are generally between SYS_UID_MIN and SYS_UID_MAX, but their values
-      are not enforced by the OS and can be changed over time.
-      Assisting rules could list users which are not disabled for manual review.
-    status: manual
-
-  - id: R35
-    title: Uniqueness and exclusivity of system service accounts
-    levels:
-    - intermediary
-    description: >-
-      Each service must have its own system account and be dedicated to it exclusively.
-    notes: >-
-      It is not trivial to identify whether a user account is a service account.
-      UIDs of such accounts are generally between SYS_UID_MIN and SYS_UID_MAX, but their values
-      are not enforced by the OS and can be changed over time.
-    status: manual
-
-  - id: R36
-    title: Changing the default value of UMASK
-    levels:
-      - enhanced
-    description: >-
-      The default value of UMASK for the shells must be set to 0077 in order to allow read and
-      write access to its owner only. This value can be defined in the configuration file
-      /etc/profile that most shells (bash, dash, ksh…) will use.
-      The default value of UMASK for services must be determined for each service, but in most
-      cases, it should be set to 0027 (or more restrictive). This allows read access to its owner
-      and its group, and a full access to its owner. For services such as systemd, this value can
-      be defined directly in the configuration file of the service with the directive UMask=0027.
-    notes: >-
-      There are cases of Systemd services which would stop working in case umask
-      would be configured to 0027 for all services. One such example is the
-      Cups service which needs to create sockets which need to be available for
-      all users. Therefore, this part of the requirement can't be automated.
-    status: automated
-    rules:
-      - accounts_umask_etc_bashrc
-      - accounts_umask_etc_login_defs
-      - accounts_umask_etc_profile
-      - var_accounts_user_umask=077
-
-  - id: R37
-    title: Using access control features
-    levels:
-    - enhanced
-    description: >-
-      It is recommended to use the mandatory access control (MAC) features in
-      addition to the traditional Unix user model (DAC), or possibly combine
-      them with partitioning mechanisms.
-    notes: >-
-      Other partitioning mechanisms can include chroot and containers and are not contemplated
-      in this requirement.
-    status: automated
-    rules:
-    - selinux_state
-    - var_selinux_state=enforcing
-
-  - id: R38
-    title: Group dedicated to the use of sudo
-    levels:
-    - enhanced
-    description: >-
-      A group dedicated to the use of sudo must be created, and only members of this
-      group are allowed to execute sudo.
-    status: automated
-    rules:
-    - sudo_dedicated_group
-    - var_sudo_dedicated_group=sudogrp
-    - file_permissions_sudo
-
-  - id: R39
-    title: Sudo configuration guidelines
-    levels:
-    - intermediary
-    status: automated
-    rules:
-    - sudo_add_noexec
-    - sudo_add_requiretty
-    - sudo_add_use_pty
-    - sudo_add_umask
-    - var_sudo_umask=0077
-    - sudo_add_ignore_dot
-    - sudo_add_env_reset
-
-  - id: R40
-    title: Privileges of target sudo users
-    description: The targeted users of a rule should be, as much as possible, non privileged users.
-    levels:
-    - intermediary
-    status: automated
-    rules:
-    - sudoers_no_root_target
-
-  - id: R41
-    title: Limiting the number of commands requiring the use of the EXEC option
-    levels:
-    - enhanced
-    description: >-
-      The commands requiring the execution of sub-processes (EXEC tag) must be
-      explicitly listed and their use should be reduced to a strict minimum.
-    notes: >-
-      Human review is required to assess if the set of commands requiring EXEC is minimal.
-      An auxiliary rule could list rules containing EXEC tag, for analysis.
-    status: manual
-
-  - id: R42
-    title: Good use of negation in a sudoers file
-    levels:
-    - intermediary
-    description: The sudoers configuration rules should not involve negation.
-    status: automated
-    rules:
-    - sudoers_no_command_negation
-
-  - id: R43
-    title: Explicit arguments in sudo specifications
-    levels:
-    - intermediary
-    status: automated
-    rules:
-    - sudoers_explicit_command_args
-
-  - id: R44
-    title: Editing files with sudo
-    levels:
-    - intermediary
-    description: A file requiring sudo to be edited, must be edited through the sudoedit command.
-    notes: >-
-      In R62 we established that the sudoers files should not use negations, thus the approach
-      for this requirement is to ensure that sudoedit is the only text editor allowed.
-      But it is difficult to ensure that allowed binaries aren't text editors without human
-      review.
-    status: manual
-
-  - id: R45
-    title: Enable AppArmor security profiles
-    levels:
-    - enhanced
-    description: >-
-      All AppArmor security profiles on the system must be enabled by default.
-    status: automated
-    rules:
-    - apparmor_configured
-    - all_apparmor_profiles_enforced
-    - grub2_enable_apparmor
-    - package_apparmor_installed
-    - package_pam_apparmor_installed
-
-  - id: R46
-    title: Activate SELinux with the Targeted Policy
-    levels:
-    - high
-    description: >-
-      It is recommended to enable the targeted policy when the distribution
-      supports it and that it does not operate another security module than SELinux.
-    status: automated
-    rules:
-    - selinux_policytype
-    - var_selinux_policy_name=targeted
-
-  - id: R47
-    title: Containment of unprivileged interactive users
-    levels:
-    - high
-    description: >-
-      Interactive non-privileged users of a system must be confined by associating them with a SELinux confined user.
-    notes: Interactive users who still need to perform administrative tasks should not be confined with user_u.
-    status: manual
-
-  - id: R48
-    title: Setting SELinux booleans
-    levels:
-    - high
-    description: >-
-      It is recommended to set the following Booleans:
-      allow_execheap to off, forbids processes to make their heap executable;
-      allow_execmem to off, forbids processes to have both write and execute rights on memory pages;
-      allow_execstack to off, forbids processes to make their stack executable;
-      secure_mode_insmod to on, prohibits dynamic loading of modules by any process;
-      ssh_sysadm_login to off, forbids SSH logins to connect directly in sysadmin role.
-    notes:
-      In RHEL, the SELinux boolean allow_execheap is renamed to selinuxuser_execheap, and the
-      boolean allow_execstack is renamed to selinuxuser_execstack. And allow_execmem is not
-      available, deny_execmem provides the same functionality.
-    status: automated
-    rules:
-    - var_selinuxuser_execheap=off
-    - sebool_selinuxuser_execheap
-    - var_deny_execmem=on
-    - sebool_deny_execmem
-    - var_selinuxuser_execstack=off
-    - sebool_selinuxuser_execstack
-    - var_secure_mode_insmod=on
-    - sebool_secure_mode_insmod
-    - sebool_ssh_sysadm_login
-
-  - id: R49
-    title: Uninstalling SELinux Policy Debugging Tools
-    levels:
-    - high
-    description: >-
-      SELinux policy manipulation and debugging tools should not be installed
-      on a machine in production.
-    status: automated
-    rules:
-    - package_setroubleshoot_removed
-    - package_setroubleshoot-server_removed
-    - package_setroubleshoot-plugins_removed
-
-  - id: R50
-    title: Rights to access sensitive files and directories
-    levels:
-    - intermediary
-    status: automated
-    rules:
-    - file_owner_etc_shadow
-    - file_groupowner_etc_shadow
-    - file_permissions_etc_shadow
-    - file_owner_etc_gshadow
-    - file_groupowner_etc_gshadow
-    - file_permissions_etc_gshadow
-    - file_owner_etc_passwd
-    - file_groupowner_etc_passwd
-    - file_permissions_etc_passwd
-    - file_owner_etc_group
-    - file_groupowner_etc_group
-    - file_permissions_etc_group
-    - file_owner_etc_shells
-    - file_groupowner_etc_shells
-    - file_permissions_etc_shells
-    - accounts_user_dot_group_ownership
-    - accounts_user_dot_user_ownership
-    - accounts_users_home_files_groupownership
-    - accounts_users_home_files_ownership
-    - accounts_users_home_files_permissions
-    - file_permission_user_init_files
-    - dir_system_commands_group_root_owned
-    - dir_system_commands_root_owned
-    - file_groupownership_system_commands_dirs
-    - file_ownership_binary_dirs
-    - file_permissions_binary_dirs
-    - file_ownership_sshd_private_key
-    - file_groupownership_sshd_private_key
-    - file_permissions_sshd_private_key
-    - file_ownership_sshd_pub_key
-    - file_groupownership_sshd_pub_key
-    - file_permissions_sshd_pub_key
-    - file_owner_sshd_config
-    - file_groupowner_sshd_config
-    - file_permissions_sshd_config
-    - directory_owner_etc_selinux
-    - directory_groupowner_etc_selinux
-    - directory_permissions_etc_selinux
-    - file_owner_etc_sestatus_conf
-    - file_groupowner_etc_sestatus_conf
-    - file_permissions_etc_sestatus_conf
-    - directory_owner_etc_ipsecd
-    - directory_groupowner_etc_ipsecd
-    - directory_permissions_etc_ipsecd
-    - file_owner_etc_ipsec_conf
-    - file_groupowner_etc_ipsec_conf
-    - file_permissions_etc_ipsec_conf
-    - file_owner_etc_ipsec_secrets
-    - file_groupowner_etc_ipsec_secrets
-    - file_permissions_etc_ipsec_secrets
-    - directory_owner_etc_iptables
-    - directory_groupowner_etc_iptables
-    - directory_permissions_etc_iptables
-    - directory_owner_etc_nftables
-    - directory_groupowner_etc_nftables
-    - directory_permissions_etc_nftables
-    - directory_owner_etc_sysctld
-    - directory_groupowner_etc_sysctld
-    - directory_permissions_etc_sysctld
-    - file_owner_etc_sudoers
-    - file_groupowner_etc_sudoers
-    - file_permissions_etc_sudoers
-    - directory_owner_etc_sudoersd
-    - directory_groupowner_etc_sudoersd
-    - directory_permissions_etc_sudoersd
-    - file_owner_etc_crypttab
-    - file_groupowner_etc_crypttab
-    - file_permissions_etc_crypttab
-    - file_owner_etc_chrony_keys
-    - file_groupowner_etc_chrony_keys
-    - file_permissions_etc_chrony_keys
-
-  - id: R51
-    title: Sensitive and trusted files
-    levels:
-    - enhanced
-    description: >-
-      All sensitive files and those contributing to the authentication mechanisms
-      must be set up as soon as the system is installed. If default secrets are
-      preconfigured, they must be replaced during, or immediately after, the
-      installation phase of the system.
-    notes: >-
-      This concerns two aspects, the first is administrative, and involves prompt
-      installation of secrets or trusted elements by the sysadmin.
-      The second involves removal of any default secret or trusted element
-      configured by the operating system during install process, e.g. default
-      known passwords.
-    status: documentation
-
-  - id: R52
-    title: Securing access for named sockets and pipes
-    levels:
-    - intermediary
-    notes: |-
-      The requirement states that all sockets and named pipes within all mounted
-      file systems should be checked. The check should look at the permissions
-      of the socket / pipe and compare them with permissions of the directory
-      which contains the particular socket. In case permissions of the directory
-      are less stricter than permissions of the socket, this should be
-      considered a finding. Since different use cases can require different
-      permissions for named pipes / sockets, it is not possible to perform this
-      check automatically.
-    status: manual
-
-  - id: R53
-    title: Files or directories without a known user or group
-    levels:
-    - minimal
-    status: automated
-    rules:
-    - file_permissions_ungroupowned
-    - no_files_unowned_by_user
-
-  - id: R54
-    title: Sticky bit and write access rights
-    levels:
-    - minimal
-    status: automated
-    rules:
-    - dir_perms_world_writable_sticky_bits
-    - dir_perms_world_writable_root_owned
-    - file_permissions_unauthorized_world_writable
-
-  - id: R55
-    title: Temporary directories dedicated to accounts
-    levels:
-    - intermediary
-    description: >-
-      Each user or service account must have its own temporary directory
-      and dispose of it exclusively.
-    notes: The approach of the selected rules is to use and configure pam_namespace module.
-    status: automated
-    rules:
-    - enable_pam_namespace
-    - accounts_polyinstantiated_tmp
-    - accounts_polyinstantiated_var_tmp
-    - var_polyinstantiation_enabled=on
-    - sebool_polyinstantiation_enabled
-
-  - id: R56
-    title: Executables with setuid and setgid bits
-    levels:
-    - minimal
-    notes: >-
-      Only programs specifically designed to be used with setuid or setgid bits can have these privilege bits set.
-      This requirement considers apropriate for setuid and setgid bits the binaries that are installed from
-      recognized and authorized repositories (covered in R15).
-      The remediation resets the sticky bit to intended value by vendor/developer, any finding after remediation
-      should be reviewed.
-    status: automated
-    rules:
-    - file_permissions_unauthorized_suid
-    - file_permissions_unauthorized_sgid
-
-  - id: R57
-    title: Executable with special rights setuid root and setgid root
-    levels:
-    - enhanced
-    description: >-
-      The executables with setuid executables root and setgid root special rights should be as few as possible.
-      When only administrators are expected to execute them, these special rights should
-      be removed and prefer them commands like su or sudo, which can be monitored
-    notes: There could be rules to list all executables with setuid root or setgid root rights.
-    status: manual
-
-  - id: R58
-    title: Installation of packages reduced to the bare necessities
-    levels:
-    - minimal
-    description: >-
-      The selection of packages installed should be as small as possible,
-      limiting itself to select only what is required.
-    notes: >-
-      It is not possible to automatically decide in general way if a package is required or not for given system.
-      As a future improvement, there could be rules assisting assessment by listing the installed packages.
-    status: manual
-
-  - id: R59
-    title: Official package repositories
-    levels:
-    - minimal
-    description: Only up-to-date official repositories of the distribution must be used.
-    notes: >-
-      It is not trivial to distinguish an official repository from an unofficial one.
-      We cannot draw conclusions from the repo name or URL of the repo (as they can be arbitrary or behind a proxy).
-      One approach to check the origin of installed packages is to check the signature of the packages.
-      If the public key of a repository is not installed, the repo is not trusted.
-    status: automated
-    rules:
-    - ensure_gpgcheck_never_disabled
-    - ensure_gpgcheck_globally_activated
-    - ensure_gpgcheck_local_packages
-    - ensure_redhat_gpgkey_installed
-    - ensure_oracle_gpgkey_installed
-    - ensure_almalinux_gpgkey_installed
-
-  - id: R60
-    title: Hardened package repositories
-    levels:
-    - enhanced
-    description: >-
-      When the distribution provides several types of repositories, preference
-      should be given to those containing packages subject to additional
-      hardening measures.
-      Between two packages providing the same service, those subject to hardening
-      (at compilation, installation, or default configuration) must be preferred.
-    status: not applicable
-
-  - id: R61
-    title: Regular updates
-    levels:
-    - minimal
-    notes: Check the vendor CVE feed and configure automatic install of security related updates.
-    status: automated
-    rules:
-    - security_patches_up_to_date
-    - package_dnf-automatic_installed
-    - timer_dnf-automatic_enabled
-    # Configure dnf-automatic to Install Available Updates Automatically
-    - dnf-automatic_apply_updates
-    # Configure dnf-automatic to Install Only Security Updates
-    - dnf-automatic_security_updates_only
-
-  - id: R62
-    title: Minimization of installed services
-    levels:
-    - minimal
-    description: >-
-      Only the components strictly necessary to the service provided by the system should
-      be installed.
-      Those whose presence can not be justified should be disabled, removed or deleted.
-    status: manual # The list of essential services is not objective.
-    notes: >-
-      Performing a minimal install is a good starting point, but doesn't provide any assurance
-      over any package installed later.
-      Manual review is required to assess if the installed services are minimal.
-      In general, use of obsolete or insecure services is not recommended and we remove some
-      of these in this recommendation.
-    rules:
-    - package_dhcp_removed
-    - package_kea_removed
-    - package_rsh_removed
-    - package_rsh-server_removed
-    - package_sendmail_removed
-    - package_talk_removed
-    - package_talk-server_removed
-    - package_telnet_removed
-    - package_telnet-server_removed
-    - package_tftp_removed
-    - package_tftp-server_removed
-    - package_xinetd_removed
-    - package_ypbind_removed
-    - package_ypserv_removed
-
-  - id: R63
-    title: Minimization of services configuration
-    levels:
-    - intermediary
-    description: >-
-      Services are often installed with default configurations that enable features potentially
-      problematic from a security point of view.
-      The features configured at the level of launched services should be limited to the strict
-      minimum.
-    notes: >-
-      Define a list of most problematic components or features to be hardened or restricted.
-    status: manual
-
-  - id: R64
-    title: Least privilege for the services
-    levels:
-    - enhanced
-    description: >-
-      The deployed services must have their access restricted to the system
-      strict minimum, especially when it comes to files, processes or network.
-    notes: >-
-      SELinux policies limit the privileges of services and daemons just to those which are required.
-      The policies should be enough to restrict the services' privileges to its essentials, but the
-      automated content cannot assess whether they are the minimum required for the deployment.
-    status: automated
-    rules:
-    - selinux_policytype
-    - var_selinux_policy_name=targeted
-
-  - id: R65
-    title: Services partitioning
-    levels:
-    - enhanced
-    notes: >-
-      Using automation to restrict access and chroot services is not generally reliable.
-    status: manual
-
-  - id: R66
-    title: Virtualization components hardening
-    levels:
-    - high
-    description: >-
-      Each component supporting the virtualization must be hardened, especially
-      by applying technical measures to counter the exploit attempts.
-    notes: >-
-      We cannot easily automate securing of virtualization technologies in a general way.
-      It may be interesting to point out virtualization components that are installed and
-      should be hardened.
-    status: manual
-
-  - id: R67
-    title: Secure remote authentication with PAM
-    levels:
-    - intermediary
-    description: |-
-      When authentication takes place through a remote application (network),
-      the authentication protocol used by PAM must be secure (flow encryption,
-      remote server authentication, anti-replay mechanisms, ...).
-    notes: |-
-      In systems where remote authentication is handled through sssd service, PAM delegates
-      requests for remote authentication to sssd service through a local Unix socket. The sssd
-      service can use IPA, AD or LDAP as a remote database containing information required for authentication.
-      In case LDAP is configured manually, there are several configuration options which should be chedked.
-    status: automated
-    rules:
-      - package_sssd_installed
-      - service_sssd_enabled
-      - sssd_enable_pam_services
-      - sssd_ldap_configure_tls_reqcert
-      - sssd_ldap_start_tls
-    related_rules:
-      - package_sssd-ipa_installed
-
-  - id: R68
-    title: Protecting stored passwords
-    levels:
-    - minimal
-    description: Any password must be protected by cryptographic mechanisms.
-    notes: >-
-      The selection of rules doesn't cover the use of hardware devices to protect the passwords.
-    status: supported
-    rules:
-    - var_password_hashing_algorithm=yescrypt
-    - var_password_hashing_algorithm_pam=sha512
-    - set_password_hashing_algorithm_systemauth
-    - var_password_pam_unix_rounds=11
-    - accounts_password_pam_unix_rounds_system_auth
-    - accounts_password_pam_unix_rounds_password_auth
-    - accounts_password_pam_minclass
-    - accounts_password_pam_minlen
-    - accounts_password_pam_retry
-    - var_password_pam_minclass=4
-
-  - id: R69
-    title: Securing access to remote user databases
-    levels:
-    - intermediary
-    description: |-
-      When the user databases are stored on a remote network service, NSS must
-      be configured to establish a secure link that allows, at minimum, to
-      authenticate the server and protect the communication channel.
-    notes: |-
-      A nsswitch service connecting to remote database is provided by sssd. This is checked in requirement R67.
-      Another such service is winbind which is by default configured to connect securely to Samba domains.
-      Other relevant services are NIS and Hesiod. These should not be used.
-    status: pending
-    related_rules:
-      - no_nis_in_nsswitch
-
-  - id: R70
-    title: Separation of System Accounts and Directory Administrator
-    levels:
-    - intermediary
-    status: manual
-
-  - id: R71
-    title: Implement a logging system
-    levels:
-    - enhanced
-    description: >-
-      The configuration of the service must be performed according to the
-      'Security Recommendations for the architecture of a logging system'
-      (DAT-PA-012 v2.0) accessible on the ANSSI website
-      (https://www.ssi.gouv.fr/journalisation).
-    notes: >-
-      A lot of recommendations and requirements from the DAT-PA-012 document are administrative and hard to automate.
-      The rules selected below address a few of the aspects that can be covered, keep in mind that these configurations should
-      be customized for the systems deployment requirements.
-    status: automated
-    rules:
-    # Based on DAT-PA-012 R5
-    - package_chrony_installed
-    - service_chronyd_or_ntpd_enabled
-    - chronyd_specify_remote_server
-    - chronyd_configure_pool_and_server
-
-    # Derived from DAT-PA-012 R9
-    # The default remote loghost is logcollector.
-    # Change the default value to the hostname or IP of the system to send the logs to
-    - rsyslog_remote_loghost
-
-    # Derived from DAT-PA-012 R17
-    - package_rsyslog-gnutls_installed
-    - rsyslog_remote_tls
-    - rsyslog_remote_tls_cacert
-
-    # Derived from DAT-PA-012 R21
-    - partition_for_var_log_audit
-
-    # Based on DAT-PA-012 R24
-    # The rules sets the rotation frequency to daily
-    - package_logrotate_installed
-    - timer_logrotate_enabled
-    - ensure_logrotate_activated
-
-    # Based on DAT-PA-012 R26, R27
-    - rsyslog_files_ownership
-    - rsyslog_files_groupownership
-    - rsyslog_files_permissions
-
-  - id: R72
-    title: Service Activity Logs
-    levels:
-    - enhanced
-    description: >-
-      Each service must have a dedicated event logging journal on the system.
-      This log must only be accessible by the syslog server, and must not be readable,
-      editable or deletable by the service directly.
-    status: documentation # How to enable syslog for each service installed in the system
-
-  - id: R73
-    title: Logging activity by auditd
-    levels:
-    - enhanced
-    description: >-
-      The logging of the system activity must be done through the auditd service.
-    status: automated
-    rules:
-    - audit_rules_sysadmin_actions
-    - audit_sudo_log_events
-
-    - audit_rules_login_events_faillock
-    - audit_rules_login_events_lastlog
-
-    - audit_rules_session_events_utmp
-    - audit_rules_session_events_btmp
-    - audit_rules_session_events_wtmp
-
-    - audit_rules_time_adjtimex
-    - audit_rules_time_clock_settime
-    - audit_rules_time_stime
-    - audit_rules_time_watch_localtime
-
-    - audit_rules_mac_modification
-
-    - audit_rules_networkconfig_modification
-
-    - audit_rules_dac_modification_chmod
-    - audit_rules_dac_modification_chown
-    - audit_rules_dac_modification_fchmod
-    - audit_rules_dac_modification_fchmodat
-    - audit_rules_dac_modification_fchmodat2
-    - audit_rules_dac_modification_fchown
-    - audit_rules_dac_modification_fchownat
-    - audit_rules_dac_modification_fremovexattr
-    - audit_rules_dac_modification_fsetxattr
-    - audit_rules_dac_modification_lchown
-    - audit_rules_dac_modification_lremovexattr
-    - audit_rules_dac_modification_lsetxattr
-    - audit_rules_dac_modification_removexattr
-    - audit_rules_dac_modification_setxattr
-
-    - audit_rules_unsuccessful_file_modification_creat
-    - audit_rules_unsuccessful_file_modification_ftruncate
-    - audit_rules_unsuccessful_file_modification_open
-    - audit_rules_unsuccessful_file_modification_openat
-    - audit_rules_unsuccessful_file_modification_truncate
-
-    - audit_rules_usergroup_modification_group
-    - audit_rules_usergroup_modification_gshadow
-    - audit_rules_usergroup_modification_opasswd
-    - audit_rules_usergroup_modification_passwd
-    - audit_rules_usergroup_modification_shadow
-
-    - audit_rules_media_export
-    - audit_rules_dac_modification_umount2
-
-    - audit_rules_privileged_commands
-
-    - audit_rules_file_deletion_events_rename
-    - audit_rules_file_deletion_events_renameat
-    - audit_rules_file_deletion_events_renameat2
-    - audit_rules_file_deletion_events_rmdir
-    - audit_rules_file_deletion_events_unlink
-    - audit_rules_file_deletion_events_unlinkat
-
-    - audit_rules_kernel_module_loading_delete
-    - audit_rules_kernel_module_loading_init
-    - audit_rules_kernel_module_loading_finit
-    - audit_rules_privileged_commands_insmod
-    - audit_rules_privileged_commands_modprobe
-    - audit_rules_privileged_commands_rmmod
-    - audit_rules_privileged_commands_kmod
-
-    - audit_rules_immutable
-    - service_auditd_enabled
-    - package_audit_installed
-
-  - id: R74
-    title: Configuring the local messaging service
-    levels:
-    - intermediary
-    status: automated
-    rules:
-    - postfix_network_listening_disabled
-
-  - id: R75
-    title: Messaging Aliases for Service Accounts
-    levels:
-    - intermediary
-    status: automated #semi-automated
-    notes: >-
-      Only the alias for root user is covered by the rule.
-      The other services cannot be reliably covered, as there is no simple way
-      of determining what is a service account.
-    rules:
-    - postfix_client_configure_mail_alias
-
-  - id: R76
-    title: Sealing and integrity of files
-    levels:
-    - high
-    description: >-
-      Any file that is not transient (such as temporary files, databases, etc.)
-      must be monitored by a sealing program.
-      This includes: directories containing executables, libraries,
-      configuration files, as well as any files that may contain sensitive
-      elements (cryptographic keys, passwords, confidential data).
-    status: automated
-    rules:
-    - package_aide_installed
-    - aide_build_database
-    - aide_periodic_cron_checking
-    - aide_periodic_checking_systemd_timer
-    - aide_scan_notification
-    - aide_verify_acls
-    - aide_verify_ext_attributes
-
-  - id: R77
-    title: Protection of the seals database
-    levels:
-    - high
-    description: >-
-      The sealing database must be protected from malicious access by
-      cryptographic signature mechanisms (with the key used for the signature
-      not locally stored in clear), or possibly stored on a separate machine
-      of the one on which the sealing is done.
-      Check section "Database and config signing in AIDE manual"
-      https://aide.github.io/doc/#signing
-    status: does not meet
-
-  - id: R78
-    title: Network services partitioning
-    levels:
-    - enhanced
-    description: >-
-      Network services should as much as possible be hosted on isolated environments.
-      This avoids having other potentially affected services if one of them gets
-      compromised under the same environment.
-    notes: >-
-      Manual analysis is required to determine if services are hosted appropriately in
-      separate or isolated system while maintaining functionality.
-    status: manual
-
-  - id: R79
-    title: Hardening and monitoring of exposed services
-    levels:
-    - intermediary
-    notes: >-
-      SELinux can provide confinement and monitoring of services, and AIDE provides
-      basic integrity checking. System logs are configured as part of R43.
-      Hardening of particular services should be done on a case by case basis and is
-      not automated by this content.
-    status: partial
-    rules:
-    - selinux_state
-    - var_selinux_state=enforcing
-    - package_aide_installed
-    - aide_build_database
-
-  - id: R80
-    title: Minimization of network services
-    levels:
-    - minimal
-    description: All network services must be listening on the correct network intefaces.
-    notes: >-
-      Manual review is necessary to decide if the list of resident daemons is minimal.
-      Assisting rules could be created to list sevices listening on the network for manual review.
-    status: manual
+    - id: R3
+      title: UEFI Secure boot activation
+      levels:
+          - intermediary
+      description: >-
+          It is recommended to apply UEFI Secure Boot configuration of the distribution.
+      notes: >-
+          Secure Boot needs to be enabled in the UEFI Setup program.
+          Enabling Secure Boot can't be accomplished from the operating system.
+          Also, OVAL doesn't provide any reliable ways to detect the Secure Boot status.
+          Therefore, we will not provide any rules to automate this requirement.
+          We recommend checking the Secure Boot status using the `mokutil --sb-state` or `bootctl status`
+          commands.
+      status: manual
+
+    - id: R4
+      title: Replacing of preloaded keys
+      levels:
+          - high
+      description: >-
+          It is recommended to replace the UEFI preloaded keys with new keys used to sign;
+          the bootloader and Linux kernel, or; the image of the Linux kernel in EFI format.
+      notes: >-
+          This requirement is not generally automatable. The Machine Owner Key (MOK) could
+          be used to add keys to the Secure Boot db key database but manual interaction is
+          required to navigate the UEFI console and input the key password.
+          On systems where MOK utility is not supported, one will need to access the UEFI
+          firmware interface to add new keys.
+          We have no automation support for UEFI interfaces and the steps for each hardware
+          manufacturer can vary.
+      status: manual
+
+    - id: R5
+      title: Boot loader password
+      levels:
+          - intermediary
+      description: >-
+          A password protecting the boot loader must exist.
+          This password must prevent any user from changing their configuration options.
+      status: automated
+      rules:
+          - grub2_password
+          - grub2_uefi_password
+
+    - id: R6
+      title: Protecting kernel command line parameters
+      levels:
+          - high
+      description: >-
+          It is recommended that UEFI Secure Boot is used to protect the Linux Kernel
+          command line parameters during boot.
+      notes: >-
+          To protect the Linux Kernel command line one needs to create an Unified Kernel Image and use
+          it with the UEFI Secure Boot mechanism.
+          To check if the Kernel image contains the kernel command one needs to inspect the binary, on
+          the command line one can use the objdump command. But unfortunately OVAL is not able to
+          inspect kernel images.
+          Also, it is not trivial to automate creation of such image or configuration of the
+          Secure Boot mechanism.
+      status: manual
+
+    - id: R7
+      title: IOMMU Configuration Guidelines
+      levels:
+          - enhanced
+      description: >-
+          The iommu = force directive must be added to the list of kernel parameters
+          during startup in addition to those already present in the configuration
+          files of the bootloader (/boot/grub/menu.lst or /etc/default/grub).
+      status: automated
+      rules:
+          - grub2_enable_iommu_force
+
+    - id: R8
+      title: Memory configuration options
+      levels:
+          - intermediary
+      status: automated
+      rules:
+          # l1tf=full,force to enable countermeasure for L1 Terminal Fault vulnerability, or
+          # l1tf=off to maximize performance, when system is not a hypervisor or VMs are trusted
+          - grub2_l1tf_argument
+          - var_l1tf_options=full_force
+
+          # page_poison=on: activate the poisoning of the pages of the page allocator (buddy allocator)
+          - grub2_page_poison_argument
+
+          # pti=on: force the use of Page Table Isolation (PTI) including on processors claiming
+          # not to be affected by the Meltdown vulnerability;
+          - grub2_pti_argument
+
+          # slab_nomerge=yes (equivalent to CONFIG_SLAB_MERGE_DEFAULT=n): disables the merging of
+          # slab caches (dynamic memory allocations) of identical size.
+          - grub2_slab_nomerge_argument
+
+          # slub_debug=F,Z,P: activate certain options for checking slabs caches (dynamic memory allocation)
+          - grub2_slub_debug_argument
+          - var_slub_debug_options=FZP
+
+          # spec_store_bypass_disable=seccomp: force the system to use the default countermeasure
+          # (on an x86 system supporting seccomp) for the Specter v4 (Speculative Store Bypass) vulnerability
+          - grub2_spec_store_bypass_disable_argument
+          - var_spec_store_bypass_disable_options=seccomp
+
+          # spectre_v2=on: force the system to use a countermeasure for the Specter v2 (Branch Target Injection) vulnerability.
+          - grub2_spectre_v2_argument
+
+          # mds=full,nosmt: force the system to use Microarchitectural Data Sampling (MDS) to
+          # mitigate the vulnerabilities of Intel processors.
+          - grub2_mds_argument
+          - var_mds_options=full_nosmt
+
+          # mce=0: force a kernel panic on uncorrected errors reported by Machine Check support.
+          - grub2_mce_argument
+
+          # page_alloc.shuffle=1: enables Page allocator randomization
+          - grub2_page_alloc_shuffle_argument
+
+          # rng_core.default_quality=500: increase confidence in TPM's HWRNG for robust and fast
+          # Linux CSPRNG initialization by crediting half of the entropy it provides.
+          - grub2_rng_core_default_quality_argument
+          - var_rng_core_default_quality=500
+
+          # Forbidden to map memory in low addresses (0)
+          # vm.mmap_min_addr = 65536
+          - sysctl_vm_mmap_min_addr
+
+    - id: R9
+      title: Kernel configuration options
+      levels:
+          - intermediary
+      status: automated
+      rules:
+          # Restrict access to the dmesg buffer (equivalent to
+          # CONFIG_SECURITY_DMESG_RESTRICT=y)
+          - sysctl_kernel_dmesg_restrict
+
+          # Hide kernel addresses in /proc and various other interfaces,
+          # including from privileged users
+          - sysctl_kernel_kptr_restrict
+          - sysctl_kernel_kptr_restrict_value=2
+
+          # Explicitly specify the process id space supported by the kernel,
+          # 65536 being an example value
+          # kernel.pid_max=65536
+          - sysctl_kernel_pid_max
+
+          # Restricts the use of the perf system
+          # kernel.perf_event_max_sample_rate = 1
+          # kernel.perf_cpu_time_max_percent = 1
+          - sysctl_kernel_perf_event_max_sample_rate
+          - sysctl_kernel_perf_cpu_time_max_percent
+
+          # Prohibit unprivileged access to the perf_event_open () system call.
+          # With a value greater than 2, we impose the possession of
+          # CAP_SYS_ADMIN, in order to collect the perf events.
+          # kernel.perf_event_paranoid = 2
+          - sysctl_kernel_perf_event_paranoid
+
+          # Activate ASLR
+          - sysctl_kernel_randomize_va_space
+
+          # Disable Magic System Request Key combinations
+          # kernel.sysrq = 0
+          - sysctl_kernel_sysrq
+
+          # Restrict kernel BPF usage to privileged users
+          # kernel.unprivileged_bpf_disabled=1
+          - sysctl_kernel_unprivileged_bpf_disabled
+
+          # Completely shut down the system if the Linux kernel behaves
+          # unexpectedly kernel.panic_on_oops=1
+          - sysctl_kernel_panic_on_oops
+
+    - id: R10
+      title: Disabling the loading of kernel modules
+      levels:
+          - enhanced
+      description: >-
+          The loading of the kernel modules can be blocked by the activation of the
+          sysctl kernel.modules_disabled:
+          Prohibition of loading modules (except those already loaded to this point)
+          kernel.modules_disabled = 1
+      status: automated
+      rules:
+          - sysctl_kernel_modules_disabled
+
+    - id: R11
+      title: Yama module sysctl configuration
+      levels:
+          - intermediary
+      description: >-
+          It is recommended to load the Yama security module at startup (by example
+          passing the security = yama argument to the kernel) and configure the
+          sysctl kernel.yama.ptrace_scope to a value of at least 1.
+      status: automated
+      rules:
+          - sysctl_kernel_yama_ptrace_scope
+
+    - id: R12
+      title: IPv4 configuration options
+      levels:
+          - intermediary
+      status: automated
+      rules:
+          # Mitigation of the dispersion effect of the kernel JIT at the cost of a
+          # compromise on  the associated performance.
+          # net.core.bpf_jit_harden=2
+          - sysctl_net_core_bpf_jit_harden
+
+          # No routing between interfaces
+          # net.ipv4.ip_forward = 0
+          - sysctl_net_ipv4_ip_forward
+
+          # Consider as invalid the packets received from outside whose source
+          # is the 127/8 network.
+          # net.ipv4.conf.all.accept_local=0
+          - sysctl_net_ipv4_conf_all_accept_local
+
+          # Deny receipt of ICMP redirect packets
+          # net.ipv4.conf.all.accept_redirects = 0
+          - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+          - sysctl_net_ipv4_conf_all_accept_redirects
+
+          # net.ipv4.conf.default.accept_redirects = 0
+          - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
+          - sysctl_net_ipv4_conf_default_accept_redirects
+
+          # net.ipv4.conf.all.secure_redirects = 0
+          - sysctl_net_ipv4_conf_all_secure_redirects
+          # net.ipv4.conf.default.secure_redirects = 0
+          - sysctl_net_ipv4_conf_default_secure_redirects
+
+          # net.ipv4.conf.all.shared_media=0
+          - sysctl_net_ipv4_conf_all_shared_media
+          - sysctl_net_ipv4_conf_all_shared_media_value=disabled
+
+          - sysctl_net_ipv4_conf_default_shared_media
+          - sysctl_net_ipv4_conf_default_shared_media_value=disabled
+
+          # Deny the source routing header information supplied by the
+          # packet to determine its route.
+          # net.ipv4.conf.all.accept_source_route = 0
+          - sysctl_net_ipv4_conf_all_accept_source_route
+          # net.ipv4.conf.default.accept_source_route = 0
+          - sysctl_net_ipv4_conf_default_accept_source_route
+
+          # Prevent the Linux kernel from handling the ARP table globally.
+          - sysctl_net_ipv4_conf_all_arp_filter
+
+          # Respond to ARP requests only if the source and destination address are on the
+          # same network and come from the same interface on which the packet was received.
+          # Note that the configuration of this option is to be studied according to the
+          # use case.
+          - sysctl_net_ipv4_conf_all_arp_ignore
+          - sysctl_net_ipv4_conf_all_arp_ignore_value=2
+
+          # Refuse the routing of packets whose source or destination address is that
+          # of the local loopback.
+          # net.ipv4.conf.all.route_localnet=0
+          - sysctl_net_ipv4_conf_all_route_localnet
+
+          # Ignore gratuitous ARP requests.
+          # net.ipv4.conf.all.drop_gratuitous_arp=1
+          - sysctl_net_ipv4_conf_all_drop_gratuitous_arp
+
+          # Check that the source address of packets received on a given interface
+          # would have been contacted via this same interface.
+          # net.ipv4.conf.all.rp_filter = 1
+          - sysctl_net_ipv4_conf_all_rp_filter
+          # net.ipv4.conf.default.rp_filter = 1
+          - sysctl_net_ipv4_conf_default_rp_filter
+
+          # A non-routing equipment has no reason to receive a flow for which it is not the
+          # recipient and therefore to send an ICMP redirect packet.
+          # net.ipv4.conf.all.send_redirects = 0
+          - sysctl_net_ipv4_conf_all_send_redirects
+          # net.ipv4.conf.default.send_redirects = 0
+          - sysctl_net_ipv4_conf_default_send_redirects
+
+          # Ignore responses that do not comply with RFC 1122
+          # net.ipv4.icmp_ignore_bogus_error_responses = 1
+          - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+
+          # Increase the range for ephemeral ports
+          # net.ipv4.ip_local_port_range = 32768 65535
+          - sysctl_net_ipv4_ip_local_port_range
+
+          # RFC 1337
+          # net.ipv4.tcp_rfc1337 = 1
+          - sysctl_net_ipv4_tcp_rfc1337
+
+          # Use SYN cookies
+          # net.ipv4.tcp_syncookies = 1
+          - sysctl_net_ipv4_tcp_syncookies
+
+    - id: R13
+      title: Disabling IPv6
+      levels:
+          - intermediary
+      notes: >-
+          When IPv6 is not in use, disable it, otherwise secure the IPv6 stack.
+          This control hardens the IPv6 stack, to disable it use the related rules instead.
+      status: automated
+      rules:
+          # Disable support for "router solicitations"
+          # net.ipv6.conf.all.router_solicitations = 0
+          # net.ipv6.conf.default.router_solicitations = 0
+          - sysctl_net_ipv6_conf_all_router_solicitations
+          - sysctl_net_ipv6_conf_default_router_solicitations
+
+          # Do not accept "router preferences" by "router advertisements"
+          # net.ipv6.conf.all.accept_ra_rtr_pref = 0
+          # net.ipv6.conf.default.accept_ra_rtr_pref = 0
+          - sysctl_net_ipv6_conf_all_accept_ra_rtr_pref
+          - sysctl_net_ipv6_conf_default_accept_ra_rtr_pref
+
+          # No auto configuration of prefixes by router advertisements
+          # net.ipv6.conf.all.accept_ra_pinfo = 0
+          # net.ipv6.conf.default.accept_ra_pinfo = 0
+          - sysctl_net_ipv6_conf_all_accept_ra_pinfo
+          - sysctl_net_ipv6_conf_default_accept_ra_pinfo
+
+          # No default router learning by router advertisements
+          # net.ipv6.conf.all.accept_ra_defrtr = 0
+          # net.ipv6.conf.default.accept_ra_defrtr = 0
+          - sysctl_net_ipv6_conf_all_accept_ra_defrtr
+          - sysctl_net_ipv6_conf_default_accept_ra_defrtr
+
+          # No auto configuration of addresses from "routers" advertisements
+          # net.ipv6.conf.all.autoconf = 0
+          # net.ipv6.conf.default.autoconf = 0
+          - sysctl_net_ipv6_conf_all_autoconf
+          - sysctl_net_ipv6_conf_default_autoconf
+
+          # Do not accept ICMPs of redirect type
+          # net.ipv6.conf.all_accept_redirects = 0
+          - sysctl_net_ipv6_conf_all_accept_redirects
+
+          # net.ipv6.conf.default.accept_redirects = 0
+          - sysctl_net_ipv6_conf_default_accept_redirects
+
+          # Deny routing source packets
+          # net.ipv6.conf.all.accept_source_route = 0
+          - sysctl_net_ipv6_conf_all_accept_source_route
+
+          # net.ipv6.conf.default.accept_source_route = 0
+          - sysctl_net_ipv6_conf_default_accept_source_route
+
+          # Maximum number of autoconfigured addresses per interface
+          # net.ipv6.conf.all.max_addresses = 1
+          # net.ipv6.conf.default.max_addresses = 1
+          - sysctl_net_ipv6_conf_all_max_addresses
+          - sysctl_net_ipv6_conf_default_max_addresses
+      related_rules:
+          # Rules to select when disabling the IPv6 stack.
+          - sysctl_net_ipv6_conf_all_disable_ipv6
+          - sysctl_net_ipv6_conf_default_disable_ipv6
+
+    - id: R14
+      title: File system configuration options
+      levels:
+          - intermediary
+      notes: >-
+          The rule for the /proc file system is not implemented
+      status: automated
+      rules:
+          # Disable coredump creation for setuid executables
+          - sysctl_fs_suid_dumpable
+
+          # Available from version 4.19 of the Linux kernel, allows to prohibit
+          # opening FIFOs and "regular" files that are not owned by the user
+          # in sticky folders for everyone to write.
+          # fs.protected_fifos=2
+          - sysctl_fs_protected_fifos
+          # fs.protected_regular=2
+          - sysctl_fs_protected_regular
+
+          # Restrict the creation of symbolic links to files that the user owns.
+          - sysctl_fs_protected_symlinks
+
+          # Restrict the creation of hard links to files whose user is owner.
+          - sysctl_fs_protected_hardlinks
+
+    - id: R15
+      title: Compile options for memory management
+      levels:
+          - high
+      status: automated
+      notes: >-
+          The special case of direct access to physical memory is not handled.
+      rules:
+          - kernel_config_strict_kernel_rwx
+          - kernel_config_debug_wx
+          - kernel_config_debug_fs
+          - kernel_config_stackprotector
+          - kernel_config_stackprotector_strong
+          - kernel_config_sched_stack_end_check
+          - kernel_config_hardened_usercopy
+          - kernel_config_hardened_usercopy_fallback
+          - kernel_config_vmap_stack
+          - kernel_config_refcount_full
+          - kernel_config_fortify_source
+          - kernel_config_acpi_custom_method
+          - kernel_config_devkmem
+          - kernel_config_proc_kcore
+          - kernel_config_compat_vdso
+          - kernel_config_security_dmesg_restrict
+          - kernel_config_retpoline
+          - kernel_config_legacy_vsyscall_none
+          - kernel_config_legacy_vsyscall_emulate
+          - kernel_config_legacy_vsyscall_xonly
+          - kernel_config_x86_vsyscall_emulation
+
+    - id: R16
+      title: Compile options for kernel data structures
+      levels:
+          - high
+      status: automated
+      rules:
+          - kernel_config_debug_credentials
+          - kernel_config_debug_notifiers
+          - kernel_config_debug_list
+          - kernel_config_debug_sg
+          - kernel_config_bug_on_data_corruption
+
+    - id: R17
+      title: Compile options for the memory allocator
+      levels:
+          - high
+      status: automated
+      rules:
+          - kernel_config_slab_freelist_random
+          - kernel_config_slab_freelist_hardened
+          - kernel_config_slab_merge_default
+          - kernel_config_slub_debug
+          - kernel_config_page_poisoning
+          - kernel_config_page_poisoning_no_sanity
+          - kernel_config_page_poisoning_zero
+          - kernel_config_compat_brk
+
+    - id: R18
+      title: Compile options for the management of kernel module
+      levels:
+          - high
+      status: automated
+      rules:
+          - kernel_config_strict_module_rwx
+          - kernel_config_module_sig
+          - kernel_config_module_sig_force
+          - kernel_config_module_sig_all
+          - kernel_config_module_sig_sha512
+          - kernel_config_module_sig_hash
+          - kernel_config_module_sig_key
+
+    - id: R19
+      title: Compile options for abnormal situations
+      levels:
+          - high
+      status: automated
+      rules:
+          - kernel_config_bug
+          - kernel_config_panic_on_oops
+          - kernel_config_panic_timeout
+
+    - id: R20
+      title: Compile options for kernel security functions
+      levels:
+          - high
+      status: automated
+      rules:
+          - kernel_config_seccomp
+          - kernel_config_seccomp_filter
+          - kernel_config_security
+          - kernel_config_security_yama
+          - kernel_config_security_writable_hooks
+
+    - id: R21
+      title: Compile options for the compiler plugins
+      levels:
+          - high
+      status: automated
+      rules:
+          - kernel_config_gcc_plugin_latent_entropy
+          - kernel_config_gcc_plugin_stackleak
+          - kernel_config_gcc_plugin_structleak
+          - kernel_config_gcc_plugin_structleak_byref_all
+          - kernel_config_gcc_plugin_randstruct
+
+    - id: R22
+      title: Compile options for the IP stack
+      levels:
+          - high
+      notes: >-
+          This control doesn't disable the IPv6 stack, to disable it select the related rule.
+      status: automated
+      rules:
+          - kernel_config_syn_cookies
+      related_rules:
+          - kernel_config_ipv6
+
+    - id: R23
+      title: Compile options for various kernel behaviors
+      levels:
+          - high
+      notes: >-
+          If the system can function without support for kernel modules, module support should be disabled
+          by setting CONFIG_MODULES=n.
+      status: automated
+      rules:
+          - kernel_config_kexec
+          - kernel_config_hibernation
+          - kernel_config_binfmt_misc
+          - kernel_config_legacy_ptys
+
+    - id: R24
+      title: Compile options for 32-bit architectures
+      levels:
+          - high
+      notes: >-
+          Unless a X86 32bit kernel is explicitly supported by one of products in the project, this
+          requirement is set to not applicable.
+      status: not applicable
+
+    - id: R25
+      title: Compile options for x86_64 architectures
+      levels:
+          - high
+      status: automated
+      rules:
+          # TODO: add support for variable for config_default_mmap_min_addr
+          # CONFIG_DEFAULT_MMAP_MIN_ADDR=65536
+          - kernel_config_default_mmap_min_addr
+          - kernel_config_randomize_base
+          - kernel_config_randomize_memory
+          - kernel_config_page_table_isolation
+          - kernel_config_ia32_emulation
+          - kernel_config_modify_ldt_syscall
+
+    - id: R26
+      title: Compile options for ARM architectures
+      levels:
+          - high
+      notes: >-
+          Unless a ARM 32bit kernel is explicitly supported by one of products in the project, this
+          requirement is set to not applicable.
+      status: not applicable
+
+    - id: R27
+      title: Compile options for ARM 64 architectures
+      levels:
+          - high
+      status: automated
+      rules:
+          # CONFIG_DEFAULT_MMAP_MIN_ADDR=32768
+          - kernel_config_default_mmap_min_addr
+          - kernel_config_randomize_base
+          - kernel_config_arm64_sw_ttbr0_pan
+          - kernel_config_unmap_kernel_at_el0
+
+    - id: R28
+      title: Partitioning type
+      levels:
+          - intermediary
+      status: automated
+      rules:
+          # this covers nodev options
+          - mount_option_nodev_nonroot_local_partitions
+          # The recommended partitioning type is as follows:
+          # / <without option> Root partition, contains the rest of the tree
+          # /boot nosuid, nodev, noexec (optional noauto) Contains the kernel and the bootloader.
+          # No access required once the boot finished (except update)
+          - partition_for_boot
+          - mount_option_boot_nosuid
+          - mount_option_boot_noexec
+          # The noauto option rule breaks checking of the other mount options
+          # Commented until rules for /boot mount_option handles this use case
+          # - mount_option_boot_noauto
+
+          # /opt nosuid, nodev (optional ro) Additional packages to the system.
+          # Read-only editing if not used
+          - partition_for_opt
+          - mount_option_opt_nosuid
+
+          # /tmp nosuid, noexec temporary files. Must contain only non-executable elements.
+          # Cleaned after reboot. Prefferred tmpfs.
+          - systemd_tmp_mount_enabled
+          - mount_option_tmp_nosuid
+          - mount_option_tmp_noexec
+
+          # /srv nosuid, nodev (noexec, optional ro) Contains files served by a service type web, ftp, etc
+          - partition_for_srv
+          - mount_option_srv_nosuid
+
+          # /home nosuid, nodev, noexec Contains the HOME users.  Read-only editing if not in use
+          - partition_for_home
+          - mount_option_home_nosuid
+          - mount_option_home_noexec
+
+          # /usr nodev Contains the majority of utilities and system files
+          - partition_for_usr
+
+          # /var nosuid, nodev, noexec Partition containing variable files during the life of the system (mails, PID files, databases of a service)
+          - partition_for_var
+          - mount_option_var_nosuid
+          - mount_option_var_noexec
+
+          # /var/log nosuid, nodev, noexec Contains system logs
+          - partition_for_var_log
+          - mount_option_var_log_noexec
+          - mount_option_var_log_nosuid
+
+          # /var/tmp nosuid, nodev, noexec Temporary files kept after extinction
+          - partition_for_var_tmp
+          - mount_option_var_tmp_nosuid
+          - mount_option_var_tmp_noexec
+      related_rules:
+          # /proc hidepid = 2 Contains process information and the system
+          - mount_option_proc_hidepid
+          - var_mount_option_proc_hidepid=2
+
+    - id: R29
+      title: Access Restrictions on /boot
+      levels:
+          - enhanced
+      description: >-
+          When possible, it is recommended not to automatically mount the /boot partition.
+          In any case, access to the /boot folder should only be allowed for the root user.
+      notes: >-
+          The /boot partition mounted is essential to perform certain administrative actions, for
+          example updating the kernel. Therefore, for better stability, in this requirement only rules
+          to restrict the access to /boot are selected. It is not changed how the /boot is mounted.
+      status: automated
+      rules:
+          - file_groupowner_efi_grub2_cfg
+          - file_groupowner_grub2_cfg
+          - file_owner_efi_grub2_cfg
+          - file_owner_grub2_cfg
+          - file_permissions_efi_grub2_cfg
+          - file_permissions_grub2_cfg
+          - file_groupowner_efi_user_cfg
+          - file_groupowner_user_cfg
+          - file_owner_efi_user_cfg
+          - file_owner_user_cfg
+          - file_permissions_efi_user_cfg
+          - file_permissions_user_cfg
+          - file_groupowner_systemmap
+          - file_owner_systemmap
+          - file_permissions_systemmap
+      related_rules:
+          - mount_option_boot_noauto
+
+    - id: R30
+      title: Removal of unused user accounts
+      levels:
+          - minimal
+      description: >-
+          Unused user accounts must be deleted from the system.
+      notes: >-
+          The definition of unused user accounts is broad. It can include accounts
+          whose owners don't use the system anymore, or users created by services
+          or applications that should not be used.
+          Automation by itself cannot discern which accounts are used or not.
+      status: manual
+
+    - id: R31
+      title: User password strength
+      levels:
+          - minimal
+      notes: >-
+          The rules selected below establish a general password strength baseline
+          of 100 bits, based on the recommendations of the technical note
+          "Recommandations relatives à l'authentification multifacteur et aux mots de passe"
+          (https://cyber.gouv.fr/publications/recommandations-relatives-lauthentification-multifacteur-et-aux-mots-de-passe)
+
+          The baseline should be reviewed and tailored to the system's use case and needs.
+      status: automated
+      rules:
+          # enable authselect to support following rules
+          - enable_authselect
+
+          # Set the maximum password age for the root account to 1 year
+          - var_accounts_maximum_age_root=365
+          - accounts_password_set_max_life_root
+
+          # Ensure passwords with minimum of 15 characters
+          - var_password_pam_minlen=15
+          - accounts_password_pam_minlen
+          - cracklib_accounts_password_pam_minlen
+          # Enforce password lenght for new accounts
+          - var_accounts_password_minlen_login_defs=15
+          - accounts_password_minlen_login_defs
+          # Require at Least 1 Special Character in Password
+          - var_password_pam_ocredit=1
+          - accounts_password_pam_ocredit
+          - cracklib_accounts_password_pam_ocredit
+          # Require at Least 1 Numeric Character in Password
+          - var_password_pam_dcredit=1
+          - cracklib_accounts_password_pam_dcredit
+          - accounts_password_pam_dcredit
+          # Require at Least 1 Uppercase Character in Password
+          - var_password_pam_ucredit=1
+          - accounts_password_pam_ucredit
+          - cracklib_accounts_password_pam_ucredit
+          # Require at Least 1 Lowercase Character in Password
+          - var_password_pam_lcredit=1
+          - cracklib_accounts_password_pam_lcredit
+          - accounts_password_pam_lcredit
+
+          # Lock out users after 3 failed authentication attempts within 15 min
+          - var_accounts_passwords_pam_faillock_fail_interval=900
+          - accounts_passwords_pam_faillock_interval
+          - var_accounts_passwords_pam_faillock_deny=3
+          - accounts_passwords_pam_faillock_deny
+          - accounts_passwords_pam_faillock_deny_root
+          # same as above but for pam_tally2 module
+          - accounts_passwords_pam_tally2_deny_root
+          - var_password_pam_tally2=5
+          - accounts_passwords_pam_tally2
+          - accounts_passwords_pam_tally2_unlock_time
+          - var_accounts_passwords_pam_tally2_unlock_time=1800
+          # Automatically unlock users after 15 min to prevent DoS
+          - var_accounts_passwords_pam_faillock_unlock_time=900
+          - accounts_passwords_pam_faillock_unlock_time
+
+          # Do not reuse last two passwords
+          - var_password_pam_unix_remember=2
+          - accounts_password_pam_unix_remember
+
+    - id: R32
+      title: Configuring a timeout on local user sessions
+      levels:
+          - intermediary
+      description: >-
+          Local user sessions (console TTY, graphical session) must be locked after a certain period
+          of inactivity.
+      notes: >-
+          ANSSI doesn't specify the length of the inactivity period, we are choosing 10 minutes as reasonable
+          number.
+      status: automated
+      rules:
+          - logind_session_timeout
+          - var_logind_session_timeout=10_minutes
+          - accounts_tmout
+          - var_accounts_tmout=10_min
+
+    - id: R33
+      title: Use of dedicated administration accounts
+      levels:
+          - intermediary
+      notes: >-
+          By disabling direct root logins proper accountability is ensured.
+          Users will login first, then escalate to privileged (root) access.
+          Change of privilege operations must be based on executables to monitor the activities
+          performed (for example sudo).
+          Nonetheless, the content automation cannot ensure that each administrator was given a
+          nominative administration account separate from his normal user account.
+      status: automated
+      rules:
+          - no_direct_root_logins
+          - sshd_disable_root_login
+          - package_sudo_installed
+          - audit_rules_privileged_commands_sudo
+          - service_auditd_enabled
+          - package_audit_installed
+
+    - id: R34
+      title: Deactivation of service accounts
+      levels:
+          - intermediary
+      notes: >-
+          It is difficult to generally identify the system's service accounts.
+          UIDs of such accounts are generally between SYS_UID_MIN and SYS_UID_MAX, but their values
+          are not enforced by the OS and can be changed over time.
+          Assisting rules could list users which are not disabled for manual review.
+      status: manual
+
+    - id: R35
+      title: Uniqueness and exclusivity of system service accounts
+      levels:
+          - intermediary
+      description: >-
+          Each service must have its own system account and be dedicated to it exclusively.
+      notes: >-
+          It is not trivial to identify whether a user account is a service account.
+          UIDs of such accounts are generally between SYS_UID_MIN and SYS_UID_MAX, but their values
+          are not enforced by the OS and can be changed over time.
+      status: manual
+
+    - id: R36
+      title: Changing the default value of UMASK
+      levels:
+          - enhanced
+      description: >-
+          The default value of UMASK for the shells must be set to 0077 in order to allow read and
+          write access to its owner only. This value can be defined in the configuration file
+          /etc/profile that most shells (bash, dash, ksh…) will use.
+          The default value of UMASK for services must be determined for each service, but in most
+          cases, it should be set to 0027 (or more restrictive). This allows read access to its owner
+          and its group, and a full access to its owner. For services such as systemd, this value can
+          be defined directly in the configuration file of the service with the directive UMask=0027.
+      notes: >-
+          There are cases of Systemd services which would stop working in case umask
+          would be configured to 0027 for all services. One such example is the
+          Cups service which needs to create sockets which need to be available for
+          all users. Therefore, this part of the requirement can't be automated.
+      status: automated
+      rules:
+          - accounts_umask_etc_bashrc
+          - accounts_umask_etc_login_defs
+          - accounts_umask_etc_profile
+          - var_accounts_user_umask=077
+
+    - id: R37
+      title: Using access control features
+      levels:
+          - enhanced
+      description: >-
+          It is recommended to use the mandatory access control (MAC) features in
+          addition to the traditional Unix user model (DAC), or possibly combine
+          them with partitioning mechanisms.
+      notes: >-
+          Other partitioning mechanisms can include chroot and containers and are not contemplated
+          in this requirement.
+      status: automated
+      rules:
+          - selinux_state
+          - var_selinux_state=enforcing
+
+    - id: R38
+      title: Group dedicated to the use of sudo
+      levels:
+          - enhanced
+      description: >-
+          A group dedicated to the use of sudo must be created, and only members of this
+          group are allowed to execute sudo.
+      status: automated
+      rules:
+          - sudo_dedicated_group
+          - var_sudo_dedicated_group=sudogrp
+          - file_permissions_sudo
+
+    - id: R39
+      title: Sudo configuration guidelines
+      levels:
+          - intermediary
+      status: automated
+      rules:
+          - sudo_add_noexec
+          - sudo_add_requiretty
+          - sudo_add_use_pty
+          - sudo_add_umask
+          - var_sudo_umask=0077
+          - sudo_add_ignore_dot
+          - sudo_add_env_reset
+
+    - id: R40
+      title: Privileges of target sudo users
+      description: The targeted users of a rule should be, as much as possible, non privileged users.
+      levels:
+          - intermediary
+      status: automated
+      rules:
+          - sudoers_no_root_target
+
+    - id: R41
+      title: Limiting the number of commands requiring the use of the EXEC option
+      levels:
+          - enhanced
+      description: >-
+          The commands requiring the execution of sub-processes (EXEC tag) must be
+          explicitly listed and their use should be reduced to a strict minimum.
+      notes: >-
+          Human review is required to assess if the set of commands requiring EXEC is minimal.
+          An auxiliary rule could list rules containing EXEC tag, for analysis.
+      status: manual
+
+    - id: R42
+      title: Good use of negation in a sudoers file
+      levels:
+          - intermediary
+      description: The sudoers configuration rules should not involve negation.
+      status: automated
+      rules:
+          - sudoers_no_command_negation
+
+    - id: R43
+      title: Explicit arguments in sudo specifications
+      levels:
+          - intermediary
+      status: automated
+      rules:
+          - sudoers_explicit_command_args
+
+    - id: R44
+      title: Editing files with sudo
+      levels:
+          - intermediary
+      description: A file requiring sudo to be edited, must be edited through the sudoedit command.
+      notes: >-
+          In R62 we established that the sudoers files should not use negations, thus the approach
+          for this requirement is to ensure that sudoedit is the only text editor allowed.
+          But it is difficult to ensure that allowed binaries aren't text editors without human
+          review.
+      status: manual
+
+    - id: R45
+      title: Enable AppArmor security profiles
+      levels:
+          - enhanced
+      description: >-
+          All AppArmor security profiles on the system must be enabled by default.
+      status: automated
+      rules:
+          - apparmor_configured
+          - all_apparmor_profiles_enforced
+          - grub2_enable_apparmor
+          - package_apparmor_installed
+          - package_pam_apparmor_installed
+
+    - id: R46
+      title: Activate SELinux with the Targeted Policy
+      levels:
+          - high
+      description: >-
+          It is recommended to enable the targeted policy when the distribution
+          supports it and that it does not operate another security module than SELinux.
+      status: automated
+      rules:
+          - selinux_policytype
+          - var_selinux_policy_name=targeted
+
+    - id: R47
+      title: Containment of unprivileged interactive users
+      levels:
+          - high
+      description: >-
+          Interactive non-privileged users of a system must be confined by associating them with a SELinux
+          confined user.
+      notes: Interactive users who still need to perform administrative tasks should not be confined
+          with user_u.
+      status: manual
+
+    - id: R48
+      title: Setting SELinux booleans
+      levels:
+          - high
+      description: >-
+          It is recommended to set the following Booleans:
+          allow_execheap to off, forbids processes to make their heap executable;
+          allow_execmem to off, forbids processes to have both write and execute rights on memory pages;
+          allow_execstack to off, forbids processes to make their stack executable;
+          secure_mode_insmod to on, prohibits dynamic loading of modules by any process;
+          ssh_sysadm_login to off, forbids SSH logins to connect directly in sysadmin role.
+      notes: In RHEL, the SELinux boolean allow_execheap is renamed to selinuxuser_execheap, and the
+          boolean allow_execstack is renamed to selinuxuser_execstack. And allow_execmem is not available,
+          deny_execmem provides the same functionality.
+      status: automated
+      rules:
+          - var_selinuxuser_execheap=off
+          - sebool_selinuxuser_execheap
+          - var_deny_execmem=on
+          - sebool_deny_execmem
+          - var_selinuxuser_execstack=off
+          - sebool_selinuxuser_execstack
+          - var_secure_mode_insmod=on
+          - sebool_secure_mode_insmod
+          - sebool_ssh_sysadm_login
+
+    - id: R49
+      title: Uninstalling SELinux Policy Debugging Tools
+      levels:
+          - high
+      description: >-
+          SELinux policy manipulation and debugging tools should not be installed
+          on a machine in production.
+      status: automated
+      rules:
+          - package_setroubleshoot_removed
+          - package_setroubleshoot-server_removed
+          - package_setroubleshoot-plugins_removed
+
+    - id: R50
+      title: Rights to access sensitive files and directories
+      levels:
+          - intermediary
+      status: automated
+      rules:
+          - file_owner_etc_shadow
+          - file_groupowner_etc_shadow
+          - file_permissions_etc_shadow
+          - file_owner_etc_gshadow
+          - file_groupowner_etc_gshadow
+          - file_permissions_etc_gshadow
+          - file_owner_etc_passwd
+          - file_groupowner_etc_passwd
+          - file_permissions_etc_passwd
+          - file_owner_etc_group
+          - file_groupowner_etc_group
+          - file_permissions_etc_group
+          - file_owner_etc_shells
+          - file_groupowner_etc_shells
+          - file_permissions_etc_shells
+          - accounts_user_dot_group_ownership
+          - accounts_user_dot_user_ownership
+          - accounts_users_home_files_groupownership
+          - accounts_users_home_files_ownership
+          - accounts_users_home_files_permissions
+          - file_permission_user_init_files
+          - dir_system_commands_group_root_owned
+          - dir_system_commands_root_owned
+          - file_groupownership_system_commands_dirs
+          - file_ownership_binary_dirs
+          - file_permissions_binary_dirs
+          - file_ownership_sshd_private_key
+          - file_groupownership_sshd_private_key
+          - file_permissions_sshd_private_key
+          - file_ownership_sshd_pub_key
+          - file_groupownership_sshd_pub_key
+          - file_permissions_sshd_pub_key
+          - file_owner_sshd_config
+          - file_groupowner_sshd_config
+          - file_permissions_sshd_config
+          - directory_owner_etc_selinux
+          - directory_groupowner_etc_selinux
+          - directory_permissions_etc_selinux
+          - file_owner_etc_sestatus_conf
+          - file_groupowner_etc_sestatus_conf
+          - file_permissions_etc_sestatus_conf
+          - directory_owner_etc_ipsecd
+          - directory_groupowner_etc_ipsecd
+          - directory_permissions_etc_ipsecd
+          - file_owner_etc_ipsec_conf
+          - file_groupowner_etc_ipsec_conf
+          - file_permissions_etc_ipsec_conf
+          - file_owner_etc_ipsec_secrets
+          - file_groupowner_etc_ipsec_secrets
+          - file_permissions_etc_ipsec_secrets
+          - directory_owner_etc_iptables
+          - directory_groupowner_etc_iptables
+          - directory_permissions_etc_iptables
+          - directory_owner_etc_nftables
+          - directory_groupowner_etc_nftables
+          - directory_permissions_etc_nftables
+          - directory_owner_etc_sysctld
+          - directory_groupowner_etc_sysctld
+          - directory_permissions_etc_sysctld
+          - file_owner_etc_sudoers
+          - file_groupowner_etc_sudoers
+          - file_permissions_etc_sudoers
+          - directory_owner_etc_sudoersd
+          - directory_groupowner_etc_sudoersd
+          - directory_permissions_etc_sudoersd
+          - file_owner_etc_crypttab
+          - file_groupowner_etc_crypttab
+          - file_permissions_etc_crypttab
+          - file_owner_etc_chrony_keys
+          - file_groupowner_etc_chrony_keys
+          - file_permissions_etc_chrony_keys
+
+    - id: R51
+      title: Sensitive and trusted files
+      levels:
+          - enhanced
+      description: >-
+          All sensitive files and those contributing to the authentication mechanisms
+          must be set up as soon as the system is installed. If default secrets are
+          preconfigured, they must be replaced during, or immediately after, the
+          installation phase of the system.
+      notes: >-
+          This concerns two aspects, the first is administrative, and involves prompt
+          installation of secrets or trusted elements by the sysadmin.
+          The second involves removal of any default secret or trusted element
+          configured by the operating system during install process, e.g. default
+          known passwords.
+      status: documentation
+
+    - id: R52
+      title: Securing access for named sockets and pipes
+      levels:
+          - intermediary
+      notes: |-
+          The requirement states that all sockets and named pipes within all mounted
+          file systems should be checked. The check should look at the permissions
+          of the socket / pipe and compare them with permissions of the directory
+          which contains the particular socket. In case permissions of the directory
+          are less stricter than permissions of the socket, this should be
+          considered a finding. Since different use cases can require different
+          permissions for named pipes / sockets, it is not possible to perform this
+          check automatically.
+      status: manual
+
+    - id: R53
+      title: Files or directories without a known user or group
+      levels:
+          - minimal
+      status: automated
+      rules:
+          - file_permissions_ungroupowned
+          - no_files_unowned_by_user
+
+    - id: R54
+      title: Sticky bit and write access rights
+      levels:
+          - minimal
+      status: automated
+      rules:
+          - dir_perms_world_writable_sticky_bits
+          - dir_perms_world_writable_root_owned
+          - file_permissions_unauthorized_world_writable
+
+    - id: R55
+      title: Temporary directories dedicated to accounts
+      levels:
+          - intermediary
+      description: >-
+          Each user or service account must have its own temporary directory
+          and dispose of it exclusively.
+      notes: The approach of the selected rules is to use and configure pam_namespace module.
+      status: automated
+      rules:
+          - enable_pam_namespace
+          - accounts_polyinstantiated_tmp
+          - accounts_polyinstantiated_var_tmp
+          - var_polyinstantiation_enabled=on
+          - sebool_polyinstantiation_enabled
+
+    - id: R56
+      title: Executables with setuid and setgid bits
+      levels:
+          - minimal
+      notes: >-
+          Only programs specifically designed to be used with setuid or setgid bits can have these privilege
+          bits set.
+          This requirement considers apropriate for setuid and setgid bits the binaries that are installed
+          from
+          recognized and authorized repositories (covered in R15).
+          The remediation resets the sticky bit to intended value by vendor/developer, any finding after
+          remediation
+          should be reviewed.
+      status: automated
+      rules:
+          - file_permissions_unauthorized_suid
+          - file_permissions_unauthorized_sgid
+
+    - id: R57
+      title: Executable with special rights setuid root and setgid root
+      levels:
+          - enhanced
+      description: >-
+          The executables with setuid executables root and setgid root special rights should be as few
+          as possible.
+          When only administrators are expected to execute them, these special rights should
+          be removed and prefer them commands like su or sudo, which can be monitored
+      notes: There could be rules to list all executables with setuid root or setgid root rights.
+      status: manual
+
+    - id: R58
+      title: Installation of packages reduced to the bare necessities
+      levels:
+          - minimal
+      description: >-
+          The selection of packages installed should be as small as possible,
+          limiting itself to select only what is required.
+      notes: >-
+          It is not possible to automatically decide in general way if a package is required or not for
+          given system.
+          As a future improvement, there could be rules assisting assessment by listing the installed
+          packages.
+      status: manual
+
+    - id: R59
+      title: Official package repositories
+      levels:
+          - minimal
+      description: Only up-to-date official repositories of the distribution must be used.
+      notes: >-
+          It is not trivial to distinguish an official repository from an unofficial one.
+          We cannot draw conclusions from the repo name or URL of the repo (as they can be arbitrary
+          or behind a proxy).
+          One approach to check the origin of installed packages is to check the signature of the packages.
+          If the public key of a repository is not installed, the repo is not trusted.
+      status: automated
+      rules:
+          - ensure_gpgcheck_never_disabled
+          - ensure_gpgcheck_globally_activated
+          - ensure_gpgcheck_local_packages
+          - ensure_redhat_gpgkey_installed
+          - ensure_oracle_gpgkey_installed
+          - ensure_almalinux_gpgkey_installed
+
+    - id: R60
+      title: Hardened package repositories
+      levels:
+          - enhanced
+      description: >-
+          When the distribution provides several types of repositories, preference
+          should be given to those containing packages subject to additional
+          hardening measures.
+          Between two packages providing the same service, those subject to hardening
+          (at compilation, installation, or default configuration) must be preferred.
+      status: not applicable
+
+    - id: R61
+      title: Regular updates
+      levels:
+          - minimal
+      notes: Check the vendor CVE feed and configure automatic install of security related updates.
+      status: automated
+      rules:
+          - security_patches_up_to_date
+          - package_dnf-automatic_installed
+          - timer_dnf-automatic_enabled
+          # Configure dnf-automatic to Install Available Updates Automatically
+          - dnf-automatic_apply_updates
+          # Configure dnf-automatic to Install Only Security Updates
+          - dnf-automatic_security_updates_only
+
+    - id: R62
+      title: Minimization of installed services
+      levels:
+          - minimal
+      description: >-
+          Only the components strictly necessary to the service provided by the system should
+          be installed.
+          Those whose presence can not be justified should be disabled, removed or deleted.
+      status: manual  # The list of essential services is not objective.
+      notes: >-
+          Performing a minimal install is a good starting point, but doesn't provide any assurance
+          over any package installed later.
+          Manual review is required to assess if the installed services are minimal.
+          In general, use of obsolete or insecure services is not recommended and we remove some
+          of these in this recommendation.
+      rules:
+          - package_dhcp_removed
+          - package_kea_removed
+          - package_rsh_removed
+          - package_rsh-server_removed
+          - package_sendmail_removed
+          - package_talk_removed
+          - package_talk-server_removed
+          - package_telnet_removed
+          - package_telnet-server_removed
+          - package_tftp_removed
+          - package_tftp-server_removed
+          - package_xinetd_removed
+          - package_ypbind_removed
+          - package_ypserv_removed
+
+    - id: R63
+      title: Minimization of services configuration
+      levels:
+          - intermediary
+      description: >-
+          Services are often installed with default configurations that enable features potentially
+          problematic from a security point of view.
+          The features configured at the level of launched services should be limited to the strict
+          minimum.
+      notes: >-
+          Define a list of most problematic components or features to be hardened or restricted.
+      status: manual
+
+    - id: R64
+      title: Least privilege for the services
+      levels:
+          - enhanced
+      description: >-
+          The deployed services must have their access restricted to the system
+          strict minimum, especially when it comes to files, processes or network.
+      notes: >-
+          SELinux policies limit the privileges of services and daemons just to those which are required.
+          The policies should be enough to restrict the services' privileges to its essentials, but the
+          automated content cannot assess whether they are the minimum required for the deployment.
+      status: automated
+      rules:
+          - selinux_policytype
+          - var_selinux_policy_name=targeted
+
+    - id: R65
+      title: Services partitioning
+      levels:
+          - enhanced
+      notes: >-
+          Using automation to restrict access and chroot services is not generally reliable.
+      status: manual
+
+    - id: R66
+      title: Virtualization components hardening
+      levels:
+          - high
+      description: >-
+          Each component supporting the virtualization must be hardened, especially
+          by applying technical measures to counter the exploit attempts.
+      notes: >-
+          We cannot easily automate securing of virtualization technologies in a general way.
+          It may be interesting to point out virtualization components that are installed and
+          should be hardened.
+      status: manual
+
+    - id: R67
+      title: Secure remote authentication with PAM
+      levels:
+          - intermediary
+      description: |-
+          When authentication takes place through a remote application (network),
+          the authentication protocol used by PAM must be secure (flow encryption,
+          remote server authentication, anti-replay mechanisms, ...).
+      notes: |-
+          In systems where remote authentication is handled through sssd service, PAM delegates
+          requests for remote authentication to sssd service through a local Unix socket. The sssd
+          service can use IPA, AD or LDAP as a remote database containing information required for authentication.
+          In case LDAP is configured manually, there are several configuration options which should be chedked.
+      status: automated
+      rules:
+          - package_sssd_installed
+          - service_sssd_enabled
+          - sssd_enable_pam_services
+          - sssd_ldap_configure_tls_reqcert
+          - sssd_ldap_start_tls
+      related_rules:
+          - package_sssd-ipa_installed
+
+    - id: R68
+      title: Protecting stored passwords
+      levels:
+          - minimal
+      description: Any password must be protected by cryptographic mechanisms.
+      notes: >-
+          The selection of rules doesn't cover the use of hardware devices to protect the passwords.
+      status: supported
+      rules:
+          - var_password_hashing_algorithm=yescrypt
+          - var_password_hashing_algorithm_pam=sha512
+          - set_password_hashing_algorithm_systemauth
+          - var_password_pam_unix_rounds=11
+          - accounts_password_pam_unix_rounds_system_auth
+          - accounts_password_pam_unix_rounds_password_auth
+          - accounts_password_pam_minclass
+          - accounts_password_pam_minlen
+          - accounts_password_pam_retry
+          - var_password_pam_minclass=4
+
+    - id: R69
+      title: Securing access to remote user databases
+      levels:
+          - intermediary
+      description: |-
+          When the user databases are stored on a remote network service, NSS must
+          be configured to establish a secure link that allows, at minimum, to
+          authenticate the server and protect the communication channel.
+      notes: |-
+          A nsswitch service connecting to remote database is provided by sssd. This is checked in requirement R67.
+          Another such service is winbind which is by default configured to connect securely to Samba domains.
+          Other relevant services are NIS and Hesiod. These should not be used.
+      status: pending
+      related_rules:
+          - no_nis_in_nsswitch
+
+    - id: R70
+      title: Separation of System Accounts and Directory Administrator
+      levels:
+          - intermediary
+      status: manual
+
+    - id: R71
+      title: Implement a logging system
+      levels:
+          - enhanced
+      description: >-
+          The configuration of the service must be performed according to the
+          'Security Recommendations for the architecture of a logging system'
+          (DAT-PA-012 v2.0) accessible on the ANSSI website
+          (https://www.ssi.gouv.fr/journalisation).
+      notes: >-
+          A lot of recommendations and requirements from the DAT-PA-012 document are administrative and
+          hard to automate.
+          The rules selected below address a few of the aspects that can be covered, keep in mind that
+          these configurations should
+          be customized for the systems deployment requirements.
+      status: automated
+      rules:
+          # Based on DAT-PA-012 R5
+          - package_chrony_installed
+          - service_chronyd_or_ntpd_enabled
+          - chronyd_specify_remote_server
+          - chronyd_configure_pool_and_server
+
+          # Derived from DAT-PA-012 R9
+          # The default remote loghost is logcollector.
+          # Change the default value to the hostname or IP of the system to send the logs to
+          - rsyslog_remote_loghost
+
+          # Derived from DAT-PA-012 R17
+          - package_rsyslog-gnutls_installed
+          - rsyslog_remote_tls
+          - rsyslog_remote_tls_cacert
+
+          # Derived from DAT-PA-012 R21
+          - partition_for_var_log_audit
+
+          # Based on DAT-PA-012 R24
+          # The rules sets the rotation frequency to daily
+          - package_logrotate_installed
+          - timer_logrotate_enabled
+          - ensure_logrotate_activated
+
+          # Based on DAT-PA-012 R26, R27
+          - rsyslog_files_ownership
+          - rsyslog_files_groupownership
+          - rsyslog_files_permissions
+
+    - id: R72
+      title: Service Activity Logs
+      levels:
+          - enhanced
+      description: >-
+          Each service must have a dedicated event logging journal on the system.
+          This log must only be accessible by the syslog server, and must not be readable,
+          editable or deletable by the service directly.
+      status: documentation  # How to enable syslog for each service installed in the system
+
+    - id: R73
+      title: Logging activity by auditd
+      levels:
+          - enhanced
+      description: >-
+          The logging of the system activity must be done through the auditd service.
+      status: automated
+      rules:
+          - audit_rules_sysadmin_actions
+          - audit_sudo_log_events
+
+          - audit_rules_login_events_faillock
+          - audit_rules_login_events_lastlog
+
+          - audit_rules_session_events_utmp
+          - audit_rules_session_events_btmp
+          - audit_rules_session_events_wtmp
+
+          - audit_rules_time_adjtimex
+          - audit_rules_time_clock_settime
+          - audit_rules_time_stime
+          - audit_rules_time_watch_localtime
+
+          - audit_rules_mac_modification
+
+          - audit_rules_networkconfig_modification
+
+          - audit_rules_dac_modification_chmod
+          - audit_rules_dac_modification_chown
+          - audit_rules_dac_modification_fchmod
+          - audit_rules_dac_modification_fchmodat
+          - audit_rules_dac_modification_fchmodat2
+          - audit_rules_dac_modification_fchown
+          - audit_rules_dac_modification_fchownat
+          - audit_rules_dac_modification_fremovexattr
+          - audit_rules_dac_modification_fsetxattr
+          - audit_rules_dac_modification_lchown
+          - audit_rules_dac_modification_lremovexattr
+          - audit_rules_dac_modification_lsetxattr
+          - audit_rules_dac_modification_removexattr
+          - audit_rules_dac_modification_setxattr
+
+          - audit_rules_unsuccessful_file_modification_creat
+          - audit_rules_unsuccessful_file_modification_ftruncate
+          - audit_rules_unsuccessful_file_modification_open
+          - audit_rules_unsuccessful_file_modification_openat
+          - audit_rules_unsuccessful_file_modification_truncate
+
+          - audit_rules_usergroup_modification_group
+          - audit_rules_usergroup_modification_gshadow
+          - audit_rules_usergroup_modification_opasswd
+          - audit_rules_usergroup_modification_passwd
+          - audit_rules_usergroup_modification_shadow
+
+          - audit_rules_media_export
+          - audit_rules_dac_modification_umount2
+
+          - audit_rules_privileged_commands
+
+          - audit_rules_file_deletion_events_rename
+          - audit_rules_file_deletion_events_renameat
+          - audit_rules_file_deletion_events_renameat2
+          - audit_rules_file_deletion_events_rmdir
+          - audit_rules_file_deletion_events_unlink
+          - audit_rules_file_deletion_events_unlinkat
+
+          - audit_rules_kernel_module_loading_delete
+          - audit_rules_kernel_module_loading_init
+          - audit_rules_kernel_module_loading_finit
+          - audit_rules_privileged_commands_insmod
+          - audit_rules_privileged_commands_modprobe
+          - audit_rules_privileged_commands_rmmod
+          - audit_rules_privileged_commands_kmod
+
+          - audit_rules_immutable
+          - service_auditd_enabled
+          - package_audit_installed
+
+    - id: R74
+      title: Configuring the local messaging service
+      levels:
+          - intermediary
+      status: automated
+      rules:
+          - postfix_network_listening_disabled
+
+    - id: R75
+      title: Messaging Aliases for Service Accounts
+      levels:
+          - intermediary
+      status: automated  # semi-automated
+      notes: >-
+          Only the alias for root user is covered by the rule.
+          The other services cannot be reliably covered, as there is no simple way
+          of determining what is a service account.
+      rules:
+          - postfix_client_configure_mail_alias
+
+    - id: R76
+      title: Sealing and integrity of files
+      levels:
+          - high
+      description: >-
+          Any file that is not transient (such as temporary files, databases, etc.)
+          must be monitored by a sealing program.
+          This includes: directories containing executables, libraries,
+          configuration files, as well as any files that may contain sensitive
+          elements (cryptographic keys, passwords, confidential data).
+      status: automated
+      rules:
+          - package_aide_installed
+          - aide_build_database
+          - aide_periodic_cron_checking
+          - aide_periodic_checking_systemd_timer
+          - aide_scan_notification
+          - aide_verify_acls
+          - aide_verify_ext_attributes
+
+    - id: R77
+      title: Protection of the seals database
+      levels:
+          - high
+      description: >-
+          The sealing database must be protected from malicious access by
+          cryptographic signature mechanisms (with the key used for the signature
+          not locally stored in clear), or possibly stored on a separate machine
+          of the one on which the sealing is done.
+          Check section "Database and config signing in AIDE manual"
+          https://aide.github.io/doc/#signing
+      status: does not meet
+
+    - id: R78
+      title: Network services partitioning
+      levels:
+          - enhanced
+      description: >-
+          Network services should as much as possible be hosted on isolated environments.
+          This avoids having other potentially affected services if one of them gets
+          compromised under the same environment.
+      notes: >-
+          Manual analysis is required to determine if services are hosted appropriately in
+          separate or isolated system while maintaining functionality.
+      status: manual
+
+    - id: R79
+      title: Hardening and monitoring of exposed services
+      levels:
+          - intermediary
+      notes: >-
+          SELinux can provide confinement and monitoring of services, and AIDE provides
+          basic integrity checking. System logs are configured as part of R43.
+          Hardening of particular services should be done on a case by case basis and is
+          not automated by this content.
+      status: partial
+      rules:
+          - selinux_state
+          - var_selinux_state=enforcing
+          - package_aide_installed
+          - aide_build_database
+
+    - id: R80
+      title: Minimization of network services
+      levels:
+          - minimal
+      description: All network services must be listening on the correct network intefaces.
+      notes: >-
+          Manual review is necessary to decide if the list of resident daemons is minimal.
+          Assisting rules could be created to list sevices listening on the network for manual review.
+      status: manual
