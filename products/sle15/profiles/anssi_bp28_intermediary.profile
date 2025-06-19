@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 metadata:
@@ -28,7 +29,7 @@ selections:
     - var_sudo_dedicated_group=root
     - '!accounts_password_pam_unix_rounds_system_auth'
     - '!accounts_password_pam_unix_rounds_password_auth'
-    -  set_password_hashing_min_rounds_logindefs
+    - set_password_hashing_min_rounds_logindefs
     # Following rules once had a prodtype incompatible with the sle15 product
     - '!accounts_password_pam_dcredit'
     - '!sysctl_kernel_unprivileged_bpf_disabled'
@@ -65,6 +66,6 @@ selections:
     - '!accounts_password_pam_retry'
     - '!file_groupowner_etc_chrony_keys'
     - accounts_password_pam_pwhistory_remember
-    
+
     # The following rules are not applicable to SLE 15
     - '!logind_session_timeout'

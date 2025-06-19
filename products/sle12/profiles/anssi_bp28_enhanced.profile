@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 metadata:
@@ -28,7 +29,7 @@ selections:
     - var_sudo_dedicated_group=root
     - '!accounts_password_pam_unix_rounds_system_auth'
     - '!accounts_password_pam_unix_rounds_password_auth'
-    -  set_password_hashing_min_rounds_logindefs
+    - set_password_hashing_min_rounds_logindefs
     # Following rules once had a prodtype incompatible with the sle12 product
     - '!accounts_password_pam_dcredit'
     - '!sysctl_kernel_unprivileged_bpf_disabled'
