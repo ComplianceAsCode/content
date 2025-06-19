@@ -185,6 +185,26 @@ and keep these guidelines in mind when writing new code.
 * Shall use the `.yml` vs `.yaml` for the file extension
 * Shall have one blank line between sections
 
+<details>
+<summary>Hint: Linting Tools</summary><br/>
+You can test and fix lint issues locally using two python tools:
+
+```bash
+pip install yamllint yamlfix
+```
+
+Use `yamllint` to check the files
+```bash
+yamlint -c .yamllint <file>
+```
+
+Use `yamlfix` to automatically fix lint issues
+```bash
+yamlfix -c yamlfix.toml <file>
+```
+These configuration files are available in the root directory of the repository.
+</details>
+
 #### HTML Like Fields
 
 The sections below that are marked with `(HTML Like)` means that a limited number of HTML elements are supported in these sections.
