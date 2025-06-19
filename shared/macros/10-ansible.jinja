@@ -226,6 +226,41 @@ value: :code:`Setting={{ varname1 }}`
 {{%- endif %}}
 {{%- endmacro %}}
 
+{{#
+  High level macro to set a value in the ssh configuration file.
+  We specify a case insensitive comparison in the prefix since this is
+  used to deduplicate since ssh_config has case-insensitive parameters
+  (but case-sensitive values). We also specify the validation program here;
+  -t specifies test and -f allows Ansible to pass a file at a different path.
+
+  Set set a parameter in /etc/ssh_config or /etc/ssh/ssh_config.d/
+
+:parameter msg: Message to be set as Task Title, if not set the rule's title will be used instead
+:type msg: str
+:parameter parameter: Parameter to set
+:type parameter: str
+:parameter value: The value to set
+:type value: str
+:parameter config_is_distributed: If true, will ok look in /etc/ssh/ssh_config.d
+:type config_is_distributed: str
+:parameter config_basename: Filename of configuration file when using distributed configuration
+:type config_basename: str
+
+#}}
+{{%- macro ansible_ssh_set(msg='', parameter='', value='', config_is_distributed="false", config_basename="00-complianceascode-hardening.conf", rule_title=None) %}}
+{{%- if config_is_distributed == "true" %}}
+{{% set config_dir = "/etc/ssh/ssh_config.d" %}}
+{{% set config_file = "/etc/ssh/ssh_config.d" ~ "/" ~ config_basename %}}
+{{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/ssh_config", config_dir=config_dir, set_file=config_file, parameter=parameter, separator_regex="\s+", value=value, prefix_regex="(?i)^\s*", create='yes', validate='', insert_after='', insert_before="BOF", rule_title=rule_title) }}}
+- name: {{{ rule_title }}} - set file mode for {{{ config_file }}}
+  ansible.builtin.file:
+    path: {{{ config_file }}}
+    mode: '0600'
+{{%- else %}}
+{{{ ansible_set_config_file(msg, "/etc/ssh/ssh_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="", insert_before="BOF", rule_title=rule_title) }}}
+{{%- endif %}}
+{{%- endmacro %}}
+
 
 {{#
   High level macro to set a value in a shell-related file that contains var assignments.
