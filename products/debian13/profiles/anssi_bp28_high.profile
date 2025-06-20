@@ -41,7 +41,7 @@ selections:
   # chronyd_specify_remote_server still reports whether chrony is configured.
   - '!chronyd_configure_pool_and_server'
 
-  # Following rules once had a prodtype incompatible with the debian12 product
+  # Following rules aren't compatible with Debian 13
   - '!accounts_passwords_pam_tally2_deny_root'
   - '!ensure_redhat_gpgkey_installed'
   - '!set_password_hashing_algorithm_systemauth'
