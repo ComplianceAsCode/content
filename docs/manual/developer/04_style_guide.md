@@ -186,7 +186,7 @@ and keep these guidelines in mind when writing new code.
 * Shall have one blank line between sections
 
 <details>
-<summary>Hint: Linting Tools</summary><br/>
+<summary>Hint: Linting Tools to Check and Fix Lint Issues</summary><br/>
 You can test and fix lint issues locally using two python tools:
 
 ```bash
@@ -195,7 +195,7 @@ pip install yamllint yamlfix
 
 Use `yamllint` to check the files
 ```bash
-yamlint -c .yamllint <file>
+yamllint -c .yamllint <file>
 ```
 
 Use `yamlfix` to automatically fix lint issues
