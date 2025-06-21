@@ -32,3 +32,5 @@ selections:
   - service_rexec_disabled
   - package_scap-security-guide_installed
   - set_password_hashing_yescrypt_cost_factor_logindefs
+  - var_authselect_profile=local
+

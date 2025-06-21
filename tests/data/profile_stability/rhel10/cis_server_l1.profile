@@ -310,6 +310,7 @@ var_accounts_passwords_pam_faillock_deny=5
 var_accounts_passwords_pam_faillock_unlock_time=900
 var_accounts_tmout=15_min
 var_accounts_user_umask=027
+var_authselect_profile=local
 var_multiple_time_servers=rhel
 var_pam_wheel_group_for_su=cis
 var_password_hashing_algorithm=yescrypt

@@ -20,6 +20,8 @@ description: |-
 
 selections:
     - ospp:all
+    - var_authselect_profile=local
+
     - '!package_screen_installed'
     - '!package_dnf-plugin-subscription-manager_installed'
     - '!package_scap-security-guide_installed'

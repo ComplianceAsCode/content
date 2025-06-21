@@ -40,3 +40,4 @@ selections:
     - '!package_talk_removed'
     - '!package_talk-server_removed'
     - '!package_xinetd_removed'
+    - var_authselect_profile=local

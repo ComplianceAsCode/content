@@ -63,3 +63,4 @@ selections:
     - '!zipl_init_on_alloc_argument'
     - '!zipl_page_alloc_shuffle_argument'
     - '!zipl_systemd_debug-shell_argument_absent'
+    - var_authselect_profile=local

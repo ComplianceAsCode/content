@@ -15,3 +15,4 @@ description: |-
 
 selections:
     - cis_rhel10:all:l2_workstation
+    - var_authselect_profile=local

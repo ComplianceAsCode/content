@@ -31,3 +31,4 @@ selections:
     - '!security_patches_up_to_date'
     # authselect is enabled by default
     - '!enable_authselect'
+    - var_authselect_profile=local
