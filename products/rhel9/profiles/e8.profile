@@ -25,3 +25,7 @@ selections:
     - '!package_rsh_removed'
     - package_rear_installed
     - package_audit_installed
+
+    # Following rules are not applicable to RHEL
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'

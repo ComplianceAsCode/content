@@ -20,32 +20,36 @@ description: |-
     https://cyber.gouv.fr/publications/configuration-recommendations-gnulinux-system
 
 selections:
-  - anssi:all:intermediary
-  - var_password_hashing_algorithm=SHA512
-  - var_password_pam_unix_rounds=65536
+    - anssi:all:intermediary
+    - var_password_hashing_algorithm=SHA512
+    - var_password_pam_unix_rounds=65536
 
-  # An alternative solution for R67 is using nss-pam-ldapd package, in this case ensures SSL and certificate configuration
-  - ldap_client_start_tls
-  - ldap_client_tls_cacertpath
+    # An alternative solution for R67 is using nss-pam-ldapd package, in this case ensures SSL and certificate configuration
+    - ldap_client_start_tls
+    - ldap_client_tls_cacertpath
 
-  # Ensure nis is not used for RHEL 8 in R69
-  - no_nis_in_nsswitch
+    # Ensure nis is not used for RHEL 8 in R69
+    - no_nis_in_nsswitch
 
-  # Following rules once had a prodtype incompatible with the rhel8 product
-  - '!cracklib_accounts_password_pam_minlen'
-  - '!accounts_passwords_pam_tally2_deny_root'
-  - '!grub2_mds_argument'
-  - '!sysctl_fs_protected_fifos'
-  - '!accounts_passwords_pam_tally2'
-  - '!cracklib_accounts_password_pam_ucredit'
-  - '!cracklib_accounts_password_pam_dcredit'
-  - '!cracklib_accounts_password_pam_lcredit'
-  - '!sysctl_fs_protected_regular'
-  - '!cracklib_accounts_password_pam_ocredit'
-  - '!grub2_page_alloc_shuffle_argument'
-  - '!accounts_passwords_pam_tally2_unlock_time'
-  - '!ensure_oracle_gpgkey_installed'
-  - '!ensure_almalinux_gpgkey_installed'
-  - '!package_kea_removed'
-  - '!package_rsh-server_removed'
-  - '!package_rsh_removed'
+    # Following rules once had a prodtype incompatible with the rhel8 product
+    - '!cracklib_accounts_password_pam_minlen'
+    - '!accounts_passwords_pam_tally2_deny_root'
+    - '!grub2_mds_argument'
+    - '!sysctl_fs_protected_fifos'
+    - '!accounts_passwords_pam_tally2'
+    - '!cracklib_accounts_password_pam_ucredit'
+    - '!cracklib_accounts_password_pam_dcredit'
+    - '!cracklib_accounts_password_pam_lcredit'
+    - '!sysctl_fs_protected_regular'
+    - '!cracklib_accounts_password_pam_ocredit'
+    - '!grub2_page_alloc_shuffle_argument'
+    - '!accounts_passwords_pam_tally2_unlock_time'
+    - '!ensure_oracle_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
+    - '!package_kea_removed'
+    - '!package_rsh-server_removed'
+    - '!package_rsh_removed'
+
+    # Following rules are not applicable to RHEL
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'

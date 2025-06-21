@@ -70,3 +70,7 @@ selections:
     - '!package_xinetd_removed'
     - '!package_ypbind_removed'
     - '!package_ypserv_removed'
+
+    # Following rules are not applicable to RHEL
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
