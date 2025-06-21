@@ -4,11 +4,17 @@
 # complexity = low
 # disruption = low
 
-{{%- if "sle" in product or "slmicro" in product or "ubuntu" in product %}}
+{{%- if "sle" in product or "slmicro5" in product or "ubuntu" in product %}}
 {{%- set pam_lastlog_path = "/etc/pam.d/login" %}}
+{{%- set pam_lastlog = "pam_lastlog.so" %}}
+{{%- set after_match = "^\s*session.*include\s+common-session$" %}}
+{{%- elif product == 'slmicro6' %}}
+{{%- set pam_lastlog_path = "/etc/pam.d/postlogin-session" %}}
+{{%- set pam_lastlog = "pam_lastlog2.so" %}}
 {{%- set after_match = "^\s*session.*include\s+common-session$" %}}
 {{%- else %}}
 {{%- set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
+{{%- set pam_lastlog = "pam_lastlog.so" %}}
 {{%- set after_match = "^\s*session\s+.*pam_succeed_if\.so.*" %}}
 {{%- endif %}}
 
@@ -20,4 +26,8 @@
 {{%- set control = "[default=1]" %}}
 {{%- endif %}}
 
+{{%- if pam_lastlog == "pam_lastlog.so" %}}
 {{{ ansible_pam_lastlog_enable_showfailed(pam_lastlog_path, control, after_match, rule_title=rule_title, rule_id=rule_id) }}}
+{{%- else %}}
+{{{ ansible_pam_lastlog2_enable_showfailed(pam_lastlog_path, control, after_match, rule_title=rule_title, rule_id=rule_id) }}}
+{{%- endif %}}

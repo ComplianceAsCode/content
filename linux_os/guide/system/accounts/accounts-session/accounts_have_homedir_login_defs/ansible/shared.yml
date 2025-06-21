@@ -4,4 +4,10 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_set_config_file(msg='Ensure new users receive home directories', file='/etc/login.defs', parameter="CREATE_HOME", value='yes', create='yes', rule_title=rule_title) }}}
+{{% if product == 'slmicro6' %}}
+{{% set login_defs_path = "/usr/etc/login.defs" %}}
+{{% else %}}
+{{% set login_defs_path = "/etc/login.defs" %}}
+{{% endif %}}
+
+{{{ ansible_set_config_file(msg='Ensure new users receive home directories', file=login_defs_path, parameter="CREATE_HOME", value='yes', create='yes', rule_title=rule_title) }}}

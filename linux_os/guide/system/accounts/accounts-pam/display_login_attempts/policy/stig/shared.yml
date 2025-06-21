@@ -9,7 +9,7 @@ checktext: |-
 
     $ sudo grep pam_lastlog /etc/pam.d/postlogin
 
-    session required pam_lastlog.so showfailed
+    session required {{{ pam_lastlog }}} showfailed
 
     If "pam_lastlog" is missing from "/etc/pam.d/postlogin" file, or the silent option is present, this is a finding.
 
@@ -18,6 +18,4 @@ fixtext: |-
 
     Add the following line to the top of "/etc/pam.d/postlogin":
 
-    session required pam_lastlog.so showfailed
-
-
+    session required {{{ pam_lastlog }}} showfailed
