@@ -717,8 +717,7 @@ XCCDF rules in our project.
 In the example below we identified that:
 
 * R1 can be automatically scanned by SCAP and we already have 3 existing rules
-in our repository. However, we want one of them to be selected only on RHEL 9,
-but the rule is applicable to all platforms.
+in our repository.
 * R2 is up to manual checking, but we have systemd_target_multi_user which is
 related to this control.
 * R3 can be automatically scanned by SCAP but unfortunately we don't have any
@@ -742,8 +741,10 @@ between XCCDF rules which directly implement the given controls (represented by
 The `rules` and `related_rules` keys consist of a list of rule IDs and variable
 selections.
 
-If a rule needs to be chosen only in some of the products we can use Jinja macros
-inside the controls file to choose products.
+If we want some rules (e.g. `cockpit_session_timeout`) to be selected only on some product (e.g. RHEL 9),
+but the rule is applicable to all platforms, we can unselect the rule in other product's profile `selections` field,
+e.g. we add `!cockpit_session_timeout` to `products/rhel10/profiles/anssi_bp28_high.profile` to unselect rule
+`cockpit_session_timeout`.
 
 After we finish our analysis, we will insert our findings to the controls file,
 the file will look like this:
@@ -766,9 +767,7 @@ controls:
     - sshd_set_idle_timeout
     - accounts_tmout
     - var_accounts_tmout=10_min
-{{% if product == "rhel9" %}}
     - cockpit_session_timeout
-{{% endif %}}
   - id: R2
     title: Minimization of configuration
     description: |-
@@ -820,9 +819,7 @@ controls:
     - sshd_set_idle_timeout
     - accounts_tmout
     - var_accounts_tmout=10_min
-{{% if product == "rhel9" %}}
     - cockpit_session_timeout
-{{% endif %}}
 ```
 
 ```
