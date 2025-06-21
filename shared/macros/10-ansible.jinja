@@ -1493,7 +1493,7 @@ Part of the grub2_bootloader_argument template.
 
 {{% endif -%}}
 
-{{% if product in ['sle12', 'sle15'] %}}
+{{% if product in ['sle12', 'sle15', 'slmicro5'] %}}
 - name: Update grub defaults and the bootloader menu
   command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
 {{% elif 'debian' in product %}}
