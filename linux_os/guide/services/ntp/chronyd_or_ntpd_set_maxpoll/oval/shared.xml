@@ -31,6 +31,11 @@
   </ind:textfilecontent54_object>
 
 {{% set filepath_regex = "^(" + chrony_conf_path | replace(".", "\.") + "|" + chrony_d_path | replace(".", "\.") + ".+\.conf)$" %}}
+{{%- if "ubuntu" in product %}}
+{{%- set sources_regex = "^(?:server)" %}}
+{{%- else %}}
+{{%- set sources_regex = "^(?:server|pool|peer)" %}}
+{{%- endif %}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="check if maxpoll is set in {{{ chrony_conf_path }}} or {{{ chrony_d_path }}}"
@@ -40,7 +45,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_chrony_set_maxpoll" version="1">
     <ind:filepath operation="pattern match">{{{ filepath_regex }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^(?:server|pool|peer)[\s]+[\S]+.*maxpoll[\s]+(\d+)</ind:pattern>
+    <ind:pattern operation="pattern match">{{{ sources_regex }}}[\s]+[\S]+.*maxpoll[\s]+(\d+)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -71,7 +76,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_chrony_all_server_has_maxpoll" version="1">
     <ind:filepath operation="pattern match">{{{ filepath_regex }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^(?:server|pool|peer)[\s]+[\S]+[\s]+(.*)</ind:pattern>
+    <ind:pattern operation="pattern match">{{{ sources_regex }}}[\s]+[\S]+[\s]+(.*)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
