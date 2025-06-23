@@ -26,3 +26,7 @@ selections:
     - '!package_rsh_removed'
     - '!sshd_use_directory_configuration'
     - '!package_rsh-server_removed'
+
+    # Following rules are not applicable to RHEL
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
