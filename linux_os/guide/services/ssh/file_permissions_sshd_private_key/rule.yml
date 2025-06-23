@@ -4,7 +4,7 @@ title: 'Verify Permissions on SSH Server Private *_key Key Files'
 
 {{% set dedicated_ssh_groupname = groups.get("dedicated_ssh_keyowner", {}).get("name") %}}
 
-{{% if product in ["rhcos4", "sle12", "sle15", "slmicro5"] %}}
+{{% if product in ["rhcos4", "sle12", "sle15", "slmicro5","ol9"] %}}
 {{# CoreOS is special - it is immutable, so it is more predictable, and it uses the dedicated group as key owner by default #}}
 {{% set perms = "-rw-r-----" %}}
 {{% set perms_num = "0640" %}}
