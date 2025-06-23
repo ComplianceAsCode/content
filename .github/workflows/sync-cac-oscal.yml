@@ -39,7 +39,7 @@ jobs:
             # Extract PR title from the response
             PR_TITLE=$(echo "$PR_INFO" | jq -r .title)
             echo "PR Title: $PR_TITLE"
-            if [[ "$PR_TITLE" == *"Auto-generated PR from OSCAL content"* ]]; then
+            if [[ "$PR_TITLE" == *"Auto-generated PR from OSCAL"* ]]; then
               echo "The PR comes from OSCAL content. The task of Sync CaC content to OSCAL will exit."
               echo "Skipping further checks."
               echo "SKIP=true" >> $GITHUB_ENV
@@ -87,7 +87,7 @@ jobs:
         if: ${{ env.CHANGE_FOUND == 'true' }}
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          repository: complytime/trestle-bot
+          repository: complytime/complyscribe
           path: trestle-bot
       - name: Setup trestlebot
         if: ${{ env.CHANGE_FOUND == 'true' }}
