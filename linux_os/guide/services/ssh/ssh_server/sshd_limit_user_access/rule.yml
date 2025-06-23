@@ -38,7 +38,7 @@ ocil_clause: 'sshd does not limit the users who can log in'
 
 ocil: |-
     To ensure sshd limits the users who can log in, run the following:
-    pre>$ sudo grep -rPi '^\h*(allow|deny)(users|groups)\h+\H+(\h+.*)?$' /etc/ssh/sshd_config*</pre>
+    <pre>$ sudo grep -rPi '^\h*(allow|deny)(users|groups)\h+\H+(\h+.*)?$' /etc/ssh/sshd_config*</pre>
     If properly configured, the output should be a list of usernames and/or
     groups allowed to log in to this system.
 
