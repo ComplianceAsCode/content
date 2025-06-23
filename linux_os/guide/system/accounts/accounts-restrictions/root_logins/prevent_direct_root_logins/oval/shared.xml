@@ -10,10 +10,16 @@
       version="1" id="test_root_access_locked_etc_shadow"
       comment="make sure root account is locked in /etc/shadow">
     <ind:object object_ref="obj_root_access_locked_etc_shadow" />
+    <ind:state state_ref="state_oot_access_locked_etc_shadow"/>
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_root_access_locked_etc_shadow" version="1">
     <ind:filepath>/etc/shadow</ind:filepath>
-    <ind:pattern operation="pattern match">^root:(!.*|\*.*).*$</ind:pattern>
+    <ind:pattern operation="pattern match">^root:([^:]*):(?:[^:]*:){6}(?:[^:]*)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_oot_access_locked_etc_shadow" version="1">
+      <ind:subexpression operation="pattern match">^(\!|\*).*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
 </def-group>
