@@ -282,25 +282,29 @@ jobs:
           BRANCH_NAME="sync_cac_pr${{ env.PR_NUMBER }}"
           OWNER="ComplianceAsCode" 
           REPO="oscal-content"
-          # Check if the PR exists
-          PR_EXISTS=$(gh pr list --repo $OWNER/$REPO \
-            --head $BRANCH_NAME --state open --json id \
-            | jq length)
-          # Get commits between main and branch
-          commits=$(git log main..$BRANCH_NAME --oneline)
-          # If the PR does not exist and there are commits in the branch,
-          # then create a PR for this branch.
-          if [ "$PR_EXISTS" -gt 0 ]; then
-            echo "PR $BRANCH_NAME already exists. Skipping PR creation."
-          elif [ -n "$commits" ]; then
-            echo "No commits between main and $BRANCH_NAME. Skipping PR creation."
+          if [[ "$(git branch --show-current)" == "$BRANCH_NAME" ]]; then
+            # Check if the PR exists
+            PR_EXISTS=$(gh pr list --repo $OWNER/$REPO \
+              --head $BRANCH_NAME --state open --json id \
+              | jq length)
+            # Get commits between main and branch
+            commits=$(git log main..$BRANCH_NAME --oneline)
+            # If the PR does not exist and there are commits in the branch,
+            # then create a PR for this branch.
+            if [ "$PR_EXISTS" -gt 0 ]; then
+              echo "PR $BRANCH_NAME already exists. Skipping PR creation."
+            elif [ -z "$commits" ]; then
+              echo "No commits between main and $BRANCH_NAME. Skipping PR creation."
+            else
+              echo "Creating PR for new branch: $BRANCH_NAME"
+              gh pr create --repo $OWNER/$REPO \
+                --title "Auto-generated PR from CAC ${{ env.PR_NUMBER }}" \
+                --head "$BRANCH_NAME" \
+                --base "main" \
+                --body "This is an auto-generated PR from CAC ${{ env.PR_NUMBER }} updates"
+            fi
           else
-            echo "Creating PR for new branch: $BRANCH_NAME"
-            gh pr create --repo $OWNER/$REPO \
-              --title "Auto-generated PR from CAC ${{ env.PR_NUMBER }}" \
-              --head "$BRANCH_NAME" \
-              --base "main" \
-              --body "This is an auto-generated PR from CAC ${{ env.PR_NUMBER }} updates"
+            echo "No branch $BRANCH_NAME. Skipping PR creation."
           fi
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
