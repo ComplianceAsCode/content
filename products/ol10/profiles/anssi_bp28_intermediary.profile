@@ -44,3 +44,4 @@ selections:
     - '!package_xinetd_removed'
     # OL 10 unified the paths for grub2 files. This rule is selected in control file by R5.
     - '!grub2_uefi_password'
+    - var_authselect_profile=local

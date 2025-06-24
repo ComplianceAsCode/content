@@ -403,6 +403,7 @@ var_deny_execmem=on
 var_l1tf_options=full_force
 var_logind_session_timeout=10_minutes
 var_mds_options=full_nosmt
+var_mount_option_proc_hidepid=invisible
 var_password_hashing_algorithm=SHA512
 var_password_hashing_algorithm_pam=sha512
 var_password_pam_dcredit=1
