@@ -74,7 +74,7 @@ jobs:
           cat filenames.txt
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-      # Step 6: Setup the trestle bot environment
+      # Step 6: Setup the complyscribe environment
       - name: Checkout OSCAL content repo
         if: ${{ env.CHANGE_FOUND == 'true' }}
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -83,16 +83,16 @@ jobs:
           path: oscal-content
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
-      - name: Checkout trestle-bot repo
+      - name: Checkout complyscribe repo
         if: ${{ env.CHANGE_FOUND == 'true' }}
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           repository: complytime/complyscribe
-          path: trestle-bot
-      - name: Setup trestlebot
+          path: complyscribe
+      - name: Setup complyscribe
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
-          cd trestle-bot && python3 -m venv venv && source venv/bin/activate
+          cd complyscribe && python3 -m venv venv && source venv/bin/activate
           python3 -m pip install --no-cache-dir "poetry==1.7.1"
           poetry install
       - name: Set RH_PRODUCTS
@@ -103,7 +103,7 @@ jobs:
       - name: Get profiles, controls and level mapping
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
-          cd trestle-bot && source venv/bin/activate
+          cd complyscribe && source venv/bin/activate
           RH_PRODUCTS=${{ env.RH_PRODUCTS }}
           for product in "${RH_PRODUCTS[@]}"; do
             echo "The map for $product..."
@@ -115,7 +115,7 @@ jobs:
       - name: Get product controls
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
-          cd trestle-bot && source venv/bin/activate
+          cd complyscribe && source venv/bin/activate
           RH_PRODUCTS=${{ env.RH_PRODUCTS }}
           for product in "${RH_PRODUCTS[@]}"; do
             echo "All available controls of $product..."
@@ -132,7 +132,7 @@ jobs:
         run: |
           cat filenames.txt
           python cac-content/utils/handle_detected_updates.py 'filenames.txt' > updates 2>&1
-          cd trestle-bot && source venv/bin/activate
+          cd complyscribe && source venv/bin/activate
           RH_PRODUCTS=${{ env.RH_PRODUCTS }}
           i=0
           while IFS= read -r line; do
@@ -185,7 +185,7 @@ jobs:
       - name: Sync updated controls to OSCAL content
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
-          cd trestle-bot && source venv/bin/activate
+          cd complyscribe && source venv/bin/activate
           RH_PRODUCTS=${{ env.RH_PRODUCTS }}
           pr_number="${{ env.PR_NUMBER }}"
           # 1.1 Get the updated controls to array
@@ -203,21 +203,21 @@ jobs:
               for pc in "${available_controls[@]}"; do
                 if [[ "$pc" == "$policy_id" ]]; then
                   # 1.2.1 Sync the updated controls to OSCAL catalog
-                  poetry run trestlebot sync-cac-content catalog  --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$GITHUB_WORKSPACE/cac-content" --cac-policy-id "$policy_id" --oscal-catalog "$policy_id"
+                  poetry run complyscribe sync-cac-content catalog  --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$GITHUB_WORKSPACE/cac-content" --cac-policy-id "$policy_id" --oscal-catalog "$policy_id"
                   # 1.2.2 Sync the updated controls to OSCAL profile
-                  poetry run trestlebot sync-cac-content profile  --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$GITHUB_WORKSPACE/cac-content" --product "$product" --cac-policy-id "$policy_id" --oscal-catalog "$policy_id"
+                  poetry run complyscribe sync-cac-content profile  --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$GITHUB_WORKSPACE/cac-content" --product "$product" --cac-policy-id "$policy_id" --oscal-catalog "$policy_id"
                 fi
               done
               # 1.2.3 Sync the updated controls to OSCAL component-definition
               # This sync depends on the control assoicated profile and levels
-              sh ../cac-content/utils/trestlebot-cli-compd.sh true $policy_id $product $pr_number $GITHUB_WORKSPACE $product"_map.json"
+              sh ../cac-content/utils/complyscribe-cli-compd.sh true $policy_id $product $pr_number $GITHUB_WORKSPACE $product"_map.json"
             done
           done
       # Step 12: Sync updated profiles to OSCAL content
       - name: Sync updated profiles to OSCAL content
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
-          cd trestle-bot && source venv/bin/activate
+          cd complyscribe && source venv/bin/activate
           RH_PRODUCTS=${{ env.RH_PRODUCTS }}
           pr_number="${{ env.PR_NUMBER }}"
           # 1. Get the updated profiles
@@ -234,11 +234,11 @@ jobs:
                   policy_id=$(echo "$map" | jq -r '.policy_id')
                   profile_name=$(echo "$map" | jq -r '.profile_name')
                   if [[ "$profile" == "$profile_name" ]]; then
-                    poetry run trestlebot sync-cac-content profile  --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$GITHUB_WORKSPACE/cac-content" --product "$product" --cac-policy-id "$policy_id" --oscal-catalog "$policy_id"
+                    poetry run complyscribe sync-cac-content profile  --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$GITHUB_WORKSPACE/cac-content" --product "$product" --cac-policy-id "$policy_id" --oscal-catalog "$policy_id"
                   fi
                 done < $product"_map.json"
                 # 2.2 Sync CaC profile to OSCAL component-definition
-                sh ../cac-content/utils/trestlebot-cli-compd.sh false $profile $product $pr_number $GITHUB_WORKSPACE $product"_map.json"
+                sh ../cac-content/utils/complyscribe-cli-compd.sh false $profile $product $pr_number $GITHUB_WORKSPACE $product"_map.json"
               done
             fi
           done
@@ -246,7 +246,7 @@ jobs:
       - name: Sync rule updates to OSCAL component-definition
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
-          cd trestle-bot && source venv/bin/activate
+          cd complyscribe && source venv/bin/activate
           RH_PRODUCTS=${{ env.RH_PRODUCTS }}
           pr_number="${{ env.PR_NUMBER }}"
           # 1. Get the rule impacted controls
@@ -258,7 +258,7 @@ jobs:
             for product in "${RH_PRODUCTS[@]}"; do
               # Sync CAC controls' updates to OSCAL content
               for policy_id in "${rule_impacted_controls[@]}"; do
-                sh ../cac-content/utils/trestlebot-cli-compd.sh true $policy_id $product $pr_number $GITHUB_WORKSPACE $product"_map.json"
+                sh ../cac-content/utils/complyscribe-cli-compd.sh true $policy_id $product $pr_number $GITHUB_WORKSPACE $product"_map.json"
               done
             done
           fi
@@ -270,7 +270,7 @@ jobs:
               echo "The rule impacted profiles for $product: ${rule_impacted_profiles[@]}"
               # 4. Sync the rule impacted profiles to OSCAL component-definition
               for profile in "${rule_impacted_profiles[@]}"; do
-                sh ../cac-content/utils/trestlebot-cli-compd.sh false $profile $product $pr_number $GITHUB_WORKSPACE $product"_map.json"
+                sh ../cac-content/utils/complyscribe-cli-compd.sh false $profile $product $pr_number $GITHUB_WORKSPACE $product"_map.json"
               done
             fi
           done
