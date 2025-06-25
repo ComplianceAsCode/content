@@ -7,7 +7,6 @@ description: |-
     To configure how many days prior to password expiration that a warning will be issued to
     users, run the command:
     <pre>$ sudo chage --warndays {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} <i>USER</i></pre>
-    The DoD requirement is 7, and CIS recommendation is no less than 7 days.
     This profile requirement is <tt>{{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</tt>.
 
 rationale: |-
