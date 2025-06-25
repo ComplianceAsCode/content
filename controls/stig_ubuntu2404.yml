@@ -1007,6 +1007,8 @@ controls:
       - low
     rules:
       - var_time_service_set_maxpoll=18_hours
+      - var_multiple_time_servers=stig
+      - chronyd_configure_pool_and_server
       - chronyd_or_ntpd_set_maxpoll
     status: automated
 
