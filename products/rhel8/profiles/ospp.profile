@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 metadata:
@@ -241,7 +242,6 @@ selections:
     - configure_usbguard_auditbackend
     - usbguard_allow_hid_and_hub
 
-
     ### Enable / Configure FIPS
     - enable_fips_mode
     - var_system_crypto_policy=fips_ospp
@@ -414,7 +414,6 @@ selections:
 
     # Enable dnf-automatic Timer
     - timer_dnf-automatic_enabled
-
 
     # Prevent Kerberos use by system daemons
     - kerberos_disable_no_keytab
