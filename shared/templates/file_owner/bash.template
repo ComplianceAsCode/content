@@ -27,22 +27,20 @@ else
 
 {{%- if RECURSIVE %}}
 {{%- set FIND_RECURSE_ARGS_DEP="" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="" %}}
 {{%- else %}}
 {{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="-L" %}}
 {{%- endif %}}
 
 {{%- for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
 
-find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{{ ns.find_users }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown -L "$newown" {} \;
+find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{{ ns.find_users }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown --no-dereference "$newown" {} \;
 {{%- else %}}
-find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d {{{ ns.find_users }}} -exec chown -L "$newown" {} \;
+find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d {{{ ns.find_users }}} -exec chown --no-dereference "$newown" {} \;
 {{%- endif %}}
 {{%- else %}}
-chown "$newown" {{{ path }}}
+chown --no-dereference "$newown" {{{ path }}}
 {{%- endif %}}
 {{%- endfor %}}
 
