@@ -9,19 +9,19 @@ controls:
   ###
   ### 1. Hardware and its configuration
   ###
-  - id: 1.1
+  - id: '1.1'
     title: Protection of the BIOS or UEFI
     description: >-
       Users should protect their BIOS or UEFI with a password.
     status: manual
 
-  - id: 1.2
+  - id: '1.2'
     title: Proper BIOS or UEFI Configuration
     description: >-
       Users should disable features and devices in the BIOS or UEFI that are not in use and should only include trusted devices in the boot order.
     status: manual
 
-  - id: 1.3
+  - id: '1.3'
     title: 64-bit OS
     description: >-
       When possible, users should use a 64-bit system and hardware that supports it.
@@ -29,25 +29,25 @@ controls:
   ###
   ### 2. System installation
   ###
-  - id: 2.1
+  - id: '2.1'
     title: Security Policy Selection
     description: >-
       Users should apply the Fedora Common User Security Policy in the installer.
     status: manual
 
-  - id: 2.2
+  - id: '2.2'
     title: Disk Partitioning
     description: >-
       Users should put the /home, /tmp, /var, /var/tmp and /var/log directories on separate partitions.
     status: manual
 
-  - id: 2.3
+  - id: '2.3'
     title: Password Security
     description: >-
       Users should ensure that all account passwords adhere to the password rules in rule 4.1.
     status: manual
 
-  - id: 2.4
+  - id: '2.4'
     title: Disk Encryption
     description: >-
       Users should encrypt their disk with a passphrase that adheres to the password rules in rule 4.1.
@@ -55,7 +55,7 @@ controls:
   ###
   ### 3. General system configuration
   ###
-  - id: 3.1
+  - id: '3.1'
     title: Bootloader Security
     description: >-
       If the BIOS or UEFI does not allow password protection of the boot process, users should set a bootloader password.
@@ -78,7 +78,7 @@ controls:
       - file_permissions_efi_user_cfg
       - grub2_uefi_password
 
-  - id: 3.2
+  - id: '3.2'
     title: Software Updates
     description: >-
       Users should apply updates from the GNOME Software application at least once per day.
@@ -86,7 +86,7 @@ controls:
     rules:
       - package_gnome_software_installed
 
-  - id: 3.3
+  - id: '3.3'
     title: Filesystem Configuration
     description: >-
       Directories /home (-noexec), /tmp, /var, /var/tmp and /var/log mount option configuration.
@@ -98,7 +98,7 @@ controls:
       - kernel_module_squashfs_disabled
       - kernel_module_udf_disabled
 
-  - id: 3.4
+  - id: '3.4'
     title: Crypto Policy
     description: >-
       System cryto policy configuation and ensuring it is not overridden in critical components.
@@ -112,7 +112,7 @@ controls:
       - configure_openssl_crypto_policy
       - configure_ssh_crypto_policy
 
-  - id: 3.5
+  - id: '3.5'
     title: Auditing and Logging
     description: >-
       Auditd and journald configutation.
@@ -186,7 +186,7 @@ controls:
       - journald_compress
       - journald_storage
 
-  - id: 3.6
+  - id: '3.6'
     title: Files, Permissions, and Ownership
     description: >-
       User and critical system file permissions and ownership, user and group file and directory ownership, identifiers.
@@ -237,7 +237,7 @@ controls:
       - file_permissions_home_directories
       - accounts_user_dot_no_world_writable_programs
 
-  - id: 3.7
+  - id: '3.7'
     title: Memory Protection
     description: >-
       Enable ASLR and ExecShield, restrict exposed kernel pointer.
@@ -247,7 +247,7 @@ controls:
       - sysctl_kernel_exec_shield
       - sysctl_kernel_kptr_restrict
 
-  - id: 3.8
+  - id: '3.8'
     title: GUI Configuration
     description: >-
       Do not show user list, disable xdmpc and auto login, set up idle lock and protect the settings.
@@ -256,7 +256,7 @@ controls:
       - gnome_gdm_disable_xdmcp
       - gnome_gdm_disable_automatic_login
 
-  - id: 3.9
+  - id: '3.9'
     title: Time and Schedulers
     description: >-
       Chrony and time-based scheduler security configuration.
@@ -294,7 +294,7 @@ controls:
       - file_groupowner_at_allow
       - file_permissions_at_allow
 
-  - id: "3.10"
+  - id: '3.10'
     title: Service Minimization
     description: >-
       Users should remove any services that are not necessary for normal system usage.
@@ -328,7 +328,7 @@ controls:
   ###
   ### 4. User access and control
   ###
-  - id: 4.1
+  - id: '4.1'
     title: Account Protection
     description: >-
       All account passwords must be passphrases of at least 4 words and 15 characters with at least three character classes, generated with a large wordlist and a source of randomness.
@@ -364,7 +364,7 @@ controls:
       - accounts_password_pam_difok
       - var_password_pam_difok=8
 
-  - id: 4.2
+  - id: '4.2'
     title: Sudo
     description: >-
       Secure sudo configuration.
@@ -378,7 +378,7 @@ controls:
       - use_pam_wheel_for_su
       - sudoers_default_includedir
 
-  - id: 4.3
+  - id: '4.3'
     title: SSH Server
     description: >-
       Secure ssh server configuration.
@@ -422,7 +422,7 @@ controls:
   ###
   ### 5. Networking
   ###
-  - id: 5.1
+  - id: '5.1'
     title: General Network Configuration
     description: >-
       If users did not configure IPv6 on the system and it is not needed, it should be disabled.
@@ -467,7 +467,7 @@ controls:
       - sysctl_net_ipv4_tcp_syncookies
       - sysctl_net_ipv4_tcp_syncookies_value=enabled
 
-  - id: 5.2
+  - id: '5.2'
     title: Firewall Configuration
     description: >-
       Users should ensure that all network interfaces are in the appropriate firewall zone and that ports and services allowed by the firewall are reduced to the necessary minimum.
@@ -479,7 +479,7 @@ controls:
   ###
   ### 6. User applications
   ###
-  - id: 6.1
+  - id: '6.1'
     title: Web Browser
     description: >-
       Users should install the Firefox Flatpak from FlatHub and use it instead of the default Firefox application. If the default Firefox application must be used, the users should apply the Common User Security Profile for Mozilla Firefox CaC profile.
@@ -487,7 +487,7 @@ controls:
   ###
   ### 7. Advanced security features
   ###
-  - id: 7.1
+  - id: '7.1'
     title: Mandatory Access Control
     description: >-
       Ensure SELinux is installed and enabled, in enforcing mode using targeted policy.
@@ -503,7 +503,7 @@ controls:
       - sysctl_fs_protected_hardlinks
       - sysctl_fs_protected_symlinks
 
-  - id: 7.2
+  - id: '7.2'
     title: Periodic Compliance Scans
     description: >-
       Users should perform periodic system scans and remediations with the Common User Security Profile by using the oscap tool or SCAP Workbench.
