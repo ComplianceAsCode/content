@@ -40,7 +40,9 @@ find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{{ ns.find_users }}}
 find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d {{{ ns.find_users }}} -exec chown --no-dereference "$newown" {} \;
 {{%- endif %}}
 {{%- else %}}
-chown --no-dereference "$newown" {{{ path }}}
+if ! stat -c "%u %U" "{{{ path }}}" | grep -E -w -q "{{{ UID_OR_NAME }}}"; then
+    chown --no-dereference "$newown" {{{ path }}}
+fi
 {{%- endif %}}
 {{%- endfor %}}
 
