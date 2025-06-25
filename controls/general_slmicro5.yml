@@ -739,6 +739,14 @@ controls:
           - audit_rules_login_events_tallylog
       status: automated
 
+    - id: SLEM-5-AUD-01080000
+      levels:
+          - medium
+      title: Record Attempts to Alter Process and Session Initiation Information
+      rules:
+          - audit_rules_session_events
+      status: automated
+
     - id: SLEM-5-AUD-01090000
       levels:
           - medium
@@ -811,6 +819,14 @@ controls:
           - audit_rules_privileged_commands_modprobe
           - audit_rules_privileged_commands_rmmod
           - audit_rules_kernel_module_loading_delete
+      status: automated
+
+    - id: SLEM-5-AUD-01017000
+      title: Make the auditd Configuration Immutable
+      levels:
+          - medium
+      rules:
+          - audit_rules_immutable
       status: automated
 
     - id: SLEM-5-AUD-02010500
