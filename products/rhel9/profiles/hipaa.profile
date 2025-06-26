@@ -1,4 +1,5 @@
-documentation_complete: True
+---
+documentation_complete: true
 
 metadata:
     SMEs:
@@ -18,7 +19,7 @@ description: |-
 
     This profile configures Red Hat Enterprise Linux 9 to the HIPAA Security
     Rule identified for securing of electronic protected health information.
-    Use of this profile in no way guarantees or makes claims against legal compliance against the HIPAA Security Rule(s).   
+    Use of this profile in no way guarantees or makes claims against legal compliance against the HIPAA Security Rule(s).
 
 selections:
     - hipaa:all

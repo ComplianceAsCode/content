@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 metadata:
@@ -25,6 +26,6 @@ description: |-
     - Red Hat Containers with a Red Hat Enterprise Linux 9 image
 
 selections:
-  - stig_rhel9:all
+    - stig_rhel9:all
   # Following rules once had a prodtype incompatible with the rhel9 product
-  - '!audit_rules_immutable_login_uids'
+    - '!audit_rules_immutable_login_uids'
