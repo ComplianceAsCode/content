@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 title: 'CIS Red Hat OpenShift Container Platform 4 Benchmark'

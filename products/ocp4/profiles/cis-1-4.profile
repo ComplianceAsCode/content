@@ -1,9 +1,11 @@
+---
 documentation_complete: true
 
 title: 'CIS Red Hat OpenShift Container Platform 4 Benchmark'
 
 platform: ocp4
 status: deprecated
+
 metadata:
     SMEs:
         - JAORMX
@@ -25,7 +27,8 @@ description: |-
 
     This profile is applicable to OpenShift versions 4.10 and greater.
 
-filter_rules: '"ocp4-node" not in platform and "ocp4-master-node" not in platform and "ocp4-node-on-sdn" not in platform and "ocp4-node-on-ovn" not in platform'
+filter_rules: '"ocp4-node" not in platform and "ocp4-master-node" not in platform and "ocp4-node-on-sdn"
+    not in platform and "ocp4-node-on-ovn" not in platform'
 
 selections:
     - cis_ocp_1_4_0:all

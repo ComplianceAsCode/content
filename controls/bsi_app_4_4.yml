@@ -1,3 +1,4 @@
+---
 # In BSI Basic Protection are multiple Requirements in one control.
 # i.e. there are multiple sentences, some including a RFC2119 keyword
 # Since we must increase granularity to create a precise control,
@@ -9,620 +10,678 @@ title: 'BSI APP.4.4 Kubernetes'
 id: bsi_app_4_4
 version: '1.0'
 source: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
+
 levels:
-  - id: basic
-  - id: standard
-    inherits_from:
-    - basic
-  - id: elevated
-    inherits_from:
-    - standard
+    - id: basic
+    - id: standard
+      inherits_from:
+          - basic
+    - id: elevated
+      inherits_from:
+          - standard
 
 reference_type: bsi
 
 controls:
-  - id: APP.4.4.A1
-    title: Planning the Separation of the Applications
-    levels:
-    - basic
-    description: >-
-      Before going live, the manner in which the applications running in the pods in question and
-      their different test and production operating environments will be separated MUST be
-      planned. Based on the protection needs of the applications, the planning MUST determine
-      which architecture of namespaces, meta tags, clusters, and networks adequately addresses the
-      risks at hand and whether virtualised servers and networks should also be used.
-      The planning MUST include provisions separating for networks, CPUs, and persistent
-      volumes. The separation SHOULD also take into account and be aligned with the network
-      zone concept and the protection requirements at hand.
-      Each application SHOULD run in a separate Kubernetes namespace that includes all the
-      programs of the application. Only applications with similar protection needs and similar
-      possible attack vectors SHOULD share a Kubernetes cluster.
-    notes: >-
-      These requirements must be implemented organizationally. OpenShift fully supports them.
-      OpenShift simplifies the implementation of the stated requirements for separating applications
-      as well as development and production environments by setting up projects (tenants).
-      Namespaces, networks/network separation, meta tags as well as CPU and memory separation are already
-      configured by OpenShift as required (security-by-design). Special requirements for protection and
-      network zone concepts can also be flexibly and easily mapped using additional measures.
-      This particularly includes the ability to define application classes, operate in multiple,
-      separate clusters, and automatically distribute workloads to protection zones and fire compartments.
-      Particularly in the case of separate clusters, ACM can support rule-based distribution of applications using labels.
-    status: manual
-    rules:
-      - general_namespace_separation
+    - id: APP.4.4.A1
+      title: Planning the Separation of the Applications
+      levels:
+          - basic
+      description: >-
+          Before going live, the manner in which the applications running in the pods in question and
+          their different test and production operating environments will be separated MUST be
+          planned. Based on the protection needs of the applications, the planning MUST determine
+          which architecture of namespaces, meta tags, clusters, and networks adequately addresses the
+          risks at hand and whether virtualised servers and networks should also be used.
+          The planning MUST include provisions separating for networks, CPUs, and persistent
+          volumes. The separation SHOULD also take into account and be aligned with the network
+          zone concept and the protection requirements at hand.
+          Each application SHOULD run in a separate Kubernetes namespace that includes all the
+          programs of the application. Only applications with similar protection needs and similar
+          possible attack vectors SHOULD share a Kubernetes cluster.
+      notes: >-
+          These requirements must be implemented organizationally. OpenShift fully supports them.
+          OpenShift simplifies the implementation of the stated requirements for separating applications
+          as well as development and production environments by setting up projects (tenants).
+          Namespaces, networks/network separation, meta tags as well as CPU and memory separation are
+          already
+          configured by OpenShift as required (security-by-design). Special requirements for protection
+          and
+          network zone concepts can also be flexibly and easily mapped using additional measures.
+          This particularly includes the ability to define application classes, operate in multiple,
+          separate clusters, and automatically distribute workloads to protection zones and fire compartments.
+          Particularly in the case of separate clusters, ACM can support rule-based distribution of applications
+          using labels.
+      status: manual
+      rules:
+          - general_namespace_separation
 
-  - id: APP.4.4.A2
-    title: Planning Automation with CI/CD
-    levels:
-    - basic
-    description: >-
-      (1) Automating the operation of applications in Kubernetes using CI/CD MUST ONLY take place
-      after appropriate planning. (2) The planning MUST cover the entire lifecycle from commissioning
-      to decommissioning, including development, testing, operation, monitoring, and updates. (3) A
-      roles and rights concept and the securing of Kubernetes Secrets MUST be part of the planning
-    notes: >-
-      Since this requirement is a plan only, we cannot test this with compliance checks.
-      Section 1: This requirement must be implemented organizationally.
-      The documentation at https://docs.openshift.com/container-platform/latest/cicd/pipelines/understanding-openshift-pipelines.html
-      provides information on the planning
-      Section 2: The protective measure is primarily of an organizational nature. OpenShift fully supports them.
-      With the integrated CI/CD technologies Jenkins, Tekton and OpenShift GitOps, OpenShift already offers preconfigured solutions
-      for automated CI/CD pipelines. Of course, other technologies such as Gitlab CI and GitHub Actions can also be integrated.
-      Section 3: Kubernetes secrets are secured by a Role Based Access Control (RBAC) system.
-      Depending on the protection requirement, Kubernetes secrets can be secured via an (encrypted) etcd metadata store or
-      additionally via an integration of Vault components or "sealed secrets" for CD and GitOps mechanisms.
-      Secrets and roles can also be managed centrally using ACM and rolled out consistently to the managed clusters using policies.
-    status: documentation
-    rules: []
+    - id: APP.4.4.A2
+      title: Planning Automation with CI/CD
+      levels:
+          - basic
+      description: >-
+          (1) Automating the operation of applications in Kubernetes using CI/CD MUST ONLY take place
+          after appropriate planning. (2) The planning MUST cover the entire lifecycle from commissioning
+          to decommissioning, including development, testing, operation, monitoring, and updates. (3)
+          A
+          roles and rights concept and the securing of Kubernetes Secrets MUST be part of the planning
+      notes: >-
+          Since this requirement is a plan only, we cannot test this with compliance checks.
+          Section 1: This requirement must be implemented organizationally.
+          The documentation at https://docs.openshift.com/container-platform/latest/cicd/pipelines/understanding-openshift-pipelines.html
+          provides information on the planning
+          Section 2: The protective measure is primarily of an organizational nature. OpenShift fully
+          supports them.
+          With the integrated CI/CD technologies Jenkins, Tekton and OpenShift GitOps, OpenShift already
+          offers preconfigured solutions
+          for automated CI/CD pipelines. Of course, other technologies such as Gitlab CI and GitHub Actions
+          can also be integrated.
+          Section 3: Kubernetes secrets are secured by a Role Based Access Control (RBAC) system.
+          Depending on the protection requirement, Kubernetes secrets can be secured via an (encrypted)
+          etcd metadata store or
+          additionally via an integration of Vault components or "sealed secrets" for CD and GitOps mechanisms.
+          Secrets and roles can also be managed centrally using ACM and rolled out consistently to the
+          managed clusters using policies.
+      status: documentation
+      rules: []
 
-  - id: APP.4.4.A3
-    title: Identity and Access Management for Kubernetes
-    levels:
-    - basic
-    description: >-
-      (1) Kubernetes and all other control plane applications MUST authenticate and authorise each
-      action taken by a user or, in automated mode, corresponding software. This applies whether
-      the actions are taken via a client, a web interface, or a corresponding API. Administrative
-      actions MUST NOT be performed anonymously.
-      (2) Each user MUST ONLY be granted the permissions they absolutely require. Unlimited access
-      rights MUST be granted in a very restrictive manner.
-      (3) Only a small group of people SHOULD be authorised to define automation processes. Only
-      selected administrators SHOULD be given the right to create or change shares for persistent
-      volumes in Kubernetes.
-    notes: >-
-      Section 1: In the default configuration, OpenShift restricts the use of the web console and APIs only to authenticated and authorized users.|
-      Connection to external directory services (LDAP, OIDC and others) is possible.
-      Section 2: OpenShift already offers roles for a least privilege concept. The RBAC roles can be adapted or supplemented with new roles.
-      The preconfigured roles enable easy authorization assignment according to the least-privilege and need-to-know principles.
-      User actions can be tracked via the audit log.
-      Section 3: In the default configuration, persistent storage can only be integrated by cluster administrators.
-      For dynamically provisioned storage, the corresponding provisioners have the necessary authorizations.
-      These provisioners must be set up and configured by an admin. Storage requirements are controlled and restricted using quota mechanisms.
-    status: partial
-    rules:
+    - id: APP.4.4.A3
+      title: Identity and Access Management for Kubernetes
+      levels:
+          - basic
+      description: >-
+          (1) Kubernetes and all other control plane applications MUST authenticate and authorise each
+          action taken by a user or, in automated mode, corresponding software. This applies whether
+          the actions are taken via a client, a web interface, or a corresponding API. Administrative
+          actions MUST NOT be performed anonymously.
+          (2) Each user MUST ONLY be granted the permissions they absolutely require. Unlimited access
+          rights MUST be granted in a very restrictive manner.
+          (3) Only a small group of people SHOULD be authorised to define automation processes. Only
+          selected administrators SHOULD be given the right to create or change shares for persistent
+          volumes in Kubernetes.
+      notes: >-
+          Section 1: In the default configuration, OpenShift restricts the use of the web console and
+          APIs only to authenticated and authorized users.|
+          Connection to external directory services (LDAP, OIDC and others) is possible.
+          Section 2: OpenShift already offers roles for a least privilege concept. The RBAC roles can
+          be adapted or supplemented with new roles.
+          The preconfigured roles enable easy authorization assignment according to the least-privilege
+          and need-to-know principles.
+          User actions can be tracked via the audit log.
+          Section 3: In the default configuration, persistent storage can only be integrated by cluster
+          administrators.
+          For dynamically provisioned storage, the corresponding provisioners have the necessary authorizations.
+          These provisioners must be set up and configured by an admin. Storage requirements are controlled
+          and restricted using quota mechanisms.
+      status: partial
+      rules:
       # Section 1
-      - api_server_anonymous_auth
-      - kubelet_anonymous_auth
-      - kubeadmin_removed
+          - api_server_anonymous_auth
+          - kubelet_anonymous_auth
+          - kubeadmin_removed
       # Section 2 + 3
-      - rbac_least_privilege
+          - rbac_least_privilege
 
-  - id: APP.4.4.A4
-    title: Separation of Pods
-    levels:
-    - basic
-    description: >-
-      (1) The operating system kernel of nodes MUST have isolation mechanisms to restrict visibility
-      and resource usage among the corresponding pods (cf. Linux namespaces and cgroups). (2) At
-      minimum, this isolation MUST include process IDs, inter-process communication, user IDs,
-      the file system, and the network (including the hostname).
-    notes: >-
-      Since these are OS based requirements, they are included in the rhcos4 bsi profile.
-      One of the key mechanisms in OCP4 to separate Workloads is SELinux. Thus this should be
-      enforced. Furthermore a admin should check the SCCs as they might lift some of the separations
-      between workloads and/or hosts.
-    status: inherently met
-    rules:
+    - id: APP.4.4.A4
+      title: Separation of Pods
+      levels:
+          - basic
+      description: >-
+          (1) The operating system kernel of nodes MUST have isolation mechanisms to restrict visibility
+          and resource usage among the corresponding pods (cf. Linux namespaces and cgroups). (2) At
+          minimum, this isolation MUST include process IDs, inter-process communication, user IDs,
+          the file system, and the network (including the hostname).
+      notes: >-
+          Since these are OS based requirements, they are included in the rhcos4 bsi profile.
+          One of the key mechanisms in OCP4 to separate Workloads is SELinux. Thus this should be
+          enforced. Furthermore a admin should check the SCCs as they might lift some of the separations
+          between workloads and/or hosts.
+      status: inherently met
+      rules:
       # Section 1
-      - coreos_enable_selinux_kernel_argument
-      - selinux_policytype
-      - selinux_state
+          - coreos_enable_selinux_kernel_argument
+          - selinux_policytype
+          - selinux_state
       # Section 2
-      - scc_limit_privileged_containers
-      - scc_limit_root_containers
+          - scc_limit_privileged_containers
+          - scc_limit_root_containers
       # inter process communication
-      - scc_limit_ipc_namespace
+          - scc_limit_ipc_namespace
       # process IDs
-      - scc_limit_process_id_namespace
+          - scc_limit_process_id_namespace
       # file system
-      - scc_limit_host_dir_volume_plugin
+          - scc_limit_host_dir_volume_plugin
       # network
-      - scc_limit_net_raw_capability
-      - scc_limit_network_namespace
+          - scc_limit_net_raw_capability
+          - scc_limit_network_namespace
 
-  - id: APP.4.4.A5
-    title: Backup in the Cluster
-    levels:
-    - basic
-    description: >-
-      (1) A cluster MUST have a backup. The backup MUST include:
-        (2) • Persistent volumes
-        (3) • Configuration files for Kubernetes and the other programs of the control plane
-        (4) • The current state of the Kubernetes cluster, including extensions
-        (5) • Databases of the configuration (namely etcd in this case)
-        (6) • All infrastructure applications required to operate the cluster and the services within it
-        (7) • The data storage of the code and image registries
-      (8) Snapshots for the operation of the applications SHOULD also be considered. Snapshots MUST NOT be considered a substitute for backups.
-    notes: >-
-      The data backup of a cluster must be individually defined as part of the system architecture as part of the operating model. The areas of responsibility for the container platform (cluster administration), the infrastructure services (system administration) and the application management (technical administration) should be considered separately.
+    - id: APP.4.4.A5
+      title: Backup in the Cluster
+      levels:
+          - basic
+      description: >-
+          (1) A cluster MUST have a backup. The backup MUST include:
+            (2) • Persistent volumes
+            (3) • Configuration files for Kubernetes and the other programs of the control plane
+            (4) • The current state of the Kubernetes cluster, including extensions
+            (5) • Databases of the configuration (namely etcd in this case)
+            (6) • All infrastructure applications required to operate the cluster and the services within
+          it
+            (7) • The data storage of the code and image registries
+          (8) Snapshots for the operation of the applications SHOULD also be considered. Snapshots MUST
+          NOT be considered a substitute for backups.
+      notes: >-
+          The data backup of a cluster must be individually defined as part of the system architecture
+          as part of the operating model. The areas of responsibility for the container platform (cluster
+          administration), the infrastructure services (system administration) and the application management
+          (technical administration) should be considered separately.
 
-      For data backup as part of cluster administration (Kubernetes configuration, current state of the Kubernetes cluster, configuration database) the integrated functions or methods of OpenShift must be used. System administration and specialist administration must be carried out in accordance with the respective specifications.
+          For data backup as part of cluster administration (Kubernetes configuration, current state
+          of the Kubernetes cluster, configuration database) the integrated functions or methods of OpenShift
+          must be used. System administration and specialist administration must be carried out in accordance
+          with the respective specifications.
 
-      Snapshots for persistent volumes are supported when using OpenShift's Container Storage Interface (CSI) drivers. OpenShift offers an easily configurable backup system with the OpenShift API for Data Protection (OADP).
+          Snapshots for persistent volumes are supported when using OpenShift's Container Storage Interface
+          (CSI) drivers. OpenShift offers an easily configurable backup system with the OpenShift API
+          for Data Protection (OADP).
 
-      Additional third-party solutions for backup are also available in the OperatorHub.
+          Additional third-party solutions for backup are also available in the OperatorHub.
 
-      The checks are not checking the requirement in detail. They only setup a foundation to implement the configurations as described. For Section 3,4 and 6 a GitOps approach might achieve the best results. for 2 and 7 a sufficient backup solution is needed. 5 can be achieved with onboard utilities. 8 is dependend on the CSI provider and the available features
-    status: partial
-    rules:
+          The checks are not checking the requirement in detail. They only setup a foundation to implement
+          the configurations as described. For Section 3,4 and 6 a GitOps approach might achieve the
+          best results. for 2 and 7 a sufficient backup solution is needed. 5 can be achieved with onboard
+          utilities. 8 is dependend on the CSI provider and the available features
+      status: partial
+      rules:
       # Section 2,7
-      - general_backup_solution_installed
+          - general_backup_solution_installed
       # Section 5
-      - etcd_backup
+          - etcd_backup
 
-  - id: APP.4.4.A6
-    title: Initialisation of Pods
-    levels:
-    - standard
-    description: >-
-      If an initialisation (e.g. of an application) takes place in a pod at start-up, this SHOULD take place in a separate Init container. It SHOULD be ensured that the initialisation terminates all processes that are already running. Kubernetes SHOULD ONLY start the other containers if the initialisation is successful.
-    notes: >-
-      OpenShift provides the necessary resource configurations via Kubernetes. Kubernetes ensures the (process) dependencies between init containers and “normal” containers of a pod.
+    - id: APP.4.4.A6
+      title: Initialisation of Pods
+      levels:
+          - standard
+      description: >-
+          If an initialisation (e.g. of an application) takes place in a pod at start-up, this SHOULD
+          take place in a separate Init container. It SHOULD be ensured that the initialisation terminates
+          all processes that are already running. Kubernetes SHOULD ONLY start the other containers if
+          the initialisation is successful.
+      notes: >-
+          OpenShift provides the necessary resource configurations via Kubernetes. Kubernetes ensures
+          the (process) dependencies between init containers and “normal” containers of a pod.
 
-      The requirement must be implemented by application development.
-    status: inherently met
-    rules: []
+          The requirement must be implemented by application development.
+      status: inherently met
+      rules: []
 
-  - id: APP.4.4.A7
-    title: Separation of Networks for Kubernetes
-    levels:
-    - standard
-    description: >-
-      (1) Networks for the administration of nodes, the control plane, and the individual networks of application services SHOULD be separated.
-      (2) Only the network ports of the pods necessary for operation SHOULD be released into the designated networks. (3) If a Kubernetes cluster contains multiple applications, all the network connections between the Kubernetes namespaces SHOULD first be prohibited and only required network connections permitted (whitelisting). (4) The network ports necessary for the administration of the nodes, the runtime, and Kubernetes (including its extensions) SHOULD ONLY be accessible from the corresponding administration network and from pods that need them.
-      (5) Only selected administrators SHOULD be authorised in Kubernetes to manage the CNI and create or change rules for the network.
-    notes: >-
-      Section 1-3:
-      The requirements for restricting network ports and network connections between Kubernetes namespaces are already supported by OpenShift as standard using network policies and the option for default network policies (security by design).
+    - id: APP.4.4.A7
+      title: Separation of Networks for Kubernetes
+      levels:
+          - standard
+      description: >-
+          (1) Networks for the administration of nodes, the control plane, and the individual networks
+          of application services SHOULD be separated.
+          (2) Only the network ports of the pods necessary for operation SHOULD be released into the
+          designated networks. (3) If a Kubernetes cluster contains multiple applications, all the network
+          connections between the Kubernetes namespaces SHOULD first be prohibited and only required
+          network connections permitted (whitelisting). (4) The network ports necessary for the administration
+          of the nodes, the runtime, and Kubernetes (including its extensions) SHOULD ONLY be accessible
+          from the corresponding administration network and from pods that need them.
+          (5) Only selected administrators SHOULD be authorised in Kubernetes to manage the CNI and create
+          or change rules for the network.
+      notes: >-
+          Section 1-3:
+          The requirements for restricting network ports and network connections between Kubernetes namespaces
+          are already supported by OpenShift as standard using network policies and the option for default
+          network policies (security by design).
 
-      The separation of the management network can also be implemented at the namespace level via network policies (incoming, the responsibility of the namespace administrator) and egress firewalls (outgoing, the responsibility of the cluster admins).
+          The separation of the management network can also be implemented at the namespace level via
+          network policies (incoming, the responsibility of the namespace administrator) and egress firewalls
+          (outgoing, the responsibility of the cluster admins).
 
-      Externally exposed services can receive their own IP and thus data traffic can also be separated outside the platform. Inter-node communication is carried out via suitable tunnel protocols (VXLAN, GENEVE) and can also be encrypted using IPSec.
+          Externally exposed services can receive their own IP and thus data traffic can also be separated
+          outside the platform. Inter-node communication is carried out via suitable tunnel protocols
+          (VXLAN, GENEVE) and can also be encrypted using IPSec.
 
-      The determination of the necessary network policies for applications is supported by the network policy generator in ACS.
-      Section 4 is true by default
-      Section 5 maps to principle of least privilege
-    status: partial
-    rules:
+          The determination of the necessary network policies for applications is supported by the network
+          policy generator in ACS.
+          Section 4 is true by default
+          Section 5 maps to principle of least privilege
+      status: partial
+      rules:
       # Section 1
-      - general_network_separation
+          - general_network_separation
       # Section 2
-      - configure_network_policies
-      - configure_network_policies_namespaces
+          - configure_network_policies
+          - configure_network_policies_namespaces
       # Section 3
-      - project_config_and_template_network_policy
+          - project_config_and_template_network_policy
       # Section 4, default
       # Section 5
-      - rbac_least_privilege
+          - rbac_least_privilege
 
+    - id: APP.4.4.A8
+      title: Securing Configuration Files on Kubernetes
+      levels:
+          - standard
+      description: >-
+          (1) The configuration files of a Kubernetes cluster, including all its extensions and applications,
+          SHOULD be versioned and annotated.
+          (2) Access rights to configuration file management software SHOULD be granted in a restrictive
+          manner. (3) Read and write access rights to the configuration files of the control plane SHOULD
+          be assigned and restricted with particular care.
+      notes: >-
+          OpenShift is fully configured using Kubernetes resources including CustomResources (CR). All
+          resources that are created after the initial cluster installation can be considered configuration
+          files as described in this control.
 
-  - id: APP.4.4.A8
-    title: Securing Configuration Files on Kubernetes
-    levels:
-    - standard
-    description: >-
-      (1) The configuration files of a Kubernetes cluster, including all its extensions and applications,
-      SHOULD be versioned and annotated.
-      (2) Access rights to configuration file management software SHOULD be granted in a restrictive
-      manner. (3) Read and write access rights to the configuration files of the control plane SHOULD
-      be assigned and restricted with particular care.
-    notes: >-
-      OpenShift is fully configured using Kubernetes resources including CustomResources (CR). All
-      resources that are created after the initial cluster installation can be considered configuration
-      files as described in this control.
+          Section 1: This control needs to be adressed on an organizational level. To achieve versioning,
+          the configuration files should be stored in a Git repository. The Git repository is considered
+          the only source of truth and provides a visible and auditable trail of changes. To automatically
+          apply the configuration, GitOps processes and tools like OpenShift GitOps can be used.
 
-      Section 1: This control needs to be adressed on an organizational level. To achieve versioning,
-      the configuration files should be stored in a Git repository. The Git repository is considered
-      the only source of truth and provides a visible and auditable trail of changes. To automatically
-      apply the configuration, GitOps processes and tools like OpenShift GitOps can be used.
+          Section 2: This control needs to be adressed in the respective external systems. Access rights
+          to the Git repository and GitOps controller should be granted in a restrictive manner.
 
-      Section 2: This control needs to be adressed in the respective external systems. Access rights
-      to the Git repository and GitOps controller should be granted in a restrictive manner.
+          Section 3: The relevant Kubernetes resources for configuring the control plane are inherently
+          protected by Kubernetes RBAC and can only be modified by cluster administrators.
+      status: manual
+      rules: []
 
-      Section 3: The relevant Kubernetes resources for configuring the control plane are inherently
-      protected by Kubernetes RBAC and can only be modified by cluster administrators.
-    status: manual
-    rules: []
+    - id: APP.4.4.A9
+      title: Use of Kubernetes Service Accounts
+      levels:
+          - standard
+      description: >-
+          (1) Pods SHOULD NOT use the "default" service account. (2) Rights SHOULD NOT be granted to
+          the
+          "default" service account. (3) Pods for different applications SHOULD run under their own service
+          accounts. (4) Access rights for the service accounts of the applications' pods SHOULD be limited
+          to those that are strictly necessary.
+          (5) Pods that do not require a service account SHOULD not be able to view it or have access
+          to
+          corresponding tokens.
+          (6) Only control plane pods and pods that absolutely need them SHOULD use privileged service
+          accounts.
+          (7) Automation programs SHOULD each receive their own tokens, even if they share a common
+          service account due to similar tasks.
+      notes: >-
+          Section 1-5: This needs to be adressed in the individual application deployments. The
+          associated rules provide additional guidance.
 
-  - id: APP.4.4.A9
-    title: Use of Kubernetes Service Accounts
-    levels:
-    - standard
-    description: >-
-      (1) Pods SHOULD NOT use the "default" service account. (2) Rights SHOULD NOT be granted to the
-      "default" service account. (3) Pods for different applications SHOULD run under their own service
-      accounts. (4) Access rights for the service accounts of the applications' pods SHOULD be limited
-      to those that are strictly necessary.
-      (5) Pods that do not require a service account SHOULD not be able to view it or have access to
-      corresponding tokens.
-      (6) Only control plane pods and pods that absolutely need them SHOULD use privileged service
-      accounts.
-      (7) Automation programs SHOULD each receive their own tokens, even if they share a common
-      service account due to similar tasks.
-    notes: >-
-      Section 1-5: This needs to be adressed in the individual application deployments. The
-      associated rules provide additional guidance.
+          Section 6: The usage of privileged service accounts is controlled by Security Context
+          Constraints (SCC), which should be configured and granted according to the principle of least
+          privilege.
 
-      Section 6: The usage of privileged service accounts is controlled by Security Context
-      Constraints (SCC), which should be configured and granted according to the principle of least
-      privilege.
-
-      Section 7: This control needs to be adressed on an organizational level.
-    status: partial
-    rules:
+          Section 7: This control needs to be adressed on an organizational level.
+      status: partial
+      rules:
       # Section 1-3:
-      - accounts_unique_service_account
+          - accounts_unique_service_account
       # Section 2:
-      - accounts_no_rolebindings_default_service_account
-      - accounts_no_clusterrolebindings_default_service_account
+          - accounts_no_rolebindings_default_service_account
+          - accounts_no_clusterrolebindings_default_service_account
       # Section 4:
-      - rbac_least_privilege
-      - rbac_wildcard_use
+          - rbac_least_privilege
+          - rbac_wildcard_use
       # Section 5:
-      - accounts_restrict_service_account_tokens
+          - accounts_restrict_service_account_tokens
       # Section 6:
-      - scc_drop_container_capabilities
-      - scc_limit_container_allowed_capabilities
-      - scc_limit_host_dir_volume_plugin
-      - scc_limit_host_ports
-      - scc_limit_ipc_namespace
-      - scc_limit_net_raw_capability
-      - scc_limit_network_namespace
-      - scc_limit_privilege_escalation
-      - scc_limit_privileged_containers
-      - scc_limit_process_id_namespace
-      - scc_limit_root_containers
+          - scc_drop_container_capabilities
+          - scc_limit_container_allowed_capabilities
+          - scc_limit_host_dir_volume_plugin
+          - scc_limit_host_ports
+          - scc_limit_ipc_namespace
+          - scc_limit_net_raw_capability
+          - scc_limit_network_namespace
+          - scc_limit_privilege_escalation
+          - scc_limit_privileged_containers
+          - scc_limit_process_id_namespace
+          - scc_limit_root_containers
 
-  - id: APP.4.4.A10
-    title: Securing Automation Processes
-    levels:
-    - standard
-    description: >-
-      (1) All automation software processes, such as CI/CD and their pipelines, SHOULD only operate
-      with the rights that are strictly necessary. (2) If different user groups can change
-      configurations or start pods via automation software, this SHOULD be done for each group
-      through separate processes that only have the rights necessary for the respective user group.
-    notes: >-
-      This control needs to be adressed on an organizational level. All service accounts used by
-      automation software need to adhere to the principle of least privilege.
-    status: not applicable
-    rules: []
+    - id: APP.4.4.A10
+      title: Securing Automation Processes
+      levels:
+          - standard
+      description: >-
+          (1) All automation software processes, such as CI/CD and their pipelines, SHOULD only operate
+          with the rights that are strictly necessary. (2) If different user groups can change
+          configurations or start pods via automation software, this SHOULD be done for each group
+          through separate processes that only have the rights necessary for the respective user group.
+      notes: >-
+          This control needs to be adressed on an organizational level. All service accounts used by
+          automation software need to adhere to the principle of least privilege.
+      status: not applicable
+      rules: []
 
-  - id: APP.4.4.A11
-    title: Container Monitoring
-    levels:
-    - standard
-    description: >-
-      (1) In pods, each container SHOULD define a health check for start-up and operation ("readiness"
-      and "liveness"). (2) These checks SHOULD provide information about the availability of the
-      software running in a pod. (3) The checks SHOULD fail if the monitored software cannot perform
-      its tasks properly. (4) For each of these checks, a time period SHOULD be defined that is
-      appropriate for the service running in the pod. (5) Based on these checks, Kubernetes SHOULD
-      delete or restart the pods.
-    notes: >-
-      Section 1-3: The existance of readiness und liveness probes can be validated technically. This
-      check needs to be performed for each container in every pod individually.
-      Section 4: The adequacy of the checks and the configured time periods needs to be ensured by
-      the application owner.
-      Section 5: This functionality is inherently met by OpenShift.
-    status: manual
-    rules:
+    - id: APP.4.4.A11
+      title: Container Monitoring
+      levels:
+          - standard
+      description: >-
+          (1) In pods, each container SHOULD define a health check for start-up and operation ("readiness"
+          and "liveness"). (2) These checks SHOULD provide information about the availability of the
+          software running in a pod. (3) The checks SHOULD fail if the monitored software cannot perform
+          its tasks properly. (4) For each of these checks, a time period SHOULD be defined that is
+          appropriate for the service running in the pod. (5) Based on these checks, Kubernetes SHOULD
+          delete or restart the pods.
+      notes: >-
+          Section 1-3: The existance of readiness und liveness probes can be validated technically. This
+          check needs to be performed for each container in every pod individually.
+          Section 4: The adequacy of the checks and the configured time periods needs to be ensured by
+          the application owner.
+          Section 5: This functionality is inherently met by OpenShift.
+      status: manual
+      rules:
       # Section 1-4:
-      - liveness_readiness_probe_in_workload
+          - liveness_readiness_probe_in_workload
 
-  - id: APP.4.4.A12
-    title: Securing Infrastructure Applications
-    levels:
-    - standard
-    description: >-
-      (1) If a separate registry for images or automation software, persistent volume management,
-      configuration file storage, or similar is in use, its protection SHOULD at least consider:
-        (2) • Use of personal and service accounts for access
-        (3) • Encrypted communication on all network ports
-        (4) • Restrictive assignment of permissions to user and service accounts
-        (5) • Logging of changes
-        (6) • Regular data backups.
-    notes: >-
-      This requirement needs to be adressed in the respective separate systems.
-      However, one requirement (Encrypted communication on all network ports) can partitially be
-      checked by ensuring that no registry is allowed in over insecure protocols
-    status: partial
-    rules:
-      - ocp_insecure_registries
-      - ocp_insecure_allowed_registries_for_import
+    - id: APP.4.4.A12
+      title: Securing Infrastructure Applications
+      levels:
+          - standard
+      description: >-
+          (1) If a separate registry for images or automation software, persistent volume management,
+          configuration file storage, or similar is in use, its protection SHOULD at least consider:
+            (2) • Use of personal and service accounts for access
+            (3) • Encrypted communication on all network ports
+            (4) • Restrictive assignment of permissions to user and service accounts
+            (5) • Logging of changes
+            (6) • Regular data backups.
+      notes: >-
+          This requirement needs to be adressed in the respective separate systems.
+          However, one requirement (Encrypted communication on all network ports) can partitially be
+          checked by ensuring that no registry is allowed in over insecure protocols
+      status: partial
+      rules:
+          - ocp_insecure_registries
+          - ocp_insecure_allowed_registries_for_import
 
-  - id: APP.4.4.A13
-    title: Automated Configuration Auditing
-    levels:
-    - elevated
-    description: >-
-      (1) There SHOULD be an automated audit that checks the settings of nodes, of Kubernetes, and
-      of the pods of applications against a defined list of allowed settings and standardised
-      benchmarks.
-      (2) Kubernetes SHOULD enforce these established rules in each cluster by connecting
-      appropriate tools.
-    notes: >-
-      Section 1 is addressed by the compliance operator itself. The standardized Benchmarks can be
-      just the BSI Profile, or additionally a hardening standard like the CIS Benchmark.
-      Section 2 can be addressed by using auto-remediation of compliance-operator or for workloads
-      by using Advanced Cluster Security or similar tools.
-    status: automated
-    rules:
-      - scansettingbinding_exists
-      - scansettings_have_schedule
-      - scansetting_has_autoapplyremediations
+    - id: APP.4.4.A13
+      title: Automated Configuration Auditing
+      levels:
+          - elevated
+      description: >-
+          (1) There SHOULD be an automated audit that checks the settings of nodes, of Kubernetes, and
+          of the pods of applications against a defined list of allowed settings and standardised
+          benchmarks.
+          (2) Kubernetes SHOULD enforce these established rules in each cluster by connecting
+          appropriate tools.
+      notes: >-
+          Section 1 is addressed by the compliance operator itself. The standardized Benchmarks can be
+          just the BSI Profile, or additionally a hardening standard like the CIS Benchmark.
+          Section 2 can be addressed by using auto-remediation of compliance-operator or for workloads
+          by using Advanced Cluster Security or similar tools.
+      status: automated
+      rules:
+          - scansettingbinding_exists
+          - scansettings_have_schedule
+          - scansetting_has_autoapplyremediations
 
-  - id: APP.4.4.A14
-    title: Use of Dedicated Nodes
-    levels:
-    - elevated
-    description: >-
-      (1) In a Kubernetes cluster, nodes SHOULD be assigned dedicated tasks and only run pods that are
-      assigned to each task.
-      (2) Bastion nodes SHOULD handle all incoming and outgoing data connections of between
-      applications and other networks.
-      (3) Management nodes SHOULD operate control plane pods and only handle control plane data
-      connections.
-      (4) If deployed, storage nodes SHOULD only operate the fixed persistent volume services pods in
-      a cluster.
-    notes: >-
-      Section 1:
-      This requirement must be solved organizationally. OpenShift can bind applications to specific
-      nodes or node groups (via labels and node selectors). ACM can take over the labeling of nodes
-      and ensure that the nodes are labeled accordingly.
-      Section 2:
-      OpenShift uses the concept of infra-nodes. The incoming connections can be bound to these and,
-      by using Egress-IP, the outgoing connections can also be bound.
-      Section 3:
-      OpenShift uses control plane nodes for management, on which no applications are running.
-      Data connections between applications to the outside world and to one another are not routed
-      via the control plane as standard. The necessary requirements must be taken into account as
-      part of the planning.
-      Section 4:
-      OpenShift Data Foundation (ODF) can be linked to its own infra nodes using the OpenShift
-      mechanisms, which only run storage services. This can be implemented equivalently with other
-      storage solutions.
-    status: partial
-    rules:
+    - id: APP.4.4.A14
+      title: Use of Dedicated Nodes
+      levels:
+          - elevated
+      description: >-
+          (1) In a Kubernetes cluster, nodes SHOULD be assigned dedicated tasks and only run pods that
+          are
+          assigned to each task.
+          (2) Bastion nodes SHOULD handle all incoming and outgoing data connections of between
+          applications and other networks.
+          (3) Management nodes SHOULD operate control plane pods and only handle control plane data
+          connections.
+          (4) If deployed, storage nodes SHOULD only operate the fixed persistent volume services pods
+          in
+          a cluster.
+      notes: >-
+          Section 1:
+          This requirement must be solved organizationally. OpenShift can bind applications to specific
+          nodes or node groups (via labels and node selectors). ACM can take over the labeling of nodes
+          and ensure that the nodes are labeled accordingly.
+          Section 2:
+          OpenShift uses the concept of infra-nodes. The incoming connections can be bound to these and,
+          by using Egress-IP, the outgoing connections can also be bound.
+          Section 3:
+          OpenShift uses control plane nodes for management, on which no applications are running.
+          Data connections between applications to the outside world and to one another are not routed
+          via the control plane as standard. The necessary requirements must be taken into account as
+          part of the planning.
+          Section 4:
+          OpenShift Data Foundation (ODF) can be linked to its own infra nodes using the OpenShift
+          mechanisms, which only run storage services. This can be implemented equivalently with other
+          storage solutions.
+      status: partial
+      rules:
       # Section 1,2,3,4
-      - general_node_separation
-      - general_network_separation
+          - general_node_separation
+          - general_network_separation
       # Section 2
-      - configure_egress_ip_node_assignable
+          - configure_egress_ip_node_assignable
       # Section 3
-      - master_taint_noschedule
+          - master_taint_noschedule
 
-  - id: APP.4.4.A15
-    title: Separation of Applications at Node and Cluster Level
-    levels:
-    - elevated
-    description: >-
-      (1) Applications with very high protection needs SHOULD each use their own Kubernetes clusters
-      or dedicated nodes that are not available for other applications
-    notes: ''
-    status: manual
-    rules:
-      - general_node_separation
+    - id: APP.4.4.A15
+      title: Separation of Applications at Node and Cluster Level
+      levels:
+          - elevated
+      description: >-
+          (1) Applications with very high protection needs SHOULD each use their own Kubernetes clusters
+          or dedicated nodes that are not available for other applications
+      notes: ''
+      status: manual
+      rules:
+          - general_node_separation
 
-  - id: APP.4.4.A16
-    title: Use of Operators
-    levels:
-    - elevated
-    description: >-
-      (1) The automation of operational tasks in operators SHOULD be used for particularly critical
-      applications and control plane programs.
-    notes: >-
-      OpenShift relies consistently on the application of the concept of operators. The platform
-      itself is operated and managed 100% by operators, meaning that all internal components of
-      the platform are rolled out and managed by operators.
+    - id: APP.4.4.A16
+      title: Use of Operators
+      levels:
+          - elevated
+      description: >-
+          (1) The automation of operational tasks in operators SHOULD be used for particularly critical
+          applications and control plane programs.
+      notes: >-
+          OpenShift relies consistently on the application of the concept of operators. The platform
+          itself is operated and managed 100% by operators, meaning that all internal components of
+          the platform are rolled out and managed by operators.
 
-      Application-specific operators must be considered as part of application development and
-      deployment.
-    status: inherently met
-    rules: []
+          Application-specific operators must be considered as part of application development and
+          deployment.
+      status: inherently met
+      rules: []
 
-  - id: APP.4.4.A17
-    title: Attestation of Nodes
-    levels:
-    - elevated
-    description: >-
-      (1) Nodes SHOULD send a cryptographically secured (and, if possible, TPM-verified) status
-      message to the control plane. (2) The control plane SHOULD ONLY accept nodes into a cluster
-      that have successfully proven their integrity.
-    notes: >-
-      OpenShift Nodes are using Red Hat CoreOS (RHCOS) by default, an immutable operating system.
-      While RHEL is also supported for Compute Nodes, RHCOS is mandatory for Control Plane Nodes and
-      recommended for all nodes. The correct version and configuration of RHCOS is verified
-      cryptographically with the desired state, that is managed by the Control Plane using MachineConfigs.
-      Any manual change on managed files is overwritten to ensure the desired state. Therefore, the
-      control is mostly inheretly met when using CoreOS for all nodes.
+    - id: APP.4.4.A17
+      title: Attestation of Nodes
+      levels:
+          - elevated
+      description: >-
+          (1) Nodes SHOULD send a cryptographically secured (and, if possible, TPM-verified) status
+          message to the control plane. (2) The control plane SHOULD ONLY accept nodes into a cluster
+          that have successfully proven their integrity.
+      notes: >-
+          OpenShift Nodes are using Red Hat CoreOS (RHCOS) by default, an immutable operating system.
+          While RHEL is also supported for Compute Nodes, RHCOS is mandatory for Control Plane Nodes
+          and
+          recommended for all nodes. The correct version and configuration of RHCOS is verified
+          cryptographically with the desired state, that is managed by the Control Plane using MachineConfigs.
+          Any manual change on managed files is overwritten to ensure the desired state. Therefore, the
+          control is mostly inheretly met when using CoreOS for all nodes.
 
-      Section 1: OpenShift uses an internal Certificate Authority (CA). The nodes (kubelet to API server
-      and MachineConfig daemon to MachineConfig server) are communicating using node-specific certificates,
-      signed by this CA. Correct permissions of relevant files and secure TLS configuration are verified
-      using the referenced rules. A TPM-verified status is not present with currently built-in mechanisms
-      of OpenShift.
+          Section 1: OpenShift uses an internal Certificate Authority (CA). The nodes (kubelet to API
+          server
+          and MachineConfig daemon to MachineConfig server) are communicating using node-specific certificates,
+          signed by this CA. Correct permissions of relevant files and secure TLS configuration are verified
+          using the referenced rules. A TPM-verified status is not present with currently built-in mechanisms
+          of OpenShift.
 
-      Section 2: Using the Red Hat File Integrity Operator, all files on the RHCOS nodes can be
-      cryptographically checked for integrity using Advanced Intrusion Detection Environment (AIDE).
-    status: partial
-    rules:
+          Section 2: Using the Red Hat File Integrity Operator, all files on the RHCOS nodes can be
+          cryptographically checked for integrity using Advanced Intrusion Detection Environment (AIDE).
+      status: partial
+      rules:
       # Section 1 (worker / kubelet)
-      - file_groupowner_kubelet_conf
-      - file_groupowner_worker_ca
-      - file_groupowner_worker_kubeconfig
-      - file_groupowner_worker_service
-      - file_owner_kubelet
-      - file_owner_kubelet_conf
-      - file_owner_worker_ca
-      - file_owner_worker_kubeconfig
-      - file_owner_worker_service
-      - file_permissions_kubelet
-      - file_permissions_kubelet_conf
-      - file_permissions_worker_ca
-      - file_permissions_worker_kubeconfig
-      - file_permissions_worker_service
-      - kubelet_configure_client_ca
-      - kubelet_configure_tls_cert
-      - kubelet_configure_tls_cipher_suites
-      - kubelet_configure_tls_key
-      - kubelet_configure_tls_min_version
+          - file_groupowner_kubelet_conf
+          - file_groupowner_worker_ca
+          - file_groupowner_worker_kubeconfig
+          - file_groupowner_worker_service
+          - file_owner_kubelet
+          - file_owner_kubelet_conf
+          - file_owner_worker_ca
+          - file_owner_worker_kubeconfig
+          - file_owner_worker_service
+          - file_permissions_kubelet
+          - file_permissions_kubelet_conf
+          - file_permissions_worker_ca
+          - file_permissions_worker_kubeconfig
+          - file_permissions_worker_service
+          - kubelet_configure_client_ca
+          - kubelet_configure_tls_cert
+          - kubelet_configure_tls_cipher_suites
+          - kubelet_configure_tls_key
+          - kubelet_configure_tls_min_version
       # Section 1 (API Server)
-      - api_server_client_ca
-      - api_server_kubelet_client_cert
-      - api_server_kubelet_client_key
-      - api_server_https_for_kubelet_conn
-      - api_server_tls_cert
-      - api_server_tls_cipher_suites
-      - api_server_tls_private_key
-      - api_server_tls_security_profile_not_old
-      - tls_version_check_apiserver
+          - api_server_client_ca
+          - api_server_kubelet_client_cert
+          - api_server_kubelet_client_key
+          - api_server_https_for_kubelet_conn
+          - api_server_tls_cert
+          - api_server_tls_cipher_suites
+          - api_server_tls_private_key
+          - api_server_tls_security_profile_not_old
+          - tls_version_check_apiserver
       # Section 2
-      - cluster_version_operator_exists
-      - cluster_version_operator_verify_integrity
-      - file_integrity_exists
-      - file_integrity_notification_enabled
+          - cluster_version_operator_exists
+          - cluster_version_operator_verify_integrity
+          - file_integrity_exists
+          - file_integrity_notification_enabled
 
-  - id: APP.4.4.A18
-    title: Use of Micro-Segmentation
-    levels:
-    - elevated
-    description: >-
-      (1) Pods SHOULD ONLY be able to communicate with each other through the necessary network
-      ports, even within a Kubernetes namespace. (2) There SHOULD be rules within the CNI that
-      disallow all but the necessary network connections within the Kubernetes namespace. (3) These
-      rules SHOULD precisely define the source and destination of the allowed connections using at
-      least one of the following criteria: service name, metadata (“labels”), Kubernetes service
-      accounts, or certificate-based authentication.
-      (4) All the criteria used as labels for a connection SHOULD be secured in such a way that they
-      can only be changed by authorised persons and management services.
-    notes: >-
-      In a cluster using a network plugin that supports Kubernetes network policy, network isolation
-      is controlled entirely by NetworkPolicy objects. In OpenShift, the default plugin (OVN-Kubernetes)
-      supports using network policy. Support for NetworkPolicy objects is verified using rules.
-      
-      Section 1-3: By default, all pods in a project are accessible from other pods and network endpoints.
-      To isolate one or more pods in a project, you need to create NetworkPolicy objects in that project
-      to indicate the allowed incoming connections. If a pod is matched by selectors in one or more
-      NetworkPolicy objects, then the pod will accept only connections that are allowed by at least
-      one of those NetworkPolicy objects. A pod that is not selected by any NetworkPolicy objects
-      is fully accessible.
+    - id: APP.4.4.A18
+      title: Use of Micro-Segmentation
+      levels:
+          - elevated
+      description: >-
+          (1) Pods SHOULD ONLY be able to communicate with each other through the necessary network
+          ports, even within a Kubernetes namespace. (2) There SHOULD be rules within the CNI that
+          disallow all but the necessary network connections within the Kubernetes namespace. (3) These
+          rules SHOULD precisely define the source and destination of the allowed connections using at
+          least one of the following criteria: service name, metadata (“labels”), Kubernetes service
+          accounts, or certificate-based authentication.
+          (4) All the criteria used as labels for a connection SHOULD be secured in such a way that they
+          can only be changed by authorised persons and management services.
+      notes: >-
+          In a cluster using a network plugin that supports Kubernetes network policy, network isolation
+          is controlled entirely by NetworkPolicy objects. In OpenShift, the default plugin (OVN-Kubernetes)
+          supports using network policy. Support for NetworkPolicy objects is verified using rules.
 
-      It is useful to create default policies for each application namespace e.g. to deny all ingress
-      traffic by default. The existance of at least one network policy and the automatic creation
-      as part of a namespace template is checked using rules.
+          Section 1-3: By default, all pods in a project are accessible from other pods and network endpoints.
+          To isolate one or more pods in a project, you need to create NetworkPolicy objects in that
+          project
+          to indicate the allowed incoming connections. If a pod is matched by selectors in one or more
+          NetworkPolicy objects, then the pod will accept only connections that are allowed by at least
+          one of those NetworkPolicy objects. A pod that is not selected by any NetworkPolicy objects
+          is fully accessible.
 
-      The creation of suitable NetworkPolicy objects that satisfy the requirements from sections 1 to 3,
-      however, needs to be ensured by the application owner. A manual rule is provided for that.
+          It is useful to create default policies for each application namespace e.g. to deny all ingress
+          traffic by default. The existance of at least one network policy and the automatic creation
+          as part of a namespace template is checked using rules.
 
-      Section 4: It needs to be ensured organizationally, that only required subjects are granted
-      RBAC to change the relevant Kubernetes objects.
-    status: partial
-    rules:
+          The creation of suitable NetworkPolicy objects that satisfy the requirements from sections
+          1 to 3,
+          however, needs to be ensured by the application owner. A manual rule is provided for that.
+
+          Section 4: It needs to be ensured organizationally, that only required subjects are granted
+          RBAC to change the relevant Kubernetes objects.
+      status: partial
+      rules:
       # General support of network policies
-      - configure_network_policies
+          - configure_network_policies
       # Section 1-2
-      - configure_network_policies_namespaces
-      - project_config_and_template_network_policy
+          - configure_network_policies_namespaces
+          - project_config_and_template_network_policy
       # Section 3
-      - configure_appropriate_network_policies
+          - configure_appropriate_network_policies
 
-  - id: APP.4.4.A19
-    title: High Availability of Kubernetes
-    levels:
-    - elevated
-    description: >-
-      (1) A Kubernetes operation SHOULD be set up in such a way that if a site fails, the clusters
-      (and thus the applications in the pods) either continue to run without interruption or can be
-      restarted in a short time at another site.
-      (2) Should a restart be required, all the necessary configuration files, images, user data,
-      network connections, and other resources required for operation (including the necessary hardware)
-      SHOULD already be available at the alternative site.
-      (3) For the uninterrupted operation of clusters, the control plane of Kubernetes, the infrastructure
-      applications of the clusters, and the pods of the applications SHOULD be distributed across
-      several fire zones based on the location data of the corresponding nodes so that the failure of a
-      fire zone will not lead to the failure of an application.
-    notes: >-
-      Section 1: OpenShift supports topology labels to differentiate between failure zones. To achieve
+    - id: APP.4.4.A19
+      title: High Availability of Kubernetes
+      levels:
+          - elevated
+      description: >-
+          (1) A Kubernetes operation SHOULD be set up in such a way that if a site fails, the clusters
+          (and thus the applications in the pods) either continue to run without interruption or can
+          be
+          restarted in a short time at another site.
+          (2) Should a restart be required, all the necessary configuration files, images, user data,
+          network connections, and other resources required for operation (including the necessary hardware)
+          SHOULD already be available at the alternative site.
+          (3) For the uninterrupted operation of clusters, the control plane of Kubernetes, the infrastructure
+          applications of the clusters, and the pods of the applications SHOULD be distributed across
+          several fire zones based on the location data of the corresponding nodes so that the failure
+          of a
+          fire zone will not lead to the failure of an application.
+      notes: >-
+          Section 1: OpenShift supports topology labels to differentiate between failure zones. To achieve
 
-      continued operation without interruption, nodes of every role need to be spread across zones.
-      For quorum-based applications, such as the Kubernetes control plane, three zones are required.
-      A sufficient number of control plane nodes and sufficient spreading across zones is checked using
-      rules. If a restart-based approach is chosen, the adequacy needs to be ensured organizationally.
+          continued operation without interruption, nodes of every role need to be spread across zones.
+          For quorum-based applications, such as the Kubernetes control plane, three zones are required.
+          A sufficient number of control plane nodes and sufficient spreading across zones is checked
+          using
+          rules. If a restart-based approach is chosen, the adequacy needs to be ensured organizationally.
 
-      Section 2: The availability of all required resources for operation after restart in a different
-      site needs to be ensured organizationally. Regular tests are essential. The availability of
-      persistent data used by pods requires the storage inside of PVs/PVCs and a storage provider,
-      that is also available at the alternative site.
+          Section 2: The availability of all required resources for operation after restart in a different
+          site needs to be ensured organizationally. Regular tests are essential. The availability of
+          persistent data used by pods requires the storage inside of PVs/PVCs and a storage provider,
+          that is also available at the alternative site.
 
-      Section 3: The OpenShift control plane is evenly distributed across the control plane nodes
-      out-of-the box. If the control plane nodes are distributed across failure zones, the control
-      plane is hence prone to node or zone outage. For infrastructure and application workloads, a
-      distribution across nodes and zones needs to be configured during deployment using affinity /
-      anti-affinity rules or topology spread constraints.
+          Section 3: The OpenShift control plane is evenly distributed across the control plane nodes
+          out-of-the box. If the control plane nodes are distributed across failure zones, the control
+          plane is hence prone to node or zone outage. For infrastructure and application workloads,
+          a
+          distribution across nodes and zones needs to be configured during deployment using affinity
+          /
+          anti-affinity rules or topology spread constraints.
 
-      Single Node OpenShift (SNO) is not highly available and therefore incompliant to this control.
-    status: automated
+          Single Node OpenShift (SNO) is not highly available and therefore incompliant to this control.
+      status: automated
 
-    rules:
+      rules:
       # Section 1, 3
-      - multiple_nodes_in_every_mcp
-      - control_plane_nodes_in_three_zones
-      - worker_nodes_in_two_zones_or_more
-      - infra_nodes_in_two_zones_or_more
+          - multiple_nodes_in_every_mcp
+          - control_plane_nodes_in_three_zones
+          - worker_nodes_in_two_zones_or_more
+          - infra_nodes_in_two_zones_or_more
       # Section 3
-      - three_control_plane_nodes
-      - anti_affinity_or_topology_spread_constraints_in_deployment
-      - anti_affinity_or_topology_spread_constraints_in_statefulset
+          - three_control_plane_nodes
+          - anti_affinity_or_topology_spread_constraints_in_deployment
+          - anti_affinity_or_topology_spread_constraints_in_statefulset
 
+    - id: APP.4.4.A20
+      title: Encrypted Data Storage for Pods
+      levels:
+          - elevated
+      description: >-
+          The file systems containing the persistent data of the control plane (etcd in particular in
+          this
+          context) and the application services SHOULD be encrypted.
+      notes: >-
+          TBD
+      status: pending
+      rules: []
 
-  - id: APP.4.4.A20
-    title: Encrypted Data Storage for Pods
-    levels:
-    - elevated
-    description: >-
-      The file systems containing the persistent data of the control plane (etcd in particular in this
-      context) and the application services SHOULD be encrypted.
-    notes: >-
-      TBD
-    status: pending
-    rules: []
-
-  - id: APP.4.4.A21
-    title: Regular Restart of Pods
-    levels:
-    - elevated
-    description: >-
-      (1) Pods SHOULD be stopped and restarted regularly if there is an increased risk of external
-      interference and a very high need for protection.
-      (2) No pod SHOULD run for more than 24
-      hours. The availability of the applications in a pod SHOULD be ensured.
-    notes: >-
-      TBD
-    status: pending
-    rules:
+    - id: APP.4.4.A21
+      title: Regular Restart of Pods
+      levels:
+          - elevated
+      description: >-
+          (1) Pods SHOULD be stopped and restarted regularly if there is an increased risk of external
+          interference and a very high need for protection.
+          (2) No pod SHOULD run for more than 24
+          hours. The availability of the applications in a pod SHOULD be ensured.
+      notes: >-
+          TBD
+      status: pending
+      rules:
       # Section 1
-      - kube_descheduler_operator_exists
+          - kube_descheduler_operator_exists
       # Section 2
-      - kube_descheduler_lifecycle_policy
-      - kube_descheduler_podlifetime
+          - kube_descheduler_lifecycle_policy
+          - kube_descheduler_podlifetime

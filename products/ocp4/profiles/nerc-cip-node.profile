@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 metadata:
@@ -11,9 +12,9 @@ platform: ocp4-node
 reference: https://www.nerc.com/pa/Stand/AlignRep/One%20Stop%20Shop.xlsx
 
 title: >-
-  North American Electric Reliability Corporation (NERC) Critical Infrastructure
-  Protection (CIP) cybersecurity standards profile for the 
-  Red Hat OpenShift Container Platform - Node level
+    North American Electric Reliability Corporation (NERC) Critical Infrastructure
+    Protection (CIP) cybersecurity standards profile for the  Red Hat OpenShift Container Platform -
+    Node level
 
 description: |-
     This compliance profile reflects a set of security recommendations for

@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 platform: ocp4-node
@@ -17,7 +18,8 @@ description: |-
     This profile contains configuration checks that align to the DISA STIG for
     Red Hat OpenShift Container Platform 4.
 
-filter_rules: '"ocp4-node" in platform or "ocp4-master-node" in platform or "ocp4-node-on-sdn" in platform or "ocp4-node-on-ovn" in platform'
+filter_rules: '"ocp4-node" in platform or "ocp4-master-node" in platform or "ocp4-node-on-sdn" in platform
+    or "ocp4-node-on-ovn" in platform'
 
 selections:
     - stig_ocp4:all
