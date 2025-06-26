@@ -6,10 +6,8 @@
 
 {{%- if RECURSIVE %}}
 {{%- set FIND_RECURSE_ARGS_DEP="" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="" %}}
 {{%- else %}}
 {{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="-L" %}}
 {{%- endif %}}
 
 {{%- set ns=namespace(find_users="") %}}
@@ -48,7 +46,7 @@
 {{%- if FILE_REGEX %}}
 
 - name: Find {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}{{% if RECURSIVE %}} recursively{{% endif %}}
-  command: 'find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{{ ns.find_users }}} -regextype posix-extended -regex "{{{ FILE_REGEX[loop.index0] }}}"'
+  command: 'find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{{ ns.find_users }}} -regextype posix-extended -regex "{{{ FILE_REGEX[loop.index0] }}}"'
   register: files_found
   changed_when: False
   failed_when: False
@@ -57,6 +55,7 @@
 - name: Ensure owner on {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}
   file:
     path: "{{ item }}"
+    follow: false
     owner: "{{ {{{ _RULE_ID }}}_newown }}"
     state: file
   with_items:
@@ -67,6 +66,7 @@
 - name: Ensure owner on directory {{{ path }}}{{% if RECURSIVE %}} recursively{{% endif %}}
   file:
     path: "{{{ path }}}"
+    follow: false
     state: directory
 {{% if RECURSIVE %}}
     recurse: yes
@@ -84,6 +84,7 @@
 - name: Ensure owner on {{{ path }}}
   file:
     path: "{{{ path }}}"
+    follow: false
     owner: "{{ {{{ _RULE_ID }}}_newown }}"
   when: file_exists.stat is defined and file_exists.stat.exists
 
