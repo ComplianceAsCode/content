@@ -1,9 +1,9 @@
+---
 documentation_complete: true
 
 metadata:
     SMEs:
         - mab879
-
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
