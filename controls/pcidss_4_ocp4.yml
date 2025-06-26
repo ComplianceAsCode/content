@@ -892,7 +892,7 @@ controls:
           requirement 3.4.1.
           Access to the stored data is only possible via a decryption password that must be entered
           when the disk is mounted .
-          The disk can be encrypted using a TPM v2, a secure cryptoprocessor contained 
+          The disk can be encrypted using a TPM v2, a secure cryptoprocessor contained
           within a server; or a Tang server, a network-bound disk encryption (NBDE).
 
           The NBDE Tang Server Operator can provide automatic unlocking of LUKS-encrypted volumes
@@ -2899,8 +2899,6 @@ controls:
         Use of an external log collector or SIEM solution may provide improved protections against
         unauthorized modifications by adding additional features such as file integrity monitoring,
         digital signing, or Write Once, Read Many (WORM) storage.
-      levels:
-      - base
       rules:
         - directory_access_var_log_kube_audit
         - directory_access_var_log_oauth_audit
