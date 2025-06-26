@@ -482,6 +482,15 @@ controls:
           - medium
       status: manual
 
+    - id: SLEM-5-NET-01010000
+      title: Disable IPv6
+      levels:
+          - medium
+      rules:
+          - grub2_ipv6_disable_argument
+          - sysctl_net_ipv6_conf_all_disable_ipv6
+      status: automated
+
     - id: SLEM-5-NET-01020000
       title: Deactivate Wireless Network Interfaces
       levels:
