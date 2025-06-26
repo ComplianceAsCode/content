@@ -741,10 +741,15 @@ between XCCDF rules which directly implement the given controls (represented by
 The `rules` and `related_rules` keys consist of a list of rule IDs and variable
 selections.
 
-If we want some rules (e.g. `cockpit_session_timeout`) to be selected only on some product (e.g. RHEL 9),
-but the rule is applicable to all platforms, we can unselect the rule in other product's profile `selections` field,
+There might be cases, specially in product agnostic policies such as PCI-DSS, ANSSI and HIPAA,
+that rules included in `rules` field need to be removed in profiles for specific products.
+These exceptions can be managed by unselecting the relevant rules in product's profile `selections` field,
 e.g. we add `!cockpit_session_timeout` to `products/rhel10/profiles/anssi_bp28_high.profile` to unselect rule
 `cockpit_session_timeout`.
+
+Similarly there might be cases where a particular product needs a specific rule not applicable to other
+products consuming the same control file. This exception can also be managed by selecting the rule in
+the product's profile `selections` field of the particular product.
 
 After we finish our analysis, we will insert our findings to the controls file,
 the file will look like this:
