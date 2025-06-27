@@ -5,7 +5,7 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_auditd_action_mail_acct") }}}
 
--   name: Configure auditd mail_acct Action on Low Disk Space
+-   name: {{{ rule_title }}} - Configure auditd mail_acct Action on Low Disk Space
     ansible.builtin.lineinfile:
         dest: /etc/audit/auditd.conf
         regexp: "^action_mail_acct"
