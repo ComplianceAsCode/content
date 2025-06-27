@@ -1,3 +1,4 @@
+---
 documentation_complete: false
 
 metadata:
@@ -6,7 +7,6 @@ metadata:
         - mab879
 
 title: 'Automatus Testing Profile'
-
 
 description: |-
     This profile contains a few rules used to test Automatus in profile and combined modes.
