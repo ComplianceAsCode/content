@@ -28,7 +28,7 @@ description: |-
     update the
     <tt>grub.cfg</tt> file by running:
     {{%- if "rhel" in product %}}
-    <pre>grub-mkconfig -o /boot/grub2/grub.cfg</pre>
+    <pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
     {{%- else %}}
     <pre>{{{ grub_command("update") }}}</pre>
     {{%- endif %}}
@@ -111,7 +111,7 @@ fixtext: |-
     Once the superuser account has been added, update the grub.cfg file by running:
 
     {{%- if "rhel" in product %}}
-    <pre>grub-mkconfig -o /boot/grub2/grub.cfg</pre>
+    <pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
     {{%- else %}}
     <pre>{{{ grub_command("update") }}}</pre>
     {{%- endif %}}
