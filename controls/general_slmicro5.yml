@@ -452,6 +452,14 @@ controls:
           - service_snmpd_disabled
           - package_net-snmp_removed
 
+    - id: SLEM-5-SER-02170000
+      title: Uninstall rsync
+      levels:
+          - low
+      status: automated
+      rules:
+          - service_rsyncd_disabled
+
     - id: SLEM-5-SER-02190000
       title: Uninstall telnet-server Package
       levels:
