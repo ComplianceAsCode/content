@@ -1,4 +1,4 @@
-{{% if product in ["sle12", "slmicro5"] %}}
+{{% if product in ["sle12", "slmicro5", "slmicro6"] %}}
 {{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc', 'coolkey'] %}}
 {{% elif product in ["sle15"] %}}
 {{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc'] %}}
@@ -46,6 +46,7 @@ identifiers:
     cce@sle12: CCE-83177-6
     cce@sle15: CCE-83292-3
     cce@slmicro5: CCE-93761-5
+    cce@slmicro6: CCE-94720-0
 
 references:
     nist: CM-6(a)
@@ -65,7 +66,7 @@ ocil: |-
     {{{ ocil_package(package=pkg) }}}
     {{% endfor %}}
 
-{{% if product not in ["sle12", "sle15", "slmicro5"] %}}
+{{% if product not in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
 template:
     name: package_installed
     vars:

@@ -1394,7 +1394,7 @@ Create a rule description for rules using the `audit_rules_privileged_commands` 
 #}}
 
 {{% macro describe_arpc(path) %}}
-{{%- if product in ["almalinux9", "debian12", "fedora", "ol7", "ol8", "ol9", "ol10", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "ubuntu2204", "ubuntu2404"] %}}
+{{%- if product in ["almalinux9", "debian12", "fedora", "ol7", "ol8", "ol9", "ol10", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "slmicro6", "ubuntu2204", "ubuntu2404"] %}}
   {{%- set perm_x="-F perm=x " %}}
 {{%- endif -%}}
 {{%- if product == "rhel10" -%}}

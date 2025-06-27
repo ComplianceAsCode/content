@@ -1,5 +1,5 @@
 {{%- set unix_chkpwd_binary="/usr/sbin/unix_chkpwd" %}}
-{{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5", "ubuntu2204", "ubuntu2404"] or 'ol' in families or 'rhel' in product %}}  
+{{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5", "slmicro6", "ubuntu2204", "ubuntu2404"] or 'ol' in families or 'rhel' in product %}}  
     {{%- set unix_chkpwd_binary="/sbin/unix_chkpwd" %}}
 {{%- endif %}}
 
@@ -33,6 +33,7 @@ identifiers:
     cce@sle12: CCE-83109-9
     cce@sle15: CCE-85727-6
     cce@slmicro5: CCE-93606-2
+    cce@slmicro6: CCE-94610-3
 
 references:
     cis-csc: 1,12,13,14,15,16,2,3,5,6,7,8,9
@@ -61,3 +62,4 @@ template:
         path@sle12: /sbin/unix_chkpwd
         path@sle15: /sbin/unix_chkpwd
         path@slmicro5: /sbin/unix_chkpwd
+        path@slmicro6: /sbin/unix_chkpwd

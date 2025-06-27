@@ -12,7 +12,7 @@
   register: user_names
 
 - name: Change the minimum time period between password changes
-{{% if product in ["sle12", "sle15"] %}}
+{{% if product in ["sle12", "sle15", "slmicro6"] %}}
   command: >
     passwd -q -n {{ var_accounts_minimum_age_login_defs }} {{ item }}
 {{% else %}}

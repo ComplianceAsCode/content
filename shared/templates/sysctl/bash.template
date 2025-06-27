@@ -5,7 +5,7 @@
 # disruption = medium
 
 # Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
-{{% if product in [ "sle12", "sle15", "slmicro5"] %}}
+{{% if product in [ "sle12", "sle15", "slmicro5", "slmicro6"] %}}
 for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /lib/sysctl.d/*.conf; do
 {{% elif product in [ "ubuntu2204", "ubuntu2404"] %}}
 for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /etc/ufw/sysctl.conf; do
