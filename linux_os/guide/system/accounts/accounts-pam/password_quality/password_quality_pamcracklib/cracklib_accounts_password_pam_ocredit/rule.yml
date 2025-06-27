@@ -41,8 +41,8 @@ ocil: |-
     password requisite pam_cracklib.so ocredit={{{ xccdf_value("var_password_pam_ocredit") }}}</pre>
     The <tt>ocredit</tt> parameter (as a negative number) will indicate how
     many special characters are required.
-    The DoD and FISMA require at least one special character in a password.
-    This would appear as <tt>ocredit=-1</tt>.
+    The profile requires at least {{{ xccdf_value("var_password_pam_ocredit") }}} special character in a password.
+    This would appear as <tt>ocredit=-{{{ xccdf_value("var_password_pam_ocredit") }}}</tt>.
 
 template:
     name: pam_options

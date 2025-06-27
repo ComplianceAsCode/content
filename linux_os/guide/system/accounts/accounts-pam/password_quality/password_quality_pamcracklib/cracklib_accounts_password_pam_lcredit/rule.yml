@@ -47,8 +47,8 @@ ocil: |-
     out, or has a second column value different from "requisite", or does not
     contain <tt>lcredit={{{ xccdf_value("var_password_pam_lcredit") }}}</tt>, this is a finding.
 
-    The DoD and FISMA require at least one lowercase character in a password.
-    This would appear as <tt>lcredit=-1</tt>.
+    The profile requires at least {{{ xccdf_value("var_password_pam_lcredit") }}} lowercase character in a password.
+    This would appear as <tt>lcredit=-{{{ xccdf_value("var_password_pam_lcredit") }}}</tt>.
 
 template:
     name: pam_options

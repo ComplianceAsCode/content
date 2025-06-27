@@ -8,7 +8,6 @@ description: |-
     edit the file <tt>/etc/login.defs</tt> and add or correct
      the following line:
     <pre>PASS_WARN_AGE {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</pre>
-    The DoD requirement is 7.
     The profile requirement is <tt>{{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</tt>.
 
 rationale: |-
@@ -45,6 +44,6 @@ ocil_clause: 'it is not set to the required value'
 ocil: |-
     To check the password warning age, run the command:
     <pre>$ grep PASS_WARN_AGE /etc/login.defs</pre>
-    The DoD requirement is 7.
+    This profile requirement is <tt>{{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</tt>.
 
 platform: package[shadow-utils]

@@ -10,7 +10,7 @@ description: |-
     {{{ describe_iptables_allow(proto="tcp", port=443) }}}
 
 rationale: |-
-    Failure to comply with DoD ports, protocols, and services (PPS) requirements
+    Failure to properly manage and restricts ports, protocols, and services (PPS)
     can result in compromise of enclave boundary protections and/or functionality
     of the AIS.
 
@@ -20,7 +20,7 @@ ocil_clause: 'it is not'
 
 ocil: |-
     Review the web site to determine if HTTP and HTTPs are used in accordance with
-    well known ports (e.g., 80 and 443) or those ports and services as registered
-    and approved for use by the DoD PPSM.
+    well known ports (e.g., 80 and 443) or over alternate ports that are explicitly registered
+    and approved for use by the organization's network security policy.
     {{{ describe_firewalld_allow_service(service="http") }}}
     {{{ describe_firewalld_allow_service(service="https") }}}

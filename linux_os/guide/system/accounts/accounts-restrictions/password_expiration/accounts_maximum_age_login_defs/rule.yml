@@ -7,8 +7,6 @@ description: |-
     edit the file <tt>/etc/login.defs</tt>
     and add or correct the following line:
     <pre>PASS_MAX_DAYS {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}</pre>
-    A value of 180 days is sufficient for many environments.
-    The DoD requirement is 60.
     The profile requirement is <tt>{{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}</tt>.
 
 rationale: |-

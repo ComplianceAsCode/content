@@ -41,8 +41,8 @@ ocil: |-
     <pre># grep pam_cracklib.so /etc/pam.d/common-password
     password requisite pam_cracklib.so difok={{{ xccdf_value("var_password_pam_difok") }}}</pre>
     The <tt>difok</tt> parameter will indicate how many characters must differ.
-    The DoD requires at least eight characters differ during a password change.
-    This would appear as <tt>difok=8</tt>.
+    The profile requires at least {{{ xccdf_value("var_password_pam_difok") }}} characters differ during a password change.
+    This would appear as <tt>difok={{{ xccdf_value("var_password_pam_difok") }}}</tt>.
 
 template:
     name: pam_options

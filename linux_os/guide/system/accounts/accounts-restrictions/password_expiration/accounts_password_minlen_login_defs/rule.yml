@@ -7,8 +7,6 @@ description: |-
     <tt>/etc/login.defs</tt> and add or correct the following line:
     <pre>PASS_MIN_LEN {{{ xccdf_value("var_accounts_password_minlen_login_defs") }}}</pre>
     <br /><br />
-    The DoD requirement is <tt>15</tt>.
-    The FISMA requirement is <tt>12</tt>.
     The profile requirement is
     <tt>{{{ xccdf_value("var_accounts_password_minlen_login_defs") }}}</tt>.
     If a program consults <tt>/etc/login.defs</tt> and also another PAM module
@@ -51,7 +49,8 @@ ocil_clause: 'it is not set to the required value'
 ocil: |-
     To check the minimum password length, run the command:
     <pre>$ grep PASS_MIN_LEN /etc/login.defs</pre>
-    The DoD requirement is <tt>15</tt>.
+    The profile requirement is
+    <tt>{{{ xccdf_value("var_accounts_password_minlen_login_defs") }}}</tt>.
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce a minimum 15-character password length for new user accounts.
