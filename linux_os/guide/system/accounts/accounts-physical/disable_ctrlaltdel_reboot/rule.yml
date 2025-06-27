@@ -79,8 +79,11 @@ references:
     stigid@sle15: SLES-15-040060
     stigid@ubuntu2204: UBTU-22-211015
 
-ocil_clause: 'the system is configured to reboot when Ctrl-Alt-Del is pressed'
+{{% if pkg_system == "dpkg" %}}
+platform: not container
+{{% endif %}}
 
+ocil_clause: 'the system is configured to reboot when Ctrl-Alt-Del is pressed'
 
 ocil: |-
     To ensure the system is configured to mask the Ctrl-Alt-Del sequence, Check

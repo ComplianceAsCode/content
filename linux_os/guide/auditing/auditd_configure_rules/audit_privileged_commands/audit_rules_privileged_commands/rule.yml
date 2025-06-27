@@ -65,6 +65,10 @@ references:
     pcidss: Req-10.2.2
     srg: SRG-OS-000327-GPOS-00127
 
+{{% if pkg_system == "dpkg" %}}
+platform: not container
+{{% endif %}}
+
 ocil_clause: "any setuid or setgid programs doesn't have a line in the audit rules"
 
 ocil: |-
