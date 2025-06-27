@@ -1,6 +1,6 @@
 # platform = multi_platform_all
 
-{{% if 'sle' in product or 'rhel' in product or product == 'fedora' or product == 'slmicro5' %}}
+{{% if 'sle' in product or 'rhel' in product or product == 'fedora' or product == 'slmicro5' or 'ol' in families  %}}
 service_dropin_cfg_dir="/etc/systemd/system/emergency.service.d"
 service_dropin_file="${service_dropin_cfg_dir}/10-oscap.conf"
 {{% else %}}
@@ -13,7 +13,7 @@ sulogin="/usr/lib/systemd/systemd-sulogin-shell emergency"
 sulogin='/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
 {{%- endif %}}
 
-{{% if 'sle' in product or 'rhel' in product or product == 'fedora' or product == 'slmicro5' %}}
+{{% if 'sle' in product or 'rhel' in product or product == 'fedora' or product == 'slmicro5' or 'ol' in families  %}}
 mkdir -p "${service_dropin_cfg_dir}"
 echo "[Service]" >> "${service_dropin_file}"
 echo "ExecStart=-$sulogin" >> "${service_dropin_file}"
