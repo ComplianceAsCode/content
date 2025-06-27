@@ -30,6 +30,7 @@
     <filter action="exclude">{{{ rule_id }}}_exclude_files_cloudinit</filter>
     <filter action="exclude">{{{ rule_id }}}_exclude_files_gdm</filter>
     <filter action="exclude">{{{ rule_id }}}_exclude_files_journal</filter>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_landscape</filter>
     <filter action="exclude">{{{ rule_id }}}_exclude_files_lastlog</filter>
     <filter action="exclude">{{{ rule_id }}}_exclude_files_localmessages</filter>
     <filter action="exclude">{{{ rule_id }}}_exclude_files_messages</filter>
@@ -49,6 +50,9 @@
   </unix:file_state>
   <unix:file_state id="{{{ rule_id }}}_exclude_files_apt" version="1">
     <unix:filepath operation="pattern match">^/var/log/apt/.*</unix:filepath>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_landscape" version="1">
+    <unix:filepath operation="pattern match">^/var/log/landscape/.*</unix:filepath>
   </unix:file_state>
   <unix:file_state id="{{{ rule_id }}}_exclude_files_auth_log" version="1">
     <unix:filename>auth.log</unix:filename>

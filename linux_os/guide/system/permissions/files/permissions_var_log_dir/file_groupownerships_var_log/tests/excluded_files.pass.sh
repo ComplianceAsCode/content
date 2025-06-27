@@ -8,6 +8,10 @@ mkdir -p /var/log/apt
 touch /var/log/apt/file
 chgrp nogroup /var/log/apt/file
 
+mkdir -p /var/log/landscape
+touch /var/log/landscape/file
+chgrp nogroup /var/log/landscape/file
+
 touch /var/log/auth.log
 chgrp nogroup /var/log/auth.log
 

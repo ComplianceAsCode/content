@@ -8,6 +8,10 @@ mkdir -p /var/log/apt
 touch /var/log/apt/file
 chown nobody /var/log/apt/file
 
+mkdir -p /var/log/landscape
+touch /var/log/landscape/file
+chown nobody /var/log/landscape/file
+
 touch /var/log/auth.log
 chown nobody /var/log/auth.log
 

@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Verify Ownership of Files in /var/log/landscape'
+
+description: '{{{ describe_file_owner(file="/var/log/landscape/*", owner="root|landscape") }}}'
+
+rationale: |-
+    The <tt>/var/log/landscape</tt> directory contains information about
+    the landscape-client and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/landscape/*", owner="root|landscape") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/landscape/*", owner="root|landscape") }}}
+
+fixtext: |-
+    {{{ describe_file_owner(file="/var/log/landscape/*", owner="root|landscape") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: '/var/log/landscape/'
+        file_regex: '^.*$'
+        uid_or_name: 'root|landscape'
