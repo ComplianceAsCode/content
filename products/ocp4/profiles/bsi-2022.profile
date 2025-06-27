@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 title: 'BSI IT-Grundschutz (Basic Protection) Building Block SYS.1.6 and APP.4.4'
@@ -24,8 +25,8 @@ description: |-
     - Building-Block SYS.1.6 Containerisation
     - Building-Block APP.4.4 Kubernetes
 
-
-filter_rules: '"ocp4-node" not in platform and "ocp4-master-node" not in platform and "ocp4-node-on-sdn" not in platform and "ocp4-node-on-ovn" not in platform'
+filter_rules: '"ocp4-node" not in platform and "ocp4-master-node" not in platform and "ocp4-node-on-sdn"
+    not in platform and "ocp4-node-on-ovn" not in platform'
 
 selections:
     - bsi_app_4_4:all
