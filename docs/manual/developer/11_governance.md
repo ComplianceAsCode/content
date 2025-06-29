@@ -86,7 +86,9 @@ All issues and pull requests for product removal must use the [product-removal](
 #### Architectural Decision Records
 - We use [Architectural Decision Records](#introduction-of-architecture-decisions-records)
 - The first ADR defines the context and guidelines for new ADRs.
-
+- All PR that support or justify a proposed ADR should be linked to that ADR in the description and should remain in the draft state until ADR is accepted.
+  In case a PR linked to an ADR would be found valuable to the project in isolation from the ADR, reviewers may decide to unlink the PR from ADR, switch it
+  to the ready state and proceed with the PR in a regular way.
 
 ### Shared Resources
 
