@@ -16,9 +16,12 @@
 {{{ bash_package_install("libsemanage-python") }}}
 {{% endif %}}
 
+# Workaround for https://github.com/OpenSCAP/openscap/issues/2242: Use full
+# path to setsebool command to avoid the issue with the command not being
+# found.
 {{% if SEBOOL_BOOL %}}
-    setsebool -P {{{ SEBOOLID }}} {{{ SEBOOL_BOOL }}}
+    /usr/sbin/setsebool -P {{{ SEBOOLID }}} {{{ SEBOOL_BOOL }}}
 {{% else %}}
     {{{ bash_instantiate_variables("var_" + SEBOOLID) }}}
-    setsebool -P {{{ SEBOOLID }}} $var_{{{ SEBOOLID }}}
+    /usr/sbin/setsebool -P {{{ SEBOOLID }}} $var_{{{ SEBOOLID }}}
 {{% endif %}}

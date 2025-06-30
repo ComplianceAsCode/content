@@ -2,8 +2,10 @@
 
 {{{ bash_instantiate_variables("var_pam_wheel_group_for_su") }}}
 
+# Workaround for https://github.com/OpenSCAP/openscap/issues/2242: Use full
+# path to groupadd command to avoid the issue with the command not being found.
 if ! grep -q "^${var_pam_wheel_group_for_su}:[^:]*:[^:]*:[^:]*" /etc/group; then
-    groupadd ${var_pam_wheel_group_for_su}
+    /usr/sbin/groupadd ${var_pam_wheel_group_for_su}
 fi
 
 # group must be empty
