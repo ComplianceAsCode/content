@@ -166,19 +166,10 @@ jobs:
         run: |
           BRANCH_NAME="sync_cac_pr${{ env.PR_NUMBER }}"
           cd oscal-content
-          branches=$(git branch -r | grep 'origin/sync_cac' | sed 's/origin\///')
-          exist="false"
-          for branch in $branches; do
-            echo $branch
-            if [[ "$branch" == "$BRANCH_NAME" ]]; then
-              echo "OSCAL content branch $BRANCH_NAME exists"
-              git fetch --all
-              git checkout -b sync_cac_pr${{ env.PR_NUMBER }} origin/sync_cac_pr${{ env.PR_NUMBER }}
-              exist="true"
-              break
-            fi
-          done
-          if [[ "$exist" == "false" ]]; then
+          git fetch --all
+          if git show-ref --verify --quiet refs/remotes/origin/"$BRANCH_NAME"; then
+            git checkout -b "sync_cac_pr${{ env.PR_NUMBER }}" origin/sync_cac_pr${{ env.PR_NUMBER }}
+          else
             echo "OSCAL content branch $BRANCH_NAME doesn't exist"
           fi
       # Step 11: Sync updated controls to OSCAL content
@@ -274,14 +265,15 @@ jobs:
               done
             fi
           done
-      # Step 14: Create PR to OSCAL content
-      - name: Create a Pull Request to OSCAL content
+      # Step 14: Create PR in OSCAL content
+      - name: Create a Pull Request in OSCAL content
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
           cd oscal-content
           BRANCH_NAME="sync_cac_pr${{ env.PR_NUMBER }}"
           OWNER="ComplianceAsCode" 
           REPO="oscal-content"
+          CAC_PR_URL="https://github.com/$OWNER/$REPO/pull/${{ env.PR_NUMBER }}"
           if [[ "$(git branch --show-current)" == "$BRANCH_NAME" ]]; then
             # Check if the PR exists
             PR_EXISTS=$(gh pr list --repo $OWNER/$REPO \
@@ -297,11 +289,12 @@ jobs:
               echo "No commits between main and $BRANCH_NAME. Skipping PR creation."
             else
               echo "Creating PR for new branch: $BRANCH_NAME"
+              PR_BODY="This is an auto-generated PR from CAC PR [${{ env.PR_NUMBER }}]("$CAC_PR_URL")"
               gh pr create --repo $OWNER/$REPO \
                 --title "Auto-generated PR from CAC ${{ env.PR_NUMBER }}" \
                 --head "$BRANCH_NAME" \
                 --base "main" \
-                --body "This is an auto-generated PR from CAC ${{ env.PR_NUMBER }} updates"
+                --body "${PR_BODY}"
             fi
           else
             echo "No branch $BRANCH_NAME. Skipping PR creation."
