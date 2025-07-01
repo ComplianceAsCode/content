@@ -1,0 +1,29 @@
+documentation_complete: true
+
+
+title: 'Chrony Configure Server'
+
+description: |-
+    <tt>Chrony</tt> is a daemon which implements the Network Time Protocol (NTP). It is designed to
+    synchronize system clocks across a variety of systems and use a source that is highly
+    accurate. More information on <tt>chrony</tt> can be found at
+    {{{ weblink(link="https://chrony-project.org/") }}}.
+    <tt>Chrony</tt> can be configured to be a client and/or a server.
+    Add or edit server lines to <tt>{{{ chrony_conf_path }}}</tt> as appropriate:
+    <pre>server &lt;remote-server&gt;</pre>
+    Multiple servers may be configured.
+    Contact organization's IT support for approved time servers.
+
+rationale: |-
+    If <tt>chrony</tt> is in use on the system proper configuration is vital to ensuring time
+    synchronization is working properly.
+
+severity: medium
+
+platform: package[chrony]
+
+ocil_clause: 'a remote time server is not configured'
+
+ocil: |-
+    Run the following command and verify remote servers are configured properly:
+    <pre># grep -E "^server" {{{ chrony_conf_path }}}</pre>
