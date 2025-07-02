@@ -7,7 +7,7 @@
 {{%- if RECURSIVE %}}
 {{%- set FIND_RECURSE_ARGS_DEP="" %}}
 {{%- else %}}
-{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 0" %}}
 {{%- endif %}}
 
 {{%- set ns=namespace(find_groups="") %}}
