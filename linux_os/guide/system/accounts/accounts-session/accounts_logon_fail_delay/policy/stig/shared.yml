@@ -8,7 +8,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} enforces a delay of at least four seconds between console logon prompts following a failed logon attempt with the following command:
 
-    $ grep -i fail_delay /etc/login.defs
+    $ grep -i fail_delay {{{ login_defs_path }}}
 
     FAIL_DELAY 4
 
@@ -17,6 +17,6 @@ checktext: |-
 fixtext: |-
     Configure the {{{ full_name }}} to enforce a delay of at least 4 seconds between logon prompts following a failed console logon attempt.
 
-    Modify the "/etc/login.defs" file to set the "FAIL_DELAY" parameter to 4 or greater:
+    Modify the "{{{ login_defs_path }}}" file to set the "FAIL_DELAY" parameter to 4 or greater:
 
     FAIL_DELAY 4

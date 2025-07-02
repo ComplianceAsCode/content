@@ -2,5 +2,5 @@
 # profiles = xccdf_org.ssgproject.content_profile_standard
 # platform = multi_platform_fedora
 
-rm -f /etc/login.defs
-echo '#PASS_MAX_DAYS 90' > /etc/login.defs
+rm -f {{{ login_defs_path }}}
+echo '#PASS_MAX_DAYS 90' > {{{ login_defs_path }}}

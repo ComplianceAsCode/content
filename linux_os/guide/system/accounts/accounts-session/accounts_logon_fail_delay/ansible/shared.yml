@@ -4,11 +4,6 @@
 # complexity = low
 # reboot = true
 {{{ ansible_instantiate_variables("var_accounts_fail_delay") }}}
-{{% if product == 'slmicro6' %}}
-{{% set login_defs_path = "/usr/etc/login.defs" %}}
-{{% else %}}
-{{% set login_defs_path = "/etc/login.defs" %}}
-{{% endif %}}
 
 - name: Set accounts logon fail delay
   lineinfile:

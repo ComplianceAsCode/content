@@ -1,13 +1,7 @@
 #!/bin/bash
-#
-{{% if product == 'slmicro6' %}}
-LOGIN_DEFS_PATH=/usr/etc/login.defs
-{{% else %}}
-LOGIN_DEFS_PATH=/etc/login.defs
-{{% endif %}}
 
-if grep -q "^UMASK" "$LOGIN_DEFS_PATH"; then
-	sed -i "s/^UMASK.*/umask 077/" "$LOGIN_DEFS_PATH"
+if grep -q "^UMASK" {{{ login_defs_path }}}; then
+	sed -i "s/^UMASK.*/umask 077/" {{{ login_defs_path }}}
 else
-	echo "umask 077" >> "$LOGIN_DEFS_PATH"
+	echo "umask 077" >> {{{ login_defs_path }}}
 fi

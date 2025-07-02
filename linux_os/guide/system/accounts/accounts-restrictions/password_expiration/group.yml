@@ -3,10 +3,10 @@ documentation_complete: true
 title: 'Set Password Expiration Parameters'
 
 description: |-
-    The file <tt>/etc/login.defs</tt> controls several
+    The file <tt>{{{ login_defs_path }}}</tt> controls several
     password-related settings. Programs such as <tt>passwd</tt>,
     <tt>su</tt>, and
-    <tt>login</tt> consult <tt>/etc/login.defs</tt> to determine
+    <tt>login</tt> consult <tt>{{{ login_defs_path }}}</tt> to determine
     behavior with regard to password aging, expiration warnings,
     and length. See the man page <tt>login.defs(5)</tt> for more information.
     <br /><br />

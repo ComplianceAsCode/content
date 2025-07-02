@@ -8,6 +8,6 @@
 - name: Set Password Maximum Age
   lineinfile:
     create: yes
-    dest: /etc/login.defs
+    dest: {{{ login_defs_path }}}
     regexp: ^#?PASS_MAX_DAYS
     line: "PASS_MAX_DAYS {{ var_accounts_maximum_age_login_defs }}"

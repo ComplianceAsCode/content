@@ -9,14 +9,13 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} has a minimum number of hash rounds configured with the following command:
 
-    $ grep -i sha_crypt /etc/login.defs
+    $ grep -i sha_crypt {{{ login_defs_path }}}
 
     If "SHA_CRYPT_MIN_ROUNDS" or "SHA_CRYPT_MAX_ROUNDS" is less than "{{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}", this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to encrypt all stored passwords with a strong cryptographic hash.
 
-    Edit/modify the following line in the "/etc/login.defs" file and set "SHA_CRYPT_MIN_ROUNDS" to a value no lower than "{{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}":
+    Edit/modify the following line in the "{{{ login_defs_path }}}" file and set "SHA_CRYPT_MIN_ROUNDS" to a value no lower than "{{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}":
 
     SHA_CRYPT_MIN_ROUNDS {{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}
-

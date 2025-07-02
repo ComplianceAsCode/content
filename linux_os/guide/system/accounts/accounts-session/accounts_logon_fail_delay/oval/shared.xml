@@ -1,9 +1,3 @@
-{{% if product == 'slmicro6' %}}
-{{% set login_defs_path = "/usr/etc/login.defs" %}}
-{{% else %}}
-{{% set login_defs_path = "/etc/login.defs" %}}
-{{% endif %}}
-
 <def-group>
   <definition class="compliance" id="accounts_logon_fail_delay" version="1">
     {{{ oval_metadata("The delay between failed authentication attempts should be
@@ -13,12 +7,12 @@
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check FAIL_DELAY in /etc/login.defs" id="test_accounts_logon_fail_delay" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check FAIL_DELAY in {{{ login_defs_path }}}" id="test_accounts_logon_fail_delay" version="1">
     <ind:object object_ref="object_accounts_logon_fail_delay" />
     <ind:state state_ref="state_accounts_logon_fail_delay" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_accounts_logon_fail_delay" comment="FAIL_DELAY value from /etc/login.defs" version="1">
+  <ind:textfilecontent54_object id="object_accounts_logon_fail_delay" comment="FAIL_DELAY value from {{{ login_defs_path }}}" version="1">
     <ind:filepath>{{{ login_defs_path }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)FAIL_DELAY(?-i)[\s]+([^#\s]*)</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>

@@ -4,7 +4,7 @@ title: 'Set Password Minimum Age'
 
 description: |-
     To specify password minimum age for new accounts,
-    edit the file <tt>/etc/login.defs</tt>
+    edit the file <tt>{{{ login_defs_path }}}</tt>
     and add or correct the following line:
     <pre>PASS_MIN_DAYS {{{ xccdf_value("var_accounts_minimum_age_login_defs") }}}</pre>
     A value of 1 day is considered sufficient for many
@@ -59,20 +59,20 @@ ocil_clause: 'the "PASS_MIN_DAYS" parameter value is not "{{{ xccdf_value("var_a
 ocil: |-
     Verify {{{ full_name }}} enforces 24 hours/one day as the minimum password lifetime for new user accounts.
 
-    Check for the value of "PASS_MIN_DAYS" in "/etc/login.defs" with the following command:
+    Check for the value of "PASS_MIN_DAYS" in "{{{ login_defs_path }}}" with the following command:
 
-    <pre>$ grep -i pass_min_days /etc/login.defs
+    <pre>$ grep -i pass_min_days {{{ login_defs_path }}}
 
     PASS_MIN_DAYS {{{ xccdf_value("var_accounts_minimum_age_login_defs") }}}</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce 24 hours/one day as the minimum password lifetime.
 
-    Add the following line in "/etc/login.defs" (or modify the line to have the required value):
+    Add the following line in "{{{ login_defs_path }}}" (or modify the line to have the required value):
 
     PASS_MIN_DAYS {{{ xccdf_value("var_accounts_minimum_age_login_defs") }}}
 
 srg_requirement: |-
-    {{{ full_name }}} passwords for new users or password changes must have a 24 hours/one day minimum password lifetime restriction in /etc/login.defs.
+    {{{ full_name }}} passwords for new users or password changes must have a 24 hours/one day minimum password lifetime restriction in {{{ login_defs_path }}}.
 
 platform: package[shadow-utils]

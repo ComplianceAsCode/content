@@ -32,7 +32,7 @@
     <ind:object object_ref="object_etc_login_defs_sha_crypt_min_rounds_default" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_etc_login_defs_sha_crypt_min_rounds_default" version="1">
-    <ind:filepath>/etc/login.defs</ind:filepath>
+    <ind:filepath>{{{ login_defs_path }}}</ind:filepath>
     <ind:pattern operation="pattern match">^\s*SHA_CRYPT_MIN_ROUNDS\s*</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -42,7 +42,7 @@
     <ind:state state_ref="state_etc_login_defs_sha_crypt_rounds" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_etc_login_defs_sha_crypt_min_rounds_present" version="1">
-    <ind:filepath>/etc/login.defs</ind:filepath>
+    <ind:filepath>{{{ login_defs_path }}}</ind:filepath>
     <ind:pattern operation="pattern match">^\s*SHA_CRYPT_MIN_ROUNDS\s+(\d+)\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -51,7 +51,7 @@
     <ind:object object_ref="object_etc_login_defs_sha_crypt_max_rounds_default" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_etc_login_defs_sha_crypt_max_rounds_default" version="1">
-    <ind:filepath>/etc/login.defs</ind:filepath>
+    <ind:filepath>{{{ login_defs_path }}}</ind:filepath>
     <ind:pattern operation="pattern match">^\s*SHA_CRYPT_MAX_ROUNDS\s*</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -61,7 +61,7 @@
     <ind:state state_ref="state_etc_login_defs_sha_crypt_rounds" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_etc_login_defs_sha_crypt_max_rounds_present" version="1">
-    <ind:filepath>/etc/login.defs</ind:filepath>
+    <ind:filepath>{{{ login_defs_path }}}</ind:filepath>
     <ind:pattern operation="pattern match">^\s*SHA_CRYPT_MAX_ROUNDS\s+(\d+)\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

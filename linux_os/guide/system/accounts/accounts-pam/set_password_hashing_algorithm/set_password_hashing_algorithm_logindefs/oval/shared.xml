@@ -1,8 +1,3 @@
-{{% if product == 'slmicro6' %}}
-{{% set login_defs_path = "/usr/etc/login.defs" %}}
-{{% else %}}
-{{% set login_defs_path = "/etc/login.defs" %}}
-{{% endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
 	  {{{ oval_metadata("The password hashing algorithm should be set correctly in /usr/etc/login.defs.", rule_title=rule_title) }}}
@@ -12,7 +7,7 @@
   </definition>
 
   <ind:variable_test id="test_set_password_hashing_algorithm_logindefs" version="1"
-    check="all" comment="The value of ENCRYPT_METHOD should be set appropriately in /etc/login.defs">
+    check="all" comment="The value of ENCRYPT_METHOD should be set appropriately in {{{ login_defs_path }}}">
     <ind:object object_ref="object_set_password_hashing_algorithm_logindefs"/>
     <ind:state state_ref="state_set_password_hashing_algorithm_logindefs"/>
   </ind:variable_test>
@@ -28,7 +23,7 @@
 
   <!-- Capture the actual ENCRYPT_METHOD string value from the previously retrieved last instance -->
   <local_variable id="variable_last_encrypt_method_instance_value" version="1"
-    datatype="string" comment="The value of last ENCRYPT_METHOD directive in /etc/login.defs">
+    datatype="string" comment="The value of last ENCRYPT_METHOD directive in {{{ login_defs_path }}}">
     <regex_capture pattern="ENCRYPT_METHOD\s+(\w+)">
       <object_component item_field="subexpression" object_ref="object_last_encrypt_method_from_etc_login_defs"/>
     </regex_capture>

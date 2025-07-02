@@ -1,8 +1,8 @@
 #!/bin/bash
 # profiles = xccdf_org.ssgproject.content_profile_stig
 
-if grep -q 'FAIL_DELAY' /etc/login.defs; then
-	sed -i 's/^.*FAIL_DELAY.*/FAIL_DELAY 1/' /etc/login.defs
+if grep -q 'FAIL_DELAY' {{{ login_defs_path }}}; then
+	sed -i 's/^.*FAIL_DELAY.*/FAIL_DELAY 1/' {{{ login_defs_path }}}
 else
-	echo 'FAIL_DELAY 1' >> /etc/login.defs
+	echo 'FAIL_DELAY 1' >> {{{ login_defs_path }}}
 fi

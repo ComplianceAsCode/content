@@ -19,7 +19,7 @@ vuldiscussion: |-
 checktext: |-
     Verify the system's shadow file is configured to store only encrypted representations of passwords. with a hash value of SHA512 with the following command:
 
-    # grep -i encrypt_method /etc/login.defs
+    # grep -i encrypt_method {{{ login_defs_path }}}
 
     ENCRYPT_METHOD SHA512
 
@@ -28,6 +28,6 @@ checktext: |-
 fixtext: |-
     Configure {{{ full_name }}} to store only SHA512 encrypted representations of passwords.
 
-    Add or update the following line in the "/etc/login.defs" file:
+    Add or update the following line in the "{{{ login_defs_path }}}" file:
 
     ENCRYPT_METHOD SHA512
