@@ -83,7 +83,7 @@ ocil: |-
     If the output shows <tt>EncryptionInProgress</tt> this means that encryption is still in
     progress. Wait a few minutes and try again.
     To display the encryption configured, run the following command:
-    <pre>$ oc get --raw {{.var_apiserver_encryption_path}} | jq {{.var_apiserver_encryption_filter}} </pre>
+    <pre>$ oc get --raw {{{custom_api_path}}} | jq '{{{custom_jqfilter}}}' </pre>
     If the output does not list <tt>aescbc</tt> or <tt>aesgcm</tt>, the encryption is not configured correctly.
 
 warnings:
