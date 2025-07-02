@@ -54,6 +54,7 @@ ocil: |-
 
     $ sudo find -L /lib /lib64 /usr/lib /usr/lib64 ! -group root -exec ls -l {} \;
 
+{{% if "ubuntu" not in product %}}
 template:
     name: file_groupowner
     vars:
@@ -65,6 +66,7 @@ template:
         file_regex: ^.*$
         recursive: 'true'
         gid_or_name: '0'
+{{% endif %}}
 
 fixtext: |-
     Configure the system-wide shared library files (/lib, /lib64, /usr/lib and /usr/lib64) to be protected from unauthorized access.

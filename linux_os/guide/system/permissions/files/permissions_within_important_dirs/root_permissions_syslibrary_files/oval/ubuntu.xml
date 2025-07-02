@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    {{{ oval_metadata("Verify the system-wide library files in directories /lib, /lib64, /usr/lib/ and /usr/lib64 are group-owned by root.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion test_ref="test_groupownership_syslibrary_directories" />
+      <criterion test_ref="test_groupownership_syslibrary_files" />
+    </criteria>
+  </definition>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="binary directories uid root" id="test_groupownership_syslibrary_directories" version="1">
+    <unix:object object_ref="object_file_groupownership_syslibrary_directories" />
+  </unix:file_test>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="binary files uid root" id="test_groupownership_syslibrary_files" version="1">
+    <unix:object object_ref="object_file_groupownership_syslibrary_files" />
+  </unix:file_test>
+
+  <unix:file_object comment="binary directories" id="object_file_groupownership_syslibrary_directories" version="1">
+    <!-- Check that files within /lib /lib64 /usr/lib/ /usr/lib64 directories belong to user with gid < 1000 (system accounts) -->
+    <unix:path operation="pattern match">^\/(|usr\/)lib(|64)\/</unix:path>
+    <unix:filename xsi:nil="true"/>
+    <filter action="include">state_groupowner_binaries_not_system_accounts</filter>
+    <filter action="exclude">state_groupowner_root_path_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_object comment="binary files" id="object_file_groupownership_syslibrary_files" version="1">
+    <!-- Check that files within /lib /lib64 /usr/lib/ /usr/lib64 directories belong to user with gid < 1000 (system accounts) -->
+    <unix:path operation="pattern match">^\/(|usr\/)lib(|64)\/</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+   <filter action="include">state_groupowner_binaries_not_system_accounts</filter>
+   <filter action="exclude">state_groupowner_root_path_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_groupowner_root_path_dirs_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+  <unix:file_state id="state_groupowner_binaries_not_system_accounts" version="1">
+    <unix:user_id datatype="int" operation="great than or equal">{{{ gid_min }}}</unix:user_id>
+  </unix:file_state>
+
+</def-group>
