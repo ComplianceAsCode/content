@@ -1,0 +1,19 @@
+# platform = multi_platform_rhcos
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 3.1.0
+    systemd:
+      units:
+      - name: systemd-coredump.socket
+        enabled: false
+        mask: true
+      - name: systemd-coredump.service
+        enabled: false
+        mask: true
