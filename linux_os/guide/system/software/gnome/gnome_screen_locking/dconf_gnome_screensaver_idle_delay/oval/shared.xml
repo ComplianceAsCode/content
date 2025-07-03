@@ -47,8 +47,10 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_screensaver_idle_delay_setting" version="1">
+  <ind:textfilecontent54_state id="state_screensaver_idle_delay_setting" version="1" operator="AND">
     <ind:subexpression datatype="int" operation="less than or equal" var_check="all" var_ref="inactivity_timeout_value" />
+    <!-- Value of zero disables this functionality -->
+    <ind:subexpression datatype="int" operation="not equal">0<ind:subexpression />
   </ind:textfilecontent54_state>
 
   <external_variable comment="inactivity timeout variable" datatype="int"
