@@ -7,8 +7,7 @@
         <!-- pam_unix.so is a control module present in all realistic scenarios and also used
              as reference for the correct position of pam_faillock.so in auth section. If the
              system is properly configured, it must appear only once in auth section. -->
-	
-        comment="Count occurrences of pam_unix.so in common-auth">
+
         <criterion
             test_ref="test_accounts_passwords_pam_faillock_deny_root_pam_unix_auth"
             comment="pam_unix.so appears only once in auth section of common-auth"/>
