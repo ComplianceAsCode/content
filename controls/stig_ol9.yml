@@ -2690,14 +2690,6 @@ controls:
           restriction in /etc/login.defs.
       rules:
           - accounts_minimum_age_login_defs
-      status: automated
-
-    - id: OL09-00-001085
-      levels:
-          - medium
-      title: OL 9 passwords must have a 24 hours minimum password lifetime restriction in /etc/shadow.
-      rules:
-          - accounts_password_set_min_life_existing
           - var_accounts_minimum_age_login_defs=1
       status: automated
 
