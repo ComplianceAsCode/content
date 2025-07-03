@@ -1,9 +1,12 @@
 documentation_complete: true
 
+{{% if 'ubuntu' in product -%}}
+{{% set gid_description = '(gid less than 1000)' -%}}
+{{% endif -%}}
 
 title: |-
     Verify the system-wide library files in directories
-    "/lib", "/lib64", "/usr/lib/" and "/usr/lib64" are group-owned by root.
+    "/lib", "/lib64", "/usr/lib/" and "/usr/lib64" are group-owned by root or a required system account{{{ gid_description }}}.
 
 description: |-
     System-wide library files are stored in the following directories
@@ -14,8 +17,8 @@ description: |-
     /usr/lib64
     </pre>
     All system-wide shared library files should be protected from unauthorised
-    access. If any of these files is not group-owned by root, correct its group-owner with
-    the following command:
+    access. If any of these files is not group-owned by root or a required system account{{{ gid_description }}},
+    correct its group-owner with the following command:
     <pre>$ sudo chgrp root <i>FILE</i></pre>
 
 rationale: |-
@@ -47,10 +50,10 @@ references:
     stigid@sle15: SLES-15-010355
     stigid@ubuntu2204: UBTU-22-232075
 
-ocil_clause: any system wide shared library file is returned and is not group-owned by a required system account
+ocil_clause: any system wide shared library file is returned and is not group-owned by root or a required system account{{{ gid_description }}}
 
 ocil: |-
-    Verify the system-wide shared library files are group-owned by "root" with the following command:
+    Verify the system-wide shared library files are group-owned by root or a required system account{{{ gid_description }}} with the following command:
 
     $ sudo find -L /lib /lib64 /usr/lib /usr/lib64 ! -group root -exec ls -l {} \;
 
@@ -71,9 +74,9 @@ template:
 fixtext: |-
     Configure the system-wide shared library files (/lib, /lib64, /usr/lib and /usr/lib64) to be protected from unauthorized access.
 
-    Run the following command, replacing "[FILE]" with any library file not group-owned by "root".
+    Run the following command, replacing "[FILE]" with any library file not group-owned by root or a required system account{{{ gid_description }}}.
 
     $ sudo chgrp root [FILE]
 
 srg_requirement:
-    {{{ full_name }}} library files must be group-owned by root or a system account.
+    {{{ full_name }}} library files must be group-owned by root or a required system account{{{ gid_description }}}.
