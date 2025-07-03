@@ -200,29 +200,10 @@ def open_and_expand(yaml_file, substitutions_dict=None):
     return yaml_contents
 
 
-def open_and_macro_expand(yaml_file, substitutions_dict=None):
-    """
-    Opens a YAML file and expands macros within it using the provided substitutions dictionary.
-
-    This function loads definitions of macros and uses them to expand the template within the YAML
-    file. It is similar to open_and_expand, but load definitions of macros
-
-    Args:
-        yaml_file (str): The path to the YAML file to be opened and expanded.
-        substitutions_dict (dict, optional): A dictionary containing macro definitions and their
-                                             corresponding values. If not provided, an empty
-                                             dictionary is used.
-
-    Returns:
-        dict: The expanded content of the YAML file with macros substituted.
-    """
-    return open_and_expand(yaml_file, substitutions_dict)
-
-
 def open_and_macro_expand_from_dir(yaml_file, content_dir, substitutions_dict=None):
     """
     Opens a YAML file and expands macros from a specified directory. It is similar to
-    open_and_macro_expand but loads macro definitions from a specified directory instead of the
+    open_and_expand but loads macro definitions from a specified directory instead of the
     default directory defined in constants. This is useful in cases where the SSG library is
     consumed by an external project.
 
