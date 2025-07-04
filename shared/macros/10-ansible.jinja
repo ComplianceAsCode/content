@@ -320,29 +320,6 @@ value: :code:`Setting={{ varname1 }}`
 {{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", prefix_regex='(?i)^\s*', separator=" = ", separator_regex="\s*=\s*", rule_title=rule_title) }}}
 {{%- endmacro %}}
 
-
-{{#
-  High level macro to set a parameter in /etc/systemd/coredump.conf.
-  For SLE platforms put remediation in drop-in configuration file /etc/systemd/coredump.conf.d/oscap-autoremedy.conf.
-
-:param msg: The name for the Ansible task
-:type msg: str
-:param parameter: Parameter to be set in the configuration file
-:type parameter: str
-:param value: Value of the parameter
-:type value: str
-
-#}}
-{{%- macro ansible_coredump_config_set(msg='', parameter='', value='') %}}
-{{% if 'sle' in product %}}
-{{% set file = '/etc/systemd/coredump.conf.d/oscap-autoremedy.conf' %}}
-{{% else %}}
-{{% set file = '/etc/systemd/coredump.conf' %}}
-{{% endif %}}
-{{{ ansible_ini_file_set(file, "Coredump", parameter, value) }}}
-{{%- endmacro %}}
-
-
 {{#
   High level macro to set a parameter in /etc/selinux/config.
 

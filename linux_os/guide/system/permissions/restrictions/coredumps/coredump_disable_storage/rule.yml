@@ -4,11 +4,8 @@ title: 'Disable storing core dump'
 
 description: |-
     The <tt>Storage</tt> option in <tt>[Coredump]</tt> section
-{{%- if 'sle' in product %}}
-    of <tt>/etc/systemd/coredump.conf</tt> or <tt>/etc/systemd/coredump.conf.d/*.conf</tt>
-{{%- else -%}}
-    of <tt>/etc/systemd/coredump.conf</tt>
-{{%- endif %}}
+    of <tt>/etc/systemd/coredump.conf</tt> or a drop-in file in
+    <tt>/etc/systemd/coredump.conf.d/*.conf</tt>
     can be set to <tt>none</tt> to disable storing core dumps permanently.
 
 rationale: |-
@@ -44,14 +41,14 @@ ocil_clause: Storage is not set to none or is commented out and the need for cor
 ocil: |-
     Verify {{{ full_name }}} disables storing core dumps for all users by issuing the following command:
 
-    $ grep -i storage /etc/systemd/coredump.conf
+    $ grep -i storage /etc/systemd/coredump.conf /etc/systemd/coredump.conf.d/*.conf
 
     Storage=none
 
 fixtext: |-
     Configure {{{ full_name }}} to disable storing core dumps for all users.
 
-    Add or modify the following line in /etc/systemd/coredump.conf:
+    Add or modify the following line in /etc/systemd/coredump.conf or a drop-in file under /etc/systemd/coredump.conf.d/:
 
     Storage=none
 
@@ -59,8 +56,20 @@ srg_requirement: '{{{ full_name }}} must disable storing core dumps.'
 
 warnings:
     - general: |-
-        If the <tt>/etc/systemd/coredump.conf</tt> file
+        If the <tt>/etc/systemd/coredump.conf</tt> file or a drop-in file under <tt>/etc/systemd/coredump.conf.d/</tt>
         does not already contain the <tt>[Coredump]</tt> section,
         the value will not be configured correctly.
 
 platform: package[systemd]
+
+template:
+    name: systemd_dropin_configuration
+    vars:
+        master_cfg_file: /etc/systemd/coredump.conf
+        dropin_dir: /etc/systemd/coredump.conf.d
+        section: Coredump
+        param: Storage
+        application: systemd-coredump
+        value: none
+        no_quotes: 'true'
+        missing_config_file_fail: 'false'
