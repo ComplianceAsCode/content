@@ -1,13 +1,16 @@
+---
 policy: General System Security Profile forSUSE Linux Enterprise Micro (SLEM) 5
 title: General System Security Profile SUSE Linux Enterprise Micro (SLEM) 5
 id: general_slmicro5
 version: '1.0'
 source: not_publicly_available
 reference_type: suse-general
+
 levels:
     - id: high
     - id: medium
     - id: low
+
 product: slmicro5
 
 controls:
@@ -712,7 +715,7 @@ controls:
       title: Record attempts to modify the date and time
       levels:
           - high
-      automated: partially # we do not have rule for clock_settime
+      automated: partially  # we do not have rule for clock_settime
       rules:
           - audit_rules_time_adjtimex
           - audit_rules_time_settimeofday
@@ -778,9 +781,9 @@ controls:
       title: Ensure auditd Collects Information on the Use of Privileged Commands
       levels:
           - medium
-      status: manual # we have audit_rules_privileged_commands, but it does not set perm=x
+      status: manual  # we have audit_rules_privileged_commands, but it does not set perm=x
       notes: >-
-        Additional rules for priviliged commands are available and can be enabled.
+          Additional rules for priviliged commands are available and can be enabled.
       related_rules:
           - audit_rules_privileged_commands
 
@@ -839,7 +842,7 @@ controls:
           - service_systemd-journal-upload_enabled
           - systemd_journal_upload_url
           - systemd_journal_upload_server_tls
-      status: manual # do not assume anything set external variables before use
+      status: manual  # do not assume anything set external variables before use
 
     - id: SLEM-5-AUD-02030000
       title: Verify permissions of log files
@@ -1148,7 +1151,7 @@ controls:
       title: Set Interactive Session Timeout
       levels:
           - medium
-      automated: partially # we check only for value of tmout variable, no export or readonly and we do not check /etc/bashrc
+      automated: partially  # we check only for value of tmout variable, no export or readonly and we do not check /etc/bashrc
       rules:
           - accounts_tmout
           - var_accounts_tmout=15_min
@@ -1174,7 +1177,7 @@ controls:
       title: Enforce Usage of pam_wheel on the System for su Authentication
       levels:
           - medium
-      automated: partially # we check only for usage of use_uid with pam_su, not for the group
+      automated: partially  # we check only for usage of use_uid with pam_su, not for the group
       rules:
           - ensure_pam_wheel_group_empty
           - use_pam_wheel_group_for_su
@@ -1389,7 +1392,7 @@ controls:
       title: Remove Rsh Trust Files
       levels:
           - high
-      status: manual # we have a rule but it removes additionally /etc/hosts.equiv
+      status: manual  # we have a rule but it removes additionally /etc/hosts.equiv
       related_rules:
           - no_rsh_trust_files
 
