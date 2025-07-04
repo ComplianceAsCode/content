@@ -12,6 +12,7 @@ description: |-
 
 selections:
     - account_disable_post_pw_expiration
+    - accounts_max_concurrent_login_sessions
     - accounts_maximum_age_login_defs
     - accounts_minimum_age_login_defs
     - accounts_no_uid_except_zero
@@ -33,19 +34,26 @@ selections:
     - accounts_password_pam_pwhistory_remember
     - accounts_password_pam_pwhistory_use_authtok
     - accounts_password_pam_pwquality_enabled
+    - accounts_password_pam_retry
     - accounts_password_pam_ucredit
     - accounts_password_pam_unix_authtok
     - accounts_password_pam_unix_enabled
     - accounts_password_pam_unix_no_remember
+    - accounts_password_pam_unix_rounds_password_auth
     - accounts_password_set_max_life_existing
     - accounts_password_set_min_life_existing
+    - accounts_passwords_pam_faildelay_delay
+    - accounts_passwords_pam_faillock_audit
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_enabled
+    - accounts_passwords_pam_faillock_interval
     - accounts_passwords_pam_faillock_root_unlock_time
+    - accounts_passwords_pam_faillock_silent
     - accounts_passwords_pam_faillock_unlock_time
     - accounts_password_warn_age_login_defs
     - accounts_root_gid_zero
     - accounts_root_path_dirs_no_write
+    - accounts_set_post_pw_existing
     - accounts_tmout
     - accounts_umask_etc_bashrc
     - accounts_umask_etc_login_defs
@@ -54,13 +62,20 @@ selections:
     - accounts_user_dot_group_ownership
     - accounts_user_dot_user_ownership
     - accounts_user_interactive_home_directory_exists
+    - account_temp_expire_date
     - account_unique_id
     - account_unique_name
     - aide_build_database
     - aide_check_audit_tools
+    - aide_disable_silentreports
     - aide_periodic_checking_systemd_timer
+    - aide_periodic_cron_checking
     - all_apparmor_profiles_enforced
     - all_apparmor_profiles_in_enforce_complain_mode
+    - apparmor_configured
+    - apt_conf_disallow_unauthenticated
+    - auditd_audispd_configure_remote_server
+    - auditd_audispd_configure_sufficiently_large_partition
     - auditd_data_disk_error_action
     - auditd_data_disk_full_action
     - auditd_data_retention_action_mail_acct
@@ -68,6 +83,8 @@ selections:
     - auditd_data_retention_max_log_file
     - auditd_data_retention_max_log_file_action
     - auditd_data_retention_space_left_action
+    - auditd_data_retention_space_left_percentage
+    - auditd_offload_logs
     - audit_rules_dac_modification_chmod
     - audit_rules_dac_modification_chown
     - audit_rules_dac_modification_fchmod
@@ -86,23 +103,51 @@ selections:
     - audit_rules_execution_setfacl
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_renameat
+    - audit_rules_file_deletion_events_rmdir
     - audit_rules_file_deletion_events_unlink
     - audit_rules_file_deletion_events_unlinkat
     - audit_rules_immutable
+    - audit_rules_kernel_module_loading_create
     - audit_rules_kernel_module_loading_delete
+    - audit_rules_kernel_module_loading_finit
     - audit_rules_kernel_module_loading_init
+    - audit_rules_kernel_module_loading_query
     - audit_rules_login_events_faillock
+    - audit_rules_login_events_faillog
     - audit_rules_login_events_lastlog
     - audit_rules_mac_modification_etc_apparmor
     - audit_rules_mac_modification_etc_apparmor_d
     - audit_rules_media_export
     - audit_rules_networkconfig_modification
     - audit_rules_privileged_commands
-    - audit_rules_privileged_commands_insmod
+    - audit_rules_privileged_commands_apparmor_parser
+    - audit_rules_privileged_commands_chage
+    - audit_rules_privileged_commands_chfn
+    - audit_rules_privileged_commands_chsh
+    - audit_rules_privileged_commands_crontab
+    - audit_rules_privileged_commands_fdisk
+    - audit_rules_privileged_commands_gpasswd
+    - audit_rules_privileged_commands_kmod
     - audit_rules_privileged_commands_modprobe
-    - audit_rules_privileged_commands_rmmod
+    - audit_rules_privileged_commands_mount
+    - audit_rules_privileged_commands_newgrp
+    - audit_rules_privileged_commands_pam_timestamp_check
+    - audit_rules_privileged_commands_passwd
+    - audit_rules_privileged_commands_ssh_agent
+    - audit_rules_privileged_commands_ssh_keysign
+    - audit_rules_privileged_commands_su
+    - audit_rules_privileged_commands_sudo
+    - audit_rules_privileged_commands_sudoedit
+    - audit_rules_privileged_commands_umount
+    - audit_rules_privileged_commands_unix_update
     - audit_rules_privileged_commands_usermod
     - audit_rules_session_events
+    - audit_rules_session_events_btmp
+    - audit_rules_session_events_utmp
+    - audit_rules_session_events_wtmp
+    - audit_rules_sudoers
+    - audit_rules_sudoers_d
+    - audit_rules_suid_auid_privilege_function
     - audit_rules_suid_privilege_function
     - audit_rules_sysadmin_actions
     - audit_rules_time_adjtimex
@@ -113,6 +158,7 @@ selections:
     - audit_rules_unsuccessful_file_modification_ftruncate
     - audit_rules_unsuccessful_file_modification_open
     - audit_rules_unsuccessful_file_modification_openat
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at
     - audit_rules_unsuccessful_file_modification_truncate
     - audit_rules_usergroup_modification_group
     - audit_rules_usergroup_modification_gshadow
@@ -122,28 +168,51 @@ selections:
     - audit_rules_usergroup_modification_pamd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
+    - audit_rules_var_log_journal
     - audit_sudo_log_events
     - banner_etc_issue_cis
+    - banner_etc_issue_net
     - banner_etc_issue_net_cis
     - banner_etc_motd_cis
+    - banner_etc_profiled_ssh_confirm
+    - bios_enable_execution_restrictions
     - check_ufw_active
     - chronyd_configure_pool_and_server
+    - chronyd_or_ntpd_set_maxpoll
     - chronyd_run_as_chrony_user
+    - chronyd_server_directive
+    - chronyd_sync_clock
+    - clean_components_post_updating
     - dconf_gnome_banner_enabled
     - dconf_gnome_disable_automount
     - dconf_gnome_disable_automount_open
     - dconf_gnome_disable_autorun
+    - dconf_gnome_disable_ctrlaltdel_reboot
     - dconf_gnome_disable_user_list
     - dconf_gnome_login_banner_text
     - dconf_gnome_screensaver_idle_delay
     - dconf_gnome_screensaver_lock_delay
     - dconf_gnome_screensaver_lock_enabled
     - directory_permissions_var_log_audit
+    - dir_groupownership_binary_dirs
+    - dir_group_ownership_library_dirs
+    - dir_groupowner_system_journal
+    - dir_ownership_binary_dirs
+    - dir_ownership_library_dirs
+    - dir_owner_system_journal
+    - dir_permissions_binary_dirs
+    - dir_permissions_system_journal
+    - dir_perms_world_writable_sticky_bits
+    - disable_ctrlaltdel_reboot
     - disable_host_auth
     - disable_users_coredumps
+    - display_login_attempts
+    - encrypt_partitions
     - ensure_pam_wheel_group_empty
     - ensure_root_access_controlled
+    - ensure_rtc_utc_configuration
     - ensure_shadow_group_empty
+    - ensure_sudo_group_restricted
     - file_at_allow_exists
     - file_cron_allow_exists
     - file_cron_deny_not_exist
@@ -170,6 +239,7 @@ selections:
     - file_groupowner_etc_security_opasswd_old
     - file_groupowner_etc_shadow
     - file_groupowner_etc_shells
+    - file_groupowner_journalctl
     - file_groupownership_audit_binaries
     - file_groupownership_audit_configuration
     - file_groupownership_home_directories
@@ -177,9 +247,14 @@ selections:
     - file_groupownerships_var_log_apt
     - file_groupownerships_var_log_gdm
     - file_groupownerships_var_log_gdm3
+    - file_groupownerships_var_log_landscape
     - file_groupownerships_var_log_sssd
+    - file_groupownership_system_commands_dirs
     - file_group_ownership_var_log_audit
+    - file_group_ownership_var_log_audit_stig
     - file_groupowner_sshd_config
+    - file_groupowner_system_journal
+    - file_groupowner_var_log
     - file_groupowner_var_log_auth
     - file_groupowner_var_log_cloud_init
     - file_groupowner_var_log_journal
@@ -214,16 +289,22 @@ selections:
     - file_owner_etc_shadow
     - file_owner_etc_shells
     - file_owner_grub2_cfg
+    - file_owner_journalctl
     - file_ownership_audit_binaries
     - file_ownership_audit_configuration
+    - file_ownership_binary_dirs
     - file_ownership_home_directories
+    - file_ownership_library_dirs
     - file_ownerships_var_log
     - file_ownerships_var_log_apt
     - file_ownerships_var_log_gdm
     - file_ownerships_var_log_gdm3
+    - file_ownerships_var_log_landscape
     - file_ownerships_var_log_sssd
     - file_ownership_var_log_audit_stig
     - file_owner_sshd_config
+    - file_owner_system_journal
+    - file_owner_var_log
     - file_owner_var_log_auth
     - file_owner_var_log_cloud_init
     - file_owner_var_log_journal
@@ -241,6 +322,7 @@ selections:
     - file_permissions_backup_etc_gshadow
     - file_permissions_backup_etc_passwd
     - file_permissions_backup_etc_shadow
+    - file_permissions_binary_dirs
     - file_permissions_cron_allow
     - file_permissions_cron_d
     - file_permissions_cron_daily
@@ -263,13 +345,18 @@ selections:
     - file_permissions_etc_shells
     - file_permissions_grub2_cfg
     - file_permissions_home_directories
+    - file_permissions_journalctl
+    - file_permissions_library_dirs
     - file_permissions_sshd_config
     - file_permissions_sshd_private_key
     - file_permissions_sshd_pub_key
+    - file_permissions_system_journal
     - file_permissions_unauthorized_world_writable
     - file_permissions_ungroupowned
+    - file_permissions_var_log
     - file_permissions_var_log_apt
     - file_permissions_var_log_audit
+    - file_permissions_var_log_audit_stig
     - file_permissions_var_log_auth
     - file_permissions_var_log_cloud-init
     - file_permissions_var_log_gdm
@@ -279,6 +366,7 @@ selections:
     - file_permissions_var_log_messages
     - file_permissions_var_log_secure
     - file_permissions_var_log_sssd
+    - file_permissions_var_log_stig
     - file_permissions_var_log_syslog
     - file_permissions_var_log_waagent
     - file_permissions_var_log_wbtmp
@@ -296,8 +384,11 @@ selections:
     - grub2_password
     - grub2_uefi_password
     - has_nonlocal_mta
+    - installed_OS_is_vendor_supported
+    - install_smartcard_packages
     - ip6tables_rules_for_open_ports
     - iptables_rules_for_open_ports
+    - is_fips_mode_enabled
     - journald_compress
     - journald_disable_forward_to_syslog
     - journald_forward_to_syslog
@@ -338,6 +429,8 @@ selections:
     - nftables_ensure_default_deny_policy
     - nftables_rules_permanent
     - no_dirs_unowned_by_root
+    - no_duplicate_uids
+    - no_empty_passwords
     - no_empty_passwords_etc_shadow
     - no_empty_passwords_unix
     - no_files_unowned_by_user
@@ -348,6 +441,7 @@ selections:
     - no_rsh_trust_files
     - no_shelllogin_for_systemaccounts
     - ntp_single_service_active
+    - only_allow_dod_certs
     - package_aide_installed
     - package_apparmor_installed
     - package_apparmor-utils_installed
@@ -365,6 +459,7 @@ selections:
     - package_ftp_removed
     - package_gdm_removed
     - package_httpd_removed
+    - package_inetutils-telnet_removed
     - package_iptables_installed
     - package_iptables-persistent_installed
     - package_iptables-persistent_removed
@@ -373,24 +468,33 @@ selections:
     - package_nftables_installed
     - package_nginx_removed
     - package_nis_removed
+    - package_nss_sss_installed
+    - package_ntp_removed
     - package_openldap-clients_removed
     - package_openldap-servers_removed
+    - package_opensc_installed
+    - package_openssh-server_installed
     - package_pam_modules_installed
     - package_pam_pwquality_installed
     - package_pam_runtime_installed
+    - package_pam_sss_installed
     - package_prelink_removed
     - package_rpcbind_removed
     - package_rsh_removed
+    - package_rsh-server_removed
     - package_rsync_removed
     - package_rsyslog_installed
     - package_samba_removed
     - package_squid_removed
+    - package_sssd_installed
     - package_sudo_installed
     - package_systemd-journal-remote_installed
     - package_talk_removed
+    - package_telnetd_removed
     - package_telnet_removed
     - package_tftp-server_removed
     - package_timesyncd_installed
+    - package_timesyncd_removed
     - package_tnftp_removed
     - package_ufw_installed
     - package_ufw_removed
@@ -407,10 +511,13 @@ selections:
     - partition_for_var_tmp
     - permissions_local_var_log
     - postfix_network_listening_disabled
+    - prevent_direct_root_logins
     - root_path_all_dirs
     - root_path_no_dot
+    - root_permissions_syslibrary_files
     - rsyslog_filecreatemode
     - rsyslog_nolisten
+    - rsyslog_remote_access_monitoring
     - rsyslog_remote_loghost
     - service_apport_disabled
     - service_auditd_enabled
@@ -426,6 +533,7 @@ selections:
     - service_dnsmasq_disabled
     - service_dovecot_disabled
     - service_httpd_disabled
+    - service_kdump_disabled
     - service_named_disabled
     - service_nfs_disabled
     - service_nftables_disabled
@@ -438,6 +546,8 @@ selections:
     - service_smb_disabled
     - service_snmpd_disabled
     - service_squid_disabled
+    - service_sshd_enabled
+    - service_sssd_enabled
     - service_systemd-journald_enabled
     - service_systemd-journal-upload_enabled
     - service_tftp_disabled
@@ -455,18 +565,26 @@ selections:
     - set_nftables_base_chain
     - set_nftables_loopback_traffic
     - set_nftables_table
+    - set_password_hashing_algorithm_auth_stig
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_systemauth
     - set_ufw_default_rule
     - set_ufw_loopback_traffic
+    - smartcard_configure_ca
+    - smartcard_configure_cert_checking
+    - smartcard_configure_crl
+    - smartcard_pam_enabled
     - socket_systemd-journal-remote_disabled
+    - ssh_client_use_approved_ciphers_ordered_stig
     - sshd_disable_empty_passwords
     - sshd_disable_forwarding
     - sshd_disable_gssapi_auth
     - sshd_disable_rhosts
     - sshd_disable_root_login
+    - sshd_disable_x11_forwarding
     - sshd_do_not_permit_user_env
     - sshd_enable_pam
+    - sshd_enable_pubkey_auth
     - sshd_enable_warning_banner_net
     - sshd_limit_user_access
     - sshd_set_idle_timeout
@@ -476,15 +594,26 @@ selections:
     - sshd_set_max_auth_tries
     - sshd_set_max_sessions
     - sshd_set_maxstartups
+    - sshd_use_approved_ciphers_ordered_stig
+    - sshd_use_approved_kex_ordered_stig
+    - sshd_use_approved_macs_ordered_stig
     - sshd_use_strong_ciphers
     - sshd_use_strong_kex
     - sshd_use_strong_macs
+    - sshd_x11_use_localhost
+    - ssh_use_approved_macs_ordered_stig
+    - sssd_certification_path_trust_anchor
+    - sssd_enable_pam_services
+    - sssd_enable_smartcards
+    - sssd_enable_user_cert
+    - sssd_offline_cred_expiration
     - sudo_add_use_pty
     - sudo_custom_logfile
     - sudo_remove_no_authenticate
     - sudo_require_authentication
     - sudo_require_reauthentication
     - sysctl_fs_suid_dumpable
+    - sysctl_kernel_dmesg_restrict
     - sysctl_kernel_randomize_va_space
     - sysctl_kernel_yama_ptrace_scope
     - sysctl_net_ipv4_conf_all_accept_redirects
@@ -512,8 +641,11 @@ selections:
     - sysctl_net_ipv6_conf_default_accept_source_route
     - systemd_journal_upload_server_tls
     - systemd_journal_upload_url
+    - ufw_only_required_services
+    - ufw_rate_limit
     - ufw_rules_for_open_ports
     - use_pam_wheel_group_for_su
+    - vlock_installed
     - wireless_disable_interfaces
     - zipl_audit_argument
     - zipl_audit_backlog_limit_argument
