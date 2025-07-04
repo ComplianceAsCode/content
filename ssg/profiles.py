@@ -199,11 +199,17 @@ def _update_profile_with_policy(profile: ProfileSelections, policy: Policy, leve
         profile (ProfileSelections): The profile to be updated.
         policy (Policy): The policy containing controls to update the profile with.
         level (str): The level of controls to be processed. If 'all', all controls are processed.
-                     Otherwise, only controls matching the specified level are processed.
+                     Otherwise, only controls matching the specified level are processed honoring
+                     inheritance.
 
     Returns:
         None
     """
+    inherited_levels = getattr(policy.levels_by_id.get(level), "inherits_from", None)
+    if inherited_levels:
+        for inherited_level in inherited_levels:
+            _update_profile_with_policy(profile, policy, inherited_level)
+
     for control in policy.controls:
         if level == 'all' or level in control.levels:
             _process_control(profile, control)
