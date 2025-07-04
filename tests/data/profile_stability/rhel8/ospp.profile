@@ -177,6 +177,7 @@ sysctl_kernel_kexec_load_disabled
 sysctl_kernel_kptr_restrict
 sysctl_kernel_perf_event_paranoid
 sysctl_kernel_unprivileged_bpf_disabled
+sysctl_kernel_unprivileged_bpf_disabled_value=2
 sysctl_kernel_yama_ptrace_scope
 sysctl_net_core_bpf_jit_harden
 sysctl_net_ipv4_conf_all_accept_redirects
@@ -214,6 +215,7 @@ var_accounts_passwords_pam_faillock_unlock_time=never
 var_accounts_user_umask=027
 var_auditd_flush=incremental_async
 var_authselect_profile=minimal
+var_logind_session_timeout=5_minutes
 var_password_pam_dcredit=1
 var_password_pam_difok=4
 var_password_pam_lcredit=1
