@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-{{% if 'rhel' not in product and product != 'fedora' %}}
+{{% if 'rhel' not in product and product != 'fedora' and 'ol' not in families %}}
 - name: "{{{ rule_title }}} - Require single user mode password"
   lineinfile:
       create: yes

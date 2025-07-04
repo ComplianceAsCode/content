@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_fedora,multi_platform_rhel
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel
 
 rm -rf /etc/systemd/system/rescue.service.d
 mkdir -p /etc/systemd/system/rescue.service.d
