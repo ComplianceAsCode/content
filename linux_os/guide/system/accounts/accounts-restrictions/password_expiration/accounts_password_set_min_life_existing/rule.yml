@@ -24,6 +24,7 @@ identifiers:
     cce@sle12: CCE-83049-7
     cce@sle15: CCE-85710-2
     cce@slmicro5: CCE-93684-9
+    cce@slmicro6: CCE-94661-6
 
 references:
     cis@sle12: 5.4.1.3
@@ -46,7 +47,7 @@ ocil: |-
 
 fixtext: |-
     Configure non-compliant accounts to enforce a 24 hours/1 day minimum password lifetime:
-    {{% if product not in ["sle12", "sle15"] %}}
+    {{% if product not in ["sle12", "sle15", "slmicro6"] %}}
     $ sudo chage -m {{{ xccdf_value("var_accounts_minimum_age_login_defs") }}} [user]
     {{% else %}}
     usrs_min_pass_age=( "$(awk -F: '$4 < $var_accounts_minimum_age_login_defs || $4 == "" {print $1}' /etc/shadow)" )

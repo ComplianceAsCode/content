@@ -5,9 +5,9 @@ useradd -u {{{ uid_min }}} testuser
 
 key=SYS_UID_MIN
 
-printf "%s 201\n" "$key" >> /etc/login.defs
+printf "%s 201\n" "$key" >> {{{ login_defs_path }}}
 
 key=SYS_UID_MAX
 
 # Add bogus key as 2nd last and valid last line w/o nl
-printf "%s 2000\n%s 999" "$key" "$key" >> /etc/login.defs
+printf "%s 2000\n%s 999" "$key" "$key" >> {{{ login_defs_path }}}

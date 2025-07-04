@@ -4,4 +4,4 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_set_config_file(msg='Ensure new users receive home directories', file='/etc/login.defs', parameter="CREATE_HOME", value='yes', create='yes', rule_title=rule_title) }}}
+{{{ ansible_set_config_file(msg='Ensure new users receive home directories', file=login_defs_path, parameter="CREATE_HOME", value='yes', create='yes', rule_title=rule_title) }}}

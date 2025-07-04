@@ -4,7 +4,7 @@ title: 'Verify Permissions on SSH Server Private *_key Key Files'
 
 {{% set dedicated_ssh_groupname = groups.get("dedicated_ssh_keyowner", {}).get("name") %}}
 
-{{% if product in ["rhcos4", "sle12", "sle15", "slmicro5","ol9"] %}}
+{{% if product in ["ol9", "rhcos4", "sle12", "sle15", "slmicro5", "slmicro6"] %}}
 {{# CoreOS is special - it is immutable, so it is more predictable, and it uses the dedicated group as key owner by default #}}
 {{% set perms = "-rw-r-----" %}}
 {{% set perms_num = "0640" %}}
@@ -33,6 +33,7 @@ identifiers:
     cce@sle12: CCE-83058-8
     cce@sle15: CCE-85644-3
     cce@slmicro5: CCE-93751-6
+    cce@slmicro6: CCE-95070-9 
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5

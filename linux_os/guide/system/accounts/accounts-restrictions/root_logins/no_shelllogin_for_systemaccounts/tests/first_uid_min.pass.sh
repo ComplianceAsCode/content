@@ -11,4 +11,4 @@ sed -Ei '
 '"$key"' {{{ uid_min }}}
 }
 /^(SYS_)?UID_(MIN|MAX)/d;
-' /etc/login.defs
+' {{{ login_defs_path }}}

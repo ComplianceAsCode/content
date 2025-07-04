@@ -1018,6 +1018,37 @@ else
 fi
 {{%- endmacro -%}}
 
+{{#
+    Ensure pam_lastlog2.so PAM module shows the failed logins according to the system capabilities.
+    If authselect is present and the "with-silent-lastlog" feature is available, the feature will be disabled.
+    If authselect is present but the "with-silent-lastlog" feature is not yet available, a custom profile will be used.
+    If authselect is not present, PAM files will be directly edited.
+
+:param pam_file:    PAM config file.
+:type pam_file: str
+:param control:     PAM control flags.
+:type control: str
+:param after_match: Regex used as reference to append a line, if necessary. Optional parameter.
+                    Note: For this macro, there is a special value used to include a line at
+                    the beginning of the file: "BOF"
+:type after_match: str
+
+#}}
+{{%- macro bash_pam_lastlog2_enable_showfailed(pam_file, control, after_match='') -%}}
+if [ -f /usr/bin/authselect ]; then
+    if authselect list-features sssd | grep -q with-silent-lastlog; then
+        {{{ bash_disable_authselect_feature('with-silent-lastlog') | indent(8) }}}
+    else
+        {{# the following macro ensures the PAM_FILE_PATH variable is properly set #}}
+        {{{ bash_ensure_pam_variables_and_authselect_profile(pam_file) | indent(8) }}}
+        {{{ bash_ensure_pam_module_configuration("$PAM_FILE_PATH", 'session', control, 'pam_lastlog2.so', 'showfailed', '', after_match) | indent(8) }}}
+        {{{ bash_remove_pam_module_option_configuration("$PAM_FILE_PATH", 'session', control, 'pam_lastlog2.so', 'silent') | indent(8) }}}
+    fi
+else
+    {{{ bash_ensure_pam_module_configuration(pam_file, 'session', control, 'pam_lastlog2.so', 'showfailed', '', after_match) | indent(8) }}}
+    {{{ bash_remove_pam_module_option_configuration(pam_file, 'session', control, 'pam_lastlog2.so', 'silent') | indent(8) }}}
+fi
+{{%- endmacro -%}}
 
 {{#
     Enable pam_pwhistory.so PAM module according to the system capabilities.

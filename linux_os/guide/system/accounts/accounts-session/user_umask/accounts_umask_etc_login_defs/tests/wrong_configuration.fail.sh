@@ -1,7 +1,7 @@
 #!/bin/bash
-#
-if grep -q "^UMASK" /etc/login.defs; then
-	sed -i "s/^UMASK.*/umask 077/" /etc/login.defs
+
+if grep -q "^UMASK" {{{ login_defs_path }}}; then
+	sed -i "s/^UMASK.*/umask 077/" {{{ login_defs_path }}}
 else
-	echo "umask 077" >> /etc/login.defs
+	echo "umask 077" >> {{{ login_defs_path }}}
 fi

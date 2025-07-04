@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sed -i "/PASS_WARN_AGE.*/d" /etc/login.defs
+sed -i "/PASS_WARN_AGE.*/d" {{{ login_defs_path }}}

@@ -7,16 +7,16 @@
 
 - name: Check if UMASK is already set
   ansible.builtin.lineinfile:
-    path: /etc/login.defs
+    path: {{{ login_defs_path }}}
     regexp: ^(\s*)UMASK\s+.*
     state: absent
   check_mode: true
   changed_when: false
   register: result_umask_is_set
 
-- name: Replace user UMASK in /etc/login.defs
+- name: Replace user UMASK in {{{ login_defs_path }}}
   ansible.builtin.replace:
-    path: /etc/login.defs
+    path: {{{ login_defs_path }}}
     regexp: ^(\s*)UMASK(\s+).*
     replace: \g<1>UMASK\g<2>{{ var_accounts_user_umask }}
   when:
@@ -25,7 +25,7 @@
 - name: Ensure the Default UMASK is Appended Correctly
   ansible.builtin.lineinfile:
     create: true
-    path: /etc/login.defs
+    path: {{{ login_defs_path }}}
     line: UMASK {{ var_accounts_user_umask }}
   when:
   - result_umask_is_set.found == 0

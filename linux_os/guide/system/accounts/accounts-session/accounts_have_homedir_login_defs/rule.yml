@@ -7,7 +7,7 @@ description: |-
     All local interactive user accounts, upon creation, should be assigned a home directory.
     <br /><br />
     Configure the operating system to assign home directories to all new local interactive users by setting the <tt>CREATE_HOME</tt>
-    parameter in <tt>/etc/login.defs</tt> to <tt>yes</tt> as follows:
+    parameter in <tt>{{{ login_defs_path }}}</tt> to <tt>yes</tt> as follows:
     <br /><br />
     <pre>CREATE_HOME yes</pre>
 
@@ -24,6 +24,7 @@ identifiers:
     cce@sle12: CCE-83053-9
     cce@sle15: CCE-85562-7
     cce@slmicro5: CCE-93736-7
+    cce@slmicro6: CCE-95044-4
 
 references:
     srg: SRG-OS-000480-GPOS-00227
@@ -37,11 +38,11 @@ ocil_clause: 'the value for "CREATE_HOME" parameter is not set to "yes", the lin
 ocil: |-
     Verify all local interactive users on {{{ full_name }}} are assigned a home
     directory upon creation with the following command:
-    <pre>$ grep -i create_home /etc/login.defs</pre>
+    <pre>$ grep -i create_home {{{ login_defs_path }}}</pre>
     <pre>CREATE_HOME yes</pre>
 
 fixtext: |-
-    Configure {{{ full_name }}} to assign home directories to all new local interactive users by setting the "CREATE_HOME" parameter in "/etc/login.defs" to "yes" as follows.
+    Configure {{{ full_name }}} to assign home directories to all new local interactive users by setting the "CREATE_HOME" parameter in "{{{ login_defs_path }}}" to "yes" as follows.
 
     CREATE_HOME yes
 

@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'Set Password Hashing Algorithm in /etc/login.defs'
+title: 'Set Password Hashing Algorithm in {{{ login_defs_path }}}'
 
 description: |-
-    In <tt>/etc/login.defs</tt>, add or update the following line to ensure the system will use
+    In <tt>{{{ login_defs_path }}}</tt>, add or update the following line to ensure the system will use
     {{{ xccdf_value("var_password_hashing_algorithm") }}} as the hashing algorithm:
     <pre>ENCRYPT_METHOD {{{ xccdf_value("var_password_hashing_algorithm") }}}</pre>
 
@@ -58,7 +58,7 @@ ocil: |-
 
     Check the hashing algorithm that is being used to hash passwords with the following command:
 
-    $ sudo grep -i ENCRYPT_METHOD /etc/login.defs
+    $ sudo grep -i ENCRYPT_METHOD  {{{ login_defs_path }}}
 
     ENCRYPT_METHOD {{{ xccdf_value("var_password_hashing_algorithm") }}}
 
@@ -71,6 +71,6 @@ platform: package[shadow-utils]
 fixtext: |-
     Configure {{{ full_name }}} to encrypt all stored passwords.
 
-    Add or update the following line in the "/etc/login.defs" file:
+    Add or update the following line in the "{{{ login_defs_path }}}" file:
 
     ENCRYPT_METHOD {{{ xccdf_value("var_password_hashing_algorithm") }}}

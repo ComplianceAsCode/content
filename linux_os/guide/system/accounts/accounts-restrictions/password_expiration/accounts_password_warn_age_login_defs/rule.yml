@@ -5,7 +5,7 @@ title: 'Set Password Warning Age'
 description: |-
     To specify how many days prior to password
     expiration that a warning will be issued to users,
-    edit the file <tt>/etc/login.defs</tt> and add or correct
+    edit the file <tt>{{{ login_defs_path }}}</tt> and add or correct
      the following line:
     <pre>PASS_WARN_AGE {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</pre>
     The profile requirement is <tt>{{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</tt>.
@@ -43,7 +43,8 @@ ocil_clause: 'it is not set to the required value'
 
 ocil: |-
     To check the password warning age, run the command:
-    <pre>$ grep PASS_WARN_AGE /etc/login.defs</pre>
-    This profile requirement is <tt>{{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</tt>.
+    <pre>$ grep PASS_WARN_AGE {{{ login_defs_path }}}</pre>
+    The profile requirement is <tt>{{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</tt>.
+
 
 platform: package[shadow-utils]

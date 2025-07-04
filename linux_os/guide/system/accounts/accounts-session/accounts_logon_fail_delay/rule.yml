@@ -3,8 +3,8 @@ documentation_complete: true
 title: 'Ensure the Logon Failure Delay is Set Correctly in login.defs'
 
 description: |-
-    To ensure the logon failure delay controlled by <tt>/etc/login.defs</tt> is set properly,
-    add or correct the <tt>FAIL_DELAY</tt> setting in <tt>/etc/login.defs</tt> to read as follows:
+    To ensure the logon failure delay controlled by <tt>{{{ login_defs_path }}}</tt> is set properly,
+    add or correct the <tt>FAIL_DELAY</tt> setting in <tt>{{{ login_defs_path }}}</tt> to read as follows:
     <pre>FAIL_DELAY {{{ xccdf_value("var_accounts_fail_delay") }}}</pre>
 
 rationale: |-
@@ -19,6 +19,7 @@ identifiers:
     cce@rhel10: CCE-86822-4
     cce@sle12: CCE-83028-1
     cce@slmicro5: CCE-94093-2
+    cce@slmicro6: CCE-95034-5
 
 references:
     cis-csc: 11,3,9
@@ -38,7 +39,7 @@ ocil_clause: 'the value of "FAIL_DELAY" is not set to "{{{ xccdf_value("var_acco
 ocil: |-
     Verify {{{ full_name }}} enforces a delay of at least {{{ xccdf_value("var_accounts_fail_delay") }}} seconds between console logon prompts following a failed logon attempt with the following command:
 
-    <pre>$ sudo grep -i "FAIL_DELAY" /etc/login.defs
+    <pre>$ sudo grep -i "FAIL_DELAY" {{{ login_defs_path }}}
     FAIL_DELAY {{{ xccdf_value("var_accounts_fail_delay") }}}</pre>
 
 platform: package[shadow-utils]
@@ -46,7 +47,7 @@ platform: package[shadow-utils]
 fixtext: |-
     Configure the {{{ full_name }}} to enforce a delay of at least {{{ xccdf_value("var_accounts_fail_delay") }}} seconds between logon prompts following a failed console logon attempt.
 
-    Modify the "/etc/login.defs" file to set the "FAIL_DELAY" parameter to {{{ xccdf_value("var_accounts_fail_delay") }}} or greater:
+    Modify the "{{{ login_defs_path }}}" file to set the "FAIL_DELAY" parameter to {{{ xccdf_value("var_accounts_fail_delay") }}} or greater:
 
     FAIL_DELAY {{{ xccdf_value("var_accounts_fail_delay") }}}
 

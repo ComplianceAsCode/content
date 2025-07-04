@@ -3,8 +3,8 @@ documentation_complete: true
 title: 'Ensure the Default Umask is Set Correctly in login.defs'
 
 description: |-
-    To ensure the default umask controlled by <tt>/etc/login.defs</tt> is set properly,
-    add or correct the <tt>UMASK</tt> setting in <tt>/etc/login.defs</tt> to read as follows:
+    To ensure the default umask controlled by <tt>{{{ login_defs_path }}}</tt> is set properly,
+    add or correct the <tt>UMASK</tt> setting in <tt>{{{ login_defs_path }}}</tt> to read as follows:
     <pre>UMASK {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
 rationale: |-
@@ -21,6 +21,7 @@ identifiers:
     cce@sle12: CCE-83052-1
     cce@sle15: CCE-85659-1
     cce@slmicro5: CCE-93753-2
+    cce@slmicro6: CCE-95089-9
 
 references:
     cis-csc: 11,18,3,9
@@ -46,7 +47,7 @@ ocil_clause: 'the value for the "UMASK" parameter is not "{{{ xccdf_value("var_a
 ocil: |-
     Verify {{{ full_name }}} defines default permissions for all authenticated users in such a way that the user can only read and modify their own files with the following command:
 
-    <pre># grep -i umask /etc/login.defs
+    <pre># grep -i umask {{{ login_defs_path }}}
 
     UMASK {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
@@ -55,9 +56,9 @@ platform: package[shadow-utils]
 checktext: |-
     Verify {{{ full_name }}} defines default permissions for all authenticated users in such a way that the user can only read and modify their own files with the following command:
 
-    Note: If the value of the "UMASK" parameter is set to "000" in "/etc/login.defs" file, the Severity is raised to a CAT I.
+    Note: If the value of the "UMASK" parameter is set to "000" in "{{{ login_defs_path }}}" file, the Severity is raised to a CAT I.
 
-    # grep -i umask /etc/login.defs
+    # grep -i umask {{{ login_defs_path }}}
 
     UMASK 077
 
@@ -66,7 +67,7 @@ checktext: |-
 fixtext: |-
     Configure the {{{ full_name }}} to define default permissions for all authenticated users in such a way that the user can only read and modify their own files.
 
-    Add or edit the lines for the "UMASK" parameter in the "/etc/login.defs" file to "{{{ xccdf_value("var_accounts_user_umask") }}}":
+    Add or edit the lines for the "UMASK" parameter in the "{{{ login_defs_path }}}" file to "{{{ xccdf_value("var_accounts_user_umask") }}}":
 
     UMASK {{{ xccdf_value("var_accounts_user_umask") }}}
 
