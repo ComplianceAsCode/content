@@ -1,9 +1,8 @@
-{{% if product not in ["ubuntu2404"] %}}
 <def-group>
   <definition class="compliance" id="file_groupownership_system_commands_dirs" version="1">
     {{{ oval_metadata("
         Checks that system commands in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin 
-        are owned by root group.
+        are owned by system group.
       ", rule_title=rule_title) }}}
     <criteria >
       <criterion test_ref="test_groupownership_system_commands_dirs" />
@@ -16,16 +15,15 @@
 
   <unix:file_object comment="system commands files" id="object_groupownership_system_commands_dirs" version="1">
     <!-- Check that system commands within directories /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin 
-         belong to group with gid 0 (root) -->
+         belong to system group -->
     <unix:path operation="pattern match">^\/s?bin|^\/usr\/s?bin|^\/usr\/local\/s?bin</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
-   <filter action="include">state_groupowner_system_commands_dirs_not_root_not_sgid</filter>
+   <filter action="include">state_groupowner_system_commands_dirs_not_system_group_not_sgid</filter>
   </unix:file_object>
 
-  <unix:file_state id="state_groupowner_system_commands_dirs_not_root_not_sgid" version="1">
-    <unix:group_id datatype="int" operation="not equal">0</unix:group_id>
+  <unix:file_state id="state_groupowner_system_commands_dirs_not_system_group_not_sgid" version="1">
+    <unix:group_id datatype="int" operation="greater than or equal">{{{ gid_min }}}</unix:group_id>
     <unix:sgid datatype="boolean">false</unix:sgid>
   </unix:file_state>
 
 </def-group>
-{{% endif %}}
