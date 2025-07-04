@@ -45,7 +45,7 @@ from .constants import (XCCDF12_NS,
 from .rules import get_rule_dir_yaml, is_rule_dir
 
 from .cce import is_cce_format_valid, is_cce_value_valid
-from .yaml import DocumentationNotComplete, open_and_macro_expand
+from .yaml import DocumentationNotComplete, open_and_expand
 from .utils import required_key, mkdir_p
 
 from .xml import ElementTree as ET, register_namespaces, parse_file
@@ -1945,7 +1945,7 @@ class Rule(XCCDFEntity, Templatable):
         Returns:
             dict: The processed YAML data from the content file.
         """
-        yaml_data = open_and_macro_expand(filename, env_yaml)
+        yaml_data = open_and_expand(filename, env_yaml)
         return yaml_data
 
     def read_policy_specific_content(self, env_yaml, files):

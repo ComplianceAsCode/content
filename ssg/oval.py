@@ -13,7 +13,7 @@ from .constants import oval_namespace as ovalns
 from .xml import ElementTree as ET
 from .xml import oval_generated_header
 
-from .jinja import process_file_with_macros
+from .jinja import process_file
 from .products import _get_implied_properties
 
 
@@ -66,7 +66,7 @@ def applicable_platforms(oval_file, oval_version_string=None):
     subst_dict = _get_implied_properties(subst_dict)
     subst_dict['target_oval_version'] = [999, 999.999]
 
-    body = process_file_with_macros(oval_file, subst_dict)
+    body = process_file(oval_file, subst_dict)
 
     try:
         oval_tree = ET.fromstring(header + body + footer)

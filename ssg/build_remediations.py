@@ -9,11 +9,11 @@ from collections import defaultdict, namedtuple, OrderedDict
 
 import ssg.yaml
 import ssg.build_yaml
+import ssg.jinja
 from . import rules
 from . import utils
 
 from . import constants
-from .jinja import process_file_with_macros as jinja_process_file
 
 from .xml import ElementTree
 from .constants import XCCDF12_NS
@@ -91,7 +91,7 @@ def parse_from_file_with_jinja(file_path, env_yaml):
     update ssg.fixes.parse_platform(...).
     """
 
-    fix_file = jinja_process_file(file_path, env_yaml)
+    fix_file = ssg.jinja.process_file(file_path, env_yaml)
     return split_remediation_content_and_metadata(fix_file)
 
 

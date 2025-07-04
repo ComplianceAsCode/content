@@ -5,7 +5,7 @@ from . import utils, products
 from .rules import get_rule_dir_ovals, find_rule_dirs_in_paths
 from .oval_object_model import OVALDocument
 from .build_yaml import Rule, DocumentationNotComplete
-from .jinja import process_file_with_macros
+from .jinja import process_file
 from .id_translate import IDTranslator
 from .xml import ElementTree
 
@@ -16,7 +16,7 @@ def expand_shorthand(shorthand_path, oval_path, env_yaml):
     oval_document.product_name = "test"
     oval_document.schema_version = env_yaml.get("target_oval_version_str", "5.11")
 
-    shorthand_file_content = process_file_with_macros(shorthand_path, env_yaml)
+    shorthand_file_content = process_file(shorthand_path, env_yaml)
     oval_document.load_shorthand(shorthand_file_content)
 
     root = oval_document.get_xml_element()
@@ -157,7 +157,7 @@ class OVALBuilder:
             logging.critical("File name '{}' doesn't end with '.xml'.".format(file_path))
 
         if from_benchmark or "checks_from_templates" not in file_path:
-            return process_file_with_macros(file_path, context)
+            return process_file(file_path, context)
 
         with open(file_path, "r") as f:
             return f.read()

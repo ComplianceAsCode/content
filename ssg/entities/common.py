@@ -10,7 +10,7 @@ from copy import deepcopy
 from ssg.yaml import yaml_Dumper
 
 from ..xml import ElementTree as ET, add_xhtml_namespace
-from ..yaml import DocumentationNotComplete, open_and_macro_expand
+from ..yaml import DocumentationNotComplete, open_and_expand
 from ..shims import unicode_func
 
 from ..constants import (
@@ -247,7 +247,7 @@ class XCCDFEntity(object):
 
         if env_yaml:
             env_yaml[cls.ID_LABEL] = entity_id
-        yaml_data = open_and_macro_expand(yaml_file, env_yaml)
+        yaml_data = open_and_expand(yaml_file, env_yaml)
 
         try:
             processed_data = cls.process_input_dict(yaml_data, env_yaml, product_cpes)

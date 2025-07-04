@@ -17,7 +17,7 @@ from ssg.build_yaml import Rule as RuleYAML
 from ssg.constants import MULTI_PLATFORM_MAPPING
 from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
 from ssg.constants import OSCAP_RULE
-from ssg.jinja import process_file_with_macros
+from ssg.jinja import process_file
 from ssg.products import product_yaml_path, load_product_yaml
 from ssg.rules import get_rule_dir_yaml
 from ssg.utils import mkdir_p, select_templated_tests
@@ -288,7 +288,7 @@ def write_rule_test_content_to_dir(rule_dir, test_content):
         with open(file_path, "w") as f:
             f.write(file_content)
             # Ensure newline at the end of the file because
-            # process_file_with_macros strips it off
+            # process_file strips it off
             f.write("\n")
 
 
@@ -447,7 +447,7 @@ def load_test(absolute_path, rule_template, local_env_yaml):
                          "which doesn't exist in '{}".format(template_name, _SHARED_TEMPLATES))
 
     jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
-    filled_template = ssg.jinja.process_file_with_macros(
+    filled_template = ssg.jinja.process_file(
         absolute_path, jinja_dict)
     return filled_template
 
@@ -476,7 +476,7 @@ def fetch_local_tests_paths(tests_dir):
 def load_local_tests(local_tests_paths, local_env_yaml):
     local_tests = dict()
     for path in local_tests_paths:
-        test = process_file_with_macros(path, local_env_yaml)
+        test = process_file(path, local_env_yaml)
         basename = os.path.basename(path)
         local_tests[basename] = test
     return local_tests

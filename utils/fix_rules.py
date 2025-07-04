@@ -45,7 +45,7 @@ def has_empty_identifier(rule_path, rule, rule_lines):
 
 
 def has_no_cce(yaml_file, product_yaml=None):
-    rule = yaml.open_and_macro_expand(yaml_file, product_yaml)
+    rule = yaml.open_and_expand(yaml_file, product_yaml)
     product = product_yaml["product"]
     if 'identifiers' in rule and rule['identifiers'] is None:
         return True
@@ -158,7 +158,7 @@ def rule_data_generator(args):
 
         rule_path = ssg.rules.get_rule_dir_yaml(rule_obj['dir'])
         try:
-            rule = yaml.open_and_macro_expand(rule_path, local_env_yaml)
+            rule = yaml.open_and_expand(rule_path, local_env_yaml)
             rule_lines = read_file_list(rule_path)
             yield rule_path, rule, rule_lines, product_path, local_env_yaml
         except jinja2.exceptions.UndefinedError as ue:
@@ -484,7 +484,7 @@ def _fixed_file_contents(path, file_contents, product_yaml, func):
         file_contents = file_contents[:-1]
 
     subst_dict = product_yaml
-    yaml_contents = yaml.open_and_macro_expand(path, subst_dict)
+    yaml_contents = yaml.open_and_expand(path, subst_dict)
 
     try:
         new_file_contents = func(file_contents, yaml_contents)

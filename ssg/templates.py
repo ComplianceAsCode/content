@@ -363,7 +363,7 @@ class Builder(object):
         env_yaml = self.env_yaml.copy()
         env_yaml.update(local_env_yaml)
         jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
-        return ssg.jinja.process_file_with_macros(template_file_path, jinja_dict)
+        return ssg.jinja.process_file(template_file_path, jinja_dict)
 
     def get_lang_contents_for_templatable(self, templatable, language):
         """
