@@ -15,7 +15,7 @@ import tempfile
 
 import ssg.utils
 from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
-from ssg.jinja import process_file_with_macros
+from ssg.jinja import process_file
 from ssg.rules import is_rule_dir
 
 from tests.ssg_test_suite import oscap
@@ -433,7 +433,7 @@ class RuleChecker(oscap.Checker):
                 file_path = os.path.join(dirpath, file_name)
                 rel_path = os.path.relpath(file_path, common._SHARED_DIR)
                 try:
-                    file_content = process_file_with_macros(file_path, product_yaml)
+                    file_content = process_file(file_path, product_yaml)
                 except Exception as e:
                     logging.error("Error processing file {0}: {1}".format(file_path, str(e)))
                     continue

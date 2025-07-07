@@ -206,9 +206,6 @@ def process_file(filepath, substitutions_dict):
 
     Returns:
         str: The rendered template as a string.
-
-    Note:
-        This function does not load the project macros. Use `process_file_with_macros(...)` for that.
     """
     filepath = os.path.abspath(filepath)
     template = _get_jinja_environment(substitutions_dict).get_template(filepath)
@@ -322,32 +319,6 @@ def load_macros_from_content_dir(content_dir, substitutions_dict=None):
     """
     jinja_macros_directory = os.path.join(content_dir, 'shared', 'macros')
     return _load_macros(jinja_macros_directory, substitutions_dict)
-
-
-def process_file_with_macros(filepath, substitutions_dict):
-    """
-    Process a file with Jinja macros.
-
-    This function processes the file located at the given `filepath` using Jinja macros and the
-    specified `substitutions_dict`. The `substitutions_dict` is first processed to load any
-    macros, and then it is used to substitute values in the file. The function ensures that the
-    key 'indent' is not present in the `substitutions_dict`.
-
-    Args:
-        filepath (str): The path to the file to be processed.
-        substitutions_dict (dict): A dictionary containing the substitutions to be applied to the file.
-
-    Returns:
-        str: The processed file content as a string.
-
-    Raises:
-        AssertionError: If the key 'indent' is present in `substitutions_dict`.
-
-    See also:
-        process_file: A function that processes a file with the given substitutions.
-    """
-    assert 'indent' not in substitutions_dict
-    return process_file(filepath, substitutions_dict)
 
 
 def url_encode(source):
