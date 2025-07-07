@@ -6,9 +6,9 @@
 
 - name: "Retrieve the system command files and set their group ownership to root"
 {{% if 'ubuntu' in product %}}
-  command: "find -L {{ item }} ! -gid -{{{ gid_min }}} -type f -exec chgrp root '{}' \\;"
+  command: "find -P {{ item }} ! -gid -{{{ gid_min }}} -type f -exec chgrp root '{}' \\;"
 {{% else %}}
-  command: "find -L {{ item }} ! -group root -type f -exec chgrp root '{}' \\;"
+  command: "find -P {{ item }} ! -group root -type f -exec chgrp root '{}' \\;"
 {{% endif %}}
   with_items: ['/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/local/bin', '/usr/local/sbin']
   changed_when: False

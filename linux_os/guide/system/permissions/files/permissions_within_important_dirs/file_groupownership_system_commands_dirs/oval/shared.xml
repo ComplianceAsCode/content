@@ -20,10 +20,15 @@
     <unix:path operation="pattern match">^\/s?bin|^\/usr\/s?bin|^\/usr\/local\/s?bin</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
    <filter action="include">state_groupowner_system_commands_dirs_not_root_or_system_account</filter>
+   <filter action="exclude">state_groupowner_system_commands_dirs_symlink</filter>
   </unix:file_object>
 
   <unix:file_state id="state_groupowner_system_commands_dirs_not_root_or_system_account" version="1">
     <unix:group_id datatype="int" operation="greater than or equal">{{{ gid_min }}}</unix:group_id>
+  </unix:file_state>
+
+  <unix:file_state comment="symbolic link" id="state_groupowner_system_commands_dirs_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
   </unix:file_state>
 
 </def-group>
