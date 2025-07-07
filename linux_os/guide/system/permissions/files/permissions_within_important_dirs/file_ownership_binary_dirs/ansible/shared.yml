@@ -4,7 +4,11 @@
 # complexity = medium
 # disruption = medium
 - name: "Read list of system executables without root ownership"
+  {{% if "ubuntu" in product -%}}
+  command: "find /bin/ /usr/bin/ /usr/local/bin/ /sbin/ /usr/sbin/ /usr/local/sbin/ /usr/libexec \\! -user {{{ uid_min }}}"
+  {{% else -%}}
   command: "find /bin/ /usr/bin/ /usr/local/bin/ /sbin/ /usr/sbin/ /usr/local/sbin/ /usr/libexec \\! -user root"
+  {{% endif -%}}
   register: no_root_system_executables
   changed_when: False
   failed_when: False
