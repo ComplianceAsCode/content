@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-{{% if 'sle' in product or 'rhel' in product or product == 'fedora' or product == 'slmicro5' %}}
+{{% if 'sle' in product or 'rhel' in product or product == 'fedora' or product == 'slmicro5'  or 'ol' in families %}}
 - name: Require emergency mode password
   ansible.builtin.blockinfile:
       create: yes
