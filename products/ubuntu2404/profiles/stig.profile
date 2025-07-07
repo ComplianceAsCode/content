@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: draft
+    version: V1R1
     SMEs:
         - mpurg
         - dodys
@@ -9,7 +9,7 @@ metadata:
 
 reference: https://public.cyber.mil/stigs/downloads
 
-title: '(DRAFT) Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide (STIG) V1R1'
+title: 'Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide (STIG) V1R1'
 
 description: |-
     This profile contains configuration checks that align to the
