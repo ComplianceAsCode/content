@@ -282,31 +282,6 @@ EOF
     }}}
 {{%- endmacro -%}}
 
-
-{{#
-   Set parameter in /etc/systemd/coredump.conf.
-   For SLE platforms put remediation in drop-in configuration file /etc/systemd/coredump.conf.d/oscap-autoremedy.conf.
-
-:parameter parameter: Parameter to set
-:type parameter: str
-:parameter value: The value to set
-:type value: str
-
-#}}
-{{%- macro bash_coredump_config_set(parameter, value) -%}}
-{{% if 'sle' in product %}}
-mkdir -p /etc/systemd/coredump.conf.d/
-if [ ! -f "/etc/systemd/coredump.conf.d/oscap-autoremedy.conf" ]; then
-   echo "[Coredump]" > "/etc/systemd/coredump.conf.d/oscap-autoremedy.conf"
-fi
-{{%- set target_path="/etc/systemd/coredump.conf.d/oscap-autoremedy.conf" -%}}
-{{% else %}}
-{{%- set target_path="/etc/systemd/coredump.conf" -%}}
-{{% endif %}}
-{{{ bash_ensure_ini_config(target_path, section="Coredump", key=parameter, value=value) }}}
-{{%- endmacro -%}}
-
-
 {{#
    Set parameter in /etc/selinux/config
 
