@@ -56,7 +56,7 @@
 
 {{% if 'ubuntu' in product %}}
   <unix:file_state id="state_owner_binaries_not_system_accounts" version="1" operator="AND">
-    <unix:user_id datatype="int" operation="greater than or equal">100</unix:user_id>
+    <unix:user_id datatype="int" operation="greater than or equal">{{{ uid_min }}}</unix:user_id>
   </unix:file_state>
 {{% endif %}}
 
