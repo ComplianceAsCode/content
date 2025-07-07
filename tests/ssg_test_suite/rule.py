@@ -159,6 +159,7 @@ class RuleChecker(oscap.Checker):
                 return False
             if initial_scan_res == 2:
                 # notapplicable
+                self.initial_scan_result = 2
                 return True
 
             supported_and_available_remediations = self._get_available_remediations(scenario)
@@ -495,6 +496,8 @@ class RuleChecker(oscap.Checker):
         self._current_result.scenario = common.Scenario_run(rule_id, scenario.script)
         self._current_result.when = self.test_timestamp_str
 
+        if hasattr(self, 'initial_scan_result') and self.initial_scan_result == 2:
+            return
         with self.copy_of_datastream():
             self._check_rule_scenario(scenario, remote_rule_dir, rule_id, remediation_available)
         self.results.append(self._current_result.save_to_dict())
