@@ -8,6 +8,5 @@ description: |-
 
 selections:
     - abcd-levels:all:medium
-    - file_groupownership_sshd_private_key
     - sshd_set_keepalive
     - var_sshd_set_keepalive=1
