@@ -5,7 +5,7 @@
 # disruption = medium
 - name: "Read list of system executables without root ownership"
   {{% if "ubuntu" in product -%}}
-  command: "find /bin/ /usr/bin/ /usr/local/bin/ /sbin/ /usr/sbin/ /usr/local/sbin/ /usr/libexec \\! -user {{{ uid_min }}}"
+  command: "find /bin/ /usr/bin/ /usr/local/bin/ /sbin/ /usr/sbin/ /usr/local/sbin/ \\! -user {{{ uid_min }}}"
   {{% else -%}}
   command: "find /bin/ /usr/bin/ /usr/local/bin/ /sbin/ /usr/sbin/ /usr/local/sbin/ /usr/libexec \\! -user root"
   {{% endif -%}}
