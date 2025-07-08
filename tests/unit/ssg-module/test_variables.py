@@ -66,11 +66,11 @@ def test_get_variable_options(tmp_path):
 
 
 def test_get_variables_by_products():
-    products = ["rhel9"]
-    content_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+    products = ["rhel8"]
+    content_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "data/content_dir"))
     result = get_variables_by_products(str(content_dir), products)
-    assert "var_selinux_policy_name" in result
-    assert "rhel9" in result["var_selinux_policy_name"]
+    assert "var_sshd_set_keepalive" in result
+    assert "rhel8" in result["var_sshd_set_keepalive"]
 
 
 def test_get_variable_values(tmp_path):

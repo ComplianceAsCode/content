@@ -199,14 +199,22 @@ def _update_profile_with_policy(profile: ProfileSelections, policy: Policy, leve
         profile (ProfileSelections): The profile to be updated.
         policy (Policy): The policy containing controls to update the profile with.
         level (str): The level of controls to be processed. If 'all', all controls are processed.
-                     Otherwise, only controls matching the specified level are processed.
+                     Otherwise, only controls matching the specified level are processed honoring
+                     inheritance.
 
     Returns:
         None
     """
-    for control in policy.controls:
-        if level == 'all' or level in control.levels:
-            _process_control(profile, control)
+    inherited_levels = getattr(policy.levels_by_id.get(level), "inherits_from", []) or []
+    for inherited_level in inherited_levels:
+        _update_profile_with_policy(profile, policy, inherited_level)
+
+    controls = (
+        policy.controls if level == 'all'
+        else [ctrl for ctrl in policy.controls if level in ctrl.levels]
+    )
+    for control in controls:
+        _process_control(profile, control)
 
 
 def _process_controls(profile: ProfileSelections, control_line: str,
@@ -281,18 +289,17 @@ def _process_profile(profile: ProfileSelections, profile_yaml: dict, profiles_fi
     return profile
 
 
-def _load_controls_manager(controls_dir: str, product_yaml: dict) -> object:
+def _load_controls_manager(controls_dir: str) -> object:
     """
     Loads and initializes a ControlsManager instance.
 
     Args:
         controls_dir (str): The directory containing control files.
-        product_yaml (dict): The product configuration in YAML format.
 
     Returns:
         object: An instance of ControlsManager with loaded controls.
     """
-    control_mgr = ControlsManager(controls_dir, product_yaml)
+    control_mgr = ControlsManager(controls_dir)
     control_mgr.load()
     return control_mgr
 
@@ -333,7 +340,7 @@ def get_profiles_from_products(content_dir: str, products: list,
         product_yaml = _load_product_yaml(content_dir, product)
         product_title = product_yaml.get("full_name")
         profiles_files = get_profile_files_from_root(product_yaml, product_yaml)
-        controls_manager = _load_controls_manager(controls_dir, product_yaml)
+        controls_manager = _load_controls_manager(controls_dir)
         for file in profiles_files:
             profile_id = os.path.basename(file).split('.profile')[0]
             profile_yaml = _load_yaml_profile_file(file)
