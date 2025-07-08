@@ -4,6 +4,8 @@
 useradd crontab
 {{% endif %}}
 
+groupadd group_test
+
 {{% if 'ubuntu' in product %}}
 for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
 {{% else %}}
@@ -14,4 +16,4 @@ do
 done
 
 ln -s $(mktemp -p /tmp) /usr/bin/test.log.symlink
-chgrp -h nogroup /usr/bin/test.log.symlink
+chgrp -h group_test /usr/bin/test.log.symlink
