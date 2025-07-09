@@ -24,7 +24,8 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      notes: <- This is a helper rule to reload Dconf database correctly.
+      notes: |-
+          This is a helper rule to reload Dconf database correctly.
       status: automated
       rules:
           - dconf_db_up_to_date
@@ -34,7 +35,8 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      notes: <- We need this in all CIS versions, but the policy doesn't have any section where this
+      notes: |-
+          We need this in all CIS versions, but the policy doesn't have any section where this
           would fit better.
       status: automated
       rules:
@@ -474,7 +476,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
-      notes: <- RHEL9 unified the paths for grub2 files.
+      notes: |-
+          RHEL9 unified the paths for grub2 files.
       rules:
           - grub2_password
       related_rules:
@@ -486,7 +489,8 @@ controls:
           - l1_server
           - l1_workstation
       status: pending
-      notes: <- RHEL9 unified the paths for grub2 files. This requirement demands a deeper review of
+      notes: |-
+          RHEL9 unified the paths for grub2 files. This requirement demands a deeper review of
           the rules.
       rules:
           - file_groupowner_grub2_cfg

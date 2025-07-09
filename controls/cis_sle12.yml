@@ -23,7 +23,8 @@ controls:
           - l1_workstation
           - l2_server
           - l2_workstation
-      notes: <- This is a helper rule to reload Dconf database correctly.
+      notes: |-
+          This is a helper rule to reload Dconf database correctly.
       status: automated
       rules:
           - dconf_db_up_to_date
@@ -1138,7 +1139,8 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
-      notes: <- Note that currently the value is hardcoded to 8192
+      notes: |-
+          Note that currently the value is hardcoded to 8192
       rules:
           - grub2_audit_backlog_limit_argument
 

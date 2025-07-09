@@ -24,7 +24,8 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      notes: <- This is a helper rule to reload Dconf database correctly.
+      notes: |-
+          This is a helper rule to reload Dconf database correctly.
       status: automated
       rules:
           - dconf_db_up_to_date
@@ -34,7 +35,8 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      notes: <- We need this in all CIS versions, but the policy doesn't have any section where this
+      notes: |-
+          We need this in all CIS versions, but the policy doesn't have any section where this
           would fit better.
       status: automated
       rules:
