@@ -18,13 +18,19 @@
   block:
     {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file, rule_title=rule_title) | indent(4) }}}
 
-    - name: '{{{ rule_title }}} - Ensure That Only the Correct Hashing Algorithm Option For pam_unix.so Is Used in {{{ pam_file }}}'
+    - name: '{{{ rule_title }}} - Check if "{{ pam_file_path }}" File is Present'
+      ansible.builtin.stat:
+        path: "{{ pam_file_path }}"
+      register: pam_file_path_present
+
+    - name: '{{{ rule_title }}} - Ensure That Only the Correct Hashing Algorithm Option For pam_unix.so Is Used in {{ pam_file_path }}'
       ansible.builtin.replace:
         dest: "{{ pam_file_path }}"
         regexp: (^\s*password.*pam_unix\.so.*)\b{{ item }}\b\s*(.*)
         replace: '\1\2'
       when:
-        item != var_password_hashing_algorithm_pam
+        - item != var_password_hashing_algorithm_pam
+        - pam_file_path_present.stat.exists
       loop:
         - 'sha512'
         - 'yescrypt'
