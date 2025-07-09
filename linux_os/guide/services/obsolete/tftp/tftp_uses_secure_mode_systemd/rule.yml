@@ -34,10 +34,6 @@ ocil_clause: 'the ExecStart property of tftp does not contain correctly set -s f
 
 platform: package[tftp-server]
 
-warnings:
-    - general: |-
-        An OVAL check is not currently available since <tt>ExecStart</tt> cannot be checked with OVAL since it is not exposed via dbus.
-        Currently, a remedation is not available for this rule.
 
 identifiers:
     cce@rhel8: CCE-90667-7
