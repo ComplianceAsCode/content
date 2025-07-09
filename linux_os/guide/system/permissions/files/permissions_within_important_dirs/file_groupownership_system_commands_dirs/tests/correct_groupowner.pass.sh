@@ -6,5 +6,5 @@ for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
 for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin
 {{% endif %}}
 do
-  find -L  $SYSLIBDIRS \! -group root -type f -exec chgrp root '{}' \;
+  find -P $SYSLIBDIRS \! -group root -type f -exec chgrp -P root '{}' \;
 done

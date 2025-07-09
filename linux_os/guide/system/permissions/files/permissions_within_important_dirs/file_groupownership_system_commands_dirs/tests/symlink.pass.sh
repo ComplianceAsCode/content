@@ -2,14 +2,7 @@
 
 groupadd group_test
 
-{{% if 'ubuntu' in product %}}
-for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
-{{% else %}}
-for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin
-{{% endif %}}
-do
-  find -L  $SYSLIBDIRS \! -group root -type f -exec chgrp root '{}' \;
-done
+find -P /bin/ /sbin/ /usr/bin/ /usr/sbin/ /usr/local/bin/ /usr/local/sbin/ \! -group root -type f -exec chgrp -P root {} \;
 
 ln -s $(mktemp -p /tmp) /usr/bin/test.log.symlink
 chgrp -h group_test /usr/bin/test.log.symlink

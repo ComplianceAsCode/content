@@ -1,14 +1,7 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu
 
-{{% if 'ubuntu' in product %}}
-for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
-{{% else %}}
-for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin
-{{% endif %}}
-do
-  find -L  $SYSLIBDIRS \! -group root -type f -exec chgrp root '{}' \;
-done
+find -P /bin/ /sbin/ /usr/bin/ /usr/sbin/ /usr/local/bin/ /usr/local/sbin/ -type f -exec chgrp -P root {} \;
 
 groupadd group_test
 
@@ -23,5 +16,5 @@ do
     touch $TESTFILE
   fi
   chgrp group_test $TESTFILE
-  chmod g-s $TESTFILE
+  chmod u+x,g-s $TESTFILE
 done
