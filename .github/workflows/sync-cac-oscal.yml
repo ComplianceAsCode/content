@@ -265,15 +265,42 @@ jobs:
               done
             fi
           done
-      # Step 14: Create PR in OSCAL content
-      - name: Create a Pull Request in OSCAL content
+      # Step 14: Squash multiple commits
+      - name: Squash multiple commits
         if: ${{ env.CHANGE_FOUND == 'true' }}
+        run: |
+          cd oscal-content
+          BRANCH_NAME="sync_cac_pr${{ env.PR_NUMBER }}"
+          git config user.name "openscap-ci"
+          git config user.email "openscap-ci@gmail.com"
+          echo "PR_SKIP=false" >> $GITHUB_ENV
+          if [ "$(git branch --show-current)" == "$BRANCH_NAME" ]; then
+            SQUASH_COUNT=$(git rev-list --count main..HEAD)
+            if [[ "$SQUASH_COUNT" -eq 0 ]]; then
+              echo "No commit of the branch."
+              echo "PR_SKIP=true" >> $GITHUB_ENV
+            elif [[ "$SQUASH_COUNT" -eq 1 ]]; then
+              echo "::notice::Branch has 1 commit. No squashing needed."
+            else
+              # Call the squash script using the commit count
+              $GITHUB_WORKSPACE/complyscribe/scripts/squash.sh "$SQUASH_COUNT"
+            fi
+          else
+            echo "PR_SKIP=true" >> $GITHUB_ENV
+            echo "No branch $BRANCH_NAME. Skipping squash and create PR."
+          fi
+        shell: bash
+        env:
+          GH_TOKEN: ${{ env.INSTALLATION_TOKEN }}
+      # Step 15: Create PR in OSCAL content
+      - name: Create a Pull Request in OSCAL content
+        if: ${{ env.PR_SKIP == 'false' }}
         run: |
           cd oscal-content
           BRANCH_NAME="sync_cac_pr${{ env.PR_NUMBER }}"
           OWNER="ComplianceAsCode" 
           REPO="oscal-content"
-          CAC_PR_URL="https://github.com/$OWNER/$REPO/pull/${{ env.PR_NUMBER }}"
+          CAC_PR_URL="https://github.com/$OWNER/content/pull/${{ env.PR_NUMBER }}"
           if [[ "$(git branch --show-current)" == "$BRANCH_NAME" ]]; then
             # Check if the PR exists
             PR_EXISTS=$(gh pr list --repo $OWNER/$REPO \
