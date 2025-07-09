@@ -25,6 +25,7 @@
   <unix:file_state id="state_groupowner_system_commands_dirs_not_system_group_not_sgid" version="1">
     <unix:group_id datatype="int" operation="greater than or equal">{{{ gid_min }}}</unix:group_id>
     <unix:sgid datatype="boolean">false</unix:sgid>
+    <unix:uexec datatype="boolean">true</unix:uexec>
   </unix:file_state>
 
   <unix:file_state comment="symbolic link" id="state_groupowner_system_commands_dirs_symlink" version="1">
