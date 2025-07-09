@@ -1,11 +1,6 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu
 
-{{% if product in ["ubuntu2404"] %}}
-useradd crontab
-{{% endif %}}
-
-
 {{% if 'ubuntu' in product %}}
 for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
 {{% else %}}

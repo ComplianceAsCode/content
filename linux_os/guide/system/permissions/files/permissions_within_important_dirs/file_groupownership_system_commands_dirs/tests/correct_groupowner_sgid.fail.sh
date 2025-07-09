@@ -2,7 +2,6 @@
 # platform = multi_platform_ubuntu
 
 {{% if 'ubuntu' in product %}}
-useradd crontab
 for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
 {{% else %}}
 for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin

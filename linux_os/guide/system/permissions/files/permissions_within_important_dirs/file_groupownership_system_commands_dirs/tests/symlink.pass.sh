@@ -1,9 +1,5 @@
 #!/bin/bash
 
-{{% if product in ["ubuntu2404"] %}}
-useradd crontab
-{{% endif %}}
-
 groupadd group_test
 
 {{% if 'ubuntu' in product %}}
