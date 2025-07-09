@@ -221,6 +221,7 @@ value: :code:`Setting={{ varname1 }}`
   ansible.builtin.file:
     path: {{{ config_file }}}
     mode: '0600'
+    state: touch
 {{%- else %}}
 {{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="BOF", rule_title=rule_title) }}}
 {{%- endif %}}
