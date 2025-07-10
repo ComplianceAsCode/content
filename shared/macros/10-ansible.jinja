@@ -1744,6 +1744,7 @@ Part of the grub2_bootloader_argument_absent template.
     state: present
   register: result_pam_{{{ rule_id }}}_add
   when:
+    - result_pam_module_{{{ rule_id }}}_option_present.found is defined
     - result_pam_module_{{{ rule_id }}}_option_present.found == 0
 
 {{%- if value != '' %}}
@@ -1922,6 +1923,8 @@ Part of the grub2_bootloader_argument_absent template.
     - name: '{{{ rule_title }}} - Change the PAM file to be edited according to the custom authselect profile'
       ansible.builtin.set_fact:
         pam_file_path: "/etc/authselect/{{ authselect_custom_profile }}/{{ pam_file_path | basename }}"
+      when:
+        - authselect_custom_profile is defined
   when:
     - result_authselect_present.stat.exists
 {{%- endmacro -%}}
