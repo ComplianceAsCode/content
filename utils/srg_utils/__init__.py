@@ -62,8 +62,10 @@ def cleanup_end_of_file(rule_dir: str) -> None:
     with open(path, 'w') as f:
         f.writelines(lines)
 
+
 def get_cac_status(disa: str) -> str:
     return SEVERITY.get(disa, 'Unknown')
+
 
 def update_severity(changed: Row,
                     current: Row, rule_dir_json: dict) -> int:
