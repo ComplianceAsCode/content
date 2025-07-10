@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = Ubuntu 24.04
 
 groupadd group_test
 
