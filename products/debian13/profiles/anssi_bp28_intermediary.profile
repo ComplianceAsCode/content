@@ -31,12 +31,11 @@ selections:
   - '!accounts_polyinstantiated_var_tmp'
   - '!enable_pam_namespace'
 
-  # Following rules once had a prodtype incompatible with the debian13 product
+  # Following rules aren't compatible with Debian 13
   - '!accounts_passwords_pam_tally2_deny_root'
   - '!ensure_redhat_gpgkey_installed'
   - '!set_password_hashing_algorithm_systemauth'
   - '!package_dnf-automatic_installed'
-  - '!accounts_passwords_pam_faillock_deny_root'
   - '!dnf-automatic_security_updates_only'
   - '!cracklib_accounts_password_pam_lcredit'
   - '!dnf-automatic_apply_updates'

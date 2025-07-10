@@ -1136,7 +1136,7 @@ fi
 
 #}}
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product %}}
 AUTH_FILES=("/etc/pam.d/common-auth")
 SKIP_FAILLOCK_CHECK=true
 {{% else %}}
