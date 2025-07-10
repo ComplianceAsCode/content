@@ -4,6 +4,10 @@
 # complexity = low
 # disruption = low
 
+- name: "{{{ rule_title }}} - Gather the package facts"
+  ansible.builtin.package_facts:
+    manager: auto
+
 - name: {{{ rule_title }}} - Ensure a Final Rule Denying Everything
   ansible.builtin.copy:
     content: |
@@ -15,6 +19,8 @@
     owner: root
     group: fapolicyd
     mode: '0644'
+  when:
+    - '"fapolicyd" in ansible_facts.packages'
   register: result_fapolicyd_final_rule
 
 - name: {{{ rule_title }}} - Ensure fapolicyd is Not Permissive
@@ -23,6 +29,8 @@
     regexp: '^(permissive\s*=).*$'
     line: '\1 0'
     backrefs: true
+  when:
+    - '"fapolicyd" in ansible_facts.packages'
   register: result_fapolicyd_enforced
 
 - name: "{{{ rule_title }}} - Restart fapolicyd If Permissive Mode or Final Rule is Changed"
@@ -30,4 +38,5 @@
     name: fapolicyd
     state: restarted
   when:
+    - '"fapolicyd" in ansible_facts.packages'
     - result_fapolicyd_final_rule is changed or result_fapolicyd_enforced is changed
