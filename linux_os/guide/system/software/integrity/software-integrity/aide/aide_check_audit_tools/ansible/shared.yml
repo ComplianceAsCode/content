@@ -17,6 +17,9 @@
   with_items:
     - aide
 
+- name: "{{{ rule_title }}} - Gather the package facts"
+  ansible.builtin.package_facts:
+    manager: auto
 
 - name: Set audit_tools fact
   set_fact:
@@ -41,7 +44,8 @@
     line: "{{ item }} {{{ aide_string() }}}"
     create: true
   with_items: "{{ audit_tools }}"
-
+  when:
+    - '"aide" in ansible_facts.packages'
 
 - name: Configure AIDE to properly protect audit tools
   lineinfile:
@@ -49,3 +53,5 @@
     line: "{{ item }} {{{ aide_string() }}}"
     create: true
   with_items: "{{ audit_tools }}"
+  when:
+    - '"aide" in ansible_facts.packages'
