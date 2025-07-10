@@ -1781,6 +1781,11 @@ Part of the grub2_bootloader_argument_absent template.
   ansible.builtin.set_fact:
     pam_module_control: '{{{ control }}}'
 
+- name: '{{{ rule_title }}} - Check if {{{ pam_file }}} file is present'
+  ansible.builtin.stat:
+    path: "{{{ pam_file }}}"
+  register: result_pam_file_present
+
 - name: '{{{ rule_title }}} - Ensure the "{{{ option }}}" option from "{{{ module }}}" is not present in {{{ pam_file }}}'
   ansible.builtin.replace:
     dest: "{{{ pam_file }}}"
@@ -1791,6 +1796,7 @@ Part of the grub2_bootloader_argument_absent template.
     {{%- endif %}}
     replace: '\1\2'
   register: result_pam_option_removal
+  when: result_pam_file_present.stat.exists
 {{%- endmacro -%}}
 
 
