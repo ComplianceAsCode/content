@@ -927,6 +927,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_check_cmd is success
 
@@ -958,6 +959,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_check_cmd is success
 
@@ -1024,6 +1026,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect list-features sssd
   register: result_authselect_available_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_present.stat.exists
 
@@ -1066,6 +1069,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect list-features sssd
   register: result_authselect_available_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_present.stat.exists
 
@@ -1107,6 +1111,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect list-features sssd
   register: result_authselect_available_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_present.stat.exists
 
@@ -1479,12 +1484,14 @@ Part of the grub2_bootloader_argument template.
 {{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value) -%}}
 {{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'slmicro5'] %}}
 - name: Check {{{ arg_name }}} argument exists
-  command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
+  ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
+  check_mode: False
   failed_when: False
   register: argcheck
 
 - name: Check {{{ arg_name }}} argument exists
-  command: grep '^\s*GRUB_CMDLINE_LINUX=' /etc/default/grub
+  ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=' /etc/default/grub
+  check_mode: False
   failed_when: False
   register: linecheck
 
@@ -1537,7 +1544,8 @@ Part of the grub2_bootloader_argument_absent template.
 {{%- macro ansible_grub2_bootloader_argument_absent(arg_name) -%}}
 {{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15'] %}}
 - name: Check {{{ arg_name }}} argument exists
-  command: grep '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"' /etc/default/grub
+  ansible.builtin.command: grep '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"' /etc/default/grub
+  check_mode: False
   failed_when: False
   register: argcheck
 
@@ -1825,6 +1833,7 @@ Part of the grub2_bootloader_argument_absent template.
     cmd: authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_profile is not skipped
     - authselect_current_profile is not match("custom/")
