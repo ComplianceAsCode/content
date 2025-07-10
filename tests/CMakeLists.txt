@@ -400,7 +400,7 @@ if(SSG_PRODUCT_RHEL10)
     check_for_rule_removal("rhel10")
 endif()
 
-if(Python_VERSION_MAJOR GREATER 2 AND Python_VERSION_MINOR GREATER 6)
+if(Python_VERSION_MAJOR GREATER 2 AND Python_VERSION_MINOR GREATER 6 AND PY_OPENPYXL)
 add_test(
     NAME "import_srg_spreadsheet-sanity"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/import_srg_spreadsheet.py" "-h"
