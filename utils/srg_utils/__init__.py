@@ -1,17 +1,15 @@
 import json
 import os
-import re
-from pathlib import Path
 from typing import List
 
 import yaml
 
 import utils.srg_utils.worksheet_utils
 from utils.srg_utils.worksheet_utils import Row
-from ssg.utils import mkdir_p
 from ssg.yaml import yaml_SafeLoader
 from ssg.build_stig import SEVERITY
-from utils.srg_utils.yaml import replace_yaml_key
+from utils.srg_utils.yaml import replace_yaml_key, create_output
+
 
 def get_full_name(root_dir: str, product: str) -> str:
     product_yml_path = os.path.join(root_dir, 'products', product, 'product.yml')
@@ -41,26 +39,6 @@ def fix_changed_text(replacement: str, changed_name: str) -> str:
     return replacement.replace(changed_name, '{{{ full_name }}}')\
         .replace(no_space_name, '{{{ full_name }}}')
 
-
-def create_output(rule_dir: str) -> str:
-    path_dir_parent = os.path.join(rule_dir, "policy")
-    mkdir_p(path_dir_parent)
-    path_dir = os.path.join(path_dir_parent, "stig")
-    mkdir_p(path_dir)
-    path = os.path.join(path_dir, 'shared.yml')
-    Path(path).touch()
-    return path
-
-
-def write_output(path: str, result: tuple) -> None:
-    with open(path, 'w') as f:
-        first_time = True
-        for line in result:
-            if first_time:
-                first_time = False
-                line = re.sub(r'^\n', '', result[0])
-            f.write(line.rstrip())
-            f.write('\n')
 
 def get_last_content_index(lines: List[str]) -> int:
     last_content_index = len(lines)
