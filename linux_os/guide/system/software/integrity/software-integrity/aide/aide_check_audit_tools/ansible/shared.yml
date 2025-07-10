@@ -39,6 +39,7 @@
     path: {{{ aide_conf_path }}}
     regexp: ^{{ item }}\s
     line: "{{ item }} {{{ aide_string() }}}"
+    create: true
   with_items: "{{ audit_tools }}"
 
 
@@ -46,4 +47,5 @@
   lineinfile:
     path: {{{ aide_conf_path }}}
     line: "{{ item }} {{{ aide_string() }}}"
+    create: true
   with_items: "{{ audit_tools }}"
