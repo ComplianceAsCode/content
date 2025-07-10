@@ -1,7 +1,7 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu
 
-find -P /bin/ /sbin/ /usr/bin/ /usr/sbin/ /usr/local/bin/ /usr/local/sbin/ -type f -exec chgrp -P root {} \;
+find -P /bin/ /sbin/ /usr/bin/ /usr/sbin/ /usr/local/bin/ /usr/local/sbin/ -type f -exec chgrp --no-dereference root {} \;
 
 groupadd group_test
 

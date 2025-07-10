@@ -1,7 +1,7 @@
 # platform = multi_platform_ubuntu
 
 {{% if product in ["ubuntu2404"] %}}
-find -P /bin/ /sbin/ /usr/bin/ /usr/sbin/ /usr/local/bin/ /usr/local/sbin/ -maxdepth 1 -type f  \! -gid -{{{ gid_min }}} -regextype posix-extended -regex '.*' -exec chgrp -P root {} \;
+find -P /bin/ /sbin/ /usr/bin/ /usr/sbin/ /usr/local/bin/ /usr/local/sbin/ -maxdepth 1 -type f  \! -gid -{{{ gid_min }}} -regextype posix-extended -regex '.*' -exec chgrp --no-dereference root {} \;
 
 {{% else %}}
 for SYSCMDFILES in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
