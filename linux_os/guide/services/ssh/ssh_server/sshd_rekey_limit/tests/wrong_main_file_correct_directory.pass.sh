@@ -12,4 +12,4 @@ if grep -q "^\s*${SSHD_PARAM}" /etc/ssh/sshd_config /etc/ssh/sshd_config.d/* ; t
 fi
 
 echo "${SSHD_PARAM} 512M 1h" >> /etc/ssh/sshd_config.d/good_config.conf
-echo "${SSHD_PARAM} 1G 3h" >> /etc/ssh/sshd_config.d/bad_config.conf
+echo "${SSHD_PARAM} 1G 3h" >> /etc/ssh/sshd_config
