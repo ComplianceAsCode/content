@@ -1,0 +1,20 @@
+contentOrigin:
+  repofiles:
+     - ./redhat.repo
+
+packages:
+  - python3
+  - cmake
+  - make
+  - python3-pyyaml
+  - python3-jinja2
+  - openscap-scanner
+
+arches:
+  - aarch64
+  - x86_64
+  - s390x
+  - ppc64le
+
+context:
+    containerfile: Dockerfiles/compliance-operator-content-konflux.Containerfile
