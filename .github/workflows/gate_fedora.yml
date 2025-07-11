@@ -1,4 +1,4 @@
-name: Gate
+name: Gate Fedora
 on:
   merge_group:
     branches: [ 'master' ]
@@ -74,12 +74,12 @@ jobs:
                 working-directory: ./build
             -   name: "Set git safe directory, ref: https://github.com/actions/checkout/issues/760"
                 run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
-            -   name: Upload coverage to Code Climate  # Requires: git package
+            -   name: Upload coverage to Qlty  # Requires: git package
                 if: ${{ github.repository == 'ComplianceAsCode/content' }}
-                uses: paambaati/codeclimate-action@f429536ee076d758a24705203199548125a28ca7 # v9.0.0
-                env:
-                    CC_TEST_REPORTER_ID: e67e068471d32b63f8e9561dba8f6a3f84dcc76b05ebfd98e44ced1a91cff854
+                uses: qltysh/qlty-action/coverage@b9133a486505563742d768da29f7951271678c87 # v1.1.1
                 with:
-                    coverageLocations: build/tests/coverage.xml:coverage.py
+                    token: qltcp_kdIPsqNZzW5rYoxq
+                    files: build/tests/coverage.xml
+                    strip-prefix: /__w/content/content
             -   name: Validate gitmailmap
                 run: grep -E "\S" .mailmap | grep -Ev '^#' | git check-mailmap --stdin
