@@ -32,6 +32,10 @@ spec:
     - linux/s390x
   - name: dockerfile
     value: Dockerfiles/compliance-operator-content-konflux.Containerfile
+  - name: hermetic
+    value: "true"
+  - name: prefetch-input
+    value: '{"type": "rpm", "path": "Dockerfiles/konflux"}'
   - name: build-source-image
     value: "true"
   pipelineSpec:
@@ -193,6 +197,8 @@ spec:
         value: $(params.output-image).prefetch
       - name: ociArtifactExpiresAfter
         value: $(params.image-expires-after)
+      - name: dev-package-managers
+        value: "true"
       runAfter:
       - clone-repository
       taskRef:
