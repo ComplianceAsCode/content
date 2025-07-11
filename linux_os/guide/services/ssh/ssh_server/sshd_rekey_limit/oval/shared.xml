@@ -15,7 +15,7 @@
       <criteria comment="sshd is configured correctly" operator="OR">
         {{%- if sshd_distributed_config == "true" %}}
         {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, rule_id=rule_id) | indent(8) }}}
-        <!-- Configuration in directory has presedence -->
+        <!-- Configuration in directory has precedence -->
         <criteria comment="sshd is configured correctly in main file">
           {{{- oval_line_in_file_criterion(sshd_config_path, parameter, rule_id=rule_id) }}}
           <criterion test_ref="test_sshd_rekey_limit_config_dir_absent"
