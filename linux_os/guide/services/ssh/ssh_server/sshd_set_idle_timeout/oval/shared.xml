@@ -33,6 +33,10 @@
           test_ref="test_sshd_idle_timeout_config_dir" />
           {{%- endif %}}
           <criterion comment="the configuration exists" test_ref="test_clientaliveinterval_present" />
+          {{%- if product in ["ol8", "ol9"] %}}
+          <criterion comment="Check ClientAliveInterval in included files"
+          test_ref="test_sshd_idle_timeout_included_files"/>
+          {{%- endif %}}
         </criteria>
         {{%- if product not in ["ol8", "ol9"] and "rhel" not in product %}}
         <extend_definition comment="The SSH ClientAliveCountMax is set to zero" definition_ref="sshd_set_keepalive" />
@@ -67,6 +71,41 @@
     <ind:filename operation="pattern match">.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveInterval[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{%- endif %}}
+
+  {{%- if product in ["ol8", "ol9"] %}}
+  <ind:textfilecontent54_object id="obj_sshd_include_value_sshd_idle_timeout" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">(?i)^\s*Include\s+(.*)$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_sshd_config_included_files_sshd_idle_timeout" datatype="string" version="1"
+  comment="Include value converted to regex">
+    <concat>
+      <literal_component>^(/etc/ssh/(?!/))?</literal_component>
+      <substring substring_start="2" substring_length="-1">
+        <unique>
+          <glob_to_regex>
+            <object_component item_field="subexpression" object_ref="obj_sshd_include_value_sshd_idle_timeout" />
+          </glob_to_regex>
+        </unique>
+      </substring>
+    </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+  comment="timeout is configured in included files" id="test_sshd_idle_timeout_included_files" version="1">
+    <ind:object object_ref="object_sshd_idle_timeout_included_files" />
+    <ind:state state_ref="state_timeout_value_upper_bound" />
+    <ind:state state_ref="state_timeout_value_lower_bound" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_sshd_idle_timeout_included_files" version="1">
+    <ind:filepath operation="pattern match" var_ref="var_sshd_config_included_files_sshd_idle_timeout" var_check="at least one"/>
+    <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveInterval[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   {{%- endif %}}
 

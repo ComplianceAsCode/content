@@ -12,4 +12,4 @@ echo "   INclUde /etc/dummy" >> "/etc/ssh/sshd_config"
 {{%- endif %}}
 
 echo "{{{ PARAMETER }}} {{{ CORRECT_VALUE }}}" >> /etc/dummy
-echo "{{{ PARAMETER }}} {{{ correct_VALUE }}}" >> /etc/ssh/sshd_config.d/other.conf
+echo "{{{ PARAMETER }}} {{{ CORRECT_VALUE }}}" >> /etc/ssh/sshd_config.d/other.conf

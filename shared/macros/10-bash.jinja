@@ -205,6 +205,14 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
 
+{{% if product in ["ol8", "ol9"] %}}
+# Find the include keyword, extract from the line the glob expression representing included files.
+# And if it is a relative path prepend '/etc/ssh/'
+included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*include\s*//I' | sed -e 's|^[^/]|/etc/ssh/&|')
+for included_file in ${included_files} ; do
+    {{{ lineinfile_absent("$included_file", "^\s*" ~ parameter, insensitive=true, rule_id=rule_id) | indent(4) }}}
+done
+{{% endif %}}
 {{%- if config_is_distributed == "true" %}}
 {{%- set prefix_regex = "^\s*" -%}}
 {{%- set separator_regex = "\s\+" -%}}
@@ -228,14 +236,6 @@ chmod 0600 {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
         prefix_regex=prefix_regex, rule_id=rule_id)
     }}}
 {{%- else %}}
-{{% if product in ["ol8", "ol9"] %}}
-# Find the include keyword, extract from the line the glob expression representing included files.
-# And if it is a relative path prepend '/etc/ssh/'
-included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*include\s*//I' | sed -e 's|^[^/]|/etc/ssh/&|')
-for included_file in ${included_files} ; do
-    {{{ lineinfile_absent("$included_file", "^\s*" ~ parameter, insensitive=true, rule_id=rule_id) | indent(4) }}}
-done
-{{% endif %}}
 {{{ bash_sshd_config_set(parameter=parameter, value=value, rule_id=rule_id) }}}
 {{%- endif %}}
 {{%- endmacro %}}
