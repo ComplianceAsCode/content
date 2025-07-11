@@ -11,5 +11,5 @@ do
   then
     touch $TESTFILE
   fi
-  chgrp "$test_group" $TESTFILE
+  chgrp --no-dereference "$test_group" $TESTFILE
 done
