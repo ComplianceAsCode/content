@@ -1192,15 +1192,17 @@ macro(ssg_build_html_stig_tables PRODUCT)
 endmacro()
 
 macro(rule_dir_json)
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/rule_dirs.json"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/rule_dir_json.py" "--root" "${CMAKE_SOURCE_DIR}" "--output" "${CMAKE_BINARY_DIR}/rule_dirs.json" --quiet
-        COMMENT "[rule-dir-json] creating build/rule_dirs.json"
-    )
-    add_custom_target(
-        rule_dir_json
-        DEPENDS "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
-    )
+    if(NOT TARGET rule_dir_json)
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/rule_dirs.json"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/rule_dir_json.py" "--root" "${CMAKE_SOURCE_DIR}" "--output" "${CMAKE_BINARY_DIR}/rule_dirs.json" --quiet
+            COMMENT "[rule-dir-json] creating build/rule_dirs.json"
+        )
+        add_custom_target(
+            rule_dir_json
+            DEPENDS "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
+        )
+    endif()
 endmacro()
 
 
