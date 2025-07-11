@@ -30,8 +30,13 @@ spec:
   - name: build-platforms
     value:
     - linux/x86_64
+    - linux/arm64
+    - linux/ppc64le
+    - linux/s390x
   - name: dockerfile
     value: Dockerfiles/compliance-operator-content-konflux.Containerfile
+  - name: build-source-image
+    value: "true"
   pipelineSpec:
     description: |
       This pipeline is ideal for building multi-arch container images from a Containerfile while maintaining trust after pipeline customization.
