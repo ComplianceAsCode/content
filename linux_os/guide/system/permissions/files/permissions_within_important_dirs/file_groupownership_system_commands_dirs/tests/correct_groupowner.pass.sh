@@ -1,10 +1,3 @@
 #!/bin/bash
 
-{{% if 'ubuntu' in product %}}
-for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
-{{% else %}}
-for SYSLIBDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin
-{{% endif %}}
-do
-  find -P $SYSLIBDIRS \! -group root -type f -exec chgrp --no-dereference root '{}' \;
-done
+find -P /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin \! -group root -type f -exec chgrp --no-dereference root '{}' \; || true
