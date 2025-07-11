@@ -338,7 +338,7 @@ cce_avail_check("redhat-all" "ocp4,rhel8,rhel9,rhel10" "${CMAKE_SOURCE_DIR}/shar
 cce_avail_check("sle12" "sle12" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle12-avail.txt")
 cce_avail_check("sle15" "sle15" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle15-avail.txt")
 
-if(Python_VERSION_MAJOR GREATER 2 AND Python_VERSION_MINOR GREATER 6)
+if(Python_VERSION_MAJOR GREATER 2 AND Python_VERSION_MINOR GREATER 6 AND PY_OPENPYXL)
     add_test(
         NAME "utils-import_disa_stig_sanity"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/import_disa_stig.py" "--help"
