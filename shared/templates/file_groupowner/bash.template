@@ -27,8 +27,10 @@ else
 
 {{%- if RECURSIVE %}}
 {{%- set FIND_RECURSE_ARGS_DEP="" %}}
-{{%- else %}}
+{{%- elif FILE_REGEX %}}
 {{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
+{{%- else %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 0" %}}
 {{%- endif %}}
 
 {{%- for path in FILEPATH %}}
