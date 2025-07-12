@@ -5,7 +5,7 @@
 # disruption = low
 
 CONF_FILE=/etc/crypto-policies/back-ends/gnutls.config
-correct_value='+VERS-ALL:-VERS-DTLS0.9:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1:-VERS-DTLS1.0'
+correct_value='+VERS-ALL:-VERS-DTLS0.9:-VERS-TLS1.1:-VERS-TLS1.0:-VERS-SSL3.0:-VERS-DTLS1.0'
 
 grep -q ${correct_value} ${CONF_FILE}
 

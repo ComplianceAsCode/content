@@ -1,5 +1,5 @@
-{{%- set regex = "\+VERS-ALL:-VERS-DTLS0\.9:-VERS-SSL3\.0:-VERS-TLS1\.0:-VERS-TLS1\.1:-VERS-DTLS1\.0" -%}}
-{{%- set TEXT = "+VERS-ALL:-VERS-DTLS0.9:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1:-VERS-DTLS1.0" -%}}
+{{%- set regex = "\+VERS-ALL:-VERS-DTLS0\.9:-VERS-TLS1\.1:-VERS-TLS1\.0:-VERS-SSL3\.0:-VERS-DTLS1\.0" -%}}
+{{%- set TEXT = "+VERS-ALL:-VERS-DTLS0.9:-VERS-TLS1.1:-VERS-TLS1.0:-VERS-SSL3.0:-VERS-DTLS1.0" -%}}
 {{%- set PATH = "/etc/crypto-policies/back-ends/gnutls.config" -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
