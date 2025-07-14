@@ -1,0 +1,21 @@
+---
+name: Qlty Checks
+on:
+    push:
+        branches: ['*', '!stabilization*', '!stable*', master]
+    pull_request:
+        branches: [master, stabilization*, oscal-update-*]
+concurrency:
+    group: ${{ github.workflow }}-qlty-${{ github.event.number || github.run_id }}
+    cancel-in-progress: true
+jobs:
+    qlty-check:
+        name: Qlty Check
+        runs-on: ubuntu-latest
+        steps:
+            - name: Install Qlty
+              run: curl https://qlty.sh | sh
+            - name: Checkout Repo
+              uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+            - name: Run Qlty Check
+              run: ~/.qlty/bin/qlty check
