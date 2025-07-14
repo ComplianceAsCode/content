@@ -45,9 +45,11 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type quotes: str
 :param xccdf_variable: the name of an XCCDF variable carrying the value, this conflicts with the value parameter
 :type xccdf_variable: str
+:param variable_datatype: data type of the XCCDF variable specified by the xccdf_variable parameter, optional, default is string
+:type variable_datatype: str
 
 #}}
-{{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='', quotes='', xccdf_variable="", rule_id=None, rule_title=None) -%}}
+{{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='', quotes='', xccdf_variable="", variable_datatype="string", rule_id=None, rule_title=None) -%}}
 {{%- if application == '' -%}}
 	{{%- set application = "The respective application or service" -%}}
 {{%- endif -%}}
@@ -77,13 +79,13 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </definition>
 
   {{% if xccdf_variable %}}
-  {{{ oval_line_in_file_define_variable(xccdf_variable, datatype="string") }}}
+  {{{ oval_line_in_file_define_variable(xccdf_variable, datatype=variable_datatype) }}}
   {{% endif %}}
 
   {{{ oval_line_in_file_test(path, parameter, rule_id=rule_id) }}}
   {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value, rule_id=rule_id) }}}
   {{%- if xccdf_variable -%}}
-  {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, datatype="string", rule_id=rule_id) }}}
+  {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, datatype=variable_datatype, rule_id=rule_id) }}}
   {{%- else -%}}
   {{{ oval_line_in_file_state(value, multi_value, quotes, rule_id=rule_id) }}}
   {{%- endif -%}}
