@@ -11,14 +11,19 @@
         path: "/usr/lib/systemd/system/tftp.service"
     register: tftp_service_file
 
--   name: "{{{ rule_title }}} - Ensure ExecStart includes secure directory"
-    community.general.ini_file:
-        path: "/usr/lib/systemd/system/tftp.service"
-        section: Service
-        option: ExecStart
-        value: "/usr/sbin/in.tftpd -s {{ var_tftpd_secure_directory }}"
-        state: present
-    when: tftp_service_file.stat.exists
+-   name: "{{{ rule_title }}} - Ensure drop-in directory exists"
+    ansible.builtin.file:
+        path: /etc/systemd/system/tftp.service.d
+        state: directory
+
+-   name: "{{{ rule_title }}} - Deploy override.conf drop-in"
+    ansible.builtin.copy:
+        dest: /etc/systemd/system/tftp.service.d/override.conf
+        content: |-
+            [Service]
+            # clear any existing ExecStart in the original unit
+            ExecStart=
+            ExecStart=/usr/sbin/in.tftpd -s {{ var_tftpd_secure_directory }}
 
 -   name: "{{{ rule_title }}} - Reload systemd manager configuration"
     ansible.builtin.command: systemctl daemon-reload

@@ -2,13 +2,17 @@
 
 {{{ bash_instantiate_variables ("var_tftpd_secure_directory") }}}
 
-TFTP_SERVICE_FILE="/usr/lib/systemd/system/tftp.service"
+DROPIN_DIR="/etc/systemd/system/tftp.service.d"
+DROPIN_FILE="$DROPIN_DIR/override.conf"
 
-if grep -q 'ExecStart' "$TFTP_SERVICE_FILE"; then
-    sed -i "s;^[[:blank:]]*ExecStart[[:blank:]]*=.*$;ExecStart=/usr/sbin/in.tftpd -s $var_tftpd_secure_directory;" "$TFTP_SERVICE_FILE"
-else
-    sed -i "/^\[Service\]/a ExecStart=/usr/sbin/in.tftpd -s $var_tftpd_secure_directory" "$TFTP_SERVICE_FILE"
-fi
+mkdir -p "$DROPIN_DIR"
+
+cat > "$DROPIN_FILE" << EOF
+[Service]
+# clear any existing ExecStart in the original unit
+ExecStart=
+ExecStart=/usr/sbin/in.tftpd -s $var_tftpd_secure_directory
+EOF
 
 systemctl daemon-reload
 systemctl restart tftp.service
