@@ -606,6 +606,8 @@ When the remediation is applied duplicate occurrences of `key` are removed.
 
     - **xccdf_variable** - use value stored in an XCCDF variable instead of hardcoded value
 
+    - **variable_datatype** - data type of the XCCDF variable specified by the xccdf_variable parameter, optional, default is string
+
     - **app** - optional. If not set the check will use the default text `The respective application or service`.
       If set, the `app` is used within sentences like: "`application` is configured correctly and configuration file exists"
 

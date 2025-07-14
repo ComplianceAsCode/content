@@ -28,5 +28,9 @@ def preprocess(data, lang):
 
     if "app" not in data:
         data["app"] = ""
+
+    if "variable_datatype" not in data:
+        data["variable_datatype"] = "string"
+
     data = set_variables_for_test_scenarios(data)
     return data
