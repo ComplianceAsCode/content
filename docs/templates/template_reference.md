@@ -284,8 +284,9 @@
         be a list of regexes.
 
     -   **recursive** - If set to `"true"` the OVAL will consider the
-        subdirectories under the directory specified by **filepath**. Default
-        value is `"false"`.
+        subdirectories under the directory specified by **filepath**.
+        If set to `'false"` and file_regex not set, the filepath will
+        not be walked through. Default value is `"false"`.
 
     -   **gid_or_name** - group ID (GID) or a group name.
         If the parameter is an integer, it is treated as group ID. If the
@@ -323,8 +324,9 @@ they must be of the same length.
         be a list of regexes.
 
     -   **recursive** - If set to `"true"` the OVAL will consider the
-        subdirectories under the directory specified by **filepath**. Default
-        value is `"false"`.
+        subdirectories under the directory specified by **filepath**.
+        If set to `'false"` and file_regex not set, the filepath will
+        not be walked through. Default value is `"false"`.
 
     -   **uid_or_name** - user ID (UID) or a user name.
         If the parameter is an integer, it is treated as user ID. If the
@@ -365,8 +367,9 @@ they must be of the same length.
         be a list of regexes.
 
     -   **recursive** - If set to `"true"` the OVAL will consider the
-        subdirectories under the directory specified by **filepath**. Default
-        value is `"false"`.
+        subdirectories under the directory specified by **filepath**.
+        If set to `'false"` and file_regex not set, the filepath will
+        not be walked through. Default value is `"false"`.
 
     -   **filemode** - File permissions in a hexadecimal format, eg.
         `'0640'`.
