@@ -126,6 +126,7 @@ directory_permissions_var_log_audit
 disable_host_auth
 enable_authselect
 ensure_gpgcheck_globally_activated
+ensure_gpgcheck_never_disabled
 ensure_pam_wheel_group_empty
 ensure_root_password_configured
 file_at_deny_not_exist
