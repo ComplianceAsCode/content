@@ -37,7 +37,7 @@ fixtext: '{{{ fixtext_service_disabled("rngd") }}}'
 srg_requirement: '{{{ srg_requirement_service_disabled("rngd") }}}'
 
 {{% if product == "rhel8" %}}
-platform: os_linux[rhel]<=8.3
+platform: os_linux[rhel]<=8.3 or (os_linux[rhel]>=8.4 and not runtime_kernel_fips_enabled)
 warnings:
   - general: |-
       For RHEL versions 8.4 and above running with kernel FIPS mode enabled this rule is not applicable.
