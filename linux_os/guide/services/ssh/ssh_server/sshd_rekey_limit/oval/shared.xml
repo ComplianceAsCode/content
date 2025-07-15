@@ -13,9 +13,16 @@
     {{{- application_not_required_or_requirement_unset() }}}
     {{{- application_required_or_requirement_unset() }}}
       <criteria comment="sshd is configured correctly" operator="OR">
-        {{{- oval_line_in_file_criterion(sshd_config_path, parameter, rule_id=rule_id) }}}
         {{%- if sshd_distributed_config == "true" %}}
         {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, rule_id=rule_id) | indent(8) }}}
+        <!-- Configuration in directory has precedence -->
+        <criteria comment="sshd is configured correctly in main file">
+          {{{- oval_line_in_file_criterion(sshd_config_path, parameter, rule_id=rule_id) }}}
+          <criterion test_ref="test_sshd_rekey_limit_config_dir_absent"
+            comment="{{{ parameter }}} is not defined in the directory" />
+        </criteria>
+        {{%- else %}}
+        {{{- oval_line_in_file_criterion(sshd_config_path, parameter, rule_id=rule_id) }}}
         {{%- endif %}}
       </criteria>
     </criteria><!-- macro application_required_or_requirement_unset() leaves an open criteria element-->
@@ -38,6 +45,13 @@
      <ind:object object_ref="obj_sshd_rekey_limit_config_dir"/>
      <ind:state state_ref="state_sshd_rekey_limit"/>
   </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+      comment="tests that {{{ parameter }}} is not set in SSHD config directory"
+      id="test_sshd_rekey_limit_config_dir_absent">
+     <ind:object object_ref="obj_sshd_rekey_limit_config_dir"/>
+  </ind:textfilecontent54_test>
+
 
   <ind:textfilecontent54_object id="obj_sshd_rekey_limit_config_dir" version="1">
      <ind:path>{{{ sshd_config_dir}}}</ind:path>
