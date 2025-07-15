@@ -20,6 +20,7 @@
   {{%- endif %}}
   changed_when: False
   register: gpg_fingerprints
+  failed_when: False
   check_mode: no
 
 - name: Set Fact - Installed GPG Fingerprints
