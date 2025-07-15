@@ -2642,15 +2642,16 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      status: partial
-      notes: |-
-          Missing rules to check "/etc/nsswitch.conf", "/etc/pam.conf" and "/etc/pam.d"
+      status: automated
       rules:
           - audit_rules_usergroup_modification_group
           - audit_rules_usergroup_modification_gshadow
           - audit_rules_usergroup_modification_opasswd
           - audit_rules_usergroup_modification_passwd
           - audit_rules_usergroup_modification_shadow
+          - audit_rules_usergroup_modification_nsswitch_conf
+          - audit_rules_usergroup_modification_pam_conf
+          - audit_rules_usergroup_modification_pamd
 
     - id: 6.3.3.9
       title: Ensure discretionary access control permission modification events are collected (Automated)
