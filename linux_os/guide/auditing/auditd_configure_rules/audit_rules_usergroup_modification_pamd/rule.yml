@@ -10,6 +10,9 @@ rationale: |-
     used by PAM-aware applications. Any unexpected changes to PAM configuration
     should be investigated.
 
+identifiers:
+    cce@rhel9: CCE-86211-0
+
 severity: medium
 
 fixtext: '{{{ fixtext_audit_file_watch_rule("/etc/pam.d/", "audit_rules_usergroup_modification", "/etc/audit/rules.d/audit.rules") }}}'
