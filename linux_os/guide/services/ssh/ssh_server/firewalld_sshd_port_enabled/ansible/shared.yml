@@ -79,8 +79,8 @@
 - name: '{{{ rule_title }}} - Informative message based on services states'
   ansible.builtin.assert:
     that:
-      - ansible_facts.services['firewalld.service'].state == 'running'
-      - ansible_facts.services['NetworkManager.service'].state == 'running'
+      - ansible_check_mode or ansible_facts.services['firewalld.service'].state == 'running'
+      - ansible_check_mode or ansible_facts.services['NetworkManager.service'].state == 'running'
     fail_msg:
       - firewalld and NetworkManager services are not active. Remediation aborted!
       - This remediation could not be applied because it depends on firewalld and NetworkManager services running.
