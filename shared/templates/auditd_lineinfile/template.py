@@ -4,7 +4,7 @@ from ssg.utils import parse_template_boolean_value
 def preprocess(data, lang):
     if data.get("value") is not None and data.get("xccdf_variable") is not None:
         errmsg = (
-            f"The template definition of {data["_rule_id"]} specifies both "
+            f"The template definition of {data['_rule_id']} specifies both "
             f"value and xccdf_variable. This is forbidden."
         )
         raise ValueError(errmsg)
