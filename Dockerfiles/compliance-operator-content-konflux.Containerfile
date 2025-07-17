@@ -85,6 +85,8 @@ LABEL \
         io.k8s.description="OpenSCAP content for the compliance-operator." \
         io.openshift.tags="openshift,compliance,security" \
         com.redhat.delivery.appregistry="false" \
+        summary="Compliance Content" \
+        description="OpenSCAP content for the compliance-operator" \
         maintainer="Red Hat ISC <isc-team@redhat.com>" \
         License="GPLv2+" \
         name="openshift-compliance-content" \
