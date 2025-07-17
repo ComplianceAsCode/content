@@ -289,7 +289,7 @@ def _process_profile(profile: ProfileSelections, profile_yaml: dict, profiles_fi
     return profile
 
 
-def _load_controls_manager(controls_dir: str) -> object:
+def _load_controls_manager(controls_dir: str, product_yaml: dict) -> object:
     """
     Loads and initializes a ControlsManager instance.
 
@@ -299,7 +299,7 @@ def _load_controls_manager(controls_dir: str) -> object:
     Returns:
         object: An instance of ControlsManager with loaded controls.
     """
-    control_mgr = ControlsManager(controls_dir)
+    control_mgr = ControlsManager(controls_dir, product_yaml)
     control_mgr.load()
     return control_mgr
 
@@ -340,7 +340,7 @@ def get_profiles_from_products(content_dir: str, products: list,
         product_yaml = _load_product_yaml(content_dir, product)
         product_title = product_yaml.get("full_name")
         profiles_files = get_profile_files_from_root(product_yaml, product_yaml)
-        controls_manager = _load_controls_manager(controls_dir)
+        controls_manager = _load_controls_manager(controls_dir, product_yaml)
         for file in profiles_files:
             profile_id = os.path.basename(file).split('.profile')[0]
             profile_yaml = _load_yaml_profile_file(file)
