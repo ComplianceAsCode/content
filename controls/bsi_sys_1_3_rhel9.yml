@@ -26,9 +26,9 @@ controls:
     title: ELIMINATED
     levels:
       - basic
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -36,7 +36,7 @@ controls:
     title: Careful Allocation of IDs
     levels:
       - basic
-    description: >-
+    description: |-
       (1) Each login name, each user ID (UID) and each group ID (GID) MUST ONLY be used once.
       (2) Every user MUST be a member of at least one group. (3) Every GID mentioned in the /etc/passwd
       file MUST be defined in the /etc/group file. (4) Every group SHOULD only contain the users that
@@ -44,7 +44,7 @@ controls:
       and group names (UIDs and GIDs) are assigned consistently in the system network if there is a
       possibility that the same UIDs or GIDs could be assigned to different user or group names on
       the systems during cross-system access.
-    notes: >-
+    notes: |-
       Section 2: System accounts do not always have a group
       Section 4 is a manual control
       Section 5 this cant be checked on a per system base, and therefore is an organizational control
@@ -64,9 +64,9 @@ controls:
     title: No Automatic Integration of Removable Drives
     levels:
       - basic
-    description: >-
+    description: |-
       (1) Removable media such as USB pen drives or CDs/DVDs MUST NOT be integrated automatically.
-    notes: >-
+    notes: |-
       https://access.redhat.com/solutions/18978
     status: automated
     rules:
@@ -81,11 +81,11 @@ controls:
     title: Protection from Exploitation of Vulnerabilities in Applications
     levels:
       - basic
-    description: >-
+    description: |-
       (1) ASLR and DEP/NX MUST be activated in the kernel and used by applications to make it harder
       to exploit vulnerabilities in applications. (2) Security functions of the kernel and of the standard
       libraries (such as heap and stack protection) MUST NOT be disabled.
-    notes: >-
+    notes: |-
       This should be the default on all modern platforms
       Section 2: organizational requirement towards the admin
     status: automated
@@ -99,7 +99,7 @@ controls:
     title: Secure Installation of Software Packages
     levels:
       - basic
-    description: >-
+    description: |-
       (1) If software to be installed is to be compiled from source code, it MUST ONLY be unpacked,
       configured, and compiled using an unprivileged user account. (2) The software to be installed
       MUST NOT then be installed in the root file system of the server in question in an
@@ -109,7 +109,7 @@ controls:
       documented appropriately. (4) Based on this documentation, it SHOULD be possible to compile
       the software in a transparent and reproducible manner at any time. (5) All further installation
       steps SHOULD also be documented.
-    notes: >-
+    notes: |-
       This requirement must be implemented organizationally.
     status: manual
 
@@ -117,11 +117,11 @@ controls:
     title: Managing Users and Groups
     levels:
       - standard
-    description: >-
+    description: |-
       (1) The corresponding management tools SHOULD be used for managing users and groups. (2) The
       configuration files /etc/passwd, /etc/shadow, /etc/group, and /etc/sudoers SHOULD NOT be
       edited directly.
-    notes: >-
+    notes: |-
       This requirement must be implemented organizationally.
       We could add auditing rules for these files, which shows edits, but do not prevent the users
       in the toolings they use for editing.
@@ -137,9 +137,9 @@ controls:
     title: ELIMINATED
     levels:
       - standard
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -147,12 +147,12 @@ controls:
     title: Encrypted Access via Secure Shell
     levels:
       - standard
-    description: >-
+    description: |-
       (1) Only Secure Shell (SSH) SHOULD be used to create an encrypted and authenticated interactive
       connection between two IT systems. (2) All other protocols whose functions are covered by
       Secure Shell SHOULD be disabled completely. (3) For authentication, users SHOULD primarily
       use certificates instead of passwords.
-    notes: >-
+    notes: |-
       Section 1: this should be the default
       Section 2: this should be the default
       Section 3: The requirement says PRIMARILY use certificate, not disallow PasswordAuthentication
@@ -175,9 +175,9 @@ controls:
     title: ELIMINATED
     levels:
       - standard
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -185,12 +185,12 @@ controls:
     title: Preventing Further Intrusion When Vulnerabilities Are Exploited
     levels:
       - standard
-    description: >-
+    description: |-
       (1) Services and applications SHOULD be protected with individual security architecture (e.g.
       with AppArmor or SELinux). (2) In addition, chroot environments and LXC or Docker containers
       SHOULD be taken into account here. (3) It SHOULD be ensured that the standard profiles and
       rules provided are activated.
-    notes: >-
+    notes: |-
       Section 2: we could add podman specific tasks, but it would be hard to evaluate if they are
       used properly
     status: partial
@@ -211,9 +211,9 @@ controls:
     title: ELIMINATED
     levels:
       - standard
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -221,9 +221,9 @@ controls:
     title: ELIMINATED
     levels:
       - standard
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -231,9 +231,9 @@ controls:
     title: ELIMINATED
     levels:
       - elevated
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -241,11 +241,11 @@ controls:
     title: Preventing Unauthorised Collection of System and User Information
     levels:
       - standard
-    description: >-
+    description: |-
       (1) Information output for users regarding the operating system and access to protocol and
       configuration files SHOULD be limited to the required minimum. (2) Moreover, confidential
       information SHOULD NOT be provided as parameters when commands are issued.
-    notes: >-
+    notes: |-
       Section 2: This requirement must be implemented organizationally.
     status: partial
     rules:
@@ -385,9 +385,9 @@ controls:
     title: ELIMINATED
     levels:
       - elevated
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -395,12 +395,12 @@ controls:
     title: Additional Prevention of Further Intrusion When Vulnerabilities Are Exploited
     levels:
       - elevated
-    description: >-
+    description: |-
       (1) The use of system calls SHOULD be limited to those absolutely necessary, particularly for
       exposed services and applications. (2) The standard profiles and/or rules (e.g. of SELinux or
       AppArmor) SHOULD be checked manually and, if necessary, adapted to an organisation's own
       security policies. (3) If necessary, new rules and profiles SHOULD be drawn up.
-    notes: >-
+    notes: |-
       This requirement must be implemented organizationally.
     status: manual
 
@@ -408,11 +408,11 @@ controls:
     title: Additional Kernel Protection
     levels:
       - elevated
-    description: >-
+    description: |-
       (1) Specially hardened kernels (e.g. grsecurity, PaX) and appropriate protective safeguards such as
       memory protection or file system protection SHOULD be implemented to prevent
       exploitation of vulnerabilities and propagation in operating systems.
-    notes: >-
+    notes: |-
       Section 1: Red Hat does not provide specifically hardened kernels. If using them, please be
       aware of the support policy for 3rd Party software (https://access.redhat.com/third-party-software-support).
     status: does not meet

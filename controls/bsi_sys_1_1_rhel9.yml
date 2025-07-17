@@ -26,10 +26,10 @@ controls:
     title: Appropriate Installation
     levels:
       - basic
-    description: >-
+    description: |-
       (1) Servers MUST be operated in locations that may only be accessed by authorised persons.
       (2) Servers MUST therefore be set up and installed in data centres, computer rooms, or lockable server rooms (see the corresponding modules in the INF Infrastructure layer). (3) Servers MUST NOT be used as personal computers (4) IT systems used as workstations MUST NOT be used as servers.
-    notes: >-
+    notes: |-
       This requirement must be implemented organizationally and cannot be checked technically
     status: manual
 
@@ -37,9 +37,9 @@ controls:
     title: User Authentication on Servers
     levels:
       - basic
-    description: >-
+    description: |-
       (1) Authentication methods adequate for the protection needs at hand MUST be used when users and services log into servers. (2) This SHOULD be taken into account for administrative access in particular. (3) Central, network-based authentication services SHOULD be used whenever possible.
-    notes: >-
+    notes: |-
       Section 1,2: sshd configuration, NoPermitRootLogin,PAM
       Section 3: AD Integration, IdM?
     status: pending
@@ -48,9 +48,9 @@ controls:
     title: ELIMINATED
     levels:
       - basic
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -58,9 +58,9 @@ controls:
     title: ELIMINATED
     levels:
       - basic
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -68,10 +68,10 @@ controls:
     title: Protection of Interfaces
     levels:
       - basic
-    description: >-
+    description: |-
       (1) It MUST be ensured that only specified removable storage media and other devices can be
       connected to servers. All interfaces that are no longer needed must be disabled.
-    notes: >-
+    notes: |-
       Section 1: If you dont utilize specific software to control the allowed devices for usb ports,
       you can ensure compliance by disabling the usb port completely.
       Interfaces is ambigious, it is focussed on usb etc. not on network.
@@ -91,14 +91,14 @@ controls:
     title: Disabling Unnecessary Services
     levels:
       - basic
-    description: >-
+    description: |-
       (1) All unnecessary services and applications — particularly network services — MUST be
       disabled or uninstalled. (2) All unused functions in firmware MUST also be disabled.
       (3) On servers, the disk space allotted to both individual users and applications SHOULD be
       restricted appropriately.
       (4) The decisions taken in this regard SHOULD be documented in a way that makes it clear which
       configuration and software equipment was chosen for servers.
-    notes: >-
+    notes: |-
       Section 1: We can conclude for servers, that wireless protocols are unnecessary
       Section 4: Documentation and organizational tasks.
     status: partial
@@ -128,9 +128,9 @@ controls:
     title: ELIMINATED
     levels:
       - basic
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -138,9 +138,9 @@ controls:
     title: ELIMINATED
     levels:
       - basic
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -148,13 +148,13 @@ controls:
     title: Using Anti-Virus Programs on Servers
     levels:
       - basic
-    description: >-
+    description: |-
       (1) Whether virus protection programs can and should be used MUST be checked depending on the
       operating system installed, the services provided, and other existing protection mechanisms of
       the server in question. (2) Where available, concrete statements from the relevant operating
       system modules of the IT-Grundschutz Compendium on whether virus protection is necessary MUST
       be considered.
-    notes: >-
+    notes: |-
       Section 1,2: Antivirus software on linux systems is more useful, if the servers provide any
       file or mailservices to endpoints.
     status: automated
@@ -166,7 +166,7 @@ controls:
     title: Logging
     levels:
       - basic
-    description: >-
+    description: |-
       (1) In general, all security-relevant system events MUST be logged, including the following at
       minimum:
       • (2) System starts and reboots
@@ -176,7 +176,7 @@ controls:
       • (6) Creation of or changes to users, groups, and authorisations
       • (7) Security-relevant error messages (e.g. hardware defects, exceeded capacity limits)
       • (8) Warnings from security systems (e.g. virus protection)
-    notes: >-
+    notes: |-
       This whole requirement is more specifically implemented in the CIS hardening guide, which also
       defines permissions to protect against manipulations.
       Section 7 and 8 are not addressed explicitly with rules, as 8 is specific for the AV software
@@ -233,13 +233,13 @@ controls:
     title: Defining a Security Policy for Servers
     levels:
       - standard
-    description: >-
+    description: |-
       (1) Based on the general security policy of the organisation in question, the requirements for
       servers SHOULD be specified in a separate security policy. (2) This policy SHOULD be known to
       all administrators and other persons involved in the procurement and operation of servers and
       be integral to their work. (3) The implementation of the policy's requirements SHOULD be
       checked at regular intervals. (4) The results SHOULD be appropriately documented.
-    notes: >-
+    notes: |-
       This requirement must be implemented organizationally.
       If we interprete this towards hardening, the CIS Profile could be used
     status: manual
@@ -248,7 +248,7 @@ controls:
     title: Planning the Use of Servers
     levels:
       - standard
-    description: >-
+    description: |-
       Each server system SHOULD be suitably planned. In this process, the following points
       SHOULD be taken into account at minimum:
       • Selection of the hardware platform, operating system, and application software
@@ -263,7 +263,7 @@ controls:
       (virus protection, IDS, etc)
       All decisions taken in the planning phase SHOULD be documented in such a way that they can
       be understood at any future point in time.
-    notes: >-
+    notes: |-
       This requirement must be implemented organizationally.
       Some parts could be technically checked, i.e. if repositories are configureg, if AV is
       installed and therelike.
@@ -273,10 +273,10 @@ controls:
     title: Procurement of Servers
     levels:
       - standard
-    description: >-
+    description: |-
       Prior to procuring one or more servers, a requirements list SHOULD be drawn up that can be
       used to evaluate the products available on the market.
-    notes: >-
+    notes: |-
       This requirement must be implemented organizationally.
     status: manual
 
@@ -284,9 +284,9 @@ controls:
     title: ELIMINATED
     levels:
       - standard
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -294,9 +294,9 @@ controls:
     title: Stable and Uninterruptible Power Supply [Building Services]
     levels:
       - standard
-    description: >-
+    description: |-
       (1) Every server SHOULD be connected to an uninterruptible power supply (UPS).
-    notes: >-
+    notes: |-
       This requirement must be implemented organizationally.
     status: manual
 
@@ -304,11 +304,11 @@ controls:
     title: Secure Basic Configuration of Servers
     levels:
       - standard
-    description: >-
+    description: |-
       (1) The basic settings of servers SHOULD be checked and, where necessary, adapted to the
       specifications of the security policy at hand. (2) Clients SHOULD only be connected to the
       Internet after the installation and configuration have been completed.
-    notes: >-
+    notes: |-
       One could argue, that this is done with this profile. Or could utilize the CIS Benchmark again,
       if CIS is the security policy
     status: inherently met
@@ -318,9 +318,9 @@ controls:
     title: ELIMINATED
     levels:
       - standard
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -328,9 +328,9 @@ controls:
     title: ELIMINATED
     levels:
       - standard
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -338,12 +338,12 @@ controls:
     title: Configuring Local Packet Filters
     levels:
       - standard
-    description: >-
+    description: |-
       (1) Based on a set of rules, existing local packet filters SHOULD be designed to limit
       incoming and outgoing communications to the necessary communication partners, communication
       protocols, ports, and interfaces. (2) The identity of remote systems and the integrity of
       corresponding connections SHOULD be protected cryptographically.
-    notes: >-
+    notes: |-
       Section 1: This can be addressed by utilizing firewalld or therelike
       Section 2: this must be configured on the application layer
       # deactivate WebConsole to circumvent TLS
@@ -359,9 +359,9 @@ controls:
     title: ELIMINATED
     levels:
       - standard
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -369,14 +369,14 @@ controls:
     title: Operational Documentation for Servers
     levels:
       - standard
-    description: >-
+    description: |-
       (1) Operational tasks that are carried out on a server SHOULD be clearly documented in terms
       of what has been done, when, and by whom. (2) In particular, the documentation SHOULD make
       configuration changes transparent. (3) Security-relevant responsibilities, such as who is
       authorised to install new hard disks, SHOULD be documented. (4) Everything that can be
       documented automatically SHOULD be documented automatically. (5) The documentation SHOULD be
       protected against unauthorised access and loss.
-    notes: >-
+    notes: |-
       This requirement must be implemented organizationally.
     status: manual
 
@@ -384,12 +384,12 @@ controls:
     title: Integration into Contingency Planning
     levels:
       - standard
-    description: >-
+    description: |-
       (1) Servers SHOULD be taken into account in business continuity management processes.
       (2) To this end, the contingency requirements for the system in question SHOULD be determined
       and appropriate contingency procedures implemented—for example, by drawing up recovery plans
       or securely storing passwords and cryptographic keys.
-    notes: >-
+    notes: |-
       This requirement must be implemented organizationally.
     status: manual
 
@@ -397,12 +397,12 @@ controls:
     title: Monitoring Systems and Servers
     levels:
       - standard
-    description: >-
+    description: |-
       (1) Server systems SHOULD be integrated into an appropriate system monitoring concept.
       (2) The status and functionality of these systems and the services operated on them SHOULD be
       continuously monitored. (3) Error conditions and defined thresholds that are exceeded SHOULD
       be reported to the operating personnel.
-    notes: >-
+    notes: |-
       Monitoring is a very specific and organization dependend task. therefore we do not
       check this automatically
     status: manual
@@ -413,7 +413,7 @@ controls:
     title: Security Checks for Servers
     levels:
       - standard
-    description: >-
+    description: |-
       (1) Servers SHOULD be subjected to regular security tests to check their compliance with the
       applicable security requirements and identify possible vulnerabilities. (2) In particular,
       these security tests SHOULD be performed on servers with external interfaces. (3) To prevent
@@ -421,7 +421,7 @@ controls:
       systems SHOULD also be checked accordingly at defined intervals. (4) Whether the security
       checks can be realised automatically—by means of suitable scripts, for example—SHOULD be
       examined.
-    notes: >-
+    notes: |-
       This is met due to the usage of this compliance profile.
     status: inherently met
 
@@ -429,7 +429,7 @@ controls:
     title: Controlled Decommissioning of a Server
     levels:
       - standard
-    description: >-
+    description: |-
       (1) When decommissioning a server, it SHOULD be ensured that no important data that might
       still be present on the storage media is lost and no sensitive data remains.
       (2) There SHOULD be an overview of the data stored in each location on the server.
@@ -438,7 +438,7 @@ controls:
       (4) A checklist SHOULD be created that is to be completed when decommissioning a server.
       (5) This checklist SHOULD at least include aspects related to backing up data, migrating
       services, and subsequently deleting all data in a secure manner.
-    notes: >-
+    notes: |-
       This requirement must be implemented organizationally.
     status: manual
 
@@ -446,13 +446,13 @@ controls:
     title: Drawing Up and Maintaining an Operating Manual
     levels:
       - standard
-    description: >-
+    description: |-
       (1) An operating manual SHOULD be drawn up. (2) It SHOULD document all the rules, requirements,
       and settings that are necessary in operating servers. (3) There SHOULD be a specific operating
       manual for every type of server. (4) Each operating manual SHOULD be updated at regular
       intervals. (5) Operating manuals SHOULD be protected against unauthorised access. (6) Operating
       manuals SHOULD be available in emergencies.
-    notes: >-
+    notes: |-
       This requirement must be implemented organizationally.
     status: manual
 
@@ -460,7 +460,7 @@ controls:
     title: Encapsulation of Security-Critical Applications and Operating System Components
     levels:
       - standard
-    description: >-
+    description: |-
       (1) In order to prevent an attacker from accessing the operating system or other applications and
       prevent access from the operating system to files that are particularly sensitive, applications
       and operating system components (such as authentication or certificate verification) SHOULD
@@ -468,7 +468,7 @@ controls:
       applications and operating system components. (2) Particular attention SHOULD be paid to
       security-critical applications that work with data from insecure sources (e.g. web browsers and
       office communication applications)
-    notes: >-
+    notes: |-
       Section 1-2: This can be done by utilizing SELinux for enhanced protection and/or container
       technology (Microsegmentation)
     status: automated
@@ -486,9 +486,9 @@ controls:
     title: ELIMINATED
     levels:
       - elevated
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -496,7 +496,7 @@ controls:
     title: Host-Based Attack Detection
     levels:
       - elevated
-    description: >-
+    description: |-
       (1) Host-based attack detection systems (also referred to as host-based intrusion detection
       systems, IDS, or intrusion prevention systems, IPS) SHOULD be used to monitor system
       behaviour for abnormalities and misuse. (2) The IDS/IPS mechanisms used SHOULD be
@@ -504,7 +504,7 @@ controls:
       the operating personnel SHOULD be alerted in an appropriate manner.
       (4) Using operating system mechanisms or suitable additional products, changes made to system
       files and configuration settings SHOULD be checked, restricted, and reported.
-    notes: >-
+    notes: |-
       Section 1: Can only be checked manually.
       Section 2,3: this is an organizational requirement
       Section 4: AIDE could be leveraged as a system mechanism
@@ -530,13 +530,13 @@ controls:
     title: Increasing Availability Through Redundancy
     levels:
       - elevated
-    description: >-
+    description: |-
       (1) Server systems with high availability requirements SHOULD be protected adequately against
       failures. (2) At minimum, suitable redundancies SHOULD be available and maintenance contracts
       concluded with the respective suppliers. (3) Whether high-availability architectures with
       automatic failover (across various sites, if necessary) are required in the case of very high
       requirements SHOULD be checked.
-    notes: >-
+    notes: |-
       this is an organizational requirement
     status: manual
 
@@ -544,9 +544,9 @@ controls:
     title: ELIMINATED
     levels:
       - elevated
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -554,10 +554,10 @@ controls:
     title: One Service per Server
     levels:
       - elevated
-    description: >-
+    description: |-
       (1) Depending on the threat landscape at hand and the protection needs of services, only one
       service SHOULD be operated on each server.
-    notes: >-
+    notes: |-
       This requirement must be implemented organizationally.
     status: manual
 
@@ -565,12 +565,12 @@ controls:
     title: Using Execution Control
     levels:
       - elevated
-    description: >-
+    description: |-
       (1) Execution control SHOULD be used to ensure that only explicitly authorised programs and
       scripts can be executed. (2) The rules SHOULD be set as restrictively as possible. (3) If explicit
       specification of paths and hashes is not possible, certificate-based or path rules SHOULD be
       used as an alternative.
-    notes: >-
+    notes: |-
       While not directly leveraging a allowlist of executable programs, SELinux and fapolicyd help to
       address this issue. They deny execution or fileaccess based on a list of allowed permissions.
     status: automated
@@ -594,9 +594,9 @@ controls:
     title: ELIMINATED
     levels:
       - elevated
-    description: >-
+    description: |-
       This requirement has been eliminated.
-    notes: >-
+    notes: |-
       This requirement has been eliminated.
     status: not applicable
 
@@ -604,14 +604,14 @@ controls:
     title: Active Administration of Root Certificates
     levels:
       - elevated
-    description: >-
+    description: |-
       (1) As part of the procurement and installation of a server, the root certificates that are
       required to operate the server SHOULD be documented. (2) Only the previously documented root
       certificates required for operation SHOULD be present on the server. (3) Regular checks SHOULD
       be performed as to whether existing root certificates still comply with the respective
       organisation’s requirements. (4) All certificate stores on the IT system at hand SHOULD be
       included in these checks.
-    notes: >-
+    notes: |-
       Section 1: organizational control
       Section 2-4: can be addressed by a manual rule in OpenSCAP
       This can be in conflict with rpm_checks as changing the ca-trust-store triggers these checks.
@@ -624,14 +624,14 @@ controls:
     title: Hard Disk Encryption
     levels:
       - elevated
-    description: >-
+    description: |-
       (1) In case of increased protection needs, a server's storage media should be encrypted using a
       product or procedure that is considered secure. (2) This SHOULD also apply to virtual machines
       containing production data. (3) Trusted Platform Module (TPM) SHOULD NOT be the only form
       of key protection used. (4) Recovery passwords SHOULD be stored in an appropriate and secure
       location. (5) In case of very high requirements (e.g. regarding confidentiality), full volume or full
       disk encryption SHOULD be used.
-    notes: >-
+    notes: |-
       Section 1-3: Specification of what is needed
       Section 4: organizational control
       Section 5: can be addressed on a partition label with existing checks
@@ -649,11 +649,11 @@ controls:
     title: Protecting the Boot Process
     levels:
       - elevated
-    description: >-
+    description: |-
       (1) A server's boot loader and operating system kernel SHOULD be checked by self-controlled key
       material that is signed upon system start in a trusted chain (secure boot). (2) Unnecessary key
       material SHOULD be removed.
-    notes: >-
+    notes: |-
       At the moment there is no automatic check to check if secure boot is active.
       It can be done manually by using mokutil --sb-state
     status: manual
@@ -663,9 +663,9 @@ controls:
     title: Hardening of the Host System by Means of a Read-Only File System
     levels:
       - elevated
-    description: >-
+    description: |-
       The integrity of the host system should be ensured by a read-only file system (an immutable OS).
-    notes: >-
+    notes: |-
       RHEL does not meet this requirement. RHEL in ImageMode (bootc) might be the solution
       for that.
     status: does not meet
