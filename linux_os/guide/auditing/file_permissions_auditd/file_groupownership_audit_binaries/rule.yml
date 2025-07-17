@@ -79,7 +79,7 @@ template:
             - /sbin/ausearch
             {{% if product not in ["rhel10"] %}}- /sbin/autrace{{% endif %}}
             - /sbin/auditd
-            {{% if 'rhel' not in product %}}- /sbin/audispd{{% endif %}}
+            {{% if 'rhel' not in product and 'ubuntu' not in product %}}- /sbin/audispd{{% endif %}}
             - /sbin/augenrules
             {{% if 'rhel' in product %}}- /sbin/audisp-syslog{{% endif %}}
         gid_or_name: '0'
