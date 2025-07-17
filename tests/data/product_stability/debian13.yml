@@ -6,16 +6,17 @@ audisp_conf_path: /etc/audit
 audit_watches_style: legacy
 auid: 1000
 basic_properties_derived: true
-benchmark_id: DEBIAN-12
+benchmark_id: DEBIAN-13
 benchmark_root: ../../linux_os/guide
 bootable_containers_supported: 'false'
 chrony_conf_path: /etc/chrony/chrony.conf
 chrony_d_path: /etc/chrony/chrony.d/
+components_root: ../../components
 cpes:
-- debian12:
-    check_id: installed_OS_is_debian12
-    name: cpe:/o:debian:debian_linux:12
-    title: Debian Linux 12
+- debian13:
+    check_id: installed_OS_is_debian13
+    name: cpe:/o:debian:debian_linux:13
+    title: Debian Linux 13
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 dynamic_uid_max: 65519
@@ -24,7 +25,7 @@ faillock_path: /var/run/faillock
 families:
 - debian
 - debian-like
-full_name: Debian 12
+full_name: Debian 13
 gid_min: 1000
 groups: {}
 grub2_boot_path: /boot/grub
@@ -32,10 +33,10 @@ grub2_uefi_boot_path: /boot/grub2
 grub_helper_executable: update-grub
 init_system: systemd
 login_defs_path: /etc/login.defs
-major_version_ordinal: 12
+major_version_ordinal: 13
 nobody_gid: 65534
 nobody_uid: 65534
-oval_feed_url: https://www.debian.org/security/oval/oval-definitions-bookworm.xml.bz2
+oval_feed_url: https://www.debian.org/security/oval/oval-definitions-trixie.xml.bz2
 pkg_manager: apt_get
 pkg_system: dpkg
 platform_package_overrides:
@@ -57,14 +58,13 @@ platform_package_overrides:
   sssd-ldap: null
   uefi: null
   zipl: s390utils-base
-product: debian12
+product: debian13
 profiles_root: ./profiles
 reference_uris:
   anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
   app-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
   app-srg-ctr: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=container-platform
   bsi: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
-  cis: https://www.cisecurity.org/benchmark/debian_linux/
   cis-csc: https://www.cisecurity.org/controls/
   cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
   cobit5: https://www.isaca.org/resources/cobit
