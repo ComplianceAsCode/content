@@ -221,6 +221,7 @@ value: :code:`Setting={{ varname1 }}`
   ansible.builtin.file:
     path: {{{ config_file }}}
     mode: '0600'
+    state: touch
 {{%- else %}}
 {{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="BOF", rule_title=rule_title) }}}
 {{%- endif %}}
@@ -854,12 +855,13 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect check
   register: result_authselect_check_cmd
   changed_when: false
+  check_mode: false
   failed_when: false
 
 - name: '{{{ rule_title }}} - Informative message based on the authselect integrity check result'
   ansible.builtin.assert:
     that:
-      - result_authselect_check_cmd.rc == 0
+      - ansible_check_mode or result_authselect_check_cmd.rc == 0
     fail_msg:
       - authselect integrity check failed. Remediation aborted!
       - This remediation could not be applied because an authselect profile was not selected or the selected profile is not intact.
@@ -925,6 +927,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_check_cmd is success
 
@@ -956,6 +959,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_check_cmd is success
 
@@ -1022,6 +1026,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect list-features sssd
   register: result_authselect_available_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_present.stat.exists
 
@@ -1064,6 +1069,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect list-features sssd
   register: result_authselect_available_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_present.stat.exists
 
@@ -1105,6 +1111,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect list-features sssd
   register: result_authselect_available_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_present.stat.exists
 
@@ -1477,12 +1484,14 @@ Part of the grub2_bootloader_argument template.
 {{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value) -%}}
 {{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'slmicro5'] %}}
 - name: Check {{{ arg_name }}} argument exists
-  command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
+  ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
+  check_mode: False
   failed_when: False
   register: argcheck
 
 - name: Check {{{ arg_name }}} argument exists
-  command: grep '^\s*GRUB_CMDLINE_LINUX=' /etc/default/grub
+  ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=' /etc/default/grub
+  check_mode: False
   failed_when: False
   register: linecheck
 
@@ -1535,7 +1544,8 @@ Part of the grub2_bootloader_argument_absent template.
 {{%- macro ansible_grub2_bootloader_argument_absent(arg_name) -%}}
 {{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15'] %}}
 - name: Check {{{ arg_name }}} argument exists
-  command: grep '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"' /etc/default/grub
+  ansible.builtin.command: grep '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"' /etc/default/grub
+  check_mode: False
   failed_when: False
   register: argcheck
 
@@ -1734,6 +1744,7 @@ Part of the grub2_bootloader_argument_absent template.
     state: present
   register: result_pam_{{{ rule_id }}}_add
   when:
+    - result_pam_module_{{{ rule_id }}}_option_present.found is defined
     - result_pam_module_{{{ rule_id }}}_option_present.found == 0
 
 {{%- if value != '' %}}
@@ -1770,6 +1781,11 @@ Part of the grub2_bootloader_argument_absent template.
   ansible.builtin.set_fact:
     pam_module_control: '{{{ control }}}'
 
+- name: '{{{ rule_title }}} - Check if {{{ pam_file }}} file is present'
+  ansible.builtin.stat:
+    path: "{{{ pam_file }}}"
+  register: result_pam_file_present
+
 - name: '{{{ rule_title }}} - Ensure the "{{{ option }}}" option from "{{{ module }}}" is not present in {{{ pam_file }}}'
   ansible.builtin.replace:
     dest: "{{{ pam_file }}}"
@@ -1780,6 +1796,7 @@ Part of the grub2_bootloader_argument_absent template.
     {{%- endif %}}
     replace: '\1\2'
   register: result_pam_option_removal
+  when: result_pam_file_present.stat.exists
 {{%- endmacro -%}}
 
 
@@ -1823,6 +1840,7 @@ Part of the grub2_bootloader_argument_absent template.
     cmd: authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_profile is not skipped
     - authselect_current_profile is not match("custom/")
@@ -1833,12 +1851,14 @@ Part of the grub2_bootloader_argument_absent template.
   register: result_authselect_custom_profile_present
   changed_when: false
   when:
+    - result_authselect_profile is not skipped
     - authselect_current_profile is not match("custom/")
 
 - name: '{{{ rule_title }}} - Create an authselect custom profile based on the current profile'
   ansible.builtin.command:
     cmd: authselect create-profile hardening -b {{ authselect_current_profile }}
   when:
+    - result_authselect_profile is not skipped
     - result_authselect_check_cmd is success
     - authselect_current_profile is not match("^(custom/|local)")
     - not result_authselect_custom_profile_present.stat.exists
@@ -1847,6 +1867,7 @@ Part of the grub2_bootloader_argument_absent template.
   ansible.builtin.command:
     cmd: authselect create-profile hardening -b sssd
   when:
+    - result_authselect_profile is not skipped
     - result_authselect_check_cmd is success
     - authselect_current_profile is match("local")
     - not result_authselect_custom_profile_present.stat.exists
@@ -1911,6 +1932,8 @@ Part of the grub2_bootloader_argument_absent template.
     - name: '{{{ rule_title }}} - Change the PAM file to be edited according to the custom authselect profile'
       ansible.builtin.set_fact:
         pam_file_path: "/etc/authselect/{{ authselect_custom_profile }}/{{ pam_file_path | basename }}"
+      when:
+        - authselect_custom_profile is defined
   when:
     - result_authselect_present.stat.exists
 {{%- endmacro -%}}
