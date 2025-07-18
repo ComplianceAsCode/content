@@ -4,4 +4,5 @@
 # complexity = low
 # disruption = low
 
+{{{ bash_package_install("polkit-pkla-compat") }}}
 printf "[Disable General User Access to NetworkManager]\nIdentity=default\nAction=org.freedesktop.NetworkManager.*\nResultAny=no\nResultInactive=no\nResultActive=auth_admin\n" > /etc/polkit-1/localauthority/20-org.d/10-nm-harden-access.pkla
