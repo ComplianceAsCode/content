@@ -9,15 +9,6 @@ accounts_passwords_pam_faillock_unlock_time
 audit_access_failed
 audit_access_failed_aarch64
 audit_access_failed_ppc64le
-audit_access_success
-audit_access_success.role=unscored
-audit_access_success.severity=info
-audit_access_success_aarch64
-audit_access_success_aarch64.role=unscored
-audit_access_success_aarch64.severity=info
-audit_access_success_ppc64le
-audit_access_success_ppc64le.role=unscored
-audit_access_success_ppc64le.severity=info
 audit_basic_configuration
 audit_create_failed
 audit_create_failed_aarch64

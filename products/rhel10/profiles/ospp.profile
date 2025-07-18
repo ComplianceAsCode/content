@@ -27,3 +27,8 @@ selections:
     - '!package_scap-security-guide_installed'
     # Currently not working RHEL 10, changes are being made to FIPS mode. Investigation is recommended.
     - '!enable_dracut_fips_module'
+
+    # To avoid too much log entries reporting success.
+    - '!audit_access_success'
+    - '!audit_access_success_aarch64'
+    - '!audit_access_success_ppc64le'
