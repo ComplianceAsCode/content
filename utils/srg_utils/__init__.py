@@ -2,7 +2,7 @@ import json
 import os
 from typing import List
 
-import yaml
+from yaml import load as yaml_load
 
 import utils.srg_utils.worksheet_utils
 from utils.srg_utils.worksheet_utils import Row
@@ -14,7 +14,7 @@ from utils.srg_utils.yaml import replace_yaml_key, create_output
 def get_full_name(root_dir: str, product: str) -> str:
     product_yml_path = os.path.join(root_dir, 'products', product, 'product.yml')
     with open(product_yml_path, 'r') as f:
-        data = yaml.load(f, Loader=yaml_SafeLoader)
+        data = yaml_load(f, Loader=yaml_SafeLoader)
         return data['full_name']
 
 
