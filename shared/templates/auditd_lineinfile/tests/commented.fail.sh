@@ -3,4 +3,7 @@
 # platform = Not Applicable
 {{% endif%}}
 # packages = audit
-echo "#{{{ PARAMETER }}} = {{{ VALUE }}}" > "/etc/audit/auditd.conf"
+{{% if XCCDF_VARIABLE %}}
+# variables = {{{ XCCDF_VARIABLE }}}={{{ CORRECT_VALUE }}}
+{{% endif %}}
+echo "#{{{ PARAMETER }}} = {{{ CORRECT_VALUE }}}" > "/etc/audit/auditd.conf"

@@ -28,6 +28,9 @@
     -   **value** - the value of configuration item specified by
         parameter
 
+    - **xccdf_variable** - specifies an XCCDF variable to use as a value for the specified **parameter**.
+        This parameter conflicts with the **value** parameter.
+
     -   **missing_parameter_pass** - effective only in OVAL checks, if
         set to `"false"` and the parameter is not present in the
         configuration file, the OVAL check will return false (default value: `"false"`).
