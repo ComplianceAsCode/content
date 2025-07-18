@@ -23,11 +23,7 @@ selections:
     - '!enable_dracut_fips_module'
     - '!package_subscription-manager_installed'
 
-    - '!audit_access_success_aarch64.role=unscored'
-    - '!audit_access_success_aarch64.severity=info'
     - '!audit_access_success_aarch64'
-    - '!audit_access_success_ppc64le.role=unscored'
-    - '!audit_access_success_ppc64le.severity=info'
     - '!audit_access_success_ppc64le'
     - '!audit_access_failed_aarch64'
     - '!audit_access_failed_ppc64le'

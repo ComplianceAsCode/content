@@ -49,14 +49,8 @@ controls:
           - audit_access_failed_aarch64
           - audit_access_failed_ppc64le
           - audit_access_success
-          - audit_access_success.role=unscored
-          - audit_access_success.severity=info
           - audit_access_success_aarch64
-          - audit_access_success_aarch64.role=unscored
-          - audit_access_success_aarch64.severity=info
           - audit_access_success_ppc64le
-          - audit_access_success_ppc64le.role=unscored
-          - audit_access_success_ppc64le.severity=info
           - audit_create_failed
           - audit_create_failed_aarch64
           - audit_create_failed_ppc64le
@@ -93,6 +87,13 @@ controls:
           - audit_perm_change_success_aarch64
           - audit_perm_change_success_ppc64le
       status: automated
+      related_rules:
+          - audit_access_success.role=unscored
+          - audit_access_success.severity=info
+          - audit_access_success_aarch64.role=unscored
+          - audit_access_success_aarch64.severity=info
+          - audit_access_success_ppc64le.role=unscored
+          - audit_access_success_ppc64le.severity=info
     - id: FAU_GEN.1.2
       title: 'Audit Data Generation - Audit Event Format'
       levels:
