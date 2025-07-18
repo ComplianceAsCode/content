@@ -25,3 +25,8 @@ selections:
     - enable_authselect
     - var_authselect_profile=minimal
     - '!package_dnf-plugin-subscription-manager_installed'
+
+    # To avoid too much log entries reporting success.
+    - '!audit_access_success'
+    - '!audit_access_success_aarch64'
+    - '!audit_access_success_ppc64le'
