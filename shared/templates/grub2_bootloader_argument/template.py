@@ -11,7 +11,10 @@ def preprocess(data, lang):
     if 'arg_variable' in data:
         data["arg_name_value"] = data["arg_name"]
     else:
-        data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
+        if "arg_value" in data:
+            data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
+        else:
+            data["arg_name_value"] = data["arg_name"]
 
     if 'is_substring' not in data:
         data["is_substring"] = "false"
