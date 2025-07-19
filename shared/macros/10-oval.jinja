@@ -1593,11 +1593,15 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
 {{%- if init_system == "systemd" %}}
   {{%- if target_oval_version >= [5, 11] %}}
   {{# we are using systemd and our target OVAL version does support the systemd related tests #}}
-      <criteria operator="AND" comment="service {{{ name }}} is not configured to start">
-        <criterion test_ref="test_service_not_running_{{{ rule_id }}}_{{{ name }}}"
-          comment="{{{ name }}} is not running"/>
-        <criterion test_ref="test_service_loadstate_is_masked_{{{ rule_id }}}_{{{ name }}}"
-          comment="Property LoadState of service {{{ name }}} is masked"/>
+      <criteria operator="OR" comment="service is not present or not configured">
+        <criteria operator="AND" comment="service {{{ name }}} is not configured to start">
+          <criterion test_ref="test_service_not_running_{{{ rule_id }}}_{{{ name }}}"
+            comment="{{{ name }}} is not running"/>
+          <criterion test_ref="test_service_loadstate_is_masked_{{{ rule_id }}}_{{{ name }}}"
+            comment="Property LoadState of service {{{ name }}} is masked"/>
+        </criteria>
+        <criterion test_ref="test_service_not_found_{{{ rule_id }}}_{{{ name }}}"
+          comment="{{{ name }}} is not found"/>
       </criteria>
   {{%- else %}}
   {{# fallback if we are using systemd but can't use the new systemd features of OVAL 5.11 #}}
@@ -1659,6 +1663,22 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
       version="1">
       <linux:value>masked</linux:value>
     </linux:systemdunitproperty_state>
+
+
+    <linux:systemdunitproperty_test check="all" check_existence="any_exist"
+      id="test_service_not_found_{{{ rule_id }}}_{{{ name }}}"
+      comment="Test that the service {{{ name }}} is not found"
+      version="1">
+      <linux:object object_ref="obj_service_loadstate_is_masked_{{{ rule_id }}}_{{{ name }}}"/>
+      <linux:state state_ref="state_service_is_not_found_{{{ rule_id }}}_{{{ name }}}"/>
+    </linux:systemdunitproperty_test>
+
+    <linux:systemdunitproperty_state comment="Service is not found"
+      id="state_service_is_not_found_{{{ rule_id }}}_{{{ name }}}"
+      version="1">
+      <linux:value>not-found</linux:value>
+    </linux:systemdunitproperty_state>
+
   {{%- else %}}
   {{# fallback if we are using systemd but can't use the new systemd features of OVAL 5.11 #}}
       <unix:file_test check="all" check_existence="none_exist"
