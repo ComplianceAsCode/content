@@ -1,5 +1,9 @@
 #!/bin/bash
-# platform = multi_platform_fedora,Oracle Linux 9,Red Hat Enterprise Linux 9
+{{% if sshd_distributed_config == "false" %}}
+# platform = Not Applicable
+{{% else %}}
+# platform = multi_platform_all
+{{% endif %}}
 
 mkdir -p /etc/ssh/sshd_config.d
 touch /etc/ssh/sshd_config.d/nothing
