@@ -8,9 +8,10 @@ from typing import cast
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl import load_workbook
 
-from utils.srg_utils import get_full_name, get_stigid_set, get_cce_dict_to_row_dict, \
+from utils.srg_utils import get_full_name, \
     get_cce_dict, get_rule_dir_json, fix_changed_text, cleanup_end_of_file, \
     update_severity
+from utils.srg_utils.worksheet_utils import get_stigid_set, get_cce_dict_to_row_dict
 from utils.srg_utils.yaml import update_row
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
