@@ -456,9 +456,6 @@ class RuleChecker(oscap.Checker):
         if not self.rule_spec:
             source = self.template_spec
         if not rules_to_test:
-            logging.warning("No tests found matching the {0}(s) '{1}'".format(
-                self.target_type,
-                ", ".join(source)))
             return
 
         test_content_by_rule_id = self._get_test_content_by_rule_id(
