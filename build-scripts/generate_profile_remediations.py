@@ -5,8 +5,10 @@ import collections
 import os
 import re
 import xml.etree.ElementTree as ET
+import yaml
 
 import ssg.ansible
+import ssg.yaml
 from ssg.constants import (
     ansible_system,
     bash_system,
@@ -24,7 +26,7 @@ LANGUAGE_TO_TARGET = {"ansible": "playbook", "bash": "script"}
 LANGUAGE_TO_EXTENSION = {"ansible": "yml", "bash": "sh"}
 ANSIBLE_VAR_PATTERN = re.compile(
     "- name: XCCDF Value [^ ]+ # promote to variable\n  set_fact:\n"
-    "    ([^:]+): (.+)\n  tags:\n    - always\n")
+    "    ([^:]+): !!str (.+)\n  tags:\n    - always\n")
 
 
 def parse_args():
@@ -50,7 +52,7 @@ def parse_args():
 
 
 def extract_ansible_vars(string):
-    ansible_vars = {}
+    ansible_vars = collections.OrderedDict()
     for match in ANSIBLE_VAR_PATTERN.finditer(string):
         variable_name, value = match.groups()
         ansible_vars[variable_name] = value
@@ -166,6 +168,63 @@ def ansible_tasks_to_string(tasks):
     return tasks_str
 
 
+facts_task = collections.OrderedDict([
+    ('name', 'Gather the package facts'),
+    ('ansible.builtin.package_facts', {'manager': 'auto'})
+])
+
+
+def task_is(task, names):
+    """
+    Check if the task is one of the given names.
+    """
+    for name in names:
+        if name in task:
+            return True
+    return False
+
+
+class AnsibleSnippetsProcessor:
+    def __init__(self, all_snippets):
+        self.all_snippets = all_snippets
+        self.package_tasks = []
+        self.other_tasks = []
+
+    def _process_task(self, task):
+        if task_is(task, ["block"]):
+            # Process block tasks recursively
+            new_block = []
+            for subtask in task["block"]:
+                if self._process_task(subtask) is not None:
+                    new_block.append(subtask)
+            task["block"] = new_block
+            return task if new_block else None
+        if task_is(task, ["ansible.builtin.package_facts", "package_facts"]):
+            # Skip package_facts tasks because they will be replaced by
+            # a single package_facts task that will be added later
+            return None
+        if task_is(task, ["ansible.builtin.package", "package"]):
+            # Collect package tasks to be processed later
+            self.package_tasks.append(task)
+            return None
+        return task
+
+    def _process_snippet(self, snippet):
+        tasks = ssg.yaml.ordered_load(snippet)
+        for task in tasks:
+            if self._process_task(task) is not None:
+                self.other_tasks.append(task)
+
+    def process_snippets(self):
+        for snippet in self.all_snippets:
+            self._process_snippet(snippet)
+
+    def get_ansible_tasks(self):
+        self.package_tasks.insert(0, facts_task)
+        self.package_tasks.append(facts_task)
+        return self.package_tasks + self.other_tasks
+
+
 class ScriptGenerator:
     def __init__(self, language, product_id, ds_file_path, output_dir):
         self.language = language
@@ -219,21 +278,23 @@ class ScriptGenerator:
         return file_path
 
     def create_output_ansible(self, profile_el):
-        ansible_vars, ansible_tasks = self.collect_ansible_vars_and_tasks(
+        ansible_vars, ansible_snippets = self.collect_ansible_vars_and_tasks(
             profile_el)
-        header = self.create_header(profile_el)
+        sp = AnsibleSnippetsProcessor(ansible_snippets)
+        sp.process_snippets()
+        ansible_tasks = sp.get_ansible_tasks()
         profile_id = profile_el.get("id")
-        vars_str = ansible_vars_to_string(ansible_vars)
-        tasks_str = ansible_tasks_to_string(ansible_tasks)
-        output = (
-            "%s\n"
-            "- name: Ansible Playbook for %s\n"
-            "  hosts: all\n"
-            "  vars:\n"
-            "%s"
-            "  tasks:\n"
-            "%s"
-            % (header, profile_id, vars_str, tasks_str))
+        playbook = [
+            collections.OrderedDict([
+                ("name", "Ansible Playbook for %s" % profile_id),
+                ("hosts", "all"),
+                ("vars", ansible_vars),
+                ("tasks", ansible_tasks)
+            ])
+        ]
+        header = self.create_header(profile_el)
+        playbook_str = ssg.yaml.ordered_dump(playbook, default_flow_style=False)
+        output = "%s%s" % (header, playbook_str)
         return output
 
     def collect_ansible_vars_and_tasks(self, profile_el):
