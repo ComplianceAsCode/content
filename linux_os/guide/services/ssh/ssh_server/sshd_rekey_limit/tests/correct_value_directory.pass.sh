@@ -1,5 +1,9 @@
 #!/bin/bash
+{{% if sshd_distributed_config == "false" %}}
+# platform = Not Applicable
+{{% else %}}
 # platform = multi_platform_all
+{{% endif %}}
 # variables = var_rekey_limit_size=900M,var_rekey_limit_time=3h
 
 
