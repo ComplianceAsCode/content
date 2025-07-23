@@ -7,4 +7,3 @@
 {{{ bash_selinux_config_set(parameter="SELINUX", value="permissive", rule_id=rule_id) }}}
 
 fixfiles onboot
-fixfiles -f relabel

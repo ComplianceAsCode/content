@@ -9,6 +9,9 @@ description: |-
     <pre>SELINUX=enforcing</pre>
     OR
     <pre>SELINUX=permissive</pre>
+    Ensure that all files have correct SELinux labels by running:
+    <pre>fixfiles onboot</pre>
+    Then reboot the system.
 
 rationale: |-
     Running SELinux in disabled mode is strongly discouraged. It prevents enforcing the SELinux
