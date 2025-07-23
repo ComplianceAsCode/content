@@ -10,6 +10,9 @@ description: |-
     system boot time.  In the file <tt>/etc/selinux/config</tt>, add or correct the
     following line to configure the system to boot into enforcing mode:
     <pre>SELINUX={{{ xccdf_value("var_selinux_state") }}}</pre>
+    Ensure that all files have correct SELinux labels by running:
+    <pre>fixfiles onboot</pre>
+    Then reboot the system.
 
 rationale: |-
     Setting the SELinux state to enforcing ensures SELinux is able to confine
