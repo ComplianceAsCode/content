@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import collections
+import copy
 import re
 
 from .constants import ansible_version_requirement_pre_task_name
@@ -186,6 +187,4 @@ class AnsibleSnippetsProcessor:
         Returns:
             list: Combined list of all processed tasks.
         """
-        self.package_tasks.insert(0, facts_task)
-        self.package_tasks.append(facts_task)
-        return self.package_tasks + self.other_tasks
+        return [facts_task, *self.package_tasks, copy.deepcopy(facts_task), *self.other_tasks]
