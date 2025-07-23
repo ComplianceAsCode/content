@@ -5,10 +5,12 @@ Common functions for processing Ansible in SSG
 from __future__ import absolute_import
 from __future__ import print_function
 
+import collections
 import re
 
 from .constants import ansible_version_requirement_pre_task_name
 from .constants import min_ansible_version
+from . import yaml
 
 
 def add_minimum_version(ansible_src):
@@ -80,3 +82,110 @@ def remove_trailing_whitespace(ansible_src):
     """
 
     return re.sub(r'[ \t]+$', '', ansible_src, 0, flags=re.M)
+
+
+facts_task = collections.OrderedDict([
+    ('name', 'Gather the package facts'),
+    ('ansible.builtin.package_facts', {'manager': 'auto'})
+])
+
+
+def task_is(task, names):
+    """
+    Check if the task is one of the given names.
+
+    Args:
+        task (dict): The task to check.
+        names (list): List of task names to check against.
+
+    Returns:
+        bool: True if the task contains any of the given names as keys, False otherwise.
+    """
+    for name in names:
+        if name in task:
+            return True
+    return False
+
+
+class AnsibleSnippetsProcessor:
+    """
+    Processes Ansible snippets to optimize package management tasks.
+
+    This class processes a collection of Ansible snippets by:
+    - Collecting package-related tasks for batch processing
+    - Skipping redundant package_facts tasks
+    - Handling block tasks recursively
+    - Preserving other tasks as-is
+    """
+
+    def __init__(self, all_snippets):
+        """
+        Initialize the processor with a collection of snippets.
+
+        Args:
+            all_snippets (list): List of Ansible snippet strings to process.
+        """
+        self.all_snippets = all_snippets
+        self.package_tasks = []
+        self.other_tasks = []
+
+    def _process_task(self, task):
+        """
+        Process a single task, determining how to handle it.
+
+        Args:
+            task (dict): The task to process.
+
+        Returns:
+            dict or None: The processed task, or None if the task should be skipped.
+        """
+        if task_is(task, ["block"]):
+            # Process block tasks recursively
+            new_block = []
+            for subtask in task["block"]:
+                if self._process_task(subtask) is not None:
+                    new_block.append(subtask)
+            task["block"] = new_block
+            return task if new_block else None
+        if task_is(task, ["ansible.builtin.package_facts", "package_facts"]):
+            # Skip package_facts tasks because they will be replaced by
+            # a single package_facts task that will be added later
+            return None
+        if task_is(task, ["ansible.builtin.package", "package"]):
+            # Collect package tasks to be processed later
+            self.package_tasks.append(task)
+            return None
+        return task
+
+    def _process_snippet(self, snippet):
+        """
+        Process a single snippet, extracting tasks from it.
+
+        Args:
+            snippet (str): The YAML snippet string to process.
+        """
+        tasks = yaml.ordered_load(snippet)
+        for task in tasks:
+            if self._process_task(task) is not None:
+                self.other_tasks.append(task)
+
+    def process_snippets(self):
+        """
+        Process all snippets provided during initialization.
+        """
+        for snippet in self.all_snippets:
+            self._process_snippet(snippet)
+
+    def get_ansible_tasks(self):
+        """
+        Get the final list of processed Ansible tasks.
+
+        Package facts tasks are added at the beginning and end of package tasks,
+        then combined with other tasks.
+
+        Returns:
+            list: Combined list of all processed tasks.
+        """
+        self.package_tasks.insert(0, facts_task)
+        self.package_tasks.append(facts_task)
+        return self.package_tasks + self.other_tasks
