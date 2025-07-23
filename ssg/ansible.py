@@ -87,7 +87,8 @@ def remove_trailing_whitespace(ansible_src):
 
 facts_task = collections.OrderedDict([
     ('name', 'Gather the package facts'),
-    ('ansible.builtin.package_facts', {'manager': 'auto'})
+    ('ansible.builtin.package_facts', {'manager': 'auto'}),
+    ('tags', ['always'])
 ])
 
 
