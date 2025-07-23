@@ -63,3 +63,226 @@ def test_add_minimum_version():
     assert ssg.ansible.add_minimum_version(unknown_snippet) == unknown_snippet
 
     assert ssg.ansible.add_minimum_version(processed_snippet) == processed_snippet
+
+
+def test_task_is():
+    # Test with task containing one of the names
+    task_with_package = {"ansible.builtin.package": {"name": "vim"}}
+    assert ssg.ansible.task_is(task_with_package, ["package", "ansible.builtin.package"])
+
+    # Test with task containing different name
+    assert ssg.ansible.task_is(task_with_package, ["ansible.builtin.package"])
+
+    # Test with task not containing any of the names
+    task_with_copy = {"copy": {"src": "file", "dest": "/tmp"}}
+    assert not ssg.ansible.task_is(task_with_copy, ["package", "ansible.builtin.package"])
+
+    # Test with empty names list
+    assert not ssg.ansible.task_is(task_with_package, [])
+
+    # Test with empty task
+    assert not ssg.ansible.task_is({}, ["package"])
+
+
+class TestAnsibleSnippetsProcessor:
+
+    def test_initialization(self):
+        """Test processor initialization."""
+        snippets = ["snippet1", "snippet2"]
+        processor = ssg.ansible.AnsibleSnippetsProcessor(snippets)
+
+        assert processor.all_snippets == snippets
+        assert processor.package_tasks == []
+        assert processor.other_tasks == []
+
+    def test_process_task_package(self):
+        """Test processing of package tasks."""
+        processor = ssg.ansible.AnsibleSnippetsProcessor([])
+
+        package_task = {"ansible.builtin.package": {"name": "vim"}}
+        result = processor._process_task(package_task)
+
+        assert result is None  # Package tasks should be skipped from immediate processing
+        assert package_task in processor.package_tasks
+
+    def test_process_task_package_facts(self):
+        """Test processing of package_facts tasks."""
+        processor = ssg.ansible.AnsibleSnippetsProcessor([])
+
+        package_facts_task = {"ansible.builtin.package_facts": {"manager": "auto"}}
+        result = processor._process_task(package_facts_task)
+
+        assert result is None  # package_facts tasks should be skipped
+        assert len(processor.package_tasks) == 0  # Should not be added to package_tasks
+
+    def test_process_task_package_facts_short_name(self):
+        """Test processing of package_facts tasks with short name."""
+        processor = ssg.ansible.AnsibleSnippetsProcessor([])
+
+        package_facts_task = {"package_facts": {"manager": "auto"}}
+        result = processor._process_task(package_facts_task)
+
+        assert result is None  # package_facts tasks should be skipped
+
+    def test_process_task_other(self):
+        """Test processing of other tasks."""
+        processor = ssg.ansible.AnsibleSnippetsProcessor([])
+
+        copy_task = {"copy": {"src": "file", "dest": "/tmp"}}
+        result = processor._process_task(copy_task)
+
+        assert result == copy_task  # Other tasks should be returned as-is
+        assert len(processor.package_tasks) == 0
+        assert len(processor.other_tasks) == 0  # _process_task doesn't add to other_tasks
+
+    def test_process_task_block_empty(self):
+        """Test processing of empty block tasks."""
+        processor = ssg.ansible.AnsibleSnippetsProcessor([])
+
+        block_task = {"block": []}
+        result = processor._process_task(block_task)
+
+        assert result is None  # Empty blocks should be filtered out
+
+    def test_process_task_block_with_content(self):
+        """Test processing of block tasks with content."""
+        processor = ssg.ansible.AnsibleSnippetsProcessor([])
+
+        block_task = {
+            "block": [
+                {"copy": {"src": "file", "dest": "/tmp"}},
+                {"ansible.builtin.package": {"name": "vim"}},
+                {"ansible.builtin.package_facts": {"manager": "auto"}}
+            ]
+        }
+        result = processor._process_task(block_task)
+
+        # Should return block with only the copy task (package tasks are collected, package_facts skipped)
+        assert result is not None
+        assert "block" in result
+        assert len(result["block"]) == 1
+        assert result["block"][0] == {"copy": {"src": "file", "dest": "/tmp"}}
+        assert len(processor.package_tasks) == 1
+
+    def test_process_task_block_all_filtered(self):
+        """Test processing of block tasks where all subtasks are filtered."""
+        processor = ssg.ansible.AnsibleSnippetsProcessor([])
+
+        block_task = {
+            "block": [
+                {"ansible.builtin.package": {"name": "vim"}},
+                {"ansible.builtin.package_facts": {"manager": "auto"}}
+            ]
+        }
+        result = processor._process_task(block_task)
+
+        assert result is None  # Block should be None if all subtasks are filtered
+        assert len(processor.package_tasks) == 1
+
+    def test_process_snippet(self):
+        """Test processing of a complete snippet."""
+        processor = ssg.ansible.AnsibleSnippetsProcessor([])
+
+        snippet = """
+        - name: Install vim
+          ansible.builtin.package:
+            name: vim
+        - name: Gather facts
+          ansible.builtin.package_facts:
+            manager: auto
+        - name: Copy file
+          copy:
+            src: file
+            dest: /tmp
+        """
+
+        processor._process_snippet(snippet)
+
+        assert len(processor.package_tasks) == 1
+        assert len(processor.other_tasks) == 1
+        assert processor.other_tasks[0]["copy"]["src"] == "file"
+
+    def test_process_snippets(self):
+        """Test processing multiple snippets."""
+        snippet1 = """
+        - name: Install vim
+          ansible.builtin.package:
+            name: vim
+        """
+
+        snippet2 = """
+        - name: Copy file
+          copy:
+            src: file
+            dest: /tmp
+        """
+
+        processor = ssg.ansible.AnsibleSnippetsProcessor([snippet1, snippet2])
+        processor.process_snippets()
+
+        assert len(processor.package_tasks) == 1
+        assert len(processor.other_tasks) == 1
+
+    def test_get_ansible_tasks(self):
+        """Test getting the final ansible tasks."""
+        snippet = """
+        - name: Install vim
+          ansible.builtin.package:
+            name: vim
+        - name: Copy file
+          copy:
+            src: file
+            dest: /tmp
+        """
+
+        processor = ssg.ansible.AnsibleSnippetsProcessor([snippet])
+        processor.process_snippets()
+
+        tasks = processor.get_ansible_tasks()
+
+        # Should have: facts_task + package_task + facts_task + other_task
+        assert len(tasks) == 4
+        assert tasks[0] == ssg.ansible.facts_task  # First facts task
+        assert "ansible.builtin.package" in tasks[1]  # Package task
+        assert tasks[2] == ssg.ansible.facts_task  # Second facts task
+        assert "copy" in tasks[3]  # Other task
+
+    def test_get_ansible_tasks_no_package_tasks(self):
+        """Test getting ansible tasks when there are no package tasks."""
+        snippet = """
+        - name: Copy file
+          copy:
+            src: file
+            dest: /tmp
+        """
+
+        processor = ssg.ansible.AnsibleSnippetsProcessor([snippet])
+        processor.process_snippets()
+
+        tasks = processor.get_ansible_tasks()
+
+        # Should have: facts_task + facts_task + other_task
+        assert len(tasks) == 3
+        assert tasks[0] == ssg.ansible.facts_task
+        assert tasks[1] == ssg.ansible.facts_task
+        assert "copy" in tasks[2]
+
+    def test_empty_snippets(self):
+        """Test processing empty snippets list."""
+        processor = ssg.ansible.AnsibleSnippetsProcessor([])
+        processor.process_snippets()
+
+        tasks = processor.get_ansible_tasks()
+
+        # Should have only the two facts tasks
+        assert len(tasks) == 2
+        assert tasks[0] == ssg.ansible.facts_task
+        assert tasks[1] == ssg.ansible.facts_task
+
+    def test_malformed_snippet(self):
+        """Test handling of malformed YAML snippets."""
+        processor = ssg.ansible.AnsibleSnippetsProcessor(["invalid: yaml: content:"])
+
+        # This should raise SystemExit when trying to parse invalid YAML
+        with pytest.raises(SystemExit):
+            processor.process_snippets()
