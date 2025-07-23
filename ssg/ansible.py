@@ -85,9 +85,14 @@ def remove_trailing_whitespace(ansible_src):
     return re.sub(r'[ \t]+$', '', ansible_src, 0, flags=re.M)
 
 
-facts_task = collections.OrderedDict([
+package_facts_task = collections.OrderedDict([
     ('name', 'Gather the package facts'),
     ('ansible.builtin.package_facts', {'manager': 'auto'}),
+    ('tags', ['always'])
+])
+service_facts_task = collections.OrderedDict([
+    ('name', 'Gather the service facts'),
+    ('ansible.builtin.service_facts', None),
     ('tags', ['always'])
 ])
 
@@ -153,6 +158,10 @@ class AnsibleSnippetsProcessor:
             # Skip package_facts tasks because they will be replaced by
             # a single package_facts task that will be added later
             return None
+        if task_is(task, ["ansible.builtin.service_facts", "service_facts"]):
+            # Skip service_facts tasks because they will be replaced by
+            # a single service_facts task that will be added later
+            return None
         if task_is(task, ["ansible.builtin.package", "package"]):
             # Collect package tasks to be processed later
             self.package_tasks.append(task)
@@ -188,4 +197,4 @@ class AnsibleSnippetsProcessor:
         Returns:
             list: Combined list of all processed tasks.
         """
-        return [facts_task, *self.package_tasks, copy.deepcopy(facts_task), *self.other_tasks]
+        return [package_facts_task, *self.package_tasks, copy.deepcopy(package_facts_task), service_facts_task, *self.other_tasks]

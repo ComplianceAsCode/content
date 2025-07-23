@@ -124,6 +124,16 @@ class TestAnsibleSnippetsProcessor:
 
         assert result is None  # package_facts tasks should be skipped
 
+    def test_process_task_service_facts(self):
+        """Test processing of service_facts tasks."""
+        processor = ssg.ansible.AnsibleSnippetsProcessor([])
+
+        service_facts_task = {"ansible.builtin.service_facts": None}
+        result = processor._process_task(service_facts_task)
+
+        assert result is None  # service_facts tasks should be skipped
+        assert len(processor.other_tasks) == 0  # Should not be added to other_tasks
+
     def test_process_task_other(self):
         """Test processing of other tasks."""
         processor = ssg.ansible.AnsibleSnippetsProcessor([])
@@ -240,12 +250,13 @@ class TestAnsibleSnippetsProcessor:
 
         tasks = processor.get_ansible_tasks()
 
-        # Should have: facts_task + package_task + facts_task + other_task
-        assert len(tasks) == 4
-        assert tasks[0] == ssg.ansible.facts_task  # First facts task
+        # Should have: package_facts_task + package_task + package_facts_task + service_facts_task + other_task
+        assert len(tasks) == 5
+        assert tasks[0] == ssg.ansible.package_facts_task  # First package facts task
         assert "ansible.builtin.package" in tasks[1]  # Package task
-        assert tasks[2] == ssg.ansible.facts_task  # Second facts task
-        assert "copy" in tasks[3]  # Other task
+        assert tasks[2] == ssg.ansible.package_facts_task  # Second package facts task
+        assert "ansible.builtin.service_facts" in tasks[3]  # Service facts task
+        assert "copy" in tasks[4]  # Other task
 
     def test_get_ansible_tasks_no_package_tasks(self):
         """Test getting ansible tasks when there are no package tasks."""
@@ -261,11 +272,12 @@ class TestAnsibleSnippetsProcessor:
 
         tasks = processor.get_ansible_tasks()
 
-        # Should have: facts_task + facts_task + other_task
-        assert len(tasks) == 3
-        assert tasks[0] == ssg.ansible.facts_task
-        assert tasks[1] == ssg.ansible.facts_task
-        assert "copy" in tasks[2]
+        # Should have: package_facts_task + package_facts_task + service_facts_task + other_task
+        assert len(tasks) == 4
+        assert tasks[0] == ssg.ansible.package_facts_task
+        assert tasks[1] == ssg.ansible.package_facts_task
+        assert tasks[2] == ssg.ansible.service_facts_task
+        assert "copy" in tasks[3]  # Other task
 
     def test_empty_snippets(self):
         """Test processing empty snippets list."""
@@ -274,10 +286,11 @@ class TestAnsibleSnippetsProcessor:
 
         tasks = processor.get_ansible_tasks()
 
-        # Should have only the two facts tasks
-        assert len(tasks) == 2
-        assert tasks[0] == ssg.ansible.facts_task
-        assert tasks[1] == ssg.ansible.facts_task
+        # Should have only the two package facts tasks and service facts task
+        assert len(tasks) == 3
+        assert tasks[0] == ssg.ansible.package_facts_task
+        assert tasks[1] == ssg.ansible.package_facts_task
+        assert tasks[2] == ssg.ansible.service_facts_task
 
     def test_malformed_snippet(self):
         """Test handling of malformed YAML snippets."""
