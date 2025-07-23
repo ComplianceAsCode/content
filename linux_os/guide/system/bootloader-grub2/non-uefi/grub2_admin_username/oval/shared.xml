@@ -36,7 +36,7 @@
   <ind:textfilecontent54_object id="object_bootloader_unique_superuser" version="1">
     <ind:filepath>{{{ grub2_boot_path }}}/grub.cfg</ind:filepath>
     <ind:pattern operation="pattern match"
-          >^[\s]*set[\s]+superusers="(?i)\b(?!(?:root|admin|administrator)\b)(\w+)".*\nexport superusers$</ind:pattern>
+          >^[\s]*set[\s]+superusers="(?i)\b(?!(?:root|admin|administrator)\b)(\w+)".*\n[\s]*export[\s]+superusers[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

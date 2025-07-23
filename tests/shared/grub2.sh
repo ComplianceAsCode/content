@@ -48,3 +48,8 @@ function set_root_unquoted {
 function set_superusers_no_export {
 	set_superusers_unquoted "\"$1\""
 }
+
+function set_superusers_indented_export {
+	set_superusers_unquoted "\"$1\""
+	echo "    export superusers" >> "$GRUB_CFG_ROOT/grub.cfg"
+}
