@@ -299,3 +299,19 @@ class TestAnsibleSnippetsProcessor:
         # This should raise SystemExit when trying to parse invalid YAML
         with pytest.raises(SystemExit):
             processor.process_snippets()
+
+    def test_process_task_special_service_block(self):
+      """Test processing of special service block tasks."""
+      processor = ssg.ansible.AnsibleSnippetsProcessor([])
+
+      service_task = {
+        "name": "Enable service sshd",
+        "block": [{"name":"Gather package facts", "ansible.builtin.package_facts": {"manager": "auto"}}, {"name": "Enable service sshd", "ansible.builtin.systemd": {"name": "sshd"}}],
+        "tags": ["special_service_block"]
+      }
+      result = processor._process_task(service_task)
+
+      assert result is None  # Service tasks should be skipped
+      assert len(processor.service_tasks) == 1
+      assert processor.service_tasks[0] == service_task
+      assert "ansible.builtin.package_facts" not in processor.service_tasks[0]["block"][0]

@@ -134,6 +134,7 @@ class AnsibleSnippetsProcessor:
         """
         self.all_snippets = all_snippets
         self.package_tasks = []
+        self.service_tasks = []
         self.other_tasks = []
 
     def _process_task(self, task):
@@ -146,6 +147,7 @@ class AnsibleSnippetsProcessor:
         Returns:
             dict or None: The processed task, or None if the task should be skipped.
         """
+
         if task_is(task, ["block"]):
             # Process block tasks recursively
             new_block = []
@@ -153,6 +155,10 @@ class AnsibleSnippetsProcessor:
                 if self._process_task(subtask) is not None:
                     new_block.append(subtask)
             task["block"] = new_block
+            if "special_service_block" in task.get("tags", []):
+                # Collect service tasks to be processed later
+                self.service_tasks.append(task)
+                return None
             return task if new_block else None
         if task_is(task, ["ansible.builtin.package_facts", "package_facts"]):
             # Skip package_facts tasks because they will be replaced by
@@ -197,4 +203,4 @@ class AnsibleSnippetsProcessor:
         Returns:
             list: Combined list of all processed tasks.
         """
-        return [package_facts_task, *self.package_tasks, copy.deepcopy(package_facts_task), service_facts_task, *self.other_tasks]
+        return [package_facts_task, *self.package_tasks, copy.deepcopy(package_facts_task), *self.service_tasks, service_facts_task, *self.other_tasks]
