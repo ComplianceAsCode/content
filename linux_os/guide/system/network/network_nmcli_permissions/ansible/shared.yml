@@ -4,7 +4,12 @@
 # complexity = low
 # disruption = low
 
-- name: Ensure non-privileged users do not have access to nmcli
+- name: "{{{ rule_title }}} - Ensure polkit-pkla-compat is installed"
+  package:
+    name: "polkit-pkla-compat"
+    state: present
+
+- name: "{{{ rule_title }}} - Ensure non-privileged users do not have access to nmcli"
   community.general.ini_file:
     path: /etc/polkit-1/localauthority/20-org.d/10-nm-harden-access.pkla
     section: Disable General User Access to NetworkManager
