@@ -13,32 +13,18 @@
 # Or for a full reference, visit https://qlty.sh/d/qlty-toml
 config_version = "0"
 
+[[source]]
+name = "default"
+default = true
+
+[[source]]
+name = "cac-source"
+repository = "https://github.com/ComplianceAsCode/content"
+branch = "master"
+
+
 exclude_patterns = [
-  "*_min.*",
-  "*-min.*",
-  "*.min.*",
-  "**/.yarn/**",
-  "**/*.d.ts",
-  "**/assets/**",
-  "**/bower_components/**",
-  "**/build/**",
-  "**/cache/**",
-  "**/config/**",
-  "**/db/**",
-  "**/deps/**",
-  "**/dist/**",
-  "**/extern/**",
-  "**/external/**",
-  "**/generated/**",
-  "**/Godeps/**",
-  "**/gradlew/**",
-  "**/mvnw/**",
-  "**/node_modules/**",
-  "**/protos/**",
-  "**/seed/**",
-  "**/target/**",
-  "**/templates/**",
-  "**/testdata/**",
+  "linux_os/"
 ]
 
 test_patterns = [
@@ -52,38 +38,13 @@ test_patterns = [
   "**/spec_*.*",
 ]
 
-[smells]
-mode = "comment"
-
-[smells.boolean_logic]
-threshold = 4
-
-[smells.file_complexity]
-threshold = 88
-
-[smells.return_statements]
-threshold = 4
-
-[smells.nested_control_flow]
-threshold = 4
-
-[smells.function_parameters]
-threshold = 4
-
-[smells.function_complexity]
-threshold = 7
-
-[smells.duplication]
-enabled = true
-threshold = 20
-
-[[source]]
-name = "default"
-default = true
-
 [[plugin]]
 name = "markdownlint"
 mode = "comment"
 
 [[plugin]]
 name = "shellcheck"
+
+[[plugin]]
+name = "flake8"
+mode = "comment"
