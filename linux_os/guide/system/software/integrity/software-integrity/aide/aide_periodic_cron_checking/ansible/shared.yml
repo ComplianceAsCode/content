@@ -5,24 +5,16 @@
 # disruption = low
 - name: "Ensure AIDE is installed"
   package:
-    name: "{{ item }}"
+    name: aide
     state: present
-  with_items:
-    - aide
-
-- name: Set cron package name - RedHat
-  set_fact:
-    cron_pkg_name: cronie
-  when: ansible_os_family == "RedHat" or ansible_os_family == "Suse"
-
-- name: Set cron package name - Debian
-  set_fact:
-    cron_pkg_name: cron
-  when: ansible_os_family == "Debian"
 
 - name: Install cron
   package:
-    name: "{{ cron_pkg_name }}"
+{{% if "ubuntu" in product or "debian" in product %}}
+    name: cron
+{{% else %}}
+    name: cronie
+{{% endif %}}
     state: present
 
 {{% if product != 'ubuntu2404' %}}

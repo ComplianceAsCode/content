@@ -13,7 +13,6 @@
 
 - name: '{{{ rule_title }}} - Collect Facts About System Services'
   ansible.builtin.service_facts:
-  register: result_services_states
 
 - name: '{{{ rule_title }}} - Remediation is Applicable if firewalld Service is Running'
   block:
