@@ -2,7 +2,7 @@ FROM registry.redhat.io/ubi9/ubi:latest AS builder
 
 # The build tooling requires python, and the openscap-utils package to build
 # the content.
-RUN yum -y install python3 cmake make python3-pyyaml python3-jinja2 openscap-utils
+RUN yum -y install python3 cmake make python3-pyyaml python3-jinja2 openscap-scanner
 
 WORKDIR /go/src/github.com/ComplianceAsCode/content
 COPY . .
@@ -95,4 +95,5 @@ LABEL \
         # version=1.6.1-dev
 
 WORKDIR /
+COPY --from=builder /go/src/github.com/ComplianceAsCode/content/LICENSE /licenses/LICENSE
 COPY --from=builder /go/src/github.com/ComplianceAsCode/content/build/ssg-*-ds.xml .
