@@ -14,7 +14,14 @@
         test_ref="test_require_rescue_service_override" />
       </criteria>
       {{%- if 'ol' not in families  and 'rhel' not in product and "fedora" != product-%}}
-      <criterion test_ref="test_require_rescue_service_runlevel1" />
+        {{%- if product in ["sle15", "slmicro6"]  -%}}
+            <criteria operator="OR">
+                <criterion test_ref="test_require_rescue_service_runlevel1" />
+                <criterion test_ref="test_require_rescue_service_rescue_target" />
+            </criteria>
+        {{%- else -%}}
+            <criterion test_ref="test_require_rescue_service_runlevel1" />
+        {{%- endif %}}
       <criterion test_ref="test_no_custom_runlevel1_target" negate="true"/>
       <criterion test_ref="test_no_custom_rescue_service" negate="true"/>
       {{%- endif -%}}
@@ -23,7 +30,7 @@
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that
-    {{% if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5"] or 'ol' in families or 'rhel' in product -%}}
+    {{% if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
     /usr/lib/systemd/systemd-sulogin-shell
     {{%- else -%}}
     /sbin/sulogin
@@ -38,14 +45,13 @@
 
   <ind:textfilecontent54_object id="obj_require_rescue_service_distro" version="1">
     <ind:filepath>/usr/lib/systemd/system/rescue.service</ind:filepath>
-
     <ind:pattern operation="pattern match">^ExecStart\s?=\s?\-?(.*)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that
-    {{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5"] or 'ol' in families or 'rhel' in product -%}}
+    {{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
     /usr/lib/systemd/systemd-sulogin-shell
     {{%- else -%}}
     /sbin/sulogin
@@ -64,10 +70,10 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  
+
 
   <ind:textfilecontent54_state id="state_require_rescue_service" version="1">
-    {{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5"] or 'ol' in families or 'rhel' in product -%}}
+    {{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
     <ind:subexpression datatype="string" operation="pattern match">.*/usr/lib/systemd/systemd-sulogin-shell[ ]+rescue</ind:subexpression>
     {{%- else -%}}
     <ind:subexpression datatype="string" operation="pattern match">/bin/sh[\s]+-c[\s]+\"(/usr)?/sbin/sulogin;[\s]+/usr/bin/systemctl[\s]+--fail[\s]+--no-block[\s]+default\"</ind:subexpression>
@@ -93,6 +99,17 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+    <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="Tests that the systemd rescue.service is in the rescue.target"
+    id="test_require_rescue_service_rescue_target" version="1">
+    <ind:object object_ref="obj_require_rescue_service_rescue_target" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_require_rescue_service_rescue_target" version="1">
+    <ind:filepath>/usr/lib/systemd/system/rescue.target</ind:filepath>
+    <ind:pattern operation="pattern match">^Requires=.*rescue\.service</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
   <unix:file_test check="all" check_existence="at_least_one_exists"
   comment="look for rescue.service in /etc/systemd/system"
   id="test_no_custom_rescue_service" version="1">
@@ -110,11 +127,15 @@
   id="test_no_custom_runlevel1_target" version="1">
     <unix:object object_ref="object_no_custom_runlevel1_target" />
   </unix:file_test>
-  <unix:file_object comment="look for runlevel1.target in /etc/systemd/system"
+  <unix:file_object comment="look for runlevel1.target or rescue.target in /etc/systemd/system"
   id="object_no_custom_runlevel1_target" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="all" />
     <unix:path operation="equals">/etc/systemd/system</unix:path>
-    <unix:filename operation="pattern match">^runlevel1.target$</unix:filename>
+    {{%- if product in [ "sle15", "slmicro6" ] -%}}
+        <unix:filename operation="pattern match">^(runlevel1|rescue).target$</unix:filename>
+    {{%- else -%}}
+        <unix:filename operation="pattern match">^runlevel1.target$</unix:filename>
+    {{%- endif %}}
   </unix:file_object>
   {{%- endif -%}}
 </def-group>
