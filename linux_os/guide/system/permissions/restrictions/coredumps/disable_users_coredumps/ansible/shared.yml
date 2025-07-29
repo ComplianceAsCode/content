@@ -5,7 +5,7 @@
 # disruption = low
 
 -   name: "{{{ rule_title }}} - Set dirs, files and regex variables"
-    set_fact:
+    ansible.builtin.set_fact:
         limits_dropin_dir: /etc/security/limits.d
         limits_dropin_file: /etc/security/limits.d/10-ssg-hardening.conf
         limits_main_file: /etc/security/limits.conf
