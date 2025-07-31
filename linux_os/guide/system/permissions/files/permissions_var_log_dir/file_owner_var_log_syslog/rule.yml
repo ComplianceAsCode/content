@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify User Who Owns /var/log/syslog File'
 
-{{%  if product in ['ubuntu2404'] %}}
+{{%  if product in ['ubuntu2404'] or 'debian' in product %}}
 description: '{{{ describe_file_owner(file="/var/log/syslog", owner="syslog|root") }}}'
 {{%- else %}}
 description: '{{{ describe_file_owner(file="/var/log/syslog", owner="syslog") }}}'
@@ -47,5 +47,7 @@ template:
     vars:
         filepath: /var/log/syslog
         uid_or_name: syslog
+        uid_or_name@debian12: root
+        uid_or_name@debian13: root
 {{%- endif %}}
 
