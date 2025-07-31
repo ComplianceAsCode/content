@@ -1,0 +1,34 @@
+{{% macro find_command(find_parameters, fail_message, find_type="-type f") %}}
+#!/bin/bash
+
+# Get filesystems mounted with 'nodev' option
+filter_nodev=$(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,)
+
+# Find all mounted partitions, excluding those with 'nodev'
+readarray -t partitions < <(findmnt -n -l -k -it "${filter_nodev}" | awk '{ print $1 }')
+
+# Ensure /tmp is also checked when tmpfs is used.
+if grep -Pq "^tmpfs\\h+/tmp" /proc/mounts; then
+    partitions+=("/tmp")
+fi
+
+# Loop through each partition and find files based on provided type and permissions
+for partition in "${partitions[@]}"; do
+    # The find command uses the parametrized find_parameters
+    files=$(find "${partition}" -xdev {{{ find_type }}} {{{ find_parameters }}}
+    if [[ -n "${files}" ]]; then
+        echo -e "{{{ fail_message }}}:\n${files}"
+        exit "${XCCDF_RESULT_FAIL}"
+    fi
+done
+
+exit "${XCCDF_RESULT_PASS}"
+{{% endmacro %}}
+
+
+{{% macro find_files(find_parameters, fail_message) %}}
+{{{ find_command(find_parameters, fail_message, find_type="-type f") }}}
+{{% endmacro %}}
+{{% macro find_directories(find_parameters, fail_message) %}}
+{{{ find_command(find_parameters, fail_message, find_type="-type d") }}}
+{{% endmacro %}}
