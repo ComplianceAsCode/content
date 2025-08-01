@@ -15,7 +15,7 @@ fi
 # Loop through each partition and find files based on provided type and permissions
 for partition in "${partitions[@]}"; do
     # The find command uses the parametrized find_parameters
-    files=$(find "${partition}" -xdev {{{ find_type }}} {{{ find_parameters }}}
+    files=$(find "${partition}" -xdev {{{ find_type }}} {{{ find_parameters }}})
     if [[ -n "${files}" ]]; then
         echo -e "{{{ fail_message }}}:\n${files}"
         exit "${XCCDF_RESULT_FAIL}"
