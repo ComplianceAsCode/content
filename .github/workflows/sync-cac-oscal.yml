@@ -98,7 +98,7 @@ jobs:
       - name: Set RH_PRODUCTS
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
-          echo "RH_PRODUCTS=(rhel8 rhel9 rhel10 ocp4)" >> $GITHUB_ENV
+          echo "RH_PRODUCTS=(rhel8 rhel9 rhel10 ocp4 fedora)" >> $GITHUB_ENV
       # Step 7: Get profiles, controls and level mapping
       - name: Get profiles, controls and level mapping
         if: ${{ env.CHANGE_FOUND == 'true' }}
@@ -108,7 +108,7 @@ jobs:
           for product in "${RH_PRODUCTS[@]}"; do
             echo "The map for $product..."
             map_file=$product"_map.json"
-            python scripts/get_mappings_profile_control_levels.py $product "$GITHUB_WORKSPACE/cac-content" > $map_file  2>&1
+            python -W ignore scripts/get_mappings_profile_control_levels.py $product "$GITHUB_WORKSPACE/cac-content" > $map_file  2>&1
             cat $map_file
           done
       # Step 8: Get product available controls
@@ -120,7 +120,7 @@ jobs:
           for product in "${RH_PRODUCTS[@]}"; do
             echo "All available controls of $product..."
             controls_file=$product"_controls"
-            python scripts/get_product_controls.py $product "$GITHUB_WORKSPACE/cac-content" > $controls_file  2>&1
+            python -W ignore scripts/get_product_controls.py $product "$GITHUB_WORKSPACE/cac-content" > $controls_file  2>&1
             cat $controls_file
           done
       # Step 9: Handle the detected updates
@@ -153,9 +153,9 @@ jobs:
                 # then convert them to impacted controls and profiles
                 rules=($line)
                 for rule in "${rules[@]}"; do
-                  python scripts/get_rule_impacted_files.py rh-products "$GITHUB_WORKSPACE/cac-content" $rule control >> rule_impacted_controls 2>&1
+                  python -W ignore scripts/get_rule_impacted_files.py rh-products "$GITHUB_WORKSPACE/cac-content" $rule control >> rule_impacted_controls 2>&1
                   for product in "${RH_PRODUCTS[@]}"; do
-                    python scripts/get_rule_impacted_files.py $product "$GITHUB_WORKSPACE/cac-content" $rule profile >> $product"_rule_impacted_profiles" 2>&1
+                    python -W ignore scripts/get_rule_impacted_files.py $product "$GITHUB_WORKSPACE/cac-content" $rule profile >> $product"_rule_impacted_profiles" 2>&1
                   done
                 done
               fi

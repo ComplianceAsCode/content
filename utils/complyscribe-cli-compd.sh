@@ -41,10 +41,10 @@ while IFS= read -r line; do
   if [ "$policy_or_profile" = "$param" ]; then
     while IFS= read -r level; do
       oscal_profile=$product-$policy_id-$level
-      if echo "$product" | grep -q 'rhel'; then
-        type="software"
-      else
+      if echo "$product" | grep -q 'ocp4'; then
         type="service"
+      else
+        type="software"
       fi
       sed -i "/href/s|\(trestle://\)[^ ]*\(catalogs\)|\1\2|g" "../oscal-content/profiles/$oscal_profile/profile.json"
       poetry run complyscribe sync-cac-content component-definition --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$workspace_path/cac-content" --product "$product" --component-definition-type "$type" --cac-profile "$profile" --oscal-profile "$oscal_profile"
