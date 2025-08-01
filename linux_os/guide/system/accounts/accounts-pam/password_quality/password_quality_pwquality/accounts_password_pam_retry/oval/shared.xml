@@ -19,6 +19,7 @@
           test_ref="test_password_pam_pwquality_retry_{{{ file | escape_id }}}" />
           {{% endfor %}}
         </criteria>
+        {{% if 'ol' not in families%}}
         <criteria operator="AND" comment="Conditions for retry in pwquality.conf file are satisfied">
           {{% for file in configuration_files %}}
           <criterion
@@ -28,6 +29,7 @@
           <criterion comment="check retry parameter in pwquality.conf"
           test_ref="test_password_pam_pwquality_retry_pwquality_conf"/>
         </criteria>
+        {{% endif %}}
       </criteria>
     </criteria>
   </definition>
@@ -64,9 +66,11 @@
   {{{ object_pwquality_retry( path="/etc/pam.d/" ~ file ,
                             test_ref="password_pam_pwquality_retry_" ~ (file | escape_id)) }}}
 
+  {{% if 'ol' not in families %}}
   {{{ test_pwquality_notset(file,
                             "password_pam_pwquality_retry_" ~ (file | escape_id) ~"_not_set",
                             "password_pam_pwquality_retry_" ~ (file | escape_id)) }}}
+  {{% endif %}}
   {{% endfor %}}
 
   <ind:textfilecontent54_state id="state_password_pam_retry_upper_bound" version="1"
@@ -82,7 +86,7 @@
 
   <external_variable datatype="int" id="var_password_pam_retry" version="1"
                      comment="External variable for pam_pwquality retry"/>
-
+  {{% if 'ol' not in families %}}
   <ind:textfilecontent54_test check="all" version="1"
                               id="test_password_pam_pwquality_retry_pwquality_conf"
                               comment="check the configuration of /etc/security/pwquality.conf">
@@ -96,4 +100,5 @@
     <ind:pattern operation="pattern match">^[\s]*retry[\s]*=[\s]*(\d+)(?:[\s]|$)</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+  {{% endif %}}
 </def-group>
