@@ -78,7 +78,7 @@ RUN if [ "$(uname -m)" = "x86_64" ] || [ "$(uname -m)" = "ppc64le" ]; then \
         else ./build_product ocp4 --datastream-only; \
         fi
 
-FROM registry.redhat.io/ubi9/ubi-micro:latest
+FROM registry.redhat.io/ubi9/ubi-minimal:latest
 
 LABEL \
         io.k8s.display-name="Compliance Content" \
