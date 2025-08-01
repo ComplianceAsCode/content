@@ -1051,7 +1051,7 @@ if [ -f /usr/bin/authselect ]; then
         {{{ bash_ensure_pam_module_line("$PAM_FILE_PATH", 'password', control, 'pam_pwhistory.so', after_match) | indent(8) }}}
     fi
 else
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product %}}
 conf_name={{{ pam_file }}}
 conf_path="/usr/share/pam-configs"
 

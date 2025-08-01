@@ -1,4 +1,4 @@
-# platform = multi_platform_slmicro,multi_platform_ubuntu
+# platform = multi_platform_slmicro,multi_platform_ubuntu,multi_platform_debian
 {{% if 'ubuntu' in product %}}
 dropin_conf=/etc/systemd/journal-upload.conf.d/60-journald_upload.conf
 mkdir -p /etc/systemd/journal-upload.conf.d

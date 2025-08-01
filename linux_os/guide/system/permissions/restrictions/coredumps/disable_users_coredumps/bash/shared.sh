@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_ol,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu,multi_platform_almalinux
+# platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_ol,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu,multi_platform_almalinux,multi_platform_debian
 SECURITY_LIMITS_FILE="/etc/security/limits.conf"
 DROPIN_DIR="/etc/security/limits.d"
 DROPIN_FILE="$DROPIN_DIR/10-ssg-hardening.conf"
