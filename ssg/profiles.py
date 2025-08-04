@@ -338,6 +338,7 @@ def get_profiles_from_products(content_dir: str, products: list,
 
     for product in products:
         product_yaml = _load_product_yaml(content_dir, product)
+        product_yaml = product_yaml._data_as_dict
         product_title = product_yaml.get("full_name")
         profiles_files = get_profile_files_from_root(product_yaml, product_yaml)
         controls_manager = _load_controls_manager(controls_dir, product_yaml)
