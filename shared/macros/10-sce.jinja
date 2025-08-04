@@ -5,8 +5,9 @@
 
   :param find_parameters: Parameters that will be passed to the find command
   :param fail_message: Message printed to the output when the test fails
-  :param find_type: Find type, either file or directory. options: '-type f' or '-type d'
   :param exclude_directories: List of directories to be excluded from the search using regex format, e.g.: 'sysroot|boot', this will exclude both /sysroot and /boot directories.
+  :param skip_rpm_owned_files: Check if files are owned by an rpm package and ignores it. Useful in cases when check SUID and SGID.
+  :param find_type: Find type, either file or directory. options: '-type f' or '-type d'
 #}}
 {{% macro find_command(find_parameters, fail_message, exclude_directories="", skip_rpm_owned_files=False, find_type="-type f") %}}
 #!/bin/bash
@@ -27,29 +28,29 @@ unauthorized_files=()
 # Loop through each partition and find files based on provided type and permissions
 for partition in "${partitions[@]}"; do
 
-    # Loop through each partition and find SGID files
-    for partition in "${partitions[@]}"; do
-        while IFS= read -r file; do
+  # Loop through each partition and find SGID files
+  for partition in "${partitions[@]}"; do
+    while IFS= read -r file; do
 
-        {{%- if skip_rpm_owned_files %}}
-        # Skip files that belong to an RPM package
-        if ! rpm -qf --quiet "$file"; then
-        {{%- endif %}}
-            unauthorized_files+=("$file")
-        {{%- if skip_rpm_owned_files %}}
-        fi
-        {{%- endif %}}
-        done < <(find "${partition}" -xdev {{{ find_type }}} {{{ find_parameters }}} {{{ '| grep -Ev "^/('~exclude_directories~')/"' if exclude_directories }}})
-    done
-
-    if (( ${#unauthorized_files[@]} > 0 )); then
-        echo "{{{ fail_message }}}:\n"
-        printf '%s\n' "${unauthorized_files[@]}"
-        exit "${XCCDF_RESULT_FAIL}"
+    {{%- if skip_rpm_owned_files %}}
+    # Skip files that belong to an RPM package
+    if ! rpm -qf --quiet "$file"; then
+    {{%- endif %}}
+        unauthorized_files+=("$file")
+    {{%- if skip_rpm_owned_files %}}
     fi
-    done
+    {{%- endif %}}
+    done < <(find "${partition}" -xdev {{{ find_type }}} {{{ find_parameters }}} {{{ '| grep -Ev "^/('~exclude_directories~')/"' if exclude_directories }}})
+  done
 
-    exit "${XCCDF_RESULT_PASS}"
+  if (( ${#unauthorized_files[@]} > 0 )); then
+    echo "{{{ fail_message }}}:\n"
+    printf '%s\n' "${unauthorized_files[@]}"
+    exit "${XCCDF_RESULT_FAIL}"
+  fi
+done
+
+exit "${XCCDF_RESULT_PASS}"
 {{% endmacro %}}
 
 {{#
@@ -60,6 +61,7 @@ for partition in "${partitions[@]}"; do
   :param find_parameters: Parameters that will be passed to the find command
   :param fail_message: Message printed to the output when the test fails
   :param exclude_directories: List of directories to be excluded from the search using regex format, e.g.: 'sysroot|boot', this will exclude both /sysroot and /boot directories.
+  :param skip_rpm_owned_files: Check if files are owned by an rpm package and ignores it. Useful in cases when check SUID and SGID.
 #}}
 {{% macro find_files(find_parameters, fail_message, exclude_directories="", skip_rpm_owned_files=False) %}}
 {{{ find_command(find_parameters, fail_message, exclude_directories, skip_rpm_owned_files, find_type="-type f") }}}
@@ -73,6 +75,7 @@ for partition in "${partitions[@]}"; do
   :param find_parameters: Parameters that will be passed to the find command
   :param fail_message: Message printed to the output when the test fails
   :param exclude_directories: List of directories to be excluded from the search using regex format, e.g.: 'sysroot|boot', this will exclude both /sysroot and /boot directories.
+  :param skip_rpm_owned_files: Check if files are owned by an rpm package and ignores it. Useful in cases when check SUID and SGID.
 #}}
 {{% macro find_directories(find_parameters, fail_message, exclude_directories="", skip_rpm_owned_files=False) %}}
 {{{ find_command(find_parameters, fail_message, exclude_directories, skip_rpm_owned_files, find_type="-type d") }}}
