@@ -1,3 +1,12 @@
+{{#
+  Macro to help finding files in the system, uses the unix program 'find' to look for files
+  and directories. Returns pass if it finds no files matching the find criteria. If it finds
+  files then it returns fail.
+
+  :param find_parameters: Parameters that will be passed to the find command
+  :param fail_message: Message printed to the output when the test fails
+  :param find_type: Find type, either file or directory. options: '-type f' or '-type d'
+#}}
 {{% macro find_command(find_parameters, fail_message, find_type="-type f") %}}
 #!/bin/bash
 
@@ -25,10 +34,26 @@ done
 exit "${XCCDF_RESULT_PASS}"
 {{% endmacro %}}
 
+{{#
+  Macro to help finding files in the system, uses the unix program 'find'.
+  Returns pass if it finds no files matching the find criteria. If it finds
+  files then it returns fail.
 
+  :param find_parameters: Parameters that will be passed to the find command
+  :param fail_message: Message printed to the output when the test fails
+#}}
 {{% macro find_files(find_parameters, fail_message) %}}
 {{{ find_command(find_parameters, fail_message, find_type="-type f") }}}
 {{% endmacro %}}
+
+{{#
+  Macro to help finding directories in the system, uses the unix program 'find'.
+  Returns pass if it finds no directories matching the find criteria. If it finds
+  directories then it returns fail.
+
+  :param find_parameters: Parameters that will be passed to the find command
+  :param fail_message: Message printed to the output when the test fails
+#}}
 {{% macro find_directories(find_parameters, fail_message) %}}
 {{{ find_command(find_parameters, fail_message, find_type="-type d") }}}
 {{% endmacro %}}
