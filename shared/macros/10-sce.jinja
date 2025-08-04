@@ -6,8 +6,9 @@
   :param find_parameters: Parameters that will be passed to the find command
   :param fail_message: Message printed to the output when the test fails
   :param find_type: Find type, either file or directory. options: '-type f' or '-type d'
+  :param exclude_directories: List of directories to be excluded from the search using regex format, e.g.: 'sysroot|boot', this will exclude both /sysroot and /boot directories.
 #}}
-{{% macro find_command(find_parameters, fail_message, find_type="-type f") %}}
+{{% macro find_command(find_parameters, fail_message, exclude_directories="", find_type="-type f") %}}
 #!/bin/bash
 
 # Get filesystems mounted with 'nodev' option
@@ -23,8 +24,14 @@ fi
 
 # Loop through each partition and find files based on provided type and permissions
 for partition in "${partitions[@]}"; do
+
     # The find command uses the parametrized find_parameters
+    {{% if exclude_directories %}}
+    files=$(find "${partition}" -xdev {{{ find_type }}} {{{ find_parameters }}} | grep -Ev "^/({{{exclude_directories}}})/" )
+    {{% else %}}
     files=$(find "${partition}" -xdev {{{ find_type }}} {{{ find_parameters }}})
+    {{% endif %}}
+
     if [[ -n "${files}" ]]; then
         echo -e "{{{ fail_message }}}:\n${files}"
         exit "${XCCDF_RESULT_FAIL}"
@@ -41,9 +48,10 @@ exit "${XCCDF_RESULT_PASS}"
 
   :param find_parameters: Parameters that will be passed to the find command
   :param fail_message: Message printed to the output when the test fails
+  :param exclude_directories: List of directories to be excluded from the search using regex format, e.g.: 'sysroot|boot', this will exclude both /sysroot and /boot directories.
 #}}
-{{% macro find_files(find_parameters, fail_message) %}}
-{{{ find_command(find_parameters, fail_message, find_type="-type f") }}}
+{{% macro find_files(find_parameters, fail_message, exclude_directories="") %}}
+{{{ find_command(find_parameters, fail_message, exclude_directories, find_type="-type f") }}}
 {{% endmacro %}}
 
 {{#
@@ -53,7 +61,8 @@ exit "${XCCDF_RESULT_PASS}"
 
   :param find_parameters: Parameters that will be passed to the find command
   :param fail_message: Message printed to the output when the test fails
+  :param exclude_directories: List of directories to be excluded from the search using regex format, e.g.: 'sysroot|boot', this will exclude both /sysroot and /boot directories.
 #}}
-{{% macro find_directories(find_parameters, fail_message) %}}
-{{{ find_command(find_parameters, fail_message, find_type="-type d") }}}
+{{% macro find_directories(find_parameters, fail_message, exclude_directories="") %}}
+{{{ find_command(find_parameters, fail_message, exclude_directories, find_type="-type d") }}}
 {{% endmacro %}}
