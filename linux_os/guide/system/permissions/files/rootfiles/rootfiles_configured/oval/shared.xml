@@ -2,7 +2,7 @@
 
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("Ensure that tmpfiles for rootfiles is configured correctly.", rule_title=rule_title) }}}]
+        {{{ oval_metadata("Ensure that tmpfiles for rootfiles is configured correctly.", rule_title=rule_title) }}}
         <criteria operator="AND" comment="Ensure that tmpfiles for rootfiles is configured correctly.">
             {{%- for file in files %}}
             <criterion comment="Check that /root/.{{{ file }}} is configured correctly"
