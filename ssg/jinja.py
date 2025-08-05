@@ -98,10 +98,17 @@ def _preload_macros_from_file(env, macros_file):
 
 
 def preload_macros(env):
-    for filename in sorted(os.listdir(JINJA_MACROS_DIRECTORY)):
+    if "site-packages" in JINJA_MACROS_DIRECTORY and env.globals.get('product_dir'):
+        # use product_dir to find macros directory
+        jinja_macros_directory = os.path.join(
+            os.path.dirname(os.path.dirname(env.globals['product_dir'])), "shared", "macros"
+        )
+    else:
+        jinja_macros_directory = JINJA_MACROS_DIRECTORY
+    for filename in sorted(os.listdir(jinja_macros_directory)):
         if not filename.endswith(".jinja"):
             continue
-        macros_file = os.path.join(JINJA_MACROS_DIRECTORY, filename)
+        macros_file = os.path.join(jinja_macros_directory, filename)
         _preload_macros_from_file(env, macros_file)
 
 
