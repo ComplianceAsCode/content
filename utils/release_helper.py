@@ -96,24 +96,16 @@ def get_repo_stable_branch(repo) -> object:
     branches = get_repo_branches(repo)
     return filter_repo_branch_by_name(branches, "stable")
 
-
-def get_old_stabilization_branch(repo) -> object:
-    branches = get_repo_branches(repo)
-    latest_version = get_latest_version(repo)
-    branch_name = f'stabilization-v{latest_version}'
-    return filter_repo_branch_by_name(branches, branch_name)
-
-
-def remove_old_stabilization_branch(repo, branch) -> None:
-    if get_confirmation(f'Are you sure about removing the "{branch.name}" branch?'):
+def remove_old_stabilization_branch(repo) -> None:
+    if get_confirmation('Are you sure about removing the "stabilization" branch?'):
         # https://github.com/PyGithub/PyGithub/issues/1570
         try:
-            branch_ref = repo.get_git_ref(f'heads/{branch.name}')
+            branch_ref = repo.get_git_ref('heads/stabilization')
             branch_ref.delete()
         except Exception as e:
             print(f'Error: {e}')
     else:
-        print(f'Aborted! {branch.name} branch not removed.')
+        print(f'Aborted! stabilization branch not removed.')
 
 
 # Repository Contributors
@@ -373,7 +365,7 @@ def get_next_release_date(latest_release_date: datetime) -> datetime:
 
 
 def is_next_release_in_progress(repo) -> bool:
-    stabilization_branch = get_next_stabilization_branch(repo)
+    stabilization_branch = "stabilization"
     branches_names = [branch.name for branch in get_repo_branches(repo)]
     if stabilization_branch in branches_names:
         return True
@@ -385,12 +377,6 @@ def get_next_release_version(repo) -> str:
     current_version = get_latest_version(repo)
     next_version = bump_version(current_version, 'minor')
     return next_version
-
-
-def get_next_stabilization_branch(repo) -> str:
-    next_release = get_next_release_version(repo)
-    return f'stabilization-v{next_release}'
-
 
 # Communication
 def get_date_for_message(date) -> datetime:
@@ -421,7 +407,7 @@ def get_release_start_message(repo) -> str:
     next_release_version = get_next_release_version(repo)
     next_release_date = get_next_release_date(latest_release.published_at)
     date = get_date_for_message(next_release_date)
-    branch = get_next_stabilization_branch(repo)
+    branch = "stabilization"
 
     future_version = bump_version(next_release_version, 'minor')
     future_release_date = get_next_release_date(next_release_date)
@@ -682,13 +668,7 @@ def stats(repo, args):
 
 def cleanup(repo, args) -> None:
     if args.branch:
-        branches_to_remove = get_old_stabilization_branch(repo)
-        if branches_to_remove:
-            for branch in branches_to_remove:
-                remove_old_stabilization_branch(repo, branch)
-        else:
-            print('Great! There is no branch to be removed.')
-
+        remove_old_stabilization_branch(repo)
 
 def release_prep(repo, args) -> None:
     if args.contributors:
@@ -724,11 +704,10 @@ def release(repo, args) -> None:
         if args.tag:
             next_version = get_next_release_version(repo)
             tag_name = f'v{next_version}'
-            stab_branch = get_next_stabilization_branch(repo)
             print('Release process starts when a version tag is added to the branch.\n'
                   'It is better to do it manually. But here are the commands you need:\n')
-            print(f'git tag {tag_name} {stab_branch}\n'
-                  'git push --tags')
+            print(f'git tag {tag_name} origin/stabilization\n'
+                  f'git push origin {tag_name}')
 
         if args.message:
             message = get_release_start_message(repo)
