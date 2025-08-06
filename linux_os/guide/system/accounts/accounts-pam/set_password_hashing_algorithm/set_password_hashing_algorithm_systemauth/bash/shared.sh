@@ -5,7 +5,7 @@
 {{% if 'sle' in product or 'slmicro' in product -%}}
 PAM_FILE_PATH="/etc/pam.d/common-password"
 {{% set control = "required" %}}
-{{%- elif 'ubuntu' in product -%}}
+{{%- elif 'ubuntu' in product or 'debian' in product -%}}
 {{{ bash_pam_unix_enable() }}}
 PAM_FILE_PATH=/usr/share/pam-configs/cac_unix
 {{%- else -%}}
@@ -17,7 +17,7 @@ PAM_FILE_PATH="/etc/pam.d/system-auth"
 declare -a HASHING_ALGORITHMS_OPTIONS=("sha512" "yescrypt" "gost_yescrypt" "blowfish" "sha256" "md5" "bigcrypt")
 
 for hash_option in "${HASHING_ALGORITHMS_OPTIONS[@]}"; do
-  {{% if 'ubuntu' in product -%}}
+  {{% if 'ubuntu' in product or 'debian' in product -%}}
     sed -i -E '/^Password:/,/^[^[:space:]]/ {
     /pam_unix\.so/ {
       s/\s*\b'"$hash_option"'\b//g
@@ -36,7 +36,7 @@ for hash_option in "${HASHING_ALGORITHMS_OPTIONS[@]}"; do
   {{%- endif %}}
 done
 
-{{% if 'ubuntu' in product -%}}
+{{% if 'ubuntu' in product or 'debian' in product -%}}
 if ! grep -qzP "Password:\s*\n\s+.*\s+pam_unix.so\s+.*\b$var_password_hashing_algorithm_pam\b" "$PAM_FILE_PATH"; then
   sed -i -E '/^Password:/,/^[^[:space:]]/ {
     /pam_unix\.so/ {

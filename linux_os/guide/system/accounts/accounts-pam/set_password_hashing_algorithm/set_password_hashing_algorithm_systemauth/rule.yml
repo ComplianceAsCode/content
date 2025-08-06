@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: "Set PAM''s Password Hashing Algorithm"
 
-{{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] or 'ubuntu' in product %}}
+{{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] or 'ubuntu' in product or 'debian' in product %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
 {{% else %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/system-auth" %}}
@@ -19,7 +19,7 @@ description: |-
     <br />
     {{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
     <pre>password    required    pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}} <i>other arguments...</i></pre>
-    {{% elif 'ubuntu' in product %}}
+    {{% elif 'ubuntu' in product or 'debian' in product %}}
     <pre>password    [success=1 default=ignore]   pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}} <i>other arguments...</i></pre>
     {{% else %}}
     <pre>password    sufficient    pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}} <i>other arguments...</i></pre>
@@ -79,7 +79,7 @@ ocil: |-
     <pre>$ sudo grep "^password.*pam_unix\.so.*{{{ xccdf_value("var_password_hashing_algorithm_pam") }}}" {{{ pam_passwd_file_path }}}
     {{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] -%}}
     password required pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}
-    {{% elif 'ubuntu' in product %}}
+    {{% elif 'ubuntu' in product or 'debian' in product %}}
     password [success=1 default=ignore] pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}
     {{% else %}}
     password sufficient pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}
