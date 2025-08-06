@@ -24,7 +24,7 @@ branch = "master"
 
 
 exclude_patterns = [
-  "linux_os/"
+  "**/linux_os/**"
 ]
 
 test_patterns = [
@@ -46,4 +46,4 @@ mode = "comment"
 name = "shellcheck"
 
 [[plugin]]
-name = "ruff"
+name = "flake8"
