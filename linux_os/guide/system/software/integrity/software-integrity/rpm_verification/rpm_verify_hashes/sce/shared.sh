@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# platform = multi_platform_rhel
+# platform = multi_platform_fedora,multi_platform_rhel
 # check-import = stdout
 
 readarray -t FILES_WITH_INCORRECT_HASHES < <(rpm -Va --noconfig | grep -E '^..5' | awk '{print $NF}' )
