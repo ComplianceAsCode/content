@@ -40,7 +40,7 @@ for partition in "${partitions[@]}"; do
 done
 
 if (( ${#unauthorized_files[@]} > 0 )); then
-  echo "{{{ fail_message }}}:\n"
+  echo "{{{ fail_message }}}:"
   printf '%s\n' "${unauthorized_files[@]}"
   exit "${XCCDF_RESULT_FAIL}"
 fi
