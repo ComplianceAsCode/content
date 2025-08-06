@@ -1,6 +1,5 @@
 #!/bin/bash
 # check-import = stdout
-# environment = bootc
 if [[ $(systemctl is-enabled {{{ DAEMONNAME }}}.service) == "masked" ]] ; then
     exit "$XCCDF_RESULT_PASS"
 fi
