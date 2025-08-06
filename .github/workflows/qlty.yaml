@@ -19,3 +19,5 @@ jobs:
               uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
             - name: Run Qlty Check
               run: ~/.qlty/bin/qlty check --no-fix
+            - name: Run ruff
+              uses: astral-sh/ruff-action@0c50076f12c38c3d0115b7b519b54a91cb9cf0ad
