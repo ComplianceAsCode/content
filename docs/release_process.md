@@ -63,7 +63,7 @@ More details about stabilization can be found in [Stabilization Phase](manual/de
 
 ### Updating Contributors List
 
-- Update the contributors list before creating the new **stabilization-vX.Y.Z** branch. So, make
+- Update the contributors list before creating the new **stabilization** branch. So, make
 sure there is enough time to review and merge the PR before starting the **stabilization** phase.
 - Update the contributors list by accessing the root folder of `content` repository and executing
 the following command:
@@ -81,10 +81,7 @@ Using `release_helper.py` script:
 
 ### Creating the Stabilization Branch
 
-- Create a new branch called **stabilization-vX.Y.Z** where **X.Y.Z** is the version of upstream
-release to be created.
-    - For example, if the last released version was **0.1.64**, the branch should be named as
-    `stabilization-v0.1.65`
+- Create a new branch called **stabilization**.
 
 Using `release_helper.py` script:
 ```bash
@@ -94,8 +91,7 @@ Using `release_helper.py` script:
 ### Creating the New Milestone
 
 - Create a new Milestone called **X.Y.Z**, where **X.Y.Z** is the version of future upstream release.
-    - For example, if you have just created the `stabilization-v0.1.65` branch in order to start
-    the stabilization phase for **0.1.65**, the new Milestone should be `0.1.66`.
+    - For example, if you have just started the stabilization phase for **0.1.65**, the new Milestone should be `0.1.66`.
 
 Using `release_helper.py` script:
 ```bash
@@ -108,11 +104,11 @@ Using `release_helper.py` script:
 created can only be part of a future release, through another stabilization branch that will likely
 be created in about 2 months. Therefore, if they have a Milestone defined, they must be updated to
 the new Milestone.
-    - For example, when the `stabilization-v0.1.65` is created, all open Pull Requests and Issues
+    - For example, when the stabilization branch for the 0.1.65 release is created, all open Pull Requests and Issues
     with the Milestone `0.1.65` should be updated to the Milestone `0.1.66`.
 <!-- -->
 - All Issues which are open at the moment the stabilization branch was created can only be part of
-a future release, through another stabilization branch that will likely be created in about 2
+a future release, through another stabilization branch that will likely be created in about 3
 months. Therefore, like Pull Requests, if they have a Milestone defined, the
 Milestone must be updated to refer the next release.
 <!-- -->
@@ -131,7 +127,7 @@ Using `release_helper.py` script:
 ### Bumping the Version
 
 - Open a PR to bump the version of `CMakeLists.txt` on the **master** branch.
-    - For example, when the `stabilization-v0.1.65` is created, the line `set(SSG_PATCH_VERSION 65)`
+    - For example, if the version  `0.1.65` is going to be released, the line `set(SSG_PATCH_VERSION 65)`
     must be updated to `set(SSG_PATCH_VERSION 66)` in the `CMakeLists.txt` file
     - Reference: https://github.com/ComplianceAsCode/content/pull/9857
 
@@ -163,7 +159,7 @@ Using `release_helper.py` script:
     Issues and PRs that were not solved were moved to the 0.1.66 milestone.
 
     Any bug fixes you would like to include in release 0.1.65 should be proposed
-    for the *stabilization-v0.1.65* and *master* branches as a measure to avoid
+    for the *stabilization* and *master* branches as a measure to avoid
     potential conflicts between these branches.
 
     The next version, 0.1.66, is scheduled to be released on February 3rd,
@@ -180,12 +176,11 @@ This message can be completely created using the `release_helper.py` script:
 ### Bug Fixes
 - Run whatever extra tests you have and report bugs as Upstream issues using the
 [General Issue](https://github.com/ComplianceAsCode/content/issues/new?assignees=&labels=&template=general_issue.md) template.
-- Propose bug fixes by targeting PRs to the **stabilization-vX.Y.Z** branch.
-e.g.: `stabilization-v0.1.65`
+- Propose bug fixes by targeting PRs to the **stabilization** branch.
   - For easier identification, it is a good practice to prefix PRs for the
-  **stabilization-vX.Y.Z** branch by `Stabilization: `.
+  **stabilization** branch by `Stabilization: `.
       - Reference: https://github.com/ComplianceAsCode/content/pull/9877
-  - Once the PR is **merged** in the **stabilization-vX.Y.Z** branch, make a PR with the same fix
+  - Once the PR is **merged** in the **stabilization** branch, make a PR with the same fix
   to the **master** branch.
 
 > **_NOTE:_** There are different ways how to port commits from one branch to another.
@@ -215,11 +210,11 @@ Below are listed a few approaches how to do it.
 
   - Alternatively, you can create a fix branch that can be used to create both PRs.
     The branch needs to be created from the merge base of **master** and
-    **stabilization-vX.Y.Z** branches.
+    **stabilization** branches.
     This approach only works if the relevant files did not diverge in a way that causes conflicts.
     Example commands:
     ```
-    stab_base=$(git merge-base master stabilization-v0.1.65)
+    stab_base=$(git merge-base master stabilization)
     git checkout -b my_fix $stab_base
     # Do the fix, commit, push and create two PRs through the GitHub Web Interface.
     # One PR should targeting **master** and the other targeting the **stabilization** branch.
@@ -236,7 +231,7 @@ them as the changes are still "fresh".
 
 ### Tests
 
-There is a GitHub Action hooked up with **stabilization-vX.Y.Z** branch that will run a set of
+There is a GitHub Action hooked up with **stabilization** branch that will run a set of
 tests on every push.
 Make sure that all these tests are passing before moving on with the release process.
 
@@ -255,7 +250,7 @@ configuration file.
 
 Everything necessary for the release is built by the release GitHub Action, which is triggered
 when a tag **v\*.\*.\*** is pushed to the repository. This tag should point to the
-**stabilization-vX.Y.Z** branch that is ready to be released.
+**stabilization** branch that is ready to be released.
 
 This action will also create a release draft with release notes automatically generated.
 The way in which the action will categorize and break down changes is controlled by the
@@ -265,11 +260,21 @@ The general rule is that the PR Titles will compose the body of the changelog.
 
 ### Tagging
 
-- Create and push a **vX.Y.Z** tag to the GitHub repo.
+This set of commands describes how to push the release tag.
 ```
-git tag vX.Y.Z stabilization-vX.Y.Z
-git push --tags
+release=v0.1.99
+remote=origin
+
+# get up-to-date branches and tags from github
+git fetch --tags $remote
+
+# create a new tag based on latest stabilization
+git tag $release $remote/stabilization
+
+# push the tag
+git push $remote $release
 ```
+
 - Wait for the release action to finish. You can follow the Workflow runs in this link:
     - https://github.com/ComplianceAsCode/content/actions/workflows/release.yaml
 - Check the release draft and update the release notes if necessary.
@@ -278,7 +283,7 @@ git push --tags
 - Publish the release.
 
 > **_NOTE:_** In case there is a need to run the job again, delete the release draft and run the
-GitHb Action again.
+Github Action again.
 
 Using `release_helper.py` script:
 ```bash
@@ -289,20 +294,22 @@ Using `release_helper.py` script:
 
 - Update the **stable** branch to point to the new release:
 ```
-git checkout stable
-git merge stabilization-vX.Y.Z
-```
-- Make sure any conflicts are solved.
-- Push the changes:
-```
-git push
+release=v0.1.99
+remote=origin
+# update the stable branch, merging in the new tag
+hash=$(git commit-tree $release^{tree} -p $remote/stable -p $release -m "Merge in $release")
+git push $remote $hash:stable
 ```
 
 # Clean Up
 
-- Delete the **stabilization-vX.Y.Z** branch.
+- Delete the **stabilization** branch.
 ```
-git push upstream --delete stabilization-vX.Y.Z
+remote=origin
+# delete the stabilization branch
+# (first locally if it exists, then on Github)
+git branch | grep -q stabilization && git branch -D stabilization
+git push $remote :stabilization
 ```
 
 Using `release_helper.py` script:
