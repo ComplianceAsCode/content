@@ -1,8 +1,6 @@
 ---
 name: Qlty Checks
 on:
-    push:
-        branches: ['*', '!stabilization*', '!stable*', master]
     pull_request:
         branches: [master, stabilization*, oscal-update-*]
 concurrency:
