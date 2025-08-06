@@ -76,7 +76,7 @@ jobs:
                 run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
             -   name: Upload coverage to Qlty  # Requires: git package
                 if: ${{ github.repository == 'ComplianceAsCode/content' }}
-                uses: qltysh/qlty-action/coverage@b9133a486505563742d768da29f7951271678c87 # v1.1.1
+                uses: qltysh/qlty-action/coverage@9e8e09dfc3d82a968f4034f5265eaf3c142881f7 # v2.0.0
                 with:
                     token: qltcp_kdIPsqNZzW5rYoxq
                     files: build/tests/coverage.xml
