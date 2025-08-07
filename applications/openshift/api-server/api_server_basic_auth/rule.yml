@@ -12,27 +12,18 @@ title: 'Disable basic-auth-file for the API Server'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-    Basic Authentication should not be used for any reason. If needed, edit API
-    Edit the <tt>openshift-kube-apiserver</tt> configmap
-    and remove the <tt>basic-auth-file</tt> parameter:
-    <pre>
-    "apiServerArguments":{
-      ...
-      "basic-auth-file":[
-        "/path/to/any/file"
-      ],
-      ...
-    </pre>
-
-    Alternate authentication mechanisms such as tokens and certificates will need to be
-    used. Username and password for basic authentication will be disabled.
+    Disable basic authentication for the API Server to prevent the use of
+    insecure authentication methods. Remove the `basic-auth-file` parameter
+    from the `openshift-kube-apiserver` configmap if it exists. Use alternate
+    authentication mechanisms such as tokens and certificates instead.
 
 rationale: |-
     Basic authentication uses plaintext credentials for authentication.
-    Currently the basic authentication credentials last indefinitely, and
-    the password cannot be changed without restarting the API Server. The
-    Basic Authentication is currently supported for convenience and is
-    not intended for production workloads.
+    Currently, basic authentication credentials last indefinitely, and the
+    password cannot be changed without restarting the API Server. Basic
+    Authentication is supported for convenience and is not intended for
+    production workloads. Using basic authentication exposes credentials in
+    plaintext and creates significant security vulnerabilities.
 
 identifiers:
   cce@ocp4: CCE-83936-5
@@ -52,9 +43,14 @@ platform: not ocp4-on-hypershift-hosted
 ocil_clause: 'basic-auth-file is configured and enabled for the API server'
 
 ocil: |-
-    To verify that <tt>basic-auth-file</tt> is configured and enabled for the API server, run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["basic-auth-file"]'</pre>
-    The output should be empty as OpenShift does not support basic authentication at all.
+    Verify that basic authentication is disabled by running the following command:
+
+    ```
+    $ oc get configmap config -n openshift-kube-apiserver -ojson | \
+      jq -r '.data["config.yaml"]' | jq '.apiServerArguments["basic-auth-file"]'
+    ```
+
+    The output should be empty as OpenShift does not support basic authentication.
 
 warnings:
     - general: |-

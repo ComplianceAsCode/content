@@ -12,23 +12,18 @@ title: 'Disable Use of the Insecure Bind Address'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-    OpenShift should not bind to non-loopback insecure addresses.
-    Edit the <tt>openshift-kube-apiserver</tt> configmap
-    and remove the <tt>insecure-bind-address</tt> if it exists:
-    <pre>
-    "apiServerArguments":{
-      ...
-      "insecure-bind-address":[
-        "127.0.0.1"
-      ],
-      ...
-    </pre>
+    Disable the insecure bind address to prevent OpenShift from binding to
+    non-loopback insecure addresses. Remove the `insecure-bind-address`
+    parameter from the `openshift-kube-apiserver` configmap if it exists to
+    ensure secure API server bindings.
 
 rationale: |-
-    If the API Server is bound to an insecure address the installation would
-    be susceptible to unauthenticated and unencrypted access to the master node(s).
-    The API Server does not perform authentication checking for insecure
-    binds and the traffic is generally not encrypted.
+    If the API Server is bound to an insecure address, the installation would
+    be susceptible to unauthenticated and unencrypted access to the master
+    nodes. The API Server does not perform authentication checking for insecure
+    binds and the traffic is generally not encrypted. This creates a critical
+    security vulnerability allowing unauthorized access to cluster management
+    functions.
 
 identifiers:
   cce@ocp4: CCE-83955-5
@@ -44,11 +39,17 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: 'insecure-bind-address is exists and has not been removed</tt>'
+ocil_clause: 'insecure-bind-address exists and has not been removed'
 
 ocil: |-
-    Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["insecure-bind-address"]'</pre>
+    Verify that the insecure bind address is not configured by running the
+    following command:
+
+    ```
+    $ oc get configmap config -n openshift-kube-apiserver -ojson | \
+      jq -r '.data["config.yaml"]' | jq '.apiServerArguments["insecure-bind-address"]'
+    ```
+
     The output should be empty.
 
 warnings:

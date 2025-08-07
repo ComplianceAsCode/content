@@ -11,16 +11,18 @@ title: Ensure that the service-account-lookup argument is set to true
 {{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
-description: Validate service account before validating token.
+description: |-
+    Enable service account lookup to validate service accounts before
+    validating tokens. Ensure the `service-account-lookup` argument is set to
+    `true` to prevent the use of tokens from deleted service accounts.
 
 rationale: |-
-  If <tt>service-account-lookup</tt> is not enabled, the apiserver
-  only verifies that the authentication token is valid, and
-  does not validate that the service account token mentioned
-  in the request is actually present in etcd. This allows
-  using a service account token even after the corresponding
-  service account is deleted. This is an example of time of
-  check to time of use security issue.
+    If `service-account-lookup` is not enabled, the API server only verifies
+    that the authentication token is valid and does not validate that the
+    service account token mentioned in the request is actually present in etcd.
+    This allows using a service account token even after the corresponding
+    service account is deleted. This creates a time-of-check to time-of-use
+    security vulnerability that could allow unauthorized access.
 
 identifiers:
   cce@ocp4: CCE-83370-7
@@ -36,14 +38,19 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: 'API server argument <tt>--service-account-lookup</tt> contains <tt>true</tt>'
+ocil_clause: 'API server argument `--service-account-lookup` contains `true`'
 
 ocil: |-
-  Run the following command:
-  <pre>$ oc get configmap config -n openshift-kube-apiserver -o json | \
-      jq -r '.data["config.yaml"]' | \
-      jq -r '.apiServerArguments["service-account-lookup"]'</pre>
-  The output should return <pre>true</pre>.
+    Verify that the service account lookup is enabled by running the following
+    command:
+
+    ```
+    $ oc get configmap config -n openshift-kube-apiserver -o json | \
+        jq -r '.data["config.yaml"]' | \
+        jq -r '.apiServerArguments["service-account-lookup"]'
+    ```
+
+    The output should return `true`.
 
 warnings:
 - general: |-

@@ -12,28 +12,19 @@ title: 'Configure the Client Certificate Authority for the API Server'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-    Certificates must be provided to fully setup TLS client certificate
-    authentication. To ensure the API Server utilizes its own TLS certificates, the
-    <tt>clientCA</tt> must be configured. Verify
-    that <tt>servingInfo</tt> has the <tt>clientCA</tt> configured in
-    the <tt>openshift-kube-apiserver</tt> <tt>config</tt> configmap
-    to something similar to:
-    <pre>
-    "apiServerArguments": {
-      ...
-        "client-ca-file": [
-          "/etc/kubernetes/static-pod-certs/configmaps/client-ca/ca-bundle.crt"
-        ],
-      ...
-    </pre>
+    Configure the Client Certificate Authority for the API Server to fully set
+    up TLS client certificate authentication. Ensure the API Server utilizes
+    its own TLS certificates by configuring the `client-ca-file` parameter in
+    the `openshift-kube-apiserver` configmap.
 
 rationale: |-
     API Server communication contains sensitive parameters that should remain
     encrypted in transit. Configure the API Server to serve only HTTPS traffic.
-    If <tt>-clientCA</tt> is set, any request presenting a client
-    certificate signed by one of the authorities in the <tt>client-ca-file</tt>
-    is authenticated with an identity corresponding to the <i>CommonName</i> of
-    the client certificate.
+    If `client-ca-file` is set, any request presenting a client certificate
+    signed by one of the authorities in the `client-ca-file` is authenticated
+    with an identity corresponding to the CommonName of the client certificate.
+    Improper client CA configuration could allow unauthorized certificate-based
+    access to the cluster.
 
 severity: medium
 
@@ -49,11 +40,16 @@ identifiers:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: '<tt>client-ca-file</tt> is not set as appropriate for <tt>apiServerArguments</tt>'
+ocil_clause: '`client-ca-file` is not set as appropriate for `apiServerArguments`'
 
 ocil: |-
-    Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["client-ca-file"]'</pre>
+    Verify that the client CA file is configured by running the following command:
+
+    ```
+    $ oc get configmap config -n openshift-kube-apiserver -ojson | \
+      jq -r '.data["config.yaml"]' | jq '.apiServerArguments["client-ca-file"]'
+    ```
+
     The output should return a configured TLS CA certificate file.
 
 warnings:

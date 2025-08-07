@@ -2,18 +2,20 @@
 title: 'Profiling is protected by RBAC'
 
 description: |-
-  Ensure that the cluster-debugger cluster role includes the /metrics
-  resource URL. This demonstrates that profiling is protected by RBAC, with a
-  specific cluster role to allow access.
+    Ensure that profiling is protected by RBAC by verifying the
+    cluster-debugger cluster role includes the `/metrics` resource URL. This
+    demonstrates that profiling access is properly secured with specific
+    cluster role permissions.
 
 rationale: |-
-  Profiling allows for the identification of specific performance bottlenecks.
-  It generates a significant amount of program data that could potentially be
-  exploited to uncover system and program details.
-  To ensure the collected data is not exploited, profiling endpoints are secured
-  via RBAC (see cluster-debugger role). By default, the profiling endpoints are
-  accessible only by users bound to cluster-admin or cluster-debugger role.
-  Profiling can not be disabled.
+    Profiling allows for the identification of specific performance bottlenecks
+    but generates a significant amount of program data that could potentially
+    be exploited to uncover system and program details. To ensure the collected
+    data is not exploited, profiling endpoints are secured via RBAC using the
+    cluster-debugger role. By default, profiling endpoints are accessible only
+    by users bound to cluster-admin or cluster-debugger roles. Unsecured
+    profiling endpoints could expose sensitive system information to
+    unauthorized users.
 
 identifiers:
   cce@ocp4: CCE-84212-0
@@ -28,13 +30,17 @@ references:
 severity: medium
 
 ocil_clause: |-
-    The <tt>cluster-debugger</tt> role isn't protecting <tt>/metrics</tt>
+    The `cluster-debugger` role isn't protecting `/metrics`
 
 ocil: |-
-    To verify that the <tt>cluster-debugger</tt> role is configured correctly,
-    run the following command:
-    <pre>$ oc get clusterroles cluster-debugger -o jsonpath='{.rules[0].nonResourceURLs}'</pre>
-    and verify that the <tt>/metrics</tt> path is included there.
+    Verify that the `cluster-debugger` role is configured correctly by running
+    the following command:
+
+    ```
+    $ oc get clusterroles cluster-debugger -o jsonpath='{.rules[0].nonResourceURLs}'
+    ```
+
+    Verify that the `/metrics` path is included in the output.
 
 warnings:
 - general: |-

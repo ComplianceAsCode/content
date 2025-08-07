@@ -12,45 +12,41 @@ title: 'Configure the Encryption Provider Cipher'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-    <p>
-    When you enable etcd encryption, the following OpenShift API server
-    and Kubernetes API server resources are encrypted:
-    <ul>
-      <li>Secrets</li>
-      <li>ConfigMaps</li>
-      <li>Routes</li>
-      <li>OAuth access tokens</li>
-      <li>OAuth authorize tokens</li>
-    </ul>
-    </p>
-    <p>
-    When you enable etcd encryption, encryption keys are created. These
-    keys are rotated on a weekly basis. You must have these keys in order
-    to restore from an etcd backup.
-    </p>
-    <p>
-    To ensure the correct cipher, set the encryption type to <tt>aescbc</tt> or
-    <tt>aesgcm</tt> in the <tt>apiserver</tt> object which configures the API
-    server itself.
-    <pre>
+    Configure strong encryption provider cipher for etcd data encryption to
+    protect sensitive API server resources. When etcd encryption is enabled, the
+    following OpenShift API server and Kubernetes API server resources are
+    encrypted:
+
+    - Secrets
+    - ConfigMaps
+    - Routes
+    - OAuth access tokens
+    - OAuth authorize tokens
+
+    Enable etcd encryption to automatically create and rotate encryption keys
+    on a weekly basis. These keys are required for etcd backup restoration
+    operations.
+
+    Set the encryption type to aescbc or aesgcm in the `apiserver` object configuration:
+    ```
     spec:
       encryption:
         type: aescbc
-    </pre>
-    </p>
-    <p>
+    ```
+
     For more information, follow
     {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/encrypting-etcd.html",
                 text="the relevant documentation") }}}.
-    </p>
 
 rationale: |-
-    etcd is a highly available key-value store used by OpenShift deployments
-    for persistent storage of all REST API objects. These objects are
-    sensitive in nature and should be encrypted at rest to avoid any
-    disclosures. Where etcd encryption is used, it is important to ensure that the
-    appropriate set of encryption providers is used. Currently, <tt>aescbc</tt>
-    and <tt>aesgcm</tt> are the only types supported by OCP.
+    etcd serves as the highly available key-value store for persistent storage
+    of all REST API objects in OpenShift deployments. These objects contain
+    sensitive information and must be encrypted at rest to prevent unauthorized
+    disclosure. The encryption provider must use strong, supported algorithms
+    to ensure data confidentiality. Failure to configure proper encryption
+    exposes sensitive cluster data, authentication tokens, and configuration
+    secrets to potential compromise if storage media is accessed by
+    unauthorized parties.
 
 identifiers:
   cce@ocp4: CCE-83585-0
@@ -66,25 +62,30 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: '<tt>aescbc</tt> or <tt>aesgcm</tt> is not configured as the encryption provider'
+ocil_clause: '`aescbc` or `aesgcm` is not configured as the encryption provider'
 
 ocil: |-
-    OpenShift supports encryption of data at rest of etcd datastore, but it is
-    up to the customer to configure. The asecbc and aesgcm ciphers are
-    available for use within OpenShift. Keys are stored on the filesystem of
-    the master and automatically rotated. Run the following command to review
-    the Encrypted status condition for the OpenShift API server to verify that its
-    resources were successfully encrypted:
-    <pre>
-    # encrypt the etcd datastore
+    Verify that aescbc or aesgcm encryption providers are configured for etcd
+    data encryption. OpenShift supports encryption of data at rest for the etcd
+    datastore, with keys stored on the master filesystem and automatically
+    rotated.
+
+    Check the Encrypted status condition for the OpenShift API server:
+
+    ```
     $ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{.status}{"\n"}{.reason}{"\n"}{.message}{"\n"}{end}'
-    <pre>
-    The output shows <tt>EncryptionCompleted</tt> upon successful encryption.
-    If the output shows <tt>EncryptionInProgress</tt> this means that encryption is still in
-    progress. Wait a few minutes and try again.
-    To display the encryption configured, run the following command:
-    <pre>$ oc get --raw {{.var_apiserver_encryption_path}} | jq {{.var_apiserver_encryption_filter}} </pre>
-    If the output does not list <tt>aescbc</tt> or <tt>aesgcm</tt>, the encryption is not configured correctly.
+    ```
+
+    The output should show EncryptionCompleted for successful encryption. If
+    EncryptionInProgress appears, wait a few minutes and retry.
+
+    Display the configured encryption provider:
+
+    ```
+    $ oc get --raw {{.var_apiserver_encryption_path}} | jq {{.var_apiserver_encryption_filter}}
+    ```
+
+    Verify the output lists aescbc or aesgcm as the encryption provider.
 
 warnings:
 - general: |-

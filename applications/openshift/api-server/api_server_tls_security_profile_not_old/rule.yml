@@ -4,7 +4,7 @@ documentation_complete: true
 title: "Ensure APIServer is not configured with Old tlsSecurityProfile"
 
 description: |-
-    The configuration <tt>tlsSecurityProfile</tt> specifies TLS configurations
+    The configuration `tlsSecurityProfile` specifies TLS configurations
     to be used while establishing connections with the externally exposed
     servers. Though secure transport mode is used for establishing connections,
     the protocols used may not always be strong enough to avoid interception and
@@ -13,7 +13,7 @@ description: |-
     could lead to security breaches.
 
     Update tlsSecurityProfile from Old to Intermediate using the following command:
-    {{% raw %}}<pre>oc patch apiservers.config.openshift.io cluster --type 'json' --patch '[{"op": "add", "path": "/spec/tlsSecurityProfile/intermediate", "value": {}}, {"op": "replace", "path": "/spec/tlsSecurityProfile/type", "value": "Intermediate"}, {"op": "remove", "path": "/spec/tlsSecurityProfile/old"}]'</pre>{{% endraw %}}
+    {{% raw %}}```oc patch apiservers.config.openshift.io cluster --type 'json' --patch '[{"op": "add", "path": "/spec/tlsSecurityProfile/intermediate", "value": {}}, {"op": "replace", "path": "/spec/tlsSecurityProfile/type", "value": "Intermediate"}, {"op": "remove", "path": "/spec/tlsSecurityProfile/old"}]'```{{% endraw %}}
 
     For more information, follow
     OpenShift documentation:
@@ -40,7 +40,7 @@ ocil_clause: 'insecure tlsSecurityProfile is configured for accessing external s
 
 ocil: |-
     To check for the configured tlsSecurityProfile use below command:
-    <tt>$ oc get apiservers.config.openshift.io cluster -o jsonpath='{.spec.tlsSecurityProfile.type}{"\n"}'</tt>
+    `$ oc get apiservers.config.openshift.io cluster -o jsonpath='{.spec.tlsSecurityProfile.type}{"\n"}'`
     The output shows the tlsSecurityProfile configured for API Server, and
     TLS security profile configured should not be "old".
 

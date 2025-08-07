@@ -4,32 +4,37 @@ documentation_complete: true
 title: 'Ensure that anonymous requests to the API Server are authorized'
 
 description: |-
-    By default, anonymous access to the OpenShift API is enabled, but at
-    the same time, all requests must be authorized. If no authentication
-    mechanism is used, the request is assigned the <tt>system:anonymous</tt>
-    virtual user and the <tt>system:unauthenticated</tt> virtual group.
-    This allows the authorization layer to determine which requests, if any,
-    is an anonymous user authorized to make.
+    Ensure anonymous requests to the OpenShift API are properly authorized.
+    By default, anonymous access is enabled but all requests must be
+    authorized. Requests without authentication mechanisms are assigned the
+    `system:anonymous` virtual user and `system:unauthenticated` virtual
+    group, allowing the authorization layer to determine permitted anonymous
+    operations.
 
-    To verify the authorization rules for anonymous requests run the following:
-    <pre>$ oc describe clusterrolebindings</pre>
-    and inspect the bindings of the <tt>system:anonymous</tt>
-    virtual user and the <tt>system:unauthenticated</tt> virtual group.
+    Verify authorization rules for anonymous requests:
+    ```
+    $ oc describe clusterrolebindings
+    ```
+    Inspect bindings for the `system:anonymous` virtual user and
+    `system:unauthenticated` virtual group.
 
-    To test that an anonymous request is authorized to access the <tt>readyz</tt>
-    endpoint, run:
-    <pre>$ oc get --as="system:anonymous" --raw='/readyz?verbose'</pre>
-    In contrast, a request to list all projects should not be authorized:
-    <pre>$ oc get --as="system:anonymous" projects</pre>
+    Test anonymous access to the `readyz` endpoint:
+    ```
+    $ oc get --as="system:anonymous" --raw='/readyz?verbose'
+    ```
+    Verify restricted access to projects:
+    ```
+    $ oc get --as="system:anonymous" projects
+    ```
 
 rationale: |-
-    When enabled, requests that are not rejected by other configured
-    authentication methods are treated as anonymous requests. These requests
-    are then served by the API server. If you are using RBAC authorization,
-    it is generally considered reasonable to allow anonymous access to the
-    API Server for health checks and discovery purposes, and hence this
-    recommendation is not scored. However, you should consider whether
-    anonymous discovery is an acceptable risk for your purposes.
+    Requests not rejected by configured authentication methods become anonymous
+    requests served by the API server. With RBAC authorization, allowing
+    anonymous access for health checks and discovery purposes is generally
+    reasonable. However, organizations must evaluate whether anonymous discovery
+    presents acceptable security risks. Without proper anonymous request
+    controls, unauthorized users could potentially discover cluster information
+    or access unintended resources.
 
 severity: medium
 
@@ -43,16 +48,21 @@ references:
 ocil_clause: 'anonymous requests are not authorized'
 
 ocil: |-
-    Run the following command to view the authorization rules for anonymous requests:
-    <pre>$ oc describe clusterrolebindings</pre>
-    Make sure that there exists at least one <tt>clusterrolebinding</tt> that binds
-    either the <tt>system:unauthenticated</tt> group or the <tt>system:anonymous</tt>
-    user.
-    To test that an anonymous request is authorized to access the <tt>readyz</tt>
-    endpoint, run:
-    <pre>$ oc get --as="system:anonymous" --raw='/readyz?verbose'</pre>
-    In contrast, a request to list all projects should not be authorized:
-    <pre>$ oc get --as="system:anonymous" projects</pre>
+    View authorization rules for anonymous requests:
+    ```
+    $ oc describe clusterrolebindings
+    ```
+    Verify at least one `clusterrolebinding` binds either the
+    `system:unauthenticated` group or the `system:anonymous` user.
+    
+    Test anonymous access to the `readyz` endpoint:
+    ```
+    $ oc get --as="system:anonymous" --raw='/readyz?verbose'
+    ```
+    Verify restricted access to projects:
+    ```
+    $ oc get --as="system:anonymous" projects
+    ```
 
 warnings:
 - general: |-

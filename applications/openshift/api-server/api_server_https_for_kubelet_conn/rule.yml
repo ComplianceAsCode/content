@@ -12,15 +12,17 @@ title: 'Ensure that the --kubelet-https argument is set to true'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-    The kube-apiserver ensures https to the kubelet by default. The apiserver
-    flag "--kubelet-https" is deprecated and should be either set to "true" or
-    omitted from the argument list.
+    Ensure HTTPS connections to kubelet are enabled. The kube-apiserver ensures
+    HTTPS to the kubelet by default. The apiserver flag `--kubelet-https` is
+    deprecated and should be either set to `true` or omitted from the argument
+    list.
 
 rationale: |-
     Connections from the kube-apiserver to kubelets could potentially carry
-    sensitive data such as secrets and keys. It is thus important to use
-    in-transit encryption for any communication between the apiserver and
-    kubelets.
+    sensitive data such as secrets and keys. Using in-transit encryption for
+    any communication between the apiserver and kubelets is essential.
+    Unencrypted connections could expose sensitive pod data to network
+    eavesdropping attacks.
 
 severity: medium
 
@@ -33,12 +35,17 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: '<tt>kubelet-https</tt> is set to false'
+ocil_clause: '`kubelet-https` is set to false'
 
 ocil: |-
-    Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["kubelet-https"]'</pre>
-    The output should return <pre>true</pre>, or no output at all.
+    Verify that kubelet HTTPS is enabled by running the following command:
+
+    ```
+    $ oc get configmap config -n openshift-kube-apiserver -ojson | \
+      jq -r '.data["config.yaml"]' | jq '.apiServerArguments["kubelet-https"]'
+    ```
+
+    The output should return `true` or no output at all.
 
 warnings:
 - general: |-

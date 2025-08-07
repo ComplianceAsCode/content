@@ -11,11 +11,11 @@ title: Ensure that the bindAddress is set to a relevant secure port
 {{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
-description: "The bindAddress is set by default to <tt>0.0.0.0:6443</tt>, and listening with TLS enabled."
+description: "The bindAddress is set by default to `0.0.0.0:6443`, and listening with TLS enabled."
 
 rationale: |-
   The OpenShift API server is served over HTTPS with authentication and authorization;
-  the secure API endpoint is bound to <tt>0.0.0.0:6443</tt> by default. In OpenShift, the only
+  the secure API endpoint is bound to `0.0.0.0:6443` by default. In OpenShift, the only
   supported way to access the API server pod is through the load balancer and then through
   the internal service.  The value is set by the bindAddress argument under the servingInfo
   parameter.
@@ -34,12 +34,17 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: '<tt>bindAddress</tt> allows unsecure connections'
+ocil_clause: '`bindAddress` allows unsecure connections'
 
 ocil: |-
     Run the following command:
-    <pre>oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.servingInfo["bindAddress"]'</pre>
-    The output should return <pre>0.0.0.0:6443</pre>.
+
+    ```
+    $ oc get configmap config -n openshift-kube-apiserver -ojson | \
+      jq -r '.data["config.yaml"]' | jq -r '.servingInfo["bindAddress"]'
+    ```
+
+    The output should return ```0.0.0.0:6443```.
 
 warnings:
 - general: |-

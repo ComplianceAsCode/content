@@ -14,18 +14,18 @@ title: 'Prevent Insecure Port Access'
 description: |-
     By default, traffic for the OpenShift API server is served over
     HTTPS with authentication and authorization, and the secure API endpoint
-    is bound to <tt>0.0.0.0:8443</tt>. To ensure that the insecure port configuration
-    has not been enabled, the <tt>insecure-port</tt> parameter should be set to 0.
-    Edit the <tt>openshift-kube-apiserver</tt> configmap and change the
-    <tt>insecure-port</tt> value to 0:
-    <pre>
+    is bound to `0.0.0.0:8443`. To ensure that the insecure port configuration
+    has not been enabled, the `insecure-port` parameter should be set to 0.
+    Edit the `openshift-kube-apiserver` configmap and change the
+    `insecure-port` value to 0:
+    ```
     "apiServerArguments":{
       ...
       "insecure-port":[
         "1234"
       ],
       ...
-    </pre>
+    ```
 
 rationale: |-
     Configuring the API Server on an insecure port would allow unauthenticated
@@ -42,12 +42,12 @@ platform: (ocp4.6 or ocp4.7 or ocp4.8 or ocp4.9 or ocp4.10) and not ocp4-on-hype
 severity: medium
 
 
-ocil_clause: '<tt>insecure-port</tt> setting exists'
+ocil_clause: '`insecure-port` setting exists'
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["insecure-port"]'</pre>
-    The output should return <pre>0</pre>.
+    ```$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["insecure-port"]'```
+    The output should return ```0```.
 
 warnings:
 - general: |-

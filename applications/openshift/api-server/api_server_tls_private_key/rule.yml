@@ -13,11 +13,11 @@ title: 'Configure the Certificate Key for the API Server'
 
 description: |-
     To ensure the API Server utilizes its own TLS certificates, the
-    <tt>tls-private-key-file</tt> must be configured. Verify
-    that the <tt>apiServerArguments</tt> section has the <tt>tls-private-key-file</tt> configured in
-    the <tt>config</tt> configmap in the <tt>openshift-kube-apiserver</tt> namespace
+    `tls-private-key-file` must be configured. Verify
+    that the `apiServerArguments` section has the `tls-private-key-file` configured in
+    the `config` configmap in the `openshift-kube-apiserver` namespace
     similar to:
-    <pre>
+    ```
     "apiServerArguments":{
     ...
     "tls-private-key-file": [
@@ -25,7 +25,7 @@ description: |-
     ],
     ...
     }
-    </pre>
+    ```
 
 rationale: |-
     API Server communication contains sensitive parameters that should remain
@@ -47,12 +47,12 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: '<tt>tls-private-key-file</tt> is not set as appropriate for <tt>apiServerArguments</tt>'
+ocil_clause: '`tls-private-key-file` is not set as appropriate for `apiServerArguments`'
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."tls-private-key-file"'</pre>
-    The output should return <tt>/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls.key</tt>
+    ```$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."tls-private-key-file"'```
+    The output should return `/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls.key`
 
 warnings:
 - general: |-

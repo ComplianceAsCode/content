@@ -13,15 +13,17 @@ title: 'Ensure all admission control plugins are enabled'
 
 
 description: |-
-    To make sure none of them is explicitly disabled except PodSecurity, run the following command:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '{{{ default_jqfilter }}}'</pre>
-    and make sure the output is empty.
+    Ensure all admission control plugins are enabled and none are explicitly
+    disabled except PodSecurity. Verify that critical admission control plugins
+    remain active to provide required security protections.
 
 rationale: |-
     Several hardening controls depend on certain API server admission plugins
     being enabled. Checking that no admission control plugins are disabled
-    helps assert that all the critical admission control plugins are indeed
-    enabled and providing the security benefits required.
+    helps assert that all critical admission control plugins are indeed enabled
+    and providing the security benefits required. Disabling admission control
+    plugins could bypass essential security controls and expose the cluster to
+    security vulnerabilities.
 
 identifiers:
   cce@ocp4: CCE-83799-7
@@ -41,8 +43,14 @@ platform: not ocp4-on-hypershift-hosted
 ocil_clause: 'No admission plugins are disabled'
 
 ocil: |-
-    To verify that the list of disabled admission plugins is empty, run the following command:
-    <pre>$oc -n openshift-kube-apiserver get configmap config -o json | jq -r '{{{ default_jqfilter }}}'</pre>
+    Verify that the list of disabled admission plugins is empty by running the
+    following command:
+
+    ```
+    $ oc -n openshift-kube-apiserver get configmap config -o json | \
+      jq -r '{{{ default_jqfilter }}}'
+    ```
+
     There should be no output.
 
 warnings:

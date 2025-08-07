@@ -15,16 +15,16 @@ description: |-
     To ensure OpenShift does not accept token-based authentication,
     follow the OpenShift documentation and configure alternate mechanisms for
     authentication. Then, edit the API Server pod specification file
-    Edit the <tt>openshift-kube-apiserver</tt> configmap
-    and remove the <tt>token-auth-file</tt> parameter:
-    <pre>
+    Edit the `openshift-kube-apiserver` configmap
+    and remove the `token-auth-file` parameter:
+    ```
     "apiServerArguments":{
       ...
       "token-auth-file":[
         "/path/to/any/file"
       ],
       ...
-    </pre>
+    ```
 
 rationale: |-
     The token-based authentication utilizes static tokens to authenticate
@@ -47,11 +47,11 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: '<tt>token-auth-file</tt> argument is configured'
+ocil_clause: '`token-auth-file` argument is configured'
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments' | grep "token-auth-file"</pre>
+    ```$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments' | grep "token-auth-file"```
     The output should be empty as OpenShift does not support token-based authentication at all.
 
 warnings:
