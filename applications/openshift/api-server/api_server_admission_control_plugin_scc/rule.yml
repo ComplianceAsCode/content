@@ -12,17 +12,17 @@ title: 'Enable the SecurityContextConstraint Admission Control Plugin'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-   To ensure pod permissions are managed, make sure that the
-   <tt>SecurityContextConstraint</tt> admission control plugin is used.
+    Enable the SecurityContextConstraint admission control plugin to ensure
+    pod permissions are properly managed and security policies are enforced.
 
 rationale: |-
-    A Security Context Constraint is a cluster-level resource that controls the actions
-    which a pod can perform and what the pod may access. The
-    <tt>SecurityContextConstraint</tt> objects define a set of conditions that a pod
-    must run with in order to be accepted into the system. Security Context Constraints
-    are comprised of settings and strategies that control the security features
-    a pod has access to and hence this must be used to control pod access
-    permissions.
+    Security Context Constraints are cluster-level resources that control pod
+    actions and access permissions. `SecurityContextConstraint` objects define
+    conditions that pods must meet for system acceptance. Security Context
+    Constraints comprise settings and strategies controlling pod security
+    features. Without proper SecurityContextConstraint enforcement, pods may
+    execute with excessive privileges or access unauthorized resources,
+    compromising cluster security.
 
 identifiers:
   cce@ocp4: CCE-83602-3
@@ -39,12 +39,15 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: 'the list of enabled admission plugins contains <tt>SecurityContextConstraint</tt>'
+ocil_clause: 'the list of enabled admission plugins contains `SecurityContextConstraint`'
 
 ocil: |-
-    The SecurityContextConstraint plugin should be enabled in the list of enabled plugins in
-    the apiserver configuration:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+    Verify the SecurityContextConstraint plugin is enabled in the list of
+    enabled plugins in the apiserver configuration:
+    ```
+    $ oc -n openshift-kube-apiserver get configmap config -o json | jq -r \
+      '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'
+    ```
 
 warnings:
 - general: |-

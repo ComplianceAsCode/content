@@ -12,14 +12,17 @@ title: 'Enable the NamespaceLifecycle Admission Control Plugin'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-    OpenShift enables the <tt>NamespaceLifecycle</tt> plugin by default.
+    Verify the NamespaceLifecycle admission control plugin is enabled.
+    OpenShift enables the `NamespaceLifecycle` plugin by default to ensure
+    proper namespace management and object creation controls.
 
 rationale: |-
-    Setting admission control policy to <tt>NamespaceLifecycle</tt> ensures that
-    objects cannot be created in non-existent namespaces, and that namespaces
-    undergoing termination are not used for creating new objects. This
-    is recommended to enforce the integrity of the namespace termination process
-    and also for the availability of new objects.
+    The NamespaceLifecycle admission control policy ensures objects cannot
+    be created in non-existent namespaces and prevents creation in namespaces
+    undergoing termination. This enforcement maintains namespace termination
+    process integrity and ensures proper object availability. Without this
+    control, applications might create objects in invalid namespaces, leading
+    to resource conflicts or security boundary violations.
 
 identifiers:
   cce@ocp4: CCE-83854-0
@@ -36,12 +39,15 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: 'API server config contains <tt>NamespaceLifecycle</tt>'
+ocil_clause: 'API server config contains `NamespaceLifecycle`'
 
 ocil: |-
-    To verify that the <tt>NamespaceLifecycle</tt> plugin is enabled in
-    the apiserver configuration, run:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+    Verify the `NamespaceLifecycle` plugin is enabled in
+    the apiserver configuration:
+    ```
+    $ oc -n openshift-kube-apiserver get configmap config -o json | jq -r \
+      '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'
+    ```
 
 warnings:
 - general: |-

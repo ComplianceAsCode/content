@@ -12,13 +12,15 @@ title: 'Disable the AlwaysAdmit Admission Control Plugin'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-    To ensure OpenShift only responses to requests explicitly allowed by the
-    admission control plugin. Check that the <code>config</code> ConfigMap object does not
-    contain the AlwaysAdmit plugin.
+    Disable the AlwaysAdmit admission control plugin to ensure OpenShift only
+    responds to requests explicitly allowed by the admission control plugin.
+    Verify that the `config` ConfigMap object does not contain the AlwaysAdmit
+    plugin.
 
 rationale: |-
-    Enabling the admission control plugin <tt>AlwaysAdmit</tt> allows all
-    requests and does not provide any filtering.
+    Enabling the admission control plugin `AlwaysAdmit` allows all requests and
+    does not provide any filtering. This creates a significant security risk by
+    bypassing all access controls and allowing unauthorized actions.
 
 identifiers:
   cce@ocp4: CCE-84148-6
@@ -35,12 +37,15 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: '<tt>AlwaysAdmit</tt> admission control plugin is not set'
+ocil_clause: '`AlwaysAdmit` admission control plugin is not set'
 
 ocil: |-
-    To verify that the <tt>AlwaysAdmit</tt> admission control plugin is not set, run the following command:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
-    The output should not contain <tt>AlwaysAdmit</tt>
+    Verify that the `AlwaysAdmit` admission control plugin is not set by
+    running the following command:
+    ```
+    $ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'
+    ```
+    The output should not contain `AlwaysAdmit`.
 
 warnings:
 - general: |-

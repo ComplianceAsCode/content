@@ -1,7 +1,8 @@
 documentation_complete: true
 
 
-title: 'Ensure that the admission control plugin SecurityContextDeny is set if PodSecurityPolicy is not used'
+title: 'Ensure that the admission control plugin SecurityContextDeny is set if
+  PodSecurityPolicy is not used'
 
 {{% set default_jqfilter = '[.data."config.yaml" | fromjson]' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
@@ -12,21 +13,28 @@ title: 'Ensure that the admission control plugin SecurityContextDeny is set if P
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-    Instead of using a customized SecurityContext for pods, a Pod Security
-    Policy (PSP) or a SecurityContextConstraint should be used. These are
-    cluster-level resources that control the actions that a pod can perform
-    and what resource the pod may access. The <tt>SecurityContextDeny</tt>
-    disallows folks from setting a pod's <tt>securityContext</tt> fields.
-    Ensure that the list of admission controllers does not include
+    Ensure the SecurityContextDeny admission control plugin is not enabled when
+    using Pod Security Policies (PSP) or SecurityContextConstraints. Use
+    cluster-level resources like PSP or SecurityContextConstraints instead of
+    customized SecurityContext for pods. These resources control pod actions
+    and resource access.
+    
+    The `SecurityContextDeny` plugin prevents setting pod `securityContext`
+    fields. Verify the admission controllers list does not include
     SecurityContextDeny:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"' </pre>
+    ```
+    $ oc -n openshift-kube-apiserver get configmap config -o json | jq -r \
+      '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'
+    ```
 
 rationale: |-
-    The <tt>SecurityContextDeny</tt> admission control plugin disallows
-    setting any security options for your pods. <tt>SecurityContextConstraints</tt>
-    allow you to enforce RBAC rules on who can set these options on the pods, and
-    what they're allowed to set. Thus, using the <tt>SecurityContextDeny</tt>
-    will deter you from enforcing granular permissions on your pods.
+    The `SecurityContextDeny` admission control plugin prevents setting any
+    security options for pods. SecurityContextConstraints allow enforcement
+    of RBAC rules controlling who can set security options on pods and what
+    values are permitted. Using `SecurityContextDeny` prevents granular
+    permission enforcement on pods, reducing security flexibility and
+    potentially leaving the cluster vulnerable to privilege escalation or
+    inadequate security controls.
 
 identifiers:
   cce@ocp4: CCE-83586-8
@@ -44,11 +52,15 @@ references:
 platform: not ocp4-on-hypershift-hosted
 
 ocil_clause: |-
-    '<tt>enable-admission-plugins</tt>does not contain <tt>SecurityContextDeny</tt>'
+    '`enable-admission-plugins` does not contain `SecurityContextDeny`'
 
 ocil: |-
-    The SecurityContextDeny plugin should not be enabled in the list of enabled plugins in the apiserver configuration:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"' </pre>
+    Verify the SecurityContextDeny plugin is not enabled in the list of
+    enabled plugins in the apiserver configuration:
+    ```
+    $ oc -n openshift-kube-apiserver get configmap config -o json | jq -r \
+      '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'
+    ```
 
 warnings:
 - general: |-

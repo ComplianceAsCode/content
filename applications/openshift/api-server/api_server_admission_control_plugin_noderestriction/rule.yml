@@ -12,17 +12,23 @@ title: 'Enable the NodeRestriction Admission Control Plugin'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-    To limit the <tt>Node</tt> and <tt>Pod</tt> objects that a kubelet could modify,
-    ensure that the <tt>NodeRestriction</tt> plugin on kubelets is enabled in
-    the api-server configuration by running the following command:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+    Enable the NodeRestriction admission control plugin to limit the `Node` and
+    `Pod` objects that a kubelet can modify. This plugin restricts kubelet
+    permissions to only their assigned resources.
+    
+    Verify the plugin is enabled in the api-server configuration:
+    ```
+    $ oc -n openshift-kube-apiserver get configmap config -o json | jq -r \
+      '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'
+    ```
 
 rationale: |-
-    Using the <tt>NodeRestriction</tt> plugin ensures that the kubelet is
-    restricted to the <tt>Node</tt> and <tt>Pod</tt> objects that it could
-    modify as defined. Such kubelets will only be allowed to modify their
-    own <tt>Node</tt> API object, and only modify <tt>Pod</tt> API objects
-    that are bound to their node.
+    The NodeRestriction plugin ensures kubelets are restricted to specific
+    `Node` and `Pod` objects they can modify. Kubelets may only modify their
+    own `Node` API object and `Pod` API objects bound to their node. Without
+    NodeRestriction enforcement, kubelets could potentially modify
+    unauthorized nodes or pods, leading to privilege escalation or cluster
+    compromise.
 
 identifiers:
   cce@ocp4: CCE-83753-4
@@ -39,12 +45,15 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: '<tt>enable-admission-plugins</tt> does not contain <tt>NodeRestriction</tt>'
+ocil_clause: '`enable-admission-plugins` does not contain `NodeRestriction`'
 
 ocil: |-
-    Ensure that the NodeRestriction plugin is enabled in the list of enabled plugins in
-    the apiserver configuration by running the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep 'NodeRestriction'</pre>
+    Verify the NodeRestriction plugin is enabled in the list of enabled
+    plugins in the apiserver configuration:
+    ```
+    $ oc get configmap config -n openshift-kube-apiserver -ojson | \
+      jq -r '.data["config.yaml"]' | grep 'NodeRestriction'
+    ```
 
 warnings:
 - general: |-

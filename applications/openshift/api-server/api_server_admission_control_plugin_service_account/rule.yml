@@ -12,17 +12,25 @@ title: 'Enable the ServiceAccount Admission Control Plugin'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-    To ensure <tt>ServiceAccount</tt> objects must be created and granted
-    before pod creation is allowed, follow the documentation and create
-    <tt>ServiceAccount</tt> objects as per your environment.
-    Ensure that the plugin is enabled in the api-server configuration:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+    Enable the ServiceAccount admission control plugin to ensure
+    `ServiceAccount` objects are created and granted before pod creation is
+    allowed. Follow the documentation and create `ServiceAccount` objects as
+    per your environment requirements.
+    
+    Verify the plugin is enabled in the api-server configuration:
+    ```
+    $ oc -n openshift-kube-apiserver get configmap config -o json | jq -r \
+      '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'
+    ```
 
 rationale: |-
-    When a pod is created, if a service account is not specified, the pod
-    is automatically assigned the <i>default</i> service account in the same
+    When a pod is created without a specified service account, the pod
+    automatically receives the default service account in the same
     namespace. OpenShift operators should create unique service accounts
-    and let the API Server manage its security tokens.
+    and allow the API Server to manage its security tokens. Without proper
+    service account management, pods may receive excessive privileges or
+    operate with unintended access permissions, potentially compromising
+    cluster security.
 
 identifiers:
   cce@ocp4: CCE-83791-4
@@ -39,12 +47,15 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: 'API server configuration contains <tt>ServiceAccount</tt>'
+ocil_clause: 'API server configuration contains `ServiceAccount`'
 
 ocil: |-
-    The ServiceAccount plugin should be enabled in the list of enabled plugins in
-    the apiserver configuration:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+    Verify the ServiceAccount plugin is enabled in the list of enabled
+    plugins in the apiserver configuration:
+    ```
+    $ oc -n openshift-kube-apiserver get configmap config -o json | jq -r \
+      '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'
+    ```
 
 warnings:
 - general: |-

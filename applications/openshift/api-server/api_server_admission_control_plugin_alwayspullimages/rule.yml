@@ -12,32 +12,24 @@ title: 'Ensure that the Admission Control Plugin AlwaysPullImages is not set'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-     The <tt>AlwaysPullImages</tt> admission control plugin should be disabled,
-     since it can introduce new failure modes for control plane components if an
-     image registry is unreachable.
+    Ensure the AlwaysPullImages admission control plugin is disabled to prevent
+    potential failure modes for control plane components when image registries
+    become unreachable.
 
 rationale: |-
-     Setting admission control policy to AlwaysPullImages forces every new pod
-     to pull the required images every time. In a multi-tenant cluster users can
-     be assured that their private images can only be used by those who have the
-     credentials to pull them. Without this admission control policy, once an
-     image has been pulled to a node, any pod from any user can use it simply by
-     knowing the image’s name, without any authorization check against the image
-     ownership. When this plug-in is enabled, images are always pulled prior to
-     starting containers, which means valid credentials are required.
-
-     However, turning on this admission plugin can introduce new kinds of
-     cluster failure modes. OpenShift 4 master and infrastructure components are
-     deployed as pods. Enabling this feature can result in cases where loss of
-     contact to an image registry can cause a redeployed infrastructure pod
-     (oauth-server for example) to fail on an image pull for an image that is
-     currently present on the node. We use PullIfNotPresent so that a loss of
-     image registry access does not prevent the pod from starting.  If it
-     becomes PullAlways, then an image registry access outage can cause key
-     infrastructure components to fail.
-
-     The pull policy can be managed per container, using
-     <tt>imagePullPolicy</tt>.
+    The AlwaysPullImages admission control policy forces every pod to pull
+    required images each time, providing multi-tenant security by ensuring
+    private images require proper credentials. Without this policy, any pod can
+    use previously pulled images by knowing the image name without authorization.
+    
+    However, enabling this plugin introduces cluster failure modes in OpenShift
+    4. Master and infrastructure components are deployed as pods, and registry
+    outages can cause redeployed infrastructure pods (like oauth-server) to fail
+    on image pulls for locally present images. Using `PullIfNotPresent` prevents
+    pods from failing during registry outages. The imagePullPolicy should be
+    managed per container instead. Without proper configuration, enabling
+    AlwaysPullImages can cause critical infrastructure failures during registry
+    unavailability.
 
 
 severity: high
@@ -51,12 +43,15 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: '<tt>AlwaysPullImages</tt> is included in <tt>admissionConfig</tt>'
+ocil_clause: '`AlwaysPullImages` is included in `admissionConfig`'
 
 ocil: |-
-    Run the following command:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
-    The output list should not contain <pre>"AlwaysPullImages"</pre>.
+    Verify the AlwaysPullImages plugin is not enabled:
+    ```
+    $ oc -n openshift-kube-apiserver get configmap config -o json | jq -r \
+      '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'
+    ```
+    The output list should not contain `"AlwaysPullImages"`.
 
 warnings:
 - general: |-
