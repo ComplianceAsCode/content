@@ -701,14 +701,6 @@ def release_prep(repo, args) -> None:
 
 def release(repo, args) -> None:
     if is_next_release_in_progress(repo):
-        if args.tag:
-            next_version = get_next_release_version(repo)
-            tag_name = f'v{next_version}'
-            print('Release process starts when a version tag is added to the branch.\n'
-                  'It is better to do it manually. But here are the commands you need:\n')
-            print(f'git tag {tag_name} origin/stabilization\n'
-                  f'git push origin {tag_name}')
-
         if args.message:
             message = get_release_start_message(repo)
             print_communication_channels('release')
@@ -773,9 +765,6 @@ def parse_arguments():
     release_parser.add_argument(
         '-m', '--message', action='store_true',
         help="Prepare a message to communicate the stabilization process has started.")
-    release_parser.add_argument(
-        '-t', '--tag', action='store_true',
-        help="Show commands to properly tag the branch and start the release.")
 
     finish_parser = subparsers.add_parser(
         'finish', help="Tasks to be done when the release is out.")
