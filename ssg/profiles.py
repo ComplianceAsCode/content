@@ -154,8 +154,7 @@ def _process_selected_variable(profile: ProfileSelections, variable: str) -> Non
         ValueError: If the variable is not in the correct format.
     """
     variable_name, variable_value = variable.split('=', 1)
-    if variable_name not in profile.variables:
-        profile.variables[variable_name] = variable_value
+    profile.variables[variable_name] = variable_value
 
 
 def _process_selected_rule(profile: ProfileSelections, rule: str) -> None:
@@ -176,7 +175,7 @@ def _process_selected_rule(profile: ProfileSelections, rule: str) -> None:
 def _process_control(profile: ProfileSelections, control: object) -> None:
     """
     Processes a control by iterating through its rules and applying the appropriate processing
-    function. Not that at this level rules list in control can include both variables and rules.
+    function. Note that at this level rules list in control can include both variables and rules.
     The function distinguishes between variable and rules based on the presence of an '='
     character in the rule.
 
