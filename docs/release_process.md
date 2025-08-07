@@ -258,9 +258,10 @@ The way in which the action will categorize and break down changes is controlled
 
 The general rule is that the PR Titles will compose the body of the changelog.
 
-### Tagging
+### Tagging and updating the stable branch
 
-This set of commands describes how to push the release tag.
+This set of commands describes how to create and push the release tag.
+It also updates the **stable** branch with the latest released tag.
 ```
 release=v0.1.99
 remote=origin
@@ -273,6 +274,9 @@ git tag $release $remote/stabilization
 
 # push the tag
 git push $remote $release
+# update the stable branch, merging in the new tag
+hash=$(git commit-tree $release^{tree} -p $remote/stable -p $release -m "Merge in $release")
+git push $remote $hash:stable
 ```
 
 - Wait for the release action to finish. You can follow the Workflow runs in this link:
@@ -284,22 +288,6 @@ git push $remote $release
 
 > **_NOTE:_** In case there is a need to run the job again, delete the release draft and run the
 Github Action again.
-
-Using `release_helper.py` script:
-```bash
-./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release --tag
-```
-
-### Updating the *stable* branch
-
-- Update the **stable** branch to point to the new release:
-```
-release=v0.1.99
-remote=origin
-# update the stable branch, merging in the new tag
-hash=$(git commit-tree $release^{tree} -p $remote/stable -p $release -m "Merge in $release")
-git push $remote $hash:stable
-```
 
 # Clean Up
 
