@@ -1,5 +1,6 @@
 #!/bin/bash
 #
+# packages = nss-altfiles
 {{% if 'ubuntu' in product %}}
 # platform = Not Applicable
 {{% endif %}}
