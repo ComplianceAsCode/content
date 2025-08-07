@@ -2,19 +2,19 @@
 title: Ensure that the kubeadmin secret has been removed
 
 description: |-
-  The kubeadmin user is meant to be a temporary user used for
-  bootstrapping purposes. It is preferable to assign system
-  administrators whose users are backed by an Identity Provider.
+  The kubeadmin user serves as a temporary user for
+  bootstrapping purposes. System administrators should assign users
+  that an Identity Provider backs instead of using the kubeadmin user.
 
   <br />
-  Make sure to remove the user as
+  Remove the user following the steps
   {{{ weblink(link="https://docs.openshift.com/container-platform/latest/authentication/remove-kubeadmin.html",
               text="described in the documentation") }}}
 
 rationale: |-
-  The kubeadmin user has an auto-generated password
-  and a self-signed certificate, and has effectively <pre>cluster-admin</pre>
-  permissions; therefore, it's considered a security liability.
+  The kubeadmin user possesses an auto-generated password
+  and a self-signed certificate, and effectively holds <pre>cluster-admin</pre>
+  permissions; therefore, organizations consider it a security liability.
 
 severity: medium
 
