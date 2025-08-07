@@ -17,7 +17,7 @@
 {{{ oval_test_package_installed(package="kernel-default", test_id="inventory_test_kernel_installed") }}}
 {{{ oval_test_package_installed(package="kernel-default-base", test_id="inventory_test_kernel_default_base_installed") }}}
 {{% else %}}
-{{{ oval_test_package_installed(package="kernel", test_id="inventory_test_kernel_installed") }}}
+{{{ oval_test_package_installed(package="kernel-core", test_id="inventory_test_kernel_installed") }}}
 {{% endif %}}
 {{% if "ol" in families %}}
 {{{ oval_test_package_installed(package="kernel-uek", test_id="inventory_test_kernel_uek_installed") }}}
