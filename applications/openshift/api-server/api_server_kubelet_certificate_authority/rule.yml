@@ -12,26 +12,19 @@ title: 'Configure the kubelet Certificate Authority for the API Server'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-    To ensure OpenShift verifies kubelet certificates before establishing
-    connections, follow the OpenShift documentation and setup the TLS connection
-    between the API Server and kubelets.
-
-    Edit the <tt>openshift-kube-apiserver</tt> configmap
-    and set the below parameter if it is not already configured:
-    <pre>
-    "apiServerArguments":{
-      ...
-      "kubelet-certificate-authority":"/etc/kubernetes/static-pod-resources/configmaps/kubelet-serving-ca/ca-bundle.crt",
-      ...
-    </pre>
+    Configure the kubelet Certificate Authority to ensure OpenShift verifies
+    kubelet certificates before establishing connections. Set up the TLS
+    connection between the API Server and kubelets by configuring the
+    `kubelet-certificate-authority` parameter in the `openshift-kube-apiserver`
+    configmap.
 
 rationale: |-
     Connections from the API Server to the kubelet are used for fetching logs
-    for pods, attaching (through kubectl) to running pods, and using the kubelet
-    port-forwarding functionality. These connections terminate at the kubelet
-    HTTPS endpoint. By default, the API Server does not verify the kubelet serving
-    certificate, which makes the connection subject to man-in-the-middle attacks,
-    and unsafe to run over untrusted and/or public networks.
+    for pods, attaching to running pods, and using the kubelet port-forwarding
+    functionality. These connections terminate at the kubelet HTTPS endpoint.
+    By default, the API Server does not verify the kubelet serving certificate,
+    which makes the connection subject to man-in-the-middle attacks and unsafe
+    to run over untrusted networks.
 
 identifiers:
   cce@ocp4: CCE-84196-5
@@ -48,11 +41,17 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: '<tt>kubelet-certificate-authority</tt> is not set as appropriate for <tt>apiServerArguments</tt>'
+ocil_clause: '`kubelet-certificate-authority` is not set as appropriate for `apiServerArguments`'
 
 ocil: |-
-    Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."kubelet-certificate-authority"'</pre>
+    Verify that the kubelet certificate authority is configured by running the
+    following command:
+
+    ```
+    $ oc get configmap config -n openshift-kube-apiserver -ojson | \
+      jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."kubelet-certificate-authority"'
+    ```
+
     The output should return a configured certificate.
 
 warnings:
