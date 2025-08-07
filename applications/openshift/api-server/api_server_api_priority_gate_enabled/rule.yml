@@ -4,26 +4,26 @@ documentation_complete: true
 title: 'Enable the APIPriorityAndFairness feature gate'
 
 description: |-
-  To limit the rate at which the API Server accepts requests, make
-  sure that the API Priority and Fairness feature is enabled.
-  Using <tt>APIPriorityAndFairness</tt> feature provides a fine-grained way
-  to control the behaviour of the Kubernetes API server in an overload
-  situation. To enable the <tt>APIPriorityAndFairness</tt> feature gate,
-  make sure that the <tt>feature-gates</tt> API server argument, typically
-  set in the <tt>config</tt> configMap in the <tt>openshift-kube-apiserver</tt>
-  namespace contains <tt>APIPriorityAndFairness=true</tt>.
-  Note that since Kubernetes 1.20, this feature gate is enabled by default.
-  As a result, this rule is only applicable to OpenShift releases prior
-  to 4.7 which was the first OCP release to ship Kubernetes 1.20.
+  To limit the rate at which the API Server accepts requests, make sure
+  that the API Priority and Fairness feature is enabled. Using
+  `APIPriorityAndFairness` feature provides a fine-grained way to control
+  the behaviour of the Kubernetes API server in an overload situation. To
+  enable the `APIPriorityAndFairness` feature gate, make sure that the
+  `feature-gates` API server argument, typically set in the `config`
+  configMap in the `openshift-kube-apiserver` namespace contains
+  `APIPriorityAndFairness=true`. Note that since Kubernetes 1.20, this
+  feature gate is enabled by default. As a result, this rule is only
+  applicable to OpenShift releases prior to 4.7 which was the first OCP
+  release to ship Kubernetes 1.20.
 
 rationale: |-
-  The <tt>APIPriorityAndFairness</tt> feature gate enables the use of the
-  <tt>FlowSchema</tt> API objects which enforce a limit on the number of
-  events that the API Server will accept in a given time slice In a large
+  The `APIPriorityAndFairness` feature gate enables the use of the
+  `FlowSchema` API objects which enforce a limit on the number of events
+  that the API Server will accept in a given time slice. In a large
   multi-tenant cluster, there might be a small percentage of misbehaving
-  tenants which could have a significant impact on the performance of
-  the cluster overall. It is recommended to limit the rate of events
-  that the API Server will accept.
+  tenants which could have a significant impact on the performance of the
+  cluster overall. It is recommended to limit the rate of events that the
+  API Server will accept.
 
 identifiers:
   cce@ocp4: CCE-83656-9
@@ -35,11 +35,15 @@ severity: medium
 
 platform: not ocp4-on-hypershift-hosted and ocp4.6
 
-ocil_clause: '<tt>.apiServerArguments["feature-gates"]</tt> does not include <tt>APIPriorityAndFairness</tt>'
+ocil_clause: '`.apiServerArguments["feature-gates"]` does not include `APIPriorityAndFairness`'
 
 ocil: |-
-  To verify that <tt>APIPriorityAndFairness</tt> is enabled, run the following command:
-  <pre>oc get kubeapiservers.operator.openshift.io cluster -o json | jq '.spec.observedConfig.apiServerArguments["feature-gates"]'</pre>
+  To verify that `APIPriorityAndFairness` is enabled, run the following
+  command:
+  ```
+  oc get kubeapiservers.operator.openshift.io cluster -o json | \
+    jq '.spec.observedConfig.apiServerArguments["feature-gates"]'
+  ```
   The output should contain "APIPriorityAndFairness=true"
 
 warnings:
