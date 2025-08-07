@@ -9,12 +9,16 @@ title: Ensure authorization-mode Node is configured
 {{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
-description: 'Restrict kubelet nodes to reading only objects associated with them.'
+description: |-
+    Ensure Node authorization mode is configured to restrict kubelet nodes to
+    reading only objects associated with them. Configure the Node authorization
+    mode to limit kubelet access to cluster resources based on node identity.
 
 rationale: |-
-  The Node authorization mode only allows kubelets to read Secret,
-  ConfigMap, PersistentVolume, and PersistentVolumeClaim objects
-  associated with their nodes.
+    The Node authorization mode only allows kubelets to read Secret, ConfigMap,
+    PersistentVolume, and PersistentVolumeClaim objects associated with their
+    nodes. Without Node authorization mode, kubelets could access unauthorized
+    cluster resources and potentially compromise cluster security.
 
 identifiers:
   cce@ocp4: CCE-83889-6
@@ -34,9 +38,16 @@ platform: not ocp4-on-hypershift-hosted
 ocil_clause: 'The Node authorization-mode is configured and enabled'
 
 ocil: |-
-    To verify that Node authorization mode is enabled, run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep '"authorization-mode":\[[^]]*"Node"'</pre>
-    The output should show that the "authorization-mode" list contains the "Node" authorizer.
+    Verify that Node authorization mode is enabled by running the following
+    command:
+
+    ```
+    $ oc get configmap config -n openshift-kube-apiserver -ojson | \
+      jq -r '.data["config.yaml"]' | grep '"authorization-mode":\[[^]]*"Node"'
+    ```
+
+    The output should show that the `authorization-mode` list contains the
+    `Node` authorizer.
 
 warnings:
 - general: |-

@@ -9,10 +9,16 @@ title: The authorization-mode cannot be AlwaysAllow
 {{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
-description: 'Do not always authorize all requests.'
+description: |-
+    Ensure the authorization mode is not AlwaysAllow to prevent unrestricted
+    access to the API server. Verify that the authorization mode does not
+    include AlwaysAllow, which would bypass all access controls.
 
 rationale: |-
-    The API Server, can be configured to allow all requests. This mode should not be used on any production cluster.
+    The API Server can be configured to allow all requests using the
+    AlwaysAllow authorization mode. This mode should not be used on any
+    production cluster as it completely bypasses authorization controls and
+    allows unrestricted access to all cluster resources.
 
 identifiers:
   cce@ocp4: CCE-84207-0
@@ -29,13 +35,19 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: 'The Node authorization-mode is configured and enabled'
+ocil_clause: 'The authorization-mode does not contain AlwaysAllow'
 
 ocil: |-
-    To verify that the <tt>Node</tt> authorization mode is be configured and enabled in
-    the apiserver configuration, run:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep '"authorization-mode":\[[^]]*"AlwaysAllow"'</pre>
-    The output should be empty - the "authorization-mode" list does NOT contain the "AlwaysAllow" authorizer.
+    Verify that the AlwaysAllow authorization mode is not configured by running
+    the following command:
+
+    ```
+    $ oc get configmap config -n openshift-kube-apiserver -ojson | \
+      jq -r '.data["config.yaml"]' | grep '"authorization-mode":\[[^]]*"AlwaysAllow"'
+    ```
+
+    The output should be empty - the `authorization-mode` list does NOT contain
+    the `AlwaysAllow` authorizer.
 
 warnings:
 - general: |-
