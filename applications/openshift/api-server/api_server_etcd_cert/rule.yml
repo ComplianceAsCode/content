@@ -12,25 +12,18 @@ title: 'Configure the etcd Certificate for the API Server'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
-    To ensure etcd is configured to make use of TLS encryption for client
-    communications, follow the OpenShift documentation and setup the TLS
-    connection between the API Server and etcd. Then, verify
-    that <tt>apiServerArguments</tt> has the <tt>etcd-certfile</tt> configured in
-    the <tt>openshift-kube-apiserver</tt> configmap to something similar to:
-    <pre>
-    ...
-    "etcd-certfile": [
-        "/etc/kubernetes/static-pod-resources/secrets/etcd-client/tls.crt"
-    ],
-    ...
-    </pre>
+    Configure the etcd certificate for the API Server to ensure etcd uses TLS
+    encryption for client communications. Set up the TLS connection between the
+    API Server and etcd by configuring the `etcd-certfile` parameter in the
+    `openshift-kube-apiserver` configmap.
 
 rationale: |-
     etcd is a highly-available key-value store used by OpenShift deployments
     for persistent storage of all REST API objects. These objects are sensitive
-    in nature and should be protected by client authentication. This requires the
-    API Server to identify itself to the etcd server using a client certificate
-    and key.
+    in nature and should be protected by client authentication. This requires
+    the API Server to identify itself to the etcd server using a client
+    certificate and key. Failure to configure proper certificates could
+    compromise the security of all cluster data stored in etcd.
 
 identifiers:
   cce@ocp4: CCE-83876-3
@@ -47,11 +40,16 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: '<tt>etcd-certfile</tt> does not exist or is not configured to valid certificates'
+ocil_clause: '`etcd-certfile` does not exist or is not configured to valid certificates'
 
 ocil: |-
-    Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."etcd-certfile"'</pre>
+    Verify that the etcd certificate file is configured by running the following command:
+
+    ```
+    $ oc get configmap config -n openshift-kube-apiserver -ojson | \
+      jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."etcd-certfile"'
+    ```
+
     The output should return a configured certificate file.
 
 warnings:
