@@ -15,48 +15,41 @@ title: "Configure An Identity Provider"
 # figured out.
 
 description: |-
-  <p>
-  For users to interact with OpenShift Container Platform, they must first
-  authenticate to the cluster. The authentication layer identifies the user
-  associated with requests to the OpenShift Container Platform API. The
-  authorization layer then uses information about the requesting user to
-  determine if the request is allowed.
+  Configure an identity provider for OpenShift Container Platform
+  authentication. Users must authenticate to the cluster before interacting
+  with the OpenShift Container Platform API. The authentication layer
+  identifies users associated with requests, while the authorization layer
+  determines if requests are allowed based on user information.
   {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/logging/cluster-logging-external.html",
               text="Understanding authentication | Authentication | OpenShift Container Platform") }}}
-  </p>
 
-  <p>
-  The OpenShift Container Platform includes a built-in OAuth server for
-  token-based authentication. Developers and administrators obtain OAuth
-  access tokens to authenticate themselves to the API. It is recommended for
-  an administrator to configure OAuth to specify an identity provider after
-  the cluster is installed. User access to the cluster is managed through the
-  identity provider.
+  OpenShift Container Platform includes a built-in OAuth server for
+  token-based authentication. Developers and administrators obtain OAuth access
+  tokens to authenticate to the API. Configure OAuth to specify an identity
+  provider after cluster installation. Manage user access to the cluster
+  through the configured identity provider.
   {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/authentication/understanding-identity-provider.html",
               text="Understanding identity provider configuration | Authentication | OpenShift Container Platform") }}}
-  </p>
 
-  <p>
-  OpenShift includes built-in role based access control (RBAC) to determine
-  whether a user is allowed to perform a given action within the cluster.
-  Roles can have cluster scope or local (i.e. project) scope.
+  OpenShift includes built-in role-based access control (RBAC) to determine
+  whether users can perform specific actions within the cluster. Roles can have
+  cluster scope or local (project) scope.
   {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/authentication/using-rbac.html",
               text="Using RBAC to define and apply permissions | Authentication | OpenShift Container Platform") }}}
-  </p>
 
 rationale: |-
-  <p>
-  With any authentication mechanism the ability to revoke credentials if they
-  are compromised or no longer required, is a key control. Kubernetes client
-  certificate authentication does not allow for this due to a lack of support
-  for certificate revocation.
-  </p>
+  Credential revocationis a key security control for any authentication
+  mechanism. The ability to revoke credentials when they are compromised or no
+  longer required is essential for maintaining system security. Kubernetes
+  client certificate authentication does not support certificate revocation,
+  creating a significant security gap.
 
-  <p>
-  OpenShift's built-in OAuth server allows credential revocation by relying on
-  the Identity provider, as well as giving the administrators the ability to
-  revoke any tokens given to a specific user.
-  </p>
+  OpenShift's built-in OAuth serverenables credential revocation by relying on
+  the configured identity provider. Administrators can revoke tokens issued to
+  specific users, providing granular control over access. Without proper
+  identity provider configuration, the system lacks this critical security
+  capability, potentially allowing compromised or unauthorized credentials to
+  remain active indefinitely.
 
 identifiers:
   cce@ocp4: CCE-84088-4
@@ -72,9 +65,11 @@ references:
 ocil_clause: 'identity provider is not configured'
 
 ocil: |-
-    Run the following command to list the identity providers configured:
-    <pre>$ oc get oauths cluster -ojsonpath='{.spec.identityProviders}' | jq </pre>
-    Make sure that there exists at least one item referenced by the above path.
+    Run the following command to list the configured identity providers:
+    ```
+    $ oc get oauths cluster -ojsonpath='{.spec.identityProviders}' | jq
+    ```
+    Verify that at least one identity provider is configured in the output.
 
 severity: medium
 
