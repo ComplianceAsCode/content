@@ -33,7 +33,7 @@ ocil_clause: 'Audit Webhook not configured'
 
 ocil: |-
     Run the following command to verify that the audit webhook is configured:
-    <pre>oc get hostedclusters {{.hypershift_cluster}} -n clusters -ojson | jq -r '.spec.auditWebhook'</pre>
+    ```oc get hostedclusters {{.hypershift_cluster}} -n clusters -ojson | jq -r '.spec.auditWebhook'```
     The output should contain a properly configured webhook.
 
 warnings:

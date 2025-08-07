@@ -4,7 +4,7 @@ title: Ensure that Audit Log Forwarding Is Enabled
 description: |-
   OpenShift audit works at the API server level, logging all requests coming to the server.
   Audit is on by default and the best practice is to ship audit logs off the cluster for retention.
-  The cluster-logging-operator is able to do this with the <pre>ClusterLogForwarders</pre> resource.
+  The cluster-logging-operator is able to do this with the ```ClusterLogForwarders``` resource.
   The forementioned resource can be configured to log to different third party systems.
   For more information on this, please reference the official documentation:
   {{{ weblink(link="https://docs.openshift.com/container-platform/4.16/observability/logging/log_collection_forwarding/configuring-log-forwarding.html") }}}
@@ -33,8 +33,8 @@ ocil_clause: 'Logs are not forwarded outside the cluster'
 
 ocil: |-
     Run the following command:
-    <pre>oc get clusterlogforwarders -n openshift-logging -ojson | jq -r '.items[].spec.pipelines[].inputRefs | contains(["audit"])'</pre>
-    The output should return <pre>true</pre>.
+    ```oc get clusterlogforwarders -n openshift-logging -ojson | jq -r '.items[].spec.pipelines[].inputRefs | contains(["audit"])'```
+    The output should return ```true```.
 
 warnings:
 - general: |-
