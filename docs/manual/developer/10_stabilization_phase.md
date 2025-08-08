@@ -7,7 +7,7 @@ A period of time before release, when the project is extensively tested and the 
 New content, features, tests, or improvements are not accepted.
 Fixes for known issues that haven't been discovered during the stabilization process are also not accepted.
 
-To not interfere with project liveliness, the stabilization happens in a separate branch with *stabilization* prefix, e.g. stabilization-v0.1.70.
+To not interfere with project liveliness, the stabilization happens in a separate branch named **stabilization**.
 Master/main branch contributions are not affected.
 
 During this period, project is tested, contributors are informed about upcoming release, everything is prepared for release (release notes, contributors list, milestones), and issue fixes are verified.
