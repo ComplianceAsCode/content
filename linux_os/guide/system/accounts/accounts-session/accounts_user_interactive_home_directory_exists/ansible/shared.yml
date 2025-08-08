@@ -19,5 +19,5 @@
     create_home: yes
   loop: '{{ local_users }}'
   when:
-    - item.value[2]|int >= {{{ uid_min }}}
-    - item.value[2]|int != {{{ nobody_uid }}}
+    - item.value[1]|int >= {{{ uid_min }}}
+    - item.value[1]|int != {{{ nobody_uid }}}

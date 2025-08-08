@@ -11,5 +11,8 @@ touch /home/$USER2/.bashrc
 # Swap the ownership of files in two home directories
 # WARNING: This test scenario will report a false negative, as explained in the
 # warning section of this rule.
-chgrp -f $USER2 /home/$USER1/.bashrc
-chgrp -f $USER1 /home/$USER2/.bashrc
+GROUP1=$(id $USER1 -g)
+GROUP2=$(id $USER2 -g)
+chgrp -f $GROUP2 /home/$USER1/.bashrc
+chgrp -f $GROUP1 /home/$USER2/.bashrc
+

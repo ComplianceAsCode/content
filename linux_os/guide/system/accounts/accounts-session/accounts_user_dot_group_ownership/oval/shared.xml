@@ -20,8 +20,10 @@
 
   <local_variable id="var_accounts_user_dot_group_ownership_gids" datatype="int" version="1"
                   comment="List of interactive users gids">
+    <unique>
     <object_component item_field="subexpression"
                       object_ref="{{{ interactive_users_gids_object }}}"/>
+    </unique>
   </local_variable>
 
   <!-- #### creation of object #### -->
