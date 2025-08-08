@@ -7,4 +7,5 @@ useradd -m $USER1
 useradd -M $USER2
 
 touch /home/$USER1/.bashrc
-chgrp $USER1 /home/$USER1/.bashrc
+GROUP=$(id $USER -g)
+chgrp -f $GROUP /home/$USER/.bashrc

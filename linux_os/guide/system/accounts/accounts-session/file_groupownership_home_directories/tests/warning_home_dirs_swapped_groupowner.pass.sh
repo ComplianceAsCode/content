@@ -8,5 +8,8 @@ useradd -m $USER2
 # Swap the group-ownership of two home directories
 # WARNING: This test scenario will report a false negative, as explained in the
 # warning section of this rule.
-chgrp $USER2 /home/$USER1
-chgrp $USER1 /home/$USER2
+GROUP1=$(id $USER1 -g)
+GROUP2=$(id $USER2 -g)
+chgrp $GROUP2 /home/$USER1
+chgrp $GROUP1 /home/$USER2
+
