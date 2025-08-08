@@ -2018,6 +2018,15 @@ controls:
           - aide_check_audit_tools
       status: automated
 
+    - id:  RHEL-08-030655
+      levels:
+          - medium
+      title: RHEL 8 must audit any script or executable called by cron as root or by any privileged user.
+      rules:
+        - audit_rules_etc_cron_d
+        - audit_rules_var_spool_cron
+
+
     - id: RHEL-08-030660
       levels:
           - medium
