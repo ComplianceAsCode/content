@@ -127,7 +127,7 @@ Using `release_helper.py` script:
 ### Bumping the Version
 
 - Open a PR to bump the version of `CMakeLists.txt` on the **master** branch.
-    - For example, if the version  `0.1.65` is going to be released, the line `set(SSG_PATCH_VERSION 65)`
+    - For example, if the version  `0.1.65` is to be released, the line `set(SSG_PATCH_VERSION 65)`
     must be updated to `set(SSG_PATCH_VERSION 66)` in the `CMakeLists.txt` file
     - Reference: https://github.com/ComplianceAsCode/content/pull/9857
 
