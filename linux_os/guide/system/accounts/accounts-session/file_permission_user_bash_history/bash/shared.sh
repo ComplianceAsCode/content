@@ -1,4 +1,4 @@
-# platform = multi_platform_ubuntu
+# platform = multi_platform_sle,multi_platform_ubuntu
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -13,8 +13,7 @@ USERS_IGNORED_REGEX='nobody|nfsnobody'
 for (( i=0; i<"${#interactive_users[@]}"; i++ )); do
     if ! grep -qP "$USERS_IGNORED_REGEX" <<< "${interactive_users[$i]}" && \
         [ "${interactive_users_shell[$i]}" != "/sbin/nologin" ]; then
-        
+
         chmod u-sx,go= "${interactive_users_home[$i]}/.bash_history"
     fi
 done
-
