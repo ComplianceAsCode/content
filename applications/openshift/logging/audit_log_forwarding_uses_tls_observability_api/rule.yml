@@ -39,7 +39,7 @@ warnings:
 - general: |-
     {{{ openshift_cluster_setting() | indent(4) }}}
     {{{ openshift_filtered_cluster_setting_suppressed({
-            "/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders": 'try [.items[].spec.outputs[][]|objects|.url] catch []',
+            "/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders": 'try [.items[].spec.outputs[][]|objects|(select(.url != null).url] catch []',
         }) | indent(4) }}}
 
 template:
@@ -50,7 +50,7 @@ template:
     # The log forwarder outputs consist of an object and two strings (name and type).
     # The url is part of the object and its name will vary depending on its type.
     # By using the objects filter we ensure we are getting the object to query for its url.
-    filepath: "{{{ openshift_filtered_path('/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders', 'try [.items[].spec.outputs[][]|objects|.url] catch []') }}}"
+    filepath: "{{{ openshift_filtered_path('/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders', 'try [.items[].spec.outputs[][]|objects|select(.url != null).url] catch []') }}}"
     yamlpath: "[:]"
     entity_check: "all"
     values:
