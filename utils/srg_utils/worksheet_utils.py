@@ -1,11 +1,8 @@
+# taco
 from __future__ import annotations
-
 from openpyxl.worksheet.worksheet import Worksheet
-
 # The start row is 2, to avoid importing the header
 START_ROW = 2
-
-
 class Row:
     row_id = 0
     IA_Control = ""
@@ -25,7 +22,6 @@ class Row:
     Mitigation = ""
     Artifact_Description = ""
     Status_Justification = ""
-
     @staticmethod
     def from_row(sheet: Worksheet, row_number: int, full_name: str, changed_name: str) -> Row:
         self = Row()
@@ -55,8 +51,6 @@ class Row:
 
     def __str__(self) -> str:
         return f'<Row {self.row_id}>'
-
-
 def get_stigid_set(sheet: Worksheet, end_row: int) -> set[str]:
     result = set()
     for i in range(START_ROW, end_row):
@@ -66,8 +60,6 @@ def get_stigid_set(sheet: Worksheet, end_row: int) -> set[str]:
             continue
         result.add(cci_raw)
     return result
-
-
 def get_cce_dict_to_row_dict(sheet: Worksheet, full_name: str, changed_name: str,
                              end_row: int) -> dict:
     result = dict()
