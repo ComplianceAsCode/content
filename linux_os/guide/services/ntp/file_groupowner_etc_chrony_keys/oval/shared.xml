@@ -4,14 +4,22 @@
     {{{ oval_metadata("/etc/chrony.keys should be owned by chrony group", rule_title=rule_title) }}}
     <criteria operator="OR">
       <criteria operator="AND">
-        <criterion test_ref="test_file_groupowner_etc_chrony_keys_nsswitch_uses_altfiles" negate="true"
-          comment="The /etc/nsswitch.conf does not use nss-altfiles"/>
+        <criteria operator="AND" negate="true">
+          <criterion test_ref="test_file_groupowner_etc_chrony_keys_nsswitch_uses_altfiles"
+            comment="The /etc/nsswitch.conf uses nss-altfiles"/>
+          <criterion test_ref="test_file_groupowner_etc_chrony_keys_package_nss-altfiles_installed"
+            comment="Check if nss-altfiles package is installed"/>
+        </criteria>
         <criterion test_ref="test_file_groupowner_etc_chrony_keys"
           comment="Check group ownership of /etc/chrony.keys"/>
       </criteria>
       <criteria operator="AND">
-        <criterion test_ref="test_file_groupowner_etc_chrony_keys_nsswitch_uses_altfiles"
-          comment="The /etc/nsswitch.conf uses nss-altfiles"/>
+        <criteria operator="AND">
+          <criterion test_ref="test_file_groupowner_etc_chrony_keys_nsswitch_uses_altfiles"
+            comment="The /etc/nsswitch.conf uses nss-altfiles"/>
+          <criterion test_ref="test_file_groupowner_etc_chrony_keys_package_nss-altfiles_installed"
+            comment="Check if nss-altfiles package is installed"/>
+        </criteria>
         <criterion test_ref="test_file_groupowner_etc_chrony_keys_with_usrlib"
           comment="Check group ownership of /etc/chrony.keys"/>
       </criteria>
@@ -19,6 +27,7 @@
   </definition>
 
 {{{ oval_test_nsswitch_uses_altfiles(rule_id=rule_id) }}}
+{{{ oval_test_package_installed("nss-altfiles", test_id="test_file_groupowner_etc_chrony_keys_package_nss-altfiles_installed") }}}
 
   <unix:file_test id="test_file_groupowner_etc_chrony_keys" version="1" check="all" comment="Testing group ownership of /etc/chrony.keys" check_existence="none_exist" state_operator="AND">
     <unix:object object_ref="object_file_groupowner_etc_chrony_keys" />
