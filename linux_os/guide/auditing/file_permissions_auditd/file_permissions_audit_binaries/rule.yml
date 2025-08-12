@@ -8,22 +8,10 @@ description: |-
     permissions configured to protected against unauthorized access.
 
     Verify it by running the following command:
-    <pre>$ stat -c "%n %a" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/audispd /sbin/augenrules
-
-    /sbin/auditctl 755
-    /sbin/aureport 755
-    /sbin/ausearch 755
-    {{%- if product not in ["rhel10"] %}}
-    /sbin/autrace 755
-    {{%- endif %}}
-    /sbin/auditd 755
-    {{%- if 'rhel' not in product %}}
-    /sbin/audispd 755
-    {{%- endif %}}
-    /sbin/augenrules 755
-    {{%- if 'rhel' in product %}}
-    /sbin/audisp-syslog 755
-    {{%- endif %}}
+    <pre>$ stat -c "%n %a" {{{ audit_binaries | join(" ")}}}
+    {{% for binary in audit_binaries %}}
+    {{{ binary }}} 755
+    {{% endfor %}}
     </pre>
 
     Audit tools needed to successfully view and manipulate audit information
@@ -52,17 +40,11 @@ references:
 
 ocil: |-
     Verify it by running the following command:
-    <pre>$ stat -c "%n %a" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/audispd /sbin/augenrules
-
-    /sbin/auditctl 755
-    /sbin/aureport 755
-    /sbin/ausearch 755
-    {{% if product not in ["rhel10"] %}}/sbin/autrace 755{{% endif %}}
-    /sbin/auditd 755
-    {{% if 'rhel' not in product %}}/sbin/audispd 755{{% endif %}}
-    /sbin/augenrules 755
+    <pre>$ stat -c "%n %a" {{{ audit_binaries | join(" ")}}}
+    {{% for binary in audit_binaries %}}
+    {{{ binary }}} 755
+    {{% endfor %}}
     </pre>
-
     If the command does not return all the above lines, the missing ones
     need to be added.
 
@@ -76,13 +58,5 @@ ocil: |-
 template:
     name: file_permissions
     vars:
-        filepath:
-            - /sbin/auditctl
-            - /sbin/aureport
-            - /sbin/ausearch
-            {{% if product not in ["rhel10"] %}}- /sbin/autrace{{% endif %}}
-            - /sbin/auditd
-            {{% if 'rhel' not in product %}}- /sbin/audispd{{% endif %}}
-            - /sbin/augenrules
-            {{% if 'rhel' in product %}}- /sbin/audisp-syslog{{% endif %}}
+        filepath: {{{ audit_binaries }}}
         filemode: '0755'
