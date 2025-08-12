@@ -2,4 +2,6 @@
 
 USER="cac_user"
 useradd -m $USER
-chgrp $USER /home/$USER
+GROUP=$(id $USER -g)
+chgrp $GROUP /home/$USER
+
