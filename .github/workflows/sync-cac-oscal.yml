@@ -20,7 +20,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y git
       # Step 3: Checkout the CaC repo
       - name: Checkout CaC repo
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           repository: ${{ github.repository }}
           path: cac-content
@@ -77,7 +77,7 @@ jobs:
       # Step 6: Setup the complyscribe environment
       - name: Checkout OSCAL content repo
         if: ${{ env.CHANGE_FOUND == 'true' }}
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           repository: ComplianceAsCode/oscal-content
           path: oscal-content
@@ -85,7 +85,7 @@ jobs:
           fetch-depth: 0
       - name: Checkout complyscribe repo
         if: ${{ env.CHANGE_FOUND == 'true' }}
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           repository: complytime/complyscribe
           path: complyscribe
