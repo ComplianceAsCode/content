@@ -4,12 +4,12 @@
 # complexity = low
 # disruption = low
 - name: "Ensure AIDE is installed"
-  package:
+  ansible.builtin.package:
     name: aide
     state: present
 
 - name: Install cron
-  package:
+  ansible.builtin.package:
 {{% if "ubuntu" in product or "debian" in product %}}
     name: cron
 {{% else %}}
@@ -19,7 +19,7 @@
 
 {{% if product != 'ubuntu2404' %}}
 - name: "{{{ rule_title }}}"
-  cron:
+  ansible.builtin.cron:
 {{% if product in ["sle12", "sle15"] %}}
     name: "{{{ rule_title }}}"
     cron_file: /etc/crontab

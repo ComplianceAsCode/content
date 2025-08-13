@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: "{{{ rule_title }}}"
-  file:
+  ansible.builtin.file:
     src: /etc/crypto-policies/back-ends/krb5.config
     path: /etc/krb5.conf.d/crypto-policies
     state: link

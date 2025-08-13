@@ -14,7 +14,7 @@
         ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency
 {{% else %}}
 - name: Require emergency mode password
-  lineinfile:
+  ansible.builtin.lineinfile:
       create: yes
       dest: /usr/lib/systemd/system/emergency.service
       regexp: "^#?ExecStart="

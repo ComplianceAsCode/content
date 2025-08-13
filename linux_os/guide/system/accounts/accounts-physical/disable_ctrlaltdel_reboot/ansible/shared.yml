@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: Disable Ctrl-Alt-Del Reboot Activation
-  systemd:
+  ansible.builtin.systemd_service:
     name: ctrl-alt-del.target
     force: yes
     masked: yes

@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_journal_upload_url") }}}
 
 - name: Set URL in /etc/systemd/journal-upload.conf
-  lineinfile:
+  ansible.builtin.lineinfile:
       dest: /etc/systemd/journal-upload.conf
       regexp: "^#?URL="
       line: URL={{ var_journal_upload_url }}

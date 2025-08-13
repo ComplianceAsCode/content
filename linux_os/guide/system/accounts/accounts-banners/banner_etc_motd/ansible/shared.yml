@@ -6,6 +6,6 @@
 {{{ ansible_instantiate_variables("motd_banner_text") }}}
 
 - name: "{{{ rule_title }}} - ensure correct banner"
-  copy:
+  ansible.builtin.copy:
     dest: /etc/motd
     content: '{{{ ansible_deregexify_banner_etc_issue("motd_banner_text") }}}'

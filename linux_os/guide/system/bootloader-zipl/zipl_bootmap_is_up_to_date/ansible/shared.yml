@@ -7,22 +7,22 @@
 - name: "Ensure zIPL bootmap is up to date"
   block:
     - name: "Obtain stats of /boot/bootmap"
-      stat:
+      ansible.builtin.stat:
         path: /boot/bootmap
       register: boot_bootmap
 
     - name: "Obtain stats of /etc/zipl.conf"
-      stat:
+      ansible.builtin.stat:
         path: /etc/zipl.conf
       register: zipl_conf
 
     - name: "Obtain stats of /boot/loader/entries"
-      stat:
+      ansible.builtin.stat:
         path: /boot/loader/entries
       register: boot_loader_entries
 
     - name: "Update zIPL bootmap"
-      command: /usr/sbin/zipl
+      ansible.builtin.command: /usr/sbin/zipl
       changed_when: True
       when:
       - boot_bootmap.stat.mtime is defined

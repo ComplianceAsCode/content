@@ -4,12 +4,12 @@
 # complexity = low
 # disruption = low
 - name: Does prelink file exist
-  stat:
+  ansible.builtin.stat:
     path: /etc/sysconfig/prelink
   register: prelink_exists
 
 - name: Disable prelinking
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/sysconfig/prelink
     regexp: '^PRELINKING='
     line: 'PRELINKING=no'

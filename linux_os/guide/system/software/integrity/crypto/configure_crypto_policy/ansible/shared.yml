@@ -8,17 +8,17 @@
 {{% if product == "sle15" %}}
 - name: "{{{ rule_title }}} - Ensure crypto-policies-scripts package installed"
   become: yes
-  package:
+  ansible.builtin.package:
     name: crypto-policies-scripts
     state: present
 {{% endif %}}
 
 - name: "{{{ rule_title }}}"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/crypto-policies/config
     regexp: '^(?!#)(\S+)$'
     line: "{{ var_system_crypto_policy }}"
     create: yes
 
 - name: Verify that Crypto Policy is Set (runtime)
-  command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
+  ansible.builtin.command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}

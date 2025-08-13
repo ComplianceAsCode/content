@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_auditd_flush") }}}
 
 - name: Configure auditd Flush Priority
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/audit/auditd.conf
     regexp: '^\s*flush\s*=\s*.*$'
     line: "flush = {{ var_auditd_flush }}"

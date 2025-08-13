@@ -30,7 +30,7 @@
   loop: "{{  rsyslog_dropin_config_files.files }}"
   
 - name: "Set rsyslog remote loghost"
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/rsyslog.d/remote.conf
     regexp: "^\\*\\.\\*\\s+.*$"
     line: "*.* @@{{ rsyslog_remote_loghost_address }}"

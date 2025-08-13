@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_sssd_ssh_known_hosts_timeout") }}}
 
 - name: "Test for domain group"
-  command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
+  ansible.builtin.command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
   failed_when: false
   changed_when: False

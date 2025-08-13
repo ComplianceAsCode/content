@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_account_disable_post_pw_expiration") }}}
 
 - name: Set Account Expiration Following Inactivity
-  lineinfile:
+  ansible.builtin.lineinfile:
     create: yes
     dest: /etc/default/useradd
     regexp: ^INACTIVE

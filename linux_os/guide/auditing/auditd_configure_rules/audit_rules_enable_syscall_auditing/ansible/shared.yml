@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: Service facts
-  service_facts:
+  ansible.builtin.service_facts:
 
 - name: Check if auditctl rules script being used
   ansible.builtin.find:
@@ -22,7 +22,7 @@
   register: auditd_svc_augen_used
 
 - name: Find audit rules in /etc/audit/rules.d
-  find:
+  ansible.builtin.find:
     paths: /etc/audit/rules.d
     file_type: file
     follow: yes
@@ -32,7 +32,7 @@
     - auditd_svc_augen_used is defined and auditd_svc_augen_used.matched >= 1
 
 - name: Enable syscall auditing (augenrules)
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ item.path }}"
     regex: (?i)^(\s*-a\s+task,never)\s*$
     line: '#-a task,never'
@@ -43,7 +43,7 @@
   register: augenrules_syscall_auditing_rule_update_result
 
 - name: Enable syscall auditing (auditctl)
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/audit/audit.rules
     regex: (?i)^(\s*-a\s+task,never)\s*$
     line: '#-a task,never'
@@ -53,7 +53,7 @@
   register: auditctl_syscall_auditing_rule_update_result
 
 - name: Restart auditd.service
-  systemd:
+  ansible.builtin.systemd_service:
     name: auditd.service
     state: restarted
   when:

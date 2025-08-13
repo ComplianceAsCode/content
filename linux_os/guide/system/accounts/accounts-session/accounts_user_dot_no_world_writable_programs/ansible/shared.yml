@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: {{{ rule_title }}} - Initialize variables
-  set_fact:
+  ansible.builtin.set_fact:
     home_user_dirs: []
     world_writable_files: []
 
@@ -15,7 +15,7 @@
   register: passwd_database
     
 - name: {{{ rule_title }}} - Fill home_user_dirs
-  set_fact:
+  ansible.builtin.set_fact:
     home_user_dirs: "{{ home_user_dirs + [item.data[4]] }}"
   when: item.data[4] is defined and item.data[2]|int >= {{{ uid_min }}} and item.data[2]|int != {{{ nobody_uid }}}
   with_items: "{{ passwd_database.ansible_facts.getent_passwd | dict2items(key_name='user', value_name='data')}}"

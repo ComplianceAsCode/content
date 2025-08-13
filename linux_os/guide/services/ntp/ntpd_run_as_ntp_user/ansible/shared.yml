@@ -5,14 +5,14 @@
 # disruption = low
 
 - name: "Detect if file is not empty or missing"
-  find:
+  ansible.builtin.find:
     path: /etc/sysconfig/
     patterns: ntpd
     contains: '^([\s]*OPTIONS=["]?[^"]*)("?)'
   register: ntpd_file
 
 - name: "Replace existing setting or create a new file, rest is handled by different task"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/sysconfig/ntpd
     regexp: '^([\s]*OPTIONS=["]?[^"]*)("?)'
     line: '\1 -u ntp:ntp\2'
@@ -22,7 +22,7 @@
   when: ntpd_file.matched > 0
 
 - name: "Put line into file, assume file was empty"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/sysconfig/ntpd
     line: 'OPTIONS="-u ntp:ntp"'
     state: present

@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: Set smartcard packages fact
-  set_fact:
+  ansible.builtin.set_fact:
     smartcard_packages:
       - pam_pkcs11
       - mozilla-nss
@@ -16,6 +16,6 @@
       - opensc
 
 - name: Ensure {{ smartcard_packages }} are installed
-  package:
+  ansible.builtin.package:
     name: "{{ smartcard_packages }}"
     state: present

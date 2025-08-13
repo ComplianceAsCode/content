@@ -6,13 +6,13 @@
 
 
 - name: Drop any security clause for every export
-  replace:
+  ansible.builtin.replace:
     path: "/etc/exports"
     regexp: '^(/.*\w+.*\(.*),sec=[^,]*(.*\)\w*$)'
     replace: '\1\2'
 
 - name: Add kerberos security when no security is defined for an export
-  replace:
+  ansible.builtin.replace:
     path: "/etc/exports"
     regexp: '^(/.*\w+.*\(.*)(\)\w*$)'
     replace: '\1,sec=krb5:krb5i:krb5p\2'

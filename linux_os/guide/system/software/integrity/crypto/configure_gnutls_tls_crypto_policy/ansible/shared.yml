@@ -4,19 +4,19 @@
 # complexity = low
 # disruption = low
 - name: "{{{ rule_title }}}: set_fact"
-  set_fact:
+  ansible.builtin.set_fact:
     path: /etc/crypto-policies/back-ends/gnutls.config
     correct_value: '+VERS-ALL:-VERS-DTLS0.9:-VERS-TLS1.1:-VERS-TLS1.0:-VERS-SSL3.0:-VERS-DTLS1.0'
     lineinfile_reg: \+VERS-ALL:-VERS-DTLS0\.9:-VERS-TLS1\.1:-VERS-TLS1\.0:-VERS-SSL3\.0:-VERS-DTLS1\.0
 
 - name: "{{{ rule_title }}}: stat"
-  stat:
+  ansible.builtin.stat:
     path: "{{ path }}"
     follow: yes
   register: gnutls_file
 
 - name: "{{{ rule_title }}}: Add"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ path }}"
     regexp: "{{ lineinfile_reg }}"
     line: "{{ correct_value }}"
@@ -26,7 +26,7 @@
 - name: "{{{ rule_title }}}"
   block:
     - name: "{{{ rule_title }}}: Existing value check"
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: "{{ path }}"
         create: false
         regexp: "{{ lineinfile_reg }}"
@@ -36,7 +36,7 @@
       register: gnutls
 
     - name: "{{{ rule_title }}}: Update"
-      replace:
+      ansible.builtin.replace:
         path: "{{ path }}"
         regexp: (\+VERS-ALL(?::-VERS-[A-Z]+\d\.\d)+)
         replace: "{{ correct_value }}"

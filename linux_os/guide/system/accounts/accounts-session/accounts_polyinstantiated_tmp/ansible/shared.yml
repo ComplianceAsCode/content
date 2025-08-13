@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: Create /tmp/tmp-inst directory
-  file:
+  ansible.builtin.file:
     path: /tmp/tmp-inst
     state: directory
     mode: '000'

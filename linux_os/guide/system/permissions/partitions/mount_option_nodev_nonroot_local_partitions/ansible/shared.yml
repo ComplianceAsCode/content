@@ -5,7 +5,7 @@
 # disruption = high
 
 - name: "{{{ rule_title }}}: Refresh facts"
-  setup:
+  ansible.builtin.setup:
     gather_subset: mounts
 
 - name: "{{{ rule_title }}}: Define excluded (non-local) file systems"
@@ -33,7 +33,7 @@
       - fuse.sshfs
 
 - name: "{{{ rule_title }}}: Ensure non-root local partitions are mounted with nodev option"
-  mount:
+  ansible.builtin.mount:
     path: "{{ item.mount }}"
     src: "{{ item.device }}"
     opts: "{{ item.options }},nodev"

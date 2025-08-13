@@ -5,7 +5,7 @@
 # disruption = medium
 
 - name: "{{{ rule_title }}}: Set facts"
-  set_fact:
+  ansible.builtin.set_fact:
     conf_files: [ '/etc/rsyslog.conf' ]
     remote_methods:
       - selector: 'auth.*'
@@ -19,14 +19,14 @@
         location: "/var/log/messages"
 
 - name: "{{{ rule_title }}}: Ensure rsyslog.conf exists"
-  file:
+  ansible.builtin.file:
     path: "{{ conf_files.0 }}"
     state: touch
     access_time: preserve
     modification_time: preserve
 
 - name: "{{{ rule_title }}}: Gather conf.d files"
-  find:
+  ansible.builtin.find:
     patterns:
       - '*.conf'
     paths:
@@ -34,13 +34,13 @@
   register: rsyslogd
 
 - name: "{{{ rule_title }}}: Set conf file(s)"
-  set_fact:
+  ansible.builtin.set_fact:
     conf_files: "{{ conf_files + [item.path] }}"
   loop: "{{ rsyslogd.files }}"
   when: rsyslogd.matched > 0
 
 - name: "{{{ rule_title }}}: Check for existing values"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ item.1 }}"
     regexp: "{{ item.0.regexp }}"
     state: absent
@@ -50,7 +50,7 @@
   loop: "{{ remote_methods|product(conf_files)|list }}"
 
 - name: "{{{ rule_title }}}: Configure"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/rsyslog.conf
     line: "{{ item.item.0.selector }} {{ item.item.0.location }}"
     insertafter: ^.*\/var\/log\/secure.*$

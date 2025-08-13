@@ -7,30 +7,30 @@
 - name: "Ensure BLS boot entries options contain systemd.debug-shell"
   block:
     - name: "Check how many boot entries set systemd.debug-shell"
-      find:
+      ansible.builtin.find:
         paths: "/boot/loader/entries/"
         contains: "^options .*systemd\\.debug-shell.*$"
         patterns: "*.conf"
       register: n_entries
 
     - name: "Remove systemd.debug-shell from boot entries"
-      command: grubby --update-kernel=ALL --remove-args="systemd.debug-shell"
+      ansible.builtin.command: grubby --update-kernel=ALL --remove-args="systemd.debug-shell"
       when: n_entries is defined and n_entries.matched >= 1
 
     - name: "Check if /etc/kernel/cmdline exists"
-      stat:
+      ansible.builtin.stat:
         path: /etc/kernel/cmdline
       register: cmdline_stat
 
     - name: "Check if /etc/kernel/cmdline contains systemd.debug-shell"
-      find:
+      ansible.builtin.find:
         paths: "/etc/kernel/"
         patterns: "cmdline"
         contains: "^.*systemd\\.debug-shell.*$"
       register: cmdline_find
 
     - name: "Remove systemd.debug-shell from /etc/kernel/cmdline"
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: "/etc/kernel/cmdline"
         backrefs: yes
         regexp: '^(.*)\s*systemd.debug-shell\b\S*(.*)$'

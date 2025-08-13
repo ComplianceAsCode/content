@@ -5,7 +5,7 @@
 # disruption = medium
 
 - name: "Get root paths which are not symbolic links"
-  stat:
+  ansible.builtin.stat:
     path: "{{ item }}"
   changed_when: False
   failed_when: False
@@ -13,7 +13,7 @@
   with_items: "{{ ansible_env.PATH.split(':') }}"
 
 - name: "Disable writability to root directories"
-  file:
+  ansible.builtin.file:
     path: "{{ item.item }}"
     mode: "g-w,o-w"
   with_items: "{{ root_paths.results }}"

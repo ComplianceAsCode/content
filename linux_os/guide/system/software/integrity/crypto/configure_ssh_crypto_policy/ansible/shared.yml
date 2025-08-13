@@ -5,7 +5,7 @@
 # disruption = medium
 
 - name: "{{{ rule_title }}}"
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/sysconfig/sshd
     state: absent
     regexp: (?i)^\s*CRYPTO_POLICY.*$

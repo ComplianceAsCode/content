@@ -7,20 +7,20 @@
 {{{ ansible_instantiate_variables("var_audit_failure_mode") }}}
 
 - name: Collect all files from /etc/audit/rules.d with .rules extension
-  find:
+  ansible.builtin.find:
     paths: "/etc/audit/rules.d/"
     patterns: "*.rules"
   register: find_rules_d
 
 - name: Remove the -f option from all Audit config files
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ item }}"
     regexp: '^\s*(?:-f)\s+.*$'
     state: absent
   loop: "{{ find_rules_d.files | map(attribute='path') | list + ['/etc/audit/audit.rules'] }}"
 
 - name: Add Audit -f option into /etc/audit/rules.d/immutable.rules and /etc/audit/audit.rules
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ item }}"
     create: True
     mode: "0600"

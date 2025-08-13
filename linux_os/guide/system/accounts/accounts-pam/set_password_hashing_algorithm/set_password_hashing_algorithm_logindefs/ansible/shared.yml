@@ -7,7 +7,7 @@
 {{{ ansible_instantiate_variables("var_password_hashing_algorithm") }}}
 
 - name: Set Password Hashing Algorithm in {{{ login_defs_path }}}
-  lineinfile:
+  ansible.builtin.lineinfile:
       dest: {{{ login_defs_path }}}
       regexp: ^#?ENCRYPT_METHOD
       line: ENCRYPT_METHOD {{ var_password_hashing_algorithm.split('|')[0] }}

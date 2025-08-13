@@ -10,14 +10,14 @@
 {{%- endif %}}
 
 - name: "Detect if file /etc/sysconfig/chronyd is not empty or missing"
-  find:
+  ansible.builtin.find:
     path: /etc/sysconfig/
     patterns: chronyd
     contains: '^([\s]*OPTIONS=["]?[^"]*)("?)'
   register: chronyd_file
 
 - name: "Remove any previous configuration of user used to run chronyd process"
-  replace:
+  ansible.builtin.replace:
     path: /etc/sysconfig/chronyd
     regexp: '\s*-u\s*\w+\s*'
     replace: ' '
@@ -25,7 +25,7 @@
 
 {{%- if not ok_by_default %}}
 - name: "Correct existing line in /etc/sysconfig/chronyd to run chronyd as chrony user"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/sysconfig/chronyd
     regexp: '^([\s]*OPTIONS=["]?[^"]*)("?)'
     line: '\1 -u chrony\2'
@@ -34,7 +34,7 @@
   when: chronyd_file is defined and chronyd_file.matched > 0
 
 - name: "Insert correct line into /etc/sysconfig/chronyd ensuring chronyd runs as chrony user"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/sysconfig/chronyd
     line: 'OPTIONS="-u chrony"'
     state: present

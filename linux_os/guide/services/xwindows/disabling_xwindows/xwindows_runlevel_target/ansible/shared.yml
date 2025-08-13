@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: Switch to multi-user runlevel
-  file:
+  ansible.builtin.file:
     src: /usr/lib/systemd/system/multi-user.target
     dest: /etc/systemd/system/default.target
     state: link

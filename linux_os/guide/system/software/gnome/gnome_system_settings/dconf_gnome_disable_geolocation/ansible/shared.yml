@@ -21,18 +21,18 @@
     create: yes
 
 - name: "Prevent user modification of GNOME geolocation - location tracking"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
     regexp: '^/org/gnome/system/location/enabled$'
     line: '/org/gnome/system/location/enabled'
     create: yes
 
 - name: "Prevent user modification of GNOME geolocation - clock location tracking"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
     regexp: '^/org/gnome/clocks/geolocation$'
     line: '/org/gnome/clocks/geolocation'
     create: yes
 
 - name: Dconf Update
-  command: dconf update
+  ansible.builtin.command: dconf update

@@ -5,7 +5,7 @@
 # disruption = medium
 
 - name: "Configure GNOME3 DConf User Profile"
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "/etc/dconf/profile/gdm"
     line: "user-db:user\nsystem-db:gdm"
     create: yes
