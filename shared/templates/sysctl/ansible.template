@@ -6,14 +6,14 @@
 
 - name: List /etc/sysctl.d/*.conf files
 {{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
-  find:
+  ansible.builtin.find:
     paths:
       - "/run/sysctl.d/"
       - "/etc/sysctl.d/"
       - "/usr/local/lib/sysctl.d/"
       - "/lib/sysctl.d/"
 {{% else %}}
-  find:
+  ansible.builtin.find:
     paths:
       - "/etc/sysctl.d/"
       - "/run/sysctl.d/"
@@ -28,7 +28,7 @@
   register: find_sysctl_d
 
 - name: Comment out any occurrences of {{{ SYSCTLVAR }}} from config files
-  replace:
+  ansible.builtin.replace:
     path: "{{ item.path }}"
     regexp: '^[\s]*{{{ SYSCTLVAR }}}'
     replace: '#{{{ SYSCTLVAR }}}'
@@ -36,7 +36,7 @@
 
 {{% if product in [ "ubuntu2204", "ubuntu2404"] %}}
 - name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/ufw/sysctl.conf
-  replace:
+  ansible.builtin.replace:
     path: "/etc/ufw/sysctl.conf"
     regexp: '(^[\s]*{{{ SYSCTLVAR }}}.*$)'
     replace: '# \1'
@@ -44,7 +44,7 @@
 
 {{% if sysctl_remediate_drop_in_file == "true" %}}
 - name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.conf
-  replace:
+  ansible.builtin.replace:
     path: "/etc/sysctl.conf"
     regexp: '^[\s]*{{{ SYSCTLVAR }}}'
     replace: '#{{{ SYSCTLVAR }}}'
@@ -54,12 +54,12 @@
 - (xccdf-var sysctl_{{{ SYSCTLID }}}_value)
 
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set
-  sysctl:
+  ansible.builtin.sysctl:
     name: "{{{ SYSCTLVAR }}}"
     value: "{{ sysctl_{{{ SYSCTLID }}}_value }}"
 {{%- else %}}
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set to {{{ SYSCTLVAL }}}
-  sysctl:
+  ansible.builtin.sysctl:
     name: "{{{ SYSCTLVAR }}}"
     value: "{{{ SYSCTLVAL }}}"
 {{%- endif %}}

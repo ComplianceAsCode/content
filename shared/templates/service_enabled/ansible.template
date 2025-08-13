@@ -6,7 +6,7 @@
 - name: "{{{ rule_title }}} - Enable service {{{ SERVICENAME }}}"
   block:
   - name: Gather the package facts
-    package_facts:
+    ansible.builtin.package_facts:
       manager: auto
 
 {{%- if init_system == "systemd" %}}

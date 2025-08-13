@@ -7,7 +7,7 @@
 - name: Disable xinetd service {{{ SERVICENAME }}}
   block:
   - name: Gather the package facts
-    package_facts:
+    ansible.builtin.package_facts:
       manager: auto
 
   - name: "{{{ rule_title }}} - Ensure /etc/xinetd.d/{{{ SERVICENAME }}} exists"

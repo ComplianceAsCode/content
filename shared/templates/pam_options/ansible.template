@@ -19,24 +19,24 @@
 {{% endfor %}}
 
 - name: Set control_flag fact
-  set_fact:
+  ansible.builtin.set_fact:
     control_flag: '{{{ CONTROL_FLAG }}}'
 
 - name: Check to see if '{{{ MODULE }}}' module is configured in '{{{ PATH }}}'
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     grep -E '^\s*{{{ TYPE }}}\s+\S+\s+{{{ MODULE }}}' {{{ PATH }}} || true
   register: check_pam_module_result
 
 - name: Configure '{{{ MODULE }}}' module in '{{{ PATH }}}'
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: {{{ PATH }}}
     line: '{{{ TYPE }}} {{{ CONTROL_FLAG }}} {{{ MODULE }}}'
     state: present
   when: check_pam_module_result.stdout is defined and '"{{{ MODULE }}}" not in check_pam_module_result.stdout'
 
 - name: Ensure '{{{ MODULE }}}' module has conforming control flag
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: {{{ PATH }}}
     regexp: '^(\s*{{{ TYPE }}}\s+)\S+(\s+{{{ MODULE }}}\s+.*)'
     line: '\g<1>{{{ CONTROL_FLAG }}}\g<2>'
@@ -49,7 +49,7 @@
 # it is set to.
 {{% if arg['remove_argument']|length %}}
 - name: Remove argument '{{{ arg['argument'] }}}' from '{{{ MODULE }}}' module
-  replace:
+  ansible.builtin.replace:
     path: {{{ PATH }}}
     regexp: '^(\s*{{{ TYPE }}}\s+\S+\s+{{{ MODULE }}}(?:\s+\S+)*)\s+{{{ arg['argument'] }}}(?:=\S+)?((\s+\S+)*\s*\\*\s*)$'
     replace: '\1\2'
@@ -58,20 +58,20 @@
 # static value
 
 - name: Ensure "{{{ MODULE }}}" module has argument "{{{ arg['variable'] }}}={{ var_password_pam_{{{ arg['variable'] }}} }}"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: {{{ PATH }}}
     regexp: '^(\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}(?:\s+\S+)*\s+{{{ arg['variable'] }}}=)(?:\S+)((\s+\S+)*\s*\\*\s*)$'
     line: '\g<1>{{ var_password_pam_{{{ arg['variable'] }}} }}\g<2>'
     backrefs: yes
 
 - name: Check the presence of "{{{ arg['variable'] }}}" argument in "{{{ MODULE }}}" module
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     grep -E '^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+{{{ arg['variable'] }}}(=|\s|\s*$)' {{{ PATH }}} || true
   register: check_pam_module_argument_result
 
 - name: Add "{{{ arg['variable'] }}}" argument to "{{{ MODULE }}}" module
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: {{{ PATH }}}
     regexp: '^(\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}})((\s+\S+)*\s*(\\)*$)'
     line: '\g<1> {{{ arg['variable'] }}}={{ var_password_pam_{{{ arg['variable'] }}} }}\g<2>'
@@ -79,11 +79,11 @@
   when: check_pam_module_argument_result is not skipped and '"{{{ arg['variable'] }}}" not in check_pam_module_argument_result.stdout'
 {{% else %}}
 - name: Set argument_value fact
-  set_fact:
+  ansible.builtin.set_fact:
     argument_value: "{{{ arg['argument_value'] }}}"
 
 - name: Ensure "{{{ MODULE }}}" module has argument {{% if arg['argument_value']|string|length %}}"{{{ arg['argument'] }}}={{{ arg['argument_value'] }}}"{{% else %}}"{{{ arg['argument'] }}}"{{% endif %}}
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: {{{ PATH }}}
     regexp: '^(\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}(?:\s+\S+)*\s+{{{ arg['argument'] }}}=)(?!{{{ arg['argument_match'] }}})\S*((\s+\S+)*\s*\\*\s*)$'
     line: '\g<1>{{{ arg['argument_value'] }}}\g<2>'
@@ -91,13 +91,13 @@
   when: argument_value|length
 
 - name: Check the presence of "{{{ arg['argument'] }}}" argument in "{{{ MODULE }}}" module
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     grep -E '^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+{{{ arg['argument'] }}}(=|\s|\s*$)' {{{ PATH }}} || true
   register: check_pam_module_argument_result
 
 - name: Add "{{{ arg['argument'] }}}" argument to "{{{ MODULE }}}" module
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: {{{ PATH }}}
     regexp: '^(\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}})((\s+\S+)*\s*(\\)*$)'
     line: '\g<1> {{{ arg['new_argument'] }}}\g<2>'

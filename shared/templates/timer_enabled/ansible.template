@@ -6,11 +6,11 @@
 - name: Enable timer {{{ TIMERNAME }}}
   block:
   - name: Gather the package facts
-    package_facts:
+    ansible.builtin.package_facts:
       manager: auto
 
   - name: Enable timer {{{ TIMERNAME }}}
-    systemd:
+    ansible.builtin.systemd_service:
       name: "{{{ TIMERNAME }}}.timer"
       enabled: "yes"
       state: "started"
