@@ -1,9 +1,27 @@
 documentation_complete: true
 
-title: ''
+title: 'Implement STIG Sub Crypto Policy'
 
-description: ''
+description: |-
+    Create a custom cryptographic policy to follow the guidance
 
-rationale: ''
+rationale: |-
+    To follow STIG policy.
 
 severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86570-9
+
+
+references:
+    srg: SRG-OS-000396-GPOS-00176
+
+ocil_clause: 'the STIG subpolicy does not exist'
+
+ocil: |-
+    Verify that <tt>/etc/crypto-policies/policies/modules/STIG.pmod</tt> exists and has the following content:
+    <pre>
+    cipher@SSH=AES-256-GCM AES-256-CTR AES-128-GCM AES-128-CTR
+    mac@SSH=HMAC-SHA2-512 HMAC-SHA2-256
+    </pre>
