@@ -15,55 +15,76 @@ RUN find . -name "default\.profile" -exec sed -i 's/\(documentation_complete: \)
 
 # Choose profile to enable for all architectures
 RUN sed -i 's/\(documentation_complete: \).*/\1true/' \
-    products/ocp4/profiles/pci-dss-node-3-2.profile \
-    products/ocp4/profiles/pci-dss-3-2.profile \
-    products/ocp4/profiles/pci-dss-node-4-0.profile \
-    products/ocp4/profiles/pci-dss-4-0.profile \
-    products/ocp4/profiles/pci-dss-node.profile \
-    products/ocp4/profiles/pci-dss.profile \
     products/ocp4/profiles/cis-node.profile \
     products/ocp4/profiles/cis.profile \
     products/ocp4/profiles/cis-node-1-4.profile \
     products/ocp4/profiles/cis-1-4.profile \
     products/ocp4/profiles/cis-node-1-5.profile \
     products/ocp4/profiles/cis-1-5.profile \
+    products/ocp4/profiles/cis-node-1-7.profile \
+    products/ocp4/profiles/cis-1-7.profile \
     products/ocp4/profiles/moderate-node.profile \
     products/ocp4/profiles/moderate.profile \
     products/ocp4/profiles/moderate-node-rev-4.profile \
     products/ocp4/profiles/moderate-rev-4.profile
 
+# Enable PCI-DSS for all architectures except aarch64. Once we have testing for
+# PCI-DSS on ARM64 upstream, we can remove this case and include PCI-DSS
+# profiles downstream.
+RUN if [ "$(uname -m)" != "aarch64" ]; then \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss-node.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss-node-4-0.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss-4-0.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss-node-3-2.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss-3-2.profile; \
+    fi
+
+# Enable the FedRAMP Moderate profile on ARM64.
+RUN if [ "$(uname -m)" = "aarch64" ]; then \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/moderate.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/moderate-rev-4.profile; \
+    fi
+
+
 # Only enable for x86_64
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/e8.profile && \
-        sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/high.profile && \
-        sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/high-node.profile && \
-        sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/high-rev-4.profile && \
-        sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/high-node-rev-4.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/nerc-cip.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/nerc-cip-node.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/moderate.profile && \
-        sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/high.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/moderate-rev-4.profile && \
-        sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/high-rev-4.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/e8.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/nerc-cip.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss-node.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss-node-3-2.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss-3-2.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-node.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/stig.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-v1r1.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-node-v1r1.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/stig-v1r1.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-v2r1.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-node-v2r1.profile && \
-	sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/stig-v2r1.profile; \
-    elif [ "$(uname -m)" = "ppc64le" ]; then \
-        find products/rhcos4 -name "*stig*.profile" | xargs sed -i 's/\(documentation_complete: \).*/\1true/' && \
-        find products/ocp4 -name "*stig*.profile" | xargs sed -i 's/\(documentation_complete: \).*/\1true/' ; \
-	fi
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/e8.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/high.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/high-node.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/high-rev-4.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/high-node-rev-4.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/nerc-cip.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/nerc-cip-node.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/moderate.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/high.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/moderate-rev-4.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/high-rev-4.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/e8.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/nerc-cip.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-node.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/stig.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-v1r1.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-node-v1r1.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/stig-v1r1.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-v2r1.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-node-v2r1.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/stig-v2r1.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/bsi.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/bsi-node.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/bsi-2022.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/bsi-node-2022.profile &&  \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-v2r2.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-node-v2r2.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/stig-v2r2.profile; \
+    fi
+
+# Enable the DISA-STIG profiles for ppc64le
+RUN if [ "$(uname -m)" = "ppc64le" ]; then \
+    find products/rhcos4 -name "*stig*.profile" | xargs sed -i 's/\(documentation_complete: \).*/\1true/' && \
+    find products/ocp4 -name "*stig*.profile" | xargs sed -i 's/\(documentation_complete: \).*/\1true/' ; \
+    fi
 
 # OCPBUGS-32794: Ensure stability of rules shipped
 # Before building the content we re-enable all profiles as hidden, this will include any rule selected
@@ -71,9 +92,9 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then \
 RUN grep -lr 'documentation_complete: false' ./products | xargs -I '{}' \
     sed -i -e 's/\(documentation_complete: \).*/\1true/' -e '/documentation_complete/a hidden: true' {}
 
-# Build the OpenShift and RHCOS content for x86 architectures. Only build
-# OpenShift content for ppc64le and s390x architectures.
-RUN if [ "$(uname -m)" = "x86_64" ] || [ "$(uname -m)" = "ppc64le" ]; then \
+# Build the OpenShift and RHCOS content for x86, aarch64 and ppc64le architectures.
+# Only build OpenShift content for s390x architectures.
+RUN if [ "$(uname -m)" = "x86_64" ] || [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "ppc64le"]; then \
         ./build_product ocp4 rhcos4 --datastream-only; \
         else ./build_product ocp4 --datastream-only; \
         fi
