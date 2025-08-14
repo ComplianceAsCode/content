@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: Add unsuccessful file operations audit rules
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: /etc/audit/rules.d/30-ospp-v42-remediation.rules
     create: yes
     block: |

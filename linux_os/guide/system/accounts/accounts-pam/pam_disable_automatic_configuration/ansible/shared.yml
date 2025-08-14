@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: Find soft links /etc/pam.d/
-  find:
+  ansible.builtin.find:
     paths: /etc/pam.d
     file_type: link
     patterns: common-.*
@@ -13,7 +13,7 @@
   register: find_pam_soft_links_result
 
 - name: Remove soft links in /etc/pam.d/
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     target=$(readlink -f "{{ item.path }}")
     cp -p --remove-destination "$target" "{{ item.path }}"

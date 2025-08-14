@@ -9,7 +9,7 @@
 
 {{% if product == "rhel10" %}}
 - name: {{{ rule_title }}} - Set architecture for audit {{{ PATH }}}
-  set_fact:
+  ansible.builtin.set_fact:
     audit_arch: "b64"
   when:
   - ansible_architecture == "aarch64" or

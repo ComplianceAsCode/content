@@ -5,11 +5,11 @@
 # disruption = low
 
 - name: Get all /etc/passwd file entries
-  getent:
+  ansible.builtin.getent:
     database: passwd
     split: ':'
 
 - name: Lock the password of the user accounts other than root with uid 0
-  command: passwd -l {{ item.key }}
+  ansible.builtin.command: passwd -l {{ item.key }}
   loop: "{{ getent_passwd | dict2items | rejectattr('key', 'search', 'root') | list }}"
   when: item.value.1  == '0'

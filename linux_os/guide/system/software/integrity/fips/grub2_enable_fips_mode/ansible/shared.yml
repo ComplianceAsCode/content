@@ -5,86 +5,86 @@
 # disruption = medium
 
 - name: Check prelink binary installed
-  stat:
+  ansible.builtin.stat:
     path: /usr/sbin/prelink
   register: prelink_exists
 
 - name: Disable prelink
-  lineinfile:
+  ansible.builtin.lineinfile:
       dest: /etc/sysconfig/prelink
       regexp: ^#?PRELINKING
       line: "PRELINKING=no"
   when: prelink_exists.stat.exists
 
 - name: Revert prelinking binaries
-  command: /usr/sbin/prelink -ua
+  ansible.builtin.command: /usr/sbin/prelink -ua
   when: prelink_exists.stat.exists
 
 - name: Check if system supports AES-NI
-  command: grep -q -m1 -o aes /proc/cpuinfo
+  ansible.builtin.command: grep -q -m1 -o aes /proc/cpuinfo
   failed_when: aesni_supported.rc > 1
   register: aesni_supported
   check_mode: no
 
 - name: Ensure dracut-fips-aesni is installed
-  package:
+  ansible.builtin.package:
     name: dracut-fips-aesni
     state: present
   when:
     - aesni_supported.rc == 0
 
 - name: Install dracut-fips
-  package:
+  ansible.builtin.package:
     name: dracut-fips
     state: present
 
 - name: Rebuild initramfs
-  command: dracut -f
+  ansible.builtin.command: dracut -f
 
 - name: Check fips argument exists
-  command: grep 'GRUB_CMDLINE_LINUX.*fips=' /etc/default/grub
+  ansible.builtin.command: grep 'GRUB_CMDLINE_LINUX.*fips=' /etc/default/grub
   failed_when: False
   register: fipsargcheck
   check_mode: no
 
 - name: Replace existing fips argument
-  replace:
+  ansible.builtin.replace:
       path: /etc/default/grub
       regexp: 'fips=.'
       replace: 'fips=1'
   when: fipsargcheck.rc == 0
 
 - name: Add fips argument
-  replace:
+  ansible.builtin.replace:
       path: /etc/default/grub
       regexp: '(GRUB_CMDLINE_LINUX=.*)"'
       replace: '\1 fips=1"'
   when: fipsargcheck.rc != 0
 
 - name: Get boot device uuid
-  command: findmnt --noheadings --output uuid --target /boot
+  ansible.builtin.command: findmnt --noheadings --output uuid --target /boot
   register: bootuuid
   check_mode: no
 
 - name: Check boot argument exists
-  command: grep 'GRUB_CMDLINE_LINUX.*boot=' /etc/default/grub
+  ansible.builtin.command: grep 'GRUB_CMDLINE_LINUX.*boot=' /etc/default/grub
   failed_when: False
   register: bootargcheck
   check_mode: no
 
 - name: Replace existing boot argument
-  replace:
+  ansible.builtin.replace:
       path: /etc/default/grub
       regexp: 'boot=\w*-\w*-\w*-\w*-\w*'
       replace: 'boot={{ bootuuid.stdout }}'
   when: bootargcheck.rc == 0
 
 - name: Add boot argument
-  replace:
+  ansible.builtin.replace:
       path: /etc/default/grub
       regexp: '(GRUB_CMDLINE_LINUX=.*)"'
       replace: '\1 boot=UUID={{ bootuuid.stdout }}"'
   when: bootargcheck.rc != 0
 
 - name: Update bootloader menu
-  command: /sbin/grubby --update-kernel=ALL --args="fips=1 boot=UUID={{ bootuuid.stdout }}"
+  ansible.builtin.command: /sbin/grubby --update-kernel=ALL --args="fips=1 boot=UUID={{ bootuuid.stdout }}"

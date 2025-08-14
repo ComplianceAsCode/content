@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 - name: "Restrict Virtual Console Root Logins"
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/securetty
     regexp: '^vc/[0-9]'
     state: absent

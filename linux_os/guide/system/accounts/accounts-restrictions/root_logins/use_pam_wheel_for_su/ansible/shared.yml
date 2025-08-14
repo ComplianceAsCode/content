@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: "Restrict usage of su command only to members of wheel group"
-  replace:
+  ansible.builtin.replace:
     path: "/etc/pam.d/su"
     regexp: '^[\s]*#[\s]*auth[\s]+required[\s]+pam_wheel\.so[\s]+use_uid$'
     replace: "auth             required        pam_wheel.so use_uid"

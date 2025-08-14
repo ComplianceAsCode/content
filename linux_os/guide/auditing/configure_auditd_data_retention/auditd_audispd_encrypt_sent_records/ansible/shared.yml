@@ -5,7 +5,7 @@
 # strategy = configure
 
 - name: Configure Kerberos 5 Encryption in Audit Event Multiplexor (audispd)
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: {{{ audisp_conf_path }}}/audisp-remote.conf
     line: enable_krb5 = yes
     regexp: ^\s*enable_krb5\s*=\s*.*$

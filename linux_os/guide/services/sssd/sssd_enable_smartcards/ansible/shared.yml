@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 - name: "Test for domain group"
-  command: grep '^\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
+  ansible.builtin.command: grep '^\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
   failed_when: false
   changed_when: False
@@ -35,7 +35,7 @@
     mode: 0600
 
 - name: Find all the conf files inside /etc/sssd/conf.d/
-  find:
+  ansible.builtin.find:
     paths: "/etc/sssd/conf.d/"
     patterns: "*.conf"
   register: sssd_conf_d_files

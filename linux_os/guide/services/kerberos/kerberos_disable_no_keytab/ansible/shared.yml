@@ -5,13 +5,13 @@
 # disruption = low
 
 - name: Find keytab files
-  find:
+  ansible.builtin.find:
     paths: /etc/
     patterns: "*.keytab"
   register: keytab_files
 
 - name: Remove keytab files
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: absent
   with_items: "{{ keytab_files.files }}"

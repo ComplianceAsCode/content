@@ -7,12 +7,12 @@
 
 {{% if not EXISTS %}}
 - name: Remove {{{ FILEPATH }}}
-  file:
+  ansible.builtin.file:
       path: {{{ FILEPATH }}}
       state: absent
 {{% else %}}
 - name: Add empty {{{ FILEPATH }}}
-  file:
+  ansible.builtin.file:
       path: {{{ FILEPATH }}}
       state: touch
     {{%- if FILEUID %}}

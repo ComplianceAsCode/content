@@ -7,14 +7,14 @@
 {{{ ansible_instantiate_variables("var_accounts_max_concurrent_login_sessions") }}}
 
 - name: Find /etc/security/limits.d files containing maxlogins configuration
-  find:
+  ansible.builtin.find:
     paths: "/etc/security/limits.d"
     contains: '^[\s]*\*[\s]+(?:(?:hard)|(?:-))[\s]+maxlogins'
     patterns: "*.conf"
   register: maxlogins
 
 - name: "Limit the Number of Concurrent Login Sessions Allowed Per User in files from limits.d"
-  replace:
+  ansible.builtin.replace:
     dest: "{{ item.path }}"
     regexp: "^#?\\*.*maxlogins.*"
     replace: "*          hard    maxlogins     {{ var_accounts_max_concurrent_login_sessions }}"
@@ -22,7 +22,7 @@
     - "{{ maxlogins.files }}"
 
 - name: "Limit the Number of Concurrent Login Sessions Allowed Per User"
-  lineinfile:
+  ansible.builtin.lineinfile:
     state: present
     dest: /etc/security/limits.conf
     insertbefore: "^# End of file"

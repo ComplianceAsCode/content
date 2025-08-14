@@ -40,7 +40,7 @@
     when: not mac_is_correct and last_crypto_policy != ''
 
 -   name: "{{{ rule_title }}}: Build full updated CRYPTO_POLICY line"
-    set_fact:
+    ansible.builtin.set_fact:
         updated_crypto_policy: >-
             {% if last_crypto_policy == '' %}
             CRYPTO_POLICY='{{ correct_value }}'

@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_auditd_disk_error_action") }}}
 
 - name: Configure auditd Disk Error Action on Disk Error
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/audit/auditd.conf
     line: "disk_error_action = {{ var_auditd_disk_error_action }}"
     regexp: '^\s*disk_error_action\s*=\s*.*$'

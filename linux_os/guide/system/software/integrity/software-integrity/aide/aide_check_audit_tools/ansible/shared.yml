@@ -11,7 +11,7 @@
 
 
 - name: Ensure aide is installed
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   with_items:
@@ -22,7 +22,7 @@
     manager: auto
 
 - name: Set audit_tools fact
-  set_fact:
+  ansible.builtin.set_fact:
     audit_tools:
       {{% if aide_also_checks_audispd == "yes" -%}}
       - /usr/sbin/audispd
@@ -38,7 +38,7 @@
       {{%- endif %}}
 
 - name: Ensure existing AIDE configuration for audit tools are correct
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: {{{ aide_conf_path }}}
     regexp: ^{{ item }}\s
     line: "{{ item }} {{{ aide_string() }}}"
@@ -48,7 +48,7 @@
     - '"aide" in ansible_facts.packages'
 
 - name: Configure AIDE to properly protect audit tools
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: {{{ aide_conf_path }}}
     line: "{{ item }} {{{ aide_string() }}}"
     create: true

@@ -9,7 +9,7 @@
 # What architecture are we on?
 
 - name: Set architecture for audit query_module tasks
-  set_fact:
+  ansible.builtin.set_fact:
     audit_arch: "b64"
   when:
   - ansible_architecture == "aarch64" or

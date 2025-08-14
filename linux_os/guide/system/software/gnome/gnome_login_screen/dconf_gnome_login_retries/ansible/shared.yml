@@ -13,11 +13,11 @@
     no_extra_spaces: yes
 
 - name: "Prevent user modification of GNOME3 Login Number of Failures"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock
     regexp: '^/org/gnome/login-screen/allowed-failures$'
     line: '/org/gnome/login-screen/allowed-failures'
     create: yes
 
 - name: Dconf Update
-  command: dconf update
+  ansible.builtin.command: dconf update

@@ -4,7 +4,7 @@
 # complexity = medium
 # disruption = medium
 - name: "Read permission of GPG key directory"
-  stat:
+  ansible.builtin.stat:
     path: /etc/pki/rpm-gpg/
   register: gpg_key_directory_permission
   check_mode: no
@@ -14,9 +14,9 @@
 - name: Read signatures in GPG key
   # According to /usr/share/doc/gnupg2/DETAILS fingerprints are in "fpr" record in field 10
   {{% if product in ['rhel8', 'rhel9'] -%}}
-  command: gpg --show-keys --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
+  ansible.builtin.command: gpg --show-keys --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
   {{%- else -%}}
-  command: gpg --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
+  ansible.builtin.command: gpg --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
   {{%- endif %}}
   changed_when: False
   register: gpg_fingerprints
@@ -24,17 +24,17 @@
   check_mode: no
 
 - name: Set Fact - Installed GPG Fingerprints
-  set_fact:
+  ansible.builtin.set_fact:
     gpg_installed_fingerprints: "{{ gpg_fingerprints.stdout | regex_findall('^pub.*\n(?:^fpr[:]*)([0-9A-Fa-f]*)', '\\1') | list }}"
 
 - name: Set Fact - Valid fingerprints
-  set_fact:
+  ansible.builtin.set_fact:
     gpg_valid_fingerprints:
     - "{{{ release_key_fingerprint }}}"
     - "{{{ auxiliary_key_fingerprint }}}"
 
 - name: Import RedHat GPG key
-  rpm_key:
+  ansible.builtin.rpm_key:
     state: present
     key: /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
   when:

@@ -6,12 +6,12 @@
 {{{ ansible_instantiate_variables("var_accounts_authorized_local_users_regex") }}}
 
 - name: Read /etc/passwd
-  getent:
+  ansible.builtin.getent:
     database: passwd
 
 # TODO(gyee): should we remove user's home dir and mail spool?
 - name: Remove unauthorized accounts
-  user:
+  ansible.builtin.user:
     name: "{{ item.key }}"
     force: yes
     state: absent

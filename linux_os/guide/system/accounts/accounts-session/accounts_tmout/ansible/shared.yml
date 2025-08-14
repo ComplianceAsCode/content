@@ -13,7 +13,7 @@
 
 {{% if system_configuration_using_etc_bashrc_expected %}}
 - name: Correct any occurrence of TMOUT in /etc/bashrc
-  replace:
+  ansible.builtin.replace:
     path: /etc/bashrc
     regexp: '^[^#].*TMOUT=.*'
     replace: typeset -xr TMOUT={{ var_accounts_tmout }}
@@ -21,7 +21,7 @@
 {{% endif %}}
 
 - name: Correct any occurrence of TMOUT in /etc/profile
-  replace:
+  ansible.builtin.replace:
     path: /etc/profile
     regexp: '^[^#].*TMOUT=.*'
     replace: typeset -xr TMOUT={{ var_accounts_tmout }}

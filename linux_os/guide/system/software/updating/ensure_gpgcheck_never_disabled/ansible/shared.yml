@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 - name: Grep for {{{ pkg_manager }}} repo section names
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
 {{%- if product in ["sle12", "sle15", "slmicro5"] %}}
     grep -HEr '^\[.+\]' -r /etc/zypp/repos.d/

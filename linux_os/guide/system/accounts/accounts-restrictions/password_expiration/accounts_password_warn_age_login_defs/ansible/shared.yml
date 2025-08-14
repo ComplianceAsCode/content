@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_accounts_password_warn_age_login_defs") }}}
 
 - name: "Set Password Warning Age"
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: {{{ login_defs_path }}}
     regexp: "^PASS_WARN_AGE *[0-9]*"
     state: present

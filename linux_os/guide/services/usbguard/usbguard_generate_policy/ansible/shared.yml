@@ -9,28 +9,28 @@
 - name: Generate USBGuard Policy
   block:
   - name: Gather the package facts
-    package_facts:
+    ansible.builtin.package_facts:
       manager: auto
 
   - name: Check that the {{{ usbguard_config_path }}} exists
-    stat:
+    ansible.builtin.stat:
       path: "{{{ usbguard_config_path }}}"
     register: policy_file
 
   - name: Create USBGuard Policy configuration
-    command: usbguard generate-policy
+    ansible.builtin.command: usbguard generate-policy
     register: policy
     when: not policy_file.stat.exists or policy_file.stat.size == 0
 
   - name: Copy the Generated Policy configuration to a persistent file
-    copy:
+    ansible.builtin.copy:
       content: "{{ policy.stdout }}"
       dest: "{{{ usbguard_config_path }}}"
       mode: 0600
     when: not policy_file.stat.exists or policy_file.stat.size == 0
 
   - name: Add comment into {{{ usbguard_config_path }}} when system has no USB devices
-    lineinfile:
+    ansible.builtin.lineinfile:
       path: "{{{ usbguard_config_path }}}"
       line: "# No USB devices found"
       state: present
@@ -38,7 +38,7 @@
 
 {{%- if init_system == "systemd" %}}
   - name: Enable service usbguard
-    systemd:
+    ansible.builtin.systemd_service:
       name: "usbguard"
       enabled: "yes"
       state: "started"

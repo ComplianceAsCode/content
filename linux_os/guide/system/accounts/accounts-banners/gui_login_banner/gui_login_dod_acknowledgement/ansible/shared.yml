@@ -5,19 +5,19 @@
 # disruption = medium
 
 - name: Validate /etc/gdm/Xsession is executable
-  stat:
+  ansible.builtin.stat:
     path: /etc/gdm/Xsession
   register: file_stat
 
 - name: Validate /etc/gdm/Xsession is a shell script
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/gdm/Xsession
     line: "#!/bin/sh"
   check_mode: yes
   register: presence
 
 - name: Update file /etc/gdm/Xsession
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: /etc/gdm/Xsession
     block: |
       if ! zenity --text-info \

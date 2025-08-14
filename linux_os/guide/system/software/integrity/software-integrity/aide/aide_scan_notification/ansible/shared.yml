@@ -6,7 +6,7 @@
 - (xccdf-var var_aide_scan_notification_email)
 
 - name: "Ensure AIDE is installed"
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   with_items:
@@ -48,7 +48,7 @@
 
 {{% else %}}
 - name: "{{{ rule_title }}}"
-  cron:
+  ansible.builtin.cron:
     name: "run AIDE check"
     minute: 05
     hour: 04

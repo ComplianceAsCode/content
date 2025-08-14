@@ -4,13 +4,13 @@
 # complexity = low
 # disruption = low
 - name: Check if system supports AES-NI
-  command: grep -q -m1 -o aes /proc/cpuinfo
+  ansible.builtin.command: grep -q -m1 -o aes /proc/cpuinfo
   failed_when: aesni_supported.rc > 1
   register: aesni_supported
   check_mode: no
 
 - name: Ensure dracut-fips-aesni is installed
-  package:
+  ansible.builtin.package:
     name: dracut-fips-aesni
     state: present
   when:

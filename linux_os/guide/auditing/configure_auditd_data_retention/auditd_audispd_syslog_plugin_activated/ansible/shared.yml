@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: Enable syslog plugin
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: {{{ audisp_conf_path }}}/plugins.d/syslog.conf
     regexp: "^active"
     line: active = yes

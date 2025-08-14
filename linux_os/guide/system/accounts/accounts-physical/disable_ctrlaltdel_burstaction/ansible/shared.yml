@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: Disable Ctrl-Alt-Del Burst Action
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/systemd/system.conf
     state: present
     regexp: ^CtrlAltDelBurstAction

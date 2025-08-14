@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_auditd_max_log_file") }}}
 
 - name: Configure auditd Max Log File Size
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/audit/auditd.conf
     regexp: '^\s*max_log_file\s*=\s*.*$'
     line: "max_log_file = {{ var_auditd_max_log_file }}"

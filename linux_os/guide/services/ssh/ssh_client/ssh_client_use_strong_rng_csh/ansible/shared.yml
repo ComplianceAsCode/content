@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: "Ensure that correct variable is exported in /etc/profile.d/cc-ssh-strong-rng.csh"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/profile.d/cc-ssh-strong-rng.csh
     regexp: '^[\s]*setenv[\s]+SSH_USE_STRONG_RNG.*$'
     line: 'setenv SSH_USE_STRONG_RNG 32'
@@ -13,7 +13,7 @@
     create: yes
 
 - name: "Ensure that the configuration is not overridden in /etc/profile"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/profile
     regexp: '^[\s]*setenv[\s]+SSH_USE_STRONG_RNG.*$'
     state: absent
