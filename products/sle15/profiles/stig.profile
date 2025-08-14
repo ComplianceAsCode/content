@@ -107,6 +107,7 @@ selections:
     - audit_rules_dac_modification_umount
     - audit_rules_dac_modification_umount2
     - audit_rules_enable_syscall_auditing
+    - audit_rules_etc_cron_d
     - audit_rules_execution_chacl
     - audit_rules_execution_chmod
     - audit_rules_execution_chcon
@@ -160,6 +161,7 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
+    - audit_rules_var_spool_cron
     - banner_etc_gdm_banner
     - banner_etc_issue
     - chronyd_or_ntpd_set_maxpoll
