@@ -891,15 +891,6 @@ controls:
           - var_password_pam_delay=4000000
       status: automated
 
-    - id: SLEM-05-412030
-      levels:
-          - medium
-      title: SLEM 5 must use the default pam_tally2 tally directory.
-      rules:
-          - accounts_passwords_pam_tally2_file
-          - accounts_passwords_pam_tally2_file_selinux
-      status: automated
-
     - id: SLEM-05-412035
       levels:
           - low
