@@ -54,12 +54,12 @@
 - (xccdf-var sysctl_{{{ SYSCTLID }}}_value)
 
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set
-  ansible.builtin.sysctl:
+  ansible.posix.sysctl:
     name: "{{{ SYSCTLVAR }}}"
     value: "{{ sysctl_{{{ SYSCTLID }}}_value }}"
 {{%- else %}}
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set to {{{ SYSCTLVAL }}}
-  ansible.builtin.sysctl:
+  ansible.posix.sysctl:
     name: "{{{ SYSCTLVAR }}}"
     value: "{{{ SYSCTLVAL }}}"
 {{%- endif %}}
