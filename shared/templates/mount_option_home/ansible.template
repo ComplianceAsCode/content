@@ -54,7 +54,7 @@
         when: allowed_mount_point is defined
 
     -   name: "{{{ rule_title }}} - Ensure mount option {{{ MOUNTOPTION }}} is in fstab for allowed mount point"
-        ansible.builtin.mount:
+        ansible.posix.mount:
             path: "{{ item.mount }}"
             src: "{{ item.device }}"
             opts: "{{ item.options }},{{{ MOUNTOPTION }}}"

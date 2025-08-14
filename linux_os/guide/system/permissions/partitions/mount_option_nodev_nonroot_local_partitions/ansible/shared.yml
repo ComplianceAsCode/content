@@ -33,7 +33,7 @@
       - fuse.sshfs
 
 - name: "{{{ rule_title }}}: Ensure non-root local partitions are mounted with nodev option"
-  ansible.builtin.mount:
+  ansible.posix.mount:
     path: "{{ item.mount }}"
     src: "{{ item.device }}"
     opts: "{{ item.options }},nodev"
