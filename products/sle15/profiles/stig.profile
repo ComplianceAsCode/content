@@ -1,9 +1,11 @@
 documentation_complete: true
 
 metadata:
-    version: V2R4
+    version: V2R5
     SMEs:
-        - abergmann
+        - svet-se
+        - rumch-se
+        - teacup-on-rockingchair
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -11,7 +13,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 15'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 15 V2R4.
+    DISA STIG for SUSE Linux Enterprise 15 V2R5.
 
 
 selections:
@@ -105,6 +107,7 @@ selections:
     - audit_rules_dac_modification_umount
     - audit_rules_dac_modification_umount2
     - audit_rules_enable_syscall_auditing
+    - audit_rules_etc_cron_d
     - audit_rules_execution_chacl
     - audit_rules_execution_chmod
     - audit_rules_execution_chcon
@@ -158,6 +161,7 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
+    - audit_rules_var_spool_cron
     - banner_etc_gdm_banner
     - banner_etc_issue
     - chronyd_or_ntpd_set_maxpoll
