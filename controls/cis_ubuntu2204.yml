@@ -501,6 +501,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - enable_dconf_user_profile
           - dconf_gnome_banner_enabled
           - dconf_gnome_login_banner_text
       status: automated
@@ -1052,7 +1053,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - package_ufw_installed
+          - '!package_ufw_installed'
       status: automated
 
     - id: 3.5.1.2
@@ -1070,7 +1071,6 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - check_ufw_active
           - service_ufw_enabled
       status: automated
 
@@ -1202,8 +1202,8 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - package_iptables-persistent_installed
           - package_iptables_installed
+          - '!package_iptables-persistent_installed'
       status: automated
 
     - id: 3.5.3.1.2
@@ -1212,8 +1212,8 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - package_nftables_removed
-          - service_nftables_disabled
+          - '!service_nftables_disabled'
+          - '!package_nftables_removed'
       status: automated
 
     - id: 3.5.3.1.3
@@ -1320,7 +1320,7 @@ controls:
           - l2_workstation
       rules:
           - grub2_audit_argument
-          - zipl_audit_argument
+          - '!zipl_audit_argument'
       status: automated
 
     - id: 4.1.1.4
@@ -1330,7 +1330,7 @@ controls:
           - l2_workstation
       rules:
           - grub2_audit_backlog_limit_argument
-          - zipl_audit_backlog_limit_argument
+          - '!zipl_audit_backlog_limit_argument'
       status: automated
 
     - id: 4.1.2.1
@@ -1509,6 +1509,7 @@ controls:
           - l2_server
           - l2_workstation
       rules:
+          - var_accounts_passwords_pam_faillock_dir=run
           - audit_rules_login_events_faillock
           - audit_rules_login_events_lastlog
       status: automated
@@ -1861,7 +1862,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - package_cron_installed
+          # - package_cron_installed
           - service_cron_enabled
       status: automated
 
