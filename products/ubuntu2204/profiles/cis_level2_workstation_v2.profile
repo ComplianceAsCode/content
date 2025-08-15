@@ -14,7 +14,7 @@ title: 'CIS Ubuntu Linux 22.04 LTS Benchmark for Level 2 - Workstation'
 
 description: |-
     This profile defines a baseline that aligns to the "Level 2 - Workstation"
-    configuration from the Center for Internet Security® 
+    configuration from the Center for Internet Security®
     Ubuntu Linux 22.04 LTS Benchmark™, v2.0.0, released 2024-03-28.
 
     This profile includes Center for Internet Security®
