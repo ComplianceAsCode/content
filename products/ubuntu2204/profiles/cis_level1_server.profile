@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 metadata:
@@ -14,7 +15,7 @@ title: 'CIS Ubuntu Linux 22.04 LTS Benchmark for Level 1 - Server'
 
 description: |-
     This profile defines a baseline that aligns to the "Level 1 - Server"
-    configuration from the Center for Internet Security® 
+    configuration from the Center for Internet Security®
     Ubuntu Linux 22.04 LTS Benchmark™, v1.0.0, released 2022-08-30.
 
     This profile includes Center for Internet Security®
