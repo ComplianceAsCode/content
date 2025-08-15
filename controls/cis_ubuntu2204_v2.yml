@@ -1,20 +1,16 @@
 ---
 policy: CIS Benchmark for Ubuntu 22.04 LTS
 title: CIS Benchmark for Ubuntu 22.04 LTS
-id: cis_ubuntu2204
+id: cis_ubuntu2204_v2
 version: 2.0.0
 source: https://www.cisecurity.org/cis-benchmarks
 
 levels:
-
     - id: l1_server
-
     - id: l2_server
       inherits_from:
           - l1_server
-
     - id: l1_workstation
-
     - id: l2_workstation
       inherits_from:
           - l1_workstation
