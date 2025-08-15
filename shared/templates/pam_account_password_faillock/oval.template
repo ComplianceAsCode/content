@@ -53,6 +53,7 @@
 	  <criterion test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_password_pam_unix_auth"
                      comment="pam_unix.so appears only once in auth section of password-auth"/>
 	</criteria>
+        {{% if 'ol' not in families %}}
 	
         <!-- pam_faillock.so parameters can be defined directly in pam files or, in newer
              versions, in /etc/security/faillock.conf. The last is the recommended option when
@@ -72,6 +73,7 @@
 	      test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_password_pam_faillock_account"
 	      comment="pam_faillock.so is properly defined in account section of password-auth"/>
         </criteria>
+        {{% endif %}}
       </criteria>
 
       <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf whenever
@@ -80,6 +82,7 @@
            may confuse the assessment. The following tests ensure only one option is used. Note
            that if faillock.conf is available, authselect tool only manage parameters on it -->
       <criteria operator="OR" comment="Check expected value for pam_faillock.so {{{ PRM_NAME }}} parameter">
+        {{% if 'ol' not in families %}}
         <criteria operator="AND"
                   comment="Check expected pam_faillock.so {{{ PRM_NAME }}} parameter in pam files">
           <criterion
@@ -92,6 +95,7 @@
               test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_no_faillock_conf"
               comment="Ensure the {{{ PRM_NAME }}} parameter is not present in /etc/security/faillock.conf"/>
         </criteria>
+        {{% endif %}}
         <criteria operator="AND"
                   comment="Check expected pam_faillock.so {{{ PRM_NAME }}} parameter in faillock.conf">
           <criterion

@@ -48,7 +48,11 @@ fixtext: |-
     add or uncomment the following line:
     <pre>silent</pre>
 
+{{% if product == "ol8" %}}
+platform: os_linux[ol]>=8.2 and package[pam]
+{{% else %}}
 platform: package[pam]
+{{% endif %}}
 
 warnings:
     - general: |-

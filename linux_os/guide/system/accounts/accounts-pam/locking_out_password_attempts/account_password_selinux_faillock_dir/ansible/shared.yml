@@ -10,8 +10,10 @@
   register: faillock_output
   with_items:
     - /etc/security/faillock.conf
+    {{% if 'ol' not in families %}}
     - /etc/pam.d/system-auth
     - /etc/pam.d/password-auth
+    {{% endif %}}
 
 - name: {{{ rule_title }}} - Create a list directories from faillock
   ansible.builtin.set_fact:

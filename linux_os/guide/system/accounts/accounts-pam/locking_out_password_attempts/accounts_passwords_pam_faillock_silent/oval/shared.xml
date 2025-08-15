@@ -10,6 +10,7 @@
             that if faillock.conf is available, authselect tool only manage parameters on it -->
         <criteria operator="OR"
         comment="Check expected value for pam_faillock.so silent parameter">
+            {{% if 'ol' not in families %}}
             <criteria operator="AND"
             comment="Check expected pam_faillock.so silent parameter in pam files">
                 <criterion
@@ -22,6 +23,7 @@
                 test_ref="test_pam_faillock_silent_parameter_no_faillock_conf"
                 comment="Ensure /etc/security/faillock.conf is not used together with pam files"/>
             </criteria>
+            {{% endif %}}
             <criteria operator="AND"
             comment="Check expected pam_faillock.so silent parameter in faillock.conf">
                 <criterion
