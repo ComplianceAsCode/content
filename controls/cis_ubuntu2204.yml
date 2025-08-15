@@ -295,16 +295,14 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 1.2.2
       title: Ensure GPG keys are configured (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 1.3.1
       title: Ensure AIDE is installed (Automated)
@@ -415,6 +413,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_apparmor_mode=enforce
           - all_apparmor_profiles_in_enforce_complain_mode
       status: automated
 
@@ -501,6 +500,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - login_banner_text=cis_default
           - dconf_gnome_banner_enabled
           - dconf_gnome_login_banner_text
       status: automated
@@ -547,8 +547,7 @@ controls:
       levels:
           - l1_server
           - l2_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 1.8.8
       title: Ensure GDM autorun-never is enabled (Automated)
@@ -564,8 +563,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 1.8.10
       title: Ensure XDCMP is not enabled (Automated)
@@ -576,13 +574,12 @@ controls:
           - gnome_gdm_disable_xdmcp
       status: automated
 
-    - id: '1.9'
+    - id: 1.9
       title: Ensure updates, patches, and additional security software are installed (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 2.1.1.1
       title: Ensure a single time synchronization daemon is in use (Automated)
@@ -590,8 +587,8 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - package_chrony_installed
-          - package_ntp_installed
+          - '!package_chrony_installed'
+          - '!package_ntp_installed'
           - package_timesyncd_installed
       status: automated
 
@@ -600,8 +597,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 2.1.2.2
       title: Ensure chrony is running as user _chrony (Automated)
@@ -626,8 +622,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 2.1.3.2
       title: Ensure systemd-timesyncd is enabled and running (Automated)
@@ -652,8 +647,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 2.1.4.3
       title: Ensure ntp is running as user ntp (Automated)
@@ -809,6 +803,7 @@ controls:
           - l1_workstation
       rules:
           - has_nonlocal_mta
+          - var_postfix_inet_interfaces=loopback-only
           - postfix_network_listening_disabled
       status: automated
 
@@ -826,8 +821,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 2.3.2
       title: Ensure rsh client is not installed (Automated)
@@ -874,21 +868,19 @@ controls:
           - package_rpcbind_removed
       status: automated
 
-    - id: '2.4'
+    - id: 2.4
       title: Ensure nonessential services are removed or masked (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 3.1.1
-      title: Ensure  system is checked to determine if IPv6 is enabled (Manual)
+      title: Ensure system is checked to determine if IPv6 is enabled (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 3.1.2
       title: Ensure wireless interfaces are disabled (Automated)
@@ -1088,8 +1080,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 3.5.1.6
       title: Ensure ufw firewall rules exist for all open ports (Automated)
@@ -1123,16 +1114,16 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      rules:
+          - package_ufw_removed
+      status: automated
 
     - id: 3.5.2.3
       title: Ensure iptables are flushed with nftables (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 3.5.2.4
       title: Ensure a nftables table exists (Automated)
@@ -1140,6 +1131,8 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_nftables_family=inet
+          - var_nftables_table=filter
           - set_nftables_table
       status: automated
 
@@ -1149,6 +1142,11 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_nftables_base_chain_names=chain_names
+          - var_nftables_base_chain_types=chain_types
+          - var_nftables_base_chain_hooks=chain_hooks
+          - var_nftables_base_chain_priorities=chain_priorities
+          - var_nftables_base_chain_policies=chain_policies
           - set_nftables_base_chain
       status: automated
 
@@ -1166,8 +1164,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 3.5.2.8
       title: Ensure nftables default deny firewall policy (Automated)
@@ -1193,6 +1190,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_nftables_master_config_file=etc
           - nftables_rules_permanent
       status: automated
 
@@ -1212,7 +1210,6 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - package_nftables_removed
           - service_nftables_disabled
       status: automated
 
@@ -1248,8 +1245,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 3.5.3.2.4
       title: Ensure iptables firewall rules exist for all open ports (Automated)
@@ -1283,8 +1279,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 3.5.3.3.4
       title: Ensure ip6tables firewall rules exist for all open ports (Automated)
@@ -1597,8 +1592,7 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 4.1.4.1
       title: Ensure audit log files are mode 0640 or less permissive (Automated)
@@ -1714,16 +1708,14 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 4.2.1.1.3
       title: Ensure systemd-journal-remote is enabled (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 4.2.1.1.4
       title: Ensure journald is not configured to recieve logs from a remote client (Automated)
@@ -1766,24 +1758,21 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 4.2.1.6
       title: Ensure journald log rotation is configured per site policy (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 4.2.1.7
       title: Ensure journald default file permissions configured (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 4.2.2.1
       title: Ensure rsyslog is installed (Automated)
@@ -1808,8 +1797,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 4.2.2.4
       title: Ensure rsyslog default file permissions are configured (Automated)
@@ -1825,8 +1813,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 4.2.2.6
       title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
@@ -2080,6 +2067,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - sshd_strong_macs=cis_ubuntu2204
           - sshd_use_strong_macs
       status: automated
 
@@ -2089,6 +2077,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - sshd_strong_kex=cis_ubuntu2204
           - sshd_use_strong_kex
       status: automated
 
@@ -2116,6 +2105,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - sshd_max_auth_tries_value=4
           - sshd_set_max_auth_tries
       status: automated
 
@@ -2125,6 +2115,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_sshd_set_maxstartups=10:30:60
           - sshd_set_maxstartups
       status: automated
 
@@ -2134,6 +2125,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_sshd_max_sessions=10
           - sshd_set_max_sessions
       status: automated
 
@@ -2143,6 +2135,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_sshd_set_login_grace_time=60
           - sshd_set_login_grace_time
       status: automated
 
@@ -2152,8 +2145,9 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - sshd_idle_timeout_value=5_minutes
           - sshd_set_idle_timeout
-          - sshd_set_keepalive
+          - var_sshd_set_keepalive=3
           - sshd_set_keepalive
       status: automated
 
@@ -2208,6 +2202,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_sudo_timestamp_timeout=15_minutes
           - sudo_require_reauthentication
       status: automated
 
@@ -2218,6 +2213,7 @@ controls:
           - l1_workstation
       rules:
           - ensure_pam_wheel_group_empty
+          - var_pam_wheel_group_for_su=cis
           - use_pam_wheel_group_for_su
       status: automated
 
@@ -2228,13 +2224,20 @@ controls:
           - l1_workstation
       rules:
           - package_pam_pwquality_installed
+          - var_password_pam_minlen=14
+          - var_password_pam_minclass=4
+          - var_password_pam_dcredit=1
+          - var_password_pam_lcredit=1
+          - var_password_pam_ocredit=1
+          - var_password_pam_ucredit=1
+          - var_password_pam_retry=3
+          - accounts_password_pam_minlen
+          - accounts_password_pam_minclass
           - accounts_password_pam_dcredit
           - accounts_password_pam_lcredit
-          - accounts_password_pam_minclass
-          - accounts_password_pam_minlen
           - accounts_password_pam_ocredit
-          - accounts_password_pam_retry
           - accounts_password_pam_ucredit
+          - accounts_password_pam_retry
       status: automated
 
     - id: 5.4.2
@@ -2243,8 +2246,11 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_accounts_passwords_pam_faillock_deny=4
           - accounts_passwords_pam_faillock_deny
+          - var_accounts_passwords_pam_faillock_fail_interval=900
           - accounts_passwords_pam_faillock_interval
+          - var_accounts_passwords_pam_faillock_unlock_time=600
           - accounts_passwords_pam_faillock_unlock_time
       status: automated
 
@@ -2254,6 +2260,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_password_pam_unix_remember=5
           - accounts_password_pam_unix_remember
       status: automated
 
@@ -2263,6 +2270,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_password_hashing_algorithm=yescrypt
           - set_password_hashing_algorithm_logindefs
       status: automated
 
@@ -2271,8 +2279,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 5.5.1.1
       title: Ensure minimum days between password changes is  configured (Automated)
@@ -2280,6 +2287,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_accounts_minimum_age_login_defs=1
           - accounts_minimum_age_login_defs
           - accounts_password_set_min_life_existing
       status: automated
@@ -2290,6 +2298,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_accounts_maximum_age_login_defs=365
           - accounts_maximum_age_login_defs
           - accounts_password_set_max_life_existing
       status: automated
@@ -2300,6 +2309,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_accounts_password_warn_age_login_defs=7
           - accounts_password_warn_age_login_defs
       status: automated
 
@@ -2309,6 +2319,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_account_disable_post_pw_expiration=30
           - account_disable_post_pw_expiration
       status: automated
 
@@ -2345,6 +2356,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_accounts_user_umask=027
           - accounts_umask_etc_bashrc
           - accounts_umask_etc_login_defs
           - accounts_umask_etc_profile
@@ -2357,6 +2369,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_accounts_tmout=15_min
           - accounts_tmout
       status: automated
 
@@ -2480,16 +2493,14 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 6.1.13
       title: Audit SGID executables (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: Missing reference in rule.yml
+      status: manual
 
     - id: 6.2.1
       title: Ensure accounts in /etc/passwd use shadowed passwords (Automated)
