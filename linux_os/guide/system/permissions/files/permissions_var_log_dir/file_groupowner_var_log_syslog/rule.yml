@@ -16,7 +16,6 @@ severity: medium
 
 references:
     srg: SRG-OS-000206-GPOS-00084
-    stigid@ubuntu2204: UBTU-22-232135
 
 {{%- if product in ['ubuntu2404'] %}}
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/syslog", group="adm|root") }}}'
