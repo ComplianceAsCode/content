@@ -275,6 +275,7 @@ file_permissions_var_log_audit
 file_permissions_var_log_messages
 file_sshd_50_redhat_exists
 fips_crypto_subpolicy
+fips_custom_stig_sub_policy
 firewalld-backend
 firewalld_sshd_port_enabled
 gid_passwd_group_same

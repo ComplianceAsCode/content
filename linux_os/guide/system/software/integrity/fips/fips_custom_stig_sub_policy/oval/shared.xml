@@ -1,0 +1,30 @@
+{{% set cipher_items = {"cipher@SSH": "AES-256-GCM AES-256-CTR AES-128-GCM AES-128-CTR", "mac@SSH": "HMAC-SHA2-512 HMAC-SHA2-256"} %}}
+
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("Ensure that the custom STIG", rule_title=rule_title) }}}
+        <criteria operator="AND" comment="Ensure that all of the correct lines are in the file.">
+            {{% for key in cipher_items.keys() %}}
+            {{% set safe_key = key.replace("@", "_").lower() %}}
+            <criterion comment="Check that {{{ key }}} item is configured"
+                       test_ref="test_{{{ rule_id }}}_{{{ safe_key }}}"/>
+            {{% endfor %}}
+        </criteria>
+    </definition>
+        {{% for key, value in cipher_items.items() %}}
+        {{% set safe_key = key.replace("@", "_").lower() %}}
+        <ind:textfilecontent54_test check="all"
+                                    comment="Tests that {{{ safe_key }}} is configured correctly."
+                                    id="test_{{{ rule_id }}}_{{{ safe_key }}}" version="1">
+
+            <ind:object object_ref="obj_{{{ rule_id }}}_{{{ safe_key }}}"/>
+        </ind:textfilecontent54_test>
+        <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_{{{ safe_key }}}" version="1">
+            <ind:path>/etc/crypto-policies/policies/modules/</ind:path>
+            <ind:filename>STIG.pmod</ind:filename>
+            <ind:pattern operation="pattern match">^{{{ key}}}={{{value}}}$</ind:pattern>
+            <ind:instance datatype="int">1</ind:instance>
+        </ind:textfilecontent54_object>
+        {{% endfor %}}
+
+</def-group>
