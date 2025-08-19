@@ -3500,6 +3500,13 @@ controls:
           - audit_rules_privileged_commands_crontab
       status: automated
 
+    - id: RHEL-09-654096
+      title: RHEL 9 must audit any script or executable called by cron as root or by any privileged user.
+      rules:
+          - audit_rules_etc_cron_d
+          - audit_rules_var_spool_cron
+      status: automated
+
     - id: RHEL-09-654100
       levels:
           - medium
