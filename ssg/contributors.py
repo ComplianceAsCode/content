@@ -28,6 +28,7 @@ ignored_emails = (
     "46447321+allcontributors[bot]@users.noreply.github.com",
     "konflux@no-reply.konflux-ci.dev",
     "126015336+red-hat-konflux[bot]@users.noreply.github.com",
+    "49699333+dependabot[bot]@users.noreply.github.com>",
 )
 
 
