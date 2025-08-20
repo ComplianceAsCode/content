@@ -1,0 +1,29 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = configure
+# complexity = low
+# disruption = low
+
+-   name: "{{{ rule_title }}} - Create custom crypto policy - cipher"
+    ansible.builtin.lineinfile:
+        path: /etc/crypto-policies/policies/modules/STIG.pmod
+        owner: root
+        group: root
+        mode: '0644'
+        line: cipher@SSH=AES-256-GCM AES-256-CTR AES-128-GCM AES-128-CTR
+        create: true
+        regexp: "cipher@SSH"
+
+-   name: "{{{ rule_title }}} - Create custom crypto policy - mac"
+    ansible.builtin.lineinfile:
+        path: /etc/crypto-policies/policies/modules/STIG.pmod
+        owner: root
+        group: root
+        mode: '0644'
+        line: mac@SSH=HMAC-SHA2-512 HMAC-SHA2-256
+        create: true
+        regexp: "^mac@SSH="
+
+-   name: "{{{ rule_title }}} - Update crypto-policies"
+    ansible.builtin.command: update-crypto-policies --set FIPS:STIG
+

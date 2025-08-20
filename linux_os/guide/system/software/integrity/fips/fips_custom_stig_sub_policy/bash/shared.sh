@@ -1,5 +1,5 @@
 # platform = multi_platform_all
-# reboot = false
+# reboot = true
 # strategy = configure
 # complexity = low
 # disruption = low
@@ -8,3 +8,5 @@
 
 
 {{{ bash_file_contents('/etc/crypto-policies/policies/modules/STIG.pmod', contents) }}}
+
+sudo update-crypto-policies --set FIPS:STIG
