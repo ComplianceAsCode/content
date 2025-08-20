@@ -6,13 +6,10 @@
 
 {{%- if RECURSIVE %}}
 {{%- set FIND_RECURSE_ARGS_DEP="" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="" %}}
 {{%- elif FILE_REGEX %}}
 {{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="-L" %}}
 {{%- else %}}
 {{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 0" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="-L" %}}
 {{%- endif %}}
 
 {{% for path in FILEPATH %}}
@@ -41,7 +38,7 @@
 {{%- endif %}}
 
 - name: Find {{{ path }}} file(s){{% if RECURSIVE %}} recursively{{% endif %}}
-  ansible.builtin.command: 'find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} {{{ FIND_TYPE }}} {{{ FIND_FILE_REGEX }}}'
+  ansible.builtin.command: 'find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} {{{ FIND_TYPE }}} {{{ FIND_FILE_REGEX }}}'
   register: files_found
   changed_when: False
   failed_when: False
