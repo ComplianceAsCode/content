@@ -338,8 +338,7 @@ def rewrite_section_value(file_contents, yaml_contents, section, keys, transform
 
     sec_ranges = find_section_lines(file_contents, section)
     if len(sec_ranges) != 1:
-        raise RuntimeError("Refusing to fix file: %s -- could not find one section: %d"
-                           % (path, sec_ranges))
+        raise RuntimeError(f"Refusing to fix  -- could not find one section {section}")
 
     begin, end = sec_ranges[0]
     r_lines = set()
