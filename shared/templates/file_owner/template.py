@@ -19,7 +19,7 @@ def preprocess(data, lang):
         owners = data["uid_or_name"].split("|")
         if any(element.isnumeric() for element in owners):
             raise ValueError("uid_or_name list cannot contain uids when there are multiple owners")
-    
+
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_owner", "")
     return data
