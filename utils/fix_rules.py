@@ -241,8 +241,7 @@ def remove_section_keys(file_contents, yaml_contents, section, removed_keys):
     # more than once.
     sec_ranges = find_section_lines(file_contents, section)
     if len(sec_ranges) != 1:
-        raise RuntimeError("Refusing to fix file: %s -- could not find one section: %d"
-                           % (path, sec_ranges))
+        raise RuntimeError(f"Refusing to fix  -- could not find one section {section}")
 
     begin, end = sec_ranges[0]
     r_lines = set()
@@ -281,8 +280,7 @@ def rewrite_keyless_section(file_contents, yaml_contents, section, content):
 
     sec_ranges = find_section_lines(file_contents, section)
     if len(sec_ranges) != 1:
-        raise RuntimeError("Refusing to fix file: %s -- could not find one section: %d"
-                           % (path, sec_ranges))
+        raise RuntimeError(f"Refusing to fix  -- could not find one section {section}")
 
     if len(sec_ranges[0]) != 2:
         raise RuntimeError("Section has more than one line")
