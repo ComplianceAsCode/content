@@ -362,7 +362,7 @@ class ContainerTestEnv(TestEnv):
         if self.domain_ip == 'localhost':
             try:
                 ports = self._get_container_ports(self.current_container)
-            except Exception as exc:
+            except Exception:
                 msg = (
                     "Unable to extract SSH ports from the container. "
                     "This usually means that the container backend reported its configuration "

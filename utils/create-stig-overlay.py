@@ -42,7 +42,7 @@ def element_value(element, element_obj):
         elem = elem.text
     try:
         return elem
-    except UnboundLocalError as e:
+    except UnboundLocalError:
         return ""
 
 
