@@ -9,10 +9,10 @@ id "{{{ own }}}" &>/dev/null || useradd {{{ own }}}
 
 {{%- if RECURSIVE %}}
 {{%- set FIND_RECURSE_ARGS_DEP="" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="" %}}
-{{%- else %}}
+{{%- elif FILE_REGEX %}}
 {{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="-L" %}}
+{{%- else %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 0" %}}
 {{%- endif %}}
 
 {{% for path in FILEPATH %}}
@@ -21,9 +21,9 @@ if [ ! -d {{{ path }}} ]; then
     mkdir -p {{{ path }}}
 fi
 {{% if FILE_REGEX %}}
-find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown testuser_123 {} \;
+find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown testuser_123 {} \;
 {{% elif RECURSIVE %}}
-find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} -type d -exec chown testuser_123 {} \;
+find -P {{{ path }}} -type d -exec chown testuser_123 {} \;
 {{% else %}}
 chown testuser_123 {{{ path }}}
 {{% endif %}}
