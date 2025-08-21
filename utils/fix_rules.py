@@ -91,7 +91,7 @@ def has_invalid_cce(rule_path, rule, rule_lines):
 def has_int_identifier(rule_path, rule, rule_lines):
     if 'identifiers' in rule and rule['identifiers'] is not None:
         for _, value in rule['identifiers'].items():
-            if type(value) != str:
+            if not isinstance(value, str):
                 return True
     return False
 
@@ -99,7 +99,7 @@ def has_int_identifier(rule_path, rule, rule_lines):
 def has_int_reference(rule_path, rule, rule_lines):
     if 'references' in rule and rule['references'] is not None:
         for _, value in rule['references'].items():
-            if type(value) != str:
+            if not isinstance(value, str):
                 return True
     return False
 
@@ -457,7 +457,7 @@ def fix_int_identifier(file_contents, yaml_contents):
 
     int_identifiers = []
     for i_type, i_value in yaml_contents[section].items():
-        if type(i_value) != str:
+        if not isinstance(i_value, str):
             int_identifiers.append(i_type)
 
     return rewrite_section_value_int_str(file_contents, yaml_contents, section, int_identifiers)
@@ -468,7 +468,7 @@ def fix_int_reference(file_contents, yaml_contents):
 
     int_identifiers = []
     for i_type, i_value in yaml_contents[section].items():
-        if type(i_value) != str:
+        if not isinstance(i_value, str):
             int_identifiers.append(i_type)
 
     return rewrite_section_value_int_str(file_contents, yaml_contents, section, int_identifiers)
