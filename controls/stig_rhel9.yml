@@ -574,6 +574,7 @@ controls:
       rules:
           - configure_crypto_policy
           - fips_crypto_subpolicy
+          - fips_custom_stig_sub_policy
       status: automated
 
     - id: RHEL-09-231010
@@ -3497,6 +3498,13 @@ controls:
       title: RHEL 9 must audit all uses of the crontab command.
       rules:
           - audit_rules_privileged_commands_crontab
+      status: automated
+
+    - id: RHEL-09-654096
+      title: RHEL 9 must audit any script or executable called by cron as root or by any privileged user.
+      rules:
+          - audit_rules_etc_cron_d
+          - audit_rules_var_spool_cron
       status: automated
 
     - id: RHEL-09-654100
