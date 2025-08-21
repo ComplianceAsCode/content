@@ -409,7 +409,7 @@ def test_policy_parse_from_nested(minimal_empty_controls, one_simple_subcontrol)
     assert len(controls) == 2
     control, subcontrol = order_by_attribute(controls, "id", ("c", "s"))
     assert control.title == "control"
-    assert control.selections == ["a"]
+    assert control.selections == ["a", "b"]
     assert subcontrol.title == "subcontrol"
     assert subcontrol.selections == ["b"]
 
