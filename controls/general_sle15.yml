@@ -322,16 +322,14 @@ controls:
     - id: SLES-15-150300045
       title: Ensure repo_gpgcheck is globally activated
       levels:
-          - medium
+          - high
       status: manual
 
     - id: SLES-15-150300060
       title: Configure Package Manager Repositories
       levels:
-          - medium
-      status: automated
-      rules:
-          - ensure_package_repositories_are_configured
+          - high
+      status: manual
 
     - id: SLES-15-150300075
       title: Ensure Software Patches Installed
@@ -1284,14 +1282,6 @@ controls:
       status: automated
       rules:
           - sysctl_net_ipv4_conf_all_route_localnet
-
-    - id: SLES-15-450600015
-      title: Verify nftables Service is Disabled
-      levels:
-          - medium
-      status: automated
-      rules:
-          - service_nftables_disabled
 
     - id: SLES-15-450600030
       title: Install firewalld Package
@@ -2616,7 +2606,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_newgrp
 
-    - id: SLES-15-750450450
+    - id: SLES-15-750450540
       title: System Audit Logs Must Have Mode 0750 or Less Permissive
       levels:
           - medium
@@ -2624,7 +2614,7 @@ controls:
       rules:
           - directory_permissions_var_log_audit
 
-    - id: SLES-15-750450465
+    - id: SLES-15-750450555
       title: System Audit Logs Must Have Mode 0640 or Less Permissive
       levels:
           - medium
@@ -2632,7 +2622,7 @@ controls:
       rules:
           - file_permissions_var_log_audit
 
-    - id: SLES-15-750450480
+    - id: SLES-15-750450570
       title: System Audit Logs Must Be Owned By Root
       levels:
           - medium
@@ -2640,7 +2630,7 @@ controls:
       rules:
           - file_ownership_var_log_audit_stig
 
-    - id: SLES-15-750450495
+    - id: SLES-15-750450585
       title: System Audit Logs Must Be Group Owned By Root
       levels:
           - medium
@@ -2648,7 +2638,7 @@ controls:
       rules:
           - file_group_ownership_var_log_audit
 
-    - id: SLES-15-750450510
+    - id: SLES-15-750450600
       title: Audit Configuration Files Permissions are 640 or More Restrictive
       levels:
           - medium
@@ -2656,7 +2646,7 @@ controls:
       rules:
           - file_permissions_audit_configuration
 
-    - id: SLES-15-750450525
+    - id: SLES-15-750450615
       title: Audit Configuration Files Must Be Owned By Root
       levels:
           - medium
@@ -2664,7 +2654,7 @@ controls:
       rules:
           - file_ownership_audit_configuration
 
-    - id: SLES-15-750450540
+    - id: SLES-15-750450630
       title: Audit Configuration Files Must Be Owned By Group root
       levels:
           - medium
@@ -2672,7 +2662,7 @@ controls:
       rules:
           - file_groupownership_audit_configuration
 
-    - id: SLES-15-750450555
+    - id: SLES-15-750450645
       title: Verify that audit tools Have Mode 0755 or less
       levels:
           - medium
@@ -2680,7 +2670,7 @@ controls:
       rules:
           - file_permissions_audit_binaries
 
-    - id: SLES-15-750450570
+    - id: SLES-15-750450660
       title: Verify that audit tools are owned by root
       levels:
           - medium
@@ -2688,7 +2678,7 @@ controls:
       rules:
           - file_ownership_audit_binaries
 
-    - id: SLES-15-750450585
+    - id: SLES-15-750450675
       title: Verify that audit tools are owned by group root
       levels:
           - medium
@@ -2696,7 +2686,7 @@ controls:
       rules:
           - file_groupownership_audit_binaries
 
-    - id: SLES-15-750450600
+    - id: SLES-15-750450690
       title: Record Any Attempts to Run ssh-agent
       levels:
           - medium
@@ -2704,7 +2694,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_ssh_agent
 
-    - id: SLES-15-750450615
+    - id: SLES-15-750450705
       title: Ensure auditd Collects Information on the Use of Privileged Commands - ssh-keysign
       levels:
           - medium
