@@ -8,18 +8,10 @@ description: |-
     ownership configured to protected against unauthorized access.
 
     Verify it by running the following command:
-    <pre>$ stat -c "%n %G" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/audispd /sbin/augenrules
-
-    /sbin/auditctl root
-    /sbin/aureport root
-    /sbin/ausearch root
-    {{% if product not in ["rhel10"] %}}/sbin/autrace root{{% endif %}}
-    /sbin/auditd root
-    {{% if 'rhel' not in product %}}/sbin/audispd root{{% endif %}}
-    /sbin/augenrules root
-    {{%- if 'rhel' in product %}}
-    /sbin/audisp-syslog root
-    {{%- endif %}}
+    <pre>$ stat -c "%n %G" {{{ audit_binaries | join(" ")}}}
+    {{% for binary in audit_binaries %}}
+    {{{ binary }}} root
+    {{% endfor %}}
     </pre>
 
     Audit tools needed to successfully view and manipulate audit information
@@ -48,16 +40,10 @@ references:
 
 ocil: |-
     Verify it by running the following command:
-    <pre>$ stat -c "%n %G" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/audispd /sbin/augenrules /sbin/audisp-syslog
-
-    /sbin/auditctl root
-    /sbin/aureport root
-    /sbin/ausearch root
-    {{% if product not in ["rhel10"] %}}/sbin/autrace root{{% endif %}}
-    /sbin/auditd root
-    {{% if 'rhel' not in product %}}/sbin/audispd root{{% endif %}}
-    /sbin/augenrules root
-    {{% if 'rhel' in product %}}/sbin/audisp-syslog root{{% endif %}}
+    <pre>$ stat -c "%n %G" {{{ audit_binaries | join(" ")}}}
+    {{% for binary in audit_binaries %}}
+    {{{ binary }}} root
+    {{% endfor %}}
     </pre>
 
     If the command does not return all the above lines, the missing ones
@@ -72,13 +58,5 @@ ocil: |-
 template:
     name: file_groupowner
     vars:
-        filepath:
-            - /sbin/auditctl
-            - /sbin/aureport
-            - /sbin/ausearch
-            {{% if product not in ["rhel10"] %}}- /sbin/autrace{{% endif %}}
-            - /sbin/auditd
-            {{% if 'rhel' not in product and 'ubuntu' not in product %}}- /sbin/audispd{{% endif %}}
-            - /sbin/augenrules
-            {{% if 'rhel' in product %}}- /sbin/audisp-syslog{{% endif %}}
+        filepath: {{{ audit_binaries }}}
         gid_or_name: '0'

@@ -1,0 +1,27 @@
+default:
+  audit_binaries:
+    - /sbin/auditctl
+    - /sbin/aureport
+    - /sbin/ausearch
+    {{% if product not in ["rhel10"] %}}
+    - /sbin/autrace
+    {{% endif %}}
+    - /sbin/auditd
+    {{% if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in product %}}
+    - /sbin/audispd
+    {{% endif %}}
+    - /sbin/augenrules
+    {{% if 'rhel' in product %}}
+    - /sbin/audisp-syslog
+    {{% endif %}}
+overrides:
+{{% if product == 'sle15' %}}
+  audit_binaries:
+    - /usr/sbin/auditctl
+    - /usr/sbin/aureport
+    - /usr/sbin/ausearch
+    - /usr/sbin/autrace
+    - /usr/sbin/auditd
+    - /usr/sbin/augenrules
+    - /usr/sbin/audisp-syslog
+{{% endif %}}
