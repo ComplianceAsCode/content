@@ -64,7 +64,11 @@ ocil: |-
     <pre>password requisite pam_pwquality.so retry={{{ xccdf_value("var_password_pam_retry") }}}</pre>
     {{% endif %}}
 
+{{% if product == "ol8" %}}
+platform: os_linux[ol]<8.4 and package[libpwquality]
+{{% else %}}
 platform: package[libpwquality]
+{{% endif %}}
 
 fixtext: |-
     Configure {{{ full_name }}} to limit the "pwquality" retry option to {{{ xccdf_value("var_password_pam_retry") }}}.

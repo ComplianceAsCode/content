@@ -1,13 +1,13 @@
 {{% if 'ubuntu' in product %}}
 configuration_files=("common-password")
-{{% elif product in ['ol8', 'ol9'] or 'rhel' in product %}}
+{{% elif 'ol' in families or 'rhel' in product %}}
 configuration_files=("password-auth" "system-auth")
 {{% else %}}
 configuration_files=("system-auth")
 {{% endif %}}
 
 
-{{% if product in ['ol8', 'ol9'] or 'rhel' in product %}}
+{{% if 'ol' in families or 'rhel' in product %}}
 authselect create-profile testingProfile --base-on sssd
 
 for file in ${configuration_files[@]}; do

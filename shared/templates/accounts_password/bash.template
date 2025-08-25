@@ -6,14 +6,20 @@
 
 {{{ bash_instantiate_variables("var_password_pam_" ~ VARIABLE) }}}
 
-{{% if product in ["ol8","ol9"] or 'rhel' in product %}}
+{{% if 'ol' in families or 'rhel' in product %}}
 if grep -sq {{{ VARIABLE }}} /etc/security/pwquality.conf.d/*.conf ; then
     sed -i "/{{{ VARIABLE }}}/d" /etc/security/pwquality.conf.d/*.conf
 fi
 {{% endif %}}
 
-{{% if "ol" in product %}}
+{{% if "ol" in families %}}
 {{{ bash_remove_pam_module_option_configuration('/etc/pam.d/system-auth',
+                                  'password',
+                                  '',
+                                  'pam_pwquality.so',
+                                  VARIABLE)
+}}}
+{{{ bash_remove_pam_module_option_configuration('/etc/pam.d/password-auth',
                                   'password',
                                   '',
                                   'pam_pwquality.so',
