@@ -362,7 +362,7 @@ class StigContentDiffer(StandardContentDiffer):
             new_stig_id = self._get_stig_id(new_rule)
             new_sv_rule_id = self.get_stig_rule_SV(new_rule.get_attr("id"))
             try:
-                old_sv_rule_id = old_rule_mapping[new_sv_rule_id]
+                old_sv_rule_id = old_rule_mapping[new_sv_rule_id]  # noqa: F841
             except KeyError:
                 print("%s was added in new data stream." % (new_stig_id))
 

@@ -91,7 +91,7 @@ def has_invalid_cce(rule_path, rule, rule_lines):
 def has_int_identifier(rule_path, rule, rule_lines):
     if 'identifiers' in rule and rule['identifiers'] is not None:
         for _, value in rule['identifiers'].items():
-            if type(value) != str:
+            if not isinstance(value, str):
                 return True
     return False
 
@@ -99,7 +99,7 @@ def has_int_identifier(rule_path, rule, rule_lines):
 def has_int_reference(rule_path, rule, rule_lines):
     if 'references' in rule and rule['references'] is not None:
         for _, value in rule['references'].items():
-            if type(value) != str:
+            if not isinstance(value, str):
                 return True
     return False
 
@@ -241,8 +241,7 @@ def remove_section_keys(file_contents, yaml_contents, section, removed_keys):
     # more than once.
     sec_ranges = find_section_lines(file_contents, section)
     if len(sec_ranges) != 1:
-        raise RuntimeError("Refusing to fix file: %s -- could not find one section: %d"
-                           % (path, sec_ranges))
+        raise RuntimeError(f"Refusing to fix  -- could not find one section {section}")
 
     begin, end = sec_ranges[0]
     r_lines = set()
@@ -281,8 +280,7 @@ def rewrite_keyless_section(file_contents, yaml_contents, section, content):
 
     sec_ranges = find_section_lines(file_contents, section)
     if len(sec_ranges) != 1:
-        raise RuntimeError("Refusing to fix file: %s -- could not find one section: %d"
-                           % (path, sec_ranges))
+        raise RuntimeError(f"Refusing to fix  -- could not find one section {section}")
 
     if len(sec_ranges[0]) != 2:
         raise RuntimeError("Section has more than one line")
@@ -338,11 +336,10 @@ def rewrite_section_value(file_contents, yaml_contents, section, keys, transform
 
     sec_ranges = find_section_lines(file_contents, section)
     if len(sec_ranges) != 1:
-        raise RuntimeError("Refusing to fix file: %s -- could not find one section: %d"
-                           % (path, sec_ranges))
+        raise RuntimeError(f"Refusing to fix  -- could not find one section {section}")
 
     begin, end = sec_ranges[0]
-    r_lines = set()
+    r_lines = set()  # noqa: F841
 
     # Don't include section header
     for line_num in range(begin+1, end+1):
@@ -425,7 +422,7 @@ def fix_invalid_cce(file_contents, yaml_contents):
 def has_product_cce(yaml_contents, product):
     section = 'identifiers'
 
-    invalid_identifiers = []
+    invalid_identifiers = []  # noqa: F841
 
     if not yaml_contents[section]:
         return False
@@ -458,7 +455,7 @@ def fix_int_identifier(file_contents, yaml_contents):
 
     int_identifiers = []
     for i_type, i_value in yaml_contents[section].items():
-        if type(i_value) != str:
+        if not isinstance(i_value, str):
             int_identifiers.append(i_type)
 
     return rewrite_section_value_int_str(file_contents, yaml_contents, section, int_identifiers)
@@ -469,7 +466,7 @@ def fix_int_reference(file_contents, yaml_contents):
 
     int_identifiers = []
     for i_type, i_value in yaml_contents[section].items():
-        if type(i_value) != str:
+        if not isinstance(i_value, str):
             int_identifiers.append(i_type)
 
     return rewrite_section_value_int_str(file_contents, yaml_contents, section, int_identifiers)
@@ -550,7 +547,7 @@ def add_cce(args, product_yaml):
 
 
 def _add_cce(directory, cce_pool, rules, product_yaml, args):
-    product = product_yaml["product"]
+    product = product_yaml["product"]  # noqa: F841
 
     def is_relevant_rule(rule_path, rule, rule_lines):
         for r in rules:
@@ -573,7 +570,7 @@ def _add_cce(directory, cce_pool, rules, product_yaml, args):
         try:
             changes = fix_file(rule_path, product_yaml, fix_callback)
         except RuntimeError as exc:
-            msg = (
+            msg = (  # noqa: F841
                 "Error adding CCE into {rule_path}: {exc}"
                 .format(rule_path=rule_path, exc=str(exc)))
             raise RuntimeError(exc)

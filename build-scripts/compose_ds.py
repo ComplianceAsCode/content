@@ -55,7 +55,7 @@ def embed_sce_checks_in_datastream(datastreamtree, checklists, checks, build_dir
 
         # Create a component reference to map the checklist to the extended component
         component_ref_id = "scap_{}_cref_{}".format(ID_NS, mangled_path)
-        component_ref = ET.SubElement(
+        component_ref = ET.SubElement(  # noqa: F841
             checks, '{%s}component-ref' % datastream_namespace,
             attrib={
                 'id': component_ref_id,
@@ -66,7 +66,7 @@ def embed_sce_checks_in_datastream(datastreamtree, checklists, checks, build_dir
         checklists_component_ref = checklists.find(
             "{%s}component-ref" % datastream_namespace)
         catalog = checklists_component_ref.find('{%s}catalog' % cat_namespace)
-        uri = ET.SubElement(
+        uri = ET.SubElement(  # noqa: F841
             catalog, '{%s}uri' % cat_namespace,
             attrib={
                 'name': file,

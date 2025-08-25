@@ -44,7 +44,7 @@ PROFILE_ALL_ID_SINGLE_QUOTED = False
 def analysis_to_serializable(analysis):
     result = dict(analysis)
     for key, value in analysis.items():
-        if type(value) == set:
+        if isinstance(value, set):
             result[key] = tuple(value)
     return result
 

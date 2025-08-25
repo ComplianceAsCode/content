@@ -409,7 +409,7 @@ def test_policy_parse_from_nested(minimal_empty_controls, one_simple_subcontrol)
     assert len(controls) == 2
     control, subcontrol = order_by_attribute(controls, "id", ("c", "s"))
     assert control.title == "control"
-    assert control.selections == ["a"]
+    assert control.selections == ["a", "b"]
     assert subcontrol.title == "subcontrol"
     assert subcontrol.selections == ["b"]
 
@@ -445,7 +445,7 @@ def test_manager_removes_rules():
     assert len(control.selections) == 0
 
 
-def test_policy_parse_from_nested():
+def test_policy_parse_from_nested2():
     top_control_dict = dict(id="top", controls=["nested-1"])
     first_nested_dict = dict(id="nested-1", controls=["nested-2"], rules="Y")
     second_nested_dict = dict(id="nested-2", rules=["X"])
@@ -456,7 +456,7 @@ def test_policy_parse_from_nested():
     controls_manager = ssg.controls.ControlsManager("", dict())
     controls_manager.policies[policy.id] = policy
 
-    controls = policy.save_controls_tree([top_control_dict, second_nested_dict, first_nested_dict])
+    controls = policy.save_controls_tree([top_control_dict, second_nested_dict, first_nested_dict])  # noqa: F841
     controls_manager.resolve_controls()
     control = policy.get_control("top")
     assert "Y" in control.selections

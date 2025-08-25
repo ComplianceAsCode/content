@@ -45,7 +45,7 @@ class ProductCPEs(object):
         try:
             product_cpes_list = env_yaml["cpes"]
             self.load_product_cpes_from_list(product_cpes_list)
-        except KeyError as exc:
+        except KeyError:
             raise Exception("Product %s does not define 'cpes'" % (env_yaml["product"]))
 
     def load_product_cpes_from_list(self, product_cpes_list):

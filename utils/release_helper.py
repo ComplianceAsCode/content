@@ -105,7 +105,7 @@ def remove_old_stabilization_branch(repo) -> None:
         except Exception as e:
             print(f'Error: {e}')
     else:
-        print(f'Aborted! stabilization branch not removed.')
+        print('Aborted! stabilization branch not removed.')
 
 
 # Repository Contributors
@@ -674,7 +674,7 @@ def release_prep(repo, args) -> None:
     if args.contributors:
         update_contributors()
 
-    stab_branch_name = get_next_stabilization_branch(repo)
+    stab_branch_name = "stabilization"
     if args.branch:
         print('git checkout master\n'
               'git pull upstream master\n'

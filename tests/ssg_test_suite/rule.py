@@ -454,7 +454,7 @@ class RuleChecker(oscap.Checker):
         rules_to_test = self._get_rules_to_test()
         source = self.rule_spec
         if not self.rule_spec:
-            source = self.template_spec
+            source = self.template_spec  # noqa: F841
         if not rules_to_test:
             return
 

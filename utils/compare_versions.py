@@ -137,16 +137,16 @@ class ManifestComparator():
             rules_added: set, rules_removed: set,
             values_added: set, values_removed: set) -> None:
         if rules_added:
-            print(f"The following rules were added:")
+            print("The following rules were added:")
             print_set(rules_added)
         if rules_removed:
-            print(f"The following rules were removed:")
+            print("The following rules were removed:")
             print_set(rules_removed)
         if values_added:
-            print(f"The following values were added:")
+            print("The following values were added:")
             print_set(values_added)
         if values_removed:
-            print(f"The following values were removed:")
+            print("The following values were removed:")
             print_set(values_removed)
         print()
 

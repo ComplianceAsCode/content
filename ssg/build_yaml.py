@@ -3159,7 +3159,7 @@ class LinearLoader(object):
         for gid in benchmark_first_groups:
             try:
                 self.benchmark.add_group(self.groups[gid], self.env_yaml, self.product_cpes)
-            except KeyError as exc:
+            except KeyError:
                 # Add only the groups we have compiled and loaded
                 pass
         self.benchmark.drop_rules_not_included_in_a_profile()

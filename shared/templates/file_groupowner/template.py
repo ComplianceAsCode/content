@@ -15,7 +15,7 @@ def preprocess(data, lang):
     except ValueError:
         data["group_represented_with_gid"] = False
 
-    if data["group_represented_with_gid"] == False:
+    if not data["group_represented_with_gid"]:
         groups = data["gid_or_name"].split("|")
         if any(element.isnumeric() for element in groups):
             raise ValueError("gid_or_name list cannot contain gids when there are multiple groups")

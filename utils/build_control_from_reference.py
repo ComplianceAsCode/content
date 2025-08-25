@@ -35,7 +35,7 @@ def _parse_args() -> argparse.Namespace:
                         help=f"YAML file with information about the build configuration. "
                              f"Defaults to {BUILD_CONFIG}")
     parser.add_argument("-o", "--output", type=str, required=True,
-                        help=f"Path to output the control file.")
+                        help="Path to output the control file.")
     return parser.parse_args()
 
 

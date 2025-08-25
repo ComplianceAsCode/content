@@ -8,7 +8,7 @@ def resolve_var_substitutions(text):
     # as occurrence of sub with idref implies that substitution of XCCDF values takes place
     return re.sub(
         r'<sub\s+idref="([^"]*)"\s*/>', r"<tt>$\1</tt>", text)
-    
+
 
 def resolve_var_substitutions_in_rule(rule):
     rule.description = resolve_var_substitutions(rule.description)

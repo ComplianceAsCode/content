@@ -28,7 +28,7 @@ class SavedState(object):
             current_running_state = self.environment.reset_state_to(
                 self.name, "running_%d" % idx)
             function(* args)
-        current_running_state = self.environment.reset_state_to(
+        current_running_state = self.environment.reset_state_to(  # noqa: F841
             self.name, "running_last")
 
     @classmethod
@@ -153,7 +153,7 @@ class TestEnv(object):
                 "Failed to copy {source} to {destination}"
                 .format(source=source, destination=destination))
         try:
-            result = common.run_with_stdout_logging(
+            result = common.run_with_stdout_logging(  # noqa: F841
                 "scp", tuple(self.ssh_additional_options) + (source, destination), log_file)
         except Exception as exc:
             error_msg = error_msg + ": " + str(exc)
@@ -171,7 +171,7 @@ class TestEnv(object):
 
     def save_state(self, state_name):
         self.running_state_base = common.get_prefixed_name(state_name)
-        running_state = self.running_state
+        running_state = self.running_state  # noqa: F841
         return self._save_state(state_name)
 
     def _delete_saved_state(self, state_name):
@@ -362,7 +362,7 @@ class ContainerTestEnv(TestEnv):
         if self.domain_ip == 'localhost':
             try:
                 ports = self._get_container_ports(self.current_container)
-            except Exception as exc:
+            except Exception:
                 msg = (
                     "Unable to extract SSH ports from the container. "
                     "This usually means that the container backend reported its configuration "

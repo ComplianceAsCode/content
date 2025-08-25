@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
     diff = set(new_shell_modules) - set(old_shell_modules)
     if diff:
-        print(f"Changes in Ansible shell module have been found:")
+        print("Changes in Ansible shell module have been found:")
         print("\n".join(diff))
 
     Path.unlink('old.yml')
