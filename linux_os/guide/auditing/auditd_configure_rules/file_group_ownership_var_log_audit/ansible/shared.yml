@@ -1,4 +1,4 @@
-# platform = multi_platform_ubuntu
+# platform = multi_platform_sle,multi_platform_ubuntu
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -23,12 +23,46 @@
       log_file: "{{ log_file_line }}"
   when: (log_file_line is defined) and (log_file_line | length > 0)
 
-- name: "{{{ rule_title }}} - List All Log File Backups"
+- name: "{{{ rule_title }}} - Get All Log File Backups"
   ansible.builtin.find:
       path: "{{ log_file | dirname }}"
       patterns: "{{ log_file | basename }}.*"
   register: backup_files
 
+{{% if product == "sle15" %}}
+- name: "{{{ rule_title }}} - Get Audit Log Group"
+  ansible.builtin.command: grep -iw ^log_group /etc/audit/auditd.conf
+  failed_when: false
+  register: log_group_exists
+
+- name: "{{{ rule_title }}} - Set Log Group Facts"
+  ansible.builtin.set_fact:
+      log_group_line: "{{ log_group_exists.stdout | split(' ') | last }}"
+
+- name: "{{{ rule_title }}} - Set Default log_group if Not Set"
+  ansible.builtin.set_fact:
+      log_group: "root"
+  when: (log_group_exists is undefined) or (log_group_exists.stdout | length == 0)
+
+- name: "{{{ rule_title }}} - Set log_group From log_group_line if Not Set Already"
+  ansible.builtin.set_fact:
+      log_group: "{{ log_group_line }}"
+  when: (log_group_line is defined) and (log_group_line | length > 0)
+
+- name: "{{{ rule_title }}} - Apply Mode to All Backup Log Files"
+  ansible.builtin.file:
+      path: "{{ item }}"
+      group: "{{ log_group }}"
+  failed_when: false
+  loop: "{{ backup_files.files| map(attribute='path') | list }}"
+
+- name: "{{{ rule_title }}} - Apply Mode to Log File"
+  ansible.builtin.file:
+      path: "{{ log_file }}"
+      group: "{{ log_group }}"
+  failed_when: false
+
+{{% else %}}
 - name: "{{{ rule_title }}} - Apply Mode to All Backup Log Files"
   ansible.builtin.file:
       path: "{{ item }}"
@@ -41,3 +75,4 @@
       path: "{{ log_file }}"
       group: root
   failed_when: false
+{{% endif %}}
