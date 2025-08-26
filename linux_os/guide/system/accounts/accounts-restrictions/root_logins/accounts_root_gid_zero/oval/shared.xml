@@ -3,7 +3,7 @@
     {{{ oval_metadata("The root account should have primary group of 0", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="tests that the root account's gid is equal to 0" test_ref="test_{{{rule_id}}}" />
-      {{% if 'ubuntu' in product or 'rhel' in product %}}
+      {{% if 'ubuntu' in product or 'rhel' in product or 'fedora' in product %}}
       <criterion comment="no other users have primary group ID 0" test_ref="test_{{{rule_id}}}_no_other_gid_0" />
       {{% endif %}}
     </criteria>
@@ -24,7 +24,7 @@
     <ind:subexpression operation="equals" datatype="int">0</ind:subexpression>
   </ind:textfilecontent54_state>
 
-  {{% if 'ubuntu' in product or 'rhel' in product %}}
+  {{% if 'ubuntu' in product or 'rhel' in product or 'fedora' in product %}}
   <!-- Test for other users with GID 0 (excluding sync, shutdown, halt, operator) -->
   <ind:textfilecontent54_test id="test_{{{rule_id}}}_no_other_gid_0" check="all" check_existence="none_exist" comment="test that there are no other accounts with GID 0 except root" version="1">
     <ind:object object_ref="object_{{{rule_id}}}_no_other_gid_0" />
