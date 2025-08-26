@@ -455,7 +455,7 @@ def main() -> None:
     check_product_value_path(args.root, args.product)
 
     srgs = ssg.build_stig.parse_srgs(args.manual)
-    product_dir = os.path.join(args.root, "products", args.product)
+    product_dir = os.path.join(args.root, "products", args.product)  # noqa: F841
     env_yaml = get_env_yaml(
             args.root, args.product, args.build_config_yaml)
     policy = get_policy(args, env_yaml)

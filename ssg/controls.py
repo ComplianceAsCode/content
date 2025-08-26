@@ -300,7 +300,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                 continue
             try:
                 rule.add_control_reference(reference_type, self.id)
-            except ValueError as exc:
+            except ValueError:
                 msg = (
                     "Please remove any duplicate listing of rule '%s' in "
                     "control '%s'." % (
@@ -403,7 +403,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
         data["source"] = self.source
         data["definition_location"] = self.filepath
         data["controls"] = [c.represent_as_dict() for c in self.controls]
-        data["levels"] = [l.represent_as_dict() for l in self.levels]
+        data["levels"] = [level.represent_as_dict() for level in self.levels]
         return data
 
     @property
@@ -726,9 +726,9 @@ class Policy(ssg.entities.common.XCCDFEntity):
         levels[level] = ""
         if level.inherits_from:
             for lv in level.inherits_from:
-                eligible_levels = [l for l in self.get_level_with_ancestors_sequence(lv) if l not in levels.keys()]
-                for l in eligible_levels:
-                    levels[l] = ""
+                eligible_levels = [le for le in self.get_level_with_ancestors_sequence(lv) if le not in levels.keys()]
+                for le in eligible_levels:
+                    levels[le] = ""
         return list(levels.keys())
 
     def _check_conflict_in_rules(self, rules):

@@ -1,0 +1,23 @@
+name: Ruff Gate
+on:
+    merge_group:
+        branches: [ 'master' ]
+    push:
+        branches: [ '*', '!stabilization*', '!stable*', '!master' ]
+    pull_request:
+        branches: [ 'master', 'stabilization*', 'oscal-update-*' ]
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
+    cancel-in-progress: true
+jobs:
+    ruff:
+        name: Run ruff
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
+            -   name: Install ruff
+                run: python3 -m pip install ruff
+            -   name: Run ruff check
+                run: ruff check

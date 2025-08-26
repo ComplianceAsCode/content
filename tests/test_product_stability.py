@@ -71,7 +71,6 @@ def corresponding_product_built(build_dir, product_id):
 
 
 def get_matching_compiled_product_filename(build_dir, product_id):
-    ref_path_components = reference_fname.split(os.path.sep)
     matching_filename = os.path.join(build_dir, product_id, "product.yml")
     if os.path.isfile(matching_filename):
         return matching_filename

@@ -291,7 +291,7 @@ class XCCDFEntity(object):
 
         try:
             data_dict = cls.parse_yaml_into_processed_dict(yaml_file, local_env_yaml, product_cpes)
-        except DocumentationNotComplete as exc:
+        except DocumentationNotComplete:
             raise
         except Exception as exc:
             msg = (

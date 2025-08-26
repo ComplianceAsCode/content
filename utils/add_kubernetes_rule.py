@@ -220,7 +220,7 @@ def createNodeRuleFunc(args):
     template['name'] = args.template
 
     template['vars'] = dict()
-    template_vars = set_template_vars(args.template_vars, template['vars'])
+    template_vars = set_template_vars(args.template_vars, template['vars'])  # noqa: F841
 
     save_rule(rule_yaml_path, rule_yaml)
     return 0

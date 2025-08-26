@@ -578,4 +578,4 @@ def test_profile_with_version(profile_with_version):
 def test_profile_ospp_with_invalid_status():
     value_file = os.path.join(DATADIR, "ospp_invalid_status.profile")
     with pytest.raises(Exception):
-        profile = ssg.build_yaml.Profile.from_yaml(value_file)
+        profile = ssg.build_yaml.Profile.from_yaml(value_file)  # noqa: F841
