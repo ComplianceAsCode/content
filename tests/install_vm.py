@@ -256,8 +256,8 @@ def handle_kickstart(data):
 
         if data.uefi:
             content = content.replace(
-                "part /boot --fstype=xfs --size=512",
-                "part /boot --fstype=xfs --size=312\npart /boot/efi --fstype=efi --size=200",
+                "part /boot --fstype=xfs --size=1152",
+                "part /boot --fstype=xfs --size=640\npart /boot/efi --fstype=efi --size=512",
             ).replace(
                 "part biosboot ",
                 "# part biosboot ",
