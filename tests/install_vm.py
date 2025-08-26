@@ -208,11 +208,14 @@ def handle_ssh_pubkey(data):
     data.ssh_pubkey_used = bool(data.ssh_pubkey)
     if not data.ssh_pubkey:
         home_dir = os.path.expanduser('~')
-        user_default_key = f'{home_dir}/.ssh/id_rsa.pub'
-        if os.path.isfile(user_default_key):
-            data.ssh_pubkey = user_default_key
-            with open(data.ssh_pubkey) as f:
-                data.pub_key_content = f.readline().rstrip()
+        key_types = ['ed25519', 'rsa',]
+        for key_type in key_types:
+            user_default_key = f'{home_dir}/.ssh/id_{key_type}.pub'
+            if os.path.isfile(user_default_key):
+                data.ssh_pubkey = user_default_key
+                with open(data.ssh_pubkey) as f:
+                    data.pub_key_content = f.readline().rstrip()
+                    return
         else:
             err('SSH public key was not found or informed by "--ssh-pubkey" option.')
 
