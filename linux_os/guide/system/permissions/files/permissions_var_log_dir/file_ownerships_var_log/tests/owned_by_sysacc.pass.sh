@@ -1,8 +1,10 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = Ubuntu 22.04
 # packages = rsyslog
 
 chown root -R /var/log/*
 
+useradd -r testUser
+
 touch /var/log/test.log
-chown nobody /var/log/test.log
+chown testUser /var/log/test.log
