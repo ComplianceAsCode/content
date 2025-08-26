@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Ubuntu 24.04
+# platform = multi_platform_ubuntu
 
 chown root -R /var/log/*
 

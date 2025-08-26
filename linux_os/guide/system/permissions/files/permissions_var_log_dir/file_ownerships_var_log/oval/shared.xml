@@ -6,15 +6,17 @@
     </criteria>
   </definition>
 
-  <unix:password_object id="object_syslog_uid" version="1">
+  <unix:password_object id="{{{ rule_id }}}_object_syslog_uid" version="1">
     {{% if 'debian' in product %}}
     <unix:username operation="pattern match">root</unix:username>
+    {{% elif 'ubuntu' in product %}}
+    <unix:username operation="pattern match">(root|syslog)</unix:username>
     {{% else %}}
     <unix:username operation="pattern match">syslog</unix:username>
     {{% endif %}}
   </unix:password_object>
-  <local_variable id="var_syslog_uid" comment="Retrieve the uid of syslog" datatype="int" version="1">
-    <object_component item_field="user_id" object_ref="object_syslog_uid" />
+  <local_variable id="{{{ rule_id }}}_var_syslog_uid" comment="Retrieve the uid of syslog" datatype="int" version="1">
+    <object_component item_field="user_id" object_ref="{{{ rule_id }}}_object_syslog_uid" />
   </local_variable>
 
   <unix:file_test check="all" comment="/var/log/* owner is root|syslog"
@@ -52,7 +54,7 @@
     <unix:type operation="equals">symbolic link</unix:type>
   </unix:file_state>
   <unix:file_state id="state_file_ownership_syslog_var_log_auth_log" version="1">
-    <unix:user_id datatype="int" operation="equals" var_ref="var_syslog_uid"/>
+    <unix:user_id datatype="int" operation="equals" var_ref="{{{ rule_id }}}_var_syslog_uid"/>
   </unix:file_state>
   <unix:file_state id="state_file_ownership_root_var_log_auth_log" version="1">
     <unix:user_id datatype="int" operation="equals">0</unix:user_id>
