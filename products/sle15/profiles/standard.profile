@@ -45,6 +45,7 @@ selections:
     - file_groupowner_etc_passwd
     - file_permissions_etc_group
     - file_owner_etc_group
+    - file_group_ownership_var_log_audit
     - file_groupowner_etc_group
     - sysctl_fs_protected_symlinks
     - sysctl_fs_protected_hardlinks
