@@ -985,6 +985,14 @@ controls:
           - var_multiple_time_servers=suse
           - var_multiple_time_pools=suse
 
+    - id: SLES-15-300450075
+      title: Enable chrony
+      levels:
+          - medium
+      status: automated
+      rules:
+          - service_chronyd_enabled
+
     - id: SLES-15-300450090
       title: Configure Time Service Maxpoll Interval
       levels:
