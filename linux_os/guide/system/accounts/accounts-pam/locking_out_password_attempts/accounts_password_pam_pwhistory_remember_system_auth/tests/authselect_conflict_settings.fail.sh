@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = authselect
-# platform = Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
+# platform = Oracle Linux 8,Oracle Linux 9,multi_platform_rhel,multi_platform_fedora
 # variables = var_password_pam_remember=5,var_password_pam_remember_control_flag=requisite
 
 remember_cnt=5
