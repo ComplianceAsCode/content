@@ -1770,7 +1770,7 @@ controls:
           - medium
       status: automated
       rules:
-          - accounts_password_pam_difok
+          - cracklib_accounts_password_pam_difok
           - var_password_pam_difok=2
 
     - id: SLES-15-600450105
@@ -1788,8 +1788,14 @@ controls:
           - medium
       status: automated
       rules:
-          - accounts_password_pam_minclass
-          - var_password_pam_minclass=4
+          - cracklib_accounts_password_pam_dcredit
+          - var_password_pam_dcredit=-1
+          - cracklib_accounts_password_pam_ucredit
+          - var_password_pam_ucredit=-1
+          - cracklib_accounts_password_pam_lcredit
+          - var_password_pam_lcredit=-1
+          - cracklib_accounts_password_pam_ocredit
+          - var_password_pam_ocredit=-1
 
     - id: SLES-15-600450135
       title: Configure password same consecutive characters
