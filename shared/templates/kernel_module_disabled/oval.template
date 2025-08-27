@@ -14,7 +14,7 @@
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled"
       comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d" />
       {{% endif %}}
-{{% if "ubuntu" not in product and "rhel" not in product and "ol" not in product or product not in ["fedora"] %}}
+{{% if "ubuntu" not in product and "rhel" not in product and "ol" not in product and product not in ["fedora"] %}}
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" />
 {{% endif %}}
 
