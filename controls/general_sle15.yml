@@ -1801,26 +1801,19 @@ controls:
       title: Configure password same consecutive characters
       levels:
           - medium
-      status: automated
-      rules:
-          - accounts_password_pam_maxrepeat
-          - var_password_pam_maxrepeat=3
+      status: pending
 
     - id: SLES-15-600450150
       title: Configure password maximum sequential characters
       levels:
           - medium
-      status: automated
-      rules:
-          - accounts_password_pam_maxsequence
+      status: pending
 
     - id: SLES-15-600450165
       title: Ensure PAM Enforces Password Requirements - Enforce for root User
       levels:
           - medium
-      status: automated
-      rules:
-          - accounts_password_pam_enforce_root
+      status: pending
 
     - id: SLES-15-600450180
       title: Configure password history remember
@@ -1835,18 +1828,13 @@ controls:
       title: Limit Password Reuse
       levels:
           - medium
-      status: automated
-      rules:
-          - accounts_password_pam_pwhistory_enforce_root
+      status: pending
 
     - id: SLES-15-600450210
       title: Includes use_authtok in pam_pwhistory
       levels:
           - medium
-      status: automated
-      rules:
-          - accounts_password_pam_pwhistory_remember_password_auth
-          - accounts_password_pam_pwhistory_remember_system_auth
+      status: pending
 
     - id: SLES-15-600450225
       title: Prevent Login to Accounts With Empty Password
@@ -1860,9 +1848,7 @@ controls:
       title: Avoid using remember in pam_unix module
       levels:
           - medium
-      status: automated
-      rules:
-          - accounts_password_pam_unix_no_remember
+      status: pending
 
     - id: SLES-15-600450255
       title: Set PAM's Password Hashing Algorithm
@@ -1878,9 +1864,7 @@ controls:
       title: Require use_authtok for pam_unix.so
       levels:
           - medium
-      status: automated
-      rules:
-          - accounts_password_pam_unix_authtok
+      status: pending
 
     - id: SLES-15-600600015
       title: Configure password expiration
