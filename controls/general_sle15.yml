@@ -1764,15 +1764,6 @@ controls:
       rules:
           - accounts_passwords_pam_faillock_deny_root
 
-    - id: SLES-15-600450075
-      title: Enable password dictionary check
-      levels:
-          - medium
-      status: automated
-      rules:
-          - accounts_password_pam_dictcheck
-          - var_password_pam_dictcheck=1
-
     - id: SLES-15-600450090
       title: Configure password number of changed characters
       levels:
