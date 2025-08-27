@@ -11,7 +11,7 @@ description: |-
     still achieving the desired effect. An example of this is that the "-S" calls
     could be split up and placed on separate lines, however, this is less efficient.
     Add the following to <tt>/etc/audit/audit.rules</tt>:
-{{% if product == "rhel10" %}}
+{{% if product in ["fedora", "rhel10"] %}}
     <pre>-a always,exit -F arch=b32 -S chmod,fchmod,fchmodat,fchmodat2 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod
 {{% else %}}
     <pre>-a always,exit -F arch=b32 -S chmod,fchmod,fchmodat -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod
@@ -20,7 +20,7 @@ description: |-
         -a always,exit -F arch=b32 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
     If your system is 64 bit then these lines should be duplicated and the
     arch=b32 replaced with arch=b64 as follows:
-{{% if product == "rhel10" %}}
+{{% if product in ["fedora", "rhel10"] %}}
     <pre>-a always,exit -F arch=b64 -S chmod,fchmod,fchmodat,fchmodat2 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod
 {{% else %}}
     <pre>-a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod
