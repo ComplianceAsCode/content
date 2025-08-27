@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ol,multi_platform_rhel
+# platform = multi_platform_ol,multi_platform_rhel,multi_platform_fedora
 # profiles = xccdf_org.ssgproject.content_profile_stig
 # packages = dconf,gdm
 
