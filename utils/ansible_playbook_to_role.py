@@ -394,7 +394,6 @@ class PlaybookToRoleConverter():
         return ("%s%s%s" % ("\n".join(header), default_vars_local_content, "\n".join(lines)))
 
     def save_to_disk(self, directory):
-        print("Converting Ansible Playbook {} to Ansible Role {}".format(self._local_playbook_filename, os.path.join(directory, self.name)))
         for filename in self.PRODUCED_FILES:
             abs_path = os.path.join(directory, self.name, filename)
             mkdir_p(os.path.dirname(abs_path))
