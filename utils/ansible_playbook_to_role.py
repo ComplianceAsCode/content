@@ -17,13 +17,6 @@ import collections
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 PLAYBOOK_ROOT = os.path.join(SSG_ROOT, "build", "ansible")
 
-try:
-    from github import Github, InputGitAuthor, UnknownObjectException
-except ImportError:
-    print("Please install PyGithub, you need a specific version of pygithub, install it through $ pip install \"PyGithub>=1.58.2,<2.0\"",
-          file=sys.stderr)
-    raise SystemExit(1) from None
-
 
 try:
     import ssg.ansible
@@ -425,6 +418,13 @@ class RoleGithubUpdater(object):
 
         blob = self._get_blob_content(branch, path_name)
         if blob is None:
+
+            try:
+                from github import UnknownObjectException
+            except ImportError:
+                print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
+                    file=sys.stderr)
+                raise SystemExit(1)
             raise UnknownObjectException(
                 'unable to locate file: ' + path_name + ' in branch: ' + branch)
         return blob
@@ -439,6 +439,12 @@ class RoleGithubUpdater(object):
         remote_content, sha = self._remote_content(filepath)
 
         if self._local_content(filepath) != remote_content:
+            try:
+                from github import InputGitAuthor
+            except ImportError:
+                print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
+                    file=sys.stderr)
+                raise SystemExit(1)
             self.remote_repo.update_file(
                 filepath,
                 "Updated " + filepath,
@@ -546,6 +552,12 @@ def main():
                 args.build_playbooks_dir, playbook_filename)
             PlaybookToRoleConverter(playbook_full_path).save_to_disk(args.dry_run)
     else:
+        try:
+            from github import Github
+        except ImportError:
+            print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
+                file=sys.stderr)
+            raise SystemExit(1)
         if not args.token:
             print("Input your GitHub credentials:")
             username = input("username or token: ")
@@ -553,7 +565,6 @@ def main():
             github = Github(username, password)
         else:
             github = Github(args.token)
-
         github_org = github.get_organization(args.organization)
         github_repositories = [repo.name for repo in github_org.get_repos()]
 
