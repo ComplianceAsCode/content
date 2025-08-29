@@ -32,7 +32,7 @@ ocil_clause: 'Logs are not forwarded outside the cluster using TLS'
 
 ocil: |-
     Run the following command:
-    <pre>{{{ ocil_oc_pipe_jq_filter('clusterlogforwarders', 'try [.items[].spec.outputs[][]|objects|.url] catch []', namespace="openshift-logging") }}}</pre>
+    <pre>{{{ ocil_oc_pipe_jq_filter('clusterlogforwarders', 'try [.items[].spec.outputs[][]|objects|select(.url != null).url] catch []', namespace="openshift-logging") }}}</pre>
     The output should return a list of URL entries with <pre>https://</pre> or <pre>tls://</pre> transport.
 
 warnings:
@@ -40,5 +40,5 @@ warnings:
     {{{ openshift_cluster_setting() | indent(4) }}}
     {{{ openshift_filtered_cluster_setting_suppressed({
             "/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance": 'try [.spec.outputs[].url] catch []',
-            "/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders": 'try [.items[].spec.outputs[][]|objects|.url] catch []',
+            "/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders": 'try [.items[].spec.outputs[][]|objects|select(.url != null).url] catch []',
         }) | indent(4) }}}
