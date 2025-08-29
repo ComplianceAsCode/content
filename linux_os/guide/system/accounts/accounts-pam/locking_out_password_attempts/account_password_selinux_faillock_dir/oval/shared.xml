@@ -1,6 +1,10 @@
+{{% if 'ol' in families %}}
+{{% set faillock_files = ["/etc/security/faillock.conf"] %}}
+{{% else %}}
 {{% set faillock_files = ["/etc/pam.d/password-auth",
                           "/etc/pam.d/system-auth",
                           "/etc/security/faillock.conf"] %}}
+{{% endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
   {{{ oval_metadata("An SELinux Context must be configured for the Faillock directory.", rule_title=rule_title) }}}
