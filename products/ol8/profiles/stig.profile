@@ -529,7 +529,7 @@ selections:
     # OL08-00-020031
     - dconf_gnome_screensaver_lock_delay
     - var_screensaver_lock_delay=5_seconds
-    
+
     # OL08-00-020032
     - dconf_gnome_disable_user_list
 
@@ -561,8 +561,11 @@ selections:
     # OL08-00-020101
     - accounts_password_pam_pwquality_system_auth
 
-    # OL08-00-020102, OL08-00-020103, OL08-00-020104
+    # OL08-00-020102, OL08-00-020103
     - accounts_password_pam_retry
+
+    # OL08-00-020104
+    - accounts_password_pam_pwquality_retry
 
     # OL08-00-020110
     - accounts_password_pam_ucredit

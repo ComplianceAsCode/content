@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = authselect
-# platform = Oracle Linux 8,Oracle Linux 9,multi_platform_rhel
+# platform = multi_platform_rhel
 # variables = var_password_pam_retry=3
 
 source common.sh

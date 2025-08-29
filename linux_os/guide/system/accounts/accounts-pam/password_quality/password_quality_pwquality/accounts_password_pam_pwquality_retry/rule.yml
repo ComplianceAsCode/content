@@ -25,6 +25,10 @@ identifiers:
 references:
     srg: SRG-OS-000069-GPOS-00037
 
+{{% if product == "ol8" %}}
+platform: os_linux[ol]>8.3
+{{% endif %}}
+
 ocil_clause: 'the value of "retry" is set to "0" or greater than "{{{ xccdf_value("var_password_pam_retry") }}}", or is missing'
 
 ocil: |-

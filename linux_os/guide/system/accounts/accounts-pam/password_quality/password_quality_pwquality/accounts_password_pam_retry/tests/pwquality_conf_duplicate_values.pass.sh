@@ -1,4 +1,6 @@
 #!/bin/bash
+# packages = authselect
+# platform = multi_platform_rhel
 # variables = var_password_pam_retry=3
 
 source common.sh
