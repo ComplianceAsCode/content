@@ -515,7 +515,7 @@ def parse_args():
         help="What profiles to upload, if not specified, upload all that are applicable.")
     parser.add_argument(
         "--product", "-r", default=[], action="append",
-        metavar="PRODUCT", choices=PRODUCT_ALLOWLIST,
+        metavar="PRODUCT",
         help="What products to upload, if not specified, upload all that are applicable.")
     parser.add_argument(
         "--tag-release", "-n", default=False, action="store_true",
@@ -539,14 +539,14 @@ def locally_clone_and_init_repositories(organization, repo_list):
 
 
 def select_roles_to_upload(product_allowlist, profile_allowlist,
-                           build_playbooks_dir):
+                           build_playbooks_dir, dry_run):
     selected_roles = dict()
     for filename in sorted(os.listdir(build_playbooks_dir)):
         root, ext = os.path.splitext(filename)
         if ext == ".yml":
             # the format is product-playbook-profile.yml
             product, _, profile = root.split("-", 2)
-            if product in product_allowlist and profile in profile_allowlist:
+            if dry_run or (product in product_allowlist and profile in profile_allowlist):
                 role_name = "ansible-role-%s-%s" % (product, profile)
                 selected_roles[role_name] = (product, profile)
     return selected_roles
@@ -569,7 +569,7 @@ def main():
         profile_allowlist &= set(args.profile)
 
     selected_roles = select_roles_to_upload(
-        product_allowlist, profile_allowlist, args.build_playbooks_dir
+        product_allowlist, profile_allowlist, args.build_playbooks_dir, args.dry_run
     )
 
     if args.dry_run:
