@@ -58,7 +58,7 @@ def handle_controls(controls: str) -> str:
     # Handle some special cases
     for i, item in enumerate(controls):
         if "section-" in item:
-            controls[i] = "cis_ocp_1_4_0"
+            controls[i] = "cis_ocp"
         if "SRG-" in item:
             controls.remove(item)
     return list(dict.fromkeys(controls))
