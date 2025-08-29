@@ -17,7 +17,7 @@ spec:
     storage:
       files:
       - contents:
-{{% if product == "rhel10" %}}
+{{% if product in ["fedora", "rhel10"] %}}
           source: data:,-a%20always%2Cexit%20-F%20arch%3Db32%20-F%20path%3D{{{ PATH }}}{{{ perm_x }}}%20-F%20auid%3E%3D{{{ auid }}}%20-F%20auid%21%3Dunset%20-F%20key%3Dprivileged%0A-a%20always%2Cexit%20-F%20arch%3Db64%20-F%20path%3D{{{ PATH }}}{{{ perm_x }}}%20-F%20auid%3E%3D{{{ auid }}}%20-F%20auid%21%3Dunset%20-F%20key%3Dprivileged%0A
 {{% else %}}
           source: data:,-a%20always%2Cexit%20-F%20path%3D{{{ PATH }}}{{{ perm_x }}}%20-F%20auid%3E%3D{{{ auid }}}%20-F%20auid%21%3Dunset%20-F%20key%3Dprivileged%0A

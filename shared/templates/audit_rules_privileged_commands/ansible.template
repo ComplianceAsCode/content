@@ -7,7 +7,7 @@
 # complexity = low
 # disruption = low
 
-{{% if product == "rhel10" %}}
+{{% if product in ["fedora", "rhel10"] %}}
 - name: {{{ rule_title }}} - Set architecture for audit {{{ PATH }}}
   ansible.builtin.set_fact:
     audit_arch: "b64"

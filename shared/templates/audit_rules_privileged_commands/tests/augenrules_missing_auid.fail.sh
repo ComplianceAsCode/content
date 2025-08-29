@@ -2,7 +2,7 @@
 
 source common.sh
 
-{{% if product == "rhel10" %}}
+{{% if product in ["fedora", "rhel10"] %}}
 echo "-a always,exit -F arch=b32 -F path={{{ PATH }}} ${perm_x} -F auid!=unset -k test_key" >> /etc/audit/rules.d/test_key.rules
 echo "-a always,exit -F arch=b64 -F path={{{ PATH }}} ${perm_x} -F auid!=unset -k test_key" >> /etc/audit/rules.d/test_key.rules
 {{% else %}}

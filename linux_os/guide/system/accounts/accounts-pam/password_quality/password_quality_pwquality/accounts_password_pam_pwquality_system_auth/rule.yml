@@ -8,7 +8,7 @@ description: |-
     Edit the <tt>password</tt> section in
     <tt>/etc/pam.d/system-auth</tt> to show
     <tt>password    requisite                                    pam_pwquality.so</tt>.
-    {{% if product == "rhel10" %}}
+    {{% if product in ["fedora", "rhel10"] %}}
     The <tt>pam_pwquality</tt> module should be enabled using the <tt>authselect</tt> tool.
     By default, <tt>authselect</tt> always configures <tt>pam_pwquality local_users_only</tt> as a part of <tt>local</tt>, <tt>sssd</tt>, and <tt>winbind</tt> profiles.
     No additional authselect feature is needed to be enabled.

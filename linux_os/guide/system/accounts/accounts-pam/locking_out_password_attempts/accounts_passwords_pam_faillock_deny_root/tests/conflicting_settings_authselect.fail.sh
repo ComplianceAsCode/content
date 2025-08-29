@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = authselect,pam
-# platform = Oracle Linux 8,Oracle Linux 9,multi_platform_rhel
+# platform = Oracle Linux 8,Oracle Linux 9,multi_platform_rhel,multi_platform_fedora
 
 pam_files=("password-auth" "system-auth")
 

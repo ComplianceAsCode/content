@@ -45,7 +45,7 @@ warnings:
       Consequently, the rngd service can't be started in FIPS mode.
 {{% endif %}}
 
-{{% if product == "rhel9" or product == "rhel10" or product == "ol9" or product == "ol10" %}}
+{{% if product in ["fedora", "ol9", "ol10", "rhel9", "rhel10"] %}}
 platform: not runtime_kernel_fips_enabled
 warnings:
   - general: |-

@@ -30,7 +30,7 @@ description: |-
     <br /><br />
     If the system is 64 bit then also add the following line:
     <pre>-a always,exit -F arch=b64 -S removexattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-{{%- if 'ol' in families or 'rhel' in product or 'ubuntu' in product %}}
+{{%- if 'ol' in families or 'rhel' in product or 'ubuntu' in product or product in ["fedora"] %}}
     <pre>-a always,exit -F arch=b64 -S removexattr -F auid=0 -F key=perm_mod</pre>
 {{%- endif %}}
 

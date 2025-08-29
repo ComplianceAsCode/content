@@ -2,7 +2,7 @@
 # packages = dconf,gdm
 
 {{% set dconf_db = "distro.d" %}}
-{{% if product not in ["fedora", "rhel9"] %}}
+{{% if product not in ["fedora", "rhel9", "rhel10"] %}}
 {{% set dconf_db = "gdm.d" %}}
 {{% endif %}}
 

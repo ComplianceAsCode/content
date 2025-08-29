@@ -10,7 +10,7 @@ SYSCALL=""
 KEY="privileged"
 SYSCALL_GROUPING="{{{ SYSCALL_GROUPING }}}"
 
-{{% if product == "rhel10" %}}
+{{% if product in ["fedora", "rhel10"] %}}
 [ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
 for ARCH in "${RULE_ARCHS[@]}"
 do

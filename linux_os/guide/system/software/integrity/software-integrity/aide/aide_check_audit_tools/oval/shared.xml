@@ -19,7 +19,7 @@
   </definition>
 
   <ind:textfilecontent54_state id="state_aide_check_attributes" version="1">
-    {{% if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in product %}}
+    {{% if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in product and 'fedora' not in product %}}
     <ind:subexpression operation="equals">p+i+n+u+g+s+b+acl+selinux+xattrs+sha512</ind:subexpression>
     {{% else %}}
     <ind:subexpression operation="pattern match">^p\+i\+n\+u\+g\+s\+b\+acl(|\+selinux)\+xattrs\+sha512$</ind:subexpression>

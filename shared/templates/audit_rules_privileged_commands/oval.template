@@ -10,7 +10,7 @@
       <!-- Test the {{{ audit_tool }}} case -->
       <criteria operator="AND">
         <extend_definition comment="audit {{{ audit_tool }}}" definition_ref="audit_rules_{{{ audit_tool }}}" />
-{{% if product == "rhel10" %}}
+{{% if product in ["fedora", "rhel10"] %}}
         <criterion comment="audit {{{ audit_tool }}} 32-bit {{{ NAME }}}" test_ref="test_{{{ rule_id }}}_{{{ audit_tool }}}_32bit" />
         <criteria operator="OR">
           <!-- System either isn't 64-bit => we just check presence of 32-bit version of {{{ NAME }}} audit rule -->
@@ -49,7 +49,7 @@
 {{% endmacro %}}
 
 {{% for audit_tool in ["augenrules", "auditctl"] %}}
-{{% if product == "rhel10" %}}
+{{% if product in ["fedora", "rhel10"] %}}
 {{{ arpc_tftst(audit_tool, "32") }}}
 {{{ arpc_tftst(audit_tool, "64") }}}
 {{% else %}}

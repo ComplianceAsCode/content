@@ -1147,7 +1147,7 @@ Operator see
 
 #}}
 {{%- macro describe_grub2_argument(arg_name_value) -%}}
-{{%- if product in ["ol7", "ol8", "ol9", "rhel8", "rhel9", "rhel10"] or 'ubuntu' in product -%}}
+{{%- if product in ["fedora", "ol7", "ol8", "ol9", "rhel8", "rhel9", "rhel10"] or 'ubuntu' in product -%}}
 To ensure that <tt>{{{ arg_name_value }}}</tt> is added as a kernel command line
 argument to newly installed kernels, add <tt>{{{ arg_name_value }}}</tt> to the
 default Grub2 command line for Linux operating systems. Modify the line within
@@ -1219,7 +1219,7 @@ For more details on configuring kernel arguments in bootable container images, p
 
 #}}
 {{%- macro aide_string() -%}}
-{{%- if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in product -%}}
+{{%- if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in product or product not in ['fedora'] -%}}
 p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
 {{%- else -%}}
 p+i+n+u+g+s+b+acl+xattrs+sha512
@@ -1397,7 +1397,7 @@ Create a rule description for rules using the `audit_rules_privileged_commands` 
 {{%- if product in ["almalinux9", "debian12", "fedora", "ol7", "ol8", "ol9", "ol10", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "slmicro6", "ubuntu2204", "ubuntu2404"] %}}
   {{%- set perm_x="-F perm=x " %}}
 {{%- endif -%}}
-{{%- if product == "rhel10" -%}}
+{{%- if product in ["fedora", "rhel10"] -%}}
 {{% set arch_clause=", setting ARCH to either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit" %}}
 {{% set rule="-a always,exit -F arch=ARCH -F path=" ~ path ~ " " ~ perm_x ~ "-F auid&gt;=" ~ auid ~ " -F auid!=unset -F key=privileged" %}}
 {{% else %}}

@@ -1125,7 +1125,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     <pre>$ ls -lL {{{ file }}}</pre>
     If properly configured, the output should indicate the following group-owner:
     {{% for grp in group.split("|") %}}
-      <code>{{{ grp }}}</code> 
+      <code>{{{ grp }}}</code>
       {{% if not loop.last %}} or {{% endif %}}
     {{% endfor %}}
 {{%- endmacro %}}
@@ -1185,9 +1185,9 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 #}}
 {{%- macro ocil_clause_file_group_owner(file, group) -%}}
-    {{{ file }}} does not have a group owner of 
+    {{{ file }}} does not have a group owner of
     {{% for grp in group.split("|") %}}
-      {{{ grp }}} 
+      {{{ grp }}}
       {{% if not loop.last %}} or {{% endif %}}
     {{% endfor %}}
 {{%- endmacro %}}
@@ -1262,7 +1262,7 @@ ocil_clause: "the correct value is not returned"
     The parameter should have form `parameter=value`.
 #}}
 {{%- macro ocil_grub2_argument(arg_name_value) -%}}
-{{%- if product in ["ol7", "ol8", "ol9", "rhel8", "rhel9", "rhel10"] or 'ubuntu' in product -%}}
+{{%- if product in ["fedora", "ol7", "ol8", "ol9",] or 'ubuntu' in product or 'rhel' in product -%}}
 Inspect the form of default GRUB 2 command line for the Linux operating system
 in <tt>/etc/default/grub</tt>. If it includes <tt>{{{ arg_name_value }}}</tt>,
 then the parameter will be configured for newly installed kernels.

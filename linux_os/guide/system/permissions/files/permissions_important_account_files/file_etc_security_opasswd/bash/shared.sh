@@ -1,4 +1,4 @@
-# platform = multi_platform_slmicro
+# platform = multi_platform_slmicro,multi_platform_rhel,multi_platform_fedora
 
 # Create /etc/security/opasswd if needed
 # Owner group mode root.root 0600

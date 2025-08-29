@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_rhel,multi_platform_ubuntu
+# platform = multi_platform_fedora,multi_platform_rhel,multi_platform_ubuntu
 # Remediation doesn't fix the rule, only locks passwords
 # of non-root accounts with uid 0.
 # remediation = none
