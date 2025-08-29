@@ -4,21 +4,26 @@ documentation_complete: true
 title: 'Ensure Usage of Unique Service Accounts '
 
 description: |-
-    Using the <tt>default</tt> service account prevents accurate application
-    rights review and audit tracing. Instead of <tt>default</tt>, create
-    a new and unique service account with the following command:
-    <pre>$ oc create sa <i>service_account_name</i></pre>
-    where <i>service_account_name</i> is the name of a service account
-    that is needed in the project namespace.
+    Ensure applications use unique service accounts instead of the `default`
+    service account to enable accurate rights review and audit tracing.
+    Create dedicated service accounts for each application that requires
+    Kubernetes API access. Use the following command to create a unique
+    service account:
+    ```
+    oc create sa service_account_name
+    ```
+    Replace `service_account_name` with a descriptive name for the service
+    account needed in the project namespace.
 
 rationale: |-
-    Kubernetes provides a default service account which is used by
-    cluster workloads where no specific service account is assigned to the pod.
-    Where access to the Kubernetes API from a pod is required, a specific service account
-    should be created for that pod, and rights granted to that service account.
-    This increases auditability of service account rights and access making it
-    easier and more accurate to trace potential malicious behaviors to a specific
-    service account and project.
+    Kubernetes provides a default service account that cluster workloads use
+    when no specific service account is assigned to the pod. Configure specific
+    service accounts for pods that require access to the Kubernetes API and
+    grant rights to those dedicated accounts. This approach increases
+    auditability of service account rights and access, making it easier to
+    trace potential malicious behaviors to specific service accounts and
+    projects. Using the `default` service account creates security risks
+    through overly broad permissions and inadequate audit trails.
 
 severity: medium
 
@@ -32,6 +37,7 @@ references:
 ocil_clause: 'default service account usage needs review'
 
 ocil: |-
-    For each namespace in the cluster, review the rights assigned
-    to the default service account. There should be no cluster or local roles
-    assigned to the default other than the defaults.
+    Review the rights assigned to the `default` service account in each
+    namespace. Verify that no cluster roles or local roles are assigned to
+    the `default` service account beyond the system defaults. Examine
+    RoleBindings and ClusterRoleBindings to ensure compliance.
