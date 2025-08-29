@@ -38,7 +38,7 @@
 
 {{%- if init_system == "systemd" %}}
   - name: Enable service usbguard
-    ansible.builtin.systemd_service:
+    ansible.builtin.systemd:
       name: "usbguard"
       enabled: "yes"
       state: "started"

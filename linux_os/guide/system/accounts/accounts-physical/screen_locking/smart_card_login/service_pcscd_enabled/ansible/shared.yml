@@ -11,7 +11,7 @@
 
 {{%- if init_system == "systemd" %}}
   - name: Start service pcscd
-    ansible.builtin.systemd_service:
+    ansible.builtin.systemd:
       name: "pcscd"
       state: "started"
       masked: "no"

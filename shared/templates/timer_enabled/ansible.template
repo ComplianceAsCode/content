@@ -10,7 +10,7 @@
       manager: auto
 
   - name: Enable timer {{{ TIMERNAME }}}
-    ansible.builtin.systemd_service:
+    ansible.builtin.systemd:
       name: "{{{ TIMERNAME }}}.timer"
       enabled: "yes"
       state: "started"
