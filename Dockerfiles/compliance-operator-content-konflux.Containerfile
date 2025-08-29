@@ -26,19 +26,13 @@ RUN sed -i 's/\(documentation_complete: \).*/\1true/' \
     products/ocp4/profiles/moderate-node.profile \
     products/ocp4/profiles/moderate.profile \
     products/ocp4/profiles/moderate-node-rev-4.profile \
-    products/ocp4/profiles/moderate-rev-4.profile
-
-# Enable PCI-DSS for all architectures except aarch64. Once we have testing for
-# PCI-DSS on ARM64 upstream, we can remove this case and include PCI-DSS
-# profiles downstream.
-RUN if [ "$(uname -m)" != "aarch64" ]; then \
-    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss-node.profile && \
-    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss.profile && \
-    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss-node-4-0.profile && \
-    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss-4-0.profile && \
-    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss-node-3-2.profile && \
-    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/pci-dss-3-2.profile; \
-    fi
+    products/ocp4/profiles/moderate-rev-4.profile \
+    products/ocp4/profiles/pci-dss-node.profile \
+    products/ocp4/profiles/pci-dss.profile \
+    products/ocp4/profiles/pci-dss-node-4-0.profile \
+    products/ocp4/profiles/pci-dss-4-0.profile \
+    products/ocp4/profiles/pci-dss-node-3-2.profile \
+    products/ocp4/profiles/pci-dss-3-2.profile
 
 # Enable the FedRAMP Moderate profile on ARM64.
 RUN if [ "$(uname -m)" = "aarch64" ]; then \
