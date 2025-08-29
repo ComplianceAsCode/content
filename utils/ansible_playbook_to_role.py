@@ -85,7 +85,7 @@ PROFILE_ALLOWLIST = set([
 ])
 
 
-ORGANIZATION_NAME = "RedHatOfficial"
+ORGANIZATION_NAME = "ComplianceAsCode"
 GIT_COMMIT_AUTHOR_NAME = "ComplianceAsCode development team"
 GIT_COMMIT_AUTHOR_EMAIL = "scap-security-guide@lists.fedorahosted.org"
 META_TEMPLATE_PATH = os.path.join(
