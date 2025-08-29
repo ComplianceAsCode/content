@@ -3,6 +3,13 @@ aide_also_checks_rsyslog: 'yes'
 aide_bin_path: /usr/sbin/aide
 aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
+audit_binaries:
+  - /sbin/auditctl
+  - /sbin/aureport
+  - /sbin/ausearch
+  - /sbin/autrace
+  - /sbin/auditd
+  - /sbin/augenrules
 audit_watches_style: legacy
 auid: 1000
 basic_properties_derived: true
