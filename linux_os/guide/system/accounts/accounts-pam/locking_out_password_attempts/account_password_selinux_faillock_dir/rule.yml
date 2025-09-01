@@ -21,9 +21,13 @@ identifiers:
 references:
     nist: AC-7 (a)
     srg: SRG-OS-000021-GPOS-00005
-    stigid@ol8: OL08-00-020027,OL08-00-020028
+    stigid@ol8: OL08-00-020027
 
+{{% if product == "ol8" %}}
+platform: os_linux[ol]>=8.2 and system_with_kernel
+{{% else %}}
 platform: system_with_kernel
+{{% endif %}}
 
 ocil_clause: 'the security context type of the non-default tally directory is not "faillog_t"'
 

@@ -489,26 +489,26 @@ selections:
     # OL08-00-020000, OL08-00-020270
     - account_temp_expire_date
 
-    # OL08-00-020010, OL08-00-020011
+    # OL08-00-020011
     - accounts_passwords_pam_faillock_deny
 
-    # OL08-00-020012, OL08-00-020013
+    # OL08-00-020013
     - accounts_passwords_pam_faillock_interval
 
 
-    # OL08-00-020014, OL08-00-020015
+    # OL08-00-020015
     - accounts_passwords_pam_faillock_unlock_time
 
-    # OL08-00-020016, OL08-00-020017
+    # OL08-00-020017
     - accounts_passwords_pam_faillock_dir
 
-    # OL08-00-020018, OL08-00-020019
+    # OL08-00-020019
     - accounts_passwords_pam_faillock_silent
 
-    # OL08-00-020020, OL08-00-020021
+    # OL08-00-020021
     - accounts_passwords_pam_faillock_audit
 
-    # OL08-00-020022, OL08-00-020023
+    # OL08-00-020023
     - accounts_passwords_pam_faillock_deny_root
 
     # OL08-00-020024
@@ -520,7 +520,7 @@ selections:
     # OL08-00-020026
     - account_password_pam_faillock_password_auth
 
-    # OL08-00-020027, OL08-00-020028
+    # OL08-00-020027
     - account_password_selinux_faillock_dir
 
     # OL08-00-020030, OL08-00-020082

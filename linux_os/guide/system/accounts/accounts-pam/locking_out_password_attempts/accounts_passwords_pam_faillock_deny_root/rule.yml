@@ -37,10 +37,14 @@ references:
     nist-csf: PR.AC-7
     srg: SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005
     stigid@ol7: OL07-00-010330
-    stigid@ol8: OL08-00-020022,OL08-00-020023
+    stigid@ol8: OL08-00-020023
 
 {{% if product == "rhel8" %}}
-platform: os_linux[rhel]>=8.2
+platform: os_linux[rhel]>=8.2 and package[pam]
+{{% elif product == "ol8" %}}
+platform: os_linux[ol]>=8.2 and package[pam]
+{{% else %}}
+platform: package[pam]
 {{% endif %}}
 
 ocil_clause: 'the "even_deny_root" option is not set, is missing or commented out'
@@ -63,8 +67,6 @@ fixtext: |-
     add or uncomment the following line:
     <pre>even_deny_root</pre>
 
-
-platform: package[pam]
 
 warnings:
     - general: |-

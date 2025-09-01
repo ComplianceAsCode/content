@@ -35,7 +35,7 @@ identifiers:
 references:
     nist: AC-7(b),AC-7(a),AC-7.1(ii)
     srg: SRG-OS-000021-GPOS-00005,SRG-OS-000329-GPOS-00128
-    stigid@ol8: OL08-00-020016,OL08-00-020017
+    stigid@ol8: OL08-00-020017
 
 ocil_clause: 'the "dir" option is not set to a non-default documented tally log directory, is missing or commented out'
 
@@ -53,7 +53,11 @@ fixtext: |-
     add, uncomment or edit the following line:
     <pre>dir = {{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}}</pre>
 
+{{% if product == "ol8" %}}
+platform: os_linux[ol]>=8.2 and package[pam]
+{{% else %}}
 platform: package[pam]
+{{% endif %}}
 
 srg_requirement: '{{{ full_name }}} must ensure account lockouts persist.'
 
