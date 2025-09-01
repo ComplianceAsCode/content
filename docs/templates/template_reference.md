@@ -31,6 +31,17 @@
     - **xccdf_variable** - specifies an XCCDF variable to use as a value for the specified **parameter**.
         This parameter conflicts with the **value** parameter.
 
+    - **variable_datatype** - data type of the XCCDF variable specified by the xccdf_variable parameter, optional, default is string
+
+    - **test_correct_value** - optional. If set, it will be used in test scenarios as a correct value.
+      If not set, the "value" parameter of the template will be used.
+      If XCCDF variable is used and the this option is not set, then a string "corect_value" will be used.
+      This parameter should be used in case the value is defined by an XCCDF variable and the value must be chosen from a strictly defined set of options.
+
+    - **test_wrong_value** - optional. If set, this value will be used test scenarios as a incorrect value.
+      If not set, a string "wrong_value" will be used.
+      This parameter can be used in case that the value has to be chosen from strictly defined set of options.
+
     -   **missing_parameter_pass** - effective only in OVAL checks, if
         set to `"false"` and the parameter is not present in the
         configuration file, the OVAL check will return false (default value: `"false"`).
