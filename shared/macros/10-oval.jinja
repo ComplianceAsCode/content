@@ -679,8 +679,8 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type missing_config_file_fail: bool
 
 #}}
-{{%- macro oval_auditd_config(parameter='', value='', xccdf_variable='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, rule_id=None, rule_title=None) %}}
-{{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", xccdf_variable=xccdf_variable, missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, rule_id=rule_id, rule_title=rule_title) }}}
+{{%- macro oval_auditd_config(parameter='', value='', xccdf_variable='', variable_datatype='string', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, rule_id=None, rule_title=None) %}}
+{{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", xccdf_variable=xccdf_variable, variable_datatype=variable_datatype, missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, rule_id=rule_id, rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 
