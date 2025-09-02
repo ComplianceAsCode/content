@@ -525,6 +525,12 @@ controls:
 
           - rpm_verify_hashes
           - rpm_verify_ownership
+
+      related_rules:
+      # while rpm_verify_permissions is a part of how to detect changes, it conflicts
+      # with permission hardening rules like the cron_permissions rules and therelike.
+      # it is more important to harden the permissions to prevent change, than it is to
+      # ensure that the permissions are the same as in the rpm database.
           - rpm_verify_permissions
 
     - id: SYS.1.1.A28
