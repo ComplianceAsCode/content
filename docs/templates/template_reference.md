@@ -35,10 +35,10 @@
 
     - **test_correct_value** - optional. If set, it will be used in test scenarios as a correct value.
       If not set, the "value" parameter of the template will be used.
-      If XCCDF variable is used and the this option is not set, then a string "corect_value" will be used.
+      If XCCDF variable is used and this option is not set, then a string "corect_value" will be used.
       This parameter should be used in case the value is defined by an XCCDF variable and the value must be chosen from a strictly defined set of options.
 
-    - **test_wrong_value** - optional. If set, this value will be used test scenarios as a incorrect value.
+    - **test_wrong_value** - optional. If set, this value will be used in test scenarios as an incorrect value.
       If not set, a string "wrong_value" will be used.
       This parameter can be used in case that the value has to be chosen from strictly defined set of options.
 
@@ -630,10 +630,10 @@ When the remediation is applied duplicate occurrences of `key` are removed.
 
     - **test_correct_value** - optional. If set, it will be used in test scenarios as a correct value.
       If not set, the "value" parameter of the template will be used.
-      If XCCDF variable is used and the this option is not set, then a string "corect_value" will be used.
+      If XCCDF variable is used and this option is not set, then a string "corect_value" will be used.
       This parameter should be used in case the value is defined by an XCCDF variable and the value must be chosen from a strictly defined set of options.
 
-    - **test_wrong_value** - optional. If set, this value will be used test scenarios as a incorrect value.
+    - **test_wrong_value** - optional. If set, this value will be used in test scenarios as an incorrect value.
       If not set, a string "wrong_value" will be used.
       This parameter can be used in case that the value has to be chosen from strictly defined set of options.
 
