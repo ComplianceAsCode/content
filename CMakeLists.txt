@@ -44,6 +44,7 @@ set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
 # Define Install Directories, where built content will be stored.
 set(SSG_ANSIBLE_ROLE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/ansible")
 set(SSG_ANSIBLE_PER_RULE_PLAYBOOKS_INSTALL_DIR "${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks")
+set(SSG_ANSIBLE_ROLES_INSTALL_DIR "${SSG_ANSIBLE_ROLE_INSTALL_DIR}/roles")
 set(SSG_BASH_ROLE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/bash")
 set(SSG_CONTENT_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/content")
 set(SSG_GUIDE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/guides")

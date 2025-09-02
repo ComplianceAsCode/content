@@ -915,6 +915,18 @@ macro(ssg_build_product PRODUCT)
             "
         )
     endif()
+    if(SSG_ANSIBLE_PLAYBOOKS_ENABLED AND SSG_ANSIBLE_ROLES_ENABLED)
+        if(NOT IS_ABSOLUTE "${SSG_ANSIBLE_ROLES_INSTALL_DIR}")
+            set(DESTINATION_DIR "${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLES_INSTALL_DIR}")
+        else()
+            set(DESTINATION_DIR "${SSG_ANSIBLE_ROLES_INSTALL_DIR}")
+        endif()
+
+        install(
+            DIRECTORY "${CMAKE_BINARY_DIR}/ansible_roles/"
+            DESTINATION "${DESTINATION_DIR}"
+            )
+    endif()
 
     if(ENABLE_SCAPVAL13)
         add_test(
