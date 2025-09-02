@@ -1029,7 +1029,6 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - file_cron_allow_exists
           - file_groupowner_crontab
           - file_owner_crontab
           - file_permissions_crontab
@@ -1096,6 +1095,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - file_cron_allow_exists
           - file_cron_deny_not_exist
           - file_groupowner_cron_allow
           - file_owner_cron_allow
