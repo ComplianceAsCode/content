@@ -95,6 +95,8 @@ def inform_and_append_fix_based_on_reference_compiled_product(ref, build_root):
     compiled_product = ssg.products.Product(compiled_path)
     difference = get_reference_vs_built_difference(ref_product, compiled_product)
     all_ok = difference.empty
+    if all_ok == False:
+        print(describe_change(difference, product_id), file=sys.stderr)
     return all_ok
 
 
