@@ -671,6 +671,8 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type value: str
 :param xccdf_variable: the name of an XCCDF variable carrying the value, this conflicts with the value parameter
 :type xccdf_variable: str
+:param variable_datatype: data type of the XCCDF variable specified by the xccdf_variable parameter, optional, default is string
+:type variable_datatype: str
 :param missing_parameter_pass: If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 :type missing_parameter_pass: bool
 :param multi_value: If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
@@ -679,8 +681,8 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type missing_config_file_fail: bool
 
 #}}
-{{%- macro oval_auditd_config(parameter='', value='', xccdf_variable='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, rule_id=None, rule_title=None) %}}
-{{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", xccdf_variable=xccdf_variable, missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, rule_id=rule_id, rule_title=rule_title) }}}
+{{%- macro oval_auditd_config(parameter='', value='', xccdf_variable='', variable_datatype='string', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, rule_id=None, rule_title=None) %}}
+{{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", xccdf_variable=xccdf_variable, variable_datatype=variable_datatype, missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, rule_id=rule_id, rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 
