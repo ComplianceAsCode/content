@@ -13,7 +13,11 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_root_access_controlled_etc_shadow" version="1">
     <ind:filepath>/etc/shadow</ind:filepath>
+    {{% if product == "ubuntu2204" %}}
+    <ind:pattern operation="pattern match">^root:(\$(y|[0-9].+)\$).*$</ind:pattern>
+    {{% else %}}
     <ind:pattern operation="pattern match">^root:(\$(y|[0-9].+)\$|!.*|\*.*).*$</ind:pattern>
+    {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
