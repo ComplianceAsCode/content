@@ -19,4 +19,10 @@ description: |-
     - Building-Block SYS.1.1 General Server
     - Building-Block SYS.1.3 Linux Server
 
-extends: bsi-2022
+selections:
+    - bsi_sys_1_1_rhel9:all
+    - bsi_sys_1_3_rhel9:all
+
+    # BSI APP.4.4.A4
+    - var_selinux_policy_name=targeted
+    - var_selinux_state=enforcing
