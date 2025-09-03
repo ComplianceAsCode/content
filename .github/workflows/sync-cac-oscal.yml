@@ -163,6 +163,7 @@ jobs:
       # Step 10: Check if there is any existing open PR
       - name: Check if there is any existing open PR
         run: |
+          cd oscal-content
           # Use the GitHub CLI to search for an open PR.
           # The 'jq' query filters for PRs where the branch name contains "sync_cac_pr".
           # We take the first result found.
@@ -176,6 +177,8 @@ jobs:
             BRANCH_NAME="sync_cac_pr${{ env.PR_NUMBER }}"
             echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
           fi
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
       # Step 11: Check if the OSCAL content branch exists
       - name: Check if the OSCAL content branch exists
         if: ${{ env.CHANGE_FOUND == 'true' }}
