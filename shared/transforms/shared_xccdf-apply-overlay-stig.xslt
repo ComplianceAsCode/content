@@ -61,7 +61,7 @@
                     <xsl:apply-templates select="xccdf-1.2:check[@system='http://scap.nist.gov/schema/ocil/2']"/>
                   </check-content>
                 </check>
-            <ident system="https://public.cyber.mil/stigs/cci"><xsl:value-of select="$overlay_ref" /></ident>
+            <ident system="https://www.cyber.mil/stigs/cci"><xsl:value-of select="$overlay_ref" /></ident>
                 <fixtext><xsl:copy-of select="xccdf-1.2:description/node()" /></fixtext>
               </Rule>
               </Group>
@@ -70,7 +70,7 @@
         </xsl:otherwise>
     </xsl:choose>
 
-    </xsl:for-each> 
+    </xsl:for-each>
     </xsl:copy>
   </xsl:template>
 

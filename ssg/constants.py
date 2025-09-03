@@ -22,7 +22,7 @@ SSG_REF_URIS = {
     'cjis': 'https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf',
     'cui': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf',
     'dcid': 'not_officially_available',
-    'disa': 'https://public.cyber.mil/stigs/cci/',
+    'disa': 'https://www.cyber.mil/stigs/cci/',
     'pcidss': 'https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf',
     'pcidss4': 'https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf',
     'ospp': 'https://www.niap-ccevs.org/Profile/PP.cfm',
@@ -30,11 +30,11 @@ SSG_REF_URIS = {
     'ism': 'https://www.cyber.gov.au/acsc/view-all-content/ism',
     'iso27001-2013': 'https://www.iso.org/contents/data/standard/05/45/54534.html',
     'nerc-cip': 'https://www.nerc.com/pa/Stand/AlignRep/One%20Stop%20Shop.xlsx',
-    'stigid': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
-    'os-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
-    'app-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
-    'app-srg-ctr': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security',
-    'stigref': 'https://public.cyber.mil/stigs/srg-stig-tools/',
+    'stigid': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
+    'os-srg': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
+    'app-srg': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
+    'app-srg-ctr': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security',
+    'stigref': 'https://www.cyber.mil/stigs/srg-stig-tools/',
 }
 
 product_directories = [
@@ -92,7 +92,7 @@ anaconda_system = "urn:redhat:anaconda:pre"
 kickstart_system = "urn:xccdf:fix:script:kickstart"
 bootc_system = "urn:xccdf:fix:script:bootc"
 cce_uri = "https://ncp.nist.gov/cce"
-stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
+stig_ns = "https://www.cyber.mil/stigs/srg-stig-tools/"
 ccn_ns = "https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html"
 cis_ns = "https://www.cisecurity.org/benchmark/red_hat_linux/"
 hipaa_ns = "https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf"
@@ -100,8 +100,8 @@ anssi_ns = "https://cyber.gouv.fr/sites/default/files/document/linux_configurati
 ospp_ns = "https://www.niap-ccevs.org/Profile/PP.cfm"
 pcidss4_ns = "https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf"
 cui_ns = 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf'
-stig_refs = 'https://public.cyber.mil/stigs/'
-disa_cciuri = "https://public.cyber.mil/stigs/cci/"
+stig_refs = 'https://www.cyber.mil/stigs/'
+disa_cciuri = "https://www.cyber.mil/stigs/cci/"
 ssg_version_uri = \
     "https://github.com/ComplianceAsCode/content/releases/latest"
 OSCAP_VENDOR = "org.ssgproject"

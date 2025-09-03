@@ -7,7 +7,7 @@ metadata:
         - mab879
         - ggbecker
 
-reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
 title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
