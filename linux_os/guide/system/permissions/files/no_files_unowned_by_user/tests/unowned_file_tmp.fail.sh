@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_rhel,multi_platform_ubuntu
+# platform = multi_platform_fedora,multi_platform_rhel,multi_platform_ubuntu
 # remediation = none
 
 mount tmpfs /tmp -t tmpfs

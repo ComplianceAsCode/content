@@ -3,7 +3,7 @@
   id="kernel_module_{{{ KERNMODULE }}}_disabled" version="1">
     {{{ oval_metadata("The kernel module " + KERNMODULE + " should be disabled.", rule_title=rule_title) }}}
     <criteria operator="OR">
-      {{% if product in "rhcos4" or 'ol' in product or 'rhel' in product or 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
+      {{% if product in ["rhcos4", "fedora"] or 'ol' in product or 'rhel' in product or 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
       <criteria operator="AND">
         <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_blacklisted"
         comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d" />
@@ -14,7 +14,7 @@
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled"
       comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d" />
       {{% endif %}}
-{{% if "ubuntu" not in product and "rhel" not in product and "ol" not in product%}}
+{{% if "ubuntu" not in product and "rhel" not in product and "ol" not in product and product not in ["fedora"] %}}
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" />
 {{% endif %}}
 
@@ -44,7 +44,7 @@
     <value>/usr/lib/modules-load.d</value>
   </constant_variable>
 
-{{% if product in "rhcos4" or 'ol' in product or 'rhel' in product or 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
+{{% if product in ["rhcos4", "fedora"] or 'ol' in product or 'rhel' in product or 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
   <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_blacklisted" version="1" check="all"
   comment="kernel module {{{ KERNMODULE }}} blacklisted">
     <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_blacklisted" />
@@ -59,7 +59,7 @@
   </ind:textfilecontent54_object>
 {{% endif %}}
 
-{{% if "ubuntu" not in product and "rhel" not in product and "ol" not in product %}}
+{{% if "ubuntu" not in product and "rhel" not in product and "ol" not in product and product not in ["fedora"] %}}
   <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" version="1" check="all"
   comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf">
     <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_modprobeconf" />

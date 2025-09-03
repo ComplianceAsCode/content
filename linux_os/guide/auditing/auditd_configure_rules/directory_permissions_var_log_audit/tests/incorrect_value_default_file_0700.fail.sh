@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = audit
-# platform = multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
+# platform = multi_platform_ol,multi_platform_rhel,multi_platform_almalinux,multi_platform_fedora
 
 source common_0700.sh
 
