@@ -1,0 +1,12 @@
+---
+# platform = multi_platform_ocp
+apiVersion: config.openshift.io/v1
+kind: APIServer
+metadata:
+  name: cluster
+spec:
+  tlsSecurityProfile:
+    type: Custom
+    custom:
+      ciphers: [ {{ .var_apiserver_tls_cipher_suites }} ]
+      minTLSVersion: VersionTLS12
