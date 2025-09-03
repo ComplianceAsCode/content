@@ -431,7 +431,7 @@ Generate the HTML diffs:
 
 The goal of this script is to compare the result of two ARF files.
 It will show what rules are missing, different, and the same between the two files.
-The script can take results from content created by this repo and by [DISA](https://public.cyber.mil/stigs/scap/).
+The script can take results from content created by this repo and by [DISA](https://www.cyber.mil/stigs/scap/).
 If the result files come from the same source the script will use XCCDF ids as basis for the comparison.
 Otherwise, the script will use STIG ids to compare.
 
