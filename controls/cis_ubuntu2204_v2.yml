@@ -668,14 +668,13 @@ controls:
       notes: Implementation analogous to ubuntu2404/1.7.9.
 
     - id: 1.7.10
-      title: Ensure XDCMP is not enabled (Automated)
+      title: Ensure XDMCP is not enabled (Automated)
       levels:
           - l1_server
           - l1_workstation
-      related_rules:
+      rules:
           - gnome_gdm_disable_xdmcp
-      status: planned
-      notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2404/1.7.10.
+      status: automated
 
     - id: 2.1.1
       title: Ensure autofs services are not in use (Automated)
