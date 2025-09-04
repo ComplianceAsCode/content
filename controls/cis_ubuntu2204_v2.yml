@@ -988,7 +988,6 @@ controls:
           - service_timesyncd_disabled
           - ntp_single_service_active
       status: automated
-      notes: Implementation analogous to ubuntu2404/2.3.1.1.
 
     - id: 2.3.2.1
       title: Ensure systemd-timesyncd configured with authorized timeserver (Automated)
@@ -996,18 +995,20 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - var_multiple_time_servers=ubuntu
+          - var_multiple_time_servers=nist
           - service_timesyncd_configured
       status: automated
-      notes: Implementation analogous to ubuntu2404/2.3.2.1.
 
     - id: 2.3.2.2
       title: Ensure systemd-timesyncd is enabled and running (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2404/2.3.2.2.
+      related_rules:
+          - service_timesyncd_enabled
+          - service_timesyncd_disabled
+      status: automated
+      notes: Implemented in 2.3.1.1
 
     - id: 2.3.3.1
       title: Ensure chrony is configured with authorized timeserver (Manual)
@@ -1015,11 +1016,13 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - var_multiple_time_servers=ubuntu
-          - var_multiple_time_pools=ubuntu
+          - var_multiple_time_servers=nist
+          - var_multiple_time_pools=nist
           - chronyd_configure_pool_and_server
-      status: manual
-      notes: Implementation analogous to ubuntu2404/2.3.3.1.
+      status: partial
+      notes: |
+          Rule does not check or remediate config files included via
+          confdir and sourcedir directives.
 
     - id: 2.3.3.2
       title: Ensure chrony is running as user _chrony (Automated)
@@ -1029,15 +1032,17 @@ controls:
       rules:
           - chronyd_run_as_chrony_user
       status: automated
-      notes: Implementation analogous to ubuntu2404/2.3.3.2.
 
     - id: 2.3.3.3
       title: Ensure chrony is enabled and running (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2404/2.3.3.3.
+      related_rules:
+          - service_chronyd_enabled
+          - service_chronyd_disabled
+      status: automated
+      notes: Implemented in 2.3.1.1
 
     - id: 2.4.1.1
       title: Ensure cron daemon is enabled and active (Automated)
