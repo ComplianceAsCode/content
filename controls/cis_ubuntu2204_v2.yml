@@ -75,8 +75,9 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      status: planned
-      notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2404/1.1.1.7.
+      rules:
+          - kernel_module_squashfs_disabled
+      status: automated
 
     - id: 1.1.1.7
       title: Ensure udf kernel module is not available (Automated)
