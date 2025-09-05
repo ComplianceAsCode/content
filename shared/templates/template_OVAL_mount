@@ -2,9 +2,7 @@
   <definition class="compliance" id="partition_for{{{ POINTID }}}" version="1">
     <metadata>
       <title>Ensure {{{ MOUNTPOINT }}} Located On Separate Partition</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>If stored locally, create a separate partition for
       {{{ MOUNTPOINT }}}. If {{{ MOUNTPOINT }}} will be mounted from another
       system such as an NFS server, then creating a separate partition is not

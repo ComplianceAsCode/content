@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_kubelet_client_cert" version="1">
     <metadata>
       <title>Configure the kubelet Certificate for the API Server</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The certificate file should be configured in kubeletClientInfo.</description>
     </metadata>
     <criteria operator="AND">

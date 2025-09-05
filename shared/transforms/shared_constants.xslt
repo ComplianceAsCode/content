@@ -28,7 +28,7 @@
 <xsl:variable name="nistcsfuri">https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf</xsl:variable>
 <xsl:variable name="isa-62443-2013uri">https://www.isa.org/templates/one-column.aspx?pageid=111294&amp;productId=116785</xsl:variable>
 <xsl:variable name="isa-62443-2009uri">https://www.isa.org/templates/one-column.aspx?pageid=111294&amp;productId=116731</xsl:variable>
-<xsl:variable name="cobit5uri">http://www.isaca.org/COBIT/Pages/default.aspx</xsl:variable>
+<xsl:variable name="cobit5uri">https://www.isaca.org/resources/cobit</xsl:variable>
 <xsl:variable name="cis-cscuri">https://www.cisecurity.org/wp-content/uploads/2017/03/Poster_Winter2016_CSCs.pdf</xsl:variable>
 <xsl:variable name="osppuri">https://www.niap-ccevs.org/Profile/PP.cfm</xsl:variable>
 <xsl:variable name="pcidssuri">https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-1.pdf</xsl:variable>

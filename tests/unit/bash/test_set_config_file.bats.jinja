@@ -126,3 +126,59 @@ function call_set_config_file {
 
     rm "$tmp_file"
 }
+
+@test "Basic Bash remediation" {
+    tmp_file="$(mktemp)"
+    printf "%s\n" "something=foo" > "$tmp_file"
+    expected_output="something='va lue'\n"
+
+    {{{ bash_shell_file_set("$tmp_file", "something", "va lue") | indent(4) }}}
+
+    run diff -U2 "$tmp_file" <(printf "$expected_output")
+    echo "$output"
+    [ "$status" -eq 0 ]
+
+    rm "$tmp_file"
+}
+
+@test "Variable remediation - preserve dollar and use double quotes" {
+    tmp_file="$(mktemp)"
+    printf "%s\n" "something=bar" > "$tmp_file"
+    expected_output='something="$value"'"\n"
+
+    {{{ bash_shell_file_set("$tmp_file", "something", '$value') | indent(4) }}}
+
+    run diff -U2 "$tmp_file" <(printf "$expected_output")
+    echo "$output"
+    [ "$status" -eq 0 ]
+
+    rm "$tmp_file"
+}
+
+@test "Basic Bash remediation - don't quote" {
+    tmp_file="$(mktemp)"
+    printf "%s\n" "something=foo" > "$tmp_file"
+    expected_output="something=va lue\n"
+
+    {{{ bash_shell_file_set("$tmp_file", "something", "va lue", no_quotes=true) | indent(4) }}}
+
+    run diff -U2 "$tmp_file" <(printf "$expected_output")
+    echo "$output"
+    [ "$status" -eq 0 ]
+
+    rm "$tmp_file"
+}
+
+@test "Variable remediation - don't quote" {
+    tmp_file="$(mktemp)"
+    printf "%s\n" "something=bar" > "$tmp_file"
+    expected_output='something=$value'"\n"
+
+    {{{ bash_shell_file_set("$tmp_file", "something", '$value', no_quotes=true) | indent(4) }}}
+
+    run diff -U2 "$tmp_file" <(printf "$expected_output")
+    echo "$output"
+    [ "$status" -eq 0 ]
+
+    rm "$tmp_file"
+}

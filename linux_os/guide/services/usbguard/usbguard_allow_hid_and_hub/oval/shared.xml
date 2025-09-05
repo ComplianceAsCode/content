@@ -2,11 +2,7 @@
   <definition class="compliance" id="usbguard_allow_hid_and_hub" version="1">
     <metadata>
       <title>Check that USB human interface devices and hubs are allowed by USBGuard rules</title>
-      <affected family="unix">
-        <platform>multi_platform_fedora</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Oracle Linux 8</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Check that /etc/usbguard/rules.conf contains at least one non whitespace character and exists.</description>
     </metadata>
     <criteria comment="Check that /etc/usbguard/rules.conf contains at least one non whitespace character." operator="AND">

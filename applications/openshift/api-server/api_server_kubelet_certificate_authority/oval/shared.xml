@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_kubelet_certificate_authority" version="1">
     <metadata>
       <title>Configure the kubelet Certificate Authority for the API Server</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The certificate authority file should be configured in kubeletClientInfo.</description>
     </metadata>
     <criteria operator="AND">

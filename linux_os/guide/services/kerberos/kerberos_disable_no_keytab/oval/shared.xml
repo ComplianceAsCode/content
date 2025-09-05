@@ -16,11 +16,11 @@
     </criteria>
   </definition>
 
-  <unix:file_object id="obj_kerberos_disable_no_keytab" version="1" comment="fapolicyd.mounts">
+  <unix:file_object id="obj_kerberos_disable_no_keytab" version="1" comment="Default Kerberos keytab file">
     <unix:filepath operation="pattern match">^/etc/.+\.keytab$</unix:filepath>
   </unix:file_object>
   <unix:file_test id="test_kerberos_disable_no_keytab" check="all" check_existence="none_exist" version="1"
-    comment="Ensure a keytab file exists">
+    comment="Ensure keytab file does not exist">
     <unix:object object_ref="obj_kerberos_disable_no_keytab"/>
   </unix:file_test>
 </def-group>

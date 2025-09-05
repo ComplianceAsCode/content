@@ -9,6 +9,8 @@ function get_release_fingerprint {
         readonly FEDORA_RELEASE_FINGERPRINT="{{{ latest_release_fingerprint }}}"
     elif [ "${fedora_version}" -eq "{{{ previous_version }}}" ]; then
         readonly FEDORA_RELEASE_FINGERPRINT="{{{ previous_release_fingerprint }}}"
+    elif [ "${fedora_version}" -eq "{{{ future_version }}}" ]; then
+        readonly FEDORA_RELEASE_FINGERPRINT="{{{ future_release_fingerprint }}}"
     else
         {{{ die("This Fedora version '$fedora_version' is not supported anymore, please upgrade to a newer version.", action="return") | indent(8)}}}
     fi

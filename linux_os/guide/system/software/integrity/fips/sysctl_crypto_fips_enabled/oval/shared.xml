@@ -2,11 +2,7 @@
   <definition class="compliance" id="sysctl_crypto_fips_enabled" version="1">
     <metadata>
       <title>Kernel "crypto.fips_enabled" Parameter Runtime Check</title>
-      <affected family="unix">
-        <platform>multi_platform_fedora</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Oracle Linux 8</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The kernel "crypto.fips_enabled" parameter should be set to "1" in system runtime.</description>
     </metadata>
     <criteria operator="AND">

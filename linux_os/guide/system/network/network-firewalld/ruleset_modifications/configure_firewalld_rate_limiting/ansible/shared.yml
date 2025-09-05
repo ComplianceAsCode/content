@@ -1,0 +1,8 @@
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: "Configure rate limiting direct rule for firewalld"
+  command: "firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -p tcp -m limit --limit 25/minute --limit-burst 100  -j INPUT_ZONES"

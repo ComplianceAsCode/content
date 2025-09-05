@@ -2,13 +2,7 @@
   <definition class="compliance" id="installed_OS_is_FIPS_certified" version="1">
     <metadata>
       <title>FIPS 140-2 Certified Operating System</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_rhosp</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>
           The operating system installed on the system is a certified operating system that meets FIPS 140-2 requirements.
       </description>

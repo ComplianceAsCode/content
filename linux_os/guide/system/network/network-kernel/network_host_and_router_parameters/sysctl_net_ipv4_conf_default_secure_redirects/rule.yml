@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4,ocp4
+prodtype: fedora,ocp4,ol7,ol8,rhel6,rhel7,rhel8,rhv4
 
 title: 'Configure Kernel Parameter for Accepting Secure Redirects By Default'
 
@@ -17,6 +17,7 @@ identifiers:
     cce@rhel6: 26831-8
     cce@rhel7: 80164-7
     cce@rhel8: 81017-6
+    cce@ocp4: 82483-9
 
 references:
     anssi: NT28(R22)
@@ -35,8 +36,6 @@ references:
     srg: SRG-OS-000480-GPOS-00227
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.default.secure_redirects", value="0") }}}
-
-platform: machine
 
 template:
     name: sysctl

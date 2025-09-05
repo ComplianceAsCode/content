@@ -1,19 +1,22 @@
+from __future__ import absolute_import
 from __future__ import print_function
 
 import os
 import sys
 import re
+from xml.sax.saxutils import unescape
 
 import ssg.build_yaml
 
-languages = ["anaconda", "ansible", "bash", "oval", "puppet"]
+languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition"]
 
 lang_to_ext_map = {
     "anaconda": ".anaconda",
     "ansible": ".yml",
     "bash": ".sh",
     "oval": ".xml",
-    "puppet": ".pp"
+    "puppet": ".pp",
+    "ignition": ".yml"
 }
 
 def sanitize_input(string):
@@ -92,6 +95,10 @@ def audit_rules_privileged_commands(data, lang):
         data["path"] = path.replace("/", "\\/")
     return data
 
+@template(["ansible", "bash", "oval"])
+def audit_rules_rule_file(data, lang):
+    return data
+
 
 @template(["ansible", "bash", "oval"])
 def audit_rules_unsuccessful_file_modification(data, lang):
@@ -120,6 +127,20 @@ def audit_rules_usergroup_modification(data, lang):
     data["name"] = name
     if lang == "oval":
         data["path"] = path.replace("/", "\\/")
+    return data
+
+
+@template(["ansible", "bash", "oval"])
+def audit_file_contents(data, lang):
+    if lang == "oval":
+        pathid = re.sub(r'[-\./]', '_', data["filepath"])
+        # remove root slash made into '_'
+        pathid = pathid[1:]
+        data["filepath_id"] = pathid
+
+    # The build system converts "<",">" and "&" for us
+    if lang == "bash" or lang == "ansible":
+        data["contents"] = unescape(data["contents"])
     return data
 
 
@@ -287,6 +308,29 @@ def sshd_lineinfile(data, lang):
     elif missing_parameter_pass == "false":
         missing_parameter_pass = False
     data["missing_parameter_pass"] = missing_parameter_pass
+    return data
+
+
+@template(["ansible", "bash", "oval"])
+def shell_lineinfile(data, lang):
+    value = data["value"]
+    if value[0] in ("'", '"') and value[0] == value[-1]:
+        msg = (
+            "Value >>{value}<< of shell variable '{varname}' "
+            "has been supplied with quotes, please fix the content - "
+            "shell quoting is handled by the check/remediation code."
+            .format(value=value, varname=data["parameter"]))
+        raise Exception(msg)
+    missing_parameter_pass = data.get("missing_parameter_pass", "false")
+    if missing_parameter_pass == "true":
+        missing_parameter_pass = True
+    elif missing_parameter_pass == "false":
+        missing_parameter_pass = False
+    data["missing_parameter_pass"] = missing_parameter_pass
+    no_quotes = False
+    if data["no_quotes"] == "true":
+        no_quotes = True
+    data["no_quotes"] = no_quotes
     return data
 
 

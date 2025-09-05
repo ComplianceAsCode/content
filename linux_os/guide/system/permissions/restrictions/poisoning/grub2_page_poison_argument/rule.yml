@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora,ol7,ol8,ocp4
+prodtype: fedora,ocp4,ol7,ol8,rhel7,rhel8
 
 title: 'Enable page allocator poisoning'
 
@@ -23,9 +23,11 @@ severity: medium
 identifiers:
     cce@rhel7: 82158-7
     cce@rhel8: 80944-2
+    cce@ocp4: 82673-5
 
-references: 
+references:
     srg: SRG-OS-000480-GPOS-00227
+    nist: CM-6(a)
 
 ocil_clause: 'page allocator poisoning is not enabled'
 

@@ -50,6 +50,7 @@ bash_system = "urn:xccdf:fix:script:sh"
 ansible_system = "urn:xccdf:fix:script:ansible"
 puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
+ignition_system = "urn:xccdf:fix:script:ignition"
 cce_uri = "https://nvd.nist.gov/cce/index.cfm"
 stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
 stig_refs = 'https://public.cyber.mil/stigs/'

@@ -66,10 +66,7 @@ def add_products(rule_obj, products):
 
         start_line = doc_complete_section[1]+1
 
-        print("Current prodtype is empty")
-        print("New prodtype: %s" % new_prodtype_str)
-        yaml_contents = ssg.rule_yaml.add_key_value(yaml_contents, 'prodtype',
-                                                    start_line, new_prodtype_str)
+        print("Current prodtype is empty, not adding the new prodtype.")
     else:
         prodtype_contents = ssg.rule_yaml.parse_from_yaml(yaml_contents, prodtype_section)
         prodtype = prodtype_contents['prodtype']

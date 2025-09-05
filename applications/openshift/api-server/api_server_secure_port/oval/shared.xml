@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_secure_port" version="1">
     <metadata>
       <title>Enable the Secure Port for the API Server</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>To ensure traffic is served over HTTPS, secure-port should not be zero.</description>
     </metadata>
     <criteria operator="AND">

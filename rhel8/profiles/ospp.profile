@@ -58,6 +58,8 @@ selections:
     - sshd_set_keepalive
     - sshd_enable_warning_banner
     - sshd_rekey_limit
+    - sshd_use_strong_rng
+    - openssl_use_strong_entropy
 
     # Time Server
     - chronyd_client_only
@@ -167,19 +169,17 @@ selections:
     - package_dnf-plugin-subscription-manager_installed
     - package_firewalld_installed
     - package_iptables_installed
-    - package_libcap-ng-utils_installed
     - package_openscap-scanner_installed
     - package_policycoreutils_installed
     - package_rng-tools_installed
     - package_sudo_installed
     - package_usbguard_installed
-    - package_audispd-plugins_installed
     - package_scap-security-guide_installed
     - package_audit_installed
-    - package_rsyslog_installed
-    - package_rsyslog-gnutls_installed
-    - package_gnutls-utils_installed
-    - package_nss-tools_installed
+    - package_crypto-policies_installed
+    - package_openssh-server_installed
+    - package_openssh-clients_installed
+    - package_policycoreutils-python-utils_installed
 
     ### Remove Prohibited Packages
     - package_sendmail_removed
@@ -316,7 +316,7 @@ selections:
     ## Configure the System to Offload Audit Records to a Log
     ##  Server
     ## AU-4(1) / FAU_GEN.1.1.c
-    - auditd_audispd_syslog_plugin_activated
+    # temporarily dropped
 
     ## Set Logon Warning Banner
     ## AC-8(a) / FMT_MOF_EXT.1
@@ -375,7 +375,22 @@ selections:
     ## AU-2(a) / FAU_GEN.1.1.c
     ## Audit Kernel Module Loading and Unloading Events (Success/Failure)
     ## AU-2(a) / FAU_GEN.1.1.c
-    - audit_rules_for_ospp
+    - audit_basic_configuration
+    - audit_immutable_login_uids
+    - audit_create_failed
+    - audit_create_success
+    - audit_modify_failed
+    - audit_modify_success
+    - audit_access_failed
+    - audit_access_success
+    - audit_delete_failed
+    - audit_delete_success
+    - audit_perm_change_failed
+    - audit_perm_change_success
+    - audit_owner_change_failed
+    - audit_owner_change_success
+    - audit_ospp_general
+    - audit_module_load
 
     ## Enable Automatic Software Updates
     ## SI-2 / FMT_MOF_EXT.1
@@ -389,8 +404,7 @@ selections:
     - timer_dnf-automatic_enabled
 
     # Configure TLS for remote logging
-    - rsyslog_remote_tls
-    - rsyslog_remote_tls_cacert
+    # temporarily dropped
 
     # Prevent Kerberos use by system daemons
     - kerberos_disable_no_keytab

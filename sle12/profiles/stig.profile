@@ -8,3 +8,4 @@ description: |-
 
 selections:
     - installed_OS_is_vendor_supported
+    - security_patches_up_to_date

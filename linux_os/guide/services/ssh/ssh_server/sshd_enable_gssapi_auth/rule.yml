@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Enable GSSAPI Authentication'
+
+description: |-
+    Sites setup to use Kerberos or other GSSAPI Authenticaion require setting
+    sshd to accept this authentication.
+    To enable GSSAPI authentication, add or correct the following line in the
+    <tt>/etc/ssh/sshd_config</tt> file:
+    <pre>GSSAPIAuthentication yes</pre>
+
+rationale: |-
+    Kerberos authentication for SSH is often implemented using GSSAPI. If
+    Kerberos is enabled through SSH, the SSH daemon provides a means of access
+    to the system's Kerberos implementation. Vulnerabilities in the system's
+    Kerberos implementations may be subject to exploitation.
+
+    For enterprises, Kerberos is often enabled and used with GSSAPI for 
+    centralized user account management which may necessitate enabling of
+    GSSAPI functionality in SSH. 
+
+severity: medium
+
+ocil_clause: 'it is commented out or is not enabled'
+
+ocil: |-
+    To check if GSSAPIAuthentication is enabled or set correctly, run the following
+    command:
+    <pre>$ sudo grep GSSAPIAuthentication /etc/ssh/sshd_config</pre>
+    If configured properly, output should be <pre>yes</pre>
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: GSSAPIAuthentication
+        rule_id: sshd_enable_gssapi_auth
+        value: 'yes'

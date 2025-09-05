@@ -2,9 +2,7 @@
   <definition class="compliance" id="etcd_auto_tls" version="1">
     <metadata>
       <title>Disable etcd Self-Signed Certificates</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Ensure OpenShift is not using Self-Signed Certificates</description>
     </metadata>
     <criteria operator="AND">

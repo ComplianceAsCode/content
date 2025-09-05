@@ -5,9 +5,7 @@
   <definition class="compliance" id="timer_{{{ TIMERNAME }}}_enabled" version="1">
     <metadata>
       <title>Timer {{{ TIMERNAME }}} Enabled</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The {{{ TIMERNAME }}} timer should be enabled if possible.</description>
     </metadata>
     <criteria comment="package {{{ PACKAGENAME }}} installed and timer {{{ TIMERNAME }}} is configured to start" operator="AND">

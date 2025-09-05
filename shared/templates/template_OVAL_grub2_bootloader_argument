@@ -2,13 +2,7 @@
   <definition class="compliance" id="grub2_{{{ ARG_NAME }}}_argument" version="2">
     <metadata>
       <title>Ensure GRUB 2 is configured to run Linux operating system with argument {{{ ARG_NAME_VALUE }}}</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Look for argument {{{ ARG_NAME_VALUE }}} in the kernel line in /etc/default/grub.</description>
     </metadata>
     <criteria operator="AND">

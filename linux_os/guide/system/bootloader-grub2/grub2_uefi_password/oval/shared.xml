@@ -2,14 +2,7 @@
   <definition class="compliance" id="grub2_uefi_password" version="1">
     <metadata>
       <title>Set the UEFI Boot Loader Password</title>
-      <affected family="unix">
-        <platform>multi_platform_wrlinux</platform>
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The UEFI grub2 boot loader should have password protection enabled.</description>
     </metadata>
 

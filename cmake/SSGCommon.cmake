@@ -97,15 +97,24 @@ macro(ssg_build_shorthand_xml PRODUCT)
     string(REPLACE "\n" ";" SHORTHAND_INPUTS "${SHORTHAND_INPUTS_STR}")
 
     add_custom_command(
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_profiles.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" -o "${CMAKE_CURRENT_BINARY_DIR}/profiles/{name}.profile"
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/profiles/"
+        COMMENT "[${PRODUCT}-content] compiling profiles"
+    )
+
+    add_custom_command(
         # The command also produces the directory with rules, but this is done before the the shorthand XML.
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/rules"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --bash-remediation-fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" build
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --bash-remediation-fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" build
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS ${SHORTHAND_INPUTS}
         DEPENDS generate-internal-bash-remediation-functions.xml
         DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
         DEPENDS "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
     )
     add_custom_target(
@@ -273,8 +282,8 @@ macro(ssg_build_ansible_playbooks PRODUCT)
 endmacro()
 
 macro(ssg_build_remediations PRODUCT)
-    message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet and anaconda)...")
-    _ssg_build_remediations_for_language(${PRODUCT} "bash;ansible;puppet;anaconda")
+    message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet, anaconda and ignition)...")
+    _ssg_build_remediations_for_language(${PRODUCT} "bash;ansible;puppet;anaconda;ignition")
 
     # only enable the ansible syntax checks if we are using openscap 1.2.17 or higher
     # older openscap causes syntax errors, see https://github.com/OpenSCAP/openscap/pull/977
@@ -305,7 +314,7 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
     string(REPLACE " " "%20" CMAKE_CURRENT_BINARY_DIR_NO_SPACES "${CMAKE_CURRENT_BINARY_DIR}")
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam bash_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/bash-fixes.xml" --stringparam ansible_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ansible-fixes.xml" --stringparam puppet_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/puppet-fixes.xml" --stringparam anaconda_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/anaconda-fixes.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam bash_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/bash-fixes.xml" --stringparam ansible_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ansible-fixes.xml" --stringparam puppet_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/puppet-fixes.xml" --stringparam anaconda_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/anaconda-fixes.xml" --stringparam ignition_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ignition-fixes.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
         DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked-ocilrefs.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
@@ -317,6 +326,8 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/puppet-fixes.xml"
         DEPENDS generate-internal-${PRODUCT}-anaconda-fixes.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/anaconda-fixes.xml"
+        DEPENDS generate-internal-${PRODUCT}-ignition-fixes.xml
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ignition-fixes.xml"
         DEPENDS "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt"
         COMMENT "[${PRODUCT}-content] generating xccdf-unlinked.xml"
     )

@@ -2,12 +2,7 @@
   <definition class="compliance" id="audit_rules_session_events" version="1">
     <metadata>
       <title>Record Attempts to Alter Process and Session Initiation Information</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Audit rules should capture information about session initiation.</description>
     </metadata>
 

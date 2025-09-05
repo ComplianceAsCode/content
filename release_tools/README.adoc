@@ -1,0 +1,124 @@
+= How to perform a semi-automatic release =
+
+The scripts in this folder automates some processes of the release.
+
+=== Dependencies ===
+
+* System with `python3.6` or greater
+* Make sure the following python packages are installed:
+** https://pygithub.readthedocs.io/en/latest/index.html[PyGithub]
+** https://python-jenkins.readthedocs.io/en/latest/index.html[Python Jenkins]
+** https://gitpython.readthedocs.io/en/stable/index.html[GitPython]
+
+On fedora: `dnf install python3-pygithub python3-jenkins python3-GitPython`
+
+=== Authentication Tokens ===
+
+The scripts interact with Jenkins and GitHub, so you'll need to setup
+authentication tokens for these services.
+
+* A GitHub token - get one on https://github.com/settings/tokens, `repo` scope is enough.
+* Your Jenkins user - your User ID is probably the same as your GitHub handle, to be sure,
+  check your *profile page* in Jenkins.
+* A Jenkins token - generate a token on *Configure page* in Jenkins
+
+* Create `.env` file in `release_tools` directory, to hold your tokens:
++
+   GITHUB_TOKEN='<your github token here>'
+   JENKINS_USER='<you jenkins user ID>'
+   JENKINS_TOKEN='<you jenkins token here>'
+
+[NOTE]
+====
+You can also use your own fork of the project to test and debug the release tools, define in `.env` file the owner and name of the repo to use.
+
+   OWNER="--owner <owner of repo>" # your github user name
+   REPO="--repo <name of repo>"    # your clone's repo name
+
+====
+
+=== Before the release ===
+
+* Make sure the version in `CMakeLists.txt` is correct, i.e.: the version corresponds to an unreleased version number.
+* Run `PYTHONPATH=. utils/generate_contributors.py` to update the contributors list.
++
+Make a commit and PR it.
+* Make sure you don't have any uncommited changes, otherwise they may be lost during the release.
+* Make sure you have the `master` and `stabilization-v{version}` branch checked out and up to date.
+
+=== Check Phase ===
+
+Let's do some pre-flight checks:
+
+* Run `python3 release_content.py check`.
+
+The script will verify the status of a few Jenkins jobs:
+
+* link:https://jenkins.complianceascode.io/job/scap-security-guide/[Build]
+* link:https://jenkins.complianceascode.io/job/scap-security-guide-linkchecker/[linkcheck]
+* link:https://jenkins.complianceascode.io/job/scap-security-guide-lint-checker/[lint-check]
+* link:https://jenkins.complianceascode.io/job/scap-security-guide-scapval-scap-1.2/[SCAPVal 1.2]
+* link:https://jenkins.complianceascode.io/job/scap-security-guide-scapval-scap-1.3/[SCAPVal 1.3]
+* link:https://jenkins.complianceascode.io/job/scap-security-guide-nightly-zip/[Nightly zip]
+* https://jenkins.complianceascode.io/job/scap-security-guide-nightly-oval510-zip/[Nightly OVAl 5.10 zip]
+
+Although these jobs probably have run against `master`, they are a good indicator of problems in the project.
+
+The script also builds RHEL6 and RHEL7 content to check for missing STIG IDs in STIG profiles. +
+**Review the status** of missing STIG IDs in `rhel6-stig-ids.log` and `rhel7-stig-ids.log` files, fix if necessary. +
+If everything seems fine, continue to build phase.
+
+=== Build Phase ===
+
+Everything necessary for the release is built in Jenkins:
+
+* Run `python3 release_content.py build`.
++
+It will trigger build of the zipfile, docs and tarball in Jenkins. +
+You can run `python3 release_content.py build` again to check status of the jobs. +
+NOTE: As of July-20th 2019, it takes about 44 minutes for all the builds finish.
+
+While Jenkins performs the builds you can generate and review the release notes:
+
+* Run `python3 release_content.py release-notes`
+
+Format of the release notes are as follows: +
+At the top Highlighted PRs will be listed, followed by list of product's profiles that changed since last release. +
+Followed by a list of _relevant_ changes, genereated from the Pull Requests mereged in this release. +
+Not all PRs have an entry to avoid over cluttering. To determine the _relevant_ PRs a few heuristics are applied:
+
+* If a Profile file (`.profile`) was changed, it will be listed under Profiles section;
+* But if a Rule file (`rule.yml`) was changed, it will be listed under Rules section instead;
+* If neither a Profile nor Rule file was changed, but there were changes to any test, it will be listed under Tests section;
+
+A file named `release-notes.txt` will contain the notes, **review the file** and make changes if necessary.
+
+=== Release ===
+
+After Jenkins builds have finished, release notes were generated and reviewed.
+We move on to creating the release entry in GitHub:
+
+* Run `python3 release_content.py release`
++
+It will create the next milestone (if it doens't exist yet), move any open issues and PRs from current +
+milestone to next milesone, and close current release's milestone. +
+The assets from Jenkins builds and the release notes will be used to create the git release. +
+**Review the Git Release** and publish it.
+
+=== Clean up and bump version ===
+
+* Run `python3 release_content.py prep_next_release`
++
+It will cleanup the release process, meaning that local copy of the artifacts will be deleted, tracking of Jenkins builds are dropped. +
+It will also create a `bump_version_{version}` branch and a "Bump version" commit for your convenience. +
+**Make a PR out of the branch**.
+
+=== Announce it ===
+* Announce on link:https://lists.fedorahosted.org/admin/lists/scap-security-guide.lists.fedorahosted.org/[scap-security-guide] and link:https://www.redhat.com/mailman/listinfo/open-scap-list[open-scap] mailing lists.
+* Announce on twitter via link:https://twitter.com/openscap[@OpenSCAP]
+
+=== Fedora and Copr builds ===
+* Submit Fedora updates, check:
+     * the link:https://fedoraproject.org/wiki/Package_maintenance_guide[Package Maintenance Guide]
+     * and link:https://fedoraproject.org/wiki/Package_update_HOWTO[Package Update How To]
+* Do build for COPR repository: https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/builds/

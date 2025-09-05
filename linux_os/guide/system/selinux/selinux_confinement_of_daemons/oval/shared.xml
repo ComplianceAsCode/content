@@ -2,15 +2,7 @@
   <definition class="compliance" id="selinux_confinement_of_daemons" version="1">
     <metadata>
       <title>Ensure No Daemons are Unconfined by SELinux</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>WRLinux 8</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>All pids in /proc should be assigned an SELinux security context other than 'initrc_t'.</description>
     </metadata>
     <criteria>

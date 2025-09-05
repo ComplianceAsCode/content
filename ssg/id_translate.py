@@ -88,6 +88,10 @@ class IDTranslator(object):
                 element.text = self.generate_id("{%s}variable" % oval_ns,
                                                 element.text)
                 continue
+            if element.tag == "{%s}object_reference" % oval_ns:
+                element.text = self.generate_id("{%s}object" % oval_ns,
+                                                element.text)
+                continue
             for attr in element.keys():
                 if attr in OVALREFATTR_TO_TAG.keys():
                     element.set(attr, self.generate_id(

@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_insecure_bind_address" version="1">
     <metadata>
       <title>Disable Use of the Insecure Bind Address</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>OpenShift should not bind to non-loopback insecure addresses.</description>
     </metadata>
     <criteria operator="AND">

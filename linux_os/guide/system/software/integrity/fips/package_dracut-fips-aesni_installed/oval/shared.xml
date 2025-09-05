@@ -7,12 +7,7 @@
   version="1">
     <metadata>
       <title>Package dracut-fips-aesni Installed</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>Oracle Linux 7</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The RPM package dracut-fips-aesni should be installed.</description>
     </metadata>
     <criteria operator="OR">

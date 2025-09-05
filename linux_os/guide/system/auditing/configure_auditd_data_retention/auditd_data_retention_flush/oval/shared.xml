@@ -2,11 +2,7 @@
   <definition class="compliance" id="auditd_data_retention_flush" version="1">
     <metadata>
       <title>Auditd priority for flushing data to disk</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The setting for flush in /etc/audit/auditd.conf</description>
     </metadata>
 

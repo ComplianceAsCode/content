@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_etcd_key" version="1">
     <metadata>
       <title>Configure the etcd Certificate Key for the API Server</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The certificate key should be configured in etcdClientInfo.</description>
     </metadata>
     <criteria operator="AND">

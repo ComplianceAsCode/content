@@ -2,11 +2,7 @@
   <definition class="compliance" id="chronyd_no_chronyc_network" version="1">
     <metadata>
       <title>Disable network management of chrony daemon</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Configure the cmdport setting in /etc/chrony.conf to disable
       chronyc management connections over network.</description>
     </metadata>

@@ -2,9 +2,7 @@
   <definition class="compliance" id="no_netrc_files" version="1">
     <metadata>
       <title>Verify No netrc Files Exist</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The .netrc files contain login information used to auto-login into FTP servers and reside in the user's home directory. Any .netrc files should be removed.</description>
     </metadata>
     <criteria>

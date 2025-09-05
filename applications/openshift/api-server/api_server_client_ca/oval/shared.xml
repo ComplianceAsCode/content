@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_client_ca" version="1">
     <metadata>
       <title>Configure the Client Certificate Authority for the API Server</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The client certificate authority should be configured in servingInfo.</description>
     </metadata>
     <criteria operator="AND">

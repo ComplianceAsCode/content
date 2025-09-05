@@ -2,9 +2,7 @@
   <definition class="compliance" id="accounts_no_uid_except_zero" version="1">
     <metadata>
       <title>UID 0 Belongs Only To Root</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Only the root account should be assigned a user id of 0.</description>
     </metadata>
     <criteria>

@@ -2,12 +2,7 @@
   <definition class="compliance" id="network_nmcli_permissions" version="1">
     <metadata>
       <title>Ensure non-Privileged Users Cannot Change Network Settings</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_fedora</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>polkit is properly configured to prevent non-privilged users from changing networking settings</description>
     </metadata>
     <criteria>

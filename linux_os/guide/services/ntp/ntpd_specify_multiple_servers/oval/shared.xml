@@ -2,12 +2,7 @@
   <definition class="compliance" id="ntpd_specify_multiple_servers" version="2">
     <metadata>
       <title>Specify Multiple Remote ntpd NTP Server for Time Data</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Multiple ntpd NTP Servers for time synchronization should be specified.</description>
     </metadata>
     <criteria comment="ntp.conf conditions are met">

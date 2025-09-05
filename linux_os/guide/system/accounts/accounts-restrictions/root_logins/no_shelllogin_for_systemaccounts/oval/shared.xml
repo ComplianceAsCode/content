@@ -2,9 +2,7 @@
   <definition class="compliance" id="no_shelllogin_for_systemaccounts" version="2">
     <metadata>
       <title>System Accounts Do Not Run a Shell</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The root account is the only system account that should have
       a login shell.</description>
     </metadata>

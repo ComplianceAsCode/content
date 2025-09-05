@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: wrlinux1019,rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4,ocp4
+prodtype: fedora,ocp4,ol7,ol8,rhel6,rhel7,rhel8,rhv4,wrlinux1019
 
 title: 'Enable Kernel Parameter to Ignore ICMP Broadcast Echo Requests on IPv4 Interfaces'
 
@@ -19,6 +19,7 @@ identifiers:
     cce@rhel6: 26883-9
     cce@rhel7: 80165-4
     cce@rhel8: 80922-8
+    cce@ocp4: 82491-2
 
 references:
     stigid@rhel6: "000092"
@@ -39,8 +40,6 @@ references:
     cis-csc: 1,11,12,13,14,15,16,18,2,3,4,6,7,8,9
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.icmp_echo_ignore_broadcasts", value="1") }}}
-
-platform: machine
 
 template:
     name: sysctl

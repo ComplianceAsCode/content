@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_anonymous_auth" version="1">
     <metadata>
       <title>Disable Anonymous Authentication to the API Server</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Anonymous access is allowed by default and should be disabled.</description>
     </metadata>
     <criteria operator="AND">

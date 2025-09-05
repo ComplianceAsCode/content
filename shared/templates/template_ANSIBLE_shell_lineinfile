@@ -1,0 +1,21 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{% set msg = "shell-style assignment of '" ~ PARAMETER ~ "' to '" ~ VALUE ~ "' in '" ~ PATH ~ "'" -%}}
+{{%- if NO_QUOTES -%}}
+	{{% set msg = "Setting unquoted " ~ msg %}}
+{{%- else -%}}
+	{{% set msg = "Setting shell-quoted " ~ msg %}}
+{{%- endif -%}}
+{{{
+    ansible_shell_set(
+        msg=msg,
+        path=PATH,
+        parameter=PARAMETER,
+        value=VALUE,
+        no_quotes=NO_QUOTES
+    )
+}}}
+

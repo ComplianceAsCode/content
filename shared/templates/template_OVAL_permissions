@@ -2,9 +2,7 @@
   <definition class="compliance" id="permissions{{{ FILEID }}}" version="1">
     <metadata>
       <title>Ensure Correct Mode, Owner, Group Owner for {{{ FILEPATH }}}</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Checks for correct UNIX permissions on {{{ FILEPATH }}}.</description>
     </metadata>
     <criteria operator="AND">

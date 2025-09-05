@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4,ocp4
+prodtype: fedora,ocp4,ol7,ol8,rhel6,rhel7,rhel8,rhv4
 
 title: 'Enable Kernel Parameter to Use Reverse Path Filtering on all IPv4 Interfaces'
 
@@ -19,6 +19,7 @@ identifiers:
     cce@rhel6: 26979-5
     cce@rhel7: 80167-0
     cce@rhel8: 81021-8
+    cce@ocp4: 82488-8
 
 references:
     anssi: NT28(R22)
@@ -37,8 +38,6 @@ references:
     srg: SRG-OS-000480-GPOS-00227
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.rp_filter", value="1") }}}
-
-platform: machine
 
 template:
     name: sysctl

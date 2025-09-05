@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: wrlinux1019,rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+prodtype: fedora,ocp4,ol7,ol8,rhel6,rhel7,rhel8,rhv4,wrlinux1019
 
 title: 'Verify and Correct File Permissions with RPM'
 
@@ -33,6 +33,7 @@ identifiers:
     cce@rhel6: 26731-0
     cce@rhel7: 27209-6
     cce@rhel8: 80858-4
+    cce@ocp4: 82687-5
 
 references:
     disa@rhel6: 1493,1495
@@ -63,9 +64,11 @@ ocil: |-
     is expected by the RPM database:
     <pre>$ rpm -Va | awk '{ if (substr($0,2,1)=="M") print $NF }'</pre>
 
+{{% if product == "rhel6" %}}
 warnings:
     - general: |-
         <b>Note: Due to a bug in the <tt>gdm</tt> package,
         the RPM verify command may continue to fail even after file permissions have
         been correctly set on <tt>/var/log/gdm</tt>. This is being tracked in Red Hat
         Bugzilla #1277603.</b>
+{{% endif %}}

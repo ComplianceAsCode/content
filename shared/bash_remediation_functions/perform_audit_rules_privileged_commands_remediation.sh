@@ -6,7 +6,6 @@
 # 			One of 'auditctl' or 'augenrules'
 #
 # min_auid		Minimum original ID the user logged in with
-# 			'500' for RHEL-6 and before, '1000' for RHEL-7 and after.
 #
 # Example Call(s):
 #

@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_basic_auth" version="1">
     <metadata>
       <title>Disable basic-auth-file for the API Server</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>basic-auth-file should not be configured on the master node.</description>
     </metadata>
     <criteria operator="AND">

@@ -5,9 +5,6 @@ prodtype: rhel6,rhel7,rhel8
 title: 'Uninstall openldap-servers Package'
 
 description: |-
-    The <tt>openldap-servers</tt> package should be removed if not in use.
-    Is this system the OpenLDAP server? If not, remove the package.
-    {{{ describe_package_remove(package="openldap-servers") }}}
     The openldap-servers RPM is not installed by default on a {{{ full_name }}}
     system. It is needed only by the OpenLDAP server, not by the
     clients which use LDAP for authentication. If the system is not

@@ -618,10 +618,42 @@ ocil_clause: "the correct value is not returned"
 
 
 {{% macro body_of_warning_about_dependent_rule(rule_id, why) -%}}
-        When selecting this rule in a profile, 
+        When selecting this rule in a profile,
         {{%- if why %}}
             make sure that rule with ID <code>{{{ rule_id }}}</code> is selected as well: {{{ why }}}
         {{%- else %}}
             rule <code>{{{ rule_id }}}</code> has to be selected as well.
         {{%- endif %}}
 {{% endmacro %}}
+
+{{% macro openssl_strong_entropy_config_file() -%}}
+# provide a default -rand /dev/random option to openssl commands that
+# support it
+
+# written inefficiently for maximum shell compatibility
+openssl()
+(
+  openssl_bin=/usr/bin/openssl
+
+  case "$*" in
+    # if user specified -rand, honor it
+    *\ -rand\ *|*\ -help*) exec $openssl_bin "$@" ;;
+  esac
+
+  cmds=`$openssl_bin list -digest-commands -cipher-commands | tr '\n' ' '`
+  for i in `$openssl_bin list -commands`; do
+    if $openssl_bin list -options "$i" | grep -q '^rand '; then
+      cmds=" $i $cmds"
+    fi
+  done
+
+  case "$cmds" in
+    *\ "$1"\ *)
+      cmd="$1"; shift
+      exec $openssl_bin "$cmd" -rand /dev/random "$@" ;;
+  esac
+
+  exec $openssl_bin "$@"
+)
+
+{{%- endmacro %}}

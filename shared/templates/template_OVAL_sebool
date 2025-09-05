@@ -2,12 +2,7 @@
   <definition class="compliance" id="sebool_{{{ SEBOOLID }}}" version="1">
     <metadata>
       <title>SELinux "{{{ SEBOOLID }}}" Boolean Check</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The SELinux "{{{ SEBOOLID }}}" boolean should be set in the system configuration.</description>
     </metadata>
     <criteria>

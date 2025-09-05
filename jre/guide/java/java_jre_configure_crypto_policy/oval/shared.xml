@@ -2,9 +2,7 @@
   <definition class="compliance" id="java_jre_configure_crypto_policy" version="1">
     <metadata>
       <title>Configure JRE to use System Crypto Policy.</title>
-      <affected family="unix">
-        <platform>Java Runtime Environment</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>JRE should be configured to use the system-wide crypto policy setting.</description>
     </metadata>
     <criteria>

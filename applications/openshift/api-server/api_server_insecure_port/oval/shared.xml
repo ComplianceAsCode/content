@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_insecure_port" version="1">
     <metadata>
       <title>Prevent Insecure Port Access</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>All components that use the API should connect via the secured port,
     authenticate themselves, and be authorized to use the API.</description>
     </metadata>

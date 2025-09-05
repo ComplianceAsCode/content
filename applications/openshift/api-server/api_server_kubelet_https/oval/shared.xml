@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_kubelet_https" version="1">
     <metadata>
       <title>Enable kubelet HTTPS connections to the API Server</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>HTTPS should be used for connections between the API Server and Kubelets.</description>
     </metadata>
     <criteria operator="AND">

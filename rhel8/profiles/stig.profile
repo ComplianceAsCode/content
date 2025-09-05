@@ -20,6 +20,7 @@ extends: ospp
 
 selections:
     - login_banner_text=dod_banners
+    - dconf_db_up_to_date
     - dconf_gnome_banner_enabled
     - banner_etc_issue
     - accounts_password_set_min_life_existing
@@ -33,3 +34,12 @@ selections:
     - encrypt_partitions
     - sysctl_net_ipv4_tcp_syncookies
     - clean_components_post_updating
+    - package_audispd-plugins_installed
+    - package_libcap-ng-utils_installed
+    - auditd_audispd_syslog_plugin_activated
+
+    # Configure TLS for remote logging
+    - package_rsyslog_installed
+    - package_rsyslog-gnutls_installed
+    - rsyslog_remote_tls
+    - rsyslog_remote_tls_cacert

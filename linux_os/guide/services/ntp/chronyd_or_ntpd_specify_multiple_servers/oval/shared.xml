@@ -2,13 +2,7 @@
   <definition class="compliance" id="chronyd_or_ntpd_specify_multiple_servers" version="1">
     <metadata>
       <title>Specify Multiple Remote chronyd Or ntpd NTP Servers for Time Data</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Multiple remote chronyd or ntpd NTP Servers for time synchronization should be specified (and dependencies are met)</description>
     </metadata>
 

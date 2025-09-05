@@ -2,12 +2,7 @@
   <definition class="compliance" id="mount_option_{{{ MOUNTOPTION }}}_removable_partitions" version="4">
     <metadata>
       <title>Add {{{ MOUNTOPTION }}} Option to Removable Media Partitions</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_wrlinux</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The {{{ MOUNTOPTION }}} option should be enabled for all removable devices mounts in /etc/fstab.</description>
     </metadata>
     <criteria operator="OR">

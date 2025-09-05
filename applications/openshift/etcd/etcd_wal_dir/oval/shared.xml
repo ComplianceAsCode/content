@@ -2,9 +2,7 @@
   <definition class="compliance" id="etcd_wal_dir" version="1">
     <metadata>
       <title>Configure etcd Log Storage</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Ensure OpenShift is configured to store etcd logs in a separate directory from the data.</description>
     </metadata>
     <criteria>

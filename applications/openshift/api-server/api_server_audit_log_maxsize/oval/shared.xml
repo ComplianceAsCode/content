@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_audit_log_maxsize" version="1">
     <metadata>
       <title>Configure Maximum Audit Log Size</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Configure maximum audit log size.</description>
     </metadata>
     <criteria operator="AND">

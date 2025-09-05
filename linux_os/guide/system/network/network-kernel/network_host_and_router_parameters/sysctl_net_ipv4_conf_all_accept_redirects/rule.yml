@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: wrlinux1019,rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4,ocp4
+prodtype: fedora,ocp4,ol7,ol8,rhel6,rhel7,rhel8,rhv4,wrlinux1019
 
 title: 'Disable Accepting ICMP Redirects for All IPv4 Interfaces'
 
@@ -21,6 +21,7 @@ identifiers:
     cce@rhel6: 27027-2
     cce@rhel7: 80158-9
     cce@rhel8: 80917-8
+    cce@ocp4: 82469-8
 
 references:
     anssi: NT28(R22)
@@ -41,8 +42,6 @@ references:
     cis-csc: 1,11,12,13,14,15,16,2,3,7,8,9
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.accept_redirects", value="0") }}}
-
-platform: machine
 
 template:
     name: sysctl

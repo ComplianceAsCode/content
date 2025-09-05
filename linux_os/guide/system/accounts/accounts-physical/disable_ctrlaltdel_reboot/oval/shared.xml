@@ -5,13 +5,7 @@
   <definition class="compliance" id="disable_ctrlaltdel_reboot" version="1">
     <metadata>
       <title>Disable Ctrl-Alt-Del Reboot Activation</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_wrlinux</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>By default, the system will reboot when the
       Ctrl-Alt-Del key sequence is pressed.</description>
     </metadata>

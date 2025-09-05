@@ -5,11 +5,7 @@
   <definition class="compliance" id="configure_kerberos_crypto_policy" version="2">
     <metadata>
       <title>Configure kerberos to use System Crypto Policy</title>
-      <affected family="unix">
-        <platform>multi_platform_fedora</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Oracle Linux 8</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Kerberos should be configured to use the system-wide crypto policy setting.</description>
     </metadata>
     <criteria operator="OR" comment="The config file is always a symlink to the backend, but the backend itself may be either a file, or a symlink. For this reason, we need two tests, if one passes, the other one is expected to either fail, or error.">

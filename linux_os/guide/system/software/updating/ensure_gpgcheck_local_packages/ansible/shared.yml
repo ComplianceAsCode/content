@@ -19,7 +19,7 @@
     option: localpkg_gpgcheck
     value: 1
     create: True
-  when: (ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or yum_config_file.stat.exists)
+  when: (ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Scientific" or yum_config_file.stat.exists)
 
 - name: Ensure GPG check Enabled for Local Packages (DNF)
   ini_file:

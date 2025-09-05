@@ -2,11 +2,7 @@
   <definition class="compliance" id="chronyd_client_only" version="1">
     <metadata>
       <title>Disable chrony daemon from acting as server</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Configure the port setting in /etc/chrony.conf to disable
       server operation.</description>
     </metadata>

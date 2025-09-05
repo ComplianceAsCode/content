@@ -1,0 +1,39 @@
+documentation_complete: true
+
+title: 'Disable SSH root Login with a Password (Insecure)'
+
+description: |-
+    To disable password-based root logins over SSH, add or correct the following
+    line in <tt>/etc/ssh/sshd_config</tt>:
+    <pre>PermitRootLogin prohibit-password</pre>
+
+warnings:
+    - general: |-
+         While this disables password-based root logins, direct root logins
+         through other means such as through SSH keys or GSSAPI will still be
+         permitted. Permitting any sort of root login remotely opens up the
+         root account to attack.
+         To fully disable direct root logins over SSH (which is considered a
+         best practice) and prevent remote attacks against the root account,
+         see CCE-27100-7, CCE-27445-6, CCE-80901-2, and similar.
+
+
+rationale: |-
+    Even though the communications channel may be encrypted, an additional
+    layer of security is gained by preventing use of a password.
+    This also helps to minimize direct attack attempts on root's password.
+
+severity: medium
+
+ocil_clause: 'it is commented out or not configured properly'
+
+ocil: |-
+    {{{ ocil_sshd_option(default="prohibit-password", option="PermitRootLogin", value="prohibit-password") }}}
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'true'
+        parameter: PermitRootLogin
+        rule_id: sshd_disable_root_password_login
+        value: 'prohibit-password'

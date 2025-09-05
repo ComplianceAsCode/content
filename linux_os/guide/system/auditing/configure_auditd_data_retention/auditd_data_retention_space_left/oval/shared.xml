@@ -2,9 +2,7 @@
   <definition class="compliance" id="auditd_data_retention_space_left" version="2">
     <metadata>
       <title>Configure auditd space_left on Low Disk Space</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>space_left setting in /etc/audit/auditd.conf is set to at least a certain value</description>
     </metadata>
 

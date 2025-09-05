@@ -23,7 +23,8 @@ REMEDIATION_TO_EXT_MAP = {
     'anaconda': '.anaconda',
     'ansible': '.yml',
     'bash': '.sh',
-    'puppet': '.pp'
+    'puppet': '.pp',
+    'ignition': '.yml'
 }
 
 FILE_GENERATED_HASH_COMMENT = '# THIS FILE IS GENERATED'
@@ -95,6 +96,12 @@ def get_fixgroup_for_type(fixcontent, remediation_type):
         return ElementTree.SubElement(
             fixcontent, "fix-group", id="puppet",
             system="urn:xccdf:fix:script:puppet",
+            xmlns="http://checklists.nist.gov/xccdf/1.1")
+
+    elif remediation_type == 'ignition':
+        return ElementTree.SubElement(
+            fixcontent, "fix-group", id="ignition",
+            system="urn:xccdf:fix:script:ignition",
             xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
@@ -373,11 +380,18 @@ class PuppetRemediation(Remediation):
             file_path, "puppet")
 
 
+class IgnitionRemediation(Remediation):
+    def __init__(self, file_path):
+        super(IgnitionRemediation, self).__init__(
+            file_path, "ignition")
+
+
 REMEDIATION_TO_CLASS = {
     'anaconda': AnacondaRemediation,
     'ansible': AnsibleRemediation,
     'bash': BashRemediation,
     'puppet': PuppetRemediation,
+    'ignition': IgnitionRemediation,
 }
 
 
@@ -500,7 +514,9 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
             function_name "arg1" "arg2" ... "argN"
     """
 
-    if remediation_type == "ansible":
+    if remediation_type == "ignition":
+        return
+    elif remediation_type == "ansible":
         fix_text = fix.text
 
         if "(ansible-populate " in fix_text:

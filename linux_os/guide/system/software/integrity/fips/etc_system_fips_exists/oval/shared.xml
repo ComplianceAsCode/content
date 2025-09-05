@@ -2,11 +2,7 @@
   <definition class="compliance" id="etc_system_fips_exists" version="1">
     <metadata>
       <title>Check /etc/system-fips exists</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>Oracle Linux 8</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Check /etc/system-fips exists</description>
     </metadata>
     <criteria operator="AND">
