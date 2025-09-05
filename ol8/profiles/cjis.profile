@@ -1,5 +1,7 @@
 documentation_complete: true
 
+reference: https://www.fbi.gov/services/cjis/cjis-security-policy-resource-center
+
 title: 'Criminal Justice Information Services (CJIS) Security Policy'
 
 description: |-
@@ -95,7 +97,8 @@ selections:
     - dconf_db_up_to_date
     - sshd_allow_only_protocol2
     - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - disable_host_auth
     - sshd_disable_root_login
     - sshd_disable_empty_passwords

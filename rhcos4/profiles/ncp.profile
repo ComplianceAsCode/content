@@ -434,7 +434,6 @@ selections:
     - audit_rules_mac_modification
     - audit_rules_media_export
     - audit_rules_networkconfig_modification
-    - audit_rules_privileged_commands
     - audit_rules_privileged_commands_at
     - audit_rules_privileged_commands_chage
     - audit_rules_privileged_commands_chsh
@@ -555,8 +554,6 @@ selections:
     - chronyd_or_ntpd_specify_multiple_servers
 
     # AU-9
-    #- rpm_verify_ownership
-    #- rpm_verify_permissions
     - selinux_confinement_of_daemons
     #- ensure_logrotate_activated
     - file_permissions_var_log_audit

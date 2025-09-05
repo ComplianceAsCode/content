@@ -56,7 +56,9 @@ A rule itself contains these attributes:
     The &lt;tt&gt;/tmp&lt;/tt&gt; partition is used as temporary storage
     by many programs. Placing &lt;tt&gt;/tmp&lt;/tt&gt; in its own
     partition enables the setting of more restrictive mount options,
-    which can help protect programs which use it. \* `description`:
+    which can help protect programs which use it.
+
+-   `description`:
     Human-readable HTML description, which provides broader context for
     non-experts than the rationale. For example, description of the
     `partition_for_tmp` rule states that:
@@ -70,7 +72,9 @@ A rule itself contains these attributes:
     The &lt;tt&gt;/var/tmp&lt;/tt&gt; directory is a world-writable
     directory used for temporary file storage. Ensure it has its own
     partition or logical volume at installation time, or migrate it
-    using LVM. \* `severity`: Is used for metrics and tracking. It can
+    using LVM. 
+
+-   `severity`: Is used for metrics and tracking. It can
     have one of the following values: `unknown`, `info`, `low`,
     `medium`, or `high`.
 
@@ -110,9 +114,10 @@ A rule itself contains these attributes:
     </table>
 
     When deciding on severity levels, it is best to follow the following
-    guidelines: .Table Vulnerability Severity Category Code Definitions
+    guidelines:
 
     <table>
+    <caption>Table Vulnerability Severity Category Code Definitions</caption>
     <colgroup>
     <col style="width: 33%" />
     <col style="width: 33%" />
@@ -143,10 +148,14 @@ A rule itself contains these attributes:
     </table>
 
     The severity of the rule can be overridden by a profile with
-    `refine-rule` selector. \* `platform`: Defines applicability of a
-    rule. For example, if a rule is not applicable to containers, this
-    should be set to `machine`, which means it will be evaluated only if
-    the targeted scan environment is either bare-metal or virtual
+    `refine-rule` selector.
+
+-   `platform` or `platforms`: Defines applicability of a
+    rule. It is specified either as a single platform or as a list of platforms.
+    For example, if a rule is not
+    applicable to containers, the list should contain the item `machine`, which
+    means it will be evaluated only if the targeted scan environment is either
+    bare-metal or virtual
     machine. Also, it can restrict applicability on higher software
     layers. By setting to `shadow-utils`, the rule will have its
     applicability restricted to only environments which have
@@ -154,15 +163,21 @@ A rule itself contains these attributes:
     in the file &lt;product&gt;/cpe/&lt;product&gt;-cpe-dictionary.xml
     (e.g.: rhel8/cpe/rhel8-cpe-dictionary.xml). In order to support a
     new value, an OVAL check (of `inventory` class) must be created
-    under `shared/checks/oval/` and referenced in the dictionary
-    file. \* `ocil`: Defines asserting statements to check whether or
-    not the rule is valid. \* `ocil_clause`: This attribute contains the
+    under `shared/checks/oval/` and referenced in the dictionary file. It is
+    possible to specify multiple platforms in the list. In that case, they are
+    implicitly connected with "OR" operand. 
+    
+-   `ocil`: Defines asserting
+    statements to check whether or not the rule is valid.
+
+-   `ocil_clause`: This
+    attribute contains the
     statement which describes how to determine whether the statement is
     true or false. Check out `rule.yml` in
     `linux_os/guide/system/software/disk_partitioning/encrypt_partitions/`:
     this contains a `partitions do not have a type of crypto_LUKS` value
-    for `ocil_clause`. This clause is prefixed with the phrase "It is
-    the case that".
+    for `ocil_clause`. This clause is prefixed with the phrase `Is it
+    the case that <ocil_clause> ?`.
 
 A rule may contain those reference-type attributes:
 
@@ -237,10 +252,10 @@ A rule may contain those reference-type attributes:
     `srg`, `nist`, etc., whose keys may be modified with a product
     (e.g., `stigid@rhel7`) to restrict what products a reference
     identifier applies to. Depending on the type of reference (e.g.
-    catalog, rulei, etc.) will depend on how many can be added to a
+    catalog, ruleid, etc.) will depend on how many can be added to a
     single rule. In addition, certain references in a rule such as
-    `stigid` only apply to a certain product and product version; they
-    cannot be used for multiple products and versions
+    `stigid` or `cis` only apply to a certain product and product version; they
+    cannot be used for multiple products and versions.
 
     <table>
     <colgroup>
@@ -259,7 +274,7 @@ A rule may contain those reference-type attributes:
     </thead>
     <tbody>
     <tr class="odd">
-    <td><p>cis</p></td>
+    <td><p>cis@&lt;product&gt;&lt;product_version&gt;</p></td>
     <td><p>Center for Internet Security (catalog identifier)</p></td>
     <td><p>0-to-many, 0-to-1 is preferred</p></td>
     <td><p>5.2.5</p></td>
@@ -595,15 +610,22 @@ Tips:
 
 ### Checks
 
-Checks are used to evaluate a Rule. They are written using a custom OVAL
-syntax and are stored as xml files inside the *checks/oval* directory
-for the desired platform. During the building process, the system will
-transform the checks in OVAL compliant checks.
+Checks are used to evaluate a Rule.
+They are written using a custom OVAL syntax and are transformed by the system
+during the building process into OVAL compliant checks.
 
-In order to create a new check, you must create a file in the
-appropriate directory, and name it the same as the Rule *id*. This *id*
-will also be used as the OVAL *id* attribute. The content of the file
-should follow the OVAL specification with these exceptions:
+The OVAL checks are stored as XML files and the build system can source
+them from:
+
+- the `oval` directory of a rule
+- the shared pool of checks `shared/checks/oval`
+- a template
+
+In order to create a new check you must create a file in the
+appropriate directory. The *id* attribute of the check needs to match the *id*
+of its rule.
+The content of the file should follow the OVAL specification with these
+exceptions:
 
 -   The root tag must be `<def-group>`
 
@@ -685,6 +707,42 @@ oval_config_file_exists_criterion
 oval_config_file_exists_test
 oval_config_file_exists_object
 ```
+
+#### Limitations and pitfalls
+
+This section aims to list known OVAL limitations and situations that OVAL can't
+handle well or at all.
+
+##### Checking that all objects exist based on a variable
+
+A test with *check_existence="all_exist"* attribute will not ensure that all
+objects defined based on a variable exist.
+
+This happens because in the test context *all_exist* defaults to
+*at_least_one_exists*.
+Reference: OVAL [ExistenceEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---existenceenumeration---)
+
+This means that an object defined based on a variable with multiple values will
+result in *pass* if just one of the expected objects exist.
+Example, lets say there is a variable containing multiple paths, and you'd like
+to check that all of them are present in the file system. The following snippet
+would work if *all_exist* didn't default to *at_least_one_exists*.
+
+```xml
+  <unix:file_test id="" check="all" check_existence="all_exist" comment="This test fails to ensure that all paths from variable exist" version="1">
+    <unix:object object_ref="collect_objects_based_on_variable" />
+  </unix:file_test>
+
+  <unix:file_object id="collect_objects_based_on_variable" version="1">
+    <unix:path datatype="string" var_ref="variable_containing_a_list_of_paths" var_check="at least one"/>
+  </unix:file_object>
+```
+
+A workaround is to add a second test to count the number of objects
+collected and compare the sum against the number of values in the variable.
+This works well, except when none of the files exist, which leads to a
+result of *unknown*. Counting the number of collected items of an
+object definition that doesn't exist is *unknown* (not 0, for example).
 
 ###### Platform applicability
 
@@ -1268,6 +1326,25 @@ the following to `rule.yml`:
 
 -   Languages: OVAL
 
+#### coreos_kernel_option
+-   Checks that `argument=value` pair is present in the kernel arguments.
+    Note that this applies to Red Hat CoreOS.
+
+-   Parameters:
+
+    -   **arg_name** - Argument name, eg. `audit`
+
+    -   **arg_value** - Argument value, eg. `'1'`. This parameter is optional,
+        and if omitted, this template will only use **arg_name**.
+
+    -   **arg_negate** - negates the check, which then ensures that
+        `argument=value` is not present in the kernel arguments.
+
+    -   **arg_is_regex** - Specifies that the given `arg_name` and `arg_value`
+        are regexes.
+
+-   Languages: OVAL, Kubernetes
+
 #### dconf_ini_file
 -   Checks for `dconf` configuration. Additionally checks if the
     configuration is locked so it cannot be overriden by the user.
@@ -1371,7 +1448,7 @@ the following to `rule.yml`:
 
     -   **allow_stricter_permissions** - If set to `"true"` the OVAL
         will also consider permissions stricter than **filemode** as compliant.
-        Default value is `"false"`.
+        Default value is `"true"`.
 
 -   Languages: Ansible, Bash, OVAL
 
@@ -2086,13 +2163,15 @@ The current workflow is as follows:
 
 -   Run second scan
 
-The test will pass if: \* There are no errors in the scan runs \* We
-have less rule failures after the remediations have been applied \* The
-cluster status is not inconsistent
+The test will pass if: 
+- There are no errors in the scan runs
+- We have less rule failures after the remediations have been applied
+- The cluster status is not inconsistent
 
 Rules may have extra verifications on them. For instance, one is able to
-verify if: \* The rule’s expected result is gotten on a clean run. \*
-The rule’s result changes after a remediation has been applied.
+verify if:
+- The rule’s expected result is gotten on a clean run.
+- The rule’s result changes after a remediation has been applied.
 
 If an automated remediation is not possible, one is also able to created
 a "manual" remediation that will be run as a bash script. The end-to-end

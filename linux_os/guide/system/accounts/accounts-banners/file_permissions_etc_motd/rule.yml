@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,sle15,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15,wrlinux1019
 
 title: 'Verify permissions on Message of the Day Banner'
 
@@ -26,7 +26,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/motd", perms="-rw-r--r--") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/etc/motd", perms="-rw-r--r--") }}}'
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/motd", perms="-rw-r--r--") }}}
 
 template:
     name: file_permissions

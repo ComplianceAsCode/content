@@ -18,7 +18,7 @@ product_directories = [
     'rhcos4',
     'ol7', 'ol8',
     'opensuse',
-    'rhel7', 'rhel8',
+    'rhel7', 'rhel8', 'rhel9',
     'rhosp10', 'rhosp13',
     'rhv4',
     'sle12', 'sle15',
@@ -57,6 +57,7 @@ bash_system = "urn:xccdf:fix:script:sh"
 ansible_system = "urn:xccdf:fix:script:ansible"
 ignition_system = "urn:xccdf:fix:script:ignition"
 kubernetes_system = "urn:xccdf:fix:script:kubernetes"
+blueprint_system = "urn:redhat:osbuild:blueprint"
 puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
 cce_uri = "https://nvd.nist.gov/cce/index.cfm"
@@ -64,6 +65,8 @@ stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
 cis_ns = "https://www.cisecurity.org/benchmark/red_hat_linux/"
 hipaa_ns = "https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf"
 anssi_ns = "http://www.ssi.gouv.fr/administration/bonnes-pratiques/"
+ospp_ns = "https://www.niap-ccevs.org/Profile/PP.cfm"
+cui_ns = 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf'
 stig_refs = 'https://public.cyber.mil/stigs/'
 disa_cciuri = "https://public.cyber.mil/stigs/cci/"
 ssg_version_uri = \
@@ -84,6 +87,9 @@ min_ansible_version = "2.5"
 ansible_version_requirement_pre_task_name = \
     "Verify Ansible meets SCAP-Security-Guide version requirements."
 standard_profiles = ['standard', 'pci-dss', 'desktop', 'server']
+xslt_ns = "http://www.w3.org/1999/XSL/Transform"
+generic_stig_ns = "https://public.cyber.mil/stigs/downloads/" + \
+                  "?_dl_facet_stigs=operating-systems%2Cunix-linux"
 
 
 OVAL_SUB_NS = dict(
@@ -164,6 +170,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "openSUSE": "opensuse",
     "Red Hat Enterprise Linux 7": "rhel7",
     "Red Hat Enterprise Linux 8": "rhel8",
+    "Red Hat Enterprise Linux 9": "rhel9",
     "Red Hat OpenStack Platform 10": "rhosp10",
     "Red Hat OpenStack Platform 13": "rhosp13",
     "Red Hat Virtualization 4": "rhv4",
@@ -198,7 +205,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_ol": ["ol7", "ol8"],
     "multi_platform_ocp": ["ocp4"],
     "multi_platform_rhcos": ["rhcos4"],
-    "multi_platform_rhel": ["rhel7", "rhel8"],
+    "multi_platform_rhel": ["rhel7", "rhel8", "rhel9"],
     "multi_platform_rhosp": ["rhosp10", "rhosp13"],
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle12", "sle15"],
@@ -365,7 +372,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'sle': 'SUSE Linux Enterprise',
     'vsel': 'McAfee VirusScan Enterprise for Linux',
     'wrlinux': 'WRLinux',
-    'example': 'Example Linux Content',
+    'example': 'Example',
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',
     'rhcos': 'Red Hat Enterprise Linux CoreOS',
@@ -374,3 +381,4 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 
 # Application constants
 DEFAULT_UID_MIN = 1000
+DEFAULT_GRUB2_BOOT_PATH = '/boot/grub2'

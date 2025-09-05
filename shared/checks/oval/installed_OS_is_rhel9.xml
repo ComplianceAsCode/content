@@ -1,0 +1,59 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_OS_is_rhel9" version="1">
+    <metadata>
+      <title>Red Hat Enterprise Linux 9</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:redhat:enterprise_linux:9"
+      source="CPE" />
+      <description>The operating system installed on the system is
+      Red Hat Enterprise Linux 9</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_rhel9_unix_family" />
+      <criteria operator="OR">
+        <criterion comment="RHEL 9 is installed" test_ref="test_rhel9" />
+        <criteria operator="AND" comment="Red Hat Enterprise Virtualization Host is installed">
+          <criterion comment="Red Hat Virtualization Host (RHVH)" test_ref="test_rhvh4_version" />
+          <criterion comment="Red Hat Enterprise Virtualization Host is based on RHEL 9" test_ref="test_rhevh_rhel9_version" />
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:family_test check="all" check_existence="at_least_one_exists" comment="installed OS part of unix family" id="test_rhel9_unix_family" version="1">
+    <ind:object object_ref="obj_rhel9_unix_family" />
+    <ind:state state_ref="state_rhel9_unix_family" />
+  </ind:family_test>
+  <ind:family_state id="state_rhel9_unix_family" version="1">
+    <ind:family>unix</ind:family>
+  </ind:family_state>
+  <ind:family_object id="obj_rhel9_unix_family" version="1" />
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="redhat-release is version 9" id="test_rhel9" version="1">
+    <linux:object object_ref="obj_rhel9" />
+    <linux:state state_ref="state_rhel9" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_rhel9" version="1">
+    <linux:version operation="pattern match">^9.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_rhel9" version="1">
+    <linux:name>redhat-release</linux:name>
+  </linux:rpminfo_object>
+
+  <ind:textfilecontent54_test check="all" comment="RHEVH base RHEL is version 9" id="test_rhevh_rhel9_version" version="1">
+    <ind:object object_ref="obj_rhevh_rhel9_version" />
+    <ind:state state_ref="state_rhevh_rhel9_version" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_rhevh_rhel9_version" version="1">
+    <ind:filepath>/etc/redhat-release</ind:filepath>
+    <ind:pattern operation="pattern match">^Red Hat Enterprise Linux release (\d)\.\d+$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_rhevh_rhel9_version" version="1">
+    <ind:subexpression operation="pattern match">9</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

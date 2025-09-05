@@ -26,6 +26,10 @@ rationale: |-
 identifiers:
   cce@ocp4: CCE-83522-3
 
+platforms:
+  - ocp4.8
+  - ocp4.9
+  - ocp4.10
 
 severity: medium
 
@@ -43,13 +47,16 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/flowcontrol.apiserver.k8s.io/v1alpha1/flowschemas/catch-all") | indent(4) }}}
+    {{{ openshift_cluster_setting("/apis/flowcontrol.apiserver.k8s.io/v1beta1/flowschemas/catch-all") | indent(4) }}}
+- dependency: |-
+    Note that this is only applicable in OpenShift Container Platform version 4.8
+    and higher
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: "/apis/flowcontrol.apiserver.k8s.io/v1alpha1/flowschemas/catch-all"
+    filepath: "/apis/flowcontrol.apiserver.k8s.io/v1beta1/flowschemas/catch-all"
     yamlpath: '.spec.rules[0].subjects[:].group["name"]'
     check_existence: "at_least_one_exists"
     entity_check: "at least one"

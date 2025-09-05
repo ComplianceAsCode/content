@@ -77,6 +77,9 @@ The stabilization phase is typically two weeks long. To start the stabilization:
 
 During the stabilization:
 
+- PRs containing bug fixes should be labeled with the "bugfix" label so that
+  they can be easily identified
+
 - If a bug is fixed, cherry-pick the PR from the master branch into the
   stabilization branch
 

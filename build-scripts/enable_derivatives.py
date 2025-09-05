@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 from __future__ import print_function
 
@@ -112,7 +112,7 @@ def main():
             )
 
     ssg.build_derivatives.replace_platform(root, oval_ns, derivative)
-    ssg.build_derivatives.add_cpe_item_to_dictionary(root, args[0], args[1], "ssg-%s-cpe-oval.xml" % args[0], options.id_name)
+    ssg.build_derivatives.add_cpe_item_to_dictionary(root, args[0], args[1], options.id_name)
 
     tree.write(options.output)
 

@@ -27,7 +27,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/shadow-", group=target_group) }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/etc/shadow-", group=target_group) }}}'
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/shadow-", group=target_group) }}}
 
 template:
     name: file_groupowner
@@ -38,4 +39,5 @@ template:
         filegid@debian10: '42'
         filegid@ubuntu1604: '42'
         filegid@ubuntu1804: '42'
+        filegid@ubuntu2004: '42'
         missing_file_pass: 'true'

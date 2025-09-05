@@ -8,7 +8,12 @@ description: |-
     If any files are not owned by a user, then the
     cause of their lack of ownership should be investigated.
     Following this, the files should be deleted or assigned to an
-    appropriate user.
+    appropriate user. The following command will discover and print
+    any files on local partitions which do not belong to a valid user:
+    <pre>$ df --local -P | awk {'if (NR!=1) print $6'} | sudo xargs -I '{}' find '{}' -xdev -nouser</pre>
+    To search all filesystems on a system including network mounted
+    filesystems the following command can be run manually for each partition:
+    <pre>$ sudo find PARTITION -xdev -nouser</pre>
 
 rationale: |-
     Unowned files do not directly imply a security problem, but they are generally
@@ -25,6 +30,7 @@ identifiers:
     cce@rhel7: CCE-80134-0
     cce@rhel8: CCE-83499-4
     cce@sle12: CCE-83072-9
+    cce@sle15: CCE-85657-5
 
 references:
     stigid@ol7: OL07-00-020320
@@ -42,6 +48,7 @@ references:
     cis-csc: 11,12,13,14,15,16,18,3,5,9
     cis@sle15: 6.1.11
     stigid@sle12: SLES-12-010690
+    stigid@sle15: SLES-15-040400
     stigid@rhel8: RHEL-08-010780
 
 ocil_clause: 'files exist that are not owned by a valid user'
@@ -49,7 +56,7 @@ ocil_clause: 'files exist that are not owned by a valid user'
 ocil: |-
     The following command will discover and print any
     files on local partitions which do not belong to a valid user.
-    <pre>$ sudo find / -xdev -fstype local -nouser</pre>
+    <pre>$ df --local -P | awk {'if (NR!=1) print $6'} | sudo xargs -I '{}' find '{}' -xdev -nouser</pre>
     <br /><br />
     Either remove all files and directories from the system that do not have a
     valid user, or assign a valid user to all unowned files and directories on

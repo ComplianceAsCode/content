@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 8
+# platform = Red Hat Enterprise Linux 8,Oracle Linux 8
 
 # put line into the file
 echo "export SSH_USE_STRONG_RNG=32" > /etc/profile.d/cc-ssh-strong-rng.sh

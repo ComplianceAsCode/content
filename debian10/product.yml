@@ -10,6 +10,8 @@ pkg_manager: "apt_get"
 
 init_system: "systemd"
 
+grub2_boot_path: "/boot/grub"
+
 cpes_root: "../shared/applicability"
 cpes:
   - debian10:
@@ -20,3 +22,4 @@ cpes:
 # Mapping of CPE platform to package
 platform_package_overrides:
   net-snmp: "snmp"
+  pam: libpam-runtime

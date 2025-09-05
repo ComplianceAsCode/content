@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhcos4,ol8,rhel8
+prodtype: ol8,rhcos4,rhel8,rhel9
 
 title: 'Enable the File Access Policy Service'
 
@@ -21,12 +21,14 @@ identifiers:
 references:
     nist: CM-6(a),SI-4(22)
     ospp: FMT_SMF_EXT.1
-    srg: SRG-OS-000370-GPOS-00155
+    srg: SRG-OS-000370-GPOS-00155,SRG-OS-000368-GPOS-00154
     stigid@rhel8: RHEL-08-040135
+    disa: CCI-001764
 
 ocil_clause: 'the service is not enabled'
 
-ocil: '{{{ ocil_service_enabled(service="fapolicyd") }}}'
+ocil: |-
+    {{{ ocil_service_enabled(service="fapolicyd") }}}
 
 template:
     name: service_enabled

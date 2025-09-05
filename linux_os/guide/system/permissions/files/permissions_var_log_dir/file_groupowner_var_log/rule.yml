@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Verify Group Who Owns /var/log Directory'
+
+description: '{{{ describe_file_group_owner(file="/var/log", group="root") }}}'
+
+rationale: |-
+    The <tt>/var/log</tt> directory contains files with logs of error
+    messages in the system and should only be accessed by authorized
+    personnel.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83659-3
+
+references:
+    srg: SRG-OS-000206-GPOS-00084
+    disa: CCI-001314
+    stigid@rhel8: RHEL-08-010260
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/log", group="root") }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /var/log/
+        filegid: '0'

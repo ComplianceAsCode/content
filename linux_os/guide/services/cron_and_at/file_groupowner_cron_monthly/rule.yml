@@ -32,7 +32,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/cron.monthly", group="root") }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/etc/cron.monthly", group="root") }}}'
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/cron.monthly", group="root") }}}
 
 template:
     name: file_groupowner

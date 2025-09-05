@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Create administrative boundaries between resources using namespaces'
+
+description: |-
+   Use namespaces to isolate your Kubernetes objects.
+
+rationale: |-
+   Limiting the scope of user permissions can reduce the impact of mistakes or
+   malicious activities. A Kubernetes namespace allows you to partition created
+   resources into logically named groups. Resources created in one namespace can
+   be hidden from other namespaces. By default, each resource created by a user
+   in Kubernetes cluster runs in a default namespace, called default. You can
+   create additional namespaces and attach resources and users to them. You can
+   use Kubernetes Authorization plugins to create policies that segregate access
+   to namespace resources between different users.
+
+severity: medium
+
+ocil_clause: 'Namespace usage needs review'
+
+ocil: |-
+    OpenShift projects wrap Kubernetes namespaces and are used by default in
+    OpenShift 4.  Run the following command and review the namespaces created in
+    the cluster.  <pre>$ oc get namespaces</pre> Ensure that the namespaces are
+    the ones you need and are adequately administered.
+
+references:
+    cis@ocp4: 5.6.1

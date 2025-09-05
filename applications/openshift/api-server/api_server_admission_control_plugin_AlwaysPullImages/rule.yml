@@ -2,39 +2,61 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Enable the AlwaysPullImages Admission Control Plugin'
+title: 'Ensure that the Admission Control Plugin AlwaysPullImages is not set'
 
 description: |-
-    To ensure credentials are required to pull images, edit the API Server pod
-    specification file
-    <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s) and
-    set the <tt>admissionConfig</tt> to include <tt>AlwaysPullImages</tt>:
-    <pre>admissionConfig:
-      pluginConfig:
-        AlwaysPullImages:
-          configuration:
-          kind: DefaultAdmissionConfig
-          apiVersion: v1
-          disable: false</pre>
+     The <tt>AlwaysPullImages</tt> admission control plugin should be disabled,
+     since it can introduce new failure modes for control plane components if an
+     image registry is unreachable.
 
 rationale: |-
-    Setting admission control policy to include <tt>AlwaysPullImages</tt> forces
-    every new pod to pull the required images during every build. In a multi-tenant
-    cluster users can be assured that private images can only be used by those who
-    have the credentials to pull them. Without this admission control policy, once
-    an image has been pulled to a node, any pod from any user can use it simply by
-    knowing the image's name (without any authorization check against the image
-    access control lists). When this plugin is enabled, images are always pulled
-    prior to starting containers and forces authorization.
+     Setting admission control policy to AlwaysPullImages forces every new pod
+     to pull the required images every time. In a multi-tenant cluster users can
+     be assured that their private images can only be used by those who have the
+     credentials to pull them. Without this admission control policy, once an
+     image has been pulled to a node, any pod from any user can use it simply by
+     knowing the image’s name, without any authorization check against the image
+     ownership. When this plug-in is enabled, images are always pulled prior to
+     starting containers, which means valid credentials are required.
+
+     However, turning on this admission plugin can introduce new kinds of
+     cluster failure modes. OpenShift 4 master and infrastructure components are
+     deployed as pods. Enabling this feature can result in cases where loss of
+     contact to an image registry can cause a redeployed infrastructure pod
+     (oauth-server for example) to fail on an image pull for an image that is
+     currently present on the node. We use PullIfNotPresent so that a loss of
+     image registry access does not prevent the pod from starting.  If it
+     becomes PullAlways, then an image registry access outage can cause key
+     infrastructure components to fail.
+
+     The pull policy can be managed per container, using
+     <tt>imagePullPolicy</tt>.
+
 
 severity: high
 
 references:
     cis@ocp4: 1.2.12
 
-ocil_clause: '<tt>admissionConfig</tt> does not contain <tt>AlwaysPullImages</tt>'
+ocil_clause: '<tt>AlwaysPullImages</tt> is included in <tt>admissionConfig</tt>'
 
 ocil: |-
-    Run the following command on the master node(s):
-    <pre>$ sudo grep -A4 AlwaysPullImages /etc/origin/master/master-config.yaml</pre>
-    The output should return <pre>disable: false</pre>.
+    Run the following command:
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+    The output list should not contain <pre>"AlwaysPullImages"</pre>.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "none satisfy"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '"enable-admission-plugins":\[[^]]*"AlwaysPullImages"'
+      operation: "pattern match"
+      type: "string"

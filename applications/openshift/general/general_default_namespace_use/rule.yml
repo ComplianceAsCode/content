@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'The default namespace should not be used'
+
+description: |-
+   Kubernetes provides a default namespace, where objects are placed if no
+   namespace is specified for them. Placing objects in this namespace makes
+   application of RBAC and other controls more difficult.
+
+rationale: |-
+   Resources in a Kubernetes cluster should be segregated by namespace, to allow
+   for security controls to be applied at that level and to make it easier to
+   manage resources.
+
+severity: medium
+
+ocil_clause: 'Use of the default namespace needs review'
+
+ocil: |-
+   Run the following command to list objects in the default namespace:
+   <pre>$ oc get all -n default</pre>
+   The only entries there should be system-managed resources such as the
+   <tt>kubernetes</tt> and <tt>openshift</tt> service.
+
+references:
+    cis@ocp4: 5.6.4

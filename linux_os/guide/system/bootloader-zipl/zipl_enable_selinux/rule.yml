@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel8,rhcos4
+prodtype: rhcos4,rhel8,rhel9
 
 title: 'Ensure SELinux Not Disabled in zIPL'
 
@@ -19,7 +19,7 @@ severity: medium
 ocil_clause: 'SELinux is disabled at boot time'
 
 ocil: |-
-    To check that selinux is not disabled at boot time;
+    To check that SELinux is not disabled at boot time;
     Check that no boot entry disables selinux:
     <pre>sudo grep -L "^options\s+.*\bselinux=0\b" /boot/loader/entries/*.conf</pre>
     No line should be returned, each line returned is a boot entry that disables SELinux.

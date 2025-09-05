@@ -28,7 +28,9 @@ selections:
     - sshd_set_idle_timeout
     - sshd_disable_root_login
     - sshd_disable_empty_passwords
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=3
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - file_owner_logfiles_value=syslog
     - rsyslog_files_ownership
     - file_groupowner_logfiles_value=adm

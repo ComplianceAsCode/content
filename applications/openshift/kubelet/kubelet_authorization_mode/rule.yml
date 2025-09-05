@@ -42,7 +42,7 @@ template:
     vars:
         filepath: /etc/kubernetes/kubelet.conf
         yamlpath: ".authorization.mode"
-        check_existence: "none_exist"
+        check_existence: "any_exist"
         values:
          - value: "AlwaysAllow"
-           operation: "equals"
+           operation: "not equal"

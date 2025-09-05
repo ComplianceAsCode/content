@@ -120,6 +120,12 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
 
     dom = xml.dom.minidom.parseString(ET.tostring(new_stig_overlay, encoding="UTF-8", xml_declaration=True))
     pretty_xml_as_string = dom.toprettyxml(indent='  ', encoding="UTF-8")
+
+    overlay_directory = os.path.dirname(outfile)
+    if not os.path.exists(overlay_directory):
+        os.makedirs(overlay_directory)
+        print("\nOverlay directory created: %s" % overlay_directory)
+
     with open(outfile, 'wb') as f:
         f.write(pretty_xml_as_string)
     print("\nGenerated the new STIG overlay file: %s" % outfile)

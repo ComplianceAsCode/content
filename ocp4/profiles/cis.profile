@@ -51,12 +51,11 @@ selections:
   # 1.2.10 Ensure that the admission control plugin EventRateLimit is set
     - api_server_api_priority_gate_enabled
     - api_server_api_priority_flowschema_catch_all
+    - api_server_api_priority_v1alpha1_flowschema_catch_all
   # 1.2.11 Ensure that the admission control plugin AlwaysAdmit is not set
     - api_server_admission_control_plugin_AlwaysAdmit
   # 1.2.12 Ensure that the admission control plugin AlwaysPullImages is set
-    # (jhrozek): This rule should temporarily be commented out as OCP diverges from CIS
-    #            and we need to improve our reply to this control
-    # - api_server_admission_control_plugin_AlwaysPullImages
+    - api_server_admission_control_plugin_AlwaysPullImages
   # 1.2.13 Ensure that the admission control plugin SecurityContextDeny is not set
     - api_server_admission_control_plugin_SecurityContextDeny
   # 1.2.14 Ensure that the admission control plugin ServiceAccount is set
@@ -219,6 +218,16 @@ selections:
   # 5.4.1 Prefer using secrets as files over secrets as environment variables (info)
     - secrets_no_environment_variables
   # 5.4.2 Consider external secret storage (info)
+    - secrets_consider_external_storage
   #### 5.5 Extensible Admission Control
   # 5.5.1 Configure Image Provenance using ImagePolicyWebhook admission controller
     - general_configure_imagepolicywebhook
+  #### 5.6 General Policies
+  # 5.6.1 Create administrative boundaries between resources using namespaces (info)
+    - general_namespaces_in_use
+  # 5.6.2 Ensure Seccomp Profile Pod Definitions (info)
+    - general_default_seccomp_profile
+  # 5.6.3 Apply Security Context to your Pods and Containers (info)
+    - general_apply_scc
+  # 5.6.4 The Default Namespace should not be used (info)
+    - general_default_namespace_use

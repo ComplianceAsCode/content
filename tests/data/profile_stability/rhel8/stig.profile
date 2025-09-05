@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 8.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R2.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -43,6 +43,8 @@ selections:
 - accounts_password_pam_retry
 - accounts_password_pam_ucredit
 - accounts_password_pam_unix_remember
+- accounts_password_pam_unix_rounds_password_auth
+- accounts_password_pam_unix_rounds_system_auth
 - accounts_password_set_max_life_existing
 - accounts_password_set_min_life_existing
 - accounts_passwords_pam_faillock_deny
@@ -79,6 +81,7 @@ selections:
 - configure_kerberos_crypto_policy
 - configure_libreswan_crypto_policy
 - configure_openssl_crypto_policy
+- configure_openssl_tls_crypto_policy
 - configure_ssh_crypto_policy
 - configure_tmux_lock_after_time
 - configure_tmux_lock_command
@@ -87,6 +90,7 @@ selections:
 - coredump_disable_storage
 - dconf_gnome_banner_enabled
 - dconf_gnome_disable_ctrlaltdel_reboot
+- dconf_gnome_lock_screen_on_smartcard_removal
 - dconf_gnome_login_banner_text
 - dconf_gnome_screensaver_idle_delay
 - dconf_gnome_screensaver_lock_enabled
@@ -102,7 +106,11 @@ selections:
 - encrypt_partitions
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_local_packages
+- file_groupowner_var_log
+- file_groupowner_var_log_messages
 - file_groupownership_home_directories
+- file_owner_var_log
+- file_owner_var_log_messages
 - file_ownership_binary_dirs
 - file_ownership_library_dirs
 - file_ownership_var_log_audit
@@ -113,7 +121,9 @@ selections:
 - file_permissions_sshd_private_key
 - file_permissions_sshd_pub_key
 - file_permissions_ungroupowned
+- file_permissions_var_log
 - file_permissions_var_log_audit
+- file_permissions_var_log_messages
 - gnome_gdm_disable_automatic_login
 - grub2_admin_username
 - grub2_audit_argument
@@ -179,6 +189,7 @@ selections:
 - package_audit_installed
 - package_fapolicyd_installed
 - package_firewalld_installed
+- package_gssproxy_removed
 - package_iprutils_removed
 - package_krb5-workstation_removed
 - package_opensc_installed
@@ -223,7 +234,6 @@ selections:
 - set_password_hashing_algorithm_logindefs
 - set_password_hashing_algorithm_systemauth
 - ssh_client_rekey_limit
-- sshd_allow_only_protocol2
 - sshd_disable_compression
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
@@ -237,13 +247,15 @@ selections:
 - sshd_print_last_log
 - sshd_rekey_limit
 - sshd_set_idle_timeout
-- sshd_set_keepalive
+- sshd_set_keepalive_0
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
 - sssd_enable_smartcards
 - sssd_offline_cred_expiration
 - sudo_remove_no_authenticate
 - sudo_remove_nopasswd
+- sudo_restrict_privilege_elevation_to_authorized
+- sudoers_validate_passwd
 - sysctl_crypto_fips_enabled
 - sysctl_fs_protected_hardlinks
 - sysctl_fs_protected_symlinks
@@ -273,12 +285,14 @@ selections:
 - sysctl_user_max_user_namespaces
 - tftpd_uses_secure_mode
 - wireless_disable_interfaces
+- xwindows_remove_packages
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - var_accounts_user_umask=077
 - var_password_pam_difok=8
 - var_password_pam_maxrepeat=3
 - var_sshd_disable_compression=no
+- var_password_hashing_algorithm=SHA512
 - var_password_pam_maxclassrepeat=4
 - var_password_pam_minclass=4
 - var_accounts_minimum_age_login_defs=1
@@ -287,12 +301,14 @@ selections:
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted
 - var_accounts_password_minlen_login_defs=15
+- var_password_pam_unix_rounds=5000
 - var_password_pam_minlen=15
 - var_password_pam_ocredit=1
 - var_password_pam_dcredit=1
 - var_password_pam_ucredit=1
 - var_password_pam_lcredit=1
 - var_password_pam_retry=3
+- var_sshd_set_keepalive=0
 - sshd_idle_timeout_value=10_minutes
 - var_accounts_passwords_pam_faillock_deny=3
 - var_accounts_passwords_pam_faillock_fail_interval=900
@@ -303,7 +319,6 @@ selections:
 - var_account_disable_post_pw_expiration=35
 - var_auditd_action_mail_acct=root
 - var_time_service_set_maxpoll=18_hours
-- var_password_hashing_algorithm=SHA512
 - var_accounts_maximum_age_login_defs=60
 - var_auditd_space_left=250MB
 - var_auditd_space_left_action=email

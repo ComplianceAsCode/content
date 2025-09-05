@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9
+
+title: 'Uninstall setroubleshoot-plugins Package'
+
+description: |-
+    The SETroubleshoot plugins are used to analyze SELinux AVC data. The service provides information around configuration errors,
+    unauthorized intrusions, and other potential errors.
+    {{{ describe_package_remove(package="setroubleshoot-plugins") }}}
+
+rationale: |-
+    The SETroubleshoot service is an unnecessary daemon to
+    have running on a server.
+
+severity: low
+
+identifiers:
+    cce@rhcos4: CCE-84091-8
+    cce@rhel7: CCE-84249-2
+    cce@rhel8: CCE-84250-0
+    cce@rhel9: CCE-84251-8
+
+references:
+    anssi: BP28(R68)
+
+{{{ complete_ocil_entry_package(package="setroubleshoot-plugins") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: setroubleshoot-plugins

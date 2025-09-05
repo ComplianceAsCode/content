@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8
+prodtype: ol7,ol8,rhel7,rhel8,rhel9
 
 title: 'Uninstall DHCP Server Package'
 
@@ -36,3 +36,4 @@ template:
     name: package_removed
     vars:
         pkgname: dhcp
+        pkgname@rhel8: dhcp-server

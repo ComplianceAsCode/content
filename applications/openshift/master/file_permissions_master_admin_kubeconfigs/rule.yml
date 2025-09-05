@@ -30,7 +30,14 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-
 ocil: |-
   {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-apiserver-certs/secrets/node-kubeconfigs/*.kubeconfig", perms="-rw-------") }}}
 
-platform: ocp4-master-node
+platforms:
+  - ocp4-master-node
+
+warnings:
+  - dependency: |-
+      This rule is only applicable for nodes that run the Kubernetes Control Plane.
+      The aforementioned service is only running on the nodes labeled
+      "master" by default.
 
 template:
   name: file_permissions

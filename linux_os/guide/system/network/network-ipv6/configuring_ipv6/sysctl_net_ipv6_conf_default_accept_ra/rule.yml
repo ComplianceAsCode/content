@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle15
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Disable Accepting Router Advertisements on all IPv6 Interfaces by Default'
 
@@ -29,6 +29,7 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     cis@sle15: 3.3.9
     stigid@rhel8: RHEL-08-040262
+    disa: CCI-000366
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.default.accept_ra", value="0") }}}
 

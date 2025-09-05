@@ -22,7 +22,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/usr/bin/sudo", perms="---s--x---") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/usr/bin/sudo", perms="---s--x---") }}}'
+ocil: |-
+    {{{ ocil_file_permissions(file="/usr/bin/sudo", perms="---s--x---") }}}
 
 template:
     name: file_permissions

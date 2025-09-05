@@ -16,6 +16,15 @@ rationale: |-
 
 severity: unknown
 
+ocil_clause: 'sshd does not limit the users who can log in'
+
+ocil: |-
+    To ensure sshd limits the users who can log in, run the following:
+    <pre>$ sudo grep AllowUsers /etc/ssh/sshd_config</pre>
+    If properly configured, the output should be a list of usernames allowed to log in
+    to this system.
+
+
 identifiers:
     cce@rhel7: CCE-80219-9
     cce@rhel8: CCE-82422-7

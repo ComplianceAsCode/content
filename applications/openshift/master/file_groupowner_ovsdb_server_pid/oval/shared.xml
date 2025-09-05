@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="file_groupowner_ovsdb_server_pid" version="1">
+    {{{ oval_metadata("This test makes sure that /run/openvswitch/ovsdb-server.pid is group owned by 800 or 801.") }}}
+    <criteria operator="OR">
+      <criterion comment="Check file group ownership of /run/openvswitch/ovsdb-server.pid belongs to group 800" test_ref="test_file_groupowner_ovsdb_server_pid_800" />
+      <criterion comment="Check file group ownership of /run/openvswitch/ovsdb-server.pid belongs to group 801" test_ref="test_file_groupowner_ovsdb_server_pid_801" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing group ownership of /run/openvswitch/ovsdb-server.pid" id="test_file_groupowner_ovsdb_server_pid_800" version="1">
+    <unix:object object_ref="object_file_groupowner_ovsdb_server_pid" />
+    <unix:state state_ref="state_file_file_groupowner_ovsdb_server_pid_gid_800" />
+  </unix:file_test>
+
+  <unix:file_state id="state_file_file_groupowner_ovsdb_server_pid_gid_800" version="1">
+    <unix:group_id datatype="int">800</unix:group_id>
+  </unix:file_state>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing group ownership of /run/openvswitch/ovsdb-server.pid" id="test_file_groupowner_ovsdb_server_pid_801" version="1">
+    <unix:object object_ref="object_file_groupowner_ovsdb_server_pid" />
+    <unix:state state_ref="state_file_file_groupowner_ovsdb_server_pid_gid_801" />
+  </unix:file_test>
+
+  <unix:file_state id="state_file_file_groupowner_ovsdb_server_pid_gid_801" version="1">
+    <unix:group_id datatype="int">801</unix:group_id>
+  </unix:file_state>
+
+  <unix:file_object comment="/run/openvswitch/ovsdb-server.pid" id="object_file_groupowner_ovsdb_server_pid" version="1">
+      <unix:filepath>/run/openvswitch/ovsdb-server.pid</unix:filepath>
+  </unix:file_object>
+</def-group>

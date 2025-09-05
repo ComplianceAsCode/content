@@ -4,7 +4,8 @@ prodtype: debian10,debian9,rhel7,rhel8,sle15
 
 title: 'Disable snmpd Service'
 
-description: '{{{ describe_service_disable(service="snmpd") }}}'
+description: |-
+    {{{ describe_service_disable(service="snmpd") }}}
 
 rationale: |-
     Running SNMP software provides a network-based avenue of attack, and
@@ -23,7 +24,8 @@ references:
     cis@sle15: 2.2.14
     ism: "1311"
 
-ocil: '{{{ ocil_service_disabled(service="snmpd") }}}'
+ocil: |-
+    {{{ ocil_service_disabled(service="snmpd") }}}
 
 platform: machine
 

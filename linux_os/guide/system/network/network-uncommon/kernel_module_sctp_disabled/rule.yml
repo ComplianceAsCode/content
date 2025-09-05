@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle15
+prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Disable SCTP Support'
 
@@ -23,8 +23,8 @@ identifiers:
     cce@rhcos4: CCE-82516-6
 
 references:
-    cis@rhel7: 3.5.3
-    cis@rhel8: 3.5.2
+    cis@rhel7: 3.5.2
+    cis@rhel8: 3.3.2
     cjis: 5.10.1
     cui: 3.4.6
     nist: CM-7(a),CM-7(b),CM-6(a)
@@ -36,6 +36,7 @@ references:
     cis-csc: 11,14,3,9
     srg: SRG-OS-000095-GPOS-00049
     stigid@rhel8: RHEL-08-040023
+    disa: CCI-000381
 
 {{{ complete_ocil_entry_module_disable(module="sctp") }}}
 

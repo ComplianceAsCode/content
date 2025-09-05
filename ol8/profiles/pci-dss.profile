@@ -103,7 +103,8 @@ selections:
     - ensure_logrotate_activated
     - sshd_idle_timeout_value=15_minutes
     - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - display_login_attempts
     - gid_passwd_group_same
     - grub2_audit_argument

@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R1
+    version: V3R3
     SMEs:
         - carlosmmatos
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux V3R2.
+    DISA STIG for Red Hat Enterprise Linux V3R3.
 
     In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -104,7 +104,9 @@ selections:
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_deny_root
     - sudo_remove_nopasswd
+    - sudo_restrict_privilege_elevation_to_authorized
     - sudo_remove_no_authenticate
+    - sudoers_validate_passwd
     - accounts_logon_fail_delay
     - gnome_gdm_disable_automatic_login
     - gnome_gdm_disable_guest_login
@@ -179,7 +181,6 @@ selections:
     - auditd_data_retention_space_left
     - auditd_data_retention_space_left_action
     - auditd_data_retention_action_mail_acct
-    - audit_rules_privileged_commands
     - audit_rules_dac_modification_chown
     - audit_rules_dac_modification_fchown
     - audit_rules_dac_modification_lchown
@@ -203,7 +204,6 @@ selections:
     - audit_rules_execution_setsebool
     - audit_rules_execution_chcon
     - audit_rules_execution_setfiles
-    - audit_rules_login_events_tallylog
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
     - audit_rules_privileged_commands_passwd
@@ -216,7 +216,6 @@ selections:
     - audit_rules_sysadmin_actions
     - audit_rules_privileged_commands_newgrp
     - audit_rules_privileged_commands_chsh
-    - audit_rules_privileged_commands_sudoedit
     - audit_rules_media_export
     - audit_rules_privileged_commands_umount
     - audit_rules_privileged_commands_postdrop
@@ -253,7 +252,8 @@ selections:
     - sshd_set_idle_timeout
     - sshd_disable_rhosts
     - sshd_disable_rhosts_rsa
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - sshd_print_last_log
     - sshd_disable_root_login
     - sshd_allow_only_protocol2
@@ -267,7 +267,6 @@ selections:
     - sshd_disable_compression
     - sshd_disable_user_known_hosts
     - chronyd_or_ntpd_set_maxpoll
-    - configure_firewalld_rate_limiting
     - service_firewalld_enabled
     - display_login_attempts
     - no_user_host_based_files
@@ -286,8 +285,7 @@ selections:
     - sshd_disable_x11_forwarding
     - sshd_x11_use_localhost
     - tftpd_uses_secure_mode
-    - package_xorg-x11-server-common_removed
-    - xwindows_runlevel_target
+    - xwindows_remove_packages
     - sysctl_net_ipv4_ip_forward
     - mount_option_krb_sec_remote_filesystems
     - snmpd_not_default_password

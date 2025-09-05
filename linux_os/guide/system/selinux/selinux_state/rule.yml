@@ -1,6 +1,7 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,wrlinux1019
+# This rule is applicable even to non-selinux platforms, as the selinux_state is leveraged
+# by rules that deal with technologies that conflict with SELinux
 
 title: 'Ensure SELinux State is Enforcing'
 

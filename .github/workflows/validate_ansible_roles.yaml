@@ -1,7 +1,7 @@
 name: Validate Ansible Roles
 on:
   push:
-    branches: [ master ]
+    branches: [ '*' ]
   pull_request:
     branches: [ master ]
 jobs:
@@ -12,15 +12,19 @@ jobs:
       - name: Install Deps
         uses: mstksg/get-package@master
         with:
-                apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml ansible-lint python3-github
+                apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml python3-github
+      - name: Install upstream ansible-lint
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible-lint ansible
       - name: Checkout
         uses: actions/checkout@v1
       - name: Build
         run: |
-          ./build_product rhel7 rhel8 rhv4
+          ./build_product rhel7 rhel8
       - name: Build Ansible Roles
         run: |
           PYTHONPATH=. python3 utils/ansible_playbook_to_role.py --build-playbooks-dir ./build/ansible/ --dry-run ./build/ansible_roles
       - name: Lint Ansible Roles
         run: |
-          ansible-lint -x 204 ./build/ansible_roles/*
+          ansible-lint -x 204 -x experimental ./build/ansible_roles/*

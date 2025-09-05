@@ -1,0 +1,27 @@
+<def-group>
+  {{% macro check_sudoers(scope, pattern) %}}
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Make sure that sudoers has restrictions on which users can run sudo"
+  id="test_not_all_users_can_sudo_to_{{{ scope }}}" version="1">
+    <ind:object object_ref="object_sudoers_cfg_spec_all_{{{ scope }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_sudoers_cfg_spec_all_{{{ scope }}}" version="1">
+    <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ pattern }}}</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endmacro %}}
+  
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+     {{{ oval_metadata("Check that sudoers doesn't allow all users to run commands via sudo") }}}
+     <criteria operator="AND">
+        <criterion comment="Make sure that sudoers has restrictions on which users can run sudo for any target user" test_ref="test_not_all_users_can_sudo_to_users" />
+        <criterion comment="Make sure that sudoers has restrictions on which users can run sudo for any target group" test_ref="test_not_all_users_can_sudo_to_group" />
+     </criteria>
+  </definition>
+
+  {{{  check_sudoers(scope='users',pattern='^\s*ALL\s+ALL\=\(ALL\)\s+ALL\s*$') }}}
+  {{{  check_sudoers(scope='group',pattern='^\s*ALL\s+ALL\=\(ALL\:ALL\)\s+ALL\s*') }}}
+
+</def-group>

@@ -19,6 +19,7 @@
       <criteria operator="OR">
         <criterion comment="SLE 12 Desktop is installed" test_ref="test_sle12_desktop" />
         <criterion comment="SLE 12 Server is installed" test_ref="test_sle12_server" />
+	<criterion comment="SLES 12 for SAP Applications is installed" test_ref="test_sles_12_for_sap" />
       </criteria>
     </criteria>
   </definition>
@@ -52,6 +53,17 @@
   </linux:rpminfo_state>
   <linux:rpminfo_object id="obj_sle12_server" version="1">
     <linux:name>sles-release</linux:name>
+  </linux:rpminfo_object>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="SLES_SAP-release is version 12" id="test_sles_12_for_sap" version="1">
+    <linux:object object_ref="obj_sles_12_for_sap" />
+    <linux:state state_ref="state_sles_12_for_sap" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_sles_12_for_sap" version="1">
+    <linux:version operation="pattern match">^12.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_sles_12_for_sap" version="1">
+    <linux:name>SLES_SAP-release</linux:name>
   </linux:rpminfo_object>
 
 </def-group>

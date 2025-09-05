@@ -24,11 +24,13 @@ REMEDIATION_TO_EXT_MAP = {
     'bash': '.sh',
     'puppet': '.pp',
     'ignition': '.yml',
-    'kubernetes': '.yml'
+    'kubernetes': '.yml',
+    'blueprint': '.toml'
 }
 
 PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND = {
-    'apt_get': 'dpkg-query -s {0} &>/dev/null',
+    'apt_get': "dpkg-query --show --showformat='${{db:Status-Status}}\\n' '{0}' 2>/dev/null " +
+               "| grep -q installed",
     'dnf': 'rpm --quiet -q {0}',
     'yum': 'rpm --quiet -q {0}',
     'zypper': 'rpm --quiet -q {0}',
@@ -115,6 +117,12 @@ def get_fixgroup_for_type(fixcontent, remediation_type):
         return ElementTree.SubElement(
             fixcontent, "fix-group", id="kubernetes",
             system="urn:xccdf:fix:script:kubernetes",
+            xmlns="http://checklists.nist.gov/xccdf/1.1")
+
+    elif remediation_type == 'blueprint':
+        return ElementTree.SubElement(
+            fixcontent, "fix-group", id="blueprint",
+            system="urn:redhat:osbuild:blueprint",
             xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
@@ -280,39 +288,34 @@ class BashRemediation(Remediation):
         if stripped_fix_text == "":
             return result
 
-        rule_platforms = set()
+        rule_specific_platforms = set()
+        inherited_platforms = set()
         if self.associated_rule:
             # There can be repeated inherited platforms and rule platforms
-            rule_platforms.update(self.associated_rule.inherited_platforms)
-            rule_platforms.add(self.associated_rule.platform)
+            inherited_platforms.update(self.associated_rule.inherited_platforms)
+            if self.associated_rule.platforms is not None:
+                rule_specific_platforms = {
+                    p for p in self.associated_rule.platforms if p not in inherited_platforms}
 
-        platform_conditionals = []
-        for platform in rule_platforms:
-            if platform == "machine":
-                # Based on check installed_env_is_a_container
-                platform_conditionals.append('[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]')
-            elif platform is not None:
-                # Assume any other platform is a Package CPE
+        inherited_conditionals = [
+            self.generate_platform_conditional(p) for p in inherited_platforms]
+        rule_specific_conditionals = [
+            self.generate_platform_conditional(p) for p in rule_specific_platforms]
+        # remove potential "None" from lists
+        inherited_conditionals = [p for p in inherited_conditionals if p is not None]
+        rule_specific_conditionals = [p for p in rule_specific_conditionals if p is not None]
 
-                # Some package names are different from the platform names
-                if platform in self.local_env_yaml["platform_package_overrides"]:
-                    platform = self.local_env_yaml["platform_package_overrides"].get(platform)
-
-                    # Workaround for plaforms that are not Package CPEs
-                    # Skip platforms that are not about packages installed
-                    # These should be handled in the remediation itself
-                    if not platform:
-                        continue
-
-                # Adjust package check command according to the pkg_manager
-                pkg_manager = self.local_env_yaml["pkg_manager"]
-                pkg_check_command = PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND[pkg_manager]
-                platform_conditionals.append(pkg_check_command.format(platform))
-
-        if platform_conditionals:
+        if inherited_conditionals or rule_specific_conditionals:
             wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
 
-            all_conditions = " && ".join(platform_conditionals)
+            all_conditions = ""
+            if inherited_conditionals:
+                all_conditions += " && ".join(inherited_conditionals)
+            if rule_specific_conditionals:
+                if all_conditions:
+                    all_conditions += " && { " + " || ".join(rule_specific_conditionals) + "; }"
+                else:
+                    all_conditions = " || ".join(rule_specific_conditionals)
             wrapped_fix_text.append("if {0}; then".format(all_conditions))
             wrapped_fix_text.append("")
             # It is possible to indent the original body of the remediation with textwrap.indent(),
@@ -328,6 +331,28 @@ class BashRemediation(Remediation):
             result = remediation(contents="\n".join(wrapped_fix_text), config=result.config)
 
         return result
+
+    def generate_platform_conditional(self, platform):
+        if platform == "machine":
+            # Based on check installed_env_is_a_container
+            return '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]'
+        elif platform is not None:
+            # Assume any other platform is a Package CPE
+
+            # Some package names are different from the platform names
+            if platform in self.local_env_yaml["platform_package_overrides"]:
+                platform = self.local_env_yaml["platform_package_overrides"].get(platform)
+
+                # Workaround for platforms that are not Package CPEs
+                # Skip platforms that are not about packages installed
+                # These should be handled in the remediation itself
+                if not platform:
+                    return
+
+            # Adjust package check command according to the pkg_manager
+            pkg_manager = self.local_env_yaml["pkg_manager"]
+            pkg_check_command = PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND[pkg_manager]
+            return pkg_check_command.format(platform)
 
 class AnsibleRemediation(Remediation):
     def __init__(self, file_path):
@@ -441,35 +466,38 @@ class AnsibleRemediation(Remediation):
         additional_when = []
 
         # There can be repeated inherited platforms and rule platforms
-        rule_platforms = set(self.associated_rule.inherited_platforms)
-        rule_platforms.add(self.associated_rule.platform)
+        inherited_platforms = set()
+        rule_specific_platforms = set()
+        inherited_platforms.update(self.associated_rule.inherited_platforms)
+        if self.associated_rule.platforms is not None:
+            rule_specific_platforms = {
+                p for p in self.associated_rule.platforms if p not in inherited_platforms}
 
-        for platform in rule_platforms:
-            if platform == "machine":
-                additional_when.append('ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]')
-            elif platform is not None:
-                # Assume any other platform is a Package CPE
+        inherited_conditionals = [
+            self.generate_platform_conditional(p) for p in inherited_platforms]
+        rule_specific_conditionals = [
+            self.generate_platform_conditional(p) for p in rule_specific_platforms]
+        # remove potential "None" from lists
+        inherited_conditionals = [p for p in inherited_conditionals if p is not None]
+        rule_specific_conditionals = [p for p in rule_specific_conditionals if p is not None]
 
-                # It doesn't make sense to add a conditional on the task that
-                # gathers data for the conditional
-                if "package_facts" in to_update:
-                    continue
+        # remove conditionals related to package CPEs if the updated task
+        # collects package facts
+        if "package_facts" in to_update:
+            inherited_conditionals = [
+                c for c in inherited_conditionals if "in ansible_facts.packages" not in c]
+            rule_specific_conditionals = [
+                c for c in rule_specific_conditionals if "in ansible_facts.packages" not in c]
 
-                if platform in self.local_env_yaml["platform_package_overrides"]:
-                    platform = self.local_env_yaml["platform_package_overrides"].get(platform)
+        if inherited_conditionals:
+            additional_when = additional_when + inherited_conditionals
 
-                    # Workaround for plaforms that are not Package CPEs
-                    # Skip platforms that are not about packages installed
-                    # These should be handled in the remediation itself
-                    if not platform:
-                        continue
-
-                additional_when.append('"' + platform + '" in ansible_facts.packages')
-                # After adding the conditional, we need to make sure package_facts are collected.
-                # This is done via inject_package_facts_task()
+        if rule_specific_conditionals:
+            additional_when.append(" or ".join(rule_specific_conditionals))
 
         to_update.setdefault("when", "")
-        new_when = ssg.yaml.update_yaml_list_or_string(to_update["when"], additional_when)
+        new_when = ssg.yaml.update_yaml_list_or_string(to_update["when"], additional_when,
+                                                       prepend=True)
         if not new_when:
             to_update.pop("when")
         else:
@@ -505,6 +533,25 @@ class AnsibleRemediation(Remediation):
                 return None
             return result
 
+    def generate_platform_conditional(self, platform):
+        if platform == "machine":
+            return 'ansible_virtualization_type not in '\
+                '["docker", "lxc", "openvz", "podman", "container"]'
+        elif platform is not None:
+            # Assume any other platform is a Package CPE
+
+            if platform in self.local_env_yaml["platform_package_overrides"]:
+                platform = self.local_env_yaml["platform_package_overrides"].get(platform)
+
+                # Workaround for platforms that are not Package CPEs
+                # Skip platforms that are not about packages installed
+                # These should be handled in the remediation itself
+                if not platform:
+                    return
+
+            return '"' + platform + '" in ansible_facts.packages'
+
+
 
 class AnacondaRemediation(Remediation):
     def __init__(self, file_path):
@@ -530,6 +577,15 @@ class KubernetesRemediation(Remediation):
               file_path, "kubernetes")
 
 
+class BlueprintRemediation(Remediation):
+    """
+    This provides class for OSBuild Blueprint remediations
+    """
+    def __init__(self, file_path):
+        super(BlueprintRemediation, self).__init__(
+            file_path, "blueprint")
+
+
 REMEDIATION_TO_CLASS = {
     'anaconda': AnacondaRemediation,
     'ansible': AnsibleRemediation,
@@ -537,6 +593,7 @@ REMEDIATION_TO_CLASS = {
     'puppet': PuppetRemediation,
     'ignition': IgnitionRemediation,
     'kubernetes': KubernetesRemediation,
+    'blueprint': BlueprintRemediation,
 }
 
 
@@ -617,18 +674,42 @@ def get_rule_dir_remediations(dir_path, remediation_type, product=None):
     if not has_remediations_dir:
         return []
 
-    results = []
+    # Two categories of results: those for a product and those that are
+    # shared to multiple products. Within common results, there's two types:
+    # those shared to multiple versions of the same type (added up front) and
+    # those shared across multiple product types (e.g., RHEL and Ubuntu).
+    product_results = []
+    common_results = []
     for remediation_file in sorted(os.listdir(remediations_dir)):
         file_name, file_ext = os.path.splitext(remediation_file)
         remediation_path = os.path.join(remediations_dir, remediation_file)
 
         if file_ext == ext and rules.applies_to_product(file_name, product):
+            # rules.applies_to_product ensures we only have three entries:
+            # 1. shared
+            # 2. <product>
+            # 3. <product><version>
+            #
+            # Note that the product variable holds <product><version>.
             if file_name == 'shared':
-                results.append(remediation_path)
+                # Shared are the lowest priority items, add them to the end
+                # of the common results.
+                common_results.append(remediation_path)
+            elif file_name != product:
+                # Here, the filename is a subset of the product, but isn't
+                # the full product. Product here is both the product name
+                # (e.g., ubuntu) and its version (2004). Filename could be
+                # either "ubuntu" or "ubuntu2004" so we want this branch
+                # to trigger when it is the former, not the latter. It is
+                # the highest priority of common results, so insert it
+                # before any shared ones.
+                common_results.insert(0, remediation_path)
             else:
-                results.insert(0, remediation_path)
+                # Finally, this must be product-specific result.
+                product_results.append(remediation_path)
 
-    return results
+    # Combine the two sets in priority order.
+    return product_results + common_results
 
 
 def expand_xccdf_subs(fix, remediation_type, remediation_functions):
@@ -665,7 +746,9 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
 
     if remediation_type == "ignition":
         return
-    if remediation_type == "kubernetes":
+    elif remediation_type == "kubernetes":
+        return
+    elif remediation_type == "blueprint":
         return
     elif remediation_type == "ansible":
         fix_text = fix.text

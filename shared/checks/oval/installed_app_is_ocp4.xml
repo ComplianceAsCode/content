@@ -1,4 +1,5 @@
 <def-group>
+  <!-- General check for OpenShift Container Platform 4 -->
   <definition class="inventory" id="installed_app_is_ocp4" version="1">
     <metadata>
       <title>Red Hat OpenShift Container Platform</title>
@@ -41,4 +42,34 @@
           <field name="#" datatype="string" operation="pattern match">4\..*</field>
       </ind:value>
   </ind:yamlfilecontent_state>
+
+{{% for minorversion in range(6, 11) %}}
+  <!-- Check for OpenShift Container Platform 4.{{{ minorversion }}} -->
+  <definition class="inventory" id="installed_app_is_ocp4_{{{ minorversion }}}" version="1">
+    <metadata>
+      <title>Red Hat OpenShift Container Platform 4.{{{ minorversion }}}</title>
+      <affected family="unix">
+        <platform>Red Hat OpenShift Container Platform 4.{{{ minorversion }}}</platform>
+      </affected>
+      <reference ref_id="cpe:/a:redhat:openshift_container_platform:4.{{{ minorversion }}}" source="CPE" />
+      <description>The application installed installed on the system is OpenShift version 4.{{{ minorversion }}}.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="cluster is OpenShift 4.{{{ minorversion }}}" test_ref="test_ocp4_{{{ minorversion }}}" />
+      <criterion comment="Make sure OCP4 clusteroperators file is present" test_ref="test_file_for_ocp4"/>
+    </criteria>
+  </definition>
+
+  <ind:yamlfilecontent_test id="test_ocp4_{{{ minorversion }}}" check="at least one" comment="Find one match" version="1">
+      <ind:object object_ref="object_ocp4"/>
+      <ind:state state_ref="state_ocp4_{{{ minorversion }}}"/>
+  </ind:yamlfilecontent_test>
+
+  <ind:yamlfilecontent_state id="state_ocp4_{{{ minorversion }}}" version="1">
+      <ind:value datatype="record">
+          <field name="#" datatype="string" operation="pattern match">4\.{{{ minorversion }}}.*</field>
+      </ind:value>
+  </ind:yamlfilecontent_state>
+
+{{% endfor %}}
 </def-group>

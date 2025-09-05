@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8
+prodtype: ol7,ol8,rhel7,rhel8
 
 title: 'Ensure a dedicated group owns sudo'
 
@@ -30,4 +30,5 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/usr/bin/sudo", group=sub_var_value("var_sudo_dedicated_group")) }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/usr/bin/sudo", group=sub_var_value("var_sudo_dedicated_group")) }}}'
+ocil: |-
+    {{{ ocil_file_group_owner(file="/usr/bin/sudo", group=sub_var_value("var_sudo_dedicated_group")) }}}

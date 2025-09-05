@@ -1,4 +1,4 @@
-{{% if product == 'sle12' %}}
+{{% if product in ["sle12", "sle15"] %}}
 {{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc', 'coolkey'] %}}
 {{% elif product in ["rhel7", "ol7"] %}}
 {{% set smartcard_packages = ['pam_pkcs11'] %}}
@@ -8,7 +8,7 @@
 
 documentation_complete: true
 
-prodtype: fedora,ol7,rhel7,rhel8,sle12
+prodtype: fedora,ol7,rhel7,rhel8,sle12,sle15
 
 title: 'Install Smart Card Packages For Multifactor Authentication'
 
@@ -36,6 +36,7 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-80519-2
     cce@sle12: CCE-83177-6
+    cce@sle15: CCE-83292-3
     cce@rhel8: CCE-84029-8
 
 references:
@@ -45,6 +46,7 @@ references:
     srg: SRG-OS-000105-GPOS-00052,SRG-OS-000375-GPOS-00160,SRG-OS-000375-GPOS-00161,SRG-OS-000377-GPOS-00162
     stigid@rhel7: RHEL-07-041001
     stigid@sle12: SLES-12-030500
+    stigid@sle15: SLES-15-010460
     stigid@rhel8: RHEL-08-010390
 
 ocil_clause: 'smartcard software is not installed'
@@ -54,7 +56,7 @@ ocil: |-
     '{{{ ocil_package(package=pkg) }}}'
     {{% endfor %}}
 
-{{% if product != 'sle12' %}}
+{{% if product not in ["sle12", "sle15"] %}}
 template:
     name: package_installed
     vars:

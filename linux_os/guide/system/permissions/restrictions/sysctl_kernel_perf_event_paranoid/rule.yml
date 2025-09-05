@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol8,rhel7,rhel8
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9
 
 title: 'Disallow kernel profiling by unprivileged users'
 
@@ -19,8 +19,9 @@ identifiers:
 references:
     anssi: BP28(R23)
     ospp: FMT_SMF_EXT.1
-    srg: SRG-OS-000132-GPOS-00067
+    srg: SRG-OS-000132-GPOS-00067,SRG-OS-000138-GPOS-00069
     stigid@rhel8: RHEL-08-010376
+    disa: CCI-001090
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.perf_event_paranoid", value="2") }}}
 

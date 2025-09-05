@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9
 
 title: 'Uninstall gssproxy Package'
 
@@ -17,8 +17,9 @@ identifiers:
     cce@rhel8: CCE-82943-2
 
 references:
-    srg: SRG-OS-000095-GPOS-00049
+    srg: SRG-OS-000095-GPOS-00049,SRG-OS-000480-GPOS-00227
     stigid@rhel8: RHEL-08-040370
+    disa: CCI-000381,CCI-000366
 
 {{{ complete_ocil_entry_package(package="gssproxy") }}}
 
@@ -26,3 +27,5 @@ template:
     name: package_removed
     vars:
         pkgname: gssproxy
+    backends:
+        anaconda: "off"

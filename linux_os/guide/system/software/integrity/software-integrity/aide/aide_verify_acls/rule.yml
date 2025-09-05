@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhv4,sle12
+prodtype: ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15
 
 title: 'Configure AIDE to Verify Access Control Lists (ACLs)'
 
@@ -13,6 +13,9 @@ description: |-
     AIDE rules can be configured in multiple ways; this is merely one example that is already
     configured by default.
 
+    The remediation provided with this rule adds <tt>acl</tt> to all rule sets available in
+    <tt>/etc/aide.conf</tt>
+
 rationale: |-
     ACLs can provide permissions beyond those permitted through the file mode and must be
     verified by the file integrity tools.
@@ -23,6 +26,7 @@ identifiers:
     cce@rhel7: CCE-80375-9
     cce@rhel8: CCE-84220-3
     cce@sle12: CCE-83150-3
+    cce@sle15: CCE-85623-7
 
 references:
     stigid@ol7: OL07-00-021600
@@ -38,6 +42,7 @@ references:
     iso27001-2013: A.11.2.4,A.12.2.1,A.12.5.1,A.14.1.2,A.14.1.3,A.14.2.4
     cis-csc: 2,3
     stigid@sle12: SLES-12-010520
+    stigid@sle15: SLES-15-040040
     stigid@rhel8: RHEL-08-040310
 
 ocil_clause: 'the acl option is missing or not added to the correct ruleset'

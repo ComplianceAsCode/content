@@ -11,7 +11,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object comment="check /etc/pam.d/system-auth for correct settings" id="object_pam_unix_sha512" version="1">
-    {{% if product == "sle12" %}}
+    {{% if product in ['sle12', 'sle15'] %}}
       <ind:filepath>/etc/pam.d/common-password</ind:filepath>
       <ind:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required))[\s]+pam_unix\.so[\s]+.*sha512.*$</ind:pattern>
     {{% else %}}

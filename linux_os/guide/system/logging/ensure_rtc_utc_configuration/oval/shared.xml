@@ -1,0 +1,23 @@
+{{% if target_oval_version >= [5, 11] %}}
+<def-group oval_version="5.11">
+  <definition class="compliance" id="ensure_rtc_utc_configuration" version="1">
+   {{{ oval_metadata("Ensure RTC is using UTC as its time base") }}}
+    <criteria operator="AND">
+      <criterion comment="Check softlink exists for /etc/localtime and look for UTC pattern" test_ref="test_ensure_rtc_utc_configuration" />
+    </criteria>
+  </definition>
+
+  <unix:symlink_test check="all" check_existence="all_exist" id="test_ensure_rtc_utc_configuration" comment="Ensure softlink exist for localtime with UTC pattern" version="1">
+    <unix:object object_ref="object_ensure_rtc_utc_configuration" />
+    <unix:state state_ref="object_ensure_symlink_utc_configuration" />
+  </unix:symlink_test>
+
+  <unix:symlink_object comment="object_ensure_rtc_utc_configuration" id="object_ensure_rtc_utc_configuration" version="1">
+    <unix:filepath>/etc/localtime</unix:filepath>
+  </unix:symlink_object>
+  <unix:symlink_state comment="object_ensure_symlink_utc_configuration" id="object_ensure_symlink_utc_configuration" version="1">
+    <unix:filepath>/etc/localtime</unix:filepath>
+    <unix:canonical_path operation="pattern match">^(/usr)?/share/zoneinfo/(GMT|UTC)$</unix:canonical_path>
+  </unix:symlink_state>
+</def-group>
+{{% endif %}}

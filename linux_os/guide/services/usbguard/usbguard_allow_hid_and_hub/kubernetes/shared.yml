@@ -1,6 +1,6 @@
 # platform = multi_platform_wrlinux,multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_rhcos 
 {{% macro usbguard_hid_and_hub_config_source() %}}
-allow with-interface match_all { 03:*:* 09:00:* }
+allow with-interface match-all { 03:*:* 09:00:* }
 {{%- endmacro -%}}
 
 {{{ kubernetes_machine_config_file_with_dependencies(path='/etc/usbguard/rules.d/75-hid-and-hub.conf', file_permissions_mode='0600', source=usbguard_hid_and_hub_config_source(), deps=["xccdf_org.ssgproject.content_rule_package_usbguard_installed"]) }}}

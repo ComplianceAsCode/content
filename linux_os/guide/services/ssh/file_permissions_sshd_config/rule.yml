@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,rhv4,sle15,rhcos4
+prodtype: rhcos4,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Verify Permissions on SSH Server config file'
 
@@ -33,7 +33,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/sshd_config", perms="-rw-------") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/etc/ssh/sshd_config", perms="-rw-------") }}}'
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/ssh/sshd_config", perms="-rw-------") }}}
 
 template:
     name: file_permissions

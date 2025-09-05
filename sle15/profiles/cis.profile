@@ -261,9 +261,6 @@ selections:
     ### 2.2.6 Ensure LDAP server is not enabled (Scored)
     - package_openldap-servers_removed
 
-    ### 2.2.7 Ensure NFS and RPC are not enabled (Scored)
-    - service_nfs_disabled
-
     ### 2.2.8 Ensure rpcbind is not enabled (Scored)
     - service_rpcbind_disabled
 
@@ -368,7 +365,7 @@ selections:
 
     ## 3.4 Uncommon Network Protocols
     ### 3.4.1 Ensure DCCP is disabled (Not Scored)
-    - kernel_module_dccp_disabled
+    ##- kernel_module_dccp_disabled
 
     ### 3.4.2 Ensure SCTP is disabled (Not Scored)
     - kernel_module_sctp_disabled
@@ -691,7 +688,8 @@ selections:
     - sshd_set_idle_timeout
 
     # ClientAliveCountMax 0
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
 
     ### 5.2.17 Ensure SSH LoginGraceTime is set to one minute
     ###        or less (Scored)    

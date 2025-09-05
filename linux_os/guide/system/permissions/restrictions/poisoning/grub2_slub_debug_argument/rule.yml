@@ -25,9 +25,10 @@ identifiers:
     cce@rhel8: CCE-80945-9
 
 references:
-    srg: SRG-OS-000433-GPOS-00192
+    srg: SRG-OS-000433-GPOS-00192,SRG-OS-000134-GPOS-00068
     nist: CM-6(a)
     stigid@rhel8: RHEL-08-010423
+    disa: CCI-001084
 
 ocil_clause: 'SLUB/SLAB poisoning is not enabled'
 
@@ -51,7 +52,7 @@ warnings:
         <pre>grub2-mkconfig -o</pre> command as follows:
         <ul>
         <li>On BIOS-based machines, issue the following command as <tt>root</tt>:
-        <pre>~]# grub2-mkconfig -o /boot/grub2/grub.cfg</pre></li>
+        <pre>~]# grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre></li>
         <li>On UEFI-based machines, issue the following command as <tt>root</tt>:
 {{% if product in ["rhel7", "rhel8", "ol7", "ol8"] %}}
         <pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>

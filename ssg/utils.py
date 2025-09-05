@@ -284,3 +284,17 @@ def banner_regexify(banner_text):
 
 def banner_anchor_wrap(banner_text):
     return "^" + banner_text + "$"
+
+
+def parse_template_boolean_value(data, parameter, default_value):
+    value = data.get(parameter)
+    if not value:
+        return default_value
+    if value == "true":
+        return True
+    elif value == "false":
+        return False
+    else:
+        raise ValueError(
+            "Template parameter {} used in rule {} cannot accept the "
+            "value {}".format(parameter, data["_rule_id"], value))

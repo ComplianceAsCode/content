@@ -23,7 +23,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/lib/cni/networks/openshift-sdn/.*", group="root") }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/var/lib/cni/networks/openshift-sdn/.*", group="root") }}}'
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/lib/cni/networks/openshift-sdn/.*", group="root") }}}
 
 template:
     name: file_groupowner

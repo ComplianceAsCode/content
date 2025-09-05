@@ -4,14 +4,12 @@
       to continuously poll the time source servers.") }}}
     <criteria operator="OR">
       <criteria operator="AND">
-        <extend_definition comment="service ntpd enabled" definition_ref="service_ntpd_enabled" />
         <criterion comment="check if maxpoll is set in /etc/ntp.conf"
         test_ref="test_ntp_set_maxpoll" />
         <criterion comment="check if all server entries have maxpoll set in /etc/ntp.conf"
         test_ref="test_ntp_all_server_has_maxpoll"/>
       </criteria>
       <criteria operator="AND">
-        <extend_definition comment="service chronyd enabled" definition_ref="service_chronyd_enabled" />
         <criterion comment="check if maxpoll is set in /etc/chrony.conf"
         test_ref="test_chrony_set_maxpoll" />
         <criterion comment="check if all server entries have maxpoll set in /etc/chrony.conf"
@@ -39,7 +37,7 @@
     <ind:state state_ref="state_time_service_set_maxpoll" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_chrony_set_maxpoll" version="1">
-    <ind:filepath>/etc/chrony.conf</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/chrony\.(conf|d/.+\.conf)$</ind:filepath>
     <ind:pattern operation="pattern match">^server[\s]+[\S]+.*maxpoll[\s]+(\d+)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -70,7 +68,7 @@
     <ind:state state_ref="state_server_has_maxpoll" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_chrony_all_server_has_maxpoll" version="1">
-    <ind:filepath>/etc/chrony.conf</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/chrony\.(conf|d/.+\.conf)$</ind:filepath>
     <ind:pattern operation="pattern match">^server[\s]+[\S]+[\s]+(.*)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

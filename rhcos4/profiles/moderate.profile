@@ -77,7 +77,8 @@ selections:
     #- sshd_disable_kerb_auth
     #- sshd_disable_gssapi_auth
     # AC-2(5)
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     #- sshd_enable_warning_banner
     #- sshd_rekey_limit
 
@@ -160,8 +161,6 @@ selections:
     - auditd_log_format
     - auditd_freq
     - auditd_name_format
-    - var_auditd_action_mail_acct=root
-    - var_auditd_space_left_action=email
     
     #####
     # Need to replace with fluentd checks
@@ -234,7 +233,7 @@ selections:
     - selinux_policytype
 
     ### Configure SSSD
-    - sssd_run_as_sssd_user
+    #- sssd_run_as_sssd_user
 
     ### Configure USBGuard
     - service_usbguard_enabled
@@ -245,8 +244,8 @@ selections:
     - enable_fips_mode
     - var_system_crypto_policy=fips
     - configure_crypto_policy
-    - harden_sshd_crypto_policy
-    - harden_ssh_client_crypto_policy
+    #- harden_sshd_crypto_policy
+    #- harden_ssh_client_crypto_policy
     - configure_openssl_crypto_policy
     - configure_kerberos_crypto_policy
 
@@ -303,9 +302,12 @@ selections:
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_UAU.1
     - require_singleuser_auth
-    - grub2_disable_interactive_boot
-    - grub2_uefi_password
+    - coreos_disable_interactive_boot
     - no_empty_passwords
+
+    # This is not currently officially supported in RHCOS; Once we have a
+    # documented workaround this will be re-enabled.
+    #- grub2_uefi_password
 
     ## Set Maximum Number of Authentication Failures to 3 Within 15 Minutes
     ## AC-7 / FIA_AFL.1
@@ -425,7 +427,6 @@ selections:
     - audit_rules_mac_modification
     - audit_rules_media_export
     - audit_rules_networkconfig_modification
-    - audit_rules_privileged_commands
     - audit_rules_privileged_commands_at
     - audit_rules_privileged_commands_chage
     - audit_rules_privileged_commands_chsh
@@ -513,7 +514,7 @@ selections:
     - wireless_disable_interfaces
 
     # AC-19
-    - grub2_nousb_argument
+    - coreos_nousb_kernel_argument
     - bios_disable_usb_boot
     - service_autofs_disabled
     #- mount_option_nosuid_removable_partitions
@@ -539,7 +540,7 @@ selections:
     - sshd_limit_user_access
     - sshd_disable_rhosts
     #- xwindows_runlevel_target
-    - grub2_enable_selinux
+    - coreos_enable_selinux_kernel_argument
     #- require_emergency_target_auth
     - no_netrc_files
 
@@ -557,12 +558,16 @@ selections:
     - coreos_vsyscall_kernel_argument.severity=info
 
     # AU-4
-    - auditd_data_retention_action_mail_acct
     - auditd_data_disk_full_action
+    - var_auditd_disk_full_action=syslog
     - auditd_data_retention_admin_space_left_action
+    - var_auditd_admin_space_left_action=syslog
     - auditd_data_retention_space_left_action
+    - var_auditd_space_left_action=syslog
     - auditd_data_disk_error_action
+    - var_auditd_disk_error_action=syslog
     - auditd_data_retention_max_log_file_action
+    - var_auditd_max_log_file_action=rotate
     - auditd_data_retention_space_left
 
     # AU-8
@@ -572,8 +577,6 @@ selections:
     - chronyd_or_ntpd_specify_multiple_servers
 
     # AU-9
-    - rpm_verify_ownership
-    - rpm_verify_permissions
     - selinux_confinement_of_daemons
     # TODO - we should update this rule to parameterize the rotation cadence.
     # The check curently expects it to be daily, but OCP4 nodes rotate weekly.
@@ -585,9 +588,6 @@ selections:
     # AU-11
     - auditd_data_retention_num_logs
     - auditd_data_retention_max_log_file
-
-    # AC-2(3)
-    - account_disable_post_pw_expiration
 
     # AC-2(5), AC-12
     #- accounts_tmout

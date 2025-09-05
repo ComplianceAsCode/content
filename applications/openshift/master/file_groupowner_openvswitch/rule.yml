@@ -22,7 +22,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/openvswitch/.*", group="root") }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/etc/origin/openvswitch/.*", group="root") }}}'
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/origin/openvswitch/.*", group="root") }}}
 
 template:
     name: file_groupowner

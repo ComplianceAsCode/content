@@ -55,9 +55,14 @@ selections:
     - sshd_disable_empty_passwords
     - sshd_disable_kerb_auth
     - sshd_disable_gssapi_auth
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - sshd_enable_warning_banner
     - sshd_rekey_limit
+    - var_rekey_limit_size=1G
+    - var_rekey_limit_time=1hour
+    - sshd_use_strong_rng
+    - openssl_use_strong_entropy
 
     # Time Server
     - chronyd_client_only
@@ -122,6 +127,7 @@ selections:
     - grub2_vsyscall_argument.role=unscored
     - grub2_vsyscall_argument.severity=info
     - grub2_pti_argument
+    - grub2_kernel_trust_cpu_rng
 
     ## Security Settings
     - sysctl_kernel_kptr_restrict
@@ -134,6 +140,7 @@ selections:
     - sysctl_user_max_user_namespaces.severity=info
     - sysctl_kernel_unprivileged_bpf_disabled
     - sysctl_net_core_bpf_jit_harden
+    - service_kdump_disabled
 
     ## File System Settings
     - sysctl_fs_protected_hardlinks
@@ -164,10 +171,8 @@ selections:
     - package_aide_installed
     - package_dnf-automatic_installed
     - package_firewalld_installed
-    - package_iptables_installed
     - package_openscap-scanner_installed
     - package_policycoreutils_installed
-    - package_rng-tools_installed
     - package_sudo_installed
     - package_usbguard_installed
     - package_scap-security-guide_installed
@@ -176,6 +181,11 @@ selections:
     - package_openssh-server_installed
     - package_openssh-clients_installed
     - package_policycoreutils-python-utils_installed
+    - package_rsyslog_installed
+    - package_rsyslog-gnutls_installed
+    - package_audispd-plugins_installed
+    - package_chrony_installed
+    - package_gnutls-utils_installed
 
     ### Remove Prohibited Packages
     - package_sendmail_removed
@@ -189,9 +199,7 @@ selections:
     - package_abrt-plugin-logger_removed
     - package_abrt-plugin-sosreport_removed
     - package_abrt-cli_removed
-    - package_tuned_removed
     - package_abrt_removed
-    - package_pigz_removed
 
     ### Login
     - disable_users_coredumps
@@ -204,6 +212,7 @@ selections:
     - securetty_root_login_console_only
     - var_password_pam_unix_remember=5
     - accounts_password_pam_unix_remember
+    - use_pam_wheel_for_su
 
     ### SELinux Configuration
     - var_selinux_state=enforcing
@@ -215,9 +224,6 @@ selections:
     - package_fapolicyd_installed
     - service_fapolicyd_enabled
 
-    ### Enable the Hardware RNG Entropy Gatherer Service
-    - service_rngd_enabled
-
     ### Configure USBGuard
     - service_usbguard_enabled
     - configure_usbguard_auditbackend
@@ -227,6 +233,7 @@ selections:
     - enable_fips_mode
     - var_system_crypto_policy=fips_ospp
     - configure_crypto_policy
+    - configure_ssh_crypto_policy
     - configure_bind_crypto_policy
     - configure_openssl_crypto_policy
     - configure_libreswan_crypto_policy
@@ -398,7 +405,17 @@ selections:
     - timer_dnf-automatic_enabled
 
     # Configure TLS for remote logging
-    # temporarily dropped
+    - rsyslog_remote_tls
+    - rsyslog_remote_tls_cacert
 
     # Prevent Kerberos use by system daemons
     - kerberos_disable_no_keytab
+
+    # set ssh client rekey limit
+    - ssh_client_rekey_limit
+    - var_ssh_client_rekey_limit_size=1G
+    - var_ssh_client_rekey_limit_time=1hour
+
+    # configure ssh client to use strong entropy
+    - ssh_client_use_strong_rng_sh
+    - ssh_client_use_strong_rng_csh

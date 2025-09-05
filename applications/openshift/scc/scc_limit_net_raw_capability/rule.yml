@@ -22,15 +22,23 @@ severity: medium
 references:
     cis@ocp4: 5.2.7
 
-ocil_clause: 'NET_RAW does not exist or is configured in defaultAddCapabilities or allowedCapabilities'
+ocil_clause: 'NET_RAW use in SCCs needs review'
 
 ocil: |-
     Inspect each SCC returned from running the following command:
     <pre>$ oc get scc</pre>
-    Review each SCC and determine that either <tt>NET_RAW</tt> or <tt>ALL</tt> is either
-    completely disabled as a list entry under <tt>requiredDropCapabilities</tt>,
-    or that either <tt>NET_RAW</tt> or <tt>ALL</tt> is only enabled to a small set of
-    containers and SCCs.
+    Review each SCC for those that do not have <tt>NET_RAW</tt> or <tt>ALL</tt> set under <tt>requiredDropCapabilities</tt>.
+    Next, examine the outputs of the following commands:
+    <pre>$ oc describe roles --all-namespaces</pre>
+    <pre>$ oc describe clusterroles</pre>
+    For any role/clusterrole that reference the
+    <tt>securitycontextconstraints</tt> resource with the <tt>resourceNames</tt>
+    of the SCCs that do not drop <tt>NET_RAW</tt> or <tt>ALL</tt>, examine the
+    associated rolebindings to account for the users that are bound to the role.
+    Review each SCC and determine that either <tt>NET_RAW</tt> or <tt>ALL</tt>
+    is either included as a list entry under <tt>requiredDropCapabilities</tt>,
+    or that either <tt>NET_RAW</tt> or <tt>ALL</tt> is only enabled to a small
+    set of containers and SCCs.
 
 #template:
 #    name: yamlfile_value

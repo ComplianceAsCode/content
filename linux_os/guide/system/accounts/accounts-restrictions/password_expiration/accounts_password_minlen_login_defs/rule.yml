@@ -7,7 +7,7 @@ description: |-
     <tt>/etc/login.defs</tt> and add or correct the following line:
     <pre>PASS_MIN_LEN {{{ xccdf_value("var_accounts_password_minlen_login_defs") }}}</pre>
     <br /><br />
-    The DoD requirement is <tt>15</tt>. 
+    The DoD requirement is <tt>15</tt>.
     The FISMA requirement is <tt>12</tt>.
     The profile requirement is
     <tt>{{{ xccdf_value("var_accounts_password_minlen_login_defs") }}}</tt>.
@@ -44,6 +44,7 @@ references:
     ism: 0421,0422,0431,0974,1173,1401,1504,1505,1546,1557,1558,1559,1560,1561
     stigid@rhel8: RHEL-08-020231
     anssi: BP28(R18)
+    disa: CCI-000205
 
 ocil_clause: 'it is not set to the required value'
 

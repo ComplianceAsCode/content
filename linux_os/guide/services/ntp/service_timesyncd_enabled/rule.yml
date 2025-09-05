@@ -4,7 +4,8 @@ prodtype: ubuntu1604,ubuntu1804,ubuntu2004
 
 title: 'Enable systemd_timesyncd Service'
 
-description: '{{{ describe_service_enable(service="systemd_timesyncd") }}}'
+description: |-
+    {{{ describe_service_enable(service="systemd_timesyncd") }}}
 
 rationale: |-
     Enabling the <tt>systemd_timesyncd</tt> service ensures that this host
@@ -32,7 +33,8 @@ references:
     cis-csc: 1,14,15,16,3,5,6
     cis@ubuntu2004: 2.2.1.2
 
-ocil: '{{{ ocil_service_enabled(service="systemd_timesyncd") }}}'
+ocil: |-
+    {{{ ocil_service_enabled(service="systemd_timesyncd") }}}
 
 template:
     name: service_enabled

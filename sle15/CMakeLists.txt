@@ -9,3 +9,5 @@ ssg_build_product("sle15")
 ssg_build_html_nistrefs_table(${PRODUCT} "standard")
 
 ssg_build_html_cce_table(${PRODUCT})
+
+ssg_build_html_stig_tables(${PRODUCT} "stig")

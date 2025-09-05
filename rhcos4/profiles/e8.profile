@@ -68,7 +68,9 @@ selections:
   - audit_rules_usergroup_modification
   - audit_rules_dac_modification_chmod
   - audit_rules_dac_modification_chown
-  - audit_rules_kernel_module_loading
+  - audit_rules_kernel_module_loading_delete
+  - audit_rules_kernel_module_loading_finit
+  - audit_rules_kernel_module_loading_init
 
   ### Secure access
   - sshd_disable_root_login

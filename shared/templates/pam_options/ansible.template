@@ -24,7 +24,8 @@
 
 - name: Check to see if '{{{ MODULE }}}' module is configured in '{{{ PATH }}}'
   shell: |
-    grep -E '^\s*{{{ TYPE }}}\s+\S+\s+{{{ MODULE }}}' {{{ PATH }}} | cat
+    set -o pipefail
+    grep -E '^\s*{{{ TYPE }}}\s+\S+\s+{{{ MODULE }}}' {{{ PATH }}} || true
   register: check_pam_module_result
 
 - name: Configure '{{{ MODULE }}}' module in '{{{ PATH }}}'
@@ -65,7 +66,8 @@
 
 - name: Check the presence of "{{{ arg['variable'] }}}" argument in "{{{ MODULE }}}" module
   shell: |
-    grep -E '^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+{{{ arg['variable'] }}}(=|\s|\s*$)' {{{ PATH }}} | cat
+    set -o pipefail
+    grep -E '^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+{{{ arg['variable'] }}}(=|\s|\s*$)' {{{ PATH }}} || true
   register: check_pam_module_argument_result
 
 - name: Add "{{{ arg['variable'] }}}" argument to "{{{ MODULE }}}" module
@@ -90,7 +92,8 @@
 
 - name: Check the presence of "{{{ arg['argument'] }}}" argument in "{{{ MODULE }}}" module
   shell: |
-    grep -E '^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+{{{ arg['argument'] }}}(=|\s|\s*$)' {{{ PATH }}} | cat
+    set -o pipefail
+    grep -E '^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+{{{ arg['argument'] }}}(=|\s|\s*$)' {{{ PATH }}} || true
   register: check_pam_module_argument_result
 
 - name: Add "{{{ arg['argument'] }}}" argument to "{{{ MODULE }}}" module

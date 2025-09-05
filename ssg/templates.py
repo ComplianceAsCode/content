@@ -15,7 +15,7 @@ try:
 except ImportError:
     from urllib import quote
 
-languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition", "kubernetes"]
+languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition", "kubernetes", "blueprint"]
 preprocessing_file_name = "template.py"
 lang_to_ext_map = {
     "anaconda": ".anaconda",
@@ -24,7 +24,8 @@ lang_to_ext_map = {
     "oval": ".xml",
     "puppet": ".pp",
     "ignition": ".yml",
-    "kubernetes": ".yml"
+    "kubernetes": ".yml",
+    "blueprint": ".toml"
 }
 
 
@@ -167,6 +168,21 @@ class Builder(object):
         else:
             return languages
 
+    def process_product_vars(self, all_variables):
+        """
+        Given a dictionary with the format key[@<product>]=value, filter out
+        and only take keys that apply to this product (unqualified or qualified
+        to exactly this product). Returns a new dict.
+        """
+        processed = dict(filter(lambda item: '@' not in item[0], all_variables.items()))
+        suffix = '@' + self.env_yaml['product']
+        for variable in filter(lambda key: key.endswith(suffix), all_variables):
+            new_variable = variable[:-len(suffix)]
+            value = all_variables[variable]
+            processed[new_variable] = value
+
+        return processed
+
     def build_rule(self, rule_id, rule_title, template, langs_to_generate):
         """
         Builds templated content for a given rule for selected languages,
@@ -183,7 +199,7 @@ class Builder(object):
                 "Rule {0} uses template {1} which does not exist.".format(
                     rule_id, template_name))
         try:
-            template_vars = template["vars"]
+            template_vars = self.process_product_vars(template["vars"])
         except KeyError:
             raise ValueError(
                 "Rule {0} does not contain mandatory 'vars:' key under "
@@ -198,8 +214,12 @@ class Builder(object):
         local_env_yaml["rule_title"] = rule_title
         local_env_yaml["products"] = self.env_yaml["product"]
         for lang in langs_to_generate:
-            self.build_lang(
-                rule_id, template_name, template_vars, lang, local_env_yaml)
+            try:
+                self.build_lang(
+                    rule_id, template_name, template_vars, lang, local_env_yaml)
+            except Exception as e:
+                print("Error building templated {0} content for rule {1}".format(lang, rule_id), file=sys.stderr)
+                raise e
 
     def build_extra_ovals(self):
         declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")

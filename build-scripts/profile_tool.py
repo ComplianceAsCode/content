@@ -56,6 +56,12 @@ def parse_args():
     parser_stats.add_argument("--missing-anssi-refs", default=False,
                         action="store_true", dest="missing_anssi_refs",
                         help="Show rules in ANSSI profiles that don't have ANSSI references.")
+    parser_stats.add_argument("--missing-ospp-refs", default=False,
+                              action="store_true", dest="missing_ospp_refs",
+                              help="Show rules in OSPP profiles that don't have OSPP references.")
+    parser_stats.add_argument("--missing-cui-refs", default=False,
+                              action="store_true", dest="missing_cui_refs",
+                              help="Show rules in CUI profiles that don't have CUI references.")
     parser_stats.add_argument("--missing-ovals", default=False,
                         action="store_true", dest="missing_ovals",
                         help="Show IDs of unimplemented OVAL checks.")
@@ -87,6 +93,12 @@ def parse_args():
     parser_stats.add_argument("--all", default=False,
                         action="store_true", dest="all",
                         help="Show all available statistics.")
+    parser_stats.add_argument("--product", action="store", dest="product",
+                              help="Product directory to evaluate XCCDF under "
+                              "(e.g., ~/scap-security-guide/rhel8)")
+    parser_stats.add_argument("--skip-stats", default=False,
+                              action="store_true", dest="skip_overall_stats",
+                              help="Do not show overall statistics.")
     parser_stats.add_argument("--format", default="plain",
                         choices=["plain", "json", "csv", "html"],
                         help="Which format to use for output.")
@@ -132,6 +144,8 @@ def parse_args():
             args.missing_cis_refs = True
             args.missing_hipaa_refs = True
             args.missing_anssi_refs = True
+            args.missing_ospp_refs = True
+            args.missing_cui_refs = True
 
     return args
 
@@ -175,7 +189,7 @@ def main():
             print("Subtraction would produce an empty profile. No new profile was generated")
         exit(0)
 
-    benchmark = ssg.build_profile.XCCDFBenchmark(args.benchmark)
+    benchmark = ssg.build_profile.XCCDFBenchmark(args.benchmark, args.product)
     ret = []
     if args.profile:
         ret.append(benchmark.show_profile_stats(args.profile, args))
@@ -208,6 +222,8 @@ def main():
             'missing_cis_refs',
             'missing_hipaa_refs',
             'missing_anssi_refs',
+            'missing_ospp_refs',
+            'missing_cui_refs',
             'missing_ovals',
             'missing_bash_fixes',
             'missing_ansible_fixes',

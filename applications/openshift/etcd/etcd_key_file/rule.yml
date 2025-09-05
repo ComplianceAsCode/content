@@ -5,11 +5,14 @@ prodtype: ocp4
 title: 'Ensure That The etcd Key File Is Correctly Set'
 
 description: |-
-    To ensure the <tt>etcd</tt> service is serving TLS to clients,
-    make sure the <tt>etcd-pod*</tt> <tt>ConfigMaps</tt> in the
+    To ensure the etcd service is serving TLS to clients,
+    make sure the <tt>etcd-pod*</tt> ConfigMaps in the
     <tt>openshift-etcd</tt> namespace contain the following argument
     for the <tt>etcd</tt> binary in the <tt>etcd</tt> pod:
-    <pre>oc get -nopenshift-etcd cm etcd-pod -oyaml | grep "\-\-key-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-serving/etcd-serving-NODE_NAME.key"</pre>
+    <pre>oc get -nopenshift-etcd cm etcd-pod -oyaml | grep "\-\-key-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-[a-z]+/etcd-serving-NODE_NAME.key"</pre>.
+
+    Note that the <pre>[a-z]+</pre> is being used since the directory might
+    change between OpenShift versions.
 
 rationale: |-
     Without cryptographic integrity protections, information can be
@@ -27,7 +30,7 @@ ocil_clause: 'the etcd client key file is not configured'
 
 ocil: |-
     Run the following command:
-    <pre>oc get -nopenshift-etcd cm etcd-pod -oyaml | grep "\-\-key-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-serving/etcd-serving-NODE_NAME.key"</pre>
+    <pre>oc get -nopenshift-etcd cm etcd-pod -oyaml | grep "\-\-key-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-[a-z]+/etcd-serving-NODE_NAME.key"</pre>
     Verify that there is a private key configured.
 
 warnings:
@@ -41,5 +44,5 @@ template:
         filepath: /api/v1/namespaces/openshift-etcd/configmaps/etcd-pod
         yamlpath: ".data['pod.yaml']"
         values:
-          - value: ".*--key-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-serving/etcd-serving-NODE_NAME.key \\.*"
+          - value: ".*--key-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-[a-z]+/etcd-serving-NODE_NAME.key \\.*"
             operation: "pattern match"

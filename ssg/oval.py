@@ -14,8 +14,9 @@ from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs
 from .xml import ElementTree as ET
 from .xml import oval_generated_header
 from .jinja import process_file_with_macros, add_python_functions
-from .yaml import open_environment
+from .environment import open_environment
 from .id_translate import IDTranslator
+from .products import _get_implied_properties
 
 SHARED_OVAL = re.sub(r'ssg/.*', 'shared', __file__) + '/checks/oval/'
 LINUX_OS_GUIDE = re.sub(r'ssg/.*', 'linux_os', __file__) + '/guide/'
@@ -116,9 +117,17 @@ def applicable_platforms(oval_file, oval_version_string=None):
         msg = "Unable to get rule ID from OVAL path '{path}'".format(path=oval_file)
         print(msg, file=sys.stderr)
 
+    subst_dict = _get_implied_properties(subst_dict)
+    subst_dict['target_oval_version'] = [999, 999.999]
+
     body = process_file_with_macros(oval_file, subst_dict)
 
-    oval_tree = ET.fromstring(header + body + footer)
+    try:
+        oval_tree = ET.fromstring(header + body + footer)
+    except Exception as e:
+        msg = "Error while loading " + oval_file
+        print(msg, file=sys.stderr)
+        raise e
 
     element_path = "./{%s}def-group/{%s}definition/{%s}metadata/{%s}affected/{%s}platform"
     element_ns_path = element_path % (ovalns, ovalns, ovalns, ovalns, ovalns)

@@ -431,3 +431,176 @@ AuditBackend=LinuxAudit
 {{%- macro kubernetes_usbguard_set(deps=[]) -%}}
 {{{ kubernetes_machine_config_file_with_dependencies(path='/etc/usbguard/usbguard-daemon.conf', file_permissions_mode='0600', source=usbguard_config_source(), deps=deps) }}}
 {{%- endmacro -%}}
+
+{{% macro kubernetes_machineconfig_audit_add_watch_rule(path='', permissions='', key='') -%}}
+{{%- set audit_watch_rule = "-w " + path + " -p " + permissions + " -k " + key + "\n" -%}}
+{{%- set audit_watch_rule_path = "/etc/audit/rules.d/75-" + path | replace('/', '')  + "-" + permissions + "-" + key + ".rules" -%}}
+{{{ kubernetes_machine_config_file(path=audit_watch_rule_path, file_permissions_mode='0600', source=audit_watch_rule) }}}
+{{%- endmacro %}}
+
+{{% macro audit_syscalls_rule(syscalls=[], key='', fields='') %}}
+{{%- for syscall in syscalls -%}}
+-a always,exit -F arch=b64 -S {{{ syscall }}}{{% if fields %}} -F {{{ fields }}}{{% endif %}} -k {{{ key }}}
+-a always,exit -F arch=b32 -S {{{ syscall }}}{{% if fields %}} -F {{{ fields }}}{{% endif %}} -k {{{ key }}}
+{{% endfor %}}
+{{%- endmacro %}}
+
+{{#
+  Macro to generate MachineConfig adding an auditd rule for syscall watching
+#}}
+{{% macro kubernetes_machineconfig_audit_add_syscall_rule(path='', syscalls=[], key='', fields='') -%}}
+{{{ kubernetes_machine_config_file(path=path, file_permissions_mode='0600', source=audit_syscalls_rule(syscalls, key, fields)) }}}
+{{%- endmacro %}}
+
+{{% macro rhcos_ospp_audit_rules() -%}}
+## This content is a section of an Audit config snapshot recommended for {{{full_name|urlencode}}} systems that target OSPP compliance.
+## The following content has been retreived on 2019-03-11 from: https://github.com/linux-audit/audit-userspace/blob/master/rules/30-ospp-v42.rules
+
+## The purpose of these rules is to meet the requirements for Operating
+## System Protection Profile (OSPP)v4.2. These rules depends on having
+## 10-base-config.rules, 11-loginuid.rules, and 43-module-load.rules installed.
+
+## Unsuccessful file creation (open with O_CREAT)
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S open -F a1&0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S open -F a1&0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S open -F a1&0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S open -F a1&0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S creat -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S creat -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S creat -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S creat -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+
+## Unsuccessful file modifications (open for write or truncate)
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S open -F a1&01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S open -F a1&01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S open -F a1&01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S open -F a1&01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+
+## Unsuccessful file access (any other opens) This has to go last.
+-a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
+-a always,exit -F arch=b64 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
+-a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
+-a always,exit -F arch=b64 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
+{{%- endmacro %}}
+
+{{#
+  Macro to generate MachineConfig setting OSPP audit rules
+#}}
+{{% macro kubernetes_machineconfig_ospp_audit_rules() -%}}
+{{{ kubernetes_machine_config_file(path='/etc/audit/rules.d/30-ospp-v42-remediation.rules', file_permissions_mode='0600', source=rhcos_ospp_audit_rules()) }}}
+{{%- endmacro %}}
+
+{{% macro rhcos_logrotate_config() -%}}
+# see "man logrotate" for details
+# rotate log files daily
+daily
+
+# keep 4 weeks worth of backlogs
+rotate 30
+
+# create new (empty) log files after rotating old ones
+create
+
+# use date as a suffix of the rotated file
+dateext
+
+# uncomment this if you want your log files compressed
+#compress
+
+# RPM packages drop log rotation information into this directory
+include /etc/logrotate.d
+
+# system-specific logs may be also be configured here.
+{{%- endmacro %}}
+
+{{#
+  Macro to generate MachineConfig setting our recommended logrotate.conf
+#}}
+{{% macro kubernetes_machineconfig_logrotate_config() -%}}
+{{{ kubernetes_machine_config_file(path='/etc/logrotate.conf', file_permissions_mode='0644', source=rhcos_logrotate_config()) }}}
+{{%- endmacro %}}
+
+{{% macro rhcos_auditd_config() -%}}
+#
+# This file controls the configuration of the audit daemon
+#
+
+local_events = yes
+write_logs = yes
+log_file = /var/log/audit/audit.log
+log_group = root
+log_format = ENRICHED
+flush = incremental_async
+freq = 50
+max_log_file = 8
+num_logs = 5
+priority_boost = 4
+name_format = hostname
+##name = mydomain
+max_log_file_action = rotate
+space_left = 100
+space_left_action = syslog
+verify_email = yes
+action_mail_acct = root
+admin_space_left = 50
+admin_space_left_action = syslog
+disk_full_action = syslog
+disk_error_action = syslog
+use_libwrap = yes
+##tcp_listen_port = 60
+tcp_listen_queue = 5
+tcp_max_per_addr = 1
+##tcp_client_ports = 1024-65535
+tcp_client_max_idle = 0
+transport = TCP
+krb5_principal = auditd
+##krb5_key_file = /etc/audit/audit.key
+distribute_network = no
+q_depth = 400
+overflow_action = syslog
+max_restarts = 10
+plugin_dir = /etc/audit/plugins.d
+{{%- endmacro %}}
+
+{{#
+  Macro to generate MachineConfig setting our recommended auditd.conf
+#}}
+{{% macro kubernetes_machineconfig_auditd_config() -%}}
+{{{ kubernetes_machine_config_file(path='/etc/audit/auditd.conf', file_permissions_mode='0640', source=rhcos_auditd_config()) }}}
+{{%- endmacro %}}
+
+{{#
+  Macro to generate MachineConfig setting our recommended chrony.conf
+#}}
+{{% macro kubernetes_machineconfig_chrony_config() -%}}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 3.1.0
+    storage:
+      files:
+      - contents:
+          source: data:,%23%20Allow%20for%20extra%20configuration%20files.%20This%20is%20useful%0A%23%20for%20admins%20specifying%20their%20own%20NTP%20servers%0Ainclude%20/etc/chrony.d/%2A.conf%0A%0A%23%20Set%20chronyd%20as%20client-only.%0Aport%200%0A%0A%23%20Disable%20chronyc%20from%20the%20network%0Acmdport%200%0A%0A%23%20Record%20the%20rate%20at%20which%20the%20system%20clock%20gains/losses%20time.%0Adriftfile%20/var/lib/chrony/drift%0A%0A%23%20Allow%20the%20system%20clock%20to%20be%20stepped%20in%20the%20first%20three%20updates%0A%23%20if%20its%20offset%20is%20larger%20than%201%20second.%0Amakestep%201.0%203%0A%0A%23%20Enable%20kernel%20synchronization%20of%20the%20real-time%20clock%20%28RTC%29.%0Artcsync%0A%0A%23%20Enable%20hardware%20timestamping%20on%20all%20interfaces%20that%20support%20it.%0A%23hwtimestamp%20%2A%0A%0A%23%20Increase%20the%20minimum%20number%20of%20selectable%20sources%20required%20to%20adjust%0A%23%20the%20system%20clock.%0A%23minsources%202%0A%0A%23%20Allow%20NTP%20client%20access%20from%20local%20network.%0A%23allow%20192.168.0.0/16%0A%0A%23%20Serve%20time%20even%20if%20not%20synchronized%20to%20a%20time%20source.%0A%23local%20stratum%2010%0A%0A%23%20Require%20authentication%20%28nts%20or%20key%20option%29%20for%20all%20NTP%20sources.%0A%23authselectmode%20require%0A%0A%23%20Specify%20file%20containing%20keys%20for%20NTP%20authentication.%0Akeyfile%20/etc/chrony.keys%0A%0A%23%20Insert/delete%20leap%20seconds%20by%20slewing%20instead%20of%20stepping.%0A%23leapsecmode%20slew%0A%0A%23%20Get%20TAI-UTC%20offset%20and%20leap%20seconds%20from%20the%20system%20tz%20database.%0Aleapsectz%20right/UTC%0A%0A%23%20Specify%20directory%20for%20log%20files.%0Alogdir%20/var/log/chrony%0A%0A%23%20Select%20which%20information%20is%20logged.%0A%23log%20measurements%20statistics%20tracking
+        mode: 420
+        overwrite: true
+        path: /etc/chrony.conf
+      - contents:
+          source: data:,
+        mode: 420
+        overwrite: true
+        path: /etc/chrony.d/.mco-keep
+{{%- endmacro %}}

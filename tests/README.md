@@ -345,6 +345,7 @@ If you would like to test all profile's rules against their test scenarios:
 
 Scenarios are simple bash scripts. A scenario starts with a header which provides metadata.
 The header consists of comments (starting by `#`). Possible values are:
+- `packages` is a comma-separated list of packages to install.
 - `platform` is a comma-separated list of platforms where the test scenario can be run. This is similar to `platform` used in our remediations. Examples of values: `multi_platform_rhel`, `Red Hat Enterprise Linux 7`, `multi_platform_all`. If `platform` is not specified in the header, `multi_platform_all` is assumed.
 - `profiles` is a comma-separated list of profiles to which this scenario applies to.
 - `remediation` is a string specifying one of the allowed remediation types (eg. `bash`, `ansible`, `none`).
@@ -358,28 +359,14 @@ Examples of test scenario:
 
 Using `platform` and `profiles` metadata:
 
-```
+```bash
 #!/bin/bash
 #
 # platform = Red Hat Enterprise Linux 7,multi_platform_fedora
 # profiles = xccdf_org.ssgproject.content_profile_ospp
+# variables = auth_enabled=yes,var_example_1=value_example
 
-echo "KerberosAuthentication yes" >> /etc/ssh/sshd_config
-```
-
-<<<<<<< HEAD
-Multi values in `variables` metadata option:
-
-```
-#!/bin/bash
-#
-# variables = var_accounts_tmout=600,var_example_1=value_example
-
-if grep -q "^TMOUT" /etc/profile; then
-  sed -i "s/^TMOUT.*/# TMOUT=600/" /etc/profile
-else
-  echo "# TMOUT=600" >> /etc/profile
-fi
+echo "KerberosAuthentication $auth_enabled" >> /etc/ssh/sshd_config
 ```
 
 # Example of incorporating new test scenario

@@ -1,5 +1,7 @@
 documentation_complete: True
 
+reference: https://www.hhs.gov/hipaa/for-professionals/index.html
+
 title: 'Health Insurance Portability and Accountability Act (HIPAA)'
 
 description: |-
@@ -12,6 +14,7 @@ description: |-
 
     This profile configures {{{ full_name }}} to the HIPAA Security
     Rule identified for securing of electronic protected health information.
+    Use of this profile in no way guarantees or makes claims against legal compliance against the HIPAA Security Rule(s).
 
 selections:
     - grub2_password
@@ -59,7 +62,8 @@ selections:
     - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - sshd_use_priv_separation
     - encrypt_partitions
     - var_system_crypto_policy=fips

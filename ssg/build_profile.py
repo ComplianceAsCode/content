@@ -1,8 +1,10 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
+import os
 import sys
 
+from .build_yaml import ProfileWithInlinePolicies
 from .xml import ElementTree
 from .constants import XCCDF11_NS as xccdf_ns
 from .constants import oval_namespace as oval_ns
@@ -14,8 +16,23 @@ from .constants import puppet_system as puppet_rem_system
 from .constants import anaconda_system as anaconda_rem_system
 from .constants import cce_uri
 from .constants import ssg_version_uri
-from .constants import stig_ns, cis_ns, hipaa_ns, anssi_ns
+from .constants import stig_ns, cis_ns, generic_stig_ns, hipaa_ns, anssi_ns
+from .constants import ospp_ns, cui_ns, xslt_ns
 console_width = 80
+
+
+def make_name_to_profile_mapping(profile_files, env_yaml):
+    name_to_profile = {}
+    for f in profile_files:
+        try:
+            p = ProfileWithInlinePolicies.from_yaml(f, env_yaml)
+            name_to_profile[p.id_] = p
+        except Exception as exc:
+            # The profile is probably doc-incomplete
+            msg = "Not building profile from {fname}: {err}".format(
+                fname=f, err=str(exc))
+            print(msg, file=sys.stderr)
+    return name_to_profile
 
 
 class RuleStats(object):
@@ -27,7 +44,8 @@ class RuleStats(object):
                  rbash_fix=None, ransible_fix=None,
                  rignition_fix=None, rkubernetes_fix=None,
                  rpuppet_fix=None, ranaconda_fix=None, rcce=None,
-                 stig_id=None, cis_ref=None, hipaa_ref=None, anssi_ref=None):
+                 stig_id=None, cis_ref=None, hipaa_ref=None,
+                 anssi_ref=None, ospp_ref=None, cui_ref=None):
         self.dict = {
             'id': rid,
             'oval': roval,
@@ -42,6 +60,8 @@ class RuleStats(object):
             'cis_ref': cis_ref,
             'hipaa_ref': hipaa_ref,
             'anssi_ref': anssi_ref,
+            'ospp_ref': ospp_ref,
+            'cui_ref': cui_ref,
         }
 
 
@@ -51,7 +71,7 @@ class XCCDFBenchmark(object):
     statistics about the profiles contained within it.
     """
 
-    def __init__(self, filepath):
+    def __init__(self, filepath, product=""):
         self.tree = None
         try:
             with open(filepath, 'r') as xccdf_file:
@@ -72,6 +92,24 @@ class XCCDFBenchmark(object):
                 raise RuntimeError("Multiple rules exist with same id attribute: %s!" % rule_id)
 
             self.indexed_rules[rule_id] = rule
+
+        self.cis_ns = cis_ns
+        self.stig_ns = stig_ns
+        if product:
+            constants_path = os.path.join(product, "transforms/constants.xslt")
+            if os.path.exists(constants_path):
+                root = ElementTree.parse(constants_path)
+                cis_var = root.find('./{%s}variable[@name="cisuri"]' % (xslt_ns))
+                if cis_var is not None and cis_var.text:
+                    self.cis_ns = cis_var.text
+
+                stig_var = root.find('./{%s}variable[@name="disa-stigs-uri"]' % (xslt_ns))
+                if stig_var is not None and stig_var.text:
+                    self.stig_ns = stig_var.text
+                elif (stig_var and 'select' in stig_var.attrib and
+                      stig_var.attrib['select'] == '$disa-stigs-os-unix-linux-uri'):
+                    self.stig_ns = generic_stig_ns
+
 
     def get_profile_stats(self, profile):
         """Obtain statistics for the profile"""
@@ -110,6 +148,8 @@ class XCCDFBenchmark(object):
             'missing_cis_refs': [],
             'missing_hipaa_refs': [],
             'missing_anssi_refs': [],
+            'missing_ospp_refs': [],
+            'missing_cui_refs': [],
             'ansible_parity': [],
         }
 
@@ -166,19 +206,24 @@ class XCCDFBenchmark(object):
                 cce = rule.find("./{%s}ident[@system=\"%s\"]" %
                                 (xccdf_ns, cce_uri))
                 stig_id = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (xccdf_ns, stig_ns))
+                                    (xccdf_ns, self.stig_ns))
                 cis_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (xccdf_ns, cis_ns))
+                                    (xccdf_ns, self.cis_ns))
                 hipaa_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
                                     (xccdf_ns, hipaa_ns))
                 anssi_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
                                     (xccdf_ns, anssi_ns))
+                ospp_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
+                                     (xccdf_ns, ospp_ns))
+                cui_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
+                                    (xccdf_ns, cui_ns))
 
                 rule_stats.append(
                     RuleStats(rule.get("id"), oval,
                               bash_fix, ansible_fix, ignition_fix,
                               kubernetes_fix, puppet_fix, anaconda_fix,
-                              cce, stig_id, cis_ref, hipaa_ref, anssi_ref)
+                              cce, stig_id, cis_ref, hipaa_ref, anssi_ref,
+                              ospp_ref, cui_ref)
                 )
 
         if not rule_stats:
@@ -266,6 +311,16 @@ class XCCDFBenchmark(object):
             profile_stats['missing_anssi_refs'] = \
                 [x.dict['id'] for x in rule_stats if x.dict['anssi_ref'] is None]
 
+        profile_stats['missing_ospp_refs'] = []
+        if 'ospp' in profile_stats['profile_id']:
+            profile_stats['missing_ospp_refs'] = \
+                [x.dict['id'] for x in rule_stats if x.dict['ospp_ref'] is None]
+
+        profile_stats['missing_cui_refs'] = []
+        if 'cui' in profile_stats['profile_id']:
+            profile_stats['missing_cui_refs'] = \
+                [x.dict['id'] for x in rule_stats if x.dict['cui_ref'] is None]
+
         profile_stats['implemented_anaconda_fixes_pct'] = \
             float(len(profile_stats['implemented_anaconda_fixes'])) / \
             profile_stats['rules_count'] * 100
@@ -307,37 +362,40 @@ class XCCDFBenchmark(object):
         missing_cis_refs_count = len(profile_stats['missing_cis_refs'])
         missing_hipaa_refs_count = len(profile_stats['missing_hipaa_refs'])
         missing_anssi_refs_count = len(profile_stats['missing_anssi_refs'])
+        missing_ospp_refs_count = len(profile_stats['missing_ospp_refs'])
+        missing_cui_refs_count = len(profile_stats['missing_cui_refs'])
         impl_cces_count = len(profile_stats['assigned_cces'])
 
         if options.format == "plain":
-            print("\nProfile %s:" % profile)
-            print("* rules:            %d" % rules_count)
-            print("* checks (OVAL):    %d\t[%d%% complete]" %
-                  (impl_ovals_count,
-                   profile_stats['implemented_ovals_pct']))
+            if not options.skip_overall_stats:
+                print("\nProfile %s:" % profile)
+                print("* rules:            %d" % rules_count)
+                print("* checks (OVAL):    %d\t[%d%% complete]" %
+                      (impl_ovals_count,
+                       profile_stats['implemented_ovals_pct']))
 
-            print("* fixes (bash):     %d\t[%d%% complete]" %
-                  (impl_bash_fixes_count,
-                   profile_stats['implemented_bash_fixes_pct']))
-            print("* fixes (ansible):  %d\t[%d%% complete]" %
-                  (impl_ansible_fixes_count,
-                   profile_stats['implemented_ansible_fixes_pct']))
-            print("* fixes (ignition):  %d\t[%d%% complete]" %
-                  (impl_ignition_fixes_count,
-                   profile_stats['implemented_ignition_fixes_pct']))
-            print("* fixes (kubernetes):  %d\t[%d%% complete]" %
-                  (impl_kubernetes_fixes_count,
-                   profile_stats['implemented_kubernetes_fixes_pct']))
-            print("* fixes (puppet):   %d\t[%d%% complete]" %
-                  (impl_puppet_fixes_count,
-                   profile_stats['implemented_puppet_fixes_pct']))
-            print("* fixes (anaconda): %d\t[%d%% complete]" %
-                  (impl_anaconda_fixes_count,
-                   profile_stats['implemented_anaconda_fixes_pct']))
+                print("* fixes (bash):     %d\t[%d%% complete]" %
+                      (impl_bash_fixes_count,
+                       profile_stats['implemented_bash_fixes_pct']))
+                print("* fixes (ansible):  %d\t[%d%% complete]" %
+                      (impl_ansible_fixes_count,
+                       profile_stats['implemented_ansible_fixes_pct']))
+                print("* fixes (ignition):  %d\t[%d%% complete]" %
+                      (impl_ignition_fixes_count,
+                       profile_stats['implemented_ignition_fixes_pct']))
+                print("* fixes (kubernetes):  %d\t[%d%% complete]" %
+                      (impl_kubernetes_fixes_count,
+                       profile_stats['implemented_kubernetes_fixes_pct']))
+                print("* fixes (puppet):   %d\t[%d%% complete]" %
+                      (impl_puppet_fixes_count,
+                       profile_stats['implemented_puppet_fixes_pct']))
+                print("* fixes (anaconda): %d\t[%d%% complete]" %
+                      (impl_anaconda_fixes_count,
+                       profile_stats['implemented_anaconda_fixes_pct']))
 
-            print("* CCEs:             %d\t[%d%% complete]" %
-                  (impl_cces_count,
-                   profile_stats['assigned_cces_pct']))
+                print("* CCEs:             %d\t[%d%% complete]" %
+                      (impl_cces_count,
+                       profile_stats['assigned_cces_pct']))
 
             if options.implemented_ovals and \
                profile_stats['implemented_ovals']:
@@ -510,6 +568,24 @@ class XCCDFBenchmark(object):
                 self.console_print(profile_stats['missing_anssi_refs'],
                                    console_width)
 
+            if options.missing_ospp_refs and profile_stats['missing_ospp_refs']:
+                print("*** rules of '%s' profile missing "
+                      "OSPP Refs: %d of %d have them [%d%% missing]"
+                      % (profile, rules_count - missing_ospp_refs_count,
+                         rules_count,
+                         (100.0 * missing_ospp_refs_count / rules_count)))
+                self.console_print(profile_stats['missing_ospp_refs'],
+                                   console_width)
+
+            if options.missing_cui_refs and profile_stats['missing_cui_refs']:
+                print("*** rules of '%s' profile missing "
+                      "CUI Refs: %d of %d have them [%d%% missing]"
+                      % (profile, rules_count - missing_cui_refs_count,
+                         rules_count,
+                         (100.0 * missing_cui_refs_count / rules_count)))
+                self.console_print(profile_stats['missing_cui_refs'],
+                                   console_width)
+
             if options.missing_cces and profile_stats['missing_cces']:
                 print("***Rules of '%s' " % profile + "profile missing " +
                       "CCE identifier: %d of %d [%d%% complete]" %
@@ -541,6 +617,8 @@ class XCCDFBenchmark(object):
             profile_stats['missing_cis_refs_count'] = missing_cis_refs_count
             profile_stats['missing_hipaa_refs_count'] = missing_hipaa_refs_count
             profile_stats['missing_anssi_refs_count'] = missing_anssi_refs_count
+            profile_stats['missing_ospp_refs_count'] = missing_ospp_refs_count
+            profile_stats['missing_cui_refs_count'] = missing_cui_refs_count
             profile_stats['missing_ovals_count'] = len(profile_stats['missing_ovals'])
             profile_stats['missing_bash_fixes_count'] = len(profile_stats['missing_bash_fixes'])
             profile_stats['missing_ansible_fixes_count'] = len(profile_stats['missing_ansible_fixes'])
@@ -578,6 +656,8 @@ class XCCDFBenchmark(object):
                 del profile_stats['missing_cis_refs']
                 del profile_stats['missing_hipaa_refs']
                 del profile_stats['missing_anssi_refs']
+                del profile_stats['missing_ospp_refs']
+                del profile_stats['missing_cui_refs']
             if not options.missing_cces:
                 del profile_stats['missing_cces']
             if not options.implemented_ovals:

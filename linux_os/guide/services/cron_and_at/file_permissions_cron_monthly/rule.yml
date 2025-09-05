@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,rhv4,sle15
+prodtype: rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Verify Permissions on cron.monthly'
 
@@ -32,7 +32,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cron.monthly", perms="-rwx------") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/etc/cron.monthly", perms="-rwx------") }}}'
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/cron.monthly", perms="-rwx------") }}}
 
 template:
     name: file_permissions

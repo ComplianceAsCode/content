@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel7,rhel8,rhv4
+prodtype: fedora,rhel7,rhel8,rhel9,rhv4
 
 title: 'Enable ExecShield via sysctl'
 
@@ -29,7 +29,7 @@ identifiers:
     cce@rhel8: CCE-80914-5
 
 references:
-    cis: 1.5.2
+    cis@rhel7: 1.5.2
     cui: 3.1.7
     disa: CCI-002530
     hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)
@@ -51,7 +51,7 @@ ocil: |-
     The output should not contain <tt>'disabled by kernel command line option'</tt>.
     To verify that ExecShield has not been disabled in the kernel configuration,
     run the following command:
-    <pre>$ sudo grep noexec /boot/grub2/grub.cfg</pre>
+    <pre>$ sudo grep noexec {{{ grub2_boot_path }}}/grub.cfg</pre>
     The output should not return <tt>noexec=off</tt>.
     For 32-bit Red Hat Enterprise Linux 7 systems, run the following command:
     <pre>$ sysctl kernel.exec-shield</pre>

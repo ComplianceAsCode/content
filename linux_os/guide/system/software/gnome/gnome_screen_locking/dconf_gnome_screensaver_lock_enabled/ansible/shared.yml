@@ -1,8 +1,13 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle
 # reboot = false
 # strategy = unknown
 # complexity = low
 # disruption = medium
+
+- name: Dconf Update
+  command: dconf update
+  when: ansible_distribution == 'SLES'
+
 - name: "Enable GNOME3 Screensaver Lock After Idle Period"
   ini_file:
     dest: "/etc/dconf/db/local.d/00-security-settings"
@@ -18,6 +23,15 @@
     regexp: '^/org/gnome/desktop/screensaver/lock-enabled'
     line: '/org/gnome/desktop/screensaver/lock-enabled'
     create: yes
+
+- name: "Check GNOME3 screenserver disable-lock-screen false"
+  command: gsettings get org.gnome.desktop.lockdown disable-lock-screen
+  register: cmd_out
+  when: ansible_distribution == 'SLES'
+
+- name: "Update GNOME3 screenserver disable-lock-screen false"
+  command: gsettings set org.gnome.desktop.lockdown disable-lock-screen false
+  when: ansible_distribution == 'SLES'
 
 - name: Dconf Update
   command: dconf update

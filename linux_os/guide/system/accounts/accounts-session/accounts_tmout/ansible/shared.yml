@@ -5,4 +5,4 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_accounts_tmout") }}}
 
-{{{ ansible_etc_profile_set(parameter='TMOUT', value='{{ var_accounts_tmout }}') }}}
+{{{ ansible_set_config_file(file='/etc/profile.d/tmout.sh', parameter='TMOUT', separator='=', separator_regex='=', value='{{ var_accounts_tmout }}', create='yes') }}}

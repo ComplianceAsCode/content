@@ -2,11 +2,10 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Ensure Project Namespaces Use Network Policies'
+title: 'Ensure that application Namespaces have Network Policies defined.'
 
 description: |-
-    Network policies should be configured for each project to isolate
-    traffic on the network.
+    Use network policies to isolate traffic in your cluster network.
 
 rationale: |-
     Running different applications on the same Kubernetes cluster creates a risk of one
@@ -18,11 +17,12 @@ rationale: |-
 
 severity: high
 
-ocil_clause: 'the NetworkPolicy plugin is not configured or network policies are not in use'
+ocil_clause: 'Namespaced Network Policies needs review'
 
 ocil: |-
     Verify on OpenShift namespaces that network policies are in use:
     <pre>$ oc get networkpolicy --all-namespaces</pre>
+    Ensure that each namespace defined in the cluster has at least one NetworkPolicy.
 
 references:
     cis@ocp4: 5.3.2
