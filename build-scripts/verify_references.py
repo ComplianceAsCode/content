@@ -185,14 +185,7 @@ def main():
 
     check_content_refs = xccdftree.findall(".//{%s}check-content-ref"
                                            % xccdf_ns)
-
-    # decide on usage of .iter or .getiterator method of elementtree class.
-    # getiterator is deprecated in Python 3.9, but iter is not available in
-    # older versions
-    if getattr(xccdftree, 'iter', None) == None:
-        xccdf_parent_map = dict((c, p) for p in xccdftree.getiterator() for c in p)
-    else:
-        xccdf_parent_map = dict((c, p) for p in xccdftree.iter() for c in p)
+    xccdf_parent_map = dict((c, p) for p in xccdftree.iter() for c in p)
     # now we can actually do the verification work here
     if options.rules_with_invalid_checks or options.all_checks:
         for check_content_ref in check_content_refs:

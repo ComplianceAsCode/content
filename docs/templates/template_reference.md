@@ -805,8 +805,8 @@ The selected value can be changed in the profile (consult the actual variable fo
     - /run/sysctl.d/\*.conf
     - /usr/lib/sysctl.d/\*.conf (does not apply to RHEL and OL)
 
-    A sysctl option defined in more than one file within the scanned directories
-    will result in `fail`.
+    A sysctl option is allowed to be defined in more than one file within the scanned directories
+    as long as those values are compliant.
 
 -   Parameters:
 

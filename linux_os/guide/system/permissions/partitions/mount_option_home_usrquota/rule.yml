@@ -1,0 +1,67 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4
+
+title: 'Add usrquota Option to /home'
+
+description: |-
+    The <tt>usrquota</tt> mount option allows for the filesystem to have disk quotas configured.
+    {{{ describe_mount(option="usrquota", part="/home") }}}
+
+rationale: |-
+    To ensure the availability of disk space on /home, it is important to limit the impact a
+    single user or group can cause for other users (or the wider system) by intentionally or
+    accidentally filling up the partition. Quotas can also be applied to inodes for filesystems
+    where inode exhaustion is a concern.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86034-6
+    cce@rhel8: CCE-86035-3
+    cce@rhel9: CCE-86036-1
+
+references:
+    cis@rhel8: 1.1.7.4
+    nist: CM-6(b)
+
+platform: machine
+
+{{{ complete_ocil_entry_mount_option("/home", "usrquota") }}}
+
+fixtext: '{{{ fixtext_mount_option("/home", "usrquota") }}}'
+
+srg_requirement: '{{{ srg_requirement_mount_option("/home", "usrquota") }}}'
+
+warnings:
+    - general: |-
+        The quota options for XFS file systems can only be activated when mounting the partition.
+        It is not possible to enable them by remounting an already mounted partition. Therefore,
+        if the desired options were not defined before mounting the partition, dismount and mount
+        it again to apply the quota options.
+{{% if "ol" in product %}}
+    - functionality: |-
+        OVAL looks for partitions whose mount point is a substring of any interactive user's home
+        directory and validates that usrquota option is there. Because of this, there could be
+        false negatives when several partitions share a base substring. For example, if there is a
+        home directory in <tt>/var/tmp/user1</tt> and there are partitions mounted in
+        <tt>/var</tt> and <tt>/var/tmp</tt>. The usrquota option is only expected in
+        <tt>/var/tmp</tt>, but OVAL will check both.<br/>
+        Bash remediation uses the <tt>df</tt> command to find out the partition where the home
+        directory is mounted. However, if the directory doesn't exist the remediation won't be
+        applied.
+{{% endif %}}
+
+{{% if "ol" in product %}}
+template:
+    name: mount_option_home
+    vars:
+        mountoption: usrquota
+{{% else %}}
+template:
+    name: mount_option
+    vars:
+        mountpoint: /home
+        mountoption: usrquota
+        mount_has_to_exist: 'yes'
+{{% endif %}}

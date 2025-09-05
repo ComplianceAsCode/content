@@ -38,7 +38,7 @@ references:
     cis@alinux3: 5.6.1.1
     cis@rhel7: 5.5.1.1
     cis@rhel8: 5.6.1.1
-    cis@sle12: 5.5.1.2
+    cis@sle12: 5.4.1.2
     cis@sle15: 5.4.1.2
     cis@ubuntu2004: 5.4.1.1
     cis@ubuntu2204: 5.4.1.1
@@ -62,15 +62,17 @@ references:
     stigid@sle15: SLES-15-020220
     stigid@ubuntu2004: UBTU-20-010008
 
-ocil_clause: 'PASS_MAX_DAYS is not set equal to or greater than the required value'
+ocil_clause: 'the "PASS_MAX_DAYS" parameter value is greater than "{{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}", or commented out'
 
 ocil: |-
-    To check the maximum password age, run the command:
-    <pre>$ grep PASS_MAX_DAYS /etc/login.defs</pre>
-    The profile requirement is <tt>{{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}</tt>.
+    Verify that {{{ full_name }}} enforces a {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}-day maximum password lifetime for new user accounts by running the following command:
+
+    <pre>$ grep -i pass_max_days /etc/login.defs
+
+    PASS_MAX_DAYS {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}</pre>
 
 fixtext: |-
-    Configure {{{ full_name }}} to enforce a 60-day maximum password lifetime.
+    Configure {{{ full_name }}} to enforce a {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}-day maximum password lifetime.
 
     Add, or modify the following line in the "/etc/login.defs" file:
 

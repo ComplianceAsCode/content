@@ -1,0 +1,22 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Provide Audit Record Generation Capability For Dod-Defined Auditable Events For All Operating System Components.
+
+vuldiscussion: |-
+    Using the Linux Audit logging allows for centralized trace
+    of events.
+
+checktext: |-
+    To verify that Linux Audit logging is enabled for the USBGuard daemon,
+    run the following command:
+     $ sudo grep AuditBackend
+    The output should be
+     AuditBackend=LinuxAudit
+
+    If AuditBackend is not set to LinuxAudit, then this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} USBGuard AuditBackend to use the audit system.
+
+    Add or edit the following line in /etc/usbguard/usbguard-daemon.conf
+
+    AuditBackend=LinuxAudit

@@ -1,0 +1,37 @@
+srg_requirement: |-
+    {{{ full_name }}} must automatically lock graphical user sessions after 15 minutes of inactivity.
+
+vuldiscussion: |-
+    A session time-out lock is a temporary action taken when a user stops work and moves away from
+    the immediate physical vicinity of the information system but does not logout because of the
+    temporary nature of the absence. Rather than relying on the user to manually lock their operating
+    system session prior to vacating the vicinity, GNOME3 can be configured to identify when
+    a user's session has idled and take action to initiate a session lock.
+
+checktext: |-
+    Verify {{{ full_name }}} initiates a session lock after a 15-minute period of inactivity for graphical user interfaces with the following command:
+
+    Note: This requirement assumes the use of the RHEL 0 default graphical user interface, Gnome Shell. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
+
+    $ sudo gsettings get org.gnome.desktop.session idle-delay
+
+    uint32 900
+
+    If "idle-delay" is set to "0" or a value greater than "900", this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to initiate a screensaver after a 15-minute period of inactivity for graphical user interfaces.
+
+    Create a database to contain the system-wide screensaver settings (if it does not already exist) with the following command:
+
+    $ sudo touch /etc/dconf/db/local.d/00-screensaver
+
+    Edit /etc/dconf/db/local.d/00-screensaver and add or update the following lines:
+
+    [org/gnome/desktop/session]
+    # Set the lock time out to 900 seconds before the session is considered idle
+    idle-delay=uint32 900
+
+    Update the system databases:
+
+    $ sudo dconf update

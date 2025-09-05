@@ -1,0 +1,23 @@
+product: anolis8
+full_name: Anolis OS 8
+type: platform
+
+benchmark_id: ANOLIS-8
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "yum"
+
+init_system: "systemd"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - anolis8:
+      name: "cpe:/o:anolis:anolis_os:8"
+      title: "Anolis OS 8"
+      check_id: installed_OS_is_anolis8
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  login_defs: "shadow-utils"

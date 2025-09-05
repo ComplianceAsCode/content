@@ -31,12 +31,21 @@ references:
     stigid@rhel7: RHEL-07-021040
     stigid@rhel8: RHEL-08-020352
 
-ocil_clause: 'the above command returns no output, or if the umask is configured incorrectly'
+ocil_clause: 'any local interactive user initialization files are found to have a umask statement that sets a value less restrictive than "077"'
 
 ocil: |-
-    Verify the <tt>UMASK</tt> setting is not configured for interactive users,
-    run the following command:
-    <pre>$ sudo grep -ri "UMASK" /home</pre>
+    Verify that the default umask for all local interactive users is "077".
+
+    Identify the locations of all local interactive user home directories by looking at the "/etc/passwd" file.
+
+    Check all local interactive user initialization files for interactive users with the following command:
+
+    Note: The example is for a system that is configured to create users home directories in the "/home" directory.
+
+    # grep -ri umask /home/
+
+    /home/smithj/.bash_history:grep -i umask /etc/bashrc /etc/csh.cshrc /etc/profile
+    /home/smithj/.bash_history:grep -i umask /etc/login.defs
 
 fixtext: |-
     Remove the umask statement from all local interactive user's initialization files.

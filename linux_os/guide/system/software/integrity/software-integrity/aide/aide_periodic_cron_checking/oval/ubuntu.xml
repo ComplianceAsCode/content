@@ -1,4 +1,3 @@
-{{%- if target_oval_version == [5, 11] -%}}
 <def-group>
   <definition class="compliance" id="aide_periodic_cron_checking" version="3">
     {{{ oval_metadata("By default, AIDE does not install itself for periodic
@@ -75,4 +74,3 @@
     <linux:state state_ref="ste_aide_is_active" />
   </linux:systemdunitproperty_test>
 </def-group>
-{{% endif %}}

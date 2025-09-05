@@ -1,0 +1,34 @@
+srg_requirement: |-
+    The {{{ full_name }}} audit system must be configured to audit the execution of privileged functions and prevent all software from executing at higher privilege levels than users executing the software.
+
+vuldiscussion: |-
+    Misuse of privileged functions, either intentionally or unintentionally by
+    authorized users, or by unauthorized external entities that have
+    compromised information system accounts, is a serious and ongoing concern
+    and can have significant adverse impacts on organizations. Auditing the use
+    of privileged functions is one way to detect such misuse and identify the
+    risk from insider threats and the advanced persistent threat.
+
+checktext: |-
+    Verify that {{{ full_name }}} is configured to audit the execution of the "execve" system call with the following command:
+
+    $ sudo auditctl -l | grep execve
+
+    -a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k execpriv
+    -a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k execpriv
+    -a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k execpriv
+    -a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k execpriv
+
+    If the command does not return all lines, or the lines are commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to audit the execution of the "execve" system call.
+
+    Add or update the following file system rules to "/etc/audit/rules.d/audit.rules":
+
+    -a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k execpriv
+    -a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k execpriv
+    -a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k execpriv
+    -a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k execpriv
+
+    The audit daemon must be restarted for the changes to take effect.

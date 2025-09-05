@@ -5,8 +5,7 @@ import os
 import sys
 from collections import namedtuple
 
-from .ansible import add_minimum_version, remove_multiple_blank_lines, \
-                     remove_trailing_whitespace
+from .ansible import add_minimum_version, remove_trailing_whitespace
 from .shims import subprocess_check_output, Queue
 from .build_guides import _is_blacklisted_profile
 from .xccdf import get_profile_short_id
@@ -134,7 +133,6 @@ def builder(queue):
             if extension == "yml" and \
                template == "urn:xccdf:fix:script:ansible":
                 src = add_minimum_version(src)
-                src = remove_multiple_blank_lines(src)
                 src = remove_trailing_whitespace(src)
             with open(path, "wb") as _file:
                 _file.write(src.encode("utf-8"))

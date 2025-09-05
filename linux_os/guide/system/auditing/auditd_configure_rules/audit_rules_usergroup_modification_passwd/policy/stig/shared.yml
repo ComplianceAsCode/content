@@ -1,0 +1,22 @@
+srg_requirement: |-
+     {{{ full_name }}} must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/passwd.
+
+vuldiscussion: |-
+    In addition to auditing new user and group accounts, these watches
+    will alert the system administrator(s) to any modifications. Any unexpected
+    users, groups, or modifications should be investigated for legitimacy.
+
+checktext: |-
+    Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/passwd" with the following command:
+
+    $  sudo auditctl -l | egrep '(/etc/passwd)'
+
+    -w /etc/passwd -p wa -k identity
+
+    If the command does not return a line, or the line is commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that affect "/etc/passwd".
+    Add or update the following file system rule to "/etc/audit/rules.d/audit.rules":
+    -w /etc/passwd -p wa -k identity
+    The audit daemon must be restarted for the changes to take effect.

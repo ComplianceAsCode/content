@@ -1,0 +1,28 @@
+srg_requirement: |-
+    {{{ full_name }}} cron configuration files directory must be owned by root.
+
+vuldiscussion: |-
+    Service configuration files enable or disable features of their respective services that if configured incorrectly
+    can lead to insecure and vulnerable configurations. Therefore, service configuration files should be owned by the
+    correct group to prevent unauthorized changes.
+
+checktext: |-
+    To check the group ownership of all cron configuration files,
+    run the command:
+     $ sudo stat -c "%U %n" /etc/cron*
+    If properly configured, the output should indicate the following owner for all files:
+    root /etc/cron.d
+    root /etc/cron.daily
+    root /etc/cron.deny
+    root /etc/cron.hourly
+    root /etc/cron.monthly
+    root /etc/crontab
+    root /etc/cron.weekly
+
+
+    If any crontab is not owned by group, this is a finding.
+
+fixtext: |-
+    Configure any cron configuration not owned by root with the following command:
+
+    $ sudo chown root [cron config file]

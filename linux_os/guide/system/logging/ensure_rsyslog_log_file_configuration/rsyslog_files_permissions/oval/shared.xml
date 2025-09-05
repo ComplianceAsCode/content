@@ -3,7 +3,7 @@
     {{{ oval_metadata("File permissions for all syslog log files should be set correctly.") }}}
 
     <criteria operator="AND">
-      {{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu1804"] %}}
+      {{% if product in ["debian10", "debian11", "ubuntu1604", "ubuntu1804"] %}}
       <extend_definition comment="rsyslog daemon is used as local logging daemon" definition_ref="package_rsyslog_installed" />
       {{% endif %}}
       <criterion comment="Check permissions of all system log files" test_ref="test_rsyslog_files_permissions" />
@@ -117,7 +117,7 @@
   <unix:file_state id="state_rsyslog_files_permissions" version="1">
     <unix:type operation="equals">regular</unix:type>
     <unix:uexec datatype="boolean">false</unix:uexec>
-    {{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204", "sle15", "sle12"] %}}
+    {{% if product in ["debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204", "sle15", "sle12"] %}}
     <unix:gread datatype="boolean">true</unix:gread>
     {{% else %}}
     <unix:gread datatype="boolean">false</unix:gread>

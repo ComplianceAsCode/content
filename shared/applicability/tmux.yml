@@ -1,0 +1,5 @@
+name: "cpe:/a:tmux"
+title: "Package tmux is installed"
+check_id: installed_env_has_tmux_package
+bash_conditional: {{{ bash_pkg_conditional("tmux") }}}
+ansible_conditional: {{{ ansible_pkg_conditional("tmux") }}}

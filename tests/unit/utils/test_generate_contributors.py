@@ -29,13 +29,7 @@ def authors(emails):
 
 def test_contributions_aggregation(emails):
     assert "somebody@gmail.com" in emails
-    assert "dsmith@secure-innovations.net" not in emails  # <-- Not the canonical email
     assert "nick@null.net" not in emails  # <-- emails is supposed to be ignored
-
-
-def test_contributors_aggregation(authors):
-    assert "Dave Smith" not in authors
-    assert "David Smith" in authors
 
 
 def test_name_sorting(authors):

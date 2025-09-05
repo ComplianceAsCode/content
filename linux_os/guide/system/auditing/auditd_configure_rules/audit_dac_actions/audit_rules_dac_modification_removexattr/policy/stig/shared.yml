@@ -1,0 +1,26 @@
+srg_requirement: |-
+     Successful/unsuccessful uses of the removexattr system call in {{{ full_name }}} must generate an audit record.
+
+vuldiscussion: |-
+    The changing of file permissions could indicate that a user is attempting to
+    gain access to information that would otherwise be disallowed. Auditing DAC modifications
+    can facilitate the identification of patterns of abuse among both authorized and
+    unauthorized users.
+
+checktext: |-
+    To determine if the system is configured to audit calls to the
+     removexattr  system call, run the following command:
+     $ sudo grep "removexattr" /etc/audit/audit.*
+    If the system is configured to audit this activity, it will return a line.
+
+
+    If no line is returned, then this is a finding.
+
+fixtext: |-
+    Configure the audit system to generate an audit event for any successful/unsuccessful use of the "removexattr" system call by adding or updating the following rules in the "/etc/audit/rules.d/audit.rules" file:
+    -a always,exit -F arch=b32 -S removexattr -F auid>=1000 -F auid!=unset -k perm_mod
+    -a always,exit -F arch=b64 -S removexattr -F auid>=1000 -F auid!=unset -k perm_mod
+
+    It's allowed to group this system call within the same line as "fremovexattr", "lremovexattr", "removexattr", "fsetxattr", "lsetxattr" and "setxattr".
+
+    The audit daemon must be restarted for the changes to take effect.

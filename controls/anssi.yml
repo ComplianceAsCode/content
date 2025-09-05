@@ -363,6 +363,10 @@ controls:
     - var_accounts_passwords_pam_faillock_deny=3
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_deny_root
+    # same as above but for pam_tally2 module
+    - var_password_pam_tally2=5
+    - accounts_passwords_pam_tally2
+    - accounts_passwords_pam_tally2_deny_root
     # Automatically unlock users after 15 min to prevent DoS
     - var_accounts_passwords_pam_faillock_unlock_time=900
     - accounts_passwords_pam_faillock_unlock_time

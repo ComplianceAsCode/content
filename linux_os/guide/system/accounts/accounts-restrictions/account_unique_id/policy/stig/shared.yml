@@ -1,0 +1,17 @@
+srg_requirement: |-
+    {{{ full_name }}} duplicate User IDs (UIDs) must not exist for interactive users.
+
+vuldiscussion: |-
+    To assure accountability and prevent unauthenticated access, interactive users must be identified and authenticated to prevent potential misuse and compromise of the system.
+
+checktext: |-
+    Verify that {{{ full_name }}} contains no duplicate User IDs (UIDs) for interactive users.
+
+    Check that the operating system contains no duplicate UIDs for interactive users with the following command:
+
+    $ sudo awk -F ":" 'list[$3]++{print $1, $3}' /etc/passwd
+
+    If output is produced and the accounts listed are interactive user accounts, this is a finding.
+
+fixtext: |-
+    Edit the file "/etc/passwd" and provide each interactive user account that has a duplicate User ID (UID) with a unique UID.

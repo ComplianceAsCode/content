@@ -4,19 +4,40 @@
 # complexity = low
 # disruption = low
 
-- name: Find /etc/grub.d/ files
-  find:
+- name: "{{{ rule_title }}} - Find /etc/grub.d/ files"
+  ansible.builtin.find:
     paths:
       - /etc/grub.d/
-    follow: yes
-  register: grub
+    follow: true
+  register: result_grub_d
 
-
-- name: Ensure SELinux Not Disabled in grub files
-  replace:
+- name: "{{{ rule_title }}} - Ensure SELinux Not Disabled in /etc/grub.d/ files"
+  ansible.builtin.replace:
     dest: "{{ item.path }}"
     regexp: (selinux|enforcing)=0
   with_items:
-    - "{{ grub.files }}"
-    - { path: /etc/grub2.cfg }
-    - { path: /etc/default/grub }
+    - "{{ result_grub_d.files }}"
+
+- name: "{{{ rule_title }}} - Check if /etc/grub2.cfg exists"
+  ansible.builtin.stat:
+    path: /etc/grub2.cfg
+  register: result_grub2_cfg_present
+
+- name: "{{{ rule_title }}} - Check if /etc/default/grub exists"
+  ansible.builtin.stat:
+    path: /etc/default/grub
+  register: result_default_grub_present
+
+- name: "{{{ rule_title }}} - Ensure SELinux Not Disabled in /etc/grub2.cfg"
+  ansible.builtin.replace:
+    dest: "/etc/grub2.cfg"
+    regexp: (selinux|enforcing)=0
+  when:
+    - result_grub2_cfg_present.stat.exists
+
+- name: "{{{ rule_title }}} - Ensure SELinux Not Disabled in /etc/default/grub"
+  ansible.builtin.replace:
+    dest: "/etc/default/grub"
+    regexp: (selinux|enforcing)=0
+  when:
+    - result_default_grub_present.stat.exists

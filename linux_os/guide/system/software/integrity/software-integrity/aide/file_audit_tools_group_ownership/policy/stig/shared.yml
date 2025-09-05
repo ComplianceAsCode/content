@@ -1,0 +1,31 @@
+srg_requirement: |-
+    {{{ full_name }}} audit tools must be group-owned by root.
+
+vuldiscussion: |-
+    Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit information.
+
+    {{{ full_name }}} systems providing tools to interface with audit information will leverage user permissions and roles identifying the user accessing the tools, and the corresponding rights the user enjoys, to make access decisions regarding the access to audit tools.
+
+    Audit tools include, but are not limited to, vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.
+
+checktext: |-
+    Verify the audit tools are group owned by "root" with the following command:
+
+    $ sudo stat -c "%G %n" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/rsyslogd /sbin/augenrules
+
+    root /sbin/auditctl
+    root /sbin/aureport
+    root /sbin/ausearch
+    root /sbin/autrace
+    root /sbin/auditd
+    root /sbin/rsyslogd
+    root /sbin/augenrules
+
+    If any audit tools do not have a group owner of "root", this is a finding.
+
+fixtext: |-
+    Configure the audit tools to be group-owned by "root" by running the following command:
+
+    $ sudo chgrp root [audit_tool]
+
+    Replace "[audit_tool]" with each audit tool not group-owned by "root".

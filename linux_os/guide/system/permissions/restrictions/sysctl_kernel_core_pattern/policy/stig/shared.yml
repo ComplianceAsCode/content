@@ -1,0 +1,35 @@
+srg_requirement: |-
+    {{{ full_name }}} must disable the kernel.core_pattern.
+
+vuldiscussion: |-
+    A core dump includes a memory image taken at the time the operating system
+    terminates an application. The memory image could contain sensitive data
+    and is generally useful only for developers trying to debug problems.
+
+checktext: |-
+    Verify {{{ full_name }}} disables storing core dumps with the following commands:
+
+    $ sudo sysctl kernel.core_pattern
+
+    kernel.core_pattern = |/bin/false
+
+    If the returned line does not have a value of "|/bin/false", or a line is not returned and the need for core dumps is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
+
+    Check that the configuration files are present to disable core dump storage.
+
+    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F kernel.core_pattern | tail -1
+
+    kernel.core_pattern = |/bin/false
+
+    If "kernel.core_pattern" is not set to "|/bin/false" and is not documented with the Information System Security Officer (ISSO) as an operational requirement, or is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable storing core dumps.
+
+    Add or edit the following line in a system configuration file, in the "/etc/sysctl.d/" directory:
+
+    kernel.core_pattern = |/bin/false
+
+    The system configuration files need to be reloaded for the changes to take effect. To reload the contents of the files, run the following command:
+
+    $ sudo sysctl --system

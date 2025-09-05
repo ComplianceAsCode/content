@@ -14,7 +14,7 @@
 # ARG_USE_ENV([ADDITIONAL_CMAKE_OPTIONS],[],[Whitespace-separated string of arguments to pass to CMake])
 # ARG_POSITIONAL_INF([product],[Products to build, ALL means all products],[0],[ALL])
 # ARG_DEFAULTS_POS([])
-# ARG_TYPE_GROUP_SET([oval_ver],[VERSION],[oval],[5.10,5.11,auto])
+# ARG_TYPE_GROUP_SET([oval_ver],[VERSION],[oval],[5.11,auto])
 # ARG_TYPE_GROUP_SET([builder_type],[BUILDER],[builder],[make,ninja,auto])
 # ARG_HELP([Wipes out contents of the 'build' directory and builds only and only the given products.])
 # ARGBASH_GO()
@@ -38,12 +38,12 @@ die()
 
 oval_ver()
 {
-	local _allowed=("5.10" "5.11" "auto") _seeking="$1"
+	local _allowed=("5.11" "auto") _seeking="$1"
 	for element in "${_allowed[@]}"
 	do
 		test "$element" = "$_seeking" && echo "$element" && return 0
 	done
-	die "Value '$_seeking' (of argument '$2') doesn't match the list of allowed values: '5.10', '5.11' and 'auto'" 4
+	die "Value '$_seeking' (of argument '$2') doesn't match the list of allowed values: '5.11' and 'auto'" 4
 }
 
 
@@ -85,7 +85,7 @@ print_help()
 	printf '%s\n' "Wipes out contents of the 'build' directory and builds only and only the given products."
 	printf 'Usage: %s [-o|--oval <VERSION>] [-b|--builder <BUILDER>] [-j|--jobs <arg>] [--(no-)debug] [--(no-)derivatives] [--(no-)ansible-playbooks] [--(no-)bash-scripts] [-d|--(no-)datastream-only] [-p|--(no-)profiling] [-h|--help] [<product-1>] ... [<product-n>] ...\n' "$0"
 	printf '\t%s\n' "<product>: Products to build, ALL means all products (defaults for <product>: 'ALL')"
-	printf '\t%s\n' "-o, --oval: OVAL version. Can be one of: '5.10', '5.11' and 'auto' (default: 'auto')"
+	printf '\t%s\n' "-o, --oval: OVAL version. Can be one of: '5.11' or 'auto' (default: 'auto')"
 	printf '\t%s\n' "-b, --builder: Builder engine. Can be one of: 'make', 'ninja' and 'auto' (default: 'auto')"
 	printf '\t%s\n' "-j, --jobs: Count of simultaneous jobs (default: 'auto')"
 	printf '\t%s\n' "--debug, --no-debug: Make a debug build with draft profiles (off by default)"
@@ -307,16 +307,14 @@ set_explict_build_targets() {
 all_cmake_products=(
 	ALINUX2
 	ALINUX3
+	ANOLIS8
 	CHROMIUM
-	DEBIAN9
 	DEBIAN10
 	DEBIAN11
 	EXAMPLE
 	EKS
 	FEDORA
 	FIREFOX
-	FUSE6
-	JRE
 	OCP4
 	RHCOS4
 	OL7
@@ -334,7 +332,6 @@ all_cmake_products=(
 	UBUNTU2004
 	UBUNTU2204
 	UOS20
-	VSEL
 	MACOS1015
 )
 

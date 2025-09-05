@@ -24,6 +24,8 @@ identifiers:
     cce@rhel7: CCE-83416-8
     cce@rhel8: CCE-83417-6
     cce@rhel9: CCE-83935-7
+    cce@sle12: CCE-91698-1
+    cce@sle15: CCE-91328-5
 
 references:
     cis@alinux2: 6.1.7
@@ -53,7 +55,7 @@ template:
     vars:
         filepath: /etc/shadow-
         filemode: '0000'
-        filemode@debian9: '0640'
+
         filemode@debian10: '0640'
         filemode@debian11: '0640'
         filemode@ubuntu1604: '0640'

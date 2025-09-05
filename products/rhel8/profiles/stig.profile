@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R7
+    version: V1R8
     SMEs:
         - mab879
         - ggbecker
@@ -12,7 +12,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V1R7.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R8.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -50,7 +50,7 @@ selections:
     - var_password_pam_lcredit=1
     - var_password_pam_retry=3
     - var_password_pam_minlen=15
-    # - var_sshd_set_keepalive=0
+    - var_sshd_set_keepalive=1
     - sshd_approved_macs=stig
     - sshd_approved_ciphers=stig
     - sshd_idle_timeout_value=10_minutes
@@ -174,7 +174,7 @@ selections:
     # they still need to be selected so it follows exactly what STIG
     # states.
     # RHEL-08-010200
-    - sshd_set_keepalive_0
+    - sshd_set_keepalive
     # RHEL-08-010201
     - sshd_set_idle_timeout
 
@@ -506,7 +506,7 @@ selections:
     # RHEL-08-020020
 
     # RHEL-08-020021
-    - account_passwords_pam_faillock_audit
+    - accounts_passwords_pam_faillock_audit
 
     # RHEL-08-020022, RHEL-08-020023
     - accounts_passwords_pam_faillock_deny_root

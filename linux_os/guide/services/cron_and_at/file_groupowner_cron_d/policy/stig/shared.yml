@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} cron configuration file directory must be group-owned by root.
+
+vuldiscussion: |-
+    Service configuration files enable or disable features of their respective services that if configured incorrectly
+    can lead to insecure and vulnerable configurations. Therefore, service configuration files should be owned by the
+    correct group to prevent unauthorized changes.
+
+checktext: |-
+    Verify the group ownership of the "/etc/cron.d" directory with the following command:
+
+    $ ls -lLd /etc/cron.d
+
+    drwxr-xr-x. 2 root root 4096 July 11 11:34 /etc/cron.d
+
+    If the "/etc/cron.d" directory does not have a group owner of "root", then this is a finding.
+
+fixtext: |-
+    Configure "/etc/cron.d" to be group-owned by root with the following command:
+
+    $ sudo chgrp root /etc/cron.d

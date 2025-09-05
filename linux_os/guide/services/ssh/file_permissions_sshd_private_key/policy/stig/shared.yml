@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} SSH private host key files must have mode 0600 or less permissive.
+
+vuldiscussion: |-
+    If an unauthorized user obtains the private SSH host key file, the host could be
+    impersonated.
+
+checktext: |-
+    Verify the SSH private host key files have mode "0600" or less permissive with the following command:
+
+    $ ls -l /etc/ssh/*_key
+
+    600 /etc/ssh/ssh_host_dsa_key
+    600 /etc/ssh/ssh_host_ecdsa_key
+    600 /etc/ssh/ssh_host_ed25519_key
+    600 /etc/ssh/ssh_host_rsa_key
+
+    If any private host key file has a mode more permissive than "0600", this is a finding.
+
+fixtext: |-
+    Configure the mode of SSH private host key files under "/etc/ssh" to "0600" with the following command:
+
+    $ sudo chmod 0600 /etc/ssh/ssh_host*key
+
+    Restart the SSH daemon for the changes to take effect:
+
+    $ sudo systemctl restart sshd.service

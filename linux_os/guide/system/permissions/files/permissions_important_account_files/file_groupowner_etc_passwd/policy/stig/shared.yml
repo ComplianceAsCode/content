@@ -1,0 +1,19 @@
+srg_requirement: |-
+    The {{{ full_name }}} /etc/passwd file must be group-owned by root.
+
+vuldiscussion: |-
+    The "/etc/passwd" file contains information about the users that are configured on
+    the system. Protection of this file is critical for system security.
+
+checktext: |-
+    To check the group ownership of /etc/passwd ,
+    run the command:
+     $ sudo stat -c "%G %n" /etc/passwd
+    If properly configured, the output should indicate the following group-owner:
+     root /etc/passwd
+
+    If /etc/passwd does not have a group owner of root, then this is a finding.
+
+fixtext: |-
+    Change the group of the file /etc/passwd to root by running the following command:
+    $ sudo chgrp root /etc/passwd

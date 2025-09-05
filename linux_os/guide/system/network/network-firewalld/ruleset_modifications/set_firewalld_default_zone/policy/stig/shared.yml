@@ -1,0 +1,47 @@
+srg_requirement: |-
+    A {{{ full_name }}} firewall must employ a deny-all, allow-by-exception policy for allowing connections to other systems.
+
+vuldiscussion: |-
+    Failure to restrict network connectivity only to authorized systems permits inbound connections from malicious systems. It also permits outbound connections that may facilitate exfiltration of DoD data.
+
+    {{{ full_name }}} incorporates the "firewalld" daemon, which allows for many different configurations. One of these configurations is zones. Zones can be utilized to a deny-all, allow-by-exception approach. The default "drop" zone will drop all incoming network packets unless it is explicitly allowed by the configuration file or is related to an outgoing network connection.
+
+checktext: |-
+    Verify the {{{ full_name }}} "firewalld" is configured to employ a deny-all, allow-by-exception policy for allowing connections to other systems with the following commands:
+
+    $ sudo  firewall-cmd --state
+
+    running
+
+    $ sudo firewall-cmd --get-active-zones
+
+    public
+       interfaces: ens33
+
+    $ sudo firewall-cmd --info-zone=public | grep target
+
+       target: DROP
+
+    $ sudo firewall-cmd --permanent --info-zone=public | grep target
+
+       target: DROP
+
+    If no zones are active on the {{{ full_name }}} interfaces or if runtime and permanent targets are set to a different option other than "DROP", this is a finding.
+
+fixtext: |-
+    Configure the "firewalld" daemon to employ a deny-all, allow-by-exception with the following commands:
+
+    Start by adding the exceptions that are required for mission functionality to the "drop" zone. If you need SSH access on port 22, for example, run the following: "sudo firewall-cmd --permanent --add-service=ssh --zone=drop"
+
+    Reload the firewall rules to update the runtime configuration from the "--permanent" changes made above:
+    $ sudo firewall-cmd --reload
+
+    Set the default zone to the drop zone:
+    $ sudo firewall-cmd --set-default-zone=drop
+    Note: This is a runtime and permanent change.
+
+    Add any interfaces to the newly modified "drop" zone:
+    $ sudo firewall-cmd --permanent --zone=drop --change-interface=ens33
+
+    Reload the firewall rules for changes to take effect:
+    $ sudo firewall-cmd --reload

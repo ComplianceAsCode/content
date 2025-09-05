@@ -1,6 +1,3 @@
-{{%- if target_oval_version == [5, 10] -%}}
-{{# there is no good alternative for symlink_test for OVAL 5.10 #}}
-{{%- else -%}}
 <def-group>
   <definition class="compliance" id="disable_ctrlaltdel_reboot" version="1">
     {{{ oval_metadata("By default, the system will reboot when the
@@ -21,4 +18,4 @@
     <unix:canonical_path>/dev/null</unix:canonical_path>
   </unix:symlink_state>
 </def-group>
-{{%- endif -%}}
+

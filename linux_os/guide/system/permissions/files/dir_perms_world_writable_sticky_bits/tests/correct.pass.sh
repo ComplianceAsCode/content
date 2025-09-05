@@ -2,9 +2,9 @@
 
 # Perform remediation
 df --local -P | awk '{if (NR!=1) print $6}' \
-| xargs -I '{}' find '{}' -xdev -type d \
+| xargs -I '$6' find '$6' -xdev -type d \
 \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null \
-| xargs chmod a+t
+-exec chmod a+t {} +
 
 # Create a new dir that has sticky bit but is not word-writable
 mkdir /test_dir_1

@@ -1,0 +1,17 @@
+srg_requirement: |-
+    {{{ full_name }}} must mount /var/tmp with the noexec option.
+
+vuldiscussion: |-
+    The "noexec" mount option causes the system to not execute binary files. This option must be used for mounting any file system not containing approved binary files, as they may be incompatible. Executing files from untrusted file systems increases the opportunity for unprivileged users to attain unauthorized administrative access.
+
+checktext: |-
+    Verify "/var/tmp" is mounted with the "noexec" option:
+
+    $ mount | grep /var/tmp
+
+    /dev/mapper/rhel-var-tmp on /var/tmp type xfs (rw,nodev,nosuid,noexec,seclabel)
+
+    If the "/var/tmp" file system is mounted without the "noexec" option, this is a finding.
+
+fixtext: |-
+    Modify "/etc/fstab" to use the "noexec" option on the "/var/tmp" directory.

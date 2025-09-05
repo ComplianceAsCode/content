@@ -23,7 +23,6 @@ jobs:
               chromium \
               fedora \
               firefox \
-              fuse6 \
               rhcos4 \
               rhel7 \
               rhel8 \
@@ -45,7 +44,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: ./build_product alinux2 alinux3 chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004 ubuntu2204 uos20
+        run: ./build_product alinux2 alinux3 chromium fedora firefox rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004 ubuntu2204 uos20
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -68,7 +67,7 @@ jobs:
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON"
         run: |-
-          ./build_product debian9 debian10 debian11
+          ./build_product debian10 debian11
       - name: Test
         working-directory: ./build
         run: ctest -j2 --output-on-failure -E unique-stigids
@@ -91,7 +90,6 @@ jobs:
               chromium \
               fedora \
               firefox \
-              fuse6 \
               rhcos4 \
               rhel7 \
               rhel8 \
@@ -112,9 +110,9 @@ jobs:
       image: fedora:latest
     steps:
       - name: Install Deps
-        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck git
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck git python3-mypy python3-lxml
       - name: Install deps python
-        run: pip install ruamel.yaml yamlpath
+        run: pip install ruamel.yaml yamlpath types-openpyxl types-PyYAML xmldiff openpyxl pandas
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
@@ -125,7 +123,6 @@ jobs:
               chromium \
               fedora \
               firefox \
-              fuse6 \
               rhcos4 \
               rhel7 \
               rhel8 \
@@ -151,17 +148,8 @@ jobs:
           CC_TEST_REPORTER_ID: e67e068471d32b63f8e9561dba8f6a3f84dcc76b05ebfd98e44ced1a91cff854
         with:
           coverageLocations: build/tests/coverage.xml:coverage.py
-      - name: Build 5.10 (sanity only)
-        run: |-
-          ./build_product \
-              -d \
-              --oval '5.10' \
-              rhel7 \
-              rhel8 \
-              rhel9
-      - name: Validate OVAL Build 5.10
-        working-directory: ./build
-        run: ctest -j2 -R validate-ssg-rhel[0-9]+-oval.xml --output-on-failure -E unique-stigids
+      - name: Validate gitmailmap
+        run: egrep "\S" .mailmap | egrep -v '^#' | git check-mailmap --stdin
 
   validate-fedora-rawhide:
     name: Build, Test on Fedora Rawhide (Container)
@@ -170,9 +158,9 @@ jobs:
       image: fedora:rawhide
     steps:
       -   name: Install Deps
-          run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck
+          run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck python-mypy git
       -   name: Install deps python
-          run: pip install ruamel.yaml yamlpath
+          run: pip install ruamel.yaml yamlpath types-openpyxl types-PyYAML openpyxl pandas
       -   name: Checkout
           uses: actions/checkout@v2
       -   name: Build
@@ -183,7 +171,6 @@ jobs:
                 chromium \
                 fedora \
                 firefox \
-                fuse6 \
                 rhcos4 \
                 rhel7 \
                 rhel8 \

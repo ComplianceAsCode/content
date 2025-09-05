@@ -1,0 +1,16 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.
+
+vuldiscussion: |-
+    Unnecessary service packages must not be installed to decrease the attack surface of the system. X windows has a long history of security
+    vulnerabilities and should not be installed unless approved and documented.
+
+checktext: |-
+    To ensure the X Windows package group is removed, run the following command:
+
+     $ rpm -qi xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils xorg-x11-server-Xwayland
+
+    For each "package" mentioned above you should receive following line:
+     package &lt;package&gt; is not installed
+
+    If xorg related packages are not removed and run level is not correctly configured, then this is a finding.

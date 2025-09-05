@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Disable Account Identifiers (Individuals, Groups, Roles, And Devices) After 35 Days Of Inactivity.
+
+vuldiscussion: |-
+    Inactive identifiers pose a risk to systems and applications because attackers may exploit an inactive identifier and potentially obtain undetected access to the system.
+    Disabling inactive accounts ensures that accounts which may not have been responsibly removed are not available to attackers who may have compromised their credentials.
+    Owners of inactive accounts will not notice if unauthorized access to their user account has been obtained.
+
+checktext: |-
+    Verify that {{{ full_name }}} account identifiers (individuals, groups, roles, and devices) are disabled after 35 days of inactivity with the following command:
+
+    Check the account inactivity value by performing the following command:
+
+    $ sudo grep -i inactive /etc/default/useradd
+
+    INACTIVE=35
+
+    If "INACTIVE" is set to "-1", a value greater than "35", or is commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable account identifiers after 35 days of inactivity after the password expiration.
+
+    Run the following command to change the configuration for useradd:
+
+    $ sudo useradd -D -f 35
+
+    A recommendation is 35 days, but a lower value is acceptable.

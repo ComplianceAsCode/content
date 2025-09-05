@@ -1,12 +1,12 @@
 documentation_complete: true
 
-title: 'Set SSH Idle Timeout Interval'
+title: 'Set SSH Client Alive Interval'
 
 description: |-
-    SSH allows administrators to set an idle timeout interval. After this interval
-    has passed, the idle user will be automatically logged out.
+    SSH allows administrators to set a network responsiveness timeout interval.
+    After this interval has passed, the unresponsive client will be automatically logged out.
     <br /><br />
-    To set an idle timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as
+    To set this timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as
     follows:
     <pre>ClientAliveInterval <b>{{{ xccdf_value("sshd_idle_timeout_value") }}}</b></pre>
     <br/><br/>
@@ -15,7 +15,7 @@ description: |-
     <br /><br />
     If a shorter timeout has already been set for the login shell, that value will
     preempt any SSH setting made in <tt>/etc/ssh/sshd_config</tt>. Keep in mind that
-    some processes may stop SSH  from correctly detecting that the user is idle.
+    some processes may stop SSH from correctly detecting that the user is idle.
 
 rationale: |-
     Terminating an idle ssh session within a short time period reduces the window of
@@ -39,7 +39,7 @@ references:
     cis@alinux3: 5.2.13
     cis@rhel7: 5.3.16
     cis@rhel8: 5.2.20
-    cis@sle12: 5.3.17
+    cis@sle12: 5.2.16
     cis@sle15: 5.2.16
     cis@ubuntu2004: 5.2.15
     cis@ubuntu2204: 5.2.15
@@ -81,7 +81,7 @@ ocil: |-
 
 warnings:
     - dependency: |-
-        SSH disconnecting idle clients will not have desired effect without also
+        SSH disconnecting unresponsive clients will not have desired effect without also
         configuring ClientAliveCountMax in the SSH service configuration.
     - general: |-
         Following conditions may prevent the SSH session to time out:

@@ -13,6 +13,7 @@ import ssg.id_translate
 import ssg.products
 import ssg.xml
 import ssg.yaml
+from ssg.constants import XCCDF12_NS
 
 # This script requires two arguments: an OVAL file and a CPE dictionary file.
 # It is designed to extract any inventory definitions and the tests, states,
@@ -20,7 +21,6 @@ import ssg.yaml
 # OVAL CPE file, along with a synchronized CPE dictionary file.
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 cpe_ns = "http://cpe.mitre.org/dictionary/2.0"
 
 
@@ -41,6 +41,7 @@ def parse_args():
     p.add_argument("shorthandfile", help="shorthand xml to generate "
                    "the CPE dictionary from")
     p.add_argument("ovalfile", help="OVAL file to process")
+    p.add_argument("--cpe-items-dir", help="the directory where compiled CPE items are stored")
 
     return p.parse_args()
 
@@ -129,7 +130,7 @@ def main():
     # Lets scrape the shorthand for the list of platforms referenced
     benchmark_cpe_names = set()
     shorthandtree = ssg.xml.parse_file(args.shorthandfile)
-    for platform in shorthandtree.findall(".//{%s}platform" % xccdf_ns):
+    for platform in shorthandtree.findall(".//{%s}platform" % XCCDF12_NS):
         cpe_name = platform.get("idref")
         # skip CPE AL platforms (they are handled later)
         # this is temporary solution until we get rid of old type of platforms in the benchmark
@@ -142,7 +143,8 @@ def main():
         cpe_factref_name = factref.get("name")
         benchmark_cpe_names.add(cpe_factref_name)
 
-    product_cpes = ssg.build_cpe.ProductCPEs(product_yaml)
+    product_cpes = ssg.build_cpe.ProductCPEs()
+    product_cpes.load_cpes_from_directory_tree(args.cpe_items_dir, product_yaml)
     cpe_list = ssg.build_cpe.CPEList()
     for cpe_name in benchmark_cpe_names:
         cpe_list.add(product_cpes.get_cpe(cpe_name))

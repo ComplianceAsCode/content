@@ -1,0 +1,44 @@
+srg_requirement: |-
+    {{{ full_name }}} audit logs file must have mode 0640 or less permissive to prevent unauthorized access to the audit log.
+
+vuldiscussion: |-
+    Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify the {{{ full_name }}} system or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives.
+
+    The structure and content of error messages must be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements.
+
+checktext: |-
+    Verify the audit logs have a mode of "0640".
+
+    First determine where the audit logs are stored with the following command:
+
+    $ sudo grep -iw log_file /etc/audit/auditd.conf
+
+    log_file = /var/log/audit/audit.log
+
+    Then using the location of the audit log file, determine if the audit log files as a mode of "0640" with the following command:
+
+    $ sudo ls -la /var/log/audit/*.log
+
+    rw-rw----. 2 root root 237923 Jun 11 11:56 /var/log/audit/audit.log
+
+    If the audit logs have a mode more permissive than "0640", this is a finding.
+
+fixtext: |-
+    Configure the audit logs to have a mode of "0640" with the following command:
+
+    Replace "[audit_log_file]" to the correct audit log path, by default this location is "/var/log/audit/audit.log".
+
+    $ sudo chmod 0640 /var/log/audit/[audit_log_file]
+    Check the group that owns the system audit logs:
+
+    $ sudo grep -m 1 -q ^log_group /etc/audit/auditd.conf
+
+    If the log_group is not defined or it is set to root, configure the permissions the following way:
+
+    $ sudo chmod 0640 $log_file
+    $ sudo chmod 0440 $log_file.*
+
+    Otherwise, configure the permisssions the following way:
+
+    $ sudo chmod 0600 $log_file
+    $ sudo chmod 0400 $log_file.*

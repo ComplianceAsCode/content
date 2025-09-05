@@ -14,7 +14,6 @@ controls:
             - sshd_set_keepalive_0
             - accounts_tmout
             - var_accounts_tmout=10_min
-        status: does not meet
         status_justification: |-
             {{{ full_name }}} does not have configuration options to
             meet this requirement. There is no option to configure sshd timeout
@@ -30,3 +29,4 @@ controls:
             seconds.
         mitigation: |-
             There is no mitigation.
+        status: automated

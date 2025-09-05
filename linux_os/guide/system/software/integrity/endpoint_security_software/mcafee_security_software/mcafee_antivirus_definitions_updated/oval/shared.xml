@@ -1,4 +1,4 @@
-<def-group oval_version="5.10">
+<def-group>
   <definition class="compliance" id="mcafee_antivirus_definitions_updated" version="1">
     {{{ oval_metadata("Verify that McAfee AntiVirus definitions have been updated.") }}}
 
@@ -15,7 +15,7 @@
 
   <local_variable id="variable_mcafee_dat_files_mtime" version="1" comment="Age of file for each McAfee definition file." datatype="int">
       <time_difference format_2="seconds_since_epoch">
-        <object_component object_ref="mcafee_dat_files_mtime" item_field="m_time"/> 
+        <object_component object_ref="mcafee_dat_files_mtime" item_field="m_time"/>
       </time_difference>
   </local_variable>
 

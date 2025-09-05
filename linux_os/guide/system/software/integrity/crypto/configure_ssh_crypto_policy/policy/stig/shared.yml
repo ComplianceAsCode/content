@@ -1,0 +1,27 @@
+srg_requirement: |-
+    The {{{ full_name }}} SSH daemon must be configured to use system-wide crypto policies.
+
+vuldiscussion: |-
+    Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
+
+    Remote access (e.g., RDP) is access to DoD nonpublic information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
+
+    Cryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.
+
+    {{{ full_name }}} incorporates system-wide crypto policies by default. The SSH configuration file has no effect on the ciphers, MACs, or algorithms unless specifically defined in the /etc/sysconfig/sshd file. The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/ directory.
+
+checktext: |-
+    Verify that system-wide crypto policies are in effect:
+
+    $ sudo grep CRYPTO_POLICY /etc/sysconfig/sshd
+
+    # CRYPTO_POLICY=
+
+    If a "CRYPTO_POLICY" line is found and is uncommented, this is a finding.
+
+fixtext: |-
+    Configure the {{{ full_name }}} SSH daemon to use system-wide crypto policies by commenting or removing the 'CRYPTO_POLICY=' line in /etc/sysconfig/sshd:
+
+    # CRYPTO_POLICY=
+
+    A reboot is required for the changes to take effect.

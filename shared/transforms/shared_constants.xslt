@@ -20,7 +20,7 @@
 <xsl:variable name="disa-stigs-apps-web-server-uri">https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security%2Cweb-servers</xsl:variable>
 <xsl:variable name="disa-stigs-os-mainframe-uri">https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cmainframe</xsl:variable>
 <xsl:variable name="disa-stigs-os-unix-linux-uri">https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux</xsl:variable>
-<xsl:variable name="disa-stigs-virutalization-uri">https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cvirtualization</xsl:variable>
+<xsl:variable name="disa-stigs-virtualization-uri">https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cvirtualization</xsl:variable>
 <xsl:variable name="hipaauri">https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf</xsl:variable>
 <xsl:variable name="iso27001-2013uri">https://www.iso.org/standard/54534.html</xsl:variable>
 <xsl:variable name="nist800-171uri">http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf</xsl:variable>

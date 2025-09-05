@@ -33,23 +33,21 @@ references:
     stigid@rhel8: RHEL-08-020040
     vmmsrg: SRG-OS-000028-VMM-000090,SRG-OS-000030-VMM-000110
 
-ocil_clause: 'lock-command is not set'
+ocil_clause: 'the "lock-command" is not set in the global settings to call "vlock"'
 
 ocil: |-
-    To verify that vlock is configured as a locking mechanism in tmux, run the following command:
+    Verify {{{ full_name }}} enables the user to initiate a session lock with the following command:
 
-    <pre>$ sudo grep lock-command /etc/tmux.conf</pre>
-
-    The output should return the following:
+    <pre>$ grep lock-command /etc/tmux.conf</pre>
 
     <pre>set -g lock-command vlock</pre>
 
     Then, verify that the /etc/tmux.conf file can be read by other users than root:
 
-    <pre>$ sudo ls -al /etc/tmux.conf
+    <pre>$ sudo ls -al /etc/tmux.conf</pre>
 
 fixtext: |-
-    Add the following line to the file "/etc/tmux.conf":
+    Configure {{{ full_name }}} to allow a user to initiate a sessions lock by adding the following line to the file "/etc/tmux.conf":
 
     <pre>set -g lock-command vlock</pre>
 

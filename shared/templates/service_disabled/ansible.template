@@ -16,8 +16,6 @@
 
 - name: "Unit Socket Exists - {{{ DAEMONNAME }}}.socket"
   command: systemctl list-unit-files {{{ DAEMONNAME }}}.socket
-  args:
-    warn: False
   register: socket_file_exists
   changed_when: False
   ignore_errors: True

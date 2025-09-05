@@ -1,0 +1,18 @@
+srg_requirement: |-
+    The {{{ full_name }}} service chronyd must be enabled.
+
+vuldiscussion: |-
+    If chrony is in use on the system proper configuration is vital to ensuring time
+    synchronization is working properly.
+
+checktext: |-
+    Run the following command to determine the current status of the
+     chronyd service:
+     $ sudo systemctl is-active chronyd
+    If the service is running, it should return the following: active
+
+    If the chronyd process is not running, then this is a finding.
+
+fixtext: |-
+    To enable the chronyd service run the following command:
+    $ sudo systemctl enable --now chronyd

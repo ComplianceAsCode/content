@@ -197,7 +197,7 @@ def append(element, newchild):
 def check_oval_version(oval_version):
     """Not necessary, but should help with typos"""
 
-    supported_versions = ["5.10", "5.11"]
+    supported_versions = ["5.11"]
     if oval_version not in supported_versions:
         supported_versions_str = ", ".join(supported_versions)
         sys.stderr.write(
@@ -245,8 +245,8 @@ def _check_oval_version_from_oval(oval_file_tree, oval_version):
     if file_oval_version is None:
         # oval_version does not exist in <def-group/>
         # which means the OVAL is supported for any version.
-        # By default, that version is 5.10
-        file_oval_version = "5.10"
+        # By default, that version is 5.11
+        file_oval_version = "5.11"
 
     if tuple(oval_version.split(".")) >= tuple(file_oval_version.split(".")):
         return True
@@ -338,23 +338,28 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
             already_loaded[filename] = oval_version
 
     for oval_dir in reversed_dirs:
-        if os.path.isdir(oval_dir):
-            # sort the files to make output deterministic
-            for filename in sorted(os.listdir(oval_dir)):
-                if filename.endswith(".xml"):
-                    xml_content = process_file_with_macros(
-                        os.path.join(oval_dir, filename), env_yaml
-                    )
+        if not os.path.isdir(oval_dir):
+            continue
+        # sort the files to make output deterministic
+        for filename in sorted(os.listdir(oval_dir)):
+            if not filename.endswith(".xml"):
+                continue
+            oval_file_path = os.path.join(oval_dir, filename)
+            if "checks_from_templates" in oval_dir:
+                with open(oval_file_path, "r") as f:
+                    xml_content = f.read()
+            else:
+                xml_content = process_file_with_macros(oval_file_path, env_yaml)
 
-                    if not _check_is_applicable_for_product(xml_content, product):
-                        continue
-                    if _check_is_loaded(already_loaded, filename, oval_version):
-                        continue
-                    oval_file_tree = _create_oval_tree_from_string(xml_content)
-                    if not _check_oval_version_from_oval(oval_file_tree, oval_version):
-                        continue
-                    body.append(xml_content)
-                    included_checks_count += 1
-                    already_loaded[filename] = oval_version
+            if not _check_is_applicable_for_product(xml_content, product):
+                continue
+            if _check_is_loaded(already_loaded, filename, oval_version):
+                continue
+            oval_file_tree = _create_oval_tree_from_string(xml_content)
+            if not _check_oval_version_from_oval(oval_file_tree, oval_version):
+                continue
+            body.append(xml_content)
+            included_checks_count += 1
+            already_loaded[filename] = oval_version
 
     return "".join(body)

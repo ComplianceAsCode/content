@@ -1,5 +1,5 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_ospp
+# variables = var_sshd_priv_separation=sandbox
 
 true

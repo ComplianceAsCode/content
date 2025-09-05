@@ -122,13 +122,13 @@ fi
 {{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false) -%}}
 {{% if no_quotes -%}}
   {{% if "$" in value %}}
-  {{% set value = '%s' % value.replace("$", "\\$") %}}
+    {{% set value = '%s' % value.replace("$", "\\$") %}}
   {{% endif %}}
 {{%- else -%}}
   {{% if "$" in value %}}
-  {{% set value = '\\"%s\\"' % value.replace("$", "\\$") %}}
+    {{% set value = '\\"%s\\"' % value.replace("$", "\\$") %}}
   {{% else %}}
-  {{% set value = "'%s'" % value %}}
+    {{% set value = "'%s'" % value %}}
   {{% endif %}}
 {{%- endif -%}}
 {{{ set_config_file(
@@ -140,7 +140,7 @@ fi
         insert_before="^#\s*" ~ parameter,
         insensitive=false,
         separator="=",
-        separator_regex="=",
+        separator_regex="\s*=\s*",
         prefix_regex="^\s*")
     }}}
 {{%- endmacro -%}}
@@ -700,28 +700,38 @@ fi
 # Check for setting in any of the DConf db directories
 # If files contain ibus or distro, ignore them.
 # The assignment assumes that individual filenames don't contain :
-readarray -t SETTINGSFILES < <(grep -r "\\[{{{ path }}}\\]" "/etc/dconf/db/" | grep -v 'distro\|ibus' | cut -d":" -f1)
+readarray -t SETTINGSFILES < <(grep -r "\\[{{{ path }}}\\]" "/etc/dconf/db/" \
+                                | grep -v 'distro\|ibus\|{{{ db }}}' | cut -d":" -f1)
 DCONFFILE="/etc/dconf/db/{{{ db }}}/{{{ setting_file }}}"
 DBDIR="/etc/dconf/db/{{{ db }}}"
 
 mkdir -p "${DBDIR}"
 
-if [ "${#SETTINGSFILES[@]}" -eq 0 ]
+# Comment out the configurations in databases different from the target one
+if [ "${#SETTINGSFILES[@]}" -ne 0 ]
 then
-    [ ! -z ${DCONFFILE} ] || echo "" >> ${DCONFFILE}
-    printf '%s\n' "[{{{ path }}}]" >> ${DCONFFILE}
-    printf '%s=%s\n' "{{{ key }}}" "{{{ value }}}" >> ${DCONFFILE}
-else
-    escaped_value="$(sed -e 's/\\/\\\\/g' <<< "{{{ value }}}")"
     if grep -q "^\\s*{{{ key }}}\\s*=" "${SETTINGSFILES[@]}"
     then
         {{% if '/' in key %}}
         {{{ raise("Key (" + key + ") uses sed path separator (/) in " + rule_id) }}}
         {{% endif %}}
-        sed -i "s/\\s*{{{ key }}}\\s*=\\s*.*/{{{ key }}}=${escaped_value}/g" "${SETTINGSFILES[@]}"
-    else
-        sed -i "\\|\\[{{{ path }}}\\]|a\\{{{ key }}}=${escaped_value}" "${SETTINGSFILES[@]}"
+        sed -Ei "s/(^\s*){{{ key }}}(\s*=)/#\1{{{ key }}}\2/g" "${SETTINGSFILES[@]}"
     fi
+fi
+
+
+[ ! -z "${DCONFFILE}" ] && echo "" >> "${DCONFFILE}"
+if ! grep -q "\\[{{{ path }}}\\]" "${DCONFFILE}"
+then
+    printf '%s\n' "[{{{ path }}}]" >> ${DCONFFILE}
+fi
+
+escaped_value="$(sed -e 's/\\/\\\\/g' <<< "{{{ value }}}")"
+if grep -q "^\\s*{{{ key }}}\\s*=" "${DCONFFILE}"
+then
+        sed -i "s/\\s*{{{ key }}}\\s*=\\s*.*/{{{ key }}}=${escaped_value}/g" "${DCONFFILE}"
+    else
+        sed -i "\\|\\[{{{ path }}}\\]|a\\{{{ key }}}=${escaped_value}" "${DCONFFILE}"
 fi
 
 dconf update
@@ -734,12 +744,19 @@ dconf update
 #}}
 {{%- macro bash_dconf_lock(key, setting, db, lock_file) -%}}
 # Check for setting in any of the DConf db directories
-LOCKFILES=$(grep -r "^/{{{ key }}}/{{{ setting }}}$" "/etc/dconf/db/" | grep -v 'distro\|ibus' | cut -d":" -f1)
+LOCKFILES=$(grep -r "^/{{{ key }}}/{{{ setting }}}$" "/etc/dconf/db/" \
+            | grep -v 'distro\|ibus\|{{{ db }}}' | grep ":" | cut -d":" -f1)
 LOCKSFOLDER="/etc/dconf/db/{{{ db }}}/locks"
 
 mkdir -p "${LOCKSFOLDER}"
 
-if [[ -z "${LOCKFILES}" ]]
+# Comment out the configurations in databases different from the target one
+if [[ ! -z "${LOCKFILES}" ]]
+then
+    sed -i -E "s|^/{{{ key }}}/{{{ setting }}}$|#&|" "${LOCKFILES[@]}"
+fi
+
+if ! grep -qr "^/{{{ key }}}/{{{ setting }}}$" /etc/dconf/db/{{{ db }}}/
 then
     echo "/{{{ key }}}/{{{ setting }}}" >> "/etc/dconf/db/{{{ db }}}/locks/{{{ lock_file }}}"
 fi
@@ -1235,12 +1252,12 @@ if grep -qzosP '[[:space:]]*\[{{{ section }}}]([^\n\[]*\n+)+?[[:space:]]*{{{ key
     {{% elif '/' in value %}}
     {{{ raise("value (" + value + ") uses sed path separator (/) in " + rule_id) }}}
     {{% endif %}}
-    sed -i 's/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value }}}/' '{{{ filename }}}'
+    sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value }}}/" '{{{ filename }}}'
 elif grep -qs '[[:space:]]*\[{{{ section }}}]' '{{{ filename }}}'; then
-    sed -i '/[[:space:]]*\[{{{ section }}}]/a {{{ key }}}={{{ value }}}' '{{{ filename }}}'
+    sed -i "/[[:space:]]*\[{{{ section }}}]/a {{{ key }}}={{{ value }}}" '{{{ filename }}}'
 else
     if test -d "{{{ config_dir }}}"; then
-        printf '%s\n' '[{{{ section }}}]' '{{{ key }}}={{{ value }}}' >> '{{{ filename }}}'
+        printf '%s\n' '[{{{ section }}}]' "{{{ key }}}={{{ value }}}" >> '{{{ filename }}}'
     else
         echo "Config file directory '{{{ config_dir }}}' doesnt exist, not remediating, assuming non-applicability." >&2
     fi

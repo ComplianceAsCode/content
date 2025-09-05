@@ -5,7 +5,6 @@ title: 'Account Lockouts Must Be Logged'
 description: |-
     PAM faillock locks an account due to excessive password failures, this event must be logged.
 
-
 rationale:
     Without auditing of these events it may be harder or impossible to identify what an attacker did after an attack.
 
@@ -19,8 +18,6 @@ references:
     disa: CCI-000044
     nist: AC-7 (a)
     srg: SRG-OS-000021-GPOS-00005
-    stigid@ol8: OL08-00-020021
-    stigid@rhel8: RHEL-08-020021
 
 ocil_clause: 'the "audit" option is not set, is missing or commented out'
 
@@ -39,3 +36,6 @@ fixtext: |-
     audit
 
 srg_requirement: '{{{ full_name }}} must log user name information when unsuccessful logon attempts occur.'
+
+warnings:
+{{{ warning_rule_deprecated_by("accounts_passwords_pam_faillock_audit", "0.1.65") | indent(4) }}}

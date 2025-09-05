@@ -346,6 +346,12 @@ controls:
     - file_groupowner_efi_grub2_cfg
     - file_owner_efi_grub2_cfg
     - file_permissions_efi_grub2_cfg
+    - file_groupowner_efi_user_cfg
+    - file_groupowner_user_cfg
+    - file_owner_efi_user_cfg
+    - file_owner_user_cfg
+    - file_permissions_efi_user_cfg
+    - file_permissions_user_cfg
 
   - id: 1.4.3
     title: Ensure authentication required for single user mode (Automated)
@@ -492,7 +498,10 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule is missing
+    status: automated
+    rules:
+      - banner_etc_issue_net
+      - login_banner_text=cis_banners
 
   - id: 1.7.4
     title: Ensure permissions on /etc/motd are configured (Automated)
@@ -521,7 +530,11 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - file_groupowner_etc_issue_net
+      - file_owner_etc_issue_net
+      - file_permissions_etc_issue_net
 
   - id: 1.8.1
     title: Ensure GNOME Display Manager is removed (Manual)

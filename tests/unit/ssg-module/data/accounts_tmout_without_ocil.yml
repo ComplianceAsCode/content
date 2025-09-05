@@ -1,0 +1,70 @@
+prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
+title: Set Interactive Session Timeout
+description: 'Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that
+
+    all user sessions will terminate based on inactivity.
+
+    The value of TMOUT should be exported and read only.
+
+    The <tt>TMOUT</tt>
+
+
+    setting in a file loaded by <tt>/etc/profile</tt>, e.g.
+
+    <tt>/etc/profile.d/tmout.sh</tt> should read as follows:
+
+    <pre>declare -xr TMOUT=<sub idref="var_accounts_tmout" /></pre>'
+rationale: 'Terminating an idle session within a short time period reduces
+
+    the window of opportunity for unauthorized personnel to take control of a
+
+    management session enabled on the console or console port that has been
+
+    left unattended.'
+severity: medium
+references:
+    anssi: BP28(R29)
+    cis-csc: 1,12,15,16
+    cobit5: DSS05.04,DSS05.10,DSS06.10
+    cui: 3.1.11
+    disa: CCI-000057,CCI-001133,CCI-002361
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    isa-62443-2013: SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
+    nerc-cip: CIP-004-6 R2.2.3,CIP-007-3 R5.1,CIP-007-3 R5.2,CIP-007-3 R5.3.1,CIP-007-3
+        R5.3.2,CIP-007-3 R5.3.3
+    nist: AC-12,SC-10,AC-2(5),CM-6(a)
+    nist-csf: PR.AC-7
+    ospp: FMT_MOF_EXT.1
+    srg: SRG-OS-000163-GPOS-00072,SRG-OS-000029-GPOS-00010
+    vmmsrg: SRG-OS-000163-VMM-000700,SRG-OS-000279-VMM-001010
+identifiers:
+    cce: CCE-83633-8
+
+oval_external_content: null
+fixtext: 'Configure Red Hat Enterprise Linux 9 to terminate user sessions after <sub
+    idref="var_accounts_tmout" /> seconds of inactivity.
+
+
+    Add or edit the following line in "/etc/profile.d/tmout.sh":
+
+    TMOUT=<sub idref="var_accounts_tmout" />'
+checktext: ''
+vuldiscussion: ''
+srg_requirement: ''
+warnings: []
+conflicts: []
+requires: []
+policy_specific_content: {}
+platform: machine
+platforms: !!set
+    machine: null
+sce_metadata: {}
+inherited_platforms: !!set {}
+template: null
+cpe_platform_names: !!set
+    machine: null
+inherited_cpe_platform_names: !!set {}
+bash_conditional: null
+fixes: {}
+documentation_complete: true

@@ -1,0 +1,29 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Implement Dod-Approved Encryption To Protect The Confidentiality Of Remote Access Sessions.
+
+vuldiscussion: |-
+    By decreasing the limit based on the amount of data and enabling
+    time-based limit, effects of potential attacks against
+    encryption keys are limited.
+
+checktext: |-
+    To check if RekeyLimit is set correctly, run the
+    following command:
+
+     $ sudo grep RekeyLimit /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+
+    If configured properly, output should be
+     RekeyLimit 1G 1h
+
+    If it is commented out or is not set, then this is a finding.
+
+fixtext: |-
+
+    Configure {{{ full_name }}} to force a frequent session key renegotiation for SSH connections to the server by adding or modifying the following line in the "/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf" file:
+
+
+    RekeyLimit 1G 1h
+
+    Restart the SSH daemon for the settings to take effect.
+
+    $ sudo systemctl restart sshd.service

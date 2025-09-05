@@ -50,10 +50,10 @@ and to ensure that various parties can collaborate on the project without major 
 
 We need to:
 
-- Allow individuals and organizations in the content project to work at their own pace on parts of the project within their area of expertise, and to do so independently if they don’t influence each other.
+- Allow individuals and organizations in the content project to work at their own pace on parts of the project within their area of expertise, and to do so independently if they don't influence each other.
 - Introduce enter and exit criteria for roles with elevated privileges so the hierarchy can self-organize.
 - Define a framework for organizations to join the project and assume responsibilities.
-- Ensure that the project stays coherent and individual parts contribute to its value, and the project doesn’t become a disgusting spaghetti soup.
+- Ensure that the project stays coherent and individual parts contribute to its value, and the project doesn't become a disgusting spaghetti soup.
 
 
 ### Decomposition
@@ -61,12 +61,12 @@ We need to:
 In order to keep the project scalable, we divide the project into separate areas, and assign groups of users that can be granted commit access with the intention to develop content in respective areas.
 Those areas are going to be segmented by
 
-- Products (RHEL, Ubuntu, …) - make it easy to develop content of a product that doesn’t influence the other content or the build system.
+- Products (RHEL, Ubuntu, …) - make it easy to develop content of a product that doesn't influence the other content or the build system.
 - Product-specific profiles (PSPs s.a. Firefox STIG, Ubuntu CIS, …) and respective control files - make it easy for SMEs that only want to assign rules to profiles without going into details.
 - Shared resources
   - Product-independent profiles (PIPs s.a. ANSSI, HIPAA, PCI-DSS, …) and respective control files - ensure that PIP development benefits the whole community instead of cluttering the content with “if product in [...]”.
   - Build system - decisions upon architecture of the build system impact build time, project capabilities, and can also move maintenance costs.
-  - Test-related code - ensure that tests have the greatest coverage as possible, but that don’t waste time and don’t suffer from false positives.
+  - Test-related code - ensure that tests have the greatest coverage as possible, but that don't waste time and don't suffer from false positives.
   - Other - rules only loosely coupled to products, templates, CPEs etc. Same principles that apply to PIPs apply for the shared content as well.
 - Organization administration - ability to grant and remove rights, create and delete repositories etc.
 
@@ -76,8 +76,8 @@ Those areas are going to be segmented by
 #### Products
 
 - Keeping track of the decomposition: Metadata in product.yml files, CODEOWNERS file
-- Area of effect: All PSPs that don’t have specific stakeholders, associated content and test scenarios.
-- Guidelines: Care needs to be taken when content requires a slightly different approach for different products - don’t copy and paste, and also don’t change existing behavior for everybody.
+- Area of effect: All PSPs that don't have specific stakeholders, associated content and test scenarios.
+- Guidelines: Care needs to be taken when content requires a slightly different approach for different products - don't copy and paste, and also don't change existing behavior for everybody.
   See the [style guide](04_style_guide.md) for more details.
 
 ##### Removal of Products
@@ -113,7 +113,7 @@ All issues and pull requests for product removal must use the [product-removal](
 
 #### Product Independent Profiles (PIPs)
 
-- Keeping track of the decomposition: Metadata in control files. Any profile definitions that live as separate profile files are simply a product’s content.
+- Keeping track of the decomposition: Metadata in control files. Any profile definitions that live as separate profile files are simply a product's content.
 - Area of effect: Just control files
 - Guidelines: Individual actors don't break profiles for others.
   The control file format should help with productive collaboration.
@@ -166,7 +166,7 @@ Although one can technically merge code, the code contribution guidelines still 
 
 Loss of merge rights:
 - Request: A person can ask to be stripped of merge rights.
-- Timeout: If a person doesn’t actively contribute to the project for a period of 12 months, their merge rights are stripped.
+- Timeout: If a person doesn't actively contribute to the project for a period of 12 months, their merge rights are stripped.
   Active contribution consists of either non-trivial contributions of code, non-trivial reviews, or analyses of problems in issues.
 - Violation: Rights can be also revoked if coding style or conduct are consistently broken.
 
@@ -181,4 +181,4 @@ The project maintainers decide about granting or strip of rights and about excep
 
 Aside from an organization (s.a. a company or an institution) being composed of individuals with individual rights, other developers associated with the organization may get “backup” merge rights or organization administration rights.
 Those rights can be granted for a period of 12 months and their renewal can be requested.
-These rights can only be used in cases when regular developers aren’t available and the organization needs to get their things through.
+These rights can only be used in cases when regular developers aren't available and the organization needs to get their things through.

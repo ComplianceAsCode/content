@@ -1,3 +1,9 @@
 # platform = multi_platform_all
 
-nmcli radio all off
+if 
+    rpm -q NetworkManager
+then
+    nmcli radio all off
+else
+    echo "NetworkManager package not installed" >&2     
+fi

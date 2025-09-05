@@ -55,7 +55,21 @@ class RedhatCCEFile(CCEFile):
         return os.path.join(self.project_root, "shared", "references", "cce-redhat-avail.txt")
 
 
+class SLE12CCEFile(CCEFile):
+    @property
+    def absolute_path(self):
+        return os.path.join(self.project_root, "shared", "references", "cce-sle12-avail.txt")
+
+
+class SLE15CCEFile(CCEFile):
+    @property
+    def absolute_path(self):
+        return os.path.join(self.project_root, "shared", "references", "cce-sle15-avail.txt")
+
+
 CCE_POOLS["redhat"] = RedhatCCEFile
+CCE_POOLS["sle12"] = SLE12CCEFile
+CCE_POOLS["sle15"] = SLE15CCEFile
 
 
 def is_cce_format_valid(cceid):
@@ -63,8 +77,6 @@ def is_cce_format_valid(cceid):
     IF CCE ID IS IN VALID FORM (either 'CCE-XXXX-X' or 'CCE-XXXXX-X'
     where each X is a digit, and the final X is a check-digit)
     based on Requirement A17:
-
-    http://people.redhat.com/swells/nist-scap-validation/scap-val-requirements-1.2.html
     """
     match = re.match(r'^CCE-\d{4,5}-\d$', cceid)
     return match is not None

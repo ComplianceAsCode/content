@@ -1,0 +1,35 @@
+srg_requirement: |-
+    {{{ full_name }}} must enable kernel parameters to enforce discretionary access control on hardlinks.
+
+vuldiscussion: |-
+    By enabling the fs.protected_hardlinks kernel parameter, users can no longer create soft or hard links to files they do not own. Disallowing such hardlinks mitigate vulnerabilities based on insecure file system accessed by privileged programs, avoiding an exploitation vector exploiting unsafe use of open() or creat().
+
+checktext: |-
+    Verify {{{ full_name }}} is configured to enable DAC on hardlinks.
+
+    Check the status of the fs.protected_hardlinks kernel parameter with the following command:
+
+    $ sudo sysctl fs.protected_hardlinks
+
+    fs.protected_hardlinks = 1
+
+    If "fs.protected_hardlinks" is not set to "1" or is missing, this is a finding.
+
+    Check that the configuration files are present to enable this kernel parameter.
+
+    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F fs.protected_hardlinks | tail -1
+
+    fs.protected_hardlinks = 1
+
+    If "fs.protected_hardlinks" is not set to "1" or is missing, this is a finding.
+
+fixtext: |-
+    Verify {{{ full_name }}} is configured to enable DAC on hardlinks with the following commands:
+
+    Add or edit the following line in a system configuration file in the "/etc/sysctl.d/" directory:
+
+    fs.protected_hardlinks = 1
+
+    Load settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system

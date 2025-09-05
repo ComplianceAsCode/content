@@ -22,6 +22,10 @@ description: |-
 
     This profile is applicable to OpenShift versions 4.6 and greater.
 selections:
+  ### Helper Rules
+  ### This is a helper rule to fetch the required api resource for detecting OCP version
+    - version_detect_in_ocp
+    - version_detect_in_hypershift
   ### 1 Control Plane Components
   ###
   #### 1.2 API Server
@@ -54,20 +58,20 @@ selections:
     - api_server_api_priority_gate_enabled
     - api_server_api_priority_flowschema_catch_all
   # 1.2.11 Ensure that the admission control plugin AlwaysAdmit is not set
-    - api_server_admission_control_plugin_AlwaysAdmit
+    - api_server_admission_control_plugin_alwaysadmit
   # 1.2.12 Ensure that the admission control plugin AlwaysPullImages is set
-    - api_server_admission_control_plugin_AlwaysPullImages
+    - api_server_admission_control_plugin_alwayspullimages
   # 1.2.13 Ensure that the admission control plugin SecurityContextDeny is not set
-    - api_server_admission_control_plugin_SecurityContextDeny
+    - api_server_admission_control_plugin_securitycontextdeny
   # 1.2.14 Ensure that the admission control plugin ServiceAccount is set
-    - api_server_admission_control_plugin_ServiceAccount
+    - api_server_admission_control_plugin_service_account
     - api_server_no_adm_ctrl_plugins_disabled
   # 1.2.15 Ensure that the admission control plugin NamespaceLifecycle is set
-    - api_server_admission_control_plugin_NamespaceLifecycle
+    - api_server_admission_control_plugin_namespacelifecycle
   # 1.2.16 Ensure that the admission control plugin PodSecurityPolicy is set (Automated)
-    - api_server_admission_control_plugin_Scc
+    - api_server_admission_control_plugin_scc
   # 1.2.17 Ensure that the admission control plugin NodeRestriction is set (Automated)
-    - api_server_admission_control_plugin_NodeRestriction
+    - api_server_admission_control_plugin_noderestriction
   # 1.2.18 Ensure that the --insecure-bind-address argument is not set
     - api_server_insecure_bind_address
   # 1.2.19 Ensure that the --insecure-port argument is set to 0
@@ -255,12 +259,12 @@ selections:
   #### 5.5 Extensible Admission Control
   # 5.5.1 Configure Image Provenance using ImagePolicyWebhook admission controller
     - general_configure_imagepolicywebhook
-  #### 5.6 General Policies
-  # 5.6.1 Create administrative boundaries between resources using namespaces (info)
+  #### 5.7 General Policies
+  # 5.7.1 Create administrative boundaries between resources using namespaces (info)
     - general_namespaces_in_use
-  # 5.6.2 Ensure Seccomp Profile Pod Definitions (info)
+  # 5.7.2 Ensure Seccomp Profile Pod Definitions (info)
     - general_default_seccomp_profile
-  # 5.6.3 Apply Security Context to your Pods and Containers (info)
+  # 5.7.3 Apply Security Context to your Pods and Containers (info)
     - general_apply_scc
-  # 5.6.4 The Default Namespace should not be used (info)
+  # 5.7.4 The Default Namespace should not be used (info)
     - general_default_namespace_use

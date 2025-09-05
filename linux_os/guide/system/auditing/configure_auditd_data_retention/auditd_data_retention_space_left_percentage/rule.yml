@@ -41,20 +41,19 @@ references:
     stigid@ubuntu2004: UBTU-20-010217
     vmmsrg: SRG-OS-000343-VMM-001240
 
-ocil_clause: 'the system is not configured with a specific percentage to notify administrators of an issue'
+ocil_clause: 'the value of the "space_left" keyword is not set to {{{ xccdf_value("var_auditd_space_left_percentage") }}}% of the storage volume allocated to audit logs, or if the line is commented out, ask the System Administrator to indicate how the system is providing real-time alerts to the SA and ISSO. If the "space_left" value is not configured to the correct value'
 
 ocil: |-
-    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
-    determine if the system is configured correctly:
-    <pre>space_left <i>PERCENTAGE</i>%</pre>
+    Verify {{{ full_name }}} takes action when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity with the following command:
+
+    <pre>$ sudo grep -w space_left /etc/audit/auditd.conf</pre>
+
+    <pre>space_left = {{{ xccdf_value("var_auditd_space_left_percentage") }}}%</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to initiate an action to notify the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity by adding/modifying the following line in the /etc/audit/auditd.conf file.
 
-    space_left = 25%
+    space_left = {{{ xccdf_value("var_auditd_space_left_percentage") }}}%
 
-    Note: Option names and values in the auditd.conf file are case insensitive.
-
-srg_requirement:
-  {{{ full_name }}} must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) via email when the threshold for the repository maximum audit record storage capacity is reached.
-
+srg_requirement: |-
+    {{{ full_name }}} must take action when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity.

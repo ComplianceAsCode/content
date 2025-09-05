@@ -1,0 +1,40 @@
+srg_requirement: |-
+    {{{ full_name }}} must not respond to Internet Control Message Protocol (ICMP) echoes sent to a broadcast address.
+
+vuldiscussion: |-
+    Responding to broadcast (ICMP) echoes facilitates network mapping
+    and provides a vector for amplification attacks.
+
+
+    Ignoring ICMP echo requests (pings) sent to broadcast or multicast
+    addresses makes the system slightly more difficult to enumerate on the network.
+
+checktext: |-
+    Verify {{{ full_name }}} does not respond to ICMP echoes sent to a broadcast address.
+
+    Check the value of the "icmp_echo_ignore_broadcasts" variable with the following command:
+
+    $ sudo sysctl net.ipv4.icmp_echo_ignore_broadcasts
+
+    net.ipv4.icmp_echo_ignore_broadcasts = 1
+
+    If the returned line does not have a value of "1", a line is not returned, or the retuned line is commented out, this is a finding.
+
+    Check that the configuration files are present to enable this network parameter.
+
+    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F net.ipv4.icmp_echo_ignore_broadcasts | tail -1
+
+    net.ipv4.icmp_echo_ignore_broadcasts = 1
+
+    If "net.ipv4.icmp_echo_ignore_broadcasts" is not set to "1" or is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not respond to IPv4 ICMP echoes sent to a broadcast address.
+
+    Add or edit the following line in a single system configuration file, in the "/etc/sysctl.d/" directory:
+
+    net.ipv4.icmp_echo_ignore_broadcasts=1
+
+    Load settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system

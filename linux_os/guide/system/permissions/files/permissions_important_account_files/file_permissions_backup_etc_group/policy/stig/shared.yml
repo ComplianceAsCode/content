@@ -1,0 +1,20 @@
+srg_requirement: |-
+    The {{{ full_name }}} /etc/passwd- file must have 0644 or less permissive to prevent unauthorized access.
+
+vuldiscussion: |-
+    The "/etc/group-" file is a backup file of "/etc/group", and as such,
+    it contains information regarding groups that are configured on the system.
+    Protection of this file is important for system security.
+
+checktext: |-
+    To check the permissions of /etc/group- ,
+    run the command:
+     $ sudo stat -c "%a %n" /etc/group-
+    If properly configured, the output should indicate the following permissions:
+    644 /etc/group-
+
+    If /etc/group- does not have unix mode 644, then this is a finding.
+
+fixtext: |-
+    Change the permissions of the file "/etc/passwd-" to "0644" by running the following command:
+    $ sudo chmod 0644 /etc/passwd-

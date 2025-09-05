@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R8
+    version: V3R9
     SMEs:
         - ggbecker
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux V3R8.
+    DISA STIG for Red Hat Enterprise Linux V3R9.
 
     In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -333,3 +333,4 @@ selections:
     - package_aide_installed
     - selinux_context_elevation_for_sudo
     - audit_rules_kernel_module_loading_create
+    - account_emergency_expire_date

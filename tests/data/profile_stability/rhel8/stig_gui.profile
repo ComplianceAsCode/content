@@ -1,7 +1,7 @@
 title: DISA STIG with GUI for Red Hat Enterprise Linux 8
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R7.
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R8.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -34,7 +34,7 @@ description: 'This profile contains configuration checks that align to the
     standard DISA STIG for Red Hat Enterprise Linux 8 profile.'
 extends: null
 metadata:
-    version: V1R7
+    version: V1R8
     SMEs:
     - mab879
     - ggbecker
@@ -42,7 +42,6 @@ reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-s
 selections:
 - account_disable_post_pw_expiration
 - account_emergency_expire_date
-- account_passwords_pam_faillock_audit
 - account_temp_expire_date
 - account_unique_id
 - accounts_authorized_local_users
@@ -70,6 +69,7 @@ selections:
 - accounts_password_pam_ucredit
 - accounts_password_set_max_life_existing
 - accounts_password_set_min_life_existing
+- accounts_passwords_pam_faillock_audit
 - accounts_passwords_pam_faillock_deny
 - accounts_passwords_pam_faillock_deny_root
 - accounts_passwords_pam_faillock_interval
@@ -381,7 +381,7 @@ selections:
 - sshd_print_last_log
 - sshd_rekey_limit
 - sshd_set_idle_timeout
-- sshd_set_keepalive_0
+- sshd_set_keepalive
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
 - sssd_certificate_verification
@@ -449,6 +449,7 @@ selections:
 - var_password_pam_ucredit=1
 - var_password_pam_lcredit=1
 - var_password_pam_retry=3
+- var_sshd_set_keepalive=1
 - sshd_approved_macs=stig
 - sshd_approved_ciphers=stig
 - sshd_idle_timeout_value=10_minutes
@@ -475,6 +476,7 @@ selections:
 - var_sudo_timestamp_timeout=always_prompt
 - var_slub_debug_options=P
 - var_screensaver_lock_delay=5_seconds
+unselected_groups: []
 platforms: !!set {}
 cpe_names: !!set {}
 platform: null

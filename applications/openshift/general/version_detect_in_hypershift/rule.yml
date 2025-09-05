@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'This is a helper rule to fetch the required api resource for detecting HyperShift OCP version'
+
+{{% set custom_jqfilter = '[.status.version.history[].version]' %}}
+{{% set custom_api_path = '/apis/hypershift.openshift.io/v1alpha1/namespaces/clusters/hostedclusters/{{.hypershift_cluster}}' %}}
+{{% set default_api_path = '/hypershift/version' %}}
+{{% set dump_path = default_api_path ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+    no description
+
+rationale: |-
+    no rationale
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_version({custom_api_path: dump_path}) | indent(4) }}}

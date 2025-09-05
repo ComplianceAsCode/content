@@ -1,0 +1,3181 @@
+policy: PCI-DSS
+title: Configuration Recommendations of a GNU/Linux System
+id: pcidss_3
+version: '3.2.1'
+source: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
+levels:
+- id: base
+
+controls:
+- id: Req-1.1
+  title: '1.1 Establish and implement firewall and router configuration standards
+    that include the following:'
+  levels:
+  - base
+  status: automated
+  controls:
+  - id: Req-1.1.1
+    title: 1.1.1 A formal process for approving and testing all network connections
+      and changes to the firewall and router configurations
+    levels:
+    - base
+    status: not applicable
+    rules: []
+
+  - id: Req-1.1.2
+    title: 1.1.2 Current network diagram that identifies all connections between the
+      cardholder data environment and other networks, including any wireless networks
+    levels:
+    - base
+    status: not applicable
+    rules: []
+
+  - id: Req-1.1.3
+    title: 1.1.3 Current diagram that shows all cardholder data flows across systems
+      and networks
+    levels:
+    - base
+    status: not applicable
+    rules: []
+
+  - id: Req-1.1.4
+    title: 1.1.4 Requirements for a firewall at each Internet connection and between
+      any demilitarized zone (DMZ) and the internal network zone
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-1.1.5
+    title: 1.1.5 Description of groups, roles, and responsibilities for management of
+      network components
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-1.1.6
+    title: 1.1.6 Documentation and business justification for use of all services, protocols,
+      and ports allowed, including documentation of security features implemented for
+      those protocols considered to be insecure.
+    description: Examples of insecure services, protocols, or ports include but are
+      not limited to FTP, Telnet, POP3, IMAP, and SNMP v1 and v2.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-1.1.7
+    title: 1.1.7 Requirement to review firewall and router rule sets at least every
+      six months
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-1.2
+  title: 1.2 Build firewall and router configurations that restrict connections between
+    untrusted networks and any system components in the cardholder data environment.
+  description: |-
+    Note: An "untrusted network" is any network that is external
+    to the networks belonging to the entity under review, and/or which is out of
+    the entity's ability to control or manage.
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-1.2.1
+    title: 1.2.1 Restrict inbound and outbound traffic to that which is necessary for
+      the cardholder data environment, and specifically deny all other traffic.
+    levels:
+    - base
+    automated: yes
+    status: pending
+    rules: []
+
+  - id: Req-1.2.2
+    title: 1.2.2 Secure and synchronize router configuration files.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-1.2.3
+    title: 1.2.3 Install perimeter firewalls between all wireless networks and the cardholder
+      data environment, and configure these firewalls to deny or, if traffic is necessary
+      for business purposes, permit only authorized traffic between the wireless environment
+      and the cardholder data environment.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-1.3
+  title: 1.3 Prohibit direct public access between the Internet and any system component
+    in the cardholder data environment.
+  levels:
+  - base
+  status: partial
+  controls:
+  - id: Req-1.3.1
+    title: 1.3.1 Implement a DMZ to limit inbound traffic to only system components
+      that provide authorized publicly accessible services, protocols, and ports.
+    levels:
+    - base
+    status: automated
+    rules:
+      - grub2_ipv6_disable_argument
+      - sysctl_net_ipv4_ip_forward
+      - package_iptables_installed
+      - kernel_module_sctp_disabled
+      - kernel_module_dccp_disabled
+
+  - id: Req-1.3.2
+    title: 1.3.2 Limit inbound Internet traffic to IP addresses within the DMZ.
+    levels:
+    - base
+    status: automated
+    rules:
+      - grub2_ipv6_disable_argument
+      - sysctl_net_ipv4_ip_forward
+      - package_iptables_installed
+      - kernel_module_sctp_disabled
+      - kernel_module_dccp_disabled
+
+
+  - id: Req-1.3.3
+    title: >-
+      1.3.3 Implement anti-spoofing measures to detect and block forged
+      source IP addresses from entering the network.
+    description: (For example, block traffic originating from the Internet with an internal
+      source address.)
+    levels:
+    - base
+    status: automated
+    rules:
+      - wireless_disable_interfaces
+      - package_iptables_installed
+      - sysctl_net_ipv4_tcp_syncookies
+      - sysctl_net_ipv4_conf_default_accept_redirects
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+      - sysctl_net_ipv6_conf_default_accept_source_route
+      - sysctl_net_ipv4_conf_all_rp_filter
+      - sysctl_net_ipv4_conf_all_secure_redirects
+
+  - id: Req-1.3.4
+    title: >-
+      1.3.4 Do not allow unauthorized outbound traffic from the cardholder
+      data environment to the Internet.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-1.3.5
+    title: 1.3.5 Permit only "established" connections into the network.
+    levels:
+    - base
+    status: partial
+    rules:
+      - kernel_module_sctp_disabled
+      - kernel_module_dccp_disabled
+
+  - id: Req-1.3.6
+    title: >-
+      1.3.6 Place system components that store cardholder data (such as a
+      database) in an internal network zone, segregated from the DMZ and other
+      untrusted networks
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-1.3.7
+    title: >-
+      1.3.7 Do not disclose private IP addresses and routing information to
+      unauthorized parties.
+    description: |-
+      Note: Methods to obscure IP addressing may include, but are not limited to:
+      * Network Address Translation (NAT)
+      * Placing servers containing cardholder data behind proxy servers/firewalls,
+      * Removal or filtering of route advertisements for private networks that
+        employ registered addressing,
+      * Internal use of RFC1918 address space instead of registered addresses.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-1.4
+  title: '1.4 Install personal firewall software on any mobile and/or employee-owned
+    devices that connect to the Internet when outside the network (for example, laptops
+    used by employees), and which are also used to access the network.'
+  description: |+
+    Firewall configurations include:
+    * Specific configuration settings are defined for personal firewall software.
+    * Personal firewall software is actively running.
+    * Personal firewall software is not alterable by users of mobile and/or
+      employee-owned devices.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-1.5
+  title: 1.5 Ensure that security policies and operational procedures for managing
+    firewalls are documented, in use, and known to all affected parties.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-2.1
+  title: 2.1 Always change vendor-supplied defaults and remove or disable unnecessary
+    default accounts before installing a system on the network.
+  description: This applies to ALL default passwords, including but not limited to
+    those used by operating systems, software that provides security services, application
+    and system accounts, point-of-sale (POS) terminals, Simple Network Management
+    Protocol (SNMP) community strings, etc.).
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-2.1.1
+  title: 2.1.1 For wireless environments connected to the cardholder data environment
+    or transmitting cardholder data, change ALL wireless vendor defaults at installation,
+    including but not limited to default wireless encryption keys, passwords, and
+    SNMP community strings.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-2.2
+  title: 2.2 Develop configuration standards for all system components. Assure that
+    these standards address all known security vulnerabilities and are consistent
+    with industry-accepted system hardening standards.
+  description: |-
+    Sources of industry-accepted system hardening standards may include,
+    but are not limited to:
+    * Center for Internet Security (CIS)
+    * International Organization for Standardization (ISO)
+    * SysAdmin Audit Network Security (SANS) Institute
+    * National Institute of Standards Technology (NIST)
+  levels:
+  - base
+  status: partial
+  rules:
+    - configure_libreswan_crypto_policy
+    - configure_ssh_crypto_policy
+    - configure_openssl_crypto_policy
+
+  controls:
+  - id: Req-2.2.1
+    title: >-
+      2.2.1 Implement only one primary function per server to prevent functions
+      that require different security levels from co-existing on the same server.
+    description: |-
+      (For example, web servers, database servers, and DNS should be implemented
+      on separate servers.)
+
+      Note: Where virtualization technologies are in use, implement only
+      one primary function per virtual system component.
+    levels:
+    - base
+    status: partial
+    rules:
+      - sysctl_kernel_randomize_va_space
+
+  - id: Req-2.2.2
+    title: 2.2.2 Enable only necessary services, protocols, daemons, etc., as required
+      for the function of the system.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-2.2.3
+    title: >-
+      2.2.3 Implement additional security features for any required services,
+      protocols, or daemons that are considered to be insecure
+    description: |-
+      for example, use secured technologies such as SSH, S-FTP, TLS, or IPSec
+      VPN to protect insecure services such as NetBIOS, file-sharing, Telnet, FTP, etc.
+
+      Note: SSL and early TLS are not considered strong cryptography and
+      cannot be used as a security control after June 30, 2016. Prior to this date,
+      existing implementations that use SSL and/or early TLS must have a formal Risk
+      Mitigation and Migration Plan in place.
+
+      Effective immediately, new implementations must not use SSL or early TLS.
+
+      POS POI terminals (and the SSL/TLS termination points to which they connect) that
+      can be verified as not being susceptible to any known exploits for SSL and early
+      TLS may continue using these as a security control after June 30, 2016.'
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-2.2.4
+    title: 2.2.4 Configure system security parameters to prevent misuse.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-2.2.5
+    title: 2.2.5 Remove all unnecessary functionality, such as scripts, drivers, features,
+      subsystems, file systems, and unnecessary web servers.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-2.3
+  title: 2.3 Encrypt all non-console administrative access using strong cryptography.
+    Use technologies such as SSH, VPN, or TLS for web-based management and other non-console
+    administrative access.
+  description: 'Note: SSL and early TLS are not considered strong cryptography and
+    cannot be used as a security control after June 30, 2016. Prior to this date,
+    existing implementations that use SSL and/or early TLS must have a formal Risk
+    Mitigation and Migration Plan in place.
+
+    Effective immediately, new implementations must not use SSL or early TLS.
+
+    POS POI terminals (and the SSL/TLS termination points to which they connect) that
+    can be verified as not being susceptible to any known exploits for SSL and early
+    TLS may continue using these as a security control after June 30, 2016.'
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-2.4
+  title: 2.4 Maintain an inventory of system components that are in scope for PCI
+    DSS.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-2.5
+  title: 2.5 Ensure that security policies and operational procedures for managing
+    vendor defaults and other security parameters are documented, in use, and known
+    to all affected parties.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-2.6
+  title: >-
+    2.6 Shared hosting providers must protect each entity's hosted environment
+    and cardholder data.
+  description: |-
+    These providers must meet specific requirements as
+    detailed in Appendix A: Additional PCI DSS Requirements for Shared Hosting
+    Providers.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-3.1
+  title: >-
+    3.1 Keep cardholder data storage to a minimum by implementing data retention
+    and disposal policies, procedures and processes that include at least the following
+    for all cardholder data (CHD) storage:
+  description: |-
+    * Limiting data storage amount and retention time to that
+      which is required for legal, regulatory, and/or business requirements
+    * Specific retention requirements for cardholder data
+    * Processes for secure deletion of data when no longer needed
+    * A quarterly process for identifying and securely deleting stored
+      cardholder data that exceeds defined retention.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-3.2
+  title: >-
+    3.2 Do not store sensitive authentication data after authorization (even
+    if encrypted).
+  description: |-
+    If sensitive authentication data is received, render all
+    data unrecoverable upon completion of the authorization process.
+
+    It is permissible for issuers and companies that support issuing services
+    to store sensitive authentication data if:
+    * There is a business justification and
+    * The data is stored securely.
+
+    Sensitive authentication data includes the data as cited in the
+    following Requirements 3.2.1 through 3.2.3:
+  levels:
+  - base
+  notes: >-
+    Proper design of the application by the payment entity can accommodate this requirement as a processing
+    mandate, restricting in-memory process for this data and taking care not to write to file storage from within
+    the container or pod.
+  status: pending
+  controls:
+  - id: Req-3.2.1
+    title: 3.2.1 Do not store the full contents of any track (from the magnetic stripe
+      located on the back of a card, equivalent data contained on a chip, or elsewhere)
+      after authorization. This data is alternatively called full track, track, track
+      1, track 2, and magnetic- stripe data.
+    description: |-
+      Note: In the normal course of business, the following data elements
+      from the magnetic stripe may need to be retained:
+
+      * The cardholder's name
+      * Primary account number (PAN)
+      * Expiration date
+      * Service code
+
+      To minimize risk, store only these data elements as needed for business.
+    levels:
+    - base
+    notes: ''
+    status: pending
+    rules: []
+
+  - id: Req-3.2.2
+    title: 3.2.2 Do not store the card verification code or value (three-digit or four-digit
+      number printed on the front or back of a payment card used to verify card-not-
+      present transactions) after authorization.
+    levels:
+    - base
+    notes: ''
+    status: pending
+    rules: []
+
+  - id: Req-3.2.3
+    title: 3.2.3 Do not store the personal identification number (PIN) or the encrypted
+      PIN block after authorization.
+    levels:
+    - base
+    notes: ''
+    status: pending
+    rules: []
+
+- id: Req-3.3
+  title: 3.3 Mask PAN when displayed (the first six and last four digits are the maximum
+    number of digits to be displayed), such that only personnel with a legitimate
+    business need can see the full PAN.
+  description: |-
+    Note: This requirement does not supersede stricter requirements in
+    place for displays of cardholder data; for example, legal or payment card
+    brand requirements for point-of-sale (POS) receipts.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-3.4
+  title: '3.4 Render PAN unreadable anywhere it is stored (including on portable digital
+    media, backup media, and in logs) by using any of the following approaches:'
+  description: |-
+    * One-way hashes based on strong cryptography, (hash must be of the entire PAN)
+    * Truncation (hashing cannot be used to replace the truncated segment of PAN)
+    * Index tokens and pads (pads must be securely stored)
+    * Strong cryptography with associated key-management processes and procedures.
+
+    Note: It is a relatively trivial effort for a malicious individual to
+    reconstruct original PAN data if they have access to both the
+    truncated and hashed version of a PAN. Where hashed and truncated versions of
+    the same PAN are present in an entity's environment, additional controls
+    must be in place to ensure that the hashed and truncated versions cannot be
+    correlated to reconstruct the original PAN.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-3.4.1
+  title: 3.4.1 If disk encryption is used (rather than file- or column-level database
+    encryption), logical access must be managed separately and independently of native
+    operating system authentication and access control mechanisms (for example, by
+    not using local user account databases or general network login credentials).
+    Decryption keys must not be associated with user accounts.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-3.5
+  title: '3.5 Document and implement procedures to protect keys used to secure stored
+    cardholder data against disclosure and misuse:'
+  description: |-
+    Note: This requirement applies to keys used to encrypt stored cardholder
+    data, and also applies to key-encrypting keys used to protect data-encrypting
+    keys; such key-encrypting keys must be at least as strong as the data-encrypting
+    key.
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-3.5.1
+    title: 'Additional requirement  for service  providers  only: Maintain a documented
+      description of the cryptographic architecture that includes: '
+    description: |-
+       * Details of all algorithms, protocols, and keys used  for the protection of
+         cardholder data, including key strength an d expiry date
+       * Description of the key usage for each key
+       * Inventory of any HSMs and other SCDs  used for key management
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-3.5.2
+    title: '3.5.2 Restrict access to cryptographic keys to the fewest number of custodians
+      necessary.'
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-3.5.3
+    title: '3.5.3 Store secret and private keys used to encrypt/decrypt cardholder data
+      in one (or more) of the following forms at all times:'
+    description: |-
+      * Encrypted with a key-encrypting key that is at least as strong
+        as the data-encrypting key, and that is stored separately from the
+        data-encrypting key
+      * Within a secure cryptographic device (such as a hardware (host)
+        security module (HSM) or PTS- approved point-of-interaction device)
+      * As at least two full-length key components or key shares, in accordance with
+        an industry- accepted method\nNote: It is not required that public keys be stored
+        in one of these forms.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-3.5.4
+    title: 3.5.4 Store cryptographic keys in the fewest possible locations.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-3.6
+  title: '3.6 Fully document and implement all key-management processes and procedures
+    for cryptographic keys used for encryption of cardholder data, including the following:'
+  description: 'Note: Numerous industry standards for key management are available
+    from various resources including NIST, which can be found at http://csrc.nist.gov.'
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-3.6.1
+    title: 3.6.1 Generation of strong cryptographic keys
+    levels:
+    - base
+    notes: ''
+    status: pending
+    rules: []
+
+  - id: Req-3.6.2
+    title: 3.6.2 Secure cryptographic key distribution
+    levels:
+    - base
+    notes: ''
+    status: pending
+    rules: []
+
+  - id: Req-3.6.3
+    title: 3.6.3 Secure cryptographic key storage
+    levels:
+    - base
+    notes: ''
+    status: pending
+    rules: []
+
+  - id: Req-3.6.4
+    title: 3.6.4 Cryptographic key changes for keys that have reached the end of their
+      cryptoperiod (for example, after a defined period of time has passed and/or after
+      a certain amount of cipher- text has been produced by a given key), as defined
+      by the associated application vendor or key owner, and based on industry best
+      practices and guidelines (for example, NIST Special Publication 800-57).
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-3.6.5
+    title: 3.6.5 Retirement or replacement (for example, archiving, destruction, and/or
+      revocation) of keys as deemed necessary when the integrity of the key has been
+      weakened (for example, departure of an employee with knowledge of a clear-text
+      key component), or keys are suspected of being compromised.
+    description: 'Note: If retired or replaced cryptographic keys need to be retained,
+      these keys must be securely archived (for example, by using a key-encryption key).
+      Archived cryptographic keys should only be used for decryption/verification purposes.'
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-3.6.6
+    title: 3.6.6 If manual clear-text cryptographic key-management operations are used,
+      these operations must be managed using split knowledge and dual control.
+    description: 'Note: Examples of manual key- management operations include, but are
+      not limited to: key generation, transmission, loading, storage and destruction.'
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-3.6.7
+    title: 3.6.7 Prevention of unauthorized substitution of cryptographic keys.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-3.6.8
+    title: 3.6.8 Requirement for cryptographic key custodians to formally acknowledge
+      that they understand and accept their key-custodian responsibilities.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-3.7
+  title: 3.7 Ensure that security policies and operational procedures for protecting
+    stored cardholder data are documented, in use, and known to all affected parties.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-4.1
+  title: '4.1 Use strong cryptography and security protocols (for example, TLS, IPSEC,
+    SSH, etc.) to safeguard sensitive cardholder data during transmission over open,
+    public networks, including the following:'
+  description: |-
+    * Only trusted keys and certificates are accepted.
+    * The protocol in use only supports secure versions or configurations.
+    * The encryption strength is appropriate for the encryption methodology in
+      use.
+
+    Note: SSL and early TLS are not considered strong cryptography and cannot
+    be used as a security control after June 30, 2016. Prior to this date, existing
+    implementations that use SSL and/or early TLS must have a formal Risk Mitigation
+    and Migration Plan in place.
+
+    Effective immediately, new implementations must not use SSL or early TLS.
+
+    POS POI terminals (and the SSL/TLS termination points to which they connect)
+    that can be verified as not being susceptible to any known exploits for SSL
+    and early TLS may continue using these as a security control after
+    June 30, 2016.
+
+    Examples of open, public networks include but are not limited to:
+    * The Internet
+    * Wireless technologies, including 802.11 and Bluetooth
+    * Cellular technologies, for example, Global System for Mobile
+      communications (GSM), Code division multiple access (CDMA)
+    * General Packet Radio Service (GPRS)
+    * Satellite communications
+  levels:
+  - base
+  status: partial
+  rules:
+    - package_strongswan_installed
+    - package_libreswan_installed
+
+- id: Req-4.1.1
+  title: 4.1.1 Ensure wireless networks transmitting cardholder data or connected
+    to the cardholder data environment, use industry best practices (for example,
+    IEEE 802.11i) to implement strong encryption for authentication and transmission.
+  description: 'Note: The use of WEP as a security control is prohibited.'
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-4.2
+  title: 4.2 Never send unprotected PANs by end-user messaging technologies (for
+    example, e-mail, instant messaging, SMS, chat, etc.).
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-4.3
+  title: 4.3 Ensure that security policies and operational procedures for encrypting
+    transmissions of cardholder data are documented, in use, and known to all affected
+    parties.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-5.1
+  title: 5.1 Deploy anti-virus software on all systems commonly affected by malicious
+    software (particularly personal computers and servers).
+  levels:
+  - base
+  status: pending
+  controls:
+    - id: Req-5.1.1
+      title: 5.1.1 Ensure that anti-virus programs are capable of detecting, removing,
+        and protecting against all known types of malicious software.
+      levels:
+      - base
+      status: pending
+      rules: []
+
+    - id: Req-5.1.2
+      title: 5.1.2 For systems considered to be not commonly affected by malicious software,
+        perform periodic evaluations to identify and evaluate evolving malware threats
+        in order to confirm whether such systems continue to not require anti-virus software.
+      levels:
+      - base
+      status: pending
+      rules: []
+
+- id: Req-5.2
+  title: '5.2 Ensure that all anti-virus mechanisms are maintained as follows:'
+  description: |-
+    * Are kept current,
+    * Perform periodic scans
+    * Generate audit logs which are retained per PCI DSS Requirement 10.7.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-5.3
+  title: 5.3 Ensure that anti-virus mechanisms are actively running and cannot be
+    disabled or altered by users, unless specifically authorized by management on
+    a case-by-case basis for a limited time period.
+  description: 'Note: Anti-virus solutions may be temporarily disabled only if there
+    is legitimate technical need, as authorized by management on a case-by-case basis.
+    If anti-virus protection needs to be disabled for a specific purpose, it must
+    be formally authorized. Additional security measures may also need to be implemented
+    for the period of time during which anti-virus protection is not active.'
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-5.4
+  title: 5.4 Ensure that security policies and operational procedures for protecting
+    systems against malware are documented, in use, and known to all affected parties.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-6.1
+  title: >-
+    6.1 Establish a process to identify security vulnerabilities, using reputable
+    outside sources for security vulnerability information, and assign a risk ranking
+    (for example, as 'high', 'medium', or 'low') to newly discovered security vulnerabilities.
+  description: |-
+    Note: Risk rankings should be based on industry best practices as well as
+    consideration of potential impact. For example, criteria for ranking
+    vulnerabilities may include consideration of the CVSS base score,
+    and/or the classification by the vendor, and/or type of systems affected.
+
+    Methods for evaluating vulnerabilities and assigning risk ratings
+    will vary based on an organization's environment and risk- assessment strategy.
+    Risk rankings should, at a minimum, identify all vulnerabilities considered
+    to be a 'high risk' to the environment. In addition to the risk ranking,
+    vulnerabilities may be considered 'critical' if they pose an imminent
+    threat to the environment, impact critical systems, and/or would result in a
+    potential compromise if not addressed. Examples of critical systems may include
+    security systems, public-facing devices and systems, databases, and other systems
+    that store, process, or transmit cardholder data.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-6.2
+  title: 6.2 Ensure that all system components and software are protected from known
+    vulnerabilities by installing applicable vendor- supplied security patches. Install
+    critical security patches within one month of release.
+  description: 'Note: Critical security patches should be identified according to
+    the risk ranking process defined in Requirement 6.1.'
+  levels:
+  - base
+  status: automated
+  rules:
+    - ensure_suse_gpgkey_installed
+    - ensure_gpgcheck_globally_activated
+    - dconf_db_up_to_date
+    - ensure_gpgcheck_never_disabled
+    - security_patches_up_to_date
+
+
+- id: Req-6.3
+  title: '6.3 Develop internal and external software applications (including web-based
+    administrative access to applications) securely, as follows:'
+  description: |-
+    * In accordance with PCI DSS (for example, secure authentication and logging)
+    * Based on industry standards and/or best practices.
+    * Incorporating information security throughout the software-development
+      life cycle
+    Note: this applies to all software developed internally as well as
+    bespoke or custom software developed by a third party.
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-6.3.1
+    title: 6.3.1 Remove development, test and/or custom application accounts, user IDs,
+      and passwords before applications become active or are released to customers.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-6.3.2
+    title: '6.3.2 Review custom code prior to release to production or customers in
+      order to identify any potential coding vulnerability (using either manual or automated
+      processes) to include at least the following:'
+    description: |-
+      * Code changes are reviewed by individuals other than the originating
+        code author, and by individuals knowledgeable about code-review techniques and
+        secure coding practices.
+      * Code reviews ensure code is developed according
+        to secure coding guidelines
+      * Appropriate corrections are implemented
+        prior to release.
+      * Code-review results are reviewed and approved by management prior to release.
+
+      Note: This requirement for code reviews applies to all custom code
+      (both internal and public-facing), as part of the system development life cycle.
+
+      Code reviews can be conducted by knowledgeable internal personnel or third parties.
+      Public-facing web applications are also subject to additional controls,
+      to address ongoing threats and vulnerabilities after implementation,
+      as defined at PCI DSS Requirement 6.6.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-6.4
+  title: '6.4 Follow change control processes and procedures for all changes to system
+    components. The processes must include the following:'
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-6.4.1
+    title: 6.4.1 Separate development/test environments from production environments,
+      and enforce the separation with access controls.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment entity's
+      responsibility to separate development and test environments.
+    status: pending
+    rules: []
+
+  - id: Req-6.4.2
+    title: 6.4.2 Separation of duties between development/test and production environments
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment entity's
+      responsibility to separate development and test environments.
+    status: pending
+    rules: []
+
+  - id: Req-6.4.3
+    title: 6.4.3 Production data (live PANs) are not used for testing or development
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment entity's
+      responsibility to not use live PANs for testing and development.
+    status: pending
+    rules: []
+
+  - id: Req-6.4.4
+    title: 6.4.4 Removal of test data and accounts before production systems become
+      active
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment entity's
+      responsibility to remove test data and accounts, or ensure they're not present
+      in production environments.
+    status: pending
+    rules: []
+
+  - id: Req-6.4.5
+    title: '6.4.5 Change control procedures for the implementation of security patches
+      and software modifications must include the following:'
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow appropriate and documented procedures
+      when applying updates and software modifications.
+    status: pending
+    controls:
+    - id: Req-6.4.5.1
+      title: 6.4.5.1 Documentation of impact.
+      levels:
+      - base
+      notes: |-
+        This is an organizational control, and thus it's in the payment
+        entity's responsibility to follow appropriate procedures
+        when applying updates and software modifications, and that these
+        procedures are thoroughly documented.
+      status: pending
+      rules: []
+
+    - id: Req-6.4.5.2
+      title: 6.4.5.2 Documented change approval by authorized parties.
+      levels:
+      - base
+      notes: |-
+        This is an organizational control, and thus it's in the payment
+        entity's responsibility to follow appropriate and documented procedures
+        when applying updates and software modifications, and that these
+        procedures are approved by an authorized party.
+      status: pending
+      rules: []
+
+    - id: Req-6.4.5.3
+      title: 6.4.5.3 Functionality testing to verify that the change does not adversely
+        impact the security of the system.
+      levels:
+      - base
+      notes: |-
+        This is an organizational control, and thus it's in the payment
+        entity's responsibility to follow appropriate and documented procedures
+        when applying updates and software modifications, as well
+        as testing them appropriately before applying them.
+      status: pending
+      rules: []
+
+    - id: Req-6.4.5.4
+      title: 6.4.5.4 Back-out procedures.
+      levels:
+      - base
+      notes: |-
+        This is an organizational control, and thus it's in the payment
+        entity's responsibility to follow appropriate and documented procedures
+        when applying updates and software modifications, as well
+        having back-out procedures in-place and working.
+      status: pending
+      rules: []
+
+  - id: Req-6.4.6
+    title: '6.4.6- Upon completion of a significant change, all relevant PCI DSS requirements must be implemented on all
+      new or changed systems and networks, and documentation updated as applicable.'
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow implement and document all relevant requirements
+      to new or changed software
+    status: pending
+    rules: []
+
+- id: Req-6.5
+  title: '6.5 Address common coding vulnerabilities in software-development processes
+    as follows:'
+  description: |-
+    * Train developers in secure coding techniques, including
+      how to avoid common coding vulnerabilities, and understanding how sensitive
+      data is handled in memory.
+    * Develop applications based on secure coding guidelines.
+
+    Note: The vulnerabilities listed at 6.5.1 through 6.5.10 were current
+    with industry best practices when this version of PCI DSS was published. However,
+    as industry best practices for vulnerability management are updated (for example,
+    the OWASP Guide, SANS CWE Top 25, CERT Secure Coding, etc.), the current best
+    practices must be used for these requirements.
+  levels:
+  - base
+  notes: |-
+    This is an organizational control, and thus it's in the payment
+    entity's responsibility to follow best secure development practices
+    when developing applications.
+  status: pending
+  controls:
+  - id: Req-6.5.1
+    title: 6.5.1 Injection flaws, particularly SQL injection. Also consider OS Command
+      Injection, LDAP and XPath injection flaws as well as other injection flaws.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications.
+    status: pending
+    rules: []
+
+  - id: Req-6.5.2
+    title: 6.5.2 Buffer overflows
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications.
+    status: pending
+    rules: []
+
+  - id: Req-6.5.3
+    title: 6.5.3 Insecure cryptographic storage
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications.
+    status: pending
+    rules: []
+
+  - id: Req-6.5.4
+    title: 6.5.4 Insecure communications
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications.
+    status: pending
+    rules:
+    - routes_protected_by_tls
+
+  - id: Req-6.5.5
+    title: 6.5.5 Improper error handling
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications.
+    status: pending
+    rules: []
+
+  - id: Req-6.5.6
+    title: >-
+      6.5.6 All "high risk" vulnerabilities identified in the vulnerability
+      identification process (as defined in PCI DSS Requirement 6.1).
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-6.5.7
+    title: 6.5.7   Cross-site scripting (XSS)
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications.
+    status: pending
+    rules: []
+
+  - id: Req-6.5.8
+    title: 6.5.8 Improper access control (such as insecure direct object references,
+      failure to restrict URL access, directory traversal, and failure to restrict user
+      access to functions).
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications.
+    status: pending
+    rules: []
+
+  - id: Req-6.5.9
+    title: 6.5.9 Cross-site request forgery (CSRF)
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications.
+    status: pending
+    rules: []
+
+  - id: Req-6.5.10
+    title: 6.5.10 Broken authentication and session management
+    description: 'Note: Requirement 6.5.10 is a best practice until June 30, 2015, after
+      which it becomes a requirement.'
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications.
+    status: pending
+    rules: []
+
+- id: Req-6.6
+  title: '6.6 For public-facing web applications, address new threats and vulnerabilities
+    on an ongoing basis and ensure these applications are protected against known
+    attacks by either of the following methods:'
+  description: |-
+    * Reviewing public-facing web applications via manual or automated
+      application vulnerability security assessment tools or methods, at least annually
+      and after any changes
+
+      Note: This assessment is not the same as the vulnerability
+      scans performed for Requirement 11.2.
+
+    * Installing an automated technical solution that detects and prevents
+      web-based attacks (for example, a web- application firewall) in
+      front of public- facing web applications, to continually check all traffic.
+  levels:
+  - base
+  notes: |-
+    This is an organizational control, and thus it's in the payment
+    entity's responsibility to identify public-facing web applications
+    and ensure threat detection is in place.
+  status: pending
+  rules: []
+
+- id: Req-6.7
+  title: 6.7 Ensure that security policies and operational procedures for developing
+    and maintaining secure systems and applications are documented, in use, and known
+    to all affected parties.
+  levels:
+  - base
+  notes: |-
+    This is an organizational control, and thus it's in the payment
+    entity's responsibility to follow best secure development practices
+    when developing applications.
+  status: pending
+  rules: []
+
+- id: Req-7.1
+  title: 7.1 Limit access to system components and cardholder data to only those individuals
+    whose job requires such access.
+  levels:
+  - base
+  status: partial
+  rules:
+    - file_owner_grub2_cfg
+    - file_groupowner_grub2_cfg
+  controls:
+  - id: Req-7.1.1
+    title: '7.1.1 Define access needs for each role, including:'
+    description: |-
+      * System components and data resources that each role needs
+        to access for their job function
+      * Level of privilege required (for example, user, administrator,
+        etc.) for accessing resources.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-7.1.2
+    title: 7.1.2 Restrict access to privileged user IDs to least privileges necessary
+      to perform job responsibilities.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-7.1.3
+    title: >-
+      7.1.3 Assign access based on individual personnel's job classification
+      and function."
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-7.1.4
+    title: 7.1.4 Require documented approval by authorized parties specifying required
+      privileges.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-7.2
+  title: >-
+    7.2 Establish an access control system for systems components that restricts
+    access based on a user's need to know, and is set to 'deny all'
+    unless specifically allowed.
+  description: 'This access control system must include the following:'
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-7.2.1
+    title: 7.2.1 Coverage of all system components
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-7.2.2
+    title: 7.2.2 Assignment of privileges to individuals based on job classification
+      and function.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-7.2.3
+    title: "7.2.3 Default 'deny-all' setting."
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-7.3
+  title: 7.3 Ensure that security policies and operational procedures for restricting
+    access to cardholder data are documented, in use, and known to all affected parties.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-8.1
+  title: '8.1 Define and implement policies and procedures to ensure proper user identification
+    management for non-consumer users and administrators on all system components
+    as follows:'
+  levels:
+  - base
+
+  status: partial
+  controls:
+  - id: Req-8.1.1
+    title: 8.1.1 Assign all users a unique ID before allowing them to access system
+      components or cardholder data.
+    levels:
+    - base
+    status: automated
+    rules:
+      - account_unique_name
+
+  - id: Req-8.1.2
+    title: 8.1.2 Control addition, deletion, and modification of user IDs, credentials,
+      and other identifier objects.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-8.1.3
+    title: 8.1.3 Immediately revoke access for any terminated users.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-8.1.4
+    title: 8.1.4 Remove/disable inactive user accounts within 90 days.
+    levels:
+    - base
+    status: automated
+    rules:
+      - var_account_disable_post_pw_expiration=90
+      - account_disable_post_pw_expiration
+
+  - id: Req-8.1.5
+    title: '8.1.5 Manage IDs used by vendors to access, support, or maintain system
+      components via remote access as follows:'
+    description: "\uF0B7  Enabled only during the time period needed and disabled when\
+      \ not in use.\n\uF0B7  Monitored when in use."
+    levels:
+    - base
+    notes: |-
+      The options for controlling remote access for third parties is the
+      responsibility of the payment entity
+    status: pending
+    rules: []
+
+  - id: Req-8.1.6
+    title: 8.1.6 Limit repeated access attempts by locking out the user ID after not
+      more than six attempts.
+    levels:
+    - base
+    status: automated
+    rules:
+      - accounts_passwords_pam_faillock_deny
+      - accounts_passwords_pam_tally2
+
+  - id: Req-8.1.7
+    title: 8.1.7 Set the lockout duration to a minimum of 30 minutes or until an administrator
+      enables the user ID.
+    levels:
+    - base
+    status:  automated
+    rules:
+      - accounts_passwords_pam_faillock_unlock_time
+      - accounts_passwords_pam_tally2_unlock_time
+      - var_accounts_passwords_pam_tally2_unlock_time=1800
+
+  - id: Req-8.1.8
+    title: 8.1.8 If a session has been idle for more than 15 minutes, require the user
+      to re-authenticate to re-activate the terminal or session.
+    levels:
+    - base
+    status: automated
+    rules:
+      - var_sshd_set_keepalive=0
+      - sshd_idle_timeout_value=15_minutes
+      - dconf_gnome_session_idle_user_locks
+      - sshd_set_keepalive
+      - sshd_set_idle_timeout
+      - dconf_gnome_screensaver_lock_enabled
+      - dconf_gnome_screensaver_idle_activation_enabled
+      - dconf_gnome_screensaver_idle_delay
+      - dconf_gnome_screensaver_mode_blank
+      - sshd_set_keepalive_0
+
+
+- id: Req-8.2
+  title: '8.2 In addition to assigning a unique ID, ensure proper user-authentication
+    management for non-consumer users and administrators on all system components
+    by employing at least one of the following methods to authenticate all users:'
+  description: |-
+    * Something you know, such as a password or passphrase
+    * Something you have, such as a token device or smart card
+    * Something you are, such as a biometric.
+  levels:
+  - base
+  status: automated
+  controls:
+  - id: Req-8.2.1
+    title: 8.2.1 Using strong cryptography, render all authentication credentials (such
+      as passwords/phrases) unreadable during transmission and storage on all system
+      components.
+    levels:
+    - base
+    status: automated
+    rules:
+      - set_password_hashing_algorithm_systemauth
+      - set_password_hashing_algorithm_commonauth
+      - set_password_hashing_algorithm_logindefs
+      - set_password_hashing_algorithm_libuserconf
+      - accounts_password_all_shadowed
+
+  - id: Req-8.2.2
+    title: 8.2.2 Verify user identity before modifying any authentication credential
+    description: |-
+      for example, performing password resets, provisioning new tokens, or generating
+      new keys."
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-8.2.3
+    title: '8.2.3 Passwords/phrases must meet the following:'
+    description: |-
+      * Require a minimum length of at least seven characters.
+      * Contain both numeric and alphabetic characters.
+
+      Alternatively, the passwords/phrases must have complexity
+      and strength at least equivalent to the parameters specified
+      above.
+    levels:
+    - base
+    status: automated
+    rules:
+      - var_password_pam_lcredit=1
+      - accounts_password_pam_ucredit
+      - accounts_password_pam_dcredit
+      - accounts_password_pam_lcredit
+      - no_empty_passwords
+      - accounts_password_pam_minlen
+
+
+  - id: Req-8.2.4
+    title: 8.2.4 Change user passwords/passphrases at least once every 90 days.
+    levels:
+    - base
+    status: automated
+    rules:
+      - var_accounts_maximum_age_login_defs=90
+      - accounts_maximum_age_login_defs
+
+  - id: Req-8.2.5
+    title: 8.2.5 Do not allow an individual to submit a new password/phrase that is
+      the same as any of the last four passwords/phrases he or she has used.
+    levels:
+    - base
+    status: automated
+    rules:
+      - var_password_pam_unix_remember=4
+      - accounts_password_pam_unix_remember
+
+  - id: Req-8.2.6
+    title: 8.2.6 Set passwords/phrases for first- time use and upon reset to a unique
+      value for each user, and change immediately after the first use.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-8.3
+  title: '8.3 Incorporate two-factor authentication for remote network access originating
+    from outside the network by personnel (including users and administrators) and
+    all third parties, (including vendor access for support or maintenance). Note:
+    Two-factor authentication requires that two of the three authentication methods
+    (see Requirement 8.2 for descriptions of authentication methods) be used for authentication.
+    Using one factor twice (for example, using two separate passwords) is not considered
+    two-factor authentication.'
+  description: Examples of two-factor technologies include remote authentication and
+    dial-in service (RADIUS) with tokens; terminal access controller access control
+    system (TACACS) with tokens; and other technologies that facilitate two-factor
+    authentication.
+  levels:
+  - base
+  status: automated
+  rules:
+    - var_smartcard_drivers=cac
+    - install_smartcard_packages
+    - configure_opensc_card_drivers
+    - service_pcscd_enabled
+    - sssd_enable_smartcards
+    - force_opensc_card_drivers
+
+
+- id: Req-8.4
+  title: '8.4 Document and communicate authentication policies and procedures to all
+    users including:'
+  description: |-
+    * Guidance on selecting strong authentication credentials
+    * Guidance for how users should protect their authentication credentials
+    * Instructions not to reuse previously used passwords
+    * Instructions to change passwords if there is any suspicion the password
+      could be compromised.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-8.5
+  title: '8.5 Do not use group, shared, or generic IDs, passwords, or other authentication
+    methods as follows:'
+  description: |-
+    * Generic user IDs are disabled or removed.
+    * Shared user IDs do not exist for system administration and other critical functions.
+    * Shared and generic user IDs are not used to administer any system components.
+  levels:
+  - base
+  status: partial
+  rules:
+    - gid_passwd_group_same
+
+- id: Req-8.5.1
+  title: '8.5.1 Additional requirement for service providers only: Service providers
+    with remote access to customer premises (for example, for support of POS systems
+    or servers) must use a unique authentication credential (such as a password/phrase)
+    for each customer.'
+  description: 'Note: This requirement is not intended to apply to shared hosting
+    providers accessing their own hosting environment, where multiple customer environments
+    are hosted.
+
+    Note: Requirement 8.5.1 is a best practice until June 30, 2015, after which it
+    becomes a requirement.'
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-8.6
+  title: '8.6 Where other authentication mechanisms are used (for example, physical
+    or logical security tokens, smart cards, certificates, etc.), use of these mechanisms
+    must be assigned as follows:'
+  description: "\uF0B7    Authentication mechanisms must be assigned to an individual\
+    \ account and not shared among multiple accounts.\n\uF0B7    Physical and/or logical\
+    \ controls must be in place to ensure only the intended account can use that mechanism\
+    \ to gain access."
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-8.7
+  title: '8.7 All access to any database containing cardholder data (including access
+    by applications, administrators, and all other users) is restricted as follows:'
+  description: "\uF0B7 All user access to, user queries of, and user actions on databases\
+    \ are through programmatic methods.\n\uF0B7    Only database administrators have\
+    \ the ability to directly access or query databases.\n\uF0B7    Application IDs\
+    \ for database applications can only be used by the applications (and not by individual\
+    \ users or other non-application processes)."
+  levels:
+  - base
+  status: partial
+  rules:
+    - file_owner_etc_group
+    - file_owner_etc_shadow
+    - file_permissions_etc_passwd
+    - file_owner_etc_passwd
+    - file_groupowner_etc_passwd
+    - file_groupowner_etc_group
+    - file_permissions_etc_group
+    - file_permissions_etc_shadow
+    - file_groupowner_etc_shadow
+
+- id: Req-8.8
+  title: 8.8 Ensure that security policies and operational procedures for identification
+    and authentication are documented, in use, and known to all affected parties.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-9.1
+  title: 9.1 Use appropriate facility entry controls to limit and monitor physical
+    access to systems in the cardholder data environment.
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-9.1.1
+    title: 9.1.1 Use video cameras and/or access control mechanisms to monitor individual
+      physical access to sensitive areas. Review collected data and correlate with other
+      entries. Store for at least three months, unless otherwise restricted by law.
+    description: "Note: \u201CSensitive areas\u201D refers to any\ndata center, server\
+      \ room or any area that houses systems that store, process, or transmit cardholder\
+      \ data. This excludes public-facing areas where only point-of- sale terminals\
+      \ are present, such as the cashier areas in a retail store."
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-9.1.2
+    title: 9.1.2 Implement physical and/or logical controls to restrict access to publicly
+      accessible network jacks.
+    description: For example, network jacks located in public areas and areas accessible
+      to visitors could be disabled and only enabled when network access is explicitly
+      authorized. Alternatively, processes could be implemented to ensure that visitors
+      are escorted at all times in areas with active network jacks.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-9.1.3
+    title: 9.1.3 Restrict physical access to wireless access points, gateways, handheld
+      devices, networking/communications hardware, and telecommunication lines.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-9.2
+  title: '9.2 Develop procedures to easily distinguish between onsite personnel and visitors'
+  description: |-
+    include:
+    * Identifying onsite personnel and visitors (for example, assigning badges)
+    * Changes to access requirements
+    * Revoking or terminating onsite personnel and expired visitor identification
+      (such as ID badges).
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-9.3
+  title: '9.3 Control physical access for onsite personnel to sensitive areas as follows:'
+  description: |-
+    * Access must be authorized and based on individual job function.
+    * Access is revoked immediately upon termination, and all physical access
+      mechanisms, such as keys, access cards, etc., are returned or disabled.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-9.4
+  title: 9.4 Implement procedures to identify and authorize visitors.
+  description: 'Procedures should include the following:'
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-9.4.1
+    title: >-
+      9.4.1 Visitors are authorized before entering, and escorted at all times
+      within, areas where cardholder data is processed or maintained.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-9.4.2
+    title: 9.4.2 Visitors are identified and given a badge or other identification that
+      expires and that visibly distinguishes the visitors from onsite personnel.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-9.4.3
+    title: 9.4.3 Visitors are asked to surrender the badge or identification before
+      leaving the facility or at the date of expiration.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-9.4.4
+    title: 9.4.4 A visitor log is used to maintain a physical audit trail of visitor
+      activity to the facility as well as computer rooms and data centers where cardholder
+      data is stored or transmitted.
+    description: |-
+      Document the visitor's name, the firm represented, and the onsite
+      personnel authorizing physical access on the log.
+      Retain this log for a minimum of three months, unless otherwise restricted
+      by law.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-9.5
+  title: 9.5 Physically secure all media.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-9.5.1
+  title: >-
+    9.5.1 Store media backups in a secure location, preferably an off-site facility,
+    such as an alternate or backup site, or a commercial storage facility. Review
+    the location\u2019s security at least annually.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-9.6
+  title: >-
+    9.6 Maintain strict control over the internal or external distribution of
+    any kind of media, including the following:'
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-9.6.1
+    title: 9.6.1 Classify media so the sensitivity of the data can be determined.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-9.6.2
+    title: 9.6.2 Send the media by secured courier or other delivery method that can
+      be accurately tracked.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-9.6.3
+    title: 9.6.3 Ensure management approves any and all media that is moved from a secured
+      area (including when media is distributed to individuals).
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-9.7
+  title: 9.7 Maintain strict control over the storage and accessibility of media.
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-9.7.1
+    title: >-
+      9.7.1 Properly maintain inventory logs of all media and conduct media
+      inventories at least annually.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-9.8
+  title: >-
+    9.8 Destroy media when it is no longer needed for business or legal reasons
+    as follows:
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-9.8.1
+    title: >-
+      9.8.1 Shred, incinerate, or pulp hard- copy materials so that cardholder
+      data cannot be reconstructed. Secure storage containers used for materials that
+      are to be destroyed.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-9.8.2
+    title: 9.8.2 Render cardholder data on electronic media unrecoverable so that cardholder
+      data cannot be reconstructed.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-9.9
+  title: >-
+    9.9 Protect devices that capture payment card data via direct physical interaction
+    with the card from tampering and substitution.
+  description: |-
+    Note: These requirements apply to card- reading devices used in card-present
+    transactions (that is, card swipe or dip) at the point of sale. This requirement
+    is not intended to apply to manual key-entry components such as computer keyboards
+    and POS keypads.
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-9.9.1
+    title: 9.9.1 Maintain an up-to-date list of devices.
+    description: |-
+      The list should include the following:
+      * Make, model of device
+      * Location of device (for example, the address of the site or facility
+        where the device is located)
+      * Device serial number or other method of unique identification.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-9.9.2
+    title: >-
+      9.9.2 Periodically inspect device surfaces to detect tampering (for example,
+      addition of card skimmers to devices), or substitution (for example, by checking
+      the serial number or other device characteristics to verify it has not been swapped
+      with a fraudulent device).
+    description: >-
+      Note: Examples of signs that a device might have been tampered with
+      or substituted include unexpected attachments or cables plugged into the device,
+      missing or changed security labels, broken or differently colored casing, or changes
+      to the serial number or other external markings.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-9.9.3
+    title: >-
+      9.9.3 Provide training for personnel to be aware of attempted tampering
+      or replacement of devices.
+    description: >-
+      Training should include the following:
+      * Verify the identity of any third-party persons claiming to be repair
+        or maintenance personnel, prior to granting them access to modify
+        or troubleshoot devices.
+      * Do not install, replace, or return devices without verification.
+      * Be aware of suspicious behavior around devices (for example, attempts
+        by unknown persons to unplug or open devices).
+      * Report suspicious behavior and indications of device tampering or
+        substitution to appropriate personnel (for example, to a manager or
+        security officer).
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-9.10
+  title: 9.10 Ensure that security policies and operational procedures for restricting
+    physical access to cardholder data are documented, in use, and known to all affected
+    parties.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-10.1
+  title: >-
+    10.1 Implement audit trails to link all access to system components to each individual
+    user.
+  levels:
+  - base
+  status: automated
+  rules:
+    - service_auditd_enabled
+
+- id: Req-10.2
+  title: >-
+    10.2 Implement automated audit trails for all system components to reconstruct
+    the following events:
+  levels:
+  - base
+  status: automated
+  controls:
+  - id: Req-10.2.1
+    title: 10.2.1 All individual user accesses to cardholder data
+    levels:
+    - base
+    status: automated
+    rules:
+      - audit_rules_unsuccessful_file_modification_creat
+      - audit_rules_unsuccessful_file_modification_rename
+      - audit_rules_unsuccessful_file_modification_open
+      - audit_rules_unsuccessful_file_modification
+      - audit_rules_unsuccessful_file_modification_ftruncate
+      - audit_rules_unsuccessful_file_modification_renameat
+      - audit_rules_unsuccessful_file_modification_truncate
+      - audit_rules_unsuccessful_file_modification_unlink
+      - audit_rules_unsuccessful_file_modification_openat
+      - audit_rules_unsuccessful_file_modification_unlinkat
+      - audit_rules_unsuccessful_file_modification_open_by_handle_at
+
+  - id: Req-10.2.2
+    title: 10.2.2 All actions taken by any individual with root or administrative privileges
+    levels:
+    - base
+    status: automated
+    rules:
+      - audit_rules_privileged_commands
+      - audit_rules_sysadmin_actions
+
+  - id: Req-10.2.3
+    title: 10.2.3 Access to all audit trails
+    levels:
+    - base
+    status: automated
+    rules:
+    - var_accounts_passwords_pam_faillock_deny=6
+    - var_accounts_passwords_pam_faillock_unlock_time=1800
+    - audit_rules_login_events_tallylog
+    - audit_rules_login_events_faillock
+    - audit_rules_login_events_lastlog
+    - audit_rules_login_events
+    - audit_rules_session_events
+
+  - id: Req-10.2.4
+    title: 10.2.4 Invalid logical access attempts
+    levels:
+    - base
+    status: automated
+    rules:
+    - display_login_attempts
+    - audit_rules_unsuccessful_file_modification_creat
+    - audit_rules_unsuccessful_file_modification_rename
+    - audit_rules_unsuccessful_file_modification_open
+    - audit_rules_unsuccessful_file_modification
+    - audit_rules_unsuccessful_file_modification_ftruncate
+    - audit_rules_unsuccessful_file_modification_renameat
+    - audit_rules_unsuccessful_file_modification_truncate
+    - audit_rules_unsuccessful_file_modification_unlink
+    - audit_rules_unsuccessful_file_modification_openat
+    - audit_rules_unsuccessful_file_modification_unlinkat
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at
+
+  - id: Req-10.2.5
+    title: >-
+      10.2.5 Use of and changes to identification and authentication mechanisms
+      -- including but not limited to creation of new accounts and elevation of privileges --
+      and all changes, additions, or deletions to accounts with root or administrative
+      privileges
+    notes: >-
+      Like 10.2.4, changes to identification and authentication mechanisms would be handled by the payment
+      entity’s chosen identity provider. Changes that are made to RBAC within OpenShift are logged. These
+      logged events may be an indication of attempts to modify defined roles to grant additional privileges.
+    levels:
+    - base
+    status: automated
+    rules:
+      - audit_rules_usergroup_modification_gshadow
+      - audit_rules_usergroup_modification_opasswd
+      - audit_rules_usergroup_modification
+      - audit_rules_usergroup_modification_passwd
+      - audit_rules_usergroup_modification_group
+      - audit_rules_usergroup_modification_shadow
+
+  - id: Req-10.2.6
+    title: 10.2.6 Initialization, stopping, or pausing of the audit logs
+    levels:
+    - base
+    status: pending
+
+  - id: Req-10.2.7
+    title: 10.2.7 Creation and deletion of system- level objects
+    levels:
+    - base
+    status: automated
+    rules:
+      - audit_rules_file_deletion_events
+      - audit_rules_file_deletion_events_rmdir
+      - audit_rules_media_export
+      - audit_rules_kernel_module_loading_delete
+      - audit_rules_file_deletion_events_unlinkat
+      - audit_rules_kernel_module_loading
+      - audit_rules_file_deletion_events_renameat
+      - audit_rules_file_deletion_events_unlink
+      - audit_rules_kernel_module_loading_init
+      - audit_rules_kernel_module_loading_finit
+      - audit_rules_file_deletion_events_rename
+
+- id: Req-10.3
+  title: >-
+    10.3 Record at least the following audit trail entries for all system components for each event:'
+  levels:
+  - base
+  status: partial
+  rules:
+    - grub2_audit_argument
+  controls:
+  - id: Req-10.3.1
+    title: 10.3.1 User identification
+    levels:
+    - base
+    status: pending
+
+  - id: Req-10.3.2
+    title: 10.3.2 Type of event
+    levels:
+    - base
+    status: pending
+
+  - id: Req-10.3.3
+    title: 10.3.3 Date and time
+    levels:
+    - base
+    status: pending
+
+  - id: Req-10.3.4
+    title: 10.3.4 Success or failure indication
+    levels:
+    - base
+    status: pending
+
+  - id: Req-10.3.5
+    title: 10.3.5 Origination of event
+    levels:
+    - base
+    status: pending
+
+  - id: Req-10.3.6
+    title: 10.3.6 Identity or name of affected data, system component, or resource.
+    levels:
+    - base
+    status: pending
+
+- id: Req-10.4
+  title: 10.4 Using time-synchronization technology, synchronize all critical system
+    clocks and times and ensure that the following is implemented for acquiring, distributing,
+    and storing time.
+  notes: 'One example of time synchronization technology is Network Time Protocol (NTP).'
+  levels:
+  - base
+  status: automated
+  rules:
+    - service_ntpd_enabled
+    - package_ntp_installed
+    - service_ntp_enabled
+    - service_timesyncd_enabled
+
+  controls:
+  - id: Req-10.4.1
+    title: 10.4.1 Critical systems have the correct and consistent time.
+    levels:
+    - base
+    status: automated
+    rules:
+      - service_chronyd_or_ntpd_enabled
+      - ntpd_specify_remote_server
+
+  - id: Req-10.4.2
+    title: 10.4.2 Time data is protected.
+    levels:
+    - base
+    status: automated
+    rules:
+      - audit_rules_time_watch_localtime
+      - audit_rules_time_watch_localtime
+      - audit_rules_time_settimeofday
+      - audit_rules_time_clock_settime
+      - audit_rules_time_stime
+      - audit_rules_time_adjtimex
+
+  - id: Req-10.4.3
+    title: 10.4.3 Time settings are received from industry-accepted time sources.
+    levels:
+    - base
+    status: automated
+    rules:
+      - var_multiple_time_servers=suse
+      - ntpd_specify_remote_server
+      - ntpd_specify_multiple_servers
+      - chronyd_specify_remote_server
+      - chronyd_or_ntpd_specify_multiple_servers
+
+- id: Req-10.5
+  title: 10.5 Secure audit trails so they cannot be altered.
+  levels:
+  - base
+  status: partial
+  controls:
+  - id: Req-10.5.1
+    title: 10.5.1 Limit viewing of audit trails to those with a job-related need.
+    levels:
+    - base
+    status: automated
+    rules:
+      - file_permissions_var_log_audit
+      - file_ownership_var_log_audit
+      - rsyslog_files_ownership
+      - rsyslog_files_permissions
+      - rsyslog_files_groupownership
+
+  - id: Req-10.5.2
+    title: 10.5.2 Protect audit trail files from unauthorized modifications.
+    levels:
+    - base
+    status: automated
+    rules:
+      - rsyslog_files_ownership
+      - rsyslog_files_permissions
+      - rsyslog_files_groupownership
+      - audit_rules_immutable
+
+  - id: Req-10.5.3
+    title: 10.5.3 Promptly back up audit trail files to a centralized log server or media that is difficult to alter.
+    levels:
+    - base
+    status: automated
+    rules:
+      - auditd_audispd_syslog_plugin_activated
+      - package_audit-audispd-plugins_installed
+
+  - id: Req-10.5.4
+    title: 10.5.4 Write logs for external-facing technologies onto a secure, centralized, internal log server or
+      media device.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-10.5.5
+    title: 10.5.5 Use file-integrity monitoring or change-detection software on logs
+      to ensure that existing log data cannot be changed without generating alerts (although
+      new data being added should not cause an alert).
+    levels:
+    - base
+    status: automated
+    rules:
+      - audit_rules_dac_modification_fremovexattr
+      - audit_rules_dac_modification_fchownat
+      - audit_rules_dac_modification_fchown
+      - audit_rules_dac_modification_lremovexattr
+      - audit_rules_dac_modification_lchown
+      - audit_rules_dac_modification_fsetxattr
+      - audit_rules_dac_modification_setxattr
+      - audit_rules_networkconfig_modification
+      - audit_rules_dac_modification_chmod
+      - audit_rules_dac_modification_fchmod
+      - audit_rules_dac_modification_lsetxattr
+      - audit_rules_dac_modification_chown
+      - audit_rules_dac_modification_removexattr
+      - audit_rules_mac_modification
+      - audit_rules_dac_modification_fchmodat
+
+- id: Req-10.6
+  title: 10.6 Review logs and security events for all system components to identify
+    anomalies or suspicious activity.
+  description: 'Note: Log harvesting, parsing, and alerting tools may be used to meet
+    this Requirement.'
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-10.6.1
+    title: '10.6.1 Review the following at least daily:'
+    description: |-
+      * All security events
+      * Logs of all system components that store, process, or transmit CHD and/or SAD
+      * Logs of all critical system components
+      * Logs of all servers and system components that perform security functions
+        (for example, firewalls, intrusion-detection systems/intrusion-prevention
+        systems (IDS/IPS), authentication servers, e-commerce redirection servers, etc.).
+    levels:
+    - base
+    status: pending
+
+  - id: Req-10.6.2
+    title: >-
+      10.6.2 Review logs of all other system components periodically based on
+      the organization's policies and risk management strategy, as determined
+      by the organization's annual risk assessment.
+    levels:
+    - base
+    status: pending
+
+  - id: Req-10.6.3
+    title: 10.6.3 Follow up exceptions and anomalies identified during the review process.
+    levels:
+    - base
+    status: pending
+
+- id: Req-10.7
+  title: 10.7 Retain audit trail history for at least one year, with a minimum of
+    three months immediately available for analysis (for example, online, archived,
+    or restorable from backup).
+  levels:
+  - base
+  status: automated
+  rules:
+    - var_auditd_action_mail_acct=root
+    - auditd_data_retention_space_left_action
+    - ensure_logrotate_activated
+    - auditd_data_retention_max_log_file_action_stig
+    - auditd_data_retention_num_logs
+    - auditd_data_retention_max_log_file_action
+    - auditd_data_retention_max_log_file
+    - auditd_data_retention_space_left
+    - auditd_data_retention_admin_space_left_action
+    - auditd_data_retention_action_mail_acct
+
+
+- id: Req-10.8
+  title: 10.8 Ensure that security policies and operational procedures for monitoring
+    all access to network resources and cardholder data are documented, in use, and
+    known to all affected parties.
+  levels:
+  - base
+  status: pending
+
+- id: Req-11.1
+  title: 11.1 Implement processes to test for the presence of wireless access points
+    (802.11), and detect and identify all authorized and unauthorized wireless access
+    points on a quarterly basis.
+  description: 'Note: Methods that may be used in the process include but are not
+    limited to wireless network scans, physical/logical inspections of system components
+    and infrastructure, network access control (NAC), or wireless IDS/IPS.
+
+    Whichever methods are used, they must be sufficient to detect and identify both
+    authorized and unauthorized devices.'
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-11.1.1
+    title: 11.1.1 Maintain an inventory of authorized wireless access points including
+      a documented business justification.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-11.1.2
+    title: 11.1.2 Implement incident response procedures in the event unauthorized wireless
+      access points are detected.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-11.2
+  title: 11.2 Run internal and external network vulnerability scans at least quarterly
+    and after any significant change in the network (such as new system component
+    installations, changes in network topology, firewall rule modifications, product
+    upgrades).
+  description: 'Note: Multiple scan reports can be combined for the quarterly scan
+    process to show that all systems were scanned and all applicable vulnerabilities
+    have been addressed. Additional documentation may be required to verify non-remediated
+    vulnerabilities are in the process of being addressed.
+
+    For initial PCI DSS compliance, it is not required that four quarters of passing
+    scans be completed if the assessor verifies 1) the most recent scan result was
+    a passing scan, 2) the entity has documented policies and procedures requiring
+    quarterly scanning, and 3) vulnerabilities noted in the scan results have been
+    corrected as shown in a re-scan(s). For subsequent years after the initial PCI
+    DSS review, four quarters of passing scans must have occurred.'
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-11.2.1
+    title: >-
+      11.2.1 Perform quarterly internal vulnerability scans and rescans as needed,
+      until all 'high-risk' vulnerabilities (as identified in Requirement
+      6.1) are resolved. Scans must be performed by qualified personnel.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-11.2.2
+    title: 11.2.2 Perform quarterly external vulnerability scans, via an Approved Scanning
+      Vendor (ASV) approved by the Payment Card Industry Security Standards Council
+      (PCI SSC). Perform rescans as needed, until passing scans are achieved.
+    description: 'Note: Quarterly external vulnerability scans must be performed by
+      an Approved Scanning Vendor (ASV), approved by the Payment Card Industry Security
+      Standards Council (PCI SSC).
+
+      Refer to the ASV Program Guide published on the PCI SSC website for scan customer
+      responsibilities, scan preparation, etc.'
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-11.2.3
+    title: 11.2.3 Perform internal and external scans, and rescans as needed, after
+      any significant change. Scans must be performed by qualified personnel.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-11.3
+  title: '11.3 Implement a methodology for penetration testing that includes the following:'
+  description: |-
+    * Is based on industry-accepted penetration testing approaches (for example, NIST SP800-115)
+    * Includes coverage for the entire CDE perimeter and critical systems
+    * Includes testing from both inside and outside the network
+    * Includes testing to validate any segmentation and scope-reduction controls
+    * Defines application-layer penetration tests to include, at a minimum,
+      the vulnerabilities listed in Requirement 6.5
+    * Defines network-layer penetration tests to include components that support
+      network functions as well as operating systems
+    * Includes review and consideration of threats and vulnerabilities experienced in
+      the last 12 months
+    * Specifies retention of penetration testing results and remediation activities results.
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-11.3.1
+    title: 11.3.1 Perform external penetration testing at least annually and after any
+      significant infrastructure or application upgrade or modification (such as an
+      operating system upgrade, a sub-network added to the environment, or a web server
+      added to the environment).
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-11.3.2
+    title: 11.3.2 Perform internal penetration testing at least annually and after any
+      significant infrastructure or application upgrade or modification (such as an
+      operating system upgrade, a sub-network added to the environment, or a web server
+      added to the environment).
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-11.3.3
+    title: 11.3.3 Exploitable vulnerabilities found during penetration testing are corrected
+      and testing is repeated to verify the corrections.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-11.3.4
+    title: 11.3.4 If segmentation is used to isolate the CDE from other networks, perform
+      penetration tests at least annually and after any changes to segmentation controls/methods
+      to verify that the segmentation methods are operational and effective, and isolate
+      all out-of-scope systems from systems in the CDE.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-11.4
+  title: 11.4 Use intrusion-detection and/or intrusion-prevention techniques to detect
+    and/or prevent intrusions into the network. Monitor all traffic at the perimeter
+    of the cardholder data environment as well as at critical points in the cardholder
+    data environment, and alert personnel to suspected compromises.
+  description: Keep all intrusion-detection and prevention engines, baselines, and
+    signatures up to date.
+  levels:
+  - base
+  status: automated
+  rules:
+    - package_MFEhiplsm_installed
+    - install_hids
+
+- id: Req-11.5
+  title: 11.5 Deploy a change-detection mechanism (for example, file-integrity monitoring
+    tools) to alert personnel to unauthorized modification (including changes, additions,
+    and deletions) of critical system files, configuration files, or content files;
+    and configure the software to perform critical file comparisons at least weekly.
+  description: 'Note: For change-detection purposes, critical files are usually those
+    that do not regularly change, but the modification of which could indicate a system
+    compromise or risk of compromise. Change-detection mechanisms such as file-integrity
+    monitoring products usually come pre- configured with critical files for the related
+    operating system. Other critical files, such as those for custom applications,
+    must be evaluated and defined by the entity (that is, the merchant or service
+    provider).'
+  levels:
+  - base
+  status: partial
+  rules:
+  - rpm_verify_permissions
+  - disable_prelink
+  - package_aide_installed
+  - aide_periodic_cron_checking
+  - rpm_verify_ownership
+  - rpm_verify_hashes
+  - aide_build_database
+  controls:
+  - id: Req-11.5.1
+    title: 11.5.1 Implement a process to respond to any alerts generated by the change-
+      detection solution.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-11.6
+  title: 11.6 Ensure that security policies and operational procedures for security
+    monitoring and testing are documented, in use, and known to all affected parties.
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-12.1
+  title: 12.1 Establish, publish, maintain, and disseminate a security policy.
+  levels:
+  - base
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: pending
+  rules: []
+  controls:
+  - id: Req-12.1.1
+    title: 12.1.1 Review the security policy at least annually and update the policy
+      when the environment changes.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+- id: Req-12.2
+  title: '12.2 Implement a risk-assessment process that:'
+  description: |-
+    * Is performed at least annually and upon significant changes
+      to the environment (for example, acquisition, merger, relocation, etc.),
+    * Identifies critical assets, threats, and vulnerabilities, and
+    * Results in a formal, documented analysis of risk.
+
+    Examples of risk-assessment methodologies include but are not limited
+    to OCTAVE, ISO 27005 and NIST SP 800-30.
+  levels:
+  - base
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: pending
+  rules: []
+
+- id: Req-12.3
+  title: 12.3 Develop usage policies for critical technologies and define proper use
+    of these technologies.
+  description: 'Note: Examples of critical technologies include, but are not limited
+    to, remote access and wireless technologies, laptops, tablets, removable electronic
+    media, e- mail usage and Internet usage.
+
+    Ensure these usage policies require the following:'
+  levels:
+  - base
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: pending
+  controls:
+  - id: Req-12.3.1
+    title: 12.3.1 Explicit approval by authorized parties
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.3.2
+    title: 12.3.2 Authentication for use of the technology
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.3.3
+    title: 12.3.3 A list of all such devices and personnel with access
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.3.4
+    title: 12.3.4 A method to accurately and readily determine owner, contact information,
+      and purpose (for example, labeling, coding, and/or inventorying of devices)
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.3.5
+    title: 12.3.5 Acceptable uses of the technology
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.3.6
+    title: 12.3.6 Acceptable network locations for the technologies
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.3.7
+    title: 12.3.7 List of company-approved products
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.3.8
+    title: 12.3.8 Automatic disconnect of sessions for remote-access technologies after
+      a specific period of inactivity
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.3.9
+    title: 12.3.9 Activation of remote-access technologies for vendors and business
+      partners only when needed by vendors and business partners, with immediate deactivation
+      after use
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.3.10
+    title: 12.3.10 For personnel accessing cardholder data via remote-access technologies,
+      prohibit the copying, moving, and storage of cardholder data onto local hard drives
+      and removable electronic media, unless explicitly authorized for a defined business
+      need.
+    description: Where there is an authorized business need, the usage policies must
+      require the data be protected in accordance with all applicable PCI DSS Requirements.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+- id: Req-12.4
+  title: 12.4 Ensure that the security policy and procedures clearly define information
+    security responsibilities for all personnel.
+  levels:
+  - base
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: pending
+  rules: []
+
+- id: Req-12.5
+  title: '12.5 Assign to an individual or team the following information security
+    management responsibilities:'
+  levels:
+  - base
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: pending
+  controls:
+  - id: Req-12.5.1
+    title: 12.5.1 Establish, document, and distribute security policies and procedures.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.5.2
+    title: 12.5.2 Monitor and analyze security alerts and information, and distribute
+      to appropriate personnel.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.5.3
+    title: 12.5.3 Establish, document, and distribute security incident response and
+      escalation procedures to ensure timely and effective handling of all situations.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.5.4
+    title: 12.5.4 Administer user accounts, including additions, deletions, and modifications.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-12.5.5
+    title: 12.5.5 Monitor and control all access to data.
+    levels:
+    - base
+    status: pending
+    rules:
+    - audit_profile_set
+
+- id: Req-12.6
+  title: 12.6 Implement a formal security awareness program to make all personnel
+    aware of the importance of cardholder data security.
+  levels:
+  - base
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: pending
+  controls:
+  - id: Req-12.6.1
+    title: 12.6.1 Educate personnel upon hire and at least annually.
+    description: 'Note: Methods can vary depending on the role of the personnel and
+      their level of access to the cardholder data.'
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.6.2
+    title: 12.6.2 Require personnel to acknowledge at least annually that they have
+      read and understood the security policy and procedures.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+- id: Req-12.7
+  title: 12.7 Screen potential personnel prior to hire to minimize the risk of attacks
+    from internal sources. (Examples of background checks include previous employment
+    history, criminal record, credit history, and reference checks.)
+  description: 'Note: For those potential personnel to be hired for certain positions
+    such as store cashiers who only have access to one card number at a time when
+    facilitating a transaction, this requirement is a recommendation only.'
+  levels:
+  - base
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: pending
+  rules: []
+
+- id: Req-12.8
+  title: '12.8 Maintain and implement policies and procedures to manage service providers
+    with whom cardholder data is shared, or that could affect the security of cardholder
+    data, as follows:'
+  levels:
+  - base
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: pending
+  controls:
+  - id: Req-12.8.1
+    title: 12.8.1 Maintain a list of service providers.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.8.2
+    title: >-
+      12.8.2 Maintain a written agreement that includes an acknowledgement that
+      the service providers are responsible for the security of cardholder data the
+      service providers possess or otherwise store, process or transmit on behalf
+      of the customer, or to the extent that they could impact the security of the
+      customer's cardholder data environment.
+    description: 'Note: The exact wording of an acknowledgement will depend on the agreement
+      between the two parties, the details of the service being provided, and the responsibilities
+      assigned to each party. The acknowledgement does not have to include the exact
+      wording provided in this requirement.'
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.8.3
+    title: 12.8.3 Ensure there is an established process for engaging service providers
+      including proper due diligence prior to engagement.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.8.4
+    title: >-
+      12.8.4 Maintain a program to monitor service providers' PCI DSS compliance
+      status at least annually.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.8.5
+    title: 12.8.5 Maintain information about which PCI DSS requirements are managed
+      by each service provider, and which are managed by the entity.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+- id: Req-12.9
+  title: >-
+    12.9 Additional requirement for service providers only: Service providers
+    acknowledge in writing to customers that they are responsible for the security
+    of cardholder data the service provider possesses or otherwise stores, processes,
+    or transmits on behalf of the customer, or to the extent that they could impact
+    the security of the customer's cardholder data environment.
+  description: 'Note: This requirement is a best practice until June 30, 2015, after
+    which it becomes a requirement.
+
+    Note: The exact wording of an acknowledgement will depend on the agreement between
+    the two parties, the details of the service being provided, and the responsibilities
+    assigned to each party. The acknowledgement does not have to include the exact
+    wording provided in this requirement.'
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-12.10
+  title: 12.10 Implement an incident response plan. Be prepared to respond immediately
+    to a system breach.
+  levels:
+  - base
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: pending
+  controls:
+  - id: Req-12.10.1
+    title: '12.10.1 Create the incident response plan to be implemented in the event
+      of system breach. Ensure the plan addresses the following, at a minimum:'
+    description: |-
+      * Roles, responsibilities, and communication and contact strategies
+        in the event of a compromise including notification of the payment brands, at
+        a minimum
+      * Specific incident response procedures
+      * Business recovery
+        and continuity procedures
+      * Data backup processes
+      * Analysis of legal requirements for reporting compromises
+      * Coverage and responses of all critical system components
+      * Reference or inclusion of incident response procedures from the payment
+        brands.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.10.2
+    title: 12.10.2 Test the plan at least annually.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.10.3
+    title: 12.10.3 Designate specific personnel to be available on a 24/7 basis to respond
+      to alerts.
+    levels:
+    - base
+    notes: |-
+      This is an organizational and personnel-related control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.10.4
+    title: 12.10.4 Provide appropriate training to staff with security breach response
+      responsibilities.
+    levels:
+    - base
+    notes: |-
+      This is an organizational and personnel-related control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+  - id: Req-12.10.5
+    title: 12.10.5 Include alerts from security monitoring systems, including but not
+      limited to intrusion-detection, intrusion- prevention, firewalls, and file-integrity
+      monitoring systems.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-12.10.6
+    title: 12.10.6 Develop a process to modify and evolve the incident response plan
+      according to lessons learned and to incorporate industry developments.
+    levels:
+    - base
+    notes: |-
+      This is an procedural control which is the responsibility of the payment
+      entity.
+    status: pending
+    rules: []
+
+- id: Req-A.1
+  title: >-
+    A.1 Protect each entity's (that is, merchant, service provider, or
+    other entity) hosted environment and data, per A.1.1 through A.1.4:"
+  description: 'A hosting provider must fulfill these requirements as well as all other relevant
+    sections of the PCI DSS.
+
+    Note: Even though a hosting provider may meet these requirements, the compliance
+    of the entity that uses the hosting provider is not guaranteed. Each entity must
+    comply with the PCI DSS and validate compliance as applicable.'
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-A.1.1
+    title: >-
+      A.1.1 Ensure that each entity only runs processes that have access to that
+      entity's cardholder data environment.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-A.1.2
+    title: >-
+      A.1.2 Restrict each entity's access and privileges to its own cardholder
+      data environment only.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-A.1.3
+    title: >-
+      A.1.3 Ensure logging and audit trails are enabled and unique to each entity's
+      cardholder data environment and consistent with PCI DSS Requirement 10.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-A.1.4
+    title: A.1.4 Enable processes to provide for timely forensic investigation in the
+      event of a compromise to any hosted merchant or service provider.
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-A3.1.1
+  title: 'A3.1.1 Executive management shall establish responsibility for the protection
+    of cardholder data and a PCI DSS compliance program to include:'
+  description: |-
+    * Overall accountability for maintaining PCI DSS compliance
+    * Defining a charter for a PCI DSS compliance program
+    * Providing updates to executive management and board of directors on PCI DSS compliance
+      initiatives and issues, including remediation activities, at least annually
+
+    PCI DSS Reference: Requirement 12
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.1.2
+  title: 'A3.1.2 A formal PCI DSS compliance program must be in place to include:'
+  description: |-
+    * Definition of activities for maintaining and monitoring overall
+      PCI DSS compliance, including business-as-usual activities
+    * Annual PCI DSS assessment processes
+    * Processes for the continuous validation of PCI DSS requirements
+      (for example: daily, weekly, quarterly, etc. as applicable per requirement)
+    * A process for performing business- impact analysis to determine potential
+      PCI DSS impacts for strategic business decisions
+
+    PCI DSS Reference: Requirements 1-12
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.1.3
+  title: 'A3.1.3 PCI DSS compliance roles and responsibilities must be specifically
+    defined and formally assigned to one or more personnel, including at least the
+    following:'
+  description: |-
+    * Managing PCI DSS business-as-usual activities
+    * Managing annual PCI DSS assessments
+    * Managing continuous validation of PCI DSS requirements
+      (for example: daily, weekly, quarterly, etc. as applicable per
+      requirement)
+    * Managing business-impact analysis to determine potential
+      PCI DSS impacts for strategic business decisions
+
+    PCI DSS Reference: Requirement 12
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.1.4
+  title: A3.1.4 Provide up-to-date PCI DSS and/or information security training at
+    least annually to personnel with PCI DSS compliance responsibilities (as identified
+    in A3.1.3).
+  description: 'PCI DSS Reference: Requirement 12'
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.2.1
+  title: 'A3.2.1 Document and confirm the accuracy of PCI DSS scope at least quarterly
+    and upon significant changes to the in-scope environment. At a minimum, the quarterly
+    scoping validation should include:'
+  description: |-
+    * Identifying all in-scope networks and system components
+    * Identifying all out-of-scope networks and justification for networks
+      being out of scope, including descriptions of all segmentation controls implemented
+    * Identifying all connected entities. e.g., third-party entities with
+      access to the cardholder data environment (CDE)
+
+    PCI DSS Reference: Scope of PCI DSS Requirements"
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.2.2
+  title: 'A3.2.2 Determine PCI DSS scope impact for all changes to systems or networks,
+    including additions of new systems and new network connections. Processes must
+    include:'
+  description: |-
+    * Performing a formal PCI DSS impact assessment
+    * Identifying applicable PCI DSS requirements to the system or network
+    * Updating PCI DSS scope as appropriate
+    * Documented sign-off of the results of the impact assessment by
+      responsible personnel (as defined in A3.1.3)
+
+    PCI DSS Reference: Scope of PCI DSS Requirements; Requirements 1-12
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.2.2.1
+  title: 'A3.2.2.1 Upon completion of a change, all relevant PCI DSS requirements
+    must be verified on all new or changed systems and networks, and documentation
+    must be updated as applicable. Examples of PCI DSS requirements that should be
+    verified include, but are not limited to:'
+  description: |-
+    * Network diagram is updated to reflect changes.
+    * Systems are configured per configuration standards, with all default
+      passwords changed and unnecessary services disabled.
+    * Systems are protected with required controls.
+      e.g., file-integrity monitoring (FIM), anti-virus, patches, audit logging.
+    * Verify that sensitive authentication data (SAD) is not stored
+      and that all cardholder data (CHD) storage is documented and incorporated into
+      data-retention policy and procedures
+    * New systems are included in the quarterly vulnerability scanning process.
+
+    PCI DSS Reference: Scope of PCI DSS Requirements; Requirement 1-12
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.2.3
+  title: >-
+    A3.2.3 Changes to organizational structure -- for example, a company
+    merger or acquisition, change or reassignment of personnel with responsibility
+    for security controls -- result in a formal (internal) review of the impact
+    to PCI DSS scope and applicability of controls.
+  description: 'PCI DSS Reference: Requirement 12'
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.2.4
+  title: A3.2.4 If segmentation is used, confirm PCI DSS scope by performing penetration
+    testing on segmentation controls at least every six months and after any changes
+    to segmentation controls/methods.
+  description: 'PCI DSS Reference: Requirement 11'
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.2.5
+  title: A3.2.5 Implement a data-discovery methodology to confirm PCI DSS scope and
+    to locate all sources and locations of clear- text PAN at least quarterly, and
+    upon significant changes to the cardholder environment or processes.
+  description: 'Data-discovery methodology must take into consideration the potential
+    for clear-text PAN to reside on systems and networks outside of the currently
+    defined CA3.
+
+    PCI DSS Reference: Scope of PCI DSS Requirements'
+  levels:
+  - base
+  status: pending
+  controls:
+  - id: Req-A3.2.5.1
+    title: "A3.2.5.1 Ensure effectiveness of methods used for data discovery\u2014\u2013\
+      e.g., methods must be able to discover clear-text PAN on all types of system components\
+      \ (for example, on each operating system or platform) and file formats in use."
+    description: 'The effectiveness of data-discovery methods must be confirmed at least
+      annually.
+
+      PCI DSS Reference: Scope of PCI DSS Requirements'
+    levels:
+    - base
+    status: pending
+    rules: []
+
+  - id: Req-A3.2.5.2
+    title: 'A3.2.5.2 Implement response procedures to be initiated upon the detection
+      of clear- text PAN outside of the CDE to include:'
+    description: |-
+      * Procedures for determining what to do if clear-text PAN is
+        discovered outside of the CDE, including its retrieval, secure deletion and/or
+        migration into the currently defined CDE, as applicable
+      * Procedures for determining how the data ended up outside of the CDE
+      * Procedures for remediating data leaks or process gaps that resulted in the data
+        being outside of the CDE
+      * Procedures for identifying the source of the data
+      * Procedures for identifying whether any track data is stored with the PANs
+    levels:
+    - base
+    status: pending
+    rules: []
+
+- id: Req-A3.2.6
+  title: A3.2.6 Implement mechanisms for detecting and preventing clear-text PAN from
+    leaving the CDE via an unauthorized channel, method, or process, including generation
+    of audit logs and alerts.
+  description: 'PCI DSS Reference: Scope of PCI DSS Requirements'
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.2.6.1
+  title: 'A3.2.6.1 Implement response procedures to be initiated upon the detection
+    of attempts to remove clear-text PAN from the CDE via an unauthorized channel,
+    method, or process.'
+  description: |-
+    Response procedures must include:
+    *  Procedures for the timely investigation of alerts by responsible
+       personnel
+    *  Procedures for remediating data leaks\nor process gaps, as
+       necessary, to prevent any data loss
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.3.1
+  title: 'A3.3.1 Implement a process to immediately detect and alert on critical security
+    control failures.'
+  description: |-
+    Examples of critical security controls include, but are not
+    limited to:
+
+    * Firewalls
+    * IDS/IPS
+    * FIM
+    * Anti-virus
+    * Physical access controls
+    * Logical access controls
+    * Audit logging mechanisms
+    * Segmentation controls (if used)
+
+    PCI DSS Reference: Requirements 1-12
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.3.1.1
+  title: A3.3.1.1 Respond to failures of any critical security controls in a timely
+    manner.
+  description: |-
+    Processes for responding to failures in security controls must include:
+
+    * Restoring security functions
+    * Identifying and documenting the duration (date and time start to end)
+      of the security failure
+    * Identifying and documenting cause(s) of failure, including root cause,
+      and documenting remediation required to address root cause
+    * Identifying and addressing any security issues that arose during the failure
+    * Performing a risk assessment to determine whether further actions are
+      required as a result of the security failure\n\
+    * Implementing controls to prevent cause of failure from reoccurring
+    * Resuming monitoring of security controls
+
+    PCI DSS Reference: Requirements 1-12
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.3.2
+  title: "A3.3.2 Review hardware and software technologies at least annually to confirm\
+    \ whether they continue to meet the organization's PCI DSS requirements."
+  description: |-
+    (For example, a review of technologies that are no longer supported by the vendor
+    and/or no longer meet the security needs of the organization.)
+    The process includes a plan for remediating technologies that no longer
+    meet the organization\u2019s PCI DSS requirements, up to and including replacement
+    of the technology, as appropriate.
+
+    PCI DSS Reference: Requirement 2, 6"
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.3.3
+  title: 'A3.3.3 Perform reviews at least quarterly to verify BAU activities are being
+    followed.'
+  description: |-
+    Reviews must be performed by personnel assigned to the PCI DSS compliance\
+      program (as identified in A3.1.3), and include the following:
+
+    * Confirmation that all BAU activities (e.g., A3.2.2, A3.2.6,
+      and A3.3.1) are being performed
+    * Confirmation that personnel are following security policies and
+      operational procedures (for example, daily log reviews,
+      firewall rule-set reviews, configuration standards for new systems, etc.)
+    * Documenting how the reviews were completed, including how all BAU activities
+      were verified as being in place.
+    * Collection of documented evidence as required for the annual
+      PCI DSS assessment
+    * Review and sign off of results by personnel assigned responsibility for
+      the PCI DSS compliance program (as identified in A3.1.3)
+    * Retention of records and documentation for at least 12 months,
+      covering all BAU activities
+
+    PCI DSS Reference: Requirements 1-12
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.4.1
+  title: A3.4.1 Review user accounts and access privileges to in-scope system components
+    at least every six months to ensure user accounts and access remain appropriate
+    based on job function, and authorized.
+  description: 'PCI DSS Reference: Requirement 7'
+  levels:
+  - base
+  status: pending
+  rules: []
+
+- id: Req-A3.5.1
+  title: >-
+    A3.5.1 Implement a methodology for the timely identification of attack patterns
+    and undesirable behavior across systems--for example, using coordinated
+    manual reviews and/or centrally-managed or automated log correlation tools--
+    to include at least the following:
+  description: |-
+    * Identification of anomalies or suspicious activity as they
+      occur
+    * Issuance of timely alerts upon detection of suspicious activity
+      or anomaly to responsible personnel
+    * Response to alerts in accordance with documented response procedures
+
+    PCI DSS Reference: Requirements 10, 12
+  levels:
+  - base
+  status: pending
+  rules: []

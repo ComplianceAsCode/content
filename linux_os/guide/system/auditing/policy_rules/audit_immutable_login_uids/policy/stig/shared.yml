@@ -1,0 +1,23 @@
+srg_requirement: |-
+    {{{ full_name }}} audit system must protect logon UIDs from unauthorized change.
+
+vuldiscussion: |-
+    If modification of login UIDs is not prevented, they can be changed by unprivileged users and make auditing complicated or impossible.
+
+checktext: |-
+    Verify the audit system prevents unauthorized changes to logon UIDs with the following command:
+
+    $ sudo grep -i immutable /etc/audit/audit.rules
+
+    --loginuid-immutable
+
+    If the "--loginuid-immutable" option is not returned in the "/etc/audit/audit.rules", or the line is commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} auditing to prevent modification of login UIDs once they are set by adding the following line to /etc/audit/rules.d/audit.rules:
+
+
+    --loginuid-immutable
+
+
+    The audit daemon must be restarted for the changes to take effect.

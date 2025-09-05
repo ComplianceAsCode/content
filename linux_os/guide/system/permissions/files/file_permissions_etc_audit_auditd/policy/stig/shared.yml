@@ -1,0 +1,23 @@
+srg_requirement: |-
+    The {{{ full_name }}} /etc/audit/auditd.conf file must have 0640 or less permissive to prevent unauthorized access.
+
+vuldiscussion: |-
+    Without the capability to restrict the roles and individuals that can select which events
+    are audited, unauthorized personnel may be able to prevent the auditing of critical
+    events. Misconfigured audits may degrade the system's performance by overwhelming
+    the audit log. Misconfigured audits may also make it more difficult to establish,
+    correlate, and investigate the events relating to an incident or identify
+    those responsible for one.
+
+checktext: |-
+    To check the permissions of /etc/audit/auditd.conf ,
+    run the command:
+     $ sudo stat -c "%a %n" /etc/audit/auditd.conf
+    If properly configured, the output should indicate the following permissions:
+    640 /etc/audit/auditd.conf
+
+    If /etc/audit/auditd.conf does not have unix mode 0640, then this is a finding.
+
+fixtext: |-
+    To properly set the permissions of /etc/audit/auditd.conf , run the command:
+     $ sudo chmod 0640 /etc/audit/auditd.conf

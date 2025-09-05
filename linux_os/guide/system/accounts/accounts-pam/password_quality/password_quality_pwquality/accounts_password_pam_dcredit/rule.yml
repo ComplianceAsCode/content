@@ -58,15 +58,19 @@ references:
     stigid@ubuntu2004: UBTU-20-010052
     vmmsrg: SRG-OS-000071-VMM-000380
 
-ocil_clause: 'dcredit is not found or not equal to or less than the required value'
+ocil_clause: 'the value of "dcredit" is a positive number or is commented out'
 
 ocil: |-
-    To check how many digits are required in a password, run the following command:
-    <pre>$ grep dcredit /etc/security/pwquality.conf</pre>
-    The <tt>dcredit</tt> parameter (as a negative number) will indicate how many digits are required.
+    Verify that {{{ full_name }}} enforces password complexity by requiring that at least one numeric character be used.
+
+    Check the value for "dcredit" with the following command:
+
+    <pre>$ sudo grep dcredit /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf
+
+    /etc/security/pwquality.conf:dcredit = {{{ xccdf_value('var_password_pam_dcredit') }}}</pre>
 
 fixtext: |-
-    Configure {{{ full_name }}} to enforce password complexity by requiring that at least numeric character be used by setting the "dcredit" option.
+    Configure {{{ full_name }}} to enforce password complexity by requiring that at least one numeric character be used by setting the "dcredit" option.
 
     Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
 

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Configure opensc Smart Card Drivers'
 
@@ -33,6 +33,7 @@ identifiers:
     cce@rhel7: CCE-80565-5
     cce@rhel8: CCE-80766-9
     cce@rhel9: CCE-89122-6
+    cce@sle12: CCE-92221-1
     cce@sle15: CCE-85843-1
 
 references:
@@ -49,17 +50,19 @@ references:
     srg: SRG-OS-000104-GPOS-00051,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000109-GPOS-00056,SRG-OS-000108-GPOS-00055,SRG-OS-000108-GPOS-00057,SRG-OS-000108-GPOS-00058
     vmmsrg: SRG-OS-000376-VMM-001520
 
-ocil_clause: 'the smart card driver is not configured correctly'
+ocil_clause: '"{{{ xccdf_value("var_smartcard_drivers") }}}" is not listed as a card driver, or there is no line returned for "card_drivers"'
 
 ocil: |-
-    To verify that <tt>{{{ xccdf_value("var_smartcard_drivers") }}}</tt> is configured
-    as the smart card driver, run the following command:
+    Verify that {{{ full_name }}} loads the {{{ xccdf_value("var_smartcard_drivers") }}} driver with the following command:
+
     <pre>$ grep card_drivers /etc/opensc.conf</pre>
-    The output should return something similar to:
+
     <pre>card_drivers = {{{ xccdf_value("var_smartcard_drivers") }}};</pre>
 
 fixtext: |-
-    Edit "/etc/opensc.conf" and add or edit the following line:
+    Configure {{{ full_name }}} to load the {{{ xccdf_value("var_smartcard_drivers") }}} driver.
+
+    Add, or modify the following line in the "/etc/opensc.conf" file:
 
     card_drivers = {{{ xccdf_value("var_smartcard_drivers") }}};
 

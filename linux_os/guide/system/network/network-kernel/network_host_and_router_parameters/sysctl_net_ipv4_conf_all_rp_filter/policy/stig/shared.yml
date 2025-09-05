@@ -1,0 +1,37 @@
+srg_requirement: |-
+    {{{ full_name }}} must use reverse path filtering on all IPv4 interfaces.
+
+vuldiscussion: |-
+    Enabling reverse path filtering drops packets with source addresses
+    that should not have been able to be received on the interface they were
+    received on. It should not be used on systems which are routers for
+    complicated networks, but is helpful for end hosts and routers serving small
+    networks.
+
+checktext: |-
+    Verify {{{ full_name }}} uses reverse path filtering on all IPv4 interfaces with the following commands:
+
+    $ sudo sysctl net.ipv4.conf.all.rp_filter
+
+    net.ipv4.conf.all.rp_filter = 1
+
+    If the returned line does not have a value of "1", or a line is not returned, this is a finding.
+
+    Check that the configuration files are present to enable this network parameter.
+
+    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F net.ipv4.conf.all.rp_filter | tail -1
+
+    net.ipv4.conf.all.rp_filter = 1
+
+    If "net.ipv4.conf.all.rp_filter" is not set to "1" or is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to use reverse path filtering on all IPv4 interfaces.
+
+    Add or edit the following line in a single system configuration file, in the "/etc/sysctl.d/" directory:
+
+    net.ipv4.conf.all.rp_filter = 1
+
+    The system configuration files need to be reloaded for the changes to take effect. To reload the contents of the files, run the following command:
+
+    $ sudo sysctl --system

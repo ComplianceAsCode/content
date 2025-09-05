@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.12)
 
 # Inspired and referenced from https://blog.kitware.com/cmake-and-the-default-build-type
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -32,13 +32,13 @@ set(SSG_TAILORING_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/tail
 
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
-set(SSG_PATCH_VERSION 64)
+set(SSG_PATCH_VERSION 65)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
 
 set(SSG_TARGET_OVAL_MAJOR_VERSION "5" CACHE STRING "Which major version of OVAL are we targetting. Only 5 is supported at the moment.")
-set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Possible choices are 10 or 11.")
+set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Only 11 is supported at the moment.")
 
 set(SSG_TARGET_OVAL_VERSION "${SSG_TARGET_OVAL_MAJOR_VERSION}.${SSG_TARGET_OVAL_MINOR_VERSION}")
 
@@ -54,6 +54,7 @@ option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be
 option(SSG_BATS_TESTS_ENABLED "If enabled, bats will be used to run unit-tests of bash remediations." TRUE)
 option(SSG_BUILD_DISA_DELTA_FILES "If enabled, If the product has automated content from DISA for its STIG a tailoring file will be created with rules not covered by DISA's content enabled." TRUE)
 option(SSG_SCE_ENABLED "If enabled, additional SCE audit content will be enabled alongside OVAL-based auditing." FALSE)
+option(SSG_SRG_XLSX_EXPORT "If enabled, an XLSX of SRG Export will be ceated." FALSE)
 set(SSG_JINJA2_CACHE_DIR "${CMAKE_BINARY_DIR}/jinja2_cache" CACHE PATH "Where the jinja2 cached bytecode should be stored. This speeds up builds at the expense of disk space. You can use one location for multiple SSG builds for performance improvements.")
 
 # SSG_PRODUCT_DEFAULT modifies the behavior of all other options. Products
@@ -68,16 +69,14 @@ option(SSG_PRODUCT_DEFAULT "If enabled, all default release products will be bui
 # unless explicitly asked for.
 option(SSG_PRODUCT_ALINUX2 "If enabled, the Alibaba Cloud Linux 2 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_ALINUX3 "If enabled, the Alibaba Cloud Linux 3 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_ANOLIS8 "If enabled, the Anolis OS 8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_CHROMIUM "If enabled, the Chromium SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_DEBIAN9 "If enabled, the Debian 9 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN10 "If enabled, the Debian 10 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN11 "If enabled, the Debian 11 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_EKS "If enabled, the EKS SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_EXAMPLE "If enabled, the Example SCAP content will be built" FALSE)
 option(SSG_PRODUCT_FEDORA "If enabled, the Fedora SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_FIREFOX "If enabled, the Firefox SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_FUSE6 "If enabled, the JBoss Fuse6 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_JRE "If enabled, the JRE SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_MACOS1015 "If enabled, the Apple macOS 10.15 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OCP4 "If enabled, the OCP4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_RHCOS4 "If enabled, the RHCOS4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
@@ -96,7 +95,7 @@ option(SSG_PRODUCT_UBUNTU1804 "If enabled, the Ubuntu 18.04 SCAP content will be
 option(SSG_PRODUCT_UBUNTU2004 "If enabled, the Ubuntu 20.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2204 "If enabled, the Ubuntu 22.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UOS20 "If enabled, the Uos 20 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_VSEL "If enabled, the McAfee VSEL SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+
 
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
@@ -134,12 +133,15 @@ find_python_module(pytest)
 find_python_module(pytest_cov)
 find_python_module(json2html)
 find_python_module(yamlpath)
+find_python_module(mypy)
+find_python_module(openpyxl)
+find_python_module(pandas)
 
 # sphinx documentation requirements
 find_python_module(sphinx)
 find_python_module(sphinxcontrib.autojinja)
 find_python_module(sphinx_rtd_theme)
-find_python_module(recommonmark)
+find_python_module(myst_parser)
 
 
 include(CMakeDependentOption)
@@ -147,12 +149,8 @@ cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage
 
 find_package(OpenSCAP REQUIRED)
 
-if (SSG_TARGET_OVAL_MAJOR_VERSION EQUAL "5" AND SSG_TARGET_OVAL_VERSION_MINOR EQUAL "11" AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11")
-    message(FATAL_ERROR "Your version of OpenSCAP does not support OVAL 5.11, please switch the OVAL target version to 5.10 or lower. $ cmake -DSSG_TARGET_OVAL_MINOR_VERSION=10 ../")
-endif()
-
-if (NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.10" AND NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    message(WARNING "You are targetting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.10 and 5.11 only!")
+if (NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
+    message(WARNING "You are targetting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.11 only!")
 endif()
 
 # OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support
@@ -207,6 +205,8 @@ find_program(GREP_EXECUTABLE NAMES grep)
 find_program(ANSIBLE_PLAYBOOK_EXECUTABLE NAMES ansible-playbook)
 find_program(ANSIBLE_LINT_EXECUTABLE NAMES ansible-lint)
 find_program(YAMLLINT_EXECUTABLE NAMES yamllint)
+find_program(PYTHON3_EXECUTABLE NAMES python3)
+find_program(GIT_EXECUTABLE NAMES git)
 
 configure_file("${CMAKE_SOURCE_DIR}/build_config.yml.in" "${CMAKE_BINARY_DIR}/build_config.yml" @ONLY)
 
@@ -234,11 +234,14 @@ message(STATUS "ansible-playbook module (optional): ${ANSIBLE_PLAYBOOK_EXECUTABL
 message(STATUS "ansible-lint module (optional): ${ANSIBLE_LINT_EXECUTABLE}")
 message(STATUS "yamllint module (optional): ${YAMLLINT_EXECUTABLE}")
 message(STATUS "yamlpath module (optional): ${PY_YAMLPATH}")
+message(STATUS "python mypy module (optional): ${PY_MYPY}")
 message(STATUS "BATS framework (optional): ${BATS_EXECUTABLE}")
 message(STATUS "python sphinx module (optional): ${PY_SPHINX}")
 message(STATUS "python sphinxcontrib.autojinja module (optional): ${PY_SPHINXCONTRIB.AUTOJINJA}")
 message(STATUS "python sphinx_rtd_theme module (optional): ${PY_SPHINX_RTD_THEME}")
-message(STATUS "python recommonmark module (optional): ${PY_RECOMMONMARK}")
+message(STATUS "python myst-parser module (optional): ${PY_MYST_PARSER}")
+message(STATUS "python openpyxl module (optional): ${PY_OPENPYXL}")
+message(STATUS "python pandas module (optional): ${PY_PANDAS}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
@@ -258,21 +261,20 @@ else()
     message(STATUS "jinja2 cache: disabled")
 endif()
 message(STATUS "STIG Delta Taloring files: ${SSG_BUILD_DISA_DELTA_FILES}")
+message(STATUS "Build SCE Content: " ${SSG_SCE_ENABLED})
 message(STATUS " ")
 
 message(STATUS "Products:")
 message(STATUS "Alibaba Cloud Linux 2: ${SSG_PRODUCT_ALINUX2}")
 message(STATUS "Alibaba Cloud Linux 3: ${SSG_PRODUCT_ALINUX3}")
+message(STATUS "Anolis OS 8: ${SSG_PRODUCT_ANOLIS8}")
 message(STATUS "Chromium: ${SSG_PRODUCT_CHROMIUM}")
-message(STATUS "Debian 9: ${SSG_PRODUCT_DEBIAN9}")
 message(STATUS "Debian 10: ${SSG_PRODUCT_DEBIAN10}")
 message(STATUS "Debian 11: ${SSG_PRODUCT_DEBIAN11}")
 message(STATUS "Example: ${SSG_PRODUCT_EXAMPLE}")
 message(STATUS "EKS: ${SSG_PRODUCT_EKS}")
 message(STATUS "Fedora: ${SSG_PRODUCT_FEDORA}")
 message(STATUS "Firefox: ${SSG_PRODUCT_FIREFOX}")
-message(STATUS "JBoss Fuse 6: ${SSG_PRODUCT_FUSE6}")
-message(STATUS "JRE: ${SSG_PRODUCT_JRE}")
 message(STATUS "MacOS 1015: ${SSG_PRODUCT_MACOS1015}")
 message(STATUS "OCP4: ${SSG_PRODUCT_OCP4}")
 message(STATUS "RHCOS4: ${SSG_PRODUCT_RHCOS4}")
@@ -291,7 +293,7 @@ message(STATUS "Ubuntu 18.04: ${SSG_PRODUCT_UBUNTU1804}")
 message(STATUS "Ubuntu 20.04: ${SSG_PRODUCT_UBUNTU2004}")
 message(STATUS "Ubuntu 22.04: ${SSG_PRODUCT_UBUNTU2204}")
 message(STATUS "Uos 20: ${SSG_PRODUCT_UOS20}")
-message(STATUS "McAfee VSEL: ${SSG_PRODUCT_VSEL}")
+
 
 
 
@@ -310,11 +312,7 @@ add_subdirectory("tests")
 
 # Targets 'stats', 'profile-stats' and 'zipfile' need to be added
 # before any product because they will receive dependencies from products added
-if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}")
-else()
-    ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
-endif()
+ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}")
 
 add_custom_target(stats)
 add_custom_target(profile-stats)
@@ -322,7 +320,7 @@ add_custom_target(profile-stats)
 add_custom_target(html-stats)
 add_custom_target(html-profile-stats)
 
-if(PY_SPHINX AND PY_SPHINXCONTRIB.AUTOJINJA AND PY_SPHINX_RTD_THEME AND PY_RECOMMONMARK)
+if(PY_SPHINX AND PY_SPHINXCONTRIB.AUTOJINJA AND PY_SPHINX_RTD_THEME AND PY_MYST_PARSER)
     message(STATUS "Enabling docs directory as system supports Sphinx builds.")
     add_subdirectory("docs")
 endif()
@@ -335,12 +333,13 @@ endif()
 if (SSG_PRODUCT_ALINUX3)
     add_subdirectory("products/alinux3" "alinux3")
 endif()
+if (SSG_PRODUCT_ANOLIS8)
+    add_subdirectory("products/anolis8" "anolis8")
+endif()
 if (SSG_PRODUCT_CHROMIUM)
     add_subdirectory("products/chromium" "chromium")
 endif()
-if (SSG_PRODUCT_DEBIAN9)
-    add_subdirectory("products/debian9" "debian9")
-endif()
+
 if (SSG_PRODUCT_DEBIAN10)
     add_subdirectory("products/debian10" "debian10")
 endif()
@@ -358,12 +357,6 @@ if (SSG_PRODUCT_FEDORA)
 endif()
 if (SSG_PRODUCT_FIREFOX)
     add_subdirectory("products/firefox" "firefox")
-endif()
-if (SSG_PRODUCT_FUSE6)
-    add_subdirectory("products/fuse6" "fuse6")
-endif()
-if (SSG_PRODUCT_JRE)
-    add_subdirectory("products/jre" "jre")
 endif()
 if (SSG_PRODUCT_MACOS1015)
     add_subdirectory("products/macos1015" "macos1015")
@@ -419,17 +412,11 @@ endif()
 if (SSG_PRODUCT_UOS20)
     add_subdirectory("products/uos20" "uos20")
 endif()
-if (SSG_PRODUCT_VSEL)
-    add_subdirectory("products/vsel" "vsel")
-endif()
 
 # ZIP only contains source datastreams and kickstarts, people who
 # want sources to build from should get the tarball instead.
-if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
-else()
-    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
-endif()
+ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
+
 
 ssg_define_guide_and_table_tests()
 

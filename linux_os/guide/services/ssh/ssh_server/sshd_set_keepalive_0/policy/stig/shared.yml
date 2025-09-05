@@ -1,0 +1,19 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Terminate All Network Connections Associated With A Communications Session At The End Of The Session, Or As Follows: For In-Band Management Sessions (Privileged Sessions), The Session Must Be Terminated After 10 Minutes Of Inactivity; And For User Sessions (Non-Privileged Session), The Session Must Be Terminated After 15 Minutes Of Inactivity, Except To Fulfill Documented And Validated Mission Requirements.
+
+vuldiscussion: |-
+    This ensures a user login will be terminated as soon as the "ClientAliveInterval"
+    is reached.
+
+checktext: |-
+    To ensure "ClientAliveInterval" is set correctly, run the following command:
+
+     $ sudo grep ClientAliveCountMax /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf
+
+    If properly configured, the output should be:
+     ClientAliveCountMax 0
+
+    In this case, the SSH idle timeout occurs precisely when
+    the "ClientAliveInterval" is set.
+
+    If it is commented out or not configured properly, then this is a finding.

@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} cron configuration directories must have a mode of 0700 or less permissive
+
+vuldiscussion: |-
+    Service configuration files enable or disable features of their respective services that if configured incorrectly
+    can lead to insecure and vulnerable configurations. Therefore, service configuration files should have the
+    correct access rights to prevent unauthorized changes.
+
+checktext: |-
+    To check the permissions of the cron directories,
+    run the command:
+     $ find /etc/cron* -type d | xargs stat -c "%a %n"
+    If properly configured, the output should indicate the following permissions:
+
+    700 /etc/cron.d
+    700 /etc/cron.daily
+    700 /etc/cron.hourly
+    700 /etc/cron.monthly
+    700 /etc/cron.weekly
+
+
+    If any cron configuration directory is more permissive than 700, then this is a finding.
+
+fixtext: |-
+    Configure any {{{ full_name }}} cron configration directory with a mode more permissive than 0700 as follows:
+
+    chmod 0700 [cron configuration directory]

@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4
+
+title: 'Verify ownership of System Login Banner for Remote Connections'
+
+description: |-
+    {{{ describe_file_owner(file="/etc/issue.net", owner="root") }}}
+
+rationale: |-
+    Display of a standardized and approved use notification before granting
+    access to the operating system ensures privacy and security notification
+    verbiage used is consistent with applicable federal laws, Executive Orders,
+    directives, policies, regulations, standards, and guidance.<br />
+    Proper ownership will ensure that only root user can modify the banner.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86053-6
+    cce@rhel8: CCE-86054-4
+    cce@rhel9: CCE-86057-7
+
+references:
+    cis@rhel7: 1.7.6
+    cis@rhel8: 1.7.6
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/issue.net", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/issue.net", owner="root") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/issue.net
+        fileuid: '0'
+        missing_file_pass: 'true'

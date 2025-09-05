@@ -1,0 +1,27 @@
+srg_requirement: |-
+    The {{{ full_name }}} SSH daemon must not allow compression or must only allow compression after successful authentication.
+
+vuldiscussion: |-
+    If compression is allowed in an SSH connection prior to authentication,
+    vulnerabilities in the compression software could result in compromise of the
+    system from an unauthenticated connection, potentially with root privileges.
+
+checktext: |-
+    Verify the SSH daemon performs compression after a user successfully authenticates with the following command:
+
+    $ sudo grep -ir compression /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+
+    Compression delayed
+
+    If the "Compression" keyword is set to "yes", is missing, or the returned line is commented out, this is a finding.
+
+fixtext: |-
+    Configure the SSH daemon to not allow compression.
+
+    Uncomment the "Compression" keyword in "/etc/ssh/sshd_config" on the system and set the value to "delayed" or "no":
+
+    Compression no
+
+    The SSH service must be restarted for changes to take effect:
+
+    $ sudo systemctl restart sshd.service

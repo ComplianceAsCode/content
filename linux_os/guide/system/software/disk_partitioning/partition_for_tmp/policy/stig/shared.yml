@@ -1,0 +1,18 @@
+srg_requirement: |-
+    {{{ full_name }}} must use a separate file system for /tmp.
+
+vuldiscussion: |-
+    The "/tmp" partition is used as temporary storage by many programs.
+    Placing "/tmp" in its own partition enables the setting of more
+    restrictive mount options, which can help protect programs which use it.
+
+checktext: |-
+    Verify that a separate file system/partition has been created for  /tmp  with the following command:
+
+     $ mountpoint /tmp
+
+
+    If "/tmp is is not a mountpoint" is returned, then this is a finding.
+
+fixtext: |-
+    Migrate the "/tmp" path onto a separate file system.

@@ -1,0 +1,17 @@
+srg_requirement: |-
+    {{{ full_name }}} must mount /tmp with the nosuid option.
+
+vuldiscussion: |-
+    The "nosuid" mount option causes the system to not execute "setuid" and "setgid" files with owner privileges. This option must be used for mounting any file system not containing approved "setuid" and "setguid" files. Executing files from untrusted file systems increases the opportunity for unprivileged users to attain unauthorized administrative access.
+
+checktext: |-
+    Verify "/tmp" is mounted with the "nosuid" option:
+
+    $ mount | grep /tmp
+
+    /dev/mapper/rhel-tmp on /tmp type xfs (rw,nodev,nosuid,noexec,seclabel)
+
+    If the "/tmp" file system is mounted without the "nosuid" option, this is a finding.
+
+fixtext: |-
+    Modify "/etc/fstab" to use the "nosuid" option on the "/tmp" directory.

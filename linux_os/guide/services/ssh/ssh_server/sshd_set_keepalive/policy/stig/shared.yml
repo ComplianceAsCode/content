@@ -1,0 +1,29 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Terminate All Network Connections Associated With A Communications Session At The End Of The Session, Or As Follows: For In-Band Management Sessions (Privileged Sessions), The Session Must Be Terminated After 10 Minutes Of Inactivity; And For User Sessions (Non-Privileged Session), The Session Must Be Terminated After 15 Minutes Of Inactivity, Except To Fulfill Documented And Validated Mission Requirements.
+
+vuldiscussion: |-
+    Terminating an idle SSH session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle SSH session will also free up resources committed by the managed network element.
+
+    Terminating network connections associated with communications sessions includes, for example, de-allocating associated TCP/IP address/port pairs at the operating system level and de-allocating networking assignments at the application level if multiple application sessions are using a single operating system-level network connection. This does not mean that the operating system terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.
+
+    {{{ full_name }}} utilizes /etc/ssh/sshd_config for configurations of OpenSSH. Within the sshd_config the product of the values of "ClientAliveInterval" and "ClientAliveCountMax" are used to establish the inactivity threshold. The "ClientAliveInterval" is a timeout interval in seconds after which if no data has been received from the client, sshd will send a message through the encrypted channel to request a response from the client. The "ClientAliveCountMax" is the number of client alive messages that may be sent without sshd receiving any messages back from the client. If this threshold is met, sshd will disconnect the client. For more information on these settings and others, refer to the sshd_config man pages.
+
+checktext: |-
+    Verify that the "ClientAliveCountMax" is set to "{{{ xccdf_value("var_sshd_set_keepalive") }}}" by performing the following command:
+
+    $ sudo grep -i countmax /etc/ssh/sshd_config
+
+    ClientAliveCountMax {{{ xccdf_value("var_sshd_set_keepalive") }}}
+
+    If "ClientAliveCountMax" do not exist, is not set to a value of "{{{ xccdf_value("var_sshd_set_keepalive") }}}" in "/etc/ssh/sshd_config", or is commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to automatically terminate all network connections associated with SSH traffic at the end of a session or after 10 minutes of inactivity.
+
+    Modify or append the following lines in the "/etc/ssh/sshd_config" file:
+
+    ClientAliveCountMax {{{ xccdf_value("var_sshd_set_keepalive") }}}
+
+    In order for the changes to take effect, the SSH daemon must be restarted.
+
+    $ sudo systemctl restart sshd.service

@@ -1,0 +1,53 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Set Lockout Time for Failed Password Attempts using pam_tally2'
+
+description: |-
+    This rule configures the system to lock out accounts during a specified time period after a
+    number of incorrect login attempts using <tt>pam_tally2.so</tt>.
+
+rationale: |-
+    By limiting the number of failed logon attempts, the risk of unauthorized system access via
+    user password guessing, also known as brute-forcing, is reduced. Limits are imposed by locking
+    the account.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-91598-3
+    cce@sle15: CCE-91282-4
+
+references:
+    anssi: BP28(R18)
+    cis-csc: 1,12,15,16
+    cobit5: DSS05.04,DSS05.10,DSS06.10
+    disa: CCI-002238,CCI-000044
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    ism: 0421,0422,0431,0974,1173,1401,1504,1505,1546,1557,1558,1559,1560,1561
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
+    nist: CM-6(a),AC-7(b),IA-5(c)
+    nist-csf: PR.AC-7
+    ospp: FMT_MOF_EXT.1
+    pcidss: Req-8.1.7
+    srg: SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005
+
+ocil_clause: 'unlock_time is less than the expected value'
+
+ocil: |-
+    To ensure the failed password attempt policy is configured correctly, run the following command:
+    <pre>$ grep pam_tally2 /etc/pam.d/system-auth /etc/pam.d/common-auth</pre>
+    The output should show <tt>unlock_time=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
+
+fixtext: |-
+    To configure the system to lock out accounts during a specified time period after a number of
+    incorrect login attempts using <tt>pam_faillock.so</tt>,
+    Modify the content of both <tt>/etc/pam.d/common-auth</tt>, like this:
+    <pre>auth required pam_tally2.so deny={{{ xccdf_value("var_accounts_passwords_pam_tally2_deny") }}} <tt>unlock_time={{{ xccdf_value("var_accounts_passwords_pam_tally2_unlock_time") }}}</tt> </pre>
+
+platform: pam
+
+srg_requirement: |-
+        {{{ full_name }}} must automatically lock an account until the locked account is released by an administrator.

@@ -1,18 +1,96 @@
+import contextlib
+import collections
 import os
 import tempfile
 
 import yaml
 import pytest
 import xml.etree.ElementTree as ET
-from ssg.build_cpe import ProductCPEs
 
+from ssg.build_cpe import ProductCPEs
 import ssg.build_yaml
-from ssg.constants import cpe_language_namespace
+import ssg.entities.common
+from ssg.constants import XCCDF12_NS, cpe_language_namespace, xhtml_namespace
 from ssg.yaml import open_raw
 
 
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "..", "..", "..", )
 DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
+
+
+def test_add_sub_element():
+    parent = ET.Element("{%s}glass" % XCCDF12_NS)
+    text = "Use <tt>public</tt> and<br/> private mushrooms!"
+    child = ssg.build_yaml.add_sub_element(
+        parent, "wall", XCCDF12_NS, text)
+    assert child.tag == "{%s}wall" % XCCDF12_NS
+    all_text = "".join(child.itertext())
+    assert all_text == "Use public and private mushrooms!"
+    assert "&lt;" not in all_text
+    tt_els = child.findall("{%s}tt" % xhtml_namespace)
+    assert len(tt_els) == 0
+    code_els = child.findall("{%s}code" % xhtml_namespace)
+    assert len(code_els) == 1
+    code_el = code_els[0]
+    assert code_el.text == "public"
+    assert len(code_el) == 0
+    assert len(code_el.attrib) == 0
+    br_els = child.findall("{%s}br" % xhtml_namespace)
+    assert len(br_els) == 1
+    br_el = br_els[0]
+    assert br_el.text is None
+    assert len(br_el) == 0
+    assert len(br_el.attrib) == 0
+
+
+def test_add_sub_element_with_sub():
+    parent = ET.Element("{%s}cheese" % XCCDF12_NS)
+    text = "The horse sings <sub idref=\"green\"/> and eats my igloo"
+    child = ssg.build_yaml.add_sub_element(
+        parent, "shop", XCCDF12_NS, text)
+    assert "".join(child.itertext()) == "The horse sings  and eats my igloo"
+    sub_els = child.findall("{%s}sub" % XCCDF12_NS)
+    assert len(sub_els) == 1
+    sub_el = sub_els[0]
+    assert len(sub_el) == 0
+    assert len(sub_el.attrib) == 2
+    assert sub_el.get("idref") == "xccdf_org.ssgproject.content_value_green"
+    assert sub_el.get("use") == "legacy"
+
+
+def test_add_warning_elements():
+    rule_el = ET.Element("{%s}Rule" % XCCDF12_NS)
+    warnings = [
+        {"general": "hot beverage"},
+        {"general": "inflammable material"}
+    ]
+    ssg.build_yaml.add_warning_elements(rule_el, warnings)
+    assert rule_el.tag == "{%s}Rule" % XCCDF12_NS
+    assert len(rule_el) == 2
+    warning_els = rule_el.findall("{%s}warning" % XCCDF12_NS)
+    assert len(warning_els) == 2
+    for warning_el in warning_els:
+        assert len(warning_el) == 0
+        assert len(warning_el.attrib) == 1
+        assert warning_el.get("category") == "general"
+    texts = [x.text for x in warning_els]
+    assert "hot beverage" in texts
+    assert "inflammable material" in texts
+
+
+def test_check_warnings():
+    warnings = [
+        {
+            "general": "hot beverage",
+            "error": "explosive"
+        }
+    ]
+    XCCDFStructure = collections.namedtuple("XCCDFStructure", "warnings")
+    s = XCCDFStructure(warnings=warnings)
+    with pytest.raises(ValueError) as e:
+        ssg.build_yaml.check_warnings(s)
+    msg = "Only one key/value pair should exist for each warnings dictionary"
+    assert msg in str(e)
 
 
 def test_serialize_rule():
@@ -152,7 +230,10 @@ def product_cpes():
     product_yaml_path = os.path.join(DATADIR, "product.yml")
     product_yaml = open_raw(product_yaml_path)
     product_yaml["product_dir"] = os.path.dirname(product_yaml_path)
-    return ProductCPEs(product_yaml)
+    product_cpes =  ProductCPEs()
+    product_cpes.load_product_cpes(product_yaml)
+    product_cpes.load_content_cpes(product_yaml)
+    return product_cpes
 
 
 def test_platform_from_text_unknown_platform(product_cpes):
@@ -162,9 +243,9 @@ def test_platform_from_text_unknown_platform(product_cpes):
 
 def test_platform_from_text_simple(product_cpes):
     platform = ssg.build_yaml.Platform.from_text("machine", product_cpes)
-    assert platform.to_ansible_conditional() == \
+    assert platform.get_remediation_conditional("ansible") == \
         "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]"
-    assert platform.to_bash_conditional() == \
+    assert platform.get_remediation_conditional("bash") == \
         "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]"
     platform_el = ET.fromstring(platform.to_xml_element())
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
@@ -182,8 +263,8 @@ def test_platform_from_text_simple(product_cpes):
 
 def test_platform_from_text_simple_product_cpe(product_cpes):
     platform = ssg.build_yaml.Platform.from_text("rhel7-workstation", product_cpes)
-    assert platform.to_bash_conditional() == ""
-    assert platform.to_ansible_conditional() == ""
+    assert platform.get_remediation_conditional("bash") == ""
+    assert platform.get_remediation_conditional("ansible") == ""
     platform_el = ET.fromstring(platform.to_xml_element())
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
     assert platform_el.get("id") == "rhel7-workstation"
@@ -201,8 +282,8 @@ def test_platform_from_text_simple_product_cpe(product_cpes):
 
 def test_platform_from_text_or(product_cpes):
     platform = ssg.build_yaml.Platform.from_text("ntp or chrony", product_cpes)
-    assert platform.to_bash_conditional() == "( rpm --quiet -q chrony || rpm --quiet -q ntp )"
-    assert platform.to_ansible_conditional() == \
+    assert platform.get_remediation_conditional("bash") == "( rpm --quiet -q chrony || rpm --quiet -q ntp )"
+    assert platform.get_remediation_conditional("ansible") == \
         "( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages )"
     platform_el = ET.fromstring(platform.to_xml_element())
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
@@ -219,11 +300,18 @@ def test_platform_from_text_or(product_cpes):
     assert fact_refs[1].get("name") == "cpe:/a:ntp"
 
 
+def test_platform_from_text_and_empty_conditionals(product_cpes):
+    platform = ssg.build_yaml.Platform.from_text(
+        "krb5_server_older_than_1_17-18 and krb5_workstation_older_than_1_17-18", product_cpes)
+    assert platform.get_remediation_conditional("bash") == ""
+    assert platform.get_remediation_conditional("ansible") == ""
+
+
 def test_platform_from_text_complex_expression(product_cpes):
     platform = ssg.build_yaml.Platform.from_text(
         "systemd and !yum and (ntp or chrony)", product_cpes)
-    assert platform.to_bash_conditional() == "( rpm --quiet -q systemd && ( rpm --quiet -q chrony || rpm --quiet -q ntp ) && ! ( rpm --quiet -q yum ) )"
-    assert platform.to_ansible_conditional() == "( \"systemd\" in ansible_facts.packages and ( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages ) and not ( \"yum\" in ansible_facts.packages ) )"
+    assert platform.get_remediation_conditional("bash") == "( rpm --quiet -q systemd && ( rpm --quiet -q chrony || rpm --quiet -q ntp ) && ! ( rpm --quiet -q yum ) )"
+    assert platform.get_remediation_conditional("ansible") == "( \"systemd\" in ansible_facts.packages and ( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages ) and not ( \"yum\" in ansible_facts.packages ) )"
     platform_el = ET.fromstring(platform.to_xml_element())
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
     assert platform_el.get("id") == "systemd_and_chrony_or_ntp_and_not_yum"
@@ -274,8 +362,162 @@ def test_platform_as_dict(product_cpes):
     assert d["bash_conditional"] == "( rpm --quiet -q chrony )"
     assert "xml_content" in d
 
+def test_platform_get_invalid_conditional_language(product_cpes):
+    platform = ssg.build_yaml.Platform.from_text("ntp or chrony", product_cpes)
+    with pytest.raises(AttributeError):
+        assert platform.get_remediation_conditional("foo")
+
+def test_parametrized_platform(product_cpes):
+    platform = ssg.build_yaml.Platform.from_text("package[test]", product_cpes)
+    assert platform.test.cpe_name != "cpe:/a:{arg}"
+    assert platform.test.cpe_name == "cpe:/a:test"
+    cpe_item = product_cpes.get_cpe(platform.test.cpe_name)
+    assert cpe_item.name == "cpe:/a:test"
+    assert cpe_item.title == "Package test is installed"
+    assert cpe_item.check_id == "installed_env_has_test_package"
+
+
+
 
 def test_derive_id_from_file_name():
-    assert ssg.build_yaml.derive_id_from_file_name("rule.yml") == "rule"
-    assert ssg.build_yaml.derive_id_from_file_name("id.with.dots.yaml") == "id.with.dots"
-    assert ssg.build_yaml.derive_id_from_file_name("my_id") == "my_id"
+    assert ssg.entities.common.derive_id_from_file_name("rule.yml") == "rule"
+    assert ssg.entities.common.derive_id_from_file_name("id.with.dots.yaml") == "id.with.dots"
+    assert ssg.entities.common.derive_id_from_file_name("my_id") == "my_id"
+
+
+def test_rule_triage_policy_files():
+    product = "example"
+    filenames = [
+        "policy/po/shared.yml",
+        "policy/po/example.yml",
+        "policy/li/sample.yml",
+        "policy/li/shared.yml",
+        "policy/cy/sample.yml",
+    ]
+    rule = ssg.build_yaml.Rule("id")
+    triaged = rule.triage_policy_specific_content(product, filenames)
+    number_of_applicable_policies = 2
+    assert len(triaged) == number_of_applicable_policies
+    assert triaged["po"].endswith(product + ".yml")
+    assert triaged["li"].endswith("shared" + ".yml")
+    triaged = rule.triage_policy_specific_content("", filenames)
+    number_of_applicable_policies = 2
+    assert len(triaged) == number_of_applicable_policies
+    assert triaged["po"].endswith("shared" + ".yml")
+    assert triaged["li"].endswith("shared" + ".yml")
+
+
+@contextlib.contextmanager
+def temporary_filename():
+    import tempfile
+    try:
+        tmp = tempfile.NamedTemporaryFile(delete=False)
+        tmp_name = tmp.name
+        tmp.close()
+        yield tmp_name
+    finally:
+        os.unlink(tmp_name)
+
+
+@pytest.fixture
+def rule_accounts_tmout():
+    rule_file = os.path.join(DATADIR, "accounts_tmout.yml")
+    return ssg.build_yaml.Rule.from_yaml(rule_file)
+
+
+def test_rule_to_xml_element(rule_accounts_tmout):
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    rule_el = rule_accounts_tmout.to_xml_element()
+    with temporary_filename() as real:
+        ET.ElementTree(rule_el).write(real)
+        expected = os.path.join(DATADIR, "accounts_tmout.xml")
+        diff = xmldiff_main.diff_files(real, expected)
+        assert diff == []
+
+
+@pytest.fixture
+def group_selinux():
+    rule_file = os.path.join(DATADIR, "selinux.yml")
+    return ssg.build_yaml.Group.from_yaml(rule_file)
+
+
+def test_group_to_xml_element(group_selinux):
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    group_el = group_selinux.to_xml_element()
+    with temporary_filename() as real:
+        ET.ElementTree(group_el).write(real)
+        expected = os.path.join(DATADIR, "selinux.xml")
+        diff = xmldiff_main.diff_files(real, expected)
+        assert diff == []
+
+
+@pytest.fixture
+def value_system_crypto_policy():
+    value_file = os.path.join(DATADIR, "var_system_crypto_policy.yml")
+    return ssg.build_yaml.Value.from_yaml(value_file)
+
+
+def test_value_to_xml_element(value_system_crypto_policy):
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    value_el = value_system_crypto_policy.to_xml_element()
+    with temporary_filename() as real:
+        ET.ElementTree(value_el).write(real)
+        expected = os.path.join(DATADIR, "var_system_crypto_policy.xml")
+        diff = xmldiff_main.diff_files(real, expected)
+        assert diff == []
+
+
+@pytest.fixture
+def profile_ospp():
+    value_file = os.path.join(DATADIR, "ospp.profile")
+    return ssg.build_yaml.Profile.from_yaml(value_file)
+
+
+def test_profile_to_xml_element(profile_ospp):
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    profile_el = profile_ospp.to_xml_element()
+    with temporary_filename() as real:
+        ET.ElementTree(profile_el).write(real)
+        expected = os.path.join(DATADIR, "ospp.xml")
+        diff = xmldiff_main.diff_files(real, expected)
+        assert diff == []
+
+
+@pytest.fixture
+def profile_ospp_with_extends(profile_ospp):
+    profile_ospp.extends = "xccdf_org.ssgproject.content_profile_standard"
+    return profile_ospp
+
+
+def test_profile_to_xml_element_extends(profile_ospp_with_extends):
+    profile_el = profile_ospp_with_extends.to_xml_element()
+    assert profile_el.get("extends") == \
+        "xccdf_org.ssgproject.content_profile_standard"
+
+
+@pytest.fixture
+def rule_without_ocil():
+    rule_file = os.path.join(DATADIR, "accounts_tmout_without_ocil.yml")
+    return ssg.build_yaml.Rule.from_yaml(rule_file)
+
+
+def test_rule_to_ocil_without_ocil(rule_without_ocil):
+    with pytest.raises(ValueError) as e:
+        rule_without_ocil.to_ocil()
+    assert "Rule accounts_tmout_without_ocil doesn't have OCIL" in str(e)
+
+
+def test_rule_to_ocil(rule_accounts_tmout):
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    questionnaire, action, boolean_question = rule_accounts_tmout.to_ocil()
+    testables = {
+        questionnaire: "accounts_tmout_questionnaire.xml",
+        action: "accounts_tmout_action.xml",
+        boolean_question: "accounts_tmout_boolean_question.xml"
+    }
+    for element, expected_filename in testables.items():
+        with temporary_filename() as real_file_path:
+            ET.ElementTree(element).write(real_file_path)
+            expected_file_path = os.path.join(DATADIR, expected_filename)
+            diff = xmldiff_main.diff_files(real_file_path, expected_file_path)
+            assert diff == []

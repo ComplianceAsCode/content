@@ -30,6 +30,8 @@ severity: medium
 
 identifiers:
     cce@rhel9: CCE-88396-7
+    cce@sle12: CCE-91655-1
+    cce@sle15: CCE-91249-3
 
 references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8
@@ -44,7 +46,7 @@ references:
     pcidss: Req-10.7
     srg: SRG-OS-000047-GPOS-00023
 
-ocil_clause: 'the value of the "disk_full_action" option is not "ROTATE", "SINGLE", or the line is commented out, ask the system administrator to indicate how the system takes appropriate action when an audit storage volume is full. If there is no evidence of appropriate action'
+ocil_clause: 'the value of the "max_log_file_action" option is not "ROTATE", "SINGLE", or the line is commented out, ask the system administrator to indicate how the system takes appropriate action when an audit storage volume is full. If there is no evidence of appropriate action'
 
 ocil: |-
     Verify {{{ full_name }}} takes the appropriate action when the audit files have reached maximum size.

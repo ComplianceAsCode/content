@@ -1,0 +1,30 @@
+srg_requirement: |-
+    {{{ full_name }}} must encrypt the transfer of audit records off-loaded onto a different system or media from the system being audited via rsyslog.
+
+vuldiscussion: |-
+    Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
+
+    Off-loading is a common process in information systems with limited audit storage capacity.
+
+    RHEL 8 installation media provides "rsyslogd".  "rsyslogd" is a system utility providing support for message logging.  Support for both internet and UNIX domain sockets enables this utility to support both local and remote logging.  Couple this utility with "gnutls" (which is a secure communications library implementing the SSL, TLS and DTLS protocols), and you have a method to securely encrypt and off-load auditing.
+
+    "Rsyslog" supported authentication modes include:
+    anon - anonymous authentication
+    x509/fingerprint - certificate fingerprint authentication
+    x509/certvalid - certificate validation only
+    x509/name - certificate validation and subject name authentication
+
+checktext: |-
+
+    Verify {{{ full_name }}} encrypts audit records off-loaded onto a different system or media from the system being audited via rsyslog with the following command:
+
+    $ sudo grep -i '$ActionSendStreamDriverMode' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
+
+    /etc/rsyslog.conf:$ActionSendStreamDriverMode 1
+
+    If the value of the "$ActionSendStreamDriverMode" option is not set to "1" or the line is commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to encrypt off-loaded audit records via rsyslog by setting the following options in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf":
+
+    $ActionSendStreamDriverMode 1

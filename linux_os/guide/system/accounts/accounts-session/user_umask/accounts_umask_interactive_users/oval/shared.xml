@@ -29,7 +29,13 @@
     <ind:filename operation="pattern match">^\..*</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*umask\s*</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_accounts_umask_interactive_users_bash_history</filter>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_accounts_umask_interactive_users_bash_history"
+    version="1">
+    <ind:filename operation="pattern match">^\.bash_history</ind:filename>
+  </ind:textfilecontent54_state>
 
   <!-- #### creation of test #### -->
   <ind:textfilecontent54_test id="test_accounts_umask_interactive_users" check="all"

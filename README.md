@@ -3,7 +3,6 @@
 [![Docs](https://img.shields.io/readthedocs/complianceascode)](https://complianceascode.readthedocs.io/en/latest/)
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
 [![Nightly ZIP Status](https://github.com/ComplianceAsCode/content/actions/workflows/nightly_build.yml/badge.svg)](https://nightly.link/ComplianceAsCode/content/workflows/nightly_build/master/Nightly%20Build.zip)
-[![Nightly 5.10 ZIP Status](https://github.com/ComplianceAsCode/content/actions/workflows/nightly_build_5_10.yml/badge.svg)](https://nightly.link/ComplianceAsCode/content/workflows/nightly_build_5_10/master/Nightly%20Build%20OVAL%205.10.zip)
 [![Maintainability](https://api.codeclimate.com/v1/badges/62c1f8d8064b2163db3e/maintainability)](https://codeclimate.com/github/ComplianceAsCode/content/maintainability)
 [![Stats, Guides, Tables](https://github.com/ComplianceAsCode/content/actions/workflows/gh-pages.yaml/badge.svg)](https://complianceascode.github.io/content-pages/)
 [![Join the chat at https://gitter.im/Compliance-As-Code-The/content](https://badges.gitter.im/Compliance-As-Code-The/content.svg)](https://gitter.im/Compliance-As-Code-The/content?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -13,7 +12,7 @@
 
 The purpose of this project is to create *security policy content* for various
 platforms &mdash; *Red Hat Enterprise Linux*, *Fedora*, *Ubuntu*, *Debian*, *SUSE Linux Enterprise Server (SLES)*,... &mdash;
-as well as products &mdash; *Firefox*, *Chromium*, *JRE*, ...
+as well as products &mdash; *Firefox*, *Chromium*, ...
 We aim to make it as easy as possible to write new and maintain existing
 security content in all the commonly used formats.
 

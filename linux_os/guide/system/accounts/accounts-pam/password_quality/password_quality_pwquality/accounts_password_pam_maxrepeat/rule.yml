@@ -47,8 +47,11 @@ references:
 ocil_clause: the value of "maxrepeat" is set to more than "{{{ xccdf_value("var_password_pam_maxrepeat") }}}" or is commented out
 
 ocil: |-
-    To check the maximum value for consecutive repeating characters, run the following command:
-    <pre>$ sudo grep maxrepeat /etc/security/pwquality.conf</pre>
+    Verify the value of the "maxrepeat" option in "/etc/security/pwquality.conf" with the following command:
+
+    <pre>$ grep maxrepeat /etc/security/pwquality.conf
+
+    maxrepeat = {{{ xccdf_value("var_password_pam_maxrepeat") }}}</pre>
 
 platform: pam
 

@@ -18,8 +18,6 @@ identifiers:
 references:
     disa: CCI-000044 
     nist: 'AC-7 (a)'
-    srg: SRG-OS-000021-GPOS-00005
-    stigid@rhel8: RHEL-08-020017
 
 ocil_clause: 'the "dir" option is not set to a non-default documented tally log directory, is missing or commented out'
 
@@ -38,3 +36,6 @@ fixtext: |-
     dir = /var/log/faillock
 
 srg_requirement: '{{{ full_name }}} must ensure account lockouts persist.'
+
+warnings:
+{{{ warning_rule_deprecated_by("accounts_passwords_pam_faillock_dir", "0.1.65") | indent(4) }}}

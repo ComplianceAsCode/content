@@ -41,8 +41,10 @@ ocil: |-
     <pre>AuditBackend=LinuxAudit</pre>
 
 fixtext: |-
-    Configure {{{ full_name }}} to enable Linux audit logging of the USBGuard daemon by adding or modifying the following line in "/etc/usbguard/usbguard-daemon.conf":
+    Configure {{{ full_name }}} USBGuard AuditBackend to use the audit system.
+
+    Add or edit the following line in /etc/usbguard/usbguard-daemon.conf:
 
     AuditBackend=LinuxAudit
 
-srg_requirement: '{{{ full_name }}} must enable Linux audit logging for the USBGuard daemon.'
+srg_requirement: {{{ full_name }}} Must Provide Audit Record Generation Capability For Dod-Defined Auditable Events For All Operating System Components

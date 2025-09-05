@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} file system automounter must be disabled unless required.
+
+vuldiscussion: |-
+    Without identifying devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity.
+
+checktext: |-
+    Verify that {{{ full_name }}} file system automounter has been disabled with the following command:
+
+    $ sudo systemctl is-enabled  autofs
+
+    masked
+
+    If the returned value is not "masked", "disabled", "Failed to get unit file state for autofs.service for autofs", or "enabled" is returned and is not documented as operational requirement with the Information System Security Officer ISSO.
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable the ability to automount devices.
+
+    The  autofs  service can be disabled with the following command:
+
+     $ sudo systemctl mask --now autofs.service

@@ -24,30 +24,36 @@
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of {{{ parameter }}} setting in the file" id="test_sshd_rekey_limit" version="1">
      <ind:object object_ref="obj_sshd_rekey_limit"/>
+     <ind:state state_ref="state_sshd_rekey_limit"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_sshd_rekey_limit" version="1">
      <ind:filepath>{{{ sshd_config_path }}}</ind:filepath>
-     <ind:pattern var_ref="sshd_line_regex" operation="pattern match"></ind:pattern>
+     <ind:pattern operation="pattern match">^[\s]*{{{ parameter }}}[\s]+(.*)$</ind:pattern>
      <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   {{%- if sshd_distributed_config == "true" %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of {{{ parameter }}} setting in SSHD config directory" id="test_sshd_rekey_limit_config_dir" version="1">
      <ind:object object_ref="obj_sshd_rekey_limit_config_dir"/>
+     <ind:state state_ref="state_sshd_rekey_limit"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_sshd_rekey_limit_config_dir" version="1">
      <ind:path>{{{ sshd_config_dir}}}</ind:path>
      <ind:filename operation="pattern match">.*\.conf$</ind:filename>
-     <ind:pattern var_ref="sshd_line_regex" operation="pattern match"></ind:pattern>
+     <ind:pattern operation="pattern match">^[\s]*{{{ parameter }}}[\s]+(.*)$</ind:pattern>
      <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   {{%- endif %}}
 
+  <ind:textfilecontent54_state id="state_sshd_rekey_limit" version="1">
+     <ind:subexpression operation="pattern match" var_ref="sshd_line_regex" />
+  </ind:textfilecontent54_state>
+
   <local_variable id="sshd_line_regex" datatype="string" comment="The regex of the directive" version="1">
     <concat>
-      <literal_component>^[\s]*{{{ parameter }}}[\s]+</literal_component>
+      <literal_component>^</literal_component>
       <variable_component var_ref="var_rekey_limit_size"/>
       <literal_component>[\s]+</literal_component>
       <variable_component var_ref="var_rekey_limit_time"/>

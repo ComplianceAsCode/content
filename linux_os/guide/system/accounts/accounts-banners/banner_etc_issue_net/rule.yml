@@ -1,8 +1,8 @@
 documentation_complete: true
 
-prodtype: ubuntu2004,ubuntu2204
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,ubuntu2004,ubuntu2204
 
-title: 'Modify the System Login Banner'
+title: 'Modify the System Login Banner for Remote Connections'
 
 description: |-
     To configure the system login banner edit <tt>/etc/issue.net</tt>. Replace the
@@ -48,7 +48,13 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel7: CCE-86146-8
+    cce@rhel8: CCE-86147-6
+    cce@rhel9: CCE-86148-4
+
 references:
+    cis@rhel7: 1.7.3
     cis@rhel8: 1.7.3
     disa: CCI-000048,CCI-001384,CCI-001385,CCI-001386,CCI-001387,CCI-001388
     srg: SRG-OS-000023-GPOS-00006,SRG-OS-000228-GPOS-00088
@@ -57,8 +63,7 @@ references:
 ocil_clause: 'it does not display the required banner'
 
 ocil: |-
-    To check if the system login banner is compliant,
-    run the following command:
+    To check if the system login banner is compliant, run the following command:
     <pre>$ cat /etc/issue.net</pre>
 
 platform: machine

@@ -26,20 +26,22 @@ ocil_clause: 'EBS encryption is not enabled on storage classes'
 
 ocil: |-
     Run the following command to retrieve if the EBS encryption is enabled:
-    <pre>$ oc get storageclass -o json| jq '[.items[] | select (.provisioner == "kubernetes.io/aws-ebs")] | map(.parameters.encrypted)'</pre>
+    <pre>$ oc get storageclass -o json | jq {{{ jqfilter }}}</pre>
     Make sure that the result is an array of 'true' values.
+
+{{% set jqfilter = '[.items[] | select (.provisioner == "kubernetes.io/aws-ebs" or .provisioner == "ebs.csi.aws.com")] | map(.parameters.encrypted)' %}}
 
 severity: high
 
 warnings:
 - general: |-
-    {{{ openshift_filtered_cluster_setting({'/apis/storage.k8s.io/v1/storageclasses': '[.items[] | select (.provisioner == "kubernetes.io/aws-ebs")] | map(.parameters.encrypted)'}) | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({'/apis/storage.k8s.io/v1/storageclasses': jqfilter}) | indent(4) }}}
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
     filepath: |-
-      {{{ openshift_filtered_path('/apis/storage.k8s.io/v1/storageclasses', '[.items[] | select (.provisioner == "kubernetes.io/aws-ebs")] | map(.parameters.encrypted)') }}}
+      {{{ openshift_filtered_path('/apis/storage.k8s.io/v1/storageclasses', jqfilter) }}}
     yamlpath: "[:]"
     check_existence: "all_exist"
     entity_check: "all"

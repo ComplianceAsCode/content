@@ -46,20 +46,24 @@ references:
     stigid@rhel8: RHEL-08-010371
     vmmsrg: SRG-OS-000366-VMM-001430,SRG-OS-000370-VMM-001460,SRG-OS-000404-VMM-001650
 
-ocil_clause: 'gpgcheck is not enabled or configured correctly to verify local packages'
+ocil_clause: 'there is no process to validate certificates for local packages that is approved by the organization'
 
 ocil: |-
-    To verify that <tt>localpkg_gpgcheck</tt> is configured properly, run the following
-    command:
+    Verify that {{{ pkg_manager }}} verifies the signature of local packages prior to install with the following command:
+
     <pre>$ grep localpkg_gpgcheck {{{ pkg_manager_config_file }}}</pre>
-    The output should return something similar to:
+
     <pre>localpkg_gpgcheck=1</pre>
+
+    If "localpkg_gpgcheck" is not set to "1", or if the option is missing or commented out, ask the System Administrator how the certificates for patches and other operating system components are verified.
 
 platform: yum
 
 fixtext: |-
     Configure {{{ full_name }}} to always check package signatures before installation of local packages.
-    Add or update the following line in {{{ pkg_manager_config_file }}}:
+
+    Add or update the following line in [main] section of the {{{ pkg_manager_config_file }}} file:
+
     localpkg_gpgcheck=1
 
-srg_requirement: '{{{ full_name }}} package manage must check GPG signatures of local packages.'
+srg_requirement: '{{{ full_name }}} must check the GPG sign of locally installed packages.'

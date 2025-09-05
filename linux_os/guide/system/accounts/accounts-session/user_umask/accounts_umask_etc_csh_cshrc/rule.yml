@@ -37,20 +37,33 @@ references:
     stigid@ol8: OL08-00-020353
     stigid@rhel8: RHEL-08-020353
 
-ocil_clause: 'the above command returns no output, or the umask is configured incorrectly'
+ocil_clause: 'the value for the "umask" parameter is not "{{{ xccdf_value("var_accounts_user_umask") }}}", or the "umask" parameter is missing or is commented out'
 
 ocil: |-
-    Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/csh.cshrc</tt> file by
-    running the following command:
-    <pre>$ sudo grep "umask" /etc/csh.cshrc</pre>
-    All output must show the value of <tt>umask</tt> set as shown in the below:
-    <pre>umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
+    Verify the "umask" setting is configured correctly in the "/etc/csh.cshrc" file with the following command:
+
+    $ grep umask /etc/csh.cshrc
+
+    umask 077
+    umask 077
+
+checktext: |-
+    Verify the "umask" setting is configured correctly in the "/etc/csh.cshrc" file with the following command:
+
+    Note: If the value of the "umask" parameter is set to "000" "/etc/csh.cshrc" file, the Severity is raised to a CAT I.
+
+    $ grep umask /etc/csh.cshrc
+
+    umask 077
+    umask 077
+
+    If the value for the "umask" parameter is not "077", or the "umask" parameter is missing or is commented out, this is a finding.
 
 fixtext: |-
-    Configure the {{{ full_name }}} to define default permissions for all authenticated users in such a way that the user can only read and modify their own files.
+    Configure the {{{ full_name }}} to define default permissions for all authenticated users using the c shell.
 
-    Add or edit the lines for the "umask" parameter in the "/etc/csh.cshrc" files to "{{{ xccdf_value("var_accounts_user_umask") }}}":
+    Add or edit the lines for the "umask" parameter in the "/etc/csh.cshrc" file to "{{{ xccdf_value("var_accounts_user_umask") }}}":
 
     umask {{{ xccdf_value("var_accounts_user_umask") }}}
 
-srg_requirement: '{{{ full_name }}} must define default permissions for logon and non-logon shells.'
+srg_requirement: '{{{ full_name }}} must define default permissions for the c shell.'

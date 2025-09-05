@@ -120,9 +120,6 @@ def load_product_yaml(product_yaml_path):
                                                              platform_package_overrides)
     product_yaml.update(_get_implied_properties(product_yaml))
 
-    # The product_yaml should be aware of the ProductCPEs
-    product_yaml["product_cpes"] = ProductCPEs(product_yaml)
-
     reference_uris = product_yaml.get("reference_uris", {})
     product_yaml["reference_uris"] = merge_dicts(SSG_REF_URIS,
                                                  reference_uris)

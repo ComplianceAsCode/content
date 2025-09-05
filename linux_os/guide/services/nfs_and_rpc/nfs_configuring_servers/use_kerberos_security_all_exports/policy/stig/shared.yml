@@ -1,0 +1,24 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that the Network File System (NFS) is configured to use RPCSEC_GSS.
+
+vuldiscussion: |-
+    When an NFS server is configured to use AUTH_SYS a selected userid and groupid are used to handle
+    requests from the remote user. The userid and groupid could mistakenly or maliciously be set
+    incorrectly. The AUTH_GSS method of authentication uses certificates on the server and client
+    systems to more securely authenticate the remote mount request.
+
+checktext: |-
+    Verify {{{ full_name }}} has the "sec" option is configured for all NFS exports with the following command:
+
+    Note: If the system does not have any filesystems mounted for NFS export this requirement is Not Applicable.
+
+    $ grep "sec=" /etc/exports
+
+    192.168.17.7:/mnt/export /data1 nfs4 rw,sync ,soft,sec=krb5p:krb5i:krb5
+
+    If the system is exporting file systems via NFS and has the sec option without the "krbp:krb5i:krb5" settings, the "sec" option has the "sys" setting, or the "sec" option is missing, this is a finding.
+
+fixtext: |-
+    Update the "/etc/fstab" file so the option "sec" is defined for each NFS mounted file system and the "sec" option does not have the "sys" setting.
+
+    Ensure the "sec" option is defined as "krb5p:krb5i:krb5".

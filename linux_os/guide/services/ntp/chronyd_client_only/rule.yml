@@ -10,8 +10,9 @@ description: |-
     for server operation and to operate strictly in a client-only mode.
 
 rationale: |-
-    Minimizing the exposure of the server functionality of the chrony
-    daemon diminishes the attack surface.
+    In order to prevent unauthorized connection of devices, unauthorized transfer of information, or unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable or restrict unused or unnecessary physical and logical ports/protocols on information systems.
+    Operating systems are capable of providing a wide variety of functions and services. Some of the functions and services provided by default may not be necessary to support essential organizational operations. Additionally, it is sometimes convenient to provide multiple services from a single component (e.g., VPN and IPS); however, doing so increases risk over limiting the services provided by any one component.
+    To support the requirements and principles of least functionality, the operating system must support the organizational requirements, providing only essential capabilities and limiting the use of ports, protocols, and/or services to only those required, authorized, and approved to conduct official business or to address authorized quality of life issues.
 
 severity: low
 
@@ -30,18 +31,15 @@ references:
     stigid@ol8: OL08-00-030741
     stigid@rhel8: RHEL-08-030741
 
-ocil_clause: 'port is not set or port is set to a non-zero value'
+ocil_clause: 'the "port" option is not set to "0", is commented out, or is missing'
 
 ocil: |-
-    To verify that <tt>port</tt> has been set properly, perform the following:
-    <pre>$ grep '\bport\b' {{{ chrony_conf_path }}}</pre>
-    The output should return
+    Verify {{{ full_name }}} disables the chrony daemon from acting as a server with the following command:
+    <pre>$ grep -w port {{{ chrony_conf_path }}}</pre>
     <pre>port 0</pre>
 
 fixtext: |-
-    Configure the chrony daemon to prevent acting as server.
-
-    Add or edit the following line in {{{ chrony_conf_path }}}:
+    Configure {{{ full_name }}} to disable the chrony daemon from acting as a server by adding/modifying the following line in the {{{ chrony_conf_path }}} file:
 
     port 0
 

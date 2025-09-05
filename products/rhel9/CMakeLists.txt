@@ -11,6 +11,10 @@ ssg_build_html_cce_table(${PRODUCT})
 
 ssg_build_html_srgmap_tables(${PRODUCT})
 
+if (SSG_SRG_XLSX_EXPORT)
+    ssg_build_xlsx_srg_export(${PRODUCT} "srg_gpos")
+endif()
+
 # ssg_build_html_stig_tables(${PRODUCT} "stig")
 
 #ssg_build_html_stig_tables(${PRODUCT} "ospp")

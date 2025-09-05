@@ -35,15 +35,18 @@ ocil_clause: 'there is no evidence that unauthorized peripherals are being block
 ocil: |-
     Verify the USBGuard has a policy configured with the following command:
 
-    $ sudo usbguard list-rules
+    $ usbguard list-rules
+
+    allow id 1d6b:0001 serial
 
     If the command does not return results or an error is returned, ask the SA to indicate how unauthorized peripherals are being blocked.
 
 fixtext: |-
-    Configure {{{ full_name }}} to enable the blocking of unauthorized peripherals with the following command:
-    This command must be run from a root shell and will create an allow list for any usb devices currently connected to the system.
+    Configure the operating system to enable the blocking of unauthorized peripherals with the following command:
 
-    # usbguard generate-policy > /etc/usbguard/rules.conf
+    Note: This command must be run from a root shell and will create an allow list for any usb devices currently connect to the system.
+
+    # usbguard generate-policy --no-hash > /etc/usbguard/rules.conf
 
     Note: Enabling and starting usbguard without properly configuring it for an individual system will immediately prevent any access over a usb device such as a keyboard or mouse.
 

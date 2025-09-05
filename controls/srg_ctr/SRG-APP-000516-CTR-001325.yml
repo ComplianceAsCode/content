@@ -8,13 +8,13 @@ controls:
   rules:
   - accounts_restrict_service_account_tokens
   - accounts_unique_service_account
-  - api_server_admission_control_plugin_AlwaysAdmit
-  - api_server_admission_control_plugin_AlwaysPullImages
-  - api_server_admission_control_plugin_NamespaceLifecycle
-  - api_server_admission_control_plugin_NodeRestriction
-  - api_server_admission_control_plugin_Scc
-  - api_server_admission_control_plugin_SecurityContextDeny
-  - api_server_admission_control_plugin_ServiceAccount
+  - api_server_admission_control_plugin_alwaysadmit
+  - api_server_admission_control_plugin_alwayspullimages
+  - api_server_admission_control_plugin_namespacelifecycle
+  - api_server_admission_control_plugin_noderestriction
+  - api_server_admission_control_plugin_scc
+  - api_server_admission_control_plugin_securitycontextdeny
+  - api_server_admission_control_plugin_service_account
   - api_server_anonymous_auth
   - api_server_api_priority_flowschema_catch_all
   - api_server_api_priority_gate_enabled
@@ -199,4 +199,10 @@ controls:
   - file_permissions_worker_ca
   - file_permissions_worker_kubeconfig
   - file_permissions_worker_service
+  - file_permissions_ovn_cni_server_sock
+  - file_groupowner_ovn_cni_server_sock
+  - file_owner_ovn_cni_server_sock
+  - file_groupowner_ovn_db_files
+  - file_owner_ovn_db_files
+  - file_permissions_ovn_db_files
   status: automated

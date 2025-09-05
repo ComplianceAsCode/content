@@ -37,7 +37,7 @@ def preprocess(data, lang):
     else:
         data["sysctl_correct_value"] = data["sysctlval"]
         if data["datatype"] == "int":
-            data["sysctl_wrong_value"] = "1" + data["sysctlval"]
+            data["sysctl_wrong_value"] = str((int(data["sysctlval"])+1) % 2)
         elif data["datatype"] == "string":
             data["sysctl_wrong_value"] = "wrong_value"
     return data

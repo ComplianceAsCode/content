@@ -1,5 +1,7 @@
 documentation_complete: true
 
+# new major OS versions will most likely not be applicable because of the
+# kerberos version higher than 1.17-18
 prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9
 
 title: 'Uninstall krb5-workstation Package'
@@ -25,11 +27,11 @@ references:
     stigid@rhel8: RHEL-08-010162
 
 platforms:
-{{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
-{{%- if product in ["ol8", "rhel8"] %}}
-    - krb5_server_older_than_1_17-18
+{{%- if "rhel" in product %}}
+    - no_ovirt and krb5_workstation_older_than_1_17-18
+{{%- else %}}
     - krb5_workstation_older_than_1_17-18
-{{% endif %}}
+{{%- endif %}}
 
 warnings:
 {{{ warning_ovirt_rule_notapplicable("RHV hosts require ipa-client package, which has dependency on krb5-workstation") | indent(4) }}}

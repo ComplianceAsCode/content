@@ -1,0 +1,5 @@
+name: cpe:/a:not_s390x_arch
+title: System architecture is not S390X
+check_id: proc_sys_kernel_osrelease_arch_not_s390x
+bash_conditional: '! grep -q s390x /proc/sys/kernel/osrelease'
+ansible_conditional: 'ansible_architecture != "s390x"'

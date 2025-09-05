@@ -272,21 +272,23 @@ controls:
     rules:
       - mount_option_home_nosuid
 
-  # NEEDS RULE
   - id: 1.1.7.4
     title: Ensure usrquota option set on /home partition (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - mount_option_home_usrquota
 
-  # NEEDS RULE
   - id: 1.1.7.5
     title: Ensure grpquota option set on /home partition (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - mount_option_home_grpquota
 
   - id: 1.1.8.1
     title: Ensure nodev option set on /dev/shm partition (Automated)
@@ -399,7 +401,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: partial  # This rule, as implemented here, does not check for a user.cfg file
+    status: automated
     rules:
       - file_groupowner_efi_grub2_cfg
       - file_groupowner_grub2_cfg
@@ -407,6 +409,12 @@ controls:
       - file_owner_grub2_cfg
       - file_permissions_efi_grub2_cfg
       - file_permissions_grub2_cfg
+      - file_groupowner_efi_user_cfg
+      - file_groupowner_user_cfg
+      - file_owner_efi_user_cfg
+      - file_owner_user_cfg
+      - file_permissions_efi_user_cfg
+      - file_permissions_user_cfg
 
   - id: 1.4.3
     title: Ensure authentication is required when booting into rescue mode (Automated)
@@ -569,14 +577,16 @@ controls:
       - file_owner_etc_issue
       - file_permissions_etc_issue
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/7225
   - id: 1.7.6
     title: Ensure permissions on /etc/issue.net are configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - file_groupowner_etc_issue_net
+      - file_owner_etc_issue_net
+      - file_permissions_etc_issue_net
 
   - id: 1.8.1
     title: Ensure GNOME Display Manager is removed (Manual)
@@ -595,29 +605,33 @@ controls:
       - dconf_gnome_login_banner_text
       - login_banner_text=cis_default
 
-  # NEEDS RULE
   - id: 1.8.3
     title: Ensure last logged in user display is disabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - dconf_gnome_disable_user_list
 
-  # NEEDS RULE
   - id: 1.8.4
     title: Ensure XDMCP is not enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - gnome_gdm_disable_xdmcp
 
-  # NEEDS RULE
   - id: 1.8.5
     title: Ensure automatic mounting of removable media is disabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - dconf_gnome_disable_automount
+      - dconf_gnome_disable_automount_open
 
   - id: 1.9
     title: Ensure updates, patches, and additional security software are installed (Manual)
@@ -736,7 +750,7 @@ controls:
       - package_vsftpd_removed
 
   - id: 2.2.9
-    title: 2.2.9 Ensure TFTP Server is not installed (Automated)
+    title: Ensure TFTP Server is not installed (Automated)
     levels:
       - l1_server
       - l1_workstation

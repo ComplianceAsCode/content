@@ -5,7 +5,7 @@ ENV OSCAP_DIR content
 ENV BUILD_JOBS 4
 
 RUN true \
-	&& zypper --non-interactive in cmake ninja expat openscap-utils libxml2-tools libxslt-tools python3-PyYAML python3-Jinja2 python3-pytest python3-pytest-cov python3-Sphinx python3-sphinx_rtd_theme python3-pip python3-recommonmark \
+	&& zypper --non-interactive in cmake ninja expat openscap-utils libxml2-tools libxslt-tools python3-PyYAML python3-Jinja2 python3-pytest python3-pytest-cov python3-Sphinx python3-sphinx_rtd_theme python3-pip python3-myst-parser \
         && pip install pip --upgrade \
         && pip install json2html sphinxcontrib.jinjadomain \
 	&& mkdir -p /home/$OSCAP_USERNAME \

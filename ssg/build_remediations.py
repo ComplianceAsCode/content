@@ -16,7 +16,7 @@ from . import constants
 from .jinja import process_file_with_macros as jinja_process_file
 
 from .xml import ElementTree
-from .constants import XCCDF11_NS
+from .constants import XCCDF12_NS
 
 REMEDIATION_TO_EXT_MAP = {
     'anaconda': '.anaconda',
@@ -35,58 +35,7 @@ REMEDIATION_CONFIG_KEYS = ['complexity', 'disruption', 'platform', 'reboot',
                            'strategy']
 REMEDIATION_ELM_KEYS = ['complexity', 'disruption', 'reboot', 'strategy']
 
-
-def get_fixgroup_for_type(fixcontent, remediation_type):
-    """
-    For a given remediation type, return a new subelement of that type.
-
-    Exits if passed an unknown remediation type.
-    """
-    if remediation_type == 'anaconda':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="anaconda",
-            system="urn:redhat:anaconda:pre",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    elif remediation_type == 'ansible':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="ansible",
-            system="urn:xccdf:fix:script:ansible",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    elif remediation_type == 'bash':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="bash",
-            system="urn:xccdf:fix:script:sh",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    elif remediation_type == 'puppet':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="puppet",
-            system="urn:xccdf:fix:script:puppet",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    elif remediation_type == 'ignition':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="ignition",
-            system="urn:xccdf:fix:script:ignition",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    elif remediation_type == 'kubernetes':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="kubernetes",
-            system="urn:xccdf:fix:script:kubernetes",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    elif remediation_type == 'blueprint':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="blueprint",
-            system="urn:redhat:osbuild:blueprint",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
-                     % (remediation_type))
-    sys.exit(1)
+RemediationObject = namedtuple('remediation', ['contents', 'config'])
 
 
 def is_supported_filename(remediation_type, filename):
@@ -126,8 +75,7 @@ def split_remediation_content_and_metadata(fix_file):
         remediation_contents.append(line)
 
     contents = "\n".join(remediation_contents)
-    remediation = namedtuple('remediation', ['contents', 'config'])
-    return remediation(contents=contents, config=config)
+    return RemediationObject(contents=contents, config=config)
 
 
 def parse_from_file_with_jinja(file_path, env_yaml):
@@ -181,6 +129,44 @@ class Remediation(object):
     def parse_from_file_with_jinja(self, env_yaml, cpe_platforms):
         return parse_from_file_with_jinja(self.file_path, env_yaml)
 
+    def get_inherited_cpe_platform_names(self):
+        inherited_cpe_platform_names = set()
+        if self.associated_rule:
+            # There can be repeated inherited platforms and rule platforms
+            inherited_cpe_platform_names.update(self.associated_rule.inherited_cpe_platform_names)
+        return inherited_cpe_platform_names
+
+    def get_rule_specific_cpe_platform_names(self):
+        rule_specific_cpe_platform_names = set()
+        inherited_cpe_platform_names = self.get_inherited_cpe_platform_names()
+        if self.associated_rule and self.associated_rule.cpe_platform_names is not None:
+            rule_specific_cpe_platform_names = {
+                p for p in self.associated_rule.cpe_platform_names
+                if p not in inherited_cpe_platform_names}
+        return rule_specific_cpe_platform_names
+
+    def get_stripped_conditionals(self, language, cpe_platform_names, cpe_platforms):
+        """
+        collect conditionals of platforms defined by cpe_platform_names
+        and strip them of white spaces
+        """
+        stripped_conditionals = []
+        for p in cpe_platform_names:
+            conditional = cpe_platforms[p].get_remediation_conditional(language)
+            if conditional is not None:
+                stripped_conditional = conditional.strip()
+                if stripped_conditional:
+                    stripped_conditionals.append(stripped_conditional)
+        return stripped_conditionals
+
+    def get_rule_specific_conditionals(self, language, cpe_platforms):
+        cpe_platform_names = self.get_rule_specific_cpe_platform_names()
+        return self.get_stripped_conditionals(language, cpe_platform_names, cpe_platforms)
+
+    def get_inherited_conditionals(self, language, cpe_platforms):
+        cpe_platform_names = self.get_inherited_cpe_platform_names()
+        return self.get_stripped_conditionals(language, cpe_platform_names, cpe_platforms)
+
 
 def process(remediation, env_yaml, cpe_platforms):
     """
@@ -232,28 +218,10 @@ class BashRemediation(Remediation):
         if stripped_fix_text == "":
             return result
 
-        rule_specific_cpe_platform_names = set()
-        inherited_cpe_platform_names = set()
-        if self.associated_rule:
-            # There can be repeated inherited platforms and rule platforms
-            inherited_cpe_platform_names.update(self.associated_rule.inherited_cpe_platform_names)
-            if self.associated_rule.cpe_platform_names is not None:
-                rule_specific_cpe_platform_names = {
-                    p for p in self.associated_rule.cpe_platform_names
-                    if p not in inherited_cpe_platform_names}
-
-        inherited_conditionals = [
-            cpe_platforms[p].to_bash_conditional()
-            for p in inherited_cpe_platform_names]
-        rule_specific_conditionals = [
-            cpe_platforms[p].to_bash_conditional()
-            for p in rule_specific_cpe_platform_names]
-        # remove potential "None" from lists
-        inherited_conditionals = sorted([
-            p for p in inherited_conditionals if p != ''])
-        rule_specific_conditionals = sorted([
-            p for p in rule_specific_conditionals if p != ''])
-
+        inherited_conditionals = super(
+            BashRemediation, self).get_inherited_conditionals("bash", cpe_platforms)
+        rule_specific_conditionals = super(
+            BashRemediation, self).get_rule_specific_conditionals("bash", cpe_platforms)
         if inherited_conditionals or rule_specific_conditionals:
             wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
 
@@ -277,8 +245,7 @@ class BashRemediation(Remediation):
                 "    >&2 echo 'Remediation is not applicable, nothing was done'")
             wrapped_fix_text.append("fi")
 
-            remediation = namedtuple('remediation', ['contents', 'config'])
-            result = remediation(contents="\n".join(wrapped_fix_text), config=result.config)
+            result = RemediationObject(contents="\n".join(wrapped_fix_text), config=result.config)
 
         return result
 
@@ -394,38 +361,20 @@ class AnsibleRemediation(Remediation):
 
     def update_when_from_rule(self, to_update, cpe_platforms):
         additional_when = []
-        rule_specific_cpe_platform_names = set()
-        inherited_cpe_platform_names = set()
-        if self.associated_rule:
-            # There can be repeated inherited platforms and rule platforms
-            inherited_cpe_platform_names.update(self.associated_rule.inherited_cpe_platform_names)
-            if self.associated_rule.cpe_platform_names is not None:
-                rule_specific_cpe_platform_names = {
-                    p for p in self.associated_rule.cpe_platform_names
-                    if p not in inherited_cpe_platform_names}
-
-        inherited_conditionals = [
-            cpe_platforms[p].to_ansible_conditional()
-            for p in inherited_cpe_platform_names]
-        rule_specific_conditionals = [
-            cpe_platforms[p].to_ansible_conditional()
-            for p in rule_specific_cpe_platform_names]
-        # remove potential "None" from lists
-        inherited_conditionals = sorted([
-            p for p in inherited_conditionals if p != ''])
-        rule_specific_conditionals = sorted([
-            p for p in rule_specific_conditionals if p != ''])
-
-        # remove conditionals related to package CPEs if the updated task
-        # collects package facts
+        inherited_conditionals = super(
+            AnsibleRemediation, self).get_inherited_conditionals("ansible", cpe_platforms)
+        rule_specific_conditionals = super(
+            AnsibleRemediation, self).get_rule_specific_conditionals("ansible", cpe_platforms)
+        # Remove conditionals related to package CPEs if the updated task collects package facts
         if "package_facts" in to_update:
-            inherited_conditionals = [
-                c for c in inherited_conditionals if "in ansible_facts.packages" not in c]
-            rule_specific_conditionals = [
-                c for c in rule_specific_conditionals if "in ansible_facts.packages" not in c]
+            inherited_conditionals = filter(
+                lambda c: "in ansible_facts.packages" not in c,
+                inherited_conditionals)
+            rule_specific_conditionals = filter(
+                lambda c: "in ansible_facts.packages" not in c, rule_specific_conditionals)
 
         if inherited_conditionals:
-            additional_when = additional_when + inherited_conditionals
+            additional_when.extend(inherited_conditionals)
 
         if rule_specific_conditionals:
             additional_when.append(" or ".join(rule_specific_conditionals))
@@ -664,8 +613,10 @@ def expand_xccdf_subs(fix, remediation_type):
 
         # we cannot combine elements and text easily
         # so text is in ".tail" of element
-        xccdfvarsub = ElementTree.SubElement(fix, "{%s}sub" % XCCDF11_NS, idref=varname)
+        xccdfvarsub = ElementTree.SubElement(
+            fix, "{%s}sub" % XCCDF12_NS, idref=constants.OSCAP_VALUE + varname)
         xccdfvarsub.tail = text_between_vars
+        xccdfvarsub.set("use", "legacy")
 
 
 def load_compiled_remediations(fixes_dir):

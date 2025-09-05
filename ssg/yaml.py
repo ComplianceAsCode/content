@@ -209,3 +209,19 @@ def update_yaml_list_or_string(current_contents, new_contents, prepend=False):
     if len(result) == 1:
         result = result[0]
     return result
+
+
+def convert_string_to_bool(string):
+    """
+    Returns True if string is "true" (in any letter case)
+    returns False if "false"
+    raises ValueError
+    """
+    lower = string.lower()
+    if lower == "true":
+        return True
+    elif lower == "false":
+        return False
+    else:
+        raise ValueError(
+                    "Invalid value %s while expecting boolean string" % string)

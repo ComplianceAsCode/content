@@ -32,9 +32,11 @@ description: |-
     Detailed information on encrypting partitions using LUKS or LUKS ciphers can be found on
     the {{{ full_name }}} Documentation web site:<br />
     {{% if product == "ol7" %}}
-        {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/7/security/ol7-install-sec.html") }}}
+        {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/7/security/security-SecureInstallationandConfiguration.html#ol7-instcsdp-sec") }}}
     {{% elif product == "ol8" %}}
-        {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/8/install/install-InstallingOracleLinuxManually.html#install-storage-network") }}}
+        {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/8/install/install-InstallingOracleLinuxManually.html#system-options") }}}
+    {{% elif product == "ol9" %}}
+        {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/9/install/install-InstallingOracleLinuxManually.html#system-options") }}}
     {{% elif product in ["sle12", "sle15"] %}}
         {{{ weblink(link="https://www.suse.com/documentation/sled-12/book_security/data/sec_security_cryptofs_y2.html") }}}
     {{% elif product == "rhel7" %}}

@@ -5,22 +5,27 @@ prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4
 title: 'Ensure tftp Daemon Uses Secure Mode'
 
 description: |-
-    If running the <tt>tftp</tt> service is necessary, it should be configured
-    to change its root directory at startup. To do so, ensure
-    <tt>/etc/xinetd.d/tftp</tt> includes <tt>-s</tt> as a command line argument, as shown in
-    the following example:
+    If running the Trivial File Transfer Protocol (TFTP) service is necessary,
+    it should be configured to change its root directory at startup. To do so,
+    {{%- if product in ["rhel7","ol7","rhel8","ol8","rhv4"] %}}
+    ensure <tt>/etc/xinetd.d/tftp</tt> includes <tt>-s</tt> as a command line argument,
+    as shown in the following example:
     <pre>server_args = -s {{{ xccdf_value("var_tftpd_secure_directory") }}}</pre>
+    {{%- else %}}
+    find the path for the <tt>tftp</tt> systemd service:
+    <pre>$ sudo systemctl show tftp | grep FragmentPath=
+    FragmentPath=/etc/systemd/system/tftp.service</pre>
+
+    and ensure the <tt>ExecStart</tt> line on that file includes the <tt>-s</tt> option with a subdirectory:
+    <pre>ExecStart=/usr/sbin/in.tftpd -s {{{ xccdf_value("var_tftpd_secure_directory") }}}</pre>
+    {{%- endif %}}
 
 rationale: |-
     Using the <tt>-s</tt> option causes the TFTP service to only serve files from the
     given directory. Serving files from an intentionally-specified directory
     reduces the risk of sharing files which should remain private.
 
-severity: {{% if product in ["rhel7","ol7"] -%}}
-medium
-{{%- else -%}}
-high
-{{%- endif %}}
+severity: medium
 
 platform: tftp-server
 
@@ -44,21 +49,56 @@ references:
     stigid@rhel7: RHEL-07-040720
     stigid@rhel8: RHEL-08-040350
 
-ocil_clause: '"server_args" line does not have a "-s" option, and a subdirectory is not assigned'
+ocil_clause: |-
+{{%- if product in ["rhel7","ol7","rhel8","ol8","rhv4"] %}}
+    '"server_args" line does not have a "-s" option, and a subdirectory is not assigned'
+{{%- else %}}
+    'the "ExecStart" line does not have a "-s" option, and a subdirectory is not assigned'
+{{%- endif %}}
 
 ocil: |-
-    If TFTP is not installed, this is not applicable. To determine if TFTP is
-    installed, run the following command:
+    Verify the TFTP daemon is configured to operate in secure mode.
+
+    Check if a TFTP server is installed with the following command:
+    {{% if product in ["rhel7","ol7","rhel8","ol8","rhv4"] %}}
     <pre>$ rpm -qa | grep tftp</pre>
+    {{% else %}}
+    <pre>$ sudo dnf list --installed tftp-server
+
+    tftp-server.x86_64    5.2-35.el9.x86_64</pre>
+    {{% endif %}}
+
+    If a TFTP server is not installed, this is Not Applicable.
     <br /><br />
-    Verify <tt>tftp</tt> is configured by with the <tt>-s</tt> option by
-    running the following command:
+    {{% if product in ["rhel7","ol7","rhel8","ol8","rhv4"] %}}
+    If a TFTP server is installed, verify TFTP is configured by with
+    the <tt>-s</tt> option by running the following command:
+
     <pre>grep "server_args" /etc/xinetd.d/tftp</pre>
     <pre>server_args = -s {{{ xccdf_value("var_tftpd_secure_directory") }}}</pre>
+    {{% else %}}
+    If a TFTP server is installed, check for the server arguments with the following command:
+
+    <pre>$ systemctl cat tftp | grep ExecStart=
+    ExecStart=/usr/sbin/in.tftpd -s {{{ xccdf_value("var_tftpd_secure_directory") }}}</pre>
+    {{% endif %}}
 
 fixtext: |-
+    {{%- if product in ["rhel7","ol7","rhel8","ol8","rhv4"] %}}
     Configure the TFTP daemon to operate in secure mode by adding the following line to "/etc/xinetd.d/tftp" (or modify the line to have the required value):
 
     server_args = -s {{{ xccdf_value("var_tftpd_secure_directory") }}}
+    {{%- else %}}
+    Configure the TFTP daemon to operate in secure mode.
+
+    1. Find the path for the systemd service
+
+    $ sudo systemctl show tftp | grep FragmentPath=
+    FragmentPath=/etc/systemd/system/tftp.service
+
+    2. Edit the ExecStart line on that file to add the -s option with a subdirectory.
+
+    ExecStart=/usr/sbin/in.tftpd -s {{{ xccdf_value("var_tftpd_secure_directory") }}}
+    {{%- endif %}}
 
 srg_requirement: 'If the Trivial File Transfer Protocol (TFTP) server is required, the {{{ full_name }}} TFTP daemon must be configured to operate in secure mode.'

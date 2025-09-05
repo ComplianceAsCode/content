@@ -1,0 +1,37 @@
+srg_requirement: |-
+    {{{ full_name }}} must not accept router advertisements on all IPv6 interfaces by default.
+
+vuldiscussion: |-
+    An illicit router advertisement message could result in a man-in-the-middle attack.
+
+checktext: |-
+    Verify {{{ full_name }}} does not accept router advertisements on all IPv6 interfaces by default, unless the system is a router.
+
+    Note: If IPv6 is disabled on the system, this requirement is not applicable.
+
+    Check to see if router advertisements are not accepted by default by using the following command:
+
+    $ sudo sysctl net.ipv6.conf.default.accept_ra
+
+    net.ipv6.conf.default.accept_ra = 0
+
+    If the "accept_ra" value is not "0" and is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
+
+    Check that the configuration files are present to enable this network parameter.
+
+    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F net.ipv6.conf.default.accept_ra | tail -1
+
+    net.ipv6.conf.default.accept_ra = 0
+
+    If "net.ipv6.conf.default.accept_ra" is not set to "0" or is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not accept router advertisements on all IPv6 interfaces by default unless the system is a router.
+
+    Add or edit the following line in a single system configuration file, in the "/etc/sysctl.d/" directory:
+
+    net.ipv6.conf.default.accept_ra=0
+
+    Load settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system

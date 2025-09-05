@@ -1,0 +1,28 @@
+srg_requirement: |-
+    {{{ full_name }}} must implement NIST FIPS-validated cryptography for the following: to
+    provision digital signatures, to generate cryptographic hashes, and to
+    protect data requiring data-at-rest protections in accordance with
+    applicable federal laws, Executive Orders, directives, policies,
+    regulations, and standards.
+
+vuldiscussion: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+checktext: |-
+    Verify that {{{ full_name }}} is in FIPS mode with the following command:
+
+    $ sudo fips-mode-setup --check
+
+    FIPS mode is enabled.
+
+    If FIPS mode is not enabled, this is a finding.
+
+fixtext: |-
+    Configure the operating system to implement FIPS mode with the following command
+
+    $ sudo fips-mode-setup --enable
+
+    Reboot the system for the changes to take effect.

@@ -1,0 +1,22 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that the file integrity tool verifies Access Control Lists (ACLs).
+
+vuldiscussion: |-
+    {{{ full_name }}} installation media ships with an optional file integrity tool called Advanced Intrusion Detection Environment (AIDE). AIDE is highly configurable at install time. This requirement assumes the "aide.conf" file is under the "/etc" directory.
+
+    ACLs can provide permissions beyond those permitted through the file mode and must be
+    verified by the file integrity tools.
+
+checktext: |-
+    Verify that that AIDE is verifying ACLs with the following command:
+
+    $ grep acl /etc/aide.conf
+
+    All= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
+
+    If the "acl" rule is not being used on all uncommented selection lines in the "/etc/aide.conf" file, or ACLs are not being checked by another file integrity tool, this is a finding.
+
+fixtext: |-
+    Configure the file integrity tool to check file and directory ACLs.
+
+    If AIDE is installed, ensure the "acl" rule is present on all uncommented file and directory selection lists.

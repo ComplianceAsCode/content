@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux3,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
+prodtype: alinux3,anolis8,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Set Existing Passwords Minimum Age'
 
@@ -45,7 +45,7 @@ references:
 ocil_clause: 'any results are returned that are not associated with a system account'
 
 ocil: |-
-    Check whether the minimum time period between password changes for each user account is one day or greater.
+    Verify that {{{ full_name }}} has configured the minimum time period between password changes for each user account is one day or greater with the following command:
 
     $ sudo awk -F: '$4 &lt; 1 {print $1 " " $4}' /etc/shadow
 

@@ -27,6 +27,8 @@ def parse_args():
                    help="Path to SSG root directory (defaults to %s)" % SSG_ROOT)
     parser.add_argument("-o", "--output", type=str, action="store", default=BUILD_OUTPUT,
                    help="File to write json output to (defaults to build/rule_dirs.json)")
+    parser.add_argument("-q", "--quiet", action="store_true",
+                        help="Hides output from the script, just creates the file.")
 
     return parser.parse_args()
 
@@ -173,6 +175,11 @@ def handle_remediations(product_list, product_yamls, rule_obj):
     return rule_remediations, r_products
 
 
+def quiet_print(msg, quiet, file):
+    if not quiet:
+        print(msg, file)
+
+
 def main():
     args = parse_args()
 
@@ -201,7 +208,7 @@ def main():
                 all_ovals = ','.join(oval_products[key])
                 msg = "Product {0} has multiple ovals in rule {1}: {2}"
                 msg = msg.format(key, rule_id, all_ovals)
-                print(msg, file=sys.stderr)
+                quiet_print(msg, args.quiet, sys.stderr)
 
         rule_obj['oval_products'] = oval_products
 
@@ -215,7 +222,7 @@ def main():
                     msg = "Product {0} has multiple remediations of the same type "
                     msg += "in rule {1}: {2}"
                     msg = msg.format(key, rule_id, all_fixes)
-                    print(msg, file=sys.stderr)
+                    quiet_print(msg, args.quiet, sys.stderr)
 
         rule_obj['remediation_products'] = r_products
 

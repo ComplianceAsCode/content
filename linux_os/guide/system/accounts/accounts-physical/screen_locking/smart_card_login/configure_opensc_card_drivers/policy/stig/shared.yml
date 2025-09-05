@@ -1,0 +1,23 @@
+srg_requirement: |-
+    {{{ full_name }}} must use the cac smartcard driver.
+
+vuldiscussion: |-
+    Smart card login provides two-factor authentication stronger than
+    that provided by a username and password combination. Smart cards leverage public key infrastructure in order to provide and verify credentials.
+    Configuring the smart card driver in use by your organization helps to prevent users from using unauthorized smart cards.
+
+checktext: |-
+    Verify that RHEL loads the cac driver with the following command:
+
+    $ grep card_drivers /etc/opensc.conf
+
+    card_drivers = cac;
+
+    If "cac" is not listed as a card driver, or there is no line returned for "card_drivers", this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to load the cac driver.
+
+    Add, or modify the following line in the "/etc/opensc.conf" file:
+
+    card_drivers = cac;

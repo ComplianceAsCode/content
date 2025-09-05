@@ -1,4 +1,4 @@
-# platform = multi_platform_ubuntu
+# platform = multi_platform_all
 
 {{{ bash_instantiate_variables("login_banner_text") }}}
 

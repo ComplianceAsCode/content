@@ -44,7 +44,7 @@ ocil: |-
 
     $ sudo grep disk_full_action /etc/audit/auditd.conf
 
-    disk_full_action = HALT
+    disk_full_action = {{{ xccdf_value("var_auditd_disk_full_action") }}}
 
     If the value of the "disk_full_action" option is not "SYSLOG", "SINGLE", or "HALT", or the line is commented out, ask the system administrator to indicate how the system takes appropriate action when an audit storage volume is full.
 

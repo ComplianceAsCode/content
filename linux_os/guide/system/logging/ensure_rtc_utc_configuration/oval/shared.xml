@@ -1,4 +1,3 @@
-{{% if target_oval_version >= [5, 11] %}}
 <def-group oval_version="5.11">
   <definition class="compliance" id="ensure_rtc_utc_configuration" version="1">
    {{{ oval_metadata("Ensure RTC is using UTC as its time base") }}}
@@ -20,4 +19,3 @@
     <unix:canonical_path operation="pattern match">^(/usr)?/share/zoneinfo(/Etc)?/(GMT|UTC)$</unix:canonical_path>
   </unix:symlink_state>
 </def-group>
-{{% endif %}}

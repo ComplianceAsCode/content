@@ -1,0 +1,14 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_auditd_admin_space_left_percentage") }}}
+
+- name: Configure auditd admin_space_left on Low Disk Space
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: "admin_space_left = {{ var_auditd_admin_space_left_percentage }}%"
+    regexp: '^\s*admin_space_left\s*=\s*.*$'
+    state: present
+    create: yes

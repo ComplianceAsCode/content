@@ -49,10 +49,10 @@ ocil: |-
     with <pre>$ oc get machineset --all-namespaces -o yaml</pre>
 
     If not, run the following command to retrieve if the FIPS flag is enabled:
-    <pre>$ oc get machineconfig -o json | jq '. | [select(.items[].metadata.name | test("^rendered-worker-[0-9a-z]+$|^rendered-master-[0-9a-z]+$"))] | map(.spec.fips == true)'</pre>
+    <pre>$ oc get machineconfig -o json | jq '[.items[] | select(.metadata.name | test("^rendered-worker-[0-9a-z]+$|^rendered-master-[0-9a-z]+$"))] | map(.spec.fips == true)'</pre>
     Make sure that the result is an array of 'true' values.
     Then, run this next command to retrieve if LUKS encryption is enabled:
-    <pre>$ oc get machineconfig -o json | jq '. | [select(.items[].metadata.name | test("^rendered-worker-[0-9a-z]+$|^rendered-master-[0-9a-z]+$"))] | map(.spec.config.storage.luks[0].clevis != null)'</pre>
+    <pre>$ oc get machineconfig -o json | jq '[.items[] | select(.metadata.name | test("^rendered-worker-[0-9a-z]+$|^rendered-master-[0-9a-z]+$"))] | map(.spec.config.storage.luks[0].clevis != null)'</pre>
     The result must also be an array of 'true' values.
 
 severity: high

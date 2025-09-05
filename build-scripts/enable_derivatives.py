@@ -13,7 +13,6 @@ has been enabled for the derivative operating systems and what are the implicati
 Author: Martin Preisler <mpreisle@redhat.com>
 """
 
-import os
 import sys
 from optparse import OptionParser
 
@@ -22,7 +21,6 @@ import ssg.build_derivatives
 import ssg.xccdf
 import ssg.xml
 
-XCCDF11_NS = ssg.constants.XCCDF11_NS
 XCCDF12_NS = ssg.constants.XCCDF12_NS
 oval_ns = ssg.constants.oval_namespace
 
@@ -47,6 +45,9 @@ def parse_args():
                       action="store", help="XML Tree content")
     parser.add_option("--id-name", dest="id_name", default="ssg",
                       action="store", help="ID naming scheme")
+    parser.add_option(
+        "--cpe-items-dir",
+        dest="cpe_items_dir", help="path to the directory where compiled cpe items are stored")
     (options, args) = parser.parse_args()
 
     if options.centos and options.sl:
@@ -59,8 +60,6 @@ def parse_args():
     if not options.output and not options.input_content:
         parser.print_help()
         sys.exit(1)
-
-
     return options, args
 
 
@@ -84,12 +83,10 @@ def main():
 
     benchmarks = []
 
-    ssg.xccdf.scrape_benchmarks(root, XCCDF11_NS, benchmarks)
     ssg.xccdf.scrape_benchmarks(root, XCCDF12_NS, benchmarks)
 
     # Remove CCEs and DISA STIG IDs from derivatives as these are specific to
     # the vendor/OS.
-    ssg.build_derivatives.remove_idents(root, XCCDF11_NS)
     ssg.build_derivatives.remove_idents(root, XCCDF12_NS)
     ssg.build_derivatives.remove_cce_reference(root, oval_ns)
 
@@ -115,7 +112,8 @@ def main():
             )
 
     ssg.build_derivatives.replace_platform(root, oval_ns, derivative)
-    ssg.build_derivatives.add_cpe_item_to_dictionary(root, args[0], args[1], options.id_name)
+    ssg.build_derivatives.add_cpe_item_to_dictionary(
+        root, args[0], args[1], options.id_name, options.cpe_items_dir)
 
     tree.write(options.output)
 

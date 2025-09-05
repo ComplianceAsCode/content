@@ -1,0 +1,36 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("The root account should be configured to deny access after the number of
+    defined failed attempts has been reached.") }}}
+    <criteria operator="AND" comment="Checks common to both scenarios">
+      <criterion test_ref="test_accounts_passwords_pam_tally2_even_deny_root"
+      comment="Verify deny root configuation of pam_tally2 in common-auth" />
+      <criterion test_ref="test_accounts_passwords_pam_tally2_even_deny_root_account"
+      comment="Verify deny configuation of pam_tally2 in common-account" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_even_deny_root"
+  check="all" check_existence="all_exist"
+  comment="Verify even_deny_root configuation of pam_tally2" version="1">
+    <ind:object object_ref="object_accounts_passwords_pam_tally2_even_deny_root" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_tally2_even_deny_root" comment="Check even deny root configuration of pam_tally2" version="1">
+    <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*auth\s+required\s+pam_tally2\.so\s+[^\n]*deny=[[4-9]|[1-9][0-9]]+([\s+\S+]*)even_deny_root([\s+\S+])*\s*(\\)*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_even_deny_root_account"
+  check="all" check_existence="all_exist"
+  comment="Verify deny configuation of pam_tally2_account" version="1">
+    <ind:object object_ref="object_accounts_passwords_pam_tally2_even_deny_root_account" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_tally2_even_deny_root_account" comment="Check deny configuration of pam_tally2" version="1">
+    <ind:filepath>/etc/pam.d/common-account</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*account(?:(?!\n)\s)+required(?:(?!\n)\s)+pam_tally2.so(\s|$)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

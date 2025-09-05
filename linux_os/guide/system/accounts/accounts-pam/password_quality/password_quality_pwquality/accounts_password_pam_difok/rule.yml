@@ -52,14 +52,14 @@ references:
     stigid@ubuntu2004: UBTU-20-010053
     vmmsrg: SRG-OS-000072-VMM-000390
 
-ocil_clause: 'difok is not found or set to less than the required value'
+ocil_clause: 'the value of "difok" is set to less than "{{{ xccdf_value("var_password_pam_difok") }}}", or is commented out'
 
 ocil: |-
-    To check how many characters must differ during a password change, run the following command:
+    Verify the value of the "difok" option in "/etc/security/pwquality.conf" with the following command:
+
     <pre>$ sudo grep difok /etc/security/pwquality.conf
-    difok = {{{ xccdf_value("var_password_pam_difok") }}}
-    </pre>
-    The <tt>difok</tt> parameter will indicate how many characters must differ.
+
+    difok = {{{ xccdf_value("var_password_pam_difok") }}}</pre>
 
 platform: pam
 

@@ -1,0 +1,12 @@
+summary:
+  Destructive ANSSI-BP-028 (high) profile test (Bash)
+discover:
+  how: fmf
+  url: https://src.fedoraproject.org/tests/scap-security-guide.git
+  test:
+  - /Sanity/machine-hardening/anssi_bp28_high
+execute:
+  how: tmt
+adjust:
+- enabled: false
+  when: distro == fedora

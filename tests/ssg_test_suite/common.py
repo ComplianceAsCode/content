@@ -199,7 +199,9 @@ def _get_platform_cpes(platform):
         for p in products:
             product_yaml_path = os.path.join(ssg_root, "products", p, "product.yml")
             product_yaml = load_product_yaml(product_yaml_path)
-            p_cpes = ProductCPEs(product_yaml)
+            p_cpes = ProductCPEs()
+            p_cpes.load_product_cpes(product_yaml)
+            p_cpes.load_content_cpes(product_yaml)
             platform_cpes |= set(p_cpes.get_product_cpe_names())
         return platform_cpes
     else:
@@ -213,7 +215,9 @@ def _get_platform_cpes(platform):
             raise ValueError
         product_yaml_path = os.path.join(ssg_root, "products", product, "product.yml")
         product_yaml = load_product_yaml(product_yaml_path)
-        product_cpes = ProductCPEs(product_yaml)
+        product_cpes = ProductCPEs()
+        product_cpes.load_product_cpes(product_yaml)
+        product_cpes.load_content_cpes(product_yaml)
         platform_cpes = set(product_cpes.get_product_cpe_names())
         return platform_cpes
 
@@ -437,11 +441,11 @@ def select_templated_tests(test_dir_config, available_scenarios_basenames):
 
 
 def fetch_templated_tests_paths(
-        rule_namedtuple, template_builder, product_yaml):
+        rule_namedtuple, product_yaml):
     rule = rule_namedtuple.rule
     if not rule.template or not rule.template['vars']:
         return dict()
-    tests_paths = template_builder.get_all_tests(rule.template)
+    tests_paths = fetch_all_templated_tests_paths(rule.template)
     test_config = get_test_dir_config(rule_namedtuple.directory, product_yaml)
     allowed_tests_paths = select_templated_tests(
         test_config, tests_paths.keys())
@@ -450,14 +454,69 @@ def fetch_templated_tests_paths(
     return templated_test_scenarios
 
 
+def fetch_all_templated_tests_paths(rule_template):
+    """
+    Builds a dictionary of a test case relative path -> test case absolute path mapping.
+
+    Here, we want to know what the relative path on disk (under the tests/
+    subdirectory) is (such as "installed.pass.sh"), along with the actual
+    absolute path.
+    """
+    template_name = rule_template['name']
+
+    base_dir = os.path.abspath(os.path.join(_SHARED_TEMPLATES, template_name, "tests"))
+    results = dict()
+
+    # If no test cases exist, return an empty dictionary.
+    if not os.path.exists(base_dir):
+        return results
+
+    # Walk files; note that we don't need to do anything about directories
+    # as only files are recorded in the mapping; directories can be
+    # inferred from the path.
+    for dirpath, _, filenames in os.walk(base_dir):
+        if not filenames:
+            continue
+
+        for filename in filenames:
+            if filename.endswith(".swp"):
+                continue
+
+            # Relative path to the file becomes our results key.
+            absolute_path = os.path.abspath(os.path.join(dirpath, filename))
+            relative_path = os.path.relpath(absolute_path, base_dir)
+
+            # Save the results under the relative path.
+            results[relative_path] = absolute_path
+    return results
+
+
 def load_templated_tests(
-        templated_tests_paths, template_builder, template, local_env_yaml):
+        templated_tests_paths, template, local_env_yaml):
     templated_tests = dict()
     for path in templated_tests_paths:
-        test = template_builder.get_test(path, template, local_env_yaml)
+        test = load_test(path, template, local_env_yaml)
         basename = os.path.basename(path)
         templated_tests[basename] = test
     return templated_tests
+
+
+def load_test(absolute_path, rule_template, local_env_yaml):
+    template_name = rule_template['name']
+    template_vars = rule_template['vars']
+    # Load template parameters and apply it to the test case.
+    maybe_template = ssg.templates.Template(_SHARED_TEMPLATES, template_name)
+    if maybe_template.looks_like_template():
+        maybe_template.load()
+        template_parameters = maybe_template.preprocess(template_vars, "tests")
+    else:
+        raise ValueError("Rule uses template '{}' "
+                         "which doesn't exist in '{}".format(template_name, _SHARED_TEMPLATES))
+
+    jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
+    filled_template = ssg.jinja.process_file_with_macros(
+        absolute_path, jinja_dict)
+    return filled_template
 
 
 def file_known_as_useless(file_name):

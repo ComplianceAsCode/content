@@ -1,0 +1,54 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: "Check if any insecure registry sources is configured"
+
+description: |-
+    The configuration <tt>registrySources.insecureRegistries</tt> determines the
+    insecure registries that the OpenShift container runtime can access for builds
+    and pods. This configuration setting is for accessing the configured registries
+    without TLS validation which could lead to security breaches and should be
+    avoided.
+    Remove any insecureRegistries configured using the following command:
+    <pre>oc patch image.config.openshift.io cluster --type=json -p "[{'op': 'remove', 'path': '/spec/registrySources/insecureRegistries'}]"</pre>
+
+    For more information, follow
+    {{{ weblink(link="https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html",
+                text="the relevant documentation") }}}.
+
+rationale: |-
+    Insecure registries should not be configured, which would restrict the possibilities of
+    OpenShift container runtime accessing registries which cannot be validated.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-86123-7
+
+references:
+    nist: CM-5(3)
+    srg: SRG-APP-000014-CTR-000035
+
+ocil_clause: 'insecure registry sources is configured for image access'
+
+ocil: |-
+    To check for the configured insecure registry sources use below command:
+    <tt>$ oc get image.config.openshift.io/cluster -ojsonpath='{.spec.registrySources.insecureRegistries}'</tt>
+    The output lists the insecure registry sources configured.
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/images/cluster") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: /apis/config.openshift.io/v1/images/cluster
+        yamlpath: ".spec.registrySources.insecureRegistries[:]"
+        check_existence: "none_exist"
+        entity_check: "all"
+        values:
+            - value: ".*"
+              operation: "pattern match"

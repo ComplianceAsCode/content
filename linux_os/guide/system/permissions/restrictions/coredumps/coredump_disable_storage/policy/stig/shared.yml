@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} must disable storing core dumps.
+
+vuldiscussion: |-
+    A core dump includes a memory image taken at the time the operating system
+    terminates an application. The memory image could contain sensitive data
+    and is generally useful only for developers or system operators trying to
+    debug problems. Enabling core dumps on production systems is not recommended,
+    however there may be overriding operational requirements to enable advanced
+    debuging. Permitting temporary enablement of core dumps during such situations
+    should be reviewed through local needs and policy.
+
+checktext: |-
+    Verify {{{ full_name }}} disables storing core dumps for all users by issuing the following command:
+
+    $ grep -i storage /etc/systemd/coredump.conf
+
+    Storage=none
+
+    If the "Storage" item is missing, commented out, or the value is anything other than "none" and the need for core dumps is not documented with the Information System Security Officer (ISSO) as an operational requirement for all domains that have the "core" item assigned, this is a finding.
+
+fixtext: |-
+    Configure the operating system to disable storing core dumps for all users.
+
+    Add or modify the following line in /etc/systemd/coredump.conf:
+
+    Storage=none

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle15,ubuntu1604,ubuntu1804,ubuntu2004,ubuntu2204
+prodtype: sle12,sle15,ubuntu1604,ubuntu1804,ubuntu2004,ubuntu2204
 
 title: 'Enable systemd_timesyncd Service'
 
@@ -20,9 +20,14 @@ rationale: |-
 
 severity: high
 
+identifiers:
+    cce@sle12: CCE-91659-3
+    cce@sle15: CCE-91296-4
+
 references:
     anssi: NT012(R03)
     cis-csc: 1,14,15,16,3,5,6
+    cis@sle12: 2.2.1.2
     cis@sle15: 2.2.1.2
     cis@ubuntu2004: 2.2.1.2
     cis@ubuntu2204: 2.2.1.2

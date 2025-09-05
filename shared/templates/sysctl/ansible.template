@@ -9,12 +9,16 @@
     paths:
       - "/etc/sysctl.d/"
       - "/run/sysctl.d/"
+      - "/usr/local/lib/sysctl.d/"
+{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
+      - "/usr/lib/sysctl.d/"
+{{% endif %}}
     contains: '^[\s]*{{{ SYSCTLVAR }}}.*$'
     patterns: "*.conf"
     file_type: any
   register: find_sysctl_d
 
-- name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
+- name: Comment out any occurrences of {{{ SYSCTLVAR }}} from config files
   replace:
     path: "{{ item.path }}"
     regexp: '^[\s]*{{{ SYSCTLVAR }}}'

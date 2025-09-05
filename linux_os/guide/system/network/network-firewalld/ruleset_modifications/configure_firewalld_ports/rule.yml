@@ -54,18 +54,23 @@ references:
     stigid@rhel8: RHEL-08-040030
     vmmsrg: SRG-OS-000096-VMM-000490,SRG-OS-000480-VMM-002000
 
-ocil_clause: 'the firewalld rules are not configured'
+ocil_clause: 'there are additional ports, protocols, or services that are not in the PPSM CLSA, or there are ports, protocols, or services that are prohibited by the PPSM Category Assurance List (CAL), or there are no firewall rules configured'
 
 ocil: |-
     Inspect the list of enabled firewall ports and verify they are configured correctly by running
     the following command:
+
     <pre>$ sudo firewall-cmd --list-all</pre>
 
+    Ask the System Administrator for the site or program Ports, Protocols, and Services Management Component Local Service Assessment (PPSM CLSA). Verify the services allowed by the firewall match the PPSM CLSA.
+
 fixtext: |-
-    Configure {{{ full_name }}} to allow approved services to have access to the system.
+    Configure {{{ full_name }}} to allow approved settings and/or running services to comply with the PPSM Component Local Service Assessment (CLSA) for the site or program and the PPSM CAL.
+
     To open a port for a service, configure firewalld using the following command:
+
     $ sudo firewall-cmd --permanent --add-port=port_number/tcp
     or
     $ sudo firewall-cmd --permanent --add-service=service_name
 
-srg_requirement: '{{{ full_name }}} must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the Ports, Protocols, and Services Management (PPSM) Category Assignments List (CAL) and vulnerability assessments.'
+srg_requirement: '{{{ full_name }}} Must Control Remote Access Methods.'

@@ -1,0 +1,39 @@
+srg_requirement: |-
+    {{{ full_name }}} must not enable IPv6 packet forwarding unless the system is a router.
+
+vuldiscussion: |-
+    IP forwarding permits the kernel to forward packets from one network
+    interface to another. The ability to forward packets between two networks is
+    only appropriate for systems acting as routers.
+
+checktext: |-
+    Verify {{{ full_name }}} is not performing IPv6 packet forwarding, unless the system is a router.
+
+    Note: If IPv6 is disabled on the system, this requirement is Not Applicable.
+
+    Check that IPv6 forwarding is disabled using the following commands:
+
+    $ sudo sysctl net.ipv6.conf.all.forwarding
+
+    net.ipv6.conf.all.forwarding = 0
+
+    If the IPv6 forwarding value is not "0" and is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
+
+    Check that the configuration files are present to enable this network parameter.
+
+    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F net.ipv6.conf.all.forwarding | tail -1
+
+    net.ipv6.conf.all.forwarding = 0
+
+    If "net.ipv6.conf.all.forwarding" is not set to "0" or is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not allow IPv6 packet forwarding, unless the system is a router.
+
+    Add or edit the following line in a single system configuration file, in the "/etc/sysctl.d/" directory:
+
+    net.ipv6.conf.all.forwarding=0
+
+    Load settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system

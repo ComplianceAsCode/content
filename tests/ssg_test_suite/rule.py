@@ -219,15 +219,6 @@ class RuleChecker(oscap.Checker):
             logging.error(msg)
         return success
 
-    def _rule_template_been_tested(self, rule, tested_templates):
-        if rule.template is None:
-            return False
-        if self.test_env.duplicate_templates:
-            return False
-        if rule.template in tested_templates:
-            return True
-        tested_templates.add(rule.template)
-        return False
 
     def _rule_matches_rule_spec(self, rule_short_id):
         rule_id = OSCAP_RULE + rule_short_id
@@ -368,10 +359,10 @@ class RuleChecker(oscap.Checker):
                 new_sbr[rule_id] = RuleTestContent(scenarios, other_content)
         return new_sbr
 
-    def _find_tests_paths(self, rule, template_builder, product_yaml):
+    def _find_tests_paths(self, rule, product_yaml):
         # Start by checking for templating tests
         templated_tests_paths = common.fetch_templated_tests_paths(
-            rule, template_builder, product_yaml)
+            rule, product_yaml)
 
         # Add additional tests from the local rule directory. Note that,
         # like the behavior in template_tests, this will overwrite any
@@ -380,7 +371,7 @@ class RuleChecker(oscap.Checker):
 
         for filename in local_tests_paths:
             templated_tests_paths.pop(filename, None)
-        if self.target_type != "template":
+        if self.target_type != "template" and not self.test_env.duplicate_templates:
             for filename in self.used_templated_test_scenarios[rule.template]:
                 templated_tests_paths.pop(filename, None)
             self.used_templated_test_scenarios[rule.template] |= set(
@@ -389,13 +380,9 @@ class RuleChecker(oscap.Checker):
 
     def _load_all_tests(self, rule):
         product_yaml = common.get_product_context(self.test_env.product)
-        # Initialize a mock template_builder.
-        empty = "/ssgts/empty/placeholder"
-        template_builder = ssg.templates.Builder(
-            product_yaml, empty, common._SHARED_TEMPLATES, empty, empty)
 
         templated_tests_paths, local_tests_paths = self._find_tests_paths(
-            rule, template_builder, product_yaml)
+            rule, product_yaml)
 
         # All tests is a mapping from path (in the tarball) to contents
         # of the test case. This is necessary because later code (which
@@ -405,7 +392,7 @@ class RuleChecker(oscap.Checker):
         # templating system.
         all_tests = dict()
         templated_tests = common.load_templated_tests(
-            templated_tests_paths, template_builder, rule.rule.template,
+            templated_tests_paths, rule.rule.template,
             rule.local_env_yaml)
         local_tests = common.load_local_tests(
             local_tests_paths, rule.local_env_yaml)

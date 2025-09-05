@@ -14,9 +14,15 @@
 
 - name: Set architecture for audit init_module tasks
   set_fact:
-    audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
+    audit_arch: "b64"
+  when:
+  - ansible_architecture == "aarch64" or
+    ansible_architecture == "ppc64" or
+    ansible_architecture == "ppc64le" or
+    ansible_architecture == "s390x" or
+    ansible_architecture == "x86_64"
 
-- name: Perform remediation of Audit rules for init_module for x86 platform
+- name: Perform remediation of Audit rules for init_module for 32bit platform
   block:
     {{{ ansible_audit_augenrules_add_syscall_rule(
       action_arch_filters="-a always,exit -F arch=b32",
@@ -35,7 +41,7 @@
       syscall_grouping=["init_module","finit_module"],
       )|indent(4) }}}
 
-- name: Perform remediation of Audit rules for init_module for x86_64 platform
+- name: Perform remediation of Audit rules for init_module for 64bit platform
   block:
     {{{ ansible_audit_augenrules_add_syscall_rule(
       action_arch_filters="-a always,exit -F arch=b64",

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,fedora,rhel7,rhel8,rhel9,sle15
+prodtype: alinux2,alinux3,anolis8,fedora,rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'Ensure that /etc/cron.deny does not exist'
 
@@ -19,12 +19,15 @@ identifiers:
     cce@rhel7: CCE-86848-9
     cce@rhel8: CCE-86849-7
     cce@rhel9: CCE-86850-5
+    cce@sle12: CCE-91684-1
+    cce@sle15: CCE-91314-5
 
 references:
     cis@alinux2: 5.1.8
     cis@alinux3: 5.1.8
     cis@rhel7: 5.1.8
     cis@rhel8: 5.1.8
+    cis@sle12: 5.1.8
     cis@sle15: 5.1.8
 
 ocil_clause: 'the file /etc/cron.deny exists'

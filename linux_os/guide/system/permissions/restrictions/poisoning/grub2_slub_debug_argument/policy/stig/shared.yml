@@ -1,0 +1,34 @@
+srg_requirement: |-
+    {{{ full_name }}} must clear SLUB/SLAB objects to prevent use-after-free attacks.
+
+vuldiscussion: |-
+    Poisoning writes an arbitrary value to freed objects, so any modification or
+    reference to that object after being freed or before being initialized will be
+    detected and prevented.
+    This prevents many types of use-after-free vulnerabilities at little performance cost.
+    Also prevents leak of data and detection of corrupted memory.
+
+checktext: |-
+    Verify that GRUB 2 is configured to enable poisoning of SLUB/SLAB objects to mitigate use-after-free vulnerabilities with the following commands:
+
+    Check that the current GRUB 2 configuration has poisoning of SLUB/SLAB objects enabled:
+
+    $  sudo grubby --info=ALL | grep args | grep -v 'slub_debug=P'
+    If any output is returned, this is a finding.
+
+    Check that poisoning of SLUB/SLAB objects is enabled by default to persist in kernel updates:
+
+    $ sudo grep slub_debug /etc/default/grub
+
+    GRUB_CMDLINE_LINUX="slub_debug=P"
+
+    If "slub_debug" is not set to "P", is missing or commented out, this is a finding.
+
+fixtext: |-
+    Configure RHEL  to enable poisoning of SLUB/SLAB objects with the following commands:
+
+    $ sudo grubby --update-kernel=ALL --args="slub_debug=P"
+
+    Add or modify the following line in "/etc/default/grub" to ensure the configuration survives kernel updates:
+
+    GRUB_CMDLINE_LINUX="slub_debug=P"

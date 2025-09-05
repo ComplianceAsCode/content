@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} emergency accounts must be automatically removed or disabled after the crisis is resolved or within 72 hours.
+
+vuldiscussion: |-
+    If emergency user accounts remain active when no longer needed or for
+    an excessive period, these accounts may be used to gain unauthorized access.
+    To mitigate this risk, automated termination of all emergency accounts
+    must be set upon account creation.
+
+checktext: |-
+    Verify emergency accounts have been provisioned with an expiration date of 72 hours.
+
+    For every emergency account, run the following command to obtain its account aging and expiration information:
+
+    $ sudo chage -l emergency_account_name
+
+    Verify each of these accounts has an expiration date set within 72 hours or as documented.
+
+    If any emergency accounts have no expiration date set or do not expire within 72 hours, this is a finding.
+
+fixtext: |-
+    If an emergency account must be created configure the system to terminate the account after a 72
+    hour time period with the following command to set an expiration date on it. Substitute
+    "temporary_account_name" with the account to be created.
+
+    $ sudo chage -E `date -d "+3 days" +%Y-%m-%d` wmergency_account_name

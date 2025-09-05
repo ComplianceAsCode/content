@@ -1,0 +1,18 @@
+srg_requirement: |-
+    All {{{ full_name }}} local interactive users must have a home directory assigned in the /etc/passwd file.
+
+vuldiscussion: |-
+    If local interactive users are not assigned a valid home directory, there is no
+    place for the storage and control of files they should own.
+
+checktext: |-
+    Verify that interactive users on the system have a home directory assigned with the following command:
+
+    $ sudo awk -F: '($3>=1000)&&($7 !~ /nologin/){print $1, $3, $6}' /etc/passwd
+
+    Inspect the output and verify that all interactive users (normally users with a UID greater that 1000) have a home directory defined.
+
+    If users home directory is not defined, then this is a finding.
+
+fixtext: |-
+    Assign home directories to all local interactive users on {{{ full_name }}} that currently do not have a home directory assigned.

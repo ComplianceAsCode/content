@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,ubuntu2004,ubuntu2204
+prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004,ubuntu2204
 
 title: 'Enforce usage of pam_wheel for su authentication'
 
@@ -21,6 +21,8 @@ identifiers:
     cce@rhel7: CCE-85855-5
     cce@rhel8: CCE-83318-6
     cce@rhel9: CCE-90085-2
+    cce@sle12: CCE-91633-8
+    cce@sle15: CCE-91336-8
 
 references:
     cis@alinux2: "5.6"
@@ -30,6 +32,7 @@ references:
     cis@ubuntu2004: "5.6"
     cis@ubuntu2204: "5.6"
     ospp: FMT_SMF_EXT.1.1
+    pcidss: Req-8.6.1
     srg: 'SRG-OS-000373-GPOS-00156,SRG-OS-000312-GPOS-00123'
 
 ocil_clause: 'the line is not in the file or it is commented'
@@ -45,8 +48,15 @@ fixtext: |-
 
     In file "/etc/pam.d/su", uncomment the following line:
 
-    "#auth    required    pam_wheel.so use_id"
+    "#auth    required    pam_wheel.so use_uid"
 
     $ sed '/^[[:space:]]*#[[:space:]]*auth[[:space:]]\+required[[:space:]]\+pam_wheel\.so[[:space:]]\+use_uid$/s/^[[:space:]]*#//' -i /etc/pam.d/su
 
-srg_requirement: '{{{ full_name }}} must restrict access to the su command.'
+    If necessary, create a "wheel" group and add administrative users to the group.
+
+srg_requirement: '{{{ full_name }}} Must Require Users To Re-Authenticate For Privilege Escalation.'
+
+vuldiscussion: |-
+    Without re-authentication, users may access resources or perform tasks for which they do not have authorization.
+    When operating systems provide the capability to escalate a functional capability, it is critical the user re-authenticate.
+

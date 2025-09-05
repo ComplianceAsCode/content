@@ -5,7 +5,6 @@
     "smartcard": "smartcard-auth",
     "system": "system-auth",
 } -%}}
-{{% if target_oval_version >= [5, 11] %}}
 <def-group>
 	<definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Check that authselect is enabled") }}}
@@ -34,4 +33,3 @@
   </unix:symlink_state>
   {{% endfor %}}
 </def-group>
-{{% endif %}}

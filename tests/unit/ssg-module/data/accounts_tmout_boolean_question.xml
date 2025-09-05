@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ns0:boolean_question xmlns:ns0="http://scap.nist.gov/schema/ocil/2.0" id="accounts_tmout_question">
+  <ns0:question_text>Run the following command to ensure the TMOUT value is configured for all users
+on the system:
+
+$ sudo grep TMOUT /etc/profile /etc/profile.d/*.sh
+
+The output should return the following:
+TMOUT=
+      Is it the case that value of TMOUT is not less than or equal to expected setting?
+      </ns0:question_text>
+</ns0:boolean_question>

@@ -32,3 +32,7 @@ selections:
     - rbac_limit_cluster_admin
     - api_server_tls_cipher_suites
     - api_server_encryption_provider_cipher
+  ### Helper Rules
+  ### This is a helper rule to fetch the required api resource for detecting OCP version
+    - version_detect_in_ocp
+    - version_detect_in_hypershift

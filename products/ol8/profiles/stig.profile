@@ -505,7 +505,7 @@ selections:
     - accounts_passwords_pam_faillock_silent
 
     # OL08-00-020020, OL08-00-020021
-    - account_passwords_pam_faillock_audit
+    - accounts_passwords_pam_faillock_audit
 
     # OL08-00-020022, OL08-00-020023
     - accounts_passwords_pam_faillock_deny_root

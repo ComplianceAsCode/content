@@ -1,0 +1,12 @@
+summary:
+  Destructive CIS Server Level 2 profile test (Bash)
+discover:
+  how: fmf
+  url: https://src.fedoraproject.org/tests/scap-security-guide.git
+  test:
+  - /Sanity/machine-hardening/cis
+execute:
+  how: tmt
+adjust:
+- enabled: false
+  when: distro == fedora

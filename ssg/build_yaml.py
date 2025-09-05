@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-from collections import defaultdict
 from copy import deepcopy
 import datetime
 import json
@@ -9,15 +8,16 @@ import os
 import os.path
 import re
 import sys
-from xml.sax.saxutils import escape
 import glob
 
-import yaml
 
 import ssg.build_remediations
-from .build_cpe import CPEDoesNotExist, CPEALLogicalTest, CPEALFactRef
-from .constants import (XCCDF11_NS,
-                        XCCDF_REFINABLE_PROPERTIES,
+from .build_cpe import CPEDoesNotExist, CPEALLogicalTest, CPEALFactRef, ProductCPEs
+from .constants import (XCCDF12_NS,
+                        OSCAP_BENCHMARK,
+                        OSCAP_GROUP,
+                        OSCAP_RULE,
+                        OSCAP_VALUE,
                         SCE_SYSTEM,
                         cce_uri,
                         dc_namespace,
@@ -26,7 +26,6 @@ from .constants import (XCCDF11_NS,
                         oval_namespace,
                         xhtml_namespace,
                         xsi_namespace,
-                        stig_ns,
                         timestamp,
                         SSG_BENCHMARK_LATEST_URI,
                         SSG_PROJECT_NAME,
@@ -34,26 +33,22 @@ from .constants import (XCCDF11_NS,
                         PREFIX_TO_NS,
                         FIX_TYPE_TO_SYSTEM
                         )
-from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
+from .rules import get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
 from .cce import is_cce_format_valid, is_cce_value_valid
-from .yaml import DocumentationNotComplete, open_and_expand, open_and_macro_expand
+from .yaml import DocumentationNotComplete, open_and_macro_expand
 from .utils import required_key, mkdir_p
 
 from .xml import ElementTree as ET, add_xhtml_namespace, register_namespaces, parse_file
 from .shims import unicode_func
-from .build_cpe import ProductCPEs
 import ssg.build_stig
 
-def dump_yaml_preferably_in_original_order(dictionary, file_object):
-    try:
-        return yaml.dump(dictionary, file_object, indent=4, sort_keys=False)
-    except TypeError as exc:
-        # Older versions of libyaml don't understand the sort_keys kwarg
-        if "sort_keys" not in str(exc):
-            raise exc
-        return yaml.dump(dictionary, file_object, indent=4)
+from .entities.common import (
+    XCCDFEntity,
+    add_sub_element,
+)
+from .entities.profile import Profile, ProfileWithInlinePolicies
 
 
 def add_sub_element(parent, tag, ns, data):
@@ -84,6 +79,12 @@ def add_sub_element(parent, tag, ns, data):
                .format(parent.tag, ustr))
         raise RuntimeError(msg)
 
+    # Apart from HTML and XML elements the rule descriptions and similar
+    # also contain <xccdf:sub> elements, where we need to add the prefix
+    # to create a full reference.
+    for x in element.findall(".//{%s}sub" % XCCDF12_NS):
+        x.set("idref", OSCAP_VALUE + x.get("idref"))
+        x.set("use", "legacy")
     parent.append(element)
     return element
 
@@ -120,7 +121,7 @@ def add_warning_elements(element, warnings):
     # Each of the {dict} should have only one key/value pair.
     for warning_dict in warnings:
         warning = add_sub_element(
-            element, "warning", XCCDF11_NS, list(warning_dict.values())[0])
+            element, "warning", XCCDF12_NS, list(warning_dict.values())[0])
         warning.set("category", list(warning_dict.keys())[0])
 
 
@@ -128,7 +129,7 @@ def add_nondata_subelements(element, subelement, attribute, attr_data):
     """Add multiple iterations of a sublement that contains an attribute but no data
        For example, <requires id="my_required_id"/>"""
     for data in attr_data:
-        req = ET.SubElement(element, subelement)
+        req = ET.SubElement(element, "{%s}%s" % (XCCDF12_NS, subelement))
         req.set(attribute, data)
 
 
@@ -159,13 +160,13 @@ def add_reference_elements(element, references, ref_uri_dict):
                         .format(ref_type, ref_vals, self.id_))
                     raise ValueError(msg)
 
-            ref = ET.SubElement(element, '{%s}reference' % XCCDF11_NS)
+            ref = ET.SubElement(element, '{%s}reference' % XCCDF12_NS)
             ref.set("href", ref_href)
             ref.text = ref_val
 
 
 def add_benchmark_metadata(element, contributors_file):
-    metadata = ET.SubElement(element, "{%s}metadata" % XCCDF11_NS)
+    metadata = ET.SubElement(element, "{%s}metadata" % XCCDF12_NS)
 
     publisher = ET.SubElement(metadata, "{%s}publisher" % dc_namespace)
     publisher.text = SSG_PROJECT_NAME
@@ -180,582 +181,6 @@ def add_benchmark_metadata(element, contributors_file):
 
     source = ET.SubElement(metadata, "{%s}source" % dc_namespace)
     source.text = SSG_BENCHMARK_LATEST_URI
-
-
-class SelectionHandler(object):
-    def __init__(self):
-        self.refine_rules = defaultdict(list)
-        self.variables = dict()
-        self.unselected = []
-        self.unselected_groups = []
-        self.selected = []
-
-    @property
-    def selections(self):
-        selections = []
-        for item in self.selected:
-            selections.append(str(item))
-        for item in self.unselected:
-            selections.append("!"+str(item))
-        for varname in self.variables.keys():
-            selections.append(varname+"="+self.variables.get(varname))
-        for rule, refinements in self.refine_rules.items():
-            for prop, val in refinements:
-                selections.append("{rule}.{property}={value}"
-                                  .format(rule=rule, property=prop, value=val))
-        return selections
-
-    @selections.setter
-    def selections(self, entries):
-        for item in entries:
-            self.apply_selection(item)
-
-    def apply_selection(self, item):
-        if "." in item:
-            rule, refinement = item.split(".", 1)
-            property_, value = refinement.split("=", 1)
-            if property_ not in XCCDF_REFINABLE_PROPERTIES:
-                msg = ("Property '{property_}' cannot be refined. "
-                       "Rule properties that can be refined are {refinables}. "
-                       "Fix refinement '{rule_id}.{property_}={value}' in profile '{profile}'."
-                       .format(property_=property_, refinables=XCCDF_REFINABLE_PROPERTIES,
-                               rule_id=rule, value=value, profile=self.id_)
-                       )
-                raise ValueError(msg)
-            self.refine_rules[rule].append((property_, value))
-        elif "=" in item:
-            varname, value = item.split("=", 1)
-            self.variables[varname] = value
-        elif item.startswith("!"):
-            self.unselected.append(item[1:])
-        else:
-            self.selected.append(item)
-
-    def _subtract_refinements(self, extended_refinements):
-        """
-        Given a dict of rule refinements from the extended profile,
-        "undo" every refinement prefixed with '!' in this profile.
-        """
-        for rule, refinements in list(self.refine_rules.items()):
-            if rule.startswith("!"):
-                for prop, val in refinements:
-                    extended_refinements[rule[1:]].remove((prop, val))
-                del self.refine_rules[rule]
-        return extended_refinements
-
-    def update_with(self, rhs):
-        extended_selects = set(rhs.selected)
-        extra_selections = extended_selects.difference(set(self.selected))
-        self.selected.extend(list(extra_selections))
-
-        updated_variables = dict(rhs.variables)
-        updated_variables.update(self.variables)
-        self.variables = updated_variables
-
-        extended_refinements = deepcopy(rhs.refine_rules)
-        updated_refinements = self._subtract_refinements(extended_refinements)
-        updated_refinements.update(self.refine_rules)
-        self.refine_rules = updated_refinements
-
-
-class XCCDFEntity(object):
-    """
-    This class can load itself from a YAML with Jinja macros,
-    and it can also save itself to YAML.
-
-    It is supposed to work with the content in the project,
-    when entities are defined in the benchmark tree,
-    and they are compiled into flat YAMLs to the build directory.
-    """
-    KEYS = dict(
-            id_=lambda: "",
-            definition_location=lambda: "",
-    )
-
-    MANDATORY_KEYS = set()
-
-    GENERIC_FILENAME = ""
-    ID_LABEL = "id"
-
-    def __init__(self, id_):
-        super(XCCDFEntity, self).__init__()
-        self._assign_defaults()
-        self.id_ = id_
-
-    def _assign_defaults(self):
-        for key, default in self.KEYS.items():
-            default_val = default()
-            if isinstance(default_val, RuntimeError):
-                default_val = None
-            setattr(self, key, default_val)
-
-    @classmethod
-    def get_instance_from_full_dict(cls, data):
-        """
-        Given a defining dictionary, produce an instance
-        by treating all dict elements as attributes.
-
-        Extend this if you want tight control over the instance creation process.
-        """
-        entity = cls(data["id_"])
-        for key, value in data.items():
-            setattr(entity, key, value)
-        return entity
-
-    @classmethod
-    def process_input_dict(cls, input_contents, env_yaml, product_cpes=None):
-        """
-        Take the contents of the definition as a dictionary, and
-        add defaults or raise errors if a required member is not present.
-
-        Extend this if you want to add, remove or alter the result
-        that will constitute the new instance.
-        """
-        data = dict()
-
-        for key, default in cls.KEYS.items():
-            if key in input_contents:
-                if input_contents[key] is not None:
-                    data[key] = input_contents[key]
-                del input_contents[key]
-                continue
-
-            if key not in cls.MANDATORY_KEYS:
-                data[key] = cls.KEYS[key]()
-            else:
-                msg = (
-                    "Key '{key}' is mandatory for definition of '{class_name}'."
-                    .format(key=key, class_name=cls.__name__))
-                raise ValueError(msg)
-
-        return data
-
-    @classmethod
-    def parse_yaml_into_processed_dict(cls, yaml_file, env_yaml=None, product_cpes=None):
-        """
-        Given yaml filename and environment info, produce a dictionary
-        that defines the instance to be created.
-        This wraps :meth:`process_input_dict` and it adds generic keys on the top:
-
-        - `id_` as the entity ID that is deduced either from thefilename,
-          or from the parent directory name.
-        - `definition_location` as the original location whenre the entity got defined.
-        """
-        file_basename = os.path.basename(yaml_file)
-        entity_id = derive_id_from_file_name(file_basename)
-        if file_basename == cls.GENERIC_FILENAME:
-            entity_id = os.path.basename(os.path.dirname(yaml_file))
-
-        if env_yaml:
-            env_yaml[cls.ID_LABEL] = entity_id
-        yaml_data = open_and_macro_expand(yaml_file, env_yaml)
-
-        try:
-            processed_data = cls.process_input_dict(yaml_data, env_yaml, product_cpes)
-        except ValueError as exc:
-            msg = (
-                "Error processing {yaml_file}: {exc}"
-                .format(yaml_file=yaml_file, exc=str(exc)))
-            raise ValueError(msg)
-
-        if yaml_data:
-            msg = (
-                "Unparsed YAML data in '{yaml_file}': {keys}"
-                .format(yaml_file=yaml_file, keys=list(yaml_data.keys())))
-            raise RuntimeError(msg)
-
-        if not processed_data.get("definition_location", ""):
-            processed_data["definition_location"] = yaml_file
-
-        processed_data["id_"] = entity_id
-
-        return processed_data
-
-    @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
-        yaml_file = os.path.normpath(yaml_file)
-
-        local_env_yaml = None
-        if env_yaml:
-            local_env_yaml = dict()
-            local_env_yaml.update(env_yaml)
-
-        try:
-            data_dict = cls.parse_yaml_into_processed_dict(yaml_file, local_env_yaml, product_cpes)
-        except DocumentationNotComplete as exc:
-            raise
-        except Exception as exc:
-            msg = (
-                "Error loading a {class_name} from {filename}: {error}"
-                .format(class_name=cls.__name__, filename=yaml_file, error=str(exc)))
-            raise RuntimeError(msg)
-
-        result = cls.get_instance_from_full_dict(data_dict)
-
-        return result
-
-    def represent_as_dict(self):
-        """
-        Produce a dict representation of the class.
-
-        Extend this method if you need the representation to be different from the object.
-        """
-        data = dict()
-        for key in self.KEYS:
-            value = getattr(self, key)
-            if value or True:
-                data[key] = getattr(self, key)
-        del data["id_"]
-        return data
-
-    def dump_yaml(self, file_name, documentation_complete=True):
-        to_dump = self.represent_as_dict()
-        to_dump["documentation_complete"] = documentation_complete
-        with open(file_name, "w+") as f:
-            dump_yaml_preferably_in_original_order(to_dump, f)
-
-    def to_xml_element(self):
-        raise NotImplementedError()
-
-    def to_file(self, file_name):
-        root = self.to_xml_element()
-        tree = ET.ElementTree(root)
-        tree.write(file_name)
-
-
-class Profile(XCCDFEntity, SelectionHandler):
-    """Represents XCCDF profile
-    """
-    KEYS = dict(
-        title=lambda: "",
-        description=lambda: "",
-        extends=lambda: "",
-        metadata=lambda: None,
-        reference=lambda: None,
-        selections=lambda: list(),
-        unselected_groups=lambda: list(),
-        platforms=lambda: set(),
-        cpe_names=lambda: set(),
-        platform=lambda: None,
-        filter_rules=lambda: "",
-        ** XCCDFEntity.KEYS
-    )
-
-    MANDATORY_KEYS = {
-        "title",
-        "description",
-        "selections",
-    }
-
-    @classmethod
-    def process_input_dict(cls, input_contents, env_yaml, product_cpes):
-        input_contents = super(Profile, cls).process_input_dict(input_contents, env_yaml)
-
-        platform = input_contents.get("platform")
-        if platform is not None:
-            input_contents["platforms"].add(platform)
-
-        if env_yaml:
-            for platform in input_contents["platforms"]:
-                try:
-                    new_cpe_name = product_cpes.get_cpe_name(platform)
-                    input_contents["cpe_names"].add(new_cpe_name)
-                except CPEDoesNotExist:
-                    msg = (
-                        "Unsupported platform '{platform}' in a profile."
-                        .format(platform=platform))
-                    raise CPEDoesNotExist(msg)
-
-        return input_contents
-
-    @property
-    def rule_filter(self):
-        if self.filter_rules:
-            return rule_filter_from_def(self.filter_rules)
-        else:
-            return noop_rule_filterfunc
-
-    def to_xml_element(self):
-        element = ET.Element('{%s}Profile' % XCCDF11_NS)
-        element.set("id", self.id_)
-        if self.extends:
-            element.set("extends", self.extends)
-        title = add_sub_element(element, "title", XCCDF11_NS, self.title)
-        title.set("override", "true")
-        desc = add_sub_element(
-            element, "description", XCCDF11_NS, self.description)
-        desc.set("override", "true")
-
-        if self.reference:
-            add_sub_element(
-                element, "reference", XCCDF11_NS, escape(self.reference))
-
-        for cpe_name in self.cpe_names:
-            plat = ET.SubElement(element, "{%s}platform" % XCCDF11_NS)
-            plat.set("idref", cpe_name)
-
-        for selection in self.selected:
-            select = ET.Element("{%s}select" % XCCDF11_NS)
-            select.set("idref", selection)
-            select.set("selected", "true")
-            element.append(select)
-
-        for selection in self.unselected:
-            unselect = ET.Element("{%s}select" % XCCDF11_NS)
-            unselect.set("idref", selection)
-            unselect.set("selected", "false")
-            element.append(unselect)
-
-        for selection in self.unselected_groups:
-            unselect = ET.Element("{%s}select" % XCCDF11_NS)
-            unselect.set("idref", selection)
-            unselect.set("selected", "false")
-            element.append(unselect)
-
-        for value_id, selector in self.variables.items():
-            refine_value = ET.Element("{%s}refine-value" % XCCDF11_NS)
-            refine_value.set("idref", value_id)
-            refine_value.set("selector", selector)
-            element.append(refine_value)
-
-        for refined_rule, refinement_list in self.refine_rules.items():
-            refine_rule = ET.Element("{%s}refine-rule" % XCCDF11_NS)
-            refine_rule.set("idref", refined_rule)
-            for refinement in refinement_list:
-                refine_rule.set(refinement[0], refinement[1])
-            element.append(refine_rule)
-
-        return element
-
-    def get_rule_selectors(self):
-        return self.selected + self.unselected
-
-    def get_variable_selectors(self):
-        return self.variables
-
-    def validate_refine_rules(self, rules):
-        existing_rule_ids = [r.id_ for r in rules]
-        for refine_rule, refinement_list in self.refine_rules.items():
-            # Take first refinement to ilustrate where the error is
-            # all refinements in list are invalid, so it doesn't really matter
-            a_refinement = refinement_list[0]
-
-            if refine_rule not in existing_rule_ids:
-                msg = (
-                    "You are trying to refine a rule that doesn't exist. "
-                    "Rule '{rule_id}' was not found in the benchmark. "
-                    "Please check all rule refinements for rule: '{rule_id}', for example: "
-                    "- {rule_id}.{property_}={value}' in profile {profile_id}."
-                    .format(rule_id=refine_rule, profile_id=self.id_,
-                            property_=a_refinement[0], value=a_refinement[1])
-                    )
-                raise ValueError(msg)
-
-            if refine_rule not in self.get_rule_selectors():
-                msg = ("- {rule_id}.{property_}={value}' in profile '{profile_id}' is refining "
-                       "a rule that is not selected by it. The refinement will not have any "
-                       "noticeable effect. Either select the rule or remove the rule refinement."
-                       .format(rule_id=refine_rule, property_=a_refinement[0],
-                               value=a_refinement[1], profile_id=self.id_)
-                       )
-                raise ValueError(msg)
-
-    def validate_variables(self, variables):
-        variables_by_id = dict()
-        for var in variables:
-            variables_by_id[var.id_] = var
-
-        for var_id, our_val in self.variables.items():
-            if var_id not in variables_by_id:
-                all_vars_list = [" - %s" % v for v in variables_by_id.keys()]
-                msg = (
-                    "Value '{var_id}' in profile '{profile_name}' is not known. "
-                    "We know only variables:\n{var_names}"
-                    .format(
-                        var_id=var_id, profile_name=self.id_,
-                        var_names="\n".join(sorted(all_vars_list)))
-                )
-                raise ValueError(msg)
-
-            allowed_selectors = [str(s) for s in variables_by_id[var_id].options.keys()]
-            if our_val not in allowed_selectors:
-                msg = (
-                    "Value '{var_id}' in profile '{profile_name}' "
-                    "uses the selector '{our_val}'. "
-                    "This is not possible, as only selectors {all_selectors} are available. "
-                    "Either change the selector used in the profile, or "
-                    "add the selector-value pair to the variable definition."
-                    .format(
-                        var_id=var_id, profile_name=self.id_, our_val=our_val,
-                        all_selectors=allowed_selectors,
-                    )
-                )
-                raise ValueError(msg)
-
-    def validate_rules(self, rules, groups):
-        existing_rule_ids = [r.id_ for r in rules]
-        rule_selectors = self.get_rule_selectors()
-        for id_ in rule_selectors:
-            if id_ in groups:
-                msg = (
-                    "You have selected a group '{group_id}' instead of a "
-                    "rule. Groups have no effect in the profile and are not "
-                    "allowed to be selected. Please remove '{group_id}' "
-                    "from profile '{profile_id}' before proceeding."
-                    .format(group_id=id_, profile_id=self.id_)
-                )
-                raise ValueError(msg)
-            if id_ not in existing_rule_ids:
-                msg = (
-                    "Rule '{rule_id}' was not found in the benchmark. Please "
-                    "remove rule '{rule_id}' from profile '{profile_id}' "
-                    "before proceeding."
-                    .format(rule_id=id_, profile_id=self.id_)
-                )
-                raise ValueError(msg)
-
-    def _find_empty_groups(self, group, profile_rules):
-        is_empty = True
-        empty_groups = []
-        for child in group.groups.values():
-            child_empty, child_empty_groups = self._find_empty_groups(child, profile_rules)
-            if not child_empty:
-                is_empty = False
-            empty_groups.extend(child_empty_groups)
-        if is_empty:
-            group_rules = set(group.rules.keys())
-            if profile_rules & group_rules:
-                is_empty = False
-        if is_empty:
-            empty_groups.append(group.id_)
-        return is_empty, empty_groups
-
-    def unselect_empty_groups(self, root_group):
-        # Unselecting empty groups is necessary to make HTML guides shorter
-        # and the XCCDF more usable in tools such as SCAP Workbench.
-        profile_rules = set(self.selected)
-        is_empty, empty_groups = self._find_empty_groups(root_group, profile_rules)
-        if is_empty:
-            msg = "Profile {0} unselects all groups.".format(self.id_)
-            raise ValueError(msg)
-        self.unselected_groups.extend(sorted(empty_groups))
-
-    def __sub__(self, other):
-        profile = Profile(self.id_)
-        profile.title = self.title
-        profile.description = self.description
-        profile.extends = self.extends
-        profile.platforms = self.platforms
-        profile.platform = self.platform
-        profile.selected = list(set(self.selected) - set(other.selected))
-        profile.selected.sort()
-        profile.unselected = list(set(self.unselected) - set(other.unselected))
-        profile.variables = dict ((k, v) for (k, v) in self.variables.items()
-                             if k not in other.variables or v != other.variables[k])
-        return profile
-
-
-class ResolvableProfile(Profile):
-    def __init__(self, * args, ** kwargs):
-        super(ResolvableProfile, self).__init__(* args, ** kwargs)
-        self.resolved = False
-
-    def _controls_ids_to_controls(self, controls_manager, policy_id, control_id_list):
-        items = [controls_manager.get_control(policy_id, cid) for cid in control_id_list]
-        return items
-
-    def resolve_controls(self, controls_manager):
-        pass
-
-    def extend_by(self, extended_profile):
-        self.update_with(extended_profile)
-
-    def resolve_selections_with_rules(self, rules_by_id):
-        selections = set()
-        for rid in self.selected:
-            if rid not in rules_by_id:
-                continue
-            rule = rules_by_id[rid]
-            if not self.rule_filter(rule):
-                continue
-            selections.add(rid)
-        self.selected = list(selections)
-
-    def resolve(self, all_profiles, rules_by_id, controls_manager=None):
-        if self.resolved:
-            return
-
-        if controls_manager:
-            self.resolve_controls(controls_manager)
-
-        self.resolve_selections_with_rules(rules_by_id)
-
-        if self.extends:
-            if self.extends not in all_profiles:
-                msg = (
-                    "Profile {name} extends profile {extended}, but "
-                    "only profiles {known_profiles} are available for resolution."
-                    .format(name=self.id_, extended=self.extends,
-                            known_profiles=list(all_profiles.keys())))
-                raise RuntimeError(msg)
-            extended_profile = all_profiles[self.extends]
-            extended_profile.resolve(all_profiles, rules_by_id, controls_manager)
-
-            self.extend_by(extended_profile)
-
-        self.selected = [s for s in set(self.selected) if s not in self.unselected]
-
-        self.unselected = []
-        self.extends = None
-
-        self.selected = sorted(self.selected)
-
-        for rid in self.selected:
-            if rid not in rules_by_id:
-                msg = (
-                    "Rule {rid} is selected by {profile}, but the rule is not available. "
-                    "This may be caused by a discrepancy of prodtypes."
-                    .format(rid=rid, profile=self.id_))
-                raise ValueError(msg)
-
-        self.resolved = True
-
-
-class ProfileWithInlinePolicies(ResolvableProfile):
-    def __init__(self, * args, ** kwargs):
-        super(ProfileWithInlinePolicies, self).__init__(* args, ** kwargs)
-        self.controls_by_policy = defaultdict(list)
-
-    def apply_selection(self, item):
-        # ":" is the delimiter for controls but not when the item is a variable
-        if ":" in item and "=" not in item:
-            policy_id, control_id = item.split(":", 1)
-            self.controls_by_policy[policy_id].append(control_id)
-        else:
-            super(ProfileWithInlinePolicies, self).apply_selection(item)
-
-    def _process_controls_ids_into_controls(self, controls_manager, policy_id, controls_ids):
-        controls = []
-        for cid in controls_ids:
-            if not cid.startswith("all"):
-                controls.extend(
-                    self._controls_ids_to_controls(controls_manager, policy_id, [cid]))
-            elif ":" in cid:
-                _, level_id = cid.split(":", 1)
-                controls.extend(
-                    controls_manager.get_all_controls_of_level(policy_id, level_id))
-            else:
-                controls.extend(
-                    controls_manager.get_all_controls(policy_id))
-        return controls
-
-    def resolve_controls(self, controls_manager):
-        for policy_id, controls_ids in self.controls_by_policy.items():
-            controls = self._process_controls_ids_into_controls(
-                controls_manager, policy_id, controls_ids)
-
-            for c in controls:
-                self.update_with(c)
 
 
 class Value(XCCDFEntity):
@@ -807,22 +232,22 @@ class Value(XCCDFEntity):
         return value
 
     def to_xml_element(self):
-        value = ET.Element('{%s}Value' % XCCDF11_NS)
-        value.set('id', self.id_)
+        value = ET.Element('{%s}Value' % XCCDF12_NS)
+        value.set('id', OSCAP_VALUE + self.id_)
         value.set('type', self.type)
         if self.operator != "equals":  # equals is the default
             value.set('operator', self.operator)
         if self.interactive:  # False is the default
             value.set('interactive', 'true')
-        title = ET.SubElement(value, '{%s}title' % XCCDF11_NS)
+        title = ET.SubElement(value, '{%s}title' % XCCDF12_NS)
         title.text = self.title
-        add_sub_element(value, 'description', XCCDF11_NS, self.description)
+        add_sub_element(value, 'description', XCCDF12_NS, self.description)
         add_warning_elements(value, self.warnings)
 
         for selector, option in self.options.items():
             # do not confuse Value with big V with value with small v
             # value is child element of Value
-            value_small = ET.SubElement(value, '{%s}value' % XCCDF11_NS)
+            value_small = ET.SubElement(value, '{%s}value' % XCCDF12_NS)
             # by XCCDF spec, default value is value without selector
             if selector != "default":
                 value_small.set('selector', str(selector))
@@ -935,7 +360,8 @@ class Benchmark(XCCDFEntity):
                 continue
 
             try:
-                new_profile = ProfileWithInlinePolicies.from_yaml(dir_item_path, env_yaml, product_cpes)
+                new_profile = ProfileWithInlinePolicies.from_yaml(
+                    dir_item_path, env_yaml, product_cpes)
             except DocumentationNotComplete:
                 continue
             except Exception as exc:
@@ -952,24 +378,25 @@ class Benchmark(XCCDFEntity):
             p.unselect_empty_groups(self)
 
     def to_xml_element(self, env_yaml=None, product_cpes=None):
-        root = ET.Element('{%s}Benchmark' % XCCDF11_NS)
-        root.set('id', self.id_)
+        root = ET.Element('{%s}Benchmark' % XCCDF12_NS)
+        root.set('id', OSCAP_BENCHMARK + self.id_)
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-        root.set('xsi:schemaLocation',
-                 'http://checklists.nist.gov/xccdf/1.1 xccdf-1.1.4.xsd')
-        root.set('style', 'SCAP_1.1')
+        root.set(
+            'xsi:schemaLocation',
+            'http://checklists.nist.gov/xccdf/1.2 xccdf-1.2.4.xsd')
+        root.set('style', 'SCAP_1.2')
         root.set('resolved', 'true')
         root.set('xml:lang', 'en-US')
-        status = ET.SubElement(root, '{%s}status' % XCCDF11_NS)
+        status = ET.SubElement(root, '{%s}status' % XCCDF12_NS)
         status.set('date', datetime.date.today().strftime("%Y-%m-%d"))
         status.text = self.status
-        add_sub_element(root, "title", XCCDF11_NS, self.title)
-        add_sub_element(root, "description", XCCDF11_NS, self.description)
+        add_sub_element(root, "title", XCCDF12_NS, self.title)
+        add_sub_element(root, "description", XCCDF12_NS, self.description)
         notice = add_sub_element(
-            root, "notice", XCCDF11_NS, self.notice_description)
+            root, "notice", XCCDF12_NS, self.notice_description)
         notice.set('id', self.notice_id)
-        add_sub_element(root, "front-matter", XCCDF11_NS, self.front_matter)
-        add_sub_element(root, "rear-matter",  XCCDF11_NS, self.rear_matter)
+        add_sub_element(root, "front-matter", XCCDF12_NS, self.front_matter)
+        add_sub_element(root, "rear-matter",  XCCDF12_NS, self.rear_matter)
         # if there are no platforms, do not output platform-specification at all
         if len(self.product_cpes.platforms) > 0:
             cpe_platform_spec = ET.Element(
@@ -981,10 +408,10 @@ class Benchmark(XCCDFEntity):
         # The Benchmark applicability is determined by the CPEs
         # defined in the product.yml
         for cpe_name in self.product_cpe_names:
-            plat = ET.SubElement(root, "{%s}platform" % XCCDF11_NS)
+            plat = ET.SubElement(root, "{%s}platform" % XCCDF12_NS)
             plat.set("idref", cpe_name)
 
-        version = ET.SubElement(root, '{%s}version' % XCCDF11_NS)
+        version = ET.SubElement(root, '{%s}version' % XCCDF12_NS)
         version.text = self.version
         version.set('update', SSG_BENCHMARK_LATEST_URI)
 
@@ -1094,7 +521,8 @@ class Group(XCCDFEntity):
         if data["platform"]:
             data["platforms"].add(data["platform"])
 
-        # parse platform definition and get CPEAL platform if cpe_platform_names not already defined
+        # parse platform definition and get CPEAL platform
+        # if cpe_platform_names not already defined
         if data["platforms"] and not data["cpe_platform_names"]:
             for platform in data["platforms"]:
                 cpe_platform = Platform.from_text(platform, product_cpes)
@@ -1134,27 +562,29 @@ class Group(XCCDFEntity):
         return yaml_contents
 
     def to_xml_element(self, env_yaml=None):
-        group = ET.Element('{%s}Group' % XCCDF11_NS)
-        group.set('id', self.id_)
-        title = ET.SubElement(group, '{%s}title' % XCCDF11_NS)
+        group = ET.Element('{%s}Group' % XCCDF12_NS)
+        group.set('id', OSCAP_GROUP + self.id_)
+        title = ET.SubElement(group, '{%s}title' % XCCDF12_NS)
         title.text = self.title
-        add_sub_element(group, 'description', XCCDF11_NS, self.description)
+        add_sub_element(group, 'description', XCCDF12_NS, self.description)
         add_warning_elements(group, self.warnings)
 
         # This is where references should be put if there are any
         # This is where rationale should be put if there are any
 
         for cpe_platform_name in self.cpe_platform_names:
-            platform_el = ET.SubElement(group, "{%s}platform" % XCCDF11_NS)
+            platform_el = ET.SubElement(group, "{%s}platform" % XCCDF12_NS)
             platform_el.set("idref", "#"+cpe_platform_name)
 
         add_nondata_subelements(
-            group, "{%s}requires" % XCCDF11_NS, "idref", self.requires)
+            group, "requires", "idref",
+            list(map(lambda x: OSCAP_GROUP + x, self.requires)))
         add_nondata_subelements(
-            group, "{%s}conflicts" % XCCDF11_NS, "idref", self.conflicts)
-
+            group, "conflicts", "idref",
+            list(map(lambda x: OSCAP_GROUP + x, self.conflicts)))
         for _value in self.values.values():
-            group.append(_value.to_xml_element())
+            if _value is not None:
+                group.append(_value.to_xml_element())
 
         # Rules that install or remove packages affect remediation
         # of other rules.
@@ -1175,7 +605,9 @@ class Group(XCCDFEntity):
         # Add rules in priority order, first all packages installed, then removed,
         # followed by services enabled, then disabled
         for rule_id in rules_in_group:
-            group.append(self.rules.get(rule_id).to_xml_element(env_yaml))
+            rule = self.rules.get(rule_id)
+            if rule is not None:
+                group.append(rule.to_xml_element(env_yaml))
 
         # Add the sub groups after any current level group rules.
         # As package installed/removed and service enabled/disabled rules are usuallly in
@@ -1214,7 +646,8 @@ class Group(XCCDFEntity):
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
         for group_id in groups_in_group:
             _group = self.groups[group_id]
-            group.append(_group.to_xml_element(env_yaml))
+            if _group is not None:
+                group.append(_group.to_xml_element(env_yaml))
 
         return group
 
@@ -1240,13 +673,13 @@ class Group(XCCDFEntity):
         child.inherited_platforms.update(self.platforms, self.inherited_platforms)
         childs[child.id_] = child
 
-
     def __str__(self):
         return self.id_
 
 
 def noop_rule_filterfunc(rule):
     return True
+
 
 def rule_filter_from_def(filterdef):
     if filterdef is None or filterdef == "":
@@ -1280,6 +713,7 @@ class Rule(XCCDFEntity):
         warnings=lambda: list(),
         conflicts=lambda: list(),
         requires=lambda: list(),
+        policy_specific_content=lambda: dict(),
         platform=lambda: None,
         platforms=lambda: set(),
         sce_metadata=lambda: dict(),
@@ -1343,15 +777,18 @@ class Rule(XCCDFEntity):
         # to lookup), and the rule's prodtype matches the product being built
         # also if the rule already has cpe_platform_names specified (compiled rule)
         # do not evaluate platforms again
-        if (
-                env_yaml and env_yaml["product"] in parse_prodtype(rule.prodtype)
-                or env_yaml and rule.prodtype == "all") and product_cpes and not rule.cpe_platform_names:
+        if env_yaml and (
+            env_yaml["product"] in parse_prodtype(rule.prodtype)
+            or rule.prodtype == "all") and (
+                product_cpes and not rule.cpe_platform_names):
             # parse platform definition and get CPEAL platform
             for platform in rule.platforms:
                 cpe_platform = Platform.from_text(platform, product_cpes)
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
-
+        # Only load policy specific content if rule doesn't have it defined yet
+        if not rule.policy_specific_content:
+            rule.load_policy_specific_content(yaml_file, env_yaml)
 
         if sce_metadata and rule.id_ in sce_metadata:
             rule.sce_metadata = sce_metadata[rule.id_]
@@ -1411,6 +848,52 @@ class Rule(XCCDFEntity):
                 if ref == gref or gref.startswith(start):
                     product_references[gref] = gval
         return product_references
+
+    def find_policy_specific_content(self, rule_root):
+        policy_specific_dir = os.path.join(rule_root, "policy")
+        policy_directories = glob.glob(os.path.join(policy_specific_dir, "*"))
+        filenames = set()
+        for pdir in policy_directories:
+            policy_files = glob.glob(os.path.join(pdir, "*.yml"))
+            filenames.update(set(policy_files))
+        return filenames
+
+    def triage_policy_specific_content(self, product_name, filenames):
+        product_dot_yml = product_name + ".yml"
+        filename_by_policy = dict()
+        for fname in filenames:
+            policy = os.path.basename(os.path.dirname(fname))
+            filename_appropriate_for_storage = (
+                fname.endswith(product_dot_yml) and product_name
+                or fname.endswith("shared.yml") and policy not in filename_by_policy)
+            if (filename_appropriate_for_storage):
+                filename_by_policy[policy] = fname
+        return filename_by_policy
+
+    def read_policy_specific_content_file(self, env_yaml, filename):
+        yaml_data = open_and_macro_expand(filename, env_yaml)
+        return yaml_data
+
+    def read_policy_specific_content(self, env_yaml, files):
+        keys = dict()
+        if env_yaml:
+            product = env_yaml["product"]
+        else:
+            product = ""
+        filename_by_policy = self.triage_policy_specific_content(product, files)
+        for p, f in filename_by_policy.items():
+            yaml_data = self.read_policy_specific_content_file(env_yaml, f)
+            keys[p] = yaml_data
+        return keys
+
+    def load_policy_specific_content(self, rule_filename, env_yaml):
+        rule_root = os.path.dirname(rule_filename)
+        policy_specific_content_files = self.find_policy_specific_content(rule_root)
+        policy_specific_content = dict()
+        if policy_specific_content_files:
+            policy_specific_content = self.read_policy_specific_content(
+                env_yaml, policy_specific_content_files)
+        self.policy_specific_content = policy_specific_content
 
     def make_template_product_specific(self, product):
         product_suffix = "@{0}".format(product)
@@ -1559,7 +1042,7 @@ class Rule(XCCDFEntity):
 
     def _add_fixes_elements(self, rule_el):
         for fix_type, fix in self.fixes.items():
-            fix_el = ET.SubElement(rule_el, "{%s}fix" % XCCDF11_NS)
+            fix_el = ET.SubElement(rule_el, "{%s}fix" % XCCDF12_NS)
             fix_el.set("system", FIX_TYPE_TO_SYSTEM[fix_type])
             fix_el.set("id", self.id_)
             fix_contents, config = fix
@@ -1572,12 +1055,12 @@ class Rule(XCCDFEntity):
             ssg.build_remediations.expand_xccdf_subs(fix_el, fix_type)
 
     def to_xml_element(self, env_yaml=None):
-        rule = ET.Element('{%s}Rule' % XCCDF11_NS)
+        rule = ET.Element('{%s}Rule' % XCCDF12_NS)
         rule.set('selected', 'false')
-        rule.set('id', self.id_)
+        rule.set('id', OSCAP_RULE + self.id_)
         rule.set('severity', self.severity)
-        add_sub_element(rule, 'title', XCCDF11_NS, self.title)
-        add_sub_element(rule, 'description', XCCDF11_NS, self.description)
+        add_sub_element(rule, 'title', XCCDF12_NS, self.title)
+        add_sub_element(rule, 'description', XCCDF12_NS, self.description)
         add_warning_elements(rule, self.warnings)
 
         if env_yaml:
@@ -1586,19 +1069,21 @@ class Rule(XCCDFEntity):
             ref_uri_dict = SSG_REF_URIS
         add_reference_elements(rule, self.references, ref_uri_dict)
 
-        add_sub_element(rule, 'rationale', XCCDF11_NS, self.rationale)
+        add_sub_element(rule, 'rationale', XCCDF12_NS, self.rationale)
 
         for cpe_platform_name in sorted(self.cpe_platform_names):
-            platform_el = ET.SubElement(rule, "{%s}platform" % XCCDF11_NS)
+            platform_el = ET.SubElement(rule, "{%s}platform" % XCCDF12_NS)
             platform_el.set("idref", "#"+cpe_platform_name)
 
         add_nondata_subelements(
-            rule, "{%s}requires" % XCCDF11_NS, "idref", self.requires)
+            rule, "requires", "idref",
+            list(map(lambda x: OSCAP_RULE + x, self.requires)))
         add_nondata_subelements(
-            rule, "{%s}conflicts" % XCCDF11_NS, "idref", self.conflicts)
+            rule, "conflicts", "idref",
+            list(map(lambda x: OSCAP_RULE + x, self.conflicts)))
 
         for ident_type, ident_val in self.identifiers.items():
-            ident = ET.SubElement(rule, '{%s}ident' % XCCDF11_NS)
+            ident = ET.SubElement(rule, '{%s}ident' % XCCDF12_NS)
             if ident_type == 'cce':
                 ident.set('system', cce_uri)
                 ident.text = ident_val
@@ -1632,15 +1117,15 @@ class Rule(XCCDFEntity):
                 # is present, and add update ocil_parent accordingly.
                 if self.ocil or self.ocil_clause:
                     ocil_parent = ET.SubElement(
-                        ocil_parent, "{%s}complex-check" % XCCDF11_NS)
+                        ocil_parent, "{%s}complex-check" % XCCDF12_NS)
                     ocil_parent.set('operator', 'OR')
 
                 check_parent = ET.SubElement(
-                    ocil_parent, "{%s}complex-check" % XCCDF11_NS)
+                    ocil_parent, "{%s}complex-check" % XCCDF12_NS)
                 check_parent.set('operator', self.sce_metadata['complex-check'])
 
             # Now, add the SCE check element to the tree.
-            check = ET.SubElement(check_parent, "{%s}check" % XCCDF11_NS)
+            check = ET.SubElement(check_parent, "{%s}check" % XCCDF12_NS)
             check.set("system", SCE_SYSTEM)
 
             if 'check-import' in self.sce_metadata:
@@ -1648,7 +1133,7 @@ class Rule(XCCDFEntity):
                     self.sce_metadata['check-import'] = [self.sce_metadata['check-import']]
                 for entry in self.sce_metadata['check-import']:
                     check_import = ET.SubElement(
-                        check, '{%s}check-import' % XCCDF11_NS)
+                        check, '{%s}check-import' % XCCDF12_NS)
                     check_import.set('import-name', entry)
                     check_import.text = None
 
@@ -1658,20 +1143,20 @@ class Rule(XCCDFEntity):
                 for entry in self.sce_metadata['check-export']:
                     export, value = entry.split('=')
                     check_export = ET.SubElement(
-                        check, '{%s}check-export' % XCCDF11_NS)
+                        check, '{%s}check-export' % XCCDF12_NS)
                     check_export.set('value-id', value)
                     check_export.set('export-name', export)
                     check_export.text = None
 
             check_ref = ET.SubElement(
-                check, "{%s}check-content-ref" % XCCDF11_NS)
+                check, "{%s}check-content-ref" % XCCDF12_NS)
             href = self.sce_metadata['relative_path']
             check_ref.set("href", href)
 
-        check = ET.SubElement(check_parent, '{%s}check' % XCCDF11_NS)
+        check = ET.SubElement(check_parent, '{%s}check' % XCCDF12_NS)
         check.set("system", oval_namespace)
         check_content_ref = ET.SubElement(
-            check, "{%s}check-content-ref" % XCCDF11_NS)
+            check, "{%s}check-content-ref" % XCCDF12_NS)
         if self.oval_external_content:
             check_content_ref.set("href", self.oval_external_content)
         else:
@@ -1680,16 +1165,16 @@ class Rule(XCCDFEntity):
             #       Therefore let's just add an OVAL ref of that ID.
             # TODO  Can we not add the check element if the rule doesn't have an OVAL check?
             #       At the moment, the check elements of rules without OVAL are removed by
-            #       relabel_ids.py
+            #       the OVALFileLinker class.
             check_content_ref.set("href", "oval-unlinked.xml")
             check_content_ref.set("name", self.id_)
 
         patches_up_to_date = (self.id_ == "security_patches_up_to_date")
         if (self.ocil or self.ocil_clause) and not patches_up_to_date:
-            ocil_check = ET.SubElement(check_parent, "{%s}check" % XCCDF11_NS)
+            ocil_check = ET.SubElement(check_parent, "{%s}check" % XCCDF12_NS)
             ocil_check.set("system", ocil_cs)
             ocil_check_ref = ET.SubElement(
-                ocil_check, "{%s}check-content-ref" % XCCDF11_NS)
+                ocil_check, "{%s}check-content-ref" % XCCDF12_NS)
             ocil_check_ref.set("href", "ocil-unlinked.xml")
             ocil_check_ref.set("name", self.id_ + "_ocil")
 
@@ -1699,26 +1184,26 @@ class Rule(XCCDFEntity):
         if not self.ocil and not self.ocil_clause:
             raise ValueError("Rule {0} doesn't have OCIL".format(self.id_))
         # Create <questionnaire> for the rule
-        questionnaire = ET.Element("questionnaire", id=self.id_ + "_ocil")
-        title = ET.SubElement(questionnaire, "title")
+        questionnaire = ET.Element("{%s}questionnaire" % ocil_namespace, id=self.id_ + "_ocil")
+        title = ET.SubElement(questionnaire, "{%s}title" % ocil_namespace)
         title.text = self.title
-        actions = ET.SubElement(questionnaire, "actions")
-        test_action_ref = ET.SubElement(actions, "test_action_ref")
+        actions = ET.SubElement(questionnaire, "{%s}actions" % ocil_namespace)
+        test_action_ref = ET.SubElement(actions, "{%s}test_action_ref" % ocil_namespace)
         test_action_ref.text = self.id_ + "_action"
         # Create <boolean_question_test_action> for the rule
         action = ET.Element(
-            "boolean_question_test_action",
+            "{%s}boolean_question_test_action" % ocil_namespace,
             id=self.id_ + "_action",
             question_ref=self.id_ + "_question")
-        when_true = ET.SubElement(action, "when_true")
-        result = ET.SubElement(when_true, "result")
+        when_true = ET.SubElement(action, "{%s}when_true" % ocil_namespace)
+        result = ET.SubElement(when_true, "{%s}result" % ocil_namespace)
         result.text = "PASS"
-        when_true = ET.SubElement(action, "when_false")
-        result = ET.SubElement(when_true, "result")
+        when_true = ET.SubElement(action, "{%s}when_false" % ocil_namespace)
+        result = ET.SubElement(when_true, "{%s}result" % ocil_namespace)
         result.text = "FAIL"
         # Create <boolean_question>
         boolean_question = ET.Element(
-            "boolean_question", id=self.id_ + "_question")
+            "{%s}boolean_question" % ocil_namespace, id=self.id_ + "_question")
         # TODO: The contents of <question_text> element used to be broken in
         # the legacy XSLT implementation. The following code contains hacks
         # to get the same results as in the legacy XSLT implementation.
@@ -1913,6 +1398,11 @@ class DirectoryLoader(object):
         if self.product_cpes.platforms:
             self.save_entities(self.product_cpes.platforms.values(), destdir)
 
+        destdir = os.path.join(base_dir, "cpe_items")
+        mkdir_p(destdir)
+        if self.product_cpes.cpes_by_id:
+            self.save_entities(self.product_cpes.cpes_by_id.values(), destdir)
+
     def save_entities(self, entities, destdir):
         if not entities:
             return
@@ -1993,9 +1483,12 @@ class LinearLoader(object):
         self.fixes_dir = os.path.join(resolved_path, "fixes")
         self.fixes = dict()
 
+        self.resolved_cpe_items_dir = os.path.join(resolved_path, "cpe_items")
+        self.cpe_items = dict()
+
         self.benchmark = None
         self.env_yaml = env_yaml
-        self.product_cpes = ProductCPEs(env_yaml)
+        self.product_cpes = ProductCPEs()
 
     def find_first_groups_ids(self, start_dir):
         group_files = glob.glob(os.path.join(start_dir, "*", "group.yml"))
@@ -2015,7 +1508,8 @@ class LinearLoader(object):
         self.benchmark = Benchmark.from_yaml(
             os.path.join(directory, "benchmark.yml"), self.env_yaml, self.product_cpes)
 
-        self.benchmark.add_profiles_from_dir(self.resolved_profiles_dir, self.env_yaml, self.product_cpes)
+        self.benchmark.add_profiles_from_dir(
+            self.resolved_profiles_dir, self.env_yaml, self.product_cpes)
 
         benchmark_first_groups = self.find_first_groups_ids(directory)
         for gid in benchmark_first_groups:
@@ -2042,31 +1536,34 @@ class LinearLoader(object):
         self.load_entities_by_id(filenames, self.platforms, Platform)
         self.product_cpes.platforms = self.platforms
 
+        self.product_cpes.load_cpes_from_directory_tree(self.resolved_cpe_items_dir, self.env_yaml)
+
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
+
+    def export_benchmark_to_xml(self):
+        return self.benchmark.to_xml_element(self.env_yaml)
 
     def export_benchmark_to_file(self, filename):
         register_namespaces()
         return self.benchmark.to_file(filename, self.env_yaml)
 
-    def export_ocil_to_file(self, filename):
-        root = ET.Element('ocil')
+    def export_ocil_to_xml(self):
+        root = ET.Element('{%s}ocil' % ocil_namespace)
         root.set('xmlns:xsi', xsi_namespace)
-        root.set("xmlns", ocil_namespace)
         root.set("xmlns:xhtml", xhtml_namespace)
-        tree = ET.ElementTree(root)
-        generator = ET.SubElement(root, "generator")
-        product_name = ET.SubElement(generator, "product_name")
+        generator = ET.SubElement(root, "{%s}generator" % ocil_namespace)
+        product_name = ET.SubElement(generator, "{%s}product_name" % ocil_namespace)
         product_name.text = "build_shorthand.py from SCAP Security Guide"
-        product_version = ET.SubElement(generator, "product_version")
+        product_version = ET.SubElement(generator, "{%s}product_version" % ocil_namespace)
         product_version.text = "ssg: " + self.env_yaml["ssg_version_str"]
-        schema_version = ET.SubElement(generator, "schema_version")
+        schema_version = ET.SubElement(generator, "{%s}schema_version" % ocil_namespace)
         schema_version.text = "2.0"
-        timestamp_el = ET.SubElement(generator, "timestamp")
+        timestamp_el = ET.SubElement(generator, "{%s}timestamp" % ocil_namespace)
         timestamp_el.text = timestamp
-        questionnaires = ET.SubElement(root, "questionnaires")
-        test_actions = ET.SubElement(root, "test_actions")
-        questions = ET.SubElement(root, "questions")
+        questionnaires = ET.SubElement(root, "{%s}questionnaires" % ocil_namespace)
+        test_actions = ET.SubElement(root, "{%s}test_actions" % ocil_namespace)
+        questions = ET.SubElement(root, "{%s}questions" % ocil_namespace)
         for rule in self.rules.values():
             if not rule.ocil and not rule.ocil_clause:
                 continue
@@ -2074,6 +1571,11 @@ class LinearLoader(object):
             questionnaires.append(questionnaire)
             test_actions.append(action)
             questions.append(boolean_question)
+        return root
+
+    def export_ocil_to_file(self, filename):
+        root = self.export_ocil_to_xml()
+        tree = ET.ElementTree(root)
         tree.write(filename)
 
 
@@ -2108,6 +1610,7 @@ class Platform(XCCDFEntity):
         id = test.as_id()
         platform = cls(id)
         platform.test = test
+        platform.test.pass_parameters(product_cpes)
         platform.test.enrich_with_cpe_info(product_cpes)
         platform.name = id
         platform.original_expression = expression
@@ -2135,11 +1638,13 @@ class Platform(XCCDFEntity):
     def to_xml_element(self):
         return self.xml_content
 
-    def to_bash_conditional(self):
-        return self.bash_conditional
-
-    def to_ansible_conditional(self):
-        return self.ansible_conditional
+    def get_remediation_conditional(self, language):
+        if language == "bash":
+            return self.bash_conditional
+        elif language == "ansible":
+            return self.ansible_conditional
+        else:
+            raise AttributeError("Invalid remediation language {0} specified.".format(language))
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
@@ -2166,7 +1671,3 @@ def add_platform_if_not_defined(platform, product_cpes):
             return p
     product_cpes.platforms[platform.id_] = platform
     return platform
-
-
-def derive_id_from_file_name(filename):
-    return os.path.splitext(filename)[0]

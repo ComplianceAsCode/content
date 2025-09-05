@@ -26,7 +26,7 @@ checks and remediations.
 Rules are input described in YAML which mirrors the XCCDF format (an XML
 container). Rules are translated to become members of a `Group` in an
 XML file. All existing rules for Linux products can be found in the
-`linux_os/guide` directory. For non-Linux products (e.g., `jre`), this
+`linux_os/guide` directory. For non-Linux products (e.g., `firefox`), this
 content can be found in the `<product>/guide`. The exact location
 depends on the group (or category) that a rule belongs to.
 
@@ -102,7 +102,7 @@ A rule itself contains these attributes:
     </tr>
     <tr class="even">
     <td><p><code>info</code></p></td>
-    <td><p>Rule is informational only. Failing the rule doesn’t imply failure to conform to the security guidance of the benchmark.</p></td>
+    <td><p>Rule is informational only. Failing the rule doesn't imply failure to conform to the security guidance of the benchmark.</p></td>
     </tr>
     <tr class="odd">
     <td><p><code>low</code></p></td>
@@ -172,13 +172,15 @@ A rule itself contains these attributes:
     under `shared/checks/oval/` and referenced in the dictionary file. It is
     possible to specify multiple platforms in the list. In that case, they are
     implicitly connected with "OR" operator.
-    
+
+    Platforms from groups are inherited by rules for the whole group hierarchy. They are implicitly joined with rule's platforms using "AND" operator.
+
     The `platform` can also be a [Boolean algebra expression](https://booleanpy.readthedocs.io/en/latest/concepts.html),
     describing applicability of the rule as a combination of multiple platforms.
-    
+
     The build system recognizes `!` or `not` as "NOT" operator, `&` or `and` as "AND" operator, and `|` or `or` as "OR" operator.
     And it also allows to group and alter operator precedence with brackets: `(` and `)`.
-    
+
     For example, the expression `grub2 & !(shadow-utils | ssh)` will denote that rule is applicable for systems with *GRUB2 bootloader*,
     but only if there is no *shadow-utils* or *ssh* package installed.
 
@@ -203,9 +205,9 @@ A rule itself contains these attributes:
 
 A rule may contain those reference-type attributes:
 
--   `identifiers`: This is related to products that the rule applies to;
-    this is a dictionary. Currently, only the Common Configuration
-    Enumeration or CCE identifier is supported. Other identifiers can be
+-   `identifiers`: This is related to products that the rule applies to.
+    This attribute is a dictionary. Currently, only the Common Configuration
+    Enumeration or CCE identifier are supported. Other identifiers can be
     added as well. Contributions to add these other identifiers are
     welcomed. The table below shows a list of common identifiers and
     their current support in a rule:
@@ -424,6 +426,30 @@ on their basename. Therefore, the rule `sshd_print_last_log` has a
 playbook `shared/fixes/ansible/sshd_print_last_log.yml`, the rule has
 also an Ansible fix associated.
 
+#### Rule Deprecation
+As the project and products evolve, it is natural for some rules to become obsolete, split, or even replaced by others that take a different approach.
+When situations like this happen, it's important to make it clear that a rule is obsolete so users can evaluate and use the alternative as quickly as possible.
+
+This is done by including a deprecation warning message in the warning section of the rule and setting the `highlight` label for the PR.
+The purpose of the 'highlight' label is to ensure that this PR is highlighted in the release notes and is therefore more visible and transparent to the public.
+
+Regarding the warning message, to make it easier for developers and to maintain the standard, the `warning_rule_deprecated_by(rule, release='')` macro was created.
+
+As a reference, here is an example where this macro is used:
+[account_passwords_pam_faillock_dir](https://github.com/ComplianceAsCode/content/blob/9e0c6ac6eec596b0662d5672e4d3081523afdc9d/linux_os/guide/system/accounts/accounts-pam/locking_out_password_attempts/account_passwords_pam_faillock_dir/rule.yml#L40-L41)
+
+And this is the respective PR where the `highlight` label is set:
+[https://github.com/ComplianceAsCode/content/pull/9462](https://github.com/ComplianceAsCode/content/pull/9462)
+
+##### Agreements
+* We avoid hard problems by not removing anything from data stream whenever we want to rename, split or deprecate a rule.
+* Obsolete rules should have "deprecated_by" warnings for the transitional period.
+* We keep the "obsolete" rule in the data stream for some time, usually while the applicable products are still active.
+    * If an obsolete rule is removed in a tailoring file, the tailoring file likely have to be updated to also remove the new rule.
+    * The administrators should assess each situation in their tailoring files.
+* It is imperative that we document those changes in release notes.
+* Changes like in the PR [Rename account_passwords_pam_faillock_audit #9462](https://github.com/ComplianceAsCode/content/pull/9462) are worth doing because it improves consistency in the project.
+
 ### Rule Directories
 
 The rule directory simplifies the structure of a rule and all of its
@@ -488,13 +514,6 @@ utilities:
 
 -   `utils/rule_dir_json.py` - to generate a JSON tree describing the
     current content of all guides
-
--   `utils/rule_dir_stats.py` - for analyzing the JSON tree and finding
-    information about specific rules, products, or summary statistics
-
--   `utils/rule_dir_diff.py` - for diffing two JSON trees (e.g., before
-    and after a major change), using the same interface as
-    `rule_dir_stats.py`.
 
 For more information about these utilities, please see their help text.
 
@@ -630,7 +649,7 @@ Tips:
 
 -   To use the local `test` subcommand, first create a yaml file under a
     directory structure under /tmp that mirrors the API path. For
-    example, if the resource’s full path is /api/v1/foo, save the yaml
+    example, if the resource's full path is /api/v1/foo, save the yaml
     to /tmp/api/v1/foo. Running `test` will then check the rule against
     the local file by launching an openscap-1.3.3 container using
     podman.
@@ -669,7 +688,7 @@ exceptions:
     tag. Otherwise if `oval_version` does not exist in `<def-group>`, it
     is assumed that the OVAL file applies to *any* OVAL version.
 
--   Don’t use the tags `<definitions>` `<tests>` `<objects>` `<states>`,
+-   Don't use the tags `<definitions>` `<tests>` `<objects>` `<states>`,
     instead, put the tags `<definition>` `<*_test>` `<*_object>`
     `<*_state>` directly inside the `<def-group>` tag.
 
@@ -708,7 +727,7 @@ root:
       </unix:file_object>
 
 Before you start creating an OVAL check, please consult our [list of JINJA
-macros](jinja_macros/oval:oval)
+macros](../../jinja_macros/10-oval.rst)
 specific for OVAL. It might save time for you as an author as well as for
 reviewers.
 
@@ -844,14 +863,14 @@ Puppet, Ignition and Kubernetes. By default all remediation languages
 are built and included in the DataStream.
 
 But each product can specify its own set of remediation to include in
-the DataStream via a CMake Variable in the product’s `CMakeLists.txt`.
+the DataStream via a CMake Variable in the product's `CMakeLists.txt`.
 See example below, from OCP4 product, `ocp4/CMakeLists.txt`:
 
     set(PRODUCT_REMEDIATION_LANGUAGES "ignition;kubernetes")
 
 They also have to be idempotent, meaning that they must be able to be
 executed multiple times without causing the fixes to accumulate. The
-Ansible’s language works in such a way that this behavior is built-in,
+Ansible's language works in such a way that this behavior is built-in,
 however, for the other versions, the remediations must have it
 implemented explicitly. Remediations also carry metadata that should be
 present at the beginning of the files. This meta data will be converted
@@ -926,7 +945,7 @@ Ansible remediations are either:
 -   Generated using jinja2 macros.
 
 They are meant to be executed by Ansible itself when requested by
-openscap, so they are written using [Ansible’s own
+openscap, so they are written using [Ansible's own
 language](http://docs.ansible.com/ansible/latest/intro.html) with the
 following exceptions:
 
@@ -976,7 +995,7 @@ profile. The Playbook is generated in
 
 Jinja macros for Ansible content are located in
 `/shared/macros/ansible.jinja`. You can see their reference
-[here](jinja_macros/ansible:ansible).
+[here](../../jinja_macros/10-ansible.rst).
 
 Whenever possible, please reuse the macros and form high-level
 simplifications. This ensures consistent, high quality remediations that
@@ -1010,7 +1029,7 @@ guidelines:
     remediation content. If the macro is used from a nested block, use
     the `indent` jinja2 filter assuming the 4-space indentation.
     Typically, you want to call the macro with the intended indentation,
-    and as `indent` doesn’t indent the first line by default, you just
+    and as `indent` doesn't indent the first line by default, you just
     pass the number of spaces as the only argument. See the remediation
     for rule `ensure_fedora_gpgkey_installed` for reference.
 
@@ -1022,7 +1041,7 @@ guidelines:
     them](https://mywiki.wooledge.org/BashPitfalls#cmd1_.26.26_cmd2_.7C.7C_cmd3).
 
 -   Test your script in the "strict mode" with `set -e -o pipefail`
-    specified at the top of it. Make sure that the script doesn’t end
+    specified at the top of it. Make sure that the script doesn't end
     prematurely in the strict mode.
 
 -   Beware of constructs such as `[ $x = 1 ] && echo "$x is one"` as
@@ -1042,13 +1061,13 @@ guidelines:
 
 Jinja macros that generate Bash remediations can be found in
 `shared/macros/bash.jinja`. You can see their reference
-[here](jinja_macros/bash:bash).
+[here](../../jinja_macros/10-bash.rst).
 
 ### Kubernetes
 
 Jinja macros for Kubernetes content are located in
 `/shared/macros/kubernetes.jinja`. You can see their reference
-[here](jinja_macros/kubernetes:kubernetes)
+[here](../../jinja_macros/10-kubernetes.rst)
 
 Templating
 ----------
@@ -1111,7 +1130,7 @@ the following to `rule.yml`:
 > strings as arguments until **Python 2** is completely removed from the
 > list of supported interpreters.
 
-you can see reference of all available templates [here](templates/template_reference:available%20templates).
+you can see reference of all available templates [here](../../templates/template_reference.md#available-templates).
 
 ## Applicability of content
 
@@ -1119,7 +1138,7 @@ All profiles and rules included in a products' DataStream are applicable
 by default. For example, all profiles and rules included in a `rhel8` DS
 will apply and evaluate in a RHEL 8 host.
 
-But a content’s applicability can be fine tuned to a specific
+But a content's applicability can be fine tuned to a specific
 environment in the product. The SCAP standard specifies two mechanisms
 to define applicability: - [CPE](https://nvd.nist.gov/products/cpe):
 Allows a specific hardware or platform to be identified. -
@@ -1157,9 +1176,9 @@ restricted to only environments which have `gdm` package installed.
 The OVAL checks for the CPE need to be of `inventory` class, and must be
 under `shared/checks/oval/`.
 
-#### Setting a product’s default CPE
+#### Setting a product's default CPE
 
-The product’s default applicability is set in its `product.yml` file,
+The product's default applicability is set in its `product.yml` file,
 under the `cpes` key. For example:
 
     cpes:
@@ -1170,7 +1189,7 @@ under the `cpes` key. For example:
 
 Multiple CPEs can be set as default platforms for a product.
 
-#### Setting the product’s CPE source directory
+#### Setting the product's CPE source directory
 
 The key `cpes_root` in `product.yml` file specifies the directory to
 source the CPEs from.
@@ -1178,8 +1197,8 @@ By default, all products source their CPEs from `shared/applicability/`.
 Any file with extension `.yml` will be sourced for CPE definitions.
 
 Note: Only CPEs that are referenced by a rule or profile will be included
-in the product’s CPE Dictionary.
-If no content requires the CPE, it is deemed unnecessary and won’t be
+in the product's CPE Dictionary.
+If no content requires the CPE, it is deemed unnecessary and won't be
 included in the dictionary.
 
 ## Tests (ctest)
@@ -1415,8 +1434,8 @@ The test will pass if:
 
 Rules may have extra verifications on them. For instance, one is able to
 verify if:
-- The rule’s expected result is gotten on a clean run.
-- The rule’s result changes after a remediation has been applied.
+- The rule's expected result is gotten on a clean run.
+- The rule's result changes after a remediation has been applied.
 
 If an automated remediation is not possible, one is also able to created
 a "manual" remediation that will be run as a bash script. The end-to-end
@@ -1427,7 +1446,7 @@ be executed.
 
 In order to test that a rule is yielding expected results in the e2e
 tests, one must create a file called `e2e.yml` in a `tests/ocp4/`
-directory which will exist in the rule’s directory itself.
+directory which will exist in the rule's directory itself.
 
 The format may look as follows:
 
@@ -1449,7 +1468,7 @@ roles in the cluster.
 It is also possible to differentiate results between roles. For such a thing,
 the format would look as follows:
 
-Let’s look at an example:
+Let's look at an example:
 
     ---
     default_result:
@@ -1477,11 +1496,11 @@ passing result. So `e2e.yml` has the following content:
     ---
     default_result: PASS
 
-Let’s look at another example:
+Let's look at another example:
 
 For the `api_server_encryption_provider_config` we want to apply a
 remediation which cannot be applied via the `compliance-operator`. So
-we’ll need a manual remediation for this.
+we'll need a manual remediation for this.
 
 The directory structure looks as follows:
 
@@ -1524,7 +1543,7 @@ Here, we apply the remediation (through the `patch` command) and probe
 the cluster for status. Once the cluster converges, we exit the script
 with `0`, which is a successful status.
 
-The e2e test run will time out at **15 minuntes** if a script doesn’t
+The e2e test run will time out at **15 minuntes** if a script doesn't
 converge.
 
 Note that the scripts will be run in parallel, but the test run will
@@ -1537,10 +1556,10 @@ The end-to-end tests for OpenShift are maintained in separate
 
     $ git clone https://github.com/ComplianceAsCode/ocp4e2e; cd ocp4e2e
 
-Note that it’s possible to run the e2e tests on a cluster of your choice.
+Note that it's possible to run the e2e tests on a cluster of your choice.
 
 To do so, ensure that you have a `KUBECONFIG` with appropriate
-credentials that points to the cluster where you’ll run the tests.
+credentials that points to the cluster where you'll run the tests.
 
 Run:
 
@@ -1558,7 +1577,7 @@ For more information on the available options, do:
     $ make help
 
 It is important to note that the tests will do changes to your cluster
-and there currently isn’t an option to clean them up. So take that into
+and there currently isn't an option to clean them up. So take that into
 account before running these tests.
 
 ## Contribution to infrastructure code

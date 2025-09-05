@@ -1,9 +1,13 @@
 #!/bin/bash
-# platform = Oracle Linux 7,Red Hat Enterprise Linux 7,Red Hat Virtualization 4,multi_platform_fedora
+# platform = Oracle Linux 7,Red Hat Enterprise Linux 7,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_sle
 # variables = var_password_pam_unix_remember=5
 
 remember_cnt=5
+{{% if product in [ "sle12", "sle15" ] %}}
+for auth_file in common-password password-auth
+{{% else %}}
 for auth_file in system-auth password-auth
+{{% endif %}}
 do
     config_file=/etc/pam.d/${auth_file}
 

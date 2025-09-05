@@ -1,0 +1,29 @@
+srg_requirement: |-
+    {{{ full_name }}} must restrict exposed kernel pointer addresses access.
+
+vuldiscussion: |-
+    Exposing kernel pointers (through procfs or "seq_printf()") exposes kernel writeable structures which may contain functions pointers. If a write vulnerability occurs in the kernel, allowing write access to any of this structure, the kernel can be compromised. This option disallow any program without the CAP_SYSLOG capability to get the addresses of kernel pointers by replacing them with 0.
+
+checktext: |-
+    Verify the runtime status of the kernel.kptr_restrict kernel parameter with the following command:
+
+    $ sudo sysctl kernel.kptr_restrict
+
+    kernel.kptr_restrict = 1
+
+    Verify the configuration of the kernel.kptr_restrict kernel parameter with the following command:
+
+    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F kernel.kptr_restrict | tail -1
+
+    kernel.kptr_restrict =1
+
+    If "kernel.kptr_restrict" is not set to "1" or is missing, this is a finding.
+
+fixtext: |-
+    Add or edit the following line in a system configuration file in the "/etc/sysctl.d/" directory:
+
+    kernel.kptr_restrict = 1
+
+    Reload settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system

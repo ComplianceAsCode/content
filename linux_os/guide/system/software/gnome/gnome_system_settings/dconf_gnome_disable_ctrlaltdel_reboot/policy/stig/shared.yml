@@ -1,0 +1,36 @@
+srg_requirement: |-
+    {{{ full_name }}} must prevent a user from overriding the Ctrl-Alt-Del sequence settings for the graphical user interface.
+
+vuldiscussion: |-
+    A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
+    can reboot the system. If accidentally pressed, as could happen in
+    the case of mixed OS environment, this can create the risk of short-term
+    loss of availability of systems due to unintentional reboot.
+
+checktext: |-
+    To ensure that users cannot enable the Ctrl-Alt-Del sequence in the Gnome GUI, run the following:
+
+    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, Gnome Shell. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
+
+     $ grep logout /etc/dconf/db/local.d/locks/*
+
+    If properly configured, the output should be:
+
+    "/org/gnome/settings-daemon/plugins/media-keys/logout"
+
+    If Gnome can be configured to shut down when Ctrl-Alt-Del is pressed, then this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to disallow the user changing the Ctrl-Alt-Del sequence in the GNOME GUI, if it is installed and the system is used to host services whos availability could be impacted.
+
+    Create a database to container system-wide graphical user logon settings (if it does not already exist) with the following command:
+
+    $ sudo touch /etc/dconf/db/local.d/locks/session
+
+    Add the following line to the session locks file to prevent unprivileged users from modifying the Ctrl-Alt-Del setting:
+
+    /org/gnome/settings-daemon/plugins/media-keys/logout
+
+    Run the following command to update the database:
+
+    $ sudo dconf update

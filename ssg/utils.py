@@ -219,6 +219,7 @@ def read_file_list(path):
     with open(path, 'r') as f:
         return split_string_content(f.read())
 
+
 def split_string_content(content):
     """
     Split the string content and returns as a list.
@@ -325,3 +326,29 @@ def check_conflict_regex_directory(data):
                 "Used 'file_regex' key in rule '{0}' but filepath '{1}' does not "
                 "specify a directory. Append '/' to the filepath or remove the "
                 "'file_regex' key.".format(data["_rule_id"], f))
+
+
+def enum(*args):
+    enums = dict(zip(args, range(len(args))))
+    return type('Enum', (), enums)
+
+
+def apply_formatting_on_dict_values(source_dict, string_dict, ignored_keys=frozenset()):
+    """
+    Uses Python built-in string replacement.
+    It replaces strings marked by {token} if "token" is a key in the string_dict parameter.
+    It skips keys in source_dict which are listed in ignored_keys parameter.
+    This works only for dictionaries whose values are dicts or strings
+    """
+    new_dict = {}
+    for k, v in source_dict.items():
+        if k not in ignored_keys:
+            if isinstance(v, dict):
+                new_dict[k] = apply_formatting_on_dict_values(v, string_dict, ignored_keys)
+            elif isinstance(v, str):
+                new_dict[k] = v.format(**string_dict)
+            else:
+                new_dict[k] = v
+        else:
+            new_dict[k] = v
+    return new_dict

@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must remove all software components after updated versions have been installed.
+
+vuldiscussion: |-
+    Previous versions of software components that are not removed from the information system after updates have been installed may be exploited by some adversaries.
+
+checktext: |-
+    Verify {{{ full_name }}} removes all software components after updated versions have been installed with the following command:
+
+    $ grep clean /etc/dnf/dnf.conf
+
+    clean_requirements_on_remove=1
+
+    If "clean_requirements_on_remove" is not set to "1", this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to remove all software components after updated versions have been installed.
+
+    Edit the file /etc/dnf/dnf.conf by adding or editing the following line:
+
+     clean_requirements_on_remove=1

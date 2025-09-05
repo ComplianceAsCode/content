@@ -21,6 +21,10 @@ grub2_uefi_boot_path: "/boot/efi/EFI/redhat"
 
 oval_feed_url: "https://linux.oracle.com/security/oval/com.oracle.elsa-all.xml.bz2"
 
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
+
 cpes_root: "../../shared/applicability"
 cpes:
   - ol8:

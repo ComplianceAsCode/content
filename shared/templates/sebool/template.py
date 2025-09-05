@@ -5,4 +5,8 @@ def preprocess(data, lang):
             "ERROR: key sebool_bool in rule {0} contains forbidden "
             "value '{1}'.".format(data["_rule_id"], sebool_bool)
         )
+
+    if sebool_bool:
+        data["wrong_sebool"] = "true" if sebool_bool == "false" else "false"
+
     return data

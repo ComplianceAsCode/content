@@ -31,6 +31,7 @@ add_test(
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/rule_dir_json.py" "--root" "${CMAKE_SOURCE_DIR}" "--output" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
 )
 set_tests_properties("test-rule-dir-json" PROPERTIES LABELS quick)
+set_tests_properties("test-rule-dir-json" PROPERTIES FIXTURES_SETUP "rule-dir-json")
 
 add_test(
     NAME "validate-parse-affected"
@@ -80,6 +81,7 @@ add_test(
 )
 set_tests_properties("fix_rules-empty_identifiers" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-empty_identifiers" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-empty_identifiers" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-invalid_identifiers"
@@ -87,6 +89,7 @@ add_test(
 )
 set_tests_properties("fix_rules-invalid_identifiers" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-invalid_identifiers" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-invalid_identifiers" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-int_identifiers"
@@ -94,6 +97,7 @@ add_test(
 )
 set_tests_properties("fix_rules-int_identifiers" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-int_identifiers" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-int_identifiers" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-empty_references"
@@ -101,6 +105,7 @@ add_test(
 )
 set_tests_properties("fix_rules-empty_references" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-empty_references" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-empty_references" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-int_references"
@@ -108,6 +113,7 @@ add_test(
 )
 set_tests_properties("fix_rules-int_references" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-int_references" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-int_references" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-duplicate_subkeys"
@@ -115,6 +121,7 @@ add_test(
 )
 set_tests_properties("fix_rules-duplicate_subkeys" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-duplicate_subkeys" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-duplicate_subkeys" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-sort_subkeys"
@@ -122,6 +129,7 @@ add_test(
 )
 set_tests_properties("fix_rules-sort_subkeys" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-sort_subkeys" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-sort_subkeys" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-sort_prodtypes"
@@ -129,6 +137,7 @@ add_test(
 )
 set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 if (PY_YAMLPATH)
     if (PY_PYTEST)
@@ -142,4 +151,48 @@ if (PY_YAMLPATH)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_ansible_file_removed_and_added.py" --ansible_dir "${CMAKE_BINARY_DIR}/ansible"
     )
     set_tests_properties("fix_rules-sort_subkeys" PROPERTIES LABELS quick)
+endif()
+
+if (PY_MYPY)
+    add_test(
+        NAME "test-mypy"
+        COMMAND env "${PYTHON_EXECUTABLE}" -m mypy "${CMAKE_SOURCE_DIR}/utils/import_srg_spreadsheet.py"
+     )
+endif()
+
+if (PY_OPENPYXL AND PY_PANDAS AND PYTHON3_EXECUTABLE)
+    add_test(
+        NAME "srg-export-rhel9"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_srg_export.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --control "${CMAKE_SOURCE_DIR}/controls/srg_gpos.yml" --product rhel9 --out-format xlsx --output "${CMAKE_BINARY_DIR}/cac_stig_output.xlsx" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
+    )
+    set_tests_properties("srg-export-rhel9" PROPERTIES LABELS quick)
+    set_tests_properties("srg-export-rhel9" PROPERTIES FIXTURES_SETUP "rhel9-cac-xlsx")
+    set_tests_properties("srg-export-rhel9" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+    set_tests_properties("srg-export-rhel9" PROPERTIES DEPENDS "test-rule-dir-json")
+
+    add_test(
+        NAME "srg-diff-rhel9"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/srg_diff.py" --base "${CMAKE_SOURCE_DIR}/tests/data/utils/rhel9_stig_diff_base.xlsx" --target "${CMAKE_BINARY_DIR}/cac_stig_output.xlsx" --product rhel9
+    )
+    set_tests_properties("srg-diff-rhel9" PROPERTIES LABELS quick)
+    set_tests_properties("srg-diff-rhel9" PROPERTIES FIXTURES_REQUIRED "rhel9-cac-xlsx")
+    set_tests_properties("srg-diff-rhel9" PROPERTIES DEPENDS "srg-export-rhel9")
+endif()
+
+
+if (PYTHON3_EXECUTABLE)
+file(GLOB RHEL8_DISA_STIG_REF "${SSG_SHARED_REFS}/disa-stig-rhel8-v[0-9]*r[0-9]*-xccdf-manual.xml")
+add_test(
+    NAME "test-compare_ds"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/compare_ds.py" "${CMAKE_SOURCE_DIR}/tests/data/utils/disa-stig-rhel8-v1r6-xccdf-manual.xml" "${RHEL8_DISA_STIG_REF}"
+)
+set_tests_properties("test-compare_ds" PROPERTIES LABELS quick)
+endif()
+
+if (PYTHON3_EXECUTABLE AND GIT_EXECUTABLE)
+add_test(
+    NAME "test-generate_contributors"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/generate_contributors.py" "--dry-run"
+)
+set_tests_properties("test-generate_contributors" PROPERTIES LABELS quick)
 endif()

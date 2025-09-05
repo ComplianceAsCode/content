@@ -21,12 +21,30 @@
   </ind:yamlfilecontent_test>
 
   <local_variable id="ocp4_dump_location" datatype="string" comment="The actual filepath of the file to scan." version="1">
-      <literal_component>/kubernetes-api-resources/apis/config.openshift.io/v1/clusteroperators/openshift-apiserver</literal_component>
+      <literal_component>/kubernetes-api-resources/ocp/version</literal_component>
+  </local_variable>
+
+  <local_variable id="ocp4_hypershift_dump_location" datatype="string" comment="The actual filepath of the file to scan." version="1">
+      <literal_component>/kubernetes-api-resources/hypershift/version</literal_component>
   </local_variable>
 
   <unix:file_test id="test_file_for_ocp4" check="only one" comment="Find the actual file to be scanned." version="1">
       <unix:object object_ref="object_file_for_ocp4"/>
   </unix:file_test>
+
+  <unix:file_test id="test_hypershift_file_for_ocp4" check="only one" comment="Find the actual file to be scanned for hypershift." version="1">
+      <unix:object object_ref="object_hypershift_file_for_ocp4"/>
+  </unix:file_test>
+
+  <unix:file_object id="object_hypershift_file_for_ocp4" version="1">
+      <unix:filepath var_ref="ocp4_hypershift_dump_location"/>
+  </unix:file_object>
+
+  <ind:yamlfilecontent_object id="object_hypershift_ocp4" version="1">
+      <ind:filepath var_ref="ocp4_hypershift_dump_location"/>
+      <ind:yamlpath>[:]</ind:yamlpath>
+  </ind:yamlfilecontent_object>
+
 
   <unix:file_object id="object_file_for_ocp4" version="1">
       <unix:filepath var_ref="ocp4_dump_location"/>
@@ -34,7 +52,7 @@
 
   <ind:yamlfilecontent_object id="object_ocp4" version="1">
       <ind:filepath var_ref="ocp4_dump_location"/>
-      <ind:yamlpath>.status.versions[:].version</ind:yamlpath>
+      <ind:yamlpath>[:]</ind:yamlpath>
   </ind:yamlfilecontent_object>
 
   <ind:yamlfilecontent_state id="state_ocp4" version="1">
@@ -54,9 +72,16 @@
       <reference ref_id="cpe:/a:redhat:openshift_container_platform:4.{{{ minorversion }}}" source="CPE" />
       <description>The application installed installed on the system is OpenShift version 4.{{{ minorversion }}}.</description>
     </metadata>
-    <criteria operator="AND">
-      <criterion comment="cluster is OpenShift 4.{{{ minorversion }}}" test_ref="test_ocp4_{{{ minorversion }}}" />
-      <criterion comment="Make sure OCP4 clusteroperators file is present" test_ref="test_file_for_ocp4"/>
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <criterion comment="cluster is OpenShift 4.{{{ minorversion }}}" test_ref="test_ocp4_{{{ minorversion }}}" />
+        <criterion comment="Make sure OCP4 clusteroperators file is present" test_ref="test_file_for_ocp4"/>
+        <criterion negate="true" comment="Make sure HyperShift OCP4 clusteroperators file is not present" test_ref="test_hypershift_file_for_ocp4"/>
+      </criteria>
+      <criteria operator="AND">
+        <criterion comment="cluster is OpenShift 4.{{{ minorversion }}}" test_ref="test_hypershift_ocp4_{{{ minorversion }}}" />
+        <criterion comment="Make sure HyperShift OCP4 clusteroperators file is present" test_ref="test_hypershift_file_for_ocp4"/>
+      </criteria>
     </criteria>
   </definition>
 
@@ -64,6 +89,12 @@
       <ind:object object_ref="object_ocp4"/>
       <ind:state state_ref="state_ocp4_{{{ minorversion }}}"/>
   </ind:yamlfilecontent_test>
+
+  <ind:yamlfilecontent_test id="test_hypershift_ocp4_{{{ minorversion }}}" check="at least one" comment="Find one match" version="1">
+      <ind:object object_ref="object_hypershift_ocp4"/>
+      <ind:state state_ref="state_ocp4_{{{ minorversion }}}"/>
+  </ind:yamlfilecontent_test>
+
 
   <ind:yamlfilecontent_state id="state_ocp4_{{{ minorversion }}}" version="1">
       <ind:value datatype="record">
@@ -164,7 +195,11 @@
 
   <ind:yamlfilecontent_state id="state_ocp4_on_{{{ network|lower }}}" version="1">
       <ind:value datatype="record">
+{{% if network == "OpenShiftOVN" %}}
+          <field name="#" datatype="string" operation="pattern match">^(OpenShiftOVN|OVNKubernetes)$</field>
+{{% else %}}
           <field name="#" datatype="string" operation="pattern match">^{{{ network }}}$</field>
+{{% endif %}}
       </ind:value>
   </ind:yamlfilecontent_state>
 {{% endfor %}}

@@ -37,7 +37,7 @@ description: |-
     content as minor divergences, such as bugfixes, work through the
     consensus and release processes.
 
-filter_rules: '"ocp4-node" not in platforms and "ocp4-master-node" not in platforms and "ocp4-node-on-sdn" not in platforms'
+filter_rules: '"ocp4-node" not in platforms and "ocp4-master-node" not in platforms and "ocp4-node-on-sdn" not in platforms and "ocp4-node-on-ovn" not in platforms'
 
 # CM-6 CONFIGURATION SETTINGS
 # CM-6(1) CONFIGURATION SETTINGS | AUTOMATED CENTRAL MANAGEMENT / APPLICATION / VERIFICATION
@@ -45,3 +45,7 @@ extends: cis
 
 selections:
     - nist_ocp4:all:high
+  ### Helper Rules
+  ### This is a helper rule to fetch the required api resource for detecting OCP version
+    - version_detect_in_ocp
+    - version_detect_in_hypershift

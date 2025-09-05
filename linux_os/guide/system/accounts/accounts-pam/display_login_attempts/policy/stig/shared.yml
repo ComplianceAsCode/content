@@ -1,0 +1,25 @@
+srg_requirement: |-
+    {{{ full_name }}} must display the date and time of the last successful account logon upon logon.
+
+vuldiscussion: |-
+    Users need to be aware of activity that occurs regarding
+    their account. Providing users with information regarding the number
+    of unsuccessful attempts that were made to login to their account
+    allows the user to determine if any unauthorized activity has occurred
+    and gives them an opportunity to notify administrators.
+
+checktext: |-
+    Verify users are provided with feedback on when account accesses last occurred with the following command:
+
+    $ sudo grep pam_lastlog /etc/pam.d/postlogin
+
+    session required pam_lastlog.so showfailed
+
+    If "pam_lastlog" is missing from "/etc/pam.d/postlogin" file, or the silent option is present, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to provide users with feedback on when account accesses last occurred by setting the required configuration options in "/etc/pam.d/postlogin".
+
+    Add the following line to the top of "/etc/pam.d/postlogin":
+
+    session required pam_lastlog.so showfailed

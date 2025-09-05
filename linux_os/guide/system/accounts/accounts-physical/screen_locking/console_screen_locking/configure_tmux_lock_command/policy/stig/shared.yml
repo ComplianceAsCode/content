@@ -1,0 +1,23 @@
+srg_requirement: |-
+    {{{ full_name }}} must enable a user session lock until that user re-establishes access using established identification and authentication procedures for command line sessions.
+
+vuldiscussion: |-
+    A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.
+
+    The session lock is implemented at the point where session activity can be determined. Rather than be forced to wait for a period of time to expire before the user session can be locked, {{{ full_name }}} must provide users with the ability to manually invoke a session lock so users can secure their session if it is necessary to temporarily vacate the immediate physical vicinity.
+
+    The "tmux" package allows for a session lock to be implemented and configured. However, the session lock is implemented by an external command. The "tmux" default configuration does not contain an effective session lock.
+
+checktext: |-
+    Verify {{{ full_name }}} enables the user to initiate a session lock with the following command:
+
+    $ grep lock-command /etc/tmux.conf
+
+    set -g lock-command vlock
+
+    If the "lock-command" is not set in the global settings to call "vlock", this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to allow a user to initiate a sessions lock by adding the following line to the file "/etc/tmux.conf":
+
+     set -g lock-command vlock

@@ -1,0 +1,23 @@
+srg_requirement: |-
+    {{{ full_name }}} must not have a Trivial File Transfer Protocol (TFTP) server package installed.
+
+vuldiscussion: |-
+    Removing the "tftp-server" package decreases the risk of the accidental
+    (or intentional) activation of tftp services.
+
+    If TFTP is required for operational support (such as transmission of router
+    configurations), its use must be documented with the Information Systems
+    Securty Manager (ISSM), restricted to only authorized personnel, and have
+    access control rules established.
+
+checktext: |-
+    Verify that {{{ full_name }}} does not have a tftp server package installed with the following command:
+
+    $ sudo dnf list --installed | grep tftp
+
+    If a tftp package is installed, this is a finding.
+
+fixtext: |-
+    The tftp package can be removed with the following command:
+
+    $ sudo dnf remove tftp

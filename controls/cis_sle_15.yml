@@ -1012,6 +1012,8 @@ controls:
       - l1_server
       - l1_workstation
     status: manual
+    rules:
+      - set_loopback_traffic
 
   - id: 3.5.2.7
     title: Ensure outbound and established connections are configured (Manual)
@@ -1082,6 +1084,8 @@ controls:
       - l1_server
       - l1_workstation
     status: manual
+    rules:
+      - set_ipv6_loopback_traffic
 
   - id: 3.5.3.2.3
     title: Ensure outbound and established connections are configured (Manual)
@@ -1564,7 +1568,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rule:
+    rules:
       - file_groupowner_at_allow
       - file_owner_at_allow
       - file_permissions_at_allow
@@ -1747,7 +1751,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rule:
+    rules:
       - sshd_enable_warning_banner
 
   - id: 5.2.19
@@ -2197,7 +2201,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rule:
+    rules:
       - group_unique_id
 
   - id: 6.2.16

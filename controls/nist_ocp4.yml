@@ -4715,6 +4715,8 @@ controls:
   - reject_unsigned_images_by_default
   - ocp_allowed_registries_for_import
   - ocp_allowed_registries
+  - ocp_insecure_registries
+  - ocp_insecure_allowed_registries_for_import
   description: |-
     The information system prevents the installation of [Assignment: organization-defined software and firmware components] without verification that the component has been digitally signed using a certificate that is recognized and approved by the organization.
 
@@ -4808,7 +4810,7 @@ controls:
   rules:
   - file_perms_openshift_sdn_cniserver_config
   - file_owner_openshift_sdn_cniserver_config
-  - api_server_admission_control_plugin_NamespaceLifecycle
+  - api_server_admission_control_plugin_namespacelifecycle
   - api_server_request_timeout
   - file_permissions_openshift_pki_key_files
   - file_owner_cni_conf
@@ -4850,7 +4852,7 @@ controls:
   - controller_secure_port
   - api_server_service_account_public_key
   - secrets_no_environment_variables
-  - api_server_admission_control_plugin_NodeRestriction
+  - api_server_admission_control_plugin_noderestriction
   - kubelet_configure_client_ca
   - kubelet_eviction_thresholds_set_soft_nodefs_inodesfree
   - file_owner_ovs_sys_id_conf
@@ -4910,7 +4912,7 @@ controls:
   - file_groupowner_kubelet_conf
   - file_permissions_var_log_ocp_audit
   - accounts_unique_service_account
-  - api_server_admission_control_plugin_ServiceAccount
+  - api_server_admission_control_plugin_service_account
   - file_owner_kube_controller_manager
   - kubelet_enable_protect_kernel_sysctl
   - kubelet_enable_protect_kernel_defaults
@@ -4955,7 +4957,7 @@ controls:
   - file_ownership_var_log_ocp_audit
   - openshift_api_server_audit_log_path
   - api_server_profiling_protected_by_rbac
-  - api_server_admission_control_plugin_AlwaysAdmit
+  - api_server_admission_control_plugin_alwaysadmit
   - kubelet_eviction_thresholds_set_soft_memory_available
   - scc_limit_container_allowed_capabilities
   - file_owner_multus_conf
@@ -4979,17 +4981,23 @@ controls:
   - compliancesuite_exists
   - general_default_seccomp_profile
   - file_owner_ip_allocations
+  - file_permissions_ovn_cni_server_sock
+  - file_groupowner_ovn_cni_server_sock
+  - file_owner_ovn_cni_server_sock
+  - file_groupowner_ovn_db_files
+  - file_owner_ovn_db_files
+  - file_permissions_ovn_db_files
   - api_server_oauth_https_serving_cert
   - file_permissions_ovs_vswitchd_pid
   - secrets_consider_external_storage
   - kubelet_enable_cert_rotation
   - kubelet_disable_readonly_port
   - configure_network_policies
-  - api_server_admission_control_plugin_Scc
+  - api_server_admission_control_plugin_scc
   - file_owner_etcd_pki_cert_files
   - file_groupowner_etcd_data_dir
   - etcd_auto_tls
-  - api_server_admission_control_plugin_AlwaysPullImages
+  - api_server_admission_control_plugin_alwayspullimages
   - controller_use_service_account
   - file_groupowner_ovs_sys_id_conf
   - file_groupowner_cni_conf
@@ -4997,7 +5005,7 @@ controls:
   - rbac_debug_role_protects_pprof
   - rbac_limit_cluster_admin
   - file_groupowner_ovs_pid
-  - api_server_admission_control_plugin_SecurityContextDeny
+  - api_server_admission_control_plugin_securitycontextdeny
   - directory_permissions_var_log_kube_audit
   - file_groupowner_ovs_conf_db_lock
   - file_owner_ovsdb_server_pid
@@ -5038,7 +5046,7 @@ controls:
   rules:
   - file_perms_openshift_sdn_cniserver_config
   - file_owner_openshift_sdn_cniserver_config
-  - api_server_admission_control_plugin_NamespaceLifecycle
+  - api_server_admission_control_plugin_namespacelifecycle
   - api_server_request_timeout
   - file_permissions_openshift_pki_key_files
   - file_owner_cni_conf
@@ -5080,7 +5088,7 @@ controls:
   - controller_secure_port
   - api_server_service_account_public_key
   - secrets_no_environment_variables
-  - api_server_admission_control_plugin_NodeRestriction
+  - api_server_admission_control_plugin_noderestriction
   - kubelet_configure_client_ca
   - kubelet_eviction_thresholds_set_soft_nodefs_inodesfree
   - file_owner_ovs_sys_id_conf
@@ -5135,7 +5143,7 @@ controls:
   - kubelet_enable_protect_kernel_sysctl
   - kubelet_enable_protect_kernel_defaults
   - accounts_unique_service_account
-  - api_server_admission_control_plugin_ServiceAccount
+  - api_server_admission_control_plugin_service_account
   - file_owner_kube_controller_manager
   - file_owner_kubelet_conf
   - file_owner_kubelet
@@ -5197,17 +5205,23 @@ controls:
   - compliancesuite_exists
   - general_default_seccomp_profile
   - file_owner_ip_allocations
+  - file_permissions_ovn_cni_server_sock
+  - file_groupowner_ovn_cni_server_sock
+  - file_owner_ovn_cni_server_sock
+  - file_groupowner_ovn_db_files
+  - file_owner_ovn_db_files
+  - file_permissions_ovn_db_files
   - api_server_oauth_https_serving_cert
   - file_permissions_ovs_vswitchd_pid
   - secrets_consider_external_storage
   - kubelet_enable_cert_rotation
   - kubelet_disable_readonly_port
   - configure_network_policies
-  - api_server_admission_control_plugin_Scc
+  - api_server_admission_control_plugin_scc
   - file_owner_etcd_pki_cert_files
   - file_groupowner_etcd_data_dir
   - etcd_auto_tls
-  - api_server_admission_control_plugin_AlwaysPullImages
+  - api_server_admission_control_plugin_alwayspullimages
   - controller_use_service_account
   - file_groupowner_ovs_sys_id_conf
   - file_groupowner_cni_conf
@@ -5215,7 +5229,7 @@ controls:
   - rbac_debug_role_protects_pprof
   - rbac_limit_cluster_admin
   - file_groupowner_ovs_pid
-  - api_server_admission_control_plugin_SecurityContextDeny
+  - api_server_admission_control_plugin_securitycontextdeny
   - file_owner_ovsdb_server_pid
   - file_groupowner_ovs_conf_db_lock
   - kubelet_configure_tls_cipher_suites

@@ -27,6 +27,7 @@ identifiers:
 
 references:
     cis@rhel8: 6.2.12
+    cis@sle12: 6.2.8
     cis@sle15: 6.2.8
     disa: CCI-000366
     srg: SRG-OS-000480-GPOS-00227
@@ -37,22 +38,19 @@ references:
     stigid@sle12: SLES-12-010780
     stigid@sle15: SLES-15-040130
 
-ocil_clause: 'user initialization files are executing world-writable programs'
+ocil_clause: 'any local initialization files are found to reference world-writable files'
 
 ocil: |-
-    Verify that local initialization files do not execute world-writable programs,
-    execute the following command:
+    Verify that local initialization files do not execute world-writable programs with the following command:
+
+    Note: The example will be for a system that is configured to create user home directories in the "/home" directory.
+
     <pre>$ sudo find /home -perm -002 -type f -name ".[^.]*" -exec ls -ld {} \;</pre>
-    For all files listed, check for their presence in the local
-    initialization files with the following command:
-    Note: The example will be for a system that is configured to create
-    users' home directories in the "/home" directory.
-    <pre> sudo find /home/* -maxdepth 1 -type f -name \.\* -exec grep -H &lt;file&gt; {} \; </pre>
 
 fixtext: |-
     Set the mode on files being executed by the local initialization files with the following command:
 
-    $ sudo chmod 0755
+    $ sudo chmod 0755 &lt;file&gt;
 
 srg_requirement: |-
     Local {{{ full_name }}} initialization files must not execute world-writable programs.

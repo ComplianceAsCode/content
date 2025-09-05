@@ -1,0 +1,19 @@
+srg_requirement: |-
+    {{{ full_name }}}  must prevent code from being executed on file systems that are imported via Network File System (NFS).
+
+vuldiscussion: |-
+    The "noexec" mount option causes the system not to execute binary files. This option must be used for mounting any file system not containing approved binary as they may be incompatible. Executing files from untrusted file systems increases the opportunity for unprivileged users to attain unauthorized administrative access.
+
+checktext: |-
+    Verify {{{ full_name }}} has the "noexec" option configured for all NFS mounts with the following command:
+
+    $cat /etc/fstab | grep nfs
+
+    192.168.22.2:/mnt/export /data nfs4 rw,nosuid,nodev,noexec,sync,soft,sec=krb5:krb5i:krb5p
+
+    If no NFS mounts are configured this requirement is not applicable.
+
+    If the system is mounting file systems via NFS and the "noexec" option is missing, this is a finding.
+
+fixtext: |-
+    Update each NFS mounted file system to use the "noexec" option on file systems that are being imported via NFS.

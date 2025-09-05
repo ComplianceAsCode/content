@@ -1,0 +1,20 @@
+srg_requirement: |-
+    {{{ full_name }}} must have the rng-tools package installed.
+
+vuldiscussion: |-
+    "rng-tools" provides hardware random number generator tools,
+    such as those used in the formation of x509/PKI certificates.
+
+checktext: |-
+    Verify that {{{ full_name }}} has the rng-tools package installed with the following command:
+
+    $ dnf list --installed rng-tools
+
+    rng-tools.x86_64        6.14-2.git.b2b7934e.el9
+
+    If a rng-tools package is not installed, this is a finding.
+
+fixtext: |-
+    The rng-tools package can be installed with the following command:
+
+    $ sudo dnf install rng-tools

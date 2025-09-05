@@ -4,7 +4,7 @@ import os
 import copy
 from glob import glob
 
-import ssg.build_yaml
+import ssg.entities.common
 import ssg.yaml
 import ssg.utils
 
@@ -14,37 +14,42 @@ class InvalidStatus(Exception):
 
 
 class Status:
-    PENDING = "pending"
-    PLANNED = "planned"
-    NOT_APPLICABLE = "not applicable"
-    INHERENTLY_MET = "inherently met"
-    DOCUMENTATION = "documentation"
-    PARTIAL = "partial"
     SUPPORTED = "supported"
-    AUTOMATED = "automated"
+    PLANNED = "planned"
+    PENDING = "pending"
+    PARTIAL = "partial"
+    NOT_APPLICABLE = "not applicable"
     MANUAL = "manual"
+    INHERENTLY_MET = "inherently met"
     DOES_NOT_MEET = "does not meet"
+    DOCUMENTATION = "documentation"
+    AUTOMATED = "automated"
 
     def __init__(self, status):
         self.status = status
+
+    @classmethod
+    def get_status_list(cls):
+        valid_statuses = [
+            cls.AUTOMATED,
+            cls.DOCUMENTATION,
+            cls.DOES_NOT_MEET,
+            cls.INHERENTLY_MET,
+            cls.MANUAL,
+            cls.NOT_APPLICABLE,
+            cls.PARTIAL,
+            cls.PENDING,
+            cls.PLANNED,
+            cls.SUPPORTED,
+        ]
+        return valid_statuses
 
     @classmethod
     def from_control_info(cls, ctrl, status):
         if status is None:
             return cls.PENDING
 
-        valid_statuses = [
-            cls.PENDING,
-            cls.PLANNED,
-            cls.NOT_APPLICABLE,
-            cls.INHERENTLY_MET,
-            cls.DOCUMENTATION,
-            cls.PARTIAL,
-            cls.SUPPORTED,
-            cls.AUTOMATED,
-            cls.MANUAL,
-            cls.DOES_NOT_MEET
-        ]
+        valid_statuses = cls.get_status_list()
 
         if status not in valid_statuses:
             raise InvalidStatus(
@@ -66,7 +71,7 @@ class Status:
         return False
 
 
-class Control(ssg.build_yaml.SelectionHandler):
+class Control(ssg.entities.common.SelectionHandler):
     def __init__(self):
         super(Control, self).__init__()
         self.id = None
@@ -126,7 +131,6 @@ class Control(ssg.build_yaml.SelectionHandler):
         control.selections = selections
 
         control.related_rules = control_dict.get("related_rules", [])
-        control.note = control_dict.get("note")
         return control
 
 

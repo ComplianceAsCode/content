@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2022-09-30 10:46
+Last Modified: 2022-11-18 11:05
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -19,7 +19,7 @@ The following people have contributed to the SCAP Security Guide project
 * anixon-rh <55244503+anixon-rh@users.noreply.github.com>
 * Ikko Ashimine <eltociear@gmail.com>
 * Chuck Atkins <chuck.atkins@kitware.com>
-* ayfantis <ayfantis@localhost.localdomain>
+* Bharath B <bhb@redhat.com>
 * Ryan Ballanger <root@rballang-admin-2.fastenal.com>
 * Alex Baranowski <alex@euro-linux.com>
 * Eduardo Barretto <eduardo.barretto@canonical.com>
@@ -31,7 +31,7 @@ The following people have contributed to the SCAP Security Guide project
 * Jose Luis BG <bgjoseluis@gmail.com>
 * binyanling <binyanling@uniontech.com>
 * Joseph Bisch <joseph.bisch@gmail.com>
-* Jeffrey Blank <blank@eclipse.ncsc.mil>
+* Jeff Blank <blank@eclipse.ncsc.mil>
 * Olivier Bonhomme <ptitoliv@ptitoliv.net>
 * Lance Bragstad <lbragstad@gmail.com>
 * Ted Brunell <tbrunell@redhat.com>
@@ -43,7 +43,7 @@ The following people have contributed to the SCAP Security Guide project
 * Nick Carboni <ncarboni@redhat.com>
 * Carlos <64919342+carlosmmatos@users.noreply.github.com>
 * James Cassell <james.cassell@ll.mit.edu>
-* Frank Caviggia <fcaviggi@ra.iad.redhat.com>
+* Frank Caviggia <fcaviggia@users.noreply.github.com>
 * Eric Christensen <echriste@redhat.com>
 * Dan Clark <danclark@redhat.com>
 * Jayson Cofell <1051437+70k10@users.noreply.github.com>
@@ -92,6 +92,7 @@ The following people have contributed to the SCAP Security Guide project
 * Yasir Imam <yimam@redhat.com>
 * Jiri Jaburek <jjaburek@redhat.com>
 * Keith Jackson <keithkjackson@gmail.com>
+* Marc Jadoul <mgjadoul@laptomatic.auth-o-matic.corp>
 * Jeremiah Jahn <jeremiah@goodinassociates.com>
 * Jakub Jelen <jjelen@redhat.com>
 * Jessicahfy <Jessicahfy@users.noreply.github.com>
@@ -137,7 +138,6 @@ The following people have contributed to the SCAP Security Guide project
 * Marcus Meissner <meissner@suse.de>
 * Khary Mendez <kmendez@redhat.com>
 * Rodney Mercer <rmercer@harris.com>
-* mgjadoul <mgjadoul@laptomatic.auth-o-matic.corp>
 * Matt Micene <nzwulfin@gmail.com>
 * Brian Millett <bmillett@gmail.com>
 * Takuya Mishina <tmishina@jp.ibm.com>
@@ -176,7 +176,7 @@ The following people have contributed to the SCAP Security Guide project
 * Kenyon Ralph <kenyon@kenyonralph.com>
 * Mike Ralph <mralph@redhat.com>
 * Federico Ramirez <federico.r.ramirez@oracle.com>
-* rchikov <rumen.chikov@suse.com>
+* Rumen Chikov <rumen.chikov@suse.com>
 * Rick Renshaw <Richard_Renshaw@xtoenergy.com>
 * Chris Reynolds <c.reynolds82@gmail.com>
 * rhayes <rhayes@rivierautilities.com>
@@ -198,17 +198,17 @@ The following people have contributed to the SCAP Security Guide project
 * Gautam Satish <gautams@hpe.com>
 * Watson Sato <wsato@redhat.com>
 * Satoru SATOH <satoru.satoh@gmail.com>
-* Alexander Scheel <ascheel@redhat.com>
+* Alexander Scheel <alexander.m.scheel@gmail.com>
 * Bryan Schneiders <pschneiders@trisept.com>
 * shaneboulden <shane.boulden@gmail.com>
-* Vincent Shen <47534281+Vincent056@users.noreply.github.com>
+* Vincent Shen <wenshen@redhat.com>
 * Dhriti Shikhar <dhriti.shikhar.rokz@gmail.com>
 * Spencer Shimko <sshimko@tresys.com>
 * Mark Shoger <mshoger@redhat.com>
 * THOBY Simon <Simon.THOBY@viveris.fr>
 * Thomas Sjögren <konstruktoid@users.noreply.github.com>
 * Francisco Slavin <fslavin@tresys.com>
-* David Smith <dsmith@eclipse.ncsc.mil>
+* Dave Smith <dsmith@eclipse.ncsc.mil>
 * Kevin Spargur <kspargur@redhat.com>
 * Kenneth Stailey <kstailey.lists@gmail.com>
 * Leland Steinke <leland.j.steinke.ctr@mail.mil>
@@ -216,6 +216,7 @@ The following people have contributed to the SCAP Security Guide project
 * Brian Stinson <brian@bstinson.com>
 * Jake Stookey <jakestookey@gmail.com>
 * Jonathan Sturges <jsturges@redhat.com>
+* teacup-on-rockingchair <315160+teacup-on-rockingchair@users.noreply.github.com>
 * Ian Tewksbury <itewk@redhat.com>
 * Philippe Thierry <phil@reseau-libre.net>
 * Derek Thurston <thegrit@gmail.com>
@@ -241,6 +242,7 @@ The following people have contributed to the SCAP Security Guide project
 * Roy Williams <roywilli@roywilli.redhat.com>
 * Willumpie <willumpie@xs4all.nl>
 * Rob Wilmoth <rwilmoth@redhat.com>
+* win97pro <win97pro@protonmail.com>
 * Lucas Yamanishi <lucas.yamanishi@onyxpoint.com>
 * Xirui Yang <xirui.yang@oracle.com>
 * yarunachalam <yarunachalam@suse.com>

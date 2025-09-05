@@ -1,0 +1,19 @@
+srg_requirement: |-
+    The {{{ full_name }}} policycoreutils-python-utils package must be installed.
+
+vuldiscussion: |-
+    The policycoreutils-python-utils package is required to operate and manage an SELinux environment and its policies. It provides utilities such as semanage, audit2allow, audit2why, chcat and sandbox.
+
+checktext: |-
+    Verify that {{{ full_name }}} policycoreutils-python-utils service package is installed with the following command:
+
+    $ sudo dnf list --installed policycoreutils-python-utils
+
+    policycoreutils-python-utils.noarch     3.3-6.el9_0
+
+    If the policycoreutils-python-utils package is not installed, this is a finding.
+
+fixtext: |-
+    Install the policycoreutils-python-utils service package (if the policycoreutils-python-utils service is not already installed) with the following command:
+
+    $ sudo dnf install policycoreutils-python-utils

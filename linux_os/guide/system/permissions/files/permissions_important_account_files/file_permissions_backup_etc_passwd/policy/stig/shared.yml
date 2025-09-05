@@ -1,0 +1,20 @@
+srg_requirement: |-
+    The {{{ full_name }}} /etc/passwd- file must have 0644 or less permissive to prevent unauthorized access.
+
+vuldiscussion: |-
+    The "/etc/passwd-" file is a backup file of "/etc/passwd", and as such,
+    it contains information about the users that are configured on the system.
+    Protection of this file is critical for system security.
+
+checktext: |-
+    To check the permissions of /etc/passwd- ,
+    run the command:
+     $ sudo stat -c "%a %n" /etc/passwd-
+    If properly configured, the output should indicate the following permissions:
+     644 /etc/passwd-
+
+    If /etc/passwd- does not have unix mode 644, then this is a finding.
+
+fixtext: |-
+    Change the permissions of the file "/etc/passwd-" to "0644" by running the following command:
+    $ sudo chmod 0644 /etc/passwd-

@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must ensure the password complexity module is enabled in the system-auth file.
+
+vuldiscussion: |-
+    Enabling PAM password complexity permits to enforce strong passwords and consequently
+    makes the system less prone to dictionary attacks.
+
+checktext: |-
+    To check if pam_pwhistory.so is enabled in system-auth, run the following command:
+     $ grep pam_pwquality /etc/pam.d/system-auth
+    The output should be similar to the following:
+     password requisite pam_pwquality.so
+
+    If pam_pwquality.so is not enabled in system-auth, then this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to use "pwquality" to enforce password complexity rules.
+
+    Add the following line to the "/etc/pam.d/system-auth" file(or modify the line to have the required value):
+
+    password required pam_pwquality.so

@@ -57,7 +57,7 @@ do
 	then
 		NORMALIZED_CONFIG_FILE_LINES=$(sed -e "/^[#|$]/d" "${LOG_FILE}")
 		LINES_WITH_PATHS=$(grep '[^/]*\s\+\S*/\S\+$' <<< "${NORMALIZED_CONFIG_FILE_LINES}")
-		FILTERED_PATHS=$(awk '{if(NF>=2&&($2~/^\//||$2~/^-\//)){sub(/^-\//,"/",$2);print $2}}' <<< "${LINES_WITH_PATHS}")
+		FILTERED_PATHS=$(awk '{if(NF>=2&&($NF~/^\//||$NF~/^-\//)){sub(/^-\//,"/",$NF);print $NF}}' <<< "${LINES_WITH_PATHS}")
 		CLEANED_PATHS=$(sed -e "s/[\"')]//g; /\\/etc.*\.conf/d; /\\/dev\\//d" <<< "${FILTERED_PATHS}")
 		MATCHED_ITEMS=$(sed -e "/^$/d" <<< "${CLEANED_PATHS}")
 		# Since above sed command might return more than one item (delimited by newline), split the particular
@@ -70,7 +70,7 @@ do
 		unset ARRAY_FOR_LOG_FILE
 	fi
 done
-{{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204", "sle15", "sle12"] %}}
+{{% if product in ["debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204", "sle15", "sle12"] %}}
 DESIRED_PERM_MOD=640
 {{% else %}}
 DESIRED_PERM_MOD=600

@@ -7,7 +7,7 @@
 - name: "Set rsyslog logfile configuration facts"
   set_fact:
     rsyslog_etc_config: "/etc/rsyslog.conf"
-{{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204", "sle15", "sle12"] %}}
+{{% if product in ["debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204", "sle15", "sle12"] %}}
     desired_perm_mode: "640"
 {{% else %}}
     desired_perm_mode: "600"

@@ -1,0 +1,19 @@
+srg_requirement: |-
+    The {{{ full_name }}} /etc/shadow file must be group-owned by root.
+
+vuldiscussion: |-
+    The "/etc/shadow" file stores password hashes. Protection of this file is
+    critical for system security.
+
+checktext: |-
+    To check the group ownership of /etc/shadow ,
+    run the command:
+     $ sudo stat -c "%G %n" /etc/shadow
+    If properly configured, the output should indicate the following group-owner:
+     root  /etc/shadow
+
+    If /etc/shadow does not have a group owner of root, then this is a finding.
+
+fixtext: |-
+    Change the group of the file /etc/shadow to root by running the following command:
+    $ sudo chgrp root /etc/shadow

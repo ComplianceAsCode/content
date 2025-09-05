@@ -41,14 +41,13 @@ SSG_REF_URIS = {
 product_directories = [
     'alinux2',
     'alinux3',
+    'anolis8',
     'chromium',
-    'debian9', 'debian10', 'debian11',
+    'debian10', 'debian11',
     'example',
     'eks',
     'fedora',
     'firefox',
-    'fuse6',
-    'jre',
     'macos1015',
     'ocp4',
     'rhcos4',
@@ -59,7 +58,6 @@ product_directories = [
     'sle12', 'sle15',
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004', 'ubuntu2204',
     'uos20',
-    'vsel',
 ]
 
 JINJA_MACROS_DIRECTORY = os.path.join(os.path.dirname(os.path.dirname(
@@ -100,9 +98,11 @@ ssg_version_uri = \
     "https://github.com/ComplianceAsCode/content/releases/latest"
 OSCAP_VENDOR = "org.ssgproject"
 OSCAP_DS_STRING = "xccdf_%s.content_benchmark_" % OSCAP_VENDOR
+OSCAP_BENCHMARK = "xccdf_%s.content_benchmark_" % OSCAP_VENDOR
 OSCAP_PROFILE = "xccdf_%s.content_profile_" % OSCAP_VENDOR
 OSCAP_GROUP = "xccdf_%s.content_group_" % OSCAP_VENDOR
 OSCAP_RULE = "xccdf_%s.content_rule_" % OSCAP_VENDOR
+OSCAP_VALUE = "xccdf_%s.content_value_" % OSCAP_VENDOR
 OSCAP_GROUP_PCIDSS = "xccdf_%s.content_group_pcidss-req" % OSCAP_VENDOR
 OSCAP_GROUP_VAL = "xccdf_%s.content_group_values" % OSCAP_VENDOR
 OSCAP_GROUP_NON_PCI = "xccdf_%s.content_group_non-pci-dss" % OSCAP_VENDOR
@@ -195,19 +195,16 @@ PKG_MANAGER_TO_CONFIG_FILE = {
 FULL_NAME_TO_PRODUCT_MAPPING = {
     "Alibaba Cloud Linux 2": "alinux2",
     "Alibaba Cloud Linux 3": "alinux3",
+    "Anolis OS 8": "anolis8",
     "Chromium": "chromium",
-    "Debian 9": "debian9",
     "Debian 10": "debian10",
     "Debian 11": "debian11",
     "Example": "example",
     "Amazon Elastic Kubernetes Service": "eks",
     "Fedora": "fedora",
     "Firefox": "firefox",
-    "JBoss Fuse 6": "fuse6",
-    "Java Runtime Environment": "jre",
     "Apple macOS 10.15": "macos1015",
     "Red Hat OpenShift Container Platform 4": "ocp4",
-    "McAfee VirusScan Enterprise for Linux": "vsel",
     "Red Hat Enterprise Linux CoreOS 4": "rhcos4",
     "Oracle Linux 7": "ol7",
     "Oracle Linux 8": "ol8",
@@ -224,6 +221,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Ubuntu 20.04": "ubuntu2004",
     "Ubuntu 22.04": "ubuntu2204",
     "UnionTech OS Server 20": "uos20",
+    "Not Applicable" : "example"
 }
 
 
@@ -267,11 +265,12 @@ REFERENCES = dict(
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
-                       "example", "eks", "alinux", "uos"]
+                       "example", "eks", "alinux", "uos", "anolis"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_alinux": ["alinux2", "alinux3"],
-    "multi_platform_debian": ["debian9", "debian10", "debian11"],
+    "multi_platform_anolis": ["anolis8"],
+    "multi_platform_debian": ["debian10", "debian11"],
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
@@ -434,10 +433,10 @@ XCCDF_PLATFORM_TO_PACKAGE = {
 # _version_name_map = {
 MAKEFILE_ID_TO_PRODUCT_MAP = {
     'alinux': 'Alibaba Cloud Linux',
+    'anolis': 'Anolis OS',
     'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
-    'jre': 'Java Runtime Environment',
     'macos': 'Apple macOS',
     'rhel': 'Red Hat Enterprise Linux',
     'rhv': 'Red Hat Virtualization',
@@ -448,7 +447,6 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'fuse': 'JBoss Fuse',
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
-    'vsel': 'McAfee VirusScan Enterprise for Linux',
     'example': 'Example',
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',

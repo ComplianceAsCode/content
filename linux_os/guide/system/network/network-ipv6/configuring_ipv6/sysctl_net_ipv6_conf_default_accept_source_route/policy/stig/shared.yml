@@ -1,0 +1,40 @@
+srg_requirement: |-
+    {{{ full_name }}} must not forward IPv6 source-routed packets by default.
+
+vuldiscussion: |-
+    Source-routed packets allow the source of the packet to suggest that routers forward the packet along a different path than configured on the router, which can be used to bypass network security measures. This requirement applies only to the forwarding of source-routed traffic, such as when forwarding is enabled and the system is functioning as a router.
+
+    Accepting source-routed packets in the IPv6 protocol has few legitimate
+    uses. It should be disabled unless it is absolutely required.
+
+checktext: |-
+    Verify {{{ full_name }}} does not accept IPv6 source-routed packets by default.
+
+    Note: If IPv6 is disabled on the system, this requirement is Not Applicable.
+
+    Check the value of the accept source route variable with the following command:
+
+    $ sudo sysctl net.ipv6.conf.default.accept_source_route
+
+    net.ipv6.conf.default.accept_source_route = 0
+
+    If the returned line does not have a value of "0", a line is not returned, or the line is commented out, this is a finding.
+
+    Check that the configuration files are present to enable this network parameter.
+
+    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F net.ipv6.conf.default.accept_source_route | tail -1
+
+    net.ipv6.conf.default.accept_source_route = 0
+
+    If "net.ipv6.conf.default.accept_source_route" is not set to "0" or is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not forward IPv6 source-routed packets by default.
+
+    Add or edit the following line in a single system configuration file, in the "/etc/sysctl.d/" directory:
+
+    net.ipv6.conf.default.accept_source_route=0
+
+    Load settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system

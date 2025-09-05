@@ -1,0 +1,25 @@
+srg_requirement: |-
+    The {{{ full_name }}} SSH daemon must display the date and time of the last successful account logon upon an SSH logon.
+
+vuldiscussion: |-
+    Providing users feedback on when account accesses last occurred facilitates user recognition and reporting of unauthorized account use.
+
+checktext: |-
+    Verify the SSH daemon provides users with feedback on when account accesses last occurred with the following command:
+
+    $ sudo grep -ir printlast  /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+
+    PrintLastLog yes
+
+    If the "PrintLastLog" keyword is set to "no", the returned line is commented out, or no output is returned, this is a finding.
+
+fixtext: |-
+    Configure the SSH daemon to provide users with feedback on when account accesses last occurred.
+
+    Add the following line in "/etc/ssh/sshd_config", or uncomment the line and set the value to "yes":
+
+    PrintLastLog yes
+
+    The SSH service must be restarted for changes to take effect:
+
+    $ sudo systemctl restart sshd.service

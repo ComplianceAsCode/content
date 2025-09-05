@@ -1,0 +1,36 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Shut Down The Information System, Restart The Information System, And/Or Notify The System Administrator When Anomalies In The Operation Of Any Security Functions Are Discovered.
+
+vuldiscussion: |-
+    Unauthorized changes to the baseline configuration could make the system vulnerable
+    to various attacks or allow unauthorized access to the operating system. Changes to
+    operating system configurations can have unintended side effects, some of which may
+    be relevant to security.
+
+
+
+    Detecting such changes and providing an automated response can help avoid unintended,
+    negative consequences that could ultimately affect the security state of the operating
+    system. The operating system's Information Management Officer (IMO)/Information System
+    Security Officer (ISSO) and System Administrators (SAs) must be notified via email and/or
+    monitoring system trap when there is an unauthorized modification of a configuration item.
+
+checktext: |-
+    To determine that periodic AIDE execution has been scheduled, run the following command:
+     $ grep aide /etc/crontab
+    The output should return something similar to the following:
+     05 4 * * * root /usr/sbin/aide --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost
+    The email address that the notifications are sent to can be changed by overriding
+     root@localhost .
+
+    If AIDE has not been configured or has not been configured to notify personnel of scan details, then this is a finding.
+
+fixtext: |-
+    Configure the file integrity tool to run automatically on the system at least weekly and to notify designated personnel if baseline configurations are changed in an unauthorized manner.    The AIDE tool can be configured to email designated personnel with the use of the cron system.
+
+    The following example output is generic. It will set cron to run AIDE daily and to send email at the completion of the
+
+    $ sudo more /etc/cron.daily/aide
+
+    #!/bin/bash
+    /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil

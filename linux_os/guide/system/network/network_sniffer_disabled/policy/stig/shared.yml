@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} network interfaces must not be in promiscuous mode.
+
+vuldiscussion: |-
+    Network interfaces in promiscuous mode allow for the capture of all network traffic
+    visible to the system. If unauthorized individuals can access these applications, it
+    may allow them to collect information such as logon IDs, passwords, and key exchanges
+    between systems.
+
+    If the system is being used to perform a network troubleshooting function, the use of these
+    tools must be documented with the Information Systems Security Manager (ISSM) and restricted
+    to only authorized personnel.
+
+checktext: |-
+    Verify network interfaces are not in promiscuous mode with the following command:
+
+    $ ip link | grep -i promisc
+
+    If network interfaces are found on the system in promiscuous mode and their use has not been approved by the ISSO and documented, this is a finding.
+
+fixtext: |-
+    Configure network interfaces to turn off promiscuous mode unless approved by the ISSO and documented.
+
+    Set the promiscuous mode of an interface to off with the following command:
+
+    $ sudo ip link set dev &lt;devicename&gt; multicast off promisc off

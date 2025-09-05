@@ -1,0 +1,20 @@
+srg_requirement: |-
+    The graphical display manager must not be the default target on {{{ full_name }}} unless approved.
+
+vuldiscussion: |-
+    Unnecessary service packages must not be installed to decrease the attack surface of the system.
+    Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.
+
+checktext: |-
+    Verify that {{{ full_name }}} is configured to boot to the command line:
+
+    $ systemctl get-default
+
+    multi-user.target
+
+    If the system default target is not set to "multi-user.target" and the Information System Security Officer (ISSO) lacks a documented requirement for a graphical user interface, this is a finding.
+
+fixtext: |-
+    Document the requirement for a graphical user interface with the ISSO or set the default target to multi-user with the following command:
+
+    $ sudo systemctl set-default multi-user.target

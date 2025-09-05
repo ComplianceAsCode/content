@@ -30,17 +30,21 @@ references:
     nist: IA-5(c),IA-5(1)(a),CM-6(a),IA-5(4)
     srg: SRG-OS-000072-GPOS-00040,SRG-OS-000071-GPOS-00039,SRG-OS-000070-GPOS-00038,SRG-OS-000266-GPOS-00101,SRG-OS-000078-GPOS-00046,SRG-OS-000480-GPOS-00225,SRG-OS-000069-GPOS-00037
 
-ocil_clause: 'enforce_for_root is commented or not present'
+ocil_clause: '"enforce_for_root" is commented or missing'
 
 ocil: |-
-    To verify if root user is required to use complex passwords, run the following command:
-    <pre>$ grep enforce_for_root /etc/security/pwquality.conf</pre>
-    The output should return <tt>enforce_for_root</tt> uncommented.
+    Verify that {{{ full_name }}} enforces password complexity rules for the root account.
+
+    Check if root user is required to use complex passwords with the following command:
+
+    <pre>$ grep enforce_for_root /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf
+
+    /etc/security/pwquality.conf:enforce_for_root</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce password complexity on the root account.
 
-    Add the following line to /etc/security/pwquality.conf:
+    Add or update the following line in /etc/security/pwquality.conf:
 
     enforce_for_root
 

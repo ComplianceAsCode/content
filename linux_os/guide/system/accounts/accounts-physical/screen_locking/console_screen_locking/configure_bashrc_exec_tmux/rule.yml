@@ -32,21 +32,36 @@ references:
 
 platform: tmux
 
-ocil_clause: 'exec tmux is not present at the end of bashrc'
+ocil_clause: 'the command does not produce output'
 
 ocil: |-
-    To verify that tmux is configured to execute,
-    run the following command:
-    <pre>$ grep -A1 -B3 "case ..name. in sshd|login) exec tmux ;; esac" /etc/bashrc /etc/profile.d/*</pre>
-    The output should return the following:
-    <pre>if [ "$PS1" ]; then
-      parent=$(ps -o ppid= -p $$)
-      name=$(ps -o comm= -p $parent)
-      case "$name" in sshd|login) exec tmux ;; esac
+    Verify {{{ full_name }}} shell initialization file is configured to start each shell with the tmux terminal multiplexer.
+
+    Determine the location of the tmux script with the following command:
+
+    <pre>$ sudo grep tmux /etc/bashrc /etc/profile.d/*
+
+    /etc/profile.d/tmux.sh:  case "$name" in (sshd|login) exec tmux ;; esac</pre>
+
+    Review the tmux script by using the following example:
+
+    <pre>$ cat /etc/profile.d/tmux.sh
+
+    if [ "$PS1" ]; then
+    parent=$(ps -o ppid= -p $$)
+    name=$(ps -o comm= -p $parent)
+    case "$name" in (sshd|login) exec tmux ;; esac
     fi</pre>
 
+    If the shell file is not configured as the example above, is commented out, or is missing, this is a finding.
+
+    Determine if tmux is currently running with the following command:
+
+    <pre>$ sudo ps all | grep tmux | grep -v grep</pre>
+
 fixtext: |-
-    Create or edit the following file /etc/profile.d/tmux.sh and add the following content:
+    Configure {{{ full_name }}} to initialize the tmux terminal multiplexer as each shell is called by adding the following to file "/etc/profile.d/tmux.sh":
+
     if [ "$PS1" ]; then
         parent=$(ps -o ppid= -p $$)
         name=$(ps -o comm= -p $parent)

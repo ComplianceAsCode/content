@@ -115,6 +115,7 @@ controls:
             - mount_option_noexec_removable_partitions
             - mount_option_nosuid_removable_partitions
             - mount_option_krb_sec_remote_filesystems
+            - use_kerberos_security_all_exports
 
             # sshd config
             - sshd_disable_compression
@@ -186,6 +187,7 @@ controls:
             - dconf_gnome_disable_automount_open
             - dconf_gnome_disable_autorun
             - dconf_gnome_disable_ctrlaltdel_reboot
+            - dconf_gnome_disable_user_list
             - dconf_db_up_to_date
 
             # partition
@@ -225,7 +227,7 @@ controls:
             - postfix_prevent_unrestricted_relay
             - set_firewalld_default_zone
             - firewalld_sshd_port_enabled
-            
+
             # misc
             - enable_authselect
             - no_host_based_files

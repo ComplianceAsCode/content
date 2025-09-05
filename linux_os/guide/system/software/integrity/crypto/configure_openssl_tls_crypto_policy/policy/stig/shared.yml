@@ -1,0 +1,37 @@
+srg_requirement: |-
+    {{{ full_name }}} must implement DoD-approved TLS encryption in the OpenSSL package.
+
+vuldiscussion: |-
+    Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
+
+    Remote access (e.g., RDP) is access to DoD nonpublic information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
+
+    Cryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.
+
+    The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/openssl.config file.
+
+checktext: |-
+    Verify that {{{ full_name }}} OpenSSL library is configured to use  TLS 1.2 encryption or stronger.
+
+    Determine the version of crypto-policies that is installed on the system with the following command:
+
+    $ sudo dnf list --installed crypto-policies
+
+    crpyto-policies.noarch                20220223-1.git5203b41.el9_0.1
+
+    For version crypto-policies-20210617-1.gitc776d3e.el8.noarch and newer:
+
+    $ grep -i  minprotocol /etc/crypto-policies/back-ends/opensslcnf.config
+
+    TLS.MinProtocol = TLSv1.2
+    DTLS.MinProtocol = DTLSv1.2
+
+    If the "TLS.MinProtocol" is set to anything older than "TLSv1.2" or the "DTLS.MinProtocol" is set to anything older than DTLSv1.2, this is a finding.
+
+fixtext: |-
+    Configure the {{{ full_name }}} OpenSSL library to use only DoD-approved TLS encryption by editing the following line in the "/etc/crypto-policies/back-ends/opensslcnf.config" file:
+
+    TLS.MinProtocol = TLSv1.2
+    DTLS.MinProtocol = DTLSv1.2
+
+    A reboot is required for the changes to take effect.

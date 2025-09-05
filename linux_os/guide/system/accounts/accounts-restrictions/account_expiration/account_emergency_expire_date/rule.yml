@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,ol9,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhel7,rhel8,rhel9
 
 title: 'Assign Expiration Date to Emergency Accounts'
 
@@ -28,6 +28,7 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: CCE-88242-3
     cce@rhel8: CCE-85910-8
     cce@rhel9: CCE-90560-4
 
@@ -42,6 +43,7 @@ references:
     nist-csf: DE.CM-1,DE.CM-3,PR.AC-1,PR.AC-4,PR.AC-6
     srg: SRG-OS-000123-GPOS-00064,SRG-OS-000002-GPOS-00002
     stigid@ol8: OL08-00-020270
+    stigid@rhel7: RHEL-07-010271
     stigid@rhel8: RHEL-08-020270
     vmmsrg: SRG-OS-000002-VMM-000020,SRG-OS-000123-VMM-000620
 
@@ -52,13 +54,13 @@ ocil: |-
 
     For every emergency account, run the following command to obtain its account aging and expiration information:
 
-    $ sudo chage -l  emergency_account_name
+    $ sudo chage -l emergency_account_name
 
     Verify each of these accounts has an expiration date set within 72 hours or as documented.
 
 warnings:
     - general: |-
-        Due to the unique requirements of each sysetem, automated
+        Due to the unique requirements of each system, automated
         remediation is not available for this configuration check.
 
 vuldiscussion: |-
@@ -72,15 +74,14 @@ checktext: |-
 
     For every emergency account, run the following command to obtain its account aging and expiration information:
 
-    $ sudo chage -l  emergency_account_name
+    $ sudo chage -l emergency_account_name
 
     Verify each of these accounts has an expiration date set within 72 hours or as documented.
 
     If any emergency accounts have no expiration date set or do not expire within 72 hours, this is a finding.
 
 fixtext: |-
-    If an emergency account must be created, configure the system to terminate the account after
-    72 hours with the following command to set an expiration date for the account.
+    If an emergency account must be created configure the system to terminate the account after a 72 hour time period with the following command to set an expiration date on it.
     Substitute "emergency_account_name" with the account to be created.
 
     $ sudo chage -E `date -d "+3 days" +%Y-%m-%d` emergency_account_name

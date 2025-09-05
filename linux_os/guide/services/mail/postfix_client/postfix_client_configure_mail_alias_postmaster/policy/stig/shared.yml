@@ -1,0 +1,32 @@
+srg_requirement: |-
+    {{{ full_name }}} must forward mails from postmaster to the root account using a postfix alias
+
+vuldiscussion: |-
+    It is critical for the appropriate personnel to be aware if a system is at risk of failing to
+    process audit logs as required. Without this notification, the security personnel may be
+    unaware of an impending failure of the audit capability, and system operation may be adversely
+    affected.
+
+    Audit processing failures include software/hardware errors, failures in the audit capturing
+    mechanisms, and audit storage capacity being reached or exceeded.
+
+checktext: |-
+   Verify that the administrators are notified in the event of an audit processing failure.
+
+    Check that the "/etc/aliases" file has a defined value for "root".
+
+    $ sudo grep "postmaster:\s*root$" /etc/aliases
+
+    If the command does not return a line, or the line is commented out, ask the system administrator to indicate how they and the ISSO are notified of an audit process failure.
+    If there is no evidence of the proper personnel being notified of an audit processing failure, this is a finding.
+
+fixtext: |-
+    Configure a valid email address as an alias for the root account.
+
+    Append the following line to "/etc/aliases":
+
+    postmaster: root
+
+    Then, run the following command:
+
+    $ sudo newaliases

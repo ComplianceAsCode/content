@@ -1,27 +1,31 @@
 <def-group>
-  <definition class="compliance" id="banner_etc_issue_net" version="2">
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("The system login banner text should be set correctly.") }}}
     <criteria>
-      <criterion comment="/etc/issue.net is set appropriately" test_ref="test_banner_etc_issue_net" />
+      <criterion test_ref="test_banner_etc_issue_net"
+          comment="/etc/issue.net is set appropriately"/>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="at least one" check_existence="at_least_one_exists" comment="correct banner in /etc/issue.net" id="test_banner_etc_issue_net" version="1">
-    <ind:object object_ref="object_banner_etc_issue_net" />
-    <ind:state state_ref="state_banner_etc_issue_net" />
+  <ind:textfilecontent54_test id="test_banner_etc_issue_net" version="1"
+      check="at least one" check_existence="at_least_one_exists"
+      comment="correct banner in /etc/issue.net">
+      <ind:object object_ref="object_banner_etc_issue_net"/>
+      <ind:state state_ref="state_banner_etc_issue_net"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_banner_etc_issue_net" version="1">
-    <ind:behaviors singleline="true" multiline="false" />
-    <ind:filepath operation="pattern match">^/etc/issue.net$</ind:filepath>
-    <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+      <ind:behaviors singleline="true" multiline="false"/>
+      <ind:filepath operation="pattern match">^/etc/issue\.net$</ind:filepath>
+      <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
+      <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_banner_etc_issue_net" version="1">
-    <ind:subexpression datatype="string" var_ref="login_banner_text" operation="pattern match" />
+      <ind:subexpression datatype="string" operation="pattern match"
+      var_ref="login_banner_text"/>
   </ind:textfilecontent54_state>
 
-  <external_variable comment="warning banner text variable" datatype="string" id="login_banner_text" version="1" />
-
+  <external_variable datatype="string" id="login_banner_text" version="1"
+      comment="warning banner text variable"/>
 </def-group>

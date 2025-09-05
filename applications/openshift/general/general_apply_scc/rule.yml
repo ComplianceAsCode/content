@@ -21,14 +21,14 @@ severity: medium
 ocil_clause: 'SCCs in Pod definitions need review'
 
 ocil: |-
-   Review the pod definitions in your cluster and verify that you have security
-   contexts defined as appropriate.  OpenShift's Security Context Constraint
-   feature is on by default in OpenShift 4 and applied to all pods deployed. SCC
-   selection is determined by a combination of the values in the securityContext
-   and the rolebindings for the account deploying the pod.
+   Review the pod definitions in your cluster and verify they have appropriate
+   security contexts. OpenShift comes configured with default security context
+   constraints you can use immediately to secure pods in your cluster. For more
+   information on security context constraints, how to use them, and how to
+   build your own, please refer to the {{{ weblink(link="https://docs.openshift.com/container-platform/4.11/authentication/managing-security-context-constraints.html", text="OpenShift security constraints documentation") }}}.
 
 references:
-    cis@ocp4: 5.6.3
+    cis@ocp4: 5.7.3
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
     pcidss: Req-2.2

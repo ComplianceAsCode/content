@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Force opensc To Use Defined Smart Card Driver'
 
@@ -29,6 +29,7 @@ identifiers:
     cce@rhel7: CCE-81002-8
     cce@rhel8: CCE-80821-2
     cce@rhel9: CCE-89151-5
+    cce@sle12: CCE-92222-9
     cce@sle15: CCE-85827-4
 
 references:
@@ -52,12 +53,12 @@ ocil: |-
     as the smart card driver, run the following command:
     <pre>$ grep force_card_driver /etc/opensc.conf</pre>
     The output should return something similar to:
-    <pre>force_card_drivers = {{{ xccdf_value("var_smartcard_drivers") }}};</pre>
+    <pre>force_card_driver = {{{ xccdf_value("var_smartcard_drivers") }}};</pre>
 
 fixtext: |-
     Edit "/etc/opensc.conf" and add or edit the following line:
 
-    force_card_drivers = {{{ xccdf_value("var_smartcard_drivers") }}};
+    force_card_driver = {{{ xccdf_value("var_smartcard_drivers") }}};
 
 srg_requirement:
   {{{ full_name }}} must use the {{{ xccdf_value("var_smartcard_drivers") }}} smartcard driver.

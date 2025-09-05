@@ -429,7 +429,7 @@ class RoleGithubUpdater(object):
         """
         content = self.remote_repo.get_contents(path_name, ref=branch)
         if content.content:
-            return (remote.decoded_content.decode("utf-8"), remote.sha)
+            return (content.decoded_content.decode("utf-8"), content.sha)
 
         blob = self._get_blob_content(branch, path_name)
         if blob is None:

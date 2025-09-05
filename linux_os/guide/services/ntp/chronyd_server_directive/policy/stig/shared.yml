@@ -1,0 +1,17 @@
+srg_requirement: |-
+    {{{ full_name }}} must securely compare internal information system clocks at least every 24 hours with a server synchronized to an authoritative time source, such as the United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).
+
+vuldiscussion: |-
+    Depending on the infrastruture being used the "pool" directive may not be supported.
+
+checktext: |-
+    Run the following command and verify that time sources are only configure with "server" directive:
+     # grep -E "^(server|pool)" /etc/chrony.conf
+    A line with the appropriate server should be returned, any line returned starting with "pool" is a finding.
+
+    If an authoritative remote time server is not configured or configured with pool directive, then this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to securely compare internal information system clocks at least every 24 hours with an NTP server by adding/modifying the following line in the /etc/chrony.conf file.
+
+    server [ntp.server.name] iburst maxpoll 16

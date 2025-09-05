@@ -1,0 +1,25 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Prevent The Use Of Dictionary Words For Passwords.
+
+vuldiscussion: |-
+    Use of a complex password helps to increase the time and resources required to compromise the password.
+    Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at
+    guessing and brute-force attacks.
+
+    If {{{ full_name }}} allows the user to select passwords based on dictionary words, this increases the chances of password compromise by increasing the opportunity for successful guesses, and brute-force attacks.
+
+checktext: |-
+    Verify {{{ full_name }}} prevents the use of dictionary words for passwords with the following command:
+
+    $ sudo grep dictcheck /etc/security/pwquality.conf /etc/pwquality.conf.d/*.conf
+
+    /etc/security/pwquality.conf:dictcheck=1
+
+    If "dictcheck" does not have a value other than "0", or is commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent the use of dictionary words for passwords.
+
+    Add or update the following line in the "/etc/security/pwquality.conf" file or a configuration file in the /etc/pwquality.conf.d/ directory to contain the "dictcheck" parameter:
+
+    dictcheck=1

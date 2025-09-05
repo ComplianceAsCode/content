@@ -27,6 +27,7 @@ identifiers:
     cce@rhel7: CCE-27370-6
     cce@rhel8: CCE-80679-4
     cce@rhel9: CCE-83700-5
+    cce@sle12: CCE-91618-9
     cce@sle15: CCE-85824-1
 
 references:
@@ -53,20 +54,29 @@ references:
     srg: SRG-OS-000343-GPOS-00134
     stigid@ol7: OL07-00-030340
 
-ocil_clause: 'the system is not configured to switch to single user mode for corrective action'
+ocil_clause: 'there is no evidence that real-time alerts are configured on the system'
 
 ocil: |-
-    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
-    determine if the system is configured to either suspend, switch to single user mode,
-    or halt when disk space has run low:
-    <pre>admin_space_left_action single</pre>
+    Verify that {{{ full_name }}} is configured to take action in the event of allocated audit record storage volume reaches 95 percent of the repository maximum audit record storage capacity with the following command:
+
+    <pre>$ sudo grep admin_space_left_action /etc/audit/auditd.conf
+
+    admin_space_left_action = single</pre>
+
+    If the value of the "admin_space_left_action" is not set to "single", or if the line is commented out, ask the System Administrator to indicate how the system is providing real-time alerts to the SA and ISSO.
 
 fixtext: |-
-    Configure the {{{ full_name }}} audit system to take an action when the disk is audit disk is getting full.
+    Configure "auditd" service  to take action in the event of allocated audit record storage volume reaches 95 percent of the repository maximum audit record storage capacity.
 
-    Add or edit the following line in "/etc/audit/auditd.conf"
-    <pre>admin_space_left_action halt</pre>
-    The value must be one of the following: <tt>email</tt>, <tt>suspend</tt>, <tt>single</tt>, and <tt>halt</tt>.
+    Edit the following line in "/etc/audit/auditd.conf" to ensure that the system is forced into single user mode in the event the audit record storage volume is about to reach maximum capacity:
+
+    <pre>admin_space_left_action = single</pre>
+
+    The audit daemon must be restarted for changes to take effect.
 
 srg_requirement: |-
-  {{{ full_name }}} must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) via email when the threshold for the repository maximum audit record storage capacity is reached.
+    {{{ full_name }}} must take action when allocated audit record storage volume reaches 95 percent of the repository maximum audit record storage capacity.
+    {{{ full_name }}} must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) via email when the threshold for the repository maximum audit record storage capacity is reached.
+
+vuldiscussion: |-
+    If security personnel are not notified immediately when storage volume reaches 90% utilization, they are unable to plan for audit record storage capacity expansion.

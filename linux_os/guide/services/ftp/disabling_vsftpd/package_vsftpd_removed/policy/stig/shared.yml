@@ -1,0 +1,18 @@
+srg_requirement: |-
+    {{{ full_name }}} must not have a File Transfer Protocol (FTP) server package installed.
+
+vuldiscussion: |-
+    Removing the "vsftpd" package decreases the risk of its
+    accidental activation.
+
+checktext: |-
+    Verify that {{{ full_name }}} does not have a File Transfer Protocol (FTP) server package installed with the following command:
+
+    $ sudo dnf list --installed | grep ftp
+
+    If a ftp package is installed, this is a finding.
+
+fixtext: |-
+    The ftp package can be removed with the following command (using vsftpd as an example):
+
+    $ sudo dnf remove vsftpd

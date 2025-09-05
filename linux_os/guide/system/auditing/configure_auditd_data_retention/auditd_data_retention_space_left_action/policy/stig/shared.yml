@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) when allocated audit record storage volume 75 percent utilization.
+
+vuldiscussion: |-
+    If security personnel are not notified immediately when storage volume reaches 75 percent utilization, they are unable to plan for audit record storage capacity expansion.
+
+checktext: |-
+    Verify {{{ full_name }}} notifies the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity with the following command:
+
+    $ sudo grep -w space_left_action /etc/audit/auditd.conf
+
+    space_left_action = email
+
+    If the value of the "space_left_action" is not set to "email", or if the line is commented out, ask the System Administrator to indicate how the system is providing real-time alerts to the SA and ISSO.
+
+    If there is no evidence that real-time alerts are configured on the system, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to initiate an action to notify the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity by adding/modifying the following line in the /etc/audit/auditd.conf file.
+
+    space_left_action = email

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<ns0:oval_definitions xmlns:ns0="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:ns2="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:ns3="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:ns4="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:ns5="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">
+  <ns0:definitions>
+    <ns0:definition class="compliance" id="kerberos_disable_no_keytab" version="1">
+      <ns0:metadata>
+        <ns0:title>Disable Kerberos by removing host keytab</ns0:title>
+      </ns0:metadata>
+      <ns0:criteria>
+        <ns0:criterion test_ref="test_kerberos_disable_no_keytab" comment="Restrict Kerberos operation by removing keytab files"/>
+      </ns0:criteria>
+    </ns0:definition>
+  </ns0:definitions>
+  <ns0:tests>
+    <ns4:file_test id="test_kerberos_disable_no_keytab" check="all" check_existence="none_exist" version="1" comment="Ensure keytab file does not exist">
+      <ns4:object object_ref="obj_kerberos_disable_no_keytab"/>
+    </ns4:file_test>
+  </ns0:tests>
+  <ns0:objects>
+    <ns4:file_object id="obj_kerberos_disable_no_keytab" version="1" comment="Default Kerberos keytab file">
+      <ns4:filepath operation="pattern match">^/etc/.+\.keytab$</ns4:filepath>
+      <ns0:filter action="exclude">filter_ssh_key_owner_root</ns0:filter>
+    </ns4:file_object>
+  </ns0:objects>
+  <ns0:states>
+    <ns4:file_state comment="All keys in /etc/ssh groupowned by root have the right permissions" id="filter_ssh_key_owner_root" version="1">
+      <ns4:path>/etc</ns4:path>
+      <ns4:filename operation="pattern match">.*_key$</ns4:filename>
+    </ns4:file_state>
+  </ns0:states>
+</ns0:oval_definitions>

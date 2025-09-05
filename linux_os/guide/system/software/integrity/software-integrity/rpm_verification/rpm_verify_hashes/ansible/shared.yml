@@ -1,5 +1,5 @@
 # and the regex_findall does not filter out configuration files the same as bash remediation does
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
 # reboot = false
 # strategy = restrict
 # complexity = high
@@ -12,12 +12,16 @@
 - name: "Set fact: Package manager reinstall command (yum)"
   set_fact:
     package_manager_reinstall_cmd: yum reinstall -y
-  when: (ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux")
+  when: (ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "OracleLinux")
+
+- name: "Set fact: Package manager reinstall command (zypper)"
+  set_fact:
+    package_manager_reinstall_cmd: zypper in -f -y
+  when: ansible_distribution == "SLES"
+
 
 - name: "Read files with incorrect hash"
   command: rpm -Va --nodeps --nosize --nomtime --nordev --nocaps --nolinkto --nouser --nogroup --nomode --noghost --noconfig
-  args:
-    warn: False # Ignore ANSIBLE0006, we can't fetch files with incorrect hash using rpm module
   register: files_with_incorrect_hash
   changed_when: False
   failed_when: files_with_incorrect_hash.rc > 1
@@ -26,8 +30,6 @@
 
 - name: Create list of packages
   command: rpm -qf "{{ item }}"
-  args:
-    warn: False # Ignore ANSIBLE0006, we can't fetch packages with files with incorrect hash using rpm module
   with_items: "{{ files_with_incorrect_hash.stdout_lines | map('regex_findall', '^[.]+[5]+.* (\\/.*)', '\\1') | map('join') | select('match', '(\\/.*)') | list | unique }}"
   register: list_of_packages
   changed_when: False
@@ -38,8 +40,6 @@
 
 - name: "Reinstall packages of files with incorrect hash"
   command: "{{ package_manager_reinstall_cmd }} '{{ item }}'"
-  args:
-    warn: False # Ignore ANSIBLE0006, this task is flexible with regards to package manager
   with_items: "{{ list_of_packages.results | map(attribute='stdout_lines') | list | unique }}"
   when:
     - files_with_incorrect_hash.stdout_lines is defined

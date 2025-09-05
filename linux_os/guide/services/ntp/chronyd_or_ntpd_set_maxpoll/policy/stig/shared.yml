@@ -1,0 +1,23 @@
+srg_requirement: |-
+    {{{ full_name }}} must securely compare internal information system clocks at least every 24 hours with a server synchronized to an authoritative time source, such as the United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).
+
+vuldiscussion: |-
+    Inaccurate time stamps make it more difficult to correlate
+    events and can lead to an inaccurate analysis. Determining the correct
+    time a particular event occurred on a system is critical when conducting
+    forensic analysis and investigating system events. Sources outside the
+    configured acceptable allowance (drift) may be inaccurate.
+
+checktext: |-
+    Verify {{{ full_name }}} is securely comparing internal information system clocks at a regular interval with an NTP server with the following command:
+
+    $ sudo grep maxpoll /etc/ntp.conf /etc/chrony.conf
+
+    server [ntp.server.name] iburst maxpoll 10
+
+    If "maxpoll" has not been set to the of "10", is commented out, or is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to securely compare internal information system clocks at a regular interval with an NTP server by adding/modifying the following line in the /etc/chrony.conf file.
+
+    server [ntp.server.name] iburst maxpoll 10

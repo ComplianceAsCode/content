@@ -5,49 +5,38 @@
 # disruption = low
 
 {{{ bash_package_install("firewalld") }}}
-
+{{{ bash_package_install("NetworkManager") }}}
 {{{ bash_instantiate_variables("firewalld_sshd_zone") }}}
 
-{{% if product in ['rhel9'] %}}
-  {{% set network_config_path = "/etc/NetworkManager/system-connections/${interface}.nmconnection" %}}
-{{% else %}}
-  {{% set network_config_path = "/etc/sysconfig/network-scripts/ifcfg-${interface}" %}}
-{{% endif %}}
+if systemctl is-active NetworkManager && systemctl is-active firewalld; then
+    # First make sure the SSH service is enabled in run-time for the proper zone.
+    # This is to avoid connection issues when new interfaces are addeded to this zone.
+    firewall-cmd --zone="$firewalld_sshd_zone" --add-service=ssh
 
-# This assumes that firewalld_sshd_zone is one of the pre-defined zones
-if [ ! -f "/etc/firewalld/zones/${firewalld_sshd_zone}.xml" ]; then
-    cp "/usr/lib/firewalld/zones/${firewalld_sshd_zone}.xml" "/etc/firewalld/zones/${firewalld_sshd_zone}.xml"
-fi
-if ! grep -q 'service name="ssh"' "/etc/firewalld/zones/${firewalld_sshd_zone}.xml"; then
-    sed -i '/<\/description>/a \
-  <service name="ssh"/>' "/etc/firewalld/zones/${firewalld_sshd_zone}.xml"
-fi
+    # This will collect all NetworkManager connections names
+    readarray -t nm_connections < <(nmcli -f UUID,TYPE con | grep ethernet | awk '{ print $1 }')
+    # If the connection is not yet assigned to a firewalld zone, assign it to the proper zone.
+    # This will not change connections which are already assigned to any firewalld zone.
+    for connection in "${nm_connections[@]}"; do
+        current_zone=$(nmcli -f connection.zone connection show "$connection" | awk '{ print $2}')
+        if [ $current_zone = "--" ]; then
+            nmcli connection modify "$connection" connection.zone $firewalld_sshd_zone
+        fi
+    done
+    systemctl restart NetworkManager
 
-# Check if any eth interface is bounded to the zone with SSH service enabled
-nic_bound=false
-readarray -t eth_interface_list < <(ip link show up | cut -d ' ' -f2 | cut -d ':' -s -f1 | grep -E '^(en|eth)')
-for interface in "${eth_interface_list[@]}"; do
-    if grep -qi "ZONE=$firewalld_sshd_zone" "{{{ network_config_path }}}"; then
-        nic_bound=true
-        break;
-    fi
-done
-
-if [ $nic_bound = false ];then
-    # Add first NIC to SSH enabled zone
-    interface="${eth_interface_list[0]}"
-
-    if ! firewall-cmd --state -q; then
-        {{% if product in ['rhel9'] %}}
-          {{{ bash_replace_or_append(network_config_path, '^zone=', "$firewalld_sshd_zone", '%s=%s') | indent(8) }}}
-        {{% else %}}
-          {{{ bash_replace_or_append(network_config_path, '^ZONE=', "$firewalld_sshd_zone", '%s=%s') | indent(8) }}}
-        {{% endif %}}
-    else
-        # If firewalld service is running, we need to do this step with firewall-cmd
-        # Otherwise firewalld will communicate with NetworkManage and will revert assigned zone
-        # of NetworkManager managed interfaces upon reload
-        firewall-cmd --permanent --zone="$firewalld_sshd_zone" --add-interface="${eth_interface_list[0]}"
-        firewall-cmd --reload
-    fi
+    # Active zones are zones with at least one interface assigned to it.
+    # It is possible that traffic is comming by any active interface and consequently any
+    # active zone. So, this make sure all active zones are permanently allowing SSH service.
+    readarray -t firewalld_active_zones < <(firewall-cmd --get-active-zones | grep -v interfaces)
+    for zone in "${firewalld_active_zones[@]}"; do
+        firewall-cmd --permanent --zone="$zone" --add-service=ssh
+    done
+    firewall-cmd --reload
+else
+    echo "
+    firewalld and NetworkManager services are not active. Remediation aborted!
+    This remediation could not be applied because it depends on firewalld and NetworkManager services running.
+    The service is not started by this remediation in order to prevent connection issues."
+    exit 1
 fi

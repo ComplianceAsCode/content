@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,uos20
+prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,uos20
 
 title: 'Ensure gpgcheck Enabled In Main {{{ pkg_manager }}} Configuration'
 
@@ -67,16 +67,16 @@ references:
     stigid@sle15: SLES-15-010430
     vmmsrg: SRG-OS-000366-VMM-001430,SRG-OS-000370-VMM-001460,SRG-OS-000404-VMM-001650
 
-ocil_clause: 'GPG checking is not enabled'
+ocil_clause: 'there is no process to validate certificates that is approved by the organization'
 
 ocil: |-
-    To determine whether <tt>{{{ pkg_manager }}}</tt> is configured to use <tt>gpgcheck</tt>,
-    inspect <tt>{{{ pkg_manager_config_file }}}</tt> and ensure the following appears in the
-    <tt>[main]</tt> section:
+    Verify that {{{ pkg_manager }}} verifies the signature of packages from a repository prior to install with the following command:
+
+    <pre>$ grep gpgcheck {{{ pkg_manager_config_file }}}</pre>
+
     <pre>gpgcheck=1</pre>
-    A value of <tt>1</tt> indicates that <tt>gpgcheck</tt> is enabled. Absence of a
-    <tt>gpgcheck</tt> line or a setting of <tt>0</tt> indicates that it is
-    disabled.
+
+    If "gpgcheck" is not set to "1", or if the option is missing or commented out, ask the System Administrator how the certificates for patches and other operating system components are verified.
 
 {{% if 'sle' in product %}}
 platform: zypper
@@ -86,8 +86,10 @@ platform: yum
 
 fixtext: |-
     Configure {{{ full_name }}} to always check package signatures before installation.
-    Add or update the following line in {{{ pkg_manager_config_file }}}:
+
+    Add or update the following line in [main] section of the {{{ pkg_manager_config_file }}} file:
+
     gpgcheck=1
 
 srg_requirement: |-
-   {{{ full_name }}} must have GPG checking enabled in the {{{ pkg_manager }}} package manager.
+    {{{ full_name }}} must prevent the installation of software, patches, service packs, device drivers, or operating system components from a repository without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization.

@@ -5,8 +5,6 @@
 # disruption = medium
 - name: "Read list of files with incorrect ownership"
   command: rpm -Va --nodeps --nosignature --nofiledigest --nosize --nomtime --nordev --nocaps --nolinkto --nomode
-  args:
-    warn: False # Ignore ANSIBLE0006, we can't fetch files with incorrect ownership using rpm module
   register: files_with_incorrect_ownership
   failed_when: files_with_incorrect_ownership.rc > 1
   changed_when: False
@@ -14,8 +12,6 @@
 
 - name: Create list of packages
   command: rpm -qf "{{ item }}"
-  args:
-    warn: False # Ignore ANSIBLE0006, we can't fetch packages with files with incorrect ownership using rpm module
   with_items: "{{ files_with_incorrect_ownership.stdout_lines | map('regex_findall', '^[.]+[U|G]+.* (\\/.*)', '\\1') | map('join') | select('match', '(\\/.*)') | list | unique }}"
   register: list_of_packages
   changed_when: False
@@ -23,8 +19,6 @@
   when: (files_with_incorrect_ownership.stdout_lines | length > 0)
 
 - name: "Correct file ownership with RPM"
-  command: "rpm --quiet --setugids '{{ item }}'"
-  args:
-    warn: False # Ignore ANSIBLE0006, we can't correct ownership using rpm module
+  command: "rpm --setugids '{{ item }}'"
   with_items: "{{ list_of_packages.results | map(attribute='stdout_lines') | list | unique }}"
   when: (files_with_incorrect_ownership.stdout_lines | length > 0)

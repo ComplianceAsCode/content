@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004,ubuntu2204
+prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure PAM Enforces Password Requirements - Minimum Length'
 
@@ -58,21 +58,24 @@ references:
     stigid@ubuntu2004: UBTU-20-010054
     vmmsrg: SRG-OS-000072-VMM-000390,SRG-OS-000078-VMM-000450
 
-ocil_clause: 'minlen is not found, or not equal to or greater than the required value'
+ocil_clause: 'the command does not return a "minlen" value of "{{{ xccdf_value("var_password_pam_minlen") }}}" or greater, does not return a line, or the line is commented out'
 
 ocil: |-
-    To check how many characters are required in a password, run the following command:
-    <pre>$ grep minlen /etc/security/pwquality.conf</pre>
-    Your output should contain <tt>minlen = {{{ xccdf_value("var_password_pam_minlen") }}}</tt>
+    Verify that {{{ full_name }}} enforces a minimum {{{ xccdf_value("var_password_pam_minlen") }}}-character password length with the following command:
+
+    <pre>$ grep minlen /etc/security/pwquality.conf
+
+    minlen = {{{ xccdf_value("var_password_pam_minlen") }}}</pre>
 
 fixtext: |-
-    Configure {{{ full_name }}} to enforce a minimum 15-character password length.
+    Configure {{{ full_name }}} to enforce a minimum {{{ xccdf_value("var_password_pam_minlen") }}}-character password length.
 
     Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
 
     minlen = {{{ xccdf_value("var_password_pam_minlen") }}}
 
-srg_requirement: '{{{ full_name }}} passwords must have a minimum of 15 characters.'
+srg_requirement: |-
+    {{{ full_name }}} passwords must be created with a minimum of 15 characters.
 
 platform: pam
 

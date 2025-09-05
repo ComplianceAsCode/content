@@ -1,0 +1,25 @@
+srg_requirement: |-
+    {{{ full_name }}} must audit all uses of the mount command.
+
+vuldiscussion: |-
+    Without generating audit records that are specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
+
+    Audit records can be generated from various components within the information system (e.g., module or policy filter). The "mount" command is used to mount a filesystem.
+
+    When a user logs on, the AUID is set to the UID of the account that is being authenticated. Daemons are not user sessions and have the loginuid set to "-1". The AUID representation is an unsigned 32-bit integer, which equals "4294967295". The audit system interprets "-1", "4294967295", and "unset" in the same way.
+
+checktext: |-
+    Verify {{{ full_name }}} generates audit records for the execution of the "mount" command with the following command:
+
+    $ sudo auditctl -l | grep /usr/bin/mount
+
+    -a always,exit -F path=/usr/bin/mount -F perm=x -F auid>=1000 -F auid!=unset -k privileged-mount
+
+    If the command does not return a line, or the line is commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to generate audit records upon successful/unsuccessful attempts to use the "mount" command by adding or updating the following rule in "/etc/audit/rules.d/audit.rules":
+
+    -a always,exit -F path=/usr/bin/mount -F perm=x -F auid>=1000 -F auid!=unset -k privileged-mount
+
+    The audit daemon must be restarted for the changes to take effect.

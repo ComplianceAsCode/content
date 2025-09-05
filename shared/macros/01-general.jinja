@@ -91,6 +91,36 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 </ul>
 {{%- endmacro %}}
 
+{{#
+  Macro which generates a unique identifier for Compliance Operator, this will hide the rule from ComplianceCheckResult
+#}}
+{{% macro hide_rule() -%}}
+This rule will be a hidden rule 
+<code class="ocp-hide-rule" id="ocp-hide-rule">true</code>
+{{%- endmacro %}}
+
+{{% macro openshift_filtered_version(path_filter_pairs) -%}}
+This rule's check operates on the cluster configuration dump.
+Therefore, you need to use a tool that can query the OCP API, retrieve the following:
+<ul>
+{{% for obj_path, v in path_filter_pairs.items() %}}
+  {{% set vars = v.split(',') %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+  <li>
+    <code class="ocp-api-endpoint" id="{{{ (dump_path+default_filter)|sha256 }}}">{{{ obj_path }}}</code>
+    API endpoint, filter with with the <code>jq</code> utility using the following filter
+    <code class="ocp-api-filter" id="filter-{{{ (dump_path+default_filter)|sha256 }}}">{{{ default_filter }}}</code>
+    and persist it to the local
+    <code class="ocp-dump-location" id="dump-{{{ (dump_path+default_filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ dump_path.lstrip("/") }}}</code>
+    file.
+    {{{ hide_rule() }}}
+  </li>
+{{% endfor %}}
+</ul>
+{{%- endmacro %}}
+
+
 
 {{#
   Macro which generates a unique path for a filtered Kubernetes
@@ -1089,15 +1119,6 @@ Part of the grub2_bootloader_argument(_absent) templates.
     {{%- endif -%}}
 {{%- endif -%}}
 {{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
-{{%- endmacro %}}
-
-{{% macro ocil_fix_srg_privileged_command(cmd, path_prefix="/usr/bin/", key="") %}}
-{{{ complete_ocil_entry_audit_privileged_commands(cmd, path_prefix, key) }}}
-
-fixtext: |-
-    {{{ fixtext_audit_rules_privileged_commands(cmd, path_prefix, key) | indent(4) }}}
-
-srg_requirement: '{{{ srg_requirement_audit_command(cmd) }}}'
 {{%- endmacro %}}
 
 {{%- macro audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() -%}}

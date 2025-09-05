@@ -1,0 +1,36 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.
+
+vuldiscussion: |-
+    The Linux kernel offers an option which signifies if the kernel should trust
+    data provided by CPU hardware random number generator. Hardware random
+    number generators can provide random data very quickly and are used to generate random cryptographic keys. They can
+    be useful during boot time when other means of getting random data can be
+    slow because there is not yet enough entropy in the system.
+
+checktext: |-
+    Make sure that the kernel is configured to trust the CPU RNG by following
+    commands. To check if the option was correctly configured at kernel compile
+    time, run the following command:
+     grep -q CONFIG_RANDOM_TRUST_CPU=y /boot/config-`uname -r`
+    If the command outputs:
+     CONFIG_RANDOM_TRUST_CPU=y ,
+    it means that the option is compiled into the kernel. Make sure that the
+    option is not overridden through a boot parameter:
+     sudo grep 'kernelopts.*random\.trust_cpu=off.*' /boot/grub2/grubenv
+    The command should not return any output. If the option is not compiled into
+    the kernel, check that the option is configured through boot parameter.
+    Inspect the form of default GRUB 2 command line for the Linux operating system
+    in "/etc/default/grub". If it includes "random.trust_cpu=on",
+    then the parameter will be configured for newly installed kernels.
+    First check if the GRUB recovery is enabled:
+     $ sudo grep 'GRUB_DISABLE_RECOVERY' /etc/default/grub
+    If this option is set to true, then check that a line is output by the following command:
+     $ sudo grep 'GRUB_CMDLINE_LINUX_DEFAULT.*random.trust_cpu=on.*' /etc/default/grub
+    If the recovery is disabled, check the line with
+     $ sudo grep 'GRUB_CMDLINE_LINUX.*random.trust_cpu=on.*' /etc/default/grub .Moreover, command line parameters for currently installed kernels should be checked as well.
+    Run the following command:
+     $ sudo grubby --info=ALL | grep args | grep -v 'random.trust_cpu=on'
+    The command should not return any output.
+
+    If the kernel is not configured to trust the CPU RNG, then this is a finding.

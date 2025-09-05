@@ -18,8 +18,6 @@
   {{%- else -%}}
   command: gpg --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
   {{%- endif %}}
-  args:
-    warn: False
   changed_when: False
   register: gpg_fingerprints
   check_mode: no

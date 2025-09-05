@@ -28,7 +28,7 @@ references:
     cis@alinux3: 5.6.5
     cis@rhel7: 5.5.5
     cis@rhel8: 5.6.5
-    cis@sle12: 5.5.5
+    cis@sle12: 5.4.5
     cis@sle15: 5.4.5
     cis@ubuntu2004: 5.4.4
     cis@ubuntu2204: 5.4.4
@@ -40,6 +40,7 @@ references:
     nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
     nist: AC-6(1),CM-6(a)
     nist-csf: PR.IP-1,PR.IP-2
+    pcidss: Req-8.6.1
     srg: SRG-OS-000480-GPOS-00228
     stigid@ol7: OL07-00-020240
     stigid@ol8: OL08-00-020351
@@ -49,21 +50,32 @@ references:
     stigid@sle15: SLES-15-040420
     stigid@ubuntu2004: UBTU-20-010016
 
-ocil_clause: 'the above command returns no output, or the umask is configured incorrectly'
+ocil_clause: 'the value for the "UMASK" parameter is not "{{{ xccdf_value("var_accounts_user_umask") }}}", or the "UMASK" parameter is missing or is commented out'
 
 ocil: |-
-    Verify the <tt>UMASK</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
-    running the following command:
-    <pre>$ sudo grep "UMASK" /etc/login.defs</pre>
-    All output must show the value of <tt>UMASK</tt> set as shown in the below:
-    <pre>UMASK {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
+    Verify {{{ full_name }}} defines default permissions for all authenticated users in such a way that the user can only read and modify their own files with the following command:
+
+    <pre># grep -i umask /etc/login.defs
+
+    UMASK {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
 platform: login_defs
+
+checktext: |-
+    Verify {{{ full_name }}} defines default permissions for all authenticated users in such a way that the user can only read and modify their own files with the following command:
+
+    Note: If the value of the "UMASK" parameter is set to "000" in "/etc/login.defs" file, the Severity is raised to a CAT I.
+
+    # grep -i umask /etc/login.defs
+
+    UMASK 077
+
+    If the value for the "UMASK" parameter is not "077", or the "UMASK" parameter is missing or is commented out, this is a finding.
 
 fixtext: |-
     Configure the {{{ full_name }}} to define default permissions for all authenticated users in such a way that the user can only read and modify their own files.
 
-    Add or edit the lines for the "UMASK" parameter in the "/etc/login.defs" files to "{{{ xccdf_value("var_accounts_user_umask") }}}":
+    Add or edit the lines for the "UMASK" parameter in the "/etc/login.defs" file to "{{{ xccdf_value("var_accounts_user_umask") }}}":
 
     UMASK {{{ xccdf_value("var_accounts_user_umask") }}}
 

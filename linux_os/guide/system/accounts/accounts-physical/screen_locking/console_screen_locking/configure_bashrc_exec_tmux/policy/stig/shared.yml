@@ -1,0 +1,45 @@
+srg_requirement: |-
+    {{{ full_name }}} must ensure session control is automatically started at shell initialization.
+
+vuldiscussion: |-
+    A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.
+
+    The session lock is implemented at the point where session activity can be determined. Rather than be forced to wait for a period of time to expire before the user session can be locked, {{{ full_name }}} must provide users with the ability to manually invoke a session lock so users can secure their session if it is necessary to temporarily vacate the immediate physical vicinity.
+
+    The "tmux" package allows for a session lock to be implemented and configured. However, the session lock is implemented by an external command. The "tmux" default configuration does not contain an effective session lock.
+
+checktext: |-
+    Verify {{{ full_name }}} shell initialization file is configured to start each shell with the tmux terminal multiplexer.
+
+    Determine the location of the tmux script with the following command:
+
+    $ sudo grep tmux /etc/bashrc /etc/profile.d/*
+
+    /etc/profile.d/tmux.sh:  case "$name" in (sshd|login) exec tmux ;; esac
+
+    Review the tmux script by using the following example:
+
+    $ cat /etc/profile.d/tmux.sh
+
+    If [ "$PS1" ]; then
+    parent=$(ps -o ppid= -p $$)
+    name=$(ps -o comm= -p $parent)
+    case "$name" in (sshd|login) exec tmux ;; esac
+    fi
+
+    If the shell file is not configured as the example above, is commented out, or is missing, this is a finding.
+
+    Determine if tmux is currently running with the following command:
+
+    $ sudo ps all | grep tmux | grep -v grep
+
+    If the command does not produce output, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to initialize the tmux terminal multiplexer as each shell is called by adding the flllowing to file "/etc/profile.d/tmux.sh":
+
+    if [ "$PS1" ]; then
+        parent=$(ps -o ppid= -p $$)
+        name=$(ps -o comm= -p $parent)
+        case "$name" in sshd|login) exec tmux ;; esac
+    fi

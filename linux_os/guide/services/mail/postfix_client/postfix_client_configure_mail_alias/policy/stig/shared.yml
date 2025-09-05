@@ -1,0 +1,33 @@
+srg_requirement: |-
+    {{{ full_name }}} must have mail alises to notify the Information System Security Officer (ISSO) and System Administrator (SA) (at a minimum) in the event of an audit processing failure.
+
+vuldiscussion: |-
+    It is critical for the appropriate personnel to be aware if a system is at risk of failing to process audit logs as required. Without this notification, the security personnel may be unaware of an impending failure of the audit capability, and system operation may be adversely affected.
+
+    Audit processing failures include software/hardware errors, failures in the audit capturing mechanisms, and audit storage capacity being reached or exceeded.
+
+    This requirement applies to each audit data storage repository (i.e., distinct information system component where audit records are stored), the centralized audit storage capacity of organizations (i.e., all audit data storage repositories combined), or both.
+
+checktext: |-
+    Find the list of alias maps used by the Postfix mail server for root.
+
+    Find the alias maps that are being used with the following command:
+
+    $ postconf alias_maps
+    alias_maps = hash:/etc/aliases
+
+    Query the Postfix alias maps for an alias for the root user with the following command:
+
+    $ postmap -q root hash:/etc/aliases
+    isso
+
+    If an alias is not set, then this is a finding.
+
+fixtext: |-
+    Edit the aliases map file (by default /etc/aliases) used by Postfix and configure a root alias (using the user ISSO as an example):
+
+    root:    ISSO
+
+    and then update the aliases database with the command:
+
+    $ sudo newaliases

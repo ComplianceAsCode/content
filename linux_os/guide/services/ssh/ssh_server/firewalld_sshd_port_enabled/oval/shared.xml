@@ -1,109 +1,211 @@
 <def-group>
-  <definition class="compliance" id="firewalld_sshd_port_enabled" version="1">
-    {{{ oval_metadata("If inbound SSH access is needed, the firewall should allow access to
-      the SSH port (22).") }}}
-    <criteria operator="OR">
-      <criterion comment="ssh service is enabled in services" test_ref="test_firewalld_service_sshd_enabled" />
-      <criterion comment="ssh port is enabled in services" test_ref="test_firewalld_service_sshd_port_enabled" />
-      <criteria operator="AND">
-        <criterion comment="ssh service is enabled in zones" test_ref="test_firewalld_zone_sshd_enabled" />
-        <criterion comment="there is at least one NIC assigned to a zone with ssh enabled" test_ref="test_nic_assigned_to_sshd_enabled_zone" />
-      </criteria>
-      <criterion comment="ssh port is enabled in zones" test_ref="test_firewalld_zone_sshd_port_enabled" />
-    </criteria>
-  </definition>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("If inbound SSH access is needed, the firewall should allow access to
+        the SSH service.") }}}
+        <criteria operator="AND">
+            <criterion comment="Ensure all NICs have a zone defined in their config files"
+                test_ref="test_firewalld_sshd_port_enabled_all_nics_in_zones"/>
+            <criteria operator="OR">
+                <criteria operator="AND">
+                    <criterion
+                        comment="Ensure default file zones have SSH service defined"
+                        test_ref="test_firewalld_sshd_port_enabled_zone_ssh_enabled_usr"/>
+                    <criterion
+                        comment="Ensure default files from active zones were not overridden"
+                        test_ref="test_firewalld_sshd_port_enabled_usr_zones_not_overridden"/>
+                </criteria>
+                <criterion
+                    comment="Ensure custom files from active zones have SSH service defined"
+                    test_ref="test_firewalld_sshd_port_enabled_zone_ssh_enabled_etc"/>
+            </criteria>
+            <criteria operator="AND">
+                <criterion
+                    comment="Ensure default file for SSH service is correct"
+                    test_ref="test_firewalld_sshd_port_enabled_ssh_service_usr"/>
+                <criterion
+                    comment="Ensure the modified firewalld SSH port is correct"
+                    test_ref="test_firewalld_sshd_port_enabled_ssh_service_etc"/>
+            </criteria>
+        </criteria>
+    </definition>
 
-  <ind:xmlfilecontent_test check="all" check_existence="all_exist" comment="ssh service is enabled in services"
-  id="test_firewalld_service_sshd_enabled" version="1">
-    <ind:object object_ref="object_firewalld_service_sshd_enabled" />
-  </ind:xmlfilecontent_test>
-  <ind:xmlfilecontent_object id="object_firewalld_service_sshd_enabled" version="1">
-    <ind:path>/etc/firewalld/services</ind:path>
-    <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
-    <ind:xpath>/service/service[@name='ssh']</ind:xpath>
-  </ind:xmlfilecontent_object>
+    <!-- all interfaces have a zone defined -->
+    <ind:variable_test id="test_firewalld_sshd_port_enabled_all_nics_in_zones"
+        check="all" check_existence="at_least_one_exists" version="1"
+        comment="All NICs must have a firewalld zone defined in their settings">
+        <ind:object object_ref="object_firewalld_sshd_port_enabled_network_conf_files_count"/>
+        <ind:state state_ref="state_firewalld_sshd_port_enabled_network_conf_files_count"/>
+    </ind:variable_test>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="ssh port is enabled in services"
-  id="test_firewalld_service_sshd_port_enabled" version="1">
-    <ind:object object_ref="object_firewalld_service_sshd_port_enabled" />
-    <ind:state state_ref="state_sshd_listening_port" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_firewalld_service_sshd_port_enabled" version="1">
-    <ind:path>/etc/firewalld/services</ind:path>
-    <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
-    <ind:pattern operation="pattern match">&lt;port.*port="(\d+)"</ind:pattern>
-    <ind:instance datatype="int" operation="equals">1</ind:instance>
-  </ind:textfilecontent54_object>
+    <ind:variable_object id="object_firewalld_sshd_port_enabled_network_conf_files_count"
+        version="1">
+        <ind:var_ref>var_firewalld_sshd_port_enabled_network_conf_files_with_zone_count</ind:var_ref>
+    </ind:variable_object>
 
-  <ind:xmlfilecontent_test check="all" check_existence="all_exist" comment="ssh service is enabled in zones"
-  id="test_firewalld_zone_sshd_enabled" version="1">
-    <ind:object object_ref="object_firewalld_zone_sshd_enabled" />
-  </ind:xmlfilecontent_test>
-  <ind:xmlfilecontent_object id="object_firewalld_zone_sshd_enabled" version="1">
-    <ind:path>/etc/firewalld/zones</ind:path>
-    <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
-    <ind:xpath>/zone/service[@name='ssh']</ind:xpath>
-  </ind:xmlfilecontent_object>
+    <local_variable id="var_firewalld_sshd_port_enabled_network_conf_files_with_zone_count"
+        datatype="int" version="1"
+        comment="Variable including number of network config files with an assiged zone">
+        <count>
+            <object_component item_field="instance"
+                object_ref="object_firewalld_sshd_port_enabled_zones_assigned_to_nics"/>
+        </count>
+    </local_variable>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="ssh port is enabled in zones"
-  id="test_firewalld_zone_sshd_port_enabled" version="1">
-    <ind:object object_ref="object_firewalld_zone_sshd_port_enabled" />
-    <ind:state state_ref="state_sshd_listening_port" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_firewalld_zone_sshd_port_enabled" version="1">
-    <ind:path>/etc/firewalld/zones</ind:path>
-    <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
-    <ind:pattern operation="pattern match">&lt;port.*port="(\d+)"</ind:pattern>
-    <ind:instance datatype="int" operation="equals">1</ind:instance>
-  </ind:textfilecontent54_object>
+    <ind:textfilecontent54_object id="object_firewalld_sshd_port_enabled_zones_assigned_to_nics"
+        comment="Check the respective zone parameter in all NICs configuration files" version="3">
+        {{% if product in ["fedora", "rhel9"] %}}
+        <ind:path>/etc/NetworkManager/system-connections</ind:path>
+        <ind:filename operation="pattern match">.*\.nmconnection</ind:filename>
+        <ind:pattern operation="pattern match">^zone=(.*)$</ind:pattern>
+        {{% else %}}
+        <ind:path>/etc/sysconfig/network-scripts</ind:path>
+        <ind:filename operation="pattern match">^ifcfg-(?!lo).*</ind:filename>
+        <ind:pattern operation="pattern match">^ZONE=(.*)$</ind:pattern>
+        {{% endif %}}
+        <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    </ind:textfilecontent54_object>
 
-  <!-- Grab list of zones which enable service ssh -->
-  <local_variable id="var_firewalld_sshd_enabled_zones" datatype="string" version="1" comment="firewalld zones with ssh service enabled">
-    <regex_capture pattern="(\S+).xml">
-      <object_component item_field="filename" object_ref="object_firewalld_zone_sshd_enabled" />
-    </regex_capture>
-  </local_variable>
+    <ind:variable_state id="state_firewalld_sshd_port_enabled_network_conf_files_count"
+        version="1">
+        <ind:value datatype="int" operation="equals" var_check="at least one"
+            var_ref="var_firewalld_sshd_port_enabled_network_conf_files_count"/>
+    </ind:variable_state>
 
-  <!-- check if any of the zones with NIC assigned allows sshd service -->
-  <ind:xmlfilecontent_test check="all" check_existence="at_least_one_exists" comment="ssh service is enabled in zones"
-  id="test_nic_assigned_to_sshd_enabled_zone" version="1">
-    <ind:object object_ref="object_zones_with_nics" />
-  </ind:xmlfilecontent_test>
-  <ind:xmlfilecontent_object id="object_zones_with_nics" version="1">
-    <ind:path>/etc/firewalld/zones</ind:path>
-    <ind:filename operation="pattern match" var_check="at least one" var_ref="var_firewalld_zones_with_assigned_nics"/>
-    <ind:xpath>/zone/service[@name='ssh']</ind:xpath>
-  </ind:xmlfilecontent_object>
+    <local_variable id="var_firewalld_sshd_port_enabled_network_conf_files_count"
+        datatype="int" version="1"
+        comment="Variable including number of network config files present in the system">
+        <count>
+            <object_component item_field="filepath"
+                object_ref="object_firewalld_sshd_port_enabled_network_conf_files"/>
+        </count>
+    </local_variable>
 
-  <!-- List of Zones with NIC assigned to it -->
-  <local_variable id="var_firewalld_zones_with_assigned_nics" datatype="string" version="1" comment="firewalld zones with ssh service enabled">
-        <concat>
-         <object_component item_field="subexpression" object_ref="object_nic_assigned_to_firewalld_zone" />
-            <literal_component>.xml</literal_component>
-        </concat>
-  </local_variable>
-{{% if product in ["fedora", "rhel9"] %}}
-  <ind:textfilecontent54_object comment="Check config of all NIC"
-  id="object_nic_assigned_to_firewalld_zone" version="2">
-    <ind:path>/etc/NetworkManager/system-connections</ind:path>
-    <ind:filename operation="pattern match">.*\.nmconnection</ind:filename>
-    <ind:pattern operation="pattern match">^zone=(.*)$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-{{% else %}}
-  <ind:textfilecontent54_object comment="Check config of all NIC"
-  id="object_nic_assigned_to_firewalld_zone" version="1">
-    <ind:path>/etc/sysconfig/network-scripts</ind:path>
-    <ind:filename operation="pattern match">ifcfg-.*</ind:filename>
-    <ind:pattern operation="pattern match">^ZONE=(.*)$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-{{% endif %}}
+    <unix:file_object id="object_firewalld_sshd_port_enabled_network_conf_files" version="1">
+        <unix:behaviors recurse="directories" recurse_direction="down" max_depth="1"
+            recurse_file_system="all"/>
+        {{% if product in ["fedora", "rhel9"] %}}
+        <unix:path>/etc/NetworkManager/system-connections</unix:path>
+        <unix:filename operation="pattern match">.*\.nmconnection</unix:filename>
+        {{% else %}}
+        <unix:path>/etc/sysconfig/network-scripts</unix:path>
+        <unix:filename operation="pattern match">^ifcfg-(?!lo).*</unix:filename>
+        {{% endif %}}
+    </unix:file_object>
 
-  <ind:textfilecontent54_state comment="port ssh is listening" id="state_sshd_listening_port" version="1">
-    <ind:subexpression datatype="int" operation="equals" var_ref="sshd_listening_port" />
-  </ind:textfilecontent54_state>
+    <!-- zones allow SSH -->
+    <!-- Except to the block and drop zones, which have a clear purpose suggested by their
+         respective names, all other zones delivered in the firewalld package allow SSH
+         out-of-box. This test ensure these files are indeed allowing SSH in case a NIC is
+         assigned to any of these existing zones. -->
+    <ind:xmlfilecontent_test id="test_firewalld_sshd_port_enabled_zone_ssh_enabled_usr"
+        check="all" check_existence="at_least_one_exists" version="1"
+        comment="SSH service is defined in all zones delivered in the firewalld package">
+      <ind:object object_ref="object_firewalld_sshd_port_enabled_zone_files_usr"/>
+    </ind:xmlfilecontent_test>
 
-  <external_variable comment="port ssh is listening" datatype="int" id="sshd_listening_port" version="1" />
+    <ind:xmlfilecontent_object id="object_firewalld_sshd_port_enabled_zone_files_usr"
+      version="1">
+      <ind:path>/usr/lib/firewalld/zones</ind:path>
+      <ind:filename operation="pattern match" var_check="all"
+          var_ref="var_firewalld_sshd_port_enabled_default_zones"/>
+      <ind:xpath>/zone/service[@name='ssh']</ind:xpath>
+    </ind:xmlfilecontent_object>
 
+    <!-- Once the default firewalld zone files are confirmed to be allowing ssh, it is necessary
+         to confirm they are indeed in use by not having an equivalent file in /etc/firewalld/zones
+         dir. Otherwise, it is not possible to rely only on default files and the /etc dir should
+         also be checked. -->
+    <unix:file_test id="test_firewalld_sshd_port_enabled_usr_zones_not_overridden" version="1"
+        check="all" check_existence="none_exist"
+        comment="there is no equivalent zone file defined by the administrator in /etc dir">
+      <unix:object object_ref="object_firewalld_sshd_port_enabled_customized_zone_files"/>
+    </unix:file_test>
+
+    <unix:file_object id="object_firewalld_sshd_port_enabled_customized_zone_files" version="1">
+      <unix:behaviors recurse="directories" recurse_direction="down" max_depth="1"
+          recurse_file_system="all"/>
+      <unix:path>/etc/firewalld/zones</unix:path>
+      <unix:filename operation="pattern match" var_check="at least one"
+          var_ref="var_firewalld_sshd_port_enabled_default_zones"/>
+    </unix:file_object>
+
+    <!-- During the refactoring of this file, it was tried many techniques to use the available
+         OVAL resources in order to detect and assess only active zone, which are zones with at
+         least one NIC assigned to it. Since it was possible to easily have the list of active
+         zones, it was cumbersome to use that list in other OVAL objects without introduce a high
+         level of complexity to make sure environments with multiple NICs and multiple zones are
+         in use. So, in favor of simplicity and readbility it was decided to work with a static
+         list. It means that, in the future, it is possible this list needs to be updated. -->
+    <local_variable id="var_firewalld_sshd_port_enabled_default_zones" version="1"
+        datatype="string"
+        comment="Regex containing the list of zones files delivered in the firewalld package">
+        <literal_component>^(dmz|external|home|internal|public|trusted|work)\.xml$</literal_component>
+    </local_variable>
+
+    <!-- If any default zone is modified by the administrator, the respective zone file is placed
+         in the /etc/firewalld/zones dir in order to override the default zone settings. The same
+         directory is applicable for new zones created by the administrator. Therefore, all files
+         in this directory should also allow SSH. -->
+    <ind:xmlfilecontent_test id="test_firewalld_sshd_port_enabled_zone_ssh_enabled_etc"
+        check="all" check_existence="at_least_one_exists" version="1"
+        comment="SSH service is defined in all zones created or modified by the administrator">
+      <ind:object object_ref="object_firewalld_sshd_port_enabled_zone_files_etc"/>
+      <ind:state state_ref="state_firewalld_sshd_port_enabled_zone_files_etc"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_sshd_port_enabled_zone_files_etc" version="1">
+      <ind:path>/etc/firewalld/zones</ind:path>
+      <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
+      <ind:xpath>/zone/service[@name='ssh']</ind:xpath>
+    </ind:xmlfilecontent_object>
+
+    <ind:xmlfilecontent_state id="state_firewalld_sshd_port_enabled_zone_files_etc" version="1">
+      <ind:xpath>/zone/service[@name='ssh']</ind:xpath>
+    </ind:xmlfilecontent_state>
+
+    <!-- SSH service is configured as expected -->
+    <!-- The firewalld package brings many services already defined out-of-box, including SSH.
+         SSH port is defined as 22/tcp by default. However, there are possible cases where the
+         admin wants, for whatever reason, to change this default port. The proper way to do this
+         is overriding the respectice SSH service file by populating the /etc/firewalld/services
+         directory with a file with the same name. So, its necessary to ensure the file delivered
+         by the package, in the /usr/lib/firewalld/services directory, was not changed. However,
+         if the file is changed, there is necessary to ensure there is a customized service
+         properly configured by the administrator. -->
+    <ind:xmlfilecontent_test id="test_firewalld_sshd_port_enabled_ssh_service_usr"
+        check="all" check_existence="all_exist" version="1"
+        comment="SSH service is interger in the /usr/lib/firewalld/services dir">
+      <ind:object object_ref="object_firewalld_sshd_port_enabled_ssh_service_file_usr"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_sshd_port_enabled_ssh_service_file_usr"
+      version="1">
+      <ind:filepath>/usr/lib/firewalld/services/ssh.xml</ind:filepath>
+      <ind:xpath>/service/port[@port='22']</ind:xpath>
+    </ind:xmlfilecontent_object>
+
+    <!-- If, for whatever reason, the administrator decides to change the SSH default port, the
+         modified ssh.xml file is placed in the /etc/firewalld/services directory with the proper
+         port defined. -->
+    <ind:textfilecontent54_test id="test_firewalld_sshd_port_enabled_ssh_service_etc"
+        check="all" check_existence="any_exist" version="1"
+        comment="SSH service is properly configured in /etc/firewalld/services dir">
+        <ind:object object_ref="object_firewalld_sshd_port_enabled_ssh_service_file_etc"/>
+        <ind:state state_ref="state_firewalld_sshd_port_enabled_ssh_service_file_etc"/>
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="object_firewalld_sshd_port_enabled_ssh_service_file_etc"
+        version="1">
+        <ind:filepath>/etc/firewalld/services/ssh.xml</ind:filepath>
+        <ind:pattern operation="pattern match">&lt;port.*port="(\d+)"</ind:pattern>
+        <ind:instance datatype="int" operation="equals">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_state id="state_firewalld_sshd_port_enabled_ssh_service_file_etc"
+        comment="expected SSH port as defined by external variable" version="1">
+      <ind:subexpression datatype="int" operation="equals" var_ref="sshd_listening_port"/>
+    </ind:textfilecontent54_state>
+
+    <external_variable id="sshd_listening_port" datatype="int" version="1"
+        comment="external variable containing the expected SSH port"/>
 </def-group>

@@ -27,24 +27,23 @@ references:
     stigid@ol8: OL08-00-020070
     stigid@rhel8: RHEL-08-020070
 
-ocil_clause: 'lock-after-time is set to a value greater than 900 or zero'
+ocil_clause: '"lock-after-time" is not set to "900" or less in the global tmux configuration file to enforce session lock after inactivity'
 
 ocil: |-
-    To verify that session locking after period of inactivity is configured in tmux,
-    run the following command:
+    Verify {{{ full_name }}} initiates a session lock after 15 minutes of inactivity.
 
-    <pre>$ sudo grep lock-after-time /etc/tmux.conf</pre>
+    Check the value of the system inactivity timeout with the following command:
 
-    The output should return the following:
+    <pre>$ grep -i lock-after-time /etc/tmux.conf</pre>
 
     <pre>set -g lock-after-time 900</pre>
 
     Then, verify that the /etc/tmux.conf file can be read by other users than root:
 
-    <pre>$ sudo ls -al /etc/tmux.conf
+    <pre>$ sudo ls -al /etc/tmux.conf</pre>
 
 fixtext: |-
-    Configure the operating system to enforce session lock after a period of 15 minutes
+    Configure {{{ full_name }}} to enforce session lock after a period of 15 minutes
     of inactivity by adding the following line to the "/etc/tmux.conf" global configuration file:
 
     set -g lock-after-time 900

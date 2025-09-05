@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,fedora,rhel7,rhel8,sle15
+prodtype: alinux2,alinux3,anolis8,fedora,rhel7,rhel8,sle12,sle15
 
 title: 'Ensure All Groups on the System Have Unique Group Names'
 
@@ -13,13 +13,15 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-86327-4
     cce@rhel8: CCE-86328-2
-
+    cce@sle12: CCE-92207-0
+    cce@sle15: CCE-91340-0
 
 references:
     cis@alinux2: 6.2.19
     cis@alinux3: 6.2.15
     cis@rhel7: 6.2.6
     cis@rhel8: 6.2.6
+    cis@sle12: 6.2.17
     cis@sle15: 6.2.17
 
 ocil_clause: 'has duplicate group names'

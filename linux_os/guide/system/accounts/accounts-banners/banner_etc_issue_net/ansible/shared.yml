@@ -1,0 +1,11 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+{{{ ansible_instantiate_variables("login_banner_text") }}}
+
+- name: "{{{ rule_title }}} - ensure correct banner"
+  copy:
+    dest: /etc/issue.net
+    content: '{{{ ansible_deregexify_banner_etc_issue("login_banner_text") }}}'

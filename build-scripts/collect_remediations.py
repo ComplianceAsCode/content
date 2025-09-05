@@ -49,6 +49,9 @@ def parse_args():
     p.add_argument(
         "--platforms-dir", required=True,
         help="directory from which we collect compiled platforms")
+    p.add_argument(
+        "--cpe-items-dir", required=True,
+        help="directory from which we collect compiled CPE items")
 
     return p.parse_args()
 
@@ -120,7 +123,8 @@ def main():
 
     product = ssg.utils.required_key(env_yaml, "product")
     output_dirs = prepare_output_dirs(args.output_dir, args.remediation_type)
-    product_cpes = ProductCPEs(env_yaml)
+    product_cpes = ProductCPEs()
+    product_cpes.load_cpes_from_directory_tree(args.cpe_items_dir, env_yaml)
     cpe_platforms = dict()
     for platform_file in os.listdir(args.platforms_dir):
         platform_path = os.path.join(args.platforms_dir, platform_file)

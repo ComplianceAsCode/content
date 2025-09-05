@@ -8,9 +8,21 @@
 {{% if "rhel" not in product and product != "fedora" %}}
 
 # What architecture are we on?
-- name: Set architecture for kernel exec-shield tasks
+# By default, set 32bit
+- name: Set 32bit architecture for kernel exec-shield tasks
   set_fact:
-    kexec_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
+    kexec_arch: "b32"
+
+# If needed, change to 64bit
+- name: Set 64bit architecture for kernel exec-shield tasks
+  set_fact:
+    kexec_arch: "b64"
+  when:
+  - ansible_architecture == "aarch64" or
+    ansible_architecture == "ppc64" or
+    ansible_architecture == "ppc64le" or
+    ansible_architecture == "s390x" or
+    ansible_architecture == "x86_64"
 
 - name: Ensure sysctl kernel.exec-shield is set to 1
   sysctl:

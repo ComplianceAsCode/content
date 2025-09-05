@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must have policycoreutils package installed.
+
+vuldiscussion: |-
+    Without verification of the security functions, security functions may not operate correctly and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.
+
+    Policycoreutils contains the policy core utilities that are required for basic operation of an SELinux-enabled system. These utilities include load_policy to load SELinux policies, setfile to label filesystems, newrole to switch roles, and run_init to run /etc/init.d scripts in the proper context.
+
+checktext: |-
+    Verify {{{ full_name }}} has the policycoreutils package installed with the following command:
+
+    $ sudo dnf list --installed policycoreutils
+
+    policycoreutils.x86_64                                              3.3-6.el9_0
+
+    If the policycoreutils package is not installed, this is a finding.
+
+fixtext: |-
+    The policycoreutils package can be installed with the following command:
+
+    $ sudo dnf install policycoreutils

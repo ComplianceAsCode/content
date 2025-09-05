@@ -1,0 +1,23 @@
+srg_requirement: |-
+    All {{{ full_name }}} networked systems must have and implement SSH to protect the confidentiality and integrity of transmitted and received information, as well as information during preparation for transmission.
+
+vuldiscussion: |-
+    Without protection of the transmitted information, confidentiality and integrity may be compromised because unprotected communications can be intercepted and either read or altered.
+
+    This requirement applies to both internal and external networks and all types of information system components from which information can be transmitted (e.g., servers, mobile devices, notebook computers, printers, copiers, scanners, and facsimile machines). Communication paths outside the physical protection of a controlled boundary are exposed to the possibility of interception and modification.
+
+    Protecting the confidentiality and integrity of organizational information can be accomplished by physical means (e.g., employing physical distribution systems) or by logical means (e.g., employing cryptographic techniques). If physical means of protection are employed, then logical means (cryptography) do not have to be employed, and vice versa.
+
+checktext: |-
+    Verify that "sshd" is active with the following command:
+
+    $ systemctl is-active sshd
+
+    active
+
+    If the "sshd" service is not active, this is a finding.
+
+fixtext: |-
+    To enable the sshd service run the following command:
+
+    $ systemctl enable --now sshd

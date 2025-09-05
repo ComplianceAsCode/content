@@ -35,13 +35,11 @@ references:
     stigid@rhel8: RHEL-08-020310
     stigid@sle12: SLES-12-010140
 
-ocil_clause: 'the above command returns no output, or FAIL_DELAY is configured less than the expected value'
+ocil_clause: 'the value of "FAIL_DELAY" is not set to "{{{ xccdf_value("var_accounts_fail_delay") }}}" or greater, or the line is commented out'
 
 ocil: |-
-    Verify the <tt>FAIL_DELAY</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
-    running the following command:
-    <pre>$ sudo grep -i "FAIL_DELAY" /etc/login.defs</pre>
-    All output must show the value of <tt>FAIL_DELAY</tt> set as shown in the below:
+    Verify {{{ full_name }}} enforces a delay of at least {{{ xccdf_value("var_accounts_fail_delay") }}} seconds between console logon prompts following a failed logon attempt with the following command:
+
     <pre>$ sudo grep -i "FAIL_DELAY" /etc/login.defs
     FAIL_DELAY {{{ xccdf_value("var_accounts_fail_delay") }}}</pre>
 

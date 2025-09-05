@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux3,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
+prodtype: alinux3,anolis8,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Deactivate Wireless Network Interfaces'
 
@@ -58,6 +58,7 @@ references:
     nist: AC-18(a),AC-18(3),CM-7(a),CM-7(b),CM-6(a),MP-7
     nist-csf: PR.AC-3,PR.IP-1,PR.PT-3,PR.PT-4
     nist@sle12: AC-18(1),SC-8
+    pcidss: Req-1.3.3
     srg: SRG-OS-000299-GPOS-00117,SRG-OS-000300-GPOS-00118,SRG-OS-000424-GPOS-00188,SRG-OS-000481-GPOS-000481
     stigid@ol7: OL07-00-041010
     stigid@ol8: OL08-00-040110
@@ -67,7 +68,7 @@ references:
     stigid@sle15: SLES-15-010380
     stigid@ubuntu2004: UBTU-20-010455
 
-ocil_clause: 'wireless interfaces are not active'
+ocil_clause: 'a wireless interface is configured and has not been documented and approved by the Information System Security Officer (ISSO)'
 
 ocil: |-
     Verify that there are no wireless interfaces configured on the system
@@ -96,15 +97,21 @@ ocil: |-
     If a wireless interface is configured it must be documented and approved by
     the local Authorizing Official.
     {{% else %}}
-    <pre>$ sudo nmcli device</pre>
-    The output should only contain wireless devices in unavailable state, like in the
-    following example:
-    <pre>wlp0s20f3          wifi      unavailable             -- </pre>
+    Note: This requirement is Not Applicable for systems that do not have physical wireless network radios.
+
+    <pre>$ nmcli device status</pre>
+    <pre>DEVICE          TYPE      STATE         CONNECTION
+    virbr0          bridge    connected     virbr0
+    wlp7s0          wifi      connected     wifiSSID
+    enp6s0          ethernet  disconnected  --
+    p2p-dev-wlp7s0  wifi-p2p  disconnected  --
+    lo              loopback  unmanaged     --
+    virbr0-nic      tun       unmanaged     --</pre>
     {{% endif %}}
 
 fixtext: |-
-    To disable all wireless devices use the following command:
-    <pre>nmcli radio all off</pre>
+    Configure the system to disable all wireless network interfaces with the following command:
+    <pre>$ nmcli radio all off</pre>
 
 srg_requirement: '{{{ full_name }}} wireless network adapters must be disabled.'
 

@@ -49,8 +49,6 @@
 {{%- else %}} # restarting auditd through systemd doesn't work, see: https://access.redhat.com/solutions/5515011
 - name: Restart Auditd
   command: /usr/sbin/service auditd restart
-  args:
-    warn: false
 {{%- endif %}}
   when:
     - (augenrules_audit_rules_privilege_function_update_result.changed or

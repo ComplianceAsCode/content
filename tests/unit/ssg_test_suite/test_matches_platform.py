@@ -62,7 +62,7 @@ def test_list_multi_platform_match_first():
 
 def test_list_multi_platform_match_second():
     scenario_platforms = ["multi_platform_rhel", "multi_platform_debian"]
-    benchmark_cpes = {"cpe:/o:debianproject:debian:9"}
+    benchmark_cpes = {"cpe:/o:debian:debian_linux:11"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) == True
 
 
@@ -80,16 +80,16 @@ def test_list_combined_match():
 
 
 def test_list_combined_match_2():
-    scenario_platforms = ["Debian 9", "multi_platform_ubuntu", "openSUSE",
+    scenario_platforms = ["Debian 11", "multi_platform_ubuntu", "openSUSE",
                           "Red Hat Enterprise Linux 8"]
-    benchmark_cpes = {"cpe:/o:debianproject:debian:9"}
+    benchmark_cpes = {"cpe:/o:debian:debian_linux:11"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) == True
 
 
 def test_list_combined_no_match():
     scenario_platforms = ["multi_platform_ubuntu", "multi_platform_fedora",
                           "Red Hat Enterprise Linux 8", "openSUSE"]
-    benchmark_cpes = {"cpe:/o:debianproject:debian:9"}
+    benchmark_cpes = {"cpe:/o:debian:debian_linux:11"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) == False
 
 

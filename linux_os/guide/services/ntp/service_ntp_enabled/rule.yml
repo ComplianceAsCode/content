@@ -3,10 +3,10 @@ documentation_complete: true
 title: 'Enable the NTP Daemon'
 
 description: |-
-    {{{ describe_service_enable(service="ntpd") }}}
+    {{{ describe_service_enable(service="ntp") }}}
 
 rationale: |-
-    Enabling the <tt>ntpd</tt> service ensures that the <tt>ntpd</tt>
+    Enabling the <tt>ntp</tt> service ensures that the <tt>ntp</tt>
     service will be running and that the system will synchronize its time to
     any servers specified. This is important whether the system is configured to be
     a client (and synchronize only its own clock) or it is also acting as an NTP
@@ -18,6 +18,10 @@ rationale: |-
     deprecated.
 
 severity: high
+
+identifiers:
+    cce@sle12: CCE-91657-7
+    cce@sle15: CCE-91294-9
 
 references:
     anssi: NT012(R03)

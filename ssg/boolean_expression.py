@@ -12,15 +12,6 @@ SPEC_SYMBOLS = ['<', '>', '=', '!', ',', '[', ']']
 
 VERSION_SYMBOLS = ['.', '-', '_', '*']
 
-SPEC_OP_ID_TRANSLATION = {
-    '==': 'eq',
-    '!=': 'ne',
-    '>': 'gt',
-    '<': 'le',
-    '>=': 'gt_or_eq',
-    '<=': 'le_or_eq',
-}
-
 
 class Function(boolean.Function):
     """
@@ -32,7 +23,7 @@ class Function(boolean.Function):
     Provides `is_and`, `is_or` and `is_not` methods to distinguish instances
     between different boolean functions.
 
-    The `as_id` method will generate an unique string identifier usable as
+    The `as_id` method will generate a unique string identifier usable as
     an XML id based on the properties of the entity.
     """
 
@@ -63,21 +54,20 @@ class Symbol(boolean.Symbol):
     Sub-class it and pass to the `Algebra` as `symbol_cls` to enrich
     expression elements with domain-specific methods.
 
-    The `as_id` method will generate an unique string identifier usable as
+    The `as_id` method will generate a unique string identifier usable as
     an XML id based on the properties of the entity.
     """
 
     def __init__(self, obj):
         super(Symbol, self).__init__(obj)
-        self.spec = pkg_resources.Requirement.parse(obj)
-        self.obj = self.spec
+        self.requirement = pkg_resources.Requirement.parse(obj)
+        self.obj = self.requirement
 
     def __call__(self, **kwargs):
-        val = kwargs.get(self.name, False)
-        if len(self.spec.specs):
-            if type(val) is str:
-                return val in self.spec
-            return False
+        full_name = self.name
+        if self.arg:
+            full_name += '[' + self.arg + ']'
+        val = kwargs.get(full_name, False)
         return bool(val)
 
     def __lt__(self, other):
@@ -85,17 +75,23 @@ class Symbol(boolean.Symbol):
 
     def as_id(self):
         id_str = self.name
-        for (op, ver) in self.spec.specs:
-            id_str += '_{0}_{1}'.format(SPEC_OP_ID_TRANSLATION.get(op, 'unknown_spec_op'), ver)
+        if self.arg:
+            id_str += '_' + self.arg
         return id_str
+
+    def as_dict(self):
+        res = {'id': self.as_id(), 'name': self.name, 'arg': ''}
+        if self.arg:
+            res['arg'] = self.arg
+        return res
+
+    @property
+    def arg(self):
+        return self.requirement.extras[0] if self.requirement.extras else None
 
     @property
     def name(self):
-        return self.spec.project_name
-
-    @property
-    def specs(self):
-        return self.spec.specs
+        return self.requirement.project_name
 
 
 class Algebra(boolean.BooleanAlgebra):
@@ -121,3 +117,11 @@ class Algebra(boolean.BooleanAlgebra):
         super(Algebra, self).__init__(allowed_in_token=VERSION_SYMBOLS+SPEC_SYMBOLS,
                                       Symbol_class=symbol_cls,
                                       NOT_class=not_cls, AND_class=and_cls, OR_class=or_cls)
+
+
+def get_base_name_of_parametrized_platform(name):
+    """
+    If given a parametrized platform name such as package[test],
+    it returns the package part only.
+    """
+    return pkg_resources.Requirement.parse(name).project_name

@@ -114,7 +114,9 @@ def test_product_cpes():
     product_yaml_path = os.path.join(DATADIR, "product.yml")
     product_yaml = open_raw(product_yaml_path)
     product_yaml["product_dir"] = os.path.dirname(product_yaml_path)
-    product_cpes = ssg.build_cpe.ProductCPEs(product_yaml)
+    product_cpes = ssg.build_cpe.ProductCPEs()
+    product_cpes.load_product_cpes(product_yaml)
+    product_cpes.load_content_cpes(product_yaml)
 
     # get a product CPE by name and verify it's loaded
     # this CPE is defined in `DATADIR/product.yml`

@@ -130,6 +130,7 @@ selections:
     ## 1.5 Secure Boot Settings ##
     ### 1.5.1 Ensure bootloader password is set (Automated)
     - grub2_password
+    - grub2_uefi_password
 
     ### 1.5.2 Ensure permissions on bootloader config are configured (Automated)
     - file_owner_grub2_cfg
@@ -700,6 +701,7 @@ selections:
 
     ## 5.3 Configure PAM ##
     ### 5.3.1 Ensure password creation requirements are configured (Automated)
+    - package_pam_pwquality_installed
     - var_password_pam_minlen=14
     - accounts_password_pam_minlen
     - var_password_pam_minclass=4

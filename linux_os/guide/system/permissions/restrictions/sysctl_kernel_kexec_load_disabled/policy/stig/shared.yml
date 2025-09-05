@@ -1,0 +1,35 @@
+srg_requirement: |-
+    {{{ full_name }}} must prevent the loading of a new kernel for later execution.
+
+vuldiscussion: |-
+    Changes to any software components can have significant effects on the overall security of the operating system. This requirement ensures the software has not been tampered with and that it has been provided by a trusted vendor.
+
+    Disabling kexec_load prevents an unsigned kernel image (that could be a windows kernel or modified vulnerable kernel) from being loaded. Kexec can be used subvert the entire secureboot process and should be avoided at all costs especially since it can load unsigned kernel images.
+
+checktext: |-
+    Verify {{{ full_name }}} is configured to disable kernel image loading.
+
+    Check the status of the kernel.kexec_load_disabled kernel parameter with the following command:
+
+    $ sudo sysctl kernel.kexec_load_disabled
+
+    kernel.kexec_load_disabled = 1
+
+    If "kernel.kexec_load_disabled" is not set to "1" or is missing, this is a finding.
+
+    Check that the configuration files are present to enable this kernel parameter with the following command:
+
+    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F kernel.kexec_load_disabled | tail -1
+
+    kernel.kexec_load_disabled = 1
+
+    If "kernel.kexec_load_disablede" is not set to "1" or is missing, this is a finding.
+
+fixtext: |-
+    Add or edit the following line in a system configuration file in the "/etc/sysctl.d/" directory:
+
+    kernel.kexec_load_disabled = 1
+
+    Load settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system

@@ -1,5 +1,9 @@
 documentation_complete: true
 
+# new major OS versions will most likely not be applicable because of the
+# kerberos version higher than 1.17-18
+prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9
+
 title: 'Disable Kerberos by removing host keytab'
 
 description: |-
@@ -25,11 +29,8 @@ references:
     stigid@ol8: OL08-00-010161
     stigid@rhel8: RHEL-08-010161
 
-{{% if product in ["ol8", "rhel8"] %}}
 platforms:
-    - krb5_server_older_than_1_17-18
-    - krb5_workstation_older_than_1_17-18
-{{% endif %}}
+    - krb5_server_older_than_1_17-18 and krb5_workstation_older_than_1_17-18
 
 ocil_clause: 'a keytab file is present on the system'
 

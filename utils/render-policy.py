@@ -15,7 +15,7 @@ import template_renderer
 
 
 class HtmlOutput(template_renderer.Renderer):
-    TEMPLATE_NAME = "controls-template.html"
+    TEMPLATE_NAME = "rendering/controls-template.html"
 
     def set_all_rules_with_metadata(self):
         compiled_rules = os.path.join(self.built_content_path, 'rules')

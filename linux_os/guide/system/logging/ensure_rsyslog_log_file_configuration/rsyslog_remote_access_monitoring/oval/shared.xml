@@ -32,8 +32,8 @@
   </ind:textfilecontent54_object>
   {{% endmacro %}}
 
-  {{{ object_remote_method(regex="^.*auth\.\*.*$", test_ref="remote_method_monitoring_auth") }}}
-  {{{ object_remote_method(regex="^.*authpriv\.\*.*$", test_ref="remote_method_monitoring_authpriv") }}}
-  {{{ object_remote_method(regex="^.*daemon\.\*.*$", test_ref="remote_method_monitoring_daemon") }}}
+  {{{ object_remote_method(regex="^[^#]*auth\.\*.*$", test_ref="remote_method_monitoring_auth") }}}
+  {{{ object_remote_method(regex="^[^#]*authpriv\.\*.*$", test_ref="remote_method_monitoring_authpriv") }}}
+  {{{ object_remote_method(regex="^[^#]*daemon\.\*.*$", test_ref="remote_method_monitoring_daemon") }}}
 
 </def-group>

@@ -1,0 +1,22 @@
+srg_requirement: |-
+    {{{ full_name }}} must not be configured to bypass password requirements for privilege escalation.
+
+vuldiscussion: |-
+    Without re-authentication, users may access resources or perform tasks for which they do not
+    have authorization. When operating systems provide the capability to escalate a functional
+    capability, it is critical the user re-authenticate.
+
+checktext: |-
+    Verify the operating system is not configured to bypass password requirements for privilege
+    escalation. Check the configuration of the "/etc/pam.d/sudo" file with the following command:
+     $ sudo grep pam_succeed_if /etc/pam.d/sudo
+
+    If system is configured to bypass password requirements for privilege escalation, then this is a finding.
+
+fixtext: |-
+    Configure the operating system to require users to supply a password for privilege escalation.
+
+    Check the configuration of the "/etc/pam.d/sudo" file with the following command:
+    $ sudo vi /etc/pam.d/sudo
+
+    Remove any occurrences of " pam_succeed_if " in the file.

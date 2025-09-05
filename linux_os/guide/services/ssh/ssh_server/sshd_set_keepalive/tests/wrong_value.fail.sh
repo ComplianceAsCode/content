@@ -1,4 +1,6 @@
 #!/bin/bash
+# variables = var_sshd_set_keepalive=1
+
 SSHD_CONFIG="/etc/ssh/sshd_config"
 
 if grep -q "^ClientAliveCountMax" $SSHD_CONFIG; then

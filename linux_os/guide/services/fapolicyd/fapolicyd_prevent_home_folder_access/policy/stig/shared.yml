@@ -1,0 +1,24 @@
+srg_requirement: |-
+    {{{ full_name }}} must limit the ability of non-privileged users to grant other users direct access to the contents of their home directories/folders.
+
+vuldiscussion: |-
+    Users' home directories/folders may contain information of a sensitive nature.
+    Non-privileged users should coordinate any sharing of information with a System Administrator (SA) through shared resources.
+    fapolicyd can confine users to their home directory, not allowing them to make any changes outside of their own home directories.
+    Confining users to their home directory will minimize the risk of sharing information.
+
+checktext: |-
+    Verify that fapolicyd on {{{ full_name }}} prevents ability of non-privileged users to grant other users direct access to the contents of their home directories/folders.
+
+    Run the following command:
+
+    grep -r "deny_audit perm=chmod path=/home" /etc/fapolicyd/rules.d
+
+fixtext: |-
+    Configure fapolicyd to ability of non-privileged users to grant other users direct access to the contents of their home directories/folders.
+
+    Add or edit the following lines in /etc/fapolicyd/rules.d/90-deny-home.
+
+    deny_audit perm=chmod path=/home all : all
+
+    Note: That fapolicyd must have correctly configured rules. All configurations will be based on the actual system setup and organizational polices and practices.

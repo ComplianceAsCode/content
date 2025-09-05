@@ -1,53 +1,55 @@
 <def-group>
-  <definition class="compliance" id="grub2_enable_selinux" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("
         Check if selinux=0 OR enforcing=0 within the GRUB2 configuration files, fail if found.
       ") }}}
     <criteria operator="AND">
-      <criterion comment="check value selinux|enforcing=0 in /etc/default/grub, fail if found" test_ref="test_selinux_default_grub" />
-      <criterion comment="check value selinux|enforcing=0 in /etc/grub2.cfg, fail if found" test_ref="test_selinux_grub2_cfg" />
-      <criterion comment="check value selinux|enforcing=0 in /etc/grub.d, fail if found" test_ref="test_selinux_grub_dir" />
+      <criterion test_ref="test_selinux_default_grub"
+        comment="check value selinux|enforcing=0 in /etc/default/grub, fail if found"/>
+      <criterion test_ref="test_selinux_grub2_cfg"
+        comment="check value selinux|enforcing=0 in /etc/grub2.cfg, fail if found"/>
+      <criterion test_ref="test_selinux_grub_dir"
+        comment="check value selinux|enforcing=0 in /etc/grub.d, fail if found"/>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="none_exist"
-  comment="check value selinux|enforcing=0 in /etc/default/grub, fail if found"
-  id="test_selinux_default_grub" version="1">
-    <ind:object object_ref="object_selinux_default_grub" />
+  <ind:textfilecontent54_test id="test_selinux_default_grub" version="1"
+    check="all" check_existence="none_exist"
+    comment="check value selinux|enforcing=0 in /etc/default/grub, fail if found">
+    <ind:object object_ref="object_selinux_default_grub"/>
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_selinux_default_grub"
-  comment="check value selinux|enforcing=0 in /etc/default/grub, fail if found"
-  version="1">
+
+  <ind:textfilecontent54_object id="object_selinux_default_grub" version="1"
+    comment="check value selinux|enforcing=0 in /etc/default/grub, fail if found">
     <ind:filepath>/etc/default/grub</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*GRUB_CMDLINE_LINUX.*(selinux|enforcing)=0.*$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="none_exist"
-  comment="check value selinux|enforcing=0 in /etc/grub2.cfg, fail if found"
-  id="test_selinux_grub2_cfg" version="1">
-    <ind:object object_ref="object_selinux_grub2_cfg" />
+  <ind:textfilecontent54_test id="test_selinux_grub2_cfg" version="1"
+    check="all" check_existence="none_exist"
+    comment="check value selinux|enforcing=0 in /etc/grub2.cfg, fail if found">
+    <ind:object object_ref="object_selinux_grub2_cfg"/>
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_selinux_grub2_cfg" 
-  comment="check value selinux|enforcing=0 in /etc/grub2.cfg, fail if found"
-  version="1">
+
+  <ind:textfilecontent54_object id="object_selinux_grub2_cfg" version="1"
+    comment="check value selinux|enforcing=0 in /etc/grub2.cfg, fail if found">
     <ind:filepath>/etc/grub2.cfg</ind:filepath>
     <ind:pattern operation="pattern match">^.*(selinux|enforcing)=0.*$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="none_exist"
-  comment="check value selinux|enforcing=0 in /etc/grub.d fail if found"
-  id="test_selinux_grub_dir" version="1">
-    <ind:object object_ref="object_selinux_grub_dir" />
+  <ind:textfilecontent54_test id="test_selinux_grub_dir" version="1"
+    check="all" check_existence="none_exist"
+    comment="check value selinux|enforcing=0 in /etc/grub.d fail if found">
+    <ind:object object_ref="object_selinux_grub_dir"/>
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_selinux_grub_dir"
-  comment="check value selinux|enforcing=0 in /etc/grub.d, fail if found"
-  version="1">
+
+  <ind:textfilecontent54_object id="object_selinux_grub_dir" version="1"
+    comment="check value selinux|enforcing=0 in /etc/grub.d, fail if found">
     <ind:path>/etc/grub.d</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^.*(selinux|enforcing)=0.*$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
-
 </def-group>
