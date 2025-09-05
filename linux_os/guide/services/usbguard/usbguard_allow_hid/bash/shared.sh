@@ -1,8 +1,6 @@
 # platform = multi_platform_fedora,Red Hat Enterprise Linux 8,Oracle Linux 8
 
-if ! grep -Eq '^[ \t]*allow[ \t]+with-interface[ \t]+equals[ \t]+\{[ \t]+03:\*:\*[ \t]+\}[ \t]*$' /etc/usbguard/rules.conf ; then
-	echo "allow with-interface equals { 03:*:* }" >> /etc/usbguard/rules.conf
-fi
-if ! grep -Eq '^[ \t]*allow[ \t]+with-interface[ \t]+equals[ \t]+\{[ \t]+03:\*:\*[ \t]+03:\*:\*[ \t]+\}[ \t]*$' /etc/usbguard/rules.conf ; then
-	echo "allow with-interface equals { 03:*:* 03:*:* }" >> /etc/usbguard/rules.conf
-fi
+# path of file with Usbguard rules
+rulesfile="/etc/usbguard/rules.conf"
+
+echo "allow with-interface match-all { 03:*:* }" >> $rulesfile

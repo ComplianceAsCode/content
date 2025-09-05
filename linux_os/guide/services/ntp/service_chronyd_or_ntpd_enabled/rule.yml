@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora,ol7,ol8,rhv4
+prodtype: rhel7,rhel8,fedora,ol7,ol8,rhv4,ocp4
 
 title: 'Enable the NTP Daemon'
 
@@ -35,6 +35,8 @@ rationale: |-
 
 severity: medium
 
+platform: machine  # The check uses service_... extended definition, which doesnt support offline mode
+
 identifiers:
     cce@rhel7: 27444-9
     cce@rhel8: 80874-1
@@ -43,7 +45,7 @@ references:
     cis: 2.2.1.1
     cui: 3.3.7
     disa: "160"
-    nist: AU-8(1)
+    nist: CM-6(a),AU-8(1)(a)
     nist-csf: PR.PT-1
     vmmsrg: SRG-OS-000356-VMM-001340
     pcidss: Req-10.4

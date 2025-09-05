@@ -4,11 +4,25 @@ from __future__ import print_function
 import datetime
 import os.path
 
-product_directories = ['debian8', 'debian9', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
-                       'rhel7', 'rhel8', 'sle11', 'sle12', 'ubuntu1404',
-                       'ubuntu1604', 'ubuntu1804', 'wrlinux8', 'wrlinux1019', 'rhosp13',
-                       'chromium', 'eap6', 'firefox', 'fuse6', 'jre', 'ocp3', 'ocp4',
-                       'example']
+product_directories = [
+    'chromium',
+    'debian8', 'debian9', 'debian10',
+    'eap6',
+    'example',
+    'fedora',
+    'firefox',
+    'fuse6',
+    'jre',
+    'ocp3', 'ocp4',
+    'ol7', 'ol8',
+    'opensuse',
+    'rhel6', 'rhel7', 'rhel8',
+    'rhosp10', 'rhosp13',
+    'rhv4',
+    'sle11', 'sle12',
+    'ubuntu1404', 'ubuntu1604', 'ubuntu1804',
+    'wrlinux8', 'wrlinux1019'
+]
 
 JINJA_MACROS_BASE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
     __file__)), "shared", "macros.jinja")
@@ -93,6 +107,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Chromium": "chromium",
     "Debian 8": "debian8",
     "Debian 9": "debian9",
+    "Debian 10": "debian10",
     "JBoss EAP 6": "eap6",
     "Example": "example",
     "Fedora": "fedora",
@@ -107,6 +122,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Red Hat Enterprise Linux 6": "rhel6",
     "Red Hat Enterprise Linux 7": "rhel7",
     "Red Hat Enterprise Linux 8": "rhel8",
+    "Red Hat OpenStack Platform 10": "rhosp10",
     "Red Hat OpenStack Platform 13": "rhosp13",
     "Red Hat Virtualization 4": "rhv4",
     "SUSE Linux Enterprise 11": "sle11",
@@ -127,6 +143,9 @@ PRODUCT_TO_CPE_MAPPING = {
     ],
     "debian9": [
         "cpe:/o:debianproject:debian:9",
+    ],
+    "debian10": [
+        "cpe:/o:debian:debian_linux:10",
     ],
     "eap6": [
         "cpe:/a:redhat:jboss_enterprise_application_platform:6.0.0",
@@ -166,6 +185,8 @@ PRODUCT_TO_CPE_MAPPING = {
     "example": [
     ],
     "fedora": [
+        "cpe:/o:fedoraproject:fedora:32",
+        "cpe:/o:fedoraproject:fedora:31",
         "cpe:/o:fedoraproject:fedora:30",
         "cpe:/o:fedoraproject:fedora:29",
         "cpe:/o:fedoraproject:fedora:28",
@@ -217,6 +238,9 @@ PRODUCT_TO_CPE_MAPPING = {
     "rhel8": [
         "cpe:/o:redhat:enterprise_linux:8",
     ],
+    "rhosp10": [
+        "cpe:/a:redhat:openstack:10",
+    ],
     "rhosp13": [
         "cpe:/a:redhat:openstack:13",
     ],
@@ -251,6 +275,7 @@ STIG_PLATFORM_ID_MAP = {
     "rhel6": "RHEL-06",
     "rhel7": "RHEL-07",
     "rhel8": "RHEL-08",
+    "sle12": "SLES-12",
 }
 
 # see xccdf-addremediations.xslt <- shared_constants.xslt <- shared_shorthand2xccdf.xslt
@@ -267,14 +292,14 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
 
 MULTI_PLATFORM_MAPPING = {
-    "multi_platform_debian": ["debian8", "debian9"],
+    "multi_platform_debian": ["debian8", "debian9", "debian10"],
     "multi_platform_example": ["example"],
     "multi_platform_fedora": ["fedora"],
     "multi_platform_opensuse": ["opensuse"],
     "multi_platform_ol": ["ol7", "ol8"],
     "multi_platform_ocp": ["ocp3", "ocp4"],
     "multi_platform_rhel": ["rhel6", "rhel7", "rhel8"],
-    "multi_platform_rhosp": ["rhosp13"],
+    "multi_platform_rhosp": ["rhosp10", "rhosp13"],
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle11", "sle12"],
     "multi_platform_ubuntu": ["ubuntu1404", "ubuntu1604", "ubuntu1804"],
@@ -417,7 +442,7 @@ XCCDF_PLATFORM_TO_CPE = {
     "libuser": "cpe:/a:libuser",
     "nss-pam-ldapd": "cpe:/a:nss-pam-ldapd",
     "pam": "cpe:/a:pam",
-    "shadow-utils": "cpe:/a:shadow-utils",
+    "login_defs": "cpe:/a:login_defs",
     "sssd": "cpe:/a:sssd",
     "systemd": "cpe:/a:systemd",
     "yum": "cpe:/a:yum",

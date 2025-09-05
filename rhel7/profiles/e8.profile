@@ -78,6 +78,7 @@ selections:
   - network_sniffer_disabled
 
   ### Admin privileges
+  - accounts_no_uid_except_zero
   - sudo_remove_nopasswd
   - sudo_remove_no_authenticate
   - sudo_require_authentication

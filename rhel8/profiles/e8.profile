@@ -36,6 +36,7 @@ selections:
   - ensure_gpgcheck_local_packages
   - ensure_gpgcheck_globally_activated
   - security_patches_up_to_date
+  - dnf-automatic_security_updates_only
 
   ### System security settings
   - sysctl_kernel_randomize_va_space
@@ -80,6 +81,7 @@ selections:
   - network_sniffer_disabled
 
   ### Admin privileges
+  - accounts_no_uid_except_zero
   - sudo_remove_nopasswd
   - sudo_remove_no_authenticate
   - sudo_require_authentication
@@ -123,16 +125,18 @@ selections:
   - sshd_print_last_log
   - sshd_use_priv_separation
   - sshd_do_not_permit_user_env
-  - sshd_disable_rhosts_rsa
   - sshd_disable_rhosts
-  - sshd_allow_only_protocol2
   - sshd_set_loglevel_info
   - sshd_disable_empty_passwords
   - sshd_disable_user_known_hosts
   - sshd_enable_strictmodes
 
+  # See also: https://www.cyber.gov.au/ism/guidelines-using-cryptography
+  - var_system_crypto_policy=default_nosha1
+  - configure_crypto_policy
+  - configure_ssh_crypto_policy
+
   ### Application whitelisting
   - package_fapolicyd_installed
   - service_fapolicyd_enabled
-  - configure_fapolicyd_mounts
 

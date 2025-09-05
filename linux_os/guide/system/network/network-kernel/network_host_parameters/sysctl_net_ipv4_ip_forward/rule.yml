@@ -26,7 +26,7 @@ references:
     cis: 3.1.1
     cui: 3.1.20
     disa: "366"
-    nist: CM-7,SC-5,SC-32
+    nist: CM-7(a),CM-7(b),SC-5CM-6(a),SC-7(a)
     nist-csf: DE.CM-1,PR.DS-4,PR.IP-1,PR.PT-3,PR.PT-4
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "040740"
@@ -40,6 +40,12 @@ ocil: |-
     {{{ ocil_sysctl_option_value(sysctl="net.ipv4.ip_forward", value="0") }}}
     The ability to forward packets is only appropriate for routers.
 
+warnings:
+    - functionality: |-
+        Certain technologies such as virtual machines, containers, etc. rely on IPv4 forwarding to enable and use networking.
+        Disabling IPv4 forwarding would cause those technologies to stop working. Therefore, this rule should not be used in
+        profiles or benchmarks that target usage of IPv4 forwarding.
+
 platform: machine
 
 template:
@@ -50,6 +56,7 @@ template:
         datatype: int
         sysctlval@debian8: ''
         sysctlval@debian9: ''
+        sysctlval@debian10: ''
         sysctlval@ubuntu1404: ''
         sysctlval@ubuntu1604: ''
         sysctlval@ubuntu1804: ''

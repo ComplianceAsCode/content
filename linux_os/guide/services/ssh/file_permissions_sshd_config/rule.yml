@@ -8,8 +8,9 @@ description: |-
     {{{ describe_file_permissions(file="/etc/ssh/sshd_config", perms="0600") }}}
 
 rationale: |-
-    Service configuration files enable or disable features of their respective services that if configured incorrectly
-    can lead to insecure and vulnerable configurations. Therefore, service configuration files should be owned by the
+    Service configuration files enable or disable features of their respective 
+    services that if configured incorrectly can lead to insecure and vulnerable 
+    configurations. Therefore, service configuration files should be owned by the
     correct group to prevent unauthorized changes.
 
 severity: medium
@@ -21,7 +22,7 @@ identifiers:
 
 references:
     cis: 5.2.1
-    nist: AC-6,AC-17
+    nist: AC-17(a),CM-6(a),AC-6(1)
     nist-csf: PR.AC-4,PR.DS-5
     srg: SRG-OS-000480-GPOS-00227
     isa-62443-2013: 'SR 2.1,SR 5.2'

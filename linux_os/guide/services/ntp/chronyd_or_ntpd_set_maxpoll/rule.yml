@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: wrlinux1019,rhel7,rhel8,fedora,rhv4
+prodtype: wrlinux1019,rhel7,rhel8,fedora,rhv4,ocp4
 
 title: 'Configure Time Service Maxpoll Interval'
 
@@ -21,12 +21,14 @@ rationale: |-
 
 severity: unknown
 
+platform: machine  # The check uses service_... extended definition, which doesnt support offline mode
+
 identifiers:
     cce@rhel7: 80439-3
 
 references:
     disa: 1891,2046
-    nist: AU-8(1)(a)
+    nist: CM-6(a),AU-8(1)(b)
     nist-csf: PR.PT-1
     srg: 'SRG-OS-000355-GPOS-00143,SRG-OS-000356-GPOS-00144'
     stigid@rhel7: "040500"

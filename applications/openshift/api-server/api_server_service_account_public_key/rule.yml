@@ -1,12 +1,24 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Configure the Service Account Public Key for the API Server'
 
 description: |-
     To ensure the API Server utilizes its own key pair, edit the
     API Server pod specification file
+{{%- if product == "ocp4" %}}
+    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master node(s)
+    and set the <tt>serviceAccountPublicKeyFiles</tt> parameter to the public
+    key file for service accounts:
+    <pre>
+    ...
+    "serviceAccountPublicKeyFiles":[
+      "/etc/kubernetes/static-pod-resources/configmaps/sa-token-signing-certs"
+    ],
+    ...
+    </pre>
+{{% else %}}
     <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
     and set the <tt>publicKeyFiles</tt> parameter to the public
     key file for service accounts:
@@ -15,6 +27,7 @@ description: |-
       publicKeyFiles:
       - serviceaccounts.public.key
     ...</pre>
+{{%- endif %}}
 
 rationale: |-
     By default, if no <tt>privateKeyFile</tt> is specified to the
@@ -27,13 +40,23 @@ rationale: |-
 severity: medium
 
 references:
-    cis: 1.2.25
+    cis: 1.2.28
 
-ocil_clause: '<tt>publicKeyFiles</tt> is not set as appropriate for <tt>serviceAccountConfig</tt>'
+ocil_clause: '{{%- if product == "ocp4" %}}serviceAccountPublicKeyFiles is not configured correctly{{% else %}}<tt>publicKeyFiles</tt> is not set as appropriate for <tt>serviceAccountConfig</tt>{{%- endif %}}'
 
 ocil: |-
     Run the following command on the master node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep -A3 serviceAccountPublicKeyFiles /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    The output should contain a line similar to:
+    <pre>
+    "serviceAccountPublicKeyFiles":[
+      "/etc/kubernetes/static-pod-resources/configmaps/sa-token-signing-certs"
+    ],
+    </pre>
+{{% else %}}
     <pre>$ sudo grep -A9 serviceAccountConfig /etc/origin/master/master-config.yaml</pre>
     The output should contain a line similar to:
     <pre>publicKeyFiles:
       - serviceaccounts.public.key</pre>
+{{%- endif %}}

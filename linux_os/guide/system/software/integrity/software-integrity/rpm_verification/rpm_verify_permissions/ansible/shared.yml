@@ -10,6 +10,7 @@
   register: files_with_incorrect_permissions
   failed_when: files_with_incorrect_permissions.rc > 1
   changed_when: False
+  check_mode: False
 
 - name: Create list of packages
   command: rpm -qf "{{ item }}"
@@ -18,6 +19,7 @@
   with_items: "{{ files_with_incorrect_permissions.stdout_lines | map('regex_findall', '^[.]+[M]+.* (\\/.*)', '\\1') | map('join') | select('match', '(\\/.*)') | list | unique }}"
   register: list_of_packages
   changed_when: False
+  check_mode: False
   when: (files_with_incorrect_permissions.stdout_lines | length > 0)
 
 - name: "Correct file permissions with RPM"

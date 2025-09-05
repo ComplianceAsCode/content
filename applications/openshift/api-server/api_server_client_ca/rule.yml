@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Configure the Client Certificate Authority for the API Server'
 
@@ -10,12 +10,23 @@ description: |-
     <tt>clientCA</tt> must be configured. Verify
     that <tt>servingInfo</tt> has the <tt>clientCA</tt> configured in 
     the API Server pod specification file
+{{%- if product == "ocp4" %}}
+    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master
+    node(s) to something similar to:
+    <pre>
+    "servingInfo":{
+      ...
+      "clientCA":"/etc/kubernetes/static-pod-certs/configmaps/client-ca/ca-bundle.crt",
+      ...
+    </pre>
+{{% else %}}
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) to something similar to:
     <pre>servingInfo:
       clientCA: ca.crt
       certFile: master.server.crt
       keyFile: master.server.key</pre>
+{{%- endif %}}
 
 rationale: |-
     API Server communication contains sensitive parameters that should remain
@@ -28,7 +39,7 @@ rationale: |-
 severity: medium
 
 references:
-    cis: 1.1.29
+    cis: 1.2.31
 
 identifiers:
     cce@ocp3: 81152-1
@@ -37,9 +48,12 @@ ocil_clause: '<tt>clientCA</tt> is not set as appropriate for <tt>servingInfo</t
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ sudo grep -A7 servingInfo /etc/origin/master/master-config.yaml</pre>
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep clientCA /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
     The output should contain something similar to:
-    <pre>servingInfo:
-      clientCA: ca.crt
-      certFile: master.server.crt
-      keyFile: master.server.key</pre>
+    <pre>"clientCA":"/etc/kubernetes/static-pod-certs/configmaps/client-ca/ca-bundle.crt",</pre>
+{{% else %}}
+    <pre>$ sudo grep clientCA /etc/origin/master/master-config.yaml</pre>
+    The output should contain something similar to:
+    <pre>clientCA: ca.crt</pre>
+{{%- endif %}}

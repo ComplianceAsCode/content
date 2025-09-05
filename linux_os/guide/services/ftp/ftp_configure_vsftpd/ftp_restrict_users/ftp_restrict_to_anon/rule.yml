@@ -5,22 +5,30 @@ prodtype: rhel6,rhel7,rhel8,fedora
 title: 'Restrict Access to Anonymous Users if Possible'
 
 description: |-
-    Is there a mission-critical reason for users to transfer files to/from their own accounts using FTP, rather than
-    using a secure protocol like SCP/SFTP? If not, edit the vsftpd configuration file. Add or correct the following configuration option:
+    Is there a mission-critical reason for users to transfer files to/from their own accounts
+    using FTP, rather than using a secure protocol like SCP/SFTP? If not, edit the vsftpd
+    configuration file. Add or correct the following configuration option:
+
     <pre>local_enable=NO</pre>
-    If non-anonymous FTP logins are necessary, follow the guidance in the remainder of this section to secure
-    these logins as much as possible.
 
-rationale: 'The use of non-anonymous FTP logins is strongly discouraged. Since SSH clients and servers are widely available, and since SSH provides support for a transfer mode which resembles FTP in user interface, there is no good reason to allow password-based FTP access.'
+    If non-anonymous FTP logins are necessary, follow the guidance in the remainder of
+    this section to secure these logins as much as possible.
 
-severity: unknown
+rationale: |-
+        The use of non-anonymous FTP logins is strongly discouraged. Since SSH clients 
+        and servers are widely available, and since SSH provides support for a transfer
+        mode which resembles FTP in user interface, there is no good reason to allow
+        password-based FTP access.'
+
+severity: medium
 
 identifiers:
     cce@rhel6: 82047-2
     cce@rhel7: 80249-6
+    cce@rhel8: 82412-8
 
 references:
-    nist: CM-7,AC-3
+    nist: CM-7(a),CM-7(b),CM-6(a),AC-3,AC-17(a)
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7,SR 7.6'
     isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.2,4.3.4.3.3
     cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS06.03,DSS06.06

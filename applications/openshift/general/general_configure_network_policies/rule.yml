@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Ensure Network Policies are Configured'
+
+description: |-
+    OpenShift supports Kubernetes NetworkPolicy via the ovs-networkpolicy plugin. 
+    The Kubernetes NetworkPolicy plugin is preferred over the ovs-multitenant
+    plugin because Kubernetes Network Policies provide more granular control.
+    The ovs-networkpolicy plugin should be configured instead of the
+    ovs-multitenant plugin.
+
+rationale: |-
+    Properly configured network policies ensure traffic between OpenShift
+    tenants is isolated.
+
+severity: high
+
+ocil_clause: 'the ovs-networkpolicy plugin is not configured or network policies are not in use'
+
+ocil: |-
+    Verify on OpenShift master nodes the plugin being used:
+    <pre>$ oc get networkpolicies</pre>
+
+    Nodes should be properly configured to create network segmentation using the
+    Network Polices plugin over the Multi-tenant plugin.
+
+# Since this is operational guidance and not a configuration check,
+# a CCE should not be assigned.
+#identifiers:
+#    cce@ocp3: 
+
+references:
+    cis: 1.6.8

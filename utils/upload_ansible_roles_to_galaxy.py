@@ -195,19 +195,23 @@ class Role(object):
         self.added_variables.update(variables_to_add)
 
     def add_task_variables_to_default_variables_if_needed(self):
-        default_vars_to_add = sorted(self.default_vars_data) + sorted(self.added_variables)
-        lines = [
+        default_vars_to_add = sorted(self.added_variables)
+        default_vars_local_content = yaml.dump(self.default_vars_data, width=120, indent=4,
+                                               default_flow_style=False)
+        header = [
             "---", "# defaults file for {role_name}\n".format(role_name=self.role_name),
         ]
-        lines += ["{var_name}: true".format(var_name=var_name) for var_name in default_vars_to_add]
+        lines = ["{var_name}: true".format(var_name=var_name) for var_name in default_vars_to_add]
         lines.append("")
 
-        default_vars_local_content = "\n".join(lines)
+        default_vars_local_content = ("%s%s%s" % ("\n".join(header),
+                                                  default_vars_local_content,
+                                                  "\n".join(lines)))
 
-        default_vars_remote_content = self.remote_repo.get_file_contents("/defaults/main.yml")
+        default_vars_remote_content = self.remote_repo.get_contents("defaults/main.yml")
         if default_vars_local_content != default_vars_remote_content.decoded_content:
             self.remote_repo.update_file(
-                "/defaults/main.yml",
+                "defaults/main.yml",
                 "Updates defaults/main.yml",
                 default_vars_local_content,
                 default_vars_remote_content.sha,
@@ -253,11 +257,11 @@ class Role(object):
         return description
 
     def _update_tasks_content_if_needed(self):
-        tasks_remote_content = self.remote_repo.get_file_contents("/tasks/main.yml")
+        tasks_remote_content = self.remote_repo.get_contents("tasks/main.yml")
 
         if self.tasks_local_content != tasks_remote_content.decoded_content:
             self.remote_repo.update_file(
-                "/tasks/main.yml",
+                "tasks/main.yml",
                 "Updates tasks/main.yml",
                 self.tasks_local_content,
                 tasks_remote_content.sha,
@@ -273,12 +277,12 @@ class Role(object):
              vars_local_content = yaml.dump(self.vars_data, width=120, indent=4,
                                             default_flow_style=False)
 
-        vars_remote_content = self.remote_repo.get_file_contents("/vars/main.yml")
+        vars_remote_content = self.remote_repo.get_contents("vars/main.yml")
 
         if vars_local_content != vars_remote_content.decoded_content and \
            vars_local_content.splitlines()[0] != "null":
             self.remote_repo.update_file(
-                "/vars/main.yml",
+                "vars/main.yml",
                 "Updates vars/main.yml",
                 vars_local_content,
                 vars_remote_content.sha,
@@ -307,7 +311,7 @@ class Role(object):
 
     def _update_readme_content_if_needed(self, repo_status):
         local_readme_content = self._generate_readme_content()
-        remote_readme_file = self.remote_repo.get_file_contents("/README.md")
+        remote_readme_file = self.remote_repo.get_contents("README.md")
 
         if repo_status == "update":
             local_readme_content = remote_readme_file.decoded_content.decode("utf-8")
@@ -322,7 +326,7 @@ class Role(object):
             print("Updating README.md in %s" % self.remote_repo.name)
 
             self.remote_repo.update_file(
-                "/README.md",
+                "README.md",
                 "Updates README.md",
                 local_readme_content,
                 remote_readme_file.sha,
@@ -331,7 +335,7 @@ class Role(object):
             )
 
     def _update_meta_content_if_needed(self, repo_status):
-        remote_meta_file = self.remote_repo.get_file_contents("/meta/main.yml")
+        remote_meta_file = self.remote_repo.get_contents("meta/main.yml")
 
         with open(META_TEMPLATE_PATH, 'r') as f:
             meta_template = f.read()
@@ -366,7 +370,7 @@ class Role(object):
         if local_meta_content != remote_meta_file.decoded_content:
             print("Updating meta/main.yml in %s" % self.remote_repo.name)
             self.remote_repo.update_file(
-                "/meta/main.yml",
+                "meta/main.yml",
                 "Updates meta/main.yml",
                 local_meta_content,
                 remote_meta_file.sha,

@@ -78,8 +78,7 @@ def getkey(elem):
     return elem.get("ownerid")
 
 
-def new_stig_overlay(xccdftree, ssgtree, outfile,
-                     overlayfile=False):
+def new_stig_overlay(xccdftree, ssgtree, outfile):
     if not ssgtree:
         ssg_mapping = False
     else:
@@ -112,11 +111,7 @@ def new_stig_overlay(xccdftree, ssgtree, outfile,
                                 severity=severity)
         vmsinfo = ET.SubElement(overlay, "VMSinfo", VKey=vkey,
                                 SVKey=svkey, VRelease=release)
-        title = ET.SubElement(vmsinfo, "title")
-        title.text = rule_title
-        new_stig_overlay.append(overlay)
-        overlay.append(vmsinfo)
-        overlay.append(title)
+        title = ET.SubElement(overlay, "title", text=rule_title)
 
     lines = new_stig_overlay.findall("overlay")
     new_stig_overlay[:] = sorted(lines, key=getkey)

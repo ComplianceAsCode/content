@@ -1,4 +1,4 @@
-documentation_complete: false
+documentation_complete: true
 
 title: 'NIST National Checklist for Red Hat Enterprise Linux CoreOS'
 
@@ -56,27 +56,27 @@ selections:
     #- partition_for_home
     #- partition_for_var
     #- mount_option_var_nodev
-    - partition_for_var_log
+    #- partition_for_var_log
     #- mount_option_var_log_nodev
     #- mount_option_var_log_nosuid
     #- mount_option_var_log_noexec
-    - partition_for_var_log_audit
+    #- partition_for_var_log_audit
     #- mount_option_var_log_audit_nodev
     #- mount_option_var_log_audit_nosuid
     #- mount_option_var_log_audit_noexec
 
     ### Services
     # sshd
-    - sshd_disable_root_login
-    - sshd_enable_strictmodes
-    - disable_host_auth
-    - sshd_disable_empty_passwords
-    - sshd_disable_kerb_auth
-    - sshd_disable_gssapi_auth
-    - var_sshd_set_keepalive=0
-    - sshd_set_keepalive
-    - sshd_enable_warning_banner
-    - sshd_rekey_limit
+    #- sshd_disable_root_login
+    #- sshd_enable_strictmodes
+    #- disable_host_auth
+    #- sshd_disable_empty_passwords
+    #- sshd_disable_kerb_auth
+    #- sshd_disable_gssapi_auth
+    #- var_sshd_set_keepalive=0
+    #- sshd_set_keepalive
+    #- sshd_enable_warning_banner
+    #- sshd_rekey_limit
 
     # Time Server
     - chronyd_client_only
@@ -103,7 +103,6 @@ selections:
     - sysctl_net_ipv4_conf_default_rp_filter
     - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-    - sysctl_net_ipv4_ip_forward
     - sysctl_net_ipv4_tcp_syncookies
 
     ### systemd
@@ -112,24 +111,24 @@ selections:
     - service_debug-shell_disabled
 
     ### umask
-    - var_accounts_user_umask=027
-    - accounts_umask_etc_profile
-    - accounts_umask_etc_bashrc
-    - accounts_umask_etc_csh_cshrc
+    #- var_accounts_user_umask=027
+    #- accounts_umask_etc_profile
+    #- accounts_umask_etc_bashrc
+    #- accounts_umask_etc_csh_cshrc
 
     ### Software update
-    - ensure_redhat_gpgkey_installed
+    #- ensure_redhat_gpgkey_installed
     #- ensure_gpgcheck_globally_activated
     #- ensure_gpgcheck_local_packages
     #- ensure_gpgcheck_never_disabled
 
     ### Passwords
-    - var_password_pam_difok=4
-    - accounts_password_pam_difok
-    - var_password_pam_maxrepeat=3
-    - accounts_password_pam_maxrepeat
-    - var_password_pam_maxclassrepeat=4
-    - accounts_password_pam_maxclassrepeat
+    #- var_password_pam_difok=4
+    #- accounts_password_pam_difok
+    #- var_password_pam_maxrepeat=3
+    #- accounts_password_pam_maxrepeat
+    #- var_password_pam_maxclassrepeat=4
+    #- accounts_password_pam_maxclassrepeat
 
     ### Kernel Config
     ## Boot prompt
@@ -169,15 +168,18 @@ selections:
     - auditd_name_format
     - var_auditd_action_mail_acct=root
     - var_auditd_space_left_action=email
-    - auditd_audispd_configure_remote_server
-    - auditd_audispd_encrypt_sent_records
-    - auditd_audispd_disk_full_action
-    - auditd_audispd_network_failure_action
-
+    
+    #####
+    # Need to replace with fluentd checks
+    #- auditd_audispd_configure_remote_server
+    #- auditd_audispd_encrypt_sent_records
+    #- auditd_audispd_disk_full_action
+    #- auditd_audispd_network_failure_action
+    #####
 
     ### Module Blacklist
     - kernel_module_cramfs_disabled
-#    - kernel_module_bluetooth_disabled
+    - kernel_module_bluetooth_disabled
     - kernel_module_sctp_disabled
     - kernel_module_firewire-core_disabled
     - kernel_module_atm_disabled
@@ -187,38 +189,39 @@ selections:
     ### rpcbind
 
     ### Install Required Packages
-    - package_sssd-ipa_installed
+    #- package_sssd-ipa_installed
     - package_aide_installed
     - package_firewalld_installed
     - package_iptables_installed
-    - package_libcap-ng-utils_installed
-    - package_openscap-scanner_installed
-    - package_policycoreutils_installed
-    - package_rng-tools_installed
+    #- package_libcap-ng-utils_installed
+    #- package_openscap-scanner_installed
+    #- package_policycoreutils_installed
+    #- package_rng-tools_installed
     - package_sudo_installed
     - package_usbguard_installed
-    - package_audispd-plugins_installed
-    - package_scap-security-guide_installed
+    ####
+    # Need to replace with fluentd checks
+    #- package_audispd-plugins_installed
+    ####
+    #- package_scap-security-guide_installed
     - package_audit_installed
     - package_libreswan_installed
-    - package_rsyslog_installed
-    - package_rsyslog-gnutls_installed
 
     ### Remove Prohibited Packages
-    - package_sendmail_removed
-    - package_iprutils_removed
-    - package_gssproxy_removed
-    - package_nfs-utils_removed
-    - package_krb5-workstation_removed
-    - package_abrt-addon-kerneloops_removed
-    - package_abrt-addon-python_removed
-    - package_abrt-addon-ccpp_removed
-    - package_abrt-plugin-rhtsupport_removed
-    - package_abrt-plugin-logger_removed
-    - package_abrt-plugin-sosreport_removed
-    - package_abrt-cli_removed
-    - package_tuned_removed
-    - package_abrt_removed
+    #- package_sendmail_removed
+    #- package_iprutils_removed
+    #- package_gssproxy_removed
+    #- package_nfs-utils_removed
+    #- package_krb5-workstation_removed
+    #- package_abrt-addon-kerneloops_removed
+    #- package_abrt-addon-python_removed
+    #- package_abrt-addon-ccpp_removed
+    #- package_abrt-plugin-rhtsupport_removed
+    #- package_abrt-plugin-logger_removed
+    #- package_abrt-plugin-sosreport_removed
+    #- package_abrt-cli_removed
+    #- package_tuned_removed
+    #- package_abrt_removed
 
     ### Login
     - disable_users_coredumps
@@ -226,11 +229,11 @@ selections:
     - coredump_disable_storage
     - coredump_disable_backtraces
     - service_systemd-coredump_disabled
-    - var_accounts_max_concurrent_login_sessions=10
-    - accounts_max_concurrent_login_sessions
-    - securetty_root_login_console_only
-    - var_password_pam_unix_remember=5
-    - accounts_password_pam_unix_remember
+    #- var_accounts_max_concurrent_login_sessions=10
+    #- accounts_max_concurrent_login_sessions
+    #- securetty_root_login_console_only
+    #- var_password_pam_unix_remember=5
+    #- accounts_password_pam_unix_remember
 
     ### SELinux Configuration
     - var_selinux_state=enforcing
@@ -241,7 +244,6 @@ selections:
     ### Application Whitelisting (RHEL 8)
     - package_fapolicyd_installed
     - service_fapolicyd_enabled
-    - configure_fapolicyd_mounts
 
     ### Enable the Hardware RNG Entropy Gatherer Service
     - service_rngd_enabled
@@ -252,8 +254,7 @@ selections:
     ### Configure USBGuard
     - service_usbguard_enabled
     - configure_usbguard_auditbackend
-    - usbguard_allow_hub
-    - usbguard_allow_hid
+    - usbguard_allow_hid_and_hub
 
     ### Enable / Configure FIPS
     - enable_fips_mode
@@ -278,43 +279,43 @@ selections:
 
     ## Configure Minimum Password Length to 12 Characters
     ## IA-5 (1)(a) / FMT_MOF_EXT.1
-    - var_accounts_password_minlen_login_defs=12
-    - accounts_password_minlen_login_defs
-    - var_password_pam_minlen=12
-    - accounts_password_pam_minlen
+    #- var_accounts_password_minlen_login_defs=12
+    #- accounts_password_minlen_login_defs
+    #- var_password_pam_minlen=12
+    #- accounts_password_pam_minlen
 
     ## Require at Least 1 Special Character in Password
     ## IA-5(1)(a) / FMT_MOF_EXT.1
-    - var_password_pam_ocredit=1
-    - accounts_password_pam_ocredit
+    #- var_password_pam_ocredit=1
+    #- accounts_password_pam_ocredit
 
     ## Require at Least 1 Numeric Character in Password
     ## IA-5(1)(a) / FMT_MOF_EXT.1
-    - var_password_pam_dcredit=1
-    - accounts_password_pam_dcredit
+    #- var_password_pam_dcredit=1
+    #- accounts_password_pam_dcredit
 
     ## Require at Least 1 Uppercase Character in Password
     ## IA-5(1)(a) / FMT_MOF_EXT.1
-    - var_password_pam_ucredit=1
-    - accounts_password_pam_ucredit
+    #- var_password_pam_ucredit=1
+    #- accounts_password_pam_ucredit
 
     ## Require at Least 1 Lowercase Character in Password
     ## IA-5(1)(a) / FMT_MOF_EXT.1
-    - var_password_pam_lcredit=1
-    - accounts_password_pam_lcredit
+    #- var_password_pam_lcredit=1
+    #- accounts_password_pam_lcredit
 
     ## Enable Screen Lock
     ## FMT_MOF_EXT.1
-    - package_tmux_installed
-    - configure_bashrc_exec_tmux
-    - no_tmux_in_shells
-    - configure_tmux_lock_command
-    - configure_tmux_lock_after_time
+    #- package_tmux_installed
+    #- configure_bashrc_exec_tmux
+    #- no_tmux_in_shells
+    #- configure_tmux_lock_command
+    #- configure_tmux_lock_after_time
 
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
     ## AC-11(a) / FMT_MOF_EXT.1
-    - sshd_idle_timeout_value=10_minutes
-    - sshd_set_idle_timeout
+    #- sshd_idle_timeout_value=10_minutes
+    #- sshd_set_idle_timeout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_AFL.1
@@ -325,14 +326,14 @@ selections:
 
     ## Set Maximum Number of Authentication Failures to 3 Within 15 Minutes
     ## AC-7(a) / FMT_MOF_EXT.1
-    - var_accounts_passwords_pam_faillock_deny=3
-    - accounts_passwords_pam_faillock_deny
-    - var_accounts_passwords_pam_faillock_fail_interval=900
-    - accounts_passwords_pam_faillock_interval
-    - var_accounts_passwords_pam_faillock_unlock_time=never
-    - accounts_passwords_pam_faillock_unlock_time
-    - accounts_passwords_pam_faillock_deny_root
-    - accounts_logon_fail_delay
+    #- var_accounts_passwords_pam_faillock_deny=3
+    #- accounts_passwords_pam_faillock_deny
+    #- var_accounts_passwords_pam_faillock_fail_interval=900
+    #- accounts_passwords_pam_faillock_interval
+    #- var_accounts_passwords_pam_faillock_unlock_time=never
+    #- accounts_passwords_pam_faillock_unlock_time
+    #- accounts_passwords_pam_faillock_deny_root
+    #- accounts_logon_fail_delay
 
     ## Enable Host-Based Firewall
     ## SC-7(12) / FMT_MOF_EXT.1
@@ -345,7 +346,10 @@ selections:
     ## Configure the System to Offload Audit Records to a Log
     ##  Server
     ## AU-4(1) / FAU_GEN.1.1.c
-    - auditd_audispd_syslog_plugin_activated
+    #####
+    # Need to replace with fluentd checks
+    #- auditd_audispd_syslog_plugin_activated
+    #####
 
     ## Set Logon Warning Banner
     ## AC-8(a) / FMT_MOF_EXT.1
@@ -517,12 +521,8 @@ selections:
     # Enable dnf-automatic Timer
     #- timer_dnf-automatic_enabled
 
-    # Configure TLS for remote logging
-    - rsyslog_remote_tls
-    - rsyslog_remote_tls_cacert
-
     # Prevent Kerberos use by system daemons
-    - kerberos_disable_no_keytab
+    #- kerberos_disable_no_keytab
 
     # AC-18
     - wireless_disable_in_bios
@@ -531,25 +531,23 @@ selections:
     # AC-19
     - grub2_nousb_argument
     - bios_disable_usb_boot
-    - service_autofs_disabled
-    - mount_option_nosuid_removable_partitions
-    - mount_option_nodev_removable_partitions
-    - mount_option_noexec_removable_partitions
+    #- service_autofs_disabled
+    #- mount_option_nosuid_removable_partitions
+    #- mount_option_nodev_removable_partitions
+    #- mount_option_noexec_removable_partitions
 
     # AC-3
     - sshd_limit_user_access
     - sshd_disable_rhosts
-    - xwindows_runlevel_target
+    #- xwindows_runlevel_target
     - grub2_enable_selinux
-    - require_emergency_target_auth
+    #- require_emergency_target_auth
     - no_netrc_files
 
     # AU-1
     - audit_rules_immutable
 
     # AU-4
-    - service_rsyslog_enabled
-    - rsyslog_remote_loghost
     - auditd_data_retention_action_mail_acct
     - auditd_data_disk_full_action
     - auditd_data_retention_admin_space_left_action
@@ -565,10 +563,10 @@ selections:
     - chronyd_or_ntpd_specify_multiple_servers
 
     # AU-9
-    - rpm_verify_ownership
-    - rpm_verify_permissions
+    #- rpm_verify_ownership
+    #- rpm_verify_permissions
     - selinux_confinement_of_daemons
-    - ensure_logrotate_activated
+    #- ensure_logrotate_activated
     - file_permissions_var_log_audit
     - file_ownership_var_log_audit
     - directory_permissions_var_log_audit
@@ -578,14 +576,14 @@ selections:
     - auditd_data_retention_max_log_file
 
     # AC-2(5), AC-12
-    - accounts_tmout
+    #- accounts_tmout
 
     # AC-17
-    - sshd_disable_rhosts_rsa
-    - sshd_disable_user_known_hosts
-    - sshd_do_not_permit_user_env
-    - sshd_print_last_log
-    - sshd_use_priv_separation
+    #- sshd_disable_rhosts_rsa
+    #- sshd_disable_user_known_hosts
+    #- sshd_do_not_permit_user_env
+    #- sshd_print_last_log
+    #- sshd_use_priv_separation
 
     # AC-18(4)
     - network_nmcli_permissions

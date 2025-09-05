@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2019-08-28 16:53
+Last Modified: 2020-01-15 16:49
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -28,17 +28,22 @@ The following people have contributed to the SCAP Security Guide project
 * James Cassell <james.cassell@ll.mit.edu>
 * Frank Caviggia <fcaviggi@ra.iad.redhat.com>
 * Eric Christensen <echriste@redhat.com>
+* Jayson Cofell <1051437+70k10@users.noreply.github.com>
 * Caleb Cooper <coopercd@ornl.gov>
 * Deric Crago <deric.crago@gmail.com>
 * Maura Dailey <maura@eclipse.ncsc.mil>
 * Klaas Demter <demter@atix.de>
 * dhanushkar-wso2 <dhanushkar@wso2.com>
 * Andrew DiPrinzio <andrew.diprinzio@jhuapl.edu>
+* dom <dominique.blaze@devinci.fr>
 * Jean-Baptiste Donnette <jean-baptiste.donnette@epita.fr>
 * drax <applezip@gmail.com>
+* Sebastian Dunne <sdunne@redhat.com>
 * Greg Elin <gregelin@gitmachines.com>
+* Alexis Facques <alexis.facques@mythalesgroup.io>
 * Leah Fisher <lfisher047@gmail.com>
 * Alijohn Ghassemlouei <alijohn.ghassemlouei@sapns2.com>
+* ghylock <ghylock@gmail.com>
 * Andrew Gilmore <agilmore2@gmail.com>
 * Joshua Glemza <jglemza@nasa.gov>
 * Loren Gordon <lorengordon@users.noreply.github.com>
@@ -50,8 +55,10 @@ The following people have contributed to the SCAP Security Guide project
 * Henning Henkel <henning.henkel@helvetia.ch>
 * hex2a <hex2a@users.noreply.github.com>
 * John Hooks <jhooks@starscream.pa.jhbcomputers.com>
+* Jakub Hrozek <jhrozek@redhat.com>
 * De Huo <De.Huo@windriver.com>
 * Robin Price II <robin@redhat.com>
+* Yasir Imam <yimam@redhat.com>
 * Jiri Jaburek <jjaburek@redhat.com>
 * Keith Jackson <keithkjackson@gmail.com>
 * Jeremiah Jahn <jeremiah@goodinassociates.com>
@@ -60,7 +67,9 @@ The following people have contributed to the SCAP Security Guide project
 * Kai Kang <kai.kang@windriver.com>
 * Charles Kernstock <charles.kernstock@ultra-ats.com>
 * Yuli Khodorkovskiy <ykhodorkovskiy@tresys.com>
+* Nathan Kinder <nkinder@redhat.com>
 * Lee Kinser <lee.kinser@gmail.com>
+* Evgeny Kolesnikov <ekolesni@redhat.com>
 * Peter 'Pessoft' Kolínek <github@pessoft.com>
 * Luke Kordell <luke.t.kordell@lmco.com>
 * Malte Kraus <malte.kraus@suse.com>
@@ -75,6 +84,7 @@ The following people have contributed to the SCAP Security Guide project
 * Fredrik Lysén <fredrik@pipemore.se>
 * Matus Marhefka <mmarhefk@redhat.com>
 * Jamie Lorwey Martin <jlmartin@redhat.com>
+* Robert McAllister <rmcallis@redhat.com>
 * Michael McConachie <michael@redhat.com>
 * Khary Mendez <kharyam@gmail.com>
 * Rodney Mercer <rmercer@harris.com>
@@ -106,11 +116,13 @@ The following people have contributed to the SCAP Security Guide project
 * Raphael Sanchez Prudencio <rsprudencio@redhat.com>
 * T.O. Radzy Radzykewycz <radzy@windriver.com>
 * Kenyon Ralph <kenyon@kenyonralph.com>
+* Mike Ralph <mralph@redhat.com>
 * Rick Renshaw <Richard_Renshaw@xtoenergy.com>
 * Chris Reynolds <c.reynolds82@gmail.com>
 * rhayes <rhayes@rivierautilities.com>
 * Pat Riehecky <riehecky@fnal.gov>
 * rlucente-se-jboss <rlucente@redhat.com>
+* Jesse Roland <j.roland277@gmail.com>
 * Joshua Roys <roysjosh@gmail.com>
 * rrenshaw <bofh69@yahoo.com>
 * Chris Ruffalo <chris.ruffalo@gmail.com>
@@ -120,7 +132,10 @@ The following people have contributed to the SCAP Security Guide project
 * Watson Sato <wsato@redhat.com>
 * Satoru SATOH <satoru.satoh@gmail.com>
 * Alexander Scheel <ascheel@redhat.com>
+* Bryan Schneiders <pschneiders@trisept.com>
+* shaneboulden <shane.boulden@gmail.com>
 * Spencer Shimko <sshimko@tresys.com>
+* Mark Shoger <mshoger@redhat.com>
 * Thomas Sjögren <konstruktoid@users.noreply.github.com>
 * Francisco Slavin <fslavin@tresys.com>
 * David Smith <dsmith@eclipse.ncsc.mil>
@@ -129,7 +144,11 @@ The following people have contributed to the SCAP Security Guide project
 * Leland Steinke <leland.j.steinke.ctr@mail.mil>
 * Justin Stephenson <jstephen@redhat.com>
 * Brian Stinson <brian@bstinson.com>
+* Jake Stookey <jakestookey@gmail.com>
+* Jonathan Sturges <jsturges@jsturges.remote.csb>
 * Philippe Thierry <phil@reseau-libre.net>
+* Derek Thurston <thegrit@gmail.com>
+* tianzhenjia <jiatianzhen@cmss.chinamobile.com>
 * Paul Tittle <ptittle@cmf.nrl.navy.mil>
 * tomas.hudik <tomas.hudik@embedit.cz>
 * Jeb Trayer <jeb.d.trayer@uscg.mil>

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora,ol7,ol8
+prodtype: rhel7,rhel8,fedora,ol7,ol8,ocp4
 
 title: 'Record Events that Modify User/Group Information via open syscall - /etc/gshadow'
 
@@ -28,7 +28,7 @@ identifiers:
     cce@rhel8: 80959-0
 
 references:
-    nist: AC-6(9)
+    nist: AC-2(4),AU-2(d),AU-12(c),AC-6(9),CM-6(a)
     ospp: FAU_GEN.1.1.c
 
 {{{ complete_ocil_entry_audit_syscall(syscall="open") }}}

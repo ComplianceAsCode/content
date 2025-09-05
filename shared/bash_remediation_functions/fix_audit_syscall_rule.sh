@@ -127,7 +127,7 @@ do
 		if [ "${rule}" != "${full_rule}" ]
 		then
 			# If so, isolate just '(-S \w)+' substring of that rule
-			rule_syscalls=$(echo $rule | grep -o -P '(-S \w+ )+')
+			rule_syscalls=$(echo "$rule" | grep -o -P '(-S \w+ )+')
 			# Check if list of '-S syscall' arguments of that rule is subset
 			# of '-S syscall' list of expected $full_rule
 			if grep -q -- "$rule_syscalls" <<< "$full_rule"

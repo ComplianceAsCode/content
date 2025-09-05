@@ -13,6 +13,10 @@ from .constants import (JINJA_MACROS_BASE_DEFINITIONS,
 from .utils import required_key, prodtype_to_name, name_to_platform, prodtype_to_platform
 
 
+class MacroError(RuntimeError):
+    pass
+
+
 class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
     """Loads templates from the file system. This loader insists on absolute
     paths and fails if a relative path is provided.
@@ -74,6 +78,10 @@ def _get_jinja_environment(substitutions_dict):
 _get_jinja_environment.env = None
 
 
+def raise_exception(message):
+    raise MacroError(message)
+
+
 def update_substitutions_dict(filename, substitutions_dict):
     """
     Treat the given filename as a jinja2 file containing macro definitions,
@@ -104,6 +112,7 @@ def add_python_functions(substitutions_dict):
     substitutions_dict['prodtype_to_name'] = prodtype_to_name
     substitutions_dict['name_to_platform'] = name_to_platform
     substitutions_dict['prodtype_to_platform'] = prodtype_to_platform
+    substitutions_dict['raise'] = raise_exception
 
 
 def load_macros(substitutions_dict=None):

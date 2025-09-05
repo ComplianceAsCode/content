@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel
+# platform = Red Hat Virtualization 4,multi_platform_rhel
 find /bin/ \
 /usr/bin/ \
 /usr/local/bin/ \

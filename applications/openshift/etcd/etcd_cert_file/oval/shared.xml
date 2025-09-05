@@ -7,8 +7,9 @@
       </affected>
       <description>ETCD_CERT_FILE is correctly set</description>
     </metadata>
-    <criteria>
+    <criteria operator="AND">
       <criterion test_ref="test_etcd_cert_file" comment="Check ETCD_CERT_FILE in /etc/etcd/etcd.conf" />
+      <criterion comment="Runtime configuration is correct" test_ref="test_ocp_runtime_cert_file" />
     </criteria>
   </definition>
 
@@ -27,7 +28,13 @@
 
   <ind:textfilecontent54_state id="state_etcd_cert_file"
   version="1">
-    <ind:subexpression datatype="string" operation="pattern match">^/etc/etcd/server.crt$</ind:subexpression>
+    <ind:subexpression datatype="string" operation="pattern match">^/etc/etcd/server.crt|/etc/ssl/etcd/system\:etcd-server-\:.*\.crt$</ind:subexpression>
   </ind:textfilecontent54_state>
+
+{{%- if product == "ocp4" %}}
+  {{{ oval_ocp_service_runtime_config(command="etcd", option="--cert-file", value="/etc/ssl/etcd/system\:etcd-server\:.*\.crt", option_id="cert_file") }}}
+{{% else %}}
+  {{{ oval_ocp_service_runtime_config(command="etcd", option="--cert-file", value="/etc/etcd/server.crt", option_id="cert_file") }}}
+{{%- endif %}}
 
 </def-group>

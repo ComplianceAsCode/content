@@ -22,7 +22,7 @@ references:
     srg@rhel6: SRG-OS-999999
     disa@rhel6: '225'
     cis: 6.1.5
-    nist: AC-6
+    nist: CM-6(a),AC-6(1)
     nist-csf: PR.AC-4,PR.DS-5
     isa-62443-2013: 'SR 2.1,SR 5.2'
     isa-62443-2009: 4.3.3.7.3
@@ -42,6 +42,7 @@ template:
         filemode: '0000'
         filemode@debian8: '0640'
         filemode@debian9: '0640'
+        filemode@debian10: '0640'
         filemode@ubuntu1404: '0640'
         filemode@ubuntu1604: '0640'
         filemode@ubuntu1804: '0640'

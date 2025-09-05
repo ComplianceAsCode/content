@@ -19,7 +19,7 @@ if [ "$(getconf LONG_BIT)" = "64" ] ; then
   if grep --silent noexec /boot/grub2/grub*.cfg ; then 
         sed -i "s/noexec.*//g" /etc/default/grub
         sed -i "s/noexec.*//g" /etc/grub.d/*
-        GRUBCFG=`ls | grep '.cfg$'`
-        grub2-mkconfig -o "/boot/grub2/$GRUBCFG"
+        GRUBCFG=/boot/grub2/*.cfg
+        grub2-mkconfig -o "$GRUBCFG"
   fi
 fi

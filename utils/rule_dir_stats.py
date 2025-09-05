@@ -12,6 +12,7 @@ import pprint
 import ssg.build_yaml
 import ssg.oval
 import ssg.build_remediations
+import ssg.products
 import ssg.rule_dir_stats as rds
 import ssg.rules
 import ssg.yaml

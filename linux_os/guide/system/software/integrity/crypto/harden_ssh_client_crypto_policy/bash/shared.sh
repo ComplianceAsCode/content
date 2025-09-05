@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora,Red Hat Enterprise Linux 8,Oracle Linux 8
+# platform = Oracle Linux 8,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_fedora
 
 #the file starts with 02 so that it is loaded before the 05-redhat.conf which activates configuration provided by system vide crypto policy
 file="/etc/ssh/ssh_config.d/02-ospp.conf"

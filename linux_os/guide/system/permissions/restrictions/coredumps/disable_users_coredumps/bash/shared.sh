@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel
+# platform = Red Hat Virtualization 4,multi_platform_rhel
 SECURITY_LIMITS_FILE="/etc/security/limits.conf"
 
 if grep -qE '\*\s+hard\s+core' $SECURITY_LIMITS_FILE; then

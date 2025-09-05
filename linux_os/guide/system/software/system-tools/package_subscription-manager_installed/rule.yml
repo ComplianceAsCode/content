@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,rhv4
+prodtype: rhel6,rhel7,rhel8,rhv4
 
 title: 'Install subscription-manager Package'
 
@@ -17,9 +17,12 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 82637-0
+    cce@rhel7: 82638-8
     cce@rhel8: 82316-1
 
 references:
+    srg: SRG-OS-000366-GPOS-00153
     ospp: FPT_TUD_EXT.1,FPT_TUD_EXT.2
 
 ocil_clause: 'the package is not installed'

@@ -22,7 +22,7 @@ identifiers:
 
 references:
     disa@rhel6: "1551"
-    nist: CM-7
+    nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
     srg@rhel6: SRG-OS-999999
     stigid@rhel6: "000098"
@@ -48,3 +48,5 @@ ocil: |-
     lines in all files in <tt>/etc/modprobe.d</tt> and the deprecated
     <tt>/etc/modprobe.conf</tt>:
     <pre xml:space="preserve">$ grep -r ipv6 /etc/modprobe.conf /etc/modprobe.d</pre>
+
+platform: machine

@@ -1,4 +1,4 @@
-# platform = multi_platform_wrlinux,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_wrlinux
 # reboot = false
 # complexity = low
 # strategy = configure
@@ -38,7 +38,7 @@ if [ $nic_bound = false ];then
         # If firewalld service is running, we need to do this step with firewall-cmd
         # Otherwise firewalld will comunicate with NetworkManage and will revert assigned zone
         # of NetworkManager managed interfaces upon reload
-        firewall-cmd --zone=$firewalld_sshd_zone --add-interface=${eth_interface_list[0]}
+        firewall-cmd --permanent --zone=$firewalld_sshd_zone --add-interface=${eth_interface_list[0]}
         firewall-cmd --reload
     fi
 fi

@@ -1,11 +1,22 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Configure Maximum Audit Log Size'
 
 description: |-
     To rotate audit logs upon reaching a maximum size, edit the API Server pod
+{{%- if product == "ocp4" %}}
+    specification file <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on
+    the master node(s) and set the <tt>maximumFileSizeMegabytes</tt> parameter to
+    an appropriate size in MB. For example, to set it to 100 MB:
+    <pre>
+    "auditConfig":{
+      ...
+      "maximumFileSizeMegabytes":100,
+      ...
+     </pre>
+{{% else %}}
     specification file <tt>/etc/origin/master/master-config.yaml</tt> on
     the master node(s) and set the <tt>maximumFileSizeMegabytes</tt> parameter to
     an appropriate size in MB. For example, to set it to 100 MB:
@@ -15,6 +26,7 @@ description: |-
       maximumFileRetentionDays: 30
       maximumFileSizeMegabytes: 100
       maximumRetainedFiles: 10</pre>
+{{%- endif %}}
 
 rationale: |-
     OpenShift automatically rotates log files. Retaining old log files ensures that
@@ -26,11 +38,15 @@ rationale: |-
 severity: medium
 
 references:
-    cis: 1.1.18
+    cis: 1.2.25
 
 ocil_clause: '<tt>maximumFileSizeMegabytes</tt> is set to <tt>100</tt> or as appropriate'
 
 ocil: |-
     Run the following command on the master node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep maximumFileSizeMegabytes /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+{{% else %}}
     <pre>$ sudo grep maximumFileSizeMegabytes /etc/origin/master/master-config.yaml</pre>
+{{%- endif %}}
     The output should return a value of <pre>100</pre> or as appropriate.

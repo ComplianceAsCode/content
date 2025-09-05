@@ -2,7 +2,7 @@
 # platform = multi_platform_fedora,Red Hat Enterprise Linux 8
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 
-update-crypto-policies --set "FIPS"
+update-crypto-policies --set "FIPS:OSPP"
 
 CRYPTO_POLICY_LIB_FILE="/etc/crypto-policies/back-ends/nss.config"
 SYMLINK_TO_FOLDER="/usr/share/crypto-policies/FIPS/"

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,fedora,ol8
+prodtype: rhel6,rhel7,rhel8,fedora,ol8,ocp4
 
 title: 'Disable CAN Support'
 
@@ -23,10 +23,9 @@ identifiers:
 
 references:
     ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000095-GPOS-00049
 
 {{{ complete_ocil_entry_module_disable(module="can") }}}
-
-platform: machine
 
 template:
     name: kernel_module_disabled

@@ -16,7 +16,7 @@
   <unix:file_test check="all" check_existence="all_exist" comment="encryption policy files exists" id="test_encryption_policy_file_exists" version="1">
     <unix:object object_ref="object_encryption_policy_file_exists" />
   </unix:file_test>
-  <unix:file_object comment="/etc/shadow" id="object_encryption_policy_file_exists" version="1">
+  <unix:file_object comment="/etc/origin/master/encryption-config.yaml" id="object_encryption_policy_file_exists" version="1">
     <unix:path>/etc/origin/master</unix:path>
     <unix:filename>encryption-config.yaml</unix:filename>
   </unix:file_object>

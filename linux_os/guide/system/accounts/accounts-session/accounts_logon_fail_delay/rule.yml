@@ -18,7 +18,7 @@ identifiers:
 
 references:
     disa: "366"
-    nist: AC-7(b),CM-6(b)
+    nist: AC-7(b),CM-6(a)
     nist-csf: PR.IP-1
     srg: SRG-OS-000480-GPOS-00226
     stigid@rhel7: "010430"
@@ -38,4 +38,4 @@ ocil: |-
     <pre>$ sudo grep -i "FAIL_DELAY" /etc/login.defs
     fail_delay <sub idref="var_accounts_fail_delay" /></pre>
 
-platform: shadow-utils
+platform: login_defs

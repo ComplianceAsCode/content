@@ -1,7 +1,8 @@
 {{%- if target_oval_version == [5, 11] -%}}
 {{# there is no good alternative for symlink_object for OVAL 5.10 #}}
+{{% set backend_krb5_config = "/etc/crypto-policies/back-ends/krb5.config" %}}
 <def-group>
-  <definition class="compliance" id="configure_kerberos_crypto_policy" version="1">
+  <definition class="compliance" id="configure_kerberos_crypto_policy" version="2">
     <metadata>
       <title>Configure kerberos to use System Crypto Policy</title>
       <affected family="unix">
@@ -11,17 +12,18 @@
       </affected>
       <description>Kerberos should be configured to use the system-wide crypto policy setting.</description>
     </metadata>
-    <criteria>
-      <criterion comment="kerberos crypto-policy configuration links to same file as kerberos crypto-policy backend" test_ref="test_configure_kerberos_crypto_policy" />
+    <criteria operator="OR" comment="The config file is always a symlink to the backend, but the backend itself may be either a file, or a symlink. For this reason, we need two tests, if one passes, the other one is expected to either fail, or error.">
+      <criterion comment="kerberos crypto-policy configuration links to same file as kerberos crypto-policy backend" test_ref="test_configure_kerberos_crypto_policy_symlink" />
+      <criterion comment="kerberos crypto-policy configuration links to the crypto-policy backend file" test_ref="test_configure_kerberos_crypto_policy_nosymlink" />
     </criteria>
   </definition>
 
   <!-- Due to the fact that symlink_test goes all the way through to the canonical path,
   and it ignores any intermediary symlink,
   we check that both, /etc/krb5.conf.d/crypto-policies and,
-  /etc/crypto-policies/back-ends/krb5.config point to the same file -->
+  {{{ backend_krb5_config }}} point to the same file -->
 
-  <ind:variable_test id="test_configure_kerberos_crypto_policy" check="all" check_existence="all_exist" comment="Check if kerberos configuration symlink and crypto policy kerberos backend symlink point to same file" version="1">
+  <ind:variable_test id="test_configure_kerberos_crypto_policy_symlink" check="all" check_existence="all_exist" comment="Check if kerberos configuration symlink and crypto policy kerberos backend symlink point to same file" version="1">
     <ind:object object_ref="object_symlink_kerberos_crypto_policy_configuration" />
     <ind:state state_ref="state_symlink_kerberos_crypto_policy_backend" />
   </ind:variable_test>
@@ -32,6 +34,14 @@
     <ind:value datatype="string" operation="equals" var_ref="var_symlink_kerberos_crypto_policy_backend"/>
   </ind:variable_state>
 
+  <ind:variable_test id="test_configure_kerberos_crypto_policy_nosymlink" check="all" check_existence="all_exist" comment="Check if kerberos configuration symlink links to the crypto-policy backend file" version="1">
+    <ind:object object_ref="object_symlink_kerberos_crypto_policy_configuration" />
+    <ind:state state_ref="state_location_of_kerberos_crypto_policy_backend" />
+  </ind:variable_test>
+  <ind:variable_state id="state_location_of_kerberos_crypto_policy_backend" version="1">
+    <ind:value datatype="string" operation="equals">{{{ backend_krb5_config }}}</ind:value>
+  </ind:variable_state>
+
   <unix:symlink_object comment="kerberos crypto-policy configuration softlink" id="object_kerberos_crypto_policy_configuration" version="1">
     <unix:filepath>/etc/krb5.conf.d/crypto-policies</unix:filepath>
   </unix:symlink_object>
@@ -40,7 +50,7 @@
   </local_variable>
 
   <unix:symlink_object comment="kerberos crypto-policy backend softlink" id="object_kerberos_crypto_policy_backend" version="1">
-      <unix:filepath>/etc/crypto-policies/back-ends/krb5.config</unix:filepath>
+      <unix:filepath>{{{ backend_krb5_config }}}</unix:filepath>
   </unix:symlink_object>
   <local_variable id="var_symlink_kerberos_crypto_policy_backend" datatype="string" comment="regex variable for canonical path to targeted kerberos policy" version="1">
     <object_component item_field="canonical_path" object_ref="object_kerberos_crypto_policy_backend"/>

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Configure the Certificate for the API Server'
 
@@ -9,12 +9,23 @@ description: |-
     <tt>certFile</tt> must be configured. Verify
     that <tt>servingInfo</tt> has the <tt>certFile</tt> configured in 
     the API Server pod specification file
+{{%- if product == "ocp4" %}}
+    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master
+    node(s) to something similar to:
+    <pre>
+    "servingInfo":{
+      ...
+      "certFile":"/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls.crt",
+      ...
+    </pre>
+{{% else %}}
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) to something similar to:
     <pre>servingInfo:
       clientCA: ca.crt
       certFile: master.server.crt
       keyFile: master.server.key</pre>
+{{%- endif %}}
 
 rationale: |-
     API Server communication contains sensitive parameters that should remain
@@ -24,15 +35,21 @@ rationale: |-
 severity: medium
 
 references:
-    cis: 1.1.28
+    cis: 1.2.30
 
 ocil_clause: '<tt>certFile</tt> is not set as appropriate for <tt>servingInfo</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep -A7 servingInfo /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    The output should contain something similar to:
+    <pre>"certFile":"/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls.crt",</pre>
+{{% else %}}
     <pre>$ sudo grep -A7 servingInfo /etc/origin/master/master-config.yaml</pre>
     The output should contain something similar to:
     <pre>servingInfo:
       clientCA: ca.crt
       certFile: master.server.crt
       keyFile: master.server.key</pre>
+{{%- endif %}}

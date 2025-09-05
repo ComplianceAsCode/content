@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel8,fedora,ol8
+prodtype: rhel8,fedora,ol8,ocp4
 
 title: 'Disable acquiring, saving, and processing core dumps'
 
@@ -16,11 +16,14 @@ rationale: |-
 
 severity: unknown
 
+platform: machine
+
 identifiers:
     cce@rhel8: 82881-4
 
 references:
     ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000480-GPOS-00227
 
 ocil_clause: unit systemd-coredump.socket is not masked or running
 

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel8,fedora,ol8
+prodtype: rhel8,fedora,ol8,ocp4
 
 title: Enable FIPS Mode
 
@@ -26,13 +26,16 @@ rationale: |-
 
 severity: high
 
+platform: machine  # The check uses syscyl_... extended definition, which doesnt support offline mode
+
 identifiers:
     cce@rhel8: 80942-6
 
 references:
     disa: 68,803,2450
-    nist: SC-13,AC-17(a),AC-17(2),IA-7
+    nist: SC-12(2),SC-12(3),IA-7,SC-13,CM-6(a),SC-12
     vmmsrg: SRG-OS-000120-VMM-000600,SRG-OS-000478-VMM-001980,SRG-OS-000396-VMM-001590
+    srg: SRG-OS-000478-GPOS-00223,SRG-OS-000396-GPOS-00176
 
 ocil_clause: 'FIPS mode is not enabled'
 

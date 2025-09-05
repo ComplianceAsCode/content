@@ -1,27 +1,31 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Ensure That The etcd Key File Is Correctly Set'
 
 description: |-
     To ensure the <tt>etcd</tt> service is serving TLS to clients,
     edit the <tt>etcd</tt> configuration file
-    <tt>/etc/etcd/etcd.conf</tt> on the master on the master and
+    <tt>/etc/etcd/etcd.conf</tt> on the master and
     adding a key file to <tt>ETCD_KEY_FILE</tt>:
-    <pre>ETCD_KEY_FILE=/etc/etcd/server.key</pre>
+{{%- if product == "ocp4" %}}
+    <pre>ETCD_CERT_FILE=/etc/ssl/etcd/system:etcd-server:<i>etcd_dns_name</i>.key</pre>
+{{% else %}}
+    <pre>ETCD_CERT_FILE=/etc/etcd/server.key</pre>
+{{%- endif %}}
 
 rationale: |-
     Without cryptographic integrity protections, information can be
     altered by unauthorized users without detection.
 
+severity: medium
+
 identifiers:
     cce@ocp3: 80578-8
 
-severity: medium
-
 references:
-    cis: 1.5.1
+    cis: '2.1'
 
 ocil_clause: 'the etcd client key file is not configured'
 

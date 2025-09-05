@@ -16,6 +16,7 @@
   register: test_grep_domain
   ignore_errors: yes
   changed_when: False
+  check_mode: no
 
 - name: "Add default domain group and use STARTTLS (if no domain there)"
   ini_file:

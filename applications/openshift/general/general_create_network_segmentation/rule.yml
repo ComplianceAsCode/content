@@ -5,15 +5,16 @@ prodtype: ocp3
 title: 'Ensure Network Segmentation is Configured'
 
 description: |-
-    OpenShuft provides multi-tenant network isolation to segregate network traffic between
-    containers belonging to different tenants (users or applications) while running on a shared
-    cluster. Red Hat also works with 3rd-party SDN vendors to provide the same level of capabilities
-    integrated with OpenShift. For stronger security, create network segmentation using Network Policies
-    as it provides finer-grained control.
+    OpenShift provides multi-tenant network isolation to segregate network
+    traffic between containers belonging to different tenants (users or
+    applications) while running on a shared cluster. Red Hat also works with
+    3rd-party SDN vendors to provide the same level of capabilities integrated
+    with OpenShift. For stronger security, create network segmentation using
+    Network Policies as it provides finer-grained control.
 
 rationale: |-
-    Properly configured network policies ensure traffic between OpenShift tenants is
-    isolated.
+    Properly configured network policies ensure traffic between OpenShift
+    tenants is isolated.
 
 severity: high
 
@@ -23,8 +24,8 @@ ocil: |-
     Verify on OpenShift master nodes the plugin being used:
     <pre>$ grep networkPluginName /etc/origin/master/master-config.yaml</pre>
 
-    Nodes should be properly configured to create network segmentation using the Multi-tenant plugin or
-    Network Policies.
+    Nodes should be properly configured to create network segmentation using
+    the Multi-tenant plugin or Network Policies.
 
 # Since this is operational guidance and not a configuration check,
 # a CCE should not be assigned.

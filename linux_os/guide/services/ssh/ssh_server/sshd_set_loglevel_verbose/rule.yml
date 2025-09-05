@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Set SSH Daemon LogLevel to VERBOSE'
 
 description: |-
-    The VERBOSE parameter specifices that record login and logout activity will be logged.
+    The <tt>VERBOSE</tt> parameter configures the SSH daemon to record login and logout activity.
     To specify the log level in
     SSH, add or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
     <pre>LogLevel VERBOSE</pre>
@@ -19,10 +19,14 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel7: 82419-3
+    cce@rhel8: 82420-1
+
 references:
     srg: SRG-OS-000032-GPOS-00013
     disa: "67"
-    nist: AC-17(a),AC-17(b),AC-17(1)
+    nist: AC-17(a),AC-17(1),CM-6(a)
     stigid@sle12: "030110"
 
 ocil_clause: 'it is commented out or is not enabled'

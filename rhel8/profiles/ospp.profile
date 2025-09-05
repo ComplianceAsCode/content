@@ -161,7 +161,6 @@ selections:
     ### rpcbind
 
     ### Install Required Packages
-    - package_sssd-ipa_installed
     - package_aide_installed
     - package_dnf-automatic_installed
     - package_subscription-manager_installed
@@ -220,26 +219,20 @@ selections:
     ### Application Whitelisting (RHEL 8)
     - package_fapolicyd_installed
     - service_fapolicyd_enabled
-    - configure_fapolicyd_mounts
 
     ### Enable the Hardware RNG Entropy Gatherer Service
     - service_rngd_enabled
 
-    ### Configure SSSD
-    - sssd_run_as_sssd_user
-
     ### Configure USBGuard
     - service_usbguard_enabled
     - configure_usbguard_auditbackend
-    - usbguard_allow_hub
-    - usbguard_allow_hid
+    - usbguard_allow_hid_and_hub
+
 
     ### Enable / Configure FIPS
     - enable_fips_mode
-    - var_system_crypto_policy=fips
+    - var_system_crypto_policy=fips_ospp
     - configure_crypto_policy
-    - harden_sshd_crypto_policy
-    - harden_ssh_client_crypto_policy
     - configure_bind_crypto_policy
     - configure_openssl_crypto_policy
     - configure_libreswan_crypto_policy

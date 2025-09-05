@@ -60,6 +60,10 @@ def list_platforms(rule_obj):
 def add_platforms(rule_obj, platforms):
     oval_file, oval_contents = ssg.checks.get_oval_contents(rule_obj, 'shared')
     current_platforms = ssg.oval.applicable_platforms(oval_file)
+
+    if "multi_platform_all" in current_platforms:
+        return
+
     new_platforms = set(current_platforms)
     new_platforms.update(platforms)
 

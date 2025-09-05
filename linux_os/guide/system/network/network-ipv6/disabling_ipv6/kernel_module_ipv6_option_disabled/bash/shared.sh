@@ -10,7 +10,7 @@ echo "options ipv6 disable=1" > /etc/modprobe.d/ipv6.conf
 
 declare -a IPV6_SETTINGS=("net.ipv6.conf.all.disable_ipv6" "net.ipv6.conf.default.disable_ipv6")
 
-for setting in ${IPV6_SETTINGS[@]}
+for setting in "${IPV6_SETTINGS[@]}"
 do
 	# Set runtime =1 for setting
 	/sbin/sysctl -q -n -w "$setting=1"

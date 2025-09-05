@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8,ocp4
+
+title: 'Authorize Human Interface Devices and USB hubs in USBGuard daemon'
+
+description: |-
+    To allow authorization of USB devices combining human interface device and hub capabilities
+    by USBGuard daemon,
+    add the line
+    <tt>allow with-interface match_all { 03:*:* 09:00:* }</tt>
+    to <tt>/etc/usbguard/rules.conf</tt>.
+
+rationale: |-
+    Without allowing Human Interface Devices, it might not be possible
+    to interact with the system. Without allowing hubs, it might not be possible to use any
+    USB devices on the system.
+
+warnings:
+    - general: |-
+        This rule should be understood primarily as a convenience administration feature. This rule ensures that if the USBGuard default rules.conf file is present, it will alter it so that USB human interface devices and hubs are allowed. However, if the rules.conf file is altered by system administrator, the rule does not check if USB human interface devices and hubs are allowed. This assumes that an administrator modified the file with some purpose in mind.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82368-2
+
+references:
+    ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000114-GPOS-00059
+
+ocil_clause: 'USB devices of class 3 and 9:00 are not authorized'
+
+ocil: |-
+    To verify that USB Human Interface Devices and hubs will be authorized by the USBGuard daemon,
+    run the following command:
+    <pre>$ sudo grep allow /etc/usbguard/rules.conf</pre>
+    The output lines should include
+    <pre>allow with-interface match-all { 03:*:* 09:00:* }</pre>
