@@ -6,7 +6,7 @@ title: 'kubelet - Enable Certificate Rotation'
 
 description: |-
     To enable the kubelet to rotate client certificates, edit the kubelet configuration
-    file <tt>/etc/kubernetes/kubernetes.conf</tt>
+    file <tt>/etc/kubernetes/kubelet.conf</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>
     ...
@@ -24,7 +24,7 @@ ocil_clause: 'the kubelet cannot rotate client certificate'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep rotateCertificates /etc/kubernetes/kubernetes.conf</pre>
+    <pre>$ sudo grep rotateCertificates /etc/kubernetes/kubelet.conf</pre>
     The output should return <tt>true</tt>.
 
 identifiers:

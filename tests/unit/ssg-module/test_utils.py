@@ -27,7 +27,7 @@ def test_is_applicable_for_product():
     assert ssg.utils.is_applicable_for_product("multi_platform_rhel", "rhel7")
     assert ssg.utils.is_applicable_for_product("multi_platform_rhel,multi_platform_ol", "rhel7")
     assert ssg.utils.is_applicable_for_product("Red Hat Enterprise Linux 7", "rhel7")
-    assert not ssg.utils.is_applicable_for_product("Red Hat Enterprise Linux 7", "rhel6")
+    assert not ssg.utils.is_applicable_for_product("Red Hat Enterprise Linux 7", "rhel8")
     assert not ssg.utils.is_applicable_for_product("multi_platform_ol", "rhel7")
 
 

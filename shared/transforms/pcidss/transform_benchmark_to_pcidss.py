@@ -171,10 +171,6 @@ def main():
                     sys.exit(1)
 
     if len(unused_rules) > 0:
-        logging.warning(
-            "%i rules don't reference PCI-DSS!" % (len(unused_rules))
-        )
-
         group = ElementTree.Element("{%s}Group" % (XCCDF_NAMESPACE))
         group.set("id", ssg.constants.OSCAP_GROUP_NON_PCI)
         group.set("selected", "true")

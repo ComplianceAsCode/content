@@ -1,0 +1,52 @@
+<def-group>
+  <definition class="compliance" id="etcd_unique_ca" version="1">
+    {{{ oval_metadata("The etcd CA should be different from the Kubernetes CA.") }}}
+    <criteria>
+      <criterion test_ref="test_etcd_different_ca_than_k8s"
+      comment="Check that etcd uses a different CA than Kubernetes." />
+    </criteria>
+  </definition>
+
+  <!-- Start CA file check -->
+
+    <ind:variable_test check="all" check_existence="all_exist"
+    comment="Verify that the etcd CA is different than the Kubernetes CA"
+    id="test_etcd_different_ca_than_k8s" version="1">
+      <ind:object object_ref="obj_var_etcd_ca_file_hash" />
+      <ind:state state_ref="ste_cas_are_equal" />
+    </ind:variable_test>
+
+    <!--- etcd CA File -->
+
+    <ind:variable_object id="obj_var_etcd_ca_file_hash" version="1">
+      <ind:var_ref>var_etcd_ca_file_hash</ind:var_ref>
+    </ind:variable_object>
+
+    <local_variable id="var_etcd_ca_file_hash" datatype="string" version="1" comment="File hash for etcd CA">
+      <object_component item_field="hash" object_ref="obj_etcd_ca_file_hash" />
+    </local_variable>
+
+    <ind:filehash58_object id="obj_etcd_ca_file_hash" version="1">
+      <ind:filepath>/etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt</ind:filepath>
+      <ind:hash_type>SHA-256</ind:hash_type>
+    </ind:filehash58_object>
+
+    <!--- Kubernetes CA File -->
+
+    <local_variable id="var_k8s_ca_file_hash" datatype="string" version="1" comment="The hash for the Kubernetes CA file">
+      <object_component item_field="hash" object_ref="object_k8s_ca_file_hash" />
+    </local_variable>
+
+    <ind:filehash58_object id="object_k8s_ca_file_hash" version="1">
+      <ind:filepath>/etc/kubernetes/static-pod-resources/kube-apiserver-certs/configmaps/client-ca/ca-bundle.crt</ind:filepath>
+      <ind:hash_type>SHA-256</ind:hash_type>
+    </ind:filehash58_object>
+
+    <!--- State -->
+
+    <ind:variable_state comment="CA files" id="ste_cas_are_equal" version="1">
+      <ind:value operation="not equal" datatype="string" var_ref="var_k8s_ca_file_hash" var_check="all" />
+    </ind:variable_state>
+
+  <!-- End CA file check -->
+</def-group>

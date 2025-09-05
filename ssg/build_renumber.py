@@ -249,9 +249,6 @@ class OVALFileLinker(FileLinker):
                 # in the case:
                 # * OVAL definition is referenced from XCCDF file,
                 # * But not defined in OVAL file
-                print("WARNING: OVAL check '{0}' was not found, removing "
-                      "<check-content> element from the XCCDF rule."
-                      .format(xccdfid), file=sys.stderr)
                 rule.remove(check)
 
 

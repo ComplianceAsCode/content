@@ -6,7 +6,7 @@
       {{% if product in ["debian9", "debian10", "ubuntu1604"] %}}
       <extend_definition comment="rsyslog daemon is used as local logging daemon" definition_ref="package_rsyslog_installed" />
       {{% endif %}}
-      <criterion comment="Check if all system log files are owned by root group" test_ref="test_rsyslog_files_groupownership" />
+      <criterion comment="Check if all system log files are owned by the appropriate group" test_ref="test_rsyslog_files_groupownership" />
     </criteria>
 
   </definition>
@@ -94,8 +94,8 @@
     <object_component item_field="subexpression" object_ref="object_rfg_log_files_paths" />
   </local_variable>
 
-  <!-- Perform the test if all rsyslog system log files are owned by the 'root' group -->
-  <unix:file_test check="all" check_existence="all_exist" id="test_rsyslog_files_groupownership" version="1" comment="System log files are owned by root group">
+  <!-- Perform the test if all rsyslog system log files are owned by the appropriate group -->
+  <unix:file_test check="all" check_existence="all_exist" id="test_rsyslog_files_groupownership" version="1" comment="System log files are owned by the appropriate group">
     <unix:object object_ref="object_rsyslog_files_groupownership" />
     <unix:state state_ref="state_rsyslog_files_groupownership" />
   </unix:file_test>
@@ -106,7 +106,7 @@
 
   <unix:file_state id="state_rsyslog_files_groupownership" version="1">
     <unix:type operation="equals">regular</unix:type>
-    {{% if product in ["debian9", "debian10", "ubuntu1604"] %}}
+    {{% if product in ["debian9", "debian10", "ubuntu1604", "ubuntu2004"] %}}
     <unix:group_id datatype="int">4</unix:group_id>
     {{% else %}}
     <unix:group_id datatype="int">0</unix:group_id>

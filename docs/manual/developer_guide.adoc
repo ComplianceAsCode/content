@@ -7,6 +7,8 @@
 
 toc::[]
 
+WARNING: This guide has been deprecated. Please check the latest link:https://complianceascode.readthedocs.io/[ComplianceAsCode Developer Documentation]
+
 ## Introduction
 
 This document tries to provide information useful for ComplianceAsCode/content project contributors.
@@ -20,7 +22,7 @@ Join the mailing list at https://fedorahosted.org/mailman/listinfo/scap-security
 
 ### Installing build dependencies
 
-On *Red Hat Enterprise Linux 6/7* make sure the packages `cmake`, `openscap-utils`,
+On *Red Hat Enterprise Linux 7* make sure the packages `cmake`, `openscap-utils`,
 `PyYAML`, `python-jinja2` and their dependencies are installed:
 
 ```bash
@@ -615,7 +617,6 @@ For example:
 ----
 $ tree -d rhel7
 rhel7
-├── cpe
 ├── kickstart
 ├── overlays
 ├── profiles
@@ -628,10 +629,6 @@ rhel7
 
 |===
 |Directory |Description
-|`cpe`
-|`[red]#Required#` Contains the Common Platform Enumeration (CPE) product
-identifier that is provided from link:https://nvd.nist.gov/products/cpe[NIST].
-
 |`kickstart`
 |`[red]#Optional#` Contains product kickstart or build files to be used in
 testing, development, or production (not recommended) of compliance content.
@@ -908,10 +905,10 @@ A rule may contain those reference-type attributes:
 |US-CERT technical cyber security alerts –the identifier value SHOULD be a technical cyber security alert ID (e.g., “TA05-189A”)
 |===
 +
-When the rule is related to RHEL, it should have a CCE. A CEE (e.g. cce@rhel7: CCE-80328-8) is used as a global identifier that maps the rule to the product over the lifetime of a rule. There should only be one CCE mapped to a rule as a global identifier. Any other usage of CCE is no longer considered a best practice. CCEs are also product dependent which means that a different CCE must be used for each different product and product version. For example if `cce@rhel7: 80328-8` exists in a rule, that CCE cannot be used for another product or version (e.g. rhel6), and the CCE MUST be retired with the rule.
+When the rule is related to RHEL, it should have a CCE. A CEE (e.g. cce@rhel7: CCE-80328-8) is used as a global identifier that maps the rule to the product over the lifetime of a rule. There should only be one CCE mapped to a rule as a global identifier. Any other usage of CCE is no longer considered a best practice. CCEs are also product dependent which means that a different CCE must be used for each different product and product version. For example if `cce@rhel7: 80328-8` exists in a rule, that CCE cannot be used for another product or version (e.g. rhel9), and the CCE MUST be retired with the rule.
 Available CCEs that can be assigned to new rules are listed in the `shared/references/cce-rhel-avail.txt` file.
 +
-* `references`: This is related to the compliance document line items that the rule applies to. These can be attributes such as `stigid`, `srg`, `nist`, etc., whose keys may be modified with a product (e.g., `stigid@rhel6`) to restrict what products a reference identifier applies to. Depending on the type of reference (e.g. catalog, rulei, etc.) will depend on how many can be added to a single rule. In addition, certain references in a rule such as `stigid` only apply to a certain product and product version; they cannot be used for multiple products and versions
+* `references`: This is related to the compliance document line items that the rule applies to. These can be attributes such as `stigid`, `srg`, `nist`, etc., whose keys may be modified with a product (e.g., `stigid@rhel7`) to restrict what products a reference identifier applies to. Depending on the type of reference (e.g. catalog, rulei, etc.) will depend on how many can be added to a single rule. In addition, certain references in a rule such as `stigid` only apply to a certain product and product version; they cannot be used for multiple products and versions
 +
 [cols="4*", options="header"]
 |===
@@ -1772,16 +1769,17 @@ yamlfile_value::
 ** *yamlpath* - OVAL's link:https://github.com/OpenSCAP/yaml-filter/wiki/YAML-Path-Definition[YAML Path] expression.
 ** *entity_check* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#CheckEnumeration[CheckEnumeration]) - entity_check value for state's value, optional. If omitted, entity_check attribute would not be set and will be treated by OVAL as 'all'. +
     Possible options are `all`, `at least one`, `none satisfy` and `only one`.
-** *check_existence* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#ExistenceEnumeration[ExistenceEnumeration]) - `check_existence` value for the `yamlfilecontent_test`, optional. If omitted, check_existence attribute will defalut to 'only_one_exists'. +
+** *check_existence* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#ExistenceEnumeration[ExistenceEnumeration]) - `check_existence` value for the `yamlfilecontent_test`, optional. If omitted, check_existence attribute will default to 'only_one_exists'. +
    Possible options are `all_exist`, `any_exist`, `at_least_one_exists`, `none_exist`, `only_one_exists`.
 ** *values* - a list of dictionaries with values to check, where:
-**   *key* - the yaml key to check, optional. Used when the yamlpath expression yields a map.
-**   *value* - the value to check.
-**   *type* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---simpledatatypeenumeration---[SimpleDatatypeEnumeration]) - datatype for state's field (child of value), optional. If omitted, datatype would be treated as OVAL's default 'string'. +
+***   *key* - the yaml key to check, optional. Used when the yamlpath expression yields a map.
+***   *value* - the value to check.
+***   *type* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---simpledatatypeenumeration---[SimpleDatatypeEnumeration]) - datatype for state's field (child of value), optional. If omitted, datatype would be treated as OVAL's default 'string'. +
      Most common datatypes are `string` and `int`. For complete list check reference link.
-**   *operation* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---operationenumeration---[OperationEnumeration]) - operation value for state's field (child of value), optional. If omitted, operation attribute would not be set. OVAL's default operation is 'equals'. +
+***   *operation* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---operationenumeration---[OperationEnumeration]) - operation value for state's field (child of value), optional. If omitted, operation attribute would not be set. OVAL's default operation is 'equals'. +
      Most common operations are `equals`, `not equal`, `pattern match`, `greater than or equal` and `less than or equal`. For complete list of operations check the reference link.
-**   *entity_check* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#CheckEnumeration[CheckEnumeration]) - entity_check value for state's field (child of value), optional. If omitted, entity_check attribute would not be set and will be treated by OVAL as 'all'. +
+***   *entity_check* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#CheckEnumeration[CheckEnumeration]) - entity_check value for state's field (child of value), optional. If omitted, entity_check attribute would not be set and will be treated by OVAL as 'all'. +
+Possible options are `all`, `at least one`, `none satisfy` and `only one`.
 * Languages: OVAL
 
 
@@ -1790,10 +1788,14 @@ yamlfile_value::
 The offer of currently available templates can be extended by developing a new
 template.
 
-1) Create the template files, one for each type of file. Each one should be
-named `template_<TYPE>_<NAME>`. Where `<TYPE>` should be OVAL, ANSIBLE, BASH,
-ANACONDA or PUPPET and `<NAME>` is the what we will call the template name.
-Create these files in `link:{rootdir}/shared/templates[shared/templates]` directory.
+1) Create a new subdirectory within the
+`link:{rootdir}/shared/templates[shared/templates]` directory. The name of the
+new subdirectory will become the template name.
+
+2) For each language supported by this template, create a corresponding file
+within the template directory. File names should have format of `LANG.template`,
+where _LANG_ should be the language  identifier in lower case, e.g.
+`oval.template`, `bash.template` etc.
 
 Use the Jinja syntax we use elsewhere in the project; refer to the earlier
 section on Jinja macros for more information.  The parameters should be named
@@ -1801,7 +1803,8 @@ using uppercase letters, because the keys from `rule.yml` are converted to
 uppercase by the code that substitutes the parameters to the template.
 
 Notice that OVAL should be written in shorthand format.  This is an example of
-an OVAL template file called _template_OVAL_package_installed_:
+an OVAL template file called _oval.template_ within the _package_installed_
+directory:
 
 [source,xml]
 ----
@@ -1824,7 +1827,8 @@ an OVAL template file called _template_OVAL_package_installed_:
 </def-group>
 ----
 
-And here is the Ansible template file called _template_ANSIBLE_package_installed_:
+And here is the Ansible template file called _ansible.template_ within the
+_package_installed_ directory:
 
 ----
 # platform = multi_platform_all
@@ -1839,57 +1843,51 @@ And here is the Ansible template file called _template_ANSIBLE_package_installed
 
 ----
 
+2) Create a file called _template.yml_ within the template directory. This file
+stores template metadata. Currently, it stores list of supported languages. Note
+that each language listed in this file must have associated implementation
+file with the _.template_ extension, see above. 
 
-2) Implement a callback function which will process the
-parameters before passing them to the Jinja engine.  For example, this callback can
+An example can look like this:
+
+----
+supported_languages:
+  - ansible
+  - bash
+  - ignition
+  - kubernetes
+  - oval
+  - puppet
+
+----
+
+3) If needed, implement a preprocessing function which will process the
+parameters before passing them to the Jinja engine.  For example, this function can
 provide default values, escape characters, check if parameters are correct, or
-any other processing of the parameters specific for the template.
+perform any other processing of the parameters specific for the template.
 
-The callback functions are located in `link:{rootdir}/ssg/templates.py[ssg/templates.py]`.
+The function should be called _preprocess_ and should be located in the file
+_template.py_ within the template directory.
 
-The callback function must have the same name as the template name. This is the
-name that is used in `rule.yml` in `name:` key, for example
-`package_installed`.
-
-The callback must have 2 parameters:
+The function must have 2 parameters:
 
 - `data` - dictionary which contains the contents of `vars:` dictionary from `rule.yml`
 - `lang` - string, describes language, can be one of: `"anaconda"`, `"ansible"`, `"bash"`, `"oval"`, `"puppet"`, `"ignition"`, `"kubernetes"`
 
-The callback function is executed for every supported language, so it can process the data differently for each language.
+The function is executed for every supported language, so it can process the data differently for each language.
 
 The function must always return the (modified) `data` dictionary.
 
-The function must be always defined even if no processing of data is needed.
-In that situation the function just returns `data` parameter.
-
-3) Decorate the callback function by the `@template` decorator. The decorator
-will register the template in the templating engine. The decorator has a single
-parameter which is a list of languages that the template provides. The list can
-contain the following values: `"anaconda"`, `"ansible"`, `"bash"`, `"oval"`,
-`"puppet"`, `"ignition"`, `"kubernetes"`. The decorator parameter is mandatory.
-Insert the `@template` decorator on the line before the callback function definition.
-
-For example, if the template name is `package_installed` and it provides
-Ansible template in `shared/templates/template_ANSIBLE_package_installed` and
-OVAL template in `shared/templates/template_OVAL_package_installed`, then there
-must be callback function `package_installed` in
-`link:{rootdir}/ssg/templates.py[ssg/templates.py]` and the callback must be
-decorated by `@template(["ansible", "oval")]`. In this example, decorating the
-callback function lets the templating engine know that Ansible and OVAL should
-be generated if any rule uses `package_installed` in `rule.yml`.
-
-The following example shows the callback function for the template
-`mount_option`, including the `@template` decorator. The example function
-declares that there is a template which name is `mount_option` and it provides
-Ansible, Bash and OVAL content. The code takes the `data` argument which is a
-dictionary with template parameters from `rule.yml` and based on `lang` it
-modifies the template parameters and returns the modified dictionary.
+The following example shows the file _template.py_ for the template
+`mount_option`. The code takes the `data` argument which is a dictionary with
+template parameters from `rule.yml` and based on `lang` it modifies the template
+parameters and returns the modified dictionary.
 
 [source,python]
 ----
-@template(["ansible", "bash", "oval"])
-def mount_option(data, lang):
+import re
+
+def preprocess(data, lang):
     if lang == "oval":
         data["pointid"] = re.sub(r"[-\./]", "_", data["mountpoint"]).lstrip("_")
     else:
@@ -1909,6 +1907,68 @@ escape_id::
 escape_regex::
 * Escapes characters in the string for it to be usable as a part of some regular expression, behaves similar to the Python 3's link:https://docs.python.org/3/library/re.html#re.escape[*re.escape*].
 
+
+=== Applicability of content
+
+All profiles and rules included in a products' DataStream are applicable by default.
+For example, all profiles and rules included in a `rhel8` DS will apply and evaluate in a RHEL 8 host.
+
+But a content's applicability can be fine tuned to a specific environment in the product.
+The SCAP standard specifies two mechanisms to define applicability:
+- link:https://nvd.nist.gov/products/cpe[CPE]: Allows a specific hardware or platform to be identified.
+- link:https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/cpe/applicability-language[Applicability Language]: Allows the construction of logical expressions involving CPEs.
+
+At the moment, only the CPE mechanism is supported.
+
+==== Applicability by CPE
+
+The CPEs defined by the project are declared in `shared/applicability/cpes.yml`.
+
+Syntax is as follows (using examples of existing CPEs):
+
+[source,yml]
+----
+cpes:
+  - machine:                                  ## The id of the CPE
+      name: "cpe:/a:machine"                  ## The CPE Name as defined by the CPE standard
+      title: "Bare-metal or Virtual Machine"  ## Human readable title for the CPE
+      check_id: installed_env_is_a_machine    ## ID of OVAL implementing the applicability check
+  - gdm:
+      name: "cpe:/a:gdm"
+      title: "Package gdm is installed"
+      check_id: installed_env_has_gdm_package
+----
+
+The first entry above defines a CPE whose id is `machine`, this CPE is used for rules not applicable to containers. +
+A rule or profile with `platform: machine` will be evaluated only if the targeted scan environment is either bare-metal or virtual machine.
+
+The second entry defines a CPE for GDM. +
+By setting the `platform` to `gdm`, the rule will have its applicability restricted to only environments which have `gdm` package installed. +
+
+The OVAL checks for the CPE need to be of `inventory` class, and must be under `shared/checks/oval/`.
+
+===== Setting a product's default CPE
+The product's default applicability is set in its `product.yml` file, under the `cpes` key.
+For example:
+
+[source,yml]
+----
+cpes:
+  - example:
+      name: "cpe:/o:example"
+      title: "Example"
+      check_id: installed_OS_is_part_of_Unix_family
+----
+
+Multiple CPEs can be set as default platforms for a product. +
+
+===== Setting the product's CPE source directory
+
+The key `cpes_root` in `product.yml` file specifies the directory to source the CPES from. +
+By default, all products source their CPES from `shared/applicability/`. Any file with extension `.yml` will be sourced for CPE definitions.
+
+Note: Only CPEs that are referenced by a rule or profile will be included in the product's CPE Dictionary. +
+If no content requires the CPE it is deemed unnecessary and won't be included in the dictonary.
 
 === Tests (ctest)
 

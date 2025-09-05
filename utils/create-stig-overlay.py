@@ -130,11 +130,11 @@ def parse_args():
     parser.add_argument("--disa-xccdf", default=False, required=True,
                         action="store", dest="disa_xccdf_filename",
                         help="A DISA generated XCCDF Manual checks file. \
-                              For example: disa-stig-rhel6-v1r12-xccdf-manual.xml")
+                              For example: disa-stig-rhel8-v1r12-xccdf-manual.xml")
     parser.add_argument("--ssg-xccdf", default=None,
                         action="store", dest="ssg_xccdf_filename",
                         help="A SSG generated XCCDF file. \
-                              For example: ssg-rhel6-xccdf.xml")
+                              For example: ssg-rhel8-xccdf.xml")
     parser.add_argument("-o", "--output", default=outfile,
                         action="store", dest="output_file",
                         help="STIG overlay XML content file \

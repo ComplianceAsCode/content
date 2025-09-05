@@ -11,6 +11,7 @@ import argparse
 import ssg.build_cpe
 import ssg.id_translate
 import ssg.xml
+import ssg.yaml
 
 # This script requires two arguments: an OVAL file and a CPE dictionary file.
 # It is designed to extract any inventory definitions and the tests, states,
@@ -31,8 +32,9 @@ def parse_args():
     p.add_argument("product", help="Name of the product")
     p.add_argument("idname", help="Identifier prefix")
     p.add_argument("cpeoutdir", help="Artifact output directory")
+    p.add_argument("shorthandfile", help="shorthand xml to generate "
+                   "the CPE dictionary from")
     p.add_argument("ovalfile", help="OVAL file to process")
-    p.add_argument("cpedictfile", help="CPE dictionary file to process")
 
     return p.parse_args()
 
@@ -108,9 +110,24 @@ def main():
     newovalfile = newovalfile.replace("oval-unlinked", "cpe-oval")
     ssg.xml.ElementTree.ElementTree(ovaltree).write(args.cpeoutdir + "/" + newovalfile)
 
+    # Lets scrape the shorthand for the list of platforms referenced
+    benchmark_cpe_names = set()
+    shorthandtree = ssg.xml.parse_file(args.shorthandfile)
+    for platform in shorthandtree.findall(".//platform"):
+        cpe_name = platform.get("idref")
+        benchmark_cpe_names.add(cpe_name)
+
+    product_cpes = ssg.build_cpe.ProductCPEs(args.product)
+    cpe_list = ssg.build_cpe.CPEList()
+    for cpe_name in benchmark_cpe_names:
+        cpe_list.add(product_cpes.get_cpe(cpe_name))
+
+    cpedict_filename = "ssg-" + args.product + "-cpe-dictionary.xml"
+    cpedict_path = os.path.join(args.cpeoutdir, cpedict_filename)
+    cpe_list.to_file(cpedict_path, newovalfile)
+
     # replace and sync IDs, href filenames in input cpe dictionary file
-    cpedicttree = ssg.xml.parse_file(args.cpedictfile)
-    newcpedictfile = args.idname + "-" + os.path.basename(args.cpedictfile)
+    cpedicttree = ssg.xml.parse_file(cpedict_path)
     for check in cpedicttree.findall(".//{%s}check" % cpe_ns):
         checkhref = check.get("href")
         # If CPE OVAL references another OVAL file
@@ -173,7 +190,7 @@ def main():
         # Referenced OVAL checks passed both of the above sanity tests
         check.text = translator.generate_id("{" + oval_ns + "}definition", check.text)
 
-    ssg.xml.ElementTree.ElementTree(cpedicttree).write(args.cpeoutdir + '/' + newcpedictfile)
+    ssg.xml.ElementTree.ElementTree(cpedicttree).write(cpedict_path)
 
     sys.exit(0)
 

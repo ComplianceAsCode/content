@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify User Who Owns The Open vSwitch Daemon PID File'
+
+description: |-
+    {{{ describe_file_owner(file="/run/openvswitch/ovs-vswitchd.pid", owner="openvswitch") }}}
+
+rationale: |-
+    CNI (Container Network Interface) files consist of a specification and libraries for
+    writing plugins to configure network interfaces in Linux containers, along with a number
+    of supported plugins. Allowing writeable access to the files could allow an attacker to modify
+    the networking configuration potentially adding a rogue network connection.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-83888-8
+
+references:
+    cis: 1.1.9
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/run/openvswitch/ovs-vswitchd.pid", owner="openvswitch") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/run/openvswitch/ovs-vswitchd.pid", owner="openvswitch") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: /run/openvswitch/ovs-vswitchd.pid
+        fileuid: '800'

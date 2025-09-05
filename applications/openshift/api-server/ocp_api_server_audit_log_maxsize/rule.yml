@@ -1,0 +1,56 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Configure OpenShift API Server Maximum Audit Log Size'
+
+description: |-
+    To rotate audit logs upon reaching a maximum size,
+    edit the <tt>openshift-apiserver</tt> configmap
+    and set the <tt>audit-log-maxsize</tt> parameter to
+    an appropriate size in MB. For example, to set it to 100 MB:
+    <pre>
+    "apiServerArguments":{
+      ...
+      "audit-log-maxsize": ["100"],
+      ...
+    </pre>
+
+rationale: |-
+    OpenShift automatically rotates log files. Retaining old log files ensures that
+    OpenShift Operators have sufficient log data available for carrying out any
+    investigation or correlation. If you have set file size of 100 MB and the number of
+    old log files to keep as 10, there would be approximately 1 GB of log data
+    available for use in analysis.
+
+identifiers:
+  cce@ocp4: CCE-83687-4
+
+
+severity: medium
+
+references:
+    cis: 1.2.25
+
+ocil_clause: '<tt>audit-log-maxsize</tt> is set to <tt>100</tt> or as appropriate'
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get configmap config -n openshift-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["audit-log-maxsize"]'</pre>
+    The output should return a value of <pre>["100"]</pre> or as appropriate.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: /api/v1/namespaces/openshift-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '"apiServerArguments":{.*"audit-log-maxsize":\["100"\]'
+      operation: "pattern match"
+      type: "string"

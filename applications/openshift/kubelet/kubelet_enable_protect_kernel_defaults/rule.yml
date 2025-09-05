@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'kubelet - Enable Protect Kernel Defaults'
+
+description: |-
+  Protect tuned kernel parameters from being overwritten by the kubelet.
+
+rationale: |-
+  Kernel parameters are usually tuned and hardened by the system administrators
+  before putting the systems into production. These parameters protect the
+  kernel and the system. Your kubelet kernel defaults that rely on such
+  parameters should be appropriately set to match the desired secured system
+  state. Ignoring this could potentially lead to running pods with undesired
+  kernel behavior.
+
+severity: medium
+
+ocil_clause: 'the kubelet can modify kernel parameters'
+
+ocil: |-
+    Run the following command on the kubelet node(s):
+    <pre>$ sudo grep protectKernelDefaults /etc/kubernetes/kubelet.conf</pre>
+    The output should return <tt>true</tt>.
+
+#identifiers:
+#   cce@ocp4: 
+
+references:
+    cis: 4.2.6
+
+template:
+    name: yamlfile_value
+    vars:
+        filepath: /etc/kubernetes/kubelet.conf
+        yamlpath: ".protectKernelDefaults"
+        values:
+         - value: "true"
+           operation: "equals"

@@ -7,17 +7,29 @@
 {{#
   High level macro which checks if a particular combination of parameter and value in a configuration file is set.
   This macro can take ten parameters:
-    - path (String): Path to the configuration file to be checked.
-    - prefix_regex (String): Regular expression to be used in the beginning of the OVAL text file content check.
-    - parameter (String): The parameter to be checked in the configuration file.
-    - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
-    - separator_regex (String): Regular expression to be used as the separator of parameter and value in a configuration file. If spaces are allowed, this should be included in the regular expression.
-    - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
-    - application (String): The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
-    - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
-    - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
-    - section (String): If set, the parameter will be checked only within the given section defined by [section].
-    - quotes (String): If non-empty, one level of matching quotes is considered when checking the value. See comment of oval_line_in_file_state for more info.
+
+  :param path: Path to the configuration file to be checked.
+  :type path: str
+  :param prefix_regex: Regular expression to be used in the beginning of the OVAL text file content check.
+  :type prefix_regex: str
+  :param parameter: The parameter to be checked in the configuration file.
+  :type parameter: str
+  :param value: The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
+  :type value: str
+  :param separator_regex: Regular expression to be used as the separator of parameter and value in a configuration file. If spaces are allowed, this should be included in the regular expression.
+  :type separator_regex: str
+  :param missing_parameter_pass: If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
+  :type missing_parameter_pass: boolean
+  :param application: The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
+  :type application: str
+  :param multi_value: If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
+  :type multi_value: boolean
+  :param missing_config_file_fail: If set, the check will fail if the configuration is not existent in the system.
+  :type missing_config_file_fail: boolean
+  :param section: If set, the parameter will be checked only within the given section defined by [section].
+  :type section: str
+  :param quotes: If non-empty, one level of matching quotes is considered when checking the value. See comment of oval_line_in_file_state for more info.
+  :type quotes: str
 #}}
 {{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='', quotes='') -%}}
 {{%- if application == '' -%}}

@@ -1,0 +1,56 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Configure the OpenShift API Server Maximum Retained Audit Logs'
+
+description: |-
+    To configure how many rotations of audit logs are retained,
+    edit the <tt>openshift-apiserver</tt> configmap
+    and set the <tt>audit-log-maxbackup</tt> parameter to
+    <tt>10</tt> or to an organizationally appropriate value:
+    <pre>
+    "apiServerArguments":{
+      ...
+      "audit-log-maxbackup": [10],
+      ...
+    </pre>
+
+rationale: |-
+    OpenShift automatically rotates the log files. Retaining old log files ensures
+    OpenShift Operators will have sufficient log data available for carrying out
+    any investigation or correlation. For example, if the audit log size is set to
+    100 MB and the number of retained log files is set to 10, OpenShift Operators
+    would have approximately 1 GB of log data to use during analysis.
+
+identifiers:
+  cce@ocp4: CCE-83977-9
+
+
+severity: low
+
+references:
+    cis: 1.2.24
+
+ocil_clause: '<tt>audit-log-maxbackup</tt> is set to <tt>10</tt> or as appropriate'
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get configmap config -n openshift-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["audit-log-maxbackup"][0]'</pre>
+    The output should return a value of <pre>10</pre> or as appropriate.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: /api/v1/namespaces/openshift-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '"apiServerArguments":{.*"audit-log-maxbackup":\["10"\]'
+      operation: "pattern match"
+      type: "string"

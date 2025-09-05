@@ -10,6 +10,13 @@ pkg_manager: "apt_get"
 
 init_system: "systemd"
 
+cpes_root: "../shared/applicability"
+cpes:
+  - debian9:
+      name: "cpe:/o:debianproject:debian:9"
+      title: "Debian release 9 (Stretch)"
+      check_id: installed_OS_is_debian9
+
 # Mapping of CPE platform to package
 platform_package_overrides:
   net-snmp: "snmp"

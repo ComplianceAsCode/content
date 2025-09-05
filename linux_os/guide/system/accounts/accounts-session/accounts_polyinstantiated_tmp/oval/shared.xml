@@ -1,0 +1,44 @@
+<def-group>
+  <definition class="compliance" id="accounts_polyinstantiated_tmp" version="1">
+    {{{ oval_metadata("") }}}
+    <criteria operator="AND" comment="Check Polyinstantiation of /tmp Directories">
+      <criterion comment="Check that /tmp/tmp-inst exists and has mode 000" test_ref="test_tmp_inst" />
+      <criterion comment="Check configuration of /tmp in /etc/security/namespace.conf file" test_ref="test_tmp_in_namespace_conf" />
+    </criteria>
+  </definition>
+
+  <unix:file_test comment="Check that /tmp/tmp-inst exists and has mode 000" check="all" check_existence="only_one_exists" id="test_tmp_inst" version="1">
+    <unix:object object_ref="obj_tmp_inst" />
+    <unix:state state_ref="state_tmp_inst" />
+  </unix:file_test>
+
+  <unix:file_object id="obj_tmp_inst" version="1">
+    <unix:path>/tmp/tmp-inst</unix:path>
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+
+  <unix:file_state id="state_tmp_inst" version="1">
+    <unix:type>directory</unix:type>
+    <unix:uread datatype="boolean">false</unix:uread>
+    <unix:uwrite datatype="boolean">false</unix:uwrite>
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gread datatype="boolean">false</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+
+  <ind:textfilecontent54_test check="all"
+    comment="Check configuration of /tmp in /etc/security/namespace.conf file"
+    id="test_tmp_in_namespace_conf" version="1">
+  <ind:object object_ref="obj_tmp_in_namespace_conf" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_tmp_in_namespace_conf" version="1">
+    <ind:filepath>/etc/security/namespace.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*/tmp\s+/tmp/tmp-inst/\s+level\s+root,adm$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: fedora,ol8,rhel7,rhel8
+
+title: 'Limit CPU consumption of the Perf system'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.perf_cpu_time_max_percent", value="1") }}}'
+
+rationale: |-
+    The <tt>kernel.perf_cpu_time_max_percent</tt> configures a treshold of
+    maximum percentile of CPU that can be used by Perf system. Restricting usage
+    of <tt>Perf</tt> system decreases risk of potential availability problems.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83369-9
+    cce@rhel8: CCE-83373-1
+
+references:
+    anssi: BP28(R23)
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.perf_cpu_time_max_percent", value="1") }}}
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.perf_cpu_time_max_percent
+        sysctlval: '1'
+        datatype: int

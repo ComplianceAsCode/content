@@ -1,0 +1,34 @@
+{{% if product == "fedora" %}}
+{{% set grub_cfg_prefix = "/boot/efi/EFI/fedora" %}}
+{{% else %}}
+{{% set grub_cfg_prefix = "/boot/efi/EFI/redhat" %}}
+{{% endif %}}
+
+<def-group>
+  <definition class="compliance" id="uefi_no_removeable_media" version="1">
+    {{{ oval_metadata("Ensure the system is not configured to use a boot loader on removable media.") }}}
+    <criteria comment="The respective application or service is configured correctly or system boot mode is not UEFI" operator="OR">
+      <criterion comment="Check the set root in {{{ grub_cfg_prefix + "/grub.cfg" }}}" test_ref="test_uefi_no_removeable_media" />
+      {{{ oval_file_absent_criterion(grub_cfg_prefix + "/grub.cfg") }}}
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the value of set root setting in the {{{ grub_cfg_prefix + "/grub.cfg" }}} file"
+  id="test_uefi_no_removeable_media" version="1">
+  <ind:object object_ref="obj_uefi_no_removeable_media" />
+  <ind:state state_ref="state_uefi_no_removeable_media" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_uefi_no_removeable_media" version="1">
+    <ind:filepath>{{{ grub_cfg_prefix + "/grub.cfg" }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*set root=(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_uefi_no_removeable_media" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^['|\(](?!fd)(?!cd)(?!usb).*['|\)].*'$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  {{{ oval_file_absent(grub_cfg_prefix + "/grub.cfg") }}}
+</def-group>

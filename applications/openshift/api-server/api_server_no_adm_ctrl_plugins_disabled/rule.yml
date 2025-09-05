@@ -1,0 +1,53 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Ensure all admission control plugins are enabled'
+
+description: |-
+    To make sure none of them is explicitly disabled, run the following command:
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."disable-admission-plugins"'</pre>
+    and make sure the output is empty.
+
+rationale: |-
+    Several hardening controls depend on certain API server admission plugins
+    being enabled. Checking that no admission control plugins are disabled
+    helps assert that all the critical admission control plugins are indeed
+    enabled and providing the security benefits required.
+
+identifiers:
+  cce@ocp4: CCE-83799-7
+
+
+severity: medium
+
+references:
+    cis: 1.2.13
+    cis: 1.2.14
+    cis: 1.2.14
+    cis: 1.2.15
+    cis: 1.2.16
+    cis: 1.2.17
+
+ocil_clause: 'No admission plugins are disabled'
+
+ocil: |-
+    To verify that the list of disabled admission plugins is empty, run the following command:
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."disable-admission-plugins"'</pre>
+    There should be no output.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "none exist"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '"disable-admission-plugins"'
+      operation: "pattern match"
+      type: "string"

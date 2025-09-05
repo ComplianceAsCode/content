@@ -1,0 +1,39 @@
+<def-group>
+  <definition class="compliance" id="prefer_64bit_os" version="1">
+    {{{ oval_metadata("Check if the system supports a 64-bit Operating System") }}}
+    <criteria comment="Either the OS is 64-bit, or the CPU doesn't support 64-bit (it is 32 or 16 bit)" operator="OR">
+      <criterion comment="Check if OS is 64-bit" test_ref="test_proc_sys_kernel_osrelease_64_bit" />
+      <criterion comment="Check if CPU is not 64-bit" test_ref="test_proc_cpuinfo_64_bit" negate="true" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_proc_cpuinfo_64_bit"
+  comment="Check for CPU flag lm" check="all" version="1">
+    <ind:object object_ref="object_proc_cpuinfo_64_bit" />
+    <ind:state state_ref="state_proc_cpuinfo_64_bit" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_proc_cpuinfo_64_bit"
+  version="1">
+    <ind:filepath>/proc/cpuinfo</ind:filepath>
+    <ind:pattern operation="pattern match">^flags\s+:\s+(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_proc_cpuinfo_64_bit" version="1">
+    <ind:subexpression operation="pattern match">\blm\b</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
+      comment="Check if kernel nvr arch is 64-bit" id="test_proc_sys_kernel_osrelease_64_bit" version="1">
+    <ind:object object_ref="object_proc_sys_kernel_osrelease_64_bit" />
+    <ind:state state_ref="state_proc_sys_kernel_osrelease_64_bit" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_proc_sys_kernel_osrelease_64_bit" version="1">
+    <ind:filepath>/proc/sys/kernel/osrelease</ind:filepath>
+    <ind:pattern operation="pattern match">^.*\.(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_proc_sys_kernel_osrelease_64_bit" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^(x86_64|aarch64|ppc64le|s390x)$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

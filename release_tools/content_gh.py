@@ -80,9 +80,11 @@ def close_milestone(milestone):
 
 
 def get_closed_prs(repo, milestone):
-    issues_and_prs = repo.get_issues(milestone=milestone, state="closed", sort="updated")
-    prs_only = [i for i in issues_and_prs if i.pull_request is not None]
-    return prs_only
+    closed_issues = repo.get_issues(milestone=milestone, state="closed", sort="updated")
+    issues_with_prs = [i for i in closed_issues if i.pull_request is not None]
+    merged_prs =
+    [i.as_pull_request() for i in issues_with_prs if i.as_pull_request().merged is True]
+    return merged_prs
 
 
 def generate_release_notes(repo, args):
@@ -94,16 +96,15 @@ def generate_release_notes(repo, args):
     for pr in get_closed_prs(repo, milestone):
         pr_title = pr.title
         pr_number = str(pr.number)
-        pr_info = repo.get_pull(pr.number)
         section = "nosection"
 
-        changed_files = pr_info.get_files()
+        changed_files = pr.get_files()
         for changed_file in changed_files:
             changed_filename = changed_file.filename
 
-            # do not include files from profile_stability folder
+            # do not include files from tests folder
             # they are part of testing mechanisms
-            if ".profile" in changed_filename and "profile_stability" not in changed_filename:
+            if changed_filename.endswith(".profile") and "tests" not in changed_filename:
                 # Track changes to product:profile
                 profile_match = re.match(r"(\w+)/profiles/([\w-]+).profile", changed_filename)
                 product, profile = profile_match.groups()

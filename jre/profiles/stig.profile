@@ -30,6 +30,8 @@ selections:
     - java_jre_insecure_prompt_locked
     - java_jre_lock_untrusted_sources
     - java_jre_lock_untrusted_sources_locked
+    - java_jre_security_revocation_check
+    - java_jre_security_revocation_check_locked
     - java_jre_unsigned_applications
     - java_jre_unsigned_applications_locked
     - java_jre_validation_crl

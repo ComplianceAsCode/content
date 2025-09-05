@@ -29,6 +29,8 @@ selections:
 - accounts_password_minlen_login_defs
 - accounts_password_pam_dcredit
 - accounts_password_pam_difok
+- accounts_password_pam_enforce_local
+- accounts_password_pam_enforce_root
 - accounts_password_pam_lcredit
 - accounts_password_pam_maxclassrepeat
 - accounts_password_pam_maxrepeat
@@ -39,6 +41,7 @@ selections:
 - accounts_password_set_max_life_existing
 - accounts_password_set_min_life_existing
 - accounts_passwords_pam_faillock_deny
+- accounts_passwords_pam_faillock_enforce_local
 - accounts_passwords_pam_faillock_interval
 - accounts_passwords_pam_faillock_unlock_time
 - accounts_umask_etc_bashrc
@@ -103,11 +106,13 @@ selections:
 - grub2_audit_argument
 - grub2_audit_backlog_limit_argument
 - grub2_disable_interactive_boot
+- grub2_kernel_trust_cpu_rng
 - grub2_page_poison_argument
 - grub2_pti_argument
 - grub2_slub_debug_argument
 - grub2_uefi_password
 - grub2_vsyscall_argument
+- installed_OS_is_vendor_supported
 - kerberos_disable_no_keytab
 - kernel_module_atm_disabled
 - kernel_module_bluetooth_disabled
@@ -116,7 +121,6 @@ selections:
 - kernel_module_firewire-core_disabled
 - kernel_module_sctp_disabled
 - kernel_module_tipc_disabled
-- kernel_trust_cpu_rng
 - mount_option_boot_nodev
 - mount_option_boot_nosuid
 - mount_option_dev_shm_nodev
@@ -195,6 +199,9 @@ selections:
 - service_systemd-coredump_disabled
 - service_usbguard_enabled
 - smartcard_configure_cert_checking
+- ssh_client_rekey_limit
+- ssh_client_use_strong_rng_csh
+- ssh_client_use_strong_rng_sh
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
 - sshd_disable_kerb_auth
@@ -242,6 +249,7 @@ selections:
 - sysctl_user_max_user_namespaces
 - timer_dnf-automatic_enabled
 - usbguard_allow_hid_and_hub
+- use_pam_wheel_for_su
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - var_accounts_user_umask=027

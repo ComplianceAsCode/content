@@ -73,7 +73,7 @@ What files will that be depends on the distribution, but for example on Fedora, 
 
 === Installing from distribution packages
 
-* Red Hat Enterprise Linux 6+
+* Red Hat Enterprise Linux 7+
 +
 ------------
 $ sudo yum -y install scap-security-guide
@@ -217,7 +217,7 @@ Replace {profile-name} with the profile the system was scanned against. For exam
 
 ----
 $ oscap xccdf generate fix \
---result-id xccdf_org.open-scap_testresult_stig-rhel6-server \
+--result-id xccdf_org.open-scap_testresult_stig \
 /root/ssg-results.xml
 ----
 
@@ -225,12 +225,12 @@ You will receive output similar to the following:
 
 ----
 $ oscap xccdf generate fix \
---result-id xccdf_org.open-scap_testresult_stig-rhel6-server \
+--result-id xccdf_org.open-scap_testresult_stig \
 /root/ssg-results.xml
 
 #!/bin/bash
 # OpenSCAP fix generator output for benchmark: DRAFT Guide
-# to the Secure Configuration of Red Hat Enterprise Linux 6
+# to the Secure Configuration of Red Hat Enterprise Linux 8
 
 # XCCDF rule: set_sysctl_net_ipv4_conf_default_rp_filter
 # CCE-26915-9
@@ -264,7 +264,7 @@ fi
 # END OF SCRIPT		
 ----
 
-This output could be redirected to a bash script, or built into your RHEL6 provisioning process (e.g. the %post section of a kickstart).
+This output could be redirected to a bash script, or built into your RHEL7 provisioning process (e.g. the %post section of a kickstart).
 
 #### Ansible Playbooks
 
@@ -289,7 +289,7 @@ If you need content for RHV based on el7, use the Red Hat Enterprise Linux 7 (`r
 
 |Debian 8
 |June 30, 2020
-| link:https://github.com/ComplianceAsCode/content/releases/tag/v0.1.53[content 0.1.53]
+| link:https://github.com/ComplianceAsCode/content/releases/tag/v0.1.52[content 0.1.52]
 
 |Red Hat OpenStack Platform 7
 |August 5, 2018
@@ -318,15 +318,19 @@ If you need content for RHV based on el7, use the Red Hat Enterprise Linux 7 (`r
 
 |Ubuntu 14.04
 |April 30, 2019
-| link:https://github.com/ComplianceAsCode/content/releases/tag/v0.1.53[content 0.1.53]
+| link:https://github.com/ComplianceAsCode/content/releases/tag/v0.1.52[content 0.1.52]
 
 |SUSE Enterprise Linux 11
 |March 31, 2019
-| link:https://github.com/ComplianceAsCode/content/releases/tag/v0.1.53[content 0.1.53]
+| link:https://github.com/ComplianceAsCode/content/releases/tag/v0.1.52[content 0.1.52]
 
 |Red Hat OpenShift Container Platform 3
 |June 1, 2022
-| link:https://github.com/ComplianceAsCode/content/releases/tag/v0.1.53[content 0.1.53]
+| link:https://github.com/ComplianceAsCode/content/releases/tag/v0.1.52[content 0.1.52]
+
+|Red Hat Enterprise Linux 6
+|November 1, 2020
+| link:https://github.com/ComplianceAsCode/content/releases/tag/v0.1.52[content 0.1.52]
 
 |===
 

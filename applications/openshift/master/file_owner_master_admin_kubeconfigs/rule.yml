@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify User Who Owns The OpenShift Admin Kubeconfig Files'
+
+description: |-
+  {{{ describe_file_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-certs/secrets/node-kubeconfigs/*.kubeconfig", owner="root") }}}
+
+rationale: |-
+  There are various kubeconfig files that can be used by the administrator,
+  defining various settings for the administration of the cluster. These files
+  contain credentials that can be used to control the cluster and are needed
+  for disaster recovery and each kubeconfig points to a different endpoint in
+  the cluster. You should restrict its file permissions to maintain the
+  integrity of the kubeconfig file as an attacker who gains access to these
+  files can take over the cluster.
+
+identifiers:
+  cce@ocp4: CCE-83719-5
+
+
+severity: medium
+
+references:
+  cis: 1.1.14
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-certs/secrets/node-kubeconfigs/*.kubeconfig", owner="root") }}}'
+
+ocil: |-
+  {{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-certs/secrets/node-kubeconfigs/*.kubeconfig", owner="root") }}}
+
+platform: ocp4-master-node
+
+template:
+  name: file_owner
+  vars:
+    filepath: ^/etc/kubernetes/static-pod-resources/kube-apiserver-certs/secrets/node-kubeconfigs/.*\.kubeconfig$
+    fileuid: '0'
+    filepath_is_regex: "true"

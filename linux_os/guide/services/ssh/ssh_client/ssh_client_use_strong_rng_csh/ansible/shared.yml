@@ -1,0 +1,19 @@
+# platform = Red Hat Enterprise Linux 8
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: "Ensure that correct variable is exported in /etc/profile.d/cc-ssh-strong-rng.csh"
+  lineinfile:
+    path: /etc/profile.d/cc-ssh-strong-rng.csh
+    regexp: '^[\s]*setenv[\s]+SSH_USE_STRONG_RNG.*$'
+    line: 'setenv SSH_USE_STRONG_RNG 32'
+    state: present
+    create: yes
+
+- name: "Ensure that the configuration is not overridden in /etc/profile"
+  lineinfile:
+    path: /etc/profile
+    regexp: '^[\s]*setenv[\s]+SSH_USE_STRONG_RNG.*$'
+    state: absent

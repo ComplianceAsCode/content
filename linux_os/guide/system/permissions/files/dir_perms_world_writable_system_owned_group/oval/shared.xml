@@ -1,0 +1,22 @@
+<def-group>
+  <definition class="compliance" id="dir_perms_world_writable_system_owned_group" version="1">
+    {{{ oval_metadata("All world writable directories should be group owned by a system user.") }}}
+    <criteria comment="check for local directories that are world writable and have gid greater than or equal to {{{ auid }}}" negate="true">
+      <criterion comment="check for local directories that are world writable and have gid greater than or equal to {{{ auid }}}" test_ref="test_dir_world_writable_gid_gt_value" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" comment="check for local directories that are world writable and have gid greater than or equal to {{{ auid }}}" id="test_dir_world_writable_gid_gt_value" version="1">
+    <unix:object object_ref="all_local_directories_gid" />
+    <unix:state state_ref="state_gid_is_user_and_world_writable" />
+  </unix:file_test>
+  <unix:file_object comment="all local directories" id="all_local_directories_gid" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_gid_is_user_and_world_writable</filter>
+  </unix:file_object>
+  <unix:file_state comment="gid greater than or equal to {{{ auid }}} and world writable" id="state_gid_is_user_and_world_writable" version="1">
+    <unix:group_id datatype="int" operation="greater than or equal">{{{ auid }}}</unix:group_id>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+  </unix:file_state>
+</def-group>

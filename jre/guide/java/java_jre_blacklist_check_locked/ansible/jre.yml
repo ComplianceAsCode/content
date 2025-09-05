@@ -1,0 +1,18 @@
+# platform = Java Runtime Environment
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+- name: Ensure Java Deployment Directory Exists
+  file:
+    path: /etc/.java/deployment
+    state: directory
+    mode: '0755'
+
+- name: Disable User Access to Prohibited Mobile Code Setting
+  lineinfile:
+    create: yes
+    mode: '0644'
+    dest: "/etc/.java/deployment/deployment.properties"
+    regexp: '^\s*#?\s*deployment.security.blacklist.check.locked'
+    line: 'deployment.security.blacklist.check.locked'

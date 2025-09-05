@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.pyc script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2020-11-12 16:51
+Last Modified: 2021-02-03 08:55
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -47,6 +47,7 @@ The following people have contributed to the SCAP Security Guide project
 * Jean-Baptiste Donnette <jean-baptiste.donnette@epita.fr>
 * drax <applezip@gmail.com>
 * Sebastian Dunne <sdunne@redhat.com>
+* François Duthilleul <francoisduthilleul@gmail.com>
 * Greg Elin <gregelin@gitmachines.com>
 * eradot4027 <jrtonmac@gmail.com>
 * Alexis Facques <alexis.facques@mythalesgroup.io>
@@ -139,6 +140,7 @@ The following people have contributed to the SCAP Security Guide project
 * T.O. Radzy Radzykewycz <radzy@windriver.com>
 * Kenyon Ralph <kenyon@kenyonralph.com>
 * Mike Ralph <mralph@redhat.com>
+* Federico Ramirez <federico.r.ramirez@oracle.com>
 * Rick Renshaw <Richard_Renshaw@xtoenergy.com>
 * Chris Reynolds <c.reynolds82@gmail.com>
 * rhayes <rhayes@rivierautilities.com>
@@ -178,6 +180,7 @@ The following people have contributed to the SCAP Security Guide project
 * Paul Tittle <ptittle@cmf.nrl.navy.mil>
 * tomas.hudik <tomas.hudik@embedit.cz>
 * Jeb Trayer <jeb.d.trayer@uscg.mil>
+* Brian Turek <brian.turek@gmail.com>
 * Matěj Týč <matyc@redhat.com>
 * VadimDor <29509093+VadimDor@users.noreply.github.com>
 * Shawn Wells <shawn@redhat.com>
@@ -187,6 +190,7 @@ The following people have contributed to the SCAP Security Guide project
 * Rob Wilmoth <rwilmoth@redhat.com>
 * Lucas Yamanishi <lucas.yamanishi@onyxpoint.com>
 * Xirui Yang <xirui.yang@oracle.com>
+* Guang Yee <guang.yee@suse.com>
 * Kevin Zimmerman <kevin.zimmerman@kitware.com>
 * Jan Černý <jcerny@redhat.com>
 * Michal Šrubař <msrubar@redhat.com>

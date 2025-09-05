@@ -26,7 +26,7 @@ def do_test_contents(remediation, config):
 
     assert ssg.utils.is_applicable_for_product(config['platform'], 'rhel7')
     assert ssg.utils.is_applicable_for_product(config['platform'], 'fedora')
-    assert not ssg.utils.is_applicable_for_product(config['platform'], 'rhel6')
+    assert not ssg.utils.is_applicable_for_product(config['platform'], 'rhel8')
     assert not ssg.utils.is_applicable_for_product(config['platform'], 'ol7')
 
     assert 'false' == config['reboot']

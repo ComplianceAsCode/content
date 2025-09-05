@@ -7,15 +7,20 @@ description: 'Do not always authorize all requests.'
 rationale: |-
     The API Server, can be configured to allow all requests. This mode should not be used on any production cluster.
 
+identifiers:
+  cce@ocp4: CCE-84207-0
+
+
 severity: medium
 
 references:
     cis: 1.2.7
 
-ocil_clause: 'The Node authorization-mode is configured and enabled on the master node'
+ocil_clause: 'The Node authorization-mode is configured and enabled'
 
 ocil: |-
-    Run the following command on the master node(s):
+    To verify that the <tt>Node</tt> authorization mode is be configured and enabled in
+    the apiserver configuration, run:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep '"authorization-mode":\[[^]]*"AlwaysAllow"'</pre>
     The output should be empty - the "authorization-mode" list does NOT contain the "AlwaysAllow" authorizer.
 

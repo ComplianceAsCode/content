@@ -1,0 +1,49 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Permissions on the Etcd PKI Certificate Files'
+
+description: |-
+  {{{ describe_file_permissions(file="/etc/kubernetes/static-pod-resources/etcd-*/secrets/*/*.crt", perms="0600") }}}
+
+rationale: |-
+  OpenShift makes use of a number of certificate files as part of the operation
+  of its components. The permissions on these files should be set to
+  <pre>600</pre> or more restrictive to protect their integrity.
+
+identifiers:
+  cce@ocp4: CCE-83362-4
+
+
+severity: medium
+
+references:
+  cis: 1.1.20
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-resources/etcd-*/secrets/*/*.crt", perms="-rw-------") }}}'
+
+ocil: |-
+  {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/etcd-*/secrets/*/*.crt", perms="-rw-------") }}}
+
+platform: ocp4-master-node
+
+# Note that this recursively checks for files, and the form is as follows:
+#
+#  /etc/kubernetes/static-pod-resources/.*/.*/.*/tls\.key
+#
+# Taking as an example:
+#
+#  /etc/kubernetes/static-pod-resources/etcd-pod-2/secrets/etcd-all-serving/etcd-serving-ip-10-0-136-27.ec2.internal.crt
+#
+# - /etc/kubernetes/static-pod-resources/ is the base path
+# - 'etcd-pod-2' This initial versioned resourced directory (e.g. pod version)
+# - 'secrets' The type of resource (e.g. configmap or secret)
+# - 'etcd-all-serving' the mount name
+# - 'etcd-serving-ip-10-0-136-27.ec2.internal.crt' the cert file
+template:
+  name: file_permissions
+  vars:
+    filepath: ^/etc/kubernetes/static-pod-resources/etcd-.*/secrets/.*/.*\.crt$
+    filemode: '0600'
+    filepath_is_regex: "true"

@@ -3,7 +3,7 @@ documentation_complete: true
 metadata:
     version: TBD
     SMEs:
-        - redhatrises
+        - carlosmmatos
 
 title: 'C2S for Red Hat Enterprise Linux 7'
 

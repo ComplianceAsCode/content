@@ -19,11 +19,11 @@ severity: medium
 references:
     cis: 5.1.4
 
-ocil_clause: 'wildcards are in use by more roles than necessary'
+ocil_clause: 'pod creation privileges are in use by more roles than necessary'
 
 ocil: |-
-    To review the wildcard usage in roles, run the following commands:
+    To review the pod creation privileges in roles, run the following commands:
     <pre>$ oc get roles --all-namespaces -o yaml</pre>
     <pre>$ oc get clusterroles -o yaml</pre>
-    Review the output and ensure that wildcard use is limited to
-    a small subset as possible.
+    Review the output and ensure that pod creation privileged use is limited to
+    as small subset as possible.

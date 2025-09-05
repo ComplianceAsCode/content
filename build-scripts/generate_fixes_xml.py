@@ -46,8 +46,6 @@ def main():
     remediation.write_fixes_to_xml(args.remediation_type, args.build_dir,
                                    args.output, fixes)
 
-    sys.stderr.write("Merged %d %s remediations.\n" % (len(fixes), args.remediation_type))
-
     sys.exit(0)
 
 

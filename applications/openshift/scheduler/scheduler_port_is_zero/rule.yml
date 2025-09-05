@@ -1,0 +1,47 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: Ensure that the port parameter is zero
+
+description: |-
+  The Scheduler API service which runs on port 10251/TCP by default is used for
+  health and metrics information and is available without authentication or
+  encryption. As such it should only be bound to a localhost interface, to
+  minimize the cluster's attack surface.
+
+rationale: |-
+  In OpenShift 4, The Kubernetes Scheduler operator manages and updates the
+  Kubernetes Scheduler deployed on top of OpenShift. By default, the operator
+  exposes metrics via metrics service. The metrics are collected from the
+  Kubernetes Scheduler operator. Profiling data is sent to healthzPort,
+  the port of the localhost healthz endpoint. Changing this value may disrupt
+  components that monitor the kubelet health.
+
+references:
+  cis: 1.4.2
+
+severity: medium
+
+ocil_clause: '<tt>kube-scheduler-pod</tt> port parameter is zero'
+
+ocil: |-
+    Run the following command:
+    <pre>oc get -nopenshift-kube-scheduler cm kube-scheduler-pod -ojson | jq -r '.data["pod.yaml"]' | jq -r '.spec.containers[] | select(.name == "kube-scheduler")' | jq -r '.args' | grep \\-\\-port</pre>
+    The output should return <pre>--port=0</pre>.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-scheduler/configmaps/kube-scheduler-pod") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /api/v1/namespaces/openshift-kube-scheduler/configmaps/kube-scheduler-pod
+    yamlpath: '.data["pod.yaml"]'
+    values:
+    - value: '"--port=0",'
+      operation: "pattern match"
+      entity_check: "all"
+      type: "string"

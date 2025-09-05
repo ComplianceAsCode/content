@@ -1,0 +1,23 @@
+<def-group oval_version="5.10">
+  <definition class="compliance" id="enable_fips_mode" version="1">
+    {{{ oval_metadata("Check if FIPS mode is enabled on the system") }}}
+    <criteria operator="AND">
+      <extend_definition comment="check /etc/system-fips exists" definition_ref="etc_system_fips_exists" />
+      <extend_definition comment="check sysctl crypto.fips_enabled = 1" definition_ref="proc_sys_crypto_fips_enabled" />
+      <extend_definition comment="system cryptography policy is configured" definition_ref="configure_crypto_policy" />
+      <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
+      <criterion comment="check if system crypto policy selection in var_system_crypto_policy in the profile is set to FIPS" test_ref="test_system_crypto_policy_value" />
+    </criteria>
+  </definition>
+  <ind:variable_test check="at least one" comment="tests if var_system_crypto_policy is set to FIPS" id="test_system_crypto_policy_value" version="1">
+    <ind:object object_ref="obj_system_crypto_policy_value" />
+    <ind:state state_ref="ste_system_crypto_policy_value" />
+  </ind:variable_test>
+  <ind:variable_object id="obj_system_crypto_policy_value" version="1">
+    <ind:var_ref>var_system_crypto_policy</ind:var_ref>
+  </ind:variable_object>
+  <ind:variable_state comment="variable value is set to 'FIPS' or 'FIPS:modifier', where the modifier corresponds to a crypto policy module that further restricts the modified crypto policy." id="ste_system_crypto_policy_value" version="2">
+    <ind:value operation="pattern match" datatype="string">^FIPS(:(OSPP|NO-SHA1|NO-CAMELLIA))?$</ind:value>
+  </ind:variable_state>
+  <external_variable comment="defined crypto policy" datatype="string" id="var_system_crypto_policy" version="1" />
+</def-group>

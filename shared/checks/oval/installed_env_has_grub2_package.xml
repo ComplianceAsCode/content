@@ -31,7 +31,7 @@
     <linux:object object_ref="obj_env_has_grub2_installed" />
   </linux:rpminfo_test>
   <linux:rpminfo_object id="obj_env_has_grub2_installed" version="1">
-    <linux:name>grub2-common</linux:name>
+    <linux:name>{{% if product == "sle12" %}}grub2{{% else %}}grub2-common{{% endif %}}</linux:name>
   </linux:rpminfo_object>
 {{% elif pkg_system == "dpkg" %}}
   <linux:dpkginfo_test check="all" check_existence="all_exist"
@@ -44,7 +44,7 @@
   </linux:dpkginfo_object>
 {{% endif %}}
 
-  <unix:file_test check="all" check_existence="all_exist" comment="Check if /sys/firware/opal exists" id="test_system_using_opal" version="1">
+  <unix:file_test check="all" check_existence="all_exist" comment="Check if /sys/firmware/opal exists" id="test_system_using_opal" version="1">
     <unix:object object_ref="object_system_using_opal" />
   </unix:file_test>
   <unix:file_object id="object_system_using_opal" version="1">

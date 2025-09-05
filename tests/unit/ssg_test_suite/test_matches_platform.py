@@ -11,7 +11,7 @@ def test_simple_match():
 
 def test_simple_no_match():
     scenario_platforms = ["Red Hat Enterprise Linux 7"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:6"}
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:8"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) == False
 
 
@@ -50,13 +50,13 @@ def test_list_simple_match_second():
 def test_list_simple_no_match():
     scenario_platforms = ["Red Hat Enterprise Linux 7",
                           "Red Hat Enterprise Linux 8"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:6"}
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:9"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) == False
 
 
 def test_list_multi_platform_match_first():
     scenario_platforms = ["multi_platform_rhel", "multi_platform_debian"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:6"}
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:8"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) == True
 
 
@@ -68,27 +68,27 @@ def test_list_multi_platform_match_second():
 
 def test_list_multi_platform_no_match():
     scenario_platforms = ["multi_platform_debian", "multi_platform_ubuntu"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:6"}
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:8"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) == False
 
 
 def test_list_combined_match():
     scenario_platforms = ["multi_platform_debian", "multi_platform_ubuntu",
-                          "Red Hat Enterprise Linux 6"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:6"}
+                          "Red Hat Enterprise Linux 8"]
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:8"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) == True
 
 
 def test_list_combined_match_2():
     scenario_platforms = ["Debian 9", "multi_platform_ubuntu", "openSUSE",
-                          "Red Hat Enterprise Linux 6"]
+                          "Red Hat Enterprise Linux 8"]
     benchmark_cpes = {"cpe:/o:debianproject:debian:9"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) == True
 
 
 def test_list_combined_no_match():
     scenario_platforms = ["multi_platform_ubuntu", "multi_platform_fedora",
-                          "Red Hat Enterprise Linux 6", "openSUSE"]
+                          "Red Hat Enterprise Linux 8", "openSUSE"]
     benchmark_cpes = {"cpe:/o:debianproject:debian:9"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) == False
 
@@ -104,8 +104,7 @@ def test_simple_multiple_benchmark_cpes():
 def test_simple_multiple_unrelated_benchmark_cpes():
     scenario_platforms = ["Red Hat Enterprise Linux 7"]
     benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:7",
-                      "cpe:/o:redhat:enterprise_linux:6"
-                      "cpe:/o:scientificlinux:scientificlinux:6"}
+                      "cpe:/o:redhat:enterprise_linux:8"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) == True
 
 

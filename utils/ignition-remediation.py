@@ -84,6 +84,7 @@ spec:
         filesystem: root
         mode: $mode
         path: $path
+        overwrite: true
 """
 
 

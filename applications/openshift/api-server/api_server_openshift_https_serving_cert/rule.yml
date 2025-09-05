@@ -1,0 +1,50 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Ensure the openshift-oauth-apiserver service uses TLS'
+
+description: |-
+    By default, the OpenShift API Server uses TLS. HTTPS should be
+    used for connections between openshift-apiserver and kube-apiserver.
+    OpenShift API server enables TLS automatically if a TLS key and a
+    certificate are provided via the <tt>serving-cert</tt> secret
+    in the <tt>openshift-apiserver</tt> namespace.
+
+rationale: |-
+    Connections between the kube-apiserver and the extension
+    openshift-apiserver could potentially carry sensitive data such
+    as secrets and keys. It is important to use in-transit encryption
+    for any communication between the kube-apiserver and the extension
+    openshift-apiserver.
+
+severity: medium
+
+references:
+    cis: 1.2.4
+
+ocil_clause: |-
+    The openshift-apiserver serving-cert is not set to type
+    <tt>kubernetes.io/tls</tt> and that returned Data does not include <tt>tls.crt</tt>
+    and <tt>tls.key</tt>
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc -n openshift-apiserver describe secret serving-cert</pre>
+    Verify that the <tt>serving-cert</tt> for the openshift-apiserver is type
+    <tt>kubernetes.io/tls</tt> and that returned Data includes <tt>tls.crt</tt>
+    and <tt>tls.key</tt>.
+
+# (jhrozek): Disabled because the compliance operator does not have the permissions
+#            to read secrets from openshift-apiserver
+#            - checking for the type should be enough as the type enforces the required
+#              keys
+# template:
+#     name: yamlfile_value
+#     vars:
+#         ocp_data: "true"
+#         filepath: '/api/v1/namespaces/openshift-apiserver/secrets/serving-cert'
+#         yamlpath: '.type'
+#         values:
+#             - value: 'kubernetes.io/tls'
+#               type: "string"

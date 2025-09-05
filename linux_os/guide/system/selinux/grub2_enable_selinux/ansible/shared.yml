@@ -3,24 +3,20 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-{{% if product != "rhel6" -%}}
+
 - name: Find /etc/grub.d/ files
   find:
     paths:
       - /etc/grub.d/
     follow: yes
   register: grub
-{{%- endif %}}
+
 
 - name: Ensure SELinux Not Disabled in grub files
   replace:
     dest: "{{ item.path }}"
     regexp: (selinux|enforcing)=0
   with_items:
-{{%- if product == "rhel6" %}}
-    - { path: /etc/grub.conf }
-{{%- else %}}
     - "{{ grub.files }}"
     - { path: /etc/grub2.cfg }
     - { path: /etc/default/grub }
-{{%- endif -%}}

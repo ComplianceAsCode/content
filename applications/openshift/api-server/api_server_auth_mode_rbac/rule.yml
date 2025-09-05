@@ -1,0 +1,47 @@
+prodtype: ocp4
+
+title: Ensure authorization-mode RBAC is configured
+
+description: |-
+  To ensure OpenShift restricts different identities to a defined set
+  of operations they are allowed to perform, check that the API server's
+  <tt>authorization-mode</tt> configuration option list containst RBAC.
+
+rationale: |-
+  Role Based Access Control (RBAC) allows fine-grained control over the
+  operations that different entities can perform on different objects in
+  the cluster. Enabling RBAC is critical in regulating access to an
+  OpenShift cluster as the RBAC rules specify, given a user, which operations
+  can be executed over a set of namespaced or cluster-wide resources.
+
+identifiers:
+  cce@ocp4: CCE-84102-3
+
+
+severity: medium
+
+references:
+    cis: 1.2.9
+
+ocil_clause: 'The RBAC authorization mode is enabled'
+
+ocil: |-
+    To verify that RBAC authorization mode is enabled, run the following command:
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep '"authorization-mode":\[[^]]*"RBAC"'</pre>
+    The output should show that the "authorization-mode" list contains the "RBAC" authorizer.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '"authorization-mode":\[[^]]*"RBAC"'
+      operation: "pattern match"
+      type: "string"

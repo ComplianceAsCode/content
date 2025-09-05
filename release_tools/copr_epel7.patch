@@ -1,5 +1,5 @@
---- scap-security-guide.spec	2020-09-25 11:49:18.257916790 +0200
-+++ scap-security-guide_epel7.spec	2020-09-25 11:49:45.951338075 +0200
+--- scap-security-guide.spec	2020-12-18 12:17:34.751380285 +0100
++++ epel7.spec	2021-01-04 14:43:36.907418098 +0100
 @@ -11,9 +11,9 @@
  BuildRequires:	expat
  BuildRequires:	openscap-scanner >= 1.2.5
@@ -23,7 +23,7 @@
 -%cmake
 -%cmake_build
 +cd build
-+%cmake ..
++%cmake -DSSG_PRODUCT_OCP4:BOOLEAN=OFF ..
 +%make_build
  
  %install

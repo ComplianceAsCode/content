@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol7,ol8,rhel6,rhel7,rhel8,rhv4,sle12,sle15
+prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15
 
 title: 'The Installed Operating System Is FIPS 140-2 Certified'
 
@@ -8,7 +8,7 @@ description: |-
     To enable processing of sensitive information the operating system must
     provide certified cryptographic modules compliant with FIPS 140-2
     standard.
-{{% if product in ["rhel6", "rhel7"] %}}
+{{% if product in ["rhel7"] %}}
     Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
     Linux vendor, Red Hat, Inc. is responsible for maintaining government certifications and standards.
 {{% elif product in ["sle12", "sle15"] %}}
@@ -67,7 +67,7 @@ ocil_clause: 'the installed operating system is not FIPS 140-2 certified'
 ocil: |-
     To verify that the installed operating system is supported or certified, run
     the following command:
-{{% if product in ["rhel6", "rhel7"] %}}
+{{% if product in ["rhel7"] %}}
     <pre>$ grep -i "red hat" /etc/redhat-release</pre>
 {{% elif product == "ol7" %}}
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>

@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: Prefer to use a 64-bit Operating System when supported
+
+description: |-
+  Prefer installation of 64-bit operating systems when the CPU supports it.
+
+rationale: |-
+  Use of a 64-bit operating system offers a few advantages, like a larger address space range for
+  Address Space Layout Randomization (ASLR) and systematic presence of No eXecute and Execute Disable (NX/XD) protection bits.
+
+warnings:
+    - general: |-
+        There is no remediation besides installing a 64-bit operating system.
+
+severity: medium
+
+identifiers:
+  cce@rhel7: CCE-83691-6
+  cce@rhel8: CCE-83694-0
+
+references:
+  anssi: BP28(R10)
+
+ocil_clause: the installed operating sytem is 32-bit but the CPU supports operation in 64-bit
+
+ocil: |-
+  To check if the installed Operating System is 64-bit, run the following command:
+  <pre>$ uname -m</pre>
+  The output should be one of the following: <tt>x86_64</tt>, <tt>aarch64</tt>, <tt>ppc64le</tt> or <tt>s390x</tt>.
+  If the output is <tt>i686</tt> or <tt>i386</tt> the operating system is 32-bit.
+  Check if the installed CPU supports 64-bit operating systems by running the following command:
+  <pre>$ lscpu | grep "CPU op-mode"</pre>
+  If the output contains <tt>64bit</tt>, the CPU supports 64-bit operating systems.

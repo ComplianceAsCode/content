@@ -19,16 +19,12 @@
     <unix:filepath datatype="string">/etc/crypto-policies/config</unix:filepath>
   </unix:file_object>
 
-  <local_variable id="variable_crypto_policies_current_file_age" version="1" comment="Age of /etc/crypto-policies/state/current" datatype="int">
-      <time_difference format_2="seconds_since_epoch">
-        <object_component object_ref="crypto_policies_current_file" item_field="m_time"/>
-      </time_difference>
+  <local_variable id="variable_crypto_policies_current_file_timestamp" version="1" comment="Age of /etc/crypto-policies/state/current" datatype="int">
+    <object_component object_ref="crypto_policies_current_file" item_field="m_time"/>
   </local_variable>
 
-  <local_variable id="variable_crypto_policies_config_file_age" version="1" comment="Age of /etc/crypto-policies/config" datatype="int">
-    <time_difference format_2="seconds_since_epoch">
-      <object_component object_ref="crypto_policies_config_file" item_field="m_time"/>
-    </time_difference>
+  <local_variable id="variable_crypto_policies_config_file_timestamp" version="1" comment="Age of /etc/crypto-policies/config" datatype="int">
+    <object_component object_ref="crypto_policies_config_file" item_field="m_time"/>
   </local_variable>
 
   <ind:variable_test check="all" check_existence="all_exist" id="test_crypto_policies_updated" version="1" comment="Check if update-crypto-policies has been run">
@@ -36,14 +32,14 @@
     <ind:state state_ref="state_crypto_current_file_newer_than_config_file" />
   </ind:variable_test>
 
-  <ind:variable_object comment="Crypto policy current file age"
+  <ind:variable_object comment="Crypto policy current file timestamp"
 id="object_crypto_policies_config_file_modified_time" version="1">
-     <ind:var_ref>variable_crypto_policies_config_file_age</ind:var_ref>
+     <ind:var_ref>variable_crypto_policies_config_file_timestamp</ind:var_ref>
    </ind:variable_object>
 
   <ind:variable_state id="state_crypto_current_file_newer_than_config_file" version="1">
-    <ind:value datatype="int" operation="greater than or equal" var_check="all"
-    var_ref="variable_crypto_policies_current_file_age" />
+    <ind:value datatype="int" operation="less than or equal" var_check="all"
+    var_ref="variable_crypto_policies_current_file_timestamp" />
   </ind:variable_state>
 
   <ind:textfilecontent54_test id="test_configure_crypto_policy"

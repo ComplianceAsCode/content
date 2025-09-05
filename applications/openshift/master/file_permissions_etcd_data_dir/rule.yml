@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Permissions on the Etcd Database Directory'
+
+description: |-
+    {{{ describe_file_permissions(file="/var/lib/etcd", perms="0700") }}}
+
+rationale: |-
+    etcd is a highly-available key-value store used by Kubernetes deployments for persistent
+    storage of all of its REST API objects. This data directory should be protected from any
+    unauthorized reads or writes. It should not be readable or writable by any group members
+    or the world.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-84013-2
+
+references:
+    cis: 1.1.11
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/lib/etcd", perms="drwx------") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/lib/etcd", perms="drwx------") }}}
+
+platform: ocp4-master-node
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/lib/etcd/member/
+        filemode: '0700'

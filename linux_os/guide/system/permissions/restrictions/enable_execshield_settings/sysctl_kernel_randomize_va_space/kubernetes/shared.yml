@@ -1,0 +1,15 @@
+# platform = multi_platform_rhcos,multi_platform_rhel,multi_platform_fedora
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 3.1.0
+    storage:
+      files:
+      - contents:
+          source: data:,kernel.randomize_va_space%3D2%0A
+        mode: 0644
+        path: /etc/sysctl.d/75-sysctl_kernel_randomize_va_space.conf
+        overwrite: true
+

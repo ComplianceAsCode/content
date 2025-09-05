@@ -1,0 +1,50 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Group Who Owns The OpenShift PKI Private Key Files'
+
+description: |-
+  {{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/*/*/*/*.key", group="root") }}}
+
+rationale: |-
+  OpenShift makes use of a number of certificates as part of its operation.
+  You should verify the ownership of the directory containing the PKI
+  information and all files in that directory to maintain their integrity.
+  The directory and files should be owned by root:root.
+
+identifiers:
+  cce@ocp4: CCE-84172-6
+
+
+severity: medium
+
+references:
+  cis: 1.1.19
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/*/*/*/*.key", group="root") }}}'
+
+ocil: |-
+  {{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/*/*/*/*.key", group="root") }}}
+
+platform: ocp4-master-node
+
+# Note that this recursively checks for files, and the form is as follows:
+#
+#  /etc/kubernetes/static-pod-resources/.*/.*/.*/.*\.key
+#
+# Taking as an example:
+#
+#  /etc/kubernetes/static-pod-resources/kube-apiserver-pod-3/secrets/kubelet-client/tls.key
+#
+# - /etc/kubernetes/static-pod-resources/ is the base path
+# - 'kube-apiserver-pod-3' This initial versioned resourced directory (e.g. pod version)
+# - 'secrets' The type of resource (e.g. configmap or secret)
+# - 'kubelet-client' the mount name
+# - 'tls.key' the file
+template:
+  name: file_groupowner
+  vars:
+    filepath: ^/etc/kubernetes/static-pod-resources/.*/.*/.*/.*\.key$
+    filegid: '0'
+    filepath_is_regex: "true"

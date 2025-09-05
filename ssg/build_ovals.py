@@ -327,6 +327,5 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
                     body.append(xml_content)
                     included_checks_count += 1
                     already_loaded[filename] = oval_version
-    sys.stderr.write("Merged %d OVAL checks.\n" % (included_checks_count))
 
     return "".join(body)

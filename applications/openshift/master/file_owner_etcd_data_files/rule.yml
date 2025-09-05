@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify User Who Owns The Etcd Write-Ahead-Log Files'
+
+description: |-
+    {{{ describe_file_owner(file="/var/lib/etcd/member/wal/*", owner="root") }}}
+
+rationale: |-
+    etcd is a highly-available key-value store used by Kubernetes deployments for
+    persistent storage of all of its REST API objects. This data directory should
+    be protected from any unauthorized reads or writes.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-84010-8
+
+references:
+    cis: 1.1.12
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/lib/etcd/member/wal/*", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/lib/etcd/member/wal/*", owner="root") }}}
+
+platform: ocp4-master-node
+
+template:
+    name: file_owner
+    vars:
+        filepath: ^/var/lib/etcd/member/wal/.*$
+        fileuid: '0'
+        filepath_is_regex: "true"

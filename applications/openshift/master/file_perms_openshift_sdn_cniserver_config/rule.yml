@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Permissions on the OpenShift SDN CNI Server Config'
+
+description: |-
+    {{{ describe_file_permissions(file="/var/run/openshift-sdn/cniserver/config.json", perms="0444") }}}
+
+rationale: |-
+    CNI (Container Network Interface) files consist of a specification and libraries for
+    writing plugins to configure network interfaces in Linux containers, along with a number
+    of supported plugins. Allowing writeable access to the files could allow an attacker to modify
+    the networking configuration potentially adding a rogue network connection.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-83927-4
+
+references:
+    cis: 1.1.9
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/run/openshift-sdn/cniserver/config.json", perms="-r--r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/run/openshift-sdn/cniserver/config.json", perms="-r--r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/run/openshift-sdn/cniserver/config.json
+        filemode: '0444'

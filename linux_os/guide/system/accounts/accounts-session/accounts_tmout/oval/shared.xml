@@ -15,7 +15,7 @@
   {{% endmacro %}}
 
   {{% macro object_tmout(test_stem, path, filename, filepath) %}}
-  <ind:textfilecontent54_object id="object_{{{ test_stem }}}" version="2">
+  <ind:textfilecontent54_object id="object_{{{ test_stem }}}" version="3">
     {{% if path %}}
     <ind:path>{{{ path }}}</ind:path>
     {{% endif %}}
@@ -25,7 +25,7 @@
     {{% if filepath %}}
     <ind:filepath>{{{ filepath }}}</ind:filepath>
     {{% endif %}}
-    <ind:pattern operation="pattern match">^[\s]*TMOUT[\s]*=[\s]*(.*)[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*TMOUT=([\w$]+).*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   {{% endmacro %}}

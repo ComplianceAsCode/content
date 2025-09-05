@@ -9,7 +9,7 @@ description: |-
   A copy of the Essential Eight in Linux Environments guide can be found at the
   ACSC website:
 
-  https://www.cyber.gov.au/publications/essential-eight-in-linux-environments
+  https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers
 
 selections:
 

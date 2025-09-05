@@ -10,6 +10,13 @@ pkg_manager: "dnf"
 
 init_system: "systemd"
 
+cpes_root: "../shared/applicability"
+cpes:
+  - fedora:
+      name: "cpe:/o:fedoraproject:fedora:32"
+      title: "Fedora 32"
+      check_id: installed_OS_is_fedora
+
 # The fingerprint and pkg_version are retrieved from https://getfedora.org/keys/
 future_version: 32
 future_release_fingerprint: "97A1AE57C3A2372CCA3A4ABA6C13026D12C944D0"

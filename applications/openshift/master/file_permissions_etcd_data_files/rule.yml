@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Permissions on the Etcd Write-Ahead-Log Files'
+
+description: |-
+    {{{ describe_file_permissions(file="/var/lib/etcd/member/wal/*", perms="0600") }}}
+
+rationale: |-
+    etcd is a highly-available key-value store used by Kubernetes deployments for persistent
+    storage of all of its REST API objects. This data directory should be protected from any
+    unauthorized reads or writes. It should not be readable or writable by any group members
+    or the world.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-83382-2
+
+references:
+    cis: 1.1.11
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/lib/etcd/member/wal/*", perms="-rw-------") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/lib/etcd/member/wal/*", perms="-rw-------") }}}
+
+platform: ocp4-master-node
+
+template:
+    name: file_permissions
+    vars:
+        filepath: ^/var/lib/etcd/member/wal/.*$
+        filemode: '0600'
+        filepath_is_regex: "true"

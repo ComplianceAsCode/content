@@ -10,13 +10,6 @@
     <ind:object object_ref="obj_display_login_attempts" />
   </ind:textfilecontent54_test>
 
-  {{%- if product == "rhel6" -%}}
-  <ind:textfilecontent54_object id="obj_display_login_attempts" version="1">
-    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*session\s+(required|requisite)?\s+pam_lastlog.so[\s\w\d\=]+showfailed</ind:pattern>
-    <ind:instance datatype="int" operation="equals">1</ind:instance>
-  </ind:textfilecontent54_object>
-  {{%- else -%}}
   <ind:textfilecontent54_object id="obj_display_login_attempts" version="1">
     <!-- Read whole /etc/pam.d/postlogin as single line so we can verify form
          of both pam_lastlog.so rows and their order -->
@@ -25,5 +18,5 @@
     <ind:pattern operation="pattern match">[\n][\s]*session[\s]+\[default=1\][\s]+pam_lastlog.so[\s\w\d\=]+showfailed[\s\w\d\=]*\n[\s]*session[\s]+optional[\s]+pam_lastlog.so[\s\w\d\=]+showfailed[\s\w\d\=]*[\n]</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
-  {{%- endif -%}}
+
 </def-group>

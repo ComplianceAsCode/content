@@ -4,7 +4,7 @@ from __future__ import print_function
 
 """
 Takes given XCCDF or DataStream and adds RHEL derivative operating system(s) CPE name next
-to RHEL CPE names. Can automatically recognize RHEL6, 7, etc. CPEs and adds the derivitive OS ones
+to RHEL CPE names. Can automatically recognize RHEL CPEs and adds the derivitive OS ones
 next to those accordingly.
 
 Apart from adding the CPEs it adds a notice informing the user that the content
@@ -45,6 +45,8 @@ def parse_args():
                       help="INPUT can be XCCDF or Source DataStream")
     parser.add_option("-o", "--output", dest="output", default=False,
                       action="store", help="XML Tree content")
+    parser.add_option("--id-name", dest="id_name", default="ssg",
+                      action="store", help="ID naming scheme")
     (options, args) = parser.parse_args()
 
     if options.centos and options.sl:
@@ -110,6 +112,7 @@ def main():
             )
 
     ssg.build_derivatives.replace_platform(root, oval_ns, derivative)
+    ssg.build_derivatives.add_cpe_item_to_dictionary(root, args[0], args[1], "ssg-%s-cpe-oval.xml" % args[0], options.id_name)
 
     tree.write(options.output)
 

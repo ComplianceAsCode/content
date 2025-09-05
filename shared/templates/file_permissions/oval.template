@@ -1,0 +1,43 @@
+<def-group>
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+    {{{ oval_metadata("This test makes sure that " + FILEPATH + " has mode " + FILEMODE + ".
+      If the target file or directory has an extended ACL, then it will fail the mode check.
+      ") }}}
+    <criteria>
+      <criterion comment="Check file mode of {{{ FILEPATH }}}" test_ref="test_file_permissions{{{ FILEID }}}"{{{ ' negate="true"' if ALLOW_STRICTER_PERMISSIONS }}}/>
+    </criteria>
+  </definition>
+  {{%- if ALLOW_STRICTER_PERMISSIONS %}}
+    {{% set FILE_EXISTENCE = "at_least_one_exists" %}}
+  {{%- else -%}}
+    {{%- if MISSING_FILE_PASS -%}}
+      {{# Any number of files can exist, from zero to any #}}
+      {{% set FILE_EXISTENCE = "any_exist" %}}
+    {{%- else -%}}
+      {{# All defined files must exist. When using regex, at least one file must match #}}
+      {{% set FILE_EXISTENCE = "all_exist" %}}
+    {{%- endif -%}}
+  {{%- endif -%}}
+      <unix:file_test check="all" check_existence="{{{ FILE_EXISTENCE }}}" comment="Testing mode of {{{ FILEPATH }}}" id="test_file_permissions{{{ FILEID }}}" version="2">
+      <unix:object object_ref="object_file_permissions{{{ FILEID }}}" />
+      <unix:state state_ref="state_file_permissions{{{ FILEID }}}_mode_{{{ 'not_' if ALLOW_STRICTER_PERMISSIONS }}}{{{ FILEMODE }}}" />
+    </unix:file_test>
+    <unix:file_state id="state_file_permissions{{{ FILEID }}}_mode_{{{ 'not_' if ALLOW_STRICTER_PERMISSIONS }}}{{{ FILEMODE }}}"{{{ ' operator="OR"' if ALLOW_STRICTER_PERMISSIONS }}} version="2">
+      {{{ STATEMODE | indent(6) }}}
+    </unix:file_state>
+    <unix:file_object comment="{{{ FILEPATH }}}" id="object_file_permissions{{{ FILEID }}}" version="1">
+    {{%- if IS_DIRECTORY %}}
+      <unix:path>{{{ FILEPATH }}}</unix:path>
+      {{%- if FILE_REGEX %}}
+        <unix:filename operation="pattern match">{{{ FILE_REGEX }}}</unix:filename>
+      {{%- else %}}
+        <unix:filename xsi:nil="true" />
+      {{%- endif %}}
+    {{%- else %}}
+      <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ FILEPATH }}}</unix:filepath>
+      {{%- if ALLOW_STRICTER_PERMISSIONS %}}
+      <filter action="include">state_file_permissions{{{ FILEID }}}_mode_not_{{{ FILEMODE }}}</filter>
+      {{%- endif %}}
+    {{%- endif %}}
+    </unix:file_object>
+</def-group>

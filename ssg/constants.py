@@ -17,11 +17,11 @@ product_directories = [
     'rhcos4',
     'ol7', 'ol8',
     'opensuse',
-    'rhel6', 'rhel7', 'rhel8',
+    'rhel7', 'rhel8',
     'rhosp10', 'rhosp13',
     'rhv4',
     'sle12', 'sle15',
-    'ubuntu1604', 'ubuntu1804',
+    'ubuntu1604', 'ubuntu1804', 'ubuntu2004',
     'vsel',
     'wrlinux8', 'wrlinux1019'
 ]
@@ -155,7 +155,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Oracle Linux 7": "ol7",
     "Oracle Linux 8": "ol8",
     "openSUSE": "opensuse",
-    "Red Hat Enterprise Linux 6": "rhel6",
     "Red Hat Enterprise Linux 7": "rhel7",
     "Red Hat Enterprise Linux 8": "rhel8",
     "Red Hat OpenStack Platform 10": "rhosp10",
@@ -165,116 +164,11 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "SUSE Linux Enterprise 15": "sle15",
     "Ubuntu 16.04": "ubuntu1604",
     "Ubuntu 18.04": "ubuntu1804",
+    "Ubuntu 20.04": "ubuntu2004",
     "WRLinux 8": "wrlinux8",
     "WRLinux 1019": "wrlinux1019",
 }
 
-PRODUCT_TO_CPE_MAPPING = {
-    "chromium": [
-        "cpe:/a:google:chromium-browser",
-    ],
-    "debian9": [
-        "cpe:/o:debianproject:debian:9",
-    ],
-    "debian10": [
-        "cpe:/o:debian:debian_linux:10",
-    ],
-    "example": [
-    ],
-    "fedora": [
-        "cpe:/o:fedoraproject:fedora:32",
-        "cpe:/o:fedoraproject:fedora:31",
-        "cpe:/o:fedoraproject:fedora:30",
-        "cpe:/o:fedoraproject:fedora:29",
-        "cpe:/o:fedoraproject:fedora:28",
-        "cpe:/o:fedoraproject:fedora:27",
-        "cpe:/o:fedoraproject:fedora:26",
-        "cpe:/o:fedoraproject:fedora:25",
-    ],
-    "firefox": [
-        "cpe:/a:mozilla:firefox",
-    ],
-    "fuse6": [
-        "cpe:/a:redhat:jboss_fuse:6.0",
-    ],
-    "jre": [
-        "cpe:/a:oracle:jre:",
-        "cpe:/a:sun:jre:",
-        "cpe:/a:redhat:openjdk:",
-        "cpe:/a:ibm:jre:",
-    ],
-    "macos1015": [
-        "cpe:/o:apple:macos:10.15",
-    ],
-    "ocp4": [
-        "cpe:/a:redhat:openshift_container_platform:4.1",
-        "cpe:/o:redhat:openshift_container_platform_node:4",
-    ],
-    "ocp4-node": [
-        "cpe:/o:redhat:openshift_container_platform_node:4",
-    ],
-    "rhcos4": [
-        "cpe:/o:redhat:enterprise_linux_coreos:4",
-    ],
-    "ol7": [
-        "cpe:/o:oracle:linux:7",
-    ],
-    "ol8": [
-        "cpe:/o:oracle:linux:8",
-    ],
-    "opensuse": [
-        "cpe:/o:opensuse:leap:42.1",
-        "cpe:/o:opensuse:leap:42.2",
-        "cpe:/o:opensuse:leap:42.3",
-        "cpe:/o:opensuse:leap:15.0",
-    ],
-    "rhel6": [
-        "cpe:/o:redhat:enterprise_linux:6",
-        "cpe:/o:redhat:enterprise_linux:6::client",
-        "cpe:/o:redhat:enterprise_linux:6::computenode",
-    ],
-    "rhel7": [
-        "cpe:/o:redhat:enterprise_linux:7",
-        "cpe:/o:redhat:enterprise_linux:7::client",
-        "cpe:/o:redhat:enterprise_linux:7::computenode",
-    ],
-    "rhel8": [
-        "cpe:/o:redhat:enterprise_linux:8",
-    ],
-    "rhosp10": [
-        "cpe:/a:redhat:openstack:10",
-    ],
-    "rhosp13": [
-        "cpe:/a:redhat:openstack:13",
-    ],
-    "rhv4": [
-        "cpe:/a:redhat:enterprise_virtualization_manager:4",
-        "cpe:/o:redhat:enterprise_linux:8::hypervisor",
-    ],
-    "sle12": [
-        "cpe:/o:suse:linux_enterprise_server:12",
-    ],
-    "sle15": [
-        "cpe:/o:suse:linux_enterprise_server:15",
-        "cpe:/o:suse:linux_enterprise_desktop:15",
-    ],
-    "ubuntu1604": [
-        "cpe:/o:canonical:ubuntu_linux:16.04",
-    ],
-    "ubuntu1804": [
-        "cpe:/o:canonical:ubuntu_linux:18.04",
-    ],
-    "vsel": [
-        "cpe:/a:mcafee:virusscan_enterprise_for_linux:1.9",
-        "cpe:/a:mcafee:virusscan_enterprise_for_linux:2.0",
-    ],
-    "wrlinux8": [
-        "cpe:/o:windriver:wrlinux:8",
-    ],
-    "wrlinux1019": [
-        "cpe:/o:windriver:wrlinux:1019",
-    ],
-}
 
 # see xccdf-addremediations.xslt <- shared_constants.xslt <- shared_shorthand2xccdf.xslt
 # if you want to know how the map was constructed
@@ -297,11 +191,11 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_ol": ["ol7", "ol8"],
     "multi_platform_ocp": ["ocp4"],
     "multi_platform_rhcos": ["rhcos4"],
-    "multi_platform_rhel": ["rhel6", "rhel7", "rhel8"],
+    "multi_platform_rhel": ["rhel7", "rhel8"],
     "multi_platform_rhosp": ["rhosp10", "rhosp13"],
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle12", "sle15"],
-    "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804"],
+    "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004"],
     "multi_platform_wrlinux": ["wrlinux8", "wrlinux1019"],
 }
 
@@ -434,25 +328,6 @@ OCILREFATTR_TO_TAG = {
     "question_ref": "question",
 }
 
-XCCDF_PLATFORM_TO_CPE = {
-    "machine": "cpe:/a:machine",
-    "container": "cpe:/a:container",
-    "chrony": "cpe:/a:chrony",
-    "gdm": "cpe:/a:gdm",
-    "grub2": "cpe:/a:grub2",
-    "libuser": "cpe:/a:libuser",
-    "nss-pam-ldapd": "cpe:/a:nss-pam-ldapd",
-    "ntp": "cpe:/a:ntp",
-    "pam": "cpe:/a:pam",
-    "login_defs": "cpe:/a:login_defs",
-    "sssd": "cpe:/a:sssd",
-    "sssd-ldap": "cpe:/a:sssd-ldap",
-    "systemd": "cpe:/a:systemd",
-    "yum": "cpe:/a:yum",
-    "zipl": "cpe:/a:zipl",
-    "net-snmp": "cpe:/a:net-snmp",
-}
-
 # Default platform to package mapping
 XCCDF_PLATFORM_TO_PACKAGE = {
   "grub2": "grub2-common",
@@ -460,6 +335,9 @@ XCCDF_PLATFORM_TO_PACKAGE = {
   "sssd": "sssd-common",
   "zipl": "s390utils-base",
   "sssd-ldap": None,  # Force package check wrapping skip
+  "uefi": None,
+  "non-uefi": None,
+  "not_s390x_arch": None,
 }
 
 # _version_name_map = {

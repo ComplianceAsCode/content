@@ -7,12 +7,12 @@ title: 'Configure the API Server Request Timeout'
 description: |-
     All components that use the API should connect via the secured port,
     authenticate themselves, and be authorized to use the API. To ensure
-    such a configuration, edit the <tt>openshift-kube-apiserver</tt> configmap on the master
-    node(s) and set the <tt>request-timeout</tt> to <tt>300</tt>:
+    such a configuration, edit the <tt>openshift-kube-apiserver</tt> configmap
+    and set the <tt>min-request-timeout</tt> to <tt>300</tt>:
     <pre>
     "apiServerArguments":{
       ...
-      "request-timeout":[
+      "min-request-timeout":[
         "300"
       ],
       ...
@@ -34,9 +34,9 @@ severity: medium
 references:
     cis: 1.2.26
 
-ocil_clause: '<tt>request-timeout</tt> is not set or is not set to an appropriate value'
+ocil_clause: '<tt>min-request-timeout</tt> is not set or is not set to an appropriate value'
 
 ocil: |-
-    Run the following command on the master node(s):
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["request-timeout"]'</pre>
+    Run the following command:
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["min-request-timeout"]'</pre>
     The output should return <pre>300</pre>.

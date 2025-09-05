@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Sudo - umask value'
+
+description: |-
+    Specify the sudo umask to use. The actual umask value that is used is the union
+    of the user's umask and the sudo umask.
+    The default sudo umask is 0022. This guarantess sudo never lowers the umask when
+    running a command.
+
+interactive: false
+
+type: string
+
+operator: equals
+
+options:
+    default: "0022"
+    "0022": "0022"
+    "0027": "0027"

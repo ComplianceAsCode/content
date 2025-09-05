@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8
+prodtype: rhel7,rhel8
 
 title: 'Configure Certificate Directives for LDAP Use of TLS'
 
@@ -9,18 +9,10 @@ description: |-
     Ensure a copy of a trusted CA certificate has been placed in the file
     <tt>/etc/pki/tls/CA/cacert.pem</tt>. Configure LDAP to enforce TLS use and
     to trust certificates signed by that CA. First, edit the file
-{{% if product == "rhel6" %}}
-    <tt>/etc/pam_ldap.conf</tt>, and add or correct either of the following
-    lines:
-    <pre>tls_cacertdir /etc/pki/tls/CA</pre> or 
-    <pre>tls_cacertfile /etc/pki/tls/CA/cacert.pem</pre>
-    Then review the LDAP server and ensure TLS has been configured.
-{{% else %}}
     <tt>/etc/nslcd.conf</tt>, and add or correct either of the following lines:
     <pre>tls_cacertdir /etc/pki/tls/CA</pre> or 
     <pre>tls_cacertfile /etc/pki/tls/CA/cacert.pem</pre>
     Then review the LDAP server and ensure TLS has been configured.
-{{% endif %}}
 
 rationale: |-
     The tls_cacertdir or tls_cacertfile directives are required when
@@ -31,12 +23,10 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel6: CCE-27189-0
     cce@rhel7: CCE-80292-6
     cce@rhel8: CCE-82417-7
 
 references:
-    stigid@rhel6: RHEL-06-000253
     disa: CCI-000776,CCI-000778,CCI-001453
     nist: CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3

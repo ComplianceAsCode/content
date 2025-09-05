@@ -1,5 +1,3 @@
-{{# ##### High level macros ##### #}}
-
 {{#
 Pass strings that correspond to XCCDF value names as arguments to this macro:
 bash_instantiate_variables("varname1", "varname2")
@@ -102,9 +100,12 @@ populate {{{ name }}}
 {{%- endmacro -%}}
 
 {{#
-# Install a package
-# Uses the right command based on pkg_manger proprerty defined in product.yaml.
-# package: name of the package
+    Install a package
+
+    Uses the right command based on pkg_manager property defined in product.yml.
+
+    :param package: name of the package
+    :type package: str
 #}}
 {{%- macro bash_package_install(package) -%}}
 {{%- if pkg_manager is defined -%}}
@@ -114,6 +115,8 @@ if ! rpm -q --quiet "{{{ package }}}" ; then
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
 apt-get install -y "{{{ package }}}"
+{{%- elif pkg_manager == "zypper" -%}}
+zypper install -y "{{{ package }}}"
 {{%- else -%}}
 {{{ die("Can't generate a remediation for " + pkg_manager) }}}
 {{%- endif -%}}
@@ -123,9 +126,12 @@ apt-get install -y "{{{ package }}}"
 {{%- endmacro -%}}
 
 {{#
-# Remove a package
-# Uses the right command based on pkg_manger proprerty defined in product.yaml.
-# package: name of the package
+    Remove a package
+
+    Uses the right command based on pkg_manager property defined in product.yml.
+
+    :param package: name of the package
+    :type package: str
 #}}
 {{%- macro bash_package_remove(package) -%}}
 {{%- if pkg_manager is defined -%}}
@@ -135,6 +141,8 @@ if rpm -q --quiet "{{{ package }}}" ; then
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
 apt-get remove -y "{{{ package }}}"
+{{%- elif pkg_manager == "zypper" -%}}
+zypper remove -y "{{{ package }}}"
 {{%- else -%}}
 {{{ die("Can't generate a remediation for " + pkg_manager) }}}
 {{%- endif -%}}
@@ -181,7 +189,7 @@ then
     printf '%s=%s\n' "{{{ key }}}" "{{{ value }}}" >> ${DCONFFILE}
 else
     escaped_value="$(sed -e 's/\\/\\\\/g' <<< "{{{ value }}}")"
-    if grep -q "^\\s*{{{ key }}}" "${SETTINGSFILES[@]}"
+    if grep -q "^\\s*{{{ key }}}\\s*=" "${SETTINGSFILES[@]}"
     then
         sed -i "s/\\s*{{{ key }}}\\s*=\\s*.*/{{{ key }}}=${escaped_value}/g" "${SETTINGSFILES[@]}"
     else
@@ -403,9 +411,6 @@ do
     {{{ bash_set_faillock_option_account("$pam_file") | indent(4) }}}
 done
 {{%- endmacro -%}}
-
-
-{{# ##### Low level macros ##### #}}
 
 {{#
 # Print a message to stderr and exit the shell

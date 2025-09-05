@@ -9,7 +9,7 @@ description: |-
     make sure the <tt>etcd-pod*</tt> <tt>ConfigMaps</tt> in the
     <tt>openshift-etcd</tt> namespace contain the following argument
     for the <tt>etcd</tt> binary in the <tt>etcd</tt> pod:
-    <pre>--cert-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-serving/etcd-serving-<i>NODE_NAME</i>.crt</pre>
+    <pre>--cert-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-serving/etcd-serving-NODE_NAME.crt</pre>
 
 rationale: |-
     Without cryptographic integrity protections, information can be
@@ -27,7 +27,7 @@ ocil_clause: 'the etcd client certificate is not configured'
 
 ocil: |-
     Run the following command:
-    <pre>oc get -nopenshift-etcd cm etcd-pod -oyaml | grep --cert-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-serving/etcd-serving-<i>NODE_NAME</i>.crt</pre>
+    <pre>oc get -nopenshift-etcd cm etcd-pod -oyaml | grep "\-\-cert-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-serving/etcd-serving-NODE_NAME.crt"</pre>
     Verify that there is a certificate configured.
 
 warnings:

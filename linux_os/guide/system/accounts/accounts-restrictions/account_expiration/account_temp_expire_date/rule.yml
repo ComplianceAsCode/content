@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel6,rhel7,rhel8,rhv4
+prodtype: fedora,rhel7,rhel8,rhv4,sle12
 
 title: 'Assign Expiration Date to Temporary Accounts'
 
@@ -28,13 +28,11 @@ rationale: |-
 severity: unknown
 
 identifiers:
-    cce@rhel6: CCE-27474-6
     cce@rhel7: CCE-81000-2
     cce@rhel8: CCE-82474-8
+    cce@sle12: CCE-83043-0
 
 references:
-    stigid@rhel6: RHEL-06-000297
-    srg@rhel6: SRG-OS-000121,SRG-OS-000123
     disa: CCI-000016,CCI-001682
     nist: AC-2(2),AC-2(3),CM-6(a)
     nist-csf: DE.CM-1,DE.CM-3,PR.AC-1,PR.AC-4,PR.AC-6
@@ -45,6 +43,7 @@ references:
     cobit5: DSS01.03,DSS03.05,DSS05.04,DSS05.05,DSS05.07,DSS06.03
     iso27001-2013: A.12.4.1,A.12.4.3,A.6.1.2,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
     cis-csc: 1,12,13,14,15,16,18,3,5,7,8
+    stigid@sle12: SLES-12-010360
 
 ocil_clause: 'any temporary or emergency accounts have no expiration date set or do not expire within a documented time frame'
 

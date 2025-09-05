@@ -4,6 +4,12 @@ title: 'CIS Red Hat OpenShift Container Platform 4 Benchmark'
 
 platform: ocp4
 
+metadata:
+    SMEs:
+        - JAORMX
+        - mrogers950
+        - jhrozek
+
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
     Red Hat OpenShift Container Platform 4 Benchmark™, V0.3, currently unreleased.
@@ -26,9 +32,11 @@ selections:
   # 1.2.3 Ensure that the --token-auth-file parameter is not set
     - api_server_token_auth
   # 1.2.4 Ensure that the --kubelet-https argument is set to true
-    - api_server_kubelet_https_cert
-    - api_server_kubelet_https_key
-    - api_server_kubelet_https_serving_cert
+  # OCP doesn't use --kubelet-https but relies on TLS which is checked for in 1.2.30
+  # This rule also makes sure that the services of openshift-apiserver and openshift-oauth-apiserver
+  # serve TLS
+    - api_server_openshift_https_serving_cert
+    - api_server_oauth_https_serving_cert
   # 1.2.5 Ensure that the --kubelet-client-certificate and --kubelet-client-key arguments are set as appropriate
     - api_server_kubelet_client_cert
     - api_server_kubelet_client_key
@@ -39,20 +47,25 @@ selections:
   # 1.2.8 Ensure that the --authorization-mode argument includes Node
     - api_server_auth_mode_node
   # 1.2.9 Ensure that the --authorization-mode argument includes RBAC
+    - api_server_auth_mode_rbac
   # 1.2.10 Ensure that the admission control plugin EventRateLimit is set
-    - api_server_admission_control_plugin_EventRateLimit
+    - api_server_api_priority_gate_enabled
+    - api_server_api_priority_flowschema_catch_all
   # 1.2.11 Ensure that the admission control plugin AlwaysAdmit is not set
     - api_server_admission_control_plugin_AlwaysAdmit
   # 1.2.12 Ensure that the admission control plugin AlwaysPullImages is set
-    - api_server_admission_control_plugin_AlwaysPullImages
-  # 1.2.13 Ensure that the admission control plugin SecurityContextDeny is set if PodSecurityPolicy is not used
+    # (jhrozek): This rule should temporarily be commented out as OCP diverges from CIS
+    #            and we need to improve our reply to this control
+    # - api_server_admission_control_plugin_AlwaysPullImages
+  # 1.2.13 Ensure that the admission control plugin SecurityContextDeny is not set
     - api_server_admission_control_plugin_SecurityContextDeny
   # 1.2.14 Ensure that the admission control plugin ServiceAccount is set
     - api_server_admission_control_plugin_ServiceAccount
+    - api_server_no_adm_ctrl_plugins_disabled
   # 1.2.15 Ensure that the admission control plugin NamespaceLifecycle is set
     - api_server_admission_control_plugin_NamespaceLifecycle
   # 1.2.16 Ensure that the admission control plugin PodSecurityPolicy is set (Automated)
-    - api_server_admission_control_plugin_PodSecurityPolicy
+    - api_server_admission_control_plugin_Scc
   # 1.2.17 Ensure that the admission control plugin NodeRestriction is set (Automated)
     - api_server_admission_control_plugin_NodeRestriction
   # 1.2.18 Ensure that the --insecure-bind-address argument is not set
@@ -62,18 +75,25 @@ selections:
   # 1.2.20 Ensure that the --secure-port argument is not set to 0
     - api_server_bind_address
   # 1.2.21 Ensure that the --profiling argument is set to false
-    - api_server_profiling
+    # (jhrozek): This rule should temporarily be commented out as OCP diverges from CIS
+    #            and we need to improve our reply to this control
+    # - api_server_profiling
   # 1.2.22 Ensure that the --audit-log-path argument is set
     - api_server_audit_log_path
     - openshift_api_server_audit_log_path
-  # 1.2.23 Ensure that the --audit-log-maxage argument is set to 30 or as appropriate
-    - api_server_audit_log_maxage
+  # 1.2.23 Ensure that the audit logs are forwarded off the cluster for retention
+    - audit_log_forwarding_enabled
   # 1.2.24 Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate
     - api_server_audit_log_maxbackup
+    - ocp_api_server_audit_log_maxbackup
   # 1.2.25 Ensure that the --audit-log-maxsize argument is set to 100 or as appropriate
     - api_server_audit_log_maxsize
+    - ocp_api_server_audit_log_maxsize
   # 1.2.26 Ensure that the --request-timeout argument is set as appropriate
-    - api_server_request_timeout
+    # (jhrozek) Temporarily disabling the rule because the benchmark
+    #           specifies one value (60) for the request-timeout parameter, while we
+    #           use 3600 in OCP. It is unclear if this value is appropriate...
+    # - api_server_request_timeout
   # 1.2.27 Ensure that the --service-account-lookup argument is set to true
     - api_server_service_account_lookup
   # 1.2.28 Ensure that the --service-account-key-file argument is set as appropriate
@@ -111,8 +131,9 @@ selections:
     - controller_insecure_port_disabled
   #### 1.4 Scheduler
   # 1.4.1 Ensure that the --profiling argument is set to false  (info only)
-    - scheduler_profiling_argument
+  # Handled by rbac_debug_role_protects_pprof
   # 1.4.2 Ensure that the --bind-address argument is set to 127.0.0.1
+    - scheduler_no_bind_address
 
   ### 2 etcd
   # 2.1 Ensure that the --cert-file and --key-file arguments are set as appropriate
@@ -129,8 +150,6 @@ selections:
     - etcd_peer_client_cert_auth
   # 2.6 Ensure that the --peer-auto-tls argument is not set to true
     - etcd_peer_auto_tls
-  # 2.7 Ensure that a unique Certificate Authority is used for etcd
-    - etcd_unique_ca
 
   ### 3 Control Plane Configuration
   ###

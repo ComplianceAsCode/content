@@ -9,3 +9,10 @@ profiles_root: "./profiles"
 pkg_manager: "yum"
 
 init_system: "systemd"
+
+cpes_root: "../shared/applicability"
+cpes:
+  - wrlinux8:
+      name: "cpe:/o:windriver:wrlinux:8"
+      title: "Wind River Linux 8"
+      check_id: installed_OS_is_wrlinux8

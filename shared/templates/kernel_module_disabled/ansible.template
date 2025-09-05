@@ -1,0 +1,12 @@
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+- name: Ensure kernel module '{{{ KERNMODULE }}}' is disabled
+  lineinfile:
+    create: yes
+    dest: "/etc/modprobe.d/{{{ KERNMODULE }}}.conf"
+    regexp: '{{{ KERNMODULE }}}'
+    line: "install {{{ KERNMODULE }}} /bin/true"
+

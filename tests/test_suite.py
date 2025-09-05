@@ -46,11 +46,11 @@ def parse_args():
         "is omitted from the hypervisor, qemu:/// protocol is assumed. "
         "Example of a hypervisor domain name tuple: system ssg-test-suite")
 
-    common_parser.add_argument("--datastream",
-                               dest="datastream",
-                               metavar="DATASTREAM",
-                               help=("Path to the Source DataStream on this "
-                                     "machine which is going to be tested"))
+    common_parser.add_argument(
+        "--datastream", dest="datastream", metavar="DATASTREAM",
+        help="Path to the Source DataStream on this machine which is going to be tested. "
+        "If not supplied, autodetection is attempted by looking into the build directory.")
+
     benchmarks = common_parser.add_mutually_exclusive_group()
     benchmarks.add_argument("--xccdf-id",
                                dest="xccdf_id",
@@ -359,6 +359,7 @@ def main():
         with xml_operations.datastream_root(stashed_datastream, stashed_datastream) as root:
             if options.remove_machine_only:
                 xml_operations.remove_machine_platform(root)
+                xml_operations.remove_machine_remediation_condition(root)
             if options.add_platform:
                 xml_operations.add_platform_to_benchmark(root, options.add_platform)
 

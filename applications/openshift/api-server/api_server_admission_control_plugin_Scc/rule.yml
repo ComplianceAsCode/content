@@ -1,0 +1,51 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Enable the SecurityContextConstraint Admission Control Plugin'
+
+description: |-
+   To ensure pod permissions are managed, make sure that the
+   <tt>SecurityContextConstraint</tt> admission control plugin is used.
+
+rationale: |-
+    A Security Context Constraint is a cluster-level resource that controls the actions
+    which a pod can perform and what the pod may access. The
+    <tt>SecurityContextConstraint</tt> objects define a set of conditions that a pod
+    must run with in order to be accepted into the system. Security Context Constraints
+    are comprised of settings and strategies that control the security features
+    a pod has access to and hence this must be used to control pod access
+    permissions.
+
+identifiers:
+  cce@ocp4: CCE-83602-3
+
+
+severity: medium
+
+references:
+    cis: 1.2.16
+
+ocil_clause: 'the list of enabled admission plugins contains <tt>SecurityContextConstraint</tt>'
+
+ocil: |-
+    The SecurityContextConstraint plugin should be enabled in the list of enabled plugins in
+    the apiserver configuration:
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '"enable-admission-plugins":\[[^]]*"security.openshift.io/SecurityContextConstraint"'
+      operation: "pattern match"
+      type: "string"
+

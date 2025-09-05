@@ -16,11 +16,11 @@
   <ind:textfilecontent54_object id="obj_rsyslog_remote_tls" version="1">
     <ind:behaviors singleline="true" />
     <ind:filepath operation="pattern match">^/etc/rsyslog\.(conf|d/.+\.conf)$</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*action\(type="omfwd"(.+?)\)</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*action\((?i)type(?-i)="omfwd"(.+?)\)</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">0</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_rsyslog_remote_tls" comment="value of omfwd action" version="1">
-    <ind:subexpression datatype="string" operation="pattern match">(?=[\S\s]*\sprotocol="tcp")(?=[\S\s]*\sTarget="[^"]+?")(?=[\S\s]*\sport="6514")(?=[\S\s]*\sStreamDriver="gtls")(?=[\S\s]*\sStreamDriverMode="1")(?=[\S\s]*\sStreamDriverAuthMode="x509/name")(?=[\S\s]*\sstreamdriver\.CheckExtendedKeyPurpose="on")</ind:subexpression>
+    <ind:subexpression datatype="string" operation="pattern match">(?=[\S\s]*\s(?i)protocol(?-i)="tcp")(?=[\S\s]*\s(?i)Target(?-i)="[^"]+?")(?=[\S\s]*\s(?i)port(?-i)="6514")(?=[\S\s]*\s(?i)StreamDriver(?-i)="gtls")(?=[\S\s]*\s(?i)StreamDriverMode(?-i)="1")(?=[\S\s]*\s(?i)StreamDriverAuthMode(?-i)="x509/name")(?=[\S\s]*\s(?i)StreamDriver\.CheckExtendedKeyPurpose(?-i)="on")</ind:subexpression>
   </ind:textfilecontent54_state>
 </def-group>

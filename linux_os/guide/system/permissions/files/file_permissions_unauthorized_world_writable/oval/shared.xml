@@ -6,7 +6,7 @@
     </criteria>
   </definition>
   <!-- NOTE: It is impossible for an OVAL check to determine which world writable files are authorized or not. -->
-  <!-- This checks basically fails if any world writable files exist on the system. A default RHEL6 install -->
+  <!-- This checks basically fails if any world writable files exist on the system. A default RHEL install -->
   <!-- does not have any world writable files but this many not be the case for other systems. It will be up to -->
   <!-- the system administrator to determine which world writable files are approved for use. -->
   <unix:file_test check="all" check_existence="none_exist" comment="world writable files" id="test_file_permissions_unauthorized_world_write" version="1">

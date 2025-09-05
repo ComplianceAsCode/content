@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel7,rhel8
+
+title: 'Ensure /usr Located On Separate Partition'
+
+description: |-
+    It is recommended that the <tt>/usr</tt> directory resides on a separate
+    partition.
+
+rationale: |-
+    The <tt>/usr</tt> partition contains system software, utilities and files.
+    Putting it on a separate partition allows limiting its size and applying
+    restrictions through mount options.
+
+severity: medium
+
+platform: machine
+
+identifiers:
+    cce@rhel7: CCE-83342-6
+    cce@rhel8: CCE-83343-4
+
+references:
+    anssi: BP28(R12)
+
+{{{ complete_ocil_entry_separate_partition(part="/usr") }}}
+
+template:
+    name: mount
+    vars:
+        mountpoint: /usr

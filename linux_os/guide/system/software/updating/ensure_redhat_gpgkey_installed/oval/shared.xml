@@ -4,9 +4,6 @@
     <criteria comment="Vendor GPG keys" operator="OR">
       <criteria comment="Red Hat Vendor Keys" operator="AND">
         <criteria comment="Red Hat Installed" operator="OR">
-        {{%- if product == "rhel6" %}}
-          <extend_definition comment="SL6 installed" definition_ref="installed_OS_is_sl6" />
-        {{%- endif %}}
         {{%- if product == "rhel7" %}}
           <extend_definition comment="SL7 installed" definition_ref="installed_OS_is_sl7" />
         {{%- endif %}}

@@ -1,0 +1,21 @@
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Create /tmp/tmp-inst directory
+  file:
+    path: /tmp/tmp-inst
+    state: directory
+    mode: '000'
+    seuser: system_u
+    serole: object_r
+    setype: tmp_t
+
+{{{ ansible_lineinfile(
+  msg="Make changes to /etc/security/namespace.conf",
+  path="/etc/security/namespace.conf",
+  regex="^\s*/tmp\s+/tmp/tmp-inst/\s+level\s+root,adm$",
+  new_line="/tmp     /tmp/tmp-inst/        level      root,adm"
+) }}}

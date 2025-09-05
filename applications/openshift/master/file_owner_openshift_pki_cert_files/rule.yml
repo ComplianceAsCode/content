@@ -1,0 +1,49 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify User Who Owns The OpenShift PKI Certificate Files'
+
+description: |-
+  {{{ describe_file_owner(file="/etc/kubernetes/static-pod-resources/*/*/*/tls.crt", owner="root") }}}
+
+rationale: |-
+  OpenShift makes use of a number of certificates as part of its operation.
+  You should verify the ownership of the directory containing the PKI
+  information and all files in that directory to maintain their integrity.
+
+identifiers:
+  cce@ocp4: CCE-83558-7
+
+
+severity: medium
+
+references:
+  cis: 1.1.19
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resources/*/*/*/tls.crt", owner="root") }}}'
+
+ocil: |-
+  {{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/*/*/*/tls.crt", owner="root") }}}
+
+platform: ocp4-master-node
+
+# Note that this recursively checks for files, and the form is as follows:
+#
+#  /etc/kubernetes/static-pod-resources/.*/.*/.*/tls\.key
+#
+# Taking as an example:
+#
+#  /etc/kubernetes/static-pod-resources/kube-controller-manager-pod-7/secrets/serving-cert/tls.crt
+#
+# - /etc/kubernetes/static-pod-resources/ is the base path
+# - 'kube-controller-manager-pod-7' This initial versioned resourced directory (e.g. pod version)
+# - 'secrets' The type of resource (e.g. configmap or secret)
+# - 'serving-cert' the mount name
+# - 'tls.crt' the cert file
+template:
+  name: file_owner
+  vars:
+    filepath: ^/etc/kubernetes/static-pod-resources/.*/.*/.*/tls\.crt$
+    fileuid: '0'
+    filepath_is_regex: "true"

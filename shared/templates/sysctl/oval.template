@@ -1,0 +1,167 @@
+{{% macro state_static_sysctld(prefix) -%}}
+    <ind:object object_ref="object_static_{{{ prefix }}}_{{{ SYSCTLID }}}" />
+{{%- if SYSCTLVAL == "" %}}
+    <ind:state state_ref="state_static_sysctld_{{{ SYSCTLID }}}" />
+{{%- endif -%}}
+{{%- endmacro -%}}
+{{%- macro sysctl_match() -%}}
+{{%- if SYSCTLVAL == "" -%}}
+    <ind:pattern operation="pattern match">(?:^|.*\n)[^#]*{{{ SYSCTLVAR }}}[\s]*=[\s]*(\d+)[\s]*\n</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+{{%- else -%}}
+{{% if OPERATION == "pattern match" %}}
+    <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*{{{ SYSCTLVAL_REGEX }}}[\s]*$</ind:pattern>
+{{% else %}}
+    <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*{{{ SYSCTLVAL }}}[\s]*$</ind:pattern>
+{{% endif %}}
+    <ind:instance datatype="int">1</ind:instance>
+{{%- endif -%}}
+{{%- endmacro -%}}
+{{%- if "P" in FLAGS -%}}
+
+<def-group>
+  <definition class="compliance" id="sysctl_{{{ SYSCTLID }}}" version="3">
+    {{{ oval_metadata("The '" + SYSCTLVAR + "' kernel parameter should be set to the appropriate value in both system configuration and system runtime.") }}}
+    <criteria operator="AND">
+      <extend_definition comment="{{{ SYSCTLVAR }}} configuration setting check" definition_ref="sysctl_static_{{{ SYSCTLID }}}" />
+      <extend_definition comment="{{{ SYSCTLVAR }}} runtime setting check" definition_ref="sysctl_runtime_{{{ SYSCTLID }}}" />
+    </criteria>
+  </definition>
+</def-group>
+
+{{%- elif "I" in FLAGS -%}}
+
+<def-group>
+  <definition class="compliance" id="sysctl_{{{ SYSCTLID }}}" version="4">
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to the appropriate value in both system configuration and system runtime.") }}}
+    <criteria comment="IPv6 disabled or {{{ SYSCTLVAR }}} set correctly" operator="OR">
+{{% if product in ["ubuntu1604", "ubuntu1804"] %}}
+      <extend_definition comment="is IPv6 enabled?" definition_ref="kernel_module_ipv6_option_disabled" />
+{{% else %}}
+      <extend_definition comment="is IPv6 enabled?" definition_ref="sysctl_kernel_ipv6_disable" />
+{{% endif %}}
+      <criteria operator="AND">
+        <extend_definition comment="{{{ SYSCTLVAR }}} configuration setting check" definition_ref="sysctl_static_{{{ SYSCTLID }}}" />
+        <extend_definition comment="{{{ SYSCTLVAR }}} runtime setting check" definition_ref="sysctl_runtime_{{{ SYSCTLID }}}" />
+      </criteria>
+    </criteria>
+  </definition>
+</def-group>
+
+{{%- endif %}}
+{{%- if "R" in FLAGS -%}}
+
+<def-group>
+  <definition class="compliance" id="sysctl_runtime_{{{ SYSCTLID }}}" version="3">
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + ("'" + SYSCTLVAL + "'") if SYSCTLVAL else " the appropriate value" + " in the system runtime.") }}}
+    <criteria operator="AND">
+{{%- if SYSCTLVAL == "" %}}
+      <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to the appropriate value" test_ref="test_sysctl_runtime_{{{ SYSCTLID }}}" />
+{{%- else %}}
+      <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}}" test_ref="test_sysctl_runtime_{{{ SYSCTLID }}}" />
+{{%- endif %}}
+    </criteria>
+  </definition>
+{{% if SYSCTLVAL == "" %}}
+  <unix:sysctl_test check="all" check_existence="all_exist" comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to the appropriate value" id="test_sysctl_runtime_{{{ SYSCTLID }}}" version="1">
+{{%- else %}}
+  <unix:sysctl_test check="all" check_existence="all_exist" comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}}" id="test_sysctl_runtime_{{{ SYSCTLID }}}" version="1">
+{{%- endif %}}
+    <unix:object object_ref="object_sysctl_runtime_{{{ SYSCTLID }}}" />
+    <unix:state state_ref="state_sysctl_runtime_{{{ SYSCTLID }}}" />
+  </unix:sysctl_test>
+
+  <unix:sysctl_object id="object_sysctl_runtime_{{{ SYSCTLID }}}" version="1">
+    <unix:name>{{{ SYSCTLVAR }}}</unix:name>
+  </unix:sysctl_object>
+{{% if SYSCTLVAL == "" %}}
+  <unix:sysctl_state id="state_sysctl_runtime_{{{ SYSCTLID }}}" version="1">
+    <unix:value datatype="{{{ DATATYPE }}}" operation="equals" var_ref="sysctl_{{{ SYSCTLID }}}_value" />
+  </unix:sysctl_state>
+
+  <external_variable comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}" id="sysctl_{{{ SYSCTLID }}}_value" version="1" />
+{{%- else %}}
+  <unix:sysctl_state id="state_sysctl_runtime_{{{ SYSCTLID }}}" version="1">
+{{% if OPERATION == "pattern match" %}}
+    <unix:value datatype="{{{ DATATYPE }}}" operation="{{{ OPERATION }}}">{{{ SYSCTLVAL_REGEX }}}</unix:value>
+{{% else %}}
+    <unix:value datatype="{{{ DATATYPE }}}" operation="{{{ OPERATION }}}">{{{ SYSCTLVAL }}}</unix:value>
+{{% endif %}}
+  </unix:sysctl_state>
+{{%- endif %}}
+</def-group>
+
+{{%- endif -%}}
+{{%- if "S" in FLAGS -%}}
+
+<def-group>
+  <definition class="compliance" id="sysctl_static_{{{ SYSCTLID }}}" version="3">
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + ("'" + SYSCTLVAL + "'") if SYSCTLVAL else " the appropriate value" + " in the system configuration.") }}}
+{{%- if SYSCTLVAL == "" %}}
+    <criteria operator="OR">
+      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to the appropriate value in /etc/sysctl.conf" test_ref="test_static_sysctl_{{{ SYSCTLID }}}" />
+      <!-- see sysctl.d(5) -->
+      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to the appropriate value in /etc/sysctl.d/*.conf" test_ref="test_static_etc_sysctld_{{{ SYSCTLID }}}" />
+      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to the appropriate value in /run/sysctl.d/*.conf" test_ref="test_static_run_sysctld_{{{ SYSCTLID }}}" />
+      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to the appropriate value in /usr/lib/sysctl.d/*.conf" test_ref="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}" />
+    </criteria>
+{{%- else %}}
+
+    <criteria operator="OR">
+      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}} in /etc/sysctl.conf" test_ref="test_static_sysctl_{{{ SYSCTLID }}}" />
+      <!-- see sysctl.d(5) -->
+      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}} in /etc/sysctl.d/*.conf" test_ref="test_static_etc_sysctld_{{{ SYSCTLID }}}" />
+      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}} in /run/sysctl.d/*.conf" test_ref="test_static_run_sysctld_{{{ SYSCTLID }}}" />
+      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}} in /usr/lib/sysctl.d/*.conf" test_ref="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}" />
+    </criteria>
+{{%- endif %}}
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="{{{ SYSCTLVAR }}} static configuration" id="test_static_sysctl_{{{ SYSCTLID }}}" version="1">
+    {{{ state_static_sysctld("sysctl") }}}
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf" id="test_static_etc_sysctld_{{{ SYSCTLID }}}" version="1">
+    {{{ state_static_sysctld("etc_sysctld") }}}
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf" id="test_static_run_sysctld_{{{ SYSCTLID }}}" version="1">
+    {{{ state_static_sysctld("run_sysctld") }}}
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf" id="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}" version="1">
+    {{{ state_static_sysctld("usr_lib_sysctld") }}}
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_static_sysctl_{{{ SYSCTLID }}}" version="1">
+    <ind:filepath>/etc/sysctl.conf</ind:filepath>
+    {{{ sysctl_match() }}}
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_etc_sysctld_{{{ SYSCTLID }}}" version="1">
+    <ind:path>/etc/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    {{{ sysctl_match() }}}
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_run_sysctld_{{{ SYSCTLID }}}" version="1">
+    <ind:path>/run/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    {{{ sysctl_match() }}}
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_usr_lib_sysctld_{{{ SYSCTLID }}}" version="1">
+    <ind:path>/usr/lib/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    {{{ sysctl_match() }}}
+  </ind:textfilecontent54_object>
+{{% if SYSCTLVAL == "" %}}
+
+  <ind:textfilecontent54_state id="state_static_sysctld_{{{ SYSCTLID }}}" version="1">
+    <ind:subexpression operation="{{{ OPERATION }}}"  var_ref="sysctl_{{{ SYSCTLID }}}_value" datatype="{{{ DATATYPE }}}" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}" id="sysctl_{{{ SYSCTLID }}}_value" version="1" />
+{{% endif %}}
+</def-group>
+{{%- endif -%}}

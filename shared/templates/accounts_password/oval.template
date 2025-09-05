@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="3">
+    {{{ oval_metadata("The password " + VARIABLE + " should meet minimum requirements") }}}
+    <criteria operator="AND" comment="conditions for {{{ VARIABLE }}} are satisfied">
+      <extend_definition comment="pwquality.so exists in system-auth" definition_ref="accounts_password_pam_pwquality" />
+      <criterion comment="pwquality.conf" test_ref="test_password_pam_pwquality_{{{ VARIABLE }}}" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all"
+  comment="check the configuration of /etc/security/pwquality.conf"
+  id="test_password_pam_pwquality_{{{ VARIABLE }}}" version="3">
+    <ind:object object_ref="obj_password_pam_pwquality_{{{ VARIABLE }}}" />
+    <ind:state state_ref="state_password_pam_{{{ VARIABLE }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_password_pam_pwquality_{{{ VARIABLE }}}" version="3">
+    <ind:filepath>/etc/security/pwquality.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^{{{ VARIABLE }}}[\s]*=[\s]*({{{ SIGN }}}\d+)(?:[\s]|$)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_password_pam_{{{ VARIABLE }}}" version="3">
+    <ind:subexpression datatype="int" operation="{{{ OPERATION }}}" var_ref="var_password_pam_{{{ VARIABLE }}}" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="External variable for pam_{{{ VARIABLE }}}" datatype="int" id="var_password_pam_{{{ VARIABLE }}}" version="3" />
+</def-group>

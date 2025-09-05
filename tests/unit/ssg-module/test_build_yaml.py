@@ -41,7 +41,6 @@ def test_make_items_product_specific():
     rule = ssg.build_yaml.Rule("something")
 
     rule.identifiers = {
-        "cce@rhel6": "CCE-27100-7",
         "cce@rhel7": "CCE-27445-6",
         "cce@rhel8": "CCE-80901-2",
     }
@@ -76,7 +75,6 @@ def test_make_items_product_specific():
     assert rule.identifiers["cce"] == "CCE-27445-6"
 
     rule.references = {
-        "stigid@rhel6": "RHEL-06-000237",
         "stigid@rhel7": "RHEL-07-040370",
         "stigid": "tralala",
     }
@@ -85,30 +83,22 @@ def test_make_items_product_specific():
     assert "stigid" in str(exc)
 
     rule.references = {
-        "stigid@rhel6": "RHEL-06-000237",
         "stigid@rhel7": "RHEL-07-040370",
     }
     rule.normalize("rhel7")
     assert rule.references["stigid"] == "RHEL-07-040370"
 
     rule.references = {
-        "stigid@rhel6": "RHEL-06-000237",
         "stigid@rhel7": "RHEL-07-040370",
     }
     rule.template = TEST_TEMPLATE_DICT.copy()
 
-    rule.normalize("rhel6")
-    assert rule.references["stigid"] == "RHEL-06-000237"
-    assert "stigid@rhel6" not in rule.references
-    assert rule.identifiers["cce"] == "CCE-27445-6"
-
-    assert "filesystem@rhel7" not in rule.template["vars"]
+    assert "filesystem@rhel8" not in rule.template["vars"]
     assert rule.template["vars"]["filesystem"] == "tmpfs"
-    assert "anaconda@rhel7" not in rule.template["backends"]
+    assert "anaconda@rhel8" not in rule.template["backends"]
     assert rule.template["backends"]["anaconda"]
 
     rule.references = {
-        "stigid@rhel6": "RHEL-06-000237",
         "stigid@rhel7": "RHEL-07-040370,RHEL-07-057364",
     }
     with pytest.raises(ValueError, match="Rules can not have multiple STIG IDs."):

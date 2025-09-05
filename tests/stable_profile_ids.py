@@ -19,8 +19,6 @@ from collections import defaultdict
 
 STABLE_PROFILE_IDS = {
     "FEDORA": ["standard", "ospp", "pci-dss"],
-    "RHEL-6": ["C2S", "CS2", "CSCF-RHEL6-MLS", "fisma-medium-rhel6-server",
-               "pci-dss", "rht-ccp", "stig", "usgcb-rhel6-server"],
     "RHEL-7": ["C2S", "cjis", "hipaa", "cui", "rht-ccp",
                "ospp", "ncp", "pci-dss", "stig"],
     "RHEL-8": ["ospp", "pci-dss"],
@@ -29,7 +27,6 @@ STABLE_PROFILE_IDS = {
 
 BENCHMARK_TO_FILE_STEM = {
     "FEDORA": "fedora",
-    "RHEL-6": "rhel6",
     "RHEL-7": "rhel7",
     "RHEL-8": "rhel8",
 }

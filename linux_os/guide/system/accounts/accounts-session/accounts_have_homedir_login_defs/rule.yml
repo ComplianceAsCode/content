@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhv4,sle15,wrlinux1019,fedora
+prodtype: ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,wrlinux1019,fedora
 
 title: 'Ensure Home Directories are Created for New Users'
 
@@ -21,12 +21,14 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-80434-4
     cce@rhel8: CCE-83789-8
+    cce@sle12: CCE-83053-9
 
 references:
     stigid@ol7: OL07-00-020610
     disa: CCI-000366
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: RHEL-07-020610
+    stigid@sle12: SLES-12-010720
 
 ocil_clause: 'the value of CREATE_HOME is not set to yes, is missing, or the line is commented out'
 
