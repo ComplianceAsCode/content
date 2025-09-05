@@ -17,7 +17,10 @@ jobs:
           python-version: '3.9'
       # Step 2: Install Git
       - name: Install Git
-        run: sudo apt-get update && sudo apt-get install -y git
+        run: |
+          sudo apt-get update && sudo apt-get install -y git
+          python -m pip install --upgrade pip
+          pip install ruamel.yaml
       # Step 3: Checkout the CaC repo
       - name: Checkout CaC repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -62,16 +65,38 @@ jobs:
         if: ${{ env.SKIP == 'false' }}
         id: changed-files
         run: |
-          repo=${{ github.repository }}
+          OWNER="ComplianceAsCode"
+          REPO="content"
           # Fetch all pages of the files for the pull request
-          url="repos/$repo/pulls/${{ env.PR_NUMBER }}/files"
+          url="repos/$OWNER/$REPO/pulls/${{ env.PR_NUMBER }}/files"
           response=$(gh api "$url" --paginate)
           echo "$response" | jq -r '.[].filename' > filenames.txt
           echo "CHANGE_FOUND=false" >> $GITHUB_ENV
-          if grep -E "controls/|.profile|rule.yml|.var" filenames.txt ; then
+          cd cac-content
+          while IFS= read -r line; do
+            if echo "$line" | grep -qE "controls/|\.profile"; then
+              echo "$line" >> valid_files.txt
+            # Only the rule.description, var.description, and var.options updates
+            # will trigger the sync.
+            elif [[ "$line" == *"rule.yml" || "$line" == *".var" ]]; then
+              python  utils/compare_rule_var.py \
+              --owner $OWNER \
+              --repo $REPO \
+              ${{ env.PR_NUMBER }} \
+              "$line" \
+              description options \
+            || {
+              echo "Change detected! Running follow-up actions..."
+              echo "The description/options in the $line have been updated."
+              echo "$line" >> valid_files.txt
+            }
+            fi
+          done < ../filenames.txt
+          if [[ -f valid_files.txt ]]; then
+            echo "Shows valid_files:"
+            cat valid_files.txt
             echo "CHANGE_FOUND=true" >> $GITHUB_ENV
           fi
-          cat filenames.txt
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
       # Step 6: Setup the complyscribe environment
@@ -130,8 +155,7 @@ jobs:
       - name: Handle the detected updates
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
-          cat filenames.txt
-          python cac-content/utils/handle_detected_updates.py 'filenames.txt' > updates 2>&1
+          python cac-content/utils/handle_detected_updates.py 'cac-content/valid_files.txt' > updates 2>&1
           cd complyscribe && source venv/bin/activate
           RH_PRODUCTS=${{ env.RH_PRODUCTS }}
           i=0
@@ -162,6 +186,7 @@ jobs:
           done < "$GITHUB_WORKSPACE"/updates
       # Step 10: Check if there is any existing open PR
       - name: Check if there is any existing open PR
+        if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
           cd oscal-content
           # Use the GitHub CLI to search for an open PR.
@@ -332,7 +357,7 @@ jobs:
                 --head $BRANCH_NAME --state open --json id \
                 | jq length)
               if [ "$PR_EXISTS" -gt 0 ]; then
-                echo "PR ${{ env.BRANCH_NAME }} already exists. Skipping PR creation.
+                echo "PR ${{ env.BRANCH_NAME }} already exists. Skipping PR creation."
                 echo "Add a comment for the CAC PR ${{ env.PR_NUMBER }}."
                 gh pr comment ${{ env.BRANCH_NAME }} --body "${PR_BODY}"
               else
