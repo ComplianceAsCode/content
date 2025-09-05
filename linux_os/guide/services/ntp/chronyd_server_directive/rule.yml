@@ -22,11 +22,12 @@ identifiers:
 references:
     disa: CCI-001891
     srg: SRG-OS-000355-GPOS-00143,SRG-OS-000356-GPOS-00144,SRG-OS-000359-GPOS-00146
+    stigid@ol8: OL08-00-030740
     stigid@rhel8: RHEL-08-030740
 
 ocil_clause: 'a remote time server is not configured or configured with pool directive'
 
 ocil: |-
     Run the following command and verify that time sources are only configure with <tt>server</tt> directive:
-    <pre># grep -E "^(server|pool)" /etc/chrony.conf</pre>
+    <pre># grep -E "^(server|pool)" {{{ chrony_conf_path }}}</pre>
     A line with the appropriate server should be returned, any line returned starting with <tt>pool</tt> is a finding.

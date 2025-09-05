@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 """
 Takes given *resolved* XCCDF, goes through every profile. For every profile,
@@ -93,14 +93,6 @@ def main():
             "Make sure the input file is XCCDF 1.1.4 and the root element is "
             "a benchmark!"
         )
-
-    if root_element.get("resolved") not in ["1", "true"]:
-        raise RuntimeError(
-            "Make sure the input file is a resolved XCCDF Benchmark."
-        )
-
-    # force another oscap resolve to fix namespace prefixes
-    root_element.set("resolved", "0")
 
     affected_profiles = []
     group_elements = root_element.findall(".//{%s}Group" % (XCCDF11_NS))

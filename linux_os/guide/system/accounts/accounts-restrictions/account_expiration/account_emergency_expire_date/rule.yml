@@ -59,7 +59,7 @@ warnings:
         remediation is not available for this configuration check.
 
 
-fix: |-
+fixtext: |-
     If an emergency account must be created, configure the system to terminate the account after
     72 hours with the following command to set an expiration date for the account.
     Substitute "system_account_name" with the account to be created.
@@ -68,3 +68,6 @@ fix: |-
 
     The automatic expiration or disabling time period may be extended as needed until the crisis
     is resolved.
+
+srg_requirement: |-
+    {{{ full_name }}} must automatically remove or disable emergency user accounts after 72 hours.

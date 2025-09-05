@@ -1,3 +1,3 @@
 Ansible
 =======
-    .. autojinja:: shared/macros-ansible.jinja
+    .. autojinja:: shared/macros/ansible.jinja

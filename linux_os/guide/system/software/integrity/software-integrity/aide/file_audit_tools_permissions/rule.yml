@@ -1,0 +1,59 @@
+documentation_complete: true
+
+prodtype: rhel8,rhel9
+
+title: Audit Tools Must Have a Mode of 0755 or Less Permissive
+
+description: |-
+    {{{ full_name }}} systems providing tools to interface with audit information will leverage user permissions and roles identifying the user accessing the tools, and the corresponding rights the user enjoys, to make access decisions regarding the access to audit tools.
+
+    Audit tools include, but are not limited to, vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.
+
+    Audit tools must have a mode of 0755 or less permissive.
+
+rationale: |-
+    Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data.
+    Therefore, protecting audit tools is necessary to prevent unauthorized operations on audit information.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86227-6
+    cce@rhel9: CCE-86228-4
+
+references:
+    disa: CCI-001493
+    nist: AU-9
+    srg: SRG-OS-000256-GPOS-00097
+    stigid@rhel8: RHEL-08-030620
+
+ocil_clause: 'any of these files have more permissive permissions than 0755'
+
+ocil: |-
+    Verify the audit tools are protected from unauthorized access, deletion, or modification by checking the permissive mode.
+
+    Check the octal permission of each audit tool by running the following command:
+
+    $ sudo stat -c "%U %n" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/rsyslogd /sbin/augenrules
+
+fixtext: |-
+    Configure the audit tools to be owned by "root", by running the following command:
+
+    $ sudo chmod 0755 [audit_tool]
+
+    Replace "[audit_tool]" with each audit tool that has a more permissive mode than 0755.
+
+template:
+    name: file_permissions
+    vars:
+        filepath:
+            - /sbin/auditctl
+            - /sbin/aureport
+            - /sbin/ausearch
+            - /sbin/autrace
+            - /sbin/auditd
+            - /sbin/rsyslogd
+            - /sbin/augenrules
+        filemode: '0755'
+        missing_file_pass: 'true'
+

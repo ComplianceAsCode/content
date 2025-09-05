@@ -155,6 +155,27 @@ apt-get install python3-sphinx
 pip install -r docs/requirements.txt
 ```
 
+### Pandas (SRG Export HTML)
+
+Install `pandas` if you want to run `utils/create_srg_export.py`:
+
+```bash
+# Fedora/RHEL
+yum install python3-pandas
+
+# Ubuntu/Debian
+apt-get install python3-pandas
+```
+
+### OpenpyXL (SRG Export XLSX)
+```bash
+# Fedora/RHEL
+yum install python3-openpyxl
+
+# Ubuntu/Debian
+apt-get install python3-openpyxl
+```
+
 ## Downloading the source code
 
 Download and extract a tarball from the [list of releases](https://github.com/ComplianceAsCode/content/releases):

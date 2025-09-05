@@ -68,3 +68,8 @@ template:
           - rename
           - renameat
           - rmdir
+
+fixtext: |-
+    {{{ fixtext_audit_rules_file_deletion_events("unlinkat") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("unlinkat") }}}'

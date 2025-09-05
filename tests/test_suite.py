@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 from __future__ import print_function
 
 import argparse
@@ -22,6 +22,7 @@ import ssg_test_suite.test_env
 import ssg_test_suite.profile
 import ssg_test_suite.rule
 import ssg_test_suite.combined
+import ssg_test_suite.template
 from ssg_test_suite import xml_operations
 
 
@@ -133,8 +134,13 @@ def parse_args():
         default=False,
         action="store_true",
         help="Execute all tests even for tests using shared templates; "
-        "otherwise, executes one test per template type"
-    )
+        "otherwise, executes one test per template type")
+
+    common_parser.add_argument(
+        "--keep-snapshots",
+        dest="keep_snapshots",
+        action="store_true",
+        help="Do not remove existing snapshots created during previous tests.")
 
     subparsers = parser.add_subparsers(dest="subparser_name",
                                        help="Subcommands: profile, rule, combined")
@@ -249,8 +255,48 @@ def parse_args():
                                        "in a profile will be evaluated against all its test "
                                        "scenarios."))
 
+    parser_template = subparsers.add_parser("template",
+                                            help=("Tests all rules in a template evaluating them "
+                                                  "against their test scenarios."),
+                                            parents=[common_parser])
+    parser_template.set_defaults(func=ssg_test_suite.template.perform_template_check)
+    parser_template.add_argument("--dontclean",
+                                 dest="dont_clean",
+                                 action="store_true",
+                                 help="Do not remove html reports of successful runs")
+    parser_template.add_argument("--no-reports",
+                                 dest="no_reports",
+                                 action="store_true",
+                                 help="Do not run oscap with --report and --results options")
+    parser_template.add_argument("--scenarios",
+                                 dest="scenarios_regex",
+                                 default=None,
+                                 help="Regular expression matching test scenarios to run")
+    parser_template.add_argument("--profile",
+                                 dest="scenarios_profile",
+                                 default=None,
+                                 help="Override the profile used for test scenarios."
+                                      " Variable selections will be done according "
+                                      "to this profile.")
+    parser_template.add_argument("--slice",
+                                 dest='_slices',
+                                 # real dest is postprocessed later:
+                                 # 'slice_current' and 'slice_total'
+                                 metavar=('X', 'Y'),
+                                 default=[1, 1],
+                                 nargs=2,
+                                 type=int,
+                                 help=("Allows to run only Xth slice of Y in total, to enable "
+                                       "stable parallelization of the bigger test sets."))
+    parser_template.add_argument("target",
+                                 nargs="+",
+                                 metavar="TARGET",
+                                 help=("Template whose rules are to be tested. Each rule using"
+                                       "a template will be evaluated against all its test "
+                                       "scenarios."))
+
     options = parser.parse_args()
-    if options.subparser_name in ["rule", "combined"]:
+    if options.subparser_name in ["rule", "combined", "template"]:
         options.slice_current, options.slice_total = options._slices
         if options.slice_current < 1:
             raise argparse.ArgumentTypeError('Current slice needs to be positive integer')
@@ -397,7 +443,7 @@ def normalize_passed_arguments(options):
         if not re.match(r"[\w\+]+:///", hypervisor):
             hypervisor = "qemu:///" + hypervisor
         options.test_env = ssg_test_suite.test_env.VMTestEnv(
-            options.scanning_mode, hypervisor, domain_name)
+            options.scanning_mode, hypervisor, domain_name, options.keep_snapshots)
         logging.info(
             "The base image option has not been specified, "
             "choosing libvirt-based test environment.")

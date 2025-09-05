@@ -1,0 +1,16 @@
+controls:
+    -   id: SRG-OS-000375-GPOS-00160
+        levels:
+            - medium
+        title: {{{ full_name }}} must implement multifactor authentication for remote
+            access to privileged accounts in such a way that one of the factors is provided
+            by a device separate from the system gaining access.
+        rules:
+            - sssd_certificate_verification
+            - var_sssd_certificate_verification_digest_function=sha512
+            - sssd_enable_smartcards
+            - install_smartcard_packages
+            - package_opensc_installed
+            - package_pcsc-lite_installed
+            - service_pcscd_enabled
+        status: automated

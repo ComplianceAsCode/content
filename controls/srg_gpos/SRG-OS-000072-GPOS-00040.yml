@@ -1,0 +1,17 @@
+controls:
+    -   id: SRG-OS-000072-GPOS-00040
+        levels:
+            - medium
+        title: {{{ full_name }}} must require the change of at least 50% of the total
+            number of characters when passwords are changed.
+        rules:
+            - accounts_password_pam_difok
+            - var_password_pam_difok=8
+            - accounts_password_pam_enforce_root
+            - accounts_password_pam_maxclassrepeat
+            - var_password_pam_maxclassrepeat=4
+            - accounts_password_pam_maxrepeat
+            - var_password_pam_maxrepeat=3
+            - accounts_password_pam_minclass
+            - var_password_pam_minclass=4
+        status: automated

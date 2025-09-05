@@ -4,6 +4,12 @@ prodtype: ocp4
 
 title: 'Disable the AlwaysAdmit Admission Control Plugin'
 
+{{% set custom_jqfilter = '[.data."{{.var_openshift_kube_apiserver_config_data_name}}" | fromjson]' %}}
+{{% set default_jqfilter = '[.data."config.yaml" | fromjson]' %}}
+{{% set custom_api_path = '/api/v1/namespaces/{{.var_openshift_kube_apiserver_namespace}}/configmaps/{{.var_openshift_kube_apiserver_config}}' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 description: |-
     To ensure OpenShift only responses to requests explicitly allowed by the
     admission control plugin. Check that the <code>config</code> ConfigMap object does not
@@ -35,16 +41,15 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    entity_check: "none satisfy"
-    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
-    yamlpath: '.data["config.yaml"]'
+    check_existence: "none_exist"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '.apiServerArguments["enable-admission-plugins"][:]'
     values:
-    - value: '"enable-admission-plugins":\[[^]]*"AlwaysAdmit"'
+    - value: '^AlwaysAdmit$'
       operation: "pattern match"
-      type: "string"

@@ -15,7 +15,7 @@
 
   <ind:textfilecontent54_object id="object_configure_ssh_crypto_policy" version="1">
     <ind:filepath>/etc/sysconfig/sshd</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*CRYPTO_POLICY\s*=.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*(?i)CRYPTO_POLICY\s*=.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

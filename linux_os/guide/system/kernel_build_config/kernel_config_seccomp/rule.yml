@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Enable seccomp to safely compute untrusted bytecode'
+
+description: |-
+    This kernel feature is useful for number crunching applications that may need to compute
+    untrusted bytecode during their execution. By using pipes or other transports made available
+    to the process as file descriptors supporting the read/write syscalls, it's possible to isolate
+    those applications in their own address space using seccomp.
+
+    {{{ describe_kernel_build_config("CONFIG_SECCOMP", "y") | indent(4) }}}
+
+rationale: |-
+    <tt>seccomp</tt> enables the ability to filter system calls made by an application, effectively
+    isolating the system's resources from it.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86449-6
+    cce@rhel8: CCE-86450-4
+    cce@rhel9: CCE-86451-2
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_SECCOMP", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_SECCOMP
+        value: 'y'
+

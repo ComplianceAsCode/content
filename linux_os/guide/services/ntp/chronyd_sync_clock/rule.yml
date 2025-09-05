@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: ubuntu2004
+
+title: 'Synchronize internal information system clocks'
+
+description: |-
+    Synchronizing internal information system clocks provides uniformity
+    of time stamps for information systems with multiple system clocks and
+    systems connected over a network.
+
+rationale: |-
+    Inaccurate time stamps make it more difficult to correlate events and
+    can lead to an inaccurate analysis. Determining the correct time a
+    particular event occurred on a system is critical when conducting
+    forensic analysis and investigating system events.
+
+severity: medium
+
+references:
+    disa: CCI-002046
+    srg: SRG-OS-000356-GPOS-00144
+    stigid@ubuntu2004: UBTU-20-010436
+
+ocil_clause: ''
+
+ocil: |-
+    Verify the operating system synchronizes internal system clocks to the
+    authoritative time source when the time difference is greater than one
+    second. Check the value of "makestep" by running the following command:
+    <pre>$ sudo grep makestep {{{ chrony_conf_path }}}
+    makestep 1 -1</pre>
+
+    If it is not set to "1 -1", edit the {{{ chrony_conf_path }}} file
+    and add:
+    <pre>makestep 1 -1</pre>
+    Restart the chrony service:
+    <pre>$ sudo systemctl restart chrony.service</pre>
+
+template:
+    name: "lineinfile"
+    vars:
+        text: "makestep 1 -1"
+        path: {{{ chrony_conf_path }}}

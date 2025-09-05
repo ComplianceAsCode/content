@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R5
+    version: V1R6
     SMEs:
         - mab879
         - ggbecker
@@ -12,7 +12,7 @@ title: 'DISA STIG with GUI for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R5.
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R6.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -38,3 +38,6 @@ selections:
 
     # RHEL-08-040321
     - '!xwindows_runlevel_target'
+
+    # RHEL-08-040001
+    - '!package_libreport-plugin-rhtsupport_removed'

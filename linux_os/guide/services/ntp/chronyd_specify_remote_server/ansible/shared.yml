@@ -14,7 +14,7 @@
 
 - name: "Configure remote time servers"
   lineinfile:
-    path: /etc/chrony.conf
+    path: {{{ chrony_conf_path }}}
     line: 'server {{ item }}'
     state: present
     create: True

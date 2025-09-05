@@ -1,0 +1,47 @@
+prodtype: ocp4
+
+title: Ensure that GitOps Operator is deployed
+
+description: |-
+  Red Hat OpenShift GitOps is a declarative continuous delivery platform based on
+  Argo CD. It enables teams to adopt GitOps principles for managing cluster configurations
+  and automating secure and repeatable application delivery across hybrid multi-cluster
+  Kubernetes environments. 
+  
+  Following GitOps and infrastructure as code principles, you can store the configuration of
+  clusters and applications in Git repositories and use Git workflows to roll them out to
+  the target clusters.
+
+
+rationale: |-
+  GitOps provides a mean to track system configuration changes
+
+identifiers:
+  cce@ocp4: CCE-86134-4
+
+references:
+  nist: CM-3(6),MA-2(2)
+
+ocil_clause: 'GitOps operator is not installed'
+
+ocil: |-
+    Run the following command to retrieve the gitopsservices objects in the system:
+    <pre>$ oc get gitopsservices</pre>
+    Make sure there is at least one output.
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/pipelines.openshift.io/v1alpha1/gitopsservices?limit=5") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/pipelines.openshift.io/v1alpha1/gitopsservices?limit=5
+    yamlpath: ".items[:].metadata.name"
+    entity_check: "at least one"
+    values:
+      - value: ".*"
+        operation: "pattern match"

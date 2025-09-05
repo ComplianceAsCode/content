@@ -3,9 +3,15 @@
 # strategy = configure
 # complexity = low
 # disruption = medium
+{{% if 'sle' in product %}}
+PAM_PATH="/etc/pam.d/"
+NULLOK_FILES=$(grep -rl ".*pam_unix\\.so.*nullok.*" ${PAM_PATH})
+for FILE in ${NULLOK_FILES}; do
+   sed --follow-symlinks -i 's/\<nullok\>//g' ${FILE}
+done
+{{% else %}}
 SYSTEM_AUTH="/etc/pam.d/system-auth"
 PASSWORD_AUTH="/etc/pam.d/password-auth"
-
 if [ -f /usr/bin/authselect ]; then
     if authselect check; then
         authselect enable-feature without-nullok
@@ -22,3 +28,4 @@ else
     sed --follow-symlinks -i 's/\<nullok\>//g' $SYSTEM_AUTH
     sed --follow-symlinks -i 's/\<nullok\>//g' $PASSWORD_AUTH
 fi
+{{% endif %}}

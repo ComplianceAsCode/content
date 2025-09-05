@@ -1,0 +1,16 @@
+controls:
+    -   id: SRG-OS-000324-GPOS-00125
+        levels:
+            - medium
+        title: {{{ full_name }}} must prevent non-privileged users from executing privileged
+            functions to include disabling, circumventing, or altering implemented security
+            safeguards/countermeasures.
+        rules:
+            - disable_ctrlaltdel_burstaction
+            - disable_ctrlaltdel_reboot
+            - no_tmux_in_shells
+            - service_debug-shell_disabled
+            - sysctl_fs_protected_hardlinks
+            - sysctl_fs_protected_symlinks
+            - package_sudo_installed
+        status: automated

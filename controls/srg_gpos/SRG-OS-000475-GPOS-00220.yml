@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000475-GPOS-00220
+        levels:
+            - medium
+        title: {{{ full_name }}} must generate audit records for all direct access to
+            the information system.
+        rules:
+            - package_audit_installed
+            - service_auditd_enabled
+        status: automated

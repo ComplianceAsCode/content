@@ -52,7 +52,7 @@ references:
 template:
     name: sshd_lineinfile
     vars:
-        missing_parameter_pass: 'true'
         parameter: X11Forwarding
         rule_id: sshd_disable_x11_forwarding
         value: 'no'
+        is_default_value: 'true'

@@ -60,15 +60,15 @@ references:
     stigid@rhel7: RHEL-07-010170
     stigid@rhel8: RHEL-08-020160
 
-ocil_clause: 'minclass is not found or not set equal to or greater than the required value'
+ocil_clause: the value of "minclass" is set to less than "{{{ xccdf_value("var_password_pam_minclass") }}}" or is commented out
 
 ocil: |-
     To check how many categories of characters must be used in password during a password change,
     run the following command:
-    <pre>$ grep minclass /etc/security/pwquality.conf</pre>
+    <pre>$ sudo grep minclass /etc/security/pwquality.conf</pre>
     The <tt>minclass</tt> parameter will indicate how many character classes must be used. If
-    the requirement was for the password to contain characters from three different categories,
-    then this would appear as <tt>minclass = 3</tt>.
+    the requirement was for the password to contain characters from {{{ xccdf_value("var_password_pam_minclass") }}} different categories,
+    then this would appear as <tt>minclass = {{{ xccdf_value("var_password_pam_minclass") }}}</tt>.
 
 platform: pam
 
@@ -77,3 +77,10 @@ template:
     vars:
         variable: minclass
         operation: greater than or equal
+
+fixtext: |-
+    Configure {{{ full_name }}} to require the change of at least {{{ xccdf_value("var_password_pam_minclass") }}} character classes when passwords are changed by setting the "minclass" option.
+
+    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+
+    minclass = {{{ xccdf_value("var_password_pam_minclass") }}}

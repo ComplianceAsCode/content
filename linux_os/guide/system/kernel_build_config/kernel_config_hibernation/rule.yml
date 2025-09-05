@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Disable hibernation'
+
+description: |-
+    Enable the suspend to disk (STD) functionality, which is usually called "hibernation" in user
+    interfaces. STD checkpoints the system and powers it off; and restores that checkpoint on
+    reboot.
+
+    {{{ describe_kernel_build_config("CONFIG_HIBERNATION", "n") | indent(4) }}}
+
+rationale: |-
+    Suspending to disk allows one to replace the running kernel.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-87607-8
+    cce@rhel8: CCE-87608-6
+    cce@rhel9: CCE-87609-4
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_HIBERNATION", "n") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_HIBERNATION
+        value: 'n'
+

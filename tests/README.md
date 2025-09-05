@@ -216,6 +216,7 @@ variables it has and the values they take) is still not provided to the test
 scenario. The above `# profiles` or `# variables` directives will still have
 to be used to add any profile-specific information.
 
+
 ### Augmenting using `shared/templates`
 
 Additionally, we have enabled test scenarios located under the templated
@@ -230,6 +231,13 @@ directory, the latter takes precedence over the former).
 In addition to the Jinja context described above, the contents of the template
 variables (after processing in `template.py`) are also available to the
 test scenario. This enables template-specific checking.
+
+You can place a `test_config.yml` file in rule's `tests` folder to control usage of templated scenarios
+if they don't fit for that particular rule for some reason.
+The file is jinja2-capable and product-aware, and you can use keys `allow_templated_scenarios` or `deny_templated_scenarios`
+that expect to contain a list of scenario basenames (including e.g. `pass.sh` suffix) to either test or to block.
+If you want to disable templated scenarios for a rule completely, allow only a scenario that doesn't exist, s.a. `none`.
+
 
 ## Example of adding new test scenarios
 
@@ -277,6 +285,7 @@ Mode of operation, specify one of the following commands;
 - `rule`: Evaluate a rule, remediate, and evaluate again in context of test scenarios.
 - `profile`: Evaluate, remediate and evaluate again using selected profile
 - `combined`: Evaluate, remediate, and evaluate again the rules from a profile in context of test scenarios.
+- `template`: Evaluate, remediate, and evaluate again the rules using a given template in context of test scenarios.
 
 Specify backend and image to use:
 - To use VM backend, use the following option on the command line:
@@ -506,6 +515,23 @@ If you would like to test all profile's rules against their test scenarios:
 ./test_suite.py combined --libvirt qemu:///system ssg-test-suite-rhel8 --datastream ../build/ssg-rhel8-ds.xml ospp
 ```
 
+## Template-based testing
+
+```
+./test_suite.py template ... <template_name1>[ <template_name2> <template_name3> ...]
+
+```
+
+In this mode you can test all rules that use a template.
+This is very useful when one fixes a bug or makes improvements to the template.
+Each rule may use the template in a specfic way and this provides a way to easily
+run the test scenarios for all rules based on their template.
+
+The test scenarios executed are based on the template and the rule that uses it.
+If the specified template doesn't have tests, only the rule's test scenarios are executed,
+and if a rule doesn't have test scenarios it won't be tested.
+If the specified template does have tests they are combined with the rule's tests, this is
+the same behavior we see in the rule mode.
 
 # Analysis of results
 

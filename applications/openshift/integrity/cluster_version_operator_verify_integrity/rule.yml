@@ -18,7 +18,7 @@ identifiers:
 references:
   nist: SA-10(1)
 
-{{% set jqfilter = '[.status.history[] | .verified]' %}}
+{{% set jqfilter = '[.status.history[0:-1]|.[]|.verified]' %}}
 {{% set apipath = '/apis/config.openshift.io/v1/clusterversions/version' %}}
 
 ocil_clause: 'Cluster image is not verified'
@@ -34,6 +34,7 @@ warnings:
 - general: |-
     {{{ openshift_filtered_cluster_setting({apipath: jqfilter}) | indent(4) }}}
 
+
 template:
   name: yamlfile_value
   vars:
@@ -41,6 +42,7 @@ template:
     filepath: |-
       {{{ openshift_filtered_path(apipath, jqfilter) }}}
     yamlpath: "[:]"
+    check_existence: any_exist
     entity_check: "all"
     values:
       - value: "true"

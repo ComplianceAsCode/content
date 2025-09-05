@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Enable use of Berkeley Packet Filter with seccomp'
+
+description: |-
+    Enable tasks to build secure computing environments defined in terms of Berkeley Packet Filter
+    programs which implement task-defined system call filtering polices.
+
+    {{{ describe_kernel_build_config("CONFIG_SECCOMP_FILTER", "y") | indent(4) }}}
+
+rationale: |-
+    Use of BPF filters allows for expressive filtering of system calls using a filter program
+    language with a long history of being exposed to userland.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86489-2
+    cce@rhel8: CCE-86490-0
+    cce@rhel9: CCE-86491-8
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_SECCOMP_FILTER", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_SECCOMP_FILTER
+        value: 'y'
+

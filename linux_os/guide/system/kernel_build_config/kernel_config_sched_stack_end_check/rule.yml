@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8,rhel9
+
+title: 'Detect stack corruption on calls to schedule()'
+
+description: |-
+    This option checks for a stack overrun on calls to schedule(). If the stack end location is
+    found to be overwritten always panic as the content of the corrupted region can no longer
+    be trusted.
+    This configuration is available from kernel 3.18.
+
+    {{{ describe_kernel_build_config("CONFIG_SCHED_STACK_END_CHECK", "y") | indent(4) }}}
+
+rationale: |-
+   This ensures no erroneous behaviour occurs which could result in data corruption or a
+   sporadic crash at a later stage once the region is examined.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-88041-9
+    cce@rhel9: CCE-89041-8
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_SCHED_STACK_END_CHECK", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_SCHED_STACK_END_CHECK
+        value: 'y'
+

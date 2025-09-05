@@ -1,22 +1,22 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="chronyd_no_chronyc_network" version="1">
-    {{{ oval_metadata("Configure the cmdport setting in /etc/chrony.conf to disable
+    {{{ oval_metadata("Configure the cmdport setting in {{{ chrony_conf_path }}} to disable
       chronyc management connections over network.") }}}
     <criteria operator="AND">
       <extend_definition definition_ref="service_chronyd_enabled" comment="service chronyd enabled" />
-      <criterion test_ref="test_chronyd_no_chronyc_network" comment="check if cmdport is 0 in /etc/chrony.conf" />
+      <criterion test_ref="test_chronyd_no_chronyc_network" comment="check if cmdport is 0 in {{{ chrony_conf_path }}}" />
     </criteria>
   </definition>
 
   <ind:textfilecontent54_test id="test_chronyd_no_chronyc_network"
-    comment="check if cmdport is 0 in /etc/chrony.conf"
+    comment="check if cmdport is 0 in {{{ chrony_conf_path }}}"
     check="all" check_existence="all_exist" version="1">
     <ind:object object_ref="obj_chronyd_cmdport_value" />
     <ind:state state_ref="state_chronyd_cmdport_value_0" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_chronyd_cmdport_value" version="1">
-    <ind:filepath>/etc/chrony.conf</ind:filepath>
+    <ind:filepath>{{{ chrony_conf_path }}}</ind:filepath>
     <ind:pattern operation="pattern match">^\s*cmdport[\s]+(\S+)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

@@ -1,0 +1,14 @@
+documentation_complete: true
+
+title: 'Kube controller manager config check - rotate kubelet server certs'
+
+description: 'Kube controller manager config check - rotate kubelet server certs'
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+    default: '.data."config.yaml" | fromjson | .extendedArguments["feature-gates"]'

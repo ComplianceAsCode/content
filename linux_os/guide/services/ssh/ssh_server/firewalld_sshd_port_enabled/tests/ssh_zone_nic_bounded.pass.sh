@@ -1,7 +1,6 @@
 #!/bin/bash
 # packages = firewalld
 #
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 
 # ensure firewalld installed
 

@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+platform: ocp4-node
+
+{{%- set kubeletconf_path = "/var/lib/kubelet/config.json" %}}
+
+title: 'Verify User Who Owns The Kubelet Configuration File'
+
+description: '{{{ describe_file_owner(file=kubeletconf_path, owner="root") }}}'
+
+rationale: |-
+    The kubelet configuration file contains information about the configuration of the
+    OpenShift node that is configured on the system. Protection of this file is
+    critical for OpenShift security.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-85900-9
+
+references:
+    cis@ocp4: 4.1.6
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
+
+ocil_clause: '{{{ ocil_clause_file_owner(file=kubeletconf_path, owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file=kubeletconf_path, owner="root") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: {{{ kubeletconf_path }}}
+        fileuid: '0'

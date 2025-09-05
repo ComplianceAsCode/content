@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000105-GPOS-00052
+        levels:
+            - medium
+        title: {{{ full_name }}} must use multifactor authentication for network access
+            to privileged accounts.
+        rules:
+            - sshd_enable_pubkey_auth
+            - sssd_enable_smartcards
+            - install_smartcard_packages
+        status: automated

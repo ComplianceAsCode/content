@@ -41,6 +41,18 @@ references:
 
 {{{ complete_ocil_entry_module_disable(module="bluetooth") }}}
 
+fixtext: |-
+    Configure {{{ full_name }}} to disable the Bluetooth adapter when not in use.
+
+    Create or modify the "/etc/modprobe.d/bluetooth.conf" file with the following line:
+    
+    install bluetooth /bin/true
+    
+    Reboot the system for the settings to take effect.
+
+srg_requirement:
+  {{{ full_name }}} Bluetooth must be disabled.
+
 platform: machine
 
 template:

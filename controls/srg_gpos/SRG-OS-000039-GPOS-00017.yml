@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000039-GPOS-00017
+        levels:
+            - medium
+        title: {{{ full_name }}} must produce audit records containing information to
+            establish where the events occurred.
+        rules:
+            - auditd_name_format
+            - service_auditd_enabled
+            - package_audit_installed
+        status: automated

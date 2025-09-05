@@ -33,6 +33,9 @@ ocil: |-
     The output should return the following:
     <pre>write_logs = yes</pre>
 
+fixtext: |-
+    {{{ fixtext_audit_configuration(param="write_logs", value="yes") | indent(4) }}}
+
 template:
     name: auditd_lineinfile
     vars:

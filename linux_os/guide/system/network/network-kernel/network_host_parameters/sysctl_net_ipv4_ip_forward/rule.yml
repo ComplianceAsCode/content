@@ -56,7 +56,7 @@ warnings:
         Certain technologies such as virtual machines, containers, etc. rely on IPv4 forwarding to enable and use networking.
         Disabling IPv4 forwarding would cause those technologies to stop working. Therefore, this rule should not be used in
         profiles or benchmarks that target usage of IPv4 forwarding.
-{{{ ovirt_rule_notapplicable_warning("RHV host requires IPv4 forwarding for the Hosted Engine bootstrap VM to reach network outside of the initial host") | indent(4) }}}
+{{{ warning_ovirt_rule_notapplicable("RHV host requires IPv4 forwarding for the Hosted Engine bootstrap VM to reach network outside of the initial host") | indent(4) }}}
 
 platforms:
 {{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}

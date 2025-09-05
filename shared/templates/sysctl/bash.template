@@ -5,8 +5,8 @@
 # disruption = medium
 
 # Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
-for f in /etc/sysctl.d/*.conf ; do
-  matching_list=$(grep -P '^(?!#).*[\s]+{{{ SYSCTLVAR }}}.*$' $f | uniq )
+for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf; do
+  matching_list=$(grep -P '^(?!#).*[\s]*{{{ SYSCTLVAR }}}.*$' $f | uniq )
   if ! test -z "$matching_list"; then
     while IFS= read -r entry; do
       # comment out "{{{ SYSCTLVAR }}}" matches to preserve user data

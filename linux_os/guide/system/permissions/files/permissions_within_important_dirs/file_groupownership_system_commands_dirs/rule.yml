@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: fedora,ol8,rhel8,rhel9,sle12,sle15,ubuntu2004
 
-title: 'Verify that system commands files are group owned by root '
+title: 'Verify that system commands files are group owned by root'
 
 description: |-
     System commands files are stored in the following directories by default:
@@ -48,16 +48,19 @@ references:
     stigid@sle15: SLES-15-010361
     stigid@ubuntu2004: UBTU-20-010458
 
-ocil_clause: 'any of these files are not owned by root group'
+ocil_clause: 'any system commands are returned and is not group-owned by a required system account'
 
 ocil: |-
-    System commands are stored in the following directories:
-    <pre>/bin
-    /sbin
-    /usr/bin
-    /usr/sbin
-    /usr/local/bin
-    /usr/local/sbin</pre>
-    For each of these directories, run the following command to find files not
-    owned by root group:
-    <pre>$ sudo find -L <i>$DIR</i> ! -group root -type f \;</pre>
+    Verify the system commands contained in the following directories are group-owned by "root", or a required system account, with the following command:
+
+    $ sudo find -L /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -group root -exec ls -l {} \;
+
+fixtext: |-
+    Configure the system commands to be protected from unauthorized access.
+
+    Run the following command, replacing "[FILE]" with any system command file not group-owned by "root" or a required system account.
+
+    $ sudo chgrp root [FILE]
+
+srg_requirement:
+    {{{ full_name }}} system commands must be group-owned by root.

@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Sign kernel modules with SHA-512'
+
+description: |-
+    This configures the kernel to build and sign modules using SHA512 as the hash function.
+
+    {{{ describe_kernel_build_config("CONFIG_MODULE_SIG_SHA512", "y") | indent(4) }}}
+
+rationale: |-
+    Use of strong hash function is important to secure the module against counterfeit signatures.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-89693-6
+    cce@rhel8: CCE-89692-8
+    cce@rhel9: CCE-89691-0
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_MODULE_SIG_SHA512", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_MODULE_SIG_SHA512
+        value: 'y'
+

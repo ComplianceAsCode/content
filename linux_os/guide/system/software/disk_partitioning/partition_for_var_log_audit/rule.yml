@@ -54,6 +54,9 @@ references:
 
 {{{ complete_ocil_entry_separate_partition(part="/var/log/audit") }}}
 
+fixtext: |-
+    Migrate the system audit data path onto a separate file system.
+
 platform: machine
 
 # (jhrozek): at the moment, the mount probe checks the /proc filesystem

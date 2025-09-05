@@ -57,3 +57,11 @@ ocil: |-
     <pre>$ grep card_drivers /etc/opensc.conf</pre>
     The output should return something similar to:
     <pre>card_drivers = {{{ xccdf_value("var_smartcard_drivers") }}};</pre>
+
+fixtext: |-
+    Edit "/etc/opensc.conf" and add or edit the following line:
+
+    card_drivers = {{{ xccdf_value("var_smartcard_drivers") }}};
+
+srg_requirement:
+  {{{ full_name }}} must use the {{ xccdf_value("var_smartcard_drivers") }}} smartcard driver.

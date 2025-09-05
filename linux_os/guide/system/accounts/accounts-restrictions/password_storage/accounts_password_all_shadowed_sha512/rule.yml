@@ -10,7 +10,7 @@ description: |-
     cryptographic hash.
     Check that the interactive user account passwords are using a strong
     password hash with the following command:
-    <pre># sudo cut -d: -f2 /etc/shadow
+    <pre>$ sudo cut -d: -f2 /etc/shadow
     $6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/</pre>
     Password hashes <tt>!</tt> or <tt>*</tt> indicate inactive accounts not
     available for logon and are not evaluated.
@@ -48,7 +48,7 @@ ocil: |-
     Check that the interactive user account passwords are using a strong
     password hash with the following command:
 
-    <pre># sudo cut -d: -f2 /etc/shadow
+    <pre>$ sudo cut -d: -f2 /etc/shadow
 
     $6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/</pre>
 
@@ -57,3 +57,9 @@ ocil: |-
 
     If any interactive user password hash does not begin with <tt>$6</tt>,
     this is a finding.
+
+fixtext: |-
+    Lock all interactive user accounts not using SHA-512 hashing until the passwords can be regenerated with SHA-512.
+
+srg_requirement: |-
+    {{{ full_name }}} must employ FIPS 140-2 approved cryptographic hashing algorithms for all stored passwords.

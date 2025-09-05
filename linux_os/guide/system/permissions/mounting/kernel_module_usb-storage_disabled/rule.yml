@@ -57,3 +57,11 @@ template:
     name: kernel_module_disabled
     vars:
         kernmodule: usb-storage
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable automated loading of the USB storage driver.
+    {{{ describe_module_disable(module="usb-storage") }}}
+
+srg_requirement:
+    {{{ full_name }}} must be configured to disable USB mass storage.
+

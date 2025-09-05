@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000354-GPOS-00142
+        levels:
+            - medium
+        title: {{{ full_name }}} must not alter original content or time ordering of
+            audit records when it provides a report generation capability.
+        rules:
+            - package_audit_installed
+            - service_auditd_enabled
+        status: automated

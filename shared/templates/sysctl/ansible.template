@@ -6,14 +6,17 @@
 
 - name: List /etc/sysctl.d/*.conf files
   find:
-    paths: "/etc/sysctl.d/"
+    paths:
+      - "/etc/sysctl.d/"
+      - "/run/sysctl.d/"
     contains: '^[\s]*{{{ SYSCTLVAR }}}.*$'
     patterns: "*.conf"
+    file_type: any
   register: find_sysctl_d
 
 - name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
   replace:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     regexp: '^[\s]*{{{ SYSCTLVAR }}}'
     replace: '#{{{ SYSCTLVAR }}}'
   loop: "{{ find_sysctl_d.files }}"

@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000370-GPOS-00155
+        levels:
+            - medium
+        title: {{{ full_name }}} must employ a deny-all, permit-by-exception policy to
+            allow the execution of authorized software programs.
+        rules:
+            - package_fapolicyd_installed
+            - service_fapolicyd_enabled
+        status: automated

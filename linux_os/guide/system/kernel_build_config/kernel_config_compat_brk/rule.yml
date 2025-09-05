@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Disable compatibility with brk()'
+
+description: |-
+    Enabling compatiliby with <tt>brk()</tt> allows legacy binaries to run (i.e. those linked
+    against libc5). But this compatibility comes at the cost of not being able to randomize
+    the heap placement (ASLR).
+
+    Unless legacy binaries need to run on the system, set <tt>CONFIG_COMPAT_BRK</tt> to <tt>"n"</tt>.
+
+    {{{ describe_kernel_build_config("CONFIG_COMPAT_BRK", "n") | indent(4) }}}
+
+rationale: |-
+    Enabling compatibility with brk() disables support for ASLR.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-88961-8
+    cce@rhel8: CCE-88962-6
+    cce@rhel9: CCE-88963-4
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_COMPAT_BRK", "n") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_COMPAT_BRK
+        value: 'n'
+

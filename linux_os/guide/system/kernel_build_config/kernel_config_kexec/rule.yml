@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Disable kexec system call'
+
+description: |-
+    <tt>kexec</tt> is a system call that implements the ability to shutdown your current kernel,
+    and to start another kernel. It is like a reboot but it is independent of the system firmware.
+    And like a reboot you can start any kernel with it, not just Linux.
+
+    {{{ describe_kernel_build_config("CONFIG_KEXEC", "n") | indent(4) }}}
+
+rationale: |-
+    Prohibits the execution of a new kernel image after reboot.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: low
+
+identifiers:
+    cce@rhel7: CCE-87486-7
+    cce@rhel8: CCE-87488-3
+    cce@rhel9: CCE-87489-1
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_KEXEC", "n") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_KEXEC
+        value: 'n'
+

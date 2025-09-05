@@ -35,3 +35,9 @@ template:
     name: package_installed
     vars:
         pkgname: rsyslog-gnutls
+
+fixtext: |-
+    {{{ describe_package_install("rsyslog-gnutls") }}}
+
+srg_requirement:
+  {{{ full_name }}} must have the packages required for encrypting offloaded audit logs installed.

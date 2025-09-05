@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000266-GPOS-00101
+        levels:
+            - medium
+        title: {{{ full_name }}} must enforce password complexity by requiring that at
+            least one special character be used.
+        rules:
+            - accounts_password_pam_enforce_root
+            - accounts_password_pam_ocredit
+            - var_password_pam_ocredit=1
+        status: automated

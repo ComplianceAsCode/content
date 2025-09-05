@@ -33,3 +33,6 @@ template:
     vars:
         filepath: /var/log/
         filemode: '0755'
+
+fixtext: |-
+    {{{ describe_file_permissions(file="/var/log", perms="0755") }}}

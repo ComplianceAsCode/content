@@ -14,6 +14,7 @@ identifiers:
     cce@rhel7: CCE-80187-8
     cce@rhel8: CCE-80847-7
     cce@rhel9: CCE-84063-7
+    cce@sle15: CCE-91161-0
 
 references:
     anssi: BP28(R5),NT28(R46)
@@ -39,6 +40,14 @@ references:
 ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="rsyslog") }}}'
+
+fixtext: |-
+    Configure {{{ full_name }}} to offload audit logs by installing the required packages with the following command:
+
+    {{{ describe_package_install(package="rsyslog") }}}
+
+srg_requirement: |-
+    {{{ full_name }}} must have the packages required for offloading audit logs installed.
 
 template:
     name: package_installed

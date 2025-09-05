@@ -1,0 +1,9 @@
+controls:
+    -   id: SRG-OS-000032-GPOS-00013
+        levels:
+            - medium
+        title: {{{ full_name }}} must monitor remote access methods.
+        rules:
+            - sshd_set_loglevel_verbose
+            - rsyslog_remote_access_monitoring
+        status: automated

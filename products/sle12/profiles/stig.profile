@@ -86,6 +86,7 @@ selections:
     - audit_rules_dac_modification_lremovexattr
     - audit_rules_dac_modification_removexattr
     - audit_rules_dac_modification_setxattr
+    - audit_rules_dac_modification_lsetxattr
     - audit_rules_dac_modification_umount
     - audit_rules_dac_modification_umount2
     - audit_rules_enable_syscall_auditing
@@ -194,6 +195,7 @@ selections:
     - ftp_present_banner
     - gnome_gdm_disable_unattended_automatic_login
     - dconf_gnome_screensaver_idle_delay
+    - dconf_gnome_session_idle_user_locks
     - grub2_password
     - grub2_uefi_password
     - gui_login_dod_acknowledgement
@@ -266,6 +268,7 @@ selections:
     - sudo_remove_nopasswd
     - sudo_require_reauthentication
     - sudo_restrict_privilege_elevation_to_authorized
+    - sudoers_default_includedir
     - sudoers_validate_passwd
     - susefirewall2_ddos_protection
     - susefirewall2_only_required_services

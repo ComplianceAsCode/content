@@ -4,12 +4,16 @@ prodtype: ocp4
 
 title: 'Ensure all admission control plugins are enabled'
 
+{{% set custom_jqfilter = '[.data."{{.var_openshift_kube_apiserver_config_data_name}}" | fromjson | .apiServerArguments | select(has("disable-admission-plugins")) | if ."disable-admission-plugins" != ["PodSecurity"] then ."disable-admission-plugins" else empty end]' %}}
+{{% set default_jqfilter = '[.data."config.yaml" | fromjson | .apiServerArguments | select(has("disable-admission-plugins")) | if ."disable-admission-plugins" != ["PodSecurity"] then ."disable-admission-plugins" else empty end]' %}}
+{{% set custom_api_path = '/api/v1/namespaces/{{.var_openshift_kube_apiserver_namespace}}/configmaps/{{.var_openshift_kube_apiserver_config}}' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
-{{% set jqfilter = '[.data."config.yaml" | fromjson | .apiServerArguments | select(has("disable-admission-plugins")) | if ."disable-admission-plugins" != ["PodSecurity"] then ."disable-admission-plugins" else empty end]' %}}
 
 description: |-
     To make sure none of them is explicitly disabled except PodSecurity, run the following command:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '{{{ jqfilter }}}'</pre>
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '{{{ default_jqfilter }}}'</pre>
     and make sure the output is empty.
 
 rationale: |-
@@ -35,12 +39,12 @@ ocil_clause: 'No admission plugins are disabled'
 
 ocil: |-
     To verify that the list of disabled admission plugins is empty, run the following command:
-    <pre>$oc -n openshift-kube-apiserver get configmap config -o json | jq -r '{{{ jqfilter }}}'</pre>
+    <pre>$oc -n openshift-kube-apiserver get configmap config -o json | jq -r '{{{ default_jqfilter }}}'</pre>
     There should be no output.
 
 warnings:
 - general: |-
-    {{{ openshift_filtered_cluster_setting({'/api/v1/namespaces/openshift-kube-apiserver/configmaps/config': jqfilter}) | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
 
 
 template:
@@ -48,7 +52,7 @@ template:
   vars:
     ocp_data: "true"
     filepath: |-
-      {{{ openshift_filtered_path('/api/v1/namespaces/openshift-kube-apiserver/configmaps/config', jqfilter) }}}
+      {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
     yamlpath: "[:]"
     check_existence: "none_exist"
     entity_check: "all"

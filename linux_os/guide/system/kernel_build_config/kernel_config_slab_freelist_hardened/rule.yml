@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8,rhel9
+
+title: 'Harden slab freelist metadata'
+
+description: |-
+    This feature protects integrity of the allocator's metadata.
+    This configuration is available from kernel 4.14.
+
+    {{{ describe_kernel_build_config("CONFIG_SLAB_FREELIST_HARDENED", "y") | indent(4) }}}
+
+rationale: |-
+    Many kernel heap attacks try to target slab cache metadata and other infrastructure.
+    This options makes minor performance sacrifices to harden the kernel slab allocator against
+    common freelist exploit methods.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-87962-7
+    cce@rhel9: CCE-87963-5
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_SLAB_FREELIST_HARDENED", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_SLAB_FREELIST_HARDENED
+        value: 'y'
+

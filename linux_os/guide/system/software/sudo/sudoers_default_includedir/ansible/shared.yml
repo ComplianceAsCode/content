@@ -13,7 +13,7 @@
     contains: '^#include(dir)?\s.*$'
   register: sudoers_d_includes
 
-- name: "Remove found occurrences of file and directory inclues from /etc/sudoers.d/* files"
+- name: "Remove found occurrences of file and directory includes from /etc/sudoers.d/* files"
   lineinfile:
     path: "{{ item.path }}"
     regexp: '^#include(dir)?\s.*$'

@@ -2,4 +2,4 @@
 # packages = chrony
 # platform = multi_platform_fedora,multi_platform_rhel
 
-rm -f /etc/chrony.conf
+rm -f {{{ chrony_conf_path }}}

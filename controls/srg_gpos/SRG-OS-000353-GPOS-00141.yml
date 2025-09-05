@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000353-GPOS-00141
+        levels:
+            - medium
+        title: {{{ full_name }}} must not alter original content or time ordering of
+            audit records when it provides an audit reduction capability.
+        rules:
+            - package_audit_installed
+            - service_auditd_enabled
+        status: automated

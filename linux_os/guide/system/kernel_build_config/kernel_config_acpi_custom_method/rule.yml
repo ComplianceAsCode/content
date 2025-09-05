@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Do not allow ACPI methods to be inserted/replaced at run time'
+
+description: |-
+    This debug facility allows ACPI AML methods to be inserted and/or replaced without rebooting
+    the system.
+    This configuration is available from kernel 3.0.
+
+    {{{ describe_kernel_build_config("CONFIG_ACPI_CUSTOM_METHOD", "n") | indent(4) }}}
+
+rationale: |-
+    Enabling this feature allows arbitrary kernel memory to be written to by root (uid=0) users,
+    allowing them to bypass certain security measures
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: low
+
+identifiers:
+    cce@rhel7: CCE-86776-2
+    cce@rhel8: CCE-86778-8
+    cce@rhel9: CCE-86779-6
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_ACPI_CUSTOM_METHOD", "n") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_ACPI_CUSTOM_METHOD
+        value: 'n'
+

@@ -1,0 +1,13 @@
+controls:
+    -   id: SRG-OS-000228-GPOS-00088
+        levels:
+            - medium
+        title: Any publically accessible connection to {{{ full_name }}} must display
+            the Standard Mandatory DoD Notice and Consent Banner before granting access to
+            the system.
+        rules:
+            - sshd_enable_warning_banner
+            - banner_etc_issue
+            - dconf_gnome_banner_enabled
+            - dconf_gnome_login_banner_text
+        status: automated

@@ -91,8 +91,6 @@ of occurrence:
 Various Python utilities under `/build-scripts` contribute to this process;
 refer to their help text for more information and usage:
 
- - `add_stig_references.py` -- add STIG reference identifiers into the
-   unlinked XCCDF.
  - `build_all_guides.py` -- generates separate HTML guides for every profile
    in an XCCDF document.
  - `build_profile_remediations.py` -- generates separate remediation content
@@ -108,15 +106,14 @@ refer to their help text for more information and usage:
    remediations and places them into a single directory.
  - `compile_profiles.py` -- pre-processes profiles to handle inheritance and
    the product-independent controls format.
+ - `compose_ds.py` -- composes an SCAP source data stream from individual
+   SCAP components
  - `cpe_generate.py` -- generates the product-specific CPE dictionary and
    checks.
  - `enable_derivatives.py` -- generates derivative product content from a
    base product.
  - `expand_jinja.py` -- helper script used by the BATS (Bash unit test
    framework) to expand Jinja in test scripts.
- - `generate_fixes_xml.py` -- combines the remediations (from the source
-   directory) into a single XML document to be merged with the unlinked
-   XCCDF.
  - `generate_man_page.py` -- generates the ComplianceAsCode man page.
  - `oscap_svg_support.py` -- helper script to check if OpenSCAP supports
    inline SVGs (used by the build system for feature detection).
@@ -124,12 +121,8 @@ refer to their help text for more information and usage:
    in a specific XCCDF/Datastream file.
  - `relabel_ids.py` -- updates various internal identifiers to their final
    resolved values (e.g., with the `xccdf_org.ssgproject.content_` prefix).
- - `sds_move_ocil_to_checks.py` -- updates the datastream to have the correct
-   structure for OCIL checks; only necessary for old OpenSCAP versions.
  - `unselect_empty_xccdf_groups.py` -- updates the XCCDF document to remove
    selections of groups without any rules.
- - `update_sds_version.py` -- used to build XCCDF v1.2 (instead of XCCDF v1.3)
-   compatible content.
  - `verify_references.py` -- used by the test system to verify cross-linkage
    of identifiers between XCCDF and OVAL/OCIL documents.
  - `yaml_to_shorthand.py` -- generates the shorthand XML document from the

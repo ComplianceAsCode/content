@@ -41,6 +41,9 @@ ocil_clause: 'audit backlog limit is not configured'
 ocil: |-
     {{{ ocil_grub2_argument("audit_backlog_limit=8192") | indent(4) }}}
 
+fixtext: |-
+    {{{ fixtext_grub2_bootloader_argument("audit_backlog_limit", "8192") | indent(4) }}}
+
 platform: grub2
 
 template:

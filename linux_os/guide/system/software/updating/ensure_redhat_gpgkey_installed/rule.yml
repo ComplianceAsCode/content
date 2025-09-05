@@ -66,3 +66,7 @@ ocil: |-
     <pre>$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey</pre>
     The command should return the string below:
     <pre>gpg(Red Hat, Inc. (release key 2)  &lt;security@redhat.com&gt;</pre>
+
+fixtext: |-
+    Install {{{ full_name }}} GPG key. Run the following command:
+    $ sudo rpm --import "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"

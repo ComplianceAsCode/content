@@ -68,8 +68,6 @@ selections:
 - accounts_password_pam_pwquality_system_auth
 - accounts_password_pam_retry
 - accounts_password_pam_ucredit
-- accounts_password_pam_unix_rounds_password_auth
-- accounts_password_pam_unix_rounds_system_auth
 - accounts_password_set_max_life_existing
 - accounts_password_set_min_life_existing
 - accounts_passwords_pam_faillock_deny
@@ -159,7 +157,6 @@ selections:
 - auditd_data_disk_error_action
 - auditd_data_disk_full_action
 - auditd_data_retention_action_mail_acct
-- auditd_data_retention_max_log_file_action
 - auditd_data_retention_space_left_action
 - auditd_data_retention_space_left_percentage
 - auditd_local_events
@@ -193,12 +190,16 @@ selections:
 - dconf_gnome_lock_screen_on_smartcard_removal
 - dconf_gnome_login_banner_text
 - dconf_gnome_screensaver_idle_delay
+- dconf_gnome_session_idle_user_locks
+- dconf_gnome_screensaver_lock_delay
 - dconf_gnome_screensaver_lock_enabled
+- dconf_gnome_screensaver_user_locks
 - dir_group_ownership_library_dirs
 - dir_ownership_library_dirs
 - dir_permissions_library_dirs
 - dir_perms_world_writable_root_owned
 - dir_perms_world_writable_sticky_bits
+- dir_perms_world_writable_system_owned_group
 - directory_group_ownership_var_log_audit
 - directory_ownership_var_log_audit
 - directory_permissions_var_log_audit
@@ -211,6 +212,8 @@ selections:
 - encrypt_partitions
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_local_packages
+- file_audit_tools_group_ownership
+- file_audit_tools_ownership
 - file_group_ownership_var_log_audit
 - file_groupowner_var_log
 - file_groupowner_var_log_messages
@@ -302,9 +305,9 @@ selections:
 - package_firewalld_installed
 - package_gssproxy_removed
 - package_iprutils_removed
+- package_krb5-server_removed
 - package_krb5-workstation_removed
 - package_libreport-plugin-logger_removed
-- package_libreport-plugin-rhtsupport_removed
 - package_mcafeetp_installed
 - package_opensc_installed
 - package_openssh-server_installed
@@ -355,6 +358,7 @@ selections:
 - set_password_hashing_algorithm_logindefs
 - set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
+- set_password_hashing_min_rounds_logindefs
 - sshd_disable_compression
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
@@ -458,6 +462,7 @@ selections:
 - var_system_crypto_policy=fips
 - var_sudo_timestamp_timeout=always_prompt
 - var_slub_debug_options=P
+- var_screensaver_lock_delay=5_seconds
 platforms: !!set {}
 cpe_names: !!set {}
 platform: null

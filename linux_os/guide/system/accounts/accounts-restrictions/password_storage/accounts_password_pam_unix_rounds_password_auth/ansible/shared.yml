@@ -1,13 +1,20 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
 # reboot = false
 # strategy = configure
 # complexity = low
 # disruption = medium
 {{{ ansible_instantiate_variables("var_password_pam_unix_rounds") }}}
 
+{{% if product in ["sle12", "sle15"] %}}
+    {{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
+{{% else %}}
+    {{% set pam_passwd_file_path = "/etc/pam.d/password-auth" %}}
+{{% endif %}}
+
+
 - name: Check for existing rounds parameter
   ansible.builtin.lineinfile:
-    path: "/etc/pam.d/password-auth"
+    path: {{{ pam_passwd_file_path }}}
     create: no
     regexp: '^password.*pam_unix.so.*rounds='
     state: absent
@@ -150,13 +157,13 @@
   block:
     - name: Ensure the desired rounds value is updated in the custom profile
       ansible.builtin.replace:
-        dest: "/etc/pam.d/password-auth"
+        dest: {{{ pam_passwd_file_path }}}
         regexp: '(^\s*password.*pam_unix.so.*rounds=)(\S+)(.*)$'
         replace: '\g<1>{{ var_password_pam_unix_rounds }}\g<3>'
 
     - name: Ensure the remember parameter is included in the custom profile
       ansible.builtin.replace:
-        dest: "/etc/pam.d/password-auth"
+        dest: {{{ pam_passwd_file_path }}}
         regexp: '(^\s*password.*pam_unix.so.*)(?! rounds=\S+)(.*)$'
         replace: '\g<1> \g<2> rounds={{ var_password_pam_unix_rounds }}'
       when:

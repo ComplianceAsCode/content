@@ -1,0 +1,56 @@
+documentation_complete: true
+
+prodtype: fedora,rhel9
+
+title: 'Configure Microarchitectural Data Sampling mitigation'
+
+description: |-
+    Microarchitectural Data Sampling (MDS) is a hardware vulnerability which allows unprivileged
+    speculative access to data which is available in various CPU internal buffers.
+
+    When performing store, load, L1 refill operations, processors write data into temporary
+    microarchitectural structures (buffers), and the data in the buffer can be forwarded to load
+    operations as an optimization.
+
+    Under certain conditions, data unrelated to the load operations can be speculatively
+    forwarded from the buffers to a disclosure gadget which allows in turn to infer the value
+    via a cache side channel attack.
+
+    Select the appropriate mitigation by adding the argument
+    <tt>mds={{{ xccdf_value(var_mds_options) }}}</tt> to the default
+    GRUB 2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("mds=xccdf_value(var_mds_options)") | indent(4) }}}
+
+    Not all processors are affected by all variants of MDS, but the mitigation mechanism is
+    identical for all of them.
+
+    Since Linux Kernel 5.2 you can check whether the system is vulnerable or mitigated with the
+    following command:
+    <tt>cat /sys/devices/system/cpu/vulnerabilities/mds</tt>
+
+rationale: |-
+    The MDS vulnerability allows an attacker to sample data from internal CPU buffers.
+
+warnings:
+    - performance: |-
+        Enabling MDS mitigations will impact performance of the system, mainly by workloads with
+        high rates of user-kernel-user space transitions. For example, system calls, NMIs and interrupts.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-89456-8
+    cce@rhel9: CCE-90456-5
+
+ocil_clause: 'MDS mitigations are not configured appropriately'
+
+ocil: |-
+    {{{ ocil_grub2_argument("mds=xccdf_value(var_mds_options)") | indent(4) }}}
+
+platform: machine
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: mds
+        arg_variable: var_mds_options

@@ -4,6 +4,12 @@ prodtype: ocp4
 
 title: 'Configure the etcd Certificate for the API Server'
 
+{{% set custom_jqfilter = '.data."{{.var_openshift_kube_apiserver_config_data_name}}" | fromjson' %}}
+{{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
+{{% set custom_api_path = '/api/v1/namespaces/{{.var_openshift_kube_apiserver_namespace}}/configmaps/{{.var_openshift_kube_apiserver_config}}' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 description: |-
     To ensure etcd is configured to make use of TLS encryption for client
     communications, follow the OpenShift documentation and setup the TLS
@@ -47,16 +53,16 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
     entity_check: "all"
-    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
-    yamlpath: '.data["config.yaml"]'
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '.apiServerArguments["etcd-certfile"][:]'
     values:
-     - value: '"etcd-certfile":\[.*\.crt"\]'
+     - value: '.*\.crt'
        operation: "pattern match"
        type: "string"

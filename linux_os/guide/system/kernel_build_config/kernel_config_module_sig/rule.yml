@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Enable module signature verification'
+
+description: |-
+    Check modules for valid signatures upon load.
+    Note that this option adds the OpenSSL development packages as a kernel build dependency so
+    that the signing tool can use its crypto library.
+
+    {{{ describe_kernel_build_config("CONFIG_MODULE_SIG", "y") | indent(4) }}}
+
+rationale: |-
+    Loaded modules must be signed.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-89377-6
+    cce@rhel8: CCE-89378-4
+    cce@rhel9: CCE-89379-2
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_MODULE_SIG", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_MODULE_SIG
+        value: 'y'
+

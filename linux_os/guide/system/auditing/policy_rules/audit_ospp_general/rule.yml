@@ -88,8 +88,7 @@ title: 'Perform general configuration of Audit for OSPP'
 ## Application invocation. The requirements list an optional requirement
 ## FPT_SRP_EXT.1 Software Restriction Policies. This event is intended to
 ## state results from that policy. This would be handled entirely by
-## that daemon.
-" %}}
+## that daemon." %}}
 
 
 description: |-
@@ -142,3 +141,5 @@ template:
         filepath: /etc/audit/rules.d/30-ospp-v42.rules
         contents: |+
             {{{ file_contents_audit_ospp_general|indent(12) }}}
+#do not remove this comment, it stops Jinja from including more blank lines to the variable
+

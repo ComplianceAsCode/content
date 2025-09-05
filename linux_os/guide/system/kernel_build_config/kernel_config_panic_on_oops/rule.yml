@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Kernel panic oops'
+
+description: |-
+    Enable the kernel to panic when it oopses.
+    This has the same effect as setting oops=panic on the kernel command line.
+
+    {{{ describe_kernel_build_config("CONFIG_PANIC_ON_OOPS", "y") | indent(4) }}}
+
+rationale: |-
+    This feature ensures that the kernel does not do anything erroneous after an oops which
+    could result in data corruption or other issues.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86175-7
+    cce@rhel8: CCE-86176-5
+    cce@rhel9: CCE-86177-3
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_PANIC_ON_OOPS", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_PANIC_ON_OOPS
+        value: 'y'
+

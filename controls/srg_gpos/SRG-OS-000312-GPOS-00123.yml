@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000312-GPOS-00123
+        levels:
+            - medium
+        title: {{{ full_name }}} must allow operating system admins to grant their privileges
+            to other operating system admins.
+        rules:
+            - use_pam_wheel_for_su
+            - sysctl_fs_protected_symlinks
+            - sysctl_fs_protected_hardlinks
+        status: automated

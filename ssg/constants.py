@@ -31,6 +31,7 @@ SSG_REF_URIS = {
     'stigid': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
     'os-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
     'app-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
+    'stigref': 'https://public.cyber.mil/stigs/srg-stig-tools/',
     # The following reference URIs were not defined in the XSLT constants
     'ism': '',
     'vmmsrg': '',
@@ -59,20 +60,8 @@ product_directories = [
     'wrlinux8', 'wrlinux1019'
 ]
 
-JINJA_MACROS_BASE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros.jinja")
-JINJA_MACROS_HIGHLEVEL_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros-highlevel.jinja")
-JINJA_MACROS_ANSIBLE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros-ansible.jinja")
-JINJA_MACROS_IGNITION_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros-ignition.jinja")
-JINJA_MACROS_KUBERNETES_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros-kubernetes.jinja")
-JINJA_MACROS_OVAL_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros-oval.jinja")
-JINJA_MACROS_BASH_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros-bash.jinja")
+JINJA_MACROS_DIRECTORY = os.path.join(os.path.dirname(os.path.dirname(
+    __file__)), "shared", "macros")
 
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 
@@ -151,6 +140,15 @@ PREFIX_TO_NS = {
     "cpe-lang": "http://cpe.mitre.org/language/2.0",
 }
 
+FIX_TYPE_TO_SYSTEM = {
+    "bash": bash_system,
+    "ansible": ansible_system,
+    "ignition": ignition_system,
+    "kubernetes": kubernetes_system,
+    "blueprint": blueprint_system,
+    "puppet": puppet_system,
+    "anaconda": anaconda_system,
+}
 
 for prefix, url_part in OVAL_SUB_NS.items():
     assert prefix not in PREFIX_TO_NS, \
@@ -454,6 +452,8 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 # Application constants
 DEFAULT_GID_MIN = 1000
 DEFAULT_UID_MIN = 1000
+DEFAULT_NOBODY_GID = 65534
+DEFAULT_NOBODY_UID = 65534
 DEFAULT_GRUB2_BOOT_PATH = '/boot/grub2'
 DEFAULT_GRUB2_UEFI_BOOT_PATH = '/boot/grub2'
 DEFAULT_DCONF_GDM_DIR = 'gdm.d'
@@ -461,4 +461,4 @@ DEFAULT_AIDE_CONF_PATH = '/etc/aide.conf'
 DEFAULT_AIDE_BIN_PATH = '/usr/sbin/aide'
 DEFAULT_SSH_DISTRIBUTED_CONFIG = 'false'
 DEFAULT_PRODUCT = 'example'
-
+DEFAULT_CHRONY_CONF_PATH = '/etc/chrony.conf'

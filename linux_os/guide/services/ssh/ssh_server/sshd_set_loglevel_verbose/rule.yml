@@ -41,10 +41,15 @@ references:
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="LogLevel", value="VERBOSE") }}}
 
+fixtext: |-
+    {{{ fixtext_sshd_lineinfile('LogLevel', 'VERBOSE', False) }}}
+
+srg_requirement: |-
+    {{{ full_name }}} must log SSH connection attempts and failures to the server.
+
 template:
     name: sshd_lineinfile
     vars:
-        missing_parameter_pass: 'false'
         parameter: LogLevel
         rule_id: sshd_set_loglevel_verbose
         value: VERBOSE

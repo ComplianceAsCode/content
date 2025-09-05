@@ -34,5 +34,16 @@ references:
     stigid@ol8: OL08-00-030100
     stigid@rhel8: RHEL-08-030100
 
+ocil_clause: the directory is not owned by root
+
 ocil: |-
     {{{ describe_file_owner(file="/var/log/audit", owner="root") }}}
+
+srg_requirement: |-
+    {{{ full_name }}} audit log directory must be owned by root to prevent unauthorized read access.
+
+fixtext: |-
+    Change the owner of the directory /var/log/audit to root.
+    Run the following command:
+
+    $ sudo chown root /var/log/audit

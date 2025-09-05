@@ -4,6 +4,12 @@ prodtype: ocp4
 
 title: 'Use Strong Cryptographic Ciphers on the API Server'
 
+{{% set custom_jqfilter = '.data."{{.var_openshift_kube_apiserver_config_data_name}}" | fromjson' %}}
+{{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
+{{% set custom_api_path = '/api/v1/namespaces/{{.var_openshift_kube_apiserver_namespace}}/configmaps/{{.var_openshift_kube_apiserver_config}}' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 description: |-
     To ensure that the API Server is configured to only use strong
     cryptographic ciphers, verify the <tt>openshift-kube-apiserver</tt>
@@ -53,7 +59,7 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
 - management: |-
     Once configured, API Server clients that cannot support modern
     cryptographic ciphers will not be able to make connections to the API
@@ -63,10 +69,10 @@ template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    entity_check: "at least one"
-    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
-    yamlpath: '.data["config.yaml"]'
+    entity_check: "all"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '.servingInfo.cipherSuites[:]'
     values:
-    - value: '\"cipherSuites\":\[(\"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256\"|\"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256\"|\"TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256\"|\"TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384\"|\"TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256\"|\"TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384\"|,| )*\]'
+    - value: 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256|TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384|TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256|TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
       operation: "pattern match"
       type: "string"

@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 #
 
 . $SHARED/auditd_utils.sh

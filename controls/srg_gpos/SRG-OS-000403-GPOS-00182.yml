@@ -1,0 +1,28 @@
+controls:
+    -   id: SRG-OS-000403-GPOS-00182
+        levels:
+            - medium
+        title:  {{{ full_name }}} must only allow the use of DoD PKI-established certificate
+            authorities for authentication in the establishment of protected sessions to
+            {{{ full_name }}}.
+        status: does not meet
+        description:
+            {{{ full_name }}} must only allow the use of DoD PKI-established certificate authorities for authentication in the establishment of protected sessions to the operating system.
+        rationale:
+            Untrusted Certificate Authorities (CA) can issue certificates, but they may be issued by organizations or individuals that seek to compromise DoD systems or by organizations with insufficient security controls.
+            If the CA used for verifying the certificate is not a DoD-approved CA, trust of this CA has not been established.
+
+            The DoD will only accept PKI-certificates obtained from a DoD-approved internal or external certificate authority.
+            Reliance on CAs for the establishment of secure sessions includes, for example, the use of SSL/TLS certificates.
+        check:
+            {{{ full_name }}} does not support this requirement.
+            This is an applicable-does not meet finding.
+        fixtext:
+            This requirement is a permanent finding and cannot be fixed.
+            An appropriate mitigation for the system must be implemented, but this finding cannot be considered fixed.
+        mitigation:
+            This item can be mitigated by installing an additional packages/software that is not included in the default install of {{{ full_name }}}.
+
+            Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
+        status_justification:
+            This is a procedural-only requirement that is not enforced by the OS.

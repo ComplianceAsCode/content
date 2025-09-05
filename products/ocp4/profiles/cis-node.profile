@@ -146,7 +146,9 @@ selections:
     - file_permissions_kubelet_conf
   # 4.1.6 Ensure that the --kubeconfig kubelet.conf file ownership is set to root:root
     - file_groupowner_kubelet_conf
+    - file_groupowner_kubelet
     - file_owner_kubelet_conf
+    - file_owner_kubelet
   # 4.1.7 Ensure that the certificate authorities file permissions are set to 644 or more restrictive
     - file_permissions_worker_ca
   # 4.1.8 Ensure that the client certificate authorities file ownership is set to root:root

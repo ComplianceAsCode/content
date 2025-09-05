@@ -1760,6 +1760,10 @@ controls:
   rules:
   - wireless_disable_in_bios
   - kernel_module_bluetooth_disabled
+  - kernel_module_iwlmvm_disabled
+  - kernel_module_iwlwifi_disabled
+  - kernel_module_cfg80211_disabled
+  - kernel_module_mac80211_disabled
   - service_bluetooth_disabled
   - wireless_disable_interfaces
   - kernel_module_atm_disabled
@@ -1811,6 +1815,10 @@ controls:
   - kernel_module_bluetooth_disabled
   - service_bluetooth_disabled
   - wireless_disable_interfaces
+  - kernel_module_iwlmvm_disabled
+  - kernel_module_iwlwifi_disabled
+  - kernel_module_cfg80211_disabled
+  - kernel_module_mac80211_disabled
   description: |-
     The organization disables, when not intended for use, wireless networking capabilities internally embedded within information system components prior to issuance and deployment.
 
@@ -1820,12 +1828,18 @@ controls:
   levels:
   - high
 - id: AC-18(4)
-  status: pending
+  status: automated
   notes: |-
-    A control response is planned. Progress can be tracked via:
-
-    https://issues.redhat.com/browse/CMP-149
-  rules: []
+    The network capabilities should be disabled by default.
+  rules: 
+  - wireless_disable_in_bios
+  - kernel_module_bluetooth_disabled
+  - service_bluetooth_disabled
+  - wireless_disable_interfaces
+  - kernel_module_iwlmvm_disabled
+  - kernel_module_iwlwifi_disabled
+  - kernel_module_cfg80211_disabled
+  - kernel_module_mac80211_disabled
   description: |-
     The organization identifies and explicitly authorizes users allowed to independently configure wireless networking capabilities.
 
@@ -3567,12 +3581,18 @@ controls:
   - moderate
   - low
 - id: AU-12(1)
-  status: pending
+  status: automated
   notes: |-
-    A control response is planned. Engineering progress can be tracked via:
+    OpenShift provides options to configure chrony time service through Machine Config.[1]
+    A correct NTP server is required for audit records to be generated with correct timestamp.
 
-    https://issues.redhat.com/browse/CMP-181
-  rules: []
+    [1] https://docs.openshift.com/container-platform/latest/installing/install_config/installing-customizing.html#installation-special-config-chrony_installing-customizing
+  rules:
+  - chronyd_or_ntpd_specify_multiple_servers
+  - service_chronyd_or_ntpd_enabled
+  - chronyd_client_only
+  - chronyd_or_ntpd_set_maxpoll
+  - chronyd_or_ntpd_specify_remote_server
   description: |-
     The information system compiles audit records from [Assignment: organization-defined information system components] into a system-wide (logical or physical) audit trail that is time- correlated to within [Assignment: organization-defined level of tolerance for relationship between time stamps of individual records in the audit trail].
 
@@ -4663,13 +4683,16 @@ controls:
     https://issues.redhat.com/browse/CMP-267
   rules: []
 - id: CM-3(6)
-  status: pending
+  status: automated
   notes: |-
-    A complete control response is planned. Engineering progress can be
-    tracked via:
+    The only way to access the OpenShift nodes should through '$oc debug', remote SSH should
+    be disabled after the Installation
 
-    https://issues.redhat.com/browse/CMP-268
-  rules: []
+    OpenShift also support FIPS mode, which can be enabled in OpenShift through a flag that
+    can be set at installation time
+  rules:
+   - service_sshd_disabled
+   - enable_fips_mode
   description: |-
     The organization ensures that cryptographic mechanisms used to provide [Assignment: organization-defined security safeguards] are under configuration management.
 
@@ -5015,6 +5038,10 @@ controls:
   - audit_rules_usergroup_modification_shadow
   - file_ownership_var_log_audit
   - kernel_module_bluetooth_disabled
+  - kernel_module_iwlmvm_disabled
+  - kernel_module_iwlwifi_disabled
+  - kernel_module_cfg80211_disabled
+  - kernel_module_mac80211_disabled
   - sysctl_net_ipv6_conf_all_accept_source_route
   - no_empty_passwords
   - chronyd_or_ntpd_specify_remote_server
@@ -5191,6 +5218,10 @@ controls:
   - kernel_module_jffs2_disabled
   - sysctl_net_ipv4_conf_default_accept_redirects
   - kernel_module_bluetooth_disabled
+  - kernel_module_iwlmvm_disabled
+  - kernel_module_iwlwifi_disabled
+  - kernel_module_cfg80211_disabled
+  - kernel_module_mac80211_disabled
   - kernel_module_sctp_disabled
   - wireless_disable_interfaces
   - sysctl_net_ipv6_conf_all_accept_ra
@@ -6785,12 +6816,12 @@ controls:
   - high
   - moderate
 - id: IA-2(4)
-  status: pending
+  status: automated
   notes: |-
-    A control response is planned. Engineering progress can be tracked via:
-
-    https://issues.redhat.com/browse/CMP-303
-  rules: []
+    The only way to access the OpenShift nodes should through '$oc debug', remote SSH should
+    be disabled after the Installation
+  rules:
+  - service_sshd_disabled
   description: |-
     The information system implements multifactor authentication for local access to non-privileged accounts.
   title: >-
@@ -8908,6 +8939,10 @@ controls:
   - kernel_module_usb-storage_disabled
   - coreos_nousb_kernel_argument
   - kernel_module_bluetooth_disabled
+  - kernel_module_iwlmvm_disabled
+  - kernel_module_iwlwifi_disabled
+  - kernel_module_cfg80211_disabled
+  - kernel_module_mac80211_disabled
   - service_bluetooth_disabled
   - wireless_disable_interfaces
   description: |-

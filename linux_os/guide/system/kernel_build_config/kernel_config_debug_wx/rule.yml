@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8,rhel9
+
+title: 'Warn on W+X mappings found at boot'
+
+description: |-
+    Generate a warning if any W+X mappings are found at boot.
+    This configuration is available from kernel 5.8.
+
+    {{{ describe_kernel_build_config("CONFIG_DEBUG_WX", "y") | indent(4) }}}
+
+rationale: |-
+    This is useful for discovering cases where the kernel is leaving W+X mappings after applying NX,
+    as such mappings are a security risk.
+    Note that even if the check fails, your kernel is possibly still fine, as W+X mappings are not
+    a security hole in themselves, what they do is that they make the exploitation of other unfixed
+    kernel bugs easier.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-87032-9
+    cce@rhel9: CCE-88032-8
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_DEBUG_WX", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_DEBUG_WX
+        value: 'y'
+

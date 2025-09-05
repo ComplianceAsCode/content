@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R5
+    version: V1R6
     SMEs:
         - mab879
         - ggbecker
@@ -12,7 +12,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V1R5.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R6.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -126,10 +126,7 @@ selections:
     - accounts_password_all_shadowed_sha512
 
     # RHEL-08-010130
-    - accounts_password_pam_unix_rounds_password_auth
-
-    # RHEL-08-010131
-    - accounts_password_pam_unix_rounds_system_auth
+    - set_password_hashing_min_rounds_logindefs
 
     # RHEL-08-010140
     - grub2_uefi_password
@@ -438,6 +435,7 @@ selections:
     - dir_perms_world_writable_root_owned
 
     # RHEL-08-010710
+    - dir_perms_world_writable_system_owned_group
 
     # RHEL-08-010720
     - accounts_user_interactive_home_directory_defined
@@ -502,6 +500,10 @@ selections:
     # RHEL-08-020030
     - dconf_gnome_screensaver_lock_enabled
 
+    # RHEL-08-020031, RHEL-08-020080
+    - dconf_gnome_screensaver_lock_delay
+    - var_screensaver_lock_delay=5_seconds
+
     # RHEL-08-020039
     - package_tmux_installed
 
@@ -524,6 +526,10 @@ selections:
     - configure_tmux_lock_after_time
 
     # RHEL-08-020080
+    - dconf_gnome_screensaver_user_locks
+
+    # RHEL-08-020081
+    - dconf_gnome_session_idle_user_locks
 
     # RHEL-08-020090
     - sssd_enable_certmap
@@ -656,9 +662,6 @@ selections:
 
     # RHEL-08-030040
     - auditd_data_disk_error_action
-
-    # RHEL-08-030050
-    - auditd_data_retention_max_log_file_action
 
     # RHEL-08-030060
     - auditd_data_disk_full_action
@@ -874,10 +877,13 @@ selections:
     - file_permissions_etc_audit_rulesd
 
     # RHEL-08-030620
+    - file_audit_tool_permissions
 
     # RHEL-08-030630
+    - file_audit_tools_ownership
 
     # RHEL-08-030640
+    - file_audit_tools_group_ownership
 
     # RHEL-08-030650
     - aide_check_audit_tools
@@ -1179,3 +1185,6 @@ selections:
 
     # RHEL-08-040390
     - package_tuned_removed
+
+    # RHEL-08-010163
+    - package_krb5-server_removed

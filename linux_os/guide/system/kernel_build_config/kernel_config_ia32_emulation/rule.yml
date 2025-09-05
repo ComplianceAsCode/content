@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Disable IA32 emulation'
+
+description: |-
+    Disables support for legacy 32-bit programs under a 64-bit kernel.
+
+    {{{ describe_kernel_build_config("CONFIG_IA32_EMULATION", "n") | indent(4) }}}
+
+rationale: |-
+    Disabling 32-bit backwards compatibility helps reduce the attack surface.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+    - general: |-
+        Only disable support for 32-bit programs if you are sure you don't need any 32-bit program.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-88745-5
+    cce@rhel8: CCE-88746-3
+    cce@rhel9: CCE-88747-1
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_IA32_EMULATION", "n") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_IA32_EMULATION
+        value: 'n'
+

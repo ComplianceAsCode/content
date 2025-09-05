@@ -3,4 +3,4 @@
 # platform = multi_platform_fedora,multi_platform_rhel
 # remediation = none
 
-rm -f /etc/chrony.conf
+rm -f {{{ chrony_conf_path }}}

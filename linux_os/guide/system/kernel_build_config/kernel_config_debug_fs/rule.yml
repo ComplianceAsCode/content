@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Disable kernel debugfs'
+
+description: |-
+    <tt>debugfs</tt> is a virtual file system that kernel developers use to put debugging files
+    into. Enable this option to be able to read and write to these files.
+
+    {{{ describe_kernel_build_config("CONFIG_DEBUG_FS", "n") | indent(4) }}}
+
+rationale: |-
+    To reduce the attack surface, this file system should be disabled if not in use.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: low
+
+identifiers:
+    cce@rhel7: CCE-87033-7
+    cce@rhel8: CCE-88033-6
+    cce@rhel9: CCE-89033-5
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_DEBUG_FS", "n") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_DEBUG_FS
+        value: 'n'
+

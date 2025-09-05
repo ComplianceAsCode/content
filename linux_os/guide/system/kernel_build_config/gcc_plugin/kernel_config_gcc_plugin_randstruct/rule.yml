@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: fedora,rhel9
+
+title: 'Randomize layout of sensitive kernel structures'
+
+description: |-
+    Randomize at compile-time the layouts of structures that are entirely function pointers
+    (and have not been manually annotated with __no_randomize_layout), or structures that have
+    been explicitly marked with __randomize_layout.
+    This configuration is available from kernel 4.13, but may be available if backported
+    by distros.
+
+    {{{ describe_kernel_build_config("CONFIG_GCC_PLUGIN_RANDSTRUCT", "y") | indent(4) }}}
+
+rationale: |-
+    Randomizing the layout of kernel data structures make it more difficult for an attacker to
+    know the location of sensitive data.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-87107-9
+    cce@rhel9: CCE-87109-5
+
+ocil_clause: 'the kernel was built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_GCC_PLUGIN_RANDSTRUCT", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_GCC_PLUGIN_RANDSTRUCT
+        value: 'y'
+

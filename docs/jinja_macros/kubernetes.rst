@@ -1,3 +1,3 @@
 Kubernetes
 ==========
-    .. autojinja:: shared/macros-kubernetes.jinja
+    .. autojinja:: shared/macros/kubernetes.jinja

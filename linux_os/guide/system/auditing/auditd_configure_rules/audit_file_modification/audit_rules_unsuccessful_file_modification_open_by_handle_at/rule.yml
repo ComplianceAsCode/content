@@ -75,6 +75,11 @@ warnings:
         have been placed independent of other system calls. Grouping these system
         calls with others as identifying earlier in this guide is more efficient.
 
+fixtext: |-
+    {{{ fixtext_audit_rules_unsuccessful_file_modification_creat("open_by_handle_at") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("open_by_handle_at") }}}'
+
 template:
     name: audit_rules_unsuccessful_file_modification
     vars:

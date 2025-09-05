@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Randomize the address of the kernel image (KASLR)'
+
+description: |-
+    In support of Kernel Address Space Layout Randomization (KASLR), this randomizes the physical
+    address at which the kernel image is decompressed and the virtual address where the kernel
+    image is mapped.
+
+    {{{ describe_kernel_build_config("CONFIG_RANDOMIZE_BASE", "y") | indent(4) }}}
+
+rationale: |-
+    An unpredictable kernel address makes it more difficult to succeed with exploits that rely on
+    knowledge of the location of kernel code internals.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-88317-3
+    cce@rhel8: CCE-88318-1
+    cce@rhel9: CCE-88319-9
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_RANDOMIZE_BASE", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_RANDOMIZE_BASE
+        value: 'y'
+

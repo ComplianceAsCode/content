@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000359-GPOS-00146
+        levels:
+            - medium
+        title: {{{ full_name }}} must record time stamps for audit records that can be
+            mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).
+        rules:
+            - var_time_service_set_maxpoll=18_hours
+            - chronyd_or_ntpd_set_maxpoll
+            - package_audit_installed
+        status: automated

@@ -28,12 +28,11 @@ references:
 ocil_clause: "The AllowTcpForwarding option exists and is disabled"
 
 ocil: |-
-    {{{ ocil_sshd_option(default="yes", option="AllowTcpForwarding", value="no") }}}
+    {{{ ocil_sshd_option(default="no", option="AllowTcpForwarding", value="no") }}}
 
 template:
     name: sshd_lineinfile
     vars:
-        missing_parameter_pass: 'false'
         parameter: AllowTcpForwarding
         rule_id: sshd_disable_tcp_forwarding
         value: 'no'

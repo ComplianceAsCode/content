@@ -5,6 +5,19 @@ prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,wrlinux1019
 title: 'Configure Multiple DNS Servers in /etc/resolv.conf'
 
 description: |-
+    {{% if "ol" in product or "rhel" in product %}}
+    Determine whether the system is using local or DNS name resolution with the
+    following command:
+    <pre>$ sudo grep hosts /etc/nsswitch.conf
+    hosts: files dns</pre>
+    If the DNS entry is missing from the host's line in the "/etc/nsswitch.conf"
+    file, the "/etc/resolv.conf" file must be empty.
+    Verify the "/etc/resolv.conf" file is empty with the following command:
+    <pre>$ sudo ls -al /etc/resolv.conf
+    -rw-r--r-- 1 root root 0 Aug 19 08:31 resolv.conf</pre>
+    If the DNS entry is found on the host's line of the "/etc/nsswitch.conf" file,
+    then verify the following:<br/>
+    {{% endif %}}
     Multiple Domain Name System (DNS) Servers should be configured
     in <tt>/etc/resolv.conf</tt>. This provides redundant name resolution services
     in the event that a domain server crashes. To configure the system to contain

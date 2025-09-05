@@ -48,17 +48,19 @@ references:
     stigid@sle15: SLES-15-010359
     stigid@ubuntu2004: UBTU-20-010457
 
-ocil_clause: 'any system executables are found to not be owned by root'
+ocil_clause: 'any system commands are found to not be owned by root'
 
 ocil: |-
-    System executables are stored in the following directories by default:
-    <pre>/bin
-    /sbin
-    /usr/bin
-    /usr/libexec
-    /usr/local/bin
-    /usr/local/sbin
-    /usr/sbin</pre>
-    To find system executables that are not owned by <tt>root</tt>,
-    run the following command for each directory <i>DIR</i> which contains system executables:
-    <pre>$ sudo find <i>DIR/</i> \! -user root</pre>
+    Verify the system commands contained in the following directories are owned by "root" with the following command:
+
+    $ sudo find -L /bin /sbin /usr/bin /usr/sbin /usr/libexec /usr/local/bin /usr/local/sbin ! -user root -exec ls -l {} \;
+
+fixtext: |-
+    Configure the system commands to be protected from unauthorized access.
+
+    Run the following command, replacing "[FILE]" with any system command file not owned by "root".
+
+    $ sudo chown root [FILE]
+
+srg_requirement:
+    {{{ full_name }}} system commands must be owned by root.

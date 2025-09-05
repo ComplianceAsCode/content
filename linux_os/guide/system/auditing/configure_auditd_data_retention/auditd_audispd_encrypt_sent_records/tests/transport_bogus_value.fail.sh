@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 # platform = Red Hat Enterprise Linux 8,multi_platform_fedora
 
 . $SHARED/auditd_utils.sh

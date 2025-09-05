@@ -1,0 +1,12 @@
+controls:
+    -   id: SRG-OS-000134-GPOS-00068
+        levels:
+            - medium
+        title: {{{ full_name }}} must isolate security functions from nonsecurity functions.
+        rules:
+            - grub2_vsyscall_argument
+            - grub2_page_poison_argument
+            - grub2_slub_debug_argument
+            - selinux_state
+            - package_policycoreutils_installed
+        status: automated

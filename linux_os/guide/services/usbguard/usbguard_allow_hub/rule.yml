@@ -35,3 +35,10 @@ ocil: |-
     <pre>$ sudo grep allow /etc/usbguard/rules.conf</pre>
     One of the output lines should be
     <pre>allow with-interface match-all { 09:00:* }</pre>
+
+fixtext: |-
+    Configure the USBGuard daemon to allow USB hubs.
+
+    Add or edit the following line in "/etc/usbguard/rules.conf"
+
+    allow with-interface match-all { 09:00:* }

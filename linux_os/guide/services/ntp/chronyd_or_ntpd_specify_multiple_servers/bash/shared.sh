@@ -3,7 +3,7 @@
 {{{ bash_instantiate_variables("var_multiple_time_servers") }}}
 
 config_file="/etc/ntp.conf"
-/usr/sbin/pidof ntpd || config_file="/etc/chrony.conf"
+/usr/sbin/pidof ntpd || config_file="{{{ chrony_conf_path }}}"
 
 if ! [ "$(grep -c '^server' "$config_file")" -gt 1 ] ; then
   {{{ bash_ensure_there_are_servers_in_ntp_compatible_config_file("$config_file", "$var_multiple_time_servers") | indent(2) }}}

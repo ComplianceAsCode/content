@@ -18,7 +18,7 @@ import sphinx_rtd_theme
 
 # since these files live outside of root doc directory, we need to create a symlink to a dir under where conf.py lives
 # so recommonmark can properly render them
-filepaths = ["release_tools/README.md", "tests/README.md"]
+filepaths = ["tests/README.md"]
 for filepath in filepaths:
     try:
         path, _ = filepath.split("/")

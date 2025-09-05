@@ -409,6 +409,21 @@ template:
     arg_name: audit
 ```
 
+#### kernel_build_config
+This template checks the configuration used to build the kernel by checking the `/boot/config-*` files.
+The only way to remediate is to recompile and reinstall the kernel, so no remediation should be expected.
+
+- Parameters:
+
+    - **config** - The kernel configuration to check
+    - **value** - The value the configuration should have
+      When **value** is `"n"`, the check will pass when the config is absent, commented out or has the
+      value `n` in the `/boot/config-*` files.
+    - **variable** - The variable to get the value from.
+      This parameter is mutually exclusive with **value**.
+
+- Languages: OVAL
+
 #### kernel_module_disabled
 -   Checks if the given Linux kernel module is disabled.
 
@@ -702,7 +717,9 @@ template:
         inserted to the file by the remediation if not present.
 
 #### sshd_lineinfile
--   Checks SSH server configuration items in `/etc/ssh/sshd_config`.
+-   Checks SSH server configuration items in `/etc/ssh/sshd_config` or
+    `/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf` in case
+    of Fedora or RHEL9 and newer.
 
 -   Parameters:
 
@@ -715,6 +732,11 @@ template:
     -   **missing_parameter_pass** - effective only in OVAL checks, if
         set to `"false"` and the parameter is not present in the
         configuration file, the OVAL check will return false (default value: `"false"`).
+
+    -   **is_default_value** - effective only in Ansible and Bash remediation, if
+        set to `"true"`, settings will be remediated into a file
+        called (in case of Fedora or RHEL9 and newer):
+        `/etc/ssh/sshd_config.d/01-complianceascode-reinforce-os-defaults.conf`
 
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
@@ -766,9 +788,19 @@ The selected value can be changed in the profile (consult the actual variable fo
 ```
 
 #### sysctl
--   Checks sysctl parameters. The OVAL definition checks both
+-   Checks sysctl parameters. The OVAL definition checks both static
     configuration and runtime settings and require both of them to be
     set to the desired value to return true.
+
+    The following file and directories are checked for static
+    sysctl configurations:
+    - /etc/sysctl.conf
+    - /etc/sysctl.d/\*.conf
+    - /run/sysctl.d/\*.conf
+    - /usr/lib/sysctl.d/\*.conf (does not apply to RHEL and OL)
+
+    A sysctl option defined in more than one file within the scanned directories
+    will result in `fail`.
 
 -   Parameters:
 
@@ -840,6 +872,10 @@ The selected value can be changed in the profile (consult the actual variable fo
 
     -   **embedded_data** - if set to `"true"` and used combined with `xccdf_variable`, the data retrieved by `yamlpath`
         is considered as a blob and the field `value` has to contain a capture regex.
+   
+    -   **regex_data** - if set to `"true"` and combined with `xccdf_variable`, it will use the value of `xccdf_variable` as a regex
+        and does pattern match operation instead of equal operation.
+
 
     -   **check_existence_yamlpath** - optional YAML Path that could be set to ensure that the target sequence from `yamlpath` has all
         required sub-elements. It is helpful when the `yamlpath` is targeting a map inside a sequence, and the document could be

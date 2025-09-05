@@ -49,11 +49,22 @@ references:
     stigid@rhel7: RHEL-07-010220
     vmmsrg: SRG-OS-000480-VMM-002000
 
-ocil_clause: 'it does not'
+ocil_clause: crypt_style is not set to sha512
 
 ocil: |-
-    Inspect <tt>/etc/libuser.conf</tt> and ensure the following line appears
-    in the <tt>[default]</tt> section:
-    <pre>crypt_style = sha512</pre>
+    Verify that the libuser is set to encrypt password with a FIPS 140-2 approved cryptographic hashing algorithm.
+
+    Check the hashing algorithm that is being used to hash passwords with the following command:
+
+    $ sudo grep -i crypt_style /etc/libuser.conf
+
+    crypt_style = sha512
 
 platform: libuser
+
+fixtext: |-
+    Configure {{{ full_name }}} to use the SHA-512 algorithm for password hashing.
+
+    Add or change the following line in the "[default]" section of "/etc/libuser.conf" file:
+
+    crypt_style = sha512

@@ -21,7 +21,9 @@ references:
     ospp: FIA_UAU.5,FTP_ITC_EXT.1
     srg: SRG-OS-000480-GPOS-00227
 
-{{{ complete_ocil_entry_package(package='openssh-clients') }}}
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="openssh-clients") }}}'
 
 template:
     name: package_installed

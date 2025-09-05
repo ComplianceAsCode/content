@@ -14,12 +14,12 @@
         </criteria>
       </criteria>
       <criteria operator="OR">
-        <criterion comment="check if no server or pool entry is set in /etc/chrony.conf"
+        <criterion comment="check if no server or pool entry is set in {{{ chrony_conf_path }}}"
           test_ref="test_chrony_no_server_nor_pool"/>
         <criteria operator="AND">
-          <criterion comment="check if maxpoll is set in /etc/chrony.conf"
+          <criterion comment="check if maxpoll is set in {{{ chrony_conf_path }}}"
           test_ref="test_chrony_set_maxpoll" />
-          <criterion comment="check if all server entries have maxpoll set in /etc/chrony.conf"
+          <criterion comment="check if all server entries have maxpoll set in {{{ chrony_conf_path }}}"
           test_ref="test_chrony_all_server_has_maxpoll"/>
         </criteria>
       </criteria>
@@ -39,7 +39,7 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="check if maxpoll is set in /etc/chrony.conf"
+  comment="check if maxpoll is set in {{{ chrony_conf_path }}}"
   id="test_chrony_set_maxpoll" version="1">
     <ind:object object_ref="obj_chrony_set_maxpoll" />
     <ind:state state_ref="state_time_service_set_maxpoll" />
@@ -70,7 +70,7 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="check if all server entries have maxpoll set in /etc/chrony.conf"
+  comment="check if all server entries have maxpoll set in {{{ chrony_conf_path }}}"
   id="test_chrony_all_server_has_maxpoll" version="1">
     <ind:object object_ref="obj_chrony_all_server_has_maxpoll" />
     <ind:state state_ref="state_server_has_maxpoll" />
@@ -86,7 +86,7 @@
   </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist"
-  comment="check if no server entries have server or pool set in /etc/chrony.conf"
+  comment="check if no server entries have server or pool set in {{{ chrony_conf_path }}}"
   id="test_chrony_no_server_nor_pool" version="1">
     <ind:object object_ref="obj_chrony_no_server_nor_pool" />
   </ind:textfilecontent54_test>

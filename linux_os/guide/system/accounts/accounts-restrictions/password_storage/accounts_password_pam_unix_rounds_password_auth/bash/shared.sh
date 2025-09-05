@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
 
 {{{ bash_instantiate_variables("var_password_pam_unix_rounds") }}}
 
@@ -35,8 +35,11 @@ In cases where the default authselect profile does not cover a specific demand, 
         false
     fi
 else
+{{% if product in ["sle15", "sle12"] %}}
+    pamFile="/etc/pam.d/common-password"
+{{% else %}}
     pamFile="/etc/pam.d/password-auth"
-
+{{% endif %}}
     if grep -q "rounds=" $pamFile; then
         sed -iP --follow-symlinks "/password[[:space:]]\+sufficient[[:space:]]\+pam_unix\.so/ \
                                         s/rounds=[[:digit:]]\+/rounds=$var_password_pam_unix_rounds/" $pamFile

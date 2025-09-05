@@ -54,5 +54,5 @@ template:
     name: audit_file_contents
     vars:
         filepath: /etc/audit/rules.d/43-module-load.rules
-        contents: |+
+        contents: |-
             {{{ file_contents_audit_module_load|indent(12) }}}

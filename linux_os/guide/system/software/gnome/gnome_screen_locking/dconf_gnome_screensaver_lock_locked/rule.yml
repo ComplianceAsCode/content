@@ -35,13 +35,13 @@ references:
     nist-csf: PR.AC-7
     ospp: FMT_MOF_EXT.1
     pcidss: Req-8.1.8
-    srg: SRG-OS-000029-GPOS-00010
+    srg: SRG-OS-000028-GPOS-00009,SRG-OS-000030-GPOS-00011
     stigid@ol7: OL07-00-010062
     stigid@rhel7: RHEL-07-010062
 
 ocil_clause: 'screensaver locking is not locked'
 
 ocil: |-
-    To ensure that users cannot change how long until the the screensaver locks, run the following:
+    To ensure that users cannot change how long until the screensaver locks, run the following:
     <pre>$ grep lock-enabled /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output for <tt>lock-enabled</tt> should be <tt>/org/gnome/desktop/screensaver/lock-enabled</tt>

@@ -69,5 +69,8 @@ template:
         syscall_grouping:
           - rename
           - renameat
+          {{% if product in ['sle15'] %}}
+          - renameat2
+          {{% endif %}}
           - unlink
           - unlinkat

@@ -74,5 +74,11 @@ ocil: |-
     <pre># df -h /var/log/audit/
     /dev/sda2 24G 10.4G 13.6G 43% /var/log/audit</pre>
 
+fixtext: |-
+    Allocate enough storage capacity for at least one week of audit records when audit records are not immediately sent to a central audit record storage facility.
+
+    If audit records are stored on a partition made specifically for audit records, resize the partition with sufficient space to contain one week of audit records.
+
+    If audit records are not stored on a partition made specifically for audit records, a new partition with sufficient space will need be to be created.
 
 platform: machine

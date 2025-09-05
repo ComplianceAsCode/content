@@ -366,7 +366,7 @@ Some of existing rule definitions contain attributes that use macros.
 There are two implementations of macros:
 
 -   [Jinja macros](http://jinja.pocoo.org/docs/2.10/), that are defined
-    in `shared/macros.jinja`, and `shared/macros-highlevel.jinja`.
+    in `*.jinja` files in `shared/macros` directory.
 
 -   Legacy XSLT macros, which are defined in `shared/transforms/*.xslt`.
 
@@ -379,14 +379,6 @@ example, invocation of the partition macro looks like
 are three opening and closing curly braces instead of the two that are
 documented in the Jinja guide.
 
-`shared/macros.jinja` contains specific low-level macros s.a.
-`systemd_ocil_service_enabled`, whereas `shared/macros-highlevel.jinja`
-contains general macros s.a. `ocil_service_enabled`, that decide which
-one of the specialized macros to call based on the actual product being
-used.
-
-You can see references of high level macros [here](jinja_macros/highlevel:high%20level).
-
 The macros that are likely to be used in descriptions begin by
 `describe_`, whereas macros likely to be used in OCIL entries begin with
 `ocil_`. Sometimes, a rule requires `ocil` and `ocil_clause` to be
@@ -394,6 +386,9 @@ specified, and they depend on each other. Macros that begin with
 `complete_ocil_entry_` were designed for exactly this purpose, as they
 make sure that OCIL and OCIL clauses are defined and consistent. Macros
 that begin with underscores are not meant to be used in descriptions.
+
+You can also check documentation for all macros in the `Jinja Macros Reference`
+section accessible from the table of contents.
 
 To parametrize rules and remediations as well as Jinja macros, you can
 use product-specific variables defined in `product.yml` in product root
@@ -973,8 +968,8 @@ profile. The Playbook is generated in
 `/build/ansible/<product>-playbook-<profile_id>.yml`.
 
 Jinja macros for Ansible content are located in
-`/shared/macros-ansible.jinja`. You can see their reference
-[here](	jinja_macros/ansible:ansible).
+`/shared/macros/ansible.jinja`. You can see their reference
+[here](jinja_macros/ansible:ansible).
 
 Whenever possible, please reuse the macros and form high-level
 simplifications. This ensures consistent, high quality remediations that
@@ -1004,7 +999,7 @@ guidelines:
 
 -   Use four spaces for indentation rather than tabs.
 
--   You can use macros from `shared/macros-bash.jinja` in the
+-   You can use macros from `shared/macros/bash.jinja` in the
     remediation content. If the macro is used from a nested block, use
     the `indent` jinja2 filter assuming the 4-space indentation.
     Typically, you want to call the macro with the intended indentation,
@@ -1027,7 +1022,7 @@ guidelines:
     they violate the previous point. `[ $x != 1 ] || echo "$x is one"`
     is OK.
 
--   Use the `die` macro defined in `shared/macros-bash.jinja` to handle
+-   Use the `die` macro defined in `shared/macros/bash.jinja` to handle
     exceptions and terminate the remediation, such as
     `{{{ die("An error was encountered during the remediation of rule.") }}}`.
 
@@ -1039,13 +1034,13 @@ guidelines:
     `grep '^[[:space:]]*something'` over `grep '^\s*something'`.
 
 Jinja macros that generate Bash remediations can be found in
-`shared/macros-bash.jinja`. You can see their reference
+`shared/macros/bash.jinja`. You can see their reference
 [here](jinja_macros/bash:bash).
 
 ### Kubernetes
 
 Jinja macros for Kubernetes content are located in
-`/shared/macros-kubernetes.jinja`. You can see their reference
+`/shared/macros/kubernetes.jinja`. You can see their reference
 [here](jinja_macros/kubernetes:kubernetes)
 
 Templating
@@ -1530,26 +1525,30 @@ wait for all of them to be done.
 
 #### Running the e2e tests on a local cluster
 
-Note that it’s possible to run the e2e tests on a cluster of your
-choice.
+The end-to-end tests for OpenShift are maintained in separate
+[repository](https://github.com/ComplianceAsCode/ocp4e2e):
+
+    $ git clone https://github.com/ComplianceAsCode/ocp4e2e; cd ocp4e2e
+
+Note that it’s possible to run the e2e tests on a cluster of your choice.
 
 To do so, ensure that you have a `KUBECONFIG` with appropriate
 credentials that points to the cluster where you’ll run the tests.
 
-From the root of the `ComplianceAsCode/content` repository, run:
+Run:
 
-    $ make -f tests/ocp4e2e/Makefile e2e PROFILE=<profile> PRODUCT=<product>
+    $ make e2e PROFILE=<profile> PRODUCT=<product>
 
 Where profile is the name of the profile you want to test, and product
 is a product relevant to `OCP4`, such as `ocp4` or `rhcos4`.
 
 For instance, to run the tests for the `cis` benchmark for `ocp4` do:
 
-    $ make -f tests/ocp4e2e/Makefile e2e PROFILE=cis PRODUCT=ocp4
+    $ make e2e PROFILE=cis PRODUCT=ocp4
 
 For more information on the available options, do:
 
-    $ make -f tests/ocp4e2e/Makefile help
+    $ make help
 
 It is important to note that the tests will do changes to your cluster
 and there currently isn’t an option to clean them up. So take that into

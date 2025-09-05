@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000254-GPOS-00095
+        levels:
+            - medium
+        title: {{{ full_name }}} must initiate session audits at system start-up.
+        rules:
+            - grub2_audit_argument
+            - grub2_audit_backlog_limit_argument
+            - service_auditd_enabled
+            - package_audit_installed
+        status: automated

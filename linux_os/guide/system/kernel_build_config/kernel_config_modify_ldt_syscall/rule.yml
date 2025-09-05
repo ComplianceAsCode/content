@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8,rhel9
+
+title: 'Disable the LDT (local descriptor table)'
+
+description: |-
+    Linux can allow user programs to install a per-process x86 Local Descriptor Table (LDT) using
+    the modify_ldt(2) system call. This is required to run 16-bit or segmented code such as DOSEMU
+    or some Wine programs. It is also used by some very old threading libraries.
+    This configuration is available from kernel 4.3, but may be available if backported
+    by distros.
+
+    Disable LDT if 16-bit program emulation is not necessary.
+
+    {{{ describe_kernel_build_config("CONFIG_MODIFY_LDT_SYSCALL", "n") | indent(4) }}}
+
+rationale: |-
+    Disabling support for unnecessary code reduces attack surface.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-88827-1
+    cce@rhel9: CCE-88828-9
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_MODIFY_LDT_SYSCALL", "n") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_MODIFY_LDT_SYSCALL
+        value: 'n'
+

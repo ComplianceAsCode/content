@@ -24,7 +24,6 @@ selections:
     - grub2_password
     - grub2_uefi_password
     - file_groupowner_grub2_cfg
-    - file_permissions_grub2_cfg
     - file_owner_grub2_cfg
     - grub2_disable_interactive_boot
     - no_direct_root_logins

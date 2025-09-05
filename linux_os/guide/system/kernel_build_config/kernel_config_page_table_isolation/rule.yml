@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Remove the kernel mapping in user mode'
+
+description: |-
+    This feature reduces the number of hardware side channels by ensuring that the majority of
+    kernel addresses are not mapped into userspace.
+    This configuration is available from kernel 4.15, but may be available if backported
+    by distros.
+
+    {{{ describe_kernel_build_config("CONFIG_PAGE_TABLE_ISOLATION", "y") | indent(4) }}}
+
+rationale: |-
+    This is a countermeasure to the Meltdown attack.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: high
+
+identifiers:
+    cce@rhel7: CCE-88590-5
+    cce@rhel8: CCE-88591-3
+    cce@rhel9: CCE-88592-1
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_PAGE_TABLE_ISOLATION", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_PAGE_TABLE_ISOLATION
+        value: 'y'
+

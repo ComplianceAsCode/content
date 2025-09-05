@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: fedora,rhel7,rhel8,rhel9
+
+title: 'Harden memory copies between kernel and userspace'
+
+description: |-
+    This option checks for obviously wrong memory regions when copying memory to/from the kernel
+    (via copy_to_user() and copy_from_user() functions) by rejecting memory ranges that are larger
+    than the specified heap object, span multiple separately allocated pages, are not on the
+    process stack, or are part of the kernel text.
+    This configuration is available from kernel 4.8, and may be available if backported by distros.
+
+    {{{ describe_kernel_build_config("CONFIG_HARDENED_USERCOPY", "y") | indent(4) }}}
+
+rationale: |
+    This config prevents entire classes of heap overflow exploits and similar kernel memory exposures.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: high
+
+identifiers:
+    cce@rhel7: CCE-87299-4
+    cce@rhel8: CCE-88299-3
+    cce@rhel9: CCE-89299-2
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_HARDENED_USERCOPY", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_HARDENED_USERCOPY
+        value: 'y'
+

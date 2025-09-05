@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 
 
 # Use auditctl in RHEL7

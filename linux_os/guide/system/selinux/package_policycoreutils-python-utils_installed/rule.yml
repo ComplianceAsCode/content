@@ -18,9 +18,11 @@ identifiers:
     cce@rhel9: CCE-84070-2
 
 references:
-    srg: SRG-OS-000480-GPOS-00227 
+    srg: SRG-OS-000480-GPOS-00227
 
-{{{ complete_ocil_entry_package(package='policycoreutils-python-utils') }}}
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="policycoreutils-python-utils") }}}'
 
 template:
     name: package_installed

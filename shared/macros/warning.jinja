@@ -1,0 +1,39 @@
+{{#
+    Adds a boiler plate warning with a justification why a rule is disabled on RHV.
+    Note: This is only applied on RHEL8 content.
+
+    :param rationale: Explanation why RHV needs the rule disabled.
+#}}
+{{% macro warning_ovirt_rule_notapplicable(rationale) %}}
+{{%- if product == "rhel8" %}}
+- general: |-
+    This rule is disabled on Red Hat Virtualization Hosts and Managers, it will report not applicable.
+    {{{ rationale }}}.
+{{%- endif %}}
+{{% endmacro %}}
+
+{{#
+    Includes a deprecation warning in rules which are no longer recommended in favor of a similar
+    and more updated rule.
+
+    :param rule: Rule which replaces the deprecated rule.
+    :param release: Release number since the rule is officially deprecated.
+#}}
+{{% macro warning_rule_deprecated_by(rule, release='') %}}
+- general: |-
+    This rule is deprecated in favor of the <code>{{{ rule }}}</code> rule.
+    Please consider replacing this rule in your files as it is not expected to receive
+    {{%- if release %}}
+    updates as of version <code>{{{ release }}}</code>.
+    {{%- else %}}
+    further updates.
+    {{% endif -%}}
+{{% endmacro %}}
+
+{{#
+    Adds a default "no easy remediation" warning for kernel_build_config warning.
+#}}
+{{% macro warning_kernel_build_config() %}}
+- general: |-
+    There is no remediation for this besides re-compiling the kernel with the appropriate value for the config.
+{{% endmacro %}}

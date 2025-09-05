@@ -1,0 +1,12 @@
+controls:
+    -   id: SRG-OS-000480-GPOS-00229
+        levels:
+            - medium
+        title: {{{ full_name }}} must not allow an unattended or automatic logon to the
+            system.
+        rules:
+            - disable_host_auth
+            - sshd_disable_empty_passwords
+            - sshd_do_not_permit_user_env
+            - gnome_gdm_disable_automatic_login
+        status: automated

@@ -1,0 +1,9 @@
+controls:
+    -   id: SRG-OS-000383-GPOS-00166
+        levels:
+            - medium
+        title: {{{ full_name }}} must prohibit the use of cached authenticators after
+            one day.
+        rules:
+            - sssd_offline_cred_expiration
+        status: automated

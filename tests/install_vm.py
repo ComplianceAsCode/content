@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 import argparse
 import os
@@ -26,7 +26,7 @@ def parse_args():
         "--distro",
         dest="distro",
         required=True,
-        choices=['fedora', 'rhel7', 'centos7', 'rhel8', 'rhel9'],
+        choices=['fedora', 'rhel7', 'centos7', 'centos8', 'centos9', 'rhel8', 'rhel9'],
         help="What distribution to install."
     )
     parser.add_argument(
@@ -141,9 +141,15 @@ def main():
 
     if not data.url:
         if data.distro == "fedora":
-            data.url = "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Everything/x86_64/os"
+            data.url = "https://download.fedoraproject.org/pub/fedora/linux/releases/35/Everything/x86_64/os"
         elif data.distro == "centos7":
             data.url = "http://mirror.centos.org/centos/7/os/x86_64"
+        elif data.distro == "centos8":
+            data.url = "http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/"
+            data.extra_repo = "http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/"
+        elif data.distro == "centos9":
+            data.url = "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/"
+            data.extra_repo = "http://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/"
     if not data.url:
         sys.stderr.write("For the '{}' distro the `--url` option needs to be provided.\n".format(data.distro))
         return 1
@@ -215,7 +221,7 @@ def main():
     # The kernel option 'net.ifnames=0' is used to disable predictable network
     # interface names, for more details see:
     # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
-    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} {inst_opt} ksdevice=eth0 net.ifnames=0 console=ttyS0,115200" --serial pty --graphics={graphics_opt} --noautoconsole --rng /dev/random --wait={wait_opt} --location={url}'.format(**data.__dict__)
+    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} {inst_opt} inst.ks.device=eth0 net.ifnames=0 console=ttyS0,115200" --serial pty --graphics={graphics_opt} --noautoconsole --rng /dev/random --wait={wait_opt} --location={url}'.format(**data.__dict__)
     if data.uefi == "normal":
         command = command+" --boot uefi"
     if data.uefi == "secureboot":

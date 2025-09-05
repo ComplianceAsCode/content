@@ -1,3 +1,3 @@
 General
 =======
-    .. autojinja:: shared/macros.jinja
+    .. autojinja:: shared/macros/general.jinja

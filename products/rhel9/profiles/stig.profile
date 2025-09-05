@@ -127,10 +127,7 @@ selections:
     - accounts_password_all_shadowed_sha512
 
     # RHEL-08-010130
-    - accounts_password_pam_unix_rounds_password_auth
-
-    # RHEL-08-010131
-    - accounts_password_pam_unix_rounds_system_auth
+    - set_password_hashing_min_rounds_logindefs
 
     # RHEL-08-010140
     - grub2_uefi_password
@@ -522,6 +519,9 @@ selections:
 
     # RHEL-08-020080
 
+    # RHEL-08-020081
+    - dconf_gnome_session_idle_user_locks
+
     # RHEL-08-020090
     - sssd_enable_certmap
 
@@ -653,9 +653,6 @@ selections:
 
     # RHEL-08-030040
     - auditd_data_disk_error_action
-
-    # RHEL-08-030050
-    - auditd_data_retention_max_log_file_action
 
     # RHEL-08-030060
     - auditd_data_disk_full_action
@@ -870,10 +867,13 @@ selections:
     - file_permissions_etc_audit_rulesd
 
     # RHEL-08-030620
+    - file_audit_tools_permissions
 
     # RHEL-08-030630
+    - file_audit_tools_ownership
 
     # RHEL-08-030640
+    - file_audit_tools_group_ownership
 
     # RHEL-08-030650
     - aide_check_audit_tools

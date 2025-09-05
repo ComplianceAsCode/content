@@ -43,3 +43,9 @@ template:
     vars:
         arg_name: slub_debug
         arg_variable: var_slub_debug_options
+
+fixtext: |-
+    {{{ describe_grub2_argument("slub_debug=P") | indent(4) }}}
+
+srg_requirement: |-
+    {{{ full_name }}} must clear SLUB/SLAB objects to prevent use-after-free attacks.

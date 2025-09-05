@@ -3,4 +3,5 @@
 
 # The rule doesn't remediate the ClientAliveCountMax setting, we have another rule for that.
 
-sed -i "/^ClientAliveCountMax.*/d" /etc/ssh/sshd_config
+sed -i "/^ClientAliveInterval.*/d" /etc/ssh/sshd_config
+

@@ -1,0 +1,23 @@
+controls:
+    -   id: SRG-OS-000184-GPOS-00078
+        levels:
+            - medium
+        title: {{{ full_name }}} must fail to a secure state if system initialization
+            fails, shutdown fails, or aborts fail.
+        status: inherently met
+        rationale: |-
+            Failure to a known safe state helps prevent systems from failing to a state that may cause loss of data or unauthorized access to system resources.
+            Operating systems that fail suddenly and with no incorporated failure state planning may leave the system available but with a reduced security protection capability.
+            Preserving operating system state information also facilitates system restart and return to the operational mode of the organization with less disruption to mission-essential processes.
+
+            Abort refers to stopping a program or function before it has finished naturally.
+            The term abort refers to both requested and unexpected terminations.
+        check: |-
+            {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
+            {{{ full_name }}} inherently meets this requirement.
+        fixtext:
+            {{{ full_name }}} inherently meets this requirement.
+            No fix is required.
+        status_justification:
+            {{{ full_name }}} is secure in the event of a failure.
+            Authentication and authorizations are still necessary to access the system.

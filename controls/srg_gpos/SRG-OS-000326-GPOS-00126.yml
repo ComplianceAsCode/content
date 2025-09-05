@@ -1,0 +1,9 @@
+controls:
+    -   id: SRG-OS-000326-GPOS-00126
+        levels:
+            - medium
+        title: {{{ full_name }}} must prevent all software from executing at higher privilege
+            levels than users executing the software.
+        rules:
+            - audit_rules_suid_privilege_function
+        status: automated

@@ -37,7 +37,7 @@ references:
     stigid@sle15: SLES-15-030580
 
 
-ocil_clause: 'it is not'
+ocil_clause: 'the alias is not set'
 
 ocil: |-
     Find the list of alias maps used by the Postfix mail server:
@@ -45,3 +45,14 @@ ocil: |-
     Query the Postfix alias maps for an alias for the <i>root</i> user:
     <pre>$ sudo postmap -q root hash:/etc/aliases</pre>
     The output should return an alias.
+
+fixtext: |-
+    Configure a valid email address as an alias for the root account.
+
+    Append the following line to "/etc/aliases":
+
+    root: {{{ xccdf_value("var_postfix_root_mail_alias") }}}
+
+    Then, run the following command:
+
+    $ sudo newaliases

@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Enable checks on credential management'
+
+description: |-
+    Enable this to turn on some debug checking for credential management. The additional code keeps
+    track of the number of pointers from task_structs to any given cred struct, and checks to see
+    that this number never exceeds the usage count of the cred struct.
+
+    Furthermore, if SELinux is enabled, this also checks that the security pointer in the cred
+    struct is never seen to be invalid.
+
+    {{{ describe_kernel_build_config("CONFIG_DEBUG_CREDENTIALS", "y") | indent(4) }}}
+
+rationale: |-
+    This adds sanity checks and validations to credential data structures.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: low
+
+identifiers:
+    cce@rhel7: CCE-86655-8
+    cce@rhel8: CCE-86656-6
+    cce@rhel9: CCE-86657-4
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_DEBUG_CREDENTIALS", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_DEBUG_CREDENTIALS
+        value: 'y'
+

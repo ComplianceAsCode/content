@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Configure Sending and Accepting Shared Media Redirects for All IPv4 Interfaces'
+
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.all.shared_media", value=xccdf_value("sysctl_net_ipv4_conf_all_shared_media_value")) }}}'
+
+rationale: |-
+    This setting should be aligned with <tt>net.ipv4.conf.all.secure_redirects</tt> because it overrides it.
+    If <tt>shared_media</tt> is enabled for an interface <tt>secure_redirects</tt> will be enabled too.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-87333-1
+    cce@rhel8: CCE-88333-0
+    cce@rhel9: CCE-89333-9
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.shared_media", value="0") }}}
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv4.conf.all.shared_media
+        datatype: int

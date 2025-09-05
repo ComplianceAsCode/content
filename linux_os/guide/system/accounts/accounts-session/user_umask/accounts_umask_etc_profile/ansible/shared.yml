@@ -8,7 +8,7 @@
 - name: Replace user umask in /etc/profile
   replace:
     path: /etc/profile
-    regexp: "umask.*"
+    regexp: '^[^#]*umask'
     replace: "umask {{ var_accounts_user_umask }}"
   register: umask_replace
 

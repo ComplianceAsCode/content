@@ -1,0 +1,15 @@
+controls:
+    -   id: SRG-OS-000479-GPOS-00224
+        levels:
+            - medium
+        title: {{{ full_name }}} must, at a minimum, off-load audit data from interconnected
+            systems in real time and off-load audit data from standalone systems weekly.
+        rules:
+            - auditd_name_format
+            - auditd_overflow_action
+            - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
+            - rsyslog_encrypt_offload_actionsendstreamdrivermode
+            - rsyslog_encrypt_offload_defaultnetstreamdriver
+            - package_rsyslog_installed
+            - rsyslog_remote_loghost
+        status: automated

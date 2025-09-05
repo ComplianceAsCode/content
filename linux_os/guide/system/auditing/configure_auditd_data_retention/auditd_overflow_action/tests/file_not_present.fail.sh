@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 
 {{%- if product in ["rhel7", "ol7"] %}}
 config_file="/etc/audisp/audispd.conf"

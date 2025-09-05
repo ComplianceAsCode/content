@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 # variables = var_auditd_space_left_percentage=25
 
 . $SHARED/auditd_utils.sh

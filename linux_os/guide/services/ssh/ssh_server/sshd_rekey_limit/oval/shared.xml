@@ -14,7 +14,7 @@
     {{{- application_required_or_requirement_unset() }}}
       <criteria comment="sshd is configured corectly" operator="OR">
         {{{- oval_line_in_file_criterion(sshd_config_path, parameter) }}}
-        {{%- if sshd_distributed_config %}}
+        {{%- if sshd_distributed_config == "true" %}}
         {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter) | indent(8) }}}
         {{%- endif %}}
       </criteria>
@@ -32,7 +32,7 @@
      <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  {{%- if sshd_distributed_config %}}
+  {{%- if sshd_distributed_config == "true" %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of {{{ parameter }}} setting in SSHD config directory" id="test_sshd_rekey_limit_config_dir" version="1">
      <ind:object object_ref="obj_sshd_rekey_limit_config_dir"/>
   </ind:textfilecontent54_test>

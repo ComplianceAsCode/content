@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8,rhel9
+
+title: 'Generate some entropy during boot and runtime'
+
+description: |-
+    Instrument some kernel code to extract some entropy from both original and artificially created
+    program state. This will help especially embedded systems where there is little 'natural' source
+    of entropy normally.
+
+    This configuration is available from kernel 4.9, but may be available if backported
+    by distros.
+
+    {{{ describe_kernel_build_config("CONFIG_GCC_PLUGIN_LATENT_ENTROPY", "y") | indent(4) }}}
+
+rationale: |-
+    This helps generate entropy during startup and is particularly relevant for devices with
+    inappropriate entropy sources.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+    - general: |-
+        Note that entropy extracted this way is not cryptographically secure!
+    - performance: |-
+        There is a performance cost during the boot process (about 0.5%) and fork and irq processing.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-87034-5
+    cce@rhel9: CCE-87035-2
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_GCC_PLUGIN_LATENT_ENTROPY", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_GCC_PLUGIN_LATENT_ENTROPY
+        value: 'y'
+

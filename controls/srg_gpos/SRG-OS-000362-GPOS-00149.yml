@@ -1,0 +1,25 @@
+controls:
+    -   id: SRG-OS-000362-GPOS-00149
+        levels:
+            - medium
+        title: {{{ full_name }}} must prohibit user installation of system software without
+            explicit privileged status.
+        rationale:
+            Allowing regular users to install software, without explicit privileges, creates the risk that untested or potentially malicious software will be installed on the system.
+            Explicit privileges (escalated or administrative privileges) provide the regular user with explicit capabilities and control that exceeds the rights of a regular user.
+
+            Operating system functionality will vary, and while users are not permitted to install unapproved software, there may be instances where the organization allows the user to install approved software packages, such as from an approved software repository.
+
+            The operating system or software configuration management utility must enforce control of software installation by users based upon what types of software installations are permitted (e.g., updates and security patches to existing software) and what types of installations are prohibited (e.g., software whose pedigree with regard to being potentially malicious is unknown or suspect) by the organization.
+        status: inherently met
+        check:
+          {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
+          {{{ full_name }}} inherently meets this requirement.
+        fixtext:
+            {{{ full_name }}} inherently meets this requirement.
+            No fix is required.
+        artifact_description:
+          {{{ full_name }}} uses DNF or Dandified YUM, the next generation version of the Yellowdog Updater, Modified and RPM (Red Hat Package Manager) to install system software. 
+          Both of these utilities and the archive repositories are installed with root privileges and they require root privileges to execute.
+        status_justificaton:
+            The UNIX permissions construct separates user and privileged user (the operating system accounts) access.

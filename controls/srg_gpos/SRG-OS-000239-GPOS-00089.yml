@@ -1,0 +1,14 @@
+controls:
+    -   id: SRG-OS-000239-GPOS-00089
+        levels:
+            - medium
+        title: {{{ full_name }}} must audit all account modifications.
+        rules:
+            - audit_rules_sudoers
+            - audit_rules_sudoers_d
+            - audit_rules_usergroup_modification_group
+            - audit_rules_usergroup_modification_gshadow
+            - audit_rules_usergroup_modification_opasswd
+            - audit_rules_usergroup_modification_passwd
+            - audit_rules_usergroup_modification_shadow
+        status: automated

@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8,rhel9
+
+title: 'Enable poison of pages after freeing'
+
+description: |-
+    Fill the pages with poison patterns after free_pages() and verify the patterns before
+    alloc_pages. This does have a potential performance impact if enabled with the "page_poison=1"
+    kernel boot option.
+    This configuration is available from kernel 4.6.
+
+    {{{ describe_kernel_build_config("CONFIG_PAGE_POISONING", "y") | indent(4) }}}
+
+rationale: |-
+    The filling of the memory helps reduce the risk of information leaks from freed data.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-88426-2
+    cce@rhel9: CCE-88427-0
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_PAGE_POISONING", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_PAGE_POISONING
+        value: 'y'
+

@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 
 
 echo "-a always,exit -F arch=b32 -S sethostname,setdomainname -F key=audit_rules_networkconfig_modification" >> /etc/audit/rules.d/some.rules

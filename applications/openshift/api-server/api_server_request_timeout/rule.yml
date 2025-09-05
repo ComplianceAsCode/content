@@ -4,6 +4,12 @@ prodtype: ocp4
 
 title: 'Configure the API Server Minimum Request Timeout'
 
+{{% set custom_jqfilter = '.data."{{.var_openshift_kube_apiserver_config_data_name}}" | fromjson' %}}
+{{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
+{{% set custom_api_path = '/api/v1/namespaces/{{.var_openshift_kube_apiserver_namespace}}/configmaps/{{.var_openshift_kube_apiserver_config}}' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 description: |-
     The API server minimum request timeout defines the minimum number of
     seconds a handler must keep a request open before timing it out. To set this,
@@ -52,11 +58,11 @@ template:
   vars:
     ocp_data: "true"
     entity_check: "at least one"
-    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
-    yamlpath: '.data["config.yaml"]'
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '.apiServerArguments["min-request-timeout"][:]'
     xccdf_variable: var_api_min_request_timeout
     embedded_data: "true"
     values:
-    - value: '"apiServerArguments":{.*"min-request-timeout":\["(\d*)"\]'
+    - value: '(\d*)'
       operation: "pattern match"
       type: "string"

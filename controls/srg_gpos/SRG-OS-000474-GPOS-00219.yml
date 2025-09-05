@@ -1,0 +1,19 @@
+controls:
+    -   id: SRG-OS-000474-GPOS-00219
+        levels:
+            - medium
+        title: {{{ full_name }}} must generate audit records when successful/unsuccessful
+            accesses to objects occur.
+        rules:
+            - audit_rules_dac_modification_chown
+            - audit_rules_dac_modification_fchown
+            - audit_rules_dac_modification_fchownat
+            - audit_rules_dac_modification_fremovexattr
+            - audit_rules_dac_modification_fsetxattr
+            - audit_rules_dac_modification_lchown
+            - audit_rules_dac_modification_lremovexattr
+            - audit_rules_dac_modification_lsetxattr
+            - audit_rules_dac_modification_removexattr
+            - package_audit_installed
+            - service_auditd_enabled
+        status: automated

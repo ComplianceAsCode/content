@@ -1,0 +1,24 @@
+downstream_package_name: scap-security-guide
+upstream_package_name: scap-security-guide
+specfile_path: scap-security-guide.spec
+
+actions:
+  get-current-version:
+  - bash utils/version.sh
+
+jobs:
+- job: copr_build
+  trigger: pull_request
+  metadata:
+    targets:
+    - fedora-all-x86_64
+    - centos-stream-8-x86_64
+    - centos-stream-9-x86_64
+
+- job: tests
+  trigger: pull_request
+  metadata:
+    targets:
+    - fedora-latest
+    - centos-stream-8
+    - centos-stream-9

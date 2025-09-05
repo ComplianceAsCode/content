@@ -4,4 +4,4 @@
 
 systemctl enable chronyd.service
 
-echo "cmdport 324" >> /etc/chrony.conf
+echo "cmdport 324" >> {{{ chrony_conf_path }}}

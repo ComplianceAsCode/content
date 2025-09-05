@@ -63,3 +63,8 @@ template:
     name: audit_rules_login_events
     vars:
         path: /var/log/tallylog
+
+fixtext: |-
+    {{{ fixtext_audit_file_watch_rule("/var/log/tallylog", "logins", "/etc/audit/rules.d/audit.rules") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_file_watch_rule("/var/log/tallylog") }}}'

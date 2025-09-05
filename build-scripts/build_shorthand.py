@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 from __future__ import print_function
 
@@ -57,6 +57,7 @@ def main():
     loader.load_compiled_content()
     loader.load_benchmark(benchmark_root)
 
+    loader.add_fixes_to_rules()
     loader.export_benchmark_to_file(args.output)
     loader.export_ocil_to_file(args.ocil)
 

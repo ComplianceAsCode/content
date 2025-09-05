@@ -94,6 +94,7 @@ selections:
     - var_accounts_passwords_pam_faillock_deny=5
     - var_accounts_passwords_pam_faillock_unlock_time=600
     - dconf_gnome_screensaver_idle_delay
+    - dconf_gnome_session_idle_user_locks
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_mode_blank

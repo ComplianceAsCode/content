@@ -31,7 +31,8 @@ references:
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.AC-4,PR.AC-6,PR.PT-3
 
-ocil_clause: 'it does not'
+ocil_clause: |-
+    {{{ ocil_clause_service_disabled(service="nfs-server") }}}
 
 ocil: |-
     {{{ ocil_service_disabled(service="nfs-server") }}}

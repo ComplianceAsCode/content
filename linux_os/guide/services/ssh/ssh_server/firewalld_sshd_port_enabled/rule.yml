@@ -26,6 +26,13 @@ references:
     cui: 3.1.12
     ism: "1416"
     nist: AC-17(a),CM-6(b),CM-7(a),CM-7(b)
+    srg: SRG-OS-000096-GPOS-00050
 
+ocil_clause: 'sshd service is disabled by firewall'
 ocil: |
     {{{ ocil_firewalld_allow_access(port="22", proto="tcp", service="ssh") }}}
+
+fixtext: |-
+    Enable sshd in firewalld configuration.
+
+    {{{ describe_firewalld_allow(proto="tcp", service="ssh") }}}

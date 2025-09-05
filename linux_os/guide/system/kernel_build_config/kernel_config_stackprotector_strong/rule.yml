@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8,rhel9
+
+title: 'Strong Stack Protector'
+
+description: |-
+    This features adds canary logic protection to more kinds of vulnerable functions than
+    CONFIG_STACKPROTECTOR, but not to all functions so that performance is not severily impacted.
+    This configuration is available from kernel 4.18.
+    This config requires gcc version 4.9 or above, or a distribution gcc with the feature
+    backported ("-fstack-protector-strong").
+
+    {{{ describe_kernel_build_config("CONFIG_STACKPROTECTOR_STRONG", "y") | indent(4) }}}
+
+rationale: |-
+    This provides a mechanism that protects more vulnerable functions than CONFIG_STACKPROTECTOR,
+    balancing between security and performance.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-88036-9
+    cce@rhel9: CCE-89036-8
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_STACKPROTECTOR_STRONG", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_STACKPROTECTOR_STRONG
+        value: 'y'
+

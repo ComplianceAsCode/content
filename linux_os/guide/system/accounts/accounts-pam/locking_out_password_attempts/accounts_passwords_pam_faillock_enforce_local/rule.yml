@@ -7,22 +7,7 @@ title: 'Enforce pam_faillock for Local Accounts Only'
 description: |-
     The pam_faillock module's <tt>local_users_only</tt> parameter controls requirements for
     enforcing failed lockout attempts only for local user accounts and ignoring centralized user
-    account management failed attempt configurations. To enable the <tt>local_users_only</tt>
-    setting in <tt>/etc/security/faillock.conf</tt>, first enable pam_faillock.so using the
-    following command:
-    <br /><br />
-    <ul>
-    <li><pre>authselect enable-feature with-faillock</pre></li>
-    </ul>
-    <br />
-    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
-    <br /><br />
-    <ul>
-    <li> add or uncomment the following line:
-    <pre>local_users_only</pre></li>
-    <li> add or uncomment the following line:
-    <pre>silent</pre></li>
-    </ul>
+    account management failed attempt configurations.
 
 rationale: |-
     The operating system must provide automated mechanisms for supporting account management
@@ -46,6 +31,18 @@ ocil: |-
     To check if only local user are impacted by pam_faillock, run the following command:
     <pre>$ grep local_users_only /etc/security/faillock.conf</pre>
     The output should return <tt>local_users_only</tt> not commented.
+
+fixtext: |-
+    To enable the <tt>local_users_only</tt> setting in <tt>/etc/security/faillock.conf</tt>,
+    first enable pam_faillock.so using the following command:
+    $ sudo authselect enable-feature with-faillock
+
+    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
+    add or uncomment the following line:
+    <pre>local_users_only</pre>
+
+    add or uncomment the following line:
+    <pre>silent</pre>
 
 platform: pam
 

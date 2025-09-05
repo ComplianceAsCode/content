@@ -164,7 +164,6 @@ selections:
     - auditd_log_format
     - auditd_freq
     - auditd_name_format
-    - auditd_audispd_syslog_plugin_activated
 
     ### Module Blacklist
     - kernel_module_cramfs_disabled
@@ -194,8 +193,6 @@ selections:
     - package_openssh-clients_installed
     - package_policycoreutils-python-utils_installed
     - package_rsyslog_installed
-    - package_rsyslog-gnutls_installed
-    - package_audispd-plugins_installed
     - package_chrony_installed
     - package_gnutls-utils_installed
 
@@ -418,9 +415,6 @@ selections:
     # Enable dnf-automatic Timer
     - timer_dnf-automatic_enabled
 
-    # Configure TLS for remote logging
-    - rsyslog_remote_tls
-    - rsyslog_remote_tls_cacert
 
     # Prevent Kerberos use by system daemons
     - kerberos_disable_no_keytab

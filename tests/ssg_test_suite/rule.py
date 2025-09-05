@@ -85,10 +85,14 @@ def _apply_script(rule_dir, test_env, script):
         command = "cd {0}; SHARED={1} bash -x {2}".format(rule_dir, shared_dir, script)
 
         try:
-            test_env.execute_ssh_command(command, log_file)
-        except subprocess.CalledProcessError as exc:
-            logging.error("Rule testing script {script} failed with exit code {rc}"
-                          .format(script=script, rc=exc.returncode))
+            error_msg_template = (
+                f"Rule '{rule_name}' test setup script '{script}' "
+                "failed with exit code {rc}"
+            )
+            test_env.execute_ssh_command(
+                command, log_file, error_msg_template=error_msg_template)
+        except RuntimeError as exc:
+            logging.error(str(exc))
             return False
     return True
 
@@ -124,6 +128,7 @@ class RuleChecker(oscap.Checker):
         self.results = list()
         self._current_result = None
         self.remote_dir = ""
+        self.target_type = "rule ID"
 
     def _run_test(self, profile, test_data):
         scenario = test_data["scenario"]
@@ -306,13 +311,15 @@ class RuleChecker(oscap.Checker):
     def _test_target(self, target):
         rules_to_test = self._get_rules_to_test(target)
         if not rules_to_test:
-            logging.error("No tests found matching the rule ID(s) '{0}'".format(", ".join(target)))
+            logging.error("No tests found matching the {0}(s) '{1}'".format(
+                self.target_type,
+                ", ".join(target)))
             return
 
         scenarios_by_rule_id = dict()
         for rule in rules_to_test:
             rule_scenarios = self._get_scenarios(
-                rule.directory, rule.files, self.scenarios_regex,
+                rule.directory, rule.scenarios_basenames, self.scenarios_regex,
                 self.benchmark_cpes)
             scenarios_by_rule_id[rule.id] = rule_scenarios
         sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
@@ -412,9 +419,10 @@ class RuleChecker(oscap.Checker):
 
     @contextlib.contextmanager
     def copy_of_datastream(self, new_filename=None):
+        prefixed_name = common.get_prefixed_name("ds_modified")
         old_filename = self.datastream
         if not new_filename:
-            descriptor, new_filename = tempfile.mkstemp(prefix="ssgts_ds_modified", dir="/tmp")
+            descriptor, new_filename = tempfile.mkstemp(prefix=prefixed_name, dir="/tmp")
         os.close(descriptor)
         shutil.copy(old_filename, new_filename)
         self.datastream = new_filename
@@ -494,6 +502,7 @@ def perform_rule_check(options):
     checker.scenarios_regex = options.scenarios_regex
     checker.slice_current = options.slice_current
     checker.slice_total = options.slice_total
+    checker.keep_snapshots = options.keep_snapshots
 
     checker.scenarios_profile = options.scenarios_profile
     # check if target is a complete profile ID, if not prepend profile prefix

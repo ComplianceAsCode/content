@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000071-GPOS-00039
+        levels:
+            - medium
+        title: {{{ full_name }}} must enforce password complexity by requiring that at
+            least one numeric character be used.
+        rules:
+            - var_password_pam_dcredit=1
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_enforce_root
+        status: automated

@@ -1,0 +1,12 @@
+controls:
+    -   id: SRG-OS-000420-GPOS-00186
+        levels:
+            - medium
+        title: {{{ full_name }}} must protect against or limit the effects of Denial
+            of Service (DoS) attacks by ensuring the operating system is implementing rate-limiting
+            measures on impacted network interfaces.
+        rules:
+            - sysctl_net_ipv4_tcp_invalid_ratelimit
+            - sysctl_net_ipv4_tcp_syncookies
+            - sysctl_net_ipv4_tcp_invalid_ratelimit_value=five_hundred
+        status: automated

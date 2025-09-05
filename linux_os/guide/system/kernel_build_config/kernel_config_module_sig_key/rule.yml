@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Specify module signing key to use'
+
+description: |-
+    Setting this option to something other than its default of <tt>certs/signing_key.pem</tt> will
+    disable the autogeneration of signing keys and allow the kernel modules to be signed with a key
+    of your choosing.
+
+    The string provided should identify a file containing both a private key and
+    its corresponding X.509 certificate in PEM form, or — on systems where the OpenSSL ENGINE_pkcs11
+    is functional — a PKCS#11 URI as defined by RFC7512. In the latter case, the PKCS#11 URI should
+    reference both a certificate and a private key.
+
+    {{{ describe_kernel_build_config("CONFIG_MODULE_SIG_KEY", xccdf_value("var_kernel_config_module_sig_key")) | indent(4) }}}
+
+rationale: |-
+    A key and certificate is required to sign the built modules.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-90001-9
+    cce@rhel8: CCE-90000-1
+    cce@rhel9: CCE-89999-7
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_MODULE_SIG_KEY", xccdf_value("var_kernel_config_module_sig_key")) | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_MODULE_SIG_KEY
+        variable: var_kernel_config_module_sig_key
+

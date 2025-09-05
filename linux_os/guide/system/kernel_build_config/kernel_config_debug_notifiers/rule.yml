@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Enable checks on notifier call chains'
+
+description: |-
+    Enable this to turn on sanity checking for notifier call chains. This is most useful for kernel
+    developers to make sure that modules properly unregister themselves from notifier chains.
+
+    {{{ describe_kernel_build_config("CONFIG_DEBUG_NOTIFIERS", "y") | indent(4) }}}
+
+rationale: |-
+    This provides validation of notifier chains, it checks whether the notifiers are from the
+    kernel or a module that is still loaded prior to being invoked.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: low
+
+identifiers:
+    cce@rhel7: CCE-86813-3
+    cce@rhel8: CCE-86814-1
+    cce@rhel9: CCE-86815-8
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_DEBUG_NOTIFIERS", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_DEBUG_NOTIFIERS
+        value: 'y'
+

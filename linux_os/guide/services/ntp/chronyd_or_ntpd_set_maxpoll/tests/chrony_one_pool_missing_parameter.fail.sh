@@ -6,9 +6,9 @@
 yum remove -y ntp
 
 # Remove all server options
-sed -i "/^\(server\|pool\).*/d" /etc/chrony.conf
+sed -i "/^\(server\|pool\).*/d" {{{ chrony_conf_path }}}
 
-echo "pool pool.ntp.org iburst" >> /etc/chrony.conf
+echo "pool pool.ntp.org iburst" >> {{{ chrony_conf_path }}}
 
 systemctl enable chronyd.service
 

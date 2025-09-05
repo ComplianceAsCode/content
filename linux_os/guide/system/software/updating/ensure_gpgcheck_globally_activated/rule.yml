@@ -76,8 +76,13 @@ ocil: |-
     <tt>gpgcheck</tt> line or a setting of <tt>0</tt> indicates that it is
     disabled.
 
-{{% if product in ['sle12', 'sle15'] %}}
+{{% if 'sle' in product %}}
 platform: zypper
 {{% else %}}
 platform: yum
 {{% endif %}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to always check package signatures before installation.
+    Add or update the following line in {{{ pkg_manager_config_file }}}:
+    gpgcheck=1

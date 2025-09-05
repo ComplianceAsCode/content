@@ -1,16 +1,22 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Set number of Password Hashing Rounds - password-auth'
+
+{{% if product in ["sle12", "sle15"] %}}
+{{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
+{{% else %}}
+{{% set pam_passwd_file_path = "/etc/pam.d/password-auth" %}}
+{{% endif %}}
 
 description: |-
     Configure the number or rounds for the password hashing algorithm. This can be
     accomplished by using the <tt>rounds</tt> option for the <tt>pam_unix</tt> PAM module.
     <br /><br />
-    In file <tt>/etc/pam.d/password-auth</tt> append <tt>rounds=<sub idref="var_password_pam_unix_rounds" /></tt>
-    to the <tt>pam_unix.so</tt> file, as shown below:
-    <pre>password sufficient pam_unix.so <i>...existing_options...</i> rounds=<sub idref="var_password_pam_unix_rounds" /></pre>
+    In file <tt>{{{ pam_passwd_file_path }}}</tt> append <tt>rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</tt>
+    to the <tt>pam_unix.so</tt> entry, as shown below:
+    <pre>password sufficient pam_unix.so <i>...existing_options...</i> rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
     The system's default number of rounds is 5000.
 
 rationale: |-
@@ -27,20 +33,28 @@ identifiers:
     cce@rhel7: CCE-83402-8
     cce@rhel8: CCE-83403-6
     cce@rhel9: CCE-83615-5
+    cce@sle15: CCE-91173-5
 
 references:
     anssi: BP28(R32)
     disa: CCI-000196
     srg: SRG-OS-000073-GPOS-00041
     stigid@ol8: OL08-00-010130
-    stigid@rhel8: RHEL-08-010130
 
-ocil_clause: 'it does not set the appropriate number of hashing rounds'
+ocil_clause: 'rounds is not set to {{{ xccdf_value("var_password_pam_unix_rounds") }}} or is commented out'
 
 ocil: |-
-    To verify the number of rounds for the password hashing algorithm is compliant, run the following command:
-    <pre>$ grep rounds /etc/pam.d/password-auth</pre>
+    To verify the number of rounds for the password hashing algorithm is configured, run the following command:
+    <pre>$ sudo grep rounds {{{ pam_passwd_file_path }}}</pre>
     The output should show the following match:
-    <pre>rounds=<sub idref="var_password_pam_unix_rounds" /></pre>
+    <pre>password sufficient pam_unix.so sha512 rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
 
 platform: pam
+
+fixtext: |-
+    Configure {{{ full_name }}} to use {{{ xccdf_value("var_password_pam_unix_rounds") }}} hashing rounds for hashing passwords.
+
+    Add or modify the following line in "{{{ pam_passwd_file_path }}}" and set "rounds" to {{{ xccdf_value("var_password_pam_unix_rounds") }}}.
+    For example:
+
+    password sufficient pam_unix.so sha512 rounds=5000

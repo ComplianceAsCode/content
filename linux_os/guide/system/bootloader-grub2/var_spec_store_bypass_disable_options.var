@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Spec Store Bypass Mitigation'
+
+description: |-
+    This controls how the Speculative Store Bypass (SSB) vulnerability is mitigated.
+
+interactive: false
+
+type: string
+
+operator: equals
+
+options:
+    default: prctl
+    on: on
+    auto: auto
+    prctl: prctl
+    seccomp: seccomp

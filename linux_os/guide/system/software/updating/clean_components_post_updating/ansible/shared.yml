@@ -3,9 +3,9 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Ensure YUM Removes Previous Package Versions"
+- name: "Ensure {{{ pkg_manager | upper }}} Removes Previous Package Versions"
   lineinfile:
-      dest: /etc/yum.conf
+      dest: {{{ pkg_manager_config_file }}}
       regexp: ^#?clean_requirements_on_remove
       line: clean_requirements_on_remove=1
       insertafter: '\[main\]'

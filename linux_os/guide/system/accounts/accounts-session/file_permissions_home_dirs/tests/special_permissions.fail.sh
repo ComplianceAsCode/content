@@ -1,5 +1,5 @@
 #!/bin/bash
-# remediation = none
 
-useradd -m cacusertest
-chmod -f g-w+s,o=t /home/cacusertest
+USER="cac_user"
+useradd -m $USER
+chmod -f g-w+s,o=t /home/$USER

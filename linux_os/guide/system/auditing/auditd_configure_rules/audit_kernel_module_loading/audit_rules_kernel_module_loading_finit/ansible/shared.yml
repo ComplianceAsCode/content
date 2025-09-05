@@ -4,6 +4,12 @@
 # disruption = low
 # strategy = configure
 
+{{% if product in ["ol8", "rhel8"] %}}
+{{% set auid_filters = "-F auid>=" ~ auid ~ " -F auid!=unset" %}}
+{{% else %}}
+{{% set auid_filters = "" %}}
+{{% endif %}}
+
 # What architecture are we on?
 
 - name: Set architecture for audit finit_module tasks
@@ -15,7 +21,7 @@
     {{{ ansible_audit_augenrules_add_syscall_rule(
       action_arch_filters="-a always,exit -F arch=b32",
       other_filters="",
-      auid_filters="",
+      auid_filters=auid_filters,
       syscalls=["finit_module"],
       key="module-change",
       syscall_grouping=["init_module","finit_module"],
@@ -23,7 +29,7 @@
     {{{ ansible_audit_auditctl_add_syscall_rule(
       action_arch_filters="-a always,exit -F arch=b32",
       other_filters="",
-      auid_filters="",
+      auid_filters=auid_filters,
       syscalls=["finit_module"],
       key="module-change",
       syscall_grouping=["init_module","finit_module"],
@@ -34,7 +40,7 @@
     {{{ ansible_audit_augenrules_add_syscall_rule(
       action_arch_filters="-a always,exit -F arch=b64",
       other_filters="",
-      auid_filters="",
+      auid_filters=auid_filters,
       syscalls=["finit_module"],
       key="module-change",
       syscall_grouping=["init_module","finit_module"],
@@ -42,7 +48,7 @@
     {{{ ansible_audit_auditctl_add_syscall_rule(
       action_arch_filters="-a always,exit -F arch=b64",
       other_filters="",
-      auid_filters="",
+      auid_filters=auid_filters,
       syscalls=["finit_module"],
       key="module-change",
       syscall_grouping=["init_module","finit_module"],

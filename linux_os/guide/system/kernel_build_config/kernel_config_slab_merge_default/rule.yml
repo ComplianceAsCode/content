@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8,rhel9
+
+title: 'Disallow merge of slab caches'
+
+description: |-
+    For reduced kernel memory fragmentation, slab caches can be merged when they share the same
+    size and other characteristics. This carries a risk of kernel heap overflows being able to
+    overwrite objects from merged caches (and more easily control cache layout), which makes such
+    heap attacks easier to exploit by attackers.
+    This configuration is available from kernel 4.13.
+
+    {{{ describe_kernel_build_config("CONFIG_SLAB_MERGE_DEFAULT", "n") | indent(4) }}}
+
+rationale: |-
+    Disabling the merge of slabs of similar sizes prevents the kernel from
+    merging a seemingly useless but vulnerable slab with a useful and valuable slab.
+    This increase the risk that a heap overflow could overwrite objects from merged caches,
+    with unmerged caches the heap overflow would only affect the objects in the same cache.
+    Overall, this reduces the kernel attack surface area by isolating slabs from each other.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-88122-7
+    cce@rhel9: CCE-88121-9
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_SLAB_MERGE_DEFAULT", "n") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_SLAB_MERGE_DEFAULT
+        value: 'n'
+

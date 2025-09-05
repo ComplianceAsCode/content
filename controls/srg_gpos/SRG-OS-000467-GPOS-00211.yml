@@ -1,0 +1,13 @@
+controls:
+    -   id: SRG-OS-000467-GPOS-00211
+        levels:
+            - medium
+        title: {{{ full_name }}} must generate audit records when successful/unsuccessful
+            attempts to delete security levels occur.
+        rules:
+            - audit_rules_file_deletion_events_rename
+            - audit_rules_file_deletion_events_renameat
+            - audit_rules_file_deletion_events_rmdir
+            - audit_rules_file_deletion_events_unlink
+            - audit_rules_file_deletion_events_unlinkat
+        status: automated

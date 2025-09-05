@@ -1,4 +1,4 @@
-# platform =  McAfee VirusScan Enterprise for Linux
+# platform = McAfee VirusScan Enterprise for Linux
 
 
 NAILS_CONFIG_FILE="/var/opt/NAI/LinuxShield/etc/nailsd.cfg"

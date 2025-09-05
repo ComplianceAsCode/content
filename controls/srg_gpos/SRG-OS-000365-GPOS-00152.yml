@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000365-GPOS-00152
+        levels:
+            - medium
+        title: {{{ full_name }}} must audit the enforcement actions used to restrict
+            access associated with changes to the system.
+        rules:
+            - package_audit_installed
+            - service_auditd_enabled
+        status: automated

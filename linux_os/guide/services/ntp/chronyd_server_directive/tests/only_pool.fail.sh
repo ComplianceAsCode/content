@@ -3,7 +3,7 @@
 # platform = multi_platform_fedora,multi_platform_rhel
 # remediation = none
 
-sed -i "^server.*" /etc/chrony.conf
-if ! grep "^pool.*" /etc/chrony.conf; then
-    echo "pool 0.pool.ntp.org" > /etc/chrony.conf
+sed -i "^server.*" {{{ chrony_conf_path }}}
+if ! grep "^pool.*" {{{ chrony_conf_path }}}; then
+    echo "pool 0.pool.ntp.org" > {{{ chrony_conf_path }}}
 fi

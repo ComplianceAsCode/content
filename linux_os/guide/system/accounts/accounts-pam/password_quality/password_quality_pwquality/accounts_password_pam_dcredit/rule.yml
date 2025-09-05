@@ -62,7 +62,13 @@ ocil: |-
     To check how many digits are required in a password, run the following command:
     <pre>$ grep dcredit /etc/security/pwquality.conf</pre>
     The <tt>dcredit</tt> parameter (as a negative number) will indicate how many digits are required.
-    The DoD requires at least one digit in a password. This would appear as <tt>dcredit = -1</tt>.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enforce password complexity by requiring that at least numeric character be used by setting the "dcredit" option.
+
+    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+
+    dcredit = {{{ xccdf_value('var_password_pam_dcredit') }}}
 
 platform: pam
 

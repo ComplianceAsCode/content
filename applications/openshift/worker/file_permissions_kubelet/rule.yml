@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+platform: ocp4-node
+
+{{%- set kubeletconf_path = "/var/lib/kubelet/config.json" %}}
+
+
+title: 'Verify Permissions on The Kubelet Configuration File'
+
+description: |-
+    {{{ describe_file_permissions(file=kubeletconf_path, perms="0600") }}}
+
+rationale: |-
+    If the kubelet configuration file is writable by a group-owner or the
+    world the risk of its compromise is increased. The file contains the configuration of
+    an OpenShift node that is configured on the system. Protection of this file is
+    critical for OpenShift security.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-85896-9
+
+references:
+    cis@ocp4: 4.1.5
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file=kubeletconf_path, perms="-rw-------") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file=kubeletconf_path, perms="-rw-------") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: {{{ kubeletconf_path }}}
+        filemode: '0600'

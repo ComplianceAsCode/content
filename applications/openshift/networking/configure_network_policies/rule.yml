@@ -24,9 +24,29 @@ ocil: |-
     <pre>$ oc explain networkpolicy</pre>
     The resulting output should be an explanation of the NetworkPolicy resource.
 
+{{% set api_path = '/apis/operator.openshift.io/v1/networks/cluster' %}}
+{{% set jqfilter = '[.spec.defaultNetwork.type]' %}}
+
 references:
     cis@ocp4: 5.3.1
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
     pcidss: Req-1.1.4,Req-1.2,Req-2.2
     srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({api_path: jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path(api_path, jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "any_exist"
+    entity_check: "all"
+    values:
+      - value: "OpenShiftSDN|OVN"
+        operation: "pattern match"

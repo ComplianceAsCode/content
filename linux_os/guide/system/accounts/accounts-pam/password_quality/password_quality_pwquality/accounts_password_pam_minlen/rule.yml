@@ -62,6 +62,13 @@ ocil: |-
     <pre>$ grep minlen /etc/security/pwquality.conf</pre>
     Your output should contain <tt>minlen = {{{ xccdf_value("var_password_pam_minlen") }}}</tt>
 
+fixtext: |-
+    Configure {{{ full_name }}} to enforce a minimum 15-character password length.
+
+    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+
+    minlen = {{{ xccdf_value("var_password_pam_minlen") }}}
+
 platform: pam
 
 template:

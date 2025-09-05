@@ -415,6 +415,7 @@ selections:
     - dir_perms_world_writable_system_owned
 
     # OL08-00-010710
+    - dir_perms_world_writable_system_owned_group
 
     # OL08-00-010720
     - accounts_user_interactive_home_directory_defined
@@ -492,6 +493,10 @@ selections:
     # OL08-00-020030
     - dconf_gnome_screensaver_lock_enabled
 
+    # OL08-00-020031, OL08-00-020080
+    - dconf_gnome_screensaver_lock_delay
+    - var_screensaver_lock_delay=5_seconds
+
     # OL08-00-020039
     - package_tmux_installed
 
@@ -504,6 +509,9 @@ selections:
     # OL08-00-020042
     - no_tmux_in_shells
 
+    # OL08-00-020043
+    - vlock_installed
+
     # OL08-00-020050
     - dconf_gnome_lock_screen_on_smartcard_removal
 
@@ -514,6 +522,10 @@ selections:
     - configure_tmux_lock_after_time
 
     # OL08-00-020080
+    - dconf_gnome_screensaver_user_locks
+
+    # OL08-00-020081
+    - dconf_gnome_session_idle_user_locks
 
     # OL08-00-020090
     - sssd_enable_certmap
@@ -921,6 +933,7 @@ selections:
     # OL08-00-030740
     # remediation fails because default configuration file contains pool instead of server keyword
     - chronyd_or_ntpd_set_maxpoll
+    - chronyd_server_directive
 
     # OL08-00-030741
     - chronyd_client_only
@@ -933,11 +946,8 @@ selections:
 
     # OL08-00-040001
     - package_abrt_removed
-    - package_abrt-addon-ccpp_removed
-    - package_abrt-addon-kerneloops_removed
-    - package_abrt-addon-python_removed
-    - package_abrt-cli_removed
-    - package_abrt-plugin-sosreport_removed
+    - package_abrt-libs_removed
+    - package_abrt-server-info-page_removed
 
     # OL08-00-040002
     - package_sendmail_removed
@@ -1183,3 +1193,6 @@ selections:
 
     # OL08-00-040390
     - package_tuned_removed
+
+    # OL08-00-010163
+    - package_krb5-server_removed

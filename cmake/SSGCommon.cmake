@@ -99,14 +99,27 @@ endmacro()
 # known. As part of this step, we also resolve/template the rules in the
 # content repository for each product.
 macro(ssg_build_shorthand_xml PRODUCT)
+    file(GLOB STIG_REFERENCE_FILE_LIST "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-*-xccdf-manual.xml")
+    list(APPEND STIG_REFERENCE_FILE_LIST "not-found")
+    list(GET STIG_REFERENCE_FILE_LIST 0 STIG_REFERENCE_FILE)
 
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --controls-dir "${CMAKE_SOURCE_DIR}/controls" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
-        DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
-        COMMENT "[${PRODUCT}-content] compiling everything"
-    )
+    if (STIG_REFERENCE_FILE STREQUAL "not-found")
+        add_custom_command(
+            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --controls-dir "${CMAKE_SOURCE_DIR}/controls" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
+            DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
+            COMMENT "[${PRODUCT}-content] compiling everything"
+        )
+    else()
+        add_custom_command(
+            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --controls-dir "${CMAKE_SOURCE_DIR}/controls" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json" --stig-references "${STIG_REFERENCE_FILE}"
+            DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
+            COMMENT "[${PRODUCT}-content] compiling everything"
+        )
+    endif()
     add_custom_target(
         ${PRODUCT}-compile-all
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
@@ -118,6 +131,7 @@ macro(ssg_build_shorthand_xml PRODUCT)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_shorthand.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --ocil "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS ${PRODUCT}-compile-all
+        DEPENDS generate-internal-${PRODUCT}-all-fixes
         COMMENT "[${PRODUCT}-content] generating shorthand.xml and ocil-unlinked.xml"
     )
 
@@ -126,51 +140,6 @@ macro(ssg_build_shorthand_xml PRODUCT)
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
     )
-endmacro()
-
-# Apply the XSLT transformation to the shorthand to generate the intermediate
-# XCCDF document. Here, unlinked refers to the fact that we don't yet have
-# knowledge of the remediations and OVAL content present in the repo and thus
-# haven't removed extraneous <oval/> elements &c. There's two versions of this
-# macro depending on whether this product has a STIG guide.
-macro(ssg_build_xccdf_unlinked_no_stig PRODUCT)
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf resolve -o "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
-        COMMENT "[${PRODUCT}-content] generating xccdf-unlinked-resolved.xml"
-    )
-    add_custom_target(
-        generate-internal-${PRODUCT}-xccdf-unlinked-resolved.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-    )
-endmacro()
-
-# See above.
-macro(ssg_build_xccdf_unlinked_stig PRODUCT STIG_REFERENCE_FILE)
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf resolve -o "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/add_stig_references.py" --disa-stig "${STIG_REFERENCE_FILE}" --unlinked-xccdf "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-        DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
-        COMMENT "[${PRODUCT}-content] generating xccdf-unlinked-resolved.xml"
-    )
-    add_custom_target(
-        generate-internal-${PRODUCT}-xccdf-unlinked-resolved.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-    )
-endmacro()
-
-macro(ssg_build_xccdf_unlinked PRODUCT)
-    file(GLOB STIG_REFERENCE_FILE_LIST "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-*-xccdf-manual.xml")
-    list(APPEND STIG_REFERENCE_FILE_LIST "not-found")
-    list(GET STIG_REFERENCE_FILE_LIST 0 STIG_REFERENCE_FILE)
-
-    if (STIG_REFERENCE_FILE STREQUAL "not-found")
-        ssg_build_xccdf_unlinked_no_stig(${PRODUCT})
-    else()
-        ssg_build_xccdf_unlinked_stig(${PRODUCT} ${STIG_REFERENCE_FILE})
-    endif()
 endmacro()
 
 # Build all templated content using the YAML "template" key in this product's
@@ -219,24 +188,6 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
     endif()
 endmacro()
 
-# Builds the XML document containing all remediations of the given language.
-# This is later combined with the unlinked XCCDF document.
-macro(ssg_combine_remediations PRODUCT LANGUAGES)
-    foreach(LANGUAGE ${LANGUAGES})
-      set(ALL_FIXES_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes/${LANGUAGE}")
-      add_custom_command(
-          OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
-          COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_fixes_xml.py" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml" "${ALL_FIXES_DIR}"
-          DEPENDS generate-internal-${PRODUCT}-all-fixes
-          COMMENT "[${PRODUCT}-content] generating ${LANGUAGE}-fixes.xml"
-      )
-      add_custom_target(
-          generate-internal-${PRODUCT}-${LANGUAGE}-fixes.xml
-          DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
-      )
-    endforeach()
-endmacro()
-
 # Output per-profile Ansible playbooks for the specified product. This allows
 # Ansible hardening to be applied directly from CaC's artifacts without
 # needing to invoke OpenSCAP.
@@ -269,7 +220,6 @@ macro(ssg_build_remediations PRODUCT)
     message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet, anaconda, ignition, kubernetes and blueprint)...")
 
     ssg_collect_remediations(${PRODUCT} "${PRODUCT_REMEDIATION_LANGUAGES}")
-    ssg_combine_remediations(${PRODUCT} "${PRODUCT_REMEDIATION_LANGUAGES}")
 
     if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
         # only enable the ansible syntax checks if we are using openscap 1.2.17 or higher
@@ -311,31 +261,6 @@ macro(ssg_build_remediations PRODUCT)
             endif()
         endif()
     endif()
-endmacro()
-
-# Combine the unlinked XCCDF and separate language-specific remediation XML
-# trees into a single unlinked XCCDF document.
-macro(ssg_build_xccdf_with_remediations PRODUCT)
-    # we have to encode spaces in paths before passing them as stringparams to xsltproc
-    string(REPLACE " " "%20" CMAKE_CURRENT_BINARY_DIR_NO_SPACES "${CMAKE_CURRENT_BINARY_DIR}")
-    set(PRODUCT_XSLT_LANGUAGE_PARAMS "")
-    set(PRODUCT_LANGUAGE_DEPENDS "")
-    foreach(LANGUAGE ${PRODUCT_REMEDIATION_LANGUAGES})
-        list(APPEND PRODUCT_XSLT_LANGUAGE_PARAMS --stringparam ${LANGUAGE}_remediations ${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/${LANGUAGE}-fixes.xml )
-        list(APPEND PRODUCT_LANGUAGE_DEPENDS generate-internal-${PRODUCT}-${LANGUAGE}-fixes.xml)
-    endforeach()
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" ${PRODUCT_XSLT_LANGUAGE_PARAMS} --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-        COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked-resolved.xml
-        DEPENDS ${PRODUCT_LANGUAGE_DEPENDS}
-        COMMENT "[${PRODUCT}-content] generating xccdf-unlinked.xml"
-    )
-    add_custom_target(
-        generate-internal-${PRODUCT}-xccdf-unlinked.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-    )
 endmacro()
 
 macro(ssg_build_oval_unlinked PRODUCT)
@@ -441,8 +366,7 @@ macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml"
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml"
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/relabel_ids.py" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" ssg
-        DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked.xml
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/relabel_ids.py" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml" ssg
         DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
         DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
         COMMENT "[${PRODUCT}-content] linking IDs, generating xccdf-linked.xml, oval-linked.xml, ocil-linked.xml"
@@ -460,12 +384,9 @@ endmacro()
 macro(ssg_build_xccdf_final PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        # Remove overlays Groups which are only for use in tables, and not guide output.
-        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_SOURCE_DIR}/shared/transforms/shared_xccdf-removeaux.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/unselect_empty_xccdf_groups.py" --input "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${SED_EXECUTABLE}" -i "s/oval-linked.xml/ssg-${PRODUCT}-oval.xml/g" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${SED_EXECUTABLE}" -i "s/ocil-linked.xml/ssg-${PRODUCT}-ocil.xml/g" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/unselect_empty_xccdf_groups.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf resolve -o "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-internal-${PRODUCT}-linked-xccdf-oval-ocil.xml
         COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-xccdf.xml"
@@ -571,68 +492,38 @@ endmacro()
 # evaluation using e.g., OpenSCAP) by combining XCCDF, OVAL, SCE, and OCIL
 # content. This relies heavily on the OpenSCAP executable here.
 macro(ssg_build_sds PRODUCT)
-    if("${PRODUCT}" MATCHES "rhel(6|7)")
-        add_custom_command(
-            OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/${PRODUCT}"
-            # use --skip-valid here to avoid repeatedly validating everything
-            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            COMMAND "${SED_EXECUTABLE}" -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/sds_move_ocil_to_checks.py" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
-            DEPENDS generate-ssg-${PRODUCT}-oval.xml
-            DEPENDS generate-ssg-${PRODUCT}-ocil.xml
-            DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
-            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds-base.xml"
-        )
-    else()
-        add_custom_command(
-            OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/${PRODUCT}"
-            # use --skip-valid here to avoid repeatedly validating everything
-            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            COMMAND "${SED_EXECUTABLE}" -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/sds_move_ocil_to_checks.py" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
-            DEPENDS generate-ssg-${PRODUCT}-oval.xml
-            DEPENDS generate-ssg-${PRODUCT}-ocil.xml
-            DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
-            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds-base.xml"
-        )
-    endif()
-    add_custom_target(
-        generate-ssg-${PRODUCT}-ds-base.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-    )
-
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/update_sds_version.py" --version "1.3" --input "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        DEPENDS generate-ssg-${PRODUCT}-ds-base.xml
-        COMMENT "[${PRODUCT}-content] Updating data stream ssg-${PRODUCT}-ds.xml to 1.3"
-    )
-    add_custom_target(
-        generate-ssg-${PRODUCT}-ds.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-    )
-
     if(SSG_BUILD_SCAP_12_DS)
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/update_sds_version.py" --version "1.2" --input "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
+            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compose_ds.py" --xccdf "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" --oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --ocil "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --cpe-dict "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" --cpe-oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" --output-12 "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml" --output-13 "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
-            DEPENDS generate-ssg-${PRODUCT}-ds-base.xml
-            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds-1.2.xml"
+            COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
+            DEPENDS generate-ssg-${PRODUCT}-oval.xml
+            DEPENDS generate-ssg-${PRODUCT}-ocil.xml
+            DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
+            COMMENT "[${PRODUCT}-content] Updating data stream ssg-${PRODUCT}-ds.xml to 1.3"
         )
         add_custom_target(
-            generate-ssg-${PRODUCT}-ds-1.2.xml
+            generate-ssg-${PRODUCT}-ds.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        )
+    else()
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compose_ds.py" --xccdf "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" --oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --ocil "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --cpe-dict "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" --cpe-oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" --output-13 "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
+            DEPENDS generate-ssg-${PRODUCT}-oval.xml
+            DEPENDS generate-ssg-${PRODUCT}-ocil.xml
+            DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
+            COMMENT "[${PRODUCT}-content] Updating data stream ssg-${PRODUCT}-ds.xml to 1.3"
+        )
+        add_custom_target(
+            generate-ssg-${PRODUCT}-ds.xml
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         )
     endif()
 
@@ -806,7 +697,6 @@ macro(ssg_build_product PRODUCT)
     ssg_build_shorthand_xml(${PRODUCT})
     ssg_make_all_tables(${PRODUCT})
     ssg_build_templated_content(${PRODUCT})
-    ssg_build_xccdf_unlinked(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
 
     if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED)
@@ -816,7 +706,6 @@ macro(ssg_build_product PRODUCT)
             generate-${PRODUCT}-ansible-playbooks
         )
     endif()
-    ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
     ssg_build_cpe_dictionary(${PRODUCT})
     ssg_build_link_xccdf_oval_ocil(${PRODUCT})
@@ -838,9 +727,6 @@ macro(ssg_build_product PRODUCT)
         generate-ssg-${PRODUCT}-ds.xml
         generate-ssg-tables-${PRODUCT}-all
     )
-    if (SSG_BUILD_SCAP_12_DS)
-        add_dependencies(${PRODUCT}-content generate-ssg-${PRODUCT}-ds-1.2.xml)
-    endif()
 
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
 
@@ -1020,7 +906,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds-1.2.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml" "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${DERIVATIVE} --id-name ssg
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
-            DEPENDS generate-ssg-${ORIGINAL}-ds-1.2.xml
+            DEPENDS generate-ssg-${ORIGINAL}-ds.xml
             COMMENT "[${DERIVATIVE}-content] generating ssg-${DERIVATIVE}-ds-1.2.xml"
         )
         add_custom_target(
@@ -1141,31 +1027,6 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     )
 endmacro()
 
-macro(ssg_build_html_table_by_ref PRODUCT REF)
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html"
-        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam ref "${REF}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-byref.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-byref.xslt"
-        COMMENT "[${PRODUCT}-tables] generating HTML table for ${REF} references"
-    )
-    add_custom_target(
-        generate-${PRODUCT}-table-by-ref-${REF}
-        DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html"
-    )
-    add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-by-ref-${REF})
-
-    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
-    # also needs to set the variable in local scope for next macro tables
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html")
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST}" PARENT_SCOPE)
-
-    install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html"
-        DESTINATION "${SSG_TABLE_INSTALL_DIR}")
-endmacro()
-
 macro(ssg_build_html_ref_tables PRODUCT OUTPUT_TEMPLATE REFERENCES)
     set(OUTPUTS_LIST "")
     set(REFS_STR "")
@@ -1219,30 +1080,6 @@ macro(ssg_build_html_profile_table BASENAME PRODUCT PROFILE REFERENCE)
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html"
     DESTINATION "${SSG_TABLE_INSTALL_DIR}")
-endmacro()
-
-
-macro(ssg_build_html_anssirefs_table PRODUCT PROFILE)
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-anssirefs-${PROFILE}.html"
-        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam profile "anssi_${PROFILE}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-anssirefs-${PROFILE}.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileanssirefs.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        COMMENT "[${PRODUCT}-tables] generating HTML ANSSI refs table for anssi_${PROFILE} profile"
-    )
-    add_custom_target(
-        generate-${PRODUCT}-table-anssirefs-${PROFILE}
-        DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-anssirefs-${PROFILE}.html"
-    )
-    add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-anssirefs-${PROFILE})
-
-    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
-    # also needs to set the variable in local scope for next macro tables
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-anssirefs-${PROFILE}.html")
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST}" PARENT_SCOPE)
-
-    install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-anssirefs-${PROFILE}.html"
-        DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 
 macro(ssg_build_html_cce_table PRODUCT)

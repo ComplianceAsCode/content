@@ -59,8 +59,9 @@ references:
 ocil_clause: 'smartcard software is not installed'
 
 ocil: |-
+    Check that {{{ full_name }}} has the packages for smart card support installed.
     {{% for pkg in smartcard_packages %}}
-    '{{{ ocil_package(package=pkg) }}}'
+    {{{ ocil_package(package=pkg) }}}
     {{% endfor %}}
 
 {{% if product not in ["sle12", "sle15"] %}}
@@ -74,3 +75,6 @@ template:
         pkgname@ubuntu1804: libpam-pkcs11
         pkgname@ubuntu2004: libpam-pkcs11
 {{% endif %}}
+
+fixtext: |-
+    {{{ describe_package_install(package=smartcard_packages | join) }}}

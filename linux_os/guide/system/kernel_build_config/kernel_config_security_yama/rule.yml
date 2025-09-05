@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Enable Yama support'
+
+description: |-
+    This enables support for LSM module Yama, which extends DAC support with additional system-wide
+    security settings beyond regular Linux discretionary access controls. The module will limit the
+    use of the system call <tt>ptrace()</tt>.
+
+    {{{ describe_kernel_build_config("CONFIG_SECURITY_YAMA", "y") | indent(4) }}}
+
+rationale: |-
+    Unrestricted usage of ptrace allows compromised binaries to run ptrace
+    on another processes of the user.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86715-0
+    cce@rhel8: CCE-86716-8
+    cce@rhel9: CCE-86717-6
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_SECURITY_YAMA", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_SECURITY_YAMA
+        value: 'y'
+

@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000425-GPOS-00189
+        levels:
+            - medium
+        title: {{{ full_name }}} must maintain the confidentiality and integrity of information
+            during preparation for transmission.
+        rules:
+            - package_openssh-server_installed
+            - service_sshd_enabled
+        status: automated

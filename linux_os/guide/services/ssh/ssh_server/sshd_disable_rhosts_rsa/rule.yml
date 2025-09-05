@@ -43,7 +43,7 @@ ocil: |
     <pre>$ rpm -qi openssh-server | grep Version</pre>
     Versions equal to or higher than 7.4 have deprecated the <tt>RhostsRSAAuthentication</tt> option.
     If version is lower than 7.4, run the following command to check configuration:
-    {{{ ocil_sshd_option(default="yes", option="RhostsRSAAuthentication", value="no") }}}
+    {{{ ocil_sshd_option(default="no", option="RhostsRSAAuthentication", value="no") }}}
 
 {{{ ocil_clause_entry_sshd_option() }}}
 

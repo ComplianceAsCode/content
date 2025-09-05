@@ -1,0 +1,45 @@
+documentation_complete: true
+
+title: 'Configure the confidence in TPM for entropy'
+
+description: |-
+    The TPM security chip that is available in most modern systems has a hardware RNG.
+    It is also used to feed the entropy pool, but generally not credited entropy.
+
+    Use <tt>rng_core.default_quality</tt> in the kernel command line to set the trust
+    level on the hardware generators. The trust level defines the amount of entropy to credit.
+    A value of <tt>0</tt> tells the system not to trust the hardware random number generators
+    available, and doesn't credit any entropy to the pool.
+    A value of <tt>1000</tt> assigns full confidence in the generators, and credits all the
+    entropy it provides to the pool.
+
+    Note that the value of <tt>rng_core.default_quality</tt> is global, affecting the trust
+    on all hardware random number generators.
+
+    Select the appropriate confidence by adding the argument
+    <tt>rng_core.default_quality={{{ xccdf_value(var_rng_core_default_quality_options) }}}</tt> to the default
+    GRUB 2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("rng_core.default_quality=xccdf_value(var_rng_core_default_quality)") | indent(4) }}}
+
+rationale: |-
+    A system may struggle to initialize its entropy pool and end up starving. Crediting entropy
+    from the hardware number generators available in the system helps fill up the entropy pool.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-89567-2
+    cce@rhel9: CCE-90567-9
+
+ocil_clause: 'trust on hardware random number generator is not configured appropriately'
+
+ocil: |-
+    {{{ ocil_grub2_argument("rng_core.default_quality=xccdf_value(var_rng_core_default_quality)") | indent(4) }}}
+
+platform: machine
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: rng_core.default_quality
+        arg_variable: var_rng_core_default_quality

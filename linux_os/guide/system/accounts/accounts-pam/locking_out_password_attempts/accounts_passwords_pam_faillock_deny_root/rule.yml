@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15,wrlinux1019
 
 title: 'Configure the root Account for Failed Password Attempts'
 
@@ -9,8 +9,8 @@ description: |-
     incorrect login attempts using <tt>pam_faillock.so</tt>.
 
     pam_faillock.so module requires multiple entries in pam files. These entries must be carefully
-    defined to work as expected. In order to avoid any errors when manually editing these files,
-    it is recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
+    defined to work as expected. In order to avoid errors when manually editing these files, it is
+    recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
     depending on the OS version.
 
 rationale: |-
@@ -24,6 +24,7 @@ identifiers:
     cce@rhel7: CCE-80353-6
     cce@rhel8: CCE-80668-7
     cce@rhel9: CCE-83589-2
+    cce@sle15: CCE-91171-9
 
 references:
     anssi: BP28(R18)
@@ -56,39 +57,30 @@ ocil: |-
     The output should show <tt>even_deny_root</tt>.
     {{% endif %}}
 
-fix: |-
+fixtext: |-
     To configure the system to lock out the <tt>root</tt> account after a number of incorrect login
     attempts using <tt>pam_faillock.so</tt>, first enable the feature using the following command:
-    <br /><br />
     {{% if product in ["rhel7"] %}}
-    <ul>
-    <li><pre>authconfig --enablefaillock --update</pre></li>
-    </ul>
-    <br />
+    $ sudo authconfig --enablefaillock --update
+
     Then modify the content of both <tt>/etc/pam.d/system-auth</tt> and
     <tt>/etc/pam.d/password-auth</tt> as follows:
-    <br /><br />
-    <ul>
-    <li> include the even_deny_root parameter in the following line <tt>before</tt> the <tt>pam_unix.so</tt>
+    include the even_deny_root parameter in the following line <tt>before</tt> the <tt>pam_unix.so</tt>
     statement in the <tt>auth</tt> section, like this:
-    <pre>auth required pam_faillock.so preauth silent deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}} <tt>even_deny_root</tt></pre></li>
-    <li> include the even_deny_root parameter in the following line <tt>after</tt> the <tt>pam_unix.so</tt>
+    <pre>auth required pam_faillock.so preauth silent deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}} <tt>even_deny_root</tt></pre>
+
+    include the even_deny_root parameter in the following line <tt>after</tt> the <tt>pam_unix.so</tt>
     statement in the <tt>auth</tt> section, like this:
-    <pre>auth required pam_faillock.so authfail deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}} <tt>even_deny_root</tt></pre></li>
-    </ul>
+    <pre>auth required pam_faillock.so authfail deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}} <tt>even_deny_root</tt></pre>
     {{% else %}}
-    <ul>
-    <li><pre>authselect enable-feature with-faillock</pre></li>
-    </ul>
-    <br />
+    $ sudo authselect enable-feature with-faillock
+
     Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
-    <br /><br />
-    <ul>
-    <li> add or uncomment the following line:
-    <pre>even_deny_root</pre></li>
-    <li> add or uncomment the following line:
-    <pre>silent</pre></li>
-    </ul>
+    add or uncomment the following line:
+    <pre>even_deny_root</pre>
+
+    add or uncomment the following line:
+    <pre>silent</pre>
     {{% endif %}}
 
 platform: pam
@@ -102,3 +94,6 @@ warnings:
         be shown in the remediation report.
         If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
         parameters should be defined in <tt>faillock.conf</tt> file.
+
+srg_requirement: |-
+    {{{ full_name }}} must automatically lock the root account until the root account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period.

@@ -1,10 +1,16 @@
-# platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_wrlinux,multi_platform_ol,multi_platform_sle
+# platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_wrlinux,multi_platform_ol,multi_platform_sle,multi_platform_ubuntu
 
 {{{ bash_instantiate_variables("var_time_service_set_maxpoll") }}}
 
 
+{{% if 'ubuntu' not in product %}}
+pof="/usr/sbin/pidof"
+{{% else %}}
+pof="/bin/pidof"
+{{% endif %}}
+
 config_file="/etc/ntp.conf"
-/usr/sbin/pidof ntpd || config_file="/etc/chrony.conf"
+$pof ntpd || config_file="{{{ chrony_conf_path }}}"
 
 
 # Set maxpoll values to var_time_service_set_maxpoll

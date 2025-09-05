@@ -1,0 +1,12 @@
+controls:
+    -   id: SRG-OS-000114-GPOS-00059
+        levels:
+            - medium
+        title: {{{ full_name }}} must uniquely identify peripherals before establishing
+            a connection.
+        rules:
+            - kernel_module_usb-storage_disabled
+            - service_autofs_disabled
+            - dconf_gnome_disable_automount_open
+            - dconf_gnome_disable_autorun
+        status: automated

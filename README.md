@@ -7,9 +7,8 @@
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
 [![Nightly ZIP Status](https://jenkins.open-scap.org/job/scap-security-guide-nightly-zip/badge/icon?subject=Nightly%20OVAL-5.11%20ZIP&status=Download)](https://jenkins.open-scap.org/job/scap-security-guide-nightly-zip/lastSuccessfulBuild/artifact/scap-security-guide-nightly.zip)
 [![Nightly 5.10 ZIP Status](https://jenkins.open-scap.org/job/scap-security-guide-nightly-oval510-zip/badge/icon?subject=Nightly%20OVAL-5.10%20ZIP&status=Download)](https://jenkins.open-scap.org/job/scap-security-guide-nightly-oval510-zip/lastSuccessfulBuild/artifact/scap-security-guide-nightly-oval-510.zip)
-[![Link-checker Status](https://jenkins.open-scap.org/job/scap-security-guide-linkcheck/badge/icon?subject=Link%20Checker)](https://jenkins.open-scap.org/job/scap-security-guide-linkcheck/)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ComplianceAsCode/content/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ComplianceAsCode/content/?branch=master)
-[![Stats, Guides, Tables](https://github.com/ComplianceAsCode/content/actions/workflows/gh-pages.yaml/badge.svg)](https://complianceascode.github.io/content/)
+[![Stats, Guides, Tables](https://github.com/ComplianceAsCode/content/actions/workflows/gh-pages.yaml/badge.svg)](https://complianceascode.github.io/content-pages/)
 [![Join the chat at https://gitter.im/Compliance-As-Code-The/content](https://badges.gitter.im/Compliance-As-Code-The/content.svg)](https://gitter.im/Compliance-As-Code-The/content?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/ComplianceAsCode/content)
 

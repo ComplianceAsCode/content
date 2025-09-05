@@ -1,5 +1,11 @@
-
 # platform = multi_platform_all
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{# products that are available also in a 32 bits form #}}
+{{% if "rhel" not in product and product != "fedora" %}}
 if [ "$(getconf LONG_BIT)" = "32" ] ; then
   #
   # Set runtime for kernel.exec-shield
@@ -14,9 +20,8 @@ if [ "$(getconf LONG_BIT)" = "32" ] ; then
 fi
 
 if [ "$(getconf LONG_BIT)" = "64" ] ; then
-  if grep --silent noexec {{{ grub2_boot_path }}}/grub*.cfg ; then
-        sed -i "s/noexec.*//g" /etc/default/grub
-        sed -i "s/noexec.*//g" /etc/grub.d/*
-        grub2-mkconfig -o "{{{ grub2_boot_path }}}"/grub*.cfg
-  fi
+    {{{ grub2_bootloader_argument_absent_remediation("noexec") }}}
 fi
+{{% else %}}
+    {{{ grub2_bootloader_argument_absent_remediation("noexec") }}}
+{{% endif %}}

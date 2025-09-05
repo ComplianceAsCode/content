@@ -48,18 +48,12 @@ references:
     stigid@sle15: SLES-15-010355
     stigid@ubuntu2004: UBTU-20-01430
 
-ocil_clause: 'system wide library files are not group-owned by root'
+ocil_clause: any system wide shared library file is returned and is not group-owned by a required system account
 
 ocil: |-
-    System-wide library files are stored in the following directories:
-    <pre>/lib
-    /lib64
-    /usr/lib
-    /usr/lib64
-    </pre>
-    To find if system-wide library files stored in these directories are not group-owned by
-    root run the following command for each directory <i>DIR</i>:
-    <pre>$ sudo find -L <i>DIR</i> ! -group root -type f </pre>
+    Verify the system-wide shared library files are group-owned by "root" with the following command:
+
+    $ sudo find -L /lib /lib64 /usr/lib /usr/lib64 ! -group root -exec ls -l {} \;
 
 template:
     name: file_groupowner
@@ -69,5 +63,15 @@ template:
             - /lib64/
             - /usr/lib/
             - /usr/lib64/
-        file_regex: ^.*$
+        recursive: 'true'
         filegid: '0'
+
+fixtext: |-
+    Configure the system-wide shared library files (/lib, /lib64, /usr/lib and /usr/lib64) to be protected from unauthorized access.
+
+    Run the following command, replacing "[FILE]" with any library file not group-owned by "root".
+
+    $ sudo chgrp root [FILE]
+
+srg_requirement:
+    {{{ full_name }}} library files must be group-owned by root or a system account.

@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Enable support for BUG()'
+
+description: |-
+    Disabling this option eliminates support for BUG and WARN, reducing the size of your kernel
+    image and potentially quietly ignoring numerous fatal conditions. You should only consider
+    disabling this option for embedded systems with no facilities for reporting errors.
+
+    {{{ describe_kernel_build_config("CONFIG_BUG", "y") | indent(4) }}}
+
+rationale: |-
+    Not setting this variable may hide a number of critical errors.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86093-2
+    cce@rhel8: CCE-86095-7
+    cce@rhel9: CCE-86096-5
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_BUG", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_BUG
+        value: 'y'
+

@@ -75,6 +75,7 @@
 				<td>CCI</td>
 				<td>CAT</td>
 				<td>Title</td>
+				<td>SRG</td>
 			</xsl:otherwise>
 			</xsl:choose>
 				<td>Description</td>
@@ -112,11 +113,12 @@
 				<!--<td> <xsl:value-of select="cdf:title" /></td>-->
 				<td> <xsl:value-of select="cdf:Rule/@severity" /></td>
 				<td> <xsl:value-of select="cdf:Rule/cdf:title" /></td>
+				<td> <xsl:value-of select="cdf:title/node()" /></td>
 			</xsl:otherwise>
 			</xsl:choose>
-			<td> <xsl:call-template name="extract-vulndiscussion"><xsl:with-param name="desc" select="cdf:Rule/cdf:description"/></xsl:call-template> </td>
-			<td> <xsl:apply-templates select="cdf:Rule/cdf:check/cdf:check-content/node()"/> </td>
-			<td> <xsl:apply-templates select="cdf:Rule/cdf:fixtext/node()"/> </td>
+			<td> <pre> <xsl:call-template name="extract-vulndiscussion"><xsl:with-param name="desc" select="cdf:Rule/cdf:description"/></xsl:call-template> </pre> </td>
+			<td> <pre> <xsl:apply-templates select="cdf:Rule/cdf:check/cdf:check-content/node()"/> </pre> </td>
+			<td> <pre> <xsl:apply-templates select="cdf:Rule/cdf:fixtext/node()"/> </pre> </td>
 			<td> <xsl:apply-templates select="cdf:Rule/cdf:version/node()"/> </td>
 			<td> <xsl:value-of select="cdf:Rule/@id"/> </td>
 			<xsl:if test='$notes'>

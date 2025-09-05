@@ -1,0 +1,12 @@
+controls:
+    -   id: SRG-OS-000471-GPOS-00216
+        levels:
+            - medium
+        title: The audit system must be configured to audit the loading and unloading of
+            dynamic kernel modules.
+        rules:
+            - audit_rules_kernel_module_loading_delete
+            - audit_rules_kernel_module_loading_finit
+            - audit_rules_kernel_module_loading_init
+            - audit_rules_privileged_commands_kmod
+        status: automated

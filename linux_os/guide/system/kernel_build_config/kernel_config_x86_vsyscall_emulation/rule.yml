@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Disable x86 vsyscall emulation'
+
+description: |-
+    Disabling it is roughly equivalent to booting with vsyscall=none, except that it will also
+    disable the helpful warning if a program tries to use a vsyscall. With this option set to N,
+    offending programs will just segfault, citing addresses of the form 0xffffffffff600?00.
+    This configuration is available from kernel 3.19.
+
+    {{{ describe_kernel_build_config("CONFIG_X86_VSYSCALL_EMULATION", "n") | indent(4) }}}
+
+rationale: |-
+    The vsyscall table is no longer required and is a potential source of ROP gadgets.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: low
+
+identifiers:
+    cce@rhel7: CCE-87882-7
+    cce@rhel8: CCE-87883-5
+    cce@rhel9: CCE-87884-3
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_X86_VSYSCALL_EMULATION", "n") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_X86_VSYSCALL_EMULATION
+        value: 'n'
+

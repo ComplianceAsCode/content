@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000377-GPOS-00162
+        levels:
+            - medium
+        title: {{{ full_name }}} must electronically verify Personal Identity Verification
+            (PIV) credentials.
+        rules:
+            - sssd_certificate_verification
+            - var_sssd_certificate_verification_digest_function=sha512
+            - install_smartcard_packages
+        status: automated

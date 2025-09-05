@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000042-GPOS-00021
+        levels:
+            - medium
+        title: {{{ full_name }}} must produce audit records containing the individual
+            identities of group account users.
+        rules:
+            - service_auditd_enabled
+            - package_audit_installed
+        status: automated

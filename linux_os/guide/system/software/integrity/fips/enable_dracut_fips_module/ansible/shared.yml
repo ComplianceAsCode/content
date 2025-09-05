@@ -1,0 +1,21 @@
+# platform = multi_platform_rhel,multi_platform_fedora,Oracle Linux 8
+# reboot = true
+# strategy = restrict
+# complexity = medium
+# disruption = medium
+
+- name: Check to see the current status of FIPS mode
+  command: /usr/bin/fips-mode-setup --check
+  register: is_fips_enabled
+  changed_when: false
+  failed_when:  False
+
+- name: Enable FIPS mode
+  command: /usr/bin/fips-mode-setup --enable
+  when:
+    - is_fips_enabled.stdout.find('FIPS mode is enabled.') == -1
+
+- name: "{{{ rule_title }}}"
+  lineinfile:
+    path: /etc/dracut.conf.d/40-fips.conf
+    line: 'add_dracutmodules+=" fips "'

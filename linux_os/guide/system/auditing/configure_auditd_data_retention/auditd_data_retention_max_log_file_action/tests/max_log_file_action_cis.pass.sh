@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 # profiles = xccdf_org.ssgproject.content_profile_cis
 
 . $SHARED/auditd_utils.sh

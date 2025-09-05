@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Kernel panic timeout'
+
+description: |-
+    Set the timeout value (in seconds) until a reboot occurs when the kernel panics.
+    A timeout of 0 configures the system to wait forever. With a timeout value greater than 0,
+    the system will wait the specified amount of seconds before rebooting. While a timeout value
+    less than 0 makes the system reboot immediately.
+
+    {{{ describe_kernel_build_config("CONFIG_PANIC_TIMEOUT", xccdf_value("var_kernel_config_panic_timeout")) | indent(4) }}}
+
+rationale: |-
+    This is required to enable protection against Spectre v2.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86348-0
+    cce@rhel8: CCE-86349-8
+    cce@rhel9: CCE-86350-6
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_PANIC_TIMEOUT", xccdf_value("var_kernel_config_panic_timeout")) | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_PANIC_TIMEOUT
+        variable: var_kernel_config_panic_timeout
+

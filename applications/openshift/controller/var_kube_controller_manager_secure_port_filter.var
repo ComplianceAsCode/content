@@ -1,0 +1,14 @@
+documentation_complete: true
+
+title: 'Kube controller manager config check - secure port'
+
+description: 'Kube controller manager config check - secure port'
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+    default: '[.data."config.yaml" | fromjson | if .extendedArguments["secure-port"][]=="10257" then true else false end]'

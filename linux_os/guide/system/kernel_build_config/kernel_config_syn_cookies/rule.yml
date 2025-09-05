@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Enable TCP/IP syncookie support'
+
+description: |-
+    Normal TCP/IP networking is open to an attack known as SYN flooding.
+    It is denial-of-service attack that prevents legitimate remote users from being able to connect
+    to your computer during an ongoing attack.
+
+    When enabled the TCP/IP stack will use a cryptographic challenge protocol known as SYN cookies
+    to enable legitimate users to continue to connect, even when your machine is under attack.
+
+    {{{ describe_kernel_build_config("CONFIG_SYN_COOKIES", "y") | indent(4) }}}
+
+rationale: |-
+    SYN cookies provide protection against SYN flooding attacks.
+
+warnings:
+    {{{ warning_kernel_build_config() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-87329-9
+    cce@rhel8: CCE-87330-7
+    cce@rhel9: CCE-87331-5
+
+ocil_clause: 'the kernel was not built with the required value'
+
+ocil: |-
+    {{{ ocil_kernel_build_config("CONFIG_SYN_COOKIES", "y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_SYN_COOKIES
+        value: 'y'
+

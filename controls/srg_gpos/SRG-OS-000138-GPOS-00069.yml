@@ -1,0 +1,12 @@
+controls:
+    -   id: SRG-OS-000138-GPOS-00069
+        levels:
+            - medium
+        title: {{{ full_name }}} must prevent unauthorized and unintended information transfer
+            via shared system resources.
+        rules:
+            - dir_perms_world_writable_sticky_bits
+            - dir_perms_world_writable_root_owned
+            - sysctl_kernel_dmesg_restrict
+            - sysctl_kernel_perf_event_paranoid
+        status: automated

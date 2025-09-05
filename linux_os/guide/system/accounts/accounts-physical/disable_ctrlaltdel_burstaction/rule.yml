@@ -84,6 +84,11 @@ ocil: |-
     The output should return:
     <pre>CtrlAltDelBurstAction=none</pre>
 
+fixtext: |-
+    Edit "/etc/systemd/system.conf" and add or edit the following line:
+
+    CtrlAltDelBurstAction=none
+
 {{% if product != "ubuntu2004" %}}
 warnings:
     - functionality: |-
