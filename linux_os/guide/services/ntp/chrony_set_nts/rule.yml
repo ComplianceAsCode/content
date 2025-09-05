@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Configure Time Service to use NTS'
+
+description: |-
+    The system should be configured to use time servers that support Network Time Security (NTS).
+    The specified time server must support NTS and must be configured to use NTS.
+    To configure NTS for given time server add <tt>nts</tt> to each <tt>server</tt> or <tt>pool</tt> line in <tt>{{{ chrony_conf_path }}}</tt>.
+
+rationale: |-
+    Network Time Security (NTS) uses Transport Layer Security (TLS) to secure Network Time Protocol (NTP) communications.
+    Not using NTS could allow an attacker to interpret and modify the data sent back from the time server
+    Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis.
+    Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events.
+    Sources outside the configured acceptable allowance (drift) may be inaccurate.
+
+identifiers:
+    cce@rhel10: CCE-86471-0
+
+severity: medium
+
+platforms:
+    - package[chrony]

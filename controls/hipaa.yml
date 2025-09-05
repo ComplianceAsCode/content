@@ -368,7 +368,6 @@ controls:
             - sshd_do_not_permit_user_env
             - sshd_enable_strictmodes
             - sshd_enable_warning_banner
-            - sshd_enable_warning_banner_net
             - sshd_set_keepalive
             - sshd_set_keepalive_0
             - sshd_use_priv_separation
@@ -533,6 +532,7 @@ controls:
             - restrict_serial_port_logins
             - securetty_root_login_console_only
             - enable_authselect
+            - var_authselect_profile=sssd
             - file_groupowner_grub2_cfg
             - file_groupowner_user_cfg
             - file_owner_grub2_cfg
@@ -638,9 +638,8 @@ controls:
             - sshd_do_not_permit_user_env
             - sshd_enable_strictmodes
             - sshd_enable_warning_banner
-            - sshd_enable_warning_banner_net
             - sshd_set_keepalive
-            - sshd_set_keepalive_0
+            - var_sshd_set_keepalive=1
             - sshd_use_approved_ciphers
             - sshd_use_approved_macs
             - sshd_use_priv_separation
@@ -707,7 +706,6 @@ controls:
             - sshd_do_not_permit_user_env
             - sshd_enable_strictmodes
             - sshd_enable_warning_banner
-            - sshd_enable_warning_banner_net
             - sshd_set_keepalive
             - sshd_set_keepalive_0
             - sshd_use_priv_separation
@@ -905,7 +903,6 @@ controls:
             - sshd_do_not_permit_user_env
             - sshd_enable_strictmodes
             - sshd_enable_warning_banner
-            - sshd_enable_warning_banner_net
             - sshd_set_keepalive
             - sshd_set_keepalive_0
             - sshd_use_priv_separation
@@ -944,6 +941,8 @@ controls:
             - selinux_confinement_of_daemons
             - selinux_policytype
             - selinux_state
+            - var_selinux_policy_name=targeted
+            - var_selinux_state=enforcing
             - dconf_gnome_remote_access_credential_prompt
             - dconf_gnome_remote_access_encryption
         status: automated
@@ -1113,6 +1112,7 @@ controls:
             - selinux_confinement_of_daemons
             - selinux_policytype
             - selinux_state
+            - sshd_use_directory_configuration
         status: automated
 
     -   id: 164.312(a)(1)
@@ -1138,6 +1138,7 @@ controls:
         levels:
             - required
         rules:
+            - var_audit_failure_mode=panic
             - audit_rules_dac_modification_chmod
             - audit_rules_dac_modification_chown
             - audit_rules_dac_modification_fchmod
@@ -1670,7 +1671,6 @@ controls:
             - sshd_do_not_permit_user_env
             - sshd_enable_strictmodes
             - sshd_enable_warning_banner
-            - sshd_enable_warning_banner_net
             - sshd_set_keepalive
             - sshd_set_keepalive_0
             - sshd_use_approved_ciphers
@@ -1744,7 +1744,6 @@ controls:
             - sshd_do_not_permit_user_env
             - sshd_enable_strictmodes
             - sshd_enable_warning_banner
-            - sshd_enable_warning_banner_net
             - sshd_set_keepalive
             - sshd_set_keepalive_0
             - sshd_use_approved_ciphers

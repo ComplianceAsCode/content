@@ -9,14 +9,14 @@ description: |-
     <br /><br />
     Since plaintext passwords are a security risk, generate a hash for the password
     by running the following command:
-    {{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
+    {{% if product in ["sle12", "sle15", "slmicro5"] or 'ubuntu' in product %}}
     <pre># grub2-mkpasswd-pbkdf2</pre>
     {{% else %}}
     <pre># grub2-setpassword</pre>
     {{% endif %}}
     When prompted, enter the password that was selected.
     <br /><br />
-    {{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
+    {{% if product in ["sle12", "sle15", "slmicro5"] or 'ubuntu' in product %}}
     Using the hash from the output, modify the <tt>/etc/grub.d/40_custom</tt>
     file with the following content:
     <pre>set superusers="boot"
@@ -44,6 +44,7 @@ identifiers:
     cce@rhel10: CCE-87614-4
     cce@sle12: CCE-83044-8
     cce@sle15: CCE-83274-1
+    cce@slmicro5: CCE-93778-9
 
 references:
     cis-csc: 1,11,12,14,15,16,18,3,5
@@ -60,7 +61,6 @@ references:
     iso27001-2013: A.18.1.4,A.6.1.2,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
     nist: CM-6(a)
     nist-csf: PR.AC-1,PR.AC-4,PR.AC-6,PR.AC-7,PR.PT-3
-    ospp: FIA_UAU.1
     srg: SRG-OS-000080-GPOS-00048
     stigid@ol7: OL07-00-010482
     stigid@ol8: OL08-00-010150

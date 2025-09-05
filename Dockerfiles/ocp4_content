@@ -2,10 +2,9 @@ FROM registry.fedoraproject.org/fedora-minimal:latest as builder
 
 WORKDIR /content
 
-RUN microdnf -y install cmake make git /usr/bin/python3 python3-pyyaml python3-jinja2 openscap-utils
+RUN microdnf -y install cmake make git /usr/bin/python3 python3-pyyaml python3-jinja2 openscap-utils python3-setuptools
 
 COPY . .
-
 
 # Enable only certain profiles on ppc64le and s390x
 RUN if [ "$(uname -m)" == "x86_64" ]; then \
@@ -30,6 +29,11 @@ RUN if [ "$(uname -m)" == "x86_64" ]; then \
         products/ocp4/profiles/moderate.profile \
         products/ocp4/profiles/moderate-node-rev-4.profile \
         products/ocp4/profiles/moderate-rev-4.profile && \
+        # Adds DISA-STIG for ppc64le
+        if [ "$(uname -m)" = "ppc64le" ]; then \
+            find products/rhcos4 -name "*stig*.profile" | xargs sed -i 's/\(documentation_complete: \).*/\1true/' && \
+            find products/ocp4 -name "*stig*.profile" | xargs sed -i 's/\(documentation_complete: \).*/\1true/' ; \
+        fi && \
         # OCPBUGS-32794: Ensure stability of rules shipped
         # Before building the content we re-enable all profiles as hidden, this will include any rule selected
         # by these profiles in the data stream without creating a profile for them.

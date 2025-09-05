@@ -486,6 +486,37 @@ def test_policy_parse_from_ours_and_foreign():
     assert "really_ours" in control.selections
     assert "foreign" in control.selections
 
+def test_policy_parse_foreign_with_all():
+    main_control_dict = dict(id="top", controls=["foreign:all:level_1", "ours", "P:ours_qualified"])
+    main_subcontrol_dicts = [dict(id="ours", rules=["ours"]), dict(id="ours_qualified", rules=["really_ours"])]
+    foreign_control_dicts = [dict(id="req1", rules=["foreign_1"], levels=["level_1"]),
+                            dict(id="req2", rules=["foreign_2"], levels=["level_1", "level_2"]),
+                            dict(id="req3", rules=["foreign_3"], levels=["level_2"])]
+
+    main_policy = ssg.controls.Policy("")
+    main_policy.id = "P"
+    main_policy.save_controls_tree([main_control_dict] + main_subcontrol_dicts)
+
+    foreign_policy = ssg.controls.Policy("")
+    foreign_policy.id = "foreign"
+    level1 = ssg.controls.Level.from_level_dict(dict(id="level_1"))
+    level2 = ssg.controls.Level.from_level_dict(dict(id="level_2"))
+
+    foreign_policy.levels = [level1, level2]
+    foreign_policy.levels_by_id = {"level_1": level1, "level_2": level2}
+    foreign_policy.save_controls_tree(foreign_control_dicts)
+
+    controls_manager = ssg.controls.ControlsManager("", dict())
+    controls_manager.policies[main_policy.id] = main_policy
+    controls_manager.policies[foreign_policy.id] = foreign_policy
+
+    controls_manager.resolve_controls()
+    control = controls_manager.get_control("P", "top")
+    assert "ours" in control.selections
+    assert "really_ours" in control.selections
+    assert "foreign_1" in control.selections
+    assert "foreign_2" in control.selections
+    assert "foreign_3" not in control.selections
 
 def test_policy_parse_from_referenced(minimal_empty_controls, one_simple_subcontrol):
     nested_controls = minimal_empty_controls

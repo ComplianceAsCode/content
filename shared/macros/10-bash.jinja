@@ -483,7 +483,12 @@ if rpm -q --quiet "{{{ package }}}" ; then
 {{% if SSG_TEST_SUITE_ENV %}}
     rpm -e --nodeps "{{{ package }}}"
 {{% else %}}
-    {{{ pkg_manager }}} remove -y "{{{ package }}}"
+    {{%- if pkg_manager == "dnf" -%}}
+        dnf remove -y --noautoremove "{{{ package }}}"
+    {{%- else -%}}
+        {{{ pkg_manager }}} remove -y "{{{ package }}}"
+    {{%- endif -%}}
+
 {{% endif %}}
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
@@ -1092,7 +1097,7 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 
 #}}
 {{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/") -%}}
-    {{%- set new_line = parameter+separator+value -%}}
+    {{%- set new_line = parameter+separator~value -%}}
     {{#- An escaped dollar in the parameter is escaped because of its significance for the shell, so when making a regex out of the parameter, we remove the shell escape, as the regex escape will do its thing. -#}}
     {{%- set line_regex = prefix_regex + ((parameter | replace("\\$", "$") | escape_regex) | replace("/", "\/")) + separator_regex -%}}
 if [ -e "{{{ path }}}" ] ; then
@@ -1422,7 +1427,7 @@ fi
 
 #}}
 {{%- macro bash_restrict_permissions_home_directories(recursive=false) -%}}
-for home_dir in $(awk -F':' '{ if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid }}}) print $6 }' /etc/passwd); do
+for home_dir in $(awk -F':' '{ if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid }}} && $6 != "/") print $6 }' /etc/passwd); do
     # Only update the permissions when necessary. This will avoid changing the inode timestamp when
     # the permission is already defined as expected, therefore not impacting in possible integrity
     # check systems that also check inodes timestamps.
@@ -2511,4 +2516,20 @@ mkdir -p /etc/dconf/db/{{{ database }}}.d
 # Also define the umask to avoid `dconf update` changing permissions.
 chmod -R u=rwX,go=rX /etc/dconf/profile
 (umask 0022 && dconf update)
+{{%- endmacro -%}}
+
+{{#
+This macro defines a conditional expression that is evaluated as true
+if the remediation is performed during a build of a bootable container image.
+#}}
+{{%- macro bash_bootc_build() -%}}
+[[ "$OSCAP_BOOTC_BUILD" == "YES" ]]
+{{%- endmacro -%}}
+
+{{#
+This macro defines a conditional expression that is evaluated as true
+if the remediation is not performed during a build of a bootable container image.
+#}}
+{{%- macro bash_not_bootc_build() -%}}
+[[ "$OSCAP_BOOTC_BUILD" != "YES" ]]
 {{%- endmacro -%}}

@@ -1,0 +1,31 @@
+name: cpe:/a:system_with_kernel
+title: Bare-metal systems, virtual machines, bootc container images, running bootc systems
+# Common platform for all systems that aren't containers
+# Matches:
+# - normal bare-metal systems or VMs
+# - running bootc (RHEL Image Mode) systems
+# - bootc (RHEL Image Mode) containers and container images
+# Does not match:
+# - classic containers and container images
+#
+# The matching platforms and non-matching platforms can be easily distinguished
+# by checking for presence of the kernel RPM package. All matching platforms
+# have in common that they contain kernel.
+#
+# In most cases, this platform is assigned to rules where the "machine" platform
+# was set in past.
+check_id: system_with_kernel
+{{% if pkg_system == "rpm" %}}
+{{% if "sle" in product or "slmicro" in product %}}
+bash_conditional: "rpm --quiet -q kernel-default"
+{{% else %}}
+bash_conditional: "rpm --quiet -q kernel"
+{{% endif %}}
+{{% else %}}
+bash_conditional: "dpkg-query --show --showformat='${db:Status-Status}\n' 'kernel' 2>/dev/null | grep -q installed"
+{{% endif %}}
+{{% if "sle" in product or "slmicro" in product %}}
+ansible_conditional: '"kernel-default" in ansible_facts.packages'
+{{% else %}}
+ansible_conditional: '"kernel" in ansible_facts.packages'
+{{% endif %}}

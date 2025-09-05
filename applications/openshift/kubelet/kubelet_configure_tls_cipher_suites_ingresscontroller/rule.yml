@@ -18,18 +18,32 @@ severity: medium
 #    cce@ocp4:
 
 references:
-  cis@ocp4: 4.2.13
+  cis@ocp4: 4.2.12
 
-ocil_clause: "TLS cipher suite configuration is not configured"
+ocil_clause: "Ingress controller TLS cipher suite configuration is incomplete or possibly insecure"
 
 ocil: |-
   Run the following command on the kubelet nodes(s):
-  {{% raw %}}<pre>oc -n openshift-ingress-operator patch ingresscontroller/default --type merge -p '{"spec":{"tlsSecurityProfile":{"type":"Custom","custom":{"ciphers":["ECDHE-ECDSA-AES128-GCM-SHA256","ECDHE-RSA-AES128-GCM-SHA256","ECDHE-RSA-AES256-GCM-SHA384"],"minTLSVersion":"VersionTLS12"} } } }'</pre>{{% endraw %}}
+  <pre>oc get ingresscontrollers/default -n openshift-ingress-operator -o=jsonpath='{.status.tlsProfile.ciphers[:]}'</pre>
+  The output should only include relevant and modern TLS ciphers you deem
+  acceptable for your cluster.
 
 warnings:
 - general: |-
     {{{ openshift_cluster_setting("/apis/operator.openshift.io/v1/namespaces/openshift-ingress-operator/ingresscontrollers/default") | indent(4) }}}
 
+# Recommended ciphers
+# ECDHE-ECDSA-AES128-GCM-SHA256
+# ECDHE-ECDSA-CHACHA20-POLY1305
+# ECDHE-ECDSA-AES256-GCM-SHA384
+# TLS_CHACHA20_POLY1305_SHA256
+# TLS_AES_128_GCM_SHA256
+# TLS_AES_256_GCM_SHA384
+#
+# Secure ciphers
+# ECDHE-RSA-AES128-GCM-SHA256
+# ECDHE-RSA-AES256-GCM-SHA384
+# ECDHE-RSA-CHACHA20-POLY1305
 template:
   name: yamlfile_value
   vars:
@@ -37,5 +51,5 @@ template:
     filepath: '/apis/operator.openshift.io/v1/namespaces/openshift-ingress-operator/ingresscontrollers/default'
     yamlpath: ".status.tlsProfile.ciphers[:]"
     values:
-    - value: '^(ECDHE-ECDSA-AES128-GCM-SHA256|ECDHE-RSA-AES128-GCM-SHA256|ECDHE-ECDSA-CHACHA20-POLY1305|ECDHE-RSA-AES256-GCM-SHA384|ECDHE-RSA-CHACHA20-POLY1305|ECDHE-ECDSA-AES256-GCM-SHA384|AES256-GCM-SHA384|AES128-GCM-SHA256)$'
+    - value: '^(ECDHE-ECDSA-AES128-GCM-SHA256|ECDHE-RSA-AES128-GCM-SHA256|ECDHE-ECDSA-CHACHA20-POLY1305|ECDHE-RSA-AES256-GCM-SHA384|ECDHE-RSA-CHACHA20-POLY1305|ECDHE-ECDSA-AES256-GCM-SHA384|TLS_AES_128_GCM_SHA256|TLS_AES_256_GCM_SHA384|TLS_CHACHA20_POLY1305_SHA256)$'
       operation: 'pattern match'

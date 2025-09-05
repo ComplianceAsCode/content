@@ -29,7 +29,7 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  {{% if product in ['rhel9'] %}}
+  {{% if product in ['rhel9','ol9'] %}}
   <ind:textfilecontent54_test id="test_trust_cpu_rng_boot_param_off"
                               comment="check kernel command line parameters for the argument for all boot entries."
                               check="all" check_existence="all_exist" version="1">

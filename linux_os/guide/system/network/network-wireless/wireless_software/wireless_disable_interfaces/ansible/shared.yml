@@ -7,7 +7,7 @@
 - name: Service facts
   ansible.builtin.service_facts:
 
-{{% if product in ["sle12", "sle15"] %}}
+{{% if product in ["sle12", "sle15", "slmicro5"] %}}
 
 - name: Wicked Deactivate Wireless Network Interfaces
   command: wicked ifdown {{ item }}

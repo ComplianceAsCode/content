@@ -1,0 +1,29 @@
+apiVersion: "observability.openshift.io/v1"
+kind: ClusterLogForwarder
+metadata:
+  name: log-forwarder
+  namespace: openshift-logging
+spec:
+  outputs:
+    # This output is fake... but it's used for a probe to work
+    - elasticsearch:
+        index: most-logs
+        url: 'https://elasticsearch:9200'
+        version: 6
+      name: default-elasticsearch
+      type: elasticsearch
+  pipelines:
+   - name: most-logs
+     inputRefs:
+       - application
+       - audit
+       - infrastructure
+     outputRefs:
+      - default
+   - name: audit-logs
+     inputRefs:
+       - audit
+     outputRefs:
+      - default
+  serviceAccount:
+    name: cluster-loggin-operator

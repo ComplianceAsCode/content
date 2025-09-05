@@ -1,5 +1,15 @@
 documentation_complete: true
 
+{{% if product == 'rhel10' %}}
+{{% set audit_loading_systemd_directive="ExecStart" %}}
+{{% set audit_loading_systemd_directive_suffix="=" %}}
+{{% set audit_loading_service_file="audit-rules.service" %}}
+{{% else %}}
+{{% set audit_loading_systemd_directive="ExecStartPost" %}}
+{{% set audit_loading_service_file="auditd.service" %}}
+{{% set audit_loading_systemd_directive_suffix="=-" %}}
+{{% endif %}}
+
 title: 'System Accounting with auditd'
 
 description: |-
@@ -19,17 +29,17 @@ description: |-
     daemon can use the <tt>auditctl</tt> utility to read audit rules from the
     <tt>/etc/audit/audit.rules</tt> configuration file during daemon startup,
     and load them into the kernel. The expected behavior is configured via the
-    appropriate <tt>ExecStartPost</tt> directive setting in the
-    <tt>/usr/lib/systemd/system/auditd.service</tt> configuration file.
+    appropriate <tt>{{{ audit_loading_systemd_directive }}}</tt> directive setting in the
+    <tt>/usr/lib/systemd/system/{{{ audit_loading_service_file }}}</tt> configuration file.
     To instruct the <tt>auditd</tt> daemon to use the <tt>augenrules</tt> program
     to read audit rules (default configuration), use the following setting:
-    <br /> <pre>ExecStartPost=-/sbin/augenrules --load</pre>
-    in the <tt>/usr/lib/systemd/system/auditd.service</tt> configuration file.
+    <br /> <pre>{{{ audit_loading_systemd_directive ~ audit_loading_systemd_directive_suffix }}}/sbin/augenrules --load</pre>
+    in the <tt>/usr/lib/systemd/system/{{{ audit_loading_service_file }}}</tt> configuration file.
     In order to instruct the <tt>auditd</tt> daemon to use the <tt>auditctl</tt>
     utility to read audit rules, use the following setting:
-    <br /> <pre>ExecStartPost=-/sbin/auditctl -R /etc/audit/audit.rules</pre>
-    in the <tt>/usr/lib/systemd/system/auditd.service</tt> configuration file.
-    Refer to <tt>[Service]</tt> section of the <tt>/usr/lib/systemd/system/auditd.service</tt>
+    <br /> <pre>{{{ audit_loading_systemd_directive ~ audit_loading_systemd_directive_suffix }}}/sbin/auditctl -R /etc/audit/audit.rules</pre>
+    in the <tt>/usr/lib/systemd/system/{{{ audit_loading_service_file }}}</tt> configuration file.
+    Refer to <tt>[Service]</tt> section of the <tt>/usr/lib/systemd/system/{{{ audit_loading_service_file }}}</tt>
     configuration file for further details.
     <br /><br />
     Government networks often have substantial auditing
@@ -102,5 +112,5 @@ description: |-
     </li></ul>
     </li></ul>
 
-platform: machine
+platform: system_with_kernel
 

@@ -43,8 +43,8 @@ template:
     name: sshd_lineinfile
     vars:
         parameter: UsePAM
-        rule_id: sshd_enable_pam
         value: 'yes'
+        datatype: string
 
 fixtext: |-
     {{{ fixtext_sshd_lineinfile('UsePAM', 'yes') }}}

@@ -36,3 +36,4 @@ selections:
     - '!grub2_page_alloc_shuffle_argument'
     - '!sysctl_net_core_bpf_jit_harden'
     - '!grub2_pti_argument'
+    - '!package_kea_removed'

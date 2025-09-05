@@ -62,6 +62,7 @@ controls:
             - sshd_max_auth_tries_value=5
             - sssd_enable_smartcards
             - var_password_pam_minlen=14
+            - var_accounts_password_minlen_login_defs=14
             - var_accounts_password_warn_age_login_defs=7
             - var_accounts_minimum_age_login_defs=1
             - var_accounts_maximum_age_login_defs=60
@@ -94,8 +95,18 @@ controls:
             - sshd_disable_kerb_auth
             - sshd_set_max_auth_tries
             - sssd_enable_smartcards
+            - var_password_pam_minlen=20
+            - var_accounts_password_minlen_login_defs=20
         status: automated
-
+    -   id: '0484'
+        title: 'SSH daemon configuration'
+        levels:
+            - base
+        rules:
+            - disable_host_auth
+            - sshd_enable_warning_banner
+            - sshd_disable_x11_forwarding
+        status: partial
     -   id: '0487'
         title: 'Passwordless SSH Connections Configuration'
         levels:
@@ -116,7 +127,7 @@ controls:
             - audit_rules_privileged_commands
             - audit_rules_session_events
             - audit_rules_unsuccessful_file_modification
-            - display_login_attempts
+            - sshd_print_last_log
             - sebool_auditadm_exec_content
         status: automated
 
@@ -134,7 +145,7 @@ controls:
             - audit_rules_privileged_commands
             - audit_rules_session_events
             - audit_rules_unsuccessful_file_modification
-            - display_login_attempts
+            - sshd_print_last_log
             - sebool_auditadm_exec_content
         status: automated
 
@@ -428,7 +439,7 @@ use of device access control software or by disabling external communication int
         levels:
             - base
         rules:
-            - sshd_allow_only_protocol2
+            - file_permissions_sshd_private_key
         status: partial
         notes: |-
             This needs more
@@ -531,11 +542,11 @@ use of device access control software or by disabling external communication int
         title: 'The use of SSH version 1 is disabled for SSH connections.'
         levels:
             - base
-        rules:
+        related_rules:
             - sshd_allow_only_protocol2
-        status: partial
+        status: inherently met
         notes: |-
-            This should be reviewed.
+            As of OpenSSH 7.6, OpenSSH only supports SSH 2.
 
     -   id: '1546'
         title: 'Users are authenticated before they are granted access to a system and its resources'
@@ -599,6 +610,8 @@ use of device access control software or by disabling external communication int
             - sshd_disable_kerb_auth
             - sshd_set_max_auth_tries
             - sssd_enable_smartcards
+            - var_password_pam_minlen=17
+            - var_accounts_password_minlen_login_defs=17
         status: partial
 
     -   id: '1558'

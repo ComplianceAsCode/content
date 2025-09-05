@@ -17,7 +17,7 @@ jobs:
             image: fedora:latest
         steps:
             -   name: Install Deps
-                run: dnf install -y cmake make openscap-utils python3-pyyaml bats ansible python3-pip ShellCheck git gcc gcc-c++ python3-devel python3-lxml python3-pytest
+                run: dnf install -y cmake make openscap-utils python3-pyyaml bats ansible python3-pip ShellCheck git gcc gcc-c++ python3-devel python3-lxml python3-pytest python3-setuptools
             -   name: Checkout
                 uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
             -   name: Install deps python

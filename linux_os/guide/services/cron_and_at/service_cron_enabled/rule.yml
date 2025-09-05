@@ -1,3 +1,9 @@
+{{% if product in ["rhel8", "rhel9", "rhel10"] %}}
+{{% set service_name = "crond" %}}
+{{% else %}}
+{{% set service_name = "cron" %}}
+{{% endif %}}
+
 documentation_complete: true
 
 title: 'Enable cron Service'
@@ -6,7 +12,7 @@ description: |-
     The <tt>crond</tt> service is used to execute commands at
     preconfigured times. It is required by almost all systems to perform necessary
     maintenance tasks, such as notifying root of system activity.
-    {{{ describe_service_enable(service="cron") }}}
+    {{{ describe_service_enable(service=service_name) }}}
 
 rationale: |-
     Due to its usage for maintenance and security-supporting tasks,
@@ -34,9 +40,14 @@ references:
     nist-csf: PR.IP-1,PR.PT-3
 
 ocil: |-
-    {{{ ocil_service_enabled(service="cron") }}}
+    {{{ ocil_service_enabled(service=service_name) }}}
 
 template:
     name: service_enabled
     vars:
         servicename: cron
+        servicename@rhel8: crond
+        servicename@rhel9: crond
+        servicename@rhel10: crond
+        packagename: cron
+        packagename@rhel10: cronie

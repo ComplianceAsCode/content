@@ -5,4 +5,6 @@ if ! grep -s "^\s*cron\.\*\s*/var/log/cron$" /etc/rsyslog.conf /etc/rsyslog.d/*.
 	echo "cron.*	/var/log/cron" >> /etc/rsyslog.d/cron.conf
 fi
 
-systemctl restart rsyslog.service
+if {{{ bash_not_bootc_build() }}} ; then
+    systemctl restart rsyslog.service
+fi

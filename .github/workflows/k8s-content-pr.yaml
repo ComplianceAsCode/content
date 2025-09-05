@@ -65,7 +65,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@49b3bc8e6bdd4a60e6116a5414239cba5943d3cf # v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@aa33708b10e362ff993539393ff100fa93ed6a27 # v3
+        uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3
       - name: Docker metadata
         id: meta
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5
@@ -84,7 +84,7 @@ jobs:
             org.opencontainers.image.vendor='Compliance Operator Authors'
       - name: Build container images and push
         id: docker_build
-        uses: docker/build-push-action@5176d81f87c23d6fc96624dfdbcd9f3830bbe445 # v6
+        uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6
         with:
           context: .
           file: ./Dockerfiles/ocp4_content
@@ -106,7 +106,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Upsert comment on the PR
     steps:
-      - uses: thollander/actions-comment-pull-request@fabd468d3a1a0b97feee5f6b9e499eab0dd903f6 # v2
+      - uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v2
         with:
           message: |
             :robot: A k8s content image for this PR is available at:

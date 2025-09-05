@@ -1,10 +1,10 @@
-# platform = multi_platform_sle
+# platform = multi_platform_sle,multi_platform_slmicro
 # reboot = false
 # complexity = low
 # strategy = configure
 # disruption = low
 
-{{{ ansible_lineinfile(msg='Configure permission for /var/log/messages', path='/etc/permissions.local', regex='^\/var\/log\/messages\s+root.*', new_line='/var/log/messages root:root 640', create='yes', state='present', register='update_permissions_local_result') }}}
+{{{ ansible_lineinfile(msg='Configure permission for /var/log/messages', path='/etc/permissions.local', regex='^\/var\/log\/messages\s+root.*', insensitive=false, new_line='/var/log/messages root:root 640', create='yes', state='present', register='update_permissions_local_result') }}}
 
 - name: "Correct file permissions after update /etc/permissions.local"
   shell: >

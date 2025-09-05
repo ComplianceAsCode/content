@@ -8,7 +8,7 @@ description: |-
     all user sessions will terminate based on inactivity.
     The value of TMOUT should be exported and read only.
     The <tt>TMOUT</tt>
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5"] %}}
     setting in <tt>/etc/profile.d/autologout.sh</tt> should read as follows:
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
     readonly TMOUT
@@ -43,6 +43,7 @@ identifiers:
     cce@rhel10: CCE-88163-1
     cce@sle12: CCE-83011-7
     cce@sle15: CCE-83269-1
+    cce@slmicro5: CCE-93805-0
 
 references:
     cis-csc: 1,12,15,16
@@ -52,7 +53,7 @@ references:
     cis@ubuntu2204: 5.5.5
     cobit5: DSS05.04,DSS05.10,DSS06.10
     cui: 3.1.11
-    disa: CCI-000057,CCI-001133,CCI-002361
+    disa: CCI-000057,CCI-001133
     isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
     iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
@@ -60,7 +61,6 @@ references:
     nist: AC-12,SC-10,AC-2(5),CM-6(a)
     nist-csf: PR.AC-7
     nist@sle12: AC-11(a)
-    ospp: FMT_MOF_EXT.1
     srg: SRG-OS-000163-GPOS-00072,SRG-OS-000029-GPOS-00010
     stigid@ol7: OL07-00-040160
     stigid@sle12: SLES-12-010090
@@ -73,7 +73,7 @@ ocil_clause: 'value of TMOUT is not less than or equal to expected setting'
 ocil: |-
     Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
     on the system:
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5"] %}}
     <pre>$ sudo grep TMOUT /etc/profile.d/autologout.sh</pre>
     {{% elif "ubuntu" in product %}}
     <pre>$ sudo grep TMOUT /etc/bash.bashrc /etc/profile /etc/profile.d/*.sh</pre>
@@ -82,12 +82,12 @@ ocil: |-
     {{% endif %}}
     The output should return the following:
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
-    {{% if product in ["sle12", "sle15",  "ubuntu2004", "ubuntu2204"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204"] %}}
     readonly TMOUT
     export TMOUT
     {{% endif %}}
 
-platform: machine
+platform: system_with_kernel
 
 fixtext: |-
     Configure {{{ full_name }}} to terminate user sessions after {{{ xccdf_value("var_accounts_tmout") }}} seconds of inactivity.

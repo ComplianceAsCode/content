@@ -17,5 +17,7 @@ checktext: |-
 
     If the "active" keyword does not have a value of "yes", the line is commented out, or the line is missing, this is a finding.
 
-vuln_discussion: |-
+
+
+vuldiscussion: |-
     The auditd service does not include the ability to send audit records to a centralized server for management directly. However, it can use a plug-in for audit event multiplexor (audispd) to pass audit records to the local syslog server.

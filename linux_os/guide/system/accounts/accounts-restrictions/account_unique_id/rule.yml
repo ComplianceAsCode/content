@@ -15,6 +15,7 @@ identifiers:
     cce@rhel10: CCE-89811-4
     cce@sle12: CCE-83196-6
     cce@sle15: CCE-83277-4
+    cce@slmicro5: CCE-93780-5
 
 references:
     cis@sle12: 6.2.14
@@ -31,7 +32,7 @@ references:
     stigid@sle15: SLES-15-010230
 
 # The rule check uses password probe, which doesn't support offline mode
-platform: machine
+platform: system_with_kernel
 
 ocil_clause: 'output is produced and the accounts listed are interactive user accounts'
 

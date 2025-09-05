@@ -1,0 +1,37 @@
+# platform = multi_platform_sle,multi_platform_slmicro
+# reboot = false
+# complexity = low
+# strategy = configure
+# disruption = low
+
+{{{ ansible_lineinfile(msg='Configure permission for /var/log/audit', path='/etc/permissions.local', regex='^\/var\/log\/audit\s+root.*', insensitive=false, new_line='/var/log/audit root:root 600', create='yes', state='present', register='update_permissions_var_log_audit') }}}
+
+- name: "Correct file permissions after update /var/log/audit"
+  shell: >
+    set -o pipefail
+    chkstat --set --system
+  when: update_permissions_var_log_audit.changed
+
+{{{ ansible_lineinfile(msg='Configure permission for /var/log/audit.log', path='/etc/permissions.local', regex='^\/var\/log\/audit\/audit.log\s+root.*', insensitive=false, new_line='/var/log/audit/audit.log root:root 600', create='yes', state='present', register='update_permissions_var_log_audit_audit_log') }}}
+
+- name: "Correct file permissions after update /var/log/audit/audit.log"
+  shell: >
+    set -o pipefail
+    chkstat --set --system
+  when: update_permissions_var_log_audit_audit_log.changed
+
+{{{ ansible_lineinfile(msg='Configure permission for /etc/audit/audit.rules', path='/etc/permissions.local', regex='^\/etc\/audit\/audit.rules\s+root.*', insensitive=false, new_line='/etc/audit/audit.rules root:root 640', create='yes', state='present', register='update_permissions_etc_audit_audit_rules') }}}
+
+- name: "Correct file permissions after update /etc/audit/audit.rules"
+  shell: >
+    set -o pipefail
+    chkstat --set --system
+  when: update_permissions_etc_audit_audit_rules.changed
+
+{{{ ansible_lineinfile(msg='Configure permission for /etc/audit/rules.d/audit.rules', path='/etc/permissions.local', regex='^\/etc\/audit\/rules.d\/audit.rules\s+root.*', insensitive=false, new_line='/etc/audit/rules.d/audit.rules root:root 640', create='yes', state='present', register='update_permissions_etc_audit_rules_d_audit_rules') }}}
+
+- name: "Correct file permissions after update /etc/audit/rules.d/audit.rules"
+  shell: >
+    set -o pipefail
+    chkstat --set --system
+  when: update_permissions_etc_audit_rules_d_audit_rules.changed

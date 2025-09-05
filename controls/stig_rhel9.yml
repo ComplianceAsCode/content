@@ -2,7 +2,7 @@ policy: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 title: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 id: stig_rhel9
 source: https://public.cyber.mil/stigs/downloads/
-version: V1R3
+version: V2R1
 reference_type: stigid
 product: rhel9
 levels:
@@ -44,15 +44,6 @@ controls:
         rules:
             - banner_etc_issue
             - login_banner_text=dod_banners
-        status: automated
-
-    -   id: RHEL-09-211025
-        levels:
-            - medium
-        title: RHEL 9 must implement the Endpoint Security for Linux Threat Prevention tool.
-        rules:
-            - package_mcafeetp_installed
-            - agent_mfetpd_running
         status: automated
 
     -   id: RHEL-09-211030
@@ -669,16 +660,6 @@ controls:
             user home directories.
         rules:
             - mount_option_home_noexec
-        status: automated
-
-    -   id: RHEL-09-231060
-        levels:
-            - medium
-        title:
-            RHEL 9 must be configured so that the Network File System (NFS) is configured
-            to use RPCSEC_GSS.
-        rules:
-            - mount_option_krb_sec_remote_filesystems
         status: automated
 
     -   id: RHEL-09-231065
@@ -1411,14 +1392,6 @@ controls:
             - configured_firewalld_default_deny
         status: automated
 
-    -   id: RHEL-09-251025
-        levels:
-            - medium
-        title: RHEL 9 must control remote access methods.
-        rules:
-            - configure_firewalld_ports
-        status: automated
-
     -   id: RHEL-09-251030
         levels:
             - medium
@@ -1521,7 +1494,7 @@ controls:
         title: RHEL 9 must configure a DNS processing mode set be Network Manager.
         rules:
             - networkmanager_dns_mode
-            - var_networkmanager_dns_mode=none
+            - var_networkmanager_dns_mode=explicit_default
         status: automated
 
     -   id: RHEL-09-252045
@@ -1538,16 +1511,6 @@ controls:
         title: RHEL 9 must be configured to prevent unrestricted mail relaying.
         rules:
             - postfix_prevent_unrestricted_relay
-        status: automated
-
-    -   id: RHEL-09-252055
-        levels:
-            - medium
-        title:
-            If the Trivial File Transfer Protocol (TFTP) server is required, RHEL 9 TFTP
-            daemon must be configured to operate in secure mode.
-        rules:
-            - tftpd_uses_secure_mode
         status: automated
 
     -   id: RHEL-09-252060
@@ -1856,7 +1819,8 @@ controls:
             - medium
         title: RHEL 9 SSH daemon must be configured to use system-wide crypto policies.
         rules:
-            - configure_ssh_crypto_policy
+            - file_sshd_50_redhat_exists
+            - sshd_include_crypto_policy
         status: automated
 
     -   id: RHEL-09-255060
@@ -2047,14 +2011,6 @@ controls:
             logon upon an SSH logon.
         rules:
             - sshd_print_last_log
-        status: automated
-
-    -   id: RHEL-09-255170
-        levels:
-            - medium
-        title: RHEL 9 SSH daemon must be configured to use privilege separation.
-        rules:
-            - sshd_use_priv_separation
         status: automated
 
     -   id: RHEL-09-255175
@@ -2551,52 +2507,6 @@ controls:
             - accounts_user_dot_no_world_writable_programs
         status: automated
 
-    -   id: RHEL-09-412010
-        levels:
-            - medium
-        title: RHEL 9 must have the tmux package installed.
-        rules:
-            - package_tmux_installed
-        status: automated
-
-    -   id: RHEL-09-412015
-        levels:
-            - medium
-        title: RHEL 9 must ensure session control is automatically started at shell initialization.
-        rules:
-            - configure_bashrc_tmux
-        status: automated
-
-    -   id: RHEL-09-412020
-        levels:
-            - medium
-        title:
-            RHEL 9 must enable a user session lock until that user re-establishes access
-            using established identification and authentication procedures for command line
-            sessions.
-        rules:
-            - configure_tmux_lock_command
-            - configure_tmux_lock_keybinding
-        status: automated
-
-    -   id: RHEL-09-412025
-        levels:
-            - medium
-        title:
-            RHEL 9 must automatically lock command line user sessions after 15 minutes
-            of inactivity.
-        rules:
-            - configure_tmux_lock_after_time
-        status: automated
-
-    -   id: RHEL-09-412030
-        levels:
-            - low
-        title: RHEL 9 must prevent users from disabling session control mechanisms.
-        rules:
-            - no_tmux_in_shells
-        status: automated
-
     -   id: RHEL-09-412035
         levels:
             - medium
@@ -2605,6 +2515,7 @@ controls:
             15 minutes of inactivity.
         rules:
             - accounts_tmout
+            - var_accounts_tmout=10_min
         status: automated
 
     -   id: RHEL-09-412040
@@ -2813,28 +2724,6 @@ controls:
             - var_password_pam_retry=3
         status: automated
 
-    -   id: RHEL-09-611015
-        levels:
-            - medium
-        title:
-            RHEL 9 must be configured in the password-auth file to prohibit password
-            reuse for a minimum of five generations.
-        rules:
-            - accounts_password_pam_pwhistory_remember_password_auth
-            - var_password_pam_remember=5
-            - var_password_pam_remember_control_flag=requisite_or_required
-        status: automated
-
-    -   id: RHEL-09-611020
-        levels:
-            - medium
-        title:
-            RHEL 9 must be configured in the system-auth file to prohibit password reuse
-            for a minimum of five generations.
-        rules:
-            - accounts_password_pam_pwhistory_remember_system_auth
-        status: automated
-
     -   id: RHEL-09-611025
         levels:
             - high
@@ -2972,14 +2861,6 @@ controls:
             - var_password_pam_minlen=15
         status: automated
 
-    -   id: RHEL-09-611095
-        levels:
-            - medium
-        title: RHEL 9 passwords for new users must have a minimum of 15 characters.
-        rules:
-            - accounts_password_minlen_login_defs
-        status: automated
-
     -   id: RHEL-09-611100
         levels:
             - medium
@@ -3085,16 +2966,6 @@ controls:
             escalation.
         rules:
             - disallow_bypass_password_sudo
-        status: automated
-
-    -   id: RHEL-09-611150
-        levels:
-            - medium
-        title:
-            RHEL 9 shadow password suite must be configured to use a sufficient number
-            of hashing rounds.
-        rules:
-            - set_password_hashing_min_rounds_logindefs
         status: automated
 
     -   id: RHEL-09-611155

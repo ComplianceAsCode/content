@@ -55,3 +55,4 @@ selections:
     - '!sysctl_net_ipv6_conf_all_autoconf'
     - '!grub2_pti_argument'
     - '!ensure_oracle_gpgkey_installed'
+    - '!package_kea_removed'

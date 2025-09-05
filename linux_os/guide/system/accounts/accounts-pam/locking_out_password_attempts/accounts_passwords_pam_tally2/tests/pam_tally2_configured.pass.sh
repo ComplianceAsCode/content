@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_sle,Ubuntu 20.04
+# platform = multi_platform_sle,multi_platform_slmicro,Ubuntu 20.04
 
 {{% if product in ["sle12","sle15"] %}}
 {{% set cfg_file = '/etc/pam.d/login' %}}

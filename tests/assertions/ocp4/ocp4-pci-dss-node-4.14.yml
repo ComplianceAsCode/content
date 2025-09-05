@@ -128,7 +128,7 @@ rule_results:
   e2e-pci-dss-node-master-file-ownership-var-log-ocp-audit:
     default_result: PASS
   e2e-pci-dss-node-master-file-permissions-cni-conf:
-    default_result: FAIL
+    default_result: PASS
   e2e-pci-dss-node-master-file-permissions-controller-manager-kubeconfig:
     default_result: PASS
   e2e-pci-dss-node-master-file-permissions-etcd-data-dir:
@@ -355,7 +355,7 @@ rule_results:
   e2e-pci-dss-node-worker-file-ownership-var-log-ocp-audit:
     default_result: NOT-APPLICABLE
   e2e-pci-dss-node-worker-file-permissions-cni-conf:
-    default_result: FAIL
+    default_result: PASS
   e2e-pci-dss-node-worker-file-permissions-controller-manager-kubeconfig:
     default_result: NOT-APPLICABLE
   e2e-pci-dss-node-worker-file-permissions-etcd-data-dir:
@@ -452,3 +452,27 @@ rule_results:
     default_result: MANUAL
   e2e-pci-dss-node-worker-tls-version-check-masters-workers:
     default_result: PASS
+  e2e-pci-dss-node-master-directory-access-var-log-kube-audit:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-node-master-directory-access-var-log-oauth-audit:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-node-master-directory-access-var-log-ocp-audit:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-node-master-kubelet-configure-tls-min-version:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-node-worker-directory-access-var-log-kube-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-node-worker-directory-access-var-log-oauth-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-node-worker-directory-access-var-log-ocp-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-node-worker-kubelet-configure-tls-min-version:
+    default_result: PASS
+    result_after_remediation: PASS

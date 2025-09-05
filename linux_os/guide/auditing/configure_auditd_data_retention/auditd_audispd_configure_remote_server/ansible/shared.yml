@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
 # reboot = false
 # strategy = configure
 # complexity = low
@@ -6,8 +6,27 @@
 {{{ ansible_instantiate_variables("var_audispd_remote_server") }}}
 {{% set audisp_config_file_path = audisp_conf_path + "/audisp-remote.conf" %}}
 
-- name: Make sure that a remote server is configured for Audispd
-  lineinfile:
+{{% if 'ubuntu' in product %}}
+{{% set audisp_config_plugin_path = audisp_conf_path + "/plugins.d/au-remote.conf" %}}
+- name: "{{{ rule_title }}} - Uncomment active for offloading to remote server"
+  ansible.builtin.lineinfile:
+    path: "{{{ audisp_config_plugin_path }}}"
+    regexp: ^(#.*)(active\s*=)
+    line: \2
+    backrefs: true
+
+- name: "{{{ rule_title }}} - Set active to true for offloading to remote server"
+  ansible.builtin.lineinfile:
+    path: "{{{ audisp_config_plugin_path }}}"
+    regexp: ^(.*)(active\s*=)(?!.*yes)
+    line: \2 yes
+    create: true
+    state: present
+    backrefs: true
+{{% endif %}}
+
+- name: "{{{ rule_title }}} - Make sure that a remote server is configured for Audispd"
+  ansible.builtin.lineinfile:
     path: "{{{ audisp_config_file_path }}}"
     line: "remote_server = {{ var_audispd_remote_server }}"
     regexp: '^\s*remote_server\s*=.*$'

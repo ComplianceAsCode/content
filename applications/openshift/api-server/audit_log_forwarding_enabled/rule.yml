@@ -7,7 +7,7 @@ description: |-
   The cluster-logging-operator is able to do this with the <pre>ClusterLogForwarders</pre> resource.
   The forementioned resource can be configured to logs to different third party systems.
   For more information on this, please reference the official documentation:
-  {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/logging/cluster-logging-external.html") }}}
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/observability/logging/logging-6.0/log6x-clf.html") }}}
 
 rationale: |-
   Retaining logs ensures the ability to go back in time to investigate or correlate any events.
@@ -33,20 +33,9 @@ ocil_clause: 'Logs are not forwarded outside the cluster'
 
 ocil: |-
     Run the following command:
-    <pre>oc get clusterlogforwarders instance -n openshift-logging -ojson | jq -r '.spec.pipelines[].inputRefs | contains(["audit"])'</pre>
+    <pre>oc get clusterlogforwarders -n openshift-logging -ojson | jq -r '.items[].spec.pipelines[].inputRefs | contains(["audit"])'</pre>
     The output should return <pre>true</pre>.
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance", true) | indent(4) }}}
-
-template:
-  name: yamlfile_value
-  vars:
-    ocp_data: "true"
-    filepath: /apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance
-    yamlpath: "spec.pipelines[:].inputRefs[:]"
-    entity_check: "at least one"
-    values:
-    - value: "audit"
-      entity_check: "at least one"
+    {{{ openshift_cluster_setting(["/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders", "/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance"], true) | indent(4) }}}

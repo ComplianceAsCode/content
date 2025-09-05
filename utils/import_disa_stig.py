@@ -96,12 +96,16 @@ def main() -> int:
         rule_fixtext = rule.policy_specific_content.get('fixtext')
         if rule_fixtext != stig_fix_text:
             changed_fixtext = fix_changed_text(stig_fix_text, changed_name)
+            changed_fixtext = changed_fixtext.replace(f'auid>={env_yaml["uid_min"]}',
+                                                      'auid&gt;={{{ uid_min }}}')
             update_row(changed_fixtext, rule_fixtext, rule_obj, 'fixtext')
 
         stig_checktext = stig_rule['check']
         rule_checktext = rule.policy_specific_content.get('checkfix')
         if rule_checktext != stig_checktext:
             changed_checktext = fix_changed_text(stig_checktext, changed_name)
+            changed_checktext = changed_checktext.replace(f'auid>={env_yaml["uid_min"]}',
+                                                          'auid&gt;={{{ uid_min }}}')
             update_row(changed_checktext, rule_checktext, rule_obj, 'checktext')
 
         stig_vuln_discussion = stig_rule['vuln_discussion']
@@ -109,7 +113,7 @@ def main() -> int:
         if stig_vuln_discussion != rule_vuln_discussion:
             changed_vuln_discussion = fix_changed_text(stig_vuln_discussion, changed_name)
             update_row(changed_vuln_discussion, rule_vuln_discussion, rule_obj,
-                       'vuln_discussion')
+                       'vuldiscussion')
 
     return 0
 

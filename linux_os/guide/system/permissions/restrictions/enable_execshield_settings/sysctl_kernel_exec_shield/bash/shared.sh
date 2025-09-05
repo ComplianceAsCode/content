@@ -5,7 +5,7 @@
 # disruption = low
 
 {{# products that are available also in a 32 bits form #}}
-{{% if "rhel" not in product and product != "fedora" %}}
+{{% if "rhel" not in product and product != "fedora" and "ol" not in families %}}
 if [ "$(getconf LONG_BIT)" = "32" ] ; then
   #
   # Set runtime for kernel.exec-shield

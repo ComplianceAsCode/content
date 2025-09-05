@@ -1,4 +1,4 @@
-{{%- if product in ["fedora", "ol7", "ol8", "ol9", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204"] %}}
+{{%- if product in ["fedora", "ol7", "ol8", "ol9", "sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204"] or 'rhel' in product %}}
   {{%- set perm_x="-F perm=x " %}}
 {{%- endif %}}
 
@@ -41,7 +41,7 @@ identifiers:
     cce@slmicro5: CCE-94099-9
 
 references:
-    disa: CCI-000169,CCI-000172,CCI-002884
+    disa: CCI-000172,CCI-000130,CCI-000135,CCI-000169,CCI-002884
     nist: AU-2(d),AU-12(c),AC-6(9),CM-6(a)
     srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209,SRG-APP-000495-CTR-001235,SRG-APP-000496-CTR-001240,SRG-APP-000497-CTR-001245,SRG-APP-000498-CTR-001250
     stigid@ol7: OL07-00-030590

@@ -41,9 +41,10 @@ identifiers:
     cce@rhel10: CCE-87194-7
     cce@sle12: CCE-83114-9
     cce@sle15: CCE-85697-1
+    cce@slmicro5: CCE-94090-8
 
 references:
-    disa: CCI-001849
+    disa: CCI-001849,CCI-001851
     nist@sle15: AU-4
     srg: SRG-OS-000341-GPOS-00132,SRG-OS-000342-GPOS-00133
     stigid@ol8: OL08-00-030660
@@ -84,6 +85,5 @@ fixtext: |-
 
     If audit records are not stored on a partition made specifically for audit records, a new partition with sufficient space will need be to be created.
 
-platform: machine
 
 srg_requirement: '{{{ full_name }}} must allocate enough storage capacity for at least one week of audit records.'

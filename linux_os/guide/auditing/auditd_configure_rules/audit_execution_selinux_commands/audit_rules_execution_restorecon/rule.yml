@@ -1,4 +1,4 @@
-{{%- if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
+{{%- if product in ["fedora", "ol8", "ol9", "sle12", "sle15", "ubuntu2004", "ubuntu2204"] or 'rhel' in product %}}
   {{%- set perm_x="-F perm=x " %}}
 {{%- endif %}}
 
@@ -51,7 +51,6 @@ references:
     iso27001-2013: A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1,A.14.2.7,A.15.2.1,A.15.2.2
     nist: AU-2(d),AU-12(c),AC-6(9),CM-6(a)
     nist-csf: DE.CM-1,DE.CM-3,DE.CM-7,ID.SC-4,PR.PT-1
-    ospp: FAU_GEN.1.1.c
     srg: SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209
 
 {{{ ocil_fix_srg_privileged_command("restorecon", "/usr/sbin/") }}}

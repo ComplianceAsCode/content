@@ -26,7 +26,7 @@ identifiers: {}
 references:
   nist: SC-6
 
-{{% set jqfilter = '[ .items[] | select(.metadata.namespace | startswith("kube-") or startswith("openshift-") | not) | select( .spec.template.spec.containers[].resources.requests.cpu == null  or  .spec.template.spec.containers[].resources.requests.memory == null or .spec.template.spec.containers[].resources.limits.cpu == null  or  .spec.template.spec.containers[].resources.limits.memory == null )  | .metadata.name ]' %}}
+{{% set jqfilter = '[ .items[] | select(.metadata.namespace | startswith("kube-") or startswith("openshift-") | not) | select(.metadata.namespace != "rhacs-operator" and ({{if ne .var_statefulset_limit_namespaces_exempt_regex "None"}}.metadata.namespace | test("{{.var_statefulset_limit_namespaces_exempt_regex}}") | not{{else}}true{{end}})) | select( .spec.template.spec.containers[].resources.requests.cpu == null  or  .spec.template.spec.containers[].resources.requests.memory == null or .spec.template.spec.containers[].resources.limits.cpu == null  or  .spec.template.spec.containers[].resources.limits.memory == null )  | .metadata.name ]' %}}
 
 ocil_clause: 'Resource requests and limits is not set'
 

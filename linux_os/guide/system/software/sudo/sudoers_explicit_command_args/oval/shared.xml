@@ -19,7 +19,7 @@
            - ',' is a command delimiter, while
          The last capturing group holds the offending command without args.
     -->
-    <ind:pattern operation="pattern match">^(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+(?:[ \t]+[^,\s]+)+[ \t]*,)*(\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+[ \t]*(?:,|$))</ind:pattern>
+    <ind:pattern operation="pattern match">^(?!\s*Defaults)(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+(?:[ \t]+[^,\s]+)+[ \t]*,)*(\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+[ \t]*(?:,|$))</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

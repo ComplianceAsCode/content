@@ -3,7 +3,7 @@
 {{{ bash_instantiate_variables("var_time_service_set_maxpoll") }}}
 
 
-{{% if 'sle' in product or 'ubuntu' in product %}}
+{{% if 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
 pof="/bin/pidof"
 {{% else %}}
 pof="/usr/sbin/pidof"
@@ -20,7 +20,7 @@ $pof ntpd || {
 
 for config_file in "${CONFIG_FILES[@]}" ; do
     # Set maxpoll values to var_time_service_set_maxpoll
-    sed -i "s/^\(\(server\|pool\|peer\).*maxpoll\) [0-9][0-9]*\(.*\)$/\1 $var_time_service_set_maxpoll \3/" "$config_file"
+    sed -i "s/^\(\(server\|pool\|peer\).*maxpoll\) [0-9,-][0-9]*\(.*\)$/\1 $var_time_service_set_maxpoll \3/" "$config_file"
 done
 
 for config_file in "${CONFIG_FILES[@]}" ; do

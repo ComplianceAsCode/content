@@ -559,3 +559,15 @@ selections:
     - set_nftables_table
     - sshd_use_approved_ciphers
     - configure_bashrc_exec_tmux
+    - agent_mfetpd_running
+    - package_mcafeetp_installed
+    - configure_bashrc_tmux
+    - configure_tmux_lock_after_time
+    - configure_tmux_lock_command
+    - configure_tmux_lock_keybinding
+    - mount_option_krb_sec_remote_filesystems
+    - no_tmux_in_shells
+    - package_tmux_installed
+    - set_password_hashing_min_rounds_logindefs
+    - sshd_use_priv_separation
+    - tftpd_uses_secure_mode

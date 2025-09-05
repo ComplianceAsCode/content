@@ -61,7 +61,7 @@ ocil_clause: 'OAuth server inactivity timeout is not configured'
 ocil: |-
   To check if the OAuth server timeout is configured, run the following command:
   <pre>oc get oauth cluster -ojsonpath='{.spec.tokenConfig.accessTokenInactivityTimeout}'</pre>
-  the output should return <pre> {{{ xccdf_value("var_oauth_inactivity_timeout") }}} </pre>.
+  the output should return <pre>{{ .var_oauth_inactivity_timeout }}</pre>.
 
 severity: medium
 

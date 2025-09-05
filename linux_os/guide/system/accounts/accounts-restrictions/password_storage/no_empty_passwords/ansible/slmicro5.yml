@@ -1,0 +1,17 @@
+# platform = multi_platform_slmicro
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+- name: Find files in /etc/pam.d/ with password auth
+  find:
+    paths: /etc/pam.d
+    contains: ".*pam_unix\\.so.*nullok.*"
+    recurse: yes
+  register: find_pam_conf_files_result
+
+- name: Prevent Log In to Accounts with Empty Password
+  replace:
+    dest: "{{ item.path }}"
+    regexp: nullok
+  with_items: "{{ find_pam_conf_files_result.files }}"

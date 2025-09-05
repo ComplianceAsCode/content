@@ -19,6 +19,7 @@ rules:
 - file_permissions_sshd_config
 - file_permissions_sshd_private_key
 - file_permissions_sshd_pub_key
+- file_sshd_50_redhat_exists
 - firewalld_sshd_disabled
 - firewalld_sshd_port_enabled
 - iptables_sshd_disabled
@@ -79,5 +80,6 @@ rules:
 - sshd_use_strong_macs
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
+- sshd_include_crypto_policy
 templates:
 - sshd_lineinfile

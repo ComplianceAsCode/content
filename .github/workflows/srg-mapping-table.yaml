@@ -3,7 +3,7 @@ on:
   push:
     branches: [ 'master' ]
   pull_request:
-    branches: [ 'master', 'stabilization*' ]
+    branches: [ 'master', 'stabilization*', 'oscal-update-*' ]
   merge_group:
     branches: [ 'master' ]
 concurrency:
@@ -19,7 +19,7 @@ jobs:
       PAGES_DIR: __srg_mapping
     steps:
       - name: Install Deps
-        run: dnf install -y cmake git ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint libxslt python3-pip rsync
+        run: dnf install -y cmake git ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint libxslt python3-pip rsync python3-setuptools
       - name: Install deps python
         run: pip3 install pandas openpyxl
       - name: Checkout
@@ -45,19 +45,19 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate XLSX for RHEL9
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v2r7.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v3r1.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML for RHEL9
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v2r7.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel9.html
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v3r1.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel9.html
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate XLSX for RHEL10
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v2r7.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel10.xlsx
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v3r1.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel10.xlsx
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML for RHEL10
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v2r7.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel10.html
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v3r1.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel10.html
         env:
           PYTHONPATH: ${{ github.workspace }}
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
@@ -99,7 +99,7 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Deploy
         if: ${{ github.event_name == 'push' && github.repository == 'ComplianceAsCode/content' }}
-        uses: JamesIves/github-pages-deploy-action@94f3c658273cf92fb48ef99e5fbc02bd2dc642b2 # v4.6.3
+        uses: JamesIves/github-pages-deploy-action@881db5376404c5c8d621010bcbec0310b58d5e29 # v4.6.8
         with:
           branch: main # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.

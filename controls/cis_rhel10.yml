@@ -46,6 +46,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this module when the product is out.
     rules:
       - kernel_module_cramfs_disabled
 
@@ -55,6 +56,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this module when the product is out.
     rules:
       - kernel_module_freevxfs_disabled
 
@@ -64,6 +66,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this module when the product is out.
     rules:
       - kernel_module_hfs_disabled
 
@@ -73,6 +76,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this module when the product is out.
     rules:
       - kernel_module_hfsplus_disabled
 
@@ -82,6 +86,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this module when the product is out.
     rules:
       - kernel_module_jffs2_disabled
 
@@ -471,8 +476,9 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    notes: <-
-      RHEL9 unified the paths for grub2 files.
+    notes: |-
+      There is no automated remediation for this rule and this is intentional.
+      More details in the rule description.
     rules:
       - grub2_password
     related_rules:
@@ -484,8 +490,7 @@ controls:
       - l1_server
       - l1_workstation
     status: pending
-    notes: <-
-      RHEL9 unified the paths for grub2 files.
+    notes: |-
       This requirement demands a deeper review of the rules.
     rules:
       - file_groupowner_grub2_cfg
@@ -548,7 +553,7 @@ controls:
     status: automated
     rules:
       - configure_crypto_policy
-      - var_system_crypto_policy=default
+      - var_system_crypto_policy=default_policy
 
   - id: 1.6.2
     title: Ensure system wide crypto policy is not set in sshd configuration (Automated)
@@ -615,8 +620,8 @@ controls:
       - l1_workstation
     status: automated
     rules:
-      - banner_etc_motd
-      - motd_banner_text=cis_banners
+      - banner_etc_motd_cis
+      - cis_banner_text=cis
 
   - id: 1.7.2
     title: Ensure local login warning banner is configured properly (Automated)
@@ -625,8 +630,8 @@ controls:
       - l1_workstation
     status: automated
     rules:
-      - banner_etc_issue
-      - login_banner_text=cis_banners
+      - banner_etc_issue_cis
+      - cis_banner_text=cis
 
   - id: 1.7.3
     title: Ensure remote login warning banner is configured properly (Automated)
@@ -635,8 +640,8 @@ controls:
       - l1_workstation
     status: automated
     rules:
-      - banner_etc_issue_net
-      - remote_login_banner_text=cis_banners
+      - banner_etc_issue_net_cis
+      - cis_banner_text=cis
 
   - id: 1.7.4
     title: Ensure access to /etc/motd is configured (Automated)
@@ -761,11 +766,15 @@ controls:
 
   - id: 1.8.10
     title: Ensure XDMCP is not enabled (Automated)
+    notes: |-
+        This was inherited from the RHEL 9 profile.
+        However, it was reported that XDMCP is no
+        longer in RHEL 10.
     levels:
       - l1_server
       - l1_workstation
     status: automated
-    rules:
+    related_rules:
       - gnome_gdm_disable_xdmcp
 
   - id: 2.1.1
@@ -795,7 +804,7 @@ controls:
       - l1_workstation
     status: automated
     rules:
-      - package_dhcp_removed
+      - package_kea_removed
     related_rules:
       - service_dhcpd_disabled
 
@@ -874,10 +883,9 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rules:
-      - package_ypserv_removed
     related_rules:
       - service_ypserv_disabled
+      - package_ypserv_removed
 
   - id: 2.1.11
     title: Ensure print server services are not in use (Automated)
@@ -977,6 +985,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this package when the product is out.
     rules:
       - package_xinetd_removed
     related_rules:
@@ -988,6 +997,7 @@ controls:
       - l2_server
     status: automated
     notes: |-
+      Review the availability of xorg-x11-server-common package when the product is out.
       The rule also configures correct run level to prevent unbootable system.
     rules:
       - package_xorg-x11-server-common_removed
@@ -1038,7 +1048,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rules:
+    related_rules:
       - package_ypbind_removed
 
   - id: 2.2.4
@@ -1220,6 +1230,7 @@ controls:
       - l2_server
       - l2_workstation
     status: automated
+    notes: Review the availability of this module when the product is out.
     rules:
       - kernel_module_dccp_disabled
 
@@ -1513,7 +1524,6 @@ controls:
       - l1_workstation
     status: pending
     notes: |-
-      Introduced in CIS RHEL9 v2.0.0
       The status was automated but we need to double check the approach used in this rule.
       Therefore I moved it to pending until deeper investigation.
     related_rules:
@@ -1599,8 +1609,6 @@ controls:
       - l2_server
       - l1_workstation
     status: automated
-    notes: |-
-      Introduced in CIS RHEL9 v2.0.0
     rules:
       - sshd_disable_gssapi_auth
 
@@ -2117,10 +2125,13 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: |-
+      There's a "new" set of options in /etc/login.defs file to define the number of iterations
+      performed during the hashing process.
     rules:
       - set_password_hashing_algorithm_libuserconf
       - set_password_hashing_algorithm_logindefs
-      - var_password_hashing_algorithm=SHA512
+      - var_password_hashing_algorithm=yescrypt
       - var_password_hashing_algorithm_pam=yescrypt
 
   - id: 5.4.1.5
@@ -2172,7 +2183,6 @@ controls:
       - l1_workstation
     status: pending
     notes: |-
-      Introduced in CIS RHEL9 v2.0.0.
       New rule is necessary.
 
   - id: 5.4.2.4
@@ -2221,7 +2231,6 @@ controls:
       - l1_workstation
     status: pending
     notes: |-
-      Introduced in CIS RHEL9 v2.0.0.
       New rule is necessary.
 
   - id: 5.4.3.1
@@ -2342,7 +2351,6 @@ controls:
       - l1_workstation
     status: pending
     notes: |-
-      Introduced in CIS RHEL9 v2.0.0.
       New templated rule is necessary.
 
   - id: 6.2.2.1.4

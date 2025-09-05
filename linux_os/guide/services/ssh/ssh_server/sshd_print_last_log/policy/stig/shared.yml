@@ -7,7 +7,7 @@ vuldiscussion: |-
 checktext: |-
     Verify the SSH daemon provides users with feedback on when account accesses last occurred with the following command:
 
-    $ sudo grep -ir printlast  /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*printlastlog'
 
     PrintLastLog yes
 
@@ -23,6 +23,3 @@ fixtext: |-
     The SSH service must be restarted for changes to take effect:
 
     $ sudo systemctl restart sshd.service
-
-vuln_discussion: |-
-    Providing users feedback on when account accesses last occurred facilitates user recognition and reporting of unauthorized account use.

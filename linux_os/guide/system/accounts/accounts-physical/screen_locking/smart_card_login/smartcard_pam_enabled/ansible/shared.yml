@@ -1,18 +1,14 @@
-# platform = multi_platform_sle,Ubuntu 20.04
+# platform = multi_platform_sle,multi_platform_slmicro,Ubuntu 20.04
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = low
 
-{{%- if 'sle' in product %}}
+{{%- if 'sle' in product or 'slmicro' in product %}}
   {{%- set pam_package = "pam_pkcs11" %}}
-{{%- else %}}
-  {{%- set pam_package = "libpam-pkcs11" %}}
-{{% endif %}}
-
-{{%- if 'sle' in product %}}
   {{%- set pam_pkcs11_control_flag = "sufficient" %}}
 {{%- else %}}
+  {{%- set pam_package = "libpam-pkcs11" %}}
   {{%- set pam_pkcs11_control_flag = "\u005Bsuccess=2 default=ignore\u005D" %}}
 {{% endif %}}
 

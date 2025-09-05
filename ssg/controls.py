@@ -177,7 +177,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         return data
 
     def add_references(self, reference_type, rules):
-        for selection in self.rules:
+        for selection in self.selections:
             if "=" in selection:
                 continue
             rule = rules.get(selection)
@@ -349,7 +349,11 @@ class Policy(ssg.entities.common.XCCDFEntity):
         self.title = ssg.utils.required_key(yaml_contents, "title")
         self.source = yaml_contents.get("source", "")
         self.reference_type = yaml_contents.get("reference_type", None)
-        self.product = yaml_contents.get("product", None)
+        yaml_product = yaml_contents.get("product", None)
+        if isinstance(yaml_product, list):
+            self.product = yaml_product
+        elif yaml_product is not None:
+            self.product = [yaml_product]
 
         default_level_dict = {"id": "default"}
         level_list = yaml_contents.get("levels", [default_level_dict])
@@ -456,14 +460,25 @@ class ControlsManager():
             for control in policy.controls:
                 self._resolve_control(pid, control)
 
+    def _get_foreign_subcontrols(self, policy_id, req):
+        if req.startswith("all"):
+            _, level_id = req.split(":", 1)
+            return self.get_all_controls_of_level(policy_id, level_id)
+        else:
+            return [self.get_control(policy_id, req)]
+
     def _resolve_control(self, pid, control):
         for sub_name in control.controls:
             policy_id = pid
             if ":" in sub_name:
-                policy_id, sub_name = sub_name.split(":", 1)
-            subcontrol = self.get_control(policy_id, sub_name)
-            self._resolve_control(pid, subcontrol)
-            control.update_with(subcontrol)
+                policy_id, req = sub_name.split(":", 1)
+                subcontrols = self._get_foreign_subcontrols(policy_id, req)
+            else:
+                subcontrols = [self.get_control(policy_id, sub_name)]
+
+            for subcontrol in subcontrols:
+                self._resolve_control(policy_id, subcontrol)
+                control.update_with(subcontrol)
 
     def get_control(self, policy_id, control_id):
         policy = self._get_policy(policy_id)

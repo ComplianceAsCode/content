@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu,multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu,multi_platform_sle,multi_platform_slmicro
 # reboot = true
 # strategy = disable
 # complexity = low
@@ -12,7 +12,7 @@ else
 	echo -e "\n# Disable per security requirements" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 	echo "install {{{ KERNMODULE }}} /bin/false" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 fi
-{{% if product in ["sle12", "sle15"] or 'ol' in product or 'rhel' in product or 'ubuntu' in product %}}
+{{% if product in ["sle12", "sle15", "slmicro5"] or 'ol' in product or 'rhel' in product or 'ubuntu' in product %}}
 if ! LC_ALL=C grep -q -m 1 "^blacklist {{{ KERNMODULE }}}$" /etc/modprobe.d/{{{ KERNMODULE }}}.conf ; then
 	echo "blacklist {{{ KERNMODULE }}}" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 fi

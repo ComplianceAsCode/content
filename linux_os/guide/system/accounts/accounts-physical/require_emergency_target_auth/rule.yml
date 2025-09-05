@@ -39,7 +39,6 @@ references:
     iso27001-2013: A.18.1.4,A.6.1.2,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
     nist: IA-2,AC-3,CM-6(a)
     nist-csf: PR.AC-1,PR.AC-4,PR.AC-6,PR.AC-7,PR.PT-3
-    ospp: FIA_UAU.1
     srg: SRG-OS-000080-GPOS-00048
     stigid@ol7: OL07-00-010481
     stigid@ol8: OL08-00-010152
@@ -79,7 +78,7 @@ fixtext: |-
     Configure {{{ full_name }}} to require authentication for system emergency mode.
 
     Add or edit the following line in "/usr/lib/systemd/system/emergency.service":
-    {{% if product in ["fedora", "ol8", "ol9", "openeuler2203", "rhel8", "rhel9", "sle12", "sle15"] -%}}
+    {{% if product in ["fedora", "ol8", "ol9", "kylinserver10", "openeuler2203", "rhel8", "rhel9", "sle12", "sle15"] -%}}
     ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency
     {{%- else -%}}
     ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"

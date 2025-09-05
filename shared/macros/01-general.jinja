@@ -660,14 +660,14 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
     Example output::
 
-        $ sudo dnf erase remove package
+        $ sudo dnf remove package
 
 :param package: Package to remove
 :type package: str
 
 #}}
 {{%- macro dnf_package_remove(package) %}}
-    $ sudo dnf erase {{{ package }}}
+    $ sudo dnf remove {{{ package }}}
 {{%- endmacro %}}
 
 

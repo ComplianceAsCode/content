@@ -2,8 +2,7 @@ srg_requirement: |-
     A graphical display manager must not be installed on {{{ full_name }}} unless approved.
 
 vuldiscussion: |-
-    Unnecessary service packages must not be installed to decrease the attack surface of the system. X windows has a long history of security
-    vulnerabilities and should not be installed unless approved and documented.
+    Unnecessary service packages must not be installed to decrease the attack surface of the system. Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.
 
 checktext: |-
     Verify that a graphical user interface is not installed with the following command:
@@ -25,7 +24,3 @@ fixtext: |-
 
     $ sudo dnf remove "xorg*"
     $ sudo systemctl set-default multi-user.target
-
-vuln_discussion: |-
-    Unnecessary service packages must not be installed to decrease the attack surface of the system.
-    Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.

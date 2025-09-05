@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must disable acquiring, saving, and processing core dumps.
 
 vuldiscussion: |-
-    A core dump includes a memory image taken at the time the operating system
-    terminates an application. The memory image could contain sensitive data
-    and is generally useful only for developers trying to debug problems.
+    A core dump includes a memory image taken at the time the operating system terminates an application. The memory image could contain sensitive data and is generally useful only for developers trying to debug problems.
 
 checktext: |-
     Verify {{{ full_name }}} is not configured to acquire, save, or process core dumps with the following command:
@@ -22,11 +20,8 @@ fixtext: |-
 
     $ sudo systemctl mask --now systemd-coredump.socket
 
-    Created symlink /etc/systemd/system/systemd-coredump.socket -&gt /dev/null
+    Created symlink /etc/systemd/system/systemd-coredump.socket -&gt; /dev/null
 
     Reload the daemon for this change to take effect.
 
     $ sudo systemctl daemon-reload
-
-vuln_discussion: |-
-    A core dump includes a memory image taken at the time the operating system terminates an application. The memory image could contain sensitive data and is generally useful only for developers trying to debug problems.

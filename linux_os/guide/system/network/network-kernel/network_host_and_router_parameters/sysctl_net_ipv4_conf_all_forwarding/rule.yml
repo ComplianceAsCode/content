@@ -15,6 +15,7 @@ severity: medium
 identifiers:
     cce@rhel8: CCE-86220-1
     cce@rhel9: CCE-87181-4
+    cce@rhel10: CCE-87420-6
 
 references:
     disa: CCI-000366
@@ -35,7 +36,7 @@ fixtext: |-
 
 srg_requirement: '{{{ full_name }}} must not perform packet forwarding unless the system is a router.'
 
-platform: machine
+platform: system_with_kernel
 
 
 warnings:

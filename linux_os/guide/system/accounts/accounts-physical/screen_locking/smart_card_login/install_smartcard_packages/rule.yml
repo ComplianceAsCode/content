@@ -1,4 +1,4 @@
-{{% if product in ["sle12"] %}}
+{{% if product in ["sle12", "slmicro5"] %}}
 {{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc', 'coolkey'] %}}
 {{% elif product in ["sle15"] %}}
 {{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc'] %}}
@@ -6,6 +6,8 @@
 {{% set smartcard_packages = ['pam_pkcs11'] %}}
 {{% elif 'ubuntu' in product %}}
 {{% set smartcard_packages = ['libpam-pkcs11'] %}}
+{{% elif product in ['rhel10'] %}}
+{{% set smartcard_package = ['pkcs11-provider'] %}}
 {{% else %}}
 {{% set smartcard_packages = ['openssl-pkcs11'] %}}
 {{% endif %}}
@@ -44,9 +46,10 @@ identifiers:
     cce@rhel10: CCE-86642-6
     cce@sle12: CCE-83177-6
     cce@sle15: CCE-83292-3
+    cce@slmicro5: CCE-93761-5
 
 references:
-    disa: CCI-000765,CCI-001948,CCI-001953,CCI-001954
+    disa: CCI-000765,CCI-001953,CCI-001954,CCI-004046
     nist: CM-6(a)
     pcidss: Req-8.3
     srg: SRG-OS-000105-GPOS-00052,SRG-OS-000375-GPOS-00160,SRG-OS-000375-GPOS-00161,SRG-OS-000377-GPOS-00162
@@ -66,12 +69,13 @@ ocil: |-
     {{{ ocil_package(package=pkg) }}}
     {{% endfor %}}
 
-{{% if product not in ["sle12", "sle15"] %}}
+{{% if product not in ["sle12", "sle15", "slmicro5"] %}}
 template:
     name: package_installed
     vars:
         pkgname: openssl-pkcs11
         pkgname@ol7: pam_pkcs11
+        pkgname@rhel10: pkcs11-provider
         pkgname@ubuntu1604: libpam-pkcs11
         pkgname@ubuntu1804: libpam-pkcs11
         pkgname@ubuntu2004: libpam-pkcs11

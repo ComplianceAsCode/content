@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must ensure account lockouts persist.
 
 vuldiscussion: |-
-    Having lockouts persist across reboots ensures that account is only unlocked by an administrator.
-    If the lockouts did not persist across reboots an attack could simply reboot the system to continue brute force attacks against the accounts on the system.
+    Having lockouts persist across reboots ensures that account is only unlocked by an administrator. If the lockouts did not persist across reboots, an attacker could simply reboot the system to continue brute force attacks against the accounts on the system.
 
 checktext: |-
     Verify the "/etc/security/faillock.conf" file is configured use a nondefault faillock directory to ensure contents persist after reboot with the following command:
@@ -21,5 +20,3 @@ fixtext: |-
 
     dir = /var/log/faillock
 
-vuln_discussion: |-
-    Having lockouts persist across reboots ensures that account is only unlocked by an administrator. If the lockouts did not persist across reboots, an attacker could simply reboot the system to continue brute force attacks against the accounts on the system.

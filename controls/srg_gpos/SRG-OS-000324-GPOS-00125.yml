@@ -1,12 +1,10 @@
 controls:
     -   id: SRG-OS-000324-GPOS-00125
+        title: '{{{ full_name }}} must prevent nonprivileged users from executing privileged
+        functions to include disabling, circumventing, or altering implemented security
+        safeguards/countermeasures.'
         levels:
             - high
-        title: |-
-            {{{ full_name }}} must prevent nonprivileged users from executing privileged functions
-            to include disabling, circumventing, or altering implemented security
-            safeguards/countermeasures.
-
         rules:
             - disable_ctrlaltdel_burstaction
             - disable_ctrlaltdel_reboot
@@ -15,4 +13,8 @@ controls:
             - sysctl_fs_protected_hardlinks
             - sysctl_fs_protected_symlinks
             - package_sudo_installed
+            - sudo_remove_no_authenticate
+            - sudo_remove_nopasswd
+            - sudo_require_reauthentication
+            - disallow_bypass_password_sudo
         status: automated

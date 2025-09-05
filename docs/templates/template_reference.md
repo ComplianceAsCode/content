@@ -205,6 +205,20 @@
 
 -   Languages: OVAL
 
+#### cis_banner
+-   Verify that the contents of a login banner in the given `filepath` complies
+    with CIS requirements.
+
+-   Parameters:
+
+    -   **filepath** - Path to the login banner file, eg. `/etc/motd`.
+
+    -   **banner_must_be_set** - If set to `"true"`, the rule will fail if no
+        banner is configured in that file. Otherwise, the rule will pass if
+        the banner isn't configured.
+
+- Languages: Ansible, Bash, OVAL
+
 #### coreos_kernel_option
 -   Checks that `argument=value` pair is present in the kernel arguments.
     Note that this applies to Red Hat CoreOS.
@@ -568,7 +582,7 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
         state uses operation "greater than or equal" to compare the
         collected package version with the version in the OVAL state.
 
--   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Blueprint, Kickstart
+-   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Blueprint, Kickstart, Bootc
 
 #### package_removed
 -   Checks if the given package is not installed.
@@ -577,7 +591,7 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 
     -   **pkgname** - name of the RPM or DEB package, eg. `tmux`
 
--   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Kickstart
+-   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Kickstart, Bootc
 
 #### key_value_pair_in_file
 Checks if a given key and value are configured in a file.
@@ -685,7 +699,7 @@ When the remediation is applied duplicate occurrences of `key` are removed.
         `var_selinuxuser_execheap` to turn on or off the SELinux
         boolean.
 
--   Languages: Ansible, Bash, OVAL
+-   Languages: Ansible, Bash, OVAL, SCE
 
 #### service_disabled
 -   Checks if a service is disabled. Uses either systemd or SysV init
@@ -704,7 +718,7 @@ When the remediation is applied duplicate occurrences of `key` are removed.
         If **daemonname** is not specified it means the name of the
         daemon is the same as the name of service.
 
--   Languages: Ansible, Bash, OVAL, Puppet, Ignition, Kubernetes, Blueprint, Kickstart
+-   Languages: Ansible, Bash, OVAL, Puppet, Ignition, Kubernetes, Blueprint, Kickstart, SCE
 
 #### service_enabled
 -   Checks if a system service is enabled. Uses either systemd or SysV
@@ -723,7 +737,7 @@ When the remediation is applied duplicate occurrences of `key` are removed.
         If **daemonname** is not specified it means the name of the
         daemon is the same as the name of service.
 
--   Languages: Ansible, Bash, OVAL, Puppet, Blueprint, Kickstart
+-   Languages: Ansible, Bash, OVAL, Puppet, Blueprint, Kickstart, SCE
 
 #### shell_lineinfile
 -   Checks shell variable assignments in files. Remediations will paste
@@ -781,7 +795,7 @@ When the remediation is applied duplicate occurrences of `key` are removed.
         package name is provided, socketname is used. Currently, the package name
         is used when running Automatus test scenarios.
 
-- languages: Ansible, Bash, OVAL
+- languages: Ansible, Bash, OVAL, SCE
 
 #### sshd_lineinfile
 -   Checks SSH server configuration items in `/etc/ssh/sshd_config` or
@@ -795,6 +809,14 @@ When the remediation is applied duplicate occurrences of `key` are removed.
 
     -   **value** - value of the SSH configuration option specified by
         **parameter**, eg. `"no"`.
+        This cannot be specified together with the **xccdf_variable** parameter.
+
+    - **xccdf_variable** - specifies an XCCDF variable to use as a value for the specified **parameter**.
+        This parameter conflicts with the **value** parameter.
+
+    - **datatype** - specifies the datatype of the **value** or **xccdf_variable**.
+        Possible options are **int** or **string**.
+        The datatype is utilized for creation of correct templated test scenarios.
 
     -   **missing_parameter_pass** - effective only in OVAL checks, if
         set to `"false"` and the parameter is not present in the
@@ -961,7 +983,7 @@ The selected value can be changed in the profile (consult the actual variable fo
         provided it is assumed that the name of the RPM package is the
         same as the name of the SystemD timer unit.
 
--   Languages: Ansible, Bash, OVAL
+-   Languages: Ansible, Bash, OVAL, SCE
 
 #### yamlfile_value
 -   Check if value(s) of certain type is (are) present in a YAML (or

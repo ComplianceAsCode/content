@@ -33,7 +33,7 @@ references:
     cjis: 5.5.6
     cobit5: DSS05.04,DSS05.10,DSS06.10
     cui: 3.1.9
-    disa: CCI-000048,CCI-000050,CCI-001384,CCI-001385,CCI-001386,CCI-001387,CCI-001388
+    disa: CCI-001387,CCI-001384,CCI-000048,CCI-001386,CCI-001388,CCI-001385
     hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
     isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
@@ -61,9 +61,12 @@ fixtext: |-
 
 srg_requirement: '{{{ full_name }}} must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a ssh logon.'
 
+conflicts:
+    - sshd_enable_warning_banner_net
+
 template:
     name: sshd_lineinfile
     vars:
         parameter: Banner
-        rule_id: sshd_enable_warning_banner
         value: /etc/issue
+        datatype: string

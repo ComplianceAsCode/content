@@ -10,7 +10,7 @@ checktext: |-
     $ sudo cat /etc/sssd/sssd.conf
 
     [certmap/testing.test/rule_name]
-    matchrule =&ltSAN&gt.*EDIPI@mil
+    matchrule =&lt;SAN&gt;.*EDIPI@mil
     maprule = (userCertificate;binary={cert!bin})
     domains = testing.test
 
@@ -27,6 +27,3 @@ fixtext: |-
     The "sssd" service must be restarted for the changes to take effect. To restart the "sssd" service, run the following command:
 
     $ sudo systemctl restart sssd.service
-
-vuln_discussion: |-
-    Without mapping the certificate used to authenticate to the user account, the ability to determine the identity of the individual user or group will not be available for forensic analysis.

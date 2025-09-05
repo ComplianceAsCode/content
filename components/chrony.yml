@@ -3,6 +3,7 @@ packages:
 - chrony
 rules:
 - chronyd_configure_pool_and_server
+- chronyd_or_ntpd_specify_remote_server
 - chronyd_run_as_chrony_user
 - chronyd_server_directive
 - chronyd_specify_remote_server
@@ -11,3 +12,4 @@ rules:
 - file_permissions_etc_chrony_keys
 - package_chrony_installed
 - service_chronyd_enabled
+- chrony_set_nts

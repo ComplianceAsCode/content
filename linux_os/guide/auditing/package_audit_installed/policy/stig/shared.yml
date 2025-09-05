@@ -8,8 +8,10 @@ vuldiscussion: |-
 
     Associating event types with detected events in audit logs provides a means of investigating an attack, recognizing resource utilization or capacity thresholds, or identifying an improperly configured {{{ full_name }}} system.
 
+
+
 checktext: |-
-    Verify that {{{ full_name }}} audit service package is installed.
+    Verify that the {{{ full_name }}} audit service package is installed.
 
     Check that the audit service package is installed with the following command:
 
@@ -25,10 +27,3 @@ fixtext: |-
     Install the audit service package (if the audit service is not already installed) with the following command:
 
     $ sudo dnf install audit
-
-vuln_discussion: |-
-    Without establishing what type of events occurred, the source of events, where events occurred, and the outcome of events, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.
-
-    Audit record content that may be necessary to satisfy this requirement includes, for example, time stamps, source and destination addresses, user/process identifiers, event descriptions, success/fail indications, filenames involved, and access control or flow control rules invoked.
-
-    Associating event types with detected events in audit logs provides a means of investigating an attack, recognizing resource utilization or capacity thresholds, or identifying an improperly configured {{{ full_name }}} system.

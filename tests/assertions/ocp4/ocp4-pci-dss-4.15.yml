@@ -334,3 +334,36 @@ rule_results:
   e2e-pci-dss-tls-version-check-router:
     default_result: PASS
     result_after_remediation: PASS
+  e2e-pci-dss-acs-sensor-exists:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-alert-receiver-configured:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-api-server-tls-security-profile:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-audit-error-alert-exists:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-container-security-operator-exists:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-ingress-controller-certificate:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-ingress-controller-tls-security-profile:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-kubelet-configure-tls-cipher-suites-ingresscontroller:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-oauth-or-oauthclient-inactivity-timeout:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-ocp-idp-no-htpasswd:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-security-profiles-operator-exists:
+    default_result: FAIL
+    result_after_remediation: PASS

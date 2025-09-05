@@ -2,10 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must enable mitigations against processor-based vulnerabilities.
 
 vuldiscussion: |-
-    Kernel page-table isolation is a kernel feature that mitigates
-    the Meltdown security vulnerability and hardens the kernel
-    against attempts to bypass kernel address space layout
-    randomization (KASLR).
+    Kernel page-table isolation is a kernel feature that mitigates the Meltdown security vulnerability and hardens the kernel against attempts to bypass kernel address space layout randomization (KASLR).
 
 checktext: |-
     Verify {{{ full_name }}} enables kernel page-table isolation with the following command:
@@ -33,5 +30,3 @@ fixtext: |-
 
     GRUB_CMDLINE_LINUX="pti=on"
 
-vuln_discussion: |-
-    Kernel page-table isolation is a kernel feature that mitigates the Meltdown security vulnerability and hardens the kernel against attempts to bypass kernel address space layout randomization (KASLR).

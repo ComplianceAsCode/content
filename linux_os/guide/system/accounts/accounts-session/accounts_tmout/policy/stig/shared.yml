@@ -2,10 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must automatically exit interactive command shell user sessions after 15 minutes of inactivity.
 
 vuldiscussion: |-
-    Terminating an idle session within a short time period reduces
-    the window of opportunity for unauthorized personnel to take control of a
-    management session enabled on the console or console port that has been
-    left unattended.
+    Terminating an idle interactive command shell user session within a short time period reduces the window of opportunity for unauthorized personnel to take control of it when left unattended in a virtual terminal or physical console.
 
 checktext: |-
     Verify {{{ full_name }}} is configured to exit interactive command shell user sessions after 15 minutes of inactivity or less with the following command:
@@ -25,5 +22,3 @@ fixtext: |-
 
     declare -xr TMOUT=900
 
-vuln_discussion: |-
-    Terminating an idle interactive command shell user session within a short time period reduces the window of opportunity for unauthorized personnel to take control of it when left unattended in a virtual terminal or physical console.

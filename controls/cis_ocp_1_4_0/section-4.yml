@@ -131,6 +131,7 @@ controls:
       status: automated
       rules:
         - kubelet_configure_event_creation
+        - var_event_record_qps=50
       levels: [ level_2, ]
     - id: 4.2.9
       title: Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate
@@ -157,5 +158,6 @@ controls:
       status: automated
       rules:
         - kubelet_configure_tls_cipher_suites
+        - kubelet_configure_tls_cipher_suites_ingresscontroller
       levels: [ level_1, ]
 

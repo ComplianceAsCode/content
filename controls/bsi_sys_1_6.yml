@@ -18,61 +18,115 @@ levels:
     inherits_from:
     - standard
 
+reference_type: bsi
+
 controls:
   - id: SYS.1.6.A1
     title: Planning Container Use
     levels:
     - basic
     description: >-
-      Before containers are deployed, the goal of such a deployment (e.g. scaling, availability,
+      (1) Before containers are deployed, the goal of such a deployment (e.g. scaling, availability,
       disposable containers for safety or CI/CD) SHOULD be determined so that all the security-
-      related aspects of installation, operation, and decommissioning can be planned. The planning
-      SHOULD also take into account the operational overhead resulting from container
-      deployment or mixed operation. The planning MUST be adequately documented
+      related aspects of installation, operation, and decommissioning can be planned.
+      (2) The planning SHOULD also take into account the operational overhead resulting from container
+      deployment or mixed operation.
+      (3) The planning MUST be adequately documented
     notes: >-
-      This requirement can not be checked
+      This requirement must be implemented organizationally.
+      OpenShift supports all of the goals mentioned. Comprehensive handouts are available to carry
+      out and document the planning of container use, security and compliance, architecture and
+      installation on OpenShift (see https://www.redhat.com/en/resources/openshift-security-guide-ebook)
     status: manual
-    #rules:
 
   - id: SYS.1.6.A2
     title: Container Management Planning
     levels:
     - basic
     description: >-
-      The management of containers MUST ONLY be carried out in line with appropriate planning.
-      This planning MUST cover the entire lifecycle from commissioning to decommissioning,
-      including operation and updates. When planning container management, it MUST be taken
+      (1) The management of containers MUST ONLY be carried out in line with appropriate planning.
+      (2) This planning MUST cover the entire lifecycle from commissioning to decommissioning,
+      including operation and updates. (3) When planning container management, it MUST be taken
       into account that the creator of a container is to be considered like an administrator due to the
       effects they have on parts of the operation.
-      Containers MUST be started, stopped, and monitored via the management software used.
+      (4) Containers MUST be started, stopped, and monitored via the management software used.
     notes: >-
-      ToDo
+      This requirement must be implemented organizationally.
+      Through OpenShift GitOps, OpenShift technically supports this requirement with a standardized
+      approach to deployment, change handling and deprovisioning via kustomize or Helm charts.
+      OpenShift provides further support through operator-based applications and platform management
+      that automates the processes of commissioning, decommissioning and updates.
+
+      Section 4: Start, stop and monitoring is a basic function of OpenShift. It is not possible to
+      bypass the OpenShift methods to start and stop without manually connecting to a Container Host.
+      For monitoring purposes, OpenShift itself offers Prometheus-based monitoring.
+      Using Advanced Cluster Security for Kubernetes (ACS), policy-based rules can also be used to
+      monitor the containers.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A3
     title: Secure Use of Containerised IT Systems
     levels:
     - basic
     description: >-
-      In the case of containerised IT systems, consideration MUST be given to how containerisation
+      (1) In the case of containerised IT systems, consideration MUST be given to how containerisation
       affects the IT systems and applications operated, in particular the management and suitability
       of the applications.
-      Based on the protection needs of the applications, it MUST be checked whether the
+      (2) Based on the protection needs of the applications, it MUST be checked whether the
       requirements for isolation and encapsulation of the containerised IT systems, virtual
-      networks, and operated applications are sufficiently fulfilled. The mechanisms of the
-      operating system in question SHOULD be included in this check. Since the host performs the
+      networks, and operated applications are sufficiently fulfilled. (3) The mechanisms of the
+      operating system in question SHOULD be included in this check. (4) Since the host performs the
       function of a network component for virtual networks, the modules of the sub-layers NET.1
-      Networks and NET.3 Network Components MUST be considered accordingly. Logical and
-      overlay networks MUST also be considered and modelled. Furthermore, the containerised IT
+      Networks and NET.3 Network Components MUST be considered accordingly. (5) Logical and
+      overlay networks MUST also be considered and modelled. (6) Furthermore, the containerised IT
       systems used MUST meet the requirements at hand regarding availability and data
-      throughput.
-      During operation, the performance and the state of the containerised IT systems SHOULD be
-      monitored (health checks).
+      throughput.(7) During operation, the performance and the state of the containerised IT systems
+      SHOULD be monitored (health checks).
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: This requirement must be implemented organizationally.
+      Note: This requirement is actively supported by OpenShift. For example, OpenShift does not
+      allow applications with fixed UID/GID settings as standard; on the contrary, these IDs are
+      assigned dynamically (security-by-design). The behavior can be adjusted by administrators,
+      for example for system tasks.
+
+      Section 2: This requirement must be implemented organizationally.
+      Note: OpenShift supports the requirements through strict client separation based on a “Project”
+      (an extension to the Kubernetes namespace). The containers are separated from each other and
+      from the host system via cgroups using SELinux. As long as all applications run “restricted”
+      in the Security Context Constraint (SCC), OpenShift maintains strict client separation.
+
+      Section 3: This requirement must be implemented organizationally.
+      OpenShift supports this requirement by leveraging SELinux with its cgroups to create the container sandbox.
+
+      Section 4: This requirement must be implemented organizationally.
+
+      Section 5: This requirement must be implemented organizationally.
+      Note: OpenShift supports different network infrastructures via the CNI plugin interface
+      (e.g. OVN-Kubernetes, OpenShift-SDN, hardware networks etc.) OVN-Kubernetes, hardware networks etc.)
+      The underlying network is abstracted by the network model in Openshift and usage is consistent
+      across containers. This allows OpenShift to uniformly implement network security features such
+      as: Firewall rules over network policies.
+
+      Section 6: This requirement must be implemented organizationally.
+      Note: OpenShift provides fine-grained metrics for external capacity management via monitoring.
+
+      Section 7: OpenShift offers automated checks for the availability and health of an application.
+      If the LivenessProbe (Health) repeatedly receives a negative result or is not reachable, the
+      affected pod with the container is restarted. Using ReadinessProbe, a container can control
+      whether it is ready to accept HTTP(S) based requests or not.
+      Note: Monitoring is considered in APP.4.4.A11.
+    status: automated
+    rules:
+      # Section 2
+      - general_namespace_separation
+      - general_node_separation
+      - general_network_separation
+      # Section 3:
+      - coreos_enable_selinux_kernel_argument
+      - selinux_state
+      - selinux_policytype
+      # Section 7
+      - liveness_readiness_probe_in_workload
 
   - id: SYS.1.6.A4
     title: Planning the Provision and Distribution of Images
@@ -82,42 +136,125 @@ controls:
       The process for the provision and distribution of images MUST be planned and appropriately
       documented.
     notes: >-
-      ToDo
+      This requirement must be implemented organizationally.
+      Note: OpenShift supports the requirement through the built-in functionalities and enables the
+      highest possible level of automation. On the one hand, CI/CD tools are delivered with OpenShift
+      pipelines and integrated into the platform. On the other hand, pre-configured build processes
+      based on Red Hat experience are available that are based on Source2Image and thus support
+      planning.
+      The built-in registry allows you to store images and other associated information, such as Helm
+      charts or SBOMs.
+      The abstractions available in Openshift allow the entire image distribution process to be
+      documented and controlled as code. This further allows the image distribution process to
+      be managed via OpenShift GitOps.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A5
     title: Separation of Administration and Access Networks for Containers
     levels:
     - basic
     description: >-
-      Networks for the administration of the host, the administration of the containers, and their
-      access networks MUST be separated according to the protection needs at hand. In principle, at
+      (1) Networks for the administration of the host, the administration of the containers, and their
+      access networks MUST be separated according to the protection needs at hand. (2) In principle, at
       least the administration of the host SHOULD only be possible from the administration
       network.
-      Only the communication relationships necessary for operation SHOULD be allowed.
+      (3) Only the communication relationships necessary for operation SHOULD be allowed.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: Hosts and containers are controlled via the Kubernetes API. This is addressed via
+      api. The load balancer used for this is located in the administration network. The load
+      balancer for *.apps. is set up separately in the active network. This means that the
+      administration is appropriately separated.
+      The Console (the OpenShift web UI) is used by all users. Authorization takes place at the API
+      level and is secured via RBAC.
+      The control plane is to be located in an administration network.
+
+      Section 2: The web UI can be configured on another router that is terminated on the
+      administration load balancer and is therefore only accessible from the administration network.
+      This means that it can no longer be reached from the active network.
+
+      Section 3: This is a standard OpenShift feature. The OpenShift documentation
+      contains the necessary communication paths between control plane, infrastructure and worker
+      nodes, as well as the necessary firewall activations of the underlying network stack at
+      hardware or IaaS level. The communication between containers or pods within a client
+      (“Project”) is not restricted by default, but can be regulated with micro-segmentation if
+      necessary or as a service mesh with mTLS authentication be implemented (see APP.4.4.A18).
+
+      Externally exposed services can receive their own IP and thus data traffic can also be
+      separated outside the platform. Inter-node communication is carried out via suitable tunnel
+      protocols (VXLAN, GENEVE) and can also be encrypted using IPSec.
+
+    status: automated
+    rules:
+      # Section 1,2
+      - general_network_separation
+      # Section 3
+      - configure_network_policies
+      - configure_network_policies_namespaces
+      - service_firewalld_enabled
 
   - id: SYS.1.6.A6
     title: Use of Secure Images
     levels:
     - basic
     description: >-
-      It MUST be ensured that all images used originate from trusted sources. The creator of each
-      image MUST be clearly identifiable.
-      Sources MUST be selected on the basis of whether the creator of a given image regularly
+      (1) It MUST be ensured that all images used originate from trusted sources. (2) The creator of
+      each image MUST be clearly identifiable.
+      (3) Sources MUST be selected on the basis of whether the creator of a given image regularly
       checks the included software for security problems, fixes and documents them, and provides
       corresponding guarantees to customers.
-      The utilised version of base images MUST NOT be deprecated. Unique version numbers MUST
-      be provided. If an image with a newer version number is available, a patch and change
+      (4) The utilised version of base images MUST NOT be deprecated. (5) Unique version numbers MUST
+      be provided. (6) If an image with a newer version number is available, a patch and change
       management process MUST check whether and how it can be rolled out
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: This requirement must be implemented organizationally.
+      Note: OpenShift supports the requirement by allowing only certain sources. This allows the
+      sources from which images come to be restricted and new sources to be added in a controlled
+      process.
+      Quay can also be used to provide your own registry in an open environment as a trustworthy
+      delivery point for external software. Images can also be checked for vulnerabilities here.
+
+      Section 2: This requirement must be implemented organizationally.
+      Note: OpenShift makes it possible to verify the signatures of images before use and thus
+      enforce the identification requirement. Red Hat Advanced Cluster Security for Kubernetes
+      (ACS) can check and optionally enforce signatures as well as certain labels
+      (e.g. MAINTAINER) for images.
+      For images delivered by Red Hat via the official Red Hat Registry, the MAINTAINER label
+      of the container images is always maintained, through which Red Hat can be identified as
+      the creator of the images. Images are also signed with GPG keys.
+
+      Section 3: This requirement must be implemented organizationally.
+      Note: Images from the Red Hat Registry are regularly checked for security vulnerabilities
+      and updated accordingly. The security status of the images is indicated via a health
+      indicator.
+      ACS can perform technical checks through regular scans and report conspicuous containers
+      or containers with identified vulnerabilities, thereby supporting the implementation of
+      the requirement.
+
+      Section 4: This requirement must be implemented organizationally.
+      Note: For discontinued images with appropriate identification (e.g. through labels),
+      policies implemented in ACS can report these violations. ACS also provides policies that
+      report when images have not been scanned for more than 30/60/90 days. However, this means
+      that an image must be built and rolled out at this interval so that the scans during the
+      build process are effective. With a CI/CD pipeline with a high level of automation, this
+      usually does not represent any increased effort.
+
+      Section 5: This requirement must be implemented organizationally.
+      Note: Image-level labels or image tags could be used here.
+
+      Section 6: This requirement must be implemented organizationally for integrated software
+      or self-created software.
+      Note: OpenShift supports Lifecycle Management (OLM) with Operator. Software managed using
+      OLM or Cluster Operator receives updates via the Operator Hub or Cluster Updates. An
+      automated check with automatic or alternatively manual release is possible for this software.
+    status: automated
+    rules:
+      # Section 1
+      - ocp_allowed_registries
+      - ocp_allowed_registries_for_import
+      - ocp_insecure_allowed_registries_for_import
+      - ocp_insecure_registries
+      # Section 2
+      - reject_unsigned_images_by_default
 
   - id: SYS.1.6.A7
     title: Persistence of Container Logging Data
@@ -127,67 +264,91 @@ controls:
       Container logging data MUST be stored outside of the respective container (on the container
       host at minimum)
     notes: >-
-      ToDo
+      OpenShift Logging stores the containers' logging data in a separate log management system.
+      The output of the container is saved as long as it is on STDOUT and STDERR. The logging
+      data can also be forwarded to different log storage depending on the source
+      (e.g. infrastructure or application).
+      It is the responsibility of the applications to write log output to STDOUT and errors to STDERR.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A8
     title: Secure Storage of Container Access Data
     levels:
     - basic
     description: >-
-      Access data MUST be stored and managed in such a way that only authorised persons and
-      containers can access it. In particular, it MUST be ensured that access data is only stored in
-      specially protected locations and not in images. The access data management mechanisms
+      (1) Access data MUST be stored and managed in such a way that only authorised persons and
+      containers can access it. (2) In particular, it MUST be ensured that access data is only stored in
+      specially protected locations and not in images. (3) The access data management mechanisms
       provided by container service management software SHOULD be used.
-      At minimum, the following credentials MUST be stored securely:
+      (4) At minimum, the following credentials MUST be stored securely:
       • Passwords of any accounts
       • API keys for services used by the application
       • Keys for symmetric encryption
       • Private keys for public key authentication
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: OpenShift offers secrets that are only available to the containers and the people
+      authorized via RBAC in the tenant or project (client).
+      Section 2: This requirement must be enforced as part of application development.
+      OpenShift offers suitable mechanisms (secrets) with encryption of the etcd store if necessary.
+      Section 3: OpenShift offers corresponding mechanisms (secrets). Unless the secrets are
+      dynamically generated, third-party/community tools such as SealedSecrets or HashiCorp Vault
+      can help securely deploy the secrets.
+      Section 4: This requirement must be implemented organizationally.
+      All of this information can and should be managed in Secrets.
+    status: automated
+    rules:
+      # Section 1
+      - rbac_least_privilege
+      - rbac_limit_secrets_access
+      - rbac_limit_cluster_admin
+      - rbac_wildcard_use
+      - rbac_roles_defined
+      - rbac_cluster_roles_defined
+      # Section 2-4
+      - api_server_encryption_provider_cipher
+      - secrets_no_environment_variables
+      # Section 3
+      - secrets_consider_external_storage
 
   - id: SYS.1.6.A9
     title: Suitability for Container Operation
     levels:
     - standard
     description: >-
-      An application or service to be operated in a container SHOULD be suitable for such operation.
-      It SHOULD be considered that containers can often be terminated unexpectedly, with
-      corresponding consequences for the application run therein. The results of the checking
+      (1) An application or service to be operated in a container SHOULD be suitable for such operation.
+      (2) It SHOULD be considered that containers can often be terminated unexpectedly, with
+      corresponding consequences for the application run therein. (3) The results of the checking
       described under SYS.1.6.A3 Secure Use of Containerised IT Systems SHOULD be documented in
       a comprehensible manner.
     notes: >-
-      ToDo
+      Section 1: This requirement must be implemented organizationally.
+      Section 2: This requirement must be implemented organizationally and be part of the application
+      development process.
+      Section 3: This requirement must be implemented organizationally and suppliers must be
+      contractually obliged to comply.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A10
     title: Policy for Images and Container Operation
     levels:
     - standard
     description: >-
-      A policy SHOULD be established and applied that specifies the requirements for container
-      operation and permitted images. The policy SHOULD also include requirements for the
+      (1) A policy SHOULD be established and applied that specifies the requirements for container
+      operation and permitted images. (2) The policy SHOULD also include requirements for the
       operation and deployment of images.
     notes: >-
-      ToDo
+      These requirements must be implemented organizationally.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A11
     title:  Only One Service per Container
     levels:
     - standard
     description: >-
-      Each container SHOULD only provide one service at a time.
+      (1) Each container SHOULD only provide one service at a time.
     notes: >-
-      ToDo
+      This requirement must be implemented organizationally.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A12
     title: Distribution of Secure Images
@@ -223,15 +384,24 @@ controls:
     levels:
     - standard
     description: >-
-      When establishing a concept for patch and change management according to OPS.1.1.3 Patch
+      (1)When establishing a concept for patch and change management according to OPS.1.1.3 Patch
       and Change Management, it SHOULD be decided when and how the updates of images or the
-      software or service operated are to be rolled out. For persistent containers, checks SHOULD be
+      software or service operated are to be rolled out. (2)For persistent containers, checks SHOULD be
       made as to whether an update of a container is more appropriate than completely re-
       provisioning the container in exceptional cases.
     notes: >-
-      ToDo
+      Section 1: This requirement must be solved organizationally.
+      Best practices use multiple environments (either separate clusters or multiple namespaces on a cluster)
+      to support this process and enable automated testing (e.g. via OpenShift Pipelines or Jenkins ).
+      Section 2: “Persistent” containers contradict the cloud native principle and do not represent “good practice”.
+      There is also a contradiction with APP.4.4.A21 “Regular restart of pods”.
+      Accordingly, OpenShift does not support updates at the container level.
+      Changes to the container image always result in the pod stopping and a new pod being restarted.
+      With the recommended use of GitOps, this is a reprovisioning of the changed elements
+      and also documents the status of the application at a given point in time.
+      Due to the high level of automation, this usually does not represent any increased effort.
     status: manual
-    #rules:
+    rules: []
 
   - id: SYS.1.6.A15
     title: Limitation of Resources per Container
@@ -283,63 +453,148 @@ controls:
     levels:
     - standard
     description: >-
-      System accounts within a container SHOULD have no permissions on the host system. If such
+      (1) System accounts within a container SHOULD have no permissions on the host system. (2) If such
       authorisation is required for operational reasons, it SHOULD only apply to the data and
-      system access that is absolutely necessary. The account in the container that is necessary to
+      system access that is absolutely necessary. (3) The account in the container that is necessary to
       exchange data SHOULD be known in the host system
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: With OpenShift, accounts within the container are separated from the host system by
+      SELinux. This includes preventing the use of privileged user and group IDs as well as
+      corresponding rights extensions (SET-UID, Set-GID bit). A range of UIDs/GIDs is provided for
+      use in containers.
+
+      Section 2: Security Context Constraints (SCCs) allow accounts in the container to gain
+      controlled access.
+
+      Section 3: The host system Red Hat CoreOS is immutable. The changes to the host operating
+      system should only be made by OpenShift and should be necessary so that hardening by Red Hat
+      is not inadvertently undermined.
+      Since, in contrast to an unprotected container runtime environment, SELinux enforces the
+      separation between the container runtime and the operating system, this mirroring of account
+      names is not necessary.
+    status: automated
+    rules:
+      # Section 1
+      - coreos_enable_selinux_kernel_argument
+      - selinux_policytype
+      - selinux_state
+      # Section 2
+      - general_apply_scc
+      - scc_limit_privileged_containers
+      - scc_limit_root_containers
+      # inter process communication
+      - scc_limit_ipc_namespace
+      # process IDs
+      - scc_limit_process_id_namespace
+      # file system
+      - scc_limit_host_dir_volume_plugin
+      # network
+      - scc_limit_net_raw_capability
+      - scc_limit_network_namespace
 
   - id: SYS.1.6.A19
     title:  Including Data Stores in Containers
     levels:
     - standard
     description: >-
-      Containers SHOULD ONLY be able to access the mass storage and directories necessary for
-      operation. Permissions SHOULD only be explicitly assigned where needed. If the container
+      (1) Containers SHOULD ONLY be able to access the mass storage and directories necessary for
+      operation. (2) Permissions SHOULD only be explicitly assigned where needed. (3) If the container
       runtime for a container includes local storage, the access rights in the file system SHOULD be
-      restricted to the service account of the container. If network storage is used, the permissions
+      restricted to the service account of the container. (4) If network storage is used, the permissions
       SHOULD be set on the network storage itself
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: Applications can access persistent volumes (PVs) and temporary (ephemeral) storage
+      in OpenShift. Persisted volumes are connected as network storage, ephemeral storage serves
+      primarily as volatile, short-lived mass storage and is allocated within the container file
+      system. This configures which PV can be reached and the use of the ephemeral storage is
+      separated per pod. This means that each pod has its own volatile mass storage. Volumes can be
+      limited in size.
+
+      Section 2: OpenShift implements the principle of least privileges. The definition is made via
+      an explicit configuration at the deployment level.
+
+      Section 3: By default, no local storage is included. For reasons of reliability, this is
+      explicitly not recommended.
+
+      Section 4: The network storage dictates the permissions. OpenShift supports this with the
+      dynamically assigned UID/GID of the projects (clients).
+    status: automated
+    rules:
+      # Section 1
+      - scc_limit_host_dir_volume_plugin
+      # Section 2
+      - rbac_least_privilege
 
   - id: SYS.1.6.A20
     title: Protection of Configuration Data
     levels:
     - standard
     description: >-
-      Containers SHOULD ONLY be able to access the mass storage and directories necessary for
-      operation. Permissions SHOULD only be explicitly assigned where needed. If the container
-      runtime for a container includes local storage, the access rights in the file system SHOULD be
-      restricted to the service account of the container. If network storage is used, the permissions
-      SHOULD be set on the network storage itself
+      (1) Descriptions of container configuration data SHOULD be versioned. (2) Changes SHOULD be
+      documented in a comprehensible manner.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: OpenShift only maintains the current version of the configuration. It is therefore
+      recommended to use GitOps, in which the configuration is transferred from a git repository to
+      the OpenShift cluster. OpenShift includes OpenShift GitOps (based on the community project
+      ArgoCD), which supports easy implementation of a GitOps-based administration concept.
+
+      Section 2: With a GitOps approach, all changes are documented in git.
+    status: automated
+    rules:
+      # Section 1,2
+      - gitops_operator_exists
 
   - id: SYS.1.6.A21
-    title: Compile options for the compiler plugins
+    title: Extended Security Policies
     levels:
     - elevated
     description: >-
-      Extended policies SHOULD restrict the permissions of containers. Mandatory Access Control
-      (MAC) or a comparable technology SHOULD enforce these policies. At minimum, policies
+      (1) Extended policies SHOULD restrict the permissions of containers. (2) Mandatory Access Control
+      (MAC) or a comparable technology SHOULD enforce these policies. (3) At minimum, policies
       SHOULD restrict the following types of access:
       • Incoming and outgoing network connections
       • File system access attempts
       • Kernel requests (syscalls)
-      A runtime SHOULD start containers in such a way that the kernel of the host system prevents
+      (4) A runtime SHOULD start containers in such a way that the kernel of the host system prevents
       all activities of the containers that are not allowed by the relevant policy (e.g. by setting up
       local packet filters or revoking permissions), or at least reports violations appropriately.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: By default, OpenShift blocks the containers' permissions (security-by-default).
+
+      Section 2: OpenShift already uses SELinux Mandatory Access Control to restrict permissions by
+      default Using the Security Profiles Operator, workload-dependent SELinux
+      and Seccomp profiles can be created and managed.
+
+      Section 3: These permissions are managed in OpenShift and controlled via Security Context
+      Constraints (SCCs). For tool-based policy management, ACS or Red Hat Advanced Cluster
+      Management (ACM) (with Kyverno or Open Policy Agent) can be used.
+
+      Section 4: OpenShift already meets this requirement as standard (security-by-design).
+    status: automated
+    rules:
+      # Section 2
+      - coreos_enable_selinux_kernel_argument
+      - selinux_policytype
+      - selinux_state
+      # Section 3
+      - general_apply_scc
+      - scc_limit_privileged_containers
+      - scc_limit_root_containers
+      # inter process communication
+      - scc_limit_ipc_namespace
+      # process IDs
+      - scc_limit_process_id_namespace
+      # file system
+      - scc_limit_host_dir_volume_plugin
+      # network
+      - scc_limit_net_raw_capability
+      - scc_limit_network_namespace
+      # network policies
+      - configure_network_policies
+      - configure_network_policies_namespaces
+      - service_firewalld_enabled
+      # Section 3,4
+      - security_profiles_operator_exists
 
   - id: SYS.1.6.A22
     title: Provision for Investigations

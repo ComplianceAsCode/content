@@ -683,7 +683,7 @@ It will internally clone the upstream project, checkout these tags, generate Com
 ### `utils/oscal/build_cd_from_policy.py` &ndash; Build a Component Definition from a Policy
 
 This script builds an OSCAL Component Definition (cd) (version `1.0.4`) for an existing OSCAL profile from a policy. The script uses the
-[compliance-trestle](https://ibm.github.io/compliance-trestle/) library to build the component definition. The component definition can be used with the `compliance-trestle` CLI after generation.
+[compliance-trestle](https://github.com/oscal-compass/compliance-trestle) library to build the component definition. The component definition can be used with the `compliance-trestle` CLI after generation.
 
 Some assumption made by this script:
 

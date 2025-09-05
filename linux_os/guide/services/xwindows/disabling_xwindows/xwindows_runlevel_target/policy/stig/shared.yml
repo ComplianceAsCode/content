@@ -2,8 +2,7 @@ srg_requirement: |-
     The graphical display manager must not be the default target on {{{ full_name }}} unless approved.
 
 vuldiscussion: |-
-    Unnecessary service packages must not be installed to decrease the attack surface of the system.
-    Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.
+    Unnecessary service packages must not be installed to decrease the attack surface of the system. Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.
 
 checktext: |-
     Verify that {{{ full_name }}} is configured to boot to the command line:
@@ -19,5 +18,3 @@ fixtext: |-
 
     $ sudo systemctl set-default multi-user.target
 
-vuln_discussion: |-
-    Unnecessary service packages must not be installed to decrease the attack surface of the system. Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.

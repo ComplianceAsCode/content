@@ -2,7 +2,7 @@ srg_requirement: |-
     All {{{ full_name }}} local files and directories must have a valid owner.
 
 vuldiscussion: |-
-    Unowned files and directories may be unintentionally inherited if a user is assigned the same User Identifier "UID" as the UID of the un-owned files.
+    Unowned files and directories may be unintentionally inherited if a user is assigned the same user identifier "UID" as the UID of the unowned files.
 
 checktext: |-
     Verify all local files and directories on {{{ full_name }}} have a valid owner with the following command:
@@ -14,7 +14,4 @@ checktext: |-
 fixtext: |-
     Either remove all files and directories from the system that do not have a valid user, or assign a valid user to all unowned files and directories on {{{ full_name }}} with the "chown" command:
 
-    $ sudo chown &ltuser&gt &ltfile&gt
-
-vuln_discussion: |-
-    Unowned files and directories may be unintentionally inherited if a user is assigned the same user identifier "UID" as the UID of the unowned files.
+    $ sudo chown &lt;user&gt; &lt;file&gt;

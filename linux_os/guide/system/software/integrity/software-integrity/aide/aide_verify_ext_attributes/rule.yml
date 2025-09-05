@@ -7,14 +7,19 @@ description: |-
     By default, the <tt>xattrs</tt> option is added to the <tt>FIPSR</tt> ruleset in AIDE.
     If using a custom ruleset or the <tt>xattrs</tt> option is missing, add <tt>xattrs</tt>
     to the appropriate ruleset.
-    For example, add <tt>xattrs</tt> to the following line in <tt>/etc/aide.conf</tt>:
+    For example, add <tt>xattrs</tt> to the following line in <tt>{{{ aide_conf_path }}}</tt>:
     <pre>FIPSR = p+i+n+u+g+s+m+c+acl+selinux+xattrs+sha256</pre>
     AIDE rules can be configured in multiple ways; this is merely one example that is already
     configured by default.
 
+    {{% if "debian" in product %}}
+    The remediation provided with this rule adds <tt>xattrs</tt> to the InodeData rule in
+    <tt>{{{ aide_conf_path }}}</tt>
+    {{% else %}}
     The remediation provided with this rule adds <tt>xattrs</tt> to all rule sets available in
-    <tt>/etc/aide.conf</tt>
-
+    <tt>{{{ aide_conf_path }}}</tt>
+    {{% endif %}}
+    
 rationale: |-
     Extended attributes in file systems are used to contain arbitrary data and file metadata
     with security implications.
@@ -27,6 +32,7 @@ identifiers:
     cce@rhel10: CCE-89625-8
     cce@sle12: CCE-83151-1
     cce@sle15: CCE-85624-5
+    cce@slmicro5: CCE-93743-3
 
 references:
     cis-csc: 2,3
@@ -48,7 +54,7 @@ ocil_clause: 'the xattrs option is missing or not added to the correct ruleset'
 
 ocil: |-
     To determine that AIDE is verifying extended file attributes, run the following command:
-    <pre>$ grep xattrs /etc/aide.conf</pre>
+    <pre>$ grep xattrs {{{ aide_conf_path }}}</pre>
     Verify that the <tt>xattrs</tt> option is added to the correct ruleset.
 
 fixtext: |-

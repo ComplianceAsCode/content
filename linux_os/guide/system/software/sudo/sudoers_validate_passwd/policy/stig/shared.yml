@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must use the invoking user's password for privilege escalation when using "sudo".
 
 vuldiscussion: |-
-    If the rootpw, targetpw, or runaspw flags are defined and not disabled, by default the operating system will prompt
-    the invoking user for the "root" user password.
+    If the rootpw, targetpw, or runaspw flags are defined and not disabled, by default the operating system will prompt the invoking user for the "root" user password.
 
 checktext: |-
     Verify that the sudoers security policy is configured to use the invoking user's password for privilege escalation with the following command:
@@ -31,5 +30,3 @@ fixtext: |-
     Defaults !rootpw
     Defaults !runaspw
 
-vuln_discussion: |-
-    If the rootpw, targetpw, or runaspw flags are defined and not disabled, by default the operating system will prompt the invoking user for the "root" user password.

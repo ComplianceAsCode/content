@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R14
+    version: V2R1
     SMEs:
         - mab879
         - ggbecker
@@ -12,7 +12,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V1R14.
+    DISA STIG for Red Hat Enterprise Linux 8 V2R1.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -91,10 +91,6 @@ selections:
     ### Rules:
     # RHEL-08-010000
     - installed_OS_is_vendor_supported
-
-    # RHEL-08-010001
-    - package_mcafeetp_installed
-    - agent_mfetpd_running
 
     # RHEL-08-010010
     - security_patches_up_to_date
@@ -547,29 +543,13 @@ selections:
 
     # RHEL-08-020035
     - logind_session_timeout
-    - var_logind_session_timeout=15_minutes
-
-    # RHEL-08-020039
-    - package_tmux_installed
-
-    # RHEL-08-020040
-    - configure_tmux_lock_command
-    - configure_tmux_lock_keybinding
-
-    # RHEL-08-020041
-    - configure_bashrc_tmux
-
-    # RHEL-08-020042
-    - no_tmux_in_shells
+    - var_logind_session_timeout=10_minutes
 
     # RHEL-08-020050
     - dconf_gnome_lock_screen_on_smartcard_removal
 
     # RHEL-08-020060
     - dconf_gnome_screensaver_idle_delay
-
-    # RHEL-08-020070
-    - configure_tmux_lock_after_time
 
     # RHEL-08-020080
     - dconf_gnome_screensaver_user_locks

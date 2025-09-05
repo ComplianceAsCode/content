@@ -22,5 +22,5 @@ done
 # correct values
 for RPM_PACKAGE in "${!SETPERMS_RPM_DICT[@]}"
 do
-        rpm --setugids "${RPM_PACKAGE}"
+        rpm --restore "${RPM_PACKAGE}"
 done

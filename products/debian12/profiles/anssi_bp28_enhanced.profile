@@ -35,6 +35,11 @@ selections:
   - '!accounts_polyinstantiated_tmp'
   - '!accounts_polyinstantiated_var_tmp'
   - '!enable_pam_namespace'
+  # there is no tmp.mount unit on Debian 12.
+  - '!systemd_tmp_mount_enabled'
+  # this rule cannot handle /etc/chrony/chrony.conf path properly.
+  # chronyd_specify_remote_server still report wether chrony is configured.
+  - '!chronyd_configure_pool_and_server'
 
   # Following rules once had a prodtype incompatible with the debian12 product
   - '!accounts_passwords_pam_tally2_deny_root'

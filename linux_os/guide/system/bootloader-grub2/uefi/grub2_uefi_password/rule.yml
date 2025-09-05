@@ -9,14 +9,14 @@ description: |-
     <br /><br />
     Since plaintext passwords are a security risk, generate a hash for the password
     by running the following command:
-    {{% if product in ["sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204"] %}}
     <pre># grub2-mkpasswd-pbkdf2</pre>
     {{% else %}}
     <pre># grub2-setpassword</pre>
     {{% endif %}}
     When prompted, enter the password that was selected.
     <br /><br />
-    {{% if product in ["sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204"] %}}
     Using the hash from the output, modify the <tt>/etc/grub.d/40_custom</tt>
     file with the following content:
     <pre>set superusers="boot"
@@ -45,6 +45,7 @@ identifiers:
     cce@rhel10: CCE-89236-4
     cce@sle12: CCE-83045-5
     cce@sle15: CCE-83275-8
+    cce@slmicro5: CCE-93779-7
 
 references:
     cis-csc: 11,12,14,15,16,18,3,5

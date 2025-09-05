@@ -1,4 +1,4 @@
-{{% if product in ["sle12"] %}}
+{{% if product in ["sle12", "slmicro5"] %}}
 {{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc', 'coolkey'] %}}
 {{% elif product in ["sle15"] %}}
 {{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc'] %}}
@@ -13,7 +13,7 @@
 <def-group>
   <definition class="compliance" id="install_smartcard_packages"
   version="1">
-    {{{ oval_metadata("The " + pkg_system|upper + " packages " + smartcard_packages|join(',') + " should be installed.", affected_platforms=["multi_platform_sle"]) }}}
+    {{{ oval_metadata("The " + pkg_system|upper + " packages " + smartcard_packages|join(',') + " should be installed.", affected_platforms=["multi_platform_sle", "multi_platform_slmicro"]) }}}
     <criteria operator="AND" comment="Make sure all smartcard packages are installed">
 {{% for pkg in smartcard_packages %}}
       <criterion comment="package {{{ pkg }}} is installed"

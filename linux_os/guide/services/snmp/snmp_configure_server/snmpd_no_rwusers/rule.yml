@@ -6,7 +6,7 @@ title: 'Ensure SNMP Read Write is disabled'
 description: |-
     Edit <tt>/etc/snmp/snmpd.conf</tt>, remove any <tt>rwuser</tt> entries.
     Once the read write users have been removed, restart the SNMP service:
-    <pre>$ sudo service snmpd restart</pre>
+    <pre>$ sudo systemctl restart snmpd</pre>
 
 rationale: |-
     Certain SNMP settings can permit users to execute system behaviors from user

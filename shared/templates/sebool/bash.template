@@ -16,7 +16,7 @@
 {{{ bash_package_install("libsemanage-python") }}}
 {{% endif %}}
 
-if selinuxenabled; then
+if selinuxenabled || {{{ bash_bootc_build() }}} ; then
 {{% if SEBOOL_BOOL %}}
     setsebool -P {{{ SEBOOLID }}} {{{ SEBOOL_BOOL }}}
 {{% else %}}

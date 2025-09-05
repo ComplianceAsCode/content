@@ -1,8 +1,8 @@
 policy: PCI-DSS
 title: Payment Card Industry - Data Security Standard (PCI-DSS)
 id: pcidss_4
-version: '4.0'
-source: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
+version: '4.0.1'
+source: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0_1.pdf
 levels:
 - id: base
 reference_type: pcidss4
@@ -695,7 +695,7 @@ controls:
     status: partial
     controls:
     - id: 3.3.1
-      title: SAD is not retained after authorization, even if encrypted. All sensitive
+      title: SAD is not stored after authorization, even if encrypted. All sensitive
         authentication data received is rendered unrecoverable upon completion of the
         authorization process.
       description: |-
@@ -710,7 +710,7 @@ controls:
       status: partial
       controls:
       - id: 3.3.1.1
-        title: The full contents of any track are not retained upon completion of the
+        title: The full contents of any track are not stored upon completion of the
           authorization process.
         description: |-
           This requirement is not eligible for the customized approach. In the normal course of
@@ -725,7 +725,7 @@ controls:
         status: partial
         notes: |-
           This requirement consists in auditing files, databases and memory to make sure the full
-          content of any track is not unnecessarily retained. It involves manual auditing but some
+          content of any track is not unnecessarily stored. It involves manual auditing but some
           automated rules fit this requirement in order to reduce the chances if this data be
           unintentionally stored in memory.
         rules:
@@ -744,7 +744,7 @@ controls:
           - sysctl_kernel_core_uses_pid
 
       - id: 3.3.1.2
-        title: The card verification code is not retained upon completion of the authorization
+        title: The card verification code is not stored upon completion of the authorization
           process.
         description: |-
           This requirement is not eligible for the customized approach. The card verification code
@@ -762,7 +762,7 @@ controls:
           - sysctl_fs_suid_dumpable
 
       - id: 3.3.1.3
-        title: The personal identification number (PIN) and the PIN block are not retained upon
+        title: The personal identification number (PIN) and the PIN block are not stored upon
           completion of the authorization process.
         description: |-
           This requirement is not eligible for the customized approach. PIN blocks are encrypted
@@ -789,12 +789,13 @@ controls:
         programs (for example, payment brands and acquirers). Contact the organizations of
         interest for any additional criteria. This requirement applies to all storage of SAD, even
         if no PAN is present in the environment. Refer to Requirement 3.2.1 for an additional
-        requirement that applies if SAD is stored prior to completion of authorization. This
-        requirement does not apply to issuers and companies that support issuing services where
-        there is a legitimate issuing business justification to store SAD. Refer to Requirement
-        3.3.3 for requirements specifically for issuers. This requirement does not replace how PIN
-        blocks are required to be managed, nor does it mean that a properly encrypted PIN block
-        needs to be encrypted again.
+        requirement that applies if SAD is stored prior to completion of authorization. Issuers
+        and companies that support issuing services, where there is a legitimate and documented
+        business need to store SAD, are not required to meet this requirement. A legitimate
+        business need is one that is necessary for the performance of the function being provided
+        by or for the issuer. Refer to Requirement 3.3.3 for requirements specifically for issuers.
+        This requirement does not replace how PIN blocks are required to be managed, nor does it
+        mean that a properly encrypted PIN block needs to be encrypted again.
       levels:
         - base
       status: manual
@@ -890,13 +891,18 @@ controls:
           are keyed cryptographic hashes of the entire PAN, with associated key-management
           processes and procedures in accordance with Requirements 3.6 and 3.7.
         description: |-
-          This requirement applies to PANs stored in primary storage (databases, or flat files
-          such as text files spreadsheets) as well as non-primary storage (backup, audit logs,
-          exception, or troubleshooting logs) must all be protected. This requirement does not
-          preclude the use of temporary files containing cleartext PAN while encrypting and
-          decrypting PAN. This requirement is considered a best practice until 31 March 2025,
-          after which it will be required and must be fully considered during a PCI DSS
-          assessment.
+          All Applicability Notes for Requirement 3.5.1 also apply to this requirement.
+          Key-management processes and procedures (Requirements 3.6 and 3.7) do not apply to
+          system components used to generate individual keyed hashes of a PAN for comparison to
+          another system if:
+          - The system components only have access to one hash value at a time (hash values are
+          not stored on the system)
+          AND
+          - There is no other account data stored on the same system as the hashes.
+          This requirement is considered a best practice until 31 March 2025, after which it will
+          be required and must be fully considered during a PCI DSS assessment. This requirement
+          will replace the bullet in Requirement 3.5.1 for one-way hashes once its effective date
+          is reached.
         levels:
           - base
         status: planned
@@ -1400,15 +1406,13 @@ controls:
         against phishing attacks.
       description: |-
         Mechanisms are in place to protect against and mitigate risk posed by phishing attacks.
-        This requirement applies to the automated mechanism. It is not intended that the systems
-        and services providing such automated mechanisms (such as email servers) are brought into
-        scope for PCI DSS. The focus of this requirement is on protecting personnel with access to
-        system components in-scope for PCI DSS. Meeting this requirement for technical and
-        automated controls to detect and protect personnel against phishing is not the same as
-        Requirement 12.6.3.1 for security awareness training. Meeting this requirement does not
-        also meet the requirement for providing personnel with security awareness training, and
-        vice versa. This requirement is a best practice until 31 March 2025, after which it will
-        be required and must be fully considered during a PCI DSS assessment.
+        The focus of this requirement is on protecting personnel with access to system components
+        in-scope for PCI DSS. Meeting this requirement for technical and automated controls to
+        detect and protect personnel against phishing is not the same as Requirement 12.6.3.1 for
+        security awareness training. Meeting this requirement does not also meet the requirement
+        for providing personnel with security awareness training, and vice versa. This requirement
+        is a best practice until 31 March 2025, after which it will be required and must be fully
+        considered during a PCI DSS assessment.
       levels:
         - base
       status: manual
@@ -1541,10 +1545,11 @@ controls:
       description: |-
         All system components are protected from known vulnerabilities by installing
         applicable security patches/updates as follows:
-        - Critical or high-security patches/updates (identified according to the risk ranking
+        - Patches/updates for critical vulnerabilities (identified according to the risk ranking
         process at Requirement 6.3.1) are installed within one month of release.
         - All other applicable security patches/updates are installed within an appropriate time
-        frame as determined by the entity (for example, within three months of release).
+        frame as determined by the entity's assessment of the criticality of the risk to the
+        environment as identified according to the risk ranking process at Requirement 6.3.1.
       levels:
         - base
       status: automated
@@ -1570,11 +1575,11 @@ controls:
         - Reviewing public-facing web applications via manual or automated application
         vulnerability security assessment tools or methods as follows:
           - At least once every 12 months and after significant changes.
-          – By an entity that specializes in application security.
-          – Including, at a minimum, all common software attacks in Requirement 6.2.4.
-          – All vulnerabilities are ranked in accordance with requirement 6.3.1.
-          – All vulnerabilities are corrected.
-          – The application is re-evaluated after the corrections
+          - By an entity that specializes in application security.
+          - Including, at a minimum, all common software attacks in Requirement 6.2.4.
+          - All vulnerabilities are ranked in accordance with requirement 6.3.1.
+          - All vulnerabilities are corrected.
+          - The application is re-evaluated after the corrections
         OR
         - Installing an automated technical solution(s) that continually detects and prevents
         web-based attacks as follows:
@@ -1603,8 +1608,8 @@ controls:
         managed as follows:
         - A method is implemented to confirm that each script is authorized.
         - A method is implemented to assure the integrity of each script.
-        - An inventory of all scripts is maintained with written justification as to why each is
-        necessary.
+        - An inventory of all scripts is maintained with written business or technical
+        justification as to why each is necessary.
       levels:
         - base
       status: manual
@@ -1890,10 +1895,10 @@ controls:
         - group_unique_name
 
     - id: 8.2.2
-      title: Group, shared, or generic accounts, or other shared authentication credentials are
-        only used when necessary on an exception basis, and are managed.
+      title: Group, shared, or generic IDs, or other shared authentication credentials are only
+        used when necessary on an exception basis, and are managed.
       description: |-
-        - Account use is prevented unless needed for an exceptional circumstance.
+        - ID use is prevented unless needed for an exceptional circumstance.
         - Use is limited to the time needed for the exceptional circumstance.
         - Business justification for use is documented.
         - Use is explicitly approved by management.
@@ -2047,6 +2052,7 @@ controls:
       status: automated
       rules:
         - enable_authselect
+        - var_authselect_profile=sssd
         - accounts_passwords_pam_faillock_deny
         - var_accounts_passwords_pam_faillock_deny=10
         - accounts_passwords_pam_faillock_unlock_time
@@ -2220,7 +2226,7 @@ controls:
         - sssd_enable_smartcards
 
     - id: 8.4.2
-      title: MFA is implemented for all access into the CDE.
+      title: MFA is implemented for all non-console access into the CDE.
       description: |-
         Access into the CDE cannot be obtained by the use of a single authentication factor.
       levels:
@@ -2228,8 +2234,8 @@ controls:
       status: manual
 
     - id: 8.4.3
-      title: MFA is implemented for all remote network access originating from outside the
-        entity's network that could access or impact the CDE.
+      title: MFA is implemented for all remote access originating from outside the entity's
+        network that could access or impact the CDE.
       levels:
         - base
       status: manual
@@ -2431,8 +2437,8 @@ controls:
       status: manual
 
     - id: 9.3.4
-      title: A visitor log is used to maintain a physical record of visitor activity within the
-        facility and within sensitive areas.
+      title: Visitor logs are used to maintain a physical record of visitor activity both within
+        the facility and within sensitive areas.
       levels:
         - base
       status: manual
@@ -2787,7 +2793,6 @@ controls:
       rules:
         - var_auditd_name_format=fqd
         - auditd_name_format
-        - audit_profile_set
 
   - id: '10.3'
     title: Audit logs are protected from destruction and unauthorized modifications.
@@ -3170,8 +3175,9 @@ controls:
       status: manual
       controls:
       - id: 11.3.1.1
-        title: All other applicable vulnerabilities (those not ranked as high-risk or critical per
-          the entity's vulnerability risk rankings defined at Requirement 6.3.1) are managed
+        title: All other applicable vulnerabilities (those not ranked as high-risk vulnerabilities
+          or critical vulnerabilities according to the entity's vulnerability risk rankings
+          defined at Requirement 6.3.1) are managed.
         levels:
           - base
         status: manual
@@ -3385,9 +3391,8 @@ controls:
     status: manual
     controls:
     - id: 12.3.1
-      title: Each PCI DSS requirement that provides flexibility for how frequently it is performed
-        (for example, requirements to be performed periodically) is supported by a targeted risk
-        analysis that is documented.
+      title: For each PCI DSS requirement that specifies completion of a targeted risk analysis,
+        the analysis is documented.
       levels:
         - base
       status: manual
@@ -3633,17 +3638,17 @@ controls:
     controls:
     - id: 12.9.1
       title: |-
-        Additional requirement for service providers only: TPSPs acknowledge in writing to
-        customers that they are responsible for the security of account data the TPSP possesses or
-        otherwise stores, processes, or transmits on behalf of the customer, or to the extent that
-        they could impact the security of the customer's CDE.
+        Additional requirement for service providers only: TPSPs provide written agreements to
+        customers that include acknowledgments that TPSPs are responsible for the security of
+        account data the TPSP possesses or otherwise stores, processes, or transmits on behalf of
+        the customer, or to the extent that the TPSP could impact the security of the customer's
+        cardholder data and/or sensitive authentication data.
       description: |-
         TPSPs formally acknowledge their security responsibilities to their customers. This
         requirement applies only when the entity being assessed is a service provider. The exact
-        wording of an acknowledgment will depend on the agreement between the two parties, the
-        details of the service being provided, and the responsibilities assigned to each party.
-        The acknowledgment does not have to include the exact wording provided in this
-        requirement.
+        wording of an agreement will depend on the details of the service being provided, and the
+        responsibilities assigned to each party. The agreement does not have to include the exact
+        wording provided in this requirement.
       levels:
         - base
       status: manual

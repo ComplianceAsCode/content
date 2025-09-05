@@ -67,7 +67,6 @@ selections:
     - harden_sshd_ciphers_opensshserver_conf_crypto_policy
     - package_cron_installed
     - sshd_enable_gssapi_auth
-    - package_audit-audispd-plugins_installed
     - partition_for_dev_shm
     - ftp_configure_firewall
     - auditd_data_disk_error_action

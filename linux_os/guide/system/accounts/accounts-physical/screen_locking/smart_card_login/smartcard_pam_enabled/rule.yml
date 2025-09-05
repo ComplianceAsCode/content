@@ -9,14 +9,16 @@ description: |-
     VPN, proxy capability). This does not apply to authentication for the
     purpose of configuring the device itself (management).
 
+    {{% if 'ubuntu' in product %}}
+    Add or update the following line in <tt>/etc/pam.d/common-auth</tt>,
+    placing it above any lines containing <tt>pam_unix.so</tt>:
+    <pre>auth    [success=2 default=ignore] pam_pkcs11.so </pre>
+    {{% else %}}
     Check that the <tt>pam_pkcs11.so</tt> option is configured in the
     <tt>etc/pam.d/common-auth</tt> file with the following command:
 
     <pre># grep pam_pkcs11.so /etc/pam.d/common-auth
 
-    {{% if 'ubuntu' in product %}}
-    auth [success=2 default=ignore] pam_pkcs11.so</pre>
-    {{% else %}}
     auth sufficient pam_pkcs11.so</pre>
     {{% endif %}}
 
@@ -53,9 +55,10 @@ severity: medium
 identifiers:
     cce@sle12: CCE-83208-9
     cce@sle15: CCE-85556-9
+    cce@slmicro5: CCE-93800-1
 
 references:
-    disa: CCI-000765,CCI-000766,CCI-000767,CCI-000768,CCI-000187,CCI-001948,CCI-001953,CCI-001954
+    disa: CCI-000765,CCI-000766,CCI-000767,CCI-000768,CCI-000187,CCI-004046,CCI-001953,CCI-001954,CCI-004047
     nist@sle12: IA-2(1),IA-2(1).1,IA-2(2),IA-2(2).1,IA-2(3),IA-2(3).1,IA-2(4),IA-2(4).1,IA-5(2),IA-5(2).1,IA-5(2)(c),IA-2(11),IA-2(12)
     srg: SRG-OS-000068-GPOS-00036,SRG-OS-000105-GPOS-00052,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000108-GPOS-00055,SRG-OS-000375-GPOS-00160,SRG-OS-000375-GPOS-00161,SRG-OS-000375-GPOS-00162
     stigid@sle12: SLES-12-030520

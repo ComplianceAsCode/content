@@ -2,10 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} systems using Domain Name Servers (DNS) resolution must have at least two name servers configured.
 
 vuldiscussion: |-
-    To provide availability for name resolution services, multiple redundant
-    name servers are mandated. A failure in name resolution could lead to the
-    failure of security functions requiring name resolution, which may include
-    time synchronization, centralized authentication, and remote system logging.
+    To provide availability for name resolution services, multiple redundant name servers are mandated. A failure in name resolution could lead to the failure of security functions requiring name resolution, which may include time synchronization, centralized authentication, and remote system logging.
 
 checktext: |-
     Verify the name servers used by the system with the following command:
@@ -34,5 +31,3 @@ fixtext: |-
 
     Replace [name server 1] and [name server 2] with the IPs of two different DNS resolvers. Replace [connection name] with a valid NetworkManager connection name on the system. Replace ipv4 with ipv6 if IPv6 DNS servers are used.
 
-vuln_discussion: |-
-    To provide availability for name resolution services, multiple redundant name servers are mandated. A failure in name resolution could lead to the failure of security functions requiring name resolution, which may include time synchronization, centralized authentication, and remote system logging.

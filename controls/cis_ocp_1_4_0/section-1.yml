@@ -246,9 +246,8 @@ controls:
       levels: [ level_1, ]
     - id: 1.2.9
       title: Ensure that the APIPriorityAndFairness feature gate is enabled
-      status: automated
-      rules:
-        - api_server_api_priority_gate_enabled
+      status: inherently met
+      rules: []
       levels: [ level_1, ]
     - id: 1.2.10
       title: Ensure that the admission control plugin AlwaysAdmit is not set
@@ -294,9 +293,8 @@ controls:
       levels: [ level_1, ]
     - id: 1.2.17
       title: Ensure that the --insecure-port argument is set to 0
-      status: automated
-      rules:
-        - api_server_insecure_port
+      status: inherently met
+      rules: []
       levels: [ level_1, ]
     - id: 1.2.18
       title: Ensure that the --secure-port argument is not set to 0
@@ -384,15 +382,10 @@ controls:
       levels: [ level_1, ]
     - id: 1.2.31
       title: Ensure that encryption providers are appropriately configured
-      status: partial
+      status: automated
       rules:
         - api_server_encryption_provider_cipher
       levels: [ level_1, ]
-      # Remove this comment once https://github.com/ComplianceAsCode/content/issues/10868 is fixed.
-      # tickets:
-      #   - https://issues.redhat.com/browse/CMP-1973
-      notes: |-
-        Ticket 1973 tracks adding the aesgcm encryption method for OCP 4.13+
     - id: 1.2.32
       title: Ensure that the API Server only makes use of Strong Cryptographic Ciphers
       status: automated

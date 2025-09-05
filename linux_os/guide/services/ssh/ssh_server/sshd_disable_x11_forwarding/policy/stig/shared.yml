@@ -2,12 +2,12 @@ srg_requirement: |-
     {{{ full_name }}} SSH daemon must disable remote X connections for interactive users.
 
 vuldiscussion: |-
-    When X11 forwarding is enabled, there may be additional exposure to the server and client displays if the sshd proxy display is configured to listen on the wildcard address.  By default, sshd binds the forwarding server to the loopback address and sets the hostname part of the DIPSLAY environment variable to localhost.  This prevents remote hosts from connecting to the proxy display.
+    When X11 forwarding is enabled, there may be additional exposure to the server and client displays if the sshd proxy display is configured to listen on the wildcard address.  By default, sshd binds the forwarding server to the loopback address and sets the hostname part of the DISPLAY environment variable to localhost. This prevents remote hosts from connecting to the proxy display.
 
 checktext: |-
     Verify the SSH daemon does not allow X11Forwarding with the following command:
 
-    $ sudo grep -ir x11for  /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*x11forwarding'
 
     X11forwarding no
 
@@ -23,6 +23,3 @@ fixtext: |-
     The SSH service must be restarted for changes to take effect:
 
     $ sudo systemctl restart sshd.service
-
-vuln_discussion: |-
-    When X11 forwarding is enabled, there may be additional exposure to the server and client displays if the sshd proxy display is configured to listen on the wildcard address.  By default, sshd binds the forwarding server to the loopback address and sets the hostname part of the DISPLAY environment variable to localhost. This prevents remote hosts from connecting to the proxy display.

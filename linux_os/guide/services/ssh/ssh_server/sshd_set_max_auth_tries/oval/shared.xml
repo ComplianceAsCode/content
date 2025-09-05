@@ -1,27 +1,43 @@
 <def-group>
-  <definition class="compliance" id="sshd_set_max_auth_tries" version="1">
+  <definition class="compliance" id="{{{rule_id}}}" version="1">
     {{{ oval_metadata("The SSH MaxAuthTries should be set to an
       appropriate value.") }}}
-    <criteria comment="sshd is configured correctly or is not installed" operator="OR">
+    <criteria comment="SSH is configured correctly or is not installed"
+    operator="OR">
       <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
-          definition_ref="sshd_not_required_or_unset" />
+        definition_ref="sshd_not_required_or_unset" />
+        {{% if product in ['opensuse', 'sle12', 'sle15'] %}}
+        <extend_definition comment="rpm package openssh removed"
+        definition_ref="package_openssh_removed" />
+        {{% else %}}
         <extend_definition comment="rpm package openssh-server removed"
-          definition_ref="package_openssh-server_removed" />
+        definition_ref="package_openssh-server_removed" />
+        {{% endif %}}
       </criteria>
       <criteria comment="sshd is installed and configured" operator="AND">
         <extend_definition comment="sshd is required or requirement is unset"
-          definition_ref="sshd_required_or_unset" />
+        definition_ref="sshd_required_or_unset" />
+        {{% if product in ['opensuse', 'sle12', 'sle15'] %}}
+        <extend_definition comment="rpm package openssh installed"
+        definition_ref="package_openssh_installed" />
+        {{% else %}}
         <extend_definition comment="rpm package openssh-server installed"
-          definition_ref="package_openssh-server_installed" />
+        definition_ref="package_openssh-server_installed" />
+        {{% endif %}}
         <criterion comment="Check MaxAuthTries in /etc/ssh/sshd_config"
         test_ref="test_sshd_max_auth_tries" />
+        {{% if sshd_distributed_config == "true" %}}
+        <criterion comment="Check MaxAuthTries in /etc/ssh/sshd_config.d if any"
+        test_ref="test_sshd_set_max_auth_tries_config_dir" />
+        {{% endif %}}
+        <criterion comment="the configuration exists" test_ref="test_MaxAuthTries_present_sshd_set_max_auth_tries" />
       </criteria>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="maxauthtries is configured" id="test_sshd_max_auth_tries" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+  comment="MaxAuthTries is configured" id="test_sshd_max_auth_tries" version="1">
     <ind:object object_ref="object_sshd_max_auth_tries" />
     <ind:state state_ref="state_maxauthtries_value_upper_bound" />
     <ind:state state_ref="state_maxauthtries_value_lower_bound" />
@@ -30,21 +46,53 @@
   <ind:textfilecontent54_object id="object_sshd_max_auth_tries" version="2">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)MaxAuthTries[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state comment="upper bound of MaxAuthTries"
+{{% if sshd_distributed_config == "true" %}}
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="tests the value of MaxAuthTries setting in the /etc/ssh/sshd_config.d file"
+    id="test_sshd_set_max_auth_tries_config_dir" version="1">
+    <ind:object object_ref="obj_sshd_set_max_auth_tries_config_dir" />
+    <ind:state state_ref="state_maxauthtries_value_upper_bound" />
+    <ind:state state_ref="state_maxauthtries_value_lower_bound" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_sshd_set_max_auth_tries_config_dir" version="1">
+    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)MaxAuthTries(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endif %}}
+
+  <ind:textfilecontent54_test id="test_MaxAuthTries_present_sshd_set_max_auth_tries" version="1"
+    check="all" check_existence="at_least_one_exists"
+    comment="Verify that the value of MaxAuthTries is present">
+    <ind:object object_ref="obj_collection_obj_sshd_set_max_auth_tries" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_sshd_set_max_auth_tries" version="1">
+    <set>
+      <object_reference>object_sshd_max_auth_tries</object_reference>
+      {{% if sshd_distributed_config == "true" %}}
+      <object_reference>obj_sshd_set_max_auth_tries_config_dir</object_reference>
+      {{% endif %}}
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state comment="upper bound of MaxAuthTries in number of sessions"
   id="state_maxauthtries_value_upper_bound" version="1">
     <ind:subexpression datatype="int" operation="less than or equal" var_check="all"
     var_ref="sshd_max_auth_tries_value" />
   </ind:textfilecontent54_state>
 
-  <ind:textfilecontent54_state comment="lower bound of MaxAuthTries"
+  <ind:textfilecontent54_state comment="lower bound of MaxAuthTries in number of sessions"
   id="state_maxauthtries_value_lower_bound" version="1">
     <ind:subexpression datatype="int" operation="greater than">0</ind:subexpression>
   </ind:textfilecontent54_state>
 
-  <external_variable comment="maxauthtries value" datatype="int"
+  <external_variable comment="MaxAuthTries value" datatype="int"
   id="sshd_max_auth_tries_value" version="1" />
 
 </def-group>

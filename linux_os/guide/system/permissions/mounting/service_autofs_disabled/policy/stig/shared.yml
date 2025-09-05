@@ -2,7 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} file system automount function must be disabled unless required.
 
 vuldiscussion: |-
-    Without identifying devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity.
+    An authentication process resists replay attacks if it is impractical to achieve a successful authentication by recording and replaying a previous authentication message.
 
 checktext: |-
     Verify that {{{ full_name }}} file system automount function has been disabled with the following command:
@@ -20,5 +20,3 @@ fixtext: |-
 
     $ sudo systemctl mask --now autofs.service
 
-vuln_discussion: |-
-    An authentication process resists replay attacks if it is impractical to achieve a successful authentication by recording and replaying a previous authentication message.

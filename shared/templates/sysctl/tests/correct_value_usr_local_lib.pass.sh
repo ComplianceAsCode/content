@@ -4,7 +4,7 @@
 {{% endif %}}
 
 # Clean sysctl config directories
-{{% if product not in ["sle12","sle15"] %}}
+{{% if product not in ["sle12", "sle15", "slmicro5"] %}}
 rm -rf /usr/lib/sysctl.d/* /usr/local/lib/sysctl.d/* /run/sysctl.d/* /etc/sysctl.d/*
 
 sed -i "/{{{ SYSCTLVAR }}}/d" /etc/sysctl.conf

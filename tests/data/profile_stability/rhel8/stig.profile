@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 8 V1R14.
+    DISA STIG for Red Hat Enterprise Linux 8 V2R1.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -23,7 +23,7 @@ description: 'This profile contains configuration checks that align to the
 extends: null
 hidden: ''
 metadata:
-    version: V1R14
+    version: V2R1
     SMEs:
     - mab879
     - ggbecker
@@ -79,7 +79,6 @@ selections:
 - accounts_user_interactive_home_directory_exists
 - accounts_users_home_files_groupownership
 - accounts_users_home_files_permissions
-- agent_mfetpd_running
 - aide_build_database
 - aide_check_audit_tools
 - aide_scan_notification
@@ -169,7 +168,6 @@ selections:
 - chronyd_server_directive
 - chronyd_specify_remote_server
 - clean_components_post_updating
-- configure_bashrc_tmux
 - configure_bind_crypto_policy
 - configure_crypto_policy
 - configure_firewalld_ports
@@ -179,9 +177,6 @@ selections:
 - configure_openssl_crypto_policy
 - configure_openssl_tls_crypto_policy
 - configure_ssh_crypto_policy
-- configure_tmux_lock_after_time
-- configure_tmux_lock_command
-- configure_tmux_lock_keybinding
 - configure_usbguard_auditbackend
 - configured_firewalld_default_deny
 - coredump_disable_backtraces
@@ -306,7 +301,6 @@ selections:
 - no_empty_passwords_etc_shadow
 - no_files_unowned_by_user
 - no_host_based_files
-- no_tmux_in_shells
 - no_user_host_based_files
 - package_abrt-addon-ccpp_removed
 - package_abrt-addon-kerneloops_removed
@@ -324,7 +318,6 @@ selections:
 - package_libreport-plugin-logger_removed
 - package_libreport-plugin-rhtsupport_removed
 - package_mailx_installed
-- package_mcafeetp_installed
 - package_opensc_installed
 - package_openssh-server_installed
 - package_policycoreutils_installed
@@ -337,7 +330,6 @@ selections:
 - package_sendmail_removed
 - package_telnet-server_removed
 - package_tftp-server_removed
-- package_tmux_installed
 - package_tuned_removed
 - package_usbguard_installed
 - package_vsftpd_removed
@@ -492,7 +484,7 @@ selections:
 - var_slub_debug_options=P
 - var_user_initialization_files_regex=all_dotfiles
 - var_screensaver_lock_delay=5_seconds
-- var_logind_session_timeout=15_minutes
+- var_logind_session_timeout=10_minutes
 - var_auditd_name_format=stig
 unselected_groups: []
 platforms: !!set {}

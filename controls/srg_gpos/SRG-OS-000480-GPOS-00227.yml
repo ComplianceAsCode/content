@@ -17,6 +17,7 @@ controls:
             - file_groupowner_etc_gshadow
             - file_groupowner_etc_passwd
             - file_groupowner_etc_shadow
+            - file_owner_grub2_cfg
             - file_groupowner_grub2_cfg
             - file_owner_cron_d
             - file_owner_cron_daily
@@ -66,9 +67,10 @@ controls:
             - no_files_unowned_by_user
             - file_owner_cron_deny
             - file_groupowner_cron_deny
+            - file_permission_user_init_files_root
+            - var_user_initialization_files_regex=all_dotfiles
 
             # service disabled
-            # - service_rngd_enabled - this rule was removed because it does bring questionable value on modern systems
             - service_kdump_disabled
             - service_debug-shell_disabled
             - service_autofs_disabled
@@ -81,7 +83,6 @@ controls:
 
             # package removed
             - package_vsftpd_removed
-            - package_sendmail_removed
             - package_tftp-server_removed
             - package_quagga_removed
             - package_gssproxy_removed
@@ -97,8 +98,6 @@ controls:
             - package_rsyslog_installed
             - package_firewalld_installed
             - package_gnutls-utils_installed
-            - package_rng-tools_installed
-            - package_MFEhiplsm_installed
             - package_nss-tools_installed
             - package_policycoreutils-python-utils_installed
             - package_policycoreutils_installed
@@ -146,6 +145,7 @@ controls:
             - sysctl_net_ipv6_conf_default_accept_source_route
             - sysctl_net_ipv4_conf_all_accept_redirects
             - sysctl_net_ipv4_conf_all_accept_source_route
+            - sysctl_net_ipv4_conf_all_forwarding
             - sysctl_net_ipv4_conf_default_accept_source_route
             - sysctl_net_ipv4_conf_all_rp_filter
             - sysctl_net_ipv4_conf_default_rp_filter
@@ -155,6 +155,7 @@ controls:
             - sysctl_net_ipv4_conf_default_accept_redirects
             - sysctl_net_ipv4_conf_default_send_redirects
             - sysctl_net_ipv4_ip_forward
+            - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
             - sysctl_kernel_core_pattern
             - sysctl_kernel_kexec_load_disabled
             - sysctl_kernel_unprivileged_bpf_disabled
@@ -235,8 +236,10 @@ controls:
             - enable_authselect
             - no_host_based_files
             - no_user_host_based_files
-            - tftpd_uses_secure_mode
             - display_login_attempts
             - installed_OS_is_vendor_supported
-
+            - selinux_all_devicefiles_labeled
+            - xwindows_remove_packages
+            - chrony_set_nts
+            - tftp_uses_secure_mode_systemd
         status: automated

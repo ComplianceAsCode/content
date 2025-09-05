@@ -576,6 +576,7 @@ INSTALL_COMMANDS = dict(
     rhel10=("dnf", "install", "-y"),
     sles=("zypper", "install", "-y"),
     ubuntu=("DEBIAN_FRONTEND=noninteractive", "apt", "install", "-y"),
+    debian=("DEBIAN_FRONTEND=noninteractive", "apt", "install", "-y"),
 )
 
 
@@ -609,7 +610,7 @@ def _match_rhel_version(cpe):
 
 
 def cpe_to_platform(cpe):
-    trivials = ["fedora", "sles", "ubuntu"]
+    trivials = ["fedora", "sles", "ubuntu", "debian"]
     for platform in trivials:
         if platform in cpe:
             return platform

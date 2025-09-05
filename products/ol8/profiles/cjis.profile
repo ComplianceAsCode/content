@@ -1,5 +1,7 @@
 documentation_complete: true
 
+hidden: true
+
 reference: https://www.fbi.gov/services/cjis/cjis-security-policy-resource-center
 
 title: 'Criminal Justice Information Services (CJIS) Security Policy'

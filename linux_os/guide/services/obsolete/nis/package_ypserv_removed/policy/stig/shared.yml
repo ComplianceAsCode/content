@@ -15,7 +15,9 @@ checktext: |-
 
     If the "ypserv" package is installed, this is a finding.
 
-vuln_discussion: |-
+
+
+vuldiscussion: |-
     The NIS service provides an unencrypted authentication service, which does not provide for the confidentiality and integrity of user passwords or the remote session.
 
     Removing the "ypserv" package decreases the risk of the accidental (or intentional) activation of NIS or NIS+ services.

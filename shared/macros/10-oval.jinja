@@ -336,6 +336,23 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 </ind:textfilecontent54_state>
 {{%- endmacro %}}
 
+{{% macro oval_line_in_file_define_variable(var_name, datatype) %}}
+<local_variable id="local_var_regex_{{{ rule_id }}}"
+comment="Regex that matches exact value represented by {{{ var_name }}} XCCDF variable"
+datatype="{{{ datatype }}}" version="1">
+    <variable_component var_ref="{{{ var_name }}}" />
+</local_variable>
+
+<external_variable comment="Variable defining the value the argument should have" datatype="{{{ datatype }}}" id="{{{ var_name }}}" version="1" />
+{{% endmacro %}}
+
+{{%- macro oval_line_in_file_state_xccdf_variable(var_name='', id_stem='', datatype='') -%}}
+{{%- set id_stem = id_stem or rule_id -%}}
+<ind:textfilecontent54_state id="state_{{{ id_stem }}}" version="1">
+  <ind:subexpression datatype="{{{ datatype }}}" operation="equals" var_ref="local_var_regex_{{{ rule_id }}}" />
+</ind:textfilecontent54_state>
+{{%- endmacro -%}}
+
 
 {{%- macro oval_line_in_directory_criterion(path='', parameter='', missing_parameter_pass=false, avoid_conflicting=false) -%}}
 {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir", avoid_conflicting=avoid_conflicting) -}}}
@@ -356,6 +373,9 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{{- oval_line_in_file_state(value, multi_value, quotes, id_stem=rule_id ~ "_config_dir") -}}}
 {{%- endmacro %}}
 
+{{%- macro oval_line_in_directory_state_xccdf_variable(var_name='', datatype='') -%}}
+{{{- oval_line_in_file_state_xccdf_variable(var_name, id_stem=rule_id ~ "_config_dir", datatype=datatype) -}}}
+{{%- endmacro -%}}
 
 {{#
   Macro to define the OVAL criterion to check if the configuration file exists (Criterion definition).
@@ -525,28 +545,6 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   {{{- oval_argument_value_in_line_test(filepath, name, value, line_prefix, line_suffix) }}}
 </def-group>
 {{%- endmacro -%}}
-
-
-{{#
-  High level macro to check if a particular combination of parameter and value in the ssh daemon configuration file is set.
-  A case insensitive comparison is used in the prefix because sshd_config has case-insensitive parameters (but case-sensitive values).
-
-:param parameter: The parameter to be checked in the configuration file.
-:type parameter: str
-:param value: The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
-:type value: str
-:param missing_parameter_pass: If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
-:type missing_parameter_pass: bool
-:param multi_value: If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
-:type multi_value: bool
-:param missing_config_file_fail: If set, the check will fail if the configuration file doesn't exist in the system.
-:type missing_config_file_fail: bool
-
-#}}
-{{%- macro oval_sshd_config(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
-{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]+', value=value, missing_parameter_pass=missing_parameter_pass, application="sshd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
-{{%- endmacro %}}
-
 
 {{#
   High level macro to check if a particular shell variable is set.
@@ -721,7 +719,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
       <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
         definition_ref="sshd_not_required_or_unset" />
-        {{% if product in ['opensuse', 'sle12', 'sle15'] %}}
+        {{% if product in ['opensuse', 'sle12', 'sle15', 'slmicro5'] %}}
         <extend_definition comment="rpm package openssh removed"
         definition_ref="package_openssh_removed" />
         {{% else %}}
@@ -739,7 +737,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
       <criteria comment="sshd is installed and configured" operator="AND">
         <extend_definition comment="sshd is required or requirement is unset"
         definition_ref="sshd_required_or_unset" />
-        {{% if product in ['opensuse', 'sle12', 'sle15'] %}}
+        {{% if product in ['opensuse', 'sle12', 'sle15', 'slmicro5'] %}}
         <extend_definition comment="rpm package openssh installed"
         definition_ref="package_openssh_installed" />
         {{% else %}}
@@ -1035,12 +1033,20 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type missing_parameter_pass: bool
 :param config_is_distributed: Is the param in /etc/sshd_config.d vs just /etc/ssh/sshd_config
 :type config_is_distributed: bool
+:param xccdf_variable: the name of an XCCDF variable carrying the value, this conflicts with the value parameter
+:type xccdf_variable: str
+:param datatype: a data type of the value
+:type datatype: str
 
 #}}
-{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed) -%}}
+{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed, xccdf_variable="", datatype="") -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{%- if xccdf_variable -%}}
+{{%- set description = "Ensure '" ~ parameter ~ "' is configured with value configured in " ~ xccdf_variable ~ " variable in " ~ sshd_config_path %}}
+{{%- else -%}}
 {{%- set description = "Ensure '" ~ parameter ~ "' is configured with value '" ~ value ~ "' in " ~ sshd_config_path %}}
+{{%- endif -%}}
 {{%- if config_is_distributed == "true" %}}
 {{%- set description = description  ~ " or in " ~ sshd_config_dir -%}}
 {{%- endif %}}
@@ -1053,7 +1059,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
      <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
           definition_ref="sshd_not_required_or_unset" />
-          {{% if product in ['opensuse', 'sle12','sle15'] %}}
+          {{% if product in ['opensuse', 'sle12','sle15', 'slmicro5'] %}}
           <extend_definition definition_ref="package_openssh_removed"
           comment="rpm package openssh removed"/>
           {{% else %}}
@@ -1064,7 +1070,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
      <criteria comment="sshd is installed and configured" operator="AND">
         <extend_definition comment="sshd is required or requirement is unset"
           definition_ref="sshd_required_or_unset" />
-        {{% if product in ['opensuse', 'sle12','sle15'] %}}
+        {{% if product in ['opensuse', 'sle12','sle15', 'slmicro5'] %}}
         <extend_definition comment="rpm package openssh installed"
           definition_ref="package_openssh_installed" />
         {{% else %}}
@@ -1082,12 +1088,16 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
             {{% endif %}}
           </criteria>
           {{%- if not missing_parameter_pass %}}
-          <criterion comment="the configuraton exists" test_ref="test_{{{ parameter }}}_present_{{{ rule_id }}}" />
+          <criterion comment="the configuration exists" test_ref="test_{{{ parameter }}}_present_{{{ rule_id }}}" />
           {{% endif %}}
         </criteria>
       </criteria>
     </criteria>
   </definition>
+
+{{% if xccdf_variable %}}
+{{{ oval_line_in_file_define_variable(xccdf_variable, datatype) }}}
+{{% endif %}}
 
   {{% if product in ["ol8", "ol9"] %}}
   {{{ oval_line_in_file_object(sshd_config_path, parameter="include", id_stem="sshd_include_value_" ~ rule_id, ** case_insensitivity_kwargs)| indent (2) }}}
@@ -1113,18 +1123,30 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  {{%- if xccdf_variable -%}}
+  {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, id_stem=rule_id ~ "_sshd_included_files", datatype=datatype) | indent (2) }}}
+  {{%- else -%}}
   {{{ oval_line_in_file_state(value, id_stem=rule_id ~ "_sshd_included_files") | indent (2) }}}
+  {{%- endif -%}}
 
   {{% endif %}}
 
   {{{ oval_line_in_file_test(sshd_config_path, parameter, avoid_conflicting=true ) | indent (2) }}}
   {{{ oval_line_in_file_object(sshd_config_path, parameter=parameter, ** case_insensitivity_kwargs)| indent (2) }}}
+  {{%- if xccdf_variable -%}}
+  {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, datatype=datatype) }}}
+  {{%- else -%}}
   {{{ oval_line_in_file_state(value) | indent (2) }}}
+  {{%- endif -%}}
 
   {{%- if config_is_distributed == "true" %}}
   {{{ oval_line_in_directory_test(sshd_config_dir, parameter, avoid_conflicting=true) | indent (2) }}}
   {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, ** case_insensitivity_kwargs) | indent (2) }}}
+  {{%- if xccdf_variable -%}}
+  {{{ oval_line_in_directory_state_xccdf_variable(xccdf_variable, datatype) | indent (2) }}}
+  {{%- else -%}}
   {{{ oval_line_in_directory_state(value) | indent (2) }}}
+  {{%- endif -%}}
   {{%- endif %}}
 
   {{% if not missing_parameter_pass %}}

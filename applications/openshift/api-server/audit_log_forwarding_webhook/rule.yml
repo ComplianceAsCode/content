@@ -3,8 +3,14 @@ title: Ensure that Audit Log Webhook Is Configured
 
 {{% set default_jqfilter = '.spec' %}}
 {{% set default_api_path = '/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance' %}}
+
+{{% set v6_default_jqfilter = '.items[].spec' %}}
+{{% set v6_default_api_path = '/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders' %}}
+
 {{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/{{.hypershift_namespace_prefix}}/hostedclusters/{{.hypershift_cluster}}' %}}
+
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ default_jqfilter %}}
+{{% set v6_dump_path = v6_default_api_path ~ ',' ~ v6_default_jqfilter ~ ',' ~ v6_default_jqfilter %}}
 
 description: |-
   Audit is on by default and the best practice is to ship audit logs off an cluster for retention.
@@ -33,20 +39,9 @@ ocil_clause: 'Audit Webhook not configured'
 
 ocil: |-
     Run the following command to verify that the audit webhook is configured:
-    <pre>oc get hostedclusters {{.hypershift_cluster}} -n clusters -ojson | jq -r '.spec.auditWebhook'</pre>
+    <pre>oc get hostedclusters {{.hypershift_cluster}} -n clusters -ojson | jq -r '.items[].spec.auditWebhook'</pre>
     The output should contain a properly configured webhook.
 
 warnings:
 - general: |-
-    {{{ openshift_filtered_cluster_setting_suppressed({hypershift_path: dump_path}) | indent(4) }}}
-
-template:
-  name: yamlfile_value
-  vars:
-    ocp_data: 'true'
-    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-    yamlpath: ".auditWebhook"
-    entity_check: "at least one"
-    values:
-    - value: ".*"
-      operation: "pattern match"
+    {{{ openshift_filtered_cluster_setting_suppressed({hypershift_path: dump_path, hypershift_path: v6_dump_path}) | indent(4) }}}

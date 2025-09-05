@@ -1,4 +1,5 @@
 import os
+import re
 
 from ssg.rule_yaml import find_section_lines, get_yaml_contents
 from ssg.utils import read_file_list
@@ -18,7 +19,8 @@ def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None
     path = create_output(rule_dir['dir'])
 
     lines = read_file_list(path)
-    replacement = replacement.replace('<', '&lt').replace('>', '&gt')
+    replacement = replacement.replace('<', '&lt;').replace('>', '&gt;')
+    replacement = re.sub(r'Satisfies: SRG-OS.+', '', replacement)
     section_ranges = find_section_lines(lines, section)
     if section_ranges:
         result = lines[:section_ranges[0].start]
@@ -55,7 +57,6 @@ def replace_yaml_key(key: str, replacement: str, rule_dir: dict) -> None:
     with open(path, 'w') as f:
         for line in result:
             f.write(line.rstrip())
-            f.write('\n')
 
 
 def update_row(changed: str, current: str, rule_dir_json: dict, section: str) -> None:

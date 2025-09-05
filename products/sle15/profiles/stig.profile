@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R13
+    version: V2R2
     SMEs:
         - abergmann
 
@@ -11,13 +11,13 @@ title: 'DISA STIG for SUSE Linux Enterprise 15'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 15 V1R13.
+    DISA STIG for SUSE Linux Enterprise 15 V2R2.
 
 
 selections:
     - var_account_disable_post_pw_expiration=35
     - var_accounts_fail_delay=4
-    - var_accounts_tmout=15_min
+    - var_accounts_tmout=10_min
     - inactivity_timeout_value=15_minutes
     - var_password_pam_dcredit=1
     - var_password_pam_lcredit=1
@@ -59,7 +59,6 @@ selections:
     - accounts_passwords_pam_faildelay_delay
     - accounts_passwords_pam_tally2
     - var_password_pam_tally2=3
-    - accounts_password_pam_unix_remember
     - accounts_tmout
     - accounts_umask_etc_login_defs
     - accounts_user_dot_no_world_writable_programs
@@ -193,7 +192,6 @@ selections:
     - encrypt_partitions
     - ensure_gpgcheck_globally_activated
     - ensure_rtc_utc_configuration
-    - file_etc_security_opasswd
     - file_groupownership_home_directories
     - file_groupownership_system_commands_dirs
     - file_ownership_binary_dirs
@@ -230,7 +228,6 @@ selections:
     - package_audit-audispd-plugins_installed
     - package_audit_installed
     - package_mailx_installed
-    - package_mcafeetp_installed
     - package_pam_apparmor_installed
     - package_telnet-server_removed
     - package_firewalld_installed

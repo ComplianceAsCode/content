@@ -1,0 +1,12 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables("cis_banner_text") }}}
+
+- name: {{{ rule_title }}} - Copy using inline content
+  ansible.builtin.copy:
+    content: "{{ cis_banner_text }}"
+    dest: {{{ FILEPATH }}}

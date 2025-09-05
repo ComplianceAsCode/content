@@ -19,6 +19,6 @@
   when: (files_with_incorrect_permissions.stdout_lines | length > 0)
 
 - name: "Correct file permissions with RPM"
-  command: "rpm --setperms '{{ item }}'"
+  command: "rpm --restore '{{ item }}'"
   with_items: "{{ list_of_packages.results | map(attribute='stdout_lines') | list | unique }}"
   when: (files_with_incorrect_permissions.stdout_lines | length > 0)

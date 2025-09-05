@@ -6,8 +6,8 @@
    - Kernel opts can be stored in /etc/default/grub so they are persistent between kernel upgrades
 -#}}
 {{% set system_with_expanded_kernel_options_in_loader_entries = false -%}}
-{{% set system_with_referenced_kernel_options_in_loader_entries = false -%}}
 {{% set system_with_kernel_options_in_grubenv = false -%}}
+{{% set system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv = false -%}}
 {{% set system_with_kernel_options_in_etc_default_grub = true -%}}
 {{% set system_with_kernel_options_in_etc_default_grub_d = false -%}}
 {{% set system_with_expanded_kernel_options_in_grub_cfg = false -%}}
@@ -18,8 +18,7 @@
 {{%- endif -%}}
 
 {{% if product in ["ol8", "rhel8"] -%}}
-{{% set system_with_referenced_kernel_options_in_loader_entries = true %}}
-{{% set system_with_kernel_options_in_grubenv = true %}}
+{{% set system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv = true -%}}
 {{%- endif -%}}
 
 {{% if product in ["ol7"] or 'ubuntu' in product -%}}
@@ -34,11 +33,31 @@
 {{% set system_with_bios_and_uefi_support = true %}}
 {{%- endif -%}}
 
+
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
     {{{ oval_metadata("Ensure " + ARG_NAME_VALUE + " is configured in the kernel line in /etc/default/grub.") }}}
     <criteria operator="AND">
-      {{% if system_with_kernel_options_in_grubenv -%}}
+      {{% if system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
+      <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced"
+      comment="Check /boot/loader/entries/*.conf files if they contain direct reference to {{{ ARG_NAME_VALUE }}} or if they contain $kernelopts" />
+      <criteria operator="OR"
+      comment="Expressing implication">
+        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_at_least_one_entry_referenced" negate="true"
+        comment="Negate the result of the test if there exists at least one $kernelopts in /boot/loader/entries" />
+        {{% if system_with_bios_and_uefi_support -%}}
+        <criteria operator="OR">
+        {{%- endif %}}
+        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env"
+        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the GRUB2 environment variable block in {{{ grub2_boot_path }}}/grubenv" />
+      {{% if system_with_bios_and_uefi_support -%}}
+        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env_uefi"
+        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the GRUB2 environment variable block in {{{ grub2_uefi_boot_path }}}/grubenv" />
+        </criteria>
+        {{%- endif %}}
+      </criteria>
+      {{% elif system_with_kernel_options_in_grubenv -%}}
+        <extend_definition comment="check kernel command line parameters for referenced boot entries reference the $kernelopts variable" definition_ref="grub2_entries_reference_kernelopts" />
       {{% if system_with_bios_and_uefi_support -%}}
       <criteria operator="OR">
       {{%- endif %}}
@@ -49,11 +68,7 @@
         comment="Check if {{{ ARG_NAME_VALUE }}} is present in the GRUB2 environment variable block in {{{ grub2_uefi_boot_path }}}/grubenv" />
       </criteria>
       {{%- endif %}}
-      {{%- endif %}}
-      {{% if system_with_referenced_kernel_options_in_loader_entries -%}}
-        <extend_definition comment="check kernel command line parameters for referenced boot entries reference the $kernelopts variable" definition_ref="grub2_entries_reference_kernelopts" />
-      {{%- endif %}}
-      {{% if system_with_expanded_kernel_options_in_loader_entries -%}}
+      {{% elif system_with_expanded_kernel_options_in_loader_entries -%}}
           <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries"
                      comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the /boot/loader/entries/*.conf" />
       {{%- endif %}}
@@ -95,6 +110,36 @@
       {{%- endif %}}
     </criteria>
   </definition>
+
+{{% if system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
+  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced"
+  comment="check all /boot/loader/entries/*.conf for expanded entries of  {{{ ARG_NAME_VALUE }}}. Leave out rescue boot entries. Accept also references to $kernelopts."
+  state_operator="OR" check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced" />
+    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
+    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_is_kernelopts" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced" version="1">
+    <ind:path>/boot/loader/entries/</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_grub2_rescue_entry_for_{{{ _RULE_ID }}}</filter>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_grub2_rescue_entry_for_{{{ _RULE_ID }}}" version="1">
+    <ind:filename operation="pattern match">.*rescue\.conf$</ind:filename>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_at_least_one_entry_referenced"
+  comment="check all /boot/loader/entries/*.conf files if there is at least one entry referencing $kernelopts. Leave out rescue entries."
+  check="all" check_existence="at_least_one_exists" version="1">
+    <ind:object object_ref="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced" />
+    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_is_kernelopts" />
+  </ind:textfilecontent54_test>
+{{% endif %}}
+
 
 {{%- if system_with_kernel_options_in_etc_default_grub %}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
@@ -154,7 +199,7 @@
   </ind:textfilecontent54_object>
 {{%- endif %}}
 
-{{%- if system_with_kernel_options_in_grubenv %}}
+{{%- if system_with_kernel_options_in_grubenv or system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
 {{%- macro test_and_object_for_kernel_options_grub_env(base_name, path) %}}
   <ind:textfilecontent54_test id="test_{{{ base_name }}}"
   comment="check for kernel command line parameters {{{ ARG_NAME_VALUE }}} in {{{ path }}} for all kernels"
@@ -225,6 +270,13 @@
 {{%- endif %}}
 {{%- endif %}}
 
+{{% if system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
+  <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_is_kernelopts"
+  version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?\$kernelopts(?:\s.*)?$</ind:subexpression>
+  </ind:textfilecontent54_state>
+{{% endif %}}
+
 {{% if ARG_VALUE %}}
   <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
   version="1">
@@ -241,7 +293,13 @@
   datatype="string" version="1">
     <concat>
       <literal_component>^(?:.*\s)?{{{ ARG_NAME }}}=</literal_component>
+      {{% if IS_SUBSTRING == "true" %}}
+      <literal_component>\S*</literal_component>
+      {{% endif %}}
       <variable_component var_ref="{{{ ARG_VARIABLE }}}" />
+      {{% if IS_SUBSTRING == "true" %}}
+      <literal_component>\S*</literal_component>
+      {{% endif %}}
       <literal_component>(?:\s.*)?$</literal_component>
     </concat>
   </local_variable>

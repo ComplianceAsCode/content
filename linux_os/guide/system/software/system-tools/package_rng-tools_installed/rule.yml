@@ -31,7 +31,7 @@ fixtext: '{{{ fixtext_package_installed("rng-tools") }}}'
 
 srg_requirement: '{{{ srg_requirement_package_installed("rng-tools") }}}'
 
-platform: machine
+platform: system_with_kernel and not runtime_kernel_fips_enabled
 
 template:
     name: package_installed

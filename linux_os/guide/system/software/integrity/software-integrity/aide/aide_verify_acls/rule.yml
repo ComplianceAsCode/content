@@ -7,14 +7,19 @@ description: |-
     By default, the <tt>acl</tt> option is added to the <tt>FIPSR</tt> ruleset in AIDE.
     If using a custom ruleset or the <tt>acl</tt> option is missing, add <tt>acl</tt>
     to the appropriate ruleset.
-    For example, add <tt>acl</tt> to the following line in <tt>/etc/aide.conf</tt>:
+    For example, add <tt>acl</tt> to the following line in <tt>{{{ aide_conf_path }}}</tt>:
     <pre>FIPSR = p+i+n+u+g+s+m+c+acl+selinux+xattrs+sha256</pre>
     AIDE rules can be configured in multiple ways; this is merely one example that is already
     configured by default.
 
+    {{% if "debian" in product %}}
+    The remediation provided with this rule adds <tt>acl</tt> to the OwnerMode rule
+    in <tt>{{{ aide_conf_path }}}</tt>
+    {{% else %}}
     The remediation provided with this rule adds <tt>acl</tt> to all rule sets available in
-    <tt>/etc/aide.conf</tt>
-
+    <tt>{{{ aide_conf_path }}}</tt>
+    {{% endif %}}
+    
 rationale: |-
     ACLs can provide permissions beyond those permitted through the file mode and must be
     verified by the file integrity tools.
@@ -27,6 +32,7 @@ identifiers:
     cce@rhel10: CCE-89640-7
     cce@sle12: CCE-83150-3
     cce@sle15: CCE-85623-7
+    cce@slmicro5: CCE-93742-5
 
 references:
     cis-csc: 2,3
@@ -48,7 +54,7 @@ ocil_clause: 'the acl option is missing or not added to the correct ruleset'
 
 ocil: |-
     To determine that AIDE is verifying ACLs, run the following command:
-    <pre>$ grep acl /etc/aide.conf</pre>
+    <pre>$ grep acl {{{ aide_conf_path }}}</pre>
     Verify that the <tt>acl</tt> option is added to the correct ruleset.
 
 fixtext: |-

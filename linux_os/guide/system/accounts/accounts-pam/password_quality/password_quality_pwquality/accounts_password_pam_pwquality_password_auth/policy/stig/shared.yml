@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must ensure the password complexity module is enabled in the password-auth file.
 
 vuldiscussion: |-
-    Enabling PAM password complexity permits to enforce strong passwords and consequently
-    makes the system less prone to dictionary attacks.
+    Enabling PAM password complexity permits enforcement of strong passwords and consequently makes the system less prone to dictionary attacks.
 
 checktext: |-
     Verify {{{ full_name }}} uses "pwquality" to enforce the password complexity rules in the password-auth file with the following command:
@@ -21,5 +20,3 @@ fixtext: |-
 
     password required pam_pwquality.so
 
-vuln_discussion: |-
-    Enabling PAM password complexity permits enforcement of strong passwords and consequently makes the system less prone to dictionary attacks.

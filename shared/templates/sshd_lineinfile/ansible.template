@@ -3,6 +3,18 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+
+{{% if XCCDF_VARIABLE %}}
+{{{ ansible_instantiate_variables(XCCDF_VARIABLE) }}}
+{{{
+    ansible_sshd_set(
+        parameter=PARAMETER,
+        value="{{ "+XCCDF_VARIABLE+" }}",
+        config_is_distributed=sshd_distributed_config,
+        config_basename=CONFIG_BASENAME
+    )
+}}}
+{{% else %}}
 {{{
     ansible_sshd_set(
         parameter=PARAMETER,
@@ -11,3 +23,4 @@
         config_basename=CONFIG_BASENAME
     )
 }}}
+ {{% endif %}}

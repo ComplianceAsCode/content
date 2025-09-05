@@ -2,11 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must use a separate file system for /var.
 
 vuldiscussion: |-
-    Ensuring that "/var" is mounted on its own partition enables the
-    setting of more restrictive mount options. This helps protect
-    system services such as daemons or other programs which use it.
-    It is not uncommon for the "/var" directory to contain
-    world-writable directories installed by other software packages.
+    Ensuring that "/var" is mounted on its own partition enables the setting of more restrictive mount options. This helps protect system services such as daemons or other programs which use it. It is not uncommon for the "/var" directory to contain world-writable directories installed by other software packages.
 
 checktext: |-
     Verify that a separate file system/partition has been created for "/var" with the following command:
@@ -20,5 +16,3 @@ checktext: |-
 fixtext: |-
     Migrate the "/var" path onto a separate file system.
 
-vuln_discussion: |-
-    Ensuring that "/var" is mounted on its own partition enables the setting of more restrictive mount options. This helps protect system services such as daemons or other programs which use it. It is not uncommon for the "/var" directory to contain world-writable directories installed by other software packages.

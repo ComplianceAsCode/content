@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must not enable IPv6 packet forwarding unless the system is a router.
 
 vuldiscussion: |-
-    IP forwarding permits the kernel to forward packets from one network
-    interface to another. The ability to forward packets between two networks is
-    only appropriate for systems acting as routers.
+    IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
 
 checktext: |-
     Verify {{{ full_name }}} is not performing IPv6 packet forwarding, unless the system is a router.
@@ -38,5 +36,3 @@ fixtext: |-
 
     $ sudo sysctl --system
 
-vuln_discussion: |-
-    IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.

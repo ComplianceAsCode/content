@@ -31,7 +31,7 @@ ocil_clause: 'the streaming connection timeouts are not disabled'
 ocil: |-
     Run the following command on the kubelet node(s):
     <pre>$ sudo grep streamingConnectionIdleTimeout {{{ kubeletconf_path }}}</pre>
-    The output should return <tt>{{{ xccdf_value("var_streaming_connection_timeouts") }}}</tt>.
+    The output should return <tt>{{ .var_streaming_connection_timeouts }}</tt>.
 
 references:
     cis@eks: 3.2.5

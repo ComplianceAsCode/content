@@ -15,11 +15,13 @@ fixtext: |-
 checktext: |-
     Verify the SSH daemon performs privilege separation with the following command:
 
-    $ sudo grep -ir usepriv  /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*useprivilegeseparation'
 
     UsePrivilegeSeparation sandbox
 
     If the "UsePrivilegeSeparation" keyword is set to "no", the returned line is commented out, or no output is returned, this is a finding.
 
-vuln_discussion: |-
+
+
+vuldiscussion: |-
     SSH daemon privilege separation causes the SSH process to drop root privileges when not needed, which would decrease the impact of software vulnerabilities in the nonprivileged section.

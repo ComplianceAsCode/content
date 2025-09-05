@@ -17,6 +17,8 @@ cpes:
     title: Ubuntu release 20.04 (Focal Fossa)
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
+dynamic_uid_max: 65519
+dynamic_uid_min: 61184
 faillock_path: /var/run/faillock
 families:
 - debian-like
@@ -38,6 +40,8 @@ pkg_system: dpkg
 platform_package_overrides:
   aarch64_arch: null
   audit: auditd
+  avahi: avahi-daemon
+  dconf: dconf-editor
   gdm: gdm3
   grub2: grub2-common
   login_defs: login

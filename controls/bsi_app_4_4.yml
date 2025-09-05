@@ -18,6 +18,8 @@ levels:
     inherits_from:
     - standard
 
+reference_type: bsi
+
 controls:
   - id: APP.4.4.A1
     title: Planning the Separation of the Applications
@@ -225,18 +227,18 @@ controls:
       manner. (3) Read and write access rights to the configuration files of the control plane SHOULD
       be assigned and restricted with particular care.
     notes: >-
-      OpenShift is fully configured using Kubernetes resources including CustomResources (CR). All 
+      OpenShift is fully configured using Kubernetes resources including CustomResources (CR). All
       resources that are created after the initial cluster installation can be considered configuration
-      files as described in this control. 
+      files as described in this control.
 
       Section 1: This control needs to be adressed on an organizational level. To achieve versioning,
-      the configuration files should be stored in a Git repository. The Git repository is considered 
+      the configuration files should be stored in a Git repository. The Git repository is considered
       the only source of truth and provides a visible and auditable trail of changes. To automatically
       apply the configuration, GitOps processes and tools like OpenShift GitOps can be used.
 
       Section 2: This control needs to be adressed in the respective external systems. Access rights
       to the Git repository and GitOps controller should be granted in a restrictive manner.
-      
+
       Section 3: The relevant Kubernetes resources for configuring the control plane are inherently
       protected by Kubernetes RBAC and can only be modified by cluster administrators.
     status: manual
@@ -261,11 +263,11 @@ controls:
       Section 1-5: This needs to be adressed in the individual application deployments. The
       associated rules provide additional guidance.
 
-      Section 6: The usage of privileged service accounts is controlled by Security Context 
-      Constraints (SCC), which should be configured and granted according to the principle of least 
+      Section 6: The usage of privileged service accounts is controlled by Security Context
+      Constraints (SCC), which should be configured and granted according to the principle of least
       privilege.
 
-      Section 7: This control needs to be adressed on an organizational level.      
+      Section 7: This control needs to be adressed on an organizational level.
     status: partial
     rules:
       # Section 1-3:
@@ -297,8 +299,8 @@ controls:
     - standard
     description: >-
       (1) All automation software processes, such as CI/CD and their pipelines, SHOULD only operate
-      with the rights that are strictly necessary. (2) If different user groups can change 
-      configurations or start pods via automation software, this SHOULD be done for each group 
+      with the rights that are strictly necessary. (2) If different user groups can change
+      configurations or start pods via automation software, this SHOULD be done for each group
       through separate processes that only have the rights necessary for the respective user group.
     notes: >-
       This control needs to be adressed on an organizational level. All service accounts used by
@@ -320,7 +322,7 @@ controls:
     notes: >-
       Section 1-3: The existance of readiness und liveness probes can be validated technically. This
       check needs to be performed for each container in every pod individually.
-      Section 4: The adequacy of the checks and the configured time periods needs to be ensured by 
+      Section 4: The adequacy of the checks and the configured time periods needs to be ensured by
       the application owner.
       Section 5: This functionality is inherently met by OpenShift.
     status: manual
@@ -333,13 +335,13 @@ controls:
     levels:
     - standard
     description: >-
-      If a separate registry for images or automation software, persistent volume management,
+      (1) If a separate registry for images or automation software, persistent volume management,
       configuration file storage, or similar is in use, its protection SHOULD at least consider:
-        • Use of personal and service accounts for access
-        • Encrypted communication on all network ports
-        • Restrictive assignment of permissions to user and service accounts
-        • Logging of changes
-        • Regular data backups.
+        (2) • Use of personal and service accounts for access
+        (3) • Encrypted communication on all network ports
+        (4) • Restrictive assignment of permissions to user and service accounts
+        (5) • Logging of changes
+        (6) • Regular data backups.
     notes: >-
       This requirement needs to be adressed in the respective separate systems.
       However, one requirement (Encrypted communication on all network ports) can partitially be
@@ -412,13 +414,62 @@ controls:
     levels:
     - elevated
     description: >-
-      Nodes SHOULD send a cryptographically secured (and, if possible, TPM-verified) status
-      message to the control plane. The control plane SHOULD ONLY accept nodes into a cluster
+      (1) Nodes SHOULD send a cryptographically secured (and, if possible, TPM-verified) status
+      message to the control plane. (2) The control plane SHOULD ONLY accept nodes into a cluster
       that have successfully proven their integrity.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      OpenShift Nodes are using Red Hat CoreOS (RHCOS) by default, an immutable operating system.
+      While RHEL is also supported for Compute Nodes, RHCOS is mandatory for Control Plane Nodes and
+      recommended for all nodes. The correct version and configuration of RHCOS is verified
+      cryptographically with the desired state, that is managed by the Control Plane using MachineConfigs.
+      Any manual change on managed files is overwritten to ensure the desired state. Therefore, the
+      control is mostly inheretly met when using CoreOS for all nodes.
+
+      Section 1: OpenShift uses an internal Certificate Authority (CA). The nodes (kubelet to API server
+      and MachineConfig daemon to MachineConfig server) are communicating using node-specific certificates,
+      signed by this CA. Correct permissions of relevant files and secure TLS configuration are verified
+      using the referenced rules. A TPM-verified status is not present with currently built-in mechanisms
+      of OpenShift.
+
+      Section 2: Using the Red Hat File Integrity Operator, all files on the RHCOS nodes can be
+      cryptographically checked for integrity using Advanced Intrusion Detection Environment (AIDE).
+    status: partial
+    rules:
+      # Section 1 (worker / kubelet)
+      - file_groupowner_kubelet_conf
+      - file_groupowner_worker_ca
+      - file_groupowner_worker_kubeconfig
+      - file_groupowner_worker_service
+      - file_owner_kubelet
+      - file_owner_kubelet_conf
+      - file_owner_worker_ca
+      - file_owner_worker_kubeconfig
+      - file_owner_worker_service
+      - file_permissions_kubelet
+      - file_permissions_kubelet_conf
+      - file_permissions_worker_ca
+      - file_permissions_worker_kubeconfig
+      - file_permissions_worker_service
+      - kubelet_configure_client_ca
+      - kubelet_configure_tls_cert
+      - kubelet_configure_tls_cipher_suites
+      - kubelet_configure_tls_key
+      - kubelet_configure_tls_min_version
+      # Section 1 (API Server)
+      - api_server_client_ca
+      - api_server_kubelet_client_cert
+      - api_server_kubelet_client_key
+      - api_server_https_for_kubelet_conn
+      - api_server_tls_cert
+      - api_server_tls_cipher_suites
+      - api_server_tls_private_key
+      - api_server_tls_security_profile_not_old
+      - tls_version_check_apiserver
+      # Section 2
+      - cluster_version_operator_exists
+      - cluster_version_operator_verify_integrity
+      - file_integrity_exists
+      - file_integrity_notification_enabled
 
   - id: APP.4.4.A18
     title: Use of Micro-Segmentation
@@ -475,10 +526,16 @@ controls:
     levels:
     - elevated
     description: >-
-      Pods SHOULD be stopped and restarted regularly if there is an increased risk of external
-      interference and a very high need for protection. No pod SHOULD run for more than 24
+      (1) Pods SHOULD be stopped and restarted regularly if there is an increased risk of external
+      interference and a very high need for protection.
+      (2) No pod SHOULD run for more than 24
       hours. The availability of the applications in a pod SHOULD be ensured.
     notes: >-
       TBD
     status: pending
-    rules: []
+    rules:
+      # Section 1
+      - kube_descheduler_operator_exists
+      # Section 2
+      - kube_descheduler_lifecycle_policy
+      - kube_descheduler_podlifetime

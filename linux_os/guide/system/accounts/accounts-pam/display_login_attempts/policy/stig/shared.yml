@@ -2,11 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must display the date and time of the last successful account logon upon logon.
 
 vuldiscussion: |-
-    Users need to be aware of activity that occurs regarding
-    their account. Providing users with information regarding the number
-    of unsuccessful attempts that were made to login to their account
-    allows the user to determine if any unauthorized activity has occurred
-    and gives them an opportunity to notify administrators.
+    Users need to be aware of activity that occurs regarding their account. Providing users with information regarding the number of unsuccessful attempts that were made to login to their account allows the user to determine if any unauthorized activity has occurred and gives them an opportunity to notify administrators.
 
 checktext: |-
     Verify users are provided with feedback on when account accesses last occurred with the following command:
@@ -24,5 +20,3 @@ fixtext: |-
 
     session required pam_lastlog.so showfailed
 
-vuln_discussion: |-
-    Users need to be aware of activity that occurs regarding their account. Providing users with information regarding the number of unsuccessful attempts that were made to login to their account allows the user to determine if any unauthorized activity has occurred and gives them an opportunity to notify administrators.

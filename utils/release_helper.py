@@ -245,11 +245,14 @@ def create_repo_milestone(repo, name) -> None:
         future_stabilization_date = get_next_stabilization_date(future_release_date)
         formatted_date_stabilization = get_date_for_message(future_stabilization_date)
         milestone_description = (
-            f'Milestone for the release {name}'
+            f'Milestone for the release {name}. '
             f'Stabilization phase starts on {formatted_date_stabilization}')
         try:
             repo.create_milestone(
                 title=name, description=milestone_description, due_on=estimated_release_date)
+            print(f'Milestone {name} successfully created with the following information:')
+            print(f'Description: {milestone_description}')
+            print(f'Due on: {estimated_release_date}')
         except Exception as e:
             print(f'Error: {e}')
             exit(1)
@@ -332,15 +335,42 @@ def get_monday_that_follows(date) -> datetime:
     return date + timedelta((0 - date.weekday()) % 7)
 
 
+def get_next_quarter_first_month(latest_release_date: datetime) -> int:
+    last_release_quarter = (latest_release_date.month - 1) // 3 + 1
+    if last_release_quarter == 4:
+        next_release_quarter = 1
+    else:
+        next_release_quarter = last_release_quarter + 1
+    return (next_release_quarter - 1) * 3 + 1
+
+
+def get_last_monday_of_month(year: int, month: int) -> datetime:
+    if month == 12:
+        last_month_day = datetime(year, month, 31)
+    else:
+        last_month_day = datetime(year, month + 1, 1) - timedelta(days=1)
+
+    days_since_monday = (last_month_day.weekday() - 0) % 7
+    return last_month_day - timedelta(days=days_since_monday)
+
+
 def get_next_stabilization_date(release_date) -> datetime:
     two_weeks_before = release_date - timedelta(weeks=2)
     stabilization_monday = get_monday_that_follows(two_weeks_before)
     return stabilization_monday.date()
 
 
-def get_next_release_date(latest_release_date) -> datetime:
-    three_months_ahead = latest_release_date + timedelta(days=90)
-    return get_friday_that_follows(three_months_ahead)
+def get_next_release_date(latest_release_date: datetime) -> datetime:
+    month = get_next_quarter_first_month(latest_release_date)
+    now = datetime.now()
+
+    if month > 9 and latest_release_date <= now:
+        year = latest_release_date.year + 1
+    else:
+        year = latest_release_date.year
+
+    last_monday = get_last_monday_of_month(year, month)
+    return get_friday_that_follows(last_monday + timedelta(weeks=1))
 
 
 def is_next_release_in_progress(repo) -> bool:

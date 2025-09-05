@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_ubuntu
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
 
 {{{ bash_instantiate_variables("login_banner_text") }}}
 
@@ -16,7 +16,7 @@
 {{{ bash_deregexify_banner_backslash("login_banner_text") }}}
 formatted=$(echo "$login_banner_text" | fold -sw 80)
 
-{{%- if product not in ['sle15'] %}}
+{{%- if product not in ['sle15', 'slmicro5'] %}}
 cat <<EOF >/etc/issue
 $formatted
 EOF

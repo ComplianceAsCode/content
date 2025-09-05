@@ -7,7 +7,7 @@ description: |-
     but does not have an assigned password, it may be possible to log
     into the account without authentication. Remove any instances of the
     <tt>nullok</tt> in
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5"] %}}
     password authentication configurations in <tt>/etc/pam.d/</tt>
     {{% elif 'ubuntu' in product %}}
     <tt>/etc/pam.d/common-password</tt>
@@ -24,7 +24,7 @@ rationale: |-
 
 severity: high
 
-platform: machine
+platform: system_with_kernel
 
 identifiers:
     cce@rhcos4: CCE-82553-9
@@ -33,6 +33,7 @@ identifiers:
     cce@rhel10: CCE-86640-0
     cce@sle12: CCE-83039-8
     cce@sle15: CCE-85576-7
+    cce@slmicro5: CCE-93738-3
 
 references:
     cis-csc: 1,12,13,14,15,16,18,3,5
@@ -62,7 +63,7 @@ ocil_clause: 'NULL passwords can be used'
 
 ocil: |-
     To verify that null passwords cannot be used, run the following command:
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5"] %}}
     <pre>$ grep pam_unix.so /etc/pam.d/* | grep nullok</pre>
     {{% elif 'ubuntu' in product %}}
     <pre>grep nullok /etc/pam.d/common-password</pre>

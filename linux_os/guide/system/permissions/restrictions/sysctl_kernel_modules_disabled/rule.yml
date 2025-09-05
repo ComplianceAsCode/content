@@ -23,11 +23,11 @@ identifiers:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.modules_disabled", value="1") }}}
 
-platform: machine
+platform: system_with_kernel
 
 warnings:
   - general:
-      This rule doesn't come with Bash remediation.
+      This rule doesn't come with remediation.
       Remediating this rule during the installation process disrupts the install and boot process.
 
 template:
@@ -39,3 +39,4 @@ template:
     backends:
         # Automated remediation of this rule during installations disrupts the first boot
         bash: 'off'
+        ansible: 'off'

@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# platform = multi_platform_ubuntu
+# platform = multi_platform_all
 # packages = grub2
+
+source common.sh
 
 {{%- if ARG_VARIABLE %}}
 # variables = {{{ ARG_VARIABLE }}}=correct_value

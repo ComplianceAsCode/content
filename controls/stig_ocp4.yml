@@ -3,7 +3,7 @@ policy: Red Hat OpenShift Container Platform 4.12 Security Technical Implementat
 title: Red Hat OpenShift Container Platform 4.12 Security Technical Implementation
   Guide
 id: stig_ocp4
-version: V1R1
+version: V2R1
 source: https://public.cyber.mil/stigs/downloads/
 reference_type: stigid
 product:
@@ -63,7 +63,6 @@ controls:
   title: OpenShift must automatically audit account creation.
   rules:
   - audit_rules_sysadmin_actions
-  - audit_rules_usergroup_modification
   status: automated
 
 - id: CNTR-OS-000060
@@ -72,7 +71,6 @@ controls:
   title: OpenShift must automatically audit account modification.
   rules:
   - audit_rules_sysadmin_actions
-  - audit_rules_usergroup_modification
   status: automated
 
 - id: CNTR-OS-000070
@@ -81,7 +79,6 @@ controls:
   title: OpenShift must generate audit rules to capture account related actions.
   rules:
   - audit_rules_sysadmin_actions
-  - audit_rules_usergroup_modification
   status: automated
 
 - id: CNTR-OS-000080
@@ -914,12 +911,6 @@ controls:
   - audit_rules_privileged_commands_usermod
   - audit_rules_sudoers
   - audit_rules_sudoers_d
-  - audit_rules_unsuccessful_file_modification_creat
-  - audit_rules_unsuccessful_file_modification_ftruncate
-  - audit_rules_unsuccessful_file_modification_open
-  - audit_rules_unsuccessful_file_modification_open_by_handle_at
-  - audit_rules_unsuccessful_file_modification_openat
-  - audit_rules_unsuccessful_file_modification_truncate
   - audit_rules_usergroup_modification_group
   - audit_rules_usergroup_modification_gshadow
   - audit_rules_usergroup_modification_opasswd
@@ -998,10 +989,6 @@ controls:
   - audit_rules_file_deletion_events_unlinkat
   - audit_rules_privileged_commands_chage
   - audit_rules_privileged_commands_pt_chown
-  - audit_rules_unsuccessful_file_modification_rename
-  - audit_rules_unsuccessful_file_modification_renameat
-  - audit_rules_unsuccessful_file_modification_unlink
-  - audit_rules_unsuccessful_file_modification_unlinkat
   status: automated
 
 - id: CNTR-OS-000970

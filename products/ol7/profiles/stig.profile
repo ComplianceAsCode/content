@@ -4,7 +4,7 @@ title: 'DISA STIG for Oracle Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux V2R14.
+    DISA STIG for Oracle Linux V3R1.
 
 selections:
     - login_banner_text=dod_banners
@@ -37,7 +37,7 @@ selections:
     - var_accounts_user_umask=077
     - var_password_pam_retry=3
     - var_accounts_max_concurrent_login_sessions=10
-    - var_accounts_tmout=15_min
+    - var_accounts_tmout=10_min
     - var_password_pam_remember=5
     - var_password_pam_remember_control_flag=required
     - var_time_service_set_maxpoll=18_hours
@@ -311,13 +311,9 @@ selections:
     - sudoers_validate_passwd
     - sudo_restrict_privilege_elevation_to_authorized
     - xwindows_remove_packages
-    - package_mcafeetp_installed
-    - agent_mfetpd_running
     - sudo_require_reauthentication
     - auditd_overflow_action
     - accounts_authorized_local_users
-    - accounts_password_pam_pwhistory_remember_password_auth
-    - accounts_password_pam_pwhistory_remember_system_auth
     - sebool_ssh_sysadm_login
     - selinux_confine_to_least_privilege
     - selinux_context_elevation_for_sudo

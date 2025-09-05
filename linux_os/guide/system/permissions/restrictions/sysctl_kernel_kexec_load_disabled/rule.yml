@@ -18,7 +18,7 @@ identifiers:
     cce@rhel10: CCE-89232-3
 
 references:
-    disa: CCI-001749
+    disa: CCI-003992,CCI-000366
     nist: CM-6
     srg: SRG-OS-000480-GPOS-00227,SRG-OS-000366-GPOS-00153
     stigid@ol8: OL08-00-010372
@@ -31,7 +31,7 @@ srg_requirement: '{{{ full_name }}} must prevent the loading of a new kernel for
 {{% if product == "ol8" %}}
 platform: machine and not (secure_boot and kernel_uek)
 {{% else %}}
-platform: machine
+platform: system_with_kernel
 {{% endif %}}
 
 template:

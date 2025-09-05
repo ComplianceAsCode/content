@@ -1,10 +1,10 @@
-# platform = multi_platform_sle
+# platform = multi_platform_sle,multi_platform_slmicro
 # reboot = false
 # complexity = low
 # strategy = configure
 # disruption = low
 
-{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/audispd', path='/etc/permissions.local', regex='^\/usr\/sbin\/audispd\s+root.*', new_line='/usr/sbin/audispd root:root 0750', create='yes', state='present', register='update_permissions_local_result_audispd') }}}
+{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/audispd', path='/etc/permissions.local', regex='^\/usr\/sbin\/audispd\s+root.*', insensitive=false, new_line='/usr/sbin/audispd root:root 0750', create='yes', state='present', register='update_permissions_local_result_audispd') }}}
 
 - name: "Correct file permissions after update /usr/sbin/audispd"
   shell: >
@@ -12,7 +12,7 @@
     chkstat --set --system
   when: update_permissions_local_result_audispd.changed
 
-{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/auditctl', path='/etc/permissions.local', regex='^\/usr\/sbin\/auditctl\s+root.*', new_line='/usr/sbin/auditctl root:root 0750', create='yes', state='present', register='update_permissions_local_result_auditctl') }}}
+{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/auditctl', path='/etc/permissions.local', regex='^\/usr\/sbin\/auditctl\s+root.*', insensitive=false, new_line='/usr/sbin/auditctl root:root 0750', create='yes', state='present', register='update_permissions_local_result_auditctl') }}}
 
 - name: "Correct file permissions after update /usr/sbin/auditctl"
   shell: >
@@ -20,7 +20,7 @@
     chkstat --set --system
   when: update_permissions_local_result_auditctl.changed
 
-{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/auditd', path='/etc/permissions.local', regex='^\/usr\/sbin\/auditd\s+root.*', new_line='/usr/sbin/auditd root:root 0750', create='yes', state='present', register='update_permissions_local_result_auditd') }}}
+{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/auditd', path='/etc/permissions.local', regex='^\/usr\/sbin\/auditd\s+root.*', insensitive=false, new_line='/usr/sbin/auditd root:root 0750', create='yes', state='present', register='update_permissions_local_result_auditd') }}}
 
 - name: "Correct file permissions after update /usr/sbin/auditd"
   shell: >
@@ -28,7 +28,7 @@
     chkstat --set --system
   when: update_permissions_local_result_auditd.changed
 
-{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/ausearch', path='/etc/permissions.local', regex='^\/usr\/sbin\/ausearch\s+root.*', new_line='/usr/sbin/ausearch root:root 0755', create='yes', state='present', register='update_permissions_local_result_ausearch') }}}
+{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/ausearch', path='/etc/permissions.local', regex='^\/usr\/sbin\/ausearch\s+root.*', insensitive=false, new_line='/usr/sbin/ausearch root:root 0755', create='yes', state='present', register='update_permissions_local_result_ausearch') }}}
 
 - name: "Correct file permissions after update /usr/sbin/ausearch"
   shell: >
@@ -36,7 +36,7 @@
     chkstat --set --system
   when: update_permissions_local_result_ausearch.changed
 
-{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/aureport', path='/etc/permissions.local', regex='^\/usr\/sbin\/aureport\s+root.*', new_line='/usr/sbin/aureport root:root 0755', create='yes', state='present', register='update_permissions_local_result_aureport') }}}
+{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/aureport', path='/etc/permissions.local', regex='^\/usr\/sbin\/aureport\s+root.*', insensitive=false, new_line='/usr/sbin/aureport root:root 0755', create='yes', state='present', register='update_permissions_local_result_aureport') }}}
 
 - name: "Correct file permissions after update /usr/sbin/aureport"
   shell: >
@@ -44,7 +44,7 @@
     chkstat --set --system
   when: update_permissions_local_result_aureport.changed
 
-{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/autrace', path='/etc/permissions.local', regex='^\/usr\/sbin\/autrace\s+root.*', new_line='/usr/sbin/autrace root:root 0750', create='yes', state='present', register='update_permissions_local_result_autrace') }}}
+{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/autrace', path='/etc/permissions.local', regex='^\/usr\/sbin\/autrace\s+root.*', insensitive=false, new_line='/usr/sbin/autrace root:root 0750', create='yes', state='present', register='update_permissions_local_result_autrace') }}}
 
 - name: "Correct file permissions after update /usr/sbin/autrace"
   shell: >
@@ -52,7 +52,7 @@
     chkstat --set --system
   when: update_permissions_local_result_autrace.changed
 
-{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/augenrules', path='/etc/permissions.local', regex='^\/usr\/sbin\/augenrules\s+root.*', new_line='/usr/sbin/augenrules root:root 0750', create='yes', state='present', register='update_permissions_local_result_augenrules') }}}
+{{{ ansible_lineinfile(msg='Configure permission for /usr/sbin/augenrules', path='/etc/permissions.local', regex='^\/usr\/sbin\/augenrules\s+root.*', insensitive=false, new_line='/usr/sbin/augenrules root:root 0750', create='yes', state='present', register='update_permissions_local_result_augenrules') }}}
 
 - name: "Correct file permissions after update /usr/sbin/augenrules"
   shell: >

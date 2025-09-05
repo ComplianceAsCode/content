@@ -1,4 +1,4 @@
-{{%- if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
+ {{%- if product in ["fedora", "ol8", "ol9", "sle12", "sle15", "ubuntu2004", "ubuntu2204"] or 'rhel' in product %}}
   {{%- set perm_x="-F perm=x " %}}
 {{%- endif %}}
 
@@ -42,7 +42,6 @@ references:
     disa: CCI-000172
     nerc-cip: CIP-004-6 R2.2.2,CIP-004-6 R2.2.3,CIP-007-3 R.1.3,CIP-007-3 R5,CIP-007-3 R5.1.1,CIP-007-3 R5.1.3,CIP-007-3 R5.2.1,CIP-007-3 R5.2.3
     nist: AC-2(4),AU-2(d),AU-12(c),AC-6(9),CM-6(a)
-    ospp: FAU_GEN.1.1.c
 
 ocil_clause: '{{{ ocil_clause_audit() }}}'
 

@@ -29,6 +29,7 @@ references:
     cis@ubuntu1804: 1.1.6
     cis@ubuntu2004: 1.1.11
     cis@ubuntu2204: 1.1.4.1
+    disa: CCI-000366
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-010544
     stigid@rhel8: RHEL-08-010544
@@ -39,7 +40,6 @@ fixtext: '{{{ fixtext_separate_partition(part="/var/tmp") }}}'
 
 srg_requirement: '{{{ srg_requirement_separate_partition("/var/tmp") }}}'
 
-platform: machine
 
 template:
     name: mount

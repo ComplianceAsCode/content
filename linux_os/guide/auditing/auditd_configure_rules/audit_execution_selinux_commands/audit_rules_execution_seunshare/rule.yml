@@ -1,4 +1,4 @@
-{{%- if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
+{{%- if product in ["fedora", "ol8", "ol9", "sle12", "sle15", "ubuntu2004", "ubuntu2204"] or 'rhel' in product %}}
   {{%- set perm_x="-F perm=x " %}}
 {{%- endif %}}
 
@@ -43,7 +43,6 @@ identifiers:
 references:
     disa: CCI-000172
     nist: AU-2(d),AU-12(c),AC-6(9),CM-6(a)
-    ospp: FAU_GEN.1.1.c
 
 ocil: |-
     To verify that execution of the command is being audited, run the following command:

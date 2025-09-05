@@ -1,4 +1,4 @@
-# platform = multi_platform_sle
+# platform = multi_platform_sle,multi_platform_slmicro
 
 CORRECT_PERMISSIONS="/var/log/messages root:root 640"
 err_cnt=0

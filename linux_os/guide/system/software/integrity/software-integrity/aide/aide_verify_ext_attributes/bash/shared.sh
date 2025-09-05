@@ -2,9 +2,13 @@
 
 {{{ bash_package_install("aide") }}}
 
-aide_conf="/etc/aide.conf"
+aide_conf="{{{ aide_conf_path }}}"
 
+{{% if "debian" in product %}}
+groups=$(LC_ALL=C grep "^InodeData" $aide_conf | grep -v "^ALLXTRAHASHES" | cut -f1 -d '=' | tr -d ' ' | sort -u)
+{{% else %}}
 groups=$(LC_ALL=C grep "^[A-Z][A-Za-z_]*" $aide_conf | grep -v "^ALLXTRAHASHES" | cut -f1 -d '=' | tr -d ' ' | sort -u)
+{{% endif %}}
 
 for group in $groups
 do

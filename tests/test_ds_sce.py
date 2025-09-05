@@ -11,7 +11,7 @@ import ssg.xml
 
 def verify_file(ds, catalog_uris, file, build_dir):
     component_ref = ds.find(str.format(
-        ".//{{{ds_ns}}}checklists/{{{ds_ns}}}component-ref[@id='{cid}']",
+        ".//{{{ds_ns}}}checks/{{{ds_ns}}}component-ref[@id='{cid}']",
         ds_ns=datastream_namespace,
         cid=catalog_uris[file]
     ))

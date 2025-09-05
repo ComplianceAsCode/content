@@ -28,7 +28,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
             - name: Install Python
-              uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+              uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
               with:
                   python-version: '3.9'
             - name: Install python deps
@@ -45,7 +45,7 @@ jobs:
                   trestle href --name "${{ matrix.variables.profile-name }}" -hr "trestle://catalogs/${{ matrix.variables.catalog-name }}/catalog.json"
               working-directory: ./shared/references/oscal
             - name: Update content
-              uses: peter-evans/create-pull-request@c5a7806660adbe173f04e3e038b0ccdcd758773c # v6.1.0
+              uses: peter-evans/create-pull-request@5e914681df9dc83aa4e4905692ca88beb2f9e91f # v7.0.5
               with:
                   base: master
                   branch: "oscal-update-${{ github.run_id }}"

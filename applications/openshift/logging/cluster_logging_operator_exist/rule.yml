@@ -7,7 +7,7 @@ description: |-
   container logs, and infrastructure logs. OpenShift Logging aggregates these logs
   from throughout OpenShift cluster and stores them in a default log store. [1]
 
-  [1]https://docs.openshift.com/container-platform/4.10/logging/cluster-logging.html
+  [1]https://docs.openshift.com/container-platform/latest/observability/logging/logging-6.0/log6x-about.html
 
 rationale: |-
   OpenShift Logging Operator is able to collect, aggregate, and manage logs.
@@ -22,26 +22,17 @@ references:
 ocil_clause: 'OpenShift Logging Operator is not installed'
 
 ocil: |-
-    Run the following command to retrieve the clusterlogging objects in the system:
-    <pre>$ oc get clusterloggings --all-namespaces</pre>
+    Run the following command to retrieve the clusterlogforwarder objects in the system:
+    <pre>$ oc get clusterlogforwarder --all-namespaces</pre>
     Make sure the OpenShift Logging Operator is installed and there exists
-    at least one active clusterlogging object in the cluster.
+    at least one active clusterlogforwarder object in the cluster.
 
 severity: medium
 
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterloggings/instance") | indent(4) }}}
-
-template:
-  name: yamlfile_value
-  vars:
-    ocp_data: "true"
-    filepath: /apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterloggings/instance
-    yamlpath: "metadata.name"
-    entity_check: "at least one"
-    values:
-      - value: ".*"
-        operation: "pattern match"
-
+    {{{ openshift_cluster_setting([
+      "/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterloggings/instance",
+      "/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders",
+    ]) | indent(4) }}}

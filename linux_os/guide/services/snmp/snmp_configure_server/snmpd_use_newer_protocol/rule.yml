@@ -6,7 +6,7 @@ title: 'Configure SNMP Service to Use Only SNMPv3 or Newer'
 description: |-
     Edit <tt>/etc/snmp/snmpd.conf</tt>, removing any references to <tt>rocommunity</tt>, <tt>rwcommunity</tt>, or <tt>com2sec</tt>.
     Upon doing that, restart the SNMP service:
-    <pre>$ sudo service snmpd restart</pre>
+    <pre>$ sudo systemctl restart snmpd</pre>
 
 rationale: |-
     Earlier versions of SNMP are considered insecure, as they potentially allow

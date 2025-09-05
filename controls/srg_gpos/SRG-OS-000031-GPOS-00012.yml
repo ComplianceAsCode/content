@@ -5,6 +5,6 @@ controls:
         title: {{{ full_name }}} must conceal, via the session lock, information previously
             visible on the display with a publicly viewable image.
         rules:
-            - configure_bashrc_exec_tmux
             - configure_tmux_lock_after_time
+            - dconf_gnome_screensaver_mode_blank
         status: automated

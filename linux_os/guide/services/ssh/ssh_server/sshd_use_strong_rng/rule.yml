@@ -27,7 +27,6 @@ identifiers:
 
 references:
     disa: CCI-000366
-    ospp: FCS_RBG_EXT.1.2
     srg: SRG-OS-000480-GPOS-00232,SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-010292
     stigid@rhel8: RHEL-08-010292
@@ -61,4 +60,5 @@ template:
         path: '/etc/sysconfig/sshd'
         parameter: 'SSH_USE_STRONG_RNG'
         value: '32'
+        datatype: int
         no_quotes: 'true'

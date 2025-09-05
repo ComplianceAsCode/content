@@ -1,10 +1,10 @@
-{{%- if "sle" in product or "ubuntu" in product %}}
+{{%- if "sle" in product or "slmicro" in product or "ubuntu" in product %}}
 {{%- set pam_lastlog_path = "/etc/pam.d/login" %}}
 {{%- else %}}
 {{%- set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
 {{%- endif %}}
 
-{{%- if "ol" in product or "ubuntu" in product %}}
+{{%- if "ol" in product or "slmicro" in product or "ubuntu" in product %}}
 {{%- set control = "required" %}}
 {{%- elif "sle" in product %}}
 {{%- set control = "optional" %}}
@@ -37,12 +37,13 @@ identifiers:
     cce@rhel10: CCE-88650-7
     cce@sle12: CCE-83149-5
     cce@sle15: CCE-85560-1
+    cce@slmicro5: CCE-93730-0
 
 references:
     cis-csc: 1,12,15,16
     cjis: 5.5.2
     cobit5: DSS05.04,DSS05.10,DSS06.10
-    disa: CCI-000052
+    disa: CCI-000366
     isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
     ism: 0582,0584,05885,0586,0846,0957

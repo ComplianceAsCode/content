@@ -13,7 +13,7 @@ description: |-
     option is selected the system will prompt for a passphrase to use in
     decrypting the partition. The passphrase will subsequently need to be entered manually
     every time the system boots.
-    {{% if product not in ["sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
+    {{% if product not in ["sle12", "sle15", "slmicro5",  "ubuntu2004", "ubuntu2204"] %}}
     <br /><br />
     For automated/unattended installations, it is possible to use Kickstart by adding
     the <tt>--encrypted</tt> and <tt>--passphrase=</tt> options to the definition of each partition to be
@@ -36,8 +36,12 @@ description: |-
         {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/8/install/install-InstallingOracleLinuxManually.html#system-options") }}}
     {{% elif product == "ol9" %}}
         {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/9/install/install-InstallingOracleLinuxManually.html#system-options") }}}
-    {{% elif product in ["sle12", "sle15"] %}}
-        {{{ weblink(link="https://www.suse.com/documentation/sled-12/book_security/data/sec_security_cryptofs_y2.html") }}}
+    {{% elif product == "sle12" %}}
+        {{{ weblink(link="https://documentation.suse.com/sles/12-SP5/html/SLES-all/cha-security-cryptofs.html") }}}
+    {{% elif product == "sle15" %}}
+        {{{ weblink(link="https://documentation.suse.com/sles/15-SP2/html/SLES-all/cha-security-cryptofs.html") }}}
+    {{% elif product == "slmicro5" %}}
+        {{{ weblink(link="https://documentation.suse.com/sles/15-SP3/html/SLES-all/cha-security-cryptofs.html") }}}
     {{% elif 'ubuntu' in product %}}
         {{{ weblink(link="https://help.ubuntu.com/community/Full_Disk_Encryption_Howto_2019") }}}
     {{% elif product == "fedora" %}}
@@ -59,12 +63,13 @@ identifiers:
     cce@rhel10: CCE-89165-5
     cce@sle12: CCE-83046-3
     cce@sle15: CCE-85719-3
+    cce@slmicro5: CCE-93760-7
 
 references:
     cis-csc: 13,14
     cobit5: APO01.06,BAI02.01,BAI06.01,DSS04.07,DSS05.03,DSS05.04,DSS05.07,DSS06.02,DSS06.06
     cui: 3.13.16
-    disa: CCI-001199,CCI-002475,CCI-002476
+    disa: CCI-002476,CCI-001199,CCI-002475
     hipaa: 164.308(a)(1)(ii)(D),164.308(b)(1),164.310(d),164.312(a)(1),164.312(a)(2)(iii),164.312(a)(2)(iv),164.312(b),164.312(c),164.314(b)(2)(i),164.312(d)
     isa-62443-2013: 'SR 3.4,SR 4.1,SR 5.2'
     iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
@@ -96,13 +101,28 @@ ocil: |-
     The boot partition and pseudo-file systems, such as /proc, /sys, and tmpfs,
     are not required to use disk encryption and are not a finding.
 
-platform: machine
 
 fixtext: |-
     Configure {{{ full_name }}} to prevent unauthorized modification of all information at rest by using disk encryption.
 
     Encrypting a partition in an already installed system is more difficult, because existing partitions will need to be resized and changed.
     To encrypt an entire partition, dedicate a partition for encryption in the partition layout.
+
+    {{% if "slmicro" in product %}}
+    The standard partitioning proposal as suggested by YaST (installation and configuration tool for Linux) does not include an encrypted 
+    partition by default. Add it manually in the partitioning dialog.
+    
+    The following set of commands will switch {{{ full_name }}} to work in FIPS mode:
+    <pre>$ sudo transactional-update pkg install -t pattern microos-fips</pre>
+    <pre>$ sudo reboot</pre>
+
+    Add of modify the following line in the "/etc/default/grub" file to include "fips=1":
+    <pre>GRUB_CMDLINE_LINUX_DEFAULT="splash=silent swapaccount=1 apparmor=0 mitigations=auto quiet crashkernel=195M,high crashkernel=72M,low fips=1"</pre>
+    <pre>$ sudo transactional-update grub.cfg</pre>
+    <pre>$ sudo reboot</pre>
+
+    {{% endif %}}
+
 
 srg_requirement: |-
     {{{ full_name }}} local disk partitions must implement cryptographic mechanisms to prevent unauthorized disclosure or modification of all information that requires at-rest protection.
@@ -112,7 +132,36 @@ checktext: |-
 
     If there is a documented and approved reason for not having data-at-rest encryption, this requirement is Not Applicable.
 
-    {{% if 'ubuntu' in product -%}}
+    {{% if "slmicro" in product %}}
+    Verify that the system partitions are all encrypted with the following commands:
+    <pre>$ sudo blkid</pre>
+    <br /><br />
+    Output will be similar to:
+    /dev/sda1: "UUID=26d4a101-7f48-4394-b730-56dc00e65f64" TYPE="crypto_LUKS"
+    /dev/sda2: "UUID=f5b8a790-14cb-4b82-882d-707d52f27765" TYPE="crypto_LUKS"
+    /dev/sda3: "UUID=f2d86128-f975-478d-a5b0-25806c900eac" TYPE="crypto_LUKS"
+
+    Every persistent disk partition present must be of type "crypto_LUKS". 
+    If any partitions other than the boot partition or pseudo file systems (such as /proc or /sys) or temporary file systems (that are tmpfs) 
+    are not type "crypto_LUKS", ask the administrator to indicate how the partitions are encrypted. 
+    If there is no evidence that these partitions are encrypted, this is a finding.
+
+    <pre>$ sudo more /etc/cryptab</pre>
+    <br /><br />
+    Output will be similar to:    
+    cr_root UUID=26d4a101-7f48-4394-b730-56dc00e65f64
+    cr_home UUID=f5b8a790-14cb-4b82-882d-707d52f27765
+    cr_swap UUID=f2d86128-f975-478d-a5b0-25806c900eac    
+    
+    Every persistent disk partition present on the system must have an entry in the /etc/crypttab file. 
+    If any partitions other than pseudo file systems (such as /proc or /sys) are not listed or "/etc/crypttab" does not exist, this is a finding.
+
+    Verify the system works in FIPS mode with the following command:
+    <pre>sudo sysctl - a | grep fips</pre>
+    <br /><br />
+    crypto.fips_enabled = 1
+
+    {{% elif 'ubuntu' in product %}}
     Determine the partition layout for the system with the following command:
     <pre>$ sudo fdisk -l</pre>
 

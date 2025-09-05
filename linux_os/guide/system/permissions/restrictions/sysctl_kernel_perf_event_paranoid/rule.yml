@@ -19,7 +19,7 @@ identifiers:
     cce@sle15: CCE-91258-4
 
 references:
-    disa: CCI-001090
+    disa: CCI-001082,CCI-001090
     nist: AC-6
     ospp: FMT_SMF_EXT.1
     srg: SRG-OS-000132-GPOS-00067,SRG-OS-000138-GPOS-00069,SRG-APP-000243-CTR-000600
@@ -34,7 +34,7 @@ fixtext: |-
 
 srg_requirement: '{{{ full_name }}} must prevent kernel profiling by unprivileged users.'
 
-platform: machine
+platform: system_with_kernel
 
 template:
     name: sysctl

@@ -333,8 +333,7 @@ rule_results:
     default_result: PASS
     result_after_remediation: PASS
   e2e-high-resource-requests-quota:
-    default_result: FAIL
-    result_after_remediation: PASS
+    default_result: PASS
   e2e-high-route-ip-whitelist:
     default_result: PASS
     result_after_remediation: PASS
@@ -376,3 +375,6 @@ rule_results:
     default_result: MANUAL
   e2e-high-secrets-no-environment-variables:
     default_result: MANUAL
+  e2e-high-kubelet-configure-tls-cipher-suites-ingresscontroller:
+    default_result: FAIL
+    result_after_remediation: PASS

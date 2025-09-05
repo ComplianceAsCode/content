@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: Ensure Message Of The Day Is Configured Properly
+
+description: |-
+    To configure the system message of the day banner edit the <tt>/etc/motd</tt> file.
+    Replace the default text with a message compliant with the local site policy.
+    The message should not contain information about operating system version,
+    release, kernel version or patch level.
+
+    The recommended banner text can be tailored in the XCCDF Value <tt>xccdf_org.ssgproject.content_value_cis_banner_text</tt>:
+    <pre>
+    {{{ xccdf_value("cis_banner_text") }}}
+    </pre>
+
+rationale: |-
+    Warning messages inform users who are attempting to login to the system of their legal
+    status regarding the system and must include the name of the organization that owns
+    the system and any monitoring policies that are in place. Displaying OS and patch level
+    information in login banners also has the side effect of providing detailed system
+    information to attackers attempting to target specific exploits of a system. Authorized
+    users can easily get this information by running the <tt>uname -a</tt> command once they
+    have logged in.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86145-0
+    cce@rhel9: CCE-86141-9
+    cce@rhel10: CCE-86150-0
+
+{{{ ocil_cis_banner("/etc/motd") }}}
+
+platform: system_with_kernel
+
+template:
+    name: cis_banner
+    vars:
+        filepath: /etc/motd
+        banner_must_be_set: "false"

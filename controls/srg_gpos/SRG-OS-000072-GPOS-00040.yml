@@ -1,9 +1,9 @@
 controls:
     -   id: SRG-OS-000072-GPOS-00040
+        title: '{{{ full_name }}} must require the change of at least 50 percent of the
+    total number of characters when passwords are changed.'
         levels:
             - medium
-        title: {{{ full_name }}} must require the change of at least 50% of the total
-            number of characters when passwords are changed.
         rules:
             - accounts_password_pam_difok
             - var_password_pam_difok=8

@@ -6,7 +6,7 @@ vuldiscussion: |-
 
     Audit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit {{{ full_name }}} system activity.
 
-    In immutable mode, unauthorized users cannot execute changes to the audit system to potentially hide malicious activity and then put the audit rules back.  A system reboot would be noticeable and a system administrator could then investigate the unauthorized changes.
+    In immutable mode, unauthorized users cannot execute changes to the audit system to potentially hide malicious activity and then put the audit rules back.  A system reboot would be noticeable, and a system administrator could then investigate the unauthorized changes.
 
 checktext: |-
     Verify the audit system prevents unauthorized changes with the following command:
@@ -24,9 +24,3 @@ fixtext: |-
 
     The audit daemon must be restarted for the changes to take effect.
 
-vuln_discussion: |-
-    Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.
-
-    Audit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit {{{ full_name }}} system activity.
-
-    In immutable mode, unauthorized users cannot execute changes to the audit system to potentially hide malicious activity and then put the audit rules back.  A system reboot would be noticeable, and a system administrator could then investigate the unauthorized changes.

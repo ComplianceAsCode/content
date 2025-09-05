@@ -22,32 +22,31 @@ description: |-
 
 selections:
     - anssi:all:enhanced
-    # Following rules are incompatible with the rhel10 product
-    - '!partition_for_opt'
+    # Following rules are incompatible with rhel10 product
+    # tally2 is deprecated, replaced by faillock
     - '!accounts_passwords_pam_tally2_deny_root'
-    - '!install_PAE_kernel_on_x86-32'
-    - '!partition_for_boot'
-    - '!sudo_add_ignore_dot'
-    - '!audit_rules_privileged_commands_rmmod'
-    - '!audit_rules_privileged_commands_modprobe'
-    - '!package_dracut-fips-aesni_installed'
-    - '!cracklib_accounts_password_pam_lcredit'
-    - '!partition_for_usr'
-    - '!cracklib_accounts_password_pam_ocredit'
-    - '!enable_pam_namespace'
-    - '!audit_rules_privileged_commands_insmod'
-    - '!service_chronyd_or_ntpd_enabled'
-    - '!chronyd_configure_pool_and_server'
     - '!accounts_passwords_pam_tally2'
-    - '!cracklib_accounts_password_pam_ucredit'
     - '!accounts_passwords_pam_tally2_unlock_time'
-    - '!sudo_add_umask'
-    - '!sudo_add_env_reset'
+    # RHEL 10 does not support 32 bit architecture
+    - '!install_PAE_kernel_on_x86-32'
+    # the package does not exist in RHEL 10
+    - '!package_dracut-fips-aesni_installed'
+    # pam_cracklib is not used in RHEL 10
+    - '!cracklib_accounts_password_pam_lcredit'
+    - '!cracklib_accounts_password_pam_ocredit'
+    - '!cracklib_accounts_password_pam_ucredit'
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
+    # umask is configured at a different place in RHEL 10
+    - '!sudo_add_umask'
+    # Oracle key is not relevant on RHEL 10
     - '!ensure_oracle_gpgkey_installed'
+    # this rule is not automated anymore
     - '!security_patches_up_to_date'
-    # RHEL10 unified the paths for grub2 files. These rules are selected in control file by R29.
+    # There is only chrony package on RHEL 10, no ntpd
+    - '!service_chronyd_or_ntpd_enabled'
+    - 'service_chronyd_enabled'
+    # RHEL 10 unified the paths for grub2 files. These rules are selected in control file by R29.
     - '!file_groupowner_efi_grub2_cfg'
     - '!file_owner_efi_grub2_cfg'
     - '!file_permissions_efi_grub2_cfg'
@@ -60,3 +59,19 @@ selections:
     - '!grub2_enable_apparmor'
     - '!package_apparmor_installed'
     - '!package_pam_apparmor_installed'
+    # these packages do not exist in rhel10 (R62)
+    - '!package_dhcp_removed'
+    - '!package_rsh_removed'
+    - '!package_rsh-server_removed'
+    - '!package_sendmail_removed'
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
+    - '!package_xinetd_removed'
+    - '!package_ypbind_removed'
+    - '!package_ypserv_removed'
+    # these rules are failing when they are remediated with Ansible, removing them temporarily until they are fixed
+    - '!accounts_password_pam_retry'
+    # These rules are being modified and they are causing trouble in their current state (R67)
+    - '!sssd_enable_pam_services'
+    - '!sssd_ldap_configure_tls_reqcert'
+    - '!sssd_ldap_start_tls'

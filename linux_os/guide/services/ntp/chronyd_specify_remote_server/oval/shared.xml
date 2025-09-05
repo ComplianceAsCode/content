@@ -15,7 +15,7 @@
 
   <ind:textfilecontent54_object comment="Ensure at least one NTP server is set"
   id="object_chronyd_remote_server" version="1">
-    <ind:filepath operation="pattern match">^/etc/chrony\.(conf|d/.+\.conf)$</ind:filepath>
+    <ind:filepath operation="pattern match">^({{{ chrony_conf_path }}}|{{{ chrony_d_path }}}.+\.conf)$</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?:server|pool)[\s]+.+$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

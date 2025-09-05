@@ -21,15 +21,31 @@ description: |-
     https://cyber.gouv.fr/publications/configuration-recommendations-gnulinux-system
 
 selections:
-  - anssi:all:minimal
-  # Following are incompatible with the rhel9 product
-  - '!cracklib_accounts_password_pam_minlen'
-  - '!accounts_passwords_pam_tally2_deny_root'
-  - '!accounts_passwords_pam_tally2'
-  - '!cracklib_accounts_password_pam_ucredit'
-  - '!cracklib_accounts_password_pam_dcredit'
-  - '!cracklib_accounts_password_pam_lcredit'
-  - '!cracklib_accounts_password_pam_ocredit'
-  - '!accounts_passwords_pam_tally2_unlock_time'
-  - '!ensure_oracle_gpgkey_installed'
-  - '!security_patches_up_to_date'
+    - anssi:all:minimal
+    # Following rules are incompatible with rhel10 product
+    # tally2 is deprecated, replaced by faillock
+    - '!accounts_passwords_pam_tally2_deny_root'
+    - '!accounts_passwords_pam_tally2'
+    - '!accounts_passwords_pam_tally2_unlock_time'
+    # pam_cracklib is not used in RHEL 10
+    - '!cracklib_accounts_password_pam_minlen'
+    - '!cracklib_accounts_password_pam_ucredit'
+    - '!cracklib_accounts_password_pam_dcredit'
+    - '!cracklib_accounts_password_pam_lcredit'
+    - '!cracklib_accounts_password_pam_ocredit'
+    # Oracle key is not relevant on RHEL 10
+    - '!ensure_oracle_gpgkey_installed'
+    # this rule is not automated anymore
+    - '!security_patches_up_to_date'
+    # these packages do not exist in rhel10 (R62)
+    - '!package_dhcp_removed'
+    - '!package_rsh_removed'
+    - '!package_rsh-server_removed'
+    - '!package_sendmail_removed'
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
+    - '!package_xinetd_removed'
+    - '!package_ypbind_removed'
+    - '!package_ypserv_removed'
+    # these rules are failing when they are remediated with Ansible, removing then temporarily until they are fixed
+    - '!accounts_password_pam_retry'

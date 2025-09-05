@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_kylinserver10" version="1">
+    <metadata>
+      <title>Kylin Server 10</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The operating system installed on the system is Kylin Server 10.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Kylin Server 10 is installed" test_ref="test_kylinserver10_installed" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Kylin Server 10 is installed" id="test_kylinserver10_installed" version="1">
+    <linux:object object_ref="obj_kylinserver10_installed" />
+    <linux:state state_ref="state_kylinserver10_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_kylinserver10_installed" version="1">
+    <linux:version operation="pattern match">^10.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_kylinserver10_installed" version="1">
+    <linux:name>kylin-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

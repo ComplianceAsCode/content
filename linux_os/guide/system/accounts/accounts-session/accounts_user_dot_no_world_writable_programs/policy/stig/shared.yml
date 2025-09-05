@@ -2,11 +2,7 @@ srg_requirement: |-
     Local {{{ full_name }}} initialization files must not execute world-writable programs.
 
 vuldiscussion: |-
-    If user start-up files execute world-writable programs, especially in
-    unprotected directories, they could be maliciously modified to destroy user
-    files or otherwise compromise the system at the user level. If the system is
-    compromised at the user level, it is easier to elevate privileges to eventually
-    compromise the system at the root and network level.
+    If user start-up files execute world-writable programs, especially in unprotected directories, they could be maliciously modified to destroy user files or otherwise compromise the system at the user level. If the system is compromised at the user level, it is easier to elevate privileges to eventually compromise the system at the root and network level.
 
 checktext: |-
     Verify that local initialization files do not execute world-writable programs with the following command:
@@ -20,7 +16,4 @@ checktext: |-
 fixtext: |-
     Set the mode on files being executed by the local initialization files with the following command:
 
-    $ sudo chmod 0755 &ltfile&gt
-
-vuln_discussion: |-
-    If user start-up files execute world-writable programs, especially in unprotected directories, they could be maliciously modified to destroy user files or otherwise compromise the system at the user level. If the system is compromised at the user level, it is easier to elevate privileges to eventually compromise the system at the root and network level.
+    $ sudo chmod 0755 &lt;file&gt;

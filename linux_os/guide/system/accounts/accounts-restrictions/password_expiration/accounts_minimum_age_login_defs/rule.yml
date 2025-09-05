@@ -29,6 +29,7 @@ identifiers:
     cce@rhel10: CCE-89307-3
     cce@sle12: CCE-83042-2
     cce@sle15: CCE-85720-1
+    cce@slmicro5: CCE-93683-1
 
 references:
     cis-csc: 1,12,15,16,5
@@ -39,7 +40,7 @@ references:
     cjis: 5.6.2.1.1
     cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     cui: 3.5.8
-    disa: CCI-000198
+    disa: CCI-004066
     isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.4
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1'
     ism: 0418,1055,1402
@@ -59,7 +60,7 @@ references:
 ocil_clause: 'the "PASS_MIN_DAYS" parameter value is not "{{{ xccdf_value("var_accounts_minimum_age_login_defs") }}}" or greater, or is commented out'
 
 ocil: |-
-    Verify {{{ full_name }}} enforces 24 hours/1 day as the minimum password lifetime for new user accounts.
+    Verify {{{ full_name }}} enforces 24 hours/one day as the minimum password lifetime for new user accounts.
 
     Check for the value of "PASS_MIN_DAYS" in "/etc/login.defs" with the following command:
 
@@ -68,13 +69,13 @@ ocil: |-
     PASS_MIN_DAYS {{{ xccdf_value("var_accounts_minimum_age_login_defs") }}}</pre>
 
 fixtext: |-
-    Configure {{{ full_name }}} to enforce 24 hours/1 day as the minimum password lifetime.
+    Configure {{{ full_name }}} to enforce 24 hours/one day as the minimum password lifetime.
 
     Add the following line in "/etc/login.defs" (or modify the line to have the required value):
 
     PASS_MIN_DAYS {{{ xccdf_value("var_accounts_minimum_age_login_defs") }}}
 
 srg_requirement: |-
-    {{{ full_name }}} passwords for new users or password changes must have a 24 hours/1 day minimum password lifetime restriction in /etc/login.defs.
+    {{{ full_name }}} passwords for new users or password changes must have a 24 hours/one day minimum password lifetime restriction in /etc/login.defs.
 
 platform: package[shadow-utils]

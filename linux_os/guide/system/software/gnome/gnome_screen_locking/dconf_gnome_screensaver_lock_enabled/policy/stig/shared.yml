@@ -2,11 +2,11 @@ srg_requirement: |-
     {{{ full_name }}} must prevent a user from overriding the screensaver lock-enabled setting for the graphical user interface.
 
 vuldiscussion: |-
-    A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.
+    A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not log out because of the temporary nature of the absence. Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity, operating systems need to be able to identify when a user's session has idled and take action to initiate the session lock.
 
-    The session lock is implemented at the point where session activity can be determined.
+    The session lock is implemented at the point where session activity can be determined and/or controlled.
 
-    Regardless of where the session lock is determined and implemented, once invoked, the session lock must remain in place until the user reauthenticates. No other activity aside from reauthentication must unlock the system.
+    Implementing session settings will have little value if a user is able to manipulate these settings from the defaults prescribed in the other requirements of this implementation guide.
 
 checktext: |-
     Verify {{{ full_name }}} prevents a user from overriding settings for graphical user interfaces.
@@ -41,9 +41,3 @@ fixtext: |-
     Add the following setting to prevent nonprivileged users from modifying it:
 
     /org/gnome/desktop/screensaver/lock-enabled
-vuln_discussion: |-
-    A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not log out because of the temporary nature of the absence. Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity, operating systems need to be able to identify when a user's session has idled and take action to initiate the session lock.
-
-    The session lock is implemented at the point where session activity can be determined and/or controlled.
-
-    Implementing session settings will have little value if a user is able to manipulate these settings from the defaults prescribed in the other requirements of this implementation guide.

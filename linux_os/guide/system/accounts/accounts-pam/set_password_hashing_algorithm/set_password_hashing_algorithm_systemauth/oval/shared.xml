@@ -6,7 +6,7 @@
     </criteria>
   </definition>
 
-  {{% if product in ['sle12', 'sle15'] %}}
+  {{% if product in ['sle12', 'sle15', 'slmicro5'] %}}
     {{% set pam_file = "/etc/pam.d/common-password" %}}
     {{% set line_pattern = "^[\s]*password[\s]+(?:(?:required))[\s]+pam_unix\.so[\s]+" %}}
   {{% elif 'ubuntu' in product %}}

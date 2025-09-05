@@ -1,0 +1,27 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+-   name: "{{{ rule_title }}} - Search if cron configuration exists"
+    ansible.builtin.command: 'grep -s "^\s*cron\.\*\s*/var/log/cron$" /etc/rsyslog.conf /etc/rsyslog.d/*.conf'
+    register: cron_log_config_exists
+    failed_when: false
+
+-   name: "{{{ rule_title }}} - Ensure the /etc/rsyslog.d directory exists"
+    ansible.builtin.file:
+        path: /etc/rsyslog.d
+        state: directory
+
+-   name: "{{{ rule_title }}} - Add cron log configuration line"
+    ansible.builtin.lineinfile:
+        path: /etc/rsyslog.d/cron.conf
+        line: "cron.*  /var/log/cron"
+        create: true
+    when: cron_log_config_exists.stdout_lines | length == 0
+
+-   name: "{{{ rule_title }}} - Restart the rsyslog service now"
+    ansible.builtin.service:
+        name: rsyslog
+        state: restarted

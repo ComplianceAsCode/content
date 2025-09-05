@@ -1,9 +1,9 @@
 controls:
     -   id: SRG-OS-000069-GPOS-00037
+        title: '{{{ full_name }}} must enforce password complexity by requiring that at
+    least one uppercase character be used.'
         levels:
             - medium
-        title: {{{ full_name }}} must enforce password complexity by requiring that at
-            least one upper-case character be used.
         rules:
             - var_password_pam_retry=3
             - accounts_password_pam_enforce_root

@@ -22,4 +22,5 @@
   when:
     - item.value[2]|int >= {{{ uid_min }}}
     - item.value[2]|int != {{{ nobody_uid }}}
+    - item.value[2]|int < {{{ dynamic_uid_min }}} or item.value[2]|int > {{{ dynamic_uid_max }}}
     - not item.value[4] | regex_search('^\/\w*\/\w{1,}')

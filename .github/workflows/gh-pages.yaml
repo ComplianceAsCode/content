@@ -3,7 +3,7 @@ on:
   push:
     branches: [ 'master' ]
   pull_request:
-    branches: [ 'master' ]
+    branches: [ 'master',  'oscal-update-*' ]
   merge_group:
     branches: [ 'master' ]
 concurrency:
@@ -19,7 +19,7 @@ jobs:
       PAGES_DIR: __pages
     steps:
       - name: Install Deps
-        run: dnf install -y cmake git ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint libxslt python3-pip rsync python3-lxml
+        run: dnf install -y cmake git ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint libxslt python3-pip rsync python3-lxml python3-setuptools
       - name: Install deps python
         run: pip3 install json2html prometheus_client
       - name: Checkout
@@ -50,7 +50,7 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Deploy
         if: ${{ github.event_name == 'push' && github.repository == 'ComplianceAsCode/content' && github.ref == 'refs/heads/master'  }}
-        uses: JamesIves/github-pages-deploy-action@94f3c658273cf92fb48ef99e5fbc02bd2dc642b2 # v4.6.3
+        uses: JamesIves/github-pages-deploy-action@881db5376404c5c8d621010bcbec0310b58d5e29 # v4.6.8
         with:
           branch: main # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.

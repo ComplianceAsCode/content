@@ -5,9 +5,11 @@
 # disruption = low
 
 {{%- if RECURSIVE %}}
-{{% set FIND_RECURSE_ARGS="" %}}
+{{%- set FIND_RECURSE_ARGS_DEP="" %}}
+{{%- set FIND_RECURSE_ARGS_SYM="" %}}
 {{%- else %}}
-{{% set FIND_RECURSE_ARGS="-maxdepth 1" %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
+{{%- set FIND_RECURSE_ARGS_SYM="-L" %}}
 {{%- endif %}}
 
 {{%- if ALLOW_STRICTER_PERMISSIONS %}}
@@ -25,9 +27,9 @@
 {{% for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
-find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} -type f -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chmod {{{ FILEMODE }}} {} \;
+find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} -type f -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chmod {{{ FILEMODE }}} {} \;
 {{%- else %}}
-find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type d -exec chmod {{{ FILEMODE }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} {{{ PERMS }}} -type d -exec chmod {{{ FILEMODE }}} {} \;
 {{%- endif %}}
 {{%- else %}}
 chmod {{{ FILEMODE }}} {{{ path }}}

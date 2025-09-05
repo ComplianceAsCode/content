@@ -1,4 +1,4 @@
-{{% if product in ['ol8','rhel8'] %}}
+{{% if product in ['ol8', 'rhel8'] %}}
 {{% set path='/etc/crypto-policies/back-ends/opensshserver.config' %}}
 {{% set conf="CRYPTO_POLICY='-oKexAlgorithms=ecdh-sha2-nistp256,ecdh-sha2-nistp384" ~
              ",ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256" ~
@@ -8,7 +8,7 @@
 {{% set path='/etc/ssh/sshd_config' %}}
 {{% set conf="KexAlgorithms ecdh-sha1-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521" ~
              ",diffie-hellman-group-exchange-sha256"  %}}
-{{% elif product in ['sle12','sle15','ubuntu2004', 'ubuntu2204'] %}}
+{{% elif product in ['sle12', 'sle15', 'slmicro5', 'ubuntu2004', 'ubuntu2204'] %}}
 {{% set path='/etc/ssh/sshd_config' %}}
 {{% set conf="KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521" ~
              ",diffie-hellman-group-exchange-sha256"  %}}
@@ -39,6 +39,7 @@ identifiers:
     cce@rhel8: CCE-86059-3
     cce@sle12: CCE-92336-7
     cce@sle15: CCE-92505-7
+    cce@slmicro5: CCE-93696-3
 
 references:
     disa: CCI-001453

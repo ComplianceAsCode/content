@@ -1,9 +1,9 @@
 controls:
     -   id: SRG-OS-000108-GPOS-00055
+        title: '{{{ full_name }}} must use multifactor authentication for local access to
+        nonprivileged accounts.'
         levels:
             - medium
-        title: {{{ full_name }}} must use multifactor authentication for local access
-            to non-privileged accounts.
         rules:
             - sshd_enable_pubkey_auth
             - configure_opensc_card_drivers

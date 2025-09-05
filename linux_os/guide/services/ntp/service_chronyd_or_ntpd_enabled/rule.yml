@@ -4,7 +4,11 @@ documentation_complete: true
 title: 'Enable the NTP Daemon'
 
 description: |-
+    {{% if "debian" in product %}}
+    {{{ ocil_service_enabled(service="chrony") }}}
+    {{% else %}}
     {{{ ocil_service_enabled(service="chronyd") }}}
+    {{% endif %}}
     Note: The <tt>chronyd</tt> daemon is enabled by default.
     <br /><br />
     {{{ ocil_service_enabled(service="ntpd") }}}
@@ -23,7 +27,7 @@ description: |-
     for guidance which NTP daemon to choose depending on the environment used.
 
 rationale: |-
-    Enabling some of <tt>chronyd</tt> or <tt>ntpd</tt> services ensures
+    Enabling some of {{% if "debian" in product %}}<tt>chrony</tt>{{% else %}}<tt>chronyd</tt>{{% endif %}} or <tt>ntpd</tt> services ensures
     that the NTP daemon will be running and that the system will synchronize its
     time to any servers specified. This is important whether the system is
     configured to be a client (and synchronize only its own clock) or it is also
@@ -36,7 +40,6 @@ rationale: |-
 
 severity: medium
 
-platform: machine  # The check uses service_... extended definition, which doesnt support offline mode
 
 identifiers:
     cce@rhcos4: CCE-82682-6
@@ -60,5 +63,9 @@ references:
     srg: SRG-APP-000116-CTR-000235
 
 ocil: |-
+    {{% if "debian" in product %}}
+    {{{ ocil_service_enabled(service="chrony") }}}
+    {{% else %}}
     {{{ ocil_service_enabled(service="chronyd") }}}
+    {{% endif %}}
     {{{ ocil_service_enabled(service="ntpd") }}}

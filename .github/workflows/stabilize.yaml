@@ -17,7 +17,7 @@ jobs:
       image: fedora:latest
     steps:
       - name: Install Deps
-        run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible libxslt python3-ansible-lint linkchecker java-1.8.0-openjdk unar wget python-unversioned-command git-core
+        run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible libxslt python3-ansible-lint linkchecker java-1.8.0-openjdk unar wget python-unversioned-command git-core python3-setuptools
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Configure

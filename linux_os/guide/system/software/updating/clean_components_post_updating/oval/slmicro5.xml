@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="clean_components_post_updating" version="1">
+    <metadata>
+      <title>Ensure Zypper Removes Previous Package Versions</title>
+      <affected family="unix">
+        <platform>SUSE Linux Enterprise Micro 5</platform>
+      </affected>
+      <description>The solver.upgradeRemoveDroppedPackages option should be used to ensure that old
+      versions of software components are removed after updating.</description>
+    </metadata>
+    <criteria>
+        <criterion comment="check value of solver.upgradeRemoveDroppedPackages in /etc/zypp/zypp.conf" test_ref="test_zypp_clean_components_post_updating" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check value of solver.upgradeRemoveDroppedPackages in /etc/zypp/zypp.conf" id="test_zypp_clean_components_post_updating" version="1">
+    <ind:object object_ref="object_zypp_clean_components_post_updating" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_zypp_clean_components_post_updating" comment="solver.upgradeRemoveDroppedPackages set in /etc/zypp/zypp.conf" version="1">
+    <ind:filepath>/etc/zypp/zypp.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^solver.upgradeRemoveDroppedPackages\s*=\s*(?i)true(?-i)\s*$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

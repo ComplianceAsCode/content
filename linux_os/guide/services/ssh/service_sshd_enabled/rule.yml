@@ -26,12 +26,13 @@ identifiers:
     cce@rhel10: CCE-88621-8
     cce@sle12: CCE-83201-4
     cce@sle15: CCE-83297-2
+    cce@slmicro5: CCE-93771-4
 
 references:
     cis-csc: 13,14
     cobit5: APO01.06,DSS05.02,DSS05.04,DSS05.07,DSS06.02,DSS06.06
     cui: 3.1.13,3.5.4,3.13.8
-    disa: CCI-002418,CCI-002420,CCI-002421,CCI-002422
+    disa: CCI-002420,CCI-002421,CCI-002418,CCI-002422
     isa-62443-2013: 'SR 3.1,SR 3.8,SR 4.1,SR 4.2,SR 5.2'
     iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
     nist: CM-6(a),SC-8,SC-8(1),SC-8(2),SC-8(3),SC-8(4)
@@ -61,6 +62,7 @@ template:
         packagename: openssh-server
         packagename@sle12: openssh
         packagename@sle15: openssh
+        packagename@slmicro5: openssh
 
 fixtext: |-
     {{{ fixtext_service_enabled("sshd") }}}

@@ -1,0 +1,1112 @@
+policy: 'Standard Benchmark for Kylin Server 10'
+title: 'Standard Benchmark for Kylin Server 10'
+id: std_kylinserver10
+version: '1.0'
+levels:
+    - id: l1_server
+    - id: l2_server
+
+controls:
+
+  ##1.Security Services
+
+  - id: 1.1
+    title: Ensure a print server is not installed (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - package_cups_removed
+    related_rules:
+      - service_cups_disabled
+
+
+  - id: 1.1
+    levels:
+        - l2_server
+    title: system must not have the sendmail package installed.
+    status: automated
+    rules:
+      - package_sendmail_removed
+
+ 
+  - id: 1.3
+    title: Ensure NFS Service Disabled
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - service_nfs_disabled
+      - service_nfs_disabled.severity=low
+
+
+  - id: 1.4
+    title: Ensure nfs-utils is not installed or the nfs-server service is masked (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - service_nfs_disabled
+      - package_nfs-utils_removed
+
+
+  - id: 1.5
+    title: ident{auth.socket}
+    levels:
+      - l2_server
+    status: planned
+
+
+  - id: 1.6
+    title: ntalk
+    levels:
+      - l2_server
+    status: planned
+
+
+  - id: 1.7
+    title: Ensure DHCP Service Disabled
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - service_dhcpd_disabled
+      - service_dhcpd_disabled.severity=low
+
+
+  - id: 1.8
+    title: Ensure NIS Client Not Installed
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - package_ypbind_removed
+      - package_ypbind_removed.severity=high
+
+
+
+  - id: 1.9
+    title: Ensure TFTP Server Not Installed
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - package_tftp_removed
+      - package_tftp_removed.severity=high
+      - package_tftp-server_removed
+      - package_tftp-server_removed.severity=high
+
+
+  - id: 1.10
+    title: Ensure rsync-daemon is not installed or the rsyncd service is masked (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - package_rsync_removed
+    related_rules:
+      - service_rsyncd_disabled
+
+
+  - id: 1.11
+    title: Prohibit anonymous VSFTP user login
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 1.12
+    title: Prohibit root login to VSFTP
+    levels:
+      - l2_server
+    status: planned
+
+
+  - id: 1.13
+    title: ensure-local-login-warning-banner-is-configured-properly
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - banner_etc_issue
+      - login_banner_text=cis_banners
+
+  - id: 1.14
+    title: ensure-message-of-the-day-is-configured-properly
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - banner_etc_motd
+      - login_banner_text=cis_banners
+
+
+  - id: 1.15
+    title: Ensure sshd PermitRootLogin is disabled (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sshd_disable_root_login
+
+  - id: 1.16
+    title: Ensure SSHd Protocol Version Is 2
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sshd_allow_only_protocol2
+      - sshd_allow_only_protocol2.severity=high
+
+  - id: 1.17
+    title: Ensure SSHd Log Level Correct
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sshd_set_loglevel_verbose
+      - sshd_set_loglevel_verbose.severity=low
+
+
+  - id: 1.18
+    title: Ensure SSHd MaxAuthTries Correct
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sshd_set_max_auth_tries
+      - sshd_set_max_auth_tries.severity=low
+      - sshd_max_auth_tries_value=3
+
+  - id: 1.19
+    title: ensure-ssh-permitemptypasswords-is-disabled
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sshd_disable_empty_passwords
+
+
+  - id: 1.20
+    title: Ensure SSHd PermitUserEnvironment Forbidden
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sshd_do_not_permit_user_env
+      - sshd_do_not_permit_user_env.severity=high
+
+  - id: 1.21
+    title: Ensure SSHd Ciphers Algorithm Correct
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sshd_use_strong_ciphers
+      - sshd_use_strong_ciphers.severity=high
+
+
+  - id: 1.22
+    title: check is installed chkrootkit
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 1.23
+    title: Check for the existence of rootkit programs
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 1.24
+    title: Restricting the directories that FTP users can access after logging in
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 1.25
+    title: operating system must use SSH to protect the confidentiality and integrity of transmitted information.
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - package_openssh-server_installed
+      - service_sshd_enabled
+
+  - id: 1.26
+    title: Ensure telnet server services are not in use (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - package_telnet-server_removed
+    related_rules:
+      - service_telnet_disabled
+
+  - id: 1.27
+    title: Prohibit remote telnet login for root user
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 1.28
+    title: Set warning banner before telnet login
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 1.29
+    title: Set warning banner after telnet login
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 1.30
+    title: Disable unnecessary xinetd services
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 1.31
+    title: Ensure Unnecessary Service And Port Disabled (Manual)
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 1.32
+    title: Ensure SSH access is limited (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sshd_limit_user_access
+
+
+  - id: 1.33
+    title:  SSH daemon must display the date and time of the last successful account logon upon an SSH logon.
+    levels:
+      - l2_server
+    status: automated        
+    rules:
+      - sshd_print_last_log
+
+  ##2 Kernel parameters
+
+  - id: 2.1
+    title: Ensure ICMP Redirect Package Not Received
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sysctl_net_ipv4_conf_all_accept_redirects
+      - sysctl_net_ipv4_conf_all_accept_redirects.severity=high
+      - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+      - sysctl_net_ipv4_conf_all_secure_redirects
+      - sysctl_net_ipv4_conf_all_secure_redirects.severity=high
+      - sysctl_net_ipv4_conf_all_secure_redirects_value=disabled
+      - sysctl_net_ipv4_conf_default_secure_redirects
+      - sysctl_net_ipv4_conf_default_secure_redirects.severity=high
+      - sysctl_net_ipv4_conf_default_secure_redirects_value=disabled
+
+
+  - id: 2.2
+    title: Ensure packet redirect sending is disabled (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sysctl_net_ipv4_conf_all_send_redirects
+      - sysctl_net_ipv4_conf_default_send_redirects
+
+
+  - id: 2.3
+    title: Ensure ICMP Broadcast Package Not Responsed
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts.severity=high
+
+
+  - id: 2.4
+    title: Ensure Source Route Disabled
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sysctl_net_ipv4_conf_all_accept_source_route
+      - sysctl_net_ipv4_conf_all_accept_source_route.severity=high
+      - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
+      - sysctl_net_ipv4_conf_default_accept_source_route
+      - sysctl_net_ipv4_conf_default_accept_source_route.severity=high
+      - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
+
+
+  - id: 2.5
+    title: Ensure IP Forwarding Disabled
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sysctl_net_ipv4_ip_forward
+      - sysctl_net_ipv4_ip_forward.severity=high
+
+
+  ##3 safe net
+  - id: 3.1
+    title: Modify SNMP default group characters
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 3.2
+    title: Disable multi IP binding
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 3.3
+    title: Ensure Reverse Proxy Filter Enabled
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sysctl_net_ipv4_conf_all_rp_filter
+      - sysctl_net_ipv4_conf_all_rp_filter.severity=high
+      - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
+      - sysctl_net_ipv4_conf_default_rp_filter
+      - sysctl_net_ipv4_conf_default_rp_filter.severity=high
+      - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
+
+
+  ##4 System commands
+
+  - id: 4.1
+    title: Ensure sudo log file exists (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sudo_custom_logfile
+
+
+  - id: 4.2
+    title: Ensure sudo commands use pty (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sudo_add_use_pty
+
+    
+  - id: 4.3
+    title: must use the invoking user's password for privilege escalation when using "sudo".
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sudoers_validate_passwd
+
+
+  - id: 4.4
+    title: Ensure Important Services Logged
+    levels:
+      - l1_server
+    status: automated
+    rules:
+      - rsyslog_logging_configured
+      - rsyslog_logging_configured.severity=low
+
+
+  - id: 4.5
+    title: Ensure HISTSIZE and HISTFILESIZE Limited
+    levels:
+      - l1_server
+    status: planned
+
+  
+  ##5 System Audit
+
+  - id: 5.1
+    title: check is installed swatch
+    levels:
+      - l1_server
+    status: planned
+
+  - id: 5.2
+    title: Ensure Auditd Enabled
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - service_auditd_enabled
+      - service_auditd_enabled.severity=high
+
+  - id: 5.3
+    title: Set system audit log rules
+    levels:
+      - l1_server
+    status: planned
+
+  - id: 5.4
+    title: Ensure Audit Disk Space Set Correct
+    levels:
+      - l1_server
+    status: automated
+    rules:
+      - auditd_data_retention_space_left
+      - auditd_data_retention_space_left.severity=low
+
+
+  - id: 5.5
+    title: Ensure cron is restricted to authorized users (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - file_cron_allow_exists
+
+
+  - id: 5.6
+    title: Ensure Rsyslog Enabled
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - service_rsyslog_enabled
+      - service_rsyslog_enabled.severity=high
+
+
+  - id: 5.7
+    title: Record user operations on the device
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - package_psacct_installed
+      - service_psacct_enabled
+
+  - id: 5.8
+    title: Record user login logs
+    levels:
+      - l1_server
+    status: planned
+
+  - id: 5.9
+    title: Configure security event logs
+    levels:
+      - l1_server
+    status: planned
+
+  - id: 5.10
+    title: Ensure Cron Logged
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - rsyslog_cron_logging
+      - rsyslog_cron_logging.severity=high
+
+  - id: 5.11
+    title: Ensure AIDE Enabled
+    levels:
+      - l1_server
+    status: automated
+    rules:
+      - package_aide_installed
+      - package_aide_installed.severity=low
+
+  - id: 5.12
+    title: Ensure filesystem integrity is regularly checked (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - aide_periodic_cron_checking
+
+
+  ##6 System settings
+
+  - id: 6.1
+    title: Ensure TIMOUT Set Correct
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - accounts_tmout
+      - accounts_tmout.severity=high
+      - var_accounts_tmout=5_min
+
+
+  - id: 6.2
+    title: Ensure Grub Password Set
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - grub2_password
+      - grub2_password.severity=high
+      - grub2_uefi_password
+      - grub2_uefi_password.severity=high
+
+
+  - id: 6.3
+    title: Ensure Use Sudo To Run
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sudo_restrict_privilege_elevation_to_authorized
+      - sudo_restrict_privilege_elevation_to_authorized.severity=high
+      - sudoers_no_root_target
+
+
+  - id: 6.4
+    title: Ensure SU Usage Limited
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - use_pam_wheel_for_su
+      - use_pam_wheel_for_su.severity=high
+
+
+  - id: 6.5
+    title: Ensure time synchronization is in use (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - package_chrony_installed
+      - package_ntp_installed
+
+  - id: 6.6
+    title: Ensure chrony is running as user _chrony (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - service_chronyd_or_ntpd_enabled
+      - chronyd_configure_pool_and_server
+
+
+  - id: 6.7
+    title: must disable core dumps for all users.
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - disable_users_coredumps
+
+
+  - id: 6.8
+    title: operating system must disable the x86 Ctrl-Alt-Delete key sequence if a graphical user interface is installed.
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - dconf_gnome_disable_ctrlaltdel_reboot
+
+
+  - id: 6.9
+    title: Enable idle screen lock time
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - dconf_gnome_screensaver_idle_delay
+
+  - id: 6.10
+    title: via the session lock, information previously visible on the display with a publicly viewable image.
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - dconf_gnome_screensaver_mode_blank
+       
+
+  - id: 6.11
+    title: Prohibit automatic system login
+    levels:
+      - l1_server
+    status: planned
+
+
+  - id: 6.12
+    title: Prohibit SSH password free login
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sshd_disable_pubkey_auth
+
+
+  - id: 6.13
+    title: Set the umask value of the daemon process
+    levels:
+      - l1_server
+    status: planned
+
+
+  - id: 6.14
+    title: limit the number of concurrent sessions to ten for all accounts and/or account types.
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - accounts_max_concurrent_login_sessions
+      - var_accounts_max_concurrent_login_sessions=10
+
+
+  ##7 potential risk
+
+  - id: 7.1
+    title: Ensure No Empty Symlink
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 7.2
+    title: Ensure SNMP Not Installed
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - package_net-snmp_removed
+      - package_net-snmp_removed.severity=high
+
+
+  - id: 7.3
+    title: Check the debuggable components
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - package_binutils_installed
+
+
+  - id: 7.4
+    title: /etc/aliases Disable unnecessary aliases
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - postfix_client_configure_mail_alias
+
+
+  - id: 7.5
+    title: /etc/mail/aliases Disable unnecessary aliases
+    levels:
+      - l2_server
+    status: planned
+
+
+  - id: 7.6
+    title: Ensure No .netrc Files In Home Folder
+    levels:
+      - l1_server
+    status: automated
+    rules:
+      - no_netrc_files
+      - no_netrc_files.severity=low
+
+  - id: 7.7
+    title: Ensure No hosts.equiv Files In Home Folder
+    levels:
+      - l2_server
+    status: planned
+
+
+  - id: 7.8
+    title: Ensure No .rhosts Files In Home Folder
+    levels:
+      - l2_server
+    status: manual # we have a rule but it removes additionally /etc/hosts.equiv
+    related_rules:
+      - no_rsh_trust_files
+
+
+  - id: 7.9
+    title: Ensure No equiv Files In Home Folder
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 7.10
+    title: Ensure No rhosts Files In Home Folder
+    levels:
+      - l2_server
+    status: planned
+
+
+  ##8 file right
+
+  - id: 8.1
+    title: Ensure All Files Have Owner And Group
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - no_files_unowned_by_user
+      - no_files_unowned_by_user.severity=high
+      - file_permissions_ungroupowned
+      - file_permissions_ungroupowned.severity=high
+
+
+  - id: 8.2
+    title: Ensure UMASK Correct
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - accounts_umask_etc_bashrc
+      - accounts_umask_etc_bashrc.severity=high
+      - var_accounts_user_umask=027
+
+
+  - id: 8.3
+    title: Ensure File Permission Minimize
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 8.4
+    title: Ensure permissions on /etc/passwd are configured (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - file_groupowner_etc_passwd
+      - file_owner_etc_passwd
+      - file_permissions_etc_passwd
+
+  - id: 8.5
+    title: Ensure permissions on /etc/group are configured (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - file_groupowner_etc_group
+      - file_owner_etc_group
+      - file_permissions_etc_group
+
+  - id: 8.6
+    title: Ensure permissions on /etc/shadow are configured (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - file_owner_etc_shadow
+      - file_groupowner_etc_shadow
+      - file_permissions_etc_shadow
+
+
+  - id: 8.7
+    title: Ensure all logfiles have appropriate permissions(Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - rsyslog_files_permissions
+
+
+  - id: 8.8
+    title: Restrict the permissions of FTP users to upload files
+    levels:
+      - l2_server
+    status: planned
+
+
+  - id: 8.9
+    title: Prohibit global read-write of log files
+    levels:
+      - l2_server
+    status: planned
+
+  
+  ##9 Risk account
+
+  - id: 9.1
+    title: Delete accounts unrelated to device operation, maintenance, and other work
+    levels:
+      - l2_server
+    status: planned
+
+
+  - id: 9.2
+    title: Ensure pam_unix does not include nullok (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - no_empty_passwords
+
+
+  - id: 9.3
+    title: Ensure /etc/shadow password fields are not empty (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - no_empty_passwords_etc_shadow
+
+
+  - id: 9.4
+    title: Prohibit interactive login of system accounts
+    levels:
+      - l2_server
+    status: planned
+
+  - id: 9.5
+    title: Ensure UID Unique
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - account_unique_id
+      - account_unique_id.severity=high
+
+  ##10 Disk inspection
+
+  - id: 10.1
+    title: Check the usage rate of system disk partitions
+    levels:
+      - l2_server
+    status: planned
+
+  ##11 Password strength
+
+  - id: 11.1
+    title: Ensure Set Correct Password Complexity
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - accounts_password_pam_minclass
+      - accounts_password_pam_minclass.severity=high
+      - var_password_pam_minclass=3
+      - accounts_password_pam_retry
+      - accounts_password_pam_retry.severity=high
+      - var_password_pam_retry=3
+      - accounts_password_pam_dcredit
+      - accounts_password_pam_dcredit.severity=high
+      - var_password_pam_dcredit=0
+      - accounts_password_pam_ucredit
+      - accounts_password_pam_ucredit.severity=high
+      - var_password_pam_ucredit=0
+      - accounts_password_pam_lcredit
+      - accounts_password_pam_lcredit.severity=high
+      - var_password_pam_lcredit=0
+      - accounts_password_pam_ocredit
+      - accounts_password_pam_ocredit.severity=high
+      - var_password_pam_ocredit=0
+      - accounts_password_pam_enforce_root
+      - accounts_password_pam_enforce_root.severity=high
+
+
+  - id: 11.2
+    title: Ensure Password Expiration Warning Days
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - accounts_password_warn_age_login_defs
+      - accounts_password_warn_age_login_defs.severity=high
+      - var_accounts_password_warn_age_login_defs=7
+
+
+  - id: 11.3
+    title: Enable password complexity policy
+    levels:
+      - l2_server
+    status: planned
+
+
+  - id: 11.4
+    title: Ensure Password Expire Correct
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - accounts_maximum_age_login_defs
+      - accounts_maximum_age_login_defs.severity=high
+      - var_accounts_maximum_age_login_defs=90
+
+
+  - id: 11.5
+    title: Ensure Set Correct Password Complexity
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - accounts_password_pam_minlen
+      - accounts_password_pam_minlen.severity=high
+      - var_password_pam_minlen=8
+
+
+  - id: 11.6
+    title: Minimum Days Between Password Change
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - accounts_minimum_age_login_defs
+      - accounts_minimum_age_login_defs.severity=high
+      - var_accounts_minimum_age_login_defs=0
+
+  - id: 11.7
+    title: Ensure No History Password Used
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - accounts_password_pam_unix_remember
+      - accounts_password_pam_unix_remember.severity=high
+      - var_password_pam_unix_remember=5
+
+  - id: 11.8
+    title: Ensure Using Strong Hash Algorithm To Encipher Password
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - set_password_hashing_algorithm_systemauth
+      - set_password_hashing_algorithm_systemauth.severity=high
+      - set_password_hashing_algorithm_passwordauth
+      - set_password_hashing_algorithm_passwordauth.severity=high
+
+  ##12 Account lockout
+
+  - id: 12.1
+    title: Ensure Account Locked After Accessing Fail
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - accounts_passwords_pam_faillock_deny
+      - accounts_passwords_pam_faillock_deny.severity=high
+      - var_accounts_passwords_pam_faillock_deny=3
+      - accounts_passwords_pam_faillock_unlock_time
+      - accounts_passwords_pam_faillock_unlock_time.severity=high
+      - var_accounts_passwords_pam_faillock_unlock_time=300
+
+  ##13 system safety 
+
+  - id: 13.1
+    title: Ensure Firewalld Enabled
+    levels:
+      - l1_server
+    status: automated
+    rules:
+      - service_firewalld_enabled
+      - service_firewalld_enabled.severity=low
+
+  - id: 13.2
+    title: Ensure the SELinux mode is not disabled (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - selinux_not_disabled
+
+  - id: 13.3
+    title: Ensure firewalld default zone is set (Automated)
+    levels:
+      - l1_server
+    status: automated
+    rules:
+      - set_firewalld_default_zone
+
+  ##14 system maintenance
+
+  - id: 14.1
+    title: Ensure authentication required for single user mode (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - require_emergency_target_auth
+      - require_singleuser_auth
+
+  ##15 resource allocation
+
+  - id: 15.1
+    title: Check system resource usage control
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - project_config_and_template_resource_quota
+
+  ##16 others
+
+  - id: 16.1
+    title: Ensure root path integrity (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - accounts_root_path_dirs_no_write
+      - root_path_no_dot
+
+
+  - id: 16.2
+    title: Ensure GPG Check Configured
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - ensure_gpgcheck_globally_activated
+      - ensure_gpgcheck_globally_activated.severity=high
+      - ensure_gpgcheck_never_disabled
+      - ensure_gpgcheck_never_disabled.severity=high
+
+
+  - id: 16.3
+    title: ensure-permissions-on-ssh-private-host-key-files-are-configured
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - file_permissions_sshd_private_key
+
+    
+  - id: 16.4
+    title: Ensure SSH IgnoreRhosts is enabled (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sshd_disable_rhosts
+
+  - id: 16.5
+    title: Ensure that SSH X11 forwarding is disabled
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - sshd_disable_x11_forwarding
+
+  - id: 16.6
+    title: Ensure sshd Hostl2_serverdAuthentication is disabled (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - disable_host_auth
+
+  - id: 16.7
+    title: interactive user accounts must be assigned a home directory upon creation.
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - accounts_have_homedir_login_defs
+
+  - id: 16.8
+    title: Ensure autofs services are not in use (Automated)
+    levels:
+      - l2_server
+    status: automated
+    rules:
+      - service_autofs_disabled

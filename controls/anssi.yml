@@ -1291,6 +1291,7 @@ controls:
       of these in this recommendation.
     rules:
     - package_dhcp_removed
+    - package_kea_removed
     - package_rsh_removed
     - package_rsh-server_removed
     - package_sendmail_removed
@@ -1362,9 +1363,9 @@ controls:
       When authentication takes place through a remote application (network),
       the authentication protocol used by PAM must be secure (flow encryption,
       remote server authentication, anti-replay mechanisms, ...).
-    {{% if "rhel" in product %}}
+    {{% if "rhel" in product or "ol" in families %}}
     notes: |-
-      In RHEL systems, remote authentication is handled through sssd service.
+      In {{{ full_name }}} systems, remote authentication is handled through sssd service.
       PAM delegates requests for remote authentication to this service through a
       local Unix socket. The sssd service can use IPA, AD or LDAP as a remote
       database containing information required for authentication. In case IPA or  AD is configured through a documented way, the connection is secured by default. In case LDAP is configured manually, there are several configuration options which should be chedked.
@@ -1379,7 +1380,7 @@ controls:
       - sssd_enable_pam_services
       - sssd_ldap_configure_tls_reqcert
       - sssd_ldap_start_tls
-      {{% if product in ["rhel8"] %}}
+      {{% if product in ["rhel8","ol8"] %}}
       - ldap_client_start_tls
       - ldap_client_tls_cacertpath
       {{% endif %}}
@@ -1418,14 +1419,14 @@ controls:
       When the user databases are stored on a remote network service, NSS must
       be configured to establish a secure link that allows, at minimum, to
       authenticate the server and protect the communication channel.
-    {{% if "rhel" in product %}}
+    {{% if "rhel" in product or "ol" in families %}}
     notes: |-
       A nsswitch service connecting to remote database is provided by sssd. This is checked in requirement R67.
       Another such service is winbind which is by default configured to connect
       securely to Samba domains.
       Other relevant services are NIS and Hesiod. These should not be used.
     status: automated
-    {{% if product in ["rhel8"] %}}
+    {{% if product in ["rhel8","ol8"] %}}
     rules:
       - no_nis_in_nsswitch
     {{% endif %}}

@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 9 V1R3.
+    DISA STIG for Red Hat Enterprise Linux 9 V2R1.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 9, DISA recognizes
@@ -23,7 +23,7 @@ description: 'This profile contains configuration checks that align to the
 extends: null
 hidden: ''
 metadata:
-    version: V1R3
+    version: V2R1
     SMEs:
     - mab879
     - ggbecker
@@ -43,7 +43,6 @@ selections:
 - accounts_minimum_age_login_defs
 - accounts_no_uid_except_zero
 - accounts_password_all_shadowed_sha512
-- accounts_password_minlen_login_defs
 - accounts_password_pam_dcredit
 - accounts_password_pam_dictcheck
 - accounts_password_pam_difok
@@ -54,8 +53,6 @@ selections:
 - accounts_password_pam_minclass
 - accounts_password_pam_minlen
 - accounts_password_pam_ocredit
-- accounts_password_pam_pwhistory_remember_password_auth
-- accounts_password_pam_pwhistory_remember_system_auth
 - accounts_password_pam_pwquality_password_auth
 - accounts_password_pam_pwquality_system_auth
 - accounts_password_pam_retry
@@ -80,7 +77,6 @@ selections:
 - accounts_user_home_paths_only
 - accounts_user_interactive_home_directory_defined
 - accounts_user_interactive_home_directory_exists
-- agent_mfetpd_running
 - aide_build_database
 - aide_check_audit_tools
 - aide_periodic_cron_checking
@@ -184,19 +180,13 @@ selections:
 - chronyd_server_directive
 - chronyd_specify_remote_server
 - clean_components_post_updating
-- configure_bashrc_tmux
 - configure_bind_crypto_policy
 - configure_crypto_policy
-- configure_firewalld_ports
 - configure_kerberos_crypto_policy
 - configure_libreswan_crypto_policy
 - configure_opensc_card_drivers
 - configure_openssl_crypto_policy
 - configure_openssl_tls_crypto_policy
-- configure_ssh_crypto_policy
-- configure_tmux_lock_after_time
-- configure_tmux_lock_command
-- configure_tmux_lock_keybinding
 - configure_usbguard_auditbackend
 - configured_firewalld_default_deny
 - coredump_disable_backtraces
@@ -308,6 +298,7 @@ selections:
 - file_permissions_var_log
 - file_permissions_var_log_audit
 - file_permissions_var_log_messages
+- file_sshd_50_redhat_exists
 - firewalld-backend
 - firewalld_sshd_port_enabled
 - gid_passwd_group_same
@@ -346,7 +337,6 @@ selections:
 - mount_option_home_nodev
 - mount_option_home_noexec
 - mount_option_home_nosuid
-- mount_option_krb_sec_remote_filesystems
 - mount_option_nodev_nonroot_local_partitions
 - mount_option_nodev_remote_filesystems
 - mount_option_nodev_removable_partitions
@@ -375,7 +365,6 @@ selections:
 - no_files_unowned_by_user
 - no_host_based_files
 - no_shelllogin_for_systemaccounts
-- no_tmux_in_shells
 - no_user_host_based_files
 - package_aide_installed
 - package_audispd-plugins_installed
@@ -388,7 +377,6 @@ selections:
 - package_gssproxy_removed
 - package_iprutils_removed
 - package_libreswan_installed
-- package_mcafeetp_installed
 - package_nfs-utils_removed
 - package_nss-tools_installed
 - package_opensc_installed
@@ -408,7 +396,6 @@ selections:
 - package_sudo_installed
 - package_telnet-server_removed
 - package_tftp-server_removed
-- package_tmux_installed
 - package_tuned_removed
 - package_usbguard_installed
 - package_vsftpd_removed
@@ -452,7 +439,6 @@ selections:
 - set_password_hashing_algorithm_libuserconf
 - set_password_hashing_algorithm_logindefs
 - set_password_hashing_algorithm_passwordauth
-- set_password_hashing_min_rounds_logindefs
 - ssh_keys_passphrase_protected
 - sshd_disable_compression
 - sshd_disable_empty_passwords
@@ -467,12 +453,12 @@ selections:
 - sshd_enable_pubkey_auth
 - sshd_enable_strictmodes
 - sshd_enable_warning_banner
+- sshd_include_crypto_policy
 - sshd_print_last_log
 - sshd_rekey_limit
 - sshd_set_idle_timeout
 - sshd_set_keepalive
 - sshd_set_loglevel_verbose
-- sshd_use_priv_separation
 - sshd_x11_use_localhost
 - sssd_certificate_verification
 - sssd_enable_certmap
@@ -519,7 +505,6 @@ selections:
 - sysctl_net_ipv6_conf_default_accept_redirects
 - sysctl_net_ipv6_conf_default_accept_source_route
 - sysctl_user_max_user_namespaces
-- tftpd_uses_secure_mode
 - usbguard_generate_policy
 - use_pam_wheel_for_su
 - wireless_disable_interfaces
@@ -552,14 +537,13 @@ selections:
 - var_password_pam_dcredit=1
 - var_password_pam_lcredit=1
 - var_password_pam_unix_rounds=5000
-- var_password_pam_remember=5
-- var_password_pam_remember_control_flag=requisite_or_required
 - var_password_pam_retry=3
 - var_selinux_policy_name=targeted
 - var_selinux_state=enforcing
 - var_logind_session_timeout=15_minutes
 - var_accounts_fail_delay=4
 - var_accounts_max_concurrent_login_sessions=10
+- var_accounts_tmout=10_min
 - var_accounts_authorized_local_users_regex=rhel9
 - var_accounts_passwords_pam_faillock_unlock_time=never
 - var_accounts_passwords_pam_faillock_fail_interval=900
@@ -573,7 +557,7 @@ selections:
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - sshd_approved_ciphers=stig_rhel9
-- var_networkmanager_dns_mode=none
+- var_networkmanager_dns_mode=explicit_default
 - var_multiple_time_servers=stig
 - var_time_service_set_maxpoll=18_hours
 - var_user_initialization_files_regex=all_dotfiles

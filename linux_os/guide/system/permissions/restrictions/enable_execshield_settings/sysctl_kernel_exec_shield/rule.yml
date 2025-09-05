@@ -9,7 +9,7 @@ description: |-
     ExecShield or is disabled in <tt>/etc/default/grub</tt>.
 
     {{# products that are available also in a 32 bits form #}}
-    {{% if "rhel" not in product and product != "fedora" %}}
+    {{% if "rhel" not in product and product != "fedora" and "ol" not in families %}}
     For {{{ full_name }}}  32-bit systems, <tt>sysctl</tt> can be used to enable
     ExecShield.
     {{% endif %}}
@@ -25,7 +25,7 @@ rationale: |-
 
 severity: medium
 
-platform: machine  # The oscap sysctl probe doesn't support offline mode
+platform: system_with_kernel  # The oscap sysctl probe doesn't support offline mode
 
 identifiers:
     cce@rhel8: CCE-80914-5
@@ -38,7 +38,7 @@ references:
     cis-csc: 12,15,8
     cobit5: APO13.01,DSS05.02
     cui: 3.1.7
-    disa: CCI-002530
+    disa: CCI-002824
     hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)
     isa-62443-2013: 'SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
     iso27001-2013: A.13.1.1,A.13.2.1,A.14.1.3
@@ -56,7 +56,7 @@ ocil: |-
     {{{ ocil_grub2_argument("noexec=off") | indent(4) }}}
 
     {{# products that are available also in a 32 bits form #}}
-    {{% if "rhel" not in product and product != "fedora" %}}
+    {{% if "rhel" not in product and product != "fedora" and "ol" not in families %}}
     For 32-bit {{{ full_name }}} systems, run the following command:
     <pre>$ sysctl kernel.exec-shield</pre>
     The output should be:
@@ -65,7 +65,7 @@ ocil: |-
 
 fixtext: |-
     {{# products that are available also in a 32 bits form #}}
-    {{%- if "rhel" not in product and product != "fedora" -%}}
+    {{%- if "rhel" not in product and product != "fedora" and "ol" not in families -%}}
     On a 64-bit {{{ full_name }}} system update the GRUB bootloader configuration.
 
     {{{ fixtext_grub2_bootloader_argument_absent("noexec") | indent(4) }}}

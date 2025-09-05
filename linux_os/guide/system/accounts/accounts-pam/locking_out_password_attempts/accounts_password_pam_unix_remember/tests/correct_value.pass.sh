@@ -1,9 +1,9 @@
 #!/bin/bash
-# platform = Oracle Linux 7,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_sle
+# platform = Oracle Linux 7,Red Hat Virtualization 4,multi_platform_fedora,SUSE Linux Enterprise 12
 # variables = var_password_pam_unix_remember=5
 
 remember_cnt=5
-{{% if product in [ "sle12", "sle15" ] %}}
+{{% if "sle12" in product %}}
 for auth_file in common-password password-auth
 {{% else %}}
 for auth_file in system-auth password-auth

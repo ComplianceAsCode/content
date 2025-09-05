@@ -11,7 +11,7 @@ description: |-
     run the following command to determine which package owns it:
     <pre>$ rpm -qf <i>FILENAME</i></pre>
     Next, run the following command to reset its permissions to the correct values:
-    <pre>$ sudo rpm --setugids <i>PACKAGENAME</i></pre>
+    <pre>$ sudo rpm --restore <i>PACKAGENAME</i></pre>
 
 rationale: |-
     Ownership of binaries and configuration files that is incorrect could allow an unauthorized
@@ -60,7 +60,8 @@ fixtext: |-
 
     Reset the user and group ownership of files within a package with the following command:
 
-    $ sudo rpm --setugids [package]
+    $ sudo rpm --restore [package]
+
 
 srg_requirement: '{{{ full_name }}} must be configured so that the file ownership and group membership of system files and commands match the vendor values.'
 

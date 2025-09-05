@@ -18,6 +18,7 @@ identifiers:
     cce@rhel10: CCE-86882-8
     cce@sle12: CCE-83247-7
     cce@sle15: CCE-85713-6
+    cce@slmicro5: CCE-93640-1
 
 references:
     cis-csc: 1,11,12,13,14,15,16,2,3,7,8,9
@@ -50,13 +51,13 @@ fixtext: |-
 
 srg_requirement: '{{{ full_name }}} must not perform packet forwarding unless the system is a router.'
 
-platform: machine
+platform: system_with_kernel
 
 template:
     name: sysctl
     vars:
         sysctlvar: net.ipv6.conf.all.forwarding
         datatype: int
-{{% if "openeuler" in product %}}
+{{% if "openeuler" in product or "kylinserver" in product %}}
         missing_parameter_pass: 'true'
 {{% endif %}}        

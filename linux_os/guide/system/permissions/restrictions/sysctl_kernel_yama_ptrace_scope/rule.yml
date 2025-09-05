@@ -22,7 +22,7 @@ identifiers:
     cce@sle15: CCE-91262-6
 
 references:
-    disa: CCI-000366
+    disa: CCI-000366,CCI-001082
     nist: SC-7(10)
     srg: SRG-OS-000132-GPOS-00067,SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-040282
@@ -36,7 +36,7 @@ fixtext: |-
 
 srg_requirement: '{{{ full_name }}} must restrict usage of ptrace to descendant processes.'
 
-platform: machine
+platform: system_with_kernel
 
 template:
     name: sysctl

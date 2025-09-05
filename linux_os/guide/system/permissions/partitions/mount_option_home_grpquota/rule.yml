@@ -48,13 +48,12 @@ warnings:
 {{% endif %}}
 
 {{% if "ol" in product %}}
-platform: machine
 template:
     name: mount_option_home
     vars:
         mountoption: grpquota
 {{% else %}}
-platform: machine and mount[home]
+platform: mount[home]
 template:
     name: mount_option
     vars:

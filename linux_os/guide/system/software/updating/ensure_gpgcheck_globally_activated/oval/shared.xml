@@ -4,7 +4,7 @@
     {{{ oval_metadata("The gpgcheck option should be used to ensure that checking
       of an RPM package's signature always occurs prior to its
       installation.") }}}
-    {{% if 'sle' in product %}} 
+    {{% if 'sle' in product or 'slmicro' in product %}} 
       <criteria operator="AND">
         <criterion comment="check value of gpgcheck in {{{ pkg_manager_config_file }}}" test_ref="test_ensure_gpgcheck_globally_activated" />
         <criterion comment="no value 0_off_no_false set in {{{ pkg_manager_config_file }}}" test_ref="test_ensure_gpgcheck_globally_no_deactivated" />
@@ -26,7 +26,7 @@
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>  
 
-{{% if 'sle' in product %}}
+{{% if 'sle' in product or 'slmicro' in product %}}
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="no value 0 set in {{{ pkg_manager_config_file }}}" id="test_ensure_gpgcheck_globally_no_deactivated" version="1">
     <ind:object object_ref="object_test_ensure_gpgcheck_globally_no_deactivated" />

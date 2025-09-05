@@ -6,8 +6,8 @@ title: 'Ensure sudo Ignores Commands In Current Dir - sudo ignore_dot'
 description: |-
     The sudo <tt>ignore_dot</tt> tag, when specified, will ignore the current directory
     in the PATH environment variable.
-{{%- if 'rhel' in product %}}
-    On {{{ full_name }}}, <tt>env_reset</tt> is enabled by default
+{{%- if 'rhel' in product or 'ol' in families %}}
+    On {{{ full_name }}}, <tt>ignore_dot</tt> is enabled by default
 {{%- endif %}}
     This should be enabled by making sure that the <tt>ignore_dot</tt> tag exists in
     <tt>/etc/sudoers</tt> configuration file or any sudo configuration snippets
@@ -21,6 +21,7 @@ severity: medium
 
 identifiers:
     cce@rhel8: CCE-83810-2
+    cce@rhel10: CCE-90743-6
     cce@sle12: CCE-91493-7
     cce@sle15: CCE-91185-9
 

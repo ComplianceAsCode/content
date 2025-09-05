@@ -7,7 +7,7 @@ vuldiscussion: |-
 checktext: |-
     Verify the SSH daemon performs strict mode checking of home directory configuration files with the following command:
 
-    $ sudo grep -ir strictmodes  /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*strictmodes'
 
     StrictModes yes
 
@@ -23,6 +23,3 @@ fixtext: |-
     The SSH service must be restarted for changes to take effect:
 
     $ sudo systemctl restart sshd.service
-
-vuln_discussion: |-
-    If other users have access to modify user-specific SSH configuration files, they may be able to log into the system as another user.

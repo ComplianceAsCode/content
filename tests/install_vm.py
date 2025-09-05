@@ -10,16 +10,16 @@ import time
 
 KNOWN_DISTROS = [
     "fedora",
-    "centos7",
     "centos8",
     "centos9",
     "rhel8",
     "rhel9",
+    "rhel10",
 ]
 
 DISTRO_URL = {
     "fedora":
-        "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Everything/x86_64/os",
+        "https://download.fedoraproject.org/pub/fedora/linux/releases/41/Everything/x86_64/os",
     "centos8": "http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/",
     "centos9": "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/",
 }
@@ -150,6 +150,12 @@ def parse_args():
         action="store_true",
         help="Set cache unsafe.",
     )
+    parser.add_argument(
+        "--osinfo",
+        dest="osinfo",
+        default=None,
+        help="Specify OSInfo for virt-install command.",
+    )
 
     return parser.parse_args()
 
@@ -157,7 +163,7 @@ def parse_args():
 def wait_vm_not_running(domain):
     timeout = 300
 
-    print("Waiting for {0} VM to shutdown (max. {1}s)".format(domain, timeout))
+    print(f'Waiting for {domain} VM to shutdown (max. {timeout}s)')
     end_time = time.time() + timeout
     try:
         while True:
@@ -167,65 +173,59 @@ def wait_vm_not_running(domain):
                 return
             if time.time() < end_time:
                 continue
-            print("Timeout reached: {0} VM failed to shutdown, cancelling wait."
-                  .format(domain))
+            print(f'Timeout reached: {domain} VM failed to shutdown, cancelling wait.')
             return
     except KeyboardInterrupt:
-        print("Interrupted, cancelling wait.")
+        print('Interrupted, cancelling wait.')
         return
 
 
-def err(rc, msg):
+def err(msg):
     print(msg, file=sys.stderr)
-    sys.exit(rc)
+    sys.exit(1)
 
 
-def handle_url(data):
+def try_known_urls(data):
+    data.url = DISTRO_URL.get(data.distro, None)
+    data.extra_repo = DISTRO_EXTRA_REPO.get(data.distro, None)
+
     if not data.url:
-        data.url = DISTRO_URL.get(data.distro, None)
-        data.extra_repo = DISTRO_EXTRA_REPO.get(data.distro, None)
-
-    if data.url:
-        return
-
-    err(1, "For the '{0}' distro the `--url` option needs to be provided.".format(data.distro))
+        err(f'For the "{data.distro}" distro the "--url" option needs to be provided.')
 
 
 def handle_ssh_pubkey(data):
     data.ssh_pubkey_used = bool(data.ssh_pubkey)
     if not data.ssh_pubkey:
-        username = os.environ.get("SUDO_USER", "")
-        home_dir = os.path.expanduser("~" + username)
-        data.ssh_pubkey = home_dir + "/.ssh/id_rsa.pub"
-
-    if not os.path.isfile(data.ssh_pubkey):
-        err(1, """Error: SSH public key not found at {0}
-You can use the `--ssh-pubkey` to specify which key should be used.""".format(data.ssh_pubkey))
-
-    with open(data.ssh_pubkey) as f:
-        data.pub_key_content = f.readline().rstrip()
+        home_dir = os.path.expanduser('~')
+        user_default_key = f'{home_dir}/.ssh/id_rsa.pub'
+        if os.path.isfile(user_default_key):
+            data.ssh_pubkey = user_default_key
+            with open(data.ssh_pubkey) as f:
+                data.pub_key_content = f.readline().rstrip()
+        else:
+            err('SSH public key was not found or informed by "--ssh-pubkey" option.')
 
 
 def handle_disk(data):
     disk_spec = [
-        "size={0}".format(data.disk_size),
-        "format=qcow2",
+        f'size={data.disk_size}',
+        'format=qcow2',
     ]
     if data.disk:
         disk_spec.extend(data.disk.split(","))
     elif data.disk_dir:
         disk_path = os.path.join(data.disk_dir, data.domain) + ".qcow2"
-        print("Location of VM disk: {0}".format(disk_path))
-        disk_spec.append("path={0}".format(disk_path))
+        print(f'Location of VM disk: {disk_path}')
+        disk_spec.append(f'path={disk_path}')
     if data.disk_unsafe:
-        disk_spec.append("cache=unsafe")
-    data.disk_spec = ",".join(disk_spec)
+        disk_spec.append('cache=unsafe')
+    data.disk_spec = ','.join(disk_spec)
 
 
 def handle_kickstart(data):
     data.ks_basename = os.path.basename(data.kickstart)
 
-    tmp_kickstart = "/tmp/" + data.ks_basename
+    tmp_kickstart = f'/tmp/{data.ks_basename}'
     with open(data.kickstart) as infile, open(tmp_kickstart, "w") as outfile:
         content = infile.read()
         content = content.replace("&&HOST_PUBLIC_KEY&&", data.pub_key_content)
@@ -235,8 +235,7 @@ def handle_kickstart(data):
 
         repo_cmd = ""
         if data.extra_repo:
-            # extra repository
-            repo_cmd = "repo --name=extra-repository --baseurl={0}".format(data.extra_repo)
+            repo_cmd = f'repo --name=extra-repository --baseurl={data.extra_repo}'
             content = content.replace("&&YUM_EXTRA_REPO_URL&&", data.extra_repo)
 
         content = content.replace("&&YUM_EXTRA_REPO&&", repo_cmd)
@@ -274,37 +273,37 @@ def handle_rest(data):
 
 def join_extented_opt(opt_name, delim, opts):
     if opts:
-        return ["{0}={1}".format(opt_name, delim.join(opts))]
+        return [f'{opt_name}={delim.join(opts)}']
     return []
 
 
 def get_virt_install_command(data):
     command = [
-        "virt-install",
-        "--connect={0}".format(data.libvirt),
-        "--name={0}".format(data.domain),
-        "--memory={0}".format(data.ram),
-        "--vcpus={0}".format(data.cpu),
-        "--network={0}".format(data.network),
-        "--disk={0}".format(data.disk_spec),
-        "--initrd-inject={0}".format(data.kickstart),
-        "--serial=pty",
-        "--noautoconsole",
-        "--rng=/dev/random",
-        "--wait={0}".format(data.wait_opt),
-        "--location={0}".format(data.url),
+        'virt-install',
+        f'--connect={data.libvirt}',
+        f'--name={data.domain}',
+        f'--memory={data.ram}',
+        f'--vcpus={data.cpu}',
+        f'--network={data.network}',
+        f'--disk={data.disk_spec}',
+        f'--initrd-inject={data.kickstart}',
+        '--serial=pty',
+        '--noautoconsole',
+        '--rng=/dev/random',
+        f'--wait={data.wait_opt}',
+        f'--location={data.url}',
     ]
 
     boot_opts = []
 
     extra_args_opts = [
-        "inst.ks=file:/{0}".format(data.ks_basename),
-        "inst.ks.device=eth0",
-        # The kernel option "net.ifnames=0" is used to disable predictable network
-        # interface names, for more details see:
+        f'inst.ks=file:/{data.ks_basename}',
+        'inst.ks.device=eth0',
+        # The kernel option "net.ifnames=0" is used to disable predictable network interface
+        # names. For more details see:
         # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
-        "net.ifnames=0",
-        "console=ttyS0,115200",
+        'net.ifnames=0',
+        'console=ttyS0,115200',
     ]
 
     features_opts = []
@@ -326,6 +325,9 @@ def get_virt_install_command(data):
         else:
             boot_opts.append("loader.secure=no")
 
+    if data.osinfo:
+        command.append(f'--osinfo={data.osinfo}')
+
     command.extend(join_extented_opt("--boot", ",", boot_opts))
     command.extend(join_extented_opt("--extra-args", " ", extra_args_opts))
     command.extend(join_extented_opt("--features", ",", features_opts))
@@ -334,9 +336,10 @@ def get_virt_install_command(data):
 
 
 def run_virt_install(data, command):
+    print("\nThis is the resulting command for the VM installation:")
+    print(shlex.join(command))
+
     if data.dry:
-        print("\nThe following command would be used for the VM installation:")
-        print(shlex.join(command))
         return
 
     subprocess.call(command)
@@ -345,10 +348,12 @@ def run_virt_install(data, command):
         wait_vm_not_running(data.domain)
         subprocess.call(["virsh", "start", data.domain])
 
+    give_info(data)
+
 
 def give_info(data):
     if data.libvirt == "qemu:///system":
-        ip_cmd = "sudo virsh domifaddr {0}".format(data.domain)
+        ip_cmd = f'sudo virsh domifaddr {data.domain}'
     else:
         # command evaluation in fish shell is simply surrounded by
         # parenthesis for example: (echo foo). In other shells you
@@ -357,28 +362,27 @@ def give_info(data):
 
         cmd_eval = "" if environ["SHELL"][-4:] == "fish" else "$"
 
-        ip_cmd = "arp -n | grep {0}(virsh -q domiflist {1} | awk '{{print $5}}')".format(
-            cmd_eval, data.domain)
+        ip_cmd = f"arp -n | grep {cmd_eval}(virsh -q domiflist {data.domain} | awk '{{print $5}}')"
 
-    print("""
-To determine the IP address of the {domain} VM use:
+    print(f"""
+To determine the IP address of the {data.domain} VM use:
   {ip_cmd}
 
-To connect to the {domain} VM use:
+To connect to the {data.domain} VM use:
   ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@IP
 
 To connect to the VM serial console, use:
-  virsh console {domain}""".format(** data.__dict__, ip_cmd=ip_cmd))
+  virsh console {data.domain}""")
 
     if data.ssh_pubkey_used:
-        print("""
+        print(f"""
 Add:
-  -o IdentityFile={ssh_pubkey}
+  -o IdentityFile={data.ssh_pubkey}
 
 option to your ssh command and export the:
-  export SSH_ADDITIONAL_OPTIONS='-o IdentityFile={ssh_pubkey}'
+  export SSH_ADDITIONAL_OPTIONS='-o IdentityFile={data.ssh_pubkey}'
 
-before running the Automatus.""".format(** data.__dict__))
+before running the Automatus.""")
 
         if data.libvirt == "qemu:///system":
             print("""
@@ -390,21 +394,20 @@ to make sure that your SSH key is used.""")
 def main():
     data = parse_args()
 
-    handle_url(data)
+    if not data.url or not data.extra_repo:
+        try_known_urls(data)
+
     handle_ssh_pubkey(data)
-
-    print("Using SSH public key from file: {0}".format(data.ssh_pubkey))
-    print("Using hypervisor: {0}".format(data.libvirt))
-
     handle_disk(data)
     handle_kickstart(data)
 
-    print("Using kickstart file: {0}".format(data.kickstart))
+    print(f'Using SSH public key from file: {data.ssh_pubkey}')
+    print(f'Using hypervisor: {data.libvirt}')
+    print(f'Using kickstart file: {data.kickstart}')
 
     handle_rest(data)
     command = get_virt_install_command(data)
     run_virt_install(data, command)
-    give_info(data)
 
 
 if __name__ == "__main__":

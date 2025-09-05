@@ -2,15 +2,9 @@ srg_requirement: |-
     Executable search paths within the initialization files of all local interactive {{{ full_name }}} users must only contain paths that resolve to the system default or the users home directory.
 
 vuldiscussion: |-
-    The executable search path (typically the PATH environment variable) contains a
-    list of directories for the shell to search to find executables. If this path
-    includes the current working directory (other than the users home directory),
-    executables in these directories may be executed instead of system commands.
-    This variable is formatted as a colon-separated list of directories. If there is
-    an empty entry, such as a leading or trailing colon or two consecutive colons,
-    this is interpreted as the current working directory. If deviations from the
-    default system search path for the local interactive user are required, they
-    must be documented with the Information System Security Officer (ISSO).
+    The executable search path (typically the PATH environment variable) contains a list of directories for the shell to search to find executables. If this path includes the current working directory (other than the users home directory), executables in these directories may be executed instead of system commands.
+
+    This variable is formatted as a colon-separated list of directories. If there is an empty entry, such as a leading or trailing colon or two consecutive colons, this is interpreted as the current working directory. If deviations from the default system search path for the local interactive user are required, they must be documented with the information system security officer (ISSO).
 
 checktext: |-
     Verify that all local interactive user initialization file executable search path statements do not contain statements that will reference a working directory other than user home directories with the following commands:
@@ -26,7 +20,3 @@ fixtext: |-
 
     If a local interactive user requires path variables to reference a directory owned by the application, it must be documented with the ISSO.
 
-vuln_discussion: |-
-    The executable search path (typically the PATH environment variable) contains a list of directories for the shell to search to find executables. If this path includes the current working directory (other than the users home directory), executables in these directories may be executed instead of system commands.
-
-    This variable is formatted as a colon-separated list of directories. If there is an empty entry, such as a leading or trailing colon or two consecutive colons, this is interpreted as the current working directory. If deviations from the default system search path for the local interactive user are required, they must be documented with the information system security officer (ISSO).

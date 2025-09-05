@@ -3,7 +3,7 @@
 
 # This TS is a regression test for https://bugzilla.redhat.com/show_bug.cgi?id=2175684
 
-{{% if 'ubuntu' in product or 'sle' in product %}}
+{{% if 'ubuntu' in product or 'sle' in product or 'slmicro5' in product %}}
 DB_NEW=/var/lib/aide/aide.db.new
 DB=/var/lib/aide/aide.db
 {{% else %}}

@@ -1,0 +1,16 @@
+controls:
+    -   id: SRG-OS-000730-GPOS-00190
+        title: '{{{ full_name }}} must, for password-based authentication, employ automated
+                tools to assist the user in selecting strong password authenticators.'
+        levels:
+            - medium
+        status: automated
+        rules:
+            - accounts_password_pam_maxclassrepeat
+            - var_password_pam_maxclassrepeat=3
+            - var_password_pam_dictcheck=1
+            - accounts_password_pam_dictcheck
+            - var_password_hashing_algorithm_pam=sha512
+            - var_password_pam_unix_rounds=5000
+            - var_password_pam_remember=5
+            - var_password_pam_remember_control_flag=requisite_or_required

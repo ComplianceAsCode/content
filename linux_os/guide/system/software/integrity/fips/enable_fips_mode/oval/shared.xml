@@ -2,12 +2,14 @@
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Check if FIPS mode is enabled on the system") }}}
     <criteria operator="AND">
-      <extend_definition definition_ref="etc_system_fips_exists"
-        comment="check /etc/system-fips file existence"/>
+        <criterion test_ref="test_proc_sys_crypto_fips_enabled"
+            comment="check contents of /proc/sys/crypto/fips_enabled"/>
       <extend_definition definition_ref="sysctl_crypto_fips_enabled"
         comment="check option crypto.fips_enabled = 1 in sysctl"/>
+      {{%- if product not in ["rhel10"] -%}}
       <extend_definition definition_ref="enable_dracut_fips_module"
         comment="dracut FIPS module is enabled"/>
+      {{%- endif -%}}
       <extend_definition definition_ref="configure_crypto_policy"
         comment="system cryptography policy is configured"/>
       <criterion test_ref="test_system_crypto_policy_value"
@@ -90,6 +92,18 @@ to a crypto policy module that further restricts the modified crypto policy.">
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   {{% endif %}}
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="kernel runtime parameter crypto.fips_enabled set to 1"
+    id="test_proc_sys_crypto_fips_enabled" version="1">
+    <ind:object object_ref="obj_proc_sys_crypto_fips_enabled" />
+ </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_proc_sys_crypto_fips_enabled" version="1">
+    <ind:filepath>/proc/sys/crypto/fips_enabled</ind:filepath>
+    <ind:pattern operation="pattern match">^1$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 
   <external_variable id="var_system_crypto_policy" version="1"
     datatype="string" comment="variable which selects the crypto policy"/>

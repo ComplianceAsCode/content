@@ -1,0 +1,138 @@
+name: Trigger OCP Tests When Relevant
+on:
+  pull_request:
+    branches: [ master, 'stabilization*' ]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  check-and-trigger-ocp-prow-tests:
+    name: Identify rules changed in PR and test them in OCP Prow
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+    steps:
+      - name: Install Deps
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 git python3-deepdiff python3-requests jq python3-pip nodejs
+      - name: Install deps python
+        run: pip install gitpython xmldiff
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        with:
+          fetch-depth: 0
+      - name: Checkout (CTF)
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        with:
+          repository: ComplianceAsCode/content-test-filtering
+          path: ctf
+      # https://github.com/actions/checkout/issues/766
+      - name: Set git safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Find forking point
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+        run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
+        id: fork_point
+      - name: Detect content changes in the PR
+        run: python3 ./ctf/content_test_filtering.py pr --base ${{ steps.fork_point.outputs.FORK_POINT }} --remote_repo ${{ github.server_url }}/${{ github.repository }}  --verbose --rule --output json ${{ github.event.pull_request.number }} > ctf-output.json
+      - name: Test if there are no content changes
+        run: echo "CTF_OUTPUT_SIZE=$(stat --printf="%s" ctf-output.json)" >> $GITHUB_OUTPUT
+        id: ctf
+      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        with:
+          name: ctf-output
+          path: ctf-output.json
+      - name: Print changes to content detected if any
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        run: cat ctf-output.json
+      - name: Get product attribute
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        id: product
+        uses: notiz-dev/github-action-json-property@a5a9c668b16513c737c3e1f8956772c99c73f6e8 # v0.2.0
+        with:
+          path: 'ctf-output.json'
+          prop_path: 'product'
+
+      - name: Build product OCP and RHCOS content
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' && (contains(steps.product.outputs.prop, 'ocp4') || contains(steps.product.outputs.prop, 'rhcos4')) }}
+        run: ./build_product -d ocp4 rhcos4
+
+      - name: Process list of rules into a list of product-profiles to test
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' && (contains(steps.product.outputs.prop, 'ocp4') || contains(steps.product.outputs.prop, 'rhcos4')) }}
+        id: profiles_to_test 
+        run: |
+          # Let's grab the profiles for which we have a CI job configured
+          PROW_CONFIG=https://raw.githubusercontent.com/openshift/release/refs/heads/master/ci-operator/config/ComplianceAsCode/content/ComplianceAsCode-content-master.yaml
+          curl -o prow_config.yaml ${PROW_CONFIG}
+          readarray -t TESTED_PROFILES <<< $(grep -r PROFILE= ./prow_config.yaml | sort -u | sed 's/.*export PROFILE=\(.*\)/\1/')
+
+          RULES=$(cat ctf-output.json | jq -r '.rules[]')
+
+          # Let's grab one profile for each changed rule
+          PROFILES=()
+          ALL_PROFILES=()
+
+          # Let's consistently grab a random profile for each rule, in order to do that we use the
+          # PR number as the seed
+          RANDOM=${{ github.event.pull_request.number }}
+          for rule in $RULES; do
+            readarray -t TEMP <<< $(grep -lr -e "- ${rule}\$" build/*/profiles | sort)
+
+            ELIGIBLE_PROFILES=()
+            for index in "${!TEMP[@]}"; do
+              for tp in ${TESTED_PROFILES[@]}; do
+                if [[ ${TEMP[$index]} =~  build\/.*\/profiles\/${tp}\.profile ]]; then
+                  ELIGIBLE_PROFILES+=(${TEMP[$index]});
+                fi
+              done
+            done
+
+            ALL_PROFILES+=(${ELIGIBLE_PROFILES[@]})
+            PROFILES+=(${ELIGIBLE_PROFILES[$(($RANDOM%(${#ELIGIBLE_PROFILES[@]})))]})
+          done
+
+          # Sort and ensure that the profiles are unique
+          readarray -t UNIQUE_PROFILES <<< $(echo ${PROFILES[@]} | tr ' ' '\n' | sort -u | tr '\n' ' ')
+          readarray -t ALL_UNIQUE_PROFILES <<< $(echo ${ALL_PROFILES[@]} | tr ' ' '\n' | sort -u | tr '\n' ' ')
+
+          # Craft a command to trigger tests
+          COMMAND=$(for profile in ${UNIQUE_PROFILES[@]}; do
+            echo ${profile} | sed 's/build\/\(.*\)\/profiles\/\(.*\)\.profile/\/test e2e-aws-\1-\2/'
+          done)
+
+          # COMMAND is a multiline string, so we need to set it this way
+          {
+            echo 'TEST_PROFILES_COMMAND<<EOF'
+            echo "${COMMAND}"
+            echo EOF
+          } >> $GITHUB_OUTPUT
+
+          # Format all identified profiles for display
+          ALL_PROFILES_FORMATTED=$(for profile in ${ALL_UNIQUE_PROFILES[@]}; do
+            echo ${profile} | sed 's/build\/\(.*\)\/profiles\/\(.*\)\.profile/- `<OCP_VERSION>-e2e-aws-\1-\2`/'
+          done)
+          {
+            echo 'ALL_PROFILES_COMMENT<<EOF'
+            echo "${ALL_PROFILES_FORMATTED}"
+            echo EOF
+          } >> $GITHUB_OUTPUT
+      - uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v2
+        if: ${{ steps.profiles_to_test.outputs.TEST_PROFILES_COMMAND != '' }}
+        with:
+          message: |
+            :robot: Trigger prow tests based on changed rules
+
+            ${{ steps.profiles_to_test.outputs.TEST_PROFILES_COMMAND }}
+
+            Note: if a test is not started it could be that a CI Job is not configure for that particular profile or product.
+
+            <details>
+            <summary>Click here to see all the relevant profiles</summary>
+
+            ${{ steps.profiles_to_test.outputs.ALL_PROFILES_COMMENT}}
+
+            </details>
+          comment-tag: kubernetes_start_prow_tests
+          pr-number: ${{ github.event.pull_request.number }}
+          mode: recreate

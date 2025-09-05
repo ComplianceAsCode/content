@@ -17,7 +17,7 @@
 {{% endif %}}
 {{%- endmacro -%}}
 {{%- macro sysctl_match() -%}}
-    <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*(.*)[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*(.*\S)[\s]*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
 {{%- endmacro -%}}
 {{%- if "P" in FLAGS -%}}

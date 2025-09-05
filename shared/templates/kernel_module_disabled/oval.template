@@ -3,7 +3,7 @@
   id="kernel_module_{{{ KERNMODULE }}}_disabled" version="1">
     {{{ oval_metadata("The kernel module " + KERNMODULE + " should be disabled.") }}}
     <criteria operator="OR">
-      {{% if product in ["rhcos4", "sle12", "sle15"] or 'ol' in product or 'rhel' in product or 'ubuntu' in product %}}
+      {{% if product in ["rhcos4", "sle12", "sle15", "slmicro5"] or 'ol' in product or 'rhel' in product or 'ubuntu' in product %}}
       <criteria operator="AND">
         <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_blacklisted"
         comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d" />
@@ -44,7 +44,7 @@
     <value>/usr/lib/modules-load.d</value>
   </constant_variable>
 
-{{% if product in ["rhcos4", "sle12", "sle15"] or 'ol' in product or 'rhel' in product  or 'ubuntu' in product %}}
+{{% if product in ["rhcos4", "sle12", "sle15", "slmicro5"] or 'ol' in product or 'rhel' in product  or 'ubuntu' in product %}}
   <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_blacklisted" version="1" check="all"
   comment="kernel module {{{ KERNMODULE }}} blacklisted">
     <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_blacklisted" />

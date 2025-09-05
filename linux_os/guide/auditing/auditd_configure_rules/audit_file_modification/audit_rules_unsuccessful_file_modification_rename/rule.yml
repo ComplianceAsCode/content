@@ -35,6 +35,7 @@ identifiers:
     cce@rhel10: CCE-89713-2
     cce@sle12: CCE-83251-9
     cce@sle15: CCE-85701-1
+    cce@slmicro5: CCE-93667-4
 
 references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
@@ -48,7 +49,6 @@ references:
     nist: AU-2(d),AU-12(c),CM-6(a)
     nist-csf: DE.AE-3,DE.AE-5,DE.CM-1,DE.CM-3,DE.CM-7,ID.SC-4,PR.AC-3,PR.PT-1,PR.PT-4,RS.AN-1,RS.AN-4
     nist@sle15: AU-12(c),AU-12.1(iv)
-    ospp: FAU_GEN.1.1.c
     pcidss: Req-10.2.4,Req-10.2.1
     srg: SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000468-GPOS-00212,SRG-APP-000501-CTR-001265,SRG-APP-000502-CTR-001270
     stigid@sle12: SLES-12-020411
@@ -79,14 +79,14 @@ template:
         syscall_grouping:
           - rename
           - renameat
-          {{% if product in ['sle15'] %}}
+          {{% if product in ['sle15', 'slmicro5'] %}}
           - renameat2
           {{% endif %}}
           - unlink
           - unlinkat
 
 fixtext: |-
-    {{%- if product in ['sle15'] %}}
+    {{%- if product in ['sle15' ,'slmicro5'] %}}
     {{{ fixtext_audit_rules_unsuccessful_file_modification("rename", ["renameat", "renameat2", "unlink", "unlinkat"]) | indent(4) }}}
     {{%- else %}}
     {{{ fixtext_audit_rules_unsuccessful_file_modification("rename", ["renameat", "unlink", "unlinkat"]) | indent(4) }}}

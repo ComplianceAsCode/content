@@ -5,20 +5,22 @@
 # disruption = low
 
 {{%- if RECURSIVE %}}
-{{%- set FIND_RECURSE_ARGS="" %}}
+{{%- set FIND_RECURSE_ARGS_DEP="" %}}
+{{%- set FIND_RECURSE_ARGS_SYM="" %}}
 {{%- else %}}
-{{%- set FIND_RECURSE_ARGS="-maxdepth 1 -L" %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
+{{%- set FIND_RECURSE_ARGS_SYM="-L" %}}
 {{%- endif %}}
 
 {{%- for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
 
-find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -group {{{ GID_OR_NAME }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chgrp -L {{{ GID_OR_NAME }}} {} \;
+find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f ! -group {{{ GID_OR_NAME }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chgrp -L {{{ GID_OR_NAME }}} {} \;
 {{%- else %}}
-find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chgrp -L {{{ GID_OR_NAME }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d -exec chgrp -L {{{ GID_OR_NAME }}} {} \;
 {{%- endif %}}
 {{%- else %}}
-chgrp -L {{{ GID_OR_NAME }}} {{{ path }}}
+chgrp {{{ GID_OR_NAME }}} {{{ path }}}
 {{%- endif %}}
 {{%- endfor %}}

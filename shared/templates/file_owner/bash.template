@@ -5,20 +5,22 @@
 # disruption = low
 
 {{%- if RECURSIVE %}}
-{{%- set FIND_RECURSE_ARGS="" %}}
+{{%- set FIND_RECURSE_ARGS_DEP="" %}}
+{{%- set FIND_RECURSE_ARGS_SYM="" %}}
 {{%- else %}}
-{{%- set FIND_RECURSE_ARGS="-maxdepth 1 -L" %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
+{{%- set FIND_RECURSE_ARGS_SYM="-L" %}}
 {{%- endif %}}
 
 {{%- for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
 
-find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -uid {{{ FILEUID }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown -L {{{ FILEUID }}} {} \;
+find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f ! -uid {{{ FILEUID }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown -L {{{ FILEUID }}} {} \;
 {{%- else %}}
-find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chown -L {{{ FILEUID }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d -exec chown -L {{{ FILEUID }}} {} \;
 {{%- endif %}}
 {{%- else %}}
-chown -L {{{ FILEUID }}} {{{ path }}}
+chown {{{ FILEUID }}} {{{ path }}}
 {{%- endif %}}
 {{%- endfor %}}

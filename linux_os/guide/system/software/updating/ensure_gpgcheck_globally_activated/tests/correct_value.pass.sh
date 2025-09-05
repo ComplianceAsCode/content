@@ -1,5 +1,5 @@
 #!/bin/bash
-{{% if 'sle' in product %}}
+{{% if 'sle' in product or 'slmicro' in product %}}
 # packages = libselinux1
 {{% else %}}
 # packages = python3-libselinux

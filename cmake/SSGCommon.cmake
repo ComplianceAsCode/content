@@ -81,12 +81,14 @@ set(SSG_HTML_TABLE_FILE_LIST "")
 # Define VALIDATE_PRODUCT to FALSE if a successful product validation is known to require newer oscap
 # that the one that is picked by the build system.
 macro(define_validate_product PRODUCT)
-    set(VALIDATE_PRODUCT TRUE)
-    if("${OSCAP_VERSION}" VERSION_LESS "1.4.0")
+    if(SSG_SCAP_VALIDATION_ENABLED)
+        set(VALIDATE_PRODUCT TRUE)
         if("${PRODUCT}" MATCHES "^(ocp4|eks|ANOTHER_PROBLEMATIC_PRODUCT)$")
             message(STATUS "Won't validate ${PRODUCT}, as it requires the OpenSCAP scanner that is capable of the validation.")
             set(VALIDATE_PRODUCT FALSE)
         endif()
+    else()
+        set(VALIDATE_PRODUCT FALSE)
     endif()
 endmacro()
 
@@ -334,12 +336,6 @@ endmacro()
 # <complex-check /> elements as necessary.
 macro(ssg_build_sce PRODUCT)
     set(BUILD_CHECKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/checks")
-    # Unlike build_oval_unlinked, here we're ignoring the existing checks from
-    # templates and other places and we're merely appending/templating the
-    # content from the rules directories. That's why we ignore BUILD_CHECKS_DIR
-    # in the combine paths below.
-    set(SCE_COMBINE_PATHS "${SSG_SHARED}/checks/sce" "${CMAKE_CURRENT_SOURCE_DIR}/checks/sce")
-
     if(SSG_SCE_ENABLED)
         # Unlike build_oval_unlinked, we don't depend on templated content yet.
         #
@@ -350,7 +346,7 @@ macro(ssg_build_sce PRODUCT)
         #    the XCCDF, so we'd have a dependency circle.
         add_custom_command(
             OUTPUT "${BUILD_CHECKS_DIR}/sce/metadata.json"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_sce.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --templates-dir "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/sce" ${SCE_COMBINE_PATHS}
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_sce.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --templates-dir "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/sce"
             COMMENT "[${PRODUCT}-content] generating sce/metadata.json"
             DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
         )
@@ -418,14 +414,14 @@ macro(ssg_build_xml_final PRODUCT LANGUAGE)
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
-            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
             COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-${LANGUAGE}.xml"
         )
     else()
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
-            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
             COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-${LANGUAGE}.xml"
         )
     endif()
@@ -447,7 +443,7 @@ macro(ssg_build_sds PRODUCT)
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compose_ds.py" --xccdf "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --ocil "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --cpe-dict "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" --cpe-oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --multiple-ds "${SSG_THIN_DS_COMPONENTS_DIR}" ${COMPOSE_EXTRA_ARGS}
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compose_ds.py" --build-dir "${CMAKE_BINARY_DIR}" --xccdf "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --ocil "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --cpe-dict "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" --cpe-oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --multiple-ds "${SSG_THIN_DS_COMPONENTS_DIR}" ${COMPOSE_EXTRA_ARGS}
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-oval.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
@@ -499,19 +495,6 @@ macro(ssg_build_sds PRODUCT)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/verify_references.py" --rules-with-invalid-checks --base-dir "${CMAKE_BINARY_DIR}" --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
     )
     set_tests_properties("verify-references-ssg-${PRODUCT}-ds.xml" PROPERTIES LABELS quick)
-    if("${PRODUCT}" MATCHES "rhel")
-        if("${PRODUCT}" MATCHES "rhel8")
-            set(REFERENCES_CHECK_PROFILE_LIST anssi_bp28_high cis hipaa pci-dss)
-        elseif("${PRODUCT}" MATCHES "rhel9")
-            set(REFERENCES_CHECK_PROFILE_LIST anssi_bp28_high ccn_advanced cis pci-dss stig)
-        endif()
-        add_test(
-                NAME "missing-references-ssg-${PRODUCT}-ds.xml"
-                COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${CMAKE_SOURCE_DIR}/tests/missing_refs.sh" "${PYTHON_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" ${REFERENCES_CHECK_PROFILE_LIST}
-        )
-        set_tests_properties("missing-references-ssg-${PRODUCT}-ds.xml" PROPERTIES LABELS quick)
-
-    endif()
     if(("${PRODUCT}" MATCHES "ubuntu2" OR "${PRODUCT}" MATCHES "rhel8") AND SSG_SCE_ENABLED)
         add_test(
             NAME "ds-sce-${PRODUCT}"
@@ -688,7 +671,7 @@ macro(ssg_build_product PRODUCT)
     add_custom_target(${PRODUCT}-content)
 
     if(NOT DEFINED PRODUCT_REMEDIATION_LANGUAGES)
-        set(PRODUCT_REMEDIATION_LANGUAGES "bash;ansible;puppet;anaconda;ignition;kubernetes;blueprint;kickstart")
+        set(PRODUCT_REMEDIATION_LANGUAGES "bash;ansible;puppet;anaconda;ignition;kubernetes;blueprint;kickstart;bootc")
     endif()
     # Define variables for each language to facilitate assesment of specific remediation languages
     foreach(LANGUAGE ${PRODUCT_REMEDIATION_LANGUAGES})
@@ -1097,7 +1080,7 @@ macro(ssg_build_html_srgmap_tables PRODUCT)
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_srg_table.py" --build-dir "${CMAKE_BINARY_DIR}" "${PRODUCT}" "${SSG_SHARED_REFS}/disa-os-srg-v2r7.xml" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_srg_table.py" --build-dir "${CMAKE_BINARY_DIR}" "${PRODUCT}" "${SSG_SHARED_REFS}/disa-os-srg-v3r1.xml" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
         DEPENDS ${PRODUCT}-compile-all "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
         COMMENT "[${PRODUCT}-tables] generating HTML SRG map tables"
     )

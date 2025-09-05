@@ -1,0 +1,52 @@
+
+title: Ensure that Audit Log Webhook Is Configured
+
+{{% set default_jqfilter = '.items[].spec' %}}
+{{% set default_api_path = '/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders' %}}
+{{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/{{.hypershift_namespace_prefix}}/hostedclusters/{{.hypershift_cluster}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ default_jqfilter %}}
+
+description: |-
+  Audit is on by default and the best practice is to ship audit logs off an cluster for retention.
+  HyperShift is able to do this with the a audit webhook, which is configured in the HostedCluster
+  custom resource. The forementioned resource can be configured to log to different third party systems.
+  For more information on this, please reference the official documentation:
+  {{{ weblink(link="https://hypershift-docs.netlify.app/reference/api/") }}}
+
+rationale: |-
+  Retaining logs ensures the ability to go back in time to investigate or correlate any events.
+  Offloading audit logs from the cluster ensures that an attacker that has access to the cluster will not be able to
+  tamper with the logs because of the logs being stored off-site.
+
+severity: medium
+
+identifiers:
+  cce@ocp4: CCE-86660-8
+
+references:
+  cis@ocp4: 1.2.21
+  pcidss: Req-2.2,Req-10.5.3,Req-10.5.4
+
+platform: ocp4-on-hypershift
+
+ocil_clause: 'Audit Webhook not configured'
+
+ocil: |-
+    Run the following command to verify that the audit webhook is configured:
+    <pre>oc get hostedclusters {{.hypershift_cluster}} -n clusters -ojson | jq -r '.items[].spec.auditWebhook'</pre>
+    The output should contain a properly configured webhook.
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting_suppressed({hypershift_path: dump_path}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: 'true'
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: ".auditWebhook"
+    entity_check: "at least one"
+    values:
+    - value: ".*"
+      operation: "pattern match"

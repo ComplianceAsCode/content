@@ -50,9 +50,10 @@ product_directories = [
     'fedora',
     'firefox',
     'macos1015',
+    'kylinserver10',
     'ocp4',
     'rhcos4',
-    'ol7', 'ol8', 'ol9',
+    'ol7', 'ol8', 'ol9', 'ol10',
     'openeuler2203',
     'opensuse',
     'openembedded',
@@ -60,7 +61,6 @@ product_directories = [
     'rhv4',
     'sle12', 'sle15', 'slmicro5',
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004', 'ubuntu2204',
-    'uos20',
 ]
 
 JINJA_MACROS_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(
@@ -89,6 +89,7 @@ blueprint_system = "urn:redhat:osbuild:blueprint"
 puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
 kickstart_system = "urn:xccdf:fix:script:kickstart"
+bootc_system = "urn:xccdf:fix:script:bootc"
 cce_uri = "https://ncp.nist.gov/cce"
 stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
 ccn_ns = "https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html"
@@ -156,6 +157,7 @@ FIX_TYPE_TO_SYSTEM = {
     "puppet": puppet_system,
     "anaconda": anaconda_system,
     "kickstart": kickstart_system,
+    "bootc": bootc_system,
 }
 
 for prefix, url_part in OVAL_SUB_NS.items():
@@ -212,11 +214,13 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Fedora": "fedora",
     "Firefox": "firefox",
     "Apple macOS 10.15": "macos1015",
+    "Kylin Server 10": "kylinserver10",
     "Red Hat OpenShift Container Platform 4": "ocp4",
     "Red Hat Enterprise Linux CoreOS 4": "rhcos4",
     "Oracle Linux 7": "ol7",
     "Oracle Linux 8": "ol8",
     "Oracle Linux 9": "ol9",
+    "Oracle Linux 10": "ol10",
     "openEuler 2203": "openeuler2203",
     "openSUSE": "opensuse",
     "Red Hat Enterprise Linux 8": "rhel8",
@@ -230,7 +234,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Ubuntu 18.04": "ubuntu1804",
     "Ubuntu 20.04": "ubuntu2004",
     "Ubuntu 22.04": "ubuntu2204",
-    "UnionTech OS Server 20": "uos20",
     "OpenEmbedded": "openembedded",
     "Not Applicable": "example",
 }
@@ -282,9 +285,9 @@ REFERENCES = dict(
 
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
-                       "openeuler",
+                       "openeuler", "kylinserver",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
-                       "example", "eks", "alinux", "uos", "anolis", "openembedded", "al",
+                       "example", "eks", "alinux", "anolis", "openembedded", "al",
                        "slmicro"]
 
 MULTI_PLATFORM_MAPPING = {
@@ -294,9 +297,10 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
+    "multi_platform_kylinserver": ["kylinserver10"],
     "multi_platform_openeuler": ["openeuler2203"],
     "multi_platform_opensuse": ["opensuse"],
-    "multi_platform_ol": ["ol7", "ol8", "ol9"],
+    "multi_platform_ol": ["ol7", "ol8", "ol9", "ol10"],
     "multi_platform_ocp": ["ocp4"],
     "multi_platform_rhcos": ["rhcos4"],
     "multi_platform_rhel": ["rhel8", "rhel9", "rhel10"],
@@ -304,7 +308,6 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_sle": ["sle12", "sle15"],
     "multi_platform_slmicro": ["slmicro5"],
     "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204"],
-    "multi_platform_uos": ["uos20"],
     "multi_platform_openembedded": ["openembedded"],
     "multi_platform_al": ["al2023"],
 }
@@ -418,11 +421,11 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
     'macos': 'Apple macOS',
+    'kylinserver': 'Kylin Server',
     'rhel': 'Red Hat Enterprise Linux',
     'rhv': 'Red Hat Virtualization',
     'debian': 'Debian',
     'ubuntu': 'Ubuntu',
-    'uos': 'UnionTech OS Server',
     'eap': 'JBoss Enterprise Application Platform',
     'fuse': 'JBoss Fuse',
     'openeuler': 'openEuler',

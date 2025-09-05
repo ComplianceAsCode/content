@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must enable hardening for the Berkeley Packet Filter just-in-time compiler.
 
 vuldiscussion: |-
-    When hardened, the extended Berkeley Packet Filter just-in-time compiler
-    will randomize any kernel addresses in the BPF programs and maps,
-    and will not expose the JIT addresses in "/proc/kallsyms".
+    When hardened, the extended Berkeley Packet Filter (BPF) just-in-time (JIT) compiler will randomize any kernel addresses in the BPF programs and maps, and will not expose the JIT addresses in "/proc/kallsyms".
 
 checktext: |-
     Verify {{{ full_name }}} enables hardening for the BPF JIT with the following commands:
@@ -31,5 +29,3 @@ fixtext: |-
 
     $ sudo sysctl --system
 
-vuln_discussion: |-
-    When hardened, the extended Berkeley Packet Filter (BPF) just-in-time (JIT) compiler will randomize any kernel addresses in the BPF programs and maps, and will not expose the JIT addresses in "/proc/kallsyms".

@@ -602,7 +602,10 @@ controls:
       - l1_server
       - l1_workstation
     status: manual
-
+    notes: |-        
+        User should manually ensure that CVE-2023-48795 is addressed.
+        This is not automated and it might be difficult to automate actually.
+        Therefore, keeping this control as manual.
   - id: 1.6.7
     title: Ensure system wide crypto policy disables EtM for ssh (Automated)
     levels:
@@ -617,8 +620,8 @@ controls:
       - l1_workstation
     status: automated
     rules:
-      - banner_etc_motd
-      - motd_banner_text=cis_banners
+      - banner_etc_motd_cis
+      - cis_banner_text=cis
 
   - id: 1.7.2
     title: Ensure local login warning banner is configured properly (Automated)
@@ -627,8 +630,8 @@ controls:
       - l1_workstation
     status: automated
     rules:
-      - banner_etc_issue
-      - login_banner_text=cis_banners
+      - banner_etc_issue_cis
+      - cis_banner_text=cis
 
   - id: 1.7.3
     title: Ensure remote login warning banner is configured properly (Automated)
@@ -637,8 +640,8 @@ controls:
       - l1_workstation
     status: automated
     rules:
-      - banner_etc_issue_net
-      - remote_login_banner_text=cis_banners
+      - banner_etc_issue_net_cis
+      - cis_banner_text=cis
 
   - id: 1.7.4
     title: Ensure access to /etc/motd is configured (Automated)
@@ -1067,7 +1070,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    related_rules:
+    rules:
       - package_chrony_installed
 
   - id: 2.3.2

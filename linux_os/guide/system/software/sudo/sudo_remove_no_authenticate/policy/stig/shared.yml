@@ -2,11 +2,9 @@ srg_requirement: |-
     {{{ full_name }}} must require users to reauthenticate for privilege escalation.
 
 vuldiscussion: |-
-    Without re-authentication, users may access resources or perform tasks for which they
-    do not have authorization.
+    Without reauthentication, users may access resources or perform tasks for which they do not have authorization.
 
-    When operating systems provide the capability to escalate a functional capability, it
-    is critical that the user re-authenticate.
+    When operating systems provide the capability to escalate a functional capability, it is critical that the user reauthenticate.
 
 checktext: |-
     Verify that "/etc/sudoers" has no occurrences of "!authenticate" with the following command:
@@ -22,7 +20,3 @@ fixtext: |-
 
     $ sudo sed -i '/\!authenticate/ s/^/# /g' /etc/sudoers /etc/sudoers.d/*
 
-vuln_discussion: |-
-    Without reauthentication, users may access resources or perform tasks for which they do not have authorization.
-
-    When operating systems provide the capability to escalate a functional capability, it is critical that the user reauthenticate.

@@ -2,7 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must have the rsyslog package installed.
 
 vuldiscussion: |-
-    rsyslogd is a system utility providing support for message logging.  Support for both internet and UNIX domain sockets enables this utility to support both local and remote logging.  Couple this utility with "gnutls" (which is a secure communications library implementing the SSL, TLS and DTLS protocols), and you have a method to securely encrypt and off-load auditing.
+    rsyslogd is a system utility providing support for message logging. Support for both internet and Unix domain sockets enables this utility to support both local and remote logging. Couple this utility with "gnutls" (which is a secure communications library implementing the SSL, TLS, and DTLS protocols), to create a method to securely encrypt and offload auditing.
 
 checktext: |-
     Verify that {{{ full_name }}} has the rsyslogd package installed with the following command:
@@ -20,5 +20,3 @@ fixtext: |-
 
     $ sudo dnf install rsyslogd
 
-vuln_discussion: |-
-    rsyslogd is a system utility providing support for message logging. Support for both internet and Unix domain sockets enables this utility to support both local and remote logging. Couple this utility with "gnutls" (which is a secure communications library implementing the SSL, TLS, and DTLS protocols), to create a method to securely encrypt and offload auditing.

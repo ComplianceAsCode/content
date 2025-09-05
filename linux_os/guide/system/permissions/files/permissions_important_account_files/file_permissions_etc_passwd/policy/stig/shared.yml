@@ -2,10 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} /etc/passwd file must have mode 0644 or less permissive to prevent unauthorized access.
 
 vuldiscussion: |-
-    If the "/etc/passwd" file is writable by a group-owner or the
-    world the risk of its compromise is increased. The file contains the list of
-    accounts on the system and associated information, and protection of this file
-    is critical for system security.
+    If the "/etc/passwd" file is writable by a group-owner or the world the risk of its compromise is increased. The file contains the list of accounts on the system and associated information, and protection of this file is critical for system security.
 
 checktext: |-
     Verify that the "/etc/passwd" file has mode "0644" or less permissive with the following command:
@@ -21,5 +18,3 @@ fixtext: |-
 
     $ sudo chmod 0644 /etc/passwd
 
-vuln_discussion: |-
-    If the "/etc/passwd" file is writable by a group-owner or the world the risk of its compromise is increased. The file contains the list of accounts on the system and associated information, and protection of this file is critical for system security.

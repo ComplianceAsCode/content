@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu,multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu,multi_platform_sle,multi_platform_slmicro
 # reboot = true
 # strategy = disable
 # complexity = low
@@ -9,7 +9,7 @@
     dest: "/etc/modprobe.d/{{{ KERNMODULE }}}.conf"
     regexp: 'install\s+{{{ KERNMODULE }}}'
     line: "install {{{ KERNMODULE }}} /bin/false"
-{{% if product in ["sle12", "sle15"] or 'ol' in product or 'rhel' in product or 'ubuntu' in product %}}
+{{% if product in ["sle12", "sle15", "slmicro5"] or 'ol' in product or 'rhel' in product or 'ubuntu' in product %}}
 - name: Ensure kernel module '{{{ KERNMODULE }}}' is blacklisted
   lineinfile:
     create: yes

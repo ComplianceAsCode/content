@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must not have accounts configured with blank or null passwords.
 
 vuldiscussion: |-
-    If an account has an empty password, anyone could log in and
-    run commands with the privileges of that account. Accounts with
-    empty passwords should never be used in operational environments.
+    If an account has an empty password, anyone could log in and run commands with the privileges of that account. Accounts with empty passwords should never be used in operational environments.
 
 checktext: |-
     Verify that null or blank passwords cannot be used with the following command:
@@ -24,5 +22,3 @@ fixtext: |-
 
     $ sudo passwd -l [username]
 
-vuln_discussion: |-
-    If an account has an empty password, anyone could log in and run commands with the privileges of that account. Accounts with empty passwords should never be used in operational environments.

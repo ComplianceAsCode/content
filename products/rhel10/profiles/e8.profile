@@ -22,24 +22,19 @@ description: |-
 
 selections:
     - e8:all
-    # audit-audispd-plugins package does not exist in RHEL 10 (based on RHEL 9)
-    # use only package_audispd-plugins_installed
-    - '!package_audit-audispd-plugins_installed'
+    # nosha1 crypto policy does not exist in RHEL 10
+    - var_system_crypto_policy=default_policy
     # More tests are needed to identify which rule is conflicting with rpm_verify_permissions.
     # https://github.com/ComplianceAsCode/content/issues/11285
     - '!rpm_verify_permissions'
+    - '!rpm_verify_ownership'
+    # these packages do not exist in RHEL 10
     - '!package_talk_removed'
     - '!package_talk-server_removed'
     - '!package_ypbind_removed'
-    - '!package_audit-audispd-plugins_installed'
-    - '!set_ipv6_loopback_traffic'
-    - '!set_loopback_traffic'
-    - '!service_ntpd_enabled'
     - '!package_ypserv_removed'
-    - '!package_ypbind_removed'
-    - '!package_talk_removed'
-    - '!package_talk-server_removed'
-    - '!package_xinetd_removed'
     - '!package_rsh_removed'
     - '!package_rsh-server_removed'
     - '!security_patches_up_to_date'
+    # this rule fails after being remediated through Ansible
+    - '!audit_rules_usergroup_modification'

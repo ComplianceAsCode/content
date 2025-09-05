@@ -1,0 +1,44 @@
+documentation_complete: true
+
+title: 'Ensure tftp systemd Service Uses Secure Mode'
+
+description: |-
+    If running the Trivial File Transfer Protocol (TFTP) service is necessary,
+    it should be configured to change its root directory at startup. To do so,
+    find the path for the <tt>tftp</tt> systemd service:
+    <pre>$ sudo systemctl show tftp | grep ExecStart=
+    ExecStart={ path=/usr/sbin/in.tftpd ; argv[]=/usr/sbin/in.tftpd -s /var/lib/tftpboot ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }e
+    </pre>
+
+    and ensure the <tt>ExecStart</tt> line on that file includes the <tt>-s</tt> option with a subdirectory:
+    <pre>ExecStart=/usr/sbin/in.tftpd -s {{{ xccdf_value("var_tftpd_secure_directory") }}}</pre>
+
+rationale: |-
+    Using the <tt>-s</tt> option causes the TFTP service to only serve files from the
+    given directory. Serving files from an intentionally-specified directory
+    reduces the risk of sharing files which should remain private.
+
+severity: medium
+
+ocil: |-
+    Use <tt>udo systemctl show tftp</tt> to verify that tftp service is using secure mode.
+    <pre>$ sudo systemctl show tftp | grep ExecStart=
+    ExecStart={ path=/usr/sbin/in.tftpd ; argv[]=/usr/sbin/in.tftpd -s /var/lib/tftpboot ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }e
+    </pre>
+
+    and ensure the <tt>ExecStart</tt> line on that file includes the <tt>-s</tt> option with a subdirectory:
+    <pre>ExecStart=/usr/sbin/in.tftpd -s {{{ xccdf_value("var_tftpd_secure_directory") }}}</pre>
+
+
+ocil_clause: 'the ExecStart property of tftp does not contain correctly set -s flag'
+
+platform: package[tftp-server]
+
+warnings:
+    - general: |-
+        An OVAL check is not currently available since <tt>ExecStart</tt> cannot be checked with OVAL since it is not exposed via dbus.
+        Currently, a remedation is not available for this rule.
+
+
+identifiers:
+    cce@rhel10: CCE-86495-9

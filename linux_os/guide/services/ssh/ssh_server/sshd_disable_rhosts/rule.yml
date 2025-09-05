@@ -43,7 +43,6 @@ references:
     iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.6.1.2,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
     nist: AC-17(a),CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.AC-4,PR.AC-6,PR.IP-1,PR.PT-3
-    ospp: FIA_UAU.1
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol7: OL07-00-040350
 
@@ -58,6 +57,6 @@ template:
     name: sshd_lineinfile
     vars:
         parameter: IgnoreRhosts
-        rule_id: sshd_disable_rhosts
         value: 'yes'
+        datatype: string
         is_default_value: 'true'

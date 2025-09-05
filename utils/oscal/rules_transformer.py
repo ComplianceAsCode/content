@@ -12,7 +12,7 @@ from trestle.tasks.csv_to_oscal_cd import (
     PARAMETER_ID,
     PARAMETER_VALUE_ALTERNATIVES,
     # TODO(jpower432): Make this public in trestle
-    # https://github.com/IBM/compliance-trestle/issues/1475
+    # https://github.com/oscal-compass/compliance-trestle/issues/1475
     _RuleSetIdMgr,
     RULE_DESCRIPTION,
     RULE_ID,

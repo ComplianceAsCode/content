@@ -48,9 +48,9 @@ selections:
 - aide_build_database
 - aide_check_audit_tools
 - aide_periodic_cron_checking
-- banner_etc_issue
-- banner_etc_issue_net
-- banner_etc_motd
+- banner_etc_issue_cis
+- banner_etc_issue_net_cis
+- banner_etc_motd_cis
 - chronyd_run_as_chrony_user
 - chronyd_specify_remote_server
 - configure_crypto_policy
@@ -198,6 +198,7 @@ selections:
 - no_shelllogin_for_systemaccounts
 - package_aide_installed
 - package_bind_removed
+- package_chrony_installed
 - package_cyrus-imapd_removed
 - package_dhcp_removed
 - package_dnsmasq_removed
@@ -340,9 +341,8 @@ selections:
 - var_postfix_inet_interfaces=loopback-only
 - inactivity_timeout_value=15_minutes
 - var_screensaver_lock_delay=5_seconds
-- remote_login_banner_text=cis_banners
 - login_banner_text=cis_banners
-- motd_banner_text=cis_banners
+- cis_banner_text=cis
 - var_system_crypto_policy=default_nosha1
 - var_selinux_policy_name=targeted
 - var_authselect_profile=sssd

@@ -27,7 +27,12 @@
 
 - name: "{{{ rule_title }}}"
   cron:
+{{% if product in ["sle12", "sle15"] %}}
+    name: "{{{ rule_title }}}"
+    cron_file: /etc/crontab
+{{% else %}}
     name: "run AIDE check"
+{{% endif %}}
     minute: 05
     hour: 04
     weekday: 0

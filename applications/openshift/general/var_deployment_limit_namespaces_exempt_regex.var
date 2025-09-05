@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Namespaces exempt of Deployment Resource Limit'
+
+description: |-
+    Namespaces regular expression explicitly allowed
+    through deployment resource filters, e.g. setting value to
+    "namespace1|namespace2" will exempt namespace
+    "namespace1" and "namespace2" for deployment resource limit checks.
+
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+  default: "None"

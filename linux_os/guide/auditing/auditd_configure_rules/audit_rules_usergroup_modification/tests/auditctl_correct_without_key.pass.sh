@@ -2,7 +2,7 @@
 # packages = audit
 
 # use auditctl
-sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/system/auditd.service
+{{{ setup_auditctl_environment() }}}
 
 echo "-w /etc/group -p wa" >> /etc/audit/audit.rules
 echo "-w /etc/passwd -p wa" >> /etc/audit/audit.rules

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide (STIG) V1R1'
+title: 'Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide (STIG) V2R1'
 
 description: |-
     This Security Technical Implementation Guide is published as a tool to
@@ -26,7 +26,7 @@ selections:
     # UBTU-22-612040 The Ubuntu operating system must map the authenticated identity to the user or group account for PKI-based authentication.
     - verify_use_mappers
 
-    # UBTU-22-411025 The Ubuntu operating system must enforce 24 hours/1 day as the minimum password lifetime. Passwords for new users must have a 24 hours/1 day minimum password lifetime restriction.
+    # UBTU-22-411025 The Ubuntu operating system must enforce 24 hours/one day as the minimum password lifetime. Passwords for new users must have a 24 hours/one day minimum password lifetime restriction.
     - var_accounts_minimum_age_login_defs=1
     - accounts_minimum_age_login_defs
 
@@ -153,10 +153,6 @@ selections:
 
     # UBTU-22-612035 The Ubuntu operating system for PKI-based authentication, must implement a local cache of revocation data in case of the inability to access revocation information via the network.
     - smartcard_configure_crl
-
-    # UBTU-22-611050 The Ubuntu operating system must prohibit password reuse for a minimum of five generations.
-    - var_password_pam_unix_remember=5
-    - accounts_password_pam_unix_remember
 
     # UBTU-22-411045 The Ubuntu operating system must automatically lock an account until the locked account is released by an administrator when three unsuccessful logon attempts have been made.
     - var_accounts_passwords_pam_faillock_deny=3
@@ -436,9 +432,6 @@ selections:
     # UBTU-22-231010 Ubuntu operating systems handling data requiring "data at rest" protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest.
     - encrypt_partitions
 
-    # UBTU-22-211010 The Ubuntu operating system must deploy an Endpoint Security Solution.
-    - install_endpoint_security_software
-
     # UBTU-22-232026 The Ubuntu operating system must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.
     - permissions_local_var_log
 
@@ -511,9 +504,6 @@ selections:
 
     # UBTU-22-431015 The Ubuntu operating system must be configured to use AppArmor.
     - apparmor_configured
-
-    # UBTU-22-411020 The Ubuntu operating system must allow the use of a temporary password for system logons with an immediate change to a permanent password.
-    - policy_temp_passwords_immediate_change
 
     # UBTU-22-631015 The Ubuntu operating system must be configured such that Pluggable Authentication Module (PAM) prohibits the use of cached authentications after one day.
     - sssd_offline_cred_expiration

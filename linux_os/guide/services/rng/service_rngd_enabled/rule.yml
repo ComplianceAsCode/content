@@ -21,7 +21,6 @@ identifiers:
 
 references:
     disa: CCI-000366
-    ospp: FCS_RBG_EXT.1
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-010473
     stigid@rhel8: RHEL-08-010471
@@ -48,11 +47,11 @@ warnings:
       Consequently, the rngd service can't be started in FIPS mode.
 {{% endif %}}
 
-{{% if product == "rhel9" %}}
+{{% if product == "rhel9" or product == "rhel10" or product == "ol9" or product == "ol10" %}}
 platform: not runtime_kernel_fips_enabled
 warnings:
   - general: |-
-      For RHEL 9 running with kernel FIPS mode enabled this rule is not applicable.
+      For {{{ full_name }}} running with kernel FIPS mode enabled this rule is not applicable.
       The in-kernel deterministic random bit generator (DRBG) is used in FIPS mode instead.
       Consequently, the rngd service can't be started in FIPS mode.
 {{% endif %}}
