@@ -4,9 +4,16 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_set_config_file(file="/etc/audit/auditd.conf",
+{{%- if product in ["rhel7", "ol7"] %}}
+  {{%- set auditd_conf_path="/etc/audisp/audispd.conf" %}}
+{{%- else %}}
+  {{%- set auditd_conf_path="/etc/audit/auditd.conf" %}}
+{{%- endif %}}
+
+{{{ ansible_set_config_file(file=auditd_conf_path,
                   parameter="overflow_action",
                   value="syslog",
+                  create=true,
                   separator=" = ",
                   separator_regex="\s*=\s*",
                   prefix_regex="(?i)^\s*") }}}

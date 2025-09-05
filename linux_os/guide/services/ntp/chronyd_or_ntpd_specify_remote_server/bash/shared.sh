@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol
-. /usr/share/scap-security-guide/remediation_functions
+
 {{{ bash_instantiate_variables("var_multiple_time_servers") }}}
 
 config_file="/etc/ntp.conf"

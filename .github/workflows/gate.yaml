@@ -5,6 +5,73 @@ on:
   pull_request:
     branches: [ 'master', 'stabilization*' ]
 jobs:
+  validate-centos7:
+    name: Build, Test on CentOS 7 (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: centos:7
+    steps:
+      - name: Install Deps
+        run: yum install -y cmake make openscap-utils PyYAML libxslt expat xml-common python-jinja2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: |-
+          ./build_product \
+              chromium \
+              fedora \
+              firefox \
+              fuse6 \
+              rhcos4 \
+              rhel7 \
+              rhel8 \
+              rhel9 \
+              rhosp10 \
+              rhosp13 \
+              --derivatives
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build
+
+  validate-suse:
+    name: Build, Test on OpenSUSE Leap 15 (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: opensuse/leap:15
+    steps:
+      - name: Install Deps
+        run: zypper install -y git cmake make openscap-utils python3-PyYAML bats python3-pytest python3-pytest-cov python3-Jinja2 libxslt-tools libxml2-tools libexpat1 libexpat-devel libexpat1 expat
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: ./build_product chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 rhosp10 rhosp13 sle12 sle15 ubuntu2004
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build
+
+  validate-debian:
+    name: Build, Test on Debian 10 (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: debian:buster
+    steps:
+      - name: Update the package repository
+        run: apt-get update
+      - name: Install Deps
+        run: apt-get install -y ansible-lint bats check cmake expat libopenscap8 libxml2-utils ninja-build python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov xsltproc
+      - name: Install deps python
+        run: pip3 install ruamel.yaml yamlpath pyyaml==5.4.1
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        env:
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON"
+        run: |-
+          ./build_product debian9 debian10 debian11
+      - name: Test
+        working-directory: ./build
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        
   validate-ubuntu:
     name: Build, Test on Ubuntu 20.04
     runs-on: ubuntu-20.04
@@ -16,7 +83,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: ./build_product chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 rhosp10 rhosp13 sle12 sle15 ubuntu2004
+        run: |-
+          ./build_product \
+              chromium \
+              fedora \
+              firefox \
+              fuse6 \
+              rhcos4 \
+              rhel7 \
+              rhel8 \
+              rhel9 \
+              rhosp10 \
+              rhosp13 \
+              sle12 \
+              sle15 \
+              ubuntu2004
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -28,11 +109,30 @@ jobs:
       image: fedora:33
     steps:
       - name: Install Deps
-        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip
+      - name: Install deps python
+        run: pip install ruamel.yaml yamlpath
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: ./build_product chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 rhosp10 rhosp13 sle12 sle15 ubuntu2004 ocp4
+        run: |-
+          ./build_product \
+              chromium \
+              fedora \
+              firefox \
+              fuse6 \
+              rhcos4 \
+              rhel7 \
+              rhel8 \
+              rhel9 \
+              rhosp10 \
+              rhosp13 \
+              sle12 \
+              sle15 \
+              ubuntu2004 \
+              ocp4
+        env:
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON"
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build

@@ -1,5 +1,5 @@
 # platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_ol
-. /usr/share/scap-security-guide/remediation_functions
+
 {{{ bash_instantiate_variables("var_accounts_user_umask") }}}
 
 grep -q umask /etc/bashrc && \

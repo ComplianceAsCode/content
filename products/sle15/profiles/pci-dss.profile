@@ -23,6 +23,7 @@ selections:
     - var_auditd_action_mail_acct=root
     - var_multiple_time_servers=suse
     - var_smartcard_drivers=cac
+    - var_password_pam_unix_remember=4
     ### Rules:
     - account_disable_post_pw_expiration
     - account_unique_name
@@ -68,6 +69,7 @@ selections:
     - audit_rules_mac_modification
     - audit_rules_media_export
     - audit_rules_networkconfig_modification
+    - audit_rules_privileged_commands
     - audit_rules_unsuccessful_file_modification_creat
     - audit_rules_unsuccessful_file_modification_ftruncate
     - audit_rules_unsuccessful_file_modification_open

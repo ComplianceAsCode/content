@@ -1,0 +1,48 @@
+prodtype: ocp4
+
+title: Ensure that EBS volumes use by cluster nodes are encrypted
+
+platforms:
+  - ocp4-on-aws
+
+description: |-
+  OpenShift MachineSets can be configured to enable EBS encryption on 
+  EBS storage used by cluster nodes. By using EBS encryption, disk contents are 
+  encrypted using a AWS KMS key.
+  
+rationale: |-
+  Enabling encryption on EBS storage used by the cluster nodes, more specifically worker nodes,
+  help protect any card holder data that might be persisted on those EBS volumes. Only authorized
+  AWS resources will be able, through IAM policies, to use the KMS key to eventually read or alter data on those volumes.
+
+
+identifiers:
+  cce@ocp4: CCE-85859-7
+
+references:
+  pcidss: Req-3.4.1
+
+ocil_clause: 'EBS encryption is not enabled on cluster nodes'
+
+ocil: |-
+    Run the following command to retrieve if the EBS encryption is enabled:
+    <pre>$ oc get machineset --all-namespaces -o json | jq '[.items[] | .spec.template.spec.providerSpec.value.blockDevices[0].ebs.encrypted] | map(. == true)'</pre>
+    Make sure that the result is an array of 'true' values.
+
+severity: high
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({'/apis/machine.openshift.io/v1beta1/machinesets?limit=500': '[.items[] | .spec.template.spec.providerSpec.value.blockDevices[0].ebs.encrypted] | map(. == true)'}) | indent(4) }}}
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path('/apis/machine.openshift.io/v1beta1/machinesets?limit=500', '[.items[] | .spec.template.spec.providerSpec.value.blockDevices[0].ebs.encrypted] | map(. == true)') }}}
+    yamlpath: "[:]"
+    check_existence: "all_exist"
+    entity_check: "all"
+    values:
+      - value: "true"
+        operation: "equals"

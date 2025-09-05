@@ -444,4 +444,5 @@ selections:
 - var_sssd_certificate_verification_digest_function=sha1
 - var_system_crypto_policy=fips
 - var_sudo_timestamp_timeout=always_prompt
+- login_banner_text=dod_banners
 title: DISA STIG with GUI for Red Hat Enterprise Linux 8

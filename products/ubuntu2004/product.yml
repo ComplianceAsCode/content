@@ -2,6 +2,7 @@ product: ubuntu2004
 full_name: "Ubuntu 20.04"
 type: platform
 
+benchmark_id: UBUNTU_20-04
 benchmark_root: "../../linux_os/guide"
 
 profiles_root: "./profiles"
@@ -24,6 +25,7 @@ cpes:
       check_id: installed_OS_is_ubuntu2004
 
 platform_package_overrides:
+  audit: auditd
   gdm: gdm3
   grub2: grub2-common
   net-snmp: snmp
@@ -31,3 +33,6 @@ platform_package_overrides:
   pam: libpam-runtime
   shadow: login
   sssd: sssd-common
+
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/ubuntu_linux/'

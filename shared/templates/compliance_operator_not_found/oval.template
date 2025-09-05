@@ -1,0 +1,43 @@
+{{% if target_oval_version >= [5, 11] %}}
+<def-group>
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+    {{{ oval_metadata("In the Compliance Operator-generated file '" + FILEPATH + "' the `not found` annotation should be set") }}}
+    <criteria>
+      <criterion {{{ {'comment': "In the Compliance Operator-generated file '" + FILEPATH + "' the `not found` annotation should be set"} |xmlattr }}} test_ref="test_{{{ rule_id }}}"/>
+      <criterion comment="Make sure that the file '{{{ FILEPATH }}}' exists." test_ref="test_file_for_{{{ rule_id }}}"/>
+    </criteria>
+  </definition>
+
+  <local_variable id="{{{ rule_id }}}_file_location" datatype="string" comment="The actual path of the file to scan." version="1">
+    <concat>
+      <variable_component var_ref="ocp_data_root"/>
+      <literal_component>{{{ FILEPATH }}}</literal_component>
+    </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_test check="all"
+  comment="tests the presence of '# kube-api-error=NotFound' setting in the {{{ FILEPATH }}} file"
+  id="test_{{{ rule_id }}}" version="1">
+  <ind:object object_ref="obj_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:filepath var_ref="{{{ rule_id }}}_file_location"/>
+    <ind:pattern operation="pattern match"># kube-api-error=NotFound</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <unix:file_test id="test_file_for_{{{ rule_id }}}" check="all" check_existence="only_one_exists"
+    comment="Find the file to be checked ('{{{ FILEPATH }}}')." version="1">
+    <unix:object object_ref="object_file_for_{{{ rule_id }}}"/>
+  </unix:file_test>
+
+  <unix:file_object id="object_file_for_{{{ rule_id }}}" version="1">
+    <unix:filepath var_ref="{{{ rule_id }}}_file_location"/>
+  </unix:file_object>
+
+  <external_variable comment="Root of OCP data dump" datatype="string" id="ocp_data_root" version="1" />
+
+</def-group>
+{{% endif %}}
+

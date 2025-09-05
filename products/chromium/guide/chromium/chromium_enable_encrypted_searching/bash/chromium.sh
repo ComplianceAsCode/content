@@ -1,5 +1,6 @@
 # platform = Google Chromium Browser
-populate var_enable_encrypted_searching
+
+{{{ bash_instantiate_variables("var_enable_encrypted_searching") }}}
 
 CHROME_POL_FILE="chrome_stig_policy.json"
 CHROME_POL_DIR="/etc/chromium/policies/managed/"

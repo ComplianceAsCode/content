@@ -1,0 +1,43 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+declare -a VALUES=()
+declare -a VALUE_NAMES=()
+declare -a ARGS=()
+declare -a NEW_ARS=()
+
+{{% for arg in ARGUMENTS -%}}
+{{% if arg['variable']|length -%}}
+    {{{ bash_instantiate_variables("var_password_pam_" + arg['variable']) -}}}
+VALUES+=${{{ "var_password_pam_" + arg['variable'] }}}
+VALUE_NAMES+={{{ arg['variable'] }}}
+{{%- else -%}}
+VALUES+=""
+VALUE_NAMES+=""
+{{%- endif %}}
+{{% if arg['argument']|length -%}}
+ARGS+="{{{ arg['argument'] }}}"
+{{%- else -%}}
+ARGS+=""
+{{%- endif %}}
+{{% if arg['new_argument']|length -%}}
+NEW_ARGS+="{{{ arg['new_argument'] }}}"
+{{%- else -%}}
+NEW_ARGS+=""
+{{%- endif %}}
+{{%- endfor %}}
+
+for idx in "${!VALUES[@]}"
+do
+    {{{ bash_provide_pam_module_options(PATH, TYPE, CONTROL_FLAG, MODULE, "${VALUE_NAMES[$idx]}", "${VALUES[$idx]}", "${VALUES[$idx]}") | indent(4) }}}
+done
+
+for idx in "${!ARGS[@]}"
+do
+    if ! grep -q -P "^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+${ARGS[$idx]}\s*$" {{{ PATH }}} ; then
+        sed --follow-symlinks -i -E -e "s/^\\s*{{{ TYPE }}}\\s+{{{ CONTROL_FLAG }}}\\s+{{{ MODULE }}}.*\$/& ${NEW_ARGS[$idx]}/" {{{ PATH }}}
+    fi
+done

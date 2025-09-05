@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure the Default Umask is Set Correctly For Interactive Users") }}}
+    <criteria>
+      <criterion test_ref="test_accounts_umask_interactive_users"
+                 comment="Ensure the Default Umask is Set Correctly For Interactive Users"/>
+    </criteria>
+  </definition>
+
+  <unix:password_object id="object_accounts_umask_interactive_users_objects" version="1">
+    <unix:username datatype="string" operation="not equal">nobody</unix:username>
+    <filter action="include">state_accounts_umask_interactive_users_interactive_uids</filter>
+  </unix:password_object>
+
+  <unix:password_state id="state_accounts_umask_interactive_users_interactive_uids" version="1">
+    <unix:user_id datatype="int" operation="greater than or equal">{{{ uid_min }}}</unix:user_id>
+  </unix:password_state>
+
+  <local_variable id="var_accounts_umask_interactive_users_dirs" datatype="string" version="1"
+                  comment="Variable including all home dirs from interactive users">
+    <object_component item_field="home_dir"
+                      object_ref="object_accounts_umask_interactive_users_objects"/>
+  </local_variable>
+
+  <!-- #### creation of object #### -->
+  <ind:textfilecontent54_object id="object_accounts_umask_interactive_users"
+                                comment="Umask value from initialization files" version="1">
+    <ind:path var_ref="var_accounts_umask_interactive_users_dirs" var_check="at least one"/>
+    <ind:filename operation="pattern match">^\..*</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*umask\s*</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- #### creation of test #### -->
+  <ind:textfilecontent54_test id="test_accounts_umask_interactive_users" check="all"
+                  check_existence="none_exist" version="1"
+                  comment="Umask must not be defined in user initialization files">
+    <ind:object object_ref="object_accounts_umask_interactive_users"/>
+  </ind:textfilecontent54_test>
+</def-group>

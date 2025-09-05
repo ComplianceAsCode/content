@@ -1,5 +1,6 @@
 # platform = Google Chromium Browser
-populate var_enable_approved_plugins
+
+{{{ bash_instantiate_variables("var_enable_approved_plugins") }}}
 
 CHROME_POL_FILE="chrome_stig_policy.json"
 CHROME_POL_DIR="/etc/chromium/policies/managed/"

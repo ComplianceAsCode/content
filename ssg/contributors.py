@@ -25,6 +25,8 @@ email_mappings = {
     "jeff@t440.local": "blank@eclipse.ncsc.mil",
     # Frank Caviggia
     "fcaviggia@users.noreply.github.com": "fcaviggi@ra.iad.redhat.com",
+    # Will Cushen
+    "wcushen@redhat.com": "54533890+wcushen@users.noreply.github.com",
     # Jean-Baptiste Donnette
     "donnet_j@epita.fr": "jean-baptiste.donnette@epita.fr",
     # Greg Elin
@@ -35,6 +37,11 @@ email_mappings = {
     "dahaic@users.noreply.github.com": "mhaicman@redhat.com",
     # John Hooks
     "hooksie11@gmail.com": "jhooks@starscream.pa.jhbcomputers.com",
+    # Marc Jadoul
+    "marc.jadoul@gmail.com": "mgjadoul@laptomatic.auth-o-matic.corp",
+    # Joseph D Lenox
+    "jdlenox@labnet.rockwellcollins.lab": "Joseph.Lenox@collins.com",
+    "lordofhyphens@gmail.com": "Joseph.Lenox@collins.com",
     # Simon Lukasik
     "isimluk@fedoraproject.org": "slukasik@redhat.com",
     # Milan Lysonek
@@ -53,6 +60,8 @@ email_mappings = {
     # Robin Price II
     "rprice@users.noreply.github.com": "robin@redhat.com",
     "rprice@redhat.com": "robin@redhat.com",
+    # Vincent Shen
+    "wenshen@redhat.com": "47534281+Vincent056@users.noreply.github.com",
     # Dave / David Smith
     "dsmith@secure-innovations.net": "dsmith@eclipse.ncsc.mil",
     "dsmith@fornax.eclipse.ncsc.mil": "dsmith@eclipse.ncsc.mil",

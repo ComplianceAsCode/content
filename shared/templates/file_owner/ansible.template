@@ -4,33 +4,44 @@
 # complexity = low
 # disruption = low
 
+{{% for path in FILEPATH %}}
 {{% if IS_DIRECTORY and FILE_REGEX %}}
 
-- name: Find {{{ FILEPATH }}} file(s) matching {{{ FILE_REGEX }}}
+- name: Find {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}
   find:
-    paths: "{{{ FILEPATH }}}"
-    patterns: "{{{ FILE_REGEX }}}"
+    paths: "{{{ path }}}"
+    patterns: {{{ FILE_REGEX[loop.index0] }}}
     use_regex: yes
   register: files_found
 
-- name: Ensure group owner on {{{ FILEPATH }}} file(s) matching {{{ FILE_REGEX }}}
+- name: Ensure group owner on {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}
   file:
     path: "{{ item.path }}"
     owner: "{{{ FILEUID }}}"
   with_items:
     - "{{ files_found.files }}"
 
+{{% elif IS_DIRECTORY and RECURSIVE %}}
+
+- name: Ensure owner on {{{ path }}} recursively
+  file:
+    paths "{{{ path }}}"
+    state: directory
+    recurse: yes
+    owner: "{{{ FILEUID }}}"
+
 {{% else %}}
 
-- name: Test for existence {{{ FILEPATH }}}
+- name: Test for existence {{{ path }}}
   stat:
-    path: "{{{ FILEPATH }}}"
+    path: "{{{ path }}}"
   register: file_exists
 
-- name: Ensure owner {{{ FILEUID }}} on {{{ FILEPATH }}}
+- name: Ensure owner {{{ FILEUID }}} on {{{ path }}}
   file:
-    path: "{{{ FILEPATH }}}"
+    path: "{{{ path }}}"
     owner: "{{{ FILEUID }}}"
   when: file_exists.stat is defined and file_exists.stat.exists
 
 {{% endif %}}
+{{% endfor %}}

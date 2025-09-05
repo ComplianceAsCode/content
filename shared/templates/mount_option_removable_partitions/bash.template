@@ -1,9 +1,6 @@
 # platform = multi_platform_all
 # reboot = false
 
-# Include source function library.
-. /usr/share/scap-security-guide/remediation_functions
-
 {{{ bash_instantiate_variables("var_removable_partition") }}}
 
 device_regex="^\s*$var_removable_partition\s\+"

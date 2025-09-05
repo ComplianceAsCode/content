@@ -1,0 +1,23 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Get all local users from /etc/passwd
+  ansible.builtin.getent:
+    database: passwd
+    split: ':'
+
+- name: Create local_users variable from the getent output
+  ansible.builtin.set_fact:
+    local_users: '{{ ansible_facts.getent_passwd|dict2items }}'
+
+- name: Ensure interactive users have a home directory exists
+  ansible.builtin.user:
+    name: '{{ item.key }}'
+    create_home: yes
+  loop: '{{ local_users }}'
+  when:
+    - item.value[2]|int >= {{{ uid_min }}}
+    - item.value[2]|int != 65534

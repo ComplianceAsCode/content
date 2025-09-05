@@ -2,6 +2,8 @@ documentation_complete: true
 
 prodtype: ocp4
 
+platform: ocp4-node
+
 title: 'kubelet - Allow Automatic Firewall Configuration'
 
 description: |-
@@ -33,7 +35,7 @@ identifiers:
 
 references:
     cis@ocp4: 4.2.7
-    nerc-cip: CIP-003-3 R6,CIP-004-3 R3,CIP-007-3 R6.1
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
 
 template:
@@ -41,8 +43,6 @@ template:
     vars:
         filepath: /etc/kubernetes/kubelet.conf
         yamlpath: ".makeIPTablesUtilChains"
-        check_existence: "any_exist"
         values:
-         - value: "false"
-           operation: "not equal"
-
+         - value: "true"
+           operation: "equals"

@@ -20,8 +20,15 @@ def _bool_constructor(self, node):
     return self.construct_scalar(node)
 
 
+def _unicode_constructor(self, node):
+    string_like = self.construct_scalar(node)
+    return str(string_like)
+
+
 # Don't follow python bool case
 yaml_SafeLoader.add_constructor(u'tag:yaml.org,2002:bool', _bool_constructor)
+# Python2-relevant - become able to resolve "unicode strings"
+yaml_SafeLoader.add_constructor(u'tag:yaml.org,2002:python/unicode', _unicode_constructor)
 
 
 class DocumentationNotComplete(Exception):

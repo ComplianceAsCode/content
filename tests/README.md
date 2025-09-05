@@ -194,7 +194,6 @@ Using `platform` and `variables` metadata:
 
 ```bash
 #!/bin/bash
-#
 # platform = Red Hat Enterprise Linux 7,multi_platform_fedora
 # variables = auth_enabled=yes,var_example_1=value_example
 

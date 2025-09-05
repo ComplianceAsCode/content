@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,rhel9
+
+title: Ensure journald is configured to compress large log files
+
+description: |-
+    The journald system can compress large log files to avoid fill the system disk.
+
+rationale:
+    Log files that are not properly compressed run the risk of growing so large
+    that they fill up the log partition. Valuable logging information could be lost
+    if the log partition becomes full.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-85929-8
+    cce@rhel8: CCE-85930-6
+    cce@rhel9: CCE-85931-4
+
+references:
+    cis@rhel7: 4.2.2.2
+    cis@rhel8: 4.2.2.2
+
+ocil_clause: 'is commented out or not configured correctly'
+
+ocil: |-
+    Storing logs with compression can help avoid filling the system disk.
+    Run the following command to verify that journald is compressing logs.
+    <pre>
+    grep "^\sCompress" /etc/systemd/journald.conf
+    </pre>
+    and it should return
+    <pre>
+    Compress=yes
+    </pre>
+
+template:
+    name: shell_lineinfile
+    vars:
+        path: /etc/systemd/journald.conf
+        parameter: Compress
+        value: yes

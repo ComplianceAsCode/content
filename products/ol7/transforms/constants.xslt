@@ -8,13 +8,5 @@
 <xsl:variable name="prod_type">ol7</xsl:variable>
 
 <xsl:variable name="cisuri">https://benchmarks.cisecurity.org/tools2/linux/CIS_Oracle_Linux_7_Benchmark_v2.1.0.pdf</xsl:variable>
-<xsl:variable name="product_guide_id_name">OL-7</xsl:variable>
-<xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
-
-<!-- Define URI for custom CCE identifier which can be used for mapping to corporate policy -->
-<!--xsl:variable name="custom-cce-uri">https://www.example.org</xsl:variable-->
-
-<!-- Define URI for custom policy reference which can be used for linking to corporate policy -->
-<!--xsl:variable name="custom-ref-uri">https://www.example.org</xsl:variable-->
 
 </xsl:stylesheet>

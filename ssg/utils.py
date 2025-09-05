@@ -303,3 +303,25 @@ def parse_template_boolean_value(data, parameter, default_value):
         raise ValueError(
             "Template parameter {} used in rule {} cannot accept the "
             "value {}".format(parameter, data["_rule_id"], value))
+
+
+def check_conflict_regex_directory(data):
+    """
+    Validate that either all path are directories OR file_regex exists.
+
+    Throws ValueError.
+    """
+    for f in data["filepath"]:
+        if "is_directory" in data and data["is_directory"] != f.endswith("/"):
+            raise ValueError(
+                "If passing a list of filepaths, all of them need to be "
+                "either directories or files. Mixing is not possible. "
+                "Please fix rules '{0}' filepath '{1}'".format(data["_rule_id"], f))
+
+        data["is_directory"] = f.endswith("/")
+
+        if "file_regex" in data and not data["is_directory"]:
+            raise ValueError(
+                "Used 'file_regex' key in rule '{0}' but filepath '{1}' does not "
+                "specify a directory. Append '/' to the filepath or remove the "
+                "'file_regex' key.".format(data["_rule_id"], f))

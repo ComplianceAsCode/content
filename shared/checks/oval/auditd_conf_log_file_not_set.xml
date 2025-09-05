@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance" id="auditd_conf_log_file_not_set" version="1">
+    <metadata>
+      <title>'log_file' Not Set In /etc/audit/auditd.conf</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Verify 'log_file' is not set in /etc/audit/auditd.conf.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_auditd_conf_log_file_not_set"
+      comment="Verify 'log_file' not set in /etc/audit/auditd.conf" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_auditd_conf_log_file_not_set" check="all"
+  check_existence="none_exist" comment="log_file not set" version="1">
+    <ind:object object_ref="object_auditd_conf_log_file" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_auditd_conf_log_file" version="1">
+    <ind:filepath operation="equals">/etc/audit/auditd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^(log_file\s*=\s*.*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="audit_log_file_path" datatype="string" version="1" comment="path to audit log files">
+    <regex_capture pattern="^log_file\s*=\s*(.*)">
+      <object_component item_field="subexpression" object_ref="object_auditd_conf_log_file" />
+    </regex_capture>
+  </local_variable>
+</def-group>

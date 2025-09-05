@@ -1,5 +1,6 @@
 # platform = Google Chromium Browser
-populate var_default_search_provider_name
+
+{{{ bash_instantiate_variables("var_default_search_provider_name") }}}
 
 CHROME_POL_FILE="chrome_stig_policy.json"
 CHROME_POL_DIR="/etc/chromium/policies/managed/"

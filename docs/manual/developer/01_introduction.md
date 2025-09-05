@@ -12,10 +12,10 @@ ComplianceAsCode/content aims to provide security and compliance content for var
 
 The project contains three major parts:
 
- - [Compliance benchmark content](03_creating_content.html) in an format agnostic, easy to [read and modify](06_contributing_with_content.html) layout.
+ - [Compliance benchmark content](03_creating_content) in a format agnostic, easy to [read and modify](06_contributing_with_content) layout.
     - Rules: checks and remediations for specific items, for example, ensuring that `/var/log` has the desired permission. This includes automation for both auditing compliance with this rule as well as handling remediation if the desired state is not met.
     - Profiles and Controls: ways of grouping rules (both in product-specific and product-agnostic settings)to achieve compliance with a specific benchmark or policy (such as PCI-DSS, STIG, CIS, &c).
- - [A build system](02_building_complianceascode.html) and [utilities](05_tools_and_utilities.html) for transforming this content into standard-compliant, scanner-agnostic content.
+ - [A build system](02_building_complianceascode) and [utilities](05_tools_and_utilities) for transforming this content into standard-compliant, scanner-agnostic content.
  - [A test harness](https://github.com/ComplianceAsCode/content/blob/master/tests/README.md) for validating this content by executing it on the target platform.
 
 ## Contributing

@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol,multi_platform_sle
+# platform = multi_platform_all
 
 {{% if product in ['sle12','sle15'] %}}
 gsettings set org.gnome.desktop.lockdown disable-lock-screen false

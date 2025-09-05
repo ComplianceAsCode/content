@@ -1,5 +1,5 @@
 # platform = multi_platform_sle
-. /usr/share/scap-security-guide/remediation_functions
+
 {{{ bash_instantiate_variables("var_accounts_tmout") }}}
 
 if [ -f /etc/profile.d/autologout.sh ]; then

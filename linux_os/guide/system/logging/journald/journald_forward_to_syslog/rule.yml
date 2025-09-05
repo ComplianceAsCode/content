@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,rhel9
+
+title: Ensure journald is configured to send logs to rsyslog
+
+description: |-
+    Data from journald may be stored in volatile memory or persisted locally.
+    Utilities exist to accept remote export of journald logs.
+
+rationale:
+    Storing log data on a remote host protects log integrity from local attacks. If an attacker
+    gains root access on the local system, they could tamper with or remove log data that is
+    stored on the local system.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-85994-2
+    cce@rhel8: CCE-85995-9
+    cce@rhel9: CCE-85996-7
+
+references:
+    cis@rhel7: 4.2.2.1
+    cis@rhel8: 4.2.2.1
+
+ocil_clause: 'is commented out or not configured correctly'
+
+ocil: |-
+    Storing logs remotely protects the integrity of the data from local attacks.
+    Run the following command to verify that journald is forwarding logs to a remote host.
+    <pre>
+    grep "^\sForwardToSyslog" /etc/systemd/journald.conf
+    </pre>
+    and it should return
+    <pre>
+    ForwardToSyslog=yes
+    </pre>
+
+template:
+    name: shell_lineinfile
+    vars:
+        path: /etc/systemd/journald.conf
+        parameter: ForwardToSyslog
+        value: yes

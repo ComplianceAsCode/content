@@ -81,11 +81,22 @@ def parse_args():
             "as a literal CPE, and added as a platform. "
             "For example, use 'cpe:/o:fedoraproject:fedora:30' or 'enterprise_linux'.")
     common_parser.add_argument(
+            "--add-product-to-fips-certified",
+            default=None,
+            help="Add installed_OS_is_$product extend_definition to the "
+            "installed_OS_is_FIPS_certified OVAL criteria definition.")
+    common_parser.add_argument(
             "--remove-machine-only",
             default=False,
             action="store_true",
             help="Removes machine-only platform constraint from rules "
             "to enable testing these rules on container backends.")
+    common_parser.add_argument(
+            "--remove-ocp4-only",
+            default=False,
+            action="store_true",
+            help="Removes ocp4-only platform constraint from rules "
+            "to enable testing these rules on ocp4 backends.")
     common_parser.add_argument("--loglevel",
                                dest="loglevel",
                                metavar="LOGLEVEL",
@@ -193,6 +204,16 @@ def parse_args():
                              help="Override the profile used for test scenarios."
                                   " Variable selections will be done according "
                                   "to this profile.")
+    parser_rule.add_argument("--slice",
+                             dest='_slices',
+                             # real dest is postprocessed later:
+                             # 'slice_current' and 'slice_total'
+                             metavar=('X', 'Y'),
+                             default=[1, 1],
+                             nargs=2,
+                             type=int,
+                             help=("Allows to run only Xth slice of Y in total, to enable "
+                                   "stable parallelization of the bigger test sets."))
 
     parser_combined = subparsers.add_parser("combined",
                                             help=("Tests all rules in a profile evaluating them "
@@ -211,6 +232,16 @@ def parse_args():
                                  dest="scenarios_regex",
                                  default=None,
                                  help="Regular expression matching test scenarios to run")
+    parser_combined.add_argument("--slice",
+                                 dest='_slices',
+                                 # real dest is postprocessed later:
+                                 # 'slice_current' and 'slice_total'
+                                 metavar=('X', 'Y'),
+                                 default=[1, 1],
+                                 nargs=2,
+                                 type=int,
+                                 help=("Allows to run only Xth slice of Y in total, to enable "
+                                       "stable parallelization of the bigger test sets."))
     parser_combined.add_argument("target",
                                  nargs="+",
                                  metavar="TARGET",
@@ -218,7 +249,18 @@ def parse_args():
                                        "in a profile will be evaluated against all its test "
                                        "scenarios."))
 
-    return parser.parse_args()
+    options = parser.parse_args()
+    if options.subparser_name in ["rule", "combined"]:
+        options.slice_current, options.slice_total = options._slices
+        if options.slice_current < 1:
+            raise argparse.ArgumentTypeError('Current slice needs to be positive integer')
+        if options.slice_total < 1:
+            raise argparse.ArgumentTypeError('Number of slices needs to be positive integer')
+        if options.slice_current > options.slice_total:
+            raise argparse.ArgumentTypeError(
+                'Current slice cannot be greater than number of slices')
+    return options
+
 
 
 def get_logging_dir(options):
@@ -405,8 +447,13 @@ def main():
             if options.remove_machine_only:
                 xml_operations.remove_machine_platform(root)
                 xml_operations.remove_machine_remediation_condition(root)
+            if options.remove_ocp4_only:
+                xml_operations.remove_ocp4_platforms(root)
             if options.add_platform:
                 xml_operations.add_platform_to_benchmark(root, options.add_platform)
+            if options.add_product_to_fips_certified:
+                xml_operations.add_product_to_fips_certified(
+                    root, options.add_product_to_fips_certified)
 
         options.func(options)
 

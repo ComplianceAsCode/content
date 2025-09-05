@@ -2,15 +2,20 @@
   <definition class="compliance" id="wireless_disable_interfaces" version="1">
     {{{ oval_metadata("All wireless interfaces should be disabled.") }}}
     <criteria>
-      <criterion comment="query /proc/net/wireless" test_ref="test_wireless_disable_interfaces" />
+      <criterion comment="check if wifi interfaces are disabled" test_ref="test_wireless_disable_interfaces" negate="true" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="query /proc/net/wireless" id="test_wireless_disable_interfaces" version="1">
-    <ind:object object_ref="object_wireless_disable_interfaces" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_wireless_disable_interfaces" version="1">
-    <ind:filepath>/proc/net/wireless</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*[-\w]+:</ind:pattern>
-    <ind:instance datatype="int" operation="equals">1</ind:instance>
-  </ind:textfilecontent54_object>
+
+  <unix:interface_test check="all" check_existence="at_least_one_exists" id="test_wireless_disable_interfaces" version="1" comment="check if UP flag is present on wifi interfaces">
+    <unix:object object_ref="object_active_wifi_interfaces" />
+    <unix:state state_ref="state_wifi_up" />
+  </unix:interface_test>
+
+  <unix:interface_object id="object_active_wifi_interfaces" version="1">
+    <unix:name operation="pattern match">^wl.*$</unix:name>
+  </unix:interface_object>
+
+  <unix:interface_state id="state_wifi_up" version="1">
+    <unix:flag datatype="string" entity_check="at least one" operation="equals">UP</unix:flag>
+  </unix:interface_state>
 </def-group>

@@ -1,0 +1,15 @@
+#!/bin/bash
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+
+
+{{% if not EXISTS %}}
+    if [[ -f  {{{ FILEPATH }}} ]]; then
+        rm {{{ FILEPATH }}}
+    fi
+{{% else %}}
+    touch {{{ FILEPATH }}}
+{{% endif %}}

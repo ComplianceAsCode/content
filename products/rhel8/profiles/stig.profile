@@ -71,6 +71,7 @@ selections:
     - var_auditd_max_log_file_action=syslog
     - var_auditd_disk_full_action=halt
     - var_sssd_certificate_verification_digest_function=sha1
+    - login_banner_text=dod_banners
 
     ### Enable / Configure FIPS
     - enable_fips_mode

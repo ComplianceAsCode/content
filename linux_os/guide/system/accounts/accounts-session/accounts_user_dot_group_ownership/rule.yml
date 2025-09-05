@@ -10,6 +10,9 @@ description: |-
     interactive user home directory, use the following command:
     <pre>$ sudo chgrp <i>USER_GROUP</i> /home/<i>USER</i>/.<i>INIT_FILE</i></pre>
 
+    This rule ensures every initialization file related to an interactive user
+    is group-owned by an interactive user.
+
 rationale: |-
     Local initialization files for interactive users are used to configure the
     user's shell environment upon logon. Malicious modification of these files could
@@ -35,3 +38,9 @@ ocil: |-
     users in <tt>/etc/passwd</tt> and verify all initialization files under the
     respective users home directory. Check the group owner of all local interactive users
     initialization files.
+
+warnings:
+    - general: |-
+       Due to OVAL limitation, this rule can report a false negative in a
+       specific situation where two interactive users swap the group-ownership
+       of their respective initialization files.

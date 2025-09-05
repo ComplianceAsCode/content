@@ -48,7 +48,7 @@ do
 		unset ARRAY_FOR_LOG_FILE
 	fi
 done
-{{% if product in ["debian9", "debian10", "ubuntu1604", "ubuntu1804", "ubuntu2004", "sle15", "sle12"] %}}
+{{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "sle15", "sle12"] %}}
 DESIRED_PERM_MOD=640
 {{% else %}}
 DESIRED_PERM_MOD=600

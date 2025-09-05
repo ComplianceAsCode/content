@@ -1,0 +1,55 @@
+prodtype: ocp4
+
+title: Ensure that the MachineSets provisioned by Azure have disk encryption enabled
+
+platforms:
+  - ocp4-on-azure
+
+description: |-
+  OpenShift has an option to provide the Disk Encryption Set [1] when deploying
+  nodes on Azure. This enabled disk encryption and ensures that the OpenShift
+  nodes have that enabled.
+
+  [1] https://docs.openshift.com/container-platform/latest/machine_management/creating_machinesets/creating-machineset-azure.html#machineset-enabling-customer-managed-encryption-azure_creating-machineset-azure
+  
+rationale: |-
+  The usage of disk encryption for the nodes protects the data at rest and
+  ensures that an attacker cannot easily exfiltrate the machine contents which
+  may contain private keys or other sensitive material.
+
+identifiers:
+  cce@ocp4: CCE-90322-9
+
+references:
+  pcidss: Req-3.4.1
+
+ocil_clause: 'Disk encryption is not enabled on the Azure MachineSets'
+
+{{% set jqfilter = '[.items[] | select(.spec.template.spec.providerSpec.value.osDisk.managedDisk.diskEncryptionSet.id != null) | .metadata.name]' %}}
+
+ocil: |-
+    Run the following command to retrieve if the Azure disk encryption is enabled:
+    <pre>$ oc get machineset --all-namespaces -o json | jq '{{{ jqfilter }}}}'</pre>
+    Make sure that the result is an array of machineset names where
+    disk encryption is enabled.
+    This can be inspected by going through them
+    with <pre>$ oc get machineset --all-namespaces -o yaml</pre>
+
+severity: high
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({'/apis/machine.openshift.io/v1beta1/machinesets?limit=500': jqfilter}) | indent(4) }}}
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path('/apis/machine.openshift.io/v1beta1/machinesets?limit=500', jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "all_exist"
+    entity_check: "all"
+    values:
+      - value: "^.+$"
+        operation: "pattern match"
+

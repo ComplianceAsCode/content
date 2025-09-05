@@ -1,5 +1,6 @@
 # platform = Google Chromium Browser
-populate var_auth_schemes
+
+{{{ bash_instantiate_variables("var_auth_schema") }}}
 
 CHROME_POL_FILE="chrome_stig_policy.json"
 CHROME_POL_DIR="/etc/chromium/policies/managed/"

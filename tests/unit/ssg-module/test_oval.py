@@ -19,11 +19,3 @@ def test_applicable_platforms():
     assert 'multi_platform_fedora' in sap
     assert 'multi_platform_debian' in sap
     assert 'multi_platform_ubuntu' in sap
-
-
-def test_find_existing_testfile():
-    assert ssg.oval.find_testfile("disable_prelink.xml")
-
-
-def test_dont_find_missing_testfile():
-    assert ssg.oval.find_testfile("disable_prelinkxxx.xml") is None

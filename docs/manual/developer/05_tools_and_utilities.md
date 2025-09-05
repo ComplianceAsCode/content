@@ -9,27 +9,6 @@ this easier: `.pyenv.sh`. To set `PYTHONPATH` correctly for the current
 shell, simply call `source .pyenv.sh`. For more information on how to
 use this script, please see the comments at the top of the file.
 
-## Testing OVAL Content
-
-Located in `utils` directory, the `testoval.py` script allows easy
-testing of oval definitions. It wraps the definition and makes up an
-oval file ready for scanning, very useful for testing new OVAL content
-or modifying existing ones.
-
-Example usage:
-
-    $ PYTHONPATH=`./.pyenv.sh` ./utils/testoval.py install_hid.xml
-
-Create or add an alias to the script so that you don’t have to type out
-the full path everytime that you would like to use the `testoval.py`
-script.
-
-    $ alias testoval='/home/_username_/scap-security-guide/utils/testoval.py'
-
-An alternative is adding the directory where `testoval.py` resides to
-your PATH.
-
-    $ export PATH=$PATH:/home/_username_/scap-security-guide/utils/
 
 ## Profile Statistics and Utilities
 
@@ -60,6 +39,14 @@ rules selected by another profile, run this command:
 
 This will result in a new YAML profile containing exclusive rules to the
 profile pointed by the `--profile1` option.
+
+## Generating Controls from DISA's XCCDF Files
+If you want a control file for product from DISA's XCCDF files you can run the following command:
+
+    $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r3-xccdf-manual.xml
+
+Where `-p` is the id the comes after `stigid@` in the `references` section of a rule and `-m` is the path to the
+XCCDF Manual file from DISA.
 
 ## Generating login banner regular expressions
 
@@ -289,3 +276,26 @@ To execute:
 
     $ ./utils/rule_dir_stats.py [...any options...]
     $ ./utils/rule_dir_diff.py [...any options...]
+
+### `utils/create_scap_delta_tailoring.py` - Create tailoring files for rules not covered by other content
+The goal of this tool is to create a tailoring file that enable rules that are not covered by other SCAP content and disables rules that are covered by the given content.
+It supports the following arguments: 
+
+- `-r`, `--root` - Path to SSG root directory
+- `-p`, `--product` - What product to produce the tailoring file for (required)
+- `-m`, `--manual` - Path to the XCCDF XML file of the SCAP content (required)
+- `-j`, `--json` - Path to the `rules_dir.json ` file. 
+  - Defaults to `build/stig_control.json`
+- `-c`, `--build-config-yaml` - YAML file with information about the build configuration.
+  - Defaults to `build/build_config.yml`
+- `-b`, `--profile` - What profile to use. 
+  - Defaults to stig
+- `-ref`, `--reference` - What reference system to check for. 
+  - Defaults to `stigid`
+  - `-o`, `--output` - Defaults `build/PRODUCT_PROFILE_tailoring.xml`, where `PRODUCT` and `PROFILE` are respective parameters given to the script.
+  - `--profile-id` - The id of the created profile. Defaults to PROFILE_delta
+  - `--tailoring-id` - The id of the created tailoring file. Defaults to xccdf_content-disa-delta_tailoring_default
+
+To execute:
+
+    $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m shared/references/disa-stig-rhel8-v1r3-xccdf-scap.xml

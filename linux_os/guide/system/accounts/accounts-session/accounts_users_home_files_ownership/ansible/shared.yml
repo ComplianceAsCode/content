@@ -1,0 +1,32 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Get all local users from /etc/passwd
+  ansible.builtin.getent:
+    database: passwd
+    split: ':'
+
+- name: Create local_users variable from the getent output
+  ansible.builtin.set_fact:
+    local_users: '{{ ansible_facts.getent_passwd|dict2items }}'
+
+- name: Test for existence home directories to avoid creating them, but only fixing ownership
+  ansible.builtin.stat:
+    path: '{{ item.value[4] }}'
+  register: path_exists
+  loop: '{{ local_users }}'
+  when:
+    - item.value[1]|int >= {{{ uid_min }}}
+    - item.value[1]|int != 65534
+
+- name: Ensure interactive local users are the owners of their respective home directories
+  ansible.builtin.file:
+    path: '{{ item.0.value[4] }}'
+    owner: '{{ item.0.value[1] }}'
+    recurse: yes
+  loop: '{{ local_users|zip(path_exists.results)|list }}'
+  when:
+    - item.1.stat is defined and item.1.stat.exists

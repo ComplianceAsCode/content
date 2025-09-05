@@ -26,16 +26,14 @@
 <xsl:variable name="nist800-171uri">http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf</xsl:variable>
 <xsl:variable name="nist800-53uri">http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf</xsl:variable>
 <xsl:variable name="nistcsfuri">https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf</xsl:variable>
-<xsl:variable name="isa-62443-2013uri">https://www.isa.org/templates/one-column.aspx?pageid=111294&amp;productId=116785</xsl:variable>
-<xsl:variable name="isa-62443-2009uri">https://www.isa.org/templates/one-column.aspx?pageid=111294&amp;productId=116731</xsl:variable>
+<xsl:variable name="isa-62443-2013uri">https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu</xsl:variable>
+<xsl:variable name="isa-62443-2009uri">https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat</xsl:variable>
 <xsl:variable name="cobit5uri">https://www.isaca.org/resources/cobit</xsl:variable>
 <xsl:variable name="cis-cscuri">https://www.cisecurity.org/controls/</xsl:variable>
 <xsl:variable name="osppuri">https://www.niap-ccevs.org/Profile/PP.cfm</xsl:variable>
-<xsl:variable name="pcidssuri">https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-1.pdf</xsl:variable>
+<xsl:variable name="pcidssuri">https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf</xsl:variable>
 <xsl:variable name="nerc-cipuri">https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx</xsl:variable>
-<xsl:variable name="ssg-benchmark-latest-uri">https://github.com/ComplianceAsCode/content/releases/latest</xsl:variable>
 <xsl:variable name="ssg-contributors-uri">https://github.com/ComplianceAsCode/content/wiki/Contributors</xsl:variable>
-<xsl:variable name="ssg-project-name">SCAP Security Guide Project</xsl:variable>
 
 <!-- misc language URI's -->
 <xsl:variable name="sceuri">http://open-scap.org/page/SCE</xsl:variable>

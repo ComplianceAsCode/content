@@ -1,5 +1,5 @@
 # platform = multi_platform_all
-. /usr/share/scap-security-guide/remediation_functions
+
 {{{ bash_instantiate_variables("var_accounts_user_umask") }}}
 
 grep -q umask /etc/profile && \

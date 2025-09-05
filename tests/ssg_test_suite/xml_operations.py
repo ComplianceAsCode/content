@@ -24,6 +24,7 @@ SYSTEM_ATTRIBUTE = {
 
 
 BENCHMARK_QUERY = ".//ds:component/xccdf-1.2:Benchmark"
+OVAL_DEF_QUERY = ".//ds:component/oval-def:oval_definitions/oval-def:definitions"
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -80,19 +81,39 @@ def datastream_root(ds_location, save_location=None):
             tree.write(save_location)
 
 
-def remove_machine_platform(root):
-    remove_machine_only_from_element(root, "xccdf-1.2:Rule")
-    remove_machine_only_from_element(root, "xccdf-1.2:Group")
-
-
-def remove_machine_only_from_element(root, element_spec):
+def remove_platforms_from_element(root, element_spec, platforms):
     query = BENCHMARK_QUERY + "//{0}".format(element_spec)
     elements = root.findall(query, PREFIX_TO_NS)
     for el in elements:
-        platforms = el.findall("./xccdf-1.2:platform", PREFIX_TO_NS)
-        for p in platforms:
-            if p.get("idref") == "cpe:/a:machine":
+        platforms_xml = el.findall("./xccdf-1.2:platform", PREFIX_TO_NS)
+        for p in platforms_xml:
+            if instance_in_platforms(p, platforms):
                 el.remove(p)
+
+
+def instance_in_platforms(inst, platforms):
+    return (isinstance(platforms, str) and inst.get("idref") == platforms) or \
+        (hasattr(platforms, "__iter__") and inst.get("idref") in platforms)
+
+
+def remove_machine_platform(root):
+    remove_platforms_from_element(root, "xccdf-1.2:Rule", "cpe:/a:machine")
+    remove_platforms_from_element(root, "xccdf-1.2:Group", "cpe:/a:machine")
+    remove_platforms_from_element(root, "xccdf-1.2:Rule", "#cpe_platform_machine")
+    remove_platforms_from_element(root, "xccdf-1.2:Group", "#cpe_platform_machine")
+
+
+def remove_ocp4_platforms(root):
+    remove_platforms_from_element(
+        root, "xccdf-1.2:Rule",
+        ["cpe:/o:redhat:openshift_container_platform:4",
+         "cpe:/o:redhat:openshift_container_platform_node:4",
+         "cpe:/a:ocp4-master-node"])
+    remove_platforms_from_element(
+        root, "xccdf-1.2:Group",
+        ["cpe:/o:redhat:openshift_container_platform:4",
+         "cpe:/o:redhat:openshift_container_platform_node:4",
+         "cpe:/a:ocp4-master-node"])
 
 
 def remove_machine_remediation_condition(root):
@@ -182,6 +203,18 @@ def add_platform_to_benchmark(root, cpe_regex):
         for cpe_str in cpes_to_add:
             e = ET.Element("xccdf-1.2:platform", idref=cpe_str)
             benchmark.insert(platform_index, e)
+
+
+def add_product_to_fips_certified(root, product="fedora"):
+    query = OVAL_DEF_QUERY + "/{0}".format(
+        "oval-def:definition[@id='oval:ssg-installed_OS_is_FIPS_certified:def:1']/"
+        "oval-def:criteria")
+    criteria = root.find(query, PREFIX_TO_NS)
+    if criteria:
+        e = ET.Element("oval-def:extend_definition",
+                       comment="Installed OS is {0}".format(product),
+                       definition_ref="oval:ssg-installed_OS_is_{0}:def:1".format(product))
+        criteria.append(e)
 
 
 def _get_benchmark_node(datastream, benchmark_id, logging):

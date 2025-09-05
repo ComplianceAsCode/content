@@ -1,6 +1,6 @@
 policy: PCI-DSS
 title: Configuration Recommendations of a GNU/Linux System
-id: pcidss
+id: pcidss_ocp4
 version: '3.2.1'
 source: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
 levels:
@@ -19,14 +19,16 @@ controls:
   levels:
   - base
   notes: ''
-  status: not applicable
+  status: automated
   controls:
   - id: Req-1.1.1
     title: 1.1.1 A formal process for approving and testing all network connections
       and changes to the firewall and router configurations
     levels:
     - base
-    notes: ''
+    notes: |-
+      This is an organizational control and not something that can be provided
+      by the OpenShift Container Platform.
     status: not applicable
     rules: []
 
@@ -35,7 +37,15 @@ controls:
       cardholder data environment and other networks, including any wireless networks
     levels:
     - base
-    notes: ''
+    notes: |-
+      While there are ways and tools where the OpenShift Container Platform could
+      help address this control, covering the scope of a deployment with the application
+      specific connections is out of scope.
+
+      If such functionality is needed, there are tools such as Advanced Cluster
+      Security [1] that may help fulfil this control.
+
+      [1] https://www.redhat.com/en/resources/advanced-cluster-security-for-kubernetes-datasheet
     status: not applicable
     rules: []
 
@@ -44,7 +54,15 @@ controls:
       and networks
     levels:
     - base
-    notes: ''
+    notes: |-
+      While there are ways and tools where the OpenShift Container Platform could
+      help address this control, covering the scope of a deployment with the application
+      specific connections is out of scope.
+
+      If such functionality is needed, there are tools such as Advanced Cluster
+      Security [1] that may help fulfil this control.
+
+      [1] https://www.redhat.com/en/resources/advanced-cluster-security-for-kubernetes-datasheet
     status: not applicable
     rules: []
 
@@ -53,7 +71,14 @@ controls:
       any demilitarized zone (DMZ) and the internal network zone
     levels:
     - base
-    notes: ''
+    notes: |-
+      While there will be a firewall protecting the cluster from outside traffic,
+      network connectivity within the cluster is handled by the SDN plugin and
+      is configurable via NetworkPolicies [1]. We can ensure that each non-control
+      plane namespace has a NetworkPolicy enabled, but it's still the responsibility
+      of the system administrator to ensure that the policy is correct.
+
+      [1] https://docs.openshift.com/container-platform/latest/networking/network_policy/about-network-policy.html
     status: automated
     rules:
       - configure_network_policies
@@ -64,7 +89,9 @@ controls:
       network components
     levels:
     - base
-    notes: ''
+    notes: |-
+      This is an organizational control related to the personnel and not something
+      that can be provided by the OpenShift Container Platform.
     status: not applicable
     rules: []
 
@@ -76,7 +103,9 @@ controls:
       not limited to FTP, Telnet, POP3, IMAP, and SNMP v1 and v2.
     levels:
     - base
-    notes: ''
+    notes: |-
+      This is an organizational control and not something that can be provided
+      by the OpenShift Container Platform.
     status: not applicable
     rules: []
 
@@ -85,7 +114,9 @@ controls:
       six months
     levels:
     - base
-    notes: ''
+    notes: |-
+      This is an organizational control and not something that can be provided
+      by the OpenShift Container Platform.
     status: not applicable
     rules: []
 
@@ -106,9 +137,17 @@ controls:
       the cardholder data environment, and specifically deny all other traffic.
     levels:
     - base
-    notes: ''
+    notes: |-
+      East-West traffic in the cluster can be managed via NetworkPolicies [1]. So,
+      we can verify that each non-control plane namespace has a relevant NetworkPolicy enabled.
+      However, Egress traffic needs to be taken into account as well, and this setup
+      will vary depending on the SDN plugin used [2][3].
+
+      [1] https://docs.openshift.com/container-platform/latest/networking/network_policy/about-network-policy.html
+      [2] https://docs.openshift.com/container-platform/latest/networking/openshift_sdn/configuring-egress-firewall.html
+      [3] https://docs.openshift.com/container-platform/latest/networking/ovn_kubernetes_network_provider/configuring-egress-firewall-ovn.html
     automated: yes
-    status: supported
+    status: partial
     rules:
       - configure_network_policies_namespaces
 
@@ -116,8 +155,13 @@ controls:
     title: 1.2.2 Secure and synchronize router configuration files.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Router configurations are out of scope from the OpenShift Container Platform.
+      While this is still relevant and something that organizations do, this is
+      dependent on where OpenShift is deployed. In cloud deployments, router configurations
+      are virtual and need to be verified depending on the implementation; e.g.
+      in OpenStack, one would need to verify Neutron's Security Groups.
+    status: not applicable
     rules: []
 
   - id: Req-1.2.3
@@ -127,8 +171,11 @@ controls:
       and the cardholder data environment.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Firewall configurations are out of scope from the OpenShift Container Platform.
+      While this is still relevant and something that organizations do, this is
+      dependent on where OpenShift is deployed.
+    status: not applicable
     rules: []
 
 - id: Req-1.3
@@ -137,48 +184,68 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: partial
   controls:
   - id: Req-1.3.1
     title: 1.3.1 Implement a DMZ to limit inbound traffic to only system components
       that provide authorized publicly accessible services, protocols, and ports.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      To a limited degree, OpenShift's ingress routing (enabled by default)
+      and NetworkPolicies can support restriction of inbound traffic to pods.
+      Further restricting needs to happen on the cloud where OpenShift is deployed
+      at, but that's outside of OpenShift's scope.
+    status: partial
+    # TODO(jaosorior): Add rules to check for egress policies and ingress configurations
+    rules:
+      - configure_network_policies_namespaces
 
   - id: Req-1.3.2
     title: 1.3.2 Limit inbound Internet traffic to IP addresses within the DMZ.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      To a limited degree, OpenShift's ingress routing (enabled by default)
+      and NetworkPolicies can support restriction of inbound traffic to pods.
+      Further restricting needs to happen on the cloud where OpenShift is deployed
+      at, but that's outside of OpenShift's scope.
+    status: partial
+    # TODO(jaosorior): Add rules to check for egress policies and ingress configurations
+    rules:
+      - configure_network_policies_namespaces
 
   - id: Req-1.3.3
-    title: 1.3.3 Do not allow any direct connections inbound or outbound for traffic
-      between the Internet and the cardholder data environment.
-    levels:
-    - base
-    notes: ''
-    status: pending
-    rules: []
-
-  - id: Req-1.3.4
-    title: 1.3.4 Implement anti-spoofing measures to detect and block forged source
-      IP addresses from entering the network.
+    title: >-
+      1.3.3 Implement anti-spoofing measures to detect and block forged
+      source IP addresses from entering the network.
     description: (For example, block traffic originating from the Internet with an internal
       source address.)
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Anti-spoofing and blocking forged IP addresses is outside the scope
+      of the OpenShift Container Platform.
+    status: not applicable
+    rules: []
+
+  - id: Req-1.3.4
+    title: >-
+      1.3.4 Do not allow unauthorized outbound traffic from the cardholder
+      data environment to the Internet.
+    levels:
+    - base
+    notes: |-
+      OpenShift can support authorization of outbound traffic via
+      egress  policy  objects[1][2].
+
+      [1] https://docs.openshift.com/container-platform/latest/networking/openshift_sdn/configuring-egress-firewall.html
+      [2] https://docs.openshift.com/container-platform/latest/networking/ovn_kubernetes_network_provider/configuring-egress-firewall-ovn.html
+    status: supported
     rules: []
 
   - id: Req-1.3.5
-    title: 1.3.5 Do not allow unauthorized outbound traffic from the cardholder data
-      environment to the Internet.
+    title: 1.3.5 Permit only "established" connections into the network.
     levels:
     - base
     notes: ''
@@ -186,26 +253,35 @@ controls:
     rules: []
 
   - id: Req-1.3.6
-    title: "1.3.6 Implement stateful inspection, also known as dynamic packet filtering.\
-      \ (That is, only \u201Cestablished\u201D connections are allowed into the network.)"
+    title: >-
+      1.3.6 Place system components that store cardholder data (such as a
+      database) in an internal network zone, segregated from the DMZ and other
+      untrusted networks
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      Segregation of such system components can take place using the same
+      network segregation mechanisms that OpenShift already supports [1][2][3]:
+
+      * Ingress
+      * NetworkPolicies
+      * Egress Policies
+
+      Special attention needs to be taken to audit that these components
+      are appropriately segregated by the aforementioned mechanisms
+
+      [1] https://docs.openshift.com/container-platform/latest/networking/network_policy/about-network-policy.html
+      [2] https://docs.openshift.com/container-platform/latest/networking/openshift_sdn/configuring-egress-firewall.html
+      [3] https://docs.openshift.com/container-platform/latest/networking/ovn_kubernetes_network_provider/configuring-egress-firewall-ovn.html
+    status: partial
+    # TODO(jaosorior): Add rules to check for egress policies and ingress configurations
+    rules:
+      - configure_network_policies_namespaces
 
   - id: Req-1.3.7
-    title: 1.3.7 Place system components that store cardholder data (such as a database)
-      in an internal network zone, segregated from the DMZ and other untrusted networks.
-    levels:
-    - base
-    notes: ''
-    status: pending
-    rules: []
-
-  - id: Req-1.3.8
-    title: 1.3.8 Do not disclose private IP addresses and routing information to unauthorized
-      parties.
+    title: >-
+      1.3.7 Do not disclose private IP addresses and routing information to
+      unauthorized parties.
     description: |-
       Note: Methods to obscure IP addressing may include, but are not limited to:
       * Network Address Translation (NAT)
@@ -215,7 +291,9 @@ controls:
       * Internal use of RFC1918 address space instead of registered addresses.
     levels:
     - base
-    notes: ''
+    notes: |-
+      Protection from IP address disclosure can be handled by solutions
+      outside of OpenShift.
     status: not applicable
     rules: []
 
@@ -231,8 +309,10 @@ controls:
       employee-owned devices.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    Personal firewall software is outside the scope of the OpenShift
+    Container Platform.
+  status: not applicable
   rules: []
 
 - id: Req-1.5
@@ -240,8 +320,12 @@ controls:
     firewalls are documented, in use, and known to all affected parties.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The organization will want to ensure that they include in security
+    policies and operational procedures for managing the OpenShift
+    SDN and OpenShift NetworkPolicy objects within the OpenShift
+    environment.
+  status: not applicable
   rules: []
 
 - id: Req-2.1
@@ -253,9 +337,16 @@ controls:
     Protocol (SNMP) community strings, etc.).
   levels:
   - base
-  notes: ''
-  status: pending
-  controls: []
+  notes: |-
+    The Openshift Platform doesn't come with any hardcoded credentials or passwords.
+    Authenticators are uniquely created at deployment-time, including credentials
+    for an admin user (called `kubeadmin`) which is meant for bootstrapping purposes.
+
+    It is recommended for deployers to delete this account in favor of using an IdP
+    and setting up appropriate permissions via RBAC roles.
+  status: automated
+  rules:
+  - kubeadmin_removed
 
 - id: Req-2.1.1
   title: 2.1.1 For wireless environments connected to the cardholder data environment
@@ -264,8 +355,10 @@ controls:
     SNMP community strings.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The OpenShift Container Platform isn't used in a wireless environment and 
+    doesn't come with any hardcoded credentials or passwords.
+  status: not applicable
   rules: []
 
 - id: Req-2.2
@@ -281,8 +374,9 @@ controls:
     * National Institute of Standards Technology (NIST)
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This control is addressed by applying the OpenShift CIS recommendations.
+  status: automated
   controls:
   - id: Req-2.2.1
     title: >-
@@ -296,8 +390,14 @@ controls:
       one primary function per virtual system component.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      OpenShift nodes run RHEL CoreOS by default, which contains only the
+      necessary services, protocols and daemons needed to run OpenShift and
+      containers. OpenShift provides the means to separate application
+      workloads within the cluster onto separate hosts and containers. It
+      is the responsibility of the organization to appropriately separate
+      their applications into relevant containers to meet this control.
+    status: inherently met
     rules: []
 
   - id: Req-2.2.2
@@ -305,8 +405,10 @@ controls:
       for the function of the system.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      RHEL CoreOS runs only the necessary services, protocols and daemons required
+      for the functionality of OpenShift itself.
+    status: inherently met
     rules: []
 
   - id: Req-2.2.3
@@ -329,25 +431,59 @@ controls:
       TLS may continue using these as a security control after June 30, 2016.'
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
-
+    notes: |-
+      OpenShift does not require any insecure services, protocols or daemons for
+      proper functioning. The deployment comes with TLS enabled by default with
+      strong ciphers and an appropriate version enabled.
+    status: automated
+    rules:
+      - api_server_bind_address
+      - api_server_client_ca
+      - api_server_etcd_ca
+      - api_server_etcd_cert
+      - api_server_etcd_key
+      - api_server_kubelet_certificate_authority
+      - api_server_oauth_https_serving_cert
+      - api_server_openshift_https_serving_cert
+      - api_server_service_account_public_key
+      - api_server_tls_cert
+      - api_server_tls_cipher_suites
+      - api_server_tls_private_key
+      - controller_service_account_private_key
+      - etcd_cert_file
+      - etcd_client_cert_auth
+      - etcd_key_file
+      - etcd_peer_cert_file
+      - etcd_peer_client_cert_auth
+      - etcd_peer_key_file
+      - kubelet_configure_tls_cert
+      - kubelet_configure_tls_key
   - id: Req-2.2.4
     title: 2.2.4 Configure system security parameters to prevent misuse.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      While it's possible to manually configure the security settings
+      in the Openshift Container Platform, the Compliance Operator provides
+      an automated way of checking for a secure configuration and automatically
+      remediating issues according to known security standards. It's usage
+      is recommended to ensure appropriate configuration is set and prevent
+      drift.
+    status: automated
+    rules:
+    - compliancesuite_exists
 
   - id: Req-2.2.5
     title: 2.2.5 Remove all unnecessary functionality, such as scripts, drivers, features,
       subsystems, file systems, and unnecessary web servers.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The OpenShift Container Platform uses RHEL CoreOS by default. In itself, it's
+      a minimal operating system with the sole purpose of running OpenShift. Therefore
+      it doesn't contain extra packages or functionality; only the minimal that's meant
+      to run OpenShift. RHCOS is the recommended operating system for OpenShift.
+    status: inherently met
     rules: []
 
 - id: Req-2.3
@@ -367,16 +503,45 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
-  rules: []
+  status: automated
+  rules:
+    - api_server_bind_address
+    - api_server_client_ca
+    - api_server_etcd_ca
+    - api_server_etcd_cert
+    - api_server_etcd_key
+    - api_server_https_for_kubelet_conn
+    - api_server_insecure_port
+    - api_server_kubelet_certificate_authority
+    - api_server_oauth_https_serving_cert
+    - api_server_openshift_https_serving_cert
+    - api_server_service_account_public_key
+    - api_server_tls_cert
+    - api_server_tls_cipher_suites
+    - api_server_tls_private_key
+    - controller_service_account_private_key
+    - etcd_cert_file
+    - etcd_client_cert_auth
+    - etcd_key_file
+    - etcd_peer_cert_file
+    - etcd_peer_client_cert_auth
+    - etcd_peer_key_file
+    - kubelet_configure_tls_cert
+    - kubelet_configure_tls_key
+    - ocp_no_ldap_insecure
 
 - id: Req-2.4
   title: 2.4 Maintain an inventory of system components that are in scope for PCI
     DSS.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The payment entity will be responsible for maintaining an inventory
+    of system components that are in use for their OpenShift environment.
+
+    This is out of scope for the OpenShift platform as the responsibility lies
+    on the deployer.
+  status: not applicable
   rules: []
 
 - id: Req-2.5
@@ -385,16 +550,25 @@ controls:
     to all affected parties.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This control is not applicable to the OpenShift platform and is instead a
+    responsibility of the deployer. The payment entity will be responsible for
+    the documentation and dissemination of the security policies and 
+    operational procedures pertaining to their OpenShift deployment and
+    verifying that the policies and procedure are in use and being followed.
+  status: not applicable
   rules: []
 
 - id: Req-2.6
-  title: "2.6 Shared hosting providers must protect each entity\u2019s hosted environment\
-    \ and cardholder data. These providers must meet specific requirements as detailed\
-    \ in Appendix A: Additional PCI DSS Requirements for Shared Hosting Providers."
+  title: >-
+    2.6 Shared hosting providers must protect each entity's hosted environment
+    and cardholder data.
+  description: |-
+    These providers must meet specific requirements as
+    detailed in Appendix A: Additional PCI DSS Requirements for Shared Hosting
+    Providers.
   levels:
-  - base
+  - shared_hosting_provider
   notes: ''
   status: pending
   rules: []
@@ -414,7 +588,7 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   rules: []
 
 - id: Req-3.2
@@ -434,8 +608,11 @@ controls:
     following Requirements 3.2.1 through 3.2.3:
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: >-
+    Proper design of the application by the payment entity can accommodate this requirement as a processing
+    mandate, restricting in-memory process for this data and taking care not to write to file storage from within
+    the container or pod.
+  status: not applicable
   controls:
   - id: Req-3.2.1
     title: 3.2.1 Do not store the full contents of any track (from the magnetic stripe
@@ -455,7 +632,7 @@ controls:
     levels:
     - base
     notes: ''
-    status: pending
+    status: not applicable
     rules: []
 
   - id: Req-3.2.2
@@ -465,7 +642,7 @@ controls:
     levels:
     - base
     notes: ''
-    status: pending
+    status: not applicable
     rules: []
 
   - id: Req-3.2.3
@@ -474,7 +651,7 @@ controls:
     levels:
     - base
     notes: ''
-    status: pending
+    status: not applicable
     rules: []
 
 - id: Req-3.3
@@ -488,7 +665,7 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   rules: []
 
 - id: Req-3.4
@@ -508,8 +685,10 @@ controls:
     correlated to reconstruct the original PAN.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: >-
+    This is the responsibility of the code developer and for bespoke applications using OCP this should become
+    a development standard. 
+  status: not applicable
   rules: []
 
 - id: Req-3.4.1
@@ -520,9 +699,33 @@ controls:
     Decryption keys must not be associated with user accounts.
   levels:
   - base
-  notes: ''
-  status: pending
-  rules: []
+  notes: |-
+    In case where card holder data may be stored on worker nodes disks, OpenShift Container Platform can help to partially 
+    comply with this requirement by providing several means of fully encrypting disks.
+    * Using RHEL core crypto components which are FIPS certified
+    * Or using cloud provider techniques, such as EBS encryption for AWS case.
+    For this requirement, we also check etcd is encrypted, so that secrets, but also routes and oauth configurations are secured.
+    
+    Concerning Full Disk Encryption:
+    Full Disk Encryption can be enabled on OpenShift by installing the cluster with FIPS mode enabled. 
+    OpenShift Container Platform uses certain FIPS Validated / Modules in Process modules within RHEL and RHCOS
+    for the operating system components that it uses. 
+    See RHEL7 core crypto components and https://docs.openshift.com/container-platform/4.9/installing/installing-fips.html for further information.
+    When installing the cluster, The public ssh key is passed to the Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config 
+    files and is used to authenticate SSH access to the nodes. The key is added to the ~/.ssh/authorized_keys list for the core user 
+    on each node, which enables password-less authentication. 
+    The management of the private key is up to the customer.
+    LUKS/dm-crypt (used by the FIPS mode) provides full-disk encryption that fulfills Req-3.4.1. 
+    Access to the stored data is only possible via a decryption password that must be entered when the disk is mounted (must be somehow
+    related to the ssh keypair?...). 
+    The decryption password is stored using TPM v2, in a secure cryptoprocessor contained within a server.
+    When enabling FIPS mode, machine configs state that encryption using TPM based pinning in clevis is requested for these nodes.
+  status: partial
+  rules: 
+  - machine_volume_encrypted
+  - storageclass_encryption_enabled
+  - api_server_encryption_provider_cipher
+  - api_server_encryption_provider_config
 
 - id: Req-3.5
   title: '3.5 Document and implement procedures to protect keys used to secure stored
@@ -534,20 +737,62 @@ controls:
     key.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: 'See sub requirements for details'
+  status: inherently met
   controls:
   - id: Req-3.5.1
-    title: 3.5.1 Restrict access to cryptographic keys to the fewest number of custodians
-      necessary.
+    title: 'Additional requirement  for service  providers  only: Maintain a documented 
+      description of the cryptographic architecture that includes: '
+    description: |-
+       * Details of all algorithms, protocols, and keys used  for the protection of 
+         cardholder data, including key strength an d expiry date 
+       * Description of the key usage for each key 
+       * Inventory of any HSMs and other SCDs  used for key management
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This requirement largely depends on the solution chosen by the customer to protect card holder data at rest. 
+      * When Full Disk Encryption is done using AWS EBS encryption, the algorithm used is AES-256.
+        Your data key is stored on disk with your encrypted data, but not before EBS encrypts it with your KMS key. 
+        Your data key never appears on disk in plaintext.
+        The same data key is shared by snapshots of the volume and any subsequent volumes created from those snapshots.
+        See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html
+      * When Full Disk Encryption is done using LUKS with TPM2,full disk encryption utilities such as dm-crypt and
+        BitLocker encrypt disks with a TPM bind key, and then store the TPM bind key in the TPM (Trusted Platform Module),
+        which is a secure element attached to the motherboard of the node. 
+        The main benefit of this method is that there is no external dependency, and the node is able to decrypt its own 
+        disks at boot time without any external interaction.
+      * When Full Disk Encryption is done using LUKS with Tang, the booting node attempts to contact a predefined set
+        of Tang servers by performing a cryptographic handshake. If it can reach the required number of Tang servers, 
+        the node can construct its disk decryption key and unlock the disks to continue booting. 
+      See https://docs.openshift.com/container-platform/4.9/security/network_bound_disk_encryption/nbde-about-disk-encryption-technology.html
+    status: inherently met
+    rules: []
+ 
+  - id: Req-3.5.2
+    title: '3.5.2 Restrict access to cryptographic keys to the fewest number of custodians
+      necessary.'
+    levels:
+    - base
+    notes: |-
+      This requirement largely depends on the solution chosen by the customer to protect card holder data at rest. 
+      * When Full Disk Encryption is done using AWS EBS encryption, the data key, used for volume encryption, is generated
+        by AWS KMS, encrypted with the Key Encryption Key that lies in the KMS and stored with the volume metadata, by EBS. 
+        It is the payment entity's responsibility to limit the access to this key by ensuring that Grant requests to decrypt
+        the data key using the KEK (Key Encryption Key) is given only to the need to know users or AWS resources.
+        See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html
+      * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key, which is used to decrypt the data key is
+        stored in the TPM (Trusted Platform Module), on the motherboard of the node. 
+        It is therefore not shared with anyone.
+      * When Full Disk Encryption is done using LUKS with Tang, Tang server does not store the encryption key directly, 
+        and never interacts with it. The metadata needed to decrypt the volume is stored on the disk but can only be 
+        unlocked and used when the node can correctly establish the handshake with the Tang server.
+        The data key is therefore not shared with anyone.
+    status: inherently met
     rules: []
 
-  - id: Req-3.5.2
-    title: '3.5.2 Store secret and private keys used to encrypt/decrypt cardholder data
+  - id: Req-3.5.3
+    title: '3.5.3 Store secret and private keys used to encrypt/decrypt cardholder data
       in one (or more) of the following forms at all times:'
     description: |-
       * Encrypted with a key-encrypting key that is at least as strong
@@ -560,16 +805,32 @@ controls:
         in one of these forms.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This requirement depends on the solution chosen by the customer to protect card holder data at rest: 
+      * When Full Disk Encryption is done using AWS EBS encryption, the data key is encrypted with a  Key Encryption Key 
+        that is stored in the AWS KMS, separately from the data key.
+      * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key, which is used to decrypt the data key is
+        stored in the TPM (Trusted Platform Module), on the motherboard of the node. 
+      * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored to disk. Only the provisionning
+        metadata is. A POST to the Tang server would allow the node to recompute the encryption key from this metadata.
+        See https://github.com/latchset/tang
+    status: inherently met
     rules: []
 
-  - id: Req-3.5.3
-    title: 3.5.3 Store cryptographic keys in the fewest possible locations.
+  - id: Req-3.5.4
+    title: 3.5.4 Store cryptographic keys in the fewest possible locations.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This requirement depends on the solution chosen by the customer to protect card holder data at rest: 
+      * When Full Disk Encryption is done using AWS EBS encryption, the data key is stored in the volume's metadata only.
+        The KEK is stored in the AWS KMS only.
+      * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key is stored in the TPM (Trusted Platform Module) only.
+        The encrypted data key is stored on the MBR of the disk only.
+      * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored to disk. Only the provisionning
+        metadata is. A POST to the Tang server would allow the node to recompute the encryption key from this metadata.
+        See https://github.com/latchset/tang
+    status: inherently met
     rules: []
 
 - id: Req-3.6
@@ -579,15 +840,19 @@ controls:
     from various resources including NIST, which can be found at http://csrc.nist.gov.'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    Although some key management processes rely on OpenShift Container Platform and its underlying components
+    for Full Disk Encryption, the responsibility for documentation and implementation of key-management processes
+    and procedures for cryptographic keys used for encryption of cardholder data is still on the payment service and its 
+    operations team in order to cover all aspects of cardholder data protection.
+  status: not applicable
   controls:
   - id: Req-3.6.1
     title: 3.6.1 Generation of strong cryptographic keys
     levels:
     - base
     notes: ''
-    status: pending
+    status: inherently met
     rules: []
 
   - id: Req-3.6.2
@@ -595,7 +860,7 @@ controls:
     levels:
     - base
     notes: ''
-    status: pending
+    status: not applicable
     rules: []
 
   - id: Req-3.6.3
@@ -603,7 +868,7 @@ controls:
     levels:
     - base
     notes: ''
-    status: pending
+    status: not applicable
     rules: []
 
   - id: Req-3.6.4
@@ -614,8 +879,17 @@ controls:
       practices and guidelines (for example, NIST Special Publication 800-57).
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      It is the responsibility of the payment entity's operations team to rotate the 
+      encryption keys when they expire, according to the solution chosen for full disk
+      encryption:
+      * AWS EBS Encryption: Operations team creates a snapshot of the volume and then uses
+        the snapshot to create a new, encrypted copy of the volume. While creating the new volume, 
+        a new encryption key is specified.
+      * LUKS encryption with TPM2: The TPM secret cannot be modified after disk creation.
+      * LUKS encryption with Tang: The operations performs the Tang Keys rotation as described in 
+        https://access.redhat.com/solutions/4074891  
+    status: not applicable
     rules: []
 
   - id: Req-3.6.5
@@ -628,8 +902,10 @@ controls:
       Archived cryptographic keys should only be used for decryption/verification purposes.'
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      It is the responsibility of the payment entity's operations team to retire or 
+      replace weakened keys
+    status: not applicable
     rules: []
 
   - id: Req-3.6.6
@@ -639,16 +915,22 @@ controls:
       not limited to: key generation, transmission, loading, storage and destruction.'
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: 'Manual clear-text cryptographic key-management operations are not used in the context of Openshift Container Platform'
+    status: not applicable
     rules: []
 
   - id: Req-3.6.7
     title: 3.6.7 Prevention of unauthorized substitution of cryptographic keys.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This requirement depends on the solution chosen by the payment entity to protect card holder data at rest: 
+      * When Full Disk Encryption is done using AWS EBS encryption, the authorizations on the cryptographic keys are managed
+        in AWS IAM by the payment entity operating the service.
+      * When Full Disk Encryption is done using LUKS with TPM2, no substitution of cryptographic keys is possible after disk creation.
+      * When Full Disk Encryption is done using LUKS with Tang, the access to the Tang server, where the Tang Keys Rotation process 
+        can be handled, are the responsibility of the payment entity operating the service.
+    status: not applicable
     rules: []
 
   - id: Req-3.6.8
@@ -656,8 +938,12 @@ controls:
       that they understand and accept their key-custodian responsibilities.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This requirement is not applicable to the OpenShift Container Platform
+      as it instead pertains to the practices and documentation from the
+      payment entity. The platform may not generate the entity's policies
+      and security practices.
+    status: not applicable
     rules: []
 
 - id: Req-3.7
@@ -665,8 +951,12 @@ controls:
     stored cardholder data are documented, in use, and known to all affected parties.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This requirement is not applicable to the OpenShift Container Platform
+    as it instead pertains to the practices and documentation from the
+    payment entity. The platform may not generate the entity's policies
+    and security practices.
+  status: not applicable
   rules: []
 
 - id: Req-4.1
@@ -701,8 +991,13 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
-  rules: []
+  status: automated
+  rules:
+  - files_permissions_openshift_pki_cert_files
+  - tls_version_check_apiserver
+  - tls version_check_masters_nodes
+  - tls version_check_router
+  - etcd_check_cipher_suite
 
 - id: Req-4.1.1
   title: 4.1.1 Ensure wireless networks transmitting cardholder data or connected
@@ -712,16 +1007,16 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   rules: []
 
 - id: Req-4.2
-  title: 4.2 Never send unprotected PANs by end- user messaging technologies (for
-    example, e- mail, instant messaging, SMS, chat, etc.).
+  title: 4.2 Never send unprotected PANs by end-user messaging technologies (for
+    example, e-mail, instant messaging, SMS, chat, etc.).
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   rules: []
 
 - id: Req-4.3
@@ -731,7 +1026,7 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   rules: []
 
 - id: Req-5.1
@@ -739,28 +1034,48 @@ controls:
     software (particularly personal computers and servers).
   levels:
   - base
-  notes: ''
-  status: pending
-  rules: []
+  notes: |-
+    Security techniques that are commonly used by traditional IT infrastructures
+    have limited functionality in containerized  infrastructures. A key aspect to
+    successful security of container environments is identifying and 
+    understanding the opportunities or gateways for detection. While this may
+    encompass several attack vectors, there are integrations and mechanisms in
+    OpenShift that allow for this.
+  status: automated
+  controls:
+    - id: Req-5.1.1
+      title: 5.1.1 Ensure that anti-virus programs are capable of detecting, removing,
+        and protecting against all known types of malicious software.
+      levels:
+      - base
+      notes: |-
+        OpenShift container platforms may install the OpenShift File 
+        Integrity Operator [1] which monitors file system integrity on the host.
+        This may allow for the detection of threats on the hosts which attempt
+        to modify the file system in malicious ways. Additionally, there exist
+        several solutions to scan for container vulnerabilities which are indispensible
+        from any deployment. One such example is Red Hat Quay [2] which supports
+        image verification and continuous security scanning of container images.
 
-- id: Req-5.1.1
-  title: 5.1.1 Ensure that anti-virus programs are capable of detecting, removing,
-    and protecting against all known types of malicious software.
-  levels:
-  - base
-  notes: ''
-  status: pending
-  rules: []
+        [1] https://docs.openshift.com/container-platform/latest/security/file_integrity_operator/file-integrity-operator-understanding.html
+        [2] https://docs.openshift.com/container-platform/latest/security/container_security/security-registries.html
+      status: automated
+      rules:
+      - file_integrity_exists
 
-- id: Req-5.1.2
-  title: 5.1.2 For systems considered to be not commonly affected by malicious software,
-    perform periodic evaluations to identify and evaluate evolving malware threats
-    in order to confirm whether such systems continue to not require anti-virus software.
-  levels:
-  - base
-  notes: ''
-  status: pending
-  rules: []
+    - id: Req-5.1.2
+      title: 5.1.2 For systems considered to be not commonly affected by malicious software,
+        perform periodic evaluations to identify and evaluate evolving malware threats
+        in order to confirm whether such systems continue to not require anti-virus software.
+      levels:
+      - base
+      notes: |-
+        Red Hat Product Security constantly tracks threats to the OpenShift Container
+        Platform to ensure they are addressed. Besides this they also perform
+        vulnerability assessments on the platform which aid in keeping up
+        with the constantly evolving threat landscape.
+      status: inherently met
+      rules: []
 
 - id: Req-5.2
   title: '5.2 Ensure that all anti-virus mechanisms are maintained as follows:'
@@ -770,9 +1085,20 @@ controls:
     * Generate audit logs which are retained per PCI DSS Requirement 10.7.
   levels:
   - base
-  notes: ''
-  status: pending
-  rules: []
+  notes: |-
+    OpenShift container platforms may install the OpenShift File 
+    Integrity Operator [1] which monitors file system integrity on the host.
+    This may allow for the detection of threats on the hosts which attempt
+    to modify the file system in malicious ways. Additionally, there exist
+    several solutions to scan for container vulnerabilities which are indispensible
+    from any deployment. One such example is Red Hat Quay [2] which supports
+    image verification and continuous security scanning of container images.
+
+    [1] https://docs.openshift.com/container-platform/latest/security/file_integrity_operator/file-integrity-operator-understanding.html
+    [2] https://docs.openshift.com/container-platform/latest/security/container_security/security-registries.html
+  status: automated
+  rules:
+    - file_integrity_exists
 
 - id: Req-5.3
   title: 5.3 Ensure that anti-virus mechanisms are actively running and cannot be
@@ -785,17 +1111,32 @@ controls:
     for the period of time during which anti-virus protection is not active.'
   levels:
   - base
-  notes: ''
-  status: pending
-  rules: []
+  notes: |-
+    The OpenShift File Integrity Operator runs on a namespace prepended with
+    the `openshift-` prefix. Such namespaces are only accessible by system
+    administrators. Users require explicit roles to access the namespace. On
+    the other hand, given the usage of Custom Resource Definitions, users also
+    require explicit roles and permissions to access and modify the scan settings
+    of the operator.
+
+    Image registries such as Red Hat Quay also require special privileges in
+    order to modify and access them. Security scanning of images may not be
+    turned off.
+  status: automated
+  rules:
+    - file_integrity_exists
 
 - id: Req-5.4
   title: 5.4 Ensure that security policies and operational procedures for protecting
     systems against malware are documented, in use, and known to all affected parties.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This requirement is not applicable to the OpenShift Container Platform
+    as it instead pertains to the practices and documentation from the
+    payment entity. The platform may not generate the entity's policies
+    and security practices.
+  status: not applicable
   rules: []
 
 - id: Req-6.1
@@ -820,8 +1161,11 @@ controls:
     that store, process, or transmit cardholder data.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    Establishing a process to identify security vulnerabilities is outside of
+    OpenShift Container Platform's scope. That's up to the payment entity to
+    do and enforce.
+  status: not applicable
   rules: []
 
 - id: Req-6.2
@@ -832,8 +1176,21 @@ controls:
     the risk ranking process defined in Requirement 6.1.'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The OpenShift Container Platform provides the capability of updating
+    both the Kubernetes/OCP layer, as well as the Operating System (Red Hat
+    CoreOS) layer in an ubiquitous manner with over-the-air updates using
+    the OpenShift Update Service (OSUS) [1]. This service can also be installed
+    in clusters without internet connectivity [2].
+
+    [1] https://docs.openshift.com/container-platform/latest/updating/understanding-the-update-service.html
+    [2] https://docs.openshift.com/container-platform/latest/updating/installing-update-service.html
+  status: inherently met
+  # TODO(jaosorior): While this is inherently met for internet-connected
+  #                  clusters, we could still do a check for disconnected ones.
+  #                  The idea would be to check if we're on a disconnected cluster,
+  #                  and, if we are, check that an `upstream` is set on the
+  #                  ClusterVersion object.
   rules: []
 
 - id: Req-6.3
@@ -848,16 +1205,23 @@ controls:
     bespoke or custom software developed by a third party.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This control is applicable to the payment entity running OpenShift
+    and not to the platform itself. However, as part of the development
+    of the OpenShift Container Platform, Red Hat does perform extensive
+    security reviews on the platform itself by the Product Security organization.
+  status: not applicable
   controls:
   - id: Req-6.3.1
     title: 6.3.1 Remove development, test and/or custom application accounts, user IDs,
       and passwords before applications become active or are released to customers.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This control is applicable to the payment entity running OpenShift
+      and not to the platform itself. However, the OpenShift Container Platform
+      does not ship with development or testing accounts.
+    status: not applicable
     rules: []
 
   - id: Req-6.3.2
@@ -883,8 +1247,11 @@ controls:
       as defined at PCI DSS Requirement 6.6.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This controls is applicable to the payment entity running OpenShift
+      and not to the platform itself. However, code reviews are enforced 
+      as part of the development of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
 - id: Req-6.4
@@ -893,31 +1260,37 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   controls:
   - id: Req-6.4.1
     title: 6.4.1 Separate development/test environments from production environments,
       and enforce the separation with access controls.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment entity's
+      responsibility to separate development and test environments.
+    status: not applicable
     rules: []
 
   - id: Req-6.4.2
     title: 6.4.2 Separation of duties between development/test and production environments
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment entity's
+      responsibility to separate development and test environments.
+    status: not applicable
     rules: []
 
   - id: Req-6.4.3
     title: 6.4.3 Production data (live PANs) are not used for testing or development
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment entity's
+      responsibility to not use live PANs for testing and development.
+    status: not applicable
     rules: []
 
   - id: Req-6.4.4
@@ -925,8 +1298,11 @@ controls:
       active
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment entity's
+      responsibility to remove test data and accounts, or ensure they're not present
+      in production environments.
+    status: not applicable
     rules: []
 
   - id: Req-6.4.5
@@ -934,23 +1310,34 @@ controls:
       and software modifications must include the following:'
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow appropriate and documented procedures
+      when applying updates and software modifications.
+    status: not applicable
     controls:
     - id: Req-6.4.5.1
       title: 6.4.5.1 Documentation of impact.
       levels:
       - base
-      notes: ''
-      status: pending
+      notes: |-
+        This is an organizational control, and thus it's in the payment
+        entity's responsibility to follow appropriate procedures
+        when applying updates and software modifications, and that these
+        procedures are thoroughly documented.
+      status: not applicable
       rules: []
 
     - id: Req-6.4.5.2
       title: 6.4.5.2 Documented change approval by authorized parties.
       levels:
       - base
-      notes: ''
-      status: pending
+      notes: |-
+        This is an organizational control, and thus it's in the payment
+        entity's responsibility to follow appropriate and documented procedures
+        when applying updates and software modifications, and that these
+        procedures are approved by an authorized party.
+      status: not applicable
       rules: []
 
     - id: Req-6.4.5.3
@@ -958,17 +1345,41 @@ controls:
         impact the security of the system.
       levels:
       - base
-      notes: ''
-      status: pending
+      notes: |-
+        This is an organizational control, and thus it's in the payment
+        entity's responsibility to follow appropriate and documented procedures
+        when applying updates and software modifications, as well
+        as testing them appropriately before applying them.
+      status: not applicable
       rules: []
 
     - id: Req-6.4.5.4
       title: 6.4.5.4 Back-out procedures.
       levels:
       - base
-      notes: ''
-      status: pending
+      notes: |-
+        This is an organizational control, and thus it's in the payment
+        entity's responsibility to follow appropriate and documented procedures
+        when applying updates and software modifications, as well
+        having back-out procedures in-place and working.
+
+        However, OpenShift operators and most building blocks of the platform
+        able to downgrade automatically if an update doesn't go as expected or
+        if API requirements are not satisfied.
+      status: not applicable
       rules: []
+
+  - id: Req-6.4.6
+    title: '6.4.6- Upon completion of a significant change, all relevant PCI DSS requirements must be implemented on all
+      new or changed systems and networks, and documentation updated as applicable.'
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow implement and document all relevant requirements
+      to new or changed software
+    status: not applicable
+    rules: []
 
 - id: Req-6.5
   title: '6.5 Address common coding vulnerabilities in software-development processes
@@ -986,65 +1397,103 @@ controls:
     practices must be used for these requirements.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control, and thus it's in the payment
+    entity's responsibility to follow best secure development practices
+    when developing applications on top of the OpenShift Container Platform.
+  status: not applicable
   controls:
   - id: Req-6.5.1
     title: 6.5.1 Injection flaws, particularly SQL injection. Also consider OS Command
       Injection, LDAP and XPath injection flaws as well as other injection flaws.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
   - id: Req-6.5.2
     title: 6.5.2 Buffer overflows
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
   - id: Req-6.5.3
     title: 6.5.3 Insecure cryptographic storage
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+
+      However, the OpenShift Container Platform does have the ability to
+      enforce strong cryptographic algorithms if customers are enabling
+      FIPS[1] on their clusters and they used supported container images
+      such as UBI. This will ensure that their applications use approved
+      and string cryptographic algorithms.
+
+      [1] https://docs.openshift.com/container-platform/4.9/installing/installing-fips.html
+    status: not applicable
     rules: []
 
   - id: Req-6.5.4
     title: 6.5.4 Insecure communications
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+
+      However, OpenShift does provide tools that can help ensure that
+      secure communications are in place. e.g. OpenShift Routes
+      can easily enforce TLS is enabled for that specific endpoint.
+    status: partial
+    rules:
+    - routes_protected_by_tls
 
   - id: Req-6.5.5
     title: 6.5.5 Improper error handling
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
   - id: Req-6.5.6
-    title: "6.5.6 All \u201Chigh risk\u201D vulnerabilities identified in the vulnerability\
-      \ identification process (as defined in PCI DSS Requirement 6.1)."
+    title: >-
+      6.5.6 All "high risk" vulnerabilities identified in the vulnerability
+      identification process (as defined in PCI DSS Requirement 6.1).
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Red Hat Product Security publishes a list of known vulnerabilities that
+      allow organizations to measure their security posture and evaluate if
+      their platform and base images are appropriately patched.
+    status: inherently met
     rules: []
 
   - id: Req-6.5.7
     title: 6.5.7   Cross-site scripting (XSS)
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
   - id: Req-6.5.8
@@ -1053,16 +1502,25 @@ controls:
       access to functions).
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+
+      It is the responsibility of the payment entity to review RBAC permissions
+      in the platform.
+    status: not applicable
     rules: []
 
   - id: Req-6.5.9
     title: 6.5.9 Cross-site request forgery (CSRF)
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
   - id: Req-6.5.10
@@ -1071,8 +1529,11 @@ controls:
       which it becomes a requirement.'
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
 - id: Req-6.6
@@ -1092,8 +1553,11 @@ controls:
       front of public- facing web applications, to continually check all traffic.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control, and thus it's in the payment
+    entity's responsibility to identify public-facing web applications
+    and ensure threat detection is in place.
+  status: not applicable
   rules: []
 
 - id: Req-6.7
@@ -1102,8 +1566,12 @@ controls:
     to all affected parties.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control, and thus it's in the payment
+    entity's responsibility to follow best secure development practices
+    when developing applications on top of the OpenShift Container Platform,
+    and that they're appropriately documented.
+  status: not applicable
   rules: []
 
 - id: Req-7.1
@@ -1111,8 +1579,12 @@ controls:
     whose job requires such access.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The OpenShift Container Platform comes with the Kubernetes RBAC
+    feature enabled by default. This feature ensures that only if a
+    user or a system account has the appropriate permission, it's able
+    to operate on specific system objects.
+  status: automated
   controls:
   - id: Req-7.1.1
     title: '7.1.1 Define access needs for each role, including:'
@@ -1123,18 +1595,31 @@ controls:
         etc.) for accessing resources.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      The OpenShift Container Platform comes with the Kubernetes RBAC
+      feature enabled by default. This feature ensures that only if a
+      user or a system account has the appropriate permission, it's able
+      to operate on specific system objects. By reviewing the existing
+      Role and ClusterRole objects, one is able to see the resources
+      that are accessible for a certain role, as well as the "verbs" or
+      operations that the role can execute on that resource.
+    status: automated
+    rules:
+    - rbac_roles_defined
+    - rbac_cluster_roles_defined
 
   - id: Req-7.1.2
     title: 7.1.2 Restrict access to privileged user IDs to least privileges necessary
       to perform job responsibilities.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      The OpenShift Container Platform contains a ClusterRole called `cluster-admin`
+      this role is allowed to do anything in the system. It is recommended to monitor
+      the usage of this ClusterRole to prevent misuse.
+    status: partial
+    rules:
+    - rbac_limit_cluster_admin
 
   - id: Req-7.1.3
     title: >-
@@ -1142,8 +1627,11 @@ controls:
       and function."
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The application of this control is the responsibility of the
+      payment entity, and is not something the OpenShift Container Platform
+      can enforce.
+    status: not applicable
     rules: []
 
   - id: Req-7.1.4
@@ -1151,8 +1639,11 @@ controls:
       privileges.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The application of this control is the responsibility of the
+      payment entity, and is not something the OpenShift Container Platform
+      can enforce.
+    status: not applicable
     rules: []
 
 - id: Req-7.2
@@ -1163,15 +1654,23 @@ controls:
   description: 'This access control system must include the following:'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+      The OpenShift Container Platform has RBAC enabled by default. With this
+      feature, any requests to the API is denied unless an explicit
+      Role or ClusterRule is bound to the entity making the request.
+  status: inherently met
   controls:
   - id: Req-7.2.1
     title: 7.2.1 Coverage of all system components
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The OpenShift Container Platform has RBAC enabled by default. With this
+      feature, any requests to the API is denied unless an explicit
+      Role or ClusterRule is bound to the entity making the request.
+
+      All objects in Kubernetes/OpenShift are bound to RBAC permissions.
+    status: inherently met
     rules: []
 
   - id: Req-7.2.2
@@ -1179,16 +1678,22 @@ controls:
       and function.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The application of this control is the responsibility of the
+      payment entity, and is not something the OpenShift Container Platform
+      can enforce.
+    status: not applicable
     rules: []
 
   - id: Req-7.2.3
     title: "7.2.3 Default 'deny-all' setting."
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The OpenShift Container Platform has RBAC enabled by default. With this
+      feature, any requests to the API is denied unless an explicit
+      Role or ClusterRule is bound to the entity making the request.
+    status: inherently met
     rules: []
 
 - id: Req-7.3
@@ -1196,8 +1701,11 @@ controls:
     access to cardholder data are documented, in use, and known to all affected parties.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The application of this control is the responsibility of the
+    payment entity, and is not something the OpenShift Container Platform
+    can enforce.
+  status: not applicable
   rules: []
 
 - id: Req-8.1
@@ -1754,53 +2262,62 @@ controls:
   rules: []
 
 - id: Req-10.1
-  title: 10.1 Implement audit trails to link all access to system components to each
-    individual user.
+  title: >-
+    10.1 Implement audit trails to link all access to system components to each individual
+    user.
+  notes: |-
+    All actions taken by users of OpenShift are logged and capable of being used to satisfy audit requirements.
   levels:
   - base
-  notes: ''
-  status: pending
-  rules: []
+  status: inherently met
 
 - id: Req-10.2
-  title: '10.2 Implement automated audit trails for all system components to reconstruct
-    the following events:'
+  title: >-
+    10.2 Implement automated audit trails for all system components to reconstruct
+    the following events:
   levels:
   - base
-  notes: ''
-  status: pending
+  status: inherently met
   controls:
   - id: Req-10.2.1
     title: 10.2.1 All individual user accesses to cardholder data
+    notes: >-
+      All user and/or service account accesses to OpenShift components are logged. The payment entity would
+      be responsible for enabling logging for access to applications within workloads hosted in containers in
+      OpenShift.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: inherently met
 
   - id: Req-10.2.2
     title: 10.2.2 All actions taken by any individual with root or administrative privileges
+    notes: >-
+      All actions taken by individual with root or administrative privileges to OpenShift and Red Hat CoreOS are
+      logged.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: inherently met
 
   - id: Req-10.2.3
     title: 10.2.3 Access to all audit trails
+    notes: >-
+      Access to audit trails relative to OpenShift are made available at the OS level with administrator accounts.
+      Red Hat CoreOS can be configured to log access to the journal or log file. For better protection of audit
+      trails, including improved access controls, it is recommended to direct logs to an external log server or
+      Security Information Event Management (SIEM) solution.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: inherently met
 
   - id: Req-10.2.4
     title: 10.2.4 Invalid logical access attempts
+    notes: >-
+      Invalid logical access attempts pertaining to incorrect input of credentials would be handled by the payment
+      entity’s chosen identity provider. Unauthorized attempts to access system components or run unauthorized
+      commands against OpenShift are logged.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: inherently met
 
   - id: Req-10.2.5
     title: >-
@@ -1808,159 +2325,193 @@ controls:
       -- including but not limited to creation of new accounts and elevation of privileges --
       and all changes, additions, or deletions to accounts with root or administrative
       privileges
+    notes: >-
+      Like 10.2.4, changes to identification and authentication mechanisms would be handled by the payment
+      entity’s chosen identity provider. Changes that are made to RBAC within OpenShift are logged. These
+      logged events may be an indication of attempts to modify defined roles to grant additional privileges.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: inherently met
 
   - id: Req-10.2.6
     title: 10.2.6 Initialization, stopping, or pausing of the audit logs
+    notes: >-
+      Stopping the mechanisms for log creation in OpenShift requires stopping the OpenShift Control Plane itself,
+      which would have the effect of preventing any further access for any users to the API, CLI, or Web UI.
+      Auditing within OpenShift cannot be reconfigured or stopped without reconfiguring OpenShift. Any attempt
+      to reconfigure OpenShift will be logged.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: inherently met
 
   - id: Req-10.2.7
     title: 10.2.7 Creation and deletion of system- level objects
+    notes: >-
+      Creation and deletion of system levels objects is logged by OpenShift (for OpenShift objects) and by Red
+      Hat CoreOS.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: inherently met
 
 - id: Req-10.3
-  title: '10.3 Record at least the following audit trail entries for all system components
-    for each event:'
+  title: >-
+    10.3 Record at least the following audit trail entries for all system components for each event:'
   levels:
   - base
-  notes: ''
-  status: pending
+  status: inherently met
   controls:
   - id: Req-10.3.1
     title: 10.3.1 User identification
+    notes: >-
+      The logs generated by OpenShift and Red Hat CoreOS include user identification.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: inherently met
 
   - id: Req-10.3.2
     title: 10.3.2 Type of event
+    notes: >-
+      The logs generated by OpenShift and Red Hat CoreOS include the type of event.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: inherently met
 
   - id: Req-10.3.3
     title: 10.3.3 Date and time
+    notes: >-
+      The logs generated by OpenShift and Red Hat CoreOS include the date and time of the event.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: inherently met
 
   - id: Req-10.3.4
     title: 10.3.4 Success or failure indication
+    notes: >-
+      The logs generated by OpenShift and Red Hat CoreOS include a success or failure indication.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: inherently met
 
   - id: Req-10.3.5
     title: 10.3.5 Origination of event
+    notes: >-
+      The logs generated by OpenShift and Red Hat CoreOS include the origination of the event.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: inherently met
 
   - id: Req-10.3.6
     title: 10.3.6 Identity or name of affected data, system component, or resource.
+    notes: >-
+      The logs generated by OpenShift and Red Hat CoreOS include the identity or name of affected data, system
+      component, or resource.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: inherently met
 
 - id: Req-10.4
   title: 10.4 Using time-synchronization technology, synchronize all critical system
     clocks and times and ensure that the following is implemented for acquiring, distributing,
     and storing time.
-  description: 'Note: One example of time synchronization technology is Network Time
-    Protocol (NTP).'
+  notes: 'One example of time synchronization technology is Network Time Protocol (NTP).'
   levels:
   - base
-  notes: ''
-  status: pending
+  status: not applicable
   controls:
   - id: Req-10.4.1
     title: 10.4.1 Critical systems have the correct and consistent time.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: not applicable
 
   - id: Req-10.4.2
     title: 10.4.2 Time data is protected.
+    notes: >-
+      Time data is protected as it is part of the underlying OS that is obfuscated from the OpenShift user interfaces.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: not applicable
 
   - id: Req-10.4.3
     title: 10.4.3 Time settings are received from industry-accepted time sources.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: not applicable
 
 - id: Req-10.5
   title: 10.5 Secure audit trails so they cannot be altered.
   levels:
   - base
-  notes: ''
-  status: pending
+  status: automated
   controls:
   - id: Req-10.5.1
     title: 10.5.1 Limit viewing of audit trails to those with a job-related need.
+    notes: >-
+      It is recommended to use an external log aggregation solution or SIEM solution for securing audit trails.
+      While the logs reside on the Red Hat CoreOS server, access can be controlled using RBAC. An external
+      solution may be better equipped to secure audit trails in alignment with compliance requirements. RBAC
+      controls in Red Hat CoreOS can be used to limit the ability to review audit logs and journals. An external
+      solution may be able to provide improved granularity as well as search capability that would be of better
+      use to the payment entity to satisfy requirements.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: automated
+    rules:
+      - rbac_limit_cluster_admin
 
   - id: Req-10.5.2
     title: 10.5.2 Protect audit trail files from unauthorized modifications.
+    notes: >-
+      Limited access to the audit trails on OpenShift hosts provides minimal protection from unauthorized modification.
+      Use of an external log collector or SIEM solution may provide improved protections against unauthorized
+      modifications by adding additional features such as file integrity monitoring, digital signing, or Write Once,
+      Read Many (WORM) storage.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: automated
+    rules:
+      - directory_permissions_var_log_kube_audit
+      - directory_permissions_var_log_oauth_audit
+      - directory_permissions_var_log_ocp_audit
+      - file_ownership_var_log_kube_audit
+      - file_ownership_var_log_oauth_audit
+      - file_ownership_var_log_ocp_audit
+      - file_permissions_var_log_kube_audit
+      - file_permissions_var_log_oauth_audit
+      - file_permissions_var_log_ocp_audit
 
   - id: Req-10.5.3
-    title: 10.5.3 Promptly back up audit trail files to a centralized log server or
-      media that is difficult to alter.
+    title: 10.5.3 Promptly back up audit trail files to a centralized log server or media that is difficult to alter.
+    notes: >-
+      Limited access to the audit trails on OpenShift hosts provides minimal protection from unauthorized modification.
+      Use of an external log collector or SIEM solution may provide improved protections against unauthorized
+      modifications by adding additional features such as file integrity monitoring, digital signing, or Write Once,
+      Read Many (WORM) storage.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: automated
+    rules:
+      - audit_log_forwarding_enabled
+      - partition_for_var_log_kube_apiserver
+      - partition_for_var_log_oauth_apiserver
+      - partition_for_var_log_openshift_apiserver
 
   - id: Req-10.5.4
-    title: 10.5.4 Write logs for external-facing technologies onto a secure, centralized,
-      internal log server or media device.
+    title: 10.5.4 Write logs for external-facing technologies onto a secure, centralized, internal log server or
+      media device.
+    notes: >-
+      Limited access to the audit trails on OpenShift hosts provides minimal protection from unauthorized modification.
+      Use of an external log collector or SIEM solution may provide improved protections against unauthorized
+      modifications by adding additional features such as file integrity monitoring, digital signing, or Write Once,
+      Read Many (WORM) storage.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: automated
+    rules:
+      - audit_log_forwarding_enabled
+      - partition_for_var_log_kube_apiserver
+      - partition_for_var_log_oauth_apiserver
+      - partition_for_var_log_openshift_apiserver
 
   - id: Req-10.5.5
     title: 10.5.5 Use file-integrity monitoring or change-detection software on logs
@@ -1968,9 +2519,10 @@ controls:
       new data being added should not cause an alert).
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: partial
+    rules:
+      # TODO: Add FIO config to allow /var/log/... to extend in size but monitor perms.
+      - file_integrity_exists
 
 - id: Req-10.6
   title: 10.6 Review logs and security events for all system components to identify
@@ -1979,8 +2531,7 @@ controls:
     this Requirement.'
   levels:
   - base
-  notes: ''
-  status: pending
+  status: not applicable
   controls:
   - id: Req-10.6.1
     title: '10.6.1 Review the following at least daily:'
@@ -1993,9 +2544,7 @@ controls:
         systems (IDS/IPS), authentication servers, e-commerce redirection servers, etc.).
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: not applicable
 
   - id: Req-10.6.2
     title: >-
@@ -2004,17 +2553,13 @@ controls:
       by the organization's annual risk assessment.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: not applicable
 
   - id: Req-10.6.3
     title: 10.6.3 Follow up exceptions and anomalies identified during the review process.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    status: not applicable
 
 - id: Req-10.7
   title: 10.7 Retain audit trail history for at least one year, with a minimum of
@@ -2022,9 +2567,7 @@ controls:
     or restorable from backup).
   levels:
   - base
-  notes: ''
-  status: pending
-  rules: []
+  status: not applicable
 
 - id: Req-10.8
   title: 10.8 Ensure that security policies and operational procedures for monitoring
@@ -2032,9 +2575,7 @@ controls:
     known to all affected parties.
   levels:
   - base
-  notes: ''
-  status: pending
-  rules: []
+  status: not applicable
 
 - id: Req-11.1
   title: 11.1 Implement processes to test for the presence of wireless access points
@@ -2048,16 +2589,24 @@ controls:
     authorized and unauthorized devices.'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    wireless access points are not within the realm of the OpenShift Platform and the
+    deployment expectations of it. Normally it will be deployed within cloud
+    infrastructure where the cloud provider is responsible for keeping network
+    devices monitored. However, when deployed on Bare-metal, it is the responsibility
+    of the deployer or the payment entity (if they are the ones deploying) to
+    effectuate this monitoring.
+  status: not applicable
   controls:
   - id: Req-11.1.1
     title: 11.1.1 Maintain an inventory of authorized wireless access points including
       a documented business justification.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
   - id: Req-11.1.2
@@ -2065,8 +2614,10 @@ controls:
       access points are detected.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
 - id: Req-11.2
@@ -2087,8 +2638,13 @@ controls:
     DSS review, four quarters of passing scans must have occurred.'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is the responsibility of the payment entity and not of the Openshift
+    Platform itself. However, there are products such as Red Hat Advanced
+    Cluster Security [1] which may help in such network scanning.
+
+    [1] https://docs.openshift.com/acs/3.66/welcome/index.html
+  status: not applicable
   controls:
   - id: Req-11.2.1
     title: >-
@@ -2097,8 +2653,10 @@ controls:
       6.1) are resolved. Scans must be performed by qualified personnel.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
   - id: Req-11.2.2
@@ -2113,8 +2671,10 @@ controls:
       responsibilities, scan preparation, etc.'
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
   - id: Req-11.2.3
@@ -2122,8 +2682,10 @@ controls:
       any significant change. Scans must be performed by qualified personnel.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
 - id: Req-11.3
@@ -2142,8 +2704,10 @@ controls:
     * Specifies retention of penetration testing results and remediation activities results.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is the responsibility of the payment entity and not of the Openshift
+    Platform itself.
+  status: not applicable
   controls:
   - id: Req-11.3.1
     title: 11.3.1 Perform external penetration testing at least annually and after any
@@ -2152,8 +2716,10 @@ controls:
       added to the environment).
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
   - id: Req-11.3.2
@@ -2163,8 +2729,10 @@ controls:
       added to the environment).
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
   - id: Req-11.3.3
@@ -2172,8 +2740,10 @@ controls:
       and testing is repeated to verify the corrections.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
   - id: Req-11.3.4
@@ -2183,8 +2753,10 @@ controls:
       all out-of-scope systems from systems in the CDE.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
 - id: Req-11.4
@@ -2196,8 +2768,15 @@ controls:
     signatures up to date.
   levels:
   - base
-  notes: ''
-  status: pending
+  # TODO(jaosorior): Maybe we could automate this check by
+  #                  checking if ACS is available in the cluster
+  notes: |-
+    This is the responsibility of the payment entity and not of the Openshift
+    Platform itself. However, there are products such as Red Hat Advanced
+    Cluster Security [1] which may help in such network scanning.
+
+    [1] https://docs.openshift.com/acs/3.66/welcome/index.html
+  status: not applicable
   rules: []
 
 - id: Req-11.5
@@ -2214,44 +2793,62 @@ controls:
     provider).'
   levels:
   - base
-  notes: ''
-  status: pending
-  rules: []
+  notes: |-
+    The OpenShift Container Platform controls the whole stack (from the Kubernetes layer to
+    the Operating System layer). It is possible to Install the File Integrity Operator
+    which does file-integrity monitoring and is able to alert administrators if
+    an unexpected change happened [1].
 
-- id: Req-11.5.1
-  title: 11.5.1 Implement a process to respond to any alerts generated by the change-
-    detection solution.
-  levels:
-  - base
-  notes: ''
-  status: pending
-  rules: []
+    [1] https://docs.openshift.com/container-platform/latest/security/file_integrity_operator/file-integrity-operator-understanding.html
+  status: automated
+  rules:
+  - file_integrity_exists
+  controls:
+  - id: Req-11.5.1
+    title: 11.5.1 Implement a process to respond to any alerts generated by the change-
+      detection solution.
+    levels:
+    - base
+    notes: |-
+      While this is a control that's meant for the payment entity to set up a process
+      to respond to alerts, OpenShift Container Platform's File Integrity Operator
+      supports alerts via that can be ingested by AlertManager.
+    # TODO: * Add link to documentation
+    #       * Add OpenSCAP rule that verifies that the PrometheusRule exists
+    status: supported
+    rules: []
 
 - id: Req-11.6
   title: 11.6 Ensure that security policies and operational procedures for security
     monitoring and testing are documented, in use, and known to all affected parties.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is the responsibility of the payment entity and not of the Openshift
+    Platform itself.
+  status: not applicable
   rules: []
 
 - id: Req-12.1
   title: 12.1 Establish, publish, maintain, and disseminate a security policy.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: not applicable
   rules: []
-
-- id: Req-12.1.1
-  title: 12.1.1 Review the security policy at least annually and update the policy
-    when the environment changes.
-  levels:
-  - base
-  notes: ''
-  status: pending
-  rules: []
+  controls:
+  - id: Req-12.1.1
+    title: 12.1.1 Review the security policy at least annually and update the policy
+      when the environment changes.
+    levels:
+    - base
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
+    rules: []
 
 - id: Req-12.2
   title: '12.2 Implement a risk-assessment process that:'
@@ -2265,8 +2862,10 @@ controls:
     to OCTAVE, ISO 27005 and NIST SP 800-30.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: not applicable
   rules: []
 
 - id: Req-12.3
@@ -2279,31 +2878,39 @@ controls:
     Ensure these usage policies require the following:'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: not applicable
   controls:
   - id: Req-12.3.1
     title: 12.3.1 Explicit approval by authorized parties
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.3.2
     title: 12.3.2 Authentication for use of the technology
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.3.3
     title: 12.3.3 A list of all such devices and personnel with access
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.3.4
@@ -2311,32 +2918,40 @@ controls:
       and purpose (for example, labeling, coding, and/or inventorying of devices)
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.3.5
     title: 12.3.5 Acceptable uses of the technology
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.3.6
     title: 12.3.6 Acceptable network locations for the technologies
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.3.7
     title: 12.3.7 List of company-approved products
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.3.8
@@ -2344,8 +2959,10 @@ controls:
       a specific period of inactivity
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.3.9
@@ -2354,8 +2971,10 @@ controls:
       after use
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.3.10
@@ -2367,8 +2986,10 @@ controls:
       require the data be protected in accordance with all applicable PCI DSS Requirements.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
 - id: Req-12.4
@@ -2376,8 +2997,10 @@ controls:
     security responsibilities for all personnel.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: not applicable
   rules: []
 
 - id: Req-12.5
@@ -2385,15 +3008,19 @@ controls:
     management responsibilities:'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: not applicable
   controls:
   - id: Req-12.5.1
     title: 12.5.1 Establish, document, and distribute security policies and procedures.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.5.2
@@ -2401,8 +3028,10 @@ controls:
       to appropriate personnel.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.5.3
@@ -2410,33 +3039,44 @@ controls:
       escalation procedures to ensure timely and effective handling of all situations.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.5.4
     title: 12.5.4 Administer user accounts, including additions, deletions, and modifications.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity. Also, note that on a technical side, user accounts are the
+      responsibility of an IdP, and not of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
   - id: Req-12.5.5
     title: 12.5.5 Monitor and control all access to data.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      All accesses and operations to OpenShift objects are audited
+      accordingly. Auditing cannot be turned off in the OpenShift
+      Container Platform.
+    status: automated
+    rules:
+    - audit_profile_set
 
 - id: Req-12.6
   title: 12.6 Implement a formal security awareness program to make all personnel
     aware of the importance of cardholder data security.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: not applicable
   controls:
   - id: Req-12.6.1
     title: 12.6.1 Educate personnel upon hire and at least annually.
@@ -2444,8 +3084,10 @@ controls:
       their level of access to the cardholder data.'
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.6.2
@@ -2453,8 +3095,10 @@ controls:
       read and understood the security policy and procedures.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
 - id: Req-12.7
@@ -2466,8 +3110,10 @@ controls:
     facilitating a transaction, this requirement is a recommendation only.'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: not applicable
   rules: []
 
 - id: Req-12.8
@@ -2476,15 +3122,19 @@ controls:
     data, as follows:'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: not applicable
   controls:
   - id: Req-12.8.1
     title: 12.8.1 Maintain a list of service providers.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.8.2
@@ -2500,8 +3150,10 @@ controls:
       wording provided in this requirement.'
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.8.3
@@ -2509,8 +3161,10 @@ controls:
       including proper due diligence prior to engagement.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.8.4
@@ -2519,8 +3173,10 @@ controls:
       status at least annually.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.8.5
@@ -2528,8 +3184,10 @@ controls:
       by each service provider, and which are managed by the entity.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
 - id: Req-12.9
@@ -2548,8 +3206,10 @@ controls:
     wording provided in this requirement.'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is not a technical control, and thus there isn't something that could be
+    leveraged from the OpenShift Container Platform to address this.
+  status: not applicable
   rules: []
 
 - id: Req-12.10
@@ -2557,8 +3217,10 @@ controls:
     to a system breach.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control which is the responsibility of the payment
+    entity.
+  status: not applicable
   controls:
   - id: Req-12.10.1
     title: '12.10.1 Create the incident response plan to be implemented in the event
@@ -2577,16 +3239,20 @@ controls:
         brands.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.10.2
     title: 12.10.2 Test the plan at least annually.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.10.3
@@ -2594,8 +3260,10 @@ controls:
       to alerts.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational and personnel-related control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.10.4
@@ -2603,8 +3271,10 @@ controls:
       responsibilities.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational and personnel-related control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
   - id: Req-12.10.5
@@ -2613,8 +3283,16 @@ controls:
       monitoring systems.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is a requirement for the incident response program, and its the responsibility of the
+      payment entity to include such information. However, the OpenShift Container Platform
+      does come with a monitoring stack that allows for transforming metrics into relevant
+      alerts [1]
+
+      [1] https://docs.openshift.com/container-platform/4.9/monitoring/managing-alerts.html
+    # TODO(jaosorior): is there a relevant rule we could write for this? It's enabled
+    #                  by default and it cannot be turned off.
+    status: supported
     rules: []
 
   - id: Req-12.10.6
@@ -2622,8 +3300,10 @@ controls:
       according to lessons learned and to incorporate industry developments.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an procedural control which is the responsibility of the payment
+      entity.
+    status: not applicable
     rules: []
 
 - id: Req-A.1

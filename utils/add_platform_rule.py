@@ -134,7 +134,7 @@ kind: ComplianceScan
 metadata:
   name: test
 spec:
-  scanType: Platform
+  scanType: {TYPE}
   profile: {PROFILE}
   content: ssg-ocp4-ds.xml
   contentImage: image-registry.openshift-image-registry.svc:5000/openshift-compliance/openscap-ocp4-ds:latest
@@ -185,6 +185,8 @@ def createFunc(args):
     namespace_flag = ''
     if args.namespace is not None:
         namespace_flag = '-n ' + args.namespace
+    elif args.all_namespaces:
+        namespace_flag = '-A'
 
     group_path = os.path.join(PLATFORM_RULE_DIR, args.group)
     if args.group:
@@ -196,8 +198,16 @@ def createFunc(args):
     rule_path = os.path.join(group_path, args.rule)
     while url is None and retries < 5:
         retries += 1
-        ret_code, output = subprocess.getstatusoutput(
-            'oc get %s/%s %s --loglevel=6' % (args.type, args.name, namespace_flag))
+        cmdstr = 'oc get %s' % (args.type)
+
+        if args.name:
+            cmdstr += ' ' + args.name
+
+        cmdstr += ' %s --loglevel=6' % (namespace_flag)
+
+        print("Running: " + cmdstr)
+        ret_code, output = subprocess.getstatusoutput(cmdstr)
+
         if ret_code != 0:
             print('error running oc, check connection to the cluster: %d\n %s' % (
                 ret_code, output))
@@ -213,7 +223,7 @@ def createFunc(args):
 
         if len(fetch_line) > 0:
             # extract the object url from the debug line
-            full_url = fetch_line.split(" ")[5]
+            full_url = fetch_line[fetch_line.index("GET"):].split(" ")[1]
             url_part = full_url[full_url.rfind("/api"):]
 
         if len(url_part) > 0 and '/api' in url_part:
@@ -286,7 +296,7 @@ def clusterTestFunc(args):
     apply_cmd = ['oc', 'apply', '-f', '-']
     with subprocess.Popen(apply_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE) as proc:
         _, err = proc.communicate(
-            input=TEST_SCAN_TEMPLATE.format(PROFILE=profile).encode())
+            input=TEST_SCAN_TEMPLATE.format(PROFILE=profile, TYPE=args.scantype).encode())
         if proc.returncode != 0:
             print('Error applying scan object: %s' % err)
             try:
@@ -359,7 +369,7 @@ def main():
     create_parser.add_argument(
         '--group', default="", help='The group directory of the rule to create.')
     create_parser.add_argument(
-        '--name', required=True, help='The name of the Kubernetes object to check. Required.')
+        '--name', help='The name of the Kubernetes object to check.')
     create_parser.add_argument(
         '--type', required=True, help='The type of Kubernetes object, e.g., configmap. Required.')
     create_parser.add_argument('--yamlpath', required=True,
@@ -368,6 +378,9 @@ def main():
         '--match', required=True, help='A string value or regex providing the matching criteria. Required')
     create_parser.add_argument(
         '--namespace', help='The namespace of the Kubernetes object (optional for cluster-scoped objects)', default=None)
+    create_parser.add_argument(
+        '--all-namespaces', action="store_true", help='The namespace of the Kubernetes object (optional for cluster-scoped objects)',
+        default=False)
     create_parser.add_argument(
         '--title', help='A short description of the check.')
     create_parser.add_argument(
@@ -396,6 +409,10 @@ def main():
         '--skip-deploy', default=False, action="store_true", help='Skip deploying the compliance-operator. Default is to deploy.')
     cluster_test_parser.add_argument(
         '--skip-build', default=False, action="store_true", help='Skip building and pushing the datastream. Default is true.')
+    cluster_test_parser.add_argument(
+        '--scan-type', help='Type of scan to execute.', dest="scantype",
+        default="Platform",
+        choices=["Node", "Platform"])
     cluster_test_parser.set_defaults(func=clusterTestFunc)
 
     test_parser = subparser.add_parser(

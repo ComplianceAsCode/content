@@ -1,5 +1,10 @@
 documentation_complete: true
 
+metadata:
+    version: 4.2.1
+
+reference: https://www.niap-ccevs.org/Profile/PP.cfm
+
 title: '[DRAFT] Protection Profile for General Purpose Operating Systems'
 
 description: |-

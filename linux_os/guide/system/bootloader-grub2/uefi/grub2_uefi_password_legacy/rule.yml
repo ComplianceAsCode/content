@@ -1,0 +1,55 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Set the UEFI Boot Loader Password - systems prior to version 7.2'
+
+description: |-
+    The grub2 boot loader should have a superuser account and password
+    protection enabled to protect boot-time settings.
+    <br /><br />
+    Since plaintext passwords are a security risk, generate a hash for the password
+    by running the following command: <pre># grub2-mkpasswd-pbkdf2</pre>
+    When prompted, enter the password that was selected.
+    <br /><br />
+    Using the hash from the output, modify the <tt>/etc/grub.d/40_custom</tt>
+    file with the following content:
+    <pre>set superusers="root"
+    password_pbkdf2 boot grub.pbkdf2.sha512.VeryLongString
+    </pre>
+    Once the superuser password has been added, update the
+    <tt>grub.cfg</tt> file by running:
+    <pre>grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
+
+rationale: |-
+    Password protection on the boot loader configuration ensures
+    users with physical access cannot trivially alter
+    important bootloader settings. These include which kernel to use,
+    and whether to enter single-user mode.
+
+severity: high
+
+references:
+    disa: CCI-000213
+    nist: AC-3,AC-3.1,AC-3
+    srg: SRG-OS-000080-GPOS-00048
+    stigid@ol7: OL07-00-010490
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    To verify the boot loader superuser password has been set, run the following
+    command:
+    <pre># grep -i password {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
+    The output should show the following:
+    <pre>password_pbkdf2 <b>superusers-account</b> <b>${GRUB2_PASSWORD}</b></pre>
+
+warnings:
+    - general: |-
+        To prevent hard-coded passwords, automatic remediation of this control is not available. Remediation
+        must be automated as a component of machine provisioning, or followed manually as outlined above.
+
+        Also, do NOT manually add the superuser account and password to the
+        <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
+
+platform: machine

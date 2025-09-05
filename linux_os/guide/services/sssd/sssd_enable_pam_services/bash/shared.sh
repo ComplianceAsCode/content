@@ -1,8 +1,5 @@
 # platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_ol
 
-# Include source function library.
-. /usr/share/scap-security-guide/remediation_functions
-
 SSSD_CONF="/etc/sssd/sssd.conf"
 SSSD_CONF_DIR="/etc/sssd/conf.d/*.conf"
 

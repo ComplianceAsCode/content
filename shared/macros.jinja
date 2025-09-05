@@ -1,3 +1,6 @@
+{{#
+    An OCIL clause for an sshd option
+#}}
 {{% macro ocil_clause_entry_sshd_option() -%}}
 ocil_clause: "the required value is not set"
 {{%- endmacro %}}
@@ -7,12 +10,16 @@ ocil_clause: "the required value is not set"
   Macro which generates a warning indicating how to make use of a
   Kubernetes/OpenShift-related rule. This is used by the Compliance
   Operator to automatically figure out what resources to fetch.
-    - endpoint (String/Array): The Kubernetes object path(s) to fetch
+
+:param endpoint: The Kubernetes object path(s) to fetch
+:type endpoint: str/list
+
 #}}
 {{% macro openshift_cluster_setting(endpoint) -%}}
 This rule's check operates on the cluster configuration dump.
 Therefore, you need to use a tool that can query the OCP API, retrieve the {{% if endpoint is string %}}<code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ endpoint.lstrip("/") }}}</code> file.{{% else %}}{{% for item in endpoint %}}<code class="ocp-api-endpoint">{{{ item }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ item.lstrip("/") }}}</code> file{{% endfor %}}.{{% endif %}}
 {{%- endmacro %}}
+
 
 {{#
   Macro which generates a warning indicating how to make use of a
@@ -20,7 +27,12 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the {{% i
   is used by the Compliance Operator to automatically figure
   out what resources to fetch. The filtering directive can be used
   by the jq command ( https://stedolan.github.io/jq/manual/ ).
-    - path_filter_pairs (dict): Kubernetes object path/filter directive pairs
+
+:param path_filter_pairs: Kubernetes object path/filter directive pairs
+:type path_filter_pairs: dict
+:param varargs: A list of path_filter_pairs (in case repeated paths need to be used)
+:type path_filter_pairs: list
+
 #}}
 {{% macro openshift_filtered_cluster_setting(path_filter_pairs) -%}}
 This rule's check operates on the cluster configuration dump.
@@ -28,37 +40,70 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 <ul>
 {{% for path, filter in path_filter_pairs.items() %}}
   <li>
-    <code class="ocp-api-endpoint" id="{{{ (rule_id+path+filter)|sha256 }}}">{{{ path }}}</code>
+    <code class="ocp-api-endpoint" id="{{{ (path+filter)|sha256 }}}">{{{ path }}}</code>
     API endpoint, filter with with the <code>jq</code> utility using the following filter
-    <code class="ocp-api-filter" id="filter-{{{ (rule_id+path+filter)|sha256 }}}">{{{ filter }}}</code>
+    <code class="ocp-api-filter" id="filter-{{{ (path+filter)|sha256 }}}">{{{ filter }}}</code>
     and persist it to the local
-    <code class="ocp-dump-location" id="dump-{{{ (rule_id+path+filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ path.lstrip("/") }}}#{{{ (rule_id+path+filter)|sha256 }}}</code>
+    <code class="ocp-dump-location" id="dump-{{{ (path+filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ path.lstrip("/") }}}#{{{ (path+filter)|sha256 }}}</code>
     file.
   </li>
 {{% endfor %}}
+{{% for arg in varargs %}}
+{{% for path, filter in arg.items() %}}
+  <li>
+    <code class="ocp-api-endpoint" id="{{{ (path+filter)|sha256 }}}">{{{ path }}}</code>
+    API endpoint, filter with with the <code>jq</code> utility using the following filter
+    <code class="ocp-api-filter" id="filter-{{{ (path+filter)|sha256 }}}">{{{ filter }}}</code>
+    and persist it to the local
+    <code class="ocp-dump-location" id="dump-{{{ (path+filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ path.lstrip("/") }}}#{{{ (path+filter)|sha256 }}}</code>
+    file.
+  </li>
+{{% endfor %}}
+{{% endfor %}}
 </ul>
 {{%- endmacro %}}
+
 
 {{#
   Macro which generates a unique path for a filtered Kubernetes
   resource. The path and the filter are used to generate a unique
   identifier in such a way that it won't conflict with unfiltered
   resources
-    - path (String): The Kubernetes object path to fetch
-    - filter (String): A filtering directive
+
+:param path: The Kubernetes object path to fetch
+:type path: str
+:param filter: A filtering directive
+:type filter: str
+
 #}}
 {{% macro openshift_filtered_path(path, filter) -%}}
-{{{ path }}}#{{{ (rule_id+path+filter)|sha256 }}}
+{{{ path }}}#{{{ (path+filter)|sha256 }}}
 {{%- endmacro %}}
 
+
 {{#
-  Macro which generates a warning indicating how to make use of a
+  Macro that creates a check from :code:`oc` output
 #}}
 {{% macro ocil_oc_pipe_jq_filter(object, jqfilter, namespace=none, all_namespaces=false) -%}}
 oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ namespace }}}{{% endif %}} {{{ object }}} -o json | jq '{{{ jqfilter }}}'
 {{%- endmacro %}}
 
-{{# Example usage: ocil_sshd_option(default="no", option="Banner", value="/etc/issue") #}}
+
+{{#
+    OCIL for an sshd option.
+
+    Example usage::
+
+        ocil_sshd_option(default="no", option="Banner", value="/etc/issue")
+
+:param default: If set to yes the default value is accepted
+:type default: str
+:param option: The sshd option to configure
+:type option: str
+:param value: The value for the given option
+:type value: str
+
+#}}
 {{% macro ocil_sshd_option(default, option, value) -%}}
     To determine how the SSH daemon's <tt>{{{ option }}}</tt> option is set, run the following command:
     <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config</pre>
@@ -70,6 +115,21 @@ oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ nam
 {{%- endmacro %}}
 
 
+{{#
+OCIL and OCIL clause for and sshd option.
+
+    Example usage::
+
+        complete_ocil_entry_sshd_option(default="no", option="Banner", value="/etc/issue")
+
+:param default: If set to yes the default value is accepted
+:type default: str
+:param option: The sshd option to configure
+:type option: str
+:param value: The value for the given option
+:type value: str
+
+#}}
 {{% macro complete_ocil_entry_sshd_option(default, option, value) -%}}
 ocil: |
     {{{ ocil_sshd_option(default, option, value) }}}
@@ -78,6 +138,15 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{#
+    The OCIL text for mount options.
+
+:param point: The mount point to check
+:type point: str
+:param option: The options the mount point should have
+:type option: str
+
+#}}
 {{% macro ocil_mount_option(point, option) -%}}
     To verify the <tt>{{{ option }}}</tt> option is configured for the <tt>{{{ point }}}</tt> mount point,
     {{% if product == "rhcos4" -%}}
@@ -91,21 +160,53 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{#
+    The OCIL clause for mount options.
+
+:param point: The mount point to check
+:type point: str
+:param option: The options the mount point should have
+:type option: str
+
+#}}
 {{% macro ocil_clause_entry_mount_option(point, option) -%}}
 ocil_clause: "the {{{ option }}} is not present in the output line, or there is no output line at all"
 {{%- endmacro %}}
 
 
+{{#
+    Calls :code:`xccdf_value` macro under the hood
+
+:param varname: The name of the variable to reference
+:type varname: str
+
+#}}
 {{% macro sub_var_value(varname) -%}}
 {{{ xccdf_value(varname) }}}
 {{%- endmacro %}}
 
 
+{{#
+    Create an XCCDF :code:`<sub>` element
+
+:param varname: The name of the variable to reference
+:type varname: str
+
+#}}
 {{% macro xccdf_value(varname) -%}}
 <sub idref="{{{ varname }}}" />
 {{%- endmacro %}}
 
 
+{{#
+    The OCIL and OCIL clause for mount options.
+
+:param point: The mount point to check
+:type point: str
+:param option: The options the mount point should have
+:type option: str
+
+#}}
 {{% macro complete_ocil_entry_mount_option(point, option) -%}}
 ocil: |
     {{{ ocil_mount_option(point, option) | indent(4) }}}
@@ -123,6 +224,15 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{#
+    Describe an iptables block
+
+:param proto: protocol to block
+:type proto: str
+:param port: port to block
+:type port: int
+
+#}}
 {{% macro describe_iptables_block(proto, port) -%}}
 {{{ _iptables_desc(
 	traffic_action="to block",
@@ -133,6 +243,15 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{#
+    Describe an iptables allow
+
+:param proto: protocol to allow
+:type proto: str
+:param port: port to allow
+:type port: int
+
+#}}
 {{% macro describe_iptables_allow(proto, port) -%}}
 {{{ _iptables_desc(
 	traffic_action="to allow",
@@ -143,6 +262,13 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to check if given path is on its own partition or logical volume.
+
+:param part: Path to check
+:type part: str
+
+#}}
 {{% macro partition_check(part) -%}}
     {{% if product == "rhcos4" -%}}
     You'll need to log into a node in the cluster.
@@ -156,6 +282,14 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{#
+    OCIL for how to check if given path is on its own partition or logical volume and the
+    correct OCIL clause.
+
+:param part: Path to check
+:type part: str
+
+#}}
 {{% macro complete_ocil_entry_separate_partition(part) -%}}
 ocil: |
     {{{ partition_check(part) }}}
@@ -164,6 +298,13 @@ ocil_clause: "no line is returned"
 {{%- endmacro %}}
 
 
+{{#
+    OCIL for adding a syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
 {{% macro ocil_audit_syscall(syscall) -%}}
     To determine if the system is configured to audit calls to the
     <code>{{{ syscall }}}</code> system call, run the following command:
@@ -172,11 +313,21 @@ ocil_clause: "no line is returned"
 {{%- endmacro %}}
 
 
+{{#
+    OCIL clause for adding a syscall to audit logs
+#}}
 {{% macro ocil_clause_entry_audit_syscall() -%}}
 ocil_clause: "no line is returned"
 {{%- endmacro %}}
 
 
+{{#
+    OCIL and OCIL clause for adding a syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
 {{% macro complete_ocil_entry_audit_syscall(syscall) -%}}
 ocil: |
     {{{ ocil_audit_syscall(syscall) }}}
@@ -185,6 +336,13 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{#
+    OCIL for adding a successful syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
 {{% macro ocil_audit_successful_syscall(syscall) -%}}
     To determine if the system is configured to audit successful calls
     to the <code>{{{ syscall }}}</code> system call, run the following command:
@@ -192,6 +350,14 @@ ocil: |
     If the system is configured to audit this activity, it will return a line.
 {{%- endmacro %}}
 
+
+{{#
+    OCIL and OCIL clause for adding a successful syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
 {{% macro complete_ocil_entry_audit_successful_syscall(syscall) -%}}
 ocil: |
     {{{ ocil_audit_successful_syscall(syscall) }}}
@@ -212,6 +378,18 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{#
+    OCIL for allowing a port or service in firewalld. If the :code:`service` parameter is defined
+    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
+
+:param port: The port to allow
+:type port: int
+:param proto: The protocol to allow
+:type proto: str
+:param service: The service to allow
+:type service: str
+
+#}}
 {{%- macro ocil_firewalld_allow_access(port, proto, service) %}}
 {{{ _firewalld_check("allow access", port, proto, service) }}}
     If <code>firewalld</code> is configured to allow access through the firewall, something similar to the following will be output:
@@ -226,12 +404,36 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{#
+    OCIL for preventing access a port or service in firewalld. If the :code:`service` parameter is defined
+    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
+
+:param port: The port to allow
+:type port: int
+:param proto: The protocol to allow
+:type proto: str
+:param service: The service to allow
+:type service: str
+
+#}}
 {{%- macro ocil_firewalld_prevent_access(port, proto, service) %}}
 {{{ _firewalld_check("prevent access", port, proto, service) }}}
     If <code>firewalld</code> is configured to prevent access, no output will be returned.
 {{%- endmacro %}}
 
 
+{{#
+    Describe preventing access a port or service in firewalld. If the :code:`service` parameter is defined
+    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
+
+:param port: The port to allow
+:type port: int
+:param proto: The protocol to allow
+:type proto: str
+:param service: The service to allow
+:type service: str
+
+#}}
 {{%- macro describe_firewalld_prevent(port, proto, service) %}}
     To configure <code>firewalld</code> to prevent access, run the following command(s):
     {{% if port %}}
@@ -243,6 +445,18 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{#
+    Describe allowing access a port or service in firewalld. If the :code:`service` parameter is defined
+    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
+
+:param port: The port to allow
+:type port: int
+:param proto: The protocol to allow
+:type proto: str
+:param service: The service to allow
+:type service: str
+
+#}}
 {{%- macro describe_firewalld_allow(port, proto, service) %}}
     To configure <code>firewalld</code> to allow access, run the following command(s):
     {{% if port %}}
@@ -254,6 +468,13 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{#
+    OCIL to see if the system is configured to audit calls to given syscall.
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
 {{%- macro ocil_auditctl_syscall(syscall) %}}
     To determine if the system is configured to audit calls to the <code>{{{ syscall }}}</code> system call, run the following command:
     <pre space="preserve">$ sudo auditctl -l | grep syscall | grep {{{ syscall }}}</pre>
@@ -261,6 +482,13 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{#
+    OCIL for disabling a kernel module.
+
+:param module: The module to disable.
+:type module: str
+
+#}}
 {{%- macro ocil_module_disable(module) %}}
     If the system is configured to prevent the loading of the <code>{{{ module }}}</code> kernel module,
     it will contain lines inside any file in <code>/etc/modprobe.d</code> or the deprecated<code>/etc/modprobe.conf</code>.
@@ -270,6 +498,13 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{#
+    OCIL and OCIL clause for disabling a kernel module.
+
+:param module: The module to disable.
+:type module: str
+
+#}}
 {{%- macro complete_ocil_entry_module_disable(module) %}}
 ocil: |-
     {{{ ocil_module_disable(module) }}}
@@ -278,6 +513,13 @@ ocil_clause: "no line is returned"
 {{%- endmacro %}}
 
 
+{{#
+    Description for how to check for a disabled kernel module.
+
+:param module: The module to disable.
+:type module: str
+
+#}}
 {{%- macro describe_module_disable(module) %}}
     To configure the system to prevent the <code>{{{ module }}}</code>
     kernel module from being loaded, add the following line to a file in the directory <code>/etc/modprobe.d</code>:
@@ -285,6 +527,13 @@ ocil_clause: "no line is returned"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to check if service is disabled in system boot configuration with xinetd.
+
+:param service: service to disable
+:type service: str
+
+#}}
 {{%- macro xinetd_disabled_check_with_systemd(service) %}}
     To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration with xinetd, run the following command:
     <pre>$ chkconfig <code>{{{ service }}}</code> --list</pre>
@@ -303,6 +552,13 @@ ocil_clause: "no line is returned"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to check if socket is disabled with systemd.
+
+:param socket: The socket to check
+:type socket: str
+
+#}}
 {{%- macro socket_disabled_check_with_systemd(socket) %}}
     To check that the <code>{{{ socket }}}</code> socket is disabled in system boot configuration with systemd, run the following command:
     <pre>$ systemctl is-enabled <code>{{{ socket }}}</code></pre>
@@ -327,6 +583,13 @@ ocil_clause: "no line is returned"
 {{%- endmacro %}}
 
 
+{{#
+    OCIL and OCIL clause for ensure socket is disabled in systemd and xinetd.
+
+:param name: The socket to check
+:type name: str
+
+#}}
 {{%- macro systemd_complete_ocil_entry_socket_and_service_disabled(name) %}}
 ocil: |-
     {{{ xinetd_disabled_check_with_systemd(name) }}}
@@ -336,6 +599,13 @@ ocil_clause: "service and/or socket are running"
 {{%- endmacro %}}
 
 
+{{#
+    OCIL and OCIL clause for ensure socket is disabled in systemd.
+
+:param name: The socket to check
+:type name: str
+
+#}}
 {{%- macro upstart_complete_ocil_entry_socket_and_service_disabled(name) %}}
 ocil:
 
@@ -343,18 +613,39 @@ ocil_clause: "service and/or socket are running"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to check if a package is installed with rpm.
+
+:param package: The package to check
+:type package: str
+
+#}}
 {{%- macro rpm_ocil_package(package) -%}}
     Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
     <pre>$ rpm -q {{{ package }}}</pre>
 {{%- endmacro -%}}
 
 
+{{#
+    Describe how to check if a package is installed with dpkg.
+
+:param package: The package to check
+:type package: str
+
+#}}
 {{%- macro dpkg_ocil_package(package) %}}
     Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
     <pre>$ dpkg -l  {{{ package }}}</pre>
 {{%- endmacro %}}
 
 
+{{#
+    OCIL and OCIL clause how to check if a package is installed with rpm.
+
+:param package: The package to check
+:type package: str
+
+#}}
 {{%- macro rpm_complete_ocil_entry_package(package) %}}
 ocil: |-
     {{{ rpm_ocil_package(package) }}}
@@ -363,6 +654,12 @@ ocil_clause: "the package is installed"
 {{%- endmacro %}}
 
 
+{{#
+    OCIL and OCIL clause how to check if a package is installed with dpkg.
+
+:param package: The package to check
+:type package: str
+#}}
 {{%- macro dpkg_complete_ocil_entry_package(package) %}}
 ocil: |-
     {{{ dpkg_ocil_package(package) }}}
@@ -371,6 +668,13 @@ ocil_clause: "the package is installed"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to check if a service is disabled via chkconfig.
+
+:param service: The service to check
+:type service: str
+
+#}}
 {{%- macro ocil_xinetd_service_disabled(service) %}}
     To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration, run the following command:
     <pre>$ sudo chkconfig <code>{{{ service }}}</code> --list</pre>
@@ -380,6 +684,13 @@ ocil_clause: "the package is installed"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to check if a service is disabled via systemd.
+
+:param service: The service to check
+:type service: str
+
+#}}
 {{%- macro systemd_ocil_service_disabled(service) %}}
     To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration,
     {{% if product == "rhcos4" -%}}
@@ -411,6 +722,13 @@ ocil_clause: "the package is installed"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to check if a service is enabled via systemd.
+
+:param service: The service to check
+:type service: str
+
+#}}
 {{%- macro systemd_ocil_service_enabled(service) %}}
     {{% if product == "rhcos4" -%}}
     {{{ rhcos_node_login_instructions() }}}
@@ -422,6 +740,13 @@ ocil_clause: "the package is installed"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to check if a service is disabled via upstart.
+
+:param service: The service to check
+:type service: str
+
+#}}
 {{%- macro upstart_ocil_service_disabled(service) %}}
     To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration, run the following command:
     <pre>$ sudo chkconfig <code>{{{ service }}}</code> --list</pre>
@@ -438,6 +763,13 @@ ocil_clause: "the package is installed"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to check if a service is enabled via upstart.
+
+:param service: The service to check
+:type service: str
+
+#}}
 {{%- macro upstart_ocil_service_enabled(service) %}}
     Run the following command to determine the current status of the
     <code>{{{ service }}}</code> service:
@@ -446,6 +778,13 @@ ocil_clause: "the package is installed"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to disable socket in systemd.
+
+:param socket: The socket to check
+:type socket: str
+
+#}}
 {{%- macro systemd_describe_socket_disable(socket) %}}
     The <code>{{{ socket }}}</code> socket can be disabled with the following command:
     <pre>$ sudo systemctl mask --now {{{ socket }}}.socket</pre>
@@ -456,6 +795,13 @@ ocil_clause: "the package is installed"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to enable a socket in systemd.
+
+:param socket: The socket to check
+:type socket: str
+
+#}}
 {{%- macro systemd_describe_socket_enable(socket) %}}
     The <code>{{{ socket }}}</code> socket can be enabled with the following command:
     <pre>$ sudo systemctl enable {{{ socket }}}.socket</pre>
@@ -466,6 +812,13 @@ ocil_clause: "the package is installed"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to disable a service in systemd.
+
+:param service: The service to check
+:type service: str
+
+#}}
 {{%- macro systemd_describe_service_disable(service) %}}
     {{% if product != "rhcos4" -%}}
     The <code>{{{ service }}}</code> service can be disabled with the following command:
@@ -498,6 +851,13 @@ ocil_clause: "the package is installed"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to enable a service in systemd.
+
+:param service: The service to check
+:type service: str
+
+#}}
 {{%- macro systemd_describe_service_enable(service) %}}
     {{% if product != "rhcos4" -%}}
     The <code>{{{ service }}}</code> service can be enabled with the following command:
@@ -530,12 +890,26 @@ ocil_clause: "the package is installed"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to disable a service in upstart.
+
+:param service: The service to check
+:type service: str
+
+#}}
 {{%- macro upstart_describe_service_disable(service) %}}
     The <code>{{{ service }}}</code> service can be disabled with the following command:
     <pre>$ sudo chkconfig {{{ service }}} off</pre>
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to enable a service in upstart.
+
+:param service: The service to check
+:type service: str
+
+#}}
 {{%- macro upstart_describe_service_enable(service) %}}
     The <code>{{{ service }}}</code> service can be enabled with the following command:
     <pre>$ sudo chkconfig --level 2345 {{{ service }}} on</pre>
@@ -546,6 +920,14 @@ ocil_clause: "the package is installed"
     <pre>$ sudo systemctl enable {{{ timer }}}.timer</pre>
 {{%- endmacro %}}
 
+
+{{#
+    Describe how to check if timer is enabled in upstart.
+
+:param service: The service to check
+:type service: str
+
+#}}
 {{%- macro systemd_ocil_timer_enabled(timer) %}}
     Run the following command to determine the current status of the
     <code>{{{ timer }}}</code> timer:
@@ -553,6 +935,14 @@ ocil_clause: "the package is installed"
     If the timer is running, it should return the following: <pre>active</pre>
 {{%- endmacro %}}
 
+
+{{#
+    Describe how to check if given SELinux boolean is disabled.
+
+:param sebool: The SELinux boolean to check
+:type sebool: str
+
+#}}
 {{%- macro describe_sebool_check_disabled(sebool) %}}
     Run the following command to determine if the <code>{{{ sebool }}}</code> SELinux boolean is disabled:
     <pre>$ getsebool {{{ sebool }}}</pre>
@@ -561,6 +951,13 @@ ocil_clause: "the package is installed"
 {{%- endmacro %}}
 
 
+{{#
+    OCIL and OCIL clause for how to check if given SELinux boolean is disabled.
+
+:param sebool: The SELinux boolean to check
+:type sebool: str
+
+#}}
 {{%- macro complete_ocil_entry_sebool_disabled(sebool) %}}
 ocil: |-
     {{{ describe_sebool_check_disabled(sebool) }}}
@@ -569,6 +966,13 @@ ocil_clause: "{{{ sebool }}} is not disabled"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to check if given SELinux boolean is enabled.
+
+:param sebool: The SELinux boolean to check
+:type sebool: str
+
+#}}
 {{%- macro describe_sebool_check_enabled(sebool) %}}
     Run the following command to determine if the <code>{{{ sebool }}}</code> SELinux boolean is enabled:
     <pre>$ getsebool {{{ sebool }}}</pre>
@@ -577,6 +981,13 @@ ocil_clause: "{{{ sebool }}} is not disabled"
 {{%- endmacro %}}
 
 
+{{#
+    OCIL and OCIL clause for how to check if given SELinux boolean is enabled.
+
+:param sebool: The SELinux boolean to check
+:type sebool: str
+
+#}}
 {{%- macro complete_ocil_entry_sebool_enabled(sebool) %}}
 ocil: |-
     {{{ describe_sebool_check_enabled(sebool) }}}
@@ -585,76 +996,213 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to disable an SELinux boolean.
+
+:param sebool: The SELinux boolean to disable
+:type sebool: str
+
+#}}
 {{%- macro describe_sebool_disable(sebool) %}}
     To disable the <code>{{{ sebool }}}</code> SELinux boolean, run the following command:
     <pre>$ sudo setsebool -P {{{ sebool }}} off</pre>
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to enable an SELinux boolean.
+
+:param sebool: The SELinux boolean to disable
+:type sebool: str
+
+#}}
 {{%- macro describe_sebool_enable(sebool) %}}
     To enable the <code>{{{ sebool }}}</code> SELinux boolean, run the following command:
     <pre>$ sudo setsebool -P {{{ sebool }}} on</pre>
 {{%- endmacro %}}
 
 
+{{#
+    Show how to install a package with apt-get.
+
+    Example output::
+
+        apt-get install package
+
+:param package: Package to install
+:type package: str
+
+#}}
 {{%- macro apt_get_package_install(package) %}}
     $ apt-get install {{{ package }}}
 {{%- endmacro %}}
 
 
+{{#
+    Show how to remove a package with apt-get.
+
+    Example output::
+
+        $ apt-get remove package
+
+:param package: Package to remove
+:type package: str
+
+#}}
 {{%- macro apt_get_package_remove(package) %}}
     $ apt-get remove {{{ package }}}
 {{%- endmacro %}}
 
 
+{{#
+    Show how to install a package with dnf.
+
+    Example output::
+
+        $ sudo dnf install package
+
+:param package: Package to install
+:type package: str
+
+#}}
 {{%- macro dnf_package_install(package) %}}
     $ sudo dnf install {{{ package }}}
 {{%- endmacro %}}
 
 
+{{#
+    Show how to remove a package with dnf.
+
+    Example output::
+
+        $ sudo dnf erase remove package
+
+:param package: Package to remove
+:type package: str
+
+#}}
 {{%- macro dnf_package_remove(package) %}}
     $ sudo dnf erase {{{ package }}}
 {{%- endmacro %}}
 
 
+{{#
+    Show how to install a package with yum.
+
+    Example output::
+
+        $ sudo yum install package
+
+:param package: Package to install
+:type package: str
+
+#}}
 {{%- macro yum_package_install(package) %}}
     $ sudo yum install {{{ package }}}
 {{%- endmacro %}}
 
 
+{{#
+    Show how to remove a package with yum.
+
+    Example output::
+
+        $ sudo yum erase package
+
+:param package: Package to remove
+:type package: str
+
+#}}
 {{%- macro yum_package_remove(package) %}}
     $ sudo yum erase {{{ package }}}
 {{%- endmacro %}}
 
 
+{{#
+    Show how to install a package with zypper.
+
+    Example output::
+
+        $ sudo zypper install package
+
+:param package: Package to install
+:type package: str
+
+#}}
 {{%- macro zypper_package_install(package) %}}
     $ sudo zypper install {{{ package }}}
 {{%- endmacro %}}
 
 
+{{#
+    Show how to remove a package with zypper.
+
+    Example output::
+
+        $ sudo zypper remove package
+
+:param package: Package to remove
+:type package: str
+
+#}}
 {{%- macro zypper_package_remove(package) %}}
     $ sudo zypper remove {{{ package }}}
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to set the permissions on a file.
+
+:param file: File to change
+:type file: str
+:param perms: The permissions for the file
+:type perms: str
+
+#}}
 {{%- macro describe_file_permissions(file, perms) %}}
     To properly set the permissions of <code>{{{ file }}}</code>, run the command:
     <pre>$ sudo chmod {{{ perms }}} {{{ file }}}</pre>
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to set the file owner of a file.
+
+:param file: File to change
+:type file: str
+:param owner: the owner for the file
+:type owner: str
+
+#}}
 {{%- macro describe_file_owner(file, owner) %}}
     To properly set the owner of <code>{{{ file }}}</code>, run the command:
     <pre>$ sudo chown {{{ owner }}} {{{ file }}} </pre>
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to set the file group owner of a file.
+
+:param file: File to change
+:type file: str
+:param group: The group owner for the file
+:type group: str
+#}}
 {{%- macro describe_file_group_owner(file, group) %}}
     To properly set the group owner of <code>{{{ file }}}</code>, run the command:
     <pre>$ sudo chgrp {{{ group }}} {{{ file }}}</pre>
 {{%- endmacro %}}
 
 
+{{#
+    OCIL for how to check the permissions on a file.
+
+:param file: File to change
+:type file: str
+:param perms: The permissions for the file
+:type perms: str
+
+#}}
 {{%- macro ocil_file_permissions(file, perms) -%}}
     To check the permissions of <code>{{{ file }}}</code>,
     {{% if product == "rhcos4" or product == "ocp4" -%}}
@@ -669,6 +1217,15 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{%- endmacro %}}
 
 
+{{#
+    OCIL how to check the file owner of a file.
+
+:param file: File to change
+:type file: str
+:param owner: The owner for the file
+:type owner: str
+
+#}}
 {{%- macro ocil_file_owner(file, owner) -%}}
     To check the ownership of <code>{{{ file }}}</code>,
     {{% if product == "rhcos4" or product == "ocp4" -%}}
@@ -683,6 +1240,15 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{%- endmacro %}}
 
 
+{{#
+    OCIL how to check the file group owner of a file.
+
+:param file: File to change
+:type file: str
+:param group: the group owner for the file
+:type group: str
+
+#}}
 {{%- macro ocil_file_group_owner(file, group) -%}}
     To check the group ownership of <code>{{{ file }}}</code>,
     {{% if product == "rhcos4" or product == "ocp4" -%}}
@@ -696,18 +1262,57 @@ ocil_clause: "{{{ sebool }}} is not enabled"
     <code>{{{ group }}}</code>
 {{%- endmacro %}}
 
+
+{{#
+    OCIL clause for file permissions
+
+:param file: File to change
+:type file: str
+:param perms: the permissions for the file
+:type perms: str
+
+#}}
 {{%- macro ocil_clause_file_permissions(file, perms) -%}}
     {{{ file }}} has unix mode {{{ perms }}}
 {{%- endmacro %}}
 
+
+{{#
+    OCIL clause for file owner
+
+:param file: File to change
+:type file: str
+:param owner: the owner for the file
+:type owner: str
+
+#}}
 {{%- macro ocil_clause_file_owner(file, owner) -%}}
     {{{ file }}} has owner {{{ owner }}}
 {{%- endmacro %}}
 
+
+{{#
+    OCIL clause for file group owner
+
+:param file: File to change
+:type file: str
+:param owner: the group owner for the file
+:type owner: str
+
+#}}
 {{%- macro ocil_clause_file_group_owner(file, group) -%}}
     {{{ file }}} has group owner {{{ group }}}
 {{%- endmacro %}}
 
+
+{{#
+    How to check a file for the correct permissions.
+
+:param file: File to change
+:type file: str
+:param perms: The permissions for the file
+:type perms: str
+#}}
 {{%- macro check_file_permissions(file, perms) %}}
     To check the permissions of <code>{{{ file }}}</code>, run the command:
     <pre>$ ls -l {{{ file }}}</pre>
@@ -716,6 +1321,15 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{%- endmacro %}}
 
 
+{{#
+    How add mount options to :code:`/etc/fstab`
+
+:param option: The option to add to the partition
+:type option: str
+:param part: The partition
+:type part: str
+
+#}}
 {{% macro describe_mount(option, part) -%}}
     {{% if product != "rhcos4" -%}}
     Add the <code>{{{ option }}}</code> option to the fourth column of
@@ -737,6 +1351,14 @@ ocil_clause: "{{{ sebool }}} is not enabled"
     {{%- endif %}}
 {{%- endmacro %}}
 
+
+{{#
+    Describe the separate partition is needed.
+
+:param part: The partition
+:type part: str
+
+#}}
 {{% macro partition_description(part) -%}}
     {{% if product == "rhcos4" or product == "ocp4" -%}}
     <p>
@@ -767,6 +1389,16 @@ ocil_clause: "{{{ sebool }}} is not enabled"
     {{%- endif %}}
 {{%- endmacro %}}
 
+
+{{#
+    OCIL for a sysctl option
+
+:param sysctl: The kernel parameter to change
+:type sysctl: str
+:param value: The value to be set
+:type value: str
+
+#}}
 {{% macro ocil_sysctl_option_value(sysctl, value) -%}}
     The runtime status of the <code>{{{ sysctl }}}</code> kernel parameter can be queried
     by running the following command:
@@ -782,14 +1414,23 @@ ocil_clause: "{{{ sebool }}} is not enabled"
     If any assignments other than
     <pre>{{{ sysctl }}} = {{{ value }}}</pre>
     are found, or the correct assignment is duplicated, remove those offending lines from respective files,
-    and make sure that exactly one file in 
+    and make sure that exactly one file in
     <code>/etc/sysctl.d</code> contains <code>{{{ sysctl }}} = {{{ value }}}</code>, and that one assignment
-    is returned when 
+    is returned when
     <pre>$ grep -r {{{ sysctl }}} /etc/sysctl.conf /etc/sysctl.d</pre>
     is executed.
 {{%- endmacro %}}
 
 
+{{#
+    OCIL and OCIL clause for a sysctl option
+
+:param sysctl: The kernel parameter to change
+:type sysctl: str
+:param value: The value to be set
+:type value: str
+
+#}}
 {{% macro complete_ocil_entry_sysctl_option_value(sysctl, value) -%}}
 ocil: |
     {{{ ocil_sysctl_option_value(sysctl, value) }}}
@@ -798,6 +1439,15 @@ ocil_clause: "the correct value is not returned"
 {{%- endmacro %}}
 
 
+{{#
+    Describe how to set a sysctl kernel parameter.
+
+:param sysctl: The kernel parameter to change
+:type sysctl: str
+:param value: The value to be set
+:type value: str
+
+#}}
 {{% macro describe_sysctl_option_value(sysctl, value) -%}}
     To set the runtime status of the <code>{{{ sysctl }}}</code> kernel parameter,
     run the following command:
@@ -809,6 +1459,16 @@ ocil_clause: "the correct value is not returned"
 {{%- endmacro %}}
 
 
+{{#
+    Creates an HTML :code:`<a>` element for the given link and text. If no text is given the
+    link will be the text
+
+:param link: The url the link should have
+:type link: str
+:param text: Optional, text for the link
+:type text: str
+
+#}}
 {{% macro weblink(link, text=none) -%}}
     {{% if text is not none -%}}
         <a xmlns='http://www.w3.org/1999/xhtml' href='{{{ link }}}'>{{{ text }}}</a>
@@ -818,6 +1478,15 @@ ocil_clause: "the correct value is not returned"
 {{%- endmacro %}}
 
 
+{{#
+    A warning about rule depending on another.
+
+:param rule_id: Rule id of the rule that must be selected.
+:type rule_id: str
+:param why: The reasoning for the dependency. Should fit into this part of the sentence "make sure that rule with ID is selected as well:".
+:type why: str
+
+#}}
 {{% macro body_of_warning_about_dependent_rule(rule_id, why) -%}}
         When selecting this rule in a profile,
         {{%- if why %}}
@@ -827,6 +1496,10 @@ ocil_clause: "the correct value is not returned"
         {{%- endif %}}
 {{% endmacro %}}
 
+
+{{#
+    An openssl config file with strong entropy.
+#}}
 {{% macro openssl_strong_entropy_config_file() -%}}
 # provide a default -rand /dev/random option to openssl commands that
 # support it
@@ -859,6 +1532,10 @@ openssl()
 
 {{%- endmacro %}}
 
+
+{{#
+    A note about an item need be done for each :code:`MachineConfigPool`.
+#}}
 {{% macro machineconfig_description_footer() -%}}
 <p>
 Note that this needs to be done for each <tt>MachineConfigPool</tt>
@@ -871,6 +1548,10 @@ Operator see
 </p>
 {{% endmacro %}}
 
+
+{{#
+    How to log in to a Red Hat CoreOS Node
+#}}
 {{% macro rhcos_node_login_instructions() -%}}
     As a user with administrator privileges, log into a node in the relevant pool:
     <pre>

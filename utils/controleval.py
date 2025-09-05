@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 import collections
 import argparse
+import os
 
 from ssg import controls
+import ssg.products
+
+
+SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
 def print_options(opts):
@@ -35,9 +40,11 @@ def validate_args(ctrlmgr, args):
 def calculate_stats(ctrls):
     total = len(ctrls)
     ctrlstats = collections.defaultdict(int)
+    ctrllist = collections.defaultdict(set)
 
     for ctrl in ctrls:
         ctrlstats[str(ctrl.status)] += 1
+        ctrllist[str(ctrl.status)].add(ctrl)
 
     applicable = total - ctrlstats[controls.Status.NOT_APPLICABLE]
     assessed = ctrlstats[controls.Status.AUTOMATED] + ctrlstats[controls.Status.SUPPORTED] + \
@@ -53,6 +60,12 @@ def calculate_stats(ctrls):
     print_specific_stat("Documentation", ctrlstats[controls.Status.DOCUMENTATION], applicable)
     print_specific_stat("Inherently Met", ctrlstats[controls.Status.INHERENTLY_MET], applicable)
     print_specific_stat("Partial", ctrlstats[controls.Status.PARTIAL], applicable)
+
+    applicablelist = ctrls - ctrllist[controls.Status.NOT_APPLICABLE]
+    assessedlist = set().union(ctrllist[controls.Status.AUTOMATED]).union(ctrllist[controls.Status.SUPPORTED])\
+        .union(ctrllist[controls.Status.DOCUMENTATION]).union(ctrllist[controls.Status.INHERENTLY_MET])\
+        .union(ctrllist[controls.Status.PARTIAL])
+    print("Missing:", ", ".join(sorted(c.id for c in applicablelist - assessedlist)))
 
 
 def print_specific_stat(stat, current, total):
@@ -90,13 +103,18 @@ def create_parser():
                              required=True)
     statsparser.add_argument("-l", "--level", dest="level", help="level to display statistics of.",
                              required=True)
+    statsparser.add_argument("-p", "--product", type=str,
+                             help="Product to check has required references")
     return parser
 
 
 def main():
     parser = create_parser()
     args = parser.parse_args()
-    controls_manager = controls.ControlsManager(args.controls_dir)
+    product_base = os.path.join(SSG_ROOT, "products", args.product)
+    product_yaml = os.path.join(product_base, "product.yml")
+    env_yaml = ssg.products.load_product_yaml(product_yaml)
+    controls_manager = controls.ControlsManager(args.controls_dir, env_yaml=env_yaml)
     controls_manager.load()
     subcmds[args.subcmd](controls_manager, args)
 

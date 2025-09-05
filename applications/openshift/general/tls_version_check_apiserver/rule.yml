@@ -1,0 +1,41 @@
+prodtype: ocp4
+
+title: Ensure TLS v1.2 is minimum for Openshift APIServer
+
+description: |-
+  Verify tls version for the openshift APIServer.
+
+rationale: |-
+  Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+  protect data. The system must implement cryptographic modules adhering to the higher
+  standards approved by the federal government since this provides assurance they have been tested
+  and validated.
+
+
+identifiers:
+  cce@ocp4: CCE-85863-9
+
+references:
+  pcidss: Req-4.1
+
+ocil_clause: 'Ensure TLS version is equal to 1.2 or greater for the openshift api server'
+
+ocil: |-
+    Run the following command to check for TLS version:
+    <pre>$ oc get configmap config  -n openshift-apiserver -o json | grep -o VersionTLS[0-9]*</pre>
+    Make sure that the result has a value of VersionTLSXX where XX is 12 or greater.
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-apiserver/configmaps/config") | indent(4) }}}
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /api/v1/namespaces/openshift-apiserver/configmaps/config
+    yamlpath: ".data['config.yaml']"
+    values:
+      - value: "VersionTLS1[2-9]{1}"
+        operation: "pattern match"

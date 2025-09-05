@@ -4,13 +4,17 @@
 # complexity = low
 # disruption = low
 
+{{% for path in FILEPATH %}}
 {{% if IS_DIRECTORY and FILE_REGEX %}}
-readarray -t files < <(find {{{ FILEPATH }}})
+readarray -t files < <(find {{{ path }}})
 for file in "${files[@]}"; do
-    if basename $file | grep -q '{{{ FILE_REGEX }}}'; then
+    if basename $file | grep -qE '{{{ FILE_REGEX[loop.index0] }}}'; then
         chgrp {{{ FILEGID }}} $file
     fi
 done
+{{% elif IS_DIRECTORY and RECURSIVE %}}
+find -L {{{ path }}} -type d -exec chgrp {{{ FILEGID }}} {} \;
 {{% else %}}
-chgrp {{{ FILEGID }}} {{{ FILEPATH }}}
+chgrp {{{ FILEGID }}} {{{ path }}}
 {{% endif %}}
+{{% endfor %}}

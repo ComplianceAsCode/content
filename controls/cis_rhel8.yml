@@ -473,7 +473,7 @@ controls:
     status: automated
     rules:
       - banner_etc_motd
-      - login_banner_text=usgcb_default
+      - login_banner_text=cis_banners
 
   - id: 1.8.1.2
     title: Ensure local login warning banner is configured properly (Automated)
@@ -483,7 +483,7 @@ controls:
     status: automated
     rules:
       - banner_etc_issue
-      - login_banner_text=usgcb_default
+      - login_banner_text=cis_banners
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5225
@@ -534,7 +534,7 @@ controls:
     rules:
       - dconf_gnome_banner_enabled
       - dconf_gnome_login_banner_text
-      - login_banner_text=usgcb_default
+      - login_banner_text=cis_default
 
   - id: 1.9
     title: Ensure updates, patches, and additional security software are installed (Manual)
@@ -706,14 +706,14 @@ controls:
     rules:
       - service_rpcbind_disabled
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5231
   - id: 2.2.14
     title: Ensure LDAP server is not enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - service_slapd_disabled
 
   - id: 2.2.15
     title: Ensure DHCP Server is not enabled (Automated)
@@ -733,14 +733,14 @@ controls:
     rules:
       - service_cups_disabled
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5232
   - id: 2.2.17
     title: Ensure NIS Server is not enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - service_ypserv_disabled
 
   - id: 2.2.18
     title: Ensure mail transfer agent is configured for local-only mode (Automated)
@@ -1454,15 +1454,14 @@ controls:
       - l1_workstation
     automated: no
 
-  # NEEDS RULE
-  # The rsyslog_remote_loghost rule is not sufficient
-  # https://github.com/ComplianceAsCode/content/issues/7333
   - id: 4.2.1.5
     title: Ensure rsyslog is configured to send logs to a remote log host (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - rsyslog_remote_loghost
 
   - id: 4.2.1.6
     title: Ensure remote rsyslog messages are only accepted on designated log hosts. (Manual)
@@ -1473,32 +1472,32 @@ controls:
     related_rules:
       - rsyslog_nolisten
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5520
   - id: 4.2.2.1
     title: Ensure journald is configured to send logs to rsyslog (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - journald_forward_to_syslog
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5521
   - id: 4.2.2.2
     title: Ensure journald is configured to compress large log files (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - journald_compress
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5522
   - id: 4.2.2.3
     title: Ensure journald is configured to write logfiles to persistent disk (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - journald_storage
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5523
@@ -1591,14 +1590,21 @@ controls:
       - file_owner_cron_d
       - file_permissions_cron_d
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/7195
   - id: 5.1.8
     title: Ensure at/cron is restricted to authorized users (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - file_groupowner_cron_allow
+      - file_owner_cron_allow
+      - file_cron_deny_not_exist
+      - file_groupowner_at_allow
+      - file_owner_at_allow
+      - file_at_deny_not_exist
+      - file_permissions_at_allow
+      - file_permissions_cron_allow
 
   - id: 5.2.1
     title: Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
@@ -1731,14 +1737,15 @@ controls:
       - sshd_set_keepalive
       - var_sshd_set_keepalive=0
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5525
   - id: 5.2.14
     title: Ensure SSH LoginGraceTime is set to one minute or less (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - sshd_set_login_grace_time
+      - var_sshd_set_login_grace_time=60
 
   # NEEDS RULE
   # The current sshd_enable_warning_banner rule uses /etc/issue instead
@@ -1751,14 +1758,14 @@ controls:
       - l1_workstation
     automated: no
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5526
   - id: 5.2.16
     title: Ensure SSH PAM is enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - sshd_enable_pam
 
   - id: 5.2.17
     title: Ensure SSH AllowTcpForwarding is disabled (Automated)
@@ -1953,14 +1960,14 @@ controls:
       - accounts_tmout
       - var_accounts_tmout=15_min
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5539
   - id: 5.5.4
     title: Ensure default group for the root account is GID 0 (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - accounts_root_gid_zero
 
   - id: 5.5.5
     title: Ensure default user umask is 027 or more restrictive (Automated)
@@ -2267,23 +2274,23 @@ controls:
       - l1_workstation
     automated: no
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5502
   - id: 6.2.15
     title: Ensure no duplicate UIDs exist (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - account_unique_id
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5501
   - id: 6.2.16
     title: Ensure no duplicate GIDs exist (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - group_unique_id
 
   - id: 6.2.17
     title: Ensure no duplicate user names exist (Automated)
@@ -2294,14 +2301,14 @@ controls:
     rules:
       - account_unique_name
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5500
   - id: 6.2.18
     title: Ensure no duplicate group names exist (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - group_unique_name
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5499

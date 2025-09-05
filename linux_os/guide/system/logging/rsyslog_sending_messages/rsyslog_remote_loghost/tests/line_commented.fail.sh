@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = rsyslog
 
 CONF_FILE="/etc/rsyslog.conf"
 LOGHOST_LINE="*.* @@192.168.122.1:5000"

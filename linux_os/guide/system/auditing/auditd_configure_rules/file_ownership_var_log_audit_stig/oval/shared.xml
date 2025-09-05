@@ -1,23 +1,36 @@
 <def-group>
   <definition class="compliance" id="file_ownership_var_log_audit_stig" version="1">
-    {{{ oval_metadata("Checks that all /var/log/audit files are owned by the root user.") }}}
-    <criteria comment="files are root owned">
-      <criterion test_ref="test_user_ownership_var_log_audit_files" />
+    {{{ oval_metadata("Checks that all audit log files are owned by the root user.") }}}
+    <criteria operator="OR">
+      <criteria operator="AND" comment="log_file set">
+        <extend_definition comment="log_file not set in auditd.conf" definition_ref="auditd_conf_log_file_not_set" negate="true" />
+        <criterion comment="audit log files are root owned" test_ref="test_user_ownership_audit_log_files" />
+      </criteria>
+      <criterion comment="/var/log/audit root owned" test_ref="test_user_ownership_var_log_audit_files" />
     </criteria>
   </definition>
   
+  <unix:file_test check="all" check_existence="none_exist" comment="audit log files uid root" id="test_user_ownership_audit_log_files" version="1">
+    <unix:object object_ref="object_user_ownership_audit_log_files" />
+  </unix:file_test>
+
+  <unix:file_object comment="audit log files" id="object_user_ownership_audit_log_files" version="1">
+    <unix:filepath operation="pattern match" var_ref="audit_log_file_path" />
+    <filter action="include">state_owner_not_root_var_log_audit</filter>
+  </unix:file_object>
+
   <unix:file_test check="all" check_existence="none_exist" comment="/var/log/audit files uid root" id="test_user_ownership_var_log_audit_files" version="1">
     <unix:object object_ref="object_user_ownership_var_log_audit_files" />
   </unix:file_test>
 
-  <unix:file_object comment="/var/log/audit files" id="object_user_ownership_var_log_audit_files" version="1">
+  <unix:file_object comment="audit log files" id="object_user_ownership_var_log_audit_files" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
     <unix:path operation="equals">/var/log/audit</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
-    <filter action="include">state_group_user_owner_not_root_var_log_audit</filter>
+    <filter action="include">state_owner_not_root_var_log_audit</filter>
   </unix:file_object>
 
-  <unix:file_state id="state_group_user_owner_not_root_var_log_audit" version="1" operator="OR">
+  <unix:file_state id="state_owner_not_root_var_log_audit" version="1" operator="OR">
     <unix:user_id datatype="int" operation="not equal">0</unix:user_id>
   </unix:file_state>
 

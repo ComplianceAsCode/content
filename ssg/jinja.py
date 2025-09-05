@@ -142,6 +142,7 @@ def add_python_functions(substitutions_dict):
     substitutions_dict['prodtype_to_platform'] = prodtype_to_platform
     substitutions_dict['url_encode'] = url_encode
     substitutions_dict['raise'] = raise_exception
+    substitutions_dict['expand_yaml_path'] = expand_yaml_path
 
 
 def load_macros(substitutions_dict=None):
@@ -186,3 +187,19 @@ def process_file_with_macros(filepath, substitutions_dict):
 
 def url_encode(source):
     return quote(source)
+
+
+def expand_yaml_path(path, parameter):
+    out = ""
+    i = 0
+    for x in path.split("."):
+        i += 1
+        if i != len(path.split(".")):
+            out += i * "  " + x + ":\n"
+        elif parameter != "":
+            out += i * "  " + x + ":\n"
+            i += 1
+            out += i * "  " + parameter
+        else:
+            out += i * "  " + x
+    return out

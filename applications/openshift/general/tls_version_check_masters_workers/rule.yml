@@ -1,0 +1,54 @@
+prodtype: ocp4
+
+platform: ocp4-node
+
+title: Ensure TLS v1.2 is minimum for Openshift master and worker nodes
+
+description: |-
+  Ensure that the Kubelet is configured to only use strong cryptographic ciphers.
+  To set the cipher suites for the kubelet, create new or modify existing
+  <tt>KubeletConfig</tt> object along these lines, one for every
+  <tt>MachineConfigPool</tt>:
+    <pre>
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: KubeletConfig
+    metadata:
+       name: kubelet-config-$pool
+    spec:
+        machineConfigPoolSelector:
+            matchLabels:
+                pools.operator.machineconfiguration.openshift.io/$pool_name: ""
+        kubeletConfig:
+          tlsMinVersion: VersionTLS12
+    </pre>
+
+rationale: |-
+  Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+  protect data. The system must implement cryptographic modules adhering to the higher
+  standards approved by the federal government since this provides assurance they have been tested
+  and validated.
+
+
+identifiers:
+  cce@ocp4: CCE-85864-7
+
+references:
+  pcidss: Req-4.1
+
+ocil_clause: 'TLS version is not configured or contains insecure version'
+
+ocil: |-
+    Run the following command to check the TLS version used on master and worker nodes:
+    <pre>$ sudo grep -oE VersionTLS1[2-9]{1} /etc/kubernetes/kubelet.conf </pre>
+    Make sure that the result has a onue of VersionTLSXX where XX is 12 or greater.
+
+severity: medium
+
+template:
+  name: yamlfile_value
+  vars:
+    filepath: /etc/kubernetes/kubelet.conf
+    yamlpath: ".tlsMinVersion"
+    values:
+    - value: 'VersionTLS1[2-9]{1}'
+      operation: 'pattern match'

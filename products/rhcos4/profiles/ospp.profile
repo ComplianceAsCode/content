@@ -55,7 +55,6 @@ selections:
     - sshd_disable_kerb_auth
     - sshd_disable_gssapi_auth
     - var_sshd_set_keepalive=0
-    - var_sshd_set_keepalive=0
     - sshd_set_keepalive_0
     - sshd_enable_warning_banner
     - sshd_rekey_limit
@@ -195,7 +194,6 @@ selections:
     ## FMT_MOF_EXT.1
     - package_tmux_installed
     - configure_bashrc_exec_tmux
-    - no_tmux_in_shells
     - configure_tmux_lock_command
     - configure_tmux_lock_after_time
 

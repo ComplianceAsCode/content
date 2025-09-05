@@ -8,6 +8,11 @@ description: |-
     Assign home directories to all interactive users that currently do not
     have a home directory assigned.
 
+    This rule checks if the home directory is properly defined in a folder which has
+    at least one parent folder, like "user" in "/home/user" or "/remote/users/user".
+    Therefore, this rule will report a finding for home directories like <tt>/users</tt>,
+    <tt>/tmp</tt> or <tt>/</tt>.
+
 rationale: |-
     If local interactive users are not assigned a valid home directory, there is no
     place for the storage and control of files they should own.

@@ -47,8 +47,6 @@ selections:
     - var_password_pam_lcredit=1
     - var_password_pam_retry=3
     - var_password_pam_minlen=15
-    - var_sshd_set_keepalive=0
-    - sshd_idle_timeout_value=10_minutes
     - var_accounts_passwords_pam_faillock_deny=3
     - var_accounts_passwords_pam_faillock_fail_interval=900
     - var_accounts_passwords_pam_faillock_unlock_time=never
@@ -64,6 +62,7 @@ selections:
     - var_auditd_disk_error_action=halt
     - var_auditd_max_log_file_action=syslog
     - var_auditd_disk_full_action=halt
+    - login_banner_text=dod_banners
 
     ### Enable / Configure FIPS
     - enable_fips_mode
@@ -147,9 +146,6 @@ selections:
 
     # RHEL-08-010190
     - dir_perms_world_writable_sticky_bits
-
-    # RHEL-08-010200
-    - sshd_set_idle_timeout
 
     # RHEL-08-010210
     - file_permissions_var_log_messages

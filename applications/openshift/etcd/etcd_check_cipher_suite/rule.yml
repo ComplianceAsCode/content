@@ -1,0 +1,41 @@
+prodtype: ocp4
+
+title: Ensure ETCD has correct cipher suite
+
+description: |-
+  Check the current cipher suite used in ETCD.
+
+rationale: |-
+  Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+  protect data. The system must implement cryptographic modules adhering to the higher
+  standards approved by the federal government since this provides assurance they have been tested
+  and validated.
+
+
+identifiers:
+  cce@ocp4: CCE-85866-2
+
+references:
+  pcidss: Req-4.1
+
+ocil_clause: 'ETCD cipher suite does not meet requirements'
+
+ocil: |-
+    Run the following command to check the cipher suites for ETCD:
+    <pre>$  oc get configmaps etcd-pod -n openshift-etcd -o yaml | grep -oE 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384|TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384|TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256|TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256'</pre>
+    Make sure that the result has at least one cipher.
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting('/api/v1/namespaces/openshift-etcd/configmaps/etcd-pod') | indent(4) }}}
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /api/v1/namespaces/openshift-etcd/configmaps/etcd-pod
+    yamlpath: ".data['pod.yaml']"
+    values:
+    - value: 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384|TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384|TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256|TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256'
+      operation: 'pattern match'

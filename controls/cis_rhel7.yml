@@ -395,11 +395,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: partial
+    status: planned
     notes: >-
       The rule to remove prelink package is missing.
-    rules:
-    - disable_prelink
 
   - id: 1.6.1.1
     title: Ensure SELinux is installed (Automated)
@@ -477,7 +475,7 @@ controls:
     status: automated
     rules:
     - banner_etc_motd
-    - login_banner_text=usgcb_default
+    - login_banner_text=cis_banners
 
   - id: 1.7.2
     title: Ensure local login warning banner is configured properly (Automated)
@@ -487,7 +485,7 @@ controls:
     status: automated
     rules:
     - banner_etc_issue
-    - login_banner_text=usgcb_default
+    - login_banner_text=cis_banners
 
   - id: 1.7.3
     title: Ensure remote login warning banner is configured properly (Automated)
@@ -540,7 +538,7 @@ controls:
     rules:
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
-    - login_banner_text=usgcb_default
+    - login_banner_text=cis_default
 
   - id: 1.8.3
     title: Ensure last logged in user display is disabled (Automated)
@@ -1503,9 +1501,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule does not cover /etc/rsyslog.d/*.conf
-#    rules:
-#    - rsyslog_remote_loghost
+    automated: yes
+    rules:
+    - rsyslog_remote_loghost
 
   - id: 4.2.1.6
     title: Ensure remote rsyslog messages are only accepted on designated log hosts. (Manual)
@@ -1519,21 +1517,27 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - journald_forward_to_syslog
 
   - id: 4.2.2.2
     title: Ensure journald is configured to compress large log files (Automated)
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - journald_compress
 
   - id: 4.2.2.3
     title: Ensure journald is configured to write logfiles to persistent disk (Automated)
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - journald_storage
 
   - id: 4.2.3
     title: Ensure permissions on all logfiles are configured (Manual)
@@ -1629,10 +1633,12 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: partial # rules for removing cron.deny and checking permissions of cron.allow are missing
+    status: automated
     rules:
     - file_groupowner_cron_allow
     - file_owner_cron_allow
+    - file_cron_deny_not_exist
+    - file_permissions_cron_allow
 
   - id: 5.1.9
     title: Ensure at is restricted to authorized users (Automated)
@@ -1829,7 +1835,10 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - sshd_set_login_grace_time
+      - var_sshd_set_login_grace_time=60
 
   - id: 5.3.18
     title: Ensure SSH warning banner is configured (Automated)
@@ -1843,7 +1852,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - sshd_enable_pam
 
   - id: 5.3.20
     title: Ensure SSH AllowTcpForwarding is disabled (Automated)
@@ -1992,7 +2003,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - accounts_root_gid_zero
 
   - id: 5.5.4
     title: Ensure default user shell timeout is configured (Automated)
@@ -2214,7 +2227,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    automated: yes
+    rules:
+      - group_unique_name
 
   - id: 6.2.7
     title: Ensure no duplicate UIDs exist (Automated)
@@ -2230,7 +2245,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - group_unique_id
 
   - id: 6.2.9
     title: Ensure root is the only UID 0 account (Automated)

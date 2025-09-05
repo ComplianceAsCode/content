@@ -5,9 +5,40 @@ import os.path
 import os
 import time
 
+
+SSG_PROJECT_NAME = "SCAP Security Guide Project"
+SSG_BENCHMARK_LATEST_URI = "https://github.com/ComplianceAsCode/content/releases/latest"
+
+SSG_REF_URIS = {
+    'anssi': 'http://www.ssi.gouv.fr/administration/bonnes-pratiques/',
+    'nist': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf',
+    'nist-csf': 'https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf',
+    'isa-62443-2013': 'https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu',
+    'isa-62443-2009': 'https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat',
+    'cobit5': 'https://www.isaca.org/resources/cobit',
+    'cis-csc': 'https://www.cisecurity.org/controls/',
+    'cjis': 'https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf',
+    'cui': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf',
+    'cnss': 'http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf',
+    'dcid': 'not_officially_available',
+    'disa': 'https://public.cyber.mil/stigs/cci/',
+    'pcidss': 'https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf',
+    'ospp': 'https://www.niap-ccevs.org/Profile/PP.cfm',
+    'hipaa': 'https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf',
+    'iso27001-2013': 'https://www.iso.org/standard/54534.html',
+    'nerc-cip': 'https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx',
+    'stigid': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
+    'os-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
+    'app-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
+    # The following reference URIs were not defined in the XSLT constants
+    'ism': '',
+    'vmmsrg': '',
+    'vsrg': '',  # From the references, it looks like vsrg and vmmsrg are meant to be the same
+}
+
 product_directories = [
     'chromium',
-    'debian9', 'debian10',
+    'debian9', 'debian10', 'debian11',
     'example',
     'fedora',
     'firefox',
@@ -45,10 +76,14 @@ JINJA_MACROS_BASH_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 
 datastream_namespace = "http://scap.nist.gov/schema/scap/source/1.2"
+dc_namespace = "http://purl.org/dc/elements/1.1/"
 ocil_namespace = "http://scap.nist.gov/schema/ocil/2.0"
+cpe_language_namespace = "http://cpe.mitre.org/language/2.0"
 oval_footer = "</oval_definitions>"
 oval_namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 xlink_namespace = "http://www.w3.org/1999/xlink"
+xhtml_namespace = "http://www.w3.org/1999/xhtml"
+xsi_namespace = "http://www.w3.org/2001/XMLSchema-instance"
 cat_namespace = "urn:oasis:names:tc:entity:xmlns:xml:catalog"
 ocil_cs = "http://scap.nist.gov/schema/ocil/2"
 xccdf_header = xml_version + "<xccdf>"
@@ -103,13 +138,16 @@ OVAL_SUB_NS = dict(
 PREFIX_TO_NS = {
     "oval-def": oval_namespace,
     "oval": "http://oval.mitre.org/XMLSchema/oval-common-5",
+    "dc": dc_namespace,
     "ds": datastream_namespace,
     "ocil": ocil_namespace,
     "xccdf-1.1": XCCDF11_NS,
     "xccdf-1.2": XCCDF12_NS,
+    "html": xhtml_namespace,
     "xlink": xlink_namespace,
     "cpe-dict": "http://cpe.mitre.org/dictionary/2.0",
     "cat": cat_namespace,
+    "cpe-lang": "http://cpe.mitre.org/language/2.0",
 }
 
 
@@ -157,6 +195,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Chromium": "chromium",
     "Debian 9": "debian9",
     "Debian 10": "debian10",
+    "Debian 11": "debian11",
     "Example": "example",
     "Fedora": "fedora",
     "Firefox": "firefox",
@@ -185,7 +224,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
 }
 
 
-# see xccdf-addremediations.xslt <- shared_constants.xslt <- shared_shorthand2xccdf.xslt
+# see xccdf-addremediations.xslt <- shared_constants.xslt
 # if you want to know how the map was constructed
 REF_PREFIX_MAP = {
     "nist": "NIST-800-53",
@@ -199,7 +238,7 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos", "example"]
 
 MULTI_PLATFORM_MAPPING = {
-    "multi_platform_debian": ["debian9", "debian10"],
+    "multi_platform_debian": ["debian9", "debian10", "debian11"],
     "multi_platform_example": ["example"],
     "multi_platform_fedora": ["fedora"],
     "multi_platform_opensuse": ["opensuse"],
@@ -382,6 +421,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 
 
 # Application constants
+DEFAULT_GID_MIN = 1000
 DEFAULT_UID_MIN = 1000
 DEFAULT_GRUB2_BOOT_PATH = '/boot/grub2'
 DEFAULT_GRUB2_UEFI_BOOT_PATH = '/boot/grub2'
