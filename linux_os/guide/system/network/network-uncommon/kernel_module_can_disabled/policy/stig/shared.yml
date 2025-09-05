@@ -1,19 +1,17 @@
 srg_requirement: |-
-    {{{ full_name }}} Must Be Configured To Disable Non-Essential Capabilities.
+    {{{ full_name }}} must be configured to disable the Controller Area Network kernel module.
 
 vuldiscussion: |-
-    Disabling Controller Area Network (CAN) protects the system against exploitation of any
-    flaws in its implementation.
+    Disabling Controller Area Network (CAN) protects the system against exploitation of any flaws in its implementation.
 
 checktext: |-
+    Verify that {{{ full_name }}} disables the ability to load the CAN kernel module with the following command:
 
-    If the system is configured to prevent the loading of the  can  kernel module,
-    it will contain lines inside any file in  /etc/modprobe.d  or the deprecated /etc/modprobe.conf .
-    These lines instruct the module loading system to run another program (such as  /bin/true ) upon a module  install  event.
-    Run the following command to search for such lines in all files in  /etc/modprobe.d  and the deprecated  /etc/modprobe.conf :
-     $ grep -r can /etc/modprobe.conf /etc/modprobe.d
+    $ sudo grep -r can /etc/modprobe.conf /etc/modprobe.d/*
 
-    If no line is returned, then this is a finding.
+    blacklist can
+
+    If the command does not return any output, or the line is commented out, and use of CAN is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
 
 fixtext: |-
     To configure the system to prevent the can kernel module from being loaded, add the following line to the file  /etc/modprobe.d/can.conf (or create atm.conf if it does not exist):

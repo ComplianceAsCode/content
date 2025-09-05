@@ -1,9 +1,16 @@
 #!/bin/bash
+
 # remediation = none
 
-mkdir -p /kubernetes-api-resources/apis/route.openshift.io/v1/
+yum install -y jq
 
-cat <<EOF > /kubernetes-api-resources/apis/route.openshift.io/v1/routes?limit=500
+kube_apipath="/kubernetes-api-resources"
+
+mkdir -p "$kube_apipath/apis/route.openshift.io/v1"
+
+routes_apipath="/apis/route.openshift.io/v1/routes"
+
+cat <<EOF > "$kube_apipath$routes_apipath"
 {
     "apiVersion": "v1",
     "items": [
@@ -11,14 +18,14 @@ cat <<EOF > /kubernetes-api-resources/apis/route.openshift.io/v1/routes?limit=50
             "apiVersion": "route.openshift.io/v1",
             "kind": "Route",
             "metadata": {
-                "creationTimestamp": "2022-02-07T15:44:41Z",
+                "creationTimestamp": "2021-11-10T16:47:27Z",
                 "labels": {
                     "app": "oauth-openshift"
                 },
                 "name": "oauth-openshift",
                 "namespace": "openshift-authentication",
-                "resourceVersion": "20112",
-                "uid": "f90675f0-6090-4222-8b41-bf32d522d9ac"
+                "resourceVersion": "21582",
+                "uid": "265f462c-eb31-43e5-abab-aaad3e34b448"
             },
             "spec": {
                 "host": "oauth-openshift.apps.wenshen-51.devcluster.openshift.com",
@@ -26,7 +33,7 @@ cat <<EOF > /kubernetes-api-resources/apis/route.openshift.io/v1/routes?limit=50
                     "targetPort": 6443
                 },
                 "tls": {
-                    "insecureEdgeTerminationPolicy": "None",
+                    "insecureEdgeTerminationPolicy": "Redirect",
                     "termination": "passthrough"
                 },
                 "to": {
@@ -41,7 +48,7 @@ cat <<EOF > /kubernetes-api-resources/apis/route.openshift.io/v1/routes?limit=50
                     {
                         "conditions": [
                             {
-                                "lastTransitionTime": "2022-02-07T15:47:15Z",
+                                "lastTransitionTime": "2021-11-10T16:49:45Z",
                                 "status": "True",
                                 "type": "Admitted"
                             }
@@ -61,30 +68,29 @@ cat <<EOF > /kubernetes-api-resources/apis/route.openshift.io/v1/routes?limit=50
                 "annotations": {
                     "openshift.io/host.generated": "true"
                 },
-                "creationTimestamp": "2022-02-07T15:48:36Z",
+                "creationTimestamp": "2021-11-11T00:26:39Z",
                 "labels": {
-                    "app.kubernetes.io/component": "query-layer",
-                    "app.kubernetes.io/instance": "thanos-querier",
-                    "app.kubernetes.io/name": "thanos-query",
-                    "app.kubernetes.io/version": "0.22.0"
+                    "app": "wordpress",
+                    "app.kubernetes.io/component": "wordpress",
+                    "app.kubernetes.io/instance": "wordpress"
                 },
-                "name": "thanos-querier",
-                "namespace": "openshift-monitoring",
-                "resourceVersion": "22723",
-                "uid": "a9aee465-0939-466a-a187-5d1c3e97d8e9"
+                "name": "wordpress",
+                "namespace": "test-no-rate-limit",
+                "resourceVersion": "213342",
+                "uid": "26f97c95-7351-49b8-a0dd-f6cdd88283ae"
             },
             "spec": {
-                "host": "thanos-querier-openshift-monitoring.apps.wenshen-51.devcluster.openshift.com",
+                "host": "wordpress-test-no-rate-limit.apps.wenshen-51.devcluster.openshift.com",
                 "port": {
-                    "targetPort": "web"
+                    "targetPort": "8080-tcp"
                 },
                 "tls": {
-                    "insecureEdgeTerminationPolicy": "Redirect",
-                    "termination": "reencrypt"
+                    "insecureEdgeTerminationPolicy": "None",
+                    "termination": "passthrough"
                 },
                 "to": {
                     "kind": "Service",
-                    "name": "thanos-querier",
+                    "name": "wordpress",
                     "weight": 100
                 },
                 "wildcardPolicy": "None"
@@ -94,12 +100,12 @@ cat <<EOF > /kubernetes-api-resources/apis/route.openshift.io/v1/routes?limit=50
                     {
                         "conditions": [
                             {
-                                "lastTransitionTime": "2022-02-07T15:48:36Z",
+                                "lastTransitionTime": "2021-11-11T00:26:39Z",
                                 "status": "True",
                                 "type": "Admitted"
                             }
                         ],
-                        "host": "thanos-querier-openshift-monitoring.apps.wenshen-51.devcluster.openshift.com",
+                        "host": "wordpress-test-no-rate-limit.apps.wenshen-51.devcluster.openshift.com",
                         "routerCanonicalHostname": "router-default.apps.wenshen-51.devcluster.openshift.com",
                         "routerName": "default",
                         "wildcardPolicy": "None"
@@ -114,3 +120,12 @@ cat <<EOF > /kubernetes-api-resources/apis/route.openshift.io/v1/routes?limit=50
         "selfLink": ""
     }
 }
+EOF
+
+jq_filter='[.items[] | select(.spec.tls.insecureEdgeTerminationPolicy != null) | select(.spec.tls.insecureEdgeTerminationPolicy | test("^(^$|None|Redirect)$"; "") | not) | .metadata.name]'
+
+# Get file path. This will actually be read by the scan
+filteredpath="$kube_apipath$routes_apipath#$(echo -n "$routes_apipath$jq_filter" | sha256sum | awk '{print $1}')"
+
+# populate filtered path with jq-filtered result
+jq "$jq_filter" "$kube_apipath$routes_apipath" > "$filteredpath"

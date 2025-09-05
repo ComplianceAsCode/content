@@ -2,4 +2,5 @@
 #
 # remediation = none
 
-touch /home/.netrc
+useradd -m testNetrcUser1
+touch /home/testNetrcUser1/.netrc

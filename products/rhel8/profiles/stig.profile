@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R8
+    version: V1R9
     SMEs:
         - mab879
         - ggbecker
@@ -12,7 +12,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V1R8.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R9.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -31,14 +31,13 @@ selections:
     - var_accounts_user_umask=077
     - var_password_pam_difok=8
     - var_password_pam_maxrepeat=3
-    - var_sshd_disable_compression=no
     - var_password_hashing_algorithm=SHA512
     - var_password_pam_maxclassrepeat=4
     - var_password_pam_minclass=4
     - var_accounts_minimum_age_login_defs=1
     - var_accounts_max_concurrent_login_sessions=10
     - var_password_pam_remember=5
-    - var_password_pam_remember_control_flag=required
+    - var_password_pam_remember_control_flag=requisite
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
     - var_password_pam_unix_rounds=5000
@@ -248,6 +247,7 @@ selections:
 
     # RHEL-08-010359
     - package_aide_installed
+    - aide_build_database
 
     # RHEL-08-010360
     - aide_scan_notification
@@ -334,7 +334,7 @@ selections:
     - no_user_host_based_files
 
     # RHEL-08-010471
-    - service_rngd_enabled
+    # currently there is not a relevant rule which would improve RNG for RHEL in this context
 
     # RHEL-08-010472
     - package_rng-tools_installed
@@ -347,9 +347,6 @@ selections:
 
     # RHEL-08-010500
     - sshd_enable_strictmodes
-
-    # RHEL-08-010510
-    - sshd_disable_compression
 
     # RHEL-08-010520
     - sshd_disable_user_known_hosts
@@ -495,17 +492,16 @@ selections:
     # RHEL-08-020012, RHEL-08-020013
     - accounts_passwords_pam_faillock_interval
 
-    # RHEL-08-020014, RHEL-08-020016, RHEL-08-020017
+    # RHEL-08-020014, RHEL-08-020015
     - accounts_passwords_pam_faillock_unlock_time
 
-    # RHEL-08-020015
+    # RHEL-08-020016, RHEL-08-020017
+    - accounts_passwords_pam_faillock_dir
 
-    # RHEL-08-020018, RHEL-08-020019
-    - accounts_passwords_pam_faillock_deny
+    # # RHEL-08-020018, RHEL-08-020019
+    - accounts_passwords_pam_faillock_silent
 
-    # RHEL-08-020020
-
-    # RHEL-08-020021
+    # RHEL-08-020020, RHEL-08-020021
     - accounts_passwords_pam_faillock_audit
 
     # RHEL-08-020022, RHEL-08-020023
@@ -513,6 +509,9 @@ selections:
 
     # RHEL-08-020024
     - accounts_max_concurrent_login_sessions
+
+    # RHEL-08-020027, RHEL-08-020028
+    - account_password_selinux_faillock_dir
 
     # RHEL-08-020030
     - dconf_gnome_screensaver_lock_enabled
@@ -529,9 +528,10 @@ selections:
 
     # RHEL-08-020040
     - configure_tmux_lock_command
+    - configure_tmux_lock_keybinding
 
     # RHEL-08-020041
-    - configure_bashrc_exec_tmux
+    - configure_bashrc_tmux
 
     # RHEL-08-020042
     - no_tmux_in_shells
@@ -721,7 +721,7 @@ selections:
     - audit_rules_immutable
 
     # RHEL-08-030122
-    - audit_immutable_login_uids
+    - audit_rules_immutable_login_uids
 
     # RHEL-08-030130
     - audit_rules_usergroup_modification_shadow
@@ -1067,6 +1067,9 @@ selections:
     # RHEL-08-040136
     - service_fapolicyd_enabled
 
+    # RHEL-08-040137
+    - fapolicy_default_deny
+
     # RHEL-08-040139
     - package_usbguard_installed
 
@@ -1206,6 +1209,9 @@ selections:
 
     # RHEL-08-040390
     - package_tuned_removed
+
+    # RHEL-08-040400
+    - selinux_user_login_roles
 
     # RHEL-08-010163
     - package_krb5-server_removed

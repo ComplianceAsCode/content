@@ -11,7 +11,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/sudoers.d/" with the following command:
 
-    $ sudo auditctl -l | grep/etc/sudoers.d
+    $ sudo auditctl -l | grep /etc/sudoers.d
 
     -w /etc/sudoers.d/ -p wa -k identity
 
@@ -21,4 +21,5 @@ fixtext: |-
     Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that affect "/etc/sudoers.d/".
     Add or update the following file system rule to "/etc/audit/rules.d/audit.rules":
     -w /etc/sudoers.d/ -p wa -k identity
+
     The audit daemon must be restarted for the changes to take effect.

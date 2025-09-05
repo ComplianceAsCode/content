@@ -1,0 +1,65 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Ensure firewall rules exist for all open ports'
+
+description: |-
+    Any ports that have been opened on non-loopback addresses need firewall rules to govern
+    traffic.
+
+rationale: |-
+    Without a firewall rule configured for open ports default firewall policy will drop all
+    packets to these ports.
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-91411-9
+
+references:
+    cis@sle15: 3.5.3.2.4,3.5.3.3.4
+    pcidss: Req-1.4
+
+ocil_clause: 'Verify all open ports listening on non-localhost addresses have at least one firewall rule.'
+
+ocil: |-
+    Inspect the list of open listening ports with the following command:
+
+    <pre>$ sudo ss -tuln</pre>
+
+    <pre>$ sudo ss -tuln
+    Netid        State         Recv-Q        Send-Q               Local Address:Port                Peer Address:Port        Process
+    udp          UNCONN        3584          0                     0.0.0.0%eth0:68                       0.0.0.0:*
+    tcp          LISTEN        0             100                      127.0.0.1:25                       0.0.0.0:*
+    tcp          LISTEN        0             128                        0.0.0.0:22                       0.0.0.0:*
+    tcp          LISTEN        0             100                          [::1]:25                          [::]:*
+    tcp          LISTEN        0             128                           [::]:22                          [::]:*
+    </pre>
+    Verify for the above output that rules exist for tcp port 22 and udp port 68
+    <pre>
+    $ sudo firewall-cmd --get-active-zones
+    public
+      interfaces: eth0 eth1
+    $ sudo firewall-cmd --info-zone public |grep services
+      services: ssh
+    $ sudo firewall-cmd --info-service ssh|grep ports
+      ssh
+        ports: 22/tcp
+    </pre>
+    Which shows that rule for port 68, opened most probably by a dhcp client, is missing.
+
+fixtext: |-
+    For each port identified in the audit which does not have a firewall rule establish a proper
+    rule for accepting inbound connections:
+
+    $ sudo firewall-cmd --permanent --add-service=service_name
+    or
+    $ sudo firewall-cmd --permanent  --family=inet|inet6 --add-port=port_number/(tcp|udp)
+
+warnings:
+    - general: |-
+        To prevent denying any access to the system, automatic remediation
+        of this control is not available. Remediation must be automated as
+        a component of machine provisioning, or followed manually as outlined
+        above.

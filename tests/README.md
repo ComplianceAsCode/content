@@ -165,7 +165,11 @@ test runs. After the header, arbitrary Bash commands can follow.
 
 The header consists of comments (starting by `#`). Possible keys are:
 
-- `packages` is a comma-separated list of packages to install.
+- `packages` is a comma-separated list of packages to install. Note that each
+  package can be overridden by its platform-specific alternative if listed
+  under `platform_package_overrides` in the product YAML. You should use
+  the most common package names in this field and provide an alternative
+  for any platform-specific names in the `platform_package_overrides` field.
 - `platform` is a comma-separated list of platforms where the test scenario can
   be run. This is similar to `platform` used in our remediations. Examples of
   values: `multi_platform_rhel`, `Red Hat Enterprise Linux 7`,
@@ -398,7 +402,7 @@ Using Podman:
 ```
 
 or just call the `test_rule_in_container.sh` script that passes the backend options for you
-in addition to `--remove-machine-only` and `--add-platform`
+in addition to `--remove-machine-only` and `--remove-platforms`
 that remove some testing limitations of the container backend.
 
 Using Docker:

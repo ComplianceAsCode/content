@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.
+    {{{ full_name }}} must not have unauthorized interactive accounts.
 
 vuldiscussion: |-
     Accounts providing no operational purpose provide additional opportunities for
@@ -8,10 +8,22 @@ vuldiscussion: |-
     on the system.
 
 checktext: |-
-    To verify that there are no unauthorized local user accounts, run the following command:
-     $ less /etc/passwd
-    Inspect the results, and if unauthorized local user accounts exist, remove them by running
-    the following command:
-     $ sudo userdel  unauthorized_user
+    Verify that there are no unauthorized local interactive user accounts with the following command:
 
-    If there are unauthorized local user accounts on the system, then this is a finding.
+    $ less /etc/passwd
+
+    root:x:0:0:root:/root:/bin/bash
+    ...
+    smithk:x:1000:1000:smithk:/home/smithk:/bin/bash
+    throckw:x:1001:1001:throckw:/home/throckw:/bin/bash
+
+    Interactive user account, generally will have a UID of 1000 or greater, a home directory in a specific partition, and an interactive shell.
+
+    Obtain the list of interactive user accounts authorized to be on the system from the System Administrator or Information System Security Officer (ISSO) and compare it to the list of local interactive user accounts on the system.
+
+    If there are unauthorized local user accounts on the system, this is a finding.
+
+fixtext: |-
+    Remove unauthorized local interactive user accounts with the following command where &ltunauthorized_user&gt is the unauthorized account:
+
+    $ sudo userdel  &ltunauthorized_user&gt

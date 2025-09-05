@@ -1,9 +1,5 @@
 #!/bin/bash
-{{% if "ubuntu" in product%}}
-# packages = auditd
-{{% else %}}
 # packages = audit
-{{% endif %}}
 # variables = var_auditd_disk_full_action=action1|action2|action3
 
 source common.sh

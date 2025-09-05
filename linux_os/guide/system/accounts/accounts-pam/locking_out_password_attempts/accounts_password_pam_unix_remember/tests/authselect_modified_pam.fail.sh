@@ -11,3 +11,4 @@ if ! $(grep -q "^[^#].*pam_pwhistory\.so.*remember=" $SYSTEM_AUTH_FILE); then
 else
    sed -i --follow-symlinks "s/\(.*pam_pwhistory\.so.*remember=\)[[:digit:]]\+\s\(.*\)/\1/g" $SYSTEM_AUTH_FILE
 fi
+> /etc/security/pwhistory.conf

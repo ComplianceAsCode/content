@@ -8,11 +8,18 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} prevents privilege escalation thru the kernel by disabling access to the bpf syscall with the following commands:
 
-    $ sudo sysctl kernel.unprivileged_bpf_disabled
+    $ sysctl kernel.unprivileged_bpf_disabled
 
     kernel.unprivileged_bpf_disabled = 1
 
     If the returned line does not have a value of "1", or a line is not returned, this is a finding.
+
+    Check that the configuration files are present to enable this kernel parameter.
+
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F kernel.unprivileged_bpf_disabled | tail -1
+    kernel.unprivileged_bpf_disabled = 1
+
+    If the network parameter "ipv4.tcp_syncookies" is not equal to "1" or nothing is returned, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to prevent privilege escalation thru the kernel by disabling access to the bpf syscall by adding the following line to a file, in the "/etc/sysctl.d" directory:

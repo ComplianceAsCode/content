@@ -5,7 +5,7 @@ controls:
         title: {{{ full_name }}} must prohibit password reuse for a minimum of five generations.
         rules:
             - var_password_pam_remember=5
-            - var_password_pam_remember_control_flag=required
+            - var_password_pam_remember_control_flag=requisite
             - accounts_password_pam_pwhistory_remember_password_auth
             - accounts_password_pam_pwhistory_remember_system_auth
         status: automated

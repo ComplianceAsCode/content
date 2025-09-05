@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel8
+prodtype: rhel7,rhel8,rhel9
 
 title: 'Disable Kernel Parameter for IPv4 Forwarding on all IPv4 Interfaces'
 
@@ -14,7 +14,9 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: CCE-87180-6
     cce@rhel8: CCE-86220-1
+    cce@rhel9: CCE-87181-4
 
 references:
     disa: CCI-000366
@@ -50,4 +52,3 @@ template:
     vars:
         sysctlvar: net.ipv4.conf.all.forwarding
         datatype: int
-

@@ -57,6 +57,7 @@ references:
     cis@alinux3: 5.5.4
     cis@rhel7: 5.4.3
     cis@rhel8: 5.4.4
+    cis@rhel9: 5.5.4
     cjis: 5.6.2.2
     cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     cui: 3.13.11
@@ -92,7 +93,7 @@ ocil: |-
     {{%- endif -%}}
     </pre>
 
-platform: pam
+platform: package[pam]
 
 {{% if product in ["sle12", "sle15"] %}}
 template:

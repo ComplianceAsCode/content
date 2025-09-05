@@ -1,3 +1,10 @@
+{{% if "Red Hat" in full_name %}}
+{{% set vendor = "Red Hat" %}}
+{{% set url = "https://access.redhat.com/errata-search/" %}}
+{{% elif "ol" in product %}}
+{{% set vendor = "Oracle" %}}
+{{% set url = "https://linux.oracle.com/errata/" %}}
+{{% endif %}}
 srg_requirement: |-
     {{{ full_name }}} vendor packaged system security patches and updates must be installed and up to date.
 
@@ -11,7 +18,11 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} security patches and updates are installed and up to date.    Updates are required to be applied with a frequency determined by organizational policy.
 
-    Obtain the list of available package security updates from Red Hat. The URL for updates is https://access.redhat.com/errata-search/.    It is important to note that updates provided by Red Hat may not be present on the system if the underlying packages are not installed.
+    {{% if "Red Hat" in full_name or "ol" in product %}}
+    Obtain the list of available package security updates from {{{ vendor }}}. The URL for updates
+    is {{{ url }}}.    It is important to note that updates provided by {{{ vendor }}} may not be
+    present on the system if the underlying packages are not installed.
+    {{% endif %}}
 
     Check that the available package security updates have been installed on the system with the following command:
 
@@ -26,7 +37,7 @@ checktext: |-
 
     Typical update frequency may be overridden by Information Assurance Vulnerability Alert (IAVA) notifications from CYBERCOM.
 
-    If the system is in non-compliance with the organizational patching policy, then this is a finding.
+    If the system is in non-compliance with the organizational patching policy, this is a finding.
 
 fixtext: |-
     Install {{{ full_name }}} security patches and updates at the organizationally-defined frequency. If system updates are installed via a centralized repository that is configured on the system, you can install all updates with the following command:

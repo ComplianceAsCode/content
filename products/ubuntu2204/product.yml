@@ -13,7 +13,7 @@ init_system: "systemd"
 oval_feed_url: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.focal.cve.oval.xml"
 
 grub2_boot_path: "/boot/grub"
-grub2_uefi_boot_path: "/boot/efi/EFI/ubuntu"
+grub2_uefi_boot_path: "/boot/grub"
 
 aide_bin_path: "/usr/bin/aide.wrapper"
 aide_conf_path: "/etc/aide/aide.conf"
@@ -23,11 +23,13 @@ cpes_root: "../../shared/applicability"
 cpes:
   - ubuntu2204:
       name: "cpe:/o:canonical:ubuntu_linux:22.04::~~lts~~~"
-      title: "Ubuntu release 22.04 (Focal Fossa)"
+      title: "Ubuntu release 22.04 (Jammy Jellyfish)"
       check_id: installed_OS_is_ubuntu2204
 
 platform_package_overrides:
   audit: auditd
+  avahi: avahi-daemon
+  dconf: dconf-editor
   gdm: gdm3
   grub2: grub2-common
   net-snmp: snmp

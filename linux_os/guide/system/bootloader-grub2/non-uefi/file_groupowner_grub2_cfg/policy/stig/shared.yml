@@ -1,19 +1,19 @@
 srg_requirement: |-
-    The {{{ full_name }}} /boot/grub2/grub.cfg file must be group-owned by root.
+    The {{{ full_name }}} /boot/grub2/grub.cfg file must be owned by root.
 
 vuldiscussion: |-
-    The "root" group is a highly-privileged group. Furthermore, the group-owner of this
-    file should not have any access privileges anyway.
+    The " /boot/grub2/grub.cfg" file stores sensative system configuration and should be protected.
 
 checktext: |-
-    To check the group ownership of /boot/grub2/grub.cfg ,
-    run the command:
-     $ sudo stat -c "%G %n" /boot/grub2/grub.cfg
-    If properly configured, the output should indicate the following group-owner:
-     root /boot/grub2/grub.cfg
+    Verify the ownership of the "/boot/grub2/grub.cfg" file with the following command:
 
-    If /boot/grub2/grub.cfg does not have a group owner of root, then this is a finding.
+    $ sudo stat -c "%U %n" /boot/grub2/grub.cfg
+
+    root /boot/grub2/grub.cfg
+
+    If "/boot/grub2/grub.cfg" file does not have an owner of "root", this is a finding.
 
 fixtext: |-
-    Change the group of the file /boot/grub2/grub.cfg to root by running the following command:
-    $ sudo chgrp root /boot/grub2/grub.cfg
+    Change the owner of the file /boot/grub2/grub.cfg to root by running the following command:
+
+    $ sudo chown root /boot/grub2/grub.cfg

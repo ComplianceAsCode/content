@@ -372,8 +372,10 @@ controls:
     - accounts_passwords_pam_faillock_unlock_time
 
     # Do not reuse last two passwords
-    - var_password_pam_unix_remember=2
-    - accounts_password_pam_unix_remember
+    - var_password_pam_remember=2
+    - var_password_pam_remember_control_flag=requisite
+    - accounts_password_pam_pwhistory_remember_password_auth
+    - accounts_password_pam_pwhistory_remember_system_auth
 
   - id: R19
     levels:
@@ -674,6 +676,8 @@ controls:
     - var_accounts_tmout=10_min
     - sshd_set_idle_timeout
     - sshd_idle_timeout_value=10_minutes
+    - logind_session_timeout
+    - var_logind_session_timeout=10_minutes
     - sshd_set_keepalive
 
   - id: R30

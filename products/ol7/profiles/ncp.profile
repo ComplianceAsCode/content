@@ -124,6 +124,7 @@ selections:
     - audit_rules_session_events
     - audit_rules_sysadmin_actions
     - audit_rules_system_shutdown
+    - var_audit_failure_mode=panic
     - audit_rules_time_adjtimex
     - audit_rules_time_clock_settime
     - audit_rules_time_settimeofday

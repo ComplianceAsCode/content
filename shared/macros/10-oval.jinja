@@ -648,7 +648,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type test_id: str
 
 #}}
-{{%- macro oval_test_package_installed(package='', evr='', test_id='') -%}}
+{{%- macro oval_test_package_installed(package='', evr='', evr_op='greater than or equal', test_id='') -%}}
 {{% if pkg_system == "rpm" %}}
   <linux:rpminfo_test check="all" check_existence="all_exist"
   id="{{{ test_id }}}" version="1"
@@ -663,7 +663,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </linux:rpminfo_object>
   {{% if evr %}}
     <linux:rpminfo_state id="ste_{{{ test_id }}}" version="1">
-      <linux:evr datatype="evr_string" operation="greater than or equal">{{{ evr }}}</linux:evr>
+      <linux:evr datatype="evr_string" operation="{{{ evr_op }}}">{{{ evr }}}</linux:evr>
     </linux:rpminfo_state>
   {{% endif %}}
 {{% elif pkg_system == "dpkg" %}}
@@ -680,7 +680,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </linux:dpkginfo_object>
   {{% if evr %}}
     <linux:dpkginfo_state id="ste_{{{ test_id }}}" version="1">
-      <linux:evr datatype="evr_string" operation="greater than or equal">{{{ evr }}}</linux:evr>
+      <linux:evr datatype="evr_string" operation="{{{ evr_op }}}">{{{ evr }}}</linux:evr>
     </linux:dpkginfo_state>
   {{% endif %}}
 {{% endif %}}

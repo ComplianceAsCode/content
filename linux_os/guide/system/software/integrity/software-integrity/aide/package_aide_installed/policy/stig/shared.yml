@@ -5,7 +5,13 @@ vuldiscussion: |-
     Without verification of the security functions, security functions may not operate correctly, and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.
 
 checktext: |-
-    Verify that {{{ full_name }}} has the aide package installed with the following command:$sudo dnf list --installed aideaide.x86_640.16.100.el9If the aide package is not installed, this is a finding.
+    Verify that {{{ full_name }}} has the aide package installed with the following command:
+
+    $ sudo dnf list --installed aide
+
+    aide.x86_64        0.16.100.el9
+
+    If the "aide" package is not installed, this is a finding.
 
 fixtext: |-
     The aide package can be installed with the following command:

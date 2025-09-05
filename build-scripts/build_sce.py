@@ -73,6 +73,6 @@ if __name__ == "__main__":
         args.build_config_yaml, args.product_yaml)
     empty = "/sce/empty/placeholder"
     template_builder = ssg.templates.Builder(
-        env_yaml, empty, args.templates_dir, empty, empty)
+        env_yaml, empty, args.templates_dir, empty, empty, empty, None)
     ssg.build_sce.checks(env_yaml, args.product_yaml, args.scedirs,
                          template_builder, args.output)

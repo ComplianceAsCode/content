@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} /etc/group- file must be group-owned by root.
+    The {{{ full_name }}} /etc/group- file must be owned by root.
 
 vuldiscussion: |-
     The "/etc/group-" file is a backup file of "/etc/group", and as such,
@@ -7,14 +7,16 @@ vuldiscussion: |-
     Protection of this file is important for system security.
 
 checktext: |-
-    To check the ownership of /etc/group- ,
-    run the command:
-     $ sudo stat -c "%U %n" /etc/group-
-    If properly configured, the output should indicate the following owner:
-     root
+    Verify the ownership of the "/etc/group-" file with the following command:
 
-    If /etc/group- does not have an owner of root, then this is a finding.
+    $ sudo stat -c "%U %n" /etc/group-
+
+    root /etc/group-
+
+    If "/etc/group-" file does not have an owner of "root", this is a finding.
 
 fixtext: |-
-    Change the group of the file /etc/group- to root by running the following command:
-    $ sudo chgrp root /etc/group-
+    Change the owner of the file /etc/group- to root by running the following command:
+
+    $ sudo chown root /etc/group-
+

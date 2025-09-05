@@ -15,7 +15,7 @@ checktext: |-
 
     $ grep -i remember /etc/pam.d/system-auth
 
-    password required pam_pwhistory.so use_authtok remember=5 retry=3
+    password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok remember=5 retry=3
 
     If the line containing "pam_pwhistory.so" does not have the "remember" module argument set, is commented out, or the value of the "remember" module argument is set to less than "5", this is a finding.
 
@@ -24,4 +24,4 @@ fixtext: |-
 
     Add the following line in "/etc/pam.d/system-auth" (or modify the line to have the required value):
 
-    password required pam_pwhistory.so use_authtok remember=5 retry=3
+    password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok remember=5 retry=3

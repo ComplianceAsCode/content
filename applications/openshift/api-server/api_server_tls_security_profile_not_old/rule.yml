@@ -1,0 +1,62 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: "Ensure APIServer is not configured with Old tlsSecurityProfile"
+
+description: |-
+    The configuration <tt>tlsSecurityProfile</tt> specifies TLS configurations
+    to be used while establishing connections with the externally exposed
+    servers. Though secure transport mode is used for establishing connections,
+    the protocols used may not always be strong enough to avoid interception and
+    manipulation of the data in transport. TLS Security profile Old should be
+    avoided, as it supports vulnerable protocols, ciphers, and algorithms which
+    could lead to security breaches.
+
+    Update tlsSecurityProfile from Old to Intermediate using the following command:
+    {{% raw %}}<pre>oc patch apiservers.config.openshift.io cluster --type 'json' --patch '[{"op": "add", "path": "/spec/tlsSecurityProfile/intermediate", "value": {}}, {"op": "replace", "path": "/spec/tlsSecurityProfile/type", "value": "Intermediate"}, {"op": "remove", "path": "/spec/tlsSecurityProfile/old"}]'</pre>{{% endraw %}}
+
+    For more information, follow
+    OpenShift documentation:
+    {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/tls-security-profiles.html",
+                text="the relevant documentation") }}}.
+
+rationale: |-
+    The authenticity and integrity of the container platform and communication
+    between nodes and components must be secure. If an insecure protocol,
+    cipher, or algorithms is used, during transmission of data, the data can be
+    intercepted and manipulated. To thwart the manipulation of the data during
+    transmission secure protocol, cipher and algorithms must be used.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-86223-5
+
+references:
+    nist: SC-8,SC-8(1)
+    srg: SRG-APP-000014-CTR-000040
+
+ocil_clause: 'insecure tlsSecurityProfile is configured for accessing external services'
+
+ocil: |-
+    To check for the configured tlsSecurityProfile use below command:
+    <tt>$ oc get apiservers.config.openshift.io cluster -o jsonpath='{.spec.tlsSecurityProfile.type}{"\n"}'</tt>
+    The output shows the tlsSecurityProfile configured for API Server, and
+    TLS security profile configured should not be "old".
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/apiservers/cluster") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars: 
+        ocp_data: "true"
+        filepath: "/apis/config.openshift.io/v1/apiservers/cluster"
+        yamlpath: ".spec.tlsSecurityProfile.type"
+        check_existence: "any_exist"
+        values: 
+            - value: "Old"
+              type: "string"
+              operation: "not equal"

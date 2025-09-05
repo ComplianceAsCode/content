@@ -3,7 +3,7 @@
     {{{ oval_metadata("The grub2 boot loader should have password protection enabled.") }}}
 
     <criteria operator="OR">
-      {{% if product in ["ol8", "rhel8"] %}}
+      {{% if product in ["ol7","ol8", "rhel8"] %}}
       <criterion comment="make sure a password is defined in {{{ grub2_boot_path }}}/user.cfg" test_ref="test_grub2_password_usercfg" />
       {{% else %}}
       <criteria operator="AND">
@@ -17,7 +17,7 @@
     </criteria>
   </definition>
 
-  {{% if product not in ["ol8", "rhel8"] %}}
+  {{% if product not in ["ol7","ol8", "rhel8"] %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in {{{ grub2_boot_path }}}/grub.cfg files." id="test_bootloader_superuser" version="2">
     <ind:object object_ref="object_bootloader_superuser" />
   </ind:textfilecontent54_test>
@@ -37,7 +37,7 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  {{% if product not in ["ol8", "rhel8"] %}}
+  {{% if product not in ["ol7","ol8", "rhel8"] %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="make sure a password is defined in {{{ grub2_boot_path }}}/grub.cfg" id="test_grub2_password_grubcfg" version="1">
     <ind:object object_ref="object_grub2_password_grubcfg" />
   </ind:textfilecontent54_test>

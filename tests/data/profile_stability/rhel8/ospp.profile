@@ -104,6 +104,7 @@ selections:
 - kernel_module_firewire-core_disabled
 - kernel_module_sctp_disabled
 - kernel_module_tipc_disabled
+- logind_session_timeout
 - mount_option_boot_nodev
 - mount_option_boot_nosuid
 - mount_option_dev_shm_nodev
@@ -253,6 +254,7 @@ selections:
 - var_password_pam_ucredit=1
 - var_password_pam_lcredit=1
 - sshd_idle_timeout_value=14_minutes
+- var_logind_session_timeout=14_minutes
 - var_accounts_passwords_pam_faillock_deny=3
 - var_accounts_passwords_pam_faillock_fail_interval=900
 - var_accounts_passwords_pam_faillock_unlock_time=never

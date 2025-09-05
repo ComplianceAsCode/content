@@ -11,7 +11,7 @@ checktext: |-
 
     Check the status of the kernel.kexec_load_disabled kernel parameter with the following command:
 
-    $ sudo sysctl kernel.kexec_load_disabled
+    $ sysctl kernel.kexec_load_disabled
 
     kernel.kexec_load_disabled = 1
 
@@ -19,11 +19,11 @@ checktext: |-
 
     Check that the configuration files are present to enable this kernel parameter with the following command:
 
-    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F kernel.kexec_load_disabled | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F kernel.kexec_load_disabled | tail -1
 
     kernel.kexec_load_disabled = 1
 
-    If "kernel.kexec_load_disablede" is not set to "1" or is missing, this is a finding.
+    If "kernel.kexec_load_disabled" is not set to "1" or is missing, this is a finding.
 
 fixtext: |-
     Add or edit the following line in a system configuration file in the "/etc/sysctl.d/" directory:

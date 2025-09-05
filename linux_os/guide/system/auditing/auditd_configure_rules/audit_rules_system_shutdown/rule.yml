@@ -9,11 +9,11 @@ description: |-
     <tt>augenrules</tt> program to read audit rules during daemon startup (the
     default), add the following line to to the bottom of a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-f 2</pre>
+    <pre>-f {{{ xccdf_value("var_audit_failure_mode") }}}</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following line to the
     bottom of the <tt>/etc/audit/audit.rules</tt> file:
-    <pre>-f 2</pre>
+    <pre>-f {{{ xccdf_value("var_audit_failure_mode") }}}</pre>
 
 rationale: |-
     It is critical for the appropriate personnel to be aware if a system
@@ -54,9 +54,9 @@ ocil_clause: 'the system is not configured to shutdown on auditd failures'
 ocil: |-
     To verify that the system will shutdown when <tt>auditd</tt> fails,
     run the following command:
-    <pre>$ sudo grep "\-f 2" /etc/audit/audit.rules</pre>
+    <pre>$ sudo grep "\-f {{{ xccdf_value("var_audit_failure_mode") }}}" /etc/audit/audit.rules</pre>
     The output should contain:
-    <pre>-f 2</pre>
+    <pre>-f {{{ xccdf_value("var_audit_failure_mode") }}}</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to shutdown when auditing failures occur.
@@ -64,11 +64,11 @@ fixtext: |-
     If the auditd daemon is configured to use the augenrules program to read
     audit rules during daemon startup (the default), add the following line to
     the bottom of "/etc/audit/rules.d/immutable.rules":
-    -f 2
+    -f {{{ xccdf_value("var_audit_failure_mode") }}}
 
     If the auditd daemon is configured to use the auditctl utility to read
     audit rules during daemon startup, add the following line to the
     bottom of the /etc/audit/audit.rules file:
-    -f 2
+    -f {{{ xccdf_value("var_audit_failure_mode") }}}
 
 srg_requirement: The {{{ full_name }}} system must shut down when an audit processing failure occurs.

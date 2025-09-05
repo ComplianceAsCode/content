@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} /etc/shadow- file must have 0000 or less permissive to prevent unauthorized access.
+    The {{{ full_name }}} /etc/shadow- file must have mode 0000 or less permissive to prevent unauthorized access.
 
 vuldiscussion: |-
     The "/etc/shadow-" file is a backup file of "/etc/shadow", and as such,
@@ -7,14 +7,15 @@ vuldiscussion: |-
     Protection of this file is critical for system security.
 
 checktext: |-
-    To check the permissions of /etc/shadow- ,
-    run the command:
-     $ sudo stat -c "%a %n" /etc/shadow-
-    If properly configured, the output should indicate the following permissions:
-    000 /etc/shadow-
+    Verify that the "/etc/shadow-" file has mode "0000" with the following command:
 
-    If /etc/shadow- does not have unix mode 000, then this is a finding.
+    $ sudo stat -c "%a %n" /etc/shadow-
+
+    0 /etc/shadow-
+
+    If a value of "0" is not returned, this is a finding.
 
 fixtext: |-
-    Change the permissions of the file "/etc/shadow-" to "0000" by running the following command:
+    Change the mode of the file "/etc/shadow-" to "0000" by running the following command:
+
     $ sudo chmod 0000 /etc/shadow-

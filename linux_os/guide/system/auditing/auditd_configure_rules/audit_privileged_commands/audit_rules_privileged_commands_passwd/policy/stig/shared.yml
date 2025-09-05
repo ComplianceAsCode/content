@@ -15,7 +15,7 @@ checktext: |-
 
     $ sudo auditctl -l | egrep '(/usr/bin/passwd)'
 
-    -a always,exit -F path=/usr/bin/passwd -F perm=x -F auid>=1000 -F auid!=unset -k privileged-passwd
+    -a always,exit -F path=/usr/bin/passwd -F perm=x -F auid&gt=1000 -F auid!=unset -k privileged-passwd
 
     If the command does not return a line, or the line is commented out, this is a finding.
 

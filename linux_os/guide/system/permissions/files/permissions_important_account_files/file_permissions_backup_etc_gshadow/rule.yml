@@ -23,15 +23,19 @@ identifiers:
     cce@rhel7: CCE-83572-8
     cce@rhel8: CCE-83573-6
     cce@rhel9: CCE-83942-3
+    cce@sle12: CCE-92449-8
+    cce@sle15: CCE-92700-4
 
 references:
     cis@alinux2: 6.1.9
     cis@alinux3: 6.1.10
     cis@rhel7: 6.1.6
     cis@rhel8: 6.1.10
-    cis@sle15: 6.1.3
+    cis@rhel9: 6.1.8
+    cis@sle12: 6.1.6
+    cis@sle15: 6.1.6
     cis@ubuntu2004: 6.1.3
-    cis@ubuntu2204: 6.1.3
+    cis@ubuntu2204: 6.1.8
     disa: CCI-002223
     nist: AC-6 (1)
     srg: SRG-OS-000480-GPOS-00227
@@ -51,10 +55,10 @@ template:
     vars:
         filepath: /etc/gshadow-
         filemode: '0000'
-
         filemode@debian10: '0640'
         filemode@debian11: '0640'
         filemode@ubuntu1604: '0640'
         filemode@ubuntu1804: '0640'
         filemode@ubuntu2004: '0640'
+        filemode@ubuntu2204: '0640'
         missing_file_pass: 'true'

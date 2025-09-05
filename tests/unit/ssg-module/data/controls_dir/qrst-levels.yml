@@ -1,0 +1,13 @@
+policy: QRST Benchmark for securing Linux systems
+title: QRST Benchmark for securing Linux systems
+id: qrst-levels
+version: 1.2.3
+source: https://www.example.com/qrst/linux.pdf
+levels:
+  - id: low
+  - id: medium
+    inherits_from:
+    - low
+  - id: high
+    inherits_from:
+    - medium

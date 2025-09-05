@@ -11,17 +11,22 @@ vuldiscussion: |-
     {{{ full_name }}} incorporates system-wide crypto policies by default. The SSH configuration file has no effect on the ciphers, MACs, or algorithms unless specifically defined in the /etc/sysconfig/sshd file. The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/opensshserver.config file.
 
 checktext: |-
-    Verify the SSH server is configured to use only ciphers employing FIPS 140-3-approved algorithms with the following command:
+    Verify the SSH server is configured to use only ciphers employing FIPS 140-3 approved algorithms with the following command:
 
     $ sudo grep -i ciphers /etc/crypto-policies/back-ends/opensshserver.config
 
-    Ciphers aes256-ctr,aes192-ctr,aes128-ctr
+    Ciphers aes256-gcm@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr
 
-    If the cipher entries in the "opensshserver.config" file have any ciphers other than "aes256-ctr,aes192-ctr,aes128-ctr", the order differs from the example above, they are missing, or commented out, this is a finding.
+    If the cipher entries in the "opensshserver.config" file have any ciphers other than "aes256-gcm@openssh.com", "aes256-ctr", "aes128-gcm@openssh.com", "aes128-ctr", the order differs from the example above, they are missing, or commented out, this is a finding.
 
 fixtext: |-
-    Configure the {{{ full_name }}} SSH server to use only ciphers employing FIPS 140-3-approved algorithms by updating the "/etc/crypto-policies/back-ends/opensshserver.config" file with the following line:
+    Reinstall the crypto-policies package to remove any modifications.
 
-    Ciphers=aes256-ctr,aes192-ctr,aes128-ctr
+    $ sudo dnf reinstall crypto-policies
 
+    Then ensure that FIPS mode is setup with the following command:
+
+    $ sudo fips-mode-setup --enable
+
+    The system must be rebooted for the changes to take effect.
     A reboot is required for the changes to take effect.

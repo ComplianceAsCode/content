@@ -75,6 +75,7 @@ xlink_namespace = "http://www.w3.org/1999/xlink"
 xhtml_namespace = "http://www.w3.org/1999/xhtml"
 xsi_namespace = "http://www.w3.org/2001/XMLSchema-instance"
 cat_namespace = "urn:oasis:names:tc:entity:xmlns:xml:catalog"
+sce_namespace = "http://open-scap.org/page/SCE_xccdf_stream"
 ocil_cs = "http://scap.nist.gov/schema/ocil/2"
 xccdf_header = xml_version + "<xccdf>"
 xccdf_footer = "</xccdf>"
@@ -140,6 +141,7 @@ PREFIX_TO_NS = {
     "cpe-dict": "http://cpe.mitre.org/dictionary/2.0",
     "cat": cat_namespace,
     "cpe-lang": "http://cpe.mitre.org/language/2.0",
+    "sce": sce_namespace,
 }
 
 FIX_TYPE_TO_SYSTEM = {
@@ -454,6 +456,8 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'eks': 'Amazon Elastic Kubernetes Service',
 }
 
+# References that can not be used with product-qualifiers
+GLOBAL_REFERENCES = ("srg", "vmmsrg", "disa", "cis-csc",)
 
 # Application constants
 DEFAULT_GID_MIN = 1000
@@ -465,6 +469,7 @@ DEFAULT_GRUB2_UEFI_BOOT_PATH = '/boot/grub2'
 DEFAULT_DCONF_GDM_DIR = 'gdm.d'
 DEFAULT_AIDE_CONF_PATH = '/etc/aide.conf'
 DEFAULT_AIDE_BIN_PATH = '/usr/sbin/aide'
+DEFAULT_FAILLOCK_PATH = '/var/run/faillock'
 DEFAULT_SSH_DISTRIBUTED_CONFIG = 'false'
 DEFAULT_PRODUCT = 'example'
 DEFAULT_CHRONY_CONF_PATH = '/etc/chrony.conf'

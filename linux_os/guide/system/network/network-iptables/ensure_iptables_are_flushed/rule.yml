@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Ensure iptables are flushed'
+
+description: |-
+    nftables is a replacement for iptables, ip6tables, ebtables and arptables
+
+rationale: |-
+    It is possible to mix iptables and nftables. However, this increases complexity 
+    and also the chance to introduce errors. For simplicity flush out all iptables 
+    rules, and ensure it is not loaded.
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-92523-0
+
+references:
+    cis@sle15: 3.5.2.3
+
+ocil_clause: 'Your system is configured to use nftables, but iptables rules exist on it'
+
+ocil: |-
+    To verify that on your system not iptables rules exist, and no rules will be returned 
+    run the following command:
+    <pre>$ sudo iptables -L</pre>
+    and/or to verify that on your system not ip6tables rules exist, and no rules will be 
+    returned run:
+    <pre>$ sudo ip6tables -L</pre>
+    To flush iptables run the following command:
+    <pre>$ sudo iptables -F</pre>
+    and/or to flush ip6tbales run:
+    <pre>$ sudo ip6tables -F</pre> 

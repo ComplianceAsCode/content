@@ -1,0 +1,11 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="api_server_tls_security_profile" version="1">
+    {{{ oval_metadata("TLS security profile configured must use secure protocols") }}}
+
+    <criteria operator="AND">
+      <extend_definition comment="APIServer tlsSecurityProfile=Old is not configured" definition_ref="api_server_tls_security_profile_not_old" />
+      <extend_definition comment="APIServer tlsSecurityProfile=Custom(TLS1.2) is configured" definition_ref="api_server_tls_security_profile_custom_min_tls_version" />
+    </criteria>
+
+  </definition>
+</def-group>

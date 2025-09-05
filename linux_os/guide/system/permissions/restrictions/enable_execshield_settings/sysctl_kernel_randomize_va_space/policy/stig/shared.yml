@@ -16,7 +16,7 @@ checktext: |-
     Check that the configuration files are present to enable this kernel parameter.
     Verify the configuration of the kernel.kptr_restrict kernel parameter with the following command:
 
-    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F kernel.randomize_va_space | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' |  grep -F kernel.randomize_va_space | tail -1
 
     kernel.randomize_va_space = 2
 

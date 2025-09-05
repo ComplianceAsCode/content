@@ -13,7 +13,7 @@ import re
 from .constants import XCCDF12_NS
 
 # if a profile ID ends with a string listed here we skip it
-PROFILE_ID_BLACKLIST = ["test", "index", "default"]
+PROFILE_ID_SKIPLIST = ["test", "index", "default"]
 # filler XCCDF 1.2 prefix which we will strip to avoid very long filenames
 PROFILE_ID_PREFIX = ("^xccdf_org.*content_profile_")
 

@@ -12,7 +12,7 @@ import glob
 
 
 import ssg.build_remediations
-from .build_cpe import CPEDoesNotExist, CPEALLogicalTest, CPEALFactRef, ProductCPEs
+from .build_cpe import CPEALLogicalTest, CPEALFactRef, ProductCPEs
 from .constants import (XCCDF12_NS,
                         OSCAP_BENCHMARK,
                         OSCAP_GROUP,
@@ -40,53 +40,12 @@ from .cce import is_cce_format_valid, is_cce_value_valid
 from .yaml import DocumentationNotComplete, open_and_macro_expand
 from .utils import required_key, mkdir_p
 
-from .xml import ElementTree as ET, add_xhtml_namespace, register_namespaces, parse_file
-from .shims import unicode_func
+from .xml import ElementTree as ET, register_namespaces, parse_file
 import ssg.build_stig
 
-from .entities.common import (
-    XCCDFEntity,
-    add_sub_element,
-)
+from .entities.common import add_sub_element, make_items_product_specific, \
+                             XCCDFEntity, Templatable
 from .entities.profile import Profile, ProfileWithInlinePolicies
-
-
-def add_sub_element(parent, tag, ns, data):
-    """
-    Creates a new child element under parent with tag tag, and sets
-    data as the content under the tag. In particular, data is a string
-    to be parsed as an XML tree, allowing sub-elements of children to be
-    added.
-
-    If data should not be parsed as an XML tree, either escape the contents
-    before passing into this function, or use ElementTree.SubElement().
-
-    Returns the newly created subelement of type tag.
-    """
-    namespaced_data = add_xhtml_namespace(data)
-    # This is used because our YAML data contain XML and XHTML elements
-    # ET.SubElement() escapes the < > characters by &lt; and &gt;
-    # and therefore it does not add child elements
-    # we need to do a hack instead
-    # TODO: Remove this function after we move to Markdown everywhere in SSG
-    ustr = unicode_func('<{0} xmlns="{3}" xmlns:xhtml="{2}">{1}</{0}>').format(
-        tag, namespaced_data, xhtml_namespace, ns)
-
-    try:
-        element = ET.fromstring(ustr.encode("utf-8"))
-    except Exception:
-        msg = ("Error adding subelement to an element '{0}' from string: '{1}'"
-               .format(parent.tag, ustr))
-        raise RuntimeError(msg)
-
-    # Apart from HTML and XML elements the rule descriptions and similar
-    # also contain <xccdf:sub> elements, where we need to add the prefix
-    # to create a full reference.
-    for x in element.findall(".//{%s}sub" % XCCDF12_NS):
-        x.set("idref", OSCAP_VALUE + x.get("idref"))
-        x.set("use", "legacy")
-    parent.append(element)
-    return element
 
 
 def reorder_according_to_ordering(unordered, ordering, regex=None):
@@ -187,7 +146,6 @@ class Value(XCCDFEntity):
     """Represents XCCDF Value
     """
     KEYS = dict(
-        title=lambda: "",
         description=lambda: "",
         type=lambda: "",
         operator=lambda: "equals",
@@ -260,7 +218,6 @@ class Benchmark(XCCDFEntity):
     """Represents XCCDF Benchmark
     """
     KEYS = dict(
-        title=lambda: "",
         status=lambda: "",
         description=lambda: "",
         notice_id=lambda: "",
@@ -322,7 +279,7 @@ class Benchmark(XCCDFEntity):
         return data
 
     def represent_as_dict(self):
-        data = super(Benchmark, cls).represent_as_dict()
+        data = super(Benchmark, self).represent_as_dict()
         data["rear-matter"] = data["rear_matter"]
         del data["rear_matter"]
 
@@ -480,7 +437,6 @@ class Group(XCCDFEntity):
 
     KEYS = dict(
         prodtype=lambda: "all",
-        title=lambda: "",
         description=lambda: "",
         warnings=lambda: list(),
         requires=lambda: list(),
@@ -692,12 +648,11 @@ def rule_filter_from_def(filterdef):
     return filterfunc
 
 
-class Rule(XCCDFEntity):
+class Rule(XCCDFEntity, Templatable):
     """Represents XCCDF Rule
     """
     KEYS = dict(
         prodtype=lambda: "all",
-        title=lambda: "",
         description=lambda: "",
         rationale=lambda: "",
         severity=lambda: "",
@@ -718,13 +673,13 @@ class Rule(XCCDFEntity):
         platforms=lambda: set(),
         sce_metadata=lambda: dict(),
         inherited_platforms=lambda: set(),
-        template=lambda: None,
         cpe_platform_names=lambda: set(),
         inherited_cpe_platform_names=lambda: set(),
         bash_conditional=lambda: None,
         fixes=lambda: dict(),
-        ** XCCDFEntity.KEYS
+        **XCCDFEntity.KEYS
     )
+    KEYS.update(**Templatable.KEYS)
 
     MANDATORY_KEYS = {
         "title",
@@ -737,7 +692,6 @@ class Rule(XCCDFEntity):
     ID_LABEL = "rule_id"
 
     PRODUCT_REFERENCES = ("stigid", "cis",)
-    GLOBAL_REFERENCES = ("srg", "vmmsrg", "disa", "cis-csc",)
 
     def __init__(self, id_):
         super(Rule, self).__init__(id_)
@@ -895,21 +849,11 @@ class Rule(XCCDFEntity):
                 env_yaml, policy_specific_content_files)
         self.policy_specific_content = policy_specific_content
 
-    def make_template_product_specific(self, product):
-        product_suffix = "@{0}".format(product)
-
-        if not self.template:
-            return
-
-        not_specific_vars = self.template.get("vars", dict())
-        specific_vars = self._make_items_product_specific(
-            not_specific_vars, product_suffix, True)
-        self.template["vars"] = specific_vars
-
-        not_specific_backends = self.template.get("backends", dict())
-        specific_backends = self._make_items_product_specific(
-            not_specific_backends, product_suffix, True)
-        self.template["backends"] = specific_backends
+    def get_template_context(self, env_yaml):
+        ctx = super(Rule, self).get_template_context(env_yaml)
+        if self.identifiers:
+            ctx["cce_identifiers"] = self.identifiers
+        return ctx
 
     def make_refs_and_identifiers_product_specific(self, product):
         product_suffix = "@{0}".format(product)
@@ -933,7 +877,7 @@ class Rule(XCCDFEntity):
         )
         for name, (dic, allow_overwrites) in to_set.items():
             try:
-                new_items = self._make_items_product_specific(
+                new_items = make_items_product_specific(
                     dic, product_suffix, allow_overwrites)
             except ValueError as exc:
                 msg = (
@@ -949,43 +893,6 @@ class Rule(XCCDFEntity):
         self.references.update(product_references)
 
         self._verify_stigid_format(product)
-
-    def _make_items_product_specific(self, items_dict, product_suffix, allow_overwrites=False):
-        new_items = dict()
-        for full_label, value in items_dict.items():
-            if "@" not in full_label and full_label not in new_items:
-                new_items[full_label] = value
-                continue
-
-            label = full_label.split("@")[0]
-
-            # this test should occur before matching product_suffix with the product qualifier
-            # present in the reference, so it catches problems even for products that are not
-            # being built at the moment
-            if label in Rule.GLOBAL_REFERENCES:
-                msg = (
-                    "You cannot use product-qualified for the '{item_u}' reference. "
-                    "Please remove the product-qualifier and merge values with the "
-                    "existing reference if there is any. Original line: {item_q}: {value_q}"
-                    .format(item_u=label, item_q=full_label, value_q=value)
-                )
-                raise ValueError(msg)
-
-            if not full_label.endswith(product_suffix):
-                continue
-
-            if label in items_dict and not allow_overwrites and value != items_dict[label]:
-                msg = (
-                    "There is a product-qualified '{item_q}' item, "
-                    "but also an unqualified '{item_u}' item "
-                    "and those two differ in value - "
-                    "'{value_q}' vs '{value_u}' respectively."
-                    .format(item_q=full_label, item_u=label,
-                            value_q=value, value_u=items_dict[label])
-                )
-                raise ValueError(msg)
-            new_items[label] = value
-        return new_items
 
     def validate_identifiers(self, yaml_file):
         if self.identifiers is None:
@@ -1521,6 +1428,8 @@ class LinearLoader(object):
         self.benchmark.unselect_empty_groups()
 
     def load_compiled_content(self):
+        self.product_cpes.load_cpes_from_directory_tree(self.resolved_cpe_items_dir, self.env_yaml)
+
         self.fixes = ssg.build_remediations.load_compiled_remediations(self.fixes_dir)
 
         filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.yml"))
@@ -1535,8 +1444,6 @@ class LinearLoader(object):
         filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.platforms, Platform)
         self.product_cpes.platforms = self.platforms
-
-        self.product_cpes.load_cpes_from_directory_tree(self.resolved_cpe_items_dir, self.env_yaml)
 
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
@@ -1605,25 +1512,24 @@ class Platform(XCCDFEntity):
     def from_text(cls, expression, product_cpes):
         if not product_cpes:
             return None
-        test = product_cpes.algebra.parse(
-            expression, simplify=True)
-        id = test.as_id()
-        platform = cls(id)
+        test = product_cpes.algebra.parse(expression, simplify=True)
+        id_ = test.as_id()
+        platform = cls(id_)
         platform.test = test
-        platform.test.pass_parameters(product_cpes)
+        product_cpes.add_resolved_cpe_items_from_platform(platform)
         platform.test.enrich_with_cpe_info(product_cpes)
-        platform.name = id
+        platform.name = id_
         platform.original_expression = expression
         platform.xml_content = platform.get_xml()
-        platform.bash_conditional = platform.test.to_bash_conditional()
-        platform.ansible_conditional = platform.test.to_ansible_conditional()
+        platform.update_conditional_from_cpe_items("bash", product_cpes)
+        platform.update_conditional_from_cpe_items("ansible", product_cpes)
         return platform
 
     def get_xml(self):
         cpe_platform = ET.Element("{%s}platform" % Platform.ns)
         cpe_platform.set('id', self.name)
-        # in case the platform contains only single CPE name, fake the logical test
-        # we have to athere to CPE specification
+        # In case the platform contains only single CPE name, fake the logical test
+        # we have to adhere to CPE specification
         if isinstance(self.test, CPEALFactRef):
             cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
             cpe_test.set('operator', 'AND')
@@ -1636,7 +1542,7 @@ class Platform(XCCDFEntity):
         return xmlstr
 
     def to_xml_element(self):
-        return self.xml_content
+        return ET.fromstring(self.xml_content)
 
     def get_remediation_conditional(self, language):
         if language == "bash":
@@ -1649,13 +1555,25 @@ class Platform(XCCDFEntity):
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
-        platform.xml_content = ET.fromstring(platform.xml_content)
-        # if we did receive a product_cpes, we can restore also the original test object
+        # If we received a product_cpes, we can restore also the original test object
         # it can be later used e.g. for comparison
         if product_cpes:
-            platform.test = product_cpes.algebra.parse(
-                platform.original_expression, simplify=True)
+            platform.test = product_cpes.algebra.parse(platform.original_expression, simplify=True)
+            product_cpes.add_resolved_cpe_items_from_platform(platform)
         return platform
+
+    def get_fact_refs(self):
+        return self.test.get_symbols()
+
+    def update_conditional_from_cpe_items(self, language, product_cpes):
+        self.test.enrich_with_cpe_info(product_cpes)
+        if language == "bash":
+            self.bash_conditional = self.test.to_bash_conditional()
+        elif language == "ansible":
+            self.ansible_conditional = self.test.to_ansible_conditional()
+        else:
+            raise RuntimeError(
+                "Platform remediations do not support the {0} language".format(language))
 
     def __eq__(self, other):
         if not isinstance(other, Platform):

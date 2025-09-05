@@ -10,3 +10,7 @@ execute:
 adjust:
 - enabled: false
   when: distro == fedora
+  continue: false
+- enabled: false
+  when: distro <= centos-7
+  continue: false

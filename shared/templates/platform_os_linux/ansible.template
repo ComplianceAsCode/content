@@ -1,0 +1,2 @@
+{{%- set ansible_os_release_name_cond = 'ansible_distribution == "' + OS_ID_ANSIBLE + '"' -%}}
+  {{{ ansible_os_release_name_cond.strip() }}}

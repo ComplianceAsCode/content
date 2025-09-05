@@ -1,0 +1,38 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}}: Determine if rules are loaded by auditctl"
+  ansible.builtin.find:
+    paths: '/usr/lib/systemd/system'
+    patterns: 'auditd.service'
+    contains: '^\s*ExecStartPost=-/sbin/auditctl'
+  register: auditctl_used
+
+- name: "{{{ rule_title }}}: Configure immutable login UIDs in /etc/audit/audit.rules"
+  ansible.builtin.lineinfile:
+    path: '/etc/audit/audit.rules'
+    line: '--loginuid-immutable'
+    regexp: '^\s*--loginuid-immutable\s*$'
+    create: true
+  when: auditctl_used is defined and auditctl_used.matched >= 1
+
+- name: "{{{ rule_title }}}: In case Augen-rules is used"
+  block:
+    - name: "{{{ rule_title }}}: Detect if immutable login UIDs are already defined in /etc/audit/rules.d/*.rules"
+      ansible.builtin.find:
+        paths: '/etc/audit/rules.d'
+        patterns: '*.rules'
+        contains: '^\s*--loginuid-immutable\s*$'
+      register: immutable_found_in_rules_d
+
+    - name: "{{{ rule_title }}}: set immutable login UIDS in /etc/audit/rules.d/immutable.rules"
+      ansible.builtin.lineinfile:
+        path: '/etc/audit/rules.d/immutable.rules'
+        line: '--loginuid-immutable'
+        regexp: '^\s*--loginuid-immutable\s*$'
+        create: true
+      when: immutable_found_in_rules_d is defined and immutable_found_in_rules_d.matched == 0
+  when: auditctl_used is defined and auditctl_used.matched == 0

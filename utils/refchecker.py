@@ -5,6 +5,7 @@ import os
 import argparse
 import json
 
+from ssg.build_cpe import ProductCPEs
 import ssg.build_profile
 import ssg.build_yaml
 import ssg.controls
@@ -16,19 +17,22 @@ import ssg.yaml
 import ssg.utils
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
+BUILD_CONFIG = os.path.join(SSG_ROOT, "build", "build_config.yml")
+CONTROLS_DIR = os.path.join(SSG_ROOT, "controls")
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Check all rule.yml referenced in a given"
                                      "profile for a required reference identifier")
     parser.add_argument("-j", "--json", type=str, action="store",
-                        default="build/rule_dirs.json", help="File to read "
+                        default=RULES_JSON, help="File to read "
                         "json output of rule_dir_json from (defaults to "
                         "build/rule_dirs.json")
-    parser.add_argument("-c", "--build-config-yaml", default="build/build_config.yml",
+    parser.add_argument("-c", "--build-config-yaml", default=BUILD_CONFIG,
                         help="YAML file with information about the build configuration. "
                         "Defaults to build/build_config.yml")
-    parser.add_argument("--controls", default="controls",
+    parser.add_argument("--controls", default=CONTROLS_DIR,
                         help="Directory that contains control files with policy controls.")
     parser.add_argument("-p", "--profiles-root",
                         help="Override where to look for profile files.")
@@ -63,11 +67,15 @@ def load_for_product(rule_obj, product, env_yaml=None):
 def reference_check(env_yaml, rule_dirs, profile_path, product, product_yaml, reference,
                     profiles_root, controls_manager=None):
     profile = ssg.build_yaml.ProfileWithInlinePolicies.from_yaml(profile_path, env_yaml)
+    product_cpes = ProductCPEs()
+    product_cpes.load_product_cpes(env_yaml)
+    product_cpes.load_content_cpes(env_yaml)
 
     if controls_manager:
         profile_files = ssg.products.get_profile_files_from_root(env_yaml, product_yaml)
-        all_profiles = ssg.build_profile.make_name_to_profile_mapping(profile_files, env_yaml)
-        profile.resolve(all_profiles, controls_manager)
+        all_profiles = ssg.build_profile.make_name_to_profile_mapping(profile_files, env_yaml,
+                                                                      product_cpes)
+        profile.resolve(all_profiles, rule_dirs, controls_manager)
 
     ok = True
     for rule_id in profile.selected + profile.unselected:
@@ -117,7 +125,7 @@ def main():
     profile_path = os.path.join(profiles_root, profile_filename)
     if not os.path.exists(profile_path):
         msg = "Unknown profile {0}: check profile, --profiles-root, and try again. "
-        msg = "Note that the '.profile' suffix shouldn't be included."
+        msg += "Note that the '.profile' suffix shouldn't be included."
         msg = msg.format(args.profile)
         raise ValueError(msg)
 

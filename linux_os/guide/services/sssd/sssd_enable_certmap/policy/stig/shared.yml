@@ -10,7 +10,7 @@ checktext: |-
     $ sudo cat /etc/sssd/sssd.conf
 
     [certmap/testing.test/rule_name]
-    matchrule =&lt;SAN&gt;.*EDIPI@mil
+    matchrule =&ltSAN&gt.*EDIPI@mil
     maprule = (userCertificate;binary={cert!bin})
     domains = testing.test
 

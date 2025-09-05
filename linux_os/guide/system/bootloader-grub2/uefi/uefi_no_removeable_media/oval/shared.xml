@@ -2,7 +2,11 @@
   <definition class="compliance" id="uefi_no_removeable_media" version="1">
     {{{ oval_metadata("Ensure the system is not configured to use a boot loader on removable media.") }}}
     <criteria comment="The respective application or service is configured correctly or system boot mode is not UEFI" operator="OR">
-      <criterion comment="Check the set root in {{{ grub2_uefi_boot_path }}}/grub.cfg" test_ref="test_uefi_no_removeable_media" />
+      <criteria comment="All menuentry entries have a set root setting" operator="AND">
+        <criterion comment="Check the set root in {{{ grub2_uefi_boot_path }}}/grub.cfg" test_ref="test_uefi_no_removeable_media" />
+        <criterion comment="Check the set root in {{{ grub2_uefi_boot_path }}}/grub.cfg for every menuentry" 
+          test_ref="test_uefi_no_removeable_media_count" />
+      </criteria>
       {{{ oval_file_absent_criterion(grub2_uefi_boot_path ~ "/grub.cfg") }}}
     </criteria>
   </definition>
@@ -19,6 +23,48 @@
     <ind:pattern operation="pattern match">^[ \t]*set root=(.+?)[ \t]*(?:$|#)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_uefi_menuentry" version="1">
+    <ind:filepath>{{{ grub2_uefi_boot_path }}}/grub.cfg</ind:filepath>
+    <ind:pattern operation="pattern match">^menuentry</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_uefi_set_root_count"
+      datatype="int" version="1"
+      comment="Variable to hold the number of set root settings in {{{ grub2_uefi_boot_path }}}/grub.cfg">
+      <count>
+          <object_component item_field="filepath"
+              object_ref="obj_uefi_no_removeable_media"/>
+      </count>
+  </local_variable>
+
+  <local_variable id="var_uefi_menuentry_count"
+      datatype="int" version="1"
+      comment="Variable to hold the number of menu entries in {{{ grub2_uefi_boot_path }}}/grub.cfg">
+      <count>
+          <object_component item_field="filepath"
+              object_ref="obj_uefi_menuentry"/>
+      </count>
+  </local_variable>
+
+  <ind:variable_object id="obj_uefi_menuentry_count"
+      version="1">
+      <ind:var_ref>var_uefi_menuentry_count</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="state_uefi_set_root_count"
+      version="1">
+      <ind:value datatype="int" operation="equals" var_check="all"
+          var_ref="var_uefi_set_root_count"/>
+  </ind:variable_state>
+
+  <ind:variable_test id="test_uefi_no_removeable_media_count"
+      check="all" check_existence="all_exist" version="1"
+      comment="The number of menuentry entries matches the number of set root settings">
+      <ind:object object_ref="obj_uefi_menuentry_count"/>
+      <ind:state state_ref="state_uefi_set_root_count"/>
+  </ind:variable_test>
 
   <ind:textfilecontent54_state id="state_uefi_no_removeable_media" version="1">
     <ind:subexpression datatype="string" operation="pattern match">^['|\(](?!fd)(?!cd)(?!usb).*['|\)]$</ind:subexpression>

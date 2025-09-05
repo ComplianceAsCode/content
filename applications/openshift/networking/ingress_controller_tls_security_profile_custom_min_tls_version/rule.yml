@@ -1,0 +1,62 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: "Ensure custom tlsSecurityProfile configured for IngressController uses secure TLS version"
+
+description: |-
+    The configuration <tt>tlsSecurityProfile</tt> specifies TLS configurations
+    to be used while establishing connections with the externally exposed
+    servers. Though secure transport mode is used for establishing connections,
+    the protocols used may not always be strong enough to avoid interception and
+    manipulation of the data in transport. When Custom TLS Security profile is 
+    used it's always better to configure TLS version 1.2 or newer to avoid any
+    security breaches.
+
+    Update minTLSVersion configured in Custom tlsSecurityProfile using the following command:
+    {{% raw %}}<pre>oc patch -n openshift-ingress-operator ingresscontrollers.operator.openshift.io default --type 'merge' --patch '{"spec":{"tlsSecurityProfile":{"custom":{"minTLSVersion":"VersionTLS12"}}}}'</pre>{{% endraw %}}
+
+    For more information, follow
+    OpenShift documentation:
+    {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/tls-security-profiles.html",
+                text="the relevant documentation") }}}.
+
+rationale: |-
+    The authenticity and integrity of the container platform and communication
+    between nodes and components must be secure. If an insecure protocol,
+    cipher, or algorithms is used, during transmission of data, the data can be
+    intercepted and manipulated. To thwart the manipulation of the data during
+    transmission secure protocol, cipher and algorithms must be used.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-86323-3
+
+references:
+    nist: SC-8,SC-8(1)
+    srg: SRG-APP-000014-CTR-000040
+
+ocil_clause: 'insecure TLS version configured in the Custom tlsSecurityProfile used for accessing external services'
+
+ocil: |-
+    To check for the configured tlsSecurityProfile use below command:
+    <tt>$ oc get -n openshift-ingress-operator ingresscontrollers.operator.openshift.io default -o jsonpath='{.spec.tlsSecurityProfile.custom.minTLSVersion}{"\n"}'</tt>
+    The output shows the minTLSVersion configured in Custom tlsSecurityProfile
+    for IngressController, which should be TLSv1.2 or newer.
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/operator.openshift.io/v1/namespaces/openshift-ingress-operator/ingresscontrollers/default") | indent(8) }}}
+
+template:
+template: 
+    name: yamlfile_value
+    vars: 
+        ocp_data: "true"
+        filepath: "/apis/operator.openshift.io/v1/namespaces/openshift-ingress-operator/ingresscontrollers/default"
+        yamlpath: ".spec.tlsSecurityProfile.custom.minTLSVersion"
+        check_existence: "any_exist"
+        values: 
+            - value: "^(?!VersionTLS10|VersionTLS11)"
+              operation: "pattern match"

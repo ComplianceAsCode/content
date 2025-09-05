@@ -227,8 +227,6 @@ if test "$_arg_docker" = on; then
 fi
 
 $CONTAINER_BACKEND images | grep -q "$_arg_name" || die "Couldn't find the $CONTAINER_BACKEND image '$_arg_name'"
-test_image_cpe_product=$($CONTAINER_BACKEND run --rm "$_arg_name" sh -c '. /etc/os-release && echo "$CPE_NAME"')
-test -n "$test_image_cpe_product" || die "Unable to deduce the product CPE from the container's /etc/os-release file."
 
 additional_args=()
 test "$_arg_dontclean" = on && additional_args+=(--dontclean)
@@ -248,7 +246,7 @@ if test -n "$ADDITIONAL_SSGTS_OPTIONS"; then
 	ADDITIONAL_TEST_OPTIONS="$ADDITIONAL_SSGTS_OPTIONS"
 fi
 
-command=(python3 "${script_dir}/automatus.py" rule ${ADDITIONAL_TEST_OPTIONS} --remove-machine-only --remove-ocp4-only "${additional_args[@]}" --add-platform "$test_image_cpe_product" "$CONTAINER_OPT" "$_arg_name" -- "${_arg_rule[@]}")
+command=(python3 "${script_dir}/automatus.py" rule ${ADDITIONAL_TEST_OPTIONS} --remove-platforms --remove-machine-only --remove-ocp4-only "${additional_args[@]}" "$CONTAINER_OPT" "$_arg_name" -- "${_arg_rule[@]}")
 if test "$_arg_dry_run" = on; then
 	printf '%s\n' "${command[*]}"
 else

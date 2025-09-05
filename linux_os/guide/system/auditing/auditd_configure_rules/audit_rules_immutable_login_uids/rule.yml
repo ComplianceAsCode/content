@@ -1,0 +1,50 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Configure immutable Audit login UIDs'
+
+description: |-
+    Configure kernel to prevent modification of login UIDs once they are set.
+    Changing login UIDs while this configuration is enforced requires special capabilities which
+    are not available to unprivileged users.
+    If the <tt>auditd</tt> daemon is configured to use the
+    <tt>augenrules</tt> program to read audit rules during daemon startup (the
+    default), add the following line to a file with suffix <tt>.rules</tt> in the
+    directory <tt>/etc/audit/rules.d</tt> in order to make login UIDs
+    immutable:
+    <pre>--loginuid-immutable</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following line to
+    <tt>/etc/audit/audit.rules</tt> file in order to make login UIDs
+    immutable:
+    <pre>--loginuid-immutable</pre>
+
+rationale: |-
+    If modification of login UIDs is not prevented, they can be changed by unprivileged users and
+    make auditing complicated or impossible.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-90783-2
+
+references:
+    disa: CCI-000162,CCI-000163,CCI-000164
+    srg: SRG-OS-000462-GPOS-00206,SRG-OS-000475-GPOS-00220,SRG-OS-000057-GPOS-00027,SRG-OS-000058-GPOS-00028,SRG-OS-000059-GPOS-00029
+    stigid@rhel8: RHEL-08-030122
+
+ocil_clause: 'the system is not configured to make login UIDs immutable'
+
+ocil: |-
+    To determine if the system is configured to make login UIDs immutable, run
+    one of the following commands.
+    If the <tt>auditd</tt> daemon is configured to use the
+    <tt>augenrules</tt> program to read audit rules during daemon startup (the
+    default), run the following:
+    <pre>sudo grep immutable /etc/audit/rules.d/*.rules</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, run the following command:
+    <pre>sudo grep immutable /etc/audit/audit.rules</pre>
+    The following line should be returned:
+    <pre>--loginuid-immutable</pre>

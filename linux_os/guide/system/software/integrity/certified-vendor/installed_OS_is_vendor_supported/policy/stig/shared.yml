@@ -4,15 +4,14 @@ srg_requirement: |-
 vuldiscussion: |-
     An operating system release is considered "supported" if the vendor continues to provide security patches for the product. With an unsupported release, it will not be possible to resolve security issues discovered in the system software.
 
+    {{% if "Red Hat" in full_name %}}
     Red Hat offers the Extended Update Support (EUS) ad-on to a Red Hat Enterprise Linux subscription, for a fee, for those customers who wish to standardize on a specific minor release for an extended period.
+    {{% endif %}}
 
 checktext: |-
     Verify that the version or {{{ full_name }}} is vendor supported with the following command:
 
-    $ grep -i "red hat" /etc/redhat-release
-
-
-    Red Hat Enterprise Linux release 9.0 (Plow)
+    $ grep PRETTY_NAME /etc/os-release
 
     If the installed version of {{{ full_name }}} is not supported, this is a finding.
 

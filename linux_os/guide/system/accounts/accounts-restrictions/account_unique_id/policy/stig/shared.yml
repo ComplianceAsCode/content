@@ -5,9 +5,7 @@ vuldiscussion: |-
     To assure accountability and prevent unauthenticated access, interactive users must be identified and authenticated to prevent potential misuse and compromise of the system.
 
 checktext: |-
-    Verify that {{{ full_name }}} contains no duplicate User IDs (UIDs) for interactive users.
-
-    Check that the operating system contains no duplicate UIDs for interactive users with the following command:
+    Verify that {{{ full_name }}} contains no duplicate User IDs (UIDs) for interactive users with the following command:
 
     $ sudo awk -F ":" 'list[$3]++{print $1, $3}' /etc/passwd
 

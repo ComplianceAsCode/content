@@ -29,6 +29,8 @@
   </ind:textfilecontent54_object>
 
 </def-group>
+{{%- elif 'ubuntu' in product -%}}
+{{{ oval_check_config_file(path='/etc/chrony/chrony.conf', prefix_regex='^[ \\t]*', parameter='user', separator_regex='[[:space:]]', value='_chrony', missing_parameter_pass=true, missing_config_file_fail=false) }}}
 {{%- else -%}}
 {{{ oval_check_config_file(path='/etc/sysconfig/chronyd', prefix_regex='^[ \\t]*', parameter='OPTIONS', separator_regex='=', value='["]?.*-u[\s]*chrony.*["]?', missing_parameter_pass=ok_by_default, missing_config_file_fail=true) }}}
 {{%- endif %}}

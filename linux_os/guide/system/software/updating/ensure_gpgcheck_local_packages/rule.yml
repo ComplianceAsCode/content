@@ -57,7 +57,7 @@ ocil: |-
 
     If "localpkg_gpgcheck" is not set to "1", or if the option is missing or commented out, ask the System Administrator how the certificates for patches and other operating system components are verified.
 
-platform: yum
+platform: package[yum]
 
 fixtext: |-
     Configure {{{ full_name }}} to always check package signatures before installation of local packages.

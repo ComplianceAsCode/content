@@ -1,0 +1,20 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables("var_account_disable_post_pw_expiration") }}}
+
+- name: Collect users with not correct INACTIVE parameter set 
+  ansible.builtin.command:
+    cmd: awk -F':' '$7 > {{ var_account_disable_post_pw_expiration }} || $7 == "" {print $1}' /etc/shadow
+  register: user_names
+
+- name: Change the period of inactivity 
+{{% if product in ["sle12", "sle15"] %}}
+  ansible.builtin.command:
+    cmd: chage --inactive {{ var_account_disable_post_pw_expiration }} {{ item }}
+{{% endif %}}
+  with_items: '{{ user_names.stdout_lines }}'
+  when: user_names.stdout_lines | length > 0

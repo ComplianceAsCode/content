@@ -9,36 +9,35 @@ vuldiscussion: |-
     development or testing, there is little need to run the kdump service.
 
 checktext: |-
-    To check that the  kdump  service is disabled in system boot configuration,
-    run the following command:
-     $ sudo systemctl is-enabled  kdump
-    Output should indicate the  kdump  service has either not been installed,
-    or has been disabled at all runlevels, as shown in the example below:
-     $ sudo systemctl is-enabled  kdump
-     disabled
+    Verify that the kdump service is disabled in system boot configuration with the following command:
 
-    Run the following command to verify  kdump  is not active (i.e. not running) through current runtime configuration:
-     $ sudo systemctl is-active kdump
+    $ systemctl is-enabled  kdump
 
-    If the service is not running the command will return the following output:
-     inactive
+    disabled
 
-    The service will also be masked, to check that the  kdump  is masked, run the following command:
-     $ sudo systemctl show  kdump  | grep "LoadState\|UnitFileState"
+    Verify that the kdump service is not active (i.e. not running) through current runtime configuration with the following command:
 
-    If the service is masked the command will return the following outputs:
+    $ systemctl is-active kdump
 
-     LoadState=masked
+    inactive
+    Verify that the kdump service is masked with the following command:
 
-     UnitFileState=masked
+    $ sudo systemctl show  kdump  | grep "LoadState\|UnitFileState"
 
-    If the "kdump" is loaded and not masked, then this is a finding.
+    LoadState=masked
+
+    UnitFileState=masked
+
+    If the "kdump" service is loaded or active, and is not masked, this is a finding.
 
 fixtext: |-
-    Disable the kdump {{{ full_name }}} service.
+    Disable and mask the kdump service on {{{ full_name }}}.
 
     To disable the kdump service run the following command:
 
     $ sudo systemctl disable --now kdump
 
+    To mask the kdump service run the following command:
+
+    $ sudo systemctl mask --now kdump
     $ sudo systemctl mask --now kdump

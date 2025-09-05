@@ -54,7 +54,7 @@ fixtext: |-
     <pre>account required pam_tally2.so</pre></li>
     </ul>
 
-platform: pam
+platform: package[pam]
 
 srg_requirement: |-
     {{{ full_name }}} must automatically lock the root account until the root account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period.

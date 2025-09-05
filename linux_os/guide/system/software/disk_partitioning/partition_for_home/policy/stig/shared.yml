@@ -7,12 +7,14 @@ vuldiscussion: |-
     users cannot trivially fill partitions used for log or audit data storage.
 
 checktext: |-
-    Verify that a separate file system/partition has been created for  /home  with the following command:
+    Verify that a separate file system/partition has been created for "/home" with the following command:
 
-     $ mountpoint /home
+    $ mount | grep /home
 
+    UUID=fba5000f-2ffa-4417-90eb-8c54ae74a32f on /home type ext4 (rw,nodev,nosuid,noexec,seclabel)
 
-    If "/home is is not a mountpoint" is returned, then this is a finding.
+    If a separate entry for "/home" is not in use, this is a finding.
 
 fixtext: |-
-    Migrate the "/home" directory onto a separate file system.
+    Migrate the "/home" directory onto a separate file system/partition.
+

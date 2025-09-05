@@ -17,7 +17,7 @@
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled"
       comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d" />
       {{% endif %}}
-{{% if "ubuntu" not in product and "rhel" not in product%}}
+{{% if "ubuntu" not in product and "rhel" not in product and "ol" not in product%}}
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" />
 {{% endif %}}
 
@@ -68,7 +68,7 @@
   </ind:textfilecontent54_object>
 {{% endif %}}
 
-{{% if "ubuntu" not in product and "rhel" not in product %}}
+{{% if "ubuntu" not in product and "rhel" not in product and "ol" not in product %}}
   <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" version="1" check="all"
   comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf">
     <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_modprobeconf" />

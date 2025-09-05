@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2204
 
 title: 'Set Lockout Time for Failed Password Attempts'
 
@@ -34,6 +34,8 @@ references:
     cis-csc: 1,12,15,16
     cis@rhel7: 5.3.2
     cis@rhel8: 5.4.2
+    cis@rhel9: 5.5.2
+    cis@ubuntu2204: 5.4.2
     cjis: 5.5.3
     cobit5: DSS05.04,DSS05.10,DSS06.10
     cui: 3.1.8
@@ -53,7 +55,7 @@ references:
     stigid@rhel8: RHEL-08-020016
     vmmsrg: SRG-OS-000329-VMM-001180
 
-platform: pam
+platform: package[pam]
 
 ocil_clause: |-
     the "unlock_time" option is not set to "{{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}",

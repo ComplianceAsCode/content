@@ -1,0 +1,5 @@
+name: cpe:/a:osbuild
+title: OSBuild
+check_id: installed_env_is_osbuild
+bash_conditional: '[ "$container" == "bwrap-osbuild" ]'
+ansible_conditional: 'lookup("env", "container") == "bwrap-osbuild"'

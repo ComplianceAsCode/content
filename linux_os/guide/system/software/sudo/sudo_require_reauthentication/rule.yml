@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,ol9,rhel7,rhel8,rhel9,sle12,sle15
+prodtype: ol7,ol8,ol9,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2204
 
 title: 'The operating system must require Re-Authentication when using the sudo command.
  Ensure sudo timestamp_timeout is appropriate - sudo timestamp_timeout'
@@ -32,7 +32,9 @@ identifiers:
     cce@sle15: CCE-85764-9
 
 references:
-    cis@rhel8: 5.3.5
+    cis@rhel8: 5.3.6
+    cis@rhel9: 5.3.5,5.3.6
+    cis@ubuntu2204: 5.3.6
     disa: CCI-002038
     nist: IA-11
     srg: SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158
@@ -59,5 +61,7 @@ fixtext: |-
     Add the following line to "/etc/sudoers":
 
     Defaults timestamp_timeout={{{ xccdf_value("var_sudo_timestamp_timeout") }}}
+
+    Remove any duplicate or conflicting lines from /etc/sudoers and /etc/sudoers.d/ files. 
 
 srg_requirement: '{{{ full_name }}} must require re-authentication when using the "sudo" command.'

@@ -789,6 +789,103 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - result_authselect_enable_feature_cmd is success
 {{%- endmacro -%}}
 
+{{#
+    Used to identify if authselect is present or not in the system.
+    Some macros can change the remediation behavior based on the presence of authselect.
+#}}
+{{%- macro ansible_check_authselect_presence() -%}}
+- name: '{{{ rule_title }}} - Check if system relies on authselect tool'
+  ansible.builtin.stat:
+    path: /usr/bin/authselect
+  register: result_authselect_present
+{{%- endmacro -%}}
+
+{{#
+    Enable pam_pwhistory.so PAM module according to the system capabilities.
+    If authselect is present and the "with-pwhistory" feature is available, the feature will be enabled.
+    If authselect is present but the "with-pwhistory" feature is not yet available, a custom profile will be used.
+    If authselect is not present, PAM files will be directly edited.
+
+    :param pam_file:    PAM config file.
+    :param control:     PAM control flags.
+    :param after_match: Regex used as reference to append a line, if necessary. Optional parameter.
+                        Note: For this macro, there is a special value used to include a line at
+                        the beginning of the file: "BOF"
+#}}
+{{%- macro ansible_pam_pwhistory_enable(pam_file, control, after_match='') -%}}
+{{{ ansible_check_authselect_presence() }}}
+
+- name: '{{{ rule_title }}} - Collect the available authselect features'
+  ansible.builtin.command:
+    cmd: authselect list-features minimal
+  register: result_authselect_available_features
+  changed_when: false
+  when:
+    - result_authselect_present.stat.exists
+
+- name: '{{{ rule_title }}} - Enable pam_pwhistory.so using authselect feature'
+  block:
+    {{{ ansible_enable_authselect_feature('with-pwhistory') | indent(4) }}}
+  when:
+    - result_authselect_present.stat.exists
+    - result_authselect_available_features.stdout is search("with-pwhistory")
+
+- name: '{{{ rule_title }}} - Enable pam_pwhistory.so in appropriate PAM files'
+  block:
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
+    {{{ ansible_ensure_pam_module_line('{{ pam_file_path }}', 'password', control, 'pam_pwhistory.so', after_match) | indent(4) }}}
+  when: >
+    (result_authselect_available_features.stdout is defined and result_authselect_available_features.stdout is not search("with-pwhistory"))
+    or result_authselect_available_features is not defined
+{{%- endmacro -%}}
+
+{{#
+    Set pam_pwhistory.so PAM module options and values. In case the file
+    /etc/security/pwhistory.conf is present in the system, the option is ensured there and removed
+    from pam files to avoid conflicts or confusion.
+
+:param pam_file:            PAM config file.
+:param parameter:           pwhistory parameter/option e.g.: remember, retry, debug
+:param pwhistory_var_name:  Literal variable name.
+
+#}}
+{{%- macro ansible_pam_pwhistory_parameter_value(pam_file, parameter, pwhistory_var_name='') -%}}
+- name: '{{{ rule_title }}} - Check the presence of /etc/security/pwhistory.conf file'
+  ansible.builtin.stat:
+    path: /etc/security/pwhistory.conf
+  register: result_pwhistory_conf_check
+
+- name: '{{{ rule_title }}} - pam_pwhistory.so parameters are configured in /etc/security/pwhistory.conf file'
+  block:
+    - name: '{{{ rule_title }}} - Ensure the pam_pwhistory.so {{{ parameter }}} parameter in /etc/security/pwhistory.conf'
+      ansible.builtin.lineinfile:
+        path: /etc/security/pwhistory.conf
+        {{%- if pwhistory_var_name == '' %}}
+        regexp: ^\s*{{{ parameter }}}
+        line: {{{ parameter }}}
+        {{%- else %}}
+        regexp: ^\s*{{{ parameter }}}\s*=
+        line: {{{ parameter }}} = {{{ pwhistory_var_name }}}
+        {{%- endif %}}
+        state: present
+
+    - name: '{{{ rule_title }}} - Ensure the pam_pwhistory.so {{{ parameter }}} parameter is removed from PAM files'
+      block:
+        {{{ ansible_remove_pam_module_option_configuration(pam_file, 'password', '', 'pam_pwhistory.so', parameter) | indent(8) }}}
+  when:
+    - result_pwhistory_conf_check.stat.exists
+
+- name: '{{{ rule_title }}} - pam_pwhistory.so parameters are configured in PAM files'
+  block:
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
+    {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', 'password', 'requisite', 'pam_pwhistory.so', parameter, pwhistory_var_name, '') | indent(4) }}}
+    {{{ ansible_apply_authselect_changes() | indent(4) }}}
+      when:
+        - result_authselect_present.stat.exists
+        - (result_pam_{{{ parameter }}}_add is defined and result_pam_{{{ parameter }}}_add.changed) or (result_pam_{{{ parameter }}}_edit is defined and result_pam_{{{ parameter }}}_edit.changed)
+  when:
+    - not result_pwhistory_conf_check.stat.exists
+{{%- endmacro -%}}
 
 {{#
   This macro ensures the pam_faillock.so PAM module is enabled.
@@ -796,10 +893,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 #}}
 {{%- macro ansible_pam_faillock_enable() -%}}
 
-- name: {{{ rule_title }}} - Check if system relies on authselect tool
-  ansible.builtin.stat:
-    path: /usr/bin/authselect
-  register: result_authselect_present
+{{{ ansible_check_authselect_presence() }}}
 
 - name: {{{ rule_title }}} - Remediation where authselect tool is present
   block:
@@ -1350,12 +1444,9 @@ Part of the grub2_bootloader_argument_absent template.
   ansible.builtin.set_fact:
     pam_file_path: {{{ pam_file }}}
 
-- name: '{{{ rule_title }}} - Check if system relies on authselect'
-  ansible.builtin.stat:
-    path: /usr/bin/authselect
-  register: result_authselect_present
+{{{ ansible_check_authselect_presence() }}}
 
-- name: '{{{ rule_title }}} - Remediate using authselect'
+- name: '{{{ rule_title }}} - Ensure authselect custom profile is used if authselect is present'
   block:
     {{{ ansible_check_authselect_integrity() | indent(4) }}}
 

@@ -14,7 +14,9 @@ description: |-
     Do not allow users to reuse recent passwords. This can be accomplished by using the
     <tt>remember</tt> option for the <tt>pam_unix</tt> or <tt>pam_pwhistory</tt> PAM modules.
 
-rationale: 'Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.'
+rationale: |-
+    Preventing re-use of previous passwords helps ensure that a compromised password is not
+    re-used by a user.
 
 severity: medium
 
@@ -54,11 +56,20 @@ ocil: |-
     The output should show the following at the end of the line:
     <pre>remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
 
+    {{% if product not in ["ol7", "rhel7"] %}}
+    In newer systems, the <tt>pam_pwhistory</tt> PAM module options can also be set in
+    "/etc/security/pwhistory.conf" file. Use the following command to verify:
+    <pre>$ grep remember /etc/security/pwhistory.conf
+    remember = {{{ xccdf_value("var_password_pam_remember") }}}</pre>
+
+    The pam_pwhistory <tt>remember</tt> option must be configured only in one file.
+    {{% endif %}}
+
 fixtext: |-
     To configure the <tt>remember</tt> option for the <tt>pam_unix</tt> or <tt>pam_pwhistory</tt>
     PAM modules, in the file <tt>{{{ configFile }}}</tt>, append <tt>remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</tt>
-    to the line which refers to the <tt>pam_unix.so</tt> or <tt>pam_pwhistory.so</tt>module,
-    as shown below:
+    to the line which refers to the <tt>pam_unix.so</tt> or <tt>pam_pwhistory.so</tt>module, as
+    shown below:
     <ul>
     <li>for the <tt>pam_unix.so</tt> case:
     <pre>password sufficient pam_unix.so <i>...existing_options...</i> remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
@@ -67,8 +78,18 @@ fixtext: |-
     <pre>password requisite pam_pwhistory.so <i>...existing_options...</i> remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
     </li>
     </ul>
+    {{% if product not in ["ol7", "rhel7"] %}}
+    If the <tt>pam_pwhistory.so</tt> module is used and the <tt>/etc/security/pwhistory.conf</tt>
+    file is present in the system, use it to set the "remember" option:
+    <pre>remember = {{{ xccdf_value("var_password_pam_remember") }}}</pre>
 
-platform: pam
+    Note:
+    In newer versions of authselect, the <tt>pam_pwhistory.so</tt> module can be easily enabled
+    via authselect feature using the following command:
+    <pre>authselect enable-feature with-pwhistory</pre>
+    {{% endif %}}
+
+platform: package[pam]
 
 warnings:
     - general: |-
@@ -77,5 +98,9 @@ warnings:
        PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
        aborted in order to preserve intentional changes. In this case, an informative message will
        be shown in the remediation report.
+    - general: |-
+       Newer versions of <tt>authselect</tt> contain an authselect feature to easily and properly
+       enable <tt>pam_pwhistory.so</tt> module. If this feature is not yet available in your
+       system, an authselect custom profile must be used to avoid integrity issues in PAM files.
 
 srg_requirement: '{{{ full_name }}} must not allow passwords to be reused for a minimum of five generations.'

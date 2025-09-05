@@ -15,19 +15,17 @@ tasks:
   - name: Prepare Env
     init: |
       pip install docker ansible json2html docutils==0.17.1 \
-        myst-parser
+        myst-parser \
         sphinx \
         sphinx-rtd-theme \
         git+https://github.com/ggbecker/sphinxcontrib.jinjadomain.git#egg=sphinxcontrib-jinjadomain
       [ -z "$PRODUCT" ] && PRODUCT="fedora"
       [ -z "$CONTAINER" ] && CONTAINER=$PRODUCT
-      [ -z "$CONTAINER_VERSION" ] && CONTAINER_VERSION="$CONTAINER:34"
-      [ -z "$CPE" ] && CPE="cpe:/o:fedoraproject:fedora:34"
+      [ -z "$CONTAINER_VERSION" ] && CONTAINER_VERSION="$CONTAINER"
       mkdir -p .vscode && cp .gitpod.launch.json .vscode/launch.json
       CONTAINER_NAME=${CONTAINER}_container
       sed -i "s/&&CONTAINER_NAME&&/$CONTAINER_NAME/g" .vscode/launch.json
       sed -i "s/&&DEFAULT_PRODUCT&&/$PRODUCT/g" .vscode/launch.json
-      sed -i "s,&&CPE&&,$CPE,g" .vscode/launch.json
       PRIVATE_KEY_FOLDER=.ssh
       PRIVATE_KEY_FILEPATH=$PRIVATE_KEY_FOLDER/id_rsa
       sed -i "s,&&PRIVATE_KEY_FILEPATH&&,$PRIVATE_KEY_FILEPATH,g" .vscode/launch.json

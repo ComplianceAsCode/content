@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: ol7,rhel7
+
+title: 'Ensure the audispd''s remote logging daemon type is correct'
+
+description: |-
+    Ensure the type used by <tt>audisp-remote</tt>
+    plug-in of the <tt>audispd</tt> audit event multiplexor is correct.
+    Check that the <tt>type</tt> directive in
+    <tt>{{{ audisp_conf_path }}}/plugins.d/au-remote.conf</tt> is <tt>always</tt>.
+    Restart the <tt>auditd</tt> service to apply configuration changes:
+    <pre>$ sudo service auditd restart</pre>
+
+rationale: |-
+    The auditd service does not include the ability to send audit
+    records to a centralized server for management directly. It does, however,
+    include a plug-in for audit event multiplexor (audispd) to pass audit records
+    to a remote server.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-90159-5
+
+references:
+    disa: CCI-001851
+    srg: SRG-OS-000479-GPOS-00224,SRG-OS-000342-GPOS-00133
+    stigid@ol7: OL07-00-030201
+    stigid@rhel7: RHEL-07-030201
+
+ocil_clause: 'it is not configured'
+
+ocil: |-
+    To verify if audispd's au-remote plugin is configured, run the following command:
+    <pre>$ sudo grep type {{{ audisp_conf_path }}}/plugins.d/au-remote.conf</pre>
+    If the plugin is configured correctly, the output will show <tt>always</tt>.
+
+template:
+    name: key_value_pair_in_file
+    vars:
+        app: "audispd"
+        key: "type"
+        value: "always"
+        path: {{{ audisp_conf_path }}}/plugins.d/au-remote.conf

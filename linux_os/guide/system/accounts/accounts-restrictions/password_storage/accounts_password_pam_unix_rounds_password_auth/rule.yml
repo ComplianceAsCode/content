@@ -50,7 +50,7 @@ ocil: |-
     The output should show the following match:
     <pre>password sufficient pam_unix.so sha512 rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
 
-platform: pam
+platform: package[pam]
 
 fixtext: |-
     Configure {{{ full_name }}} to use {{{ xccdf_value("var_password_pam_unix_rounds") }}} hashing rounds for hashing passwords.

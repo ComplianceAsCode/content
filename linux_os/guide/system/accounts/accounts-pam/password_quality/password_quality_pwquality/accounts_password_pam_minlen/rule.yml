@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004,ubuntu2204
+prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure PAM Enforces Password Requirements - Minimum Length'
 
@@ -26,6 +26,7 @@ identifiers:
     cce@rhel7: CCE-27293-0
     cce@rhel8: CCE-80656-2
     cce@rhel9: CCE-83579-3
+    cce@sle12: CCE-92282-3
     cce@sle15: CCE-85785-4
 
 references:
@@ -35,10 +36,11 @@ references:
     cis@alinux3: 5.5.1
     cis@rhel7: 5.4.1
     cis@rhel8: 5.5.1
-    cis@sle12: 5.4.1
+    cis@rhel9: 5.5.1
+    cis@sle12: 5.3.1
     cis@sle15: 5.3.1
     cis@ubuntu2004: 5.3.1
-    cis@ubuntu2204: 5.3.1
+    cis@ubuntu2204: 5.4.1
     cjis: 5.6.2.1.1
     cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     disa: CCI-000205
@@ -77,7 +79,7 @@ fixtext: |-
 srg_requirement: |-
     {{{ full_name }}} passwords must be created with a minimum of 15 characters.
 
-platform: pam
+platform: package[pam]
 
 template:
     name: accounts_password

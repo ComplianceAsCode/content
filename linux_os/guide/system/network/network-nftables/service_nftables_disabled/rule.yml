@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: sle15,ubuntu2004,ubuntu2204
+
+title: 'Verify nftables service disabled'
+
+description: |-
+    nftables is a subsystem of the Linux kernel providing filtering and classification of network
+    packets/datagrams/frames and is the successor to iptables.
+    {{{ describe_package_remove(package="nftables") }}}
+
+rationale: |-
+    Running both <tt>firewalld</tt> and <tt>nftables</tt> may lead to conflict.
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-92529-7
+
+references:
+    cis@sle15: 3.5.1.2
+    cis@ubuntu2004: 3.5.3.1.2
+    cis@ubuntu2204: 3.5.3.1.2
+
+
+ocil_clause: |-
+    {{{ ocil_clause_service_disabled(service="nftables") }}}
+
+ocil: |-
+    {{{ ocil_service_disabled(service="nftables") }}}
+
+fixtext: '{{{ fixtext_service_disabled("nftables") }}}'
+
+platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        servicename: nftables
+        packagename: nftables

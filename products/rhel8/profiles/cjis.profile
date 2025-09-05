@@ -104,6 +104,7 @@ selections:
     - sshd_allow_only_protocol2
     - sshd_set_idle_timeout
     - var_sshd_set_keepalive=0
+    - logind_session_timeout
     - sshd_set_keepalive_0
     - disable_host_auth
     - sshd_disable_root_login
@@ -119,6 +120,7 @@ selections:
     - set_firewalld_default_zone
     - firewalld_sshd_port_enabled
     - sshd_idle_timeout_value=30_minutes
+    - var_logind_session_timeout=30_minutes
     - inactivity_timeout_value=30_minutes
     - sysctl_net_ipv4_conf_default_accept_source_route
     - sysctl_net_ipv4_tcp_syncookies

@@ -5,16 +5,17 @@ vuldiscussion: |-
     Having a non-default grub superuser username makes password-guessing attacks less effective.
 
 checktext: |-
-    To verify the boot loader superuser account has been set, run the following
-    command:
-     sudo grep -A1 "superusers" /etc/grub2.cfg
-    The output should show the following:
-     set superusers=" superusers-account "
+    Verify the boot loader superuser account has been set with the following command:
+
+    $ sudo grep -A1 "superusers" /etc/grub2.cfg
+
+     set superusers="&ltsuperusers-account&gt"
     export superusers
-    where superusers-account is the actual account name different from common names like root,
+
+    The &ltsuperusers-account&gt is the actual account name different from common names like root,
     admin, or administrator.
 
-    If superusers contains easily guessable username, this is a finding.
+    If superusers contains easily guessable usernames, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to have a unique username for the grub superuser account.

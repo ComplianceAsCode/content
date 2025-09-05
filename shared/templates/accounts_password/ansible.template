@@ -5,8 +5,32 @@
 # disruption = low
 - (xccdf-var var_password_pam_{{{ VARIABLE }}})
 
-- name: Ensure PAM variable {{{ VARIABLE }}} is set accordingly
-  lineinfile:
+{{% if product == "ol8" %}}
+- name: {{{ rule_title }}} - Find pwquality.conf.d files
+  ansible.builtin.find:
+    paths: /etc/security/pwquality.conf.d/
+    patterns: "*.conf"
+  register: pwquality_conf_d_files
+
+- name: {{{ rule_title }}} - Ensure {{{ VARIABLE }}} is not set in pwquality.conf.d
+  ansible.builtin.lineinfile:
+    path: "{{ item.path }}"
+    regexp: '^\s*\b{{{ VARIABLE }}}\b.*'
+    state: absent
+  with_items: "{{ pwquality_conf_d_files.files }}"
+{{% endif %}}
+
+{{% if "ol" in product %}}
+{{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/system-auth',
+                                  'password',
+                                  '',
+                                  'pam_pwquality.so',
+                                  VARIABLE)
+}}}
+{{% endif %}}
+
+- name: {{{ rule_title }}} - Ensure PAM variable {{{ VARIABLE }}} is set accordingly
+  ansible.builtin.lineinfile:
     create: yes
     dest: "/etc/security/pwquality.conf"
     regexp: '^#?\s*{{{ VARIABLE }}}'

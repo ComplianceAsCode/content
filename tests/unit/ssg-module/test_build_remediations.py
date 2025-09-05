@@ -25,6 +25,14 @@ def cpe_platforms(env_yaml):
     platforms[platform.name] = platform
     return platforms
 
+@pytest.fixture
+def cpe_platforms_with_version_comparison(env_yaml):
+    platforms = dict()
+    platform_path = os.path.join(DATADIR, "package_ntp_eq_1_0.yml")
+    platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml)
+    platforms[platform.name] = platform
+    return platforms
+
 
 def test_is_supported_file_name():
     assert sbr.is_supported_filename('bash', 'something.sh')
@@ -118,3 +126,9 @@ def test_get_rule_dir_remediations():
     something_bash = sbr.get_rule_dir_remediations(rule_dir, 'bash', 'something')
     assert len(something_bash) == 1
     assert something_bash != rhel_bash
+
+def test_deny_to_parse_remediation_if_platform_has_version_comparison(cpe_platforms_with_version_comparison):
+    remediation_cls = sbr.REMEDIATION_TO_CLASS["bash"]
+    remediation_obj = remediation_cls(rhel_bash)
+    with pytest.raises(ValueError):
+        remediation_obj.get_stripped_conditionals("bash", ["package_ntp_eq_1_0"], cpe_platforms_with_version_comparison)

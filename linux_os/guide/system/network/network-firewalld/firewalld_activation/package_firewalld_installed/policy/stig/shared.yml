@@ -12,7 +12,13 @@ vuldiscussion: |-
     Automated control of remote access sessions allows organizations to ensure ongoing compliance with remote access policies by enforcing connection rules of remote access applications on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets)."
 
 checktext: |-
-    Run the following command to determine if the  firewalld  package is installed:$ sudo dnf list --installed firewalld firewalld.noarch1.0.0-4.el9If the firewall package is not installed, this is a finding.
+    Run the following command to determine if the  firewalld  package is installed with the following command:
+
+    $ sudo dnf list --installed firewalld
+
+    firewalld.noarch                1.0.0-4.el9
+
+    If the "firewall" package is not installed, this is a finding.
 
 fixtext: |-
     To install the "firewalld" package run the following command:

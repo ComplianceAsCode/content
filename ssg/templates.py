@@ -5,53 +5,66 @@ import os
 import imp
 import glob
 
-import ssg.build_yaml
-import ssg.utils
-import ssg.yaml
-from ssg.build_cpe import ProductCPEs
 from collections import namedtuple
 
-templating_lang = namedtuple(
+import ssg.utils
+import ssg.yaml
+import ssg.jinja
+import ssg.build_yaml
+
+from ssg.build_cpe import ProductCPEs
+
+TemplatingLang = namedtuple(
     "templating_language_attributes",
     ["name", "file_extension", "template_type", "lang_specific_dir"])
-template_type = ssg.utils.enum("remediation", "check")
 
-languages = {
-    "anaconda": templating_lang("anaconda", ".anaconda", template_type.remediation, "anaconda"),
-    "ansible": templating_lang("ansible", ".yml", template_type.remediation, "ansible"),
-    "bash": templating_lang("bash", ".sh", template_type.remediation, "bash"),
-    "blueprint": templating_lang("blueprint", ".toml", template_type.remediation, "blueprint"),
-    "ignition": templating_lang("ignition", ".yml", template_type.remediation, "ignition"),
-    "kubernetes": templating_lang("kubernetes", ".yml", template_type.remediation, "kubernetes"),
-    "oval": templating_lang("oval", ".xml", template_type.check, "oval"),
-    "puppet": templating_lang("puppet", ".pp", template_type.remediation, "puppet"),
-    "sce-bash": templating_lang("sce-bash", ".sh", template_type.remediation, "sce")
+TemplateType = ssg.utils.enum("REMEDIATION", "CHECK")
+
+LANGUAGES = {
+    "anaconda": TemplatingLang("anaconda", ".anaconda", TemplateType.REMEDIATION, "anaconda"),
+    "ansible": TemplatingLang("ansible", ".yml",        TemplateType.REMEDIATION, "ansible"),
+    "bash": TemplatingLang("bash", ".sh",               TemplateType.REMEDIATION, "bash"),
+    "blueprint": TemplatingLang("blueprint", ".toml",   TemplateType.REMEDIATION, "blueprint"),
+    "ignition": TemplatingLang("ignition", ".yml",      TemplateType.REMEDIATION, "ignition"),
+    "kubernetes": TemplatingLang("kubernetes", ".yml",  TemplateType.REMEDIATION, "kubernetes"),
+    "oval": TemplatingLang("oval", ".xml",              TemplateType.CHECK,       "oval"),
+    "puppet": TemplatingLang("puppet", ".pp",           TemplateType.REMEDIATION, "puppet"),
+    "sce-bash": TemplatingLang("sce-bash", ".sh",       TemplateType.CHECK,       "sce")
 }
-preprocessing_file_name = "template.py"
 
-templates = dict()
+PREPROCESSING_FILE_NAME = "template.py"
+TEMPLATE_YAML_FILE_NAME = "template.yml"
 
 
-class Template():
-    def __init__(self, template_root_directory, name):
-        self.template_root_directory = template_root_directory
+class Template:
+    def __init__(self, templates_root_directory, name):
+        self.langs = []
+        self.templates_root_directory = templates_root_directory
         self.name = name
-        self.template_path = os.path.join(self.template_root_directory, self.name)
-        self.template_yaml_path = os.path.join(self.template_path, "template.yml")
-        self.preprocessing_file_path = os.path.join(self.template_path, preprocessing_file_name)
+        self.template_path = os.path.join(self.templates_root_directory, self.name)
+        self.template_yaml_path = os.path.join(self.template_path, TEMPLATE_YAML_FILE_NAME)
+        self.preprocessing_file_path = os.path.join(self.template_path, PREPROCESSING_FILE_NAME)
 
-    def load(self):
+    @classmethod
+    def load_template(cls, templates_root_directory, name):
+        maybe_template = cls(templates_root_directory, name)
+        if maybe_template._looks_like_template():
+            maybe_template._load()
+            return maybe_template
+        return None
+
+    def _load(self):
         if not os.path.exists(self.preprocessing_file_path):
             self.preprocessing_file_path = None
-        self.langs = []
+
         template_yaml = ssg.yaml.open_raw(self.template_yaml_path)
         for supported_lang in template_yaml["supported_languages"]:
-            if supported_lang not in languages.keys():
+            if supported_lang not in LANGUAGES.keys():
                 raise ValueError(
                     "The template {0} declares to support the {1} language,"
                     "but this language is not supported by the content.".format(
                         self.name, supported_lang))
-            lang = languages[supported_lang]
+            lang = LANGUAGES[supported_lang]
             langfilename = lang.name + ".template"
             if not os.path.exists(os.path.join(self.template_path, langfilename)):
                 raise ValueError(
@@ -60,11 +73,16 @@ class Template():
             self.langs.append(lang)
 
     def preprocess(self, parameters, lang):
-        # if no template.py file exists, skip this preprocessing part
+        parameters = self._preprocess_with_template_module(parameters, lang)
+        # TODO: Remove this right after the variables in templates are renamed to lowercase
+        parameters = {k.upper(): v for k, v in parameters.items()}
+        return parameters
+
+    def _preprocess_with_template_module(self, parameters, lang):
         if self.preprocessing_file_path is not None:
             unique_dummy_module_name = "template_" + self.name
-            preprocess_mod = imp.load_source(
-                unique_dummy_module_name, self.preprocessing_file_path)
+            preprocess_mod = imp.load_source(unique_dummy_module_name,
+                                             self.preprocessing_file_path)
             if not hasattr(preprocess_mod, "preprocess"):
                 msg = (
                     "The '{name}' template's preprocessing file {preprocessing_file} "
@@ -73,17 +91,12 @@ class Template():
                 )
                 raise ValueError(msg)
             parameters = preprocess_mod.preprocess(parameters.copy(), lang)
-        # TODO: Remove this right after the variables in templates are renamed
-        # to lowercase
-        uppercases = dict()
-        for k, v in parameters.items():
-            uppercases[k.upper()] = v
-        return uppercases
+        return parameters
 
-    def looks_like_template(self):
-        if not os.path.isdir(self.template_root_directory):
+    def _looks_like_template(self):
+        if not os.path.isdir(self.template_path):
             return False
-        if os.path.islink(self.template_root_directory):
+        if os.path.islink(self.template_path):
             return False
         template_sources = sorted(glob.glob(os.path.join(self.template_path, "*.template")))
         if not os.path.isfile(self.template_yaml_path) and not template_sources:
@@ -101,9 +114,8 @@ class Builder(object):
     output directory for remediations into the constructor. Then, call the
     method build() to perform a build.
     """
-    def __init__(
-            self, env_yaml, resolved_rules_dir, templates_dir,
-            remediations_dir, checks_dir, platforms_dir, cpe_items_dir):
+    def __init__(self, env_yaml, resolved_rules_dir, templates_dir,
+                 remediations_dir, checks_dir, platforms_dir, cpe_items_dir):
         self.env_yaml = env_yaml
         self.resolved_rules_dir = resolved_rules_dir
         self.templates_dir = templates_dir
@@ -112,198 +124,150 @@ class Builder(object):
         self.platforms_dir = platforms_dir
         self.cpe_items_dir = cpe_items_dir
         self.output_dirs = dict()
-        for lang_name, lang in languages.items():
+        self.templates = dict()
+        self._init_lang_output_dirs()
+        self._init_and_load_templates()
+        self.product_cpes = ProductCPEs()
+        if cpe_items_dir is not None:
+            self.product_cpes.load_cpes_from_directory_tree(cpe_items_dir, self.env_yaml)
+
+    def _init_and_load_templates(self):
+        for item in sorted(os.listdir(self.templates_dir)):
+            maybe_template = Template.load_template(self.templates_dir, item)
+            if maybe_template is not None:
+                self.templates[item] = maybe_template
+
+    def _init_lang_output_dirs(self):
+        for lang_name, lang in LANGUAGES.items():
             lang_dir = lang.lang_specific_dir
-            if lang.template_type == template_type.check:
+            if lang.template_type == TemplateType.CHECK:
                 output_dir = self.checks_dir
             else:
                 output_dir = self.remediations_dir
             dir_ = os.path.join(output_dir, lang_dir)
             self.output_dirs[lang_name] = dir_
-        # scan directory structure and dynamically create list of templates
-        for item in sorted(os.listdir(self.templates_dir)):
-            maybe_template = Template(templates_dir, item)
-            if maybe_template.looks_like_template():
-                maybe_template.load()
-                templates[item] = maybe_template
-        self.product_cpes = ProductCPEs()
-        self.product_cpes.load_cpes_from_directory_tree(cpe_items_dir, self.env_yaml)
 
-    def build_lang_file(
-            self, rule_id, template_name, template_vars, lang, local_env_yaml):
+    def get_resolved_langs_to_generate(self, templatable):
         """
-        Builds and returns templated content for a given rule for a given
-        language; does not write the output to disk.
+        Given a specific Templatable instance, determine which languages are
+        generated by the combination of the template supported_languages AND
+        the Templatable's template configuration 'backends'.
         """
-        if lang not in templates[template_name].langs:
-            return None
+        template_name = templatable.get_template_name()
+        if template_name not in self.templates.keys():
+            raise ValueError(
+                "Templatable {0} uses template {1} which does not exist."
+                .format(templatable, template_name))
+        template_langs = set(self.templates[template_name].langs)
+        rule_langs = set(templatable.extract_configured_backend_lang(LANGUAGES))
+        return rule_langs.intersection(template_langs)
+
+    def process_template_lang_file(self, template_name, template_vars, lang, local_env_yaml):
+        """
+        Processes template for a given template name and language and returns rendered content.
+        """
+        if lang not in self.templates[template_name].langs:
+            raise ValueError("Language {0} is not available for template {1}."
+                             .format(lang.name, template_name))
 
         template_file_name = lang.name + ".template"
         template_file_path = os.path.join(self.templates_dir, template_name, template_file_name)
-        template_parameters = templates[template_name].preprocess(template_vars, lang.name)
-        jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
-        filled_template = ssg.jinja.process_file_with_macros(
-            template_file_path, jinja_dict)
+        template_parameters = self.templates[template_name].preprocess(template_vars, lang.name)
+        env_yaml = self.env_yaml.copy()
+        env_yaml.update(local_env_yaml)
+        jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
+        return ssg.jinja.process_file_with_macros(template_file_path, jinja_dict)
 
-        return filled_template
-
-    def build_lang(
-            self, rule_id, template_name, template_vars, lang, local_env_yaml, platforms=None):
+    def get_lang_contents_for_templatable(self, templatable, language):
         """
-        Builds templated content for a given rule for a given language.
-        Writes the output to the correct build directories.
+        For the specified Templatable, build and return only the specified language content.
         """
-        if lang not in templates[template_name].langs or lang.name == "sce-bash":
-            return
+        template_name = templatable.get_template_name()
+        template_vars = templatable.get_template_vars(self.env_yaml)
 
-        filled_template = self.build_lang_file(rule_id, template_name,
-                                               template_vars, lang,
-                                               local_env_yaml)
+        # Checks and remediations are processed with a custom YAML dict
+        local_env_yaml = templatable.get_template_context(self.env_yaml)
+        try:
+            return self.process_template_lang_file(template_name, template_vars,
+                                                   language, local_env_yaml)
+        except Exception as e:
+            raise RuntimeError("Unable to generate {0} template language for Templatable {1}: {2}"
+                               .format(language.name, templatable, e))
 
-        ext = lang.file_extension
-        output_file_name = rule_id + ext
-        output_filepath = os.path.join(
-            self.output_dirs[lang.name], output_file_name)
-
+    def write_lang_contents_for_templatable(self, filled_template, lang, templatable):
+        output_file_name = templatable.id_ + lang.file_extension
+        output_filepath = os.path.join(self.output_dirs[lang.name], output_file_name)
         with open(output_filepath, "w") as f:
             f.write(filled_template)
 
-    def get_langs_to_generate(self, rule):
+    def build_lang_for_templatable(self, templatable, lang):
         """
-        For a given rule returns list of languages that should be generated
-        from templates. This is controlled by "template_backends" in rule.yml.
+        Builds templated content of a given Templatable for a selected language
+        returning the filled template.
         """
-        if "backends" in rule.template:
-            backends = rule.template["backends"]
-            for lang in backends:
-                if lang not in languages.keys():
-                    raise RuntimeError(
-                        "Rule {0} wants to generate unknown language '{1}"
-                        "from a template.".format(rule.id_, lang)
-                    )
-            langs_to_generate = []
-            for lang_name, lang in languages.items():
-                backend = backends.get(lang_name, "on")
-                if backend == "on":
-                    langs_to_generate.append(lang)
-            return langs_to_generate
-        else:
-            return languages.values()
+        return self.get_lang_contents_for_templatable(templatable, lang)
 
-    def get_template_name(self, template, rule_id):
-        """
-        Given a template dictionary from a Rule instance, determine the name
-        of the template (from templates) this rule uses.
-        """
-        try:
-            template_name = template["name"]
-        except KeyError:
-            raise ValueError(
-                "Rule {0} is missing template name under template key".format(
-                    rule_id))
-        if template_name not in templates.keys():
-            raise ValueError(
-                "Rule {0} uses template {1} which does not exist.".format(
-                    rule_id, template_name))
-        return template_name
+    def build_cpe(self, cpe):
+        for lang in self.get_resolved_langs_to_generate(cpe):
+            filled_template = self.build_lang_for_templatable(cpe, lang)
+            if lang.template_type == TemplateType.REMEDIATION:
+                cpe.set_conditional(lang.name, filled_template)
+            if lang.template_type == TemplateType.CHECK:
+                self.write_lang_contents_for_templatable(filled_template, lang, cpe)
+        self.product_cpes.add_cpe_item(cpe)
+        cpe_path = os.path.join(self.cpe_items_dir, cpe.id_+".yml")
+        cpe.dump_yaml(cpe_path)
 
-    def get_resolved_langs_to_generate(self, rule):
+    def build_platform(self, platform):
         """
-        Given a specific Rule instance, determine which languages are
-        generated by the combination of the rule's template_backends AND
-        the rule's template keys.
+        Builds templated content of a given Platform (all CPEs/Symbols) for all available
+        languages, writing the output to the correct build directories
+        and updating the platform it self.
         """
-        if rule.template is None:
-            return None
+        langs_affecting_this_platform = set()
+        for fact_ref in platform.test.get_symbols():
+            cpe = self.product_cpes.get_cpe_for_fact_ref(fact_ref)
+            if cpe.is_templated():
+                self.build_cpe(cpe)
+                langs_affecting_this_platform.update(
+                    self.get_resolved_langs_to_generate(cpe))
+        for lang in langs_affecting_this_platform:
+            if lang.template_type == TemplateType.REMEDIATION:
+                platform.update_conditional_from_cpe_items(lang.name, self.product_cpes)
+        platform_path = os.path.join(self.platforms_dir, platform.id_+".yml")
+        platform.dump_yaml(platform_path)
 
-        rule_langs = set(self.get_langs_to_generate(rule))
-        template_name = self.get_template_name(rule.template, rule.id_)
-        template_langs = set(templates[template_name].langs)
-        return rule_langs.intersection(template_langs)
-
-    def process_product_vars(self, all_variables):
+    def build_rule(self, rule):
         """
-        Given a dictionary with the format key[@<product>]=value, filter out
-        and only take keys that apply to this product (unqualified or qualified
-        to exactly this product). Returns a new dict.
-        """
-        processed = dict(filter(lambda item: '@' not in item[0], all_variables.items()))
-        suffix = '@' + self.env_yaml['product']
-        for variable in filter(lambda key: key.endswith(suffix), all_variables):
-            new_variable = variable[:-len(suffix)]
-            value = all_variables[variable]
-            processed[new_variable] = value
-
-        return processed
-
-    def build_rule(self, rule_id, rule_title, template, langs_to_generate, identifiers,
-                   platforms=None):
-        """
-        Builds templated content for a given rule for selected languages,
+        Builds templated content of a given Rule for all available languages,
         writing the output to the correct build directories.
         """
-        template_name = self.get_template_name(template, rule_id)
-        try:
-            template_vars = self.process_product_vars(template["vars"])
-        except KeyError:
-            raise ValueError(
-                "Rule {0} does not contain mandatory 'vars:' key under "
-                "'template:' key.".format(rule_id))
-        # Add the rule ID which will be reused in OVAL templates as OVAL
-        # definition ID so that the build system matches the generated
-        # check with the rule.
-        template_vars["_rule_id"] = rule_id
-        # checks and remediations are processed with a custom YAML dict
-        local_env_yaml = self.env_yaml.copy()
-        local_env_yaml["rule_id"] = rule_id
-        local_env_yaml["rule_title"] = rule_title
-        local_env_yaml["products"] = self.env_yaml["product"]
-        if identifiers is not None:
-            local_env_yaml["cce_identifiers"] = identifiers
-
-        for lang in langs_to_generate:
-            try:
-                self.build_lang(
-                    rule_id, template_name, template_vars, lang, local_env_yaml, platforms)
-            except Exception as e:
-                raise e(
-                    "Error building templated {0} content for rule {1}".format(lang, rule_id))
-
-    def get_lang_for_rule(self, rule_id, rule_title, template, language):
-        """
-        For the specified rule, build and return only the specified language
-        content.
-        """
-        template_name = self.get_template_name(template, rule_id)
-        try:
-            template_vars = self.process_product_vars(template["vars"])
-        except KeyError:
-            raise ValueError(
-                "Rule {0} does not contain mandatory 'vars:' key under "
-                "'template:' key.".format(rule_id))
-        # Add the rule ID which will be reused in OVAL templates as OVAL
-        # definition ID so that the build system matches the generated
-        # check with the rule.
-        template_vars["_rule_id"] = rule_id
-        # checks and remediations are processed with a custom YAML dict
-        local_env_yaml = self.env_yaml.copy()
-        local_env_yaml["rule_id"] = rule_id
-        local_env_yaml["rule_title"] = rule_title
-        local_env_yaml["products"] = self.env_yaml["product"]
-
-        return self.build_lang_file(rule_id, template_name, template_vars,
-                                    language, local_env_yaml)
+        for lang in self.get_resolved_langs_to_generate(rule):
+            if lang.name != "sce-bash":
+                filled_template = self.build_lang_for_templatable(rule, lang)
+                self.write_lang_contents_for_templatable(filled_template, lang, rule)
 
     def build_extra_ovals(self):
         declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
         declaration = ssg.yaml.open_raw(declaration_path)
         for oval_def_id, template in declaration.items():
-            langs_to_generate = [languages["oval"]]
             # Since OVAL definition ID in shorthand format is always the same
             # as rule ID, we can use it instead of the rule ID even if no rule
             # with that ID exists
-            self.build_rule(
-                oval_def_id, oval_def_id, template, langs_to_generate, None)
+            rule = ssg.build_yaml.Rule.get_instance_from_full_dict({
+                "id_": oval_def_id,
+                "title": oval_def_id,
+                "template": template,
+            })
+            filled_template = self.build_lang_for_templatable(rule, LANGUAGES["oval"])
+            self.write_lang_contents_for_templatable(filled_template, LANGUAGES["oval"], rule)
+
+    def build_all_platforms(self):
+        for platform_file in sorted(os.listdir(self.platforms_dir)):
+            platform_path = os.path.join(self.platforms_dir, platform_file)
+            platform = ssg.build_yaml.Platform.from_yaml(platform_path, self.env_yaml,
+                                                         self.product_cpes)
+            self.build_platform(platform)
 
     def build_all_rules(self):
         for rule_file in sorted(os.listdir(self.resolved_rules_dir)):
@@ -313,22 +277,18 @@ class Builder(object):
             except ssg.build_yaml.DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 continue
-            if rule.template is None:
-                # rule is not templated, skipping
-                continue
-            langs_to_generate = self.get_langs_to_generate(rule)
-            self.build_rule(rule.id_, rule.title, rule.template, langs_to_generate,
-                            rule.identifiers, platforms=rule.platforms)
+            if rule.is_templated():
+                self.build_rule(rule)
 
     def build(self):
         """
-        Builds all templated content for all languages, writing
-        the output to the correct build directories.
+        Builds all templated content for all languages,
+        writing the output to the correct build directories.
         """
-
         for dir_ in self.output_dirs.values():
             if not os.path.exists(dir_):
                 os.makedirs(dir_)
 
         self.build_extra_ovals()
         self.build_all_rules()
+        self.build_all_platforms()

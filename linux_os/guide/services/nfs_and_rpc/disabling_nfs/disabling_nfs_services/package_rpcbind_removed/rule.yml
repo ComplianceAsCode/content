@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
+
+title: 'Uninstall rpcbind Package'
+
+description: |-
+    The rpcbind utility maps RPC services to the ports on which they listen.
+    RPC processes notify rpcbind when they start, registering the ports they
+    are listening on and the RPC program numbers they expect to serve. The
+    rpcbind service redirects the client to the proper port number so it can
+    communicate with the requested service. If the system does not require RPC
+    (such as for NFS servers) then this service should be disabled.
+    {{{ describe_package_remove(package="rpcbind") }}}
+
+rationale: |-
+    If the system does not require rpc based services, it is recommended that
+    rpcbind be disabled to reduce the attack surface.
+
+severity: low
+
+identifiers:
+    cce@rhel7: CCE-86644-2
+    cce@rhel8: CCE-86645-9
+    cce@rhel9: CCE-86646-7
+    cce@sle12: CCE-92312-8
+    cce@sle15: CCE-92467-0
+
+references:
+    cis@rhel7: 2.2.18
+    cis@rhel8: 2.2.19
+    cis@rhel9: 2.2.17
+    cis@sle12: 2.2.8
+    cis@sle15: 2.2.8
+    cis@ubuntu2004: 2.3.6
+    cis@ubuntu2204: 2.3.6
+
+{{{ complete_ocil_entry_package(package="rpcbind") }}}
+
+fixtext: '{{{ fixtext_package_removed("rpcbind") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: rpcbind

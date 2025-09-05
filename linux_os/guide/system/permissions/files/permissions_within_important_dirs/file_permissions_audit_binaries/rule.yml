@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ubuntu2004,ubuntu2204
+prodtype: rhel8,rhel9,ubuntu2004,ubuntu2204
 
 title: 'Verify that audit tools Have Mode 0755 or less'
 
@@ -28,7 +28,7 @@ rationale: |-
     Protecting audit information also includes identifying and protecting the
     tools used to view and manipulate log data. Therefore, protecting audit
     tools is necessary to prevent unauthorized operation on audit information.
- 
+
     Operating systems providing tools to interface with audit information
     will leverage user permissions and roles identifying the user accessing the
     tools and the corresponding rights the user enjoys to make access decisions
@@ -36,7 +36,13 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel8: CCE-86447-0
+    cce@rhel9: CCE-86448-8
+
 references:
+    cis@rhel9: 4.1.4.8
+    cis@ubuntu2204: 4.1.4.8
     disa: CCI-001493,CCI-001494
     srg: SRG-OS-000256-GPOS-00097,SRG-OS-000257-GPOS-00098
     stigid@ubuntu2004: UBTU-20-010199

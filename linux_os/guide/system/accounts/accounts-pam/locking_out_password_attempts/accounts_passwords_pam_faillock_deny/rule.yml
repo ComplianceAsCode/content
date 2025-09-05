@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2204
 
 title: 'Lock Accounts After Failed Password Attempts'
 
@@ -9,9 +9,12 @@ description: |-
     using <tt>pam_faillock.so</tt>.
 
     pam_faillock.so module requires multiple entries in pam files. These entries must be carefully
-    defined to work as expected. In order to avoid errors when manually editing these files, it is
+    defined to work as expected.
+    {{% if 'ubuntu' not in product %}}
+    In order to avoid errors when manually editing these files, it is
     recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
     depending on the OS version.
+    {{% endif %}}
 
 rationale: |-
     By limiting the number of failed logon attempts, the risk of unauthorized system access via
@@ -31,6 +34,8 @@ references:
     cis-csc: 1,12,15,16
     cis@rhel7: 5.3.2
     cis@rhel8: 5.4.2,5.5.2
+    cis@rhel9: 5.4.2,5.5.2
+    cis@ubuntu2204: 5.4.2
     cjis: 5.5.3
     cobit5: DSS05.04,DSS05.10,DSS06.10
     cui: 3.1.8
@@ -47,10 +52,10 @@ references:
     stigid@ol7: OL07-00-010320
     stigid@ol8: OL08-00-020010
     stigid@rhel7: RHEL-07-010320
-    stigid@rhel8: RHEL-08-020010
+    stigid@rhel8: RHEL-08-020011
     vmmsrg: SRG-OS-000021-VMM-000050
 
-platform: pam
+platform: package[pam]
 
 ocil_clause: |-
     the "deny" option is not set to "{{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}"
@@ -84,6 +89,21 @@ fixtext: |-
     edit the deny parameter in the following line <tt>after</tt> the <tt>pam_unix.so</tt>
     statement in the <tt>auth</tt> section, like this:
     <pre>auth required pam_faillock.so authfail <tt>deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}</tt> unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre>
+    {{% elif 'ubuntu' in product %}}
+    Edit <tt>/etc/pam.d/common-auth</tt> and ensure that faillock is configured.
+    The pam_faillock.so lines surround the pam_unix.so line. The comment
+    "Added to enable faillock" is shown to highlight the additional lines
+    and their order in the file.
+    <pre>auth required pam_faillock.so preauth # Added to enable faillock
+         auth [success=1 default=ignore] pam_unix.so nullok
+         auth [default=die] pam_faillock.so authfail # Added to enable faillock
+         auth sufficient pam_faillock.so authsucc # Added to enable faillock
+    </pre>
+    Edit <tt>/etc/pam.d/common-account</tt> and ensure that the following stanza
+    is at the end of the file.
+    <pre>account required pam_faillock.so</pre>
+    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
+    deny = {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}
     {{% else %}}
     $ sudo authselect enable-feature with-faillock
 

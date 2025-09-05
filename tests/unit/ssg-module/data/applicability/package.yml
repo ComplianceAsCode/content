@@ -1,3 +1,10 @@
 name: "cpe:/a:{arg}"
-title: "Package {arg} is installed"
+title: "Package {pkgname} is installed"
+bash_conditional: {{{ bash_pkg_conditional("{pkgname}") }}}
 check_id: installed_env_has_{arg}_package
+template:
+  name: package_installed
+args:
+  ntp:
+    pkgname: ntp
+    title: NTP

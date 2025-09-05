@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} /etc/group file must have 0644 or less permissive to prevent unauthorized access.
+    The {{{ full_name }}} /etc/passwd file must have mode 0644 or less permissive to prevent unauthorized access.
 
 vuldiscussion: |-
     If the "/etc/passwd" file is writable by a group-owner or the
@@ -8,14 +8,15 @@ vuldiscussion: |-
     is critical for system security.
 
 checktext: |-
-    To check the permissions of /etc/passwd ,
-    run the command:
-     $ sudo stat -c "%a %n"/etc/passwd
-    If properly configured, the output should indicate the following permissions:
-    644
+    Verify that the "/etc/passwd" file has mode "0644" or less permissive with the following command:
 
-    If /etc/passwd does not have unix mode 644, then this is a finding.
+    $ sudo stat -c "%a %n" /etc/passwd
+
+    644 /etc/passwd
+
+    If a value of "0644" or less permissive is not returned, this is a finding.
 
 fixtext: |-
-    Change the permissions of the file "/etc/group" to "0644" by running the following command:
-    $ sudo chmod 0644 /etc/group
+    Change the mode of the file "/etc/passwd" to "0644" by running the following command:
+
+    $ sudo chmod 0644 /etc/passwd

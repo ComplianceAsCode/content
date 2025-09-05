@@ -1,0 +1,26 @@
+<def-group>
+
+  <definition class="inventory" id="rhel8_less_equal_8_4" version="1">
+    {{{ oval_metadata("RHEL version less or equal to 8.4", affected_platforms=["multi_platform_all"]) }}}
+    <criteria operator="AND">
+      <extend_definition comment="The operating system installed on the system is RHEL"
+      definition_ref="installed_os_is_rhel" />
+      <criterion comment="The version of operating system RHEL is less than or equal 8.4"
+      test_ref="test_rhel_version_id_is_lt_8_4" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="VERSION_ID in os-release is less than or equal to 8.4" id="test_rhel_version_id_is_lt_8_4" version="1">
+    <ind:object object_ref="obj_rhel_version_id_is_lt_8_4" />
+    <ind:state state_ref="state_rhel_version_id_is_lt_8_4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_rhel_version_id_is_lt_8_4" version="1">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^VERSION_ID=[&quot;&apos;]?([\d\.]+)[&quot;&apos;]?$</ind:pattern>
+    <ind:instance operation="less than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_rhel_version_id_is_lt_8_4" version="1">
+    <ind:subexpression datatype="evr_string" operation="less than or equal">8.4</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

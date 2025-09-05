@@ -22,4 +22,4 @@ ocil: |-
     <pre>$ grep relayhost /etc/postfix/main.cf</pre>
     If properly configured, the output should show only <tt>{{{ xccdf_value("var_postfix_relayhost") }}}</tt>.
 
-platform: postfix
+platform: package[postfix]

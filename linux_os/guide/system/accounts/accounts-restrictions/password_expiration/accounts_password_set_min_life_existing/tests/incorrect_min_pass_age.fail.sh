@@ -1,13 +1,11 @@
 #!/bin/bash
-
+# variables = var_accounts_minimum_age_login_defs=1
 # packages = passwd
 
-BAD_PAS_AGE=-1
-
-# Configure the OS to enforce a password age < 1 of each accout  
-
-system_users=( $(awk -F: '{print $1}' /etc/shadow) )
-for i in ${system_users[@]}; 
-do 
-  passwd -n $BAD_PAS_AGE $i
+# make existing entries pass
+for acct in $(awk -F: '(/^[^:]+:[^!*]/ && ($4 < 1 || $4 == "")) {print $1}' /etc/shadow ); do
+    chage -m 1 -d $(date +%Y-%m-%d) $acct
 done
+# add a failing entry
+echo 'max-test-user:$1$q.YkdxU1$ADmXcU4xwPrM.Pc.dclK81:18648:0:60::::' >> /etc/shadow
+echo "max-test-user:x:50000:1000::/:/usr/bin/bash" >> /etc/passwd

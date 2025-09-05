@@ -247,7 +247,7 @@ def test_platform_from_text_simple(product_cpes):
         "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]"
     assert platform.get_remediation_conditional("bash") == \
         "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]"
-    platform_el = ET.fromstring(platform.to_xml_element())
+    platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
     assert platform_el.get("id") == "machine"
     logical_tests = platform_el.findall(
@@ -265,7 +265,7 @@ def test_platform_from_text_simple_product_cpe(product_cpes):
     platform = ssg.build_yaml.Platform.from_text("rhel7-workstation", product_cpes)
     assert platform.get_remediation_conditional("bash") == ""
     assert platform.get_remediation_conditional("ansible") == ""
-    platform_el = ET.fromstring(platform.to_xml_element())
+    platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
     assert platform_el.get("id") == "rhel7-workstation"
     logical_tests = platform_el.findall(
@@ -285,7 +285,7 @@ def test_platform_from_text_or(product_cpes):
     assert platform.get_remediation_conditional("bash") == "( rpm --quiet -q chrony || rpm --quiet -q ntp )"
     assert platform.get_remediation_conditional("ansible") == \
         "( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages )"
-    platform_el = ET.fromstring(platform.to_xml_element())
+    platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
     assert platform_el.get("id") == "chrony_or_ntp"
     logical_tests = platform_el.findall(
@@ -312,7 +312,7 @@ def test_platform_from_text_complex_expression(product_cpes):
         "systemd and !yum and (ntp or chrony)", product_cpes)
     assert platform.get_remediation_conditional("bash") == "( rpm --quiet -q systemd && ( rpm --quiet -q chrony || rpm --quiet -q ntp ) && ! ( rpm --quiet -q yum ) )"
     assert platform.get_remediation_conditional("ansible") == "( \"systemd\" in ansible_facts.packages and ( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages ) and not ( \"yum\" in ansible_facts.packages ) )"
-    platform_el = ET.fromstring(platform.to_xml_element())
+    platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
     assert platform_el.get("id") == "systemd_and_chrony_or_ntp_and_not_yum"
     logical_tests = platform_el.findall(
@@ -362,21 +362,26 @@ def test_platform_as_dict(product_cpes):
     assert d["bash_conditional"] == "( rpm --quiet -q chrony )"
     assert "xml_content" in d
 
+
 def test_platform_get_invalid_conditional_language(product_cpes):
     platform = ssg.build_yaml.Platform.from_text("ntp or chrony", product_cpes)
     with pytest.raises(AttributeError):
         assert platform.get_remediation_conditional("foo")
 
+
 def test_parametrized_platform(product_cpes):
-    platform = ssg.build_yaml.Platform.from_text("package[test]", product_cpes)
+    platform = ssg.build_yaml.Platform.from_text("package[ntp]", product_cpes)
     assert platform.test.cpe_name != "cpe:/a:{arg}"
-    assert platform.test.cpe_name == "cpe:/a:test"
+    assert platform.test.cpe_name == "cpe:/a:ntp"
     cpe_item = product_cpes.get_cpe(platform.test.cpe_name)
-    assert cpe_item.name == "cpe:/a:test"
-    assert cpe_item.title == "Package test is installed"
-    assert cpe_item.check_id == "installed_env_has_test_package"
+    assert cpe_item.id_ == "package_ntp"
+    assert cpe_item.name == "cpe:/a:ntp"
+    assert cpe_item.title == "Package ntp is installed"
+    assert cpe_item.check_id == "installed_env_has_ntp_package"
 
-
+def test_parametrized_platform_with_invalid_argument(product_cpes):
+    with pytest.raises(KeyError):
+        platform = ssg.build_yaml.Platform.from_text("package[nonexisting_argument]", product_cpes)
 
 
 def test_derive_id_from_file_name():

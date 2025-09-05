@@ -1,0 +1,9 @@
+name: package_ntp_eq_1_0
+original_expression: package[ntp]==1.0
+xml_content: <ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="package_ntp_eq_1_0"><ns0:logical-test
+    operator="AND" negate="false"><ns0:fact-ref name="cpe:/a:ntp:eq:1.0" /></ns0:logical-test></ns0:platform>
+bash_conditional: rpm --quiet -q ntp
+ansible_conditional: '"ntp" in ansible_facts.packages'
+title: ''
+definition_location: /home/vojta/repos/upstream/content/build/rhel7/platforms/package_ntp_eq_1_0.yml
+documentation_complete: true

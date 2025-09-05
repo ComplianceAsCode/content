@@ -297,7 +297,7 @@ set_no_derivatives_options() {
 set_explict_build_targets() {
 	if test "$_arg_datastream_only" = on ; then
 		for chosen_product in "${_arg_product[@]}"; do
-			EXPLICIT_BUILD_TARGETS+=("generate-ssg-${chosen_product}-ds.xml")
+			EXPLICIT_BUILD_TARGETS+=("generate-ssg-$(to_lowercase "$chosen_product")-ds.xml")
 		done
 	fi
 }

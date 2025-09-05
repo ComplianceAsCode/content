@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} audit system must be configured to audit the execution of privileged functions and prevent all software from executing at higher privilege levels than users executing the software.
+    {{{ full_name }}} must audit uses of the "execve" system call.
 
 vuldiscussion: |-
     Misuse of privileged functions, either intentionally or unintentionally by
@@ -30,5 +30,6 @@ fixtext: |-
     -a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k execpriv
     -a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k execpriv
     -a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k execpriv
+
 
     The audit daemon must be restarted for the changes to take effect.

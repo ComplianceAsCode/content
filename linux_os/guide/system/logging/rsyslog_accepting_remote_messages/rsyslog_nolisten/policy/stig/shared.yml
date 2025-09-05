@@ -9,9 +9,15 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} is not configured to receive remote logs using rsyslog.
 
-    Check for lines in configuration that enable receiving remote messages with the following command:
+    Check for lines in configuration that enable receiving remote messages with the following commands:
 
-    $ grep -Ei -e '^\s*\$ModLoad (imtcp|imudp|imrelp)' -e '^\s*\$(InputTCP|UDP|InputRELP)ServerRun .*' /etc/rsyslog.conf /etc/rsyslog.d/*
+    $ grep -i modload /etc/rsyslog.conf /etc/rsyslog.d/*
+    $ModLoad imtcp
+    $ModLoad imrelp
+
+    $ grep -i serverrun /etc/rsyslog.conf /etc/rsyslog.d/*
+    $InputTCPServerRun 514
+    $InputRELPServerRun 514
 
     Note: You may see an error about no files or directories. This is not a finding.
 

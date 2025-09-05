@@ -8,11 +8,11 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} has the rng-tools package installed with the following command:
 
-    $ dnf list --installed rng-tools
+    $ sudo dnf list --installed rng-tools
 
     rng-tools.x86_64        6.14-2.git.b2b7934e.el9
 
-    If a rng-tools package is not installed, this is a finding.
+    If the "rng-tools" package is not installed, this is a finding.
 
 fixtext: |-
     The rng-tools package can be installed with the following command:

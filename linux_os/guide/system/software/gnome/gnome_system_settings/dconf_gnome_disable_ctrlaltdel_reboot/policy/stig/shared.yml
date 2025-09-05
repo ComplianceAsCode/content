@@ -8,17 +8,15 @@ vuldiscussion: |-
     loss of availability of systems due to unintentional reboot.
 
 checktext: |-
-    To ensure that users cannot enable the Ctrl-Alt-Del sequence in the Gnome GUI, run the following:
+    Verify that users cannot enable the Ctrl-Alt-Del sequence in the Gnome GUI with the following command:
 
     Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, Gnome Shell. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
 
      $ grep logout /etc/dconf/db/local.d/locks/*
 
-    If properly configured, the output should be:
+    /org/gnome/settings-daemon/plugins/media-keys/logout
 
-    "/org/gnome/settings-daemon/plugins/media-keys/logout"
-
-    If Gnome can be configured to shut down when Ctrl-Alt-Del is pressed, then this is a finding.
+    If the output is not "/org/gnome/settings-daemon/plugins/media-keys/logout", the line is commented out, or the line is missing, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to disallow the user changing the Ctrl-Alt-Del sequence in the GNOME GUI, if it is installed and the system is used to host services whos availability could be impacted.

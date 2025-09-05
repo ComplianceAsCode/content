@@ -8,7 +8,7 @@ description: |-
     The system must not allow removable media to be used as the boot loader.
     Remove alternate methods of booting the system from removable media.
     <tt>usb0</tt>, <tt>cd</tt>, <tt>fd0</tt>, etc. are some examples of removeable
-    media which should not exist in the line:
+    media which should not exist in the lines:
     <pre>set root='hd0,msdos1'</pre>
 
 rationale: |-
@@ -30,12 +30,17 @@ ocil_clause: 'it is not'
 
 ocil: |-
     To verify the system is not configured to use a boot loader on removable media,
-    run the following command:
+    check that the grub configuration file has the set root command in each menu
+    entry with the following commands:
+    <pre>$ sudo grep -cw menuentry {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
+    Note that the <pre>-c</pre> option for the <pre>grep</pre> command will print
+    only the count of <pre>menuentry</pre> occurrences. This number should match
+    the number of occurrences reported by the following command:
     <pre>$ sudo grep "set root='hd0" {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
     The output should return something similar to:
     <pre>set root='hd0,msdos1'</pre>
     <tt>usb0</tt>, <tt>cd</tt>, <tt>fd0</tt>, etc. are some examples of removeable
-    media which should not exist in the line:
+    media which should not exist in the lines:
     <pre>set root='hd0,msdos1'</pre>
 
 platform: machine

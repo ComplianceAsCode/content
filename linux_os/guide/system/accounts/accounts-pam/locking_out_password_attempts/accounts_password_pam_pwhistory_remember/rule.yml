@@ -21,11 +21,13 @@ severity: medium
 
 identifiers:
     cce@sle12: CCE-83173-5
+    cce@sle15: CCE-91398-8
 
 references:
+    cis@sle12: 5.3.3
     cis@sle15: 5.3.3
     cis@ubuntu2004: 5.3.3
-    cis@ubuntu2204: 5.3.3
+    cis@ubuntu2204: 5.4.3
     disa: CCI-000200
     nist@sle12: IA-5(1)(e),IA-5 (1).1(v)
     srg: SRG-OS-000077-GPOS-00045
@@ -45,7 +47,7 @@ ocil: |-
     <tt>{{{ xccdf_value("var_password_pam_remember") }}}</tt>, or is missing the
     "use_authtok" keyword, this is a finding.
 
-platform: pam
+platform: package[pam]
 
 template:
     name: pam_options

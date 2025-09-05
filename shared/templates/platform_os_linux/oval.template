@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="inventory" id="platform_{{{ _RULE_ID }}}" version="1">
+    {{{ oval_metadata("The installed operating system is " + OS_NAME, affected_platforms=["multi_platform_all"]) }}}
+    <criteria operator="AND">
+      <criterion comment="The operating system installed on the system is {{{ OS_NAME }}}"
+      test_ref="test_os_id_is_{{{ ID }}}" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="ID in os-release is {{{ OS_ID }}}" id="test_os_id_is_{{{ ID }}}" version="1">
+    <ind:object object_ref="obj_os_id_is_{{{ ID }}}" />
+    <ind:state state_ref="state_os_id_is_{{{ ID }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_os_id_is_{{{ ID }}}" version="1">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^ID=[&quot;&apos;]?(\w+)[&quot;&apos;]?$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_os_id_is_{{{ ID }}}" version="1">
+    <ind:subexpression operation="pattern match">{{{ OS_ID }}}</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

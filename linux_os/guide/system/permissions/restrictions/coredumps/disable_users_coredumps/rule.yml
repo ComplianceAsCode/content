@@ -34,7 +34,7 @@ references:
     cis@sle12: 1.6.1
     cis@sle15: 1.6.1
     cis@ubuntu2004: 1.6.4
-    cis@ubuntu2204: 1.6.4
+    cis@ubuntu2204: 1.5.4
     cobit5: APO13.01,BAI04.04,DSS01.03,DSS03.05,DSS05.07
     disa: CCI-000366
     isa-62443-2013: 'SR 6.2,SR 7.1,SR 7.2'
@@ -61,4 +61,4 @@ fixtext: |-
 
 srg_requirement: '{{{ full_name }}} must disable core dumps for all users.'
 
-platform: pam
+platform: package[pam]

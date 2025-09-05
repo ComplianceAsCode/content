@@ -1,0 +1,14 @@
+documentation_complete: true
+
+title: 'Configure Kubelet to use secure TLS version'
+
+description: 'TLS versions available for configuring Kubelet, excluding insecure versions'
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+  default: "^(?!VersionTLS10|VersionTLS11)"

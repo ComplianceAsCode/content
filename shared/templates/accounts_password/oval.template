@@ -11,12 +11,32 @@
       <criteria operator="OR">
         <criterion comment="pwquality.conf" test_ref="test_password_pam_pwquality_{{{ VARIABLE }}}" />
       </criteria>
+      {{% if "ol" in product %}}
+      <criterion comment="{{{ VARIABLE }}} is not overwritten in system-auth"
+        test_ref="test_password_pam_pwquality_{{{ VARIABLE }}}_not_overwritten"/>
+      {{% endif %}}
     </criteria>
   </definition>
 
+  {{% if "ol" in product %}}
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    comment="check the configuration of /etc/pam.d/system-auth doens't override pwquality.conf"
+    id="test_password_pam_pwquality_{{{ VARIABLE }}}_not_overwritten" version="1">
+    <ind:object object_ref="obj_password_pam_pwquality_{{{ VARIABLE }}}_not_overwritten" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_password_pam_pwquality_{{{ VARIABLE }}}_not_overwritten"
+  version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern
+    operation="pattern match">^\s*password.*pam_pwquality\.so.*\b{{{ VARIABLE }}}\b</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endif %}}
+
   <ind:textfilecontent54_test check="all" state_operator="AND"
-  comment="check the configuration of /etc/security/pwquality.conf"
-  id="test_password_pam_pwquality_{{{ VARIABLE }}}" version="3">
+    comment="check the configuration of /etc/security/pwquality.conf"
+    id="test_password_pam_pwquality_{{{ VARIABLE }}}" version="3">
     <ind:object object_ref="obj_password_pam_pwquality_{{{ VARIABLE }}}" />
     <ind:state state_ref="state_password_pam_{{{ VARIABLE }}}" />
   {{%- if ZERO_COMPARISON_OPERATION %}}

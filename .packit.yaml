@@ -6,12 +6,16 @@ actions:
   get-current-version:
   - bash utils/version.sh
 
+srpm_build_deps:
+  - bash
+
 jobs:
 - job: copr_build
   trigger: pull_request
   metadata:
     targets:
     - fedora-all-x86_64
+    - epel-7-x86_64
     - centos-stream-8-x86_64
     - centos-stream-9-x86_64
 
@@ -19,6 +23,8 @@ jobs:
   trigger: pull_request
   metadata:
     targets:
-    - fedora-latest-stable
-    - centos-stream-8
-    - centos-stream-9
+      fedora-latest-stable: {}
+      epel-7:
+        distros: [centos-7]
+      centos-stream-8: {}
+      centos-stream-9: {}

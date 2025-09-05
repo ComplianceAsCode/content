@@ -6,14 +6,14 @@
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="check correct configuration in /etc/sudoers" id="test_sudo_timestamp_timeout" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="check correct configuration in /etc/sudoers" id="test_sudo_timestamp_timeout" version="1">
     <ind:object object_ref="obj_sudo_timestamp_timeout"/>
     <ind:state state_ref="state_sudo_timestamp_timeout" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_sudo_timestamp_timeout" version="1">
     <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*Defaults[\s]+timestamp_timeout=([-]?[\d]+)$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*Defaults[\s]+timestamp_timeout[\s]*=[\s]*([-]?[\d]+)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 

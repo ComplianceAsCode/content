@@ -12,9 +12,9 @@ checktext: |-
 
     Check that IPv4 forwarding is disabled using the following command:
 
-    $ sudo sysctl net.ipv4.ip_forward
+    $ sysctl net.ipv4.conf.all.forwarding
 
-    net.ipv4.ip_forward = 0
+    net.ipv4.conf.all.forwarding = 0
 
     If the IPv4 forwarding value is not "0" and is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
 
@@ -31,7 +31,7 @@ fixtext: |-
 
     Add or edit the following line in a single system configuration file, in the "/etc/sysctl.d/" directory:
 
-    net.ipv4.conf.all.forwarding=0
+    net.ipv4.conf.all.forwarding = 0
 
     Load settings from all system configuration files with the following command:
 

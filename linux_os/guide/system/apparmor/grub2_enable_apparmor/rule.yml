@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: ubuntu2004,ubuntu2204
+
+title: 'Ensure AppArmor is enabled in the bootloader configuration'
+
+description: |-
+    Configure AppArmor to be enabled at boot time and verify that it has not been
+    overwritten by the bootloader boot parameters.
+
+    Note: This recommendation is designed around the grub bootloader, if LILO or
+    another bootloader is in use in your environment, enact equivalent settings.
+
+rationale: |-
+    AppArmor must be enabled at boot time in your bootloader configuration to
+    ensure that the controls it provides are not overridden.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 1.7.1.2
+    cis@ubuntu2204: 1.6.1.2

@@ -14,7 +14,7 @@ checktext: |-
 
     Check the value of the "all send_redirects" variables with the following command:
 
-    $ sudo sysctl net.ipv4.conf.all.send_redirects
+    $ sysctl net.ipv4.conf.all.send_redirects
 
     net.ipv4.conf.all.send_redirects = 0
 
@@ -22,7 +22,7 @@ checktext: |-
 
     Check that the configuration files are present to enable this network parameter.
 
-    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F net.ipv4.conf.all.send_redirects | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' |  grep -F net.ipv4.conf.all.send_redirects | tail -1
 
     net.ipv4.conf.all.send_redirects = 0
 
@@ -33,7 +33,7 @@ fixtext: |-
 
     Add or edit the following line in a single system configuration file, in the "/etc/sysctl.d/" directory:
 
-    net.ipv4.conf.all.send_redirects=0
+    net.ipv4.conf.all.send_redirects = 0
 
     Load settings from all system configuration files with the following command:
 

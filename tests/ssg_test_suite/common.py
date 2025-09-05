@@ -505,9 +505,8 @@ def load_test(absolute_path, rule_template, local_env_yaml):
     template_name = rule_template['name']
     template_vars = rule_template['vars']
     # Load template parameters and apply it to the test case.
-    maybe_template = ssg.templates.Template(_SHARED_TEMPLATES, template_name)
-    if maybe_template.looks_like_template():
-        maybe_template.load()
+    maybe_template = ssg.templates.Template.load_template(_SHARED_TEMPLATES, template_name)
+    if maybe_template is not None:
         template_parameters = maybe_template.preprocess(template_vars, "tests")
     else:
         raise ValueError("Rule uses template '{}' "

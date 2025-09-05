@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="inventory" id="{{{ _RULE_ID }}}"
+  version="1">
+    {{%- if VER_SPECS_TITLE -%}}
+      {{%- set entity =  " package " + PKGNAME + " version " + VER_SPECS_TITLE -%}}
+    {{%- else -%}}
+      {{%- set entity = " package " + PKGNAME -%}}
+    {{%- endif -%}}
+    {{{ oval_metadata("The " + pkg_system|upper + entity + " should be installed.", affected_platforms=["multi_platform_all"]) }}}
+    <criteria>
+    {{% for spec in VER_SPECS %}}
+      <criterion comment="Platform package {{{ PKGNAME }}} of version {{{ spec.evr_op }}} {{{ spec.ver }}} is installed"
+      test_ref="inventory_test_{{{ _RULE_ID }}}_{{{ spec.id }}}_installed" />
+    {{% else %}}
+      <criterion comment="Platform package {{{ PKGNAME }}} is installed"
+      test_ref="inventory_test_{{{ _RULE_ID }}}_installed" />
+    {{% endfor %}}
+    </criteria>
+  </definition>
+{{% for spec in VER_SPECS %}}
+{{{ oval_test_package_installed(package=PKGNAME, evr=spec.evr_ver, evr_op=spec.evr_op, test_id="inventory_test_" + _RULE_ID + "_" + spec.id + "_installed") }}}
+{{% else %}}
+{{{ oval_test_package_installed(package=PKGNAME, test_id="inventory_test_" + _RULE_ID + "_installed") }}}
+{{% endfor %}}
+</def-group>

@@ -1,0 +1,6 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+{{{ ansible_only_lineinfile(None, "/etc/tmux.conf", "\s*bind\s+\w\s+lock-session.*$", "bind X lock-session", create=create, mode="0644") }}}

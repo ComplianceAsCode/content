@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004,ubuntu2204
+prodtype: alinux2,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure PAM Enforces Password Requirements - Minimum Special Characters'
 
@@ -31,6 +31,7 @@ identifiers:
     cce@rhel7: CCE-27360-7
     cce@rhel8: CCE-80663-8
     cce@rhel9: CCE-83565-2
+    cce@sle12: CCE-92285-6
     cce@sle15: CCE-91157-8
 
 references:
@@ -38,10 +39,10 @@ references:
     cis-csc: 1,12,15,16,5
     cis@alinux2: 5.3.1
     cis@rhel7: 5.4.1
-    cis@sle12: 5.4.1
+    cis@sle12: 5.3.1
     cis@sle15: 5.3.1
     cis@ubuntu2004: 5.3.1
-    cis@ubuntu2204: 5.3.1
+    cis@ubuntu2204: 5.4.1
     cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     disa: CCI-001619
     isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.4
@@ -78,7 +79,7 @@ fixtext: |-
 srg_requirement: |-
     {{{ full_name }}} must enforce password complexity by requiring that at least one special character be used.
 
-platform: pam
+platform: package[pam]
 
 template:
     name: accounts_password

@@ -9,6 +9,7 @@ controls:
             - postfix_client_configure_mail_alias_postmaster
             - var_postfix_root_mail_alias=mil_sysadmin
             - audit_rules_system_shutdown
+            - var_audit_failure_mode=panic
             - auditd_data_retention_action_mail_acct
             - var_auditd_action_mail_acct=root
         status: automated

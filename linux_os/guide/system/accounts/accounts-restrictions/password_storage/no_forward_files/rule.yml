@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Verify No .forward Files Exist'
+
+description: |-
+    The <tt>.forward</tt> file specifies an email address to forward the user's mail to.
+
+rationale: |-
+    Use of the <tt>.forward</tt> file poses a security risk in that sensitive data may
+    be inadvertently transferred outside the organization. The .forward file
+    also poses a risk as it can be used to execute commands that may perform
+    unintended actions.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92349-0
+    cce@sle15: CCE-92622-0
+
+references:
+    cis@sle12: 6.2.9
+    cis@sle15: 6.2.9
+
+ocil_clause: 'any .forward files exist'
+
+ocil: |-
+    To check the system for the existence of any <tt>.forward</tt> files,
+    run the following command:
+    <pre>$ sudo find /home -xdev -name .forward</pre>

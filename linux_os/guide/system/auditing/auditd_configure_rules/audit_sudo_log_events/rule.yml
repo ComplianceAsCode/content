@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ubuntu2004,ubuntu2204
+prodtype: rhel8,rhel9,ubuntu2004,ubuntu2204
 
 title: 'Record Attempts to perform maintenance activities'
 
@@ -37,7 +37,13 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel8: CCE-86432-2
+    cce@rhel9: CCE-86433-0
+
 references:
+    cis@rhel8: 4.1.3.3
+    cis@rhel9: 4.1.3.3
     disa: CCI-000172,CCI-002884
     srg: SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215
     stigid@ubuntu2004: UBTU-20-010244

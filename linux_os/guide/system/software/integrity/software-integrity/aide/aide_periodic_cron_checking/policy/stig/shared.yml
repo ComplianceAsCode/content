@@ -1,8 +1,8 @@
 srg_requirement: |-
-    {{{ full_name }}} mustroutinely check the baseline configuration for unauthorized changes and notify the system administrator when anomalies in the operation of any security functions are discovered.
+    {{{ full_name }}} must routinely check the baseline configuration for unauthorized changes and notify the system administrator when anomalies in the operation of any security functions are discovered.
 
 vuldiscussion: |-
-    nauthorized changes to the baseline configuration could make the system vulnerable to various attacks or allow unauthorized access to the operating system. Changes to operating system configurations can have unintended side effects, some of which may be relevant to security.
+    Unauthorized changes to the baseline configuration could make the system vulnerable to various attacks or allow unauthorized access to the operating system. Changes to operating system configurations can have unintended side effects, some of which may be relevant to security.
 
     Detecting such changes and providing an automated response can help avoid unintended, negative consequences that could ultimately affect the security state of the operating system. The operating system's Information Management Officer (IMO)/Information System Security Officer (ISSO) and System Administrators (SAs) must be notified via email and/or monitoring system trap when there is an unauthorized modification of a configuration item.
 
@@ -34,7 +34,7 @@ checktext: |-
 fixtext: |-
     Configure the file integrity tool to run automatically on the system at least weekly and to notify designated personnel if baseline configurations are changed in an unauthorized manner. The AIDE tool can be configured to email designated personnel with the use of the cron system.
 
-    The following example output is generic. It will set cron to run AIDE daily and to send email at the completion of the
+    The following example output is generic. It will set cron to run AIDE daily and to send email at the completion of the analysis.
 
     $ sudo more /etc/cron.daily/aide
 

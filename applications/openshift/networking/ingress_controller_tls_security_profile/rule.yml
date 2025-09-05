@@ -1,0 +1,66 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: "Ensure IngressController is configured to use secure tlsSecurityProfile"
+
+description: |-
+    <p>
+    The configuration <tt>tlsSecurityProfile</tt> specifies TLS configurations
+    to be used while establishing connections with the externally exposed
+    servers. Though secure transport mode is used for establishing connections,
+    the protocols used may not always be strong enough to avoid interception and
+    manipulation of the data in transport. TLS Security profile configured should
+    not make use of any protocols, ciphers, and algorithms with known security
+    vulnerabilities.
+    </p>
+
+    <p>
+    <tt>tlsSecurityProfile</tt> can be configured to use one of custom, intermediate,
+    modern, or old profile. Profile Old should be avoided at all times and when using
+    custom profile one should be extremely careful as invalid configurations can be
+    catastrophic. It is always advised to use highly secure intermediate or modern
+    profiles and if unset profile configured in apiservers.config.openshift.io/cluster
+    resource will be used as default.
+    </p>
+
+    <p>
+    To update tlsSecurityProfile to Intermediate use the following command:
+    {{% raw %}}<pre>oc patch -n openshift-ingress-operator ingresscontrollers.operator.openshift.io default --type 'json' --patch '[{"op": "add", "path": "/spec/tlsSecurityProfile/intermediate", "value": {}}, {"op": "replace", "path": "/spec/tlsSecurityProfile/type", "value": "Intermediate"}'</pre>{{% endraw %}}
+    </p>
+
+    <p>
+    For more information, follow
+    OpenShift documentation:
+    {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/tls-security-profiles.html",
+                text="the relevant documentation") }}}.
+    </p>
+
+rationale: |-
+    The authenticity and integrity of the container platform and communication
+    between nodes and components must be secure. If an insecure protocol,
+    cipher, or algorithms is used, during transmission of data, the data can be
+    intercepted and manipulated. To thwart the manipulation of the data during
+    transmission secure protocol, cipher and algorithms must be used.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-86234-2
+
+references:
+    nist: SC-8,SC-8(1)
+    srg: SRG-APP-000014-CTR-000040
+
+ocil_clause: 'insecure tlsSecurityProfile is configured for accessing external services through an ingress resource'
+
+ocil: |-
+    To check for the configured tlsSecurityProfile use below command:
+    <tt>$ oc get -n openshift-ingress-operator ingresscontrollers.operator.openshift.io default -o jsonpath='{.spec.tlsSecurityProfile}{"\n"}'</tt>
+    The output shows the tlsSecurityProfile configured for IngressController, and
+    the profile configured should not be old or if custom, the minimum TLS version
+    configured should be TLSv1.2 or newer.
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/operator.openshift.io/v1/namespaces/openshift-ingress-operator/ingresscontrollers/default") | indent(8) }}}

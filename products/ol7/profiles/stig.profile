@@ -4,7 +4,7 @@ title: 'DISA STIG for Oracle Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux V2R8.
+    DISA STIG for Oracle Linux V2R9.
 
 selections:
     - login_banner_text=dod_banners
@@ -33,6 +33,7 @@ selections:
     - var_removable_partition=dev_cdrom
     - var_auditd_action_mail_acct=root
     - var_auditd_space_left_action=email
+    - var_auditd_space_left_percentage=25pc
     - var_accounts_user_umask=077
     - var_password_pam_retry=3
     - var_accounts_max_concurrent_login_sessions=10
@@ -46,6 +47,7 @@ selections:
     - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
     - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
     - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+    - sysctl_net_ipv4_tcp_invalid_ratelimit_value=five_hundred
     - rpm_verify_permissions
     - rpm_verify_ownership
     - rpm_verify_hashes
@@ -69,6 +71,7 @@ selections:
     - accounts_password_pam_maxrepeat
     - accounts_password_pam_maxclassrepeat
     - set_password_hashing_algorithm_systemauth
+    - set_password_hashing_algorithm_passwordauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
     - accounts_minimum_age_login_defs
@@ -98,6 +101,7 @@ selections:
     - package_ypserv_removed
     - selinux_user_login_roles
     - package_aide_installed
+    - aide_build_database
     - aide_periodic_cron_checking
     - aide_scan_notification
     - ensure_gpgcheck_globally_activated
@@ -155,11 +159,12 @@ selections:
     - file_permissions_var_log_audit
     - file_ownership_var_log_audit
     - audit_rules_system_shutdown
+    - var_audit_failure_mode=panic
     - auditd_audispd_configure_remote_server
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action
     - auditd_name_format
-    - auditd_data_retention_space_left
+    - auditd_data_retention_space_left_percentage
     - auditd_data_retention_space_left_action
     - auditd_data_retention_action_mail_acct
     - audit_rules_dac_modification_chown
@@ -205,6 +210,7 @@ selections:
     - audit_rules_privileged_commands_ssh_keysign
     - audit_rules_privileged_commands_crontab
     - audit_rules_privileged_commands_pam_timestamp_check
+    - audit_rules_kernel_module_loading_create
     - audit_rules_kernel_module_loading_init
     - audit_rules_kernel_module_loading_finit
     - audit_rules_kernel_module_loading_delete
@@ -247,8 +253,8 @@ selections:
     - sshd_use_priv_separation
     - sshd_disable_compression
     - chronyd_or_ntpd_set_maxpoll
-    - configure_firewalld_rate_limiting
     - service_firewalld_enabled
+    - package_firewalld_installed
     - display_login_attempts
     - no_user_host_based_files
     - no_host_based_files
@@ -261,6 +267,7 @@ selections:
     - sysctl_net_ipv4_conf_all_send_redirects
     - sysctl_net_ipv4_conf_all_rp_filter
     - sysctl_net_ipv4_conf_default_rp_filter
+    - sysctl_net_ipv4_tcp_invalid_ratelimit
     - network_sniffer_disabled
     - postfix_prevent_unrestricted_relay
     - package_vsftpd_removed
@@ -319,3 +326,9 @@ selections:
     - no_empty_passwords_etc_shadow
     - audit_rules_privileged_commands_kmod
     - passwd_system-auth_substack
+    - audit_rules_kernel_module_loading_create
+    - auditd_audispd_remote_daemon_activated
+    - auditd_audispd_remote_daemon_direction
+    - auditd_audispd_remote_daemon_path
+    - auditd_audispd_remote_daemon_type
+    - account_emergency_expire_date

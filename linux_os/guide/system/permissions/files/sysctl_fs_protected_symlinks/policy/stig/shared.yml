@@ -7,9 +7,9 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} is configured to enable DAC on symlinks.
 
-    Check the status of the fs.protected_hardlinks kernel parameter with the following command:
+    Check the status of the fs.protected_symlinks kernel parameter with the following command:
 
-    $ sudo sysctl fs.protected_syminks
+    $ sudo sysctl fs.protected_symlinks
 
     fs.protected_symlinks = 1
 
@@ -17,7 +17,7 @@ checktext: |-
 
     Check that the configuration files are present to enable this kernel parameter.
 
-    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F fs.protected_symlinks | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F fs.protected_symlinks | tail -1
 
     fs.protected_symlinks = 1
 

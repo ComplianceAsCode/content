@@ -52,8 +52,42 @@ def test_evaluate_simple_boolean_ops(algebra):
     assert not exp(**{'oranges': True, 'apple': False, 'pie': True})
 
 
-def test_args(algebra):
+def test_args_non_versioned(algebra):
     exp = algebra.parse(u'oranges[aaa] | oranges[bbb]')
     assert exp(**{'oranges[aaa]': True, 'oranges[bbb]': True})
     assert not exp(**{'oranges[zzz]': True})
     assert not exp(**{'oranges': True})
+
+
+def test_args_and_version(algebra):
+    exp = algebra.parse(u'oranges[aaa] & oranges[bbb]>=2')
+    assert exp(**{'oranges[aaa]': True, 'oranges[bbb]': '2'})
+    assert not exp(**{'oranges[aaa]': True, 'oranges[bbb]': '1'})
+    assert not exp(**{'oranges[zzz]': True})
+    assert not exp(**{'oranges': True})
+    assert not exp(**{'oranges[bbb,zzz]': True})
+
+
+def test_evaluate_simple_version_ops(algebra):
+    exp = algebra.parse(u'oranges==2')
+    assert exp(**{'oranges': '2'})
+    assert exp(**{'oranges': '2.0'})
+    assert exp(**{'oranges': '2.0.0'})
+    assert not exp(**{'oranges': '2.0.1'})
+    assert not exp(**{'oranges': '3.0'})
+    assert not exp(**{'oranges': True})
+    assert not exp(**{'oranges': 2})
+    assert not exp(**{'oranges': 2.0})
+
+
+def test_evaluate_advanced_version_ops(algebra):
+    exp = algebra.parse(u'oranges>=1.0,<3.0 and oranges!=2.6')
+    assert exp(**{'oranges': '2'})
+    assert exp(**{'oranges': '2.9'})
+    assert exp(**{'oranges': '2.0.1'})
+    assert exp(**{'oranges': '2.9.0-1'})
+    assert not exp(**{'oranges': '3.0'})
+    assert not exp(**{'oranges': '0.9.999'})
+    assert not exp(**{'oranges': '2.6.0'})
+
+

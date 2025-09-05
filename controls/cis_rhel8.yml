@@ -50,8 +50,8 @@ controls:
   - id: 1.1.1.2
     title: Ensure mounting of squashfs filesystems is disabled (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
+      - l2_workstation
     status: automated
     rules:
       - kernel_module_squashfs_disabled
@@ -59,8 +59,8 @@ controls:
   - id: 1.1.1.3
     title: Ensure mounting of udf filesystems is disabled (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
+      - l2_workstation
     status: automated
     rules:
       - kernel_module_udf_disabled
@@ -456,8 +456,8 @@ controls:
   - id: 1.6.1.1
     title: Ensure SELinux is installed (Automated)
     levels:
-      - l2_server
-      - l2_workstation
+      - l1_server
+      - l1_workstation
     status: automated
     rules:
       - package_libselinux_installed
@@ -465,8 +465,8 @@ controls:
   - id: 1.6.1.2
     title: Ensure SELinux is not disabled in bootloader configuration (Automated)
     levels:
-      - l2_server
-      - l2_workstation
+      - l1_server
+      - l1_workstation
     status: automated
     rules:
       - grub2_enable_selinux
@@ -474,20 +474,20 @@ controls:
   - id: 1.6.1.3
     title: Ensure SELinux policy is configured (Automated)
     levels:
-      - l2_server
-      - l2_workstation
+      - l1_server
+      - l1_workstation
     status: automated
     rules:
       - var_selinux_policy_name=targeted
       - selinux_policytype
 
-  # NEEDS RULE
+  # NEEDS RULE - The selinux_state could be extended
   - id: 1.6.1.4
     title: Ensure the SELinux mode is not disabled (Automated)
     levels:
-      - l2_server
-      - l2_workstation
-    status: pending
+      - l1_server
+      - l1_workstation
+    status: planned
 
   - id: 1.6.1.5
     title: Ensure the SELinux mode is enforcing (Automated)
@@ -502,8 +502,8 @@ controls:
   - id: 1.6.1.6
     title: Ensure no unconfined services exist (Automated)
     levels:
-      - l2_server
-      - l2_workstation
+      - l1_server
+      - l1_workstation
     status: automated
     rules:
       - selinux_confinement_of_daemons
@@ -511,7 +511,7 @@ controls:
   - id: 1.6.1.7
     title: Ensure SETroubleshoot is not installed (Automated)
     levels:
-      - l2_server
+      - l1_server
     status: automated
     rules:
       - package_setroubleshoot_removed
@@ -519,8 +519,8 @@ controls:
   - id: 1.6.1.8
     title: Ensure the MCS Translation Service (mcstrans) is not installed (Automated)
     levels:
-      - l2_server
-      - l2_workstation
+      - l1_server
+      - l1_workstation
     status: automated
     rules:
       - package_mcstrans_removed
@@ -593,6 +593,8 @@ controls:
     levels:
       - l2_server
     status: manual
+    related_rules:
+      - package_gdm_removed
 
   - id: 1.8.2
     title: Ensure GDM login banner is configured (Automated)
@@ -700,33 +702,35 @@ controls:
     related_rules:
       - service_avahi-daemon_disabled
 
-  # NEEDS RULE
   - id: 2.2.4
     title: Ensure CUPS is not installed (Automated)
     levels:
       - l1_server
-      - l2_workstation
-    status: planned
+    status: automated
+    rules:
+      - package_cups_removed
     related_rules:
       - service_cups_disabled
 
-  # NEEDS RULE
   - id: 2.2.5
     title: Ensure DHCP Server is not installed (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - package_dhcp_removed
     related_rules:
       - service_dhcpd_disabled
 
-  # NEEDS RULE
   - id: 2.2.6
     title: Ensure DNS Server is not installed (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - package_bind_removed
     related_rules:
       - service_named_disabled
 
@@ -847,25 +851,25 @@ controls:
       - package_nfs-utils_removed
       # The nfs-utils package is required for systems with GUI or by some libvirt packages
 
-  # NEEDS RULE
   - id: 2.2.19
     title: Ensure rpcbind is not installed or the rpcbind services are masked (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
-    # Needs rule to remove or mask rpcbind
-    related_rules:
+    status: automated
+    rules:
       - service_rpcbind_disabled
+    related_rules:
+      - package_rpcbind_removed
 
-  # NEEDS RULE
   - id: 2.2.20
     title:  Ensure rsync is not installed or the rsyncd service is masked (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
-    # Needs rule to remove rsync or mask rsyncd
+    status: automated
+    rules:
+      - package_rsync_removed
     related_rules:
       - service_rsyncd_disabled
 
@@ -1145,6 +1149,8 @@ controls:
       - l1_server
       - l1_workstation
     status: manual
+    related_rules:
+      - firewalld_sshd_port_enabled
 
   - id: 3.4.1.7
     title: Ensure firewalld drops unnecessary services and ports (Manual)
@@ -1153,13 +1159,14 @@ controls:
       - l1_workstation
     status: manual
 
-  # NEEDS RULE
   - id: 3.4.2.1
     title: Ensure nftables is installed (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - package_nftables_installed
 
   # NEEDS RULE
   - id: 3.4.2.2
@@ -1175,7 +1182,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: planned
 
   - id: 3.4.2.4
     title: Ensure iptables are flushed with nftables (Manual)
@@ -1455,30 +1462,33 @@ controls:
     rules:
       - audit_rules_sysadmin_actions
 
-  # NEEDS RULE
   - id: 4.1.3.2
     title: Ensure actions as another user are always logged (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - audit_rules_suid_privilege_function
 
-  # NEEDS RULE
   - id: 4.1.3.3
     title: Ensure events that modify the sudo log file are collected (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - audit_sudo_log_events
 
   - id: 4.1.3.4
     title: Ensure events that modify date and time information are collected (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: partial  # The CAC rule audit_rules_time_settimeofday uses additional parameters compared to the CIS benchmark and so is not used here. As a result, automated coverage is only partial for this control.
+    status: automated
     rules:
       - audit_rules_time_adjtimex
+      - audit_rules_time_settimeofday
       - audit_rules_time_clock_settime
       - audit_rules_time_stime
       - audit_rules_time_watch_localtime
@@ -1498,7 +1508,7 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: planned
     related_rules:
       # The rule below is almost correct but cannot be used as it does not set the perm=x flag.
       - audit_rules_privileged_commands
@@ -1602,37 +1612,41 @@ controls:
     rules:
       - audit_rules_mac_modification
 
-  # NEEDS RULE
   - id: 4.1.3.15
     title: Ensure successful and unsuccessful attempts to use the chcon command are recorded (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - audit_rules_execution_chcon
 
-  # NEEDS RULE
   - id: 4.1.3.16
     title: Ensure successful and unsuccessful attempts to use the setfacl command are recorded (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - audit_rules_execution_setfacl
 
-  # NEEDS RULE
   - id: 4.1.3.17
     title: Ensure successful and unsuccessful attempts to use the chacl command are recorded (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - audit_rules_execution_chacl
 
-  # NEEDS RULE
   - id: 4.1.3.18
     title: Ensure successful and unsuccessful attempts to use the usermod command are recorded (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - audit_rules_privileged_commands_usermod
 
   # NEEDS RULE
   - id: 4.1.3.19
@@ -1692,14 +1706,16 @@ controls:
       - journald_forward_to_syslog
 
   # NEEDS RULE
-  # The rsyslog_files_permissions rule is not sufficient
+  # The rsyslog_files_permissions rule is not sufficient. Needs check for $FileCreateMode.
   # https://github.com/ComplianceAsCode/content/issues/7332
   - id: 4.2.1.4
     title: Ensure rsyslog default file permissions configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: partial
+    rules:
+      - rsyslog_files_permissions
 
   - id: 4.2.1.5
     title: Ensure logging is configured (Manual)
@@ -1717,51 +1733,50 @@ controls:
     related_rules:
       - rsyslog_remote_loghost
 
-  # NEEDS RULE
   - id: 4.2.1.7
     title: Ensure rsyslog is not configured to recieve logs from a remote client (Automated)
     levels:
-      - l2_server
-      - l2_workstation
-    status: pending
+      - l1_server
+      - l1_workstation
+    status: partial
+    rules:
+      - rsyslog_nolisten
+      # This rule should be extended to consider rainerscript syntax
 
-  # NEEDS RULE
   - id: 4.2.2.1.1
     title:  Ensure systemd-journal-remote is installed (Manual)
     levels:
-      - l2_server
-      - l2_workstation
+      - l1_server
+      - l1_workstation
     status: manual
 
-  # NEEDS RULE
   - id: 4.2.2.1.2
     title:  Ensure systemd-journal-remote is configured (Manual)
     levels:
-      - l2_server
-      - l2_workstation
+      - l1_server
+      - l1_workstation
     status: manual
 
-  # NEEDS RULE
   - id: 4.2.2.1.3
     title:  Ensure systemd-journal-remote is enabled (Manual)
     levels:
-      - l2_server
-      - l2_workstation
+      - l1_server
+      - l1_workstation
     status: manual
 
   # NEEDS RULE
   - id: 4.2.2.1.4
     title: Ensure journald is not configured to recieve logs from a remote client (Automated)
     levels:
-      - l2_server
-      - l2_workstation
-    status: pending
+      - l1_server
+      - l1_workstation
+    status: planned
 
   - id: 4.2.2.2
     title: Ensure journald service is enabled (Automated)
     levels:
-      - l2_server
-      - l2_workstation
+      - l1_server
+      - l1_workstation
     status: automated
     rules:
       - service_systemd-journald_enabled
@@ -1934,17 +1949,19 @@ controls:
       - file_permissions_sshd_config
 
   # NEEDS RULE
-  # The file_permissions_sshd_private_key rule is not aligned with the benchmark
+  # Missing rules for owner and group-owner.
   # https://github.com/ComplianceAsCode/content/issues/7334
   - id: 5.2.2
     title: Ensure permissions on SSH private host key files are configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: partial
+    rules:
+      - file_permissions_sshd_private_key
 
   # TODO
-  # Check owner of public keys in /etc/ssh is root:root
+  # Missing rules for owner and group-owner.
   - id: 5.2.3
     title: Ensure permissions on SSH public host key files are configured (Automated)
     levels:
@@ -1961,7 +1978,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: planned
+    related_rules:
+      - sshd_limit_user_access
+      # Missing OVAL
 
   - id: 5.2.5
     title: Ensure SSH LogLevel is appropriate (Automated)
@@ -2066,8 +2086,8 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
-    related_rules:
+    status: partial
+    rules:
       - sshd_enable_warning_banner
 
   - id: 5.2.16
@@ -2152,8 +2172,8 @@ controls:
   - id: 5.3.4
     title: Ensure users must provide password for escalation (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
+      - l2_workstation
     status: automated
     rules:
       - sudo_require_authentication
@@ -2167,24 +2187,26 @@ controls:
     rules:
       - sudo_require_reauthentication
 
-  # NEEDS RULE
   - id: 5.3.6
     title: Ensure sudo authentication timeout is configured correctly (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - sudo_require_reauthentication
 
   - id: 5.3.7
     title: Ensure access to the su command is restricted (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     notes: |-
-      The recommendation states the the members of the "wheel" group should be checked and match the
-      site policy. But the site policy may allow or require different users for the group, so the
-      members of the "wheel" group need to be checked manually.
+      Members of "wheel" or GID 0 groups are checked by default if the group option is not set for
+      pam_wheel.so module. The recommendation states the group should be empty to reinforce the
+      use of "sudo" for privileged access. Therefore, members of these groups should be manually
+      checked or a different group should be informed.
     rules:
       - use_pam_wheel_for_su
 
@@ -2245,7 +2267,7 @@ controls:
     rules:
       - accounts_password_pam_pwhistory_remember_password_auth
       - accounts_password_pam_pwhistory_remember_system_auth
-      - var_password_pam_remember_control_flag=required
+      - var_password_pam_remember_control_flag=requisite
       - var_password_pam_remember=5
 
   - id: 5.5.4
@@ -2309,7 +2331,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: planned
 
   # NEEDS RULE
   # We are missing the component of this control which locks non-root system accounts
@@ -2322,13 +2344,16 @@ controls:
     status: partial
     rules:
       - no_shelllogin_for_systemaccounts
+    related_rules:
+      - no_password_auth_for_systemaccounts
+      # This rule needs OVAL and remediation
 
   - id: 5.6.3
     title: Ensure default user shell timeout is 900 seconds or less (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial  # The remediation for this rule does not implement the "TMOUT" variable as readonly so does not align fully with the benchmark
+    status: automated
     rules:
       - accounts_tmout
       - var_accounts_tmout=15_min
@@ -2358,8 +2383,8 @@ controls:
   - id: 6.1.1
     title: Audit system file permissions (Manual)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
+      - l2_workstation
     status: manual
     related_rules:
       - rpm_verify_permissions
@@ -2637,7 +2662,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: planned
 
   - id: 6.2.15
     title: Ensure no users have .netrc files (Automated)

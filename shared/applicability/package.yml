@@ -1,0 +1,69 @@
+name: "cpe:/a:{arg}:{ver_specs_cpe}"
+title: "Package {pkgname} is installed"
+bash_conditional: {{{ bash_pkg_conditional("{pkgname}", escape=True) }}}
+ansible_conditional: {{{ ansible_pkg_conditional("{pkgname}") }}}
+versioned: true
+template:
+  name: platform_package
+args:
+  audit:
+    {{% if pkg_system == "rpm" %}}
+    pkgname: audit
+    {{% else %}}
+    pkgname: auditd
+    {{% endif %}}
+  chrony:
+    pkgname: chrony
+  gdm:
+    {{% if pkg_system == "rpm" %}}
+    pkgname: gdm
+    {{% else %}}
+    pkgname: gdm3
+    {{% endif %}}
+  libuser:
+    pkgname: libuser
+  net-snmp:
+    {{% if pkg_system == "rpm" %}}
+      pkgname: net-snmp
+    {{% else %}}
+      pkgname: snmp
+    {{% endif %}}
+  nss-pam-ldapd:
+    {{% if pkg_system == "rpm" %}}
+      pkgname: nss-pam-ldapd
+    {{% else %}}
+      pkgname: libpam-ldapd
+    {{% endif %}}
+  ntp:
+    pkgname: ntp
+    title: NTP daemon and utilities
+  pam:
+    {{% if pkg_system == "rpm" %}}
+      pkgname: pam
+    {{% else %}}
+      pkgname: libpam-runtime
+    {{% endif %}}
+  polkit:
+    pkgname: polkit
+  postfix:
+    pkgname: postfix
+  sssd:
+    {{% if product in ["sle12", "sle15"] %}}
+      pkgname: sssd
+    {{% else %}}
+      pkgname: sssd-common
+    {{% endif %}}
+  sudo:
+    pkgname: sudo
+  systemd:
+    pkgname: systemd
+  tftp-server:
+    pkgname: tftp-server
+  tmux:
+    pkgname: tmux
+  usbguard:
+    pkgname: usbguard
+  yum:
+    pkgname: yum
+  zypper:
+    pkgname: zypper

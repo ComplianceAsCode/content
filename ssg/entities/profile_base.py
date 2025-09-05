@@ -33,7 +33,6 @@ class Profile(XCCDFEntity, SelectionHandler):
     """Represents XCCDF profile
     """
     KEYS = dict(
-        title=lambda: "",
         description=lambda: "",
         extends=lambda: "",
         metadata=lambda: None,

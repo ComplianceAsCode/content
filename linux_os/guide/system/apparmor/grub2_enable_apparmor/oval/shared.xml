@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="grub2_enable_apparmor" version="1">
+    {{{ oval_metadata("Ensure AppArmor is enabled in the bootloader configuration") }}}
+    <criteria>
+	  <criterion test_ref="test_apparmor_enabled_bootloader" comment="apparmor is enabled in bootloader" />
+  	  <criterion test_ref="test_apparmor_set_bootloader" comment="security=apparmor is set in bootloader" />
+    </criteria>
+  </definition>
+   <ind:textfilecontent54_object id="obj_apparmor_enabled_in_grubcfg" version="1">
+    <ind:filepath datatype="string">/boot/grub/grub.cfg</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string">^\s*linux\b.*(?!/boot/memtest86\+\.bin).*\bapparmor=1\b.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="obj_apparmor_set_in_grubcfg" version="1">
+    <ind:filepath datatype="string">/boot/grub/grub.cfg</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string">^\s*linux\b.*(?!/boot/memtest86\+\.bin).*\bsecurity=apparmor\b.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" id="test_apparmor_enabled_bootloader" version="1" comment="apparmor is enabled in bootloader">
+    <ind:object object_ref="obj_apparmor_enabled_in_grubcfg" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check="all" id="test_apparmor_set_bootloader" version="1" comment="security=apparmor is set in bootloader">
+    <ind:object object_ref="obj_apparmor_set_in_grubcfg" />
+  </ind:textfilecontent54_test>
+</def-group>

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
+prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Verify ownership of Message of the Day Banner'
 
@@ -19,16 +19,20 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-83737-7
     cce@rhel8: CCE-83738-5
+    cce@rhel9: CCE-86698-8
+    cce@sle12: CCE-92231-0
+    cce@sle15: CCE-91353-3
 
 references:
     cis@alinux2: 1.7.1.4
     cis@alinux3: 1.2.4
     cis@rhel7: 1.7.4
     cis@rhel8: 1.7.4
-    cis@sle12: 1.7.1.4
+    cis@rhel9: 1.7.4
+    cis@sle12: 1.8.1.4
     cis@sle15: 1.8.1.4
     cis@ubuntu2004: 1.8.1.4
-    cis@ubuntu2204: 1.8.1.4
+    cis@ubuntu2204: 1.7.4
 
 ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/motd", owner="root") }}}'
 

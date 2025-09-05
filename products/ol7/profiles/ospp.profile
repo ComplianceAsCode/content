@@ -126,7 +126,7 @@ selections:
     ### Misc Audit Configuration
     ### (not required in OSPP)
 
-    ### Module Blacklist
+    ### Module Disabled
     - kernel_module_usb-storage_disabled
     - kernel_module_cramfs_disabled
     - kernel_module_bluetooth_disabled

@@ -6,8 +6,8 @@
 {{{ ansible_instantiate_variables("var_accounts_maximum_age_login_defs") }}}
 
 - name: Collect users with not correct maximum time period between password changes
-  ansible.builtin.command: >
-    awk -F: '$5 > {{ var_accounts_maximum_age_login_defs }} || $5 == "" {print $1}' /etc/shadow
+  ansible.builtin.command:
+    cmd: awk -F':' '(/^[^:]+:[^!*]/ && ($5 > {{ var_accounts_maximum_age_login_defs }} || $5 == "")) {print $1}' /etc/shadow
   register: user_names
 
 - name: Change the maximum time period between password changes
@@ -16,8 +16,8 @@
     user: '{{ item }}'
     password_expire_max: '{{ var_accounts_maximum_age_login_defs }}'
 {{% else %}}
-  ansible.builtin.command: >
-    chage -M {{ var_accounts_maximum_age_login_defs }} {{ item }}
+  ansible.builtin.command:
+    cmd: chage -M {{ var_accounts_maximum_age_login_defs }} {{ item }}
 {{% endif %}}
   with_items: '{{ user_names.stdout_lines }}'
   when: user_names.stdout_lines | length > 0

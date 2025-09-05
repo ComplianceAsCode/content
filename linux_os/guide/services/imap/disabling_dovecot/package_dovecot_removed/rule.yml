@@ -21,15 +21,18 @@ identifiers:
     cce@rhel7: CCE-80295-9
     cce@rhel8: CCE-85976-9
     cce@rhel9: CCE-85977-7
+    cce@sle12: CCE-92249-2
+    cce@sle15: CCE-91369-9
 
 references:
     cis@alinux2: 2.1.11
     cis@rhel7: 2.2.10
     cis@rhel8: 2.2.11
-    cis@sle12: 2.2.10
+    cis@rhel9: 2.2.9
+    cis@sle12: 2.2.12
     cis@sle15: 2.2.12
     cis@ubuntu2004: 2.2.11
-    cis@ubuntu2204: 2.2.11
+    cis@ubuntu2204: 2.2.10
 
 {{% if 'ubuntu' not in product %}}
 {{{ complete_ocil_entry_package(package="dovecot") }}}
@@ -44,3 +47,4 @@ template:
         pkgname@ubuntu1604: dovecot-core
         pkgname@ubuntu1804: dovecot-core
         pkgname@ubuntu2004: dovecot-core
+        pkgname@ubuntu2204: dovecot-core

@@ -2,16 +2,8 @@ srg_requirement: |-
     {{{ full_name }}} must take appropriate action when a critical audit processing failure occurs.
 
 vuldiscussion: |-
-    It is critical for the appropriate personnel to be aware if a system
-    is at risk of failing to process audit logs as required. Without this
-    notification, the security personnel may be unaware of an impending failure of
-    the audit capability, and system operation may be adversely affected.
-
-
-
-    Audit processing failures include software/hardware errors, failures in the
-    audit capturing mechanisms, and audit storage capacity being reached or
-    exceeded.
+    It is critical for the appropriate personnel to be aware if a systemis at risk of failing to process audit logs as required. Without thisnotification, the security personnel may be unaware of an impending failure ofthe audit capability, and system operation may be adversely affected.
+    Audit processing failures include software/hardware errors, failures in theaudit capturing mechanisms, and audit storage capacity being reached orexceeded.
 
 checktext: |-
     Verify the audit service is configured to panic on a critical error with the following command:
@@ -26,4 +18,5 @@ fixtext: |-
     Configure {{{ full_name }}} to shutdown when auditing failures occur.
 
     Add the following line to the bottom of the /etc/audit/audit.rules file:
+
     -f 2

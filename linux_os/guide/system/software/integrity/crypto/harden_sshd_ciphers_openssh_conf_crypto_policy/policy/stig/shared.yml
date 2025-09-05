@@ -11,17 +11,18 @@ vuldiscussion: |-
     {{{ full_name }}} incorporates system-wide crypto policies by default. The SSH configuration file has no effect on the ciphers, MACs, or algorithms unless specifically defined in the /etc/sysconfig/sshd file. The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/opensshserver.config file.
 
 checktext: |-
-    Verify the SSH client is configured to use only ciphers employing FIPS 140-3-approved algorithms with the following command:
+    Verify that system-wide crypto policies are in effect:
 
-    $ sudo grep -i ciphers /etc/crypto-policies/back-ends/openssh.config
+    $ sudo grep Include /etc/ssh/ssh_config  /etc/ssh/ssh_config.d/*
+    /etc/ssh/ssh_config:Include /etc/ssh/ssh_config.d/*.conf
+    /etc/ssh/ssh_config.d/50-redhat.conf:        Include /etc/crypto-policies/back-ends/openssh.config
 
-    Ciphers aes256-ctr,aes192-ctr,aes128-ctr
+    If "Include /etc/crypto-policies/back-ends/openssh.config" or "Include /etc/ssh/ssh_config.d/*.conf" are not included in the system ssh client config or the file "/etc/ssh/ssh_config.d/50-redhat.conf" is missing, this is a finding.
 
-    If the cipher entries in the "openssh.config" file have any ciphers other than "aes256-ctr,aes192-ctr,aes128-ctr", the order differs from the example above, they are missing, or commented out, this is a finding.
 
 fixtext: |-
-    Configure the {{{ full_name }}} SSH client to use only ciphers employing FIPS 140-3-approved algorithms by updating the "/etc/crypto-policies/back-ends/openssh.config" file with the following line:
+    Configure the {{{ full_name }}} SSH daemon to use system-wide crypto policies by running the following commands:
 
-    Ciphers=aes256-ctr,aes192-ctr,aes128-ctr
+    $ sudo dnf reinstall openssh-clients
 
     A reboot is required for the changes to take effect.

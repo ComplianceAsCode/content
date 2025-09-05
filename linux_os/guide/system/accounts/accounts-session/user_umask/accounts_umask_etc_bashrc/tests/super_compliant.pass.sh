@@ -1,5 +1,11 @@
 #!/bin/bash
 
-sed -i '/umask/d' /etc/bashrc
-echo "umask 777" >> /etc/bashrc
+{{% if 'sle' in product or 'ubuntu' in product %}}
+etc_bash_rc="/etc/bash.bashrc"
+{{% else %}}
+etc_bash_rc="/etc/bashrc"
+{{% endif %}}
+
+sed -i '/umask/d' $etc_bash_rc
+echo "umask 777" >> $etc_bash_rc
 umask 777

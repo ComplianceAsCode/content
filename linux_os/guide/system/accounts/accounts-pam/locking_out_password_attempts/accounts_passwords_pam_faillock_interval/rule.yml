@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2204
 
 title: 'Set Interval For Counting Failed Password Attempts'
 
@@ -25,6 +25,7 @@ identifiers:
 references:
     anssi: BP28(R18)
     cis-csc: 1,12,15,16
+    cis@ubuntu2204: 5.4.2
     cobit5: DSS05.04,DSS05.10,DSS06.10
     disa: CCI-000044,CCI-002236,CCI-002237,CCI-002238
     isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
@@ -41,7 +42,7 @@ references:
     stigid@rhel8: RHEL-08-020012
     vmmsrg: SRG-OS-000021-VMM-000050
 
-platform: pam
+platform: package[pam]
 
 ocil_clause: |-
     the "fail_interval" option is not set to "{{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}"

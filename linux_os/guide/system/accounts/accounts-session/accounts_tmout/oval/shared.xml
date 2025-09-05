@@ -1,14 +1,26 @@
+{{% set system_configuration_using_etc_bashrc_expected = false -%}}
+
+{{% if product in ["ol7", "rhel7"] -%}}
+  {{% set system_configuration_using_etc_bashrc_expected = true %}}
+{{%- endif -%}}
 <def-group>
   <definition class="compliance" id="accounts_tmout" version="3">
     {{{ oval_metadata("Checks interactive shell timeout") }}}
-    <criteria operator="OR">
+    <criteria operator="AND">
+      {{% if "ubuntu" in product %}}
+      <criterion comment="TMOUT value in /etc/bash.bashrc &lt;= var_accounts_tmout" test_ref="test_etc_bashrc_tmout" />
+      {{% endif %}}
       <criterion comment="TMOUT value in /etc/profile &lt;= var_accounts_tmout" test_ref="test_etc_profile_tmout" />
       <criterion comment="TMOUT value in /etc/profile.d/*.sh &lt;= var_accounts_tmout" test_ref="test_etc_profiled_tmout" />
+      <criterion comment="At least one config file has TMOUT defined" test_ref="test_accounts_tmout_defined" />
+      {{% if system_configuration_using_etc_bashrc_expected %}}
+      <criterion comment="TMOUT value in /etc/bashrc &lt;= var_accounts_tmout" test_ref="test_etc_bashrc_tmout" />
+      {{% endif %}}
     </criteria>
   </definition>
 
   {{% macro test_tmout(test_stem, files) %}}
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="TMOUT in {{{ files }}}" id="test_{{{ test_stem }}}" version="2">
+  <ind:textfilecontent54_test check="all" check_existence="any_exist" comment="TMOUT in {{{ files }}}" id="test_{{{ test_stem }}}" version="2">
     <ind:object object_ref="object_{{{ test_stem }}}" />
     <ind:state state_ref="state_etc_profile_tmout" />
   </ind:textfilecontent54_test>
@@ -25,20 +37,70 @@
     {{% if filepath %}}
     <ind:filepath>{{{ filepath }}}</ind:filepath>
     {{% endif %}}
-    {{% if product in ['sle12', 'sle15'] %}}
+    {{% if product in ['sle12', 'sle15'] or "ubuntu" in product %}}
     <ind:pattern operation="pattern match">^[\s]*TMOUT=([\w$]+)[\s]*readonly TMOUT[\s]*export TMOUT$</ind:pattern>
     {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*declare[\s]+-xr[\s]+TMOUT=([\w$]+).*$</ind:pattern>
     {{% endif %}}
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   {{% endmacro %}}
+
+  {{% if 'ubuntu' in product %}}
+  {{{ test_tmout(  test_stem="etc_bashrc_tmout", files="/etc/bash.bashrc") }}}
+  {{{ object_tmout(test_stem="etc_bashrc_tmout", filepath="/etc/bash.bashrc") }}}
+  {{% endif %}}
 
   {{{ test_tmout(  test_stem="etc_profile_tmout", files="/etc/profile") }}}
   {{{ object_tmout(test_stem="etc_profile_tmout", filepath="/etc/profile") }}}
 
   {{{ test_tmout(  test_stem="etc_profiled_tmout", files="/etc/profile.d/*.sh") }}}
   {{{ object_tmout(test_stem="etc_profiled_tmout", path="/etc/profile.d", filename="^.*\.sh$") }}}
+
+  {{% if system_configuration_using_etc_bashrc_expected %}}
+  {{{ test_tmout(  test_stem="etc_bashrc_tmout", files="/etc/bashrc") }}}
+  {{{ object_tmout(test_stem="etc_bashrc_tmout", filepath="/etc/bashrc") }}}
+  {{% endif %}}
+
+  {{% if system_configuration_using_etc_bashrc_expected %}}
+  <ind:textfilecontent54_object id="object_accounts_tmout_all_tmout_instances" version="1">
+    <set>
+      <object_reference>object_etc_bashrc_tmout</object_reference>
+      <object_reference>object_accounts_tmout_partial_tmout_instances</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_accounts_tmout_partial_tmout_instances" version="1">
+    <set>
+      <object_reference>object_etc_profile_tmout</object_reference>
+      <object_reference>object_etc_profiled_tmout</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+  {{% else %}}
+  <ind:textfilecontent54_object id="object_accounts_tmout_all_tmout_instances" version="1">
+    <set>
+      <object_reference>object_etc_profile_tmout</object_reference>
+      <object_reference>object_etc_profiled_tmout</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+  {{% endif %}}
+
+  <local_variable id="variable_count_of_tmout_instances" comment="Count of TMOUT instances" datatype="int" version="1">
+    <count>
+      <object_component object_ref="object_accounts_tmout_all_tmout_instances" item_field="text" />
+    </count>
+  </local_variable>
+
+  <ind:variable_test check="all" check_existence="all_exist" id="test_accounts_tmout_defined" comment="Check that at least one TMOUT is defined" version="1">
+    <ind:object object_ref="object_accounts_tmout_defined" />
+    <ind:state state_ref="state_accounts_tmout_defined" />
+  </ind:variable_test>
+  <ind:variable_object id="object_accounts_tmout_defined" version="1">
+    <ind:var_ref>variable_count_of_tmout_instances</ind:var_ref>
+  </ind:variable_object>
+  <ind:variable_state id="state_accounts_tmout_defined" version="1">
+    <ind:value operation="greater than or equal" datatype="int">1</ind:value>
+  </ind:variable_state>
 
   <ind:textfilecontent54_state id="state_etc_profile_tmout" version="2">
     <ind:subexpression datatype="int" operation="less than or equal" var_check="all" var_ref="var_accounts_tmout" />

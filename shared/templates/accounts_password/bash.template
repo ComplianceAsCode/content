@@ -12,4 +12,13 @@ if grep -sq {{{ VARIABLE }}} /etc/security/pwquality.conf.d/*.conf ; then
 fi
 {{% endif %}}
 
+{{% if "ol" in product %}}
+{{{ bash_remove_pam_module_option_configuration('/etc/pam.d/system-auth',
+                                  'password',
+                                  '',
+                                  'pam_pwquality.so',
+                                  VARIABLE)
+}}}
+{{% endif %}}
+
 {{{ bash_replace_or_append('/etc/security/pwquality.conf', '^' ~ VARIABLE , '$var_password_pam_' ~ VARIABLE , '%s = %s') }}}

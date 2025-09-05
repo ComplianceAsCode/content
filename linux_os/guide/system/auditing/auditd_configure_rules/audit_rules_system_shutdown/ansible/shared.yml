@@ -4,6 +4,8 @@
 # complexity = low
 # disruption = low
 
+{{{ ansible_instantiate_variables("var_audit_failure_mode") }}}
+
 - name: Collect all files from /etc/audit/rules.d with .rules extension
   find:
     paths: "/etc/audit/rules.d/"
@@ -21,8 +23,7 @@
   lineinfile:
     path: "{{ item }}"
     create: True
-    line: "-f 2"
+    line: "-f {{ var_audit_failure_mode }}"
   loop:
     - "/etc/audit/audit.rules"
     - "/etc/audit/rules.d/immutable.rules"
-

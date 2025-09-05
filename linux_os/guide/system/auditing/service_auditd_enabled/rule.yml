@@ -37,6 +37,7 @@ references:
     cis@alinux3: 4.1.1.2
     cis@rhel7: 4.1.1.2
     cis@rhel8: 4.1.1.2
+    cis@rhel9: 4.1.1.4
     cis@sle12: 4.1.1.2
     cis@sle15: 4.1.1.2
     cis@ubuntu2004: 4.1.1.2
@@ -79,7 +80,7 @@ srg_requirement: '{{{ srg_requirement_service_enabled("auditd") }}}'
 {{% endif %}}
 
 
-platform: audit
+platform: package[audit]
 
 template:
     name: service_enabled
@@ -91,3 +92,4 @@ template:
         packagename@ubuntu1604: auditd
         packagename@ubuntu1804: auditd
         packagename@ubuntu2004: auditd
+        packagename@ubuntu2204: auditd

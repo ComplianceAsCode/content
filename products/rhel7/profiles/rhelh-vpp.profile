@@ -83,6 +83,7 @@ selections:
 
     # AU -5(b)
     - audit_rules_system_shutdown
+    - var_audit_failure_mode=panic
 
     # AU-9
     - file_permissions_var_log_audit

@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'SSH Strong KEX by FIPS'
+
+description: "Specify the FIPS approved KEXs (Key Exchange Algorithms) algorithms\n\tthat are used for methods in cryptography by which cryptographic keys are exchanged between two parties"
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+    default: ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256
+    cis_sle12: ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256
+    cis_sle15: ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256

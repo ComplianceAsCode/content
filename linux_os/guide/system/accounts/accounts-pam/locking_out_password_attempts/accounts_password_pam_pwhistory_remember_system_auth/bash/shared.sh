@@ -4,4 +4,10 @@
 
 var_password_pam_remember_control_flag="$(echo $var_password_pam_remember_control_flag | cut -d \, -f 1)"
 
-{{{ bash_ensure_pam_module_configuration('/etc/pam.d/system-auth', 'password', "$var_password_pam_remember_control_flag", 'pam_pwhistory.so', 'remember', "$var_password_pam_remember", '^password.*requisite.*pam_pwquality\.so') }}}
+{{{ bash_pam_pwhistory_enable('/etc/pam.d/system-auth',
+                              "$var_password_pam_remember_control_flag",
+                              '^password.*requisite.*pam_pwquality\.so') }}}
+
+{{{ bash_pam_pwhistory_parameter_value('/etc/pam.d/system-auth',
+                                       'remember',
+                                       "$var_password_pam_remember") }}}

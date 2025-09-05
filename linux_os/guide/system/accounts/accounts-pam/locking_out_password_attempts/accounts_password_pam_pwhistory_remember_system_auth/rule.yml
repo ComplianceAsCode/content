@@ -7,17 +7,32 @@ title: 'Limit Password Reuse: system-auth'
 description: |-
     Do not allow users to reuse recent passwords. This can be accomplished by using the
     <tt>remember</tt> option for the <tt>pam_pwhistory</tt> PAM module.
-    <br /><br />
-    In the file <tt>/etc/pam.d/system-auth</tt>, make sure the parameter
-    <tt>remember</tt> is present and it has a value equal to or greater than
+    <br/><br/>
+    {{% if product in ["ol7", "rhel7"] %}}
+    In the file <tt>/etc/pam.d/system-auth</tt>, make sure the parameter <tt>remember</tt> is
+    present and it has a value equal to or greater than
     {{{ xccdf_value("var_password_pam_remember") }}}
+    <br/><br/>
     For example:
-    <pre>password <i>control_flag</i> pam_pwhistory.so <i>...existing_options...</i> remember={{{
-    xccdf_value("var_password_pam_remember") }}} use_authtok</pre>
-    <i>control_flag</i> should be one of the next values: <tt>{{{
-    xccdf_value("var_password_pam_remember_control_flag") }}}</tt><br />
+    <pre>password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok remember={{{ xccdf_value("var_password_pam_remember") }}}</pre>
+    {{% else %}}
+    On systems with newer versions of <tt>authselect</tt>, the <tt>pam_pwhistory</tt> PAM module
+    can be enabled via authselect feature:
+    <pre>authselect enable-feature with-pwhistory</pre>
 
-rationale: 'Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.'
+    Otherwise, it should be enabled using an authselect custom profile.
+    <br/><br/>
+    Newer systems also have the <tt>/etc/security/pwhistory.conf</tt> file for setting
+    <tt>pam_pwhistory</tt> module options. This file should be used whenever available.
+    Otherwise, the <tt>pam_pwhistory</tt> module options can be set in PAM files.
+    <br/><br/>
+    The value for <tt>remember</tt> option must be equal or greater than
+    {{{ xccdf_value("var_password_pam_remember") }}}
+    {{% endif %}}
+
+rationale: |-
+    Preventing re-use of previous passwords helps ensure that a compromised password is not
+    re-used by a user.
 
 severity: medium
 
@@ -27,11 +42,13 @@ identifiers:
     cce@rhel9: CCE-89176-2
 
 references:
+    anssi: BP28(R18)
     cis-csc: 1,12,15,16,5
     cis@alinux2: 5.3.3
     cis@alinux3: 5.5.3
     cis@rhel7: 5.4.4
     cis@rhel8: 5.5.3
+    cis@rhel9: 5.5.3
     cjis: 5.6.2.1.1
     cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     cui: 3.5.8
@@ -51,26 +68,55 @@ references:
     vmmsrg: SRG-OS-000077-VMM-000440
 
 ocil_clause: |-
-     the line containing "pam_pwhistory.so" does not have the "remember" module argument set,
-     is commented out, or the value of the "remember" module argument is set to less than
-     "{{{ xccdf_value("var_password_pam_remember") }}}"
+    the pam_pwhistory.so module is not used, the "remember" module option is not set in
+    /etc/pam.d/system-auth or in /etc/security/pwhistory.conf, or is set in both files, or is set
+    with a value less than "{{{ xccdf_value("var_password_pam_remember") }}}"
 
 ocil: |-
-    Verify {{{ full_name }}} is configured in the system-auth file to prohibit password reuse
-    for a minimum of {{{ xccdf_value("var_password_pam_remember") }}} generations with the following command:
+    Verify {{{ full_name }}} use the "pam_pwhistory.so" module in the /etc/pam.d/system-auth file
+    and is configured to prohibit password reuse for a minimum of {{{ xccdf_value("var_password_pam_remember") }}}
+    generations.
 
-    <pre>$ grep -i remember /etc/pam.d/system-auth
-    password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok remember={{{ xccdf_value("var_password_pam_remember") }}} retry=3</pre>
+    Verify the "/etc/pam.d/system-auth" file with the following command:
+
+    <pre>$ grep pam_pwhistory.so /etc/pam.d/system-auth
+    password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok remember={{{ xccdf_value("var_password_pam_remember") }}}</pre>
+
+    {{% if product not in ["ol7", "rhel7"] %}}
+    Verify the "/etc/security/pwhistory.conf" file using the following command:
+
+    <pre>$ grep remember /etc/security/pwhistory.conf
+    remember = {{{ xccdf_value("var_password_pam_remember") }}}</pre>
+
+    The pam_pwhistory.so "remember" option must be configured only in one file.
+    {{% endif %}}
 
 fixtext: |-
-    Configure the {{{ full_name }}} system-auth file to prohibit password reuse for a minimum of
-    {{{ xccdf_value("var_password_pam_remember") }}} generations. Add the following line in
-    "/etc/pam.d/system-auth" (or modify the line to have the required value):
+    Configure the {{{ full_name }}} system-auth file to use "pam_pwhistory.so" module and prohibit
+    password reuse for a minimum of {{{ xccdf_value("var_password_pam_remember") }}} generations.
+
+    {{% if product in ["ol7", "rhel7"] %}}
+    Add the following line in "/etc/pam.d/system-auth" (or modify the line to have the required value):
     <pre>password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok remember={{{ xccdf_value("var_password_pam_remember") }}} retry=3</pre>
+    {{% else %}}
+    First ensure the pam_pwhistory.so module is enabled in the password section of "/etc/pam.d/system-auth":
+    <pre>password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok</pre>
+
+    If the "/etc/security/pwhistory.conf" is present in the system, use it to set the "remember" option:
+    <pre>remember = {{{ xccdf_value("var_password_pam_remember") }}}</pre>
+
+    Otherwise, include the "remember" option in "/etc/pam.d/system-auth" file:
+    <pre>password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok remember={{{ xccdf_value("var_password_pam_remember") }}}</pre>
+
+    Note:
+    In newer versions of authselect, the "pam_pwhistory.so" module can be easily enabled via
+    authselect feature using the following command:
+    <pre>authselect enable-feature with-pwhistory</pre>
+    {{% endif %}}
 
 srg_requirement: '{{{ full_name }}} must be configured in the system-auth file to prohibit password reuse for a minimum of five generations.'
 
-platform: pam
+platform: package[pam]
 
 warnings:
     - general: |-
@@ -79,3 +125,7 @@ warnings:
        PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
        aborted in order to preserve intentional changes. In this case, an informative message will
        be shown in the remediation report.
+    - general: |-
+       Newer versions of <tt>authselect</tt> contain an authselect feature to easily and properly
+       enable <tt>pam_pwhistory.so</tt> module. If this feature is not yet available in your
+       system, an authselect custom profile must be used to avoid integrity issues in PAM files.

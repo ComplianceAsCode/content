@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R9
+    version: V3R10
     SMEs:
         - ggbecker
 
@@ -11,7 +11,7 @@ title: 'DISA STIG with GUI for Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG with GUI for Red Hat Enterprise Linux V3R9.
+    DISA STIG with GUI for Red Hat Enterprise Linux V3R10.
 
     In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of

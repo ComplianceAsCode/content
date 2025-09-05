@@ -177,7 +177,7 @@ def handle_remediations(product_list, product_yamls, rule_obj):
 
 def quiet_print(msg, quiet, file):
     if not quiet:
-        print(msg, file)
+        print(msg, file=file)
 
 
 def main():

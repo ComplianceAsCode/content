@@ -1,0 +1,33 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}}: Determine if the Tmux launch script is present in /etc/bashrc"
+  ansible.builtin.find:
+    paths: '/etc'
+    patterns: 'bashrc'
+    contains: '.*case "$name" in sshd|login) tmux ;; esac.*'
+  register: tmux_in_bashrc
+
+- name: "{{{ rule_title }}}: Determine if the Tmux launch script is present in /etc/profile.d/*.sh"
+  ansible.builtin.find:
+    paths: '/etc/profile.d'
+    patterns: '*.sh'
+    contains: .*case "$name" in sshd|login) tmux ;; esac.*
+  register: tmux_in_profile_d
+
+- name: "{{{ rule_title }}}: Insert the correct script into /etc/profile.d/tmux.sh"
+  ansible.builtin.blockinfile:
+    path: '/etc/profile.d/tmux.sh'
+    block: |
+      if [ "$PS1" ]; then
+        parent=$(ps -o ppid= -p $$)
+        name=$(ps -o comm= -p $parent)
+        case "$name" in sshd|login) tmux ;; esac
+      fi
+    create: true
+  when:
+    - tmux_in_bashrc is defined and tmux_in_bashrc.matched == 0
+    - tmux_in_profile_d is defined and tmux_in_profile_d.matched == 0

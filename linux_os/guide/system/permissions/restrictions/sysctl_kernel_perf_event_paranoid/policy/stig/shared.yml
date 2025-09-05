@@ -22,7 +22,7 @@ checktext: |-
     If "kernel.perf_event_paranoid" is not set to "2" or is missing, this is a finding.
     Check that the configuration files are present to enable this kernel parameter.
 
-    $  {  sudo /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F kernel.perf_event_paranoid | tail -1
+    $  sudo /usr/lib/systemd/systemd-sysctl --cat-config  | egrep -v '^(#|;)' | grep -F kernel.perf_event_paranoid | tail -1
     kernel.perf_event_paranoid = 2
 
     If "kernel.perf_event_paranoid" is not set to "2" or is missing this is a finding.

@@ -83,6 +83,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
+        env:
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_SCE_ENABLED:BOOL=ON"
         run: |-
           ./build_product \
               alinux2 \
@@ -99,6 +101,25 @@ jobs:
               ubuntu2004 \
               ubuntu2204 \
               uos20
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build
+
+  validate-ubuntu-22-04:
+    name: Build, Test on Ubuntu 22.04
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install Deps
+        uses: mstksg/get-package@master
+        with:
+          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml python3-setuptools ansible-lint python3-github bats python3-pytest python3-pytest-cov shellcheck
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: |-
+          ./build_product \
+              ubuntu2004 \
+              ubuntu2204
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build

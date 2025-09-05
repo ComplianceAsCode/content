@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
+prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Verify Group Ownership of System Login Banner'
 
@@ -19,16 +19,20 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-83707-0
     cce@rhel8: CCE-83708-8
+    cce@rhel9: CCE-86699-6
+    cce@sle12: CCE-92233-6
+    cce@sle15: CCE-91355-8
 
 references:
     cis@alinux2: 1.7.1.5
     cis@alinux3: 1.2.5
     cis@rhel7: 1.7.5
     cis@rhel8: 1.7.5
-    cis@sle12: 1.7.1.5
+    cis@rhel9: 1.7.5
+    cis@sle12: 1.8.1.5
     cis@sle15: 1.8.1.5
     cis@ubuntu2004: 1.8.1.5
-    cis@ubuntu2204: 1.8.1.5
+    cis@ubuntu2204: 1.7.5
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/issue", group="root") }}}'
 

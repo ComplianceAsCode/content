@@ -148,7 +148,7 @@ selections:
     - sysctl_kernel_randomize_va_space
 
     ### 1.6.3 Ensure prelink is disabled (Automated)
-    - disable_prelink
+    - package_prelink_removed
 
     ### 1.6.4 Ensure core dumps are restricted (Automated)
     - disable_users_coredumps
@@ -160,7 +160,7 @@ selections:
     # Needs rule
 
     #### 1.7.1.2 Ensure AppArmor is enabled in the bootloader configuration (Automated)
-    # Needs rule
+    - grub2_enable_apparmor
 
     #### 1.7.1.3 Ensure all AppArmor Profiles are in enforce or complain mode (Automated)
     # Needs variable
@@ -243,7 +243,7 @@ selections:
 
     ### 2.2.4 Ensure CUPS is not installed (Automated)
     - service_cups_disabled
-    # Needs rule: package_cups_removed
+    - package_cups_removed
 
     ### 2.2.5 Ensure DHCP Server is not installed (Automated)
     - package_dhcp_removed
@@ -279,7 +279,7 @@ selections:
     # Needs rule
 
     ### 2.2.16 Ensure rsync service is not installed (Automated)
-    # Needs rule: package_rsync_removed
+    - package_rsync_removed
 
     ### 2.2.17 Ensure NIS Server is not installed (Automated)
     - package_nis_removed
@@ -301,7 +301,7 @@ selections:
     - package_openldap-clients_removed
 
     ### 2.3.6 Ensure RPC is not installed (Automated)
-    # Needs rule: package_rpcbind_removed
+    - package_rpcbind_removed
 
     ## 2.4 Ensure nonessential services are removed or masked (Manual)
     # Skip due to being a manual test
@@ -399,7 +399,7 @@ selections:
 
     ### 3.5.2 Configure nftables
     #### 3.5.2.1 Ensure nftables is installed (Automated)
-    # Needs rule
+    - package_nftables_installed
 
     #### 3.5.2.2 Ensure Uncomplicated Firewall is not installed or disabled (Automated)
     # Needs rule
@@ -435,7 +435,8 @@ selections:
     - service_iptables_enabled
 
     ###### 3.5.3.1.2 Ensure nftables is not installed (Automated)
-    # Needs rule: package_nftables_removed
+    - service_nftables_disabled
+    - package_nftables_removed
 
     ###### 3.5.3.1.3 Ensure Uncomplicated Firewall is not installed or disabled (Automated)
     # - package_ufw_removed # (Duplicate of above)

@@ -9,16 +9,17 @@ description: |-
 
 rationale: |-
     In the event of a system failure, {{{ full_name }}} must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to system processes.
-severity: medium
 
+severity: medium
 
 identifiers:
     cce@rhel8: CCE-85921-5
     cce@rhel9: CCE-85941-3
 
-
 references:
     cis@rhel8: 4.2.2.2
+    cis@rhel9: 4.2.2.2
+    cis@ubuntu2204: 4.2.1.2
     disa: CCI-001665
     nist: SC-24
     srg: SRG-OS-000269-GPOS-00103
@@ -30,7 +31,6 @@ ocil: |-
 
 fixtext: |-
     {{{ fixtext_service_enabled("systemd-journald") }}}
-
 
 srg_requirement: '{{{ srg_requirement_service_enabled("systemd-journald") }}}'
 

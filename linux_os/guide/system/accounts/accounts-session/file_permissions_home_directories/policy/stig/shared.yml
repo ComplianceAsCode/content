@@ -10,7 +10,7 @@ checktext: |-
 
     Note: This may miss interactive users that have been assigned a privileged User Identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system logon information.
 
-    $ sudo ls -ld $(awk -F: '($3>=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd)
+    $ sudo ls -ld $(awk -F: '($3&gt=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd)
 
     drwxr-x--- 2 smithj admin 4096 Jun 5 12:41 smithj
 

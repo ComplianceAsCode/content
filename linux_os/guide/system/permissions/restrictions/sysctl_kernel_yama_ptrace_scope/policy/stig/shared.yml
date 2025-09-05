@@ -9,11 +9,18 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} restricts usage of ptrace to descendant processes with the following commands:
 
-    $ sudo sysctl kernel.yama.ptrace_scope
+    $ sysctl kernel.yama.ptrace_scope
 
     kernel.yama.ptrace_scope = 1
 
     If the returned line does not have a value of "1", or a line is not returned, this is a finding.
+
+    Check that the configuration files are present to enable this kernel parameter.
+
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F kernel.yama.ptrace_scope| tail -1
+    kernel.yama.ptrace_scope = 1
+
+    If the network parameter "kernel.yama.ptrace_scope" is not equal to "1" or nothing is returned, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to restrict usage of ptrace to descendant processes by adding the following line to a file, in the "/etc/sysctl.d" directory:

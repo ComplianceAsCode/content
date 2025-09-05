@@ -14,7 +14,7 @@ rationale: |-
     Using the Linux Audit logging allows for centralized trace
     of events.
 
-severity: medium
+severity: low
 
 identifiers:
     cce@rhcos4: CCE-82538-0
@@ -29,7 +29,7 @@ references:
     stigid@ol8: OL08-00-030603
     stigid@rhel8: RHEL-08-030603
 
-platform: usbguard
+platform: package[usbguard]
 
 ocil_clause: 'AuditBackend is not set to LinuxAudit'
 

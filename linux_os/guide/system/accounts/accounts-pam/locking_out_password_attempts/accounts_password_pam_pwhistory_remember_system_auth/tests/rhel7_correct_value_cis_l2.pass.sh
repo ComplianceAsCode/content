@@ -4,7 +4,7 @@
 # profiles = xccdf_org.ssgproject.content_profile_cis
 
 remember_cnt=5
-control_flag='required'
+control_flag='requisite'
 
 config_file=/etc/pam.d/system-auth
 

@@ -7,10 +7,10 @@ vuldiscussion: |-
     correct group to prevent unauthorized changes.
 
 checktext: |-
-    To check the group ownership of all cron configuration files,
-    run the command:
-     $ sudo stat -c "%U %n" /etc/cron*
-    If properly configured, the output should indicate the following owner for all files:
+    Verify the ownership of all cron configuration files with the command:
+
+    $ stat -c "%U %n" /etc/cron*
+
     root /etc/cron.d
     root /etc/cron.daily
     root /etc/cron.deny
@@ -19,8 +19,7 @@ checktext: |-
     root /etc/crontab
     root /etc/cron.weekly
 
-
-    If any crontab is not owned by group, this is a finding.
+    If any crontab is not owned by root, this is a finding.
 
 fixtext: |-
     Configure any cron configuration not owned by root with the following command:

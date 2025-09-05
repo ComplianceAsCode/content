@@ -1,0 +1,93 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+platform: ocp4
+
+title: "Ensure Kubelet is configured with allowed TLS versions"
+
+description: |-
+    <p>
+    The configuration <tt>tlsSecurityProfile</tt> specifies TLS configurations
+    to be used while establishing connections with the externally exposed
+    servers. Though secure transport mode is used for establishing connections,
+    the protocols used may not always be strong enough to avoid interception and
+    manipulation of the data in transport. TLS Security profile configured should
+    not make use of any protocols, ciphers, and algorithms with known security
+    vulnerabilities.
+    </p>
+
+    <p>
+    <tt>tlsSecurityProfile</tt> can be configured to use one of custom, intermediate,
+    modern, or old profile. Profile Old should be avoided at all times and when using
+    custom profile one should be extremely careful as invalid configurations can be
+    catastrophic. It is always advised to configure minimum TLS version to TLSv1.2 or
+    latest when using Custom profile or to use predefined profiles Intermediate or
+    modern. If a TLS security profile is not configured, the default TLS security
+    profile is Intermediate.
+    </p>
+
+    <p>
+    To configure Custom tlsSecurityProfile for the Kubelet with TLSv1.2 as minimum
+    TLS version, create a new or modify existing <tt>KubeletConfig</tt> object along
+    these lines, one for every <tt>MachineConfigPool</tt>:
+      <pre>
+      apiVersion: machineconfiguration.openshift.io/v1
+      kind: KubeletConfig
+      metadata:
+          name: kubelet-tls-config-$pool
+      spec:
+          tlsSecurityProfile:
+              type: Custom
+              custom:
+                  ciphers:
+                  - ECDHE-ECDSA-CHACHA20-POLY1305
+                  - ECDHE-RSA-CHACHA20-POLY1305
+                  - ECDHE-RSA-AES128-GCM-SHA256
+                  - ECDHE-ECDSA-AES128-GCM-SHA256
+                  minTLSVersion: {{{ xccdf_value("var_kubelet_tls_min_version") }}}
+          machineConfigPoolSelector:
+              matchLabels:
+                  pools.operator.machineconfiguration.openshift.io/$pool_name: ""
+      </pre>
+    In order to configure this rule to check for an alternate TLS version, both var_kubelet_tls_min_version_regex
+    and var_kubelet_tls_min_version should be updated.
+    </p>
+
+    <p>
+    For more information, follow
+    OpenShift documentation:
+    {{{ weblink(link="https://docs.openshift.com/container-platform/4.11/nodes/nodes/nodes-nodes-tls.html",
+                text="the relevant documentation") }}}.
+    </p>
+
+rationale: |-
+    The authenticity and integrity of the container platform and communication
+    between nodes and components must be secure. If an insecure protocol,
+    cipher, or algorithms is used, during transmission of data, the data can be
+    intercepted and manipulated. To thwart the manipulation of the data during
+    transmission secure protocol, cipher and algorithms must be used.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-86623-6
+
+references:
+    nist: SC-8,SC-8(1)
+    srg: SRG-APP-000014-CTR-000040
+
+ocil_clause: 'Minimum TLS version configured for Kubelet uses insecure version'
+
+ocil: |-
+    Run the following command on the kubelet node(s):
+    <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1" | .tlsMinVersion'; done</pre>
+    The output shows the configured TLS minimum version which should be
+    TLSv1.2 or newer.
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting_kubeletconfig() | indent(8) }}}
+
+template:
+    name: kubelet_combine

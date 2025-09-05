@@ -5,6 +5,10 @@ controls:
   title: {{{ full_name }}} must use TLS 1.2 or greater for secure communication.
   related_rules:
   - fips_mode_enabled_on_all_nodes
+  rules:
+  - api_server_tls_security_profile
+  - ingress_controller_tls_security_profile
+  - kubelet_configure_tls_min_version
   status: manual
   check: |-
     Verify that the TLS Security Profile is not set to old, or a custom
@@ -28,7 +32,7 @@ controls:
 
     If any of the above returns a TLS profile of "Custom" and the minTLSVersion
     is not set to "VersionTLS12" or greater, this is a finding.
-  fixtest: |-
+  fixtext: |-
     Edit each resource and set the TLS Security Profile to Intermediate
 
     > oc edit ingresscontroller <NAME> -n <NAMESPACE>

@@ -66,13 +66,13 @@ controls:
             - no_files_unowned_by_user
 
             # service disabled
+            # - service_rngd_enabled - this rule was removed because it does bring questionable value on modern systems
             - service_kdump_disabled
             - service_debug-shell_disabled
             - service_autofs_disabled
             - service_systemd-coredump_disabled
 
             # service enabled
-            - service_rngd_enabled
             - service_auditd_enabled
             - service_rsyslog_enabled
             - service_firewalld_enabled
@@ -129,7 +129,6 @@ controls:
             - sshd_enable_strictmodes
             - sshd_print_last_log
             - sshd_rekey_limit
-            - sshd_use_strong_rng
             - sshd_x11_use_localhost
 
             # auditd config
@@ -147,8 +146,9 @@ controls:
             - sysctl_net_ipv6_conf_default_accept_source_route
             - sysctl_net_ipv4_conf_all_accept_redirects
             - sysctl_net_ipv4_conf_all_accept_source_route
-            - sysctl_net_ipv4_conf_all_log_martians
+            - sysctl_net_ipv4_conf_default_accept_source_route
             - sysctl_net_ipv4_conf_all_rp_filter
+            - sysctl_net_ipv4_conf_default_rp_filter
             - sysctl_net_ipv4_conf_all_secure_redirects
             - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
             - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
@@ -188,6 +188,7 @@ controls:
             - dconf_gnome_disable_autorun
             - dconf_gnome_disable_ctrlaltdel_reboot
             - dconf_gnome_disable_user_list
+            - dconf_gnome_disable_restart_shutdown
             - dconf_db_up_to_date
 
             # partition
@@ -236,6 +237,5 @@ controls:
             - display_login_attempts
             - installed_OS_is_vendor_supported
             - security_patches_up_to_date
-            - grub2_kernel_trust_cpu_rng
 
         status: automated

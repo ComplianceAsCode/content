@@ -161,7 +161,7 @@ selections:
     - auditd_freq
     - auditd_name_format
 
-    ### Module Blacklist
+    ### Module Disabled
     - kernel_module_cramfs_disabled
     - kernel_module_bluetooth_disabled
     - kernel_module_sctp_disabled

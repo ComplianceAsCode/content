@@ -7,14 +7,15 @@ vuldiscussion: |-
     Protection of this file is important for system security.
 
 checktext: |-
-    To check the group ownership of /etc/group- ,
-    run the command:
-     $ sudo stat -c "%U %n" /etc/group-
-    If properly configured, the output should indicate the following group-owner:
-     root /etc/group-
+    Verify the group ownership of the "/etc/group-" file with the following command:
 
-    If /etc/group- does not have a group owner of root, then this is a finding.
+    $ sudo stat -c "%G %n" /etc/group-
+
+    root /etc/group-
+
+    If "/etc/group-" file does not have a group owner of "root", this is a finding.
 
 fixtext: |-
     Change the group of the file /etc/group- to root by running the following command:
+
     $ sudo chgrp root /etc/group-

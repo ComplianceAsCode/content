@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} file must have mode 0600 /etc/crontab.
+    The {{{ full_name }}} /etc/crontab file must have mode 0600.
 
 vuldiscussion: |-
     Service configuration files enable or disable features of their respective services that if configured incorrectly
@@ -7,15 +7,16 @@ vuldiscussion: |-
     correct access rights to prevent unauthorized changes.
 
 checktext: |-
-    To check the permissions of  /etc/crontab ,
-    run the command:
-     $ stat -c "%a %n" /etc/crontab
-    If properly configured, the output should indicate the following permissions:
-    644
+    Verify the permissions of /etc/crontab with the following command:
 
-    If /etc/crontab does not have unix mode 644 then this is a finding.
+    $ stat -c "%a %n" /etc/crontab
+
+    0600
+
+    If /etc/crontab does not have a mode of 0600, this is a finding.
 
 fixtext: |-
     Configure the {{{ full_name }}} file /etc/crontab with mode 600.
 
+    $ sudo chmod 0600 /etc/crontab
     chmod 0600 /etc/crontab

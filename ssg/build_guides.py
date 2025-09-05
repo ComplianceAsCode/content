@@ -7,7 +7,7 @@ from collections import namedtuple
 
 from .shims import subprocess_check_output, Queue
 from .xccdf import get_profile_choices_for_input, get_profile_short_id
-from .xccdf import PROFILE_ID_BLACKLIST
+from .xccdf import PROFILE_ID_SKIPLIST
 from .constants import OSCAP_DS_STRING, OSCAP_PATH
 
 
@@ -113,9 +113,9 @@ def get_benchmark_profile_pairs(input_tree, benchmarks):
                   _benchmark_profile_pair_sort_key(x[0], x[1], x[2]))
 
 
-def _is_blacklisted_profile(profile_id):
-    for blacklisted_id in PROFILE_ID_BLACKLIST:
-        if profile_id.endswith(blacklisted_id):
+def _is_skipped_profile(profile_id):
+    for skipped_id in PROFILE_ID_SKIPLIST:
+        if profile_id.endswith(skipped_id):
             return True
     return False
 
@@ -141,14 +141,14 @@ def _get_guide_filename(path_base, profile_id, benchmark_id, benchmarks):
 def get_output_guide_paths(benchmarks, benchmark_profile_pairs, path_base,
                            output_dir):
     """
-    Return a list of guide paths containing guides for each non-blacklisted
+    Return a list of guide paths containing guides for each non-skipped
     profile_id in a benchmark.
     """
 
     guide_paths = []
 
     for benchmark_id, profile_id, _ in benchmark_profile_pairs:
-        if _is_blacklisted_profile(profile_id):
+        if _is_skipped_profile(profile_id):
             continue
 
         guide_filename = _get_guide_filename(path_base, profile_id,
@@ -178,7 +178,7 @@ def fill_queue(benchmarks, benchmark_profile_pairs, input_path, path_base,
     task = namedtuple('task', ['benchmark_id', 'profile_id', 'input_path', 'guide_path'])
 
     for benchmark_id, profile_id, profile_title in benchmark_profile_pairs:
-        if _is_blacklisted_profile(profile_id):
+        if _is_skipped_profile(profile_id):
             continue
 
         guide_filename = _get_guide_filename(path_base, profile_id,

@@ -38,8 +38,9 @@ references:
     cis@alinux3: 5.5.1
     cis@rhel7: 5.4.1
     cis@rhel8: 5.4.1
+    cis@rhel9: 5.5.1
     cis@ubuntu2004: 5.3.1
-    cis@ubuntu2204: 5.3.1
+    cis@ubuntu2204: 5.4.1
     cjis: 5.5.3
     cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     disa: CCI-000192,CCI-000366
@@ -75,7 +76,7 @@ ocil: |-
     <pre>password required pam_pwquality.so retry={{{ xccdf_value("var_password_pam_retry") }}}</pre>
     {{% endif %}}
 
-platform: pam
+platform: package[pam]
 
 fixtext: |-
     Configure {{{ full_name }}} to limit the "pwquality" retry option to {{{ xccdf_value("var_password_pam_retry") }}}.

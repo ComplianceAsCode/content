@@ -1,0 +1,43 @@
+documentation_complete: true
+
+prodtype: rhel8,rhel9,sle15,ubuntu2004,ubuntu2204
+
+title: 'Install nftables Package'
+
+description: |-
+    nftables provides a new in-kernel packet classification framework that is based on a
+    network-specific Virtual Machine (VM) and a new nft userspace command line tool.
+    nftables reuses the existing Netfilter subsystems such as the existing hook infrastructure,
+    the connection tracking system, NAT, userspace queuing and logging subsystem.
+    {{{ describe_package_install(package="nftables") }}}
+
+rationale: |-
+    <tt>nftables</tt> is a subsystem of the Linux kernel that can protect against threats
+    originating from within a corporate network to include malicious mobile code and poorly
+    configured software on a host.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86376-1
+    cce@rhel9: CCE-86378-7
+    cce@sle15: CCE-92469-6
+
+references:
+    cis@rhel8: 3.4.2.1
+    cis@rhel9: 3.4.1.1
+    cis@sle15: 3.5.2.1
+    cis@ubuntu2004: 3.5.2.1
+    cis@ubuntu2204: 3.5.2.1
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="nftables") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: nftables
+
+fixtext: |-
+    {{{ describe_package_install(package="nftables") }}}

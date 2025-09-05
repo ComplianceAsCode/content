@@ -1,5 +1,4 @@
 #!/bin/bash
-# remediation = none
 
 cat >> /etc/rsyslog.conf <<EOF
 action(type="omfwd"

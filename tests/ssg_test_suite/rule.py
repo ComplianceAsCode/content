@@ -238,15 +238,31 @@ class RuleChecker(oscap.Checker):
     def _rule_matches_template_spec(self, template):
         return True
 
+    def _replace_platform_specific_packages(self, packages):
+        """ Returns the provided package list with names
+            updated according to the platform alternatives
+            listed in platform_package_overrides product field """
+        product_yaml = common.get_product_context(self.test_env.product)
+        platform_package_overrides = product_yaml["platform_package_overrides"]
+        packages_with_alternatives = set()
+        for package in packages:
+            if package in platform_package_overrides and platform_package_overrides[package]:
+                packages_with_alternatives.add(platform_package_overrides[package])
+            else:
+                packages_with_alternatives.add(package)
+        return packages_with_alternatives
+
     def _ensure_package_present_for_all_scenarios(
             self, test_content_by_rule_id):
         packages_required = set()
+
         for rule_test_content in test_content_by_rule_id.values():
             for s in rule_test_content.scenarios:
                 scenario_packages = s.script_params["packages"]
                 packages_required.update(scenario_packages)
         if packages_required:
-            common.install_packages(self.test_env, packages_required)
+            packages_to_install = self._replace_platform_specific_packages(packages_required)
+            common.install_packages(self.test_env, packages_to_install)
 
     def _prepare_environment(self, test_content_by_rule_id):
         try:

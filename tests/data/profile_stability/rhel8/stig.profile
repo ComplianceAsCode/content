@@ -1,7 +1,6 @@
-title: DISA STIG for Red Hat Enterprise Linux 8
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 8 V1R8.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R9.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -23,7 +22,7 @@ description: 'This profile contains configuration checks that align to the
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 extends: null
 metadata:
-    version: V1R8
+    version: V1R9
     SMEs:
     - mab879
     - ggbecker
@@ -31,6 +30,7 @@ reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-s
 selections:
 - account_disable_post_pw_expiration
 - account_emergency_expire_date
+- account_password_selinux_faillock_dir
 - account_temp_expire_date
 - account_unique_id
 - accounts_authorized_local_users
@@ -61,7 +61,9 @@ selections:
 - accounts_passwords_pam_faillock_audit
 - accounts_passwords_pam_faillock_deny
 - accounts_passwords_pam_faillock_deny_root
+- accounts_passwords_pam_faillock_dir
 - accounts_passwords_pam_faillock_interval
+- accounts_passwords_pam_faillock_silent
 - accounts_passwords_pam_faillock_unlock_time
 - accounts_umask_etc_bashrc
 - accounts_umask_etc_csh_cshrc
@@ -75,11 +77,11 @@ selections:
 - accounts_users_home_files_groupownership
 - accounts_users_home_files_permissions
 - agent_mfetpd_running
+- aide_build_database
 - aide_check_audit_tools
 - aide_scan_notification
 - aide_verify_acls
 - aide_verify_ext_attributes
-- audit_immutable_login_uids
 - audit_rules_dac_modification_chmod
 - audit_rules_dac_modification_chown
 - audit_rules_dac_modification_fchmod
@@ -105,6 +107,7 @@ selections:
 - audit_rules_file_deletion_events_unlink
 - audit_rules_file_deletion_events_unlinkat
 - audit_rules_immutable
+- audit_rules_immutable_login_uids
 - audit_rules_kernel_module_loading_delete
 - audit_rules_kernel_module_loading_finit
 - audit_rules_kernel_module_loading_init
@@ -161,7 +164,7 @@ selections:
 - chronyd_or_ntpd_set_maxpoll
 - chronyd_server_directive
 - clean_components_post_updating
-- configure_bashrc_exec_tmux
+- configure_bashrc_tmux
 - configure_bind_crypto_policy
 - configure_crypto_policy
 - configure_firewalld_ports
@@ -173,6 +176,7 @@ selections:
 - configure_ssh_crypto_policy
 - configure_tmux_lock_after_time
 - configure_tmux_lock_command
+- configure_tmux_lock_keybinding
 - configure_usbguard_auditbackend
 - coredump_disable_backtraces
 - coredump_disable_storage
@@ -207,6 +211,7 @@ selections:
 - ensure_gpgcheck_local_packages
 - ensure_gpgcheck_never_disabled
 - ensure_redhat_gpgkey_installed
+- fapolicy_default_deny
 - file_audit_tools_group_ownership
 - file_audit_tools_ownership
 - file_audit_tools_permissions
@@ -343,13 +348,13 @@ selections:
 - security_patches_up_to_date
 - selinux_policytype
 - selinux_state
+- selinux_user_login_roles
 - service_auditd_enabled
 - service_autofs_disabled
 - service_debug-shell_disabled
 - service_fapolicyd_enabled
 - service_firewalld_enabled
 - service_kdump_disabled
-- service_rngd_enabled
 - service_rsyslog_enabled
 - service_sshd_enabled
 - service_systemd-coredump_disabled
@@ -358,7 +363,6 @@ selections:
 - set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
 - set_password_hashing_min_rounds_logindefs
-- sshd_disable_compression
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
 - sshd_disable_kerb_auth
@@ -423,14 +427,13 @@ selections:
 - var_accounts_user_umask=077
 - var_password_pam_difok=8
 - var_password_pam_maxrepeat=3
-- var_sshd_disable_compression=no
 - var_password_hashing_algorithm=SHA512
 - var_password_pam_maxclassrepeat=4
 - var_password_pam_minclass=4
 - var_accounts_minimum_age_login_defs=1
 - var_accounts_max_concurrent_login_sessions=10
 - var_password_pam_remember=5
-- var_password_pam_remember_control_flag=required
+- var_password_pam_remember_control_flag=requisite
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted
 - var_password_pam_unix_rounds=5000
@@ -473,4 +476,5 @@ platforms: !!set {}
 cpe_names: !!set {}
 platform: null
 filter_rules: ''
+title: DISA STIG for Red Hat Enterprise Linux 8
 documentation_complete: true

@@ -11,9 +11,9 @@ vuldiscussion: |-
 checktext: |-
     Verify that BIND uses the system crypto policy with the following command:
 
-    If bind is not installed, this is not applicable.
+    If the "bind" package is not installed, this is not applicable.
 
-     $ sudo grep include /etc/named.conf
+    $ sudo grep include /etc/named.conf
 
     include "/etc/crypto-policies/back-ends/bind.config";'
 

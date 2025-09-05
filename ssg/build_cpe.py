@@ -6,15 +6,13 @@ from __future__ import absolute_import
 from __future__ import print_function
 import os
 import sys
-import re
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
 from .utils import required_key, apply_formatting_on_dict_values
 from .xml import ElementTree as ET
 from .boolean_expression import Algebra, Symbol, Function
-from .boolean_expression import get_base_name_of_parametrized_platform
-from .entities.common import XCCDFEntity
+from .entities.common import XCCDFEntity, Templatable
 from .yaml import convert_string_to_bool
 
 
@@ -81,22 +79,37 @@ class ProductCPEs(object):
         if cpe_item.is_product_cpe:
             self.product_cpes[cpe_item.id_] = cpe_item
 
-    def _is_name(self, ref):
-        return ref.startswith("cpe:")
-
-    def _is_parametrized(self, ref):
-        return re.search(r'^\w+\[\w+\]$', ref)
-
-    def get_cpe(self, ref):
+    def get_cpe(self, cpe_id_or_name):
         try:
-            if self._is_name(ref):
-                return self.cpes_by_name[ref]
+            if CPEItem.is_cpe_name(cpe_id_or_name):
+                return self.cpes_by_name[cpe_id_or_name]
             else:
-                if self._is_parametrized(ref):
-                    ref = get_base_name_of_parametrized_platform(ref)
-                return self.cpes_by_id[ref]
+                if CPEALFactRef.cpe_id_is_parametrized(cpe_id_or_name):
+                    cpe_id_or_name = CPEALFactRef.get_base_name_of_parametrized_cpe_id(
+                        cpe_id_or_name)
+                return self.cpes_by_id[cpe_id_or_name]
         except KeyError:
-            raise CPEDoesNotExist("CPE %s is not defined" % (ref))
+            raise CPEDoesNotExist("CPE %s is not defined" % cpe_id_or_name)
+
+    def add_resolved_cpe_items_from_platform(self, platform):
+        for fact_ref in platform.get_fact_refs():
+            if fact_ref.arg:  # the CPE item is parametrized
+                try:
+                    # if there already exists a CPE item with factref's ID
+                    # we can just use it right away, no new CPE items need to be created
+                    cpe = self.get_cpe_for_fact_ref(fact_ref)
+                    fact_ref.cpe_name = cpe.name
+                except CPEDoesNotExist:
+                    # if the CPE item with factref's ID does not exist
+                    # it means that we need to create a new CPE item
+                    # which will have parameters in place
+                    cpe = self.get_cpe(fact_ref.cpe_name)
+                    new_cpe = cpe.create_resolved_cpe_item_for_fact_ref(fact_ref)
+                    self.add_cpe_item(new_cpe)
+                    fact_ref.cpe_name = new_cpe.name
+
+    def get_cpe_for_fact_ref(self, fact_ref):
+        return self.get_cpe(fact_ref.as_id())
 
     def get_cpe_name(self, cpe_id):
         cpe = self.get_cpe(cpe_id)
@@ -139,25 +152,25 @@ class CPEList(object):
         tree.write(file_name, encoding="utf-8")
 
 
-class CPEItem(XCCDFEntity):
+class CPEItem(XCCDFEntity, Templatable):
     """
     Represents the cpe-item element from the CPE standard.
     """
 
     KEYS = dict(
         name=lambda: "",
-        title=lambda: "",
         check_id=lambda: "",
         bash_conditional=lambda: "",
         ansible_conditional=lambda: "",
         is_product_cpe=lambda: False,
+        versioned=lambda: False,
+        args=lambda: {},
         ** XCCDFEntity.KEYS
     )
+    KEYS.update(**Templatable.KEYS)
 
     MANDATORY_KEYS = [
         "name",
-        "title",
-        "check_id"
     ]
 
     prefix = "cpe-dict"
@@ -174,7 +187,7 @@ class CPEItem(XCCDFEntity):
         cpe_item_check = ET.SubElement(cpe_item, "{%s}check" % CPEItem.ns)
         cpe_item_check.set('system', oval_namespace)
         cpe_item_check.set('href', cpe_oval_filename)
-        cpe_item_check.text = self.check_id
+        cpe_item_check.text = self.check_id or self.id_
         return cpe_item
 
     @classmethod
@@ -182,7 +195,51 @@ class CPEItem(XCCDFEntity):
         cpe_item = super(CPEItem, cls).from_yaml(yaml_file, env_yaml, product_cpes)
         if cpe_item.is_product_cpe:
             cpe_item.is_product_cpe = convert_string_to_bool(cpe_item.is_product_cpe)
+        if cpe_item.versioned:
+            cpe_item.versioned = convert_string_to_bool(cpe_item.versioned)
         return cpe_item
+
+    def set_template_variables(self, *sources):
+        if self.is_templated():
+            self.template["vars"] = {}
+            for source in sources:
+                self.template["vars"].update(source)
+
+    def create_resolved_cpe_item_for_fact_ref(self, fact_ref):
+        if fact_ref.has_version_specs():
+            if not self.versioned:
+                raise ValueError("CPE entity '{0}' does not support version specifiers: "
+                                 "{1}".format(self.id_, fact_ref.cpe_name))
+        try:
+            resolved_parameters = self.args[fact_ref.arg]
+        except KeyError:
+            raise KeyError(
+                "The {0} CPE item does not support the argument {1}. "
+                "Following arguments are supported: {2}".format(
+                    self.id_, fact_ref.arg, [a for a in self.args.keys()]))
+        resolved_parameters.update(fact_ref.as_dict())
+        cpe_item_as_dict = self.represent_as_dict()
+        cpe_item_as_dict["args"] = None
+        cpe_item_as_dict["id_"] = fact_ref.as_id()
+        new_associated_cpe_item_as_dict = apply_formatting_on_dict_values(
+            cpe_item_as_dict, resolved_parameters)
+        new_associated_cpe_item = CPEItem.get_instance_from_full_dict(
+            new_associated_cpe_item_as_dict)
+        new_associated_cpe_item.set_template_variables(resolved_parameters)
+        return new_associated_cpe_item
+
+    @staticmethod
+    def is_cpe_name(cpe_id_or_name):
+        return cpe_id_or_name.startswith("cpe:")
+
+    def set_conditional(self, language, content):
+        if language == "ansible":
+            self.ansible_conditional = content
+        elif language == "bash":
+            self.bash_conditional = content
+        else:
+            raise RuntimeError(
+                "The language {0} is not supported as conditional for CPE".format(language))
 
 
 class CPEALLogicalTest(Function):
@@ -194,7 +251,7 @@ class CPEALLogicalTest(Function):
         cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
         cpe_test.set('operator', ('OR' if self.is_or() else 'AND'))
         cpe_test.set('negate', ('true' if self.is_not() else 'false'))
-        # logical tests must go first, therefore we separate tests and factrefs
+        # Logical tests must go first, therefore we separate tests and factrefs
         tests = [t for t in self.args if isinstance(t, CPEALLogicalTest)]
         factrefs = [f for f in self.args if isinstance(f, CPEALFactRef)]
         for obj in tests + factrefs:
@@ -205,10 +262,6 @@ class CPEALLogicalTest(Function):
     def enrich_with_cpe_info(self, cpe_products):
         for arg in self.args:
             arg.enrich_with_cpe_info(cpe_products)
-
-    def pass_parameters(self, product_cpes):
-        for arg in self.args:
-            arg.pass_parameters(product_cpes)
 
     def to_bash_conditional(self):
         child_bash_conds = [
@@ -269,17 +322,6 @@ class CPEALFactRef(Symbol):
         self.ansible_conditional = cpe_products.get_cpe(self.cpe_name).ansible_conditional
         self.cpe_name = cpe_products.get_cpe_name(self.cpe_name)
 
-    def pass_parameters(self, product_cpes):
-        if self.arg:
-            associated_cpe_item_as_dict = product_cpes.get_cpe(self.cpe_name).represent_as_dict()
-            new_associated_cpe_item_as_dict = apply_formatting_on_dict_values(
-                associated_cpe_item_as_dict, self.as_dict())
-            new_associated_cpe_item_as_dict["id_"] = self.as_id()
-            new_associated_cpe_item = CPEItem.get_instance_from_full_dict(
-                new_associated_cpe_item_as_dict)
-            product_cpes.add_cpe_item(new_associated_cpe_item)
-            self.cpe_name = new_associated_cpe_item.name
-
     def to_xml_element(self):
         cpe_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
         cpe_factref.set('name', self.cpe_name)
@@ -290,6 +332,18 @@ class CPEALFactRef(Symbol):
 
     def to_ansible_conditional(self):
         return self.ansible_conditional
+
+    @staticmethod
+    def cpe_id_is_parametrized(cpe_id):
+        return Symbol.is_parametrized(cpe_id)
+
+    @staticmethod
+    def get_base_name_of_parametrized_cpe_id(cpe_id):
+        """
+        If given a parametrized platform name such as package[test],
+        it returns the package part only.
+        """
+        return Symbol.get_base_of_parametrized_name(cpe_id)
 
 
 def extract_subelement(objects, sub_elem_type):

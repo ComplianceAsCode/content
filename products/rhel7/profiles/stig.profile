@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R9
+    version: V3R10
     SMEs:
         - ggbecker
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux V3R9.
+    DISA STIG for Red Hat Enterprise Linux V3R10.
 
     In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -127,6 +127,7 @@ selections:
     - package_ypserv_removed
     - selinux_user_login_roles
     - package_aide_installed
+    - aide_build_database
     - aide_periodic_cron_checking
     - aide_scan_notification
     - ensure_gpgcheck_globally_activated
@@ -182,9 +183,14 @@ selections:
     - package_telnet-server_removed
     - service_auditd_enabled
     - audit_rules_system_shutdown
+    - var_audit_failure_mode=panic
     - auditd_audispd_configure_remote_server
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action
+    - auditd_audispd_remote_daemon_activated
+    - auditd_audispd_remote_daemon_direction
+    - auditd_audispd_remote_daemon_path
+    - auditd_audispd_remote_daemon_type
     - auditd_data_retention_space_left_action
     - auditd_data_retention_space_left_percentage
     - auditd_data_retention_action_mail_acct
@@ -334,3 +340,6 @@ selections:
     - selinux_context_elevation_for_sudo
     - audit_rules_kernel_module_loading_create
     - account_emergency_expire_date
+    - package_screen_installed
+    - sysctl_kernel_dmesg_restrict
+    - aide_build_database

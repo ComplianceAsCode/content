@@ -5,21 +5,21 @@ vuldiscussion: |-
     Not having the correct SELinux context on the faillock directory may lead to unauthorized access to the directory.
 
 checktext: |-
-    If the system does not have SELinux enabled and enforcing a targeted policy, or if the pam_faillock module is not configured for use, this requirement is not applicable.
-
     Verify the location of the non-default tally directory for the pam_faillock module with the following command:
 
-    $ sudo grep -w dir /etc/security/faillock.conf
+    Note: If the system does not have SELinux enabled and enforcing a targeted policy, or if the pam_faillock module is not configured for use, this requirement is not applicable.
+
+    $ grep 'dir =' /etc/security/faillock.conf
 
     dir = /var/log/faillock
 
     Check the security context type of the non-default tally directory with the following command:
 
-    $ sudo ls -Zd /var/log/faillock
+    $ ls -Zd /var/log/faillock
 
     unconfined_u:object_r:faillog_t:s0 /var/log/faillock
 
-    If the security context type of the non-default tally directory is not "faillog_t", then this is a finding.
+    If the security context type of the non-default tally directory is not "faillog_t", this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to allow the use of a non-default faillock tally directory while SELinux enforces a targeted policy.

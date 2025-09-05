@@ -78,7 +78,7 @@ A rule itself contains these attributes:
     The &lt;tt&gt;/var/tmp&lt;/tt&gt; directory is a world-writable
     directory used for temporary file storage. Ensure it has its own
     partition or logical volume at installation time, or migrate it
-    using LVM. 
+    using LVM.
 
 -   `severity`: Is used for metrics and tracking. It can
     have one of the following values: `unknown`, `info`, `low`,
@@ -163,19 +163,23 @@ A rule itself contains these attributes:
     means it will be evaluated only if the targeted scan environment is either
     bare-metal or virtual
     machine. Also, it can restrict applicability on higher software
-    layers. By setting to `shadow-utils`, the rule will have its
+    layers. By setting to `package[audit]`, the rule will have its
     applicability restricted to only environments which have
-    `shadow-utils` package installed. The available options can be found
+    `audit` package installed.
+
+    The available options can be found
     in the file &lt;product&gt;/cpe/&lt;product&gt;-cpe-dictionary.xml
     (e.g.: rhel8/cpe/rhel8-cpe-dictionary.xml). In order to support a
     new value, an OVAL check (of `inventory` class) must be created
-    under `shared/checks/oval/` and referenced in the dictionary file. It is
-    possible to specify multiple platforms in the list. In that case, they are
-    implicitly connected with "OR" operator.
+    under `shared/checks/oval/` and referenced in the dictionary file.
+
+    It is possible to specify multiple platforms in the list. In that case, they are implicitly connected with "OR" operator.
+
+    > ⚠ **Deprecated!** List of platforms feature is being phased out, use boolean expressions.
 
     Platforms from groups are inherited by rules for the whole group hierarchy. They are implicitly joined with rule's platforms using "AND" operator.
 
-    The `platform` can also be a [Boolean algebra expression](https://booleanpy.readthedocs.io/en/latest/concepts.html),
+    The `platform` can also be a [Boolean expression](https://booleanpy.readthedocs.io/en/latest/concepts.html),
     describing applicability of the rule as a combination of multiple platforms.
 
     The build system recognizes `!` or `not` as "NOT" operator, `&` or `and` as "AND" operator, and `|` or `or` as "OR" operator.
@@ -183,6 +187,21 @@ A rule itself contains these attributes:
 
     For example, the expression `grub2 & !(shadow-utils | ssh)` will denote that rule is applicable for systems with *GRUB2 bootloader*,
     but only if there is no *shadow-utils* or *ssh* package installed.
+
+    Some platforms can also define applicability based on the version of the entity they check.
+    Please note that this feature is not yet consistently implemented.
+    Read the following before using it.
+    If the version specification is used, it is correctly rendered into appropriate OVAL check which is later used when deciding on applicability of a rule.
+    However, conditionals used to limit applicability of Bash and Ansible remediations are currently not generated correctly in this case; the version specification is not taken into account.
+    Therefore, the build will be interrupted in case you try to use a platform with version specification which influences Bash or Ansible remediation.
+
+    Version specifiers notation loosely follows [PEP440](https://peps.python.org/pep-0440/#version-specifiers),
+    most notably not supporting *wildcard*, *epoch* and *non-numeric* suffixes.
+
+    For example, a rule with platform `package[ntp]>=1.9.0,<2.0` would be applicable for systems with *ntp* package installed,
+    but only if its *version* is greater or equal 1.9.0 *and* less than 2.0.
+
+    See also: [Applicability of content](#applicability-of-content).
 
 -   `ocil`: Defines asserting
     statements to check whether or not the rule is valid.
@@ -794,15 +813,15 @@ are unique to SCE:
 
  - `check-import`: can be `stdout` or `stderr` and corresponds to the XCCDF's
    `<check-import />` element's `import-name` attribute.
- - `check-export`: a comma-separated list of `variable_name=xccdf_variable` 
-    pairs to export via XCCDF `<check-export />` elements. 
-    oscap will generate 3 env_variables before calling the SCE script: 
+ - `check-export`: a comma-separated list of `variable_name=xccdf_variable`
+    pairs to export via XCCDF `<check-export />` elements.
+    oscap will generate 3 env_variables before calling the SCE script:
     ```bash
     XCCDF_VALUE_<variable_name>=<value>
-    XCCDF_TYPE_<variable_name>=<type> 
+    XCCDF_TYPE_<variable_name>=<type>
     XCCDF_OPERATOR_<variable_name>=<operator>
     ```
-    The `<value>`, `<type>` and `<operator>` come from the corresponding xccdf variable. 
+    The `<value>`, `<type>` and `<operator>` come from the corresponding xccdf variable.
  - `complex-check`: an XCCDF operator (`AND` or `OR`) to be passed as the
    `operator` attribute on the XCCDF element's `<complex-check />` element.
    Note that this gets provisioned into the `<Rule />` element to handle
@@ -1138,43 +1157,54 @@ All profiles and rules included in a products' DataStream are applicable
 by default. For example, all profiles and rules included in a `rhel8` DS
 will apply and evaluate in a RHEL 8 host.
 
-But a content's applicability can be fine tuned to a specific
+But a content's applicability can be fine-tuned to a specific
 environment in the product. The SCAP standard specifies two mechanisms
-to define applicability: - [CPE](https://nvd.nist.gov/products/cpe):
-Allows a specific hardware or platform to be identified. -
-[Applicability Language](https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/cpe/applicability-language):
-Allows the construction of logical expressions involving CPEs.
+to define applicability: *CPE* and *Applicability Language*.
 
-At the moment, only the CPE mechanism is supported.
+### Applicability by [CPE](https://nvd.nist.gov/products/cpe)
 
-### Applicability by CPE
+Allows a specific hardware or platform to be identified.
 
 The CPEs defined by the project are declared in
-`shared/applicability/cpes.yml`.
+`shared/applicability/*.yml`, one CPE per file.
+
+The id of the CPE is inferred from the file name.
 
 Syntax is as follows (using examples of existing CPEs):
 
-    cpes:
-      - machine:                                  ## The id of the CPE
+       machine.yml:                               ## The id of the CPE is 'machine'
           name: "cpe:/a:machine"                  ## The CPE Name as defined by the CPE standard
           title: "Bare-metal or Virtual Machine"  ## Human readable title for the CPE
           check_id: installed_env_is_a_machine    ## ID of OVAL implementing the applicability check
-      - gdm:
-          name: "cpe:/a:gdm"
-          title: "Package gdm is installed"
-          check_id: installed_env_has_gdm_package
 
-The first entry above defines a CPE whose `id` is `machine`, this CPE
+       package.yml:
+          name: "cpe:/a:{arg}"
+          title: "Package {pkgname} is installed"
+          check_id: cond_package_{arg}
+          bash_conditional: {{{ bash_pkg_conditional("{pkgname}") }}}         ## The conditional expression for Bash remediations
+          ansible_conditional: {{{ ansible_pkg_conditional("{pkgname}") }}}   ## The conditional expression for Ansible remediations
+          template:                                                           ## Instead of static OVAL checks a CPE can use templates
+             name: cond_package                                               ## Name of the template with OVAL applicability check
+          args:                                                               ## CPEs can be parametrized: 'package[*]'.
+             ntp:                                                             ## This is the map of substitution values for 'package[ntp]'
+                pkgname: ntp                                                  ## "Package {pkgname} is installed" -> "Package ntp is installed"
+                title: NTP daemon and utilities
+
+The first file above defines a CPE whose `id` is `machine`, this CPE
 is used for rules not applicable to containers.
 A rule or profile with `platform: machine` will be evaluated only if the
 targeted scan environment is either bare-metal or virtual machine.
 
-The second entry defines a CPE for GDM.
-By setting the `platform` to `gdm`, the rule will have its applicability
-restricted to only environments which have `gdm` package installed.
+The second file defines a parametrized CPE. This allows us to define multiple
+similar CPEs that differ in their argument. In our example, we define
+the `package` CPE. Within the `args` key we configure a set of its possible
+arguments and their values. In our example, there is a single possible value: `ntp`.
+
+By setting the `platform` to `package[ntp]`, the rule will have its applicability
+restricted to only environments which have `ntp` package installed.
 
 The OVAL checks for the CPE need to be of `inventory` class, and must be
-under `shared/checks/oval/`.
+under `shared/checks/oval/` or have a template under `shared/templates/`.
 
 #### Setting a product's default CPE
 
@@ -1200,6 +1230,15 @@ Note: Only CPEs that are referenced by a rule or profile will be included
 in the product's CPE Dictionary.
 If no content requires the CPE, it is deemed unnecessary and won't be
 included in the dictionary.
+
+### Applicability by CPE AL ([Applicability Language](https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/cpe/applicability-language))
+
+Allows the construction of logical expressions involving CPEs.
+
+CPEs can be combined to form an applicability statement.
+The `platform` property of a rule (or a group) can contain a [Boolean expression](https://booleanpy.readthedocs.io/en/latest/concepts.html),
+that describes the relationship of a set of individual CPEs (symbols), which would later be converted
+by the build system into the CPE AL definition in the XCCDF document.
 
 ## Tests (ctest)
 
@@ -1345,18 +1384,18 @@ as `Azure`. That would look as follows:
     }
     EOF
 
-For rules that use jq filters, they are using a unique file path 
+For rules that use jq filters, they are using a unique file path
 instead of the one you see above, therefore we also need to install
-the jq package, run the jq test, and save the filtered jq result 
+the jq package, run the jq test, and save the filtered jq result
 into that unique file path.
 
-The format for the file path for a jq filter rule is: 
+The format for the file path for a jq filter rule is:
 
 `"$kube_apipath$rule_apipath#$(echo -n "$rule_apipath$jq_filter" | sha256sum | awk '{print $1}')"`
 
-Noted it is important to know that the `$rule_apipath` does not 
-have `/` at the end, or it will cause a different hash with `/` 
-at the end, and jq result will be saved into a location that is 
+Noted it is important to know that the `$rule_apipath` does not
+have `/` at the end, or it will cause a different hash with `/`
+at the end, and jq result will be saved into a location that is
 different from where the rule is checking, hence will fail the test.
 
 
@@ -1427,7 +1466,7 @@ The current workflow is as follows:
 
 -   Run second scan
 
-The test will pass if: 
+The test will pass if:
 - There are no errors in the scan runs
 - We have less rule failures after the remediations have been applied
 - The cluster status is not inconsistent

@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Ensure nonessential services are removed or masked'
+
+description: |-
+    A network port is identified by its number, the associated IP address, 
+    and the type of the communication protocol such as TCP or UDP.
+    A listening port is a network port on which an application or process 
+    listens on, acting as a communication endpoint.
+    Each listening port can be open or closed (filtered) using a firewall. 
+    In general terms, an open port is a network port that accepts 
+    incoming packets from remote locations.
+
+rationale:
+    Services listening on the system pose a potential risk as an attack 
+    vector. These services should be reviewed, and if not required, the 
+    service should be stopped, and the package containing the service should 
+    be removed. If required packages have a dependency, the service should 
+    be stopped and masked to reduce the attack surface of the system.
+
+severity: low
+
+identifiers:
+    cce@sle12: CCE-92309-4
+    cce@sle15: CCE-92463-9
+
+references:
+    cis@sle12: "2.4"
+    cis@sle15: "2.4"
+    pcidss: Req-2.2.4
+
+ocil_clause: 'nonessential service is present and unmasked'
+
+ocil: |-
+    Run the following command:
+    <pre># lsof -i -P -n | grep -v "(ESTABLISHED)"</pre>
+    Review the output to ensure that all services listed are required 
+    on the system. If a listed service is not required, remove the 
+    package containing the service. If the package containing the 
+    service is required, stop and mask the service

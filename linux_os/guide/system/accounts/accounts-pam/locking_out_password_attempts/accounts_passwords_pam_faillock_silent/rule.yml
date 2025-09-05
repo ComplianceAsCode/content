@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8
+prodtype: ol8,rhel8,rhel9
 
 title: 'Do Not Show System Messages When Unsuccessful Logon Attempts Occur'
 
@@ -22,10 +22,15 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel8: CCE-87096-4
+    cce@rhel9: CCE-87097-2
+
 references:
     disa: CCI-002238,CCI-000044
     srg: SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005
     stigid@ol8: OL08-00-020019
+    stigid@rhel8: RHEL-08-020019
 
 ocil_clause: 'the system shows messages when three unsuccessful logon attempts occur'
 
@@ -46,7 +51,7 @@ fixtext: |-
     add or uncomment the following line:
     <pre>silent</pre>
 
-platform: pam
+platform: package[pam]
 
 warnings:
     - general: |-

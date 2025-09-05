@@ -1,0 +1,8 @@
+name: package_ntp
+original_expression: package[ntp]
+xml_content: <ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="package_ntp"><ns0:logical-test
+    operator="AND" negate="false"><ns0:fact-ref name="cpe:/a:ntp" /></ns0:logical-test></ns0:platform>
+bash_conditional: ( ( rpm --quiet -q ntp ) )
+ansible_conditional: ( ( "ntp" in ansible_facts.packages ) )
+documentation_complete: true
+title: 'NTP Package'

@@ -6,7 +6,7 @@ vuldiscussion: |-
     may be compromised.
 
 checktext: |-
-    Verify the SSH public host key files have mode "0644" or less permissive with the following command:
+    Verify the SSH public host key files have a mode of "0644" or less permissive with the following command:
 
     Note: SSH public key files may be found in other directories on the system depending on the installation.
 
@@ -16,7 +16,6 @@ checktext: |-
     644 /etc/ssh/ssh_host_ecdsa_key.pub
     644 /etc/ssh/ssh_host_ed25519_key.pub
     644 /etc/ssh/ssh_host_rsa_key.pub
-
 
     If any key.pub file has a mode more permissive than "0644", this is a finding.
 

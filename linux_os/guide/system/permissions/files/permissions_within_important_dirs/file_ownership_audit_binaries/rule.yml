@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ubuntu2004,ubuntu2204
+prodtype: rhel8,rhel9,ubuntu2004,ubuntu2204
 
 title: 'Verify that audit tools are owned by root'
 
@@ -36,7 +36,13 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel8: CCE-86453-8
+    cce@rhel9: CCE-86454-6
+
 references:
+    cis@rhel9: 4.1.4.9
+    cis@ubuntu2204: 4.1.4.9
     disa: CCI-001493,CCI-001494
     srg: SRG-OS-000256-GPiOS-00097,SRG-OS-000257-GPOS-00098
     stigid@ubuntu2004: UBTU-20-010200

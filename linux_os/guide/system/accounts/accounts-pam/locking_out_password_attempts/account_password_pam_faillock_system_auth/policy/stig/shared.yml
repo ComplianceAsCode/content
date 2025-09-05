@@ -8,13 +8,13 @@ vuldiscussion: |-
 checktext: |-
     Verify the pam_faillock.so module is present in the "/etc/pam.d/system-auth" file:
 
-    $ sudo grep pam_faillock.so /etc/pam.d/system-auth
+    $ grep pam_faillock.so /etc/pam.d/system-auth
 
     auth required pam_faillock.so preauth
     auth required pam_faillock.so authfail
     account required pam_faillock.so
 
-    If the pam_faillock.so module is not present in the "/etc/pam.d/system-auth" file with the "preauth" line listed before pam_unix.so, then this is a finding.
+    If the pam_faillock.so module is not present in the "/etc/pam.d/system-auth" file with the "preauth" line listed before pam_unix.so, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to include the use of the pam_faillock.so module in the /etc/pam.d/system-auth file.

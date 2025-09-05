@@ -9,20 +9,20 @@
   find:
     path: "/etc/sudoers.d"
     patterns: "*"
-    contains: '^[\s]*Defaults\s.*\btimestamp_timeout=.*'
+    contains: '^[\s]*Defaults\s.*\btimestamp_timeout[\s]*=.*'
   register: sudoers_d_defaults_timestamp_timeout
 
 - name: "Remove found occurrences of 'Defaults timestamp_timeout' from /etc/sudoers.d/* files"
   lineinfile:
     path: "{{ item.path }}"
-    regexp: '^[\s]*Defaults\s.*\btimestamp_timeout=.*'
+    regexp: '^[\s]*Defaults\s.*\btimestamp_timeout[\s]*=.*'
     state: absent
   with_items: "{{ sudoers_d_defaults_timestamp_timeout.files }}"
 
 - name: Ensure timestamp_timeout is enabled with the appropriate value in /etc/sudoers
   lineinfile:
     path: /etc/sudoers
-    regexp: '^[\s]*Defaults\s(.*)\btimestamp_timeout=[-]?\w+\b(.*)$'
+    regexp: '^[\s]*Defaults\s(.*)\btimestamp_timeout[\s]*=[\s]*[-]?\w+\b(.*)$'
     line: 'Defaults \1timestamp_timeout={{ var_sudo_timestamp_timeout }}\2'
     validate: /usr/sbin/visudo -cf %s
     backrefs: yes

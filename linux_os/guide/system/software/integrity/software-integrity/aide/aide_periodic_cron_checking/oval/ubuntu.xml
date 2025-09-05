@@ -20,18 +20,18 @@
  </definition>
  <ind:textfilecontent54_object id="obj_root_crontab_aide" version="1">
     <ind:filepath datatype="string">/var/spool/cron/crontabs/root</ind:filepath>
-    <ind:pattern operation="pattern match" datatype="string">aide\.wrapper</ind:pattern>
+    <ind:pattern operation="pattern match" datatype="string">aide(\.wrapper)?</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_object id="obj_etc_cron_aide" version="1">
     <ind:path operation="pattern match">/etc/cron\.(daily|hourly|weekly)</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
-    <ind:pattern operation="pattern match" datatype="string">^[^#]*(?:/usr/bin/)?aide\.wrapper</ind:pattern>
+    <ind:pattern operation="pattern match" datatype="string">^(?:\/usr\/bin\/)?aide(\.wrapper)?</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_object id="obj_etc_crontab_aide" version="1">
     <ind:filepath datatype="string">/etc/crontab</ind:filepath>
-    <ind:pattern operation="pattern match" datatype="string">[^\s]+\s+[^\s]+\s+\*(?:\/[1-7])*\s+\*\s+[^\s]+\s+(?:/usr/bin/)?aide\.wrapper\s+[^\s]+\s+(?=-C|--check).*</ind:pattern>
+    <ind:pattern operation="pattern match" datatype="string">[^\s]+\s+[^\s]+\s+\*(?:\/[1-7])*\s+\*\s+[^\s]+\s+(?:\/usr\/bin\/)?aide(\.wrapper)?\s+[^\s]+\s+(?=-C|--check).*</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <linux:systemdunitproperty_object id="obj_aidecheck-service_unitfilestate" version="1">

@@ -1,3 +1,9 @@
 # platform = multi_platform_all
 
-{{{ bash_ini_file_set("/etc/gdm/custom.conf", "xdmcp", "Enable", "false") }}}
+{{% if 'ubuntu' in product %}}
+{{% set gdm_conf_path = "/etc/gdm3/custom.conf" %}}
+{{% else %}}
+{{% set gdm_conf_path = "/etc/gdm/custom.conf" %}}
+{{% endif %}}
+
+{{{ bash_ini_file_set(gdm_conf_path, "xdmcp", "Enable", "false") }}}

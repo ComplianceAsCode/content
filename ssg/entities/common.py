@@ -7,15 +7,81 @@ from collections import defaultdict
 from copy import deepcopy
 
 from ..xml import ElementTree as ET, add_xhtml_namespace
-from ..constants import xhtml_namespace
 from ..yaml import DocumentationNotComplete, open_and_macro_expand
 from ..shims import unicode_func
 
 from ..constants import (
+    xhtml_namespace,
     XCCDF_REFINABLE_PROPERTIES,
     XCCDF12_NS,
     OSCAP_VALUE,
+    GLOBAL_REFERENCES
 )
+
+
+def extract_reference_from_product_specific_label(items_dict, full_label, value, allow_overwrites):
+    label = full_label.split("@")[0]
+
+    if label in GLOBAL_REFERENCES:
+        msg = (
+            "You cannot use product-qualified for the '{item_u}' reference. "
+            "Please remove the product-qualifier and merge values with the "
+            "existing reference if there is any. Original line: {item_q}: {value_q}"
+            .format(item_u=label, item_q=full_label, value_q=value)
+        )
+        raise ValueError(msg)
+
+    if not allow_overwrites and label in items_dict and value != items_dict[label]:
+        msg = (
+            "There is a product-qualified '{item_q}' item, "
+            "but also an unqualified '{item_u}' item "
+            "and those two differ in value - "
+            "'{value_q}' vs '{value_u}' respectively."
+            .format(item_q=full_label, item_u=label,
+                    value_q=value, value_u=items_dict[label])
+        )
+        raise ValueError(msg)
+
+    return label
+
+
+def make_items_product_specific(items_dict, product_suffix, allow_overwrites=False):
+    """
+    Function will normalize dictionary values for a specific product, by either
+    removing product qualifier from the key (reference@product: value -> reference: value),
+    or by dropping irrelevant entries (reference@other_product: value).
+
+    Qualified entries always take precedence over generic ones.
+
+    In case when `allow_overwrites` is set to False even qualified entry won't be allowed
+    to replace generic one and Exception will be thrown.
+
+    :param items_dict: Input dictionary.
+    :param product_suffix: The product to be normalized against.
+    :param allow_overwrites: Controls if the function should replace value from a non-qualified
+                             label with a qualified one.
+    :return: New, normalized dictionary.
+    """
+    new_items = dict()
+    for full_label, value in items_dict.items():
+        if "@" not in full_label:
+            # Current full_label is a generic reference, and we should NEVER overwrite an entry
+            # that came from a product-qualified reference earlier.
+            if full_label not in new_items:
+                new_items[full_label] = value
+            continue
+
+        # This procedure should occur before matching product_suffix with the product qualifier
+        # present in the reference, so it catches problems even for products that are not
+        # being built at the moment
+        label = extract_reference_from_product_specific_label(items_dict, full_label, value,
+                                                              allow_overwrites)
+
+        if not full_label.endswith(product_suffix):
+            continue
+
+        new_items[label] = value
+    return new_items
 
 
 def add_sub_element(parent, tag, ns, data):
@@ -81,6 +147,7 @@ class XCCDFEntity(object):
     """
     KEYS = dict(
             id_=lambda: "",
+            title=lambda: "",
             definition_location=lambda: "",
     )
 
@@ -149,9 +216,9 @@ class XCCDFEntity(object):
         that defines the instance to be created.
         This wraps :meth:`process_input_dict` and it adds generic keys on the top:
 
-        - `id_` as the entity ID that is deduced either from thefilename,
+        - `id_` as the entity ID that is deduced either from the file name,
           or from the parent directory name.
-        - `definition_location` as the original location whenre the entity got defined.
+        - `definition_location` is the original location where the entity got defined.
         """
         file_basename = os.path.basename(yaml_file)
         entity_id = derive_id_from_file_name(file_basename)
@@ -309,3 +376,95 @@ class SelectionHandler(object):
         updated_refinements = self._subtract_refinements(extended_refinements)
         updated_refinements.update(self.refine_rules)
         self.refine_rules = updated_refinements
+
+
+class Templatable(object):
+    """
+    The Templatable is a mix-in sidekick for XCCDFEntity-based classes
+    that have templates. It contains methods used by the template Builder
+    class.
+
+    Methods `get_template_context` and `get_template_vars` are subject for
+    overloading by XCCDFEntity subclasses that want to customize template
+    input.
+    """
+
+    KEYS = dict(
+        template=lambda: None,
+    )
+
+    def __init__(self):
+        pass
+
+    def is_templated(self):
+        return isinstance(self.template, dict)
+
+    def get_template_name(self):
+        if not self.is_templated():
+            return None
+        try:
+            return self.template["name"]
+        except KeyError:
+            raise ValueError(
+                "Templatable {0} is missing template name under template key".format(self))
+
+    def get_template_context(self, env_yaml):
+        # TODO: The first two variables, 'rule_id' and 'rule_title' are expected by some
+        #       templates and macros even if they are not rendered in a rule context.
+        #       Better name for these variables are 'entity_id' and 'entity_title'.
+        return {
+            "rule_id": self.id_,
+            "rule_title": self.title,
+            "products": env_yaml["product"],
+        }
+
+    def get_template_vars(self, env_yaml):
+        if "vars" not in self.template:
+            raise ValueError(
+                "Templatable {0} does not contain mandatory 'vars:' key under "
+                "'template:' key.".format(self))
+        template_vars = self.template["vars"]
+
+        # Add the rule ID which will be used in template preprocessors (template.py)
+        # as a unique sub-element for a variety of composite IDs.
+        # TODO: The name _rule_id is a legacy from the era when rule was the only
+        #       context for a template. Preprocessors implicitly depend on this name.
+        #       A better name is '_entity_id' (as in XCCDF Entity).
+        template_vars["_rule_id"] = self.id_
+
+        return make_items_product_specific(template_vars, env_yaml["product"],
+                                           allow_overwrites=True)
+
+    def extract_configured_backend_lang(self, avail_langs):
+        """
+        Returns list of languages that should be generated
+        based on the Templatable's template option `template.backends`.
+        """
+        if not self.is_templated():
+            return []
+
+        if "backends" in self.template:
+            backends = self.template["backends"]
+            for lang in backends:
+                if lang not in avail_langs:
+                    raise RuntimeError("Templatable {0} wants to generate unknown language '{1}"
+                                       .format(self, lang))
+            return [lang for name, lang in avail_langs.items() if backends.get(name, "on") == "on"]
+
+        return avail_langs.values()
+
+    def make_template_product_specific(self, product):
+        if not self.is_templated():
+            return
+
+        product_suffix = "@{0}".format(product)
+
+        not_specific_vars = self.template.get("vars", dict())
+        specific_vars = make_items_product_specific(
+            not_specific_vars, product_suffix, True)
+        self.template["vars"] = specific_vars
+
+        not_specific_backends = self.template.get("backends", dict())
+        specific_backends = make_items_product_specific(
+            not_specific_backends, product_suffix, True)
+        self.template["backends"] = specific_backends
