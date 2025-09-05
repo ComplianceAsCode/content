@@ -59,7 +59,7 @@ selections:
     - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
-    - var_sshd_set_keepalive=0
+    - var_sshd_set_keepalive=1
     - encrypt_partitions
     - var_system_crypto_policy=fips
     - configure_crypto_policy

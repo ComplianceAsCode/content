@@ -20,7 +20,7 @@ checktext: |-
 fixtext: |-
     Configure the operating system to use two or more name servers for DNS resolution based on the DNS mode of the system.
 
-    If the NetworkManager DNS mode is set to "none" then add the following lines to "/etc/resolv.conf":
+    If the NetworkManager DNS mode is set to "none", then add the following lines to "/etc/resolv.conf":
 
     nameserver [name server 1]
     nameserver [name server 2]
@@ -28,7 +28,11 @@ fixtext: |-
     Replace [name server 1] and [name server 2] with the IPs of two different DNS resolvers.
 
     If the NetworkManager DNS mode is set to "default" then add two DNS servers to a NetworkManager connection. Using the following commands:
+
     $ sudo nmcli connection modify [connection name] ipv4.dns [name server 1]
     $ sudo nmcli connection modify [connection name] ipv4.dns [name server 2]
 
     Replace [name server 1] and [name server 2] with the IPs of two different DNS resolvers. Replace [connection name] with a valid NetworkManager connection name on the system. Replace ipv4 with ipv6 if IPv6 DNS servers are used.
+
+vuln_discussion: |-
+    To provide availability for name resolution services, multiple redundant name servers are mandated. A failure in name resolution could lead to the failure of security functions requiring name resolution, which may include time synchronization, centralized authentication, and remote system logging.

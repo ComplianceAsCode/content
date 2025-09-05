@@ -1,0 +1,100 @@
+documentation_complete: true
+
+title: 'Ensure auditd Collects Information on the Use of Privileged Commands'
+
+description: |-
+    The audit system should collect information about usage of privileged commands for all users.
+    These are commands with suid or sgid bits on and they are specially risky in local block
+    device partitions not mounted with noexec and nosuid options. Therefore, these partitions
+    should be first identified by the following command:
+    <pre>findmnt -n -l -k -it $(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,) | grep -Pv "noexec|nosuid"</pre>
+
+    For all partitions listed by the previous command, it is necessary to search for
+    setuid / setgid programs using the following command:
+    <pre>$ sudo find <i>PARTITION</i> -xdev -perm /6000 -type f 2&gt;/dev/null</pre>
+
+    For each setuid / setgid program identified by the previous command, an audit rule must be
+    present in the appropriate place using the following line structure:
+    <pre>-a always,exit -F path=<i>PROG_PATH</i> -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program to read
+    audit rules during daemon startup, add the line to a file with suffix <tt>.rules</tt> in the
+    <tt>/etc/audit/rules.d</tt> directory, replacing the <i>PROG_PATH</i> part with the full path
+    of that setuid / setgid identified program.
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility instead, add
+    the line to the <tt>/etc/audit/audit.rules</tt> file, also replacing the <i>PROG_PATH</i> part
+    with the full path of that setuid / setgid identified program.
+
+rationale: |-
+    Misuse of privileged functions, either intentionally or unintentionally by authorized users,
+    or by unauthorized external entities that have compromised system accounts, is a serious and
+    ongoing concern that can have significant adverse impacts on organizations.
+    Auditing the use of privileged functions is one way to detect such misuse and identify the
+    risk from insider and advanced persistent threats.
+    <br /><br />
+    Privileged programs are subject to escalation-of-privilege attacks, which attempt to subvert
+    their normal role of providing some necessary but limited capability. As such, motivation
+    exists to monitor these programs for unusual activity.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82589-3
+    cce@rhel7: CCE-27437-3
+    cce@rhel8: CCE-80724-8
+    cce@rhel9: CCE-83759-1
+    cce@sle12: CCE-91611-4
+    cce@sle15: CCE-91251-9
+
+references:
+    cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
+    cis@sle12: 4.1.11
+    cis@sle15: 4.1.11
+    cjis: 5.4.1.1
+    cobit5: APO08.04,APO10.01,APO10.03,APO10.04,APO10.05,APO11.04,APO12.06,APO13.01,BAI03.05,BAI08.02,DSS01.03,DSS01.04,DSS02.02,DSS02.04,DSS02.05,DSS02.07,DSS03.01,DSS03.05,DSS05.02,DSS05.03,DSS05.04,DSS05.05,DSS05.07,MEA01.01,MEA01.02,MEA01.03,MEA01.04,MEA01.05,MEA02.01
+    cui: 3.1.7
+    disa: CCI-002234
+    isa-62443-2009: 4.2.3.10,4.3.2.6.7,4.3.3.3.9,4.3.3.5.8,4.3.3.6.6,4.3.4.4.7,4.3.4.5.5,4.3.4.5.6,4.3.4.5.7,4.3.4.5.8,4.3.4.5.9,4.4.2.1,4.4.2.2,4.4.2.4
+    isa-62443-2013: 'SR 1.13,SR 2.10,SR 2.11,SR 2.12,SR 2.6,SR 2.8,SR 2.9,SR 3.1,SR 3.5,SR 3.8,SR 3.9,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 6.1,SR 6.2,SR 7.1,SR 7.6'
+    ism: 0582,0584,05885,0586,0846,0957
+    iso27001-2013: A.11.2.6,A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1,A.13.1.1,A.13.2.1,A.14.1.3,A.14.2.7,A.15.2.1,A.15.2.2,A.16.1.1,A.16.1.2,A.16.1.3,A.16.1.4,A.16.1.5,A.16.1.7,A.6.1.3,A.6.2.1,A.6.2.2
+    nerc-cip: CIP-004-6 R2.2.2,CIP-004-6 R2.2.3,CIP-007-3 R.1.3,CIP-007-3 R5,CIP-007-3 R5.1.1,CIP-007-3 R5.1.3,CIP-007-3 R5.2.1,CIP-007-3 R5.2.3
+    nist: AC-2(4),AU-2(d),AU-12(c),AC-6(9),CM-6(a)
+    nist-csf: DE.AE-2,DE.AE-3,DE.AE-5,DE.CM-1,DE.CM-3,DE.CM-7,DE.DP-4,ID.SC-4,PR.AC-3,PR.PT-1,PR.PT-4,RS.AN-1,RS.AN-4,RS.CO-2
+    pcidss: Req-10.2.2
+    srg: SRG-OS-000327-GPOS-00127
+
+ocil_clause: "any setuid or setgid programs doesn't have a line in the audit rules"
+
+ocil: |-
+    To verify that auditing of privileged command use is configured, run the following command
+    to search privileged commands in relevant partitions and check if they are covered by auditd
+    rules:
+
+    FILTER_NODEV=$(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,)
+    PARTITIONS=$(findmnt -n -l -k -it $FILTER_NODEV | grep -Pv "noexec|nosuid" | awk '{ print $1 }')
+    for PARTITION in $PARTITIONS; do
+      for PRIV_CMD in $(find "${PARTITION}" -xdev -perm /6000 -type f 2&gt;/dev/null); do
+        grep -qr "${PRIV_CMD}" /etc/audit/rules.d /etc/audit/audit.rules &amp;&amp;
+          printf "OK: ${PRIV_CMD}\n" || printf "WARNING - rule not found for: ${PRIV_CMD}\n"
+      done
+    done
+
+    The output should not contain any WARNING.
+
+warnings:
+    - general: |-
+        This rule checks for multiple syscalls related to privileged commands. If needed to check
+        specific privileged commands, other more specific rules should be considered. For example:
+        <ul>
+        <li><tt>audit_rules_privileged_commands_su</tt></li>
+        <li><tt>audit_rules_privileged_commands_umount</tt></li>
+        <li><tt>audit_rules_privileged_commands_passwd</tt></li>
+        </ul>
+    - general: |-
+        Note that OVAL check and Bash / Ansible remediation of this rule
+        explicitly excludes file systems mounted at <code>/proc</code> directory
+        and its subdirectories. It is a virtual file system and it doesn't
+        contain executable applications. At the same time, interacting with this
+        file system during check or remediation caused undesirable errors.

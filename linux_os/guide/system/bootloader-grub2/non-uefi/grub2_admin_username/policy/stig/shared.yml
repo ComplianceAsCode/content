@@ -9,11 +9,10 @@ checktext: |-
 
     $ sudo grep -A1 "superusers" /etc/grub2.cfg
 
-     set superusers="&lt;superusers-account&gt;"
+    set superusers="&ltsuperusers-account&gt"
     export superusers
 
-    The &lt;superusers-account&gt; is the actual account name different from common names like root,
-    admin, or administrator.
+    The &ltsuperusers-account&gt is the actual account name different from common names like root, admin, or administrator.
 
     If superusers contains easily guessable usernames, this is a finding.
 
@@ -27,4 +26,7 @@ fixtext: |-
 
     Once the superuser account has been added, update the grub.cfg file by running:
 
-    $ sudo grubby --update-kernel=ALL'
+    $ sudo grubby --update-kernel=ALL
+
+vuln_discussion: |-
+    Having a nondefault grub superuser username makes password-guessing attacks less effective.

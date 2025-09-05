@@ -1,10 +1,12 @@
 controls:
     -   id: SRG-OS-000341-GPOS-00132
         levels:
-            - medium
-        title: {{{ full_name }}} must allocate audit record storage capacity to store
-            at least one weeks worth of audit records, when audit records are not immediately
-            sent to a central audit record storage facility.
+            - low
+        title: |-
+            {{{ full_name }}} must allocate audit record storage capacity to store at least
+            one week's worth of audit records, when audit records are not immediately sent to a
+            central audit record storage facility.
+
         rules:
             - grub2_audit_backlog_limit_argument
             - partition_for_var_log_audit

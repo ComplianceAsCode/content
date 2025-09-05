@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Set Root Account Password Maximum Age'
+
+description: |-
+    Configure the root account to enforce a {{{ xccdf_value("var_accounts_maximum_age_root") }}}-day maximum password lifetime restriction by running the following command:
+    <pre>$ sudo chage -M {{{ xccdf_value("var_accounts_maximum_age_root") }}} root</pre>
+
+rationale: |-
+    Any password, no matter how complex, can eventually be cracked. Therefore,
+    passwords need to be changed periodically. If the operating system does
+    not limit the lifetime of passwords and force users to change their
+    passwords, there is the risk that the operating system passwords could be
+    compromised.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-87665-6
+    cce@rhel8: CCE-87667-2
+    cce@rhel9: CCE-87668-0
+
+ocil_clause: 'any results are returned that are not associated with a system account'
+
+ocil: |-
+    Check whether the maximum time period for root account password is restricted to {{{ xccdf_value("var_accounts_maximum_age_root") }}} days with the following commands:
+
+    $ sudo awk -F: '$1 == "root" {print $1 " " $5}' /etc/shadow
+
+fixtext: |-
+    Configure non-compliant accounts to enforce a {{{ xccdf_value("var_accounts_maximum_age_root") }}}-day maximum password lifetime restriction.
+    $ sudo chage -M {{{ xccdf_value("var_accounts_maximum_age_root") }}} root
+

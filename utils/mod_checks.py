@@ -100,8 +100,8 @@ def replace_platforms(rule_obj, platforms):
                   file=sys.stderr)
             sys.exit(1)
 
-        match = ssg.rule_yaml.parse_prodtype(parsed_platform[0])
-        replacement = ssg.rule_yaml.parse_prodtype(parsed_platform[1])
+        match = ssg.utils.parse_platform(parsed_platform[0])
+        replacement = ssg.utils.parse_platform(parsed_platform[1])
 
         if match.issubset(current_platforms):
             new_platforms.difference_update(match)

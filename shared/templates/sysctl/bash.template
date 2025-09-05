@@ -12,12 +12,16 @@ for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.con
 {{% else %}}
 for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf; do
 {{% endif %}}
+
+  # skip systemd-sysctl symlink (/etc/sysctl.d/99-sysctl.conf -> /etc/sysctl.conf)
+  if [[ "$(readlink -f "$f")" == "/etc/sysctl.conf" ]]; then continue; fi
+
   matching_list=$(grep -P '^(?!#).*[\s]*{{{ SYSCTLVAR }}}.*$' $f | uniq )
   if ! test -z "$matching_list"; then
     while IFS= read -r entry; do
       escaped_entry=$(sed -e 's|/|\\/|g' <<< "$entry")
       # comment out "{{{ SYSCTLVAR }}}" matches to preserve user data
-      sed -i "s/^${escaped_entry}$/# &/g" $f
+      sed -i --follow-symlinks "s/^${escaped_entry}$/# &/g" $f
     done <<< "$matching_list"
   fi
 done

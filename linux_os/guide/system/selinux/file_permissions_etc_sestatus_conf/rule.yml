@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: Verify Permissions On /etc/sestatus.conf File
+
+description: '{{{ describe_file_permissions(file="/etc/sestatus.conf", perms="0644") }}}'
+
+rationale: |-
+    Setting correct permissions on the /etc/sestatus.conf file is important
+    because this file hosts SELinux configuration. Protection of this
+    file is critical for system security. Restricting the permissions
+    ensures exclusive control of the SELinux configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86290-4
+    cce@rhel8: CCE-86291-2
+    cce@rhel9: CCE-86293-8
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/sestatus.conf", perms="0644") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/sestatus.conf", perms="0644") }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/sestatus.conf", mode="0644") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/sestatus.conf", mode="0644") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/sestatus.conf
+        filemode: '0644'

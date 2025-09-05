@@ -2,11 +2,9 @@ controls:
     -   id: SRG-OS-000395-GPOS-00175
         levels:
             - medium
-        title: The {{{ full_name}}} must verify remote disconnection at the termination
-            of nonlocal maintenance and diagnostic sessions, when used for nonlocal maintenance
-            sessions.
-        rationale:
-            If the remote connection is not closed and verified as closed, the session may remain open and be exploited by an attacker; this is referred to as a zombie session. 
+        title: {{{ full_name }}} must verify remote disconnection at the termination of
+            nonlocal maintenance and diagnostic sessions, when used for nonlocal maintenance sessions.
+            If the remote connection is not closed and verified as closed, the session may remain open and be exploited by an attacker; this is referred to as a zombie session.
             Remote connections must be disconnected and verified as disconnected when nonlocal maintenance sessions have been terminated and are no longer available for use.
         check:
           {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
@@ -15,7 +13,7 @@ controls:
             {{{ full_name }}} inherently meets this requirement. No fix is required.
         artifact_description:
             When a process terminates, Linux kernel executes the kernel/exit.c:do_exit() function which indirectly calls fs/file.c:close_files().
-            The latter iterates over all file descriptors of the process and close them. 
+            The latter iterates over all file descriptors of the process and close them.
             Since a socket also receives a file descriptor, the kernel close those, as well.
         status_justification:
             The use of the "exit" command will end any communication session on the system.

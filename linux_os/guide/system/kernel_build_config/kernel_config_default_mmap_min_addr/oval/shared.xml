@@ -1,0 +1,130 @@
+<def-group>
+  <definition class="compliance" id="kernel_config_default_mmap_min_addr"
+  version="1">
+    {{{ oval_metadata("The kernel config CONFIG_DEFAULT_MMAP_MIN_ADDR should have value 65536 on x86_64 and 32768 on aarch64", affected_platforms=["multi_platform_all"]) }}}
+    <criteria operator="AND">
+      <criteria operator="OR">
+        <criteria operator="AND">
+          <criterion comment="Check architecture is x86_64"
+          test_ref="test_proc_sys_kernel_osrelease_arch_x86_64" />
+          <criterion comment="Check presence of build configuration of installed kernels"
+          test_ref="test_kernel_config_default_mmap_min_addr_x86_64" />
+        </criteria>
+        <criteria operator="AND">
+          <criterion comment="Check architecture is aarch64"
+          test_ref="test_proc_sys_kernel_osrelease_arch_aarch64" />
+          <criterion comment="Check presence of build configuration of installed kernels"
+          test_ref="test_kernel_config_default_mmap_min_addr_aarch64" />
+        </criteria>
+      </criteria>
+      <criterion comment="Ensure all kernels have the config"
+      test_ref="test_kernel_config_default_mmap_min_addr_all_kernels" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all"
+  comment="Check /boot/config-.* files for CONFIG_DEFAULT_MMAP_MIN_ADDR=65536"
+  id="test_kernel_config_default_mmap_min_addr_x86_64" version="1">
+    <ind:object object_ref="object_kernel_config_default_mmap_min_addr" />
+    <ind:state state_ref="state_kernel_config_default_mmap_min_addr_x86_64" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check="all"
+  comment="Check /boot/config-.* files for CONFIG_DEFAULT_MMAP_MIN_ADDR=32768"
+  id="test_kernel_config_default_mmap_min_addr_aarch64" version="1">
+    <ind:object object_ref="object_kernel_config_default_mmap_min_addr" />
+    <ind:state state_ref="state_kernel_config_default_mmap_min_addr_aarch64" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_kernel_config_default_mmap_min_addr" version="1">
+    <ind:filepath operation="pattern match">^/boot/config-.*$</ind:filepath>
+    <ind:pattern operation="pattern match">^CONFIG_DEFAULT_MMAP_MIN_ADDR="?(.*?)"?$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_kernel_config_default_mmap_min_addr_x86_64" version="1">
+    <ind:subexpression operation="equals" datatype="string">65536</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_kernel_config_default_mmap_min_addr_aarch64" version="1">
+    <ind:subexpression operation="equals" datatype="string">32768</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:variable_test check="all" check_existence="all_exist"
+  comment="Check if all installed kernels are compliant"
+  id="test_kernel_config_default_mmap_min_addr_all_kernels" version="1">
+    <ind:object object_ref="object_var_kernel_config_default_mmap_min_addr_count" />
+    <ind:state state_ref="state_var_kernel_config_default_mmap_min_addr" />
+  </ind:variable_test>
+
+  <ind:variable_object id="object_var_kernel_config_default_mmap_min_addr_count" version="1">
+    <ind:var_ref>local_var_kernel_config_default_mmap_min_addr_count_kernels_installed</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="state_var_kernel_config_default_mmap_min_addr" version="1">
+    <ind:value operation="equals" datatype="int"
+    var_ref="local_var_kernel_config_default_mmap_min_addr_count_compliant_configs" />
+  </ind:variable_state>
+
+  <local_variable comment="Count number of kernels installed" datatype="int"
+  id="local_var_kernel_config_default_mmap_min_addr_count_kernels_installed" version="1">
+    <count>
+      <unique>
+        <object_component object_ref="object_kernel_config_default_mmap_min_addr_files"
+        item_field="filepath" />
+      </unique>
+    </count>
+  </local_variable>
+
+  <local_variable comment="Count number of configs found" datatype="int"
+  id="local_var_kernel_config_default_mmap_min_addr_count_compliant_configs" version="1">
+    <count>
+      <unique>
+        <object_component object_ref="object_kernel_config_default_mmap_min_addr"
+        item_field="filepath" />
+      </unique>
+    </count>
+  </local_variable>
+
+  <unix:file_object comment="Collect the kernel config files" id="object_kernel_config_default_mmap_min_addr_files" version="1">
+      <unix:path>/boot</unix:path>
+      <unix:filename operation="pattern match">^config-.*$</unix:filename>
+  </unix:file_object>
+
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+      comment="proc_sys_kernel is for aarch64 architecture"
+      id="test_proc_sys_kernel_osrelease_arch_aarch64"
+  version="1">
+    <ind:object object_ref="object_proc_sys_kernel_osrelease_arch_aarch64" />
+    <ind:state state_ref="state_proc_sys_kernel_osrelease_arch_aarch64" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_proc_sys_kernel_osrelease_arch_aarch64" version="1">
+    <ind:filepath>/proc/sys/kernel/osrelease</ind:filepath>
+    <ind:pattern operation="pattern match">^.*\.(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_proc_sys_kernel_osrelease_arch_aarch64" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^aarch64$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+      comment="proc_sys_kernel is for x86_64 architecture"
+      id="test_proc_sys_kernel_osrelease_arch_x86_64"
+  version="1">
+    <ind:object object_ref="object_proc_sys_kernel_osrelease_arch_x86_64" />
+    <ind:state state_ref="state_proc_sys_kernel_osrelease_arch_x86_64" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_proc_sys_kernel_osrelease_arch_x86_64" version="1">
+    <ind:filepath>/proc/sys/kernel/osrelease</ind:filepath>
+    <ind:pattern operation="pattern match">^.*\.(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_proc_sys_kernel_osrelease_arch_x86_64" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^x86_64$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

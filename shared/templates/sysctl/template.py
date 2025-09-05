@@ -40,4 +40,7 @@ def preprocess(data, lang):
             data["sysctl_wrong_value"] = str((int(data["sysctlval"])+1) % 2)
         elif data["datatype"] == "string":
             data["sysctl_wrong_value"] = "wrong_value"
+
+    if "check_runtime" not in data:
+        data["check_runtime"] = "true"
     return data

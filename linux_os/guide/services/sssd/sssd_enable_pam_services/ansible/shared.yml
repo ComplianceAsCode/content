@@ -1,0 +1,55 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+- name: {{{ rule_title }}} - Find all the conf files inside the /etc/sssd/conf.d/ directory
+  ansible.builtin.find:
+    paths:
+    - "/etc/sssd/conf.d/"
+    patterns: "*.conf"
+  register: sssd_conf_d_files
+
+- name: {{{ rule_title }}} - Modify lines in files in the /etc/sssd/conf.d/ directory
+  ansible.builtin.replace:
+    path: "{{ item }}"
+    regexp: '^(\s*\[sssd\].*(?:\n\s*[^[\s].*)*\n\s*services\s*=(?!.*\bpam\b).*)$'
+    replace: '\1,pam'
+  with_items: "{{ sssd_conf_d_files.files | map(attribute='path') }}"
+  register: modify_lines_sssd_conf_d_files
+  when: sssd_conf_d_files.matched is defined and sssd_conf_d_files.matched >= 1
+
+- name: {{{ rule_title }}} - Find /etc/sssd/sssd.conf
+  ansible.builtin.stat:
+    path: /etc/sssd/sssd.conf
+  register: sssd_conf_file
+
+- name: {{{ rule_title }}} - Modify lines in /etc/sssd/sssd.conf
+  ansible.builtin.replace:
+    path: "/etc/sssd/sssd.conf"
+    regexp: '^(\s*\[sssd\].*(?:\n\s*[^[\s].*)*\n\s*services\s*=(?!.*\bpam\b).*)$'
+    replace: '\1,pam'
+  register: modify_lines_sssd_conf_file
+  when: sssd_conf_file.stat.exists
+
+- name: {{{ rule_title }}} - Find services key in /etc/sssd/sssd.conf
+  ansible.builtin.replace:
+    path: "/etc/sssd/sssd.conf"
+    regexp: '^\s*\[sssd\][^\[\]]*?(?:\n(?!\[)[^\n]*?services\s*=)+'
+    replace: ''
+  changed_when: false
+  check_mode: true
+  register: sssd_conf_file_services
+  when: sssd_conf_file.stat.exists
+
+- name: {{{ rule_title }}} - Insert entry to /etc/sssd/sssd.conf
+  ini_file:
+    path: /etc/sssd/sssd.conf
+    section: sssd
+    option: services
+    value: pam
+  when:
+  - not modify_lines_sssd_conf_d_files.changed
+  - not modify_lines_sssd_conf_file.changed
+  - (sssd_conf_file_services.msg is defined and "replacements" not in sssd_conf_file_services.msg) or not sssd_conf_file.stat.exists

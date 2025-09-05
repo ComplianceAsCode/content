@@ -83,7 +83,7 @@ selections:
     - accounts_tmout
     - var_accounts_tmout=15_min
     - accounts_root_gid_zero
-    - accounts_umask_etc_bashrc
+    - accounts_umask_etc_profile
     - use_pam_wheel_for_su
     - sshd_allow_only_protocol2
     - journald_forward_to_syslog
@@ -106,7 +106,7 @@ selections:
     - service_smb_disabled
     - service_dovecot_disabled
     - banner_etc_motd
-    - login_banner_text=cis_banners
+    - motd_banner_text=cis_banners
     - banner_etc_issue
     - login_banner_text=cis_banners
     - file_groupowner_etc_motd
@@ -125,8 +125,6 @@ selections:
     - require_singleuser_auth
     - require_emergency_target_auth
     - disable_users_coredumps
-    - configure_crypto_policy
-    - var_system_crypto_policy=default_policy
     - dir_perms_world_writable_sticky_bits
     - file_permissions_etc_passwd
     - file_owner_etc_shadow

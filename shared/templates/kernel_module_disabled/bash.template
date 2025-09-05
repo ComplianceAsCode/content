@@ -7,7 +7,7 @@ if LC_ALL=C grep -q -m 1 "^install {{{ KERNMODULE }}}" /etc/modprobe.d/{{{ KERNM
 	{{% if '#' in KERNMODULE %}}
 	{{{ raise("KERNMODULE (" + KERNMODULE + ") uses sed path separator (#) in " + rule_id) }}}
 	{{% endif %}}
-	sed -i 's#^install {{{ KERNMODULE }}}.*#install {{{ KERNMODULE }}} /bin/true#g' /etc/modprobe.d/{{{ KERNMODULE }}}.conf
+	sed -i 's#^install {{{ KERNMODULE }}}.*#install {{{ KERNMODULE }}} /bin/false#g' /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 else
 	echo -e "\n# Disable per security requirements" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 	echo "install {{{ KERNMODULE }}} /bin/false" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf

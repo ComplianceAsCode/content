@@ -11,7 +11,7 @@ SSG_PROJECT_NAME = "SCAP Security Guide Project"
 SSG_BENCHMARK_LATEST_URI = "https://github.com/ComplianceAsCode/content/releases/latest"
 
 SSG_REF_URIS = {
-    'anssi': 'http://www.ssi.gouv.fr/administration/bonnes-pratiques/',
+    'anssi': 'https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf',
     'bsi': 'https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf',
     'nist': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf',
     'nist-csf': 'https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf',
@@ -21,7 +21,6 @@ SSG_REF_URIS = {
     'cis-csc': 'https://www.cisecurity.org/controls/',
     'cjis': 'https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf',
     'cui': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf',
-    'cnss': 'http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf',
     'dcid': 'not_officially_available',
     'disa': 'https://public.cyber.mil/stigs/cci/',
     'pcidss': 'https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf',
@@ -34,6 +33,7 @@ SSG_REF_URIS = {
     'stigid': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
     'os-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
     'app-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
+    'app-srg-ctr': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=container-platform',
     'stigref': 'https://public.cyber.mil/stigs/srg-stig-tools/',
 }
 
@@ -55,7 +55,7 @@ product_directories = [
     'openeuler2203',
     'opensuse',
     'openembedded',
-    'rhel7', 'rhel8', 'rhel9',
+    'rhel7', 'rhel8', 'rhel9', 'rhel10',
     'rhv4',
     'sle12', 'sle15',
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004', 'ubuntu2204',
@@ -71,6 +71,7 @@ datastream_namespace = "http://scap.nist.gov/schema/scap/source/1.2"
 dc_namespace = "http://purl.org/dc/elements/1.1/"
 ocil_namespace = "http://scap.nist.gov/schema/ocil/2.0"
 cpe_language_namespace = "http://cpe.mitre.org/language/2.0"
+cpe_dictionary_namespace = "http://cpe.mitre.org/dictionary/2.0"
 oval_footer = "</oval_definitions>"
 oval_namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 xlink_namespace = "http://www.w3.org/1999/xlink"
@@ -88,10 +89,12 @@ puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
 cce_uri = "https://ncp.nist.gov/cce"
 stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
+ccn_ns = "https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html"
 cis_ns = "https://www.cisecurity.org/benchmark/red_hat_linux/"
 hipaa_ns = "https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf"
-anssi_ns = "http://www.ssi.gouv.fr/administration/bonnes-pratiques/"
+anssi_ns = "https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf"
 ospp_ns = "https://www.niap-ccevs.org/Profile/PP.cfm"
+pcidss4_ns = "https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf"
 cui_ns = 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf'
 stig_refs = 'https://public.cyber.mil/stigs/'
 disa_cciuri = "https://public.cyber.mil/stigs/cci/"
@@ -116,8 +119,6 @@ ansible_version_requirement_pre_task_name = \
     "Verify Ansible meets SCAP-Security-Guide version requirements."
 standard_profiles = ['standard', 'pci-dss', 'desktop', 'server']
 xslt_ns = "http://www.w3.org/1999/XSL/Transform"
-generic_stig_ns = "https://public.cyber.mil/stigs/downloads/" + \
-                  "?_dl_facet_stigs=operating-systems%2Cunix-linux"
 SCE_SYSTEM = "http://open-scap.org/page/SCE"
 
 
@@ -138,9 +139,9 @@ PREFIX_TO_NS = {
     "xccdf-1.2": XCCDF12_NS,
     "html": xhtml_namespace,
     "xlink": xlink_namespace,
-    "cpe-dict": "http://cpe.mitre.org/dictionary/2.0",
+    "cpe-dict": cpe_dictionary_namespace,
     "cat": cat_namespace,
-    "cpe-lang": "http://cpe.mitre.org/language/2.0",
+    "cpe-lang": cpe_language_namespace,
     "sce": sce_namespace,
 }
 
@@ -218,6 +219,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Red Hat Enterprise Linux 7": "rhel7",
     "Red Hat Enterprise Linux 8": "rhel8",
     "Red Hat Enterprise Linux 9": "rhel9",
+    "Red Hat Enterprise Linux 10": "rhel10",
     "Red Hat Virtualization 4": "rhv4",
     "SUSE Linux Enterprise 12": "sle12",
     "SUSE Linux Enterprise 15": "sle15",
@@ -247,7 +249,7 @@ Reference = collections.namedtuple("Reference", ("id", "name", "url", "regex_wit
 REFERENCES = dict(
     anssi=Reference(
         id="anssi", name="ANSSI", url=anssi_ns,
-        regex_with_groups=r"BP28\(R(\d+)\)"),
+        regex_with_groups=r"R(\d+)"),
     ccn=Reference(
         id="ccn", name="CCN", url="",
         regex_with_groups=r"A\.(\d+)\.SEC-(\w+)(\d+)"),
@@ -293,7 +295,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_ol": ["ol7", "ol8", "ol9"],
     "multi_platform_ocp": ["ocp4"],
     "multi_platform_rhcos": ["rhcos4"],
-    "multi_platform_rhel": ["rhel7", "rhel8", "rhel9"],
+    "multi_platform_rhel": ["rhel7", "rhel8", "rhel9", "rhel10"],
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle12", "sle15"],
     "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204"],
@@ -305,6 +307,7 @@ RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:centos:centos:7",
     "cpe:/o:redhat:enterprise_linux:8": "cpe:/o:centos:centos:8",
     "cpe:/o:redhat:enterprise_linux:9": "cpe:/o:centos:centos:9",
+    "cpe:/o:redhat:enterprise_linux:10": "cpe:/o:centos:centos:10",
 }
 
 RHEL_SL_CPE_MAPPING = {
@@ -511,6 +514,7 @@ DERIVATIVES_PRODUCT_MAPPING = {
     "centos7": "rhel7",
     "centos8": "rhel8",
     "cs9": "rhel9",
+    "cs10": "rhel10",
     "sl7": "rhel7"
 }
 

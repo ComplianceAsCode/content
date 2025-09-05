@@ -1,3 +1,9 @@
+# In BSI Basic Protection are multiple Requirements in one control.
+# i.e. there are multiple sentences, some including a RFC2119 keyword
+# Since we must increase granularity to create a precise control,
+# we number each sentence with a RFC2119 keyword as a section, grouping sentences, which are logically connected.
+# we number inline in brackets, so the lookup is easy
+# we reference these numbers in comments over each rule or group of rules
 policy: 'BSI-APP-4-4'
 title: 'BSI APP.4.4 Kubernetes'
 id: bsi_app_4_4
@@ -30,22 +36,41 @@ controls:
       programs of the application. Only applications with similar protection needs and similar
       possible attack vectors SHOULD share a Kubernetes cluster.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      These requirements must be implemented organizationally. OpenShift fully supports them.
+      OpenShift simplifies the implementation of the stated requirements for separating applications
+      as well as development and production environments by setting up projects (tenants).
+      Namespaces, networks/network separation, meta tags as well as CPU and memory separation are already
+      configured by OpenShift as required (security-by-design). Special requirements for protection and
+      network zone concepts can also be flexibly and easily mapped using additional measures.
+      This particularly includes the ability to define application classes, operate in multiple,
+      separate clusters, and automatically distribute workloads to protection zones and fire compartments.
+      Particularly in the case of separate clusters, ACM can support rule-based distribution of applications using labels.
+    status: manual
+    rules:
+      - general_namespace_separation
 
   - id: APP.4.4.A2
     title: Planning Automation with CI/CD
     levels:
     - basic
     description: >-
-      Automating the operation of applications in Kubernetes using CI/CD MUST ONLY take place
-      after appropriate planning. The planning MUST cover the entire lifecycle from commissioning
-      to decommissioning, including development, testing, operation, monitoring, and updates. A
+      (1) Automating the operation of applications in Kubernetes using CI/CD MUST ONLY take place
+      after appropriate planning. (2) The planning MUST cover the entire lifecycle from commissioning
+      to decommissioning, including development, testing, operation, monitoring, and updates. (3) A
       roles and rights concept and the securing of Kubernetes Secrets MUST be part of the planning
     notes: >-
-      TBD
-    status: pending
+      Since this requirement is a plan only, we cannot test this with compliance checks.
+      Section 1: This requirement must be implemented organizationally.
+      The documentation at https://docs.openshift.com/container-platform/latest/cicd/pipelines/understanding-openshift-pipelines.html
+      provides information on the planning
+      Section 2: The protective measure is primarily of an organizational nature. OpenShift fully supports them.
+      With the integrated CI/CD technologies Jenkins, Tekton and OpenShift GitOps, OpenShift already offers preconfigured solutions
+      for automated CI/CD pipelines. Of course, other technologies such as Gitlab CI and GitHub Actions can also be integrated.
+      Section 3: Kubernetes secrets are secured by a Role Based Access Control (RBAC) system.
+      Depending on the protection requirement, Kubernetes secrets can be secured via an (encrypted) etcd metadata store or
+      additionally via an integration of Vault components or "sealed secrets" for CD and GitOps mechanisms.
+      Secrets and roles can also be managed centrally using ACM and rolled out consistently to the managed clusters using policies.
+    status: documentation
     rules: []
 
   - id: APP.4.4.A3
@@ -53,22 +78,31 @@ controls:
     levels:
     - basic
     description: >-
-      Kubernetes and all other control plane applications MUST authenticate and authorise each
+      (1) Kubernetes and all other control plane applications MUST authenticate and authorise each
       action taken by a user or, in automated mode, corresponding software. This applies whether
       the actions are taken via a client, a web interface, or a corresponding API. Administrative
       actions MUST NOT be performed anonymously.
-      Each user MUST ONLY be granted the permissions they absolutely require. Unlimited access
+      (2) Each user MUST ONLY be granted the permissions they absolutely require. Unlimited access
       rights MUST be granted in a very restrictive manner.
-      Only a small group of people SHOULD be authorised to define automation processes. Only
+      (3) Only a small group of people SHOULD be authorised to define automation processes. Only
       selected administrators SHOULD be given the right to create or change shares for persistent
       volumes in Kubernetes.
     notes: >-
-      TBD
-    status: pending
+      Section 1: In the default configuration, OpenShift restricts the use of the web console and APIs only to authenticated and authorized users.|
+      Connection to external directory services (LDAP, OIDC and others) is possible.
+      Section 2: OpenShift already offers roles for a least privilege concept. The RBAC roles can be adapted or supplemented with new roles.
+      The preconfigured roles enable easy authorization assignment according to the least-privilege and need-to-know principles.
+      User actions can be tracked via the audit log.
+      Section 3: In the default configuration, persistent storage can only be integrated by cluster administrators.
+      For dynamically provisioned storage, the corresponding provisioners have the necessary authorizations.
+      These provisioners must be set up and configured by an admin. Storage requirements are controlled and restricted using quota mechanisms.
+    status: partial
     rules:
+      # Section 1
       - api_server_anonymous_auth
       - kubelet_anonymous_auth
       - kubeadmin_removed
+      # Section 2 + 3
       - rbac_least_privilege
 
   - id: APP.4.4.A4
@@ -76,14 +110,33 @@ controls:
     levels:
     - basic
     description: >-
-      The operating system kernel of nodes MUST have isolation mechanisms to restrict visibility
-      and resource usage among the corresponding pods (cf. Linux namespaces and cgroups). At
+      (1) The operating system kernel of nodes MUST have isolation mechanisms to restrict visibility
+      and resource usage among the corresponding pods (cf. Linux namespaces and cgroups). (2) At
       minimum, this isolation MUST include process IDs, inter-process communication, user IDs,
       the file system, and the network (including the hostname).
     notes: >-
-      Since these are OS based requirements, they are included in the rhcos4 bsi profile
-    status: pending
-    # rules:
+      Since these are OS based requirements, they are included in the rhcos4 bsi profile.
+      One of the key mechanisms in OCP4 to separate Workloads is SELinux. Thus this should be
+      enforced. Furthermore a admin should check the SCCs as they might lift some of the separations
+      between workloads and/or hosts.
+    status: inherently met
+    rules:
+      # Section 1
+      - coreos_enable_selinux_kernel_argument
+      - selinux_policytype
+      - selinux_state
+      # Section 2
+      - scc_limit_privileged_containers
+      - scc_limit_root_containers
+      # inter process communication
+      - scc_limit_ipc_namespace
+      # process IDs
+      - scc_limit_process_id_namespace
+      # file system
+      - scc_limit_host_dir_volume_plugin
+      # network
+      - scc_limit_net_raw_capability
+      - scc_limit_network_namespace
 
   - id: APP.4.4.A5
     title: Backup in the Cluster
@@ -184,8 +237,9 @@ controls:
       start pods via automation software, this SHOULD be done for each group through separate
       processes that only have the rights necessary for the respective user group.
     notes: >-
-      TBD
-    status: pending
+      This control needs to be adressed on an organizational level. All service accounts used by 
+      automation software need to adhere to the principle of least privilege.
+    status: not applicable
     rules: []
 
   - id: APP.4.4.A11
@@ -218,7 +272,7 @@ controls:
         • Regular data backups.
     notes: >-
       This requirement needs to be adressed in the respective separate systems.
-      However, one requirement (Encrypted communication on all network ports) can partitially be 
+      However, one requirement (Encrypted communication on all network ports) can partitially be
       checked by ensuring that no registry is allowed in over insecure protocols
     status: partial
     rules:

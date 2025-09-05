@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2024-01-25 14:57 UTC
+Last Modified: 2024-04-25 11:09 UTC
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -26,9 +26,11 @@ The following people have contributed to the SCAP Security Guide project
 * Ryan Ballanger <root@rballang-admin-2.fastenal.com>
 * Alex Baranowski <alex@euro-linux.com>
 * Eduardo Barretto <eduardo.barretto@canonical.com>
+* Paul Bastide <pbastide@redhat.com>
 * Molly Jo Bault <Molly.Jo.Bault@ballardtech.com>
 * Andrew Becker <A-Beck@users.noreply.github.com>
 * Gabriel Becker <ggasparb@redhat.com>
+* BenGui <benoit.guillon1@etu.unilim.fr>
 * Alexander Bergmann <abergmann@suse.com>
 * Dale Bewley <dale@bewley.net>
 * Jose Luis BG <bgjoseluis@gmail.com>
@@ -165,6 +167,7 @@ The following people have contributed to the SCAP Security Guide project
 * Zbynek Moravec <zmoravec@redhat.com>
 * Kazuo Moriwaka <moriwaka@users.noreply.github.com>
 * Michael Moseley <michael@eclipse.ncsc.mil>
+* Ross Murphy <RossMurphy@ibm.com>
 * Renaud Métrich <rmetrich@redhat.com>
 * Joe Nall <joe@nall.com>
 * Neiloy <neiloy@redhat.com>
@@ -248,6 +251,7 @@ The following people have contributed to the SCAP Security Guide project
 * Kenneth Stailey <kstailey.lists@gmail.com>
 * Leland Steinke <leland.j.steinke.ctr@mail.mil>
 * Justin Stephenson <jstephen@redhat.com>
+* steven.y.gui <steven_ygui@163.com>
 * Brian Stinson <brian@bstinson.com>
 * Jake Stookey <jakestookey@gmail.com>
 * Jonathan Sturges <jsturges@redhat.com>
@@ -283,6 +287,7 @@ The following people have contributed to the SCAP Security Guide project
 * win97pro <win97pro@protonmail.com>
 * Lucas Yamanishi <lucas.yamanishi@onyxpoint.com>
 * Xirui Yang <xirui.yang@oracle.com>
+* Yuqing Yang <yyq01323329@alibaba-inc.com>
 * yarunachalam <yarunachalam@suse.com>
 * Guang Yee <guang.yee@suse.com>
 * Achilleas John Yfantis <ayfantis@redhat.com>

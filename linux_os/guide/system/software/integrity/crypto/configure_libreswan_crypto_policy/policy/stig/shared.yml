@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} IP tunnels must use FIPS 140-2/3 approved cryptographic algorithms.
+    {{{ full_name }}} IP tunnels must use FIPS 140-2/140-3 approved cryptographic algorithms.
 
 vuldiscussion: |-
     Overriding the system crypto policy makes the behavior of the Libreswan
@@ -7,23 +7,15 @@ vuldiscussion: |-
     fragmented.
 
 checktext: |-
-    Verify that the IPSec service uses the system crypto policy with the following command:
+    Verify that the IPsec service uses the system crypto policy with the following command:
 
-    Note: If the ipsec service is not installed this requirement is Not Applicable.
-
-    $ systemctl status ipsec
-
-    ipsec.service - Internet Key Exchange (IKE) Protocol Daemon for IPsec
-    Loaded: loaded (/usr/lib/systemd/system/ipsec.service; disabled)
-    Active: inactive (dead)
-
-    If the "IPsec" service is active, check to see if it is using the system crypto policy with the following command:
+    Note: If the ipsec service is not installed, this requirement is Not Applicable.
 
     $ sudo grep include /etc/ipsec.conf /etc/ipsec.d/*.conf
 
     /etc/ipsec.conf:include /etc/crypto-policies/back-ends/libreswan.config
 
-    If the "IPsec" service is active and the ipsec configuration file does not contain "include /etc/crypto-policies/back-ends/libreswan.config", this is a finding.
+    If the ipsec configuration file does not contain "include /etc/crypto-policies/back-ends/libreswan.config", this is a finding.
 
 fixtext: |-
     Configure Libreswan to use the system cryptographic policy.
@@ -31,3 +23,6 @@ fixtext: |-
     Add the following line to "/etc/ipsec.conf":
 
     include /etc/crypto-policies/back-ends/libreswan.config
+
+vuln_discussion: |-
+    Overriding the system crypto policy makes the behavior of the Libreswan service violate expectations, and makes system configuration more fragmented.

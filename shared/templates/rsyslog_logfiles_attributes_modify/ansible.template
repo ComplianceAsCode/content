@@ -25,7 +25,7 @@
   ansible.builtin.shell: |
     {{%- if not 'debian' in product %}}
     set -o pipefail{{% endif %}}
-    awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(include\\(|\\s*)file=\"(\\S+)\".*","\\2",1); if($0!=nf){print nf}}' {{ rsyslog_etc_config }} || true
+    awk '/)/{f=0} /include\(/{f=1} f{ nf=gensub("^(include\\(|\\s*)file=\"(\\S+)\".*","\\2",1); if($0!=nf){ print nf }}' {{ rsyslog_etc_config }} || true
   register: rsyslog_new_inc
   changed_when: False
 
@@ -63,7 +63,7 @@
     {{%- if not 'debian' in product %}}
     set -o pipefail{{% endif %}}
     grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" {{ item.1.path }} | \
-    grep -aoP "File\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)" | \
+    grep -aoP "\bFile\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)" | \
     grep -oE "\"([/[:alnum:][:punct:]]*)\"" | \
     tr -d "\""|| true
   loop: "{{ rsyslog_config_files.results | default([]) | subelements('files') }}"

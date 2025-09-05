@@ -5,8 +5,8 @@
     timedatectl status | grep -i 'Time zone'| grep -iv 'UTC\|GMT' || true
   register: check_tz
   failed_when: "check_tz.rc not in [ 0 , 1 ]"
- 
+
 - name: Configure OS to use 'UTC' timezone
-  command: timedatectl set-timezone UTC 
+  command: timedatectl set-timezone UTC
   become: yes
   when: check_tz.rc == 0

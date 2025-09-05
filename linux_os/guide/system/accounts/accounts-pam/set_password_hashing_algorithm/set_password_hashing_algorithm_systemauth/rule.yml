@@ -3,7 +3,7 @@ documentation_complete: true
 
 title: "Set PAM''s Password Hashing Algorithm"
 
-{{% if product in ["sle12", "sle15"] %}}
+{{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
 {{% else %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/system-auth" %}}
@@ -19,6 +19,8 @@ description: |-
     <br />
     {{% if product in ["sle12", "sle15"] %}}
     <pre>password    required    pam_unix.so sha512 <i>other arguments...</i></pre>
+    {{% elif 'ubuntu' in product %}}
+    <pre>password    [success=1 default=ignore]   pam_unix.so sha512 <i>other arguments...</i></pre>
     {{% else %}}
     <pre>password    sufficient    pam_unix.so sha512 <i>other arguments...</i></pre>
     {{% endif %}}
@@ -50,12 +52,7 @@ identifiers:
     cce@sle15: CCE-85565-0
 
 references:
-    anssi: BP28(R32)
-    ccn@rhel9: A.19.SEC-RHEL3
     cis-csc: 1,12,15,16,5
-    cis@rhel7: 4.4.2.4.3
-    cis@rhel8: 4.4.3.4.3
-    cis@rhel9: 5.5.4
     cjis: 5.6.2.2
     cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     cui: 3.13.11
@@ -67,7 +64,6 @@ references:
     nist: IA-5(c),IA-5(1)(c),CM-6(a)
     nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
     pcidss: Req-8.2.1
-    pcidss4: "8.3.2"
     srg: SRG-OS-000073-GPOS-00041,SRG-OS-000120-GPOS-00061
     stigid@ol7: OL07-00-010200
     stigid@ol8: OL08-00-010159
@@ -75,6 +71,7 @@ references:
     stigid@rhel8: RHEL-08-010159
     stigid@sle12: SLES-12-010230
     stigid@sle15: SLES-15-020170
+    stigid@ubuntu2204: UBTU-22-611055
 
 ocil_clause: '"sha512" is missing, or is commented out'
 
@@ -86,6 +83,8 @@ ocil: |-
     <pre>$ sudo grep "^password.*pam_unix\.so.*sha512" {{{ pam_passwd_file_path }}}
     {{% if product in ["sle12", "sle15"] -%}}
     password required pam_unix.so sha512
+    {{% elif 'ubuntu' in product %}}
+    password [success=1 default=ignore] pam_unix.so sha512
     {{% else %}}
     password sufficient pam_unix.so sha512
     {{%- endif -%}}
@@ -94,7 +93,7 @@ ocil: |-
 platform: package[pam]
 
 fixtext: |-
-    {{% if product in ['ol9', 'rhel9'] -%}}
+    {{% if product in ['ol9', 'rhel9', 'ubuntu2204'] -%}}
     Configure {{{ full_name }}} to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.
     {{% else %}}
     Configure {{{ full_name }}} to use a FIPS 140-2 approved cryptographic hashing algorithm for system authentication.
@@ -103,6 +102,8 @@ fixtext: |-
     Edit/modify the following line in the "{{{ pam_passwd_file_path }}}" file to include the sha512 option for pam_unix.so:
     {{% if product in ['sle12', 'sle15'] -%}}
     password required pam_unix.so sha512
+    {{% elif 'ubuntu' in product %}}
+    password [success=1 default=ignore] pam_unix.so sha512
     {{% else %}}
     password sufficient pam_unix.so sha512
     {{%- endif %}}

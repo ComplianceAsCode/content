@@ -1,9 +1,9 @@
 controls:
     -   id: SRG-OS-000343-GPOS-00134
         levels:
-            - medium
+            - low
         title: {{{ full_name }}} must immediately notify the SA and ISSO (at a minimum)
-            when allocated audit record storage volume reaches 75% of the repository maximum
+            when allocated audit record storage volume reaches 75 percent of the repository maximum
             audit record storage capacity.
         rules:
             - auditd_data_retention_action_mail_acct
@@ -12,4 +12,7 @@ controls:
             - var_auditd_admin_space_left_percentage=5pc
             - auditd_data_retention_space_left_action
             - auditd_data_retention_space_left_percentage
+            - var_auditd_space_left_percentage=25pc
+            - var_auditd_action_mail_acct=root
+            - var_auditd_space_left_action=email
         status: automated

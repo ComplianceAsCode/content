@@ -7,7 +7,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 #}}
 {{%- macro oval_affected(products) %}}
 <affected family="unix">
-{{{ prodtype_to_platform(products)|indent(2) }}}
+{{{ product_to_platform(products)|indent(2) }}}
 </affected>
 {{%- endmacro %}}
 
@@ -132,7 +132,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
-    {{% set dir_path = path + ".d" %}}          
+    {{% set dir_path = path + ".d" %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
         {{{- oval_line_in_file_criterion(path, parameter) }}}
@@ -1057,9 +1057,9 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
         <extend_definition comment="sshd is required or requirement is unset"
           definition_ref="sshd_required_or_unset" />
         {{% if product in ['opensuse', 'sle12','sle15'] %}}
-        <extend_definition comment="rpm package openssh installed" 
+        <extend_definition comment="rpm package openssh installed"
           definition_ref="package_openssh_installed" />
-        {{% else %}}  
+        {{% else %}}
         <extend_definition comment="rpm package openssh-server installed"
           definition_ref="package_openssh-server_installed" />
         {{% endif %}}
@@ -1151,12 +1151,29 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 :param object_id: Object id to be created.
 :type object_id: str
+:param include_root: If set to true, the "root" user account will be included to the list. Default: False.
+:type include_root: bool
 
 #}}
-{{%- macro create_interactive_users_list_object(object_id) -%}}
+{{%- macro create_interactive_users_list_object(object_id, include_root=False) -%}}
   {{%- set ignored_users_list="(nobody|nfsnobody)" %}}
 
   <unix:password_object id="{{{ object_id }}}" version="1">
+    <set>
+      {{% if include_root %}}
+        <object_reference>{{{ object_id }}}_root</object_reference>
+      {{% endif %}}
+      <object_reference>{{{ object_id }}}_others</object_reference>
+    </set>
+  </unix:password_object>
+
+  {{% if include_root %}}
+    <unix:password_object id="{{{ object_id }}}_root" version="1">
+      <unix:username datatype="string" operation="equals">root</unix:username>
+    </unix:password_object>
+  {{% endif %}}
+
+  <unix:password_object id="{{{ object_id }}}_others" version="1">
     <unix:username datatype="string" operation="pattern match">.*</unix:username>
     <filter action="include">state_{{{ rule_id }}}_users_uids</filter>
     <filter action="exclude">state_{{{ rule_id }}}_users_ignored</filter>
@@ -1179,7 +1196,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 {{#
   Extract from /etc/passwd a list of specified fields of local interactive users.
-  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin shell.
+  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin and /bin/false shell.
 
   Unlike macro create_interactive_users_list_object, this macro gives list that contains only local users, because it doesn't use the OVAL "unix:password_object" element, but it merely parses /etc/passwd using "ind:textfilecontent54_object".
 
@@ -1220,7 +1237,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
       regular expression which ensures that the third field in the entry
       contains at least 4 digits (or more) and therefore the regular
       expression doesn't match entries with values 999 or less. -->
-    <ind:pattern operation="pattern match">^([^:]*):[^:]*:\d{4,}:(?:[^:]*:){3}(?!\/sbin\/nologin)[^:]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^([^:]*):[^:]*:\d{4,}:(?:[^:]*:){3}(?!(\/usr)?(\/sbin\/nologin|\/bin\/false))[^:]*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
     <filter action="exclude">state_{{{ object_id }}}_users_ignored</filter>
   </ind:textfilecontent54_object>
@@ -1235,7 +1252,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 {{#
   Extract from /etc/passwd a list of home directories of local interactive users.
-  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin shell.
+  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin and /bin/false shell.
 
   Unlike macro create_interactive_users_list_object, this macro gives list that contains only local users, because it doesn't use the OVAL "unix:password_object" element, but it merely parses /etc/passwd using "ind:textfilecontent54_object".
 
@@ -1254,7 +1271,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 {{#
   Extract from /etc/passwd a list of User IDs of local interactive users.
-  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin shell.
+  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin and /bin/false shell.
 
   Unlike macro create_interactive_users_list_object, this macro gives list that contains only local users, because it doesn't use the OVAL "unix:password_object" element, but it merely parses /etc/passwd using "ind:textfilecontent54_object".
 
@@ -1273,7 +1290,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 {{#
   Extract from /etc/passwd a list of Group IDs of local interactive users.
-  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin shell.
+  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin and /bin/false shell.
 
   Unlike macro create_interactive_users_list_object, this macro gives list that contains only local users, because it doesn't use the OVAL "unix:password_object" element, but it merely parses /etc/passwd using "ind:textfilecontent54_object".
 

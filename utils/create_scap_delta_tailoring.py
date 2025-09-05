@@ -102,6 +102,20 @@ get_platform_rules.__annotations__ = {'product': str, 'json_path': str, 'resolve
                                       'build_root': str, 'return': list}
 
 
+def _open_rule_obj(resolved_rules_dir, rule, product, env_yaml):
+    if resolved_rules_dir:
+        return rule
+    try:
+        rule_obj = handle_rule_yaml(
+            product, rule['id'], rule['dir'], rule['guide'], env_yaml)
+    except ssg.yaml.DocumentationNotComplete:
+        msg = 'Rule %s throw DocumentationNotComplete' % rule['id']
+        sys.stderr.write(msg)
+        # Happens on non-debug build when a rule is "documentation-incomplete"
+        return None
+    return rule_obj
+
+
 def get_implemented_stigs(product, root_path, build_config_yaml_path,
                           reference_str, json_path, resolved_rules_dir,
                           build_root):
@@ -114,19 +128,13 @@ def get_implemented_stigs(product, root_path, build_config_yaml_path,
 
     known_rules = dict()
     for rule in platform_rules:
-        if resolved_rules_dir:
-            rule_obj = rule
-        else:
-            try:
-                rule_obj = handle_rule_yaml(product, rule['id'],
-                                            rule['dir'], rule['guide'], env_yaml)
-            except ssg.yaml.DocumentationNotComplete:
-                sys.stderr.write('Rule %s throw DocumentationNotComplete' % rule['id'])
-                # Happens on non-debug build when a rule is "documentation-incomplete"
-                continue
-
-        if reference_str in rule_obj['references'].keys():
-            ref = rule_obj['references'][reference_str]
+        rule_obj = _open_rule_obj(resolved_rules_dir, rule, product, env_yaml)
+        if not rule_obj:
+            continue
+        if reference_str not in rule_obj['references'].keys():
+            continue
+        refs = rule_obj['references'][reference_str]
+        for ref in refs:
             if ref in known_rules:
                 known_rules[ref].append(rule['id'])
             else:

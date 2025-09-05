@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: Verify User Who Owns /etc/selinux Directory
+
+description: '{{{ describe_file_owner(file="/etc/selinux", owner="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/selinux directory by the root user is important
+    because this directory hosts SELinux configuration. Protection of this
+    directory is critical for system security. Assigning the ownership to root
+    ensures exclusive control of the SELinux configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86269-8
+    cce@rhel8: CCE-86270-6
+    cce@rhel9: CCE-86271-4
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/selinux", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/selinux", owner="root") }}}
+
+fixtext: '{{{ fixtext_file_owner(file="/etc/selinux", owner="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_owner(file="/etc/selinux", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/selinux/
+        fileuid: '0'

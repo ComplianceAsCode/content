@@ -1,7 +1,7 @@
 # Building ComplianceAsCode
 
 ## Fast Track
-Ok, if you are eager to start contributing, seeing the things happening faster and are passionate about automation, this is what you need for now. Every technical procedure described in the next sessions of this guide is covered by the [ansible-role-openscap](https://galaxy.ansible.com/marcusburghardt/ansible_role_openscap) role.
+Ok, if you are eager to start contributing, seeing the things happening faster and are passionate about automation, this is what you need for now. Every technical procedure described in the next sessions of this guide is covered by the [openscap](https://galaxy.ansible.com/ui/standalone/roles/marcusburghardt/openscap/) role.
 
 Do you prefer to see it working before starting to use it? Please, take a look in this demo:
 [![ansible-role-openscap demo](https://img.youtube.com/vi/YI5lo1P0gw0/3.jpg)](http://www.youtube.com/watch?v=YI5lo1P0gw0 "watch an ansible-role-openscap demo")
@@ -13,11 +13,11 @@ dnf install -y ansible python3
 ```
 Then you can download the ansible role:
 ```bash
-ansible-galaxy install marcusburghardt.ansible_role_openscap
+ansible-galaxy install marcusburghardt.openscap
 ```
 Now it is time to run it. To help with this, the function also comes with a pre-configured Ansible environment for this. It is recommended to use this environment in order to ensure that it is only applicable to this context, not impacting any other possible Ansible settings you may have on your computer:
 ```bash
-cp -r ~/.ansible/roles/marcusburghardt.ansible_role_openscap/files/Ansible_Samples/ ~/Ansible
+cp -r ~/.ansible/roles/marcusburghardt.openscap/files/Ansible_Samples/ ~/Ansible
 cd ~/Ansible/
 ansible-playbook -K ansible_openscap.yml
 ```
@@ -299,6 +299,24 @@ make -j4 rhel7-tables  # HTML tables for RHEL7
 make -j4 rhel7-profile-bash-scripts  # remediation Bash scripts for all RHEL7 profiles
 make -j4 rhel7-profile-playbooks # Ansible Playbooks for all RHEL7 profiles
 make -j4 rhel7  # everything above for RHEL7
+```
+
+### Building thin The Datastreams
+
+A thin Datastream is a Datastream that contains only one rule with minimal SCAP parts, without any additional OVAL checks, XCCDF groups, profiles, and CPE checks.
+
+This command will generate thin Datastreams for each rule for the product.
+The thin Datastreams are located in the build `build/thin_ds` directory.
+
+```bash
+    ./build_product fedora --thin
+```
+
+This command generates a thin Datastream for the specific rule specified as a parameter.
+The thin Datastream is stored under the normal Datastream name (for example, `ssg-fedora-ds.xml`).
+
+```bash
+    ./build_product fedora --rule-id enable_fips_mode
 ```
 
 ### Configuring CMake options using GUI

@@ -10,12 +10,12 @@ fi
 regex="\s+[0-9]+\s+[0-9]+\s+ACCEPT\s+all\s+lo\s+\*\s+::\/0\s+::\/0[[:space:]]+[0-9]+\s+[0-9]+\s+DROP\s+all\s+\*\s+\*\s+::1\s+::\/0"
 
 # Check chain INPUT for loopback related rules
-if ! ip6tables -L INPUT -v -n | grep -Ezq "$regex" ; then
+if ! ip6tables -L INPUT -v -n -x | grep -Ezq "$regex" ; then
     exit "$XCCDF_RESULT_FAIL"
 fi
 
  # Check chain OUTPUT for loopback related rules
-if ! ip6tables -L OUTPUT -v -n | grep -Eq "\s[0-9]+\s+[0-9]+\s+ACCEPT\s+all\s+\*\s+lo\s+::\/0\s+::\/0" ; then
+if ! ip6tables -L OUTPUT -v -n -x | grep -Eq "\s[0-9]+\s+[0-9]+\s+ACCEPT\s+all\s+\*\s+lo\s+::\/0\s+::\/0" ; then
     exit "$XCCDF_RESULT_FAIL"
 fi
 

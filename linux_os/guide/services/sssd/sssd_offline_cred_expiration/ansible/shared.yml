@@ -6,7 +6,7 @@
 - name: "Test for domain group"
   command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
-  ignore_errors: yes
+  failed_when: false
   changed_when: False
   check_mode: no
 
@@ -33,3 +33,16 @@
     value: 1
     create: yes
     mode: 0600
+
+- name: Find all the conf files inside /etc/sssd/conf.d/
+  find:
+    paths: "/etc/sssd/conf.d/"
+    patterns: "*.conf"
+  register: sssd_conf_d_files
+
+- name: Fix offline_credentials_expiration configuration in /etc/sssd/conf.d/
+  ansible.builtin.replace:
+    path: "{{ item.path }}"
+    regexp: '[^#]*offline_credentials_expiration.*'
+    replace: 'offline_credentials_expiration = 1'
+  with_items: "{{ sssd_conf_d_files.files }}"

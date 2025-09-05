@@ -68,6 +68,4 @@ template:
         filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
         yamlpath: ".tokenConfig.accessTokenMaxAgeSeconds"
         check_existence: "only_one_exists"
-        values:
-          - value: ".*"
-            operation: "pattern match"
+        xccdf_variable: var_oauth_token_maxage

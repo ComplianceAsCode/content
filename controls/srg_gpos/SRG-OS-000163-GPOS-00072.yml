@@ -12,20 +12,5 @@ controls:
             - sshd_set_idle_timeout
             - sshd_set_keepalive
             - accounts_tmout
-            - var_accounts_tmout=10_min
-        status_justification: |-
-            {{{ full_name }}} does not have configuration options to
-            meet this requirement. There is no option to configure sshd timeout
-            interval. {{{ full_name }}} ships OpenSSH newer than
-            version 8.2. The sshd_config options ClientAliveInterval and
-            ClientAliveCountMax don't work on versions newer than v8.2 as they
-            used to work before this release.  For SSH earlier than v8.2, a
-            ClientAliveCountMax value of 0 causes an idle timeout precisely
-            when the ClientAliveInterval is set.  Starting with v8.2, a value
-            of 0 disables the timeout functionality completely. If the option
-            is set to a number greater than 0, then the idle session will be
-            disconnected after ClientAliveInterval * ClientAliveCountMax
-            seconds.
-        mitigation: |-
-            There is no mitigation.
+            - var_accounts_tmout=15_min
         status: automated

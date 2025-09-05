@@ -35,7 +35,8 @@ def create_ini_file_template(creds_file):
         with open(new_creds_file, mode='w', encoding='utf-8') as file:
             file.write(
                 '[DEFAULT]\n'
-                'github_token = <generate your token in https://github.com/settings/tokens>\n')
+                'github_token = <generate your token in https://github.com/settings/tokens>\n'
+                '# Include these scopes: "repo:status", "repo_deployment" and "public_repo"')
         print(f'Great! {new_creds_file} was created! Edit it to include your personal token.')
     except Exception as e:
         print(f'Error: {e}')
@@ -240,10 +241,15 @@ def create_repo_milestone(repo, name) -> None:
     latest_release = get_latest_release(repo)
     estimated_release_date = get_next_release_date(latest_release.published_at)
     if get_confirmation(f'Are you sure about creating the "{name}" milestone?'):
+        future_release_date = get_next_release_date(estimated_release_date)
+        future_stabilization_date = get_next_stabilization_date(future_release_date)
+        formatted_date_stabilization = get_date_for_message(future_stabilization_date)
+        milestone_description = (
+            f'Milestone for the release {name}'
+            f'Stabilization phase starts on {formatted_date_stabilization}')
         try:
             repo.create_milestone(
-                title=name, description=f'Milestone for the release {name}',
-                due_on=estimated_release_date)
+                title=name, description=milestone_description, due_on=estimated_release_date)
         except Exception as e:
             print(f'Error: {e}')
             exit(1)
@@ -333,8 +339,8 @@ def get_next_stabilization_date(release_date) -> datetime:
 
 
 def get_next_release_date(latest_release_date) -> datetime:
-    two_months_ahead = latest_release_date + timedelta(days=60)
-    return get_friday_that_follows(two_months_ahead)
+    three_months_ahead = latest_release_date + timedelta(days=90)
+    return get_friday_that_follows(three_months_ahead)
 
 
 def is_next_release_in_progress(repo) -> bool:
@@ -362,6 +368,13 @@ def get_date_for_message(date) -> datetime:
     return date.strftime("%B %d, %Y")
 
 
+def get_git_config_username() -> str:
+    user_name = subprocess.run(
+        ['git', 'config', 'user.name'],
+        capture_output=True, text=True, cwd=get_repo_root_path())
+    return user_name.stdout
+
+
 def get_release_highlights(release) -> str:
     highlights = []
     for line in release.body.split('\r\n'):
@@ -387,6 +400,8 @@ def get_release_start_message(repo) -> str:
     future_stabilization_date = get_next_stabilization_date(future_release_date)
     future_date_stabilization = get_date_for_message(future_stabilization_date)
 
+    message_author = get_git_config_username()
+
     template = f'''
         Subject: stabilization of v{next_release_version}
 
@@ -403,7 +418,9 @@ def get_release_start_message(repo) -> str:
         The next version, {future_version}, is scheduled to be released on {future_date},
         with the stabilization phase starting on {future_date_stabilization}.
 
-        Regards,'''
+        Regards,
+
+        {message_author}'''
     return template
 
 
@@ -414,6 +431,7 @@ def get_release_end_message(repo) -> str:
     last_commit = get_contributors_last_commit()
     new_contributors = get_new_contributors(last_commit)
     released_version = get_latest_version(repo)
+    message_author = get_git_config_username()
 
     for asset in latest_release.get_assets():
         if asset.content_type == 'application/x-bzip2':
@@ -453,7 +471,9 @@ SHA-512 hash: {source_tarball_hash}
 
 Thank you to everyone who contributed!
 
-Regards,'''
+Regards,
+
+{message_author}'''
     return template
 
 

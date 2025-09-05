@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{- oval_metadata("This test makes sure that /usr/bin/sudo is owned by the group set in var_sudo_dedicated_group") }}}
-    <criteria>
+    <criteria operator="AND">
       <criterion comment="Check if dedicated group exists" test_ref="test_dedicated_group_exists" />
       <criterion comment="Check file group ownership of /usr/bin/sudo" test_ref="test_sudo_owned_by_dedicated_group" />
     </criteria>
@@ -14,19 +14,17 @@
   <unix:file_object comment="Fetch /usr/bin/sudo" id="object_sudo_file" version="1">
       <unix:filepath>/usr/bin/sudo</unix:filepath>
   </unix:file_object>
-  <unix:file_state id="state_sudo_file_gid_is_dedicated_group_gid" version="1">
-    <unix:group_id datatype="int" var_ref="local_var_sudo_dedicated_group_gid" />
-  </unix:file_state>
 
-  <local_variable id="local_var_sudo_dedicated_group_gid" datatype="int" comment="GID of the dedicated group" version="1">
-    <object_component object_ref="sudo_dedicated_group_gid" item_field="subexpression" />
-  </local_variable>
+  <unix:file_state id="state_sudo_file_gid_is_dedicated_group_gid" version="1">
+    <unix:group_id datatype="int" operation="not equal">0</unix:group_id>
+  </unix:file_state>
 
   <ind:textfilecontent54_test id="test_dedicated_group_exists"
       comment="Check if dedicated group is listed in /etc/group" check="all"
       check_existence="only_one_exists" version="1">
     <ind:object object_ref="sudo_dedicated_group_gid" />
   </ind:textfilecontent54_test>
+
   <ind:textfilecontent54_object id="sudo_dedicated_group_gid"
       comment="Grab GID of group set in var_sudo_dedicated_group" version="1">
     <ind:filepath operation="equals">/etc/group</ind:filepath>

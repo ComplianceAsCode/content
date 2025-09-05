@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R12
+    version: V2R13
     SMEs:
         - abergmann
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 12'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 12 V2R12.
+    DISA STIG for SUSE Linux Enterprise 12 V2R13.
 
 selections:
     - sshd_approved_macs=stig
@@ -70,6 +70,7 @@ selections:
     - accounts_user_interactive_home_directory_defined
     - accounts_user_interactive_home_directory_exists
     - account_temp_expire_date
+    - agent_mfetpd_running
     - aide_build_database
     - aide_check_audit_tools
     - aide_periodic_cron_checking
@@ -203,6 +204,7 @@ selections:
     - gui_login_dod_acknowledgement
     - installed_OS_is_FIPS_certified
     - installed_OS_is_vendor_supported
+    - install_mcafee_antivirus
     - install_smartcard_packages
     - is_fips_mode_enabled
     - kernel_module_usb-storage_disabled
@@ -221,6 +223,7 @@ selections:
     - package_audit-audispd-plugins_installed
     - package_audit_installed
     - package_mailx_installed
+    - package_mcafeetp_installed
     - package_pam_apparmor_installed
     - package_SuSEfirewall2_installed
     - package_telnet-server_removed

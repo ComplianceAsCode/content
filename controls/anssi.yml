@@ -14,6 +14,7 @@ levels:
   - id: high
     inherits_from:
     - enhanced
+reference_type: anssi
 
 controls:
   - id: R1
@@ -73,8 +74,11 @@ controls:
     description: >-
       It is recommended to apply UEFI Secure Boot configuration of the distribution.
     notes: >-
-      Enabling Secure Boot requires one to navigate the BIOS, and we don't have
-      the means to automate it.
+      Secure Boot needs to be enabled in the UEFI Setup program.
+      Enabling Secure Boot can't be accomplished from the operating system.
+      Also, OVAL doesn't provide any reliable ways to detect the Secure Boot status.
+      Therefore, we will not provide any rules to automate this requirement.
+      We recommend checking the Secure Boot status using the `mokutil --sb-state` or `bootctl status` commands.
     status: manual
 
   - id: R4
@@ -571,8 +575,7 @@ controls:
     levels:
     - high
     notes: >-
-      As R18 configures hardened management of kernel modules we don't check nor remediate
-      for CONFIG_MODULES=n
+      If the system can function without support for kernel modules, module support should be disabled by setting CONFIG_MODULES=n.
     status: automated
     rules:
     - kernel_config_kexec
@@ -621,6 +624,7 @@ controls:
     status: automated
     rules:
     # CONFIG_DEFAULT_MMAP_MIN_ADDR=32768
+    - kernel_config_default_mmap_min_addr
     - kernel_config_randomize_base
     - kernel_config_arm64_sw_ttbr0_pan
     - kernel_config_unmap_kernel_at_el0
@@ -647,8 +651,8 @@ controls:
     - partition_for_opt
     - mount_option_opt_nosuid
 
-    # /tmp nosuid, nodev, noexec Temporary files. Must contain only non-executable elements. Cleaned after reboot
-    - partition_for_tmp
+    # /tmp nosuid, noexec temporary files. Must contain only non-executable elements. Cleaned after reboot. Prefferred tmpfs.
+    - systemd_tmp_mount_enabled
     - mount_option_tmp_nosuid
     - mount_option_tmp_noexec
 
@@ -687,16 +691,33 @@ controls:
   - id: R29
     title: Access Restrictions on /boot
     levels:
-    - enhanced
+      - enhanced
     description: >-
-      When possible, the /boot partition should not be mounted. In any case, access to
-      the /boot directory must only be allowed to the root user.
+      When possible, it is recommended not to automatically mount the /boot partition.
+      In any case, access to the /boot folder should only be allowed for the root user.
     notes: >-
-      The rule disabling auto-mount for /boot is commented until the rules checking for other
-      /boot mount options are updated to handle this usecase.
-    status: supported
-    #rules:
-    #- mount_option_boot_noauto
+      The /boot partition mounted is essential to perform certain administrative actions, for
+      example updating the kernel. Therefore, for better stability, in this requirement only rules
+      to restrict the access to /boot are selected. It is not changed how the /boot is mounted.
+    status: automated
+    rules:
+      - file_groupowner_efi_grub2_cfg
+      - file_groupowner_grub2_cfg
+      - file_owner_efi_grub2_cfg
+      - file_owner_grub2_cfg
+      - file_permissions_efi_grub2_cfg
+      - file_permissions_grub2_cfg
+      - file_groupowner_efi_user_cfg
+      - file_groupowner_user_cfg
+      - file_owner_efi_user_cfg
+      - file_owner_user_cfg
+      - file_permissions_efi_user_cfg
+      - file_permissions_user_cfg
+      - file_groupowner_systemmap
+      - file_owner_systemmap
+      - file_permissions_systemmap
+    related_rules:
+      - mount_option_boot_noauto
 
   - id: R30
     title: Removal of unused user accounts
@@ -716,9 +737,10 @@ controls:
     levels:
     - minimal
     notes: >-
-      The rules selected below establish a general password strength baseline of 100 bits,
-      inspired by DAT-NT-001 and the "Password Strenght Calculator"
-      (https://www.ssi.gouv.fr/administration/precautions-elementaires/calculer-la-force-dun-mot-de-passe/).
+      The rules selected below establish a general password strength baseline
+      of 100 bits, based on the recommendations of the technical note
+      "Recommandations relatives à l'authentification multifacteur et aux mots de passe"
+      (https://cyber.gouv.fr/publications/recommandations-relatives-lauthentification-multifacteur-et-aux-mots-de-passe)
 
       The baseline should be reviewed and tailored to the system's use case and needs.
     status: automated
@@ -726,16 +748,16 @@ controls:
     # enable authselect to support following rules
     - enable_authselect
 
-    # Renew passwords every 90 days
-    - var_accounts_maximum_age_login_defs=90
-    - accounts_maximum_age_login_defs
+    # Set the maximum password age for the root account to 1 year
+    - var_accounts_maximum_age_root=365
+    - accounts_password_set_max_life_root
 
-    # Ensure passwords with minimum of 18 characters
-    - var_password_pam_minlen=18
+    # Ensure passwords with minimum of 15 characters
+    - var_password_pam_minlen=15
     - accounts_password_pam_minlen
     - cracklib_accounts_password_pam_minlen
     # Enforce password lenght for new accounts
-    - var_accounts_password_minlen_login_defs=18
+    - var_accounts_password_minlen_login_defs=15
     - accounts_password_minlen_login_defs
     # Require at Least 1 Special Character in Password
     - var_password_pam_ocredit=1
@@ -763,7 +785,7 @@ controls:
     # same as above but for pam_tally2 module
     - accounts_passwords_pam_tally2_deny_root
     - var_password_pam_tally2=5
-    - accounts_passwords_pam_tally2  
+    - accounts_passwords_pam_tally2
     - accounts_passwords_pam_tally2_unlock_time
     - var_accounts_passwords_pam_tally2_unlock_time=1800
     # Automatically unlock users after 15 min to prevent DoS
@@ -775,30 +797,19 @@ controls:
     - accounts_password_pam_unix_remember
 
   - id: R32
-    title: User session timeout
+    title: Configuring a timeout on local user sessions
     levels:
     - intermediary
     description: >-
-      Remote user sessions (shell access, graphical clients) must be closed
-      after a certain period of inactivity.
+      Local user sessions (console TTY, graphical session) must be locked after a certain period of inactivity.
     notes: >-
-      There is no specific capability to check remote user inactivity, but some shells allow the
-      session inactivity time out to be configured via TMOUT variable.
-      In OpenSSH < 8.2 the inactivity of the user is implied from the network inactivity.
-      The server is configured to disconnect sessions if no data has been received within the idle timeout,
-      regardless of liveness status (ClientAliveCountMax is 0 and ClientAliveInterval is > 0).
-      In OpenSSH >= 8.2 there is no way to disconnect sessions based on client liveness.
-      The semantics of "ClientAliveCountMax 0" has changed from "disconnect on first timeout" to
-      "don't disconnect network inactive sessions". The server either probes for the client liveness
-      or keeps inactive sessions connected.
-    status: supported
+      ANSSI doesn't specify the length of the inactivity period, we are choosing 10 minutes as reasonable number.
+    status: automated
     rules:
+    - logind_session_timeout
+    - var_logind_session_timeout=10_minutes
     - accounts_tmout
     - var_accounts_tmout=10_min
-    - sshd_set_idle_timeout
-    - sshd_idle_timeout_value=10_minutes
-    - sshd_set_keepalive
-    - var_sshd_set_keepalive=0
 
   - id: R33
     title: Use of dedicated administration accounts
@@ -844,26 +855,28 @@ controls:
     status: manual
 
   - id: R36
-    title: umask value
+    title: Changing the default value of UMASK
     levels:
-    - enhanced
+      - enhanced
     description: >-
-      The system umask must be set to 0027 (by default, any created file can
-      only be read by the user and his group, and be editable only by his owner).
-      The umask for users must be set to 0077 (any file created by a user is
-      readable and editable only by him).
+      The default value of UMASK for the shells must be set to 0077 in order to allow read and
+      write access to its owner only. This value can be defined in the configuration file
+      /etc/profile that most shells (bash, dash, ksh…) will use.
+      The default value of UMASK for services must be determined for each service, but in most
+      cases, it should be set to 0027 (or more restrictive). This allows read access to its owner
+      and its group, and a full access to its owner. For services such as systemd, this value can
+      be defined directly in the configuration file of the service with the directive UMask=0027.
     notes: >-
-      There is no simple way to check and remediate different umask values for
-      system and standard users reliably.
-      The different values are set in a conditional clause in a shell script
-      (e.g. /etc/profile or /etc/bashrc).
-      The current implementation checks and fixes both umask to the same value.
-    status: supported
+      There are cases of Systemd services which would stop working in case umask
+      would be configured to 0027 for all services. One such example is the
+      Cups service which needs to create sockets which need to be available for
+      all users. Therefore, this part of the requirement can't be automated.
+    status: automated
     rules:
-    - var_accounts_user_umask=077
-    - accounts_umask_etc_login_defs
-    - accounts_umask_etc_profile
-    - accounts_umask_etc_bashrc
+      - accounts_umask_etc_bashrc
+      - accounts_umask_etc_login_defs
+      - accounts_umask_etc_profile
+      - var_accounts_user_umask=077
 
   - id: R37
     title: Using access control features
@@ -888,13 +901,11 @@ controls:
     description: >-
       A group dedicated to the use of sudo must be created, and only members of this
       group are allowed to execute sudo.
-    notes: >-
-      The rules below create and configure a group named sudogrp, to change the group customize the
-      value of var_sudo_dedicated_group.
     status: automated
     rules:
     - sudo_dedicated_group
     - var_sudo_dedicated_group=sudogrp
+    - file_permissions_sudo
 
   - id: R39
     title: Sudo configuration guidelines
@@ -911,15 +922,13 @@ controls:
     - sudo_add_env_reset
 
   - id: R40
-    title: User authentication running sudo
+    title: Privileges of target sudo users
+    description: The targeted users of a rule should be, as much as possible, non privileged users.
     levels:
-    - minimal
-    description: >-
-      The calling user must be authenticated before running any command with sudo.
+    - intermediary
     status: automated
     rules:
-    - sudo_remove_nopasswd
-    - sudo_remove_no_authenticate
+    - sudoers_no_root_target
 
   - id: R41
     title: Limiting the number of commands requiring the use of the EXEC option
@@ -1038,12 +1047,76 @@ controls:
     status: automated
     rules:
     - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_gshadow
+    - file_groupowner_etc_gshadow
     - file_permissions_etc_gshadow
+    - file_owner_etc_passwd
+    - file_groupowner_etc_passwd
     - file_permissions_etc_passwd
+    - file_owner_etc_group
+    - file_groupowner_etc_group
     - file_permissions_etc_group
+    - file_owner_etc_shells
+    - file_groupowner_etc_shells
+    - file_permissions_etc_shells
+    - accounts_user_dot_group_ownership
+    - accounts_user_dot_user_ownership
+    - accounts_users_home_files_groupownership
+    - accounts_users_home_files_ownership
+    - accounts_users_home_files_permissions
+    - file_permission_user_init_files
+    - dir_system_commands_group_root_owned
+    - dir_system_commands_root_owned
+    - file_groupownership_system_commands_dirs
+    - file_ownership_binary_dirs
+    - file_permissions_binary_dirs
+    - file_ownership_sshd_private_key
+    - file_groupownership_sshd_private_key
     - file_permissions_sshd_private_key
+    - file_ownership_sshd_pub_key
+    - file_groupownership_sshd_pub_key
+    - file_permissions_sshd_pub_key
+    - file_owner_sshd_config
+    - file_groupowner_sshd_config
+    - file_permissions_sshd_config
+    - directory_owner_etc_selinux
+    - directory_groupowner_etc_selinux
+    - directory_permissions_etc_selinux
+    - file_owner_etc_sestatus_conf
+    - file_groupowner_etc_sestatus_conf
+    - file_permissions_etc_sestatus_conf
+    - directory_owner_etc_ipsecd
+    - directory_groupowner_etc_ipsecd
+    - directory_permissions_etc_ipsecd
+    - file_owner_etc_ipsec_conf
+    - file_groupowner_etc_ipsec_conf
+    - file_permissions_etc_ipsec_conf
+    - file_owner_etc_ipsec_secrets
+    - file_groupowner_etc_ipsec_secrets
+    - file_permissions_etc_ipsec_secrets
+    - directory_owner_etc_iptables
+    - directory_groupowner_etc_iptables
+    - directory_permissions_etc_iptables
+    - directory_owner_etc_nftables
+    - directory_groupowner_etc_nftables
+    - directory_permissions_etc_nftables
+    - directory_owner_etc_sysctld
+    - directory_groupowner_etc_sysctld
+    - directory_permissions_etc_sysctld
+    - file_owner_etc_sudoers
+    - file_groupowner_etc_sudoers
+    - file_permissions_etc_sudoers
+    - directory_owner_etc_sudoersd
+    - directory_groupowner_etc_sudoersd
+    - directory_permissions_etc_sudoersd
+    - file_owner_etc_crypttab
+    - file_groupowner_etc_crypttab
+    - file_permissions_etc_crypttab
+    - file_owner_etc_chrony_keys
+    - file_groupowner_etc_chrony_keys
+    - file_permissions_etc_chrony_keys
 
   - id: R51
     title: Sensitive and trusted files
@@ -1066,7 +1139,15 @@ controls:
     title: Securing access for named sockets and pipes
     levels:
     - intermediary
-    notes: We cannot easily automate securing of named sockets and pipes in a general way.
+    notes: |-
+      The requirement states that all sockets and named pipes within all mounted
+      file systems should be checked. The check should look at the permissions
+      of the socket / pipe and compare them with permissions of the directory
+      which contains the particular socket. In case permissions of the directory
+      are less stricter than permissions of the socket, this should be
+      considered a finding. Since different use cases can require different
+      permissions for named pipes / sockets, it is not possible to perform this
+      check automatically.
     status: manual
 
   - id: R53
@@ -1268,11 +1349,40 @@ controls:
     status: manual
 
   - id: R67
-    title: Securing remote authentication by PAM
+    title: Secure remote authentication with PAM
     levels:
     - intermediary
+    description: |-
+      When authentication takes place through a remote application (network),
+      the authentication protocol used by PAM must be secure (flow encryption,
+      remote server authentication, anti-replay mechanisms, ...).
+    {{% if "rhel" in product %}}
+    notes: |-
+      In RHEL systems, remote authentication is handled through sssd service.
+      PAM delegates requests for remote authentication to this service through a
+      local Unix socket. The sssd service can use IPA, AD or LDAP as a remote
+      database containing information required for authentication. In case IPA or  AD is configured through a documented way, the connection is secured by default. In case LDAP is configured manually, there are several configuration options which should be chedked.
+      {{% if product in ["rhel7", "rhel8"] %}}
+      An allternative solution is to use nss-pam-ldapd package.
+      In case this package is used, we make sure that SSL is turned on and certificate is configured.
+      {{% endif %}}
+    status: automated
+    rules:
+      - package_sssd_installed
+      - service_sssd_enabled
+      - sssd_enable_pam_services
+      - sssd_ldap_configure_tls_reqcert
+      - sssd_ldap_start_tls
+      {{% if product in ["rhel7", "rhel8"] %}}
+      - ldap_client_start_tls
+      - ldap_client_tls_cacertpath
+      {{% endif %}}
+    related_rules:
+      - package_sssd-ipa_installed
+    {{% else %}}
     notes: We cannot automate securing of remote PAM authentication in a general way.
     status: manual
+    {{% endif %}}
 
   - id: R68
     title: Protecting stored passwords
@@ -1283,21 +1393,42 @@ controls:
       The selection of rules doesn't cover the use of hardware devices to protect the passwords.
     status: supported
     rules:
-    # ENCRYPT_METHOD, system default is SHA512
+    - var_password_hashing_algorithm=yescrypt
     - set_password_hashing_algorithm_systemauth
-    # The default salt size is secure enough:
-    # https://bugzilla.redhat.com/show_bug.cgi?id=1229472
-    # SHA_CRYPT_MIN_ROUNDS 65536
-    - var_password_pam_unix_rounds=65536
+    - var_password_pam_unix_rounds=11
     - accounts_password_pam_unix_rounds_system_auth
     - accounts_password_pam_unix_rounds_password_auth
+    - accounts_password_pam_minclass
+    - accounts_password_pam_minlen
+    - accounts_password_pam_retry
+    - var_password_pam_minclass=4
 
   - id: R69
     title: Securing access to remote user databases
     levels:
     - intermediary
-    notes: We cannot automate securing access to remote databases in a general way.
-    status: manual
+    description: |-
+      When the user databases are stored on a remote network service, NSS must
+      be configured to establish a secure link that allows, at minimum, to
+      authenticate the server and protect the communication channel.
+    {{% if "rhel" in product %}}
+    notes: |-
+      A nsswitch service connecting to remote database is provided by sssd. This is checked in requirement R67.
+      Another such service is winbind which is by default configured to connect
+      securely to Samba domains.
+      Other relevant services are NIS and Hesiod. These should not be used.
+    status: automated
+    {{% if product in ["rhel7", "rhel8"] %}}
+    rules:
+      - no_nis_in_nsswitch
+      {{% if product == "rhel7" %}}
+      - no_hesiod_in_nsswitch
+      {{% endif %}}
+    {{% endif %}}
+    {{% else %}}
+    status: pending
+    {{% endif %}}
+
 
   - id: R70
     title: Separation of System Accounts and Directory Administrator
@@ -1306,44 +1437,46 @@ controls:
     status: manual
 
   - id: R71
-    title: Implementation of a logging system
+    title: Implement a logging system
     levels:
     - enhanced
     description: >-
       The configuration of the service must be performed according to the
-      'Security Recommendations for the implementation of a logging system' (DAT-NT-012) accessible on the ANSSI website.
+      'Security Recommendations for the architecture of a logging system'
+      (DAT-PA-012 v2.0) accessible on the ANSSI website
+      (https://www.ssi.gouv.fr/journalisation).
     notes: >-
-      A lot of recommendations and requirements from the DAT-NT-012 document are administrative and hard to automate.
+      A lot of recommendations and requirements from the DAT-PA-012 document are administrative and hard to automate.
       The rules selected below address a few of the aspects that can be covered, keep in mind that these configurations should
       be customized for the systems deployment requirements.
     status: automated
     rules:
-    # Based on DAT-NT-012 R3
+    # Based on DAT-PA-012 R5
     - package_chrony_installed
     - service_chronyd_or_ntpd_enabled
     - chronyd_specify_remote_server
     - chronyd_configure_pool_and_server
 
-    # Derived from DAT-NT-012 R4
-    - partition_for_var_log_audit
-
-    # Derived from DAT-NT-012 R5, these are also covered in R7
+    # Derived from DAT-PA-012 R9
     # The default remote loghost is logcollector.
     # Change the default value to the hostname or IP of the system to send the logs to
     - rsyslog_remote_loghost
 
-    # Derived from DAT-NT-012 R12
+    # Derived from DAT-PA-012 R17
     - package_rsyslog-gnutls_installed
     - rsyslog_remote_tls
     - rsyslog_remote_tls_cacert
 
-    # Based on DAT-NT-012 R18
+    # Derived from DAT-PA-012 R21
+    - partition_for_var_log_audit
+
+    # Based on DAT-PA-012 R24
     # The rules sets the rotation frequency to daily
     - package_logrotate_installed
     - timer_logrotate_enabled
     - ensure_logrotate_activated
 
-    # Based on DAT-NT-012 R20
+    # Based on DAT-PA-012 R26, R27
     - rsyslog_files_ownership
     - rsyslog_files_groupownership
     - rsyslog_files_permissions
@@ -1507,7 +1640,7 @@ controls:
       basic integrity checking. System logs are configured as part of R43.
       Hardening of particular services should be done on a case by case basis and is
       not automated by this content.
-    status: automated
+    status: partial
     rules:
     - selinux_state
     - var_selinux_state=enforcing

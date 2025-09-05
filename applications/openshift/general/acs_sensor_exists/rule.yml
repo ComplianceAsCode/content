@@ -1,0 +1,59 @@
+
+title: Ensure that Advanced Cluster Security (ACS) Sensor is deployed
+
+description: |-
+  Red Hat Advanced Cluster Security (ACS) for Kubernetes provides comprehensive security
+  for containerized environments. It offers deep visibility into deployed resources
+  across Kubernetes clusters, enabling teams to detect vulnerabilities in all images,
+  manage compliance, and enforce security policies. By integrating ACS into the Kubernetes
+  environment, organizations can automate security checks and configurations, ensuring that every
+  deployed application is scanned and secured according to best practices and organizational policies.
+
+  Sensor is the service responsible for analyzing and monitoring the cluster. Sensor
+  listens to the OpenShift Container Platform or Kubernetes API and Collector events
+  to report the current state of the cluster. Sensor also triggers deploy-time and
+  runtime violations based on RHACS Cloud Service policies. In addition, Sensor is
+  responsible for all cluster interactions, such as applying network policies,
+  initiating reprocessing of RHACS Cloud Service policies, and interacting with
+  the Admission controller.
+
+
+rationale: |-
+  ACS provides a method to continuously monitor and protect the Kubernetes environment against vulnerabilities
+  and misconfigurations. This ensures that the infrastructure and applications are compliant
+  with security standards and regulations, reducing the risk of security breaches.
+
+identifiers:
+  cce@ocp4: CCE-86171-6
+
+references:
+  pcidss: Req-6.3.2,Req-11.3.1.1,Req-11.5.1.1
+
+ocil_clause: 'ACS Sensor is not deployed'
+
+{{% set jqfilter = '[ .items[] | select(.metadata.name == "sensor" and .metadata.labels["app.kubernetes.io/name"] == "stackrox") | .status.availableReplicas]' %}}
+
+ocil: |-
+    Run the following command to check if the ACS Sensor is deployed:
+    <pre>$ oc get Deployment --all-namespaces -o json | jq '{{ jqfilter }}'</pre>
+    The output should return a non-zero value.
+
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({'/apis/apps/v1/deployments?limit=500': jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path('/apis/apps/v1/deployments?limit=500', jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "all_exist"
+    entity_check: "all"
+    values:
+      - value: "0"
+        operation: "not equal"

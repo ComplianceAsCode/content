@@ -1,0 +1,65 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_debian
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: {{{ rule_title }}} - Set List of Mount Points Which Permits Execution of Privileged Commands
+  ansible.builtin.set_fact:
+    privileged_mount_points: "{{ (ansible_facts.mounts | rejectattr('options', 'search', 'noexec|nosuid') | rejectattr('mount', 'match', '/proc($|/.*$)') | map(attribute='mount') | list ) }}"
+
+- name: {{{ rule_title }}} - Search for Privileged Commands in Eligible Mount Points
+  ansible.builtin.shell:
+    cmd: find {{ item }} -xdev -perm /6000 -type f 2>/dev/null
+  register: result_privileged_commands_search
+  changed_when: false
+  failed_when: false
+  with_items: "{{ privileged_mount_points }}"
+
+- name: {{{ rule_title }}} - Set List of Privileged Commands Found in Eligible Mount Points
+  ansible.builtin.set_fact:
+    privileged_commands: "{{ privileged_commands | default([]) + item.stdout_lines }}"
+  loop: "{{ result_privileged_commands_search.results }}"
+  when: item is not skipped
+
+- name: {{{ rule_title }}} - Privileged Commands are Present in the System
+  block:
+    - name: {{{ rule_title }}} - Ensure Rules for All Privileged Commands in augenrules Format
+      ansible.builtin.lineinfile:
+        path: /etc/audit/rules.d/privileged.rules
+        line: '-a always,exit -F path={{ item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
+        regexp: "^.*path={{ item | regex_escape() }} .*$"
+        create: yes
+      with_items:
+        - "{{ privileged_commands }}"
+
+    - name: {{{ rule_title }}} - Ensure Rules for All Privileged Commands in auditctl Format
+      ansible.builtin.lineinfile:
+        path: /etc/audit/audit.rules
+        line: '-a always,exit -F path={{ item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
+        regexp: "^.*path={{ item | regex_escape() }} .*$"
+        create: yes
+      with_items:
+        - "{{ privileged_commands }}"
+
+    - name: {{{ rule_title }}} - Search for Duplicated Rules in Other Files
+      ansible.builtin.find:
+        paths: "/etc/audit/rules.d"
+        recurse: no
+        contains: "^-a always,exit -F path={{ item }} .*$"
+        patterns: "*.rules"
+      with_items:
+        - "{{ privileged_commands }}"
+      register: result_augenrules_files
+
+    - name: {{{ rule_title }}} - Ensure Rules for Privileged Commands are Defined Only in One File
+      ansible.builtin.lineinfile:
+        path: "{{ item.1.path }}"
+        regexp: "^-a always,exit -F path={{ item.0.item }} .*$"
+        state: absent
+      with_subelements:
+        - "{{ result_augenrules_files.results }}"
+        - files
+      when:
+        - item.1.path != '/etc/audit/rules.d/privileged.rules'
+  when: privileged_commands is defined

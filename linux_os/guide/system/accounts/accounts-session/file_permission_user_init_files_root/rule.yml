@@ -1,0 +1,42 @@
+documentation_complete: true
+
+title: 'Ensure All User Initialization Files Have Mode 0740 Or Less Permissive'
+
+description: |-
+    Set the mode of the user initialization files, including the <tt>root</tt> user,
+    to <tt>0740</tt> with the following commands:
+    <pre>
+    $ sudo chmod 0740 /root/.<i>INIT_FILE</i>
+    $ sudo chmod 0740 /home/<i>USER</i>/.<i>INIT_FILE</i>
+    </pre>
+
+rationale: |-
+    Local initialization files are used to configure the user's shell environment
+    upon logon. Malicious modification of these files could compromise accounts upon
+    logon.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-87087-3
+
+references:
+    disa: CCI-000366
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'they are not 0740 or more permissive'
+
+ocil: |-
+    To verify that all user initialization files have a mode of <tt>0740</tt> or
+    less permissive, run the following command:
+    <pre>$ sudo find /home -type f -name '\.*' \( -perm -0002 -o -perm -0020 \)</pre>
+    There should be no output.
+
+fixtext: |-
+    Set the mode of the local initialization files to "0740" with the following command:
+
+    Note: The example will be for the smithj user, who has a home directory of "/home/smithj".
+
+    $ sudo chmod 0740 /home/smithj/.
+
+srg_requirement: 'All {{{ full_name }}} local initialization files must have mode 0740 or less permissive.'

@@ -11,11 +11,17 @@
   comment="Ensures that LDAP TLS requires certificate is set"
   id="test_sssd_ldap_tls_reqcert" version="1">
     <ind:object object_ref="object_sssd_ldap_tls_reqcert" />
+    <ind:state state_ref="state_sssd_ldap_tls_reqcert" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_sssd_ldap_tls_reqcert" version="1">
+  <ind:textfilecontent54_object id="object_sssd_ldap_tls_reqcert" version="2">
     <ind:filepath operation="pattern match">^\/etc\/sssd\/(sssd.conf|conf\.d\/.+\.conf)$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*\[domain\/[^]]*]([^\n\[\]]*\n+)+?[\s]*ldap_tls_reqcert[ \t]*=[ \t]*((?i)demand)[ \t]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*\[domain\/[^]]*](?:[^\n\[\]]*\n+)+?[\s]*ldap_tls_reqcert[ \t]*=[ \t]*(\w+)[ \t]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_sssd_ldap_tls_reqcert" version="1">
+    <ind:subexpression operation="pattern match">(?i)demand</ind:subexpression>
+  </ind:textfilecontent54_state>
+
 </def-group>

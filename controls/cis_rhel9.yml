@@ -13,6 +13,8 @@ levels:
   - id: l2_workstation
     inherits_from:
       - l1_workstation
+reference_type: cis
+product: rhel9
 
 controls:
   - id: reload_dconf_db
@@ -577,7 +579,7 @@ controls:
     rules:
       - dconf_gnome_banner_enabled
       - dconf_gnome_login_banner_text
-      - login_banner_text=cis_default
+      - login_banner_text=cis_banners
 
   - id: 1.8.3
     title: Ensure GDM disable-user-list option is enabled (Automated)
@@ -1292,6 +1294,7 @@ controls:
     status: automated
     rules:
       - audit_rules_networkconfig_modification
+      - audit_rules_networkconfig_modification_network_scripts
 
   - id: 4.1.3.6
     title: Ensure use of privileged commands is collected (Automated)
@@ -2015,7 +2018,7 @@ controls:
       - sshd_idle_timeout_value=15_minutes
       - sshd_set_idle_timeout
       - sshd_set_keepalive
-      - var_sshd_set_keepalive=0
+      - var_sshd_set_keepalive=1
 
   - id: 5.3.1
     title: Ensure sudo is installed (Automated)
@@ -2102,8 +2105,11 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: |-
+      This requirement is also indirectly satisfied by the requirement 5.5.2.
     rules:
-      - accounts_passwords_pam_faillock_deny
+      - account_password_pam_faillock_password_auth
+      - account_password_pam_faillock_system_auth
 
   - id: 5.5.1
     title: Ensure password creation requirements are configured (Automated)

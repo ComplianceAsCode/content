@@ -1,5 +1,5 @@
 #!/bin/bash
 
-USER="cac_user"
-useradd -m -s /sbin/nologin $USER
-chown 10005 /home/$USER
+. "$SHARED/accounts_common.sh"
+
+run_foreach_noninteractive_shell_account "chown 10005 /home/\$user"

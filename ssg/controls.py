@@ -176,6 +176,22 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         data["controls"] = self.controls
         return data
 
+    def add_references(self, reference_type, rules):
+        for selection in self.rules:
+            if "=" in selection:
+                continue
+            rule = rules.get(selection)
+            if not rule:
+                continue
+            try:
+                rule.add_extra_reference(reference_type, self.id)
+            except ValueError as exc:
+                msg = (
+                    "Please remove any duplicate listing of rule '%s' in "
+                    "control '%s'." % (
+                        rule.id_, self.id))
+                raise ValueError(msg)
+
 
 class Level(ssg.entities.common.XCCDFEntity):
     KEYS = dict(
@@ -207,10 +223,13 @@ class Policy(ssg.entities.common.XCCDFEntity):
         self.levels_by_id = dict()
         self.title = ""
         self.source = ""
+        self.reference_type = None
+        self.product = None
 
     def represent_as_dict(self):
         data = dict()
         data["id"] = self.id
+        data["policy"] = self.policy
         data["title"] = self.title
         data["source"] = self.source
         data["definition_location"] = self.filepath
@@ -326,8 +345,11 @@ class Policy(ssg.entities.common.XCCDFEntity):
         if controls_dir:
             self.controls_dir = os.path.join(os.path.dirname(self.filepath), controls_dir)
         self.id = ssg.utils.required_key(yaml_contents, "id")
+        self.policy = ssg.utils.required_key(yaml_contents, "policy")
         self.title = ssg.utils.required_key(yaml_contents, "title")
         self.source = yaml_contents.get("source", "")
+        self.reference_type = yaml_contents.get("reference_type", None)
+        self.product = yaml_contents.get("product", None)
 
         default_level_dict = {"id": "default"}
         level_list = yaml_contents.get("levels", [default_level_dict])
@@ -374,6 +396,30 @@ class Policy(ssg.entities.common.XCCDFEntity):
                 for l in eligible_levels:
                     levels[l] = ""
         return list(levels.keys())
+
+    def _check_conflict_in_rules(self, rules):
+        for rule_id, rule in rules.items():
+            if self.reference_type in rule.references:
+                msg = (
+                    "Rule %s contains %s reference, but this reference "
+                    "type is provided by %s controls. Please remove the "
+                    "reference from rule.yml." % (
+                        rule_id, self.reference_type, self.id))
+                raise ValueError(msg)
+
+    def add_references(self, rules):
+        if not self.reference_type:
+            return
+        product = self.env_yaml["product"]
+        if self.product and product not in self.product:
+            return
+        allowed_reference_types = self.env_yaml["reference_uris"].keys()
+        if self.reference_type not in allowed_reference_types:
+            msg = "Unknown reference type %s" % (self.reference_type)
+            raise(ValueError(msg))
+        self._check_conflict_in_rules(rules)
+        for control in self.controls_by_id.values():
+            control.add_references(self.reference_type, rules)
 
 
 class ControlsManager():
@@ -423,6 +469,11 @@ class ControlsManager():
         policy = self._get_policy(policy_id)
         control = policy.get_control(control_id)
         return control
+
+    def get_all_controls_dict(self, policy_id):
+        # type: (str) -> typing.Dict[str, list]
+        policy = self._get_policy(policy_id)
+        return policy.controls_by_id
 
     def _get_policy(self, policy_id):
         try:
@@ -474,3 +525,7 @@ class ControlsManager():
         for policy_id, policy in self.policies.items():
             filename = os.path.join(output_dir, "{}.{}".format(policy_id, "yml"))
             policy.dump_yaml(filename)
+
+    def add_references(self, rules):
+        for policy in self.policies.values():
+            policy.add_references(rules)

@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R13
+    version: V1R14
     SMEs:
         - mab879
         - ggbecker
@@ -12,7 +12,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V1R13.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R14.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -72,6 +72,8 @@ selections:
     - var_sssd_certificate_verification_digest_function=sha1
     - login_banner_text=dod_banners
     - var_authselect_profile=sssd
+    - var_multiple_time_servers=stig
+    - var_time_service_set_maxpoll=18_hours
 
     ### Enable / Configure FIPS
     - enable_fips_mode
@@ -965,6 +967,7 @@ selections:
     # remediation fails because default configuration file contains pool instead of server keyword
     - chronyd_or_ntpd_set_maxpoll
     - chronyd_server_directive
+    - chronyd_specify_remote_server
 
     # RHEL-08-030741
     - chronyd_client_only

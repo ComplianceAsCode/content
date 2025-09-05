@@ -20,6 +20,7 @@ description: |-
 
 selections:
     - anssi:all:intermediary
+    - '!logind_session_timeout'
     # Following rules once had a prodtype incompatible with the rhel7 product
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!sysctl_kernel_unprivileged_bpf_disabled'

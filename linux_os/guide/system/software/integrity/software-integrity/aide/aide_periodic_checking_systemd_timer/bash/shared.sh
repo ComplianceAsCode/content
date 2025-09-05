@@ -8,7 +8,7 @@ cat > /etc/systemd/system/aidecheck.service <<EOF
 Description=Aide Check
 [Service]
 Type=simple
-ExecStart=/usr/sbin/aide --check
+ExecStart={{{ aide_bin_path }}} --check
 [Install]
 WantedBy=multi-user.target
 EOF

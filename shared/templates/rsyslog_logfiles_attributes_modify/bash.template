@@ -80,7 +80,7 @@ done
 for LOG_FILE in "${RSYSLOG_CONFIG_FILES[@]}"
 do
 	ACTION_OMFILE_LINES=$(grep -iozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" "${LOG_FILE}")
-	OMFILE_LINES=$(echo "${ACTION_OMFILE_LINES}"| grep -iaoP "File\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)")
+	OMFILE_LINES=$(echo "${ACTION_OMFILE_LINES}"| grep -iaoP "\bFile\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)")
 	LOG_FILE_PATHS+=("$(echo "${OMFILE_LINES}"| grep -oE "\"([/[:alnum:][:punct:]]*)\""|tr -d "\"")")
 done
 

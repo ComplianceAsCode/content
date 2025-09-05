@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} must disable the ability of a user to accidentally press Ctrl-Alt-Del and cause a system to shut down or reboot.
+    {{{ full_name }}} must prevent a user from overriding the Ctrl-Alt-Del sequence settings for the graphical user interface.
 
 vuldiscussion: |-
     A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
@@ -8,23 +8,29 @@ vuldiscussion: |-
     loss of availability of systems due to unintentional reboot.
 
 checktext: |-
-    Verify {{{ full_name }}} is configured to ignore the Ctrl-Alt-Del sequence in the Gnome GUI with the following command:
+    Verify that users cannot enable the Ctrl-Alt-Del sequence in the GNOME desktop with the following command:
 
-    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, Gnome Shell. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
+    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
 
-    $ gsettings get org.gnome.settings-daemon.plugins.media-keys logout
+    $ grep logout /etc/dconf/db/local.d/locks/*
 
-    "['']"
+    /org/gnome/settings-daemon/plugins/media-keys/logout
 
+    If the output is not "/org/gnome/settings-daemon/plugins/media-keys/logout", the line is commented out, or the line is missing, this is a finding.
     If Gnome is configured to shut down when Ctrl-Alt-Del is pressed, this is a finding.
 fixtext: |-
-    Configure {{{ full_name }}} to ignore the Ctrl-Alt-Del sequence in the GNOME GUI, if it is installed and the system is used to host services whos availability could be impacted.
+    Configure {{{ full_name }}} to disallow the user changing the Ctrl-Alt-Del sequence in the GNOME desktop.
 
-    Add or update the [org/gnome/settings-daemon/plugins/media-keys] section of the /etc/dconf/db/local.d/00-security-settings database file and add or update the following lines:
+    Create a database to container system-wide graphical user logon settings (if it does not already exist) with the following command:
 
-    [org/gnome/settings-daemon/plugins/media-keys]
-    logout=['']
+    $ sudo touch /etc/dconf/db/local.d/locks/session
+
+    Add the following line to the session locks file to prevent nonprivileged users from modifying the Ctrl-Alt-Del setting:
+
+    /org/gnome/settings-daemon/plugins/media-keys/logout
 
     Run the following command to update the database:
 
     $ sudo dconf update
+vuln_discussion: |-
+    A locally logged-in user who presses Ctrl-Alt-Del, when at the console, can reboot the system. If accidentally pressed, as could happen in the case of mixed OS environment, this can create the risk of short-term loss of availability of systems due to unintentional reboot.

@@ -15,3 +15,6 @@ checktext: |-
 
 fixtext: |-
     Configure {{{ full_name }}} to prevent users from disabling the tmux terminal multiplexer by editing the "/etc/shells" configuration file to remove any instances of tmux.
+
+vuln_discussion: |-
+    The session lock is implemented at the point where session activity can be determined. Rather than be forced to wait for a period of time to expire before the user session can be locked, {{{ full_name }}} must provide users with the ability to manually invoke a session lock so users can secure their session if it is necessary to temporarily vacate the immediate physical vicinity.

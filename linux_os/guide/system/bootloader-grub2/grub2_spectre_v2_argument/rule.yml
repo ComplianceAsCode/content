@@ -14,7 +14,7 @@ description: |-
     Enforce the Spectre V2 mitigation by adding the argument
     <tt>spectre_v2=on</tt> to the default
     GRUB 2 command line for the Linux operating system.
-    {{{ describe_grub2_argument("spectre_v2=on)") | indent(4) }}}
+    {{{ describe_grub2_argument("spectre_v2=on") | indent(4) }}}
 
 rationale: |-
     The Spectre V2 vulnerability allows an attacker to read memory that he should not have
@@ -27,8 +27,6 @@ identifiers:
     cce@rhel8: CCE-89345-3
     cce@rhel9: CCE-90345-0
 
-references:
-    anssi: BP28(R8)
 
 ocil_clause: 'spectre_v2 mitigation is not enforced'
 

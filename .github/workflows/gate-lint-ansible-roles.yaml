@@ -2,6 +2,9 @@ name: Gate (AR / RHEL)
 on:
   pull_request:
     branches: [ 'master' ]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
+  cancel-in-progress: true
 jobs:
   validate-fedora-ar:
     name: Build, Lint Ansible Roles on Fedora Latest (Container)
@@ -14,10 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Configure
-        run: cmake -DSSG_PRODUCT_DEFAULT=OFF -DSSG_PRODUCT_RHEL7=ON -DSSG_PRODUCT_RHEL8=ON -G Ninja ..
+        run: cmake -DSSG_PRODUCT_DEFAULT=OFF -DSSG_PRODUCT_RHEL7=ON -DSSG_PRODUCT_RHEL8=ON -DSSG_PRODUCT_RHEL9=ON -G Ninja ..
         working-directory: ./build
       - name: Build
-        run: ninja -j2 rhel8-profile-playbooks rhel7-profile-playbooks
+        run: ninja -j2 rhel9-profile-playbooks rhel8-profile-playbooks rhel7-profile-playbooks
         working-directory: ./build
       - name: Build Ansible Roles
         run: PYTHONPATH=. python3 utils/ansible_playbook_to_role.py --build-playbooks-dir ./build/ansible/ --dry-run ./build/ansible_roles

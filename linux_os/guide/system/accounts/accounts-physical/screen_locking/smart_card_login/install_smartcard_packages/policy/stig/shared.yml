@@ -15,8 +15,10 @@ checktext: |-
 
     $ sudo dnf list --installed openssl-pkcs11
 
-    openssl-pkcs.i686        0.4.11-7.el9
-    openssl-pkcs.x86_64        0.4.11-7.el9
+    Example output:
+
+    openssl-pkcs.i686          0.4.11-7.el9
+    openssl-pkcs.x86_64          0.4.11-7.el9
 
     If the "openssl-pkcs11" package is not installed, this is a finding.
 
@@ -24,3 +26,6 @@ fixtext: |-
     The openssl-pkcs11 package can be installed with the following command:
 
     $ sudo dnf install openssl-pkcs11
+
+vuln_discussion: |-
+    Without the use of multifactor authentication, the ease of access to privileged functions is greatly increased. Multifactor authentication requires using two or more factors to achieve authentication. A privileged account is defined as an information system account with authorizations of a privileged user. The DOD CAC with DOD-approved PKI is an example of multifactor authentication.

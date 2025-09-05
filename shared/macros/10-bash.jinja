@@ -786,18 +786,23 @@ authselect enable-feature {{{ feature }}}
 {{% if 'ubuntu' in product %}}
 pam_file="/etc/pam.d/common-auth"
 if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "$pam_file" ; then
-    sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/i auth        required      pam_faillock.so preauth' "$pam_file"
+    # insert at the top
+    sed -i --follow-symlinks '/^# here are the per-package modules/i auth        required      pam_faillock.so preauth' "$pam_file"
 fi
 if ! grep -qE '^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail.*$' "$pam_file" ; then
-    num_lines=$(sed -n 's/^auth.*success=\([0-9]\).*pam_unix\.so.*/\1/p' "$pam_file")
+
+    num_lines=$(sed -n 's/^\s*auth.*success=\([1-9]\).*pam_unix\.so.*/\1/p' "$pam_file")
     if [ ! -z "$num_lines" ]; then
-        echo "$num_lines"
-        pattern=""
-        for ((i=1; i <= num_lines; i++)); do
-            pattern="${pattern}n;"
-        done;
-        sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/{'$pattern'a auth        [default=die]      pam_faillock.so authfail
- }' "$pam_file"
+
+        # Add pam_faillock (authfail) module below pam_unix, skipping N-1 lines, where N is
+        # the number of jumps in the pam_unix success=N statement. Ignore commented and empty lines.
+
+        append_position=$(cat -n "${pam_file}" \
+                          | grep -P "^\s+\d+\s+auth\s+.*$" \
+                          | grep -w "pam_unix.so" -A $(( num_lines - 1 )) \
+                          | tail -n 1 | cut -f 1 | tr -d ' '
+                         )
+        sed -i --follow-symlinks ''${append_position}'a auth        [default=die]      pam_faillock.so authfail' "$pam_file"
     else
         sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/a auth        [default=die]      pam_faillock.so authfail' "$pam_file"
     fi
@@ -1264,7 +1269,6 @@ for f in /etc/sudoers /etc/sudoers.d/* ; do
 done
 {{%- endmacro -%}}
 
-
 {{% macro bash_sssd_ldap_config(parameter, value) -%}}
 SSSD_CONF="/etc/sssd/sssd.conf"
 LDAP_REGEX='[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*{{{ parameter }}}'
@@ -1291,6 +1295,12 @@ if grep -qvzosP $AD_REGEX $SSSD_CONF; then
                 fi
         fi
 fi
+
+readarray -t SSSD_CONF_D_FILES < <(find /etc/sssd/conf.d/ -name "*.conf")
+for SSSD_CONF_D_FILE in "${SSSD_CONF_D_FILES[@]}"; do
+    sed -i "s#{{{ parameter }}}[^(\n)]*#{{{ parameter }}} = {{{ value }}}#" "$SSSD_CONF_D_FILE"
+done
+
 {{%- endmacro %}}
 
 

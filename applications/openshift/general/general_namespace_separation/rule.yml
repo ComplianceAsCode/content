@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Each Namespace should only host one application'
+
+description: |-
+   Use namespaces to isolate your Kubernetes objects.
+
+rationale: |-
+   Assigning a dedicated namespace to an application (or parts of an application)
+   allows you to granularly control the access to this application on a kubernetes
+   level. It also allows you control the network flow from and to other namespaces
+   more easily.
+
+references:
+    bsi: APP.4.4.A1
+
+severity: medium
+
+ocil_clause: 'Application placement in namespaces needs review'
+
+ocil: |-
+    Run the following command and review the pods and how they are deployed in
+    namespaces. <pre>$ oc get pod -o=custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,APP:.metadata.labels.app\.kubernetes\.io/name --all-namespaces | grep -v "openshift-"</pre>
+    You can use labels or other data as custom field which helps you to identify parts of an application.
+    Ensure that there are only components of one application in each namespace.

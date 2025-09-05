@@ -26,6 +26,6 @@
       path: /etc/sssd/conf.d/certificate_verification.conf
       section: sssd
       option: certificate_verification
-      value: "ocsp_dgst = {{ var_sssd_certificate_verification_digest_function }}"
+      value: "ocsp_dgst={{ var_sssd_certificate_verification_digest_function }}"
       state: present
       mode: 0600

@@ -17,11 +17,18 @@ checktext: |-
 
     If there is no evidence that unauthorized peripherals are being blocked before establishing a connection, this is a finding.
 
+    If the system is virtual machine with no virtual or physical USB peripherals attached, this is not a finding.
+
 fixtext: |-
     Configure the operating system to enable the blocking of unauthorized peripherals with the following command:
 
     Note: This command must be run from a root shell and will create an allow list for any usb devices currently connect to the system.
 
-    # usbguard generate-policy --no-hash > /etc/usbguard/rules.conf
+    # usbguard generate-policy --no-hash &gt /etc/usbguard/rules.conf
 
-    Note: Enabling and starting usbguard without properly configuring it for an individual system will immediately prevent any access over a usb device such as a keyboard or mouse
+    Note: Enabling and starting usbguard without properly configuring it for an individual system will immediately prevent any access over a usb device such as a keyboard or mouse.
+
+vuln_discussion: |-
+    The USBguard-daemon is the main component of the USBGuard software framework. It runs as a service in the background and enforces the USB device authorization policy for all USB devices. The policy is defined by a set of rules using a rule language described in the usbguard-rules.conf file. The policy and the authorization state of USB devices can be modified during runtime using the usbguard tool.
+
+    The system administrator (SA) must work with the site information system security officer (ISSO) to determine a list of authorized peripherals and establish rules within the USBGuard software framework to allow only authorized devices.

@@ -10,7 +10,9 @@ checktext: |-
 
     $ sudo dnf list --installed rng-tools
 
-    rng-tools.x86_64        6.14-2.git.b2b7934e.el9
+    Example output:
+
+    rng-tools.x86_64          6.14-2.git.b2b7934e.el9
 
     If the "rng-tools" package is not installed, this is a finding.
 
@@ -18,3 +20,6 @@ fixtext: |-
     The rng-tools package can be installed with the following command:
 
     $ sudo dnf install rng-tools
+
+vuln_discussion: |-
+    "rng-tools" provides hardware random number generator tools, such as those used in the formation of x509/PKI certificates.

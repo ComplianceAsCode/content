@@ -6,7 +6,9 @@
 
 {{{ bash_package_install("firewalld") }}}
 
-if systemctl is-active firewalld; then
+if {{{ in_chrooted_environment }}}; then
+    firewall-offline-cmd --zone=trusted --add-interface=lo
+elif systemctl is-active firewalld; then
     firewall-cmd --permanent --zone=trusted --add-interface=lo
     firewall-cmd --reload
 else

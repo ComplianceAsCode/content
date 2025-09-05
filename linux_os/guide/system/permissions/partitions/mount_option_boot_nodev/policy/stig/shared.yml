@@ -18,3 +18,6 @@ checktext: |-
 
 fixtext: |-
     Modify "/etc/fstab" to use the "nodev" option on the "/boot" directory.
+
+vuln_discussion: |-
+    The only legitimate location for device files is the "/dev" directory located on the root partition. The only exception to this is chroot jails.

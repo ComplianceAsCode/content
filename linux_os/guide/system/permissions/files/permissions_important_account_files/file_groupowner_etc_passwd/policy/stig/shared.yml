@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} /etc/passwd file must be group-owned by root.
+    {{{ full_name }}} /etc/passwd file must be group-owned by root.
 
 vuldiscussion: |-
     The "/etc/passwd" file contains information about the users that are configured on
@@ -18,3 +18,6 @@ fixtext: |-
     Change the group of the file /etc/passwd to root by running the following command:
 
     $ sudo chgrp root /etc/passwd
+
+vuln_discussion: |-
+    The "/etc/passwd" file contains information about the users that are configured on the system. Protection of this file is critical for system security.

@@ -15,6 +15,9 @@ checktext: |-
     If the rsyslog service is not active, this is a finding.
 
 fixtext: |-
-    To enable the rsyslog service run the following command:
+    To enable the rsyslog service, run the following command:
 
     $ sudo systemctl enable --now rsyslog
+
+vuln_discussion: |-
+    The "rsyslog" service must be running to provide logging services, which are essential to system administration.

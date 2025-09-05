@@ -36,6 +36,8 @@ selections:
     - sshd_disable_empty_passwords
     - sshd_disable_root_login
     - no_rsh_trust_files
+    - package_audit_installed
+    - package_audit-audispd-plugins_installed
     - package_talk_removed
     - package_telnet_removed
     - package_telnet-server_removed

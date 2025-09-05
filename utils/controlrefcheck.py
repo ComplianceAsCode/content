@@ -107,7 +107,7 @@ def does_rule_exist(all_rules: dict, control_rule: str) -> bool:
 def check_reference(reference: str, rule_object: ssg.build_yaml.Rule, control_id: str,
                     product: str) -> bool:
     if reference in rule_object.references and control_id \
-            not in rule_object.references[reference].split(','):
+            not in rule_object.references[reference]:
         print(f"{rule_object.id_} {reference}@{product} "
               f"{rule_object.references[reference]} does not match the control id "
               f"{control_id}")

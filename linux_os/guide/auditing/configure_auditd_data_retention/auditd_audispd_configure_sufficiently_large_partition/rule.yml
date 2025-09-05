@@ -1,0 +1,86 @@
+documentation_complete: true
+
+
+title: 'Configure a Sufficiently Large Partition for Audit Logs'
+
+description: |-
+    The {{{ full_name }}} operating system must allocate audit record storage
+    capacity to store at least one weeks worth of audit records when audit
+    records are not immediately sent to a central audit record storage
+    facility.
+
+    The partition size needed to capture a week's worth of audit records is
+    based on the activity level of the system and the total storage capacity
+    available. In normal circumstances, 10.0 GB of storage space for audit
+    records will be sufficient.
+
+    Determine which partition the audit records are being written to with the
+    following command:
+
+    <pre>$ sudo grep log_file /etc/audit/auditd.conf
+    log_file = /var/log/audit/audit.log</pre>
+
+    Check the size of the partition that audit records are written to with the
+    following command:
+
+    <pre>$ sudo df -h /var/log/audit/
+    /dev/sda2 24G 10.4G 13.6G 43% /var/log/audit</pre>
+
+rationale: |-
+    Information stored in one location is vulnerable to accidental or incidental
+    deletion or alteration. Off-loading is a common process in information
+    systems with limited audit storage capacity.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84005-8
+    cce@rhel9: CCE-88173-0
+    cce@sle12: CCE-83114-9
+    cce@sle15: CCE-85697-1
+
+references:
+    disa: CCI-001849
+    nist@sle15: AU-4
+    srg: SRG-OS-000341-GPOS-00132,SRG-OS-000342-GPOS-00133
+    stigid@ol8: OL08-00-030660
+    stigid@rhel8: RHEL-08-030660
+    stigid@sle12: SLES-12-020020
+    stigid@sle15: SLES-15-030660
+    stigid@ubuntu2004: UBTU-20-010215
+    stigid@ubuntu2204: UBTU-22-653035
+
+ocil_clause: 'audispd is not sending logs to a remote system and the local partition has inadequate space'
+
+ocil: |-
+    To verify whether audispd plugin off-loads audit records onto a different
+    system or media from the system being audited, run the following command:
+
+    <pre>$ sudo grep -i remote_server {{{ audisp_conf_path }}}/audisp-remote.conf</pre>
+
+    The output should return something similar to where <i>REMOTE_SYSTEM</i>
+    is an IP address or hostname:
+    <pre>remote_server = <i>REMOTE_SYSTEM</i></pre>
+
+    Determine which partition the audit records are being written to with the
+    following command:
+
+    <pre>$ sudo grep log_file /etc/audit/auditd.conf
+    log_file = /var/log/audit/audit.log</pre>
+
+    Check the size of the partition that audit records are written to with the
+    following command and verify whether it is sufficiently large:
+
+    <pre>$ sudo df -h /var/log/audit/
+    /dev/sda2 24G 10.4G 13.6G 43% /var/log/audit</pre>
+
+fixtext: |-
+    Allocate enough storage capacity for at least one week of audit records when audit records are not immediately sent to a central audit record storage facility.
+
+    If audit records are stored on a partition made specifically for audit records, resize the partition with sufficient space to contain one week of audit records.
+
+    If audit records are not stored on a partition made specifically for audit records, a new partition with sufficient space will need be to be created.
+
+platform: machine
+
+srg_requirement: '{{{ full_name }}} must allocate enough storage capacity for at least one week of audit records.'

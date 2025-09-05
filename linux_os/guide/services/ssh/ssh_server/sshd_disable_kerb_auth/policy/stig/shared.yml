@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} SSH daemon must not allow Kerberos authentication.
+    {{{ full_name }}} SSH daemon must not allow Kerberos authentication.
 
 vuldiscussion: |-
     Kerberos authentication for SSH is often implemented using GSSAPI. If Kerberos
@@ -14,7 +14,7 @@ checktext: |-
 
     KerberosAuthentication no
 
-    If the value is returned as "yes", the returned line is commented out, no output is returned, and the use of Kerberos authenitcation has not been documented with the ISSO, this is a finding.
+    If the value is returned as "yes", the returned line is commented out, no output is returned, and the use of Kerberos authentication has not been documented with the information system security officer (ISSO), this is a finding.
 
 fixtext: |-
     Configure the SSH daemon to not allow Kerberos authentication.
@@ -26,3 +26,6 @@ fixtext: |-
     The SSH service must be restarted for changes to take effect:
 
     $ sudo systemctl restart sshd.service
+
+vuln_discussion: |-
+    Kerberos authentication for SSH is often implemented using Generic Security Service Application Program Interface (GSSAPI). If Kerberos is enabled through SSH, the SSH daemon provides a means of access to the system's Kerberos implementation. Vulnerabilities in the system's Kerberos implementations may be subject to exploitation.

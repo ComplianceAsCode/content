@@ -17,14 +17,14 @@ checktext: |-
 
     Check that the configuration files are present to enable this kernel parameter.
 
-    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | grep -Ev '^(#|;)' |  grep -F fs.protected_hardlinks | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' |  grep -F fs.protected_hardlinks | tail -1
 
     fs.protected_hardlinks = 1
 
     If "fs.protected_hardlinks" is not set to "1" or is missing, this is a finding.
 
 fixtext: |-
-    Verify {{{ full_name }}} is configured to enable DAC on hardlinks with the following commands:
+    Configure {{{ full_name }}} to enable DAC on hardlinks with the following:
 
     Add or edit the following line in a system configuration file in the "/etc/sysctl.d/" directory:
 
@@ -33,3 +33,6 @@ fixtext: |-
     Load settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
+vuln_discussion: |-
+    By enabling the fs.protected_hardlinks kernel parameter, users can no longer create soft or hard links to files they do not own. Disallowing such hardlinks mitigates vulnerabilities based on insecure file system accessed by privileged programs, avoiding an exploitation vector exploiting unsafe use of open() or creat().

@@ -1,0 +1,41 @@
+documentation_complete: true
+
+
+title: 'Offload audit Logs to External Media'
+
+description: |-
+    The operating system must have a crontab script running weekly to
+    offload audit events of standalone systems.
+
+rationale: |-
+    Information stored in one location is vulnerable to accidental or
+    incidental deletion or alteration.
+    Offloading is a common process in information systems with limited
+    audit storage capacity.
+
+severity: medium
+
+references:
+    disa: CCI-001851
+    srg: SRG-OS-000479-GPOS-00224
+    stigid@ubuntu2004: UBTU-20-010300
+    stigid@ubuntu2204: UBTU-22-651035
+
+warnings:
+    - general: |-
+        Due to different needs and possibilities, automated remediation is not
+        available for this configuration check.
+
+ocil_clause: 'Cron job has not been configured to offload audit logs to external media'
+
+ocil: |-
+    Verify there is a script that offloads audit data and that script runs
+    weekly.
+    Check if there is a script in the "/etc/cron.weekly" directory that
+    offloads audit data:
+    <pre># sudo ls /etc/cron.weekly
+    audit-offload</pre>
+    Check if the script inside the file does offloading of audit logs to
+    external media.
+    If the script file does not exist or does not offload audit logs, this
+    is a finding.

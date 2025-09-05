@@ -1,0 +1,75 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_debian
+# reboot =false
+# strategy = restrict
+# complexity = low
+# disruption = low
+# remediate syscalls
+#
+# What architecture are we on?
+#
+- name: Set architecture for audit tasks
+  set_fact:
+    audit_arch: "b64"
+  when:
+  - ansible_architecture == "aarch64" or
+    ansible_architecture == "ppc64" or
+    ansible_architecture == "ppc64le" or
+    ansible_architecture == "s390x" or
+    ansible_architecture == "x86_64"
+
+- name: Remediate audit rules for network configuration for 32bit platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="",
+      syscalls=["sethostname", "setdomainname"],
+      key="audit_rules_networkconfig_modification",
+      syscall_grouping=["sethostname", "setdomainname"],
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="",
+      syscalls=["sethostname", "setdomainname"],
+      key="audit_rules_networkconfig_modification",
+      syscall_grouping=["sethostname", "setdomainname"],
+      )|indent(4) }}}
+
+- name: Remediate audit rules for network configuration for 64bit platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters="",
+      syscalls=["sethostname", "setdomainname"],
+      key="audit_rules_networkconfig_modification",
+      syscall_grouping=["sethostname", "setdomainname"],
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters="",
+      syscalls=["sethostname", "setdomainname"],
+      key="audit_rules_networkconfig_modification",
+      syscall_grouping=["sethostname", "setdomainname"],
+      )|indent(4) }}}
+  when: audit_arch == "b64"
+
+# remediate watches
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/issue', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/issue', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/issue.net', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/issue.net', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/hosts', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/hosts', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+
+{{% if 'ubuntu' in product -%}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/networks', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/networks', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/network/', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/network/', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{% else -%}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sysconfig/network', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sysconfig/network', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{% endif %}}

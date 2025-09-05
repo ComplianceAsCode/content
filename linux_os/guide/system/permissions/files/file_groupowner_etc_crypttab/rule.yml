@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: Verify Group Who Owns /etc/crypttab File
+
+description: '{{{ describe_file_group_owner(file="/etc/crypttab", group="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/crypttab file by the root group is important
+    because this file hosts encrypted block devices configuration. Protection
+    of this file is critical for system security. Assigning the ownership to
+    root ensures exclusive control of the encrypted block devices
+    configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86361-3
+    cce@rhel8: CCE-86362-1
+    cce@rhel9: CCE-86363-9
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/crypttab", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/crypttab", group="root") }}}
+
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/crypttab", group="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/crypttab", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/crypttab
+        gid_or_name: root

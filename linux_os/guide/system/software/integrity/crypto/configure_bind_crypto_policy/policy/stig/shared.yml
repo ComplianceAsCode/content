@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} must implement DoD-approved encryption in the bind package.
+    {{{ full_name }}} must implement DOD-approved encryption in the bind package.
 
 vuldiscussion: |-
     Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
@@ -11,7 +11,7 @@ vuldiscussion: |-
 checktext: |-
     Verify that BIND uses the system crypto policy with the following command:
 
-    If the "bind" package is not installed, this is not applicable.
+    Note: If the "bind" package is not installed, this requirement is Not Applicable.
 
     $ sudo grep include /etc/named.conf
 
@@ -25,3 +25,10 @@ fixtext: |-
     Add the following line to the "options" section in "/etc/named.conf":
 
     include "/etc/crypto-policies/back-ends/bind.config";
+
+vuln_discussion: |-
+    Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
+
+    Cryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.
+
+    {{{ full_name }}} incorporates system-wide crypto policies by default. The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/ directory.

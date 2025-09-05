@@ -16,7 +16,7 @@
 
     <ind:textfilecontent54_object id="obj_{{{rule_id}}}" version="1">
         <ind:filepath operation="pattern match">^/etc/sssd/(sssd|conf\.d/.*)\.conf$</ind:filepath>
-        <ind:pattern operation="pattern match">^[\s]*\[sssd](?:[^\n\[]*\n+)+?[\s]*certificate_verification\s*=\s*ocsp_dgst\s*=\s*(\w+)$</ind:pattern>
+        <ind:pattern operation="pattern match">^[\s]*\[sssd](?:[^\n\[]*\n+)+?[\s]*certificate_verification\s*=\s*ocsp_dgst=(\w+)$</ind:pattern>
         <ind:instance datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 

@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R11
+    version: V1R12
     SMEs:
         - abergmann
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 15'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 15 V1R11.
+    DISA STIG for SUSE Linux Enterprise 15 V1R12.
 
 
 selections:
@@ -68,8 +68,10 @@ selections:
     - accounts_user_interactive_home_directory_exists
     - account_temp_expire_date
     - account_unique_id
+    - agent_mfetpd_running
     - aide_build_database
     - aide_check_audit_tools
+    - aide_periodic_cron_checking
     - aide_scan_notification
     - aide_verify_acls
     - aide_verify_ext_attributes
@@ -228,6 +230,7 @@ selections:
     - package_audit-audispd-plugins_installed
     - package_audit_installed
     - package_mailx_installed
+    - package_mcafeetp_installed
     - package_pam_apparmor_installed
     - package_telnet-server_removed
     - package_firewalld_installed

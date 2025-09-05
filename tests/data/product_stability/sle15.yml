@@ -33,7 +33,7 @@ journald_conf_dir_path: /etc/systemd/journal.d
 major_version_ordinal: 15
 nobody_gid: 65534
 nobody_uid: 65534
-oval_feed_url: https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.15.xml
+oval_feed_url: https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.15-patch.xml.bz2
 pkg_manager: zypper
 pkg_manager_config_file: /etc/zypp/zypp.conf
 pkg_release: 5f68629b
@@ -49,6 +49,7 @@ platform_package_overrides:
   not_aarch64_arch: null
   not_s390x_arch: null
   ovirt: null
+  passwd: shadow
   s390x_arch: null
   sssd: sssd
   sssd-ldap: null
@@ -57,13 +58,13 @@ platform_package_overrides:
 product: sle15
 profiles_root: ./profiles
 reference_uris:
-  anssi: http://www.ssi.gouv.fr/administration/bonnes-pratiques/
+  anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
   app-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
+  app-srg-ctr: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=container-platform
   bsi: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
   cis: https://www.cisecurity.org/benchmark/suse_linux/
   cis-csc: https://www.cisecurity.org/controls/
   cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
-  cnss: http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf
   cobit5: https://www.isaca.org/resources/cobit
   cui: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
   dcid: not_officially_available

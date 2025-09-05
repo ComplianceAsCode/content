@@ -11,7 +11,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} remote access using SSH prevents users from logging on directly as "root" with the following command:
 
-    $ sudo grep -i PermitRootLogin /etc/ssh/sshd_config
+    $ sudo grep -ir PermitRootLogin /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
 
     PermitRootLogin no
 
@@ -25,3 +25,6 @@ fixtext: |-
     Restart the SSH daemon for the settings to take effect:
 
     $ sudo systemctl restart sshd.service
+
+vuln_discussion: |-
+    Even though the communications channel may be encrypted, an additional layer of security is gained by extending the policy of not logging directly on as root. In addition, logging in with a user-specific account provides individual accountability of actions performed on the system and also helps to minimize direct attack attempts on root's password.

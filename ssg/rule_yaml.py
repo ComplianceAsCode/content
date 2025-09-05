@@ -151,14 +151,6 @@ def get_yaml_contents(rule_obj):
     return file_description(yaml_file, yaml_contents)
 
 
-def parse_prodtype(prodtype):
-    """
-    From a prodtype line, returns the set of products listed.
-    """
-
-    return set(map(lambda x: x.strip(), prodtype.split(',')))
-
-
 def get_section_lines(file_path, file_contents, key_name):
     """
     From the given file_path and file_contents, find the lines describing the section
@@ -199,6 +191,8 @@ def has_duplicated_subkeys(file_path, file_contents, sections):
 
         # Sort the YAML parser's subkeys.
         parent_key = list(parsed_section.keys())[0]
+        if not parsed_section[parent_key]:
+            continue
         subkeys = parsed_section[parent_key].keys()
 
         # Create a dictionary for counting them.
@@ -257,6 +251,8 @@ def sort_section_keys(file_path, file_contents, sections, sort_func=None):
 
         # Sort the parsed subkeys.
         parent_key = list(parsed_section.keys())[0]
+        if not parsed_section[parent_key]:
+            continue
         subkeys = sorted(parsed_section[parent_key].keys(), key=sort_func)
 
         # Don't bother if there are zero or one subkeys. Sorting order thus

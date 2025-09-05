@@ -1,7 +1,7 @@
 documentation_complete: true
 
 
-platform: machine and not rhcos4-rhel9
+platform: machine and not rhcos4-rhel9 and service_disabled[nftables] and service_disabled[ufw]
 
 title: 'Install iptables Package'
 
@@ -23,8 +23,6 @@ identifiers:
     cce@sle15: CCE-91244-4
 
 references:
-    cis@rhel7: 3.4.1.1,3.4.2.1,3.4.4.1.1
-    cis@rhel8: 3.4.3.1.1
     cis@sle12: 3.5.1.1
     cis@sle15: 3.5.3.1.1
     cis@ubuntu2004: 3.5.3.1.1

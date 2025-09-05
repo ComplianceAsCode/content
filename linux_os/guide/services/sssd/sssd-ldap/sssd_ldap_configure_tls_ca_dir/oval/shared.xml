@@ -21,8 +21,8 @@
   <external_variable comment="External variable: path of the X.509 certificates in /etc/sssd/sssd.conf"
   datatype="string" id="var_sssd_ldap_tls_ca_dir" version="1" />
 
-  <ind:textfilecontent54_object id="object_sssd_ldap_tls_ca_dir" version="1">
-    <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
+  <ind:textfilecontent54_object id="object_sssd_ldap_tls_ca_dir" version="2">
+    <ind:filepath operation="pattern match">/etc/sssd/(sssd\.conf|conf.d/[^/]+\.conf)</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*\[domain\/[^]]*](?:[^\n[\]]*\n+)+?[\s]*ldap_tls_cacertdir[\s]+=[\s]+([^\s]+)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

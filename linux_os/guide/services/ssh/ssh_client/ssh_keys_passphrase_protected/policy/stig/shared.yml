@@ -6,6 +6,7 @@ checktext: |-
     $ sudo ssh-keygen -y -f /path/to/file
 
     If the contents of the key are displayed, this is a finding.
+    If the contents of the key are displayed, this is a finding.
 fixtext: |-
     Create a new private and public key pair that utilizes a passcode with the following command:
 
@@ -21,4 +22,13 @@ vuldiscussion: |-
     Both the holders of a digital certificate and the issuing authority must protect the computers, storage devices, or whatever they use to keep the private keys.
 
 srg_requirement: |-
-  {{{ full_name }}}, for PKI-based authentication, must enforce authorized access to the corresponding private key.
+    {{{ full_name }}}, for PKI-based authentication, must enforce authorized access to the corresponding private key.
+
+vuln_discussion: |-
+    If the private key is discovered, an attacker can use the key to authenticate as an authorized user and gain access to the network infrastructure.
+
+    The cornerstone of the PKI is the private key used to encrypt or digitally sign information.
+
+    If the private key is stolen, this will lead to the compromise of the authentication and nonrepudiation gained through PKI because the attacker can use the private key to digitally sign documents and pretend to be the authorized user.
+
+    Both the holders of a digital certificate and the issuing authority must protect the computers, storage devices, or whatever they use to keep the private keys.

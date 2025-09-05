@@ -14,6 +14,10 @@ description: |-
     Also remove the configuration files for every wifi adapter from
     <tt>/etc/wicked/ifconfig/&lt;WIFI-INTERFACE&gt;.xml</tt> to prevent future
     connections.
+    {{% elif 'ubuntu' in product %}}
+    Verify that there are no wireless interfaces configured on the system
+    with the following command:
+    <pre>$ ls -L -d /sys/class/net/*/wireless | xargs dirname | xargs basename -a</pre>
     {{% else %}}
     Configure the system to disable all wireless network interfaces with the following command:
     <pre>$ sudo nmcli radio all off</pre>
@@ -40,9 +44,6 @@ identifiers:
 
 references:
     cis-csc: 11,12,14,15,3,8,9
-    cis@rhel7: 3.1.2
-    cis@rhel8: 3.1.2
-    cis@rhel9: 3.1.2
     cis@sle12: 3.1.2
     cis@sle15: 3.1.2
     cis@ubuntu2004: 3.1.2
@@ -58,16 +59,15 @@ references:
     nist-csf: PR.AC-3,PR.IP-1,PR.PT-3,PR.PT-4
     nist@sle12: AC-18(1),SC-8
     pcidss: Req-1.3.3
-    pcidss4: '1.3.3,2.3'
     srg: SRG-OS-000299-GPOS-00117,SRG-OS-000300-GPOS-00118,SRG-OS-000424-GPOS-00188,SRG-OS-000481-GPOS-000481
     stigid@ol7: OL07-00-041010
     stigid@ol8: OL08-00-040110
     stigid@rhel7: RHEL-07-041010
     stigid@rhel8: RHEL-08-040110
-    stigid@rhel9: RHEL-09-291040
     stigid@sle12: SLES-12-030450
     stigid@sle15: SLES-15-010380
     stigid@ubuntu2004: UBTU-20-010455
+    stigid@ubuntu2204: UBTU-22-291015
 
 ocil_clause: 'a wireless interface is configured and has not been documented and approved by the Information System Security Officer (ISSO)'
 
@@ -97,6 +97,9 @@ ocil: |-
 
     If a wireless interface is configured it must be documented and approved by
     the local Authorizing Official.
+    {{% elif 'ubuntu' in product %}}
+    <pre>$ ls -L -d /sys/class/net/*/wireless | xargs dirname | xargs basename -a</pre>
+    Note: This requirement is Not Applicable for systems that do not have physical wireless network radios.
     {{% else %}}
     Note: This requirement is Not Applicable for systems that do not have physical wireless network radios.
 
@@ -111,8 +114,26 @@ ocil: |-
     {{% endif %}}
 
 fixtext: |-
+    {{% if 'ubuntu' in product %}}
+    List all the wireless interfaces with the following command:
+    <pre>$ ls -L -d /sys/class/net/*/wireless | xargs dirname | xargs basename -a</pre>
+    For each interface, configure the system to disable wireless network
+    interfaces with the following command:
+    <pre>$ sudo ifdown <tt>interface name</tt></pre>
+    For each interface listed, find their respective module with the
+    following command:
+    <pre>$ basename $(readlink -f /sys/class/net/<tt>interface name</tt>/device/driver)</pre>
+    where <tt>interface name</tt> must be substituted by the actual interface name.
+    Create a file in the <tt>/etc/modprobe.d</tt> directory and for each module,
+    add the following line:
+    <pre>install <tt>module name</tt> /bin/true</pre>
+    For each module from the system, execute the following command to
+    remove it:
+    <pre>$ sudo modprobe -r <tt>module name</tt></pre>
+    {{% else %}}
     Configure the system to disable all wireless network interfaces with the following command:
     <pre>$ nmcli radio all off</pre>
+    {{% endif %}}
 
 srg_requirement: '{{{ full_name }}} wireless network adapters must be disabled.'
 

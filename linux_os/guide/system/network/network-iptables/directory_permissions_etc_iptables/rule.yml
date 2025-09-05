@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: Verify Permissions On /etc/iptables Directory
+
+description: '{{{ describe_file_permissions(file="/etc/iptables", perms="0600") }}}'
+
+rationale: |-
+    Setting correct permissions on the /etc/iptables directory is important
+    because this directory hosts iptables configuration. Protection of this
+    directory is critical for system security. Restricting the permissions
+    ensures exclusive control of the iptables configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86434-8
+    cce@rhel8: CCE-86435-5
+    cce@rhel9: CCE-86436-3
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/iptables", perms="0600") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/iptables", perms="0600") }}}
+
+platform: package[iptables]
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/iptables", mode="0600") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/iptables", mode="0600") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/iptables/
+        filemode: '0600'
