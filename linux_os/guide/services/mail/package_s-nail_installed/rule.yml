@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'The s-nail Package Is Installed'
+
+description: |-
+    A mail server is required for sending emails.
+    {{{ describe_package_install(package="s-nail") }}}
+
+rationale: |-
+    Emails can be used to notify designated personnel about important
+    system events such as failures or warnings.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86608-7
+
+references:
+    disa: CCI-001744
+    nist: CM-3(5)
+    srg: SRG-OS-000363-GPOS-00150
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="s-nail") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: s-nail
+

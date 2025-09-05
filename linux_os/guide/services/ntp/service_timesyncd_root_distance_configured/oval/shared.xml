@@ -1,0 +1,36 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure that timesyncd RootDistanceMaxSec is configured") }}}
+    <criteria comment="timesyncd RootDistanceMaxSec parameter is configured" operator="OR">
+      <criterion test_ref="{{{ rule_id }}}_test_systemd_timesyncd_master_distance_configuration" />
+      <criterion test_ref="{{{ rule_id }}}_test_systemd_timesyncd_dropin_distance_configuration" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_object comment="Ensure NTP server distance is set"
+    id="{{{ rule_id }}}_object_systemd_timesyncd_dropin_distance_configuration" version="1">
+    <ind:path>/etc/systemd/timesyncd.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*RootDistanceMax=\d+</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object comment="Ensure NTP server distance is set"
+    id="{{{ rule_id }}}_object_systemd_timesyncd_master_distance_configuration" version="1">
+    <ind:filepath>/etc/systemd/timesyncd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*RootDistanceMax=\d+</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" version="1"
+    comment="Ensure NTP root distance is configured in master configuration file"
+    id="{{{ rule_id }}}_test_systemd_timesyncd_master_distance_configuration">
+    <ind:object object_ref="{{{ rule_id }}}_object_systemd_timesyncd_master_distance_configuration" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" version="1"
+    comment="Ensure NTP root distance is configured in dropin configuration file"
+    id="{{{ rule_id }}}_test_systemd_timesyncd_dropin_distance_configuration">
+    <ind:object object_ref="{{{ rule_id }}}_object_systemd_timesyncd_dropin_distance_configuration" />
+  </ind:textfilecontent54_test>
+</def-group>

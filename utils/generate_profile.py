@@ -25,7 +25,14 @@ class LiteralUnicode(str):
 
 
 def literal_unicode_representer(dumper, data):
-    return dumper.represent_scalar(u'tag:yaml.org,2002:str', data, style='|')
+    # NOTE(rhmdnd): pyyaml will not format a string using the style we define for the scalar below
+    # if any strings in the data end with a space (e.g., 'some text ' instead of 'some text'). This
+    # has been reported upstream in https://github.com/yaml/pyyaml/issues/121. This particular code
+    # goes through every line of data and strips any whitespace characters from the end of the
+    # string, and reconstructs the string with newlines so that it will format properly.
+    text = [line.rstrip() for line in data.splitlines()]
+    sanitized = '\n'.join(text)
+    return dumper.represent_scalar(u'tag:yaml.org,2002:str', sanitized, style='|')
 
 
 yaml.add_representer(LiteralUnicode, literal_unicode_representer)

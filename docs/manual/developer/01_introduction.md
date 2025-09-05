@@ -62,9 +62,9 @@ In order to keep the project scalable, we divide the project into separate areas
 Those areas are going to be segmented by
 
 - Products (RHEL, Ubuntu, …) - make it easy to develop content of a product that doesn't influence the other content or the build system.
-- Product-specific profiles (PSPs s.a. Firefox STIG, Ubuntu CIS, …) and respective control files - make it easy for SMEs that only want to assign rules to profiles without going into details.
+- Product-specific profiles (PSPs), e.g. Firefox STIG, Ubuntu CIS, &mldr;, and respective control files - make it easy for SMEs that only want to assign rules to profiles without going into details.
 - Shared resources
-  - Product-independent profiles (PIPs s.a. ANSSI, HIPAA, PCI-DSS, …) and respective control files - ensure that PIP development benefits the whole community instead of cluttering the content with “if product in [...]”.
+  - Product-independent profiles (PIPs), e.g. ANSSI, HIPAA, PCI-DSS, &mldr;, and respective control files - ensure that PIP development benefits the whole community instead of cluttering the content with “if product in [...]”.
   - Build system - decisions upon architecture of the build system impact build time, project capabilities, and can also move maintenance costs.
   - Test-related code - ensure that tests have the greatest coverage as possible, but that don't waste time and don't suffer from false positives.
   - Other - rules only loosely coupled to products, templates, CPEs etc. Same principles that apply to PIPs apply for the shared content as well.
@@ -144,7 +144,7 @@ All issues and pull requests for product removal must use the [product-removal](
 #### Organizational administration
 
 - Keeping track of the decomposition: Maintainer file, readme?
-- Area of effect: Github org and project settings
+- Area of effect: GitHub org and project settings
 - Guidelines: Project rules are followed or adapted to changing conditions.
   Decisions are made when a project wants to join the ComplianceAsCode organization.
 
@@ -155,9 +155,9 @@ All issues and pull requests for product removal must use the [product-removal](
 
 TLDR: 6 non-trivial PRs within 6 months => merge rights for 1 year since the last activity.
 
-Contributors can ask for merge rights by opening a Github issue using the `Request Merge Rights` issue template.
+Contributors can ask for merge rights by opening a GitHub issue using the `Request Merge Rights` issue template.
 1. The issue must contain the following:
-    1. The Github ID of the user
+    1. The GitHub username of the applicant
     1. The Reasoning for the requested merge rights
     1. The links for PRs
 
@@ -173,13 +173,13 @@ Loss of merge rights:
 
 Standard acquisition of merge rights:
 - Merit: Anybody who submits 6 non-trivial PRs that get merged in a period no longer than 6 months is entitled to get such rights, and is encouraged to ask for them.
-- Renewal: When a person reapplies for merge rights less than a year after losing them, it is possible to satisfy formal conditions by submitting non-trivial PRs or non-trivial reviews -- 3 of those in 3 months.
+- Renewal: When a person reapplies for merge rights less than a year after losing them, it is possible to satisfy formal conditions by submitting non-trivial PRs or non-trivial reviews &mdash; 3 of those in 3 months.
 
 The project maintainers decide about granting or strip of rights and about exceptions to the procedure e.g. when an applicant has deep prior experience with the project.
 
 
 #### Organizations
 
-Aside from an organization (s.a. a company or an institution) being composed of individuals with individual rights, other developers associated with the organization may get “backup” merge rights or organization administration rights.
+Aside from an organization (i.e., a company or an institution) being composed of individuals with individual rights, other developers associated with the organization may get “backup” merge rights or organization administration rights.
 Those rights can be granted for a period of 12 months and their renewal can be requested.
 These rights can only be used in cases when regular developers aren't available and the organization needs to get their things through.

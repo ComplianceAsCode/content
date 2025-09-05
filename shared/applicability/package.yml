@@ -4,6 +4,8 @@ versioned: true
 template:
   name: platform_package
 args:
+  aide:
+    pkgname: aide
   apport:
     pkgname: apport
   audit:
@@ -12,6 +14,8 @@ args:
     {{% else %}}
     pkgname: auditd
     {{% endif %}}
+  bash:
+    pkgname: bash
   chrony:
     pkgname: chrony
   firewalld:
@@ -26,6 +30,8 @@ args:
     pkgname: iptables
   libuser:
     pkgname: libuser
+  logrotate:
+    pkgname: logrotate
   net-snmp:
     {{% if pkg_system == "rpm" %}}
       pkgname: net-snmp
@@ -49,10 +55,14 @@ args:
     {{% else %}}
       pkgname: libpam-runtime
     {{% endif %}}
+  pam_apparmor:
+    pkgname: pam_apparmor
   polkit:
     pkgname: polkit
   postfix:
     pkgname: postfix
+  rsh-server:
+    pkgname: rsh-server
   shadow-utils:
     {{% if pkg_system == "rpm" %}}
     {{% if product in ["sle12", "sle15"] %}}

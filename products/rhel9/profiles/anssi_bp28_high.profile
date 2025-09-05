@@ -17,3 +17,5 @@ description: |-
 
 selections:
     - anssi:all:high
+    # the following rule renders UEFI systems unbootable
+    - '!sebool_secure_mode_insmod'

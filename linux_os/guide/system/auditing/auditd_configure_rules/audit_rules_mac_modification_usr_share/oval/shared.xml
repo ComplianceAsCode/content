@@ -4,6 +4,14 @@
       mandatory access controls (SELinux) in usr/share/selinux are enabled.") }}}
 
     <criteria operator="OR">
+{{%- if product in ["sle15"] -%}}
+      <criteria operator="AND">
+        <criterion test_ref="check_selinux_policy_devel_installed"
+          comment="Check no selinux-policy-devel package installed" negate="true"/>
+        <criterion test_ref="check_selinux_policy_targeted_installed"
+          comment="Check no selinux-policy-targeted package installed" negate="true"/>
+      </criteria>
+{{%- endif -%}}
       <!-- Test the augenrules_usr_share case -->
       <criteria operator="AND">
         <extend_definition definition_ref="audit_rules_augenrules"
@@ -21,6 +29,11 @@
       </criteria>
     </criteria>
   </definition>
+
+{{%- if product in ["sle15"] -%}}
+  {{{ oval_test_package_installed(package="selinux-policy-devel", evr="", test_id="check_selinux_policy_devel_installed") }}}
+  {{{ oval_test_package_installed(package="selinux-policy-targeted", evr="", test_id="check_selinux_policy_targeted_installed") }}}
+{{%- endif -%}}
 
   <ind:textfilecontent54_test id="test_armm_selinux_watch_augenrules_usr_share" version="1"
     check="all" comment="audit selinux changes augenrules in usr/share">

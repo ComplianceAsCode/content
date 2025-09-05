@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R1'
+title: 'Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R9'
 
 description: |-
     This Security Technical Implementation Guide is published as a tool to
@@ -336,13 +336,12 @@ selections:
     # UBTU-20-010178 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the pam_timestamp_check command.
     - audit_rules_privileged_commands_pam_timestamp_check
 
-    # UBTU-20-010179 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the init_module syscall.
+    # UBTU-20-010179 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the init_module and finit_module syscall.
     - audit_rules_kernel_module_loading_init
-
-    # UBTU-20-010180 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the finit_module syscall.
     - audit_rules_kernel_module_loading_finit
 
     # UBTU-20-010181 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the delete_module syscall
+    - audit_rules_kernel_module_loading_delete
 
     # UBTU-20-010182 The Ubuntu operating system must produce audit records and reports containing information to establish when, where, what type, the source, and the outcome for all DoD-defined auditable events and actions in near real time.
     - package_audit_installed
@@ -387,15 +386,10 @@ selections:
 
     # UBTU-20-010267 The Ubuntu operating system must generate audit records for any successful/unsuccessful use of unlink system call.
     - audit_rules_file_deletion_events_unlink
-
-    # UBTU-20-010268 The Ubuntu operating system must generate audit records for any successful/unsuccessful use of unlinkat system call.
-    - audit_rules_file_deletion_events_unlinkat
-
-    # UBTU-20-010269 The Ubuntu operating system must generate audit records for any successful/unsuccessful use of rename system call.
-    - audit_rules_file_deletion_events_rename
-
-    # UBTU-20-010270 The Ubuntu operating system must generate audit records for any successful/unsuccessful use of renameat system call.
+    - audit_rules_file_deletion_events_rmdir
     - audit_rules_file_deletion_events_renameat
+    - audit_rules_file_deletion_events_rename
+    - audit_rules_file_deletion_events_unlinkat
 
     # UBTU-20-010276 The Ubuntu operating system must generate audit records when loading dynamic kernel modules.
 
@@ -420,12 +414,12 @@ selections:
     # UBTU-20-010300 The Ubuntu operating system must have a crontab script running weekly to offload audit events of standalone systems.
     - auditd_offload_logs
 
-    # UBTU-20-010302 The Ubuntu operating system must generate records for successful/unsuccessful uses of delete_module syscall.
-    - audit_rules_kernel_module_loading_delete
-
     # UBTU-20-010400 The Ubuntu operating system must limit the number of concurrent sessions to ten for all accounts and/or account types.
     - var_accounts_max_concurrent_login_sessions=10
     - accounts_max_concurrent_login_sessions
+
+    #UBTU-20-010401 The Ubuntu operating system must restrict access to the kernel message buffer.
+    - sysctl_kernel_dmesg_restrict
 
     # UBTU-20-010403 The Ubuntu operating system must monitor remote access methods.
     - rsyslog_remote_access_monitoring
@@ -569,6 +563,7 @@ selections:
 
     # UBTU-20-010450 The Ubuntu operating system must use a file integrity tool to verify correct operation of all security functions.
     - package_aide_installed
+    - aide_build_database
 
     # UBTU-20-010451 The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or anomalies in the operation of any security functions are discovered.
 
@@ -595,3 +590,12 @@ selections:
     # UBTU-20-010460 The Ubuntu operating system must disable the x86 Ctrl-Alt-Delete key sequence.
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_burstaction
+
+    # UBTU-20-010462 The Ubuntu operating system must not have accounts configured with blank or null passwords.
+    - no_empty_passwords_etc_shadow
+
+    # UBTU-20-010461 The Ubuntu operating system must disable automatic mounting of Universal Serial Bus (USB) mass storage driver.
+    - kernel_module_usb-storage_disabled
+
+    # UBTU-20-010463 The Ubuntu operating system must not allow accounts configured with blank or null passwords.
+    - no_empty_passwords

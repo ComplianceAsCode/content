@@ -38,6 +38,7 @@ def get_profile(product, profile_name):
     for profile in profiles:
         if profile.attrib['id'] == profile_name_fqdn:
             return profile
+    raise ValueError("Profile %s was not found." % profile_name_fqdn)
 
 
 get_profile.__annotations__ = {'product': str, 'profile_name': str, 'return': ET.Element}
@@ -156,6 +157,13 @@ def setup_tailoring_profile(profile_id, profile_root):
 setup_tailoring_profile.__annotations__ = {'profile_id': str, 'profile_root': ET.Element}
 
 
+def _get_datetime():
+    try:
+        return datetime.datetime.now(datetime.UTC).isoformat()
+    except AttributeError:
+        return datetime.datetime.utcnow().isoformat()
+
+
 def create_tailoring(args):
     benchmark_root = ET.parse(args.manual).getroot()
     known_rules = get_implemented_stigs(args.product, args.root, args.build_config_yaml,
@@ -169,7 +177,7 @@ def create_tailoring(args):
         if selection.attrib['idref'].startswith(ssg.constants.OSCAP_RULE):
             cac_rule_id = selection.attrib['idref'].replace(ssg.constants.OSCAP_RULE, '')
             desired_value = str([cac_rule_id] in list(needed_rules.values())).lower()
-            if not selection.get('selected') == desired_value:
+            if not bool(selection.get('selected')) == desired_value:
                 selection.set('selected', desired_value)
                 tailoring_profile.append(selection)
                 if not args.quiet:
@@ -178,7 +186,7 @@ def create_tailoring(args):
 
     tailoring_root = ET.Element('xccdf-1.2:Tailoring')
     version = ET.SubElement(tailoring_root, 'xccdf-1.2:version',
-                            attrib={'time': datetime.datetime.utcnow().isoformat()})
+                            attrib={'time': _get_datetime()})
     version.text = '1'
     tailoring_root.set('id', args.tailoring_id)
     tailoring_root.append(tailoring_profile)

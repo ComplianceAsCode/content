@@ -1,6 +1,8 @@
 #!/bin/bash
 # remediation = none
 
+source common.sh
+
 # The sets up a config file with extra double quotes
 
 {{%- if VARIABLE %}}

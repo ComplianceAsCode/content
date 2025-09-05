@@ -1,7 +1,9 @@
 name: Gate
 on:
+  merge_group:
+    branches: [ 'master' ]
   push:
-    branches: [ 'master', '*', '!stabilization*', '!stable*' ]
+    branches: ['*', '!stabilization*', '!stable*', '!master' ]
   pull_request:
     branches: [ 'master', 'stabilization*' ]
 jobs:
@@ -17,20 +19,39 @@ jobs:
         uses: actions/checkout@v3
       - name: Build
         run: |-
-          ./build_product \
-              alinux2 \
-              alinux3 \
-              anolis23 \
-              anolis8 \
-              chromium \
-              fedora \
-              firefox \
-              rhcos4 \
-              rhel7 \
-              rhel8 \
-              rhel9 \
-              uos20 \
-              --derivatives
+          ./build_product rhel7 rhel8 rhel9 --derivatives
+        env:
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build
+
+  validate-sle:
+    name: Build, Test on SLE 15 (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: registry.suse.com/bci/bci-base:latest
+    steps:
+      - name: Update CA certificates
+        run: update-ca-certificates
+      - name: Zypper add factory repo - to install bats and ShellCheck
+        run: zypper --non-interactive ar  https://download.opensuse.org/repositories/openSUSE:/Backports:/SLE-15-SP5/standard/openSUSE:Backports:SLE-15-SP5.repo     
+      - name: Zypper auto import keys
+        run: zypper  --gpg-auto-import-keys --non-interactive ref
+      - name: Zypper refs
+        run: zypper refs
+      - name: Zypper refresh
+        run: zypper refresh    
+      - name: Install Deps           
+        run: zypper install -y git cmake make bats openscap-utils python3 python3-rpm python3-pip python3-devel python3-PyYAML python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools ShellCheck
+      - name: Upgrade pip python
+        run: pip install pip --upgrade
+      - name: Install deps python
+        run: pip install pytest pytest-cov
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build
+        run: ./build_product alinux2 alinux3 chromium fedora firefox rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004 ubuntu2204 uos20
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -44,9 +65,11 @@ jobs:
       - name: Install Deps
         run: zypper install -y git cmake make openscap-utils python3-PyYAML bats python3-pytest python3-pytest-cov python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools ShellCheck
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build
-        run: ./build_product alinux2 alinux3 anolis23 anolis8 chromium fedora firefox rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004 ubuntu2204 uos20
+        run: ./build_product sle12 sle15
+        env:
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -62,12 +85,12 @@ jobs:
       - name: Install Deps
         run: apt-get install -y ansible-lint bats check cmake libopenscap8 libxml2-utils ninja-build python3-github python3-pip xsltproc
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install deps python
         run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
         env:
-          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON"
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
           ./build_product debian10 debian11
       - name: Test
@@ -79,30 +102,16 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Install Deps
-        run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml python3-setuptools ansible-lint python3-github bats python3-pytest python3-pytest-cov shellcheck
+        run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      - name: Install deps python
+        run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
         env:
-          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_SCE_ENABLED:BOOL=ON"
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_SCE_ENABLED:BOOL=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
-          ./build_product \
-              alinux2 \
-              alinux3 \
-              anolis23 \
-              anolis8 \
-              chromium \
-              fedora \
-              firefox \
-              rhcos4 \
-              rhel7 \
-              rhel8 \
-              rhel9 \
-              sle12 \
-              sle15 \
-              ubuntu2004 \
-              ubuntu2204 \
-              uos20
+          ./build_product ubuntu2004 ubuntu2204
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -112,16 +121,16 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Install Deps
-        run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml python3-setuptools ansible-lint python3-github bats python3-pytest python3-pytest-cov shellcheck
+        run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      - name: Install deps python
+        run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
         env:
-          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_SCE_ENABLED:BOOL=ON"
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_SCE_ENABLED:BOOL=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
-          ./build_product \
-              ubuntu2004 \
-              ubuntu2204
+          ./build_product ubuntu2004 ubuntu2204
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -135,9 +144,9 @@ jobs:
       - name: Install Deps
         run: dnf install -y cmake make openscap-utils python3-pyyaml bats ansible python3-pip ShellCheck git
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install deps python
-        run: pip install -r requirements.txt -r test-requirements.txt
+        run: pip install pcre2 -r requirements.txt -r test-requirements.txt
       - name: Build
         run: |-
           ./build_product \
@@ -152,15 +161,11 @@ jobs:
               rhel7 \
               rhel8 \
               rhel9 \
-              sle12 \
-              sle15 \
-              ubuntu2004 \
-              ubuntu2204 \
               uos20 \
               ocp4 \
               eks
         env:
-          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON"
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -168,7 +173,7 @@ jobs:
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Upload coverage to Code Climate  # Requires: git package
         if: ${{ github.repository == 'ComplianceAsCode/content' }}
-        uses: paambaati/codeclimate-action@v4.0.0
+        uses: paambaati/codeclimate-action@v5.0.0
         env:
           CC_TEST_REPORTER_ID: e67e068471d32b63f8e9561dba8f6a3f84dcc76b05ebfd98e44ced1a91cff854
         with:
@@ -187,9 +192,9 @@ jobs:
       -   name: Install Deps
           run: dnf install -y cmake make openscap-utils bats ansible python3-pip ShellCheck git
       -   name: Checkout
-          uses: actions/checkout@v3
+          uses: actions/checkout@v4
       -   name: Install deps python
-          run: pip install -r requirements.txt -r test-requirements.txt
+          run: pip install -r requirements-base.txt -r test-requirements.txt
       -   name: Build
           run: |-
             ./build_product \
@@ -204,12 +209,10 @@ jobs:
                 rhel7 \
                 rhel8 \
                 rhel9 \
-                sle12 \
-                sle15 \
-                ubuntu2004 \
-                ubuntu2204 \
                 uos20 \
                 ocp4
+          env:
+            ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
       -   name: Test
           run: ctest -j2 --output-on-failure -E unique-stigids
           working-directory: ./build

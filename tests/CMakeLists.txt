@@ -14,7 +14,6 @@ macro(ssg_python_unit_tests PYTHON_COMPONENT_ID RELATIVE_PYTHONPATH)
 endmacro()
 
 if(PY_PYTEST)
-    ssg_python_unit_tests("build-scripts" "build-scripts")
     ssg_python_unit_tests("utils" "utils")
     ssg_python_unit_tests("ssg-module" ".")
     ssg_python_unit_tests("ssg_test_suite" "tests")
@@ -32,17 +31,6 @@ add_test(
 )
 set_tests_properties("test-rule-dir-json" PROPERTIES LABELS quick)
 set_tests_properties("test-rule-dir-json" PROPERTIES FIXTURES_SETUP "rule-dir-json")
-
-add_test(
-    NAME "validate-parse-affected"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_parse_affected.py" "${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}/build_config.yml"
-)
-
-add_test(
-    NAME "validate-parse-platform"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_parse_platform.py" "${CMAKE_SOURCE_DIR}"
-)
-set_tests_properties("validate-parse-platform" PROPERTIES LABELS quick)
 
 add_test(
     NAME "stable-profile-ids"
@@ -88,82 +76,12 @@ add_test(
 set_tests_properties("macros-oval" PROPERTIES LABELS quick)
 
 add_test(
-    NAME "fix_rules-empty_identifiers"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "empty_identifiers"
+    NAME "fix_rules"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "test_all"
 )
-set_tests_properties("fix_rules-empty_identifiers" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-empty_identifiers" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-empty_identifiers" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-invalid_identifiers"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "invalid_identifiers"
-)
-set_tests_properties("fix_rules-invalid_identifiers" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-invalid_identifiers" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-invalid_identifiers" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-int_identifiers"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "int_identifiers"
-)
-set_tests_properties("fix_rules-int_identifiers" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-int_identifiers" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-int_identifiers" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-empty_references"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "empty_references"
-)
-set_tests_properties("fix_rules-empty_references" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-empty_references" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-empty_references" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-int_references"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "int_references"
-)
-set_tests_properties("fix_rules-int_references" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-int_references" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-int_references" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-duplicate_subkeys"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "duplicate_subkeys"
-)
-set_tests_properties("fix_rules-duplicate_subkeys" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-duplicate_subkeys" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-duplicate_subkeys" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-sort_subkeys"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "sort_subkeys"
-)
-set_tests_properties("fix_rules-sort_subkeys" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-sort_subkeys" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-sort_subkeys" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-sort_prodtypes"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "sort_prodtypes"
-)
-set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-if(PY_YAMLPATH)
-    if(PY_PYTEST)
-        add_test(
-            NAME "test-function-check_playbook_file_removed_and_added"
-            COMMAND "${PYTHON_EXECUTABLE}" -m pytest ${PYTEST_COVERAGE_OPTIONS} "${CMAKE_CURRENT_SOURCE_DIR}/test_check_playbook_file_removed_and_added.py"
-        )
-    endif()
-    add_test(
-        NAME "ansible-file-removed-and-added"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_ansible_file_removed_and_added.py" --ansible_dir "${CMAKE_BINARY_DIR}/ansible"
-    )
-    set_tests_properties("fix_rules-sort_subkeys" PROPERTIES LABELS quick)
-endif()
+set_tests_properties("fix_rules" PROPERTIES LABELS quick)
+set_tests_properties("fix_rules" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 macro(mypy_test SCRIPT)
     if(PY_MYPY)
@@ -262,7 +180,7 @@ set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES DEPE
 endif()
 
 
-if(PYTHON_VERSION_MAJOR GREATER 2  AND PYTHON_VERSION_MINOR GREATER 6)
+if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 6)
     add_test(
         NAME "test-controleval-directory"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "stats" "--level" "high" "--product" "rhel9" "--id" "qrst-levels"
@@ -280,6 +198,14 @@ if(PYTHON_VERSION_MAJOR GREATER 2  AND PYTHON_VERSION_MINOR GREATER 6)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "stats" "--level" "medium" "--product" "rhel8" "--id" "qrst-levels" "--output-format" "json"
     )
     set_tests_properties("test-controleval-json" PROPERTIES LABELS quick)
+
+    if(PY_PROMETHEUS_CLIENT)
+        add_test(
+            NAME "test-controleval-prometheus-metrics"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval_metrics.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "prometheus" "--products" "fedora" "ol9" "rhel7" "rhel8" "rhel9" "sle15"
+        )
+        set_tests_properties("test-controleval-prometheus-metrics" PROPERTIES LABELS quick)
+    endif()
 endif()
 
 macro(ssg_refcheck_test PRODUCT PROFILE KEY)
@@ -292,6 +218,15 @@ macro(ssg_refcheck_test PRODUCT PROFILE KEY)
     set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES LABELS quick)
 endmacro()
 
+if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL9)
+    ssg_refcheck_test("rhel9" "cis_workstation_l1" "cis")
+    ssg_refcheck_test("rhel9" "cis_workstation_l2" "cis")
+    ssg_refcheck_test("rhel9" "cis_server_l1" "cis")
+    ssg_refcheck_test("rhel9" "cis" "cis")
+    ssg_refcheck_test("rhel9" "ccn_basic" "ccn")
+    ssg_refcheck_test("rhel9" "ccn_advanced" "ccn")
+endif()
+
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
     ssg_refcheck_test("rhel8" "cis_workstation_l1" "cis")
     ssg_refcheck_test("rhel8" "cis_workstation_l2" "cis")
@@ -299,20 +234,11 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
     ssg_refcheck_test("rhel8" "cis" "cis")
 endif()
 
-
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL7)
     ssg_refcheck_test("rhel7" "cis_workstation_l1" "cis")
     ssg_refcheck_test("rhel7" "cis_workstation_l2" "cis")
     ssg_refcheck_test("rhel7" "cis_server_l1" "cis")
     ssg_refcheck_test("rhel7" "cis" "cis")
-endif()
-
-if(PYTHON_VERSION_MAJOR GREATER 2)
-    add_test(
-        NAME "test-compare-disa-xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/compare_disa_xml.py" "${CMAKE_SOURCE_DIR}/tests/data/utils/disa-stig-rhel8-v1r6-xccdf-manual.xml" "${RHEL8_DISA_STIG_REF}"
-    )
-    set_tests_properties("test-compare-disa-xml" PROPERTIES LABELS quick)
 endif()
 
 macro(ssg_controlrefcheck_test PRODUCT CONTROL KEY)

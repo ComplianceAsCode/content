@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="inventory" id="runtime_kernel_fips_enabled" version="1">
+    <metadata>
+      <title>Running kernel has fips mode enabled</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check if sysctl crypto.fips_enabled = 1</description>
+      <reference ref_id="cpe:/a:runtime-kernel-fips-enabled" source="CPE" />
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_runtime_kernel_fips_enabled" comment="check if sysctl crypto.fips_enabled = 1" />
+    </criteria>
+  </definition>
+
+  <unix:sysctl_test check="all" check_existence="all_exist" comment="kernel runtime parameter crypto.fips_enabled set to 1"
+  id="test_runtime_kernel_fips_enabled" version="1">
+    <unix:object object_ref="obj_runtime_kernel_fips_enabled" />
+    <unix:state state_ref="state_runtime_kernel_fips_enabled" />
+  </unix:sysctl_test>
+
+  <unix:sysctl_object id="obj_runtime_kernel_fips_enabled" version="1">
+    <unix:name>crypto.fips_enabled</unix:name>
+  </unix:sysctl_object>
+
+  <unix:sysctl_state id="state_runtime_kernel_fips_enabled" version="1">
+    <unix:value datatype="int" operation="equals">1</unix:value>
+  </unix:sysctl_state>
+
+</def-group>

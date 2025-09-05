@@ -4,15 +4,26 @@
 # complexity = low
 # disruption = low
 
-- name: Get all world-writable directories with no sticky bits set
-  shell: |
-    set -o pipefail
-    df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null
-  register: dir_output
+{{{ ansible_create_list_of_local_paths(list_name="search_paths") }}}
 
-- name: Ensure sticky bit is set
-  file:
-    path: "{{ item }}"
+- name: "{{{ rule_title }}} - Define Rule Specific Facts"
+  ansible.builtin.set_fact:
+    world_writable_dirs: []
+
+- name: "{{{ rule_title }}} - Find All Uncompliant Directories in Local File Systems"
+  ansible.builtin.command:
+    cmd: find {{ item }} -xdev -type d ( -perm -0002 -a ! -perm -1000 )
+  loop: "{{ search_paths }}"
+  changed_when: false
+  register: result_found_dirs
+
+- name: "{{{ rule_title }}} - Create List of World Writable Directories Without Sticky Bit"
+  ansible.builtin.set_fact:
+    world_writable_dirs: '{{ world_writable_dirs | union(item.stdout_lines) | list }}'
+  loop: "{{ result_found_dirs.results }}"
+
+- name: "{{{ rule_title }}} - Ensure Sticky Bit is Set on Local World Writable Directories"
+  ansible.builtin.file:
+    path: '{{ item }}'
     mode: a+t
-  with_items:
-    - "{{ dir_output.stdout_lines }}"
+  loop: '{{ world_writable_dirs }}'

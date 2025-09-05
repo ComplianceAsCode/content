@@ -34,7 +34,7 @@ selections:
     -  file_owner_backup_etc_passwd
     -  file_owner_backup_etc_shadow
     -  file_owner_cron_allow
-    -  file_permissions_at_allo
+    -  file_permissions_at_allow
     -  file_permissions_backup_etc_group
     -  file_permissions_backup_etc_passwd
     -  file_permissions_backup_etc_shadow

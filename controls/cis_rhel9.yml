@@ -1375,6 +1375,7 @@ controls:
     rules:
       - audit_rules_login_events_faillock
       - audit_rules_login_events_lastlog
+      - var_accounts_passwords_pam_faillock_dir=run
 
   - id: 4.1.3.13
     title: Ensure file deletion events by users are collected (Automated)
@@ -1710,6 +1711,10 @@ controls:
       - l1_server
       - l1_workstation
     status: manual
+    related_rules:
+      - ensure_logrotate_activated
+      - package_logrotate_installed
+      - timer_logrotate_enabled
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled (Automated)

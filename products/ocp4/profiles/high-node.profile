@@ -7,6 +7,7 @@ title: 'NIST 800-53 High-Impact Baseline for Red Hat OpenShift - Node level'
 platform: ocp4-node
 
 metadata:
+    version: Revision 4
     SMEs:
         - JAORMX
         - mrogers950

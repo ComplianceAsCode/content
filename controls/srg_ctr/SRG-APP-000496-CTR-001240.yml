@@ -6,4 +6,16 @@ controls:
     attempts to modify security objects occur.
   related_rules:
   - audit_profile_set
-  status: inherently met
+  rules:
+  - audit_rules_dac_modification_fremovexattr
+  - audit_rules_dac_modification_fsetxattr
+  - audit_rules_dac_modification_lremovexattr
+  - audit_rules_dac_modification_lsetxattr
+  - audit_rules_dac_modification_removexattr
+  - audit_rules_execution_chcon
+  - audit_rules_execution_semanage
+  - audit_rules_execution_setfiles
+  - audit_rules_execution_setsebool
+  - audit_rules_usergroup_modification_opasswd
+  status: automated
+

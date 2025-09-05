@@ -52,6 +52,7 @@ product_directories = [
     'rhcos4',
     'ol7', 'ol8', 'ol9',
     'opensuse',
+    'openembedded',
     'rhel7', 'rhel8', 'rhel9',
     'rhv4',
     'sle12', 'sle15',
@@ -221,6 +222,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Ubuntu 20.04": "ubuntu2004",
     "Ubuntu 22.04": "ubuntu2204",
     "UnionTech OS Server 20": "uos20",
+    "OpenEmbedded": "openembedded",
     "Not Applicable" : "example"
 }
 
@@ -244,7 +246,7 @@ REFERENCES = dict(
         regex_with_groups=r"BP28\(R(\d+)\)"),
     ccn=Reference(
         id="ccn", name="CCN", url="",
-        regex_with_groups=r"A.(\d+).SEC-RHEL(\d+)"),
+        regex_with_groups=r"A\.(\d+)\.SEC-(\w+)(\d+)"),
     cis=Reference(
         id="cis", name="CIS", url=cis_ns,
         regex_with_groups=r"(\d+)\.(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
@@ -272,7 +274,7 @@ REFERENCES = dict(
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
-                       "example", "eks", "alinux", "uos", "anolis"]
+                       "example", "eks", "alinux", "uos", "anolis", "openembedded"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_alinux": ["alinux2", "alinux3"],
@@ -290,6 +292,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_sle": ["sle12", "sle15"],
     "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204"],
     "multi_platform_uos": ["uos20"],
+    "multi_platform_openembedded": ["openembedded"],
 }
 
 RHEL_CENTOS_CPE_MAPPING = {
@@ -459,6 +462,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'ocp': 'Red Hat OpenShift Container Platform',
     'rhcos': 'Red Hat Enterprise Linux CoreOS',
     'eks': 'Amazon Elastic Kubernetes Service',
+    'openembedded': 'OpenEmbedded',
 }
 
 # References that can not be used with product-qualifiers
@@ -474,3 +478,39 @@ DEFAULT_PRODUCT = 'example'
 DEFAULT_CHRONY_CONF_PATH = '/etc/chrony.conf'
 DEFAULT_AUDISP_CONF_PATH = '/etc/audit'
 DEFAULT_SYSCTL_REMEDIATE_DROP_IN_FILE = 'false'
+
+
+# Constants for OVAL object model
+STR_TO_BOOL = {
+    "false": False,
+    "False": False,
+    "true": True,
+    "True": True,
+}
+
+BOOL_TO_STR = {True: "true", False: "false"}
+
+
+class OvalNamespaces:
+    oval = "http://oval.mitre.org/XMLSchema/oval-common-5"
+    definition = oval_namespace
+    independent = "http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
+    linux = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
+
+
+OVAL_NAMESPACES = OvalNamespaces()
+
+DERIVATIVES_PRODUCT_MAPPING = {
+    "centos7": "rhel7",
+    "centos8": "rhel8",
+    "cs9": "rhel9",
+    "sl7": "rhel7"
+}
+
+BENCHMARKS = {
+    "apple_os",
+    "applications",
+    "linux_os/guide",
+    "products/chromium/guide",
+    "products/firefox/guide",
+}

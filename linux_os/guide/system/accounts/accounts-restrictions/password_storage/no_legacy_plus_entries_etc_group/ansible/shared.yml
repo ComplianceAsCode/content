@@ -1,17 +1,17 @@
-# platform = multi_platform_fedora,Red Hat OpenShift Container Platform 4,Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4
+# platform = multi_platform_all
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = medium
 
-- name: "Backup the old /etc/group file"
-  copy:
+- name: "{{{ rule_title }}} - Backup the Old /etc/group File"
+  ansible.builtin.copy:
     src: /etc/group
     dest: /etc/group-
     remote_src: true
 
-- name: "Remove lines starting with + from /etc/group"
-  lineinfile:
+- name: "{{{ rule_title }}} - Remove Lines Starting with + From /etc/group"
+  ansible.builtin.lineinfile:
     regexp: '^\+.*$'
     state: absent
     path: /etc/group

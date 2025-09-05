@@ -1,0 +1,44 @@
+{
+    "$id": "http://complianceascode.io/schemas/1.0/variable.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "documentation_complete": {
+            "type": "boolean"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+                "string",
+                "number",
+                "boolean"
+            ]
+          },
+          "operator": {
+            "type": "string"
+          },
+          "interactive": {
+            "type": "boolean"
+          },
+          "options": {
+            "type": "object",
+            "uniqueItems": true
+          }
+    },
+    "required": [
+        "documentation_complete",
+        "title",
+        "description",
+        "type",
+        "operator",
+        "interactive",
+        "options"
+    ],
+    "uniqueItems": true
+}

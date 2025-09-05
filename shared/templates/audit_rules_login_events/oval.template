@@ -24,7 +24,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arle_{{{ NAME }}}_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w[\s]+{{{ PATH }}}[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b.*$</ind:pattern>
+    <ind:pattern operation="pattern match" var_ref="{{{ NAME }}}_path_pattern"/>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -33,8 +33,21 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arle_{{{ NAME }}}_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w[\s]+{{{ PATH }}}[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b.*$</ind:pattern>
+    <ind:pattern operation="pattern match" var_ref="{{{ NAME }}}_path_pattern" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-
+  <local_variable id="{{{ NAME }}}_path_pattern" comment="The composite pattern used to detect if audit as been configured" datatype="string" version="1">
+    <concat>
+      <literal_component>^\-w[\s]+</literal_component>
+  {{% if PATH_IS_VARIABLE %}}
+      <variable_component var_ref="var_accounts_passwords_pam_faillock_dir"/>
+  {{% else %}}
+      <literal_component>{{{ PATH }}}</literal_component>
+  {{% endif %}}
+      <literal_component>[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b.*$</literal_component>
+    </concat>
+  </local_variable>
+  {{% if PATH_IS_VARIABLE %}}
+  <external_variable id="var_accounts_passwords_pam_faillock_dir" comment="Faillock directory" datatype="string" version="1"/>
+  {{% endif %}}
 </def-group>

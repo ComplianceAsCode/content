@@ -1,28 +1,33 @@
-{{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
-{{% set pam_lastlog_path = "/etc/pam.d/login" %}}
-{{% else %}}
-{{% set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
-{{% endif %}}
+{{%- if "sle" in product or "ubuntu" in product %}}
+{{%- set pam_lastlog_path = "/etc/pam.d/login" %}}
+{{%- else %}}
+{{%- set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
+{{%- endif %}}
+
+{{%- if "ol" in product or "ubuntu" in product %}}
+{{%- set control = "required" %}}
+{{%- elif "sle" in product %}}
+{{%- set control = "optional" %}}
+{{%- else %}}
+{{%- set control = "[default=1]" %}}
+{{%- endif %}}
 
 documentation_complete: true
 
 title: 'Ensure PAM Displays Last Logon/Access Notification'
 
 description: |-
-    To configure the system to notify users of last logon/access
-    using <tt>pam_lastlog</tt>, add or correct the <tt>pam_lastlog</tt>
-    settings in
-    <tt>{{{ pam_lastlog_path }}}</tt> to read as follows:
-    <pre>session     required pam_lastlog.so showfailed</pre>
-    And make sure that the <tt>silent</tt> option is not set for
-    <tt>pam_lastlog</tt> module.
+    To configure the system to notify users of last logon/access using <tt>pam_lastlog</tt>,
+    add or correct the <tt>pam_lastlog</tt> settings in <tt>{{{ pam_lastlog_path }}}</tt>
+    to include <tt>showfailed</tt> option, such as:
+    <pre>session     {{{ control }}}    pam_lastlog.so showfailed</pre>
+    And make sure that the <tt>silent</tt> option is not set for this specific line.
 
 rationale: |-
-    Users need to be aware of activity that occurs regarding
-    their account. Providing users with information regarding the number
-    of unsuccessful attempts that were made to login to their account
-    allows the user to determine if any unauthorized activity has occurred
-    and gives them an opportunity to notify administrators.
+    Users need to be aware of activity that occurs regarding their account. Providing users with
+    information regarding the number of unsuccessful attempts that were made to login to their
+    account allows the user to determine if any unauthorized activity has occurred and gives them
+    an opportunity to notify administrators.
 
 severity: low
 
@@ -57,20 +62,34 @@ references:
 
 platform: package[pam]
 
-ocil_clause: '"pam_lastlog" is missing from "{{{ pam_lastlog_path }}}" file, or the silent option is present'
+ocil_clause: '"pam_lastlog.so" is not properly configured in "{{{ pam_lastlog_path }}}" file'
 
 ocil: |-
     Verify users are provided with feedback on when account accesses last occurred with the following command:
 
     <pre>$ sudo grep pam_lastlog {{{ pam_lastlog_path }}}
 
-    session required pam_lastlog.so showfailed</pre>
+    session {{{ control }}} pam_lastlog.so showfailed</pre>
 
 fixtext: |-
-    Configure {{{ full_name }}} to provide users with feedback on when account accesses last occurred by setting the required configuration options in "/etc/pam.d/postlogin".
+    Configure {{{ full_name }}} to provide users with feedback on when account accesses last occurred by setting the required configuration options in "{{{ pam_lastlog_path }}}".
 
-    Add the following line to the top of "/etc/pam.d/postlogin":
+    Add the following line to the top of "{{{ pam_lastlog_path }}}":
 
-    session required pam_lastlog.so showfailed
+    session {{{ control }}} pam_lastlog.so showfailed
 
 srg_requirement: '{{{ full_name }}} must display the date and time of the last successful account logon upon logon.'
+
+warnings:
+    - general: |-
+       If the system relies on <tt>authselect</tt> tool to manage PAM settings, the remediation
+       will also use <tt>authselect</tt> tool. However, if any manual modification was made in
+       PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
+       aborted in order to preserve intentional changes. In this case, an informative message will
+       be shown in the remediation report.
+    - general: |-
+       <tt>authselect</tt> contains an authselect feature to easily and properly enable Last Logon
+       notifications with <tt>pam_lastlog.so</tt> module. If a custom profile was created and used
+       in the system before this authselect feature was available, the new feature can't be used
+       with this custom profile and the remediation will fail. In this case, the custom profile
+       should be recreated or manually updated.

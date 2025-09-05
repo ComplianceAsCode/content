@@ -2,13 +2,13 @@ documentation_complete: true
 
 prodtype: eks,ocp4
 
-platform: {{{ product }}}
-
 {{%- if product == "eks" %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
 {{%- else %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
 {{%- endif %}}
+
+platform: {{{ product }}}-node
 
 title: 'Disable Anonymous Authentication to the Kubelet'
 
@@ -52,10 +52,12 @@ ocil: |-
     <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1"' | grep -A1 anonymous; done</pre>
     The output should return <pre>enabled: false</pre>.
 
-warnings:
-- general: |-
-    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
-
 template:
-    name: kubelet_combine
-
+    name: yamlfile_value
+    vars:
+        filepath: '/etc/kubernetes/compliance-operator/kubeletconfig/openscap-kubeletconfig'
+        yamlpath: ".kubeletconfig.authentication.anonymous.enabled"
+        check_existence: "all_exist"
+        values:
+         - value: "false"
+           operation: "equals"

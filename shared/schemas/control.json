@@ -1,0 +1,132 @@
+{
+    "$id": "http://complianceascode.io/schemas/1.0/control.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "uniqueItems": true,
+    "properties": {
+        "title": {
+            "type": "string"
+        },
+        "policy": {
+            "type": "string"
+        },
+        "id": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string"
+        },
+        "source": {
+            "type": "string"
+        },
+        "filepath": {
+            "type": "string"
+        },
+        "levels": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "inherits_from": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "controls": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "title"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "rationale": {
+                        "type": "string"
+                    },
+                    "mitigation": {
+                        "type": "string"
+                    },
+                    "artifact_description": {
+                        "type": "string"
+                    },
+                    "status_justification": {
+                        "type": "string"
+                    },
+                    "fixtext": {
+                        "type": "string"
+                    },
+                    "check": {
+                        "type": "string"
+                    },
+                    "tickets": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "original_title": {
+                        "type": "string"
+                    },
+                    "related_rules": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "rules": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "levels": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "controls": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "automated",
+                            "documentation",
+                            "does not meet",
+                            "inherently met",
+                            "manual",
+                            "not applicable",
+                            "partial",
+                            "pending",
+                            "planned",
+                            "supported"
+                        ]
+                    },
+                    "notes": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

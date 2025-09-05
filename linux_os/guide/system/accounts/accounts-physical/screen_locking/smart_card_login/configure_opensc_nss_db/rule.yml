@@ -40,3 +40,9 @@ ocil: |-
     run the following command:
     <pre>$ pkcs11-switch</pre>
     The output should return <pre>opensc</pre>
+
+warnings:
+    - general: |-
+       NSS modules information are stored in NSS database which is in binary format. Currently
+       it is not possible to check NSS database using OVAL. This is the reason there is no OVAL
+       check for this rule.

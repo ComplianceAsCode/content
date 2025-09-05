@@ -15,7 +15,11 @@ description: |-
 
     <pre># grep pam_pkcs11.so /etc/pam.d/common-auth
 
+    {{% if 'ubuntu' in product %}}
+    auth [success=2 default=ignore] pam_pkcs11.so</pre>
+    {{% else %}}
     auth sufficient pam_pkcs11.so</pre>
+    {{% endif %}}
 
     For general information about enabling smart card authentication, consult
     the documentation at:
@@ -77,7 +81,11 @@ ocil: |-
 
     <pre># grep pam_pkcs11.so /etc/pam.d/common-auth
 
+    {{% if 'ubuntu' in product %}}
+    auth [success=2 default=ignore] pam_pkcs11.so</pre>
+    {{% else %}}
     auth sufficient pam_pkcs11.so</pre>
+    {{% endif %}}
 
     If <tt>pam_pkcs11.so</tt> is not set in <tt>etc/pam.d/common-auth</tt> this
     is a finding.

@@ -123,6 +123,7 @@ selections:
     - audit_rules_kernel_module_loading_delete
     - audit_rules_kernel_module_loading_init
     - audit_rules_login_events_faillock
+    - var_accounts_passwords_pam_faillock_dir=run
     - audit_rules_login_events_lastlog
     - audit_rules_login_events_tallylog
     - audit_rules_mac_modification

@@ -580,6 +580,7 @@ INSTALL_COMMANDS = dict(
     rhel7=("yum", "install", "-y"),
     rhel8=("yum", "install", "-y"),
     rhel9=("yum", "install", "-y"),
+    sles=("zypper", "install", "-y"),
     ubuntu=("DEBIAN_FRONTEND=noninteractive", "apt", "install", "-y"),
 )
 
@@ -601,24 +602,38 @@ def install_packages(test_env, packages):
             "Couldn't install required packages: {packages}".format(packages=",".join(packages)))
 
 
-def cpes_to_platform(cpes):
-    rhel_cpe = {"redhat:enterprise_linux": r":enterprise_linux:([^:]+):", "centos:centos": r"centos:centos:([0-9]+)"}
-    for cpe in cpes:
-        if "fedora" in cpe:
-            return "fedora"
-        for cpe_item in rhel_cpe.keys():
-            if cpe_item in cpe:
-                match = re.search(rhel_cpe.get(cpe_item), cpe)
-                if match:
-                    major_version = match.groups()[0].split(".")[0]
-                    return "rhel" + major_version
-        if "ubuntu" in cpe:
-            return "ubuntu"
-        if "oracle:linux" in cpe:
-            match = re.search(r":linux:([^:]+):", cpe)
+def _match_rhel_version(cpe):
+    rhel_cpe = {
+        "redhat:enterprise_linux": r":enterprise_linux:([^:]+):",
+        "centos:centos": r"centos:centos:([0-9]+)"}
+    for cpe_item in rhel_cpe.keys():
+        if cpe_item in cpe:
+            match = re.search(rhel_cpe.get(cpe_item), cpe)
             if match:
-                major_version = match.groups()[0]
-                return "ol" + major_version
+                major_version = match.groups()[0].split(".")[0]
+                return "rhel" + major_version
+
+
+def cpe_to_platform(cpe):
+    trivials = ["fedora", "sles", "ubuntu"]
+    for platform in trivials:
+        if platform in cpe:
+            return platform
+    rhel_version = _match_rhel_version(cpe)
+    if rhel_version is not None:
+        return rhel_version
+    if "oracle:linux" in cpe:
+        match = re.search(r":linux:([^:]+):", cpe)
+        if match:
+            major_version = match.groups()[0]
+            return "ol" + major_version
+
+
+def cpes_to_platform(cpes):
+    for cpe in cpes:
+        platform = cpe_to_platform(cpe)
+        if platform is not None:
+            return platform
     msg = "Unable to deduce a platform from these CPEs: {cpes}".format(cpes=cpes)
     raise ValueError(msg)
 

@@ -59,9 +59,20 @@
 
 
 if(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED)
-    set(OSCAP_OVAL_SCHEMATRON_OPTION "--schematron")
+# Starting OpenSCAP 1.3.5, the schematron validation is the default behaviour
+# due to certification requirements, the --schematron has been deprecated
+# and --skip-schematron has been introduced.
+    if("${OSCAP_VERSION}" VERSION_LESS "1.3.5")
+        set(OSCAP_OVAL_SCHEMATRON_OPTION "--schematron")
+    else()
+        set(OSCAP_OVAL_SCHEMATRON_OPTION "")
+    endif()
 else()
-    set(OSCAP_OVAL_SCHEMATRON_OPTION "")
+    if("${OSCAP_VERSION}" VERSION_LESS "1.3.5")
+        set(OSCAP_OVAL_SCHEMATRON_OPTION "")
+    else()
+        set(OSCAP_OVAL_SCHEMATRON_OPTION "--skip-schematron")
+    endif()
 endif()
 
 set(SSG_HTML_GUIDE_FILE_LIST "")
@@ -107,7 +118,7 @@ macro(ssg_build_compiled_artifacts PRODUCT)
         add_custom_command(
             OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --controls-dir "${CMAKE_SOURCE_DIR}/controls" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --project-root "${CMAKE_SOURCE_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
             COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
             DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
             DEPENDS generate-internal-${PRODUCT}-sce-metadata.json "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
@@ -117,7 +128,7 @@ macro(ssg_build_compiled_artifacts PRODUCT)
         add_custom_command(
             OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --controls-dir "${CMAKE_SOURCE_DIR}/controls" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json" --stig-references "${STIG_REFERENCE_FILE}"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --project-root "${CMAKE_SOURCE_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json" --stig-references "${STIG_REFERENCE_FILE}"
             COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
             DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
             DEPENDS generate-internal-${PRODUCT}-sce-metadata.json "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
@@ -316,6 +327,7 @@ macro(ssg_build_manifest PRODUCT)
         generate-ssg-${PRODUCT}-manifest.json
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/manifest-${PRODUCT}.json"
     )
+    add_dependencies(zipfile generate-ssg-${PRODUCT}-manifest.json)
 endmacro()
 
 # Builds SCE content into the build system. This occurs prior to XCCDF
@@ -532,25 +544,6 @@ macro(ssg_build_sds PRODUCT)
         endif()
     endif()
     add_test(
-        NAME "verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile-titles"
-        COMMAND "${XMLLINT_EXECUTABLE}" --xpath "//*[local-name()=\"Profile\"]/*[local-name()=\"title\"][not(@override=\"true\")]" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-    )
-    set_tests_properties("verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile-titles" PROPERTIES LABELS quick)
-    add_test(
-        NAME "verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile-descriptions"
-        COMMAND "${XMLLINT_EXECUTABLE}" --xpath "//*[local-name()=\"Profile\"]/*[local-name()=\"description\"][not(@override=\"true\")]" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-    )
-    set_tests_properties("verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile-descriptions" PROPERTIES LABELS quick)
-    # Sets WILL_FAIL property for all '*-override-true-all-profile-*' tests to
-    # true as it is expected that XPath of a passing test will be empty (and
-    # non-zero exit code is returned in such case).
-    set_tests_properties(
-        "verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile-titles"
-        "verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile-descriptions"
-        PROPERTIES
-        WILL_FAIL true
-    )
-    add_test(
         NAME "verify-references-ssg-${PRODUCT}-ds.xml"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/verify_references.py" --rules-with-invalid-checks --base-dir "${CMAKE_BINARY_DIR}" --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
     )
@@ -574,18 +567,35 @@ macro(ssg_build_sds PRODUCT)
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/test_ds_sce.py" "${CMAKE_BINARY_DIR}" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         )
     endif()
+    if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_PCRE2)
+        add_test(
+            NAME "check-pcre2-compatibility-ssg-${PRODUCT}-ds.xml"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/check_pcre2_compatibility.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        )
+        set_tests_properties("check-pcre2-compatibility-ssg-${PRODUCT}-ds.xml" PROPERTIES LABELS quick)
+    endif()
 endmacro()
 
 # Build per-product HTML guides to see the status of various profiles and
 # rules in the generated XCCDF guides.
 macro(ssg_build_html_guides PRODUCT)
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/guides"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_all_guides.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/guides" build
-        DEPENDS generate-ssg-${PRODUCT}-ds.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        COMMENT "[${PRODUCT}-guides] generating HTML guides for all profiles in ssg-${PRODUCT}-ds.xml"
-    )
+    if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_LXML)
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/guides"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_guides.py" --data-stream "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --product "${PRODUCT}" --output-dir "${CMAKE_BINARY_DIR}/guides" --oscap-version "${OSCAP_VERSION}"
+            DEPENDS generate-ssg-${PRODUCT}-ds.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMENT "[${PRODUCT}-guides] generating HTML guides for all profiles in ssg-${PRODUCT}-ds.xml"
+        )
+    else()
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/guides"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_all_guides.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/guides" build
+            DEPENDS generate-ssg-${PRODUCT}-ds.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMENT "[${PRODUCT}-guides] generating HTML guides for all profiles in ssg-${PRODUCT}-ds.xml"
+        )
+    endif()
     add_custom_target(
         generate-ssg-${PRODUCT}-guide-index.html
         DEPENDS "${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html"
@@ -603,7 +613,7 @@ macro(ssg_build_profile_bash_scripts PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/bash/all-profile-bash-scripts-${PRODUCT}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bash"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_profile_remediations.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/bash" --template "urn:xccdf:fix:script:sh" --extension "sh" build
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_profile_remediations.py" --language bash --data-stream "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output-dir "${CMAKE_BINARY_DIR}/bash" --product "${PRODUCT}"
         COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/bash/all-profile-bash-scripts-${PRODUCT}"
         DEPENDS generate-ssg-${PRODUCT}-ds.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         COMMENT "[${PRODUCT}-bash-scripts] generating Bash remediation scripts for all profiles in ssg-${PRODUCT}-ds.xml"
@@ -620,7 +630,7 @@ macro(ssg_build_profile_playbooks PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ansible/all-profile-playbooks-${PRODUCT}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/ansible"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_profile_remediations.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/ansible" --template "urn:xccdf:fix:script:ansible" --extension "yml" build
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_profile_remediations.py" --language ansible --data-stream "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output-dir "${CMAKE_BINARY_DIR}/ansible" --product "${PRODUCT}"
         COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/ansible/all-profile-playbooks-${PRODUCT}"
         DEPENDS generate-ssg-${PRODUCT}-ds.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         COMMENT "[${PRODUCT}-playbooks] generating Ansible Playbooks for all profiles in ssg-${PRODUCT}-ds.xml"
@@ -637,13 +647,13 @@ endmacro()
 macro(ssg_make_stats_for_product PRODUCT)
     add_custom_target(${PRODUCT}-stats
         COMMAND ${CMAKE_COMMAND} -E echo "Benchmark statistics for '${PRODUCT}':"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/profile_tool.py" stats --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --profile all
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/profile_tool.py" stats --product "${PRODUCT}" --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --profile all
         DEPENDS generate-ssg-${PRODUCT}-ds.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         COMMENT "[${PRODUCT}-stats] generating benchmark statistics"
     )
     add_custom_target(${PRODUCT}-profile-stats
         COMMAND ${CMAKE_COMMAND} -E echo "Per profile statistics for '${PRODUCT}':"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/profile_tool.py" stats --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/profile_tool.py" stats --product "${PRODUCT}" --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         DEPENDS generate-ssg-${PRODUCT}-ds.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         COMMENT "[${PRODUCT}-profile-stats] generating per profile statistics"
     )
@@ -652,30 +662,30 @@ endmacro()
 # As above
 macro(ssg_make_html_stats_for_product PRODUCT)
     add_custom_target(${PRODUCT}-html-stats
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/profile_tool.py" stats --format html --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --profile all --output "${CMAKE_BINARY_DIR}/${PRODUCT}/product-statistics/"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/profile_tool.py" stats  --product "${PRODUCT}" --format html --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --profile all --output "${CMAKE_BINARY_DIR}/${PRODUCT}/product-statistics/"
         DEPENDS generate-ssg-${PRODUCT}-ds.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         COMMENT "[${PRODUCT}-html-stats] generating benchmark html statistics"
     )
     add_custom_target(${PRODUCT}-html-profile-stats
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/profile_tool.py" stats --format html --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/profile-statistics/"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/profile_tool.py" stats  --product "${PRODUCT}" --format html --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/profile-statistics/"
         DEPENDS generate-ssg-${PRODUCT}-ds.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         COMMENT "[${PRODUCT}-html-profile-stats] generating per profile html statistics"
     )
 endmacro()
 
-macro(ssg_render_policies_for_product PRODUCT CONTROL_FILES)
-    foreach(CONTROL_FILE IN LISTS CONTROL_FILES)
-        add_custom_command(
-            OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_UTILS_SCRIPTS}/render-policy.py" --build-dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html" ${PRODUCT} "${CMAKE_SOURCE_DIR}/controls/${CONTROL_FILE}.yml"
-            DEPENDS generate-ssg-${PRODUCT}-ds.xml
-            COMMENT "[${PRODUCT}-render-policy-${CONTROL_FILE}] generating rendered policy for ${CONTROL_FILE}"
-        )
+macro(ssg_render_policies_for_product PRODUCT)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/rendered-policies-${PRODUCT}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_UTILS_SCRIPTS}/render_all_policies.py" --ssg-root "${CMAKE_SOURCE_DIR}" --output-dir "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies" --product ${PRODUCT}
+        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/rendered-policies-${PRODUCT}"
+        DEPENDS generate-ssg-${PRODUCT}-ds.xml
+        COMMENT "[${PRODUCT}-render-policies] generating rendered policies for ${PRODUCT}"
+    )
 
-        add_custom_target(${PRODUCT}-render-policy-${CONTROL_FILE}
-            DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html"
-        )
-    endforeach()
+    add_custom_target(${PRODUCT}-render-policies
+        DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/rendered-policies-${PRODUCT}"
+    )
 endmacro()
 
 macro(ssg_make_all_tables PRODUCT)
@@ -815,21 +825,11 @@ macro(ssg_build_product PRODUCT)
     add_dependencies(profile-stats ${PRODUCT}-profile-stats)
     ssg_make_html_stats_for_product(${PRODUCT})
 
-    file(GLOB CONTROL_FILEPATHS "${CMAKE_SOURCE_DIR}/controls/*.yml")
-
-    foreach(CONTROL_FILEPATH IN LISTS CONTROL_FILEPATHS)
-        get_filename_component(CONTROL_FILE ${CONTROL_FILEPATH} NAME_WE)
-        list(APPEND CONTROL_FILES ${CONTROL_FILE})
-    endforeach()
-
-    ssg_render_policies_for_product(${PRODUCT} ${CONTROL_FILES})
-
-    foreach(CONTROL_FILE IN LISTS CONTROL_FILES)
-        add_dependencies(render-policies ${PRODUCT}-render-policy-${CONTROL_FILE})
-    endforeach()
-
     add_dependencies(html-stats ${PRODUCT}-html-stats)
     add_dependencies(html-profile-stats ${PRODUCT}-html-profile-stats)
+
+    ssg_render_policies_for_product(${PRODUCT})
+    add_dependencies(render-policies ${PRODUCT}-render-policies)
 
     if(SSG_BUILD_DISA_DELTA_FILES AND "${PRODUCT}" MATCHES "rhel(7|8)")
         ssg_build_disa_delta(${PRODUCT} "stig")
@@ -1351,6 +1351,8 @@ macro(ssg_build_zipfile ZIPNAME)
         COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/guides/*" -DDEST="zipfile/${ZIPNAME}/guides" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/tables"
         COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/tables/*" -DDEST="zipfile/${ZIPNAME}/tables" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/manifests"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/*/manifest-*.json" -DDEST="zipfile/${ZIPNAME}/manifests" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -E chdir "zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}.zip" --format=zip "${ZIPNAME}"
         COMMAND ${CMAKE_COMMAND} -E chdir "zipfile" ${CMAKE_COMMAND} -E sha512sum "${ZIPNAME}.zip" > "zipfile/${ZIPNAME}.zip.sha512"
         COMMENT "Building zipfile at ${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"

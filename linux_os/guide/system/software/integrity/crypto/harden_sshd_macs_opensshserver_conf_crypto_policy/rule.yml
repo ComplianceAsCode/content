@@ -12,7 +12,7 @@ description: |-
     To check that Crypto Policies settings are configured correctly, ensure that
     <tt>/etc/crypto-policies/back-ends/opensshserver.config</tt> contains the following
     text and is not commented out:
-    <tt>-oMACS=hmac-sha2-512,hmac-sha2-256,hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com</tt>
+    <tt>-oMACS={{{ xccdf_value("sshd_approved_macs") }}}</tt>
 
 rationale: |-
     Overriding the system crypto policy makes the behavior of the OpenSSH
@@ -38,7 +38,7 @@ ocil: |-
     To verify if the OpenSSH server uses defined MACs in the Crypto Policy, run:
     <pre>$ grep -Po '(-oMACs=\S+)' /etc/crypto-policies/back-ends/opensshserver.config</pre>
     and verify that the line matches:
-    <pre>-oMACS=hmac-sha2-512,hmac-sha2-256,hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com</pre>
+    <pre>-oMACS={{{ xccdf_value("sshd_approved_macs") }}}</pre>
 
 warnings:
     - general: |-

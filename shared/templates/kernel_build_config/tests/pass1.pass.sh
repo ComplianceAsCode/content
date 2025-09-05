@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source common.sh
+
 # pass1 is the plain expected pass scenario
 
 {{%- if VALUE == "n" %}}

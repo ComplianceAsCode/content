@@ -4,9 +4,9 @@
 
 output=$(nft list ruleset)
 # Check if there are base chains
-if ! (grep -q 'hook input' "$output" &&\
-    grep -q 'hook forward' "$output" &&\
-    grep -q 'hook output' "$output"); then
+if ! (echo "$output" | grep -q 'hook input' &&\
+    echo "$output" | grep -q 'hook forward' &&\
+    echo "$output" |grep -q 'hook output'); then
     exit "${XCCDF_RESULT_FAIL}"
 fi
 

@@ -4,5 +4,11 @@
 # complexity = low
 # disruption = low
 
+{{% if PATH_IS_VARIABLE %}}
+{{{ ansible_instantiate_variables("var_accounts_passwords_pam_faillock_dir") }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path="{{ var_accounts_passwords_pam_faillock_dir }}", permissions='wa', key='logins') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path="{{ var_accounts_passwords_pam_faillock_dir }}", permissions='wa', key='logins') }}}
+{{% else %}}
 {{{ ansible_audit_augenrules_add_watch_rule(path=PATH, permissions='wa', key='logins') }}}
 {{{ ansible_audit_auditctl_add_watch_rule(path=PATH, permissions='wa', key='logins') }}}
+{{% endif %}}

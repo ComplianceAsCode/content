@@ -5,7 +5,7 @@ metadata:
 
 reference: https://www.niap-ccevs.org/Profile/PP.cfm
 
-title: '[DRAFT] Protection Profile for General Purpose Operating Systems'
+title: 'DRAFT - Protection Profile for General Purpose Operating Systems'
 
 description: |-
     This profile is part of Oracle Linux 9 Common Criteria Guidance

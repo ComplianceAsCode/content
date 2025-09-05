@@ -112,6 +112,12 @@ if [ $retVal -ne 0 ]; then
     exit 1
 fi
 
+# Generate Prometheus Stats
+PROMETHEUS_STATS_DIR="$PAGES_DIR/prometheus_stats"
+mkdir -p "$PROMETHEUS_STATS_DIR"
+mv build/policies_metrics "$PROMETHEUS_STATS_DIR"
+
+
 pushd $PAGES_DIR
 touch index.html
 echo "<!DOCTYPE html>" > index.html
@@ -129,6 +135,7 @@ echo "<li><a href=\"tables/index.html\">Mapping Tables</a></li>" >> index.html
 echo "<li><a href=\"srg_mapping/index.html\">SRG Mapping Tables</a></li>" >> index.html
 echo "<li><a href=\"rendered-policies/index.html\">Rendered Policies</a></li>" >> index.html
 echo "<li><a href=\"components/index.html\">Components</a></li>" >> index.html
+echo "<li><a href=\"prometheus_stats/policies_metrics\">Prometheus Policies Metrics</a></li>" >> index.html
 echo "</ul>" >> index.html
 echo "</body>" >> index.html
 echo "</html>" >> index.html

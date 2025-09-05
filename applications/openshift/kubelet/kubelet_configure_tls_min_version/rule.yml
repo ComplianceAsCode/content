@@ -2,8 +2,6 @@ documentation_complete: true
 
 prodtype: ocp4
 
-platform: ocp4
-
 title: "Ensure Kubelet is configured with allowed TLS versions"
 
 description: |-
@@ -77,6 +75,8 @@ references:
     nist: SC-8,SC-8(1)
     srg: SRG-APP-000014-CTR-000040,SRG-APP-000560-CTR-001340
 
+platform: ocp4-node
+
 ocil_clause: 'Minimum TLS version configured for Kubelet uses insecure version'
 
 ocil: |-
@@ -90,4 +90,9 @@ warnings:
         {{{ openshift_cluster_setting_kubeletconfig() | indent(8) }}}
 
 template:
-    name: kubelet_combine
+    name: yamlfile_value
+    vars:
+        filepath: '/etc/kubernetes/compliance-operator/kubeletconfig/openscap-kubeletconfig'
+        yamlpath: ".kubeletconfig.tlsMinVersion"
+        xccdf_variable: var_kubelet_tls_min_version_regex
+        regex_data: true

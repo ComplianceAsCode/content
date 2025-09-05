@@ -3,10 +3,12 @@ controls:
   levels:
   - medium
   title: {{{ full_name }}} must protect audit information from unauthorized modification.
+  rules:
+  - audit_rules_immutable
   related_rules:
   - audit_log_forwarding_uses_tls
   - audit_profile_set
   - directory_permissions_var_log_kube_audit
   - directory_permissions_var_log_oauth_audit
   - directory_permissions_var_log_ocp_audit
-  status: inherently met
+  status: automated

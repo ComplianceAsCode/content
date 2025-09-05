@@ -6,4 +6,16 @@ controls:
     attempts to delete security objects occur.
   related_rules:
   - audit_profile_set
-  status: inherently met
+  rules:
+  - audit_rules_dac_modification_fsetxattr
+  - audit_rules_dac_modification_lremovexattr
+  - audit_rules_dac_modification_lsetxattr
+  - audit_rules_dac_modification_removexattr
+  - audit_rules_execution_chcon
+  - audit_rules_file_deletion_events_rename
+  - audit_rules_file_deletion_events_renameat
+  - audit_rules_file_deletion_events_rmdir
+  - audit_rules_file_deletion_events_unlink
+  - audit_rules_file_deletion_events_unlinkat
+  - audit_rules_privileged_commands_chage
+  status: automated

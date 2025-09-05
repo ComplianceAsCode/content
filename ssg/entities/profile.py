@@ -18,11 +18,9 @@ class ResolvableProfile(Profile):
     def extend_by(self, extended_profile):
         self.update_with(extended_profile)
 
-    def resolve_selections_with_rules(self, rules_by_id):
+    def apply_filter(self, rules_by_id):
         selections = set()
         for rid in self.selected:
-            if rid not in rules_by_id:
-                continue
             rule = rules_by_id[rid]
             if not self.rule_filter(rule):
                 continue
@@ -35,8 +33,6 @@ class ResolvableProfile(Profile):
 
         if controls_manager:
             self.resolve_controls(controls_manager)
-
-        self.resolve_selections_with_rules(rules_by_id)
 
         if self.extends:
             if self.extends not in all_profiles:
@@ -65,6 +61,8 @@ class ResolvableProfile(Profile):
                     "This may be caused by a discrepancy of prodtypes."
                     .format(rid=rid, profile=self.id_))
                 raise ValueError(msg)
+
+        self.apply_filter(rules_by_id)
 
         self.resolved = True
 
@@ -98,6 +96,7 @@ class ProfileWithInlinePolicies(ResolvableProfile):
         return controls
 
     def resolve_controls(self, controls_manager):
+        self.policies = list(self.controls_by_policy.keys())
         for policy_id, controls_ids in self.controls_by_policy.items():
             controls = self._process_controls_ids_into_controls(
                 controls_manager, policy_id, controls_ids)

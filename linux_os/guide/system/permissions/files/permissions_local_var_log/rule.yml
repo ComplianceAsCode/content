@@ -56,8 +56,12 @@ template:
     name: file_permissions
     vars:
         excluded_files@sle15: ['*[bw]tmp', '*lastlog']
+        excluded_files@ubuntu2004: ['history.log', 'eipp.log.xz', '*[bw]tmp', '*lastlog']
+        excluded_files@ubuntu2204: ['history.log', 'eipp.log.xz', '*[bw]tmp', '*lastlog']
         file_regex: '.*'
         filemode: '0640'
         filepath: /var/log/
         recursive@sle12: 'true'
         recursive@sle15: 'true'
+        recursive@ubuntu2004: 'true'
+        recursive@ubuntu2204: 'true'

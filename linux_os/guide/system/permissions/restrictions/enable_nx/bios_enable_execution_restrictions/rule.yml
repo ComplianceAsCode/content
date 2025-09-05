@@ -43,7 +43,8 @@ references:
     stigid@rhel8: RHEL-08-010420
     stigid@ubuntu2004: UBTU-20-010447
 
-platform: machine
+# In aarch64 cpus the bit is XN and it is not disableable
+platform: machine and not aarch64_arch
 
 ocil: |-
     Verify the NX (no-execution) bit flag is set on the system.

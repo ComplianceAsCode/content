@@ -59,7 +59,7 @@ COMPLIANT
 
 ''')
 
-PLATFORM_RULE_DIR = 'applications/openshift'
+OCP_RULE_DIR = 'applications/openshift'
 OSCAP_TEST_IMAGE = 'quay.io/compliance-operator/openscap-ocp:1.3.4'
 OSCAP_CMD_TEMPLATE = 'oscap xccdf eval --verbose %s --fetch-remote-resources --profile xccdf_org.ssgproject.content_profile_test --results-arf /tmp/report-arf.xml /content/ssg-ocp4-ds.xml'
 PROFILE_PATH = 'products/ocp4/profiles/test.profile'
@@ -72,7 +72,7 @@ MOCK_VERSION = ('''status:
     version: 4.6.0-0.ci-2020-06-15-112708
 ''')
 
-RULE_TEMPLATE = ('''prodtype: ocp4
+PLATFORM_RULE_BASE = ('''prodtype: ocp4
 
 title: {TITLE}
 
@@ -88,7 +88,9 @@ warnings:
 - general: |-
     {{{{{{ openshift_cluster_setting("{URL}") | indent(4) }}}}}}
 
-template:
+''')
+
+YAML_TEMPLATE = ('''template:
   name: yamlfile_value
   vars:
     ocp_data: "true"{ENTITY_CHECK}{CHECK_EXISTENCE}
@@ -96,6 +98,35 @@ template:
     yamlpath: "{YAMLPATH}"
     values:
     - value: "{MATCH}"{CHECK_TYPE}
+''')
+
+YAML_TEMPLATE_W_VARIABLE = ('''template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"{ENTITY_CHECK}{CHECK_EXISTENCE}
+    filepath: {URL}
+    yamlpath: "{YAMLPATH}"
+    xccdf_variable: {VARIABLE}
+''')
+
+NODE_RULE_BASE = ('''prodtype: ocp4
+
+title: {TITLE}
+
+platform: ocp4-node
+
+description: {DESC}
+
+rationale: TBD
+
+identifiers: {{}}
+
+severity: {SEV}
+
+template:
+  name: {TEMPLATE_NAME}
+  vars:
+{TEMPLATE_VARS}
 ''')
 
 
@@ -180,8 +211,32 @@ def which(program):
     return None
 
 
+def createNodeRuleFunc(args):
+    group_path = os.path.join(OCP_RULE_DIR, args.group)
+    if args.group:
+        if not os.path.isdir(group_path):
+            print("ERROR: The specified group '%s' doesn't exist in the '%s' directory" % (
+                args.group, OCP_RULE_DIR))
+            return 0
+
+    rule_path = os.path.join(group_path, args.rule)
+    rule_yaml_path = os.path.join(rule_path, 'rule.yml')
+
+    mkdir_p(rule_path)
+    with open(rule_yaml_path, 'w') as f:
+        var_list = [ f"    {k.strip()}" for k in args.template_vars.split(",")]
+        processed_template_vars = "\n".join(var_list)
+        f.write(NODE_RULE_BASE.format(TITLE=args.title, SEV=args.severity, IDENT=args.identifiers,
+                                     DESC=args.description, TEMPLATE_NAME=args.template,
+                                     TEMPLATE_VARS=processed_template_vars
+                                     ))
+
+    print('* Wrote ' + rule_yaml_path)
+    return 0
+
+
 @needs_oc
-def createFunc(args):
+def createPlatformRuleFunc(args):
     url = args.url
     retries = 0
     namespace_flag = ''
@@ -190,11 +245,11 @@ def createFunc(args):
     elif args.all_namespaces:
         namespace_flag = '-A'
 
-    group_path = os.path.join(PLATFORM_RULE_DIR, args.group)
+    group_path = os.path.join(OCP_RULE_DIR, args.group)
     if args.group:
         if not os.path.isdir(group_path):
             print("ERROR: The specified group '%s' doesn't exist in the '%s' directory" % (
-                args.group, PLATFORM_RULE_DIR))
+                args.group, OCP_RULE_DIR))
             return 0
 
     rule_path = os.path.join(group_path, args.rule)
@@ -241,8 +296,18 @@ def createFunc(args):
 
     mkdir_p(rule_path)
     with open(rule_yaml_path, 'w') as f:
-        f.write(RULE_TEMPLATE.format(URL=url, TITLE=args.title, SEV=args.severity, IDENT=args.identifiers,
-                                     DESC=args.description, YAMLPATH=args.yamlpath, MATCH=args.match,
+        f.write(PLATFORM_RULE_BASE.format(URL=url, TITLE=args.title, SEV=args.severity, IDENT=args.identifiers,
+                                     DESC=args.description, YAMLPATH=args.yamlpath,
+                                     ))
+        if args.match:
+            f.write(YAML_TEMPLATE.format(URL=url, YAMLPATH=args.yamlpath, MATCH=args.match,
+                                     NEGATE=str(args.negate).lower(),
+                                     CHECK_TYPE=operation_value(args.regex),
+                                     CHECK_EXISTENCE=check_existence_value(args.check_existence),
+                                     ENTITY_CHECK=entity_value(args.match_entity)))
+        else:
+            f.write(YAML_TEMPLATE_W_VARIABLE.format(URL=url, YAMLPATH=args.yamlpath,
+                                     VARIABLE=(args.variable),
                                      NEGATE=str(args.negate).lower(),
                                      CHECK_TYPE=operation_value(args.regex),
                                      CHECK_EXISTENCE=check_existence_value(args.check_existence),
@@ -264,7 +329,7 @@ def clusterTestFunc(args):
     print('* Testing rule %s in-cluster' % args.rule)
 
     findout = subprocess.getoutput(
-        "find %s -name '%s' -type d" % (PLATFORM_RULE_DIR, args.rule))
+        "find %s -name '%s' -type d" % (OCP_RULE_DIR, args.rule))
     if findout == "":
         print('ERROR: no rule for %s, run "create" first' % args.rule)
         return 1
@@ -277,7 +342,7 @@ def clusterTestFunc(args):
         print('* Pushing image build to cluster')
         # execute the build_ds_container script
         buildp = subprocess.run(
-            ['utils/build_ds_container.sh', '-P', 'ocp4', '-P', 'rhcos4'])
+            ['utils/build_ds_container.py', '-P', 'ocp4', 'rhcos4'])
         if buildp.returncode != 0:
             try:
                 os.remove(PROFILE_PATH)
@@ -366,43 +431,58 @@ def main():
     subparser = parser.add_subparsers(
         dest='subcommand', title='subcommands', help='pick one')
     create_parser = subparser.add_parser(
-        'create', help='Bootstrap the XML and YML files under %s for a new check.' % PLATFORM_RULE_DIR)
-    create_parser.add_argument(
+        'create', help='Bootstrap the XML and YML files under %s for a new check.' % OCP_RULE_DIR)
+
+    common_rule_args = argparse.ArgumentParser(add_help=False)
+    common_rule_args.add_argument(
         '--rule', required=True, help='The name of the rule to create. Required.')
-    create_parser.add_argument(
+    common_rule_args.add_argument(
         '--group', default="", help='The group directory of the rule to create.')
-    create_parser.add_argument(
+    common_rule_args.add_argument(
         '--name', help='The name of the Kubernetes object to check.')
-    create_parser.add_argument(
-        '--type', required=True, help='The type of Kubernetes object, e.g., configmap. Required.')
-    create_parser.add_argument('--yamlpath', required=True,
+    common_rule_args.add_argument(
+        '--title', help='A short description of the check.')
+    common_rule_args.add_argument(
+        '--description', help='A human-readable description of the provided matching criteria.')
+    common_rule_args.add_argument(
+        '--severity', default="unknown", help='the severity of the rule.')
+    common_rule_args.add_argument(
+        '--identifiers', default="TBD", help='an identifier for the rule (CCE number)')
+
+    type_parser = create_parser.add_subparsers(dest='rule types', title='Creates a rule', help='Types of rules')
+    platform_parser = type_parser.add_parser('platform', help='Creates a Platform rule',  parents=[common_rule_args])
+    platform_parser.add_argument('--yamlpath',
                                help='The yaml-path of the element to match against.')
-    create_parser.add_argument(
-        '--match', required=True, help='A string value or regex providing the matching criteria. Required')
-    create_parser.add_argument(
+    value_or_variable = platform_parser.add_mutually_exclusive_group()
+    value_or_variable.add_argument(
+        '--match', help='A string value or regex providing the matching criteria. One of "match" or "variable" are required')
+    value_or_variable.add_argument(
+        '--variable', help='A string name of the XCCDF variable to with the value to check for. Mutually exclusive with "match" option')
+    platform_parser.add_argument(
         '--namespace', help='The namespace of the Kubernetes object (optional for cluster-scoped objects)', default=None)
-    create_parser.add_argument(
+    platform_parser.add_argument(
         '--all-namespaces', action="store_true", help='The namespace of the Kubernetes object (optional for cluster-scoped objects)',
         default=False)
-    create_parser.add_argument(
-        '--title', help='A short description of the check.')
-    create_parser.add_argument(
+    platform_parser.add_argument(
+        '--type', required=True, help='The type of Kubernetes object, e.g., configmap. Required.')
+    platform_parser.add_argument(
         '--url', help='The direct api path (metadata.selfLink) of the object, which overrides --type --name and --namespace options.')
-    create_parser.add_argument(
-        '--description', help='A human-readable description of the provided matching criteria.')
-    create_parser.add_argument(
+    platform_parser.add_argument(
         '--regex', default=False, action="store_true", help='treat the --match value as a regex')
-    create_parser.add_argument(
+    platform_parser.add_argument(
         '--match-entity', help='the entity_check value to apply, i.e., "all", "at least one", "none exist"')
-    create_parser.add_argument(
+    platform_parser.add_argument(
         '--check-existence', help='check_existence` value for the `yamlfilecontent_test`.')
-    create_parser.add_argument(
+    platform_parser.add_argument(
         '--negate', default=False, action="store_true", help='negate the given matching criteria (does NOT match). Default is false.')
-    create_parser.add_argument(
-        '--identifiers', default="TBD", help='an identifier for the rule (CCE number)')
-    create_parser.add_argument(
-        '--severity', default="unknown", help='the severity of the rule.')
-    create_parser.set_defaults(func=createFunc)
+    platform_parser.set_defaults(func=createPlatformRuleFunc)
+
+    node_parser = type_parser.add_parser('node', help='Creates a Node rule',  parents=[common_rule_args])
+    node_parser.add_argument(
+        '--template',  help='The tempate to use in a Node rule')
+    node_parser.add_argument(
+        '--template-vars',  help='The inputs for the template, coma separated')
+    node_parser.set_defaults(func=createNodeRuleFunc)
 
     cluster_test_parser = subparser.add_parser(
         'cluster-test', help='Test a rule on a running OCP cluster using the compliance-operator.')

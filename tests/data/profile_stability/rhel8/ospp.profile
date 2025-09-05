@@ -1,4 +1,3 @@
-title: Protection Profile for General Purpose Operating Systems
 description: 'This profile reflects mandatory configuration controls identified in
     the
 
@@ -18,9 +17,9 @@ extends: null
 metadata:
     version: 4.2.1
     SMEs:
-    - comps
-    - stevegrubb
-reference: https://www.niap-ccevs.org/Profile/PP.cfm
+    - ggbecker
+    - matusmarhefka
+reference: https://www.niap-ccevs.org/Profile/Info.cfm?PPID=442&id=442
 selections:
 - accounts_max_concurrent_login_sessions
 - accounts_password_pam_dcredit
@@ -262,8 +261,10 @@ selections:
 - grub2_vsyscall_argument.severity=info
 - sysctl_user_max_user_namespaces.role=unscored
 - sysctl_user_max_user_namespaces.severity=info
+unselected_groups: []
 platforms: !!set {}
 cpe_names: !!set {}
 platform: null
 filter_rules: ''
+title: Protection Profile for General Purpose Operating Systems
 documentation_complete: true

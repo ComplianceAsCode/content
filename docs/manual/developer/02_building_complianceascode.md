@@ -159,6 +159,26 @@ apt-get install ninja-build
 
 ### Sphinx packages (Developer Documentation)
 
+Building docs can be done via tox file or manually.  Note that tox creates a
+virtual environment to handle all dependencies defined in the docs requirements
+file.
+
+#### Using the tox file
+
+```bash
+# Fedora/RHEL
+yum install tox
+
+# Ubuntu/Debian
+apt-get install tox
+```
+
+```bash
+tox -e docs
+```
+
+#### Manual method
+
 Install Sphinx packages if you want to generate HTML Documentation, from source directory run:
 
 ```bash
@@ -171,6 +191,10 @@ apt-get install python3-sphinx
 
 ```bash
 pip install -r docs/requirements.txt
+```
+
+```bash
+make -C docs html
 ```
 
 ### Pandas (SRG Export HTML)
@@ -563,7 +587,7 @@ packages.
 
 There may be situations during the development and testing phases where it is
 convenient to use Python modules installed via pip3, as in [this example](https://github.com/ComplianceAsCode/content/pull/7376/files),
-where the `yamlpath` module is needed for some tests, but it is not available
+where the `xmldiff` module is needed for some tests, but it is not available
 in the official distro repositories and therefore needs to be installed via pip3.
 
 However, for some time now, Python modules installed via pip3 have been located

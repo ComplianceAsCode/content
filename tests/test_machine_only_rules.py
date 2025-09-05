@@ -13,7 +13,8 @@ import re
 BASH_MACHINE_CONDITIONAL = re.compile(
     r'^.*\[ ! -f /.dockerenv \] && \[ ! -f /run/.containerenv \].*$', re.M)
 ANSIBLE_MACHINE_CONDITIONAL = re.compile(
-    r'ansible_virtualization_type not in \["docker", "lxc", "openvz", "podman", "container"\]',
+    r'ansible_virtualization_type not in \["docker",\s+"lxc",\s+"openvz",\s+"podman",\s+' +
+    '"container"\]',
     re.M)
 MACHINE_PLATFORM_ONE_LINE = re.compile(
     r'^\s*platform:\s+machine\s*$', re.M)

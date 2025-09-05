@@ -1,6 +1,8 @@
 #!/bin/bash
 # remediation = none
 
+source common.sh
+
 # fail2 is the second fail scenario
 
 {{%- if VALUE == "n" %}}

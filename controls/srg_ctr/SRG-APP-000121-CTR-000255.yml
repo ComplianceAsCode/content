@@ -4,6 +4,7 @@ controls:
   - medium
   title: {{{ full_name }}} must protect audit tools from unauthorized access.
   rules:
+  - audit_immutable_login_uids
   - rbac_logging_view
   related_rules:
   - audit_log_forwarding_uses_tls
@@ -11,4 +12,4 @@ controls:
   - directory_permissions_var_log_kube_audit
   - directory_permissions_var_log_oauth_audit
   - directory_permissions_var_log_ocp_audit
-  status: manual
+  status: automated

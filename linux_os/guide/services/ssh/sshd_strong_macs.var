@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'SSH Strong KEX by FIPS'
+
+description: "Specify the FIPS approved MACs (Message Authentication Code) algorithms\n\tthat are used for data integrity protection by the SSH server."
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+    default: hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160
+    cis_sle12: hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160
+    cis_sle15: hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
+    cis_ubuntu2204: hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256

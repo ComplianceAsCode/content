@@ -1,0 +1,9 @@
+name: "cpe:/a:platform-service-disabled-{servicename}"
+title: "The {servicename} is disabled on the system"
+check_id: service_disabled_{arg}
+template:
+  name: platform_service_disabled
+args:
+  firewalld:
+      servicename: firewalld
+      packagename: firewalld

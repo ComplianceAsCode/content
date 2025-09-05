@@ -2,7 +2,6 @@ documentation_complete: true
 
 prodtype: ocp4
 
-
 title: 'Ensure Eviction threshold Settings Are Set - evictionSoft: nodefs.inodesFree'
 
 description: |-
@@ -58,6 +57,7 @@ references:
   nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
   srg: SRG-APP-000516-CTR-001325
 
+platform: ocp4-node
 
 ocil_clause: '<tt>nodefs.inodesFree</tt> is not set in <tt>evictionSoft</tt> section'
 
@@ -66,9 +66,12 @@ ocil: |-
   <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1" | .evictionSoft."nodefs.inodesFree"'; done</pre>
   and make sure it outputs a value.
 
-warnings:
-- general: |-
-    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
-
 template:
-    name: kubelet_combine
+  name: yamlfile_value
+  vars:
+    filepath: '/etc/kubernetes/compliance-operator/kubeletconfig/openscap-kubeletconfig'
+    yamlpath: ".kubeletconfig.evictionSoft['nodefs.inodesFree']"
+    check_existence: "all_exist"
+    values:
+    - value: "^.+$"
+      operation: "pattern match"

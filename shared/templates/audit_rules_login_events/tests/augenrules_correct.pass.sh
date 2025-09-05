@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = audit
 
-
-echo "-w {{{ PATH }}} -p wa -k login" >> /etc/audit/rules.d/login.rules
+path={{{ PATH }}}
+. $SHARED/audit_rules_login_events/augenrules_correct.pass.sh

@@ -5,7 +5,7 @@ metadata:
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
-title: '[DRAFT] DISA STIG for Oracle Linux 9'
+title: 'DRAFT - DISA STIG for Oracle Linux 9'
 
 description: |-
     This is a draft profile based on its OL8 version for experimental purposes.

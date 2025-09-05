@@ -8,9 +8,15 @@ controls:
   - idp_is_configured
   - ocp_idp_no_htpasswd
   - kubeadmin_removed
-  status: not applicable
-  status_justification: |-
-    Not Applicable. Applicable to Identity Management Provider and not
-    OCP. Only configurable check is to ensure OCP is configured for an
-    IDP under SRG-APP-000023-CTR-000055. Verify with IdM service provider
-    admins that the IdM meets the requirements.
+  rules:
+  - audit_rules_login_events_faillock
+  - audit_rules_login_events_lastlog
+  - audit_rules_login_events_tallylog
+  - audit_rules_sudoers
+  - audit_rules_sudoers_d
+  - audit_rules_usergroup_modification_group
+  - audit_rules_usergroup_modification_gshadow
+  - audit_rules_usergroup_modification_opasswd
+  - audit_rules_usergroup_modification_passwd
+  - audit_rules_usergroup_modification_shadow
+  status: automated

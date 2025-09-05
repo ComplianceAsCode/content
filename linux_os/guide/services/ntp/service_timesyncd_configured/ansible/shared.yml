@@ -1,0 +1,32 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_multiple_time_servers") }}}
+
+- name: {{{ rule_title }}} - Set Primary NTP Servers
+  ansible.builtin.set_fact:
+    preferred_ntp_servers: '{{ var_multiple_time_servers.split(",") | slice(2)| first |
+    join(",") }}'
+
+- name: {{{ rule_title }}} - Set Fallback NTP Servers
+  ansible.builtin.set_fact:
+    fallback_ntp_servers: '{{ var_multiple_time_servers.split(",") | slice(2)| last |
+    join(",") }}'
+
+- name: {{{ rule_title }}} - Add missing / update wrong records for NTP servers
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/timesyncd.d/oscap-remedy.conf
+    regexp: '^\s*NTP\s*='
+    state: present
+    line: 'NTP={{ preferred_ntp_servers }}'
+    create: true
+
+- name: {{{ rule_title }}} - Add missing / update wrong records for fallback servers
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/timesyncd.d/oscap-remedy.conf
+    regexp: '^\s*FallbackNTP\s*='
+    state: present
+    line: 'FallbackNTP={{ fallback_ntp_servers }}'
+    create: true

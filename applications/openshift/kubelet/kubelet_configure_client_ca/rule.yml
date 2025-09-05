@@ -2,12 +2,11 @@ documentation_complete: true
 
 prodtype: eks,ocp4
 
-platform: {{{ product }}}
-
 {{%- if product == "eks" %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
 {{%- set ca_path = "/etc/kubernetes/pki/ca.crt" %}}
 {{%- else %}}
+platform: ocp4-node
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
 {{%- set ca_path = "/etc/kubernetes/kubelet-ca.crt" %}}
 {{%- endif %}}
@@ -54,10 +53,12 @@ references:
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325
 
-warnings:
-- general: |-
-    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
-
-
 template:
-    name: kubelet_combine
+    name: yamlfile_value
+    vars:
+        filepath: '/etc/kubernetes/compliance-operator/kubeletconfig/openscap-kubeletconfig'
+        yamlpath: ".kubeletconfig.authentication.x509.clientCAFile"
+        check_existence: "all_exist"
+        values:
+         - value: "{{{ ca_path}}}"
+           operation: "equals"

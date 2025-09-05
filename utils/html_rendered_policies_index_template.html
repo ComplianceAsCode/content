@@ -13,9 +13,9 @@
 {{% for product in products|sort(attribute="name") %}}
 <h4>{{{ product.name }}}</h4>
   <ul>
-    {{% for control_file in control_files|sort(attribute="id") %}}
+    {{% for policy_id in product.policy_ids %}}
     <li>
-      <a href="{{{ product.id }}}/{{{ control_file.id }}}.html">{{{ control_file.id }}}: {{{ control_file.name }}}</a>
+      <a href="{{{ product.id }}}/{{{ policy_id }}}.html">{{{ policy_id }}}: {{{ policy_names[policy_id] }}}</a>
     </li>
     {{% endfor %}}
   </ul>

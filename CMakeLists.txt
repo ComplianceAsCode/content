@@ -34,7 +34,7 @@ set(SSG_TAILORING_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/tail
 
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
-set(SSG_PATCH_VERSION 69)
+set(SSG_PATCH_VERSION 70)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
@@ -98,6 +98,7 @@ option(SSG_PRODUCT_UBUNTU1804 "If enabled, the Ubuntu 18.04 SCAP content will be
 option(SSG_PRODUCT_UBUNTU2004 "If enabled, the Ubuntu 20.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2204 "If enabled, the Ubuntu 22.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UOS20 "If enabled, the Uos 20 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_OPENEMBEDDED "If enabled, the OpenEmbedded SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 
 
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
@@ -136,13 +137,14 @@ find_package(PythonInterp REQUIRED)
 
 find_python_module(yaml REQUIRED)
 find_python_module(jinja2 REQUIRED)
+find_python_module(lxml)
 find_python_module(pytest)
 find_python_module(pytest_cov)
 find_python_module(json2html)
-find_python_module(yamlpath)
 find_python_module(mypy)
 find_python_module(openpyxl)
 find_python_module(pandas)
+find_python_module(pcre2)
 find_python_module(cmakelint)
 
 # sphinx documentation requirements
@@ -151,6 +153,8 @@ find_python_module(sphinxcontrib.autojinja)
 find_python_module(sphinx_rtd_theme)
 find_python_module(myst_parser)
 
+# prometheus_metrics requirements
+find_python_module(prometheus_client)
 
 include(CMakeDependentOption)
 cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage support" ON "PY_PYTEST_COV" OFF)
@@ -235,7 +239,6 @@ message(STATUS "python pytest module (optional): ${PY_PYTEST}")
 message(STATUS "ansible-playbook module (optional): ${ANSIBLE_PLAYBOOK_EXECUTABLE}")
 message(STATUS "ansible-lint module (optional): ${ANSIBLE_LINT_EXECUTABLE}")
 message(STATUS "yamllint module (optional): ${YAMLLINT_EXECUTABLE}")
-message(STATUS "yamlpath module (optional): ${PY_YAMLPATH}")
 message(STATUS "python mypy module (optional): ${PY_MYPY}")
 message(STATUS "BATS framework (optional): ${BATS_EXECUTABLE}")
 message(STATUS "python sphinx module (optional): ${PY_SPHINX}")
@@ -244,6 +247,9 @@ message(STATUS "python sphinx_rtd_theme module (optional): ${PY_SPHINX_RTD_THEME
 message(STATUS "python myst-parser module (optional): ${PY_MYST_PARSER}")
 message(STATUS "python openpyxl module (optional): ${PY_OPENPYXL}")
 message(STATUS "python pandas module (optional): ${PY_PANDAS}")
+message(STATUS "python pcre2 module (optional): ${PY_PCRE2}")
+message(STATUS "python lxml module (optional): ${PY_LXML}")
+message(STATUS "python prometheus-client module (optional): ${PY_PROMETHEUS_CLIENT}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
@@ -310,6 +316,7 @@ message(STATUS "Ubuntu 18.04: ${SSG_PRODUCT_UBUNTU1804}")
 message(STATUS "Ubuntu 20.04: ${SSG_PRODUCT_UBUNTU2004}")
 message(STATUS "Ubuntu 22.04: ${SSG_PRODUCT_UBUNTU2204}")
 message(STATUS "Uos 20: ${SSG_PRODUCT_UOS20}")
+message(STATUS "OpenEmbedded: ${SSG_PRODUCT_OPENEMBEDDED}")
 
 
 message(STATUS " ")
@@ -430,6 +437,9 @@ if(SSG_PRODUCT_UBUNTU2204)
 endif()
 if(SSG_PRODUCT_UOS20)
     add_subdirectory("products/uos20" "uos20")
+endif()
+if(SSG_PRODUCT_OPENEMBEDDED)
+    add_subdirectory("products/openembedded" "openembedded")
 endif()
 
 # ZIP only contains source datastreams and kickstarts, people who

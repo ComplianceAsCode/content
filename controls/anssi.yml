@@ -2,7 +2,7 @@ policy: 'ANSSI-BP-028'
 title: 'Configuration Recommendations of a GNU/Linux System'
 id: anssi
 version: '2.0'
-source: https://www.ssi.gouv.fr/uploads/2019/02/fr_np_linux_configuration-v2.0.pdf
+source: https://www.ssi.gouv.fr/uploads/2019/02/linux_configuration-en-v2.pdf
 levels:
   - id: minimal
   - id: intermediary
@@ -817,6 +817,8 @@ controls:
     - sshd_disable_root_login
     - package_sudo_installed
     - audit_rules_privileged_commands_sudo
+    - service_auditd_enabled
+    - package_audit_installed
 
   - id: R34
     title: Deactivation of service accounts
@@ -1337,6 +1339,8 @@ controls:
 
     # Based on DAT-NT-012 R18
     # The rules sets the rotation frequency to daily
+    - package_logrotate_installed
+    - timer_logrotate_enabled
     - ensure_logrotate_activated
 
     # Based on DAT-NT-012 R20
@@ -1363,6 +1367,7 @@ controls:
     status: automated
     rules:
     - audit_rules_sysadmin_actions
+    - audit_sudo_log_events
 
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
@@ -1424,6 +1429,8 @@ controls:
     - audit_rules_privileged_commands_kmod
 
     - audit_rules_immutable
+    - service_auditd_enabled
+    - package_audit_installed
 
   - id: R74
     title: Configuring the local messaging service

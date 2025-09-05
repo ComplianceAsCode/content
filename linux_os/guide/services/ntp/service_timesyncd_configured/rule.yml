@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Configure Systemd Timesyncd Servers'
+
+description: |-
+    <tt>systemd-timesyncd</tt> is a daemon that has been added for synchronizing the system clock
+    across the network. The <tt>systemd-timesyncd</tt> daemon implements:
+      - Implements an SNTP client
+      - Runs with minimal privileges
+      - Saves the current clock to disk every time a new NTP sync has been acquired
+      - Is hooked up with networkd to only operate when network connectivity is available
+    Add or edit server or pool lines to <tt>/etc/systemd/timesyncd.conf</tt> as appropriate:
+    <pre>server &lt;remote-server&gt;</pre>
+    Multiple servers may be configured.
+
+rationale: |-
+    Configuring <tt>systemd-timesyncd</tt> ensures time synchronization is working properly.
+
+severity: medium
+
+platform: package[systemd]
+
+identifiers:
+    cce@sle12: CCE-92374-8
+    cce@sle15: CCE-92538-8 
+
+references:
+    anssi: BP28(R43)
+    cis@sle12: 2.2.1.2
+    cis@sle15: 2.2.1.2
+    disa:  CCI-001891
+    pcidss: Req-10.4.3
+    pcidss4: Req-10.6.2
+
+ocil_clause: 'a remote time server is not configured'
+
+ocil: |-
+    Review /etc/systemd/timesyncd.conf and ensure that the NTP servers, NTP FallbackNTP
+    servers are listed in accordance with local policy.

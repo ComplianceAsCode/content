@@ -17,3 +17,4 @@ description: |-
 
 selections:
     - anssi:all:enhanced
+    - '!timer_logrotate_enabled'

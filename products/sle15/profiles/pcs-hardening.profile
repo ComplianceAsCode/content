@@ -66,7 +66,7 @@ selections:
     - accounts_umask_etc_login_defs
     - accounts_umask_etc_profile
     - aide_check_audit_tools
-    - aide_periodic_cron_checking
+    - aide_periodic_checking_systemd_timer
     - aide_verify_acls
     - aide_verify_ext_attributes
     - banner_etc_issue
@@ -82,7 +82,7 @@ selections:
     - disable_users_coredumps
     - display_login_attempts
     - ensure_gpgcheck_globally_activated
-    - ensure_logrotate_activated
+    #- ensure_logrotate_activated
     - file_etc_security_opasswd
     - file_groupowner_etc_issue
     - file_groupownership_system_commands_dirs
@@ -104,8 +104,7 @@ selections:
     - kernel_module_udf_disabled
     - kernel_module_usb-storage_disabled
     - no_direct_root_logins
-    - pam_disable_automatic_configuration
-    - service_firewalld_enabled
+    #- pam_disable_automatic_configuration
     - set_password_hashing_algorithm_commonauth
     - set_password_hashing_algorithm_systemauth
     - smartcard_configure_ca

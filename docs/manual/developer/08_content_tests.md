@@ -20,10 +20,11 @@ To add a script to be checked with mypy use the `mypy_test` macro in `tests/CMak
 ## SCAPVal
 We use [SCAPVal](https://csrc.nist.gov/Projects/scap-validation-program/Validation-Test-Content) to valid our content.
 Since a separate download is required this test is disabled by default.
-A working Java installation is also required to SCAPVal to work.
-To enable this test the following options will need to passed to cmake:
+A working Java installation is also required for SCAPVal to work.
+To enable this test pass following options to cmake:
 
 * `-DENABLE_SCAPVAL13:BOOL=ON` - This enables SCAPVal
-* `-DSCAPVAL_PATH='/opt/scapval/SCAP-Content-Validation-Tool-1.3.5/scapval-1.3.5.jar'`
+* `-DSCAPVAL_PATH='/opt/scapval/SCAP-Content-Validation-Tool-1.3.5/scapval-1.3.5.jar'` - This provides the path to the SCAPVal jar.
+You will need to replace `/opt/scapval/SCAP-Content-Validation-Tool-1.3.5/scapval-1.3.5.jar` with the actual path the SCAPVAL jar on your system.
 
 SCAPVal can be run with ctest using the following command `ctest -R 'scapval' --output-on-failure`.

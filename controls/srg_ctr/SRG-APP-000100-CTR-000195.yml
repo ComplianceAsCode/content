@@ -6,4 +6,8 @@ controls:
     {{{ full_name }}}.
   related_rules:
   - audit_profile_set
-  status: inherently met
+  rules:
+  - auditd_log_format
+  - auditd_data_disk_error_action
+  - auditd_data_retention_max_log_file_action_stig
+  status: automated

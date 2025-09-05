@@ -45,6 +45,10 @@ references:
     stigid@rhel7: RHEL-07-010330
     stigid@rhel8: RHEL-08-020023
 
+{{% if product == "rhel8" %}}
+platform: os_linux[rhel]>=8.2
+{{% endif %}}
+
 ocil_clause: 'the "even_deny_root" option is not set, is missing or commented out'
 
 ocil: |-

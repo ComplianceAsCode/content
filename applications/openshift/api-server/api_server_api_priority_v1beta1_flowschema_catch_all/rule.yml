@@ -49,7 +49,7 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/flowcontrol.apiserver.k8s.io/v1beta1/flowschemas/catch-all") | indent(4) }}}
+    {{{ openshift_cluster_setting("/apis/flowcontrol.apiserver.k8s.io/v1beta1/flowschemas/catch-all", true) | indent(4) }}}
 - dependency: |-
     Note that this is only applicable in OpenShift Container Platform version 4.8
     and higher

@@ -1,92 +1,16 @@
 <def-group>
 
-{{%- set package_removed_test_id = "test_service_" + SERVICENAME + "_package_" + PACKAGENAME + "_removed" -%}}
-
-{{% if init_system == "systemd" %}}
-  {{% if target_oval_version >= [5, 11] %}}
-
-  {{# we are using systemd and our target OVAL version does support the systemd related tests #}}
+{{%- set package_removed_test_id = _RULE_ID + "_test_service_" + SERVICENAME + "_package_" + PACKAGENAME + "_removed" -%}}
 
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-    {{{ oval_metadata("The " + SERVICENAME + " service should be disabled if possible.", affected_platforms=["multi_platform_all"]) }}}
+    {{{ oval_metadata("The " + SERVICENAME + " service should be disabled.", affected_platforms=["multi_platform_all"]) }}}
     <criteria comment="package {{{ PACKAGENAME }}} removed or service {{{ SERVICENAME }}} is not configured to start" operator="OR">
       <criterion comment="{{{ PACKAGENAME }}} removed" test_ref="{{{ package_removed_test_id }}}" />
-      <criteria operator="AND" comment="service {{{ SERVICENAME }}} is not configured to start">
-        <criterion comment="{{{ SERVICENAME }}} is not running" test_ref="test_service_not_running_{{{ SERVICENAME }}}" />
-        <criterion comment="Property LoadState of service {{{ SERVICENAME }}} is masked" test_ref="test_service_loadstate_is_masked_{{{ SERVICENAME }}}" />
-      </criteria>
+      {{{ oval_test_service_disabled_criteria(SERVICENAME) }}}
     </criteria>
   </definition>
+  {{{ oval_test_service_disabled_tests(SERVICENAME) }}}
 
-  <linux:systemdunitproperty_test id="test_service_not_running_{{{ SERVICENAME }}}" check="all" check_existence="any_exist" comment="Test that the {{{ SERVICENAME }}} service is not running" version="1">
-    <linux:object object_ref="obj_service_not_running_{{{ SERVICENAME }}}"/>
-    <linux:state state_ref="state_service_not_running_{{{ SERVICENAME }}}"/>
-  </linux:systemdunitproperty_test>
-  <linux:systemdunitproperty_object id="obj_service_not_running_{{{ SERVICENAME }}}" comment="Retrieve the ActiveState property of {{{ SERVICENAME }}}" version="1">
-    <linux:unit operation="pattern match">^{{{ SERVICENAME }}}\.(service|socket)$</linux:unit>
-    <linux:property>ActiveState</linux:property>
-  </linux:systemdunitproperty_object>
-  <linux:systemdunitproperty_state id="state_service_not_running_{{{ SERVICENAME }}}" version="1" comment="{{{ SERVICENAME }}} is not running">
-      <linux:value operation="pattern match">inactive|failed</linux:value>
-  </linux:systemdunitproperty_state>
-  <linux:systemdunitproperty_test id="test_service_loadstate_is_masked_{{{ SERVICENAME }}}" check="all" check_existence="any_exist" comment="Test that the property LoadState from the service {{{ SERVICENAME }}} is masked" version="1">
-    <linux:object object_ref="obj_service_loadstate_is_masked_{{{ SERVICENAME }}}"/>
-    <linux:state state_ref="state_service_loadstate_is_masked_{{{ SERVICENAME }}}"/>
-  </linux:systemdunitproperty_test>
-  <linux:systemdunitproperty_object id="obj_service_loadstate_is_masked_{{{ SERVICENAME }}}" comment="Retrieve the LoadState property of {{{ SERVICENAME }}}" version="1">
-    <linux:unit operation="pattern match">^{{{ SERVICENAME }}}\.(service|socket)$</linux:unit>
-    <linux:property>LoadState</linux:property>
-  </linux:systemdunitproperty_object>
-  <linux:systemdunitproperty_state id="state_service_loadstate_is_masked_{{{ SERVICENAME }}}" version="1" comment="LoadState is set to masked">
-      <linux:value>masked</linux:value>
-  </linux:systemdunitproperty_state>
-
-  {{% else %}}
-
-  {{# fallback if we are using systemd but can't use the new systemd features of OVAL 5.11 #}}
-
-  <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
-    {{{ oval_metadata("The " + SERVICENAME + " service should be disabled if possible.", affected_platforms=["multi_platform_all"]) }}}
-    <criteria comment="package {{{ PACKAGENAME }}} removed or service and socket {{{ SERVICENAME }}} are not configured to start" operator="OR">
-      <criterion comment="{{{ PACKAGENAME }}} removed" test_ref="{{{ package_removed_test_id }}}" />
-      <criteria operator="AND" comment="service and socket {{{ SERVICENAME }}} are disabled">
-        <criterion comment="{{{ SERVICENAME }}} disabled in multi-user.target" test_ref="test_{{{ SERVICENAME }}}_disabled_multi_user_target" />
-        <criterion comment="{{{ SERVICENAME }}} socket disabled in sockets.target" test_ref="test_{{{ SERVICENAME }}}_socket_disabled_sockets_target" />
-      </criteria>
-    </criteria>
-  </definition>
-
-  <unix:file_test check="all" check_existence="none_exist"
-   comment="look for {{{ SERVICENAME }}}.service in /etc/systemd/system/multi-user.target.wants"
-   id="test_{{{ SERVICENAME }}}_disabled_multi_user_target" version="1">
-    <unix:object object_ref="object_{{{ SERVICENAME }}}_disabled_multi_user_target" />
-  </unix:file_test>
-
-  <unix:file_object comment="look for {{{ SERVICENAME }}}.service in /etc/systemd/system/multi-user.target.wants"
-   id="object_{{{ SERVICENAME }}}_disabled_multi_user_target" version="1">
-    <unix:filepath>/etc/systemd/system/multi-user.target.wants/{{{ SERVICENAME }}}.service</unix:filepath>
-    <filter action="include">unit_{{{ SERVICENAME }}}_state_symlink</filter>
-  </unix:file_object>
-
-  <unix:file_test check="all" check_existence="none_exist"
-   comment="look for {{{ SERVICENAME }}}.socket in /etc/systemd/system/sockets.target.wants"
-   id="test_{{{ SERVICENAME }}}_socket_disabled_sockets_target" version="1">
-    <unix:object object_ref="object_{{{ SERVICENAME }}}_socket_disabled_sockets_target" />
-  </unix:file_test>
-
-  <unix:file_object comment="look for {{{ SERVICENAME }}}.socket in /etc/systemd/system/sockets.target.wants"
-   id="object_{{{ SERVICENAME }}}_socket_disabled_sockets_target" version="1">
-    <unix:filepath>/etc/systemd/system/sockets.target.wants/{{{ SERVICENAME }}}.socket</unix:filepath>
-    <filter action="include">unit_{{{ SERVICENAME }}}_state_symlink</filter>
-  </unix:file_object>
-
-  <unix:file_state id="unit_{{{ SERVICENAME }}}_state_symlink" version="1">
-    <unix:type operation="equals">symbolic link</unix:type>
-  </unix:file_state>
-
-  {{% endif %}}
-{{% endif %}}
-
-{{{ oval_test_package_removed(package=PACKAGENAME, test_id=package_removed_test_id) }}}
+  {{{ oval_test_package_removed(package=PACKAGENAME, test_id=package_removed_test_id) }}}
 
 </def-group>

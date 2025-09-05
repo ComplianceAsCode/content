@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = audit
 
-echo "-w {{{ PATH }}} -p wa" >> /etc/audit/audit.rules
-sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/system/auditd.service
+path={{{ PATH }}}
+. $SHARED/audit_rules_login_events/auditctl_correct_without_key.pass.sh

@@ -1,17 +1,17 @@
-# platform = multi_platform_fedora,Red Hat OpenShift Container Platform 4,Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4
+# platform = multi_platform_all
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = medium
 
-- name: "Backup the old /etc/passwd file"
-  copy:
+- name: "{{{ rule_title }}} - Backup the Old /etc/passwd File"
+  ansible.builtin.copy:
     src: /etc/passwd
     dest: /etc/passwd-
     remote_src: true
 
-- name: "Remove lines starting with + from /etc/passwd"
-  lineinfile:
+- name: "{{{ rule_title }}} - Remove Lines Starting with + From /etc/passwd"
+  ansible.builtin.lineinfile:
     regexp: '^\+.*$'
     state: absent
     path: /etc/passwd

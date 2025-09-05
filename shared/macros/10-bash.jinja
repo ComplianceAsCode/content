@@ -330,7 +330,7 @@ done
         value=value,
         create=true,
         insert_after="",
-        insert_before="^Match",
+        insert_before="BOF",
         insensitive=true,
         separator=" ",
         separator_regex="\s\+",
@@ -352,7 +352,7 @@ done
 :type config_basename: str
 
 #}}
-{{% macro bash_sshd_remediation(parameter, value, config_is_distributed, config_basename="00-complianceascode-hardening.conf") -%}}
+{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="00-complianceascode-hardening.conf") -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
 
@@ -371,7 +371,7 @@ touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
         value=value,
         create=true,
         insert_after="",
-        insert_before="^Match",
+        insert_before="BOF",
         insensitive=true,
         separator=" ",
         separator_regex=separator_regex,
@@ -381,7 +381,7 @@ touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
 {{% if product in ["ol8", "ol9"] %}}
 # Find the include keyword, extract from the line the glob expression representing included files.
 # And if it is a relative path prepend '/etc/ssh/'
-included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/Include\s*//i' | sed -e 's|^[^/]|/etc/ssh/&|')
+included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*include\s*//I' | sed -e 's|^[^/]|/etc/ssh/&|')
 for included_file in ${included_files} ; do
     {{{ lineinfile_absent("$included_file", "^\s*" ~ parameter, insensitive=true) | indent(4) }}}
 done
@@ -1041,6 +1041,17 @@ authselect apply-changes -b --backup={{{ backup_name }}}
 
 
 {{#
+    Disable authselect feature if the authselect current profile is intact or inform that its
+    integrity check failed.
+#}}
+{{%- macro bash_disable_authselect_feature(feature) -%}}
+{{{ bash_check_authselect_integrity() }}}
+authselect disable-feature {{{ feature }}}
+{{{ bash_apply_authselect_changes() }}}
+{{%- endmacro -%}}
+
+
+{{#
     Enable authselect feature if the authselect current profile is intact or inform that its
     integrity check failed.
 #}}
@@ -1138,6 +1149,39 @@ fi
 PAM_FILE_NAME=$(basename "{{{ pam_file }}}")
 PAM_FILE_PATH="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE_NAME"
 {{{ bash_apply_authselect_changes() }}}
+{{%- endmacro -%}}
+
+
+{{#
+    Ensure pam_lastlog.so PAM module shows the failed logins according to the system capabilities.
+    If authselect is present and the "with-silent-lastlog" feature is available, the feature will be disabled.
+    If authselect is present but the "with-silent-lastlog" feature is not yet available, a custom profile will be used.
+    If authselect is not present, PAM files will be directly edited.
+
+:param pam_file:    PAM config file.
+:type pam_file: str
+:param control:     PAM control flags.
+:type control: str
+:param after_match: Regex used as reference to append a line, if necessary. Optional parameter.
+                    Note: For this macro, there is a special value used to include a line at
+                    the beginning of the file: "BOF"
+:type after_match: str
+
+#}}
+{{%- macro bash_pam_lastlog_enable_showfailed(pam_file, control, after_match='') -%}}
+if [ -f /usr/bin/authselect ]; then
+    if authselect list-features minimal | grep -q with-silent-lastlog; then
+        {{{ bash_disable_authselect_feature('with-silent-lastlog') | indent(8) }}}
+    else
+        {{# the following macro ensures the PAM_FILE_PATH variable is properly set #}}
+        {{{ bash_ensure_pam_variables_and_authselect_profile(pam_file) | indent(8) }}}
+        {{{ bash_ensure_pam_module_configuration("$PAM_FILE_PATH", 'session', control, 'pam_lastlog.so', 'showfailed', '', after_match) | indent(8) }}}
+        {{{ bash_remove_pam_module_option_configuration("$PAM_FILE_PATH", 'session', control, 'pam_lastlog.so', 'silent') | indent(8) }}}
+    fi
+else
+    {{{ bash_ensure_pam_module_configuration(pam_file, 'session', control, 'pam_lastlog.so', 'showfailed', '', after_match) | indent(8) }}}
+    {{{ bash_remove_pam_module_option_configuration(pam_file, 'session', control, 'pam_lastlog.so', 'silent') | indent(8) }}}
+fi
 {{%- endmacro -%}}
 
 
@@ -1722,10 +1766,10 @@ Ensures that given mount point is in :code:`/etc/fstab`.
 
 #}}
 {{% macro bash_ensure_mount_option_in_fstab(mount_point, mount_opt, fs_spec, type) -%}}
-mount_point_match_regexp="$(printf "[^#].*[[:space:]]%s[[:space:]]" {{{ mount_point }}})"
+mount_point_match_regexp="$(printf "^[[:space:]]*[^#].*[[:space:]]%s[[:space:]]" {{{ mount_point }}})"
 
 # If the mount point is not in /etc/fstab, get previous mount options from /etc/mtab
-if ! grep "$mount_point_match_regexp" /etc/fstab; then
+if ! grep -q "$mount_point_match_regexp" /etc/fstab; then
     # runtime opts without some automatic kernel/userspace-added defaults
     previous_mount_opts=$(grep "$mount_point_match_regexp" /etc/mtab | head -1 |  awk '{print $4}' \
                 | sed -E "s/(rw|defaults|seclabel|{{{ mount_opt }}})(,|$)//g;s/,$//")
@@ -1738,7 +1782,7 @@ if ! grep "$mount_point_match_regexp" /etc/fstab; then
     fi
     echo "{{{ fs_spec }}} {{{ mount_point }}} {{{ type }}} defaults,${previous_mount_opts}{{{ mount_opt }}} 0 0" >> /etc/fstab
 # If the mount_opt option is not already in the mount point's /etc/fstab entry, add it
-elif ! grep "$mount_point_match_regexp" /etc/fstab | grep "{{{ mount_opt }}}"; then
+elif ! grep "$mount_point_match_regexp" /etc/fstab | grep -q "{{{ mount_opt }}}"; then
     previous_mount_opts=$(grep "$mount_point_match_regexp" /etc/fstab | awk '{print $4}')
     sed -i "s|\(${mount_point_match_regexp}.*${previous_mount_opts}\)|\1,{{{ mount_opt }}}|" /etc/fstab
 fi
@@ -1750,7 +1794,7 @@ fi
 
 #}}
 {{% macro bash_assert_mount_point_in_fstab(mount_point) -%}}
-mount_point_match_regexp="$(printf "[^#].*[[:space:]]%s[[:space:]]" "{{{ mount_point }}}")"
+mount_point_match_regexp="$(printf "^[[:space:]]*[^#].*[[:space:]]%s[[:space:]]" "{{{ mount_point }}}")"
 {{#
     This macro gets expanded to code that will return 1 if MOUNTPOINT is not in /etc/fstab;
     This is consistent with the behavior prior to converting this function to a jinja macro
@@ -1998,12 +2042,16 @@ fi
 #}}
 {{%- macro update_etc_default_grub_manually(arg_name, arg_name_value) -%}}
 # Correct the form of default kernel command line in GRUB
-if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"'  '/etc/default/grub' ; then
+if grep -q '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"'  '/etc/default/grub' ; then
        # modify the GRUB command-line if an {{{ arg_name }}}= arg already exists
-       sed -i "s/\(^GRUB_CMDLINE_LINUX=\".*\){{{ arg_name }}}=[^[:space:]]\+\(.*\"\)/\1{{{ arg_name_value }}}\2/"  '/etc/default/grub'
-else
+       sed -i "s/\(^\s*GRUB_CMDLINE_LINUX=\".*\){{{ arg_name }}}=[^[:space:]]\+\(.*\"\)/\1{{{ arg_name_value }}}\2/"  '/etc/default/grub'
+# Add to already existing GRUB_CMDLINE_LINUX parameters
+elif grep -q '^\s*GRUB_CMDLINE_LINUX='  '/etc/default/grub' ; then
        # no {{{ arg_name }}}=arg is present, append it
-       sed -i "s/\(^GRUB_CMDLINE_LINUX=\".*\)\"/\1 {{{ arg_name_value }}}\"/"  '/etc/default/grub'
+       sed -i "s/\(^\s*GRUB_CMDLINE_LINUX=\".*\)\"/\1 {{{ arg_name_value }}}\"/"  '/etc/default/grub'
+# Add GRUB_CMDLINE_LINUX parameters line
+else
+       echo "GRUB_CMDLINE_LINUX=\"{{{ arg_name_value }}}\"" >> '/etc/default/grub'
 fi
 {{%- endmacro %}}
 

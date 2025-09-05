@@ -175,7 +175,6 @@ selections:
     - audit_rules_privileged_commands_usernetctl
     - audit_rules_privileged_commands_chage
     - audit_rules_privileged_commands_chsh
-    - audit_rules_privileged_commands_pt_chown
     - audit_rules_sysadmin_actions
     - audit_rules_privileged_commands_gpasswd
     - audit_rules_privileged_commands_newgidmap

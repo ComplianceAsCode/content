@@ -44,6 +44,17 @@ class HtmlOutput(template_renderer.Renderer):
             .format(policy_title=policy.title, product=self.product)
         )
 
+    def set_all_values_with_metadata(self):
+        resolved_values_dir = os.path.join(self.built_content_path, "values")
+        values = dict()
+        for v_file in os.listdir(resolved_values_dir):
+            v_file_path = os.path.join(resolved_values_dir, v_file)
+            val = ssg.build_yaml.Value.from_yaml(v_file_path)
+            val.relative_definition_location = val.definition_location.replace(
+                self.project_directory, "")
+            values[val.id_] = val
+        self.template_data["values"] = values
+
 
 def parse_args():
     parser = HtmlOutput.create_parser(
@@ -59,5 +70,6 @@ if __name__ == "__main__":
     args = parse_args()
     renderer = HtmlOutput(args.product, args.build_dir)
     renderer.set_all_rules_with_metadata()
+    renderer.set_all_values_with_metadata()
     renderer.set_policy(args.policy)
     renderer.output_results(args)

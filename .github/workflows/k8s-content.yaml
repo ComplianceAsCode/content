@@ -7,6 +7,10 @@ on:
 
 jobs:
   container-main:
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
     uses: metal-toolbox/container-push/.github/workflows/container-push.yml@main
     with:
       name: k8scontent

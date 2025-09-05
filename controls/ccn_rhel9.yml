@@ -795,12 +795,9 @@ controls:
     original_title: El disco del sistema está cifrado.
     levels:
       - advanced
-    status: partial
-    notes: |-
-      package_cryptsetup-luks_installed should be enabled for RHEL9.
+    status: automated
     rules:
       - encrypt_partitions
-    related_rules:
       - package_cryptsetup-luks_installed
 
   - id: A.25.SEC-RHEL2
@@ -808,7 +805,7 @@ controls:
     original_title: El disco de datos está cifrado.
     levels:
       - advanced
-    status: partial
+    status: automated
     notes: |-
       The rules in this requirement overlaps the A.25.SEC-RHEL1 requirement
     related_rules:

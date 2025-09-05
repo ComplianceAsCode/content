@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source common.sh
+
 # pass 2 is the second pass scenario
 
 {{%- if VALUE == "n" %}}

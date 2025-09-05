@@ -562,7 +562,9 @@ controls:
       - l1_workstation
     status: automated
     rules:
+      - service_timesyncd_configured
       - service_timesyncd_enabled
+      - service_timesyncd_root_distance_configured
 
   - id: 2.2.1.3
     title: Ensure chrony is configured (Automated)
@@ -1275,7 +1277,9 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: manual # missing rule for sudoers scope
+    status: automated
+    rules:
+      - audit_rules_sysadmin_actions
 
   - id: 4.1.15
     title: Ensure system administrator actions (sudolog) are collected (Automated)
@@ -1283,8 +1287,8 @@ controls:
       - l2_server
       - l2_workstation
     status: automated
-    related_rules:
-      - audit_rules_sysadmin_actions
+    rules:
+      - audit_sudo_log_events
 
   - id: 4.1.16
     title: Ensure kernel module loading and unloading is collected (Automated)
@@ -1413,10 +1417,12 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially
+    status: automated
     notes: >-
-      Rule only coveres cronjob, not logrotate config itself.
+      Rule configures logrotate service.
     rules:
+      - package_logrotate_installed
+      - timer_logrotate_enabled
       - ensure_logrotate_activated
 
   - id: 5.1.1
@@ -1663,6 +1669,7 @@ controls:
     rules:
       - sshd_approved_macs=cis_sle12
       - sshd_use_approved_macs
+      - sshd_strong_macs=cis_sle12
       - sshd_use_strong_macs
 
   - id: 5.2.15

@@ -6,7 +6,7 @@ title: 'Configure the Encryption Provider Cipher'
 
 {{% set default_jqfilter = '[.spec.encryption.type]' %}}
 {{% set default_api_path = '/apis/config.openshift.io/v1/apiservers/cluster' %}}
-{{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/clusters/hostedclusters/{{.hypershift_cluster}}' %}}
+{{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/{{.hypershift_namespace_prefix}}/hostedclusters/{{.hypershift_cluster}}' %}}
 {{% set hypershift_jqfilter = '[.spec.secretEncryption.type]' %}}
 {{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
 {{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
@@ -96,5 +96,13 @@ template:
     entity_check: "all"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
     yamlpath: "[:]"
-    xccdf_variable: var_apiserver_encryption_type
-    regex_data: true
+    check_existence: "at_least_one_exists"
+    values:
+        # aesgcm is available for OpenShift 4.13 and newer, but we include it
+        # in our check here since it's not possible to set the encryption
+        # provider type to aesgcm on OpenShift versions older than 4.13, which
+        # simplifies the rule since we don't have to modify the check based on
+        # the OpenShift version CPE.
+        - value: "aescbc|aesgcm"
+          type: "string"
+          operation: "pattern match"

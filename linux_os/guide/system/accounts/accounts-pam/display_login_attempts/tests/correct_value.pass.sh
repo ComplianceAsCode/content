@@ -1,10 +1,17 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 7,multi_platform_ol,multi_platform_ubuntu
+# platform = multi_platform_all
 
-{{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
-rm -f /etc/pam.d/login
-echo "session required pam_lastlog.so showfailed" >> /etc/pam.d/login
+{{%- if "sle" in product or "ubuntu" in product %}}
+{{% set pam_lastlog_path = "/etc/pam.d/login" %}}
 {{% else %}}
-rm -f /etc/pam.d/postlogin
-echo "session required pam_lastlog.so showfailed" >> /etc/pam.d/postlogin
+{{% set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
 {{% endif %}}
+
+rm -f {{{ pam_lastlog_path }}}
+
+cat <<EOF > {{{ pam_lastlog_path }}}
+session     optional                   pam_umask.so silent
+session     [success=1 default=ignore] pam_succeed_if.so service !~ gdm* service !~ su* quiet
+session     [default=1]                pam_lastlog.so nowtmp showfailed
+session     optional                   pam_lastlog.so silent noupdate showfailed
+EOF

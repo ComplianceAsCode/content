@@ -2,5 +2,11 @@
 
 # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 
+{{% if PATH_IS_VARIABLE %}}
+{{{ bash_instantiate_variables("var_accounts_passwords_pam_faillock_dir") }}}
+{{{ bash_fix_audit_watch_rule("auditctl", "${var_accounts_passwords_pam_faillock_dir}", "wa", "logins") }}}
+{{{ bash_fix_audit_watch_rule("augenrules", "${var_accounts_passwords_pam_faillock_dir}", "wa", "logins") }}}
+{{% else %}}
 {{{ bash_fix_audit_watch_rule("auditctl", PATH, "wa", "logins") }}}
 {{{ bash_fix_audit_watch_rule("augenrules", PATH, "wa", "logins") }}}
+{{% endif %}}

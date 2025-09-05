@@ -1,5 +1,4 @@
 import collections
-import logging
 import os
 import copy
 from glob import glob
@@ -86,6 +85,11 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         status_justification=str,
         fixtext=str,
         check=str,
+        tickets=list,
+        original_title=str,
+        related_rules=list,
+        rules=list,
+        controls=list,
     )
 
     MANDATORY_KEYS = {
@@ -108,6 +112,10 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         self.fixtext = ""
         self.check = ""
         self.controls = []
+        self.tickets = []
+        self.original_title = ""
+        self.related_rules = []
+        self.rules = []
 
     def __hash__(self):
         """ Controls are meant to be unique, so using the
@@ -117,9 +125,9 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
     @classmethod
     def _check_keys(cls, control_dict):
         for key in control_dict.keys():
-            if key not in cls.KEYS.keys() and key not in [
-                    'controls', 'original_title', 'related_rules', 'rules']:
-                raise ValueError("Key %s is not a valid for a control." % key)
+            # Rules shouldn't be in KEYS that data is in selections
+            if key not in cls.KEYS.keys() and key not in ['rules', ]:
+                raise ValueError("Key %s is not allowed in a control file." % key)
 
     @classmethod
     def from_control_dict(cls, control_dict, env_yaml=None, default_level=["default"]):
@@ -136,6 +144,11 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         control.mitigation = control_dict.get('mitigation')
         control.fixtext = control_dict.get('fixtext')
         control.check = control_dict.get('check')
+        control.tickets = control_dict.get('tickets')
+        control.original_title = control_dict.get('original_title')
+        control.related_rules = control_dict.get('related_rules')
+        control.rules = control_dict.get('rules')
+
         if control.status == "automated":
             control.automated = "yes"
         if control.automated not in ["yes", "no", "partially"]:
@@ -151,6 +164,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         control.selections = selections
 
         control.related_rules = control_dict.get("related_rules", [])
+        control.rules = control_dict.get("rules", [])
         return control
 
     def represent_as_dict(self):
@@ -207,6 +221,14 @@ class Policy(ssg.entities.common.XCCDFEntity):
         if self.levels:
             result = [self.levels[0].id]
         return result
+
+    def check_all_rules_exist(self, existing_rules):
+        for c in self.controls:
+            nonexisting_rules = set(c.selected) - existing_rules
+            if nonexisting_rules:
+                msg = "Control %s:%s contains nonexisting rule(s) %s" % (
+                    self.id, c.id, ", ".join(nonexisting_rules))
+                raise ValueError(msg)
 
     def remove_selections_not_known(self, known_rules):
         for c in self.controls:
@@ -334,21 +356,28 @@ class Policy(ssg.entities.common.XCCDFEntity):
 
 
 class ControlsManager():
-    def __init__(self, controls_dir, env_yaml=None):
+    def __init__(self, controls_dir, env_yaml=None, existing_rules=None):
         self.controls_dir = os.path.abspath(controls_dir)
         self.env_yaml = env_yaml
+        self.existing_rules = existing_rules
         self.policies = {}
 
     def load(self):
         if not os.path.exists(self.controls_dir):
             return
         for filename in sorted(glob(os.path.join(self.controls_dir, "*.yml"))):
-            logging.info("Found file %s" % (filename))
             filepath = os.path.join(self.controls_dir, filename)
             policy = Policy(filepath, self.env_yaml)
             policy.load()
             self.policies[policy.id] = policy
+        self.check_all_rules_exist()
         self.resolve_controls()
+
+    def check_all_rules_exist(self):
+        if self.existing_rules is None:
+            return
+        for p in self.policies.values():
+            p.check_all_rules_exist(self.existing_rules)
 
     def remove_selections_not_known(self, known_rules):
         known_rules = set(known_rules)

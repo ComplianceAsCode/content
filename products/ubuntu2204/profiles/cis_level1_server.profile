@@ -88,7 +88,7 @@ selections:
     #### 1.1.7.2 Ensure nodev option set on /home partition (Automated)
     - mount_option_home_nodev
 
-    #### 1.1.7.2 Ensure nosuid option set on /home partition (Automated)
+    #### 1.1.7.3 Ensure nosuid option set on /home partition (Automated)
     - mount_option_home_nosuid
 
     ### 1.1.8 Configure /dev/shm ###
@@ -449,6 +449,10 @@ selections:
     - set_nftables_table
 
     #### 3.5.2.5 Ensure nftables base chains exist (Automated)
+    - var_nftables_base_chain_names=chain_names
+    - var_nftables_base_chain_types=chain_types
+    - var_nftables_base_chain_hooks=chain_hooks
+    - var_nftables_base_chain_priorities=chain_priorities
     - set_nftables_base_chain
 
     #### 3.5.2.6 Ensure nftables loopback traffic is configured (Automated)
@@ -779,6 +783,7 @@ selections:
     - sshd_use_strong_ciphers
 
     ### 5.2.14 Ensure only strong MAC algorithms are used (Automated)
+    - sshd_strong_macs=cis_ubuntu2204
     - sshd_use_strong_macs
 
     ### 5.2.15 Ensure only strong Key Exchange algorithms are used (Automated)
@@ -1017,7 +1022,7 @@ selections:
     - no_netrc_files
 
     ### 6.2.15 Ensure no local interactive user has .forward files (Automated)
-    # - no_forward_files
+    - no_forward_files
 
     ### 6.2.16 Ensure no users have .rhosts files (Automated)
     - no_rsh_trust_files

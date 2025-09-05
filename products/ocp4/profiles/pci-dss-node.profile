@@ -3,6 +3,7 @@ documentation_complete: true
 platform: ocp4-node
 
 metadata:
+    version: 3.2.1
     SMEs:
         - JAORMX
         - jhrozek

@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R6
+    version: V1R7
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V1R6.
+    DISA STIG for Oracle Linux 8 V1R7.
 
 selections:
     ### Variables
@@ -38,8 +38,8 @@ selections:
     - var_password_pam_retry=3
     - var_password_pam_minlen=15
     - var_sshd_set_keepalive=0
-    - sshd_approved_macs=stig
-    - sshd_approved_ciphers=stig
+    - sshd_approved_macs=stig_extended
+    - sshd_approved_ciphers=stig_extended
     - sshd_idle_timeout_value=10_minutes
     - var_accounts_authorized_local_users_regex=ol8
     - var_accounts_passwords_pam_faillock_deny=3
@@ -526,6 +526,10 @@ selections:
     
     # OL08-00-020032
     - dconf_gnome_disable_user_list
+
+    # OL08-00-020035
+    - logind_session_timeout
+    - var_logind_session_timeout=15_minutes
 
     # OL08-00-020039
     - package_tmux_installed

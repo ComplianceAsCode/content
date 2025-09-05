@@ -14,6 +14,15 @@ selections:
     - rpm_verify_hashes
     - security_patches_up_to_date
     - no_empty_passwords
+    - file_groupowner_etc_group
+    - file_owner_etc_group
+    - file_permissions_etc_group
+    - file_groupowner_etc_passwd
+    - file_owner_etc_passwd
+    - file_permissions_etc_passwd
+    - file_groupowner_etc_shadow
+    - file_owner_etc_shadow
+    - file_permissions_etc_shadow
     - file_permissions_unauthorized_sgid
     - file_permissions_unauthorized_suid
     - file_permissions_unauthorized_world_writable
@@ -59,3 +68,17 @@ selections:
     - service_oddjobd_disabled
     - service_qpidd_disabled
     - service_rdisc_disabled
+    - service_auditd_enabled
+    - gid_passwd_group_same
+    - file_groupowner_grub2_cfg
+    - file_owner_grub2_cfg
+    - file_permissions_grub2_cfg
+    - file_groupowner_efi_grub2_cfg
+    - file_owner_efi_grub2_cfg
+    - file_permissions_efi_grub2_cfg
+    - file_groupowner_efi_user_cfg
+    - file_groupowner_user_cfg
+    - file_owner_efi_user_cfg
+    - file_owner_user_cfg
+    - file_permissions_efi_user_cfg
+    - file_permissions_user_cfg

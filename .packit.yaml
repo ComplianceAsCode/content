@@ -10,21 +10,29 @@ srpm_build_deps:
   - bash
 
 jobs:
-- job: copr_build
+- &build
+  job: copr_build
   trigger: pull_request
-  metadata:
-    targets:
-    - fedora-all-x86_64
-    - epel-7-x86_64
-    - centos-stream-8-x86_64
-    - centos-stream-9-x86_64
+  targets:
+  - fedora-all-x86_64
+  - epel-7-x86_64
+  - centos-stream-8-x86_64
+  - centos-stream-9-x86_64
 
-- job: tests
+- &test
+  job: tests
   trigger: pull_request
-  metadata:
-    targets:
-      fedora-latest-stable: {}
-      epel-7:
-        distros: [centos-7]
-      centos-stream-8: {}
-      centos-stream-9: {}
+  targets:
+    fedora-latest-stable: { }
+    epel-7:
+      distros: [ centos-7 ]
+    centos-stream-8: { }
+    centos-stream-9: { }
+
+- <<: *test
+  trigger: commit
+  branch: "gh-readonly-queue/.*"
+
+- <<: *build
+  trigger: commit
+  branch: "gh-readonly-queue/.*"

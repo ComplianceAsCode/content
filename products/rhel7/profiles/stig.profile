@@ -219,6 +219,7 @@ selections:
     - audit_rules_execution_chcon
     - audit_rules_execution_setfiles
     - audit_rules_login_events_faillock
+    - var_accounts_passwords_pam_faillock_dir=run
     - audit_rules_login_events_lastlog
     - audit_rules_privileged_commands_passwd
     - audit_rules_privileged_commands_unix_chkpwd
@@ -335,6 +336,7 @@ selections:
     - accounts_authorized_local_users
     - auditd_overflow_action
     - auditd_name_format
+    - var_auditd_name_format=stig
     - sebool_ssh_sysadm_login
     - sudoers_default_includedir
     - package_aide_installed

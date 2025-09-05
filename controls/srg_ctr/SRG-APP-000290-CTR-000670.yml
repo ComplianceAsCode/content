@@ -6,18 +6,8 @@ controls:
     of audit tools.
   related_rules:
   - audit_log_forwarding_uses_tls
-  status: inherently met
-  status_justification: |-
-    The audit tools used with OpenShift Container Platform are all delivered as container images referenced by manifest checksum. Installation sources for OpenShift are also delivered as container images, referenced by manifest checksum. See, for example, https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.8/release.txt
-
-    The listing of platform components by their manifest checksums, as well as the installer and command line tooling, are additionally checksummed. See, for example, https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.8/sha256sum.txt
-
-    The file that contains the checksums of the installer tooling and listing of container image manifest hashes is signed and the signature, validatable with Red Hat's product security GPG key, is published alongside the listing. See, for example, https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.8/sha256sum.txt.gpg
-
-    Included in the release of the base platform are the components that index the available installation sources for additional components, delivered as Operators, from Red Hat. The images for the OpenShift Logging Operator, which are the only supported mechanism for exporting audit logs from the cluster and forwarding to an external log aggregation solution,
-  artifact_description: |-
-    Supporting evidence is in the following documentation
-
-    https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.8/release.txt
-    https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.8/sha256sum.txt
-    https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.8/sha256sum.txt.gpg
+  rules:
+  - auditd_log_format
+  - auditd_data_disk_error_action
+  - auditd_data_retention_max_log_file_action_stig
+  status: automated

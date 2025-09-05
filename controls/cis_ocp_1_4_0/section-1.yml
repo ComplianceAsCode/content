@@ -26,7 +26,7 @@ controls:
       title: Ensure that the controller manager pod specification file permissions are set to 600 or more restrictive
       status: automated
       rules:
-        - file_permissions_kube_apiserver
+        - file_permissions_kube_controller_manager
       levels: level_1
     - id: 1.1.4
       title: Ensure that the controller manager pod specification file ownership is set to root:root
@@ -39,7 +39,7 @@ controls:
       title: Ensure that the scheduler pod specification file permissions are set to 600 or more restrictive
       status: automated
       rules:
-        - file_permissions_kube_scheduler
+        - file_permissions_scheduler
       levels: level_1
     - id: 1.1.6
       title: Ensure that the scheduler pod specification file ownership is set to root:root
@@ -384,10 +384,15 @@ controls:
       levels: level_1
     - id: 1.2.31
       title: Ensure that encryption providers are appropriately configured
-      status: automated
+      status: partial
       rules:
         - api_server_encryption_provider_cipher
       levels: level_1
+      # Remove this comment once https://github.com/ComplianceAsCode/content/issues/10868 is fixed.
+      # tickets:
+      #   - https://issues.redhat.com/browse/CMP-1973
+      notes: |-
+        Ticket 1973 tracks adding the aesgcm encryption method for OCP 4.13+
     - id: 1.2.32
       title: Ensure that the API Server only makes use of Strong Cryptographic Ciphers
       status: automated
@@ -437,17 +442,19 @@ controls:
       levels: level_1
   - id: '1.4'
     title: Scheduler
-    status: pending
+    status: automated
     rules: []
     controls:
     - id: 1.4.1
       title: Ensure that the healthz endpoints for the scheduler are protected by RBAC
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - scheduler_profiling_protected_by_rbac
       levels: level_1
     - id: 1.4.2
       title: Verify that the scheduler API service is protected by RBAC
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - scheduler_service_protected_by_rbac
       levels: level_1
 

@@ -130,7 +130,7 @@ class XCCDFBenchmark(object):
         self.cis_ns = cis_ns
         self.stig_ns = stig_ns
         if product:
-            constants_path = os.path.join(product, "transforms/constants.xslt")
+            constants_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "products", product, "transforms/constants.xslt")
             if os.path.exists(constants_path):
                 root = ElementTree.parse(constants_path)
                 cis_var = root.find('./{%s}variable[@name="cisuri"]' % (xslt_ns))

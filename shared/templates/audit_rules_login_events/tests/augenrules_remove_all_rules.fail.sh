@@ -1,6 +1,5 @@
 #!/bin/bash
 # packages = audit
 
-
-rm -f /etc/audit/rules.d/*
-> /etc/audit/audit.rules
+path={{{ PATH }}}
+. $SHARED/audit_rules_login_events/augenrules_remove_all_rules.fail.sh

@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Configure Systemd Timesyncd Root Distance Servers'
+
+description: |-
+    <tt>systemd-timesyncd</tt> server configuration should have RootDistanceMaxSec is
+    listed in accordance with local policy. This setting describes the maximum estimated
+    time required for a packet to travel to the server connected.
+
+rationale: |-
+    Configuring <tt>systemd-timesyncd</tt> RootDistanceMaxSec ensures time synchronization
+    is using servers that are close enough to the client.
+
+severity: medium
+
+platform: package[systemd]
+
+identifiers:
+    cce@sle12: CCE-92364-9
+    cce@sle15: CCE-92514-9
+
+references:
+    anssi: BP28(R43)
+    cis@sle12: 2.2.1.2
+    cis@sle15: 2.2.1.2
+    disa:  CCI-001891
+    pcidss: Req-10.4.3
+    pcidss4: Req-10.6.2
+
+ocil_clause: 'a remote time server RootDistanceMaxSec is not configured'
+
+ocil: |-
+    Review /etc/systemd/timesyncd.conf and ensure that the RootDistanceMaxSec
+    configuration is listed and in accordance with local policy.

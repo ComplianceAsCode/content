@@ -24,6 +24,7 @@ import ssg_test_suite.rule
 import ssg_test_suite.combined
 import ssg_test_suite.template
 from ssg_test_suite import xml_operations
+from ssg.constants import DERIVATIVES_PRODUCT_MAPPING
 
 
 def parse_args():
@@ -382,6 +383,19 @@ def get_unique_datastream():
         "e.g. {1}".format(len(datastreams), datastreams))
 
 
+def get_product_id(ds_filename):
+    product_regex = re.compile(r'^.*ssg-([a-zA-Z0-9]*)-(ds|ds-1\.2)\.xml$')
+    match = product_regex.match(ds_filename)
+    if not match:
+        msg = "Unable to detect product without explicit --product: "
+        msg += "datastream {0} lacks product name".format(ds_filename)
+        raise RuntimeError(msg)
+    product = match.group(1)
+    if product in DERIVATIVES_PRODUCT_MAPPING:
+        product = DERIVATIVES_PRODUCT_MAPPING[product]
+    return product
+
+
 @contextlib.contextmanager
 def datastream_in_stash(current_location):
     tfile = tempfile.NamedTemporaryFile(prefix="ssgts-ds-")
@@ -407,13 +421,7 @@ def normalize_passed_arguments(options):
         options.datastream = get_unique_datastream()
 
     if not options.product and options.datastream:
-        product_regex = re.compile(r'^.*ssg-([a-zA-Z0-9]*)-(ds|ds-1\.2)\.xml$')
-        match = product_regex.match(options.datastream)
-        if not match:
-            msg = "Unable to detect product without explicit --product: "
-            msg += "datastream {0} lacks product name".format(options.datastream)
-            raise RuntimeError(msg)
-        options.product = match.group(1)
+        options.product = get_product_id(options.datastream)
 
     if options.xccdf_id is None:
         options.xccdf_id = auto_select_xccdf_id(options.datastream,
