@@ -49,3 +49,4 @@ selections:
     - '!timer_dnf-automatic_enabled'
     - '!dnf-automatic_apply_updates'
     - '!dnf-automatic_security_updates_only'
+    - '!ldap_client_start_tls'

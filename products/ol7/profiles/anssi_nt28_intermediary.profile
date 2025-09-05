@@ -38,3 +38,4 @@ selections:
     - '!sysctl_net_core_bpf_jit_harden'
     - '!grub2_pti_argument'
     - '!package_kea_removed'
+    - '!no_nis_in_nsswitch'

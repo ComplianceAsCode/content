@@ -56,3 +56,7 @@ selections:
     # Following rules are not applicable to RHEL
     - '!package_talk_removed'
     - '!package_talk-server_removed'
+    - '!audit_rules_mac_modification_etc_selinux'
+    - '!no_nis_in_nsswitch'
+    - '!ldap_client_start_tls'
+    - '!ldap_client_tls_cacertpath'

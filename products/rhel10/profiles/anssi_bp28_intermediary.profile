@@ -23,6 +23,7 @@ description: |-
 
 selections:
     - anssi:all:intermediary
+    - '!ldap_client_tls_cacertpath'
     - var_password_hashing_algorithm_pam=yescrypt
     - var_authselect_profile=local
     # Following rules are incompatible with rhel10 product
@@ -62,3 +63,5 @@ selections:
     - '!sssd_ldap_start_tls'
     # RHEL 10 unified the paths for grub2 files. This rule is selected in control file by R5.
     - '!grub2_uefi_password'
+    - '!no_nis_in_nsswitch'
+    - '!ldap_client_start_tls'

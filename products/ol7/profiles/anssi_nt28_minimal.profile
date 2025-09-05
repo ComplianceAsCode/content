@@ -30,3 +30,4 @@ selections:
     - '!ensure_almalinux_gpgkey_installed'
     - '!enable_authselect'
     - '!package_kea_removed'
+    - '!no_nis_in_nsswitch'

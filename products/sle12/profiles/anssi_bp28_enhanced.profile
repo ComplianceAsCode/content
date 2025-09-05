@@ -63,6 +63,12 @@ selections:
     - '!timer_dnf-automatic_enabled'
     - '!dnf-automatic_apply_updates'
     - '!dnf-automatic_security_updates_only'
+    - '!ldap_client_start_tls'
+    - '!ldap_client_tls_cacertpath'
 
     # The following rules are not applicable to SLE 12
     - '!logind_session_timeout'
+    - '!ldap_client_start_tls'
+    - '!service_chronyd_enabled'
+    - '!no_nis_in_nsswitch'
+    - '!audit_rules_mac_modification_etc_selinux'

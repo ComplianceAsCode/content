@@ -36,6 +36,7 @@ selections:
     - '!sudo_add_umask'
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
+    - '!no_nis_in_nsswitch'
     # authselect is enabled by default
     - '!enable_authselect'
     # this rule is not automated anymore
