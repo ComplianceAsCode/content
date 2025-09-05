@@ -84,6 +84,7 @@ selections:
     - '!dconf_db_up_to_date'
     - '!bios_enable_execution_restrictions'
     - '!ensure_suse_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!accounts_passwords_pam_tally2_unlock_time'
     - '!gnome_gdm_disable_automatic_login'
     - '!cracklib_accounts_password_pam_minlen'

@@ -124,6 +124,9 @@ rules:
 - audit_rules_login_events_lastlog
 - audit_rules_login_events_tallylog
 - audit_rules_mac_modification
+- audit_rules_mac_modification_etc_apparmor
+- audit_rules_mac_modification_etc_apparmor_d
+- audit_rules_mac_modification_etc_selinux
 - audit_rules_mac_modification_usr_share
 - audit_rules_media_export
 - audit_rules_networkconfig_modification
@@ -260,6 +263,9 @@ rules:
 - audit_rules_usergroup_modification_opasswd
 - audit_rules_usergroup_modification_passwd
 - audit_rules_usergroup_modification_shadow
+- audit_rules_usergroup_modification_nsswitch_conf
+- audit_rules_usergroup_modification_pam_conf
+- audit_rules_usergroup_modification_pamd
 - audit_rules_var_log_journal
 - audit_sudo_log_events
 - auditd_audispd_configure_remote_server

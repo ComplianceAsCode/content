@@ -1,0 +1,32 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables(VARIABLE) }}}
+
+- name: Enable service {{{ SERVICENAME }}}
+  block:
+  - name: Gather the package facts
+    package_facts:
+      manager: auto
+
+{{%- if init_system == "systemd" %}}
+  - name: Enable service {{{ SERVICENAME }}}
+    ansible.builtin.systemd_service:
+      name: "{{{ DAEMONNAME }}}"
+      enabled: "yes"
+      state: "started"
+      masked: "no"
+    when:
+    - '"{{{ PACKAGENAME }}}" in ansible_facts.packages'
+    - {{{ VARIABLE }}} == "{{{ VALUE }}}"
+{{% if OPERATION == "pattern match" %}}
+    - {{{ VARIABLE }}} is regex("{{{ VALUE }}}")
+{{% else %}}
+    - {{{ VARIABLE }}} == "{{{ VALUE }}}"
+{{% endif %}}
+{{%- else %}}
+JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
+{{%- endif %}}

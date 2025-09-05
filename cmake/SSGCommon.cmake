@@ -202,11 +202,29 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/collect-remediations-${PRODUCT}"
     )
     if(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED AND SHELLCHECK_EXECUTABLE)
-        add_test(
-            NAME "${PRODUCT}-bash-shellcheck"
-            COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning
+        # Get the shellcheck version
+        execute_process(
+            COMMAND ${SHELLCHECK_EXECUTABLE} --version
+            OUTPUT_VARIABLE SHELLCHECK_VERSION_OUTPUT
+            OUTPUT_STRIP_TRAILING_WHITESPACE
         )
-        set_tests_properties("${PRODUCT}-bash-shellcheck" PROPERTIES LABELS quick)
+
+        # Extract the version number from the output
+        string(REGEX MATCH "version: [0-9]+\\.[0-9]+\\.[0-9]+" SHELLCHECK_VERSION_LINE "${SHELLCHECK_VERSION_OUTPUT}")
+        string(REGEX REPLACE "version: " "" SHELLCHECK_VERSION "${SHELLCHECK_VERSION_LINE}")
+
+        if(SHELLCHECK_VERSION VERSION_GREATER_EQUAL "0.10.0")
+            add_test(
+                NAME "${PRODUCT}-bash-shellcheck"
+                COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning "--extended-analysis=false"
+            )
+        else()
+            add_test(
+                NAME "${PRODUCT}-bash-shellcheck"
+                COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning
+            )
+        endif()
+
     endif()
 endmacro()
 
@@ -777,7 +795,7 @@ macro(ssg_build_product PRODUCT)
     ssg_render_policies_for_product(${PRODUCT})
     add_dependencies(render-policies ${PRODUCT}-render-policies)
 
-    if(SSG_BUILD_DISA_DELTA_FILES AND "${PRODUCT}" MATCHES "rhel(7|8)")
+    if(SSG_BUILD_DISA_DELTA_FILES AND "${PRODUCT}" MATCHES "rhel(8|9)|ol8")
         ssg_build_disa_delta(${PRODUCT} "stig")
         add_dependencies(${PRODUCT} generate-ssg-delta-${PRODUCT}-stig)
     endif()
@@ -1080,7 +1098,7 @@ macro(ssg_build_html_srgmap_tables PRODUCT)
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_srg_table.py" --build-dir "${CMAKE_BINARY_DIR}" "${PRODUCT}" "${SSG_SHARED_REFS}/disa-os-srg-v3r1.xml" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_srg_table.py" --build-dir "${CMAKE_BINARY_DIR}" "${PRODUCT}" "${SSG_SHARED_REFS}/disa-os-srg-v3r2.xml" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
         DEPENDS ${PRODUCT}-compile-all "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
         COMMENT "[${PRODUCT}-tables] generating HTML SRG map tables"
     )

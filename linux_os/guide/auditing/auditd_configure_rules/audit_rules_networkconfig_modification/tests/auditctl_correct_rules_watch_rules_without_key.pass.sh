@@ -20,3 +20,6 @@ echo "-w /etc/network/ -p wa" >> /etc/audit/audit.rules
 {{% else -%}}
 echo "-w /etc/sysconfig/network -p wa" >> /etc/audit/audit.rules
 {{% endif %}}
+{{% if product in ['ubuntu2404'] %}}
+echo "-w /etc/netplan/ -p wa" >> /etc/audit/audit.rules
+{{% endif %}}

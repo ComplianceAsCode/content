@@ -15,9 +15,11 @@ severity: medium
 
 identifiers:
     cce@sle15: CCE-92518-0
+    cce@slmicro5: CCE-93984-3
 
 references:
     cis@sle15: 3.5.1.2,3.5.3.1.2
+    cis@slmicro5: 3.5.1.2,3.5.3.1.2
     cis@ubuntu2004: 3.5.3.1.2
     cis@ubuntu2204: 3.5.3.1.2
 
@@ -25,7 +27,17 @@ references:
 
 fixtext: '{{{ fixtext_package_removed("nftables") }}}'
 
+{{%- if product in [ "sle12", "sle15" ] %}}
+template:
+    name: package_removed_guard_var
+    vars:
+        pkgname: nftables
+        variable: var_network_filtering_service
+        value: firewalld|nftables
+        operation: pattern match
+{{%- else %}}
 template:
     name: package_removed
     vars:
         pkgname: nftables
+{{%- endif %}}

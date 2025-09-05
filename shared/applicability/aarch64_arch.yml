@@ -1,5 +1,5 @@
 name: cpe:/a:aarch64_arch
 title: System architecture is AARCH64
 check_id: proc_sys_kernel_osrelease_arch_aarch64
-bash_conditional: 'grep -q aarch64 /proc/sys/kernel/osrelease'
+bash_conditional: {{{ bash_arch_conditional("aarch64") }}}
 ansible_conditional: 'ansible_architecture == "aarch64"'

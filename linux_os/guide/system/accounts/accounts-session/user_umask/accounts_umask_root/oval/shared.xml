@@ -1,0 +1,21 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("The umask for root user of the bash shell") }}}
+    <criteria operator="AND">
+      <criterion test_ref="tst_{{{ rule_id }}}" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}"
+      comment="Umask value from /root/.bashrc and /root/.profile" version="1">
+  <ind:filepath operation="pattern match">^(/root/.bashrc|/root/.profile)$</ind:filepath>
+    <ind:pattern operation="pattern match">^[^#]*\bumask\s+[0-7]?[0-7]([0-1][0-7]|[0-7][0-6])\s*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="tst_{{{ rule_id }}}" check="all" check_existence="none_exist"
+      comment="Test that no umask with lenient permissions exists" version="1">
+      <ind:object object_ref="obj_{{{ rule_id }}}"/>
+  </ind:textfilecontent54_test>
+
+</def-group>

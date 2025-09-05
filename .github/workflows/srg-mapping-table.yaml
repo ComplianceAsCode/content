@@ -45,19 +45,19 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate XLSX for RHEL9
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v3r1.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v3r2.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML for RHEL9
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v3r1.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel9.html
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v3r2.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel9.html
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate XLSX for RHEL10
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v3r1.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel10.xlsx
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v3r2.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel10.xlsx
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML for RHEL10
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v3r1.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel10.html
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v3r2.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel10.html
         env:
           PYTHONPATH: ${{ github.workspace }}
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
@@ -99,7 +99,7 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Deploy
         if: ${{ github.event_name == 'push' && github.repository == 'ComplianceAsCode/content' }}
-        uses: JamesIves/github-pages-deploy-action@881db5376404c5c8d621010bcbec0310b58d5e29 # v4.6.8
+        uses: JamesIves/github-pages-deploy-action@15de0f09300eea763baee31dff6c6184995c5f6a # v4.7.2
         with:
           branch: main # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.

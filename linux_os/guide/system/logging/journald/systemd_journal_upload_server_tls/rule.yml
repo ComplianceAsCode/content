@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Configure systemd-journal-upload TLS parameters: ServerKeyFile,ServerCertificateFile and TrustedCertificateFile'
+title: 'Configure systemd-journal-upload TLS parameters: ServerKeyFile, ServerCertificateFile and TrustedCertificateFile'
 
 description: |-
     {{{ full_name }}} must offload rsyslog messages for networked systems in real time and
@@ -22,7 +22,7 @@ ocil_clause: 'systemd-journal-upload TLS configuration is missing or commented i
 
 ocil: |-
     To ensure logs are sent securely to a remote host, examine the file
-    <tt>/etc/systemd/journal-upload.conf</tt>.
+    <tt>/etc/systemd/journal-upload.conf(.d/*.conf)</tt>.
     ServerKeyFile should be present:
     <pre>ServerKeyFile={{{ xccdf_value("var_journal_upload_server_key_file") }}}</pre>
     ServerCertificateFile should be present:

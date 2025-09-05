@@ -11,7 +11,6 @@
 
 documentation_complete: true
 
-
 title: 'Uninstall openldap-servers Package'
 
 description: |-
@@ -31,11 +30,13 @@ identifiers:
     cce@rhel8: CCE-82415-1
     cce@sle12: CCE-91640-3
     cce@sle15: CCE-91283-2
+    cce@slmicro5: CCE-93913-2
 
 references:
     cis-csc: 11,14,3,9
     cis@sle12: 2.2.6
     cis@sle15: 2.2.6
+    cis@slmicro5: 2.2.6
     cis@ubuntu2004: 2.2.6
     cis@ubuntu2204: 2.2.5
     cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS06.06
@@ -53,7 +54,7 @@ ocil: |-
     following command:
     <pre>{{{ run_cmd }}}</pre>
     The output should show the following:
-    <pre>package {{{ package_name }}} is not installed</pre>    
+    <pre>package {{{ package_name }}} is not installed</pre>
 
 template:
     name: package_removed
@@ -61,7 +62,9 @@ template:
         pkgname: openldap-servers
         pkgname@sle12: openldap2
         pkgname@sle15: openldap2
+        pkgname@slmicro5: openldap2
         pkgname@ubuntu1604: slapd
         pkgname@ubuntu1804: slapd
         pkgname@ubuntu2004: slapd
         pkgname@ubuntu2204: slapd
+        pkgname@ubuntu2404: slapd

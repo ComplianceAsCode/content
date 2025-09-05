@@ -19,10 +19,12 @@ identifiers:
     cce@rhel10: CCE-88524-4
     cce@sle12: CCE-91687-4
     cce@sle15: CCE-91317-8
+    cce@slmicro5: CCE-93927-2
 
 references:
     cis@sle12: 5.1.9
     cis@sle15: 5.1.9
+    cis@slmicro5: 5.1.9
     cis@ubuntu2004: 5.1.9
     cis@ubuntu2204: 5.1.9
 
@@ -35,5 +37,4 @@ template:
     name: file_owner
     vars:
         filepath: /etc/at.allow
-        missing_file_pass: 'true'
         fileuid: '0'

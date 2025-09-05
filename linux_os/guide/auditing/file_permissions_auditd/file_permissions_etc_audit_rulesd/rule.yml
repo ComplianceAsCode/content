@@ -1,0 +1,51 @@
+documentation_complete: true
+
+
+title: 'Verify Permissions on /etc/audit/rules.d/*.rules'
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/audit/rules.d/*.rules", perms="0600") }}}
+
+
+rationale: |-
+    Without the capability to restrict the roles and individuals that can select which events
+    are audited, unauthorized personnel may be able to prevent the auditing of critical
+    events. Misconfigured audits may degrade the system's performance by overwhelming
+    the audit log. Misconfigured audits may also make it more difficult to establish,
+    correlate, and investigate the events relating to an incident or identify
+    those responsible for one.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-85875-3
+    cce@rhel9: CCE-89977-3
+    cce@rhel10: CCE-89313-1
+
+references:
+    cis@ubuntu2204: 4.1.4.5
+    disa: CCI-000171
+    nist: AU-12(b)
+    srg: SRG-OS-000063-GPOS-00032
+    stigid@ol8: OL08-00-030610
+    stigid@rhel8: RHEL-08-030610
+    stigid@ubuntu2004: UBTU-20-010133
+    stigid@ubuntu2204: UBTU-22-653065
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/audit/rules.d/*.rules", perms="-rw-------") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/audit/rules.d/*.rules", perms="-rw-------") }}}
+
+fixtext: |-
+    {{{ describe_file_permissions(file="/etc/audit/rules.d/*.rules", perms="0600") }}}
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/audit/rules.d/*.rules", mode="0600")  }}}'
+
+template:
+    name: file_permissions
+    vars:
+      filepath: /etc/audit/rules.d/
+      file_regex: ^.*rules$
+      allow_stricter_permissions: "true"
+      filemode: '0600'

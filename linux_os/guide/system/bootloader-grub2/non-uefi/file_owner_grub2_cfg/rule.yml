@@ -19,11 +19,13 @@ identifiers:
     cce@rhel10: CCE-89438-6
     cce@sle12: CCE-91624-7
     cce@sle15: CCE-85848-0
+    cce@slmicro5: CCE-94020-5
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
     cis@sle12: 1.5.2
     cis@sle15: 1.5.2
+    cis@slmicro5: 1.5.2
     cis@ubuntu2004: 1.5.2
     cis@ubuntu2204: 1.4.2
     cjis: 5.5.2.2
@@ -44,7 +46,11 @@ ocil_clause: '{{{ ocil_clause_file_owner(file=grub2_boot_path ~ "/grub.cfg", own
 ocil: |-
     {{{ ocil_file_owner(file=grub2_boot_path ~ "/grub.cfg", owner="root") }}}
 
-platform: machine
+{{% if 'ubuntu' in product %}}
+platform: not container
+{{% else %}}
+platform: not bootc
+{{% endif %}}
 
 template:
     name: file_owner

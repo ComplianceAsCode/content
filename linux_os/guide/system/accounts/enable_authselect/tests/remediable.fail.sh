@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel
+# platform = multi_platform_fedora,Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_almalinux
 # packages = authselect,pam
 
 rm -f /etc/pam.d/{fingerprint-auth,password-auth,postlogin,smartcard-auth,system-auth}

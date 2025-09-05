@@ -1,0 +1,37 @@
+<def-group>
+
+{{%- set package_removed_test_id = _RULE_ID + "_test_service_" + SERVICENAME + "_package_" + PACKAGENAME + "_removed" -%}}
+{{%- set variable_value_test_id = _RULE_ID + "_test_variable_" + VARIABLE -%}}
+{{% if OPERATION is defined %}}
+  {{%- set variable_value_op = OPERATION -%}}
+{{% else %}}
+  {{%- set variable_value_op = "equals" -%}}
+{{% endif %}}
+
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+    {{{ oval_metadata("The " + SERVICENAME + " service should be disabled.", affected_platforms=["multi_platform_all"]) }}}
+    <criteria operator="OR" comment="package {{{ PACKAGENAME }}} removed or service {{{ SERVICENAME }}} is not configured to start">
+      <criteria comment="{{{ PKGNAME }}} and service {{{ SERVICENAME }}} are needed" operator="AND">
+        <criterion comment="variable {{{ VARIABLE }}} is set to {{{ VALUE }}}"
+        test_ref="{{{ variable_value_test_id }}}"/>
+      </criteria>
+      <criteria operator="AND">
+        <criteria comment="variable {{{ VARIABLE }}} is set to {{{ VALUE }}}" operator="AND">
+          <criterion comment="variable {{{ VARIABLE }}} is set to {{{ VALUE }}}"
+          test_ref="{{{ variable_value_test_id }}}" negate="true"/>
+        </criteria>
+        <criteria comment="package {{{ PACKAGENAME }}} removed or service {{{ SERVICENAME }}} is not configured to start" operator="OR">
+          <criterion comment="{{{ PACKAGENAME }}} removed" test_ref="{{{ package_removed_test_id }}}" />
+          {{{ oval_test_service_disabled_criteria(SERVICENAME) }}}
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+
+  {{{ oval_test_external_variable_value(variable=VARIABLE, value=VALUE, test_id=variable_value_test_id, operation=variable_value_op) }}}
+
+  {{{ oval_test_service_disabled_tests(SERVICENAME) }}}
+
+  {{{ oval_test_package_removed(package=PACKAGENAME, test_id=package_removed_test_id) }}}
+
+</def-group>

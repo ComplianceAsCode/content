@@ -18,14 +18,24 @@ check_id: system_with_kernel
 {{% if pkg_system == "rpm" %}}
 {{% if "sle" in product or "slmicro" in product %}}
 bash_conditional: "rpm --quiet -q kernel-default"
+{{% elif "ol" in families %}}
+bash_conditional: "rpm --quiet -q kernel || rpm --quiet -q kernel-uek"
 {{% else %}}
 bash_conditional: "rpm --quiet -q kernel"
 {{% endif %}}
 {{% else %}}
-bash_conditional: "dpkg-query --show --showformat='${db:Status-Status}\n' 'kernel' 2>/dev/null | grep -q installed"
+{{% if "debian" in product or "ubuntu" in product %}}
+bash_conditional: "dpkg-query --show --showformat='${db:Status-Status}\n' 'linux-base' 2>/dev/null | grep -q ^installed"
+{{% else %}}
+bash_conditional: "dpkg-query --show --showformat='${db:Status-Status}\n' 'kernel' 2>/dev/null | grep -q ^installed"
 {{% endif %}}
-{{% if "sle" in product or "slmicro" in product %}}
+{{% endif %}}
+{{% if "debian" in product or "ubuntu" in product %}}
+ansible_conditional: '"linux-base" in ansible_facts.packages'
+{{% elif "sle" in product or "slmicro" in product %}}
 ansible_conditional: '"kernel-default" in ansible_facts.packages'
+{{% elif "ol" in families %}}
+ansible_conditional: '("kernel" in ansible_facts.packages or "kernel-uek" in ansible_facts.packages)'
 {{% else %}}
 ansible_conditional: '"kernel" in ansible_facts.packages'
 {{% endif %}}

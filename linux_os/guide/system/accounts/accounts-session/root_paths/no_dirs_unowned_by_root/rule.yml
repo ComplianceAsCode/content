@@ -1,0 +1,15 @@
+documentation_complete: true
+
+title: 'Ensure that All Root''s Path Directories Are Owned by Root'
+
+description: |-
+    For each element in root's path, run:
+    <pre># ls -ld <i>DIR</i></pre>
+    and ensure that the directory is owned by the root user.
+
+rationale: |-
+    Directories in root's path that are not owned by root could allow
+    unprivileged users to manipulate the execution environment of root,
+    potentially leading to privilege escalation or execution of malicious code.
+
+severity: medium

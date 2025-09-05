@@ -1,6 +1,11 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu,multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_almalinux,multi_platform_rhv,multi_platform_ubuntu,multi_platform_sle
 {{#
    See the OVAL template for more comments.
    Product-specific categorization should be synced across all template content types
 -#}}
+if {{{ bash_bootc_build() }}} ; then
+    sed -i -E "/kargs\s*=\s*\[\s*\"{{{ ARG_NAME }}}=[^\"]*\"\s*]/{:a;N;/^\n$/ba;N;/match-architectures.*/d;}" "$KARGS_DIR/*.toml"
+    sed -i -E -e "s/^(\s*kargs\s*=\s*\[.*)\"{{{ ARG_NAME }}}=[^\"]*\"[,[:space:]]*(.*]\s*)/\1\2/" -e "s/^(\s*kargs.*),\s*\]$/\1\]/" "$KARGS_DIR/*.toml"
+else
 {{{ grub2_bootloader_argument_absent_remediation(ARG_NAME) }}}
+fi

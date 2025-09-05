@@ -49,6 +49,7 @@ references:
     cis-csc: 1,12,15,16
     cis@sle12: 5.4.4
     cis@sle15: 5.4.4
+    cis@slmicro5: 5.4.4
     cis@ubuntu2004: 5.4.5
     cis@ubuntu2204: 5.5.5
     cobit5: DSS05.04,DSS05.10,DSS06.10
@@ -82,7 +83,7 @@ ocil: |-
     {{% endif %}}
     The output should return the following:
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
-    {{% if product in ["sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
     readonly TMOUT
     export TMOUT
     {{% endif %}}

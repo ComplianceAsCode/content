@@ -716,3 +716,5 @@ selections:
     - configure_bashrc_tmux
     - configure_tmux_lock_keybinding
     - package_mcafeetp_installed
+    - harden_sshd_ciphers_openssh_conf_crypto_policy
+    - harden_sshd_macs_openssh_conf_crypto_policy

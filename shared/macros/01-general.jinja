@@ -839,6 +839,34 @@ substituting the correct package management software.
     <pre>$ sudo chown {{{ owner }}} {{{ file }}} </pre>
 {{%- endmacro %}}
 
+{{#
+    Describe how to set a directory owner
+
+:param directory: Directory to change
+:type directory: str
+:param owner: The owner of the directory
+:type owner: str
+
+#}}
+{{%- macro describe_directory_owner(directory, owner) %}}
+    To properly set the owner of <code>{{{ directory }}}</code>, run the command:
+    <pre>$ sudo chown {{{ owner }}} {{{ directory }}}</pre>
+{{%- endmacro %}}
+
+{{#
+    Describe how to set the file owner of files in the given directory.
+
+:param directory: Directory to change
+:type directory: str
+:param owner: The owner for the files in the directory
+:type owner: str
+
+#}}
+{{%- macro describe_files_in_directory_owner(directory, owner) %}}
+    To properly set the owner of files in <code>{{{ directory }}}</code>, run the command:
+    <pre>find -H {{{ directory }}} -type d -exec chown -L {{{ owner }}} {} \;</pre>
+{{%- endmacro %}}
+
 
 {{#
     Describe how to set the file group owner of a file.
@@ -854,6 +882,33 @@ substituting the correct package management software.
     <pre>$ sudo chgrp {{{ group }}} {{{ file }}}</pre>
 {{%- endmacro %}}
 
+{{#
+    Describe how to set a directory group owner
+
+:param directory: Directory to change
+:type directory: str
+:param group: The group owner of the directory
+:type group: str
+
+#}}
+{{%- macro describe_directory_group_owner(directory, group) %}}
+    To properly set the group owner of <code>{{{ directory }}}</code>, run the command:
+    <pre>$ sudo chgrp {{{ group }}} {{{ directory }}}</pre>
+{{%- endmacro %}}
+
+{{#
+    Describe how to set the file group owner of files in the given directory.
+
+:param directory: Directory to change
+:type directory: str
+:param group: The group owner for the files in the directory
+:type group: str
+
+#}}
+{{%- macro describe_files_in_directory_group_owner(directory, group) %}}
+    To properly set the group owner of files in <code>{{{ directory }}}</code>, run the command:
+    <pre>find -H {{{ directory }}} -type d -exec chgrp -L {{{ group }}} {} \;</pre>
+{{%- endmacro %}}
 
 {{#
     How to check a file for the correct permissions.
@@ -871,6 +926,33 @@ substituting the correct package management software.
     <code>{{{ perms }}}</code>
 {{%- endmacro %}}
 
+{{#
+    Describe how to set correct directory permissions
+
+:param directory: Directory to change
+:type directory: str
+:param perms: The permissions of the directory
+:type perms: str
+
+#}}
+{{%- macro describe_directory_permissions(directory, perms) %}}
+    To properly set the permissions of <code>{{{ directory }}}</code>, run the command:
+    <pre>$ sudo chmod {{{ perms }}} {{{ directory }}}</pre>
+{{%- endmacro %}}
+
+{{#
+    Describe how to set the file permissions of files in the given directory.
+
+:param directory: Directory to change
+:type directory: str
+:param perms: The permissions for the files in the directory
+:type perms: str
+
+#}}
+{{%- macro describe_files_in_directory_permissions(directory, perms) %}}
+    To properly set the permissions of files in <code>{{{ directory }}}</code>, run the command:
+    <pre>find -H {{{ directory }}} -type d -exec chown {{{ perms }}} {} \;</pre>
+{{%- endmacro %}}
 
 {{#
     How add mount options to :code:`/etc/fstab`
@@ -1069,8 +1151,34 @@ Run the following command to update command line for already installed kernels:
 Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}} as follows:
 <pre># grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) {{{ arg_name_value }}}"</pre>
 {{%- endif -%}}
+{{% if bootable_containers_supported == "true" %}}
+If the system is distributed as a bootable container image, GRUB2 can't be configured using the method described above, but the following method needs to be used instead.
+The kernel arguments should be set in <tt>/usr/lib/bootc/kargs.d</tt> in a TOML file that has the following form:
+<pre>
+# /usr/lib/bootc/kargs.d/10-example.toml
+kargs = ["{{{ arg_name_value }}}"]
+</pre>
+For more details on configuring kernel arguments in bootable container images, please refer to {{{ weblink(link="https://containers.github.io/bootc/building/kernel-arguments.html", text="Bootc documentation") }}}.
+{{%- endif -%}}
 {{%- endmacro -%}}
 
+{{#
+    Describe how to remove a kernel argument from Grub2 default kernel command line.
+
+:param arg_name: The kernel parameter name
+:type arg_name: str
+#}}
+{{%- macro describe_grub2_argument_absent(arg_name) -%}}
+Check that the line <pre>GRUB_CMDLINE_LINUX="..."</pre> within <tt>/etc/default/grub</tt>
+doesn't contain the argument <tt>{{{ arg_name }}}</tt>.
+Run the following command to update command line for already installed kernels:
+<pre># grubby --update-kernel=ALL --remove-args="{{{ arg_name }}}"</pre>
+{{% if bootable_containers_supported == "true" %}}
+If the system is distributed as a bootable container image, GRUB2 can't be configured using the method described above, but the kernel arguments should be configured using TOML files located in the <tt>/usr/lib/bootc/kargs.d</tt> directory.
+Remove all occurences of <tt>{{{ arg_name }}}</tt> from all files in <tt>/usr/lib/bootc/kargs.d</tt>.
+For more details on configuring kernel arguments in bootable container images, please refer to {{{ weblink(link="https://containers.github.io/bootc/building/kernel-arguments.html", text="Bootc documentation") }}}.
+{{%- endif -%}}
+{{%- endmacro -%}}
 
 {{#
     Describe how to check a kernel compile parameter

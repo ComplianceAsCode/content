@@ -1,27 +1,49 @@
+{{% macro generate_criteria_listening_port(port) %}}
+<criterion test_ref="tst_nothing_listening_external_mta_port_{{{ port }}}"
+            comment="mta is not listening on any non-loopbackaddress for port {{{ port }}}" />
+{{% endmacro %}}
+
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Verify MTA is not listening on any non-loopback address") }}}
-    <criteria>
-      <criterion test_ref="tst_nothing_listening_external_mta_port"
-            comment="mta is not listening on any non-loopbackaddress" />
+    <criteria operator="AND">
+      {{{ generate_criteria_listening_port("25")}}}
+{{% if 'ubuntu' in product %}}
+      {{{ generate_criteria_listening_port("465")}}}
+      {{{ generate_criteria_listening_port("587")}}}
+{{% endif %}}
     </criteria>
   </definition>
-  <linux:inetlisteningservers_object id="obj_listening_port_25" version="1">
-    <linux:protocol>tcp</linux:protocol>
-    <linux:local_address operation="not equal">127.0.0.1</linux:local_address>
-    <linux:local_port datatype="int">25</linux:local_port>
-    <filter action="exclude">ste_not_port_25</filter>
-    <filter action="exclude">ste_not_on_localhost</filter>
-  </linux:inetlisteningservers_object>
-  <linux:inetlisteningservers_state id="ste_not_port_25" version="1">
-    <linux:local_port datatype="int" operation="not equal">25</linux:local_port>
-  </linux:inetlisteningservers_state>
+
   <linux:inetlisteningservers_state id="ste_not_on_localhost" version="1">
     <linux:local_address operation="equals">::1</linux:local_address>
   </linux:inetlisteningservers_state>
+
+  {{% macro generate_test_listening_port(port) %}}
+
+  <linux:inetlisteningservers_object id="obj_listening_port_{{{ port }}}" version="1">
+    <linux:protocol>tcp</linux:protocol>
+    <linux:local_address operation="not equal">127.0.0.1</linux:local_address>
+    <linux:local_port datatype="int">{{{ port }}}</linux:local_port>
+    <filter action="exclude">ste_not_port_{{{ port }}}</filter>
+    <filter action="exclude">ste_not_on_localhost</filter>
+  </linux:inetlisteningservers_object>
+
+  <linux:inetlisteningservers_state id="ste_not_port_{{{ port }}}" version="1">
+    <linux:local_port datatype="int" operation="not equal">{{{ port }}}</linux:local_port>
+  </linux:inetlisteningservers_state>
+
   <linux:inetlisteningservers_test check="all" check_existence="none_exist"
-      id="tst_nothing_listening_external_mta_port" version="1"
-      comment="mta is not listening on any non-loopback address">
-    <linux:object object_ref="obj_listening_port_25" />
+      id="tst_nothing_listening_external_mta_port_{{{ port }}}" version="1"
+      comment="mta is not listening on any non-loopback address {{{ port }}}">
+    <linux:object object_ref="obj_listening_port_{{{ port }}}" />
   </linux:inetlisteningservers_test>
+
+  {{% endmacro %}}
+
+  {{{ generate_test_listening_port("25") }}}
+  {{% if 'ubuntu' in product %}}
+  {{{ generate_test_listening_port("465")}}}
+  {{{ generate_test_listening_port("587")}}}
+  {{% endif %}}
 </def-group>

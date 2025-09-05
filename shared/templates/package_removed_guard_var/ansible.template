@@ -1,0 +1,18 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables(VARIABLE) }}}
+
+- name: Ensure {{{ PKGNAME }}} is removed
+  ansible.builtin.package:
+    name: "{{{ PKGNAME }}}"
+    state: absent
+  when: {{{ VARIABLE }}} != "{{{ VALUE }}}"
+{{% if OPERATION == "pattern match" %}}
+  when: {{{ VARIABLE }}} is not regex("{{{ VALUE }}}")
+{{% else %}}
+  when: {{{ VARIABLE }}} != "{{{ VALUE }}}"
+{{% endif %}}

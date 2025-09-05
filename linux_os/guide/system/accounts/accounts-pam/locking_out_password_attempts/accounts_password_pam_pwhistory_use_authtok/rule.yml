@@ -1,0 +1,18 @@
+documentation_complete: true
+
+
+title: 'Enforce Password History with use_authtok'
+
+description: |-
+    The <tt>use_authtok</tt> option ensures the pam_pwhistory module uses the new
+    password provided by a previously stacked PAM module during password
+    changes, rather than prompting the user again.
+
+rationale: |-
+    The <tt>use_authtok</tt> option allows multiple PAM modules to validate the new
+    password before it is accepted, ensuring it meets all security requirements
+    without requiring the user to re-enter it multiple times.
+
+severity: medium
+
+platform: package[pam]

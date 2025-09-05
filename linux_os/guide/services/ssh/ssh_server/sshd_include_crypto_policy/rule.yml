@@ -4,7 +4,10 @@ title: 'SSHD Must Include System Crypto Policy Config File'
 
 description: |-
     SSHD should follow the system cryptographic policy.
-    In order to accomplish this the SSHD configuration should include the system
+    In order to accomplish this the SSHD configuration should include the configuration file provided by the system crypto policy.
+    The following line should be present in <tt>/etc/ssh/sshd_config</tt> or in a file included by this file (a file within the <tt>/etc/ssh/sshd_config.d</tt> directory):
+    <pre>Include /etc/crypto-policies/back-ends/opensshserver.config</pre>
+
 
 rationale: |-
     Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
@@ -18,3 +21,21 @@ references:
     disa: CCI-001453
     nist: AC-17 (2)
     srg: SRG-OS-000250-GPOS-00093
+
+checktext: |-
+    Verify that RHEL 9 implements DOD-approved encryption ciphers for SSH connections.
+    Verify that the SSH configuration files include the path to the systemwide policy with the following command:
+    <pre>sudo grep -R "Include /etc/ssh/sshd_config"  /etc/ssh/sshd_config.d/
+
+    /etc/ssh/sshd_config:Include /etc/ssh/sshd_config.d/*.conf
+    /etc/ssh/sshd_config.d/50-redhat.conf:Include /etc/crypto-policies/back-ends/opensshserver.config</pre>
+    If "Include /etc/ssh/sshd_config.d/*.conf" or "Include /etc/crypto-policies/back-ends/opensshserver.config" are not included in the system sshd config or if the file "/etc/ssh/sshd_config.d/50-redhat.conf" is missing, this is a finding.
+
+fixtext: |-
+    Configure the RHEL 9 SSH daemon to use systemwide crypto policies.
+    Reinstall OpenSSH server package contents with the following command:
+    <pre>sudo dnf -y remove openssh-server && sudo dnf -y install openssh-server</pre>
+
+warnings:
+    - general: |-
+        There is no automated remediation because recommended action could severely disrupt the system and might not be efficient in fixing the problem.

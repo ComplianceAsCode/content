@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_sle
+# platform = multi_platform_sle,multi_platform_slmicro
 
 cat >/etc/pam.d/common-account <<CAPTA
 account	[success=1 new_authtok_reqd=done default=ignore]	pam_unix.so

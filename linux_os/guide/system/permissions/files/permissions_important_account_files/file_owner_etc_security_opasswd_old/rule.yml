@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns /etc/security/opasswd.old File'
+
+description: '{{{ describe_file_owner(file="/etc/security/opasswd.old", owner="root") }}}'
+
+rationale: |-
+    The <tt>/etc/security/opasswd.old</tt> file stores backups of old passwords to prevent
+    password reuse. Protection of this file is critical for system security.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/security/opasswd.old", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/security/opasswd.old", owner="root") }}}
+
+fixtext: '{{{ fixtext_file_owner(file="/etc/security/opasswd.old", owner="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_owner(file="/etc/security/opasswd.old", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/security/opasswd.old
+        fileuid: '0'

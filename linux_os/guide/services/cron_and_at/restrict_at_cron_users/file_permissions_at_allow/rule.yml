@@ -28,10 +28,12 @@ identifiers:
     cce@rhel10: CCE-90283-3
     cce@sle12: CCE-91689-0
     cce@sle15: CCE-91319-4
+    cce@slmicro5: CCE-93926-4
 
 references:
     cis@sle12: 5.1.9
     cis@sle15: 5.1.9
+    cis@slmicro5: 5.1.9
     cis@ubuntu2004: 5.1.9
     cis@ubuntu2204: 5.1.9
 
@@ -44,5 +46,4 @@ template:
     name: file_permissions
     vars:
         filepath: /etc/at.allow
-        missing_file_pass: 'true'
         filemode: '{{{ target_perms_octal }}}'

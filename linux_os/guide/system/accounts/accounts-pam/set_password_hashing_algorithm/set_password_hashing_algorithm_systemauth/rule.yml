@@ -90,7 +90,7 @@ ocil: |-
 platform: package[pam]
 
 fixtext: |-
-    {{% if product in ['ol9', 'rhel9', 'ubuntu2204'] -%}}
+    {{% if product in ['ol9', 'rhel9', 'rhel10', 'ubuntu2204', 'ubuntu2404'] -%}}
     Configure {{{ full_name }}} to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.
     {{% else %}}
     Configure {{{ full_name }}} to use a FIPS 140-2 approved cryptographic hashing algorithm for system authentication.
@@ -106,7 +106,7 @@ fixtext: |-
     password sufficient pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}
     {{%- endif %}}
 
-{{% if product in ['ol9', 'rhel9'] -%}}
+{{% if product in ['ol9', 'rhel9', 'rhel10'] -%}}
 srg_requirement: 'The {{{ full_name }}} pam_unix.so module must be configured in the system-auth file to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.'
 {{%- endif %}}
 

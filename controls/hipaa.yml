@@ -117,7 +117,11 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
+            {{% if product == "rhel10" %}}
+            - audit_rules_mac_modification_etc_selinux
+            {{% else %}}
             - audit_rules_mac_modification
+            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
@@ -165,6 +169,7 @@ controls:
             - ensure_gpgcheck_repo_metadata
             - ensure_redhat_gpgkey_installed
             - ensure_suse_gpgkey_installed
+            - ensure_almalinux_gpgkey_installed
         status: automated
 
     -   id: 164.308(a)(3)
@@ -277,7 +282,11 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
+            {{% if product == "rhel10" %}}
+            - audit_rules_mac_modification_etc_selinux
+            {{% else %}}
             - audit_rules_mac_modification
+            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
@@ -344,7 +353,6 @@ controls:
             - package_ypbind_removed
             - package_ypserv_removed
             - service_ypbind_disabled
-            - no_rsh_trust_files
             - package_rsh-server_removed
             - package_rsh_removed
             - service_rexec_disabled
@@ -370,7 +378,6 @@ controls:
             - sshd_enable_warning_banner
             - sshd_set_keepalive
             - sshd_set_keepalive_0
-            - sshd_use_priv_separation
             - libreswan_approved_tunnels
             - dconf_gnome_remote_access_credential_prompt
             - dconf_gnome_remote_access_encryption
@@ -471,7 +478,11 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
+            {{% if product == "rhel10" %}}
+            - audit_rules_mac_modification_etc_selinux
+            {{% else %}}
             - audit_rules_mac_modification
+            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
@@ -614,7 +625,6 @@ controls:
             - package_ypbind_removed
             - package_ypserv_removed
             - service_ypbind_disabled
-            - no_rsh_trust_files
             - package_rsh-server_removed
             - package_rsh_removed
             - service_rexec_disabled
@@ -682,7 +692,6 @@ controls:
             - package_ypbind_removed
             - package_ypserv_removed
             - service_ypbind_disabled
-            - no_rsh_trust_files
             - package_rsh-server_removed
             - package_rsh_removed
             - service_rexec_disabled
@@ -879,7 +888,6 @@ controls:
             - package_ypbind_removed
             - package_ypserv_removed
             - service_ypbind_disabled
-            - no_rsh_trust_files
             - package_rsh-server_removed
             - package_rsh_removed
             - service_rexec_disabled
@@ -1204,7 +1212,11 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
+            {{% if product == "rhel10" %}}
+            - audit_rules_mac_modification_etc_selinux
+            {{% else %}}
             - audit_rules_mac_modification
+            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
@@ -1340,7 +1352,11 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
+            {{% if product == "rhel10" %}}
+            - audit_rules_mac_modification_etc_selinux
+            {{% else %}}
             - audit_rules_mac_modification
+            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
@@ -1379,6 +1395,7 @@ controls:
             - ensure_gpgcheck_repo_metadata
             - ensure_redhat_gpgkey_installed
             - ensure_suse_gpgkey_installed
+            - ensure_almalinux_gpgkey_installed
         status: automated
 
     -   id: 164.312(c)
@@ -1409,6 +1426,7 @@ controls:
             - ensure_gpgcheck_repo_metadata
             - ensure_redhat_gpgkey_installed
             - ensure_suse_gpgkey_installed
+            - ensure_almalinux_gpgkey_installed
         status: automated
 
     -   id: 164.312(c)(2)
@@ -1428,6 +1446,7 @@ controls:
             - ensure_gpgcheck_repo_metadata
             - ensure_redhat_gpgkey_installed
             - ensure_suse_gpgkey_installed
+            - ensure_almalinux_gpgkey_installed
         status: automated
 
     -   id: 164.312(d)
@@ -1503,7 +1522,11 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
+            {{% if product == "rhel10" %}}
+            - audit_rules_mac_modification_etc_selinux
+            {{% else %}}
             - audit_rules_mac_modification
+            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
@@ -1597,7 +1620,11 @@ controls:
             - audit_rules_privileged_commands_unix_chkpwd
             - audit_rules_privileged_commands_userhelper
             - audit_rules_immutable
+            {{% if product == "rhel10" %}}
+            - audit_rules_mac_modification_etc_selinux
+            {{% else %}}
             - audit_rules_mac_modification
+            {{% endif %}}
             - audit_rules_mac_modification_usr_share
             - audit_rules_media_export
             - audit_rules_networkconfig_modification
@@ -1647,7 +1674,6 @@ controls:
             - package_ypbind_removed
             - package_ypserv_removed
             - service_ypbind_disabled
-            - no_rsh_trust_files
             - package_rsh-server_removed
             - package_rsh_removed
             - service_rexec_disabled
@@ -1701,6 +1727,7 @@ controls:
             - ensure_gpgcheck_repo_metadata
             - ensure_redhat_gpgkey_installed
             - ensure_suse_gpgkey_installed
+            - ensure_almalinux_gpgkey_installed
         status: automated
 
     -   id: 164.312(e)(2)(ii)
@@ -1720,7 +1747,6 @@ controls:
             - package_ypbind_removed
             - package_ypserv_removed
             - service_ypbind_disabled
-            - no_rsh_trust_files
             - package_rsh-server_removed
             - package_rsh_removed
             - service_rexec_disabled

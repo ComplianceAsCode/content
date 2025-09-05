@@ -26,6 +26,7 @@ identifiers:
 references:
     cis@sle12: 5.3.3
     cis@sle15: 5.3.3
+    cis@slmicro5: 5.3.3
     cis@ubuntu2004: 5.3.3
     disa: CCI-000200
     nist@sle12: IA-5(1)(e),IA-5 (1).1(v)
@@ -47,6 +48,7 @@ ocil: |-
 
 platform: package[pam]
 
+{{% if 'ubuntu' not in product or product == 'ubuntu2004' %}}
 template:
     name: pam_options
     vars:
@@ -59,3 +61,4 @@ template:
           operation: greater than or equal
         - argument: use_authtok
           new_argument: use_authtok
+{{% endif %}}

@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R1
+    version: V2R2
     SMEs:
         - mab879
         - ggbecker
@@ -12,10 +12,10 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V2R1.
+    DISA STIG for Red Hat Enterprise Linux 8 V2R2.
 
-    In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
-    configuration baseline as applicable to the operating system tier of
+    In addition to being applicable to Red Hat Enterprise Linux 8, this
+    configuration baseline is applicable to the operating system tier of
     Red Hat technologies that are based on Red Hat Enterprise Linux 8, such as:
 
     - Red Hat Enterprise Linux Server
@@ -41,7 +41,7 @@ selections:
     - var_password_pam_remember_control_flag=requisite_or_required
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
-    - var_password_pam_unix_rounds=5000
+    - var_password_hashing_min_rounds_login_defs=100000
     - var_password_pam_minlen=15
     - var_password_pam_ocredit=1
     - var_password_pam_dcredit=1
@@ -203,11 +203,9 @@ selections:
     - configure_ssh_crypto_policy
 
     # RHEL-08-010290
-    - harden_sshd_macs_openssh_conf_crypto_policy
     - harden_sshd_macs_opensshserver_conf_crypto_policy
 
     # RHEL-08-010291
-    - harden_sshd_ciphers_openssh_conf_crypto_policy
     - harden_sshd_ciphers_opensshserver_conf_crypto_policy
 
     # RHEL-08-010292
@@ -612,12 +610,6 @@ selections:
 
     # RHEL-08-020210
     - accounts_password_set_max_life_existing
-
-    # RHEL-08-020220
-    - accounts_password_pam_pwhistory_remember_system_auth
-
-    # RHEL-08-020221
-    - accounts_password_pam_pwhistory_remember_password_auth
 
     # RHEL-08-020230
     - accounts_password_pam_minlen

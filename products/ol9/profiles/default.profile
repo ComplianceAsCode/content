@@ -37,10 +37,8 @@ selections:
     - sshd_set_max_sessions
     - sudoers_no_root_target
     - package_inetutils-telnetd_removed
-    - service_ntpd_enabled
     - kernel_disable_entropy_contribution_for_solid_state_drives
     - avahi_disable_publishing
-    - package_ntpdate_removed
     - sudo_custom_logfile
     - file_groupowner_efi_user_cfg
     - sshd_use_priv_separation
@@ -52,7 +50,6 @@ selections:
     - sshd_enable_warning_banner_net
     - file_groupowner_var_log_syslog
     - grub2_systemd_debug-shell_argument_absent
-    - service_netfs_disabled
     - ftp_limit_users
     - file_groupownership_sshd_private_key
     - kernel_module_ipv6_option_disabled
@@ -61,11 +58,9 @@ selections:
     - firewalld-backend
     - rsyslog_accept_remote_messages_tcp
     - file_ownership_sshd_pub_key
-    - package_ntp_installed
     - service_rngd_enabled
     - enable_dconf_user_profile
     - harden_sshd_ciphers_opensshserver_conf_crypto_policy
-    - package_cron_installed
     - sshd_enable_gssapi_auth
     - partition_for_dev_shm
     - ftp_configure_firewall
@@ -97,7 +92,6 @@ selections:
     - account_passwords_pam_faillock_audit
     - sshd_set_maxstartups
     - accounts_root_gid_zero
-    - service_cron_enabled
     - sshd_enable_x11_forwarding
     - service_sshd_disabled
     - sshd_disable_rhosts_rsa
@@ -127,4 +121,3 @@ selections:
     - package_telnetd-ssl_removed
     - file_owner_var_log_syslog
     - sshd_limit_user_access
-    - service_ip6tables_enabled

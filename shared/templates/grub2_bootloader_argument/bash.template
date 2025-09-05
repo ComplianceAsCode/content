@@ -1,11 +1,24 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu,multi_platform_sle,multi_platform_debian
+# platform = multi_platform_debian,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu,multi_platform_almalinux
 {{#
    See the OVAL template for more comments.
    Product-specific categorization should be synced across all template content types
 -#}}
+
 {{%- if ARG_VARIABLE %}}
 {{{- bash_instantiate_variables(ARG_VARIABLE) }}}
 {{%- set ARG_NAME_VALUE= ARG_NAME ~ "=$" ~ ARG_VARIABLE %}}
-{{%- endif %}}
+expected_value="${{{ ARG_VARIABLE }}}"
+{{% else %}}
+expected_value="{{{ ARG_VALUE }}}"
+{{% endif %}}
 
-{{{ grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) }}}
+if {{{ bash_bootc_build() }}} ; then
+    KARGS_DIR="/usr/lib/bootc/kargs.d/"
+    if grep -q -E "{{{ ARG_NAME }}}" "$KARGS_DIR/*.toml" ; then
+        sed -i -E "s/^(\s*kargs\s*=\s*\[.*)\"{{{ ARG_NAME }}}=[^\"]*\"(.*]\s*)/\1\"{{{ ARG_NAME }}}=$expected_value\"\2/" "$KARGS_DIR/*.toml"
+    else
+        echo "kargs = [\"{{{ ARG_NAME }}}=$expected_value\"]" >> "$KARGS_DIR/10-{{{ SANITIZED_ARG_NAME }}}.toml"
+    fi
+else
+{{{ grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) | indent(4) }}}
+fi

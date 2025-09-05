@@ -24,7 +24,6 @@ rules:
 - directory_owner_etc_sysctld
 - directory_permissions_etc_sysctld
 - grub2_ipv6_disable_argument
-- grub2_kernel_trust_cpu_rng
 - install_PAE_kernel_on_x86-32
 - kernel_config_acpi_custom_method
 - kernel_config_arm64_sw_ttbr0_pan
@@ -110,6 +109,7 @@ rules:
 - kernel_module_iwlwifi_disabled
 - kernel_module_jffs2_disabled
 - kernel_module_mac80211_disabled
+- kernel_module_overlayfs_disabled
 - kernel_module_rds_disabled
 - kernel_module_sctp_disabled
 - kernel_module_squashfs_disabled

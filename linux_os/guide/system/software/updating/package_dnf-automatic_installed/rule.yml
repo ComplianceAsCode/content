@@ -20,11 +20,14 @@ identifiers:
     cce@sle15: CCE-91163-6
 
 references:
+    ospp: FPT_TUD_EXT.1,FPT_TUD_EXT.2
     srg: SRG-OS-000191-GPOS-00080
 
 ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="dnf-automatic") }}}'
+
+platform: not bootc
 
 template:
     name: package_installed

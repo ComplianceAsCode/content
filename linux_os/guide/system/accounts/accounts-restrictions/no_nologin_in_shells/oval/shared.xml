@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    <metadata>
+      <title>Ensure nologin Shell is Not Listed in /etc/shells</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The nologin shell should not be listed in /etc/shells.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="nologin not in /etc/shells" test_ref="test_{{{ rule_id }}}" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    comment="Check for nologin in /etc/shells"
+    id="test_{{{ rule_id }}}" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:filepath>/etc/shells</ind:filepath>
+    <ind:pattern operation="pattern match">^[^#]*/nologin\b.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
+
+

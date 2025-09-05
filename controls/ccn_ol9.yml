@@ -1,0 +1,829 @@
+---
+policy: CCN-STIC-620
+title: Security Profile Application Guide for Oracle Linux 9
+id: ccn_ol9
+version: '2022-08'
+source: https://www.ccn-cert.cni.es/es/guias-de-acceso-publico-ccn-stic/6669-ccn-stic-620-guia-de-aplicaciones-de-perfilado-de-seguridad-para-oracle-linux/file.html
+levels:
+  - id: basic
+  - id: intermediate
+    inherits_from:
+      - basic
+  - id: advanced
+    inherits_from:
+      - intermediate
+reference_type: ccn
+product: ol9
+
+controls:
+  - id: reload_dconf_db
+    title: Reload Dconf Database
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    notes: |-
+      This is a helper rule to reload Dconf database correctly.
+    status: automated
+    rules:
+      - dconf_db_up_to_date
+
+  - id: enable_authselect
+    title: Enable Authselect
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    notes: |-
+      The policy doesn't have any section where this would fit better.
+    status: automated
+    rules:
+      - var_authselect_profile=sssd
+      - enable_authselect
+
+  - id: A.3.SEC-OL1
+    title: Session Initiation is Audited
+    original_title: Se auditan los inicios de sesión.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - audit_rules_session_events
+      - audit_rules_login_events_faillock
+      - audit_rules_login_events_lastlog
+
+  - id: A.3.SEC-OL2
+    title: Control Who Can Access Security and Audit Logs
+    original_title: Se controla quien puede acceder a los registros de seguridad y auditoría.
+    levels:
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - file_permissions_var_log_audit
+      - file_ownership_var_log_audit
+      - file_group_ownership_var_log_audit
+      - directory_permissions_var_log_audit
+
+  - id: A.3.SEC-OL3
+    title: System Time Change is Controlled
+    original_title: Se controla el cambio de hora del sistema.
+    levels:
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - package_chrony_installed
+      - chronyd_specify_remote_server
+      - chronyd_run_as_chrony_user
+      - var_multiple_time_servers=rhel
+
+  - id: A.3.SEC-OL4
+    title: Control Who Can Generate or Modify Audit Rules
+    original_title: Se controla quién puede generar o modificar reglas de audit.
+    levels:
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - file_permissions_audit_configuration
+      - file_ownership_audit_configuration
+      - file_groupownership_audit_configuration
+
+  - id: A.3.SEC-OL5
+    title: A Detailed Audit Has Been Implemented Based on Subcategories
+    original_title: Se ha implementado la auditoría detallada basada en subcategorías.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      It is not clear the intention of this requirement since there is no definition of these
+      subcategories. The project has many audit related rules. Clarifying these subcategories
+      we can select the proper rules.
+
+  - id: A.3.SEC-OL6
+    title: At Least 90 Days of Activity Logs Are Guaranteed
+    original_title: Se garantiza al menos 90 días de registros de actividad.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - auditd_data_retention_max_log_file_action
+      - var_auditd_max_log_file_action=keep_logs
+
+  - id: A.3.SEC-OL7
+    title: Modifications to the Sudoers File Are Audited, As Are Changes to Permissions, Users, Groups, and Passwords
+    original_title: Se auditan las modificaciones del fichero sudoers, así como los cambios en permisos, usuarios, grupos y contraseñas.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - audit_sudo_log_events
+      - audit_rules_usergroup_modification_group
+      - audit_rules_usergroup_modification_gshadow
+      - audit_rules_usergroup_modification_opasswd
+      - audit_rules_usergroup_modification_passwd
+      - audit_rules_usergroup_modification_shadow
+      - audit_rules_sysadmin_actions
+      - audit_rules_dac_modification_chmod
+      - audit_rules_dac_modification_chown
+      - audit_rules_dac_modification_fchmod
+      - audit_rules_dac_modification_fchmodat
+      - audit_rules_dac_modification_fchown
+      - audit_rules_dac_modification_fchownat
+      - audit_rules_dac_modification_fremovexattr
+      - audit_rules_dac_modification_fsetxattr
+      - audit_rules_dac_modification_lchown
+      - audit_rules_dac_modification_lremovexattr
+      - audit_rules_dac_modification_lsetxattr
+      - audit_rules_dac_modification_removexattr
+      - audit_rules_dac_modification_setxattr
+
+  - id: A.3.SEC-OL8
+    title: Changes to Cron Settings and Scheduled Tasks Including Startup Scripts Are Audited
+    original_title: Se auditan los cambios en la configuración de Cron y en tareas programadas incluyendo los de scripts de inicio.
+    levels:
+      - advanced
+    status: pending
+    notes: |-
+      Some possible rules were included here but it is not clear if the requirement intends to
+      check more than these rules. We can see if more related rules are available in the project
+      and include everything that makes sense in the context of cron and chrony.
+    related_rules:
+      - audit_rules_time_adjtimex
+      - audit_rules_time_settimeofday
+      - audit_rules_time_clock_settime
+      - audit_rules_time_stime
+      - audit_rules_time_watch_localtime
+
+  - id: A.3.SEC-OL9
+    title: Attempts to Access Critical Items Are Audited
+    original_title: Se auditan los intentos de acceso a elementos críticos.
+    levels:
+      - advanced
+    status: automated
+    rules:
+      - audit_rules_unsuccessful_file_modification_creat
+      - audit_rules_unsuccessful_file_modification_ftruncate
+      - audit_rules_unsuccessful_file_modification_open
+      - audit_rules_unsuccessful_file_modification_openat
+      - audit_rules_unsuccessful_file_modification_truncate
+
+  - id: A.3.SEC-OL10
+    title: All Mount Operations on the System and Changes to the Swap Are Audited
+    original_title: Se audita toda operación de montaje en el sistema y modificaciones en la memoria de intercambio.
+    levels:
+      - intermediate
+      - advanced
+    status: partial
+    notes: |-
+      We probably have audit related rule to monitor mount related syscalls, but it is not clear
+      about the swap. Is the intention to monitor when swap is changed?
+    rules:
+      - audit_rules_media_export
+
+  - id: A.3.SEC-OL11
+    title: Modifications in PAM Files Are Audited
+    original_title: Se auditan modificaciones en ficheros PAM.
+    levels:
+      - advanced
+    status: pending
+    notes: |-
+      The intention here is probably to audit changes in /etc/pam.d files, but we need to confirm
+      this assumption and get more context.
+
+  - id: A.4.SEC-OL1
+    title: Common Users Do Dot Have Local Administrator Permissions and Are Not Included in a Sudo Group
+    original_title: Los usuarios estándar no disponen de permisos de administrador local ni se encuentran incluidos en un grupo sudoer.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      It is a little tricky to interpret this requirement. Assuming the "Common users" are actually
+      interactive users, this requirement would automatically enforce all admin actions to be
+      performed only by the root user. I am not sure if this is the intetion here.
+
+  - id: A.4.SEC-OL2
+    title: The System Has an Updated Antivirus
+    original_title: El sistema tiene un antivirus y este está actualizado.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      New templated rule is necessary to install the package. But to ensure the chosen antivirus
+      is actually updated would demand a more complex rule. Maybe this requirement can have at
+      leastthe partial status after the templated rule.
+
+  - id: A.4.SEC-OL3
+    title: Permissions by Partitions Are Modified
+    original_title: Se modifican los permisos por particiones.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      Related to nosuid, noexec and nodev options but in /boot. More context is needed.
+
+  - id: A.5.SEC-OL1
+    title: Login and Impersonation Permissions Are Controlled
+    original_title: Se controlan los permisos de inicio de sesión y suplantación de identidad.
+    levels:
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - sudo_add_use_pty
+      - use_pam_wheel_for_su
+
+  - id: A.5.SEC-OL2
+    title: Elevation Attempts Are Controlled by Defining Users and Sudoer Groups
+    original_title: Se controlan los intentos de elevación mediante definición de usuarios y grupos sudoers.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - sudo_require_authentication
+      - sudo_require_reauthentication
+
+  - id: A.5.SEC-OL3
+    title: Access to Encryption Keys is Controlled
+    original_title: Se controla el acceso a las claves de cifrado.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      There are rules for ssh_keys, for example. We need to confirm the scope of this requirement
+
+  - id: A.5.SEC-OL4
+    title: Disable Insecure Encryption Algorithms
+    original_title: Se han deshabilitado los algoritmos de cifrado inseguros.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - configure_crypto_policy
+      - var_system_crypto_policy=default_policy
+
+  - id: A.5.SEC-OL5
+    title: Recurring Password Change is Required
+    original_title: Se exige el cambio de contraseña de forma recurrente.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - accounts_maximum_age_login_defs
+      - accounts_minimum_age_login_defs
+      - accounts_password_set_max_life_existing
+      - accounts_password_set_min_life_existing
+      - accounts_password_set_warn_age_existing
+      - accounts_password_warn_age_login_defs
+      - var_accounts_maximum_age_login_defs=45
+      - var_accounts_minimum_age_login_defs=2
+      - var_accounts_password_warn_age_login_defs=10
+
+  - id: A.5.SEC-OL6
+    title: Secure Protocols Are Used For the Network Authentication Processes
+    original_title: Se hace uso de protocolos seguros para los procesos de autenticación de red.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - configure_ssh_crypto_policy
+
+  - id: A.5.SEC-OL7
+    title: Network Session Inactivity is Controlled
+    original_title: Se controla la inactividad de la sesión de red.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - sshd_idle_timeout_value=15_minutes
+      - sshd_set_idle_timeout
+      - sshd_set_keepalive
+      - var_sshd_set_keepalive=1
+
+  - id: A.5.SEC-OL8
+    title: Local and Remote Console Inactivity is Controlled
+    original_title: Se controla la inactividad de consola local y remota.
+    levels:
+      - advanced
+    status: automated
+    rules:
+      - accounts_tmout
+      - var_accounts_tmout=5_min
+
+  - id: A.6.SEC-OL1
+    title: The Security of Sensitive System Objects is Reinforced
+    original_title: Se refuerza la seguridad de los objetos sensibles del sistema.
+    levels:
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - grub2_enable_selinux
+      - package_libselinux_installed
+      - selinux_policytype
+      - selinux_state
+      - var_selinux_policy_name=targeted
+      - var_selinux_state=enforcing
+
+  - id: A.6.SEC-OL2
+    title: Access in Recovery Mode Including Grub Boot Modification Mode is Restricted
+    original_title: Se restringen accesos en modo recuperación incluido el modo modificación de inicio de grub.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - file_groupowner_grub2_cfg
+      - file_groupowner_user_cfg
+      - file_owner_grub2_cfg
+      - file_owner_user_cfg
+      - file_permissions_grub2_cfg
+      - file_permissions_user_cfg
+
+  - id: A.6.SEC-OL3
+    title: Service Users Shell is Limited to "/bin/false"
+    original_title: Se limita la shell de usuarios de servicio a "/bin/false".
+    levels:
+      - intermediate
+      - advanced
+    status: automated
+    notes: |-
+      "/sbin/nologin" might be a better option
+    rules:
+      - no_password_auth_for_systemaccounts
+      - no_shelllogin_for_systemaccounts
+
+  - id: A.6.SEC-OL4
+    title: The Use of Sessions With the "root" User is Restricted
+    original_title: Se restringe el uso de sesiones con usuario "root".
+    levels:
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - ensure_root_password_configured
+      - no_empty_passwords_etc_shadow
+
+  - id: A.6.SEC-OL5
+    title: The Global System Mask is Modified To Be More Restrictive
+    original_title: Se modifica la máscara global del sistema para ser más restrictiva.
+    levels:
+      - advanced
+    status: automated
+    rules:
+      - accounts_umask_etc_bashrc
+      - accounts_umask_etc_login_defs
+      - accounts_umask_etc_profile
+      - var_accounts_user_umask=027
+
+  - id: A.6.SEC-OL6
+    title: Unnecessary Groups and Users are Removed From the System
+    original_title: Se eliminan los grupos y usuarios innecesarios del sistema.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: manual
+
+  - id: A.8.SEC-OL1
+    title: Control Who Can Install Software on the System
+    original_title: Se controla quién puede instalar software en el sistema.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.8.SEC-OL2
+    title: The Operating System is Updated
+    original_title: El sistema operativo está actualizado.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: manual
+    related_rules:
+      - security_patches_up_to_date
+
+  - id: A.8.SEC-OL3
+    title: The System Has an Activated Local Firewall
+    original_title: El sistema tiene un firewall local activado.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - firewalld_loopback_traffic_restricted
+      - firewalld_loopback_traffic_trusted
+      - service_firewalld_enabled
+      - package_firewalld_installed
+      - service_nftables_disabled
+      - set_firewalld_default_zone
+
+  - id: A.8.SEC-OL4
+    title: Unnecessary Services are Disabled, Reducing the Attack Surface
+    original_title: Se deshabilitan servicios innecesarios, reduciendo la superficie de exposición.
+    levels:
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - kernel_module_squashfs_disabled
+      - kernel_module_udf_disabled
+      - package_bind_removed
+      - package_cyrus-imapd_removed
+      - package_dovecot_removed
+      - package_net-snmp_removed
+      - package_squid_removed
+      - package_telnet-server_removed
+      - package_tftp-server_removed
+      - package_vsftpd_removed
+
+  - id: A.8.SEC-OL5
+    title: Application Execution is Controlled
+    original_title: Se controla la ejecución de aplicaciones.
+    levels:
+      - advanced
+    status: pending
+    notes: |-
+      This might be related to SELinux or fapolicyd.
+      We need more context to confirm the intention of this requirement
+
+  - id: A.8.SEC-OL6
+    title: Anti-Ransomware Measures are Enabled
+    original_title: Se dispone de medidas anti ransomware habilitadas.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: partial
+    notes: |-
+      These are mentioned to be reviewed but not enforced:
+      #net.ipv4.icmp_echo_ignore_all = 1
+      #net.ipv4.tcp_timestamps = 0
+      #net.ipv4.tcp_max_syn_backlog = 1280
+      #sysctl_net_ipv6_conf_all_disable_ipv6
+      #sysctl_net_ipv6_conf_default_disable_ipv6
+    rules:
+      - sysctl_net_ipv4_conf_all_send_redirects
+      - sysctl_net_ipv4_conf_all_accept_redirects
+      - sysctl_net_ipv4_conf_all_secure_redirects
+      - sysctl_net_ipv4_conf_all_accept_source_route
+      - sysctl_net_ipv4_conf_all_log_martians
+      - sysctl_net_ipv4_conf_default_send_redirects
+      - sysctl_net_ipv4_conf_default_accept_redirects
+      - sysctl_net_ipv4_conf_default_secure_redirects
+      - sysctl_net_ipv4_conf_default_accept_source_route
+      - sysctl_net_ipv4_conf_default_log_martians
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      - sysctl_net_ipv4_tcp_syncookies
+      - sysctl_net_ipv6_conf_all_accept_source_route
+      - sysctl_net_ipv6_conf_all_accept_redirects
+      - sysctl_net_ipv6_conf_all_accept_ra
+      - sysctl_net_ipv6_conf_default_accept_source_route
+      - sysctl_net_ipv6_conf_default_accept_redirects
+      - sysctl_net_ipv6_conf_default_accept_ra
+      - sysctl_fs_suid_dumpable
+      - sysctl_net_ipv4_ip_forward
+      - sysctl_net_ipv4_conf_all_rp_filter
+      - sysctl_net_ipv4_conf_default_rp_filter
+
+  - id: A.8.SEC-OL7
+    title: Password Encrypted Boot That Prevents Modification is Enabled (Protected GRUB)
+    original_title: Está habilitado el arranque cifrado con contraseña que evite modificaciones (GRUB protegido).
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - grub2_password
+
+  - id: A.8.SEC-OL8
+    title: File Download is Audited
+    original_title: Se audita la descarga de archivos.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      Is it related to downloads from the Internet to the system or from the system to an external
+      storage, for example?
+    related_rules:
+      - audit_rules_file_deletion_events_rename
+      - audit_rules_file_deletion_events_renameat
+      - audit_rules_file_deletion_events_unlink
+      - audit_rules_file_deletion_events_unlinkat
+
+  - id: A.8.SEC-OL9
+    title: System Compilers are Disabled
+    original_title: Están deshabilitados los compiladores del sistema.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      Maybe simply removing the packages is enough.
+
+  - id: A.11.SEC-OL1
+    title: Local Log On To the System is Controlled
+    original_title: Se controla el inicio de sesión local en el sistema.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      Is it related to TTY access, physical access, local users authentication, etc?
+      It is not not clear the scope.
+
+  - id: A.11.SEC-OL2
+    title: The Security of the SSH Protocol is Strengthened
+    original_title: Se ha reforzado la seguridad del protocolo SSH.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - sshd_limit_user_access
+
+  - id: A.11.SEC-OL3
+    title: A Robust Credential Policy is In Place
+    original_title: Se dispone de una política de credenciales robusta.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - accounts_password_pam_minclass
+      - accounts_password_pam_minlen
+      - accounts_password_pam_retry
+      - var_password_pam_minclass=4
+      - var_password_pam_minlen=14
+
+  - id: A.11.SEC-OL4
+    title: During Login, the System Displays a Text in Compliance With the Organization's Standards or Directives
+    original_title: Durante el inicio de sesión, el sistema muestra un texto en cumplimiento con las normas o directivas de la organización.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - banner_etc_issue
+      - banner_etc_issue_net
+      - banner_etc_motd
+      - dconf_gnome_banner_enabled
+      - dconf_gnome_login_banner_text
+      - sshd_enable_warning_banner_net
+      - login_banner_text=cis_banners
+      - motd_banner_text=cis_banners
+      - remote_login_banner_text=cis_banners
+
+  - id: A.11.SEC-OL5
+    title: Network Acess to the System is Controlled
+    original_title: Se controla el acceso al sistema a través de la red.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: manual
+    related_rules:
+      - configure_firewalld_ports
+
+  - id: A.11.SEC-OL6
+    title: Only Strong Encryption Algorithms are Allowed in Accesses to the System
+    original_title: Sólo se permiten algoritmos de cifrado robustos en accesos al sistema.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    notes: |-
+      It overlaps the rule in A.5.SEC-OL6 requirement
+    related_rules:
+      - configure_ssh_crypto_policy
+
+  - id: A.11.SEC-OL7
+    title: GUI Idle Time is Limited
+    original_title: Se limita el tiempo de inactividad del GUI.
+    levels:
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - dconf_gnome_screensaver_idle_delay
+      - dconf_gnome_screensaver_lock_delay
+      - inactivity_timeout_value=5_minutes
+      - var_screensaver_lock_delay=immediate
+
+  - id: A.11.SEC-OL8
+    title: A Dissuasive Banner is Displayed
+    original_title: Se muestra un banner disuasorio.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      It seems to duplicate the A.11.SEC-OL4 requirement
+
+  - id: A.11.SEC-OL9
+    title: The User List is Disabled
+    original_title: Se deshabilita la lista de usuarios.
+    levels:
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - dconf_gnome_disable_user_list
+
+  - id: A.11.SEC-OL10
+    title: File History is Disabled
+    original_title: Se deshabilita recordar el historial de ficheros.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      New rules might be necessary.
+
+  - id: A.11.SEC-OL11
+    title: Key Combination to Launch GTK Inspector is Disabled
+    original_title: Se deshabilita combinación de teclas para iniciar el inspector GTK
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      New rules might be necessary.
+
+  - id: A.11.SEC-OL12
+    title: Auto-Mounting of Removable Devices on the System is Disabled
+    original_title: Se deshabilita el auto montaje de dispositivos extraíbles en el sistema.
+    levels:
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - dconf_gnome_disable_automount
+      - dconf_gnome_disable_automount_open
+      - dconf_gnome_disable_autorun
+
+  - id: A.15.SEC-OL1
+    title: The Use of Removable Storage Media is Controlled
+    original_title: Se controla el uso de medios de almacenamiento extraíbles.
+    levels:
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - kernel_module_usb-storage_disabled
+
+  - id: A.19.SEC-OL1
+    title: Access to the Folder and File Tree is Controlled
+    original_title: Se controla el acceso al árbol de carpetas y ficheros.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      More context should be provided to clarify this requirement
+
+  - id: A.19.SEC-OL2
+    title: Measures Are Applied to Protect Accounts
+    original_title: Se aplican medidas para la protección de las cuentas.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      This is already covered by other requirements. Maybe more rules could be included here.
+
+  - id: A.19.SEC-OL3
+    title: A Robust Algorithm and Password Complexity Are Enabled
+    original_title: Está habilitado un algoritmo robusto y la complejidad de contraseñas.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - set_password_hashing_algorithm_systemauth
+      - set_password_hashing_algorithm_passwordauth
+      - set_password_hashing_algorithm_logindefs
+      - var_password_hashing_algorithm=SHA512
+      - var_password_hashing_algorithm_pam=sha512
+
+  - id: A.23.SEC-OL1
+    title: The Installation And Use of Any Device Connected to the Equipment is Controlled
+    original_title: Se controla la instalación y uso de cualquier dispositivo conectado al equipo.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: automated
+    rules:
+      - package_usbguard_installed
+      - service_usbguard_enabled
+      - usbguard_generate_policy
+
+  - id: A.23.SEC-OL2
+    title: The Dynamic Mounting and Unmounting of File Systems is Restricted
+    original_title: Se restringe el montaje y desmontaje dinámico de sistemas de archivos.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      It seems to duplicate the A.11.SEC-OL12 requirement.
+
+  - id: A.24.SEC-OL1
+    title: Privileges That Affect System Performance Are Controlled
+    original_title: Se controlan los privilegios que afectan al rendimiento del sistema.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+    notes: |-
+      Is it about system limits?
+
+  - id: A.24.SEC-OL2
+    title: Control Who Can Turn Off the System
+    original_title: Se controla quien puede apagar el sistema.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+    related_rules:
+      - disable_ctrlaltdel_burstaction
+      - disable_ctrlaltdel_reboot
+
+  - id: A.25.SEC-OL1
+    title: System Disk is Encrypted
+    original_title: El disco del sistema está cifrado.
+    levels:
+      - advanced
+    status: automated
+    rules:
+      - encrypt_partitions
+      - package_cryptsetup-luks_installed
+
+  - id: A.25.SEC-OL2
+    title: The Data Disk is Encrypted
+    original_title: El disco de datos está cifrado.
+    levels:
+      - advanced
+    status: automated
+    notes: |-
+      The rules in this requirement overlaps the A.25.SEC-OL1 requirement
+    related_rules:
+      - package_cryptsetup-luks_installed
+      - encrypt_partitions
+
+  - id: A.30.SEC-OL1
+    title: There Is an Account Lockout Policy for Incorrect Logins
+    original_title: Existe una política de bloqueo de cuentas ante inicios de sesión incorrectos.
+    levels:
+      - advanced
+    status: automated
+    rules:
+      - accounts_passwords_pam_faillock_deny
+      - accounts_passwords_pam_faillock_unlock_time
+      - var_accounts_passwords_pam_faillock_deny=8
+      - var_accounts_passwords_pam_faillock_unlock_time=never

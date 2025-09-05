@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -9,6 +9,6 @@
   lineinfile:
       dest: /etc/login.defs
       regexp: ^#?ENCRYPT_METHOD
-      line: ENCRYPT_METHOD {{ var_password_hashing_algorithm }}
+      line: ENCRYPT_METHOD {{ var_password_hashing_algorithm.split('|')[0] }}
       state: present
       create: yes

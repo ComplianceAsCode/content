@@ -23,7 +23,9 @@ rules:
 - file_permissions_system_journal
 - journald_compress
 - journald_forward_to_syslog
+- journald_disable_forward_to_syslog
 - journald_storage
+- logging_services_active
 - package_systemd-journal-remote_installed
 - package_timesyncd_installed
 - package_timesyncd_removed
@@ -34,6 +36,7 @@ rules:
 - service_timesyncd_configured
 - service_timesyncd_root_distance_configured
 - service_timesyncd_enabled
+- service_timesyncd_disabled
 - socket_systemd-journal-remote_disabled
 - systemd_tmp_mount_enabled
 - systemd_journal_upload_server_tls

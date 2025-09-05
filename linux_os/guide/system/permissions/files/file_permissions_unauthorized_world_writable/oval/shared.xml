@@ -1,3 +1,4 @@
+{{% if product not in ['ubuntu2404'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("The world-write permission should be disabled for all files.") }}}
@@ -15,6 +16,11 @@
     version="1">
     <unix:filepath
       operation="pattern match">^/selinux/(?:(?:member)|(?:user)|(?:relabel)|(?:create)|(?:access)|(?:context))$</unix:filepath>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_permissions_unauthorized_world_write_sysroot" version="1"
+    comment="Used to filter out all files in the /sysroot directory">
+    <unix:filepath operation="pattern match">^/sysroot/.*$</unix:filepath>
   </unix:file_state>
 
   {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
@@ -35,6 +41,7 @@
     <unix:filename operation="pattern match">^.*$</unix:filename>
     <filter action="include">state_file_permissions_unauthorized_world_write</filter>
     <filter action="exclude">state_file_permissions_unauthorized_world_write_special_selinux_files</filter>
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_sysroot</filter>
   </unix:file_object>
 
   <unix:file_test id="test_file_permissions_unauthorized_world_write" version="1"
@@ -43,3 +50,4 @@
     <unix:object object_ref="object_file_permissions_unauthorized_world_write" />
   </unix:file_test>
 </def-group>
+{{% endif %}}

@@ -95,6 +95,7 @@ selections:
   ### Audit
   - package_rsyslog_installed
   - service_rsyslog_enabled
+  - package_audit_installed
   - service_auditd_enabled
   - var_auditd_flush=incremental_async
   - auditd_data_retention_flush

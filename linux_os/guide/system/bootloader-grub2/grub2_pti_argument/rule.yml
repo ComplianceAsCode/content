@@ -34,7 +34,6 @@ ocil_clause: 'Kernel page-table isolation is not enabled'
 ocil: |-
     {{{ ocil_grub2_argument("pti=on") | indent(4) }}}
 
-platform: machine
 
 template:
     name: grub2_bootloader_argument

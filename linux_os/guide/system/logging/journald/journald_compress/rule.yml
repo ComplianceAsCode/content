@@ -19,10 +19,12 @@ identifiers:
     cce@rhel10: CCE-87639-1
     cce@sle12: CCE-92261-7
     cce@sle15: CCE-91377-2
+    cce@slmicro5: CCE-94018-9
 
 references:
     cis@sle12: 4.2.2.2
     cis@sle15: 4.2.2.2
+    cis@slmicro5: 4.2.2.2
     cis@ubuntu2004: 4.2.2.2
     cis@ubuntu2204: 4.2.1.3
 
@@ -32,7 +34,7 @@ ocil: |-
     Storing logs with compression can help avoid filling the system disk.
     Run the following command to verify that journald is compressing logs.
     <pre>
-{{%- if product in ["fedora", "rhel8", "rhel9", "sle15"] %}}
+{{%- if product in ["fedora", "sle15"] or "rhel" in product %}}
     grep "^\sCompress" /etc/systemd/journald.conf {{{ journald_conf_dir_path }}}/*.conf
 {{% else %}}
     grep "^\sCompress" /etc/systemd/journald.conf
@@ -43,7 +45,7 @@ ocil: |-
     Compress=yes
     </pre>
 
-{{%- if product in ["fedora", "rhel8", "rhel9", "sle15"] %}}
+{{%- if product in ["fedora", "sle15"] or "rhel" in product %}}
 template:
     name: systemd_dropin_configuration
     vars:

@@ -11,7 +11,7 @@ description: |-
     SUSE Enterprise Linux is supported by SUSE Software Solutions Germany GmbH. As the SUSE Enterprise
     Linux vendor, SUSE Software Solutions Germany GmbH is responsible for maintaining government
     certifications and standards.
-{{% elif product in ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204"] %}}
+{{% elif product in ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
     Ubuntu Linux is supported by Canonical Ltd. As the Ubuntu Linux Vendor, Canonical Ltd. is
     responsible for government certifications and standards.
 
@@ -75,7 +75,7 @@ ocil: |-
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
 {{% elif product in ["sle12", "sle15"] %}}
     <pre>$ grep -i "suse" /etc/os-release</pre>
-{{% elif product in ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204"] %}}
+{{% elif product in ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
     <pre>$ grep -i "ubuntu" /etc/os-release</pre>
 {{% endif %}}
     The output should contain something similar to:

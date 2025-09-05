@@ -82,13 +82,13 @@ controls:
             - service_firewalld_enabled
 
             # package removed
+            - package_unbound_removed
             - package_vsftpd_removed
             - package_tftp-server_removed
-            - package_quagga_removed
             - package_gssproxy_removed
             - package_iprutils_removed
             - package_tuned_removed
-            - package_xorg-x11-server-common_removed
+            - package_gdm_removed
 
             # package installed
             - package_openssh-clients_installed
@@ -101,6 +101,7 @@ controls:
             - package_nss-tools_installed
             - package_policycoreutils-python-utils_installed
             - package_policycoreutils_installed
+            - package_cron_installed
 
             # mount options
             - mount_option_nodev_remote_filesystems
@@ -239,7 +240,6 @@ controls:
             - display_login_attempts
             - installed_OS_is_vendor_supported
             - selinux_all_devicefiles_labeled
-            - xwindows_remove_packages
             - chrony_set_nts
             - tftp_uses_secure_mode_systemd
         status: automated

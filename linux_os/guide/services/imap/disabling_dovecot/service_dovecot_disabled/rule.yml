@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Disable Dovecot Service'
 
 description: |-
@@ -17,10 +16,12 @@ identifiers:
     cce@rhel9: CCE-84242-7
     cce@sle12: CCE-92248-4
     cce@sle15: CCE-91368-1
+    cce@slmicro5: CCE-93915-7
 
 references:
     cis@sle12: 2.2.12
     cis@sle15: 2.2.12
+    cis@slmicro5: 2.2.12
 
 ocil_clause: |-
     {{{ ocil_clause_service_disabled(service="dovecot") }}}
@@ -34,3 +35,4 @@ template:
     name: service_disabled
     vars:
         servicename: dovecot
+        packagename@ubuntu2404: dovecot-core

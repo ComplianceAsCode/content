@@ -50,6 +50,7 @@ references:
     cis-csc: 1,11,12,14,15,16,18,3,5
     cis@sle12: 1.5.1
     cis@sle15: 1.5.1
+    cis@slmicro5: 1.5.1
     cis@ubuntu2004: 1.5.1
     cis@ubuntu2204: 1.4.1
     cobit5: DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.06,DSS06.10
@@ -91,7 +92,6 @@ warnings:
         Also, do NOT manually add the superuser account and password to the
         <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
 
-platform: machine
 
 fixtext: |-
     Configure {{{ full_name }}} to require a grub bootloader password for the grub superuser account.

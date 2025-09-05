@@ -1,0 +1,52 @@
+{{% if "sle12" in product or "debian" in product or "ubuntu" in product %}}
+{{%- set accounts_password_pam_file = '/etc/pam.d/common-password' -%}}
+{{% else %}}
+{{%- set accounts_password_pam_file = '/etc/pam.d/system-auth' -%}}
+{{% endif %}}
+
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    {{{ oval_metadata("Enforce password history for root of pam_pwhistory.") }}}
+      <criteria operator="AND" comment="Check if pam_pwhistory.so is properly configured">
+        <criterion test_ref="test_accounts_password_pam_pwhistory_enforce_root_enabled"
+                   comment="pam_pwhistory.so is properly defined in password section of PAM file"/>
+        <criterion test_ref="test_accounts_password_pam_pwhistory_enforce_for_root_parameter"
+                 comment="enforce_for_root parameter of pam_pwhistory.so is properly configured"/>
+      </criteria>
+  </definition>
+
+  <!-- is pam_pwhistory.so enabled? -->
+  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_enforce_root_enabled"
+                              check="all" version="1" comment="Check pam_pwhistory.so presence in PAM file">
+    <ind:object object_ref="object_accounts_password_pam_pwhistory_enforce_root_enabled"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_enforce_root_enabled"
+                                version="1">
+    <ind:filepath>{{{ accounts_password_pam_file }}}</ind:filepath>
+    <ind:pattern var_ref="var_accounts_password_pam_pwhistory_module_regex"
+                 var_check="at least one" operation="pattern match"/>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- variables used to check the module implementation -->
+  <local_variable id="var_accounts_password_pam_pwhistory_module_regex"
+		  datatype="string" version="1"
+		  comment="The regex is to confirm the pam_pwhistory.so module is enabled">
+    <literal_component>^[ \t]*password[ \t]+(?:(?:sufficient)|(?:required)|(?:requisite)|(?:\[.*\]))[ \t]+pam_pwhistory\.so.*$</literal_component>
+  </local_variable>
+
+  <!-- Check the pam_pwhistory.so enforce_for_root parameter -->
+  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_enforce_for_root_parameter" version="1"
+                              check="all" check_existence="all_exist"
+                              comment="Test if enforce_for_root attribute of pam_pwhistory.so is set correctly in {{{ accounts_password_pam_file }}}">
+    <ind:object object_ref="object_accounts_password_pam_pwhistory_enforce_for_root_parameter" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_enforce_for_root_parameter" version="1">
+    <ind:filepath>{{{ accounts_password_pam_file }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*password[ \t]+(?:(?:sufficient)|(?:required)|(?:requisite)|(?:\[.*\]))[ \t]+pam_pwhistory\.so[ \t]+[^#\n\r]*\benforce_for_root\b.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

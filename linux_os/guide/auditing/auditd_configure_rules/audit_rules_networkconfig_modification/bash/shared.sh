@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_ubuntu,multi_platform_debian
+# platform = Red Hat Virtualization 4,multi_platform_debian,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu,multi_platform_almalinux
 
 # First perform the remediation of the syscall rule
 # Retrieve hardware architecture of the underlying system
@@ -31,6 +31,8 @@ done
 {{{ bash_fix_audit_watch_rule("augenrules", "/etc/networks", "wa", "audit_rules_networkconfig_modification") }}}
 {{{ bash_fix_audit_watch_rule("auditctl", "/etc/network/", "wa", "audit_rules_networkconfig_modification") }}}
 {{{ bash_fix_audit_watch_rule("augenrules", "/etc/network/", "wa", "audit_rules_networkconfig_modification") }}}
+{{{ bash_fix_audit_watch_rule("auditctl", "/etc/netplan/", "wa", "audit_rules_networkconfig_modification") }}}
+{{{ bash_fix_audit_watch_rule("augenrules", "/etc/netplan/", "wa", "audit_rules_networkconfig_modification") }}}
 {{% else -%}}
 {{{ bash_fix_audit_watch_rule("auditctl", "/etc/sysconfig/network", "wa", "audit_rules_networkconfig_modification") }}}
 {{{ bash_fix_audit_watch_rule("augenrules", "/etc/sysconfig/network", "wa", "audit_rules_networkconfig_modification") }}}

@@ -356,11 +356,16 @@ controls:
     levels:
     - elevated
     description: >-
-      (1) There SHOULD be an automated audit that checks the settings of nodes, of Kubernetes, and of the pods of applications against a defined list of allowed settings and standardised benchmarks.
-      (2) Kubernetes SHOULD enforce these established rules in each cluster by connecting appropriate tools.
+      (1) There SHOULD be an automated audit that checks the settings of nodes, of Kubernetes, and
+      of the pods of applications against a defined list of allowed settings and standardised
+      benchmarks.
+      (2) Kubernetes SHOULD enforce these established rules in each cluster by connecting
+      appropriate tools.
     notes: >-
-      Section 1 is addressed by the compliance operator itself. The standardized Benchmarks can be just the BSI Profile, or additionally a hardening standard like the CIS Benchmark.
-      Section 2 can be addressed by using auto-remediation of compliance-operator or for workloads by using Advanced Cluster Security or similar tools.
+      Section 1 is addressed by the compliance operator itself. The standardized Benchmarks can be
+      just the BSI Profile, or additionally a hardening standard like the CIS Benchmark.
+      Section 2 can be addressed by using auto-remediation of compliance-operator or for workloads
+      by using Advanced Cluster Security or similar tools.
     status: automated
     rules:
       - scansettingbinding_exists
@@ -372,25 +377,48 @@ controls:
     levels:
     - elevated
     description: >-
-      In a Kubernetes cluster, nodes SHOULD be assigned dedicated tasks and only run pods that are
+      (1) In a Kubernetes cluster, nodes SHOULD be assigned dedicated tasks and only run pods that are
       assigned to each task.
-      Bastion nodes SHOULD handle all incoming and outgoing data connections of between
+      (2) Bastion nodes SHOULD handle all incoming and outgoing data connections of between
       applications and other networks.
-      Management nodes SHOULD operate control plane pods and only handle control plane data
+      (3) Management nodes SHOULD operate control plane pods and only handle control plane data
       connections.
-      If deployed, storage nodes SHOULD only operate the fixed persistent volume services pods in
+      (4) If deployed, storage nodes SHOULD only operate the fixed persistent volume services pods in
       a cluster.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      Section 1:
+      This requirement must be solved organizationally. OpenShift can bind applications to specific
+      nodes or node groups (via labels and node selectors). ACM can take over the labeling of nodes
+      and ensure that the nodes are labeled accordingly.
+      Section 2:
+      OpenShift uses the concept of infra-nodes. The incoming connections can be bound to these and,
+      by using Egress-IP, the outgoing connections can also be bound.
+      Section 3:
+      OpenShift uses control plane nodes for management, on which no applications are running.
+      Data connections between applications to the outside world and to one another are not routed
+      via the control plane as standard. The necessary requirements must be taken into account as
+      part of the planning.
+      Section 4:
+      OpenShift Data Foundation (ODF) can be linked to its own infra nodes using the OpenShift
+      mechanisms, which only run storage services. This can be implemented equivalently with other
+      storage solutions.
+    status: partial
+    rules:
+      # Section 1,2,3,4
+      - general_node_separation
+      - general_network_separation
+      # Section 2
+      - configure_egress_ip_node_assignable
+      # Section 3
+      - master_taint_noschedule
 
   - id: APP.4.4.A15
     title: Separation of Applications at Node and Cluster Level
     levels:
     - elevated
     description: >-
-      Applications with very high protection needs SHOULD each use their own Kubernetes clusters or dedicated nodes that are not available for other applications
+      (1) Applications with very high protection needs SHOULD each use their own Kubernetes clusters
+      or dedicated nodes that are not available for other applications
     notes: ''
     status: manual
     rules:
@@ -401,11 +429,15 @@ controls:
     levels:
     - elevated
     description: >-
-      The automation of operational tasks in operators SHOULD be used for particularly critical applications and control plane programs.
+      (1) The automation of operational tasks in operators SHOULD be used for particularly critical
+      applications and control plane programs.
     notes: >-
-      OpenShift relies consistently on the application of the concept of operators. The platform itself is operated and managed 100% by operators, meaning that all internal components of the platform are rolled out and managed by operators.
+      OpenShift relies consistently on the application of the concept of operators. The platform
+      itself is operated and managed 100% by operators, meaning that all internal components of
+      the platform are rolled out and managed by operators.
 
-      Application-specific operators must be considered as part of application development and deployment.
+      Application-specific operators must be considered as part of application development and
+      deployment.
     status: inherently met
     rules: []
 
@@ -476,18 +508,44 @@ controls:
     levels:
     - elevated
     description: >-
-      Pods SHOULD ONLY be able to communicate with each other through the necessary network
-      ports, even within a Kubernetes namespace. There SHOULD be rules within the CNI that
-      disallow all but the necessary network connections within the Kubernetes namespace. These
+      (1) Pods SHOULD ONLY be able to communicate with each other through the necessary network
+      ports, even within a Kubernetes namespace. (2) There SHOULD be rules within the CNI that
+      disallow all but the necessary network connections within the Kubernetes namespace. (3) These
       rules SHOULD precisely define the source and destination of the allowed connections using at
       least one of the following criteria: service name, metadata (“labels”), Kubernetes service
       accounts, or certificate-based authentication.
-      All the criteria used as labels for a connection SHOULD be secured in such a way that they can
-      only be changed by authorised persons and management services.
+      (4) All the criteria used as labels for a connection SHOULD be secured in such a way that they
+      can only be changed by authorised persons and management services.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      In a cluster using a network plugin that supports Kubernetes network policy, network isolation
+      is controlled entirely by NetworkPolicy objects. In OpenShift, the default plugin (OVN-Kubernetes)
+      supports using network policy. Support for NetworkPolicy objects is verified using rules.
+      
+      Section 1-3: By default, all pods in a project are accessible from other pods and network endpoints.
+      To isolate one or more pods in a project, you need to create NetworkPolicy objects in that project
+      to indicate the allowed incoming connections. If a pod is matched by selectors in one or more
+      NetworkPolicy objects, then the pod will accept only connections that are allowed by at least
+      one of those NetworkPolicy objects. A pod that is not selected by any NetworkPolicy objects
+      is fully accessible.
+
+      It is useful to create default policies for each application namespace e.g. to deny all ingress
+      traffic by default. The existance of at least one network policy and the automatic creation
+      as part of a namespace template is checked using rules.
+
+      The creation of suitable NetworkPolicy objects that satisfy the requirements from sections 1 to 3,
+      however, needs to be ensured by the application owner. A manual rule is provided for that.
+
+      Section 4: It needs to be ensured organizationally, that only required subjects are granted
+      RBAC to change the relevant Kubernetes objects.
+    status: partial
+    rules:
+      # General support of network policies
+      - configure_network_policies
+      # Section 1-2
+      - configure_network_policies_namespaces
+      - project_config_and_template_network_policy
+      # Section 3
+      - configure_appropriate_network_policies
 
   - id: APP.4.4.A19
     title: High Availability of Kubernetes

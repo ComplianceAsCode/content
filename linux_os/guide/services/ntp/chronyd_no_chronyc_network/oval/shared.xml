@@ -2,8 +2,7 @@
   <definition class="compliance" id="chronyd_no_chronyc_network" version="1">
     {{{ oval_metadata("Configure the cmdport setting in " ~ chrony_conf_path ~ " to disable
       chronyc management connections over network.") }}}
-    <criteria operator="AND">
-      <extend_definition definition_ref="service_chronyd_enabled" comment="service chronyd enabled" />
+    <criteria>
       <criterion test_ref="test_chronyd_no_chronyc_network" comment="check if cmdport is 0 in {{{ chrony_conf_path }}}" />
     </criteria>
   </definition>

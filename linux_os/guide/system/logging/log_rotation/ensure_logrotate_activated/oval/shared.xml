@@ -11,8 +11,8 @@
       test_ref="test_logrotate_conf_no_other_keyword" />
       <criteria comment="Check if either logrotate timer or cron job is enabled" operator="OR">
         <criterion comment="Check if /etc/cron.daily/logrotate file exists (and calls logrotate)" test_ref="test_cron_daily_logrotate_existence" />
-{{% if product in ["rhcos4", "rhel9", "sle12", "sle15","ol9"] %}}
-        <extend_definition comment="Check if logrotate timer is being enabled" definition_ref="timer_logrotate_enabled" />
+{{% if product in ["ol9", "rhcos4", "rhel9", "rhel10", "sle12", "sle15", "slmicro5"] %}}
+        <criterion comment="Check if logrotate timer is enabled" test_ref="test_logrotate_enabled_systemd_target" />
 {{% endif %}}
       </criteria>
     </criteria>
@@ -53,5 +53,23 @@
     <ind:pattern operation="pattern match">^[\s]*/usr/sbin/logrotate[\s\S]*/etc/logrotate.conf$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  {{% if product in ["ol9", "rhcos4", "rhel9", "rhel10", "sle12", "sle15", "slmicro5"] %}}
+  <unix:file_test check="all" check_existence="all_exist"
+   comment="look for logrotate.timer in multi-user.target.wants and timers.target.wants"
+   id="test_logrotate_enabled_systemd_target" version="1">
+    <unix:object object_ref="object_logrotate_enabled_systemd_target" />
+  </unix:file_test>
+
+  <unix:file_object comment="look for logrotate.timer in /etc/systemd/system/multi-user.target.wants and /etc/systemd/system/timers.target.wants"
+   id="object_logrotate_enabled_systemd_target" version="1">
+    <unix:filepath operation="pattern match">^/etc/systemd/system/(multi-user|timers)\.target\.wants/logrotate\.timer$</unix:filepath>
+    <filter action="include">unit_logrotate_state_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state id="unit_logrotate_state_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+{{% endif %}}
 
 </def-group>

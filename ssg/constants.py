@@ -29,7 +29,7 @@ SSG_REF_URIS = {
     'hipaa': 'https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf',
     'ism': 'https://www.cyber.gov.au/acsc/view-all-content/ism',
     'iso27001-2013': 'https://www.iso.org/contents/data/standard/05/45/54534.html',
-    'nerc-cip': 'https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx',
+    'nerc-cip': 'https://www.nerc.com/pa/Stand/AlignRep/One%20Stop%20Shop.xlsx',
     'stigid': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
     'os-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
     'app-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
@@ -40,6 +40,7 @@ SSG_REF_URIS = {
 product_directories = [
     'alinux2',
     'alinux3',
+    'almalinux9',
     'anolis8',
     'anolis23',
     'al2023',
@@ -60,7 +61,7 @@ product_directories = [
     'rhel8', 'rhel9', 'rhel10',
     'rhv4',
     'sle12', 'sle15', 'slmicro5',
-    'ubuntu1604', 'ubuntu1804', 'ubuntu2004', 'ubuntu2204',
+    'ubuntu1604', 'ubuntu1804', 'ubuntu2004', 'ubuntu2204', 'ubuntu2404'
 ]
 
 JINJA_MACROS_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(
@@ -203,6 +204,7 @@ PKG_MANAGER_TO_CONFIG_FILE = {
 FULL_NAME_TO_PRODUCT_MAPPING = {
     "Alibaba Cloud Linux 2": "alinux2",
     "Alibaba Cloud Linux 3": "alinux3",
+    "AlmaLinux OS 9": "almalinux9",
     "Anolis OS 8": "anolis8",
     "Anolis OS 23": "anolis23",
     "Amazon Linux 2023": "al2023",
@@ -234,6 +236,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Ubuntu 18.04": "ubuntu1804",
     "Ubuntu 20.04": "ubuntu2004",
     "Ubuntu 22.04": "ubuntu2204",
+    "Ubuntu 24.04": "ubuntu2404",
     "OpenEmbedded": "openembedded",
     "Not Applicable": "example",
 }
@@ -288,10 +291,11 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "openeuler", "kylinserver",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
                        "example", "eks", "alinux", "anolis", "openembedded", "al",
-                       "slmicro"]
+                       "slmicro", "almalinux"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_alinux": ["alinux2", "alinux3"],
+    "multi_platform_almalinux": ["almalinux9"],
     "multi_platform_anolis": ["anolis8", "anolis23"],
     "multi_platform_debian": ["debian11", "debian12"],
     "multi_platform_example": ["example"],
@@ -307,7 +311,8 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle12", "sle15"],
     "multi_platform_slmicro": ["slmicro5"],
-    "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204"],
+    "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004",
+                              "ubuntu2204", "ubuntu2404"],
     "multi_platform_openembedded": ["openembedded"],
     "multi_platform_al": ["al2023"],
 }
@@ -416,6 +421,7 @@ XCCDF_PLATFORM_TO_PACKAGE = {
 # _version_name_map = {
 MAKEFILE_ID_TO_PRODUCT_MAP = {
     'alinux': 'Alibaba Cloud Linux',
+    'almalinux': 'AlmaLinux OS',
     'anolis': 'Anolis OS',
     'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
@@ -455,6 +461,7 @@ DEFAULT_CHRONY_CONF_PATH = '/etc/chrony.conf'
 DEFAULT_CHRONY_D_PATH = '/etc/chrony.d/'
 DEFAULT_AUDISP_CONF_PATH = '/etc/audit'
 DEFAULT_SYSCTL_REMEDIATE_DROP_IN_FILE = 'false'
+DEFAULT_BOOTABLE_CONTAINERS_SUPPORTED = 'false'
 
 
 # Constants for OVAL object model

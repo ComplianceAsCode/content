@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_sle
+# platform = multi_platform_rhel,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_sle,multi_platform_almalinux
 
 {{{ bash_instantiate_variables("var_multiple_time_servers") }}}
 

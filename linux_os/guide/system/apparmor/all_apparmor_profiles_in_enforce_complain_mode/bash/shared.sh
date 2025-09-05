@@ -13,14 +13,25 @@ APPARMOR_MODE="$var_apparmor_mode"
 
 if [ "$APPARMOR_MODE" = "enforce" ]
 then
+  {{% if 'ubuntu' in product %}}
+  # Set all profiles to enforce mode except disabled profiles
+  find /etc/apparmor.d -maxdepth 1 ! -type d -exec bash -c '[[ -e "/etc/apparmor.d/disable/$(basename "$1")" ]] || aa-enforce "$1"' _ {} \;
+  {{% else %}}
   # Set all profiles to enforce mode
   aa-enforce /etc/apparmor.d/*
+  {{% endif %}}
 fi
 
 if [ "$APPARMOR_MODE" = "complain" ]
 then
+  {{% if 'ubuntu' in product %}}
+  # Load all not-loaded profiles into complain mode
+  apparmor_parser -a --Complain /etc/apparmor.d/
+  echo "***WARNING***: This remediation will not downgrade any existing AppArmor profiles."
+  {{% else %}}
   # Set all profiles to complain mode
   aa-complain /etc/apparmor.d/*
+  {{% endif %}}
 fi
 
 {{% if 'ubuntu' in product %}}

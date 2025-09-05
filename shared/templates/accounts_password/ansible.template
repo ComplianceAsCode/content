@@ -5,7 +5,7 @@
 # disruption = low
 - (xccdf-var var_password_pam_{{{ VARIABLE }}})
 
-{{% if product == "ol8" %}}
+{{% if product == "ol8" or 'rhel' in product %}}
 - name: {{{ rule_title }}} - Find pwquality.conf.d files
   ansible.builtin.find:
     paths: /etc/security/pwquality.conf.d/
@@ -27,6 +27,10 @@
                                   'pam_pwquality.so',
                                   VARIABLE)
 }}}
+{{% endif %}}
+
+{{% if "ubuntu" in product %}}
+{{{ ansible_pam_pwquality_enable('/usr/share/pam-configs/cac_pwquality') }}}
 {{% endif %}}
 
 - name: {{{ rule_title }}} - Ensure PAM variable {{{ VARIABLE }}} is set accordingly

@@ -18,7 +18,7 @@
     regexp: '^[\s]*(weekly|monthly|yearly)$'
     state: absent
 
-{{% if 'sle' in product %}}
+{{% if 'sle' in product or product == 'slmicro5' %}}
 - name: Enable timer logrotate
   systemd:
     name: "logrotate.timer"

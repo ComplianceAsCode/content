@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Ensure One Logging Service Is In Use'
+
+description: |-
+    Ensure that a logging system is active and in use.
+    <pre>
+    systemctl is-active rsyslog systemd-journald
+    </pre>
+    The command should return at least one <tt>active</tt>.
+
+rationale: |-
+    The system should have one active logging service to avoid conflicts
+    and ensure consistency.
+
+severity: medium
+
+platform: machine
+
+warnings:
+    - general: |-
+        This rule does not come with a remediation. There are specific rules
+        for enabling each logging service which should be enabled instead.

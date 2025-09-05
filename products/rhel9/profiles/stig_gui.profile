@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R2
+    version: V2R3
     SMEs:
         - mab879
         - ggbecker
@@ -12,11 +12,11 @@ title: 'DISA STIG with GUI for Red Hat Enterprise Linux 9'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 9 V2R2.
+    DISA STIG for Red Hat Enterprise Linux 9 V2R3.
 
 
-    In addition to being applicable to Red Hat Enterprise Linux 9, DISA recognizes this
-    configuration baseline as applicable to the operating system tier of
+    In addition to being applicable to Red Hat Enterprise Linux 9, this
+    configuration baseline is applicable to the operating system tier of
     Red Hat technologies that are based on Red Hat Enterprise Linux 9, such as:
 
     - Red Hat Enterprise Linux Server
@@ -43,9 +43,5 @@ selections:
     # RHEL-09-215025
     - '!package_nfs-utils_removed'
 
-    # RHEL-09-213105
-    # Limiting user namespaces cause issues with user apps, such as Firefox and Cheese
-    # https://issues.redhat.com/browse/RHEL-10416
-    - '!sysctl_user_max_user_namespaces'
     # locking of idle sessions is handled by screensaver when GUI is present, the following rule is therefore redundant
     - '!logind_session_timeout'

@@ -27,6 +27,7 @@ identifiers:
 references:
     cis-csc: 11,3,9
     cis@sle15: 3.5.1.3
+    cis@slmicro5: 3.5.1.3
     cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05
     cui: 3.1.3,3.4.7
     disa: CCI-000382,CCI-000366,CCI-002314
@@ -54,7 +55,17 @@ fixtext: |-
 
 srg_requirement: '{{{ srg_requirement_service_enabled("firewalld") }}}'
 
+{{%- if product in [ "sle12", "sle15" ] %}}
+template:
+    name: service_enabled_guard_var
+    vars:
+        packagename: firewalld
+        servicename: firewalld
+        variable: var_network_filtering_service
+        value: firewalld
+{{%- else %}}
 template:
     name: service_enabled
     vars:
         servicename: firewalld
+{{%- endif %}}

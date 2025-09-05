@@ -3,8 +3,6 @@
         {{{ oval_metadata("If inbound SSH access is needed, the firewall should allow access to
         the SSH service.") }}}
         <criteria operator="AND">
-            <criterion comment="Ensure all NICs have a zone defined in their config files"
-                test_ref="test_firewalld_sshd_port_enabled_all_nics_in_zones"/>
             <criteria operator="OR">
                 <criteria operator="AND">
                     <criterion
@@ -28,69 +26,6 @@
             </criteria>
         </criteria>
     </definition>
-
-    <!-- all interfaces have a zone defined -->
-    <ind:variable_test id="test_firewalld_sshd_port_enabled_all_nics_in_zones"
-        check="all" check_existence="at_least_one_exists" version="1"
-        comment="All NICs must have a firewalld zone defined in their settings">
-        <ind:object object_ref="object_firewalld_sshd_port_enabled_network_conf_files_count"/>
-        <ind:state state_ref="state_firewalld_sshd_port_enabled_network_conf_files_count"/>
-    </ind:variable_test>
-
-    <ind:variable_object id="object_firewalld_sshd_port_enabled_network_conf_files_count"
-        version="1">
-        <ind:var_ref>var_firewalld_sshd_port_enabled_network_conf_files_with_zone_count</ind:var_ref>
-    </ind:variable_object>
-
-    <local_variable id="var_firewalld_sshd_port_enabled_network_conf_files_with_zone_count"
-        datatype="int" version="1"
-        comment="Variable including number of network config files with an assiged zone">
-        <count>
-            <object_component item_field="instance"
-                object_ref="object_firewalld_sshd_port_enabled_zones_assigned_to_nics"/>
-        </count>
-    </local_variable>
-
-    <ind:textfilecontent54_object id="object_firewalld_sshd_port_enabled_zones_assigned_to_nics"
-        comment="Check the respective zone parameter in all NICs configuration files" version="3">
-        {{% if product in ["fedora", "ol9", "rhel9", "rhel10"] %}}
-        <ind:path>/etc/NetworkManager/system-connections</ind:path>
-        <ind:filename operation="pattern match">.*\.nmconnection</ind:filename>
-        <ind:pattern operation="pattern match">^zone=(.*)$</ind:pattern>
-        {{% else %}}
-        <ind:path>/etc/sysconfig/network-scripts</ind:path>
-        <ind:filename operation="pattern match">^ifcfg-(?!lo).*</ind:filename>
-        <ind:pattern operation="pattern match">^ZONE=(.*)$</ind:pattern>
-        {{% endif %}}
-        <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-    </ind:textfilecontent54_object>
-
-    <ind:variable_state id="state_firewalld_sshd_port_enabled_network_conf_files_count"
-        version="1">
-        <ind:value datatype="int" operation="equals" var_check="at least one"
-            var_ref="var_firewalld_sshd_port_enabled_network_conf_files_count"/>
-    </ind:variable_state>
-
-    <local_variable id="var_firewalld_sshd_port_enabled_network_conf_files_count"
-        datatype="int" version="1"
-        comment="Variable including number of network config files present in the system">
-        <count>
-            <object_component item_field="filepath"
-                object_ref="object_firewalld_sshd_port_enabled_network_conf_files"/>
-        </count>
-    </local_variable>
-
-    <unix:file_object id="object_firewalld_sshd_port_enabled_network_conf_files" version="1">
-        <unix:behaviors recurse="directories" recurse_direction="down" max_depth="1"
-            recurse_file_system="all"/>
-        {{% if product in ["fedora", "ol9", "rhel9", "rhel10"] %}}
-        <unix:path>/etc/NetworkManager/system-connections</unix:path>
-        <unix:filename operation="pattern match">.*\.nmconnection</unix:filename>
-        {{% else %}}
-        <unix:path>/etc/sysconfig/network-scripts</unix:path>
-        <unix:filename operation="pattern match">^ifcfg-(?!lo).*</unix:filename>
-        {{% endif %}}
-    </unix:file_object>
 
     <!-- zones allow SSH -->
     <!-- Except to the block and drop zones, which have a clear purpose suggested by their

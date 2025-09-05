@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_ubuntu
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_almalinux,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
 # reboot = false
 # strategy = disable
 # complexity = low
@@ -7,12 +7,16 @@
 
 
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
-"$SYSTEMCTL_EXEC" stop '{{{ DAEMONNAME }}}.service'
+if [[ $("$SYSTEMCTL_EXEC" is-system-running) != "offline" ]]; then
+  "$SYSTEMCTL_EXEC" stop '{{{ DAEMONNAME }}}.service'
+fi
 "$SYSTEMCTL_EXEC" disable '{{{ DAEMONNAME }}}.service'
 "$SYSTEMCTL_EXEC" mask '{{{ DAEMONNAME }}}.service'
 # Disable socket activation if we have a unit file for it
 if "$SYSTEMCTL_EXEC" -q list-unit-files {{{ DAEMONNAME }}}.socket; then
-    "$SYSTEMCTL_EXEC" stop '{{{ DAEMONNAME }}}.socket'
+    if [[ $("$SYSTEMCTL_EXEC" is-system-running) != "offline" ]]; then
+      "$SYSTEMCTL_EXEC" stop '{{{ DAEMONNAME }}}.socket'
+    fi
     "$SYSTEMCTL_EXEC" mask '{{{ DAEMONNAME }}}.socket'
 fi
 # The service may not be running because it has been started and failed,

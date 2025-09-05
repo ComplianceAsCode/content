@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Verify nftables Service is Disabled'
 
 description: |-
@@ -20,9 +19,11 @@ identifiers:
     cce@rhel9: CCE-88429-6
     cce@rhel10: CCE-88523-6
     cce@sle15: CCE-92529-7
+    cce@slmicro5: CCE-93982-7
 
 references:
     cis@sle15: 3.5.1.2
+    cis@slmicro5: 3.5.1.2
     cis@ubuntu2004: 3.5.3.1.2
     cis@ubuntu2204: 3.5.3.1.2
 
@@ -36,8 +37,18 @@ fixtext: '{{{ fixtext_service_disabled("nftables") }}}'
 
 platform: system_with_kernel and package[nftables] and package[firewalld]
 
+{{%- if product in [ "sle12", "sle15", "ubuntu2404" ] %}}
+template:
+    name: service_disabled_guard_var
+    vars:
+        packagename: nftables
+        servicename: nftables
+        variable: var_network_filtering_service
+        value: nftables
+{{%- else %}}
 template:
     name: service_disabled
     vars:
         servicename: nftables
         packagename: nftables
+{{%- endif %}}

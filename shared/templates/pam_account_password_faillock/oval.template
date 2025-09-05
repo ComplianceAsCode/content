@@ -122,8 +122,10 @@
       id="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_faillock_auth_regex"
       datatype="string" version="2"
       comment="regex to identify pam_faillock.so entries in auth section of pam files">
-    {{% if 'debian' in product or 'ubuntu' in product %}}
+    {{% if 'debian' in product %}}
     <value>^\s*auth\s+required\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail[\s\S]*^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc</value>
+    {{% elif 'ubuntu' in product %}}
+    <value>^\s*auth\s+(requisite|required)\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail</value>
     {{% elif 'openeuler' in product or 'kylinserver' in product %}}
     <value>^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_faillock\.so[\s\w\d=]+preauth[\s\S]*^[\s]*auth[\s]+(sufficient|\[(?=.*\bsuccess=done\b)?(?=.*?\bnew_authtok_reqd=done\b)?(?=.*?\bdefault=ignore\b)?.*\])[\s]+pam_unix\.so[\s\S]*^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=die\b)?.*\])[\s]+pam_faillock\.so[\s\w\d=]+authfail</value>
     {{% else %}}
@@ -240,10 +242,10 @@
       id="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_pamd_{{{ file_stem }}}"
       comment="Check the expected {{{ PRM_NAME }}} value in {{{ file_stem }}}-auth">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_pamd_{{{ file_stem }}}"/>
-    {{% if VARIABLE_UPPER_BOUND is defined and VARIABLE_UPPER_BOUND != "none" %}}
+    {{% if VARIABLE_UPPER_BOUND is not none %}}
     <ind:state state_ref="state_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_upper_bound"/>
     {{% endif %}}
-    {{% if VARIABLE_LOWER_BOUND is defined and VARIABLE_LOWER_BOUND != "none" %}}
+    {{% if VARIABLE_LOWER_BOUND is not none %}}
     <ind:state state_ref="state_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_lower_bound"/>
     {{% endif %}}
   </ind:textfilecontent54_test>
@@ -264,34 +266,28 @@
   <external_variable id="{{{ EXT_VARIABLE }}}" datatype="int"
                      comment="external variable to use" version="1"/>
 
-  {{% if VARIABLE_UPPER_BOUND is defined and VARIABLE_UPPER_BOUND != "none" %}}
+  {{% if VARIABLE_UPPER_BOUND is not none %}}
   <ind:textfilecontent54_state
       version="1"
       id="state_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_upper_bound">
     {{% if VARIABLE_UPPER_BOUND == "use_ext_variable" %}}
     <ind:subexpression datatype="int" operation="less than or equal"
 		       var_ref="{{{ EXT_VARIABLE }}}"/>
-    {{% elif VARIABLE_UPPER_BOUND is number %}}
-    <ind:subexpression datatype="int" operation="less than">{{{ VARIABLE_UPPER_BOUND }}}</ind:subexpression>
     {{% else %}}
-    <ind:subexpression datatype="int" operation="less than or equal"
-		       var_ref="{{{ VARIABLE_UPPER_BOUND }}}"/>
+    <ind:subexpression datatype="int" operation="less than or equal">{{{ VARIABLE_UPPER_BOUND }}}</ind:subexpression>
     {{% endif %}}
   </ind:textfilecontent54_state>
   {{% endif %}}
 
-  {{% if VARIABLE_LOWER_BOUND is defined and VARIABLE_LOWER_BOUND != "none" %}}
+  {{% if VARIABLE_LOWER_BOUND is not none %}}
   <ind:textfilecontent54_state
       version="1"
       id="state_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_lower_bound">
     {{% if VARIABLE_LOWER_BOUND == "use_ext_variable" %}}
     <ind:subexpression datatype="int" operation="greater than or equal"
 		       var_ref="{{{ EXT_VARIABLE }}}"/>
-    {{% elif VARIABLE_LOWER_BOUND is number %}}
-    <ind:subexpression datatype="int" operation="greater than">{{{ VARIABLE_LOWER_BOUND }}}</ind:subexpression>
     {{% else %}}
-    <ind:subexpression datatype="int" operation="greater than or equal"
-		       var_ref="{{{ VARIABLE_LOWER_BOUND }}}"/>
+    <ind:subexpression datatype="int" operation="greater than or equal">{{{ VARIABLE_LOWER_BOUND }}}</ind:subexpression>
     {{% endif %}}
   </ind:textfilecontent54_state>
   {{% endif %}}
@@ -305,10 +301,10 @@
 			      id="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_faillock_conf"
 			      comment="Check the expected {{{ PRM_NAME }}} value in /etc/security/faillock.conf">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_faillock_conf"/>
-    {{% if VARIABLE_UPPER_BOUND is defined and VARIABLE_UPPER_BOUND != "none" %}}
+    {{% if VARIABLE_UPPER_BOUND is not none %}}
     <ind:state state_ref="state_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_upper_bound"/>
     {{% endif %}}
-    {{% if VARIABLE_LOWER_BOUND is defined and VARIABLE_LOWER_BOUND != "none" %}}
+    {{% if VARIABLE_LOWER_BOUND is not none %}}
     <ind:state state_ref="state_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_lower_bound"/>
     {{% endif %}}
   </ind:textfilecontent54_test>

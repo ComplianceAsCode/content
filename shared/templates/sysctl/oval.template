@@ -20,7 +20,7 @@
     <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*(.*\S)[\s]*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
 {{%- endmacro -%}}
-{{%- if "P" in FLAGS -%}}
+{{%- if IPV6 == "false" -%}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="3">
@@ -36,7 +36,7 @@
   </definition>
 </def-group>
 
-{{%- elif "I" in FLAGS -%}}
+{{%- else -%}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="4">
@@ -62,7 +62,6 @@
 </def-group>
 
 {{%- endif %}}
-{{%- if "R" in FLAGS -%}}
 
 {{% if CHECK_RUNTIME == "true" %}}
 <def-group>
@@ -121,8 +120,6 @@
 </def-group>
 {{% endif %}}
 
-{{%- endif -%}}
-{{%- if "S" in FLAGS -%}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}_static" version="3">
@@ -188,7 +185,7 @@
   <ind:textfilecontent54_object id="object_static_etc_lib_sysctls_{{{ rule_id }}}" version="1">
     <set>
       <object_reference>object_static_etc_sysctls_{{{ rule_id }}}</object_reference>
-{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel8", "rhel9", "rhel10", "ubuntu2004", "ubuntu2204"] %}}
+{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel8", "rhel9", "rhel10", "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
       <object_reference>object_static_lib_sysctld_{{{ rule_id }}}</object_reference>
 {{% endif %}}
     </set>
@@ -235,7 +232,7 @@
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
-{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "ubuntu2004", "ubuntu2204"] or 'rhel' in product %}}
+{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "ubuntu2004", "ubuntu2204", "ubuntu2404"] or 'rhel' in product %}}
   <ind:textfilecontent54_object id="object_static_lib_sysctld_{{{ rule_id }}}" version="1">
     <ind:path>/lib/sysctl.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
@@ -269,4 +266,3 @@
 {{% endfor %}}
 {{% endif %}}
 </def-group>
-{{%- endif -%}}

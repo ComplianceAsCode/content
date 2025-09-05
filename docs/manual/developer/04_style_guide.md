@@ -174,11 +174,10 @@ and keep these guidelines in mind when writing new code.
     * We use [Code Climate](https://codeclimate.com/quality) to help automate the checking for PEP 8 issues.
     * We do make one change from PEP 8; our maximum line length is 99 characters
 * Methods should be defined before they are called
-* The files in the build system shall be Python 2.7 and Python 3 compatible
-* Utilities may only support Python 3
 * Shall use the `.py` for the file extension
 * Shall use 4-space indentation
-* New Python 3 methods and scripts should have type hints
+* Shall support Python 3.6 and later
+* New methods and scripts should have type hints
 
 ### YAML
 

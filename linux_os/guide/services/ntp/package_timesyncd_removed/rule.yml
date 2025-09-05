@@ -18,7 +18,16 @@ references:
     disa: CCI-000366
     stigid@ubuntu2204: UBTU-22-215020
 
+{{%- if product in [ "ubuntu2404" ] %}}
+template:
+    name: package_removed_guard_var
+    vars:
+        pkgname: systemd-timesyncd
+        variable: var_timesync_service
+        value: systemd-timesyncd
+{{%- else %}}
 template:
     name: package_removed
     vars:
         pkgname: systemd-timesyncd
+{{%- endif %}}

@@ -1,27 +1,66 @@
+{{% if product not in ['ubuntu2404'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("All files should be owned by a group") }}}
-    <criteria>
-      <criterion test_ref="test_file_permissions_ungroupowned"
-        comment="Check all local files and make sure they are owned by a group"/>
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <criterion test_ref="test_file_permissions_ungroupowned_nsswitch_uses_altfiles" negate="true"
+          comment="The /etc/nsswitch.conf does not use nss-altfiles"/>
+        <criterion test_ref="test_file_permissions_ungroupowned"
+          comment="Check all local files and make sure they are owned by a group"/>
+      </criteria>
+      <criteria operator="AND">
+        <criterion test_ref="test_file_permissions_ungroupowned_nsswitch_uses_altfiles"
+          comment="The /etc/nsswitch.conf uses nss-altfiles"/>
+        <criterion test_ref="test_file_permissions_ungroupowned_with_usrlib"
+          comment="Check all local files and make sure they are owned by a group"/>
+      </criteria>
     </criteria>
   </definition>
 
   <!-- Create a file_state to filter out files group-owned by known groups. -->
-  <ind:textfilecontent54_object id="etc_group_objects" version="1">
+  <ind:textfilecontent54_object id="object_etc_group" version="1">
     <ind:filepath>/etc/group</ind:filepath>
     <ind:pattern operation="pattern match">^[^:]+:[^:]*:([\d]+):[^:]*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  <ind:textfilecontent54_object id="object_usr_lib_group" version="1">
+    <ind:filepath>/usr/lib/group</ind:filepath>
+    <ind:pattern operation="pattern match">^[^:]+:[^:]*:([\d]+):[^:]*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_all_gids_with_usrlib" version="1">
+    <set>
+      <object_reference>object_etc_group</object_reference>
+      <object_reference>object_usr_lib_group</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
   <local_variable id="var_all_local_gids" version="1"
     datatype="int" comment="all GIDs extracted from /etc/group on the target system">
-    <object_component object_ref="etc_group_objects" item_field="subexpression"/>
+    <object_component object_ref="object_etc_group" item_field="subexpression"/>
+  </local_variable>
+
+  <local_variable id="var_all_local_gids_with_usrlib" version="1"
+    datatype="int" comment="all GIDs extracted from /etc/group on the target system">
+    <object_component object_ref="object_all_gids_with_usrlib" item_field="subexpression"/>
   </local_variable>
 
   <unix:file_state id="state_file_permissions_ungroupowned_local_group_owner" version="1"
     comment="Used to filter out all files group-owned by a group defined in /etc/group">
     <unix:group_id datatype="int" var_check="at least one" var_ref="var_all_local_gids"/>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_permissions_ungroupowned_local_group_owner_with_usrlib" version="1"
+    comment="Used to filter out all files group-owned by a group defined in /etc/group">
+    <unix:group_id datatype="int" var_check="at least one" var_ref="var_all_local_gids_with_usrlib"/>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_permissions_ungroupowned_sysroot" version="1"
+    comment="Used to filter out all files in the /sysroot directory">
+    <unix:filepath operation="pattern match">^/sysroot/.*$</unix:filepath>
   </unix:file_state>
 
   {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
@@ -40,11 +79,32 @@
       var_ref="{{{ var_local_mount_points }}}"/>
     <unix:filename operation="pattern match">.*</unix:filename>
     <filter action="exclude">state_file_permissions_ungroupowned_local_group_owner</filter>
+    <filter action="exclude">state_file_permissions_ungroupowned_sysroot</filter>
   </unix:file_object>
+
+  <unix:file_object id="object_file_permissions_ungroupowned_with_usrlib" version="2"
+    comment="all local files without a known group owner">
+    <unix:behaviors recurse="directories" recurse_direction="down"
+      recurse_file_system="defined" max_depth="-1"/>
+    <unix:path operation="equals" var_check="at least one"
+      var_ref="{{{ var_local_mount_points }}}"/>
+    <unix:filename operation="pattern match">.*</unix:filename>
+    <filter action="exclude">state_file_permissions_ungroupowned_local_group_owner_with_usrlib</filter>
+    <filter action="exclude">state_file_permissions_ungroupowned_sysroot</filter>
+  </unix:file_object>
+
+{{{ oval_test_nsswitch_uses_altfiles() }}}
 
   <unix:file_test id="test_file_permissions_ungroupowned" version="1"
     check="all" check_existence="none_exist"
     comment="there are no files with group owner different than local groups">
     <unix:object object_ref="object_file_permissions_ungroupowned"/>
   </unix:file_test>
+
+  <unix:file_test id="test_file_permissions_ungroupowned_with_usrlib" version="1"
+    check="all" check_existence="none_exist"
+    comment="there are no files with group owner different than local groups">
+    <unix:object object_ref="object_file_permissions_ungroupowned_with_usrlib"/>
+  </unix:file_test>
 </def-group>
+{{% endif %}}

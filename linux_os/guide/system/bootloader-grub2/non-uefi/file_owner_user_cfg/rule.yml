@@ -39,7 +39,7 @@ ocil_clause: '{{{ ocil_clause_file_owner(file=grub2_boot_path ~ "/user.cfg", own
 ocil: |-
     {{{ ocil_file_owner(file=grub2_boot_path ~ "/user.cfg", owner="root") }}}
 
-platform: machine
+platform: not bootc
 
 template:
     name: file_owner

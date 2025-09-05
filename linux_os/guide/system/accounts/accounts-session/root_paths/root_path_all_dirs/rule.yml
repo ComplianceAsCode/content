@@ -1,0 +1,15 @@
+documentation_complete: true
+
+title: 'Ensure that All Entries in The Path of Root Are Directories'
+
+description: |-
+    For each element in root's path, run:
+    <pre># ls -ld <i>DIR</i></pre>
+    and ensure that the entry is a directory.
+
+rationale: |-
+    Locations in root's path that are not directories could cause unexpected behavior,
+    such as executing scrips from unintended locations. Ensuring that all locations in
+    root's path are directories helps maintain a secure environment for root.
+
+severity: medium

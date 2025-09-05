@@ -1,0 +1,27 @@
+{{% if product == "ol8" or 'rhel' in product %}}
+{{% set filepath_regex="^/etc/security/pwquality\.conf(\.d/[^/]+\.conf)?$" %}}
+{{% else %}}
+{{% set filepath_regex="^/etc/security/pwquality\.conf$" %}}
+{{% endif %}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="3">
+    {{{ oval_metadata("The password policy should also be enforced for root.") }}}
+    <criteria operator="AND" comment="conditions for enforce_for_root are satisfied">
+      <extend_definition comment="pwquality.so exists in system-auth" definition_ref="accounts_password_pam_pwquality" />
+      <criterion comment="pwquality.conf" test_ref="test_password_pam_pwquality_enforce_for_root" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" state_operator="AND"
+    comment="check the configuration of /etc/security/pwquality.conf"
+    id="test_password_pam_pwquality_enforce_for_root" version="3">
+    <ind:object object_ref="obj_password_pam_pwquality_enforce_for_root" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_password_pam_pwquality_enforce_for_root" version="3">
+    <ind:filepath operation="pattern match">{{{ filepath_regex }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^enforce_for_root$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

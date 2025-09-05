@@ -1,6 +1,8 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu
 
-source ubuntu_common.sh
+{{{ tests_init_faillock_vars("correct") }}}
 
-echo "deny=1" > /etc/security/faillock.conf
+{{{ bash_enable_pam_faillock_directly_in_pam_files() }}}
+
+echo "$PRM_NAME=$TEST_VALUE" > /etc/security/faillock.conf

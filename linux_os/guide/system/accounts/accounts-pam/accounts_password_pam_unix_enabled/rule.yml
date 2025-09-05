@@ -1,0 +1,30 @@
+documentation_complete: true
+
+
+title: Verify pam_unix module is activated
+
+description: |-
+    <tt>pam_unix</tt> is the standard Unix authentication module. It uses standard calls from the
+    system's libraries to retrieve and set account information as well as authentication.
+    Usually this is obtained from the <tt>/etc/passwd</tt> and if shadow is enabled, the
+    <tt>/etc/shadow</tt> file as well.
+    <br /><br />
+    The account component performs the task of establishing the status of the user's
+    account and password based on the following shadow elements: <tt>expire,
+    last_change, max_change, min_change, warn_change</tt>. In the case of the latter, it may
+    offer advice to the user on changing their password or, through the
+    <tt>PAM_AUTHTOKEN_REQD</tt> return, delay giving service to the user until they have
+    established a new password. The entries listed above are documented in the shadow(5)
+    manual page. Should the user's record not contain one or more of these entries, the
+    corresponding shadow check is not performed.
+    <br /><br />
+    The authentication component performs the task of checking the users credentials
+    (password). The default action of this module is to not permit the user access to a
+    service if their official password is blank.
+
+rationale: |-
+    The system should only provide access after performing authentication of a user.
+
+severity: medium
+
+platform: package[pam]

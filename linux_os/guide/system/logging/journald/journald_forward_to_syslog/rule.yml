@@ -19,10 +19,12 @@ identifiers:
     cce@rhel9: CCE-85996-7
     cce@sle12: CCE-92260-9
     cce@sle15: CCE-91376-4
+    cce@slmicro5: CCE-94017-1
 
 references:
     cis@sle12: 4.2.2.1
     cis@sle15: 4.2.2.1
+    cis@slmicro5: 4.2.2.1
     cis@ubuntu2004: 4.2.2.1
 
 ocil_clause: 'is commented out or not configured correctly'
@@ -31,7 +33,7 @@ ocil: |-
     Storing logs remotely protects the integrity of the data from local attacks.
     Run the following command to verify that journald is forwarding logs to a remote host.
     <pre>
-{{%- if product in ["rhel8", "rhel9", "sle15"] %}}
+{{%- if product in ["sle15"] or "rhel" in product %}}
     grep "^\sForwardToSyslog" /etc/systemd/journald.conf {{{ journald_conf_dir_path }}}/*.conf
 {{% else %}}
     grep "^\sForwardToSyslog" /etc/systemd/journald.conf
@@ -42,7 +44,7 @@ ocil: |-
     ForwardToSyslog=yes
     </pre>
 
-{{%- if product in ["rhel8", "rhel9", "sle15"] %}}
+{{%- if product in ["sle15"] or "rhel" in product %}}
 template:
     name: systemd_dropin_configuration
     vars:

@@ -31,10 +31,12 @@ identifiers:
     cce@rhel10: CCE-90124-9
     cce@sle12: CCE-91454-9
     cce@sle15: CCE-85760-7
+    cce@slmicro5: CCE-93901-7
 
 references:
     cis@sle12: 2.3.2
     cis@sle15: 2.3.2
+    cis@slmicro5: 2.3.2
     cis@ubuntu2004: 2.3.2
     cis@ubuntu2204: 2.3.2
     cui: 3.1.13
@@ -55,6 +57,7 @@ template:
         pkgname@ubuntu1804: rsh-client
         pkgname@ubuntu2004: rsh-client
         pkgname@ubuntu2204: rsh-client
+        pkgname@ubuntu2404: rsh-client
 
 {{% if product in ["rhel8", "rhel9"] %}}
 warnings:

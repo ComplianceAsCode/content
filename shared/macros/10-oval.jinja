@@ -1702,3 +1702,90 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
   {{%- endif %}}
 {{%- endif %}}
 {{%- endmacro -%}}
+
+{{#
+Generate OVAL test that tests if the system is configured to use nss-altfiles
+by checking if '/etc/nssswitch.conf' contains 'altfiles' in 'group' key.
+The macros generates the OVAL test including the dependent OVAL object and OVAL state.
+#}}
+{{%- macro oval_test_nsswitch_uses_altfiles() -%}}
+<ind:textfilecontent54_test id="test_{{{ rule_id }}}_nsswitch_uses_altfiles" version="1"
+  check="all" check_existence="at_least_one_exists"
+  comment="Test if /etc/nssswitch.conf contains 'altfiles' in 'group' key">
+  <ind:object object_ref="object_{{{ rule_id }}}_nsswitch_uses_altfiles"/>
+  <ind:state state_ref="state_{{{ rule_id }}}_nsswitch_uses_altfiles"/>
+</ind:textfilecontent54_test>
+<ind:textfilecontent54_object id="object_{{{ rule_id }}}_nsswitch_uses_altfiles" version="1">
+  <ind:filepath>/etc/nsswitch.conf</ind:filepath>
+  <ind:pattern operation="pattern match">^\s*group:\s+(.*)$</ind:pattern>
+  <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+</ind:textfilecontent54_object>
+<ind:textfilecontent54_state id="state_{{{ rule_id }}}_nsswitch_uses_altfiles" version="1">
+  <ind:subexpression operation="pattern match">altfiles</ind:subexpression>
+</ind:textfilecontent54_state>
+{{%- endmacro -%}}
+
+{{#
+  Macro for checking the system architecture in /proc/sys/kernel/{osrelease,arch}
+
+  :param arch: system architecture (x86_64, aarch64, s90x, ppc64le, ...)
+  :type arch: str
+#}}
+{{%- macro oval_check_proc_sys_kernel_osrelease_arch(arch) -%}}
+<def-group>
+  <definition class="inventory" id="proc_sys_kernel_osrelease_arch_{{{ arch }}}"
+  version="1">
+    <metadata>
+      <title>Test that the architecture is {{{ arch }}}</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check that architecture of kernel in /proc/sys/kernel is {{{ arch }}}</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Architecture is {{{ arch }}}"
+      test_ref="test_proc_sys_kernel_osrelease_arch_{{{ arch }}}" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+      comment="proc_sys_kernel is for {{{ arch }}} architecture"
+      id="test_proc_sys_kernel_osrelease_arch_{{{ arch }}}" version="1">
+    <ind:object object_ref="object_proc_sys_kernel_osrelease_arch_{{{ arch }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_proc_sys_kernel_osrelease_arch_{{{ arch }}}" version="1">
+    <ind:filepath operation="pattern match">/proc/sys/kernel/(osrelease|arch)</ind:filepath>
+    <ind:pattern operation="pattern match">^.*\.{{{ arch }}}$|^{{{ arch }}}$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
+{{%- endmacro -%}}
+
+{{#
+Macro to check if external variable is set to value
+  :param variable: Name of the external variable to check
+  :type variable: str
+  :param value: Value of the external variable
+  :type value: str
+  :param test_id: Suffix of the Ids in test, obj, and state elements
+  :type test_id: str
+  :param operation: Value operation
+  :type operation: str
+#}}
+{{%- macro oval_test_external_variable_value(variable,value,test_id='',operation='equals') -%}}
+  <ind:variable_test id="{{{ test_id }}}"
+  comment="Check external {{{ variable }}} is set to {{{ value }}}" check="all" version="1">
+    <ind:object object_ref="obj_{{{ test_id }}}"/>
+    <ind:state state_ref="ste_{{{ test_id }}}" />
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_{{{ test_id }}}" version="1">
+    <ind:var_ref>{{{ variable }}}</ind:var_ref>
+  </ind:variable_object>
+  <ind:variable_state id="ste_{{{ test_id }}}" version="1">
+    <ind:value operation="{{{ operation }}}" datatype="string">{{{ value }}}</ind:value>
+  </ind:variable_state>
+
+  <external_variable comment="External variable {{{ variable }}}" datatype="string" id="{{{ variable }}}" version="1" />
+{{%- endmacro -%}}

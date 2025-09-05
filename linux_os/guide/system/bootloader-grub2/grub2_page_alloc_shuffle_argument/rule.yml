@@ -31,7 +31,8 @@ ocil_clause: 'randomization of the page allocator is not enabled in the kernel'
 ocil: |-
     {{{ ocil_grub2_argument("page_alloc.shuffle=1") | indent(4) }}}
 
-platform: machine
+references:
+    ospp: AVA_VAN.1
 
 template:
     name: grub2_bootloader_argument

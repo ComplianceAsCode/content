@@ -1246,6 +1246,7 @@ controls:
     - ensure_gpgcheck_local_packages
     - ensure_redhat_gpgkey_installed
     - ensure_oracle_gpgkey_installed
+    - ensure_almalinux_gpgkey_installed
 
   - id: R60
     title: Hardened package repositories
@@ -1363,7 +1364,7 @@ controls:
       When authentication takes place through a remote application (network),
       the authentication protocol used by PAM must be secure (flow encryption,
       remote server authentication, anti-replay mechanisms, ...).
-    {{% if "rhel" in product or "ol" in families %}}
+    {{% if "rhel" in product or "ol" in families or "almalinux" in product %}}
     notes: |-
       In {{{ full_name }}} systems, remote authentication is handled through sssd service.
       PAM delegates requests for remote authentication to this service through a
@@ -1419,7 +1420,7 @@ controls:
       When the user databases are stored on a remote network service, NSS must
       be configured to establish a secure link that allows, at minimum, to
       authenticate the server and protect the communication channel.
-    {{% if "rhel" in product or "ol" in families %}}
+    {{% if "rhel" in product or "ol" in families or "almalinux" in product %}}
     notes: |-
       A nsswitch service connecting to remote database is provided by sssd. This is checked in requirement R67.
       Another such service is winbind which is by default configured to connect
@@ -1517,7 +1518,11 @@ controls:
     - audit_rules_time_stime
     - audit_rules_time_watch_localtime
 
+    {{% if product == "rhel10" %}}
+    - audit_rules_mac_modification_etc_selinux
+    {{% else %}}
     - audit_rules_mac_modification
+    {{% endif %}}
 
     - audit_rules_networkconfig_modification
 

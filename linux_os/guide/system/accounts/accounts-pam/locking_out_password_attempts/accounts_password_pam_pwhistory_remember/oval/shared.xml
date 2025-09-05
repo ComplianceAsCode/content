@@ -1,0 +1,58 @@
+{{% if "sle12" in product or "debian" in product or "ubuntu" in product %}}
+{{%- set accounts_password_pam_file = '/etc/pam.d/common-password' -%}}
+{{% endif %}}
+
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    {{{ oval_metadata("The passwords to remember of pam_pwhistory should be set correctly.") }}}
+      <criteria operator="AND" comment="Check if pam_pwhistory.so is properly configured">
+        <criterion test_ref="test_accounts_password_pam_pwhistory_remember_enabled"
+                   comment="pam_pwhistory.so is properly defined in password section of PAM file"/>
+        <criterion test_ref="test_accounts_password_pam_pwhistory_remember_parameter"
+                 comment="Remember parameter of pam_pwhistory.so is properly configured"/>
+      </criteria>
+  </definition>
+
+  <external_variable comment="number of passwords that should be remembered" datatype="int" id="var_password_pam_remember" version="1" />
+
+  <!-- is pam_pwhistory.so enabled? -->
+  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_remember_enabled"
+                              check="all" version="1" comment="Check pam_pwhistory.so presence in PAM file">
+    <ind:object object_ref="object_accounts_password_pam_pwhistory_remember_enabled"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_remember_enabled"
+                                version="1">
+    <ind:filepath>{{{ accounts_password_pam_file }}}</ind:filepath>
+    <ind:pattern var_ref="var_accounts_password_pam_pwhistory_module_regex"
+                 var_check="at least one" operation="pattern match"/>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- variables used to check the module implementation -->
+  <local_variable id="var_accounts_password_pam_pwhistory_module_regex"
+		  datatype="string" version="1"
+		  comment="The regex is to confirm the pam_pwhistory.so module is enabled">
+    <literal_component>^[ \t]*password[ \t]+(?:(?:sufficient)|(?:required)|(?:requisite)|(?:\[.*\]))[ \t]+pam_pwhistory\.so.*$</literal_component>
+  </local_variable>
+
+  <ind:textfilecontent54_state id="state_accounts_password_pam_pwhistory_remember" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal"
+                       var_ref="var_password_pam_remember"/>
+  </ind:textfilecontent54_state>
+
+  <!-- Check the pam_pwhistory.so remember parameter -->
+  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_remember_parameter" version="1"
+                              check="all" check_existence="all_exist"
+                              comment="Test if remember attribute of pam_pwhistory.so is set correctly in {{{ accounts_password_pam_file }}}">
+    <ind:object object_ref="object_accounts_password_pam_pwhistory_remember_parameter" />
+    <ind:state state_ref="state_accounts_password_pam_pwhistory_remember" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_remember_parameter" version="1">
+    <ind:filepath>{{{ accounts_password_pam_file }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*password[ \t]+(?:(?:sufficient)|(?:required)|(?:requisite)|(?:\[.*\]))[ \t]+pam_pwhistory\.so[ \t]+[^#\n\r]*\bremember=([0-9]*)\b.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

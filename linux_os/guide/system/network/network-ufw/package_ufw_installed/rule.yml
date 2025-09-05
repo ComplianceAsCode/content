@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Install ufw Package'
 
 description: |-
@@ -25,7 +24,17 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="ufw") }}}'
 
+{{%- if product in [ "ubuntu2404" ] %}}
+template:
+    name: package_installed_guard_var
+    vars:
+        pkgname: ufw
+        variable: var_network_filtering_service
+        value: ufw
+        operation: pattern match
+{{%- else %}}
 template:
     name: package_installed
     vars:
         pkgname: ufw
+{{%- endif %}}

@@ -20,6 +20,7 @@ selections:
     - '!install_PAE_kernel_on_x86-32'
     - '!partition_for_boot'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!sudo_add_ignore_dot'
     - '!audit_rules_privileged_commands_rmmod'
     - '!audit_rules_privileged_commands_modprobe'
@@ -42,3 +43,9 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     - '!package_xinetd_removed'
     - '!package_kea_removed'
+    # disable R45: Enable AppArmor security profiles
+    - '!apparmor_configured'
+    - '!all_apparmor_profiles_enforced'
+    - '!grub2_enable_apparmor'
+    - '!package_apparmor_installed'
+    - '!package_pam_apparmor_installed'

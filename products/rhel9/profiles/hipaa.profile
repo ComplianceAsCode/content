@@ -46,6 +46,7 @@ selections:
     - package_talk-server_removed
     - package_telnet_removed
     - package_telnet-server_removed
+    - package_cron_installed
     - service_crond_enabled
     - service_telnet_disabled
     - use_kerberos_security_all_exports

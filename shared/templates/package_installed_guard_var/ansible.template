@@ -1,0 +1,17 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables(VARIABLE) }}}
+
+- name: Ensure {{{ PKGNAME }}} is installed
+  ansible.builtin.package:
+    name: "{{{ PKGNAME }}}"
+    state: present
+{{% if OPERATION == "pattern match" %}}
+  when: {{{ VARIABLE }}} is regex("{{{ VALUE }}}")
+{{% else %}}
+  when: {{{ VARIABLE }}} == "{{{ VALUE }}}"
+{{% endif %}}

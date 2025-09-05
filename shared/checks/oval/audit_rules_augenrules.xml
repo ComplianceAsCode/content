@@ -18,9 +18,9 @@
     <ind:object object_ref="object_audit_rules_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rules_augenrules" version="1">
-  {{% if product == 'rhel10' %}}
+  {{% if product in ['rhel10', 'ol10']  %}}
     <ind:filepath>/usr/lib/systemd/system/audit-rules.service</ind:filepath>
-    <ind:pattern operation="pattern match">^ExecStart=\/sbin\/augenrules.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^ExecStart=(\/usr|)?\/sbin\/augenrules.*$</ind:pattern>
   {{% else %}}
     <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
     <ind:pattern operation="pattern match">^(ExecStartPost=\-\/sbin\/augenrules.*$|Requires=augenrules.service)</ind:pattern>

@@ -1,4 +1,4 @@
-{{%- if product in ["fedora", "ol8", "ol9",  "sle12", "sle15", "ubuntu2004", "ubuntu2204"] or 'rhel' in product %}}
+{{%- if product in ["fedora",  "sle12", "sle15", "ubuntu2004", "ubuntu2204", "ubuntu2404"] or 'ol' in families or 'rhel' in product %}}
   {{%- set perm_x="-F perm=x " %}}
 {{%- endif %}}
 

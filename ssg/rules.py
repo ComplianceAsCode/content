@@ -1,3 +1,7 @@
+"""
+Common functions for processing rules in SSG
+"""
+
 from __future__ import absolute_import
 from __future__ import print_function
 
@@ -6,16 +10,31 @@ import os
 
 def get_rule_dir_yaml(dir_path):
     """
-    Returns the path to the yaml metadata for a rule directory,
+    Constructs the path to the YAML metadata file for a given rule directory,
     regardless of if it exists.
+
+    Args:
+        dir_path (str): The path to the rule directory.
+
+    Returns:
+        str: The path to the "rule.yml" file within the specified directory.
     """
     return os.path.join(dir_path, "rule.yml")
 
 
 def get_rule_dir_id(path):
     """
-    Returns the ID of a rule directory; correctly handles being passed
-    either the directory path or the yaml metadata path.
+    Returns the base name of a rule directory.
+
+    This function takes a file path and returns the base name of the directory.
+    It correctly handles being passed either the directory path or the YAML metadata
+    file path (ending with 'rule.yml').
+
+    Args:
+        path (str): The file or directory path.
+
+    Returns:
+        str: The base name of the rule directory.
     """
     dir_path = path
 
@@ -27,10 +46,17 @@ def get_rule_dir_id(path):
 
 def is_rule_dir(dir_path):
     """
-    Returns True iff dir_path is a valid rule directory which exists
+    Check if a given directory path is a valid rule directory.
 
-    To be valid, dir_path must exist and be a directory and the file
-    returned by get_rule_dir_yaml(dir_path) must exist.
+    A valid rule directory must:
+    1. Exist as a directory.
+    2. Contain a specific YAML file as determined by get_rule_dir_yaml().
+
+    Args:
+        dir_path (str): The path to the directory to check.
+
+    Returns:
+        bool: True if dir_path is a valid rule directory, False otherwise.
     """
     rule_yaml = get_rule_dir_yaml(dir_path)
 
@@ -42,11 +68,24 @@ def is_rule_dir(dir_path):
 
 def applies_to_product(file_name, product):
     """
-    A OVAL or fix is filtered by product iff product is Falsy, file_name is
-    "shared", or file_name is product. Note that this does not filter by
-    contents of the fix or check, only by the name of the file.
-    """
+    Determines if a given file applies to a specified product.
 
+    An OVAL or fix is considered applicable to a product if any of the following conditions are met:
+    - The product parameter is Falsy (e.g., None, False, or an empty string).
+    - The file_name is "shared".
+    - The file_name matches the product.
+    - The product starts with the file_name.
+
+    Note that this function only filters based on the file name and does not consider the contents
+    of the fix or check.
+
+    Args:
+        file_name (str): The name of the file to check.
+        product (str): The product to check against.
+
+    Returns:
+        bool: True if the file applies to the product, False otherwise.
+    """
     if not product:
         return True
 
@@ -55,15 +94,17 @@ def applies_to_product(file_name, product):
 
 def get_rule_dir_ovals(dir_path, product=None):
     """
-    Gets a list of OVALs contained in a rule directory. If product is
-    None, returns all OVALs. If product is not None, returns applicable
-    OVALs in order of priority:
+    Gets a list of OVALs contained in a rule directory.
 
-        {{{ product }}}.xml -> shared.xml
+    If product is None, returns all OVALs. Only returns OVALs which exist.
 
-    Only returns OVALs which exist.
+    Args:
+        dir_path (str): The path to the rule directory.
+        product (str, optional): The product name to filter OVALs. Defaults to None.
+
+    Returns:
+        list: A list of paths to OVAL files in the specified directory, ordered by priority.
     """
-
     if not is_rule_dir(dir_path):
         return []
 
@@ -110,15 +151,28 @@ def get_rule_dir_ovals(dir_path, product=None):
 
 def get_rule_dir_sces(dir_path, product=None):
     """
-    Get a list of SCEs contained in a rule directory. If product is None,
-    returns all SCEs. If product is not None, returns applicable SCEs in
-    order of priority:
-
-        {{{ product }}}.{{{ ext }}} -> shared.{{{ ext }}}
+    Get a list of SCEs contained in a rule directory.
 
     Only returns SCEs which exist.
-    """
 
+    Args:
+        dir_path (str): The path to the rule directory.
+        product (str, optional): The product name to filter SCEs. If None, returns all SCEs.
+
+    Returns:
+        list: A list of paths to applicable SCE files. If product is specified, returns SCEs
+              in the order of priority:
+              - {product}.{ext}
+              - shared.{ext}
+
+    The function performs the following steps:
+        1. Checks if the provided directory is a valid rule directory.
+        2. Checks if the "sce" subdirectory exists within the rule directory.
+        3. Iterates over the files in the "sce" directory, filtering and prioritizing them based
+           on the product.
+        4. Returns a list of applicable SCE file paths, with product-specific SCEs listed before
+           shared SCEs.
+    """
     if not is_rule_dir(dir_path):
         return []
 
@@ -146,7 +200,13 @@ def get_rule_dir_sces(dir_path, product=None):
 
 def find_rule_dirs(base_dir):
     """
-    Generator which yields all rule directories within a given base_dir, recursively
+    Generator which yields all rule directories within a given base_dir, recursively.
+
+    Args:
+        base_dir (str): The base directory to start searching for rule directories.
+
+    Yields:
+        str: The path to each rule directory found within the base directory.
     """
     for root, dirs, _ in os.walk(base_dir):
         dirs.sort()
@@ -158,7 +218,13 @@ def find_rule_dirs(base_dir):
 
 def find_rule_dirs_in_paths(base_dirs):
     """
-    Generator which yields all rule directories within a given directories list, recursively
+    Generator which yields all rule directories within a given directories list, recursively.
+
+    Args:
+        base_dirs (list): A list of base directories to search for rule directories.
+
+    Yields:
+        str: Paths to rule directories found within the base directories.
     """
     if base_dirs:
         for cur_dir in base_dirs:

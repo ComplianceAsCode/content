@@ -5,21 +5,43 @@
 # disruption = low
 
 {{% if 'rhel' not in product and product != 'fedora' %}}
-- name: Require single user mode password
+- name: "{{{ rule_title }}} - Require single user mode password"
   lineinfile:
       create: yes
       dest: /usr/lib/systemd/system/rescue.service
       regexp: "^#?ExecStart="
-      {{% if product in ["ol8", "ol9", "sle12", "sle15"]-%}}
+      {{% if product in ["sle12", "sle15", "slmicro5"] or 'ol' in families -%}}
       line: "ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue"
       {{%- else -%}}
       line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
       {{%- endif %}}
 {{% else %}}
+- name: "{{{ rule_title }}} - find files which already override Execstart of rescue.service"
+  ansible.builtin.find:
+    paths: "/etc/systemd/system/rescue.service.d"
+    patterns: "*.conf"
+    contains: '^\s*ExecStart=.*$'
+  register: rescue_service_overrides_found
+
+- name: "{{{ rule_title }}} - set files containing ExecStart overrides as target"
+  ansible.builtin.set_fact:
+    rescue_service_remediation_target_file: "{{ rescue_service_overrides_found.files | map(attribute='path') | list }}"
+  when: rescue_service_overrides_found.matched is defined and rescue_service_overrides_found.matched > 0
+
+- name: "{{{ rule_title }}} - set default target for rescue.service override"
+  ansible.builtin.set_fact:
+    rescue_service_remediation_target_file:
+      - "/etc/systemd/system/rescue.service.d/10-oscap.conf"
+  when: rescue_service_overrides_found.matched is defined and rescue_service_overrides_found.matched == 0
+
 - name: "{{{ rule_title }}} - Require emergency user mode password"
   community.general.ini_file:
-    path: "/etc/systemd/system/rescue.service.d/10-oscap.conf"
+    path: "{{ item }}"
     section: "Service"
     option: "ExecStart"
-    value: "-/usr/lib/systemd/systemd-sulogin-shell rescue"
+    values:
+      - ""
+      - "-/usr/lib/systemd/systemd-sulogin-shell rescue"
+  loop: "{{ rescue_service_remediation_target_file }}"
+
 {{% endif %}}

@@ -8,6 +8,8 @@ description: |-
 
 rationale: |-
     <tt>gssproxy</tt> is a proxy for GSS API credential handling.
+    Kerberos relies on some key derivation functions that may not
+    be compatible with some site policies such as FIPS 140.
 
 severity: medium
 
@@ -40,3 +42,4 @@ template:
         pkgname: gssproxy
     backends:
         anaconda: "off"
+        bootc: "off"

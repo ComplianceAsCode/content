@@ -42,6 +42,13 @@ ocil: |-
 
 platform: package[pam]
 
+{{% if product == "ubuntu2404" %}}
+template:
+    name: accounts_password
+    vars:
+        variable: enforcing
+        operation: equals
+{{% else %}}
 template:
     name: "lineinfile"
     vars:
@@ -49,3 +56,5 @@ template:
         path: "/etc/security/pwquality.conf"
     oval_extend_definitions:
         - accounts_password_pam_pwquality
+{{% endif %}}
+

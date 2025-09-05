@@ -21,5 +21,6 @@ def preprocess(data, lang):
         data["escaped_arg_name_value"] = data["arg_name_value"].replace(".", "\\.")
         data["escaped_arg_name"] = data["arg_name"].replace(".", "\\.")
         # replace . with _, this is used in test / object / state ids
-        data["sanitized_arg_name"] = ssg.utils.escape_id(data["arg_name"])
+
+    data["sanitized_arg_name"] = ssg.utils.escape_id(data["arg_name"])
     return data

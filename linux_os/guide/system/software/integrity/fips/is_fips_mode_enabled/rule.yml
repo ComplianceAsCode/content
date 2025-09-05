@@ -1,7 +1,7 @@
 documentation_complete: true
 
 
-title: Verify '/proc/sys/crypto/fips_enabled' exists  
+title: Verify '/proc/sys/crypto/fips_enabled' exists
 
 description: |-
     On a system where FIPS 140-2 mode is enabled, <tt>/proc/sys/crypto/fips_enabled</tt> must exist.
@@ -41,7 +41,7 @@ ocil: |-
 warnings:
     - general: |-
         To configure the OS to run in FIPS 140-2 mode, the kernel parameter "fips=1" needs to be added during its installation.
-        Enabling FIPS mode on a preexisting system involves a number of modifications to it. Refer to the vendor installation 
+        Enabling FIPS mode on a preexisting system involves a number of modifications to it. Refer to the vendor installation
         guidances.
     - regulatory: |-
         System Crypto Modules must be provided by a vendor that undergoes

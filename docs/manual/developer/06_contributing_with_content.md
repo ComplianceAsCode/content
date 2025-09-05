@@ -518,7 +518,7 @@ then contain the following subdirectories:
 
 - `kickstart` - For Kickstart remediation content, ending in `.cfg`
 
-- `bootc` - for remediation content used in the `oscap-bootc` tool internally, ending in `.bo`
+- `bootc` - for remediation content used in the `oscap-im` tool internally, ending in `.bo`
 
 In each of these subdirectories, a file named `shared.ext` will apply to
 all products and be included in all builds, but `{{{ product }}}.ext`
@@ -825,6 +825,13 @@ are unique to SCE:
    it is not necessary. Additionally, OCIL checks, if any is present in the
    `rule.yml`, are added as a top-level OR-operator `<complex-check />` with
    the results of this `<complex-check />`.
+ - `environment`: can be `normal`, `bootc`, `any`.
+   The default value that is used when this key is not set is `any`.
+   This key specifies the environment in which the SCE check can run in.
+   This way you can restrict some SCE checks to run or not run in Image mode.
+   If set to `bootc`, the SCE check code will be modified to not run outside of the bootable image build process.
+   If set to `normal`, the SCE check code will be modified to not run during the bootable image build process.
+   If set to `any`, the SCE check code will not be modified and therefore will run in any environment.
 
 For an example of SCE content, consider the check:
 

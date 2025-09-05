@@ -9,24 +9,24 @@ description: |-
     startup (the default), add the following line to a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
     <pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-{{%- if product in ["ol8", "ol9"] or 'rhel' in product or 'ubuntu' in product %}}
+{{%- if  'ol' in families or 'rhel' in product or 'ubuntu' in product %}}
     <pre>-a always,exit -F arch=b32 -S fsetxattr -F auid=0 -F key=perm_mod</pre>
 {{%- endif %}}
     If the system is 64 bit then also add the following line:
     <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-{{%- if product in ["ol8", "ol9"] or 'rhel' in product or 'ubuntu' in product %}}
+{{%- if  'ol' in families or 'rhel' in product or 'ubuntu' in product %}}
     <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid=0 -F key=perm_mod</pre>
 {{%- endif %}}
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following line to
     <tt>/etc/audit/audit.rules</tt> file:
     <pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-{{%- if product in ["ol8", "ol9"] or 'rhel' in product or 'ubuntu' in product %}}
+{{%- if  'ol' in families or 'rhel' in product or 'ubuntu' in product %}}
     <pre>-a always,exit -F arch=b32 -S fsetxattr -F auid=0 -F key=perm_mod</pre>
 {{%- endif %}}
     If the system is 64 bit then also add the following line:
     <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-{{%- if product in ["ol8", "ol9"] or 'rhel' in product or 'ubuntu' in product %}}
+{{%- if  'ol' in families or 'rhel' in product or 'ubuntu' in product %}}
     <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid=0 -F key=perm_mod</pre>
 {{%- endif %}}
 
@@ -45,11 +45,13 @@ identifiers:
     cce@rhel10: CCE-89370-1
     cce@sle12: CCE-83141-2
     cce@sle15: CCE-85688-0
+    cce@slmicro5: CCE-93857-1
 
 references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
     cis@sle12: 4.1.9
     cis@sle15: 4.1.9
+    cis@slmicro5: 4.1.9
     cis@ubuntu2004: 4.1.9
     cis@ubuntu2204: 4.1.3.9
     cjis: 5.4.1.1

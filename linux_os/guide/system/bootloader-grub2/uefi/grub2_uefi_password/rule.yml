@@ -9,14 +9,14 @@ description: |-
     <br /><br />
     Since plaintext passwords are a security risk, generate a hash for the password
     by running the following command:
-    {{% if product in ["sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404", "ubuntu2404"] %}}
     <pre># grub2-mkpasswd-pbkdf2</pre>
     {{% else %}}
     <pre># grub2-setpassword</pre>
     {{% endif %}}
     When prompted, enter the password that was selected.
     <br /><br />
-    {{% if product in ["sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404", "ubuntu2404"] %}}
     Using the hash from the output, modify the <tt>/etc/grub.d/40_custom</tt>
     file with the following content:
     <pre>set superusers="boot"
@@ -51,6 +51,7 @@ references:
     cis-csc: 11,12,14,15,16,18,3,5
     cis@sle12: 1.5.1
     cis@sle15: 1.5.1
+    cis@slmicro5: 1.5.1
     cis@ubuntu2004: 1.5.1
     cis@ubuntu2204: 1.4.1
     cobit5: DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS06.03,DSS06.06
@@ -92,7 +93,6 @@ warnings:
         Also, do NOT manually add the superuser account and password to the
         <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
 
-platform: machine
 
 fixtext: |-
     Configure {{{ full_name }}} to use a secure UEFI boot loader password.

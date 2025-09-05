@@ -340,7 +340,7 @@ set_no_derivatives_options() {
 set_sce_options() {
 	grep -q "SSG_SCE_ENABLED" <<< "$ADDITIONAL_CMAKE_OPTIONS" && return
 	# These products will build SCE by default
-	if grep -q -E 'rhel9|rhel10|ubuntu2004|ubuntu2204' <<< "${_arg_product[*]}"; then
+	if grep -q -E 'rhel9|rhel10|ubuntu2004|ubuntu2204|ubuntu2404' <<< "${_arg_product[*]}"; then
 		CMAKE_OPTIONS+=("-DSSG_SCE_ENABLED:BOOL=ON")
 	fi
 }
@@ -359,6 +359,7 @@ all_cmake_products=(
 	AL2023
 	ALINUX2
 	ALINUX3
+	ALMALINUX9
 	ANOLIS8
 	ANOLIS23
 	CHROMIUM
@@ -386,6 +387,7 @@ all_cmake_products=(
 	UBUNTU1804
 	UBUNTU2004
 	UBUNTU2204
+	UBUNTU2404
 	MACOS1015
 	OPENEMBEDDED
 	OPENEULER2203

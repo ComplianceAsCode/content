@@ -21,11 +21,12 @@ identifiers:
     cce@rhel10: CCE-88270-4
     cce@sle12: CCE-91641-1
     cce@sle15: CCE-91284-0
+    cce@slmicro5: CCE-93911-6
 
 references:
-
     cis@sle12: 2.2.7
     cis@sle15: 2.2.7
+    cis@slmicro5: 2.2.7
     disa: CCI-000381
     srg: SRG-OS-000095-GPOS-00049
 
@@ -39,3 +40,5 @@ template:
     name: package_removed
     vars:
         pkgname: nfs-utils
+    backends:
+        bootc: "off"

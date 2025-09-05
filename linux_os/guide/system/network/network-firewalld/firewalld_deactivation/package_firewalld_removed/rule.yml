@@ -19,15 +19,26 @@ severity: medium
 
 identifiers:
     cce@sle15: CCE-92471-2
+    cce@slmicro5: CCE-94008-0
 
 references:
     cis@sle15: 3.5.2.2,3.5.3.1.3
+    cis@slmicro5: 3.5.2.2,3.5.3.1.3
 
 {{{ complete_ocil_entry_package(package="firewalld") }}}
 
 fixtext: '{{{ fixtext_package_removed("firewalld") }}}'
 
+{{%- if product in [ "sle12", "sle15" ] %}}
+template:
+    name: package_removed_guard_var
+    vars:
+        pkgname: firewalld
+        variable: var_network_filtering_service
+        value: firewalld
+{{%- else %}}
 template:
     name: package_removed
     vars:
         pkgname: firewalld
+{{%- endif %}}

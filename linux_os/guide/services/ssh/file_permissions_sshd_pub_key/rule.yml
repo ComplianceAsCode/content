@@ -22,6 +22,7 @@ references:
     cis-csc: 12,13,14,15,16,18,3,5
     cis@sle12: 5.2.3
     cis@sle15: 5.2.3
+    cis@slmicro5: 5.2.3
     cis@ubuntu2004: 5.2.3
     cis@ubuntu2204: 5.2.3
     cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
@@ -54,6 +55,10 @@ template:
     name: file_permissions
     vars:
         filepath: /etc/ssh/
-        missing_file_pass: 'true'
         file_regex: ^.*\.pub$
         filemode: '0644'
+
+warnings:
+    - general: |-
+        Remediation is not possible at bootable container build time because SSH host
+        keys are generated post-deployment.

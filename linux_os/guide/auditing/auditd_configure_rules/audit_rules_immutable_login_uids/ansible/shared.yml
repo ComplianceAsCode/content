@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_almalinux
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -16,6 +16,7 @@
     path: '/etc/audit/audit.rules'
     line: '--loginuid-immutable'
     regexp: '^\s*--loginuid-immutable\s*$'
+    mode: '0600'
     create: true
   when: auditctl_used is defined and auditctl_used.matched >= 1
 
@@ -33,6 +34,7 @@
         path: '/etc/audit/rules.d/immutable.rules'
         line: '--loginuid-immutable'
         regexp: '^\s*--loginuid-immutable\s*$'
+        mode: '0600'
         create: true
       when: immutable_found_in_rules_d is defined and immutable_found_in_rules_d.matched == 0
   when: auditctl_used is defined and auditctl_used.matched == 0

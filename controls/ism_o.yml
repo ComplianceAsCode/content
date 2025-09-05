@@ -31,7 +31,7 @@ controls:
             - set_password_hashing_algorithm_passwordauth
             - set_password_hashing_algorithm_systemauth
             - sshd_disable_gssapi_auth
-            - var_password_hashing_algorithm_pam=sha512
+            - var_password_hashing_algorithm_pam=yescrypt
         status: automated
 
     -   id: '0421'
@@ -127,6 +127,7 @@ controls:
             - audit_rules_privileged_commands
             - audit_rules_session_events
             - audit_rules_unsuccessful_file_modification
+            - package_audit_installed
             - sshd_print_last_log
             - sebool_auditadm_exec_content
         status: automated
@@ -145,6 +146,7 @@ controls:
             - audit_rules_privileged_commands
             - audit_rules_session_events
             - audit_rules_unsuccessful_file_modification
+            - package_audit_installed
             - sshd_print_last_log
             - sebool_auditadm_exec_content
         status: automated
@@ -318,6 +320,7 @@ controls:
             - force_opensc_card_drivers
             - package_opensc_installed
             - package_pcsc-lite_installed
+            - package_pcsc-lite-ccid_installed
             - package_sudo_installed
             - service_pcscd_enabled
         status: partial
@@ -430,8 +433,9 @@ use of device access control software or by disabling external communication int
         rules:
             - configure_crypto_policy
             - enable_dracut_fips_module
-            - enable_fips_mode
+            - system_booted_in_fips_mode
             - var_system_crypto_policy=fips
+            - enable_fips_mode
         status: automated
 
     -   id: '1449'

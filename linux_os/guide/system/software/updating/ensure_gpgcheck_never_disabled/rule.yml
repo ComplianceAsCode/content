@@ -1,11 +1,16 @@
 documentation_complete: true
 
+{{%- if product in ["sle12", "sle15", "slmicro5"] %}}
+  {{%- set pkg_manager_repos="/etc/zypp/repos.d" %}}
+{{%- else %}}
+  {{%- set pkg_manager_repos="/etc/yum.repos.d" %}}
+{{%- endif %}}
 
 title: 'Ensure gpgcheck Enabled for All {{{ pkg_manager }}} Package Repositories'
 
 description: |-
     To ensure signature checking is not disabled for
-    any repos, remove any lines from files in <tt>/etc/yum.repos.d</tt> of the form:
+    any repos, remove any lines from files in <tt>{{{ pkg_manager_repos }}}</tt> of the form:
     <pre>gpgcheck=0</pre>
 
 rationale: |-
@@ -24,11 +29,13 @@ identifiers:
     cce@rhel10: CCE-88176-3
     cce@sle12: CCE-83258-4
     cce@sle15: CCE-85797-9
+    cce@slmicro5: CCE-94070-0
 
 references:
     cis-csc: 11,2,3,9
     cis@sle12: 1.2.3
     cis@sle15: 1.2.3
+    cis@slmicro5: 1.2.3
     cjis: 5.10.4.1
     cobit5: APO01.06,BAI03.05,BAI06.01,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS06.02
     cui: 3.4.8
@@ -50,7 +57,7 @@ ocil_clause: 'GPG checking is disabled'
 ocil: |-
     To determine whether <tt>{{{ pkg_manager }}}</tt> has been configured to disable
     <tt>gpgcheck</tt> for any repos,  inspect all files in
-    <tt>/etc/yum.repos.d</tt> and ensure the following does not appear in any
+    <tt>{{{ pkg_manager_repos }}}</tt> and ensure the following does not appear in any
     sections:
     <pre>gpgcheck=0</pre>
     A value of <tt>0</tt> indicates that <tt>gpgcheck</tt> has been disabled for that repo.
@@ -58,7 +65,7 @@ ocil: |-
 fixtext: |-
     Ensure signature checking is enabled for all package repositories with the command:
 
-    $ sudo sed -i 's/gpgcheck\s*=.*/gpgcheck=1/g' /etc/yum.repos.d/*
+    $ sudo sed -i 's/gpgcheck\s*=.*/gpgcheck=1/g' {{{ pkg_manager_repos }}}/*
 
 srg_requirement: |-
     {{{ full_name }}} must have gpgcheck enabled for all repositories.
@@ -66,7 +73,7 @@ srg_requirement: |-
 checktext: |-
     Verify that {{{ pkg_manager }}} has not been configured to disable gpgcheck for any repos with the following command:
 
-    $ grep gpgcheck /etc/yum.repos.d/*.repo | more
+    $ grep gpgcheck {{{ pkg_manager_repos }}}/*.repo | more
 
     gpgcheck = 1
 

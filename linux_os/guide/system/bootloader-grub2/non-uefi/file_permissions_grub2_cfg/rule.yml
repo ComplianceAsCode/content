@@ -19,11 +19,13 @@ identifiers:
     cce@rhel10: CCE-89290-1
     cce@sle12: CCE-92216-1
     cce@sle15: CCE-91426-7
+    cce@slmicro5: CCE-94019-7
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
     cis@sle12: 1.5.2
     cis@sle15: 1.5.2
+    cis@slmicro5: 1.5.2
     cis@ubuntu2004: 1.5.2
     cis@ubuntu2204: 1.4.2
     cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
@@ -44,7 +46,11 @@ ocil: |-
     If properly configured, the output should indicate the following
     permissions: <tt>-rw-------</tt>
 
-platform: machine
+{{% if 'ubuntu' in product %}}
+platform: not container
+{{% else %}}
+platform: not bootc
+{{% endif %}}
 
 template:
     name: file_permissions

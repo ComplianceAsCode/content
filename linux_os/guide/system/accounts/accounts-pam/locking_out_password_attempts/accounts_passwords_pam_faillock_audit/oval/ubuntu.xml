@@ -57,7 +57,7 @@
   <constant_variable id="var_accounts_passwords_pam_faillock_{{{ prm_name }}}_pam_faillock_auth_regex"
                 datatype="string" version="1"
                 comment="regex to identify pam_faillock.so entries in auth section of pam files">
-      <value>^\s*auth\s+required\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail[\s\S]*^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc</value>
+      <value>^\s*auth\s+(requisite|required)\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail</value>
   </constant_variable>
 
   <constant_variable id="var_accounts_passwords_pam_faillock_{{{ prm_name }}}_pam_faillock_account_regex"

@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Install nftables Package'
 
 description: |-
@@ -22,9 +21,11 @@ identifiers:
     cce@rhel9: CCE-86378-7
     cce@rhel10: CCE-87358-8
     cce@sle15: CCE-92469-6
+    cce@slmicro5: CCE-93985-0
 
 references:
     cis@sle15: 3.5.2.1
+    cis@slmicro5: 3.5.2.1
     cis@ubuntu2004: 3.5.2.1
     cis@ubuntu2204: 3.5.2.1
 
@@ -34,10 +35,19 @@ ocil: '{{{ ocil_package(package="nftables") }}}'
 
 platform: system_with_kernel and service_disabled[iptables] and service_disabled[ufw]
 
+{{%- if product in [ "ubuntu2404" ] %}}
+template:
+    name: package_installed_guard_var
+    vars:
+        pkgname: nftables
+        variable: var_network_filtering_service
+        value: nftables
+{{%- else %}}
 template:
     name: package_installed
     vars:
         pkgname: nftables
+{{%- endif %}}
 
 fixtext: |-
     {{{ describe_package_install(package="nftables") }}}

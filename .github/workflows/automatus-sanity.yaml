@@ -55,7 +55,7 @@ jobs:
       - name: Check One Rule
         run: ./tests/automatus.py rule --remove-platforms --make-applicable-in-containers --logdir log_rule --datastream ssg-fedora-ds.xml --container ssg_test_suite package_sudo_installed
       - name: Check One Rule - Ansible
-        run: ./tests/automatus.py rule --remove-platforms --make-applicable-in-containers --logdir log_rule_ansible --remediate-using ansible --datastream ssg-fedora-ds.xml --container ssg_test_suite package_sudo_installed
+        run: ./tests/automatus.py rule --remove-platforms --make-applicable-in-containers --logdir log_rule_ansible --remediate-using ansible --datastream ssg-fedora-ds.xml --container ssg_test_suite file_owner_etc_passwd
       - name: Check Profile Mode
         run: ./tests/automatus.py profile --remove-platforms --make-applicable-in-containers --logdir log_profile --datastream ssg-fedora-ds.xml --container ssg_test_suite test
       - name: Check Combined Mode

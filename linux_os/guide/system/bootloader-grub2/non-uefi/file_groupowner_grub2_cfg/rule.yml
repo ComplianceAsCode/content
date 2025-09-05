@@ -21,11 +21,13 @@ identifiers:
     cce@rhel10: CCE-88691-1
     cce@sle12: CCE-91623-9
     cce@sle15: CCE-85849-8
+    cce@slmicro5: CCE-94021-3
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
     cis@sle12: 1.5.2
     cis@sle15: 1.5.2
+    cis@slmicro5: 1.5.2
     cjis: 5.5.2.2
     cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
     cui: 3.4.5
@@ -48,7 +50,11 @@ fixtext: '{{{ fixtext_file_group_owner(grub2_boot_path ~ "/grub.cfg", "root") }}
 
 srg_requirement: '{{{ srg_requirement_file_group_owner(grub2_boot_path ~ "/grub.cfg", "root") }}}'
 
-platform: machine
+{{% if 'ubuntu' in product %}}
+platform: not container
+{{% else %}}
+platform: not bootc
+{{% endif %}}
 
 template:
     name: file_groupowner

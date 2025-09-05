@@ -5,7 +5,7 @@ title: 'Ensure Log Files Are Owned By Appropriate User'
 description: |-
     The owner of all log files written by
     <tt>rsyslog</tt> should be
-    {{% if product in ['ubuntu2204','ubuntu2004'] %}}
+    {{% if product in ['ubuntu2404', 'ubuntu2204','ubuntu2004'] %}}
     <tt>syslog</tt>.
     {{% elif 'debian' in product or 'ubuntu' in product %}}
     <tt>adm</tt>.
@@ -18,7 +18,7 @@ description: |-
     run the following command to inspect the file's owner:
     <pre>$ ls -l <i>LOGFILE</i></pre>
     If the owner is not
-    {{% if product in ['ubuntu2204','ubuntu2004'] %}}
+    {{% if product in ['ubuntu2404', 'ubuntu2204','ubuntu2004'] %}}
     <tt>syslog</tt>,
     {{% elif 'debian' in product or 'ubuntu' in product %}}
     <tt>adm</tt>,
@@ -27,7 +27,7 @@ description: |-
     {{% endif %}}
     run the following command to
     correct this:
-    {{% if product in ['ubuntu2204','ubuntu2004'] %}}
+    {{% if product in ['ubuntu2404', 'ubuntu2204','ubuntu2004'] %}}
     <pre>$ sudo chown syslog <i>LOGFILE</i></pre>
     {{% elif 'debian' in product or 'ubuntu' in product %}}
     <pre>$ sudo chown adm <i>LOGFILE</i></pre>
@@ -68,7 +68,7 @@ ocil_clause: 'the owner is not correct'
 
 ocil: |-
     The owner of all log files written by <tt>rsyslog</tt> should be
-    {{% if product in ['ubuntu2204','ubuntu2004'] %}}
+    {{% if product in ['ubuntu2404', 'ubuntu2204','ubuntu2004'] %}}
     <tt>syslog</tt>.
     {{% elif 'debian' in product or 'ubuntu' in product %}}
     <tt>adm</tt>.

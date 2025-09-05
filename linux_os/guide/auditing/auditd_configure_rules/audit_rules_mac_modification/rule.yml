@@ -7,14 +7,24 @@ description: |-
     <tt>augenrules</tt> program to read audit rules during daemon startup (the
     default), add the following line to a file with suffix <tt>.rules</tt> in the
     directory <tt>/etc/audit/rules.d</tt>:
+    {{% if 'ubuntu' in product %}}
+    <pre>-w /etc/apparmor/ -p wa -k MAC-policy</pre>
+    <pre>-w /etc/apparmor.d/ -p wa -k MAC-policy</pre>
+    {{% else %}}
     <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
+    {{% endif %}}
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following line to
     <tt>/etc/audit/audit.rules</tt> file:
+    {{% if 'ubuntu' in product %}}
+    <pre>-w /etc/apparmor/ -p wa -k MAC-policy</pre>
+    <pre>-w /etc/apparmor.d/ -p wa -k MAC-policy</pre>
+    {{% else %}}
     <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
+    {{% endif %}}
 
 rationale: |-
-    The system's mandatory access policy (SELinux) should not be
+    The system's mandatory access policy (SELinux or Apparmor) should not be
     arbitrarily changed by anything other than administrator action. All changes to
     MAC policy should be audited.
 
@@ -27,11 +37,13 @@ identifiers:
     cce@rhel10: CCE-87320-8
     cce@sle12: CCE-91601-5
     cce@sle15: CCE-85830-8
+    cce@slmicro5: CCE-93868-8
 
 references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
     cis@sle12: 4.1.6
     cis@sle15: 4.1.6
+    cis@slmicro5: 4.1.6
     cis@ubuntu2204: 4.1.3.14
     cjis: 5.4.1.1
     cobit5: APO10.01,APO10.03,APO10.04,APO10.05,APO11.04,APO12.06,APO13.01,BAI03.05,BAI08.02,DSS01.03,DSS01.04,DSS02.02,DSS02.04,DSS02.07,DSS03.01,DSS03.05,DSS05.02,DSS05.03,DSS05.04,DSS05.05,DSS05.07,MEA01.01,MEA01.02,MEA01.03,MEA01.04,MEA01.05,MEA02.01
@@ -53,4 +65,3 @@ ocil: |-
     If the system is configured to watch for changes to its SELinux
     configuration, a line should be returned (including
     <tt>perm=wa</tt> indicating permissions that are watched).
-

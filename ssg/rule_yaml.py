@@ -18,12 +18,18 @@ from .utils import read_file_list
 def find_section_lines(file_contents, sec):
     """
     Parses the given file_contents as YAML to find the section with the given identifier.
-    Note that this does not call into the yaml library and thus correctly handles jinja
-    macros at the expense of not being a strictly valid yaml parsing.
 
-    Returns a list of namedtuples (start, end) of the lines where section exists.
+    Note that this does not call into the yaml library and thus correctly handles Jinja macros at
+    the expense of not being a strictly valid yaml parsing.
+
+    Args:
+        file_contents (list of str): The contents of the file, split into lines.
+        sec (str): The identifier of the section to find.
+
+    Returns:
+        list of namedtuple: A list of namedtuples (start, end) representing the lines where the
+                            section exists.
     """
-
     # Hack to find a global key ("section"/sec) in a YAML-like file.
     # All indented lines until the next global key are included in the range.
     # For example:
@@ -67,12 +73,19 @@ def find_section_lines(file_contents, sec):
 
 def add_key_value(contents, key, start_line, new_value):
     """
-    Adds a new key to contents with the given value after line start_line, returning
-    the result. Also adds a blank line afterwards.
+    Adds a new key-value pair to the contents at a specified line.
 
     Does not modify the value of contents.
-    """
 
+    Args:
+        contents (list of str): The original list of strings representing the contents.
+        key (str): The key to be added.
+        start_line (int): The line number after which the new key-value pair should be added.
+        new_value (str): The value associated with the key.
+
+    Returns:
+        list of str: A new list of strings with the key-value pair added and a blank line afterwards.
+    """
     new_contents = contents[:start_line]
     new_contents.append("%s: %s" % (key, new_value))
     new_contents.append("")
@@ -83,15 +96,25 @@ def add_key_value(contents, key, start_line, new_value):
 
 def update_key_value(contents, key, old_value, new_value):
     """
-    Find key in the contents of a file and replace its value with the new value,
-    returning the resulting file. This validates that the old value is constant and
-    hasn't changed since parsing its value.
+    Find a key in the contents of a file and replace its value with a new value, returning the
+    resulting file contents.
 
-    Raises a ValueError when the key cannot be found in the given contents.
+    This function validates that the old value is constant and hasn't changed since parsing its
+    value. Does not modify the original contents.
 
-    Does not modify the value of contents.
+    Args:
+        contents (list of str): The contents of the file as a list of strings.
+        key (str): The key whose value needs to be updated.
+        old_value (str): The current value associated with the key.
+        new_value (str): The new value to replace the old value.
+
+    Returns:
+        list of str: The updated contents of the file.
+
+    Raises:
+        ValueError: If the key cannot be found in the given contents or if the old value does not
+                    match the current value associated with the key.
     """
-
     new_contents = contents[:]
     old_line = key + ": " + old_value
     updated = False
@@ -112,11 +135,18 @@ def update_key_value(contents, key, old_value, new_value):
 
 def remove_lines(contents, lines):
     """
-    Remove the lines of the section from the parsed file, returning the new contents.
+    Remove the specified lines from the contents.
 
-    Does not modify the passed in contents.
+    This function takes the contents of a file and a range of lines to be removed, and returns the
+    new contents with those lines removed. The original contents are not modified.
+
+    Args:
+        contents (list of str): The contents of the file as a list of lines.
+        lines (slice): A slice object representing the range of lines to be removed.
+
+    Returns:
+        list of str: The new contents with the specified lines removed.
     """
-
     new_contents = contents[:lines.start]
     new_contents.extend(contents[lines.end+1:])
     return new_contents
@@ -124,9 +154,15 @@ def remove_lines(contents, lines):
 
 def parse_from_yaml(file_contents, lines):
     """
-    Parse the given line range as a yaml, returning the parsed object.
-    """
+    Parse the given line range as a YAML, returning the parsed object.
 
+    Args:
+        file_contents (list of str): The contents of the file as a list of strings.
+        lines (slice): A slice object indicating the start and end lines to parse.
+
+    Returns:
+        object: The parsed YAML object.
+    """
     new_file_arr = file_contents[lines.start:lines.end + 1]
     new_file = "\n".join(new_file_arr)
     return yaml.load(new_file, Loader=yaml.Loader)
@@ -134,11 +170,19 @@ def parse_from_yaml(file_contents, lines):
 
 def get_yaml_contents(rule_obj):
     """
-    From a rule_obj description, return a namedtuple of (path, contents); where
-    path is the path to the rule YAML and contents is the list of lines in
-    the file.
-    """
+    From a rule_obj description, return a namedtuple of (path, contents).
 
+    Args:
+        rule_obj (dict): A dictionary containing information about the rule.
+                         It must have the keys 'dir' and 'id'.
+
+    Returns:
+        namedtuple: A namedtuple with 'path' as the path to the rule YAML file and 'contents' as
+                    the list of lines in the file.
+
+    Raises:
+        ValueError: If the YAML file does not exist for the given rule_id.
+    """
     file_description = namedtuple('file_description', ('path', 'contents'))
 
     yaml_file = get_rule_dir_yaml(rule_obj['dir'])
@@ -153,10 +197,21 @@ def get_yaml_contents(rule_obj):
 
 def get_section_lines(file_path, file_contents, key_name):
     """
-    From the given file_path and file_contents, find the lines describing the section
-    key_name and returns the line range of the section.
-    """
+    From the given file_path and file_contents, find the lines describing the section key_name and
+    returns the line range of the section.
 
+    Args:
+        file_path (str): The path to the file being analyzed.
+        file_contents (str): The contents of the file as a string.
+        key_name (str): The name of the section to find within the file contents.
+
+    Returns:
+        tuple: A tuple representing the start and end line numbers of the section if found.
+        None: If the section is not found.
+
+    Raises:
+        ValueError: If multiple instances of the section are found in the file.
+    """
     section = find_section_lines(file_contents, key_name)
 
     if len(section) > 1:
@@ -171,10 +226,18 @@ def get_section_lines(file_path, file_contents, key_name):
 
 def has_duplicated_subkeys(file_path, file_contents, sections):
     """
-    Checks whether a section has duplicated keys. Note that these are silently
-    eaten by the YAML parser we use.
-    """
+    Checks whether a section has duplicated keys in a YAML file.
 
+    Note that these duplicated keys are silently ignored by the YAML parser used.
+
+    Args:
+        file_path (str): The path to the YAML file.
+        file_contents (list of str): The contents of the YAML file as a list of lines.
+        sections (str or list of str): The section or list of sections to check for duplicated keys.
+
+    Returns:
+        bool: True if any section has duplicated keys, False otherwise.
+    """
     if isinstance(sections, str):
         sections = [sections]
 
@@ -220,8 +283,23 @@ def has_duplicated_subkeys(file_path, file_contents, sections):
 def sort_section_keys(file_path, file_contents, sections, sort_func=None):
     """
     Sort subkeys in a YAML file's section.
-    """
 
+    Args:
+        file_path (str): The path to the YAML file.
+        file_contents (list of str): The contents of the YAML file as a list of lines.
+        sections (str or list of str): The section or sections whose subkeys need to be sorted.
+        sort_func (callable, optional): A function to determine the sort order of the subkeys.
+                                        If None, the subkeys are sorted in ascending order.
+
+    Returns:
+        list of str: The modified contents of the YAML file with sorted subkeys in the specified
+                     sections.
+
+    Raises:
+        ValueError: If a duplicated key is found within the same section.
+        AssertionError: If the section contains more than one parent key or if a subkey line
+                        cannot be found.
+    """
     if isinstance(sections, str):
         sections = [sections]
 

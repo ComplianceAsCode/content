@@ -1,3 +1,7 @@
+"""
+Common functions for processing Fixes in SSG
+"""
+
 from __future__ import absolute_import
 from __future__ import print_function
 
@@ -11,10 +15,21 @@ from .build_remediations import REMEDIATION_TO_EXT_MAP as REMEDIATION_MAP
 
 def get_fix_path(rule_obj, lang, fix_id):
     """
-    For the given fix_id or product, return the full path to the fix of the
-    given language in the rule described by the given rule_obj.
-    """
+    Return the full path to the fix for the given language and fix_id in the rule described by rule_obj.
 
+    Args:
+        rule_obj (dict): A dictionary containing information about the rule, including dir', 'id',
+                         and 'remediations'.
+        lang (str): The language for which the fix is required.
+        fix_id (str): The identifier for the specific fix.
+
+    Returns:
+        str: The full path to the fix file.
+
+    Raises:
+        ValueError: If the rule_obj is malformed or if the fix_id is unknown for the given rule_id
+                    and language.
+    """
     if not fix_id.endswith(REMEDIATION_MAP[lang]):
         fix_id += REMEDIATION_MAP[lang]
 
@@ -31,10 +46,16 @@ def get_fix_path(rule_obj, lang, fix_id):
 
 def get_fix_contents(rule_obj, lang, fix_id):
     """
-    Returns the tuple (path, contents) of the fix described by the given
-    fix_id or product.
-    """
+    Retrieve the path and contents of a specific fix.
 
+    Args:
+        rule_obj (object): The rule object containing the fix information.
+        lang (str): The language of the fix.
+        fix_id (str): The identifier of the fix.
+
+    Returns:
+        tuple: A tuple containing the path to the fix and the contents of the fix.
+    """
     fix_path = get_fix_path(rule_obj, lang, fix_id)
     fix_contents = read_file_list(fix_path)
 
@@ -42,6 +63,18 @@ def get_fix_contents(rule_obj, lang, fix_id):
 
 
 def applicable_platforms(fix_path):
+    """
+    Determines the applicable platforms for a given fix.
+
+    Args:
+        fix_path (str): The file path to the fix configuration file.
+
+    Returns:
+        list: A list of platforms that the fix applies to.
+
+    Raises:
+        ValueError: If the fix configuration is malformed or missing the 'platform' key.
+    """
     _, config = parse_from_file_without_jinja(fix_path)
 
     if 'platform' not in config:
@@ -52,18 +85,18 @@ def applicable_platforms(fix_path):
 
 def find_platform_line(fix_contents):
     """
-    Parses the platform configuration item to determine the line number that
-    the platforms configuration option is on. If this key is not found, None
-    is returned instead.
+    Parses the fix content to determine the line number that the platforms configuration option is on.
 
-    Note that this performs no validation on the contents of the file besides
-    this and does not return the current value of the platform.
+    Note:
+        If the configuration specification changes, please update the corresponding parsing in
+        ssg.build_remediations.parse_from_file_with_jinja(...).
 
-    If the configuration specification changes any, please update the
-    corresponding parsing in ssg.build_remediations.parse_from_file_with_jinja
-    (...).
+    Args:
+        fix_contents (list of str): The contents of the configuration file as a list of strings.
+
+    Returns:
+        int or None: The line number of the platform configuration option, or None if not found.
     """
-
     matched_line = None
     for line_num in range(0, len(fix_contents)):
         line = fix_contents[line_num]
@@ -76,10 +109,18 @@ def find_platform_line(fix_contents):
 
 def set_applicable_platforms(fix_contents, new_platforms):
     """
-    Returns a modified contents which updates the platforms to the new
-    platforms.
-    """
+    Modifies the given fix contents to update the platforms to the new platforms.
 
+    Args:
+        fix_contents (list of str): The contents of the fix file as a list of strings.
+        new_platforms (list of str): A list of new platforms to set in the fix file.
+
+    Returns:
+        list of str: The modified contents with the updated platforms.
+
+    Raises:
+        ValueError: If the platform line cannot be found in the fix contents.
+    """
     platform_line = find_platform_line(fix_contents)
     if platform_line is None:
         raise ValueError("When parsing config file, unable to find platform "

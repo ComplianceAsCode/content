@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Disable SSH Forwarding'
+
+description: |-
+    The DisableForwarding parameter disables all forwarding features, 
+
+rationale: |-
+    Disable ssh forwarding unless there is an operational requirement to use it. 
+    Leaving port forwarding enabled can expose the organization to security risks.
+
+severity: medium
+
+ocil_clause: "The DisableForwarding option exists and is yes"
+
+ocil: |-
+    {{{ ocil_sshd_option(default="yes", option="DisableForwarding", value="yes") }}}
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: DisableForwarding
+        value: 'yes'
+        datatype: string

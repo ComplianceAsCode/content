@@ -1,4 +1,4 @@
-# platform = multi_platform_debian,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
+# platform = multi_platform_debian,multi_platform_fedora,multi_platform_ol,multi_platform_almalinux,multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
 # reboot = true
 # strategy = disable
 # complexity = low
@@ -7,7 +7,7 @@
 # Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
 {{% if product in [ "sle12", "sle15", "slmicro5"] %}}
 for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /lib/sysctl.d/*.conf; do
-{{% elif product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel8", "rhel9", "rhel10", "ubuntu2004", "ubuntu2204"] %}}
+{{% elif product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel8", "rhel9", "rhel10", "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
 for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf; do
 {{% else %}}
 for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf; do
@@ -41,7 +41,9 @@ SYSCONFIG_FILE="/etc/sysctl.conf"
 #
 # Set runtime for {{{ SYSCTLVAR }}}
 #
-/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="$sysctl_{{{ SYSCTLID }}}_value"
+if {{{ bash_not_bootc_build() }}} ; then
+    /sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="$sysctl_{{{ SYSCTLID }}}_value"
+fi
 
 #
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to appropriate value
@@ -57,7 +59,9 @@ sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
 #
 # Set runtime for {{{ SYSCTLVAR }}}
 #
-/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="{{{ SYSCTLVAL }}}"
+if {{{ bash_not_bootc_build() }}} ; then
+    /sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="{{{ SYSCTLVAL }}}"
+fi
 
 #
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to "{{{ SYSCTLVAL }}}"

@@ -30,6 +30,7 @@ references:
     cis-csc: 1,12,15,16
     cis@sle12: 5.2.18
     cis@sle15: 5.2.18
+    cis@slmicro5: 5.2.18
     cjis: 5.5.6
     cobit5: DSS05.04,DSS05.10,DSS06.10
     cui: 3.1.9
@@ -61,8 +62,10 @@ fixtext: |-
 
 srg_requirement: '{{{ full_name }}} must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a ssh logon.'
 
+{{% if 'ubuntu' not in product %}}
 conflicts:
     - sshd_enable_warning_banner_net
+{{% endif %}}
 
 template:
     name: sshd_lineinfile

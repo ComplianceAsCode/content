@@ -24,11 +24,15 @@
     <unix:path var_ref="var_accounts_users_home_files_permissions_dirs" var_check="at least one"/>
     <unix:filename xsi:nil="true" />
   </unix:file_object>
+  <unix:file_state id="state_accounts_users_home_files_permissions_is_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
   <unix:file_object id="object_accounts_users_home_files_permissions_files" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
                     recurse_file_system="local"/>
     <unix:path var_ref="var_accounts_users_home_files_permissions_dirs" var_check="at least one"/>
     <unix:filename operation="pattern match">^[^\.].*</unix:filename>
+    <filter action="exclude">state_accounts_users_home_files_permissions_is_symlink</filter>
   </unix:file_object>
   <!-- #### creation of state #### -->
   <unix:file_state id="state_accounts_users_home_files_permissions_dirs" version="1" operator='AND'>

@@ -50,7 +50,7 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Deploy
         if: ${{ github.event_name == 'push' && github.repository == 'ComplianceAsCode/content' && github.ref == 'refs/heads/master'  }}
-        uses: JamesIves/github-pages-deploy-action@881db5376404c5c8d621010bcbec0310b58d5e29 # v4.6.8
+        uses: JamesIves/github-pages-deploy-action@15de0f09300eea763baee31dff6c6184995c5f6a # v4.7.2
         with:
           branch: main # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.

@@ -25,9 +25,11 @@ identifiers:
     cce@rhel10: CCE-88164-9
     cce@sle12: CCE-91461-4
     cce@sle15: CCE-85698-9
+    cce@slmicro5: CCE-94010-6
 
 references:
     cis@sle15: 3.5.1.1
+    cis@slmicro5: 3.5.1.1
     disa: CCI-000382,CCI-000366,CCI-002314,CCI-002322
     nist: CM-6(a)
     nist@sle15: CM-7,CM-7.1(iii),CM-7(b),AC-17(1)
@@ -47,10 +49,20 @@ fixtext: |-
 
     {{{ package_install("firewalld") }}}
 
+{{%- if product in [ "sle12", "sle15" ] %}}
+template:
+    name: package_installed_guard_var
+    vars:
+        pkgname: firewalld
+        variable: var_network_filtering_service
+        value: firewalld
+{{%- else %}}
 template:
     name: package_installed
     vars:
         pkgname: firewalld
+{{%- endif %}}
+
 
 srg_requirement:
     {{{ full_name }}} must have the firewalld package installed.

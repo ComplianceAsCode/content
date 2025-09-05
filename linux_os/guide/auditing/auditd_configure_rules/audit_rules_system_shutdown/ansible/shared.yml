@@ -23,6 +23,7 @@
   lineinfile:
     path: "{{ item }}"
     create: True
+    mode: "0600"
     line: "-f {{ var_audit_failure_mode }}"
   loop:
     - "/etc/audit/audit.rules"

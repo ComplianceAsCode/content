@@ -21,19 +21,20 @@ init_system: "systemd"
 # EFI and non-EFI configs are stored in same path, see https://fedoraproject.org/wiki/Changes/UnifyGrubConfig
 
 sshd_distributed_config: "true"
+bootable_containers_supported: "true"
 
 dconf_gdm_dir: "distro.d"
 
 faillock_path: "/var/log/faillock"
 
 # The fingerprints below are retrieved from https://access.redhat.com/security/team/key
-pkg_release: ""
-pkg_version: ""
-aux_pkg_release: ""
-aux_pkg_version: ""
+pkg_release: "4ae0493b"
+pkg_version: "fd431d51"
+aux_pkg_release: "6229229e"
+aux_pkg_version: "5a6340b3"
 
-release_key_fingerprint: ""
-auxiliary_key_fingerprint: ""
+release_key_fingerprint: "567E347AD0044ADE55BA8A5F199E2F91FD431D51"
+auxiliary_key_fingerprint: "7E4624258C406535D56D6F135054E4A45A6340B3"
 
 cpes_root: "../../shared/applicability"
 cpes:

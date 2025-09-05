@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG with GUI for Red Hat Enterprise Linux 8 V2R1.
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V2R2.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -34,7 +34,7 @@ description: 'This profile contains configuration checks that align to the
 extends: null
 hidden: ''
 metadata:
-    version: V2R1
+    version: V2R2
     SMEs:
     - mab879
     - ggbecker
@@ -64,8 +64,6 @@ selections:
 - accounts_password_pam_minclass
 - accounts_password_pam_minlen
 - accounts_password_pam_ocredit
-- accounts_password_pam_pwhistory_remember_password_auth
-- accounts_password_pam_pwhistory_remember_system_auth
 - accounts_password_pam_pwquality_password_auth
 - accounts_password_pam_pwquality_system_auth
 - accounts_password_pam_retry
@@ -263,9 +261,7 @@ selections:
 - grub2_uefi_admin_username
 - grub2_uefi_password
 - grub2_vsyscall_argument
-- harden_sshd_ciphers_openssh_conf_crypto_policy
 - harden_sshd_ciphers_opensshserver_conf_crypto_policy
-- harden_sshd_macs_openssh_conf_crypto_policy
 - harden_sshd_macs_opensshserver_conf_crypto_policy
 - install_smartcard_packages
 - installed_OS_is_vendor_supported
@@ -453,7 +449,7 @@ selections:
 - var_password_pam_remember_control_flag=requisite_or_required
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted
-- var_password_pam_unix_rounds=5000
+- var_password_hashing_min_rounds_login_defs=100000
 - var_password_pam_minlen=15
 - var_password_pam_ocredit=1
 - var_password_pam_dcredit=1

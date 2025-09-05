@@ -1,4 +1,7 @@
-{{%- if product in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204"] or 'rhel' in product %}}  {{%- set perm_x="-F perm=x " %}}
+{{%- set unix_chkpwd_binary="/usr/sbin/unix_chkpwd" %}}
+{{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404"] or 'ol' in families or 'rhel' in product %}}  
+    {{%- set perm_x="-F perm=x " %}}
+    {{%- set unix_chkpwd_binary="/sbin/unix_chkpwd" %}}
 {{%- endif %}}
 
 documentation_complete: true
@@ -12,11 +15,11 @@ description: |-
     configured to use the <tt>augenrules</tt> program to read audit rules during
     daemon startup (the default), add a line of the following form to a file with
     suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-a always,exit -F path=/usr/sbin/unix_chkpwd {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    <pre>-a always,exit -F path={{{ unix_chkpwd_binary }}} {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add a line of the following
     form to <tt>/etc/audit/audit.rules</tt>:
-    <pre>-a always,exit -F path=/usr/sbin/unix_chkpwd {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    <pre>-a always,exit -F path={{{ unix_chkpwd_binary }}} {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by

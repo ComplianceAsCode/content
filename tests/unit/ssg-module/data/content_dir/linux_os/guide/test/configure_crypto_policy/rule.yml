@@ -1,0 +1,46 @@
+documentation_complete: true
+
+title: 'Test Configure System Cryptography Policy'
+
+description: |-
+    This is a modified copy from original rule.yml. For testing purposes only.
+    To configure the system cryptography policy to use ciphers only from the <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt>
+
+rationale: |-
+    Centralized cryptographic policies simplify applying secure ciphers across an operating
+    system and the applications that run on that operating system. Use of weak or untested
+    encryption algorithms undermines the purposes of utilizing encryption to protect data.
+
+severity: high
+
+identifiers:
+    cce@rhel8: CCE-12345-0
+    cce@rhel9: CCE-12345-1
+
+references:
+    disa: CCI-000068,CCI-003123,CCI-002450,CCI-000877,CCI-002418,CCI-001453,CCI-002890
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-17(a),AC-17(2),CM-6(a),MA-4(6),SC-13,SC-12(2),SC-12(3)
+    ospp: FCS_COP.1(1),FCS_COP.1(2),FCS_COP.1(3),FCS_COP.1(4),FCS_CKM.1,FCS_CKM.2,FCS_TLSC_EXT.1
+    srg: SRG-OS-000396-GPOS-00176,SRG-OS-000393-GPOS-00173,SRG-OS-000394-GPOS-00174
+    stigid@ol8: OL08-00-010020
+    stigid@rhel8: RHEL-08-010020
+
+ocil_clause: 'cryptographic policy is not configured or is configured incorrectly'
+
+ocil: |-
+    To verify that cryptography policy has been configured correctly, run the following command:
+    <pre>$ update-crypto-policies --show</pre>
+    The output should return <pre>{{{ xccdf_value("var_system_crypto_policy") }}}</pre>.
+
+warnings:
+    - general: |-
+        The system needs to be rebooted for these changes to take effect.
+
+fixtext: |-
+    Configure {{{ full_name }}} to use system cryptography policy.
+    Run the following command:
+
+    $ sudo update-crypto-policies --set {{{ xccdf_value("var_system_crypto_policy") }}}
+
+srg_requirement: '{{{ full_name }}} must use {{{ xccdf_value("var_system_crypto_policy") }}} for the system cryptography policy.'

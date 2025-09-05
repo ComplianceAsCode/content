@@ -9,7 +9,7 @@ metadata:
 
 reference: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0_1.pdf
 
-title: 'DRAFT - PCI-DSS v4.0.1 Control Baseline for Red Hat Enterprise Linux 10'
+title: 'PCI-DSS v4.0.1 Control Baseline for Red Hat Enterprise Linux 10'
 
 description: |-
     This is a draft profile for experimental purposes.
@@ -57,6 +57,7 @@ selections:
     - '!ensure_firewall_rules_for_open_ports'
     - '!ensure_shadow_group_empty'
     - '!ensure_suse_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!install_PAE_kernel_on_x86-32'
     - '!mask_nonessential_services'
     - '!nftables_ensure_default_deny_policy'
@@ -74,3 +75,4 @@ selections:
     - '!sshd_use_approved_macs'
     - '!sshd_use_approved_ciphers'
     - '!security_patches_up_to_date'
+    - '!kernel_module_dccp_disabled'

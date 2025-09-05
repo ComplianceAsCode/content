@@ -22,7 +22,7 @@ jobs:
                 uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
             -   name: Install deps python
                 # pytest-xdist is used for parallel execution of thin ds test
-                run: pip install pcre2 pytest-xdist -r requirements.txt -r test-requirements.txt
+                run: pip install pcre2==0.4.0 pytest-xdist -r requirements.txt -r test-requirements.txt
             -   name: Build
                 run: ./build_product rhel9 --thin
             -   name: Test

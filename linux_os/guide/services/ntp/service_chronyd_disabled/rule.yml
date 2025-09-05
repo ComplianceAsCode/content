@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'The Chronyd service is disabled'
+
+description: |-
+    {{{ describe_service_disable(service="chrony") }}}
+
+rationale: |-
+    Disabling the <tt>chrony</tt> service ensures that there is
+    only single one time service running.
+
+severity: medium
+
+platform: package[chrony]
+
+{{%- if product in [ "ubuntu2404" ] %}}
+template:
+    name: service_disabled_guard_var
+    vars:
+        packagename: chrony
+        servicename: chrony
+        variable: var_timesync_service
+        value: chronyd
+{{%- else %}}
+template:
+    name: service_disabled
+    vars:
+        packagename: chrony
+        servicename: chronyd
+        servicename@ubuntu2004: chrony
+        servicename@ubuntu2204: chrony
+        servicename@debian12: chrony
+{{%- endif %}}

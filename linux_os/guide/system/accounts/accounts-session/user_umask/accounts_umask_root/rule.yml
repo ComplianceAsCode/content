@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Ensure the Root Bash Umask is Set Correctly'
+
+description: |-
+    To ensure the root user's umask of the Bash shell is set properly,
+    add or correct the <tt>umask</tt> setting in <tt>/root/.bashrc</tt>
+    or <tt>/root/.bashrc</tt> to read as follows:
+    <pre>umask 0027</pre>
+
+rationale: |-
+    The umask value influences the permissions assigned to files when they are created.
+    A misconfigured umask value could result in files with excessive permissions that can be read or
+    written to by unauthorized users.
+
+severity: medium
+
+platform: package[bash]

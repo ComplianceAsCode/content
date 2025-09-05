@@ -5,7 +5,7 @@ metadata:
         - marcusburghardt
         - vojtapolasek
 
-title: 'DRAFT - ANSSI-BP-028 (high)'
+title: 'ANSSI-BP-028 (high)'
 
 description: |-
     This is a draft profile for experimental purposes.
@@ -43,8 +43,9 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     # umask is configured at a different place in RHEL 10
     - '!sudo_add_umask'
-    # Oracle key is not relevant on RHEL 10
+    # Non-Red Hat keys are irrelevant on RHEL 10
     - '!ensure_oracle_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     # this rule is not automated anymore
     - '!security_patches_up_to_date'
     # There is only chrony package on RHEL 10, no ntpd
@@ -79,3 +80,13 @@ selections:
     - '!sssd_enable_pam_services'
     - '!sssd_ldap_configure_tls_reqcert'
     - '!sssd_ldap_start_tls'
+    # These rules are no longer relevant
+    - '!prefer_64bit_os'
+    - '!kernel_config_devkmem'
+    - '!kernel_config_hardened_usercopy_fallback'
+    - '!kernel_config_page_poisoning_no_sanity'
+    - '!kernel_config_page_poisoning_zero'
+    - '!kernel_config_page_table_isolation'
+    - '!kernel_config_refcount_full'
+    - '!kernel_config_retpoline'
+    - '!kernel_config_security_writable_hooks'

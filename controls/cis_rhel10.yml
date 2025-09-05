@@ -40,56 +40,6 @@ controls:
       - var_authselect_profile=sssd
       - enable_authselect
 
-  - id: 1.1.1.1
-    title: Ensure cramfs kernel module is not available (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: Review the availability of this module when the product is out.
-    rules:
-      - kernel_module_cramfs_disabled
-
-  - id: 1.1.1.2
-    title: Ensure freevxfs kernel module is not available (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: Review the availability of this module when the product is out.
-    rules:
-      - kernel_module_freevxfs_disabled
-
-  - id: 1.1.1.3
-    title: Ensure hfs kernel module is not available (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: Review the availability of this module when the product is out.
-    rules:
-      - kernel_module_hfs_disabled
-
-  - id: 1.1.1.4
-    title: Ensure hfsplus kernel module is not available (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: Review the availability of this module when the product is out.
-    rules:
-      - kernel_module_hfsplus_disabled
-
-  - id: 1.1.1.5
-    title: Ensure jffs2 kernel module is not available (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: Review the availability of this module when the product is out.
-    rules:
-      - kernel_module_jffs2_disabled
-
   - id: 1.1.1.6
     title: Ensure squashfs kernel module is not available (Automated)
     levels:
@@ -979,18 +929,6 @@ controls:
       - service_httpd_disabled
     # rule would be nice to disable nginx service
 
-  - id: 2.1.19
-    title: Ensure xinetd services are not in use (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: Review the availability of this package when the product is out.
-    rules:
-      - package_xinetd_removed
-    related_rules:
-      - service_xinetd_disabled
-
   - id: 2.1.20
     title: Ensure X window server services are not in use (Automated)
     levels:
@@ -1000,7 +938,7 @@ controls:
       Review the availability of xorg-x11-server-common package when the product is out.
       The rule also configures correct run level to prevent unbootable system.
     rules:
-      - package_xorg-x11-server-common_removed
+      - package_gdm_removed
       - xwindows_runlevel_target
 
   - id: 2.1.21
@@ -1104,6 +1042,7 @@ controls:
       - l1_workstation
     status: automated
     rules:
+      - package_cron_installed
       - service_crond_enabled
 
   - id: 2.4.1.2
@@ -1224,16 +1163,6 @@ controls:
     rules:
       - service_bluetooth_disabled
 
-  - id: 3.2.1
-    title: Ensure dccp kernel module is not available (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    notes: Review the availability of this module when the product is out.
-    rules:
-      - kernel_module_dccp_disabled
-
   - id: 3.2.2
     title: Ensure tipc kernel module is not available (Automated)
     levels:
@@ -1242,15 +1171,6 @@ controls:
     status: automated
     rules:
       - kernel_module_tipc_disabled
-
-  - id: 3.2.3
-    title: Ensure rds kernel module is not available (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - kernel_module_rds_disabled
 
   - id: 3.2.4
     title: Ensure sctp kernel module is not available (Automated)
@@ -2718,7 +2638,7 @@ controls:
       - l2_workstation
     status: automated
     rules:
-      - audit_rules_mac_modification
+      - audit_rules_mac_modification_etc_selinux
       - audit_rules_mac_modification_usr_share
 
   - id: 6.3.3.15
@@ -3119,6 +3039,5 @@ controls:
       - var_user_initialization_files_regex=all_dotfiles
       - no_forward_files
       - no_netrc_files
-      - no_rsh_trust_files
     related_rules:
       - accounts_users_netrc_file_permissions

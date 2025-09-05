@@ -1,6 +1,6 @@
 #!/bin/bash
 
-{{% if product == "ubuntu2204" %}}
+{{% if product == "ubuntu2204", "ubuntu2404" %}}
 sshd_approved_macs="hmac-sha2-512,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha2-256-etm@openssh.com"
 {{% else %}}
 sshd_approved_macs="hmac-sha2-512,hmac-sha2-256"

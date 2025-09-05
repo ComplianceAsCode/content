@@ -6,7 +6,7 @@ metadata:
 
 reference: https://www.hhs.gov/hipaa/for-professionals/index.html
 
-title: 'DRAFT - Health Insurance Portability and Accountability Act (HIPAA)'
+title: 'Health Insurance Portability and Accountability Act (HIPAA)'
 
 description: |-
     This is a draft profile for experimental purposes.
@@ -32,6 +32,7 @@ selections:
     - '!dconf_gnome_remote_access_encryption'
     - '!ensure_suse_gpgkey_installed'
     - '!ensure_fedora_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!grub2_uefi_admin_username'
     - '!grub2_uefi_pass'
     - '!service_ypbind_disabled'

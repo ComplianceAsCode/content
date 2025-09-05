@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /etc/security/opasswd File'
+
+description:  |-
+    {{{ describe_file_permissions(file="/etc/security/opasswd", perms="0600") }}}
+
+rationale: |-
+    The <tt>/etc/security/opasswd</tt> file stores old passwords to prevent
+    password reuse. Protection of this file is critical for system security.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/security/opasswd", perms="0600") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/security/opasswd", perms="0600") }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/security/opasswd", mode="0600") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/security/opasswd
+        filemode: '0600'

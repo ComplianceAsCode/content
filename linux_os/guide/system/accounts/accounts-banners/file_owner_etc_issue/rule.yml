@@ -21,10 +21,12 @@ identifiers:
     cce@rhel10: CCE-88544-2
     cce@sle12: CCE-92234-4
     cce@sle15: CCE-91356-6
+    cce@slmicro5: CCE-94057-7
 
 references:
     cis@sle12: 1.8.1.5
     cis@sle15: 1.8.1.5
+    cis@slmicro5: 1.8.1.5
     cis@ubuntu2004: 1.8.1.5
     cis@ubuntu2204: 1.7.5
 
@@ -33,7 +35,7 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/issue", owner="root") }}}'
 ocil: |-
     {{{ ocil_file_owner(file="/etc/issue", owner="root") }}}
 
-{{%- if product in ['sle15'] %}}
+{{%- if product in ['sle15', 'slmicro5'] %}}
 template:
     name: file_owner
     vars:

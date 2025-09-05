@@ -24,11 +24,13 @@ identifiers:
     cce@rhel10: CCE-89188-7
     cce@sle12: CCE-92223-7
     cce@sle15: CCE-91347-5
+    cce@slmicro5: CCE-94049-4
 
 references:
     cis-csc: 1,11,12,14,15,16,18,3,5
     cis@sle12: 1.5.3
     cis@sle15: 1.5.3
+    cis@slmicro5: 1.5.3
     cobit5: DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.06,DSS06.10
     cui: 3.1.1,3.4.5
     disa: CCI-000213
@@ -50,7 +52,7 @@ ocil: |-
     To check if authentication is required for emergency mode, run the following command:
     <pre>$ grep sulogin /usr/lib/systemd/system/emergency.service</pre>
     The output should be similar to the following, and the line must begin with
-    {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15"] -%}}
+    {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15", "slmicro5"] -%}}
         ExecStart and /usr/lib/systemd/systemd-sulogin-shell.
         <pre>ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency</pre>
     {{%- else -%}}
@@ -78,7 +80,7 @@ fixtext: |-
     Configure {{{ full_name }}} to require authentication for system emergency mode.
 
     Add or edit the following line in "/usr/lib/systemd/system/emergency.service":
-    {{% if product in ["fedora", "ol8", "ol9", "kylinserver10", "openeuler2203", "rhel8", "rhel9", "sle12", "sle15"] -%}}
+    {{% if product in ["fedora", "ol8", "ol9", "kylinserver10", "openeuler2203", "rhel8", "rhel9", "sle12", "sle15", "slmicro5"] -%}}
     ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency
     {{%- else -%}}
     ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"

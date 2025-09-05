@@ -1,14 +1,15 @@
 documentation_complete: true
 
+{{% if 'ubuntu' in product %}}
+{{% set package_name = "apache2" %}}
+{{% else %}}
+{{% set package_name = "httpd" %}}
+{{% endif %}}
 
-title: 'Uninstall httpd Package'
+title: 'Uninstall {{{ package_name }}} Package'
 
 description: |-
-    {{% if 'ubuntu' not in product %}}
-    {{{ describe_package_remove(package="httpd") }}}
-    {{% else %}}
-    {{{ describe_package_remove(package="apache2") }}}
-    {{% endif %}}
+    {{{ describe_package_remove(package=package_name) }}}
 
 rationale: |-
     If there is no need to make the web server software available,
@@ -22,11 +23,13 @@ identifiers:
     cce@rhel10: CCE-89436-0
     cce@sle12: CCE-91643-7
     cce@sle15: CCE-91286-5
+    cce@slmicro5: CCE-93918-1
 
 references:
     cis-csc: 11,14,3,9
     cis@sle12: 2.2.11
     cis@sle15: 2.2.11
+    cis@slmicro5: 2.2.11
     cis@ubuntu2004: 2.2.10
     cis@ubuntu2204: 2.2.9
     cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS06.06
@@ -36,17 +39,9 @@ references:
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
 
-{{% if 'ubuntu' not in product %}}
-{{{ complete_ocil_entry_package(package="httpd") }}}
-{{% else %}}
-{{{ complete_ocil_entry_package(package="apache2") }}}
-{{% endif %}}
+{{{ complete_ocil_entry_package(package=package_name) }}}
 
 template:
     name: package_removed
     vars:
-        pkgname: httpd
-        pkgname@ubuntu1604: apache2
-        pkgname@ubuntu1804: apache2
-        pkgname@ubuntu2004: apache2
-        pkgname@ubuntu2204: apache2
+        pkgname: {{{ package_name }}}

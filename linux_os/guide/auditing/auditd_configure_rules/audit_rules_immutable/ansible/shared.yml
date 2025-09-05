@@ -22,7 +22,7 @@
     path: "{{ item }}"
     create: True
     line: "-e 2"
-    mode: o-rwx
+    mode: g-rwx,o-rwx
   loop:
     - "/etc/audit/audit.rules"
     - "/etc/audit/rules.d/immutable.rules"

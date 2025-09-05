@@ -1,10 +1,10 @@
-# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = low
 
-{{% if product != "ol8" %}}
+{{% if product not in ["ol8", "ubuntu2404"] %}}
 {{% set egid_arg = " -F egid=0" %}}
 {{% set euid_arg = " -F euid=0" %}}
 {{% endif %}}
@@ -13,7 +13,7 @@
 {{% set rx_b32 = "-F[\s]+arch=b32[\s]+" %}}
 {{% set rx_b64 = "-F[\s]+arch=b64[\s]+" %}}
 
-{{% if product == "ol8" %}}
+{{% if product in ["ol8", "ubuntu2404"] %}}
 {{% set rx_uid = "-S[\s]+execve[\s]+-C[\s]+uid!=euid[\s]+" %}}
 {{% set rx_gid = "-S[\s]+execve[\s]+-C[\s]+gid!=egid[\s]+" %}}
 {{% else %}}
@@ -43,9 +43,10 @@
     path: /etc/audit/rules.d/privileged.rules
     line: "{{  item.rule  }}"
     regexp: "{{ item.regex }}"
+    mode: "0600"
     create: yes
   when:
-    - ('"auditd.service" in ansible_facts.services' or 
+    - ('"auditd.service" in ansible_facts.services' or
         '"augenrules.service" in ansible_facts.services')
   register: augenrules_audit_rules_privilege_function_update_result
   with_items: "{{ suid_audit_rules }}"
@@ -57,7 +58,7 @@
     regexp: "{{ item.regex }}"
     create: yes
   when:
-    - ('"auditd.service" in ansible_facts.services' or 
+    - ('"auditd.service" in ansible_facts.services' or
         '"augenrules.service" in ansible_facts.services')
   register: auditctl_audit_rules_privilege_function_update_result
   with_items: "{{ suid_audit_rules }}"

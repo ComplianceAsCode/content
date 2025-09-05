@@ -9,6 +9,29 @@ this easier: `.pyenv.sh`. To set `PYTHONPATH` correctly for the current
 shell, simply call `source .pyenv.sh`. For more information on how to
 use this script, please see the comments at the top of the file.
 
+It is also possible to install the module with `pip`.
+In this case it is recommended to install it within a Python virtual environment.
+Please note that this possibility was added after releasing the 0.1.75 version and until the release 0.1.76 is out it can only be installed from `master` branch.
+To install the ssg module currently present in the master branch, run the following command:
+
+```bash
+pip install git+https://github.com/ComplianceasCode/content
+```
+
+It is also possible to install an ssg library version associated with a certain release.
+This is recommended because the library is not stable and it can change unexpectedly when installing from master.
+This is an example command which installs the library associated with the 0.1.76 release:
+
+```bash
+pip install git+https://github.com/ComplianceasCode/content@v0.1.76
+```
+
+The installed package is named `ssg`.
+Please note that the name of the package will very probably change in the future.
+Therefore, if you install the module this way, please pay close attention to the release notes.
+It is worth emphasizing here that stability of the module is not guaranteed.
+Currently, it is used mainly for building the content and it is therefore modified predominantly based on needs of the content build system.
+
 ## Profile Statistics and Utilities
 
 The `profile_tool.py` tool displays XCCDF profile statistics. It can

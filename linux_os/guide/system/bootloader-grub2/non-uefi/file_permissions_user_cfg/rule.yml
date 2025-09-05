@@ -35,7 +35,7 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file=grub2_boot_path ~ "/user.cfg
 ocil: |-
     {{{ ocil_file_permissions(file=grub2_boot_path ~ "/user.cfg", perms="-rw-------") }}}
 
-platform: machine
+platform: not bootc
 
 template:
     name: file_permissions

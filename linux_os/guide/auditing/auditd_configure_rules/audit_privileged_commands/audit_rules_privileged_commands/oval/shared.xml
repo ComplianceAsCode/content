@@ -1,3 +1,4 @@
+{{% if product not in ['ubuntu2404'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Audit rules about the information on the use of privileged commands are enabled.") }}}
@@ -5,26 +6,50 @@
       <criteria operator="AND">
         <extend_definition definition_ref="audit_rules_augenrules"
           comment="audit augenrules format is used"/>
-        <criterion test_ref="test_augenrules_all_priv_cmds_covered"
-          comment="augenrules cover all privileged commands on the system"/>
-        <criterion test_ref="test_augenrules_count_matches_system_priv_cmds"
-          comment="count of augenrules for priv cmds matches count of priv cmds in the system"/>
+        <criteria operator="OR">
+          <criteria operator="AND">
+            <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" />
+            <criterion test_ref="test_augenrules_all_priv_cmds_covered_bootc"
+              comment="augenrules cover all privileged commands on the system"/>
+            <criterion test_ref="test_augenrules_count_matches_system_priv_cmds_bootc"
+              comment="count of augenrules for priv cmds matches count of priv cmds in the system"/>
+          </criteria>
+          <criteria operator="AND">
+            <extend_definition comment="The system isn't RHEL Image Mode" definition_ref="bootc" negate="true" />
+            <criterion test_ref="test_augenrules_all_priv_cmds_covered"
+              comment="augenrules cover all privileged commands on the system"/>
+            <criterion test_ref="test_augenrules_count_matches_system_priv_cmds"
+              comment="count of augenrules for priv cmds matches count of priv cmds in the system"/>
+          </criteria>
+        </criteria>
       </criteria>
 
       <criteria operator="AND">
         <extend_definition definition_ref="audit_rules_auditctl"
           comment="audit auditctl format is used"/>
-        <criterion test_ref="test_auditctl_all_priv_cmds_covered"
-          comment="auditctl covers all privileged commands on the system"/>
-        <criterion test_ref="test_auditctl_count_matches_system_priv_cmds"
-          comment="count of auditctl for priv cmds matches count of priv cmds in the system"/>
+        <criteria operator="OR">
+          <criteria operator="AND">
+            <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" />
+            <criterion test_ref="test_auditctl_all_priv_cmds_covered"
+              comment="auditctl covers all privileged commands on the system"/>
+            <criterion test_ref="test_auditctl_count_matches_system_priv_cmds"
+              comment="count of auditctl for priv cmds matches count of priv cmds in the system"/>
+          </criteria>
+          <criteria operator="AND">
+            <extend_definition comment="The system isn't RHEL Image Mode" definition_ref="bootc" negate="true" />
+            <criterion test_ref="test_auditctl_all_priv_cmds_covered"
+              comment="auditctl covers all privileged commands on the system"/>
+            <criterion test_ref="test_auditctl_count_matches_system_priv_cmds"
+              comment="count of auditctl for priv cmds matches count of priv cmds in the system"/>
+          </criteria>
+        </criteria>
       </criteria>
     </criteria>
   </definition>
 
   <!-- First define OVAL entities that can be reused across tests below -->
   <linux:partition_state id="state_audit_rules_privileged_commands_dev_partitons" version="1">
-    <linux:device operation="pattern match">^/dev/.*$</linux:device>
+    <linux:device operation="pattern match">^(/dev/.*|composefs)$</linux:device>
   </linux:partition_state>
 
   <linux:partition_state id="state_audit_rules_privileged_commands_nosuid_partitons" version="1">
@@ -64,6 +89,11 @@
     <unix:filepath operation="pattern match">^/var/tmp/dracut.*</unix:filepath>
   </unix:file_state>
 
+  <unix:file_state id="state_audit_rules_privileged_commands_sysroot" version="1"
+        comment="Used to filter out all files in the /sysroot directory">
+    <unix:filepath operation="pattern match">^/sysroot/.*$</unix:filepath>
+  </unix:file_state>
+
   <!-- This file_object will only find privileged commands located only in file systems that allow
        their execution. The recurse_file_system parameter is set to defined in order to make sure
        the probe doesn't leave the scope of that mount point. For example, when probing "/", the
@@ -79,10 +109,24 @@
     <filter action="include">state_setuid_or_setgid_set</filter>
     <filter action="exclude">state_dracut_tmp_files</filter>
   </unix:file_object>
+  <unix:file_object id="object_audit_rules_privileged_commands_bootc" version="1"
+    comment="Files with setuid or setgid permission in file systems that allow their execution">
+    <unix:behaviors recurse="directories" recurse_direction="down"
+      recurse_file_system="defined" max_depth="-1"/>
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename operation="pattern match">^\w+</unix:filename>
+    <filter action="include">state_setuid_or_setgid_set</filter>
+    <filter action="exclude">state_dracut_tmp_files</filter>
+    <filter action="exclude">state_audit_rules_privileged_commands_sysroot</filter>
+  </unix:file_object>
 
   <local_variable id="var_audit_rules_privileged_commands_priv_cmds" version="1"
     datatype="string" comment="Filepath of all privileged commands found in the system">
     <object_component item_field="filepath" object_ref="object_audit_rules_privileged_commands"/>
+  </local_variable>
+  <local_variable id="var_audit_rules_privileged_commands_priv_cmds_bootc" version="1"
+    datatype="string" comment="Filepath of all privileged commands found in the system">
+    <object_component item_field="filepath" object_ref="object_audit_rules_privileged_commands_bootc"/>
   </local_variable>
 
   <local_variable id="var_audit_rules_privileged_commands_priv_cmds_count" version="1"
@@ -92,10 +136,21 @@
         object_ref="object_audit_rules_privileged_commands"/>
     </count>
   </local_variable>
+  <local_variable id="var_audit_rules_privileged_commands_priv_cmds_count_bootc" version="1"
+    datatype="int" comment="Count all privileged commands present in the system">
+    <count>
+      <object_component item_field="filepath"
+        object_ref="object_audit_rules_privileged_commands_bootc"/>
+    </count>
+  </local_variable>
 
   <ind:variable_object id="object_audit_rules_privileged_commands_priv_cmds_count" version="1"
     comment="Number of all privileged commands in the system, regardless of audit rules.">
     <ind:var_ref>var_audit_rules_privileged_commands_priv_cmds_count</ind:var_ref>
+  </ind:variable_object>
+  <ind:variable_object id="object_audit_rules_privileged_commands_priv_cmds_count_bootc" version="1"
+    comment="Number of all privileged commands in the system, regardless of audit rules.">
+    <ind:var_ref>var_audit_rules_privileged_commands_priv_cmds_count_bootc</ind:var_ref>
   </ind:variable_object>
 
   <!-- The intention of the first test is to ensure that exists at least one rule for each
@@ -114,6 +169,10 @@
     <ind:subexpression datatype="string" operation="not equal" var_check="all"
       var_ref="var_audit_rules_privileged_commands_priv_cmds"/>
   </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_unprivileged_commands_bootc" version="1">
+    <ind:subexpression datatype="string" operation="not equal" var_check="all"
+      var_ref="var_audit_rules_privileged_commands_priv_cmds_bootc"/>
+  </ind:textfilecontent54_state>
 
   <!-- augenrules -->
   <ind:textfilecontent54_object id="object_priv_cmds_from_augenrules" version="1">
@@ -123,10 +182,21 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
     <filter action="exclude">state_unprivileged_commands</filter>
   </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="object_priv_cmds_from_augenrules_bootc" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match"
+      var_ref="var_audit_rules_privileged_commands_rule_regex"/>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <filter action="exclude">state_unprivileged_commands_bootc</filter>
+  </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_priv_cmds_from_system" version="1">
     <ind:subexpression datatype="string" operation="pattern match" var_check="at least one"
       var_ref="var_audit_rules_privileged_commands_priv_cmds"/>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_priv_cmds_from_system_bootc" version="1">
+    <ind:subexpression datatype="string" operation="pattern match" var_check="at least one"
+      var_ref="var_audit_rules_privileged_commands_priv_cmds_bootc"/>
   </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_test id="test_augenrules_all_priv_cmds_covered" version="1"
@@ -135,6 +205,12 @@
     <ind:object object_ref="object_priv_cmds_from_augenrules" />
     <ind:state state_ref="state_priv_cmds_from_system" />
   </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test id="test_augenrules_all_priv_cmds_covered_bootc" version="1"
+    check="all" check_existence="all_exist"
+    comment="There is one augenrules rule for each privileged command on the system.">
+    <ind:object object_ref="object_priv_cmds_from_augenrules_bootc" />
+    <ind:state state_ref="state_priv_cmds_from_system_bootc" />
+  </ind:textfilecontent54_test>
 
   <local_variable id="var_priv_cmds_from_augenrules_count" version="1"
     datatype="int" comment="Count privileged commands found in audit rules in augenrules format">
@@ -142,10 +218,20 @@
       <object_component item_field="subexpression" object_ref="object_priv_cmds_from_augenrules"/>
     </count>
   </local_variable>
+  <local_variable id="var_priv_cmds_from_augenrules_count_bootc" version="1"
+    datatype="int" comment="Count privileged commands found in audit rules in augenrules format">
+    <count>
+      <object_component item_field="subexpression" object_ref="object_priv_cmds_from_augenrules_bootc"/>
+    </count>
+  </local_variable>
 
   <ind:variable_state id="state_priv_cmds_from_augenrules_count" version="1">
     <ind:value datatype="int" operation="equals" var_check="at least one"
       var_ref="var_priv_cmds_from_augenrules_count"/>
+  </ind:variable_state>
+  <ind:variable_state id="state_priv_cmds_from_augenrules_count_bootc" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+      var_ref="var_priv_cmds_from_augenrules_count_bootc"/>
   </ind:variable_state>
 
   <ind:variable_test id="test_augenrules_count_matches_system_priv_cmds" version="1"
@@ -153,6 +239,12 @@
     comment="Count of augenrules for priv cmds matches the count of priv cmds in the system">
     <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count"/>
     <ind:state state_ref="state_priv_cmds_from_augenrules_count"/>
+  </ind:variable_test>
+  <ind:variable_test id="test_augenrules_count_matches_system_priv_cmds_bootc" version="1"
+    check="all" check_existence="all_exist"
+    comment="Count of augenrules for priv cmds matches the count of priv cmds in the system">
+    <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count_bootc"/>
+    <ind:state state_ref="state_priv_cmds_from_augenrules_count_bootc"/>
   </ind:variable_test>
 
   <!-- auditctl -->
@@ -163,12 +255,25 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
     <filter action="exclude">state_unprivileged_commands</filter>
   </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="object_priv_cmds_from_auditctl_bootc" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match"
+      var_ref="var_audit_rules_privileged_commands_rule_regex"/>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <filter action="exclude">state_unprivileged_commands_bootc</filter>
+  </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test id="test_auditctl_all_priv_cmds_covered" version="1"
     check="all" check_existence="all_exist"
     comment="There is one auditctl rule for each privileged command on the system.">
     <ind:object object_ref="object_priv_cmds_from_auditctl"/>
     <ind:state state_ref="state_priv_cmds_from_system"/>
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test id="test_auditctl_all_priv_cmds_covered_bootc" version="1"
+    check="all" check_existence="all_exist"
+    comment="There is one auditctl rule for each privileged command on the system.">
+    <ind:object object_ref="object_priv_cmds_from_auditctl_bootc"/>
+    <ind:state state_ref="state_priv_cmds_from_system_bootc"/>
   </ind:textfilecontent54_test>
 
   <local_variable id="var_priv_cmds_from_auditctl_count" version="1"
@@ -177,10 +282,20 @@
       <object_component object_ref="object_priv_cmds_from_auditctl" item_field="subexpression"/>
     </count>
   </local_variable>
+  <local_variable id="var_priv_cmds_from_auditctl_count_bootc" version="1"
+    datatype="int" comment="Count privileged commands found in audit rules in auditctl format">
+    <count>
+      <object_component object_ref="object_priv_cmds_from_auditctl_bootc" item_field="subexpression"/>
+    </count>
+  </local_variable>
 
   <ind:variable_state id="state_priv_cmds_from_auditctl_count" version="1">
     <ind:value datatype="int" operation="equals" var_check="at least one"
       var_ref="var_priv_cmds_from_auditctl_count"/>
+  </ind:variable_state>
+  <ind:variable_state id="state_priv_cmds_from_auditctl_count_bootc" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+      var_ref="var_priv_cmds_from_auditctl_count_bootc"/>
   </ind:variable_state>
 
   <ind:variable_test id="test_auditctl_count_matches_system_priv_cmds" version="1"
@@ -189,4 +304,11 @@
     <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count" />
     <ind:state state_ref="state_priv_cmds_from_auditctl_count" />
   </ind:variable_test>
+  <ind:variable_test id="test_auditctl_count_matches_system_priv_cmds_bootc" version="1"
+    check="all" check_existence="all_exist"
+    comment="Count of auditctl rules for priv cmds matches the count of priv cmds in the system">
+    <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count_bootc" />
+    <ind:state state_ref="state_priv_cmds_from_auditctl_count_bootc" />
+  </ind:variable_test>
 </def-group>
+{{% endif %}}

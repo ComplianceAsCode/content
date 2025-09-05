@@ -355,17 +355,31 @@ controls:
     levels:
     - standard
     description: >-
-      The sources of images that have been classified as trusted and SHOULD be adequately
-      documented along with the corresponding reasons. In addition, the process of how images or
+      (1) The sources of images that have been classified as trusted and SHOULD be adequately
+      documented along with the corresponding reasons. (2) In addition, the process of how images or
       the software components contained in an image are obtained from trusted sources and
       eventually deployed to a productive environment SHOULD be adequately documented.
-      Images used SHOULD have metadata that makes their function and history traceable. Digital
+      (3) Images used SHOULD have metadata that makes their function and history traceable. (4) Digital
       signatures SHOULD secure each image against modification.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
-
+      Section 1: The source of images can be restricted by configuring the allowed registries.
+      In addition, this requirement must be implemented organizationally.
+      Section 2: This requirement must be implemented organizationally.
+      Section 3: This requirement is solved using image labels. Red Hat Images contain the
+      labels io.k8s.description, summary, vender, version, url, vcs-ref and vcs-type,
+      through which the delivered images are transparent in their function and history.
+      For internal images, the existence of the labels can be ensured during application
+      development.
+      The existence of the corresponding labels can be ensured via ACS.
+      Section 4: OpenShift can be configured to assign a digital signature to each approved registry.
+      OpenShift then only executes images from this registry that are secured using this signature.
+    status: partial
+    rules:
+      # Section 1
+      - ocp_allowed_registries
+      - ocp_allowed_registries_for_import
+      # Section 4
+      - reject_unsigned_images_by_default
 
   - id: SYS.1.6.A13
     title: Release of Images
@@ -375,9 +389,14 @@ controls:
       All images for productive operation SHOULD undergo a test and release process in the same
       way as software products in accordance with module OPS.1.1.6 Software Tests and Approvals
     notes: >-
-      ToDo
+      This requirement must be solved organizationally.
+      Note: OpenShift offers various CI/CD solutions that can be used for automation.
+      OpenShift Pipelines (Tekton-based) and traditional Jenkins are available directly in OpenShift.
+      If the user uses gitlab-ci or github Actions, the runners can be executed in OpenShift.
+      If the release process contains specific artifacts such as if you require SBOMs
+      or the ability to statically analyze Dockerfiles, Quay and ACS can provide the necessary functionality.
     status: manual
-    #rules:
+    rules: []
 
   - id: SYS.1.6.A14
     title: Updating Images
@@ -408,28 +427,86 @@ controls:
     levels:
     - standard
     description: >-
-      Resources on the host system such as CPU, volatile and persistent memory, and network
-      bandwidth SHOULD be appropriately reserved and limited for each container. How the
+      (1) Resources on the host system such as CPU, volatile and persistent memory, and network
+      bandwidth SHOULD be appropriately reserved and limited for each container. (2) How the
       system should react if these limits are exceeded SHOULD be defined and documented.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: OpenShift supports the configuration of quotas for a project (client).
+      Applications can have their resources appropriately limited using limits/requests.
+      Network bandwidth is limited at the pod level and can be determined separately according
+      to incoming and outgoing network bandwidth. In addition, outgoing traffic (egress) can be
+      marked at the namespace level with differentiated services code point (DSCP) classifications
+      in order to assign quality of service classes to the outgoing packets in the physical network.
+      Section 2: This requirement must be implemented organizationally.
+      Note: The behavior of OpenShift completely replicates the standard behavior of Kubernetes.
+      If CPU limits are exceeded, the process is slowed down. If volatile memory is exceeded,
+      the process is stopped and restarted by the scheduler. The persistent memory management
+      is responsible for exceeding the persistent memory - OpenShift will not enforce or limit
+      anything here. Compliance with the limited network bandwidth is enforced by dropping
+      packets that exceed the limit.
+    status: automated
+    rules:
+      # Section 1
+      - project_config_and_template_resource_quota
+      - project_template_resource_quota
+      - resource_requests_limits_in_daemonset
+      - resource_requests_limits_in_deployment
+      - resource_requests_limits_in_statefulset
+      - resource_requests_quota
+      - resource_requests_quota_cluster
+      - resource_requests_quota_per_project
+      - configure_network_bandwidth
 
   - id: SYS.1.6.A16
     title: Administrative Remote Access to Containers
     levels:
     - standard
     description: >-
-      In principle, administrative access from a container to the container host and vice versa
-      SHOULD be considered as administrative remote access. Remote administrative access
-      SHOULD NOT be established from a container to the container host. Application containers
-      SHOULD NOT contain remote maintenance access points. Administrative access to
+      (1)In principle, administrative access from a container to the container host and vice versa
+      SHOULD be considered as administrative remote access. (2) Remote administrative access
+      SHOULD NOT be established from a container to the container host. (3) Application containers
+      SHOULD NOT contain remote maintenance access points. (4) Administrative access to
       application containers SHOULD always be carried out via the container runtime.
     notes: >-
-      ToDo
+      Section 1: Application containers can only access administrative services remotely.
+      Privileged containers can gain access to the host, the host's file system, or the host's network.
+      This is necessary, for example, for the infrastructure services of OpenShift (ingress router).
+      Normal applications (application containers) may not receive such permissions.
+
+      Section 2: This requirement must be partially implemented organizationally and
+      should be part of the guideline defined in SYS.1.6.A10. There may be exceptions for applications
+      that should/need to make configurations to Kubernetes resources. This means they have
+      administrative remote access to the corresponding Kubernetes resources.
+      Remote access is controlled by Kubernetes and backup takes place via the Kubernetes
+      functionalities (see module APP.4.4). The operating system including Mandatory Access Control
+      is optimized as a runtime environment for Kubernetes. In general, it is possible to limit
+      the provision/post-installation of remote access programs in the container.
+      Also the container runtime security tools can detect, alert and remediate,
+      if remote access daemon processes such as SSHD are running in a container.
+
+      Section 3: This requirement should also be included in the policy described in SYS.1.6.A10.
+      OpenShift only allows access to the configured ports. A container that provides remote maintenance
+      access to these ports may not be released. Application containers should be administered
+      exclusively via the container runtime. Using a policy, known remote access ports
+      (e.g. 22, RDP, etc.) can be reported via ACS and their use prevented.
+
+      Section 4: This is standard in OpenShift environments. OpenShift offers a terminal login
+      via the oc administration tool. Communication runs via the control plane to the container
+      and is both authenticated and authorized.
     status: manual
-    #rules:
+    rules:
+      #  Section 2:
+      - scc_drop_container_capabilities
+      - scc_limit_container_allowed_capabilities
+      - scc_limit_host_dir_volume_plugin
+      - scc_limit_host_ports
+      - scc_limit_ipc_namespace
+      - scc_limit_net_raw_capability
+      - scc_limit_network_namespace
+      - scc_limit_privilege_escalation
+      - scc_limit_privileged_containers
+      - scc_limit_process_id_namespace
+      - scc_limit_root_containers
 
   - id: SYS.1.6.A17
     title: Running Containers Without Privileges
@@ -601,54 +678,79 @@ controls:
     levels:
     - elevated
     description: >-
-      In order to have containers available for later investigation in case they are needed, an image
+      (1) In order to have containers available for later investigation in case they are needed, an image
       of each container's state SHOULD be created according to specified rules.
     notes: >-
-      ToDo
+      The OpenShift container runtime environment used does not provide a function for creating a memory
+      image of a running container.
+
+      The running containers can be listed and different parameters can be queried and saved for them. 
+      Further data (such as running processes) can be queried via the host. Using the operating system, 
+      memory dumps (core dump) or file system data (ephemeral and persistent) can also be backed up.
+
+      To fully address the requirement and automatically capture an image of a container based on rules,
+      one needs to utilize an additional 3rd Party solution.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A23
-    title: Compile options for various kernel behaviors
+    title: Container Immutability
     levels:
     - elevated
     description: >-
-      Containers SHOULD not be able to change their file system during runtime. File systems
-      SHOULD not be integrated with write permissions.
+      (1) Containers SHOULD not be able to change their file system during runtime.
+      (2) File systems SHOULD not be integrated with write permissions.
     notes: >-
-      ToDo
+      Section 1: This requirement must be implemented organizationally.
+      Note: By default, Red Hat recommends building containers so that the runtime UID does not have write 
+      permissions in the container. If the file system is changed (e.g. for a file system-based cache),
+      this change will be lost when you restart, as the unchangeable image will be loaded again.
+
+      Section 2: By default, local file systems are not mounted in containers. Containers access PVs that are 
+      integrated via OpenShift. Alternatively, ephemeral volumes can be used as volatile storage.
+      The requirement to mount file systems without write permissions must be implemented organizationally:
+      - The container's root file system can be restricted to ReadOnly via the SecurityContext.
+      - Every container's VolumeMount can be specified as read only.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A24
     title: Host-Based Attack Detection
     levels:
     - elevated
     description: >-
-      The behaviour of containers and the applications or services running in them SHOULD be
-      monitored. Deviations from normal behaviour SHOULD be noticed and reported. The reports
+      (1) The behaviour of containers and the applications or services running in them SHOULD be
+      monitored. (2) Deviations from normal behaviour SHOULD be noticed and reported. (3) The reports
       SHOULD be handled appropriately in a centralised process for security incident handling.
-      At minimum, the behaviour to be monitored SHOULD cover:
-      • Network connections
-      • Created processes
-      • File system access attempts
-      • Kernel requests (syscalls)
+      (4) At minimum, the behaviour to be monitored SHOULD cover:
+        (5) • Network connections
+        (6) • Created processes
+        (7) • File system access attempts
+        (8) • Kernel requests (syscalls)
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      The requirement is not met by OpenShift itself but requires the implementation of additional 
+      container runtime security solutions such as Red Hat Advanced Cluster Security (ACS).
+
+      Note: At the host level, Red Hat CoreOS supports auditd, which is enabled by default. 
+      Policies for auditd can include network connections, created processes, file accesses and syscalls. 
+      Red Hat CoreOS provides many sample policies that cover all of the areas described.
+    status: does not meet
 
   - id: SYS.1.6.A25
     title: High Availability of Containerised Applications
     levels:
     - elevated
     description: >-
-      In cases involving containerised applications with high availability requirements, the
+      (1) In cases involving containerised applications with high availability requirements, the
       necessary level of availability SHOULD be defined (e.g. redundant at the host level)
     notes: >-
-      ToDo
+      OpenShift offers multiple technical options by default (replicas, pod anti-affinities,
+      topology spread constraints). The applications needs to support this high availability.
+      Clusters can also be distributed across multiple fire zones (failure zones) within a region/location.
+      Multi-Cluster/Multi-Region distribution can be considered additionally, if required.
+      
+      The decision of the most appropriate level needs to be done organizationally per application.
+      No rules are checked here, as no required level of high availability is stated in the requirement.
+      Note: Technical checks for this can be found at APP.4.4.A19: "High Availability of Kubernetes"
     status: manual
-    #rules:
 
   - id: SYS.1.6.A26
     title: Advanced Isolation and Encapsulation of Containers

@@ -1,13 +1,21 @@
 <def-group>
   <definition class="inventory" id="system_with_kernel" version="1">
     {{{ oval_metadata("The kernel is installed", affected_platforms=["multi_platform_all"]) }}}
-    <criteria operator="AND">
+    <criteria operator="OR">
       <criterion comment="kernel is installed" test_ref="inventory_test_kernel_installed" />
+      {{% if "ol" in families %}}
+      <criterion comment="kernel-uek is installed" test_ref="inventory_test_kernel_uek_installed" />
+      {{% endif %}}
     </criteria>
   </definition>
-{{% if 'sle' in product or 'slmicro' in product %}}
+{{% if 'debian' in product or 'ubuntu' in product %}}
+{{{ oval_test_package_installed(package="linux-base", test_id="inventory_test_kernel_installed") }}}
+{{% elif 'sle' in product or 'slmicro' in product %}}
 {{{ oval_test_package_installed(package="kernel-default", test_id="inventory_test_kernel_installed") }}}
 {{% else %}}
 {{{ oval_test_package_installed(package="kernel", test_id="inventory_test_kernel_installed") }}}
+{{% endif %}}
+{{% if "ol" in families %}}
+{{{ oval_test_package_installed(package="kernel-uek", test_id="inventory_test_kernel_uek_installed") }}}
 {{% endif %}}
 </def-group>

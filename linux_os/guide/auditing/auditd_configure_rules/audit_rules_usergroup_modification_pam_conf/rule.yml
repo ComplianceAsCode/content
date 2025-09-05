@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Record Events that Modify User/Group Information - /etc/pam.conf'
+
+description: |-
+    If the <tt>auditd</tt> daemon is configured to use the
+    <tt>augenrules</tt> program to read audit rules during daemon startup (the
+    default), add the following lines to a file with suffix <tt>.rules</tt> in the
+    directory <tt>/etc/audit/rules.d</tt>, in order to capture events that modify
+    account changes:
+    <br /><br />
+    <pre>-w /etc/pam.conf -p wa -k audit_rules_usergroup_modification</pre>
+    <br /><br />
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following lines to
+    <tt>/etc/audit/audit.rules</tt> file, in order to capture events that modify
+    account changes:
+    <br /><br />
+    <pre>-w /etc/pam.conf -p wa -k audit_rules_usergroup_modification</pre>
+
+rationale: |-
+    The PAM configuration file defines the authentication mechanism
+    used by PAM-aware applications. Any unexpected changes to PAM configuration
+    should be investigated.
+
+severity: medium
+
+fixtext: '{{{ fixtext_audit_file_watch_rule("/etc/pam.conf", "identity", "/etc/audit/rules.d/audit.rules") }}}'
+
+template:
+    name: audit_rules_usergroup_modification
+    vars:
+        path: /etc/pam.conf

@@ -21,13 +21,14 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
             -   name: Install deps python
-                run: pip install pcre2 -r requirements.txt -r test-requirements.txt
+                run: pip install pcre2==0.4.0 -r requirements.txt -r test-requirements.txt
             -   name: Build
                 run: |-
                     ./build_product -j2 \
                         al2023 \
                         alinux2 \
                         alinux3 \
+                        almalinux9 \
                         anolis23 \
                         anolis8 \
                         chromium \

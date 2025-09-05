@@ -8,6 +8,7 @@ controls:
         rules:
             - configure_crypto_policy
             - package_crypto-policies_installed
-            - enable_fips_mode
+            - system_booted_in_fips_mode
             - sysctl_crypto_fips_enabled
+            - enable_fips_mode
         status: automated

@@ -2,6 +2,7 @@
 
 import argparse
 import datetime
+import time
 import json
 import os
 import re
@@ -165,10 +166,8 @@ setup_tailoring_profile.__annotations__ = {'profile_id': str, 'profile_root': ET
 
 
 def _get_datetime():
-    try:
-        return datetime.datetime.now(datetime.UTC).isoformat()
-    except AttributeError:
-        return datetime.datetime.utcnow().isoformat()
+    return datetime.datetime.fromtimestamp(
+        int(os.environ.get('SOURCE_DATE_EPOCH', time.time()))).isoformat()
 
 
 def create_tailoring(args):
@@ -177,14 +176,15 @@ def create_tailoring(args):
                                         args.reference, args.json, args.resolved_rules_dir,
                                         args.build_root)
     needed_rules = filter_out_implemented_rules(known_rules, NS, benchmark_root)
+    needed_rule_names_set = set(rulename for ruleset in needed_rules.values() for rulename in ruleset)
     profile_root = get_profile(args.product, args.profile)
     selections = profile_root.findall('xccdf-1.2:select', NS)
     tailoring_profile = setup_tailoring_profile(args.profile_id, profile_root)
     for selection in selections:
         if selection.attrib['idref'].startswith(ssg.constants.OSCAP_RULE):
             cac_rule_id = selection.attrib['idref'].replace(ssg.constants.OSCAP_RULE, '')
-            desired_value = str([cac_rule_id] in list(needed_rules.values())).lower()
-            if not bool(selection.get('selected')) == desired_value:
+            desired_value = str(cac_rule_id in needed_rule_names_set).lower()
+            if selection.get('selected') != desired_value:
                 selection.set('selected', desired_value)
                 tailoring_profile.append(selection)
                 if not args.quiet:

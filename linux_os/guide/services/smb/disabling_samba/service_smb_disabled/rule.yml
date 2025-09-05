@@ -17,10 +17,12 @@ identifiers:
     cce@rhel9: CCE-84201-3
     cce@sle12: CCE-92250-0
     cce@sle15: CCE-91370-7
+    cce@slmicro5: CCE-93892-8
 
 references:
     cis@sle12: 2.2.13
     cis@sle15: 2.2.13
+    cis@slmicro5: 2.2.13
     disa: CCI-001436
 
 ocil_clause: |-
@@ -35,4 +37,5 @@ template:
     name: service_disabled
     vars:
         servicename: smb
+        servicename@ubuntu2404: smbd
         packagename: samba

@@ -1,0 +1,39 @@
+documentation_complete: true
+
+title: 'Limiting Network Bandwidth in Pods'
+
+description: |-
+    Network bandwidth, SHOULD be appropriately reserved and limited.
+
+ocil: |-
+    Network bandwidth is limited at the pod level and can be determined separately according
+    to incoming and outgoing network bandwidth.
+    For more information about limiting network bandwidth on the pod level please refer to the Red Hat documentation:
+    {{{ weblink(link="https://docs.openshift.com/container-platform/4.17/nodes/pods/nodes-pods-configuring.html#nodes-pods-configuring-bandwidth_nodes-pods-configuring") }}}
+
+    Out of the documetation use the example for the network bandwidth configuration of a pod: 
+    <pre>
+    kind: Pod
+    apiVersion: v1
+    metadata:
+      name: hello-openshift
+      annotations:
+        kubernetes.io/ingress-bandwidth: 2M
+        kubernetes.io/egress-bandwidth: 1M
+    spec:
+        containers:
+          - image: openshift/hello-openshift
+            name: hello-openshift
+    </pre>
+
+severity: unknown
+
+identifiers:
+    cce@ocp4: CCE-87610-2
+   
+ocil_clause: 'Limiting Pod network bandwidth on OCP 4'
+
+rationale: |-
+    Extend pod configuration with network bandwidth annotations to prevent
+    a bad actor or a malfunction in the pod to consume all the bandwidth in the cluster.
+    A network bandwidth limitation on the pod level can mitigate the bearing onto the cluster.

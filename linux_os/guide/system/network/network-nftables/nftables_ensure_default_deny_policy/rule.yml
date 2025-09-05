@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Ensure nftables Default Deny Firewall Policy'
 
 description: |-
@@ -9,18 +8,31 @@ description: |-
    the firewall will accept any packet that is not configured to be denied and the packet will
    continue traversing the network stack.
 
+   {% if 'ubuntu' in product %}
+   Run the following commands and verify that base chains contain a policy of DROP.
+   <pre>
+   $ nft list ruleset | grep 'hook input'
+   type filter hook input priority 0; policy drop;
+   $ nft list ruleset | grep 'hook forward'
+   type filter hook forward priority 0; policy drop;
+   $ nft list ruleset | grep 'hook output'
+   type filter hook output priority 0; policy drop;
+   </pre>
+
 rationale: |
    It is easier to allow acceptable usage than to block unacceptable usage.
 
 severity: medium
 
-platform: package[nftables] and service_disabled[firewalld]
+platform: package[nftables] and service_disabled[firewalld] and service_disabled[ufw]
 
 identifiers:
     cce@sle15: CCE-92507-3
+    cce@slmicro5: CCE-93981-9
 
 references:
     cis@sle15: 3.5.2.8
+    cis@slmicro5: 3.5.2.8
     cis@ubuntu2004: 3.5.2.8
     cis@ubuntu2204: 3.5.2.8
 

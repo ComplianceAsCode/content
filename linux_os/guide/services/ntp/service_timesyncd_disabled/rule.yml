@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Disable systemd_timesyncd Service'
+
+description: |-
+    {{{ describe_service_disable(service="systemd_timesyncd") }}}
+
+rationale: |-
+    Disabling the <tt>systemd_timesyncd</tt> service ensures that there is
+    only single one time service running.
+    <br /><br />
+    Additional information on Ubuntu network time protocol is
+    available at
+    {{{ weblink(link="https://ubuntu.com/server/docs/about-time-synchronisation") }}}.
+
+severity: medium
+
+platform: package[systemd-timesyncd]
+
+{{%- if product in [ "ubuntu2404" ] %}}
+template:
+    name: service_disabled_guard_var
+    vars:
+        packagename: systemd-timesyncd
+        servicename: systemd-timesyncd
+        variable: var_timesync_service
+        value: systemd-timesyncd
+{{%- else %}}
+template:
+    name: service_disabled
+    vars:
+        servicename: systemd-timesyncd
+        packagename: systemd-timesyncd
+{{%- endif %}}

@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = authselect
-# platform = Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
+# platform = Oracle Linux 8,Oracle Linux 9,multi_platform_rhel,multi_platform_fedora
 # variables = var_password_hashing_algorithm_pam=sha512
 # remediation = none
 

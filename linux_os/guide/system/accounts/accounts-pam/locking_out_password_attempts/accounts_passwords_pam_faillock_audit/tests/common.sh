@@ -1,6 +1,11 @@
 pam_files=("password-auth" "system-auth")
 
+{{%- if ('rhel' in product or 'ol' in families) and product not in ['ol8', 'ol9', 'rhel8', 'rhel9']%}}
+# rhel>=10 default profile is now called local
+authselect create-profile testingProfile --base-on local
+{{%- else %}}
 authselect create-profile testingProfile --base-on minimal
+{{%- endif %}}
 
 CUSTOM_PROFILE_DIR="/etc/authselect/custom/testingProfile"
 

@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_ubuntu,multi_platform_debian
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_ubuntu,multi_platform_debian,multi_platform_almalinux
 
 # Traverse all of:
 #
@@ -21,4 +21,5 @@ do
 	echo '# Reboot is required to change audit rules once this setting is applied' >> $AUDIT_FILE
 	echo '-e 2' >> $AUDIT_FILE
 	chmod o-rwx $AUDIT_FILE
+	chmod g-rwx $AUDIT_FILE
 done

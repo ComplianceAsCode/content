@@ -2,7 +2,7 @@ policy: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 title: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 id: stig_rhel9
 source: https://public.cyber.mil/stigs/downloads/
-version: V2R1
+version: V2R3
 reference_type: stigid
 product: rhel9
 levels:
@@ -17,6 +17,11 @@ controls:
             - enable_authselect
             - var_authselect_profile=sssd
 
+    -   id: RHEL-09-171011
+        levels:
+            - medium
+        rules:
+            - dconf_gnome_login_banner_text
     -   id: RHEL-09-211010
         levels:
             - high
@@ -574,6 +579,22 @@ controls:
             - package_s-nail_installed
         status: automated
 
+    -   id: RHEL-09-215100
+        levels:
+            - medium
+        title: RHEL 9 must have the crypto-policies package installed.
+        rules:
+            - package_crypto-policies_installed
+        status: automated
+
+    -   id: RHEL-09-215105
+        levels:
+            - medium
+        title: RHEL 9 must implement a FIPS 140-3 compliant systemwide cryptographic policy.
+        rules:
+            - configure_crypto_policy
+        status: automated
+
     -   id: RHEL-09-231010
         levels:
             - medium
@@ -958,6 +979,7 @@ controls:
             - medium
         title: RHEL 9 cron configuration directories must have a mode of 0700 or less permissive.
         rules:
+            - package_cron_installed
             - file_permissions_cron_d
             - file_permissions_cron_daily
             - file_permissions_cron_hourly
@@ -1076,7 +1098,21 @@ controls:
         title: RHEL 9 /etc/group- file must be owned by root.
         rules:
             - file_owner_backup_etc_group
+
+    -   id: RHEL-09-232103
+        title: RHEL 9 "/etc/audit/" must be owned by root.
+        levels:
+        - medium
+        rules:
+            - file_ownership_audit_configuration
         status: automated
+
+    -   id: RHEL-09-232104
+        title: RHEL 9 "/etc/audit/" must be group-owned by root.
+        levels:
+            - medium
+        rules:
+            - file_groupownership_audit_configuration
 
     -   id: RHEL-09-232105
         levels:
@@ -1830,10 +1866,15 @@ controls:
             RHEL 9 must implement DOD-approved encryption ciphers to protect the confidentiality
             of SSH client connections.
         rules:
+            - sshd_include_crypto_policy
+        status: automated
+    -   id: RHEL-09-255064
+        title: The RHEL 9 SSH client must be configured to use only DOD-approved encryption ciphers employing FIPS 140-3 validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
+        levels:
+            - medium
+        rules:
             - harden_sshd_ciphers_openssh_conf_crypto_policy
             - sshd_approved_ciphers=stig_rhel9
-        status: automated
-
     -   id: RHEL-09-255065
         levels:
             - medium
@@ -1842,7 +1883,15 @@ controls:
             of SSH server connections.
         rules:
             - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+            - sshd_approved_ciphers=stig_rhel9
         status: automated
+    -   id: RHEL-09-255070
+        levels:
+            - medium
+        title: The RHEL 9 SSH client must be configured to use only DOD-approved Message Authentication Codes (MACs) employing FIPS 140-3 validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
+        rules:
+            - sshd_use_strong_macs
+            - sshd_strong_macs=stig_rhel9
 
     -   id: RHEL-09-255075
         levels:
@@ -1850,7 +1899,9 @@ controls:
         title:
             RHEL 9 SSH server must be configured to use only Message Authentication Codes
             (MACs) employing FIPS 140-3 validated cryptographic hash algorithms.
-        status: pending
+        status: automated
+        rules:
+            - configure_ssh_crypto_policy
 
     -   id: RHEL-09-255080
         levels:
@@ -1908,6 +1959,8 @@ controls:
         title: RHEL 9 SSH server configuration file must be group-owned by root.
         rules:
             - file_groupowner_sshd_config
+            - directory_groupowner_sshd_config_d
+            - file_groupowner_sshd_drop_in_config
         status: automated
 
     -   id: RHEL-09-255110
@@ -1916,6 +1969,8 @@ controls:
         title: RHEL 9 SSH server configuration file must be owned by root.
         rules:
             - file_owner_sshd_config
+            - directory_owner_sshd_config_d
+            - file_owner_sshd_drop_in_config
         status: automated
 
     -   id: RHEL-09-255115
@@ -1924,6 +1979,8 @@ controls:
         title: RHEL 9 SSH server configuration file must have mode 0600 or less permissive.
         rules:
             - file_permissions_sshd_config
+            - directory_permissions_sshd_config_d
+            - file_permissions_sshd_drop_in_config
         status: automated
 
     -   id: RHEL-09-255120
@@ -2254,6 +2311,7 @@ controls:
         title: RHEL 9 must have the USBGuard package installed.
         rules:
             - package_usbguard_installed
+            - service_usbguard_enabled
         status: automated
 
     -   id: RHEL-09-291020
@@ -2713,6 +2771,14 @@ controls:
             - service_fapolicyd_enabled
         status: automated
 
+    -   id: RHEL-09-433016
+        levels:
+            - medium
+        title: The RHEL 9 fapolicy module must be configured to employ a deny-all, permit-by-exception policy to allow the execution of authorized software programs.
+        rules:
+            - fapolicy_default_deny
+        status: automated
+
     -   id: RHEL-09-611010
         levels:
             - medium
@@ -2720,7 +2786,7 @@ controls:
             RHEL 9 must ensure the password complexity module in the system-auth file
             is configured for three retries or less.
         rules:
-            - accounts_password_pam_retry
+            - accounts_password_pam_pwquality_retry
             - var_password_pam_retry=3
         status: automated
 
@@ -2780,7 +2846,7 @@ controls:
             rounds.
         rules:
             - accounts_password_pam_unix_rounds_password_auth
-            - var_password_pam_unix_rounds=5000
+            - var_password_pam_unix_rounds=100000
         status: automated
 
     -   id: RHEL-09-611055
@@ -3194,16 +3260,6 @@ controls:
             - rsyslog_remote_access_monitoring
         status: automated
 
-    -   id: RHEL-09-652035
-        levels:
-            - medium
-        title:
-            RHEL 9 must be configured to offload audit records onto a different system
-            from the system being audited via syslog.
-        rules:
-            - auditd_audispd_syslog_plugin_activated
-        status: automated
-
     -   id: RHEL-09-652040
         levels:
             - medium
@@ -3461,7 +3517,7 @@ controls:
             individuals or roles appointed by the ISSM) to select which auditable events are
             to be audited.
         rules:
-            - file_permissions_etc_audit_rulesd
+            - file_permissions_audit_configuration
         status: automated
 
     -   id: RHEL-09-653115
@@ -4037,14 +4093,6 @@ controls:
             - set_password_hashing_algorithm_passwordauth
         status: automated
 
-    -   id: RHEL-09-672010
-        levels:
-            - medium
-        title: RHEL 9 must have the crypto-policies package installed.
-        rules:
-            - package_crypto-policies_installed
-        status: automated
-
     -   id: RHEL-09-672015
         levels:
             - high
@@ -4090,14 +4138,6 @@ controls:
         title: RHEL 9 must implement DOD-approved TLS encryption in the OpenSSL package.
         rules:
             - configure_openssl_tls_crypto_policy
-        status: automated
-
-    -   id: RHEL-09-672045
-        levels:
-            - medium
-        title: RHEL 9 must implement a system-wide encryption policy.
-        rules:
-            - configure_crypto_policy
         status: automated
 
     -   id: RHEL-09-672050

@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu,multi_platform_almalinux
 
 # First perform the remediation of the syscall rule
 # Retrieve hardware architecture of the underlying system
@@ -7,7 +7,7 @@
 for ARCH in "${RULE_ARCHS[@]}"
 do
 	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
-	{{% if product == "ol8" %}}
+    {{% if product in ["ol8", "ubuntu2404"] %}}
 	OTHER_FILTERS="-C uid!=euid"
 	{{% else %}}
 	OTHER_FILTERS="-C uid!=euid -F euid=0"
@@ -24,7 +24,7 @@ done
 for ARCH in "${RULE_ARCHS[@]}"
 do
 	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
-	{{% if product == "ol8" %}}
+    {{% if product in ["ol8", "ubuntu2404"] %}}
 	OTHER_FILTERS="-C gid!=egid"
 	{{% else %}}
 	OTHER_FILTERS="-C gid!=egid -F egid=0"

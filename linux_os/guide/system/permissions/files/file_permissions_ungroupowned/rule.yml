@@ -4,9 +4,11 @@ documentation_complete: true
 title: 'Ensure All Files Are Owned by a Group'
 
 description: |-
-    If any file is not group-owned by a group present in /etc/group, the cause of the lack of
+    If any file is not group-owned by a valid defined group, the cause of the lack of
     group-ownership must be investigated. Following this, those files should be deleted or
-    assigned to an appropriate group.
+    assigned to an appropriate group. The groups need to be defined in <tt>/etc/group</tt>
+    or in <tt>/usr/lib/group</tt> if <tt>nss-altfiles</tt> are configured to be used
+    in <tt>/etc/nsswitch.conf</tt>.
 
     Locate the mount points related to local devices by the following command:
     <pre>$ findmnt -n -l -k -it $(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,)</pre>
@@ -36,6 +38,7 @@ references:
     cis-csc: 1,11,12,13,14,15,16,18,3,5
     cis@sle12: 6.1.10
     cis@sle15: 6.1.10
+    cis@slmicro5: 6.1.10
     cis@ubuntu2004: 6.1.12
     cis@ubuntu2204: 6.1.11
     cobit5: APO01.06,DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.02,DSS06.03,DSS06.06,DSS06.10
@@ -75,7 +78,7 @@ srg_requirement: 'All {{{ full_name }}} local files and directories must have a 
 warnings:
     - general: |-
         This rule only considers local groups as valid groups.
-        If you have your groups defined outside <code>/etc/group</code>, the rule won't consider those.
+        If you have your groups defined outside <code>/etc/group</code> or <code>/usr/lib/group</code>, the rule won't consider those.
     - general: |-
         This rule can take a long time to perform the check and might consume a considerable
         amount of resources depending on the number of files present on the system. It is not a

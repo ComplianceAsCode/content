@@ -500,6 +500,7 @@ controls:
         - file_permissions_cron_allow
         - file_groupowner_crontab
         - file_owner_crontab
+        - package_cron_installed
         - file_permissions_crontab
         - file_groupowner_cron_d
         - file_owner_cron_d
@@ -1556,6 +1557,7 @@ controls:
       rules:
         - ensure_redhat_gpgkey_installed
         - ensure_suse_gpgkey_installed
+        - ensure_almalinux_gpgkey_installed
         - ensure_gpgcheck_globally_activated
         - ensure_gpgcheck_never_disabled
         - security_patches_up_to_date
@@ -2858,7 +2860,11 @@ controls:
         - base
       status: automated
       rules:
+        {{% if product == "rhel10" %}}
+        - audit_rules_mac_modification_etc_selinux
+        {{% else %}}
         - audit_rules_mac_modification
+        {{% endif %}}
         - audit_rules_dac_modification_chmod
         - audit_rules_dac_modification_chown
         - audit_rules_dac_modification_fchmod

@@ -20,10 +20,12 @@ identifiers:
     cce@rhel8: CCE-82982-0
     cce@sle12: CCE-91549-6
     cce@sle15: CCE-91244-4
+    cce@slmicro5: CCE-94006-4
 
 references:
     cis@sle12: 3.5.1.1
     cis@sle15: 3.5.3.1.1
+    cis@slmicro5: 3.5.3.1.1
     cis@ubuntu2004: 3.5.3.1.1
     cis@ubuntu2204: 3.5.3.1.1
     nist: CM-6(a)
@@ -34,7 +36,16 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="iptables") }}}'
 
+{{%- if product in [ "sle12", "sle15", "ubuntu2404" ] %}}
+template:
+    name: package_installed_guard_var
+    vars:
+        pkgname: iptables
+        variable: var_network_filtering_service
+        value: iptables
+{{%- else %}}
 template:
     name: package_installed
     vars:
         pkgname: iptables
+{{%- endif %}}

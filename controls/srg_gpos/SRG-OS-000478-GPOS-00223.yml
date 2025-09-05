@@ -8,9 +8,8 @@ controls:
     protection in accordance with applicable federal laws, Executive Orders, directives,
     policies, regulations, and standards.'
         rules:
-            - enable_dracut_fips_module
-            - enable_fips_mode
-            - sysctl_crypto_fips_enabled
+            - system_booted_in_fips_mode
             - aide_use_fips_hashes
             - configure_kerberos_crypto_policy
+            - enable_fips_mode
         status: automated

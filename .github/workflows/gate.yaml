@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Install Deps
-        run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Install deps python
@@ -97,7 +97,7 @@ jobs:
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
-          ./build_product ubuntu1604 ubuntu1804 ubuntu2004
+          ./build_product ubuntu1604 ubuntu1804 ubuntu2004 ubuntu2404
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -107,7 +107,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Install Deps
-        run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Install deps python
@@ -117,6 +117,25 @@ jobs:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
           ./build_product ubuntu2204
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build
+
+  validate-ubuntu-24-04:
+    name: Build, Test on Ubuntu 24.04
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Install Deps
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build openscap-utils libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - name: Install deps python
+        run: pip3 install -r requirements.txt -r test-requirements.txt
+      - name: Build
+        env:
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
+        run: |-
+          ./build_product ubuntu2404
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -161,8 +180,8 @@ jobs:
     name: Build on Windows
     runs-on: windows-latest
     env:
-      OPENSCAP_VERSION: "1.4.1"
-      OPENSCAP_ROOT_DIR: "C:\\Program Files\\OpenSCAP 1.4.1"
+      OPENSCAP_VERSION: "1.4.2"
+      OPENSCAP_ROOT_DIR: "C:\\Program Files\\OpenSCAP 1.4.2"
     steps:
         - name: Install Deps
           run: choco install xsltproc

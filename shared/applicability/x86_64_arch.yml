@@ -1,5 +1,5 @@
 name: cpe:/a:x86_64_arch
 title: System architecture is x86_64
 check_id: proc_sys_kernel_osrelease_arch_x86_64
-bash_conditional: 'grep -q x86_64 /proc/sys/kernel/osrelease'
+bash_conditional: {{{ bash_arch_conditional("x86_64") }}}
 ansible_conditional: 'ansible_architecture == "x86_64"'

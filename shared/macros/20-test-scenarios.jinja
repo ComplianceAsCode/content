@@ -3,10 +3,110 @@ This macro changes the configuration of the audit service so that it looks like 
 #}}
 
 {{%- macro setup_auditctl_environment () -%}}
-  {{% if product == "rhel10" %}}
+  {{% if product in ["ol10", "rhel10"] %}}
   sed -i "s%^ExecStart=.*%ExecStart=/sbin/auditctl%" /usr/lib/systemd/system/audit-rules.service
   {{% else %}}
 sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/system/auditd.service
   {{% endif %}}
+{{%- endmacro -%}}
+
+
+{{#
+This macro is used by pam_account_password_faillock template to initialize
+the external variable and parameter value to a desired state.
+
+:param state:         correct, stricter, lenient_high, lenient_low
+:type state: str
+#}}
+
+{{%- macro tests_init_faillock_vars(state) -%}}
+
+PRM_NAME={{{ PRM_NAME }}}
+{{% if state not in ["correct", "stricter", "lenient_high", "lenient_low"] %}}
+echo "Unsupported value for argument 'state': {{{ state }}}"
+exit 2
+
+{{% elif VARIABLE_UPPER_BOUND == "use_ext_variable" and VARIABLE_LOWER_BOUND == "use_ext_variable" %}}
+{{% if state == "correct" %}}
+# variables = {{{ EXT_VARIABLE }}}=5
+TEST_VALUE=5
+{{% elif state == "stricter" %}}
+# variables = {{{ EXT_VARIABLE }}}=5
+TEST_VALUE=5
+{{% elif state == "lenient_high" %}}
+# variables = {{{ EXT_VARIABLE }}}=5
+TEST_VALUE=6
+{{% elif state == "lenient_low" %}}
+# variables = {{{ EXT_VARIABLE }}}=5
+TEST_VALUE=4
+{{% endif %}}
+
+{{% elif VARIABLE_UPPER_BOUND == "use_ext_variable" and VARIABLE_LOWER_BOUND is number %}}
+{{% if state == "correct" %}}
+# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_LOWER_BOUND }}}
+TEST_VALUE={{{ VARIABLE_LOWER_BOUND }}}
+{{% elif state == "stricter" %}}
+# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_LOWER_BOUND + 2 }}}
+TEST_VALUE={{{ VARIABLE_LOWER_BOUND + 1 }}}
+{{% elif state == "lenient_high" %}}
+# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_LOWER_BOUND }}}
+TEST_VALUE={{{ VARIABLE_LOWER_BOUND + 1 }}}
+{{% elif state == "lenient_low" %}}
+# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_LOWER_BOUND }}}
+TEST_VALUE={{{ VARIABLE_LOWER_BOUND - 1 }}}
+{{% endif %}}
+
+{{% elif VARIABLE_UPPER_BOUND == "use_ext_variable" and VARIABLE_LOWER_BOUND is none %}}
+{{% if state == "correct" %}}
+# variables = {{{ EXT_VARIABLE }}}=5
+TEST_VALUE=5
+{{% elif state == "stricter" %}}
+# variables = {{{ EXT_VARIABLE }}}=5
+TEST_VALUE=4
+{{% elif state == "lenient_high" %}}
+# variables = {{{ EXT_VARIABLE }}}=5
+TEST_VALUE=6
+{{% elif state == "lenient_low" %}}
+# there is no lower limit so the test should be not-applicable
+# check = none
+{{% endif %}}
+
+{{% elif VARIABLE_LOWER_BOUND == "use_ext_variable" and VARIABLE_UPPER_BOUND is number %}}
+{{% if state == "correct" %}}
+# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_UPPER_BOUND | default(100) }}}
+TEST_VALUE={{{ VARIABLE_UPPER_BOUND | default(100) }}}
+{{% elif state == "stricter" %}}
+# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_UPPER_BOUND | default(100) - 2 }}}
+TEST_VALUE={{{ VARIABLE_UPPER_BOUND | default(100) - 1 }}}
+{{% elif state == "lenient_high" %}}
+# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_UPPER_BOUND }}}
+TEST_VALUE={{{ VARIABLE_UPPER_BOUND + 1 }}}
+{{% elif state == "lenient_low" %}}
+# variables = {{{ EXT_VARIABLE }}}={{{ VARIABLE_UPPER_BOUND }}}
+TEST_VALUE={{{ VARIABLE_UPPER_BOUND - 1 }}}
+{{% endif %}}
+
+{{% elif VARIABLE_LOWER_BOUND == "use_ext_variable" and VARIABLE_UPPER_BOUND is none %}}
+{{% if state == "correct" %}}
+# variables = {{{ EXT_VARIABLE }}}=5
+TEST_VALUE=5
+{{% elif state == "stricter" %}}
+# variables = {{{ EXT_VARIABLE }}}=5
+TEST_VALUE=6
+{{% elif state == "lenient_high" %}}
+# there is no upper limit so the test should be not-applicable
+# check = none
+{{% elif state == "lenient_low" %}}
+# variables = {{{ EXT_VARIABLE }}}=5
+TEST_VALUE=4
+{{% endif %}}
+
+{{% else %}}
+echo "The combination of template parameters is not supported by the test:"
+echo "  variable_upper_bound={{{ VARIABLE_UPPER_BOUND }}}"
+echo "  variable_lower_bound={{{ VARIABLE_LOWER_BOUND }}}"
+echo "  ext_variable={{{ EXT_VARIABLE }}}"
+exit 2
+{{% endif %}}
 {{%- endmacro -%}}
 

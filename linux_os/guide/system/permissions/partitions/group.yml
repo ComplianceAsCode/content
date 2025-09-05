@@ -8,4 +8,8 @@ description: |-
     are set in the <tt>/etc/fstab</tt> configuration file, and can be
     used to make certain types of malicious behavior more difficult.
 
+{{% if 'ubuntu' in product %}}
+platform: not container
+{{% else %}}
 platform: not container and not bootc
+{{% endif %}}
