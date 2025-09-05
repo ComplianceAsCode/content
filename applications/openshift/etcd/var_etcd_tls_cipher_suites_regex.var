@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'OpenShift Etcd TLS Cipher Suites Regex'
+
+description: 'OpenShift Etcd TLS Cipher Suites Regex'
+
+type: string
+
+operator: pattern match
+
+interactive: false
+
+# in contrast to other cipher regexes this one is not for a single string, but for multiple
+# since the pod.yaml configures them multiple times for different containers.
+# due to this we cant compare line by line and to do some more complex regex magic
+options:
+  # these regex catch all configured, allowed ciphers in the list PLUS some config around. If there are additional ciphers, which are catched by the negative lookahead, the expression fails.
+  # the regex is focussed only on the lines with "value:"
+  # while we do not add the DHE Ciphers to the config, they are still valid regarding BSI, so they are accepted
+  default: 'value: \"(?=.*TLS_(?:AES_128_GCM_SHA256|AES_256_GCM_SHA384|CHACHA20_POLY1305_SHA256|ECDHE_ECDSA_WITH_AES_128_GCM_SHA256|ECDHE_RSA_WITH_AES_128_GCM_SHA256|ECDHE_ECDSA_WITH_AES_256_GCM_SHA384|ECDHE_RSA_WITH_AES_256_GCM_SHA384|ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256|ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256))(?!.*TLS_(?!AES_128_GCM_SHA256|AES_256_GCM_SHA384|CHACHA20_POLY1305_SHA256|ECDHE_ECDSA_WITH_AES_128_GCM_SHA256|ECDHE_RSA_WITH_AES_128_GCM_SHA256|ECDHE_ECDSA_WITH_AES_256_GCM_SHA384|ECDHE_RSA_WITH_AES_256_GCM_SHA384|ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256|ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256)[A-Z0-9_]+).*\"'
+  mozilla_intermediate:
+  2024-01-BSI-TR-02102-2: 'value: \"(?=.*TLS_(?:AES_128_GCM_SHA256|AES_256_GCM_SHA384|ECDHE_ECDSA_WITH_AES_128_GCM_SHA256|ECDHE_RSA_WITH_AES_128_GCM_SHA256|ECDHE_ECDSA_WITH_AES_256_GCM_SHA384|ECDHE_RSA_WITH_AES_256_GCM_SHA384|DHE_RSA_WITH_AES_128_GCM_SHA256|DHE_RSA_WITH_AES_256_GCM_SHA384))(?!.*TLS_(?!AES_128_GCM_SHA256|AES_256_GCM_SHA384|ECDHE_ECDSA_WITH_AES_128_GCM_SHA256|ECDHE_RSA_WITH_AES_128_GCM_SHA256|ECDHE_ECDSA_WITH_AES_256_GCM_SHA384|ECDHE_RSA_WITH_AES_256_GCM_SHA384|DHE_RSA_WITH_AES_128_GCM_SHA256|DHE_RSA_WITH_AES_256_GCM_SHA384)[A-Z0-9_]+).*\"'
