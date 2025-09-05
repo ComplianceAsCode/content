@@ -1,6 +1,6 @@
 # platform = multi_platform_all
 . /usr/share/scap-security-guide/remediation_functions
-populate var_auditd_num_logs
+{{{ bash_instantiate_variables("var_auditd_num_logs") }}}
 
 AUDITCONFIG=/etc/audit/auditd.conf
 

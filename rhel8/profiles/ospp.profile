@@ -1,5 +1,14 @@
 documentation_complete: true
 
+metadata:
+    version: 4.2.1
+    SMEs:
+        - comps
+        - redhatrises
+        - stevegrubb
+
+reference: https://www.niap-ccevs.org/Profile/PP.cfm
+
 title: 'Protection Profile for General Purpose Operating Systems'
 
 description: |-
@@ -54,7 +63,6 @@ selections:
     - sshd_disable_empty_passwords
     - sshd_disable_kerb_auth
     - sshd_disable_gssapi_auth
-    - var_sshd_set_keepalive=0
     - sshd_set_keepalive
     - sshd_enable_warning_banner
     - sshd_rekey_limit
@@ -126,6 +134,7 @@ selections:
     - grub2_vsyscall_argument.role=unscored
     - grub2_vsyscall_argument.severity=info
     - grub2_pti_argument
+    - kernel_trust_cpu_rng
 
     ## Security Settings
     - sysctl_kernel_kptr_restrict
@@ -138,6 +147,7 @@ selections:
     - sysctl_user_max_user_namespaces.severity=info
     - sysctl_kernel_unprivileged_bpf_disabled
     - sysctl_net_core_bpf_jit_harden
+    - service_kdump_disabled
 
     ## File System Settings
     - sysctl_fs_protected_hardlinks
@@ -170,10 +180,8 @@ selections:
     - package_subscription-manager_installed
     - package_dnf-plugin-subscription-manager_installed
     - package_firewalld_installed
-    - package_iptables_installed
     - package_openscap-scanner_installed
     - package_policycoreutils_installed
-    - package_rng-tools_installed
     - package_sudo_installed
     - package_usbguard_installed
     - package_scap-security-guide_installed
@@ -182,6 +190,11 @@ selections:
     - package_openssh-server_installed
     - package_openssh-clients_installed
     - package_policycoreutils-python-utils_installed
+    - package_rsyslog_installed
+    - package_rsyslog-gnutls_installed
+    - package_audispd-plugins_installed
+    - package_chrony_installed
+    - package_gnutls-utils_installed
 
     ### Remove Prohibited Packages
     - package_sendmail_removed
@@ -196,9 +209,7 @@ selections:
     - package_abrt-plugin-logger_removed
     - package_abrt-plugin-sosreport_removed
     - package_abrt-cli_removed
-    - package_tuned_removed
     - package_abrt_removed
-    - package_pigz_removed
 
     ### Login
     - disable_users_coredumps
@@ -221,9 +232,6 @@ selections:
     ### Application Whitelisting (RHEL 8)
     - package_fapolicyd_installed
     - service_fapolicyd_enabled
-
-    ### Enable the Hardware RNG Entropy Gatherer Service
-    - service_rngd_enabled
 
     ### Configure USBGuard
     - service_usbguard_enabled
@@ -407,7 +415,8 @@ selections:
     - timer_dnf-automatic_enabled
 
     # Configure TLS for remote logging
-    # temporarily dropped
+    - rsyslog_remote_tls
+    - rsyslog_remote_tls_cacert
 
     # Prevent Kerberos use by system daemons
     - kerberos_disable_no_keytab
@@ -427,4 +436,3 @@ selections:
     - zipl_vsyscall_argument
     - zipl_vsyscall_argument.role=unscored
     - zipl_vsyscall_argument.severity=info
-    - zipl_pti_argument

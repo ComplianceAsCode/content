@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="network_nmcli_permissions" version="1">
-    <metadata>
-      <title>Ensure non-Privileged Users Cannot Change Network Settings</title>
-      {{{- oval_affected(products) }}}
-      <description>polkit is properly configured to prevent non-privilged users from changing networking settings</description>
-    </metadata>
+    {{{ oval_metadata("polkit is properly configured to prevent non-privileged users from changing networking settings") }}}
     <criteria>
       <criterion test_ref="test_network_nmcli_permissions" comment="check for properly configured .pkla file" />
     </criteria>

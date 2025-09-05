@@ -6,7 +6,7 @@ description: |-
     Determine how many log files
     <tt>auditd</tt> should retain when it rotates logs.
     Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following
-    line, substituting <i>NUMLOGS</i> with the correct value of <sub idref="var_auditd_num_logs" />:
+    line, substituting <i>NUMLOGS</i> with the correct value of {{{ xccdf_value("var_auditd_num_logs") }}}:
     <pre>num_logs = <i>NUMLOGS</i></pre>
     Set the value to 5 for general-purpose systems.
     Note that values less than 2 result in no log rotation.

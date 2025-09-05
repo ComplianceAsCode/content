@@ -172,9 +172,6 @@ selections:
     ### 1.6.3 Ensure address space layout randomization (ASLR) is enabled
     - sysctl_kernel_randomize_va_space
 
-    ### 1.6.4 Ensure prelink is disabled (Scored)
-    - disable_prelink
-
     ## 1.7 Mandatory Access Control
 
     ### 1.7.1 Ensure Mandatory Access Control Software is Installed
@@ -696,7 +693,6 @@ selections:
     - sshd_set_idle_timeout
 
     # ClientAliveCountMax 0
-    - var_sshd_set_keepalive=0
     - sshd_set_keepalive
 
     ### 5.2.17 Ensure SSH LoginGraceTime is set to one minute

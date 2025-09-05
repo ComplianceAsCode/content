@@ -3,6 +3,6 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-- (xccdf-var var_sshd_max_sessions)
+{{{ ansible_instantiate_variables("var_sshd_max_sessions") }}}
 
 {{{ ansible_sshd_set(parameter="MaxSessions", value="{{ var_sshd_max_sessions }}") }}}

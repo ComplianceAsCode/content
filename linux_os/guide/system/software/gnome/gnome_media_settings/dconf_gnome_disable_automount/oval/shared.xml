@@ -1,17 +1,9 @@
 <def-group>
   <definition class="compliance" id="dconf_gnome_disable_automount" version="1">
-    <metadata>
-      <title>Disable GNOME3 Automounting</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-      </affected>
-      <description>The system's default desktop environment, GNOME3, will mount
+    {{{ oval_metadata("The system's default desktop environment, GNOME3, will mount
       devices and removable media (such as DVDs, CDs and USB flash drives)
       whenever they are inserted into the system. Disable automount and autorun
-      within GNOME3.</description>
-    </metadata>
+      within GNOME3.") }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="Disable GNOME3 automount/autorun and prevent user from changing it" operator="AND">

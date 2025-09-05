@@ -36,6 +36,7 @@ To use Libvirt backend, you need to have:
   - `virt-manager`      (optional, to manage VMs via GUI)
   - `virt-viewer`       (optional, to access graphical console of VMs)
   - `ansible`           (required if remediating via Ansible)
+  - `edk2-ovmf`         (required if you want to install UEFI based machine)
 - A VM that fullfils following requirements:
   - Package `qemu-guest-agent` installed
   - Package `openscap` version 1.2.15 or higher installed
@@ -59,6 +60,12 @@ When installing a RHEL VM, you will still need to subscribe it. You can also run
 ```
 $ python install_vm.py --domain test-suite-rhel8 --distro rhel8 --url http://baseos_repo_addr --extra-repo http://appstream_repo_addr
 ```
+
+By default, the script creates a BIOS based machine. If you need to create UEFI
+based machine, supply the `--uefi normal` or `--uefi secureboot` command line
+argument. The script will create UEFI based machine and make necessary changes
+to partitioning scheme. Note that the Libvirt backend cannot make snapshots of
+UEFI based machines. Therefore, you can't use them with SSG test suite.
 
 *TIP*: Create a snapshot as soon as your VM is setup. This way, you can manually revert
 in case the test suite breaks something and fails to revert. Do not use snapshot names starting with `ssg_`.\

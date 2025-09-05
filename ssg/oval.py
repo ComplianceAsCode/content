@@ -13,7 +13,8 @@ from .constants import oval_namespace as ovalns
 from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs
 from .xml import ElementTree as ET
 from .xml import oval_generated_header
-from .jinja import process_file_with_macros
+from .jinja import process_file_with_macros, add_python_functions
+from .yaml import open_environment
 from .id_translate import IDTranslator
 
 SHARED_OVAL = re.sub(r'ssg/.*', 'shared', __file__) + '/checks/oval/'
@@ -54,7 +55,7 @@ def append(element, newchild):
         element.append(newchild)
 
 
-def _add_elements(body, header):
+def _add_elements(body, header, yaml_env):
     """Add oval elements to the global Elements defined above"""
     global definitions
     global tests
@@ -80,9 +81,9 @@ def _add_elements(body, header):
                                               % ovalns):
                 defid = defchild.get("definition_ref")
                 extend_ref = find_testfile_or_exit(defid)
-                includedbody = read_ovaldefgroup_file(extend_ref)
+                includedbody = read_ovaldefgroup_file(extend_ref, yaml_env)
                 # recursively add the elements in the other file
-                _add_elements(includedbody, header)
+                _add_elements(includedbody, header, yaml_env)
         if childnode.tag.endswith("_test"):
             append(tests, childnode)
         if childnode.tag.endswith("_object"):
@@ -281,10 +282,9 @@ def find_testfile(oval_id):
     return found_file
 
 
-def read_ovaldefgroup_file(testfile):
+def read_ovaldefgroup_file(testfile, yaml_env):
     """Read oval files"""
-    with open(testfile, 'r') as test_file:
-        body = test_file.read()
+    body = process_file_with_macros(testfile, yaml_env)
     return body
 
 
@@ -336,9 +336,10 @@ def main():
     testfile = args.xmlfile
     header = oval_generated_header("testoval.py", oval_version, "0.0.1")
     testfile = find_testfile_or_exit(testfile)
-    body = read_ovaldefgroup_file(testfile)
+    yaml_env = dict()
+    body = read_ovaldefgroup_file(testfile, yaml_env)
 
-    defname = _add_elements(body, header)
+    defname = _add_elements(body, header, yaml_env)
     if defname is None:
         print("Error while evaluating oval: defname not set; missing "
               "definitions section?")

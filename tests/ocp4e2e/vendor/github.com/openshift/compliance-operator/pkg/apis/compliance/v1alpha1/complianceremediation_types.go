@@ -48,8 +48,13 @@ type ComplianceRemediationPayload struct {
 // +k8s:openapi-gen=true
 type ComplianceRemediationSpec struct {
 	ComplianceRemediationSpecMeta `json:",inline"`
-	Current                       ComplianceRemediationPayload `json:"current,omitempty"`
-	Outdated                      ComplianceRemediationPayload `json:"outdated,omitempty"`
+	// Defines the remediation that is proposed by the scan. If there is no "outdated"
+	// remediation in this object, the "current" remediation is what will be applied.
+	Current ComplianceRemediationPayload `json:"current,omitempty"`
+	// In case there was a previous remediation proposed by a previous scan, and that remediation
+	// now differs, the old remediation will be kept in this "outdated" key. This requires admin
+	// intervention to remove this outdated object and ensure the current is what's applied.
+	Outdated ComplianceRemediationPayload `json:"outdated,omitempty"`
 }
 
 // ComplianceRemediationStatus defines the observed state of ComplianceRemediation

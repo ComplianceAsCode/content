@@ -1,0 +1,55 @@
+# To customize the repo or branch, you can use kustomize, newer versions even
+# support loading resources from remote locations, e.g. with files like:
+#
+# $ cat kustomization.yaml
+# resources:
+#   - https://raw.githubusercontent.com/ComplianceAsCode/content/buildconfig/ocp-resources/content-cluster-build.yaml
+# patchesStrategicMerge:
+#   - jakubs_repo.yaml
+# $ cat jakubs_repo.yaml
+# kind: BuildConfig
+# apiVersion: build.openshift.io/v1
+# metadata:
+#   name: "cac-build"
+# spec:
+#   source:
+#     git:
+#       uri: https://github.com/jhrozek/content
+#       ref: master
+# You can run:
+# $  kustomize build
+# to render a per-branch/per-repo manifest, or even:
+# $  kustomize build | oc apply -f -
+# to apply the rendered manifest at the same time
+#
+# The builds need be started manually, with:
+# $ oc start-build cac-build
+# For automatic builds, please set triggers:
+# https://docs.openshift.com/container-platform/4.5/builds/triggering-builds-build-hooks.html
+
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: "cac-build"
+spec:
+  lookupPolicy:
+    local: true
+---
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: "cac-build"
+spec:
+  runPolicy: "Serial"
+  source:
+    git:
+      uri: https://github.com/ComplianceAsCode/content
+      ref: master
+  strategy:
+    dockerStrategy:
+      dockerfilePath: Dockerfiles/ocp4_content
+    type: Docker
+  output:
+    to:
+      kind: "ImageStreamTag"
+      name: "cac-build:latest"

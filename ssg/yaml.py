@@ -10,8 +10,10 @@ from collections import OrderedDict
 
 from .jinja import load_macros, process_file
 from .constants import (PKG_MANAGER_TO_SYSTEM,
-                        PKG_MANAGER_TO_CONFIG_FILE)
+                        PKG_MANAGER_TO_CONFIG_FILE,
+                        XCCDF_PLATFORM_TO_PACKAGE)
 from .constants import DEFAULT_UID_MIN
+from .utils import merge_dicts
 
 try:
     from yaml import CSafeLoader as yaml_SafeLoader
@@ -139,6 +141,10 @@ def open_raw(yaml_file):
 def open_environment(build_config_yaml, product_yaml):
     contents = open_raw(build_config_yaml)
     contents.update(open_raw(product_yaml))
+    platform_package_overrides = contents.get("platform_package_overrides", {})
+    # Merge common platform package mappings, while keeping product specific mappings
+    contents["platform_package_overrides"] = merge_dicts(XCCDF_PLATFORM_TO_PACKAGE,
+                                                         platform_package_overrides)
     contents.update(_get_implied_properties(contents))
     return contents
 

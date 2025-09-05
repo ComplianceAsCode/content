@@ -3,7 +3,7 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
-- (xccdf-var inactivity_timeout_value)
+{{{ ansible_instantiate_variables("inactivity_timeout_value") }}}
 
 - name: "Set GNOME3 Screensaver Inactivity Timeout"
   ini_file:
@@ -12,6 +12,7 @@
     option: idle-delay
     value: "{{ inactivity_timeout_value }}"
     create: yes
+    no_extra_spaces: yes
 
 - name: "Prevent user modification of GNOME idle-delay"
   lineinfile:

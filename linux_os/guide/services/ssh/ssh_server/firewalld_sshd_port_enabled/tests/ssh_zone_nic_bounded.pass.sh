@@ -1,9 +1,9 @@
 #!/bin/bash
+# packages = firewalld
 #
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 
 # ensure firewalld installed
-yum install -y firewalld
 
 firewall-cmd --permanent --zone=public --add-service=ssh
 

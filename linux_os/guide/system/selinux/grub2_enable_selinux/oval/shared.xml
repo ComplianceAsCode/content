@@ -1,12 +1,8 @@
 <def-group>
   <definition class="compliance" id="grub2_enable_selinux" version="1">
-    <metadata>
-      <title>Enable SELinux in the GRUB2 Bootloader"</title>
-      {{{- oval_affected(products) }}}
-      <description>
+    {{{ oval_metadata("
         Check if selinux=0 OR enforcing=0 within the GRUB2 configuration files, fail if found.
-      </description>
-    </metadata>
+      ") }}}
     <criteria operator="AND">
       <criterion comment="check value selinux|enforcing=0 in /etc/default/grub, fail if found" test_ref="test_selinux_default_grub" />
       <criterion comment="check value selinux|enforcing=0 in /etc/grub2.cfg, fail if found" test_ref="test_selinux_grub2_cfg" />

@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="java_jre_disable_untrusted_sources" version="1">
+    <metadata>
+      <title>Disable Execution of Signed Java Applets From Untrusted Sources Feature</title>
+      <affected family="unix">
+        <product>Java Runtime Environment</product>
+      </affected>
+      <description>The dialog to enable users to grant permissions to execute 
+      signed content from an un-trusted authority must be disabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check deployment.security.askgrantdialog.notinca" test_ref="test_java_jre_disable_untrusted_sources" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.security.askgrantdialog.notinca" id="test_java_jre_disable_untrusted_sources" version="1">
+    <ind:object object_ref="object_java_jre_disable_untrusted_sources" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_java_jre_disable_untrusted_sources" version="1">
+    <ind:filepath>/etc/.java/deployment/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.security.askgrantdialog.notinca=false$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

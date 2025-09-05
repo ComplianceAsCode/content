@@ -1,16 +1,9 @@
 <def-group>
   <definition class="compliance" id="ftp_log_transactions" version="1">
-    <metadata>
-      <title>Banner for FTP Users</title>
-      <affected family="unix">
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>To trace malicious activity facilitated by the FTP 
+    {{{ oval_metadata("To trace malicious activity facilitated by the FTP 
       service, it must be configured to ensure that all commands sent to 
       the FTP server are logged using the verbose vsftpd log format.
-      </description>
-    </metadata>
+      ") }}}
     <criteria comment="FTP is not being used or the conditions are met" operator="OR">
       <extend_definition comment="vsftp package is not installed" definition_ref="package_vsftpd_installed" negate="true" />
       <criteria comment="FTP configuration conditions are not set or are met" operator="AND">

@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="sshd_allow_only_protocol2" version="1">
-    <metadata>
-      <title>Ensure Only Protocol 2 Connections Allowed</title>
-      {{{- oval_affected(products) }}}
-      <description>The OpenSSH daemon should be running protocol 2.</description>
-    </metadata>
+    {{{ oval_metadata("The OpenSSH daemon should be running protocol 2.") }}}
     <criteria comment="SSH is configured correctly or is not installed"
     operator="OR">
       <criteria comment="sshd is not installed" operator="AND">

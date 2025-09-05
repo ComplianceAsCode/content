@@ -1,6 +1,6 @@
 # platform = Red Hat Enterprise Linux 6
 . /usr/share/scap-security-guide/remediation_functions
-populate inactivity_timeout_value
+{{{ bash_instantiate_variables("inactivity_timeout_value") }}}
 
 # Install GConf2 package if not installed
 if ! rpm -q GConf2; then

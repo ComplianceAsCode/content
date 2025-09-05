@@ -5,15 +5,13 @@ prodtype: ocp4
 title: 'Configure the Encryption Provider'
 
 description: |-
-    To encrypt the etcd key-value store, follow the OpenShift documentation
-    and configure a <tt>EncryptionConfig</tt> file. Then, verify that the
-    <tt>openshift-kube-apiserver</tt> configmap on the master
-    node(s) and set <tt>encryption-provider-config</tt>
-    to the path of the <tt>EncryptionConfig</tt> file.
+    To encrypt the etcd key-value store, set the encryption type <tt>aescbc</tt> in the
+    <tt>apiserver</tt> object which configures the API server itself.
     <pre>
-    apiServerArguments:
-      encryption-provider-config:
-      - /etc/kubernetes/static-pod-resources/secrets/encryption-config/encryption-config</pre>
+    spec:
+      encryption:
+        type: aescbc
+    </pre>
 
 rationale: |-
     etcd is a highly available key-value store used by OpenShift deployments
@@ -26,9 +24,26 @@ severity: medium
 references:
     cis: 1.2.33
 
-ocil_clause: '<tt>encryption-provider-config</tt> arguments do not point to the <tt>EncryptionConfig</tt> file'
+
+ocil_clause: '<tt>aescbc</tt> is not set as the encryption type for etcd.'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["encryption-provider-config"]'</pre>
-    The output should return a file path configured for <tt>EncryptionConfig</tt>.
+    <pre>$ oc get apiserver cluster -ojson | jq -r '.spec.encryption.type'</pre>
+    The output should return <tt>aescdc</tt> as the encryption type.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/apiservers/cluster") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: '/apis/config.openshift.io/v1/apiservers/cluster'
+    yamlpath: '.spec.encryption.type'
+    values:
+    - value: 'aescbc'
+      type: "string"
+      operation: "pattern match"

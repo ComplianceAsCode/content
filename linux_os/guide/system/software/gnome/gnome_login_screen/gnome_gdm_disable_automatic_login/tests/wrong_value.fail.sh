@@ -1,7 +1,6 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_ospp
+# packages = gdm
 
-yum -y install gdm
 
 if grep -q "^AutomaticLoginEnable=" /etc/gdm/custom.conf ; then
 	sed -i "s/^AutomaticLoginEnable=.*/AutomaticLoginEnable=True/g" /etc/gdm/custom.conf

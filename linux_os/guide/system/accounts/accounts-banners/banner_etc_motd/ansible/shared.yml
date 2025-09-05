@@ -3,7 +3,7 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
-- (xccdf-var login_banner_text)
+{{{ ansible_instantiate_variables("login_banner_text") }}}
 
 - name: "{{{ rule_title }}} - remove incorrect banner"
   file:

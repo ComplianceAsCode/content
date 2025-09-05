@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_pci-dss
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
 
 # Check rsyslog.conf with root group-owner log from rules and

@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: rhcos4
+
+title: 'Enable page allocator poisoning'
+
+description: |-
+    To enable poisoning of free pages, add the argument <tt>page_poison=1</tt> to all
+    BLS (Boot Loader Specification) entries ('options' line) for the Linux
+    operating system in <tt>/boot/loader/entries/*.conf</tt>.
+
+
+rationale: |-
+    Poisoning writes an arbitrary value to freed pages, so any modification or
+    reference to that page after being freed or before being initialized will be
+    detected and prevented.
+    This prevents many types of use-after-free vulnerabilities at little performance cost.
+    Also prevents leak of data and detection of corrupted memory.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82673-5
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+    nist: CM-6(a)
+
+ocil_clause: 'page allocator poisoning is not enabled'
+
+ocil: |-
+    Inspect the form of all the BLS (Boot Loader Specification) entries
+    ('options' line) in <tt>/boot/loader/entries/*.conf</tt>. If they include
+    <tt>page_poison=1</tt>, then page poisoning is enabled at boot time.
+    <br /><br />
+    To ensure <tt>page_poison=1</tt> is configured on the installed kernel, add
+    the kernel argument via a <pre>MachineConfig</pre> object to the appropriate
+    pools.
+
+template:
+    name: coreos_kernel_option
+    vars:
+        arg_name: page_poison
+        arg_value: '1'

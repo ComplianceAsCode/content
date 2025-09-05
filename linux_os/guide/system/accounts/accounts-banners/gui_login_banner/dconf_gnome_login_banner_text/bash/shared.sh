@@ -1,6 +1,6 @@
 # platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol
 . /usr/share/scap-security-guide/remediation_functions
-populate login_banner_text
+{{{ bash_instantiate_variables("login_banner_text") }}}
 
 # Multiple regexes transform the banner regex into a usable banner
 # 0 - Remove anchors around the banner text

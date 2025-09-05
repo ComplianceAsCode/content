@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 # platform = Red Hat Enterprise Linux 7
 
 # Correct the form of default kernel command line in GRUB /etc/default/grub and applies value through Grubby

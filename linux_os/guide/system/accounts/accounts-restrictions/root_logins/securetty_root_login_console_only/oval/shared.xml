@@ -1,14 +1,8 @@
 <def-group>
   <definition class="compliance" id="securetty_root_login_console_only" version="1">
-    <metadata>
-      <title>Restrict Virtual Console Root Logins</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>Preventing direct root login to virtual console devices
+    {{{ oval_metadata("Preventing direct root login to virtual console devices
       helps ensure accountability for actions taken on the system using the
-      root account.</description>
-    </metadata>
+      root account.") }}}
     <criteria>
       <criterion comment="virtual consoles /etc/securetty" test_ref="test_virtual_consoles_etc_securetty" />
     </criteria>

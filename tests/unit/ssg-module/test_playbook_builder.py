@@ -15,6 +15,7 @@ product_yaml = os.path.join(DATADIR, "product.yml")
 input_dir = os.path.join(DATADIR, "fixes")
 output_dir = os.path.join(DATADIR, "playbooks")
 resolved_rules_dir = os.path.join(DATADIR, "rules")
+resolved_profiles_dir = os.path.join(DATADIR, "profiles")
 rule = "selinux_state"
 profile = "ospp"
 
@@ -24,7 +25,7 @@ expected_output_filepath = os.path.join(DATADIR, "selinux_state.yml")
 
 def test_build_rule_playbook():
     playbook_builder = ssg.playbook_builder.PlaybookBuilder(
-        product_yaml, input_dir, output_dir, resolved_rules_dir
+        product_yaml, input_dir, output_dir, resolved_rules_dir, resolved_profiles_dir
     )
     playbook_builder.build(profile, rule)
 

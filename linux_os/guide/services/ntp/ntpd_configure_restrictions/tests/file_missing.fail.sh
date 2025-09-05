@@ -1,5 +1,5 @@
 #!/bin/bash
+# packages = ntp
 
-yum -y install ntp
 
 rm -f /etc/ntp.conf

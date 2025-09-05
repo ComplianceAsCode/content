@@ -1,16 +1,7 @@
 <def-group>
   <definition class="compliance" id="ensure_gpgcheck_never_disabled"
   version="1">
-    <metadata>
-      <title>Ensure gpgcheck Enabled For All Yum or Dnf Package Repositories</title>
-      <affected family="unix">
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Ensure all yum or dnf repositories utilize signature checking.</description>
-    </metadata>
+    {{{ oval_metadata("Ensure all yum or dnf repositories utilize signature checking.") }}}
     <criteria comment="ensure all yum or dnf repositories utilize signiature checking" operator="AND">
       <criterion comment="verify no gpgpcheck=0 present in /etc/yum.repos.d files"
       test_ref="test_ensure_gpgcheck_never_disabled" />

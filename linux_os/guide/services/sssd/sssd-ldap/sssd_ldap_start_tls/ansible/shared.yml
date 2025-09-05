@@ -4,44 +4,4 @@
 # complexity = low
 # disruption = medium
 
-- name: "Set LDAP to be used for authentication"
-  lineinfile:
-    path: /etc/sysconfig/authconfig
-    regexp: '^USELDAPAUTH='
-    line: 'USELDAPAUTH=yes'
-    create: yes
-
-- name: "Test for domain group"
-  command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
-  register: test_grep_domain
-  ignore_errors: yes
-  changed_when: False
-  check_mode: no
-
-- name: "Add default domain group and use STARTTLS (if no domain there)"
-  ini_file:
-    path: /etc/sssd/sssd.conf
-    section: "{{ item.section }}"
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
-    create: yes
-    mode: 0600
-  with_items:
-    - { section: sssd, option: domains, value: default}
-    - { section: domain/default, option: id_provider, value: files }
-    - { section: domain/default, option: ldap_id_use_start_tls, value: true}
-  when:
-    - test_grep_domain.stdout is defined
-    - test_grep_domain.stdout | length < 1
-
-- name: "Configure LDAP to use STARTTLS"
-  ini_file:
-    path: /etc/sssd/sssd.conf
-    section: "{{ test_grep_domain.stdout | regex_replace('\\[(.*)\\]','\\1') }}"
-    option: ldap_id_use_start_tls
-    value: true
-    create: yes
-    mode: 0600
-  when:
-    - test_grep_domain.stdout is defined
-    - test_grep_domain.stdout | length > 0
+{{{ ansible_sssd_ldap_config(parameter="ldap_id_use_start_tls", value="true") }}}

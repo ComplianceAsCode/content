@@ -1,10 +1,6 @@
 <def-group oval_version="5.10">
   <definition class="compliance" id="etc_system_fips_exists" version="1">
-    <metadata>
-      <title>Check /etc/system-fips exists</title>
-      {{{- oval_affected(products) }}}
-      <description>Check /etc/system-fips exists</description>
-    </metadata>
+    {{{ oval_metadata("Check /etc/system-fips exists") }}}
     <criteria operator="AND">
       <criterion test_ref="test_etc_system_fips" comment="/etc/system-fips exists" />
     </criteria>

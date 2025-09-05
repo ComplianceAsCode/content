@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="selinux_all_devicefiles_labeled" version="1">
-    <metadata>
-      <title>Device Files Have Proper SELinux Context</title>
-      {{{- oval_affected(products) }}}
-      <description>All device files in /dev should be assigned an SELinux security context other than 'device_t' and 'unlabeled_t'.</description>
-    </metadata>
+    {{{ oval_metadata("All device files in /dev should be assigned an SELinux security context other than 'device_t' and 'unlabeled_t'.") }}}
     <criteria operator="AND">
       <criterion comment="device_t in /dev" test_ref="test_selinux_dev_device_t" />
       <criterion comment="unlabeled_t in /dev" test_ref="test_selinux_dev_unlabeled_t" />

@@ -1,5 +1,6 @@
 description: Ensures PCI-DSS v3.2.1 security configuration settings are applied.
 documentation_complete: true
+reference: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
 selections:
 - account_disable_post_pw_expiration
 - account_unique_name
@@ -80,7 +81,6 @@ selections:
 - dconf_gnome_screensaver_idle_delay
 - dconf_gnome_screensaver_lock_enabled
 - dconf_gnome_screensaver_mode_blank
-- disable_prelink
 - display_login_attempts
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_never_disabled
@@ -122,6 +122,7 @@ selections:
 - set_password_hashing_algorithm_logindefs
 - set_password_hashing_algorithm_systemauth
 - sshd_set_idle_timeout
+- sshd_set_keepalive
 - sssd_enable_smartcards
 - var_password_pam_unix_remember=4
 - var_account_disable_post_pw_expiration=90

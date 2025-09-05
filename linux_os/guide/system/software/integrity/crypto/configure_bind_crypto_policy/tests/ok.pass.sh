@@ -1,10 +1,9 @@
 #!/bin/bash
+# packages = bind
 # platform = multi_platform_fedora,Red Hat Enterprise Linux 8
-# profiles = xccdf_org.ssgproject.content_profile_ospp, xccdf_org.ssgproject.content_profile_standard
 
 BIND_CONF='/etc/named.conf'
 
-yum install -y bind
 
 cat << EOF > "$BIND_CONF"
 options {

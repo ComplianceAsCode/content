@@ -21,6 +21,7 @@ description: 'This profile contains configuration checks that align to the
 
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 documentation_complete: true
+reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
 - account_disable_post_pw_expiration
 - account_temp_expire_date
@@ -115,6 +116,7 @@ selections:
 - kernel_module_firewire-core_disabled
 - kernel_module_sctp_disabled
 - kernel_module_tipc_disabled
+- kernel_trust_cpu_rng
 - mount_option_boot_nodev
 - mount_option_boot_nosuid
 - mount_option_dev_shm_nodev
@@ -150,24 +152,23 @@ selections:
 - package_aide_installed
 - package_audispd-plugins_installed
 - package_audit_installed
+- package_chrony_installed
 - package_crypto-policies_installed
 - package_dnf-automatic_installed
 - package_dnf-plugin-subscription-manager_installed
 - package_fapolicyd_installed
 - package_firewalld_installed
+- package_gnutls-utils_installed
 - package_gssproxy_removed
 - package_iprutils_removed
-- package_iptables_installed
 - package_krb5-workstation_removed
 - package_libcap-ng-utils_installed
 - package_nfs-utils_removed
 - package_openscap-scanner_installed
 - package_openssh-clients_installed
 - package_openssh-server_installed
-- package_pigz_removed
 - package_policycoreutils-python-utils_installed
 - package_policycoreutils_installed
-- package_rng-tools_installed
 - package_rsyslog-gnutls_installed
 - package_rsyslog_installed
 - package_scap-security-guide_installed
@@ -175,7 +176,6 @@ selections:
 - package_subscription-manager_installed
 - package_sudo_installed
 - package_tmux_installed
-- package_tuned_removed
 - package_usbguard_installed
 - partition_for_home
 - partition_for_var
@@ -191,7 +191,7 @@ selections:
 - service_debug-shell_disabled
 - service_fapolicyd_enabled
 - service_firewalld_enabled
-- service_rngd_enabled
+- service_kdump_disabled
 - service_systemd-coredump_disabled
 - service_usbguard_enabled
 - smartcard_configure_cert_checking
@@ -242,7 +242,6 @@ selections:
 - sysctl_user_max_user_namespaces
 - timer_dnf-automatic_enabled
 - usbguard_allow_hid_and_hub
-- var_sshd_set_keepalive=0
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - var_accounts_user_umask=027

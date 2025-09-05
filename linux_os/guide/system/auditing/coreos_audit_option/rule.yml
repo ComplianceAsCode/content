@@ -1,0 +1,54 @@
+documentation_complete: true
+
+prodtype: rhcos4
+
+title: 'Enable Auditing for Processes Which Start Prior to the Audit Daemon'
+
+description: |-
+    To ensure all processes can be audited, even those which start
+    prior to the audit daemon, add the argument <tt>audit=1</tt> to all
+    BLS (Boot Loader Specification) entries ('options' line) for the Linux
+    operating system in <tt>/boot/loader/entries/*.conf</tt>.
+
+rationale: |-
+    Each process on the system carries an "auditable" flag which indicates whether
+    its activities can be audited. Although <tt>auditd</tt> takes care of enabling
+    this for all processes which launch after it does, adding the kernel argument
+    ensures it is set for every process during boot.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82670-1
+
+references:
+    cis@rhel8: 4.1.1.3
+    cjis: 5.4.1.1
+    cui: 3.3.1
+    disa: CCI-001464,CCI-000130
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(5)(ii)(C),164.310(a)(2)(iv),164.310(d)(2)(iii),164.312(b)
+    nist: AC-17(1),AU-14(1),AU-10,CM-6(a),IR-5(1)
+    nist-csf: DE.AE-3,DE.AE-5,ID.SC-4,PR.AC-3,PR.PT-1,PR.PT-4,RS.AN-1,RS.AN-4
+    vmmsrg: SRG-OS-000254-VMM-000880
+    pcidss: Req-10.3
+    isa-62443-2013: 'SR 1.13,SR 2.10,SR 2.11,SR 2.12,SR 2.6,SR 2.8,SR 2.9,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 6.1,SR 7.1,SR 7.6'
+    isa-62443-2009: 4.2.3.10,4.3.2.6.7,4.3.3.3.9,4.3.3.5.8,4.3.3.6.6,4.3.4.4.7,4.3.4.5.6,4.3.4.5.7,4.3.4.5.8,4.4.2.1,4.4.2.2,4.4.2.4
+    cobit5: APO10.01,APO10.03,APO10.04,APO10.05,APO11.04,APO12.06,APO13.01,BAI03.05,BAI08.02,DSS01.04,DSS02.02,DSS02.04,DSS02.07,DSS03.01,DSS05.02,DSS05.03,DSS05.04,DSS05.07,MEA01.01,MEA01.02,MEA01.03,MEA01.04,MEA01.05,MEA02.01
+    iso27001-2013: A.11.2.6,A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1,A.13.1.1,A.13.2.1,A.14.1.3,A.15.2.1,A.15.2.2,A.16.1.4,A.16.1.5,A.16.1.7,A.6.2.1,A.6.2.2
+    cis-csc: 1,11,12,13,14,15,16,19,3,4,5,6,7,8
+    srg: SRG-OS-000254-GPOS-00095
+
+ocil_clause: 'auditing is not enabled at boot time'
+
+ocil: |-
+    Inspect the form of BLS (Boot Loader Specification) options lines for the Linux operating system
+    in <tt>/boot/loader/entries/*.conf</tt>. If they include <tt>audit=1</tt>, then auditing
+    is enabled at boot time.
+    <pre># grep 'options.*audit=1.*' /boot/loader/entires/*.conf</pre>
+    <br />
+
+template:
+    name: coreos_kernel_option
+    vars:
+        arg_name: audit
+        arg_value: '1'

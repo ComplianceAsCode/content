@@ -6,8 +6,7 @@ import os
 import os.path
 import re
 import codecs
-from collections import defaultdict, namedtuple
-
+from collections import defaultdict, namedtuple, OrderedDict
 
 import ssg.yaml
 from . import build_yaml
@@ -26,6 +25,13 @@ REMEDIATION_TO_EXT_MAP = {
     'puppet': '.pp',
     'ignition': '.yml',
     'kubernetes': '.yml'
+}
+
+PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND = {
+    'apt_get': 'dpkg-query -s {0} &>/dev/null',
+    'dnf': 'rpm --quiet -q {0}',
+    'yum': 'rpm --quiet -q {0}',
+    'zypper': 'rpm --quiet -q {0}',
 }
 
 FILE_GENERATED_HASH_COMMENT = '# THIS FILE IS GENERATED'
@@ -263,6 +269,65 @@ class BashRemediation(Remediation):
     def __init__(self, file_path):
         super(BashRemediation, self).__init__(file_path, "bash")
 
+    def parse_from_file_with_jinja(self, env_yaml):
+        self.local_env_yaml.update(env_yaml)
+        result = super(BashRemediation, self).parse_from_file_with_jinja(self.local_env_yaml)
+
+        # Avoid platform wrapping empty fix text
+        # Remediations can be empty when a Jinja macro or conditional
+        # renders no fix text for a product
+        stripped_fix_text = result.contents.strip()
+        if stripped_fix_text == "":
+            return result
+
+        rule_platforms = set()
+        if self.associated_rule:
+            # There can be repeated inherited platforms and rule platforms
+            rule_platforms.update(self.associated_rule.inherited_platforms)
+            rule_platforms.add(self.associated_rule.platform)
+
+        platform_conditionals = []
+        for platform in rule_platforms:
+            if platform == "machine":
+                # Based on check installed_env_is_a_container
+                platform_conditionals.append('[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]')
+            elif platform is not None:
+                # Assume any other platform is a Package CPE
+
+                # Some package names are different from the platform names
+                if platform in self.local_env_yaml["platform_package_overrides"]:
+                    platform = self.local_env_yaml["platform_package_overrides"].get(platform)
+
+                    # Workaround for plaforms that are not Package CPEs
+                    # Skip platforms that are not about packages installed
+                    # These should be handled in the remediation itself
+                    if not platform:
+                        continue
+
+                # Adjust package check command according to the pkg_manager
+                pkg_manager = self.local_env_yaml["pkg_manager"]
+                pkg_check_command = PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND[pkg_manager]
+                platform_conditionals.append(pkg_check_command.format(platform))
+
+        if platform_conditionals:
+            wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
+
+            all_conditions = " && ".join(platform_conditionals)
+            wrapped_fix_text.append("if {0}; then".format(all_conditions))
+            wrapped_fix_text.append("")
+            # It is possible to indent the original body of the remediation with textwrap.indent(),
+            # however, it is not supported by python2, and there is a risk of breaking remediations
+            # For example, remediations with a here-doc block could be affected.
+            wrapped_fix_text.append("{0}".format(stripped_fix_text))
+            wrapped_fix_text.append("")
+            wrapped_fix_text.append("else")
+            wrapped_fix_text.append("    >&2 echo 'Remediation is not applicable, nothing was done'")
+            wrapped_fix_text.append("fi")
+
+            remediation = namedtuple('remediation', ['contents', 'config'])
+            result = remediation(contents="\n".join(wrapped_fix_text), config=result.config)
+
+        return result
 
 class AnsibleRemediation(Remediation):
     def __init__(self, file_path):
@@ -343,10 +408,66 @@ class AnsibleRemediation(Remediation):
         else:
             return []
 
+    def inject_package_facts_task(self, parsed_snippet):
+        """ Injects a package_facts task only if
+            the snippet has a task with a when clause with ansible_facts.packages,
+            and the snippet doesn't already have a package_facts task
+        """
+        has_package_facts_task = False
+        has_ansible_facts_packages_clause = False
+
+        for p_task in parsed_snippet:
+            # We are only interested in the OrderedDicts, which represent Ansible tasks
+            if not isinstance(p_task, dict):
+                continue
+
+            if "package_facts" in p_task:
+                has_package_facts_task = True
+
+            # When clause of the task can be string or a list, lets normalize to list
+            task_when = p_task.get("when", "")
+            if type(task_when) is str:
+                task_when = [task_when]
+            for when in task_when:
+                if "ansible_facts.packages" in when:
+                    has_ansible_facts_packages_clause = True
+
+        if has_ansible_facts_packages_clause and not has_package_facts_task:
+            facts_task = OrderedDict({'name': 'Gather the package facts',
+                                      'package_facts': {'manager': 'auto'}})
+            parsed_snippet.insert(0, facts_task)
+
     def update_when_from_rule(self, to_update):
-        additional_when = ""
-        if self.associated_rule.platform == "machine":
-            additional_when = 'ansible_virtualization_type not in ["docker", "lxc", "openvz"]'
+        additional_when = []
+
+        # There can be repeated inherited platforms and rule platforms
+        rule_platforms = set(self.associated_rule.inherited_platforms)
+        rule_platforms.add(self.associated_rule.platform)
+
+        for platform in rule_platforms:
+            if platform == "machine":
+                additional_when.append('ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]')
+            elif platform is not None:
+                # Assume any other platform is a Package CPE
+
+                # It doesn't make sense to add a conditional on the task that
+                # gathers data for the conditional
+                if "package_facts" in to_update:
+                    continue
+
+                if platform in self.local_env_yaml["platform_package_overrides"]:
+                    platform = self.local_env_yaml["platform_package_overrides"].get(platform)
+
+                    # Workaround for plaforms that are not Package CPEs
+                    # Skip platforms that are not about packages installed
+                    # These should be handled in the remediation itself
+                    if not platform:
+                        continue
+
+                additional_when.append('"' + platform + '" in ansible_facts.packages')
+                # After adding the conditional, we need to make sure package_facts are collected.
+                # This is done via inject_package_facts_task()
+
         to_update.setdefault("when", "")
         new_when = ssg.yaml.update_yaml_list_or_string(to_update["when"], additional_when)
         if not new_when:
@@ -355,10 +476,21 @@ class AnsibleRemediation(Remediation):
             to_update["when"] = new_when
 
     def update(self, parsed, config):
+        # We split the remediation update in three steps
+
+        # 1. Update the when clause
         for p in parsed:
             if not isinstance(p, dict):
                 continue
             self.update_when_from_rule(p)
+
+        # 2. Inject any extra task necessary
+        self.inject_package_facts_task(parsed)
+
+        # 3. Add tags to all tasks, including the ones we have injected
+        for p in parsed:
+            if not isinstance(p, dict):
+                continue
             self.update_tags_from_config(p, config)
             self.update_tags_from_rule(p)
 
@@ -631,14 +763,16 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
         patcomp = re.compile(pattern, re.DOTALL)
         fixparts = re.split(patcomp, fix.text)
         if fixparts[0] is not None:
-            # Split the portion of fix.text from fix start to first call of
-            # remediation function, keeping only the third part:
-            # * tail        to hold part of the fix.text after inclusion,
-            #               but before first call of remediation function
+            # Split the portion of fix.text at the string remediation_functions,
+            # and remove preceeding comment whenever it is there.
+            # * head        holds part of the fix.text before
+            #               remediation_functions string
+            # * tail        holds part of the fix.text after the
+            #               remediation_functions string
             try:
-                rfpattern = '(.*remediation_functions)(.*)'
-                rfpatcomp = re.compile(rfpattern, re.DOTALL)
-                _, _, tail, _ = re.split(rfpatcomp, fixparts[0], maxsplit=2)
+                rfpattern = r'((?:# Include source function library\.\n)?.*remediation_functions)'
+                rfpatcomp = re.compile(rfpattern)
+                head, _, tail = re.split(rfpatcomp, fixparts[0], maxsplit=1)
             except ValueError:
                 sys.stderr.write("Processing fix.text for: %s rule\n"
                                  % fix.get('rule'))
@@ -646,9 +780,10 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                                  "after inclusion of remediation functions."
                                  " Aborting..\n")
                 sys.exit(1)
-            # If the 'tail' is not empty, make it new fix.text.
+            # If the 'head' is not empty, make it new fix.text.
             # Otherwise use ''
-            fix.text = tail if tail is not None else ''
+            fix.text = head if head is not None else ''
+            fix.text += tail if tail is not None else ''
             # Drop the first element of 'fixparts' since it has been processed
             fixparts.pop(0)
             # Perform sanity check on new 'fixparts' list content (to continue

@@ -3,18 +3,7 @@
 {{%- else -%}}
 <def-group>
   <definition class="compliance" id="xwindows_runlevel_setting" version="1">
-    <metadata>
-      <title>Disable X Windows Startup By Setting Default SystemD Target</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-      </affected>
-      {{%- if init_system == "systemd" %}}
-      <description>Checks /etc/systemd/system/default.target to ensure that the default runlevel target is set to multi-user.target.</description>
-      {{%- else %}}
-      <description>Checks /etc/inittab to ensure that default runlevel is set to 3.</description>
-      {{%- endif %}}
-    </metadata>
+    {{{ oval_metadata("Checks /etc/inittab to ensure that default runlevel is set to 3.") }}}
     {{%- if init_system == "systemd" %}}
     <criteria>
       <criterion comment="default.target systemd softlink exists" test_ref="test_disable_xwindows_runlevel" />

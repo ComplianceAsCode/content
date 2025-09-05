@@ -6,12 +6,9 @@
 - name: "Prevent Log In to Accounts With Empty Password - system-auth"
   replace:
     dest: /etc/pam.d/system-auth
-    follow: yes
     regexp: 'nullok'
 
 - name: "Prevent Log In to Accounts With Empty Password - password-auth"
   replace:
     dest: /etc/pam.d/password-auth
-    follow: yes
     regexp: 'nullok'
-

@@ -1,11 +1,7 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="chronyd_or_ntpd_set_maxpoll" version="1">
-    <metadata>
-      <title>Configure Time Service Maxpoll Interval</title>
-      {{{- oval_affected(products) }}}
-      <description>Configure the maxpoll setting in /etc/ntp.conf or chrony.conf
-      to continuously poll the time source servers.</description>
-    </metadata>
+    {{{ oval_metadata("Configure the maxpoll setting in /etc/ntp.conf or chrony.conf
+      to continuously poll the time source servers.") }}}
     <criteria operator="OR">
       <criteria operator="AND">
         <extend_definition comment="service ntpd enabled" definition_ref="service_ntpd_enabled" />

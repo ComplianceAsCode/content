@@ -1,16 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_unsuccessful_file_modification" version="1">
-    <metadata>
-      <title>Ensure auditd Collects Unauthorized Access Attempts to Files (unsuccessful)</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_wrlinux</platform>
-      </affected>
-      <description>Audit rules about the unauthorized access attempts to files (unsuccessful) are enabled.</description>
-    </metadata>
+    {{{ oval_metadata("Audit rules about the unauthorized access attempts to files (unsuccessful) are enabled.") }}}
 
     <criteria operator="AND">
       <extend_definition comment="audit creat" definition_ref="audit_rules_unsuccessful_file_modification_creat" />

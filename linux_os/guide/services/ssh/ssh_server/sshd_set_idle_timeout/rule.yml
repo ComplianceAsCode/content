@@ -8,7 +8,7 @@ description: |-
     <br /><br />
     To set an idle timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as
     follows:
-    <pre>ClientAliveInterval <b><sub idref="sshd_idle_timeout_value" /></b></pre>
+    <pre>ClientAliveInterval <b>{{{ xccdf_value("sshd_idle_timeout_value") }}}</b></pre>
     <br/><br/>
     The timeout <b>interval</b> is given in seconds. For example, have a timeout
     of 10 minutes, set <b>interval</b> to 600.
@@ -53,7 +53,10 @@ references:
     cobit5: APO13.01,BAI03.01,BAI03.02,BAI03.03,DSS01.03,DSS03.05,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     iso27001-2013: A.12.4.1,A.12.4.3,A.14.1.1,A.14.2.1,A.14.2.5,A.18.1.4,A.6.1.2,A.6.1.5,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
     cis-csc: 1,12,13,14,15,16,18,3,5,7,8
-    anssi: NT28(R29)
+    anssi: BP28(R29)
+
+requires:
+    - sshd_set_keepalive
 
 ocil_clause: 'it is commented out or not configured properly'
 
@@ -61,4 +64,15 @@ ocil: |-
     Run the following command to see what the timeout interval is:
     <pre>$ sudo grep ClientAliveInterval /etc/ssh/sshd_config</pre>
     If properly configured, the output should be:
-    <pre>ClientAliveInterval <sub idref="sshd_idle_timeout_value" /></pre>
+    <pre>ClientAliveInterval {{{ xccdf_value("sshd_idle_timeout_value") }}}</pre>
+
+warnings:
+    - dependency: |-
+        SSH disconnecting idle clients will not have desired effect without also
+        configuring ClientAliveCountMax in the SSH service configuration.
+    - general: |-
+        Following conditions may prevent the SSH session to time out:
+        <ul>
+        <li>Remote processes on the remote machine generates output. As the output has to be transferred over the network to the client, the timeout is reset every time such transfer happens.</li>
+        <li>Any <tt>scp</tt> or <tt>sftp</tt> activity by the same user to the host resets the timeout.</li>
+        </ul>

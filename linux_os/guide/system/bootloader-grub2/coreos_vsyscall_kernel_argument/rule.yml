@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: rhcos4
+
+title: 'Disable vsyscalls'
+
+description: |-
+    To disable use of virtual syscalls, add the argument <tt>vsyscall=none</tt> to all
+    BLS (Boot Loader Specification) entries ('options' line) for the Linux
+    operating system in <tt>/boot/loader/entries/*.conf</tt>.
+
+rationale: |-
+    Virtual Syscalls provide an opportunity of attack for a user who has control
+    of the return instruction pointer.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82674-3
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+    nist: CM-7(a)
+
+ocil_clause: 'vsyscalls are enabled'
+
+ocil: |-
+    Inspect the form of all the BLS (Boot Loader Specification) entries
+    ('options' line) in <tt>/boot/loader/entries/*.conf</tt>. If they include
+    <tt>vsyscall=none</tt>, then virtual syscalls are not enabled at boot time.
+    <br /><br />
+    To ensure <tt>vsyscall=none</tt> is configured on the installed kernel, add
+    the kernel argument via a <pre>MachineConfig</pre> object to the appropriate
+    pools.
+
+template:
+    name: coreos_kernel_option
+    vars:
+        arg_name: vsyscall
+        arg_value: none

@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="selinux_confinement_of_daemons" version="1">
-    <metadata>
-      <title>Ensure No Daemons are Unconfined by SELinux</title>
-      {{{- oval_affected(products) }}}
-      <description>All pids in /proc should be assigned an SELinux security context other than 'initrc_t'.</description>
-    </metadata>
+    {{{ oval_metadata("All pids in /proc should be assigned an SELinux security context other than 'initrc_t'.") }}}
     <criteria>
       <criterion comment="device_t in /dev" test_ref="test_selinux_confinement_of_daemons" />
     </criteria>

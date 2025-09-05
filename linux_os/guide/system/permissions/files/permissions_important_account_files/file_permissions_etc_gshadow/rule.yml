@@ -25,7 +25,7 @@ identifiers:
     cce@rhel8: CCE-80811-3
 
 references:
-    anssi: NT28(R36)
+    anssi: BP28(R36)
     stigid@rhel6: RHEL-06-000038
     srg@rhel6: SRG-OS-999999
     disa@rhel6: CCI-000225
@@ -50,9 +50,7 @@ template:
     vars:
         filepath: /etc/gshadow
         filemode: '0000'
-        filemode@debian8: '0640'
         filemode@debian9: '0640'
         filemode@debian10: '0640'
-        filemode@ubuntu1404: '0640'
         filemode@ubuntu1604: '0640'
         filemode@ubuntu1804: '0640'

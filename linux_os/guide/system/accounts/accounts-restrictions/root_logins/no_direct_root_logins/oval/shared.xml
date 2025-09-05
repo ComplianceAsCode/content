@@ -1,11 +1,7 @@
 <def-group>
   <definition class="compliance" id="no_direct_root_logins" version="1">
-    <metadata>
-      <title>Direct root Logins Not Allowed</title>
-      {{{- oval_affected(products) }}}
-      <description>Preventing direct root logins help ensure accountability for actions
-      taken on the system using the root account.</description>
-    </metadata>
+    {{{ oval_metadata("Preventing direct root logins help ensure accountability for actions
+      taken on the system using the root account.") }}}
     <criteria operator="AND">
       <criterion comment="serial ports /etc/securetty" test_ref="test_no_direct_root_logins" />
       <criterion comment="serial ports /etc/securetty" test_ref="test_etc_securetty_exists" />

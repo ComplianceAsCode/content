@@ -13,8 +13,8 @@ rationale: |-
 
 severity: medium
 
-#identifiers:
-#    cce@ocp4: 80633-1
+identifiers:
+    cce@ocp4: CCE-83408-5
 
 references:
     cis: 4.1.10
@@ -23,8 +23,8 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/var/lib/kubelet/kubeconfig", own
 
 ocil: '{{{ ocil_file_owner(file="/var/lib/kubelet/kubeconfig", owner="root") }}}'
 
-#template:
-#    name: file_owner
-#    vars:
-#        filepath: /var/lib/kubelet/kubeconfig
-#        fileuid: '0'
+template:
+    name: file_owner
+    vars:
+        filepath: /var/lib/kubelet/kubeconfig
+        fileuid: '0'

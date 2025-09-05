@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
+    {{{ oval_metadata("Ensure " + ARG_NAME + "=" + ARG_VALUE +" argument is present in the 'options' line of /boot/loader/entries/ostree-2-*.conf (or ostree-1-*.conf if there is no ostree-2-*.conf as ostree has only two enries at the most, with *-2-*.conf entry always being the most recent). Also, ensure that kernel is currently running with this argument by checking /proc/cmdline.") }}}
+    <criteria operator="AND">
+      <criteria operator="OR">
+        <criteria operator="AND">
+            {{{- oval_file_absent_criterion('/boot/loader/entries/ostree-2-.*.conf')}}}
+            {{{- oval_argument_value_in_line_criterion('/boot/loader/entries/ostree-1-.*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
+        </criteria>
+        <criteria operator="AND">
+            {{{- oval_argument_value_in_line_criterion('/boot/loader/entries/ostree-2-.*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
+        </criteria>
+      </criteria>
+      <criteria operator="AND">
+        {{{- oval_argument_value_in_line_criterion('/proc/cmdline', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
+      </criteria>
+    </criteria>
+  </definition>
+
+  {{{- oval_file_absent('/boot/loader/entries/ostree-2-.*.conf') }}}
+  {{{- oval_argument_value_in_line_test('/boot/loader/entries/ostree-1-.*.conf', ARG_NAME, ARG_VALUE, 'options ') }}}
+
+  {{{- oval_argument_value_in_line_test('/boot/loader/entries/ostree-2-.*.conf', ARG_NAME, ARG_VALUE, 'options ') }}}
+
+  {{{- oval_argument_value_in_line_test('/proc/cmdline', ARG_NAME, ARG_VALUE, 'BOOT_IMAGE') }}}
+</def-group>

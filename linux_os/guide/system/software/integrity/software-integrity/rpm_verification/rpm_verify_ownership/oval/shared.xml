@@ -1,18 +1,9 @@
 <def-group>
   <definition class="compliance" id="rpm_verify_ownership" version="3">
-    <metadata>
-      <title>Verify File Ownership Using RPM</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Verify ownership of installed packages
+    {{{ oval_metadata("Verify ownership of installed packages
       by comparing the installed files with information about the
       files taken from the package metadata stored in the RPM
-      database.</description>
-    </metadata>
+      database.") }}}
     <criteria operator="AND">
       <criterion test_ref="test_verify_all_rpms_user_ownership" comment="user ownership of all files matches local rpm database" />
       <criterion test_ref="test_verify_all_rpms_group_ownership" comment="group ownership of all files matches local rpm database" />

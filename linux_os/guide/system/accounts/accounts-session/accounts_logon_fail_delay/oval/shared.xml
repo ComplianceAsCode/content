@@ -1,13 +1,7 @@
 <def-group>
   <definition class="compliance" id="accounts_logon_fail_delay" version="1">
-    <metadata>
-      <title>Ensure that FAIL_DELAY is Configured in /etc/login.defs</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The delay between failed authentication attempts should be
-      set for all users specified in /etc/login.defs</description>
-    </metadata>
+    {{{ oval_metadata("The delay between failed authentication attempts should be
+      set for all users specified in /etc/login.defs") }}}
     <criteria>
       <criterion test_ref="test_accounts_logon_fail_delay" />
     </criteria>

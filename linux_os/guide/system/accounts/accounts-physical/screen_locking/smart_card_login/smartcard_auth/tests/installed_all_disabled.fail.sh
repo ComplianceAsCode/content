@@ -1,8 +1,7 @@
 #!/bin/bash
+# packages = pcsc-lite pam_pkcs11 esc
 
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 
-yum install -y pcsc-lite pam_pkcs11 esc
 
 systemctl disable pcscd.socket
 systemctl disable pcscd.service

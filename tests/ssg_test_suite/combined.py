@@ -35,41 +35,52 @@ class CombinedChecker(rule.RuleChecker):
         super(CombinedChecker, self).__init__(test_env)
         self._matching_rule_found = False
 
+        self.rules_not_tested_yet = set()
         self.results = list()
         self._current_result = None
 
+    def _rule_should_be_tested(self, rule, rules_to_be_tested):
+        if rule.short_id not in rules_to_be_tested:
+            return False
+        return True
+
     def _modify_parameters(self, script, params):
-        # Override any metadata in test scenario, wrt to profile to test
-        # We already know that all target rules are part of the target profile
-        params['profiles'] = [self.profile]
+        # If there is no profiles metadata in a script we will use
+        # the ALL profile - this will prevent failures which might
+        # be caused by the tested profile selecting different values
+        # in tested variables compared to defaults. The ALL profile
+        # is always selecting default values.
+        # If there is profiles metadata we check the metadata and set
+        # it to self.profile (the tested profile) only if the metadata
+        # contains self.profile - otherwise scenario is not supposed to
+        # be tested using the self.profile and we return empty profiles
+        # metadata.
+        if not params["profiles"]:
+            params["profiles"].append(rule.OSCAP_PROFILE_ALL_ID)
+            logging.debug(
+                "Added the {0} profile to the list of available profiles for {1}"
+                .format(rule.OSCAP_PROFILE_ALL_ID, script))
+        else:
+            params['profiles'] = [item for item in params['profiles'] if re.search(self.profile, item)]
         return params
 
     def _test_target(self, target):
-        try:
-            remote_dir = common.send_scripts(self.test_env.domain_ip)
-        except RuntimeError as exc:
-            msg = "Unable to upload test scripts: {more_info}".format(more_info=str(exc))
-            raise RuntimeError(msg)
+        self.rules_not_tested_yet = set(target)
 
-        self._matching_rule_found = False
+        super(CombinedChecker, self)._test_target(target)
 
-        with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
-            for rule in common.iterate_over_rules():
-                if rule.short_id not in target:
-                    continue
-                # In combined mode there is no expectations of matching substrings,
-                # every entry in the target is expected to be unique.
-                # Let's remove matched targets, so we can track rules not tested
-                target.remove(rule.short_id)
-                remediation_available = self._is_remediation_available(rule)
-                self._check_rule(rule, remote_dir, state, remediation_available)
-
-        if len(target) != 0:
-            target.sort()
+        if len(self.rules_not_tested_yet) != 0:
+            not_tested = sorted(list(self.rules_not_tested_yet))
             logging.info("The following rule(s) were not tested:")
-            for rule in target:
+            for rule in not_tested:
                 logging.info("{0}".format(rule))
 
+    def test_rule(self, state, rule, scenarios):
+        super(CombinedChecker, self).test_rule(state, rule, scenarios)
+        # In combined mode there is no expectations of matching substrings,
+        # every entry in the target is expected to be unique.
+        # Let's remove matched targets, so we can track rules not tested
+        self.rules_not_tested_yet.discard(rule.short_id)
 
 def perform_combined_check(options):
     checker = CombinedChecker(options.test_env)

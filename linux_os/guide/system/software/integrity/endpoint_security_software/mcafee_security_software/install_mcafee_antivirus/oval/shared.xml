@@ -1,13 +1,7 @@
 <def-group>
   <definition class="compliance" id="install_mcafee_antivirus"
   version="1">
-    <metadata>
-      <title>Package McAfeeVSEForLinux Installed</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>McAfee Antivirus software should be installed.</description>
-    </metadata>
+    {{{ oval_metadata("McAfee Antivirus software should be installed.", affected_platforms=["multi_platform_all"]) }}}
     <criteria comment="Antivirus is not being used or conditions are met" operator="AND">
       <extend_definition comment="McAfee Runtime Libraries and Agent" definition_ref="install_mcafee_cma_rt" />
       <criterion comment="Linuxshield AntiVirus package is installed"

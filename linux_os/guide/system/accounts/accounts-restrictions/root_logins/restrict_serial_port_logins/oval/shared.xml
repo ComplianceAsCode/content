@@ -1,14 +1,8 @@
 <def-group>
   <definition class="compliance" id="restrict_serial_port_logins" version="1">
-    <metadata>
-      <title>Restrict Serial Port Root Logins</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>Preventing direct root login to serial port interfaces helps
+    {{{ oval_metadata("Preventing direct root login to serial port interfaces helps
       ensure accountability for actions taken on the system using the root
-      account.</description>
-    </metadata>
+      account.") }}}
     <criteria>
       <criterion comment="serial ports /etc/securetty" test_ref="test_serial_ports_etc_securetty" negate="true" />
     </criteria>

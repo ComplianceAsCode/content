@@ -1,15 +1,7 @@
 <def-group>
   <definition class="compliance" id="ensure_gpgcheck_repo_metadata" version="1">
-    <metadata>
-      <title>Ensure gpgcheck Enabled for Repository Metadata</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>The repo_gpgcheck option should be used to ensure that checking
-      of repository metadata always occurs.</description>
-    </metadata>
+    {{{ oval_metadata("The repo_gpgcheck option should be used to ensure that checking
+      of repository metadata always occurs.") }}}
     <criteria>
       <criterion comment="check value of repo_gpgcheck in /etc/yum.conf" test_ref="test_yum_ensure_gpgcheck_repo_metadata" />
     </criteria>

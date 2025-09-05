@@ -1,15 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="sssd_memcache_timeout" version="1">
-    <metadata>
-      <title>Configure SSSD's Memory Cache to Expire</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>SSSD's memory cache should be configured to set to expire records after 1 day.</description>
-    </metadata>
+    {{{ oval_metadata("SSSD's memory cache should be configured to set to expire records after 1 day.") }}}
     <criteria operator="OR">
       <criteria operator="OR">
         <extend_definition comment="Check if sssd service is disabled" definition_ref="service_sssd_disabled" />

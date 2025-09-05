@@ -1,5 +1,13 @@
 documentation_complete: true
 
+metadata:
+    version: 1.1.0
+    SMEs:
+        - vojtapolasek
+        - yuumasato
+
+reference: https://www.cisecurity.org/benchmark/red_hat_linux/
+
 title: 'CIS Red Hat Enterprise Linux 8 Benchmark'
 
 description: |-
@@ -819,7 +827,6 @@ selections:
     - sshd_set_idle_timeout
 
     # ClientAliveCountMax 0
-    - var_sshd_set_keepalive=0
     - sshd_set_keepalive
 
     ### 5.2.14 Ensure SSH LoginGraceTime is set to one minute

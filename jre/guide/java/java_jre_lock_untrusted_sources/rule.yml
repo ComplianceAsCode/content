@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Lock Execution of Signed Java Applets From Untrusted Sources Setting'
+
+description: |-
+    To ensure that Java cannot execute from untrusted sources, set
+    <tt>deployment.security.askgrantdialog.show</tt> to equal <tt>false</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+
+rationale: |-
+    Permitting execution of signed Java applets from un-trusted sources may
+    result in acquiring malware, and risks system modification, invasion of
+    privacy, or denial of service. Block users from granting permissions to
+    applets and JWS applications.
+
+severity: medium
+
+references:
+    srg: SRG-APP-000112
+    disa: CCI-001695
+    stigid: JRE8-UX-000090
+    nist: SC-18 (3)
+
+ocil_clause: 'it does not exist or is not configured properly'
+
+ocil: |-
+    To verify that Java cannot execute from untrusted sources,
+    run the following command:
+    <pre>$ grep 'askgrantdialog.show=false' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.security.askgrantdialog.show=false</pre>

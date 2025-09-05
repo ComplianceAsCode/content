@@ -5,7 +5,7 @@
 # disruption = low
 
 . /usr/share/scap-security-guide/remediation_functions
-populate var_smartcard_drivers
+{{{ bash_instantiate_variables("var_smartcard_drivers") }}}
 
 OPENSC_TOOL="/usr/bin/opensc-tool"
 

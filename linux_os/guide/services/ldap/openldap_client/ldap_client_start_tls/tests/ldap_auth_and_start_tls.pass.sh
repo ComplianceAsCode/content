@@ -1,13 +1,12 @@
 #!/bin/bash
+# packages = nss-pam-ldapd
 #
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 
 AUTHCONFIG_REGEX="^[[:space:]]*USELDAPAUTH=yes[[:space:]]*$"
 grep -q "$AUTHCONFIG_REGEX" /etc/sysconfig/authconfig && \
 	sed -i "s/$AUTHCONFIG_REGEX/USELDAPAUTH=yes/" /etc/sysconfig/authconfig || \
 	echo "USELDAPAUTH=yes" >> /etc/sysconfig/authconfig
 
-yum install -y nss-pam-ldapd
 
 START_TLS_REGEX="^[[:space:]]*ssl[[:space:]]*start_tls[[:space:]]*$"
 grep -q "$START_TLS_REGEX" /etc/nslcd.conf && \

@@ -1,6 +1,12 @@
 documentation_complete: true
 
+metadata:
+    SMEs:
+        - redhatrises
+
 title: 'NIST National Checklist for Red Hat OpenShift Container Platform'
+
+platform: ocp4
 
 description: |-
     This compliance profile reflects the core set of security

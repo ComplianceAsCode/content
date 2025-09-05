@@ -1,13 +1,7 @@
 <def-group>
 
   <definition class="compliance" id="accounts_password_minlen_login_defs" version="3">
-    <metadata>
-      <title>Set Password Expiration Parameters</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The password minimum length should be set appropriately.</description>
-    </metadata>
+    {{{ oval_metadata("The password minimum length should be set appropriately.") }}}
     <criteria operator="AND">
       <criterion test_ref="test_pass_min_len" />
     </criteria>

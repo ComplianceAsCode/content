@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="selinux_state" version="1">
-    <metadata>
-      <title>SELinux Enforcing</title>
-      {{{- oval_affected(products) }}}
-      <description>The SELinux state should be enforcing the local policy.</description>
-    </metadata>
+    {{{ oval_metadata("The SELinux state should be enforcing the local policy.") }}}
     <criteria operator="AND">
       <criterion comment="enforce is disabled" test_ref="test_etc_selinux_config" />
     </criteria>

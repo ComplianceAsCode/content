@@ -1,18 +1,11 @@
 <def-group>
   <definition class="compliance"
   id="mount_option_smb_client_signing" version="1">
-    <metadata>
-      <title>Require Client SMB Packet Signing, if using
-      mount.cifs</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>Require packet signing of clients who mount
+    {{{ oval_metadata("Require packet signing of clients who mount
       Samba shares using the mount.cifs program (e.g., those who
       specify shares in /etc/fstab). To do so, ensure that signing
       options (either sec=krb5i or sec=ntlmv2i) are
-      used.</description>
-    </metadata>
+      used.") }}}
     <criteria operator="OR">
       <criteria operator="AND">
         <extend_definition comment="samba-common installed" definition_ref="package_samba-common_installed" />

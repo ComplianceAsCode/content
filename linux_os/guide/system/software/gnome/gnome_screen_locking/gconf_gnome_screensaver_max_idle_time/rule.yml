@@ -4,12 +4,12 @@ title: 'Set GNOME Login Maximum Allowed Inactivity'
 
 description: |-
     Run the following command to set the maximum allowed period of inactivity for an
-    inactive user in the GNOME desktop to <sub idref="inactivity_timeout_value" /> minutes:
+    inactive user in the GNOME desktop to {{{ xccdf_value("inactivity_timeout_value") }}} minutes:
     <pre>$ sudo gconftool-2 \
       --direct \
       --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
       --type int \
-      --set /desktop/gnome/session/max_idle_time <sub idref="inactivity_timeout_value" /></pre>
+      --set /desktop/gnome/session/max_idle_time {{{ xccdf_value("inactivity_timeout_value") }}}</pre>
 
 rationale: |-
     Terminating an idle session within a short time period reduces the window of
@@ -23,4 +23,4 @@ ocil_clause: 'it is not'
 ocil: |-
     To check the current idle time-out value, run the following command:
     <pre>$ gconftool-2 -g /desktop/gnome/session/max_idle_time</pre>
-    If properly configured, the output should be <tt><sub idref="idle_timeout_value" /></tt>.
+    If properly configured, the output should be <tt>{{{ xccdf_value("idle_timeout_value") }}}</tt>.

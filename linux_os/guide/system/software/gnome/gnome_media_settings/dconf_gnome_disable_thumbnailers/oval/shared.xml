@@ -1,17 +1,9 @@
 <def-group>
   <definition class="compliance" id="dconf_gnome_disable_thumbnailers" version="1">
-    <metadata>
-      <title>Disable All GNOME3 Thumbnailers</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-      </affected>
-      <description>The system's default desktop environment, GNOME3, uses a
+    {{{ oval_metadata("The system's default desktop environment, GNOME3, uses a
       number of different thumbnailer programs to generate thumbnails for any
       new or modified content in an opened folder. Disable the execution of
-      these thumbnail applications within GNOME3.</description>
-    </metadata>
+      these thumbnail applications within GNOME3.") }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="Disable Gnome3 Thumbnailers and prevent user from enabling" operator="AND">

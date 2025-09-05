@@ -8,7 +8,7 @@ description: |-
     Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that
     all user sessions will terminate based on inactivity. The <tt>TMOUT</tt>
     setting in <tt>/etc/profile</tt> should read as follows:
-    <pre>TMOUT=<sub idref="var_accounts_tmout" /></pre>
+    <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
 
 rationale: |-
     Terminating an idle session within a short time period reduces
@@ -26,11 +26,11 @@ identifiers:
 references:
     stigid@ol7: OL07-00-040160
     cui: 3.1.11
-    disa: CCI-000361,CCI-001133
+    disa: CCI-002361,CCI-001133
     nist: AC-12,SC-10,AC-2(5),CM-6(a)
     nist-csf: PR.AC-7
     ospp: FMT_MOF_EXT.1
-    srg: SRG-OS-000163-GPOS-00072
+    srg: SRG-OS-000163-GPOS-00072,SRG-OS-000029-GPOS-00010
     vmmsrg: SRG-OS-000163-VMM-000700,SRG-OS-000279-VMM-001010
     stigid@rhel7: RHEL-07-040160
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
@@ -39,7 +39,7 @@ references:
     iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16
     cis@rhel8: 5.5.3
-    anssi: NT28(R29)
+    anssi: BP28(R29)
 
 ocil_clause: 'value of TMOUT is not less than or equal to expected setting'
 
@@ -48,4 +48,4 @@ ocil: |-
     on the system:
     <pre>$ sudo grep TMOUT /etc/profile</pre>
     The output should return the following:
-    <pre>TMOUT=<sub idref="var_accounts_tmout" /></pre>
+    <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>

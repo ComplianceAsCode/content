@@ -1,16 +1,6 @@
 <def-group>
   <definition class="compliance" id="set_firewalld_default_zone" version="2">
-    <metadata>
-      <title>Change the default firewalld zone to drop</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Change the default firewalld zone to drop.</description>
-    </metadata>
+    {{{ oval_metadata("Change the default firewalld zone to drop.") }}}
     <criteria>
       <criterion comment="Set default zone to drop" test_ref="test_firewalld_input_drop" />
     </criteria>

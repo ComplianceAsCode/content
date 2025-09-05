@@ -1,15 +1,6 @@
 <def-group>
   <definition class="compliance" id="aide_build_database" version="2">
-    <metadata>
-      <title>Aide Database Must Exist</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>The aide database must be initialized.</description>
-    </metadata>
+    {{{ oval_metadata("The aide database must be initialized.") }}}
     <criteria operator="AND">
       <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
       <!-- Only the configuration when location of the Aide database file is specified in the

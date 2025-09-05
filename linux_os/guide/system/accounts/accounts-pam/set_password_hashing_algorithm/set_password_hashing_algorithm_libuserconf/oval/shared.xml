@@ -1,16 +1,6 @@
 <def-group>
   <definition class="compliance" id="set_password_hashing_algorithm_libuserconf" version="1">
-    <metadata>
-      <title>Set SHA512 Password Hashing Algorithm in /etc/libuser.conf</title>
-      <affected family="unix">
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>The password hashing algorithm should be set correctly in /etc/libuser.conf.</description>
-    </metadata>
+    {{{ oval_metadata("The password hashing algorithm should be set correctly in /etc/libuser.conf.") }}}
     <criteria operator="AND">
       <criterion test_ref="test_etc_libuser_conf_cryptstyle" />
     </criteria>

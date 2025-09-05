@@ -1,10 +1,17 @@
 documentation_complete: true
 
+metadata:
+    version: V2R8
+    SMEs:
+        - redhatrises
+
+reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+
 title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux V1R4.
+    DISA STIG for Red Hat Enterprise Linux V2R8.
 
     In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -47,7 +54,7 @@ selections:
     - var_accounts_user_umask=077
     - var_password_pam_retry=3
     - var_accounts_max_concurrent_login_sessions=10
-    - var_accounts_tmout=10_min
+    - var_accounts_tmout=15_min
     - var_time_service_set_maxpoll=system_default
     - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
     - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
@@ -66,7 +73,6 @@ selections:
     - dconf_gnome_screensaver_lock_locked
     - dconf_gnome_enable_smartcard_auth
     - dconf_gnome_screensaver_idle_delay
-    - package_screen_installed
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_idle_activation_locked
     - dconf_gnome_screensaver_lock_delay
@@ -128,7 +134,6 @@ selections:
     - accounts_no_uid_except_zero
     - no_files_unowned_by_user
     - file_permissions_ungroupowned
-    - accounts_user_interactive_home_directory_defined
     - accounts_have_homedir_login_defs
     - accounts_user_interactive_home_directory_exists
     - file_permissions_home_directories
@@ -235,8 +240,10 @@ selections:
     - accounts_tmout
     - sshd_enable_warning_banner
     - sssd_ldap_start_tls
+    - sssd_ldap_start_tls.severity=medium
     - sssd_ldap_configure_tls_ca_dir
     - sssd_ldap_configure_tls_ca
+    - sssd_ldap_configure_tls_reqcert
     - sysctl_kernel_randomize_va_space
     - package_openssh-server_installed
     - sshd_required=yes
@@ -301,3 +308,4 @@ selections:
     - mount_option_dev_shm_noexec
     - mount_option_dev_shm_nosuid
     - audit_rules_privileged_commands_mount
+    - package_MFEhiplsm_installed

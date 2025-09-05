@@ -5,7 +5,7 @@ title: 'Ensure the Default Umask is Set Correctly in login.defs'
 description: |-
     To ensure the default umask controlled by <tt>/etc/login.defs</tt> is set properly,
     add or correct the <tt>UMASK</tt> setting in <tt>/etc/login.defs</tt> to read as follows:
-    <pre>UMASK <sub idref="var_accounts_user_umask" /></pre>
+    <pre>UMASK {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
 rationale: |-
     The umask value influences the permissions assigned to files when they are created.
@@ -33,7 +33,7 @@ references:
     cobit5: APO13.01,BAI03.01,BAI03.02,BAI03.03,BAI10.01,BAI10.02,BAI10.03,BAI10.05
     iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.1.1,A.14.2.1,A.14.2.2,A.14.2.3,A.14.2.4,A.14.2.5,A.6.1.5
     cis-csc: 11,18,3,9
-    anssi: NT28(R35)
+    anssi: BP28(R35)
 
 ocil_clause: 'the above command returns no output, or if the umask is configured incorrectly'
 
@@ -43,6 +43,6 @@ ocil: |-
     <pre># grep -i "UMASK" /etc/login.defs</pre>
     All output must show the value of <tt>umask</tt> set as shown in the below:
     <pre># grep -i "UMASK" /etc/login.defs
-    umask <sub idref="var_accounts_user_umask" /></pre>
+    umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
 platform: login_defs

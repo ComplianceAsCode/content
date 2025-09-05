@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="grub2_enable_iommu_force" version="1">
-    <metadata>
-      <title>Force IOMMU usage in GRUB2</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>Ensure iommu=force is configured in the kernel line in /etc/default/grub.</description>
-    </metadata>
+    {{{ oval_metadata("Ensure iommu=force is configured in the kernel line in /etc/default/grub.") }}}
     <criteria operator="AND">
       <extend_definition definition_ref="grub2_default_exists" comment="check for GRUB_CMDLINE_LINUX_DEFAULT exists in /etc/default/grub" />
       <criteria operator="OR">

@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="snmpd_use_newer_protocol" version="2">
-    <metadata>
-      <title>SNMP use newer protocols</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>SNMP version 1 and 2c must not be enabled.</description>
-    </metadata>
+    {{{ oval_metadata("SNMP version 1 and 2c must not be enabled.") }}}
     <criteria operator="OR">
       <extend_definition comment="SMNP installed" definition_ref="package_net-snmp_removed"/>
       <criterion comment="SNMP protocols" test_ref="test_snmp_versions" />

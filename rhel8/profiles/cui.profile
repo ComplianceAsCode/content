@@ -1,5 +1,10 @@
 documentation_complete: true
 
+metadata:
+    version: TBD
+    SMEs:
+        - redhatrises
+
 title: 'Unclassified Information in Non-federal Information Systems and Organizations (NIST 800-171)'
 
 description: |-

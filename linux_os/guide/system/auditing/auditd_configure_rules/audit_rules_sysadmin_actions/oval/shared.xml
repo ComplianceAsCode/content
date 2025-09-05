@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_sysadmin_actions" version="1">
-    <metadata>
-      <title>Audit System Administrator Actions</title>
-      {{{- oval_affected(products) }}}
-      <description>Audit actions taken by system administrators on the system.</description>
-    </metadata>
+    {{{ oval_metadata("Audit actions taken by system administrators on the system.") }}}
     <criteria operator="OR">
       <criteria operator="AND">
         <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />

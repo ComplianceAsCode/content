@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Disable XDMCP in GDM'
+
+description: |-
+    XDMCP is an unencrypted protocol, and therefore, presents a security risk, see e.g.
+    {{{ weblink("https://help.gnome.org/admin/gdm/stable/security.html.en_GB#xdmcpsecurity", "XDMCP Gnome docs") }}}.
+
+    To disable XDMCP support in Gnome, set <code>Enable</code> to <code>false</code> under the <code>[xdmcp]</code> configuration section in <code>/etc/gdm/custom.conf</code>. For example:
+    <pre>
+    [xdmcp]
+    Enable=false
+    </pre>
+
+rationale: |-
+    XDMCP provides unencrypted remote access through the Gnome Display Manager (GDM) which does
+    not provide for the confidentiality and integrity of user passwords or the
+    remote session. If a privileged user were to login using XDMCP, the
+    privileged user password could be compromised due to typed XEvents
+    and keystrokes will traversing over the network in clear text.
+
+severity: high
+
+ocil_clause: 'the Enable is not set to false or is missing in the xdmcp section of the /etc/gdm/custom.conf gdm configuration file'
+
+ocil: |-
+    To ensure that XDMCP is disabled in <code>/etc/gdm/custom.conf</code>, run the following command:
+    <pre>grep -Pzo "\[xdmcp\]\nEnable=false" /etc/gdm/custom.conf</pre>
+    The output should return the following:
+    <pre>
+    [xdmcp]
+    Enable=false
+    </pre>
+
+# There is a gdm platform implied by the parent group.
+# platform: machine

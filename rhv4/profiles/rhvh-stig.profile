@@ -1,5 +1,12 @@
 documentation_complete: true
 
+metadata:
+    version: TBD
+    SMEs:
+        - redhatrises
+
+reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+
 title: '[DRAFT] DISA STIG for Red Hat Virtualization Host (RHVH)'
 
 description: |-
@@ -203,7 +210,6 @@ selections:
     - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
-    - var_sshd_set_keepalive=3
     - sshd_set_keepalive
     - sshd_use_priv_separation
     - var_system_crypto_policy=fips_ospp
@@ -308,7 +314,6 @@ selections:
     - aide_use_fips_hashes
     - aide_verify_acls
     - aide_verify_ext_attributes
-    - disable_prelink
     - enable_fips_mode
     - install_antivirus
     - install_hids

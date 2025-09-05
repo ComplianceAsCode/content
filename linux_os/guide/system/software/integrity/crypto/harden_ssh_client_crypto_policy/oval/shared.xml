@@ -131,11 +131,7 @@
 
 <def-group>
   <definition class="compliance" id="harden_ssh_client_crypto_policy" version="3">
-    <metadata>
-      <title>Harden SSH client Crypto Policy</title>
-      {{{- oval_affected(products) }}}
-      <description>Ensure the ssh client ciphers are configured correctly in /etc/ssh/ssh_config.d/02-ospp.conf</description>
-    </metadata>
+    {{{ oval_metadata("Ensure the ssh client ciphers are configured correctly in /etc/ssh/ssh_config.d/02-ospp.conf") }}}
     <criteria comment="SSH client is configured correctly"
     operator="AND">
         {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Match') }}}

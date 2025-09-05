@@ -8,7 +8,7 @@
 
 {{{ bash_package_install("firewalld") }}}
 
-populate firewalld_sshd_zone
+{{{ bash_instantiate_variables("firewalld_sshd_zone") }}}
 
 # This assumes that firewalld_sshd_zone is one of the pre-defined zones
 if [ ! -f /etc/firewalld/zones/${firewalld_sshd_zone}.xml ]; then

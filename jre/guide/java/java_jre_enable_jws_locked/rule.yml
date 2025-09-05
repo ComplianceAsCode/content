@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Disable User Access to Java Web Start Application Setting'
+
+description: |-
+    To ensure that users cannot change the Java Web Start (JWS) application
+    setting, add <tt>deployment.webjava.enabled.locked</tt> to
+    <tt>/etc/.java/deployment/deployment.properties</tt>.
+
+rationale: |-
+    Due to the popularity of Java Web Start (JWS) applications, denying these
+    applications could have a negative impact to the user experience. Whitelisting,
+    blacklisting, and signing of applications help mitigate the risk of running
+    JWS applications.
+
+severity: high
+
+references:
+    srg: SRG-APP-000516
+    disa: CCI-000366
+    stigid: JRE8-UX-000070
+    nist: CM-6(b)
+
+ocil_clause: 'it is not configured'
+
+ocil: |-
+    To verify that a user cannot change the Java Web Start (JWS) application
+    setting, run the following command:
+    <pre>$ grep 'deployment.webjava.enabled.locked' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.webjava.enabled.locked</pre>

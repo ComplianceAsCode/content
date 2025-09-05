@@ -1,6 +1,6 @@
 # platform = Red Hat Virtualization 4,multi_platform_rhel
 . /usr/share/scap-security-guide/remediation_functions
-populate var_auditd_disk_error_action
+{{{ bash_instantiate_variables("var_auditd_disk_error_action") }}}
 
 #
 # If disk_error_action present in /etc/audit/auditd.conf, change value

@@ -7,7 +7,7 @@ description: |-
     a designated account in certain situations. Add or correct the following line
     in <tt>/etc/audit/auditd.conf</tt> to ensure that administrators are notified
     via email for those situations:
-    <pre>action_mail_acct = <sub idref="var_auditd_action_mail_acct" /></pre>
+    <pre>action_mail_acct = {{{ xccdf_value("var_auditd_action_mail_acct") }}}</pre>
 
 rationale: |-
     Email sent to the root account is typically aliased to the
@@ -49,5 +49,5 @@ ocil: |-
     Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
     determine if the system is configured to send email to an
     account when it needs to notify an administrator:
-    <pre>action_mail_acct = <sub idref="var_auditd_action_mail_acct" /></pre>
+    <pre>action_mail_acct = {{{ xccdf_value("var_auditd_action_mail_acct") }}}</pre>
 

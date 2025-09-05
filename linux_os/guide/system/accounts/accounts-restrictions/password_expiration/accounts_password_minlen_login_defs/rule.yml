@@ -5,12 +5,12 @@ title: 'Set Password Minimum Length in login.defs'
 description: |-
     To specify password length requirements for new accounts, edit the file
     <tt>/etc/login.defs</tt> and add or correct the following line:
-    <pre>PASS_MIN_LEN <sub idref="var_accounts_password_minlen_login_defs" /></pre>
+    <pre>PASS_MIN_LEN {{{ xccdf_value("var_accounts_password_minlen_login_defs") }}}</pre>
     <br /><br />
     The DoD requirement is <tt>15</tt>. 
     The FISMA requirement is <tt>12</tt>.
     The profile requirement is
-    <tt><sub idref="var_accounts_password_minlen_login_defs" /></tt>.
+    <tt>{{{ xccdf_value("var_accounts_password_minlen_login_defs") }}}</tt>.
     If a program consults <tt>/etc/login.defs</tt> and also another PAM module
     (such as <tt>pam_pwquality</tt>) during a password change operation, then
     the most restrictive must be satisfied. See PAM section for more
@@ -45,6 +45,7 @@ references:
     iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16,5
     srg: SRG-OS-000078-GPOS-00046
+    ism: 0421,0422,0431,0974,1173,1401,1504,1505,1546,1557,1558,1559,1560,1561
 
 ocil_clause: 'it is not set to the required value'
 

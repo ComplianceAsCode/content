@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ocp,multi_platform_rhcos
+# platform = multi_platform_ocp,multi_platform_rhcos
 # reboot = true
 # strategy = disable
 # complexity = low
@@ -12,12 +12,10 @@ spec:
     systemd:
       units:
       - name: {{{ DAEMONNAME }}}.service
-        enabled: false 
-{{%- if MASK_SERVICE %}}
+        enabled: false
         mask: true
-{{%- endif %}}
+        state: stopped
       - name: {{{ DAEMONNAME }}}.socket
-        enabled: false 
-{{%- if MASK_SERVICE %}}
+        enabled: false
         mask: true
-{{%- endif %}}
+        state: stopped

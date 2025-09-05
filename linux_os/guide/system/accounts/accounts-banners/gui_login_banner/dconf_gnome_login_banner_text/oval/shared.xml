@@ -1,15 +1,6 @@
 <def-group oval_version="5.11"> 
   <definition class="compliance" id="dconf_gnome_login_banner_text" version="1">
-    <metadata>
-      <title>Enable GUI Warning Banner</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Enable the GUI warning banner.</description>
-    </metadata>
+    {{{ oval_metadata("Enable the GUI warning banner.") }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="Enable GUI banner and prevent user from changing it" operator="AND">

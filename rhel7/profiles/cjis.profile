@@ -1,5 +1,12 @@
 documentation_complete: true
 
+metadata:
+    version: 5.4
+    SMEs:
+        - redhatrises
+
+reference: https://www.fbi.gov/services/cjis/cjis-security-policy-resource-center
+
 title: 'Criminal Justice Information Services (CJIS) Security Policy'
 
 description: |-

@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_password_warn_age_login_defs" version="3">
-    <metadata>
-      <title>Set Password Expiration Parameters</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The password expiration warning age should be set appropriately.</description>
-    </metadata>
+    {{{ oval_metadata("The password expiration warning age should be set appropriately.") }}}
     <criteria>
       <criterion test_ref="test_pass_warn_age" />
     </criteria>

@@ -1,16 +1,7 @@
 <def-group>
   <definition class="compliance" id="dconf_gnome_screensaver_lock_delay" version="2">
-    <metadata>
-      <title>Enable GNOME3 Screensaver Lock Delay After Idle Period</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Idle activation of the screen lock should be enabled immediately or
-      after a delay.</description>
-    </metadata>
+    {{{ oval_metadata("Idle activation of the screen lock should be enabled immediately or
+      after a delay.") }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="Enable screensaver lock and prevent user from changing it" operator="AND">

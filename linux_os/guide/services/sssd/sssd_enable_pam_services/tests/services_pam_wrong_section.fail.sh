@@ -1,8 +1,7 @@
 #!/bin/bash
+# packages = /usr/lib/systemd/system/sssd.service
 #
-# profiles = xccdf_org.ssgproject.content_profile_stig
 
-yum -y install /usr/lib/systemd/system/sssd.service
 rm -rf /etc/sssd/conf.d/
 SSSD_CONF="/etc/sssd/sssd.conf"
 cp wrong_sssd.conf $SSSD_CONF

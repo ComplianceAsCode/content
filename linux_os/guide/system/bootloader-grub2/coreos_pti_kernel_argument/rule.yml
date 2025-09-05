@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: rhcos4
+
+title: 'Enable Kernel Page-Table Isolation (KPTI)'
+
+description: |-
+    To enable Kernel page-table isolation, add the argument <tt>pti=on</tt> to all
+    BLS (Boot Loader Specification) entries ('options' line) for the Linux
+    operating system in <tt>/boot/loader/entries/*.conf</tt>.
+
+rationale: |-
+    Kernel page-table isolation is a kernel feature that mitigates
+    the Meltdown security vulnerability and hardens the kernel
+    against attempts to bypass kernel address space layout
+    randomization (KASLR).
+
+severity: high
+
+identifiers:
+    cce@rhcos4: CCE-82497-9
+
+references:
+    srg: SRG-OS-000433-GPOS-00193
+    nist: SI-16
+
+ocil_clause: 'Kernel page-table isolation is not enabled'
+
+ocil: |-
+    Inspect the form of all the BLS (Boot Loader Specification) entries
+    ('options' line) in <tt>/boot/loader/entries/*.conf</tt>. If they include
+    <tt>pti=on</tt>, then Kernel page-table isolation is enabled at boot time.
+    <br /><br />
+    To ensure <tt>pti=on</tt> is configured on the installed kernel, add
+    the kernel argument via a <pre>MachineConfig</pre> object to the appropriate
+    pools.
+
+template:
+    name: coreos_kernel_option
+    vars:
+        arg_name: pti
+        arg_value: 'on'

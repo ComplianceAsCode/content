@@ -1,5 +1,5 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_C2S
+#
 # remediation = bash
 
 . $SHARED/auditd_utils.sh

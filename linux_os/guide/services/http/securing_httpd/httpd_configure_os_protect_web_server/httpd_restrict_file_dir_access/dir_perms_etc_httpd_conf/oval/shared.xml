@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="dir_perms_etc_httpd_conf" version="2">
-    <metadata>
-      <title>Directory /etc/httpd/conf/ Permissions</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>Directory permissions for /etc/httpd/conf/ should be set to 0750 (or stronger).</description>
-    </metadata>
+    {{{ oval_metadata("Directory permissions for /etc/httpd/conf/ should be set to 0750 (or stronger).") }}}
     <criteria operator="OR">
       <extend_definition comment="httpd not present or in use"
       definition_ref="package_httpd_removed" />

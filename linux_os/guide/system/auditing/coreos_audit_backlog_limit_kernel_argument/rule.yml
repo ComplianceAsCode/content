@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: rhcos4
+
+title: 'Extend Audit Backlog Limit for the Audit Daemon'
+
+description: |-
+    To improve the kernel capacity to queue all log events, even those which occurred
+    prior to the audit daemon, add the argument <tt>audit_backlog_limit=8192</tt> to all
+    BLS (Boot Loader Specification) entries ('options' line) for the Linux
+    operating system in <tt>/boot/loader/entries/*.conf</tt>.
+
+rationale: |-
+    audit_backlog_limit sets the queue length for audit events awaiting transfer
+    to the audit daemon. Until the audit daemon is up and running, all log messages
+    are stored in this queue.  If the queue is overrun during boot process, the action
+    defined by audit failure flag is taken.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82671-9
+
+references:
+    srg: SRG-OS-000254-GPOS-00095
+    nist: CM-6(a)
+    cis@rhel8: 4.1.1.4
+
+ocil_clause: 'audit backlog limit is not configured'
+
+ocil: |-
+    Inspect the form of all the BLS (Boot Loader Specification) entries
+    ('options' line) in <tt>/boot/loader/entries/*.conf</tt>. If they include
+    <tt>audit=1</tt>, then auditing is enabled at boot time.
+    <br /><br />
+    To ensure <tt>audit_backlog_limit=8192</tt> is configured on the installed kernel, add
+    the kernel argument via a <pre>MachineConfig</pre> object to the appropriate
+    pools.
+
+template:
+    name: coreos_kernel_option
+    vars:
+        arg_name: audit_backlog_limit
+        arg_value: '8192'

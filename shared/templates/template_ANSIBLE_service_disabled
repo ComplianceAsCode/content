@@ -14,9 +14,7 @@
       name: "{{{ DAEMONNAME }}}.service"
       enabled: "no"
       state: "stopped"
-{{%- if MASK_SERVICE %}}
       masked: "yes"
-{{%- endif %}}
     when: '"{{{ DAEMONNAME }}}.service" in ansible_facts.services'
 
 - name: "Unit Socket Exists - {{{ DAEMONNAME }}}.socket"
@@ -33,9 +31,7 @@
     name: "{{{ DAEMONNAME }}}.socket"
     enabled: "no"
     state: "stopped"
-{{%- if MASK_SERVICE %}}
     masked: "yes"
-{{%- endif %}}
   when: '"{{{ DAEMONNAME }}}.socket" in socket_file_exists.stdout_lines[1]'
 {{% elif init_system == "upstart" %}}
 - name: Stop {{{ SERVICENAME }}}

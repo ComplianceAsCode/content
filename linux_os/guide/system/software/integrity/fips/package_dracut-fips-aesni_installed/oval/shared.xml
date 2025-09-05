@@ -5,11 +5,7 @@
 <def-group>
   <definition class="compliance" id="package_dracut-fips-aesni_installed"
   version="1">
-    <metadata>
-      <title>Package dracut-fips-aesni Installed</title>
-      {{{- oval_affected(products) }}}
-      <description>The RPM package dracut-fips-aesni should be installed.</description>
-    </metadata>
+    {{{ oval_metadata("The RPM package dracut-fips-aesni should be installed.") }}}
     <criteria operator="OR">
       <criterion comment="System does not support AES instruction set" test_ref="test_processor_aes_instruction" />
       <criteria operator="AND">

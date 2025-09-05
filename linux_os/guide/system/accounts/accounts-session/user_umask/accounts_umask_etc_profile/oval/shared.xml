@@ -1,15 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_umask_etc_profile" version="2">
-    <metadata>
-      <title>Ensure that Users Have Sensible Umask Values in /etc/profile</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>The default umask for all users should be set correctly</description>
-    </metadata>
+    {{{ oval_metadata("The default umask for all users should be set correctly") }}}
     <criteria operator="AND">
       <extend_definition comment="Get value of var_accounts_user_umask variable as octal number"
       definition_ref="var_accounts_user_umask_as_number" />

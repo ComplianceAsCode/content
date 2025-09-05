@@ -4,7 +4,7 @@ title: 'Configure System to Forward All Mail For The Root Account'
 
 description: |-
     Set up an alias for root that forwards to a monitored email address:
-    <pre>$ sudo echo "root: <sub idref="var_postfix_root_mail_alias" />" &gt;&gt; /etc/aliases
+    <pre>$ sudo echo "root: {{{ xccdf_value("var_postfix_root_mail_alias") }}}" &gt;&gt; /etc/aliases
     $ sudo newaliases</pre>
 
 rationale: |-

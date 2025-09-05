@@ -9,7 +9,7 @@ description: |-
     the session key is renegotiated, both in terms of
     amount of data that may be transmitted and the time
     elapsed. To decrease the default limits, put line
-    <tt>RekeyLimit {{{ sub_var_value("var_ssh_client_rekey_limit_size") }}} {{{ sub_var_value("var_ssh_client_rekey_limit_time") }}}</tt> to file <tt>/etc/ssh/ssh_config.d/02-rekey-limit.conf</tt>.
+    <tt>RekeyLimit {{{ xccdf_value("var_ssh_client_rekey_limit_size") }}} {{{ xccdf_value("var_ssh_client_rekey_limit_time") }}}</tt> to file <tt>/etc/ssh/ssh_config.d/02-rekey-limit.conf</tt>.
     Make sure that there is no other <tt>RekeyLimit</tt> configuration preceding
     the <tt>include</tt> directive in the main config file
     <tt>/etc/ssh/ssh_config</tt>. Check also other files in
@@ -37,8 +37,8 @@ ocil: |-
     To check if RekeyLimit is set correctly, run the following command: <pre>$
     sudo grep RekeyLimit /etc/ssh/ssh_config.d/*.conf</pre> If configured
     properly, output should be <pre>/etc/ssh/ssh_config.d/02-rekey-limit.conf:
-    RekeyLimit {{{ sub_var_value("var_ssh_client_rekey_limit_size") }}} {{{
-    sub_var_value("var_ssh_client_rekey_limit_time") }}}</pre> Check also the
+    RekeyLimit {{{ xccdf_value("var_ssh_client_rekey_limit_size") }}}
+    {{{ xccdf_value("var_ssh_client_rekey_limit_time") }}}</pre> Check also the
     main configuration file with the following command: <pre>sudo grep
     RekeyLimit /etc/ssh/ssh_config</pre> The command should not return any
     output.

@@ -7,7 +7,7 @@ title: 'Set Password Strength Minimum Different Characters'
 description: |-
     The pam_cracklib module's <tt>difok</tt> parameter controls requirements for
     usage of different characters during a password change.
-    Add <tt>difok=<i><sub idref="var_password_pam_difok" /></i></tt> after pam_cracklib.so to require differing
+    Add <tt>difok=<i>{{{ xccdf_value("var_password_pam_difok") }}}</i></tt> after pam_cracklib.so to require differing
     characters when changing passwords. The DoD requirement is <tt>4</tt>.
 
 rationale: |-

@@ -1,0 +1,27 @@
+prodtype: ocp4
+
+title: "Do Not Use htpasswd-based Authentication"
+
+description: TBD
+
+rationale: TBD
+
+identifiers:
+    cce@ocp4: CCE-84209-6
+
+severity: medium
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/oauths/cluster") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: /apis/config.openshift.io/v1/oauths/cluster
+        yamlpath: ".spec.identityProviders[:].type"
+        check_existence: "any_exist"
+        values:
+            - value: "HTPasswd"
+              operation: "not equal"

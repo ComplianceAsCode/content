@@ -13,10 +13,10 @@ description: |-
     <ul>
     <li>Modify the following line in the <tt>AUTH</tt> section to add
     <tt>even_deny_root</tt>:
-    <pre>auth required pam_faillock.so preauth silent <b>even_deny_root</b> deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+    <pre>auth required pam_faillock.so preauth silent <b>even_deny_root</b> deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre></li>
     <li>Modify the following line in the <tt>AUTH</tt> section to add
     <tt>even_deny_root</tt>:
-    <pre>auth [default=die] pam_faillock.so authfail <b>even_deny_root</b> deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+    <pre>auth [default=die] pam_faillock.so authfail <b>even_deny_root</b> deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre>
     </li>
     </ul>
 
@@ -43,6 +43,7 @@ references:
     cobit5: DSS05.04,DSS05.10,DSS06.10
     iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16
+    ism: 0421,0422,0431,0974,1173,1401,1504,1505,1546,1557,1558,1559,1560,1561
 
 ocil_clause: 'that is not the case'
 

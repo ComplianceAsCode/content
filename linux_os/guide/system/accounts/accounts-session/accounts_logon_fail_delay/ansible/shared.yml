@@ -3,7 +3,7 @@
 # strategy = restrict
 # complexity = low
 # reboot = true
-- (xccdf-var var_accounts_fail_delay)
+{{{ ansible_instantiate_variables("var_accounts_fail_delay") }}}
 
 - name: Set accounts logon fail delay
   lineinfile:

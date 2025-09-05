@@ -6,7 +6,7 @@ description: |-
     Set up a relay host that will act as a gateway for all outbound email.
     Edit the file <tt>/etc/postfix/main.cf</tt> to ensure that only the following
     <tt>relayhost</tt> line appears:
-    <pre>relayhost = <sub idref="var_postfix_relayhost" /></pre>
+    <pre>relayhost = {{{ xccdf_value("var_postfix_relayhost") }}}</pre>
 
 rationale: |-
     A central outbound email location ensures messages sent from any network host
@@ -20,4 +20,4 @@ ocil_clause: 'it is not'
 ocil: |-
     Run the following command to ensure postfix routes mail to this system:
     <pre>$ grep relayhost /etc/postfix/main.cf</pre>
-    If properly configured, the output should show only <tt><sub idref="var_postfix_relayhost" /></tt>.
+    If properly configured, the output should show only <tt>{{{ xccdf_value("var_postfix_relayhost") }}}</tt>.

@@ -1,14 +1,6 @@
 <def-group>
   <definition class="compliance" id="configure_opensc_nss_db" version="1">
-    <metadata>
-      <title>Check that NSS DB is set to use opensc</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>Oracle Linux 7</platform>
-      </affected>
-      <description>The NSS DB should be set to use opensc library.</description>
-    </metadata>
+    {{{ oval_metadata("The NSS DB should be set to use opensc library.") }}}
     <criteria>
       <criterion test_ref="test_configure_opensc_nss_db"
       comment="Check opensc library is configured in /etc/pki/nssdb/pkcs11.txt" />

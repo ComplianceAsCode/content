@@ -17,8 +17,8 @@ description: |-
     * Digits
     * Special characters (for example, punctuation)
     </pre>
-    Add <tt>minclass=<i><sub idref="var_password_pam_minclass" /></i></tt> after pam_cracklib.so entry into the
-    <tt>/etc/pam.d/system-auth</tt> file in order to require <sub idref="var_password_pam_minclass" />  differing categories of
+    Add <tt>minclass=<i>{{{ xccdf_value("var_password_pam_minclass") }}}</i></tt> after pam_cracklib.so entry into the
+    <tt>/etc/pam.d/system-auth</tt> file in order to require {{{ xccdf_value("var_password_pam_minclass") }}}  differing categories of
     characters when changing passwords.
     For example to require at least three character classes to be used in password, use <tt>minclass=3</tt>.
 

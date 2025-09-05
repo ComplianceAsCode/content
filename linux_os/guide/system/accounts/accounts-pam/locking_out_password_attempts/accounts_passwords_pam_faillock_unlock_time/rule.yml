@@ -11,9 +11,9 @@ description: |-
     <br /><br />
     <ul>
     <li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-    <pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+    <pre>auth required pam_faillock.so preauth silent deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre></li>
     <li> add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-    <pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+    <pre>auth [default=die] pam_faillock.so authfail deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre></li>
     <li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
     <pre>account required pam_faillock.so</pre></li>
     </ul>
@@ -54,6 +54,7 @@ references:
     cobit5: DSS05.04,DSS05.10,DSS06.10
     iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16
+    ism: 0421,0422,0431,0974,1173,1401,1504,1505,1546,1557,1558,1559,1560,1561
 
 ocil_clause: 'unlock_time is less than the expected value'
 

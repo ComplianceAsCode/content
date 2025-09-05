@@ -14,6 +14,7 @@ description: 'This profile reflects mandatory configuration controls identified 
 
     use in U.S. National Security Systems.'
 documentation_complete: true
+reference: https://www.niap-ccevs.org/Profile/PP.cfm
 selections:
 - accounts_max_concurrent_login_sessions
 - accounts_password_minlen_login_defs
@@ -96,6 +97,7 @@ selections:
 - kernel_module_firewire-core_disabled
 - kernel_module_sctp_disabled
 - kernel_module_tipc_disabled
+- kernel_trust_cpu_rng
 - mount_option_boot_nodev
 - mount_option_boot_nosuid
 - mount_option_dev_shm_nodev
@@ -129,36 +131,39 @@ selections:
 - package_abrt-plugin-sosreport_removed
 - package_abrt_removed
 - package_aide_installed
+- package_audispd-plugins_installed
 - package_audit_installed
+- package_chrony_installed
 - package_crypto-policies_installed
 - package_dnf-automatic_installed
 - package_dnf-plugin-subscription-manager_installed
 - package_fapolicyd_installed
 - package_firewalld_installed
+- package_gnutls-utils_installed
 - package_gssproxy_removed
 - package_iprutils_removed
-- package_iptables_installed
 - package_krb5-workstation_removed
 - package_nfs-utils_removed
 - package_openscap-scanner_installed
 - package_openssh-clients_installed
 - package_openssh-server_installed
-- package_pigz_removed
 - package_policycoreutils-python-utils_installed
 - package_policycoreutils_installed
-- package_rng-tools_installed
+- package_rsyslog-gnutls_installed
+- package_rsyslog_installed
 - package_scap-security-guide_installed
 - package_sendmail_removed
 - package_subscription-manager_installed
 - package_sudo_installed
 - package_tmux_installed
-- package_tuned_removed
 - package_usbguard_installed
 - partition_for_home
 - partition_for_var
 - partition_for_var_log
 - partition_for_var_log_audit
 - require_singleuser_auth
+- rsyslog_remote_tls
+- rsyslog_remote_tls_cacert
 - securetty_root_login_console_only
 - selinux_policytype
 - selinux_state
@@ -166,7 +171,7 @@ selections:
 - service_debug-shell_disabled
 - service_fapolicyd_enabled
 - service_firewalld_enabled
-- service_rngd_enabled
+- service_kdump_disabled
 - service_systemd-coredump_disabled
 - service_usbguard_enabled
 - ssh_client_rekey_limit
@@ -220,10 +225,8 @@ selections:
 - zipl_bls_entries_only
 - zipl_bootmap_is_up_to_date
 - zipl_page_poison_argument
-- zipl_pti_argument
 - zipl_slub_debug_argument
 - zipl_vsyscall_argument
-- var_sshd_set_keepalive=0
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - var_accounts_user_umask=027

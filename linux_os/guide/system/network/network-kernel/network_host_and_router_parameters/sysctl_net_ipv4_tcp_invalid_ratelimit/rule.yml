@@ -15,7 +15,7 @@ description: |-
     Set the system to implement rate-limiting measures by adding the following line to
     <tt>/etc/sysctl.conf</tt> or a configuration file in the <tt>/etc/sysctl.d/</tt> directory
     (or modify the line to have the required value):
-    <pre>net.ipv4.tcp_invalid_ratelimit = <sub idref="sysctl_net_ipv4_tcp_invalid_ratelimit_value" /></pre>
+    <pre>net.ipv4.tcp_invalid_ratelimit = {{{ xccdf_value("sysctl_net_ipv4_tcp_invalid_ratelimit_value") }}}</pre>
     Issue the following command to make the changes take effect:
     <pre># sysctl --system</pre>
 
@@ -51,7 +51,7 @@ ocil: |-
     on impacted network interfaces, run the following command:
     <pre># grep 'net.ipv4.tcp_invalid_ratelimit' /etc/sysctl.conf /etc/sysctl.d/*</pre>
     The command should output the following line:
-    <pre>/etc/sysctl.conf:net.ipv4.tcp_invalid_ratelimit = <sub idref="sysctl_net_ipv4_tcp_invalid_ratelimit_value" /></pre>
+    <pre>/etc/sysctl.conf:net.ipv4.tcp_invalid_ratelimit = {{{ xccdf_value("sysctl_net_ipv4_tcp_invalid_ratelimit_value") }}}</pre>
     The file where the line has been found can differ, but it must be either <tt>/etc/sysctl.conf</tt>
     or a file located under the <tt>/etc/sysctl.d/</tt> directory.
 

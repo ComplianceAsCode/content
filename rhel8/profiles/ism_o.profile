@@ -1,5 +1,13 @@
 documentation_complete: true
 
+metadata:
+    SMEs:
+        - shaneboulden
+        - wcushen
+        - ahamilto156
+
+reference: https://www.cyber.gov.au/acsc/view-all-content/publications/essential-eight-linux-environments
+
 title: 'Australian Cyber Security Centre (ACSC) Information Security Manual (ISM) Official'
 
 description: |-

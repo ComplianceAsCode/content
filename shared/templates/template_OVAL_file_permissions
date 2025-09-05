@@ -1,12 +1,8 @@
 <def-group>
-  <definition class="compliance" id="file_permissions{{{ FILEID }}}" version="1">
-    <metadata>
-      <title>Verify {{{ FILEPATH }}} Mode Permissions</title>
-      {{{- oval_affected(products) }}}
-      <description>This test makes sure that {{{ FILEPATH }}} has mode {{{ FILEMODE }}}.
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+    {{{ oval_metadata("This test makes sure that " + FILEPATH + " has mode " + FILEMODE + ".
       If the target file or directory has an extended ACL, then it will fail the mode check.
-      </description>
-    </metadata>
+      ") }}}
     <criteria>
       <criterion comment="Check file mode of {{{ FILEPATH }}}" test_ref="test_file_permissions{{{ FILEID }}}" />
     </criteria>
@@ -34,7 +30,7 @@
         <unix:filename xsi:nil="true" />
       {{%- endif -%}}
     {{%- else -%}}
-      <unix:filepath>{{{ FILEPATH }}}</unix:filepath>
+      <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ FILEPATH }}}</unix:filepath>
     {{%- endif -%}}
   </unix:file_object>
 </def-group>

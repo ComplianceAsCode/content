@@ -1,15 +1,7 @@
 <def-group>
   <definition class="compliance" id="install_hids"
   version="1">
-    <metadata>
-      <title>Install Intrusion Detection Software</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>Intrusion detection software or SELinux should be installed and enabled.</description>
-    </metadata>
+    {{{ oval_metadata("Intrusion detection software or SELinux should be installed and enabled.") }}}
     <criteria operator="OR">
       <extend_definition comment="McAfee HBSS" definition_ref="install_mcafee_hbss" />
       <criterion comment="SELinux enabled" test_ref="test_selinux_enforcing" />

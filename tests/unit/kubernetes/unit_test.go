@@ -8,6 +8,7 @@ var ruleExceptions = []string{
 	"sshd_disable_compression",
 	"sshd_set_idle_timeout",
 	"sshd_set_keepalive",
+	"audit_delete_success",  // The remediation uses a macro, so it looks like as an invalid YAML
 }
 
 func TestUnit(t *testing.T) {

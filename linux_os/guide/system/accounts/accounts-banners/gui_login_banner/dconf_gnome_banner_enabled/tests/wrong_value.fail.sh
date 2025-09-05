@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_ncp
 
 source $SHARED/dconf_test_functions.sh
 

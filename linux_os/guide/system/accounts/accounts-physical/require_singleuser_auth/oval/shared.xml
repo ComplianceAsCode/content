@@ -1,11 +1,7 @@
 <def-group>
   <definition class="compliance" id="require_singleuser_auth" version="1">
-    <metadata>
-      <title>Require Authentication for Single-User Mode</title>
-      {{{- oval_affected(products) }}}
-      <description>The requirement for a password to boot into single-user mode
-      should be configured correctly.</description>
-    </metadata>
+    {{{ oval_metadata("The requirement for a password to boot into single-user mode
+      should be configured correctly.") }}}
     {{%- if init_system == "systemd" -%}}
     <criteria operator="AND">
       <criterion comment="Conditions are satisfied"

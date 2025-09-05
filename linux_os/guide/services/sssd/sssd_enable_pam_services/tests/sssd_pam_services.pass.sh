@@ -1,10 +1,9 @@
 #!/bin/bash
+# packages = /usr/lib/systemd/system/sssd.service
 #
-# profiles = xccdf_org.ssgproject.content_profile_stig
 
 SSSD_CONF="/etc/sssd/sssd.conf"
 
-yum -y install /usr/lib/systemd/system/sssd.service
 rm -rf /etc/sssd/conf.d/
 rm -f SSSD_CONF
 cat <<EOF > $SSSD_CONF

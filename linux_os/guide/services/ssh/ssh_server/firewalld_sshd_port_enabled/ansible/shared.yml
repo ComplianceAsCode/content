@@ -11,7 +11,7 @@
   with_items:
     - firewalld
 
-- (xccdf-var sshd_listening_port)
+{{{ ansible_instantiate_variables("sshd_listening_port") }}}
 
 - name: Enable SSHD in firewalld (custom port)
   firewalld:

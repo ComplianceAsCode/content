@@ -1,18 +1,12 @@
 <def-group>
   <definition class="compliance" id="cups_disable_printserver" version="1">
-    <metadata>
-      <title>Disable Printer Server if Possible</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>By default, locally configured printers will not be shared
+    {{{ oval_metadata("By default, locally configured printers will not be shared
       over the network, but if this functionality has somehow been enabled,
       these recommendations will disable it again. Be sure to disable outgoing
       printer list broadcasts, or remote users will still be able to see the
       locally configured printers, even if they cannot actually print to them.
       To limit print serving to a particular set of users, use the Policy
-      directive.</description>
-    </metadata>
+      directive.") }}}
     <criteria operator="AND">
       <criterion comment="Don't use port directive" test_ref="test_cups_disable_printserver_disable_port" />
       <criterion comment="Do use the listen directive" test_ref="test_cups_disable_printserver_use_listen" />

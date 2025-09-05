@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="ntpd_configure_restrictions" version="2">
-    <metadata>
-      <title>Specify server restrictions for ntpd</title>
-      {{{- oval_affected(products) }}}
-      <description>Certain restrictions are imposed on ntp servers configured to be used by ntpd</description>
-    </metadata>
+    {{{ oval_metadata("Certain restrictions are imposed on ntp servers configured to be used by ntpd") }}}
     <criteria operator="AND">
       <criterion comment="test ipv6 configuration" test_ref="test_ntpd_configure_restrictions_ipv6" />
       <criterion comment="test ipv4 configuration" test_ref="test_ntpd_configure_restrictions_ipv4" />

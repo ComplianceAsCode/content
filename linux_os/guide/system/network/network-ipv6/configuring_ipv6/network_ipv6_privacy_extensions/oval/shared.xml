@@ -1,16 +1,7 @@
 <def-group>
   <definition class="compliance"
   id="network_ipv6_privacy_extensions" version="1">
-    <metadata>
-      <title>Enable Privacy Extensions for IPv6</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Enable privacy extensions for IPv6</description>
-    </metadata>
+    {{{ oval_metadata("Enable privacy extensions for IPv6") }}}
     <criteria operator="OR">
       {{%- if product == "rhel6" -%}}
       <extend_definition comment="IPv6 disabled or..."

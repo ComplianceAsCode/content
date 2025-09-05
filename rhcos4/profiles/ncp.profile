@@ -1,5 +1,9 @@
 documentation_complete: true
 
+metadata:
+    SMEs:
+        - redhatrises
+
 title: 'NIST National Checklist for Red Hat Enterprise Linux CoreOS'
 
 description: |-
@@ -73,7 +77,6 @@ selections:
     #- sshd_disable_empty_passwords
     #- sshd_disable_kerb_auth
     #- sshd_disable_gssapi_auth
-    #- var_sshd_set_keepalive=0
     #- sshd_set_keepalive
     #- sshd_enable_warning_banner
     #- sshd_rekey_limit
@@ -133,14 +136,14 @@ selections:
 
     ### Kernel Config
     ## Boot prompt
-    - grub2_audit_argument
-    - grub2_audit_backlog_limit_argument
-    - grub2_slub_debug_argument
-    - grub2_page_poison_argument
-    - grub2_vsyscall_argument
-    - grub2_vsyscall_argument.role=unscored
-    - grub2_vsyscall_argument.severity=info
-    - grub2_pti_argument
+    - coreos_audit_option
+    - coreos_audit_backlog_limit_kernel_argument
+    - coreos_slub_debug_kernel_argument
+    - coreos_page_poison_kernel_argument
+    - coreos_vsyscall_kernel_argument
+    - coreos_vsyscall_kernel_argument.role=unscored
+    - coreos_vsyscall_kernel_argument.severity=info
+    - coreos_pti_kernel_argument
 
     ## Security Settings
     - sysctl_kernel_kptr_restrict
@@ -193,7 +196,6 @@ selections:
     #- package_libcap-ng-utils_installed
     #- package_openscap-scanner_installed
     #- package_policycoreutils_installed
-    #- package_rng-tools_installed
     - package_sudo_installed
     - package_usbguard_installed
     ####
@@ -240,9 +242,6 @@ selections:
     ### Application Whitelisting (RHEL 8)
     - package_fapolicyd_installed
     - service_fapolicyd_enabled
-
-    ### Enable the Hardware RNG Entropy Gatherer Service
-    - service_rngd_enabled
 
     ### Configure SSSD
     - sssd_run_as_sssd_user

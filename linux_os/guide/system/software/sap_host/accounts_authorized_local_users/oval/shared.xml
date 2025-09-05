@@ -1,13 +1,7 @@
 <def-group>
   <definition class="compliance" id="accounts_authorized_local_users" version="1">
-    <metadata>
-      <title>Only Authorized Local User Accounts Exist on Operating System</title>
-      <affected family="unix">
-        <platform>Oracle Linux 7</platform>
-      </affected>
-      <description>Besides the default operating system user, there should be no other users
-      except the users that are authorized to exist locally on the operating system.</description>
-    </metadata>
+    {{{ oval_metadata("Besides the default operating system user, there should be no other users
+      except the users that are authorized to exist locally on the operating system.") }}}
     <criteria>
       <criterion test_ref="test_accounts_authorized_local_users"
       comment="only root user and explicitly authorized users are allowed in /etc/passwd" />

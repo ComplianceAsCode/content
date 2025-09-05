@@ -1,6 +1,5 @@
 #!/bin/bash
+# packages = /usr/lib/systemd/system/sssd.service
 
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 
-yum -y install /usr/lib/systemd/system/sssd.service
 systemctl enable sssd

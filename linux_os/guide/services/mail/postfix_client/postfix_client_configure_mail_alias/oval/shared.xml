@@ -1,13 +1,6 @@
 <def-group>
   <definition class="compliance" id="postfix_client_configure_mail_alias" version="1">
-    <metadata>
-      <title>Ensure root has a mail alias</title>
-      <affected family="unix">
-          <platform>Red Hat Virtualization 4</platform>
-          <platform>multi_platform_sle</platform>
-      </affected>
-      <description>Check if root has the correct mail alias.</description>
-    </metadata>
+    {{{ oval_metadata("Check if root has the correct mail alias.") }}}
     <criteria comment="Check if root has the correct mail alias.">
       <criterion comment="Check if root has the correct mail alias." test_ref="test_postfix_client_configure_mail_alias"/>
     </criteria>

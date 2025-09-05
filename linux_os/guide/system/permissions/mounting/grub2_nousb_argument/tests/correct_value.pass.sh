@@ -1,6 +1,5 @@
 #!/bin/bash
 # platform = multi_platform_fedora
-# profiles = xccdf_org.ssgproject.content_profile_standard
 
 cat <<EOF > /etc/default/grub
 GRUB_TIMEOUT=5

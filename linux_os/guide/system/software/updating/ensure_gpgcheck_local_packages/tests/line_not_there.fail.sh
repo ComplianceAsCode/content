@@ -1,6 +1,5 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 
 . $SHARED/group_updating_utils.sh
 

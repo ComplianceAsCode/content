@@ -64,9 +64,9 @@ set(SSG_HTML_TABLE_FILE_LIST "")
 # that the one that is picked by the build system.
 function(define_validate_product PRODUCT)
     set(VALIDATE_PRODUCT, TRUE)
-    if ("${OSCAP_VERSION}" VERSION_LESS "1.3.3")
+    if ("${OSCAP_VERSION}" VERSION_LESS "1.3.4")
 	    if ("${PRODUCT}" MATCHES "^(ocp4|ANOTHER_PROBLEMATIC_PRODUCT)$")
-            message(STATUS "Won't validate ${PRODUCT}, as it requires at least oscap 1.3.3")
+            message(STATUS "Won't validate ${PRODUCT}, as it requires at least oscap 1.3.4")
             set(VALIDATE_PRODUCT, FALSE)
         endif ()
     endif ()
@@ -271,7 +271,7 @@ macro(ssg_build_ansible_playbooks PRODUCT)
     set(ANSIBLE_PLAYBOOKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/playbooks")
     add_custom_command(
         OUTPUT "${ANSIBLE_PLAYBOOKS_DIR}"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py" --ssg-root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --output-dir "${ANSIBLE_PLAYBOOKS_DIR}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py" --ssg-root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --resolved-profiles-dir "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output-dir "${ANSIBLE_PLAYBOOKS_DIR}"
         DEPENDS "${ANSIBLE_FIXES_DIR}"
         DEPENDS generate-internal-${PRODUCT}-ansible-all-fixes
         DEPENDS "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py"
@@ -599,6 +599,14 @@ macro(ssg_build_sds PRODUCT)
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
     )
+
+    if("${PRODUCT}" MATCHES "rhel(6|7|8|9)")
+        add_test(
+            NAME "missing-cces-${PRODUCT}"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/missing_cces.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        )
+        set_tests_properties("missing-cces-${PRODUCT}" PROPERTIES LABELS quick)
+    endif()
 
     define_validate_product("${PRODUCT}")
     if ("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
@@ -1320,7 +1328,6 @@ macro(ssg_build_vendor_zipfile ZIPNAME)
         COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/tables/table-ocp*" -DDEST="vendor-zipfile/${ZIPNAME}/tables" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -E chdir "vendor-zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}-RedHat.zip" --format=zip "${ZIPNAME}"
         COMMENT "Building Red Hat zipfile at ${CMAKE_BINARY_DIR}/vendor-zipfile/${ZIPNAME}-RedHat.zip"
-        DEPENDS ocp3
         DEPENDS rhel6
         DEPENDS rhel7
         DEPENDS rhel8

@@ -276,7 +276,7 @@ tables/table-rhel7-stig.html
 #### Ansible Playbooks
 
 ##### Profile Ansible Playbooks
-These Playboks contains the remediations for a profile.
+These Playbooks contain the remediations for a profile.
 ```bash
 $ ls -1 ansible/rhel7-playbook-*.yml
 ansible/rhel7-playbook-C2S.yml
@@ -286,7 +286,7 @@ ansible/rhel7-playbook-pci-dss.yml
 ```
 
 ##### Rule Ansible Playbooks
-These Playboks contains just the remediation for a rule, in the context of a profile.
+These Playbooks contain just the remediation for a rule, in the context of a profile.
 ```bash
 $ ls -1 ansible/rhel7-playbook-*.yml
 $ ls -1 rhel7/playbooks/pci-dss/*.yml
@@ -515,13 +515,12 @@ We have multiple benchmarks in our project:
 | Applications | `/applications` (Notice no `guide` subdirectory there!)
 | Java Runtime Environment | `/jre/guide`
 | Fuse 6 | `/fuse6/guide`
-| EAP6 | `/eap6/guide`
 | Firefox | `/firefox/guide`
 | Chromium | `/chromium/guide`
 |===
 
 The *Linux OS* benchmark describes Linux Operating System in general.
-This benchmark is used by multiple ComplianceAsCode products, eg. `rhel7`, `fedora`, `ubuntu1404`, `sle11` etc.
+This benchmark is used by multiple ComplianceAsCode products, eg. `rhel7`, `fedora`, `ubuntu1604`, `sle15` etc.
 The benchmark is located in `/linux_os/guide`.
 
 The products specify which benchmark they use as a source of content in their `product.yml` file using `benchmark_root` key. For example, `rhel7` product specifies that it uses the Linux OS benchmark.
@@ -538,7 +537,7 @@ benchmark_root: "../linux_os/guide"
 ----
 
 Rules from multiple locations can be used for a single Benchmark. There is an optional key `additional_content_directories` for a list of paths to some arbitrary Groups of Rules
-to be included in the benchmark. Of all the rules collected only following would become a part of the benchmark:
+to be included in the benchmark. Note that the additional directories cannot contain a benchmark file (`benchmark.yml`), otherwise it fails to build the content. Of all the rules collected only the following would become a part of the benchmark:
 
 - rules that have the `prodtype` specified in correspondence with the benchmark;
 - rules that have no `prodtype` metadata.
@@ -548,7 +547,8 @@ to be included in the benchmark. Of all the rules collected only following would
 
 benchmark_root: "../applications"
 additional_content_directories:
-    - "../linux_os/guide"
+    - "../linux_os/guide/services"
+    - "../linux_os/guide/system"
 
 .....
 ----
@@ -655,6 +655,33 @@ Datastream, etc.
 For any of the `[red]#Required#` directories that may not yet add content,
 add a `.gitkeep` file for any empty directories.
 ====
+
+=== Profiles
+
+Profiles define the set of rules and variables aligned to a compliance standard.
+
+Structurally, a profile is a YAML file that represents a dictionary.
+A profile YAML file has one implied attribute:
+
+* `id`: The primary identifier for the profile, to be referenced during evaluations. This is inferred from the file name.
+
+A profile YAML file can, optionally, include metadata about the implemented policy and experts in the field, called Subject Matter Experts (SMEs). The SMEs usually are people familiar with the policy requirements or how it is applied.
+
+* `metadata`: Dictionary for profile metadata.
+  * `reference`: URL pointing to page or organization that publishes the policy.
+  * `version`: Version of the policy implemented by the profile.
+  * `SMEs`: List of people experienced with the profile, or how they are applied. The preferred method is the GitHub handle, but email is also accepted.
+
+A profile should define these attributes:
+
+* `title`: Human-readable title of the profile.
+* `description`: Human-readable HTML description, which provides broader context for non-experts than the rationale.
+* `extends`: The `id` of a profile to be extended. A profile can make incremental changes based on another profile, via `extends` attribute. The extendee can then, via the `selections` attribute, select/unselect rules and change XCCDF Value selectors.
+* `selections`: List composed of items of these types:
+  * `id`s of rules to be included in the profile, e.g. `accounts_tmout`, or
+  * `id`s of rules to be excluded from the profile prefixed by an exclamation mark, e.g. `!accounts_tmout`, or
+  * changes to XCCDF Value selectors, e.g. `var_accounts_tmout=10_min`, or
+  * rule refinements, e.g. `accounts_tmout.severity=high`.
 
 == Updating Reference and Overlay Content
 
@@ -1498,7 +1525,7 @@ auditd_lineinfile::
 * Parameters:
 ** *parameter* - auditd configuration item
 ** *value* - the value of configuration item specified by parameter
-** *missing_parameter_pass* - effective only in OVAL checks, if set to `"true"` and the parameter is not present in the configuration file the OVAL check will return true.
+** *missing_parameter_pass* - effective only in OVAL checks, if set to `"false"` and the parameter is not present in the configuration file, the OVAL check will return `false`.
 * Languages: Ansible, Bash, OVAL
 
 audit_rules_dac_modification::
@@ -1573,17 +1600,21 @@ audit_rules_usergroup_modification::
 ** *path* - path that should be part of the audit rule as a value of `-w` argument, eg. `/etc/group`.
 * Languages: Ansible, Bash, OVAL
 
-bls_bootloader_option::
-* Checks kernel command line arguments in BLS-compatible (Boot Loader Specification) boot loader configuration.
+argument_value_in_line::
+* Checks that `argument=value` pair is present in (optionally) the line started with line_prefix (and, optionally, ending with line_suffix) in the file(s) defined by filepath.
 * Parameters:
-** *arg_name* - argument name, eg. `audit`
-** *arg_value* - argument value, eg. `'1'`
+** *filepath* - File(s) to be checked. The value would be treated as a regular expression pattern.
+** *arg_name* - Argument name, eg. `audit`
+** *arg_value* - Argument value, eg. `'1'`
+** *line_prefix* - The prefix of the line in which argument-value pair should be present, optional.
+** *line_suffix* - The suffix of the line in which argument-value pair should be present, optional.
 * Languages: OVAL
 
 file_groupowner::
 * Check group that owns the given file.
 * Parameters:
 ** *filepath* - File path to be checked. If the file path ends with `/` it describes a directory.
+** *filepath_is_regex* - If set to `"true"` the OVAL will consider the value of *filepath* as a regular expression.
 ** *missing_file_pass* - If set to `"true"` the OVAL check will pass when file is absent. Default value is `"false"`.
 ** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory. Note: Applies to base name of files, so if a file `/foo/bar/file.txt` is processed, only `file.txt` is tested against *file_regex*.
 ** *filegid* - group ID (GID)
@@ -1593,6 +1624,7 @@ file_owner::
 * Check user that owns the given file.
 * Parameters:
 ** *filepath* - File path to be checked. If the file path ends with `/` it describes a directory.
+** *filepath_is_regex* - If set to `"true"` the OVAL will consider the value of *filepath* as a regular expression.
 ** *missing_file_pass* - If set to `"true"` the OVAL check will pass when file is absent. Default value is `"false"`.
 ** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory. Note: Applies to base name of files, so if a file `/foo/bar/file.txt` is processed, only `file.txt` is tested against *file_regex*.
 ** *fileuid* - user ID (UID)
@@ -1602,6 +1634,7 @@ file_permissions::
 * Checks permissions (mode) on a given file.
 * Parameters:
 ** *filepath* - File path to be checked. If the file path ends with `/` it describes a directory.
+** *filepath_is_regex* - If set to `"true"` the OVAL will consider the value of *filepath* as a regular expression.
 ** *missing_file_pass* - If set to `"true"` the OVAL check will pass when file is absent. Default value is `"false"`.
 ** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory. Note: Applies to base name of files, so if a file `/foo/bar/file.txt` is processed, only `file.txt` is tested against *file_regex*.
 ** *filemode* - File permissions in a hexadecimal format, eg. `'0640'`.
@@ -1677,7 +1710,6 @@ service_disabled::
 ** *servicename* - name of the service.
 ** *packagename* - name of the package that provides this service. This argument is optional. If *packagename* is not specified it means the name of the package is the same as the name of service.
 ** *daemonname* - name of the daemon. This argument is optional. If *daemonname* is not specified it means the name of the daemon is the same as the name of service.
-** *mask_service* - Check if the service should be masked to prevent it from running. This argument is optional. Implicit value is "true".
 * Languages: Ansible, Bash, OVAL, Puppet, Ignition, Kubernetes
 
 service_enabled::
@@ -1735,14 +1767,21 @@ timer_enabled::
 yamlfile_value::
 * Check if value(s) of certain type is (are) present in a YAML (or JSON) file at a given path.
 * Parameters:
+** *ocp_data* - if set to `"true"` then the filepath would be treated as a part of the dump of OCP configuration with the `ocp_data_root` prefix; optional.
 ** *filepath* - full path to the file to check
 ** *yamlpath* - OVAL's link:https://github.com/OpenSCAP/yaml-filter/wiki/YAML-Path-Definition[YAML Path] expression.
-** *value* - the value to check.
-** *type* (SimpleDatatypeEnumeration) - datatype for state's value_of, optional. If omitted, datatype would be treated as OVAL's default 'string'.
-** *entity_check* (CheckEnumeration) - entity_check value for state's value_of, optional. If omitted, entity_check attribute would not be set and will be treated by OVAL as 'all'.
-** *operation* (OperationEnumeration) - operation value for state's value_of, optional. If omitted, operation attribute would not be set. OVAL's default operation is 'equals'.
-** *negate* - if set to `"true"` the meaning of the value check criterion would be inverted, optional.
-** *ocp_data* - if set to `"true"` then the filepath would be treated as a part of the dump of OCP configuration with the `ocp_data_root` prefix; optional.
+** *entity_check* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#CheckEnumeration[CheckEnumeration]) - entity_check value for state's value, optional. If omitted, entity_check attribute would not be set and will be treated by OVAL as 'all'. +
+    Possible options are `all`, `at least one`, `none satisfy` and `only one`.
+** *check_existence* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#ExistenceEnumeration[ExistenceEnumeration]) - `check_existence` value for the `yamlfilecontent_test`, optional. If omitted, check_existence attribute will defalut to 'only_one_exists'. +
+   Possible options are `all_exist`, `any_exist`, `at_least_one_exists`, `none_exist`, `only_one_exists`.
+** *values* - a list of dictionaries with values to check, where:
+**   *key* - the yaml key to check, optional. Used when the yamlpath expression yields a map.
+**   *value* - the value to check.
+**   *type* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---simpledatatypeenumeration---[SimpleDatatypeEnumeration]) - datatype for state's field (child of value), optional. If omitted, datatype would be treated as OVAL's default 'string'. +
+     Most common datatypes are `string` and `int`. For complete list check reference link.
+**   *operation* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---operationenumeration---[OperationEnumeration]) - operation value for state's field (child of value), optional. If omitted, operation attribute would not be set. OVAL's default operation is 'equals'. +
+     Most common operations are `equals`, `not equal`, `pattern match`, `greater than or equal` and `less than or equal`. For complete list of operations check the reference link.
+**   *entity_check* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#CheckEnumeration[CheckEnumeration]) - entity_check value for state's field (child of value), optional. If omitted, entity_check attribute would not be set and will be treated by OVAL as 'all'. +
 * Languages: OVAL
 
 
@@ -1784,8 +1823,6 @@ an OVAL template file called _template_OVAL_package_installed_:
 {{{ oval_test_package_installed(package=PKGNAME, evr=EVR, test_id="test_package_"+PKGNAME+"_installed") }}}
 </def-group>
 ----
-
-Notice that you can use Jinja macros and Jinja filters in the template code.
 
 And here is the Ansible template file called _template_ANSIBLE_package_installed_:
 
@@ -1860,6 +1897,18 @@ def mount_option(data, lang):
     return data
 ----
 
+==== Filters
+
+You can use Jinja macros and Jinja filters in the template code. ComplianceAsCode support all built-in Jinja link:https://jinja.palletsprojects.com/en/2.11.x/templates/#builtin-filters[filters]. 
+
+There are also some custom filters useful for content authoring defined in the project:
+
+escape_id::
+* Replaces all non-word (regex *\W*) characters with underscore. Useful for sanitizing ID strings as it is compatible with OVAL IDs `oval:[A-Za-z0-9_\-\.]+:ste:[1-9][0-9]*`.
+
+escape_regex::
+* Escapes characters in the string for it to be usable as a part of some regular expression, behaves similar to the Python 3's link:https://docs.python.org/3/library/re.html#re.escape[*re.escape*].
+
 
 === Tests (ctest)
 
@@ -1875,6 +1924,176 @@ Check out the various `ctest` options to perform specific testing, you can rerun
 Tests are added using the add_test cmake call. Each test should finish with a 0 exit-code in case everything went well and a non-zero if something failed. Output (both stdout and stderr) are collected by ctest and stored in logs or displayed. Make sure you never hard-code a path to any tool when doing testing (or anything really) in the cmake code. Always use configuration to find all the paths and then use the respective variable.
 
 See some of the existing testing code in `cmake/SSGCommon.cmake`.
+
+=== Tests (OCP4)
+
+==== Unit tests
+
+TBD
+
+==== End-to-end tests
+
+The ComplianceAsCode/content repo runs some end-to-end tests for the ocp4
+content. These tests run over the OpenShift infrastructure, spawn an ephemeral
+cluster and run tests targetted at a specific profile.
+
+The current workflow is as follows:
+
+* Install needed prerequisites (e.g. the compliance-operator and other resources it might need)
+* Run a scan using the specific profile (for the specific product)
+* Run manual remediations
+* Run automated remediations
+* Wait for remediations to converge
+* Run second scan
+
+The test will pass if:
+* There are no errors in the scan runs
+* We have less rule failures after the remediations have been applied
+* The cluster status is not inconsistent
+
+Rules may have extra verifications on them. For instance, one is able to verify
+if:
+* The rule's expected result is gotten on a clean run.
+* The rule's result changes after a remediation has been applied.
+
+If an automated remediation is not possible, one is also able to created a
+"manual" remediation that will be run as a bash script. The end-to-end tests
+have a *15 minute* timeout for the manual remediation scripts to be executed.
+
+===== Writing e2e tests for specific rules
+
+In order to test that a rule is yielding expected results in the e2e tests, one
+must create a file called `e2e.yml` in a `tests/ocp4/` directory which will
+exist in the rule's directory itself.
+
+The format looks as follows:
+
+----
+---
+default_result: [PASS|FAIL]
+result_after_remediation: [PASS|FAIL]
+----
+
+Where:
+
+* `default_result` will look at the result when the first scan is run.
+* `result_after_remediation` will look at the result when the second scan is run. The second scan takes place after remediations are applied.
+
+Let's look at an example:
+
+For the `controller_use_service_account` rule, which exists in the
+`applications/openshift/controller/` directory, the directory tree will contain
+the rule definition and the test file:
+
+----
+.
+├── rule.yml
+└── tests
+    └── ocp4
+        └── e2e.yml
+----
+
+In this case, we just want to verify that the default value returns a passing
+result. So `e2e.yml` has the following content:
+
+----
+---
+default_result: PASS
+----
+
+Let's look at another example:
+
+For the `api_server_encryption_provider_config` we want to apply a remediation
+which cannot be applied via the `compliance-operator`. So we'll need a manual
+remediation for this.
+
+The directory structure looks as follows:
+
+----
+.
+├── rule.yml
+└── tests
+    └── ocp4
+        ├── e2e-remediation.sh
+        └── e2e.yml
+----
+
+Where our test contains information for both the first default result and the
+expected result after the remediation has been applied:
+
+----
+---
+default_result: FAIL
+result_after_remediation: PASS
+----
+
+The remediation expects the name of the remediation script to be
+`e2e-remediation.sh`. The script should:
+
+* Apply the remediation.
+* Verify that the status has converged.
+
+In the aforementioned case, the remediation script is as follows:
+
+----
+#!/bin/bash
+
+oc patch apiservers cluster -p '{"spec":{"encryption":{"type":"aescbc"}}}' --type=merge
+
+while true; do
+    status=$(oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{.reason}')
+
+    echo "Current Encryption Status:"
+    oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{.reason}{"\n"}{.message}{"\n"}'
+
+    if [ "$status" == "EncryptionCompleted" ]; then
+        exit 0
+    fi
+
+    sleep 5
+done
+----
+
+Here, we apply the remediation (through the `patch` command) and probe the
+cluster for status. Once the cluster converges, we exit the script with `0`,
+which is a successful status.
+
+The e2e test run will time out at *15 minuntes* if a script doesn't converge.
+
+Note that the scripts will be run in parallel, but the test run will wait for
+all of them to be done.
+
+===== Running the e2e tests on a local cluster
+
+Note that it's possible to run the e2e tests on a cluster of your choice.
+
+To do so, ensure that you have a `KUBECONFIG` with appropriate credentials that
+points to the cluster where you'll run the tests.
+
+From the root of the `ComplianceAsCode/content` repository, run:
+
+----
+$ make -f tests/ocp4e2e/Makefile e2e PROFILE=<profile> PRODUCT=<product>
+----
+
+Where profile is the name of the profile you want to test, and product is a
+product relevant to `OCP4`, such as `ocp4` or `rhcos4`.
+
+For instance, to run the tests for the `cis` benchmark for `ocp4` do:
+
+----
+$ make -f tests/ocp4e2e/Makefile e2e PROFILE=cis PRODUCT=ocp4
+----
+
+For more information on the available options, do:
+
+----
+$ make -f tests/ocp4e2e/Makefile help
+----
+
+It is important to note that the tests will do changes to your cluster and
+there currently isn't an option to clean them up. So take that into account
+before running these tests.
 
 === Contribution to infrastructure code
 

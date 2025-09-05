@@ -10,7 +10,6 @@ func TestE2e(t *testing.T) {
 	t.Run("Parameter setup and validation", func(t *testing.T) {
 		ctx.assertRootdir()
 		ctx.assertProfile()
-		ctx.assertScanType()
 		ctx.assertContentImage()
 		ctx.assertKubeClient()
 	})
@@ -28,9 +27,13 @@ func TestE2e(t *testing.T) {
 		ctx.resetClientMappings()
 	})
 
+	t.Run("Prereqs setup", func(t *testing.T) {
+		ctx.ensureTestProfileBundle()
+		ctx.ensureTestSettings()
+	})
+
 	// Remediations
-	var numberOfRemediationsInit int
-	var numberOfRemediationsEnd int
+	var numberOfRemediations int
 
 	// Failures
 	var numberOfFailuresInit int
@@ -43,30 +46,39 @@ func TestE2e(t *testing.T) {
 	// Invalid check results
 	var numberOfInvalidResults int
 
+	// suite name
+	var suite string
+
+	var manualRemediations []string
+
 	t.Run("Run first compliance scan", func(t *testing.T) {
 		// Create suite and auto-apply remediations
-		suite := ctx.createComplianceSuiteForProfile("1", true)
+		suite = ctx.createBindingForProfile()
 		ctx.waitForComplianceSuite(suite)
-		numberOfRemediationsInit = ctx.getRemediationsForSuite(suite, false)
-		numberOfFailuresInit = ctx.getFailuresForSuite(suite, false)
-		numberOfCheckResultsInit = ctx.getCheckResultsForSuite(suite)
-		numberOfInvalidResults = ctx.getInvalidResultsFromSuite(suite, true)
+		numberOfRemediations = ctx.getRemediationsForSuite(suite)
+		numberOfFailuresInit = ctx.getFailuresForSuite(suite)
+		numberOfCheckResultsInit, manualRemediations = ctx.verifyCheckResultsForSuite(suite, false)
+		numberOfInvalidResults = ctx.getInvalidResultsFromSuite(suite)
 	})
 
-	if numberOfRemediationsInit > 0 {
+	if numberOfRemediations > 0 || len(manualRemediations) > 0 {
+		if len(manualRemediations) > 0 {
+			t.Run("Apply manual remediations", func(t *testing.T) {
+				ctx.applyManualRemediations(manualRemediations)
+			})
+		}
 		t.Run("Wait for Remediations to apply", func(t *testing.T) {
 			// Lets wait for the MachineConfigs to start applying
 			time.Sleep(30 * time.Second)
-			ctx.waitForNodesToBeReady()
+			ctx.waitForMachinePoolUpdate("master")
+			ctx.waitForMachinePoolUpdate("worker")
 		})
 
 		t.Run("Run second compliance scan", func(t *testing.T) {
-			// Create suite and auto-apply remediations
-			suite := ctx.createComplianceSuiteForProfile("2", false)
+			ctx.doRescan(suite)
 			ctx.waitForComplianceSuite(suite)
-			numberOfRemediationsEnd = ctx.getRemediationsForSuite(suite, true)
-			numberOfFailuresEnd = ctx.getFailuresForSuite(suite, true)
-			numberOfCheckResultsEnd = ctx.getCheckResultsForSuite(suite)
+			numberOfFailuresEnd = ctx.getFailuresForSuite(suite)
+			numberOfCheckResultsEnd, _ = ctx.verifyCheckResultsForSuite(suite, true)
 		})
 
 		t.Run("We should have the same number of check results in each scan", func(t *testing.T) {
@@ -79,14 +91,7 @@ func TestE2e(t *testing.T) {
 			}
 		})
 
-		t.Run("We should have less remediations to apply", func(t *testing.T) {
-			if numberOfRemediationsInit <= numberOfRemediationsEnd {
-				t.Errorf("The remediations didn't diminish: init -> %d  end %d",
-					numberOfRemediationsInit, numberOfRemediationsEnd)
-			} else {
-				t.Logf("There are less remediations now: init -> %d  end %d",
-					numberOfRemediationsInit, numberOfRemediationsEnd)
-			}
+		t.Run("We should have less failures", func(t *testing.T) {
 			if numberOfFailuresInit <= numberOfFailuresEnd {
 				t.Errorf("The failures didn't diminish: init -> %d  end %d",
 					numberOfFailuresInit, numberOfFailuresEnd)
@@ -99,7 +104,7 @@ func TestE2e(t *testing.T) {
 		t.Logf("No remediations were generated from this profile")
 	}
 
-	t.Run("We should have no errors or invalid resutls", func(t *testing.T) {
+	t.Run("We should have no errors or invalid results", func(t *testing.T) {
 		if numberOfInvalidResults > 0 {
 			t.Errorf("Expected Pass, Fail, Info, or Skip results from platform scans. Got %d Error/None results", numberOfInvalidResults)
 		}

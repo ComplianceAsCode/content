@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_session_events" version="1">
-    <metadata>
-      <title>Record Attempts to Alter Process and Session Initiation Information</title>
-      {{{- oval_affected(products) }}}
-      <description>Audit rules should capture information about session initiation.</description>
-    </metadata>
+    {{{ oval_metadata("Audit rules should capture information about session initiation.") }}}
 
     <criteria operator="OR">
 

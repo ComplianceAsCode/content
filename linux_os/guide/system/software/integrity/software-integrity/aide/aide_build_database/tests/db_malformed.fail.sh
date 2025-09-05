@@ -1,11 +1,7 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_C2S
-
-# ensure aide is installed
-yum install -y aide
-
+# packages = aide
 
 DB=/var/lib/aide/aide.db.gz
 
-rm -r $DB
+rm -rf $DB
 echo "not really a database" > $DB

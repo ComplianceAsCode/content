@@ -211,7 +211,6 @@ selections:
     - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
-    - var_sshd_set_keepalive=3
     - sshd_set_keepalive
     - sshd_use_approved_ciphers
     - sshd_use_approved_macs

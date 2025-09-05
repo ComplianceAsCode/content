@@ -1,10 +1,6 @@
 <def-group oval_version="5.10">
   <definition class="compliance" id="enable_fips_mode" version="1">
-    <metadata>
-      <title>Enable FIPS Mode</title>
-      {{{- oval_affected(products) }}}
-      <description>Check if FIPS mode is enabled on the system</description>
-    </metadata>
+    {{{ oval_metadata("Check if FIPS mode is enabled on the system") }}}
     <criteria operator="AND">
       <extend_definition comment="check /etc/system-fips exists" definition_ref="etc_system_fips_exists" />
       <extend_definition comment="check sysctl crypto.fips_enabled = 1" definition_ref="sysctl_crypto_fips_enabled" />

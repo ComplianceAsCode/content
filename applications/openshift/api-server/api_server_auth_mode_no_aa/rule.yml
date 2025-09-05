@@ -1,0 +1,36 @@
+prodtype: ocp4
+
+title: The authorization-mode cannot be AlwaysAllow
+
+description: 'Do not always authorize all requests.'
+
+rationale: |-
+    The API Server, can be configured to allow all requests. This mode should not be used on any production cluster.
+
+severity: medium
+
+references:
+    cis: 1.2.7
+
+ocil_clause: 'The Node authorization-mode is configured and enabled on the master node'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep '"authorization-mode":\[[^]]*"AlwaysAllow"'</pre>
+    The output should be empty - the "authorization-mode" list does NOT contain the "AlwaysAllow" authorizer.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "none exist"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '"authorization-mode":\[[^]]*"AlwaysAllow"'
+      operation: "pattern match"
+      type: "string"

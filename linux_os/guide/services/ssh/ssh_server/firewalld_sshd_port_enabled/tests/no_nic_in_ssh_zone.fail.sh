@@ -1,10 +1,10 @@
 #!/bin/bash
+# packages = firewalld
 #
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 # remediation = none
 
 # ensure firewalld installed
-yum install -y firewalld
 
 # Make sure there is a zone with ssh service enabled
 firewall-cmd --permanent --zone=work --add-service=ssh

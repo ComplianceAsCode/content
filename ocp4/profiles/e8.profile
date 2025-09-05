@@ -1,6 +1,14 @@
 documentation_complete: true
 
+metadata:
+    SMEs:
+        - shaneboulden
+
+reference: https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers
+
 title: 'Australian Cyber Security Centre (ACSC) Essential Eight'
+
+platform: ocp4
 
 description: |-
     This profile contains configuration checks for Red Hat OpenShift Container Platform

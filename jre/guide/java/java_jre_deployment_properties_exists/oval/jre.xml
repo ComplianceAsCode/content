@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="java_jre_deployment_properties_exists" version="1">
     <metadata>
-      <title>The Java Properties File Exists</title>
+      <title>The Java deployment.properties File Exists</title>
       <affected family="unix">
         <product>Java Runtime Environment</product>
       </affected>
@@ -9,11 +9,11 @@
       that establish properties within the Java control panel.</description>
     </metadata>
     <criteria>
-      <criterion comment="Check deployment.properties file" test_ref="test_java_jre_deployment_properties" />
+      <criterion comment="Check deployment.properties file exists" test_ref="test_java_jre_deployment_properties" />
     </criteria>
   </definition>
 
-  <unix:file_test check="all" comment="Check deployment.properties file" id="test_java_jre_deployment_properties" version="1">
+  <unix:file_test check="all" comment="Check deployment.properties file exists" id="test_java_jre_deployment_properties" version="1">
     <unix:object object_ref="object_java_jre_deployment_properties" />
   </unix:file_test>
   <unix:file_object id="object_java_jre_deployment_properties" version="1">

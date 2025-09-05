@@ -15,8 +15,8 @@ rationale: |-
 
 severity: medium
 
-#identifiers:
-#    cce@ocp4: 80633-1
+identifiers:
+    cce@ocp4: CCE-83509-0
 
 references:
     cis: 4.1.9
@@ -26,8 +26,8 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/lib/kubelet/kubeconfig
 ocil: |-
     {{{ ocil_file_permissions(file="/var/lib/kubelet/kubeconfig", perms="-rw-------") }}}
 
-#template:
-#    name: file_permissions
-#    vars:
-#        filepath: /var/lib/kubelet/kubeconfig
-#        filemode: '0600'
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/lib/kubelet/kubeconfig
+        filemode: '0600'

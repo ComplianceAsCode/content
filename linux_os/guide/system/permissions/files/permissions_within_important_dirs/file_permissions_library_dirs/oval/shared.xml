@@ -1,18 +1,9 @@
 <def-group>
   <definition class="compliance" id="file_permissions_library_dirs" version="1">
-    <metadata>
-      <title>Verify that Shared Library Files Have Restrictive Permissions</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>
+    {{{ oval_metadata("
         Checks that /lib, /lib64, /usr/lib, /usr/lib64, /lib/modules, and
         objects therein, are not group-writable or world-writable.
-      </description>
-    </metadata>
+      ") }}}
     <criteria operator="AND">
       <criterion test_ref="test_perms_lib_dir" />
       <criterion test_ref="test_perms_lib_files" />

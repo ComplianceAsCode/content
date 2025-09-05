@@ -7,7 +7,7 @@ title: 'Ensure the Default C Shell Umask is Set Correctly'
 description: |-
     To ensure the default umask for users of the C shell is set properly,
     add or correct the <tt>umask</tt> setting in <tt>/etc/csh.cshrc</tt> to read as follows:
-    <pre>umask <sub idref="var_accounts_user_umask" /></pre>
+    <pre>umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
 rationale: |-
     The umask value influences the permissions assigned to files when they are created.
@@ -42,4 +42,4 @@ ocil: |-
     <pre># grep "umask" /etc/csh.cshrc</pre>
     All output must show the value of <tt>umask</tt> set as shown in the below:
     <pre># grep "umask" /etc/csh.cshrc
-    umask <sub idref="var_accounts_user_umask" /></pre>
+    umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>

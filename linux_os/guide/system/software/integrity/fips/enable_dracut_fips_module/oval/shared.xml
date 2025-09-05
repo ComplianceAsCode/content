@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="enable_dracut_fips_module" version="1">
-    <metadata>
-      <title>Enable Dracut FIPS Module</title>
-      {{{- oval_affected(products) }}}
-      <description>fips module should be enabled in Dracut configuration</description>
-    </metadata>
+    {{{ oval_metadata("fips module should be enabled in Dracut configuration") }}}
     <criteria operator="AND">
       <criterion comment="dracut fips module is enabled" test_ref="test_enable_dracut_fips_module" />
     </criteria>

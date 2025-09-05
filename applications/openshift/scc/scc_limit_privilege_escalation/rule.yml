@@ -19,6 +19,9 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@ocp4: CCE-83447-3
+
 references:
     cis: 5.2.5
 
@@ -30,3 +33,19 @@ ocil: |-
     Review each SCC and determine that <tt>allowPrivilegeEscalation</tt> is either
     completely disabled, or that <tt>allowPrivilegeEscalation</tt> is only enabled to
     a small set of containers and SCCs.
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/security.openshift.io/v1/securitycontextconstraints") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: /apis/security.openshift.io/v1/securitycontextconstraints
+        yamlpath: ".items[:]['allowPrivilegeEscalation']"
+        check_existence: "at_least_one_exists"
+        entity_check: "at least one"
+        values:
+          - type: "boolean"
+            value: "false"

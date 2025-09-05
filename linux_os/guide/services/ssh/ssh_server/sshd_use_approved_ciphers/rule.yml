@@ -31,7 +31,7 @@ description: |-
     {{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf") }}}
     {{% endif %}}
 {{% endif %}}
-    The rule is parametrized to use the following ciphers: <code>{{{ sub_var_value("sshd_approved_ciphers") }}}</code>.
+    The rule is parametrized to use the following ciphers: <code>{{{ xccdf_value("sshd_approved_ciphers") }}}</code>.
 
 rationale: |-
     Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore

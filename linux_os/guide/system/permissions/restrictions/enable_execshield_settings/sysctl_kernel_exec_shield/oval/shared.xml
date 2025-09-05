@@ -1,14 +1,6 @@
 <def-group>
   <definition class="compliance" id="sysctl_kernel_exec_shield" version="2">
-    <metadata>
-      <title>Kernel Runtime Parameter "kernel.exec-shield" Check</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-      </affected>
-      <description>The kernel runtime parameter "kernel.exec-shield" should not be disabled and set to 1 on 32-bit systems.</description>
-    </metadata>
+    {{{ oval_metadata("The kernel runtime parameter 'kernel.exec-shield' should not be disabled and set to 1 on 32-bit systems.") }}}
     <criteria operator="OR">
       <criteria operator="AND" comment="system is RHEL6">
         <extend_definition comment="RHEL6 installed" definition_ref="installed_OS_is_rhel6" />

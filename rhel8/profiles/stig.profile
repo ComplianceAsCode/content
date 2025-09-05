@@ -1,5 +1,12 @@
 documentation_complete: true
 
+metadata:
+    version: V1R0.1-Draft
+    SMEs:
+        - redhatrises
+
+reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+
 title: '[DRAFT] DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
@@ -52,7 +59,6 @@ selections:
     - "!zipl_audit_argument"
     - "!zipl_audit_backlog_limit_argument"
     - "!zipl_page_poison_argument"
-    - "!zipl_pti_argument"
     - "!zipl_slub_debug_argument"
     - "!zipl_vsyscall_argument"
     - "!zipl_vsyscall_argument.role=unscored"

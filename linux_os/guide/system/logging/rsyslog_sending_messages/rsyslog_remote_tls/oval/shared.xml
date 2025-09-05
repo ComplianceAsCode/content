@@ -1,14 +1,6 @@
 <def-group>
   <definition class="compliance" id="rsyslog_remote_tls" version="1">
-    <metadata>
-      <title>Check that rsyslog is configured to use TLS for remote logging</title>
-      <affected family="unix">
-        <platform>multi_platform_fedora</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Oracle Linux 8</platform>
-      </affected>
-      <description>Check that all needed TLS-related options are present</description>
-    </metadata>
+    {{{ oval_metadata("Check that all needed TLS-related options are present") }}}
     <criteria comment="Check that rsyslog is configured to use TLS for remote logging" operator="AND">
       <criterion comment="Check that all needed TLS-related options are present" test_ref="test_rsyslog_remote_tls" />
     </criteria>

@@ -1,0 +1,18 @@
+<def-group oval_version="5.10">
+  <definition class="compliance" id="java_jre_clean_previous_version" version="1">
+    {{{ oval_metadata("The clean_requirements_on_remove option should be used to ensure that old
+      versions of software components are removed after updating.") }}}
+    <criteria>
+      <criterion comment="check value of clean_requirements_on_remove in /etc/yum.conf" test_ref="test_yum_java_jre_clean_previous_version" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check value of clean_requirements_on_remove in /etc/yum.conf" id="test_yum_java_jre_clean_previous_version" version="1">
+    <ind:object object_ref="object_yum_java_jre_clean_previous_version" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_yum_java_jre_clean_previous_version" comment="clean_requirements_on_remove set in /etc/yum.conf" version="1">
+    <ind:filepath>/etc/yum.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*clean_requirements_on_remove\s*=\s*(1|True|yes)\s*$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

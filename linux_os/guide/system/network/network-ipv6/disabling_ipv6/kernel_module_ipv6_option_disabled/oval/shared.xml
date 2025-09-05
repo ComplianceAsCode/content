@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="kernel_module_ipv6_option_disabled" version="1">
-    <metadata>
-      <title>Disable IPv6 Kernel Module Functionality via Disable Option</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The disable option will allow the IPv6 module to be inserted, but prevent address assignment and activation of the network stack.</description>
-    </metadata>
+    {{{ oval_metadata("The disable option will allow the IPv6 module to be inserted, but prevent address assignment and activation of the network stack.") }}}
     <criteria>
       <criterion test_ref="test_kernel_module_ipv6_option_disabled" comment="ipv6 disabled any modprobe conf file"/>
     </criteria>

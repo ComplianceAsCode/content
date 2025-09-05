@@ -1,0 +1,29 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: "openscap-ocp4-ds" 
+spec:
+  lookupPolicy:
+    local: true
+---
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: "openscap-ocp4-ds" 
+spec:
+  runPolicy: "Serial" 
+  triggers: 
+    -
+      type: "ImageChange"
+  source: 
+    dockerfile: |
+      FROM registry.access.redhat.com/ubi8/ubi-minimal
+      WORKDIR /
+      COPY *-ds.xml .
+  strategy: 
+    dockerStrategy:
+      noCache: true
+  output: 
+    to:
+      kind: "ImageStreamTag"
+      name: "openscap-ocp4-ds:latest"

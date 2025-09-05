@@ -1,7 +1,6 @@
 #!/bin/bash
+# packages = prelink
 #
-# profiles = xccdf_org.ssgproject.content_profile_C2S
 
-yum install -y prelink
 
 : > /etc/sysconfig/prelink

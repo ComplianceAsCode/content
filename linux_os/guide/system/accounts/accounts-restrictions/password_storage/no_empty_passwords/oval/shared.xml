@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="no_empty_passwords" version="1">
-    <metadata>
-      <title>No nullok Option in /etc/pam.d/system-auth</title>
-      {{{- oval_affected(products) }}}
-      <description>The file /etc/pam.d/system-auth should not contain the nullok option</description>
-    </metadata>
+    {{{ oval_metadata("The file /etc/pam.d/system-auth should not contain the nullok option") }}}
     <criteria>
       <criterion comment="make sure the nullok option is not used in /etc/pam.d/system-auth" test_ref="test_no_empty_passwords" />
     </criteria>

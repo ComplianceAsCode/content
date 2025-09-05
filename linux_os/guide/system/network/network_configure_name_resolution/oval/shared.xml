@@ -1,17 +1,7 @@
 <def-group>
   <definition class="compliance" id="network_configure_name_resolution" version="1">
-    <metadata>
-      <title>Configure Multiple DNS Servers in /etc/resolv.conf</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Multiple Domain Name System (DNS) Servers should be configured
-      in /etc/resolv.conf.</description>
-    </metadata>
+    {{{ oval_metadata("Multiple Domain Name System (DNS) Servers should be configured
+      in /etc/resolv.conf.") }}}
     <criteria>
       <criterion comment="check if more than one nameserver in /etc/resolv.conf"
       test_ref="test_network_configure_name_resolution" />

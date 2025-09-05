@@ -1,0 +1,7 @@
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+
+{{{ ansible_ini_file_set("/etc/gdm/custom.conf", "xdmcp", "Enable", "false", description=rule_title) }}}

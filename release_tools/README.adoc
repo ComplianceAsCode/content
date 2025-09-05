@@ -83,7 +83,7 @@ NOTE: As of July-20th 2019, it takes about 44 minutes for all the builds finish.
 
 While Jenkins performs the builds you can generate and review the release notes:
 
-* Run `python3 release_content.py release-notes`
+* Run `python3 release_content.py release_notes`
 
 Format of the release notes are as follows: +
 At the top Highlighted PRs will be listed, followed by list of product's profiles that changed since last release. +
@@ -127,12 +127,11 @@ It will also create a `bump_version_{version}` branch and a "Bump version" commi
 
 === Copr builds ===
 * Move to the directory where you did the latest Fedora build.
-* Create a srpm with `fedpkg srpm`. This srpm will be used for epel-8 builds, rename it appropriately.
-* Copy the `copr_packages.patch` from the directory where this readme is placed into the directory where the spec file is.
-* Apply the patch with `patch -p1 < copr_packages.patch`
-* Create another srpm with `fedpkg srpm` and name it appropriately. This srpm will be used for epel-6 and epel-7 builds.
-* Upload both SRPMs into publicly visible folder in your `fedorapeople.org` space.
+* Copy `copr_epel8.patch`, `copr_epel7.patch` and `copr_epel6.patch` from the directory where this readme is placed into the directory where the spec file is.
+* For epel8, apply the patch with `patch -p1 < copr_epel8.patch` and rename the patched file appropriately.
+* Upload the new spec file into publicly visible folder in your `fedorapeople.org` space.
+* Patch and upload spec files for epel7 and epel6 in similar way as shown above.
 * Use your Fedora account and login into link:https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/[COPR repo].
 * Verify that you have build permissions through settings -> permissions.
      * If you don't have build permissions, you can ask for them directly from the interface. Wait for one of administrators to confirm.
-* Make new builds. One for epel-6 and epel-7, one for epel-8 only. Use URLs pointing to SRPMs which you have just uploaded.
+* Make new builds. Use URLs to spec files which you previously uploaded to your folder at fedorapeople.org. Use respective spec files for respective epels.

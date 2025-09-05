@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_hipaa
 
 echo "GRUB_CMDLINE_LINUX=selinux=0 enforcing=0 audit=1" >> /etc/default/grub
 echo "selinux=0" >> /etc/grub2.cfg

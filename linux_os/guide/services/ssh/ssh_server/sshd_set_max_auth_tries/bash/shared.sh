@@ -3,6 +3,6 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-populate sshd_max_auth_tries_value
+{{{ bash_instantiate_variables("sshd_max_auth_tries_value") }}}
 
 {{{ bash_sshd_config_set(parameter="MaxAuthTries", value="$sshd_max_auth_tries_value") }}}

@@ -1,16 +1,6 @@
 <def-group>
   <definition class="compliance" id="set_password_hashing_algorithm_logindefs" version="2">
-    <metadata>
-      <title>Set SHA512 Password Hashing Algorithm in /etc/login.defs</title>
-      <affected family="unix">
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>The password hashing algorithm should be set correctly in /etc/login.defs.</description>
-    </metadata>
+    {{{ oval_metadata("The password hashing algorithm should be set correctly in /etc/login.defs.") }}}
     <criteria operator="AND">
       <criterion test_ref="test_etc_login_defs_encrypt_method" />
     </criteria>
@@ -45,7 +35,8 @@
   <!-- Define corresponding variable state (the requirement) for the variable object -->
   <!-- The check should PASS if retrieved last ENCRYPT_METHOD value is equal to the requirement -->
   <ind:variable_state id="state_last_encrypt_method_instance_value" version="1">
-    <ind:value operation="equals" datatype="string">SHA512</ind:value>
+    <ind:value operation="equals" datatype="string" var_ref="var_password_hashing_algorithm"/>
   </ind:variable_state>
 
+  <external_variable comment="defined hashing algorithm" datatype="string" id="var_password_hashing_algorithm" version="1" />
 </def-group>

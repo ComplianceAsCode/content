@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Ensure All Logs are Rotated by logrotate'
 
 description: |-
-    {{% if product in ['debian8', 'ubuntu14.04', 'ubuntu16.04'] %}}
+    {{% if product in ['ubuntu14.04', 'ubuntu16.04'] %}}
     Edit the file <tt>/etc/logrotate.d/rsyslog</tt>. Find the first
     {{% else %}}
     Edit the file <tt>/etc/logrotate.d/syslog</tt>. Find the first

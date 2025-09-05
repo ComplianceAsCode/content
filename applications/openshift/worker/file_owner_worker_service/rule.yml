@@ -4,10 +4,12 @@ prodtype: ocp4
 
 title: 'Verify User Who Owns The OpenShift Node Service File'
 
-description: '{{{ describe_file_owner(file="/etc/systemd/system/atomic-openshift-node.service", owner="root") }}}'
+description: |-
+  '{{{ describe_file_owner(file="/etc/systemd/system/kubelet.service", owner="root") }}}'
 
 rationale: |-
-    The <tt>/etc/systemd/system/atomic-openshift-node.service</tt> file contains information about the configuration of the
+    The <tt>/etc/systemd/system/kubelet.service</tt>
+    file contains information about the configuration of the
     OpenShift node service that is configured on the system. Protection of this file is
     critical for OpenShift security.
 
@@ -19,12 +21,14 @@ severity: medium
 references:
     cis: 4.1.2
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/systemd/system/atomic-openshift-node.service", owner="root") }}}'
+ocil_clause: |-
+  '{{{ ocil_clause_file_owner(file="/etc/systemd/system/kubelet.service", owner="root") }}}'
 
-ocil: '{{{ ocil_file_owner(file="/etc/systemd/system/atomic-openshift-node.service", owner="root") }}}'
+ocil:
+  '{{{ ocil_file_owner(file="/etc/systemd/system/kubelet.service", owner="root") }}}'
 
 template:
     name: file_owner
     vars:
-        filepath: /etc/systemd/system/atomic-openshift-node.service
+        filepath: /etc/systemd/system/kubelet.service
         fileuid: '0'

@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_pci-dss
 # remediation = bash
 
 # Use auditctl, on RHEL7, default is to use augenrules

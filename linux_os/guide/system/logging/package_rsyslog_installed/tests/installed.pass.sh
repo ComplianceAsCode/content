@@ -1,4 +1,3 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_common
+# packages = rsyslog
 
-yum install -y rsyslog

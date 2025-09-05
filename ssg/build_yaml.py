@@ -8,6 +8,7 @@ from copy import deepcopy
 import datetime
 import re
 import sys
+from xml.sax.saxutils import escape
 
 import yaml
 
@@ -111,6 +112,9 @@ class Profile(object):
         self.unselected = []
         self.variables = dict()
         self.refine_rules = defaultdict(list)
+        self.metadata = None
+        self.reference = None
+        self.platform = None
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
@@ -131,6 +135,13 @@ class Profile(object):
             profile._parse_selections(selection_entries)
         del yaml_contents["selections"]
 
+        profile.reference = yaml_contents.pop("reference", None)
+        profile.platform = yaml_contents.pop("platform", None)
+
+        # At the moment, metadata is not used to build content
+        if "metadata" in yaml_contents:
+            del yaml_contents["metadata"]
+
         if yaml_contents:
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
                                % (yaml_file, yaml_contents))
@@ -142,8 +153,15 @@ class Profile(object):
         to_dump["documentation_complete"] = documentation_complete
         to_dump["title"] = self.title
         to_dump["description"] = self.description
+        to_dump["reference"] = self.reference
+        if self.metadata is not None:
+            to_dump["metadata"] = self.metadata
+
         if self.extends is not None:
             to_dump["extends"] = self.extends
+
+        if self.platform is not None:
+            to_dump["platform"] = self.platform
 
         selections = []
         for item in self.selected:
@@ -191,6 +209,18 @@ class Profile(object):
         title.set("override", "true")
         desc = add_sub_element(element, "description", self.description)
         desc.set("override", "true")
+
+        if self.reference:
+            add_sub_element(element, "reference", escape(self.reference))
+
+        if self.platform:
+            try:
+                cpes = PRODUCT_TO_CPE_MAPPING[self.platform]
+            except KeyError:
+                raise ValueError("Unsupported platform '%s' in profile '%s'." % (self.platform, self.id_))
+            for idref in cpes:
+                plat = ET.SubElement(element, "platform")
+                plat.set("idref", idref)
 
         for selection in self.selected:
             select = ET.Element("select")
@@ -311,6 +341,7 @@ class Profile(object):
         profile.title = self.title
         profile.description = self.description
         profile.extends = self.extends
+        profile.platform = self.platform
         profile.selected = list(set(self.selected) - set(other.selected))
         profile.selected.sort()
         profile.unselected = list(set(self.unselected) - set(other.unselected))
@@ -332,8 +363,8 @@ class ResolvableProfile(Profile):
         if self.extends:
             if self.extends not in all_profiles:
                 msg = (
-                    "Profile {name} extends profile {extended}, but"
-                    "only profiles {known_profiles} are available for resolution."
+                    "Profile {name} extends profile {extended}, but "
+                    "only profiles {profiles} are available for resolution."
                     .format(name=self.id_, extended=self.extends,
                             profiles=list(all_profiles.keys())))
                 raise RuntimeError(msg)
@@ -832,6 +863,7 @@ class Rule(object):
         "conflicts": lambda: list(),
         "requires": lambda: list(),
         "platform": lambda: None,
+        "inherited_platforms": lambda: list(),
         "template": lambda: None,
     }
 
@@ -851,6 +883,7 @@ class Rule(object):
         self.requires = []
         self.conflicts = []
         self.platform = None
+        self.inherited_platforms = [] # platforms inherited from the group
         self.template = None
 
     @classmethod
@@ -1293,6 +1326,9 @@ class BuildLoader(DirectoryLoader):
                 continue
             self.all_rules.add(rule)
             self.loaded_group.add_rule(rule)
+
+            rule.inherited_platforms.append(self.loaded_group.platform)
+
             if self.resolved_rules_dir:
                 output_for_rule = os.path.join(
                     self.resolved_rules_dir, "{id_}.yml".format(id_=rule.id_))

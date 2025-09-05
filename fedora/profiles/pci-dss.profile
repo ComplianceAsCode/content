@@ -84,7 +84,6 @@ selections:
     - rsyslog_files_groupownership
     - ensure_logrotate_activated
     - package_aide_installed
-    - disable_prelink
     - aide_build_database
     - aide_periodic_cron_checking
     - account_unique_name
@@ -101,6 +100,7 @@ selections:
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_mode_blank
     - sshd_set_idle_timeout
+    - sshd_set_keepalive
     - accounts_password_pam_minlen
     - accounts_password_pam_dcredit
     - accounts_password_pam_ucredit

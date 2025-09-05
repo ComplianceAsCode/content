@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_C2S
 
 # Remediating would mount /tmp, which would break the test environment.
 # remediation = none

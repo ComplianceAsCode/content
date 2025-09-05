@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 from __future__ import print_function
 
 import logging
@@ -25,7 +24,7 @@ Scenario = collections.namedtuple(
     "Scenario", ["script", "context", "script_params"])
 
 
-def get_viable_profiles(selected_profiles, datastream, benchmark):
+def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
     """Read datastream, and return set intersection of profiles of given
     benchmark and those provided in `selected_profiles` parameter.
     """
@@ -45,8 +44,12 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
                 valid_profiles += [ds_profile]
 
     if not valid_profiles:
-        logging.warning('No profile ends with "{0}"'
-                      .format(", ".join(selected_profiles)))
+        if script:
+            logging.warning('Script {0} - profile {1} not found in datastream'
+                            .format(script, ", ".join(selected_profiles)))
+        else:
+            logging.warning('Profile {0} not found in datastream'
+                            .format(", ".join(selected_profiles)))
     return valid_profiles
 
 
@@ -104,6 +107,7 @@ class RuleChecker(oscap.Checker):
 
         self.results = list()
         self._current_result = None
+        self.remote_dir = ""
 
     def _run_test(self, profile, test_data):
         scenario = test_data["scenario"]
@@ -114,6 +118,9 @@ class RuleChecker(oscap.Checker):
             logging.INFO, "Script {0} using profile {1} OK".format(scenario.script, profile),
             log_target='pass')
         LogHelper.preload_log(
+            logging.WARNING, "Script {0} using profile {1} notapplicable".format(scenario.script, profile),
+            log_target='notapplicable')
+        LogHelper.preload_log(
             logging.ERROR,
             "Script {0} using profile {1} found issue:".format(scenario.script, profile),
             log_target='fail')
@@ -122,8 +129,12 @@ class RuleChecker(oscap.Checker):
         runner = runner_cls(
             self.test_env, oscap.process_profile_id(profile), self.datastream, self.benchmark_id,
             rule_id, scenario.script, self.dont_clean, self.manual_debug)
-        if not self._initial_scan_went_ok(runner, rule_id, scenario.context):
+        initial_scan_res = self._initial_scan_went_ok(runner, rule_id, scenario.context)
+        if not initial_scan_res:
             return False
+        if initial_scan_res == 2:
+            # notapplicable
+            return True
 
         supported_and_available_remediations = self._get_available_remediations(scenario)
         if (scenario.context not in ['fail', 'error']
@@ -185,7 +196,7 @@ class RuleChecker(oscap.Checker):
             logging.error(msg)
         return success
 
-    def _rule_should_be_tested(self, rule_id, rules_to_be_tested):
+    def _rule_should_be_tested(self, rule, rules_to_be_tested):
         if 'ALL' in rules_to_be_tested:
             return True
         else:
@@ -195,36 +206,69 @@ class RuleChecker(oscap.Checker):
                     pattern = rule_to_be_tested
                 else:
                     pattern = OSCAP_RULE + rule_to_be_tested
-                if fnmatch.fnmatch(rule_id, pattern):
+                if fnmatch.fnmatch(rule.id, pattern):
                     return True
             return False
 
-    def _test_target(self, target):
+    def _ensure_package_present_for_all_scenarios(self, scenarios_by_rule):
+        packages_required = set()
+        for rule, scenarios in scenarios_by_rule.items():
+            for s in scenarios:
+                scenario_packages = s.script_params["packages"]
+                packages_required.update(scenario_packages)
+        if packages_required:
+            common.install_packages(self.test_env.domain_ip, packages_required)
+
+    def _prepare_environment(self, scenarios_by_rule):
+        domain_ip = self.test_env.domain_ip
         try:
-            remote_dir = common.send_scripts(self.test_env.domain_ip)
+            self.remote_dir = common.send_scripts(domain_ip)
         except RuntimeError as exc:
             msg = "Unable to upload test scripts: {more_info}".format(more_info=str(exc))
             raise RuntimeError(msg)
 
-        self._matching_rule_found = False
+        self._ensure_package_present_for_all_scenarios(scenarios_by_rule)
+
+    def _get_rules_to_test(self, target):
+        rules_to_test = []
+        for rule in common.iterate_over_rules():
+            if not self._rule_should_be_tested(rule, target):
+                continue
+            if not xml_operations.find_rule_in_benchmark(
+                    self.datastream, self.benchmark_id, rule.id):
+                logging.error(
+                    "Rule '{0}' isn't present in benchmark '{1}' in '{2}'"
+                    .format(rule.id, self.benchmark_id, self.datastream))
+                continue
+            rules_to_test.append(rule)
+        return rules_to_test
+
+    def test_rule(self, state, rule, scenarios):
+        remediation_available = self._is_remediation_available(rule)
+        self._check_rule(
+            rule, scenarios,
+            self.remote_dir, state, remediation_available)
+
+    def _test_target(self, target):
+        rules_to_test = self._get_rules_to_test(target)
+        if not rules_to_test:
+            self._matching_rule_found = False
+            logging.error("No matching rule ID found for '{0}'".format(target))
+            return
+        self._matching_rule_found = True
+
+        scenarios_by_rule = dict()
+        for rule in rules_to_test:
+            rule_scenarios = self._get_scenarios(
+                rule.directory, rule.files, self.scenarios_regex,
+                self.benchmark_cpes)
+            scenarios_by_rule[rule.id] = rule_scenarios
+
+        self._prepare_environment(scenarios_by_rule)
 
         with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
-            for rule in common.iterate_over_rules():
-                if not self._rule_should_be_tested(rule.id, target):
-                    continue
-                self._matching_rule_found = True
-                if not xml_operations.find_rule_in_benchmark(
-                        self.datastream, self.benchmark_id, rule.id):
-                    logging.error(
-                        "Rule '{0}' isn't present in benchmark '{1}' in '{2}'"
-                        .format(rule.id, self.benchmark_id, self.datastream))
-                    continue
-                remediation_available = self._is_remediation_available(rule)
-
-                self._check_rule(rule, remote_dir, state, remediation_available)
-
-        if not self._matching_rule_found:
-            logging.error("No matching rule ID found for '{0}'".format(target))
+            for rule in rules_to_test:
+                self.test_rule(state, rule, scenarios_by_rule[rule.id])
 
     def _modify_parameters(self, script, params):
         if self.scenarios_profile:
@@ -241,6 +285,7 @@ class RuleChecker(oscap.Checker):
         """Parse parameters from script header"""
         params = {'profiles': [],
                   'templates': [],
+                  'packages': [],
                   'platform': ['multi_platform_all'],
                   'remediation': ['all']}
         with open(script, 'r') as script_file:
@@ -281,17 +326,14 @@ class RuleChecker(oscap.Checker):
 
         return scenarios
 
-    def _check_rule(self, rule, remote_dir, state, remediation_available):
+    def _check_rule(self, rule, scenarios, remote_dir, state, remediation_available):
         remote_rule_dir = os.path.join(remote_dir, rule.short_id)
         logging.info(rule.id)
 
         logging.debug("Testing rule directory {0}".format(rule.directory))
 
         args_list = [
-            (s, remote_rule_dir, rule.id, remediation_available)
-            for s in self._get_scenarios(
-                rule.directory, rule.files, self.scenarios_regex,
-                self.benchmark_cpes)
+            (s, remote_rule_dir, rule.id, remediation_available) for s in scenarios
         ]
         state.map_on_top(self._check_and_record_rule_scenario, args_list)
 
@@ -318,8 +360,16 @@ class RuleChecker(oscap.Checker):
         logging.debug('Using test script {0} with context {1}'
                       .format(scenario.script, scenario.context))
 
-        profiles = get_viable_profiles(
-            scenario.script_params['profiles'], self.datastream, self.benchmark_id)
+        if scenario.script_params['profiles']:
+            profiles = get_viable_profiles(
+                scenario.script_params['profiles'], self.datastream, self.benchmark_id, scenario.script)
+        else:
+            # Special case for combined mode when scenario.script_params['profiles']
+            # is empty which means scenario is not applicable on given profile.
+            logging.warning('Script {0} is not applicable on given profile'
+                            .format(scenario.script))
+            return
+
         test_data = dict(scenario=scenario,
                          rule_id=rule_id,
                          remediation_available=remediation_available)

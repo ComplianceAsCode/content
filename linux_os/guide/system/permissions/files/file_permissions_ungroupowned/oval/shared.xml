@@ -1,16 +1,6 @@
 <def-group>
   <definition class="compliance" id="file_permissions_ungroupowned" version="2">
-    <metadata>
-      <title>Find files unowned by a group</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>All files should be owned by a group</description>
-    </metadata>
+    {{{ oval_metadata("All files should be owned by a group") }}}
     <criteria>
       <criterion comment="Check all files and make sure they are owned by a group"
       test_ref="test_file_permissions_ungroupowned" />

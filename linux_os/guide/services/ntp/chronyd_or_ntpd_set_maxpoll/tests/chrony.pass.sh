@@ -1,8 +1,8 @@
 #!/bin/bash
+# packages = chrony
 #
 # profiles = xccdf_org.ssgproject.content_profile_stig
 
-yum install -y chrony
 yum remove -y ntp
 
 if ! grep "^server" /etc/chrony.conf ; then

@@ -8,8 +8,8 @@ description: |-
     The pam_pwquality module's <tt>maxclassrepeat</tt> parameter controls requirements for
     consecutive repeating characters from the same character class. When set to a positive number, it will reject passwords
     which contain more than that number of consecutive characters from the same character class. Modify the
-    <tt>maxclassrepeat</tt> setting in <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_maxclassrepeat" />
-    to prevent a run of (<sub idref="var_password_pam_maxclassrepeat" /> + 1) or more identical characters.
+    <tt>maxclassrepeat</tt> setting in <tt>/etc/security/pwquality.conf</tt> to equal {{{ xccdf_value("var_password_pam_maxclassrepeat") }}}
+    to prevent a run of ({{{ xccdf_value("var_password_pam_maxclassrepeat") }}} + 1) or more identical characters.
 
 rationale: |-
     Use of a complex password helps to increase the time and resources required to comrpomise the password.

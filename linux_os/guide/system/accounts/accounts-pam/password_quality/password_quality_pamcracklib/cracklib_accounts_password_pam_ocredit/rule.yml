@@ -9,7 +9,7 @@ description: |-
     usage of special (or ``other'') characters in a password. When set to a negative number, any password will be required to
     contain that many special characters. When set to a positive number, pam_cracklib will grant +1 additional
     length credit for each special character.
-    Add <tt>ocredit=<sub idref="var_password_pam_ocredit" /></tt> after pam_cracklib.so to require use of a special character in passwords.
+    Add <tt>ocredit={{{ xccdf_value("var_password_pam_ocredit") }}}</tt> after pam_cracklib.so to require use of a special character in passwords.
 
 rationale: |-
     Requiring a minimum number of special characters makes password guessing attacks

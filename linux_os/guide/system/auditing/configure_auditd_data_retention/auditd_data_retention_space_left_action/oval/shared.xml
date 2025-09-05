@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="auditd_data_retention_space_left_action" version="3">
-    <metadata>
-      <title>Auditd Action to Take When Disk Starting to Run Low on Space</title>
-      {{{- oval_affected(products) }}}
-      <description>space_left_action setting in /etc/audit/auditd.conf is set to a certain action</description>
-    </metadata>
+    {{{ oval_metadata("space_left_action setting in /etc/audit/auditd.conf is set to a certain action") }}}
 
     <criteria>
         <criterion comment="space_left_action setting in auditd.conf" test_ref="test_auditd_data_retention_space_left_action" />

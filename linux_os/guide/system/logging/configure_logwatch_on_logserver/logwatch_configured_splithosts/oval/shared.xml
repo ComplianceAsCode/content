@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="logwatch_configured_splithosts" version="1">
-    <metadata>
-      <title>Ensure Logwatch SplitHosts Configured</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>Check if SplitHosts line in logwatch.conf is set appropriately.</description>
-    </metadata>
+    {{{ oval_metadata("Check if SplitHosts line in logwatch.conf is set appropriately.") }}}
     <criteria>
       <criterion comment="Test value of SplitHosts" test_ref="test_logwatch_configured_splithosts" />
     </criteria>

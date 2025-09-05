@@ -5,11 +5,7 @@
 <def-group>
   <definition class="compliance" id="package_dracut-fips_installed"
   version="1">
-    <metadata>
-      <title>Package dracut-fips Installed</title>
-      {{{- oval_affected(products) }}}
-      <description>The RPM package dracut-fips should be installed.</description>
-    </metadata>
+    {{{ oval_metadata("The RPM package dracut-fips should be installed.") }}}
     <criteria>
       <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
       <criterion comment="package dracut-fips is installed"

@@ -3,7 +3,7 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- (xccdf-var var_auditd_space_left_action)
+{{{ ansible_instantiate_variables("var_auditd_space_left_action") }}}
 
 - name: Configure auditd space_left Action on Low Disk Space
   lineinfile:

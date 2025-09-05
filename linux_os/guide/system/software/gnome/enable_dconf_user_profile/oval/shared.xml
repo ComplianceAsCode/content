@@ -1,15 +1,6 @@
 <def-group>
   <definition class="compliance" id="enable_dconf_user_profile" version="1">
-    <metadata>
-      <title>Implement Local DB for DConf User Profile</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>The DConf User profile should have the local DB configured.</description>
-    </metadata>
+    {{{ oval_metadata("The DConf User profile should have the local DB configured.") }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criterion comment="dconf user profile exists" test_ref="test_dconf_user_profile" />

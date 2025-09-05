@@ -1,16 +1,7 @@
 <def-group oval_version="5.10">
   <definition class="compliance" id="clean_components_post_updating" version="1">
-    <metadata>
-      <title>Ensure YUM Removes Previous Package Versions</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>The clean_requirements_on_remove option should be used to ensure that old 
-      versions of software components are removed after updating.</description>
-    </metadata>
+    {{{ oval_metadata("The clean_requirements_on_remove option should be used to ensure that old 
+      versions of software components are removed after updating.") }}}
     <criteria>
       <criterion comment="check value of clean_requirements_on_remove in /etc/yum.conf" test_ref="test_yum_clean_components_post_updating" />
     </criteria>

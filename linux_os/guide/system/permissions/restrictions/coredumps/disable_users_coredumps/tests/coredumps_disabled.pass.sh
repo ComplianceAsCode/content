@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 
 SECURITY_LIMITS_FILE="/etc/security/limits.conf"
 

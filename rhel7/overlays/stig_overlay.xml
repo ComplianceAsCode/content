@@ -1,991 +1,975 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <overlays xmlns="http://checklists.nist.gov/xccdf/1.1">
-  <overlay disa="2235" owner="disastig" ownerid="RHEL-07-010010" ruleid="rpm_verify_permissions" severity="high">
-    <VMSinfo SVKey="86473" VKey="71849" VRelease="4"/>
+  <overlay owner="disastig" ruleid="rpm_verify_permissions" ownerid="RHEL-07-010010" disa="2235" severity="high">
+    <VMSinfo VKey="71849" SVKey="86473" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the file permissions, ownership, and group membership of system files and commands match the vendor values."/>
   </overlay>
-  <overlay disa="663" owner="disastig" ownerid="RHEL-07-010020" ruleid="rpm_verify_hashes" severity="high">
-    <VMSinfo SVKey="86479" VKey="71855" VRelease="4"/>
+  <overlay owner="disastig" ruleid="rpm_verify_hashes" ownerid="RHEL-07-010020" disa="1749" severity="high">
+    <VMSinfo VKey="71855" SVKey="86479" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the cryptographic hash of system files and commands matches vendor values."/>
   </overlay>
-  <overlay disa="48" owner="disastig" ownerid="RHEL-07-010030" ruleid="dconf_gnome_banner_enabled" severity="medium">
-    <VMSinfo SVKey="86483" VKey="71859" VRelease="4"/>
+  <overlay owner="disastig" ruleid="dconf_gnome_banner_enabled" ownerid="RHEL-07-010030" disa="48" severity="medium">
+    <VMSinfo VKey="71859" SVKey="86483" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon."/>
   </overlay>
-  <overlay disa="48" owner="disastig" ownerid="RHEL-07-010040" ruleid="dconf_gnome_login_banner_text" severity="medium">
-    <VMSinfo SVKey="86485" VKey="71861" VRelease="4"/>
+  <overlay owner="disastig" ruleid="dconf_gnome_login_banner_text" ownerid="RHEL-07-010040" disa="48" severity="medium">
+    <VMSinfo VKey="71861" SVKey="86485" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must display the approved Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon."/>
   </overlay>
-  <overlay disa="48" owner="disastig" ownerid="RHEL-07-010050" ruleid="banner_etc_issue" severity="medium">
-    <VMSinfo SVKey="86487" VKey="71863" VRelease="3"/>
+  <overlay owner="disastig" ruleid="banner_etc_issue" ownerid="RHEL-07-010050" disa="48" severity="medium">
+    <VMSinfo VKey="71863" SVKey="86487" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a command line user logon."/>
   </overlay>
-  <overlay disa="56" owner="disastig" ownerid="RHEL-07-010060" ruleid="dconf_gnome_screensaver_lock_enabled" severity="medium">
-    <VMSinfo SVKey="86515" VKey="71891" VRelease="6"/>
+  <overlay owner="disastig" ruleid="dconf_gnome_screensaver_lock_enabled" ownerid="RHEL-07-010060" disa="56" severity="medium">
+    <VMSinfo VKey="71891" SVKey="86515" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must enable a user session lock until that user re-establishes access using established identification and authentication procedures."/>
   </overlay>
-  <overlay disa="1954" owner="disastig" ownerid="RHEL-07-010061" ruleid="dconf_gnome_enable_smartcard_auth" severity="medium">
-    <VMSinfo SVKey="92515" VKey="77819" VRelease="2"/>
+  <overlay owner="disastig" ruleid="dconf_gnome_enable_smartcard_auth" ownerid="RHEL-07-010061" disa="1954" severity="medium">
+    <VMSinfo VKey="77819" SVKey="92515" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must uniquely identify and must authenticate users using multifactor authentication via a graphical user logon."/>
   </overlay>
-  <overlay disa="57" owner="disastig" ownerid="RHEL-07-010062" ruleid="dconf_gnome_screensaver_lock_locked" severity="medium">
-    <VMSinfo SVKey="93701" VKey="78995" VRelease="2"/>
+  <overlay owner="disastig" ruleid="dconf_gnome_screensaver_lock_locked" ownerid="RHEL-07-010062" disa="57" severity="medium">
+    <VMSinfo VKey="78995" SVKey="93701" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must prevent a user from overriding the screensaver lock-enabled setting for the graphical user interface."/>
   </overlay>
-  <overlay disa="57" owner="disastig" ownerid="RHEL-07-010070" ruleid="dconf_gnome_screensaver_idle_delay" severity="medium">
-    <VMSinfo SVKey="86517" VKey="71893" VRelease="5"/>
+  <overlay owner="disastig" ruleid="dconf_gnome_screensaver_idle_delay" ownerid="RHEL-07-010070" disa="57" severity="medium">
+    <VMSinfo VKey="71893" SVKey="86517" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must initiate a screensaver after a 15-minute period of inactivity for graphical user interfaces."/>
   </overlay>
-  <overlay disa="57" owner="disastig" ownerid="RHEL-07-010081" ruleid="dconf_gnome_screensaver_user_locks" severity="medium">
-    <VMSinfo SVKey="87807" VKey="73155" VRelease="4"/>
+  <overlay owner="disastig" ruleid="dconf_gnome_screensaver_user_locks" ownerid="RHEL-07-010081" disa="57" severity="medium">
+    <VMSinfo VKey="73155" SVKey="87807" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must prevent a user from overriding the screensaver lock-delay setting for the graphical user interface."/>
   </overlay>
-  <overlay disa="57" owner="disastig" ownerid="RHEL-07-010082" ruleid="dconf_gnome_session_idle_user_locks" severity="medium">
-    <VMSinfo SVKey="87809" VKey="73157" VRelease="4"/>
+  <overlay owner="disastig" ruleid="dconf_gnome_session_idle_user_locks" ownerid="RHEL-07-010082" disa="57" severity="medium">
+    <VMSinfo VKey="73157" SVKey="87809" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must prevent a user from overriding the session idle-delay setting for the graphical user interface."/>
   </overlay>
-  <overlay disa="57" owner="disastig" ownerid="RHEL-07-010090" ruleid="package_screen_installed" severity="medium">
-    <VMSinfo SVKey="86521" VKey="71897" VRelease="3"/>
-    <title text="The Red Hat Enterprise Linux operating system must have the screen package installed."/>
-  </overlay>
-  <overlay disa="57" owner="disastig" ownerid="RHEL-07-010100" ruleid="dconf_gnome_screensaver_idle_activation_enabled" severity="medium">
-    <VMSinfo SVKey="86523" VKey="71899" VRelease="5"/>
+  <overlay owner="disastig" ruleid="dconf_gnome_screensaver_idle_activation_enabled" ownerid="RHEL-07-010100" disa="57" severity="medium">
+    <VMSinfo VKey="71899" SVKey="86523" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must initiate a session lock for the screensaver after a period of inactivity for graphical user interfaces."/>
   </overlay>
-  <overlay disa="57" owner="disastig" ownerid="RHEL-07-010101" ruleid="dconf_gnome_screensaver_idle_activation_locked" severity="medium">
-    <VMSinfo SVKey="93703" VKey="78997" VRelease="2"/>
+  <overlay owner="disastig" ruleid="dconf_gnome_screensaver_idle_activation_locked" ownerid="RHEL-07-010101" disa="57" severity="medium">
+    <VMSinfo VKey="78997" SVKey="93703" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must prevent a user from overriding the screensaver idle-activation-enabled setting for the graphical user interface."/>
   </overlay>
-  <overlay disa="57" owner="disastig" ownerid="RHEL-07-010110" ruleid="dconf_gnome_screensaver_lock_delay" severity="medium">
-    <VMSinfo SVKey="86525" VKey="71901" VRelease="3"/>
+  <overlay owner="disastig" ruleid="dconf_gnome_screensaver_lock_delay" ownerid="RHEL-07-010110" disa="57" severity="medium">
+    <VMSinfo VKey="71901" SVKey="86525" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must initiate a session lock for graphical user interfaces when the screensaver is activated."/>
   </overlay>
-  <overlay disa="192" owner="disastig" ownerid="RHEL-07-010118" ruleid="XXXX" severity="medium">
-    <VMSinfo SVKey="95715" VKey="81003" VRelease="1"/>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-07-010118" disa="192" severity="medium">
+    <VMSinfo VKey="81003" SVKey="95715" VRelease="1"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that /etc/pam.d/passwd implements /etc/pam.d/system-auth when changing passwords."/>
   </overlay>
-  <overlay disa="192" owner="disastig" ownerid="RHEL-07-010119" ruleid="accounts_password_pam_retry" severity="medium">
-    <VMSinfo SVKey="87811" VKey="73159" VRelease="4"/>
+  <overlay owner="disastig" ruleid="accounts_password_pam_retry" ownerid="RHEL-07-010119" disa="192" severity="medium">
+    <VMSinfo VKey="73159" SVKey="87811" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are established, pwquality must be used."/>
   </overlay>
-  <overlay disa="192" owner="disastig" ownerid="RHEL-07-010120" ruleid="accounts_password_pam_ucredit" severity="medium">
-    <VMSinfo SVKey="86527" VKey="71903" VRelease="3"/>
+  <overlay owner="disastig" ruleid="accounts_password_pam_ucredit" ownerid="RHEL-07-010120" disa="192" severity="medium">
+    <VMSinfo VKey="71903" SVKey="86527" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are established, the new password must contain at least one upper-case character."/>
   </overlay>
-  <overlay disa="193" owner="disastig" ownerid="RHEL-07-010130" ruleid="accounts_password_pam_lcredit" severity="medium">
-    <VMSinfo SVKey="86529" VKey="71905" VRelease="5"/>
+  <overlay owner="disastig" ruleid="accounts_password_pam_lcredit" ownerid="RHEL-07-010130" disa="193" severity="medium">
+    <VMSinfo VKey="71905" SVKey="86529" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are established, the new password must contain at least one lower-case character."/>
   </overlay>
-  <overlay disa="194" owner="disastig" ownerid="RHEL-07-010140" ruleid="accounts_password_pam_dcredit" severity="medium">
-    <VMSinfo SVKey="86531" VKey="71907" VRelease="3"/>
+  <overlay owner="disastig" ruleid="accounts_password_pam_dcredit" ownerid="RHEL-07-010140" disa="194" severity="medium">
+    <VMSinfo VKey="71907" SVKey="86531" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are assigned, the new password must contain at least one numeric character."/>
   </overlay>
-  <overlay disa="1619" owner="disastig" ownerid="RHEL-07-010150" ruleid="accounts_password_pam_ocredit" severity="medium">
-    <VMSinfo SVKey="86533" VKey="71909" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_password_pam_ocredit" ownerid="RHEL-07-010150" disa="1619" severity="medium">
+    <VMSinfo VKey="71909" SVKey="86533" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are established, the new password must contain at least one special character."/>
   </overlay>
-  <overlay disa="195" owner="disastig" ownerid="RHEL-07-010160" ruleid="accounts_password_pam_difok" severity="medium">
-    <VMSinfo SVKey="86535" VKey="71911" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_password_pam_difok" ownerid="RHEL-07-010160" disa="195" severity="medium">
+    <VMSinfo VKey="71911" SVKey="86535" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed a minimum of eight of the total number of characters must be changed."/>
   </overlay>
-  <overlay disa="195" owner="disastig" ownerid="RHEL-07-010170" ruleid="accounts_password_pam_minclass" severity="medium">
-    <VMSinfo SVKey="86537" VKey="71913" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_password_pam_minclass" ownerid="RHEL-07-010170" disa="195" severity="medium">
+    <VMSinfo VKey="71913" SVKey="86537" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed a minimum of four character classes must be changed."/>
   </overlay>
-  <overlay disa="195" owner="disastig" ownerid="RHEL-07-010180" ruleid="accounts_password_pam_maxrepeat" severity="medium">
-    <VMSinfo SVKey="86539" VKey="71915" VRelease="3"/>
+  <overlay owner="disastig" ruleid="accounts_password_pam_maxrepeat" ownerid="RHEL-07-010180" disa="195" severity="medium">
+    <VMSinfo VKey="71915" SVKey="86539" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed the number of repeating consecutive characters must not be more than three characters."/>
   </overlay>
-  <overlay disa="195" owner="disastig" ownerid="RHEL-07-010190" ruleid="accounts_password_pam_maxclassrepeat" severity="medium">
-    <VMSinfo SVKey="86541" VKey="71917" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_password_pam_maxclassrepeat" ownerid="RHEL-07-010190" disa="195" severity="medium">
+    <VMSinfo VKey="71917" SVKey="86541" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed the number of repeating characters of the same character class must not be more than four characters."/>
   </overlay>
-  <overlay disa="196" owner="disastig" ownerid="RHEL-07-010200" ruleid="set_password_hashing_algorithm_systemauth" severity="medium">
-    <VMSinfo SVKey="86543" VKey="71919" VRelease="3"/>
+  <overlay owner="disastig" ruleid="set_password_hashing_algorithm_systemauth" ownerid="RHEL-07-010200" disa="196" severity="medium">
+    <VMSinfo VKey="71919" SVKey="86543" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the PAM system service is configured to store only encrypted representations of passwords."/>
   </overlay>
-  <overlay disa="196" owner="disastig" ownerid="RHEL-07-010210" ruleid="set_password_hashing_algorithm_logindefs" severity="medium">
-    <VMSinfo SVKey="86545" VKey="71921" VRelease="2"/>
+  <overlay owner="disastig" ruleid="set_password_hashing_algorithm_logindefs" ownerid="RHEL-07-010210" disa="196" severity="medium">
+    <VMSinfo VKey="71921" SVKey="86545" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured to use the shadow file to store only encrypted representations of passwords."/>
   </overlay>
-  <overlay disa="196" owner="disastig" ownerid="RHEL-07-010220" ruleid="set_password_hashing_algorithm_libuserconf" severity="medium">
-    <VMSinfo SVKey="86547" VKey="71923" VRelease="3"/>
+  <overlay owner="disastig" ruleid="set_password_hashing_algorithm_libuserconf" ownerid="RHEL-07-010220" disa="196" severity="medium">
+    <VMSinfo VKey="71923" SVKey="86547" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that user and group account administration utilities are configured to store only encrypted representations of passwords."/>
   </overlay>
-  <overlay disa="198" owner="disastig" ownerid="RHEL-07-010230" ruleid="accounts_minimum_age_login_defs" severity="medium">
-    <VMSinfo SVKey="86549" VKey="71925" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_minimum_age_login_defs" ownerid="RHEL-07-010230" disa="198" severity="medium">
+    <VMSinfo VKey="71925" SVKey="86549" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that passwords for new users are restricted to a 24 hours/1 day minimum lifetime."/>
   </overlay>
-  <overlay disa="198" owner="disastig" ownerid="RHEL-07-010240" ruleid="accounts_password_set_min_life_existing" severity="medium">
-    <VMSinfo SVKey="86551" VKey="71927" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_password_set_min_life_existing" ownerid="RHEL-07-010240" disa="198" severity="medium">
+    <VMSinfo VKey="71927" SVKey="86551" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that passwords are restricted to a 24 hours/1 day minimum lifetime."/>
   </overlay>
-  <overlay disa="199" owner="disastig" ownerid="RHEL-07-010250" ruleid="accounts_maximum_age_login_defs" severity="medium">
-    <VMSinfo SVKey="86553" VKey="71929" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_maximum_age_login_defs" ownerid="RHEL-07-010250" disa="199" severity="medium">
+    <VMSinfo VKey="71929" SVKey="86553" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that passwords for new users are restricted to a 60-day maximum lifetime."/>
   </overlay>
-  <overlay disa="199" owner="disastig" ownerid="RHEL-07-010260" ruleid="accounts_password_set_max_life_existing" severity="medium">
-    <VMSinfo SVKey="86555" VKey="71931" VRelease="3"/>
+  <overlay owner="disastig" ruleid="accounts_password_set_max_life_existing" ownerid="RHEL-07-010260" disa="199" severity="medium">
+    <VMSinfo VKey="71931" SVKey="86555" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that existing passwords are restricted to a 60-day maximum lifetime."/>
   </overlay>
-  <overlay disa="200" owner="disastig" ownerid="RHEL-07-010270" ruleid="accounts_password_pam_unix_remember" severity="medium">
-    <VMSinfo SVKey="86557" VKey="71933" VRelease="3"/>
+  <overlay owner="disastig" ruleid="accounts_password_pam_unix_remember" ownerid="RHEL-07-010270" disa="200" severity="medium">
+    <VMSinfo VKey="71933" SVKey="86557" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that passwords are prohibited from reuse for a minimum of five generations."/>
   </overlay>
-  <overlay disa="205" owner="disastig" ownerid="RHEL-07-010280" ruleid="accounts_password_pam_minlen" severity="medium">
-    <VMSinfo SVKey="86559" VKey="71935" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_password_pam_minlen" ownerid="RHEL-07-010280" disa="205" severity="medium">
+    <VMSinfo VKey="71935" SVKey="86559" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that passwords are a minimum of 15 characters in length."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-010290" ruleid="no_empty_passwords" severity="high">
-    <VMSinfo SVKey="86561" VKey="71937" VRelease="3"/>
+  <overlay owner="disastig" ruleid="no_empty_passwords" ownerid="RHEL-07-010290" disa="366" severity="high">
+    <VMSinfo VKey="71937" SVKey="86561" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must not have accounts configured with blank or null passwords."/>
   </overlay>
-  <overlay disa="766" owner="disastig" ownerid="RHEL-07-010300" ruleid="sshd_disable_empty_passwords" severity="high">
-    <VMSinfo SVKey="86563" VKey="71939" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sshd_disable_empty_passwords" ownerid="RHEL-07-010300" disa="766" severity="high">
+    <VMSinfo VKey="71939" SVKey="86563" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not allow authentication using an empty password."/>
   </overlay>
-  <overlay disa="795" owner="disastig" ownerid="RHEL-07-010310" ruleid="account_disable_post_pw_expiration" severity="medium">
-    <VMSinfo SVKey="86565" VKey="71941" VRelease="2"/>
+  <overlay owner="disastig" ruleid="account_disable_post_pw_expiration" ownerid="RHEL-07-010310" disa="795" severity="medium">
+    <VMSinfo VKey="71941" SVKey="86565" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must disable account identifiers (individuals, groups, roles, and devices) if the password expires."/>
   </overlay>
-  <overlay disa="2238" owner="disastig" ownerid="RHEL-07-010320" ruleid="accounts_passwords_pam_faillock_interval" severity="medium">
-    <VMSinfo SVKey="86567" VKey="71943" VRelease="5"/>
+  <overlay owner="disastig" ruleid="accounts_passwords_pam_faillock_interval" ownerid="RHEL-07-010320" disa="2238" severity="medium">
+    <VMSinfo VKey="71943" SVKey="86567" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured to lock accounts for a minimum of 15 minutes after three unsuccessful logon attempts within a 15-minute timeframe."/>
   </overlay>
-  <overlay disa="2238" owner="disastig" ownerid="RHEL-07-010330" ruleid="accounts_passwords_pam_faillock_deny_root" severity="medium">
-    <VMSinfo SVKey="86569" VKey="71945" VRelease="4"/>
+  <overlay owner="disastig" ruleid="accounts_passwords_pam_faillock_deny_root" ownerid="RHEL-07-010330" disa="2238" severity="medium">
+    <VMSinfo VKey="71945" SVKey="86569" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must lock the associated account after three unsuccessful root logon attempts are made within a 15-minute period."/>
   </overlay>
-  <overlay disa="2038" owner="disastig" ownerid="RHEL-07-010340" ruleid="sudo_remove_nopasswd" severity="medium">
-    <VMSinfo SVKey="86571" VKey="71947" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sudo_remove_nopasswd" ownerid="RHEL-07-010340" disa="2038" severity="medium">
+    <VMSinfo VKey="71947" SVKey="86571" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that users must provide a password for privilege escalation."/>
   </overlay>
-  <overlay disa="2038" owner="disastig" ownerid="RHEL-07-010350" ruleid="sudo_remove_no_authenticate" severity="medium">
-    <VMSinfo SVKey="86573" VKey="71949" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sudo_remove_no_authenticate" ownerid="RHEL-07-010350" disa="2038" severity="medium">
+    <VMSinfo VKey="71949" SVKey="86573" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that users must re-authenticate for privilege escalation."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-010430" ruleid="accounts_logon_fail_delay" severity="medium">
-    <VMSinfo SVKey="86575" VKey="71951" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_logon_fail_delay" ownerid="RHEL-07-010430" disa="366" severity="medium">
+    <VMSinfo VKey="71951" SVKey="86575" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the delay between logon prompts following a failed console logon attempt is at least four seconds."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-010440" ruleid="gnome_gdm_disable_automatic_login" severity="high">
-    <VMSinfo SVKey="86577" VKey="71953" VRelease="2"/>
+  <overlay owner="disastig" ruleid="gnome_gdm_disable_automatic_login" ownerid="RHEL-07-010440" disa="366" severity="high">
+    <VMSinfo VKey="71953" SVKey="86577" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not allow an unattended or automatic logon to the system via a graphical user interface."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-010450" ruleid="gnome_gdm_disable_guest_login" severity="high">
-    <VMSinfo SVKey="86579" VKey="71955" VRelease="3"/>
+  <overlay owner="disastig" ruleid="gnome_gdm_disable_guest_login" ownerid="RHEL-07-010450" disa="366" severity="high">
+    <VMSinfo VKey="71955" SVKey="86579" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must not allow an unrestricted logon to the system."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-010460" ruleid="sshd_do_not_permit_user_env" severity="medium">
-    <VMSinfo SVKey="86581" VKey="71957" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sshd_do_not_permit_user_env" ownerid="RHEL-07-010460" disa="366" severity="medium">
+    <VMSinfo VKey="71957" SVKey="86581" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must not allow users to override SSH environment variables."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-010470" ruleid="disable_host_auth" severity="medium">
-    <VMSinfo SVKey="86583" VKey="71959" VRelease="3"/>
+  <overlay owner="disastig" ruleid="disable_host_auth" ownerid="RHEL-07-010470" disa="366" severity="medium">
+    <VMSinfo VKey="71959" SVKey="86583" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must not allow a non-certificate trusted host SSH logon to the system."/>
   </overlay>
-  <overlay disa="213" owner="disastig" ownerid="RHEL-07-010480" ruleid="grub2_password" severity="high">
-    <VMSinfo SVKey="86585" VKey="71961" VRelease="6"/>
+  <overlay owner="disastig" ruleid="grub2_admin_username" ownerid="RHEL-07-010480" disa="213" severity="high">
+    <VMSinfo VKey="71961" SVKey="86585" VRelease="6"/>
     <title text="Red Hat Enterprise Linux operating systems prior to version 7.2 with a Basic Input/Output System (BIOS) must require authentication upon booting into single-user and maintenance modes."/>
   </overlay>
-  <overlay disa="213" owner="disastig" ownerid="RHEL-07-010481" ruleid="require_singleuser_auth" severity="medium">
-    <VMSinfo SVKey="92519" VKey="77823" VRelease="2"/>
+  <overlay owner="disastig" ruleid="require_singleuser_auth" ownerid="RHEL-07-010481" disa="213" severity="medium">
+    <VMSinfo VKey="77823" SVKey="92519" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must require authentication upon booting into single-user and maintenance modes."/>
   </overlay>
-  <overlay disa="213" owner="disastig" ownerid="RHEL-07-010482" ruleid="XXXX" severity="high">
-    <VMSinfo SVKey="95717" VKey="81005" VRelease="1"/>
+  <overlay owner="disastig" ruleid="grub2_password" ownerid="RHEL-07-010482" disa="213" severity="high">
+    <VMSinfo VKey="81005" SVKey="95717" VRelease="1"/>
     <title text="Red Hat Enterprise Linux operating systems version 7.2 or newer with a Basic Input/Output System (BIOS) must require authentication upon booting into single-user and maintenance modes."/>
   </overlay>
-  <overlay disa="213" owner="disastig" ownerid="RHEL-07-010490" ruleid="grub2_uefi_password" severity="high">
-    <VMSinfo SVKey="86587" VKey="71963" VRelease="4"/>
+  <overlay owner="disastig" ruleid="grub2_uefi_admin_username" ownerid="RHEL-07-010490" disa="213" severity="high">
+    <VMSinfo VKey="71963" SVKey="86587" VRelease="4"/>
     <title text="Red Hat Enterprise Linux operating systems prior to version 7.2 using Unified Extensible Firmware Interface (UEFI) must require authentication upon booting into single-user and maintenance modes."/>
   </overlay>
-  <overlay disa="213" owner="disastig" ownerid="RHEL-07-010491" ruleid="XXXX" severity="high">
-    <VMSinfo SVKey="95719" VKey="81007" VRelease="1"/>
+  <overlay owner="disastig" ruleid="grub2_uefi_password" ownerid="RHEL-07-010491" disa="213" severity="high">
+    <VMSinfo VKey="81007" SVKey="95719" VRelease="1"/>
     <title text="Red Hat Enterprise Linux operating systems version 7.2 or newer using Unified Extensible Firmware Interface (UEFI) must require authentication upon booting into single-user and maintenance modes."/>
   </overlay>
-  <overlay disa="766" owner="disastig" ownerid="RHEL-07-010500" ruleid="smartcard_auth" severity="medium">
-    <VMSinfo SVKey="86589" VKey="71965" VRelease="2"/>
+  <overlay owner="disastig" ruleid="smartcard_auth" ownerid="RHEL-07-010500" disa="766" severity="medium">
+    <VMSinfo VKey="71965" SVKey="86589" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users) using multifactor authentication."/>
   </overlay>
-  <overlay disa="381" owner="disastig" ownerid="RHEL-07-020000" ruleid="package_rsh-server_removed" severity="high">
-    <VMSinfo SVKey="86591" VKey="71967" VRelease="2"/>
+  <overlay owner="disastig" ruleid="package_rsh-server_removed" ownerid="RHEL-07-020000" disa="381" severity="high">
+    <VMSinfo VKey="71967" SVKey="86591" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not have the rsh-server package installed."/>
   </overlay>
-  <overlay disa="381" owner="disastig" ownerid="RHEL-07-020010" ruleid="package_ypserv_removed" severity="high">
-    <VMSinfo SVKey="86593" VKey="71969" VRelease="2"/>
+  <overlay owner="disastig" ruleid="package_ypserv_removed" ownerid="RHEL-07-020010" disa="381" severity="high">
+    <VMSinfo VKey="71969" SVKey="86593" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not have the ypserv package installed."/>
   </overlay>
-  <overlay disa="1263" owner="disastig" ownerid="RHEL-07-020019" ruleid="XXXX" severity="medium">
-    <VMSinfo SVKey="102357" VKey="92255" VRelease="r1"/>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-07-020019" disa="1263" severity="medium">
+    <VMSinfo VKey="92255" SVKey="102357" VRelease="r2"/>
     <title text="The Red Hat Enterprise Linux operating system must have a host-based intrusion detection tool installed."/>
   </overlay>
-  <overlay disa="2235" owner="disastig" ownerid="RHEL-07-020020" ruleid="selinux_user_login_roles" severity="medium">
-    <VMSinfo SVKey="86595" VKey="71971" VRelease="2"/>
+  <overlay owner="disastig" ruleid="selinux_user_login_roles" ownerid="RHEL-07-020020" disa="2235" severity="medium">
+    <VMSinfo VKey="71971" SVKey="86595" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures."/>
   </overlay>
-  <overlay disa="1744" owner="disastig" ownerid="RHEL-07-020030" ruleid="aide_periodic_cron_checking" severity="medium">
-    <VMSinfo SVKey="86597" VKey="71973" VRelease="2"/>
+  <overlay owner="disastig" ruleid="aide_periodic_cron_checking" ownerid="RHEL-07-020030" disa="1744" severity="medium">
+    <VMSinfo VKey="71973" SVKey="86597" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that a file integrity tool verifies the baseline operating system configuration at least weekly."/>
   </overlay>
-  <overlay disa="1744" owner="disastig" ownerid="RHEL-07-020040" ruleid="aide_scan_notification" severity="medium">
-    <VMSinfo SVKey="86599" VKey="71975" VRelease="2"/>
+  <overlay owner="disastig" ruleid="aide_scan_notification" ownerid="RHEL-07-020040" disa="1744" severity="medium">
+    <VMSinfo VKey="71975" SVKey="86599" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that designated personnel are notified if baseline configurations are changed in an unauthorized manner."/>
   </overlay>
-  <overlay disa="1749" owner="disastig" ownerid="RHEL-07-020050" ruleid="ensure_gpgcheck_globally_activated" severity="high">
-    <VMSinfo SVKey="86601" VKey="71977" VRelease="2"/>
+  <overlay owner="disastig" ruleid="ensure_gpgcheck_globally_activated" ownerid="RHEL-07-020050" disa="1749" severity="high">
+    <VMSinfo VKey="71977" SVKey="86601" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must prevent the installation of software, patches, service packs, device drivers, or operating system components from a repository without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization."/>
   </overlay>
-  <overlay disa="1749" owner="disastig" ownerid="RHEL-07-020060" ruleid="ensure_gpgcheck_local_packages" severity="high">
-    <VMSinfo SVKey="86603" VKey="71979" VRelease="2"/>
+  <overlay owner="disastig" ruleid="ensure_gpgcheck_local_packages" ownerid="RHEL-07-020060" disa="1749" severity="high">
+    <VMSinfo VKey="71979" SVKey="86603" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must prevent the installation of software, patches, service packs, device drivers, or operating system components of local packages without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization."/>
   </overlay>
-  <overlay disa="1958" owner="disastig" ownerid="RHEL-07-020100" ruleid="kernel_module_usb-storage_disabled" severity="medium">
-    <VMSinfo SVKey="86607" VKey="71983" VRelease="4"/>
+  <overlay owner="disastig" ruleid="kernel_module_usb-storage_disabled" ownerid="RHEL-07-020100" disa="1958" severity="medium">
+    <VMSinfo VKey="71983" SVKey="86607" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured to disable USB mass storage."/>
   </overlay>
-  <overlay disa="1958" owner="disastig" ownerid="RHEL-07-020101" ruleid="kernel_module_dccp_disabled" severity="medium">
-    <VMSinfo SVKey="92517" VKey="77821" VRelease="3"/>
+  <overlay owner="disastig" ruleid="kernel_module_dccp_disabled" ownerid="RHEL-07-020101" disa="1958" severity="medium">
+    <VMSinfo VKey="77821" SVKey="92517" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the Datagram Congestion Control Protocol (DCCP) kernel module is disabled unless required."/>
   </overlay>
-  <overlay disa="1958" owner="disastig" ownerid="RHEL-07-020110" ruleid="service_autofs_disabled" severity="medium">
-    <VMSinfo SVKey="86609" VKey="71985" VRelease="2"/>
+  <overlay owner="disastig" ruleid="service_autofs_disabled" ownerid="RHEL-07-020110" disa="1958" severity="medium">
+    <VMSinfo VKey="71985" SVKey="86609" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must disable the file system automounter unless required."/>
   </overlay>
-  <overlay disa="2617" owner="disastig" ownerid="RHEL-07-020200" ruleid="clean_components_post_updating" severity="low">
-    <VMSinfo SVKey="86611" VKey="71987" VRelease="2"/>
+  <overlay owner="disastig" ruleid="kernel_module_usb-storage_disabled" ownerid="RHEL-07-020111" disa="1958" severity="medium">
+    <VMSinfo VKey="100023" SVKey="109127" VRelease="r1"/>
+    <title text="The Red Hat Enterprise Linux operating system must disable the graphical user interface automounter unless required."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="clean_components_post_updating" ownerid="RHEL-07-020200" disa="2617" severity="low">
+    <VMSinfo VKey="71987" SVKey="86611" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must remove all software components after updated versions have been installed."/>
   </overlay>
-  <overlay disa="2696" owner="disastig" ownerid="RHEL-07-020210" ruleid="selinux_state" severity="high">
-    <VMSinfo SVKey="86613" VKey="71989" VRelease="3"/>
+  <overlay owner="disastig" ruleid="selinux_state" ownerid="RHEL-07-020210" disa="2696" severity="high">
+    <VMSinfo VKey="71989" SVKey="86613" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must enable SELinux."/>
   </overlay>
-  <overlay disa="2696" owner="disastig" ownerid="RHEL-07-020220" ruleid="selinux_policytype" severity="high">
-    <VMSinfo SVKey="86615" VKey="71991" VRelease="5"/>
+  <overlay owner="disastig" ruleid="selinux_policytype" ownerid="RHEL-07-020220" disa="2696" severity="high">
+    <VMSinfo VKey="71991" SVKey="86615" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must enable the SELinux targeted policy."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020230" ruleid="disable_ctrlaltdel_reboot" severity="high">
-    <VMSinfo SVKey="86617" VKey="71993" VRelease="5"/>
+  <overlay owner="disastig" ruleid="disable_ctrlaltdel_reboot" ownerid="RHEL-07-020230" disa="366" severity="high">
+    <VMSinfo VKey="71993" SVKey="86617" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled on the command line."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020231" ruleid="kernel_module_usb-storage_disabled" severity="high">
-    <VMSinfo SVKey="104673" VKey="94843" VRelease="r1"/>
-    <title text="The Red Hat Enterprise Linux operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled in the GUI."/>
+  <overlay owner="disastig" ruleid="dconf_gnome_disable_ctrlaltdel_reboot" ownerid="RHEL-07-020231" disa="366" severity="high">
+    <VMSinfo VKey="94843" SVKey="104673" VRelease="r2"/>
+    <title text="The Red Hat Enterprise Linux operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled in the Graphical User Interface."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020240" ruleid="accounts_umask_etc_login_defs" severity="medium">
-    <VMSinfo SVKey="86619" VKey="71995" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_umask_etc_login_defs" ownerid="RHEL-07-020240" disa="366" severity="medium">
+    <VMSinfo VKey="71995" SVKey="86619" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must define default permissions for all authenticated users in such a way that the user can only read and modify their own files."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020250" ruleid="installed_OS_is_vendor_supported" severity="high">
-    <VMSinfo SVKey="86621" VKey="71997" VRelease="5"/>
+  <overlay owner="disastig" ruleid="installed_OS_is_vendor_supported" ownerid="RHEL-07-020250" disa="366" severity="high">
+    <VMSinfo VKey="71997" SVKey="86621" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must be a vendor supported release."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020260" ruleid="security_patches_up_to_date" severity="medium">
-    <VMSinfo SVKey="86623" VKey="71999" VRelease="4"/>
+  <overlay owner="disastig" ruleid="security_patches_up_to_date" ownerid="RHEL-07-020260" disa="366" severity="medium">
+    <VMSinfo VKey="71999" SVKey="86623" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system security patches and updates must be installed and up to date."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020270" ruleid="kernel_module_usb-storage_disabled" severity="medium">
-    <VMSinfo SVKey="86625" VKey="72001" VRelease="2"/>
+  <overlay owner="disastig" ruleid="sshd_disable_root_login" ownerid="RHEL-07-020270" disa="366" severity="medium">
+    <VMSinfo VKey="72001" SVKey="86625" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not have unnecessary accounts."/>
   </overlay>
-  <overlay disa="764" owner="disastig" ownerid="RHEL-07-020300" ruleid="gid_passwd_group_same" severity="low">
-    <VMSinfo SVKey="86627" VKey="72003" VRelease="2"/>
+  <overlay owner="disastig" ruleid="gid_passwd_group_same" ownerid="RHEL-07-020300" disa="764" severity="low">
+    <VMSinfo VKey="72003" SVKey="86627" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all Group Identifiers (GIDs) referenced in the /etc/passwd file are defined in the /etc/group file."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020310" ruleid="accounts_no_uid_except_zero" severity="high">
-    <VMSinfo SVKey="86629" VKey="72005" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_no_uid_except_zero" ownerid="RHEL-07-020310" disa="366" severity="high">
+    <VMSinfo VKey="72005" SVKey="86629" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the root account must be the only account having unrestricted access to the system."/>
   </overlay>
-  <overlay disa="2165" owner="disastig" ownerid="RHEL-07-020320" ruleid="no_files_unowned_by_user" severity="medium">
-    <VMSinfo SVKey="86631" VKey="72007" VRelease="3"/>
+  <overlay owner="disastig" ruleid="no_files_unowned_by_user" ownerid="RHEL-07-020320" disa="2165" severity="medium">
+    <VMSinfo VKey="72007" SVKey="86631" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all files and directories have a valid owner."/>
   </overlay>
-  <overlay disa="2165" owner="disastig" ownerid="RHEL-07-020330" ruleid="file_permissions_ungroupowned" severity="medium">
-    <VMSinfo SVKey="86633" VKey="72009" VRelease="3"/>
+  <overlay owner="disastig" ruleid="file_permissions_ungroupowned" ownerid="RHEL-07-020330" disa="2165" severity="medium">
+    <VMSinfo VKey="72009" SVKey="86633" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all files and directories have a valid group owner."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020600" ruleid="accounts_user_interactive_home_directory_defined" severity="medium">
-    <VMSinfo SVKey="86635" VKey="72011" VRelease="2"/>
-    <title text="The Red Hat Enterprise Linux operating system must be configured so that all local interactive users have a home directory assigned in the /etc/passwd file."/>
-  </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020610" ruleid="accounts_have_homedir_login_defs" severity="medium">
-    <VMSinfo SVKey="86637" VKey="72013" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_have_homedir_login_defs" ownerid="RHEL-07-020610" disa="366" severity="medium">
+    <VMSinfo VKey="72013" SVKey="86637" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all local interactive user accounts, upon creation, are assigned a home directory."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020620" ruleid="accounts_user_interactive_home_directory_exists" severity="medium">
-    <VMSinfo SVKey="86639" VKey="72015" VRelease="2"/>
-    <title text="The Red Hat Enterprise Linux operating system must be configured so that all local interactive user home directories are defined in the /etc/passwd file."/>
+  <overlay owner="disastig" ruleid="accounts_user_interactive_home_directory_exists" ownerid="RHEL-07-020620" disa="366" severity="medium">
+    <VMSinfo VKey="72015" SVKey="86639" VRelease="3"/>
+    <title text="The Red Hat Enterprise Linux operating system must be configured so that all local interactive users have a home directory assigned and defined in the /etc/passwd file."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020630" ruleid="file_permissions_home_directories" severity="medium">
-    <VMSinfo SVKey="86641" VKey="72017" VRelease="3"/>
+  <overlay owner="disastig" ruleid="file_permissions_home_directories" ownerid="RHEL-07-020630" disa="366" severity="medium">
+    <VMSinfo VKey="72017" SVKey="86641" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all local interactive user home directories have mode 0750 or less permissive."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020640" ruleid="file_ownership_home_directories" severity="medium">
-    <VMSinfo SVKey="86643" VKey="72019" VRelease="5"/>
+  <overlay owner="disastig" ruleid="file_ownership_home_directories" ownerid="RHEL-07-020640" disa="366" severity="medium">
+    <VMSinfo VKey="72019" SVKey="86643" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all local interactive user home directories are owned by their respective users."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020650" ruleid="file_groupownership_home_directories" severity="medium">
-    <VMSinfo SVKey="86645" VKey="72021" VRelease="5"/>
+  <overlay owner="disastig" ruleid="file_groupownership_home_directories" ownerid="RHEL-07-020650" disa="366" severity="medium">
+    <VMSinfo VKey="72021" SVKey="86645" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all local interactive user home directories are group-owned by the home directory owners primary group."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020660" ruleid="accounts_users_home_files_ownership" severity="medium">
-    <VMSinfo SVKey="86647" VKey="72023" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_users_home_files_ownership" ownerid="RHEL-07-020660" disa="366" severity="medium">
+    <VMSinfo VKey="72023" SVKey="86647" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all files and directories contained in local interactive user home directories are owned by the owner of the home directory."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020670" ruleid="accounts_users_home_files_groupownership" severity="medium">
-    <VMSinfo SVKey="86649" VKey="72025" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_users_home_files_groupownership" ownerid="RHEL-07-020670" disa="366" severity="medium">
+    <VMSinfo VKey="72025" SVKey="86649" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all files and directories contained in local interactive user home directories are group-owned by a group of which the home directory owner is a member."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020680" ruleid="accounts_users_home_files_permissions" severity="medium">
-    <VMSinfo SVKey="86651" VKey="72027" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_users_home_files_permissions" ownerid="RHEL-07-020680" disa="366" severity="medium">
+    <VMSinfo VKey="72027" SVKey="86651" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all files and directories contained in local interactive user home directories have a mode of 0750 or less permissive."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020690" ruleid="accounts_user_dot_user_ownership" severity="medium">
-    <VMSinfo SVKey="86653" VKey="72029" VRelease="3"/>
+  <overlay owner="disastig" ruleid="accounts_user_dot_user_ownership" ownerid="RHEL-07-020690" disa="366" severity="medium">
+    <VMSinfo VKey="72029" SVKey="86653" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all local initialization files for interactive users are owned by the home directory user or root."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020700" ruleid="accounts_user_dot_group_ownership" severity="medium">
-    <VMSinfo SVKey="86655" VKey="72031" VRelease="4"/>
+  <overlay owner="disastig" ruleid="accounts_user_dot_group_ownership" ownerid="RHEL-07-020700" disa="366" severity="medium">
+    <VMSinfo VKey="72031" SVKey="86655" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all local initialization files for local interactive users are be group-owned by the users primary group or root."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020710" ruleid="file_permission_user_init_files" severity="medium">
-    <VMSinfo SVKey="86657" VKey="72033" VRelease="3"/>
+  <overlay owner="disastig" ruleid="file_permission_user_init_files" ownerid="RHEL-07-020710" disa="366" severity="medium">
+    <VMSinfo VKey="72033" SVKey="86657" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all local initialization files have mode 0740 or less permissive."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020720" ruleid="accounts_user_home_paths_only" severity="medium">
-    <VMSinfo SVKey="86659" VKey="72035" VRelease="4"/>
+  <overlay owner="disastig" ruleid="accounts_user_home_paths_only" ownerid="RHEL-07-020720" disa="366" severity="medium">
+    <VMSinfo VKey="72035" SVKey="86659" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all local interactive user initialization files executable search paths contain only paths that resolve to the users home directory."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-020730" ruleid="accounts_user_dot_no_world_writable_programs" severity="medium">
-    <VMSinfo SVKey="86661" VKey="72037" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_user_dot_no_world_writable_programs" ownerid="RHEL-07-020730" disa="366" severity="medium">
+    <VMSinfo VKey="72037" SVKey="86661" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that local initialization files do not execute world-writable programs."/>
   </overlay>
-  <overlay disa="1814" owner="disastig" ownerid="RHEL-07-020900" ruleid="selinux_all_devicefiles_labeled" severity="medium">
-    <VMSinfo SVKey="86663" VKey="72039" VRelease="2"/>
+  <overlay owner="disastig" ruleid="selinux_all_devicefiles_labeled" ownerid="RHEL-07-020900" disa="1814" severity="medium">
+    <VMSinfo VKey="72039" SVKey="86663" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all system device files are correctly labeled to prevent unauthorized modification."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021000" ruleid="mount_option_home_nosuid" severity="medium">
-    <VMSinfo SVKey="86665" VKey="72041" VRelease="4"/>
+  <overlay owner="disastig" ruleid="mount_option_home_nosuid" ownerid="RHEL-07-021000" disa="366" severity="medium">
+    <VMSinfo VKey="72041" SVKey="86665" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that file systems containing user home directories are mounted to prevent files with the setuid and setgid bit set from being executed."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021010" ruleid="mount_option_nosuid_removable_partitions" severity="medium">
-    <VMSinfo SVKey="86667" VKey="72043" VRelease="2"/>
+  <overlay owner="disastig" ruleid="mount_option_nosuid_removable_partitions" ownerid="RHEL-07-021010" disa="366" severity="medium">
+    <VMSinfo VKey="72043" SVKey="86667" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must prevent files with the setuid and setgid bit set from being executed on file systems that are used with removable media."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021020" ruleid="mount_option_nosuid_remote_filesystems" severity="medium">
-    <VMSinfo SVKey="86669" VKey="72045" VRelease="2"/>
+  <overlay owner="disastig" ruleid="mount_option_nosuid_remote_filesystems" ownerid="RHEL-07-021020" disa="366" severity="medium">
+    <VMSinfo VKey="72045" SVKey="86669" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must prevent files with the setuid and setgid bit set from being executed on file systems that are being imported via Network File System (NFS)."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021021" ruleid="mount_option_noexec_remote_filesystems" severity="medium">
-    <VMSinfo SVKey="87813" VKey="73161" VRelease="2"/>
+  <overlay owner="disastig" ruleid="mount_option_noexec_remote_filesystems" ownerid="RHEL-07-021021" disa="366" severity="medium">
+    <VMSinfo VKey="73161" SVKey="87813" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must prevent binary files from being executed on file systems that are being imported via Network File System (NFS)."/>
   </overlay>
-  <overlay disa="1764" owner="disastig" ownerid="RHEL-07-021022" ruleid="XXXX" severity="low">
-    <VMSinfo SVKey="95721" VKey="81009" VRelease="2"/>
-    <title text="The Red Hat Enterprise Linux operating system must mount /dev/shm with the nodev option."/>
+  <overlay owner="disastig" ruleid="mount_option_dev_shm_noexec" ownerid="RHEL-07-021024" disa="1764" severity="low">
+    <VMSinfo VKey="81013" SVKey="95725" VRelease="3"/>
+    <title text="The Red Hat Enterprise Linux operating system must mount /dev/shm with secure options."/>
   </overlay>
-  <overlay disa="1764" owner="disastig" ownerid="RHEL-07-021023" ruleid="XXXX" severity="low">
-    <VMSinfo SVKey="95723" VKey="81011" VRelease="2"/>
-    <title text="The Red Hat Enterprise Linux operating system must mount /dev/shm with the nosuid option."/>
-  </overlay>
-  <overlay disa="1764" owner="disastig" ownerid="RHEL-07-021024" ruleid="XXXX" severity="low">
-    <VMSinfo SVKey="95725" VKey="81013" VRelease="2"/>
-    <title text="The Red Hat Enterprise Linux operating system must mount /dev/shm with the noexec option."/>
-  </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021030" ruleid="dir_perms_world_writable_system_owned" severity="medium">
-    <VMSinfo SVKey="86671" VKey="72047" VRelease="4"/>
+  <overlay owner="disastig" ruleid="dir_perms_world_writable_system_owned" ownerid="RHEL-07-021030" disa="366" severity="medium">
+    <VMSinfo VKey="72047" SVKey="86671" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all world-writable directories are group-owned by root, sys, bin, or an application group."/>
   </overlay>
-  <overlay disa="1814" owner="disastig" ownerid="RHEL-07-021040" ruleid="accounts_umask_interactive_users" severity="medium">
-    <VMSinfo SVKey="86673" VKey="72049" VRelease="2"/>
+  <overlay owner="disastig" ruleid="accounts_umask_interactive_users" ownerid="RHEL-07-021040" disa="1814" severity="medium">
+    <VMSinfo VKey="72049" SVKey="86673" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must set the umask value to 077 for all local interactive user accounts."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021100" ruleid="rsyslog_cron_logging" severity="medium">
-    <VMSinfo SVKey="86675" VKey="72051" VRelease="2"/>
+  <overlay owner="disastig" ruleid="rsyslog_cron_logging" ownerid="RHEL-07-021100" disa="366" severity="medium">
+    <VMSinfo VKey="72051" SVKey="86675" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must have cron logging implemented."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021110" ruleid="file_owner_cron_allow" severity="medium">
-    <VMSinfo SVKey="86677" VKey="72053" VRelease="3"/>
+  <overlay owner="disastig" ruleid="file_owner_cron_allow" ownerid="RHEL-07-021110" disa="366" severity="medium">
+    <VMSinfo VKey="72053" SVKey="86677" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the cron.allow file, if it exists, is owned by root."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021120" ruleid="file_groupowner_cron_allow" severity="medium">
-    <VMSinfo SVKey="86679" VKey="72055" VRelease="2"/>
+  <overlay owner="disastig" ruleid="file_groupowner_cron_allow" ownerid="RHEL-07-021120" disa="366" severity="medium">
+    <VMSinfo VKey="72055" SVKey="86679" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the cron.allow file, if it exists, is group-owned by root."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021300" ruleid="service_kdump_disabled" severity="medium">
-    <VMSinfo SVKey="86681" VKey="72057" VRelease="2"/>
+  <overlay owner="disastig" ruleid="service_kdump_disabled" ownerid="RHEL-07-021300" disa="366" severity="medium">
+    <VMSinfo VKey="72057" SVKey="86681" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must disable Kernel core dumps unless needed."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021310" ruleid="partition_for_home" severity="low">
-    <VMSinfo SVKey="86683" VKey="72059" VRelease="2"/>
+  <overlay owner="disastig" ruleid="partition_for_home" ownerid="RHEL-07-021310" disa="366" severity="low">
+    <VMSinfo VKey="72059" SVKey="86683" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that a separate file system is used for user home directories (such as /home or an equivalent)."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021320" ruleid="partition_for_var" severity="low">
-    <VMSinfo SVKey="86685" VKey="72061" VRelease="2"/>
+  <overlay owner="disastig" ruleid="partition_for_var" ownerid="RHEL-07-021320" disa="366" severity="low">
+    <VMSinfo VKey="72061" SVKey="86685" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must use a separate file system for /var."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021330" ruleid="partition_for_var_log_audit" severity="low">
-    <VMSinfo SVKey="86687" VKey="72063" VRelease="6"/>
+  <overlay owner="disastig" ruleid="partition_for_var_log_audit" ownerid="RHEL-07-021330" disa="366" severity="low">
+    <VMSinfo VKey="72063" SVKey="86687" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must use a separate file system for the system audit data path."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021340" ruleid="partition_for_tmp" severity="low">
-    <VMSinfo SVKey="86689" VKey="72065" VRelease="3"/>
+  <overlay owner="disastig" ruleid="partition_for_tmp" ownerid="RHEL-07-021340" disa="366" severity="low">
+    <VMSinfo VKey="72065" SVKey="86689" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must use a separate file system for /tmp (or equivalent)."/>
   </overlay>
-  <overlay disa="2476" owner="disastig" ownerid="RHEL-07-021350" ruleid="grub2_enable_fips_mode" severity="high">
-    <VMSinfo SVKey="86691" VKey="72067" VRelease="4"/>
+  <overlay owner="disastig" ruleid="grub2_enable_fips_mode" ownerid="RHEL-07-021350" disa="2476" severity="high">
+    <VMSinfo VKey="72067" SVKey="86691" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021600" ruleid="aide_verify_acls" severity="low">
-    <VMSinfo SVKey="86693" VKey="72069" VRelease="3"/>
+  <overlay owner="disastig" ruleid="aide_verify_acls" ownerid="RHEL-07-021600" disa="366" severity="low">
+    <VMSinfo VKey="72069" SVKey="86693" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the file integrity tool is configured to verify Access Control Lists (ACLs)."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021610" ruleid="aide_verify_ext_attributes" severity="low">
-    <VMSinfo SVKey="86695" VKey="72071" VRelease="3"/>
+  <overlay owner="disastig" ruleid="aide_verify_ext_attributes" ownerid="RHEL-07-021610" disa="366" severity="low">
+    <VMSinfo VKey="72071" SVKey="86695" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the file integrity tool is configured to verify extended attributes."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-021620" ruleid="aide_use_fips_hashes" severity="medium">
-    <VMSinfo SVKey="86697" VKey="72073" VRelease="3"/>
+  <overlay owner="disastig" ruleid="aide_use_fips_hashes" ownerid="RHEL-07-021620" disa="366" severity="medium">
+    <VMSinfo VKey="72073" SVKey="86697" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must use a file integrity tool that is configured to use FIPS 140-2 approved cryptographic hashes for validating file contents and directories."/>
   </overlay>
-  <overlay disa="1814" owner="disastig" ownerid="RHEL-07-021700" ruleid="grub2_no_removeable_media" severity="medium">
-    <VMSinfo SVKey="86699" VKey="72075" VRelease="2"/>
+  <overlay owner="disastig" ruleid="uefi_no_removeable_media" ownerid="RHEL-07-021700" disa="1814" severity="medium">
+    <VMSinfo VKey="72075" SVKey="86699" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not allow removable media to be used as the boot loader unless approved."/>
   </overlay>
-  <overlay disa="381" owner="disastig" ownerid="RHEL-07-021710" ruleid="package_telnet-server_removed" severity="high">
-    <VMSinfo SVKey="86701" VKey="72077" VRelease="2"/>
+  <overlay owner="disastig" ruleid="package_telnet-server_removed" ownerid="RHEL-07-021710" disa="381" severity="high">
+    <VMSinfo VKey="72077" SVKey="86701" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not have the telnet-server package installed."/>
   </overlay>
-  <overlay disa="131" owner="disastig" ownerid="RHEL-07-030000" ruleid="service_auditd_enabled" severity="high">
-    <VMSinfo SVKey="86703" VKey="72079" VRelease="3"/>
+  <overlay owner="disastig" ruleid="service_auditd_enabled" ownerid="RHEL-07-030000" disa="131" severity="high">
+    <VMSinfo VKey="72079" SVKey="86703" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that auditing is configured to produce records containing information to establish what type of events occurred, where the events occurred, the source of the events, and the outcome of the events. These audit records must also identify individual identities of group account users."/>
   </overlay>
-  <overlay disa="139" owner="disastig" ownerid="RHEL-07-030010" ruleid="audit_rules_system_shutdown" severity="medium">
-    <VMSinfo SVKey="86705" VKey="72081" VRelease="4"/>
+  <overlay owner="disastig" ruleid="audit_rules_system_shutdown" ownerid="RHEL-07-030010" disa="139" severity="medium">
+    <VMSinfo VKey="72081" SVKey="86705" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must shut down upon audit processing failure, unless availability is an overriding concern. If availability is a concern, the system must alert the designated staff (System Administrator [SA] and Information System Security Officer [ISSO] at a minimum) in the event of an audit processing failure."/>
   </overlay>
-  <overlay disa="1851" owner="disastig" ownerid="RHEL-07-030200" ruleid="auditd_audispd_configure_remote_server" severity="medium">
-    <VMSinfo SVKey="95727" VKey="81015" VRelease="1"/>
-    <title text="The Red Hat Enterprise Linux operating system must be configured to use the au-remote plugin."/>
+  <overlay owner="disastig" ruleid="auditd_audispd_configure_remote_server" ownerid="RHEL-07-030201" disa="1851" severity="medium">
+    <VMSinfo VKey="81017" SVKey="95729" VRelease="2"/>
+    <title text="The Red Hat Enterprise Linux operating system must be configured to off-load audit logs onto a different system or storage media from the system being audited."/>
   </overlay>
-  <overlay disa="1851" owner="disastig" ownerid="RHEL-07-030201" ruleid="auditd_audispd_configure_remote_server" severity="medium">
-    <VMSinfo SVKey="95729" VKey="81017" VRelease="1"/>
-    <title text="The Red Hat Enterprise Linux operating system must configure the au-remote plugin to off-load audit logs using the audisp-remote daemon."/>
-  </overlay>
-  <overlay disa="1851" owner="disastig" ownerid="RHEL-07-030210" ruleid="auditd_audispd_configure_remote_server" severity="medium">
-    <VMSinfo SVKey="95731" VKey="81019" VRelease="1"/>
+  <overlay owner="disastig" ruleid="auditd_audispd_configure_remote_server" ownerid="RHEL-07-030210" disa="1851" severity="medium">
+    <VMSinfo VKey="81019" SVKey="95731" VRelease="1"/>
     <title text="The Red Hat Enterprise Linux operating system must take appropriate action when the audisp-remote buffer is full."/>
   </overlay>
-  <overlay disa="1851" owner="disastig" ownerid="RHEL-07-030211" ruleid="auditd_audispd_configure_remote_server" severity="medium">
-    <VMSinfo SVKey="95733" VKey="81021" VRelease="1"/>
+  <overlay owner="disastig" ruleid="auditd_audispd_configure_remote_server" ownerid="RHEL-07-030211" disa="1851" severity="medium">
+    <VMSinfo VKey="81021" SVKey="95733" VRelease="1"/>
     <title text="The Red Hat Enterprise Linux operating system must label all off-loaded audit logs before sending them to the central log server."/>
   </overlay>
-  <overlay disa="1851" owner="disastig" ownerid="RHEL-07-030300" ruleid="auditd_audispd_configure_remote_server" severity="medium">
-    <VMSinfo SVKey="86707" VKey="72083" VRelease="2"/>
+  <overlay owner="disastig" ruleid="auditd_audispd_configure_remote_server" ownerid="RHEL-07-030300" disa="1851" severity="medium">
+    <VMSinfo VKey="72083" SVKey="86707" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must off-load audit records onto a different system or media from the system being audited."/>
   </overlay>
-  <overlay disa="1851" owner="disastig" ownerid="RHEL-07-030310" ruleid="auditd_audispd_encrypt_sent_records" severity="medium">
-    <VMSinfo SVKey="86709" VKey="72085" VRelease="2"/>
+  <overlay owner="disastig" ruleid="auditd_audispd_encrypt_sent_records" ownerid="RHEL-07-030310" disa="1851" severity="medium">
+    <VMSinfo VKey="72085" SVKey="86709" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must encrypt the transfer of audit records off-loaded onto a different system or media from the system being audited."/>
   </overlay>
-  <overlay disa="1851" owner="disastig" ownerid="RHEL-07-030320" ruleid="auditd_audispd_disk_full_action" severity="medium">
-    <VMSinfo SVKey="86711" VKey="72087" VRelease="3"/>
+  <overlay owner="disastig" ruleid="auditd_audispd_disk_full_action" ownerid="RHEL-07-030320" disa="1851" severity="medium">
+    <VMSinfo VKey="72087" SVKey="86711" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the audit system takes appropriate action when the audit storage volume is full."/>
   </overlay>
-  <overlay disa="1851" owner="disastig" ownerid="RHEL-07-030321" ruleid="auditd_audispd_network_failure_action" severity="medium">
-    <VMSinfo SVKey="87815" VKey="73163" VRelease="3"/>
+  <overlay owner="disastig" ruleid="auditd_audispd_network_failure_action" ownerid="RHEL-07-030321" disa="1851" severity="medium">
+    <VMSinfo VKey="73163" SVKey="87815" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the audit system takes appropriate action when there is an error sending audit records to a remote system."/>
   </overlay>
-  <overlay disa="1855" owner="disastig" ownerid="RHEL-07-030330" ruleid="auditd_data_retention_space_left" severity="medium">
-    <VMSinfo SVKey="86713" VKey="72089" VRelease="4"/>
+  <overlay owner="disastig" ruleid="auditd_data_retention_space_left" ownerid="RHEL-07-030330" disa="1855" severity="medium">
+    <VMSinfo VKey="72089" SVKey="86713" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must initiate an action to notify the System Administrator (SA) and Information System Security Officer ISSO, at a minimum, when allocated audit record storage volume reaches 75% of the repository maximum audit record storage capacity."/>
   </overlay>
-  <overlay disa="1855" owner="disastig" ownerid="RHEL-07-030340" ruleid="auditd_data_retention_space_left_action" severity="medium">
-    <VMSinfo SVKey="86715" VKey="72091" VRelease="2"/>
+  <overlay owner="disastig" ruleid="auditd_data_retention_space_left_action" ownerid="RHEL-07-030340" disa="1855" severity="medium">
+    <VMSinfo VKey="72091" SVKey="86715" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) via email when the threshold for the repository maximum audit record storage capacity is reached."/>
   </overlay>
-  <overlay disa="1855" owner="disastig" ownerid="RHEL-07-030350" ruleid="auditd_data_retention_action_mail_acct" severity="medium">
-    <VMSinfo SVKey="86717" VKey="72093" VRelease="3"/>
+  <overlay owner="disastig" ruleid="auditd_data_retention_action_mail_acct" ownerid="RHEL-07-030350" disa="1855" severity="medium">
+    <VMSinfo VKey="72093" SVKey="86717" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) when the threshold for the repository maximum audit record storage capacity is reached."/>
   </overlay>
-  <overlay disa="2234" owner="disastig" ownerid="RHEL-07-030360" ruleid="audit_rules_privileged_commands" severity="medium">
-    <VMSinfo SVKey="86719" VKey="72095" VRelease="7"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands" ownerid="RHEL-07-030360" disa="2234" severity="medium">
+    <VMSinfo VKey="72095" SVKey="86719" VRelease="7"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all executions of privileged functions."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030370" ruleid="audit_rules_dac_modification_chown" severity="medium">
-    <VMSinfo SVKey="86721" VKey="72097" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_chown" ownerid="RHEL-07-030370" disa="172" severity="medium">
+    <VMSinfo VKey="72097" SVKey="86721" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the chown syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030380" ruleid="audit_rules_dac_modification_fchown" severity="medium">
-    <VMSinfo SVKey="86723" VKey="72099" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_fchown" ownerid="RHEL-07-030380" disa="172" severity="medium">
+    <VMSinfo VKey="72099" SVKey="86723" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the fchown syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030390" ruleid="audit_rules_dac_modification_lchown" severity="medium">
-    <VMSinfo SVKey="86725" VKey="72101" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_lchown" ownerid="RHEL-07-030390" disa="172" severity="medium">
+    <VMSinfo VKey="72101" SVKey="86725" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the lchown syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030400" ruleid="audit_rules_dac_modification_fchownat" severity="medium">
-    <VMSinfo SVKey="86727" VKey="72103" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_fchownat" ownerid="RHEL-07-030400" disa="172" severity="medium">
+    <VMSinfo VKey="72103" SVKey="86727" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the fchownat syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030410" ruleid="audit_rules_dac_modification_chmod" severity="medium">
-    <VMSinfo SVKey="86729" VKey="72105" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_chmod" ownerid="RHEL-07-030410" disa="172" severity="medium">
+    <VMSinfo VKey="72105" SVKey="86729" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the chmod syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030420" ruleid="audit_rules_dac_modification_fchmod" severity="medium">
-    <VMSinfo SVKey="86731" VKey="72107" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_fchmod" ownerid="RHEL-07-030420" disa="172" severity="medium">
+    <VMSinfo VKey="72107" SVKey="86731" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the fchmod syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030430" ruleid="audit_rules_dac_modification_fchmodat" severity="medium">
-    <VMSinfo SVKey="86733" VKey="72109" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_fchmodat" ownerid="RHEL-07-030430" disa="172" severity="medium">
+    <VMSinfo VKey="72109" SVKey="86733" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the fchmodat syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030440" ruleid="audit_rules_dac_modification_setxattr" severity="medium">
-    <VMSinfo SVKey="86735" VKey="72111" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_setxattr" ownerid="RHEL-07-030440" disa="172" severity="medium">
+    <VMSinfo VKey="72111" SVKey="86735" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the setxattr syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030450" ruleid="audit_rules_dac_modification_fsetxattr" severity="medium">
-    <VMSinfo SVKey="86737" VKey="72113" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_fsetxattr" ownerid="RHEL-07-030450" disa="172" severity="medium">
+    <VMSinfo VKey="72113" SVKey="86737" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the fsetxattr syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030460" ruleid="audit_rules_dac_modification_lsetxattr" severity="medium">
-    <VMSinfo SVKey="86739" VKey="72115" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_lsetxattr" ownerid="RHEL-07-030460" disa="172" severity="medium">
+    <VMSinfo VKey="72115" SVKey="86739" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the lsetxattr syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030470" ruleid="audit_rules_dac_modification_removexattr" severity="medium">
-    <VMSinfo SVKey="86741" VKey="72117" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_removexattr" ownerid="RHEL-07-030470" disa="172" severity="medium">
+    <VMSinfo VKey="72117" SVKey="86741" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the removexattr syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030480" ruleid="audit_rules_dac_modification_fremovexattr" severity="medium">
-    <VMSinfo SVKey="86743" VKey="72119" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_fremovexattr" ownerid="RHEL-07-030480" disa="172" severity="medium">
+    <VMSinfo VKey="72119" SVKey="86743" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the fremovexattr syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030490" ruleid="audit_rules_dac_modification_lremovexattr" severity="medium">
-    <VMSinfo SVKey="86745" VKey="72121" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_lremovexattr" ownerid="RHEL-07-030490" disa="172" severity="medium">
+    <VMSinfo VKey="72121" SVKey="86745" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the lremovexattr syscall."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030500" ruleid="audit_rules_unsuccessful_file_modification_creat" severity="medium">
-    <VMSinfo SVKey="86747" VKey="72123" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification_creat" ownerid="RHEL-07-030500" disa="2884" severity="medium">
+    <VMSinfo VKey="72123" SVKey="86747" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the creat syscall."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030510" ruleid="audit_rules_unsuccessful_file_modification_open" severity="medium">
-    <VMSinfo SVKey="86749" VKey="72125" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification_open" ownerid="RHEL-07-030510" disa="2884" severity="medium">
+    <VMSinfo VKey="72125" SVKey="86749" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the open syscall."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030520" ruleid="audit_rules_unsuccessful_file_modification_openat" severity="medium">
-    <VMSinfo SVKey="86751" VKey="72127" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification_openat" ownerid="RHEL-07-030520" disa="2884" severity="medium">
+    <VMSinfo VKey="72127" SVKey="86751" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the openat syscall."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030530" ruleid="audit_rules_unsuccessful_file_modification_open_by_handle_at" severity="medium">
-    <VMSinfo SVKey="86753" VKey="72129" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification_open_by_handle_at" ownerid="RHEL-07-030530" disa="2884" severity="medium">
+    <VMSinfo VKey="72129" SVKey="86753" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the open_by_handle_at syscall."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030540" ruleid="audit_rules_unsuccessful_file_modification_truncate" severity="medium">
-    <VMSinfo SVKey="86755" VKey="72131" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification_truncate" ownerid="RHEL-07-030540" disa="2884" severity="medium">
+    <VMSinfo VKey="72131" SVKey="86755" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the truncate syscall."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030550" ruleid="audit_rules_unsuccessful_file_modification_ftruncate" severity="medium">
-    <VMSinfo SVKey="86757" VKey="72133" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification_ftruncate" ownerid="RHEL-07-030550" disa="2884" severity="medium">
+    <VMSinfo VKey="72133" SVKey="86757" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the ftruncate syscall."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030560" ruleid="audit_rules_execution_semanage" severity="medium">
-    <VMSinfo SVKey="86759" VKey="72135" VRelease="4"/>
+  <overlay owner="disastig" ruleid="audit_rules_execution_semanage" ownerid="RHEL-07-030560" disa="2884" severity="medium">
+    <VMSinfo VKey="72135" SVKey="86759" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the semanage command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030570" ruleid="audit_rules_execution_setsebool" severity="medium">
-    <VMSinfo SVKey="86761" VKey="72137" VRelease="4"/>
+  <overlay owner="disastig" ruleid="audit_rules_execution_setsebool" ownerid="RHEL-07-030570" disa="2884" severity="medium">
+    <VMSinfo VKey="72137" SVKey="86761" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the setsebool command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030580" ruleid="audit_rules_execution_chcon" severity="medium">
-    <VMSinfo SVKey="86763" VKey="72139" VRelease="4"/>
+  <overlay owner="disastig" ruleid="audit_rules_execution_chcon" ownerid="RHEL-07-030580" disa="2884" severity="medium">
+    <VMSinfo VKey="72139" SVKey="86763" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the chcon command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030590" ruleid="audit_rules_execution_setfiles" severity="medium">
-    <VMSinfo SVKey="86765" VKey="72141" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_execution_setfiles" ownerid="RHEL-07-030590" disa="2884" severity="medium">
+    <VMSinfo VKey="72141" SVKey="86765" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the setfiles command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030610" ruleid="audit_rules_login_events_faillock" severity="medium">
-    <VMSinfo SVKey="86769" VKey="72145" VRelease="4"/>
+  <overlay owner="disastig" ruleid="audit_rules_login_events_faillock" ownerid="RHEL-07-030610" disa="2884" severity="medium">
+    <VMSinfo VKey="72145" SVKey="86769" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must generate audit records for all unsuccessful account access events."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030620" ruleid="audit_rules_login_events_lastlog" severity="medium">
-    <VMSinfo SVKey="86771" VKey="72147" VRelease="3"/>
+  <overlay owner="disastig" ruleid="audit_rules_login_events_lastlog" ownerid="RHEL-07-030620" disa="2884" severity="medium">
+    <VMSinfo VKey="72147" SVKey="86771" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must generate audit records for all successful account access events."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030630" ruleid="audit_rules_privileged_commands_passwd" severity="medium">
-    <VMSinfo SVKey="86773" VKey="72149" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_passwd" ownerid="RHEL-07-030630" disa="2884" severity="medium">
+    <VMSinfo VKey="72149" SVKey="86773" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the passwd command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030640" ruleid="audit_rules_privileged_commands_unix_chkpwd" severity="medium">
-    <VMSinfo SVKey="86775" VKey="72151" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_unix_chkpwd" ownerid="RHEL-07-030640" disa="2884" severity="medium">
+    <VMSinfo VKey="72151" SVKey="86775" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the unix_chkpwd command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030650" ruleid="audit_rules_privileged_commands_gpasswd" severity="medium">
-    <VMSinfo SVKey="86777" VKey="72153" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_gpasswd" ownerid="RHEL-07-030650" disa="2884" severity="medium">
+    <VMSinfo VKey="72153" SVKey="86777" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the gpasswd command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030660" ruleid="audit_rules_privileged_commands_chage" severity="medium">
-    <VMSinfo SVKey="86779" VKey="72155" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_chage" ownerid="RHEL-07-030660" disa="2884" severity="medium">
+    <VMSinfo VKey="72155" SVKey="86779" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the chage command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030670" ruleid="audit_rules_privileged_commands_userhelper" severity="medium">
-    <VMSinfo SVKey="86781" VKey="72157" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_userhelper" ownerid="RHEL-07-030670" disa="2884" severity="medium">
+    <VMSinfo VKey="72157" SVKey="86781" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the userhelper command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030680" ruleid="audit_rules_privileged_commands_su" severity="medium">
-    <VMSinfo SVKey="86783" VKey="72159" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_su" ownerid="RHEL-07-030680" disa="2884" severity="medium">
+    <VMSinfo VKey="72159" SVKey="86783" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the su command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030690" ruleid="audit_rules_privileged_commands_sudo" severity="medium">
-    <VMSinfo SVKey="86785" VKey="72161" VRelease="4"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="RHEL-07-030690" disa="2884" severity="medium">
+    <VMSinfo VKey="72161" SVKey="86785" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the sudo command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030700" ruleid="audit_rules_sysadmin_actions" severity="medium">
-    <VMSinfo SVKey="86787" VKey="72163" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_sysadmin_actions" ownerid="RHEL-07-030700" disa="2884" severity="medium">
+    <VMSinfo VKey="72163" SVKey="86787" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the sudoers file and all files in the /etc/sudoers.d/ directory."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030710" ruleid="audit_rules_privileged_commands_newgrp" severity="medium">
-    <VMSinfo SVKey="86789" VKey="72165" VRelease="4"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="RHEL-07-030710" disa="2884" severity="medium">
+    <VMSinfo VKey="72165" SVKey="86789" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the newgrp command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030720" ruleid="audit_rules_privileged_commands_chsh" severity="medium">
-    <VMSinfo SVKey="86791" VKey="72167" VRelease="4"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_chsh" ownerid="RHEL-07-030720" disa="2884" severity="medium">
+    <VMSinfo VKey="72167" SVKey="86791" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the chsh command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030740" ruleid="audit_rules_media_export" severity="medium">
-    <VMSinfo SVKey="86795" VKey="72171" VRelease="7"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_mount" ownerid="RHEL-07-030740" disa="2884" severity="medium">
+    <VMSinfo VKey="72171" SVKey="86795" VRelease="8"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the mount command and syscall."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030750" ruleid="audit_rules_privileged_commands_umount" severity="medium">
-    <VMSinfo SVKey="86797" VKey="72173" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_umount" ownerid="RHEL-07-030750" disa="2884" severity="medium">
+    <VMSinfo VKey="72173" SVKey="86797" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the umount command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030760" ruleid="audit_rules_privileged_commands_postdrop" severity="medium">
-    <VMSinfo SVKey="86799" VKey="72175" VRelease="4"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_postdrop" ownerid="RHEL-07-030760" disa="2884" severity="medium">
+    <VMSinfo VKey="72175" SVKey="86799" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the postdrop command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030770" ruleid="audit_rules_privileged_commands_postqueue" severity="medium">
-    <VMSinfo SVKey="86801" VKey="72177" VRelease="3"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_postqueue" ownerid="RHEL-07-030770" disa="2884" severity="medium">
+    <VMSinfo VKey="72177" SVKey="86801" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the postqueue command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030780" ruleid="audit_rules_privileged_commands_ssh_keysign" severity="medium">
-    <VMSinfo SVKey="86803" VKey="72179" VRelease="3"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_ssh_keysign" ownerid="RHEL-07-030780" disa="2884" severity="medium">
+    <VMSinfo VKey="72179" SVKey="86803" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the ssh-keysign command."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030800" ruleid="audit_rules_privileged_commands_crontab" severity="medium">
-    <VMSinfo SVKey="86807" VKey="72183" VRelease="3"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_crontab" ownerid="RHEL-07-030800" disa="2884" severity="medium">
+    <VMSinfo VKey="72183" SVKey="86807" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the crontab command."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030810" ruleid="audit_rules_privileged_commands_pam_timestamp_check" severity="medium">
-    <VMSinfo SVKey="86809" VKey="72185" VRelease="4"/>
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_pam_timestamp_check" ownerid="RHEL-07-030810" disa="172" severity="medium">
+    <VMSinfo VKey="72185" SVKey="86809" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the pam_timestamp_check command."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030819" ruleid="audit_rules_kernel_module_loading_init" severity="medium">
-    <VMSinfo SVKey="93705" VKey="78999" VRelease="3"/>
+  <overlay owner="disastig" ruleid="audit_rules_kernel_module_loading_delete" ownerid="RHEL-07-030819" disa="172" severity="medium">
+    <VMSinfo VKey="78999" SVKey="93705" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the create_module syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030820" ruleid="audit_rules_kernel_module_loading_init" severity="medium">
-    <VMSinfo SVKey="86811" VKey="72187" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_kernel_module_loading_init" ownerid="RHEL-07-030820" disa="172" severity="medium">
+    <VMSinfo VKey="72187" SVKey="86811" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the init_module syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030821" ruleid="audit_rules_kernel_module_loading_finit" severity="medium">
-    <VMSinfo SVKey="93707" VKey="79001" VRelease="3"/>
+  <overlay owner="disastig" ruleid="audit_rules_kernel_module_loading_finit" ownerid="RHEL-07-030821" disa="172" severity="medium">
+    <VMSinfo VKey="79001" SVKey="93707" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the finit_module syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030830" ruleid="audit_rules_kernel_module_loading_delete" severity="medium">
-    <VMSinfo SVKey="86813" VKey="72189" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_kernel_module_loading_delete" ownerid="RHEL-07-030830" disa="172" severity="medium">
+    <VMSinfo VKey="72189" SVKey="86813" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the delete_module syscall."/>
   </overlay>
-  <overlay disa="172" owner="disastig" ownerid="RHEL-07-030840" ruleid="audit_rules_kernel_module_loading_init" severity="medium">
-    <VMSinfo SVKey="86815" VKey="72191" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_kernel_module_loading_delete" ownerid="RHEL-07-030840" disa="172" severity="medium">
+    <VMSinfo VKey="72191" SVKey="86815" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the kmod command."/>
   </overlay>
-  <overlay disa="2130" owner="disastig" ownerid="RHEL-07-030870" ruleid="audit_rules_usergroup_modification_passwd" severity="medium">
-    <VMSinfo SVKey="86821" VKey="72197" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_usergroup_modification_passwd" ownerid="RHEL-07-030870" disa="2130" severity="medium">
+    <VMSinfo VKey="72197" SVKey="86821" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/passwd."/>
   </overlay>
-  <overlay disa="2130" owner="disastig" ownerid="RHEL-07-030871" ruleid="audit_rules_usergroup_modification_group" severity="medium">
-    <VMSinfo SVKey="87817" VKey="73165" VRelease="3"/>
+  <overlay owner="disastig" ruleid="audit_rules_usergroup_modification_group" ownerid="RHEL-07-030871" disa="2130" severity="medium">
+    <VMSinfo VKey="73165" SVKey="87817" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/group."/>
   </overlay>
-  <overlay disa="2130" owner="disastig" ownerid="RHEL-07-030872" ruleid="audit_rules_usergroup_modification_gshadow" severity="medium">
-    <VMSinfo SVKey="87819" VKey="73167" VRelease="4"/>
+  <overlay owner="disastig" ruleid="audit_rules_usergroup_modification_gshadow" ownerid="RHEL-07-030872" disa="2130" severity="medium">
+    <VMSinfo VKey="73167" SVKey="87819" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/gshadow."/>
   </overlay>
-  <overlay disa="2130" owner="disastig" ownerid="RHEL-07-030873" ruleid="audit_rules_usergroup_modification_shadow" severity="medium">
-    <VMSinfo SVKey="87823" VKey="73171" VRelease="4"/>
+  <overlay owner="disastig" ruleid="audit_rules_usergroup_modification_shadow" ownerid="RHEL-07-030873" disa="2130" severity="medium">
+    <VMSinfo VKey="73171" SVKey="87823" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/shadow."/>
   </overlay>
-  <overlay disa="2130" owner="disastig" ownerid="RHEL-07-030874" ruleid="audit_rules_usergroup_modification_opasswd" severity="medium">
-    <VMSinfo SVKey="87825" VKey="73173" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_usergroup_modification_opasswd" ownerid="RHEL-07-030874" disa="2130" severity="medium">
+    <VMSinfo VKey="73173" SVKey="87825" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/opasswd."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030880" ruleid="audit_rules_file_deletion_events_rename" severity="medium">
-    <VMSinfo SVKey="86823" VKey="72199" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_file_deletion_events_rename" ownerid="RHEL-07-030880" disa="2884" severity="medium">
+    <VMSinfo VKey="72199" SVKey="86823" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the rename syscall."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030890" ruleid="audit_rules_file_deletion_events_renameat" severity="medium">
-    <VMSinfo SVKey="86825" VKey="72201" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_file_deletion_events_renameat" ownerid="RHEL-07-030890" disa="2884" severity="medium">
+    <VMSinfo VKey="72201" SVKey="86825" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the renameat syscall."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030900" ruleid="audit_rules_file_deletion_events_rmdir" severity="medium">
-    <VMSinfo SVKey="86827" VKey="72203" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_file_deletion_events_rmdir" ownerid="RHEL-07-030900" disa="2884" severity="medium">
+    <VMSinfo VKey="72203" SVKey="86827" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the rmdir syscall."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030910" ruleid="audit_rules_file_deletion_events_unlink" severity="medium">
-    <VMSinfo SVKey="86829" VKey="72205" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_file_deletion_events_unlink" ownerid="RHEL-07-030910" disa="2884" severity="medium">
+    <VMSinfo VKey="72205" SVKey="86829" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the unlink syscall."/>
   </overlay>
-  <overlay disa="2884" owner="disastig" ownerid="RHEL-07-030920" ruleid="audit_rules_file_deletion_events_unlinkat" severity="medium">
-    <VMSinfo SVKey="86831" VKey="72207" VRelease="5"/>
+  <overlay owner="disastig" ruleid="audit_rules_file_deletion_events_unlinkat" ownerid="RHEL-07-030920" disa="2884" severity="medium">
+    <VMSinfo VKey="72207" SVKey="86831" VRelease="6"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the unlinkat syscall."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-031000" ruleid="rsyslog_remote_loghost" severity="medium">
-    <VMSinfo SVKey="86833" VKey="72209" VRelease="2"/>
+  <overlay owner="disastig" ruleid="rsyslog_remote_loghost" ownerid="RHEL-07-031000" disa="366" severity="medium">
+    <VMSinfo VKey="72209" SVKey="86833" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must send rsyslog output to a log aggregation server."/>
   </overlay>
-  <overlay disa="1814" owner="disastig" ownerid="RHEL-07-031010" ruleid="rsyslog_nolisten" severity="medium">
-    <VMSinfo SVKey="86835" VKey="72211" VRelease="2"/>
+  <overlay owner="disastig" ruleid="rsyslog_nolisten" ownerid="RHEL-07-031010" disa="1814" severity="medium">
+    <VMSinfo VKey="72211" SVKey="86835" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the rsyslog daemon does not accept log messages from other servers unless the server is being used for log aggregation."/>
   </overlay>
-  <overlay disa="1668" owner="disastig" ownerid="RHEL-07-032000" ruleid="install_mcafee_antivirus" severity="high">
-    <VMSinfo SVKey="86837" VKey="72213" VRelease="3"/>
+  <overlay owner="disastig" ruleid="install_mcafee_antivirus" ownerid="RHEL-07-032000" disa="1668" severity="high">
+    <VMSinfo VKey="72213" SVKey="86837" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must use a virus scan program."/>
   </overlay>
-  <overlay disa="54" owner="disastig" ownerid="RHEL-07-040000" ruleid="accounts_max_concurrent_login_sessions" severity="low">
-    <VMSinfo SVKey="86841" VKey="72217" VRelease="3"/>
+  <overlay owner="disastig" ruleid="accounts_max_concurrent_login_sessions" ownerid="RHEL-07-040000" disa="54" severity="low">
+    <VMSinfo VKey="72217" SVKey="86841" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must limit the number of concurrent sessions to 10 for all accounts and/or account types."/>
   </overlay>
-  <overlay disa="2314" owner="disastig" ownerid="RHEL-07-040100" ruleid="configure_firewalld_ports" severity="medium">
-    <VMSinfo SVKey="86843" VKey="72219" VRelease="2"/>
+  <overlay owner="disastig" ruleid="configure_firewalld_ports" ownerid="RHEL-07-040100" disa="2314" severity="medium">
+    <VMSinfo VKey="72219" SVKey="86843" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the Ports, Protocols, and Services Management Component Local Service Assessment (PPSM CLSA) and vulnerability assessments."/>
   </overlay>
-  <overlay disa="803" owner="disastig" ownerid="RHEL-07-040110" ruleid="sshd_use_approved_ciphers" severity="medium">
-    <VMSinfo SVKey="86845" VKey="72221" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sshd_use_approved_ciphers" ownerid="RHEL-07-040110" disa="803" severity="medium">
+    <VMSinfo VKey="72221" SVKey="86845" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must use a FIPS 140-2 approved cryptographic algorithm for SSH communications."/>
   </overlay>
-  <overlay disa="2361" owner="disastig" ownerid="RHEL-07-040160" ruleid="accounts_tmout" severity="medium">
-    <VMSinfo SVKey="86847" VKey="72223" VRelease="4"/>
-    <title text="The Red Hat Enterprise Linux operating system must be configured so that all network connections associated with a communication session are terminated at the end of the session or after 10 minutes of inactivity from the user at a command prompt, except to fulfill documented and validated mission requirements."/>
+  <overlay owner="disastig" ruleid="accounts_tmout" ownerid="RHEL-07-040160" disa="2361" severity="medium">
+    <VMSinfo VKey="72223" SVKey="86847" VRelease="5"/>
+    <title text="The Red Hat Enterprise Linux operating system must be configured so that all network connections associated with a communication session are terminated at the end of the session or after 15 minutes of inactivity from the user at a command prompt, except to fulfill documented and validated mission requirements."/>
   </overlay>
-  <overlay disa="1388" owner="disastig" ownerid="RHEL-07-040170" ruleid="sshd_enable_warning_banner" severity="medium">
-    <VMSinfo SVKey="86849" VKey="72225" VRelease="4"/>
+  <overlay owner="disastig" ruleid="sshd_enable_warning_banner" ownerid="RHEL-07-040170" disa="1388" severity="medium">
+    <VMSinfo VKey="72225" SVKey="86849" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner immediately prior to, or as part of, remote access logon prompts."/>
   </overlay>
-  <overlay disa="1453" owner="disastig" ownerid="RHEL-07-040180" ruleid="sssd_ldap_start_tls" severity="medium">
-    <VMSinfo SVKey="86851" VKey="72227" VRelease="4"/>
+  <overlay owner="disastig" ruleid="sssd_ldap_start_tls" ownerid="RHEL-07-040180" disa="1453" severity="medium">
+    <VMSinfo VKey="72227" SVKey="86851" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) authentication communications."/>
   </overlay>
-  <overlay disa="1453" owner="disastig" ownerid="RHEL-07-040190" ruleid="sssd_ldap_configure_tls_ca_dir" severity="medium">
-    <VMSinfo SVKey="86853" VKey="72229" VRelease="4"/>
+  <overlay owner="disastig" ruleid="sshd_use_approved_macs" ownerid="RHEL-07-040190" disa="1453" severity="medium">
+    <VMSinfo VKey="72229" SVKey="86853" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) communications."/>
   </overlay>
-  <overlay disa="1453" owner="disastig" ownerid="RHEL-07-040200" ruleid="sssd_ldap_configure_tls_ca" severity="medium">
-    <VMSinfo SVKey="86855" VKey="72231" VRelease="4"/>
+  <overlay owner="disastig" ruleid="sssd_ldap_configure_tls_ca_dir" ownerid="RHEL-07-040200" disa="1453" severity="medium">
+    <VMSinfo VKey="72231" SVKey="86855" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) communications."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040201" ruleid="sysctl_kernel_randomize_va_space" severity="medium">
-    <VMSinfo SVKey="92521" VKey="77825" VRelease="2"/>
+  <overlay owner="disastig" ruleid="sysctl_kernel_randomize_va_space" ownerid="RHEL-07-040201" disa="366" severity="medium">
+    <VMSinfo VKey="77825" SVKey="92521" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must implement virtual address space randomization."/>
   </overlay>
-  <overlay disa="2422" owner="disastig" ownerid="RHEL-07-040300" ruleid="package_openssh-server_installed" severity="medium">
-    <VMSinfo SVKey="86857" VKey="72233" VRelease="3"/>
+  <overlay owner="disastig" ruleid="package_openssh-server_installed" ownerid="RHEL-07-040300" disa="2422" severity="medium">
+    <VMSinfo VKey="72233" SVKey="86857" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all networked systems have SSH installed."/>
   </overlay>
-  <overlay disa="2422" owner="disastig" ownerid="RHEL-07-040310" ruleid="service_sshd_enabled" severity="medium">
-    <VMSinfo SVKey="86859" VKey="72235" VRelease="3"/>
+  <overlay owner="disastig" ruleid="service_sshd_enabled" ownerid="RHEL-07-040310" disa="2422" severity="medium">
+    <VMSinfo VKey="72235" SVKey="86859" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all networked systems use SSH for confidentiality and integrity of transmitted and received information as well as information during preparation for transmission."/>
   </overlay>
-  <overlay disa="2361" owner="disastig" ownerid="RHEL-07-040320" ruleid="sshd_set_idle_timeout" severity="medium">
-    <VMSinfo SVKey="86861" VKey="72237" VRelease="4"/>
+  <overlay owner="disastig" ruleid="sshd_set_idle_timeout" ownerid="RHEL-07-040320" disa="2361" severity="medium">
+    <VMSinfo VKey="72237" SVKey="86861" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all network connections associated with SSH traffic are terminated at the end of the session or after 10 minutes of inactivity, except to fulfill documented and validated mission requirements."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040330" ruleid="sshd_disable_rhosts_rsa" severity="medium">
-    <VMSinfo SVKey="86863" VKey="72239" VRelease="4"/>
+  <overlay owner="disastig" ruleid="sshd_disable_rhosts_rsa" ownerid="RHEL-07-040330" disa="366" severity="medium">
+    <VMSinfo VKey="72239" SVKey="86863" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not allow authentication using RSA rhosts authentication."/>
   </overlay>
-  <overlay disa="2361" owner="disastig" ownerid="RHEL-07-040340" ruleid="sshd_set_keepalive" severity="medium">
-    <VMSinfo SVKey="86865" VKey="72241" VRelease="4"/>
+  <overlay owner="disastig" ruleid="sshd_set_keepalive" ownerid="RHEL-07-040340" disa="2361" severity="medium">
+    <VMSinfo VKey="72241" SVKey="86865" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all network connections associated with SSH traffic terminate after a period of inactivity."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040350" ruleid="sshd_disable_rhosts" severity="medium">
-    <VMSinfo SVKey="86867" VKey="72243" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sshd_disable_rhosts" ownerid="RHEL-07-040350" disa="366" severity="medium">
+    <VMSinfo VKey="72243" SVKey="86867" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not allow authentication using rhosts authentication."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040360" ruleid="sshd_print_last_log" severity="medium">
-    <VMSinfo SVKey="86869" VKey="72245" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sshd_print_last_log" ownerid="RHEL-07-040360" disa="366" severity="medium">
+    <VMSinfo VKey="72245" SVKey="86869" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must display the date and time of the last successful account logon upon an SSH logon."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040370" ruleid="sshd_disable_root_login" severity="medium">
-    <VMSinfo SVKey="86871" VKey="72247" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sshd_disable_root_login" ownerid="RHEL-07-040370" disa="366" severity="medium">
+    <VMSinfo VKey="72247" SVKey="86871" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must not permit direct logons to the root account using remote access via SSH."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040380" ruleid="sshd_disable_user_known_hosts" severity="medium">
-    <VMSinfo SVKey="86873" VKey="72249" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sshd_disable_user_known_hosts" ownerid="RHEL-07-040380" disa="366" severity="medium">
+    <VMSinfo VKey="72249" SVKey="86873" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not allow authentication using known hosts authentication."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040390" ruleid="sshd_allow_only_protocol2" severity="high">
-    <VMSinfo SVKey="86875" VKey="72251" VRelease="4"/>
+  <overlay owner="disastig" ruleid="sshd_allow_only_protocol2" ownerid="RHEL-07-040390" disa="366" severity="high">
+    <VMSinfo VKey="72251" SVKey="86875" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon is configured to only use the SSHv2 protocol."/>
   </overlay>
-  <overlay disa="1453" owner="disastig" ownerid="RHEL-07-040400" ruleid="sshd_use_approved_macs" severity="medium">
-    <VMSinfo SVKey="86877" VKey="72253" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sshd_use_approved_macs" ownerid="RHEL-07-040400" disa="1453" severity="medium">
+    <VMSinfo VKey="72253" SVKey="86877" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon is configured to only use Message Authentication Codes (MACs) employing FIPS 140-2 approved cryptographic hash algorithms."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040410" ruleid="file_permissions_sshd_pub_key" severity="medium">
-    <VMSinfo SVKey="86879" VKey="72255" VRelease="2"/>
+  <overlay owner="disastig" ruleid="file_permissions_sshd_pub_key" ownerid="RHEL-07-040410" disa="366" severity="medium">
+    <VMSinfo VKey="72255" SVKey="86879" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH public host key files have mode 0644 or less permissive."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040420" ruleid="file_permissions_sshd_private_key" severity="medium">
-    <VMSinfo SVKey="86881" VKey="72257" VRelease="3"/>
+  <overlay owner="disastig" ruleid="file_permissions_sshd_private_key" ownerid="RHEL-07-040420" disa="366" severity="medium">
+    <VMSinfo VKey="72257" SVKey="86881" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH private host key files have mode 0640 or less permissive."/>
   </overlay>
-  <overlay disa="1814" owner="disastig" ownerid="RHEL-07-040430" ruleid="sshd_disable_gssapi_auth" severity="medium">
-    <VMSinfo SVKey="86883" VKey="72259" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sshd_disable_gssapi_auth" ownerid="RHEL-07-040430" disa="1814" severity="medium">
+    <VMSinfo VKey="72259" SVKey="86883" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not permit Generic Security Service Application Program Interface (GSSAPI) authentication unless needed."/>
   </overlay>
-  <overlay disa="1814" owner="disastig" ownerid="RHEL-07-040440" ruleid="sshd_disable_kerb_auth" severity="medium">
-    <VMSinfo SVKey="86885" VKey="72261" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sshd_disable_kerb_auth" ownerid="RHEL-07-040440" disa="1814" severity="medium">
+    <VMSinfo VKey="72261" SVKey="86885" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not permit Kerberos authentication unless needed."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040450" ruleid="sshd_enable_strictmodes" severity="medium">
-    <VMSinfo SVKey="86887" VKey="72263" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sshd_enable_strictmodes" ownerid="RHEL-07-040450" disa="366" severity="medium">
+    <VMSinfo VKey="72263" SVKey="86887" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon performs strict mode checking of home directory configuration files."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040460" ruleid="sshd_use_priv_separation" severity="medium">
-    <VMSinfo SVKey="86889" VKey="72265" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sshd_use_priv_separation" ownerid="RHEL-07-040460" disa="366" severity="medium">
+    <VMSinfo VKey="72265" SVKey="86889" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon uses privilege separation."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040470" ruleid="sshd_disable_compression" severity="medium">
-    <VMSinfo SVKey="86891" VKey="72267" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sshd_disable_compression" ownerid="RHEL-07-040470" disa="366" severity="medium">
+    <VMSinfo VKey="72267" SVKey="86891" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not allow compression or only allows compression after successful authentication."/>
   </overlay>
-  <overlay disa="2046" owner="disastig" ownerid="RHEL-07-040500" ruleid="chronyd_or_ntpd_set_maxpoll" severity="medium">
-    <VMSinfo SVKey="86893" VKey="72269" VRelease="4"/>
+  <overlay owner="disastig" ruleid="chronyd_or_ntpd_set_maxpoll" ownerid="RHEL-07-040500" disa="2046" severity="medium">
+    <VMSinfo VKey="72269" SVKey="86893" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must, for networked systems, synchronize clocks with a server that is synchronized to one of the redundant United States Naval Observatory (USNO) time servers, a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS)."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040520" ruleid="service_firewalld_enabled" severity="medium">
-    <VMSinfo SVKey="86897" VKey="72273" VRelease="2"/>
+  <overlay owner="disastig" ruleid="service_firewalld_enabled" ownerid="RHEL-07-040520" disa="366" severity="medium">
+    <VMSinfo VKey="72273" SVKey="86897" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must enable an application firewall, if available."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040530" ruleid="display_login_attempts" severity="low">
-    <VMSinfo SVKey="86899" VKey="72275" VRelease="4"/>
+  <overlay owner="disastig" ruleid="display_login_attempts" ownerid="RHEL-07-040530" disa="366" severity="low">
+    <VMSinfo VKey="72275" SVKey="86899" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must display the date and time of the last successful account logon upon logon."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040540" ruleid="no_user_host_based_files" severity="high">
-    <VMSinfo SVKey="86901" VKey="72277" VRelease="2"/>
+  <overlay owner="disastig" ruleid="no_user_host_based_files" ownerid="RHEL-07-040540" disa="366" severity="high">
+    <VMSinfo VKey="72277" SVKey="86901" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not contain .shosts files."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040550" ruleid="no_host_based_files" severity="high">
-    <VMSinfo SVKey="86903" VKey="72279" VRelease="2"/>
+  <overlay owner="disastig" ruleid="no_host_based_files" ownerid="RHEL-07-040550" disa="366" severity="high">
+    <VMSinfo VKey="72279" SVKey="86903" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not contain shosts.equiv files."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040600" ruleid="network_configure_name_resolution" severity="low">
-    <VMSinfo SVKey="86905" VKey="72281" VRelease="2"/>
+  <overlay owner="disastig" ruleid="network_configure_name_resolution" ownerid="RHEL-07-040600" disa="366" severity="low">
+    <VMSinfo VKey="72281" SVKey="86905" VRelease="3"/>
     <title text="For Red Hat Enterprise Linux operating systems using DNS resolution, at least two name servers must be configured."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040610" ruleid="sysctl_net_ipv4_conf_all_accept_source_route" severity="medium">
-    <VMSinfo SVKey="86907" VKey="72283" VRelease="2"/>
+  <overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_all_accept_source_route" ownerid="RHEL-07-040610" disa="366" severity="medium">
+    <VMSinfo VKey="72283" SVKey="86907" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not forward Internet Protocol version 4 (IPv4) source-routed packets."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040611" ruleid="kernel_module_usb-storage_disabled" severity="medium">
-    <VMSinfo SVKey="102353" VKey="92251" VRelease="r1"/>
+  <overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_all_rp_filter" ownerid="RHEL-07-040611" disa="366" severity="medium">
+    <VMSinfo VKey="92251" SVKey="102353" VRelease="r1"/>
     <title text="The Red Hat Enterprise Linux operating system must use a reverse-path filter for IPv4 network traffic when possible on all interfaces."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040612" ruleid="kernel_module_usb-storage_disabled" severity="medium">
-    <VMSinfo SVKey="102355" VKey="92253" VRelease="r1"/>
+  <overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_default_rp_filter" ownerid="RHEL-07-040612" disa="366" severity="medium">
+    <VMSinfo VKey="92253" SVKey="102355" VRelease="r1"/>
     <title text="The Red Hat Enterprise Linux operating system must use a reverse-path filter for IPv4 network traffic when possible by default."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040620" ruleid="sysctl_net_ipv4_conf_default_accept_source_route" severity="medium">
-    <VMSinfo SVKey="86909" VKey="72285" VRelease="2"/>
+  <overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_default_accept_source_route" ownerid="RHEL-07-040620" disa="366" severity="medium">
+    <VMSinfo VKey="72285" SVKey="86909" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not forward Internet Protocol version 4 (IPv4) source-routed packets by default."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040630" ruleid="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" severity="medium">
-    <VMSinfo SVKey="86911" VKey="72287" VRelease="2"/>
+  <overlay owner="disastig" ruleid="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" ownerid="RHEL-07-040630" disa="366" severity="medium">
+    <VMSinfo VKey="72287" SVKey="86911" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not respond to Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) echoes sent to a broadcast address."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040640" ruleid="sysctl_net_ipv4_conf_default_accept_redirects" severity="medium">
-    <VMSinfo SVKey="86913" VKey="72289" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_default_accept_redirects" ownerid="RHEL-07-040640" disa="366" severity="medium">
+    <VMSinfo VKey="72289" SVKey="86913" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must prevent Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirect messages from being accepted."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040641" ruleid="sysctl_net_ipv4_conf_all_accept_redirects" severity="medium">
-    <VMSinfo SVKey="87827" VKey="73175" VRelease="4"/>
+  <overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_all_accept_redirects" ownerid="RHEL-07-040641" disa="366" severity="medium">
+    <VMSinfo VKey="73175" SVKey="87827" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must ignore Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirect messages."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040650" ruleid="sysctl_net_ipv4_conf_default_send_redirects" severity="medium">
-    <VMSinfo SVKey="86915" VKey="72291" VRelease="4"/>
+  <overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_default_send_redirects" ownerid="RHEL-07-040650" disa="366" severity="medium">
+    <VMSinfo VKey="72291" SVKey="86915" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must not allow interfaces to perform Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirects by default."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040660" ruleid="sysctl_net_ipv4_conf_all_send_redirects" severity="medium">
-    <VMSinfo SVKey="86917" VKey="72293" VRelease="3"/>
+  <overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_all_send_redirects" ownerid="RHEL-07-040660" disa="366" severity="medium">
+    <VMSinfo VKey="72293" SVKey="86917" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must not send Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirects."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040670" ruleid="network_sniffer_disabled" severity="medium">
-    <VMSinfo SVKey="86919" VKey="72295" VRelease="2"/>
+  <overlay owner="disastig" ruleid="network_sniffer_disabled" ownerid="RHEL-07-040670" disa="366" severity="medium">
+    <VMSinfo VKey="72295" SVKey="86919" VRelease="2"/>
     <title text="Network interfaces configured on the Red Hat Enterprise Linux operating system must not be in promiscuous mode."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040680" ruleid="postfix_prevent_unrestricted_relay" severity="medium">
-    <VMSinfo SVKey="86921" VKey="72297" VRelease="3"/>
+  <overlay owner="disastig" ruleid="postfix_prevent_unrestricted_relay" ownerid="RHEL-07-040680" disa="366" severity="medium">
+    <VMSinfo VKey="72297" SVKey="86921" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured to prevent unrestricted mail relaying."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040690" ruleid="package_vsftpd_removed" severity="high">
-    <VMSinfo SVKey="86923" VKey="72299" VRelease="3"/>
+  <overlay owner="disastig" ruleid="package_vsftpd_removed" ownerid="RHEL-07-040690" disa="366" severity="high">
+    <VMSinfo VKey="72299" SVKey="86923" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must not have a File Transfer Protocol (FTP) server package installed unless needed."/>
   </overlay>
-  <overlay disa="1814" owner="disastig" ownerid="RHEL-07-040700" ruleid="package_tftp-server_removed" severity="high">
-    <VMSinfo SVKey="86925" VKey="72301" VRelease="2"/>
+  <overlay owner="disastig" ruleid="package_tftp-server_removed" ownerid="RHEL-07-040700" disa="1814" severity="high">
+    <VMSinfo VKey="72301" SVKey="86925" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not have the Trivial File Transfer Protocol (TFTP) server package installed if not required for operational support."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040710" ruleid="sshd_enable_x11_forwarding" severity="high">
-    <VMSinfo SVKey="86927" VKey="72303" VRelease="4"/>
+  <overlay owner="disastig" ruleid="sshd_enable_x11_forwarding" ownerid="RHEL-07-040710" disa="366" severity="high">
+    <VMSinfo VKey="72303" SVKey="86927" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that remote X connections for interactive users are encrypted."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040720" ruleid="tftpd_uses_secure_mode" severity="medium">
-    <VMSinfo SVKey="86929" VKey="72305" VRelease="3"/>
+  <overlay owner="disastig" ruleid="tftpd_uses_secure_mode" ownerid="RHEL-07-040720" disa="366" severity="medium">
+    <VMSinfo VKey="72305" SVKey="86929" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that if the Trivial File Transfer Protocol (TFTP) server is required, the TFTP daemon is configured to operate in secure mode."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040730" ruleid="package_xorg-x11-server-common_removed" severity="medium">
-    <VMSinfo SVKey="86931" VKey="72307" VRelease="4"/>
+  <overlay owner="disastig" ruleid="package_xorg-x11-server-common_removed" ownerid="RHEL-07-040730" disa="366" severity="medium">
+    <VMSinfo VKey="72307" SVKey="86931" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must not have an X Windows display manager installed unless approved."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040740" ruleid="sysctl_net_ipv4_ip_forward" severity="medium">
-    <VMSinfo SVKey="86933" VKey="72309" VRelease="2"/>
+  <overlay owner="disastig" ruleid="sysctl_net_ipv4_ip_forward" ownerid="RHEL-07-040740" disa="366" severity="medium">
+    <VMSinfo VKey="72309" SVKey="86933" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not be performing packet forwarding unless the system is a router."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040750" ruleid="mount_option_krb_sec_remote_filesystems" severity="medium">
-    <VMSinfo SVKey="86935" VKey="72311" VRelease="4"/>
+  <overlay owner="disastig" ruleid="mount_option_krb_sec_remote_filesystems" ownerid="RHEL-07-040750" disa="366" severity="medium">
+    <VMSinfo VKey="72311" SVKey="86935" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the Network File System (NFS) is configured to use RPCSEC_GSS."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040800" ruleid="snmpd_not_default_password" severity="high">
-    <VMSinfo SVKey="86937" VKey="72313" VRelease="2"/>
+  <overlay owner="disastig" ruleid="snmpd_not_default_password" ownerid="RHEL-07-040800" disa="366" severity="high">
+    <VMSinfo VKey="72313" SVKey="86937" VRelease="2"/>
     <title text="SNMP community strings on the Red Hat Enterprise Linux operating system must be changed from the default."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040810" ruleid="set_firewalld_default_zone" severity="medium">
-    <VMSinfo SVKey="86939" VKey="72315" VRelease="3"/>
+  <overlay owner="disastig" ruleid="set_firewalld_default_zone" ownerid="RHEL-07-040810" disa="366" severity="medium">
+    <VMSinfo VKey="72315" SVKey="86939" VRelease="3"/>
     <title text="The Red Hat Enterprise Linux operating system access control program must be configured to grant or deny system access to specific hosts and services."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040820" ruleid="libreswan_approved_tunnels" severity="medium">
-    <VMSinfo SVKey="86941" VKey="72317" VRelease="2"/>
+  <overlay owner="disastig" ruleid="libreswan_approved_tunnels" ownerid="RHEL-07-040820" disa="366" severity="medium">
+    <VMSinfo VKey="72317" SVKey="86941" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not have unauthorized IP tunnels configured."/>
   </overlay>
-  <overlay disa="366" owner="disastig" ownerid="RHEL-07-040830" ruleid="sysctl_net_ipv6_conf_all_accept_source_route" severity="medium">
-    <VMSinfo SVKey="86943" VKey="72319" VRelease="2"/>
+  <overlay owner="disastig" ruleid="sysctl_net_ipv6_conf_all_accept_source_route" ownerid="RHEL-07-040830" disa="366" severity="medium">
+    <VMSinfo VKey="72319" SVKey="86943" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must not forward IPv6 source-routed packets."/>
   </overlay>
-  <overlay disa="1954" owner="disastig" ownerid="RHEL-07-041001" ruleid="install_smartcard_packages" severity="medium">
-    <VMSinfo SVKey="87041" VKey="72417" VRelease="4"/>
+  <overlay owner="disastig" ruleid="install_smartcard_packages" ownerid="RHEL-07-041001" disa="1954" severity="medium">
+    <VMSinfo VKey="72417" SVKey="87041" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must have the required packages for multifactor authentication installed."/>
   </overlay>
-  <overlay disa="1954" owner="disastig" ownerid="RHEL-07-041002" ruleid="sssd_enable_pam_services" severity="medium">
-    <VMSinfo SVKey="87051" VKey="72427" VRelease="4"/>
+  <overlay owner="disastig" ruleid="sssd_enable_pam_services" ownerid="RHEL-07-041002" disa="1954" severity="medium">
+    <VMSinfo VKey="72427" SVKey="87051" VRelease="4"/>
     <title text="The Red Hat Enterprise Linux operating system must implement multifactor authentication for access to privileged accounts via pluggable authentication modules (PAM)."/>
   </overlay>
-  <overlay disa="1954" owner="disastig" ownerid="RHEL-07-041003" ruleid="smartcard_configure_cert_checking" severity="medium">
-    <VMSinfo SVKey="87057" VKey="72433" VRelease="5"/>
+  <overlay owner="disastig" ruleid="smartcard_configure_cert_checking" ownerid="RHEL-07-041003" disa="1954" severity="medium">
+    <VMSinfo VKey="72433" SVKey="87057" VRelease="5"/>
     <title text="The Red Hat Enterprise Linux operating system must implement certificate status checking for PKI authentication."/>
   </overlay>
-  <overlay disa="2418" owner="disastig" ownerid="RHEL-07-041010" ruleid="wireless_disable_interfaces" severity="medium">
-    <VMSinfo SVKey="87829" VKey="73177" VRelease="2"/>
+  <overlay owner="disastig" ruleid="wireless_disable_interfaces" ownerid="RHEL-07-041010" disa="2418" severity="medium">
+    <VMSinfo VKey="73177" SVKey="87829" VRelease="2"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all wireless network adapters are disabled."/>
   </overlay>
 </overlays>

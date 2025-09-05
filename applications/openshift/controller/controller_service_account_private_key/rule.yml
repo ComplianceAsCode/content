@@ -37,3 +37,18 @@ ocil: |-
     run the following command:
     <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["service-account-private-key-file"]'</pre>
     The output should return a configured private key file.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /api/v1/namespaces/openshift-kube-controller-manager/configmaps/config
+    yamlpath: ".data['config.yaml']"
+    values:
+    - value: "extendedArguments\":{[^}]*service-account-private-key-file\":\\[[^\\]]*\"/etc/kubernetes/static-pod-resources/secrets/service-account-private-key/service-account\\.key\"[^\\]]*\\]"
+      operation: "pattern match"
+      type: "string"

@@ -6,23 +6,22 @@ import os.path
 
 product_directories = [
     'chromium',
-    'debian8', 'debian9', 'debian10',
-    'eap6',
+    'debian9', 'debian10',
     'example',
     'fedora',
     'firefox',
     'fuse6',
     'jre',
     'macos1015',
-    'ocp3', 'ocp4',
+    'ocp4',
     'rhcos4',
     'ol7', 'ol8',
     'opensuse',
     'rhel6', 'rhel7', 'rhel8',
     'rhosp10', 'rhosp13',
     'rhv4',
-    'sle11', 'sle12', 'sle15',
-    'ubuntu1404', 'ubuntu1604', 'ubuntu1804',
+    'sle12', 'sle15',
+    'ubuntu1604', 'ubuntu1804',
     'vsel',
     'wrlinux8', 'wrlinux1019'
 ]
@@ -142,17 +141,14 @@ PKG_MANAGER_TO_CONFIG_FILE = {
 
 FULL_NAME_TO_PRODUCT_MAPPING = {
     "Chromium": "chromium",
-    "Debian 8": "debian8",
     "Debian 9": "debian9",
     "Debian 10": "debian10",
-    "JBoss EAP 6": "eap6",
     "Example": "example",
     "Fedora": "fedora",
     "Firefox": "firefox",
     "JBoss Fuse 6": "fuse6",
     "Java Runtime Environment": "jre",
     "Apple macOS 10.15": "macos1015",
-    "Red Hat OpenShift Container Platform 3": "ocp3",
     "Red Hat OpenShift Container Platform 4": "ocp4",
     "McAfee VirusScan Enterprise for Linux": "vsel",
     "Red Hat Enterprise Linux CoreOS 4": "rhcos4",
@@ -165,10 +161,8 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Red Hat OpenStack Platform 10": "rhosp10",
     "Red Hat OpenStack Platform 13": "rhosp13",
     "Red Hat Virtualization 4": "rhv4",
-    "SUSE Linux Enterprise 11": "sle11",
     "SUSE Linux Enterprise 12": "sle12",
     "SUSE Linux Enterprise 15": "sle15",
-    "Ubuntu 14.04": "ubuntu1404",
     "Ubuntu 16.04": "ubuntu1604",
     "Ubuntu 18.04": "ubuntu1804",
     "WRLinux 8": "wrlinux8",
@@ -179,49 +173,11 @@ PRODUCT_TO_CPE_MAPPING = {
     "chromium": [
         "cpe:/a:google:chromium-browser",
     ],
-    "debian8": [
-        "cpe:/o:debianproject:debian:8",
-    ],
     "debian9": [
         "cpe:/o:debianproject:debian:9",
     ],
     "debian10": [
         "cpe:/o:debian:debian_linux:10",
-    ],
-    "eap6": [
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.0.0",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.0.1",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.1.0",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.1.1",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.0",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.1",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.2",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.3",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.4",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.3.0",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.3.1",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.3.2",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.3.3",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.0",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.1",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.2",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.3",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.4",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.5",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.6",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.7",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.8",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.9",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.10",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.11",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.12",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.13",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.14",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.15",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.16",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.17",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.18",
-        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.19",
     ],
     "example": [
     ],
@@ -250,12 +206,12 @@ PRODUCT_TO_CPE_MAPPING = {
     "macos1015": [
         "cpe:/o:apple:macos:10.15",
     ],
-    "ocp3": [
-        "cpe:/a:redhat:openshift_container_platform:3.10",
-        "cpe:/a:redhat:openshift_container_platform:3.11",
-    ],
     "ocp4": [
         "cpe:/a:redhat:openshift_container_platform:4.1",
+        "cpe:/o:redhat:openshift_container_platform_node:4",
+    ],
+    "ocp4-node": [
+        "cpe:/o:redhat:openshift_container_platform_node:4",
     ],
     "rhcos4": [
         "cpe:/o:redhat:enterprise_linux_coreos:4",
@@ -295,18 +251,12 @@ PRODUCT_TO_CPE_MAPPING = {
         "cpe:/a:redhat:enterprise_virtualization_manager:4",
         "cpe:/o:redhat:enterprise_linux:8::hypervisor",
     ],
-    "sle11": [
-        "cpe:/o:suse:linux_enterprise_server:11",
-    ],
     "sle12": [
         "cpe:/o:suse:linux_enterprise_server:12",
     ],
     "sle15": [
         "cpe:/o:suse:linux_enterprise_server:15",
         "cpe:/o:suse:linux_enterprise_desktop:15",
-    ],
-    "ubuntu1404": [
-        "cpe:/o:canonical:ubuntu_linux:14.04",
     ],
     "ubuntu1604": [
         "cpe:/o:canonical:ubuntu_linux:16.04",
@@ -340,18 +290,18 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos", "example"]
 
 MULTI_PLATFORM_MAPPING = {
-    "multi_platform_debian": ["debian8", "debian9", "debian10"],
+    "multi_platform_debian": ["debian9", "debian10"],
     "multi_platform_example": ["example"],
     "multi_platform_fedora": ["fedora"],
     "multi_platform_opensuse": ["opensuse"],
     "multi_platform_ol": ["ol7", "ol8"],
-    "multi_platform_ocp": ["ocp3", "ocp4"],
+    "multi_platform_ocp": ["ocp4"],
     "multi_platform_rhcos": ["rhcos4"],
     "multi_platform_rhel": ["rhel6", "rhel7", "rhel8"],
     "multi_platform_rhosp": ["rhosp10", "rhosp13"],
     "multi_platform_rhv": ["rhv4"],
-    "multi_platform_sle": ["sle11", "sle12", "sle15"],
-    "multi_platform_ubuntu": ["ubuntu1404", "ubuntu1604", "ubuntu1804"],
+    "multi_platform_sle": ["sle12", "sle15"],
+    "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804"],
     "multi_platform_wrlinux": ["wrlinux8", "wrlinux1019"],
 }
 
@@ -496,9 +446,20 @@ XCCDF_PLATFORM_TO_CPE = {
     "pam": "cpe:/a:pam",
     "login_defs": "cpe:/a:login_defs",
     "sssd": "cpe:/a:sssd",
+    "sssd-ldap": "cpe:/a:sssd-ldap",
     "systemd": "cpe:/a:systemd",
     "yum": "cpe:/a:yum",
     "zipl": "cpe:/a:zipl",
+    "net-snmp": "cpe:/a:net-snmp",
+}
+
+# Default platform to package mapping
+XCCDF_PLATFORM_TO_PACKAGE = {
+  "grub2": "grub2-common",
+  "login_defs": "login",
+  "sssd": "sssd-common",
+  "zipl": "s390utils-base",
+  "sssd-ldap": None,  # Force package check wrapping skip
 }
 
 # _version_name_map = {

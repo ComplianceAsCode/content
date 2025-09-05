@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="apt_sources_list_official" version="1">
-    <metadata>
-      <title>Only official, up-to-date distribution repositories should be used</title>
-      <affected family="unix">
-        <platform>multi_platform_debian</platform>
-      </affected>
-      <description>Official distribution repositories contain up-to-date distribution security and functional patches.</description>
-    </metadata>
+    {{{ oval_metadata("Official distribution repositories contain up-to-date distribution security and functional patches.") }}}
     <criteria comment="Match sources.list distribution repositories usage" operator="AND">      
       <criterion comment="Check /etc/apt/sources(.d/.+).list file for base" test_ref="test_apt_sources_list_base_official" />
       <criterion comment="Check /etc/apt/sources(.d/.+).list file for security" test_ref="test_apt_sources_list_security_official" />

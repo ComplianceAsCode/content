@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_pci-dss
 # remediation = bash
 
 echo "-w /var/log/tallylog -p wa -k logins" >> /etc/audit/rules.d/logins.rules

@@ -1,14 +1,7 @@
 <def-group>
   <definition class="compliance"
   id="network_ipv6_default_gateway" version="1">
-    <metadata>
-      <title>Manually Assign IPv6 Router Address</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Define default gateways for IPv6 traffic</description>
-    </metadata>
+    {{{ oval_metadata("Define default gateways for IPv6 traffic") }}}
     <criteria operator="OR">
       {{%- if product == "rhel6" -%}}
       <extend_definition comment="IPv6 disabled or..."
