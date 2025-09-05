@@ -13,9 +13,9 @@ rationale: |-
 severity: low
 
 identifiers:
-    cce@rhel7: CCE-80274-4
     cce@rhel8: CCE-82758-4
     cce@rhel9: CCE-90832-7
+    cce@rhel10: CCE-87815-7
     cce@sle12: CCE-92253-4
     cce@sle15: CCE-91373-1
 
@@ -36,7 +36,6 @@ template:
     name: service_disabled
     vars:
         servicename: snmpd
-        packagename@debian10: snmpd
         packagename@debian11: snmpd
         packagename@debian12: snmpd
         packagename: net-snmp

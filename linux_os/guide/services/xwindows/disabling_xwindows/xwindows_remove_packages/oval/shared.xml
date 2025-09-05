@@ -8,7 +8,7 @@
         definition_ref="package_xorg-x11-server-common_removed" />
       <criterion comment="package xorg-x11-server-utils is removed"
         test_ref="package_xorg-x11-server-utils_removed" />
-{{% if product not in ["rhel7", "ol7"] %}}
+{{% if product not in ["ol7"] %}}
       <criterion comment="package xorg-x11-server-Xwayland is removed"
         test_ref="package_xorg-x11-server-Xwayland_removed" />
 {{% endif %}}
@@ -17,7 +17,7 @@
 
   {{{ oval_test_package_removed(package='xorg-x11-server-Xorg', test_id='package_xorg-x11-server-Xorg_removed') }}}
   {{{ oval_test_package_removed(package='xorg-x11-server-utils', test_id='package_xorg-x11-server-utils_removed') }}}
-{{% if product not in ["rhel7", "ol7"] %}}
+{{% if product not in ["ol7"] %}}
   {{{ oval_test_package_removed(package='xorg-x11-server-Xwayland', test_id='package_xorg-x11-server-Xwayland_removed') }}}
 {{% endif %}}
 

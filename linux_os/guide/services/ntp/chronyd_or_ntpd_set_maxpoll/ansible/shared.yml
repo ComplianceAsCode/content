@@ -11,14 +11,14 @@
     path: /etc/ntp.conf
   register: ntp_conf_exist_result
 
-- name: "{{{ rule_title }}} - Update the Maxpoll Values in /etc/ntp.conf"
+- name: "{{{ rule_title }}} - Update the maxpoll Values in /etc/ntp.conf"
   ansible.builtin.replace:
     path: /etc/ntp.conf
     regexp: '^(server.*maxpoll)[ ]+[0-9]+(.*)$'
     replace: '\1 {{ var_time_service_set_maxpoll }}\2'
   when: ntp_conf_exist_result.stat.exists
 
-- name: "{{{ rule_title }}} - Set the Maxpoll Values in /etc/ntp.conf"
+- name: "{{{ rule_title }}} - Set the maxpoll Values in /etc/ntp.conf"
   ansible.builtin.replace:
     path: /etc/ntp.conf
     regexp: '(^server\s+((?!maxpoll).)*)$'
@@ -34,29 +34,39 @@
     path: {{{ chrony_conf_path }}}
   register: chrony_conf_exist_result
 
-- name: "{{{ rule_title }}} - Set Chrony Path Facts"
-  ansible.builtin.set_fact:
-    chrony_path: {{{ chrony_conf_path }}}
+- name: "{{{ rule_title }}} - Update the maxpoll Values in {{{ chrony_conf_path }}}"
+  ansible.builtin.replace:
+    path: "{{{ chrony_conf_path }}}"
+    regexp: '^((?:server|pool|peer).*maxpoll)[ ]+[0-9]+(.*)$'
+    replace: '\1 {{ var_time_service_set_maxpoll }}\2'
+  when: chrony_conf_exist_result.stat.exists
 
-- name: "{{{ rule_title }}} - Get Conf Files from {{ chrony_path | dirname }}"
+- name: "{{{ rule_title }}} - Set the maxpoll Values in {{{ chrony_conf_path }}}"
+  ansible.builtin.replace:
+    path: "{{{ chrony_conf_path }}}"
+    regexp: '(^(?:server|pool|peer)\s+((?!maxpoll).)*)$'
+    replace: '\1 maxpoll {{ var_time_service_set_maxpoll }}\n'
+  when: chrony_conf_exist_result.stat.exists
+
+- name: "{{{ rule_title }}} - Get Conf Files from {{{ chrony_d_path }}}"
   ansible.builtin.find:
-    path: "{{ chrony_path | dirname }}"
+    path: "{{{ chrony_d_path }}}"
     patterns: '*.conf'
     file_type: file
-  register: chrony_conf_files
+  register: chrony_d_conf_files
 
-- name: "{{{ rule_title }}} - Update the Maxpoll Values in {{{ chrony_conf_path }}}"
+- name: "{{{ rule_title }}} - Update the maxpoll Values in {{{ chrony_d_path }}}"
   ansible.builtin.replace:
     path: "{{ item.path }}"
     regexp: '^((?:server|pool|peer).*maxpoll)[ ]+[0-9]+(.*)$'
     replace: '\1 {{ var_time_service_set_maxpoll }}\2'
-  loop: '{{ chrony_conf_files.files }}'
-  when: chrony_conf_files.matched
+  loop: '{{ chrony_d_conf_files.files }}'
+  when: chrony_d_conf_files.matched
 
-- name: "{{{ rule_title }}} - Set the Maxpoll Values in {{{ chrony_conf_path }}}"
+- name: "{{{ rule_title }}} - Set the maxpoll Values in {{{ chrony_d_path }}}"
   ansible.builtin.replace:
     path: "{{ item.path }}"
     regexp: '(^(?:server|pool|peer)\s+((?!maxpoll).)*)$'
     replace: '\1 maxpoll {{ var_time_service_set_maxpoll }}\n'
-  loop: '{{ chrony_conf_files.files }}'
-  when: chrony_conf_files.matched
+  loop: '{{ chrony_d_conf_files.files }}'
+  when: chrony_d_conf_files.matched

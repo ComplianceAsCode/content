@@ -25,10 +25,8 @@ XCCDF12_NS = ssg.constants.XCCDF12_NS
 oval_ns = ssg.constants.oval_namespace
 
 CENTOS_NOTICE_ELEMENT = ssg.xml.ElementTree.fromstring(ssg.constants.CENTOS_NOTICE)
-SL_NOTICE_ELEMENT = ssg.xml.ElementTree.fromstring(ssg.constants.SL_NOTICE)
 
 CENTOS_WARNING = 'centos_warning'
-SL_WARNING = 'sl_warning'
 
 
 def parse_args():
@@ -36,8 +34,6 @@ def parse_args():
     parser = OptionParser(usage=usage)
     parser.add_option("--enable-centos", dest="centos", default=False,
                       action="store_true", help="Enable CentOS")
-    parser.add_option("--enable-sl", dest="sl", default=False,
-                      action="store_true", help="Enable Scientific Linux")
     parser.add_option("-i", "--input", dest="input_content", default=False,
                       action="store",
                       help="INPUT can be XCCDF or Source data stream")
@@ -55,13 +51,6 @@ def parse_args():
     )
 
     (options, args) = parser.parse_args()
-
-    if options.centos and options.sl:
-        sys.stderr.write(
-            "Cannot enable two derivative OS(s) at the same time\n"
-        )
-        parser.print_help()
-        sys.exit(1)
 
     if not options.output and not options.input_content:
         parser.print_help()
@@ -84,12 +73,6 @@ def main():
         warning = CENTOS_WARNING
         derivative = "CentOS"
 
-    if options.sl:
-        mapping = ssg.constants.RHEL_SL_CPE_MAPPING
-        notice = SL_NOTICE_ELEMENT
-        warning = SL_WARNING
-        derivative = "Scientific Linux"
-
     tree = ssg.xml.open_xml(options.input_content)
     root = tree.getroot()
 
@@ -111,6 +94,9 @@ def main():
             # intended to test content that will get into RHEL
             ssg.build_derivatives.profile_handling(benchmark, namespace)
         if not ssg.build_derivatives.add_cpes(benchmark, namespace, mapping):
+            import pprint
+            pprint.pprint(namespace)
+            pprint.pprint(mapping)
             raise RuntimeError(
                 "Could not add derivative OS CPEs to Benchmark '%s'."
                 % (benchmark)

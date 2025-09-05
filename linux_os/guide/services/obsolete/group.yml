@@ -15,7 +15,7 @@ description: |-
     If it remains absolutely necessary to run one of
     these services for legacy reasons, care should be taken to restrict
     the service as much as possible, for instance by configuring host
-    {{% if product == "rhel7" %}}
+    {{% if "rhel" in product %}}
     firewall software such as <tt>firewalld</tt> to restrict access to the
     {{% else %}}
     firewall software such as <tt>iptables</tt> to restrict access to the

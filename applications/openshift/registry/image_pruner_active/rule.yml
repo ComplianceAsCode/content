@@ -37,7 +37,7 @@ ocil_clause: 'ImagePruner is not active'
 ocil: |-
   Ensure that the imagepruner is configured and is not in a suspended state.
   <pre>oc get imagepruners.imageregistry.operator.openshift.io/cluster -o jsonpath='{.spec}{"\n"}'</pre
-  The output should be non-empty and the <tt>.spec.suspend</tt> field should not be set to false.
+  The output should be non-empty and the <tt>.spec.suspend</tt> field should be set to false.
 
 severity: medium
 

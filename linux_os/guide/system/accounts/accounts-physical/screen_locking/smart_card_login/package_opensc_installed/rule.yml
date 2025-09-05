@@ -25,9 +25,9 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-80568-9
     cce@rhel8: CCE-80846-9
     cce@rhel9: CCE-83595-9
+    cce@rhel10: CCE-86898-4
 
 references:
     disa: CCI-001954,CCI-001953
@@ -54,6 +54,7 @@ template:
         pkgname@ubuntu1604: opensc-pkcs11
         pkgname@ubuntu1804: opensc-pkcs11
         pkgname@ubuntu2004: opensc-pkcs11
+        pkgname@ubuntu2204: opensc-pkcs11
 
 fixtext: |-
     {{% if 'ubuntu' not in product %}}

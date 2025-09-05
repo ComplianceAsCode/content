@@ -1,4 +1,4 @@
-{{%- if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
+{{%- if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15", "slmicro5" ,"ubuntu2004", "ubuntu2204"] %}}
   {{%- set perm_x="-F perm=x " %}}
 {{%- endif %}}
 
@@ -35,10 +35,11 @@ severity: medium
 
 identifiers:
     cce@rhcos4: CCE-82607-3
-    cce@rhel7: CCE-80402-1
     cce@rhel8: CCE-80738-8
     cce@rhel9: CCE-83764-1
+    cce@rhel10: CCE-89601-9
     cce@sle15: CCE-85717-7
+    cce@slmicro5: CCE-93609-6
 
 references:
     cis-csc: 1,12,13,14,15,16,2,3,5,6,7,8,9

@@ -3,7 +3,7 @@
 # platform = Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
 # variables = var_password_pam_remember=5,var_password_pam_remember_control_flag=requisite
 
-if authselect list-features minimal | grep -q with-pwhistory; then
+if authselect list-features sssd | grep -q with-pwhistory; then
     # There is no easy way to skip this test scenario in systems with "with-pwhistory" feature.
     # In these systems, if the controls of a existing feature are modified in authselect profiles,
     # this impacts directly in the feature behaviour and is strongly not recommended. In any case,

@@ -32,7 +32,7 @@ def parse_args():
     p.add_argument(
         "--product-yaml",
         help="YAML file with information about the product we are building. "
-        "e.g.: ~/scap-security-guide/rhel7/product.yml "
+        "e.g.: ~/scap-security-guide/rhel9/product.yml "
         "needed for autodetection of profile root"
     )
     p.add_argument(
@@ -54,7 +54,7 @@ def parse_args():
     p.add_argument(
         "--thin-ds-components-dir",
         help="Directory to store CPE OVAL for thin data stream. (off: to disable)"
-        "e.g.: ~/scap-security-guide/build/rhel7/thin_ds_component/"
+        "e.g.: ~/scap-security-guide/build/rhel9/thin_ds_component/"
         "Fake profiles are used to create thin DS. Components are generated for each profile."
         "The minimal cpe will be generated from the minimal XCCDF, "
         "which is in the same directory.",

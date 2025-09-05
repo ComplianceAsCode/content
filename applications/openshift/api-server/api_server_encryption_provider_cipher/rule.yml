@@ -29,8 +29,9 @@ description: |-
     to restore from an etcd backup.
     </p>
     <p>
-    To ensure the correct cipher, set the encryption type <tt>aescbc</tt> in the
-    <tt>apiserver</tt> object which configures the API server itself.
+    To ensure the correct cipher, set the encryption type to <tt>aescbc</tt> or
+    <tt>aesgcm</tt> in the <tt>apiserver</tt> object which configures the API
+    server itself.
     <pre>
     spec:
       encryption:
@@ -49,7 +50,7 @@ rationale: |-
     sensitive in nature and should be encrypted at rest to avoid any
     disclosures. Where etcd encryption is used, it is important to ensure that the
     appropriate set of encryption providers is used. Currently, <tt>aescbc</tt>
-    is the only type supported by OCP.
+    and <tt>aesgcm</tt> are the only types supported by OCP.
 
 identifiers:
   cce@ocp4: CCE-83585-0
@@ -65,14 +66,15 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: '<tt>aescbc</tt> is not configured as the encryption provider'
+ocil_clause: '<tt>aescbc</tt> or <tt>aesgcm</tt> is not configured as the encryption provider'
 
 ocil: |-
-    OpenShift supports encryption of data at rest of etcd datastore, but it is up to the
-    customer to configure. The asecbc cipher is used. No other ciphers are supported. Keys
-    are stored on the filesystem of the master and automatically rotated.
-    Run the following command to review the Encrypted status condition for the OpenShift
-    API server to verify that its resources were successfully encrypted:
+    OpenShift supports encryption of data at rest of etcd datastore, but it is
+    up to the customer to configure. The asecbc and aesgcm ciphers are
+    available for use within OpenShift. Keys are stored on the filesystem of
+    the master and automatically rotated. Run the following command to review
+    the Encrypted status condition for the OpenShift API server to verify that its
+    resources were successfully encrypted:
     <pre>
     # encrypt the etcd datastore
     $ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{.status}{"\n"}{.reason}{"\n"}{.message}{"\n"}{end}'
@@ -82,7 +84,7 @@ ocil: |-
     progress. Wait a few minutes and try again.
     To display the encryption configured, run the following command:
     <pre>$ oc get --raw {{.var_apiserver_encryption_path}} | jq {{.var_apiserver_encryption_filter}} </pre>
-    If the output does not list <tt>aescbc</tt>, the encryption is not configured correctly.
+    If the output does not list <tt>aescbc</tt> or <tt>aesgcm</tt>, the encryption is not configured correctly.
 
 warnings:
 - general: |-

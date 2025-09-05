@@ -1,6 +1,6 @@
 documentation_complete: true
 
-{{% if "ubuntu" in product or "debian" in product %}}
+{{% if "ubuntu" in product or "debian" in product or "sle" in product %}}
     {{% set target_perms_octal="0640" %}}
     {{% set target_perms="-rw-r-----" %}}
 {{% else %}}
@@ -21,9 +21,9 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-83416-8
     cce@rhel8: CCE-83417-6
     cce@rhel9: CCE-83935-7
+    cce@rhel10: CCE-87423-0
     cce@sle12: CCE-91698-1
     cce@sle15: CCE-91328-5
 
@@ -52,11 +52,12 @@ template:
     vars:
         filepath: /etc/shadow-
         filemode: '0000'
-        filemode@debian10: '0640'
         filemode@debian11: '0640'
         filemode@debian12: '0640'
         filemode@ubuntu1604: '0640'
         filemode@ubuntu1804: '0640'
         filemode@ubuntu2004: '0640'
         filemode@ubuntu2204: '0640'
+        filemode@sle12: '0640'
+        filemode@sle15: '0640'
         missing_file_pass: 'true'

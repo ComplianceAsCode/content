@@ -782,9 +782,9 @@ controls:
       - l2_workstation
     status: automated
     rules:
-      - package_avahi_removed
-    related_rules:
       - service_avahi-daemon_disabled
+    related_rules:
+      - package_avahi_removed
 
   - id: 2.2.3
     title: Ensure dhcp server services are not in use (Automated)
@@ -883,9 +883,9 @@ controls:
       - l1_server
     status: automated
     rules:
-      - package_cups_removed
-    related_rules:
       - service_cups_disabled
+    related_rules:
+      - package_cups_removed
 
   - id: 2.2.12
     title: Ensure rpcbind services are not in use (Automated)
@@ -2020,6 +2020,7 @@ controls:
     rules:
       - set_password_hashing_algorithm_systemauth
       - set_password_hashing_algorithm_passwordauth
+      - var_password_hashing_algorithm_pam=sha512
 
   - id: 4.4.3.4.4
     title: Ensure pam_unix includes use_authtok (Automated)
@@ -2042,6 +2043,7 @@ controls:
       - set_password_hashing_algorithm_libuserconf
       - set_password_hashing_algorithm_logindefs
       - var_password_hashing_algorithm=SHA512
+      - var_password_hashing_algorithm_pam=sha512
 
   - id: 4.5.1.2
     title: Ensure password expiration is 365 days or less (Automated)

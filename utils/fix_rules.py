@@ -476,7 +476,7 @@ def fix_int_reference(file_contents, yaml_contents):
 
 
 def sort_rule_subkeys(file_contents, yaml_contents):
-    return ssg.rule_yaml.sort_section_keys(None, file_contents, TO_SORT)
+    return ssg.rule_yaml.sort_section_keys(None, file_contents, TO_SORT, sort_func=_human_sort)
 
 
 def _fixed_file_contents(path, file_contents, product_yaml, func):

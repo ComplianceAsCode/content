@@ -23,9 +23,9 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-82042-3
     cce@rhel8: CCE-80813-9
     cce@rhel9: CCE-83941-5
+    cce@rhel10: CCE-88433-8
     cce@sle12: CCE-91479-6
     cce@sle15: CCE-85804-3
 
@@ -65,7 +65,6 @@ template:
     vars:
         filepath: /etc/shadow
         filemode: '0000'
-        filemode@debian10: '0640'
         filemode@debian11: '0640'
         filemode@debian12: '0640'
         filemode@sle12: '0640'

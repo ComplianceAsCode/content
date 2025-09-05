@@ -4,43 +4,10 @@
 # complexity = low
 # disruption = low
 
-function remove_{{{ COMPONENT }}}_{{{ PARAM }}}_configuration {
-    local COMPONENT_PARAM_CONFIG
-    mapfile -t COMPONENT_PARAM_CONFIG < <(ls {{{ DROPIN_DIR }}}/*.conf)
-    COMPONENT_PARAM_CONFIG+=("{{{ MASTER_CFG_FILE }}}")
-
-    for f in "${COMPONENT_PARAM_CONFIG[@]}"
-    do
-        sed -i "/^\s*{{{ PARAM }}}\s*=\s*/d" "$f"
-        # make sure file has newline at the end
-        sed -i -e '$a\' "$f"
-    done
-    sed -i -e '$a\' "{{{ MASTER_CFG_FILE }}}"
-}
-
-function {{{ COMPONENT }}}_{{{ PARAM }}}_add_configuration {
-    local COMPONENT_PARAM_REMEDY_CFG
-    mkdir -p "{{{ DROPIN_DIR }}}"
-    COMPONENT_PARAM_REMEDY_CFG="{{{ DROPIN_DIR }}}/oscap-remedy.conf"
-
-    if [ ! -f "${COMPONENT_PARAM_REMEDY_CFG}" ] ; then
-        touch "${COMPONENT_PARAM_REMEDY_CFG}"
-    fi
-    cp "${COMPONENT_PARAM_REMEDY_CFG}" "${COMPONENT_PARAM_REMEDY_CFG}.bak"
-    # Insert before the line matching the regex '^#\s*Compress'.
-    line_number="$(LC_ALL=C grep -n "^#\s*{{{ PARAM }}}" "${COMPONENT_PARAM_REMEDY_CFG}.bak" | LC_ALL=C sed 's/:.*//g')"
-    if [ -z "$line_number" ]; then
-       # There was no match of '^#\s*{{{ PARAM }}}', insert at
-       # the end of the file.
-       printf '%s\n' "{{{ PARAM }}}={{{ VALUE }}}" >> "${COMPONENT_PARAM_REMEDY_CFG}"
-    else
-        head -n "$(( line_number - 1 ))" "${COMPONENT_PARAM_REMEDY_CFG}.bak" > "${COMPONENT_PARAM_REMEDY_CFG}"
-        printf '%s\n' "{{{ PARAM }}}={{{ VALUE }}}" >> "{{{ MASTER_CFG_FILE }}}"
-        tail -n "+$(( line_number ))" "${COMPONENT_PARAM_REMEDY_CFG}.bak" >> "${COMPONENT_PARAM_REMEDY_CFG}"
-    fi
-    # Clean up after ourselves.
-    rm "${COMPONENT_PARAM_REMEDY_CFG}.bak"
-}
-
-remove_{{{ COMPONENT }}}_{{{ PARAM }}}_configuration
-{{{ COMPONENT }}}_{{{ PARAM }}}_add_configuration
+{{{ bash_ensure_ini_config(
+    files=DROPIN_DIR+"/complianceascode_hardening.conf "+DROPIN_DIR+"/*.conf "+MASTER_CFG_FILE,
+    section=SECTION,
+    key=PARAM,
+    value=VALUE,
+    no_quotes=NO_QUOTES
+) }}}

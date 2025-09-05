@@ -5,10 +5,11 @@ metadata:
         - marcusburghardt
         - vojtapolasek
 
-title: 'ANSSI-BP-028 (intermediary)'
+title: 'DRAFT - ANSSI-BP-028 (intermediary)'
 
 description: |-
-    This profile contains configurations that align to ANSSI-BP-028 v2.0 at the intermediary hardening level.
+    This is a draft profile for experimental purposes.
+    This draft profile contains configurations that align to ANSSI-BP-028 v2.0 at the intermediary hardening level.
 
     ANSSI is the French National Information Security Agency, and stands for Agence nationale de la sécurité des systèmes d'information.
     ANSSI-BP-028 is a configuration recommendation for GNU/Linux systems.
@@ -38,3 +39,4 @@ selections:
   - '!sudo_add_ignore_dot'
   - '!sudo_add_env_reset'
   - '!ensure_oracle_gpgkey_installed'
+  - '!security_patches_up_to_date'

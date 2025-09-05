@@ -63,7 +63,6 @@ yaml.add_constructor(_mapping_tag, dict_constructor)
 # End arcaduf gist
 
 PRODUCT_ALLOWLIST = set([
-    "rhel7",
     "rhel8",
     "rhel9",
 ])

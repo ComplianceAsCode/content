@@ -1,5 +1,5 @@
 product: openembedded
-full_name: OpenEmbedded 
+full_name: OpenEmbedded
 type: platform
 
 benchmark_id: OPENEMBEDDED
@@ -22,3 +22,13 @@ cpes:
       name: "cpe:/o:openembedded:poky:"
       title: "OpenEmbedded Poky reference distribution"
       check_id: installed_OS_is_poky
+
+  - petalinux:
+      name: "cpe:/o:openembedded:petalinux:"
+      title: "OpenEmbedded petalinux distribution"
+      check_id: installed_OS_is_petalinux
+
+  - harden:
+      name: "cpe:/o:openembedded:harden:"
+      title: "OpenEmbedded Harden distribution"
+      check_id: installed_OS_is_oeharden

@@ -2,7 +2,7 @@
 # packages = authselect
 # platform = multi_platform_fedora,Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
 
-if authselect list-features minimal | grep -q with-silent-lastlog; then
+if authselect list-features sssd | grep -q with-silent-lastlog; then
     authselect select sssd --force
     authselect enable-feature with-silent-lastlog
 else

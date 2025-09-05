@@ -1,13 +1,12 @@
 # platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
 
-#Set nftables family name
 {{{ bash_instantiate_variables("var_nftables_family") }}}
-
-#Set nftables table name
 {{{ bash_instantiate_variables("var_nftables_table") }}}
 
-IS_TABLE=$(nft list tables)
-if [ -z "$IS_TABLE" ]
-then
+if ! nft list table $var_nftables_family $var_nftables_table; then
   nft create table "$var_nftables_family" "$var_nftables_table"
 fi

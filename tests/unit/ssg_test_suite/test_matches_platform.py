@@ -4,53 +4,53 @@ from ssg_test_suite import common
 
 
 def test_simple_match():
-    scenario_platforms = ["Red Hat Enterprise Linux 7"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:7"}
+    scenario_platforms = ["Red Hat Enterprise Linux 10"]
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:10"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is True
 
 
 def test_simple_no_match():
-    scenario_platforms = ["Red Hat Enterprise Linux 7"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:8"}
+    scenario_platforms = ["Red Hat Enterprise Linux 10"]
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:9"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is False
 
 
 def test_multi_platform_all():
     scenario_platforms = ["multi_platform_all"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:7"}
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:10"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is True
 
 
 def test_multi_platform_match():
     scenario_platforms = ["multi_platform_rhel"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:7"}
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:10"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is True
 
 
 def test_multi_platform_no_match():
     scenario_platforms = ["multi_platform_fedora"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:7"}
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:10"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is False
 
 
 def test_list_simple_match_first():
-    scenario_platforms = ["Red Hat Enterprise Linux 7",
-                          "Red Hat Enterprise Linux 8"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:7"}
+    scenario_platforms = ["Red Hat Enterprise Linux 9",
+                          "Red Hat Enterprise Linux 10"]
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:9"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is True
 
 
 def test_list_simple_match_second():
-    scenario_platforms = ["Red Hat Enterprise Linux 7",
-                          "Red Hat Enterprise Linux 8"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:8"}
+    scenario_platforms = ["Red Hat Enterprise Linux 9",
+                          "Red Hat Enterprise Linux 10"]
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:10"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is True
 
 
 def test_list_simple_no_match():
-    scenario_platforms = ["Red Hat Enterprise Linux 7",
-                          "Red Hat Enterprise Linux 8"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:9"}
+    scenario_platforms = ["Red Hat Enterprise Linux 8",
+                          "Red Hat Enterprise Linux 9"]
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:10"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is False
 
 
@@ -93,33 +93,25 @@ def test_list_combined_no_match():
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is False
 
 
-def test_simple_multiple_benchmark_cpes():
-    scenario_platforms = ["Red Hat Enterprise Linux 7"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:7",
-                      "cpe:/o:redhat:enterprise_linux:7::client",
-                      "cpe:/o:redhat:enterprise_linux:7::computenode"}
-    assert common.matches_platform(scenario_platforms, benchmark_cpes) is True
-
-
 def test_simple_multiple_unrelated_benchmark_cpes():
-    scenario_platforms = ["Red Hat Enterprise Linux 7"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:7",
-                      "cpe:/o:redhat:enterprise_linux:8"}
+    scenario_platforms = ["Red Hat Enterprise Linux 10"]
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:9",
+                      "cpe:/o:redhat:enterprise_linux:10"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is True
 
 
 def test_simple_multiple_bogus_benchmark_cpes():
-    scenario_platforms = ["Red Hat Enterprise Linux 7"]
+    scenario_platforms = ["Red Hat Enterprise Linux 10"]
     benchmark_cpes = {"cpe:/o:abcdef:ghijklm:42"
                       "cpe:/o:zzzzz:xxxx:77",
-                      "cpe:/o:redhat:enterprise_linux:7"}
+                      "cpe:/o:redhat:enterprise_linux:10"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is True
 
 def test_simple_multiple_bogus_benchmark_cpes_no_match():
     scenario_platforms = ["Fedora"]
     benchmark_cpes = {"cpe:/o:abcdef:ghijklm:42"
                       "cpe:/o:zzzzz:xxxx:77",
-                      "cpe:/o:redhat:enterprise_linux:7"}
+                      "cpe:/o:redhat:enterprise_linux:10"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is False
 
 
@@ -127,13 +119,13 @@ def test_multiple_multiple_bogus_benchmark_cpes_no_match():
     scenario_platforms = ["Fedora", "openSUSE"]
     benchmark_cpes = {"cpe:/o:abcdef:ghijklm:42"
                       "cpe:/o:zzzzz:xxxx:77",
-                      "cpe:/o:redhat:enterprise_linux:7"}
+                      "cpe:/o:redhat:enterprise_linux:10"}
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is False
 
 
 def test_typo():
-    scenario_platforms = ["Rrd Hat Enterprise Linux 7"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:7"}
+    scenario_platforms = ["Rrd Hat Enterprise Linux 10"]
+    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:10"}
     with pytest.raises(ValueError):
         common.matches_platform(scenario_platforms, benchmark_cpes)
 

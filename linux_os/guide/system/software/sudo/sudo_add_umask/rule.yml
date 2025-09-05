@@ -6,7 +6,7 @@ title: 'Ensure sudo umask is appropriate - sudo umask'
 description: |-
     The sudo <tt>umask</tt> tag, when specified, will be added the to the user's umask in the
     command environment.
-{{%- if product in ["rhel7", "rhel8"] %}}
+{{%- if 'rhel' in product %}}
     On {{{ full_name }}}, the default <tt>umask</tt> value is 0022.
 {{% endif %}}
     The umask should be configured by making sure that the <tt>umask={{{ xccdf_value("var_sudo_umask") }}}</tt> tag exists in
@@ -21,7 +21,6 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-83859-9
     cce@rhel8: CCE-83860-7
     cce@sle12: CCE-91498-6
     cce@sle15: CCE-91189-1

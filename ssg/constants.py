@@ -42,8 +42,9 @@ product_directories = [
     'alinux3',
     'anolis8',
     'anolis23',
+    'al2023',
     'chromium',
-    'debian10', 'debian11', 'debian12',
+    'debian11', 'debian12',
     'example',
     'eks',
     'fedora',
@@ -55,9 +56,9 @@ product_directories = [
     'openeuler2203',
     'opensuse',
     'openembedded',
-    'rhel7', 'rhel8', 'rhel9', 'rhel10',
+    'rhel8', 'rhel9', 'rhel10',
     'rhv4',
-    'sle12', 'sle15',
+    'sle12', 'sle15', 'slmicro5',
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004', 'ubuntu2204',
     'uos20',
 ]
@@ -87,6 +88,7 @@ kubernetes_system = "urn:xccdf:fix:script:kubernetes"
 blueprint_system = "urn:redhat:osbuild:blueprint"
 puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
+kickstart_system = "urn:xccdf:fix:script:kickstart"
 cce_uri = "https://ncp.nist.gov/cce"
 stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
 ccn_ns = "https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html"
@@ -153,6 +155,7 @@ FIX_TYPE_TO_SYSTEM = {
     "blueprint": blueprint_system,
     "puppet": puppet_system,
     "anaconda": anaconda_system,
+    "kickstart": kickstart_system,
 }
 
 for prefix, url_part in OVAL_SUB_NS.items():
@@ -200,8 +203,8 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Alibaba Cloud Linux 3": "alinux3",
     "Anolis OS 8": "anolis8",
     "Anolis OS 23": "anolis23",
+    "Amazon Linux 2023": "al2023",
     "Chromium": "chromium",
-    "Debian 10": "debian10",
     "Debian 11": "debian11",
     "Debian 12": "debian12",
     "Example": "example",
@@ -216,20 +219,20 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Oracle Linux 9": "ol9",
     "openEuler 2203": "openeuler2203",
     "openSUSE": "opensuse",
-    "Red Hat Enterprise Linux 7": "rhel7",
     "Red Hat Enterprise Linux 8": "rhel8",
     "Red Hat Enterprise Linux 9": "rhel9",
     "Red Hat Enterprise Linux 10": "rhel10",
     "Red Hat Virtualization 4": "rhv4",
     "SUSE Linux Enterprise 12": "sle12",
     "SUSE Linux Enterprise 15": "sle15",
+    "SUSE Linux Enterprise Micro 5": "slmicro5",
     "Ubuntu 16.04": "ubuntu1604",
     "Ubuntu 18.04": "ubuntu1804",
     "Ubuntu 20.04": "ubuntu2004",
     "Ubuntu 22.04": "ubuntu2204",
     "UnionTech OS Server 20": "uos20",
     "OpenEmbedded": "openembedded",
-    "Not Applicable" : "example"
+    "Not Applicable": "example",
 }
 
 
@@ -281,12 +284,13 @@ REFERENCES = dict(
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "openeuler",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
-                       "example", "eks", "alinux", "uos", "anolis", "openembedded"]
+                       "example", "eks", "alinux", "uos", "anolis", "openembedded", "al",
+                       "slmicro"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_alinux": ["alinux2", "alinux3"],
     "multi_platform_anolis": ["anolis8", "anolis23"],
-    "multi_platform_debian": ["debian10", "debian11", "debian12"],
+    "multi_platform_debian": ["debian11", "debian12"],
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
@@ -295,23 +299,20 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_ol": ["ol7", "ol8", "ol9"],
     "multi_platform_ocp": ["ocp4"],
     "multi_platform_rhcos": ["rhcos4"],
-    "multi_platform_rhel": ["rhel7", "rhel8", "rhel9", "rhel10"],
+    "multi_platform_rhel": ["rhel8", "rhel9", "rhel10"],
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle12", "sle15"],
+    "multi_platform_slmicro": ["slmicro5"],
     "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204"],
     "multi_platform_uos": ["uos20"],
     "multi_platform_openembedded": ["openembedded"],
+    "multi_platform_al": ["al2023"],
 }
 
 RHEL_CENTOS_CPE_MAPPING = {
-    "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:centos:centos:7",
     "cpe:/o:redhat:enterprise_linux:8": "cpe:/o:centos:centos:8",
     "cpe:/o:redhat:enterprise_linux:9": "cpe:/o:centos:centos:9",
     "cpe:/o:redhat:enterprise_linux:10": "cpe:/o:centos:centos:10",
-}
-
-RHEL_SL_CPE_MAPPING = {
-    "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:scientificlinux:scientificlinux:7",
 }
 
 CENTOS_NOTICE = \
@@ -337,46 +338,6 @@ CENTOS_NOTICE = \
     "</ul>\n" \
     "\n" \
     "<p>Members of the <i>CentOS</i> community are invited to participate in " \
-    "<a href=\"http://open-scap.org\">OpenSCAP</a> and " \
-    "<a href=\"https://github.com/ComplianceAsCode/content\">" \
-    "SCAP Security Guide</a> development. Bug reports and patches " \
-    "can be sent to GitHub: " \
-    "<a href=\"https://github.com/ComplianceAsCode/content\">" \
-    "https://github.com/ComplianceAsCode/content</a>. " \
-    "The mailing list is at " \
-    "<a href=\"https://fedorahosted.org/mailman/listinfo/scap-security-guide\">" \
-    "https://fedorahosted.org/mailman/listinfo/scap-security-guide</a>" \
-    ".</p>" \
-    "</div>"
-
-SL_NOTICE = \
-    "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n" \
-    "<p>This benchmark is a direct port of a <i>SCAP Security Guide </i> " \
-    "benchmark developed for <i>Red Hat Enterprise Linux</i>. It has been " \
-    "modified through an automated process to remove specific dependencies " \
-    "on <i>Red Hat Enterprise Linux</i> and to function with <i>Scientifc Linux</i>. " \
-    "The result is a generally useful <i>SCAP Security Guide</i> benchmark " \
-    "with the following caveats:</p>\n" \
-    "<ul>\n" \
-    "<li><i>Scientifc Linux</i> is not an exact copy of " \
-    "<i>Red Hat Enterprise Linux</i>. Scientific Linux is a Linux distribution " \
-    "produced by <i>Fermi National Accelerator Laboratory</i>. It is a free and " \
-    "open source operating system based on <i>Red Hat Enterprise Linux</i> and aims " \
-    "to be \"as close to the commercial enterprise distribution as we can get it.\" " \
-    "There may be configuration differences that produce false positives and/or " \
-    "false negatives. If this occurs please file a bug report.</li>\n" \
-    "\n" \
-    "<li><i>Scientifc Linux</i> is derived from the free and open source software " \
-    "made available by Red Hat, but it is not produced, maintained or supported by <i>Red Hat</i>. " \
-    "<i>Scientifc Linux</i> has its own build system, compiler options, patchsets, " \
-    "and is a community supported, non-commercial operating system. " \
-    "<i>Scientifc Linux</i> does not inherit " \
-    "certifications or evaluations from <i>Red Hat Enterprise Linux</i>. As " \
-    "such, some configuration rules (such as those requiring " \
-    "<i>FIPS 140-2</i> encryption) will continue to fail on <i>Scientifc Linux</i>.</li>\n" \
-    "</ul>\n" \
-    "\n" \
-    "<p>Members of the <i>Scientifc Linux</i> community are invited to participate in " \
     "<a href=\"http://open-scap.org\">OpenSCAP</a> and " \
     "<a href=\"https://github.com/ComplianceAsCode/content\">" \
     "SCAP Security Guide</a> development. Bug reports and patches " \
@@ -467,11 +428,13 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'openeuler': 'openEuler',
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
+    'slmicro': 'SUSE Linux Enterprise Micro',
     'example': 'Example',
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',
     'rhcos': 'Red Hat Enterprise Linux CoreOS',
     'eks': 'Amazon Elastic Kubernetes Service',
+    'al': 'Amazon Linux',
     'openembedded': 'OpenEmbedded',
 }
 
@@ -486,6 +449,7 @@ DEFAULT_FAILLOCK_PATH = '/var/run/faillock'
 DEFAULT_SSH_DISTRIBUTED_CONFIG = 'false'
 DEFAULT_PRODUCT = 'example'
 DEFAULT_CHRONY_CONF_PATH = '/etc/chrony.conf'
+DEFAULT_CHRONY_D_PATH = '/etc/chrony.d/'
 DEFAULT_AUDISP_CONF_PATH = '/etc/audit'
 DEFAULT_SYSCTL_REMEDIATE_DROP_IN_FILE = 'false'
 
@@ -511,11 +475,9 @@ class OvalNamespaces:
 OVAL_NAMESPACES = OvalNamespaces()
 
 DERIVATIVES_PRODUCT_MAPPING = {
-    "centos7": "rhel7",
     "centos8": "rhel8",
     "cs9": "rhel9",
     "cs10": "rhel10",
-    "sl7": "rhel7"
 }
 
 BENCHMARKS = {

@@ -14,9 +14,9 @@ rationale:
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-85929-8
     cce@rhel8: CCE-85930-6
     cce@rhel9: CCE-85931-4
+    cce@rhel10: CCE-87639-1
     cce@sle12: CCE-92261-7
     cce@sle15: CCE-91377-2
 
@@ -47,9 +47,9 @@ ocil: |-
 template:
     name: systemd_dropin_configuration
     vars:
-        component: journald
         master_cfg_file: /etc/systemd/journald.conf
         dropin_dir: {{{ journald_conf_dir_path }}}
+        section: Journal
         param: Compress
         value: yes
         no_quotes: 'true'

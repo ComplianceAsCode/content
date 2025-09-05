@@ -444,6 +444,7 @@ controls:
       - firewalld_loopback_traffic_restricted
       - firewalld_loopback_traffic_trusted
       - service_firewalld_enabled
+      - package_firewalld_installed
       - service_nftables_disabled
       - set_firewalld_default_zone
 
@@ -746,6 +747,7 @@ controls:
       - set_password_hashing_algorithm_passwordauth
       - set_password_hashing_algorithm_logindefs
       - var_password_hashing_algorithm=SHA512
+      - var_password_hashing_algorithm_pam=sha512
 
   - id: A.23.SEC-RHEL1
     title: The Installation And Use of Any Device Connected to the Equipment is Controlled

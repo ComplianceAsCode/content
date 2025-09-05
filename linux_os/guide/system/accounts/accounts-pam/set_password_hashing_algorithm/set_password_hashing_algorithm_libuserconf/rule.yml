@@ -1,33 +1,30 @@
 documentation_complete: true
 
-
 title: 'Set Password Hashing Algorithm in /etc/libuser.conf'
 
 description: |-
-    In <tt>/etc/libuser.conf</tt>, add or correct the following line in its
-    <tt>[defaults]</tt> section to ensure the system will use the SHA-512
+    In <tt>/etc/libuser.conf</tt>, add or correct the following line in its <tt>[defaults]</tt>
+    section to ensure the system will use the {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}
     algorithm for password hashing:
-    <pre>crypt_style = sha512</pre>
+    <pre>crypt_style = {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}</pre>
 
 rationale: |-
-    Passwords need to be protected at all times, and encryption is the standard
-    method for protecting passwords. If passwords are not encrypted, they can
-    be plainly read (i.e., clear text) and easily compromised. Passwords that
-    are encrypted with a weak algorithm are no more protected than if they are
-    kepy in plain text.
+    Passwords need to be protected at all times, and encryption is the standard method for
+    protecting passwords. If passwords are not encrypted, they can be plainly read
+    (i.e., clear text) and easily compromised. Passwords that are encrypted with a weak algorithm
+    are no more protected than if they are kept in plain text.
     <br /><br />
-    This setting ensures user and group account administration utilities are
-    configured to store only encrypted representations of passwords.
-    Additionally, the <tt>crypt_style</tt> configuration option ensures the use
-    of a strong hashing algorithm that makes password cracking attacks more
-    difficult.
+    This setting ensures user and group account administration utilities are configured to store
+    only encrypted representations of passwords. Additionally, the <tt>crypt_style</tt>
+    configuration option in <tt>/etc/libuser.conf</tt> ensures the use of a strong hashing
+    algorithm that makes password cracking attacks more difficult.
 
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-82038-1
     cce@rhel8: CCE-80891-5
     cce@rhel9: CCE-88865-1
+    cce@rhel10: CCE-90325-2
     cce@sle12: CCE-92220-3
     cce@sle15: CCE-85798-7
 
@@ -46,7 +43,6 @@ references:
     pcidss: Req-8.2.1
     srg: SRG-OS-000073-GPOS-00041
     stigid@ol7: OL07-00-010220
-    stigid@rhel7: RHEL-07-010220
 
 ocil_clause: crypt_style is not set to sha512
 
@@ -61,16 +57,16 @@ ocil: |-
 
     $ sudo grep -i crypt_style /etc/libuser.conf
 
-    crypt_style = sha512
+    crypt_style = {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}
 
 platform: package[libuser]
 
 fixtext: |-
-    Configure {{{ full_name }}} to use the SHA-512 algorithm for password hashing.
+    Configure {{{ full_name }}} to use the {{{ xccdf_value("var_password_hashing_algorithm_pam") }}} algorithm for password hashing.
 
     Add or change the following line in the "[default]" section of "/etc/libuser.conf" file:
 
-    crypt_style = sha512
+    crypt_style = {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}
 
 {{% if product in ['ol9', 'rhel9'] -%}}
 srg_requirement: '{{{ full_name }}} must be configured so that user and group account administration utilities are configured to store only encrypted representations of passwords.'

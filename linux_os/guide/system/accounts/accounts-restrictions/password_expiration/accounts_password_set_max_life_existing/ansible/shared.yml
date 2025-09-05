@@ -11,7 +11,7 @@
   register: user_names
 
 - name: Change the maximum time period between password changes
-{{% if product in ["rhel7", "ol7"] %}}
+{{% if product in ["ol7"] %}}
   ansible.builtin.command:
     cmd: chage -M {{ var_accounts_maximum_age_login_defs }} {{ item }}
 {{% elif product in ["sle12","sle15"] %}}

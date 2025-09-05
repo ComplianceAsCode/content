@@ -1,0 +1,47 @@
+documentation_complete: true
+
+title: 'SLEM 5 must use the default pam_tally2 tally directory.'
+
+description: |-
+    This rule configures the system to use default pam_tally2 tally directory
+
+rationale: |-
+    By limiting the number of failed logon attempts, the risk of unauthorized
+    system access via user password guessing, otherwise known as
+    brute-force attacks, is reduced. Limits are imposed by locking the account.
+
+severity: medium
+
+identifiers:
+    cce@slmicro5: CCE-94089-0
+
+references:
+    disa: CCI-000044
+    nist@slmicro5: AC-7(a)
+    srg: SRG-OS-000021-GPOS-00005
+
+ocil_clause: 'file= is set to /var/log/tallylog or missing'
+
+ocil: |-
+    Verify the location of the default tallylog file for the pam_tally2 module,
+    with the following command
+    <pre>$sudo grep -R pam_tally2 /etc/pam.d/login | grep "file=" | grep -v "^#"</pre>
+
+fixtext: |-
+    Configure SLEM 5 to use the default pam_tally2 tally directory
+    Modify the content of <tt>/etc/pam.d/login</tt>, like this:
+    <pre>sudo sed -ri 's/\s+file=\S+\s+/ /g' /etc/pam.d/login</tt> </pre>
+
+platform: package[pam]
+
+template:
+    name: pam_options
+    vars:
+      path: /etc/pam.d/login
+      type: auth
+      control_flag: required
+      module: pam_tally2.so
+      arguments:
+        - argument: file
+          argument_match: .*
+          remove_argument: file=

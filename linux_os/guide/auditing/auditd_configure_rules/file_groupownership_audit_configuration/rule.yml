@@ -18,9 +18,9 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-88896-6
     cce@rhel8: CCE-86405-8
     cce@rhel9: CCE-86446-2
+    cce@rhel10: CCE-88238-1
 
 references:
     cis@ubuntu2204: 4.1.4.7
@@ -40,6 +40,6 @@ template:
             - /etc/audit/
             - /etc/audit/rules.d/
         file_regex:
-            - ^audit(\.rules|d\.conf)$
+            - ^.*audit(\.rules|d\.conf)$
             - ^.*\.rules$
         gid_or_name: '0'

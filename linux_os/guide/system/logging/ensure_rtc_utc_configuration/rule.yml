@@ -33,7 +33,7 @@ ocil_clause: 'the system real-time clock is not configured to use UTC as its tim
 
 ocil: |-
     To verify that the system real-time clock is set to UTC or GMT, run the following command:
-    {{% if product in ['sle12','sle15'] %}}
+    {{% if product in ['sle12','sle15'] or 'ubuntu' in product %}}
     <pre># timedatectl status | grep -i "time zone"</pre>
     <pre># Time zone: UTC (UTC, +0000)</pre>
     {{% else %}}

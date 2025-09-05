@@ -21,6 +21,8 @@ description: |-
 
 selections:
     - anssi:all:enhanced
+    - var_password_hashing_algorithm=SHA512
+    - var_password_pam_unix_rounds=65536
     # Following rules once had a prodtype incompatible with the rhel9 product
     - '!partition_for_opt'
     - '!accounts_passwords_pam_tally2_deny_root'
@@ -52,3 +54,9 @@ selections:
     - '!file_groupowner_efi_user_cfg'
     - '!file_owner_efi_user_cfg'
     - '!file_permissions_efi_user_cfg'
+    # disable R45: Enable AppArmor security profiles
+    - '!apparmor_configured'
+    - '!all_apparmor_profiles_enforced'
+    - '!grub2_enable_apparmor'
+    - '!package_apparmor_installed'
+    - '!package_pam_apparmor_installed'

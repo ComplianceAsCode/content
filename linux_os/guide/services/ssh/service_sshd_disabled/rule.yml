@@ -32,7 +32,6 @@ severity: high
 
 identifiers:
     cce@rhcos4: CCE-86189-8
-    cce@rhel7: CCE-80217-3
 
 ocil_clause: |-
     {{{ ocil_clause_service_disabled(service="sshd") }}}
@@ -47,7 +46,6 @@ template:
         packagename: openssh-server
         packagename@opensuse: openssh
         packagename@sle12: openssh
-        daemonname@debian10: ssh
         daemonname@debian11: ssh
         daemonname@ubuntu1604: ssh
         daemonname@ubuntu1804: ssh

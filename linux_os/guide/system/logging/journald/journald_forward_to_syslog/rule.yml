@@ -15,7 +15,6 @@ rationale:
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-85994-2
     cce@rhel8: CCE-85995-9
     cce@rhel9: CCE-85996-7
     cce@sle12: CCE-92260-9
@@ -47,9 +46,9 @@ ocil: |-
 template:
     name: systemd_dropin_configuration
     vars:
-        component: journald
         master_cfg_file: /etc/systemd/journald.conf
         dropin_dir: {{{ journald_conf_dir_path }}}
+        section: Journal
         param: ForwardToSyslog
         value: yes
         no_quotes: 'true'

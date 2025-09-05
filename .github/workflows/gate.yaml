@@ -10,25 +10,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
   cancel-in-progress: true
 jobs:
-  validate-centos7:
-    name: Build, Test on CentOS 7 (Container)
-    runs-on: ubuntu-latest
-    container:
-      image: centos:7
-    steps:
-      - name: Install Deps
-        run: yum install -y cmake make openscap-utils PyYAML libxslt xml-common python-jinja2 python-setuptools
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Build
-        run: |-
-          ./build_product rhel7 rhel8 rhel9 --derivatives
-        env:
-          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
-      - name: Test
-        run: ctest -j2 --output-on-failure -E unique-stigids
-        working-directory: ./build
-
   validate-sle:
     name: Build, Test on SLE 15 (Container)
     runs-on: ubuntu-latest
@@ -52,9 +33,9 @@ jobs:
       - name: Install deps python
         run: pip install pytest pytest-cov
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Build
-        run: ./build_product alinux2 alinux3 chromium fedora firefox rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004 ubuntu2204 uos20
+        run: ./build_product sle12 sle15
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -68,9 +49,9 @@ jobs:
       - name: Install Deps
         run: zypper install -y git cmake make openscap-utils python3-PyYAML bats python3-pytest python3-pytest-cov python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools ShellCheck
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Build
-        run: ./build_product sle12 sle15
+        run: ./build_product opensuse
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
       - name: Test
@@ -78,26 +59,26 @@ jobs:
         working-directory: ./build
 
   validate-debian:
-    name: Build, Test on Debian 10 (Container)
+    name: Build, Test on Debian 12 (Container)
     runs-on: ubuntu-latest
     container:
-      image: debian:buster
+      image: debian:bookworm
     steps:
       - name: Update the package repository
         run: apt-get update
       - name: Install Deps
-        run: apt-get install -y ansible-lint bats check cmake libopenscap8 libxml2-utils ninja-build python3-github python3-pip xsltproc libxslt1-dev libxml2-dev zlib1g-dev
+        run: apt-get install -y ansible-lint bats check cmake openscap-scanner openscap-utils libxml2-utils ninja-build python3-pip xsltproc libxslt1-dev libxml2-dev zlib1g-dev python3.11-venv
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Upgrade pip python
-        run: pip3 install --upgrade pip
+        run: pip install --upgrade pip --break-system-packages
       - name: Install deps python
-        run: pip3 install -r requirements.txt -r test-requirements.txt --ignore-installed PyYAML
+        run: pip3 install -r requirements.txt -r test-requirements.txt --ignore-installed PyYAML PyGithub --break-system-packages
       - name: Build
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
-          ./build_product debian10 debian11
+          ./build_product debian11 debian12
       - name: Test
         working-directory: ./build
         run: ctest -j2 --output-on-failure -E unique-stigids
@@ -109,14 +90,14 @@ jobs:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Install deps python
         run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_SCE_ENABLED:BOOL=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
-          ./build_product ubuntu2004 ubuntu2204
+          ./build_product ubuntu1604 ubuntu1804 ubuntu2004
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -128,14 +109,14 @@ jobs:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Install deps python
         run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_SCE_ENABLED:BOOL=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
-          ./build_product ubuntu2004 ubuntu2204
+          ./build_product ubuntu2204
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -144,19 +125,20 @@ jobs:
     name: Build, Test on Fedora Rawhide (Container)
     runs-on: ubuntu-latest
     container:
-      image: fedora:rawhide
+      image: registry.fedoraproject.org/fedora:rawhide
     steps:
       -   name: Run Updates
           run: dnf update -y
       -   name: Install Deps
-          run: dnf install -y cmake make openscap-utils bats ansible python3-pip ShellCheck git python3-devel gcc-c++
+          run: dnf install -y cmake make openscap-utils bats ansible python3-pip ShellCheck git python3-devel gcc-c++ libxml2-devel libxslt-devel
       -   name: Checkout
-          uses: actions/checkout@v4
+          uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       -   name: Install deps python
           run: pip install -r requirements-base.txt -r test-requirements.txt
       -   name: Build
           run: |-
             ./build_product \
+                al2023 \
                 alinux2 \
                 alinux3 \
                 anolis23 \
@@ -164,12 +146,12 @@ jobs:
                 chromium \
                 fedora \
                 firefox \
+                ocp4 \
                 rhcos4 \
-                rhel7 \
                 rhel8 \
                 rhel9 \
+                rhel10 \
                 uos20 \
-                ocp4
           env:
             ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
       -   name: Test
@@ -195,7 +177,7 @@ jobs:
           shell: powershell
           run: "msiexec.exe /norestart /q /i ${{ github.workspace }}\\openscap-win\\OpenSCAP-${env:OPENSCAP_VERSION}-win64.msi"
         - name: Checkout
-          uses: actions/checkout@v4
+          uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         - name: Install Python Deps
           run: pip install -r requirements.txt -r test-requirements.txt
         - name: Build

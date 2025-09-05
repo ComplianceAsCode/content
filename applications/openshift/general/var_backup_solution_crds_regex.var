@@ -1,0 +1,15 @@
+documentation_complete: true
+
+title: 'Known CRDs which are provided by backup solutions'
+
+description: |-
+   'A regular expression that lists all CRDs that are known to be part of a backup solution'
+
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+   default: '^DataProtectionApplication\\.oadp\\.openshift\\.io$|^backups\\.velero\\.io$|^policies\\.config\\.kio\\.kasten\\.io$'

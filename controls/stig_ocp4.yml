@@ -457,7 +457,7 @@ controls:
   - high
   title: OpenShift must disable root and terminate network connections.
   rules:
-  - oauthclient_inactivity_timeout
+  - oauth_or_oauthclient_inactivity_timeout
   - sshd_disable_root_login
   status: automated
 
@@ -526,7 +526,7 @@ controls:
     session at the end of the session, or as follows: for in-band management sessions
     (privileged sessions), the session must be terminated after 10 minutes of inactivity.'
   rules:
-  - oauthclient_inactivity_timeout
+  - oauth_or_oauthclient_inactivity_timeout
   - sshd_disable_root_login
   status: automated
 

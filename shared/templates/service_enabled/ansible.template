@@ -3,19 +3,19 @@
 # strategy = enable
 # complexity = low
 # disruption = low
-- name: Enable service {{{ SERVICENAME }}}
+- name: "{{{ rule_title }}} - Enable service {{{ SERVICENAME }}}"
   block:
   - name: Gather the package facts
     package_facts:
       manager: auto
 
 {{%- if init_system == "systemd" %}}
-  - name: Enable service {{{ SERVICENAME }}}
-    systemd:
+  - name: "{{{ rule_title }}} - Enable Service {{{ SERVICENAME }}}"
+    ansible.builtin.systemd:
       name: "{{{ DAEMONNAME }}}"
-      enabled: "yes"
+      enabled: true
       state: "started"
-      masked: "no"
+      masked: false
     when:
     - '"{{{ PACKAGENAME }}}" in ansible_facts.packages'
 {{%- else %}}

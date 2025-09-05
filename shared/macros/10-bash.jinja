@@ -299,18 +299,7 @@ fi
 {{% else %}}
 {{%- set target_path="/etc/systemd/coredump.conf" -%}}
 {{% endif %}}
-{{{ set_config_file(
-        path=target_path,
-        parameter=parameter,
-        value=value,
-        create=true,
-        insert_after="",
-        insert_before="",
-        insensitive=true,
-        separator="=",
-        separator_regex="\s*=\s*",
-        prefix_regex="^\s*")
-    }}}
+{{{ bash_ensure_ini_config(target_path, section="Coredump", key=parameter, value=value) }}}
 {{%- endmacro -%}}
 
 
@@ -621,7 +610,14 @@ then
         sed -i "\\|\\[{{{ path }}}\\]|a\\{{{ key }}}=${escaped_value}" "${DCONFFILE}"
 fi
 
+{{%- if 'ubuntu' in product %}}
+# Make sure permissions allow regular users to read dconf settings.
+# Also define the umask to avoid `dconf update` changing permissions.
+chmod -R u=rwX,go=rX /etc/dconf/db
+(umask 0022 && dconf update)
+{{%- else %}}
 dconf update
+{{%- endif %}}
 {{%- endmacro -%}}
 
 
@@ -648,7 +644,14 @@ then
     echo "/{{{ key }}}/{{{ setting }}}" >> "/etc/dconf/db/{{{ db }}}/locks/{{{ lock_file }}}"
 fi
 
+{{%- if 'ubuntu' in product %}}
+# Make sure permissions allow regular users to read dconf settings.
+# Also define the umask to avoid `dconf update` changing permissions.
+chmod -R u=rwX,go=rX /etc/dconf/db
+(umask 0022 && dconf update)
+{{%- else %}}
 dconf update
+{{%- endif %}}
 {{%- endmacro -%}}
 
 
@@ -783,7 +786,7 @@ authselect enable-feature {{{ feature }}}
 
 #}}
 {{%- macro bash_enable_pam_faillock_directly_in_pam_files() -%}}
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product %}}
 pam_file="/etc/pam.d/common-auth"
 if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "$pam_file" ; then
     # insert at the top
@@ -879,7 +882,7 @@ PAM_FILE_PATH="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE_NAME"
 #}}
 {{%- macro bash_pam_lastlog_enable_showfailed(pam_file, control, after_match='') -%}}
 if [ -f /usr/bin/authselect ]; then
-    if authselect list-features minimal | grep -q with-silent-lastlog; then
+    if authselect list-features sssd | grep -q with-silent-lastlog; then
         {{{ bash_disable_authselect_feature('with-silent-lastlog') | indent(8) }}}
     else
         {{# the following macro ensures the PAM_FILE_PATH variable is properly set #}}
@@ -912,7 +915,7 @@ fi
 #}}
 {{%- macro bash_pam_pwhistory_enable(pam_file, control, after_match='') -%}}
 if [ -f /usr/bin/authselect ]; then
-    if authselect list-features minimal | grep -q with-pwhistory; then
+    if authselect list-features sssd | grep -q with-pwhistory; then
         {{{ bash_enable_authselect_feature('with-pwhistory') | indent(8) }}}
     else
         {{# the following macro ensures the PAM_FILE_PATH variable is properly set #}}
@@ -988,7 +991,7 @@ fi
 #}}
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
 {{% if 'ubuntu' in product %}}
-AUTH_FILES=("/etc/pam.d/common-auth" "/etc/pam.d/password-auth")
+AUTH_FILES=("/etc/pam.d/common-auth")
 {{% else %}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
 {{% endif %}}
@@ -1309,7 +1312,7 @@ done
 #}}
 {{%- macro bash_package_installed(pkgname) -%}}
 {{%- if pkg_manager == "apt_get" -%}}
-dpkg-query --show --showformat='${db:Status-Status}\n' "{{{ pkgname }}}" 2>/dev/null | grep -q installed
+dpkg-query --show --showformat='${db:Status-Status}\n' "{{{ pkgname }}}" 2>/dev/null | grep -q ^installed
 {{%- else -%}}
 rpm --quiet -q "{{{ pkgname }}}"
 {{%- endif -%}}
@@ -1779,7 +1782,7 @@ Part of the grub2_bootloader_argument template.
 
 #}}
 {{% macro grub2_bootloader_argument_remediation(arg_name, arg_name_value) %}}
-{{% if 'ubuntu' in product or 'debian' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
+{{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15'] %}}
 {{{ update_etc_default_grub_manually(arg_name, arg_name_value) }}}
 {{% endif -%}}
 {{{ grub_command("add", arg_name_value) }}}
@@ -1810,7 +1813,7 @@ Part of the grub2_bootloader_argument_absent template.
 
 #}}
 {{% macro grub2_bootloader_argument_absent_remediation(arg_name) %}}
-{{% if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
+{{% if 'ubuntu' in product or product in ['ol7', 'sle12', 'sle15'] %}}
 {{{ update_etc_default_grub_manually_absent(arg_name) }}}
 {{% endif -%}}
 {{{ grub_command("remove", arg_name) }}}
@@ -2083,7 +2086,7 @@ Example macro invocation(s)::
 :type value: str
 
 #}}
-{{% macro bash_ensure_ini_config(files, section, key, value) -%}}
+{{% macro bash_ensure_ini_config(files, section, key, value, no_quotes=true) -%}}
 found=false
 
 # set value in all files if they contain section or key
@@ -2094,12 +2097,20 @@ for f in $(echo -n "{{{ files }}}"); do
 
     # find key in section and change value
     if grep -qzosP "[[:space:]]*\[{{{ section }}}\]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}" "$f"; then
-            sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}} = {{{ value }}}/" "$f"
+{{% if no_quotes %}}
+            sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value }}}/" "$f"
+{{% else %}}
+            sed -i 's/{{{ key }}}[^(\n)]*/{{{ key }}}="{{{ value }}}"/' "$f"
+{{% endif %}}
             found=true
 
     # find section and add key = value to it
     elif grep -qs "[[:space:]]*\[{{{ section }}}\]" "$f"; then
-            sed -i "/[[:space:]]*\[{{{ section }}}\]/a {{{ key }}} = {{{ value }}}" "$f"
+{{% if no_quotes %}}
+            sed -i "/[[:space:]]*\[{{{ section }}}\]/a {{{ key }}}={{{ value }}}" "$f"
+{{% else %}}
+            sed -i '/[[:space:]]*\[{{{ section }}}\]/a {{{ key }}}="{{{ value }}}"' "$f"
+{{% endif %}}
             found=true
     fi
 done
@@ -2108,7 +2119,11 @@ done
 if ! $found ; then
     file=$(echo "{{{ files }}}" | cut -f1 -d ' ')
     mkdir -p "$(dirname "$file")"
-    echo -e "[{{{ section }}}]\n{{{ key }}} = {{{ value }}}" >> "$file"
+{{% if no_quotes %}}
+    echo -e "[{{{ section }}}]\n{{{ key }}}={{{ value }}}" >> "$file"
+{{% else %}}
+    echo -e '[{{{ section }}}]\n{{{ key }}}="{{{ value }}}"' >> "$file"
+{{% endif %}}
 fi
 {{%- endmacro %}}
 
@@ -2144,22 +2159,22 @@ fi
 
 #}}
 {{%- macro bash_ensure_pam_module_line(pam_file, group, control, module, after_match='') -%}}
-if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*' "{{{ pam_file }}}"; then
+if ! grep -qP "^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*" "{{{ pam_file }}}"; then
     # Line matching group + control + module was not found. Check group + module.
     if [ "$(grep -cP '^\s*{{{ group }}}\s+.*\s+{{{ module }}}\s*' "{{{ pam_file }}}")" -eq 1 ]; then
         # The control is updated only if one single line matches.
-        sed -i -E --follow-symlinks 's/^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)/\1'"{{{ control }}}"' \2/' "{{{ pam_file }}}"
+        sed -i -E --follow-symlinks "s/^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)/\1{{{ control }}} \2/" "{{{ pam_file }}}"
     else
         {{%- if after_match == '' %}}
-        echo '{{{ group }}}    '"{{{ control }}}"'    {{{ module }}}' >> "{{{ pam_file }}}"
+        echo "{{{ group }}}    {{{ control }}}    {{{ module }}}" >> "{{{ pam_file }}}"
         {{%- elif after_match == 'BOF'  %}}
-        sed -i --follow-symlinks '1i {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
+        sed -i --follow-symlinks "1i {{{ group }}}     {{{ control }}}    {{{ module }}}" "{{{ pam_file }}}"
         {{%- else %}}
         LAST_MATCH_LINE=$(grep -nP "{{{ after_match }}}" "{{{ pam_file }}}" | tail -n 1 | cut -d: -f 1)
         if [ ! -z $LAST_MATCH_LINE ]; then
-            sed -i --follow-symlinks $LAST_MATCH_LINE' a {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
+            sed -i --follow-symlinks $LAST_MATCH_LINE" a {{{ group }}}     {{{ control }}}    {{{ module }}}" "{{{ pam_file }}}"
         else
-            echo '{{{ group }}}    '"{{{ control }}}"'    {{{ module }}}' >> "{{{ pam_file }}}"
+            echo "{{{ group }}}    {{{ control }}}    {{{ module }}}" >> "{{{ pam_file }}}"
         fi
         {{%- endif %}}
     fi
@@ -2189,17 +2204,17 @@ fi
 {{%- macro bash_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='') -%}}
 {{{ bash_ensure_pam_module_line(pam_file, group, control, module, after_match) }}}
 # Check the option
-if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*\s{{{ option }}}\b' "{{{ pam_file }}}"; then
+if ! grep -qP "^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*\s{{{ option }}}\b" "{{{ pam_file }}}"; then
     {{%- if value == '' %}}
-    sed -i -E --follow-symlinks '/\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}.*/ s/$/ {{{ option }}}/' "{{{ pam_file }}}"
+    sed -i -E --follow-symlinks "/\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}.*/ s/$/ {{{ option }}}/" "{{{ pam_file }}}"
     {{%- else %}}
-    sed -i -E --follow-symlinks '/\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "{{{ pam_file }}}"
+    sed -i -E --follow-symlinks "/\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}.*/ s/$/ {{{ option }}}={{{ value }}}/" "{{{ pam_file }}}"
     {{%- endif %}}
 {{%- if value == '' %}}
 fi
 {{%- else %}}
 else
-    sed -i -E --follow-symlinks 's/(\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s+.*)('"{{{ option }}}"'=)[[:alnum:]]+\s*(.*)/\1\2'"{{{ value }}}"' \3/' "{{{ pam_file }}}"
+    sed -i -E --follow-symlinks "s/(\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s+.*)({{{ option }}}=)[[:alnum:]]+\s*(.*)/\1\2{{{ value }}} \3/" "{{{ pam_file }}}"
 fi
 {{%- endif %}}
 {{%- endmacro -%}}
@@ -2222,11 +2237,11 @@ fi
 #}}
 {{%- macro bash_remove_pam_module_option(pam_file, group, control, module, option) -%}}
 {{%- if control == '' %}}
-if grep -qP '^\s*{{{ group }}}\s.*\b{{{ module }}}\s.*\b{{{ option }}}\b' "{{{ pam_file }}}"; then
-    sed -i -E --follow-symlinks 's/(.*{{{ group }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[[:alnum:]]*(.*)/\1\2/g' "{{{ pam_file }}}"
+if grep -qP "^\s*{{{ group }}}\s.*\b{{{ module }}}\s.*\b{{{ option }}}\b" "{{{ pam_file }}}"; then
+    sed -i -E --follow-symlinks "s/(.*{{{ group }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[[:alnum:]]*(.*)/\1\2/g" "{{{ pam_file }}}"
 {{%- else %}}
-if grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s.*\b{{{ option }}}\b' "{{{ pam_file }}}"; then
-    sed -i -E --follow-symlinks 's/(.*{{{ group }}}.*'"{{{ control }}}"'.*{{{ module }}}.*)\s{{{ option }}}=?[[:alnum:]]*(.*)/\1\2/g' "{{{ pam_file }}}"
+if grep -qP "^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s.*\b{{{ option }}}\b" "{{{ pam_file }}}"; then
+    sed -i -E --follow-symlinks "s/(.*{{{ group }}}.*{{{ control }}}.*{{{ module }}}.*)\s{{{ option }}}=?[[:alnum:]]*(.*)/\1\2/g" "{{{ pam_file }}}"
 {{%- endif %}}
 fi
 {{%- endmacro -%}}
@@ -2460,4 +2475,40 @@ while read -r user; do
     del+="/^${user}:/d;"
 done < <(awk -F: '($3 >= {{{ uid_min }}}) { print $1 }' /etc/passwd)
 sed -i "${del}" /etc/passwd
+{{%- endmacro -%}}
+
+{{#
+Macro for enabling dconf user profile in /etc/dconf/profile/<PROFILE>
+
+The macro adds the following lines to the profile:
+---
+user-db:user
+system-db:<DATABASE>
+---
+If the profile exists but does not contain the above lines, the
+lines will be inserted at the beginning of the profile.
+
+:param profile: name of dconf profile (e.g. user, gdm)
+:type profile: str
+:param database: name of dconf database (e.g. local, gdm)
+:type database: str
+#}}
+{{% macro bash_enable_dconf_user_profile(profile, database) -%}}
+
+mkdir -p /etc/dconf/profile
+dconf_profile_path=/etc/dconf/profile/{{{ profile }}}
+
+[[ -s "${dconf_profile_path}" ]] || echo > "${dconf_profile_path}"
+
+if ! grep -Pzq "(?s)^\s*user-db:user.*\n\s*system-db:{{{ database }}}" "${dconf_profile_path}"; then
+    sed -i --follow-symlinks "1s/^/user-db:user\nsystem-db:{{{ database }}}\n/" "${dconf_profile_path}"
+fi
+
+# Make sure the corresponding directories exist
+mkdir -p /etc/dconf/db/{{{ database }}}.d
+
+# Make sure permissions allow regular users to read dconf settings.
+# Also define the umask to avoid `dconf update` changing permissions.
+chmod -R u=rwX,go=rX /etc/dconf/profile
+(umask 0022 && dconf update)
 {{%- endmacro -%}}

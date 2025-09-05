@@ -1,0 +1,42 @@
+title: "Make sure the Security Profiles Operator is installed"
+
+description: |-
+    Security Profiles Operator provides a way to define secure computing (seccomp) profiles and
+    SELinux profiles as custom resources that are syncrhonized to every node in a given namespace.
+
+    Using security profiles can increase security at the container level in your cluster.
+    Seccomp security profiles list the syscalls a process can make, and SELinux security profiles
+    provide a label-based system that restricts access and usage of processes, applications, and
+    files.
+
+rationale: |-
+  An application that runs with privileges can be attacked to have its privileges exploited.
+  Confining applications limit the actions an attacker can perform when they are compromised.
+
+identifiers:
+  cce@ocp4: CCE-86168-2
+
+ocil_clause: 'the security profiles operator is not installed'
+
+ocil: |-
+  To check if the Security Profiles Operator is installed, run the following command:
+  <pre>oc get sub -nopenshift-security-profiles security-profiles-operator-sub -ojsonpath='{.status.installedCSV}'</pre>
+  the output should return the version of the CSV that represents the installed operator.
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/operators.coreos.com/v1alpha1/namespaces/openshift-security-profiles/subscriptions/security-profiles-operator-sub") | indent(4) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+      ocp_data: 'true'
+      filepath: /apis/operators.coreos.com/v1alpha1/namespaces/openshift-security-profiles/subscriptions/security-profiles-operator-sub
+      yamlpath: .status.installedCSV
+      values:
+      - value: security-profiles-operator\.v.*
+        operation: pattern match
+        type: string
+

@@ -1,7 +1,7 @@
 #!/bin/bash
 # packages = audit
 
-{{%- if product in ["rhel7", "ol7"] %}}
+{{%- if product in ["ol7"] %}}
 config_file="/etc/audisp/audispd.conf"
 {{%- else %}}
 config_file="/etc/audit/auditd.conf"

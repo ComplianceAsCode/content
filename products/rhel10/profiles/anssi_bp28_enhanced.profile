@@ -5,10 +5,11 @@ metadata:
         - marcusburghardt
         - vojtapolasek
 
-title: 'ANSSI-BP-028 (enhanced)'
+title: 'DRAFT - ANSSI-BP-028 (enhanced)'
 
 description: |-
-    This profile contains configurations that align to ANSSI-BP-028 v2.0 at the enhanced hardening level.
+    This is a draft profile for experimental purposes.
+    This draft profile contains configurations that align to ANSSI-BP-028 v2.0 at the enhanced hardening level.
 
     ANSSI is the French National Information Security Agency, and stands for Agence nationale de la sécurité des systèmes d'information.
     ANSSI-BP-028 is a configuration recommendation for GNU/Linux systems.
@@ -45,6 +46,7 @@ selections:
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
     - '!ensure_oracle_gpgkey_installed'
+    - '!security_patches_up_to_date'
     # RHEL10 unified the paths for grub2 files. These rules are selected in control file by R29.
     - '!file_groupowner_efi_grub2_cfg'
     - '!file_owner_efi_grub2_cfg'
@@ -52,3 +54,9 @@ selections:
     - '!file_groupowner_efi_user_cfg'
     - '!file_owner_efi_user_cfg'
     - '!file_permissions_efi_user_cfg'
+    # disable R45: Enable AppArmor security profiles
+    - '!apparmor_configured'
+    - '!all_apparmor_profiles_enforced'
+    - '!grub2_enable_apparmor'
+    - '!package_apparmor_installed'
+    - '!package_pam_apparmor_installed'

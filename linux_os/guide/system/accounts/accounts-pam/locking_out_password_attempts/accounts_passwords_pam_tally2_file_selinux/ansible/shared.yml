@@ -1,0 +1,15 @@
+# platform = multi_platform_slmicro5
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+
+- name: {{{ rule_title }}} - Set up SELinux context for /var/log/tallylog
+  ansible.builtin.shell: |-
+    if ! semanage fcontext -a -t faillog_t /var/log/tallylog; then
+      semanage fcontext -m -t faillog_t /var/log/tallylog
+    fi
+
+- name: {{{ rule_title }}} - Restore SELinux context on /var/log/tallylog
+  ansible.builtin.command: restorecon -R -v /var/log/tallylog

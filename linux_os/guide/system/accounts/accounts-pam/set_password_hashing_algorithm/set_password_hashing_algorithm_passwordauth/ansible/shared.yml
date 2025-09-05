@@ -4,4 +4,40 @@
 # complexity = low
 # disruption = medium
 
-{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/password-auth', 'password', 'sufficient', 'pam_unix.so', 'sha512', '', '') }}}
+{{%- set pam_file="/etc/pam.d/password-auth" %}}
+
+{{{ ansible_instantiate_variables("var_password_hashing_algorithm_pam") }}}
+{{{ ansible_ensure_pam_module_configuration(pam_file, 'password', 'sufficient', 'pam_unix.so', '{{ var_password_hashing_algorithm_pam }}', '', '') }}}
+
+- name: '{{{ rule_title }}} - Check if {{{ pam_file }}} File is Present'
+  ansible.builtin.stat:
+    path: {{{ pam_file }}}
+  register: result_pam_file_present
+
+- name: '{{{ rule_title }}} - Check The Proper Remediation For The System'
+  block:
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
+
+    - name: '{{{ rule_title }}} - Ensure That Only the Correct Hashing Algorithm Option For pam_unix.so Is Used in {{{ pam_file }}}'
+      ansible.builtin.replace:
+        dest: "{{ pam_file_path }}"
+        regexp: (^\s*password.*pam_unix\.so.*)\b{{ item }}\b\s*(.*)
+        replace: '\1\2'
+      when:
+        item != var_password_hashing_algorithm_pam
+      loop:
+        - 'sha512'
+        - 'yescrypt'
+        - 'gost_yescrypt'
+        - 'blowfish'
+        - 'sha256'
+        - 'md5'
+        - 'bigcrypt'
+      register: result_pam_hashing_options_removal
+
+    {{{ ansible_apply_authselect_changes() | indent(4) }}}
+      when:
+        - result_authselect_present.stat.exists
+        - result_pam_hashing_options_removal is changed
+  when:
+    - result_pam_file_present.stat.exists

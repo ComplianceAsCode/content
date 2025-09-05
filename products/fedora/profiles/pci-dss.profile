@@ -10,6 +10,7 @@ selections:
     - var_account_disable_post_pw_expiration=90
     - var_accounts_passwords_pam_faillock_deny=6
     - var_accounts_passwords_pam_faillock_unlock_time=1800
+    - var_password_hashing_algorithm_pam=sha512
     - var_password_pam_minlen=7
     - var_password_pam_minclass=2
     - var_accounts_maximum_age_login_defs=90

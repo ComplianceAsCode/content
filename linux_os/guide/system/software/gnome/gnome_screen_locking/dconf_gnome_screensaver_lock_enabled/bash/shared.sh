@@ -1,5 +1,10 @@
 # platform = multi_platform_all
 
+{{% if 'ubuntu' in product %}}
+{{{ bash_enable_dconf_user_profile(profile="user", database="local") }}}
+{{{ bash_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
+{{% endif %}}
+
 {{% if 'sle' in product %}}
 gsettings set org.gnome.desktop.lockdown disable-lock-screen false
 {{{ bash_dconf_settings("org/gnome/desktop/lockdown", "disable-lock-screen", "false", "local.d", "00-security-settings") }}}

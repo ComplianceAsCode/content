@@ -1,0 +1,32 @@
+documentation_complete: true
+
+
+title: 'Install libdnf-plugin-subscription-manager Package'
+
+description: |-
+    {{{ describe_package_install(package="libdnf-plugin-subscription-manager") }}}
+
+rationale: |-
+    This package provides plugins to interact with repositories and subscriptions
+    from the Red Hat entitlement platform; contains subscription-manager and
+    product-id plugins.
+
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-88703-4
+
+references:
+    ism: 0940,1144,1467,1472,1483,1493,1494,1495
+    ospp: FPT_TUD_EXT.1,FPT_TUD_EXT.2
+    srg: SRG-OS-000366-GPOS-00153
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="libdnf-plugin-subscription-manager") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: libdnf-plugin-subscription-manager

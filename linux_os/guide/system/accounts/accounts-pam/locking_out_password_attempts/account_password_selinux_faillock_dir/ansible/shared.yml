@@ -1,0 +1,45 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: {{{ rule_title }}} - Get directories from faillock
+  ansible.builtin.shell: |-
+    grep -oP '^\s*(?:auth.*pam_faillock.so.*)?dir\s*=\s*(\S+)' "{{ item }}" | sed -r 's/.*=\s*(\S+)/\1/'
+  register: faillock_output
+  with_items:
+    - /etc/security/faillock.conf
+    - /etc/pam.d/system-auth
+    - /etc/pam.d/password-auth
+
+- name: {{{ rule_title }}} - Create a list directories from faillock
+  ansible.builtin.set_fact:
+    list_faillock_dir: "{{ faillock_output.results | map(attribute='stdout_lines') | flatten }}"
+
+- name: {{{ rule_title }}} - Create directories for faillock
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  with_items: "{{ list_faillock_dir }}"
+  when: item != ""
+
+- name: {{{ rule_title }}} - Set up SELinux context for faillock
+  ansible.builtin.shell: |-
+    if ! semanage fcontext -a -t faillog_t "{{ item }}(/.*)?"; then
+      semanage fcontext -m -t faillog_t "{{ item }}(/.*)?"
+    fi
+  with_items: "{{ list_faillock_dir }}"
+  when: item != ""
+
+- name: {{{ rule_title }}} - Restore SELinux context
+  ansible.builtin.command: restorecon -R -v "{{ item }}"
+  with_items: "{{ list_faillock_dir }}"
+  when: item != ""
+
+- name: {{{ rule_title }}} - Verify pam_faillock.so configuration
+  ansible.builtin.debug:
+    msg: |-
+      "The pam_faillock.so dir option is not set in the system.
+      If this is not expected, make sure pam_faillock.so is properly configured."
+  when: list_faillock_dir | length == 0

@@ -17,6 +17,7 @@ rationale: |-
 severity: high
 
 references:
+    bsi: APP.4.4.A7
     cis@eks: 4.3.2
     cis@ocp4: 5.3.2
     nerc-cip: CIP-003-8 R4,CIP-003-8 R4.2,CIP-003-8 R5,CIP-003-8 R6,CIP-004-6 R2.2.4,CIP-004-6 R3,CIP-007-3 R2,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R6.1
@@ -26,15 +27,14 @@ references:
 
 {{% set networkpolicies_api_path = '/apis/networking.k8s.io/v1/networkpolicies' %}}
 {{% set namespaces_api_path = '/api/v1/namespaces' %}}
-{{% set networkpolicies_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default") | .metadata.namespace] | unique' %}}
-{{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default")]' %}}
-
+{{% set networkpolicies_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default" and ({{if ne .var_network_policies_namespaces_exempt_regex "None"}}.metadata.namespace | test("{{.var_network_policies_namespaces_exempt_regex}}") | not{{else}}true{{end}})) | .metadata.namespace] | unique' %}}
+{{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default" and ({{if ne .var_network_policies_namespaces_exempt_regex "None"}}.metadata.name | test("{{.var_network_policies_namespaces_exempt_regex}}") | not{{else}}true{{end}}))]' %}}
 platform: not ocp4-on-hypershift
 
 ocil_clause: 'Namespaced Network Policies needs review'
 
 # same as above except filters the names only. Used in OCIL only, not in the 'warnings attribute'
-{{% set non_ctlplane_namespaces_filter_names = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default") | .metadata.name ]' %}}
+{{% set non_ctlplane_namespaces_filter_names = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default" and ({{if ne .var_network_policies_namespaces_exempt_regex "None"}}.metadata.name | test("{{.var_network_policies_namespaces_exempt_regex}}") | not{{else}}true{{end}})) | .metadata.name ]' %}}
 
 ocil: |-
     Verify that the every non-control plane namespace has an appropriate
@@ -46,6 +46,8 @@ ocil: |-
     To get all the non-control plane namespaces with a NetworkPolicy, you can do the
     following command <tt>{{{ ocil_oc_pipe_jq_filter('networkpolicies', networkpolicies_for_non_ctlplane_namespaces_filter, all_namespaces=true) }}}</tt>
 
+    Namespaces matching the variable <tt>ocp4-var-network-policies-namespaces-exempt-regex</tt> regex are excluded from this check.
+    
     Make sure that the namespaces displayed in the commands of the commands match.
 
 warnings:

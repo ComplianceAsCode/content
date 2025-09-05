@@ -11,13 +11,14 @@ basic_properties_derived: true
 benchmark_id: OL-9
 benchmark_root: ../../linux_os/guide
 chrony_conf_path: /etc/chrony.conf
+chrony_d_path: /etc/chrony.d/
 cpes:
 - ol9:
     check_id: installed_OS_is_ol9
     name: cpe:/o:oracle:linux:9
     title: Oracle Linux 9
 cpes_root: ../../shared/applicability
-dconf_gdm_dir: gdm.d
+dconf_gdm_dir: local.d
 faillock_path: /var/log/faillock
 families:
 - rhel-like

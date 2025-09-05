@@ -7,12 +7,6 @@ What files will that be depends on the distribution, but for example on Fedora, 
 
 ## Installing from distribution packages
 
-### Red Hat Enterprise Linux 7
-
-```
-$ sudo yum -y install scap-security-guide
-```
-
 ### Fedora / Red Hat Enterprise Linux 8+
 ```
 $ sudo dnf -y install scap-security-guide

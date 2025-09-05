@@ -56,6 +56,7 @@ selections:
     - dconf_gnome_screensaver_lock_locked
     - package_ntpdate_removed
     - package_avahi_removed
+    - package_cups_removed
     - file_groupowner_efi_user_cfg
     - set_loopback_traffic
     - ntpd_specify_multiple_servers
@@ -553,3 +554,8 @@ selections:
     - sebool_polipo_session_users
     - sebool_cluster_manage_all_files
     - configure_firewalld_ports
+    - journald_forward_to_syslog
+    - rsyslog_filecreatemode
+    - set_nftables_table
+    - sshd_use_approved_ciphers
+    - configure_bashrc_exec_tmux

@@ -1,0 +1,64 @@
+<def-group>
+    <definition class="inventory"
+        id="installed_OS_is_slmicro5" version="1">
+        <metadata>
+            <title>SUSE Linux Enterprise Micro</title>
+            <affected family="unix">
+                <platform>multi_platform_all</platform>
+            </affected>
+            <reference ref_id="cpe:/o:suse:suse-microos:5.2"
+                source="CPE" />
+            <reference ref_id="cpe:/o:suse:sle-micro:5.3"
+                source="CPE" />
+            <reference ref_id="cpe:/o:suse:sle-micro:5.4"
+                source="CPE" />
+            <reference ref_id="cpe:/o:suse:sle-micro:5.5"
+                source="CPE" />
+            <description>The operating system installed on the system is
+                SUSE Linux Enterprise Micro.</description>
+        </metadata>
+        <criteria>
+            <criterion comment="Installed operating system is part of the unix family"
+                test_ref="test_slmicro5_unix_family" />
+            <criteria operator="OR">
+                <criterion comment="SUSE MicroOS 5.* is installed" test_ref="test_slmicroos5" />
+                <criterion comment="SLE Micro 5.* is installed" test_ref="test_slmicro5" />
+            </criteria>
+        </criteria>
+    </definition>
+
+    <ind:family_test check="all" check_existence="at_least_one_exists"
+        comment="installed OS part of unix family" id="test_slmicro5_unix_family" version="1">
+        <ind:object object_ref="obj_slmicro5_unix_family" />
+        <ind:state state_ref="state_slmicro5_unix_family" />
+    </ind:family_test>
+    <ind:family_state id="state_slmicro5_unix_family" version="1">
+        <ind:family>unix</ind:family>
+    </ind:family_state>
+    <ind:family_object id="obj_slmicro5_unix_family" version="1" />
+
+    <linux:rpminfo_test check="all" check_existence="at_least_one_exists"
+        comment="sle-micro-release is version 5" id="test_slmicroos5" version="1">
+        <linux:object object_ref="obj_slmicroos5" />
+        <linux:state state_ref="state_slmicroos5" />
+    </linux:rpminfo_test>
+    <linux:rpminfo_state id="state_slmicroos5" version="1">
+        <linux:version operation="pattern match">^5.*$</linux:version>
+    </linux:rpminfo_state>
+    <linux:rpminfo_object id="obj_slmicroos5" version="1">
+        <linux:name>SUSE-MicroOS-release</linux:name>
+    </linux:rpminfo_object>
+
+    <linux:rpminfo_test check="all" check_existence="at_least_one_exists"
+        comment="sle-micro-release is version 5" id="test_slmicro5" version="1">
+        <linux:object object_ref="obj_slmicro5" />
+        <linux:state state_ref="state_slmicro5" />
+    </linux:rpminfo_test>
+    <linux:rpminfo_state id="state_slmicro5" version="1">
+        <linux:version operation="pattern match">^5.*$</linux:version>
+    </linux:rpminfo_state>
+    <linux:rpminfo_object id="obj_slmicro5" version="1">
+        <linux:name>SLE-Micro-release</linux:name>
+    </linux:rpminfo_object>
+
+</def-group>

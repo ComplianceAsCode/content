@@ -7,10 +7,7 @@ description: |-
     To enable processing of sensitive information the operating system must
     provide certified cryptographic modules compliant with FIPS 140-2
     standard.
-{{% if product in ["rhel7"] %}}
-    Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
-    Linux vendor, Red Hat, Inc. is responsible for maintaining government certifications and standards.
-{{% elif product in ["sle12", "sle15"] %}}
+{{% if product in ["sle12", "sle15"] %}}
     SUSE Enterprise Linux is supported by SUSE Software Solutions Germany GmbH. As the SUSE Enterprise
     Linux vendor, SUSE Software Solutions Germany GmbH is responsible for maintaining government
     certifications and standards.
@@ -60,7 +57,6 @@ warnings:
 severity: high
 
 identifiers:
-    cce@rhel7: CCE-80657-0
     cce@rhel8: CCE-80830-3
     cce@sle12: CCE-83037-2
 
@@ -75,9 +71,7 @@ ocil_clause: 'the installed operating system is not FIPS 140-2 certified'
 ocil: |-
     To verify that the installed operating system is supported or certified, run
     the following command:
-{{% if product in ["rhel7"] %}}
-    <pre>$ grep -i "red hat" /etc/redhat-release</pre>
-{{% elif product == "ol7" %}}
+{{% if product == "ol7" %}}
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
 {{% elif product in ["sle12", "sle15"] %}}
     <pre>$ grep -i "suse" /etc/os-release</pre>

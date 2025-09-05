@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R12
+    version: V1R13
     SMEs:
         - abergmann
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 15'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 15 V1R12.
+    DISA STIG for SUSE Linux Enterprise 15 V1R13.
 
 
 selections:

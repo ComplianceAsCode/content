@@ -8,8 +8,29 @@ basic_properties_derived: true
 benchmark_id: FEDORA
 benchmark_root: ../../linux_os/guide
 chrony_conf_path: /etc/chrony.conf
+chrony_d_path: /etc/chrony.d/
 components_root: ../../components
 cpes:
+- fedora_45:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:45
+    title: Fedora 45
+- fedora_44:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:44
+    title: Fedora 44
+- fedora_43:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:43
+    title: Fedora 43
+- fedora_42:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:42
+    title: Fedora 42
+- fedora_41:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:41
+    title: Fedora 41
 - fedora_40:
     check_id: installed_OS_is_fedora
     name: cpe:/o:fedoraproject:fedora:40
@@ -18,18 +39,6 @@ cpes:
     check_id: installed_OS_is_fedora
     name: cpe:/o:fedoraproject:fedora:39
     title: Fedora 39
-- fedora_38:
-    check_id: installed_OS_is_fedora
-    name: cpe:/o:fedoraproject:fedora:38
-    title: Fedora 38
-- fedora_37:
-    check_id: installed_OS_is_fedora
-    name: cpe:/o:fedoraproject:fedora:37
-    title: Fedora 37
-- fedora_36:
-    check_id: installed_OS_is_fedora
-    name: cpe:/o:fedoraproject:fedora:36
-    title: Fedora 36
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: distro.d
 faillock_path: /var/run/faillock

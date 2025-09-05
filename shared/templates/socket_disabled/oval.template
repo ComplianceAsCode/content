@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Disable {{{ SOCKETNAME }}}.socket") }}}
+    {{{ oval_metadata("Disable " ~ SOCKETNAME ~ ".socket") }}}
     <criteria>
         <criterion comment="Property LoadState of {{{ SOCKETNAME }}}.socket is masked"
             test_ref="test_socket_loadstate_is_masked_{{{ SOCKETNAME }}}"/>

@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Oracle Linux 7,Oracle Linux 8
+# platform = Red Hat Enterprise Linux 8,Oracle Linux 7,Oracle Linux 8
 # reboot = true
 # strategy = restrict
 # complexity = low
@@ -10,7 +10,7 @@
       - xorg-x11-server-Xorg
       - xorg-x11-server-common
       - xorg-x11-server-utils
-{{% if product not in ["rhel7", "ol7"] %}}
+{{% if product not in ["ol7"] %}}
       - xorg-x11-server-Xwayland
 {{% endif %}}
     state: absent

@@ -32,6 +32,7 @@ selections:
     - var_password_pam_difok=8
     - var_password_pam_maxrepeat=3
     - var_password_hashing_algorithm=SHA512
+    - var_password_hashing_algorithm_pam=sha512
     - var_password_pam_maxclassrepeat=4
     - var_password_pam_minclass=4
     - var_accounts_minimum_age_login_defs=1
@@ -480,7 +481,8 @@ selections:
     - accounts_have_homedir_login_defs
 
     # RHEL-08-010770
-    - file_permission_user_init_files
+    - file_permission_user_init_files_root
+    - var_user_initialization_files_regex=all_dotfiles
 
     # RHEL-08-010780
     - no_files_unowned_by_user

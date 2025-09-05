@@ -6,14 +6,13 @@ title: 'Configure Time Service Maxpoll Interval'
 description: |-
     The <tt>maxpoll</tt> should be configured to
     {{{ xccdf_value("var_time_service_set_maxpoll") }}} in <tt>/etc/ntp.conf</tt> or
-    <tt>{{{ chrony_conf_path }}}</tt> to continuously poll time servers. To configure
-    <tt>maxpoll</tt> in <tt>/etc/ntp.conf</tt> or <tt>{{{ chrony_conf_path }}}</tt>
-    add the following after each `server`, `pool` or `peer` entry:
+    <tt>{{{ chrony_conf_path }}}</tt> (or <tt>{{{ chrony_d_path }}}</tt>) to continuously poll time servers. To configure
+    <tt>maxpoll</tt> in <tt>/etc/ntp.conf</tt> or <tt>{{{ chrony_conf_path }}}</tt> (or <tt>{{{ chrony_d_path }}}</tt>)
+    add the following after each <tt>server</tt>, <tt>pool</tt> or <tt>peer</tt> entry:
     <pre>maxpoll {{{ xccdf_value("var_time_service_set_maxpoll") }}}</pre>
-    to <pre>server</pre> directives. If using chrony any <pre>pool</pre> directives
+    to <tt>server</tt> directives. If using chrony, any <tt>pool</tt> directives
     should be configured too.
-    If no <tt>server</tt> or <tt>pool</tt> directives are configured, the rule evaluates
-    to pass.
+
     {{% if product == "rhcos4" %}}
     <p>
     Note that if the remediation shipping with this content is being used, the
@@ -74,9 +73,9 @@ platforms:
 
 identifiers:
     cce@rhcos4: CCE-82684-2
-    cce@rhel7: CCE-80439-3
     cce@rhel8: CCE-84059-5
     cce@rhel9: CCE-88648-1
+    cce@rhel10: CCE-88549-1
     cce@sle12: CCE-83124-8
     cce@sle15: CCE-83287-3
 
@@ -93,7 +92,6 @@ references:
     srg: SRG-OS-000355-GPOS-00143,SRG-OS-000356-GPOS-00144,SRG-OS-000359-GPOS-00146
     stigid@ol7: OL07-00-040500
     stigid@ol8: OL08-00-030740
-    stigid@rhel7: RHEL-07-040500
     stigid@rhel8: RHEL-08-030740
     stigid@sle12: SLES-12-030300
     stigid@sle15: SLES-15-010400
@@ -104,7 +102,7 @@ ocil_clause: '"maxpoll" has not been set to the value of "{{{ xccdf_value("var_t
 
 ocil: |-
     Verify {{{ full_name }}} is securely comparing internal information system clocks at a regular interval with an NTP server with the following command:
-    <pre>$ sudo grep maxpoll /etc/ntp.conf {{{ chrony_conf_path }}}</pre>
+    <pre>$ sudo grep maxpoll /etc/ntp.conf {{{ chrony_conf_path }}} {{{ chrony_d_path }}}</pre>
     <pre>server [ntp.server.name] iburst maxpoll {{{ xccdf_value("var_time_service_set_maxpoll") }}}</pre>.
 
 fixtext: |-

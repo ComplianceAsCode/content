@@ -1,0 +1,30 @@
+name: Gate OL7
+on:
+    push:
+        branches: [ '*', '!stabilization*', '!stable*', '!master' ]
+    pull_request:
+        branches: [ 'master', 'stabilization*' ]
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
+    cancel-in-progress: true
+env:
+    ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+jobs:
+    validate-ol7:
+        name: Build, Test on Oracle Linux 7 (Container)
+        runs-on: ubuntu-latest
+        container:
+            image: oraclelinux:7.9
+        steps:
+            -   name: Install Deps
+                run: yum install -y cmake make openscap-utils PyYAML libxslt xml-common python-jinja2 python-setuptools openscap openscap-scanner
+            -   name: Checkout
+                uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+            -   name: Build
+                run: |-
+                    ./build_product ol7
+                env:
+                    ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
+            -   name: Test
+                run: ctest -j2 --output-on-failure -E unique-stigids
+                working-directory: ./build

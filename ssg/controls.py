@@ -184,7 +184,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
             if not rule:
                 continue
             try:
-                rule.add_extra_reference(reference_type, self.id)
+                rule.add_control_reference(reference_type, self.id)
             except ValueError as exc:
                 msg = (
                     "Please remove any duplicate listing of rule '%s' in "
@@ -527,5 +527,14 @@ class ControlsManager():
             policy.dump_yaml(filename)
 
     def add_references(self, rules):
+        # First we add all control references into a separate attribute
         for policy in self.policies.values():
             policy.add_references(rules)
+        # Then we unify them under references attribute
+        # This allows multiple control files to add references of the same type, and still track
+        # what references already existed in the rule.
+        self._merge_references(rules)
+
+    def _merge_references(self, rules):
+        for rule in rules.values():
+            rule.merge_control_references()

@@ -20,9 +20,9 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-82192-6
     cce@rhel8: CCE-80811-3
     cce@rhel9: CCE-83921-7
+    cce@rhel10: CCE-86975-0
     cce@sle12: CCE-91558-7
     cce@sle15: CCE-91231-1
 
@@ -56,7 +56,6 @@ template:
     vars:
         filepath: /etc/gshadow
         filemode: '0000'
-        filemode@debian10: '0640'
         filemode@debian11: '0640'
         filemode@debian12: '0640'
         filemode@ubuntu1604: '0640'

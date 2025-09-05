@@ -107,6 +107,7 @@ mypy_test("utils/import_srg_spreadsheet.py" "skip")
 mypy_test("utils/check_eof.py" "normal")
 mypy_test("utils/import_disa_stig.py" "skip")
 mypy_test("tests/cces-removed.py" "normal")
+mypy_test("utils/build_control_from_reference.py" "skip")
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
     mypy_test("utils/oscal/" "skip")
@@ -217,7 +218,7 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 6)
     if(PY_PROMETHEUS_CLIENT)
         add_test(
             NAME "test-controleval-prometheus-metrics"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval_metrics.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "prometheus" "--products" "fedora" "ol9" "rhel7" "rhel8" "rhel9" "sle15"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval_metrics.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "prometheus" "--products" "fedora" "ol9" "rhel8" "rhel9" "rhel10" "sle15"
         )
         set_tests_properties("test-controleval-prometheus-metrics" PROPERTIES LABELS quick)
     endif()
@@ -261,10 +262,6 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
     stig_srg_mapping_test("rhel8")
 endif()
 
-if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL7)
-    stig_srg_mapping_test("rhel7")
-endif()
-
 macro(ssg_controlrefcheck_test PRODUCT CONTROL KEY)
     if(PYTHON_VERSION_MAJOR GREATER 2)
         add_test(
@@ -277,9 +274,6 @@ macro(ssg_controlrefcheck_test PRODUCT CONTROL KEY)
     endif()
 endmacro()
 
-if(SSG_PRODUCT_RHEL7)
-    ssg_controlrefcheck_test("rhel7" "cis_rhel7" "cis")
-endif()
 if(SSG_PRODUCT_RHEL8)
     ssg_controlrefcheck_test("rhel8" "cis_rhel8" "cis")
 endif()
@@ -339,7 +333,7 @@ macro(cce_avail_check TEST_NAME_SUFFIX PRODUCTS CCE_LIST_PATH)
     endif()
 endmacro()
 
-cce_avail_check("rhel-all" "rhel7,rhel8,rhel9,rhel10" "${CMAKE_SOURCE_DIR}/shared/references/cce-redhat-avail.txt")
+cce_avail_check("redhat-all" "ocp4,rhel8,rhel9,rhel10" "${CMAKE_SOURCE_DIR}/shared/references/cce-redhat-avail.txt")
 cce_avail_check("sle12" "sle12" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle12-avail.txt")
 cce_avail_check("sle15" "sle15" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle15-avail.txt")
 
@@ -365,4 +359,21 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_GITHUB)
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/ansible_playbook_to_role.py" "--dry-run" "${CMAKE_BINARY_DIR}/roles" "--product" "rhel9" "--build-playbooks-dir" "${CMAKE_BINARY_DIR}/ansible"
         )
     endif()
+endif()
+
+if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 6)
+    add_test(
+        NAME "utils-build_control_from_reference_sanity"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/build_control_from_reference.py" "--product" "rhel10" "--reference" "ospp" "--root" "${CMAKE_SOURCE_DIR}" "--output" "${CMAKE_SOURCE_DIR}/build/rhel10_ospp_control.yml" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
+    )
+    set_tests_properties("utils-build_control_from_reference_sanity" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+    set_tests_properties("utils-build_control_from_reference_sanity" PROPERTIES DEPENDS "test-rule-dir-json")
+endif()
+
+if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 9)
+    add_test(
+        NAME "validate_automatus_metadata"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/validate_automatus_metadata.py" "--root" "${CMAKE_SOURCE_DIR}"
+    )
+mypy_test("tests/validate_automatus_metadata.py" "normal")
 endif()

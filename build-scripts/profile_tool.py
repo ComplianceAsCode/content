@@ -314,6 +314,24 @@ def parse_most_used_components(subparsers):
         choices=get_available_products_with_components_root(),
         default=get_available_products_with_components_root(),
     )
+    parser_most_used_components.add_argument(
+        "--rules",
+        default=False,
+        action="store_true",
+        help=(
+            "For every component, show the usage of each component's rule "
+            "in the profiles in given product."
+        ),
+    )
+    parser_most_used_components.add_argument(
+        "--all",
+        default=False,
+        action="store_true",
+        help=(
+            "List all components and rules in the output, including unused "
+            "components and unused rules."
+        ),
+    )
 
 
 def get_available_products_with_components_root():

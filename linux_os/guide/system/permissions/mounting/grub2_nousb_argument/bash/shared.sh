@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
+# platform = multi_platform_fedora
 
 # Correct the form of default kernel command line in /etc/default/grub
 if ! grep -q '^GRUB_CMDLINE_LINUX=".*nousb.*"' /etc/default/grub;

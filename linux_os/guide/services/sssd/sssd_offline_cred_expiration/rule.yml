@@ -5,7 +5,7 @@ title: 'Configure SSSD to Expire Offline Credentials'
 
 description: |-
     SSSD should be configured to expire offline credentials after 1 day.
-    {{% if product in ["ol8", "rhel8"] %}}
+    {{% if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
     Check if SSSD allows cached authentications with the following command:
     <pre>
     $ sudo grep cache_credentials /etc/sssd/sssd.conf
@@ -29,9 +29,9 @@ severity: medium
 platform: machine  # The check uses service_... extended definition, which doesnt support offline mode
 
 identifiers:
-    cce@rhel7: CCE-80365-0
     cce@rhel8: CCE-82460-7
     cce@rhel9: CCE-87996-5
+    cce@rhel10: CCE-90741-0
     cce@sle12: CCE-83206-3
     cce@sle15: CCE-83296-4
 
@@ -55,7 +55,7 @@ references:
 ocil_clause: 'it does not exist or is not configured properly'
 
 ocil: |-
-    {{% if product in ["ol8", "rhel8"] %}}
+    {{% if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
     Check if SSSD allows cached authentications with the following command:
     <pre>
     $ sudo grep cache_credentials /etc/sssd/sssd.conf

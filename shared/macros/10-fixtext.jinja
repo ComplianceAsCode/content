@@ -322,7 +322,7 @@ $ sudo sysctl --system
 
 #}}
 {{% macro fixtext_grub2_bootloader_argument(argument, value) %}}
-{{% if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
+{{% if 'ubuntu' in product or product in ['ol7', 'sle12', 'sle15'] %}}
 Update the GRUB_CMDLINE_LINUX line in '/etc/default/grub' so that it contains {{{ argument }}}={{{ value }}}.
 {{% endif -%}}
 
@@ -342,7 +342,7 @@ $ sudo {{{ grub_command("add", argument + "=" + value) }}}
 
 #}}
 {{% macro fixtext_grub2_bootloader_argument_absent(argument) %}}
-{{%- if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] -%}}
+{{%- if 'ubuntu' in product or product in ['ol7', 'sle12', 'sle15'] -%}}
 Update the GRUB_CMDLINE_LINUX line in '/etc/default/grub' so that it does not contain any occurrence of {{{ argument }}} using the following command:
 
 $ sudo sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ argument }}}=?[^[:space:]]*\(.*"\)/\1 \2/' '/etc/default/grub'

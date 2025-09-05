@@ -21,7 +21,15 @@ description: |-
 
 selections:
     - anssi:all:enhanced
+    - var_password_hashing_algorithm=SHA512
+    - var_password_pam_unix_rounds=65536
     - '!timer_logrotate_enabled'
+    # disable R45: Enable AppArmor security profiles
+    - '!apparmor_configured'
+    - '!all_apparmor_profiles_enforced'
+    - '!grub2_enable_apparmor'
+    - '!package_apparmor_installed'
+    - '!package_pam_apparmor_installed'
     # Following rules once had a prodtype incompatible with the rhel8 product
     - '!cracklib_accounts_password_pam_minlen'
     - '!sysctl_fs_protected_fifos'

@@ -25,8 +25,5 @@ spec:
 EOF
 
 
-echo "waiting for authentication operator to become progressing"
-oc wait clusteroperator authentication --for=condition=PROGRESSING
-
-echo "waiting for authentication operator to become ready"
-oc wait clusteroperator authentication --for=condition=Available
+echo "waiting for a stable cluster"
+oc adm wait-for-stable-cluster --minimum-stable-period 2m

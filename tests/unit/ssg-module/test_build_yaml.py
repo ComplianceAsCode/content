@@ -277,17 +277,17 @@ def test_platform_from_text_simple(product_cpes):
         "{%s}check-fact-ref" % cpe_language_namespace)
     assert len(check_fact_refs) == 1
     assert check_fact_refs[0].get("system") == "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-    assert check_fact_refs[0].get("href") == "ssg-rhel7-cpe-oval.xml"
+    assert check_fact_refs[0].get("href") == "ssg-rhel9-cpe-oval.xml"
     assert check_fact_refs[0].get("id-ref") == "oval:ssg-installed_env_is_a_machine:def:1"
 
 
 def test_platform_from_text_simple_product_cpe(product_cpes):
-    platform = ssg.build_yaml.Platform.from_text("rhel7-workstation", product_cpes)
+    platform = ssg.build_yaml.Platform.from_text("rhel9", product_cpes)
     assert platform.get_remediation_conditional("bash") == ""
     assert platform.get_remediation_conditional("ansible") == ""
     platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
-    assert platform_el.get("id") == "rhel7-workstation"
+    assert platform_el.get("id") == "rhel9"
     logical_tests = platform_el.findall(
         "{%s}logical-test" % cpe_language_namespace)
     assert len(logical_tests) == 1
@@ -297,8 +297,8 @@ def test_platform_from_text_simple_product_cpe(product_cpes):
         "{%s}check-fact-ref" % cpe_language_namespace)
     assert len(check_fact_refs) == 1
     assert check_fact_refs[0].get("system") == "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-    assert check_fact_refs[0].get("href") == "ssg-rhel7-cpe-oval.xml"
-    assert check_fact_refs[0].get("id-ref") == "oval:ssg-installed_OS_is_rhel7:def:1"
+    assert check_fact_refs[0].get("href") == "ssg-rhel9-cpe-oval.xml"
+    assert check_fact_refs[0].get("id-ref") == "oval:ssg-installed_OS_is_rhel9:def:1"
 
 
 def test_platform_from_text_or(product_cpes):
@@ -318,10 +318,10 @@ def test_platform_from_text_or(product_cpes):
         "{%s}check-fact-ref" % cpe_language_namespace)
     assert len(check_fact_refs) == 2
     assert check_fact_refs[0].get("system") == "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-    assert check_fact_refs[0].get("href") == "ssg-rhel7-cpe-oval.xml"
+    assert check_fact_refs[0].get("href") == "ssg-rhel9-cpe-oval.xml"
     assert check_fact_refs[0].get("id-ref") == "oval:ssg-installed_env_has_chrony_package:def:1"
     assert check_fact_refs[1].get("system") == "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-    assert check_fact_refs[1].get("href") == "ssg-rhel7-cpe-oval.xml"
+    assert check_fact_refs[1].get("href") == "ssg-rhel9-cpe-oval.xml"
     assert check_fact_refs[1].get("id-ref") == "oval:ssg-installed_env_has_ntp_package:def:1"
 
 
@@ -335,11 +335,9 @@ def test_platform_from_text_and_empty_conditionals(product_cpes):
 def test_platform_from_text_complex_expression(product_cpes):
     platform = ssg.build_yaml.Platform.from_text(
         "systemd and !yum and (ntp or chrony)", product_cpes)
-    assert platform.get_remediation_conditional("bash") == "( rpm --quiet -q systemd && ( rpm --quiet -q chrony || rpm --quiet -q ntp ) && ! ( rpm --quiet -q yum ) )"
-    assert platform.get_remediation_conditional("ansible") == "( \"systemd\" in ansible_facts.packages and ( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages ) and not ( \"yum\" in ansible_facts.packages ) )"
+    assert platform.test(**{'systemd': True, 'ntp': False, 'chrony': True, 'yum': False})
     platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
-    assert platform_el.get("id") == "systemd_and_chrony_or_ntp_and_not_yum"
     logical_tests = platform_el.findall(
         "{%s}logical-test" % cpe_language_namespace)
     assert len(logical_tests) == 1
@@ -377,10 +375,10 @@ def test_platform_equality(product_cpes):
 
 
 def test_platform_as_dict(product_cpes):
-    pl = ssg.build_yaml.Platform.from_text("chrony and rhel7", product_cpes)
+    pl = ssg.build_yaml.Platform.from_text("chrony and rhel9", product_cpes)
     # represent_as_dict is used during dump_yaml
     d = pl.represent_as_dict()
-    assert d["name"] == "chrony_and_rhel7"
+    assert d["name"] == "chrony_and_rhel9"
     # the "rhel7" platform doesn't have any conditionals
     # therefore the final conditional doesn't use it
     assert d["ansible_conditional"] == "( \"chrony\" in ansible_facts.packages )"

@@ -3,10 +3,16 @@
     {{{ oval_metadata("Check if actions on '" ~ PATH ~ "' are configured to be audited") }}}
 
     <criteria operator="OR">
-      <!-- Test the augenrules case -->
-      <criterion comment="audit {{{ PATH }}} augenrules" test_ref="test_{{{ rule_id }}}_augenrules" />
-      <!-- Test the auditctl case -->
-      <criterion comment="audit {{{ PATH }}} auditctl" test_ref="test_{{{ rule_id }}}_auditctl" />
+      <criteria operator="AND">
+        <!-- Test the augenrules case -->
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+        <criterion comment="audit {{{ PATH }}} augenrules" test_ref="test_{{{ rule_id }}}_augenrules" />
+      </criteria>
+      <criteria operator="AND">
+        <!-- Test the auditctl case -->
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criterion comment="audit {{{ PATH }}} auditctl" test_ref="test_{{{ rule_id }}}_auditctl" />
+      </criteria>
     </criteria>
 
   </definition>

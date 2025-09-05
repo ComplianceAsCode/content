@@ -893,6 +893,7 @@ class Rule(XCCDFEntity, Templatable):
         rationale=lambda: "",
         severity=lambda: "",
         references=lambda: dict(),
+        control_references=lambda: dict(),
         components=lambda: list(),
         identifiers=lambda: dict(),
         ocil_clause=lambda: None,
@@ -1212,16 +1213,23 @@ class Rule(XCCDFEntity, Templatable):
             ident.set("system", SSG_IDENT_URIS[ident_type])
             ident.text = ident_val
 
-    def add_extra_reference(self, ref_type, ref_value):
-        if ref_type in self.references:
-            if ref_value in self.references[ref_type]:
+    def add_control_reference(self, ref_type, ref_value):
+        if ref_type in self.control_references:
+            if ref_value in self.control_references[ref_type]:
                 msg = (
                     "Rule %s already contains a '%s' reference with value '%s'." % (
                         self.id_, ref_type, ref_value))
                 raise ValueError(msg)
-            self.references[ref_type].append(ref_value)
+            self.control_references[ref_type].append(ref_value)
         else:
-            self.references[ref_type] = [ref_value]
+            self.control_references[ref_type] = [ref_value]
+
+    def merge_control_references(self):
+        for ref_type in self.control_references:
+            if ref_type in self.references:
+                self.references[ref_type].append(self.control_references[ref_type])
+            else:
+                self.references[ref_type] = self.control_references[ref_type]
 
     def to_xml_element(self, env_yaml=None):
         rule = ET.Element('{%s}Rule' % XCCDF12_NS)

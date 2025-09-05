@@ -1,7 +1,7 @@
 # platform = multi_platform_all
 {{% set system_configuration_using_etc_bashrc_expected = false -%}}
 
-{{% if product in ["ol7", "rhel7"] %}}
+{{% if product in ["ol7"] %}}
   {{% set system_configuration_using_etc_bashrc_expected = true -%}}
 {{%- endif -%}}
 

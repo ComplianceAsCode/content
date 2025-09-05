@@ -20,9 +20,9 @@ rationale: |-
 severity: unknown
 
 identifiers:
-    cce@rhel7: CCE-80275-1
     cce@rhel8: CCE-85980-1
     cce@rhel9: CCE-85981-9
+    cce@rhel10: CCE-89193-7
     cce@sle12: CCE-91645-2
     cce@sle15: CCE-91288-1
 
@@ -42,7 +42,6 @@ template:
     name: package_removed
     vars:
         pkgname: net-snmp
-        pkgname@debian10: snmp
         pkgname@debian11: snmp
         pkgname@ubuntu1604: snmp
         pkgname@ubuntu1804: snmp

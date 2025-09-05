@@ -2,26 +2,18 @@
   <definition class="compliance" id="chronyd_or_ntpd_set_maxpoll" version="1">
     {{{ oval_metadata("Configure the maxpoll setting in /etc/ntp.conf or chrony.conf
       to continuously poll the time source servers.") }}}
-    <criteria operator="AND">
-      <criteria operator="OR">
-        <criterion comment="check if no server entry is set in /etc/ntp.conf"
-          test_ref="test_ntp_no_server"/>
-        <criteria operator="AND">
-          <criterion comment="check if maxpoll is set in /etc/ntp.conf"
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <criterion comment="check if maxpoll is set in /etc/ntp.conf"
           test_ref="test_ntp_set_maxpoll" />
-          <criterion comment="check if all server entries have maxpoll set in /etc/ntp.conf"
+        <criterion comment="check if all server entries have maxpoll set in /etc/ntp.conf"
           test_ref="test_ntp_all_server_has_maxpoll"/>
-        </criteria>
       </criteria>
-      <criteria operator="OR">
-        <criterion comment="check if no server or pool entry is set in {{{ chrony_conf_path }}}"
-          test_ref="test_chrony_no_server_nor_pool"/>
-        <criteria operator="AND">
-          <criterion comment="check if maxpoll is set in {{{ chrony_conf_path }}}"
+      <criteria operator="AND">
+        <criterion comment="check if maxpoll is set in {{{ chrony_conf_path }}} or {{{ chrony_d_path }}}"
           test_ref="test_chrony_set_maxpoll" />
-          <criterion comment="check if all server entries have maxpoll set in {{{ chrony_conf_path }}}"
+        <criterion comment="check if all server entries have maxpoll set in {{{ chrony_conf_path }}} or {{{ chrony_d_path }}}"
           test_ref="test_chrony_all_server_has_maxpoll"/>
-        </criteria>
       </criteria>
     </criteria>
   </definition>
@@ -38,14 +30,16 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+{{% set filepath_regex = "^(" + chrony_conf_path | replace(".", "\.") + "|" + chrony_d_path | replace(".", "\.") + ".+\.conf)$" %}}
+
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="check if maxpoll is set in {{{ chrony_conf_path }}}"
+  comment="check if maxpoll is set in {{{ chrony_conf_path }}} or {{{ chrony_d_path }}}"
   id="test_chrony_set_maxpoll" version="1">
     <ind:object object_ref="obj_chrony_set_maxpoll" />
     <ind:state state_ref="state_time_service_set_maxpoll" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_chrony_set_maxpoll" version="1">
-    <ind:filepath operation="pattern match">^/etc/chrony\.(conf|d/.+\.conf)$</ind:filepath>
+    <ind:filepath operation="pattern match">{{{ filepath_regex }}}</ind:filepath>
     <ind:pattern operation="pattern match">^(?:server|pool|peer)[\s]+[\S]+.*maxpoll[\s]+(\d+)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -70,13 +64,13 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="check if all server entries have maxpoll set in {{{ chrony_conf_path }}}"
+  comment="check if all server entries have maxpoll set in {{{ chrony_conf_path }}} or {{{ chrony_d_path }}}"
   id="test_chrony_all_server_has_maxpoll" version="1">
     <ind:object object_ref="obj_chrony_all_server_has_maxpoll" />
     <ind:state state_ref="state_server_has_maxpoll" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_chrony_all_server_has_maxpoll" version="1">
-    <ind:filepath operation="pattern match">^/etc/chrony\.(conf|d/.+\.conf)$</ind:filepath>
+    <ind:filepath operation="pattern match">{{{ filepath_regex }}}</ind:filepath>
     <ind:pattern operation="pattern match">^(?:server|pool|peer)[\s]+[\S]+[\s]+(.*)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -84,27 +78,5 @@
   <ind:textfilecontent54_state id="state_server_has_maxpoll" version="1">
     <ind:subexpression operation="pattern match" datatype="string">maxpoll \d+</ind:subexpression>
   </ind:textfilecontent54_state>
-
-  <ind:textfilecontent54_test check="all" check_existence="none_exist"
-  comment="check if no server entries have server or pool set in {{{ chrony_conf_path }}}"
-  id="test_chrony_no_server_nor_pool" version="1">
-    <ind:object object_ref="obj_chrony_no_server_nor_pool" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_chrony_no_server_nor_pool" version="1">
-    <ind:filepath operation="pattern match">^/etc/chrony\.(conf|d/.+\.conf)$</ind:filepath>
-    <ind:pattern operation="pattern match">^(?:server|pool).*</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_test check="all" check_existence="none_exist"
-  comment="check if no server entries in /etc/ntp.conf"
-  id="test_ntp_no_server" version="1">
-    <ind:object object_ref="obj_ntp_no_server_nor_pool" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_ntp_no_server_nor_pool" version="1">
-    <ind:filepath>/etc/ntp.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^server.*</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
 
 </def-group>

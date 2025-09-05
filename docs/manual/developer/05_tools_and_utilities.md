@@ -37,7 +37,7 @@ For example, to subtract selected rules from a given profile based on
 rules selected by another profile, run this command:
 
 ```bash
-    $ ./build-scripts/profile_tool.py sub --profile1 rhel7/profiles/ospp.profile --profile2 rhel7/profiles/pci-dss.profile
+    $ ./build-scripts/profile_tool.py sub --profile1 rhel9/profiles/ospp.profile --profile2 rhel9/profiles/pci-dss.profile
 ```
 
 This will result in a new YAML profile containing exclusive rules to the
@@ -79,6 +79,20 @@ Optionally, you can use this command to limit the statistics for a specific prod
     $ ./build-scripts/profile_tool.py most-used-components --products rhel9
 ```
 
+You can also get a list of the most used components with used rules for the RHEL9 product, you can use the `--rules` flag.
+As shown in this command:
+
+```bash
+    $ ./build-scripts/profile_tool.py most-used-components --products rhel9 --rules
+```
+
+You can also use the `--all` flag to get a list of all components and rules in the output, including unused components and unused rules.
+As shown in this command:
+
+```bash
+    $ ./build-scripts/profile_tool.py most-used-components --products rhel9 --all
+```
+
 The result will be a list of rules with the number of uses in the profiles.
 The list can be generated as plain text, JSON or CVS.
 Via the `--format FORMAT` parameter.
@@ -110,6 +124,19 @@ Example
 
 ```bash
     $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r5-xccdf-manual.xml
+```
+
+
+## Generating Controls From a Reference
+When converting profile to use a control file this script can be helpful in creating the skeleton control.
+The output of this script will need to be adjusted to add other keys such as title or description to the controls.
+This script does require that `./utils/rule_dir_json.py` be run before this script is used.
+See `./utils/build_control_from_reference.py --help` for the full set options the script provides.
+
+
+Example
+```bash
+    $ ./utils/build_control_from_reference.py --product rhel10 --reference ospp --output controls/ospp.yml
 ```
 
 ## Generating login banner regular expressions
@@ -715,4 +742,25 @@ An example of how to execute the script to generate roles locally:
 ```bash
 $ ./build_product rhel9
 $ ./utils/ansible_playbook_to_role.py --dry-run output
+```
+
+### `utils/find_unused_rules.py` &ndash; List Rules That Are Not Used In Any Data stream
+
+This script will output rules are not in any data streams.
+To prevent false positives the script will not run if the number of build datas treams less than the total number of products in the project.
+The script assumes that `./build_project --derivatives` was executed before the script is used.
+This script does require that `./utils/rule_dir_json.py` was executed before this script is used as well.
+
+This script works by comparing rules in the data streams to the rules in the `rule_dirs.json` file.
+The script works by adding off the rule ids from the data streams to a `set`.
+Then the script converts the keys of `rule_dirs.json` to a set.
+The set of rules in the data stream is subtracted to from the set of rules in `rule_dirs.json`.
+The difference is then output to the user.
+
+Example usage:
+
+```bash
+$ ./build_product --derivatives
+$ ./utils/rule_dir_json.py
+$ ./utils/find_unused_rules.py
 ```

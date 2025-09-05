@@ -18,6 +18,9 @@
 #    ( Needs to be done after 4, otherwise the escapce sequence will become just "n".
 {{{ bash_deregexify_banner_newline_token("login_banner_text")}}}
 
+{{{ bash_enable_dconf_user_profile(profile="user", database="local") }}}
+{{{ bash_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
+
 # Will do both approach, since we plan to migrate to checks over dconf db. That way, future updates of the tool
 # will pass the check even if we decide to check only for the dconf db path.
 {{{ set_config_file("/etc/gdm3/greeter.dconf-defaults", "banner-message-text", value="'${login_banner_text}'", create='no', insert_after="\[org/gnome/login-screen\]", insert_before="", separator="=", separator_regex="", prefix_regex="^\s*") }}}

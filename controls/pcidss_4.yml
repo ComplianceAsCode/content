@@ -2018,8 +2018,9 @@ controls:
         - set_password_hashing_algorithm_commonauth
         - set_password_hashing_algorithm_libuserconf
         - set_password_hashing_algorithm_logindefs
-        - var_password_hashing_algorithm=SHA512
         - set_password_hashing_algorithm_systemauth
+        - var_password_hashing_algorithm=SHA512
+        - var_password_hashing_algorithm_pam=sha512
 
     - id: 8.3.3
       title: User identity is verified before modifying any authentication factor.

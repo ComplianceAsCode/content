@@ -23,7 +23,7 @@ jobs:
       - name: Install deps python
         run: pip3 install json2html prometheus_client
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Build
         run: cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug
         working-directory: ./build
@@ -37,7 +37,7 @@ jobs:
         run: ninja render-policies -j2
         working-directory: ./build
       - name: Generate Prometheus Metrics
-        run: utils/controleval_metrics.py prometheus -p fedora ocp4 rhcos4 rhel9 rhel8 rhel7 sle12 sle15 -f ./build/policies_metrics
+        run: utils/controleval_metrics.py prometheus -p fedora ocp4 rhcos4 rhel10 rhel9 rhel8 sle12 sle15 -f ./build/policies_metrics
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML pages
@@ -50,7 +50,7 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Deploy
         if: ${{ github.event_name == 'push' && github.repository == 'ComplianceAsCode/content' && github.ref == 'refs/heads/master'  }}
-        uses: JamesIves/github-pages-deploy-action@v4.6.0
+        uses: JamesIves/github-pages-deploy-action@94f3c658273cf92fb48ef99e5fbc02bd2dc642b2 # v4.6.3
         with:
           branch: main # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.
@@ -61,7 +61,7 @@ jobs:
           git-config-name: openscap-ci
           git-config-email: openscap-ci@gmail.com
       - name: Upload artifact if the event is pull request
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         if: ${{ github.event_name == 'pull_request' }}
         with:
           name: built-content

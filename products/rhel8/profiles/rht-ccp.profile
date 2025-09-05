@@ -17,6 +17,7 @@ selections:
     - var_accounts_minimum_age_login_defs=7
     - var_accounts_passwords_pam_faillock_deny=5
     - var_accounts_password_warn_age_login_defs=7
+    - var_password_hashing_algorithm_pam=sha512
     - var_password_pam_retry=3
     - var_password_pam_dcredit=1
     - var_password_pam_ucredit=2

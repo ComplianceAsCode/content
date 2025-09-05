@@ -1,0 +1,23 @@
+documentation_complete: true
+
+
+title: 'Create Network Boundaries between Functional Different Nodes'
+
+description: |-
+   Use different Networks for Control Plane, Worker and Individual Application Services.
+
+rationale: |-
+   Separation on a Network level might help to hinder lateral movement of an attacker and subsequently reduce the impact of an attack. It might also enable you to provide additional external network control (like firewalls).
+
+references:
+    bsi: APP.4.4.A7
+
+severity: medium
+
+identifiers:
+   cce@ocp4: CCE-86851-3
+
+ocil_clause: 'Network separation needs review'
+
+ocil: |-
+    Create separate Ingress Controllers for the API and your Applications. Also setup your environment in a way, that Control Plane Nodes are in another network than your worker nodes. If you implement multiple Nodes for different purposes evaluate if these should be in different network segments (i.e. Infra-Nodes, Storage-Nodes, ...).

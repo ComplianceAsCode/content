@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 9 V1R2.
+    DISA STIG for Red Hat Enterprise Linux 9 V1R3.
 
 
 
@@ -35,7 +35,7 @@ description: 'This profile contains configuration checks that align to the
 extends: null
 hidden: ''
 metadata:
-    version: V1R2
+    version: V1R3
     SMEs:
     - mab879
     - ggbecker
@@ -348,7 +348,6 @@ selections:
 - kernel_module_tipc_disabled
 - kernel_module_usb-storage_disabled
 - libreswan_approved_tunnels
-- logind_session_timeout
 - mount_option_boot_efi_nosuid
 - mount_option_boot_nodev
 - mount_option_boot_nosuid
@@ -547,6 +546,7 @@ selections:
 - var_sssd_certificate_verification_digest_function=sha512
 - var_smartcard_drivers=cac
 - var_password_hashing_algorithm=SHA512
+- var_password_hashing_algorithm_pam=sha512
 - var_password_pam_minclass=4
 - var_password_pam_maxrepeat=3
 - var_password_pam_maxclassrepeat=4

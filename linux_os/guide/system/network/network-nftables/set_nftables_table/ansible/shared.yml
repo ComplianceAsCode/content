@@ -8,11 +8,13 @@
 {{{ ansible_instantiate_variables("var_nftables_table") }}}
 
 - name: Collect Existing Nftables
-  ansible.builtin.command: nft list tables
-  register: existing_nftables
+  ansible.builtin.command: nft list table {{ var_nftables_family }} {{ var_nftables_table }}
+  register: result_nftables_table_family
+  changed_when: false
+  failed_when: result_nftables_table_family.rc not in [0, 1]
 
 - name: Set Nftable Table
   ansible.builtin.command: nft create table {{ var_nftables_family }} {{ var_nftables_table }}
   when:
-    - existing_nftables is not skipped
-    - existing_nftables.stdout_lines | length == 0
+    - result_nftables_table_family is not skipped
+    - result_nftables_table_family.rc != 0

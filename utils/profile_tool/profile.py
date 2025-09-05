@@ -1,3 +1,4 @@
+import os
 from ..controleval import get_parameter_from_yaml
 
 
@@ -40,9 +41,14 @@ def get_profile(profiles_files, file, policies, profile=None):
 
 class Profile:
     def __init__(self, path, title):
-        self.path = path
+        normalized_path = os.path.normpath(path)
+        profile_file = os.path.basename(normalized_path)
+        self.path = normalized_path
         self.title = title
+        self.id = profile_file.split('.profile')[0]
+        self.product = normalized_path.split('/')[-3]
         self.rules = []
+        self.variables = {}
         self.unselected_rules = []
 
     def add_rule(self, rule_id):
@@ -51,6 +57,9 @@ class Profile:
             return
         if "=" not in rule_id:
             self.rules.append(rule_id)
+        else:
+            variable_name, variable_value = rule_id.split('=', 1)
+            self.variables[variable_name] = variable_value
 
     def add_rules(self, rules):
         for rule in rules:
@@ -74,10 +83,14 @@ class Profile:
         return policy, control, level
 
     @staticmethod
-    def _get_levels(policy, level):
-        levels = [level]
+    def _get_levels(policy, level, levels=None):
+        if levels is None:
+            levels = set()
+        levels.add(level)
+
         if policy.levels_by_id.get(level).inherits_from is not None:
-            levels.extend(policy.levels_by_id.get(level).inherits_from)
+            for parent_level in policy.levels_by_id.get(level).inherits_from:
+                levels.update(Profile._get_levels(policy, parent_level, levels))
         return levels
 
     def add_from_policy(self, policies, selected):

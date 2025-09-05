@@ -8,6 +8,7 @@ declare -a VALUES=()
 declare -a VALUE_NAMES=()
 declare -a ARGS=()
 declare -a NEW_ARGS=()
+declare -a DEL_ARGS=()
 
 {{% for arg in ARGUMENTS -%}}
 {{% if arg['variable'] | length -%}}
@@ -28,6 +29,9 @@ NEW_ARGS+=("{{{ arg['new_argument'] }}}")
 {{%- else -%}}
 NEW_ARGS+=("")
 {{%- endif %}}
+{{% if arg['remove_argument'] | length -%}}
+DEL_ARGS+=("{{{ arg['remove_argument'] }}}")
+{{%- endif %}}
 {{%- endfor %}}
 
 for idx in "${!VALUES[@]}"
@@ -39,5 +43,8 @@ for idx in "${!ARGS[@]}"
 do
     if ! grep -q -P "^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+${ARGS[$idx]}\s*$" {{{ PATH }}} ; then
         sed --follow-symlinks -i -E -e "s/^\\s*{{{ TYPE }}}\\s+{{{ CONTROL_FLAG }}}\\s+{{{ MODULE }}}.*\$/& ${NEW_ARGS[$idx]}/" {{{ PATH }}}
+        if [ -n "${DEL_ARGS[$idx]}" ]; then
+            sed --follow-symlinks -i -E -e "s/\s+${DEL_ARGS[$idx]}\S+\s+/ /g" {{{ PATH }}}
+        fi
     fi
 done

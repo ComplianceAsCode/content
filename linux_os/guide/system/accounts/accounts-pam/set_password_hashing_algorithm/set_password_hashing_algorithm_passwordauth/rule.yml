@@ -1,43 +1,38 @@
 documentation_complete: true
 
-
 title: "Set PAM''s Password Hashing Algorithm - password-auth"
 
 description: |-
-    The PAM system service can be configured to only store encrypted
-    representations of passwords. In
-    <tt>/etc/pam.d/password-auth</tt>,
-    the
-    <tt>password</tt> section of the file controls which PAM modules execute
-    during a password change. Set the <tt>pam_unix.so</tt> module in the
-    <tt>password</tt> section to include the argument <tt>sha512</tt>, as shown
-    below:
+    The PAM system service can be configured to only store encrypted representations of passwords.
+    In <tt>/etc/pam.d/password-auth</tt>, the <tt>password</tt> section of the file controls which
+    PAM modules to execute during a password change.
+
+    Set the <tt>pam_unix.so</tt> module in the <tt>password</tt> section to include the option
+    <tt>{{{ xccdf_value("var_password_hashing_algorithm_pam") }}}</tt> and no other hashing
+    algorithms as shown below:
     <br />
-    <pre>password    sufficient    pam_unix.so sha512 <i>other arguments...</i></pre>
+    <pre>password    sufficient    pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}} <i>other arguments...</i></pre>
     <br />
-    This will help ensure when local users change their passwords, hashes for
-    the new passwords will be generated using the SHA-512 algorithm. This is
-    the default.
+    This will help ensure that new passwords for local users will be stored using the
+    {{{ xccdf_value("var_password_hashing_algorithm_pam") }}} algorithm.
 
 rationale: |-
-    Passwords need to be protected at all times, and encryption is the standard
-    method for protecting passwords. If passwords are not encrypted, they can
-    be plainly read (i.e., clear text) and easily compromised. Passwords that
-    are encrypted with a weak algorithm are no more protected than if they are
-    kepy in plain text.
+    Passwords need to be protected at all times, and encryption is the standard method for
+    protecting passwords. If passwords are not encrypted, they can be plainly read
+    (i.e., clear text) and easily compromised. Passwords that are encrypted with a weak algorithm
+    are no more protected than if they are kept in plain text.
     <br /><br />
-    This setting ensures user and group account administration utilities are
-    configured to store only encrypted representations of passwords.
-    Additionally, the <tt>crypt_style</tt> configuration option ensures the use
-    of a strong hashing algorithm that makes password cracking attacks more
-    difficult.
+    This setting ensures user and group account administration utilities are configured to store
+    only encrypted representations of passwords. Additionally, the <tt>crypt_style</tt>
+    configuration option in <tt>/etc/libuser.conf</tt> ensures the use of a strong hashing
+    algorithm that makes password cracking attacks more difficult.
 
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-85943-9
     cce@rhel8: CCE-85945-4
     cce@rhel9: CCE-85946-2
+    cce@rhel10: CCE-88661-4
 
 references:
     cis-csc: 1,12,15,16,5
@@ -55,16 +50,18 @@ references:
     srg: SRG-OS-000073-GPOS-00041,SRG-OS-000120-GPOS-00061
     stigid@ol7: OL07-00-010200
     stigid@ol8: OL08-00-010160
-    stigid@rhel7: RHEL-07-010200
     stigid@rhel8: RHEL-08-010160
 
 ocil_clause: 'it does not'
 
 ocil: |-
     Inspect the <tt>password</tt> section of <tt>/etc/pam.d/password-auth</tt>
-    and ensure that the <tt>pam_unix.so</tt> module includes the argument
-    <tt>sha512</tt>:
-    <pre>$ grep sha512 /etc/pam.d/password-auth</pre>
+    and ensure that the <tt>pam_unix.so</tt> module is configured to use the argument
+    <tt>{{{ xccdf_value("var_password_hashing_algorithm_pam") }}}</tt>:
+
+    <pre>$ grep {{{ xccdf_value("var_password_hashing_algorithm_pam") }}} /etc/pam.d/password-auth</pre>
+
+platform: package[pam]
 
 {{% if product in ['ol9', 'rhel9'] %}}
 srg_requirement: 'The {{{ full_name }}} pam_unix.so module must be configured in the password-auth file to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.'
@@ -72,9 +69,18 @@ srg_requirement: 'The {{{ full_name }}} pam_unix.so module must be configured in
 fixtext: |-
     Configure {{{ full_name }}}} to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.
 
-    Edit/modify the following line in the "/etc/pam.d/password-auth" file to include the sha512 option for pam_unix.so:
+    Edit/modify the following line in the "/etc/pam.d/password-auth" file to include the {{{ xccdf_value("var_password_hashing_algorithm_pam") }}} option for pam_unix.so:
 
-    password sufficient pam_unix.so sha512
+    password sufficient pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}
 {{% endif %}}
 
-platform: package[pam]
+warnings:
+    - general: |-
+        The hashing algorithms to be used with pam_unix.so are defined with independent module
+        options. There are at least 7 possible algorithms and likely more algorithms will be
+        introduced along the time. Due the the number of options and its possible combinations,
+        the use of multiple hashing algorithm options may bring unexpected behaviors to the
+        system. For this reason the check will pass only when one hashing algorithm option is
+        defined and is aligned to the "var_password_hashing_algorithm_pam" variable. The
+        remediation will ensure the correct option and remove any other extra hashing algorithm
+        option.

@@ -32,22 +32,22 @@ def parse_args():
     parser.add_argument(
         "--product-yaml", required=True,
         help="YAML file with information about the product we are building. "
-        "e.g.: ~/scap-security-guide/rhel7/product.yml"
+        "e.g.: ~/scap-security-guide/rhel9/product.yml"
     )
     parser.add_argument(
         "--xccdf", required=True,
         help="Output XCCDF file. "
-        "e.g.:  ~/scap-security-guide/build/rhel7/ssg-rhel7-xccdf.xml"
+        "e.g.:  ~/scap-security-guide/build/rhel9/ssg-rhel9-xccdf.xml"
     )
     parser.add_argument(
         "--ocil", required=True,
         help="Output OCIL file. "
-        "e.g.:  ~/scap-security-guide/build/rhel7/ssg-rhel7-ocil.xml"
+        "e.g.:  ~/scap-security-guide/build/rhel9/ssg-rhel9-ocil.xml"
     )
     parser.add_argument(
         "--oval", required=True,
         help="Output OVAL file. "
-        "e.g.:  ~/scap-security-guide/build/rhel7/ssg-rhel7-oval.xml"
+        "e.g.:  ~/scap-security-guide/build/rhel9/ssg-rhel9-oval.xml"
     )
     parser.add_argument(
         "--build-ovals-dir",
@@ -61,7 +61,7 @@ def parse_args():
     parser.add_argument(
         "--thin-ds-components-dir",
         help="Directory to store XCCDF, OVAL, OCIL, for thin data stream. (off: to disable)"
-        "e.g.: ~/scap-security-guide/build/rhel7/thin_ds_component/"
+        "e.g.: ~/scap-security-guide/build/rhel9/thin_ds_component/"
         "Fake profiles are used to create thin DS. Components are generated for each profile.",
     )
     return parser.parse_args()

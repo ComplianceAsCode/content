@@ -43,7 +43,7 @@ To use Libvirt backend, you need to have:
   - Package `qemu-guest-agent` installed
   - Package `openscap` version 1.2.15 or higher installed
   - `root` can login via ssh (it is recommended to setup key-based authentication)
-  - `root` can install packages (for RHEL7, it means subscription enabled).
+  - `root` can install packages (for RHEL, it means subscription enabled).
   - `CPE_NAME` is present in `/etc/os-release`. Currently, Ubuntu doesn't ship
     it in the stock image. See [this Ubuntu
     bug](https://bugs.launchpad.net/ubuntu/+source/base-files/+bug/1472288).
@@ -172,7 +172,7 @@ The header consists of comments (starting by `#`). Possible keys are:
   for any platform-specific names in the `platform_package_overrides` field.
 - `platform` is a comma-separated list of platforms where the test scenario can
   be run. This is similar to `platform` used in our remediations. Examples of
-  values: `multi_platform_rhel`, `Red Hat Enterprise Linux 7`,
+  values: `multi_platform_rhel`, `Red Hat Enterprise Linux 10`,
   `multi_platform_all`. If `platform` is not specified in the header,
   `multi_platform_all` is assumed.
 - `profiles` is a comma-separated list of profiles to which this scenario is
@@ -182,6 +182,10 @@ The header consists of comments (starting by `#`). Possible keys are:
   variables (XCCDF Values), use the `variables` key instead. This key is
   intended to be used in regression testing of bugs in profiles, it isn't
   intended for casual use.
+- `check` is a string specifying one of the available check engine types
+  (`oval`, `sce`, `any`). It specifies for which check engine the scenario should
+  be executed. The special value `any` means that this scenario works with any
+  check engine and it's the default behavior that is used if this key isn't provided.
 - `remediation` is a string specifying one of the allowed remediation types (eg.
   `bash`, `ansible`, `none`). The `none` value means that the tested rule has no
   implemented remediation. The `none` value can also be used in case that
@@ -201,7 +205,7 @@ Using `platform` and `variables` metadata:
 
 ```bash
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
+# platform = Red Hat Enterprise Linux 9,multi_platform_fedora
 # variables = auth_enabled=yes,var_example_1=value_example
 
 echo "KerberosAuthentication $auth_enabled" >> /etc/ssh/sshd_config
@@ -393,12 +397,12 @@ If you would like to test the rule `sshd_disable_kerb_auth`:
 
 Using Libvirt:
 ```
-./automatus.py rule --libvirt qemu:///system ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+./automatus.py rule --libvirt qemu:///system ssg-test-suite-rhel9 --datastream ../build/ssg-rhel9-ds.xml sshd_disable_kerb_auth
 ```
 
 Using Podman:
 ```
-./automatus.py rule --container ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+./automatus.py rule --container ssg_test_suite --datastream ../build/ssg-rhel9-ds.xml sshd_disable_kerb_auth
 ```
 
 or just call the `test_rule_in_container.sh` script that passes the backend options for you
@@ -407,7 +411,7 @@ that remove some testing limitations of the container backend.
 
 Using Docker:
 ```
-./automatus.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+./automatus.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel9-ds.xml sshd_disable_kerb_auth
 ```
 
 Notice we didn't use full rule name on the command line. The prefix `xccdf_org.ssgproject.content_rule_` is added if not provided.
@@ -440,9 +444,9 @@ In this operation mode, you specify the `profile` command and you supply the
 profile ID as a positional argument.  Automatus then runs scans over the
 target domain and remediates it based on particular profile.
 
-To test RHEL7 STIG Profile on a VM:
+To test RHEL9 STIG Profile on a VM:
 ```
-./automatus.py profile --libvirt qemu:///session ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml stig
+./automatus.py profile --libvirt qemu:///session ssg-test-suite-rhel9 --datastream ../build/ssg-rhel9-ds.xml stig
 ```
 
 To test Fedora Standard Profile on a Podman container:

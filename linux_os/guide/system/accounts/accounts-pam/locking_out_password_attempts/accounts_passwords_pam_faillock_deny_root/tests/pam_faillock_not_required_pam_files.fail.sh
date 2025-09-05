@@ -1,9 +1,5 @@
 #!/bin/bash
-{{%- if product in ["rhel7"] %}}
-# packages = authconfig
-{{%- else %}}
 # packages = authselect
-{{%- endif %}}
 # remediation = none
 
 # This test scenario manually modify the pam_faillock.so entries in auth section from

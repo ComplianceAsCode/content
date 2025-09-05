@@ -7,18 +7,18 @@
 {{%- if RECURSIVE %}}
 {{%- set FIND_RECURSE_ARGS="" %}}
 {{%- else %}}
-{{%- set FIND_RECURSE_ARGS="-maxdepth 1" %}}
+{{%- set FIND_RECURSE_ARGS="-maxdepth 1 -L" %}}
 {{%- endif %}}
 
 {{%- for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
 
-find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -uid {{{ FILEUID }}} -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown {{{ FILEUID }}} {} \;
+find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -uid {{{ FILEUID }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown -L {{{ FILEUID }}} {} \;
 {{%- else %}}
-find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chown {{{ FILEUID }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chown -L {{{ FILEUID }}} {} \;
 {{%- endif %}}
 {{%- else %}}
-chown {{{ FILEUID }}} {{{ path }}}
+chown -L {{{ FILEUID }}} {{{ path }}}
 {{%- endif %}}
 {{%- endfor %}}

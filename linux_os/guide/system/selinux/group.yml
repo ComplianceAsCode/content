@@ -23,10 +23,7 @@ description: |-
     default (targeted) policy on every {{{ full_name }}} system, unless that
     system has unusual requirements which make a stronger policy
     appropriate.
-    {{% if product == "rhel7" %}}
-    <br /><br />
-    For more information on SELinux, see <b>{{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide") }}}</b>.
-    {{% elif product == "rhel8" %}}
+    {{% if product == "rhel8" %}}
     <br /><br />
     For more information on SELinux, see <b>{{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/using_selinux") }}}</b>.
     {{% elif "ol" in product %}}

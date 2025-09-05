@@ -3,45 +3,51 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: Check for duplicate {{{ PARAM }}} values in master {{{ COMPONENT }}} configuration
-  ansible.builtin.lineinfile:
-    path: {{{ MASTER_CFG_FILE }}}
-    create: false
-    regexp: ^\s*{{{ PARAM }}}=
-    state: absent
-  check_mode: true
-  changed_when: false
-  register: dupes_master
 
-- name: Deduplicate {{{ PARAM }}} values from {{{ COMPONENT }}} master configuration
-  ansible.builtin.lineinfile:
-    path:  {{{ MASTER_CFG_FILE }}}
-    create: false
-    regexp: ^\s*{{{ PARAM }}}=
-    state: absent
-  when: dupes_master.found is defined and dupes_master.found > 1
-
-- name: Collect all config {{{ COMPONENT }}} files which configure {{{ PARAM }}}
+- name: "{{{ rule_title }}} - Search for a section in files"
   ansible.builtin.find:
-    paths: {{{ DROPIN_DIR }}}
-    contains: ^[\s]*{{{ PARAM }}}=.*$
-    patterns: "*.conf"
-  register: {{{ COMPONENT }}}_{{{ PARAM }}}_dropin_config_files
+    paths: "{{item.path}}"
+    patterns: "{{item.pattern}}"
+    contains: '^\s*\[{{{ SECTION }}}\]'
+    read_whole_file: true
+    use_regex: true
+  register: systemd_dropin_files_with_section
+  loop:
+    - path: "{{ '{{{ MASTER_CFG_FILE }}}' | dirname }}"
+      pattern: "{{ '{{{ MASTER_CFG_FILE }}}' | basename | regex_escape }}"
+    - path: "{{{ DROPIN_DIR }}}"
+      pattern: '.*\.conf'
 
-- name: Deduplicate values from {{{ COMPONENT }}} {{{ PARAM }}} dropin configuration
-  ansible.builtin.lineinfile:
-    path: "{{ item.path }}"
-    create: false
-    regexp: ^\s*{{{ PARAM }}}=
-    state: absent
-  loop: "{{  {{{ COMPONENT }}}_{{{ PARAM }}}_dropin_config_files.files }}"
+- name: "{{{ rule_title }}} - Count number of files which contain the correct section"
+  ansible.builtin.set_fact:
+    count_of_systemd_dropin_files_with_section: "{{systemd_dropin_files_with_section.results | map(attribute='matched') | list | map('int') | sum}}"
 
-- name: Insert correct line to {{{ COMPONENT }}} {{{ PARAM }}} configuration
-  ansible.builtin.lineinfile:
-    path: {{{ DROPIN_DIR }}}/oscap-remedy.conf
-    create: true
-    regexp: ^\s*{{{ PARAM }}}=
-    line: {{{ PARAM }}}={{{ VALUE }}}
+- name: "{{{ rule_title   }}} - Add missing configuration to correct section"
+  ini_file:
+    path: "{{item}}"
+    section: {{{ SECTION }}}
+    option: {{{ PARAM }}}
+{{% if NO_QUOTES %}}
+    value: "{{{ VALUE }}}"
+{{% else %}}
+    value: '"{{{ VALUE }}}"'
+{{% endif %}}
     state: present
-    insertbefore: ^# {{{ PARAM }}}
-    validate: bash -n %s
+    no_extra_spaces: true
+  when: count_of_systemd_dropin_files_with_section | int > 0
+  loop: "{{systemd_dropin_files_with_section.results | sum(attribute='files', start=[]) | map(attribute='path') | list }}"
+
+- name: "{{{ rule_title }}} - Add configuration to new remediation file"
+  ini_file:
+    path: "{{{ DROPIN_DIR }}}/complianceascode_hardening.conf"
+    section: {{{ SECTION }}}
+    option: {{{ PARAM }}}
+{{% if NO_QUOTES %}}
+    value: "{{{ VALUE }}}"
+{{% else %}}
+    value: '"{{{ VALUE }}}"'
+{{% endif %}}
+    state: present
+    no_extra_spaces: true
+    create: true
+  when: count_of_systemd_dropin_files_with_section | int == 0

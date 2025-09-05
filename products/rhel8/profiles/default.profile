@@ -44,6 +44,8 @@ selections:
     - harden_openssl_crypto_policy
     - dir_perms_world_writable_system_owned
     - xwindows_remove_packages
+    - package_avahi_removed
+    - package_cups_removed
     - package_iptables-services_removed
     - sebool_httpd_can_network_memcache
     - sebool_git_system_use_nfs

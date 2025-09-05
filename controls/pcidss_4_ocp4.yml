@@ -592,7 +592,7 @@ controls:
         are Documented, Kept up to date, In use and Known to all affected parties.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
         Examine documentation and interview personnel to verify that security policies and
         operational procedures identified in Requirement 3 are managed in accordance with all
@@ -603,7 +603,7 @@ controls:
         documented, assigned, and understood.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
         Examine documentation and interview personnel to verify that day-to-day responsibilities
         for performing all the activities in Requirement 3 are documented, assigned and understood
@@ -634,16 +634,16 @@ controls:
         exceeding the defined retention period has been securely deleted or rendered unrecoverable.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is very dependent on each site policies and business model.
-        Local policies should be consulted and audited. Manual checking is reasonable.
+        OpenShift does not directly manage any account data. It is up to the application handling
+        account data to appropriately store and dispose of this data.
 
   - id: '3.3'
     title: Sensitive authentication data (SAD) is not stored after authorization.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 3.3.1
       title: SAD is not retained after authorization, even if encrypted. All sensitive
@@ -658,7 +658,12 @@ controls:
         through 3.3.1.3.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Proper design of the application by the payment entity can accommodate this requirement as
+        a processing mandate, restricting in-memory process for this data and taking care not to
+        write to file storage from within the container or pod.
+
       controls:
       - id: 3.3.1.1
         title: The full contents of any track are not retained upon completion of the
@@ -673,13 +678,10 @@ controls:
           To minimize risk, store securely only these data elements as needed for business.
         levels:
           - base
-        status: pending
+        status: not applicable
         notes: |-
-          This requirement consists in auditing files, databases and memory to make sure the full
-          content of any track is not unnecessarily retained. It involves manual auditing but some
-          automated rules fit this requirement in order to reduce the chances if this data be
-          unintentionally stored in memory.
-        rules: []
+          OpenShift does not directly manage any track data. It is up to the application to
+          appropriately store and dispose of this data.
 
       - id: 3.3.1.2
         title: The card verification code is not retained upon completion of the authorization
@@ -690,9 +692,10 @@ controls:
           to verify card-not-present transactions.
         levels:
           - base
-        status: pending
+        status: not applicable
         notes: |-
-          Same rules already selected in 3.3.1.1 are valid here, but they are not repeated.
+          OpenShift does not directly manage any card verification code. It is up to the
+          application to appropriately store and dispose of this data.
 
       - id: 3.3.1.3
         title: The personal identification number (PIN) and the PIN block are not retained upon
@@ -704,9 +707,10 @@ controls:
           authorization process.
         levels:
           - base
-        status: pending
+        status: not applicable
         notes: |-
-          Same rules already selected in 3.3.1.1 are valid here, but they are not repeated.
+          OpenShift does not directly manage any cardc PIN or PIN block. It is up to the
+          application to appropriately dispose of this data.
 
     - id: 3.3.2
       title: SAD that is stored electronically prior to completion of authorization is encrypted
@@ -725,13 +729,10 @@ controls:
         needs to be encrypted again.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is a best practice until 31 March 2025, after which it will be required
-        and must be fully considered during a PCI DSS assessment.
-        This requirement consists of auditing information stored during a relatively short period
-        of time. Where and how the information is possibly stored depends in each Business and
-        local policies so the check is not actually automatable.
+        OpenShift does not directly manage any SAD. It is up to the application to
+        appropriately store and dispose of this data.
 
     - id: 3.3.3
       title: Additional requirement for issuers and companies that support issuing services and
@@ -745,13 +746,16 @@ controls:
         fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        OpenShift does not directly manage any SAD. It is up to the application to
+        appropriately store and dispose of this data.
 
   - id: '3.4'
     title: Access to displays of full PAN and ability to copy PAN is restricted.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 3.4.1
       title: PAN is masked when displayed (the BIN and last four digits are the maximum number of
@@ -766,10 +770,10 @@ controls:
         Requirement 3.5.1 for protection of PAN when stored, processed, or transmitted.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Consists on examining documented policies and procedures, checking system configurations
-        and observing relevant applications.
+        OpenShift doesn't directly handle PANs.
+        Handling and masking the PAN is resposibility of the application installed.
 
     - id: 3.4.2
       title: When using remote-access technologies, technical controls prevent copy and/or
@@ -783,11 +787,11 @@ controls:
         and must be fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        There are technical rules to disable removable storage devices. However, this requirement
-        still demand some manual auditing in documentation and eventual exceptions.
-      rules: []
+        OpenShift doesn't directly handle PANs.
+        Handling and masking the PAN is resposibility of the application installed.
+        Access control, storage at rest and transport medium are to be managed by the application.
 
   - id: '3.5'
     title: Primary account number (PAN) is secured wherever it is stored.
@@ -808,7 +812,7 @@ controls:
         - Strong cryptography with associated key-management processes and procedures.
       levels:
         - base
-      status: pending
+      status: partial
       controls:
       - id: 3.5.1.1
         title: Hashes used to render PAN unreadable (per the first bullet of Requirement 3.5.1)
@@ -824,15 +828,10 @@ controls:
           assessment.
         levels:
           - base
-        status: planned
+        status: not applicable
         notes: |-
-          This requirement likely demand assessment in application level for some environments and
-          this would be too specific to be automated. However, on system level we can ensure some
-          strong cryptographic algorithms. This is also generally covered by 2.2.7 but here would
-          be possible to include more specific rules, for openssl and libreswan for example.
-          However it would be first necessary to include a platform conditional in these rules
-          before selecting them so they are applicable only if the respective packages are
-          installed.
+          OpenShift doesn't directly handle PANs.
+          Handling and masking the PAN is resposibility of the workload / application installed.
 
       - id: 3.5.1.2
         title: If disk-level or partition-level encryption (rather than file-, column-, or
@@ -841,8 +840,11 @@ controls:
           Requirement 3.5.1
         levels:
           - base
-        status: pending
-        rules: []
+        status: not applicable
+        notes: |-
+          This requirement is about ensuring PANs are also masked when disk-level and partition-level
+          encryption is used.
+          Handling and masking the PAN is resposibility of the workload / application installed.
 
       - id: 3.5.1.3
         title: If disk-level or partition-level encryption is used (rather than file-, column-, or
@@ -857,15 +859,58 @@ controls:
           access to unencrypted data are stored securely.
         levels:
           - base
-        status: pending
+        status: partial
         notes: |-
-          To properly check this requirement, site policies and documentation should be consulted.
+          Disk-level encryption is a node configuration, but it can be managed by the NBDE
+          Tang Server Operator to automatically unlock LUKS-encrypted volumes and rotate keys.
+
+          In case where card holder data may be stored on worker nodes disks, OpenShift Container
+          Platform can help to partially
+          comply with this requirement by providing several means of fully encrypting disks.
+          * Using RHEL core crypto components which are FIPS certified
+          * Or using cloud provider techniques, such as EBS encryption for AWS case.
+          For this requirement, we also check etcd is encrypted, so that secrets, but also routes
+          and oauth configurations are secured.
+
+          Concerning Full Disk Encryption:
+          Full Disk Encryption can be enabled on OpenShift by installing the cluster with FIPS mode
+          enabled.
+          OpenShift Container Platform uses certain FIPS Validated / Modules in Process modules
+          within RHEL and RHCOS for the operating system components that it uses.
+          See RHEL core crypto components and
+          https://docs.openshift.com/container-platform/latest/installing/installing-fips.html for
+          further information.
+          When installing the cluster, The public ssh key is passed to the Red Hat Enterprise Linux
+          CoreOS (RHCOS) nodes through their Ignition config files and is used to authenticate SSH
+          access to the nodes. The key is added to the ~/.ssh/authorized_keys list for the core user
+          on each node, which enables password-less authentication.
+
+          The management of the private key is up to the customer.
+          LUKS/dm-crypt (used by the FIPS mode) provides full-disk encryption that fulfills
+          requirement 3.4.1.
+          Access to the stored data is only possible via a decryption password that must be entered
+          when the disk is mounted .
+          The disk can be encrypted using a TPM v2, a secure cryptoprocessor contained 
+          within a server; or a Tang server, a network-bound disk encryption (NBDE).
+
+          The NBDE Tang Server Operator can provide automatic unlocking of LUKS-encrypted volumes
+          and key rotation.
+        rules:
+        - machine_volume_encrypted
+        - storageclass_encryption_enabled
+        - api_server_encryption_provider_cipher
+        # NOTE yuumasato: When RHCOS is supported we can add rules to check whether the encrypted
+        # volume is bound to a Tang server.
 
   - id: '3.6'
     title: Cryptographic keys used to protect stored account data are secured.
     levels:
       - base
-    status: pending
+    status: inherently met
+    notes: |-
+      The cryptographic keys created and managed by OpenShift are secured by default.
+      However, the keys created and managed by the application should be secured by the application
+      and the organization's processes.
     controls:
     - id: 3.6.1
       title: Procedures are defined and implemented to protect cryptographic keys used to protect
@@ -898,7 +943,32 @@ controls:
           location of devices, as outlined in Requirement 12.3.4.
         levels:
           - base
-        status: pending
+        notes: |-
+          This requirement largely depends on the solution chosen by the customer to protect card
+          holder data at rest.
+          * When Full Disk Encryption is done using AWS EBS encryption, the algorithm used is
+            AES-256.
+            Your data key is stored on disk with your encrypted data, but not before EBS encrypts it
+            with your KMS key.
+            Your data key never appears on disk in plaintext.
+            The same data key is shared by snapshots of the volume and any subsequent volumes
+            created from those snapshots.
+            See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html
+          * When Full Disk Encryption is done using LUKS with TPM2, full disk encryption utilities
+            such as dm-crypt and
+            BitLocker encrypt disks with a TPM bind key, and then store the TPM bind key in the TPM
+            (Trusted Platform Module),
+            which is a secure element attached to the motherboard of the node.
+            The main benefit of this method is that there is no external dependency, and the node is
+            able to decrypt its own
+            disks at boot time without any external interaction.
+          * When Full Disk Encryption is done using LUKS with Tang, the booting node attempts to
+            contact a predefined set
+            of Tang servers by performing a cryptographic handshake. If it can reach the required
+            number of Tang servers,
+            the node can construct its disk decryption key and unlock the disks to continue booting.
+          See https://docs.openshift.com/container-platform/4.9/security/network_bound_disk_encryption/nbde-about-disk-encryption-technology.html
+        status: inherently met
 
       - id: 3.6.1.2
         title: Secret and private keys used to encrypt/decrypt stored account data are stored in
@@ -920,7 +990,7 @@ controls:
           generated via one of the following
         levels:
           - base
-        status: pending
+        status: inherently met
 
       - id: 3.6.1.3
         title: Access to cleartext cryptographic key components is restricted to the fewest number
@@ -929,7 +999,29 @@ controls:
           Access to cleartext cryptographic key components is restricted to necessary personnel.
         levels:
           - base
-        status: pending
+        status: inherently met
+        notes: |-
+          This requirement largely depends on the solution chosen by the customer to protect card
+          holder data at rest.
+          * When Full Disk Encryption is done using AWS EBS encryption, the data key, used for
+            volume encryption, is generated
+            by AWS KMS, encrypted with the Key Encryption Key that lies in the KMS and stored with
+            the volume metadata, by EBS.
+            It is the payment entity's responsibility to limit the access to this key by ensuring
+            that Grant requests to decrypt
+            the data key using the KEK (Key Encryption Key) is given only to the need to know users
+            or AWS resources.
+            See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html
+          * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key, which is used
+          to decrypt the data key is
+            stored in the TPM (Trusted Platform Module), on the motherboard of the node.
+            It is therefore not shared with anyone.
+          * When Full Disk Encryption is done using LUKS with Tang, Tang server does not store the
+          encryption key directly,
+            and never interacts with it. The metadata needed to decrypt the volume is stored on the
+            disk but can only be
+            unlocked and used when the node can correctly establish the handshake with the Tang
+            server. The data key is therefore not shared with anyone.
 
       - id: 3.6.1.4
         title: Cryptographic keys are stored in the fewest possible locations.
@@ -937,14 +1029,27 @@ controls:
           Cryptographic keys are retained only where necessary.
         levels:
           - base
-        status: pending
+        status: inherently met
+        notes: |-
+          This requirement depends on the solution chosen by the customer to protect card holder
+          data at rest:
+          * When Full Disk Encryption is done using AWS EBS encryption, the data key is stored in
+            the volume's metadata only.
+            The KEK is stored in the AWS KMS only.
+          * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key is stored in
+            the TPM (Trusted Platform Module) only.
+            The encrypted data key is stored on the MBR of the disk only.
+          * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored
+            to disk. Only the provisioning metadata is. A POST to the Tang server would allow the
+            node to recompute the encryption key from this metadata.
+            See https://github.com/latchset/tang
 
   - id: '3.7'
     title: Where cryptography is used to protect stored account data, key management processes and
       procedures covering all aspects of the key lifecycle are defined and implemented.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 3.7.1
       title: Key-management policies and procedures are implemented to include generation of
@@ -953,7 +1058,13 @@ controls:
         Strong cryptographic keys are generated.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Although some key management processes rely on OpenShift Container Platform and its
+        underlying components for Full Disk Encryption, the responsibility for documentation and
+        implementation of key-management processes and procedures for cryptographic keys used for
+        encryption of cardholder data is still on the payment service and its
+        operations team in order to cover all aspects of cardholder data protection.
 
     - id: 3.7.2
       title: Key-management policies and procedures are implemented to include secure distribution
@@ -962,7 +1073,7 @@ controls:
         Cryptographic keys are secured during distribution.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 3.7.3
       title: Key-management policies and procedures are implemented to include secure storage of
@@ -971,11 +1082,9 @@ controls:
         Cryptographic keys are secured when stored.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        The scope of this requirement seems much wider going even to application level, which
-        might be different for each site. Regarding local system there are some technical measures
-        ensured by 2.2.6.
+        TPM
 
     - id: 3.7.4
       title: Key management policies and procedures are implemented for cryptographic key changes
@@ -990,7 +1099,17 @@ controls:
         - A process for key changes at the end of the defined cryptoperiod.
       levels:
         - base
-      status: pending
+      notes: |-
+        It is the responsibility of the payment entity's operations team to rotate the
+        encryption keys when they expire, according to the solution chosen for full disk
+        encryption:
+        * AWS EBS Encryption: Operations team creates a snapshot of the volume and then uses
+          the snapshot to create a new, encrypted copy of the volume. While creating the new volume,
+          a new encryption key is specified.
+        * LUKS encryption with TPM2: The TPM secret cannot be modified after disk creation.
+        * LUKS encryption with Tang: The operations performs the Tang Keys rotation as described in
+          https://access.redhat.com/solutions/4074891
+      status: not applicable
 
     - id: 3.7.5
       title: Key management policies procedures are implemented to include the retirement,
@@ -1007,7 +1126,10 @@ controls:
         - Retired or replaced keys are not used for encryption operations.
       levels:
         - base
-      status: pending
+      notes: |-
+        It is the responsibility of the payment entity's operations team to retire or
+        replace weakened keys
+      status: not applicable
 
     - id: 3.7.6
       title: Where manual cleartext cryptographic key-management operations are performed by
@@ -1022,7 +1144,10 @@ controls:
         generated via one of the following
       levels:
         - base
-      status: pending
+      notes: |-
+        Manual clear-text cryptographic key-management operations are not used in the context of
+        Openshift Container Platform
+      status: not applicable
 
     - id: 3.7.7
       title: Key management policies and procedures are implemented to include the prevention of
@@ -1031,7 +1156,17 @@ controls:
         Cryptographic keys cannot be substituted by unauthorized personnel.
       levels:
         - base
-      status: pending
+      notes: |-
+        This requirement depends on the solution chosen by the payment entity to protect card holder
+        data at rest:
+        * When Full Disk Encryption is done using AWS EBS encryption, the authorizations on the
+          cryptographic keys are managed in AWS IAM by the payment entity operating the service.
+        * When Full Disk Encryption is done using LUKS with TPM2, no substitution of cryptographic
+          keys is possible after disk creation.
+        * When Full Disk Encryption is done using LUKS with Tang, the access to the Tang server,
+          where the Tang Keys Rotation process can be handled, are the responsibility of the payment
+          entity operating the service.
+      status: not applicable
 
     - id: 3.7.8
       title: Key management policies and procedures are implemented to include that cryptographic
@@ -1042,7 +1177,12 @@ controls:
         operations and can access assistance and guidance when required.
       levels:
         - base
-      status: pending
+      notes: |-
+        This requirement is not applicable to the OpenShift Container Platform
+        as it instead pertains to the practices and documentation from the
+        payment entity. The platform may not generate the entity's policies
+        and security practices.
+      status: not applicable
 
     - id: 3.7.9
       title: 'Additional requirement for service providers only: Where a service provider shares
@@ -1055,28 +1195,28 @@ controls:
         a service provider.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '4.1'
     title: Processes and mechanisms for protecting cardholder data with strong cryptography during
       transmission over open, public networks are defined and documented.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 4.1.1
       title: All security policies and operational procedures that are identified in Requirement 4
         are Documented, Kept up to date, In use and Known to all affected parties.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 4.1.2
       title: Roles and responsibilities for performing activities in Requirement 4 are documented,
         assigned, and understood.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
         Examine documentation and interview personnel to verify that day-to-day responsibilities
         for performing all the activities in Requirement 4 are documented, assigned and understood
@@ -1086,7 +1226,7 @@ controls:
     title: PAN is protected with strong cryptography during transmission.
     levels:
       - base
-    status: pending
+    status: partial
     controls:
     - id: 4.2.1
       title: Strong cryptography and security protocols are implemented as follows to safeguard
@@ -1104,7 +1244,23 @@ controls:
         - The encryption strength is appropriate for the encryption methodology in use.
       levels:
         - base
-      status: pending
+      status: partial
+      notes: |-
+        OpenShift provides mechanisms to securely transmit PAN over open public networks, but
+        the application is still responsible for leveraging and implementing strong
+        cryptography when transmitting PAN.
+      rules:
+        - file_permissions_openshift_pki_cert_files
+        - tls_version_check_apiserver
+        - tls_version_check_masters_workers
+        - tls_version_check_router
+        - api_server_tls_cert
+        - api_server_tls_security_profile
+        - api_server_tls_cipher_suites
+        - ingress_controller_certificate
+        - ingress_controller_tls_security_profile
+        - kubelet_configure_tls_min_version
+
       controls:
       - id: 4.2.1.1
         title: An inventory of the entity's trusted keys and certificates used to protect PAN
@@ -1115,7 +1271,10 @@ controls:
           which it will be required and must be fully considered during a PCI DSS assessment.
         levels:
           - base
-        status: pending
+        status: not applicable
+        notes: |-
+          OpenShift doesn't directly handle PANs, the management of keys and certificates
+          protecting them is responsibility of the payment application.
 
       - id: 4.2.1.2
         title: Wireless networks transmitting PAN or connected to the CDE use industry best
@@ -1124,9 +1283,9 @@ controls:
           Cleartext PAN cannot be read or intercepted from wireless network transmissions.
         levels:
           - base
-        status: pending
+        status: not applicable
         notes: |-
-          Wireless interfaces are disabled by 1.3.3.
+          OpenShift doesn't manage wireless environments nor they security configurations.
 
     - id: 4.2.2
       title: PAN is secured with strong cryptography whenever it is sent via end-user messaging
@@ -1142,46 +1301,43 @@ controls:
         from being used for cardholder data.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Some known insecure services and protocols are disabled by 2.2.4.
-        If any specific end-user messaging technology is used, it should be manually checked in
-        alignment to site policies.
+        OpenShift doesn't directly handle PANs, the application is responsible for appropriately
+        securing PAN.
 
   - id: '5.1'
     title: Processes and mechanisms for protecting all systems and networks from malicious
       software are defined and understood.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 5.1.1
       title: All security policies and operational procedures that are identified in Requirement 5
         are Documented, Kept up to date, In use and Known to all affected parties.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Examine documentation and interview personnel to verify that security policies and
-        operational procedures identified in Requirement 5 are managed in accordance with all
-        elements specified in this requirement.
+        The responsibility for documentation, maintenance, use and dissemination of the security
+        policies and procedures is on the payment service and its operations team.
 
     - id: 5.1.2
       title: Roles and responsibilities for performing activities in Requirement 5 are documented,
         assigned, and understood.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Examine documentation and interview personnel to verify that day-to-day responsibilities
-        for performing all the activities in Requirement 5 are documented, assigned and understood
-        by the assigned personnel.
+        The responsibility for documentation, maintenance, use and dissemination of the security
+        policies and procedures is on the payment service and its operations team.
 
   - id: '5.2'
     title: Malicious software (malware) is prevented, or detected and addressed.
     levels:
       - base
-    status: pending
+    status: supported
     notes: |-
       Related measures are covered by 1.2.6, 1.4.5 and 3.4.2.
     controls:
@@ -1194,18 +1350,41 @@ controls:
         malware.
       levels:
         - base
-      status: pending
+      status: supported
       notes: |-
         There are many options of anti-malware and the criteria for any adopted solution or
         approach relies on each site policy. Technologies are supported but manual assessment is
         required.
+
+        OpenShift container platforms may install the OpenShift File
+        Integrity Operator [1] which monitors file system integrity on the host.
+        This may allow for the detection of threats on the hosts which attempt
+        to modify the file system in malicious ways. Additionally, there exist
+        several solutions to scan for container vulnerabilities which are indispensible
+        from any deployment. One such example is Red Hat Quay [2] which supports
+        image verification and continuous security scanning of container images.
+        Another option is Red Hat Advanced Cluster Security [3] which provides a complete solution
+        to build, deploy, and run containerized workloads with more security.
+
+        [1] https://docs.openshift.com/container-platform/latest/security/file_integrity_operator/file-integrity-operator-understanding.html
+        [2] https://docs.openshift.com/container-platform/latest/security/container_security/security-registries.html
+        [3] https://www.redhat.com/en/resources/advanced-cluster-security-for-kubernetes-datasheet
+
+      rules: []
+      related_rules:
+      - acs_sensor_exists
+      - container_security_operator_exists
+      - file_integrity_exists
 
     - id: 5.2.2
       title: The deployed anti-malware solution(s) detects all known types of malware and removes,
         blocks, or contains all known types of malware.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        It is the payment entity's responsibility to ensure that the chosen anti-malware solutions
+        cover the required malware types.
 
     - id: 5.2.3
       title: Any system components that are not at risk for malware are evaluated periodically.
@@ -1218,7 +1397,10 @@ controls:
         protection.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        It is the payment entity's responsibility to identify and evaluate whether any system
+        component is at risk of a malware attack.
       controls:
       - id: 5.2.3.1
         title: The frequency of periodic evaluations of system components identified as not at
@@ -1231,13 +1413,15 @@ controls:
           assessment.
         levels:
           - base
-        status: pending
+        status: not applicable
 
   - id: '5.3'
     title: Anti-malware mechanisms and processes are active, maintained, and monitored.
     levels:
       - base
-    status: pending
+    status: not applicable
+    notes: |-
+      The requirements in this section depend on the malware solution deployed as part of 5.2.1.
     controls:
     - id: 5.3.1
       title: The anti-malware solution(s) is kept current via automatic updates.
@@ -1245,14 +1429,14 @@ controls:
         Anti-malware mechanisms can detect and address the latest malware threats.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 5.3.2
       title: The anti-malware solution(s) performs periodic scans and active or real-time scans or
         performs continuous behavioral analysis of systems or processes.
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 5.3.2.1
         title: If periodic malware scans are performed to meet Requirement 5.3.2, the frequency of
@@ -1265,7 +1449,7 @@ controls:
           it will be required and must be fully considered during a PCI DSS assessment.
         levels:
           - base
-        status: pending
+        status: not applicable
 
     - id: 5.3.3
       title: For removable electronic media, the anti-malware solution(s) performs automatic scans
@@ -1274,9 +1458,7 @@ controls:
         logically mounted.
       levels:
         - base
-      status: pending
-      notes: |-
-        Related measures are covered by 3.4.2.
+      status: not applicable
 
     - id: 5.3.4
       title: Audit logs for the anti-malware solution(s) are enabled and retained in accordance
@@ -1286,7 +1468,7 @@ controls:
         least 12 months.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 5.3.5
       title: Anti-malware mechanisms cannot be disabled or altered by users, unless specifically
@@ -1301,9 +1483,7 @@ controls:
         protection is not active.
       levels:
         - base
-      status: pending
-      notes: |-
-        Related measures are covered by 2.2.6 requirement and 8.2 section.
+      status: not applicable
 
   - id: '5.4'
     title: Anti-phishing mechanisms protect users against phishing attacks.
@@ -1327,42 +1507,53 @@ controls:
         be required and must be fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: pending
+      status: not applicable
+      rules: []
+      related_rules:
+      # NOTE: (yuumasato) below are some node OS configurations that can help prevent
+      # and detect spoofing
+      - firewalld_loopback_traffic_restricted
+      - sysctl_net_ipv4_conf_all_log_martians
 
   - id: '6.1'
     title: Processes and mechanisms for developing and maintaining secure systems and software are
       defined and understood.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 6.1.1
       title: All security policies and operational procedures that are identified in Requirement 6
         are Documented, Kept up to date, In use and Known to all affected parties.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Examine documentation and interview personnel to verify that security policies and
-        operational procedures identified in Requirement 6 are managed in accordance with all
-        elements specified in this requirement.
+        The responsibility for documentation, maintenance, use and dissemination of the processes
+        and mechanisms for developing and maintaining secure systems and software is on the
+        payment entity and its operations team.
 
     - id: 6.1.2
       title: Roles and responsibilities for performing activities in Requirement 6 are
         documented, assigned, and understood.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Examine documentation and interview personnel to verify that day-to-day responsibilities
-        for performing all the activities in Requirement 6 are documented, assigned and understood
-        by the assigned personnel.
+        The responsibility for documentation, maintenance, use and dissemination of the processes
+        and mechanisms for developing and maintaining secure systems and software is on the
+        payment entity and its operations team.
 
   - id: '6.2'
     title: Bespoke and custom software are developed securely.
     levels:
       - base
-    status: pending
+    status: not applicable
+    notes: |-
+      OpenShift is developed and maintained following secure software development practices:
+      https://www.redhat.com/en/topics/security/red-hat-sdl
+      But this requirement applies only to software developed for or by the entity for the
+      entity's own use. This does not apply to third-party software.
     controls:
     - id: 6.2.1
       title: Bespoke and custom software are developed securely.
@@ -1374,7 +1565,7 @@ controls:
         software development lifecycle.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.2.2
       title: Software development personnel working on bespoke and custom software are trained at
@@ -1388,7 +1579,7 @@ controls:
         vulnerabilities in software.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.2.3
       title: Bespoke and custom software is reviewed prior to being released into production or to
@@ -1401,7 +1592,7 @@ controls:
         - Appropriate corrections are implemented prior to release.
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 6.2.3.1
         title: If manual code reviews are performed for bespoke and custom software prior to
@@ -1414,7 +1605,7 @@ controls:
           - Reviewed and approved by management prior to release.
         levels:
           - base
-        status: pending
+        status: not applicable
 
     - id: 6.2.4
       title: Software engineering techniques or other methods are defined and in use by software
@@ -1422,19 +1613,33 @@ controls:
         vulnerabilities in bespoke and custom software.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '6.3'
     title: Security vulnerabilities are identified and addressed.
     levels:
       - base
-    status: pending
+    status: inherently met
     controls:
     - id: 6.3.1
       title: Security vulnerabilities are identified and managed
+      description: |-
+        Security vulnerabilities are identified and managed as follows:
+        - New security vulnerabilities are identified using industry-recognized sources for
+        security vulnerability information, including alerts from international and national
+        computer emergency response teams (CERTs).
+        - Vulnerabilities are assigned a risk ranking based on industry best practices and
+        consideration of potential impact.
+        - Risk rankings identify, at a minimum, all vulnerabilities considered to be a high-risk
+        or critical to the environment.
+        - Vulnerabilities for bespoke and custom, and third-party software (for example operating
+        systems and databases) are covered.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        The payment entity needs to establish its own process of monitoring for vulnerabilities for
+        the systems in use, including bespoke and custom software.
 
     - id: 6.3.2
       title: An inventory of bespoke and custom software, and third-party software components
@@ -1446,13 +1651,7 @@ controls:
         it will be required and must be fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: automated
-      notes: |-
-        This requirement is a best practice until 31 March 2025, after which it will be required
-        and must be fully considered during a PCI DSS assessment.
-      rules:
-        - acs_sensor_exists
-        - container_security_operator_exists
+      status: not applicable
 
     - id: 6.3.3
       title: All system components are protected from known vulnerabilities by installing
@@ -1466,14 +1665,22 @@ controls:
         frame as determined by the entity (for example, within three months of release).
       levels:
         - base
-      status: pending
-      rules: []
+      status: inherently met
+      notes: |-
+        The OpenShift Container Platform provides the capability of updating
+        both the Kubernetes/OCP layer, as well as the Operating System (Red Hat
+        CoreOS) layer in an ubiquitous manner with over-the-air updates using
+        the OpenShift Update Service (OSUS) [1]. This service can also be installed
+        in clusters without internet connectivity [2].
+
+        [1] https://access.redhat.com/documentation/en-us/openshift_container_platform/4.15/html/updating_clusters/understanding-openshift-updates-1#update-service-about_understanding-openshift-updates
+        [2] https://access.redhat.com/documentation/en-us/openshift_container_platform/4.15/html/updating_clusters/performing-a-cluster-update#updating-restricted-network-cluster-OSUS
 
   - id: '6.4'
     title: Public-facing web applications are protected against attacks.
     levels:
       - base
-    status: pending
+    status: partial
     controls:
     - id: 6.4.1
       title: For public-facing web applications, new threats and vulnerabilities are addressed on
@@ -1500,14 +1707,31 @@ controls:
           investigated.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        It is up to the payment entity how they protect their public facing appilcations.
+        Depending on the approach taken OpenShift can provide support, see req. 6.4.2, for more details.
 
     - id: 6.4.2
       title: For public-facing web applications, an automated technical solution is deployed that
         continually detects and prevents web-based attacks.
       levels:
         - base
-      status: pending
+      status: partial
+      notes: |-
+        Support for Web Application Firewall in OCP is still in development:
+        https://www.redhat.com/en/blog/creating-web-application-firewall-red-hat-openshift
+
+        While Container Security Operator (CSO) is not focused on protecting web-applications it
+        can scan installed workflows and applications for known vulnerabilities.
+        https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/red_hat_quay_operator_features/container-security-operator-setup
+
+        Security Profiles Operators can also be used to contain an attack when an application
+        is compromised.
+        https://docs.openshift.com/container-platform/latest/security/security_profiles_operator/spo-overview.html
+      rules:
+        - container_security_operator_exists
+        - security_profiles_operator_exists
 
     - id: 6.4.3
       title: All payment page scripts that are loaded and executed in the consumer's browser are
@@ -1521,20 +1745,20 @@ controls:
         necessary.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '6.5'
     title: Changes to all system components are managed securely.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 6.5.1
       title: Changes to all system components in the production environment are made according to
         established procedures.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.5.2
       title: Upon completion of a significant change, all applicable PCI DSS requirements are
@@ -1547,7 +1771,7 @@ controls:
         12.5.2.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.5.3
       title: Pre-production environments are separated from production environments and the
@@ -1557,7 +1781,7 @@ controls:
         environments.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.5.4
       title: Roles and functions are separated between production and pre-production environments
@@ -1573,7 +1797,7 @@ controls:
         access to the production environment.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.5.5
       title: Live PANs are not used in pre-production environments, except where those
@@ -1583,7 +1807,7 @@ controls:
         Live PANs cannot be present in pre-production environments outside the CDE.s
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.5.6
       title: Test data and test accounts are removed from system components before the system goes
@@ -1592,21 +1816,21 @@ controls:
         Test data and test accounts cannot exist in production environments.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '7.1'
     title: Processes and mechanisms for restricting access to system components and cardholder
       data by business need to know are defined and understood.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 7.1.1
       title: All security policies and operational procedures that are identified in Requirement 7
         are Documented, Kept up to date, In use and Known to all affected parties.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
         Examine documentation and interview personnel to verify that security policies and
         operational procedures identified in Requirement 7 are managed in accordance with all
@@ -1617,7 +1841,7 @@ controls:
         assigned, and understood.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
         Examine documentation and interview personnel to verify that day-to-day responsibilities
         for performing all the activities in Requirement 7 are documented, assigned and understood
@@ -1627,7 +1851,7 @@ controls:
     title: Access to system components and data is appropriately defined and assigned.
     levels:
       - base
-    status: pending
+    status: inherently met
     controls:
     - id: 7.2.1
       title: An access control model is defined and includes granting access
@@ -1640,17 +1864,28 @@ controls:
         function.
       levels:
         - base
-      status: pending
+      status: inherently met
       notes: |-
-        General access are restricted by 2.2.6 and 8.2 section. This requirement is more about
-        checking granting access process.
+        The OpenShift Container Platform comes with the Kubernetes RBAC
+        feature enabled by default. This feature ensures that only if a
+        user or a system account has the appropriate permission, it's able
+        to operate on specific system objects. By reviewing the existing
+        Role and ClusterRole objects, one is able to see the resources
+        that are accessible for a certain role, as well as the "verbs" or
+        operations that the role can execute on that resource.
+      rules:
+        - rbac_roles_defined
+        - rbac_cluster_roles_defined
 
     - id: 7.2.2
       title: Access is assigned to users, including privileged users, based on job classification
         and function, and least privileges necessary to perform job responsibilities.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Only the payment entity can assess whether the access privileges granted to users are
+        appropriate.
 
     - id: 7.2.3
       title: Required privileges are approved by authorized personnel.
@@ -1659,7 +1894,10 @@ controls:
         authorization.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Only the payment entity can assess whether the access privileges granted to users are
+        appropriate and documented.
 
     - id: 7.2.4
       title: All user accounts and related access privileges, including third-party/vendor
@@ -1673,7 +1911,10 @@ controls:
         - Management acknowledges that access remains appropriate.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Only the payment entity can assess whether the access privileges granted to users are
+        appropriate and documented.
 
     - id: 7.2.5
       title: All application and system accounts and related access privileges are assigned and
@@ -1695,17 +1936,18 @@ controls:
           reviewed.
         levels:
           - base
-        status: pending
+        status: not applicable
+        notes: |-
+          The check for assignment of least privileges and requirement of use requires human
+          and manual analysis.
 
     - id: 7.2.6
       title: All user access to query repositories of stored cardholder data is restricted
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is specific about cardholder data, which can be available in different
-        formats, such as clear and binary files, and databases depending on site policies.
-        General system restrictions are covered in 2.2.6.
+        The payment entity is responsible implementing and managing access to card holder data.
 
   - id: '7.3'
     title: 'Access to system components and data is managed via an access control
@@ -1721,7 +1963,13 @@ controls:
         Access rights and privileges are managed via mechanisms intended for that purpose.
       levels:
         - base
-      status: pending
+      status: inherently met
+      notes: |-
+        The OpenShift Container Platform has RBAC enabled by default. With this
+        feature, any requests to the API is denied unless an explicit
+        Role or ClusterRule is bound to the entity making the request.
+
+        All objects in Kubernetes/OpenShift are bound to RBAC permissions.
 
     - id: 7.3.2
       title: The access control system(s) is configured to enforce permissions assigned to
@@ -1731,7 +1979,11 @@ controls:
         only inherited from group membership.
       levels:
         - base
-      status: pending
+      status: inherently met
+      notes: |-
+        The OpenShift Container Platform has RBAC enabled by default,
+        and it is enforced at all times.
+        There is no permissive mode for Openshift RBAC.
 
     - id: 7.3.3
       title: The access control system(s) is set to "deny all" by default.
@@ -1739,10 +1991,11 @@ controls:
         Access rights and privileges are prohibited unless expressly permitted.
       levels:
         - base
-      status: planned
+      status: inherently met
       notes: |-
-        It is possible we can select some rules for this requirement but more investigation is
-        needed to confirm.
+        The OpenShift Container Platform has RBAC enabled by default. With this
+        feature, any requests to the API is denied unless an explicit
+        Role or ClusterRule is bound to the entity making the request.
 
   - id: '8.1'
     title: Processes and mechanisms for identifying users and authenticating access to system
@@ -1756,29 +2009,27 @@ controls:
         are Documented, Kept up to date, In use and Known to all affected parties.
       levels:
         - base
-      status: pending
-      notes: |-
-        Examine documentation and interview personnel to verify that security policies and
-        operational procedures identified in Requirement 8 are managed in accordance with all
-        elements specified in this requirement.
+      status: not applicable
 
     - id: 8.1.2
       title: Roles and responsibilities for performing activities in Requirement 8 are documented,
         assigned, and understood.
       levels:
         - base
-      status: pending
-      notes: |-
-        Examine documentation and interview personnel to verify that day-to-day responsibilities
-        for performing all the activities in Requirement 8 are documented, assigned and understood
-        by the assigned personnel.
+      status: not applicable
 
   - id: '8.2'
     title: User identification and related accounts for users and administrators are strictly
       managed throughout an account's lifecycle.
     levels:
       - base
-    status: pending
+    status: automated
+    notes: |-
+      For this control to be satisfiable an identity provider must be used and the kubeadmin user
+      needs to be removed.
+    rules:
+      - idp_is_configured
+      - kubeadmin_removed
     controls:
     - id: 8.2.1
       title: All users are assigned a unique ID before access to system components or cardholder
@@ -1790,12 +2041,26 @@ controls:
         on point-of-sale terminals).
       levels:
         - base
-      status: planned
+      status: automated
       notes: |-
-        The rules selected in this requirement are incomplete. Missing remediation and test
-        scenarios. They should include test scenarios and likely remediation or a warning
-        informing why a remediation is not present.
-      rules: []
+        Openshift should be configured to work with an external third-party identity provider.
+        Through the chosen identity provider, unique identifiers can be setup for each user.
+        See more at https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html
+
+        However, the payment entity's processes and responsible personal still need to be examined
+        to check whether each user is uniquely associated with an individual.
+      rules:
+        - idp_is_configured
+      related_rules:
+        # This control can be partially implemented with the following RHCOS rules
+        - no_direct_root_logins
+        - account_unique_id
+        - account_unique_name
+        - accounts_no_uid_except_zero
+        - accounts_root_gid_zero
+        - group_unique_id
+        - group_unique_name
+        - audit_rules_immutable_login_uids
 
     - id: 8.2.2
       title: Group, shared, or generic accounts, or other shared authentication credentials are
@@ -1809,24 +2074,37 @@ controls:
         - Every action taken is attributable to an individual user.
       levels:
         - base
-      status: pending
+      status: automated
       notes: |-
-        This requirement is complemented by 8.2.1 and related to 8.3.5.
-      rules: []
+        Access tokens that are issued by OpenShift upon authentication should only be used by the
+        person for whom it was issued.
+      rules:
+        - kubeadmin_removed
+      related_rules:
+        # This control can also be implemented with the following RHCOS rules
+        - no_direct_root_logins
 
     - id: 8.2.3
       title: 'Additional requirement for service providers only: Service providers with remote
         access to customer premises use unique authentication factors for each customer premises.'
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        The payment entity itself is also required to not use group, shared, or generic IDs,
+        passwords, or other authentication methods. Access tokens that are issued by
+        OpenShift upon authentication should only be used by the person
+        for whom it was issued.
 
     - id: 8.2.4
       title: Addition, deletion, and modification of user IDs, authentication factors, and other
         identifier objects are managed
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Only the payment entity can assess whether the access privileges granted to users are
+        appropriate and documented, and properly reflected in the configured identity provider.
 
     - id: 8.2.5
       title: Access for terminated users is immediately revoked.
@@ -1834,9 +2112,11 @@ controls:
         The accounts of terminated users cannot be used.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement depends on site policies for user termination.
+        Revocation of access for terminated users are performed by the third-party
+        identity provider. Additionally, OpenShift nor the identity provider cannot by itself
+        determine the users associated with an individual.
 
     - id: 8.2.6
       title: Inactive user accounts are removed or disabled within 90 days of inactivity.
@@ -1844,9 +2124,12 @@ controls:
         Inactive user accounts cannot be used.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Also related to requirements 2.2.2 and 8.3.5.
+        Removal or disabling of inactive user accounts within 90 days are handled with the
+        identity provider.
+        All user IDs, including those handled by third parties to access, support, or maintain
+        system components via remote access, are handled externally to OpenShift.
       rules: []
 
     - id: 8.2.7
@@ -1854,7 +2137,11 @@ controls:
         remote access are managed.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Similar to how accounts for employees are managed, accounts for third parties are also
+        managed by the configured identity provider, and under responsibility of the payment
+        entity.
 
     - id: 8.2.8
       title: If a user session has been idle for more than 15 minutes, the user is required to
@@ -1867,21 +2154,42 @@ controls:
         from being performed while the console/PC is unattended.
       levels:
         - base
-      status: pending
-      rules: []
+      status: automated
+      notes: |-
+        Session timeouts can be enabled with OpenShift to limit the amount of
+        time that a session can be active. However, the payment entity also needs to control the
+        user's and administrator's idle session timeouts on their payment applications as well.
+      rules:
+        - oauth_or_oauthclient_inactivity_timeout
+        - var_oauth_inactivity_timeout=15m0s
 
   - id: '8.3'
     title: Strong authentication for users and administrators is established and managed.
     levels:
       - base
-    status: pending
+    status: partial
+    notes: |-
+      For this control to be satisfiable an identity provider must be used and the kubeadmin user
+      needs to be removed.
+    rules:
+      - idp_is_configured
+      - kubeadmin_removed
     controls:
     - id: 8.3.1
       title: All user access to system components for users and administrators is authenticated.
+      description: |-
+        All user access to system components for users and administrators is authenticated via at
+        least one of the following authentication factors:
+        - Something you know, such as a password or passphrase.
+        - Something you have, such as a token device or smart card.
+        - Something you are, such as a biometric element.
       levels:
         - base
-      status: pending
-      rules: []
+      status: not applicable
+      notes: |-
+        The type of authenticators to be used (for example, password or passphrase,
+        token device or smart card, or biometrics) are managed externally
+        to OpenShift by the identity provider
 
     - id: 8.3.2
       title: Strong cryptography is used to render all authentication factors unreadable during
@@ -1891,10 +2199,16 @@ controls:
         interception of communications or from stored data.
       levels:
         - base
-      status: pending
+      status: partial
       notes: |-
-        There are similar rules that might be redundant for some distros.
-      rules: []
+        The protection of the authentication credentials such as rendering the passwords and
+        passphrases unreadable during transmission and the storage of credentials on system
+        components is the responsibility of the third-party identity provider.
+
+        If LDAP is used as the identity provider, we do not allow it to run with the
+        'insecure' flag on.
+      rules:
+        - ocp_no_ldap_insecure
 
     - id: 8.3.3
       title: User identity is verified before modifying any authentication factor.
@@ -1903,12 +2217,12 @@ controls:
         authorized user.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is about processes, such as password resets, provisioning new hardware or
-        software tokens, and generating new keys. It is common that these activities involve help
-        desk teams and administrators and the involved people should ensure identities are properly
-        verified.
+        Modification of authentication credentials is handled by the third-party identity provider.
+        All access to modify parameters for authentication tokens or for generating keys  within
+        OpenShift is managed with RBAC and requires prior authentication before the user is
+        authorized to act.
 
     - id: 8.3.4
       title: Invalid authentication attempts are limited.
@@ -1918,8 +2232,17 @@ controls:
         confirmed.
       levels:
         - base
-      status: pending
-      rules: []
+      status: partial
+      notes: |-
+        Account lockout for failed attempts are managed by the identity provider as all
+        authentication attempts that occur prior to granting access from OpenShift.
+        Establishing a threshold for limiting repeated failed attempts are configured with
+        the chosen identity provider.
+
+        In this control we do not allow usage of htpasswd as the identity provider, as it
+        doesn't provide user lockout feature.
+      rules:
+        - ocp_idp_no_htpasswd
 
     - id: 8.3.5
       title: If passwords/passphrases are used as authentication factors to meet Requirement
@@ -1929,10 +2252,11 @@ controls:
         - Forced to be changed immediately after the first use.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Also related to requirement 2.2.2, 8.2.2 and 8.2.6.
-      rules: []
+        Parameters for authenticators such as password length, maximum password
+        age, minimum password age, password history, and requirements to change
+        the password on first use are handled by the third-party identity provider.
 
     - id: 8.3.6
       title: If passwords/passphrases are used as authentication factors to meet Requirement
@@ -1945,14 +2269,11 @@ controls:
         force attack.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is not intended to apply to:
-        - User accounts on point-of-sale terminals that have access to only one card number at a
-        time to facilitate a single transaction (such as IDs used by cashiers on point-of-sale
-        terminals).
-        - Application or system accounts, which are governed by requirements in section 8.6.
-      rules: []
+        Parameters for authenticators such as password length, maximum password
+        age, minimum password age, password history, and requirements to change
+        the password on first use are handled by the third-party identity provider.
 
     - id: 8.3.7
       title: Individuals are not allowed to submit a new password/passphrase that is the same as
@@ -1962,18 +2283,17 @@ controls:
         months.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is not intended to apply to user accounts on point-of-sale terminals that
-        have access to only one card number at a time to facilitate a single transaction (such as
-        IDs used by cashiers on point-of-sale terminals).
-      rules: []
+        Parameters for authenticators such as password length, maximum password
+        age, minimum password age, password history, and requirements to change
+        the password on first use are handled by the third-party identity provider.
 
     - id: 8.3.8
       title: Authentication policies and procedures are documented and communicated to all users.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 8.3.9
       title: If passwords/passphrases are used as the only authentication factor for user access
@@ -1988,12 +2308,11 @@ controls:
         resources is automatically determined accordingly.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        The requirement does not explicitily define the number of days before the password
-        expiration to warn the users, but the relevant rules were selected here as they do not
-        cause any problems in combination with password lifetime rules.
-      rules: []
+        Parameters for authenticators such as password length, maximum password
+        age, minimum password age, password history, and requirements to change
+        the password on first use are handled by the third-party identity provider.
 
     - id: 8.3.10
       title: 'Additional requirement for service providers only: If passwords/passphrases are used
@@ -2002,7 +2321,7 @@ controls:
         users.'
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 8.3.10.1
         title: 'Additional requirement for service providers only: If passwords/passphrases are
@@ -2010,9 +2329,11 @@ controls:
           single-factor authentication implementation) they should have a limited lifetime.'
         levels:
           - base
-        status: pending
+        status: not applicable
         notes: |-
-          This requirement is already covered by 8.3.9.
+          Parameters for authenticators such as password length, maximum password
+          age, minimum password age, password history, and requirements to change
+          the password on first use are handled by the third-party identity provider.
 
     - id: 8.3.11
       title: Where authentication factors such as physical or logical security tokens, smart
@@ -2020,24 +2341,26 @@ controls:
         is controlled.'
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        The type of authenticators to be used (for example, password or passphrase,
+        token device or smart card, or biometrics) are managed externally
+        to OpenShift by the identity provider
 
   - id: '8.4'
     title: Multi-factor authentication (MFA) is implemented to secure access into the CDE.
     levels:
       - base
-    status: pending
+    status: not applicable
     notes: |-
-      This parent requirement does not set one specific combination of Multi-factor authentication
-      (MFA), so we can't enforce the use of smartcards or any specific solution. The systems
-      usually support MFA but the chosen solution depends on site policies.
+      Multi-factor authenticators are managed externally to OpenShift by the identity provider
     controls:
     - id: 8.4.1
       title: MFA is implemented for all non-console access into the CDE for personnel with
         administrative access.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 8.4.2
       title: MFA is implemented for all access into the CDE.
@@ -2045,20 +2368,22 @@ controls:
         Access into the CDE cannot be obtained by the use of a single authentication factor.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 8.4.3
       title: MFA is implemented for all remote network access originating from outside the
         entity's network that could access or impact the CDE.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '8.5'
     title: Multi-factor authentication (MFA) systems are configured to prevent misuse.
     levels:
       - base
-    status: pending
+    status: not applicable
+    notes: |-
+      Multi-factor authenticators are managed externally to OpenShift by the identity provider
     controls:
     - id: 8.5.1
       title: MFA systems are properly implemented.
@@ -2071,17 +2396,14 @@ controls:
         - Success of all authentication factors is required before access is granted.
       levels:
         - base
-      status: pending
-      notes: |-
-        Each site might have a different MFA solution and each solution has its own capabilities.
-        This requirement demands manual assessment based on site policies.
+      status: not applicable
 
   - id: '8.6'
     title: Use of application and system accounts and associated authentication factors is
       strictly managed.
     levels:
       - base
-    status: pending
+    status: supported
     controls:
     - id: 8.6.1
       title: If accounts used by systems or applications can be used for interactive login, they
@@ -2095,13 +2417,14 @@ controls:
         - Every action taken is attributable to an individual user.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is related to 2.2.2, 2.2.6, 8.2.1 and 8.2.2. Specifically on 8.2.2 system
-        accounts usage is restricted. Exceptions to system accounts should be manually checked to
-        ensure the requirements in description. This requirement although implements some extra
-        controls regarding root account.
+        All user IDs, including those handled by third parties to access, support, or maintain
+        system components via remote access, are handled externally to OpenShift.
       rules: []
+      related_rules:
+        # The following RHCOS rule can also contribute to the implementation of this control.
+        - securetty_root_login_console_only
 
     - id: 8.6.2
       title: Passwords/passphrases for any application and system accounts that can be used for
@@ -2112,7 +2435,9 @@ controls:
         unauthorized personnel.
       levels:
         - base
-      status: pending
+      status: supported
+      notes: |-
+        OpenShift can be integrated with a Vault to manage secrets.
 
     - id: 8.6.3
       title: Passwords/passphrases for any application and system accounts are protected against
@@ -2125,45 +2450,39 @@ controls:
         frequently the entity changes the passwords/passphrases.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Related to requirements 8.3.6 and 8.3.9.
+        Parameters for authenticators such as password length, maximum password
+        age, minimum password age, password history, and requirements to change
+        the password on first use are handled by the third-party identity provider.
 
   - id: '9.1'
     title: Processes and mechanisms for restricting physical access to cardholder data are defined
       and understood.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 9.1.1
       title: All security policies and operational procedures that are identified in Requirement 9
         are Documented, Kept up to date, In use and Known to all affected parties.
       levels:
         - base
-      status: pending
-      notes: |-
-        Examine documentation and interview personnel to verify that security policies and
-        operational procedures identified in Requirement 9 are managed in accordance with all
-        elements specified in this requirement.
+      status: not applicable
 
     - id: 9.1.2
       title: Roles and responsibilities for performing activities in Requirement 9 are documented,
         assigned, and understood.
       levels:
         - base
-      status: pending
-      notes: |-
-        Examine documentation and interview personnel to verify that day-to-day responsibilities
-        for performing all the activities in Requirement 9 are documented, assigned and understood
-        by the assigned personnel.
+      status: not applicable
 
   - id: '9.2'
     title: Physical access controls manage entry into facilities and systems containing cardholder
       data.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 9.2.1
       title: Appropriate facility entry controls are in place to restrict physical access to
@@ -2172,14 +2491,14 @@ controls:
         System components in the CDE cannot be physically accessed by unauthorized personnel.
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 9.2.1.1
         title: Individual physical access to sensitive areas within the CDE is monitored with
           either video cameras or physical access control mechanisms (or both).
         levels:
           - base
-        status: pending
+        status: not applicable
 
     - id: 9.2.2
       title: Physical and/or logical controls are implemented to restrict use of publicly
@@ -2189,7 +2508,7 @@ controls:
         facility.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.2.3
       title: Physical access to wireless access points, gateways, networking/communications
@@ -2198,7 +2517,7 @@ controls:
         Physical networking equipment cannot be accessed by unauthorized personnel.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.2.4
       title: Access to consoles in sensitive areas is restricted via locking when not in use.
@@ -2206,37 +2525,32 @@ controls:
         Physical consoles within sensitive areas cannot be used by unauthorized personnel.
       levels:
         - base
-      status: pending
-      notes: |-
-        Related to requirement 8.2.8.
-        This requirement asks to observe a system administrator's attempt to log into consoles in
-        sensitive areas and verify that they are "locked" to prevent unauthorized use. Therefore
-        it is a manual requirement applicable only very specific circumstances.
+      status: not applicable
 
   - id: '9.3'
     title: Physical access for personnel and visitors is authorized and managed.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 9.3.1
       title: Procedures are implemented for authorizing and managing physical access of personnel
         to the CDE.
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 9.3.1.1
         title: Physical access to sensitive areas within the CDE for personnel is controlled
         levels:
           - base
-        status: pending
+        status: not applicable
 
     - id: 9.3.2
       title: Procedures are implemented for authorizing and managing visitor access to the CDE.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.3.3
       title: Visitor badges or identification are surrendered or deactivated before visitors leave
@@ -2245,20 +2559,20 @@ controls:
         Visitor identification or badges cannot be reused after expiration.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.3.4
       title: A visitor log is used to maintain a physical record of visitor activity within the
         facility and within sensitive areas.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '9.4'
     title: Media with cardholder data is securely stored, accessed, distributed, and destroyed.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 9.4.1
       title: All media with cardholder data is physically secured.
@@ -2266,7 +2580,12 @@ controls:
         Media with cardholder data cannot be accessed by unauthorized personnel.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Openshift uses the Kubernetes persistent volume (PV) framework, which allows separation
+        between storage provisioners and consumers.
+        The payment entity needs to ensure that they are using persistent storages for which
+        they have control over its location and physical access.
       controls:
       - id: 9.4.1.1
         title: Offline media backups with cardholder data are stored in a secure location.
@@ -2274,7 +2593,7 @@ controls:
           Offline backups cannot be accessed by unauthorized personnel.
         levels:
           - base
-        status: pending
+        status: not applicable
 
       - id: 9.4.1.2
         title: The security of the offline media backup location(s) with cardholder data is
@@ -2284,7 +2603,7 @@ controls:
           inspection.
         levels:
           - base
-        status: pending
+        status: not applicable
 
     - id: 9.4.2
       title: All media with cardholder data is classified in accordance with the sensitivity of
@@ -2293,7 +2612,7 @@ controls:
         Media are classified and protected appropriately.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.4.3
       title: Media with cardholder data sent outside the facility is secured.
@@ -2305,7 +2624,7 @@ controls:
         - Offsite tracking logs include details about media location.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.4.4
       title: Management approves all media with cardholder data that is moved outside the facility
@@ -2317,7 +2636,7 @@ controls:
         "manager" as part of their title.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.4.5
       title: Inventory logs of all electronic media with cardholder data are maintained.
@@ -2325,7 +2644,7 @@ controls:
         Accurate inventories of stored electronic media are maintained.
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 9.4.5.1
         title: Inventories of electronic media with cardholder data are conducted at least once
@@ -2334,14 +2653,14 @@ controls:
           Media inventories are verified periodically.
         levels:
           - base
-        status: pending
+        status: not applicable
 
     - id: 9.4.6
       title: Hard-copy materials with cardholder data are destroyed when no longer needed for
         business or legal reasons.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.4.7
       title: Electronic media with cardholder data is destroyed when no longer needed for business
@@ -2351,27 +2670,27 @@ controls:
         - The cardholder data is rendered unrecoverable so that it cannot be reconstructed.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '9.5'
     title: Point-of-interaction (POI) devices are protected from tampering and unauthorized
       substitution.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 9.5.1
       title: POI devices that capture payment card data via direct physical interaction with the
         payment card form factor are protected from tampering and unauthorized substitution.
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 9.5.1.1
         title: An up-to-date list of POI devices is maintained.
         levels:
           - base
-        status: pending
+        status: not applicable
 
       - id: 9.5.1.2
         title: POI device surfaces are periodically inspected to detect tampering and unauthorized
@@ -2381,7 +2700,7 @@ controls:
           or have skimming attachments installed without timely detection.
         levels:
           - base
-        status: pending
+        status: not applicable
         controls:
         - id: 9.5.1.2.1
           title: The frequency of periodic POI device inspections and the type of inspections
@@ -2393,14 +2712,14 @@ controls:
             required and must be fully considered during a PCI DSS assessment.
           levels:
             - base
-          status: pending
+          status: not applicable
 
       - id: 9.5.1.3
         title: Training is provided for personnel in POI environments to be aware of attempted
           tampering or replacement of POI devices.
         levels:
           - base
-        status: pending
+        status: not applicable
 
   - id: '10.1'
     title: Processes and mechanisms for logging and monitoring all access to system components and

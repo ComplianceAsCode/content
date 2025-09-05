@@ -1,30 +1,58 @@
 <def-group>
-  <definition class="compliance" id="set_password_hashing_algorithm_systemauth" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("The password hashing algorithm should be set correctly in /etc/pam.d/system-auth.") }}}
     <criteria operator="AND">
-      <criterion test_ref="test_pam_unix_sha512" />
-      {{%- if product == "rhel7" %}}
-      <extend_definition comment="check /etc/pam.d/password-auth for correct settings" definition_ref="set_password_hashing_algorithm_passwordauth" />
-      {{%- endif %}}
+      <criterion test_ref="test_pam_unix_hashing_algorithm_systemauth" />
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="check /etc/pam.d/system-auth for correct settings" id="test_pam_unix_sha512" version="1">
-    <ind:object object_ref="object_pam_unix_sha512" />
+  {{% if product in ['sle12', 'sle15'] %}}
+    {{% set pam_file = "/etc/pam.d/common-password" %}}
+    {{% set line_pattern = "^[\s]*password[\s]+(?:(?:required))[\s]+pam_unix\.so[\s]+" %}}
+  {{% elif 'ubuntu' in product %}}
+    {{% set pam_file = "/etc/pam.d/common-password" %}}
+    {{% set line_pattern = "^[\s]*password[\s]+(?:\[success=\d+\s+default=ignore\])[\s]+pam_unix\.so[\s]+" %}}
+  {{% else %}}
+    {{% set pam_file = "/etc/pam.d/system-auth" %}}
+    {{% set line_pattern = "^[\s]*password[\s]+(?:(?:required)|(?:sufficient))[\s]+pam_unix\.so[\s]+" %}}
+  {{% endif %}}
+
+  {{% set pam_unix_algorithms = "(sha512|yescrypt|gost_yescrypt|blowfish|sha256|md5|bigcrypt)" %}}
+  {{% set hashing_pattern = line_pattern + "(?!.*" + pam_unix_algorithms + ".*" + pam_unix_algorithms + ").*" + pam_unix_algorithms + ".*$" %}}
+
+  <!--
+    In addition to the pam file, what usually differ between products are the controls in the
+    pam_unix.so line. Therefore, only these differences were kept in Jinja2 conditionals, as
+    variables. The hashing_pattern used in OVAL object below is a concatenation of the line
+    pattern for pam_unix.so respective to each product and the regex to identify all hashing
+    algorithms options defined in pam_unix.so line. Here is an example of the rendered regex using
+    the line_pattern from the "else" section:
+    "^[\s]*password[\s]+(?:(?:required)|(?:sufficient))[\s]+pam_unix\.so[\s]+(?!.*(sha512|yescrypt|gost_yescrypt|blowfish|sha256|md5|bigcrypt).*(sha512|yescrypt|gost_yescrypt|blowfish|sha256|md5|bigcrypt)).*(sha512|yescrypt|gost_yescrypt|blowfish|sha256|md5|bigcrypt).*$"
+
+    This regex will only match if any of the hashing algorithm options is defined only once.
+    If two options for hashing algorithms are defined, the system behavior may be unexpected.
+    Therefore, the regex won't match and the rule check will fail. If only one option is defined,
+    it will be comprared with the value defined by the variable.
+  -->
+
+  <ind:textfilecontent54_test id="test_pam_unix_hashing_algorithm_systemauth" version="2"
+    check="all" check_existence="at_least_one_exists"
+    comment="check if pam_unix.so hashing algorithm option is correct and specified only once in /etc/pam.d/system-auth">
+    <ind:object object_ref="object_pam_unix_hashing_algorithm_systemauth"/>
+    <ind:state state_ref="state_pam_unix_hashing_algorithm_systemauth"/>
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object comment="check /etc/pam.d/system-auth for correct settings" id="object_pam_unix_sha512" version="1">
-    {{% if product in ['sle12', 'sle15'] %}}
-      <ind:filepath>/etc/pam.d/common-password</ind:filepath>
-      <ind:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required))[\s]+pam_unix\.so[\s]+.*sha512.*$</ind:pattern>
-    {{% elif 'ubuntu' in product %}}
-      <ind:filepath>/etc/pam.d/common-password</ind:filepath>
-      <ind:pattern operation="pattern match">^[\s]*password[\s]+(?:\[success=\d+\s+default=ignore\])[\s]+pam_unix\.so[\s]+[^#]*[\s]sha512(\s.*)?$</ind:pattern>
-    {{% else %}}
-      <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
-      <ind:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:sufficient))[\s]+pam_unix\.so[\s]+.*sha512.*$</ind:pattern>
-    {{% endif %}}
+  <ind:textfilecontent54_object id="object_pam_unix_hashing_algorithm_systemauth" version="1"
+    comment="only one hashing algorithm option for pam_unix.so is found in /etc/pam.d/system-auth">
+    <ind:filepath>{{{ pam_file }}}</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ hashing_pattern }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  <ind:textfilecontent54_state id="state_pam_unix_hashing_algorithm_systemauth" version="1">
+    <ind:subexpression operation="equals" datatype="string" var_ref="var_password_hashing_algorithm_pam"/>
+  </ind:textfilecontent54_state>
+
+  <external_variable id="var_password_hashing_algorithm_pam" datatype="string" version="1"
+    comment="hashing algorithm for pam_unix.so"/>
 </def-group>

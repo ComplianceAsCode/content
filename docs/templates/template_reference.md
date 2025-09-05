@@ -409,7 +409,7 @@ they must be of the same length.
     -   **arg_variable** - the variable used as the value for the argument, eg. `'var_slub_debug_options'`
         This parameter is mutually exclusive with **arg_value**.
 
--   Languages: Ansible, Bash, OVAL, Blueprint
+-   Languages: Ansible, Bash, OVAL, Blueprint, Kickstart
 
 #### grub2_bootloader_argument_absent
 -   Ensures that a kernel command line argument is absent in GRUB 2 configuration.
@@ -488,7 +488,7 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 
     -   **min_size** - the minimum recommended partition size, in bytes
 
--   Languages: Anaconda, OVAL, Blueprint
+-   Languages: Anaconda, OVAL, Blueprint, Kickstart
 
 #### mount_option
 -   Checks if a given partition is mounted with a specific option such
@@ -568,7 +568,7 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
         state uses operation "greater than or equal" to compare the
         collected package version with the version in the OVAL state.
 
--   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Blueprint
+-   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Blueprint, Kickstart
 
 #### package_removed
 -   Checks if the given package is not installed.
@@ -577,7 +577,7 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 
     -   **pkgname** - name of the RPM or DEB package, eg. `tmux`
 
--   Languages: Anaconda, Ansible, Bash, OVAL, Puppet
+-   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Kickstart
 
 #### key_value_pair_in_file
 Checks if a given key and value are configured in a file.
@@ -704,7 +704,7 @@ When the remediation is applied duplicate occurrences of `key` are removed.
         If **daemonname** is not specified it means the name of the
         daemon is the same as the name of service.
 
--   Languages: Ansible, Bash, OVAL, Puppet, Ignition, Kubernetes, Blueprint
+-   Languages: Ansible, Bash, OVAL, Puppet, Ignition, Kubernetes, Blueprint, Kickstart
 
 #### service_enabled
 -   Checks if a system service is enabled. Uses either systemd or SysV
@@ -723,7 +723,7 @@ When the remediation is applied duplicate occurrences of `key` are removed.
         If **daemonname** is not specified it means the name of the
         daemon is the same as the name of service.
 
--   Languages: Ansible, Bash, OVAL, Puppet, Blueprint
+-   Languages: Ansible, Bash, OVAL, Puppet, Blueprint, Kickstart
 
 #### shell_lineinfile
 -   Checks shell variable assignments in files. Remediations will paste
@@ -911,6 +911,31 @@ The selected value can be changed in the profile (consult the actual variable fo
     In case the **sysctl_remediate_drop_in_file** property is set to true in the product file,
     the remediation scripts will set the variable with correct value to a drop-in file in
     `/etc/sysctl.d/var_name.conf` file.
+
+-   Languages: Ansible, Bash, OVAL
+
+#### systemd_dropin_configuration
+- checks if a Systemd-style configuration exists either in the main file or in any file within specified dropin directory.
+    The remediation tries to modify already existing configuration.
+    If the correct section is found and the parameter exists, its value is changed to match the desired one.
+    If the section is found but the parameter does not exist, it is added to this section.
+    If none of inspected files contains the desired section a new file called complianceascode_hardening.conf within the dropin directory is created.
+- parameters:
+    - **master_cfg_file** - the main configuration file to check, e.g. /etc/systemd/journald.conf
+
+    - **dropin_dir** - the respective dropin directory, e.g. the /etc/systemd/journald.conf.d directory when keeping to the example mentioned above
+
+    - **section** - the section of the Systemd file
+
+    - **param** - the parameter to be configured
+
+    - **value** - the value of the parameter
+
+    - **no_quotes** - if set to "true", the value will not be enclosed in quotes
+
+    - **missing_parameter_pass** - effective only in OVAL checks, if
+        set to `"false"` and the parameter is not present in the
+        configuration file, the OVAL check will return false (default value: `"false"`).
 
 -   Languages: Ansible, Bash, OVAL
 

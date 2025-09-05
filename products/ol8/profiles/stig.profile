@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R10
+    version: V2R1
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V1R10.
+    DISA STIG for Oracle Linux 8 V2R1.
 
 selections:
     ### Variables
@@ -77,10 +77,6 @@ selections:
     ### Rules:
     # OL08-00-010000
     - installed_OS_is_vendor_supported
-
-    # OL08-00-010001
-    - package_mcafeetp_installed
-    - agent_mfetpd_running
 
     # OL08-00-010010
     - security_patches_up_to_date
@@ -620,14 +616,6 @@ selections:
 
     # OL08-00-020210
     - accounts_password_set_max_life_existing
-
-    # OL08-00-020221
-    - accounts_password_pam_pwhistory_remember_system_auth
-    - accounts_password_pam_pwhistory_remember_system_auth.severity=medium
-
-    # OL08-00-020220
-    - accounts_password_pam_pwhistory_remember_password_auth
-    - accounts_password_pam_pwhistory_remember_password_auth.severity=low
 
     # OL08-00-020230
     - accounts_password_pam_minlen

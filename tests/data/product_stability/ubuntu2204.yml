@@ -2,12 +2,14 @@ aide_also_checks_audispd: 'no'
 aide_also_checks_rsyslog: 'no'
 aide_bin_path: /usr/bin/aide
 aide_conf_path: /etc/aide/aide.conf
+aide_default_path: /etc/default/aide
 audisp_conf_path: /etc/audit
 auid: 1000
 basic_properties_derived: true
 benchmark_id: UBUNTU_22-04
 benchmark_root: ../../linux_os/guide
 chrony_conf_path: /etc/chrony/chrony.conf
+chrony_d_path: /etc/chrony/conf.d/
 cpes:
 - ubuntu2204:
     check_id: installed_OS_is_ubuntu2204
@@ -48,6 +50,7 @@ platform_package_overrides:
   not_aarch64_arch: null
   not_s390x_arch: null
   nss-pam-ldapd: libpam-ldap
+  openssl-pkcs11: libpam-pkcs11
   ovirt: null
   pam: libpam-runtime
   s390x_arch: null

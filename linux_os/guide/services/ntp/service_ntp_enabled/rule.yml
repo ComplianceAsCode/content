@@ -47,14 +47,9 @@ template:
     vars:
         servicename: ntp
 
-{{% if product in ["rhel7", "rhel8", "rhel9", "sle15"] %}}
+{{% if product in ["sle15"] or 'rhel' in product %}}
 warnings:
     - general:
-        {{% if product == "rhel7" %}}
-        The <pre>ntp.service</pre> Systemd unit is not available in {{{
-        full_name }}}. <pre>ntpd.service</pre> should be used instead together with the respective <pre>service_ntpd_enabled</pre> rule..
-        {{% else %}}
         The <pre>ntp</pre> package is not available in {{{ full_name }}}. Please
         consider the <pre>chrony</pre> package instead together with the respective <pre>service_chronyd_enabled</pre> rule.
-        {{% endif %}}
 {{% endif %}}
