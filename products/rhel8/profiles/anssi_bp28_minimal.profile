@@ -39,6 +39,9 @@ selections:
     - '!package_rsh-server_removed'
     - '!package_rsh_removed'
 
+    # Rules that only for higher levels
+    - '!audit_rules_mac_modification_etc_selinux'
+
     # Following rules are not applicable to RHEL
     - '!package_talk_removed'
     - '!package_talk-server_removed'

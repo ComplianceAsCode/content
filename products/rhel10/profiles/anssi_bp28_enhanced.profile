@@ -87,3 +87,6 @@ selections:
     - '!sssd_ldap_start_tls'
     # These rules are no longer relevant
     - '!prefer_64bit_os'
+    - '!ldap_client_tls_cacertpath'
+    - '!no_nis_in_nsswitch'
+    - '!ldap_client_start_tls'

@@ -54,3 +54,4 @@ selections:
     - '!accounts_password_pam_retry'
     - '!file_groupowner_etc_chrony_keys'
     - accounts_password_pam_pwhistory_remember
+    - '!ldap_client_start_tls'

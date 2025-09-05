@@ -27,6 +27,8 @@ selections:
     - var_authselect_profile=local
     # Following rules are incompatible with rhel10 product
     - '!enable_authselect'
+    - '!ldap_client_tls_cacertpath'
+    - '!ldap_client_start_tls'
     # tally2 is deprecated, replaced by faillock
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!accounts_passwords_pam_tally2'
@@ -54,3 +56,4 @@ selections:
     - '!package_ypserv_removed'
     # these rules are failing when they are remediated with Ansible, removing then temporarily until they are fixed
     - '!accounts_password_pam_retry'
+    - '!no_nis_in_nsswitch'

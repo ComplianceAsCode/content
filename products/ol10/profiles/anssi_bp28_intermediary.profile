@@ -30,6 +30,9 @@ selections:
     - '!ensure_redhat_gpgkey_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!sudo_add_umask'
+    - '!no_nis_in_nsswitch'
+    - '!ldap_client_tls_cacertpath'
+    - '!ldap_client_start_tls'
     # authselect is enabled by default
     - '!enable_authselect'
     # this rule is not automated anymore
