@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("User Initialization Files Must Not Execute World-Writable Programs") }}}
+    {{{ oval_metadata("User Initialization Files Must Not Execute World-Writable Programs", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_accounts_user_dot_no_world_writable_programs"
       comment="User Initialization Files Must Not Execute World-Writable Programs"/>
@@ -8,7 +8,7 @@
   </definition>
 
   {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
-  {{{ create_interactive_users_list_object(interactive_users_object) }}}
+  {{{ create_interactive_users_list_object(interactive_users_object, rule_id=rule_id) }}}
 
   <local_variable id="var_accounts_user_dot_no_world_writable_programs_dirs" datatype="string"
       version="1" comment="Variable including all home dirs from interactive users">

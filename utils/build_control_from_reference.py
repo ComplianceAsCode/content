@@ -64,7 +64,7 @@ def _get_id_mapping(env_yaml, reference, json_path: str) -> Dict:
     id_mapping: Dict[str, list[str]] = defaultdict(list) # type: ignore [misc] # For old mypy
     for rule_id, rule_obj in rule_dir_json.items():
         rule_yaml = os.path.join(rule_obj["dir"], "rule.yml")
-        rule = ssg.yaml.open_and_macro_expand(rule_yaml, env_yaml)
+        rule = ssg.yaml.open_and_expand(rule_yaml, env_yaml)
         if "references" not in rule:
             continue
         ref_id = rule["references"].get(reference)

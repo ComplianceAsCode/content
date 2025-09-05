@@ -5,7 +5,6 @@ title: 'Verify Permissions on /etc/audit/audit.rules'
 description: |-
     {{{ describe_file_permissions(file="/etc/audit/audit.rules", perms="0640") }}}
 
-
 rationale: |-
     Without the capability to restrict the roles and individuals that can select which events
     are audited, unauthorized personnel may be able to prevent the auditing of critical
@@ -15,9 +14,6 @@ rationale: |-
     those responsible for one.
 
 severity: medium
-
-references:
-    stigid@ubuntu2204: UBTU-22-653065
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/audit/audit.rules", perms="-rw-r-----") }}}'
 

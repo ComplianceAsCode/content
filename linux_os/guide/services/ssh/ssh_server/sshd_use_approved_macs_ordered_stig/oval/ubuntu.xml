@@ -7,9 +7,7 @@
 {{%- endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Limit the Message Authentication Codes (MACs) to those which are FIPS-approved.") }}}
-    <criteria operator="AND">
-      <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
+    {{{ oval_metadata("Limit the Message Authentication Codes (MACs) to those which are FIPS-approved.", rule_title=rule_title) }}}
       <criteria comment="sshd is configured correctly or is not installed" operator="OR">
         <criteria comment="sshd is not installed" operator="AND">
           <extend_definition comment="sshd is not required or requirement is unset"
@@ -35,7 +33,6 @@
         </criteria>
 
       </criteria>
-    </criteria>
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="any_exist"

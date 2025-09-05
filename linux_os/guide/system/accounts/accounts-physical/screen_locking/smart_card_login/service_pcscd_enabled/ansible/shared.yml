@@ -6,12 +6,12 @@
 - name: Enable service pcscd
   block:
   - name: Gather the package facts
-    package_facts:
+    ansible.builtin.package_facts:
       manager: auto
 
 {{%- if init_system == "systemd" %}}
   - name: Start service pcscd
-    systemd:
+    ansible.builtin.systemd:
       name: "pcscd"
       state: "started"
       masked: "no"

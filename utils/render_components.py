@@ -76,7 +76,7 @@ def load_rule_data(rule_path: str) -> RuleData:
 def find_rule_paths(component_rules: list, resolved_rules_dir: str) -> list:
     rule_paths = []
     for rule_id in component_rules:
-        rule_path = os.path.join(resolved_rules_dir, rule_id + ".yml")
+        rule_path = os.path.join(resolved_rules_dir, rule_id + ".json")
         if os.path.exists(rule_path):
             rule_paths.append(rule_path)
     return rule_paths

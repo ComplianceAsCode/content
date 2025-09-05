@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = high
 - name: "Security patches are up to date"
-  package:
+  ansible.builtin.package:
     name: "*"
     state: "latest"
   tags:

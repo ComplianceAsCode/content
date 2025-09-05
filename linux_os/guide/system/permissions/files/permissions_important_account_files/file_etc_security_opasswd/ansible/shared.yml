@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: Ensure /etc/security/opasswd exist and has the correct permissions
-  file:
+  ansible.builtin.file:
     path: /etc/security/opasswd
     owner: root
     group: root

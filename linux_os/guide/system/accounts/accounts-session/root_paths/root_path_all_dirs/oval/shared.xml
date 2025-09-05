@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("Check each directory in root's path and ensure it is a directory") }}}
+    {{{ oval_metadata("Check each directory in root's path and ensure it is a directory", rule_title=rule_title) }}}
     <criteria comment="Check that each entry in root's path is a directory">
       <criterion comment="Check for directory type in root's path"
       test_ref="test_accounts_root_path_dirs_are_directories" />

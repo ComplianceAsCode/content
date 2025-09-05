@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance"
   id="file_permissions_httpd_server_conf_files" version="2">
-    {{{ oval_metadata("The /etc/httpd/conf/* files should have the appropriate permissions (0640 or stronger).") }}}
+    {{{ oval_metadata("The /etc/httpd/conf/* files should have the appropriate permissions (0640 or stronger).", rule_title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="httpd not present or in use"
       definition_ref="package_httpd_removed" />

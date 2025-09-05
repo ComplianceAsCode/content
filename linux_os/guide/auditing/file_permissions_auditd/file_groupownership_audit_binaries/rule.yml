@@ -44,9 +44,7 @@ identifiers:
     cce@rhel10: CCE-87965-0
 
 references:
-    cis@ubuntu2204: 4.1.4.10
     srg: SRG-OS-000256-GPOS-00097,SRG-OS-000257-GPOS-00098
-    stigid@ubuntu2004: UBTU-20-010201
 
 ocil: |-
     Verify it by running the following command:
@@ -80,7 +78,7 @@ template:
             - /sbin/ausearch
             {{% if product not in ["rhel10"] %}}- /sbin/autrace{{% endif %}}
             - /sbin/auditd
-            {{% if 'rhel' not in product %}}- /sbin/audispd{{% endif %}}
+            {{% if 'rhel' not in product and 'ubuntu' not in product %}}- /sbin/audispd{{% endif %}}
             - /sbin/augenrules
             {{% if 'rhel' in product %}}- /sbin/audisp-syslog{{% endif %}}
         gid_or_name: '0'

@@ -7,5 +7,5 @@
 sed -i '/^.*\$ActionSendStreamDriverAuthMode.*/d' /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2> /dev/null
 
 {{{ set_config_file(path="/etc/rsyslog.d/stream_driver_auth.conf",
-             parameter="\$ActionSendStreamDriverAuthMode", value="x509/name", create=true, separator=" ", separator_regex=" ")
+             parameter="\$ActionSendStreamDriverAuthMode", value="x509/name", create=true, separator=" ", separator_regex=" ", rule_id=rule_id)
 }}}

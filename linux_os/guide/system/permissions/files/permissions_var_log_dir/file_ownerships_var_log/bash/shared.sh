@@ -4,13 +4,10 @@
 # complexity = low
 # disruption = low
 
-# default to root
-username="root"
-
 # see https://workbench.cisecurity.org/benchmarks/18959/tickets/23964
 # regarding sssd and gdm exclusions
 
-find -L /var/log/ -type f -regextype posix-extended \
+find -P /var/log/ -type f -regextype posix-extended \
     ! -user root ! -user syslog  \
     ! -name 'gdm' ! -name 'gdm3' \
     ! -name 'sssd' ! -name 'SSSD' \
@@ -18,6 +15,7 @@ find -L /var/log/ -type f -regextype posix-extended \
     ! -name 'messages' \
     ! -name 'syslog' \
     ! -path '/var/log/apt/*' \
+    ! -path '/var/log/landscape/*' \
     ! -path '/var/log/gdm/*' \
     ! -path '/var/log/gdm3/*' \
     ! -path '/var/log/sssd/*' \
@@ -28,4 +26,4 @@ find -L /var/log/ -type f -regextype posix-extended \
     ! -regex '.*/localmessages(.*)' \
     ! -regex '.*/secure(.*)' \
     ! -regex '.*/waagent.log(.*)' \
-    -regex '.*' -exec chown $username {} \;
+    -regex '.*' -exec chown --no-dereference root {} \;

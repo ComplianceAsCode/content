@@ -22,6 +22,7 @@ identifiers:
     cce@sle12: CCE-83166-9
     cce@sle15: CCE-85675-7
     cce@slmicro5: CCE-93762-3
+    cce@slmicro6: CCE-94637-6
 
 references:
     cis@sle12: 5.3.1
@@ -33,7 +34,6 @@ references:
     stigid@sle12: SLES-12-010150
     stigid@sle15: SLES-15-020130
 
-
 ocil_clause: 'ucredit is not found or not set to the required value'
 
 ocil: |-
@@ -43,8 +43,8 @@ ocil: |-
     password requisite pam_cracklib.so ucredit={{{ xccdf_value("var_password_pam_ucredit") }}}</pre>
     The <tt>ucredit</tt> parameter (as a negative number) will indicate how
     many uppercase characters are required.
-    The DoD and FISMA require at least one uppercase character in a password.
-    This would appear as <tt>ucredit=-1</tt>.
+    The profile require at least {{{ xccdf_value("var_password_pam_ucredit") }}} uppercase character in a password.
+    This would appear as <tt>ucredit=-{{{ xccdf_value("var_password_pam_ucredit") }}}</tt>.
 
 template:
     name: pam_options

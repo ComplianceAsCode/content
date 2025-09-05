@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 - name: "Test for domain group"
-  command: grep '^\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
+  ansible.builtin.command: grep '^\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
   failed_when: false
   changed_when: False
@@ -35,7 +35,7 @@
     mode: 0600
 
 - name: Find all the conf files inside /etc/sssd/conf.d/
-  find:
+  ansible.builtin.find:
     paths: "/etc/sssd/conf.d/"
     patterns: "*.conf"
   register: sssd_conf_d_files
@@ -55,14 +55,14 @@
 
 - name: '{{{ rule_title }}} - Remediate using authselect'
   block:
-    {{{ ansible_enable_authselect_feature('with-smartcard') | indent(4) }}}
+    {{{ ansible_enable_authselect_feature('with-smartcard', rule_title=rule_title) | indent(4) }}}
   when:
     - result_authselect_present.stat.exists
 
 - name: '{{{ rule_title }}} - Remediate by directly editing PAM files'
   block:
-    {{{ ansible_ensure_pam_module_option('/etc/pam.d/smartcard-auth', 'auth', 'sufficient', 'pam_sss.so', 'allow_missing_name', '', '') | indent(4) }}}
-    {{{ ansible_ensure_pam_module_option('/etc/pam.d/system-auth', 'auth', '[success=done authinfo_unavail=ignore ignore=ignore default=die]', 'pam_sss.so', 'try_cert_auth', '', '') | indent(4) }}}
+    {{{ ansible_ensure_pam_module_option('/etc/pam.d/smartcard-auth', 'auth', 'sufficient', 'pam_sss.so', 'allow_missing_name', '', '', rule_id=rule_id, rule_title=rule_title) | indent(4) }}}
+    {{{ ansible_ensure_pam_module_option('/etc/pam.d/system-auth', 'auth', '[success=done authinfo_unavail=ignore ignore=ignore default=die]', 'pam_sss.so', 'try_cert_auth', '', '', rule_id=rule_id, rule_title=rule_title) | indent(4) }}}
   when:
     - not result_authselect_present.stat.exists
 {{% endif %}}

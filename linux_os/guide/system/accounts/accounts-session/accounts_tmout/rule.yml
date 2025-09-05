@@ -5,10 +5,11 @@ title: 'Set Interactive Session Timeout'
 
 description: |-
     Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that
-    all user sessions will terminate based on inactivity.
-    The value of TMOUT should be exported and read only.
+    all user sessions will terminate based on inactivity. A value of <tt>0</tt> (zero)
+    disables the automatic logout feature and is therefore not a compliant setting.
+    The value of TMOUT should be a positive integer, exported, and read only.
     The <tt>TMOUT</tt>
-    {{% if product in ["sle12", "sle15", "slmicro5"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
     setting in <tt>/etc/profile.d/autologout.sh</tt> should read as follows:
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
     readonly TMOUT
@@ -44,13 +45,12 @@ identifiers:
     cce@sle12: CCE-83011-7
     cce@sle15: CCE-83269-1
     cce@slmicro5: CCE-93805-0
+    cce@slmicro6: CCE-94645-9
 
 references:
     cis-csc: 1,12,15,16
     cis@sle12: 5.4.4
     cis@sle15: 5.4.4
-    cis@ubuntu2004: 5.4.5
-    cis@ubuntu2204: 5.5.5
     cobit5: DSS05.04,DSS05.10,DSS06.10
     cui: 3.1.11
     isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
@@ -64,15 +64,13 @@ references:
     stigid@ol7: OL07-00-040160
     stigid@sle12: SLES-12-010090
     stigid@sle15: SLES-15-010130
-    stigid@ubuntu2004: UBTU-20-010013
-    stigid@ubuntu2204: UBTU-22-412030
 
-ocil_clause: 'value of TMOUT is not less than or equal to expected setting'
+ocil_clause: 'the TMOUT value is not configured, is set to 0, or is not less than or equal to the expected setting'
 
 ocil: |-
     Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
     on the system:
-    {{% if product in ["sle12", "sle15", "slmicro5"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
     <pre>$ sudo grep TMOUT /etc/profile.d/autologout.sh</pre>
     {{% elif "ubuntu" in product %}}
     <pre>$ sudo grep TMOUT /etc/bash.bashrc /etc/profile /etc/profile.d/*.sh</pre>
@@ -81,7 +79,7 @@ ocil: |-
     {{% endif %}}
     The output should return the following:
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
-    {{% if product in ["sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "slmicro6", "ubuntu2204", "ubuntu2404"] %}}
     readonly TMOUT
     export TMOUT
     {{% endif %}}

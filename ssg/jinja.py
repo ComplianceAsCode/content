@@ -88,6 +88,44 @@ class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
         return contents, template, uptodate
 
 
+def _preload_macros_from_file(env, macros_file):
+    template = env.get_template(macros_file)
+    module = template.module
+    for name in dir(module):
+        item = getattr(module, name)
+        if callable(item) and not name.startswith("_"):
+            env.globals[name] = item
+
+
+def preload_macros(env):
+    if "site-packages" in JINJA_MACROS_DIRECTORY and env.globals.get('product_dir'):
+        # use product_dir to find macros directory
+        jinja_macros_directory = os.path.join(
+            os.path.dirname(os.path.dirname(env.globals['product_dir'])), "shared", "macros"
+        )
+    else:
+        jinja_macros_directory = JINJA_MACROS_DIRECTORY
+    for filename in sorted(os.listdir(jinja_macros_directory)):
+        if not filename.endswith(".jinja"):
+            continue
+        macros_file = os.path.join(jinja_macros_directory, filename)
+        _preload_macros_from_file(env, macros_file)
+
+
+class JinjaEnvironment(jinja2.Environment):
+    def __init__(self, bytecode_cache=None):
+        super(JinjaEnvironment, self).__init__(
+            block_start_string="{{%",
+            block_end_string="%}}",
+            variable_start_string="{{{",
+            variable_end_string="}}}",
+            comment_start_string="{{#",
+            comment_end_string="#}}",
+            loader=AbsolutePathFileSystemLoader(),
+            bytecode_cache=bytecode_cache
+        )
+
+
 def _get_jinja_environment(substitutions_dict):
     """
     Initializes and returns a Jinja2 Environment with custom settings and filters.
@@ -115,16 +153,8 @@ def _get_jinja_environment(substitutions_dict):
             )
 
         # TODO: Choose better syntax?
-        _get_jinja_environment.env = jinja2.Environment(
-            block_start_string="{{%",
-            block_end_string="%}}",
-            variable_start_string="{{{",
-            variable_end_string="}}}",
-            comment_start_string="{{#",
-            comment_end_string="#}}",
-            loader=AbsolutePathFileSystemLoader(),
-            bytecode_cache=bytecode_cache
-        )
+        _get_jinja_environment.env = JinjaEnvironment(bytecode_cache=bytecode_cache)
+        add_python_functions(substitutions_dict)
         _get_jinja_environment.env.filters['banner_anchor_wrap'] = banner_anchor_wrap
         _get_jinja_environment.env.filters['banner_regexify'] = banner_regexify
         _get_jinja_environment.env.filters['escape_id'] = escape_id
@@ -132,11 +162,17 @@ def _get_jinja_environment(substitutions_dict):
         _get_jinja_environment.env.filters['escape_yaml_key'] = escape_yaml_key
         _get_jinja_environment.env.filters['quote'] = shell_quote
         _get_jinja_environment.env.filters['sha256'] = sha256
+        _get_jinja_environment.env.globals.update(substitutions_dict)
+        preload_macros(_get_jinja_environment.env)
 
     return _get_jinja_environment.env
 
 
 _get_jinja_environment.env = None
+
+
+def initialize(substitutions_dict):
+    _get_jinja_environment(substitutions_dict)
 
 
 def raise_exception(message):
@@ -177,9 +213,6 @@ def process_file(filepath, substitutions_dict):
 
     Returns:
         str: The rendered template as a string.
-
-    Note:
-        This function does not load the project macros. Use `process_file_with_macros(...)` for that.
     """
     filepath = os.path.abspath(filepath)
     template = _get_jinja_environment(substitutions_dict).get_template(filepath)
@@ -293,33 +326,6 @@ def load_macros_from_content_dir(content_dir, substitutions_dict=None):
     """
     jinja_macros_directory = os.path.join(content_dir, 'shared', 'macros')
     return _load_macros(jinja_macros_directory, substitutions_dict)
-
-
-def process_file_with_macros(filepath, substitutions_dict):
-    """
-    Process a file with Jinja macros.
-
-    This function processes the file located at the given `filepath` using Jinja macros and the
-    specified `substitutions_dict`. The `substitutions_dict` is first processed to load any
-    macros, and then it is used to substitute values in the file. The function ensures that the
-    key 'indent' is not present in the `substitutions_dict`.
-
-    Args:
-        filepath (str): The path to the file to be processed.
-        substitutions_dict (dict): A dictionary containing the substitutions to be applied to the file.
-
-    Returns:
-        str: The processed file content as a string.
-
-    Raises:
-        AssertionError: If the key 'indent' is present in `substitutions_dict`.
-
-    See also:
-        process_file: A function that processes a file with the given substitutions.
-    """
-    substitutions_dict = load_macros(substitutions_dict)
-    assert 'indent' not in substitutions_dict
-    return process_file(filepath, substitutions_dict)
 
 
 def url_encode(source):

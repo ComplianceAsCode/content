@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_auditd_num_logs") }}}
 
 - name: Configure auditd Number of Logs Retained
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/audit/auditd.conf
     line: "num_logs = {{ var_auditd_num_logs }}"
     regexp: '^\s*num_logs\s*=\s*.*$'

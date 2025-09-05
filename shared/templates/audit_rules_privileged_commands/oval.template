@@ -1,9 +1,9 @@
-{{%- if product in ["almalinux9", "debian12", "fedora", "ol7", "ol8", "ol9", "ol10", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
+{{%- if product in ["almalinux9", "debian12", "debian13", "fedora", "ol7", "ol8", "ol9", "ol10", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "slmicro6", "ubuntu2204", "ubuntu2404"] %}}
   {{%- set perm_x="(?:[\s]+-F[\s]+perm=x)" %}}
 {{%- endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Audit rules about the information on the use of " + NAME + " is enabled.") }}}
+    {{{ oval_metadata("Audit rules about the information on the use of " + NAME + " is enabled.", rule_title=rule_title) }}}
 
     <criteria operator="OR">
 {{% for audit_tool in ["augenrules", "auditctl"] %}}

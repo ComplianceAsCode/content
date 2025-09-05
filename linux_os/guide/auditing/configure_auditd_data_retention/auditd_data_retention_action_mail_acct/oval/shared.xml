@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="auditd_data_retention_action_mail_acct" version="2">
-    {{{ oval_metadata("action_mail_acct setting in /etc/audit/auditd.conf is set to a certain account") }}}
+    {{{ oval_metadata("action_mail_acct setting in /etc/audit/auditd.conf is set to a certain account", rule_title=rule_title) }}}
     <criteria>
         <criterion comment="action_mail_acct setting in auditd.conf" test_ref="test_auditd_data_retention_action_mail_acct" />
     </criteria>
@@ -16,7 +16,7 @@
     <!-- Allow only space (exactly) as delimiter: https://fedorahosted.org/audit/browser/trunk/src/auditd-config.c#L426 -->
     <!-- Require at least one space before and after the equal sign -->
     <ind:pattern operation="pattern match">^[ ]*action_mail_acct[ ]+=[ ]+(\S+)[ ]*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_auditd_data_retention_action_mail_acct" version="1">

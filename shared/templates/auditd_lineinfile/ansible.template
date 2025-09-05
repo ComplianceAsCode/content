@@ -3,9 +3,15 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+
+{{% if XCCDF_VARIABLE %}}
+{{{ ansible_instantiate_variables(XCCDF_VARIABLE) }}}
+{{% set value = "{{ " + XCCDF_VARIABLE + " }}" %}}
+{{% else %}}
+{{% set value = VALUE %}}
+{{% endif %}}
 {{{
     ansible_auditd_set(
         parameter=PARAMETER,
-        value=VALUE
-    )
+        value=value, rule_title=rule_title)
 }}}

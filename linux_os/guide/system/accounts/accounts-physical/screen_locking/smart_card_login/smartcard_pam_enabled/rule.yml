@@ -46,9 +46,8 @@ rationale: |-
 
     Multifactor solutions that require devices separate from information
     systems gaining access include, for example, hardware tokens providing
-    time-based or challenge-response authenticators and smart cards such as the
-    U.S. Government Personal Identity Verification card and the DoD Common
-    Access Card.
+    time-based or challenge-response authenticators and smart cards
+    or similar secure authentication devices issued by an organization or identity provider.
 
 severity: medium
 
@@ -56,19 +55,18 @@ identifiers:
     cce@sle12: CCE-83208-9
     cce@sle15: CCE-85556-9
     cce@slmicro5: CCE-93800-1
+    cce@slmicro6: CCE-94658-2
 
 references:
     nist@sle12: IA-2(1),IA-2(1).1,IA-2(2),IA-2(2).1,IA-2(3),IA-2(3).1,IA-2(4),IA-2(4).1,IA-5(2),IA-5(2).1,IA-5(2)(c),IA-2(11),IA-2(12)
     srg: SRG-OS-000068-GPOS-00036,SRG-OS-000105-GPOS-00052,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000108-GPOS-00055,SRG-OS-000375-GPOS-00160,SRG-OS-000375-GPOS-00161,SRG-OS-000375-GPOS-00162
     stigid@sle12: SLES-12-030520
     stigid@sle15: SLES-15-020030
-    stigid@ubuntu2004: UBTU-20-010033
-    stigid@ubuntu2204: UBTU-22-612020
 
 ocil_clause: 'non-exempt accounts are not using CAC authentication'
 
 ocil: |-
-    Remote access is access to DoD nonpublic information systems by an
+    Remote access is access to nonpublic information systems by an
     authorized user (or an information system) communicating through an
     external, non-organization-controlled network. Remote access methods
     include, for example, dial-up, broadband, and wireless.

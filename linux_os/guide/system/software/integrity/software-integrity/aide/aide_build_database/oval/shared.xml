@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="aide_build_database" version="2">
-    {{{ oval_metadata("The aide database must be initialized.") }}}
+    {{{ oval_metadata("The aide database must be initialized.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
       <!-- Only the configuration when location of the Aide database file is specified in the
@@ -15,8 +15,10 @@
   <!-- OVAL object to collect filename for Aide build database -->
   <ind:textfilecontent54_object id="object_aide_operational_database_filename" version="1">
     <ind:filepath>/etc/aide.conf</ind:filepath>
-    {{% if 'sle' in product or 'slmicro' in product %}}
+    {{% if 'sle' in product or product == 'slmicro5' %}}
       <ind:pattern operation="pattern match">^database=file:/([/a-z.]+)$</ind:pattern>
+    {{% elif product == 'slmicro6' %}}
+      <ind:pattern operation="pattern match">^database_in=file:/([/a-z.]+)$</ind:pattern>
     {{% elif product in [ 'ol10', 'rhel10' ] %}}
       <ind:pattern operation="pattern match">^database_in=file:@@{DBDIR}/([a-z.]+)$</ind:pattern>
     {{% else %}}

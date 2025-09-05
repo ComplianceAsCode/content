@@ -4,19 +4,19 @@
 # complexity = medium
 # disruption = medium
 - name: "Read permission of GPG key directory"
-  stat:
+  ansible.builtin.stat:
     path: /usr/lib/rpm/gnupg/keys
   register: suse_gpg_key_directory_permission
   check_mode: no
 
 
 - name: Set Valid fingerprint
-  set_fact:
+  ansible.builtin.set_fact:
     suse_gpg_valid_fingerprints: "{{{ release_key_fingerprint }}}"
 
 
 - name: Read signatures in GPG key
-  shell: |-
+  ansible.builtin.shell: |-
     set -o pipefail
     gpg --with-fingerprint --with-colons "{{ item }}" | grep -A1 "^pub" | grep "^fpr" | cut -d ":" -f 10
   changed_when: False
@@ -27,7 +27,7 @@
 
 
 - name: Import SUSE GPG key
-  rpm_key:
+  ansible.builtin.rpm_key:
     state: present
     key: "{{ item.item }}"
   when:

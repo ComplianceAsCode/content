@@ -5,4 +5,4 @@
 # disruption = low
 {{{ ansible_instantiate_variables("sshd_strong_macs") }}}
 
-{{{ ansible_sshd_set(parameter="MACs", value="{{ sshd_strong_macs }}") }}}
+{{{ ansible_sshd_set(parameter="MACs", value="{{ sshd_strong_macs }}", config_is_distributed=sshd_distributed_config, rule_title=rule_title) }}}

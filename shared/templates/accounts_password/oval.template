@@ -1,11 +1,11 @@
-{{% if product == "ol8" or 'rhel' in product %}}
+{{% if product in ["ol8","ol9"] or 'rhel' in product %}}
 {{% set filepath_regex="^/etc/security/pwquality\.conf(\.d/[^/]+\.conf)?$" %}}
 {{% else %}}
 {{% set filepath_regex="^/etc/security/pwquality\.conf$" %}}
 {{% endif %}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="3">
-    {{{ oval_metadata("The password " + VARIABLE + " should meet minimum requirements") }}}
+    {{{ oval_metadata("The password " + VARIABLE + " should meet minimum requirements", rule_title=rule_title) }}}
     <criteria operator="AND" comment="conditions for {{{ VARIABLE }}} are satisfied">
       <extend_definition comment="pwquality.so exists in system-auth" definition_ref="accounts_password_pam_pwquality" />
       <criteria operator="OR">

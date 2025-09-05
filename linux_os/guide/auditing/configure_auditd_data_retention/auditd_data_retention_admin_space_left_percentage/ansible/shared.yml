@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_auditd_admin_space_left_percentage") }}}
 
 - name: Configure auditd admin_space_left on Low Disk Space
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/audit/auditd.conf
     line: "admin_space_left = {{ var_auditd_admin_space_left_percentage }}%"
     regexp: '^\s*admin_space_left\s*=\s*.*$'

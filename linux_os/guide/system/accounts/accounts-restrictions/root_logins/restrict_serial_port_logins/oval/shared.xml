@@ -2,7 +2,7 @@
   <definition class="compliance" id="restrict_serial_port_logins" version="1">
     {{{ oval_metadata("Preventing direct root login to serial port interfaces helps
       ensure accountability for actions taken on the system using the root
-      account.") }}}
+      account.", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="serial ports /etc/securetty" test_ref="test_serial_ports_etc_securetty" negate="true" />
     </criteria>

@@ -2,7 +2,7 @@
   <definition class="compliance" id="network_disable_ddns_interfaces"
   version="1">
     {{{ oval_metadata("Clients should not automatically update their own
-      DNS record.") }}}
+      DNS record.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_network_disable_ddns_interfaces_ifcfg" />
       <criterion test_ref="test_network_disable_ddns_interfaces_dhclient" />

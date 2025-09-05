@@ -22,5 +22,13 @@ def test_get_profiles_from_products():
 
     assert len(profiles) == count_profiles_in_products_dir(products[0])
     assert 'rhel' in profiles[0].product_id
-    assert len(profiles[0].rules) > 0
-    assert len(profiles[0].variables) > 0
+    assert len(profiles[0].rules) == 3
+    assert len(profiles[0].variables) == 3
+
+    # The testing profile uses "abcd-levels:all:medium", which explicitly includes
+    # "file_groupownership_sshd_private_key" as a rule in level "medium". It should also inherit
+    # "configure_crypto_policy" from level "low". Finally, it should include "sshd_set_keepalive"
+    # defined in the profile file.
+    assert 'configure_crypto_policy' in profiles[0].rules   # from level "low"
+    assert 'file_groupownership_sshd_private_key' in profiles[0].rules  # from level "medium"
+    assert 'sshd_set_keepalive' in profiles[0].rules  # from profile file

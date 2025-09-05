@@ -83,7 +83,7 @@ Note that this command outputs the OpenSCAP version and versions of supported st
 
 == Using `ComplianceAsCode` Content with OpenSCAP Command Line Tool
 
-In this section, you find the security content for Ubuntu 20.04 from `ComplianceAsCode` source code and then you use the built content with the OpenSCAP command line tool to scan your machine.
+In this section, you find the security content for Ubuntu 24.04 from `ComplianceAsCode` source code and then you use the built content with the OpenSCAP command line tool to scan your machine.
 
 . The content has been built, so you can take a look at the generated files in the `build` directory right away:
 +
@@ -101,36 +101,36 @@ CTestTestfile.cmake
 docs
 jinja2_cache
 rules.ninja
-ssg-ubuntu2004-cpe-dictionary.xml
-ssg-ubuntu2004-cpe-oval.xml
-ssg-ubuntu2004-ds.xml
-ssg-ubuntu2004-ocil.xml
-ssg-ubuntu2004-oval.xml
-ssg-ubuntu2004-xccdf-1.2.xml
-ssg-ubuntu2004-xccdf.xml
+ssg-ubuntu2404-cpe-dictionary.xml
+ssg-ubuntu2404-cpe-oval.xml
+ssg-ubuntu2404-ds.xml
+ssg-ubuntu2404-ocil.xml
+ssg-ubuntu2404-oval.xml
+ssg-ubuntu2404-xccdf-1.2.xml
+ssg-ubuntu2404-xccdf.xml
 tests
-ubuntu2004
+ubuntu2404
 ----
 +
-There are multiple files produced by the build. The file that is going to be used with the OpenSCAP scanner is `ssg-ubuntu2004-ds.xml`. This file is called a SCAP source data stream.
+There are multiple files produced by the build. The file that is going to be used with the OpenSCAP scanner is `ssg-ubuntu2404-ds.xml`. This file is called a SCAP source data stream.
 +
-. Check which compliance profiles are available for Ubuntu 20.04.
+. Check which compliance profiles are available for Ubuntu 24.04.
 +
 ----
-[... build]$ oscap info ssg-ubuntu2004-ds.xml
+[... build]$ oscap info ssg-ubuntu2404-ds.xml
 ...
     Profiles:
-        Title: CIS Ubuntu 20.04 Level 1 Server Benchmark
+        Title: CIS Ubuntu 24.04 Level 1 Server Benchmark
             Id: xccdf_org.ssgproject.content_profile_cis_level1_server
-        Title: CIS Ubuntu 20.04 Level 1 Workstation Benchmark
+        Title: CIS Ubuntu 24.04 Level 1 Workstation Benchmark
             Id: xccdf_org.ssgproject.content_profile_cis_level1_workstation
-        Title: CIS Ubuntu 20.04 Level 2 Server Benchmark
+        Title: CIS Ubuntu 24.04 Level 2 Server Benchmark
             Id: xccdf_org.ssgproject.content_profile_cis_level2_server
-        Title: CIS Ubuntu 20.04 Level 2 Workstation Benchmark
+        Title: CIS Ubuntu 24.04 Level 2 Workstation Benchmark
             Id: xccdf_org.ssgproject.content_profile_cis_level2_workstation
-        Title: Standard System Security Profile for Ubuntu 20.04
+        Title: Standard System Security Profile for Ubuntu 24.04
             Id: xccdf_org.ssgproject.content_profile_standard
-        Title: Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R1
+        Title: Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide (STIG) V1R1
             Id: xccdf_org.ssgproject.content_profile_stig
 ...
 ----
@@ -152,7 +152,7 @@ The scanning command has to be executed by a privileged user using `sudo`, so th
 The simplest scanner invocation can look like this:
 +
 ----
-sudo oscap xccdf eval --profile cis_level1_workstation ssg-ubuntu2004-ds.xml 
+sudo oscap xccdf eval --profile cis_level1_workstation ssg-ubuntu2404-ds.xml 
 ----
 +
 However, you also want to store the scan results so you can process them later.
@@ -164,7 +164,7 @@ Therefore, you have to supply additional arguments:
 Now execute the following to run the scan and generate the HTML report as a side-effect:
 +
 ----
-[... build]$ sudo oscap xccdf eval --profile cis_level1_workstation --results-arf /tmp/arf.xml --report lab2_report.html --oval-results ssg-ubuntu2004-ds.xml
+[... build]$ sudo oscap xccdf eval --profile cis_level1_workstation --results-arf /tmp/arf.xml --report lab2_report.html --oval-results ssg-ubuntu2404-ds.xml
 ...
 ----
 +
@@ -207,20 +207,20 @@ image::scap_report_fail.png[]
 If you are unable to install SCAP-Workbench on your machine then you can skip to the next section
 .. link:https://www.open-scap.org/tools/scap-workbench/#download[Download SCAP Workbench].
 
-. Download the `ssg-ubuntu2004-ds.xml` file to your own machine by clicking `Download...` on the file as shown in the following picture:
+. Download the `ssg-ubuntu2404-ds.xml` file to your own machine by clicking `Download...` on the file as shown in the following picture:
 +
 image:download_datastream.png[]
 
 . Launch SCAP Workbench after installed.
 
 . After Workbench starts, select `Other SCAP content` in the drop-down list and click `Load Content`. A file browser window appears.
-. Locate the download `ssg-ubuntu2004-ds.xml` file and click `Open` to open the security compliance content.
+. Locate the download `ssg-ubuntu2404-ds.xml` file and click `Open` to open the security compliance content.
 +
 image:load_content.png[]
 +
 image::scap_workbench_opened.png[SCAP Workbench opened, profile selected]
 
-. Customize the `CIS Ubuntu 20.04 Level 1 Workstation Benchmark` baseline.
+. Customize the `CIS Ubuntu 24.04 Level 1 Workstation Benchmark` baseline.
 .. Select this profile from the `Profile` drop-down list.
 .. Click `Customize`.
 +

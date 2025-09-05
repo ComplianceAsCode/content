@@ -6,8 +6,8 @@
 {{{ ansible_instantiate_variables("var_accounts_minimum_age_login_defs") }}}
 
 - name: Set Password Minimum Age
-  lineinfile:
+  ansible.builtin.lineinfile:
       create: yes
-      dest: /etc/login.defs
+      dest: {{{ login_defs_path }}}
       regexp: ^#?PASS_MIN_DAYS
       line: "PASS_MIN_DAYS {{ var_accounts_minimum_age_login_defs }}"

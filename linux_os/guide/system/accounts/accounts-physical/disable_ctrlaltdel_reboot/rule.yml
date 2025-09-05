@@ -59,6 +59,7 @@ identifiers:
     cce@sle12: CCE-83018-2
     cce@sle15: CCE-85625-2
     cce@slmicro5: CCE-93744-1
+    cce@slmicro6: CCE-95054-3 
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
@@ -75,14 +76,14 @@ references:
     srg: SRG-OS-000324-GPOS-00125,SRG-OS-000480-GPOS-00227
     stigid@ol7: OL07-00-020230
     stigid@ol8: OL08-00-040170
-    stigid@rhel8: RHEL-08-040170
     stigid@sle12: SLES-12-010610
     stigid@sle15: SLES-15-040060
-    stigid@ubuntu2004: UBTU-20-010460
-    stigid@ubuntu2204: UBTU-22-211015
+
+{{% if pkg_system == "dpkg" %}}
+platform: not container
+{{% endif %}}
 
 ocil_clause: 'the system is configured to reboot when Ctrl-Alt-Del is pressed'
-
 
 ocil: |-
     To ensure the system is configured to mask the Ctrl-Alt-Del sequence, Check

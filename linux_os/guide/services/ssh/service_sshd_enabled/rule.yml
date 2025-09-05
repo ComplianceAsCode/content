@@ -27,6 +27,7 @@ identifiers:
     cce@sle12: CCE-83201-4
     cce@sle15: CCE-83297-2
     cce@slmicro5: CCE-93771-4
+    cce@slmicro6: CCE-94726-7
 
 references:
     cis-csc: 13,14
@@ -39,11 +40,8 @@ references:
     srg: SRG-OS-000423-GPOS-00187,SRG-OS-000424-GPOS-00188,SRG-OS-000425-GPOS-00189,SRG-OS-000426-GPOS-00190
     stigid@ol7: OL07-00-040310
     stigid@ol8: OL08-00-040160
-    stigid@rhel8: RHEL-08-040160
     stigid@sle12: SLES-12-030100
     stigid@sle15: SLES-15-010530
-    stigid@ubuntu2004: UBTU-20-010042
-    stigid@ubuntu2204: UBTU-22-255015
 
 ocil: |-
     {{{ ocil_service_enabled(service="sshd") }}}
@@ -54,9 +52,6 @@ template:
     name: service_enabled
     vars:
         servicename: sshd
-        servicename@ubuntu1604: ssh
-        servicename@ubuntu1804: ssh
-        servicename@ubuntu2004: ssh
         servicename@ubuntu2204: ssh
         servicename@ubuntu2404: ssh
         packagename: openssh-server

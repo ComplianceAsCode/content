@@ -6,6 +6,6 @@
 {{% endif %}}
 
 
-rm -f /etc/login.defs
-echo "PASS_MAX_DAYS        60" > /etc/login.defs
-echo "PASS_MAX_DAYS        30" >> /etc/login.defs
+rm -f {{{ login_defs_path }}}
+echo "PASS_MAX_DAYS        60" > {{{ login_defs_path }}}
+echo "PASS_MAX_DAYS        30" >> {{{ login_defs_path }}}

@@ -4,10 +4,10 @@ title: 'Disable core dump backtraces'
 
 description: |-
     The <tt>ProcessSizeMax</tt> option in <tt>[Coredump]</tt> section
-    of <tt>/etc/systemd/coredump.conf</tt>
-    specifies the maximum size in bytes of a core which will be processed.
-    Core dumps exceeding this size may be stored, but the backtrace will not
-    be generated.
+    of <tt>/etc/systemd/coredump.conf</tt> or in a drop-in file under
+    <tt>/etc/systemd/coredump.conf.d/</tt> specifies the maximum size in bytes
+    of a core which will be processed. Core dumps exceeding this size may be
+    stored, but the backtrace will not be generated.
 
 rationale: |-
     A core dump includes a memory image taken at the time the operating system
@@ -38,21 +38,20 @@ references:
     pcidss: Req-3.2
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-010675
-    stigid@rhel8: RHEL-08-010675
 
 ocil_clause: 'the "ProcessSizeMax" item is missing, commented out, or the value is anything other than "0" and the need for core dumps is not documented with the Information System Security Officer (ISSO) as an operational requirement for all domains that have the "core" item assigned'
 
 ocil: |-
     Verify {{{ full_name }}} disables core dump backtraces by issuing the following command:
 
-    <pre>$ grep -i process /etc/systemd/coredump.conf
+    <pre>$ grep -i process /etc/systemd/coredump.conf /etc/systemd/coredump.conf.d/*.conf
 
     ProcessSizeMax=0</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to disable core dump backtraces.
 
-    Add or modify the following line in /etc/systemd/coredump.conf:
+    Add or modify the following line in /etc/systemd/coredump.conf or in a drop-in file under /etc/systemd/coredump.conf.d/:
 
     ProcessSizeMax=0
 
@@ -60,8 +59,20 @@ srg_requirement: '{{{ full_name }}} must disable core dump backtraces.'
 
 warnings:
     - general: |-
-        If the <tt>/etc/systemd/coredump.conf</tt> file
+        If the <tt>/etc/systemd/coredump.conf</tt> file or a drop-in file under <tt>/etc/systemd/coredump.conf.d/</tt>
         does not already contain the <tt>[Coredump]</tt> section,
         the value will not be configured correctly.
 
 platform: package[systemd]
+
+template:
+    name: systemd_dropin_configuration
+    vars:
+        master_cfg_file: /etc/systemd/coredump.conf
+        dropin_dir: /etc/systemd/coredump.conf.d
+        section: Coredump
+        param: ProcessSizeMax
+        application: systemd-coredump
+        value: '0'
+        no_quotes: 'true'
+        missing_config_file_fail: 'false'

@@ -5,10 +5,9 @@ title: 'Set Password Warning Age'
 description: |-
     To specify how many days prior to password
     expiration that a warning will be issued to users,
-    edit the file <tt>/etc/login.defs</tt> and add or correct
+    edit the file <tt>{{{ login_defs_path }}}</tt> and add or correct
      the following line:
     <pre>PASS_WARN_AGE {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</pre>
-    The DoD requirement is 7.
     The profile requirement is <tt>{{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</tt>.
 
 rationale: |-
@@ -29,8 +28,6 @@ references:
     cis-csc: 1,12,13,14,15,16,18,3,5,7,8
     cis@sle12: 5.4.1.4
     cis@sle15: 5.4.1.4
-    cis@ubuntu2004: 5.4.1.3
-    cis@ubuntu2204: 5.5.1.3
     cobit5: DSS01.03,DSS03.05,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     cui: 3.5.8
     isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4
@@ -45,7 +42,8 @@ ocil_clause: 'it is not set to the required value'
 
 ocil: |-
     To check the password warning age, run the command:
-    <pre>$ grep PASS_WARN_AGE /etc/login.defs</pre>
-    The DoD requirement is 7.
+    <pre>$ grep PASS_WARN_AGE {{{ login_defs_path }}}</pre>
+    The profile requirement is <tt>{{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</tt>.
+
 
 platform: package[shadow-utils]

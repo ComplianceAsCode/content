@@ -6,4 +6,4 @@
 
 {{{ ansible_instantiate_variables("sshd_strong_kex") }}}
 
-{{{ ansible_sshd_set(parameter="KexAlgorithms", value="{{ sshd_strong_kex }}") }}}
+{{{ ansible_sshd_set(parameter="KexAlgorithms", value="{{ sshd_strong_kex }}", config_is_distributed=sshd_distributed_config, rule_title=rule_title) }}}

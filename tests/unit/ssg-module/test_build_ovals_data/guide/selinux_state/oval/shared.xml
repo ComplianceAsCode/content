@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="selinux_state" version="1">
-    {{{ oval_metadata("The SELinux state should be enforcing the local policy.") }}}
+    {{{ oval_metadata("The SELinux state should be enforcing the local policy.", affected_platforms=["multi_platform_all"], rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="enforce is disabled" test_ref="test_etc_selinux_config" />
     </criteria>

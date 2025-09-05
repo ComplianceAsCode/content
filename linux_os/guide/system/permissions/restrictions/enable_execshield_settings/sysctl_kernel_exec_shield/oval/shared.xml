@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="sysctl_kernel_exec_shield" version="2">
-    {{{ oval_metadata("The kernel runtime parameter 'kernel.exec-shield' should not be disabled and set to 1 on 32-bit systems.") }}}
+    {{{ oval_metadata("The kernel runtime parameter 'kernel.exec-shield' should not be disabled and set to 1 on 32-bit systems.", rule_title=rule_title) }}}
     <criteria operator="OR">
       {{# products that are available also in a 32 bits form #}}
       {{% if "rhel" not in product and product != "fedora" and "ol" not in families %}}
@@ -47,7 +47,11 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_nx_disabled_grub" version="1">
+    {{% if product in ['ol9'] %}}
+    <ind:filepath>/etc/default/grub</ind:filepath>
+    {{% else %}}
     <ind:filepath>{{{ grub2_boot_path }}}/grub.cfg</ind:filepath>
+    {{% endif %}}
     <ind:pattern operation="pattern match">[\s]*noexec[\s]*=[\s]*off</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

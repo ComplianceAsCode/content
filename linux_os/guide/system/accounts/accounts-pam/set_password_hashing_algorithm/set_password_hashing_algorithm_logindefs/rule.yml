@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'Set Password Hashing Algorithm in /etc/login.defs'
+title: 'Set Password Hashing Algorithm in {{{ login_defs_path }}}'
 
 description: |-
-    In <tt>/etc/login.defs</tt>, add or update the following line to ensure the system will use
+    In <tt>{{{ login_defs_path }}}</tt>, add or update the following line to ensure the system will use
     {{{ xccdf_value("var_password_hashing_algorithm") }}} as the hashing algorithm:
     <pre>ENCRYPT_METHOD {{{ xccdf_value("var_password_hashing_algorithm") }}}</pre>
 
@@ -29,7 +29,6 @@ references:
     cis-csc: 1,12,15,16,5
     cis@sle12: 5.4.1.1
     cis@sle15: 5.4.1.1
-    cis@ubuntu2204: 5.4.4
     cjis: 5.6.2.2
     cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     cui: 3.13.11
@@ -43,11 +42,8 @@ references:
     srg: SRG-OS-000073-GPOS-00041
     stigid@ol7: OL07-00-010210
     stigid@ol8: OL08-00-010110
-    stigid@rhel8: RHEL-08-010110
     stigid@sle12: SLES-12-010210
     stigid@sle15: SLES-15-010260
-    stigid@ubuntu2004: UBTU-20-010404
-    stigid@ubuntu2204: UBTU-22-611070
 
 ocil_clause: 'ENCRYPT_METHOD is not set to {{{ xccdf_value("var_password_hashing_algorithm") }}}'
 
@@ -60,7 +56,7 @@ ocil: |-
 
     Check the hashing algorithm that is being used to hash passwords with the following command:
 
-    $ sudo grep -i ENCRYPT_METHOD /etc/login.defs
+    $ sudo grep -i ENCRYPT_METHOD  {{{ login_defs_path }}}
 
     ENCRYPT_METHOD {{{ xccdf_value("var_password_hashing_algorithm") }}}
 
@@ -73,6 +69,6 @@ platform: package[shadow-utils]
 fixtext: |-
     Configure {{{ full_name }}} to encrypt all stored passwords.
 
-    Add or update the following line in the "/etc/login.defs" file:
+    Add or update the following line in the "{{{ login_defs_path }}}" file:
 
     ENCRYPT_METHOD {{{ xccdf_value("var_password_hashing_algorithm") }}}

@@ -46,7 +46,6 @@ selections:
   - '!ensure_redhat_gpgkey_installed'
   - '!set_password_hashing_algorithm_systemauth'
   - '!package_dnf-automatic_installed'
-  - '!accounts_passwords_pam_faillock_deny_root'
   - '!dnf-automatic_security_updates_only'
   - '!cracklib_accounts_password_pam_lcredit'
   - '!dnf-automatic_apply_updates'
@@ -69,3 +68,6 @@ selections:
   - '!package_dracut-fips-aesni_installed'
   - '!audit_rules_file_deletion_events_renameat2'
   - '!audit_rules_dac_modification_fchmodat2'
+
+  # The following rule is not applicable to Debian 12
+  - '!logind_session_timeout'

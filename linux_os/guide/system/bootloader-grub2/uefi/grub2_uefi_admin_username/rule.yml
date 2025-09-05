@@ -23,7 +23,7 @@ description: |-
     update the
     <tt>grub.cfg</tt> file by running:
     {{%- if "rhel" in product %}}
-    <pre>grub-mkconfig -o /boot/grub2/grub.cfg</pre>
+    <pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
     {{%- else %}}
     <pre>{{{ grub_command("update") }}}</pre>
     {{%- endif %}}
@@ -53,7 +53,6 @@ references:
     srg: SRG-OS-000080-GPOS-00048
     stigid@ol7: OL07-00-010492
     stigid@ol8: OL08-00-010141
-    stigid@rhel8: RHEL-08-010141
 
 ocil_clause: 'superuser account is not set or is set to an existing name or to a common name'
 
@@ -90,7 +89,7 @@ fixtext: |-
     Once the superuser account has been added, update the grub.cfg file by running:
 
     {{%- if "rhel" in product %}}
-    <pre>grub-mkconfig -o /boot/grub2/grub.cfg</pre>
+    <pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
     {{%- else %}}
     <pre>{{{ grub_command("update") }}}</pre>
     {{%- endif %}}

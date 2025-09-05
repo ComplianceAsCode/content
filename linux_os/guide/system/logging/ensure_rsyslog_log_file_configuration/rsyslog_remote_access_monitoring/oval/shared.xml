@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance"
   id="rsyslog_remote_access_monitoring" version="1">
-    {{{ oval_metadata("Rsyslog should be configured to monitor remote access methods.") }}}
+    {{{ oval_metadata("Rsyslog should be configured to monitor remote access methods.", rule_title=rule_title) }}}
     <criteria comment="remote access methods are configured in rsyslog" operator="AND">
       <criterion comment="ensure 'auth.*' remote method is configured in rsyslog"
       test_ref="test_remote_method_monitoring_auth" />

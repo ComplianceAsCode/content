@@ -1,17 +1,25 @@
 {{% if product not in ['ubuntu2404'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("All files should be owned by a group") }}}
+    {{{ oval_metadata("All files should be owned by a group", rule_title=rule_title) }}}
     <criteria operator="OR">
       <criteria operator="AND">
-        <criterion test_ref="test_file_permissions_ungroupowned_nsswitch_uses_altfiles" negate="true"
-          comment="The /etc/nsswitch.conf does not use nss-altfiles"/>
+        <criteria operator="AND" negate="true">
+          <criterion test_ref="test_file_permissions_ungroupowned_nsswitch_uses_altfiles"
+            comment="The /etc/nsswitch.conf uses nss-altfiles"/>
+          <criterion test_ref="test_file_permissions_ungroupowned_package_nss-altfiles_installed"
+            comment="Check if nss-altfiles package is installed"/>
+        </criteria>
         <criterion test_ref="test_file_permissions_ungroupowned"
           comment="Check all local files and make sure they are owned by a group"/>
       </criteria>
       <criteria operator="AND">
-        <criterion test_ref="test_file_permissions_ungroupowned_nsswitch_uses_altfiles"
-          comment="The /etc/nsswitch.conf uses nss-altfiles"/>
+        <criteria operator="AND">
+          <criterion test_ref="test_file_permissions_ungroupowned_nsswitch_uses_altfiles"
+            comment="The /etc/nsswitch.conf uses nss-altfiles"/>
+          <criterion test_ref="test_file_permissions_ungroupowned_package_nss-altfiles_installed"
+            comment="Check if nss-altfiles package is installed"/>
+        </criteria>
         <criterion test_ref="test_file_permissions_ungroupowned_with_usrlib"
           comment="Check all local files and make sure they are owned by a group"/>
       </criteria>
@@ -64,7 +72,7 @@
   </unix:file_state>
 
   {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
-  {{{ create_local_mount_points_list(var_local_mount_points) }}}
+  {{{ create_local_mount_points_list(var_local_mount_points, rule_id=rule_id) }}}
 
   <!-- This file_object will only find files located in local and not special file systems. The
        recurse_file_system parameter is set to defined in order to make sure the probe doesn't
@@ -93,7 +101,8 @@
     <filter action="exclude">state_file_permissions_ungroupowned_sysroot</filter>
   </unix:file_object>
 
-{{{ oval_test_nsswitch_uses_altfiles() }}}
+{{{ oval_test_nsswitch_uses_altfiles(rule_id=rule_id) }}}
+{{{ oval_test_package_installed("nss-altfiles", test_id="test_file_permissions_ungroupowned_package_nss-altfiles_installed") }}}
 
   <unix:file_test id="test_file_permissions_ungroupowned" version="1"
     check="all" check_existence="none_exist"

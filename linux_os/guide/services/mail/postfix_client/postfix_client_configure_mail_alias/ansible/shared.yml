@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_postfix_root_mail_alias") }}}
 
 - name: Make sure that "/etc/aliases" has a defined value for root
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "/etc/aliases"
     line: "root: {{ var_postfix_root_mail_alias }}"
     regexp: '^(?:[rR][oO][oO][tT]|"[rR][oO][oO][tT]")\s*:\s*(.+)$'

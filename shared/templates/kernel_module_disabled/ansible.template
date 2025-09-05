@@ -4,14 +4,14 @@
 # complexity = low
 # disruption = medium
 - name: Ensure kernel module '{{{ KERNMODULE }}}' is disabled
-  lineinfile:
+  ansible.builtin.lineinfile:
     create: yes
     dest: "/etc/modprobe.d/{{{ KERNMODULE }}}.conf"
     regexp: 'install\s+{{{ KERNMODULE }}}'
     line: "install {{{ KERNMODULE }}} /bin/false"
-{{% if product in ["sle12", "sle15", "slmicro5"] or 'ol' in product or 'rhel' in product or 'ubuntu' in product %}}
+{{% if 'ol' in product or 'rhel' in product or 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
 - name: Ensure kernel module '{{{ KERNMODULE }}}' is blacklisted
-  lineinfile:
+  ansible.builtin.lineinfile:
     create: yes
     dest: "/etc/modprobe.d/{{{ KERNMODULE }}}.conf"
     regexp: '^blacklist {{{ KERNMODULE }}}$'

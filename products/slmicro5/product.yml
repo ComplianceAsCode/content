@@ -2,6 +2,9 @@ product: slmicro5
 full_name: SUSE Linux Enterprise Micro 5
 type: platform
 
+families:
+  - suse
+
 major_version_ordinal: 5
 
 benchmark_id: SLMICRO5
@@ -46,6 +49,8 @@ platform_package_overrides:
   sssd: "sssd"
   passwd: "shadow"
 
+reference_uris:
+  suse-general: 'not_publicly_available'
 
 sysctl_remediate_drop_in_file: "true"
 journald_conf_dir_path: /etc/systemd/journal.conf.d

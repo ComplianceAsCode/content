@@ -21,6 +21,6 @@ chgrp fapolicyd /etc/fapolicyd/rules.d/99-deny-everything.rules
                     insensitive=true,
                     separator=" = ",
                     separator_regex="\s*=\s*",
-                    prefix_regex="^\s*") }}}
+                    prefix_regex="^\s*", rule_id=rule_id) }}}
 
 systemctl restart fapolicyd

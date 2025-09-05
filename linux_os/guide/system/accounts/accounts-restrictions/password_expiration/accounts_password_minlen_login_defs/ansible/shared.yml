@@ -6,8 +6,8 @@
 {{{ ansible_instantiate_variables("var_accounts_password_minlen_login_defs") }}}
 
 - name: "Set Password Minimum Length in login.defs"
-  lineinfile:
-    dest: /etc/login.defs
+  ansible.builtin.lineinfile:
+    dest: {{{ login_defs_path }}}
     regexp: "^PASS_MIN_LEN *[0-9]*"
     state: present
     line: "PASS_MIN_LEN        {{ var_accounts_password_minlen_login_defs }}"

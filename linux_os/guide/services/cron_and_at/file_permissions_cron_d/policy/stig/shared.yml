@@ -1,25 +1,18 @@
 srg_requirement: |-
-    {{{ full_name }}} cron configuration directories must have a mode of 0700 or less permissive
+    {{{ full_name }}} permissions of cron configuration files and directories must not be modified from the operating system defaults.
 
 vuldiscussion: |-
-    Service configuration files enable or disable features of their respective services that if configured incorrectly
-    can lead to insecure and vulnerable configurations. Therefore, service configuration files should have the
-    correct access rights to prevent unauthorized changes.
-
+    If the permissions of cron configuration files or directories are modified from the operating system defaults, it may be possible for individuals to insert unauthorized cron jobs that perform unauthorized actions, including potentially escalating privileges.
 checktext: |-
-    Verify the permissions of the cron directories with the following command:
+    Run the following command to verify that the owner, group, and mode of cron configuration files and directories match the operating system defaults:
 
-    $ find /etc/cron* -type d | xargs stat -c "%a %n"
+    $ rpm --verify cronie crontabs | awk '! ($2 == "c" && $1 ~ /^.\..\.\.\.\..\./) {print $0}'
 
-    700 /etc/cron.d
-    700 /etc/cron.daily
-    700 /etc/cron.hourly
-    700 /etc/cron.monthly
-    700 /etc/cron.weekly
-
-    If any cron configuration directory is more permissive than 700, this is a finding.
+    If the command returns any output, this is a finding.
 
 fixtext: |-
-    Configure any {{{ full_name }}} cron configration directory with a mode more permissive than 0700 as follows:
+    Run the following commands to restore the permissions of cron configuration files and directories to the operating system defaults:
 
-    chmod 0700 [cron configuration directory]
+    $ sudo dnf reinstall cronie crontabs
+    $ rpm --setugids cronie crontabs
+    $ rpm --setperms cronie crontabs

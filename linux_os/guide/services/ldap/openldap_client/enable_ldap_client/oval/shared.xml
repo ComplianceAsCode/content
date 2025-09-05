@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="enable_ldap_client" version="1">
-    {{{ oval_metadata("Enable LDAP in authconfig.") }}}
+    {{{ oval_metadata("Enable LDAP in authconfig.", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="LDAP client is enabled"
       test_ref="test_enable_ldap_client" />

@@ -3,7 +3,9 @@ documentation_complete: true
 title: 'Ensure That the sudo Binary Has the Correct Permissions'
 
 description: |-
-{{{ describe_file_permissions("/usr/bin/sudo", "4111") | indent(4) }}}
+    {{{ describe_file_permissions("/usr/bin/sudo", "4110") }}}
+    In order to use this rule, the group owner for /usr/bin/sudo needs to be changed to a
+    group other than root to effectively limit access to sudo.
 
 rationale: |-
     The sudoers program should only be usable by people who have the correct permissions.

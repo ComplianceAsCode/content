@@ -11,7 +11,7 @@ sed -Ei '
 '"$key"' 999
 }
 /^'"$key"'/d;
-' /etc/login.defs
+' {{{ login_defs_path }}}
 
 key=SYS_UID_MIN
 
@@ -21,4 +21,4 @@ sed -Ei '
 '"$key"' 201
 }
 /^'"$key"'/d;
-' /etc/login.defs
+' {{{ login_defs_path }}}

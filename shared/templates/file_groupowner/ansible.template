@@ -6,31 +6,31 @@
 
 {{%- if RECURSIVE %}}
 {{%- set FIND_RECURSE_ARGS_DEP="" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="" %}}
-{{%- else %}}
+{{%- elif FILE_REGEX %}}
 {{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="-L" %}}
+{{%- else %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 0" %}}
 {{%- endif %}}
 
 {{%- set ns=namespace(find_groups="") %}}
 {{%- if GROUP_REPRESENTED_WITH_GID %}}
 {{%- set ns.find_groups=ns.find_groups ~ " ! -group " ~ GID_OR_NAME %}}
 - name: Set the {{{ _RULE_ID }}}_newgroup variable if represented by gid
-  set_fact:
+  ansible.builtin.set_fact:
     {{{ _RULE_ID }}}_newgroup: "{{{ GID_OR_NAME }}}"
 {{%- else %}}
 {{%- set GROUPS=GID_OR_NAME.split("|") %}}
 {{%- for grp in GROUPS %}}
 {{%- set ns.find_groups=ns.find_groups ~ " ! -group " ~ grp %}}
 - name: Check that the {{{ grp }}} group is defined
-  getent:
+  ansible.builtin.getent:
     database: group
     key: {{{ grp }}}
   ignore_errors: yes
   when: {{{ _RULE_ID }}}_newgroup is undefined
 
 - name: Set the {{{ _RULE_ID }}}_newgroup variable if {{{ grp }}} found
-  set_fact: 
+  ansible.builtin.set_fact:
     {{{ _RULE_ID }}}_newgroup: "{{{ grp }}}"
   when: ansible_facts.getent_group["{{{ grp }}}"] is defined
 {{%- endfor %}}
@@ -41,15 +41,16 @@
 {{%- if FILE_REGEX %}}
 
 - name: Find {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}{{% if RECURSIVE %}} recursively{{% endif %}}
-  command: 'find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{{ ns.find_groups }}} -regextype posix-extended -regex "{{{ FILE_REGEX[loop.index0] }}}"'
+  ansible.builtin.command: 'find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{{ ns.find_groups }}} -regextype posix-extended -regex "{{{ FILE_REGEX[loop.index0] }}}"'
   register: files_found
   changed_when: False
   failed_when: False
   check_mode: no
 
 - name: Ensure group owner on {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
+    follow: false
     group: "{{ {{{ _RULE_ID }}}_newgroup }}"
     state: file
   with_items:
@@ -58,8 +59,9 @@
 {{% else %}}
 
 - name: Ensure group owner on {{{ path }}}{{% if RECURSIVE %}} recursively{{% endif %}}
-  file:
+  ansible.builtin.file:
     path: "{{{ path }}}"
+    follow: false
     state: directory
 {{% if RECURSIVE %}}
     recurse: yes
@@ -70,13 +72,14 @@
 {{% else %}}
 
 - name: Test for existence {{{ path }}}
-  stat:
+  ansible.builtin.stat:
     path: "{{{ path }}}"
   register: file_exists
 
 - name: Ensure group owner on {{{ path }}}
-  file:
+  ansible.builtin.file:
     path: "{{{ path }}}"
+    follow: false
     group: "{{ {{{ _RULE_ID }}}_newgroup }}"
   when: file_exists.stat is defined and file_exists.stat.exists
 

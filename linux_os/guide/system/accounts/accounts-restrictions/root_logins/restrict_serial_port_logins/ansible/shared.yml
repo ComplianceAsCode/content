@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 - name: "Restrict Serial Port Root Logins"
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/securetty
     regexp: 'ttyS[0-9]'
     state: absent

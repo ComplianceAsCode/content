@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: "{{{ rule_title }}}"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/ipsec.conf
     line: "include /etc/crypto-policies/back-ends/libreswan.config"
     create: yes

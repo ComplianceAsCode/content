@@ -1,10 +1,9 @@
 documentation_complete: true
 
-title: 'DRAFT - ANSSI-BP-028 (minimal)'
+title: 'ANSSI-BP-028 (minimal)'
 
 description: |-
-    This is a draft profile for experimental purposes.
-    This draft profile contains configurations that align to ANSSI-BP-028 v2.0 at the minimal hardening level.
+    This profile contains configurations that align to ANSSI-BP-028 v2.0 at the minimal hardening level.
 
     ANSSI is the French National Information Security Agency, and stands for Agence nationale de la sécurité des systèmes d'information.
     ANSSI-BP-028 is a configuration recommendation for GNU/Linux systems.
@@ -17,6 +16,7 @@ description: |-
 
 selections:
     - anssi:all:minimal
+    - var_password_hashing_algorithm_pam=yescrypt
     - '!package_ypbind_removed'
     - '!cracklib_accounts_password_pam_minlen'
     - '!package_ypserv_removed'
@@ -30,6 +30,8 @@ selections:
     - '!ensure_redhat_gpgkey_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!security_patches_up_to_date'
+    # authselect is enabled by default
+    - '!enable_authselect'
     # these packages do not exist in ol10 (R62)
     - '!package_dhcp_removed'
     - '!package_rsh_removed'
@@ -38,3 +40,4 @@ selections:
     - '!package_talk_removed'
     - '!package_talk-server_removed'
     - '!package_xinetd_removed'
+    - var_authselect_profile=local

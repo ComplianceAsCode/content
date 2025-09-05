@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("login_banner_text") }}}
 
 - name: "{{{ rule_title }}}"
-  file:
+  ansible.builtin.file:
     path: "/etc/dconf/db/{{ item }}"
     owner: root
     group: root
@@ -17,7 +17,7 @@
     - "{{{ dconf_gdm_dir }}}/locks"
 
 - name: "{{{ rule_title }}}"
-  file:
+  ansible.builtin.file:
     path: "/etc/dconf/db/{{{ dconf_gdm_dir }}}/{{ item }}"
     owner: root
     group: root
@@ -37,7 +37,7 @@
     no_extra_spaces: yes
 
 - name: "Prevent user modification of the GNOME3 Login Warning Banner Text"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock'
     regexp: '^/org/gnome/login-screen/banner-message-text$'
     line: '/org/gnome/login-screen/banner-message-text'
@@ -45,4 +45,4 @@
     state: present
 
 - name: Dconf Update
-  command: dconf update
+  ansible.builtin.command: dconf update

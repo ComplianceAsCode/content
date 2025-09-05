@@ -658,7 +658,7 @@ macro(ssg_build_disa_delta PRODUCT PROFILE)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --manual "${DISA_SCAP_REF}" --profile "${PROFILE}" --reference "stigid" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml" --quiet --build-root ${CMAKE_BINARY_DIR} --resolved-rules-dir
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --manual "${DISA_SCAP_REF}" --profile "${PROFILE}" --reference "stigid" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml" --quiet --build-root ${CMAKE_BINARY_DIR} --resolved-rules-dir -c ${CMAKE_BINARY_DIR}/build_config.yml
         DEPENDS "${PRODUCT}-content"
         COMMENT "[${PRODUCT}-generate-ssg-delta] generating disa tailoring file"
     )
@@ -674,7 +674,7 @@ endmacro()
 macro(ssg_build_tests PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/tests/.tests_done"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/build-scripts/build_tests.py"  --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --output  "${CMAKE_CURRENT_BINARY_DIR}/tests" --product-yaml "${CMAKE_SOURCE_DIR}/products/${PRODUCT}/product.yml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/build-scripts/build_tests.py"  --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --output  "${CMAKE_CURRENT_BINARY_DIR}/tests" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
         # Actually we mean that it depends on resolved rules - see also ssg_build_templated_content
         DEPENDS ${PRODUCT}-content
         COMMENT "[${PRODUCT}-tests] generating tests"
@@ -1192,15 +1192,17 @@ macro(ssg_build_html_stig_tables PRODUCT)
 endmacro()
 
 macro(rule_dir_json)
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/rule_dirs.json"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/rule_dir_json.py" "--root" "${CMAKE_SOURCE_DIR}" "--output" "${CMAKE_BINARY_DIR}/rule_dirs.json" --quiet
-        COMMENT "[rule-dir-json] creating build/rule_dirs.json"
-    )
-    add_custom_target(
-        rule_dir_json
-        DEPENDS "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
-    )
+    if(NOT TARGET rule_dir_json)
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/rule_dirs.json"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/rule_dir_json.py" "--root" "${CMAKE_SOURCE_DIR}" "--output" "${CMAKE_BINARY_DIR}/rule_dirs.json" --quiet
+            COMMENT "[rule-dir-json] creating build/rule_dirs.json"
+        )
+        add_custom_target(
+            rule_dir_json
+            DEPENDS "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
+        )
+    endif()
 endmacro()
 
 

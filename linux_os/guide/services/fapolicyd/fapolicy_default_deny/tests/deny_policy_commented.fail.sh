@@ -18,4 +18,4 @@ echo "# deny perm=any all : all" >> $active_rules_file
                     insensitive=true,
                     separator=" = ",
                     separator_regex="\s*=\s*",
-                    prefix_regex="^\s*") }}}
+                    prefix_regex="^\s*", rule_id=rule_id) }}}

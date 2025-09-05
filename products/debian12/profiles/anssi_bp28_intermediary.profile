@@ -38,7 +38,6 @@ selections:
   - '!ensure_redhat_gpgkey_installed'
   - '!set_password_hashing_algorithm_systemauth'
   - '!package_dnf-automatic_installed'
-  - '!accounts_passwords_pam_faillock_deny_root'
   - '!dnf-automatic_security_updates_only'
   - '!cracklib_accounts_password_pam_lcredit'
   - '!dnf-automatic_apply_updates'
@@ -58,3 +57,6 @@ selections:
   - '!ensure_gpgcheck_never_disabled'
   - '!ensure_oracle_gpgkey_installed'
   - '!ensure_almalinux_gpgkey_installed'
+
+  # The following rule is not applicable to Debian 12
+  - '!logind_session_timeout'

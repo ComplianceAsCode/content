@@ -4,29 +4,22 @@
 # complexity = low
 # disruption = low
 - name: "Ensure AIDE is installed"
-  package:
-    name: "{{ item }}"
+  ansible.builtin.package:
+    name: aide
     state: present
-  with_items:
-    - aide
-
-- name: Set cron package name - RedHat
-  set_fact:
-    cron_pkg_name: cronie
-  when: ansible_os_family == "RedHat" or ansible_os_family == "Suse"
-
-- name: Set cron package name - Debian
-  set_fact:
-    cron_pkg_name: cron
-  when: ansible_os_family == "Debian"
 
 - name: Install cron
-  package:
-    name: "{{ cron_pkg_name }}"
+  ansible.builtin.package:
+{{% if "ubuntu" in product or "debian" in product %}}
+    name: cron
+{{% else %}}
+    name: cronie
+{{% endif %}}
     state: present
 
+{{% if product != 'ubuntu2404' %}}
 - name: "{{{ rule_title }}}"
-  cron:
+  ansible.builtin.cron:
 {{% if product in ["sle12", "sle15"] %}}
     name: "{{{ rule_title }}}"
     cron_file: /etc/crontab
@@ -38,3 +31,17 @@
     weekday: 0
     user: root
     job: "{{{ aide_bin_path }}} --check"
+{{% else %}}
+- name: "{{{ rule_title }}} - Install AIDE Cron Job"
+  ansible.builtin.lineinfile:
+    path: /etc/cron.daily/dailyaidecheck
+    line: 'SCRIPT="/usr/share/aide/bin/dailyaidecheck"'
+  check_mode: yes
+  register: line_check
+
+- name: "{{{ rule_title }}} - Install AIDE cron script"
+  ansible.builtin.copy:
+    src: /usr/share/aide/config/cron.daily/dailyaidecheck
+    dest: /etc/cron.daily/dailyaidecheck
+  when: not line_check.found
+{{% endif %}}

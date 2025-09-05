@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="no_insecure_locks_exports" version="1">
     {{{ oval_metadata("Allowing insecure file locking could allow for sensitive 
-      data to be viewed or edited by an unauthorized user.") }}}
+      data to be viewed or edited by an unauthorized user.", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="Check for insecure NFS locks in /etc/exports"
       test_ref="test_no_insecure_locks_exports" />

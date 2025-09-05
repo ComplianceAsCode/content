@@ -9,8 +9,8 @@
 
 {{{ ansible_pam_pwhistory_enable('/etc/pam.d/password-auth',
                                  '{{ var_password_pam_remember_control_flag.split(",")[0] }}',
-                                 '^password.*requisite.*pam_pwquality\.so') }}}
+                                 '^password.*requisite.*pam_pwquality\.so', rule_title=rule_title) }}}
 
 {{{ ansible_pam_pwhistory_parameter_value('/etc/pam.d/password-auth',
                                           'remember',
-                                          '{{ var_password_pam_remember }}') }}}
+                                          '{{ var_password_pam_remember }}', rule_title=rule_title, rule_id=rule_id) }}}

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="umask_for_daemons" version="2">
-    {{{ oval_metadata("The daemon umask should be set as appropriate") }}}
+    {{{ oval_metadata("The daemon umask should be set as appropriate", rule_title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="Get value of var_accounts_user_umask variable as octal number"
       definition_ref="var_umask_for_daemons_as_number" />

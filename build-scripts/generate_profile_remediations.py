@@ -5,8 +5,10 @@ import collections
 import os
 import re
 import xml.etree.ElementTree as ET
+import yaml
 
 import ssg.ansible
+import ssg.yaml
 from ssg.constants import (
     ansible_system,
     bash_system,
@@ -24,7 +26,7 @@ LANGUAGE_TO_TARGET = {"ansible": "playbook", "bash": "script"}
 LANGUAGE_TO_EXTENSION = {"ansible": "yml", "bash": "sh"}
 ANSIBLE_VAR_PATTERN = re.compile(
     "- name: XCCDF Value [^ ]+ # promote to variable\n  set_fact:\n"
-    "    ([^:]+): (.+)\n  tags:\n    - always\n")
+    "    ([^:]+): !!str (.+)\n  tags:\n    - always\n")
 
 
 def parse_args():
@@ -50,7 +52,7 @@ def parse_args():
 
 
 def extract_ansible_vars(string):
-    ansible_vars = {}
+    ansible_vars = collections.OrderedDict()
     for match in ANSIBLE_VAR_PATTERN.finditer(string):
         variable_name, value = match.groups()
         ansible_vars[variable_name] = value
@@ -219,21 +221,23 @@ class ScriptGenerator:
         return file_path
 
     def create_output_ansible(self, profile_el):
-        ansible_vars, ansible_tasks = self.collect_ansible_vars_and_tasks(
+        ansible_vars, ansible_snippets = self.collect_ansible_vars_and_tasks(
             profile_el)
-        header = self.create_header(profile_el)
+        sp = ssg.ansible.AnsibleSnippetsProcessor(ansible_snippets)
+        sp.process_snippets()
+        ansible_tasks = sp.get_ansible_tasks()
         profile_id = profile_el.get("id")
-        vars_str = ansible_vars_to_string(ansible_vars)
-        tasks_str = ansible_tasks_to_string(ansible_tasks)
-        output = (
-            "%s\n"
-            "- name: Ansible Playbook for %s\n"
-            "  hosts: all\n"
-            "  vars:\n"
-            "%s"
-            "  tasks:\n"
-            "%s"
-            % (header, profile_id, vars_str, tasks_str))
+        playbook = [
+            collections.OrderedDict([
+                ("name", "Ansible Playbook for %s" % profile_id),
+                ("hosts", "all"),
+                ("vars", ansible_vars),
+                ("tasks", ansible_tasks)
+            ])
+        ]
+        header = self.create_header(profile_el)
+        playbook_str = ssg.yaml.ordered_dump(playbook, default_flow_style=False)
+        output = "%s%s" % (header, playbook_str)
         return output
 
     def collect_ansible_vars_and_tasks(self, profile_el):

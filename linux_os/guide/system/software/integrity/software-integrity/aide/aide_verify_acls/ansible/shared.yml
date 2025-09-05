@@ -5,18 +5,18 @@
 # disruption = low
 
 - name: "Gather list of packages"
-  package_facts:
+  ansible.builtin.package_facts:
     manager: auto
 
 - name: Get rules groups
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     LC_ALL=C grep "^[A-Z][A-Za-z_]*" /etc/aide.conf | grep -v "^ALLXTRAHASHES" | cut -f1 -d '=' | tr -d ' ' | sort -u || true
   when: "'aide' in ansible_facts.packages"
   register: find_rules_groups_results
 
 - name: Ensure the acl rule is present when aide is installed.
-  replace:
+  ansible.builtin.replace:
     path: /etc/aide.conf
     regexp: (^\s*{{ item }}\s*=\s*)(?!.*acl)([^\s]*)
     replace: \g<1>\g<2>+acl

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="banner_etc_gdm_banner" version="2">
-    {{{ oval_metadata("The system login banner text should be set correctly.") }}}
+    {{{ oval_metadata("The system login banner text should be set correctly.", rule_title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="gdm installed" definition_ref="package_gdm_installed" negate="true" />
       <criteria operator="AND">

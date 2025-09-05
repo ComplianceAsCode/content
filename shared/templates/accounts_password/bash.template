@@ -6,7 +6,7 @@
 
 {{{ bash_instantiate_variables("var_password_pam_" ~ VARIABLE) }}}
 
-{{% if product == "ol8" or 'rhel' in product %}}
+{{% if product in ["ol8","ol9"] or 'rhel' in product %}}
 if grep -sq {{{ VARIABLE }}} /etc/security/pwquality.conf.d/*.conf ; then
     sed -i "/{{{ VARIABLE }}}/d" /etc/security/pwquality.conf.d/*.conf
 fi
@@ -21,8 +21,8 @@ fi
 }}}
 {{% endif %}}
 
-{{% if product == "ubuntu2404" %}}
+{{% if product == "ubuntu2404" or product == "debian13" %}}
 {{{ bash_pam_pwquality_enable() }}}
 {{% endif %}}
 
-{{{ bash_replace_or_append('/etc/security/pwquality.conf', '^' ~ VARIABLE , '$var_password_pam_' ~ VARIABLE , '%s = %s') }}}
+{{{ bash_replace_or_append('/etc/security/pwquality.conf', '^' ~ VARIABLE , '$var_password_pam_' ~ VARIABLE , '%s = %s', cce_identifiers=cce_identifiers) }}}

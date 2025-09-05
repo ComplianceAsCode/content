@@ -45,9 +45,11 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type quotes: str
 :param xccdf_variable: the name of an XCCDF variable carrying the value, this conflicts with the value parameter
 :type xccdf_variable: str
+:param variable_datatype: data type of the XCCDF variable specified by the xccdf_variable parameter, optional, default is string
+:type variable_datatype: str
 
 #}}
-{{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='', quotes='', xccdf_variable="") -%}}
+{{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='', quotes='', xccdf_variable="", variable_datatype="string", rule_id=None, rule_title=None) -%}}
 {{%- if application == '' -%}}
 	{{%- set application = "The respective application or service" -%}}
 {{%- endif -%}}
@@ -58,43 +60,43 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata(description) }}}
+    {{{ oval_metadata(description, rule_title=rule_title) }}}
     {{%- if missing_config_file_fail %}}
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
     operator="AND">
     {{%- endif %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
-        {{{- oval_line_in_file_criterion(path, parameter) }}}
+        {{{- oval_line_in_file_criterion(path, parameter, rule_id=rule_id) }}}
         {{%- if missing_parameter_pass %}}
-        {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass) }}}
+        {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass, rule_id=rule_id) }}}
         {{%- endif %}}
     </criteria>
     {{%- if missing_config_file_fail %}}
-        {{{- oval_config_file_exists_criterion(path) }}}
+        {{{- oval_config_file_exists_criterion(path, rule_id=rule_id) }}}
     </criteria>
     {{%- endif %}}
   </definition>
 
   {{% if xccdf_variable %}}
-  {{{ oval_line_in_file_define_variable(xccdf_variable, datatype="string") }}}
+  {{{ oval_line_in_file_define_variable(xccdf_variable, datatype=variable_datatype) }}}
   {{% endif %}}
 
-  {{{ oval_line_in_file_test(path, parameter) }}}
-  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
+  {{{ oval_line_in_file_test(path, parameter, rule_id=rule_id) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value, rule_id=rule_id) }}}
   {{%- if xccdf_variable -%}}
-  {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, datatype="string") }}}
+  {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, datatype=variable_datatype, rule_id=rule_id) }}}
   {{%- else -%}}
-  {{{ oval_line_in_file_state(value, multi_value, quotes) }}}
+  {{{ oval_line_in_file_state(value, multi_value, quotes, rule_id=rule_id) }}}
   {{%- endif -%}}
 
   {{%- if missing_parameter_pass %}}
-  {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass) }}}
-  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
+  {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass, rule_id=rule_id) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value, rule_id=rule_id) }}}
   {{%- endif %}}
   {{%- if missing_config_file_fail %}}
-  {{{ oval_config_file_exists_test(path) }}}
-  {{{ oval_config_file_exists_object(path) }}}
+  {{{ oval_config_file_exists_test(path, rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object(path, rule_id=rule_id) }}}
   {{%- endif %}}
 
 </def-group>
@@ -126,35 +128,35 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type quotes: str
 
 #}}
-{{%- macro oval_check_systemd_config(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, section='', quotes='') -%}}
+{{%- macro oval_check_systemd_config(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, section='', quotes='', rule_id=None, rule_title=None) -%}}
 {{%- if application == '' -%}}
 	{{%- set application = "The respective application or service" -%}}
 {{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
+    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path, rule_title=rule_title) }}}
     {{% set dir_path = path + ".d" %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
-        {{{- oval_line_in_file_criterion(path, parameter) }}}
-        {{{- oval_line_in_directory_criterion(dir_path, parameter) }}}
+        {{{- oval_line_in_file_criterion(path, parameter, rule_id=rule_id) }}}
+        {{{- oval_line_in_directory_criterion(dir_path, parameter, rule_id=rule_id) }}}
         {{%- if missing_parameter_pass %}}
-        {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass) }}}
-        {{{- oval_line_in_directory_criterion(dir_path, parameter, missing_parameter_pass) }}}
+        {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass, rule_id=rule_id) }}}
+        {{{- oval_line_in_directory_criterion(dir_path, parameter, missing_parameter_pass, rule_id=rule_id) }}}
         {{%- endif %}}
     </criteria>
   </definition>
-  {{{ oval_line_in_file_test(path, parameter) }}}
-  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
-  {{{ oval_line_in_file_state(value, multi_value, quotes) }}}
-  {{{ oval_line_in_directory_test(dir_path, parameter) }}}
-  {{{ oval_line_in_directory_object(dir_path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
-  {{{ oval_line_in_directory_state(value, multi_value, quotes) }}}
+  {{{ oval_line_in_file_test(path, parameter, rule_id=rule_id) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value, rule_id=rule_id) }}}
+  {{{ oval_line_in_file_state(value, multi_value, quotes, rule_id=rule_id) }}}
+  {{{ oval_line_in_directory_test(dir_path, parameter, rule_id=rule_id) }}}
+  {{{ oval_line_in_directory_object(dir_path, section, prefix_regex, parameter, separator_regex, false, multi_value, rule_id=rule_id) }}}
+  {{{ oval_line_in_directory_state(value, multi_value, quotes, rule_id=rule_id) }}}
   {{%- if missing_parameter_pass %}}
-  {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass) }}}
-  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
-  {{{ oval_line_in_directory_test(dir_path, parameter, missing_parameter_pass) }}}
-  {{{ oval_line_in_directory_object(dir_path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
+  {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass, rule_id=rule_id) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value, rule_id=rule_id) }}}
+  {{{ oval_line_in_directory_test(dir_path, parameter, missing_parameter_pass, rule_id=rule_id) }}}
+  {{{ oval_line_in_directory_object(dir_path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value, rule_id=rule_id) }}}
   {{%- endif %}}
 
 </def-group>
@@ -177,7 +179,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type avoid_conflicting: bool
 
 #}}
-{{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false, comment='', id_stem='', avoid_conflicting=false) -%}}
+{{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false, comment='', id_stem='', avoid_conflicting=false, rule_id=None) -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
 {{%- set prefix_text = "Check the" -%}}
@@ -209,7 +211,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type id_stem: str
 
 #}}
-{{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false, id_stem='', avoid_conflicting=false) -%}}
+{{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false, id_stem='', avoid_conflicting=false, rule_id=None) -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
 {{%- set suffix_text = "" -%}}
@@ -259,7 +261,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type id_stem: str
 
 #}}
-{{%- macro oval_line_in_file_object(path_or_filepath='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, filename_regex='', id_stem='') -%}}
+{{%- macro oval_line_in_file_object(path_or_filepath='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, filename_regex='', id_stem='', rule_id=None) -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
 {{%- if multi_value -%}}
@@ -319,7 +321,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type id_stem: str
 
 #}}
-{{%- macro oval_line_in_file_state(value='', multi_value=false, quotes='', id_stem='') -%}}
+{{%- macro oval_line_in_file_state(value='', multi_value=false, quotes='', id_stem='', rule_id=None) -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
 {{%- set regex = value -%}}
 {{%- if quotes != "" %}}
@@ -342,7 +344,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 <external_variable comment="Variable defining the value the argument should have" datatype="{{{ datatype }}}" id="{{{ var_name }}}" version="1" />
 {{% endmacro %}}
 
-{{%- macro oval_line_in_file_state_xccdf_variable(var_name='', id_stem='', datatype='') -%}}
+{{%- macro oval_line_in_file_state_xccdf_variable(var_name='', id_stem='', datatype='', rule_id=None) -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
 <ind:textfilecontent54_state id="state_{{{ id_stem }}}" version="1">
   <ind:subexpression datatype="{{{ datatype }}}" operation="equals" var_ref="{{{ var_name }}}" />
@@ -350,27 +352,27 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endmacro -%}}
 
 
-{{%- macro oval_line_in_directory_criterion(path='', parameter='', missing_parameter_pass=false, avoid_conflicting=false) -%}}
-{{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir", avoid_conflicting=avoid_conflicting) -}}}
+{{%- macro oval_line_in_directory_criterion(path='', parameter='', missing_parameter_pass=false, avoid_conflicting=false, rule_id=None) -%}}
+{{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir", avoid_conflicting=avoid_conflicting, rule_id=rule_id) -}}}
 {{%- endmacro %}}
 
 
-{{%- macro oval_line_in_directory_test(path='', parameter='', missing_parameter_pass=false, avoid_conflicting=false) -%}}
-{{{ oval_line_in_file_test(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir", avoid_conflicting=avoid_conflicting) }}}
+{{%- macro oval_line_in_directory_test(path='', parameter='', missing_parameter_pass=false, avoid_conflicting=false, rule_id=None) -%}}
+{{{ oval_line_in_file_test(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir", avoid_conflicting=avoid_conflicting, rule_id=rule_id) }}}
 {{%- endmacro %}}
 
 
-{{%- macro oval_line_in_directory_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false) -%}}
-{{{- oval_line_in_file_object(path_or_filepath=path, section=section, prefix_regex=prefix_regex, parameter=parameter, separator_regex=separator_regex, missing_parameter_pass=missing_parameter_pass, multi_value=multi_value, filename_regex=".*\.conf$", id_stem=rule_id ~ "_config_dir") -}}}
+{{%- macro oval_line_in_directory_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, rule_id=None) -%}}
+{{{- oval_line_in_file_object(path_or_filepath=path, section=section, prefix_regex=prefix_regex, parameter=parameter, separator_regex=separator_regex, missing_parameter_pass=missing_parameter_pass, multi_value=multi_value, filename_regex=".*\.conf$", id_stem=rule_id ~ "_config_dir", rule_id=rule_id) -}}}
 {{%- endmacro %}}
 
 
-{{%- macro oval_line_in_directory_state(value='', multi_value='', quotes='') -%}}
-{{{- oval_line_in_file_state(value, multi_value, quotes, id_stem=rule_id ~ "_config_dir") -}}}
+{{%- macro oval_line_in_directory_state(value='', multi_value='', quotes='', rule_id=None) -%}}
+{{{- oval_line_in_file_state(value, multi_value, quotes, id_stem=rule_id ~ "_config_dir", rule_id=rule_id) -}}}
 {{%- endmacro %}}
 
-{{%- macro oval_line_in_directory_state_xccdf_variable(var_name='', datatype='') -%}}
-{{{- oval_line_in_file_state_xccdf_variable(var_name, id_stem=rule_id ~ "_config_dir", datatype=datatype) -}}}
+{{%- macro oval_line_in_directory_state_xccdf_variable(var_name='', datatype='', rule_id=None) -%}}
+{{{- oval_line_in_file_state_xccdf_variable(var_name, id_stem=rule_id ~ "_config_dir", datatype=datatype, rule_id=rule_id) -}}}
 {{%- endmacro -%}}
 
 {{#
@@ -380,7 +382,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type path: str
 
 #}}
-{{%- macro oval_config_file_exists_criterion(path='') -%}}
+{{%- macro oval_config_file_exists_criterion(path='', rule_id=None) -%}}
 	<criterion comment="test if configuration file {{{ path }}} exists for {{{ rule_id }}}" test_ref="test_{{{ rule_id }}}_config_file_exists" />
 {{%- endmacro %}}
 
@@ -392,7 +394,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type path: str
 
 #}}
-{{%- macro oval_config_file_exists_test(path='') -%}}
+{{%- macro oval_config_file_exists_test(path='', rule_id=None) -%}}
   <unix:file_test id="test_{{{ rule_id }}}_config_file_exists" check="all" check_existence="all_exist" comment="The configuration file {{{ path }}} exists for {{{ rule_id }}}" version="1">
     <unix:object object_ref="obj_{{{ rule_id }}}_config_file" />
   </unix:file_test>
@@ -407,7 +409,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type filepath: str
 
 #}}
-{{%- macro oval_file_absent_criterion(filepath) -%}}
+{{%- macro oval_file_absent_criterion(filepath, rule_id=None) -%}}
   <criterion comment="Pass if there are no files matching pattern '{{{ filepath }}}' exist in the system" test_ref="test_{{{ rule_id }}}_file_{{{ filepath|escape_id }}}_absent" />
 {{%- endmacro %}}
 
@@ -419,7 +421,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type filepath_regex: str
 
 #}}
-{{%- macro oval_file_absent(filepath_regex) -%}}
+{{%- macro oval_file_absent(filepath_regex, rule_id=None) -%}}
   <unix:file_test check="all" check_existence="none_exist" id="test_{{{ rule_id }}}_file_{{{ filepath_regex|escape_id }}}_absent"
   comment="Check if {{{ filepath_regex }}} does not exist" version="1">
     <unix:object object_ref="object_{{{ rule_id }}}_file_{{{ filepath_regex|escape_id }}}_absent" />
@@ -437,7 +439,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type filepath_regex: str
 
 #}}
-{{%- macro oval_config_file_exists_object(filepath_regex='') -%}}
+{{%- macro oval_config_file_exists_object(filepath_regex='', rule_id=None) -%}}
   <unix:file_object id="obj_{{{ rule_id }}}_config_file" comment="The configuration file {{{ filepath_regex }}} for {{{ rule_id }}}" version="1">
     <unix:filepath operation="pattern match">^{{{ filepath_regex }}}</unix:filepath>
   </unix:file_object>
@@ -459,7 +461,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type negate: bool
 
 #}}
-{{%- macro oval_argument_value_in_line_criterion(filepath, name, value='', application='', negate=False) -%}}
+{{%- macro oval_argument_value_in_line_criterion(filepath, name, value='', application='', negate=False, rule_id=None) -%}}
 {{%- if value -%}}
 {{%- set name_value = name+"="+value -%}}
 {{%- else -%}}
@@ -487,7 +489,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type is_regex: bool
 
 #}}
-{{%- macro oval_argument_value_in_line_test(filepath, name, value='', line_prefix='', line_suffix='', is_regex=False) -%}}
+{{%- macro oval_argument_value_in_line_test(filepath, name, value='', line_prefix='', line_suffix='', is_regex=False, rule_id=None) -%}}
 {{%- if value -%}}
   {{%- set name_value = name+"="+value -%}}
 {{%- else -%}}
@@ -530,15 +532,15 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type line_suffix: str
 
 #}}
-{{%- macro oval_argument_value_in_line(filepath, name, value, line_prefix='', line_suffix='') -%}}
+{{%- macro oval_argument_value_in_line(filepath, name, value, line_prefix='', line_suffix='', rule_id=None, rule_title=None) -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("Ensure argument " + name + "=" + value + " is present"+ (" in the line starting with '" + line_prefix + "'" if line_prefix else "") + " in file(s) '" + filepath + "'") }}}
+    {{{ oval_metadata("Ensure argument " + name + "=" + value + " is present"+ (" in the line starting with '" + line_prefix + "'" if line_prefix else "") + " in file(s) '" + filepath + "'", rule_title=rule_title) }}}
     <criteria operator="AND">
-      {{{- oval_argument_value_in_line_criterion(filepath, name, value, application) }}}
+      {{{- oval_argument_value_in_line_criterion(filepath, name, value, application, rule_id=rule_id) }}}
     </criteria>
   </definition>
-  {{{- oval_argument_value_in_line_test(filepath, name, value, line_prefix, line_suffix) }}}
+  {{{- oval_argument_value_in_line_test(filepath, name, value, line_prefix, line_suffix, rule_id=rule_id) }}}
 </def-group>
 {{%- endmacro -%}}
 
@@ -563,7 +565,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type missing_config_file_fail: bool
 
 #}}
-{{%- macro oval_check_shell_file(path, parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
+{{%- macro oval_check_shell_file(path, parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, rule_id=None, rule_title=None) %}}
 {{% if no_quotes -%}}
   {{%- set quotes = "" -%}}
 {{%- else -%}}
@@ -572,7 +574,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{% if "$" in value %}}
   {{% set value = '%s' % value.replace("$", "\\$") %}}
 {{% endif %}}
-{{{ oval_check_config_file(path, prefix_regex="^[ \\t]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, quotes=quotes) }}}
+{{{ oval_check_config_file(path, prefix_regex="^[ \\t]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, quotes=quotes, rule_id=rule_id, rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 {{#
@@ -600,10 +602,10 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type missing_config_file_fail: bool
 #}}
 
-{{%- macro oval_check_dropin_file(path, dropin_dir, section='', parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, prefix_regex='^[ \\t]*', separator_regex='=') %}}
+{{%- macro oval_check_dropin_file(path, dropin_dir, section='', parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, prefix_regex='^[ \\t]*', separator_regex='=', rule_id=None, rule_title=None) %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
+    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + ("' in section '" + section if section else "") + "' in " + path, rule_title=rule_title) }}}
     {{%- if missing_config_file_fail %}}
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
     operator="AND">
@@ -612,22 +614,22 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
     <criteria comment="{{{ application }}} is configured correctly"
     operator="AND">
         <criteria comment="Check the main config file" operator="OR">
-            {{{- oval_line_in_file_criterion(path, parameter) }}}
-            {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass) }}}
+            {{{- oval_line_in_file_criterion(path, parameter, rule_id=rule_id) }}}
+            {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass, rule_id=rule_id) }}}
         </criteria>
         <criteria comment="Check files in the dropin directory" operator="OR">
-            {{{ oval_line_in_directory_criterion(dropin_dir, parameter) }}}
-            {{{ oval_line_in_directory_criterion(dropin_dir, parameter, missing_parameter_pass) }}}
+            {{{ oval_line_in_directory_criterion(dropin_dir, parameter, rule_id=rule_id) }}}
+            {{{ oval_line_in_directory_criterion(dropin_dir, parameter, missing_parameter_pass, rule_id=rule_id) }}}
         </criteria>
     {{%- else %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
-        {{{- oval_line_in_file_criterion(path, parameter) }}}
-        {{{ oval_line_in_directory_criterion(dropin_dir, parameter) }}}
+        {{{- oval_line_in_file_criterion(path, parameter, rule_id=rule_id) }}}
+        {{{ oval_line_in_directory_criterion(dropin_dir, parameter, rule_id=rule_id) }}}
     </criteria>
     {{%- endif %}}
     {{%- if missing_config_file_fail %}}
-        {{{- oval_config_file_exists_criterion(path) }}}
+        {{{- oval_config_file_exists_criterion(path, rule_id=rule_id) }}}
     </criteria>
     {{%- endif %}}
   </definition>
@@ -637,21 +639,21 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   {{%- set quotes = "" -%}}
   {{%- endif %}}
 
-  {{{ oval_line_in_file_test(path, parameter) }}}
-  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
-  {{{ oval_line_in_file_state(value, multi_value, quotes) }}}
-  {{{ oval_line_in_directory_test(dropin_dir, parameter) }}}
-  {{{ oval_line_in_directory_object(dropin_dir, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
-  {{{ oval_line_in_directory_state(value, multi_value, quotes,) }}}
+  {{{ oval_line_in_file_test(path, parameter, rule_id=rule_id) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value, rule_id=rule_id) }}}
+  {{{ oval_line_in_file_state(value, multi_value, quotes, rule_id=rule_id) }}}
+  {{{ oval_line_in_directory_test(dropin_dir, parameter, rule_id=rule_id) }}}
+  {{{ oval_line_in_directory_object(dropin_dir, section, prefix_regex, parameter, separator_regex, false, multi_value, rule_id=rule_id) }}}
+  {{{ oval_line_in_directory_state(value, multi_value, quotes, rule_id=rule_id) }}}
   {{%- if missing_parameter_pass %}}
-  {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass) }}}
-  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
-  {{{ oval_line_in_directory_test(dropin_dir, parameter, missing_parameter_pass) }}}
-  {{{ oval_line_in_directory_object(dropin_dir, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
+  {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass, rule_id=rule_id) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value, rule_id=rule_id) }}}
+  {{{ oval_line_in_directory_test(dropin_dir, parameter, missing_parameter_pass, rule_id=rule_id) }}}
+  {{{ oval_line_in_directory_object(dropin_dir, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value, rule_id=rule_id) }}}
   {{%- endif %}}
   {{%- if missing_config_file_fail %}}
-  {{{ oval_config_file_exists_test(path) }}}
-  {{{ oval_config_file_exists_object(path) }}}
+  {{{ oval_config_file_exists_test(path, rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object(path, rule_id=rule_id) }}}
   {{%- endif %}}
 
 
@@ -667,6 +669,10 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type parameter: str
 :param value: The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
 :type value: str
+:param xccdf_variable: the name of an XCCDF variable carrying the value, this conflicts with the value parameter
+:type xccdf_variable: str
+:param variable_datatype: data type of the XCCDF variable specified by the xccdf_variable parameter, optional, default is string
+:type variable_datatype: str
 :param missing_parameter_pass: If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 :type missing_parameter_pass: bool
 :param multi_value: If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
@@ -675,26 +681,8 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type missing_config_file_fail: bool
 
 #}}
-{{%- macro oval_auditd_config(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
-{{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
-{{%- endmacro %}}
-
-
-{{#
-  High level macro to set a parameter in /etc/systemd/coredump.conf and /etc/systemd/coredump.conf.d/*.conf
-
-:param parameter: The parameter to be checked in the configuration file(s).
-:type parameter: str
-:param value: The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
-:type value: str
-:param missing_parameter_pass: If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
-:type missing_parameter_pass: bool
-:param multi_value: If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
-:type multi_value: bool
-
-#}}
-{{%- macro oval_coredump_config_set(parameter='', value='', missing_parameter_pass=false, multi_value=false) %}}
-{{{ oval_check_systemd_config("/etc/systemd/coredump.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="systemd-coredump", multi_value=multi_value, section="Coredump") }}}
+{{%- macro oval_auditd_config(parameter='', value='', xccdf_variable='', variable_datatype='string', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, rule_id=None, rule_title=None) %}}
+{{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", xccdf_variable=xccdf_variable, variable_datatype=variable_datatype, missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, rule_id=rule_id, rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 
@@ -713,8 +701,8 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type missing_config_file_fail: bool
 
 #}}
-{{%- macro oval_grub_config(parameter='', value='', missing_parameter_pass=false, multi_value=true, missing_config_file_fail=false) %}}
-{{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[ \\t]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application="grub", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
+{{%- macro oval_grub_config(parameter='', value='', missing_parameter_pass=false, multi_value=true, missing_config_file_fail=false, rule_id=None, rule_title=None) %}}
+{{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[ \\t]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application="grub", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, rule_id=rule_id, rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 
@@ -775,8 +763,8 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type missing_config_file_fail: bool
 
 #}}
-{{%- macro oval_check_ini_file(path='', section='', parameter='', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=true) %}}
-{{{ oval_check_config_file(path=path, prefix_regex="^\s*", parameter=parameter, value=value, separator_regex="[ \\t]*=[ \\t]*", missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, section=section) }}}
+{{%- macro oval_check_ini_file(path='', section='', parameter='', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=true, rule_id=None, rule_title=None) %}}
+{{{ oval_check_config_file(path=path, prefix_regex="^\s*", parameter=parameter, value=value, separator_regex="[ \\t]*=[ \\t]*", missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, section=section, rule_id=rule_id, rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 
@@ -906,10 +894,10 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type contents: str
 
 #}}
-{{%- macro oval_file_contents(filepath='', filepath_id='', contents='') -%}}
+{{%- macro oval_file_contents(filepath='', filepath_id='', contents='', rule_id=None, rule_title=None) -%}}
   <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-      {{{ oval_metadata("Inspect the contents of " + filepath) }}}
+      {{{ oval_metadata("Inspect the contents of " + filepath, rule_title=rule_title) }}}
       <criteria>
           <criterion comment="Check contents of file" test_ref="{{{ rule_id }}}_test_whole_file_contents_{{{ filepath_id }}}" />
       </criteria>
@@ -949,7 +937,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type affected_platforms: list[str]
 
 #}}
-{{%- macro oval_metadata(description, title="", affected_platforms=None) -%}}
+{{%- macro oval_metadata(description, title="", affected_platforms=None, rule_title=None) -%}}
     <metadata>
 {{%- if title %}}
         <title>{{{ title }}}</title>
@@ -963,7 +951,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endfor %}}
             </affected>
 {{%- else %}}
-        {{{ oval_affected(products) | indent -}}}
+        {{{ oval_affected(product) | indent -}}}
 {{%- endif %}}
         <description>{{{ description }}}{{{ caller() if caller else '' }}}</description>
     </metadata>
@@ -993,23 +981,23 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type lock_path: str
 
 #}}
-{{%- macro oval_check_dconf_ini_file(path='', prefix_regex='^\s*', parameter='', separator_regex='[ \\t]*=[ \\t]*', value='', application='', section='', quotes='', lock_path='') -%}}
+{{%- macro oval_check_dconf_ini_file(path='', prefix_regex='^\s*', parameter='', separator_regex='[ \\t]*=[ \\t]*', value='', application='', section='', quotes='', lock_path='', rule_id=None, rule_title=None) -%}}
 {{%- if application == '' -%}}
 	{{%- set application = "The respective application or service" -%}}
 {{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
+    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path, rule_title=rule_title) }}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="AND">
-        {{{- oval_line_in_file_criterion(path, parameter) }}}
+        {{{- oval_line_in_file_criterion(path, parameter, rule_id=rule_id) }}}
       <criterion comment="Prevent user from modifying {{{ parameter }}}"
       test_ref="test_prevent_user_{{{ parameter }}}" />
     </criteria>
   </definition>
-  {{{ oval_line_in_file_test(path, parameter) }}}
-  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, false, filename_regex='^.*$') }}}
-  {{{ oval_line_in_file_state(value, false, quotes) }}}
+  {{{ oval_line_in_file_test(path, parameter, rule_id=rule_id) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, false, filename_regex='^.*$', rule_id=rule_id) }}}
+  {{{ oval_line_in_file_state(value, false, quotes, rule_id=rule_id) }}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="Prevent user from modifying {{{ parameter }}}"
@@ -1045,7 +1033,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type datatype: str
 
 #}}
-{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed, xccdf_variable="", datatype="") -%}}
+{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed, xccdf_variable="", datatype="", rule_id=None, rule_title=None) -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
 {{%- if xccdf_variable -%}}
@@ -1060,7 +1048,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-   {{{ oval_metadata(description) }}}
+   {{{ oval_metadata(description, rule_title=rule_title) }}}
    <criteria comment="sshd is configured correctly or is not installed" operator="OR">
      <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
@@ -1085,12 +1073,12 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
         {{% endif %}}
         <criteria comment="sshd is configured correctly" operator="AND">
           <criteria comment="the configuration is correct if it exists" operator="AND">
-            {{{- oval_line_in_file_criterion(sshd_config_path, parameter, avoid_conflicting=true) | indent(10)}}}
+            {{{- oval_line_in_file_criterion(sshd_config_path, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(10)}}}
             {{%- if config_is_distributed == "true" %}}
-            {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, avoid_conflicting=true) | indent(10) }}}
+            {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(10) }}}
             {{%- endif %}}
             {{% if product in ["ol8", "ol9"] %}}
-            {{{- oval_line_in_file_criterion("sshd_config included", parameter, id_stem=rule_id ~ "_sshd_included_files", avoid_conflicting=true) | indent(10)}}}
+            {{{- oval_line_in_file_criterion("sshd_config included", parameter, id_stem=rule_id ~ "_sshd_included_files", avoid_conflicting=true, rule_id=rule_id) | indent(10)}}}
             {{% endif %}}
           </criteria>
           {{%- if not missing_parameter_pass %}}
@@ -1106,7 +1094,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{% endif %}}
 
   {{% if product in ["ol8", "ol9"] %}}
-  {{{ oval_line_in_file_object(sshd_config_path, parameter="include", id_stem="sshd_include_value_" ~ rule_id, ** case_insensitivity_kwargs)| indent (2) }}}
+  {{{ oval_line_in_file_object(sshd_config_path, parameter="include", id_stem="sshd_include_value_" ~ rule_id, rule_id=rule_id, ** case_insensitivity_kwargs)| indent (2) }}}
   <local_variable id="var_sshd_config_included_files_{{{ rule_id }}}" datatype="string" version="1"
   comment="Include value converted to regex">
     <concat>
@@ -1121,7 +1109,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
     </concat>
   </local_variable>
 
-  {{{ oval_line_in_file_test("sshd_config included", parameter, id_stem=rule_id ~ "_sshd_included_files", avoid_conflicting=true ) | indent (2) }}}
+  {{{ oval_line_in_file_test("sshd_config included", parameter, id_stem=rule_id ~ "_sshd_included_files", avoid_conflicting=true, rule_id=rule_id) | indent (2) }}}
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_sshd_included_files" version="1">
     <ind:filepath operation="pattern match" var_ref="var_sshd_config_included_files_{{{ rule_id }}}" var_check="at least one"/>
@@ -1130,28 +1118,28 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </ind:textfilecontent54_object>
 
   {{%- if xccdf_variable -%}}
-  {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, id_stem=rule_id ~ "_sshd_included_files", datatype=datatype) | indent (2) }}}
+  {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, id_stem=rule_id ~ "_sshd_included_files", datatype=datatype, rule_id=rule_id) | indent (2) }}}
   {{%- else -%}}
-  {{{ oval_line_in_file_state(value, id_stem=rule_id ~ "_sshd_included_files") | indent (2) }}}
+  {{{ oval_line_in_file_state(value, id_stem=rule_id ~ "_sshd_included_files", rule_id=rule_id) | indent (2) }}}
   {{%- endif -%}}
 
   {{% endif %}}
 
-  {{{ oval_line_in_file_test(sshd_config_path, parameter, avoid_conflicting=true ) | indent (2) }}}
-  {{{ oval_line_in_file_object(sshd_config_path, parameter=parameter, ** case_insensitivity_kwargs)| indent (2) }}}
+  {{{ oval_line_in_file_test(sshd_config_path, parameter, avoid_conflicting=true, rule_id=rule_id) | indent (2) }}}
+  {{{ oval_line_in_file_object(sshd_config_path, parameter=parameter, rule_id=rule_id, ** case_insensitivity_kwargs)| indent (2) }}}
   {{%- if xccdf_variable -%}}
-  {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, datatype=datatype) }}}
+  {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, datatype=datatype, rule_id=rule_id) }}}
   {{%- else -%}}
-  {{{ oval_line_in_file_state(value) | indent (2) }}}
+  {{{ oval_line_in_file_state(value, rule_id=rule_id) | indent (2) }}}
   {{%- endif -%}}
 
   {{%- if config_is_distributed == "true" %}}
-  {{{ oval_line_in_directory_test(sshd_config_dir, parameter, avoid_conflicting=true) | indent (2) }}}
-  {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, ** case_insensitivity_kwargs) | indent (2) }}}
+  {{{ oval_line_in_directory_test(sshd_config_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent (2) }}}
+  {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, rule_id=rule_id, ** case_insensitivity_kwargs) | indent (2) }}}
   {{%- if xccdf_variable -%}}
-  {{{ oval_line_in_directory_state_xccdf_variable(xccdf_variable, datatype) | indent (2) }}}
+  {{{ oval_line_in_directory_state_xccdf_variable(xccdf_variable, datatype, rule_id=rule_id) | indent (2) }}}
   {{%- else -%}}
-  {{{ oval_line_in_directory_state(value) | indent (2) }}}
+  {{{ oval_line_in_directory_state(value, rule_id=rule_id) | indent (2) }}}
   {{%- endif -%}}
   {{%- endif %}}
 
@@ -1191,7 +1179,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type include_root: bool
 
 #}}
-{{%- macro create_interactive_users_list_object(object_id, include_root=False) -%}}
+{{%- macro create_interactive_users_list_object(object_id, include_root=False, rule_id=None) -%}}
   {{%- set ignored_users_list="(nobody|nfsnobody)" %}}
 
   <unix:password_object id="{{{ object_id }}}" version="1">
@@ -1353,7 +1341,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type object_id: str
 
 #}}
-{{%- macro create_system_accounts_list_object(object_id) -%}}
+{{%- macro create_system_accounts_list_object(object_id, rule_id=None) -%}}
   {{%- set ignored_users_list="(root|halt|sync|shutdown|nfsnobody)" %}}
 
   <unix:password_object id="{{{ object_id }}}" version="1">
@@ -1392,7 +1380,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type variable_id: str
 
 #}}
-{{%- macro create_local_mount_points_list(variable_id) -%}}
+{{%- macro create_local_mount_points_list(variable_id, rule_id=None) -%}}
   <!-- Create a partition_state to filter out remote and special file systems. -->
   <linux:partition_state id="state_{{{ rule_id }}}_dev_partitons" version="1">
     <linux:device operation="pattern match">^/dev/.*$</linux:device>
@@ -1468,10 +1456,10 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
 :type regex_empty: str
 
 #}}
-{{%- macro etc_shadow_test(regex, regex_empty) %}}
+{{%- macro etc_shadow_test(regex, regex_empty, rule_id=None, rule_title=None) %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="3">
-      {{{ oval_metadata("Set Existing Passwords Maximum Age") }}}
+      {{{ oval_metadata("Set Existing Passwords Maximum Age", rule_title=rule_title) }}}
     <criteria operator="AND">
         <criterion test_ref="test_{{{ rule_id }}}_password_max_life_existing"
           comment="Passwords must be restricted to the appropriate maximum age for existing accounts."/>
@@ -1563,10 +1551,10 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
 :type description: str
 
 #}}
-{{%- macro test_etc_shadow_password_variable(regex, external_variable_id, operation, description) -%}}
+{{%- macro test_etc_shadow_password_variable(regex, external_variable_id, operation, description, rule_id=None, rule_title=None) -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata(description) }}}
+    {{{ oval_metadata(description, rule_title=rule_title) }}}
     <criteria operator="OR">
       <criterion test_ref="test_{{{ rule_id }}}"
         comment="Passwords must be configured to the appropriate value"/>
@@ -1603,15 +1591,19 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
 
   :param name: Name of the service to be checked
 #}}
-{{%- macro oval_test_service_disabled_criteria(name='') -%}}
+{{%- macro oval_test_service_disabled_criteria(name='', rule_id=None) -%}}
 {{%- if init_system == "systemd" %}}
   {{%- if target_oval_version >= [5, 11] %}}
   {{# we are using systemd and our target OVAL version does support the systemd related tests #}}
-      <criteria operator="AND" comment="service {{{ name }}} is not configured to start">
-        <criterion test_ref="test_service_not_running_{{{ rule_id }}}_{{{ name }}}"
-          comment="{{{ name }}} is not running"/>
-        <criterion test_ref="test_service_loadstate_is_masked_{{{ rule_id }}}_{{{ name }}}"
-          comment="Property LoadState of service {{{ name }}} is masked"/>
+      <criteria operator="OR" comment="service is not present or not configured">
+        <criteria operator="AND" comment="service {{{ name }}} is not configured to start">
+          <criterion test_ref="test_service_not_running_{{{ rule_id }}}_{{{ name }}}"
+            comment="{{{ name }}} is not running"/>
+          <criterion test_ref="test_service_loadstate_is_masked_{{{ rule_id }}}_{{{ name }}}"
+            comment="Property LoadState of service {{{ name }}} is masked"/>
+        </criteria>
+        <criterion test_ref="test_service_not_found_{{{ rule_id }}}_{{{ name }}}"
+          comment="{{{ name }}} is not found"/>
       </criteria>
   {{%- else %}}
   {{# fallback if we are using systemd but can't use the new systemd features of OVAL 5.11 #}}
@@ -1632,7 +1624,7 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
 
   :param name: Name of the service to be checked
 #}}
-{{%- macro oval_test_service_disabled_tests(name='') -%}}
+{{%- macro oval_test_service_disabled_tests(name='', rule_id=None) -%}}
 {{%- if init_system == "systemd" %}}
   {{%- if target_oval_version >= [5, 11] %}}
   {{# we are using systemd and our target OVAL version does support the systemd related tests #}}
@@ -1673,6 +1665,22 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
       version="1">
       <linux:value>masked</linux:value>
     </linux:systemdunitproperty_state>
+
+
+    <linux:systemdunitproperty_test check="all" check_existence="any_exist"
+      id="test_service_not_found_{{{ rule_id }}}_{{{ name }}}"
+      comment="Test that the service {{{ name }}} is not found"
+      version="1">
+      <linux:object object_ref="obj_service_loadstate_is_masked_{{{ rule_id }}}_{{{ name }}}"/>
+      <linux:state state_ref="state_service_is_not_found_{{{ rule_id }}}_{{{ name }}}"/>
+    </linux:systemdunitproperty_test>
+
+    <linux:systemdunitproperty_state comment="Service is not found"
+      id="state_service_is_not_found_{{{ rule_id }}}_{{{ name }}}"
+      version="1">
+      <linux:value>not-found</linux:value>
+    </linux:systemdunitproperty_state>
+
   {{%- else %}}
   {{# fallback if we are using systemd but can't use the new systemd features of OVAL 5.11 #}}
       <unix:file_test check="all" check_existence="none_exist"
@@ -1714,7 +1722,7 @@ Generate OVAL test that tests if the system is configured to use nss-altfiles
 by checking if '/etc/nssswitch.conf' contains 'altfiles' in 'group' key.
 The macros generates the OVAL test including the dependent OVAL object and OVAL state.
 #}}
-{{%- macro oval_test_nsswitch_uses_altfiles() -%}}
+{{%- macro oval_test_nsswitch_uses_altfiles(rule_id=None) -%}}
 <ind:textfilecontent54_test id="test_{{{ rule_id }}}_nsswitch_uses_altfiles" version="1"
   check="all" check_existence="at_least_one_exists"
   comment="Test if /etc/nssswitch.conf contains 'altfiles' in 'group' key">

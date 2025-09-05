@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-    {{{ oval_metadata("The SELinux '" + SEBOOLID + "' boolean should be set in the system configuration.") }}}
+    {{{ oval_metadata("The SELinux '" + SEBOOLID + "' boolean should be set in the system configuration.", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="{{{ SEBOOLID }}} is configured correctly" test_ref="test_sebool_{{{ SEBOOLID }}}" />
     </criteria>

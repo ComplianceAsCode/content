@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 metadata:
@@ -72,3 +73,7 @@ selections:
     - '!audit_rules_dac_modification_fchmodat2'
     - '!package_rsh-server_removed'
     - '!package_rsh_removed'
+
+    # Following rules are not applicable to RHEL
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'

@@ -22,6 +22,7 @@ identifiers:
     cce@sle12: CCE-83169-3
     cce@sle15: CCE-85574-2
     cce@slmicro5: CCE-93767-2
+    cce@slmicro6: CCE-94701-0
 
 references:
     cis@sle12: 5.3.1
@@ -41,8 +42,8 @@ ocil: |-
     password requisite pam_cracklib.so ocredit={{{ xccdf_value("var_password_pam_ocredit") }}}</pre>
     The <tt>ocredit</tt> parameter (as a negative number) will indicate how
     many special characters are required.
-    The DoD and FISMA require at least one special character in a password.
-    This would appear as <tt>ocredit=-1</tt>.
+    The profile requires at least {{{ xccdf_value("var_password_pam_ocredit") }}} special character in a password.
+    This would appear as <tt>ocredit=-{{{ xccdf_value("var_password_pam_ocredit") }}}</tt>.
 
 template:
     name: pam_options

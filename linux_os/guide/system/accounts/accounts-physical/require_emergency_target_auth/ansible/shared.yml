@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-{{% if 'sle' in product or 'rhel' in product or product == 'fedora' or product == 'slmicro5' %}}
+{{% if 'sle' in product or 'rhel' in product or product == 'fedora' or product == 'slmicro5'  or 'ol' in families %}}
 - name: Require emergency mode password
   ansible.builtin.blockinfile:
       create: yes
@@ -14,7 +14,7 @@
         ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency
 {{% else %}}
 - name: Require emergency mode password
-  lineinfile:
+  ansible.builtin.lineinfile:
       create: yes
       dest: /usr/lib/systemd/system/emergency.service
       regexp: "^#?ExecStart="

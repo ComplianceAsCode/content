@@ -18,8 +18,8 @@ rationale: |-
     requires using two or more factors to achieve authentication.
     A privileged account is defined as an information system account with
     authorizations of a privileged user. 
-    The DoD CAC with DoD-approved PKI is an example of multifactor
-    authentication.
+    Smart cards or hardware tokens paired with digital certificates are
+    common examples of multifactor implementations.
 
 severity: medium
 
@@ -29,8 +29,6 @@ identifiers:
 
 references:
     srg: SRG-OS-000105-GPOS-00052,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000108-GPOS-00055
-    stigid@ubuntu2004: UBTU-20-010033
-    stigid@ubuntu2204: UBTU-22-612020
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="PubkeyAuthentication", value="yes") }}}
 

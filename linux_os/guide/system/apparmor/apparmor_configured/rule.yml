@@ -45,8 +45,6 @@ references:
     srg: SRG-OS-000312-GPOS-00122,SRG-OS-000312-GPOS-00123,SRG-OS-000312-GPOS-00124,SRG-OS-000324-GPOS-00125,SRG-OS-000326-GPOS-00126,SRG-OS-000370-GPOS-00155,SRG-OS-000480-GPOS-00230,SRG-OS-000480-GPOS-00227,SRG-OS-000480-GPOS-00231,SRG-OS-000480-GPOS-00232
     stigid@sle12: SLES-12-010600
     stigid@sle15: SLES-15-010390
-    stigid@ubuntu2004: UBTU-20-010439
-    stigid@ubuntu2204: UBTU-22-431015
 
 ocil_clause: 'it is not'
 
@@ -58,9 +56,6 @@ template:
     vars:
         servicename: apparmor
         packagename: apparmor-parser
-        packagename@ubuntu1604: apparmor
-        packagename@ubuntu1804: apparmor
-        packagename@ubuntu2004: apparmor
         packagename@ubuntu2204: apparmor
         packagename@ubuntu2404: apparmor
         packagename@debian12: apparmor

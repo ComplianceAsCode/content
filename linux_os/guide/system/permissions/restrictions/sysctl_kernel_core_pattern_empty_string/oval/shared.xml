@@ -2,7 +2,7 @@
 
 <def-group>
   <definition class="compliance" id="sysctl_kernel_core_pattern_empty_string" version="3">
-    {{{ oval_metadata("The kernel 'kernel.core_pattern' parameter should be set to the appropriate value in both system configuration and system runtime.") }}}
+    {{{ oval_metadata("The kernel 'kernel.core_pattern' parameter should be set to the appropriate value in both system configuration and system runtime.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="kernel.core_pattern configuration setting check"
                          definition_ref="sysctl_kernel_core_pattern_empty_string_static"/>
@@ -14,7 +14,7 @@
 
 <def-group>
   <definition class="compliance" id="sysctl_kernel_core_pattern_empty_string_runtime" version="3">
-    {{{ oval_metadata("The kernel 'kernel.core_pattern' parameter should be set to an empty string in the system runtime.") }}}
+    {{{ oval_metadata("The kernel 'kernel.core_pattern' parameter should be set to an empty string in the system runtime.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="kernel runtime parameter kernel.core_pattern set to an empty string"
                  test_ref="test_sysctl_kernel_core_pattern_empty_string_runtime"/>
@@ -39,7 +39,7 @@
 </def-group>
 <def-group>
   <definition class="compliance" id="sysctl_kernel_core_pattern_empty_string_static" version="3">
-    {{{ oval_metadata("The kernel 'kernel.core_pattern' parameter should be set to an empty string in the system configuration.") }}}
+    {{{ oval_metadata("The kernel 'kernel.core_pattern' parameter should be set to an empty string in the system configuration.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criteria operator="OR">
         <criterion comment="kernel static parameter kernel.core_pattern set to an empty string in /etc/sysctl.conf"

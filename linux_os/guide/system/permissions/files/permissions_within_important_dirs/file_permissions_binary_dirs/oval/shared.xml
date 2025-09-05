@@ -3,7 +3,7 @@
     {{{ oval_metadata("
         Checks that binary files under /bin, /sbin, /usr/bin, /usr/sbin,
         /usr/local/bin, /usr/local/sbin, and /usr/libexec are not group-writable or world-writable.
-      ") }}}
+      ", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_perms_binary_files" />
     </criteria>

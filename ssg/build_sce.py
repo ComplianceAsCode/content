@@ -10,7 +10,7 @@ from .constants import (
     MULTI_PLATFORM_LIST, OSCAP_VALUE, datastream_namespace,
     xlink_namespace, XCCDF12_NS, SCE_SYSTEM
 )
-from .jinja import process_file_with_macros
+from .jinja import process_file
 from .rules import get_rule_dir_id, get_rule_dir_sces, find_rule_dirs_in_paths
 from . import utils, products
 
@@ -30,7 +30,7 @@ def load_sce_and_metadata(file_path, local_env_yaml):
     Returns (audit_content, metadata).
     """
 
-    raw_content = process_file_with_macros(file_path, local_env_yaml)
+    raw_content = process_file(file_path, local_env_yaml)
     return load_sce_and_metadata_parsed(raw_content)
 
 

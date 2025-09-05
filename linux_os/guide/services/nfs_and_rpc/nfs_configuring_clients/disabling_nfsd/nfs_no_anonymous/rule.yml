@@ -6,8 +6,8 @@ title: 'Specify UID and GID for Anonymous NFS Connections'
 description: |-
     To specify the UID and GID for remote root users, edit the <tt>/etc/exports</tt> file and add the following for each export:
     <pre>
-    anonuid=<tt>value greater than UID_MAX from /etc/login.defs</tt>
-    anongid=<tt>value greater than GID_MAX from /etc/login.defs</tt>
+    anonuid=<tt>value greater than UID_MAX from {{{ login_defs_path }}}</tt>
+    anongid=<tt>value greater than GID_MAX from {{{ login_defs_path }}}</tt>
     </pre>
     Note that a value of "-1" is technically acceptable as this will randomize the <tt>anonuid</tt> and
     <tt>anongid</tt> values on a Red Hat Enterprise Linux based NFS server. While acceptable from a security perspective,
@@ -24,4 +24,4 @@ ocil_clause: 'anonuid or anongid are not set to a value greater than UID_MAX (fo
 
 ocil: |-
     Inspect the mounts configured in <tt>/etc/exports</tt>. Each mount should specify a value
-    greater than UID_MAX and GID_MAX as defined in /etc/login.defs.
+    greater than UID_MAX and GID_MAX as defined in {{{ login_defs_path }}}.

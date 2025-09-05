@@ -3,11 +3,12 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+
 {{{ ansible_instantiate_variables("var_password_hashing_algorithm") }}}
 
-- name: Set Password Hashing Algorithm in /etc/login.defs
-  lineinfile:
-      dest: /etc/login.defs
+- name: Set Password Hashing Algorithm in {{{ login_defs_path }}}
+  ansible.builtin.lineinfile:
+      dest: {{{ login_defs_path }}}
       regexp: ^#?ENCRYPT_METHOD
       line: ENCRYPT_METHOD {{ var_password_hashing_algorithm.split('|')[0] }}
       state: present

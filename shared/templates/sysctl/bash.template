@@ -5,9 +5,9 @@
 # disruption = medium
 
 # Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
-{{% if product in [ "sle12", "sle15", "slmicro5"] %}}
+{{% if product in [ "sle12", "sle15", "slmicro5", "slmicro6"] %}}
 for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /lib/sysctl.d/*.conf; do
-{{% elif product in [ "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
+{{% elif product in [ "ubuntu2204", "ubuntu2404"] %}}
 for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /etc/ufw/sysctl.conf; do
 {{% elif product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel8", "rhel9", "rhel10"] %}}
 for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf; do
@@ -54,7 +54,7 @@ fi
 {{% if sysctl_remediate_drop_in_file == "true" %}}
 sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
 {{% endif %}}
-{{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , '$sysctl_' ~ SYSCTLID ~ '_value') }}}
+{{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , '$sysctl_' ~ SYSCTLID ~ '_value', cce_identifiers=cce_identifiers) }}}
 
 {{%- else %}}
 
@@ -72,5 +72,5 @@ fi
 {{% if sysctl_remediate_drop_in_file == "true" %}}
 sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
 {{% endif %}}
-{{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , SYSCTLVAL ) }}}
+{{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , SYSCTLVAL, cce_identifiers=cce_identifiers) }}}
 {{%- endif %}}

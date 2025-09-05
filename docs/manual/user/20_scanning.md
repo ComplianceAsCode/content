@@ -189,4 +189,4 @@ See [Red Hat Ansible Engine Life Cycle Page](https://access.redhat.com/support/p
 Funded by the Internal Revenue Service, the National Security Agency, and other United States government agencies Naval Information Warfare Center (NIWC) Atlantic has authored a SCAP Compliance Checker (SCC).
 The NIWC SCC tool is available to the general public.
 The NIWC SCC website is [www.niwcatlantic.navy.mil/scap](https://www.niwcatlantic.navy.mil/scap/).
-The SCC tool is available for download at [public.cyber.mil/stigs/scap](https://public.cyber.mil/stigs/scap/).
+The SCC tool is available for download at [www.cyber.mil/stigs/scap](https://www.cyber.mil/stigs/scap/).

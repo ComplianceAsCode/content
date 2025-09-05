@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-  {{{ oval_metadata("An SELinux Context faillog_t must be configured for the pam_tally2 file option.") }}}
+  {{{ oval_metadata("An SELinux Context faillog_t must be configured for the pam_tally2 file option.", rule_title=rule_title) }}}
     <criteria operator="OR">
       <criterion test_ref="test_account_password_selinux_pam_tally2_file"
                  comment="The pam_tally2 file should have faillog_t as context"/>

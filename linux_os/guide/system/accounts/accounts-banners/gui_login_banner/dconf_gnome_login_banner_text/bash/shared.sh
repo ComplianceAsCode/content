@@ -1,6 +1,6 @@
 # platform = multi_platform_all
 
-{{{ bash_instantiate_variables("login_banner_text") }}}
+login_banner_text="(bash-populate login_banner_text)"
 
 # Multiple regexes transform the banner regex into a usable banner
 # 0 - Remove anchors around the banner text
@@ -18,5 +18,5 @@
 #    ( Needs to be done after 4, otherwise the escapce sequence will become just "n".
 {{{ bash_deregexify_banner_newline_token("login_banner_text")}}}
 
-{{{ bash_dconf_settings("org/gnome/login-screen", "banner-message-text", "'${login_banner_text}'", dconf_gdm_dir, "00-security-settings") }}}
+{{{ bash_dconf_settings("org/gnome/login-screen", "banner-message-text", "'${login_banner_text}'", dconf_gdm_dir, "00-security-settings", rule_id=rule_id) }}}
 {{{ bash_dconf_lock("org/gnome/login-screen", "banner-message-text", dconf_gdm_dir, "00-security-settings-lock") }}}

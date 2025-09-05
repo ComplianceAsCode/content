@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("Group referred by var_pam_wheel_group_for_su variable exists and has no members.") }}}
+    {{{ oval_metadata("Group referred by var_pam_wheel_group_for_su variable exists and has no members.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_ensure_pam_wheel_group_empty_group_exists"/>
       <criterion test_ref="test_ensure_pam_wheel_group_empty_has_no_members"/>

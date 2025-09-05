@@ -2,11 +2,9 @@ documentation_complete: true
 
 reference: https://www.hhs.gov/hipaa/for-professionals/index.html
 
-title: 'DRAFT - Health Insurance Portability and Accountability Act (HIPAA)'
+title: 'Health Insurance Portability and Accountability Act (HIPAA)'
 
 description: |-
-    This is a draft profile for experimental purposes.
-
     The HIPAA Security Rule establishes U.S. national standards to protect individuals's
     electronic personal health information that is created, received, used, or
     maintained by a covered entity. The Security Rule requires appropriate
@@ -61,7 +59,11 @@ selections:
     - '!sshd_allow_only_protocol2'
     - '!sshd_disable_kerb_auth'
     - '!sshd_disable_gssapi_auth'
+    - '!service_rlogin_disabled'
 
+    # authselect is enabled by default
+    - '!enable_authselect'
     # OL 10 uses a different rule for auditing changes to selinux configuration
     - '!audit_rules_mac_modification'
     - audit_rules_mac_modification_etc_selinux
+    - var_authselect_profile=local

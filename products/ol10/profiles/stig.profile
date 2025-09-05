@@ -1,8 +1,8 @@
 documentation_complete: true
 
-reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
-title: 'DRAFT - DISA STIG for Oracle Linux 10'
+title: 'DRAFT - STIG for Oracle Linux 10'
 
 description: |-
     This is a draft profile for experimental purposes.
@@ -15,3 +15,4 @@ selections:
     - '!enable_dracut_fips_module'
     # Package not available in OL10
     - '!package_subscription-manager_installed'
+    - var_authselect_profile=local

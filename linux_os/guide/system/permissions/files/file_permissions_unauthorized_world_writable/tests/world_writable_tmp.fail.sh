@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = multi_platform_rhel,multi_platform_ubuntu
 
 find / -xdev -type f -perm -002 -exec chmod o-w {} \;
 

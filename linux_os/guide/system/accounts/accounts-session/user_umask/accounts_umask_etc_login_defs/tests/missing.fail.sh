@@ -1,2 +1,3 @@
 #!/bin/bash
-sed -i '/^UMASK.*/d' /etc/login.defs
+
+sed -i '/^UMASK.*/d' {{{ login_defs_path }}}

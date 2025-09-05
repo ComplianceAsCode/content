@@ -25,8 +25,6 @@ references:
     cis-csc: 12,13,14,15,16,18,3,5
     cis@sle12: 1.5.2
     cis@sle15: 1.5.2
-    cis@ubuntu2004: 1.5.2
-    cis@ubuntu2204: 1.4.2
     cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
     cui: 3.4.5
     hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)
@@ -44,11 +42,7 @@ ocil: |-
     If properly configured, the output should indicate the following
     permissions: <tt>-rw-------</tt>
 
-{{% if 'ubuntu' in product %}}
 platform: not container
-{{% else %}}
-platform: not bootc
-{{% endif %}}
 
 template:
     name: file_permissions

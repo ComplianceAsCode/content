@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("A maximum password age should be set for the root account") }}}
+    {{{ oval_metadata("A maximum password age should be set for the root account", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="root max age"
                  test_ref="test_accounts_password_set_max_life_root"/>

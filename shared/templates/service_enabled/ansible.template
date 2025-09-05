@@ -6,7 +6,7 @@
 - name: "{{{ rule_title }}} - Enable service {{{ SERVICENAME }}}"
   block:
   - name: Gather the package facts
-    package_facts:
+    ansible.builtin.package_facts:
       manager: auto
 
 {{%- if init_system == "systemd" %}}
@@ -21,3 +21,5 @@
 {{%- else %}}
 JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
 {{%- endif %}}
+  tags:
+  - special_service_block

@@ -154,8 +154,7 @@ def _process_selected_variable(profile: ProfileSelections, variable: str) -> Non
         ValueError: If the variable is not in the correct format.
     """
     variable_name, variable_value = variable.split('=', 1)
-    if variable_name not in profile.variables:
-        profile.variables[variable_name] = variable_value
+    profile.variables[variable_name] = variable_value
 
 
 def _process_selected_rule(profile: ProfileSelections, rule: str) -> None:
@@ -176,7 +175,7 @@ def _process_selected_rule(profile: ProfileSelections, rule: str) -> None:
 def _process_control(profile: ProfileSelections, control: object) -> None:
     """
     Processes a control by iterating through its rules and applying the appropriate processing
-    function. Not that at this level rules list in control can include both variables and rules.
+    function. Note that at this level rules list in control can include both variables and rules.
     The function distinguishes between variable and rules based on the presence of an '='
     character in the rule.
 
@@ -199,14 +198,22 @@ def _update_profile_with_policy(profile: ProfileSelections, policy: Policy, leve
         profile (ProfileSelections): The profile to be updated.
         policy (Policy): The policy containing controls to update the profile with.
         level (str): The level of controls to be processed. If 'all', all controls are processed.
-                     Otherwise, only controls matching the specified level are processed.
+                     Otherwise, only controls matching the specified level are processed honoring
+                     inheritance.
 
     Returns:
         None
     """
-    for control in policy.controls:
-        if level == 'all' or level in control.levels:
-            _process_control(profile, control)
+    inherited_levels = getattr(policy.levels_by_id.get(level), "inherits_from", []) or []
+    for inherited_level in inherited_levels:
+        _update_profile_with_policy(profile, policy, inherited_level)
+
+    controls = (
+        policy.controls if level == 'all'
+        else [ctrl for ctrl in policy.controls if level in ctrl.levels]
+    )
+    for control in controls:
+        _process_control(profile, control)
 
 
 def _process_controls(profile: ProfileSelections, control_line: str,
@@ -287,7 +294,6 @@ def _load_controls_manager(controls_dir: str, product_yaml: dict) -> object:
 
     Args:
         controls_dir (str): The directory containing control files.
-        product_yaml (dict): The product configuration in YAML format.
 
     Returns:
         object: An instance of ControlsManager with loaded controls.
@@ -331,6 +337,7 @@ def get_profiles_from_products(content_dir: str, products: list,
 
     for product in products:
         product_yaml = _load_product_yaml(content_dir, product)
+        product_yaml = product_yaml._data_as_dict
         product_title = product_yaml.get("full_name")
         profiles_files = get_profile_files_from_root(product_yaml, product_yaml)
         controls_manager = _load_controls_manager(controls_dir, product_yaml)

@@ -59,6 +59,7 @@ if __name__ == "__main__":
 
     env_yaml = ssg.environment.open_environment(
         args.build_config_yaml, args.product_yaml)
+    ssg.jinja.initialize(env_yaml)
     builder = ssg.templates.Builder(
         env_yaml, args.resolved_rules_dir, args.templates_dir,
         args.remediations_dir, args.checks_dir, args.platforms_dir, args.cpe_items_dir)

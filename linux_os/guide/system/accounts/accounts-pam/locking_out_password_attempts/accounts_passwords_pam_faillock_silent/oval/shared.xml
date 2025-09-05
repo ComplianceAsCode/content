@@ -1,7 +1,7 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="5">
         {{{
-        oval_metadata("Prevent System Messages When Three Unsuccessful Logon Attempts Occur")
+        oval_metadata("Prevent System Messages When Three Unsuccessful Logon Attempts Occur", rule_title=rule_title)
         }}}
         <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf whenever
             possible. But due to backwards compatibility, they are also allowed in pam files
@@ -18,6 +18,9 @@
                 <criterion
                 test_ref="test_pam_faillock_silent_parameter_password_auth"
                 comment="Check the silent parameter in auth section of password-auth file"/>
+                <criterion
+                test_ref="test_pam_faillock_silent_parameter_no_faillock_conf"
+                comment="Ensure /etc/security/faillock.conf is not used together with pam files"/>
             </criteria>
             <criteria operator="AND"
             comment="Check expected pam_faillock.so silent parameter in faillock.conf">
@@ -100,4 +103,9 @@
         <ind:object object_ref="object_pam_faillock_silent_parameter_faillock_conf"/>
     </ind:textfilecontent54_test>
 
+      <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+      id="test_pam_faillock_silent_parameter_no_faillock_conf"
+      comment="Check the absence of silent parameter in /etc/security/faillock.conf">
+            <ind:object object_ref="object_pam_faillock_silent_parameter_faillock_conf"/>
+      </ind:textfilecontent54_test>
 </def-group>

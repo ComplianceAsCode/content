@@ -1,7 +1,7 @@
 # platform = multi_platform_sle,multi_platform_debian
 
 - name: Start apparmor.service
-  systemd:
+  ansible.builtin.systemd_service:
     name: apparmor.service
     state: started
     enabled: yes

@@ -1,13 +1,13 @@
 <def-group>
   <definition class="compliance" id="grub2_no_removeable_media" version="1">
-    {{{ oval_metadata("Ensure the system is not configured to use a boot loader on removable media.") }}}
+    {{{ oval_metadata("Ensure the system is not configured to use a boot loader on removable media.", rule_title=rule_title) }}}
     <criteria comment="Do not allow removable media to be used as the boot loader" operator="OR">
       <criteria comment="All menuentry entries have a set root setting" operator="AND">
         <criterion comment="Check the set root in {{{ grub2_boot_path }}}/grub.cfg" test_ref="test_grub2_no_removeable_media" />
         <criterion comment="Check the set root in {{{ grub2_boot_path }}}/grub.cfg for every menuentry" 
           test_ref="test_grub2_no_removeable_media_count" />
       </criteria>
-      {{{ oval_file_absent_criterion(grub2_boot_path ~ "/grub.cfg") }}}
+      {{{ oval_file_absent_criterion(grub2_boot_path ~ "/grub.cfg", rule_id=rule_id) }}}
     </criteria>
   </definition>
 
@@ -70,5 +70,5 @@
     <ind:subexpression datatype="string" operation="pattern match">^['|\(](?!fd)(?!cd)(?!usb).*['|\)]$</ind:subexpression>
   </ind:textfilecontent54_state>
 
-  {{{ oval_file_absent(grub2_boot_path ~ "/grub.cfg") }}}
+  {{{ oval_file_absent(grub2_boot_path ~ "/grub.cfg", rule_id=rule_id) }}}
 </def-group>

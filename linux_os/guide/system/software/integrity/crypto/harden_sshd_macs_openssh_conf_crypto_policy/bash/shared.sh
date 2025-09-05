@@ -1,4 +1,4 @@
-# platform = Oracle Linux 8,Red Hat Enterprise Linux 8,multi_platform_fedora
+# platform = Red Hat Enterprise Linux 8,multi_platform_ol,multi_platform_fedora
 
 {{{ bash_instantiate_variables("sshd_approved_macs") }}}
 
@@ -8,6 +8,5 @@
         value="${sshd_approved_macs}",
         create=true,
         insensitive=false,
-        prefix_regex="^.*"
-	)
+        prefix_regex="^.*", rule_id=rule_id)
 }}}

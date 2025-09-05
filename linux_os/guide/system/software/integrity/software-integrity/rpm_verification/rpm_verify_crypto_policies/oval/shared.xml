@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Verify the crypto-policies package using the RPM database.", rule_title=rule_title) }}}
+    <criteria>
+      <criterion test_ref="test_rpm_verify_crypto_policies" comment="verify crypto-policies package"/>
+    </criteria>
+  </definition>
+
+  <linux:rpmverifyfile_state id="state_rpm_verify_crypto_policies" version="1"
+    operator="OR">
+    <linux:size_differs>fail</linux:size_differs>
+    <linux:mode_differs>fail</linux:mode_differs>
+    <linux:md5_differs>fail</linux:md5_differs>
+    <linux:device_differs>fail</linux:device_differs>
+    <linux:link_mismatch>fail</linux:link_mismatch>
+    <linux:ownership_differs>fail</linux:ownership_differs>
+    <linux:group_differs>fail</linux:group_differs>
+    <linux:mtime_differs>fail</linux:mtime_differs>
+    <linux:capabilities_differ>fail</linux:capabilities_differ>
+  </linux:rpmverifyfile_state>
+
+  <linux:rpmverifyfile_object id="object_rpm_verify_crypto_policies" version="1"
+    comment="rpm verify of all files">
+    <linux:name operation="equals">crypto-policies</linux:name>
+    <linux:epoch operation="pattern match">.*</linux:epoch>
+    <linux:version operation="pattern match">.*</linux:version>
+    <linux:release operation="pattern match">.*</linux:release>
+    <linux:arch operation="pattern match">.*</linux:arch>
+    <linux:filepath operation="pattern match">.*</linux:filepath>
+    <filter action="include">state_rpm_verify_crypto_policies</filter>
+  </linux:rpmverifyfile_object>
+
+  <linux:rpmverifyfile_test id="test_rpm_verify_crypto_policies" version="1"
+    check="all" check_existence="none_exist" comment="verify crypto-policies package">
+    <linux:object object_ref="object_rpm_verify_crypto_policies"/>
+  </linux:rpmverifyfile_test>
+</def-group>

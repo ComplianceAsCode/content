@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("All world writable directories should be owned by root.") }}}
+    {{{ oval_metadata("All world writable directories should be owned by root.", rule_title=rule_title) }}}
     <criteria negate="true">
       <criterion test_ref="test_dir_world_writable_uid_gt_zero"
         comment="check for local directories that are world writable and owner is not root"/>

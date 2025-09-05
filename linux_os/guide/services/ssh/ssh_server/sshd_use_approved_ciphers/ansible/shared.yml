@@ -5,4 +5,4 @@
 # disruption = low
 {{{ ansible_instantiate_variables("sshd_approved_ciphers") }}}
 
-{{{ ansible_sshd_set(parameter="Ciphers", value="{{ sshd_approved_ciphers }}") }}}
+{{{ ansible_sshd_set(parameter="Ciphers", value="{{ sshd_approved_ciphers }}", rule_title=rule_title) }}}

@@ -160,7 +160,7 @@ multiple benchmarks in our project:
 
 The **Linux OS** benchmark describes Linux Operating System in general.
 This benchmark is used by multiple ComplianceAsCode products, eg.
-`rhel9`, `fedora`, `ubuntu1604`, `sle15` etc. The benchmark is located
+`rhel9`, `fedora`, `ubuntu2404`, `sle15` etc. The benchmark is located
 in `/linux_os/guide`.
 
 The products specify which benchmark they use as a source of content in
@@ -242,7 +242,7 @@ layout:
 -   **Do not** use capital letters
 
 -   If product versions are required, use major or LTS versions only. For
-    example, `rhel9`, `ubuntu2004`, etc.
+    example, `rhel9`, `ubuntu2404`, etc.
 
 -   If the content does not depend on specific versions,
     **do not** add version numbers. For example: `fedora`, `firefox`, etc.
@@ -365,7 +365,7 @@ all_cmake_products=(
 ...
 product_directories = ['debian11', 'fedora', 'ol7', 'ol8', 'opensuse',
                        'rhel8', 'rhel9', 'sle12',
-                       'ubuntu1604', 'ubuntu1804', 'rhosp13',
+                       'ubuntu2404', 'rhosp13',
                        'chromium', 'eap6', 'firefox',
                        'example'<b>, 'custom6'</b>]
 ...
@@ -538,7 +538,7 @@ EOF
 ```
 cat << EOF >  $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:cci="https://public.cyber.mil/stigs/cci" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ovalns="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:cci="https://www.cyber.mil/stigs/cci" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ovalns="http://oval.mitre.org/XMLSchema/oval-definitions-5">
 
 <xsl:import href="../../../shared/transforms/shared_xccdf2table-profileccirefs.xslt"/>
 
@@ -717,8 +717,7 @@ XCCDF rules in our project.
 In the example below we identified that:
 
 * R1 can be automatically scanned by SCAP and we already have 3 existing rules
-in our repository. However, we want one of them to be selected only on RHEL 9,
-but the rule is applicable to all platforms.
+in our repository.
 * R2 is up to manual checking, but we have systemd_target_multi_user which is
 related to this control.
 * R3 can be automatically scanned by SCAP but unfortunately we don't have any
@@ -742,8 +741,15 @@ between XCCDF rules which directly implement the given controls (represented by
 The `rules` and `related_rules` keys consist of a list of rule IDs and variable
 selections.
 
-If a rule needs to be chosen only in some of the products we can use Jinja macros
-inside the controls file to choose products.
+There might be cases, specially in product agnostic policies such as PCI-DSS, ANSSI and HIPAA,
+that rules included in `rules` field need to be removed in profiles for specific products.
+These exceptions can be managed by unselecting the relevant rules in product's profile `selections` field,
+e.g. we add `!cockpit_session_timeout` to `products/rhel10/profiles/anssi_bp28_high.profile` to unselect rule
+`cockpit_session_timeout`.
+
+Similarly there might be cases where a particular product needs a specific rule not applicable to other
+products consuming the same control file. This exception can also be managed by selecting the rule in
+the product's profile `selections` field of the particular product.
 
 After we finish our analysis, we will insert our findings to the controls file,
 the file will look like this:
@@ -766,9 +772,7 @@ controls:
     - sshd_set_idle_timeout
     - accounts_tmout
     - var_accounts_tmout=10_min
-{{% if product == "rhel9" %}}
     - cockpit_session_timeout
-{{% endif %}}
   - id: R2
     title: Minimization of configuration
     description: |-
@@ -820,9 +824,7 @@ controls:
     - sshd_set_idle_timeout
     - accounts_tmout
     - var_accounts_tmout=10_min
-{{% if product == "rhel9" %}}
     - cockpit_session_timeout
-{{% endif %}}
 ```
 
 ```
@@ -1405,7 +1407,7 @@ These divergences are the most common in the project since we support a wide ran
 These divergences are handled in the content
 
 - Jinja conditionals (e.g.: [{{{% if product in ... }}}](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/linux_os/guide/system/software/integrity/fips/enable_fips_mode/rule.yml#L8)) - commonly used in rule descriptions and remediations.
-- Product identifiers (e.g.: [attribute@ubuntu1604](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/linux_os/guide/system/auditing/package_audit_installed/rule.yml#LL62C9-L62C9)) - commonly used in templated rules and when defining references.
+- Product identifiers (e.g.: [attribute@ubuntu2404](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/linux_os/guide/system/auditing/package_audit_installed/rule.yml#LL62C9-L62C9)) - commonly used in templated rules and when defining references.
 - Product properties (in [product.yml](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/products/rhel8/product.yml#LL32C35-L32C35) file or `product_properties` directory) - useful for more generic properties, applicable to different rules.
 - Product-specific files (e.g.: [sle12.yml](https://github.com/ComplianceAsCode/content/blob/master/linux_os/guide/system/auditing/auditd_configure_rules/audit_privileged_commands/audit_rules_privileged_commands_kmod/ansible/sle12.yml)) - Less common option which is usually used when the differences are drastic and it is not worth using the other options.
 

@@ -4,7 +4,7 @@
 
 {{% if product in ["sle12", "sle15"] %}}
 {{{ bash_ensure_pam_module_configuration('/etc/pam.d/common-password', 'password', 'sufficient', 'pam_unix.so', 'rounds', "$var_password_pam_unix_rounds", '') }}}
-{{% elif product in ["debian12"] %}}
+{{% elif product in ["debian12", "debian13"] %}}
 {{{ bash_ensure_pam_module_configuration('/etc/pam.d/common-password', 'password', '\[success=1 default=ignore\]', 'pam_unix.so', 'rounds', "$var_password_pam_unix_rounds", '') }}}
 {{% elif product in ["ubuntu2404"] %}}
 config_file="/usr/share/pam-configs/cac_unix"

@@ -28,9 +28,9 @@ value: :code:`Setting={{ varname1 }}`
   Note that all string-like parameters are single quoted in the YAML.
 
 #}}
-{{%- macro ansible_lineinfile(msg='', path='', mode='', regex='', insensitive='false', new_line='', create='no', state='present', with_items='', register='', when='', validate='', insert_after='', insert_before='', check_mode=False) -%}}
+{{%- macro ansible_lineinfile(msg='', path='', mode='', regex='', insensitive='false', new_line='', create='no', state='present', with_items='', register='', when='', validate='', insert_after='', insert_before='', check_mode=False, rule_title=None) -%}}
 - name: "{{{ msg or rule_title }}}"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{{ path }}}'
     create: {{{ create }}}
     {{%- if regex and insensitive %}}
@@ -82,9 +82,9 @@ value: :code:`Setting={{ varname1 }}`
 :type register: str
 
 #}}
-{{%- macro ansible_stat(msg='', path='', register='') %}}
+{{%- macro ansible_stat(msg='', path='', register='', rule_title=None) %}}
 - name: '{{{ msg or rule_title }}}'
-  stat:
+  ansible.builtin.stat:
     path: '{{{ path }}}'
   {{%- if register %}}
   register: '{{{ register }}}'
@@ -96,9 +96,9 @@ value: :code:`Setting={{ varname1 }}`
   Find files matching a particular value. Not a full implementation.
 
 #}}
-{{%- macro ansible_find(msg='', paths='', recurse='yes', follow='no', contains='', register='', when='') %}}
+{{%- macro ansible_find(msg='', paths='', recurse='yes', follow='no', contains='', register='', when='', rule_title=None) %}}
 - name: '{{{ msg or rule_title }}}'
-  find:
+  ansible.builtin.find:
     paths: '{{{ paths }}}'
     recurse: '{{{ recurse }}}'
     follow: '{{{ follow }}}'
@@ -122,7 +122,7 @@ value: :code:`Setting={{ varname1 }}`
   the new line is appended to the file.
 
 #}}
-{{%- macro ansible_only_lineinfile(msg, path, line_regex, new_line, insensitive='false', create='no', block=False, validate='', insert_after='', insert_before='', mode='') -%}}
+{{%- macro ansible_only_lineinfile(msg, path, line_regex, new_line, insensitive='false', create='no', block=False, validate='', insert_after='', insert_before='', mode='', rule_title=None) -%}}
 {{%- if block %}}
 - name: "{{{ msg or rule_title }}}"
   block:
@@ -130,9 +130,9 @@ value: :code:`Setting={{ varname1 }}`
     {{{ ansible_lineinfile("Deduplicate values from " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, create=create, state='absent', when='dupes.found is defined and dupes.found > 1')|indent }}}
     {{{ ansible_lineinfile("Insert correct line to " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
 {{%- else %}}
-{{{ ansible_lineinfile("Check for duplicate values", path, mode=mode, regex=line_regex, insensitive=insensitive, create=create, state='absent', register='dupes', check_mode=True) }}}
-{{{ ansible_lineinfile("Deduplicate values from " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, create=create, state='absent', when='dupes.found is defined and dupes.found > 1') }}}
-{{{ ansible_lineinfile("Insert correct line into " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before) }}}
+{{{ ansible_lineinfile("Check for duplicate values", path, mode=mode, regex=line_regex, insensitive=insensitive, create=create, state='absent', register='dupes', check_mode=True, rule_title=rule_title) }}}
+{{{ ansible_lineinfile("Deduplicate values from " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, create=create, state='absent', when='dupes.found is defined and dupes.found > 1', rule_title=rule_title) }}}
+{{{ ansible_lineinfile("Insert correct line into " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before, rule_title=rule_title) }}}
 {{%- endif %}}
 {{%- endmacro %}}
 
@@ -144,8 +144,8 @@ value: :code:`Setting={{ varname1 }}`
   instead of lineinfile-based solutions.
 
 #}}
-{{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', insensitive='false', create='no', validate='', insert_after='', insert_before='', mode='') %}}
-{{{ ansible_only_lineinfile(msg, file, prefix_regex + parameter + separator_regex, parameter + separator + value, insensitive=insensitive, create=create, block=True, validate=validate, insert_after=insert_after, insert_before=insert_before, mode=mode) }}}
+{{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', insensitive='false', create='no', validate='', insert_after='', insert_before='', mode='', rule_title=None) %}}
+{{{ ansible_only_lineinfile(msg, file, prefix_regex + parameter + separator_regex, parameter + separator + value, insensitive=insensitive, create=create, block=True, validate=validate, insert_after=insert_after, insert_before=insert_before, mode=mode, rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 
@@ -157,7 +157,7 @@ value: :code:`Setting={{ varname1 }}`
   solutions.
 
 #}}
-{{%- macro ansible_set_config_file_dir(msg, config_file, config_dir, set_file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', insensitive='false', create='no', validate='', insert_after='', insert_before='') %}}
+{{%- macro ansible_set_config_file_dir(msg, config_file, config_dir, set_file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', insensitive='false', create='no', validate='', insert_after='', insert_before='', rule_title=None) %}}
 {{%- set var_dir = config_dir | replace("/", "_") | replace("-", "_") | replace(".", "_") -%}}
 {{%- set dir_exists = var_dir + "_exists" -%}}
 {{%- set dir_parameter = var_dir + "_has_parameter" -%}}
@@ -197,32 +197,68 @@ value: :code:`Setting={{ varname1 }}`
 :type config_basename: str
 
 #}}
-{{%- macro ansible_sshd_set(msg='', parameter='', value='', config_is_distributed="false", config_basename="00-complianceascode-hardening.conf") %}}
-{{%- if config_is_distributed == "true" %}}
-{{% set config_dir = "/etc/ssh/sshd_config.d" %}}
-{{% set config_file = "/etc/ssh/sshd_config.d" ~ "/" ~ config_basename %}}
-{{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/sshd_config", config_dir=config_dir, set_file=config_file, parameter=parameter, separator_regex="\s+", value=value, prefix_regex="(?i)^\s*", create='yes', validate='/usr/sbin/sshd -t -f %s', insert_after='', insert_before="BOF") }}}
-- name: {{{ rule_title }}} - set file mode for {{{ config_file }}}
-  ansible.builtin.file:
-    path: {{{ config_file }}}
-    mode: '0600'
-{{%- else %}}
+{{%- macro ansible_sshd_set(msg='', parameter='', value='', config_is_distributed="false", config_basename="00-complianceascode-hardening.conf", rule_title=None) %}}
 {{% if product in ["ol8", "ol9"] %}}
 - name: "Find sshd_config included files"
-  shell: |-
+  ansible.builtin.shell: |-
     included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*Include\s*//i' | sed -e 's|^[^/]|/etc/ssh/&|')
     [[ -n $included_files ]] && ls $included_files || true
   register: sshd_config_included_files
 
 - name: "Comment conf from included files"
-  replace:
+  ansible.builtin.replace:
     path: '{{ item }}'
     regexp: '^(\s*{{{ parameter }}}.*)$'
     replace: '# \1'
   loop: "{{ sshd_config_included_files.stdout_lines }}"
 
 {{% endif %}}
-{{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="BOF") }}}
+{{%- if config_is_distributed == "true" %}}
+{{% set config_dir = "/etc/ssh/sshd_config.d" %}}
+{{% set config_file = "/etc/ssh/sshd_config.d" ~ "/" ~ config_basename %}}
+{{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/sshd_config", config_dir=config_dir, set_file=config_file, parameter=parameter, separator_regex="\s+", value=value, prefix_regex="(?i)^\s*", create='yes', validate='/usr/sbin/sshd -t -f %s', insert_after='', insert_before="BOF", rule_title=rule_title) }}}
+- name: {{{ rule_title }}} - set file mode for {{{ config_file }}}
+  ansible.builtin.file:
+    path: {{{ config_file }}}
+    mode: '0600'
+    state: touch
+{{%- else %}}
+{{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="BOF", rule_title=rule_title) }}}
+{{%- endif %}}
+{{%- endmacro %}}
+
+{{#
+  High level macro to set a value in the ssh configuration file.
+  We specify a case insensitive comparison in the prefix since this is
+  used to deduplicate since ssh_config has case-insensitive parameters
+  (but case-sensitive values). We also specify the validation program here;
+  -t specifies test and -f allows Ansible to pass a file at a different path.
+
+  Set set a parameter in /etc/ssh_config or /etc/ssh/ssh_config.d/
+
+:parameter msg: Message to be set as Task Title, if not set the rule's title will be used instead
+:type msg: str
+:parameter parameter: Parameter to set
+:type parameter: str
+:parameter value: The value to set
+:type value: str
+:parameter config_is_distributed: If true, will ok look in /etc/ssh/ssh_config.d
+:type config_is_distributed: str
+:parameter config_basename: Filename of configuration file when using distributed configuration
+:type config_basename: str
+
+#}}
+{{%- macro ansible_ssh_set(msg='', parameter='', value='', config_is_distributed="false", config_basename="00-complianceascode-hardening.conf", rule_title=None) %}}
+{{%- if config_is_distributed == "true" %}}
+{{% set config_dir = "/etc/ssh/ssh_config.d" %}}
+{{% set config_file = "/etc/ssh/ssh_config.d" ~ "/" ~ config_basename %}}
+{{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/ssh_config", config_dir=config_dir, set_file=config_file, parameter=parameter, separator_regex="\s+", value=value, prefix_regex="(?i)^\s*", create='yes', validate='', insert_after='', insert_before="BOF", rule_title=rule_title) }}}
+- name: {{{ rule_title }}} - set file mode for {{{ config_file }}}
+  ansible.builtin.file:
+    path: {{{ config_file }}}
+    mode: '0600'
+{{%- else %}}
+{{{ ansible_set_config_file(msg, "/etc/ssh/ssh_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="", insert_before="BOF", rule_title=rule_title) }}}
 {{%- endif %}}
 {{%- endmacro %}}
 
@@ -244,13 +280,13 @@ value: :code:`Setting={{ varname1 }}`
 :type value: str
 
 #}}
-{{%- macro ansible_shell_set(msg, path, parameter, value='', no_quotes=false) %}}
+{{%- macro ansible_shell_set(msg, path, parameter, value='', no_quotes=false, rule_title=None) %}}
 {{% if no_quotes -%}}
 {{%- else -%}}
 {{# Use the double quotes in all cases, as the underlying macro single-quotes the assignment line. #}}
 {{% set value = '"%s"' % value %}}
 {{%- endif -%}}
-{{{ ansible_set_config_file(msg, path, parameter, separator="=", separator_regex="=", value=value, create="yes", prefix_regex='^\s*', validate="/usr/bin/bash -n %s", insert_before="^# " ~ parameter) }}}
+{{{ ansible_set_config_file(msg, path, parameter, separator="=", separator_regex="=", value=value, create="yes", prefix_regex='^\s*', validate="/usr/bin/bash -n %s", insert_before="^# " ~ parameter, rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 
@@ -265,8 +301,8 @@ value: :code:`Setting={{ varname1 }}`
 :type value: str
 
 #}}
-{{%- macro ansible_tmux_set(msg='', parameter='', value='') %}}
-{{{ ansible_set_config_file(msg, "/etc/tmux.conf", "set -g " + parameter, value=value, create="yes", mode="0644") }}}
+{{%- macro ansible_tmux_set(msg='', parameter='', value='', rule_title=None) %}}
+{{{ ansible_set_config_file(msg, "/etc/tmux.conf", "set -g " + parameter, value=value, create="yes", mode="0644", rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 
@@ -281,32 +317,9 @@ value: :code:`Setting={{ varname1 }}`
 :type value: str
 
 #}}
-{{%- macro ansible_auditd_set(msg='', parameter='', value='') %}}
-{{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", prefix_regex='(?i)^\s*', separator=" = ", separator_regex="\s*=\s*") }}}
+{{%- macro ansible_auditd_set(msg='', parameter='', value='', rule_title=None) %}}
+{{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", prefix_regex='(?i)^\s*', separator=" = ", separator_regex="\s*=\s*", rule_title=rule_title) }}}
 {{%- endmacro %}}
-
-
-{{#
-  High level macro to set a parameter in /etc/systemd/coredump.conf.
-  For SLE platforms put remediation in drop-in configuration file /etc/systemd/coredump.conf.d/oscap-autoremedy.conf.
-
-:param msg: The name for the Ansible task
-:type msg: str
-:param parameter: Parameter to be set in the configuration file
-:type parameter: str
-:param value: Value of the parameter
-:type value: str
-
-#}}
-{{%- macro ansible_coredump_config_set(msg='', parameter='', value='') %}}
-{{% if 'sle' in product %}}
-{{% set file = '/etc/systemd/coredump.conf.d/oscap-autoremedy.conf' %}}
-{{% else %}}
-{{% set file = '/etc/systemd/coredump.conf' %}}
-{{% endif %}}
-{{{ ansible_ini_file_set(file, "Coredump", parameter, value) }}}
-{{%- endmacro %}}
-
 
 {{#
   High level macro to set a parameter in /etc/selinux/config.
@@ -319,8 +332,8 @@ value: :code:`Setting={{ varname1 }}`
 :type value: str
 
 #}}
-{{%- macro ansible_selinux_config_set(msg='', parameter='', value='') %}}
-{{{ ansible_set_config_file(msg, "/etc/selinux/config", parameter=parameter, value=value, create="yes", separator="=", separator_regex="=", prefix_regex='^') }}}
+{{%- macro ansible_selinux_config_set(msg='', parameter='', value='', rule_title=None) %}}
+{{{ ansible_set_config_file(msg, "/etc/selinux/config", parameter=parameter, value=value, create="yes", separator="=", separator_regex="=", prefix_regex='^', rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 
@@ -335,7 +348,7 @@ value: :code:`Setting={{ varname1 }}`
 #}}
 {{%- macro ansible_file_contents(filepath='', contents='') %}}
 - name: "Put contents into {{{ filepath }}} according to policy"
-  copy:
+  ansible.builtin.copy:
     dest: "{{{ filepath }}}"
     content: |+
         {{{ contents|indent(8) }}}
@@ -432,9 +445,9 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d
 :type filter_type: str
 
 #}}
-{{% macro ansible_audit_augenrules_add_watch_rule(path='', permissions='', key='', style='', arch='', filter_type='path') -%}}
+{{% macro ansible_audit_augenrules_add_watch_rule(path='', permissions='', key='', style='', arch='', filter_type='path', rule_title=None) -%}}
 - name: {{{ rule_title }}} - Check if watch rule for {{{ path }}} already exists in /etc/audit/rules.d/
-  find:
+  ansible.builtin.find:
     paths: "/etc/audit/rules.d"
 {{% if style == "modern" %}}
     contains: '^\s*-a\s+always,exit\s+-F\s+arch={{{ arch }}}\s+-F\s+{{{ filter_type }}}={{{ path }}}\s+-F\s+perm={{{ permissions }}}(\s|$)+'
@@ -445,7 +458,7 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d
   register: find_existing_watch_rules_d
 
 - name: {{{ rule_title }}} - Search /etc/audit/rules.d for other rules with specified key {{{ key }}}
-  find:
+  ansible.builtin.find:
     paths: "/etc/audit/rules.d"
     contains: '^.*(?:-F key=|-k\s+){{{ key }}}$'
     patterns: "*.rules"
@@ -453,19 +466,19 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d
   when: find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
 
 - name: {{{ rule_title }}} - Use /etc/audit/rules.d/{{{ key }}}.rules as the recipient for the rule
-  set_fact:
+  ansible.builtin.set_fact:
     all_files:
       - /etc/audit/rules.d/{{{ key }}}.rules
   when: find_watch_key.matched is defined and find_watch_key.matched == 0 and find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
 
 - name: {{{ rule_title }}} - Use matched file as the recipient for the rule
-  set_fact:
+  ansible.builtin.set_fact:
     all_files:
       - "{{ find_watch_key.files | map(attribute='path') | list | first }}"
   when: find_watch_key.matched is defined and find_watch_key.matched > 0 and find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
 
 - name: {{{ rule_title }}} - Add watch rule for {{{ path }}} in /etc/audit/rules.d/
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ all_files[0] }}"
 {{% if style == 'modern' %}}
     line: "-a always,exit -F arch={{{ arch }}} -F {{{ filter_type }}}={{{ path }}} -F perm={{{ permissions }}} -F key={{{ key }}}"
@@ -495,9 +508,9 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/audit.r
 :type filter_type: str
 
 #}}
-{{% macro ansible_audit_auditctl_add_watch_rule(path='', permissions='', key='', style='', arch='', filter_type='path') -%}}
+{{% macro ansible_audit_auditctl_add_watch_rule(path='', permissions='', key='', style='', arch='', filter_type='path', rule_title=None) -%}}
 - name: {{{ rule_title }}} - Check if watch rule for {{{ path }}} already exists in /etc/audit/audit.rules
-  find:
+  ansible.builtin.find:
     paths: "/etc/audit/"
 {{% if style == 'modern' %}}
     contains: '^\s*-F\s+{{{ filter_type }}}={{{ path }}}\s+-F\s+perms={{{ permissions }}}(\s|$)+'
@@ -508,7 +521,7 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/audit.r
   register: find_existing_watch_audit_rules
 
 - name: {{{ rule_title }}} - Add watch rule for {{{ path }}} in /etc/audit/audit.rules
-  lineinfile:
+  ansible.builtin.lineinfile:
 {{% if style == 'modern' %}}
     line: "-a always,exit -F arch={{{ arch }}} -F {{{ filter_type }}}={{{ path }}} -F perm={{{ permissions }}} -F key={{{ key }}}"
 {{% else %}}
@@ -553,12 +566,12 @@ The macro requires following parameters:
     {{% set syscall_flag = " -S " %}}
 {{% endif %}}
 - name: Declare list of syscalls
-  set_fact:
+  ansible.builtin.set_fact:
     syscalls: {{{ syscalls }}}
     syscall_grouping: {{{ syscall_grouping }}}
 
 - name: Check existence of {{{ syscalls | join(", ") }}} in /etc/audit/rules.d/
-  find:
+  ansible.builtin.find:
     paths: /etc/audit/rules.d
     contains: '{{{ action_arch_filters }}}(( -S |,)\w+)*(( -S |,){{ item }})+(( -S |,)\w+)*{{{ other_filters }}}{{{ auid_filters }}} (-k\s+|-F\s+key=)\S+\s*$'
     patterns: '*.rules'
@@ -566,38 +579,38 @@ The macro requires following parameters:
   loop: '{{ (syscall_grouping + syscalls) | unique }}'
 
 - name: Reset syscalls found per file
-  set_fact:
+  ansible.builtin.set_fact:
     syscalls_per_file: {}
     found_paths_dict: {}
 
 - name: Declare syscalls found per file
-  set_fact: syscalls_per_file="{{ syscalls_per_file | combine( {item.files[0].path :[item.item] + syscalls_per_file.get(item.files[0].path, []) } ) }}"
+  ansible.builtin.set_fact: syscalls_per_file="{{ syscalls_per_file | combine( {item.files[0].path :[item.item] + syscalls_per_file.get(item.files[0].path, []) } ) }}"
   loop: "{{ find_command.results | selectattr('matched') | list }}"
 
 - name: Declare files where syscalls were found
-  set_fact: found_paths="{{ find_command.results | map(attribute='files') | flatten | map(attribute='path') | list }}"
+  ansible.builtin.set_fact: found_paths="{{ find_command.results | map(attribute='files') | flatten | map(attribute='path') | list }}"
 
 - name: Count occurrences of syscalls in paths
-  set_fact: found_paths_dict="{{ found_paths_dict | combine({ item:1+found_paths_dict.get(item, 0) }) }}"
+  ansible.builtin.set_fact: found_paths_dict="{{ found_paths_dict | combine({ item:1+found_paths_dict.get(item, 0) }) }}"
   loop: "{{ find_command.results | map(attribute='files') | flatten | map(attribute='path') | list }}"
 
 - name: Get path with most syscalls
-  set_fact: audit_file="{{ (found_paths_dict | dict2items() | sort(attribute='value') | last).key }}"
+  ansible.builtin.set_fact: audit_file="{{ (found_paths_dict | dict2items() | sort(attribute='value') | last).key }}"
   when: found_paths | length >= 1
 
 - name: No file with syscall found, set path to /etc/audit/rules.d/{{{ key }}}.rules
-  set_fact: audit_file="/etc/audit/rules.d/{{{ key }}}.rules"
+  ansible.builtin.set_fact: audit_file="/etc/audit/rules.d/{{{ key }}}.rules"
   when: found_paths | length == 0
 
 - name: Declare found syscalls
-  set_fact: syscalls_found="{{ find_command.results | selectattr('matched') | map(attribute='item') | list }}"
+  ansible.builtin.set_fact: syscalls_found="{{ find_command.results | selectattr('matched') | map(attribute='item') | list }}"
 
 - name: Declare missing syscalls
-  set_fact:
+  ansible.builtin.set_fact:
     missing_syscalls="{{ syscalls | difference(syscalls_found) }}"
 
 - name: Replace the audit rule in {{ audit_file }}
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ audit_file }}'
     regexp: '({{{ action_arch_filters }}})(?=.*(?:(?:-S |,)(?:{{ syscalls_per_file[audit_file] | join("|") }}))\b)((?:( -S |,)\w+)+)({{{ other_filters }}}{{{ auid_filters }}} (?:-k |-F key=)\w+)'
     line: '\1\2\3{{ missing_syscalls | join("\3") }}\4'
@@ -607,7 +620,7 @@ The macro requires following parameters:
   when: syscalls_found | length > 0 and missing_syscalls | length > 0
 
 - name: Add the audit rule to {{ audit_file }}
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ audit_file }}'
     line: "{{{ action_arch_filters }}}{{{ syscall_flag }}}{{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
     create: true
@@ -652,12 +665,12 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     {{% set syscall_flag = " -S " %}}
 {{% endif %}}
 - name: Declare list of syscalls
-  set_fact:
+  ansible.builtin.set_fact:
     syscalls: {{{ syscalls }}}
     syscall_grouping: {{{ syscall_grouping }}}
 
 - name: Check existence of {{{ syscalls | join(", ") }}} in /etc/audit/audit.rules
-  find:
+  ansible.builtin.find:
     paths: /etc/audit
     contains: '{{{ action_arch_filters }}}(( -S |,)\w+)*(( -S |,){{ item }})+(( -S |,)\w+)*{{{ other_filters }}}{{{ auid_filters }}} (-k\s+|-F\s+key=)\S+\s*$'
     patterns: 'audit.rules'
@@ -665,17 +678,17 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   loop: '{{ (syscall_grouping + syscalls) | unique }}'
 
 - name: Set path to /etc/audit/audit.rules
-  set_fact: audit_file="/etc/audit/audit.rules"
+  ansible.builtin.set_fact: audit_file="/etc/audit/audit.rules"
 
 - name: Declare found syscalls
-  set_fact: syscalls_found="{{ find_command.results | selectattr('matched') | map(attribute='item') | list }}"
+  ansible.builtin.set_fact: syscalls_found="{{ find_command.results | selectattr('matched') | map(attribute='item') | list }}"
 
 - name: Declare missing syscalls
-  set_fact:
+  ansible.builtin.set_fact:
     missing_syscalls="{{ syscalls | difference(syscalls_found) }}"
 
 - name: Replace the audit rule in {{ audit_file }}
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ audit_file }}'
     regexp: '({{{ action_arch_filters }}})(?=.*(?:(?:-S |,)(?:{{ syscalls_found | join("|") }}))\b)((?:( -S |,)\w+)+)({{{ other_filters }}}{{{ auid_filters }}} (?:-k |-F key=)\w+)'
     line: '\1\2\3{{ missing_syscalls | join("\3") }}\4'
@@ -685,7 +698,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   when: syscalls_found | length > 0 and missing_syscalls | length > 0
 
 - name: Add the audit rule to {{ audit_file }}
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ audit_file }}'
     line: "{{{ action_arch_filters }}}{{{ syscall_flag }}}{{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
     create: true
@@ -697,21 +710,21 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 {{% macro ansible_sssd_ldap_config(parameter, value) -%}}
 - name: "Test for id_provider different than Active Directory (ad)"
-  command: grep -qzosP '[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*id_provider[[:space:]]*=[[:space:]]*((?i)ad)[[:space:]]*$' /etc/sssd/sssd.conf
+  ansible.builtin.command: grep -qzosP '[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*id_provider[[:space:]]*=[[:space:]]*((?i)ad)[[:space:]]*$' /etc/sssd/sssd.conf
   register: test_id_provider
   failed_when: false
   changed_when: false
   check_mode: no
 
 - name: "Test for domain group"
-  command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
+  ansible.builtin.command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
   failed_when: false
   changed_when: false
   check_mode: no
 
 - name: "Add default domain group and set {{{ parameter }}} in sssd configuration (if no domain there)"
-  ini_file:
+  community.general.ini_file:
     path: /etc/sssd/sssd.conf
     section: "{{ item.section }}"
     option: "{{ item.option }}"
@@ -727,7 +740,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - test_id_provider.stdout | length < 1
 
 - name: "Set {{{ parameter }}} in sssd configuration"
-  ini_file:
+  community.general.ini_file:
     path: /etc/sssd/sssd.conf
     section: "{{ test_grep_domain.stdout | regex_replace('\\[(.*)\\]','\\1') }}"
     option: {{{ parameter }}}
@@ -740,7 +753,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - test_id_provider.stdout | length < 1
 
 - name: Find all the conf files inside /etc/sssd/conf.d/
-  find:
+  ansible.builtin.find:
     paths: "/etc/sssd/conf.d/"
     patterns: "*.conf"
   register: sssd_conf_d_files
@@ -757,7 +770,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 {{% macro ansible_ini_file_set(filename, section, key, value, description="", no_extra_spaces=False) -%}}
 - name: "{{{ description if description else ("Set '" + key + "' to '" + value + "' in the [" + section + "] section of '" + filename + "'") }}}"
-  ini_file:
+  community.general.ini_file:
     path: "{{{ filename }}}"
     section: "{{{ section }}}"
     option: "{{{ key }}}"
@@ -836,18 +849,19 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     respective profiles.
 
 #}}
-{{% macro ansible_check_authselect_integrity() -%}}
+{{% macro ansible_check_authselect_integrity(rule_title=None) -%}}
 - name: '{{{ rule_title }}} - Check integrity of authselect current profile'
   ansible.builtin.command:
     cmd: authselect check
   register: result_authselect_check_cmd
   changed_when: false
+  check_mode: false
   failed_when: false
 
 - name: '{{{ rule_title }}} - Informative message based on the authselect integrity check result'
   ansible.builtin.assert:
     that:
-      - result_authselect_check_cmd.rc == 0
+      - ansible_check_mode or result_authselect_check_cmd.rc == 0
     fail_msg:
       - authselect integrity check failed. Remediation aborted!
       - This remediation could not be applied because an authselect profile was not selected or the selected profile is not intact.
@@ -872,7 +886,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 :type backup_name: str
 
 #}}
-{{% macro ansible_apply_authselect_changes(backup_name='') -%}}
+{{% macro ansible_apply_authselect_changes(backup_name='', rule_title=None) -%}}
 - name: '{{{ rule_title }}} - Ensure authselect changes are applied'
   ansible.builtin.command:
     {{%- if backup_name == '' %}}
@@ -890,7 +904,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 :type profile_name: str
 
 #}}
-{{% macro ansible_apply_pam_auth_update_changes(profile_name='') -%}}
+{{% macro ansible_apply_pam_auth_update_changes(profile_name='', rule_title=None) -%}}
 - name: '{{{ rule_title }}} - Ensure pam-auth-update profile changes are applied'
   ansible.builtin.command:
     {{%- if profile_name == '' %}}
@@ -905,14 +919,15 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     integrity check failed.
 
 #}}
-{{%- macro ansible_disable_authselect_feature(feature) -%}}
-{{{ ansible_check_authselect_integrity() }}}
+{{%- macro ansible_disable_authselect_feature(feature, rule_title=None) -%}}
+{{{ ansible_check_authselect_integrity(rule_title=rule_title) }}}
 
 - name: '{{{ rule_title }}} - Get authselect Features Currently Enabled'
   ansible.builtin.shell:
     cmd: authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_check_cmd is success
 
@@ -924,7 +939,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - result_authselect_check_cmd is success
     - result_authselect_features.stdout is search("{{{ feature }}}")
 
-{{{ ansible_apply_authselect_changes() }}}
+{{{ ansible_apply_authselect_changes(rule_title=rule_title) }}}
   when:
     - result_authselect_disable_feature_cmd is not skipped
     - result_authselect_disable_feature_cmd is success
@@ -936,14 +951,15 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     integrity check failed.
 
 #}}
-{{%- macro ansible_enable_authselect_feature(feature) -%}}
-{{{ ansible_check_authselect_integrity() }}}
+{{%- macro ansible_enable_authselect_feature(feature, rule_title=None) -%}}
+{{{ ansible_check_authselect_integrity(rule_title=rule_title) }}}
 
 - name: '{{{ rule_title }}} - Get authselect current features'
   ansible.builtin.shell:
     cmd: authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_check_cmd is success
 
@@ -955,7 +971,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - result_authselect_check_cmd is success
     - result_authselect_features.stdout is not search("{{{ feature }}}")
 
-{{{ ansible_apply_authselect_changes() }}}
+{{{ ansible_apply_authselect_changes(rule_title=rule_title) }}}
   when:
     - result_authselect_enable_feature_cmd is not skipped
     - result_authselect_enable_feature_cmd is success
@@ -967,7 +983,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     Some macros can change the remediation behavior based on the presence of authselect.
 
 #}}
-{{%- macro ansible_check_authselect_presence() -%}}
+{{%- macro ansible_check_authselect_presence(rule_title=None) -%}}
 - name: '{{{ rule_title }}} - Check if system relies on authselect tool'
   ansible.builtin.stat:
     path: /usr/bin/authselect
@@ -979,7 +995,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     Some macros can change the remediation behavior based on the presence of authselect.
 
 #}}
-{{%- macro ansible_check_pam_auth_update_presence() -%}}
+{{%- macro ansible_check_pam_auth_update_presence(rule_title=None) -%}}
 - name: '{{{ rule_title }}} - Check if system relies on pam-auth-update tool'
   ansible.builtin.stat:
     path: /usr/sbin/pam-auth-update
@@ -1002,31 +1018,74 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 :type after_match: str
 
 #}}
-{{%- macro ansible_pam_lastlog_enable_showfailed(pam_file, control, after_match='') -%}}
-{{{ ansible_check_authselect_presence() }}}
+{{%- macro ansible_pam_lastlog_enable_showfailed(pam_file, control, after_match='', rule_title=None, rule_id=None) -%}}
+{{{ ansible_check_authselect_presence(rule_title=rule_title) }}}
 
 - name: '{{{ rule_title }}} - Collect the Available authselect Features'
   ansible.builtin.command:
     cmd: authselect list-features sssd
   register: result_authselect_available_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_present.stat.exists
 
 - name: '{{{ rule_title }}} - Configure pam_lastlog.so Using authselect Feature'
   block:
-    {{{ ansible_disable_authselect_feature('with-silent-lastlog') | indent(4) }}}
+    {{{ ansible_disable_authselect_feature('with-silent-lastlog', rule_title=rule_title) | indent(4) }}}
   when:
     - result_authselect_present.stat.exists
     - result_authselect_available_features.stdout is search("with-silent-lastlog")
 
 - name: '{{{ rule_title }}} - Configure pam_lastlog.so in appropriate PAM files'
   block:
-    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
-    {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', 'session', control, 'pam_lastlog.so', 'showfailed', '', after_match) | indent(4) }}}
-    {{{ ansible_remove_pam_module_option('{{ pam_file_path }}', 'session', control, 'pam_lastlog.so', 'silent') | indent(4) }}}
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file, rule_title=rule_title) | indent(4) }}}
+    {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', 'session', control, 'pam_lastlog.so', 'showfailed', '', after_match, rule_id=rule_id, rule_title=rule_title) | indent(4) }}}
+    {{{ ansible_remove_pam_module_option('{{ pam_file_path }}', 'session', control, 'pam_lastlog.so', 'silent', rule_title=rule_title) | indent(4) }}}
 {{%- endmacro -%}}
 
+
+{{#
+    Ensure pam_lastlog.so PAM module shows the failed logins according to the system capabilities.
+    If authselect is present and the "with-silent-lastlog" feature is available, the feature will be disabled.
+    If authselect is present but the "with-silent-lastlog" feature is not yet available, a custom profile will be used.
+    If authselect is not present, PAM files will be directly edited.
+
+:param pam_file:    PAM config file.
+:type pam_file: str
+:param control:     PAM control flags.
+:type control: str
+:param after_match: Regex used as reference to append a line, if necessary. Optional parameter.
+                    Note: For this macro, there is a special value used to include a line at
+                    the beginning of the file: "BOF"
+:type after_match: str
+
+#}}
+{{%- macro ansible_pam_lastlog2_enable_showfailed(pam_file, control, after_match='', rule_title=None, rule_id=None) -%}}
+{{{ ansible_check_authselect_presence(rule_title=rule_title) }}}
+
+- name: '{{{ rule_title }}} - Collect the Available authselect Features'
+  ansible.builtin.command:
+    cmd: authselect list-features sssd
+  register: result_authselect_available_features
+  changed_when: false
+  check_mode: false
+  when:
+    - result_authselect_present.stat.exists
+
+- name: '{{{ rule_title }}} - Configure pam_lastlog2.so Using authselect Feature'
+  block:
+    {{{ ansible_disable_authselect_feature('with-silent-lastlog', rule_title=rule_title) | indent(4) }}}
+  when:
+    - result_authselect_present.stat.exists
+    - result_authselect_available_features.stdout is search("with-silent-lastlog")
+
+- name: '{{{ rule_title }}} - Configure pam_lastlog2.so in appropriate PAM files'
+  block:
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file, rule_title=rule_title) | indent(4) }}}
+    {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', 'session', control, 'pam_lastlog2.so', 'showfailed', '', after_match, rule_id=rule_id, rule_title=rule_title) | indent(4) }}}
+    {{{ ansible_remove_pam_module_option('{{ pam_file_path }}', 'session', control, 'pam_lastlog2.so', 'silent', rule_title=rule_title) | indent(4) }}}
+{{%- endmacro -%}}
 
 {{#
     Enable pam_pwhistory.so PAM module according to the system capabilities.
@@ -1044,28 +1103,29 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 :type after_match: str
 
 #}}
-{{%- macro ansible_pam_pwhistory_enable(pam_file, control, after_match='') -%}}
-{{{ ansible_check_authselect_presence() }}}
+{{%- macro ansible_pam_pwhistory_enable(pam_file, control, after_match='', rule_title=None) -%}}
+{{{ ansible_check_authselect_presence(rule_title=rule_title) }}}
 
 - name: '{{{ rule_title }}} - Collect the available authselect features'
   ansible.builtin.command:
     cmd: authselect list-features sssd
   register: result_authselect_available_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_present.stat.exists
 
 - name: '{{{ rule_title }}} - Enable pam_pwhistory.so using authselect feature'
   block:
-    {{{ ansible_enable_authselect_feature('with-pwhistory') | indent(4) }}}
+    {{{ ansible_enable_authselect_feature('with-pwhistory', rule_title=rule_title) | indent(4) }}}
   when:
     - result_authselect_present.stat.exists
     - result_authselect_available_features.stdout is search("with-pwhistory")
 
 - name: '{{{ rule_title }}} - Enable pam_pwhistory.so in appropriate PAM files'
   block:
-    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
-    {{{ ansible_ensure_pam_module_line('{{ pam_file_path }}', 'password', control, 'pam_pwhistory.so', after_match) | indent(4) }}}
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file, rule_title=rule_title) | indent(4) }}}
+    {{{ ansible_ensure_pam_module_line('{{ pam_file_path }}', 'password', control, 'pam_pwhistory.so', after_match, rule_title=rule_title) | indent(4) }}}
   when: >
     (result_authselect_available_features.stdout is defined and result_authselect_available_features.stdout is not search("with-pwhistory"))
     or result_authselect_available_features is not defined
@@ -1085,7 +1145,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 :type pwhistory_var_name: str
 
 #}}
-{{%- macro ansible_pam_pwhistory_parameter_value(pam_file, parameter, pwhistory_var_name='') -%}}
+{{%- macro ansible_pam_pwhistory_parameter_value(pam_file, parameter, pwhistory_var_name='', rule_title=None, rule_id=None) -%}}
 - name: '{{{ rule_title }}} - Check the presence of /etc/security/pwhistory.conf file'
   ansible.builtin.stat:
     path: /etc/security/pwhistory.conf
@@ -1107,15 +1167,15 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
     - name: '{{{ rule_title }}} - Ensure the pam_pwhistory.so {{{ parameter }}} parameter is removed from PAM files'
       block:
-        {{{ ansible_remove_pam_module_option_configuration(pam_file, 'password', '', 'pam_pwhistory.so', parameter) | indent(8) }}}
+        {{{ ansible_remove_pam_module_option_configuration(pam_file, 'password', '', 'pam_pwhistory.so', parameter, rule_title=rule_title) | indent(8) }}}
   when:
     - result_pwhistory_conf_check.stat.exists
 
 - name: '{{{ rule_title }}} - pam_pwhistory.so parameters are configured in PAM files'
   block:
-    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
-    {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', 'password', 'requisite', 'pam_pwhistory.so', parameter, pwhistory_var_name, '') | indent(4) }}}
-    {{{ ansible_apply_authselect_changes() | indent(4) }}}
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file, rule_title=rule_title) | indent(4) }}}
+    {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', 'password', 'requisite', 'pam_pwhistory.so', parameter, pwhistory_var_name, '', rule_id=rule_id, rule_title=rule_title) | indent(4) }}}
+    {{{ ansible_apply_authselect_changes(rule_title=rule_title) | indent(4) }}}
       when:
         - result_authselect_present.stat.exists
         - (result_pam_{{{ parameter }}}_add is defined and result_pam_{{{ parameter }}}_add.changed) or (result_pam_{{{ parameter }}}_edit is defined and result_pam_{{{ parameter }}}_edit.changed)
@@ -1129,13 +1189,13 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   It is enabled using the authselect tool or editing the PAM files, only if authselect tool is not available.
 
 #}}
-{{%- macro ansible_pam_faillock_enable() -%}}
-
-{{{ ansible_check_authselect_presence() }}}
+{{%- macro ansible_pam_faillock_enable(rule_title=None) -%}}
+{{% if 'ubuntu' not in product %}}
+{{{ ansible_check_authselect_presence(rule_title=rule_title) }}}
 
 - name: {{{ rule_title }}} - Remediation where authselect tool is present
   block:
-    {{{ ansible_enable_authselect_feature('with-faillock') | indent(4) }}}
+    {{{ ansible_enable_authselect_feature('with-faillock', rule_title=rule_title) | indent(4) }}}
   when:
     - result_authselect_present.stat.exists
 
@@ -1187,6 +1247,61 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
         - result_pam_faillock_is_enabled.found == 0
   when:
     - not result_authselect_present.stat.exists
+
+{{% else %}}
+{{{ ansible_check_pam_auth_update_presence(rule_title=rule_title) }}}
+
+- name: {{{ rule_title }}} - Remediation where pam-auth-update tool is present
+  block:
+    - name: {{{ rule_title }}} - Check the presence of cac_faillock file
+      ansible.builtin.stat:
+        path: /usr/share/pam-configs/cac_faillock
+      register: faillock_file_stat
+
+    - name: {{{ rule_title }}} - Check the presence of cac_faillock_notify file
+      ansible.builtin.stat:
+        path: /usr/share/pam-configs/cac_faillock_notify
+      register: faillock_notify_file_stat
+
+    - name: {{{ rule_title }}} - Put the content into cac_faillock if it does not exist
+      ansible.builtin.copy:
+        dest: /usr/share/pam-configs/cac_faillock
+        content: |+
+          Name: Enable pam_faillock to deny access
+          Default: yes
+          Priority: 0
+          Conflicts: faillock
+          Auth-Type: Primary
+          Auth:
+            [default=die]                   pam_faillock.so authfail
+            sufficient                      pam_faillock.so authsucc
+        force: yes
+      when: not faillock_file_stat.stat.exists
+
+    - name: {{{ rule_title }}} - Put the content into cac_faillock_notify if it does not exist
+      ansible.builtin.copy:
+        dest: /usr/share/pam-configs/cac_faillock_notify
+        content: |+
+          Name: Notify of failed login attempts and reset count upon success
+          Default: yes
+          Priority: 1025
+          Conflicts: faillock_notify
+          Auth-Type: Primary
+          Auth:
+            requisite                       pam_faillock.so preauth
+          Account-Type: Primary
+          Account:
+            required                        pam_faillock.so
+        force: yes
+      when: not faillock_notify_file_stat.stat.exists
+
+    {{{ ansible_apply_pam_auth_update_changes('cac_faillock') | indent(4) }}}
+    {{{ ansible_apply_pam_auth_update_changes('cac_faillock_notify') | indent(4) }}}
+
+  when:
+    - result_pam_auth_update_present.stat.exists
+
+{{% endif -%}}
 {{%- endmacro -%}}
 
 
@@ -1203,7 +1318,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 :type authfail: bool
 
 #}}
-{{%- macro ansible_pam_faillock_parameter_value(parameter, faillock_var_name='', authfail=True) -%}}
+{{%- macro ansible_pam_faillock_parameter_value(parameter, faillock_var_name='', authfail=True, rule_title=None) -%}}
 
 {{%- if faillock_var_name != '' %}}
 {{{ ansible_instantiate_variables( faillock_var_name ) }}}
@@ -1230,8 +1345,8 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 - name: {{{ rule_title }}} - Ensure the pam_faillock.so {{{ parameter }}} parameter not in PAM files
   block:
-    {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/system-auth','auth','','pam_faillock.so',parameter) | indent(4) }}}
-    {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/password-auth','auth','','pam_faillock.so',parameter) | indent(4) }}}
+    {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/system-auth','auth','','pam_faillock.so',parameter, rule_title=rule_title) | indent(4) }}}
+    {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/password-auth','auth','','pam_faillock.so',parameter, rule_title=rule_title) | indent(4) }}}
   when:
     - result_faillock_conf_check.stat.exists
 
@@ -1323,19 +1438,19 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 :type parameter: str
 
 #}}
-{{%- macro ansible_pam_pwquality_enable(path) -%}}
+{{%- macro ansible_pam_pwquality_enable(path, rule_title=None) -%}}
 
-{{{ ansible_check_pam_auth_update_presence() }}}
+{{{ ansible_check_pam_auth_update_presence(rule_title=rule_title) }}}
 
 - name: {{{ rule_title }}} - Remediation where pam-auth-update tool is present
   block:
     - name: Check if {{{ path }}} exists
-      stat:
+      ansible.builtin.stat:
         path: {{{ path }}}
       register: pwquality_file_stat
 
     - name: Put the content into {{{ path }}} if it does not exist
-      copy:
+      ansible.builtin.copy:
         dest: {{{ path }}}
         content: |+
           Name: Pwquality password strength checking
@@ -1348,7 +1463,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
         force: yes
       when: not pwquality_file_stat.stat.exists
 
-    {{{ ansible_apply_pam_auth_update_changes('cac_pwquality') | indent(4) }}}
+    {{{ ansible_apply_pam_auth_update_changes('cac_pwquality', rule_title=rule_title) | indent(4) }}}
 
   when:
     - result_pam_auth_update_present.stat.exists
@@ -1369,12 +1484,14 @@ Part of the grub2_bootloader_argument template.
 {{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value) -%}}
 {{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'slmicro5'] %}}
 - name: Check {{{ arg_name }}} argument exists
-  command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
+  ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
+  check_mode: False
   failed_when: False
   register: argcheck
 
 - name: Check {{{ arg_name }}} argument exists
-  command: grep '^\s*GRUB_CMDLINE_LINUX=' /etc/default/grub
+  ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=' /etc/default/grub
+  check_mode: False
   failed_when: False
   register: linecheck
 
@@ -1388,14 +1505,14 @@ Part of the grub2_bootloader_argument template.
   when: argcheck is not skipped and linecheck is not skipped and argcheck.rc != 0 and linecheck.rc != 0
 
 - name: Replace existing {{{ arg_name }}} argument
-  replace:
+  ansible.builtin.replace:
       path: /etc/default/grub
       regexp: '{{{ arg_name }}}=[a-zA-Z0-9,]+'
       replace: '{{{ arg_name_value }}}'
   when: argcheck is not skipped and linecheck is not skipped and argcheck.rc == 0 and linecheck.rc == 0
 
 - name: Add {{{ arg_name }}} argument
-  replace:
+  ansible.builtin.replace:
       path: /etc/default/grub
       regexp: '(^\s*GRUB_CMDLINE_LINUX=.*)"'
       replace: '\1 {{{ arg_name_value }}}"'
@@ -1403,15 +1520,15 @@ Part of the grub2_bootloader_argument template.
 
 {{% endif -%}}
 
-{{% if product in ['sle12', 'sle15'] %}}
+{{% if product in ['sle12', 'sle15', 'slmicro5'] %}}
 - name: Update grub defaults and the bootloader menu
-  command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
+  ansible.builtin.command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
 {{% elif 'debian' in product %}}
 - name: Update grub defaults and the bootloader menu
-  command: /usr/sbin/update-grub
+  ansible.builtin.command: /usr/sbin/update-grub
 {{% else %}}
 - name: Update grub defaults and the bootloader menu
-  command: /sbin/grubby --update-kernel=ALL --args="{{{ arg_name_value }}}"
+  ansible.builtin.command: /sbin/grubby --update-kernel=ALL --args="{{{ arg_name_value }}}"
 {{% endif -%}}
 {{%- endmacro -%}}
 
@@ -1427,12 +1544,13 @@ Part of the grub2_bootloader_argument_absent template.
 {{%- macro ansible_grub2_bootloader_argument_absent(arg_name) -%}}
 {{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15'] %}}
 - name: Check {{{ arg_name }}} argument exists
-  command: grep '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"' /etc/default/grub
+  ansible.builtin.command: grep '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"' /etc/default/grub
+  check_mode: False
   failed_when: False
   register: argcheck
 
 - name: Replace existing {{{ arg_name }}} argument
-  replace:
+  ansible.builtin.replace:
       path: /etc/default/grub
       regexp: '\(^GRUB_CMDLINE_LINUX=".*\){{{ arg_name }}}=?[^[:space:]]*\(.*"\)'
       replace: '\1 \2'
@@ -1442,13 +1560,13 @@ Part of the grub2_bootloader_argument_absent template.
 
 {{% if product in ['sle12', 'sle15'] %}}
 - name: Update grub defaults and the bootloader menu
-  command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
+  ansible.builtin.command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
 {{% elif 'debian' in product %}}
 - name: Update grub defaults and the bootloader menu
-  command: /usr/sbin/update-grub
+  ansible.builtin.command: /usr/sbin/update-grub
 {{% else %}}
 - name: Update grub defaults and the bootloader menu
-  command: /sbin/grubby --update-kernel=ALL --remove-args="{{{ arg_name }}}"
+  ansible.builtin.command: /sbin/grubby --update-kernel=ALL --remove-args="{{{ arg_name }}}"
 {{% endif -%}}
 {{%- endmacro -%}}
 
@@ -1520,7 +1638,7 @@ Part of the grub2_bootloader_argument_absent template.
 :type after_match: str
 
 #}}
-{{%- macro ansible_ensure_pam_module_line(pam_file, group, control, module, after_match='') -%}}
+{{%- macro ansible_ensure_pam_module_line(pam_file, group, control, module, after_match='', rule_title=None) -%}}
 - name: '{{{ rule_title }}} - Define a fact for control already filtered in case filters are used'
   ansible.builtin.set_fact:
     pam_module_control: '{{{ control }}}'
@@ -1565,7 +1683,7 @@ Part of the grub2_bootloader_argument_absent template.
       when:
         - result_pam_line_other_control_present.found == 0 or result_pam_line_other_control_present.found > 1
 
-    {{{ ansible_apply_authselect_changes() | indent(4) }}}
+    {{{ ansible_apply_authselect_changes(rule_title=rule_title) | indent(4) }}}
       when:
         - result_authselect_present is defined
         - result_authselect_present.stat.exists
@@ -1597,8 +1715,8 @@ Part of the grub2_bootloader_argument_absent template.
 :type after_match: str
 
 #}}
-{{%- macro ansible_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='') -%}}
-{{{ ansible_ensure_pam_module_line(pam_file, group, control, module, after_match) }}}
+{{%- macro ansible_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='', rule_id=None, rule_title=None) -%}}
+{{{ ansible_ensure_pam_module_line(pam_file, group, control, module, after_match, rule_title=rule_title) }}}
 
 - name: '{{{ rule_title }}} - Define a fact for control already filtered in case filters are used'
   ansible.builtin.set_fact:
@@ -1626,6 +1744,7 @@ Part of the grub2_bootloader_argument_absent template.
     state: present
   register: result_pam_{{{ rule_id }}}_add
   when:
+    - result_pam_module_{{{ rule_id }}}_option_present.found is defined
     - result_pam_module_{{{ rule_id }}}_option_present.found == 0
 
 {{%- if value != '' %}}
@@ -1657,10 +1776,15 @@ Part of the grub2_bootloader_argument_absent template.
 :type option: str
 
 #}}
-{{%- macro ansible_remove_pam_module_option(pam_file, group, control, module, option) -%}}
+{{%- macro ansible_remove_pam_module_option(pam_file, group, control, module, option, rule_title=None) -%}}
 - name: '{{{ rule_title }}} - Define a fact for control already filtered in case filters are used'
   ansible.builtin.set_fact:
     pam_module_control: '{{{ control }}}'
+
+- name: '{{{ rule_title }}} - Check if {{{ pam_file }}} file is present'
+  ansible.builtin.stat:
+    path: "{{{ pam_file }}}"
+  register: result_pam_file_present
 
 - name: '{{{ rule_title }}} - Ensure the "{{{ option }}}" option from "{{{ module }}}" is not present in {{{ pam_file }}}'
   ansible.builtin.replace:
@@ -1672,6 +1796,7 @@ Part of the grub2_bootloader_argument_absent template.
     {{%- endif %}}
     replace: '\1\2'
   register: result_pam_option_removal
+  when: result_pam_file_present.stat.exists
 {{%- endmacro -%}}
 
 
@@ -1685,7 +1810,7 @@ Part of the grub2_bootloader_argument_absent template.
     purpose is not available.
 
 #}}
-{{% macro ansible_ensure_authselect_custom_profile() -%}}
+{{% macro ansible_ensure_authselect_custom_profile(rule_title=None) -%}}
 - name: '{{{ rule_title }}} - Get authselect current profile'
   ansible.builtin.shell:
     cmd: authselect current -r | awk '{ print $1 }'
@@ -1715,6 +1840,7 @@ Part of the grub2_bootloader_argument_absent template.
     cmd: authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
   changed_when: false
+  check_mode: false
   when:
     - result_authselect_profile is not skipped
     - authselect_current_profile is not match("custom/")
@@ -1725,12 +1851,14 @@ Part of the grub2_bootloader_argument_absent template.
   register: result_authselect_custom_profile_present
   changed_when: false
   when:
+    - result_authselect_profile is not skipped
     - authselect_current_profile is not match("custom/")
 
 - name: '{{{ rule_title }}} - Create an authselect custom profile based on the current profile'
   ansible.builtin.command:
     cmd: authselect create-profile hardening -b {{ authselect_current_profile }}
   when:
+    - result_authselect_profile is not skipped
     - result_authselect_check_cmd is success
     - authselect_current_profile is not match("^(custom/|local)")
     - not result_authselect_custom_profile_present.stat.exists
@@ -1739,11 +1867,12 @@ Part of the grub2_bootloader_argument_absent template.
   ansible.builtin.command:
     cmd: authselect create-profile hardening -b sssd
   when:
+    - result_authselect_profile is not skipped
     - result_authselect_check_cmd is success
     - authselect_current_profile is match("local")
     - not result_authselect_custom_profile_present.stat.exists
 
-{{{ ansible_apply_authselect_changes('before-hardening-custom-profile') }}}
+{{{ ansible_apply_authselect_changes('before-hardening-custom-profile', rule_title=rule_title) }}}
   when:
     - result_authselect_check_cmd is success
     - result_authselect_profile is not skipped
@@ -1770,7 +1899,7 @@ Part of the grub2_bootloader_argument_absent template.
     - result_authselect_features is not skipped
     - result_pam_authselect_select_profile is not skipped
 
-{{{ ansible_apply_authselect_changes('after-hardening-custom-profile') }}}
+{{{ ansible_apply_authselect_changes('after-hardening-custom-profile', rule_title=rule_title) }}}
   when:
     - result_authselect_check_cmd is success
     - result_authselect_profile is not skipped
@@ -1787,22 +1916,24 @@ Part of the grub2_bootloader_argument_absent template.
 :type pam_file: str
 
 #}}
-{{%- macro ansible_ensure_pam_facts_and_authselect_profile(pam_file) -%}}
+{{%- macro ansible_ensure_pam_facts_and_authselect_profile(pam_file, rule_title=None) -%}}
 - name: '{{{ rule_title }}} - Define the PAM file to be edited as a local fact'
   ansible.builtin.set_fact:
     pam_file_path: {{{ pam_file }}}
 
-{{{ ansible_check_authselect_presence() }}}
+{{{ ansible_check_authselect_presence(rule_title=rule_title) }}}
 
 - name: '{{{ rule_title }}} - Ensure authselect custom profile is used if authselect is present'
   block:
-    {{{ ansible_check_authselect_integrity() | indent(4) }}}
+    {{{ ansible_check_authselect_integrity(rule_title=rule_title) | indent(4) }}}
 
-    {{{ ansible_ensure_authselect_custom_profile() | indent(4) }}}
+    {{{ ansible_ensure_authselect_custom_profile(rule_title=rule_title) | indent(4) }}}
 
     - name: '{{{ rule_title }}} - Change the PAM file to be edited according to the custom authselect profile'
       ansible.builtin.set_fact:
         pam_file_path: "/etc/authselect/{{ authselect_custom_profile }}/{{ pam_file_path | basename }}"
+      when:
+        - authselect_custom_profile is defined
   when:
     - result_authselect_present.stat.exists
 {{%- endmacro -%}}
@@ -1829,7 +1960,7 @@ Part of the grub2_bootloader_argument_absent template.
 :type after_match: str
 
 #}}
-{{%- macro ansible_ensure_pam_module_configuration(pam_file, group, control, module, option, value='', after_match='') -%}}
+{{%- macro ansible_ensure_pam_module_configuration(pam_file, group, control, module, option, value='', after_match='', rule_id=None, rule_title=None) -%}}
 - name: '{{{ rule_title }}} - Check if {{{ pam_file }}} file is present'
   ansible.builtin.stat:
     path: {{{ pam_file }}}
@@ -1837,15 +1968,15 @@ Part of the grub2_bootloader_argument_absent template.
 
 - name: '{{{ rule_title }}} - Check the proper remediation for the system'
   block:
-    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file, rule_title=rule_title) | indent(4) }}}
 
     {{%- if option == '' %}}
-    {{{ ansible_ensure_pam_module_line('{{ pam_file_path }}', group, control, module, after_match) | indent(4) }}}
+    {{{ ansible_ensure_pam_module_line('{{ pam_file_path }}', group, control, module, after_match, rule_title=rule_title) | indent(4) }}}
     {{%- else %}}
-    {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', group, control, module, option, value, after_match) | indent(4) }}}
+    {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', group, control, module, option, value, after_match, rule_id=rule_id, rule_title=rule_title) | indent(4) }}}
     {{%- endif %}}
 
-    {{{ ansible_apply_authselect_changes() | indent(4) }}}
+    {{{ ansible_apply_authselect_changes(rule_title=rule_title) | indent(4) }}}
       when:
         - result_authselect_present.stat.exists
         - >-
@@ -1873,7 +2004,7 @@ Part of the grub2_bootloader_argument_absent template.
 :type option: str
 
 #}}
-{{%- macro ansible_remove_pam_module_option_configuration(pam_file, group, control, module, option) -%}}
+{{%- macro ansible_remove_pam_module_option_configuration(pam_file, group, control, module, option, rule_title=None) -%}}
 - name: '{{{ rule_title }}} - Check if {{{ pam_file }}} file is present'
   ansible.builtin.stat:
     path: {{{ pam_file }}}
@@ -1881,11 +2012,11 @@ Part of the grub2_bootloader_argument_absent template.
 
 - name: '{{{ rule_title }}} - Check the proper remediation for the system'
   block:
-    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file, rule_title=rule_title) | indent(4) }}}
 
-    {{{ ansible_remove_pam_module_option('{{ pam_file_path }}', group, control, module, option) | indent(4) }}}
+    {{{ ansible_remove_pam_module_option('{{ pam_file_path }}', group, control, module, option, rule_title=rule_title) | indent(4) }}}
 
-    {{{ ansible_apply_authselect_changes() | indent(4) }}}
+    {{{ ansible_apply_authselect_changes(rule_title=rule_title) | indent(4) }}}
       when:
         - result_authselect_present.stat.exists
         - result_pam_option_removal is changed
@@ -1908,7 +2039,7 @@ Part of the grub2_bootloader_argument_absent template.
 :type pam_file: str
 
 #}}
-{{%- macro ansible_create_list_of_local_paths(list_name="search_paths") -%}}
+{{%- macro ansible_create_list_of_local_paths(list_name="search_paths", rule_title=None) -%}}
 - name: "{{{ rule_title }}} - Define Excluded (Non-Local) File Systems and Paths"
   ansible.builtin.set_fact:
     excluded_fstypes:

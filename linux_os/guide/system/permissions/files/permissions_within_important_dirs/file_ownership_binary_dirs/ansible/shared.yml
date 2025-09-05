@@ -4,14 +4,18 @@
 # complexity = medium
 # disruption = medium
 - name: "Read list of system executables without root ownership"
-  command: "find /bin/ /usr/bin/ /usr/local/bin/ /sbin/ /usr/sbin/ /usr/local/sbin/ /usr/libexec \\! -user root"
+  {{% if "ubuntu" in product -%}}
+  ansible.builtin.command: "find /bin/ /usr/bin/ /usr/local/bin/ /sbin/ /usr/sbin/ /usr/local/sbin/ \\! -user {{{ uid_min }}}"
+  {{% else -%}}
+  ansible.builtin.command: "find /bin/ /usr/bin/ /usr/local/bin/ /sbin/ /usr/sbin/ /usr/local/sbin/ /usr/libexec \\! -user root"
+  {{% endif -%}}
   register: no_root_system_executables
   changed_when: False
   failed_when: False
   check_mode: no
 
 - name: "Set ownership to root of system executables"
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     owner: "root"
   with_items: "{{ no_root_system_executables.stdout_lines }}"

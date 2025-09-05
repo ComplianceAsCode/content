@@ -269,11 +269,11 @@ To execute:
 For example:
 
 ```bash
-    $ ./utils/refchecker.py ubuntu2004 cis_level1_server cis
+    $ ./utils/refchecker.py ubuntu2404 cis_level1_server cis
 ```
 
 This utility has some knowledge of which references are product-specific
-(checking for `cis@ubuntu2004` in the above example) and which are
+(checking for `cis@ubuntu2404` in the above example) and which are
 product-independent.
 
 Note that this utility does not modify the rule directories at all.
@@ -431,7 +431,7 @@ Generate the HTML diffs:
 
 The goal of this script is to compare the result of two ARF files.
 It will show what rules are missing, different, and the same between the two files.
-The script can take results from content created by this repo and by [DISA](https://public.cyber.mil/stigs/scap/).
+The script can take results from content created by this repo and by [DISA](https://www.cyber.mil/stigs/scap/).
 If the result files come from the same source the script will use XCCDF ids as basis for the comparison.
 Otherwise, the script will use STIG ids to compare.
 

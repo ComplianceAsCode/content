@@ -24,17 +24,15 @@ identifiers:
     cce@sle12: CCE-83041-4
     cce@sle15: CCE-85571-8
     cce@slmicro5: CCE-93686-4
+    cce@slmicro6: CCE-94662-4
 
 references:
     cis@sle12: 5.4.1.2
     cis@sle15: 5.4.1.2
-    cis@ubuntu2004: 5.4.1.1
-    cis@ubuntu2204: 5.5.1.2
     nist: IA-5(f),IA-5(1)(d),CM-6(a)
     srg: SRG-OS-000076-GPOS-00044
     stigid@ol7: OL07-00-010260
     stigid@ol8: OL08-00-020210
-    stigid@rhel8: RHEL-08-020210
     stigid@sle12: SLES-12-010290
     stigid@sle15: SLES-15-020230
 
@@ -49,7 +47,7 @@ ocil: |-
 
 fixtext: |-
     Configure non-compliant accounts to enforce a 60-day maximum password lifetime restriction.
-    {{% if product not in ["sle12", "sle15"] %}}
+    {{% if product not in ["sle12", "sle15", "slmicro6"] %}}
     passwd -q -x {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} [user]
     {{% else %}}
     usrs_max_pass_age=( "$(awk -F: '$5 > $var_accounts_maximum_age_login_defs || $5 == "" {print $1}' /etc/shadow)" )

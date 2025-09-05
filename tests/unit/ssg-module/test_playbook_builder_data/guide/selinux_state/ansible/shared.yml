@@ -5,4 +5,4 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_selinux_state") }}}
 
-{{{ ansible_selinux_config_set(parameter="SELINUX", value="{{ var_selinux_state }}") }}}
+{{{ ansible_selinux_config_set(parameter="SELINUX", value="{{ var_selinux_state }}", rule_title=rule_title) }}}

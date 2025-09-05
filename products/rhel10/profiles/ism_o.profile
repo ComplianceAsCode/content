@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 metadata:
@@ -28,6 +29,7 @@ extends: e8
 
 selections:
     - ism_o:all:base
+
     # these rules do not work properly on RHEL 10 for now
     - '!enable_authselect'
     - '!enable_dracut_fips_module'

@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 metadata:
@@ -13,133 +14,67 @@ reference: https://www.cyber.gov.au/ism
 title: 'Australian Cyber Security Centre (ACSC) ISM Official'
 
 description: |-
-  This profile contains configuration checks for Red Hat Enterprise Linux 9
-  that align to the Australian Cyber Security Centre (ACSC) Information Security Manual (ISM)
-  with the applicability marking of OFFICIAL.
+    This profile contains configuration checks for Red Hat Enterprise Linux 9
+    that align to the Australian Cyber Security Centre (ACSC) Information Security Manual (ISM)
+    with the applicability marking of OFFICIAL.
 
-  The ISM uses a risk-based approach to cyber security. This profile provides a guide to aligning 
-  Red Hat Enterprise Linux security controls with the ISM, which can be used to select controls 
-  specific to an organisation's security posture and risk profile.
+    The ISM uses a risk-based approach to cyber security. This profile provides a guide to aligning
+    Red Hat Enterprise Linux security controls with the ISM, which can be used to select controls
+    specific to an organisation's security posture and risk profile.
 
-  A copy of the ISM can be found at the ACSC website:
+    A copy of the ISM can be found at the ACSC website:
 
-  https://www.cyber.gov.au/ism
+    https://www.cyber.gov.au/ism
 
 extends: e8
 
 selections:
-
-  ## Operating system configuration
-  ## Identifiers 1491
-  - no_shelllogin_for_systemaccounts
-
-  ## Local administrator accounts
-  ## Identifiers 1382 / 1410
-  - accounts_password_all_shadowed
-  - package_sudo_installed
-
-  ## Content filtering & Anti virus
-  ## Identifiers  0576 / 1341 / 1034 / 1417 / 1288
-  - package_aide_installed
-
-  ## Software firewall
-  ## Identifiers 1416
-  - configure_firewalld_ports
-  ## Removing due to build error
-  ## - configure_firewalld_rate_limiting
-  - firewalld_sshd_port_enabled
-  - set_firewalld_default_zone
-
-  ## Endpoint device control software
-  ## Identifiers 1418
-  - package_usbguard_installed
-  - service_usbguard_enabled
-  - usbguard_allow_hid_and_hub
-
-  ## Authentication hardening
-  ## Identifiers 1546 / 0974 / 1173 / 1504 / 1505 / 1401 / 1559 / 1560
-  ## 1561 / 1546 / 0421 / 1557 / 0422 / 1558 / 1403 / 0431
-  - sshd_use_directory_configuration
-  - sshd_max_auth_tries_value=5
-  - disable_host_auth
-  - require_emergency_target_auth
-  - require_singleuser_auth
-  - sshd_disable_kerb_auth
-  - sshd_set_max_auth_tries
-
-  ## Password authentication & Protecting credentials
-  ## Identifiers 0421 / 0431 / 0418 / 1402
-  - var_password_pam_minlen=14
-  - var_accounts_password_warn_age_login_defs=7
-  - var_accounts_minimum_age_login_defs=1
-  - var_accounts_maximum_age_login_defs=60
-  - var_authselect_profile=sssd
-  - enable_authselect
-  - accounts_password_warn_age_login_defs
-  - accounts_maximum_age_login_defs
-  - accounts_minimum_age_login_defs
-  - accounts_passwords_pam_faillock_interval
-  - accounts_passwords_pam_faillock_unlock_time
-  - accounts_passwords_pam_faillock_deny
-  - accounts_passwords_pam_faillock_deny_root
-  - accounts_password_pam_minlen
-
-  ## Centralised logging facility
-  ## Identifiers 1405 / 0988 
-  - rsyslog_cron_logging
-  - rsyslog_files_groupownership
-  - rsyslog_files_ownership
-  - rsyslog_files_permissions
-  - rsyslog_nolisten
-  - rsyslog_remote_loghost
-  - rsyslog_remote_tls
-  - rsyslog_remote_tls_cacert
-  - package_chrony_installed
-  - service_chronyd_enabled
-  # - chronyd_specify_multiple_servers
-  - chronyd_specify_remote_server
-
-  ## Events to be logged
-  ## Identifiers 0580 / 0584 / 0582 / 0585 / 0586 / 0846 / 0957
-  - sshd_print_last_log
-  - sebool_auditadm_exec_content
-  - audit_rules_privileged_commands
-  - audit_rules_session_events_utmp
-  - audit_rules_session_events_btmp
-  - audit_rules_session_events_wtmp
-  - audit_rules_usergroup_modification_group
-  - audit_rules_usergroup_modification_gshadow
-  - audit_rules_usergroup_modification_opasswd
-  - audit_rules_usergroup_modification_passwd
-  - audit_rules_usergroup_modification_shadow
-  - audit_access_failed
-  - audit_access_success
-
-  ## Web application & Database servers
-  ## Identifiers 1552 / 1277
-
-  ## Network design and configuration
-  ## Identifiers 1055 / 1311 
-  - network_nmcli_permissions
-  - service_snmpd_disabled
-  - snmpd_use_newer_protocol
-
-  ## Wireless networks
-  ## Identifiers 1315
-  - wireless_disable_interfaces
-
-  ## ASD Approved Cryptographic Algorithms
-  ## Identifiers 0471 / 0472 / 0473 / 0474 / 0475 / 0476 / 0477 / 
-  ## 0479 / 0480 / 0481 / 0489 / 0497 / 0994 / 0998 / 1001 /  1139 / 
-  ## 1372 / 1373 / 1374 / 1375
-  - enable_fips_mode
-  - enable_dracut_fips_module
-  - var_system_crypto_policy=fips
-  - configure_crypto_policy
-
-  ## Secure Shell access
-  ## Identifiers 0484 / 1506 / 1449 / 0487
-  - sshd_allow_only_protocol2
-  - sshd_enable_warning_banner
-  - sshd_disable_x11_forwarding
-  - file_permissions_sshd_private_key
+    - ism_o:all
+    - '!accounts_password_pam_ocredit'
+    - '!audit_rules_unsuccessful_file_modification_truncate'
+    - '!set_password_hashing_algorithm_systemauth'
+    - '!network_ipv6_static_address'
+    - '!audit_rules_unsuccessful_file_modification_ftruncate'
+    - '!kerberos_disable_no_keytab'
+    - '!audit_access_success_aarch64'
+    - '!audit_rules_unsuccessful_file_modification_creat'
+    - '!sebool_kerberos_enabled'
+    - '!force_opensc_card_drivers'
+    - '!package_subscription-manager_installed'
+    - '!system_booted_in_fips_mode'
+    - '!accounts_password_pam_minclass'
+    - '!dnf-automatic_apply_updates'
+    - '!set_password_hashing_algorithm_passwordauth'
+    - '!chronyd_or_ntpd_specify_multiple_servers'
+    - '!sebool_authlogin_radius'
+    - '!configure_kerberos_crypto_policy'
+    - '!set_password_hashing_algorithm_libuserconf'
+    - '!audit_rules_unsuccessful_file_modification_openat'
+    - '!sssd_enable_smartcards'
+    - '!openssl_use_strong_entropy'
+    - '!accounts_password_pam_ucredit'
+    - '!service_chronyd_or_ntpd_enabled'
+    - '!package_opensc_installed'
+    - '!accounts_password_pam_lcredit'
+    - '!enable_ldap_client'
+    - '!package_libdnf-plugin-subscription-manager_installed'
+    - '!sebool_authlogin_nsswitch_use_ldap'
+    - '!chronyd_configure_pool_and_server'
+    - '!set_password_hashing_algorithm_logindefs'
+    - '!service_pcscd_enabled'
+    - '!accounts_passwords_pam_tally2_unlock_time'
+    - '!package_pcsc-lite-ccid_installed'
+    - '!package_pcsc-lite_installed'
+    - '!audit_rules_unsuccessful_file_modification_open'
+    - '!configure_opensc_card_drivers'
+    - '!audit_access_success_ppc64le'
+    - '!accounts_password_pam_dcredit'
+    - '!accounts_passwords_pam_tally2_deny_root'
+    - '!audit_access_failed_ppc64le'
+    - '!audit_access_failed_aarch64'
+    - '!secure_boot_enabled'
+    - '!audit_rules_unsuccessful_file_modification_open_by_handle_at'
+    - '!accounts_password_minlen_login_defs'
+    - usbguard_allow_hid_and_hub
+    - sshd_allow_only_protocol2
+    - accounts_password_all_shadowed

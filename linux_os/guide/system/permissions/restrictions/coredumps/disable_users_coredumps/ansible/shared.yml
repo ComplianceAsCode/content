@@ -4,9 +4,66 @@
 # complexity = low
 # disruption = low
 
-- name: Disable core dumps with limits
-  lineinfile:
-    dest: /etc/security/limits.conf
-    regexp: '^[^#].*core'
-    line: '*        hard       core      0'
-    create: yes
+-   name: "{{{ rule_title }}} - Set dirs, files and regex variables"
+    ansible.builtin.set_fact:
+        limits_dropin_dir: /etc/security/limits.d
+        limits_dropin_file: /etc/security/limits.d/10-ssg-hardening.conf
+        limits_main_file: /etc/security/limits.conf
+        limits_correct_regex: '^\s*\*\s+hard\s+core\s+0\s*$'
+
+-   name: "{{{ rule_title }}} - Find valid drop-ins for core limit"
+    ansible.builtin.find:
+        paths: "{{ limits_dropin_dir }}"
+        patterns: "*.conf"
+        contains: "{{ limits_correct_regex }}"
+        file_type: file
+    register: valid_dropins
+    failed_when: false
+
+-   name: "{{{ rule_title }}} - Find all drop-ins with any core limit"
+    ansible.builtin.find:
+        paths: "{{ limits_dropin_dir }}"
+        patterns: "*.conf"
+        contains: '^\s*\*\s+hard\s+core\s+'
+        file_type: file
+    register: all_dropins
+    failed_when: false
+
+-   name: "{{{ rule_title }}} - Get invalid drop-ins"
+    ansible.builtin.set_fact:
+        invalid_dropins: >-
+          {{ all_dropins.files | rejectattr('path', 'in', valid_dropins.files | map(attribute='path') | list) | map(attribute='path') | list }}
+
+-   name: "{{{ rule_title }}} - Comment invalid * hard core lines in drop-ins"
+    ansible.builtin.replace:
+        path: "{{ item }}"
+        regexp: '(^\s*\*\s+hard\s+core\s+.*$)'
+        replace: '#\1'
+    loop: "{{ invalid_dropins }}"
+    when: invalid_dropins | length > 0
+
+-   name: "{{{ rule_title }}} - Check if main limits.conf contains correct core limit"
+    ansible.builtin.find:
+        paths: "/etc/security"
+        patterns: "limits.conf"
+        contains: "{{ limits_correct_regex }}"
+        file_type: file
+    register: main_valid
+    failed_when: false
+    when: not (valid_dropins.matched | default(0) > 0)
+
+-   name: "{{{ rule_title }}} - Set fact if configuration is valid"
+    ansible.builtin.set_fact:
+        core_limit_valid: "{{ (valid_dropins.matched | default(0)) > 0 or (main_valid.matched | default(0)) > 0 }}"
+
+-   name: "{{{ rule_title }}} - Ensure drop-in directory exists"
+    ansible.builtin.file:
+        path: "{{ limits_dropin_dir }}"
+        state: directory
+    when: not core_limit_valid
+
+-   name: "{{{ rule_title }}} - Deploy 10-ssg-hardening.conf drop-in with correct core limit"
+    ansible.builtin.copy:
+        dest: "{{ limits_dropin_file }}"
+        content: "*     hard   core    0\n"
+    when: not core_limit_valid

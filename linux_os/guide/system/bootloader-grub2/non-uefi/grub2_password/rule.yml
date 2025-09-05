@@ -9,14 +9,14 @@ description: |-
     <br /><br />
     Since plaintext passwords are a security risk, generate a hash for the password
     by running the following command:
-    {{% if product in ["sle12", "sle15", "slmicro5"] or 'ubuntu' in product %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] or 'ubuntu' in product %}}
     <pre># grub2-mkpasswd-pbkdf2</pre>
     {{% else %}}
     <pre># grub2-setpassword</pre>
     {{% endif %}}
     When prompted, enter the password that was selected.
     <br /><br />
-    {{% if product in ["sle12", "sle15", "slmicro5"] or 'ubuntu' in product %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] or 'ubuntu' in product %}}
     Using the hash from the output, modify the <tt>/etc/grub.d/40_custom</tt>
     file with the following content:
     <pre>set superusers="boot"
@@ -28,7 +28,7 @@ description: |-
     update the
     <tt>grub.cfg</tt> file by running:
     {{%- if "rhel" in product %}}
-    <pre>grub-mkconfig -o /boot/grub2/grub.cfg</pre>
+    <pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
     {{%- else %}}
     <pre>{{{ grub_command("update") }}}</pre>
     {{%- endif %}}
@@ -49,13 +49,12 @@ identifiers:
     cce@sle12: CCE-83044-8
     cce@sle15: CCE-83274-1
     cce@slmicro5: CCE-93778-9
+    cce@slmicro6: CCE-94664-0
 
 references:
     cis-csc: 1,11,12,14,15,16,18,3,5
     cis@sle12: 1.5.1
     cis@sle15: 1.5.1
-    cis@ubuntu2004: 1.5.1
-    cis@ubuntu2204: 1.4.1
     cobit5: DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.06,DSS06.10
     cui: 3.4.5
     hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)
@@ -68,11 +67,8 @@ references:
     srg: SRG-OS-000080-GPOS-00048
     stigid@ol7: OL07-00-010482
     stigid@ol8: OL08-00-010150
-    stigid@rhel8: RHEL-08-010150
     stigid@sle12: SLES-12-010430
     stigid@sle15: SLES-15-010190
-    stigid@ubuntu2004: UBTU-20-010009
-    stigid@ubuntu2204: UBTU-22-212010
 
 ocil_clause: 'it does not produce any output'
 
@@ -95,6 +91,7 @@ warnings:
         Also, do NOT manually add the superuser account and password to the
         <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
 
+platform: not container
 
 fixtext: |-
     Configure {{{ full_name }}} to require a grub bootloader password for the grub superuser account.
@@ -113,7 +110,7 @@ fixtext: |-
     Once the superuser account has been added, update the grub.cfg file by running:
 
     {{%- if "rhel" in product %}}
-    <pre>grub-mkconfig -o /boot/grub2/grub.cfg</pre>
+    <pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
     {{%- else %}}
     <pre>{{{ grub_command("update") }}}</pre>
     {{%- endif %}}

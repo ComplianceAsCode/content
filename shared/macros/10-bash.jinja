@@ -119,7 +119,10 @@ fi
 {{%- endmacro -%}}
 
 
-{{%- set in_chrooted_environment = 'test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"' -%}}
+{{%- macro in_chrooted_environment() -%}}
+test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
+{{%- endmacro -%}}
+
 {{#
     Set a parameter
 
@@ -133,7 +136,7 @@ fi
 :type no_quotes: bool
 
 #}}
-{{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false) -%}}
+{{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false, rule_id=None) -%}}
 {{% if no_quotes -%}}
   {{% if "$" in value %}}
     {{% set value = '%s' % value.replace("$", "\\$") %}}
@@ -155,7 +158,7 @@ fi
         insensitive=false,
         separator="=",
         separator_regex="\s*=\s*",
-        prefix_regex="^\s*")
+        prefix_regex="^\s*", rule_id=rule_id)
     }}}
 {{%- endmacro -%}}
 
@@ -169,7 +172,7 @@ fi
 :type value: str
 
 #}}
-{{%- macro bash_sshd_config_set(parameter, value) -%}}
+{{%- macro bash_sshd_config_set(parameter, value, rule_id=None) -%}}
 {{{ set_config_file(
         path="/etc/ssh/sshd_config",
         parameter=parameter,
@@ -180,7 +183,7 @@ fi
         insensitive=true,
         separator=" ",
         separator_regex="\s\+",
-        prefix_regex="^\s*")
+        prefix_regex="^\s*", rule_id=rule_id)
     }}}
 {{%- endmacro -%}}
 
@@ -198,10 +201,18 @@ fi
 :type config_basename: str
 
 #}}
-{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="00-complianceascode-hardening.conf") -%}}
+{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="00-complianceascode-hardening.conf", rule_id=None) -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
 
+{{% if product in ["ol8", "ol9"] %}}
+# Find the include keyword, extract from the line the glob expression representing included files.
+# And if it is a relative path prepend '/etc/ssh/'
+included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*include\s*//I' | sed -e 's|^[^/]|/etc/ssh/&|')
+for included_file in ${included_files} ; do
+    {{{ lineinfile_absent("$included_file", "^\s*" ~ parameter, insensitive=true, rule_id=rule_id) | indent(4) }}}
+done
+{{% endif %}}
 {{%- if config_is_distributed == "true" %}}
 {{%- set prefix_regex = "^\s*" -%}}
 {{%- set separator_regex = "\s\+" -%}}
@@ -210,7 +221,7 @@ fi
 mkdir -p {{{ sshd_config_dir }}}
 touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
 chmod 0600 {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
-{{{ lineinfile_absent(sshd_config_path, line_regex, insensitive=true) }}}
+{{{ lineinfile_absent(sshd_config_path, line_regex, insensitive=true, rule_id=rule_id) }}}
 {{{ lineinfile_absent_in_directory(sshd_config_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
 {{{ set_config_file(
         path=sshd_config_dir ~ "/" ~ hardening_config_basename,
@@ -222,18 +233,10 @@ chmod 0600 {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
         insensitive=true,
         separator=" ",
         separator_regex=separator_regex,
-        prefix_regex=prefix_regex)
+        prefix_regex=prefix_regex, rule_id=rule_id)
     }}}
 {{%- else %}}
-{{% if product in ["ol8", "ol9"] %}}
-# Find the include keyword, extract from the line the glob expression representing included files.
-# And if it is a relative path prepend '/etc/ssh/'
-included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*include\s*//I' | sed -e 's|^[^/]|/etc/ssh/&|')
-for included_file in ${included_files} ; do
-    {{{ lineinfile_absent("$included_file", "^\s*" ~ parameter, insensitive=true) | indent(4) }}}
-done
-{{% endif %}}
-{{{ bash_sshd_config_set(parameter=parameter, value=value) }}}
+{{{ bash_sshd_config_set(parameter=parameter, value=value, rule_id=rule_id) }}}
 {{%- endif %}}
 {{%- endmacro %}}
 
@@ -264,7 +267,7 @@ EOF
 :type value: str
 
 #}}
-{{%- macro bash_auditd_config_set(parameter, value) -%}}
+{{%- macro bash_auditd_config_set(parameter, value, rule_id=None) -%}}
 {{{ set_config_file(
         path="/etc/audit/auditd.conf",
         parameter=parameter,
@@ -275,34 +278,9 @@ EOF
         insensitive=true,
         separator=" = ",
         separator_regex="\s*=\s*",
-        prefix_regex="^\s*")
+        prefix_regex="^\s*", rule_id=rule_id)
     }}}
 {{%- endmacro -%}}
-
-
-{{#
-   Set parameter in /etc/systemd/coredump.conf.
-   For SLE platforms put remediation in drop-in configuration file /etc/systemd/coredump.conf.d/oscap-autoremedy.conf.
-
-:parameter parameter: Parameter to set
-:type parameter: str
-:parameter value: The value to set
-:type value: str
-
-#}}
-{{%- macro bash_coredump_config_set(parameter, value) -%}}
-{{% if 'sle' in product %}}
-mkdir -p /etc/systemd/coredump.conf.d/
-if [ ! -f "/etc/systemd/coredump.conf.d/oscap-autoremedy.conf" ]; then
-   echo "[Coredump]" > "/etc/systemd/coredump.conf.d/oscap-autoremedy.conf"
-fi
-{{%- set target_path="/etc/systemd/coredump.conf.d/oscap-autoremedy.conf" -%}}
-{{% else %}}
-{{%- set target_path="/etc/systemd/coredump.conf" -%}}
-{{% endif %}}
-{{{ bash_ensure_ini_config(target_path, section="Coredump", key=parameter, value=value) }}}
-{{%- endmacro -%}}
-
 
 {{#
    Set parameter in /etc/selinux/config
@@ -313,7 +291,7 @@ fi
 :type value: str
 
 #}}
-{{%- macro bash_selinux_config_set(parameter, value) -%}}
+{{%- macro bash_selinux_config_set(parameter, value, rule_id=None) -%}}
 {{{ set_config_file(
         path="/etc/selinux/config",
         parameter=parameter,
@@ -324,7 +302,7 @@ fi
         insensitive=true,
         separator="=",
         separator_regex="=",
-        prefix_regex="^")
+        prefix_regex="^", rule_id=rule_id)
     }}}
 {{%- endmacro -%}}
 
@@ -606,7 +584,7 @@ fi
     If files contain ibus or distro, ignore them.
 
 #}}
-{{%- macro bash_dconf_settings(path, key, value, db, setting_file) -%}}
+{{%- macro bash_dconf_settings(path, key, value, db, setting_file, rule_id=None) -%}}
 # Check for setting in any of the DConf db directories
 # If files contain ibus or distro, ignore them.
 # The assignment assumes that individual filenames don't contain :
@@ -868,6 +846,7 @@ Priority: 0
 Auth-Type: Primary
 Auth:
     [default=die]                   pam_faillock.so authfail
+    sufficient                      pam_faillock.so authsucc
 EOF
 fi
 
@@ -1014,6 +993,37 @@ else
 fi
 {{%- endmacro -%}}
 
+{{#
+    Ensure pam_lastlog2.so PAM module shows the failed logins according to the system capabilities.
+    If authselect is present and the "with-silent-lastlog" feature is available, the feature will be disabled.
+    If authselect is present but the "with-silent-lastlog" feature is not yet available, a custom profile will be used.
+    If authselect is not present, PAM files will be directly edited.
+
+:param pam_file:    PAM config file.
+:type pam_file: str
+:param control:     PAM control flags.
+:type control: str
+:param after_match: Regex used as reference to append a line, if necessary. Optional parameter.
+                    Note: For this macro, there is a special value used to include a line at
+                    the beginning of the file: "BOF"
+:type after_match: str
+
+#}}
+{{%- macro bash_pam_lastlog2_enable_showfailed(pam_file, control, after_match='') -%}}
+if [ -f /usr/bin/authselect ]; then
+    if authselect list-features sssd | grep -q with-silent-lastlog; then
+        {{{ bash_disable_authselect_feature('with-silent-lastlog') | indent(8) }}}
+    else
+        {{# the following macro ensures the PAM_FILE_PATH variable is properly set #}}
+        {{{ bash_ensure_pam_variables_and_authselect_profile(pam_file) | indent(8) }}}
+        {{{ bash_ensure_pam_module_configuration("$PAM_FILE_PATH", 'session', control, 'pam_lastlog2.so', 'showfailed', '', after_match) | indent(8) }}}
+        {{{ bash_remove_pam_module_option_configuration("$PAM_FILE_PATH", 'session', control, 'pam_lastlog2.so', 'silent') | indent(8) }}}
+    fi
+else
+    {{{ bash_ensure_pam_module_configuration(pam_file, 'session', control, 'pam_lastlog2.so', 'showfailed', '', after_match) | indent(8) }}}
+    {{{ bash_remove_pam_module_option_configuration(pam_file, 'session', control, 'pam_lastlog2.so', 'silent') | indent(8) }}}
+fi
+{{%- endmacro -%}}
 
 {{#
     Enable pam_pwhistory.so PAM module according to the system capabilities.
@@ -1041,7 +1051,7 @@ if [ -f /usr/bin/authselect ]; then
         {{{ bash_ensure_pam_module_line("$PAM_FILE_PATH", 'password', control, 'pam_pwhistory.so', after_match) | indent(8) }}}
     fi
 else
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product %}}
 conf_name={{{ pam_file }}}
 conf_path="/usr/share/pam-configs"
 
@@ -1126,7 +1136,7 @@ fi
 
 #}}
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product %}}
 AUTH_FILES=("/etc/pam.d/common-auth")
 SKIP_FAILLOCK_CHECK=true
 {{% else %}}
@@ -1160,14 +1170,14 @@ if [ -f $FAILLOCK_CONF ] || [ "$SKIP_FAILLOCK_CHECK" = "true" ]; then
 else
     for pam_file in "${AUTH_FILES[@]}"
     do
-        if ! grep -qE '^\s*auth.*pam_faillock\.so (preauth|authfail).*{{{ option }}}' "$pam_file"; then
+        if ! grep -qE '^\s*auth.*pam_faillock\.so\s+(preauth|authfail).*{{{ option }}}' "$pam_file"; then
             {{%- if value == '' %}}
-            sed -i --follow-symlinks '/^auth.*required.*pam_faillock\.so.*preauth.*silent.*/ s/$/ {{{ option }}}/' "$pam_file"
+            sed -i --follow-symlinks '/^auth.*required.*pam_faillock\.so.*preauth.*/ s/$/ {{{ option }}}/' "$pam_file"
             {{%- if authfail %}}
             sed -i --follow-symlinks '/^auth.*required.*pam_faillock\.so.*authfail.*/ s/$/ {{{ option }}}/' "$pam_file"
             {{%- endif %}}
             {{%- else %}}
-            sed -i --follow-symlinks '/^auth.*required.*pam_faillock\.so.*preauth.*silent.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "$pam_file"
+            sed -i --follow-symlinks '/^auth.*required.*pam_faillock\.so.*preauth.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "$pam_file"
             {{%- if authfail %}}
             sed -i --follow-symlinks '/^auth.*required.*pam_faillock\.so.*authfail.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "$pam_file"
             {{%- endif %}}
@@ -1176,9 +1186,9 @@ else
         fi
         {{%- else %}}
         else
-            sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock\.so.*preauth.*silent.*\)\('"{{{ option }}}"'=\)[0-9]\+\(.*\)/\1\2'"{{{ value }}}"'\3/' "$pam_file"
+            sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock\.so.*preauth.*\)\('"{{{ option }}}"'=\)\S\+\b\(.*\)/\1\2'"{{{ value }}}"'\3/' "$pam_file"
             {{%- if authfail %}}
-            sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock\.so.*authfail.*\)\('"{{{ option }}}"'=\)[0-9]\+\(.*\)/\1\2'"{{{ value }}}"'\3/' "$pam_file"
+            sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock\.so.*authfail.*\)\('"{{{ option }}}"'=\)\S\+\b\(.*\)/\1\2'"{{{ value }}}"'\3/' "$pam_file"
             {{%- endif %}}
         fi
         {{%- endif %}}
@@ -1263,12 +1273,12 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 :type sed_path_separator: char
 
 #}}
-{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/") -%}}
+{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/", rule_id=None) -%}}
     {{%- set new_line = parameter+separator~value -%}}
     {{#- An escaped dollar in the parameter is escaped because of its significance for the shell, so when making a regex out of the parameter, we remove the shell escape, as the regex escape will do its thing. -#}}
     {{%- set line_regex = prefix_regex + ((parameter | replace("\\$", "$") | escape_regex) | replace("/", "\/")) + separator_regex -%}}
 if [ -e "{{{ path }}}" ] ; then
-    {{{ lineinfile_absent(path, line_regex, insensitive, sed_path_separator=sed_path_separator) | indent(4) }}}
+    {{{ lineinfile_absent(path, line_regex, insensitive, sed_path_separator=sed_path_separator, rule_id=rule_id) | indent(4) }}}
 else
     {{%- if create %}}
     touch "{{{ path }}}"
@@ -1280,7 +1290,7 @@ fi
 {{%- endmacro -%}}
 
 
-{{%- macro lineinfile_absent(path, regex, insensitive=true, sed_path_separator="/") -%}}
+{{%- macro lineinfile_absent(path, regex, insensitive=true, sed_path_separator="/", rule_id=None) -%}}
     {{%- if insensitive -%}}
         {{%- set modifier="Id" -%}}
     {{%- else -%}}
@@ -1388,7 +1398,7 @@ EOF
 
 {{# Strips newline or newline escape sequence regex #}}
 {{% macro bash_deregexify_banner_newline(banner_var_name, newline) -%}}
-{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/(?:\[\\n\]+|(?:\\\\n)+)/{{{ newline }}}/g')
+{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/(?:\[\\n\]+|(?:\\n)+)/{{{ newline }}}/g')
 {{%- endmacro %}}
 
 
@@ -1404,7 +1414,7 @@ EOF
 {{%- endmacro %}}
 
 
-{{% macro bash_ini_file_set(filename, section, key, value) -%}}
+{{% macro bash_ini_file_set(filename, section, key, value, rule_id=None) -%}}
 {{% set config_dir = "/".join(filename.split("/")[:-1]) %}}
 # Try find '[{{{ section }}}]' and '{{{ key }}}' in '{{{ filename }}}', if it exists, set
 # to '{{{ value }}}', if it isn't here, add it, if '[{{{ section }}}]' doesn't exist, add it there
@@ -1444,7 +1454,7 @@ for f in /etc/sudoers /etc/sudoers.d/* ; do
 done
 {{%- endmacro -%}}
 
-{{% macro bash_sssd_ldap_config(parameter, value) -%}}
+{{% macro bash_sssd_ldap_config(parameter, value, rule_id=None) -%}}
 SSSD_CONF="/etc/sssd/sssd.conf"
 LDAP_REGEX='[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*{{{ parameter }}}'
 AD_REGEX='[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*id_provider[[:space:]]*=[[:space:]]*((?i)ad)[[:space:]]*$'
@@ -1499,7 +1509,7 @@ rpm --quiet -q "{{{ pkgname }}}"
     product this remediation is being built for, or it is empty.
 
 #}}
-{{%- macro set_cce_value() -%}}
+{{%- macro set_cce_value(cce_identifiers=None) -%}}
 {{% if cce_identifiers and 'cce' in cce_identifiers -%}}
 cce="{{{ cce_identifiers['cce'] }}}"
 {{%- endif %}}
@@ -1532,15 +1542,15 @@ fi
 
       With default format of 'key = value'::
 
-        {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2') }}}
+        {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2', cce_identifiers=cce_identifiers) }}}
 
       With custom key/value format::
 
-        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '%s=%s') }}}
+        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '%s=%s', cce_identifiers=cce_identifiers) }}}
 
       With a variable::
 
-        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
+        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s', cce_identifiers=cce_identifiers) }}}
 
 :param config_file: Configuration file that will be modified
 :type config_file: str
@@ -1564,7 +1574,7 @@ fi
 
 
 
-{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
+{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s', cce_identifiers=None) -%}}
 # Strip any search characters in the key arg so that the key can be replaced without
 # adding any search characters to the config file.
 stripped_key=$(sed 's/[\^=\$,;+]*//g' <<< "{{{ key }}}")
@@ -1581,7 +1591,7 @@ if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}\\>" "{{{ config_file }}}"; then
 else
     {{{ bash_ensure_nl_at_eof(config_file) | indent }}}
     {{%- if cce_identifiers and 'cce' in cce_identifiers %}}
-    {{{ set_cce_value() }}}
+    {{{ set_cce_value(cce_identifiers=cce_identifiers) }}}
     printf '# Per %s: Set %s in %s\n' "${cce}" "${formatted_output}" "{{{ config_file }}}" >> "{{{ config_file }}}"
     {{%- endif %}}
     printf '%s\n' "$formatted_output" >> "{{{ config_file }}}"
@@ -1954,7 +1964,7 @@ Part of the grub2_bootloader_argument template.
 
 #}}
 {{% macro grub2_bootloader_argument_remediation(arg_name, arg_name_value) %}}
-{{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15'] %}}
+{{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'slmicro5'] %}}
 {{{ update_etc_default_grub_manually(arg_name, arg_name_value) }}}
 {{% endif -%}}
 {{{ grub_command("add", arg_name_value) }}}
@@ -2697,7 +2707,11 @@ This macro defines a conditional expression that is evaluated as true
 if the remediation is performed during a build of a bootable container image.
 #}}
 {{%- macro bash_bootc_build() -%}}
+{{%- if pkg_system == "rpm" -%}}
 { rpm --quiet -q kernel rpm-ostree bootc && ! rpm --quiet -q openshift-kubelet && { [ -f "/run/.containerenv" ] || [ -f "/.containerenv" ]; }; }
+{{%- else -%}}
+/bin/false
+{{%- endif -%}}
 {{%- endmacro -%}}
 
 {{#

@@ -1,6 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="{{{ rule_id }}}" version="1"> {{{
-    oval_metadata("Cluster Logging operator is installed and scanning") }}} <criteria
+    oval_metadata("Cluster Logging operator is installed and scanning", rule_title=rule_title) }}} <criteria
       operator="OR">
       <extend_definition comment="Ensure clusterlogforwarder object exists"
         definition_ref="cluster_logging_operator_exists_observability_api" />

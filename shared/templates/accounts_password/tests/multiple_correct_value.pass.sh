@@ -1,6 +1,6 @@
 #!/bin/bash
 # This test only applies to platforms that check the pwquality.conf.d directory
-# platform = Oracle Linux 8
+# platform = Oracle Linux 8, Oracle Linux 9
 # variables = var_password_pam_{{{ VARIABLE }}}={{{ TEST_VAR_VALUE }}}
 
 {{% if product == "ubuntu2404" %}}

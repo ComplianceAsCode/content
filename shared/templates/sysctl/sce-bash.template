@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
-# environment = bootc
 # check-import = stdout
 {{% if SYSCTLVAL == "" %}}
 # check-export = sysctl_{{{ SYSCTLID }}}_value=sysctl_{{{ SYSCTLID }}}_value
 {{% endif %}}
 
-{{% if product in [ "ol7", "ol8", "ol9", "rhcos4", "rhel8", "rhel9", "rhel10", "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
+{{% if product in [ "ol7", "ol8", "ol9", "rhcos4", "rhel8", "rhel9", "rhel10", "ubuntu2204", "ubuntu2404"] %}}
 FILES_NOT_MANAGED_BY_PACKAGES=("/etc/sysctl.conf" "/etc/sysctl.d/*.conf" "/usr/local/lib/sysctl.d/*.conf" "/run/sysctl.d/*.conf")
 {{% else %}}
 FILES_NOT_MANAGED_BY_PACKAGES=("/etc/sysctl.conf" "/etc/sysctl.d/*.conf" "/lib/sysctl.d/*.conf" "/usr/local/lib/sysctl.d/*.conf" "/run/sysctl.d/*.conf")
 {{% endif %}}
 FILES_MANAGED_BY_PACKAGES=("/usr/lib/sysctl.d/*.conf")
-{{% if product in [ "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
+{{% if product in [ "ubuntu2204", "ubuntu2404"] %}}
 FILES_NOT_MANAGED_BY_PACKAGES+=("/etc/ufw/sysctl.conf")
 {{% endif %}}
 

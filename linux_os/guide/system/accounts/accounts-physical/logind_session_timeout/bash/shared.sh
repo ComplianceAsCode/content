@@ -2,4 +2,4 @@
 
 {{{ bash_instantiate_variables("var_logind_session_timeout") }}}
 
-{{{ bash_ini_file_set("/etc/systemd/logind.conf", "Login", "StopIdleSessionSec", "$var_logind_session_timeout") }}}
+{{{ bash_ini_file_set("/etc/systemd/logind.conf", "Login", "StopIdleSessionSec", "$var_logind_session_timeout", rule_id=rule_id) }}}

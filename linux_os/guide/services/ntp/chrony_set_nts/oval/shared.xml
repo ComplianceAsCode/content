@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("Configure the nts setting in /etc/ntp.conf or chrony.conf to use NTS on all time servers.") }}}
+        {{{ oval_metadata("Configure the nts setting in /etc/ntp.conf or chrony.conf to use NTS on all time servers.", rule_title=rule_title) }}}
         <criteria>
             <criterion test_ref="test_chrony_all_server_has_nts"></criterion>
         </criteria>

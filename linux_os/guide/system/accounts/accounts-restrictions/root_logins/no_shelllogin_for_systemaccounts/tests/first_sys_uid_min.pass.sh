@@ -1,5 +1,4 @@
 #!/bin/bash
-
 useradd --system --shell /sbin/nologin -u 999 sysuser
 useradd -u {{{ uid_min }}} testuser
 
@@ -11,7 +10,7 @@ sed -Ei '
 '"$key"' 999
 }
 /^'"$key"'/d;
-' /etc/login.defs
+' {{{ login_defs_path }}}
 
 key=SYS_UID_MIN
 
@@ -21,4 +20,4 @@ sed -Ei '
 '"$key"' 201
 }
 /^'"$key"'/d;
-' /etc/login.defs
+' {{{ login_defs_path }}}

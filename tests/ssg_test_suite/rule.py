@@ -15,7 +15,7 @@ import tempfile
 
 import ssg.utils
 from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
-from ssg.jinja import process_file_with_macros
+from ssg.jinja import process_file
 from ssg.rules import is_rule_dir
 
 from tests.ssg_test_suite import oscap
@@ -159,6 +159,7 @@ class RuleChecker(oscap.Checker):
                 return False
             if initial_scan_res == 2:
                 # notapplicable
+                self.initial_scan_result = 2
                 return True
 
             supported_and_available_remediations = self._get_available_remediations(scenario)
@@ -432,7 +433,7 @@ class RuleChecker(oscap.Checker):
                 file_path = os.path.join(dirpath, file_name)
                 rel_path = os.path.relpath(file_path, common._SHARED_DIR)
                 try:
-                    file_content = process_file_with_macros(file_path, product_yaml)
+                    file_content = process_file(file_path, product_yaml)
                 except Exception as e:
                     logging.error("Error processing file {0}: {1}".format(file_path, str(e)))
                     continue
@@ -455,9 +456,6 @@ class RuleChecker(oscap.Checker):
         if not self.rule_spec:
             source = self.template_spec
         if not rules_to_test:
-            logging.error("No tests found matching the {0}(s) '{1}'".format(
-                self.target_type,
-                ", ".join(source)))
             return
 
         test_content_by_rule_id = self._get_test_content_by_rule_id(
@@ -495,6 +493,8 @@ class RuleChecker(oscap.Checker):
         self._current_result.scenario = common.Scenario_run(rule_id, scenario.script)
         self._current_result.when = self.test_timestamp_str
 
+        if hasattr(self, 'initial_scan_result') and self.initial_scan_result == 2:
+            return
         with self.copy_of_datastream():
             self._check_rule_scenario(scenario, remote_rule_dir, rule_id, remediation_available)
         self.results.append(self._current_result.save_to_dict())

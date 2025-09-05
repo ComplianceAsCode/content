@@ -8,8 +8,8 @@ import pathlib
 import os
 import re
 import sys
+import typing
 
-import yaml
 from typing import TextIO
 import xml.etree.ElementTree as ET
 
@@ -100,7 +100,7 @@ def get_variable_value(root_path: str, product: str, name: str, selector: str) -
     product_value_full_path = pathlib.Path(root_path).joinpath('build').joinpath(product)\
         .joinpath('values').joinpath(f'{name}.json').absolute()
     if not product_value_full_path.exists():
-        sys.stderr.write(f'Undefined variable {name}\n')
+        sys.stderr.write(f'Undefined variable {name} at {product_value_full_path}\n')
         exit(7)
     with open(product_value_full_path, 'r') as f:
         var_json = json.load(f)
@@ -234,7 +234,7 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
         for selection in control.selections:
             if selection not in used_rules and selection in control.selected:
                 rule_object = handle_rule_yaml(product, rule_json[selection]['dir'], env_yaml)
-                row = create_base_row(control, srgs, rule_object)
+                row = create_base_row(control, srgs, rule_object, product)
                 if control.levels is not None:
                     row['Severity'] = ssg.build_stig.get_severity(control.levels[0])
                 requirement = get_policy_specific_content('srg_requirement', rule_object)
@@ -259,11 +259,11 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
         return rows
 
     else:
-        return [no_selections_row(control, srgs)]
+        return [no_selections_row(control, srgs, product)]
 
 
-def no_selections_row(control, srgs):
-    row = create_base_row(control, srgs, ssg.build_yaml.Rule('null'))
+def no_selections_row(control, srgs, product: str) -> typing.Dict[str, str]:
+    row = create_base_row(control, srgs, ssg.build_yaml.Rule('null'), product)
     row['Requirement'] = control.title
     row['Status'] = DisaStatus.from_string(control.status)
     row['Fix'] = control.fixtext
@@ -273,8 +273,28 @@ def no_selections_row(control, srgs):
     return row
 
 
+def get_rule_srg_refs(srgs: typing.List[str], product) -> typing.Generator[str, None, None]:
+    for srg in srgs:
+        if '-ctr-' in srg and product != 'ocp4':
+            continue
+        yield srg
+
+
+def _get_cci(rule_srgs, srg, srgs):
+    if rule_srgs:
+        rule_ccis = set()
+        for rule_srg in rule_srgs:
+            if rule_srg not in srgs:
+                continue
+            rule_ccis.add(srgs[rule_srg].get('cci'))
+        cci = ','.join(rule_ccis)
+    else:
+        cci = srg['cci']
+    return cci
+
+
 def create_base_row(item: ssg.controls.Control, srgs: dict,
-                    rule_object: ssg.build_yaml.Rule) -> dict:
+                    rule_object: ssg.build_yaml.Rule, product: str) -> dict:
     row = dict()
     srg_id = item.id
     if srg_id not in srgs:
@@ -282,14 +302,14 @@ def create_base_row(item: ssg.controls.Control, srgs: dict,
         exit(4)
     srg = srgs[srg_id]
 
+    rule_srgs = None
+
     if 'srg' in rule_object.references:
-        row['SRGID'] = ','.join(rule_object.references['srg'])
+        rule_srgs = list(get_rule_srg_refs(rule_object.references['srg'], product))
+        row['SRGID'] = ",".join(rule_srgs)
     else:
         row['SRGID'] = srg_id
-    if 'disa' in rule_object.references:
-        row['CCI'] = ','.join(rule_object.references['disa'])
-    else:
-        row['CCI'] = srg['cci']
+    row['CCI'] = _get_cci(rule_srgs, srg, srgs)
     row['SRG Requirement'] = srg['title']
     row['SRG VulDiscussion'] = html_plain_text(srg['vuln_discussion'])
     row['SRG Check'] = html_plain_text(srg['check'])

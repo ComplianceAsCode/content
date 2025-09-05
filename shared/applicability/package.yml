@@ -47,13 +47,17 @@ args:
   iptables:
     pkgname: iptables
   libpwquality:
-    {{% if 'ubuntu' in product %}}
+    {{% if 'ubuntu' in product or 'debian' in product %}}
     pkgname: libpwquality1
     {{% else %}}
     pkgname: libpwquality
     {{% endif %}}
   libreswan:
+    {{% if product == "sle15" %}}
+    pkgname: strongswan-ipsec
+    {{% else %}}
     pkgname: libreswan
+    {{% endif %}}
   libuser:
     pkgname: libuser
   logrotate:
@@ -75,7 +79,11 @@ args:
       pkgname: libpam-ldapd
     {{% endif %}}
   ntp:
+    {{% if product == "debian13" %}}
+    pkgname: ntpsec
+    {{% else %}}
     pkgname: ntp
+    {{% endif %}}
     title: NTP daemon and utilities
   openssh:
     pkgname: openssh
@@ -95,7 +103,7 @@ args:
     pkgname: rsh-server
   shadow-utils:
     {{% if pkg_system == "rpm" %}}
-    {{% if product in ["kylinserver10", "openeuler2203", "sle12", "sle15", "slmicro5"] %}}
+    {{% if product in ["kylinserver10", "openeuler2203", "sle12", "sle15", "slmicro5", "slmicro6"] %}}
       pkgname: shadow
     {{% else %}}
       pkgname: shadow-utils

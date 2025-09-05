@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: Create /tmp/tmp-inst directory
-  file:
+  ansible.builtin.file:
     path: /tmp/tmp-inst
     state: directory
     mode: '000'
@@ -18,5 +18,4 @@
   path="/etc/security/namespace.conf",
   regex="^\s*/tmp\s+/tmp/tmp-inst/\s+level\s+root,adm$",
   insensitive=false,
-  new_line="/tmp     /tmp/tmp-inst/        level      root,adm"
-) }}}
+  new_line="/tmp     /tmp/tmp-inst/        level      root,adm", rule_title=rule_title) }}}

@@ -1,0 +1,68 @@
+name: Compare DS Build
+on:
+    pull_request:
+        branches: [ master, 'stabilization*' ]
+permissions:
+    contents: read
+jobs:
+    compare-ds-build-content:
+        name: Compare DS Build Content
+        runs-on: ubuntu-latest
+        container:
+            image: fedora:latest
+        steps:
+            -   name: Install Deps
+                run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools
+                    python3-jinja2 git python3-deepdiff python3-requests jq python3-pip
+                    python3-setuptools
+            -   name: Install deps python
+                run: pip install gitpython xmldiff
+            -   name: Checkout
+                uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+                with:
+                    ref: ${{ github.event.pull_request.head.sha }}
+                    fetch-depth: 0
+            -   name: Checkout (CTF)
+                uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4
+                with:
+                    repository: ComplianceAsCode/content-test-filtering
+                    path: ctf
+            -   name: Set git safe directory
+                run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+            -   name: Find forking point
+                env:
+                    BASE_BRANCH: ${{ github.base_ref }}
+                run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
+                id: fork_point
+            -   name: Detect content changes in the PR
+                run: python3 ./ctf/content_test_filtering.py pr --base ${{ steps.fork_point.outputs.FORK_POINT }} --remote_repo ${{ github.server_url }}/${{ github.repository }}  --verbose --rule --output json ${{ github.event.pull_request.number }} > output.json
+            -   name: Test if there are no content changes
+                run: echo "CTF_OUTPUT_SIZE=$(stat --printf="%s" output.json)" >> $GITHUB_OUTPUT
+                id: ctf
+            -   name: Print changes to content detected if any
+                if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+                run: cat output.json
+            -   name: Get product attribute
+                if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+                id: product
+                uses: notiz-dev/github-action-json-property@a5a9c668b16513c737c3e1f8956772c99c73f6e8 # v0.2.0
+                with:
+                    path: 'output.json'
+                    prop_path: 'product'
+            -   name: Build product ${{ github.base_ref }} (${{ steps.fork_point.outputs.FORK_POINT }})
+                if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+                run: ./build_product ${{steps.product.outputs.prop}} --datastream-only
+            -   name: Create Artifact
+                if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+                run: |-
+                    mkdir artifacts
+                    cp build/ssg-${{steps.product.outputs.prop}}-ds.xml artifacts
+                    cp output.json artifacts
+                    tar -czvf artifacts.tar.gz artifacts
+            -   name: Upload artifacts
+                if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+                uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+                with:
+                    name: pr-artifacts-${{ github.event.pull_request.head.sha }}
+                    retention-days: 1
+                    path: artifacts.tar.gz

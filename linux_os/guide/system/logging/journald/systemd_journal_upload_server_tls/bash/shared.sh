@@ -1,10 +1,24 @@
-# platform = multi_platform_slmicro
+# platform = multi_platform_slmicro,multi_platform_ubuntu,multi_platform_debian
+{{% if 'ubuntu' in product %}}
+dropin_conf=/etc/systemd/journal-upload.conf.d/60-journald_upload.conf
+mkdir -p /etc/systemd/journal-upload.conf.d
+touch "${dropin_conf}"
+{{% else %}}
+dropin_conf=/etc/systemd/journal-upload.conf
+{{% endif %}}
+ 
+for conf in /etc/systemd/journal-upload.conf /etc/systemd/journal-upload.conf.d/*; do
+    [[ -e "${conf}" ]] || continue
+    sed -i --follow-symlinks \
+        -e 's/^ServerKeyFile\>/#&/g' \
+        -e 's/^ServerCertificateFile\>/#&/g' \
+        -e 's/^TrustedCertificateFile\>/#&/g' "${conf}"
+done
 
 {{{ bash_instantiate_variables("var_journal_upload_server_key_file") }}}
-{{{ bash_replace_or_append('/etc/systemd/journal-upload.conf', '^ServerKeyFile', "$var_journal_upload_server_key_file", '%s=%s') }}}
-
 {{{ bash_instantiate_variables("var_journal_upload_server_certificate_file") }}}
-{{{ bash_replace_or_append('/etc/systemd/journal-upload.conf', '^ServerCertificateFile', "$var_journal_upload_server_certificate_file", '%s=%s') }}}
-
 {{{ bash_instantiate_variables("var_journal_upload_server_trusted_certificate_file") }}}
-{{{ bash_replace_or_append('/etc/systemd/journal-upload.conf', '^TrustedCertificateFile', "$var_journal_upload_server_trusted_certificate_file", '%s=%s') }}}
+
+{{{ bash_ensure_ini_config("${dropin_conf}", 'Upload', 'ServerKeyFile', "$var_journal_upload_server_key_file") }}}
+{{{ bash_ensure_ini_config("${dropin_conf}", 'Upload', 'ServerCertificateFile', "$var_journal_upload_server_certificate_file") }}}
+{{{ bash_ensure_ini_config("${dropin_conf}", 'Upload', 'TrustedCertificateFile', "$var_journal_upload_server_trusted_certificate_file") }}}

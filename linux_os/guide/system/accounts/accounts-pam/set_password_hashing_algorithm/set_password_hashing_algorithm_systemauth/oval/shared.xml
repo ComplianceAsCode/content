@@ -1,7 +1,7 @@
-{{% if product in ['sle12', 'sle15', 'slmicro5'] %}}
+{{% if product in ['sle12', 'sle15', 'slmicro5', 'slmicro6'] %}}
   {{% set pam_file = "/etc/pam.d/common-password" %}}
   {{% set line_pattern = "^[\s]*password[\s]+(?:(?:required))[\s]+pam_unix\.so[\s]+" %}}
-{{% elif 'ubuntu' in product %}}
+{{% elif 'ubuntu' in product or 'debian' in product %}}
   {{% set pam_file = "/etc/pam.d/common-password" %}}
   {{% set line_pattern = "^[\s]*password[\s]+(?:\[success=\d+\s+default=ignore\])[\s]+pam_unix\.so[\s]+" %}}
 {{% else %}}
@@ -11,7 +11,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("The password hashing algorithm should be set correctly in {{{ pam_file }}}.") }}}
+    {{{ oval_metadata("The password hashing algorithm should be set correctly in {{{ pam_file }}}.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_pam_unix_hashing_algorithm_systemauth" />
     </criteria>

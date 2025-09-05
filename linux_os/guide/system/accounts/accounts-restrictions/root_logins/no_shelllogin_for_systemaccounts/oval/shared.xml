@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="no_shelllogin_for_systemaccounts" version="2">
     {{{ oval_metadata("The root account is the only system account that should have
-      a login shell.") }}}
+      a login shell.", rule_title=rule_title) }}}
     <criteria operator="OR">
       <!-- If SYS_UID_MIN and SYS_UID_MAX is not defined in /etc/login.defs
            perform the check that any /etc/passwd entry with shell defined
@@ -9,9 +9,9 @@
            If at least one UID with shell defined exists within that range,
            the requirement isn't met -->
       <criteria operator="AND">
-        <criterion comment="Test SYS_UID_MIN not defined in /etc/login.defs"
+        <criterion comment="Test SYS_UID_MIN not defined in {{{ login_defs_path }}}"
         test_ref="test_sys_uid_min_not_defined" />
-        <criterion comment="Test SYS_UID_MAX not defined in /etc/login.defs"
+        <criterion comment="Test SYS_UID_MAX not defined in {{{ login_defs_path }}}"
         test_ref="test_sys_uid_max_not_defined" />
         <criterion comment="Test shell defined for UID from &lt;0, UID_MIN -1&gt;"
         test_ref="test_shell_defined_default_uid_range" />
@@ -25,9 +25,9 @@
            If at least one UID with shell defined exists within some of the two
            ranges, the requirement isn't met -->
       <criteria operator="AND">
-        <criterion comment="Test SYS_UID_MIN defined in /etc/login.defs"
+        <criterion comment="Test SYS_UID_MIN defined in {{{ login_defs_path }}}"
         test_ref="test_sys_uid_min_not_defined" negate="true" />
-        <criterion comment="Test SYS_UID_MAX defined in /etc/login.defs"
+        <criterion comment="Test SYS_UID_MAX defined in {{{ login_defs_path }}}"
         test_ref="test_sys_uid_max_not_defined" negate="true" />
         <criterion comment="Test shell defined for reserved system UIDs"
         test_ref="test_shell_defined_reserved_uid_range" />
@@ -43,7 +43,7 @@
   <ind:textfilecontent54_object id="object_last_uid_min_from_etc_login_defs"
   version="1">
     <ind:behaviors singleline="true" />
-    <ind:filepath>/etc/login.defs</ind:filepath>
+    <ind:filepath>{{{ login_defs_path }}}</ind:filepath>
     <!-- Last (uncommented) instance od UID_MIN directive -->
     <ind:pattern operation="pattern match">.*(?:^|\n)\s*(UID_MIN[\s]+[\d]+)\s*(?:$|\n)</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
@@ -53,7 +53,7 @@
   <ind:textfilecontent54_object id="object_last_sys_uid_min_from_etc_login_defs"
   version="1">
     <ind:behaviors singleline="true" />
-    <ind:filepath>/etc/login.defs</ind:filepath>
+    <ind:filepath>{{{ login_defs_path }}}</ind:filepath>
     <!-- Last (uncommented) instance of SYS_UID_MIN directive -->
     <ind:pattern operation="pattern match">.*(?:^|\n)\s*(SYS_UID_MIN[\s]+[\d]+)\s*(?:$|\n)</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
@@ -62,7 +62,7 @@
   <!-- Get last occurrence of SYS_UID_MAX from /etc/login.defs as OVAL object -->
   <ind:textfilecontent54_object id="object_last_sys_uid_max_from_etc_login_defs" version="1">
     <ind:behaviors singleline="true" />
-    <ind:filepath>/etc/login.defs</ind:filepath>
+    <ind:filepath>{{{ login_defs_path }}}</ind:filepath>
     <!-- Last (uncommented) instance of SYS_UID_MAX directive -->
     <ind:pattern operation="pattern match">.*(?:^|\n)\s*(SYS_UID_MAX[\s]+[\d]+)\s*(?:$|\n)</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
@@ -86,7 +86,7 @@
 
   <!-- Actual /etc/login.defs UID_MIN value as OVAL variable -->
   <local_variable id="variable_uid_min_value" datatype="int"
-  comment="Value of last UID_MIN from /etc/login.defs" version="1">
+  comment="Value of last UID_MIN from {{{ login_defs_path }}}" version="1">
     <regex_capture pattern="UID_MIN[\s]+(\d+)">
       <object_component item_field="subexpression"
       object_ref="object_last_uid_min_from_etc_login_defs" />
@@ -113,14 +113,14 @@
 
   <!-- Test if SYS_UID_MIN not defined in /etc/login.defs -->
   <ind:textfilecontent54_test id="test_sys_uid_min_not_defined"
-  comment="SYS_UID_MIN not defined in /etc/login.defs" check="all"
+  comment="SYS_UID_MIN not defined in {{{ login_defs_path }}}" check="all"
   check_existence="none_exist" version="1">
     <ind:object object_ref="object_last_sys_uid_min_from_etc_login_defs" />
   </ind:textfilecontent54_test>
 
   <!-- Test if SYS_UID_MAX not defined in /etc/login.defs -->
   <ind:textfilecontent54_test id="test_sys_uid_max_not_defined"
-  comment="SYS_UID_MAX not defined in /etc/login.defs" check="all"
+  comment="SYS_UID_MAX not defined in {{{ login_defs_path }}}" check="all"
   check_existence="none_exist" version="1">
     <ind:object object_ref="object_last_sys_uid_max_from_etc_login_defs" />
   </ind:textfilecontent54_test>
@@ -137,7 +137,7 @@
 
   <!-- Actual /etc/login.defs SYS_UID_MIN value as OVAL variable -->
   <local_variable id="variable_sys_uid_min_value" datatype="int"
-  comment="Value of last SYS_UID_MIN from /etc/login.defs" version="1">
+  comment="Value of last SYS_UID_MIN from {{{ login_defs_path }}}" version="1">
     <regex_capture pattern="SYS_UID_MIN[\s]+(\d+)">
       <object_component item_field="subexpression"
       object_ref="object_last_sys_uid_min_from_etc_login_defs" />
@@ -146,7 +146,7 @@
 
   <!-- Actual /etc/login.defs SYS_UID_MAX value as OVAL variable -->
   <local_variable id="variable_sys_uid_max_value" datatype="int"
-  comment="Value of last SYS_UID_MAX from /etc/login.defs" version="1">
+  comment="Value of last SYS_UID_MAX from {{{ login_defs_path }}}" version="1">
     <regex_capture pattern="SYS_UID_MAX[\s]+(\d+)">
       <object_component item_field="subexpression"
       object_ref="object_last_sys_uid_max_from_etc_login_defs" />

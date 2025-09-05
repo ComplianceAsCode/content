@@ -1,4 +1,4 @@
-name: Gate
+name: Gate Fedora
 on:
   merge_group:
     branches: [ 'master' ]
@@ -19,7 +19,7 @@ jobs:
             -   name: Install Deps
                 run: dnf install -y cmake make openscap-utils python3-pyyaml bats ansible python3-pip ShellCheck git gcc gcc-c++ python3-devel libxml2-devel libxslt-devel python3-setuptools gawk
             -   name: Checkout
-                uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+                uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4
             -   name: Install deps python
                 run: pip install pcre2==0.4.0 -r requirements.txt -r test-requirements.txt
             -   name: Build
@@ -48,7 +48,7 @@ jobs:
                         rhel10 \
                         rhv4 \
                 env:
-                    ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED:BOOL=ON -DSSG_SCAP_VALIDATION_ENABLED:BOOL=OFF -DENABLE_CHECK_RULE_REMOVAL:BOOL=ON -DOLD_RELEASE_DIR=/__w/content/content/old_release"
+                    ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED:BOOL=ON -DSSG_SCAP_VALIDATION_ENABLED:BOOL=OFF -DENABLE_CHECK_RULE_REMOVAL:BOOL=ON -DOLD_RELEASE_DIR=/__w/content/content/old_release -DENABLE_PYTHON_COVERAGE:BOOL=ON"
             -   name: Get Latest Release
                 uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
                 with:
@@ -74,12 +74,12 @@ jobs:
                 working-directory: ./build
             -   name: "Set git safe directory, ref: https://github.com/actions/checkout/issues/760"
                 run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
-            -   name: Upload coverage to Code Climate  # Requires: git package
+            -   name: Upload coverage to Qlty  # Requires: git package
                 if: ${{ github.repository == 'ComplianceAsCode/content' }}
-                uses: paambaati/codeclimate-action@f429536ee076d758a24705203199548125a28ca7 # v9.0.0
-                env:
-                    CC_TEST_REPORTER_ID: e67e068471d32b63f8e9561dba8f6a3f84dcc76b05ebfd98e44ced1a91cff854
+                uses: qltysh/qlty-action/coverage@a19242102d17e497f437d7466aa01b528537e899 # v2.2.0
                 with:
-                    coverageLocations: build/tests/coverage.xml:coverage.py
+                    token: qltcp_kdIPsqNZzW5rYoxq
+                    files: build/tests/coverage.xml
+                    strip-prefix: /__w/content/content
             -   name: Validate gitmailmap
                 run: grep -E "\S" .mailmap | grep -Ev '^#' | git check-mailmap --stdin

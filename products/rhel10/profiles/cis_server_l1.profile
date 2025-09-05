@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 metadata:
@@ -15,3 +16,4 @@ description: |-
 
 selections:
     - cis_rhel10:all:l1_server
+    - var_authselect_profile=local

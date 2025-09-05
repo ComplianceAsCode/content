@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Check setting of " + NAME + " in Firefox policy", affected_platforms=['Mozilla Firefox']) }}} 
+    {{{ oval_metadata("Check setting of " + NAME + " in Firefox policy", affected_platforms=['Mozilla Firefox'], rule_title=rule_title) }}} 
     <criteria operator="AND" comment="Test conditions - Firefox policy item is set.">
      {{% for policy_item in POLICIES %}}
       <criterion comment="Check that Firefox administrative policy setting {{{ policy_item.subpath | join('.') }}}.{{{ policy_item.parameter }}} to '{{{policy_item.value}}}'." test_ref="test_{{{ rule_id }}}_{{{ policy_item.subpath_string | replace ("@", "_at_") }}}_{{{ policy_item.parameter }}}" />

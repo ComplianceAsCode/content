@@ -1,7 +1,6 @@
 <def-group>
-  <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("The accounts should be configured to expire automatically following"
-    ~ " password expiration.") }}}
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    {{{ oval_metadata("The accounts should be configured to be disabled automatically after a period of inactivity.", rule_title=rule_title) }}}
     <criteria
     comment="the value for the inactive parameter should be set appropriately in /etc/pam.d/password-auth">
       <criterion test_ref="test_password_auth_inactive" />
@@ -22,7 +21,7 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_password_auth_inactive" version="1">
-    <ind:subexpression operation="less than or equal" var_ref="var_account_disable_post_pw_expiration"
+    <ind:subexpression operation="less than or equal" var_ref="var_account_disable_inactivity"
     datatype="int" />
   </ind:textfilecontent54_state>
 
@@ -30,6 +29,6 @@
     <ind:subexpression operation="greater than" datatype="int">0</ind:subexpression>
   </ind:textfilecontent54_state>
 
-  <external_variable comment="inactive days expiration" datatype="int" id="var_account_disable_post_pw_expiration" version="1" />
+  <external_variable comment="days of inactivity before account is locked" datatype="int" id="var_account_disable_inactivity" version="1" />
 
 </def-group>

@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 title: 'BSI IT-Grundschutz (Basic Protection) Building Block SYS.1.6 and APP.4.4'

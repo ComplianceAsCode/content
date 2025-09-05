@@ -4,6 +4,8 @@ title: 'Verify User Who Owns /var/log/syslog File'
 
 {{%  if product in ['ubuntu2404'] %}}
 description: '{{{ describe_file_owner(file="/var/log/syslog", owner="syslog|root") }}}'
+{{%- elif 'debian' in product %}}
+description: '{{{ describe_file_owner(file="/var/log/syslog", owner="root") }}}'
 {{%- else %}}
 description: '{{{ describe_file_owner(file="/var/log/syslog", owner="syslog") }}}'
 {{%- endif %}}
@@ -16,8 +18,6 @@ severity: medium
 
 references:
     srg: SRG-OS-000206-GPOS-00084
-    stigid@ubuntu2004: UBTU-20-010421
-    stigid@ubuntu2204: UBTU-22-232130
 
 {{%- if product in ['ubuntu2404'] %}}
 ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="syslog|root") }}}'
@@ -30,6 +30,17 @@ template:
     vars:
         filepath: /var/log/syslog
         uid_or_name: 'syslog|root'
+{{%- elif 'debian' in product %}}
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/syslog", owner="root") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: /var/log/syslog
+        uid_or_name: 'root'
 {{%- else %}}
 ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="syslog") }}}'
 

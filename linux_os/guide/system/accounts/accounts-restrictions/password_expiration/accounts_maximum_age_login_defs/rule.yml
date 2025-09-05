@@ -4,11 +4,9 @@ title: 'Set Password Maximum Age'
 
 description: |-
     To specify password maximum age for new accounts,
-    edit the file <tt>/etc/login.defs</tt>
+    edit the file <tt>{{{ login_defs_path }}}</tt>
     and add or correct the following line:
     <pre>PASS_MAX_DAYS {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}</pre>
-    A value of 180 days is sufficient for many environments.
-    The DoD requirement is 60.
     The profile requirement is <tt>{{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}</tt>.
 
 rationale: |-
@@ -31,13 +29,12 @@ identifiers:
     cce@sle12: CCE-83050-5
     cce@sle15: CCE-85570-0
     cce@slmicro5: CCE-93685-6
+    cce@slmicro6: CCE-94670-7
 
 references:
     cis-csc: 1,12,15,16,5
     cis@sle12: 5.4.1.2
     cis@sle15: 5.4.1.2
-    cis@ubuntu2004: 5.4.1.1
-    cis@ubuntu2204: 5.5.1.2
     cjis: 5.6.2.1
     cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     cui: 3.5.6
@@ -51,29 +48,26 @@ references:
     srg: SRG-OS-000076-GPOS-00044
     stigid@ol7: OL07-00-010250
     stigid@ol8: OL08-00-020200
-    stigid@rhel8: RHEL-08-020200
     stigid@sle12: SLES-12-010280
     stigid@sle15: SLES-15-020220
-    stigid@ubuntu2004: UBTU-20-010008
-    stigid@ubuntu2204: UBTU-22-411030
 
 ocil_clause: 'the "PASS_MAX_DAYS" parameter value is greater than "{{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}", or commented out'
 
 ocil: |-
     Verify that {{{ full_name }}} enforces a {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}-day maximum password lifetime for new user accounts by running the following command:
 
-    <pre>$ grep -i pass_max_days /etc/login.defs
+    <pre>$ grep -i pass_max_days {{{ login_defs_path }}}
 
     PASS_MAX_DAYS {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce a {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}-day maximum password lifetime.
 
-    Add, or modify the following line in the "/etc/login.defs" file:
+    Add, or modify the following line in the "{{{ login_defs_path }}}" file:
 
     PASS_MAX_DAYS {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}
 
 srg_requirement: |-
-    {{{ full_name }}} user account passwords for new users or password changes must have a 60 day maximum password lifetime restriction in /etc/login.defs.
+    {{{ full_name }}} user account passwords for new users or password changes must have a 60 day maximum password lifetime restriction in {{{ login_defs_path }}}.
 
 platform: package[shadow-utils]

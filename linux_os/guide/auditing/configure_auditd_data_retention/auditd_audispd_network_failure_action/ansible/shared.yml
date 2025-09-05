@@ -7,7 +7,7 @@
 {{% set audisp_config_file_path = audisp_conf_path + "/audisp-remote.conf" %}}
 
 - name: Make sure that network failure action is configured for Audispd
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{{ audisp_config_file_path }}}"
     line: "network_failure_action = {{ var_audispd_network_failure_action }}"
     regexp: '^\s*network_failure_action\s*=.*$'

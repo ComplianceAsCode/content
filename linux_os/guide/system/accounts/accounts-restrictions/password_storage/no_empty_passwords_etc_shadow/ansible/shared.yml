@@ -5,13 +5,13 @@
 # disruption = low
 
 - name: Collect users with no password
-  command: >
+  ansible.builtin.command: >
     awk -F: '!$2 {print $1}' /etc/shadow
   register: users_nopasswd
   changed_when: false
 
 - name: Lock users with no password
-  command: >
+  ansible.builtin.command: >
     passwd -l {{ item }}
   with_items: "{{ users_nopasswd.stdout_lines }}"
   when: users_nopasswd is not skipped and users_nopasswd.stdout_lines | length > 0

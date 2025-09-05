@@ -1,7 +1,20 @@
+{{%- if XCCDF_VARIABLE -%}}
+{{{
+oval_auditd_config(
+	parameter=PARAMETER,
+	xccdf_variable=XCCDF_VARIABLE,
+	variable_datatype=VARIABLE_DATATYPE,
+	missing_parameter_pass=MISSING_PARAMETER_PASS,
+	rule_id=rule_id,
+	rule_title=rule_title)
+}}}
+{{%- else -%}}
 {{{
 oval_auditd_config(
 	parameter=PARAMETER,
 	value=VALUE,
-	missing_parameter_pass=MISSING_PARAMETER_PASS
-)
+	missing_parameter_pass=MISSING_PARAMETER_PASS,
+	rule_id=rule_id,
+	rule_title=rule_title)
 }}}
+{{%- endif -%}}

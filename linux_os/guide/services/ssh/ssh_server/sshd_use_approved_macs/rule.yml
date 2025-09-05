@@ -7,7 +7,7 @@ description: |-
     Limit the MACs to those hash algorithms which are FIPS-approved.
     The following line in <tt>/etc/ssh/sshd_config</tt>
     demonstrates use of FIPS-approved MACs:
-{{% if product in ["sle12", "sle15", "slmicro5"] %}}
+{{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
     <pre>MACs hmac-sha2-512,hmac-sha2-256</pre>
 {{% else %}}
     <pre>MACs hmac-sha2-512,hmac-sha2-256,hmac-sha1</pre>
@@ -34,8 +34,8 @@ description: |-
     The rule is parametrized to use the following MACs: <code>{{{ xccdf_value("sshd_approved_macs") }}}</code>.
 
 rationale: |-
-    DoD Information Systems are required to use FIPS-approved cryptographic hash
-    functions. The only SSHv2 hash algorithms meeting this requirement is SHA2.
+    FIPS-approved cryptographic hash functions are required to be used.
+    The only SSHv2 hash algorithms meeting this requirement is SHA2.
 
 severity: medium
 
@@ -44,12 +44,12 @@ identifiers:
     cce@sle12: CCE-83036-4
     cce@sle15: CCE-91338-4
     cce@slmicro5: CCE-93691-4
+    cce@slmicro6: CCE-94680-6
 
 references:
     cis-csc: 1,12,13,15,16,5,8
     cis@sle12: 5.2.14
     cis@sle15: 5.2.14
-    cis@ubuntu2004: 5.2.13
     cobit5: APO01.06,APO13.01,DSS01.04,DSS05.02,DSS05.03,DSS05.04,DSS05.07,DSS06.02,DSS06.03
     cui: 3.1.13,3.13.11,3.13.8
     hipaa: 164.308(b)(1),164.308(b)(2),164.312(e)(1),164.312(e)(2)(i),164.312(e)(2)(ii),164.314(b)(2)(i)

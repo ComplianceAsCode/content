@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 metadata:
@@ -23,6 +24,7 @@ selections:
     - anssi:all:high
     - var_password_hashing_algorithm=SHA512
     - var_password_pam_unix_rounds=65536
+    - var_mount_option_proc_hidepid=invisible
     # the following rule renders UEFI systems unbootable
     - '!sebool_secure_mode_insmod'
     # Following rules once had a prodtype incompatible with the rhel9 product
@@ -65,3 +67,16 @@ selections:
     - '!package_xinetd_removed'
     - '!package_ypbind_removed'
     - '!package_ypserv_removed'
+
+    # RHEL9 unified the paths for grub2 files. These rules are selected in control file by R5 and R29.
+    - '!file_groupowner_efi_grub2_cfg'
+    - '!file_owner_efi_grub2_cfg'
+    - '!file_permissions_efi_grub2_cfg'
+    - '!file_groupowner_efi_user_cfg'
+    - '!file_owner_efi_user_cfg'
+    - '!file_permissions_efi_user_cfg'
+    - '!grub2_uefi_password'
+
+    # Following rules are not applicable to RHEL
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'

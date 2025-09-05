@@ -1,7 +1,9 @@
+---
 documentation_complete: true
 
 platform: ocp4
 status: deprecated
+
 metadata:
     version: V1R1
     SMEs:
@@ -19,7 +21,8 @@ description: |-
     This profile contains configuration checks that align to the DISA STIG for
     Red Hat OpenShift Container Platform 4.
 
-filter_rules: '"ocp4-node" not in platform and "ocp4-master-node" not in platform and "ocp4-node-on-sdn" not in platform and "ocp4-node-on-ovn" not in platform'
+filter_rules: '"ocp4-node" not in platform and "ocp4-master-node" not in platform and "ocp4-node-on-sdn"
+    not in platform and "ocp4-node-on-ovn" not in platform'
 
 selections:
     - stig_ocp4:all

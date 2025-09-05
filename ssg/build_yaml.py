@@ -45,7 +45,7 @@ from .constants import (XCCDF12_NS,
 from .rules import get_rule_dir_yaml, is_rule_dir
 
 from .cce import is_cce_format_valid, is_cce_value_valid
-from .yaml import DocumentationNotComplete, open_and_macro_expand
+from .yaml import DocumentationNotComplete, open_and_expand
 from .utils import required_key, mkdir_p
 
 from .xml import ElementTree as ET, register_namespaces, parse_file
@@ -786,9 +786,10 @@ class Benchmark(XCCDFEntity):
 
         cpe_platform_spec = ET.Element(
             "{%s}platform-specification" % PREFIX_TO_NS["cpe-lang"])
-        for platform_id, platform in self.product_cpes.platforms.items():
+        for platform_id in sorted(self.product_cpes.platforms):
             if platform_id in cpe_platforms_to_not_include:
                 continue
+            platform = self.product_cpes.platforms[platform_id]
             cpe_platform_spec.append(platform.to_xml_element())
 
         if len(cpe_platform_spec) > 0:
@@ -1944,7 +1945,7 @@ class Rule(XCCDFEntity, Templatable):
         Returns:
             dict: The processed YAML data from the content file.
         """
-        yaml_data = open_and_macro_expand(filename, env_yaml)
+        yaml_data = open_and_expand(filename, env_yaml)
         return yaml_data
 
     def read_policy_specific_content(self, env_yaml, files):
@@ -3355,7 +3356,8 @@ class LinearLoader(object):
         Returns:
             A list of rules that are selected in all profiles of the given benchmark.
         """
-        return [self.rules[rule_id] for rule_id in benchmark.get_rules_selected_in_all_profiles()]
+        ids = sorted(benchmark.get_rules_selected_in_all_profiles())
+        return [self.rules[rule_id] for rule_id in ids]
 
     def export_ocil_to_xml(self, benchmark=None):
         """

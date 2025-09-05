@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("All interactive user's Home Directories must be group-owned by its user") }}}
+    {{{ oval_metadata("All interactive user's Home Directories must be group-owned by its user", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_file_groupownership_home_directories"
                  comment="All interactive user's Home Directories must be group-owned by its user"/>
@@ -20,7 +20,9 @@
 
   <local_variable id="var_file_groupownership_home_directories_gids" datatype="int" version="1"
                   comment="Variable including all gids from primary interactive group">
+    <unique>
     <object_component item_field="subexpression" object_ref="{{{ interactive_users_gids_object }}}"/>
+    </unique>
   </local_variable>
 
   <!-- #### creation of object #### -->

@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="install_PAE_kernel_on_x86-32" version="2">
     {{{ oval_metadata("The RPM package kernel-PAE should be installed on 32-bit
-      systems.") }}}
+      systems.", rule_title=rule_title) }}}
     <criteria operator="OR">
       <!-- System is not 32-bit. In that case, there's
            nothing more to check -->

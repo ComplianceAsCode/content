@@ -18,9 +18,12 @@ for f in /etc/bash.bashrc /etc/profile /etc/profile.d/*.sh; do
     fi
 done
 
+OLD_UMASK=$(umask)
+umask u=rw,go=r
 if [ $tmout_found -eq 0 ]; then
         echo -e "\n# Set TMOUT to $var_accounts_tmout per security requirements" >> /etc/profile.d/tmout.sh
         echo "TMOUT=$var_accounts_tmout" >> /etc/profile.d/tmout.sh
         echo "readonly TMOUT" >> /etc/profile.d/tmout.sh
         echo "export TMOUT" >> /etc/profile.d/tmout.sh
 fi
+umask $OLD_UMASK

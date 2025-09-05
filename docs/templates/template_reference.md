@@ -28,6 +28,20 @@
     -   **value** - the value of configuration item specified by
         parameter
 
+    - **xccdf_variable** - specifies an XCCDF variable to use as a value for the specified **parameter**.
+        This parameter conflicts with the **value** parameter.
+
+    - **variable_datatype** - data type of the XCCDF variable specified by the xccdf_variable parameter, optional, default is string
+
+    - **test_correct_value** - optional. If set, it will be used in test scenarios as a correct value.
+      If not set, the "value" parameter of the template will be used.
+      If XCCDF variable is used and this option is not set, then a string "corect_value" will be used.
+      This parameter should be used in case the value is defined by an XCCDF variable and the value must be chosen from a strictly defined set of options.
+
+    - **test_wrong_value** - optional. If set, this value will be used in test scenarios as an incorrect value.
+      If not set, a string "wrong_value" will be used.
+      This parameter can be used in case that the value has to be chosen from strictly defined set of options.
+
     -   **missing_parameter_pass** - effective only in OVAL checks, if
         set to `"false"` and the parameter is not present in the
         configuration file, the OVAL check will return false (default value: `"false"`).
@@ -284,8 +298,9 @@
         be a list of regexes.
 
     -   **recursive** - If set to `"true"` the OVAL will consider the
-        subdirectories under the directory specified by **filepath**. Default
-        value is `"false"`.
+        subdirectories under the directory specified by **filepath**.
+        If set to `'false"` and file_regex not set, the filepath will
+        not be walked through. Default value is `"false"`.
 
     -   **gid_or_name** - group ID (GID) or a group name.
         If the parameter is an integer, it is treated as group ID. If the
@@ -323,8 +338,9 @@ they must be of the same length.
         be a list of regexes.
 
     -   **recursive** - If set to `"true"` the OVAL will consider the
-        subdirectories under the directory specified by **filepath**. Default
-        value is `"false"`.
+        subdirectories under the directory specified by **filepath**.
+        If set to `'false"` and file_regex not set, the filepath will
+        not be walked through. Default value is `"false"`.
 
     -   **uid_or_name** - user ID (UID) or a user name.
         If the parameter is an integer, it is treated as user ID. If the
@@ -365,8 +381,9 @@ they must be of the same length.
         be a list of regexes.
 
     -   **recursive** - If set to `"true"` the OVAL will consider the
-        subdirectories under the directory specified by **filepath**. Default
-        value is `"false"`.
+        subdirectories under the directory specified by **filepath**.
+        If set to `'false"` and file_regex not set, the filepath will
+        not be walked through. Default value is `"false"`.
 
     -   **filemode** - File permissions in a hexadecimal format, eg.
         `'0640'`.
@@ -606,15 +623,17 @@ When the remediation is applied duplicate occurrences of `key` are removed.
 
     - **xccdf_variable** - use value stored in an XCCDF variable instead of hardcoded value
 
+    - **variable_datatype** - data type of the XCCDF variable specified by the xccdf_variable parameter, optional, default is string
+
     - **app** - optional. If not set the check will use the default text `The respective application or service`.
       If set, the `app` is used within sentences like: "`application` is configured correctly and configuration file exists"
 
     - **test_correct_value** - optional. If set, it will be used in test scenarios as a correct value.
       If not set, the "value" parameter of the template will be used.
-      If XCCDF variable is used and the this option is not set, then a string "corect_value" will be used.
+      If XCCDF variable is used and this option is not set, then a string "corect_value" will be used.
       This parameter should be used in case the value is defined by an XCCDF variable and the value must be chosen from a strictly defined set of options.
 
-    - **test_wrong_value** - optional. If set, this value will be used test scenarios as a incorrect value.
+    - **test_wrong_value** - optional. If set, this value will be used in test scenarios as an incorrect value.
       If not set, a string "wrong_value" will be used.
       This parameter can be used in case that the value has to be chosen from strictly defined set of options.
 

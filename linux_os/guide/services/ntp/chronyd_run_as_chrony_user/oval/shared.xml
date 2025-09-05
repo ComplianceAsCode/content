@@ -7,7 +7,7 @@
 {{%- if ok_by_default %}}
 <def-group oval_version="5.11">
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure that no other user than chrony is configured to run the chrony service") }}}
+    {{{ oval_metadata("Ensure that no other user than chrony is configured to run the chrony service", rule_title=rule_title) }}}
 
       <criteria comment="chronyd enabled and multiple remote servers specified" operator="AND">
         <criterion comment="The default chrony user hasn't been overriden" test_ref="test_no_user_override" />
@@ -30,7 +30,7 @@
 
 </def-group>
 {{%- elif 'ubuntu' in product -%}}
-{{{ oval_check_config_file(path='/etc/chrony/chrony.conf', prefix_regex='^[ \\t]*', parameter='user', separator_regex='[[:space:]]', value='_chrony', missing_parameter_pass=true, missing_config_file_fail=false) }}}
+{{{ oval_check_config_file(path='/etc/chrony/chrony.conf', prefix_regex='^[ \\t]*', parameter='user', separator_regex='[[:space:]]', value='_chrony', missing_parameter_pass=true, missing_config_file_fail=false, rule_id=rule_id, rule_title=rule_title) }}}
 {{%- else -%}}
-{{{ oval_check_config_file(path='/etc/sysconfig/chronyd', prefix_regex='^[ \\t]*', parameter='OPTIONS', separator_regex='=', value='["]?.*-u[\s]*chrony.*["]?', missing_parameter_pass=ok_by_default, missing_config_file_fail=true) }}}
+{{{ oval_check_config_file(path='/etc/sysconfig/chronyd', prefix_regex='^[ \\t]*', parameter='OPTIONS', separator_regex='=', value='["]?.*-u[\s]*chrony.*["]?', missing_parameter_pass=ok_by_default, missing_config_file_fail=true, rule_id=rule_id, rule_title=rule_title) }}}
 {{%- endif %}}

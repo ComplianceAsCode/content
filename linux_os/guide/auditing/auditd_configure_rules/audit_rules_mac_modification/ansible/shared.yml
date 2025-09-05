@@ -4,6 +4,6 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_audit_augenrules_add_watch_rule(path="/etc/selinux/", permissions="wa", key="MAC-policy") }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path="/etc/selinux/", permissions="wa", key="MAC-policy", rule_title=rule_title) }}}
 
-{{{ ansible_audit_auditctl_add_watch_rule(path="/etc/selinux/", permissions="wa", key="MAC-policy") }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path="/etc/selinux/", permissions="wa", key="MAC-policy", rule_title=rule_title) }}}

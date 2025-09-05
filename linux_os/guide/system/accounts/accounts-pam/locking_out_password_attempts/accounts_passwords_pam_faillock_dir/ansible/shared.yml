@@ -4,8 +4,8 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_pam_faillock_enable() }}}
-{{{ ansible_pam_faillock_parameter_value("dir", "var_accounts_passwords_pam_faillock_dir") }}}
+{{{ ansible_pam_faillock_enable(rule_title=rule_title) }}}
+{{{ ansible_pam_faillock_parameter_value("dir", "var_accounts_passwords_pam_faillock_dir", rule_title=rule_title) }}}
 
 - name: '{{{ rule_title }}} - Ensure necessary SELinux packages are installed'
   ansible.builtin.package:

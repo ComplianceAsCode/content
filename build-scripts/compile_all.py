@@ -5,6 +5,7 @@ import os.path
 
 import ssg.build_profile
 import ssg.build_yaml
+import ssg.jinja
 import ssg.utils
 import ssg.controls
 import ssg.products
@@ -190,6 +191,7 @@ def main():
     project_root_abspath = os.path.abspath(args.project_root)
 
     env_yaml = get_env_yaml(args.build_config_yaml, args.product_yaml)
+    ssg.jinja.initialize(env_yaml)
     product_yaml = ssg.products.Product(args.product_yaml)
 
     product_cpes = ProductCPEs()

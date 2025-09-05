@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance"
   id="network_ipv6_privacy_extensions" version="1">
-    {{{ oval_metadata("Enable privacy extensions for IPv6") }}}
+    {{{ oval_metadata("Enable privacy extensions for IPv6", rule_title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="IPv6 disabled or..."
       definition_ref="sysctl_kernel_ipv6_disable" />

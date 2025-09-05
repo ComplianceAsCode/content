@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Only the root group should be assigned a GID of 0.") }}}
+    {{{ oval_metadata("Only the root group should be assigned a GID of 0.", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="no groups with GID 0 except root in the /etc/group file" test_ref="test_{{{ rule_id }}}" />
     </criteria>

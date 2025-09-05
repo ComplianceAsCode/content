@@ -22,11 +22,17 @@
             - gost
             - crc32
 
+- name: "{{{ rule_title }}} - Gather the package facts"
+  ansible.builtin.package_facts:
+    manager: auto
+
 -   name: "{{{ rule_title }}} - Remove forbidden hashes"
     ansible.builtin.replace:
         path: "{{ aide_conf }}"
         regexp: '(^\s*[A-Z][A-Za-z_]*\s*=.*?)({{ item }}\+|\+?{{ item }})(.*)'
         replace: '\1\3'
+    when:
+        - '"aide" in ansible_facts.packages'
     loop: "{{ forbidden_hashes }}"
 
 -   name: "{{{ rule_title }}} - Set sha512"
@@ -34,3 +40,5 @@
         path: "{{ aide_conf }}"
         regexp: '(^\s*[A-Z][A-Za-z_]*\s*=)((?:(?!\+?sha512).)*)\s*$'
         replace: '\1\2+sha512'
+    when:
+        - '"aide" in ansible_facts.packages'

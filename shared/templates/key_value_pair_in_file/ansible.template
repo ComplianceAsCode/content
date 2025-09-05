@@ -6,7 +6,7 @@
 
 {{% if XCCDF_VARIABLE %}}
 {{{ ansible_instantiate_variables(XCCDF_VARIABLE) }}}
-{{{ ansible_set_config_file(msg, PATH, KEY, value="{{ "+XCCDF_VARIABLE+" }}", create=true, separator=SEP, separator_regex=SEP_REGEX, prefix_regex=PREFIX_REGEX) }}}
+{{{ ansible_set_config_file(msg, PATH, KEY, value="{{ "+XCCDF_VARIABLE+" }}", create=true, separator=SEP, separator_regex=SEP_REGEX, prefix_regex=PREFIX_REGEX, rule_title=rule_title) }}}
 {{% else %}}
-{{{ ansible_set_config_file(msg, PATH, KEY, value=VALUE, create=true, separator=SEP, separator_regex=SEP_REGEX, prefix_regex=PREFIX_REGEX) }}}
+{{{ ansible_set_config_file(msg, PATH, KEY, value=VALUE, create=true, separator=SEP, separator_regex=SEP_REGEX, prefix_regex=PREFIX_REGEX, rule_title=rule_title) }}}
 {{% endif %}}

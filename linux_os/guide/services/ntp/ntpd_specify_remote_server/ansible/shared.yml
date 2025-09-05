@@ -6,14 +6,14 @@
 {{{ ansible_instantiate_variables("var_multiple_time_servers") }}}
 
 - name: "Detect if ntp is already configured with pools or servers"
-  find:
+  ansible.builtin.find:
     path: /etc
     patterns: ntp.conf
     contains: '^[\s]*(?:server|pool)[\s]+[\w]+'
   register: ntp_servers
 
 - name: "Configure remote time servers"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/ntp.conf
     line: 'server {{ item }}'
     state: present

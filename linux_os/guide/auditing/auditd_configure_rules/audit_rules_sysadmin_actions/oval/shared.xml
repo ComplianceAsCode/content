@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}"  version="1">
-    {{{ oval_metadata("Audit actions taken by system administrators on the system.") }}}
+    {{{ oval_metadata("Audit actions taken by system administrators on the system.", rule_title=rule_title) }}}
     <criteria operator="AND">
         <extend_definition comment="audit augenrules" definition_ref="audit_rules_sudoers" />
         <extend_definition comment="audit augenrules" definition_ref="audit_rules_sudoers_d" />

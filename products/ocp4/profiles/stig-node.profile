@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 platform: ocp4-node
@@ -9,7 +10,7 @@ metadata:
         - rhmdnd
         - yuumasato
 
-reference: https://public.cyber.mil/stigs/downloads/
+reference: https://www.cyber.mil/stigs/downloads/
 
 title: 'DISA STIG for Red Hat OpenShift Container Platform 4 - Node level'
 

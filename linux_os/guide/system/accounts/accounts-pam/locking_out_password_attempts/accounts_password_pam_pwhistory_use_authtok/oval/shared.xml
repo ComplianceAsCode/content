@@ -6,7 +6,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Configure the system to include use_authtok for pam_pwhistory common_password configuration file") }}}
+    {{{ oval_metadata("Configure the system to include use_authtok for pam_pwhistory common_password configuration file", rule_title=rule_title) }}}
     <criteria operator="AND" comment="Check if pam_pwhistory.so is properly configured">
       <criterion test_ref="{{{ rule_id }}}_test_pwhistory_exists"
         comment="At least one pwhistory line exists"/>

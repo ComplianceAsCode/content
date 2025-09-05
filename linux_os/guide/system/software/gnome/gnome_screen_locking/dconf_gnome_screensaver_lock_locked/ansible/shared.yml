@@ -4,11 +4,11 @@
 # complexity = low
 # disruption = medium
 - name: "Prevent user modification of GNOME Screensaver lock-enabled"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
     regexp: '^/org/gnome/desktop/screensaver/lock-enabled$'
     line: '/org/gnome/desktop/screensaver/lock-enabled'
     create: yes
 
 - name: Dconf Update
-  command: dconf update
+  ansible.builtin.command: dconf update

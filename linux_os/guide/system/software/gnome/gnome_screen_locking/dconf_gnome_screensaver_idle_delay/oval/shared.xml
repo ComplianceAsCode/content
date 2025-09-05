@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="dconf_gnome_screensaver_idle_delay" version="2">
-    {{{ oval_metadata("The allowed period of inactivity before the screensaver is activated.") }}}
+    {{{ oval_metadata("The allowed period of inactivity before the screensaver is activated.", rule_title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="check screensaver idle delay and prevent user from changing it" operator="AND">
@@ -35,6 +35,8 @@
   id="test_screensaver_idle_delay_setting" version="1">
     <ind:object object_ref="obj_screensaver_idle_delay_setting" />
     <ind:state state_ref="state_screensaver_idle_delay_setting" />
+    <!-- Value of zero disables this functionality -->
+    <ind:state state_ref="state_screensaver_idle_delay_setting_not_zero" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_screensaver_idle_delay_setting"
   version="1"> 
@@ -49,6 +51,10 @@
 
   <ind:textfilecontent54_state id="state_screensaver_idle_delay_setting" version="1">
     <ind:subexpression datatype="int" operation="less than or equal" var_check="all" var_ref="inactivity_timeout_value" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_screensaver_idle_delay_setting_not_zero" version="1">
+    <ind:subexpression datatype="int" operation="not equal">0</ind:subexpression>
   </ind:textfilecontent54_state>
 
   <external_variable comment="inactivity timeout variable" datatype="int"

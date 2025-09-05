@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_smartcard_drivers") }}}
 
 - name: Check existence of opensc conf
-  stat:
+  ansible.builtin.stat:
 {{%- if product not in ['sle12', 'sle15'] %}}
     path: /etc/opensc-{{ ansible_architecture }}.conf
 {{%- else %}}
@@ -17,12 +17,12 @@
 - name: Force smartcard driver block
   block:
     - name: Check if force_card_driver is defined
-      command: /usr/bin/opensc-tool -G app:default:force_card_driver
+      ansible.builtin.command: /usr/bin/opensc-tool -G app:default:force_card_driver
       changed_when: false
       register: force_card_driver
 
     - name: "{{{ rule_title }}}"
-      command: |
+      ansible.builtin.command: |
         /usr/bin/opensc-tool -S app:default:force_card_driver:{{ var_smartcard_drivers }}
       when:
         - force_card_driver.stdout != var_smartcard_drivers

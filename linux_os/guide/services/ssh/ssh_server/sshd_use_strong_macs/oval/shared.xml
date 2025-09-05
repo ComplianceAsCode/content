@@ -1,6 +1,8 @@
+{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{%- set case_insensitivity_kwargs = dict(prefix_regex="^[ \\t]*(?i)", separator_regex = "(?-i)[ \\t]+") -%}}
 <def-group>
   <definition class="compliance" id="sshd_use_strong_macs" version="1">
-    {{{ oval_metadata("Ensure only strong MAC algorithms are used") }}}
+    {{{ oval_metadata("Ensure only strong MAC algorithms are used", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criteria comment="SSH is configured correctly or is not installed"
       operator="OR">
@@ -27,12 +29,18 @@
           {{% endif %}}
           <criterion comment="Check MACs in /etc/ssh/sshd_config"
           test_ref="test_sshd_use_strong_macs" />
+          {{%- if sshd_distributed_config == "true" %}}
+          <criterion comment="Check MACs in /etc/ssh/sshd_config.d/"
+            test_ref="test_sshd_use_strong_macs_config_dir" />
+          {{%- endif %}}
+          <criterion comment="the configuration exists"
+            test_ref="test_sshd_macs_exists" />
         </criteria>
       </criteria>
     </criteria>
   </definition>
 
-  <ind:variable_test check="at least one"
+  <ind:variable_test check="all" check_existence="any_exist"
   comment="tests the value of MACs setting in the /etc/ssh/sshd_config file"
   id="test_sshd_use_strong_macs" version="1">
     <ind:object object_ref="obj_sshd_use_strong_macs" />
@@ -50,8 +58,38 @@
   <ind:textfilecontent54_object id="obj_sshd_config_strong_macs" version="1">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)MACs(?-i)[\s]+([\w,-@]+)+[\s]*(?:#.*)?$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  {{%- if sshd_distributed_config == "true" %}}
+  <ind:variable_test check="all" check_existence="any_exist"
+  comment="tests the value of MACs setting in the /etc/ssh/sshd_config.d dir"
+  id="test_sshd_use_strong_macs_config_dir" version="1">
+    <ind:object object_ref="obj_sshd_use_strong_macs_config_dir" />
+    <ind:state state_ref="ste_sshd_use_strong_macs_config_dir" />
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_sshd_use_strong_macs_config_dir" version="1">
+    <ind:var_ref>var_sshd_config_macs_config_dir</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state comment="approved strong macs" id="ste_sshd_use_strong_macs_config_dir" version="1">
+    <ind:value operation="equals" datatype="string" var_ref="var_sshd_strong_macs" var_check="at least one" />
+  </ind:variable_state>
+
+  <ind:textfilecontent54_object id="obj_sshd_config_macs_config_dir" version="1">
+    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)MACs(?-i)[\s]+([\w,-@]+)+[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_sshd_config_macs_config_dir" datatype="string" version="1" comment="MACs values splitted on comma">
+    <split delimiter=",">
+      <object_component item_field="subexpression" object_ref="obj_sshd_config_macs_config_dir" />
+    </split>
+  </local_variable>
+  {{%- endif %}}
 
   <local_variable id="var_sshd_config_strong_macs" datatype="string" version="1" comment="MACs values splitted on comma">
     <split delimiter=",">
@@ -65,6 +103,19 @@
     </split>
   </local_variable>
   <external_variable comment="SSH MAC algorithms considered strong" datatype="string" id="sshd_strong_macs" version="1" />
+
+  <ind:textfilecontent54_test id="test_sshd_macs_exists" version="1" check="all" check_existence="at_least_one_exists"
+    comment="Verify that the value of MACs is present">
+    <ind:object object_ref="obj_sshd_macs_all_configs" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="All confs collection" id="obj_sshd_macs_all_configs" version="1">
+    <set>
+      <object_reference>obj_sshd_config_strong_macs</object_reference>
+      {{% if sshd_distributed_config == "true" %}}
+      <object_reference>obj_sshd_config_macs_config_dir</object_reference>
+      {{% endif %}}
+    </set>
+  </ind:textfilecontent54_object>
+
 </def-group>
-
-

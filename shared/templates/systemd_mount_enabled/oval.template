@@ -1,7 +1,7 @@
 <def-group>
 
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-    {{{ oval_metadata("The " + MOUNTNAME + " mount should be enabled if possible.") }}}
+    {{{ oval_metadata("The " + MOUNTNAME + " mount should be enabled if possible.", rule_title=rule_title) }}}
     <criteria comment="mount {{{ MOUNTNAME }}} is configured to start and is running" operator="AND">
       <criterion comment="{{{ MOUNTNAME }}} is running" test_ref="test_mount_running_{{{ MOUNTNAME }}}" />
       <criterion comment="multi-user.target wants {{{ MOUNTNAME }}}" test_ref="test_multi_user_wants_{{{ MOUNTNAME }}}" />

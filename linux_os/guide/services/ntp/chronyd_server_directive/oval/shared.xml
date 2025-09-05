@@ -1,11 +1,13 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure Chrony has time sources configured with server directive") }}}
+    {{{ oval_metadata("Ensure Chrony has time sources configured with server directive", rule_title=rule_title) }}}
     <criteria comment="chrony.conf only has server directive">
       <criterion test_ref="test_chronyd_server_directive_with_server" />
       <criterion test_ref="test_chronyd_server_directive_no_pool" />
     </criteria>
   </definition>
+
+  {{% set filepath_regex = "^(" + chrony_conf_path | replace(".", "\.") + "|" + chrony_d_path | replace(".", "\.") + ".+\.conf)$" %}}
 
   <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
   comment="Ensure at least one time source is set with server directive" id="test_chronyd_server_directive_with_server"
@@ -14,7 +16,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Matches server entries in Chrony conf files"
   id="object_chronyd_server_directive" version="1">
-    <ind:filepath operation="pattern match">^/etc/chrony\.(conf|d/.+\.conf)$</ind:filepath>
+    <ind:filepath operation="pattern match">{{{ filepath_regex }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*server.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -26,7 +28,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Matches pool entires in Chrony conf files"
   id="object_chronyd_no_pool_directive" version="1">
-    <ind:filepath operation="pattern match">^/etc/chrony\.(conf|d/.+\.conf)$</ind:filepath>
+    <ind:filepath operation="pattern match">{{{ filepath_regex }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]+pool.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

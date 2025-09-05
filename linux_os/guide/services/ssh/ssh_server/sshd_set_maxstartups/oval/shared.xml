@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    {{{ oval_metadata("Ensure 'MaxStartups' is properly configured in SSH configuration files.") }}}
+    {{{ oval_metadata("Ensure 'MaxStartups' is properly configured in SSH configuration files.", rule_title=rule_title) }}}
     <criteria operator="OR" comment="sshd MaxStartups parameter is properly configured if sshd is installed">
       <criteria operator="AND" comment="sshd is not installed">
         <extend_definition definition_ref="sshd_not_required_or_unset"

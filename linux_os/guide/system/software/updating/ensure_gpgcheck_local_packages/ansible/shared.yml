@@ -7,7 +7,7 @@
 - name: Ensure GPG check Enabled for Local Packages ({{{ pkg_manager }}})
   block:
     - name: Check stats of {{{ pkg_manager }}}
-      stat:
+      ansible.builtin.stat:
         path: {{{ pkg_manager_config_file }}}
       register: pkg
 

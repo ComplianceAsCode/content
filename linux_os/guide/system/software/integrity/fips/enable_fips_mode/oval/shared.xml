@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Check if FIPS mode is enabled on the system") }}}
+    {{{ oval_metadata("Check if FIPS mode is enabled on the system", rule_title=rule_title) }}}
 
     {{% if bootable_containers_supported == "true" %}}
     <criteria operator="OR">
@@ -119,12 +119,12 @@
   <ind:variable_state id="ste_system_crypto_policy_value" version="2"
     comment="variable value is set to 'FIPS' or 'FIPS:modifier', where the modifier corresponds
 to a crypto policy module that further restricts the modified crypto policy.">
-  {{% if product in ["ol9","rhel9"] -%}}
-    <ind:value operation="pattern match" datatype="string">^FIPS(:OSPP)?$</ind:value>
+  {{% if product in ["ol9","rhel9","rhel10","fedora"] -%}}
+    <ind:value operation="pattern match" datatype="string">^FIPS(:(OSPP|STIG))?$</ind:value>
   {{%- else %}}
   {{# Legacy and more relaxed list of crypto policies that were historically considered
       FIPS-compatible. More recent products should use the more restricted list of options #}}
-    <ind:value operation="pattern match" datatype="string">^FIPS(:(OSPP|NO-SHA1|NO-CAMELLIA))?$</ind:value>
+    <ind:value operation="pattern match" datatype="string">^FIPS(:(OSPP|NO-SHA1|NO-CAMELLIA|STIG))?$</ind:value>
   {{%- endif %}}
   </ind:variable_state>
 

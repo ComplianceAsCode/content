@@ -57,7 +57,7 @@ controls:
     levels:
       - medium
     rules:
-      - configure_crypto_policy
+      - file_groupownership_sshd_private_key
       - var_system_crypto_policy=fips
 
   - id: S7
@@ -65,5 +65,5 @@ controls:
     levels:
       - high
     rules:
-      - configure_crypto_policy
+      - sshd_set_keepalive
       - var_system_crypto_policy=future

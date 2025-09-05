@@ -1,11 +1,11 @@
-{{% if product in ["sle12", "sle15", "debian12", 'ubuntu2404'] %}}
+{{% if product in ["sle12", "sle15", "debian12", "debian13", 'ubuntu2404'] %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
 {{% else %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/password-auth" %}}
 {{% endif %}}
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("The number of rounds for password hashing should be set correctly.") }}}
+    {{{ oval_metadata("The number of rounds for password hashing should be set correctly.", rule_title=rule_title) }}}
     <criteria comment="Check if rounds option of pam_unix is as expected" operator="OR">
       <criterion comment="The value of rounds is set correctly in pam_unix.so" test_ref="test_password_auth_pam_unix_rounds_is_set" />
     </criteria>
@@ -19,7 +19,7 @@
 
   <ind:textfilecontent54_object id="object_password_auth_pam_unix_rounds" version="1">
     <ind:filepath operation="pattern match">^{{{ pam_passwd_file_path }}}$</ind:filepath>
-    {{% if product in ["debian12", 'ubuntu2404'] %}}
+    {{% if product in ["debian12", "debian13", 'ubuntu2404'] %}}
     <ind:pattern operation="pattern match">^\s*password\s+.*\s+pam_unix\.so[^#]*rounds=([0-9]*).*$</ind:pattern>
     {{% else %}}
     <ind:pattern operation="pattern match">^\s*password\s+(?:(?:sufficient)|(?:required))\s+pam_unix\.so[^#]*rounds=([0-9]*).*$</ind:pattern>

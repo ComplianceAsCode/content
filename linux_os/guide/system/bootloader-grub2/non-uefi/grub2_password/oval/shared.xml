@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="grub2_password" version="1">
-    {{{ oval_metadata("The grub2 boot loader should have password protection enabled.") }}}
+    {{{ oval_metadata("The grub2 boot loader should have password protection enabled.", rule_title=rule_title) }}}
 
     <criteria operator="OR">
       {{% if product in ["ol7", "ol8", "ol9", "rhel8"] %}}

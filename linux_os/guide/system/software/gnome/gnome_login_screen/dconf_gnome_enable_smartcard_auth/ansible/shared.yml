@@ -13,11 +13,11 @@
     no_extra_spaces: yes
 
 - name: "Prevent user modification of GNOME3 disablement of Smartcard Authentication"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock
     regexp: '^/org/gnome/login-screen/enable-smartcard-authentication$'
     line: '/org/gnome/login-screen/enable-smartcard-authentication'
     create: yes
 
 - name: Dconf Update
-  command: dconf update
+  ansible.builtin.command: dconf update

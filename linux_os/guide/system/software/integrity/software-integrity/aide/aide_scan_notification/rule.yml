@@ -33,6 +33,7 @@ identifiers:
     cce@sle12: CCE-83048-9
     cce@sle15: CCE-91214-7
     cce@slmicro5: CCE-93722-7
+    cce@slmicro6: CCE-94730-9
 
 references:
     cis-csc: 1,11,12,13,15,16,2,3,5,7,8,9
@@ -46,7 +47,6 @@ references:
     srg: SRG-OS-000363-GPOS-00150,SRG-OS-000446-GPOS-00200,SRG-OS-000447-GPOS-00201
     stigid@ol7: OL07-00-020040
     stigid@ol8: OL08-00-010360
-    stigid@rhel8: RHEL-08-010360
     stigid@sle12: SLES-12-010510
     stigid@sle15: SLES-15-010570
 
@@ -54,7 +54,7 @@ ocil_clause: 'AIDE has not been configured or has not been configured to notify 
 
 ocil: |-
     To determine that periodic AIDE execution has been scheduled, run the following command:
-{{% if product in ["sle15", "slmicro5"] %}}
+{{% if product in ["sle15", "slmicro5", "slmicro6"] %}}
     <pre>$ sudo systemctl status  aidecheck-notify|grep loaded</pre>
     The output should return that the service is loaded.
     Also we should make sure that notification service is started by the check:
@@ -73,7 +73,7 @@ fixtext: |-
     The AIDE tool can be configured to email designated personnel with the use of the cron system.
 
     The following example output is generic. It will set cron to run AIDE daily and to send email at the completion of the analysis.
-{{% if product in ["sle15", "slmicro5"] %}}
+{{% if product in ["sle15", "slmicro5", "slmicro6"] %}}
     $ cat > /etc/systemd/system/aidecheck-notify.service <<NOTIFYEOF
     [Unit]
         Description=Status email for AIDE check result

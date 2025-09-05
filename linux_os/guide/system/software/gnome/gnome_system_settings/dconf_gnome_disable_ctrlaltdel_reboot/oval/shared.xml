@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="dconf_gnome_disable_ctrlaltdel_reboot" version="1">
-    {{{ oval_metadata("Disable the GNOME3 ctrl-alt-del reboot key sequence in GNOME3.") }}}
+    {{{ oval_metadata("Disable the GNOME3 ctrl-alt-del reboot key sequence in GNOME3.", rule_title=rule_title) }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria operator="AND">

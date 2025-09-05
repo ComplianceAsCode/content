@@ -3,7 +3,7 @@ documentation_complete: true
 metadata:
     version: V1R1
 
-reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
 title: 'DISA STIG with GUI for Oracle Linux 9'
 

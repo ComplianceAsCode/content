@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Although the useradd program will not let you create a duplicate User ID (UID), it is possible for an administrator to manually edit the /etc/passwd file and change the UID field.") }}}
+    {{{ oval_metadata("Although the useradd program will not let you create a duplicate User ID (UID), it is possible for an administrator to manually edit the /etc/passwd file and change the UID field.", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="tst_no_duplicate_uids_exist" comment="no duplicate UIDs exist" />
     </criteria>

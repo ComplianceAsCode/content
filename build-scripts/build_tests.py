@@ -30,7 +30,7 @@ def _create_arg_parser() -> argparse.ArgumentParser:
                              "e.g.: ~/scap-security-guide/build/build_config.yml")
     parser.add_argument("--product-yaml", required=True, type=str,
                         help="YAML file with information about the product we are building. "
-                             "e.g.: ~/scap-security-guide/rhel10/product.yml")
+                             "e.g.: ~/scap-security-guide/build/rhel10/product.yml")
     parser.add_argument("--output", required=True, type=str,
                         help="Output path"
                              "e.g.:  ~/scap-security-guide/build/rhel10/tests")
@@ -67,7 +67,7 @@ def _get_deny_templated_scenarios(test_config_path: pathlib.Path) -> Set[str]:
 
 def _process_shared_file(env_yaml: dict, file: pathlib.Path, shared_output_path: pathlib.Path) \
         -> None:
-    file_contents = ssg.jinja.process_file_with_macros(str(file.absolute()), env_yaml)
+    file_contents = ssg.jinja.process_file(str(file.absolute()), env_yaml)
     shared_script_path = shared_output_path / file.name
     _write_path(file_contents, shared_script_path)
 
@@ -109,15 +109,15 @@ def _process_local_tests(product: str, env_yaml: dict, rule_output_path: pathlib
                            rule_output_path.name)
             continue
         if not _is_test_file(test.name):
-            file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()),
-                                                               env_yaml)
+            file_contents = ssg.jinja.process_file(str(test.absolute()),
+                                                   env_yaml)
             output_file = rule_output_path / test.name
             rule_output_path.mkdir(parents=True, exist_ok=True)
             _write_path(file_contents, output_file)
         file_contents = test.read_text()
         platform = _get_platform_from_file_contents(file_contents)
         if ssg.utils.is_applicable_for_product(platform, product):
-            content = ssg.jinja.process_file_with_macros(str(test.absolute()), env_yaml)
+            content = ssg.jinja.process_file(str(test.absolute()), env_yaml)
             rule_output_path.mkdir(parents=True, exist_ok=True)
             _write_path(content, rule_output_path / test.name)
 
@@ -163,7 +163,7 @@ def _process_templated_tests(env_yaml: Dict, rendered_rule_obj: Dict, templates_
         template_parameters = template.preprocess(rendered_rule_obj["template"]["vars"], "test")
         env_yaml = env_yaml.copy()
         jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
-        file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()), jinja_dict)
+        file_contents = ssg.jinja.process_file(str(test.absolute()), jinja_dict)
         platform = _get_platform_from_file_contents(file_contents)
         if ssg.utils.is_applicable_for_product(platform, product):
             rule_output_path.mkdir(parents=True, exist_ok=True)
@@ -209,8 +209,8 @@ def _get_rules_in_profile(built_profiles_root) -> Generator[str, None, None]:
 def main() -> int:
     args = _create_arg_parser().parse_args()
     logging.basicConfig(level=logging.getLevelName(args.log_level))
-    env_yaml = ssg.environment.open_environment(args.build_config_yaml, args.product_yaml,
-                                                os.path.join(args.root, "product_properties"))
+    env_yaml = ssg.environment.open_environment(args.build_config_yaml, args.product_yaml)
+    ssg.jinja.initialize(env_yaml)
 
     root_path = pathlib.Path(args.root).resolve()
     output_path = pathlib.Path(args.output).resolve()

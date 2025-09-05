@@ -6,17 +6,17 @@
 
 {{%- if RECURSIVE %}}
 {{%- set FIND_RECURSE_ARGS_DEP="" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="" %}}
-{{%- else %}}
+{{%- elif FILE_REGEX %}}
 {{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="-L" %}}
+{{%- else %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 0" %}}
 {{%- endif %}}
 
 {{%- set ns=namespace(find_users="") %}}
 {{%- if OWNER_REPRESENTED_WITH_UID %}}
 {{%- set ns.find_users=ns.find_users ~ " ! -user " ~ UID_OR_NAME %}}
 - name: Set the {{{ _RULE_ID }}}_newown variable if represented by uid
-  set_fact:
+  ansible.builtin.set_fact:
     {{{ _RULE_ID }}}_newown: "{{{ UID_OR_NAME }}}"
 {{%- else %}}
 {{%- set OWNERS=UID_OR_NAME.split("|") %}}
@@ -24,20 +24,20 @@
 {{%- set ns.find_users=ns.find_users ~ " ! -user " ~ own %}}
 {{%- if loop.first %}}
 - name: Check that the {{{ own }}} user is defined
-  getent:
+  ansible.builtin.getent:
     database: passwd
     key: {{{ own }}}
   ignore_errors: yes
 {{%- else %}}
 - name: Check that the {{{ own }}} user is defined
-  getent:
+  ansible.builtin.getent:
     database: passwd
     key: {{{ own }}}
   ignore_errors: yes
   when: {{{ _RULE_ID }}}_newown is undefined
 {{%- endif %}}
 - name: Set the {{{ _RULE_ID }}}_newown variable if {{{ own }}} found
-  set_fact: 
+  ansible.builtin.set_fact:
     {{{ _RULE_ID }}}_newown: "{{{ own }}}"
   when: ansible_facts.getent_passwd["{{{ own }}}"] is defined
 {{%- endfor %}}
@@ -48,15 +48,16 @@
 {{%- if FILE_REGEX %}}
 
 - name: Find {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}{{% if RECURSIVE %}} recursively{{% endif %}}
-  command: 'find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{{ ns.find_users }}} -regextype posix-extended -regex "{{{ FILE_REGEX[loop.index0] }}}"'
+  ansible.builtin.command: 'find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{{ ns.find_users }}} -regextype posix-extended -regex "{{{ FILE_REGEX[loop.index0] }}}"'
   register: files_found
   changed_when: False
   failed_when: False
   check_mode: no
 
 - name: Ensure owner on {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
+    follow: false
     owner: "{{ {{{ _RULE_ID }}}_newown }}"
     state: file
   with_items:
@@ -65,8 +66,9 @@
 {{% else %}}
 
 - name: Ensure owner on directory {{{ path }}}{{% if RECURSIVE %}} recursively{{% endif %}}
-  file:
+  ansible.builtin.file:
     path: "{{{ path }}}"
+    follow: false
     state: directory
 {{% if RECURSIVE %}}
     recurse: yes
@@ -77,13 +79,14 @@
 {{% else %}}
 
 - name: Test for existence {{{ path }}}
-  stat:
+  ansible.builtin.stat:
     path: "{{{ path }}}"
   register: file_exists
 
 - name: Ensure owner on {{{ path }}}
-  file:
+  ansible.builtin.file:
     path: "{{{ path }}}"
+    follow: false
     owner: "{{ {{{ _RULE_ID }}}_newown }}"
   when: file_exists.stat is defined and file_exists.stat.exists
 

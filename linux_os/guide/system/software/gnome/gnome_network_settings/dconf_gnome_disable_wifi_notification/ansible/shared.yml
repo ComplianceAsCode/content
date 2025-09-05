@@ -13,11 +13,11 @@
     no_extra_spaces: yes
 
 - name: "Prevent user modification of GNOME3 disablement of WiFi"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
     regexp: '^/org/gnome/nm-applet/suppress-wireless-networks-available$'
     line: '/org/gnome/nm-applet/suppress-wireless-networks-available'
     create: yes
 
 - name: Dconf Update
-  command: dconf update
+  ansible.builtin.command: dconf update

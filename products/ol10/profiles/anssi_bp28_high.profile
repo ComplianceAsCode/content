@@ -1,10 +1,9 @@
 documentation_complete: true
 
-title: 'DRAFT - ANSSI-BP-028 (high)'
+title: 'ANSSI-BP-028 (high)'
 
 description: |-
-    This is a draft profile for experimental purposes.
-    This draft profile contains configurations that align to ANSSI-BP-028 v2.0 at the high hardening level.
+    This profile contains configurations that align to ANSSI-BP-028 v2.0 at the high hardening level.
 
     ANSSI is the French National Information Security Agency, and stands for Agence nationale de la sécurité des systèmes d'information.
     ANSSI-BP-028 is a configuration recommendation for GNU/Linux systems.
@@ -17,6 +16,7 @@ description: |-
 
 selections:
     - anssi:all:high
+    - var_password_hashing_algorithm_pam=yescrypt
     - '!package_ypserv_removed'
     - '!sebool_secure_mode_insmod'
     - '!accounts_passwords_pam_tally2_deny_root'
@@ -36,6 +36,8 @@ selections:
     - '!sudo_add_umask'
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
+    # authselect is enabled by default
+    - '!enable_authselect'
     # this rule is not automated anymore
     - '!security_patches_up_to_date'
     # OL 10 unified the paths for grub2 files. These rules are selected in control file by R29.
@@ -75,3 +77,4 @@ selections:
     - audit_rules_mac_modification_etc_selinux
     # OL 10 unified the paths for grub2 files. This rule is selected in control file by R5.
     - '!grub2_uefi_password'
+    - var_authselect_profile=local

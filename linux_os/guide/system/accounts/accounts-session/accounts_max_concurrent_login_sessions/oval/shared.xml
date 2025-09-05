@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="accounts_max_concurrent_login_sessions" version="1">
     {{{ oval_metadata("The maximum number of concurrent login sessions per user should meet
-      minimum requirements.") }}}
+      minimum requirements.", rule_title=rule_title) }}}
     <criteria operator="OR">
       <criterion comment="the value maxlogins should be set appropriately in /etc/security/limits.d/*.conf" test_ref="test_limitsd_maxlogins" />
       <criteria operator="AND">

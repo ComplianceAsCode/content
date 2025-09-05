@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("All Interactive Users Must Have A Home Directory Defined") }}}
+    {{{ oval_metadata("All Interactive Users Must Have A Home Directory Defined", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_accounts_user_interactive_home_directory_defined"
                  comment="All Interactive Users Must Have A Home Directory Defined"/>
@@ -8,7 +8,7 @@
   </definition>
 
   {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
-  {{{ create_interactive_users_list_object(interactive_users_object) }}}
+  {{{ create_interactive_users_list_object(interactive_users_object, rule_id=rule_id) }}}
 
   <!-- #### creation of state #### -->
   <unix:password_state id="state_accounts_user_interactive_home_directory_defined" version="1">

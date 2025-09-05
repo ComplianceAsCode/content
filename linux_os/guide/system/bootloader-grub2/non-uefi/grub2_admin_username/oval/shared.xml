@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="grub2_admin_username" version="1">
     {{{ oval_metadata(
-              "The grub2 boot loader superuser should have a username that is hard to guess.") }}}
+              "The grub2 boot loader superuser should have a username that is hard to guess.", rule_title=rule_title) }}}
 
     <criteria operator="OR">
       <criterion comment="Superuser is defined in {{{ grub2_boot_path }}}/grub.cfg and it isn't
@@ -36,7 +36,7 @@
   <ind:textfilecontent54_object id="object_bootloader_unique_superuser" version="1">
     <ind:filepath>{{{ grub2_boot_path }}}/grub.cfg</ind:filepath>
     <ind:pattern operation="pattern match"
-          >^[\s]*set[\s]+superusers="(?i)\b(?!(?:root|admin|administrator)\b)(\w+)".*\nexport superusers$</ind:pattern>
+          >^[\s]*set[\s]+superusers="(?i)\b(?!(?:root|admin|administrator)\b)(\w+)".*\n[\s]*export[\s]+superusers[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

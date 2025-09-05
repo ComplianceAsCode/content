@@ -1,8 +1,13 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro5,multi_platform_almalinux
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = low
 {{{ ansible_instantiate_variables("var_selinux_state") }}}
 
-{{{ ansible_selinux_config_set(parameter="SELINUX", value="{{ var_selinux_state }}") }}}
+{{{ ansible_selinux_config_set(parameter="SELINUX", value="{{ var_selinux_state }}", rule_title=rule_title) }}}
+
+- name: "{{{ RULE_TITLE }}} - Mark system to relabel SELinux on next boot"
+  ansible.builtin.file:
+    path: /.autorelabel
+    state: touch

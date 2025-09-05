@@ -70,10 +70,7 @@ references:
     ospp: FAU_GEN.1.2
     srg: SRG-OS-000324-GPOS-00125,SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-040172
-    stigid@rhel8: RHEL-08-040172
     stigid@sle15: SLES-15-040062
-    stigid@ubuntu2004: UBTU-20-010460
-    stigid@ubuntu2204: UBTU-22-211015
 
 ocil_clause: 'the system is configured to reboot when Ctrl-Alt-Del is pressed more than 7 times in 2 seconds.'
 
@@ -91,7 +88,7 @@ fixtext: |-
 
 srg_requirement: 'The systemd Ctrl-Alt-Delete burst key sequence in {{{ full_name }}} must be disabled.'
 
-{{% if product not in ["ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
+{{% if product not in ["ubuntu2204", "ubuntu2404"] %}}
 warnings:
     - functionality: |-
         Disabling the <tt>Ctrl-Alt-Del</tt> key sequence

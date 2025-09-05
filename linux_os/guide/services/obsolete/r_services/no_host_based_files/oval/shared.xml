@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="no_host_based_files" version="1">
-    {{{ oval_metadata("There should not be any shosts.equiv files on the system.") }}}
+    {{{ oval_metadata("There should not be any shosts.equiv files on the system.", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_no_shosts_equiv"/>
     </criteria>

@@ -6,7 +6,7 @@
 
 {{% if 'debian' in product %}}
 - name: Ensure apparmor-utils is installed
-  package:
+  ansible.builtin.package:
     name: "apparmor-utils"
     state: present
 {{% endif %}}

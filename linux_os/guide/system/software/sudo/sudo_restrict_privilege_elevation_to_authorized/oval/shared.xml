@@ -14,7 +14,7 @@
   {{% endmacro %}}
   
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-     {{{ oval_metadata("Check that sudoers doesn't allow all users to run commands via sudo") }}}
+     {{{ oval_metadata("Check that sudoers doesn't allow all users to run commands via sudo", rule_title=rule_title) }}}
      <criteria operator="AND">
         <criterion comment="Make sure that sudoers has restrictions on which users can run sudo for any target user" test_ref="test_not_all_users_can_sudo_to_users" />
         <criterion comment="Make sure that sudoers has restrictions on which users can run sudo for any target group" test_ref="test_not_all_users_can_sudo_to_group" />

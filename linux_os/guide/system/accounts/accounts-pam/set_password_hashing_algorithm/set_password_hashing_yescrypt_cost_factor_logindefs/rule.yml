@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'Set yescrypt Cost Factor in /etc/login.defs'
+title: 'Set yescrypt Cost Factor in {{{ login_defs_path }}}'
 
 description: |-
-    In <tt>/etc/login.defs</tt>, ensure <tt>YESCRYPT_COST_FACTOR</tt> has the minimum value of <tt>{{{ xccdf_value("var_password_yescrypt_cost_factor_login_defs") }}}</tt>.
+    In <tt>{{{ login_defs_path }}}</tt>, ensure <tt>YESCRYPT_COST_FACTOR</tt> has the minimum value of <tt>{{{ xccdf_value("var_password_yescrypt_cost_factor_login_defs") }}}</tt>.
     For example:
     <pre>YESCRYPT_COST_FACTOR {{{ xccdf_value("var_password_yescrypt_cost_factor_login_defs") }}}
     YESCRYPT_COST_FACTOR {{{ xccdf_value("var_password_yescrypt_cost_factor_login_defs") }}}</pre>
@@ -31,7 +31,7 @@ references:
 ocil_clause: 'the cost factor is too low'
 
 ocil: |-
-    Inspect <tt>/etc/login.defs</tt> and ensure that if
+    Inspect <tt>{{{ login_defs_path }}}</tt> and ensure that if
     <tt>YESCRYPT_COST_FACTOR</tt>
     is set, it must have the minimum value of <tt>{{{ xccdf_value("var_password_yescrypt_cost_factor_login_defs") }}}</tt>.
 
@@ -40,7 +40,7 @@ srg_requirement: '{{{ full_name }}} shadow password suite must be configured to 
 fixtext: |-
     Configure {{{ full_name }}} to encrypt all stored passwords with a strong cryptographic hash.
 
-    Edit/modify the following line in the "/etc/login.defs" file and set "YESCRYPT_COST_FACTOR" to a value no lower than "5":
+    Edit/modify the following line in the "{{{ login_defs_path }}}" file and set "YESCRYPT_COST_FACTOR" to a value no lower than "5":
 
     YESCRYPT_COST_FACTOR {{{ xccdf_value("var_password_yescrypt_cost_factor_login_defs") }}}
 
@@ -48,9 +48,10 @@ fixtext: |-
 template:
     name: 'key_value_pair_in_file'
     vars:
-        path: "/etc/login.defs"
+        path: {{{ login_defs_path }}}
         key: "YESCRYPT_COST_FACTOR"
         xccdf_variable: "var_password_yescrypt_cost_factor_login_defs"
+        variable_datatype: int
         sep: " "
         sep_regex: "\\s*"
         app: 'login.defs'

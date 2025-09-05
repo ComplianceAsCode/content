@@ -1,7 +1,7 @@
 #!/bin/bash
 
-grep -q "^PASS_MIN_DAYS" /etc/login.defs && \
-  sed -i "s/PASS_MIN_DAYS.*/PASS_MIN_DAYS\t0/g" /etc/login.defs
+grep -q "^PASS_MIN_DAYS" {{{ login_defs_path }}} && \
+  sed -i "s/PASS_MIN_DAYS.*/PASS_MIN_DAYS\t0/g" {{{ login_defs_path }}}
 if ! [ $? -eq 0 ]; then
-    echo -e "PASS_MIN_DAYS\t0" >> /etc/login.defs
+    echo -e "PASS_MIN_DAYS\t0" >> {{{ login_defs_path }}}
 fi

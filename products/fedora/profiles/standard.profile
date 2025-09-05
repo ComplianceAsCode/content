@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 title: 'Standard System Security Profile for Fedora'

@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="zipl_bootmap_is_up_to_date" version="1">
-    {{{ oval_metadata("Check if /boot/bootmap is up to date") }}}
+    {{{ oval_metadata("Check if /boot/bootmap is up to date", rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion test_ref="test_zipl_bootmap_is_up_to_date"
       comment="Compare mtime of /boot/bootmap against /etc/zipl.conf and /boot/loader/entries/*.conf" />

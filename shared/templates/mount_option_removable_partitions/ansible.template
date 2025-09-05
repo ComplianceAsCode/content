@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_removable_partition") }}}
 
 - name: Ensure permission {{{ MOUNTOPTION }}} are set on var_removable_partition
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/fstab
     regexp: '^\s*({{ var_removable_partition }})\s+([^\s]*)\s+([^\s]*)\s+([^\s]*)(.*)$'
     backrefs: yes

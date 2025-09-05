@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="etcd_unique_ca" version="1">
-    {{{ oval_metadata("The etcd CA should be different from the Kubernetes CA.") }}}
+    {{{ oval_metadata("The etcd CA should be different from the Kubernetes CA.", rule_title=rule_title) }}}
     <criteria>
       <criterion test_ref="test_etcd_different_ca_than_k8s"
       comment="Check that etcd uses a different CA than Kubernetes." />

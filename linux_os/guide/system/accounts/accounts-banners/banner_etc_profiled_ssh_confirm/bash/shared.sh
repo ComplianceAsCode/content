@@ -13,8 +13,11 @@
 {{{ bash_deregexify_banner_backslash("var_ssh_confirm_text") }}}
 formatted=$(echo "$var_ssh_confirm_text")
 
+OLD_UMASK=$(umask)
+umask u=rw,go=r
+
 cat <<EOF >/etc/profile.d/ssh_confirm.sh
 $formatted
 EOF
 
-chmod a+x /etc/profile.d/ssh_confirm.sh
+umask $OLD_UMASK

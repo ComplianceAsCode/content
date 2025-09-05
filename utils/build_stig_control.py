@@ -191,7 +191,7 @@ def main():
     output['title'] = root.find('checklist:title', ns).text
     output['id'] = 'stig_%s' % args.product
     output['version'] = get_disa_stig_version(root, ns)
-    output['source'] = 'https://public.cyber.mil/stigs/downloads/'
+    output['source'] = 'https://www.cyber.mil/stigs/downloads/'
     output['reference_type'] = "stigid"
     output['product'] = args.product
     output['levels'] = list()

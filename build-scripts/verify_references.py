@@ -40,7 +40,7 @@ sce_cs = ssg.constants.SCE_SYSTEM
 
 # we use these strings to look for references within the XCCDF rules
 nist_ref_href = "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf"
-disa_ref_href = "https://public.cyber.mil/stigs/cci/"
+disa_ref_href = "https://www.cyber.mil/stigs/cci/"
 
 # default exit value - success
 exit_value = 0
@@ -138,7 +138,8 @@ def is_remote_feed(href):
             href.startswith("oval-com.ubuntu") or \
             href.startswith("pub-projects-security-oval-suse") or \
             href.startswith('security-oval-oval-definitions-bookworm') or \
-            href.startswith("oval-org.almalinux")
+            href.startswith("oval-org.almalinux") or \
+            href.startswith('security-oval-oval-definitions-trixie')
 
 
 def main():

@@ -4,14 +4,14 @@ srg_requirement: |-
 fixtext: |-
     Configure {{{ full_name }}} to enforce a minimum 15-character password length for new user accounts.
 
-    Add or modify the following line in the "/etc/login.defs" file:
+    Add or modify the following line in the "{{{ login_defs_path }}}" file:
 
     PASS_MIN_LEN 15
 
 checktext: |-
     Verify that {{{ full_name }}} enforces a minimum 15-character password length for new user accounts by running the following command:
 
-    $ sudo grep -i  pass_min_len /etc/login.defs
+    $ sudo grep -i  pass_min_len {{{ login_defs_path }}}
 
     PASS_MIN_LEN 15
 

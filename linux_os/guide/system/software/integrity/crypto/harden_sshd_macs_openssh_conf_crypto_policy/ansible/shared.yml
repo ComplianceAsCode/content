@@ -1,4 +1,4 @@
-# platform = Oracle Linux 8,Red Hat Enterprise Linux 8,multi_platform_fedora
+# platform = Red Hat Enterprise Linux 8,multi_platform_ol,multi_platform_fedora
 # reboot = true
 # strategy = restrict
 # complexity = low
@@ -11,6 +11,5 @@
         parameter='MACs',
         value="{{ sshd_approved_macs }}",
         create='yes',
-        prefix_regex='^.*'
-    )
+        prefix_regex='^.*', rule_title=rule_title)
 }}}

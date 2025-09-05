@@ -6,18 +6,15 @@
 
 {{%- if ARG_VARIABLE %}}
 {{{- bash_instantiate_variables(ARG_VARIABLE) }}}
-{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=$" ~ ARG_VARIABLE %}}
-expected_value="${{{ ARG_VARIABLE }}}"
-{{% else %}}
-expected_value="{{{ ARG_VALUE }}}"
+{{%- set ARG_NAME_VALUE = ARG_NAME ~ "=$" ~ ARG_VARIABLE %}}
 {{% endif %}}
 
 if {{{ bash_bootc_build() }}} ; then
     KARGS_DIR="/usr/lib/bootc/kargs.d/"
     if grep -q -E "{{{ ARG_NAME }}}" "$KARGS_DIR/*.toml" ; then
-        sed -i -E "s/^(\s*kargs\s*=\s*\[.*)\"{{{ ARG_NAME }}}=[^\"]*\"(.*]\s*)/\1\"{{{ ARG_NAME }}}=$expected_value\"\2/" "$KARGS_DIR/*.toml"
+        sed -i -E "s/^(\s*kargs\s*=\s*\[.*)\"{{{ ARG_NAME }}}=[^\"]*\"(.*]\s*)/\1\"{{{ ARG_NAME_VALUE }}}\"\2/" "$KARGS_DIR/*.toml"
     else
-        echo "kargs = [\"{{{ ARG_NAME }}}=$expected_value\"]" >> "$KARGS_DIR/10-{{{ SANITIZED_ARG_NAME }}}.toml"
+        echo "kargs = [\"{{{ ARG_NAME_VALUE }}}\"]" >> "$KARGS_DIR/10-{{{ SANITIZED_ARG_NAME }}}.toml"
     fi
 else
 {{{ grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) | indent(4) }}}

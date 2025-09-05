@@ -4,8 +4,8 @@
   {{% set system_configuration_using_etc_bashrc_expected = true %}}
 {{%- endif -%}}
 <def-group>
-  <definition class="compliance" id="accounts_tmout" version="3">
-    {{{ oval_metadata("Checks interactive shell timeout") }}}
+  <definition class="compliance" id="accounts_tmout" version="4">
+    {{{ oval_metadata("Checks interactive shell timeout", rule_title=rule_title) }}}
     <criteria operator="AND">
       {{% if "ubuntu" in product %}}
       <criterion comment="TMOUT value in /etc/bash.bashrc &lt;= var_accounts_tmout" test_ref="test_etc_bashrc_tmout" />
@@ -16,6 +16,7 @@
       {{% if system_configuration_using_etc_bashrc_expected %}}
       <criterion comment="TMOUT value in /etc/bashrc &lt;= var_accounts_tmout" test_ref="test_etc_bashrc_tmout" />
       {{% endif %}}
+      <criterion comment="All configured TMOUT values must be >= 1" test_ref="test_accounts_tmout_lower_bound" />
     </criteria>
   </definition>
 
@@ -37,7 +38,7 @@
     {{% if filepath %}}
     <ind:filepath>{{{ filepath }}}</ind:filepath>
     {{% endif %}}
-    {{% if product in ["sle12", "sle15", "slmicro5"] or "ubuntu" in product %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] or "ubuntu" in product %}}
     <ind:pattern operation="pattern match">^[\s]*TMOUT=([\w$]+)[\s]*readonly TMOUT[\s]*export TMOUT$</ind:pattern>
     {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*(?:typeset|declare)[\s]+-xr[\s]+TMOUT=([\w$]+).*$</ind:pattern>
@@ -105,6 +106,15 @@
   <ind:textfilecontent54_state id="state_etc_profile_tmout" version="2">
     <ind:subexpression datatype="int" operation="less than or equal" var_check="all" var_ref="var_accounts_tmout" />
   </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_etc_profile_tmout_lower_bound" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal">1</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist" comment="All TMOUT values must be greater than or equal to 1" id="test_accounts_tmout_lower_bound" version="1">
+    <ind:object object_ref="object_accounts_tmout_all_tmout_instances" />
+    <ind:state state_ref="state_etc_profile_tmout_lower_bound" />
+</ind:textfilecontent54_test>
 
   <external_variable comment="external variable for TMOUT" datatype="int" id="var_accounts_tmout" version="1" />
 </def-group>

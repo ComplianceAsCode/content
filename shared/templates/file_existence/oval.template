@@ -8,7 +8,7 @@
         {{%- endif -%}}
     <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
 
-        {{{ oval_metadata("This test makes sure that" + FILEPATH + " " + TENSE +  " exist.") }}}
+        {{{ oval_metadata("This test makes sure that" + FILEPATH + " " + TENSE +  " exist.", rule_title=rule_title) }}}
         <criteria>
             <criterion comment="Ensure that {{{FILEPATH}}} {{{TENSE}}} exist." test_ref="test_{{{_RULE_ID}}}" />
         </criteria>

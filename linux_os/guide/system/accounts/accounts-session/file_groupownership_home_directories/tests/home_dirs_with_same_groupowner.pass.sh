@@ -6,5 +6,6 @@ USER2="cac_user2"
 useradd -m $USER1
 useradd -m $USER2
 # Define the same owner for two home directories
-chgrp $USER1 /home/$USER1
-chgrp $USER1 /home/$USER2
+GROUP1=$(id $USER1 -g)
+chgrp $GROUP1 /home/$USER1
+chgrp $GROUP1 /home/$USER2

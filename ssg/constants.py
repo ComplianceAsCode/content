@@ -22,7 +22,7 @@ SSG_REF_URIS = {
     'cjis': 'https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf',
     'cui': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf',
     'dcid': 'not_officially_available',
-    'disa': 'https://public.cyber.mil/stigs/cci/',
+    'disa': 'https://www.cyber.mil/stigs/cci/',
     'pcidss': 'https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf',
     'pcidss4': 'https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf',
     'ospp': 'https://www.niap-ccevs.org/Profile/PP.cfm',
@@ -30,11 +30,11 @@ SSG_REF_URIS = {
     'ism': 'https://www.cyber.gov.au/acsc/view-all-content/ism',
     'iso27001-2013': 'https://www.iso.org/contents/data/standard/05/45/54534.html',
     'nerc-cip': 'https://www.nerc.com/pa/Stand/AlignRep/One%20Stop%20Shop.xlsx',
-    'stigid': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
-    'os-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
-    'app-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
-    'app-srg-ctr': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=container-platform',
-    'stigref': 'https://public.cyber.mil/stigs/srg-stig-tools/',
+    'stigid': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
+    'os-srg': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
+    'app-srg': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
+    'app-srg-ctr': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security',
+    'stigref': 'https://www.cyber.mil/stigs/srg-stig-tools/',
 }
 
 product_directories = [
@@ -45,7 +45,7 @@ product_directories = [
     'anolis23',
     'al2023',
     'chromium',
-    'debian11', 'debian12',
+    'debian11', 'debian12', 'debian13',
     'example',
     'eks',
     'fedora',
@@ -59,9 +59,9 @@ product_directories = [
     'openembedded',
     'rhel8', 'rhel9', 'rhel10',
     'rhv4',
-    'sle12', 'sle15', 'slmicro5',
+    'sle12', 'sle15', 'slmicro5', 'slmicro6',
     'tencentos4',
-    'ubuntu1604', 'ubuntu1804', 'ubuntu2004', 'ubuntu2204', 'ubuntu2404'
+    'ubuntu2204', 'ubuntu2404'
 ]
 
 JINJA_MACROS_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(
@@ -92,7 +92,7 @@ anaconda_system = "urn:redhat:anaconda:pre"
 kickstart_system = "urn:xccdf:fix:script:kickstart"
 bootc_system = "urn:xccdf:fix:script:bootc"
 cce_uri = "https://ncp.nist.gov/cce"
-stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
+stig_ns = "https://www.cyber.mil/stigs/srg-stig-tools/"
 ccn_ns = "https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html"
 cis_ns = "https://www.cisecurity.org/benchmark/red_hat_linux/"
 hipaa_ns = "https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf"
@@ -100,8 +100,8 @@ anssi_ns = "https://cyber.gouv.fr/sites/default/files/document/linux_configurati
 ospp_ns = "https://www.niap-ccevs.org/Profile/PP.cfm"
 pcidss4_ns = "https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf"
 cui_ns = 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf'
-stig_refs = 'https://public.cyber.mil/stigs/'
-disa_cciuri = "https://public.cyber.mil/stigs/cci/"
+stig_refs = 'https://www.cyber.mil/stigs/'
+disa_cciuri = "https://www.cyber.mil/stigs/cci/"
 ssg_version_uri = \
     "https://github.com/ComplianceAsCode/content/releases/latest"
 OSCAP_VENDOR = "org.ssgproject"
@@ -218,6 +218,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Chromium": "chromium",
     "Debian 11": "debian11",
     "Debian 12": "debian12",
+    "Debian 13": "debian13",
     "Example": "example",
     "Amazon Elastic Kubernetes Service": "eks",
     "Fedora": "fedora",
@@ -238,10 +239,8 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "SUSE Linux Enterprise 12": "sle12",
     "SUSE Linux Enterprise 15": "sle15",
     "SUSE Linux Enterprise Micro 5": "slmicro5",
+    "SUSE Linux Enterprise Micro 6": "slmicro6",
     "TencentOS Server 4": "tencentos4",
-    "Ubuntu 16.04": "ubuntu1604",
-    "Ubuntu 18.04": "ubuntu1804",
-    "Ubuntu 20.04": "ubuntu2004",
     "Ubuntu 22.04": "ubuntu2204",
     "Ubuntu 24.04": "ubuntu2404",
     "OpenEmbedded": "openembedded",
@@ -304,7 +303,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_alinux": ["alinux2", "alinux3"],
     "multi_platform_almalinux": ["almalinux9"],
     "multi_platform_anolis": ["anolis8", "anolis23"],
-    "multi_platform_debian": ["debian11", "debian12"],
+    "multi_platform_debian": ["debian11", "debian12", "debian13"],
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
@@ -317,10 +316,9 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_rhel": ["rhel8", "rhel9", "rhel10"],
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle12", "sle15"],
-    "multi_platform_slmicro": ["slmicro5"],
+    "multi_platform_slmicro": ["slmicro5", "slmicro6"],
     "multi_platform_tencentos": ["tencentos4"],
-    "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004",
-                              "ubuntu2204", "ubuntu2404"],
+    "multi_platform_ubuntu": ["ubuntu2204", "ubuntu2404"],
     "multi_platform_openembedded": ["openembedded"],
     "multi_platform_al": ["al2023"],
 }

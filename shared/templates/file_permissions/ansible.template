@@ -6,10 +6,10 @@
 
 {{%- if RECURSIVE %}}
 {{%- set FIND_RECURSE_ARGS_DEP="" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="" %}}
-{{%- else %}}
+{{%- elif FILE_REGEX %}}
 {{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
-{{%- set FIND_RECURSE_ARGS_SYM="-L" %}}
+{{%- else %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 0" %}}
 {{%- endif %}}
 
 {{% for path in FILEPATH %}}
@@ -38,14 +38,14 @@
 {{%- endif %}}
 
 - name: Find {{{ path }}} file(s){{% if RECURSIVE %}} recursively{{% endif %}}
-  command: 'find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} {{{ FIND_TYPE }}} {{{ FIND_FILE_REGEX }}}'
+  ansible.builtin.command: 'find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} {{{ FIND_TYPE }}} {{{ FIND_FILE_REGEX }}}'
   register: files_found
   changed_when: False
   failed_when: False
   check_mode: no
 
 - name: Set permissions for {{{ path }}} file(s)
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     mode: "{{{ FILEMODE }}}"
     state: "{{{ STATE }}}"
@@ -55,12 +55,12 @@
 {{% else %}}
 
 - name: Test for existence {{{ path }}}
-  stat:
+  ansible.builtin.stat:
     path: "{{{ path }}}"
   register: file_exists
 
 - name: Ensure permission {{{ FILEMODE }}} on {{{ path }}}
-  file:
+  ansible.builtin.file:
     path: "{{{ path }}}"
     mode: "{{{ FILEMODE }}}"
   when: file_exists.stat is defined and file_exists.stat.exists

@@ -25,6 +25,7 @@ identifiers:
     cce@sle12: CCE-83066-1
     cce@sle15: CCE-83263-4
     cce@slmicro5: CCE-93642-7
+    cce@slmicro6: CCE-94626-9
 
 references:
     cis-csc: 1,12,15,16
@@ -44,21 +45,20 @@ references:
     srg: SRG-OS-000023-GPOS-00006,SRG-OS-000228-GPOS-00088
     stigid@ol7: OL07-00-040170
     stigid@ol8: OL08-00-010040
-    stigid@rhel8: RHEL-08-010040
     stigid@sle12: SLES-12-030050
     stigid@sle15: SLES-15-010040
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="Banner", value="/etc/issue") }}}
 
 fixtext: |-
-    Configure {{{ full_name }}} to display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system via the ssh.
+    Configure {{{ full_name }}} to display the Standard Mandatory Notice and Consent Banner before granting access to the system via the ssh.
 
     Edit the "/etc/ssh/sshd_config" file to uncomment the banner keyword and configure it to point to a file that will contain the logon banner (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor).
     An example configuration line is:
 
     Banner /etc/issue
 
-srg_requirement: '{{{ full_name }}} must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a ssh logon.'
+srg_requirement: '{{{ full_name }}} must display the Standard Mandatory Notice and Consent Banner before granting local or remote access to the system via a ssh logon.'
 
 {{% if 'ubuntu' not in product %}}
 conflicts:

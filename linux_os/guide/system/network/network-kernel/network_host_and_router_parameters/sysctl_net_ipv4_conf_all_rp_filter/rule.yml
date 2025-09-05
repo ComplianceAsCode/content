@@ -27,8 +27,6 @@ references:
     cis-csc: 1,12,13,14,15,16,18,2,4,6,7,8,9
     cis@sle12: 3.3.7
     cis@sle15: 3.3.7
-    cis@ubuntu2004: 3.3.7
-    cis@ubuntu2204: 3.3.7
     cobit5: APO01.06,APO13.01,BAI04.04,DSS01.03,DSS01.05,DSS03.01,DSS03.05,DSS05.02,DSS05.04,DSS05.07,DSS06.02
     cui: 3.1.20
     isa-62443-2009: 4.2.3.4,4.3.3.4,4.4.3.3
@@ -40,7 +38,6 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol7: OL07-00-040611
     stigid@ol8: OL08-00-040285
-    stigid@rhel8: RHEL-08-040285
 
 ocil: |-
     The runtime status of the <code>net.ipv4.conf.all.rp_filter</code> parameter can be queried
@@ -48,8 +45,9 @@ ocil: |-
     <pre>$ sysctl net.ipv4.conf.all.rp_filter</pre>
     The output of the command should indicate either:
     <code>net.ipv4.conf.all.rp_filter = 1</code>
-    or:
+    {{% if product not in ['ol9','rhel9'] %}}or:
     <code>net.ipv4.conf.all.rp_filter = 2</code>
+    {{% endif %}}
     The output of the command should not indicate:
     <code>net.ipv4.conf.all.rp_filter = 0</code>
 
@@ -62,12 +60,14 @@ ocil: |-
     <pre>$ grep -r '^\s*net.ipv4.conf.all.rp_filter\s*=' /etc/sysctl.conf /etc/sysctl.d</pre>
     The command should not find any assignments other than:
     net.ipv4.conf.all.rp_filter = 1
-    or:
+    {{% if product not in ['ol9','rhel9'] %}}or:
     net.ipv4.conf.all.rp_filter = 2
+    {{% endif %}}
 
     Conflicting assignments are not allowed.
 
-ocil_clause: "the net.ipv4.conf.all.rp_filter is not set to 1 or 2 or is configured to be 0"
+ocil_clause: |-
+    the net.ipv4.conf.all.rp_filter is not set to {{% if product not in ['ol9','rhel9'] %}}1 or 2 or is configured to be 0{{% else %}}1 or is configured to be 0 or 2{{% endif %}}
 
 fixtext: |-
     Configure {{{ full_name }}} to use reverse path filtering on all IPv4 interfaces.
@@ -79,7 +79,7 @@ template:
     name: sysctl
     vars:
         sysctlvar: net.ipv4.conf.all.rp_filter
-        {{% if 'ol' in product or 'rhel' in product %}}
+        {{% if ('ol' in families or 'rhel' in product) and product not in ['ol9','rhel9'] %}}
         sysctlval:
         - '1'
         - '2'
