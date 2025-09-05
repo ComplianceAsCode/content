@@ -682,7 +682,7 @@ class Benchmark(object):
         return benchmark
 
     def add_profiles_from_dir(self, dir_, env_yaml):
-        for dir_item in os.listdir(dir_):
+        for dir_item in sorted(os.listdir(dir_)):
             dir_item_path = os.path.join(dir_, dir_item)
             if not os.path.isfile(dir_item_path):
                 continue
@@ -995,6 +995,7 @@ class Rule(object):
         "platform": lambda: None,
         "inherited_platforms": lambda: list(),
         "template": lambda: None,
+        "definition_location": lambda: None,
     }
 
     def __init__(self, id_):
@@ -1002,6 +1003,7 @@ class Rule(object):
         self.prodtype = "all"
         self.title = ""
         self.description = ""
+        self.definition_location = ""
         self.rationale = ""
         self.severity = "unknown"
         self.references = {}
@@ -1044,6 +1046,9 @@ class Rule(object):
         if yaml_contents:
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
                                % (yaml_file, yaml_contents))
+
+        if not rule.definition_location:
+            rule.definition_location = yaml_file
 
         rule.validate_prodtype(yaml_file)
         rule.validate_identifiers(yaml_file)
@@ -1339,7 +1344,7 @@ class DirectoryLoader(object):
         self.parent_group = None
 
     def _collect_items_to_load(self, guide_directory):
-        for dir_item in os.listdir(guide_directory):
+        for dir_item in sorted(os.listdir(guide_directory)):
             dir_item_path = os.path.join(guide_directory, dir_item)
             _, extension = os.path.splitext(dir_item)
 

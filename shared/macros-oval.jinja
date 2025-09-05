@@ -141,7 +141,7 @@
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
 #}}
-{{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false) -%}}
+{{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, filepath_regex='') -%}}
 {{%- set suffix_id = "" -%}}
 {{%- if multi_value -%}}
 {{%- set group_regex = "([^#]*).*$" -%}}
@@ -174,7 +174,12 @@
 {{%- endif %}}
 {{%- endif %}}
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}{{{ suffix_id }}}" version="1">
+{{%- if filepath_regex %}}
+    <ind:path>{{{ path }}}</ind:path>
+    <ind:filename operation="pattern match">{{{ filepath_regex }}}</ind:filename>
+{{%- else %}}
     <ind:filepath>{{{ path }}}</ind:filepath>
+{{%- endif %}}
     <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -609,4 +614,38 @@
 {{%- endif %}}
         <description>{{{ description }}}{{{ caller() if caller else '' }}}</description>
     </metadata>
+{{%- endmacro %}}
+
+{{%- macro oval_check_dconf_ini_file(path='', prefix_regex='^\s*', parameter='', separator_regex='[ \\t]*=[ \\t]*', value='', application='', section='', quotes='', lock_path='') -%}}
+{{%- if application == '' -%}}
+	{{%- set application = "The respective application or service" -%}}
+{{%- endif -%}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
+    <criteria comment="{{{ application }}} is configured correctly"
+    operator="AND">
+        {{{- oval_line_in_file_criterion(path, parameter) }}}
+      <criterion comment="Prevent user from modifying {{{ parameter }}}"
+      test_ref="test_prevent_user_{{{ parameter }}}" />
+    </criteria>
+  </definition>
+  {{{ oval_line_in_file_test(path, parameter) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, false, filepath_regex='^.*$') }}}
+  {{{ oval_line_in_file_state(value, false, quotes) }}}
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Prevent user from modifying {{{ parameter }}}"
+  id="test_prevent_user_{{{ parameter }}}" version="1">
+    <ind:object object_ref="obj_prevent_user_{{{ parameter }}}" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_prevent_user_{{{ parameter }}}"
+  version="1">
+    <ind:path>{{{ lock_path }}}</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^/{{{ section }}}/{{{ parameter }}}$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
 {{%- endmacro %}}

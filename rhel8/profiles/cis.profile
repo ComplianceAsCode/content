@@ -31,8 +31,8 @@ selections:
     #### 1.1.1.1 Ensure mounting cramfs filesystems is disabled (Scored)
     - kernel_module_cramfs_disabled
 
-    #### 1.1.1.2 Ensure mounting of vFAT flesystems is limited (Not Scored)
-    - kernel_module_vfat_disabled
+    #### 1.1.1.2 Ensure mounting of vFAT filesystems is limited (Not Scored)
+
 
     #### 1.1.1.3 Ensure mounting of squashfs filesystems is disabled (Scored)
     - kernel_module_squashfs_disabled
@@ -248,7 +248,7 @@ selections:
     - security_patches_up_to_date
 
     ## 1.10 Ensure system-wide crypto policy is not legacy (Scored)
-    #- var_system_crypto_policy
+    - var_system_crypto_policy=future
     - configure_crypto_policy
 
     ## 1.11 Ensure system-wide crytpo policy is FUTURE or FIPS (Scored)
@@ -716,8 +716,7 @@ selections:
     ### 4.2.3 Ensure permissions on all logfiles are configured (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5523
 
-    ## 4.3 Ensure logrotate is conifgured (Not Scored)
-    - ensure_logrotate_activated
+    ## 4.3 Ensure logrotate is configured (Not Scored)
 
     # 5 Access, Authentication and Authorization
 

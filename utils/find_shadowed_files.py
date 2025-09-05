@@ -10,7 +10,7 @@ SSG_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def safe_listdir(path):
     try:
-        return os.listdir(path)
+        return sorted(os.listdir(path))
     except:
         return []
 

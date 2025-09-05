@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from glob import glob
 import collections
 import os
@@ -34,7 +36,7 @@ class References:
 class Output(object):
     def __init__(self, product, build_dir):
         path = "{build_dir}/{product}/rules".format(build_dir=build_dir, product=product)
-        rule_files = glob("{path}/*".format(path=path))
+        rule_files = sorted(glob("{path}/*".format(path=path)))
         if not rule_files:
             msg = (
                 "No files found in '{path}', please make sure that you select the build dir "

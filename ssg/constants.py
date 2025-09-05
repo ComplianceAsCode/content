@@ -1,8 +1,9 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-import datetime
 import os.path
+import os
+import time
 
 product_directories = [
     'chromium',
@@ -60,6 +61,9 @@ puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
 cce_uri = "https://nvd.nist.gov/cce/index.cfm"
 stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
+cis_ns = "https://www.cisecurity.org/benchmark/red_hat_linux/"
+hipaa_ns = "https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf"
+anssi_ns = "http://www.ssi.gouv.fr/administration/bonnes-pratiques/"
 stig_refs = 'https://public.cyber.mil/stigs/'
 disa_cciuri = "https://public.cyber.mil/stigs/cci/"
 ssg_version_uri = \
@@ -124,7 +128,10 @@ oval_header = (
         {0}#linux linux-definitions-schema.xsd">"""
     .format(oval_namespace))
 
-timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+timestamp = time.strftime(
+    "%Y-%m-%dT%H:%M:%S",
+    time.gmtime(int(os.environ.get('SOURCE_DATE_EPOCH', time.time())))
+)
 
 PKG_MANAGER_TO_SYSTEM = {
     "yum": "rpm",

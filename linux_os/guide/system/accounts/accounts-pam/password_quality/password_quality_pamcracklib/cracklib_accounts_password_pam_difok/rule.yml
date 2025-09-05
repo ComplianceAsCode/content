@@ -1,0 +1,54 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Set Password Strength Minimum Different Characters'
+
+description: |-
+    The pam_cracklib module's <tt>difok</tt> parameter controls requirements for
+    usage of different characters during a password change. The number of
+    changed characters refers to the number of changes required with respect to
+    the total number of positions in the current password. In other words,
+    characters may be the same within the two passwords; however, the positions
+    of the like characters must be different.
+    Make sure the <tt>difok</tt> parameter for the pam_cracklib module is
+    configured to greater than or equal to <tt>{{{ xccdf_value("var_password_pam_difok") }}}</tt>.
+
+rationale: |-
+    Requiring a minimum number of different characters during password changes
+    ensures that newly changed passwords should not resemble previously
+    compromised ones. Note that passwords which are changed on compromised
+    systems will still be compromised, however.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83170-1
+
+references:
+    disa@sle12: CCI-000195
+    nist@sle12: IA-5(b),IA-5(v)
+    srg@sle12: SRG-OS-000072-GPOS-00040
+    stigid@sle12: SLES-12-010190
+
+ocil_clause: 'difok is not found or not set to the required value'
+
+ocil: |-
+    To check how many characters must differ during a password change, run the
+    following command:
+    <pre># grep pam_cracklib.so /etc/pam.d/common-password
+    password requisite pam_cracklib.so difok={{{ xccdf_value("var_password_pam_difok") }}}</pre>
+    The <tt>difok</tt> parameter will indicate how many characters must differ.
+    The DoD requires at least eight characters differ during a password change.
+    This would appear as <tt>difok=8</tt>.
+
+template:
+    name: pam_options
+    vars:
+      path: /etc/pam.d/common-password
+      type: password
+      control_flag: requisite
+      module: pam_cracklib.so
+      arguments:
+        - variable: difok
+          operation: greater than or equal

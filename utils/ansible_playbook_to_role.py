@@ -443,7 +443,7 @@ def locally_clone_and_init_repositories(organization, repo_list):
 def select_roles_to_upload(product_whitelist, profile_whitelist,
                            build_playbooks_dir):
     selected_roles = dict()
-    for filename in os.listdir(build_playbooks_dir):
+    for filename in sorted(os.listdir(build_playbooks_dir)):
         root, ext = os.path.splitext(filename)
         if ext == ".yml":
             # the format is product-playbook-profile.yml

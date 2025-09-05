@@ -1,3 +1,9 @@
+{{% if product in ["sle12", "sle15"] %}} 
+{{% set aide_bin_path = "/usr/bin/aide" %}} 
+{{% else %}} 
+{{% set aide_bin_path = "/usr/sbin/aide" %}} 
+{{% endif %}} 
+
 <def-group>
   <definition class="compliance" id="aide_scan_notification" version="1">
     {{{ oval_metadata("AIDE should notify appropriate personnel of the details
@@ -17,7 +23,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="notify personnel when aide completes" id="object_test_aide_scan_notification" version="1">
     <ind:filepath>/etc/crontab</ind:filepath>
-    <ind:pattern operation="pattern match">^.*/usr/sbin/aide[\s]*\-\-check.*\|.*/bin/mail[\s]*-s[\s]*".*"[\s]*.+@.+$</ind:pattern>
+    <ind:pattern operation="pattern match">^.*{{{ aide_bin_path }}}[\s]*\-\-check.*\|.*/bin/mail[\s]*-s[\s]*".*"[\s]*.+@.+$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -26,7 +32,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="notify personnel when aide completes" id="object_aide_var_cron_notification" version="1">
     <ind:filepath>/var/spool/cron/root</ind:filepath>
-    <ind:pattern operation="pattern match">^.*/usr/sbin/aide[\s]*\-\-check.*\|.*/bin/mail[\s]*-s[\s]*".*"[\s]*.+@.+$</ind:pattern>
+    <ind:pattern operation="pattern match">^.*{{{ aide_bin_path }}}[\s]*\-\-check.*\|.*/bin/mail[\s]*-s[\s]*".*"[\s]*.+@.+$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -36,7 +42,7 @@
   <ind:textfilecontent54_object comment="notify personnel when aide completes in cron.(d|daily|weekly|monthly)" id="object_aide_crontabs_notification" version="1">
     <ind:path operation="pattern match">^/etc/cron.(d|daily|weekly|monthly)$</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
-    <ind:pattern operation="pattern match">^.*/usr/sbin/aide[\s]*\-\-check.*\|.*/bin/mail[\s]*-s[\s]*".*"[\s]*.+@.+$</ind:pattern>
+    <ind:pattern operation="pattern match">^.*{{{ aide_bin_path }}}[\s]*\-\-check.*\|.*/bin/mail[\s]*-s[\s]*".*"[\s]*.+@.+$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
    

@@ -25,7 +25,6 @@ selections:
     - kernel_module_udf_disabled
 
     #### 1.1.1.4 Ensure mounting of vFAT flesystems is limited (Not Scored)
-    - kernel_module_vfat_disabled
 
     ### 1.1.2 Ensure /tmp is configured (Scored)
     - partition_for_tmp
@@ -576,8 +575,7 @@ selections:
 
     ### 4.2.3 Ensure permissions on all logfiles are configured (Scored)
 
-    ### 4.2.4 Ensure logrotate is conifgured (Not Scored)
-    - ensure_logrotate_activated
+    ### 4.2.4 Ensure logrotate is configured (Not Scored)
 
     # 5 Access, Authentication and Authorization
 

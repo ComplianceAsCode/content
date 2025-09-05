@@ -10,7 +10,7 @@ rationale: |-
     based on insecure file system accessed by privileged programs, avoiding an
     exploitation vector exploiting unsafe use of <tt>open()</tt> or <tt>creat()</tt>.
 
-severity: unknown
+severity: medium
 
 identifiers:
     cce@rhel7: CCE-81026-7
@@ -22,6 +22,7 @@ references:
     cis: 1.6.1
     nist: CM-6(a),AC-6(1)
     srg: SRG-OS-000324-GPOS-00125
+    stigid@rhel8: RHEL-08-010374
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="fs.protected_hardlinks", value="1") }}}
 

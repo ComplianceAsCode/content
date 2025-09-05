@@ -4,7 +4,7 @@ title: 'DISA STIG for Oracle Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux V1R1.
+    DISA STIG for Oracle Linux V2R2.
 
 selections:
     - login_banner_text=dod_banners
@@ -55,7 +55,6 @@ selections:
     - dconf_gnome_screensaver_lock_locked
     - dconf_gnome_enable_smartcard_auth
     - dconf_gnome_screensaver_idle_delay
-    - package_screen_installed
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_idle_activation_locked
     - dconf_gnome_screensaver_lock_delay
@@ -115,7 +114,6 @@ selections:
     - accounts_no_uid_except_zero
     - no_files_unowned_by_user
     - file_permissions_ungroupowned
-    - accounts_user_interactive_home_directory_defined
     - accounts_have_homedir_login_defs
     - accounts_user_interactive_home_directory_exists
     - file_permissions_home_directories
@@ -220,7 +218,7 @@ selections:
     - install_antivirus
     - accounts_max_concurrent_login_sessions
     - configure_firewalld_ports
-    - sshd_use_approved_ciphers
+    - sshd_use_approved_ciphers_ordered_stig
     - accounts_tmout
     - sshd_enable_warning_banner
     - sssd_ldap_start_tls
@@ -238,7 +236,7 @@ selections:
     - sshd_print_last_log
     - sshd_disable_root_login
     - sshd_allow_only_protocol2
-    - sshd_use_approved_macs
+    - sshd_use_approved_macs_ordered_stig
     - file_permissions_sshd_pub_key
     - file_permissions_sshd_private_key
     - sshd_disable_gssapi_auth
@@ -265,7 +263,7 @@ selections:
     - postfix_prevent_unrestricted_relay
     - package_vsftpd_removed
     - package_tftp-server_removed
-    - sshd_enable_x11_forwarding
+    - sshd_disable_x11_forwarding
     - tftpd_uses_secure_mode
     - package_xorg-x11-server-common_removed
     - sysctl_net_ipv4_ip_forward
@@ -288,3 +286,19 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - sysctl_net_ipv4_conf_all_accept_redirects
     - wireless_disable_interfaces
+    - sudo_remove_no_authenticate
+    - selinux_policytype
+    - dconf_gnome_disable_ctrlaltdel_reboot
+    - dconf_gnome_disable_automount_open
+    - dconf_gnome_disable_automount
+    - dconf_gnome_disable_autorun
+    - audit_rules_privileged_commands_mount
+    - dir_perms_world_writable_system_owned_group
+    - package_MFEhiplsm_installed
+    - sssd_ldap_configure_tls_reqcert
+    - uefi_no_removeable_media
+    - xwindows_runlevel_target
+    - require_emergency_target_auth
+    - grub2_admin_username
+    - grub2_uefi_admin_username
+    - sshd_x11_use_localhost

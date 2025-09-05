@@ -1,0 +1,72 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Verify Permissions of Local Logs of audit Tools'
+
+description: |-
+    The SUSE operating system audit tools must have the proper permissions
+    configured to protect against unauthorized access.
+
+    Check that "permissions.local" file contains the correct permissions rules
+    with the following command:
+
+    <pre>grep "^/usr/sbin/au" /etc/permissions.local
+
+    /usr/sbin/audispd root:root 0750
+    /usr/sbin/auditctl root:root 0750
+    /usr/sbin/auditd root:root 0750
+    /usr/sbin/ausearch root:root 0755
+    /usr/sbin/aureport root:root 0755
+    /usr/sbin/autrace root:root 0750
+    /usr/sbin/augenrules root:root 0750
+    </pre>
+
+    Audit tools include but are not limited to vendor-provided and open-source
+    audit tools needed to successfully view and manipulate audit information
+    system activity and records. Audit tools include custom queries and report
+    generators.
+
+rationale: |-
+    Protecting audit information also includes identifying and protecting the
+    tools used to view and manipulate log data. Therefore, protecting audit
+    tools is necessary to prevent unauthorized operation on audit information.
+
+    SUSE operating systems providing tools to interface with audit information
+    will leverage user permissions and roles identifying the user accessing the
+    tools and the corresponding rights the user enjoys to make access decisions
+    regarding the access to audit tools.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83118-0
+
+references:
+    disa@sle12: CCI-001493,CCI-001494,CCI-001495
+    nisti@sle12: AU-9
+    srg@sle12: SRG-OS-000256-GPOS-00097,SRG-OS-000257-GPOS-00098,SRG-OS-000258-GPOS-00099
+    stigid@sle12: SLES-12-020130
+
+ocil: |-
+    Check that <tt>permissions.local</tt> file contains the correct permissions
+    rules with the following command:
+
+    <pre>grep "^/usr/sbin/au" /etc/permissions.local
+
+    /usr/sbin/audispd root:root 0750
+    /usr/sbin/auditctl root:root 0750
+    /usr/sbin/auditd root:root 0750
+    /usr/sbin/ausearch root:root 0755
+    /usr/sbin/aureport root:root 0755
+    /usr/sbin/autrace root:root 0750
+    /usr/sbin/augenrules root:root 0750
+    </pre>
+
+    If the command does not return all the above lines, the missing ones need
+    to be added.
+
+    Run the following command to correct the permissions after adding missing
+    entries:
+
+    <pre># sudo chkstat --set --system</pre>

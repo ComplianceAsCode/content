@@ -1,11 +1,18 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu,multi_platform_sle
 # reboot = true
 # strategy = disable
 # complexity = low
 # disruption = medium
+{{% if product == "sle12" %}}
+if ! LC_ALL=C grep -q -m 1 "^blacklist {{{ KERNMODULE }}}$" /etc/modprobe.d/50-blacklist.conf ; then
+        echo -e "\n# Disable per security requirements" >> /etc/modprobe.d/50-blacklist.conf
+        echo "blacklist {{{ KERNMODULE }}}" >> /etc/modprobe.d/50-blacklist.conf
+fi
+{{% else %}}
 if LC_ALL=C grep -q -m 1 "^install {{{ KERNMODULE }}}" /etc/modprobe.d/{{{ KERNMODULE }}}.conf ; then
 	sed -i 's/^install {{{ KERNMODULE }}}.*/install {{{ KERNMODULE }}} /bin/true/g' /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 else
 	echo -e "\n# Disable per security requirements" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 	echo "install {{{ KERNMODULE }}} /bin/true" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 fi
+{{% endif %}}

@@ -1,7 +1,7 @@
 package v1alpha1
 
 import (
-	"fmt"
+	"errors"
 	"strings"
 
 	corev1 "k8s.io/api/core/v1"
@@ -32,6 +32,8 @@ const ScanFinalizer = "scan.finalizers.compliance.openshift.io"
 // results will be stored at
 const DefaultRawStorageSize = "1Gi"
 const DefaultStorageRotation = 3
+
+var ErrUnkownScanType = errors.New("Unknown scan type")
 
 // Represents the status of the compliance scan run.
 type ComplianceScanStatusPhase string
@@ -215,6 +217,9 @@ type ComplianceScanStatus struct {
 	CurrentIndex int64 `json:"currentIndex,omitempty"`
 	// Specifies the object that's storing the raw results for the scan.
 	ResultsStorage StorageReference `json:"resultsStorage,omitempty"`
+	// If there are warnings on the scan, this will be filled up with warning
+	// messages.
+	Warnings string `json:"warnings,omitempty"`
 }
 
 // StorageReference stores a reference to where certain objects are being stored
@@ -278,7 +283,7 @@ func (cs *ComplianceScan) GetScanTypeIfValid() (ComplianceScanType, error) {
 	if strings.ToLower(string(cs.Spec.ScanType)) == strings.ToLower(string(ScanTypeNode)) {
 		return ScanTypeNode, nil
 	}
-	return "", fmt.Errorf("Unknown scan type")
+	return "", ErrUnkownScanType
 }
 
 // GetScanType get's the scan type for a scan

@@ -1,8 +1,8 @@
 documentation_complete: true
 
-title: 'PCI-DSS v3 Control Baseline Draft for Oracle Linux 7'
+title: 'PCI-DSS v3.2.1 Control Baseline Draft for Oracle Linux 7'
 
-description: 'Ensures PCI-DSS v3 related security configuration settings are applied.'
+description: 'Ensures PCI-DSS v3.2.1 related security configuration settings are applied.'
 
 selections:
     - var_account_disable_post_pw_expiration=90
@@ -34,7 +34,9 @@ selections:
     - file_groupowner_etc_passwd
     - file_permissions_etc_passwd
     - file_owner_grub2_cfg
+    - file_owner_efi_grub2_cfg
     - file_groupowner_grub2_cfg
+    - file_groupowner_efi_grub2_cfg
     - package_libreswan_installed
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
@@ -57,11 +59,6 @@ selections:
     - audit_rules_time_stime
     - audit_rules_time_clock_settime
     - audit_rules_time_watch_localtime
-    - audit_rules_usergroup_modification_group
-    - audit_rules_usergroup_modification_gshadow
-    - audit_rules_usergroup_modification_opasswd
-    - audit_rules_usergroup_modification_passwd
-    - audit_rules_usergroup_modification_shadow
     - audit_rules_networkconfig_modification
     - audit_rules_mac_modification
     - audit_rules_dac_modification_chmod
@@ -77,24 +74,15 @@ selections:
     - audit_rules_dac_modification_lsetxattr
     - audit_rules_dac_modification_removexattr
     - audit_rules_dac_modification_setxattr
-    - audit_rules_login_events_faillock
-    - audit_rules_login_events_lastlog
-    - audit_rules_login_events_tallylog
+    - audit_rules_login_events
     - audit_rules_session_events
-    - audit_rules_unsuccessful_file_modification_creat
-    - audit_rules_unsuccessful_file_modification_open
-    - audit_rules_unsuccessful_file_modification_openat
-    - audit_rules_unsuccessful_file_modification_open_by_handle_at
-    - audit_rules_unsuccessful_file_modification_truncate
-    - audit_rules_unsuccessful_file_modification_ftruncate
+    - audit_rules_unsuccessful_file_modification
     - audit_rules_privileged_commands
     - audit_rules_media_export
     - audit_rules_file_deletion_events
     - audit_rules_sysadmin_actions
     - audit_rules_immutable
-    - audit_rules_kernel_module_loading_delete
-    - audit_rules_kernel_module_loading_finit
-    - audit_rules_kernel_module_loading_init
+    - audit_rules_kernel_module_loading
     - audit_rules_usergroup_modification
     - ensure_logrotate_activated
     - sshd_idle_timeout_value=15_minutes
@@ -124,3 +112,4 @@ selections:
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_mode_blank
     - service_chronyd_or_ntpd_enabled
+    - install_hids

@@ -166,6 +166,8 @@ def resolve_path(rule, path):
 
     # Otherwise we try to guess it based on the rule name
     for root, dirs, files in os.walk('./linux_os'):
+        dirs.sort()
+        files.sort()
         if root.endswith(rule):
             return os.path.join([root, "ignition", "shared.yml"])
 
@@ -177,6 +179,8 @@ def resolve_rule(rule):
 
     # Otherwise we try to guess it based on the rule name
     for root, dirs, files in os.walk('./linux_os'):
+        dirs.sort()
+        files.sort()
         if root.endswith(rule):
             return root
     return None

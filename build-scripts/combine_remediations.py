@@ -89,7 +89,7 @@ def collect_fixes(product, rules_dirs, fix_dirs, remediation_type):
     rule_id_to_remediation_map = dict()
     for fixdir in fix_dirs:
         if os.path.isdir(fixdir):
-            for filename in os.listdir(fixdir):
+            for filename in sorted(os.listdir(fixdir)):
                 file_path = os.path.join(fixdir, filename)
                 rule_id, _ = os.path.splitext(filename)
                 rule_id_to_remediation_map[rule_id] = file_path

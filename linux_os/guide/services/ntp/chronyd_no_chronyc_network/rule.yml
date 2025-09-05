@@ -13,7 +13,7 @@ rationale: |-
     Not exposing the management interface of the chrony daemon on
     the network diminishes the attack space.
 
-severity: unknown
+severity: low
 
 platform: machine  # The check uses service_... extended definition, which doesnt support offline mode
 
@@ -24,6 +24,7 @@ identifiers:
 references:
     ospp: FMT_SMF_EXT.1
     srg: SRG-OS-000096-GPOS-00050
+    stigid@rhel8: RHEL-08-030742
 
 ocil_clause: 'it does not exist or port is set to non-zero value'
 

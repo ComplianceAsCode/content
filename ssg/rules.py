@@ -70,7 +70,7 @@ def get_rule_dir_ovals(dir_path, product=None):
         return []
 
     results = []
-    for oval_file in os.listdir(oval_dir):
+    for oval_file in sorted(os.listdir(oval_dir)):
         file_name, ext = os.path.splitext(oval_file)
         oval_path = os.path.join(oval_dir, oval_file)
 
@@ -88,6 +88,7 @@ def find_rule_dirs(base_dir):
     Generator which yields all rule directories within a given base_dir, recursively
     """
     for root, dirs, _ in os.walk(base_dir):
+        dirs.sort()
         for dir_name in dirs:
             dir_path = os.path.join(root, dir_name)
             if is_rule_dir(dir_path):

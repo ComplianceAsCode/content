@@ -96,6 +96,8 @@ class PlaybookBuilder():
 
     def _get_rules_variables(self, base_dir):
         for dirpath, dirnames, filenames in os.walk(base_dir):
+            dirnames.sort()
+            filenames.sort()
             for filename in filenames:
                 root, ext = os.path.splitext(filename)
                 if ext == ".var":
@@ -222,7 +224,7 @@ class PlaybookBuilder():
     def create_playbooks_for_all_rules(self, variables):
         profile_playbooks_dir = os.path.join(self.output_dir, "all")
         os.makedirs(profile_playbooks_dir)
-        for rule in os.listdir(self.rules_dir):
+        for rule in sorted(os.listdir(self.rules_dir)):
             rule_id, _ = os.path.splitext(rule)
             snippet_path = os.path.join(self.input_dir, rule_id + ".yml")
             if not os.path.exists(snippet_path):
@@ -241,7 +243,7 @@ class PlaybookBuilder():
         """
         variables = self.get_benchmark_variables()
         profiles = {}
-        for profile_file in os.listdir(self.profiles_dir):
+        for profile_file in sorted(os.listdir(self.profiles_dir)):
             profile_path = os.path.join(self.profiles_dir, profile_file)
             try:
                 profile = self.open_profile(profile_path)

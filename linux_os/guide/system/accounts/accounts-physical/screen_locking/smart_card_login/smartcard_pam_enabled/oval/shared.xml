@@ -1,0 +1,23 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="smartcard_pam_enabled" version="3">
+   {{{ oval_metadata("Enable Smart Card logins using PAM") }}}
+
+    <criteria operator="OR" comment="smart card authentication is configured">
+      <extend_definition comment="packages needed for smartcard support are installed" definition_ref="install_smartcard_packages" negate="true" />
+      <criterion comment="smart card is configured in /etc/pam.d/common-auth" test_ref="test_smart_card_common_auth" />
+    </criteria>
+  </definition>
+
+  <!-- Test the smart card authentication required case (login is allowed only by smartcard) -->
+  <ind:textfilecontent54_test id="test_smart_card_common_auth" check="all" check_existence="all_exist"
+  comment="Test smartcard authentication is required in /etc/pam.d/common-auth file" version="1">
+    <ind:object object_ref="object_smart_card_common_auth" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_smart_card_common_auth" version="1">
+    <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string">^\s*auth\s+(?:sufficient|required)\s+pam_pkcs11.so(?:\s|$)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

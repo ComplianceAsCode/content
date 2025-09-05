@@ -161,6 +161,7 @@ selections:
 - partition_for_var
 - partition_for_var_log
 - partition_for_var_log_audit
+- partition_for_var_tmp
 - require_singleuser_auth
 - rsyslog_remote_tls
 - rsyslog_remote_tls_cacert

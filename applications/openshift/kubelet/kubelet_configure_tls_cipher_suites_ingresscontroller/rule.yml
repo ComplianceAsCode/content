@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: "Ensure that the Ingress Controller only makes use of Strong Cryptographic Ciphers"
+
+description: |-
+  Ensure that the Ingress Controller is configured to only use strong cryptographic ciphers.
+
+rationale: |-
+  TLS ciphers have had a number of known vulnerabilities and weaknesses,
+  which can reduce the protection provided by them. By default Kubernetes
+  supports a number of TLS ciphersuites including some that have security
+  concerns, weakening the protection provided.
+
+severity: medium
+
+#identifiers:
+#    cce@ocp4:
+
+references:
+  cis@ocp4: 4.2.13
+
+ocil_clause: "TLS cipher suite configuration is not configured"
+
+ocil: |-
+  Run the following comman on the kubelete nodes(s):
+  {{% raw %}}<pre>oc -n openshift-ingress-operator patch ingresscontroller/default --type merge -p '{"spec":{"tlsSecurityProfile":{"type":"Custom","custom":{"ciphers":["ECDHE-ECDSA-AES128-GCM-SHA256","ECDHE-RSA-AES128-GCM-SHA256","ECDHE-RSA-AES256-GCM-SHA384"],"minTLSVersion":"VersionTLS12"} } } }'</pre>{{% endraw %}}
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/operator.openshift.io/v1/namespaces/openshift-ingress-operator/ingresscontrollers/default") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: '/apis/operator.openshift.io/v1/namespaces/openshift-ingress-operator/ingresscontrollers/default'
+    yamlpath: ".status.tlsProfile.ciphers[:]"
+    values:
+    - value: '^(ECDHE-ECDSA-AES128-GCM-SHA256|ECDHE-RSA-AES128-GCM-SHA256|ECDHE-ECDSA-CHACHA20-POLY1305|ECDHE-RSA-AES256-GCM-SHA384|ECDHE-RSA-CHACHA20-POLY1305|ECDHE-ECDSA-AES256-GCM-SHA384|AES256-GCM-SHA384|AES128-GCM-SHA256)$'
+      operation: 'pattern match'

@@ -80,7 +80,7 @@ class Template():
             return False
         if os.path.islink(self.template_root_directory):
             return False
-        template_sources = glob.glob(os.path.join(self.template_path, "*.template"))
+        template_sources = sorted(glob.glob(os.path.join(self.template_path, "*.template")))
         if not os.path.isfile(self.template_yaml_path) and not template_sources:
             return False
         return True
@@ -116,7 +116,7 @@ class Builder(object):
             dir_ = os.path.join(output_dir, lang)
             self.output_dirs[lang] = dir_
         # scan directory structure and dynamically create list of templates
-        for item in os.listdir(self.templates_dir):
+        for item in sorted(os.listdir(self.templates_dir)):
             itempath = os.path.join(self.templates_dir, item)
             maybe_template = Template(templates_dir, item)
             if maybe_template.looks_like_template():
@@ -213,7 +213,7 @@ class Builder(object):
                 oval_def_id, oval_def_id, template, langs_to_generate)
 
     def build_all_rules(self):
-        for rule_file in os.listdir(self.resolved_rules_dir):
+        for rule_file in sorted(os.listdir(self.resolved_rules_dir)):
             rule_path = os.path.join(self.resolved_rules_dir, rule_file)
             try:
                 rule = ssg.build_yaml.Rule.from_yaml(rule_path, self.env_yaml)

@@ -16,7 +16,7 @@ rationale: |-
   tamper with the logs because of the logs being stored off-site.
 
 references:
-  cis: 1.2.23
+  cis@ocp4: 1.2.23
   nist: AU-9(2)
 
 identifiers:
@@ -42,6 +42,7 @@ template:
     ocp_data: "true"
     filepath: /apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance
     yamlpath: "spec.pipelines[:].inputRefs[:]"
+    entity_check: "at least one"
     values:
     - value: "audit"
       entity_check: "at least one"

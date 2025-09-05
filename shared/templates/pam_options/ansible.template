@@ -1,0 +1,104 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+# NOTE(gyee): Ansible's pamd module is very rigid, it doesn't do
+# what we wanted, which is to conditionally replace an existing value
+# if it doesn't match what we wanted. Till someday some good samaritan
+# updated the Ansible pamd module to do that, we will need to use regexp
+# for now.
+
+
+# declare the XCCDF vars if any
+{{% for arg in ARGUMENTS %}}
+{{% if arg['variable']|length %}}
+- (xccdf-var var_password_pam_{{{ arg['variable'] }}})
+{{% endif %}}
+{{% endfor %}}
+
+- name: Set control_flag fact
+  set_fact:
+    control_flag: '{{{ CONTROL_FLAG }}}'
+
+- name: Check to see if '{{{ MODULE }}}' module is configured in '{{{ PATH }}}'
+  shell: |
+    grep -E '^\s*{{{ TYPE }}}\s+\S+\s+{{{ MODULE }}}' {{{ PATH }}} | cat
+  register: check_pam_module_result
+
+- name: Configure '{{{ MODULE }}}' module in '{{{ PATH }}}'
+  lineinfile:
+    path: {{{ PATH }}}
+    line: '{{{ TYPE }}} {{{ CONTROL_FLAG }}} {{{ MODULE }}}'
+    state: present
+  when: '"{{{ MODULE }}}" not in check_pam_module_result.stdout'
+
+- name: Ensure '{{{ MODULE }}}' module has conforming control flag
+  lineinfile:
+    path: {{{ PATH }}}
+    regexp: '^(\s*{{{ TYPE }}}\s+)\S+(\s+{{{ MODULE }}}\s+.*)'
+    line: '\g<1>{{{ CONTROL_FLAG }}}\g<2>'
+    backrefs: yes
+  when: control_flag|length
+
+{{% for arg in ARGUMENTS %}}
+# NOTE: if 'remove_argument' is present and set to some value, we assume
+# user's intention is to remove the argument. Therefore, no need to check what
+# it is set to.
+{{% if arg['remove_argument']|length %}}
+- name: Remove argument '{{{ arg['argument'] }}}' from '{{{ MODULE }}}' module
+  replace:
+    path: {{{ PATH }}}
+    regexp: '^(\s*{{{ TYPE }}}\s+\S+\s+{{{ MODULE }}}(?:\s+\S+)*)\s+{{{ arg['argument'] }}}(?:=\S+)?((\s+\S+)*\s*\\*\s*)$'
+    replace: '\1\2'
+{{% elif arg['variable']|length %}}
+# NOTE(gyee): if 'var' is used, user is meant to set the argument to a
+# static value
+
+- name: Ensure "{{{ MODULE }}}" module has argument "{{{ arg['variable'] }}}={{ var_password_pam_{{{ arg['variable'] }}} }}"
+  lineinfile:
+    path: {{{ PATH }}}
+    regexp: '^(\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}(?:\s+\S+)*\s+{{{ arg['variable'] }}}=)(?:\S+)((\s+\S+)*\s*\\*\s*)$'
+    line: '\g<1>{{ var_password_pam_{{{ arg['variable'] }}} }}\g<2>'
+    backrefs: yes
+
+- name: Check the presence of "{{{ arg['variable'] }}}" argument in "{{{ MODULE }}}" module
+  shell: |
+    grep -E '^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+{{{ arg['variable'] }}}(=|\s|\s*$)' {{{ PATH }}} | cat
+  register: check_pam_module_argument_result
+
+- name: Add "{{{ arg['variable'] }}}" argument to "{{{ MODULE }}}" module
+  lineinfile:
+    path: {{{ PATH }}}
+    regexp: '^(\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}})((\s+\S+)*\s*(\\)*$)'
+    line: '\g<1> {{{ arg['variable'] }}}={{ var_password_pam_{{{ arg['variable'] }}} }}\g<2>'
+    backrefs: yes
+  when: '"{{{ arg['variable'] }}}" not in check_pam_module_argument_result.stdout'
+{{% else %}}
+- name: Set argument_value fact
+  set_fact:
+    argument_value: "{{{ arg['argument_value'] }}}"
+
+- name: Ensure "{{{ MODULE }}}" module has argument {{% if arg['argument_value']|string|length %}}"{{{ arg['argument'] }}}={{{ arg['argument_value'] }}}"{{% else %}}"{{{ arg['argument'] }}}"{{% endif %}}
+  lineinfile:
+    path: {{{ PATH }}}
+    regexp: '^(\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}(?:\s+\S+)*\s+{{{ arg['argument'] }}}=)(?!{{{ arg['argument_match'] }}})\S*((\s+\S+)*\s*\\*\s*)$'
+    line: '\g<1>{{{ arg['argument_value'] }}}\g<2>'
+    backrefs: yes
+  when: argument_value|length
+
+- name: Check the presence of "{{{ arg['argument'] }}}" argument in "{{{ MODULE }}}" module
+  shell: |
+    grep -E '^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+{{{ arg['argument'] }}}(=|\s|\s*$)' {{{ PATH }}} | cat
+  register: check_pam_module_argument_result
+
+- name: Add "{{{ arg['argument'] }}}" argument to "{{{ MODULE }}}" module
+  lineinfile:
+    path: {{{ PATH }}}
+    regexp: '^(\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}})((\s+\S+)*\s*(\\)*$)'
+    line: '\g<1> {{{ arg['new_argument'] }}}\g<2>'
+    backrefs: yes
+  when: '"{{{ arg['argument'] }}}" not in check_pam_module_argument_result.stdout'
+{{% endif %}}
+{{% endfor %}}

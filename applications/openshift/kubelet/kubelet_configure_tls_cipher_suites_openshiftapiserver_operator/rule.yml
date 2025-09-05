@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: "Ensure that the OpenShift API Server Operator only makes use of Strong Cryptographic Ciphers"
+
+description: |-
+  Ensure that the OpenShift API Server Operator is configured to only use strong cryptographic ciphers.
+
+rationale: |-
+  TLS ciphers have had a number of known vulnerabilities and weaknesses,
+  which can reduce the protection provided by them. By default Kubernetes
+  supports a number of TLS ciphersuites including some that have security
+  concerns, weakening the protection provided.
+
+severity: medium
+
+#identifiers:
+#    cce@ocp4:
+
+references:
+  cis@ocp4: 4.2.13
+
+ocil_clause: "TLS cipher suite configuration is not configured"
+
+ocil: |-
+  Run the following comman on the kubelete node(s):
+  {{% raw %}}<pre>oc patch openshiftapiservers.operator.openshift.io cluster --type merge -p '{"spec":{"unsupportedConfigOverrides":{"servingInfo":{"cipherSuites":["TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256","TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256","TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305","TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384","TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305","TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384","TLS_RSA_WITH_AES_256_GCM_SHA384","TLS_RSA_WITH_AES_128_GCM_SHA256"] } } } }'</pre>{{% endraw %}}
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/operator.openshift.io/v1/openshiftapiservers/cluster") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: '/apis/operator.openshift.io/v1/openshiftapiservers/cluster'
+    yamlpath: ".spec.unsupportedConfigOverrides.servingInfo.cipherSuites[:]"
+    values:
+    - value: '^(TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305|TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384|TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305|TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384|TLS_RSA_WITH_AES_256_GCM_SHA384|TLS_RSA_WITH_AES_128_GCM_SHA256)$'
+      operation: 'pattern match'

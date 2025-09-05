@@ -49,7 +49,7 @@ def main():
         "used by remediation scripts from the SCAP Security Guide Project."
 
     context = ssg.jinja.load_macros()
-    for file_ in os.listdir(args.input_dir):
+    for file_ in sorted(os.listdir(args.input_dir)):
         if not file_.endswith(".sh"):
             sys.stderr.write(
                 "File '%s' does not appear to be a bash script. Skipping!"

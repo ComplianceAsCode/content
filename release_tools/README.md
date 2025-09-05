@@ -149,18 +149,18 @@ Everything necessary for the release is built in Jenkins:
     You can run `python3 release_content.py build` again to check status
     of the jobs.
     NOTE: As of July-20th 2019, it takes about 44 minutes for all the
-    builds finish.
+    builds to finish.
 
 While Jenkins performs the builds you can generate and review the
 release notes:
 
 -   Run `python3 release_content.py release_notes`
 
-Format of the release notes are as follows:
+Format of the release notes is as follows:
 At the top Highlighted PRs will be listed, followed by list of product’s
 profiles that changed since last release.
-Followed by a list of *relevant* changes, genereated from the Pull
-Requests mereged in this release.
+Followed by a list of *relevant* changes, generated from the Pull
+Requests merged in this release.
 Not all PRs have an entry to avoid over cluttering. To determine the
 *relevant* PRs a few heuristics are applied:
 
@@ -184,9 +184,9 @@ reviewed. We move on to creating the release entry in GitHub:
 
 -   Run `python3 release_content.py release`
 
-    It will create the next milestone (if it doens’t exist yet), move
+    It will create the next milestone (if it doesn’t exist yet), move
     any open issues and PRs from current
-    milestone to next milesone, and close current release’s milestone.
+    milestone to next milestone, and close current release’s milestone.
     The assets from Jenkins builds and the release notes will be used to
     create the git release.
     **Review the Git Release** and publish it.

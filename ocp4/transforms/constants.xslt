@@ -8,7 +8,7 @@
 <xsl:variable name="product_guide_id_name">OCP-4</xsl:variable>
 <xsl:variable name="prod_type">ocp4</xsl:variable>
 
-<xsl:variable name="cisuri">empty</xsl:variable>
+<xsl:variable name="cisuri">https://www.cisecurity.org/benchmark/kubernetes/</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 
 <!-- Define URI for custom CCE identifier which can be used for mapping to corporate policy -->

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,wrlinux1019,sle12
 
 title: 'Ensure All World-Writable Directories Are Group Owned by a System Account'
 
@@ -22,14 +22,17 @@ severity: medium
 
 identifiers:
     cce@rhel7: CCE-83923-3
+    cce@sle12: CCE-83104-0
 
 references:
     stigid@ol7: OL07-00-021030
     disa: CCI-000366
     nist: CM-6(a),AC-6(1)
+    nist@sle12: CM-6(b)
     nist-csf: PR.AC-4,PR.DS-5
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: RHEL-07-021030
+    stigid@sle12: SLES-12-010830
     isa-62443-2013: 'SR 2.1,SR 5.2'
     isa-62443-2009: 4.3.3.7.3
     cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
@@ -41,5 +44,5 @@ ocil_clause: 'there is output'
 ocil: |-
     The following command will discover and print world-writable directories that
     are not group owned by a system account, given the assumption that only system
-    accounts have a gid lower than 500.  Run it once for each local partition <i>PART</i>:
-    <pre>$ sudo find <i>PART</i> -xdev -type d -perm -0002 -gid +499 -print</pre>
+    accounts have a gid lower than {{{ auid }}}.  Run it once for each local partition <i>PART</i>:
+    <pre>$ sudo find <i>PART</i> -xdev -type d -perm -0002 -gid +{{{ auid - 1 }}} -print</pre>

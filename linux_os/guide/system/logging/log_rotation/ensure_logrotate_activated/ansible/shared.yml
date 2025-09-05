@@ -15,7 +15,7 @@
   lineinfile:
     create: no
     dest: "/etc/logrotate.conf"
-    regexp: "^(weekly|monthly|yearly)$"
+    regexp: '^[\s]*(weekly|monthly|yearly)$'
     state: absent
 
 - name: Configure cron.daily if not already

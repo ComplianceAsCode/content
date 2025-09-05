@@ -54,9 +54,14 @@
 
   <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_disabled"
   version="1" comment="kernel module {{{ KERNMODULE }}} disabled">
+    {{% if product == "sle12" %}}
+    <ind:filepath>/etc/modprobe.d/50-blacklist.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^blacklist\s+{{{ KERNMODULE }}}$</ind:pattern>
+    {{% else %}}
     <ind:path>/etc/modprobe.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE }}}\s+(/bin/false|/bin/true)$</ind:pattern>
+    {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

@@ -46,8 +46,7 @@ selections:
     #### 1.1.1.7 Ensure mounting of udf filesystems is disabled (Scored)
     - kernel_module_udf_disabled
 
-    #### 1.1.1.8 Ensure mounting of FAT filesystems is disabled (Scored)
-    - kernel_module_vfat_disabled
+    #### 1.1.1.8 Ensure mounting of FAT filesystems is disabled (Manual)
 
     ### 1.1.2 Ensure separate partition exists for /tmp (Scored)
     - partition_for_tmp
@@ -538,7 +537,6 @@ selections:
     ### 4.2.4 Ensure permissions on all logfiles are configured (Scored)
 
     ## 4.3 Ensure logrotate is configured (Not Scored)
-    - ensure_logrotate_activated
 
     # 5 Access, Authentication and Authorization
     ## 5.1 Configure cron

@@ -59,7 +59,7 @@ class ProductCPEs(object):
         if not os.path.isabs(cpes_root):
             cpes_root = os.path.join(self.ssg_root, self.product_yaml["product"], cpes_root)
 
-        for dir_item in os.listdir(cpes_root):
+        for dir_item in sorted(os.listdir(cpes_root)):
             dir_item_path = os.path.join(cpes_root, dir_item)
             if not os.path.isfile(dir_item_path):
                 continue

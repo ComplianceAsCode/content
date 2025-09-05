@@ -49,3 +49,11 @@ ocil: |-
     <tt>/org/gnome/desktop/lockdown/user-administration-disabled</tt>
 
 platform: machine
+
+template:
+    name: dconf_ini_file
+    vars:
+        parameter: user-administration-disabled
+        value: "true"
+        section: "org/gnome/desktop/lockdown"
+        path: /etc/dconf/db/local.d/

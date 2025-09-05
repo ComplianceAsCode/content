@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Check that vlock is installed to allow session locking'
+
+description: |-
+    The SUSE operating system must have vlock installed to allow for session locking.
+
+    {{{ describe_package_install(package="kbd") }}}
+
+rationale: |-
+    A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.
+
+    The session lock is implemented at the point where session activity can be determined.
+
+    Regardless of where the session lock is determined and implemented, once invoked, the session lock must remain in place until the user reauthenticates. No other activity aside from reauthentication must unlock the system.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83009-1
+
+references:
+    stigid@sle12: SLES-12-010070
+    disa@sle12: CCI-000056,CCI-000058,CCI-000060
+    nist@sle12: AC-11(a),AC-11(b),AC-11(1)
+    srg@sle12: SRG-OS-000028-GPOS-00009
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="kbd") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: kbd

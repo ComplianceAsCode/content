@@ -62,8 +62,8 @@ def get_profile_files_from_root(env_yaml, product_yaml):
     if env_yaml:
         base_dir = os.path.dirname(product_yaml)
         profiles_root = ssg.utils.required_key(env_yaml, "profiles_root")
-        profile_files = glob("{base_dir}/{profiles_root}/*.profile"
-                             .format(profiles_root=profiles_root, base_dir=base_dir))
+        profile_files = sorted(glob("{base_dir}/{profiles_root}/*.profile"
+                             .format(profiles_root=profiles_root, base_dir=base_dir)))
     return profile_files
 
 

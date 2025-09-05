@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol,multi_platform_sle
 
 
 {{{ bash_dconf_settings("org/gnome/login-screen", "banner-message-enable", "true", "gdm.d", "00-security-settings") }}}

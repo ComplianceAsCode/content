@@ -27,6 +27,8 @@ def recursive_globi(mask):
     re_path_mask = re.compile(path_mask + "$")
 
     for root, dirnames, filenames in os.walk(search_root):
+        dirnames.sort()
+        filenames.sort()
         paths = filenames + dirnames
         for path in paths:
             full_path = os.path.join(root, path)
@@ -83,7 +85,7 @@ class DuplicatesFinder(object):
 
         # Walk all shared files
         shared_files_mask = os.path.join(self._shared_dir, self._shared_files_mask)
-        for shared_filename in glob.glob(shared_files_mask):
+        for shared_filename in sorted(glob.glob(shared_files_mask)):
 
             basename = os.path.basename(shared_filename)
 

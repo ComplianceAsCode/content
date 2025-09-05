@@ -12,22 +12,28 @@ import (
 type RemediationApplicationState string
 
 const (
-	RemediationNotApplied RemediationApplicationState = "NotApplied"
-	RemediationApplied    RemediationApplicationState = "Applied"
-	RemediationOutdated   RemediationApplicationState = "Outdated"
-	RemediationError      RemediationApplicationState = "Error"
+	RemediationPending             RemediationApplicationState = "Pending"
+	RemediationNotApplied          RemediationApplicationState = "NotApplied"
+	RemediationApplied             RemediationApplicationState = "Applied"
+	RemediationOutdated            RemediationApplicationState = "Outdated"
+	RemediationError               RemediationApplicationState = "Error"
+	RemediationMissingDependencies RemediationApplicationState = "MissingDependencies"
 )
 
 type RemediationType string
 
 const (
-	// The remediation wraps a MachineConfig payload
-	McRemediation RemediationType = "MachineConfig"
+	// The key of a ComplianceCheckResult that dependency annotations point to
+	ComplianceRemediationDependencyField = "id"
 )
 
 const (
 	// OutdatedRemediationLabel specifies that the remediation has been superseded by a newer version
-	OutdatedRemediationLabel = "complianceoperator.openshift.io/outdated-remediation"
+	OutdatedRemediationLabel               = "complianceoperator.openshift.io/outdated-remediation"
+	RemediationHasUnmetDependenciesLabel   = "compliance.openshift.io/has-unmet-dependencies"
+	RemediationCreatedByOperatorAnnotation = "compliance.openshift.io/remediation"
+	RemediationDependencyAnnotation        = "compliance.openshift.io/depends-on"
+	RemediationDependenciesMetAnnotation   = "compliance.openshift.io/dependencies-met"
 )
 
 type ComplianceRemediationSpecMeta struct {
@@ -101,12 +107,47 @@ func (r *ComplianceRemediation) GetMcName() string {
 		return ""
 	}
 
-	mcName := fmt.Sprintf("75-%s", r.GetScan())
-	if r.GetSuite() != "" {
-		mcName += "-" + r.GetSuite()
-	}
+	mcName := fmt.Sprintf("75-%s", r.GetName())
 
 	return mcName
+}
+
+// AddOwnershipLabels labels an object to say it was created
+// by this operator and is owned by a specific scan and suite
+func (r *ComplianceRemediation) AddOwnershipLabels(obj metav1.Object) {
+	labels := obj.GetLabels()
+	if labels == nil {
+		labels = make(map[string]string)
+	}
+	if r.GetScan() != "" {
+		labels[ComplianceScanLabel] = r.GetScan()
+	}
+	if r.GetSuite() != "" {
+		labels[SuiteLabel] = r.GetSuite()
+	}
+	obj.SetLabels(labels)
+}
+
+// IsApplied tells whether the ComplianceRemediation has been applied.
+// Note that a Remediation is considered applied if the state of it is
+// indeed applied, or if it has been requested to be applied but it has
+// become outdated
+func (r *ComplianceRemediation) IsApplied() bool {
+	applied := r.Status.ApplicationState == RemediationApplied
+	outDatedButApplied := r.Spec.Apply && r.Status.ApplicationState == RemediationOutdated
+	appliedButUnmet := r.Spec.Apply && r.Status.ApplicationState == RemediationMissingDependencies
+
+	return applied || outDatedButApplied || appliedButUnmet
+}
+
+func (r *ComplianceRemediation) HasUnmetDependencies() bool {
+	a := r.GetAnnotations()
+	if a == nil {
+		return false
+	}
+	_, hasDependencies := a[RemediationDependencyAnnotation]
+	_, dependenciesMet := a[RemediationDependenciesMetAnnotation]
+	return hasDependencies && !dependenciesMet
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -116,6 +157,28 @@ type ComplianceRemediationList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComplianceRemediation `json:"items"`
+}
+
+// AddRemediationAnnotation annotates an object to say it was created
+// by this operator
+func AddRemediationAnnotation(obj metav1.Object) {
+	annotations := obj.GetAnnotations()
+	if annotations == nil {
+		annotations = make(map[string]string)
+	}
+	annotations[RemediationCreatedByOperatorAnnotation] = ""
+	obj.SetAnnotations(annotations)
+}
+
+// AddRemediationAnnotation tells us if an object was created by this
+// operator
+func RemediationWasCreatedByOperator(obj metav1.Object) bool {
+	annotations := obj.GetAnnotations()
+	if annotations == nil {
+		return false
+	}
+	_, ok := annotations[RemediationCreatedByOperatorAnnotation]
+	return ok
 }
 
 func init() {
