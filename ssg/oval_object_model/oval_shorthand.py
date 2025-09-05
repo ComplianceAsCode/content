@@ -37,9 +37,6 @@ def _is_definitions_applicable_for_product(definitions_dict, product):
 
 
 class OVALShorthand(OVALContainer):
-    def __init__(self):
-        super(OVALShorthand, self).__init__()
-
     def _load_element(self, xml_el):
         if xml_el.tag.endswith("definition"):
             self.load_definition(xml_el)

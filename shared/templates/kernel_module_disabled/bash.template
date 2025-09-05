@@ -10,7 +10,7 @@ if LC_ALL=C grep -q -m 1 "^install {{{ KERNMODULE }}}" /etc/modprobe.d/{{{ KERNM
 	sed -i 's#^install {{{ KERNMODULE }}}.*#install {{{ KERNMODULE }}} /bin/true#g' /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 else
 	echo -e "\n# Disable per security requirements" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
-	echo "install {{{ KERNMODULE }}} /bin/true" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
+	echo "install {{{ KERNMODULE }}} /bin/false" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 fi
 {{% if product in ["sle12", "sle15"] or 'ol' in product or 'rhel' in product or 'ubuntu' in product %}}
 if ! LC_ALL=C grep -q -m 1 "^blacklist {{{ KERNMODULE }}}$" /etc/modprobe.d/{{{ KERNMODULE }}}.conf ; then

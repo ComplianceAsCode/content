@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8
 
 title: 'Configure SSSD LDAP Backend Client CA Certificate'
 
@@ -42,5 +41,9 @@ ocil: |-
     <pre>$ sudo grep ldap_tls_cacert /etc/sssd/sssd.conf</pre>
     The output should return the following with a correctly configured CA cert path:
     <pre>ldap_tls_cacert /path/to/tls/ca.cert</pre>
+
+warnings:
+    - general:
+        A remediation is not provided for this rule as each system has unique requirements.
 
 platform: sssd-ldap

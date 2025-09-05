@@ -15,7 +15,9 @@ if(SSG_SRG_XLSX_EXPORT)
     ssg_build_xlsx_srg_export(${PRODUCT} "srg_gpos")
 endif()
 
-# ssg_build_html_stig_tables(${PRODUCT} "stig")
+ssg_build_html_stig_tables(${PRODUCT})
+ssg_build_html_stig_tables_per_profile(${PRODUCT} "stig")
+ssg_build_html_stig_tables_per_profile(${PRODUCT} "stig_gui")
 
 #ssg_build_html_stig_tables(${PRODUCT} "ospp")
 

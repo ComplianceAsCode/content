@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis23,anolis8,ol7,ol8,ol9,openembedded,rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'Disable Squid'
 
@@ -21,9 +20,8 @@ identifiers:
     cce@sle15: CCE-91371-5
 
 references:
-    cis@alinux2: 2.1.13
-    cis@alinux3: 2.2.6
-    cis@rhel7: 2.2.13
+    cis@rhel7: 2.2.17
+    cis@rhel8: 2.2.17
     cis@sle12: 2.2.14
     cis@sle15: 2.2.14
 
@@ -33,7 +31,7 @@ ocil_clause: |-
 ocil: |-
     {{{ ocil_service_disabled(service="squid") }}}
 
-platform: machine
+platform: machine and package[squid]
 
 template:
     name: service_disabled

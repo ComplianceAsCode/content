@@ -1,31 +1,27 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis23,anolis8,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,uos20
 
 title: 'Verify and Correct File Permissions with RPM'
 
 description: |-
-    The RPM package management system can check file access permissions
-    of installed software packages, including many that are important
-    to system security.
-    Verify that the file permissions of system files
-    and commands match vendor values. Check the file permissions
-    with the following command:
+    The RPM package management system can check file access permissions of installed software
+    packages, including many that are important to system security. Verify that the file
+    permissions of system files and commands match vendor values. Check the file permissions with
+    the following command:
     <pre>$ sudo rpm -Va | awk '{ if (substr($0,2,1)=="M") print $NF }'</pre>
     Output indicates files that do not match vendor defaults.
-    After locating a file with incorrect permissions,
-    run the following command to determine which package owns it:
+
+    After locating a file with incorrect permissions, run the following command to determine which
+    package owns it:
     <pre>$ rpm -qf <i>FILENAME</i></pre>
     <br />
-    Next, run the following command to reset its permissions to
-    the correct values:
+    Next, run the following command to reset its permissions to the correct values:
     <pre>$ sudo rpm --setperms <i>PACKAGENAME</i></pre>
 
 rationale: |-
-    Permissions on system binaries and configuration files that are too generous
-    could allow an unauthorized user to gain privileges that they should not have.
-    The permissions set by the vendor should be maintained. Any deviations from
-    this baseline should be investigated.
+    Permissions on system binaries and configuration files that are too generous could allow an
+    unauthorized user to gain privileges that they should not have. The permissions set by the
+    vendor should be maintained. Any deviations from this baseline should be investigated.
 
 severity: high
 
@@ -39,9 +35,8 @@ identifiers:
 
 references:
     cis-csc: 1,11,12,13,14,15,16,18,3,5,6,9
-    cis@alinux3: 6.1.1
     cis@rhel7: 1.7.1.4,1.7.1.5,1.7.1.6,6.1.1,6.1.2,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9
-    cis@rhel8: 1.8.1.4,1.8.1.5,1.8.1.6,6.1.1,6.1.2,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9
+    cis@rhel8: 6.1.14
     cis@rhel9: 6.1.15
     cis@sle12: 6.1.1
     cis@sle15: 6.1.1
@@ -74,7 +69,6 @@ fixtext: |-
 
     $ sudo rpm -qf [path to file]
 
-
     Reset the permissions of files within a package with the following command:
 
     $ sudo rpm --setperms [package]
@@ -83,7 +77,14 @@ srg_requirement: '{{{ full_name }}} must be configured so that the file permissi
 
 warnings:
     - general: |-
-        Profiles may require that specific files have stricter file permissions than defined by the
-        vendor.
-        Such files will be reported as a finding and need to be evaluated according to your policy
-        and deployment environment.
+        Profiles may require that specific files have stricter file permissions than defined by
+        the vendor. Such files will be reported as a finding and need to be evaluated according to
+        your policy and deployment environment.
+    - general: |-
+        This rule can take a long time to perform the check and might consume a considerable
+        amount of resources depending on the number of packages present on the system. It is not a
+        problem in most cases, but especially systems with a large number of installed packages
+        can be affected.
+        {{% if "rhel" in product %}}
+        See <code>https://access.redhat.com/articles/6999111</code>.
+        {{% endif %}}

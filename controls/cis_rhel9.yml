@@ -1087,6 +1087,7 @@ controls:
     status: automated
     rules:
       - service_firewalld_enabled
+      - package_firewalld_installed
       - service_nftables_disabled
 
   - id: 3.4.2.1
@@ -1799,6 +1800,7 @@ controls:
     status: automated
     rules:
       - file_cron_deny_not_exist
+      - file_cron_allow_exists
       - file_groupowner_cron_allow
       - file_owner_cron_allow
       - file_permissions_cron_allow

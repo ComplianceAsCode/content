@@ -1,19 +1,13 @@
 documentation_complete: true
 
-prodtype: ol8
 
 title: 'System Must Avoid Meltdown and Spectre Exploit Vulnerabilities in Modern Processors'
 
 description: |-
-    Determine the default kernel:
-    <pre>$ sudo grubby --default-kernel
+    Verify that Meltdown mitigations are not disabled:
+    <pre>$ sudo grubby --info=ALL | grep mitigations</pre>
 
-    /boot/vmlinuz-5.4.17-2011.1.2.el8uek.x86_64</pre>
-
-    Using the default kernel, verify that Meltdown mitigations are not disabled:
-    <pre>$ sudo grubby --info=<i>path-to-default-kernel</i> | grep mitigation</pre>
-
-    The mitigation must be set to "on".
+    The mitigations must not be set to "off".
 
 rationale: |-
     Hardware vulnerabilities allow programs to steal data that is currently processed on the
@@ -32,17 +26,22 @@ references:
 
 platform: grub2
 
-ocil_clause: 'mitigation is not set to on'
+ocil_clause: 'mitigations is set to off'
 
 ocil: |-
-    {{{ ocil_grub2_argument("mitigation=on") | indent(4) }}}
+    Verify that Meltdown mitigations are not disabled in any kernel:
+
+    <pre>$ sudo grubby --info=ALL | grep mitigations</pre>
 
 
 fixtext: |-
-    {{{ describe_grub2_argument("mitigation=on") | indent(4) }}}
+    Remove the Meltdown mitigations:
+
+    <pre>$ sudo grubby --update-kernel=ALL --remove-args=mitigations=off</pre>
+
+    Reboot the system for the change to take effect.
 
 template:
-    name: grub2_bootloader_argument
+    name: grub2_bootloader_argument_absent
     vars:
-        arg_name: mitigation
-        arg_value: 'on'
+        arg_name: 'mitigations=off'

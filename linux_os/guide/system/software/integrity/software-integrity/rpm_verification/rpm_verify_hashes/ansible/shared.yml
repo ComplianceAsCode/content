@@ -4,21 +4,15 @@
 # strategy = restrict
 # complexity = high
 # disruption = medium
-- name: "Set fact: Package manager reinstall command (dnf)"
+- name: "Set fact: Package manager reinstall command"
   set_fact:
-    package_manager_reinstall_cmd: dnf reinstall -y
-  when: ansible_distribution == "Fedora"
-
-- name: "Set fact: Package manager reinstall command (yum)"
-  set_fact:
-    package_manager_reinstall_cmd: yum reinstall -y
-  when: (ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "OracleLinux")
+    package_manager_reinstall_cmd: {{{ pkg_manager }}} reinstall -y
+  when: ansible_distribution in [ "Fedora", "RedHat", "CentOS", "OracleLinux" ]
 
 - name: "Set fact: Package manager reinstall command (zypper)"
   set_fact:
     package_manager_reinstall_cmd: zypper in -f -y
   when: ansible_distribution == "SLES"
-
 
 - name: "Read files with incorrect hash"
   command: rpm -Va --nodeps --nosize --nomtime --nordev --nocaps --nolinkto --nouser --nogroup --nomode --noghost --noconfig

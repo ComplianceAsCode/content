@@ -71,14 +71,14 @@ def _copy_component(destination, source_of_components):
         add_oval_component(component, destination)
 
 
-def _remove_keys_from_dict(to_remove, dict_):
+def _remove_keys_from_dict(dict_, to_remove):
     for k in to_remove:
-        del dict_[k]
+        dict_.pop(k, None)
 
 
 def _keep_keys_in_dict(dict_, to_keep):
     to_remove = [key for key in dict_ if key not in to_keep]
-    _remove_keys_from_dict(to_remove, dict_)
+    _remove_keys_from_dict(dict_, to_remove)
 
 
 def _save_referenced_vars(ref, entity):
@@ -109,6 +109,7 @@ def _save_variable_references(ref, variable):
 
 class OVALContainer(OVALBaseObject):
     def __init__(self):
+        super(OVALContainer, self).__init__("")
         self.definitions = {}
         self.tests = {}
         self.objects = {}

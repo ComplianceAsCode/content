@@ -5,9 +5,9 @@
 sed -i "/.*TMOUT.*/d" /etc/profile.d/*.sh
 
 if grep -q "TMOUT" /etc/profile; then
-	sed -i "s/.*TMOUT.*/declare -xr TMOUT=700/" /etc/profile
-	echo "declare -xr TMOUT=600" >> /etc/profile.d/tmout.sh
+	sed -i "s/.*TMOUT.*/typeset -xr TMOUT=700/" /etc/profile
+	echo "typeset -xr TMOUT=600" >> /etc/profile.d/tmout.sh
 else
-	echo "declare -xr TMOUT=700" >> /etc/profile
-	echo "declare -xr TMOUT=600" >> /etc/profile.d/tmout.sh
+	echo "typeset -xr TMOUT=700" >> /etc/profile
+	echo "typeset -xr TMOUT=600" >> /etc/profile.d/tmout.sh
 fi

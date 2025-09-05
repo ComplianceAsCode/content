@@ -1,18 +1,17 @@
 documentation_complete: true
 
-prodtype: alinux2,debian10,debian11,debian12,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Build and Test AIDE Database'
 
 description: |-
     Run the following command to generate a new database:
-    {{% if 'ubuntu' in product %}}
+    {{% if 'ubuntu' in product or 'debian' in product %}}
     <pre>$ sudo aideinit</pre>
     {{% else %}}
     <pre>$ sudo {{{ aide_bin_path }}} --init</pre>
     {{% endif %}}
     By default, the database will be written to the file
-    {{% if 'ubuntu' in product or 'sle' in product %}}
+    {{% if 'ubuntu' in product or 'sle' in product or 'debian' in product %}}
     <tt>/var/lib/aide/aide.db.new</tt>.
     {{% else %}}
     <tt>/var/lib/aide/aide.db.new.gz</tt>.
@@ -21,7 +20,7 @@ description: |-
     <tt>{{{ aide_bin_path }}}</tt>
     (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
     The newly-generated database can be installed as follows:
-    {{% if 'ubuntu' in product or 'sle' in product %}}
+    {{% if 'ubuntu' in product or 'sle' in product or 'debian' in product %}}
     <pre>$ sudo cp /var/lib/aide/aide.db.new /var/lib/aide/aide.db</pre>
     {{% else %}}
     <pre>$ sudo cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
@@ -46,9 +45,8 @@ identifiers:
 references:
     anssi: BP28(R51)
     cis-csc: 1,11,12,13,14,15,16,2,3,5,7,8,9
-    cis@alinux2: 1.3.1
-    cis@rhel7: 1.3.1
-    cis@rhel8: 1.3.1
+    cis@rhel7: 5.3.1
+    cis@rhel8: 5.3.1
     cis@rhel9: 1.3.1
     cis@sle12: 1.4.1
     cis@sle15: 1.4.1

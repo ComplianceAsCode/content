@@ -249,6 +249,8 @@
 - Parameters:
     - **filepath** - File path to be checked.
     - **exists** - If set to `true` the check will fail if the file doesn't exist and vice versa for `false`.
+    - **fileuid** - (optional) user ID (UID) of the file created by remediations
+    - **filemode** - (optional) file permissions of the file created by remediations, use in a hexadecimal format, eg. =`'0640'`
 
 - Languages: Ansible, Bash, OVAL
 

@@ -39,7 +39,7 @@ set(SSG_TAILORING_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/tail
 
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
-set(SSG_PATCH_VERSION 71)
+set(SSG_PATCH_VERSION 72)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
@@ -92,6 +92,7 @@ option(SSG_PRODUCT_RHCOS4 "If enabled, the RHCOS4 SCAP content will be built" ${
 option(SSG_PRODUCT_OL7 "If enabled, the Oracle Linux 7 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OL8 "If enabled, the Oracle Linux 8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OL9 "If enabled, the Oracle Linux 9 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_OPENEULER2203 "If enabled, the openEuler 22.03 LTS content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OPENSUSE "If enabled, the openSUSE SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_RHEL7 "If enabled, the RHEL7 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_RHEL8 "If enabled, the RHEL8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
@@ -161,6 +162,10 @@ find_python_module(myst_parser)
 
 # prometheus_metrics requirements
 find_python_module(prometheus_client)
+
+# compliance-trestle requirements
+find_python_module(trestle)
+find_python_module(requests)
 
 include(CMakeDependentOption)
 cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage support" ON "PY_PYTEST_COV" OFF)
@@ -257,6 +262,7 @@ message(STATUS "python pandas module (optional): ${PY_PANDAS}")
 message(STATUS "python pcre2 module (optional): ${PY_PCRE2}")
 message(STATUS "python lxml module (optional): ${PY_LXML}")
 message(STATUS "python prometheus-client module (optional): ${PY_PROMETHEUS_CLIENT}")
+message(STATUS "python compliance-trestle module (optional): ${PY_TRESTLE}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
@@ -312,6 +318,7 @@ message(STATUS "RHCOS4: ${SSG_PRODUCT_RHCOS4}")
 message(STATUS "Oracle Linux 7: ${SSG_PRODUCT_OL7}")
 message(STATUS "Oracle Linux 8: ${SSG_PRODUCT_OL8}")
 message(STATUS "Oracle Linux 9: ${SSG_PRODUCT_OL9}")
+message(STATUS "openEuler 22.03 LTS: ${SSG_PRODUCT_OPENEULER2203}")
 message(STATUS "openSUSE: ${SSG_PRODUCT_OPENSUSE}")
 message(STATUS "RHEL 7: ${SSG_PRODUCT_RHEL7}")
 message(STATUS "RHEL 8: ${SSG_PRODUCT_RHEL8}")
@@ -412,6 +419,9 @@ if(SSG_PRODUCT_OL8)
 endif()
 if(SSG_PRODUCT_OL9)
     add_subdirectory("products/ol9" "ol9")
+endif()
+if(SSG_PRODUCT_OPENEULER2203)
+    add_subdirectory("products/openeuler2203" "openeuler2203")
 endif()
 if(SSG_PRODUCT_OPENSUSE)
     add_subdirectory("products/opensuse" "opensuse")

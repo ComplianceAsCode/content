@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure nftables Default Deny Firewall Policy'
 
@@ -10,7 +9,7 @@ description: |-
    the firewall will accept any packet that is not configured to be denied and the packet will
    continue traversing the network stack.
 
-rationale: |-
+rationale: |
    It is easier to allow acceptable usage than to block unacceptable usage.
 
 severity: medium
@@ -18,9 +17,12 @@ severity: medium
 platform: package[nftables] and service_disabled[firewalld]
 
 identifiers:
+    cce@rhel7: CCE-86462-9
     cce@sle15: CCE-92507-3
 
 references:
+    cis@rhel7: 3.4.3.7
+    cis@rhel8: 3.4.2.5
     cis@sle15: 3.5.2.8
     cis@ubuntu2004: 3.5.2.8
     cis@ubuntu2204: 3.5.2.8

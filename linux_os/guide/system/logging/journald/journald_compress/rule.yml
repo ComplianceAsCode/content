@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: alinux3,anolis23,anolis8,fedora,openembedded,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: Ensure journald is configured to compress large log files
 
@@ -22,9 +21,8 @@ identifiers:
     cce@sle15: CCE-91377-2
 
 references:
-    cis@alinux3: 4.2.2.2
-    cis@rhel7: 4.2.2.2
-    cis@rhel8: 4.2.2.3
+    cis@rhel7: 5.1.2.3
+    cis@rhel8: 5.1.2.3
     cis@rhel9: 4.2.2.3
     cis@sle12: 4.2.2.2
     cis@sle15: 4.2.2.2
@@ -37,21 +35,27 @@ ocil: |-
     Storing logs with compression can help avoid filling the system disk.
     Run the following command to verify that journald is compressing logs.
     <pre>
+{{%- if product in ["fedora", "rhel8", "rhel9", "sle15"] %}}
+    grep "^\sCompress" /etc/systemd/journald.conf {{{ journald_conf_dir_path }}}/*.conf
+{{% else %}}
     grep "^\sCompress" /etc/systemd/journald.conf
+{{% endif %}}
     </pre>
     and it should return
     <pre>
     Compress=yes
     </pre>
-{{%- if product == "sle15" %}}
+
+{{%- if product in ["fedora", "rhel8", "rhel9", "sle15"] %}}
 template:
     name: systemd_dropin_configuration
     vars:
         component: journald
         master_cfg_file: /etc/systemd/journald.conf
-        dropin_dir: /etc/systemd/journal.d/
+        dropin_dir: {{{ journald_conf_dir_path }}}
         param: Compress
         value: yes
+        no_quotes: 'true'
 {{% else %}}
 template:
     name: shell_lineinfile

@@ -1,0 +1,38 @@
+documentation_complete: true
+
+
+title: 'Verify Group Who Owns /etc/shells File'
+
+description:  |-
+    {{{ describe_file_group_owner(file="/etc/shells", group="root") }}}
+
+rationale: |-
+    The <tt>/etc/shells</tt> file contains the list of full pathnames to shells on the system.
+    Since this file is used by many system programs this file should be protected.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86624-4
+    cce@rhel8: CCE-87030-3
+
+references:
+    cis@rhel7: 6.1.9
+    cis@rhel8: 6.1.10
+    nist: AC-3,MP-2
+
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/shells", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/shells", group="root") }}}
+
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/shells", group="root") }}}'
+
+srg_requirement: 'The {{{ full_name }}} /etc/shells file must have a group-owner of root to prevent unauthorized access.'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/shells
+        gid_or_name: '0'

@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis23,anolis8,fedora,ol7,ol8,ol9,openembedded,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Set Interactive Session Timeout'
 
@@ -24,7 +23,10 @@ description: |-
     setting in a file loaded by <tt>/etc/profile</tt>
     {{{- "or <tt>/etc/bashrc</tt>" if product in ["ol7", "rhel7"] }}}, e.g.
     <tt>/etc/profile.d/tmout.sh</tt> should read as follows:
+    <pre>typeset -xr TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+    or
     <pre>declare -xr TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+    Using the <code>typeset</code> keyword is preferred for wider compatibility with ksh and other shells.
     {{% endif %}}
 
 rationale: |-
@@ -46,10 +48,8 @@ references:
     anssi: BP28(R29)
     ccn@rhel9: A.5.SEC-RHEL8
     cis-csc: 1,12,15,16
-    cis@alinux2: 5.4.5
-    cis@alinux3: 5.6.3
-    cis@rhel7: 5.5.4
-    cis@rhel8: 5.6.3
+    cis@rhel7: 4.5.3.2
+    cis@rhel8: 4.5.3.2
     cis@rhel9: 5.6.3
     cis@sle12: 5.4.4
     cis@sle15: 5.4.4

@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: rhel8,ubuntu2204
 
 title: 'Install systemd-journal-remote Package'
 
@@ -16,8 +15,13 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel7: CCE-87415-6
+    cce@rhel8: CCE-86467-8
+
 references:
-    cis@rhel8: 4.2.2.1.1
+    cis@rhel7: 5.1.2.1.1
+    cis@rhel8: 5.1.2.1.1
     cis@ubuntu2204: 4.2.1.1.1
 
 ocil_clause: 'the package is not installed'

@@ -3,19 +3,19 @@ documentation_complete: true
 title: 'Ensure /dev/shm is configured'
 
 description: |-
-    The <tt>/dev/shm</tt> is a traditional shared memory concept. 
-    One program will create a memory portion, which other processes 
-    (if permitted) can access. If <tt>/dev/shm</tt> is not configured, 
+    The <tt>/dev/shm</tt> is a traditional shared memory concept.
+    One program will create a memory portion, which other processes
+    (if permitted) can access. If <tt>/dev/shm</tt> is not configured,
     tmpfs will be mounted to /dev/shm by systemd.
 
 rationale: |-
-    Any user can upload and execute files inside the <tt>/dev/shm</tt> similar to 
-    the <tt>/tmp</tt> partition. Configuring <tt>/dev/shm</tt> allows an administrator 
-    to set the noexec option on the mount, making /dev/shm useless for an attacker to 
-    install executable code. It would also prevent an attacker from establishing a 
-    hardlink to a system setuid program and wait for it to be updated. Once the program 
-    was updated, the hardlink would be broken and the attacker would have his own copy 
-    of the program. If the program happened to have a security vulnerability, the attacker 
+    Any user can upload and execute files inside the <tt>/dev/shm</tt> similar to
+    the <tt>/tmp</tt> partition. Configuring <tt>/dev/shm</tt> allows an administrator
+    to set the noexec option on the mount, making /dev/shm useless for an attacker to
+    install executable code. It would also prevent an attacker from establishing a
+    hardlink to a system setuid program and wait for it to be updated. Once the program
+    was updated, the hardlink would be broken and the attacker would have his own copy
+    of the program. If the program happened to have a security vulnerability, the attacker
     could continue to exploit the known flaw.
 
 severity: low
@@ -28,7 +28,8 @@ identifiers:
     cce@sle15: CCE-92477-9
 
 references:
-    cis@rhel7: 1.1.6
+    cis@rhel7: 1.1.2.2.1
+    cis@rhel8: 1.1.2.2.1
     cis@rhel9: 1.1.8.1
     cis@sle12: 1.1.6
     cis@sle15: 1.1.6
@@ -39,8 +40,15 @@ fixtext: '{{{ fixtext_separate_partition(part="/dev/shm") }}}'
 
 platform: machine
 
+warnings:
+- general: |-
+    This rule does not have a remedation.
+    It is expected that this will be managed by systemd and will be a tmpfs partition.
+
 template:
     name: mount
     vars:
         mountpoint: /dev/shm
-        min_size: 2147483648
+    backends:
+        blueprint: 'off'
+        anaconda: 'off'

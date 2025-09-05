@@ -45,7 +45,7 @@ jobs:
       - name: Test if there are no content changes
         run: echo "CTF_OUTPUT_SIZE=$(stat --printf="%s" output.json)" >> $GITHUB_OUTPUT
         id: ctf
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
           name: output.json
@@ -63,7 +63,7 @@ jobs:
       - name: Build product
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: ./build_product sle15
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
           name: ${{ env.DATASTREAM }}
@@ -78,7 +78,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Get cached CTF output
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         id: get_ctf_output
         with:
           name: output.json
@@ -135,7 +135,7 @@ jobs:
         with:
           path: 'output.json'
           prop_path: 'ansible'
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
           name: ${{ env.DATASTREAM }}
@@ -156,7 +156,7 @@ jobs:
         continue-on-error: true
       - name: Upload logs in case of failure
         if: ${{steps.bash.outputs.prop == 'True' && steps.check_results_bash.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: logs_bash
           path: logs_bash/
@@ -172,16 +172,10 @@ jobs:
         continue-on-error: true
       - name: Upload logs in case of failure
         if: ${{ steps.ansible.outputs.prop == 'True' && steps.check_results_ansible.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: logs_ansible
           path: logs_ansible/
-      - name: Delete datastream artifact
-        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: geekyeggo/delete-artifact@v2
-        with:
-          name: ${{ env.DATASTREAM }}
-          useGlob: false
       - name: Fail in case of ERROR present in logs_bash/test_suite.log or logs_ansible/test_suite.log
         if: ${{ (steps.check_results_bash.outcome == 'success' || steps.check_results_ansible.outcome == 'success') && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: |

@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis23,anolis8,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Disable Kernel Parameter for IP Forwarding on IPv4 Interfaces'
 
@@ -25,10 +24,8 @@ references:
     anssi: BP28(R22)
     ccn@rhel9: A.8.SEC-RHEL6
     cis-csc: 1,11,12,13,14,15,16,2,3,7,8,9
-    cis@alinux2: 3.1.1
-    cis@alinux3: 3.2.1
-    cis@rhel7: 3.2.1
-    cis@rhel8: 3.2.1
+    cis@rhel7: 3.3.1
+    cis@rhel8: 3.3.1
     cis@rhel9: 3.2.1
     cis@sle12: 3.2.1
     cis@sle15: 3.2.1
@@ -48,7 +45,6 @@ references:
     pcidss4: '1.4.3'
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol7: OL07-00-040740
-    stigid@ol8: OL08-00-040259
     stigid@rhel7: RHEL-07-040740
     stigid@sle12: SLES-12-030430
     stigid@sle15: SLES-15-040380
@@ -80,7 +76,3 @@ template:
         sysctlvar: net.ipv4.ip_forward
         sysctlval: '0'
         datatype: int
-        sysctlval@debian10: ''
-        sysctlval@debian11: ''
-        sysctlval@ubuntu1604: ''
-        sysctlval@ubuntu1804: ''

@@ -153,7 +153,14 @@ selections:
     - accounts_password_pam_unix_remember
 
     # UBTU-20-010072 The Ubuntu operating system must automatically lock an account until the locked account is released by an administrator when three unsuccessful logon attempts have been made.
-    - accounts_passwords_pam_tally2
+    - var_accounts_passwords_pam_faillock_deny=3
+    - var_accounts_passwords_pam_faillock_fail_interval=900
+    - var_accounts_passwords_pam_faillock_unlock_time=never
+    - accounts_passwords_pam_faillock_audit
+    - accounts_passwords_pam_faillock_silent
+    - accounts_passwords_pam_faillock_deny
+    - accounts_passwords_pam_faillock_interval
+    - accounts_passwords_pam_faillock_unlock_time
 
     # UBTU-20-010074 The Ubuntu operating system must be configured so that the script which runs each 30 days or less to check file integrity is the default one.
     - aide_periodic_cron_checking
@@ -525,6 +532,7 @@ selections:
     - chronyd_sync_clock
 
     # UBTU-20-010437 The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or anomalies in the oper
+    - aide_disable_silentreports
 
     # UBTU-20-010438 The Ubuntu operating system's Advance Package Tool (APT) must be configured to prevent the installation of patches, service packs, device drivers, or Ubuntu operating system components without verification they have been digitally signed using a certificate that is recognized and approved by the organization.
     - apt_conf_disallow_unauthenticated
@@ -566,6 +574,7 @@ selections:
     - aide_build_database
 
     # UBTU-20-010451 The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or anomalies in the operation of any security functions are discovered.
+    # Same as UBTU-20-010437
 
     # UBTU-20-010453 The Ubuntu operating system must display the date and time of the last successful account logon upon logon.
     - display_login_attempts

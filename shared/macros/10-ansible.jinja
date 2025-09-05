@@ -1250,7 +1250,7 @@ Part of the grub2_bootloader_argument template.
 
 #}}
 {{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value) -%}}
-{{% if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
+{{% if 'ubuntu' in product or 'debian' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
 - name: Check {{{ arg_name }}} argument exists
   command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
   failed_when: False
@@ -1261,34 +1261,37 @@ Part of the grub2_bootloader_argument template.
   failed_when: False
   register: linecheck
 
-- name: Add watch rule for {{{ path }}} in /etc/audit/audit.rules
+- name: Add {{{ arg_name }}} argument
   ansible.builtin.lineinfile:
     line: 'GRUB_CMDLINE_LINUX="{{{ arg_name_value }}} "'
     state: present
     dest: /etc/default/grub
     create: yes
     mode: '0644'
-  when: argcheck.rc != 0 and linecheck.rc != 0
+  when: argcheck is not skipped and linecheck is not skipped and argcheck.rc != 0 and linecheck.rc != 0
 
 - name: Replace existing {{{ arg_name }}} argument
   replace:
       path: /etc/default/grub
-      regexp: '{{{ arg_name }}}=\w+'
+      regexp: '{{{ arg_name }}}=[a-zA-Z0-9,]+'
       replace: '{{{ arg_name_value }}}'
-  when: argcheck.rc == 0 and linecheck.rc == 0
+  when: argcheck is not skipped and linecheck is not skipped and argcheck.rc == 0 and linecheck.rc == 0
 
 - name: Add {{{ arg_name }}} argument
   replace:
       path: /etc/default/grub
       regexp: '(^\s*GRUB_CMDLINE_LINUX=.*)"'
       replace: '\1 {{{ arg_name_value }}}"'
-  when: argcheck.rc != 0 and linecheck.rc == 0
+  when: argcheck is not skipped and linecheck is not skipped and argcheck.rc != 0 and linecheck.rc == 0
 
 {{% endif -%}}
 
 {{% if product in ['sle12', 'sle15'] %}}
 - name: Update grub defaults and the bootloader menu
   command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
+{{% elif 'debian' in product %}}
+- name: Update grub defaults and the bootloader menu
+  command: /usr/sbin/update-grub
 {{% else %}}
 - name: Update grub defaults and the bootloader menu
   command: /sbin/grubby --update-kernel=ALL --args="{{{ arg_name_value }}}"
@@ -1305,7 +1308,7 @@ Part of the grub2_bootloader_argument_absent template.
 
 #}}
 {{%- macro ansible_grub2_bootloader_argument_absent(arg_name) -%}}
-{{% if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
+{{% if 'ubuntu' in product or 'debian' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
 - name: Check {{{ arg_name }}} argument exists
   command: grep '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"' /etc/default/grub
   failed_when: False
@@ -1316,13 +1319,16 @@ Part of the grub2_bootloader_argument_absent template.
       path: /etc/default/grub
       regexp: '\(^GRUB_CMDLINE_LINUX=".*\){{{ arg_name }}}=?[^[:space:]]*\(.*"\)'
       replace: '\1 \2'
-  when: argcheck.rc == 0
+  when: argcheck is not skipped and argcheck.rc == 0
 
 {{% endif -%}}
 
 {{% if product in ['sle12', 'sle15'] %}}
 - name: Update grub defaults and the bootloader menu
   command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
+{{% elif 'debian' in product %}}
+- name: Update grub defaults and the bootloader menu
+  command: /usr/sbin/update-grub
 {{% else %}}
 - name: Update grub defaults and the bootloader menu
   command: /sbin/grubby --update-kernel=ALL --remove-args="{{{ arg_name }}}"

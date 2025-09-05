@@ -1,4 +1,4 @@
 name: cpe:/a:runtime-kernel-fips-enabled
 title: Running kernel has fips mode enabled
 check_id: runtime_kernel_fips_enabled
-bash_conditional: '[ $(sysctl -a | grep -c fips_enabled.*1) -eq 1 ]'
+bash_conditional: "[ \"$(sysctl -a | grep -c 'fips_enabled.*1')\" -eq 1 ]"

@@ -1,38 +1,45 @@
 <def-group>
-  <definition class="compliance" id="file_permissions_unauthorized_world_writable" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("The world-write permission should be disabled for all files.") }}}
     <criteria>
-      <criterion test_ref="test_file_permissions_unauthorized_world_write" />
+      <criterion test_ref="test_file_permissions_unauthorized_world_write"/>
     </criteria>
   </definition>
-  <!-- NOTE: It is impossible for an OVAL check to determine which world writable files are authorized or not. -->
-  <!-- This checks basically fails if any world writable files exist on the system. A default RHEL install -->
-  <!-- does not have any world writable files but this many not be the case for other systems. It will be up to -->
-  <!-- the system administrator to determine which world writable files are approved for use. -->
-  <unix:file_test check="all" check_existence="none_exist" comment="world writable files" id="test_file_permissions_unauthorized_world_write" version="1">
-    <unix:object object_ref="object_file_permissions_unauthorized_world_write" />
-  </unix:file_test>
-  <unix:file_object comment="world writable" id="object_file_permissions_unauthorized_world_write" version="1">
-    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
-    <unix:path operation="equals">/</unix:path>
-    <unix:filename operation="pattern match">^.*$</unix:filename>
-    <filter action="include">state_file_permissions_unauthorized_world_write</filter>
-    <!-- don't search /proc, /sys, and some special files from /selinux -->
-    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_special_selinux_files</filter>
-    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_proc</filter>
-    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_sys</filter>
-  </unix:file_object>
+
   <unix:file_state id="state_file_permissions_unauthorized_world_write" version="1">
     <unix:type operation="equals">regular</unix:type>
     <unix:owrite datatype="boolean">true</unix:owrite>
   </unix:file_state>
-  <unix:file_state id="state_file_permissions_unauthorized_world_write_exclude_special_selinux_files" version="1">
-    <unix:filepath operation="pattern match">^/selinux/(?:(?:member)|(?:user)|(?:relabel)|(?:create)|(?:access)|(?:context))$</unix:filepath>
+
+  <unix:file_state id="state_file_permissions_unauthorized_world_write_special_selinux_files"
+    version="1">
+    <unix:filepath
+      operation="pattern match">^/selinux/(?:(?:member)|(?:user)|(?:relabel)|(?:create)|(?:access)|(?:context))$</unix:filepath>
   </unix:file_state>
-  <unix:file_state id="state_file_permissions_unauthorized_world_write_exclude_proc" version="1">
-    <unix:filepath operation="pattern match">^/proc/.*$</unix:filepath>
-  </unix:file_state>
-  <unix:file_state id="state_file_permissions_unauthorized_world_write_exclude_sys" version="1">
-    <unix:filepath operation="pattern match">^/sys/.*$</unix:filepath>
-  </unix:file_state>
+
+  {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
+  {{{ create_local_mount_points_list(var_local_mount_points) }}}
+
+  <!--
+    This file_object will only find files located in local and not special file systems. The
+    recurse_file_system parameter is set to defined in order to make sure the probe doesn't
+    leave the scope of that mount point. For example, when probing "/", the probe will ignore
+    any child directory which is a mount point for any other partition. This will ensure
+    considerable performance improvement. -->
+  <unix:file_object id="object_file_permissions_unauthorized_world_write" version="1"
+    comment="All files with world-write permission.">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+      recurse_file_system="defined"/>
+      <unix:path operation="equals" var_check="at least one"
+        var_ref="{{{ var_local_mount_points }}}"/>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_file_permissions_unauthorized_world_write</filter>
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_special_selinux_files</filter>
+  </unix:file_object>
+
+  <unix:file_test id="test_file_permissions_unauthorized_world_write" version="1"
+    check="all" check_existence="none_exist"
+    comment="Check the existence of world-writable files">
+    <unix:object object_ref="object_file_permissions_unauthorized_world_write" />
+  </unix:file_test>
 </def-group>

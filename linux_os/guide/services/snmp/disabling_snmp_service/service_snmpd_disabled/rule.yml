@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis23,anolis8,debian10,debian11,debian12,openembedded,rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'Disable snmpd Service'
 
@@ -21,9 +20,8 @@ identifiers:
     cce@sle15: CCE-91373-1
 
 references:
-    cis@alinux2: 2.1.14
-    cis@alinux3: 2.2.5
     cis@rhel7: 2.2.14
+    cis@rhel8: 2.2.14
     cis@sle12: 2.2.15
     cis@sle15: 2.2.15
     ism: "1311"
@@ -34,7 +32,7 @@ ocil_clause: |-
 ocil: |-
     {{{ ocil_service_disabled(service="snmpd") }}}
 
-platform: machine
+platform: machine and package[snmpd]
 
 template:
     name: service_disabled
@@ -42,4 +40,5 @@ template:
         servicename: snmpd
         packagename@debian10: snmpd
         packagename@debian11: snmpd
+        packagename@debian12: snmpd
         packagename: net-snmp

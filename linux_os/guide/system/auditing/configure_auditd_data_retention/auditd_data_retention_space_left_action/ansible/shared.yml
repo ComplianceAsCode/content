@@ -8,7 +8,7 @@
 - name: Configure auditd space_left Action on Low Disk Space
   lineinfile:
     dest: /etc/audit/auditd.conf
-    line: "space_left_action = {{ var_auditd_space_left_action }}"
+    line: "space_left_action = {{ var_auditd_space_left_action.split('|')[0] }}"
     regexp: '^\s*space_left_action\s*=\s*.*$'
     state: present
     create: yes

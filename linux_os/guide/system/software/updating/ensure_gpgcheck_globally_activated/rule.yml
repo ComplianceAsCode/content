@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis23,anolis8,fedora,ol7,ol8,ol9,openembedded,rhel7,rhel8,rhel9,rhv4,sle12,sle15,uos20
 
 title: 'Ensure gpgcheck Enabled In Main {{{ pkg_manager }}} Configuration'
 
@@ -40,10 +39,8 @@ identifiers:
 references:
     anssi: BP28(R15)
     cis-csc: 11,2,3,9
-    cis@alinux2: 1.2.3
-    cis@alinux3: 1.3.2
-    cis@rhel7: 1.2.3
-    cis@rhel8: 1.2.3
+    cis@rhel7: 1.2.2
+    cis@rhel8: 1.2.2
     cis@rhel9: 1.2.2
     cis@sle12: 1.2.3
     cis@sle15: 1.2.3
@@ -80,11 +77,7 @@ ocil: |-
 
     If "gpgcheck" is not set to "1", or if the option is missing or commented out, ask the System Administrator how the certificates for patches and other operating system components are verified.
 
-{{% if 'sle' in product %}}
-platform: package[zypper]
-{{% else %}}
-platform: package[yum]
-{{% endif %}}
+platform: package[{{{ pkg_manager }}}]
 
 fixtext: |-
     Configure {{{ full_name }}} to always check package signatures before installation.

@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: alinux2,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Set configuration for loopback traffic'
 
@@ -21,11 +20,12 @@ severity: medium
 platform: not package[nftables] and not package[ufw] and package[iptables]
 
 identifiers:
+    cce@rhel7: CCE-86926-3
     cce@sle12: CCE-92214-6
     cce@sle15: CCE-91345-9
 
 references:
-    cis@alinux2: 3.5.1.2
+    cis@rhel7: 3.4.4.2.1
     cis@sle12: 3.5.2.1
     cis@sle15: 3.5.3.2.2
     cis@ubuntu2004: 3.5.3.2.2

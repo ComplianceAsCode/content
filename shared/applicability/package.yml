@@ -14,10 +14,20 @@ args:
     {{% else %}}
     pkgname: auditd
     {{% endif %}}
+  autofs:
+    pkgname: autofs
+  avahi:
+    {{% if 'ubuntu' in product %}}
+    pkgname: avahi-daemon
+    {{% else %}}
+    pkgname: avahi
+    {{% endif %}}
   bash:
     pkgname: bash
   chrony:
     pkgname: chrony
+  dnf:
+    pkgname: dnf
   firewalld:
     pkgname: firewalld
   gdm:
@@ -38,6 +48,8 @@ args:
     {{% else %}}
       pkgname: snmp
     {{% endif %}}
+  networkmanager:
+    pkgname: NetworkManager
   nftables:
       pkgname: nftables
   nss-pam-ldapd:
@@ -49,6 +61,8 @@ args:
   ntp:
     pkgname: ntp
     title: NTP daemon and utilities
+  openssh:
+    pkgname: openssh
   pam:
     {{% if pkg_system == "rpm" %}}
       pkgname: pam
@@ -65,7 +79,7 @@ args:
     pkgname: rsh-server
   shadow-utils:
     {{% if pkg_system == "rpm" %}}
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["openeuler2203", "sle12", "sle15"] %}}
       pkgname: shadow
     {{% else %}}
       pkgname: shadow-utils
@@ -73,6 +87,14 @@ args:
     {{% else %}}
       pkgname: login
     {{% endif %}}
+  snmpd:
+    {{% if 'debian' in product %}}
+    pkgname: snmpd
+    {{% else %}}
+    pkgname: net-snmp
+    {{% endif %}}
+  squid:
+    pkgname: squid
   sssd:
     {{% if product in ["sle12", "sle15"] %}}
       pkgname: sssd
@@ -83,6 +105,8 @@ args:
     pkgname: sudo
   systemd:
     pkgname: systemd
+  telnet-server:
+    pkgname: telnet-server
   tftp-server:
     pkgname: tftp-server
   tmux:
@@ -95,7 +119,5 @@ args:
     pkgname: yum
   zypper:
     pkgname: zypper
-  openssh:
-    pkgname: openssh
-  networkmanager:
-    pkgname: NetworkManager
+  apt_get:
+    pkgname: apt

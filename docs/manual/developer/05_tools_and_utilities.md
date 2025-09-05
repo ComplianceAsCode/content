@@ -673,14 +673,55 @@ $ python3 utils/compare_versions.py compare_tags v0.1.67 v0.1.68 rhel9
 
 It will internally clone the upstream project, checkout these tags, generate ComplianceAsCode JSON manifests, compare them and print the output.
 
-`utils/no_new_global_applicable_rules.py` - Ensure That New Rules Have a `prodtype` Key
 
-This script checks the rules in `utils/rule_dir_json.py` (created by `utils/rule_dir_json.py`) and checks if rules not on the allow list have prodtypes.
-Rules that have no `prodtype` and are not on the allow list in `tests/data/utils/no_new_global_applicable_rules.json` will cause the script to return an error.
-This script is ran as part of the `ctest` run.
+### `utils/oscal/build_cd_from_policy.py` &ndash; Build a Component Definition from a Policy
 
-To run the test (assuming that the content is built)
-```
-$ cd build
-$ ctest --output-on-failure -R test-no-new-global-applicable-rules
+This script builds an OSCAL Component Definition (cd) (version `1.0.4`) for an existing OSCAL profile from a policy. The script uses the
+[compliance-trestle](https://ibm.github.io/compliance-trestle/) library to build the component definition. The component definition can be used with the `compliance-trestle` CLI after generation.
+
+Some assumption made by this script:
+
+- The script maps control file statuses to valid OSCAL [statuses](https://pages.nist.gov/OSCAL-Reference/models/v1.1.1/system-security-plan/json-reference/#/system-security-plan/control-implementation/implemented-requirements/by-components/implementation-status) as follows:
+
+  * `pending` - `alternative`
+
+  * `not applicable`: `not-applicable`
+
+  * `inherently met`: `implemented`
+
+  * `documentation`: `implemented`
+
+  * `planned`: `planned`
+
+  * `partial`: `partial`
+
+  * `supported`: `implemented`
+
+  * `automated`: `implemented`
+
+  * `manual`: `alternative`
+
+  * `does not meet`: `alternative`
+
+- The script uses the "Section *letter*:" convention in the control notes to create statements under the implemented requirements.
+- The script maps parameter to rules uses the `xccdf_variable` field under `template.vars`
+- To determine what responses will mapped to the controls in the OSCAL profile the control id and label property from the resolved catalog is searched.
+
+It supports the following arguments:
+  - `-o`, `--output` &mdash; Path to write the cd to
+  - `-r`, `--root` &mdash; Root of the SSG project. Defaults to /content.
+  - `-v`, `--vendor-dir` &mdash; Path to the vendor directory with third party OSCAL artifacts
+  - `-p`, `--profile` &mdash; Main profile href, or name of the profile model in the trestle workspace
+  - `-pr`, `--product` &mdash; Product to build cd with
+  - `-c`, `--control` &mdash; Control to use as the source for control responses. To optionally filter by level, use the format <control_id>:<level>.
+  - `-j`, `--json` &mdash; Path to the rules_dir.json. Defaults to /content/build/rule_dirs.json.
+  - `-b`, `--build-config-yaml` &mdash; YAML file with information about the build configuration
+  - `-t`, `--component-definition-type` &mdash; Type of component definition to create. Defaults to service. Options are service or validation.
+
+An example of how to execute the script:
+
+```bash
+$ ./build_product ocp4
+$ ./utils/rule_dir_json.py
+$ ./utils/oscal/build_cd_from_policy.py -o build/ocp4.json -p fedramp_rev4_high -pr ocp4 -c nist_ocp4:high
 ```

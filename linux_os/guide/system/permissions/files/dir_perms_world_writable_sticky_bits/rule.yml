@@ -3,30 +3,25 @@ documentation_complete: true
 title: 'Verify that All World-Writable Directories Have Sticky Bits Set'
 
 description: |-
-    When the so-called 'sticky bit' is set on a directory,
-    only the owner of a given file may remove that file from the
-    directory. Without the sticky bit, any user with write access to a
-    directory may remove any file in the directory. Setting the sticky
-    bit prevents users from removing each other's files. In cases where
-    there is no reason for a directory to be world-writable, a better
-    solution is to remove that permission rather than to set the sticky
-    bit. However, if a directory is used by a particular application,
-    consult that application's documentation instead of blindly
-    changing modes.
+    When the so-called 'sticky bit' is set on a directory, only the owner of a given file may
+    remove that file from the directory. Without the sticky bit, any user with write access to a
+    directory may remove any file in the directory. Setting the sticky bit prevents users from
+    removing each other's files. In cases where there is no reason for a directory to be
+    world-writable, a better solution is to remove that permission rather than to set the sticky
+    bit. However, if a directory is used by a particular application, consult that application's
+    documentation instead of blindly changing modes.
     <br />
-    To set the sticky bit on a world-writable directory <i>DIR</i>, run the
-    following command:
+    To set the sticky bit on a world-writable directory <i>DIR</i>, run the following command:
     <pre>$ sudo chmod +t <i>DIR</i></pre>
 
 rationale: |-
-    Failing to set the sticky bit on public directories allows unauthorized
-    users to delete files in the directory structure.
+    Failing to set the sticky bit on public directories allows unauthorized users to delete files
+    in the directory structure.
     <br /><br />
-    The only authorized public directories are those temporary directories
-    supplied with the system, or those designed to be temporary file
-    repositories. The setting is normally reserved for directories used by the
-    system, by users for temporary file storage (such as <tt>/tmp</tt>), and
-    for directories requiring global read/write access.
+    The only authorized public directories are those temporary directories supplied with the
+    system, or those designed to be temporary file repositories. The setting is normally reserved
+    for directories used by the system, by users for temporary file storage (such as <tt>/tmp</tt>),
+    and for directories requiring global read/write access.
 
 severity: medium
 
@@ -41,10 +36,8 @@ identifiers:
 references:
     anssi: BP28(R40)
     cis-csc: 12,13,14,15,16,18,3,5
-    cis@alinux2: 1.1.18
-    cis@alinux3: 6.1.2
-    cis@rhel7: 1.1.22
-    cis@rhel8: 6.1.2
+    cis@rhel7: 6.1.11
+    cis@rhel8: 6.1.11
     cis@rhel9: 6.1.12
     cis@sle12: 1.1.22
     cis@sle15: 1.1.22
@@ -102,3 +95,10 @@ fixtext: |-
 
 srg_requirement:
     A sticky bit must be set on all {{{ full_name }}} public directories to prevent unauthorized and unintended information transferred via shared system resources.
+
+warnings:
+    - general: |-
+        This rule can take a long time to perform the check and might consume a considerable
+        amount of resources depending on the number of directories present on the system. It is
+        not a problem in most cases, but especially systems with a large number of directories can
+        be affected. See <code>https://access.redhat.com/articles/6999111</code>.

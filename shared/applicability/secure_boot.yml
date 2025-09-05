@@ -1,5 +1,5 @@
 name: cpe:/a:secure-boot
 title: System secure boot is enabled
 check_id: secure_boot_enabled
-bash_conditional: "[ $(mokutil --sb-state | awk '{print $NF}') == 'enabled' ]"
+bash_conditional: "[ \"$(mokutil --sb-state | awk '{print $NF}')\" == 'enabled' ]"
 

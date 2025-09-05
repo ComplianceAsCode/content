@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_debian
 # reboot = false
 # strategy = configure
 # complexity = low
@@ -18,7 +18,9 @@
 
 - name: {{{ rule_title }}} - Set List of Privileged Commands Found in Eligible Mount Points
   ansible.builtin.set_fact:
-    privileged_commands: "{{( result_privileged_commands_search.results | map(attribute='stdout_lines') | select() | list ) | sum(start=[]) }}"
+    privileged_commands: "{{ privileged_commands | default([]) + item.stdout_lines }}"
+  loop: "{{ result_privileged_commands_search.results }}"
+  when: item is not skipped
 
 - name: {{{ rule_title }}} - Privileged Commands are Present in the System
   block:

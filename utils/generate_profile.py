@@ -62,19 +62,19 @@ class Parser(abc.ABC):
 
     @abc.abstractmethod
     def __init__(self) -> None:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abc.abstractmethod
     def get_name(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     @abc.abstractmethod
     def get_version(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     @abc.abstractmethod
     def parse(self):
-        raise NotImplemented
+        raise NotImplementedError
 
 
 class XLSXParser(Parser):

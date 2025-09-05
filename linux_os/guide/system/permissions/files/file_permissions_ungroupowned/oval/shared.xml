@@ -1,51 +1,50 @@
 <def-group>
-  <definition class="compliance" id="file_permissions_ungroupowned" version="2">
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("All files should be owned by a group") }}}
     <criteria>
-      <criterion comment="Check all files and make sure they are owned by a group"
-      test_ref="test_file_permissions_ungroupowned" />
+      <criterion test_ref="test_file_permissions_ungroupowned"
+        comment="Check all local files and make sure they are owned by a group"/>
     </criteria>
   </definition>
-  <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
-  check="all" comment="files with no group owner" check_existence="none_exist"
-  id="test_file_permissions_ungroupowned" version="1">
-    <!-- OVAL 5.11 rc-2 within the effort to add oval-def:NotesType construct also to variables
-         moved NotesType construct to the oval-common-schema:
-         [1] https://github.com/OVALProject/Language/issues/6
-         [2] https://github.com/OVALProject/Language/commit/c34abb871ee446d9fd9e50a8ccbc8a8e2af5db20
-         But this change broke backward-compatibility as reported in:
-         [3] https://github.com/OVALProject/Language/issues/237
-         [4] http://making-security-measurable.1364806.n2.nabble.com/5-11-backwards-incompatibility-issue-Suspect-the-fix-for-issue-6-was-the-culprit-tp7586190.html
-         Therefore as a temporary workaround to have both OVAL 5.10 and also OVAL 5.11 valid content,
-         temporarily comment out the <notes> construct below till the issue [3] is fixed in OVAL 5.11.1
-         version.
-    <notes>
-      <note>This will enumerate all files on local partitions</note>
-    </notes> -->
-    <unix:object object_ref="object_file_permissions_ungroupowned" />
-  </unix:file_test>
-  <unix:file_state comment="Files that are owned by a group."
-  id="state_file_permissions_ungroupowned" version="1">
-    <unix:group_id datatype="int" var_ref="variable_file_permissions_ungroupowned" var_check="at least one"/>
-  </unix:file_state>
 
-  <unix:file_object comment="all local files" id="object_file_permissions_ungroupowned" version="1">
-    <!-- We can't traverse symlinks here since e.g. /sys file system might contain symlink loops
-         resulting into excessive memory use by the scanner process & possible subsequent OOM killer
-         termination of it. See e.g.: https://www.redhat.com/archives/open-scap-list/2014-May/msg00005.html
-         Therefore traverse only directories -->
-    <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local" />
-    <unix:path>/</unix:path>
-    <unix:filename operation="pattern match">.*</unix:filename>
-    <filter action="exclude">state_file_permissions_ungroupowned</filter>
-  </unix:file_object>
-  <ind:textfilecontent54_object id="etc_group_object" version="1">
-        <ind:filepath>/etc/group</ind:filepath>
-        <ind:pattern operation="pattern match">^[^:]+:[^:]*:([\d]+):[^:]*$</ind:pattern>
-        <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  <!-- Create a file_state to filter out files group-owned by known groups. -->
+  <ind:textfilecontent54_object id="etc_group_objects" version="1">
+    <ind:filepath>/etc/group</ind:filepath>
+    <ind:pattern operation="pattern match">^[^:]+:[^:]*:([\d]+):[^:]*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-   <local_variable id="variable_file_permissions_ungroupowned" datatype="int" version="1" comment="all GIDs on the target system">
-        <object_component object_ref="etc_group_object" item_field="subexpression"/>
-   </local_variable>
+  <local_variable id="var_all_local_gids" version="1"
+    datatype="int" comment="all GIDs extracted from /etc/group on the target system">
+    <object_component object_ref="etc_group_objects" item_field="subexpression"/>
+  </local_variable>
+
+  <unix:file_state id="state_file_permissions_ungroupowned_local_group_owner" version="1"
+    comment="Used to filter out all files group-owned by a group defined in /etc/group">
+    <unix:group_id datatype="int" var_check="at least one" var_ref="var_all_local_gids"/>
+  </unix:file_state>
+
+  {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
+  {{{ create_local_mount_points_list(var_local_mount_points) }}}
+
+  <!-- This file_object will only find files located in local and not special file systems. The
+       recurse_file_system parameter is set to defined in order to make sure the probe doesn't
+       leave the scope of that mount point. For example, when probing "/", the probe will ignore
+       any child directory which is a mount point for any other partition. This will ensure
+       considerable performance improvement. -->
+  <unix:file_object id="object_file_permissions_ungroupowned" version="2"
+    comment="all local files without a known group owner">
+    <unix:behaviors recurse="directories" recurse_direction="down"
+      recurse_file_system="defined" max_depth="-1"/>
+    <unix:path operation="equals" var_check="at least one"
+      var_ref="{{{ var_local_mount_points }}}"/>
+    <unix:filename operation="pattern match">.*</unix:filename>
+    <filter action="exclude">state_file_permissions_ungroupowned_local_group_owner</filter>
+  </unix:file_object>
+
+  <unix:file_test id="test_file_permissions_ungroupowned" version="1"
+    check="all" check_existence="none_exist"
+    comment="there are no files with group owner different than local groups">
+    <unix:object object_ref="object_file_permissions_ungroupowned"/>
+  </unix:file_test>
 </def-group>

@@ -1,28 +1,26 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis23,anolis8,fedora,ol7,ol8,ol9,openembedded,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure All Files Are Owned by a Group'
 
 description: |-
-    If any files are not owned by a group, then the
-    cause of their lack of group-ownership should be investigated.
-    Following this, the files should be deleted or assigned to an
-    appropriate group. The following command will discover and print
-    any files on local partitions which do not belong to a valid group:
-    <pre>$ df --local -P | awk '{if (NR!=1) print $6}' | sudo xargs -I '{}' find '{}' -xdev -nogroup</pre>
-    To search all filesystems on a system including network mounted
-    filesystems the following command can be run manually for each partition:
-    <pre>$ sudo find PARTITION -xdev -nogroup</pre>
+    If any file is not group-owned by a group present in /etc/group, the cause of the lack of
+    group-ownership must be investigated. Following this, those files should be deleted or
+    assigned to an appropriate group.
+
+    Locate the mount points related to local devices by the following command:
+    <pre>$ findmnt -n -l -k -it $(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,)</pre>
+
+    For all mount points listed by the previous command, it is necessary to search for files which
+    do not belong to a valid group using the following command:
+    <pre>$ sudo find <i>MOUNTPOINT</i> -xdev -nogroup 2&gt;/dev/null</pre>
 
 rationale: |-
-    Unowned files do not directly imply a security problem, but they are generally
-    a sign that something is amiss. They may
-    be caused by an intruder, by incorrect software installation or
-    draft software removal, or by failure to remove all files belonging
-    to a deleted account. The files should be repaired so they
-    will not cause problems when accounts are created in the future,
-    and the cause should be discovered and addressed.
+    Unowned files do not directly imply a security problem, but they are generally a sign that
+    something is amiss. They may be caused by an intruder, by incorrect software installation or
+    draft software removal, or by failure to remove all files belonging to a deleted account, or
+    other similar cases. The files should be repaired so they will not cause problems when
+    accounts are created in the future, and the cause should be discovered and addressed.
 
 severity: medium
 
@@ -36,10 +34,8 @@ identifiers:
 references:
     anssi: BP28(R55)
     cis-csc: 1,11,12,13,14,15,16,18,3,5
-    cis@alinux2: 6.1.12
-    cis@alinux3: 6.1.13
     cis@rhel7: 6.1.12
-    cis@rhel8: 6.1.13
+    cis@rhel8: 6.1.12
     cis@rhel9: 6.1.11
     cis@sle12: 6.1.10
     cis@sle15: 6.1.10
@@ -65,13 +61,15 @@ references:
 ocil_clause: 'there is output'
 
 ocil: |-
-    The following command will discover and print any
-    files on local partitions which do not belong to a valid group.
-    <pre>$ df --local -P | awk '{if (NR!=1) print $6}' | sudo xargs -I '{}' find '{}' -xdev -nogroup</pre>
-    <br />
-    Either remove all files and directories from the system that do not have a valid group,
-    or assign a valid group with the chgrp command:
-    <pre>$ sudo chgrp <i>group</i> <i>file</i></pre>
+    The following command will locate the mount points related to local devices:
+    <pre>$ findmnt -n -l -k -it $(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,)</pre>
+
+    The following command will show files which do not belong to a valid group:
+    <pre>$ sudo find <i>MOUNTPOINT</i> -xdev -nogroup 2&gt;/dev/null</pre>
+
+    Replace <i>MOUNTPOINT</i> by the mount points listed by the fist command.
+
+    No files without a valid group should be located.
 
 fixtext: |-
     Either remove all files and directories from {{{ full_name }}} that do not have a valid group, or assign a valid group to all files and directories on the system with the "chgrp" command:
@@ -82,5 +80,10 @@ srg_requirement: 'All {{{ full_name }}} local files and directories must have a 
 
 warnings:
     - general: |-
-        This rule only considers local groups.
+        This rule only considers local groups as valid groups.
         If you have your groups defined outside <code>/etc/group</code>, the rule won't consider those.
+    - general: |-
+        This rule can take a long time to perform the check and might consume a considerable
+        amount of resources depending on the number of files present on the system. It is not a
+        problem in most cases, but especially systems with a large number of files can be affected.
+        See <code>https://access.redhat.com/articles/6999111</code>.

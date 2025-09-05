@@ -1,0 +1,38 @@
+documentation_complete: true
+
+
+title: 'Verify Permissions on /etc/shells File'
+
+description:  |-
+    {{{ describe_file_permissions(file="/etc/shells", perms="0644") }}}
+
+rationale: |-
+    The <tt>/etc/shells</tt> file contains the list of full pathnames to shells on the system.
+    Since this file is used by many system programs this file should be protected.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86626-9
+    cce@rhel8: CCE-86634-3
+
+references:
+    cis@rhel7: 6.1.9
+    cis@rhel8: 6.1.10
+    nist: AC-3,MP-2
+
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/shells", perms="0644") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/shells", perms="0644") }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/shells", mode="0644") }}}'
+
+srg_requirement: 'The {{{ full_name }}} /etc/shells file must have a mode of 0640 to prevent unauthorized access.'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/shells
+        filemode: '0644'

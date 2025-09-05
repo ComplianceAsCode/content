@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: ocp4
 
 title: "Ensure Kubelet is configured with allowed TLS versions"
 
@@ -84,10 +83,6 @@ ocil: |-
     <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1" | .tlsMinVersion'; done</pre>
     The output shows the configured TLS minimum version which should be
     TLSv1.2 or newer.
-
-warnings:
-    - general: |-
-        {{{ openshift_cluster_setting_kubeletconfig() | indent(8) }}}
 
 template:
     name: yamlfile_value

@@ -38,6 +38,7 @@
     - ["{{{ MOUNTPOINT }}}", "{{{ FILESYSTEM }}}", "{{{ TYPE }}}", "defaults"]
   when:
     - ("{{{ TABFILE }}}" | length == 0)
+    - device_name.stdout is defined and device_name.stdout_lines is defined
     - (device_name.stdout | length == 0)
 
 - name: "{{{ rule_title }}}: Make sure {{{ MOUNTOPTION }}} option is part of the to {{{ MOUNTPOINT }}} options"
@@ -58,4 +59,5 @@
     state: "mounted"
     fstype: "{{ mount_info.fstype }}"
   when:
+    - mount_info is defined
     - (device_name.stdout is defined and (device_name.stdout | length > 0)) or ("{{{ TABFILE }}}" | length == 0)

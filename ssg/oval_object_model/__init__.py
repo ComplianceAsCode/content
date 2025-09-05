@@ -15,3 +15,4 @@ from .oval_entities import (
     ExceptionDuplicateObjectReferenceInTest,
     ExceptionMissingObjectReferenceInTest,
 )
+from .oval_definition_references import OVALDefinitionReference

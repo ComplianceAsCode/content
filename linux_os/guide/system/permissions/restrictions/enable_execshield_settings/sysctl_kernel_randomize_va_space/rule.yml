@@ -24,10 +24,8 @@ identifiers:
 
 references:
     anssi: BP28(R23)
-    cis@alinux2: 1.5.2
-    cis@alinux3: 1.6.2
-    cis@rhel7: 1.5.3
-    cis@rhel8: 1.5.3
+    cis@rhel7: 1.4.1
+    cis@rhel8: 1.4.1
     cis@rhel9: 1.5.3
     cis@sle12: 1.6.3
     cis@sle15: 1.6.3
@@ -62,6 +60,9 @@ template:
         sysctlvar: kernel.randomize_va_space
         sysctlval: '2'
         datatype: int
+{{% if "openeuler" in product %}}
+        missing_parameter_pass: 'true'
+{{% endif %}}
 
 fixtext: |-
     Configure {{{ full_name }}} to implement virtual address space randomization.

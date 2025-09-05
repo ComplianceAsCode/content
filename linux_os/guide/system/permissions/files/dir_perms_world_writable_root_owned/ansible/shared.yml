@@ -21,6 +21,7 @@
   ansible.builtin.set_fact:
     world_writable_dirs: '{{ world_writable_dirs | union(item.stdout_lines) | list }}'
   loop: "{{ result_found_dirs.results }}"
+  when: item is not skipped
 
 - name: "{{{ rule_title }}} - Ensure root Ownership on Local World Writable Directories"
   ansible.builtin.file:

@@ -4,7 +4,7 @@
 <!-- this style sheet expects parameter $profile, which is the id of the Profile to be shown -->
 
 <xsl:variable name="cci_list" select="document('../references/disa-cci-list.xml')/cci:cci_list" />
-<xsl:variable name="os_srg" select="document('../references/disa-os-srg-v2r3.xml')/xccdf-1.1:Benchmark" />
+<xsl:variable name="os_srg" select="document('../references/disa-os-srg-v2r7.xml')/xccdf-1.1:Benchmark" />
 
 <xsl:param name="profile" select="''"/>
 <xsl:param name="testinfo" select="''" />
@@ -86,7 +86,7 @@
 				</pre>
 			</td>
 
-			<td> 
+			<td>
 			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
             	<xsl:variable name="cci_formatted" select='self::node()[text()]' />
 				<xsl:variable name="cci_expanded" select="$cci_formatted"  />
@@ -97,18 +97,18 @@
 					</xsl:if>
 				</xsl:for-each>
 			</xsl:for-each>
-			</td> 
+			</td>
 
-			<td> 
+			<td>
 			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
             	<xsl:variable name="cci_formatted" select='self::node()[text()]' />
 				<xsl:variable name="cci_expanded" select="$cci_formatted"  />
 				<xsl:value-of select="$cci_expanded"/>
 				<br/>
 			</xsl:for-each>
-			</td> 
+			</td>
 
-			<td> 
+			<td>
 			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
             	<xsl:variable name="cci_formatted" select='self::node()[text()]' />
 				<xsl:variable name="cci_expanded" select="$cci_formatted"  />
@@ -123,7 +123,7 @@
 					</xsl:if>
 				</xsl:for-each>
 			</xsl:for-each>
-			</td> 
+			</td>
 		</tr>
 		</xsl:if>
 	</xsl:template>

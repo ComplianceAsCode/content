@@ -20,5 +20,5 @@ checktext: |-
 fixtext: |-
     Configure the audit system to generate an audit event for any successful/unsuccessful use of the "umount" system call by adding or updating the following rules in "/etc/audit/audit.rules" and adding the following rules to "/etc/audit/rules.d/perm_mod.rules" or updating the existing rules in files in the "/etc/audit/rules.d/" directory:
 
-    -a always,exit -F arch=b32 -S umount -F auid>={{{ uid_min }}} -F auid!=unset -k perm_mod -a always,exit -F arch=b64 -S umount -F auid>={{{ uid_min }}} -F auid!=unset -k perm_mod
+    -a always,exit -F arch=b32 -S umount -F auid>={{{ uid_min }}} -F auid!=unset -k privileged-umount
     The audit daemon must be restarted for the changes to take effect.

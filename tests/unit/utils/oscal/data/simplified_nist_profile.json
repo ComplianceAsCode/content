@@ -1,0 +1,142 @@
+{
+  "profile": {
+    "uuid": "1019f424-1556-4aa3-9df3-337b97c2c856",
+    "metadata": {
+      "title": "NIST Special Publication 800-53 Revision 5 MODERATE IMPACT BASELINE",
+      "last-modified": "2021-06-08T13:57:34.337491-04:00",
+      "version": "Final",
+      "oscal-version": "1.0.0",
+      "roles": [
+        {
+          "id": "creator",
+          "title": "Document Creator"
+        },
+        {
+          "id": "contact",
+          "title": "Contact"
+        }
+      ],
+      "parties": [
+        {
+          "uuid": "cde369ce-57f8-4ec1-847f-2681a9a881e7",
+          "type": "organization",
+          "name": "Joint Task Force, Transformation Initiative",
+          "email-addresses": [
+            "sec-cert@nist.gov"
+          ],
+          "addresses": [
+            {
+              "addr-lines": [
+                "National Institute of Standards and Technology",
+                "Attn: Computer Security Division",
+                "Information Technology Laboratory",
+                "100 Bureau Drive (Mail Stop 8930)"
+              ],
+              "city": "Gaithersburg",
+              "state": "MD",
+              "postal-code": "20899-8930"
+            }
+          ]
+        }
+      ],
+      "responsible-parties": [
+        {
+          "role-id": "creator",
+          "party-uuids": [
+            "cde369ce-57f8-4ec1-847f-2681a9a881e7"
+          ]
+        },
+        {
+          "role-id": "contact",
+          "party-uuids": [
+            "cde369ce-57f8-4ec1-847f-2681a9a881e7"
+          ]
+        }
+      ]
+    },
+    "imports": [
+      {
+        "href": "trestle://catalogs/simplified_nist_catalog/catalog.json",
+        "include-controls": [
+          {
+            "with-ids": [
+              "ac-1",
+              "ac-2",
+              "ac-2.1",
+              "ac-2.2",
+              "ac-2.3",
+              "ac-2.4",
+              "ac-2.5",
+              "ac-2.13",
+              "ac-3",
+              "ac-4",
+              "ac-4.4",
+              "ac-5"
+            ]
+          }
+        ]
+      }
+    ],
+    "merge": {
+      "as-is": true
+    },
+    "modify": {
+      "set-parameters": [
+        {
+          "param_id": "ac-1_prm_1",
+          "class": "newclassfromprof",
+          "depends-on": "newdependsonfromprof",
+          "usage": "new usage from prof",
+          "props": [
+            {
+              "name": "param_1_prop",
+              "value": "prop value from prof"
+            },
+            {
+              "name": "param_1_prop_2",
+              "value": "new prop value from prof"
+            }
+          ],
+          "links": [
+            {
+              "href": "#123456789",
+              "text": "new text from prof"
+            },
+            {
+              "href": "#new_link",
+              "text": "new link text"
+            }
+          ],
+          "constraints": [
+            {
+              "description": "new constraint"
+            }
+          ],
+          "guidelines": [
+            {
+              "prose": "new guideline"
+            }
+          ]
+        },
+        {
+          "param_id": "ac-4.4_prm_3",
+          "values": [
+            "hacking the system"
+          ]
+        },
+        {
+          "param_id": "loose_2",
+          "values": [
+            "loose_2_val_from_prof"
+          ]
+        },
+        {
+          "param_id": "bad_param_id",
+          "values": [
+            "this will cause warning"
+          ]
+        }
+      ]
+    }
+  }
+}

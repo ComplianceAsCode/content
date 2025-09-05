@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis23,anolis8,fedora,ol7,ol8,ol9,openembedded,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Require Authentication for Emergency Systemd Target'
 
@@ -28,10 +27,7 @@ identifiers:
 
 references:
     cis-csc: 1,11,12,14,15,16,18,3,5
-    cis@alinux2: 1.4.2
-    cis@alinux3: 1.5.3
-    cis@rhel7: 1.4.3
-    cis@rhel8: 1.4.3
+    cis@rhel7: 1.3.3
     cis@sle12: 1.5.3
     cis@sle15: 1.5.3
     cobit5: DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.06,DSS06.10
@@ -85,7 +81,7 @@ fixtext: |-
     Configure {{{ full_name }}} to require authentication for system emergency mode.
 
     Add or edit the following line in "/usr/lib/systemd/system/emergency.service":
-    {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15"] -%}}
+    {{% if product in ["fedora", "ol8", "ol9", "openeuler2203", "rhel8", "rhel9", "sle12", "sle15"] -%}}
     ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency
     {{%- else -%}}
     ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"

@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: sle15,ubuntu2004,ubuntu2204
 
 title: 'Set nftables Configuration for Loopback Traffic'
 
@@ -21,9 +20,11 @@ severity: medium
 platform: package[nftables] and service_disabled[firewalld]
 
 identifiers:
+    cce@rhel7: CCE-86382-9
     cce@sle15: CCE-92481-1
 
 references:
+    cis@rhel7: 3.4.3.5
     cis@sle15: 3.5.2.6
     cis@ubuntu2004: 3.5.2.6
     cis@ubuntu2204: 3.5.2.6

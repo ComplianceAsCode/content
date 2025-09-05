@@ -1,28 +1,26 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis23,anolis8,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,uos20
 
 title: 'Verify File Hashes with RPM'
 
 description: |-
-    Without cryptographic integrity protections, system
-    executables and files can be altered by unauthorized users without
-    detection.
-    The RPM package management system can check the hashes of
-    installed software packages, including many that are important to system
-    security.
-    To verify that the cryptographic hash of system files and commands matches vendor
-    values, run the following command to list which files on the system
-    have hashes that differ from what is expected by the RPM database:
+    Without cryptographic integrity protections, system executables and files can be altered by
+    unauthorized users without detection. The RPM package management system can check the hashes
+    of installed software packages, including many that are important to system security.
+
+    To verify that the cryptographic hash of system files and commands matches vendor values, run
+    the following command to list which files on the system have hashes that differ from what is
+    expected by the RPM database:
     <pre>$ rpm -Va --noconfig | grep '^..5'</pre>
-    A "c" in the second column indicates that a file is a configuration file, which
-    may appropriately be expected to change. If the file was not expected to
-    change, investigate the cause of the change using audit logs or other means.
-    The package can then be reinstalled to restore the file.
-    Run the following command to determine which package owns the file:
+
+    If the file was not expected to change, investigate the cause of the change using audit logs
+    or other means. The package can then be reinstalled to restore the file. Run the following
+    command to determine which package owns the file:
     <pre>$ rpm -qf <i>FILENAME</i></pre>
+
     The package can be reinstalled from a {{{ pkg_manager }}} repository using the command:
     <pre>$ sudo {{{ pkg_manager }}} reinstall <i>PACKAGENAME</i></pre>
+
     Alternatively, the package can be reinstalled from trusted media using the command:
     <pre>$ sudo rpm -Uvh <i>PACKAGENAME</i></pre>
 
@@ -64,9 +62,9 @@ references:
 ocil_clause: 'there is output'
 
 ocil: |-
-    The following command will list which files on the system
-    have file hashes different from what is expected by the RPM database.
-    <pre>$ rpm -Va --noconfig | awk '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre>
+    The following command will list which files on the system have file hashes different from what
+    is expected by the RPM database.
+    <pre>$ rpm -Va --noconfig | awk '$1 ~ /..5/'</pre>
 
 fixtext: |-
     Run the following command to determine which package owns the file:
@@ -82,3 +80,13 @@ fixtext: |-
     $ sudo rpm -Uvh [PATH TO RPM]
 
 srg_requirement: '{{{ full_name }}} must be configured so that the cryptographic hash of system files and commands matches vendor values.'
+
+warnings:
+    - general: |-
+        This rule can take a long time to perform the check and might consume a considerable
+        amount of resources depending on the number of packages present on the system. It is not a
+        problem in most cases, but especially systems with a large number of installed packages
+        can be affected.
+        {{% if "rhel" in product %}}
+        See <code>https://access.redhat.com/articles/6999111</code>.
+        {{% endif %}}

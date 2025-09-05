@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis23,anolis8,ol7,ol8,ol9,openembedded,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Disable Avahi Server Software'
 
@@ -24,8 +23,7 @@ identifiers:
 
 references:
     cis-csc: 11,14,3,9
-    cis@alinux2: 2.1.3
-    cis@alinux3: 2.2.4
+    cis@rhel8: 2.2.2
     cis@sle12: 2.2.3
     cis@sle15: 2.2.3
     cis@ubuntu2004: 2.2.3
@@ -45,7 +43,7 @@ ocil_clause: |-
 ocil: |-
     {{{ ocil_service_disabled(service="avahi-daemon") }}}
 
-platform: machine
+platform: machine and package[avahi]
 
 template:
     name: service_disabled

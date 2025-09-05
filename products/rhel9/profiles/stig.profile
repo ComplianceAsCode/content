@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R1
+    version: V1R2
     SMEs:
         - mab879
         - ggbecker
@@ -12,7 +12,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 9'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 9 V1R1.
+    DISA STIG for Red Hat Enterprise Linux 9 V1R2.
 
     In addition to being applicable to Red Hat Enterprise Linux 9, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -26,3 +26,6 @@ description: |-
 
 selections:
   - stig_rhel9:all
+  # Following rules once had a prodtype incompatible with the rhel9 product
+  - '!audit_rules_immutable_login_uids'
+  - '!configure_tmux_lock_keybinding'

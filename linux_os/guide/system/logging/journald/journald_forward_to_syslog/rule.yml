@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: alinux3,anolis23,anolis8,openembedded,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
 
 title: Ensure journald is configured to send logs to rsyslog
 
@@ -23,9 +22,8 @@ identifiers:
     cce@sle15: CCE-91376-4
 
 references:
-    cis@alinux3: 4.2.2.1
-    cis@rhel7: 4.2.2.1
-    cis@rhel8: 4.2.1.3
+    cis@rhel7: 5.1.1.3
+    cis@rhel8: 5.1.1.3
     cis@rhel9: 4.2.1.3
     cis@sle12: 4.2.2.1
     cis@sle15: 4.2.2.1
@@ -37,22 +35,27 @@ ocil: |-
     Storing logs remotely protects the integrity of the data from local attacks.
     Run the following command to verify that journald is forwarding logs to a remote host.
     <pre>
+{{%- if product in ["rhel8", "rhel9", "sle15"] %}}
+    grep "^\sForwardToSyslog" /etc/systemd/journald.conf {{{ journald_conf_dir_path }}}/*.conf
+{{% else %}}
     grep "^\sForwardToSyslog" /etc/systemd/journald.conf
+{{% endif %}}
     </pre>
     and it should return
     <pre>
     ForwardToSyslog=yes
     </pre>
 
-{{%- if product == "sle15" %}}
+{{%- if product in ["rhel8", "rhel9", "sle15"] %}}
 template:
     name: systemd_dropin_configuration
     vars:
         component: journald
         master_cfg_file: /etc/systemd/journald.conf
-        dropin_dir: /etc/systemd/journal.d/
+        dropin_dir: {{{ journald_conf_dir_path }}}
         param: ForwardToSyslog
         value: yes
+        no_quotes: 'true'
 {{% else %}}
 template:
     name: shell_lineinfile

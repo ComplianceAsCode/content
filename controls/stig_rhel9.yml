@@ -2,7 +2,7 @@ policy: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 title: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 id: stig_rhel9
 source: https://public.cyber.mil/stigs/downloads/
-version: V1R1
+version: V1R2
 levels:
     -   id: high
     -   id: medium
@@ -1927,6 +1927,7 @@ controls:
             SSH traffic terminate after becoming unresponsive.
         rules:
             - sshd_set_keepalive
+            - var_sshd_set_keepalive=1
         status: automated
 
     -   id: RHEL-09-255100
@@ -2689,6 +2690,7 @@ controls:
         title: RHEL 9 must terminate idle user sessions.
         rules:
             - logind_session_timeout
+            - var_logind_session_timeout=15_minutes
         status: automated
 
     -   id: RHEL-09-431010

@@ -50,8 +50,8 @@ identifiers:
 references:
     anssi: BP28(R73)
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
-    cis@rhel7: 4.1.11
-    cis@rhel8: 4.1.3.6
+    cis@rhel7: 5.2.3.6
+    cis@rhel8: 5.2.3.6
     cis@rhel9: 4.1.3.6
     cis@sle12: 4.1.11
     cis@sle15: 4.1.11
@@ -98,7 +98,7 @@ warnings:
         </ul>
     - general: |-
         Note that OVAL check and Bash / Ansible remediation of this rule
-        explicitly excludes file systems mounted at <pre>/proc</pre> directory
+        explicitly excludes file systems mounted at <code>/proc</code> directory
         and its subdirectories. It is a virtual file system and it doesn't
         contain executable applications. At the same time, interacting with this
         file system during check or remediation caused undesirable errors.

@@ -12,7 +12,7 @@ checktext: |-
 
     $ sudo grep -i tmout /etc/profile /etc/profile.d/*.sh
 
-    etc/profile.d/tmout.sh:declare -xr TMOUT=900
+    etc/profile.d/tmout.sh:typeset -xr TMOUT=900
 
     If "TMOUT" is not set to "900" or less in a script located in the /etc/profile.d/ directory to enforce session termination after inactivity, this is a finding.
 

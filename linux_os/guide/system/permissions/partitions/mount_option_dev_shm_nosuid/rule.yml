@@ -26,10 +26,8 @@ identifiers:
 
 references:
     cis-csc: 11,13,14,3,8,9
-    cis@alinux2: 1.1.16
-    cis@alinux3: 1.1.8.3
-    cis@rhel7: 1.1.9
-    cis@rhel8: 1.1.8.3
+    cis@rhel7: 1.1.2.2.3
+    cis@rhel8: 1.1.2.2.3
     cis@rhel9: 1.1.8.4
     cis@sle12: 1.1.9
     cis@sle15: 1.1.9
@@ -66,6 +64,7 @@ template:
         type@sle12: ''
     backends:
         anaconda: 'off'
+        blueprint: 'off'
 
 fixtext: |-
     {{{ fixtext_mount_option("/dev/shm", "nosuid") }}}

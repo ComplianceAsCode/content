@@ -26,13 +26,6 @@
 - name: Service facts
   ansible.builtin.service_facts:
 
-- name: Check the rules script being used
-  ansible.builtin.command:
-    grep '^ExecStartPost' /usr/lib/systemd/system/auditd.service
-  register: check_rules_scripts_result
-  changed_when: false
-  failed_when: false
-
 - name: Set suid_audit_rules fact
   ansible.builtin.set_fact:
     suid_audit_rules:
@@ -52,8 +45,8 @@
     regexp: "{{ item.regex }}"
     create: yes
   when:
-    - '"auditd.service" in ansible_facts.services'
-    - '"augenrules" in check_rules_scripts_result.stdout'
+    - ('"auditd.service" in ansible_facts.services' or 
+        '"augenrules.service" in ansible_facts.services')
   register: augenrules_audit_rules_privilege_function_update_result
   with_items: "{{ suid_audit_rules }}"
 
@@ -64,10 +57,11 @@
     regexp: "{{ item.regex }}"
     create: yes
   when:
-    - '"auditd.service" in ansible_facts.services'
-    - '"auditctl" in check_rules_scripts_result.stdout'
+    - ('"auditd.service" in ansible_facts.services' or 
+        '"augenrules.service" in ansible_facts.services')
   register: auditctl_audit_rules_privilege_function_update_result
   with_items: "{{ suid_audit_rules }}"
+
 {{%- if product in ['sle12', 'sle15'] %}}
 - name: Restart auditd.service
   ansible.builtin.systemd:

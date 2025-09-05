@@ -22,8 +22,8 @@ ComplianceAsCode/content
 .. toctree::
     :maxdepth: 2
     :glob:
-    :caption: Testing Content Using SSG Test Suite
-    :name: Testing Content Using SSG Test Suite
+    :caption: Testing Content Using Automatus
+    :name: Testing Content Using Automatus
 
     tests/README
 

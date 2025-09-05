@@ -33,7 +33,10 @@ def get_stats(root, ns):
     stats["total"] = total
     stats["missing"] = missing
     stats["implemented"] = implemented
-    stats["coverage"] = implemented / total * 100
+    if total != 0:
+        stats["coverage"] = implemented / total * 100
+    else:
+        stats["coverage"] = 0
     stats["missing_rules"] = missing_rules
     return stats
 

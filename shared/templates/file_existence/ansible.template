@@ -15,4 +15,10 @@
   file:
       path: {{{ FILEPATH }}}
       state: touch
+    {{%- if FILEUID %}}
+      owner: "{{{ FILEUID }}}"
+    {{%- endif %}}
+    {{%- if FILEMODE %}}
+      mode: "{{{ FILEMODE }}}"
+    {{%- endif %}}
 {{% endif %}}

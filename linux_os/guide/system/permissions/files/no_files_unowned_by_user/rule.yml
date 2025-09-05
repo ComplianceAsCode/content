@@ -1,28 +1,25 @@
 documentation_complete: true
 
-prodtype: alinux2,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure All Files Are Owned by a User'
 
 description: |-
-    If any files are not owned by a user, then the
-    cause of their lack of ownership should be investigated.
-    Following this, the files should be deleted or assigned to an
-    appropriate user. The following command will discover and print
-    any files on local partitions which do not belong to a valid user:
-    <pre>$ df --local -P | awk {'if (NR!=1) print $6'} | sudo xargs -I '{}' find '{}' -xdev -nouser</pre>
-    To search all filesystems on a system including network mounted
-    filesystems the following command can be run manually for each partition:
-    <pre>$ sudo find PARTITION -xdev -nouser</pre>
+    If any files are not owned by a user, then the cause of their lack of ownership should be
+    investigated. Following this, the files should be deleted or assigned to an appropriate user.
+
+    Locate the mount points related to local devices by the following command:
+    <pre>$ findmnt -n -l -k -it $(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,)</pre>
+
+    For all mount points listed by the previous command, it is necessary to search for files which
+    do not belong to a valid user using the following command:
+    <pre>$ sudo find <i>MOUNTPOINT</i> -xdev -nouser 2&gt;/dev/null</pre>
 
 rationale: |-
-    Unowned files do not directly imply a security problem, but they are generally
-    a sign that something is amiss. They may
-    be caused by an intruder, by incorrect software installation or
-    draft software removal, or by failure to remove all files belonging
-    to a deleted account. The files should be repaired so they
-    will not cause problems when accounts are created in the future,
-    and the cause should be discovered and addressed.
+    Unowned files do not directly imply a security problem, but they are generally a sign that
+    something is amiss. They may be caused by an intruder, by incorrect software installation or
+    draft software removal, or by failure to remove all files belonging to a deleted account, or
+    other similar cases. The files should be repaired so they will not cause problems when
+    accounts are created in the future, and the cause should be discovered and addressed.
 
 severity: medium
 
@@ -36,8 +33,7 @@ identifiers:
 references:
     anssi: BP28(R55)
     cis-csc: 11,12,13,14,15,16,18,3,5,9
-    cis@alinux2: 6.1.11
-    cis@rhel7: 6.1.11
+    cis@rhel7: 6.1.12
     cis@rhel8: 6.1.12
     cis@rhel9: 6.1.10
     cis@sle12: 6.1.9
@@ -67,14 +63,15 @@ platform: machine
 ocil_clause: 'files exist that are not owned by a valid user'
 
 ocil: |-
-    The following command will discover and print any
-    files on local partitions which do not belong to a valid user.
-    <pre>$ df --local -P | awk {'if (NR!=1) print $6'} | sudo xargs -I '{}' find '{}' -xdev -nouser</pre>
-    <br /><br />
-    Either remove all files and directories from the system that do not have a
-    valid user, or assign a valid user to all unowned files and directories on
-    the system with the <tt>chown</tt> command:
-    <pre>$ sudo chown <tt>user</tt> <tt>file</tt></pre>
+    The following command will locate the mount points related to local devices:
+    <pre>$ findmnt -n -l -k -it $(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,)</pre>
+
+    The following command will show files which do not belong to a valid user:
+    <pre>$ sudo find <i>MOUNTPOINT</i> -xdev -nouser 2&gt;/dev/null</pre>
+
+    Replace <i>MOUNTPOINT</i> by the mount points listed by the fist command.
+
+    No files without a valid user should be located.
 
 fixtext: |-
     Either remove all files and directories from the system that do not have a valid user, or assign a valid user to all unowned files and directories on {{{ full_name }}} with the "chown" command:
@@ -89,6 +86,8 @@ warnings:
         so that running the command <pre>getent passwd</pre> returns a list of all users in your organization.
         If using the System Security Services Daemon (SSSD), <pre>enumerate = true</pre> must be configured
         in your organization's domain to return a complete list of users
-    - performance: |-
-        Enabling this rule will result in slower scan times depending on the size of your organization
-        and number of centralized users.
+    - general: |-
+        This rule can take a long time to perform the check and might consume a considerable
+        amount of resources depending on the number of files present on the system. It is not a
+        problem in most cases, but especially systems with a large number of files can be affected.
+        See <code>https://access.redhat.com/articles/6999111</code>.

@@ -122,3 +122,48 @@ refer to their help text for more information and usage:
 
 Many of these utilities are simply front-ends over code in the SSG Python
 module located under `ssg/`.
+
+## How OVAL is Built
+
+The build of the OVAL document takes place in two steps.
+
+### 1. Combination of OVALs
+
+In the first step, all available and applicable OVAL checks are built into a single unlinked OVAL document stored in the `build/${PRODUCT}/oval-unlinked.xml` directory.
+The `oval-unlinked.xml` document is generated using the `combine_ovals.py` script.
+The OVAL shorthands are loaded into the OVAL Document object in the order that the benchmark checks are loaded first, followed by the shared directory checks.
+If the shorthand is already loaded into the OVAL Document object, it is skipped.
+
+Steps of loading the OVAL shorthand:
+
+1. The OVAL Shorthand file is loaded as a string, and in the case of not templated Shorthand, it is expanded using Jinja macros before loading.
+2. The OVAL Shorthand string is processed by the OVAL Document object.
+   1. The OVAL Shorthand string is loaded into the OVAL Shorthand object.
+   2. The OVAL Shorthand object is validated.
+      The following properties are checked:
+       - Whether the OVAL definitions are applicable to the product.
+       - If there is an OVAL definition in the shorthand with the same id as the given rule_id.
+3. If the OVAL Shorthand object is valid, it is added to the OVAL Document object.
+
+After all OVAL Shorthands are loaded, the affected platforms of the loaded OVAL definitions are completed.
+And then the OVAL document is saved as an XML file in `build/${PRODUCT}/oval-unlinked.xml`.
+
+### 2. Linking OVAL Document
+
+The second step is performed when building an XCCDF document using the `build_xccdf.py` script.
+In this step, the `oval-unlinked.xml` document from the previous step is linked (IDs between rules and checks are aligned) to the XCCDF document being built.
+
+Steps to link an OVAL document to an XCCDF document:
+
+1. The unlinked OVAL document `oval-unlinked.xml` is loaded into the OVAL Document object.
+2. The integrity of the references to the components of the OVAL Document object is verified.
+3. For each XCCDF rule that has a CCE identification and
+   has an OVAL check implemented, a new `<reference>` element with the CCE ID is added to the OVAL definition.
+4. The OVAL definition referenced by the XCCDF is checked to be defined in the OVAL document.
+5. Verify if `<xccdf:Value>` `type` to corresponding OVAL variable `datatype` export matching [constraint](http://csrc.nist.gov/publications/nistpubs/800-126-rev2/SP800-126r2.pdf#page=30&zoom=auto,69,313) is met.
+   Also correct the `type` attribute of those `<xccdf:Value>` elements where necessary in order the produced content to meet this constraint.
+6. Verify that the referenced CCE identifiers are correct.
+7. Translate the identifiers in the OVAL Document object using `IDTranslator`.
+8. The OVAL Document object is stored as an XML file `build/ssg-${PRODUCT}-oval.xml`.
+9. For each XCCDF rule, a minimal OVAL Documents document is generated as an artifact
+10. For each reference of OVAL check in XCCDF, a link to the `check-content` and a `check-export` element is added.

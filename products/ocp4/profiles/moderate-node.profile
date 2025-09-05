@@ -38,9 +38,4 @@ description: |-
 
 # CM-6 CONFIGURATION SETTINGS
 # CM-6(1) CONFIGURATION SETTINGS | AUTOMATED CENTRAL MANAGEMENT / APPLICATION / VERIFICATION
-extends: cis-node
-
-filter_rules: '"ocp4-node" in platforms or "ocp4-master-node" in platforms or "ocp4-node-on-sdn" in platforms or "ocp4-node-on-ovn" in platforms'
-
-selections:
-    - nist_ocp4:all:moderate
+extends: moderate-node-rev-4

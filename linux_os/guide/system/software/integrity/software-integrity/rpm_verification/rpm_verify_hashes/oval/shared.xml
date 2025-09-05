@@ -1,21 +1,29 @@
 <def-group>
-  <definition class="compliance" id="rpm_verify_hashes" version="3">
+  <definition class="compliance" id="{{{ rule_id }}}" version="3">
     {{{ oval_metadata("Verify the RPM digests of system binaries using the RPM database.") }}}
     <criteria>
-      <criterion test_ref="test_files_fail_md5_hash" comment="verify file md5 hashes" />
+      <criterion test_ref="test_rpm_verify_hashes" comment="verify file md5 hashes"/>
     </criteria>
   </definition>
-  <!-- NOTE: If you examine the regex below you notice that we are interested in /bin, /sbin, /lib, /lib64 -->
-  <!-- and /usr directories. This narrows the search down to executables, libraries and supporting content. -->
-  <!-- If you look at the state below you will notice that I -->
-  <!-- commented out several attributes. The current rpmverify object has methods to distinguish between -->
-  <!-- configuration files, documentation files, etc. Using these discriminators in the state reduced -->
-  <!-- the number of false positives, but it did not eliminate them. I left them commented out to serve -->
-  <!-- as an example of what they look like. -->
-  <linux:rpmverifyfile_test check_existence="none_exist" id="test_files_fail_md5_hash" version="1" check="all" comment="verify file md5 hashes">
-    <linux:object object_ref="object_files_fail_md5_hash"/>
-  </linux:rpmverifyfile_test>
-  <linux:rpmverifyfile_object id="object_files_fail_md5_hash" version="1" comment="rpm verify of all files">
+
+  <!-- The current rpmverify object has methods to distinguish between configuration files,
+       documentation files, etc. Using these discriminators in the state reduced the number of
+       false positives, but it did not eliminate them. So they were kept commented out as
+       examples. -->
+  <linux:rpmverifyfile_state id="state_rpm_verify_hashes_fail_md5_hash" version="1"
+    operator="AND">
+    <linux:md5_differs>fail</linux:md5_differs>
+    <linux:configuration_file datatype="boolean">false</linux:configuration_file>
+    <linux:ghost_file datatype="boolean">false</linux:ghost_file>
+    <!-- <linux:documentation_file datatype="boolean">false</linux:documentation_file> -->
+    <!-- <linux:license_file datatype="boolean">false</linux:license_file> -->
+    <!-- <linux:readme_file datatype="boolean">false</linux:readme_file> -->
+  </linux:rpmverifyfile_state>
+
+  <!-- The search is focused in /bin, /sbin, /lib, /lib64 and /usr directories. It means that
+       executables, libraries and supporting content are considered. -->
+  <linux:rpmverifyfile_object id="object_rpm_verify_hashes_fail_md5_hash" version="1"
+    comment="rpm verify of all files">
     <linux:behaviors nomd5="false"/>
     <linux:name operation="pattern match">.*</linux:name>
     <linux:epoch operation="pattern match">.*</linux:epoch>
@@ -23,14 +31,11 @@
     <linux:release operation="pattern match">.*</linux:release>
     <linux:arch operation="pattern match">.*</linux:arch>
     <linux:filepath operation="pattern match">^/(bin|sbin|lib|lib64|usr)/.+$</linux:filepath>
-    <filter action="include">state_files_fail_md5_hash</filter>
+    <filter action="include">state_rpm_verify_hashes_fail_md5_hash</filter>
   </linux:rpmverifyfile_object>
-  <linux:rpmverifyfile_state id="state_files_fail_md5_hash" version="1" operator="AND">
-    <linux:md5_differs>fail</linux:md5_differs>
-    <linux:configuration_file datatype="boolean">false</linux:configuration_file>
-    <!-- <linux:documentation_file datatype="boolean">false</linux:documentation_file> -->
-    <linux:ghost_file datatype="boolean">false</linux:ghost_file>
-    <!-- <linux:license_file datatype="boolean">false</linux:license_file> -->
-    <!-- <linux:readme_file datatype="boolean">false</linux:readme_file> -->
-  </linux:rpmverifyfile_state>
+
+  <linux:rpmverifyfile_test id="test_rpm_verify_hashes" version="2"
+    check="all" check_existence="none_exist" comment="verify file md5 hashes">
+    <linux:object object_ref="object_rpm_verify_hashes_fail_md5_hash"/>
+  </linux:rpmverifyfile_test>
 </def-group>

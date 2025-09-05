@@ -47,7 +47,7 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Deploy
         if: ${{ github.event_name == 'push' && github.repository == 'ComplianceAsCode/content' && github.ref == 'refs/heads/master'  }}
-        uses: JamesIves/github-pages-deploy-action@v4.4.3
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
         with:
           branch: main # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.
@@ -58,7 +58,7 @@ jobs:
           git-config-name: openscap-ci
           git-config-email: openscap-ci@gmail.com
       - name: Upload artifact if the event is pull request
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ github.event_name == 'pull_request' }}
         with:
           name: built-content

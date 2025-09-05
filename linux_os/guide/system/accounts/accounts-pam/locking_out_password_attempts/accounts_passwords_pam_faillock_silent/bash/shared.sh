@@ -2,6 +2,10 @@
 
 {{{ bash_pam_faillock_enable() }}}
 
+{{% if "ubuntu" in product %}}
+{{{ bash_pam_faillock_parameter_value("silent", authfail=False)}}}
+
+{{% else %}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
 FAILLOCK_CONF="/etc/security/faillock.conf"
 if [ -f $FAILLOCK_CONF ]; then
@@ -18,3 +22,4 @@ else
         fi
     done
 fi
+{{% endif %}}

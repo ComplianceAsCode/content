@@ -1,0 +1,54 @@
+name: Gate
+on:
+  merge_group:
+    branches: [ 'master' ]
+  push:
+    branches: ['*', '!stabilization*', '!stable*', 'master' ]
+  pull_request:
+    branches: [ 'master', 'stabilization*' ]
+jobs:
+    validate-fedora:
+        name: Build, Test on Fedora Latest (Container)
+        runs-on: ubuntu-latest
+        container:
+            image: fedora:latest
+        steps:
+            -   name: Install Deps
+                run: dnf install -y cmake make openscap-utils python3-pyyaml bats ansible python3-pip ShellCheck git gcc gcc-c++ python3-devel
+            -   name: Checkout
+                uses: actions/checkout@v4
+            -   name: Install deps python
+                run: pip install pcre2 -r requirements.txt -r test-requirements.txt
+            -   name: Build
+                run: |-
+                    ./build_product \
+                        alinux2 \
+                        alinux3 \
+                        anolis23 \
+                        anolis8 \
+                        chromium \
+                        fedora \
+                        firefox \
+                        rhcos4 \
+                        rhel7 \
+                        rhel8 \
+                        rhel9 \
+                        uos20 \
+                        ocp4 \
+                        eks
+                env:
+                    ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
+            -   name: Test
+                run: ctest -j2 --output-on-failure -E unique-stigids
+                working-directory: ./build
+            -   name: "Set git safe directory, ref: https://github.com/actions/checkout/issues/760"
+                run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+            -   name: Upload coverage to Code Climate  # Requires: git package
+                if: ${{ github.repository == 'ComplianceAsCode/content' }}
+                uses: paambaati/codeclimate-action@v5.0.0
+                env:
+                    CC_TEST_REPORTER_ID: e67e068471d32b63f8e9561dba8f6a3f84dcc76b05ebfd98e44ced1a91cff854
+                with:
+                    coverageLocations: build/tests/coverage.xml:coverage.py
+            -   name: Validate gitmailmap
+                run: grep -E "\S" .mailmap | grep -Ev '^#' | git check-mailmap --stdin

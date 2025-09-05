@@ -13,7 +13,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_use_starttls_sssd_conf" version="1">
-    <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
+    <ind:filepath operation="pattern match">^\/etc\/sssd\/(sssd.conf|conf\.d\/.+\.conf)$</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*\[domain\/[^]]*]([^\n\[\]]*\n+)+?[\s]*ldap_id_use_start_tls[ \t]*=[ \t]*((?i)true)[ \t]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

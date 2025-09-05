@@ -999,16 +999,6 @@ controls:
       - package_nftables_removed
       - service_nftables_disabled
 
-  - id: 3.5.2.1
-    title: Ensure nftables is installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_nftables_installed
-      - firewalld-backend
-
   - id: 3.5.1.3
     title: Ensure firewalld service is enabled and running (Automated)
     levels:
@@ -1056,7 +1046,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule is missing
+    status: automated
+    rules:
+      - package_nftables_installed
+      - firewalld-backend
 
   - id: 3.5.2.2
     title: Ensure firewalld is not installed or stopped and masked (Automated)

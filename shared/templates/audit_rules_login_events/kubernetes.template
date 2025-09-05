@@ -12,7 +12,11 @@ spec:
     storage:
       files:
       - contents:
+{{% if PATH_IS_VARIABLE %}}
+          source: data:,-w%20{{ {{{ url_encode("{{.var_accounts_passwords_pam_faillock_dir}}") }}} }}%20-p%20wa%20-k%20logins%0A
+{{% else %}}
           source: data:,-w%20{{{ PATH }}}%20-p%20wa%20-k%20logins%0A
+{{% endif %}}
         mode: 0644
-        path: /etc/audit/rules.d/75-{{{ NAME }}}_login_events.rules
+        path: /etc/audit/rules.d/75-{{{ rule_id }}}.rules
         overwrite: true

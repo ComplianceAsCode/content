@@ -20,7 +20,7 @@ set(OPENSCAP_POSSIBLE_ROOT_DIRS
 foreach(NAME ${OPENSCAP_POSSIBLE_ROOT_DIRS})
     find_file(OPENSCAP_XCCDF_XSL_1_2 NAMES xccdf_1.1_to_1.2.xsl
         PATHS "${NAME}"
-        PATH_SUFFIXES "share/openscap/xsl/"
+        PATH_SUFFIXES "share/openscap/xsl/" "xsl/"
     )
 endforeach()
 

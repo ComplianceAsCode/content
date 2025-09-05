@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: alinux3,anolis23,anolis8,fedora,openembedded,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: Ensure journald is configured to write log files to persistent disk
 
@@ -21,9 +20,8 @@ identifiers:
     cce@sle15: CCE-91378-0
 
 references:
-    cis@alinux3: 4.2.2.3
-    cis@rhel7: 4.2.2.3
-    cis@rhel8: 4.2.2.4
+    cis@rhel7: 5.1.2.4
+    cis@rhel8: 5.1.2.4
     cis@rhel9: 4.2.2.4
     cis@sle12: 4.2.2.3
     cis@sle15: 4.2.2.3
@@ -36,22 +34,27 @@ ocil: |-
     Storing logs with persistent storage ensures they are available after a reboot or system crash.
     Run the command below to verify that logs are being persistently stored to disk.
     <pre>
+{{%- if product in ["fedora", "rhel8", "rhel9", "sle15"] %}}
+    grep "^\sStorage" /etc/systemd/journald.conf {{{ journald_conf_dir_path }}}/*.conf
+{{% else %}}
     grep "^\sStorage" /etc/systemd/journald.conf
+{{% endif %}}
     </pre>
     and it should return
     <pre>
     Storage=persistent
     </pre>
 
-{{%- if product == "sle15" %}}
+{{%- if product in ["fedora", "rhel8", "rhel9", "sle15"] %}}
 template:
     name: systemd_dropin_configuration
     vars:
         component: journald
         master_cfg_file: /etc/systemd/journald.conf
-        dropin_dir: /etc/systemd/journal.d/
+        dropin_dir: {{{ journald_conf_dir_path }}}
         param: Storage
         value: persistent
+        no_quotes: 'true'
 {{% else %}}
 template:
     name: shell_lineinfile

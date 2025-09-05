@@ -4,34 +4,44 @@
 # complexity = low
 # disruption = low
 
+{{% if product in ['ol8', 'ol9', 'rhel8', 'rhel9'] %}}
+{{% set PACKAGE_NAME = "python3-libsemanage" %}}
+{{% elif product == "sle15" %}}
+{{% set PACKAGE_NAME = "policycoreutils" %}}
+{{% else %}}
+{{% set PACKAGE_NAME = "libsemanage-python" %}}
+{{% endif %}}
+
+- name: "{{{ rule_title }}} - Ensure {{{ PACKAGE_NAME }}} Installed"
+  package:
+    name: "{{{ PACKAGE_NAME }}}"
+    state: present
+
+{{% if product == "sle15" %}}
+- name: "{{{ rule_title }}} - Ensure Additional Packages Installed"
+  become: yes
+  package:
+    name:
+      - policycoreutils-python-utils
+      - selinux-tools
+      - python3-selinux
+      - python3-semanage
+    state: present
+{{% endif %}}
+
 {{% if SEBOOL_BOOL %}}
-- name: Set SELinux boolean {{{ SEBOOLID }}} to {{{ SEBOOL_BOOL }}}
+- name: "{{{ rule_title }}} - Set SELinux Boolean {{{ SEBOOLID }}} to {{{ SEBOOL_BOOL }}}"
   seboolean:
     name: "{{{ SEBOOLID }}}"
     state: "{{{ SEBOOL_BOOL }}}"
     persistent: yes
+  when: ansible_facts.selinux.status == 'enabled'  
 {{% else %}}
 - (xccdf-var var_{{{ SEBOOLID }}})
-
-{{% if product in ['ol8', 'ol9', 'rhel8', 'rhel9'] %}}
-- name: Ensure python3-libsemanage installed
-  package:
-    name: python3-libsemanage
-    state: present
-{{% elif product == "sle15" %}}
-- name: Ensure policycoreutils installed
-  package:
-    name: policycoreutils
-    state: present
-{{% else %}}
-- name: Ensure libsemanage-python installed
-  package:
-    name: libsemanage-python
-    state: present
-{{% endif %}}
-- name: Set SELinux boolean {{{ SEBOOLID }}} accordingly
+- name: "{{{ rule_title }}} - Set SELinux Boolean {{{ SEBOOLID }}} Accordingly"
   seboolean:
     name: {{{ SEBOOLID }}}
     state: "{{ var_{{{ SEBOOLID }}} }}"
     persistent: yes
+  when: ansible_facts.selinux.status == 'enabled'  
 {{% endif %}}

@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure the Group Used by pam_wheel.so Module Exists on System and is Empty'
 
@@ -19,13 +18,15 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: CCE-86888-5
     cce@rhel8: CCE-86071-8
     cce@rhel9: CCE-86072-6
     cce@sle12: CCE-92353-2
     cce@sle15: CCE-92528-9
 
 references:
-    cis@rhel8: 5.3.7
+    cis@rhel7: 4.3.7
+    cis@rhel8: 4.3.7
     cis@rhel9: 5.3.7
     cis@sle12: '5.6'
     cis@sle15: '5.6'

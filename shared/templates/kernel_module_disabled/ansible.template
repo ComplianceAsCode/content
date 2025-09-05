@@ -8,7 +8,7 @@
     create: yes
     dest: "/etc/modprobe.d/{{{ KERNMODULE }}}.conf"
     regexp: 'install\s+{{{ KERNMODULE }}}'
-    line: "install {{{ KERNMODULE }}} /bin/true"
+    line: "install {{{ KERNMODULE }}} /bin/false"
 {{% if product in ["sle12", "sle15"] or 'ol' in product or 'rhel' in product or 'ubuntu' in product %}}
 - name: Ensure kernel module '{{{ KERNMODULE }}}' is blacklisted
   lineinfile:

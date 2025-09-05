@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Perform general configuration of Audit for OSPP'
 
@@ -61,8 +60,14 @@ title: 'Perform general configuration of Audit for OSPP'
 -a always,exit -F path=/usr/bin/passwd -F perm=x -F auid&gt;=" ~ uid_min ~ " -F auid!=unset -F key=special-config-changes
 -a always,exit -F path=/usr/bin/crontab -F perm=x -F auid&gt;=" ~ uid_min ~ " -F auid!=unset -F key=special-config-changes
 -a always,exit -F path=/usr/bin/at -F perm=x -F auid&gt;=" ~ uid_min ~ " -F auid!=unset -F key=special-config-changes
+-a always,exit -F path=/usr/sbin/grub2-set-bootflag -F perm=x -F auid&gt;=" ~ uid_min ~ " -F auid!=unset -F key=special-config-changes
 
 ## Privilege escalation via su or sudo. This is entirely handled by pam.
+## Special case for systemd-run. It is not audit aware, specifically watch it
+-a always,exit -F path=/usr/bin/systemd-run -F perm=x -F auid!=unset -F key=maybe-escalation
+## Special case for pkexec. It is not audit aware, specifically watch it
+-a always,exit -F path=/usr/bin/pkexec -F perm=x -F key=maybe-escalation
+
 
 ## Watch for configuration changes to privilege escalation.
 -a always,exit -F path=/etc/sudoers -F perm=wa -F key=special-config-changes

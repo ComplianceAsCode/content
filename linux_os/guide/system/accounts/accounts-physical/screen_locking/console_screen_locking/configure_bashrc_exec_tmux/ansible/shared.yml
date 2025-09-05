@@ -8,14 +8,14 @@
   ansible.builtin.find:
     paths: '/etc'
     patterns: 'bashrc'
-    contains: '.*case "$name" in sshd|login) exec tmux ;; esac.*'
+    contains: '.*case "$name" in sshd|login\) tmux ;; esac.*'
   register: tmux_in_bashrc
 
 - name: "{{{ rule_title }}}: Determine If the Tmux Launch Script Is Present in /etc/profile.d/*.sh"
   ansible.builtin.find:
     paths: '/etc/profile.d'
     patterns: '*.sh'
-    contains: .*case "$name" in sshd|login) exec tmux ;; esac.*
+    contains: .*case "$name" in sshd|login\) tmux ;; esac.*
   register: tmux_in_profile_d
 
 - name: "{{{ rule_title }}}: Insert the Correct Script into /etc/profile.d/tmux.sh"
@@ -25,7 +25,7 @@
       if [ "$PS1" ]; then
         parent=$(ps -o ppid= -p $$)
         name=$(ps -o comm= -p $parent)
-        case "$name" in sshd|login) exec tmux ;; esac
+        case "$name" in sshd|login) tmux ;; esac
       fi
     create: true
   when:

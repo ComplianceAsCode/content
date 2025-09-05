@@ -28,7 +28,9 @@
 
 - name: Set Fact - Valid fingerprints
   set_fact:
-    gpg_valid_fingerprints: ("{{{ release_key_fingerprint }}}" "{{{ auxiliary_key_fingerprint }}}")
+    gpg_valid_fingerprints:
+    - "{{{ release_key_fingerprint }}}"
+    - "{{{ auxiliary_key_fingerprint }}}"
 
 - name: Import RedHat GPG key
   rpm_key:

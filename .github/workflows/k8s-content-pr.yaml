@@ -1,0 +1,54 @@
+---
+name: Kubernetes content image for PR
+
+on:
+  pull_request:
+    types:
+    - opened
+    - reopened
+    - synchronize
+
+jobs:
+  get-pr-number:
+    name: Get PR number
+    runs-on: ubuntu-latest
+    outputs:
+      pr-number: ${{ steps.get-pr-number.outputs.pr-number }}
+    steps:
+      - name: Get PR number
+        id: get-pr-number
+        run: echo "::set-output name=pr-number::$(echo ${GITHUB_REF#refs/pull/} | cut -d'/' -f1)"
+
+  container-main:
+    needs: get-pr-number
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    uses: metal-toolbox/container-push/.github/workflows/container-push.yml@main
+    with:
+      name: k8scontent
+      tag: ${{ needs.get-pr-number.outputs.pr-number }}
+      latest: false
+      registry_org: complianceascode
+      dockerfile_path: ./Dockerfiles/ocp4_content
+      licenses: BSD
+      vendor: ComplianceAsCode authors
+
+  comment-pr:
+    needs: 
+    - container-main
+    - get-pr-number
+    runs-on: ubuntu-latest
+    name: Comment on the PR
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            :robot: The image for this PR is available at:
+            `ghcr.io/complianceascode/k8scontent:${{ needs.get-pr-number.outputs.pr-number }}`
+          comment_tag: kubernetes_content_image

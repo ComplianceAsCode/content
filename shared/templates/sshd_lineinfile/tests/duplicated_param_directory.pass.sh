@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# platform = multi_platform_fedora,Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 9
+# platform = multi_platform_fedora,Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 9,multi_platform_ubuntu
 
 mkdir -p /etc/ssh/sshd_config.d
 touch /etc/ssh/sshd_config.d/nothing

@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure {{{ pkg_manager }}} Removes Previous Package Versions'
 
@@ -94,9 +93,6 @@ fixtext: |-
 srg_requirement: |-
     {{{ full_name }}} must remove all software components after updated versions have been installed.
 
-{{% if 'sle' in product %}}
-platform: package[zypper]
-{{% elif 'ubuntu' in product %}}
-{{% else %}}
-platform: package[yum]
+{{% if 'ubuntu' not in product %}}
+platform: package[{{{ pkg_manager }}}]
 {{% endif %}}

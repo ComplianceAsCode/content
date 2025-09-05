@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis23,anolis8,debian10,debian11,debian12,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Ensure auditd Collects Information on Kernel Module Loading and Unloading'
 
@@ -8,7 +7,7 @@ description: |-
     To capture kernel module loading and unloading events, use following lines, setting ARCH to
     either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit:
     <pre>
-    -a always,exit -F arch=<i>ARCH</i> -S init_module,finit_module,delete_module -F key=modules
+    -a always,exit -F arch=<i>ARCH</i> -S init_module,finit_module,delete_module {{% if 'ol' in product or 'rhel' in product %}}-F auid>=1000 -F auid!=unset {{% endif %}}-F key=modules
     </pre>
 
     The place to add the lines depends on a way <tt>auditd</tt> daemon is configured. If it is configured
@@ -51,6 +50,7 @@ references:
 
 ocil: |-
     {{{ ocil_audit_syscall(syscall="init_module") }}}
+    {{{ ocil_audit_syscall(syscall="finit_module") }}}
     {{{ ocil_audit_syscall(syscall="delete_module") }}}
 
 {{{ ocil_clause_entry_audit_syscall() }}}

@@ -1,0 +1,285 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="3">
+    {{{ oval_metadata("The unlock time after number of failed logins should be set correctly.") }}}
+    <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
+      <criteria operator="AND" comment="Check if pam_faillock.so is properly enabled">
+        <!-- pam_unix.so is a control module present in all realistic scenarios and also used
+             as reference for the correct position of pam_faillock.so in auth section. If the
+             system is properly configured, it must appear only once in auth section. -->
+        <criteria operator="AND"
+                  comment="Count occurrences of pam_unix.so in system-auth and password-auth">
+          <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_system_pam_unix_auth"
+                     comment="pam_unix.so appears only once in auth section of system-auth"/>
+          <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_password_pam_unix_auth"
+                     comment="pam_unix.so appears only once in auth section of password-auth"/>
+        </criteria>
+
+        <!-- pam_faillock.so parameters can be defined directly in pam files or, in newer
+             versions, in /etc/security/faillock.conf. The last is the recommended option when
+             available. Also, is the option used by auselect tool. However, regardless the
+             approach, a minimal declaration is common in pam files. -->
+        <criteria operator="AND" comment="Check common definition of pam_faillock.so">
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_unlock_time_system_pam_faillock_auth"
+              comment="pam_faillock.so is properly defined in auth section of system-auth"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_unlock_time_system_pam_faillock_account"
+              comment="pam_faillock.so is properly defined in account section of system-auth"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_unlock_time_password_pam_faillock_auth"
+              comment="pam_faillock.so is properly defined in auth section of password-auth"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_unlock_time_password_pam_faillock_account"
+              comment="pam_faillock.so is properly defined in account section of password-auth"/>
+        </criteria>
+      </criteria>
+
+      <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf whenever
+           possible. But due to backwards compatibility, they are also allowed in pam files
+           directly. In case they are defined in both places, pam files have precedence and this
+           may confuse the assessment. The following tests ensure only one option is used. Note
+           that if faillock.conf is available, authselect tool only manage parameters on this file
+      -->
+      <criteria operator="OR"
+                comment="Check expected value for pam_faillock.so unlock_time parameter">
+        <criteria operator="AND"
+                  comment="Check expected pam_faillock.so unlock_time parameter in pam files">
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_system"
+              comment="Check the unlock_time parameter in auth section of system-auth file"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_password"
+              comment="Check the unlock_time parameter in auth section of password-auth file"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_no_faillock_conf"
+              comment="Ensure /etc/security/faillock.conf is not used together with pam files"/>
+        </criteria>
+        <criteria operator="AND"
+              comment="Check expected pam_faillock.so unlock_time parameter in faillock.conf">
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_no_pamd_system"
+              comment="Check the unlock_time parameter is not present system-auth file"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_no_pamd_password"
+              comment="Check the unlock_time parameter is not present password-auth file"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_faillock_conf"
+          comment="Ensure the unlock_time parameter is present in /etc/security/faillock.conf"/>
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <!-- The following tests demand complex regex which are necessary more than once.
+       These variables make simpler the usage of regex patterns. -->
+  <constant_variable id="var_accounts_passwords_pam_faillock_unlock_time_pam_unix_regex"
+                datatype="string" version="1"
+                comment="regex to identify pam_unix.so in auth section of pam files">
+    <value>^[\s]*auth\N+pam_unix\.so</value>
+  </constant_variable>
+
+  <constant_variable id="var_accounts_passwords_pam_faillock_unlock_time_pam_faillock_auth_regex"
+                datatype="string" version="1"
+                comment="regex to identify pam_faillock.so entries in auth section of pam files">
+    <value>^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_faillock\.so[\s\w\d=]+preauth[\s\S]*^[\s]*auth[\s]+(sufficient|\[(?=.*\bsuccess=done\b)?(?=.*?\bnew_authtok_reqd=done\b)?(?=.*?\bdefault=ignore\b)?.*\])[\s]+pam_unix\.so[\s\S]*^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=die\b)?.*\])[\s]+pam_faillock\.so[\s\w\d=]+authfail</value>
+  </constant_variable>
+
+  <constant_variable id="var_accounts_passwords_pam_faillock_unlock_time_pam_faillock_account_regex"
+                datatype="string" version="1"
+                comment="regex to identify pam_faillock.so entry in account section of pam files">
+    <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_unix\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_faillock\.so</value>
+  </constant_variable>
+
+  <constant_variable
+    id="var_accounts_passwords_pam_faillock_unlock_time_pam_faillock_unlock_time_parameter_regex"
+    datatype="string" version="1"
+    comment="regex to identify pam_faillock.so unlock_time entry in auth section of pam files">
+    <value>^[\s]*auth[\s]+.+[\s]+pam_faillock.so[\s]+[^\n]*unlock_time=([0-9]+)</value>
+  </constant_variable>
+
+  <constant_variable
+              id="var_accounts_passwords_pam_faillock_unlock_time_faillock_conf_unlock_time_parameter_regex"
+              datatype="string" version="1"
+              comment="regex to identify unlock_time entry in /etc/security/faillock.conf">
+    <value>^[\s]*unlock_time[\s]*=[\s]*([0-9]+)</value>
+  </constant_variable>
+
+  <!-- Check occurrences of pam_unix.so in auth section of system-auth file -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_unlock_time_system_pam_unix_auth"
+        comment="Get the second and subsequent occurrences of pam_unix.so in auth section of system-auth">
+    <ind:filepath operation="pattern match">^/etc/pam.d/system-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_unlock_time_pam_unix_regex"/>
+    <!-- It is not expected to find a second instance of this pattern -->
+    <ind:instance datatype="int" operation="greater than">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_system_pam_unix_auth"
+        comment="No more than one pam_unix.so is expected in auth section of system-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_system_pam_unix_auth"/>
+  </ind:textfilecontent54_test>
+
+  <!-- Check occurrences of pam_unix.so in auth section in password-auth -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_unlock_time_password_pam_unix_auth"
+        comment="Get the second and subsequent occurrences of pam_unix.so in auth section of password-auth">
+    <ind:filepath operation="pattern match">^/etc/pam.d/password-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_unlock_time_pam_unix_regex"/>
+    <ind:instance datatype="int" operation="greater than">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_password_pam_unix_auth"
+        comment="No more than one pam_unix.so is expected in auth section of password-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_password_pam_unix_auth"/>
+  </ind:textfilecontent54_test>
+
+  <!-- Check common definition of pam_faillock.so in system-auth -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_unlock_time_system_pam_faillock_auth"
+        comment="Check common definition of pam_faillock.so in auth section of system-auth">
+    <ind:filepath operation="pattern match">^/etc/pam.d/system-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_unlock_time_pam_faillock_auth_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_system_pam_faillock_auth"
+        comment="One and only one occurrence is expected in auth section of system-auth">
+    <ind:object
+        object_ref="object_accounts_passwords_pam_faillock_unlock_time_system_pam_faillock_auth"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_unlock_time_system_pam_faillock_account"
+        comment="Check common definition of pam_faillock.so in account section of system-auth">
+    <ind:filepath operation="pattern match">^/etc/pam.d/system-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_unlock_time_pam_faillock_account_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_system_pam_faillock_account"
+        comment="One and only one occurrence is expected in auth section of system-auth">
+    <ind:object
+        object_ref="object_accounts_passwords_pam_faillock_unlock_time_system_pam_faillock_account"/>
+  </ind:textfilecontent54_test>
+
+  <!-- Check common definition of pam_faillock.so in password-auth -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_unlock_time_password_pam_faillock_auth"
+        comment="Check common definition of pam_faillock.so in auth section of password-auth">
+    <ind:filepath operation="pattern match">^/etc/pam.d/password-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_unlock_time_pam_faillock_auth_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_password_pam_faillock_auth"
+        comment="One and only one occurrence is expected in auth section of password-auth">
+    <ind:object
+        object_ref="object_accounts_passwords_pam_faillock_unlock_time_password_pam_faillock_auth"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_unlock_time_password_pam_faillock_account"
+        comment="Check common definition of pam_faillock.so in account section of password-auth">
+    <ind:filepath operation="pattern match">^/etc/pam.d/password-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_unlock_time_pam_faillock_account_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_password_pam_faillock_account"
+        comment="One and only one occurrence is expected in auth section of password-auth">
+    <ind:object
+        object_ref="object_accounts_passwords_pam_faillock_unlock_time_password_pam_faillock_account"/>
+  </ind:textfilecontent54_test>
+
+  <!-- boundaries to test the parameter value -->
+  <!-- Specify the required external variable & create corresponding state from it -->
+  <external_variable id="var_accounts_passwords_pam_faillock_unlock_time" datatype="int"
+                     comment="number of failed login attempts allowed" version="1"/>
+
+  <ind:textfilecontent54_state version="1"
+        id="state_accounts_passwords_pam_faillock_unlock_time_parameter_lower_bound">
+    <ind:subexpression datatype="int" operation="greater than or equal"
+                       var_ref="var_accounts_passwords_pam_faillock_unlock_time"/>
+  </ind:textfilecontent54_state>
+
+  <!-- Check the pam_faillock.so unlock_time parameter in system-auth -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_system"
+        comment="Get the pam_faillock.so unlock_time parameter from system-auth file">
+    <ind:filepath operation="pattern match">^/etc/pam.d/system-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_unlock_time_pam_faillock_unlock_time_parameter_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_system"
+        comment="Check the expected unlock_time value in system-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_system"/>
+    <ind:state state_ref="state_accounts_passwords_pam_faillock_unlock_time_parameter_lower_bound"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_parameter_no_pamd_system"
+        comment="Check the absence of unlock_time parameter in system-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_system"/>
+  </ind:textfilecontent54_test>
+
+  <!-- Check the pam_faillock.so unlock_time parameter in password-auth -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_password"
+        comment="Get the pam_faillock.so unlock_time parameter from password-auth file">
+    <ind:filepath operation="pattern match">^/etc/pam.d/password-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+            var_ref="var_accounts_passwords_pam_faillock_unlock_time_pam_faillock_unlock_time_parameter_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_password"
+        comment="Check the expected unlock_time value in password-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_password"/>
+    <ind:state state_ref="state_accounts_passwords_pam_faillock_unlock_time_parameter_lower_bound"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_parameter_no_pamd_password"
+        comment="Check the absence of unlock_time parameter in password-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_password"/>
+  </ind:textfilecontent54_test>
+
+  <!-- Check pam_faillock.so unlock_time parameter in /etc/security/faillock.conf -->
+  <ind:textfilecontent54_object version="1"
+      id="object_accounts_passwords_pam_faillock_unlock_time_parameter_faillock_conf"
+      comment="Check the expected pam_faillock.so unlock_time parameter in /etc/security/faillock.conf">
+    <ind:filepath operation="pattern match">^/etc/security/faillock.conf$</ind:filepath>
+    <ind:pattern operation="pattern match"
+          var_ref="var_accounts_passwords_pam_faillock_unlock_time_faillock_conf_unlock_time_parameter_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_parameter_faillock_conf"
+        comment="Check the expected unlock_time value in in /etc/security/faillock.conf">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_parameter_faillock_conf"/>
+    <ind:state state_ref="state_accounts_passwords_pam_faillock_unlock_time_parameter_lower_bound"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_parameter_no_faillock_conf"
+        comment="Check the absence of unlock_time parameter in /etc/security/faillock.conf">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_parameter_faillock_conf"/>
+  </ind:textfilecontent54_test>
+</def-group>

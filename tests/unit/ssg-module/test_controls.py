@@ -1,12 +1,10 @@
 import pytest
-import logging
 import os
 import sys
 
 import ssg.controls
 import ssg.build_yaml
 from ssg.environment import open_environment
-from ssg.products import load_product_yaml
 
 ssg_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
@@ -513,3 +511,24 @@ def test_control_with_bad_key():
     except ValueError as e:
         assert type(e) is ValueError
     assert control_obj is None
+
+
+def test_control_with_bad_level():
+    control = {'id': 'abcd', 'levels': 'medium', }
+    control_obj = None
+    try:
+        control_obj = ssg.controls.Control.from_control_dict(control)
+    except ValueError as e:
+        assert type(e) is ValueError
+    assert control_obj is None
+
+
+def test_validating_policy_levels(env_yaml):
+    c1_path = os.path.join(data_dir, "policy_with_different_than_implicit_default_level.yml")
+    c2_path = os.path.join(data_dir, "policy_with_invalid_level.yml")
+    for policy_path in [c1_path, c2_path]:
+        policy = ssg.controls.Policy(policy_path, env_yaml)
+        with pytest.raises(ValueError):
+            policy.load()
+
+

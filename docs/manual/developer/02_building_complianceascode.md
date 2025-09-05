@@ -362,7 +362,7 @@ If you want to go deeper into statistics, refer to [Profile Statistics and Utili
 
 ### Generating Sphinx Documentation
 Generate HTML documentation of the project that includes developer documentation,
-supported Jinja Macros documentation, python modules documentation, SSG Test Suite
+supported Jinja Macros documentation, python modules documentation, Automatus
 documentation and release tools documentation:
 
 ```bash
@@ -514,7 +514,7 @@ ctest -L quick
 ctest -LE quick -j4
 ```
 
-Note: CTest does not run [SSG Test Suite](https://github.com/ComplianceAsCode/content/tree/master/tests) which provides simple system of test scenarios for testing profiles and rule remediations.
+Note: CTest does not run [Automatus](https://github.com/ComplianceAsCode/content/tree/master/tests) which provides simple system of test scenarios for testing profiles and rule remediations.
 
 ## Profiling the buildsystem
 

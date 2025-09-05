@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis23,anolis8,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Disable Kernel Parameter for Accepting Source-Routed Packets on IPv6 Interfaces by Default'
 
@@ -30,10 +29,8 @@ references:
     anssi: BP28(R22)
     ccn@rhel9: A.8.SEC-RHEL6
     cis-csc: 1,12,13,14,15,16,18,4,6,8,9
-    cis@alinux2: 3.2.1
-    cis@alinux3: 3.3.1
-    cis@rhel7: 3.3.1
-    cis@rhel8: 3.3.1
+    cis@rhel7: 3.3.8
+    cis@rhel8: 3.3.8
     cis@rhel9: 3.3.1
     cis@sle12: 3.3.1
     cis@sle15: 3.3.1
@@ -71,3 +68,6 @@ template:
     vars:
         sysctlvar: net.ipv6.conf.default.accept_source_route
         datatype: int
+{{% if "openeuler" in product %}}
+        missing_parameter_pass: 'true'
+{{% endif %}}        

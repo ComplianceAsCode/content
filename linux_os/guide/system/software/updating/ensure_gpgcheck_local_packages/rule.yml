@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Ensure gpgcheck Enabled for Local Packages'
 
@@ -57,7 +56,7 @@ ocil: |-
 
     If "localpkg_gpgcheck" is not set to "1", or if the option is missing or commented out, ask the System Administrator how the certificates for patches and other operating system components are verified.
 
-platform: package[yum]
+platform: package[{{{ pkg_manager }}}]
 
 fixtext: |-
     Configure {{{ full_name }}} to always check package signatures before installation of local packages.

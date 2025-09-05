@@ -1,22 +1,18 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4
 
 title: 'Ensure All World-Writable Directories Are Owned by a System Account'
 
 description: |-
-    All directories in local partitions which are
-    world-writable should be owned by root or another
-    system account. If any world-writable directories are not
-    owned by a system account, this should be investigated.
-    Following this, the files should be deleted or assigned to an
+    All directories in local partitions which are world-writable should be owned by root or
+    another system account. If any world-writable directories are not owned by a system account,
+    this should be investigated. Following this, the files should be deleted or assigned to an
     appropriate owner.
 
 rationale: |-
-    Allowing a user account to own a world-writable directory is
-    undesirable because it allows the owner of that directory to remove
-    or replace any files that may be placed in the directory by other
-    users.
+    Allowing a user account to own a world-writable directory is undesirable because it allows the
+    owner of that directory to remove or replace any files that may be placed in the directory by
+    other users.
 
 severity: medium
 
@@ -40,7 +36,14 @@ references:
 ocil_clause: 'there is output'
 
 ocil: |-
-    The following command will discover and print world-writable directories that
-    are not owned by a system account, given the assumption that only system
-    accounts have a uid lower than 500.  Run it once for each local partition <i>PART</i>:
-    <pre>$ sudo find <i>PART</i> -xdev -type d -perm -0002 -uid +499 -print</pre>
+    The following command will discover and print world-writable directories that are not owned by
+    a system account, given the assumption that only system accounts have a uid lower than 500.
+    Run it once for each local partition <i>PART</i>:
+    <pre>$ sudo find <i>PART</i> -xdev -type d -perm -0002 -uid +{{{ uid_min }}} -print</pre>
+
+warnings:
+    - general: |-
+        This rule can take a long time to perform the check and might consume a considerable
+        amount of resources depending on the number of directories present on the system. It is
+        not a problem in most cases, but especially systems with a large number of directories can
+        be affected. See <code>https://access.redhat.com/articles/6999111</code>.

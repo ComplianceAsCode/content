@@ -4,14 +4,26 @@
 # complexity = low
 # disruption = low
 
-{{% if product == "sle15" %}}
+{{% if product in ['ol8', 'ol9', 'rhel8', 'rhel9'] %}}
+{{{ bash_package_install("python3-libsemanage") }}}
+{{% elif product == "sle15" %}}
 {{{ bash_package_install("policycoreutils") }}}
-{{% endif %}}
-
-{{% if SEBOOL_BOOL %}}
-setsebool -P {{{ SEBOOLID }}} {{{ SEBOOL_BOOL }}}
+{{{ bash_package_install("policycoreutils-python-utils") }}}
+{{{ bash_package_install("selinux-tools") }}}
+{{{ bash_package_install("python3-selinux") }}}
+{{{ bash_package_install("python3-semanage") }}}
 {{% else %}}
-{{{ bash_instantiate_variables("var_" + SEBOOLID) }}}
-
-setsebool -P {{{ SEBOOLID }}} $var_{{{ SEBOOLID }}}
+{{{ bash_package_install("libsemanage-python") }}}
 {{% endif %}}
+
+if selinuxenabled; then
+{{% if SEBOOL_BOOL %}}
+    setsebool -P {{{ SEBOOLID }}} {{{ SEBOOL_BOOL }}}
+{{% else %}}
+    {{{ bash_instantiate_variables("var_" + SEBOOLID) }}}
+    setsebool -P {{{ SEBOOLID }}} $var_{{{ SEBOOLID }}}
+{{% endif %}}
+else
+    echo "Skipping remediation, SELinux is disabled";
+    false
+fi

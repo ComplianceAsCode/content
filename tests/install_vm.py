@@ -20,7 +20,7 @@ KNOWN_DISTROS = [
 
 DISTRO_URL = {
     "fedora":
-        "https://download.fedoraproject.org/pub/fedora/linux/releases/38/Everything/x86_64/os",
+        "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Everything/x86_64/os",
     "centos7": "http://mirror.centos.org/centos/7/os/x86_64",
     "centos8": "http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/",
     "centos9": "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/",
@@ -322,11 +322,11 @@ def get_virt_install_command(data):
         boot_opts.append("uefi")
         if data.uefi == "secureboot":
             boot_opts.extend([
-                "loader_secure=yes",
-                "loader=/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd",
-                "nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd",
+                "loader.secure=yes",
             ])
             features_opts.append("smm=on")
+        else:
+            boot_opts.append("loader.secure=no")
 
     command.extend(join_extented_opt("--boot", ",", boot_opts))
     command.extend(join_extented_opt("--extra-args", " ", extra_args_opts))
@@ -380,11 +380,11 @@ Add:
 option to your ssh command and export the:
   export SSH_ADDITIONAL_OPTIONS='-o IdentityFile={ssh_pubkey}'
 
-before running the SSG Test Suite.""".format(** data.__dict__))
+before running the Automatus.""".format(** data.__dict__))
 
         if data.libvirt == "qemu:///system":
             print("""
-IMPORTANT: When running SSG Test Suite use:
+IMPORTANT: When running Automatus use:
   sudo -E
 to make sure that your SSH key is used.""")
 

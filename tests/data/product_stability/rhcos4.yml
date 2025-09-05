@@ -27,6 +27,8 @@ grub_helper_executable: grubby
 init_system: systemd
 nobody_gid: 65534
 nobody_uid: 65534
+pkg_manager: dnf
+pkg_manager_config_file: /etc/dnf/dnf.conf
 pkg_release: 4ae0493b
 pkg_system: rpm
 pkg_version: fd431d51
@@ -49,6 +51,7 @@ profiles_root: ./profiles
 reference_uris:
   anssi: http://www.ssi.gouv.fr/administration/bonnes-pratiques/
   app-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
+  bsi: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
   cis-csc: https://www.cisecurity.org/controls/
   cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
   cnss: http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf

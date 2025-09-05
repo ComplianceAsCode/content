@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R8
+    version: V1R9
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V1R8.
+    DISA STIG for Oracle Linux 8 V1R9.
 
 selections:
     ### Variables
@@ -1144,7 +1144,7 @@ selections:
     - sysctl_net_ipv6_conf_default_accept_source_route
 
     # OL08-00-040259
-    - sysctl_net_ipv4_ip_forward
+    - sysctl_net_ipv4_conf_all_forwarding
 
     # OL08-00-040260
     - sysctl_net_ipv6_conf_all_forwarding

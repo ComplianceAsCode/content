@@ -14,7 +14,8 @@ jobs:
     uses: metal-toolbox/container-push/.github/workflows/container-push.yml@main
     with:
       name: k8scontent
-      tag: latest
+      tag: ${GITHUB_SHA}
+      latest: true
       registry_org: complianceascode
       dockerfile_path: ./Dockerfiles/ocp4_content
       licenses: BSD

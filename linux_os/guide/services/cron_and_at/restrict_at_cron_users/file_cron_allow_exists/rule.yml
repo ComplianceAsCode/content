@@ -1,0 +1,44 @@
+documentation_complete: true
+
+
+title: Ensure that /etc/cron.allow exists
+
+description: |-
+    The file <tt>/etc/cron.allow</tt> should exist and should be used instead
+    of <tt>/etc/cron.deny</tt>.
+
+rationale: |-
+    Access to <tt>crontab</tt> should be restricted.
+    It is easier to manage an allow list than a deny list.
+    Therefore, <tt>/etc/cron.allow</tt> needs to be created and used instead of <tt>/etc/cron.deny</tt>.
+    Regardless of the existence of any of these files, the root administrative user is always allowed to setup a crontab.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86183-1
+    cce@rhel8: CCE-86184-9
+    cce@rhel9: CCE-86185-6
+
+references:
+    cis@rhel7: 4.1.1.8
+    cis@rhel8: 4.1.1.8
+    cis@rhel9: 5.1.8
+
+ocil_clause: 'the file /etc/cron.allow does not exist'
+
+ocil: |-
+    The file <tt>/etc/cron.allow</tt> should exist.
+    This can be checked by running the following command:
+    <pre>
+    stat /etc/cron.allow
+    </pre>
+    and the output should list the file.
+
+template:
+    name: file_existence
+    vars:
+        filepath: /etc/cron.allow
+        exists: true
+        fileuid: "0"
+        filemode: "0600"

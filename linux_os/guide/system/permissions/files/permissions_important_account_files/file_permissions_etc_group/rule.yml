@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Verify Permissions on group File'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/passwd", perms="0644") }}}
+    {{{ describe_file_permissions(file="/etc/group", perms="0644") }}}
 
 rationale: |-
     The <tt>/etc/group</tt> file contains information regarding groups that are configured
@@ -21,10 +21,8 @@ identifiers:
 references:
     anssi: BP28(R36)
     cis-csc: 12,13,14,15,16,18,3,5
-    cis@alinux2: 6.1.4
-    cis@alinux3: 6.1.5
-    cis@rhel7: 6.1.8
-    cis@rhel8: 6.1.5
+    cis@rhel7: 6.1.3
+    cis@rhel8: 6.1.4
     cis@rhel9: 6.1.3
     cis@sle12: 6.1.4
     cis@sle15: 6.1.4

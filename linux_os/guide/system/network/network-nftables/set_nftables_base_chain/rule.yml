@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure Base Chains Exist for Nftables'
 
@@ -20,9 +19,12 @@ severity: medium
 platform: package[nftables]
 
 identifiers:
+    cce@rhel7: CCE-86333-2
     cce@sle15: CCE-92578-4
 
 references:
+    cis@rhel7: 3.4.3.4
+    cis@rhel8: 3.4.2.1
     cis@sle15: 3.5.2.5
     cis@ubuntu2004: 3.5.2.5
     cis@ubuntu2204: 3.5.2.5

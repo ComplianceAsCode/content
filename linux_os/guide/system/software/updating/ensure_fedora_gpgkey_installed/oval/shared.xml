@@ -1,18 +1,18 @@
 {{% macro fedora_gpgkey_criterion(fedora_version, pkg_release, pkg_version) %}}
    <criterion comment="Fedora {{{ fedora_version }}} package gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}} is installed"
-        test_ref="test_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" />
+        test_ref="test_fedora_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" />
 {{% endmacro %}}
 
 {{% macro fedora_gpgkey_check(fedora_version, pkg_release, pkg_version) %}}
   <!-- Test for Fedora {{{ fedora_version }}} release key -->
   <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
-  id="test_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" version="1"
+  id="test_fedora_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" version="1"
   comment="Fedora {{{ pkg_version }}} release key package is installed">
-    <linux:object object_ref="object_package_gpg-pubkey" />
-    <linux:state state_ref="state_package_gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}}" />
+    <linux:object object_ref="object_fedora_package_gpg-pubkey" />
+    <linux:state state_ref="state_fedora_package_gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}}" />
   </linux:rpminfo_test>
 
-  <linux:rpminfo_state id="state_package_gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}}" version="1">
+  <linux:rpminfo_state id="state_fedora_package_gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}}" version="1">
     <linux:release>{{{ pkg_release }}}</linux:release>
     <linux:version>{{{ pkg_version }}}</linux:version>
   </linux:rpminfo_state>
@@ -32,8 +32,8 @@
     </criteria>
   </definition>
 
-  <!-- First define global "object_package_gpg-pubkey" to be shared (reused) across multiple tests -->
-  <linux:rpminfo_object id="object_package_gpg-pubkey" version="1">
+  <!-- First define global "object_fedora_package_gpg-pubkey" to be shared (reused) across multiple tests -->
+  <linux:rpminfo_object id="object_fedora_package_gpg-pubkey" version="1">
     <linux:name>gpg-pubkey</linux:name>
   </linux:rpminfo_object>
 

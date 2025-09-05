@@ -229,7 +229,7 @@ to be used to add any profile-specific information.
 Additionally, we have enabled test scenarios located under the templated
 directory, `shared/templates/.../tests`. Unlike with build-time content,
 `tests` does not need to be located in the template's manifest (at
-`template.yml`). Instead, SSGTS will automatically parse each rule and
+`template.yml`). Instead, Automatus will automatically parse each rule and
 prefer rule-directory-specific test scenarios over any templated scenarios
 that the rule uses. (E.g., if `installed.pass.sh` is present in the
 template `package_installed` and in the `tests/` subdirectory of the rule

@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8
 
 title: 'Ensure gpgcheck Enabled for Repository Metadata'
 
@@ -56,4 +55,4 @@ ocil: |-
     The output should return something similar to:
     <pre>repo_gpgcheck=1</pre>
 
-platform: package[yum]
+platform: package[{{{ pkg_manager }}}]

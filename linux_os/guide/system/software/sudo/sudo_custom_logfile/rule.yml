@@ -20,9 +20,8 @@ identifiers:
     cce@sle15: CCE-91311-1
 
 references:
-    cis@alinux3: 5.3.3
-    cis@rhel7: 5.2.3
-    cis@rhel8: 5.3.3
+    cis@rhel7: 4.3.3
+    cis@rhel8: 4.3.3
     cis@rhel9: 5.3.3
     cis@sle12: 1.3.3
     cis@sle15: 1.3.3
@@ -78,7 +77,7 @@ template:
         #
         # Finally, we check for regular word boundary (with \b), ensuring the
         # next character isn't yet another word character.
-        option_regex_suffix: '=("(?:\\"|\\\\|[^"\\\n])*"\B|[^"](?:(?:\\,|\\"|\\ |\\\\|[^", \\\n])*)\b)'
+        option_regex_suffix: '\s*=\s*("(?:\\"|\\\\|[^"\\\n])*"\B|[^"](?:(?:\\,|\\"|\\ |\\\\|[^", \\\n])*)\b)'
         variable_name: var_sudo_logfile
 
 platform: package[sudo]

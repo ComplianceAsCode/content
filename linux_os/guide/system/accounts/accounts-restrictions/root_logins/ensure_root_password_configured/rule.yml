@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: rhel9,ubuntu2004,ubuntu2204
 
 title: 'Ensure Authentication Required for Single User Mode'
 
@@ -16,12 +15,16 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: CCE-87722-5
+    cce@rhel8: CCE-86517-0
     cce@rhel9: CCE-87101-2
 
 platform: machine
 
 references:
     ccn@rhel9: A.6.SEC-RHEL4
+    cis@rhel7: 4.5.2.4
+    cis@rhel8: 4.5.2.4
     cis@rhel9: 5.6.6
     cis@ubuntu2004: 1.5.3
     cis@ubuntu2204: 1.4.3

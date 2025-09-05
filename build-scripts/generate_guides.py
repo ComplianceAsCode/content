@@ -10,7 +10,34 @@ import ssg.build_guides
 
 BenchmarkData = collections.namedtuple(
     "BenchmarkData", ["title", "profiles", "product"])
-XSLT_PATH = "/usr/share/openscap/xsl/xccdf-guide.xsl"
+
+OPENSCAP_POSSIBLE_ROOT_DIRS = [
+    os.getenv("OPENSCAP_ROOT_DIR"),
+    os.getenv("ProgramFiles"),
+    os.getenv("XSLT_PREFIX"),
+    "/usr",
+    "/usr/bin",
+    "/usr/sbin",
+    "/usr/local",
+    "/usr/share/",
+    "/usr/local/share",
+    "/opt",
+    "/opt/local",
+]
+
+for root_dir in OPENSCAP_POSSIBLE_ROOT_DIRS:
+    if root_dir is None:
+        continue
+    for subpath in [os.path.join("share", "openscap", "xsl"), "xsl"]:
+        file_path = os.path.join(root_dir, subpath, "xccdf-guide.xsl")
+        if os.path.exists(file_path):
+            XCCDF_GUIDE_XSL = file_path
+            break
+    else:
+        continue
+    break
+else:
+    XCCDF_GUIDE_XSL = None
 
 
 def get_benchmarks(ds, product):
@@ -43,7 +70,7 @@ def parse_args():
         help="Path to a SCAP source data stream, eg. 'ssg-rhel9-ds.xml'")
     parser.add_argument(
         "--oscap-version", required=True,
-        help=f"Version of OpenSCAP that owns {XSLT_PATH}, eg. 1.3.8")
+        help=f"Version of OpenSCAP that owns {XCCDF_GUIDE_XSL}, eg. 1.3.8")
     parser.add_argument(
         "--product", required=True,
         help="Product ID, eg. rhel9")
@@ -134,7 +161,7 @@ def generate_html_index(benchmarks, data_stream, output_dir):
 
 
 def generate_html_guides(ds, benchmarks, oscap_version, output_dir):
-    xslt = ET.parse(XSLT_PATH)
+    xslt = ET.parse(XCCDF_GUIDE_XSL)
     transform = ET.XSLT(xslt)
     for benchmark_id, benchmark_data in benchmarks.items():
         for profile_id in benchmark_data.profiles:

@@ -1,0 +1,48 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+{{{ ansible_instantiate_variables("var_password_pam_unix_remember") }}}
+
+# Modified version of macro ansible_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='').
+# The original macro is designed to search/replace also the control field thus treating the field as a constant and escaping the regex.
+# Here we adapt the code to allow using regex on the control field.
+
+{{% set pam_file='/etc/pam.d/common-password' %}}
+{{% set group='password' %}}
+{{% set control='\[success=[A-Za-z0-9].*\]' %}}
+{{% set module='pam_unix.so' %}}
+{{% set option='remember' %}}
+{{% set value='{{ var_password_pam_unix_remember }}' %}}
+
+- name: '{{{ rule_title }}} - Check if the required PAM module option is present in {{{ pam_file }}}'
+  ansible.builtin.lineinfile:
+    path: "{{{ pam_file }}}"
+    regexp: ^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*\s{{{ option }}}\b
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: result_pam_module_{{{ option }}}_option_present
+
+- name: '{{{ rule_title }}} - Ensure the "{{{ option }}}" PAM option for "{{{ module }}}" is included in {{{ pam_file }}}'
+  ansible.builtin.lineinfile:
+    path: "{{{ pam_file }}}"
+    backrefs: true
+    regexp: ^(\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}.*)
+    line: \1 {{{ option }}}={{{ value }}}
+    state: present
+  register: result_pam_{{{ option }}}_add
+  when:
+    - result_pam_module_{{{ option }}}_option_present.found == 0
+
+- name: '{{{ rule_title }}} - Ensure the required value for "{{{ option }}}" PAM option from "{{{ module }}}" in {{{ pam_file }}}'
+  ansible.builtin.lineinfile:
+    path: "{{{ pam_file }}}"
+    backrefs: true
+    regexp: ^(\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s+.*)({{{ option }}})=[0-9a-zA-Z]+\s*(.*)
+    line: \1\2={{{ value }}} \3
+  register: result_pam_{{{ option }}}_edit
+  when:
+    - result_pam_module_{{{ option }}}_option_present.found > 0

@@ -1,4 +1,8 @@
 # platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
 
 - name: Implement Loopback Rules
   ansible.builtin.command: nft add rule inet filter input iif lo accept
@@ -12,7 +16,7 @@
   register: ipv6_status
 
 - name: Check sysctl value of net.ipv6.conf.all.disable_ipv6
-  ansible.posix.sysctl:
+  sysctl:
     name: net.ipv6.conf.all.disable_ipv6
     state: present
     value: "1"
@@ -20,7 +24,7 @@
   register: sysctl_ipv6_all
 
 - name: Check sysctl value of net.ipv6.conf.default.disable_ipv6
-  ansible.posix.sysctl:
+  sysctl:
     name: net.ipv6.conf.default.disable_ipv6
     state: present
     value: "1"
@@ -29,4 +33,8 @@
 
 - name: Implement IPv6 loopback rules
   ansible.builtin.command: nft add rule inet filter input ip6 saddr ::1 counter drop
-  when: ipv6_status.rc == 0 or sysctl_ipv6_all.found > 0 or sysctl_ipv6_default.found > 0
+  when:
+    - ipv6_status is not skipped
+    - sysctl_ipv6_default is not skipped
+    - sysctl_ipv6_all is not skipped
+    - ipv6_status.rc == 0 or sysctl_ipv6_all.found > 0 or sysctl_ipv6_default.found > 0

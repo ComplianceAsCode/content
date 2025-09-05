@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: sle12,sle15,ubuntu2004,ubuntu2204
 
 title:  'Enforce all AppArmor Profiles'
 
@@ -9,7 +8,7 @@ description: |-
     To set all profiles to enforce mode run the following command:
     <pre>$ sudo aa-enforce /etc/apparmor.d/*</pre>
     To list unconfined processes run the following command:
-    {{% if 'ubuntu' in product %}}
+    {{% if 'ubuntu' in product or 'debian' in product %}}
     <pre>$ sudo apparmor_status | grep processes</pre>
     {{% else %}}
     <pre>$ sudo aa-unconfined</pre>

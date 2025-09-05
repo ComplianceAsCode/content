@@ -19,9 +19,11 @@ pkg_manager_config_file: "/etc/apt/apt.conf"
 init_system: "systemd"
 oval_feed_url: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.focal.cve.oval.xml"
 
+sshd_distributed_config: "true"
 
 aide_bin_path: "/usr/bin/aide.wrapper"
 aide_conf_path: "/etc/aide/aide.conf"
+aide_default_path: "/etc/default/aide"
 chrony_conf_path: "/etc/chrony/chrony.conf"
 
 cpes_root: "../../shared/applicability"

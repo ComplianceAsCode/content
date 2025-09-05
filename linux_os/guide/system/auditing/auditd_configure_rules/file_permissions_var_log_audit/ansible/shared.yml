@@ -12,17 +12,17 @@
 - name: Parse log file line
   command: awk -F '=' '/^log_file/ {print $2}' /etc/audit/auditd.conf
   register: log_file_line
-  when: (log_file_exists.stdout | length > 0)
+  when: log_file_exists is not skipped and (log_file_exists.stdout | length > 0)
 
 - name: Set default log_file if not set
   set_fact:
     log_file: "/var/log/audit/audit.log"
-  when: (log_file_exists is undefined) or (log_file_exists.stdout | length == 0)
+  when: (log_file_exists is skipped) or (log_file_exists is undefined) or (log_file_exists.stdout | length == 0)
 
 - name: Set log_file from log_file_line if not set already
   set_fact:
     log_file: "{{ log_file_line.stdout | trim }}"
-  when: (log_file_line.stdout is defined) and (log_file_line.stdout | length > 0)
+  when: (log_file_exists is not skipped) and (log_file_line.stdout is defined) and (log_file_line.stdout | length > 0)
 
 {{% if 'ol' not in product and "rhel" not in product %}}
 - name: Get log files group
@@ -33,13 +33,14 @@
 - name: Parse log group line
   command: awk -F '=' '/log_group/ {print $2}' /etc/audit/auditd.conf
   register: log_group
-  when: (log_group_line.stdout | length > 0)
+  when: (log_group_line is not skipped) and (log_group_line.stdout | length > 0)
 
 - name: Apply mode to log file when group root
   file:
     path: "{{ log_file }}"
     mode: (( log_group is defined ) and ( ( log_group.stdout | trim ) == 'root' )) | ternary( '0600', '0640')
   failed_when: false
+  when: log_group is not skipped
 
 - name: List all log file backups
   find:
@@ -53,6 +54,7 @@
     mode: (( log_group is defined ) and ( ( log_group.stdout | trim ) == 'root' ))  | ternary( '0400', '0440')
   loop: "{{ backup_files.files| map(attribute='path') | list }}"
   failed_when: false
+  when: backup_files is not skipped
 
 {{% else %}}
 - name: Apply mode to log file

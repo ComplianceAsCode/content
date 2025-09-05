@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: rhel8,sle12,sle15
 
 title: "Ensure users' .netrc Files are not group or world accessible"
 
@@ -19,12 +18,14 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: CCE-89524-3
     cce@rhel8: CCE-87369-5
     cce@sle12: CCE-92446-4
     cce@sle15: CCE-92697-2
 
 references:
-    cis@rhel8: 6.2.13
+    cis@rhel7: 6.2.11
+    cis@rhel8: 6.2.11
     cis@sle12: 6.2.11
     cis@sle15: 6.2.11
 

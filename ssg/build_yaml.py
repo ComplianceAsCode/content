@@ -126,6 +126,17 @@ def add_reference_elements(element, references, ref_uri_dict):
             ref.text = ref_val
 
 
+def add_reference_title_elements(benchmark_el, env_yaml):
+    if env_yaml:
+        ref_uri_dict = env_yaml['reference_uris']
+    else:
+        ref_uri_dict = SSG_REF_URIS
+    for title, uri in ref_uri_dict.items():
+        reference = ET.SubElement(benchmark_el, "{%s}reference" % XCCDF12_NS)
+        reference.set("href", uri)
+        reference.text = title
+
+
 def add_benchmark_metadata(element, contributors_file):
     metadata = ET.SubElement(element, "{%s}metadata" % XCCDF12_NS)
 
@@ -336,6 +347,17 @@ class Benchmark(XCCDFEntity):
         for p in self.profiles:
             p.unselect_empty_groups(self)
 
+    def drop_rules_not_included_in_a_profile(self):
+        selected_rules = self.get_rules_selected_in_all_profiles()
+        for g in self.groups.values():
+            g.remove_rules_with_ids_not_listed(selected_rules)
+
+    def get_rules_selected_in_all_profiles(self):
+        selected_rules = set()
+        for p in self.profiles:
+            selected_rules.update(p.selected)
+        return selected_rules
+
     def to_xml_element(self, env_yaml=None, product_cpes=None):
         root = ET.Element('{%s}Benchmark' % XCCDF12_NS)
         root.set('id', OSCAP_BENCHMARK + self.id_)
@@ -356,6 +378,7 @@ class Benchmark(XCCDFEntity):
         notice.set('id', self.notice_id)
         add_sub_element(root, "front-matter", XCCDF12_NS, self.front_matter)
         add_sub_element(root, "rear-matter",  XCCDF12_NS, self.rear_matter)
+        add_reference_title_elements(root, env_yaml)
         # if there are no platforms, do not output platform-specification at all
         if len(self.product_cpes.platforms) > 0:
             cpe_platform_spec = ET.Element(
@@ -631,6 +654,11 @@ class Group(XCCDFEntity):
         child.inherited_platforms.update(self.platforms, self.inherited_platforms)
         childs[child.id_] = child
 
+    def remove_rules_with_ids_not_listed(self, rule_ids_list):
+        self.rules = dict(filter(lambda el, ids=rule_ids_list: el[0] in ids, self.rules.items()))
+        for group in self.groups.values():
+            group.remove_rules_with_ids_not_listed(rule_ids_list)
+
     def __str__(self):
         return self.id_
 
@@ -740,7 +768,11 @@ class Rule(XCCDFEntity, Templatable):
                 product_cpes and not rule.cpe_platform_names):
             # parse platform definition and get CPEAL platform
             for platform in rule.platforms:
-                cpe_platform = Platform.from_text(platform, product_cpes)
+                try:
+                    cpe_platform = Platform.from_text(platform, product_cpes)
+                except Exception as e:
+                    raise Exception("Unable to process platforms in rule '%s': " %
+                                    (rule.id_, str(e)))
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
         # Only load policy specific content if rule doesn't have it defined yet
@@ -1364,7 +1396,8 @@ class BuildLoader(DirectoryLoader):
                 (rule.id_, self.components_dir))
         prodtypes = parse_prodtype(rule.prodtype)
         if "all" not in prodtypes and self.product not in prodtypes:
-            return False
+            # TODO: remove prodtype
+            pass
         self.all_rules[rule.id_] = rule
         self.loaded_group.add_rule(
             rule, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
@@ -1456,6 +1489,7 @@ class LinearLoader(object):
             except KeyError as exc:
                 # Add only the groups we have compiled and loaded
                 pass
+        self.benchmark.drop_rules_not_included_in_a_profile()
         self.benchmark.unselect_empty_groups()
 
     def load_compiled_content(self):

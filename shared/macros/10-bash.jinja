@@ -1769,7 +1769,7 @@ Part of the grub2_bootloader_argument template.
 
 #}}
 {{% macro grub2_bootloader_argument_remediation(arg_name, arg_name_value) %}}
-{{% if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
+{{% if 'ubuntu' in product or 'debian' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
 {{{ update_etc_default_grub_manually(arg_name, arg_name_value) }}}
 {{% endif -%}}
 {{{ grub_command("add", arg_name_value) }}}

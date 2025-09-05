@@ -10,6 +10,6 @@ df --local -P | awk '{if (NR!=1) print $6}' \
 mkdir -p /test_dir_1
 chmod 1770 /test_dir_1
 
-# Create a new dir that is word-writable but doesn't have sticky bit
+# Create a new dir that is word-readable and doesn't have sticky bit
 mkdir -p /test_dir_2
 chmod 0774 /test_dir_2

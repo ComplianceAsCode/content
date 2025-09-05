@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,ol9,rhel8,rhel9,ubuntu2004
 
 title: 'Ensure PAM Enforces Password Requirements - Prevent the Use of Dictionary Words'
 
@@ -22,10 +21,13 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: CCE-87158-2
     cce@rhel8: CCE-86233-4
     cce@rhel9: CCE-88413-0
 
 references:
+    cis@rhel7: 4.4.2.2.7
+    cis@rhel8: 4.4.3.2.6
     disa: CCI-000366
     nist: IA-5(c),IA-5(1)(a),CM-6(a),IA-5(4)
     srg: SRG-OS-000480-GPOS-00225

@@ -13,4 +13,22 @@ description: |-
 
 selections:
     - anssi:all:intermediary
-    - '!mount_option_nodev_nonroot_local_partitions'
+    # Following rules once had a prodtype incompatible with the ol9 product
+    - '!package_ypbind_removed'
+    - '!partition_for_opt'
+    - '!cracklib_accounts_password_pam_minlen'
+    - '!package_ypserv_removed'
+    - '!accounts_passwords_pam_tally2_deny_root'
+    - '!accounts_passwords_pam_tally2'
+    - '!cracklib_accounts_password_pam_ucredit'
+    - '!cracklib_accounts_password_pam_dcredit'
+    - '!cracklib_accounts_password_pam_lcredit'
+    - '!partition_for_usr'
+    - '!partition_for_boot'
+    - '!cracklib_accounts_password_pam_ocredit'
+    - '!enable_pam_namespace'
+    - '!accounts_passwords_pam_tally2_unlock_time'
+    - '!ensure_redhat_gpgkey_installed'
+    - '!sudo_add_umask'
+    - '!sudo_add_ignore_dot'
+    - '!sudo_add_env_reset'

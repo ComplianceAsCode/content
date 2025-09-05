@@ -1,22 +1,39 @@
 <def-group>
-  <definition class="compliance" id="dir_perms_world_writable_sticky_bits" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("The sticky bit should be set for all world-writable directories.") }}}
     <criteria>
-      <criterion comment="all local world writable directories have sticky bit set" test_ref="test_dir_perms_world_writable_sticky_bits" negate="true" />
+      <criterion test_ref="test_dir_perms_world_writable_sticky_bits"
+        comment="All local world-writable directories have sticky bit set"/>
     </criteria>
   </definition>
-  <unix:file_test check="all" check_existence="all_exist" comment="all local world-writable directories have sticky bit set" id="test_dir_perms_world_writable_sticky_bits" version="1">
-    <unix:object object_ref="object_only_local_directories" />
-    <unix:state state_ref="state_world_writable_and_not_sticky" />
-  </unix:file_test>
-  <unix:file_object comment="only local directories" id="object_only_local_directories" version="1">
-    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
-    <unix:path operation="equals">/</unix:path>
-    <unix:filename xsi:nil="true" />
-    <filter action="include">state_world_writable_and_not_sticky</filter>
-  </unix:file_object>
-  <unix:file_state id="state_world_writable_and_not_sticky" version="1">
+
+  <unix:file_state id="state_dir_perms_world_writable_sticky_bits" version="1">
     <unix:sticky datatype="boolean">false</unix:sticky>
     <unix:owrite datatype="boolean">true</unix:owrite>
   </unix:file_state>
+
+  {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
+  {{{ create_local_mount_points_list(var_local_mount_points) }}}
+
+  <!--
+    This file_object will only find files located in local and not special file systems. The
+    recurse_file_system parameter is set to defined in order to make sure the probe doesn't
+    leave the scope of that mount point. For example, when probing "/", the probe will ignore
+    any child directory which is a mount point for any other partition. This will ensure
+    considerable performance improvement. -->
+  <unix:file_object id="object_dir_perms_world_writable_sticky_bits" version="1"
+    comment="All world-writable directories without sticky bits">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+      recurse_file_system="defined"/>
+      <unix:path operation="equals" var_check="at least one"
+        var_ref="{{{ var_local_mount_points }}}"/>
+    <unix:filename xsi:nil="true"/>
+    <filter action="include">state_dir_perms_world_writable_sticky_bits</filter>
+  </unix:file_object>
+
+  <unix:file_test id="test_dir_perms_world_writable_sticky_bits" version="2"
+    check="all" check_existence="none_exist"
+    comment="Check the existence of world-writable directories without sticky bits">
+    <unix:object object_ref="object_dir_perms_world_writable_sticky_bits"/>
+  </unix:file_test>
 </def-group>

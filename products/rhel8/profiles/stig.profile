@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R12
+    version: V1R13
     SMEs:
         - mab879
         - ggbecker
@@ -12,7 +12,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V1R12.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R13.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -543,6 +543,7 @@ selections:
 
     # RHEL-08-020035
     - logind_session_timeout
+    - var_logind_session_timeout=15_minutes
 
     # RHEL-08-020039
     - package_tmux_installed
