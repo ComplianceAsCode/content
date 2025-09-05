@@ -1,11 +1,10 @@
 documentation_complete: true
 
-title: 'Disable IPv6 Networking Support Automatic Loading'
+title: 'Disable IPv6 Addressing on All IPv6 Interfaces'
 
 description: |-
-    To disable support for (<tt>ipv6</tt>) add the following line to
-    <tt>/etc/sysctl.d/ipv6.conf</tt> (or another file in
-    <tt>/etc/sysctl.d</tt>):
+    To disable support for (<tt>ipv6</tt>) addressing on all interface add the following line to
+    <tt>/etc/sysctl.d/ipv6.conf</tt> (or another file in <tt>/etc/sysctl.d</tt>):
     <pre>net.ipv6.conf.all.disable_ipv6 = 1</pre>
     This disables IPv6 on all network interfaces as other services and system
     functionality require the IPv6 stack loaded to work.
@@ -18,6 +17,7 @@ severity: medium
 
 identifiers:
     cce@rhel7: CCE-80175-3
+    cce@rhel8: CCE-85904-1
 
 references:
     cis-csc: 11,14,3,9
@@ -30,7 +30,7 @@ references:
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
 
-ocil_clause: 'the ipv6 support is disabled on network interfaces'
+ocil_clause: 'the ipv6 support is disabled on all network interfaces'
 
 ocil: |-
     If the system uses IPv6, this is not applicable.

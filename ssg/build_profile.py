@@ -8,6 +8,7 @@ from .build_yaml import ProfileWithInlinePolicies
 from .xml import ElementTree
 from .constants import XCCDF11_NS as xccdf_ns
 from .constants import oval_namespace as oval_ns
+from .constants import SCE_SYSTEM as sce_ns
 from .constants import bash_system as bash_rem_system
 from .constants import ansible_system as ansible_rem_system
 from .constants import ignition_system as ignition_rem_system
@@ -40,7 +41,7 @@ class RuleStats(object):
     Class representing the content of a rule for statistics generation
     purposes.
     """
-    def __init__(self, rid=None, roval=None,
+    def __init__(self, rid=None, roval=None, rsce=None,
                  rbash_fix=None, ransible_fix=None,
                  rignition_fix=None, rkubernetes_fix=None,
                  rpuppet_fix=None, ranaconda_fix=None, rcce=None,
@@ -49,12 +50,15 @@ class RuleStats(object):
         self.dict = {
             'id': rid,
             'oval': roval,
+            'sce': rsce,
+            'check': None,
             'bash_fix': rbash_fix,
             'ansible_fix': ransible_fix,
             'ignition_fix': rignition_fix,
             'kubernetes_fix': rkubernetes_fix,
             'puppet_fix': rpuppet_fix,
             'anaconda_fix': ranaconda_fix,
+            'fix': None,
             'cce': rcce,
             'stig_id': stig_id,
             'cis_ref': cis_ref,
@@ -63,6 +67,24 @@ class RuleStats(object):
             'ospp_ref': ospp_ref,
             'cui_ref': cui_ref,
         }
+
+        if roval is not None:
+            self.dict['check'] = roval
+        elif rsce is not None:
+            self.dict['check'] = rsce
+
+        if rbash_fix is not None:
+            self.dict['fix'] = rbash_fix
+        elif ransible_fix is not None:
+            self.dict['fix'] = ransible_fix
+        elif rignition_fix is not None:
+            self.dict['fix'] = rignition_fix
+        elif rkubernetes_fix is not None:
+            self.dict['fix'] = rkubernetes_fix
+        elif rpuppet_fix is not None:
+            self.dict['fix'] = rpuppet_fix
+        elif ranaconda_fix is not None:
+            self.dict['fix'] = ranaconda_fix
 
 
 class XCCDFBenchmark(object):
@@ -123,6 +145,12 @@ class XCCDFBenchmark(object):
             'implemented_ovals': [],
             'implemented_ovals_pct': 0,
             'missing_ovals': [],
+            'implemented_sces': [],
+            'implemented_sces_pct': 0,
+            'missing_sces': [],
+            'implemented_checks': [],
+            'implemented_checks_pct': 0,
+            'missing_checks': [],
             'implemented_bash_fixes': [],
             'implemented_bash_fixes_pct': 0,
             'implemented_ansible_fixes': [],
@@ -141,6 +169,9 @@ class XCCDFBenchmark(object):
             'missing_kubernetes_fixes': [],
             'missing_puppet_fixes': [],
             'missing_anaconda_fixes': [],
+            'implemented_fixes': [],
+            'implemented_fixes_pct': 0,
+            'missing_fixes': [],
             'assigned_cces': [],
             'assigned_cces_pct': 0,
             'missing_cces': [],
@@ -191,6 +222,8 @@ class XCCDFBenchmark(object):
             if rule is not None:
                 oval = rule.find("./{%s}check[@system=\"%s\"]" %
                                  (xccdf_ns, oval_ns))
+                sce = rule.find("./{%s}check[@system=\"%s\"]" %
+                                (xccdf_ns, sce_ns))
                 bash_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
                                      (xccdf_ns, bash_rem_system))
                 ansible_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
@@ -219,7 +252,7 @@ class XCCDFBenchmark(object):
                                     (xccdf_ns, cui_ns))
 
                 rule_stats.append(
-                    RuleStats(rule.get("id"), oval,
+                    RuleStats(rule.get("id"), oval, sce,
                               bash_fix, ansible_fix, ignition_fix,
                               kubernetes_fix, puppet_fix, anaconda_fix,
                               cce, stig_id, cis_ref, hipaa_ref, anssi_ref,
@@ -247,6 +280,22 @@ class XCCDFBenchmark(object):
             profile_stats['rules_count'] * 100
         profile_stats['missing_ovals'] = \
             [x.dict['id'] for x in rule_stats if x.dict['oval'] is None]
+
+        profile_stats['implemented_sces'] = \
+            [x.dict['id'] for x in rule_stats if x.dict['sce'] is not None]
+        profile_stats['implemented_sces_pct'] = \
+            float(len(profile_stats['implemented_sces'])) / \
+            profile_stats['rules_count'] * 100
+        profile_stats['missing_sces'] = \
+            [x.dict['id'] for x in rule_stats if x.dict['sce'] is None]
+
+        profile_stats['implemented_checks'] = \
+            [x.dict['id'] for x in rule_stats if x.dict['check'] is not None]
+        profile_stats['implemented_checks_pct'] = \
+            float(len(profile_stats['implemented_checks'])) / \
+            profile_stats['rules_count'] * 100
+        profile_stats['missing_checks'] = \
+            [x.dict['id'] for x in rule_stats if x.dict['check'] is None]
 
         profile_stats['implemented_bash_fixes'] = \
             [x.dict['id'] for x in rule_stats if x.dict['bash_fix'] is not None]
@@ -290,6 +339,14 @@ class XCCDFBenchmark(object):
 
         profile_stats['implemented_anaconda_fixes'] = \
             [x.dict['id'] for x in rule_stats if x.dict['anaconda_fix'] is not None]
+
+        profile_stats['implemented_fixes'] = \
+            [x.dict['id'] for x in rule_stats if x.dict['fix'] is not None]
+        profile_stats['implemented_fixes_pct'] = \
+            float(len(profile_stats['implemented_fixes'])) / \
+            profile_stats['rules_count'] * 100
+        profile_stats['missing_fixes'] = \
+            [x.dict['id'] for x in rule_stats if x.dict['fix'] is None]
 
         profile_stats['missing_stig_ids'] = []
         if 'stig' in profile_stats['profile_id']:
@@ -352,12 +409,15 @@ class XCCDFBenchmark(object):
         profile_stats = self.get_profile_stats(profile)
         rules_count = profile_stats['rules_count']
         impl_ovals_count = len(profile_stats['implemented_ovals'])
+        impl_sces_count = len(profile_stats['implemented_sces'])
+        impl_checks_count = len(profile_stats['implemented_checks'])
         impl_bash_fixes_count = len(profile_stats['implemented_bash_fixes'])
         impl_ansible_fixes_count = len(profile_stats['implemented_ansible_fixes'])
         impl_ignition_fixes_count = len(profile_stats['implemented_ignition_fixes'])
         impl_kubernetes_fixes_count = len(profile_stats['implemented_kubernetes_fixes'])
         impl_puppet_fixes_count = len(profile_stats['implemented_puppet_fixes'])
         impl_anaconda_fixes_count = len(profile_stats['implemented_anaconda_fixes'])
+        impl_fixes_count = len(profile_stats['implemented_fixes'])
         missing_stig_ids_count = len(profile_stats['missing_stig_ids'])
         missing_cis_refs_count = len(profile_stats['missing_cis_refs'])
         missing_hipaa_refs_count = len(profile_stats['missing_hipaa_refs'])
@@ -369,31 +429,40 @@ class XCCDFBenchmark(object):
         if options.format == "plain":
             if not options.skip_overall_stats:
                 print("\nProfile %s:" % profile)
-                print("* rules:            %d" % rules_count)
-                print("* checks (OVAL):    %d\t[%d%% complete]" %
+                print("* rules:              %d" % rules_count)
+                print("* checks (OVAL):      %d\t[%d%% complete]" %
                       (impl_ovals_count,
                        profile_stats['implemented_ovals_pct']))
+                print("* checks (SCE):       %d\t[%d%% complete]" %
+                      (impl_sces_count,
+                       profile_stats['implemented_sces_pct']))
+                print("* checks (any):       %d\t[%d%% complete]" %
+                      (impl_checks_count,
+                       profile_stats['implemented_checks_pct']))
 
-                print("* fixes (bash):     %d\t[%d%% complete]" %
+                print("* fixes (bash):       %d\t[%d%% complete]" %
                       (impl_bash_fixes_count,
                        profile_stats['implemented_bash_fixes_pct']))
-                print("* fixes (ansible):  %d\t[%d%% complete]" %
+                print("* fixes (ansible):    %d\t[%d%% complete]" %
                       (impl_ansible_fixes_count,
                        profile_stats['implemented_ansible_fixes_pct']))
-                print("* fixes (ignition):  %d\t[%d%% complete]" %
+                print("* fixes (ignition):   %d\t[%d%% complete]" %
                       (impl_ignition_fixes_count,
                        profile_stats['implemented_ignition_fixes_pct']))
-                print("* fixes (kubernetes):  %d\t[%d%% complete]" %
+                print("* fixes (kubernetes): %d\t[%d%% complete]" %
                       (impl_kubernetes_fixes_count,
                        profile_stats['implemented_kubernetes_fixes_pct']))
-                print("* fixes (puppet):   %d\t[%d%% complete]" %
+                print("* fixes (puppet):     %d\t[%d%% complete]" %
                       (impl_puppet_fixes_count,
                        profile_stats['implemented_puppet_fixes_pct']))
-                print("* fixes (anaconda): %d\t[%d%% complete]" %
+                print("* fixes (anaconda):   %d\t[%d%% complete]" %
                       (impl_anaconda_fixes_count,
                        profile_stats['implemented_anaconda_fixes_pct']))
+                print("* fixes (any):        %d\t[%d%% complete]" %
+                      (impl_fixes_count,
+                       profile_stats['implemented_fixes_pct']))
 
-                print("* CCEs:             %d\t[%d%% complete]" %
+                print("* CCEs:               %d\t[%d%% complete]" %
                       (impl_cces_count,
                        profile_stats['assigned_cces_pct']))
 
@@ -404,6 +473,15 @@ class XCCDFBenchmark(object):
                       (impl_ovals_count, rules_count,
                        profile_stats['implemented_ovals_pct']))
                 self.console_print(profile_stats['implemented_ovals'],
+                                   console_width)
+
+            if options.implemented_sces and \
+               profile_stats['implemented_sces']:
+                print("** Rules of '%s' " % profile +
+                      "profile having SCE check: %d of %d [%d%% complete]" %
+                      (impl_sces_count, rules_count,
+                       profile_stats['implemented_sces_pct']))
+                self.console_print(profile_stats['implemented_sces'],
                                    console_width)
 
             if options.implemented_fixes:
@@ -475,6 +553,14 @@ class XCCDFBenchmark(object):
                       (rules_count - impl_ovals_count, rules_count,
                        profile_stats['implemented_ovals_pct']))
                 self.console_print(profile_stats['missing_ovals'],
+                                   console_width)
+
+            if options.missing_sces and profile_stats['missing_sces']:
+                print("*** Rules of '%s' " % profile + "profile missing " +
+                      "SCE: %d of %d [%d%% complete]" %
+                      (rules_count - impl_sces_count, rules_count,
+                       profile_stats['implemented_sces_pct']))
+                self.console_print(profile_stats['missing_sces'],
                                    console_width)
 
             if options.missing_fixes:
@@ -605,6 +691,7 @@ class XCCDFBenchmark(object):
 
         elif options.format == "html":
             del profile_stats['implemented_ovals']
+            del profile_stats['implemented_sces']
             del profile_stats['implemented_bash_fixes']
             del profile_stats['implemented_ansible_fixes']
             del profile_stats['implemented_ignition_fixes']
@@ -620,6 +707,7 @@ class XCCDFBenchmark(object):
             profile_stats['missing_ospp_refs_count'] = missing_ospp_refs_count
             profile_stats['missing_cui_refs_count'] = missing_cui_refs_count
             profile_stats['missing_ovals_count'] = len(profile_stats['missing_ovals'])
+            profile_stats['missing_sces_count'] = len(profile_stats['missing_sces'])
             profile_stats['missing_bash_fixes_count'] = len(profile_stats['missing_bash_fixes'])
             profile_stats['missing_ansible_fixes_count'] = len(profile_stats['missing_ansible_fixes'])
             profile_stats['missing_ignition_fixes_count'] = len(profile_stats['missing_ignition_fixes'])
@@ -630,6 +718,7 @@ class XCCDFBenchmark(object):
             profile_stats['missing_cces_count'] = len(profile_stats['missing_cces'])
 
             del profile_stats['implemented_ovals_pct']
+            del profile_stats['implemented_sces_pct']
             del profile_stats['implemented_bash_fixes_pct']
             del profile_stats['implemented_ansible_fixes_pct']
             del profile_stats['implemented_ignition_fixes_pct']
@@ -645,6 +734,8 @@ class XCCDFBenchmark(object):
             # First delete the not requested information
             if not options.missing_ovals:
                 del profile_stats['missing_ovals']
+            if not options.missing_sces:
+                del profile_stats['missing_sces']
             if not options.missing_fixes:
                 del profile_stats['missing_bash_fixes']
                 del profile_stats['missing_ansible_fixes']
@@ -662,6 +753,8 @@ class XCCDFBenchmark(object):
                 del profile_stats['missing_cces']
             if not options.implemented_ovals:
                 del profile_stats['implemented_ovals']
+            if not options.implemented_sces:
+                del profile_stats['implemented_sces']
             if not options.implemented_fixes:
                 del profile_stats['implemented_bash_fixes']
                 del profile_stats['implemented_ansible_fixes']

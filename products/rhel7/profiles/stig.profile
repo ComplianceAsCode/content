@@ -1,9 +1,9 @@
 documentation_complete: true
 
 metadata:
-    version: V3R3
+    version: V3R4
     SMEs:
-        - carlosmmatos
+        - ggbecker
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux V3R3.
+    DISA STIG for Red Hat Enterprise Linux V3R4.
 
     In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -50,10 +50,12 @@ selections:
     - var_removable_partition=dev_cdrom
     - var_auditd_action_mail_acct=root
     - var_auditd_space_left_action=email
+    - var_auditd_space_left_percentage=25pc
     - var_accounts_user_umask=077
     - var_password_pam_retry=3
     - var_accounts_max_concurrent_login_sessions=10
     - var_accounts_tmout=15_min
+    - var_accounts_authorized_local_users_regex=rhel7
     - var_time_service_set_maxpoll=system_default
     - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
     - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
@@ -106,14 +108,17 @@ selections:
     - sudo_remove_nopasswd
     - sudo_restrict_privilege_elevation_to_authorized
     - sudo_remove_no_authenticate
+    - sudo_require_reauthentication
     - sudoers_validate_passwd
     - accounts_logon_fail_delay
     - gnome_gdm_disable_automatic_login
     - gnome_gdm_disable_guest_login
     - sshd_do_not_permit_user_env
     - disable_host_auth
+    - grub2_admin_username
     - grub2_password
     - require_singleuser_auth
+    - grub2_uefi_admin_username
     - grub2_uefi_password
     - smartcard_auth
     - package_rsh-server_removed
@@ -178,8 +183,8 @@ selections:
     - auditd_audispd_configure_remote_server
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action
-    - auditd_data_retention_space_left
     - auditd_data_retention_space_left_action
+    - auditd_data_retention_space_left_percentage
     - auditd_data_retention_action_mail_acct
     - audit_rules_suid_privilege_function
     - audit_rules_dac_modification_chown
@@ -314,3 +319,10 @@ selections:
     - package_MFEhiplsm_installed
     - file_ownership_var_log_audit
     - file_permissions_var_log_audit
+    - sysctl_net_ipv4_conf_all_rp_filter
+    - sysctl_net_ipv4_conf_default_rp_filter
+    - package_mcafeetp_installed
+    - agent_mfetpd_running
+    - accounts_authorized_local_users
+    - auditd_overflow_action
+    - auditd_name_format

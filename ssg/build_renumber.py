@@ -10,7 +10,8 @@ from .parse_oval import resolve_definition, find_extending_defs, get_container_g
 from .xml import parse_file, map_elements_to_their_ids
 
 
-from .checks import get_content_ref_if_exists_and_not_remote, is_cce_value_valid, is_cce_format_valid
+from .checks import get_content_ref_if_exists_and_not_remote
+from .cce import is_cce_value_valid, is_cce_format_valid
 from .utils import SSGError
 from .xml import ElementTree as ET
 oval_ns = oval_namespace
@@ -470,7 +471,7 @@ def assert_that_check_ids_match_rule_id(checks, xccdf_rule):
 
 def check_that_oval_and_rule_id_match(xccdftree):
     for xccdfid, rule in rules_with_ids_generator(xccdftree):
-        checks = rule.find("./{%s}check" % XCCDF11_NS)
+        checks = rule.find(".//{%s}check" % XCCDF11_NS)
         if checks is None:
             print("Rule {0} doesn't have checks."
                   .format(xccdfid), file=sys.stderr)

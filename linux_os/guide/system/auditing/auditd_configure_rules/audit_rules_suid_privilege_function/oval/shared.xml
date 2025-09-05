@@ -30,7 +30,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_uid_privileged_function_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+-F[\s]euid=0[\s]+-k[\s]setuid[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+-F[\s]euid=0[\s]+(-k[\s]+|-F[\s]+key=)setuid[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -39,7 +39,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_uid_privileged_function_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+-F[\s]euid=0[\s]+-k[\s]setuid[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+-F[\s]euid=0[\s]+(-k[\s]+|-F[\s]+key=)setuid[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -48,7 +48,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_uid_privileged_function_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+-F[\s]euid=0[\s]+-k[\s]setuid[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+-F[\s]euid=0[\s]+(-k[\s]+|-F[\s]+key=)setuid[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -57,7 +57,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_uid_privileged_function_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+-F[\s]euid=0[\s]+-k[\s]setuid[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+-F[\s]euid=0[\s]+(-k[\s]+|-F[\s]+key=)setuid[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -66,7 +66,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_gid_privileged_function_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+-F[\s]egid=0[\s]+-k[\s]setgid[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+-F[\s]egid=0[\s]+(-k[\s]+|-F[\s]+key=)setgid[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -75,7 +75,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_gid_privileged_function_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+-F[\s]egid=0[\s]+-k[\s]setgid[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+-F[\s]egid=0[\s]+(-k[\s]+|-F[\s]+key=)setgid[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -84,7 +84,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_gid_privileged_function_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+-F[\s]egid=0[\s]+-k[\s]setgid[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+-F[\s]egid=0[\s]+(-k[\s]+|-F[\s]+key=)setgid[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -93,7 +93,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_gid_privileged_function_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+-F[\s]egid=0[\s]+-k[\s]setgid[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+-F[\s]egid=0[\s]+(-k[\s]+|-F[\s]+key=)setgid[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

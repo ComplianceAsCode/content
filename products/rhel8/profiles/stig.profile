@@ -1,9 +1,9 @@
 documentation_complete: true
 
 metadata:
-    version: V1R2
+    version: V1R3
     SMEs:
-        - carlosmmatos
+        - ggbecker
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V1R2.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R3.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -45,12 +45,16 @@ selections:
     - var_password_pam_minlen=15
     - var_password_pam_ocredit=1
     - var_password_pam_dcredit=1
+    - var_password_pam_dictcheck=1
     - var_password_pam_ucredit=1
     - var_password_pam_lcredit=1
     - var_password_pam_retry=3
     - var_password_pam_minlen=15
     - var_sshd_set_keepalive=0
+    - sshd_approved_macs=stig
+    - sshd_approved_ciphers=stig
     - sshd_idle_timeout_value=10_minutes
+    - var_accounts_authorized_local_users_regex=rhel8
     - var_accounts_passwords_pam_faillock_deny=3
     - var_accounts_passwords_pam_faillock_fail_interval=900
     - var_accounts_passwords_pam_faillock_unlock_time=never
@@ -61,11 +65,12 @@ selections:
     - var_auditd_action_mail_acct=root
     - var_time_service_set_maxpoll=18_hours
     - var_accounts_maximum_age_login_defs=60
-    - var_auditd_space_left=250MB
+    - var_auditd_space_left_percentage=25pc
     - var_auditd_space_left_action=email
     - var_auditd_disk_error_action=halt
     - var_auditd_max_log_file_action=syslog
     - var_auditd_disk_full_action=halt
+    - var_sssd_certificate_verification_digest_function=sha1
 
     ### Enable / Configure FIPS
     - enable_fips_mode
@@ -80,6 +85,10 @@ selections:
     # RHEL-08-010000
     - installed_OS_is_vendor_supported
 
+    # RHEL-08-010001
+    - package_mcafeetp_installed
+    - agent_mfetpd_running
+
     # RHEL-08-010010
     - security_patches_up_to_date
 
@@ -92,8 +101,10 @@ selections:
     # RHEL-08-010040
     - sshd_enable_warning_banner
 
-    # RHEL-08-010050
+    # RHEL-08-010049
     - dconf_gnome_banner_enabled
+
+    # RHEL-08-010050
     - dconf_gnome_login_banner_text
 
     # RHEL-08-010060
@@ -113,24 +124,28 @@ selections:
     - accounts_password_all_shadowed_sha512
 
     # RHEL-08-010130
-    - accounts_password_pam_unix_rounds_system_auth
     - accounts_password_pam_unix_rounds_password_auth
+
+    # RHEL-08-010131
+    - accounts_password_pam_unix_rounds_system_auth
 
     # RHEL-08-010140
     - grub2_uefi_password
+
+    # RHEL-08-010141
     - grub2_uefi_admin_username
+
+    # RHEL-08-010149
+    - grub2_admin_username
 
     # RHEL-08-010150
     - grub2_password
-    - grub2_admin_username
 
     # RHEL-08-010151
     - require_singleuser_auth
-    - require_emergency_target_auth
 
     # RHEL-08-010152
-    # To be released in V1R3
-    # - require_emergency_target_auth
+    - require_emergency_target_auth
 
     # RHEL-08-010160
     - set_password_hashing_algorithm_systemauth
@@ -153,8 +168,10 @@ selections:
     - dir_perms_world_writable_sticky_bits
 
     # RHEL-08-010200
-    - sshd_set_idle_timeout
     - sshd_set_keepalive_0
+
+    # RHEL-08-010201
+    - sshd_set_idle_timeout
 
     # RHEL-08-010210
     - file_permissions_var_log_messages
@@ -174,10 +191,18 @@ selections:
     # RHEL-08-010260
     - file_groupowner_var_log
 
+    # *** SHARED *** #
     # RHEL-08-010290 && RHEL-08-010291
-    ### NOTE: This will get split out in future STIG releases, as well as we will break
-    ### these rules up to be more flexible in meeting the requirements.
+    # *** SHARED *** #
     - configure_ssh_crypto_policy
+
+    # RHEL-08-010290
+    - harden_sshd_macs_openssh_conf_crypto_policy
+    - harden_sshd_macs_opensshserver_conf_crypto_policy
+
+    # RHEL-08-010291
+    - harden_sshd_ciphers_openssh_conf_crypto_policy
+    - harden_sshd_ciphers_opensshserver_conf_crypto_policy
 
     # RHEL-08-010292
     - sshd_use_strong_rng
@@ -207,6 +232,8 @@ selections:
     - file_ownership_library_dirs
 
     # RHEL-08-010350
+    - root_permissions_syslibrary_files
+    - dir_group_ownership_library_dirs
 
     # RHEL-08-010360
     - package_aide_installed
@@ -253,11 +280,13 @@ selections:
     - install_smartcard_packages
 
     # RHEL-08-010400
+    - sssd_certificate_verification
 
     # RHEL-08-010410
     - package_opensc_installed
 
     # RHEL-08-010420
+    - bios_enable_execution_restrictions
 
     # RHEL-08-010421
     - grub2_page_poison_argument
@@ -285,6 +314,8 @@ selections:
 
     # RHEL-08-010471
     - service_rngd_enabled
+
+    # RHEL-08-010472
     - package_rng-tools_installed
 
     # RHEL-08-010480
@@ -304,6 +335,8 @@ selections:
 
     # RHEL-08-010521
     - sshd_disable_kerb_auth
+
+    # RHEL-08-010522
     - sshd_disable_gssapi_auth
 
     # RHEL-08-010540
@@ -341,6 +374,7 @@ selections:
     - mount_option_nodev_nonroot_local_partitions
 
     # RHEL-08-010590
+    - mount_option_home_noexec
 
     # RHEL-08-010600
     - mount_option_nodev_removable_partitions
@@ -466,8 +500,10 @@ selections:
     # RHEL-08-020030
     - dconf_gnome_screensaver_lock_enabled
 
-    # RHEL-08-020040
+    # RHEL-08-020039
     - package_tmux_installed
+
+    # RHEL-08-020040
     - configure_tmux_lock_command
 
     # RHEL-08-020041
@@ -488,6 +524,7 @@ selections:
     # RHEL-08-020080
 
     # RHEL-08-020090
+    - sssd_enable_certmap
 
     # RHEL-08-020100
     - accounts_password_pam_retry
@@ -536,6 +573,7 @@ selections:
     - accounts_password_minlen_login_defs
 
     # RHEL-08-020240
+    - account_unique_id
 
     # RHEL-08-020250
     - sssd_enable_smartcards
@@ -544,6 +582,7 @@ selections:
     - account_disable_post_pw_expiration
 
     # RHEL-08-020270
+    - account_emergency_expire_date
 
     # RHEL-08-020280
     - accounts_password_pam_ocredit
@@ -552,16 +591,21 @@ selections:
     - sssd_offline_cred_expiration
 
     # RHEL-08-020300
+    - accounts_password_pam_dictcheck
 
     # RHEL-08-020310
     - accounts_logon_fail_delay
 
     # RHEL-08-020320
-    # - accounts_authorized_local_users
+    - accounts_authorized_local_users
 
     # RHEL-08-020330
-    - no_empty_passwords
     - sshd_disable_empty_passwords
+
+    # RHEL-08-020331
+    - no_empty_passwords
+
+    # RHEL-08-020332
 
     # RHEL-08-020340
     - display_login_attempts
@@ -611,10 +655,17 @@ selections:
     # RHEL-08-030070
     - file_permissions_var_log_audit
 
-    # RHEL-08-030080, RHEL-08-030090, RHEL-08-030100, RHEL-08-030110
-    ### NOTE: These might get broken up, but currently the following
-    ### rule accounts for these STIG ID's
-    - file_ownership_var_log_audit
+    # RHEL-08-030080
+    - file_ownership_var_log_audit_stig
+
+    # RHEL-08-030090
+    - file_group_ownership_var_log_audit
+
+    # RHEL-08-030100
+    - directory_ownership_var_log_audit
+
+    # RHEL-08-030110
+    - directory_group_ownership_var_log_audit
 
     # RHEL-08-030120
     - directory_permissions_var_log_audit
@@ -626,167 +677,207 @@ selections:
     # ************ #
 
     # RHEL-08-030121
-    # - audit_rules_immutable
+    - audit_rules_immutable
 
     # RHEL-08-030122
-    # - audit_immutable_login_uids
+    - audit_immutable_login_uids
 
     # RHEL-08-030130
-    # - audit_rules_usergroup_modification_shadow
+    - audit_rules_usergroup_modification_shadow
 
     # RHEL-08-030140
-    # - audit_rules_usergroup_modification_opasswd
+    - audit_rules_usergroup_modification_opasswd
 
     # RHEL-08-030150
-    # - audit_rules_usergroup_modification_passwd
+    - audit_rules_usergroup_modification_passwd
 
     # RHEL-08-030160
-    # - audit_rules_usergroup_modification_gshadow
+    - audit_rules_usergroup_modification_gshadow
 
     # RHEL-08-030170
-    # - audit_rules_usergroup_modification_group
+    - audit_rules_usergroup_modification_group
 
-    # RHEL-08-030171, RHEL-08-030172
-    # - audit_rules_sysadmin_actions
+    # RHEL-08-030171
+    - audit_rules_sudoers
+
+    # RHEL-08-030172
+    - audit_rules_sudoers_d
 
     # RHEL-08-030180
     - package_audit_installed
+
+    # RHEL-08-030181
     - service_auditd_enabled
 
     # RHEL-08-030190
-    # - audit_rules_privileged_commands_sudo
+    - audit_rules_privileged_commands_su
 
-    # RHEL-08-030200, RHEL-08-030210, RHEL-08-030220, RHEL-08-030230, RHEL-08-030240
-    # - audit_perm_change_failed
-    # - audit_perm_change_success
+    # RHEL-08-030200
+    - audit_rules_dac_modification_lremovexattr
+
+    # RHEL-08-030210
+    - audit_rules_dac_modification_removexattr
+
+    # RHEL-08-030220
+    - audit_rules_dac_modification_lsetxattr
+
+    # RHEL-08-030230
+    - audit_rules_dac_modification_fsetxattr
+
+    # RHEL-08-030240
+    - audit_rules_dac_modification_fremovexattr
 
     # RHEL-08-030250
-    # - audit_rules_privileged_commands_chage
+    - audit_rules_privileged_commands_chage
 
     # RHEL-08-030260
-    # - audit_rules_execution_chcon
+    - audit_rules_execution_chcon
 
     # RHEL-08-030270
-    # - audit_perm_change_failed
-    # - audit_perm_change_success
+    - audit_rules_dac_modification_setxattr
 
     # RHEL-08-030280
+    - audit_rules_privileged_commands_ssh_agent
 
-    # RHEL-08-030290, RHEL-08-030300, RHEL-08-030301
-    # - audit_ospp_general
+    # RHEL-08-030290
+    - audit_rules_privileged_commands_passwd
+
+    # RHEL-08-030300
+    - audit_rules_privileged_commands_mount
+
+    # RHEL-08-030301
+    - audit_rules_privileged_commands_umount
 
     # RHEL-08-030302
-    # - audit_rules_media_export
+    - audit_rules_media_export
 
     # RHEL-08-030310
+    - audit_rules_privileged_commands_unix_update
 
     # RHEL-08-030311
-    # - audit_rules_privileged_commands_postdrop
+    - audit_rules_privileged_commands_postdrop
 
     # RHEL-08-030312
-    # - audit_rules_privileged_commands_postqueue
+    - audit_rules_privileged_commands_postqueue
 
     # RHEL-08-030313
-    # - audit_rules_execution_semanage
+    - audit_rules_execution_semanage
 
     # RHEL-08-030314
-    # - audit_rules_execution_setfiles
+    - audit_rules_execution_setfiles
 
     # RHEL-08-030315
-    # - audit_ospp_general
+    - audit_rules_privileged_commands_userhelper
 
     # RHEL-08-030316
-    # - audit_rules_execution_setsebool
+    - audit_rules_execution_setsebool
 
     # RHEL-08-030317
-    # - audit_ospp_general
+    - audit_rules_privileged_commands_unix_chkpwd
 
     # RHEL-08-030320
-    # - audit_rules_privileged_commands_ssh_keysign
+    - audit_rules_privileged_commands_ssh_keysign
 
     # RHEL-08-030330
+    - audit_rules_execution_setfacl
 
     # RHEL-08-030340
-    # - audit_rules_privileged_commands_pam_timestamp_check
+    - audit_rules_privileged_commands_pam_timestamp_check
 
     # RHEL-08-030350
-    # - audit_ospp_general
+    - audit_rules_privileged_commands_newgrp
 
     # RHEL-08-030360
-    # - audit_module_load
+    - audit_rules_kernel_module_loading_init
 
-    # RHEL-08-030361, RHEL-08-030362
-    # - audit_delete_failed
-    # - audit_delete_success
+    # RHEL-08-030361
+    - audit_rules_file_deletion_events_rename
+
+    # RHEL-08-030362
+    - audit_rules_file_deletion_events_renameat
 
     # RHEL-08-030363
+    - audit_rules_file_deletion_events_rmdir
 
-    # RHEL-08-030364, RHEL-08-030365
-    # - audit_delete_failed
-    # - audit_delete_success
+    # RHEL-08-030364
+    - audit_rules_file_deletion_events_unlink
+
+    # RHEL-08-030365
+    - audit_rules_file_deletion_events_unlinkat
 
     # RHEL-08-030370
-    # - audit_ospp_general
+    - audit_rules_privileged_commands_gpasswd
 
-    # RHEL-08-030380, RHEL-08-030390
-    # - audit_module_load
+    # RHEL-08-030380
+    - audit_rules_kernel_module_loading_finit
+
+    # RHEL-08-030390
+    - audit_rules_kernel_module_loading_delete
 
     # RHEL-08-030400
-    # - audit_ospp_general
+    - audit_rules_privileged_commands_crontab
 
     # RHEL-08-030410
-    # - audit_rules_privileged_commands_chsh
+    - audit_rules_privileged_commands_chsh
 
     # RHEL-08-030420
-    # - audit_modify_failed
-    # - audit_modify_success
+    - audit_rules_unsuccessful_file_modification_truncate
 
-    # RHEL-08-030430, RHEL-08-030440, RHEL-08-030450
-    # - audit_create_failed
-    # - audit_create_success
-    # - audit_modify_failed
-    # - audit_modify_success
-    # - audit_access_failed
-    # - audit_access_success
+    # RHEL-08-030430
+    - audit_rules_unsuccessful_file_modification_openat
+
+    # RHEL-08-030440
+    - audit_rules_unsuccessful_file_modification_open
+
+    # RHEL-08-030450
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at
 
     # RHEL-08-030460
-    # - audit_modify_failed
-    # - audit_modify_success
+    - audit_rules_unsuccessful_file_modification_ftruncate
 
     # RHEL-08-030470
-    # - audit_create_failed
-    # - audit_create_success
+    - audit_rules_unsuccessful_file_modification_creat
 
     # RHEL-08-030480
-    # - audit_owner_change_failed
-    # - audit_owner_change_success
+    - audit_rules_dac_modification_chown
 
     # RHEL-08-030490
-    # - audit_perm_change_failed
-    # - audit_perm_change_success
+    - audit_rules_dac_modification_chmod
 
-    # RHEL-08-030500, RHEL-08-030510, RHEL-08-030520
-    # - audit_owner_change_failed
-    # - audit_owner_change_success
+    # RHEL-08-030500
+    - audit_rules_dac_modification_lchown
 
-    # RHEL-08-030530, RHEL-08-030540
-    # - audit_perm_change_failed
-    # - audit_perm_change_success
+    # RHEL-08-030510
+    - audit_rules_dac_modification_fchownat
+
+    # RHEL-08-030520
+    - audit_rules_dac_modification_fchown
+
+    # RHEL-08-030530
+    - audit_rules_dac_modification_fchmodat
+
+    # RHEL-08-030540
+    - audit_rules_dac_modification_fchmod
 
     # RHEL-08-030550
-    # - audit_rules_privileged_commands_sudo
+    - audit_rules_privileged_commands_sudo
 
     # RHEL-08-030560
+    - audit_rules_privileged_commands_usermod
 
     # RHEL-08-030570
+    - audit_rules_execution_chacl
 
     # RHEL-08-030580
+    - audit_rules_privileged_commands_kmod
 
     # RHEL-08-030590
+    # This one needs to be updated to use /var/log/faillock, but first RHEL-08-020017 should be
+    # implemented as it is the one that configures a different path for the events of failing locks
     # - audit_rules_login_events_faillock
 
     # RHEL-08-030600
-    # - audit_rules_login_events_lastlog
+    - audit_rules_login_events_lastlog
 
     # RHEL-08-030601
     - grub2_audit_argument
@@ -798,6 +889,8 @@ selections:
     - configure_usbguard_auditbackend
 
     # RHEL-08-030610
+    - file_permissions_etc_audit_auditd
+    - file_permissions_etc_audit_rulesd
 
     # RHEL-08-030620
 
@@ -806,6 +899,7 @@ selections:
     # RHEL-08-030640
 
     # RHEL-08-030650
+    - aide_check_audit_tools
 
     # RHEL-08-030660
     - auditd_audispd_configure_sufficiently_large_partition
@@ -820,14 +914,19 @@ selections:
     - rsyslog_remote_loghost
 
     # RHEL-08-030700
+    - auditd_overflow_action
 
     # RHEL-08-030710
+    - rsyslog_encrypt_offload_defaultnetstreamdriver
+    - rsyslog_encrypt_offload_actionsendstreamdrivermode
 
     # RHEL-08-030720
+    - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
 
     # RHEL-08-030730
-    # this rule expects configuration in MB instead percentage as how STIG demands
-    # - auditd_data_retention_space_left
+    - auditd_data_retention_space_left_percentage
+
+    # RHEL-08-030731
     - auditd_data_retention_space_left_action
 
     # RHEL-08-030740
@@ -900,8 +999,10 @@ selections:
     # RHEL-08-040090
 
     # RHEL-08-040100
-    - service_firewalld_enabled
     - package_firewalld_installed
+
+    # RHEL-08-040101
+    - service_firewalld_enabled
 
     # RHEL-08-040110
     - wireless_disable_interfaces
@@ -956,24 +1057,29 @@ selections:
 
     # RHEL-08-040135
     - package_fapolicyd_installed
+
+    # RHEL-08-040136
     - service_fapolicyd_enabled
 
-    # RHEL-08-040140
+    # RHEL-08-040139
     - package_usbguard_installed
-    - service_usbguard_enabled
+
+    # RHEL-08-040140
     - usbguard_generate_policy
+
+    # RHEL-08-040141
+    - service_usbguard_enabled
 
     # RHEL-08-040150
 
-    # RHEL-08-040160
+    # RHEL-08-040159
     - package_openssh-server_installed
+
+    # RHEL-08-040160
     - service_sshd_enabled
 
     # RHEL-08-040161
     - sshd_rekey_limit
-
-    # RHEL-08-040162
-    - ssh_client_rekey_limit
 
     # RHEL-08-040170
     - disable_ctrlaltdel_reboot
@@ -993,8 +1099,10 @@ selections:
     # RHEL-08-040200
     - accounts_no_uid_except_zero
 
-    # RHEL-08-040210
+    # RHEL-08-040209
     - sysctl_net_ipv4_conf_default_accept_redirects
+
+    # RHEL-08-040210
     - sysctl_net_ipv6_conf_default_accept_redirects
 
     # RHEL-08-040220
@@ -1003,12 +1111,16 @@ selections:
     # RHEL-08-040230
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
 
-    # RHEL-08-040240
+    # RHEL-08-040239
     - sysctl_net_ipv4_conf_all_accept_source_route
+
+    # RHEL-08-040240
     - sysctl_net_ipv6_conf_all_accept_source_route
 
-    # RHEL-08-040250
+    # RHEL-08-040249
     - sysctl_net_ipv4_conf_default_accept_source_route
+
+    # RHEL-08-040250
     - sysctl_net_ipv6_conf_default_accept_source_route
 
     # RHEL-08-040260
@@ -1023,8 +1135,10 @@ selections:
     # RHEL-08-040270
     - sysctl_net_ipv4_conf_default_send_redirects
 
-    # RHEL-08-040280
+    # RHEL-08-040279
     - sysctl_net_ipv4_conf_all_accept_redirects
+
+    # RHEL-08-040280
     - sysctl_net_ipv6_conf_all_accept_redirects
 
     # RHEL-08-040281
@@ -1042,10 +1156,11 @@ selections:
     # RHEL-08-040285
     - sysctl_net_ipv4_conf_all_rp_filter
 
+    # RHEL-08-040286
+    - sysctl_net_core_bpf_jit_harden
+
     # RHEL-08-040290
-    # /etc/postfix/main.cf does not exist on default installation resulting in error during remediation
-    # there needs to be a new platform check to identify when postfix is installed or not
-    # - postfix_prevent_unrestricted_relay
+    - postfix_prevent_unrestricted_relay
 
     # RHEL-08-040300
     - aide_verify_ext_attributes

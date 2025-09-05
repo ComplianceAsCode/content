@@ -31,7 +31,7 @@ selections:
     # - var_audispd_remote_server=<remote audit server name/IP>
     - var_removable_partition=dev_cdrom
     - var_sssd_memcache_timeout=1_day
-    - var_time_service_set_maxpoll=system_default
+    - var_time_service_set_maxpoll=18_hours
     - var_accounts_minimum_age_login_defs=7
     - account_disable_post_pw_expiration
     - account_emergency_admin
@@ -44,6 +44,7 @@ selections:
     - account_emergency_admin
     - accounts_authorized_local_users
     - accounts_have_homedir_login_defs
+    - var_accounts_max_concurrent_login_sessions=10
     - accounts_max_concurrent_login_sessions
     - accounts_maximum_age_login_defs
     - accounts_no_uid_except_zero
@@ -75,6 +76,7 @@ selections:
     - auditd_audispd_disk_full_action
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_network_failure_action
+    - var_auditd_disk_full_action=syslog
     - auditd_data_disk_full_action
     - auditd_data_retention_action_mail_acct
     - auditd_data_retention_space_left
@@ -91,6 +93,8 @@ selections:
     - audit_rules_dac_modification_lsetxattr
     - audit_rules_dac_modification_removexattr
     - audit_rules_dac_modification_setxattr
+    - audit_rules_dac_modification_umount
+    - audit_rules_dac_modification_umount2
     - audit_rules_enable_syscall_auditing
     - audit_rules_execution_chacl
     - audit_rules_execution_chmod
@@ -102,13 +106,13 @@ selections:
     - audit_rules_kernel_module_loading_init
     - audit_rules_login_events_lastlog
     - audit_rules_login_events_tallylog
+    - audit_rules_media_export
     - audit_rules_privileged_commands_chage
     - audit_rules_privileged_commands_chfn
     - audit_rules_privileged_commands_chsh
     - audit_rules_privileged_commands_crontab
     - audit_rules_privileged_commands_gpasswd
     - audit_rules_privileged_commands_kmod
-    - audit_rules_privileged_commands_mount
     - audit_rules_privileged_commands_modprobe
     - audit_rules_privileged_commands_newgrp
     - audit_rules_privileged_commands_pam_timestamp_check
@@ -124,7 +128,6 @@ selections:
     - audit_rules_privileged_commands_unix2_chkpwd
     - audit_rules_privileged_commands_usermod
     - audit_rules_privileged_commands_sudoedit
-    - audit_rules_privileged_commands_umount
     - audit_rules_session_events_utmp
     - audit_rules_session_events_wtmp
     - audit_rules_suid_privilege_function
@@ -155,7 +158,6 @@ selections:
     - cracklib_accounts_password_pam_lcredit
     - cracklib_accounts_password_pam_minlen
     - cracklib_accounts_password_pam_ocredit
-    - cracklib_accounts_password_pam_retry
     - cracklib_accounts_password_pam_ucredit
     - dconf_db_up_to_date
     - dconf_gnome_banner_enabled
@@ -249,13 +251,13 @@ selections:
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
     - sshd_print_last_log
+    - sshd_idle_timeout_value=10_minutes
     - sshd_set_idle_timeout
     - var_sshd_set_keepalive=0
     - sshd_set_keepalive_0
     - sshd_set_loglevel_verbose
     - sshd_use_approved_ciphers_ordered_stig
     - sshd_use_approved_macs_ordered_stig
-    - sshd_use_priv_separation
     - sssd_memcache_timeout
     - sssd_offline_cred_expiration
     - sudo_remove_no_authenticate

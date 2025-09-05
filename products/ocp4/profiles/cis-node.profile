@@ -12,7 +12,7 @@ metadata:
 
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
-    Red Hat OpenShift Container Platform 4 Benchmark™, V0.3, currently unreleased.
+    Red Hat OpenShift Container Platform 4 Benchmark™, V1.1.
 
     This profile includes Center for Internet Security®
     Red Hat OpenShift Container Platform 4 CIS Benchmarks™ content.
@@ -170,8 +170,6 @@ selections:
     - kubelet_enable_protect_kernel_defaults
   # 4.2.7 Ensure that the --make-iptables-util-chains argument is set to true
     - kubelet_enable_iptables_util_chains
-  # 4.2.8 Ensure that the --hostname-override argument is not set
-    - kubelet_disable_hostname_override
   # 4.2.9 Ensure that the --event-qps argument is set to 0 or a level which ensures appropriate event capture
     - kubelet_configure_event_creation
   # 4.2.11 Ensure that the --rotate-certificates argument is not set to false

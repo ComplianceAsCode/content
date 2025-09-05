@@ -31,7 +31,7 @@ set(SSG_KICKSTART_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/kick
 
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
-set(SSG_PATCH_VERSION 57)
+set(SSG_PATCH_VERSION 58)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
@@ -52,6 +52,7 @@ option(SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED "If enabled, Ansible Playbooks for
 option(SSG_BASH_SCRIPTS_ENABLED "If enabled, Bash remediation scripts for each profile will be built and installed." TRUE)
 option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be cached into bytecode. Also see SSG_JINJA2_CACHE_DIR." TRUE)
 option(SSG_BATS_TESTS_ENABLED "If enabled, bats will be used to run unit-tests of bash remediations." TRUE)
+option(SSG_SCE_ENABLED "If enabled, additional SCE audit content will be enabled alongside OVAL-based auditing." FALSE)
 set(SSG_JINJA2_CACHE_DIR "${CMAKE_BINARY_DIR}/jinja2_cache" CACHE PATH "Where the jinja2 cached bytecode should be stored. This speeds up builds at the expense of disk space. You can use one location for multiple SSG builds for performance improvements.")
 
 # SSG_PRODUCT_DEFAULT modifies the behavior of all other options. Products
@@ -111,7 +112,7 @@ message(STATUS "")
 # discourage our users from using them
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     message(FATAL_ERROR "In-source builds are not supported! Please use out of source builds:\n"
-       "$ cd scap-security-guide\n"
+       "$ cd content\n"
        "$ rm CMakeCache.txt\n"
        "$ cd build\n"
        "$ cmake ../\n"
@@ -128,6 +129,7 @@ find_python_module(jinja2 REQUIRED)
 find_python_module(pytest)
 find_python_module(pytest_cov)
 find_python_module(json2html)
+find_python_module(yamlpath)
 
 # sphinx documentation requirements
 find_python_module(sphinx)
@@ -230,6 +232,7 @@ message(STATUS "python pytest module (optional): ${PY_PYTEST}")
 message(STATUS "ansible-playbook module (optional): ${ANSIBLE_PLAYBOOK_EXECUTABLE}")
 message(STATUS "ansible-lint module (optional): ${ANSIBLE_LINT_EXECUTABLE}")
 message(STATUS "yamllint module (optional): ${YAMLLINT_EXECUTABLE}")
+message(STATUS "yamlpath module (optional): ${PY_YAMLPATH}")
 message(STATUS "BATS framework (optional): ${BATS_EXECUTABLE}")
 message(STATUS "python sphinx module (optional): ${PY_SPHINX}")
 message(STATUS "python sphinxcontrib.autojinja module (optional): ${PY_SPHINXCONTRIB.AUTOJINJA}")

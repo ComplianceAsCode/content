@@ -26,6 +26,11 @@ description: |-
        tokenConfig:
          accessTokenInactivityTimeout: {{{ xccdf_value("var_oauth_inactivity_timeout") }}}
     </pre>
+    <pre>
+    Please note that the OAuth server converts the value internally to a human-readable format,
+    so that e.g. setting accessTokenInactivityTimeout=600s would be converted by the OAuth
+    server to accessTokenInactivityTimeout=10m0s.
+    </pre>
     For more information on configuring the OAuth server, consult the
     OpenShift documentation:
     {{{ weblink(link="https://docs.openshift.com/container-platform/4.7/authentication/configuring-oauth-clients.html") }}}

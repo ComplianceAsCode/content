@@ -4,9 +4,11 @@
 # strategy = configure
 # disruption = low
 
-. /usr/share/scap-security-guide/remediation_functions
 
 {{{ bash_package_install("firewalld") }}}
+
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
 {{{ bash_instantiate_variables("firewalld_sshd_zone") }}}
 
@@ -33,7 +35,7 @@ if [ $nic_bound = false ];then
     # Add first NIC to SSH enabled zone
 
     if ! firewall-cmd --state -q; then
-        replace_or_append "/etc/sysconfig/network-scripts/ifcfg-${eth_interface_list[0]}" '^ZONE=' "$firewalld_sshd_zone" '@CCENUM@' '%s=%s'
+        {{{ bash_replace_or_append("/etc/sysconfig/network-scripts/ifcfg-${eth_interface_list[0]}", '^ZONE=', "$firewalld_sshd_zone", '@CCENUM@', '%s=%s') | indent(8) }}}
     else
         # If firewalld service is running, we need to do this step with firewall-cmd
         # Otherwise firewalld will comunicate with NetworkManage and will revert assigned zone

@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
 # reboot = true
 # strategy = restrict
 # complexity = medium
@@ -30,7 +30,8 @@
 {{% else %}}
 
 - name: get current kernel parameters
-  command: '/usr/bin/grub2-editenv - list'
+  ansible.builtin.shell:
+    cmd: '/usr/bin/grub2-editenv - list | grep "kernelopts="'
   register: kernelopts
   changed_when: False
 

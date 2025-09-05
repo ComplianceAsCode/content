@@ -116,6 +116,15 @@ def parse_args():
         "or remediation done by using remediation roles "
         "that are saved to disk beforehand.")
 
+    common_parser.add_argument(
+        "--duplicate-templates",
+        dest="duplicate_templates",
+        default=False,
+        action="store_true",
+        help="Execute all tests even for tests using shared templates; "
+        "otherwise, executes one test per template type"
+    )
+
     subparsers = parser.add_subparsers(dest="subparser_name",
                                        help="Subcommands: profile, rule, combined")
     subparsers.required = True
@@ -170,6 +179,10 @@ def parse_args():
                              dest="dont_clean",
                              action="store_true",
                              help="Do not remove html reports of successful runs")
+    parser_rule.add_argument("--no-reports",
+                             dest="no_reports",
+                             action="store_true",
+                             help="Do not run oscap with --report and --results options")
     parser_rule.add_argument("--scenarios",
                              dest="scenarios_regex",
                              default=None,
@@ -190,14 +203,19 @@ def parse_args():
                                  dest="dont_clean",
                                  action="store_true",
                                  help="Do not remove html reports of successful runs")
+    parser_combined.add_argument("--no-reports",
+                                 dest="no_reports",
+                                 action="store_true",
+                                 help="Do not run oscap with --report and --results options")
     parser_combined.add_argument("--scenarios",
                                  dest="scenarios_regex",
                                  default=None,
                                  help="Regular expression matching test scenarios to run")
     parser_combined.add_argument("target",
+                                 nargs="+",
                                  metavar="TARGET",
-                                 help=("Profile whose rules are to be tested. Each rule selected "
-                                       "in the profile will be evaluated against all its test "
+                                 help=("Profiles whose rules are to be tested. Each rule selected "
+                                       "in a profile will be evaluated against all its test "
                                        "scenarios."))
 
     return parser.parse_args()
@@ -285,6 +303,14 @@ def datastream_in_stash(current_location):
 
 
 def normalize_passed_arguments(options):
+    targets = []
+    for target in options.target:
+        if ',' in target:
+            targets.extend(target.split(","))
+        else:
+            targets.append(target)
+    options.target = targets
+
     if 'ALL' in options.target:
         options.target = ['ALL']
 
@@ -296,7 +322,7 @@ def normalize_passed_arguments(options):
         match = product_regex.match(options.datastream)
         if not match:
             msg = "Unable to detect product without explicit --product: "
-            msg += "datastream {0} lacks product name".format(datastream)
+            msg += "datastream {0} lacks product name".format(options.datastream)
             raise RuntimeError(msg)
         options.product = match.group(1)
 
@@ -337,6 +363,7 @@ def normalize_passed_arguments(options):
     # Add in product to the test environment. This is independent of actual
     # test environment type so we do it after creation.
     options.test_env.product = options.product
+    options.test_env.duplicate_templates = options.duplicate_templates
 
     try:
         benchmark_cpes = xml_operations.benchmark_get_applicable_platforms(

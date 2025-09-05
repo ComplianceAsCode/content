@@ -91,16 +91,21 @@
     - path (String): Path to the configuration file to be checked.
     - parameter (String): The parameter to be checked in the configuration file.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
+    - id_stem (String): The first suffix of tests, objects etc. that ensures uniqueness of the particular OVAL entity ID. Defaults to the rule ID.
 #}}
-{{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false) -%}}
+{{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false, comment='', id_stem='') -%}}
+{{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
 {{%- set prefix_text = "Check the" -%}}
 {{%- if missing_parameter_pass %}}
 {{%- set suffix_id = suffix_id_default_not_overriden -%}}
 {{%- set prefix_text = prefix_text + " absence of" -%}}
 {{%- endif %}}
-      <criterion comment="{{{ prefix_text }}} {{{ parameter }}} in {{{ path }}}"
-      test_ref="test_{{{ rule_id }}}{{{ suffix_id }}}" />
+{{%- if not comment -%}}
+{{%- set comment = prefix_text ~ " " ~ parameter ~ " in " ~ path -%}}
+{{%- endif -%}}
+<criterion comment="{{{ comment }}}"
+  test_ref="test_{{{ id_stem }}}{{{ suffix_id }}}" />
 {{%- endmacro %}}
 
 {{#
@@ -109,8 +114,10 @@
     - path (String): Path to the configuration file to be checked.
     - parameter (String): The parameter to be checked in the configuration file.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
+    - id_stem (String): The first suffix of tests, objects etc. that ensures uniqueness of the particular OVAL entity ID. Defaults to the rule ID.
 #}}
-{{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false) -%}}
+{{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false, id_stem='') -%}}
+{{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
 {{%- if missing_parameter_pass %}}
 {{%- set check_existence = "none_exist" -%}}
@@ -120,28 +127,31 @@
 {{%- set check_existence = "all_exist" -%}}
 {{%- set prefix_text = "value" -%}}
 {{%- endif %}}
-  <ind:textfilecontent54_test check="all" check_existence="{{{ check_existence }}}"
+<ind:textfilecontent54_test check="all" check_existence="{{{ check_existence }}}"
   comment="tests the {{{ prefix_text }}} of {{{ parameter }}} setting in the {{{ path }}} file"
-  id="test_{{{ rule_id }}}{{{ suffix_id }}}" version="1">
-  <ind:object object_ref="obj_{{{ rule_id }}}{{{ suffix_id }}}" />
+  id="test_{{{ id_stem }}}{{{ suffix_id }}}" version="1">
+  <ind:object object_ref="obj_{{{ id_stem }}}{{{ suffix_id }}}" />
   {{%- if not missing_parameter_pass %}}
-  <ind:state state_ref="state_{{{ rule_id }}}{{{ suffix_id }}}" />
+  <ind:state state_ref="state_{{{ id_stem }}}{{{ suffix_id }}}" />
   {{%- endif %}}
-  </ind:textfilecontent54_test>
+</ind:textfilecontent54_test>
 {{%- endmacro %}}
 
 {{#
   Macro to check if a parameter in a configuration file is set (Object definition).
   This macro can take six parameters:
-    - path (String): Path to the configuration file to be checked.
+    - path_or_filepath (String): Either `filepath` to the configuration file to be checked, or if `filename_regex` is specified, path to the directory where filenames are matched against it.
     - section (String): If set, the parameter will be checked only within the given section defined by [section].
     - prefix_regex (String): Regular expression to be used in the beginning of the OVAL text file content check.
     - parameter (String): The parameter to be checked in the configuration file.
     - separator_regex (String): Regular expression to be used as the separator of parameter and value in a configuration file. If spaces are allowed, this should be included in the regular expression.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
+    - filename_regex (String): If specified, the first argument is interpreted as `path`, and this will serve as `filename` regex.
+    - id_stem (String): The first suffix of tests, objects etc. that ensures uniqueness of the particular OVAL entity ID. Defaults to the rule ID.
 #}}
-{{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, filepath_regex='') -%}}
+{{%- macro oval_line_in_file_object(path_or_filepath='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, filename_regex='', id_stem='') -%}}
+{{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
 {{%- if multi_value -%}}
 {{%- set group_regex = "([^#]*).*$" -%}}
@@ -173,16 +183,16 @@
 {{%- set regex = prefix_regex+parameter+separator_regex+group_regex -%}}
 {{%- endif %}}
 {{%- endif %}}
-  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}{{{ suffix_id }}}" version="1">
-{{%- if filepath_regex %}}
-    <ind:path>{{{ path }}}</ind:path>
-    <ind:filename operation="pattern match">{{{ filepath_regex }}}</ind:filename>
+<ind:textfilecontent54_object id="obj_{{{ id_stem }}}{{{ suffix_id }}}" version="1">
+{{%- if filename_regex %}}
+  <ind:path>{{{ path_or_filepath }}}</ind:path>
+  <ind:filename operation="pattern match">{{{ filename_regex }}}</ind:filename>
 {{%- else %}}
-    <ind:filepath>{{{ path }}}</ind:filepath>
+  <ind:filepath>{{{ path_or_filepath }}}</ind:filepath>
 {{%- endif %}}
-    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
+  <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
+  <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+</ind:textfilecontent54_object>
 {{%- endmacro %}}
 
 {{#
@@ -192,8 +202,10 @@
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
     - quotes (String): If non-empty, one level of matching quotes is considered when checking the value. Specify one or more quote types as a string.
       For example, for shell quoting, specify quotes="'\""), which will make sure that value, 'value' and "value" are matched, but 'value" or '"value"' won't be.
+    - id_stem (String): The first suffix of tests, objects etc. that ensures uniqueness of the particular OVAL entity ID. Defaults to the rule ID.
 #}}
-{{%- macro oval_line_in_file_state(value='', multi_value='', quotes='') -%}}
+{{%- macro oval_line_in_file_state(value='', multi_value='', quotes='', id_stem='') -%}}
+{{%- set id_stem = id_stem or rule_id -%}}
 {{%- set regex = value -%}}
 {{%- if quotes != "" %}}
 {{%- if "\\1" in value > 0 %}}
@@ -206,9 +218,25 @@
 {{%- else %}}
 {{%- set regex = "^"+regex+"$" -%}}
 {{%- endif %}}
-  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
-    <ind:subexpression datatype="string" operation="pattern match">{{{ regex }}}</ind:subexpression>
-  </ind:textfilecontent54_state>
+<ind:textfilecontent54_state id="state_{{{ id_stem }}}" version="1">
+  <ind:subexpression datatype="string" operation="pattern match">{{{ regex }}}</ind:subexpression>
+</ind:textfilecontent54_state>
+{{%- endmacro %}}
+
+{{%- macro oval_line_in_directory_criterion(path='', parameter='', missing_parameter_pass=false) -%}}
+{{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir") -}}}
+{{%- endmacro %}}
+
+{{%- macro oval_line_in_directory_test(path='', parameter='', missing_parameter_pass=false) -%}}
+{{{ oval_line_in_file_test(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir") }}}
+{{%- endmacro %}}
+
+{{%- macro oval_line_in_directory_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false) -%}}
+{{{- oval_line_in_file_object(path_or_filepath=path, section=section, prefix_regex=prefix_regex, parameter=parameter, separator_regex=separator_regex, missing_parameter_pass=missing_parameter_pass, multi_value=multi_value, filename_regex=".*\.conf$", id_stem=rule_id ~ "_config_dir") -}}}
+{{%- endmacro %}}
+
+{{%- macro oval_line_in_directory_state(value='', multi_value='', quotes='') -%}}
+{{{- oval_line_in_file_state(value, multi_value, quotes, id_stem=rule_id ~ "_config_dir") -}}}
 {{%- endmacro %}}
 
 {{#
@@ -244,27 +272,26 @@
 {{#
   Macro to define the OVAL test to check if the configuration file exists (Test definition).
   Parameters:
-    - filepath (String): Path to the configuration file to be checked.
-    - id of the test name - the test will be named test_<id>, the respective object object_<id> etc.
+    - filepath_regex (String): Regex to the filepath to be checked, will be perfixed by ^.
 #}}
-{{%- macro oval_file_absent(filepath) -%}}
-  <unix:file_test check="all" check_existence="none_exist" id="test_{{{ rule_id }}}_file_{{{ filepath|escape_id }}}_absent"
-  comment="Check if {{{ filepath }}} does not exist" version="1">
-    <unix:object object_ref="object_{{{ rule_id }}}_file_{{{ filepath|escape_id }}}_absent" />
+{{%- macro oval_file_absent(filepath_regex) -%}}
+  <unix:file_test check="all" check_existence="none_exist" id="test_{{{ rule_id }}}_file_{{{ filepath_regex|escape_id }}}_absent"
+  comment="Check if {{{ filepath_regex }}} does not exist" version="1">
+    <unix:object object_ref="object_{{{ rule_id }}}_file_{{{ filepath_regex|escape_id }}}_absent" />
   </unix:file_test>
-  <unix:file_object id="object_{{{ rule_id }}}_file_{{{ filepath|escape_id }}}_absent" version="1">
-    <unix:filepath operation="pattern match">^{{{ filepath }}}</unix:filepath>
+  <unix:file_object id="object_{{{ rule_id }}}_file_{{{ filepath_regex|escape_id }}}_absent" version="1">
+    <unix:filepath operation="pattern match">^{{{ filepath_regex }}}</unix:filepath>
   </unix:file_object>
 {{%- endmacro %}}
 
 {{#
   Macro to define the OVAL object to check if the configuration file exists (Object definition).
   This macro can take one parameter:
-    - path (String): Path to the configuration file to be checked.
+    - filepath_regex (String): Regex to the filepath to be checked, will be perfixed by ^.
 #}}
-{{%- macro oval_config_file_exists_object(path='') -%}}
-  <unix:file_object id="obj_{{{ rule_id }}}_config_file" comment="The configuration file {{{ path }}} for {{{ rule_id }}}" version="1">
-    <unix:filepath operation="pattern match">^{{{ path }}}</unix:filepath>
+{{%- macro oval_config_file_exists_object(filepath_regex='') -%}}
+  <unix:file_object id="obj_{{{ rule_id }}}_config_file" comment="The configuration file {{{ filepath_regex }}} for {{{ rule_id }}}" version="1">
+    <unix:filepath operation="pattern match">^{{{ filepath_regex }}}</unix:filepath>
   </unix:file_object>
 {{%- endmacro %}}
 
@@ -283,7 +310,7 @@
 {{%- else -%}}
 {{%- set name_value = name -%}}
 {{%- endif -%}}
-  <criterion comment="Check if argument {{{ name_value }}}{{% if application %}} for {{{ application }}}{{% endif %}} is {{% if negate %}}not {{% endif %}}present in {{{ filepath }}}" 
+  <criterion comment="Check if argument {{{ name_value }}}{{% if application %}} for {{{ application }}}{{% endif %}} is {{% if negate %}}not {{% endif %}}present in {{{ filepath }}}"
   test_ref="test_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}" {{% if negate %}}negate="true" {{% endif %}}/>
 {{%- endmacro -%}}
 
@@ -646,7 +673,7 @@
     </criteria>
   </definition>
   {{{ oval_line_in_file_test(path, parameter) }}}
-  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, false, filepath_regex='^.*$') }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, false, filename_regex='^.*$') }}}
   {{{ oval_line_in_file_state(value, false, quotes) }}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
@@ -662,5 +689,69 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+</def-group>
+{{%- endmacro %}}
+
+
+{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed) -%}}
+{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
+{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{%- set description = "Ensure '" ~ parameter ~ "' is configured with value '" ~ value ~ "' in " ~ sshd_config_path %}}
+{{%- if config_is_distributed %}}
+{{%- set description = description  ~ " and in " ~ sshd_config_dir -%}}
+{{%- endif %}}
+{{%- set case_insensitivity_kwargs = dict(prefix_regex="^[ \\t]*(?i)", separator_regex = "(?-i)[ \\t]+") -%}}
+
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+   {{{ oval_metadata(description) }}}
+   <criteria comment="sshd is configured correctly or is not installed" operator="OR">
+     <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+          definition_ref="sshd_not_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server removed"
+          definition_ref="package_openssh-server_removed" />
+     </criteria>
+     <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset"
+          definition_ref="sshd_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server installed"
+          definition_ref="package_openssh-server_installed" />
+        <criteria comment="sshd is configured correctly" operator="OR">
+          {{{- oval_line_in_file_criterion(sshd_config_path, parameter) | indent(8) }}}
+          {{%- if missing_parameter_pass %}}
+          <criteria comment="sshd is not configured incorrectly" operator="AND">
+          {{{- oval_line_in_file_criterion(sshd_config_path, parameter, missing_parameter_pass) | indent(10)}}}
+          {{%- if config_is_distributed %}}
+          {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, missing_parameter_pass) | indent(10) }}}
+          {{%- endif %}}
+          </criteria>
+          {{%- endif %}}
+          {{%- if config_is_distributed %}}
+          {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter) | indent(8) }}}
+          {{%- endif %}}
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+  {{{ oval_line_in_file_test(sshd_config_path, parameter) | indent (2) }}}
+  {{{ oval_line_in_file_object(sshd_config_path, parameter=parameter, ** case_insensitivity_kwargs)| indent (2) }}}
+  {{{ oval_line_in_file_state(value) | indent (2) }}}
+
+  {{%- if missing_parameter_pass %}}
+  {{{ oval_line_in_file_test(sshd_config_path, parameter, missing_parameter_pass) | indent(2) }}}
+  {{{ oval_line_in_file_object(sshd_config_path, parameter=parameter, missing_parameter_pass=missing_parameter_pass, ** case_insensitivity_kwargs) | indent(2) }}}
+  {{%- endif %}}
+
+  {{%- if config_is_distributed %}}
+  {{{ oval_line_in_directory_test(sshd_config_dir, parameter) | indent (2) }}}
+  {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, ** case_insensitivity_kwargs) | indent (2) }}}
+  {{{ oval_line_in_directory_state(value) | indent (2) }}}
+
+  {{%- if missing_parameter_pass %}}
+  {{{ oval_line_in_directory_test(sshd_config_path, parameter, missing_parameter_pass) | indent(2) }}}
+  {{{ oval_line_in_directory_object(sshd_config_path, parameter=parameter, missing_parameter_pass=missing_parameter_pass, ** case_insensitivity_kwargs) | indent(2) }}}
+  {{%- endif %}}
+  {{%- endif %}}
 </def-group>
 {{%- endmacro %}}

@@ -1,0 +1,38 @@
+name: Gate
+on:
+  push:
+    branches: [ 'master', '*', '!stabilization*', '!stable*' ]
+  pull_request:
+    branches: [ 'master', 'stabilization*' ]
+jobs:
+  validate-ubuntu:
+    name: Build, Test on Ubuntu 20.04
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install Deps
+        uses: mstksg/get-package@master
+        with:
+          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml ansible-lint python3-github bats python3-pytest python3-pytest-cov
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: ./build_product chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 rhosp10 rhosp13 sle12 sle15 ubuntu2004
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build
+
+  validate-fedora:
+    name: Build, Test on Fedora 33 (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:33
+    steps:
+      - name: Install Deps
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: ./build_product chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 rhosp10 rhosp13 sle12 sle15 ubuntu2004 ocp4
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build

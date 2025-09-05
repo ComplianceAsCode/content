@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: ubuntu2004
+
+title: 'Verify Permissions on /etc/cron.allow file'
+
+description: |-
+    If <tt>/etc/cron.allow</tt> exists, it must have permissions <tt>0640</tt>
+    or more restrictive.
+
+    {{{ describe_file_permissions(file="/etc/cron.allow", perms="0640") }}}
+
+rationale: |-
+    If the permissions of the cron.allow file are not set to 0640 or more restrictive,
+    the possibility exists for an unauthorized user to view or edit sensitive information.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 5.1.8
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cron.allow", perms="-rw-r-----") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/cron.allow", perms="-rw-r-----") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/cron.allow
+        missing_file_pass: 'true'
+        filemode: '0640'

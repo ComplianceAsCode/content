@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Ensure /var/log/openshift-apiserver Located On Separate Partition'
+
+description: |-
+    Openshift API server audit logs are stored in the
+    <tt>/var/log/openshift-apiserver</tt> directory.
+    {{{ partition_description(part="/var/log/openshift-apiserver") }}}
+
+rationale: |-
+    Placing <tt>/var/log/openshift-apiserver</tt> in its own partition
+    enables better separation between Openshift API server audit
+    files and other log files, and helps ensure that
+    auditing cannot be halted due to the partition running out
+    of space.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-86094-0
+
+references:
+    nist: AU-4
+
+{{{ complete_ocil_entry_separate_partition(part="/var/log/openshift-apiserver") }}}
+
+# (jhrozek): at the moment, the mount probe checks the /proc filesystem
+# even if openscap looks at a chroot, which doesn't allow to check for
+# mount points when checking RHCOS4 via CO
+{{% if product != "ocp4" %}}
+template:
+    name: mount
+    vars:
+        mountpoint: /var/log/openshift-apiserver
+{{% endif %}}

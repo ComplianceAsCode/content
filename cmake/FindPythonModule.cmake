@@ -7,6 +7,17 @@ function(find_python_module module)
 		if(ARGC GREATER 1 AND ARGV1 STREQUAL "REQUIRED")
 			set(PY_${module}_FIND_REQUIRED TRUE)
 		endif()
+		if($ENV{SSG_USE_PIP_PACKAGES})
+			execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
+				"import platform; print(''.join('python'+platform.python_version()[:-2]))"
+				RESULT_VARIABLE _python_version_status
+				OUTPUT_VARIABLE _python_version
+				ERROR_QUIET
+				OUTPUT_STRIP_TRAILING_WHITESPACE)
+			if(NOT ${_python_version_status})
+				set(ENV{PYTHONPATH} "/usr/local/lib/${_python_version}/site-packages:/usr/local/lib64/${_python_version}/site-packages")
+			endif()
+		endif()
 		# A module's location is usually a directory, but for binary modules
 		# it's a .so file.
 		execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"

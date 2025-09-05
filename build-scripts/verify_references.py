@@ -40,6 +40,7 @@ import ssg.xml
 xccdf_ns = ssg.constants.XCCDF11_NS
 oval_ns = ssg.constants.oval_namespace
 ocil_cs = ssg.constants.ocil_cs
+sce_cs = ssg.constants.SCE_SYSTEM
 
 # we use these strings to look for references within the XCCDF rules
 nist_ref_href = "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf"
@@ -80,6 +81,8 @@ def parse_options():
     parser.add_option("--ovaldefs-unused", default=False,
                       action="store_true", dest="ovaldefs_unused",
                       help="print OVAL definitions which are not used by any XCCDF Rule")
+    parser.add_option("--base-dir", default=False, action="store", dest="base_dir",
+                      help="path to the build directory")
     parser.add_option("--all-checks", default=False, action="store_true",
                       dest="all_checks",
                       help="perform all checks on the given XCCDF file")
@@ -104,7 +107,7 @@ def get_ovalfiles(checks):
             if not checkcontentref_hrefattr.startswith("http://") and \
                not checkcontentref_hrefattr.startswith("https://"):
                 ovalfiles.add(checkcontentref_hrefattr)
-        elif check.get("system") != ocil_cs:
+        elif check.get("system") != ocil_cs and check.get("system") != sce_cs:
             print("ERROR: Non-OVAL checking system found: %s"
                   % (check.get("system")))
             exit_value = 1
@@ -189,10 +192,12 @@ def main():
     # now we can actually do the verification work here
     if options.rules_with_invalid_checks or options.all_checks:
         for check_content_ref in check_content_refs:
-
+            parent = xccdf_parent_map[check_content_ref]
+            rule = xccdf_parent_map[parent]
+            check_system = parent.get("system")
             # Skip those <check-content-ref> elements using OCIL as the checksystem
             # (since we are checking just referenced OVAL definitions)
-            if xccdf_parent_map[check_content_ref].get("system") == ocil_cs:
+            if check_system == ocil_cs:
                 continue
 
             # Obtain the value of the 'href' attribute of particular
@@ -207,14 +212,20 @@ def main():
                check_content_ref_href_attr.startswith("https://"):
                 continue
 
-            refname = check_content_ref.get("name")
-            if refname not in ovaldef_ids:
-                rule = xccdf_parent_map[
-                    xccdf_parent_map[check_content_ref]
-                ]
-                print("ERROR: Invalid OVAL definition referenced by XCCDF Rule: %s"
-                      % (rule.get("id")))
-                exit_value = 1
+            if check_system == sce_cs:
+                check_path = os.path.join(options.base_dir, check_content_ref_href_attr)
+                if not os.path.exists(check_path):
+                    msg = "ERROR: Invalid or missing SCE definition (%s) "
+                    msg += "referenced by XCCDF Rule: %s"
+                    msg = msg % (check_path, rule.get("id"))
+                    print(msg)
+                    exit_value = 1
+            else:
+                refname = check_content_ref.get("name")
+                if refname not in ovaldef_ids:
+                    print("ERROR: Invalid OVAL definition referenced by XCCDF Rule: %s"
+                          % (rule.get("id")))
+                    exit_value = 1
 
     if options.rules_without_checks or options.all_checks:
         for rule in rules:

@@ -4,8 +4,7 @@ title: 'Ensure /var/log Located On Separate Partition'
 
 description: |-
     System logs are stored in the <tt>/var/log</tt> directory.
-    Ensure that it has its own partition or logical
-    volume at installation time, or migrate it using LVM.
+    {{{ partition_description(part="/var/log") }}}
 
 rationale: |-
     Placing <tt>/var/log</tt> in its own partition
@@ -25,7 +24,8 @@ references:
     cis-csc: 1,12,14,15,16,3,5,6,8
     cis@rhel7: 1.1.15
     cis@rhel8: 1.1.11
-    cis@sle: 1.1.12
+    cis@sle12: 1.1.15
+    cis@sle15: 1.1.15
     cis@ubuntu1804: 1.1.10
     cis@ubuntu2004: 1.1.15
     cobit5: APO11.04,APO13.01,BAI03.05,DSS05.02,DSS05.04,DSS05.07,MEA02.01
@@ -43,7 +43,12 @@ references:
 
 platform: machine
 
+# (jhrozek): at the moment, the mount probe checks the /proc filesystem
+# even if openscap looks at a chroot, which doesn't allow to check for
+# mount points when checking RHCOS4 via CO
+{{% if product != "rhcos4" %}}
 template:
     name: mount
     vars:
         mountpoint: /var/log
+{{% endif %}}

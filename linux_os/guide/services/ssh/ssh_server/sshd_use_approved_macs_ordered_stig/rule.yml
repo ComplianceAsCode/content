@@ -37,7 +37,7 @@ ocil: |-
     MACs are in use, run the following command:
     <pre>$ sudo grep -i macs /etc/ssh/sshd_config</pre>
     The output should contain only following MACs (or a subset) in the exact order:
-    <pre>hmac-sha2-512,hmac-sha2-256</pre>
+    <pre>MACs {{{ xccdf_value("sshd_approved_macs") }}}</pre>
 
 warnings:
     - general: |-

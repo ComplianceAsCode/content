@@ -1,0 +1,16 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("Ensure that McAfee Endpoint Security for Linux (ENSL) is running.") }}}
+        <criteria>
+            <criterion comment="McAfee ENSL is running" test_ref="test_{{{ rule_id }}}"/>
+        </criteria>
+    </definition>
+    <unix:process58_test check="all" id="test_{{{ rule_id }}}" comment="is mfetpd running" version="1">
+        <unix:object object_ref="obj_{{{ rule_id }}}"/>
+    </unix:process58_test>
+
+    <unix:process58_object id="obj_{{{ rule_id }}}" version="1">
+        <unix:command_line operation="pattern match">^mfetpd.*$</unix:command_line>
+        <unix:pid datatype="int" operation="greater than">0</unix:pid>
+    </unix:process58_object>
+</def-group>

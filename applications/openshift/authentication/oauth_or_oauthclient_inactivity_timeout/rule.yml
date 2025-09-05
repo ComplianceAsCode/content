@@ -25,6 +25,11 @@ description: |-
     spec:
        tokenConfig:
          accessTokenInactivityTimeout: 10m0s 
+    <pre>
+    Please note that the OAuth server converts the value internally to a human-readable format,
+    so that e.g. setting accessTokenInactivityTimeout=600s would be converted by the OAuth
+    server to accessTokenInactivityTimeout=10m0s.
+    </pre>
     </pre>
     For more information on configuring the OAuth server, consult the
     OpenShift documentation:

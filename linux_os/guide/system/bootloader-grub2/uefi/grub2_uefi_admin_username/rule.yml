@@ -20,7 +20,7 @@ description: |-
     Once the superuser account has been added,
     update the
     <tt>grub.cfg</tt> file by running:
-    <pre>grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre>
+    <pre>grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
 
 rationale: |-
     Having a non-default grub superuser username makes password-guessing attacks less effective.
@@ -54,9 +54,9 @@ references:
     nist-csf: PR.AC-4,PR.AC-6,PR.PT-3
     ospp: FIA_UAU.1
     srg: SRG-OS-000080-GPOS-00048
-    stigid@ol7: OL07-00-010490
-    stigid@rhel7: RHEL-07-010490
-    stigid@rhel8: RHEL-08-010140
+    stigid@ol7: OL07-00-010492
+    stigid@rhel7: RHEL-07-010492
+    stigid@rhel8: RHEL-08-010141
 
 ocil_clause: 'it does not'
 

@@ -185,7 +185,7 @@ selections:
     - file_permissions_system_commands_dirs
     - file_permission_user_init_files
     - ftp_present_banner
-    - gnome_gdm_disable_automatic_login
+    - gnome_gdm_disable_unattended_automatic_login
     - dconf_gnome_screensaver_idle_delay
     - grub2_password
     - grub2_uefi_password
@@ -208,7 +208,6 @@ selections:
     - package_aide_installed
     - package_audit-audispd-plugins_installed
     - package_audit_installed
-    - package_MFEhiplsm_installed
     - package_pam_apparmor_installed
     - package_SuSEfirewall2_installed
     - package_telnet-server_removed
@@ -276,6 +275,7 @@ selections:
     - sysctl_net_ipv6_conf_all_accept_redirects
     - sysctl_net_ipv6_conf_all_accept_source_route
     - sysctl_net_ipv6_conf_default_accept_source_route
+    - sysctl_net_ipv6_conf_default_forwarding
     - sysctl_net_ipv6_conf_default_accept_redirects
     - sysctl_net_ipv6_conf_all_forwarding
     - vlock_installed

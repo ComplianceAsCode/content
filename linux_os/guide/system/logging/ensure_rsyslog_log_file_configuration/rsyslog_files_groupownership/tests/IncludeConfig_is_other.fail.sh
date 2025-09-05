@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle
 
 # Check rsyslog.conf with root group-owner log from rules and
 # non root group-owner log from $IncludeConfig fails.

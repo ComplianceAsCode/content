@@ -1,0 +1,27 @@
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_sle
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Start ntpd service if ntp installed
+  service:
+    name: "ntpd"
+    enabled: "yes"
+    state: "started"
+    masked: "no"
+  when: "'ntp' in ansible_facts.packages"
+  ignore_errors: yes
+
+
+- name: Start chronyd service if chrony or chronyd installed
+  service:
+    name: "chronyd"
+    enabled: "yes"
+    state: "started"
+    masked: "no"
+  when: ('chrony' in ansible_facts.packages) or ('chronyd' in ansible_facts.packages)
+  ignore_errors: yes

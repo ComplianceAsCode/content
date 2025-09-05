@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 8 V1R2.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R3.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -24,7 +24,10 @@ documentation_complete: true
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
 - account_disable_post_pw_expiration
+- account_emergency_expire_date
 - account_temp_expire_date
+- account_unique_id
+- accounts_authorized_local_users
 - accounts_have_homedir_login_defs
 - accounts_logon_fail_delay
 - accounts_max_concurrent_login_sessions
@@ -34,6 +37,7 @@ selections:
 - accounts_password_all_shadowed_sha512
 - accounts_password_minlen_login_defs
 - accounts_password_pam_dcredit
+- accounts_password_pam_dictcheck
 - accounts_password_pam_difok
 - accounts_password_pam_lcredit
 - accounts_password_pam_maxclassrepeat
@@ -60,20 +64,89 @@ selections:
 - accounts_user_home_paths_only
 - accounts_user_interactive_home_directory_defined
 - accounts_user_interactive_home_directory_exists
+- agent_mfetpd_running
+- aide_check_audit_tools
 - aide_scan_notification
 - aide_verify_acls
 - aide_verify_ext_attributes
+- audit_immutable_login_uids
+- audit_rules_dac_modification_chmod
+- audit_rules_dac_modification_chown
+- audit_rules_dac_modification_fchmod
+- audit_rules_dac_modification_fchmodat
+- audit_rules_dac_modification_fchown
+- audit_rules_dac_modification_fchownat
+- audit_rules_dac_modification_fremovexattr
+- audit_rules_dac_modification_fsetxattr
+- audit_rules_dac_modification_lchown
+- audit_rules_dac_modification_lremovexattr
+- audit_rules_dac_modification_lsetxattr
+- audit_rules_dac_modification_removexattr
+- audit_rules_dac_modification_setxattr
+- audit_rules_execution_chacl
+- audit_rules_execution_chcon
+- audit_rules_execution_semanage
+- audit_rules_execution_setfacl
+- audit_rules_execution_setfiles
+- audit_rules_execution_setsebool
+- audit_rules_file_deletion_events_rename
+- audit_rules_file_deletion_events_renameat
+- audit_rules_file_deletion_events_rmdir
+- audit_rules_file_deletion_events_unlink
+- audit_rules_file_deletion_events_unlinkat
+- audit_rules_immutable
+- audit_rules_kernel_module_loading_delete
+- audit_rules_kernel_module_loading_finit
+- audit_rules_kernel_module_loading_init
+- audit_rules_login_events_lastlog
+- audit_rules_media_export
+- audit_rules_privileged_commands_chage
+- audit_rules_privileged_commands_chsh
+- audit_rules_privileged_commands_crontab
+- audit_rules_privileged_commands_gpasswd
+- audit_rules_privileged_commands_kmod
+- audit_rules_privileged_commands_mount
+- audit_rules_privileged_commands_newgrp
+- audit_rules_privileged_commands_pam_timestamp_check
+- audit_rules_privileged_commands_passwd
+- audit_rules_privileged_commands_postdrop
+- audit_rules_privileged_commands_postqueue
+- audit_rules_privileged_commands_ssh_agent
+- audit_rules_privileged_commands_ssh_keysign
+- audit_rules_privileged_commands_su
+- audit_rules_privileged_commands_sudo
+- audit_rules_privileged_commands_umount
+- audit_rules_privileged_commands_unix_chkpwd
+- audit_rules_privileged_commands_unix_update
+- audit_rules_privileged_commands_userhelper
+- audit_rules_privileged_commands_usermod
+- audit_rules_sudoers
+- audit_rules_sudoers_d
 - audit_rules_suid_privilege_function
+- audit_rules_unsuccessful_file_modification_creat
+- audit_rules_unsuccessful_file_modification_ftruncate
+- audit_rules_unsuccessful_file_modification_open
+- audit_rules_unsuccessful_file_modification_open_by_handle_at
+- audit_rules_unsuccessful_file_modification_openat
+- audit_rules_unsuccessful_file_modification_truncate
+- audit_rules_usergroup_modification_group
+- audit_rules_usergroup_modification_gshadow
+- audit_rules_usergroup_modification_opasswd
+- audit_rules_usergroup_modification_passwd
+- audit_rules_usergroup_modification_shadow
 - auditd_audispd_configure_sufficiently_large_partition
 - auditd_data_disk_error_action
 - auditd_data_disk_full_action
 - auditd_data_retention_action_mail_acct
 - auditd_data_retention_max_log_file_action
 - auditd_data_retention_space_left_action
+- auditd_data_retention_space_left_percentage
 - auditd_local_events
 - auditd_log_format
 - auditd_name_format
+- auditd_overflow_action
 - banner_etc_issue
+- bios_enable_execution_restrictions
 - chronyd_client_only
 - chronyd_no_chronyc_network
 - chronyd_or_ntpd_set_maxpoll
@@ -99,8 +172,11 @@ selections:
 - dconf_gnome_login_banner_text
 - dconf_gnome_screensaver_idle_delay
 - dconf_gnome_screensaver_lock_enabled
+- dir_group_ownership_library_dirs
 - dir_perms_world_writable_root_owned
 - dir_perms_world_writable_sticky_bits
+- directory_group_ownership_var_log_audit
+- directory_ownership_var_log_audit
 - directory_permissions_var_log_audit
 - disable_ctrlaltdel_burstaction
 - disable_ctrlaltdel_reboot
@@ -111,6 +187,7 @@ selections:
 - encrypt_partitions
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_local_packages
+- file_group_ownership_var_log_audit
 - file_groupowner_var_log
 - file_groupowner_var_log_messages
 - file_groupownership_home_directories
@@ -119,9 +196,11 @@ selections:
 - file_owner_var_log_messages
 - file_ownership_binary_dirs
 - file_ownership_library_dirs
-- file_ownership_var_log_audit
+- file_ownership_var_log_audit_stig
 - file_permission_user_init_files
 - file_permissions_binary_dirs
+- file_permissions_etc_audit_auditd
+- file_permissions_etc_audit_rulesd
 - file_permissions_home_directories
 - file_permissions_library_dirs
 - file_permissions_sshd_private_key
@@ -141,6 +220,10 @@ selections:
 - grub2_uefi_admin_username
 - grub2_uefi_password
 - grub2_vsyscall_argument
+- harden_sshd_ciphers_openssh_conf_crypto_policy
+- harden_sshd_ciphers_opensshserver_conf_crypto_policy
+- harden_sshd_macs_openssh_conf_crypto_policy
+- harden_sshd_macs_opensshserver_conf_crypto_policy
 - install_smartcard_packages
 - installed_OS_is_vendor_supported
 - kerberos_disable_no_keytab
@@ -156,6 +239,7 @@ selections:
 - mount_option_dev_shm_nodev
 - mount_option_dev_shm_noexec
 - mount_option_dev_shm_nosuid
+- mount_option_home_noexec
 - mount_option_home_nosuid
 - mount_option_nodev_nonroot_local_partitions
 - mount_option_nodev_remote_filesystems
@@ -198,6 +282,7 @@ selections:
 - package_gssproxy_removed
 - package_iprutils_removed
 - package_krb5-workstation_removed
+- package_mcafeetp_installed
 - package_opensc_installed
 - package_openssh-server_installed
 - package_policycoreutils_installed
@@ -219,9 +304,14 @@ selections:
 - partition_for_var_log_audit
 - partition_for_var_tmp
 - postfix_client_configure_mail_alias
+- postfix_prevent_unrestricted_relay
 - require_emergency_target_auth
 - require_singleuser_auth
+- root_permissions_syslibrary_files
 - rsyslog_cron_logging
+- rsyslog_encrypt_offload_actionsendstreamdriverauthmode
+- rsyslog_encrypt_offload_actionsendstreamdrivermode
+- rsyslog_encrypt_offload_defaultnetstreamdriver
 - rsyslog_remote_access_monitoring
 - rsyslog_remote_loghost
 - security_patches_up_to_date
@@ -240,7 +330,6 @@ selections:
 - service_usbguard_enabled
 - set_password_hashing_algorithm_logindefs
 - set_password_hashing_algorithm_systemauth
-- ssh_client_rekey_limit
 - sshd_disable_compression
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
@@ -257,6 +346,8 @@ selections:
 - sshd_set_keepalive_0
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
+- sssd_certificate_verification
+- sssd_enable_certmap
 - sssd_enable_smartcards
 - sssd_offline_cred_expiration
 - sudo_remove_no_authenticate
@@ -275,6 +366,7 @@ selections:
 - sysctl_kernel_randomize_va_space
 - sysctl_kernel_unprivileged_bpf_disabled
 - sysctl_kernel_yama_ptrace_scope
+- sysctl_net_core_bpf_jit_harden
 - sysctl_net_ipv4_conf_all_accept_redirects
 - sysctl_net_ipv4_conf_all_accept_source_route
 - sysctl_net_ipv4_conf_all_rp_filter
@@ -315,11 +407,15 @@ selections:
 - var_password_pam_minlen=15
 - var_password_pam_ocredit=1
 - var_password_pam_dcredit=1
+- var_password_pam_dictcheck=1
 - var_password_pam_ucredit=1
 - var_password_pam_lcredit=1
 - var_password_pam_retry=3
 - var_sshd_set_keepalive=0
+- sshd_approved_macs=stig
+- sshd_approved_ciphers=stig
 - sshd_idle_timeout_value=10_minutes
+- var_accounts_authorized_local_users_regex=rhel8
 - var_accounts_passwords_pam_faillock_deny=3
 - var_accounts_passwords_pam_faillock_fail_interval=900
 - var_accounts_passwords_pam_faillock_unlock_time=never
@@ -330,11 +426,12 @@ selections:
 - var_auditd_action_mail_acct=root
 - var_time_service_set_maxpoll=18_hours
 - var_accounts_maximum_age_login_defs=60
-- var_auditd_space_left=250MB
+- var_auditd_space_left_percentage=25pc
 - var_auditd_space_left_action=email
 - var_auditd_disk_error_action=halt
 - var_auditd_max_log_file_action=syslog
 - var_auditd_disk_full_action=halt
+- var_sssd_certificate_verification_digest_function=sha1
 - var_system_crypto_policy=fips
 - var_sudo_timestamp_timeout=always_prompt
 title: DISA STIG for Red Hat Enterprise Linux 8

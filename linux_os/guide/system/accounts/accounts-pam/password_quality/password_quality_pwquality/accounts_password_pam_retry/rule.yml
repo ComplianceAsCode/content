@@ -7,8 +7,12 @@ title: 'Ensure PAM Enforces Password Requirements - Authentication Retry Prompts
 description: |-
     To configure the number of retry prompts that are permitted per-session:
     Edit the <tt>pam_pwquality.so</tt> statement in
+    {{% if 'ubuntu' not in product %}}
     <tt>/etc/pam.d/system-auth</tt> {{% if product == "rhel8" %}} and
     <tt>/etc/pam.d/password-auth</tt> {{% endif %}} to show
+    {{% else %}}
+    <tt>/etc/pam.d/common-password</tt> to show
+    {{% endif %}}
     <tt>retry={{{xccdf_value("var_password_pam_retry") }}}</tt>, or a lower value if site
     policy is more restrictive. The DoD requirement is a maximum of 3 prompts
     per session.
@@ -50,7 +54,11 @@ ocil_clause: 'it is not the required value'
 
 ocil: |-
     To check how many retry attempts are permitted on a per-session basis, run the following command:
+    {{% if 'ubuntu' in product %}}
+    <pre>$ grep pam_pwquality /etc/pam.d/common-password</pre>
+    {{% else %}}
     <pre>$ grep pam_pwquality /etc/pam.d/system-auth {{% if product == "rhel8" %}}/etc/pam.d/password-auth{{% endif %}}</pre>
+    {{% endif %}}
     The <tt>retry</tt> parameter will indicate how many attempts are permitted.
     The DoD required value is less than or equal to 3.
     This would appear as <tt>retry=3</tt>, or a lower value.

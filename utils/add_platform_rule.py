@@ -197,13 +197,27 @@ def createFunc(args):
     while url is None and retries < 5:
         retries += 1
         ret_code, output = subprocess.getstatusoutput(
-            'oc get %s/%s -o template="{{.metadata.selfLink}}" %s' % (args.type, args.name, namespace_flag))
+            'oc get %s/%s %s --loglevel=6' % (args.type, args.name, namespace_flag))
         if ret_code != 0:
             print('error running oc, check connection to the cluster: %d\n %s' % (
                 ret_code, output))
             continue
-        if len(output) > 0 and '/api' in output:
-            url = output
+
+        fetch_line = ""
+        url_part = ""
+        lines = output.splitlines()
+        for line in lines:
+            if 'GET' in line:
+                fetch_line = line
+                break
+
+        if len(fetch_line) > 0:
+            # extract the object url from the debug line
+            full_url = fetch_line.split(" ")[5]
+            url_part = full_url[full_url.rfind("/api"):]
+
+        if len(url_part) > 0 and '/api' in url_part:
+            url = url_part
 
     if url == None:
         print('there was a problem finding the URL from the oc debug output. Hint: override this automatic check with --url')

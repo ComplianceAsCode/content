@@ -14,7 +14,9 @@
       - pcsc-lite
       - pcsc-tools
       - opensc
+{{% if product not in ["sle15"] %}}
       - coolkey
+{{% endif %}}
 
 - name: Ensure {{ smartcard_packages }} are installed
   package:

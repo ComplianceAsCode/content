@@ -5,16 +5,27 @@ prodtype: sle12,sle15,ubuntu2004
 title: 'Check that vlock is installed to allow session locking'
 
 description: |-
-    The SUSE operating system must have vlock installed to allow for session locking.
+    The {{{ full_name }}} operating system must have vlock installed to allow for session locking.
 
+    {{% if 'ubuntu' in product %}}
+    {{{ describe_package_install(package="vlock") }}}
+    {{% else %}}
     {{{ describe_package_install(package="kbd") }}}
+    {{% endif %}}
 
 rationale: |-
-    A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.
+    A session lock is a temporary action taken when a user stops work and
+    moves away from the immediate physical vicinity of the information
+    system but does not want to log out because of the temporary nature of
+    the absence.
 
-    The session lock is implemented at the point where session activity can be determined.
+    The session lock is implemented at the point where session activity can
+    be determined.
 
-    Regardless of where the session lock is determined and implemented, once invoked, the session lock must remain in place until the user reauthenticates. No other activity aside from reauthentication must unlock the system.
+    Regardless of where the session lock is determined and implemented,
+    once invoked, the session lock must remain in place until the user
+    reauthenticates. No other activity aside from reauthentication must
+    unlock the system.
 
 severity: medium
 
@@ -32,9 +43,17 @@ references:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ ocil_package(package="kbd") }}}'
+ocil: |-
+    {{% if 'ubuntu' in product %}}
+    {{{ ocil_package(package="vlock") }}}
+    {{% else %}}
+    {{{ ocil_package(package="kbd") }}}
+    {{% endif %}}
 
 template:
     name: package_installed
     vars:
         pkgname: kbd
+        pkgname@ubuntu1604: vlock
+        pkgname@ubuntu1804: vlock
+        pkgname@ubuntu2004: vlock

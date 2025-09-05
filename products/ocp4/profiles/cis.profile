@@ -12,7 +12,7 @@ metadata:
 
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
-    Red Hat OpenShift Container Platform 4 Benchmark™, V0.3, currently unreleased.
+    Red Hat OpenShift Container Platform 4 Benchmark™, V1.1.
 
     This profile includes Center for Internet Security®
     Red Hat OpenShift Container Platform 4 CIS Benchmarks™ content.

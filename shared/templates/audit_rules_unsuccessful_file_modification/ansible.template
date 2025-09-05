@@ -7,71 +7,47 @@
 #
 # What architecture are we on?
 #
-- name: Set architecture for audit {{{ NAME }}} tasks
+- name: Set architecture for audit {{{ NAME | join(", ") }}} tasks
   set_fact:
     audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
 
-#
-# Inserts/replaces the rule in /etc/audit/rules.d
-#
-- name: Search /etc/audit/rules.d for other DAC audit rules
-  find:
-    paths: "/etc/audit/rules.d"
-    recurse: no
-    contains: "-F key=perm_mod$"
-    patterns: "*.rules"
-  register: find_{{{ NAME }}}
+{{% for EXIT_CODE in ["EACCES","EPERM"] %}}
+- name: Perform remediation of Audit rules for {{{ NAME | join(", ") }}} {{{ EXIT_CODE}}} for x86 platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="-F exit=-"~EXIT_CODE,
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=NAME,
+      key="access",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="-F exit=-"~EXIT_CODE,
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=NAME,
+      key="access",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
 
-- name: If existing DAC ruleset not found, use /etc/audit/rules.d/access.rules as the recipient for the rule
-  set_fact:
-    all_files:
-      - /etc/audit/rules.d/access.rules
-  when: find_{{{ NAME }}}.matched is defined and find_{{{ NAME }}}.matched == 0
-
-- name: Use matched file as the recipient for the rule
-  set_fact:
-    all_files:
-      - "{{ find_{{{ NAME }}}.files | map(attribute='path') | list | first }}"
-  when: find_{{{ NAME }}}.matched is defined and find_{{{ NAME }}}.matched > 0
-
-- name: Inserts/replaces the {{{ NAME }}} rule in rules.d when on x86
-  lineinfile:
-    path: "{{ all_files[0] }}"
-    line: "{{ item }}"
-    create: yes
-  with_items:
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
-
-- name: Inserts/replaces the {{{ NAME }}} rule in rules.d when on x86_64
-  lineinfile:
-    path: "{{ all_files[0] }}"
-    line: "{{ item }}"
-    create: yes
-  with_items:
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
-  when: audit_arch is defined and audit_arch == 'b64'
-#   
-# Inserts/replaces the rule in /etc/audit/audit.rules
-#
-- name: Inserts/replaces the {{{ NAME }}} rule in /etc/audit/audit.rules when on x86
-  lineinfile:
-    line: "{{ item }}"
-    state: present
-    dest: /etc/audit/audit.rules
-    create: yes
-  with_items:
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
-
-- name: Inserts/replaces the {{{ NAME }}} rule in audit.rules when on x86_64
-  lineinfile:
-    line: "{{ item }}"
-    state: present
-    dest: /etc/audit/audit.rules
-    create: yes
-  with_items:
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
-  when: audit_arch is defined and audit_arch == 'b64'
+- name: Perform remediation of Audit rules for {{{ NAME | join(", ") }}} {{{ EXIT_CODE }}} for x86_64 platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="-F exit=-"~EXIT_CODE,
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=NAME,
+      key="access",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="-F exit=-"~EXIT_CODE,
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=NAME,
+      key="access",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
+  when: audit_arch == "b64"
+{{% endfor %}}

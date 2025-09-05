@@ -105,6 +105,7 @@ selections:
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_mode_blank
+    - sshd_use_directory_configuration
     - sshd_set_idle_timeout
     - var_sshd_set_keepalive=0
     - accounts_password_pam_minlen
@@ -121,8 +122,8 @@ selections:
     - var_smartcard_drivers=cac
     - configure_opensc_card_drivers
     - force_opensc_card_drivers
-#    - package_pcsc-lite_installed  # not supported in RHEL9 ATM
-#    - service_pcscd_enabled  # not supported in RHEL9 ATM
+    - package_pcsc-lite_installed
+    - service_pcscd_enabled
     - sssd_enable_smartcards
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs

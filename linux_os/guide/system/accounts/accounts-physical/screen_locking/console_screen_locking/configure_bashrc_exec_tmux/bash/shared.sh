@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora,Red Hat Enterprise Linux 8,Oracle Linux 8
+# platform = multi_platform_all
 
 if ! grep -x '  case "$name" in sshd|login) exec tmux ;; esac' /etc/bashrc; then
     cat >> /etc/bashrc <<'EOF'

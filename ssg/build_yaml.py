@@ -1,11 +1,12 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-import os
-import os.path
 from collections import defaultdict
 from copy import deepcopy
 import datetime
+import json
+import os
+import os.path
 import re
 import sys
 from xml.sax.saxutils import escape
@@ -13,12 +14,11 @@ from xml.sax.saxutils import escape
 import yaml
 
 from .build_cpe import CPEDoesNotExist
-from .constants import XCCDF_REFINABLE_PROPERTIES
+from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
-from .controls import Control
 
-from .checks import is_cce_format_valid, is_cce_value_valid
+from .cce import is_cce_format_valid, is_cce_value_valid
 from .yaml import DocumentationNotComplete, open_and_expand, open_and_macro_expand
 from .utils import required_key, mkdir_p
 
@@ -1082,11 +1082,13 @@ class Rule(object):
         self.platforms = set()
         self.cpe_names = set()
         self.inherited_platforms = [] # platforms inherited from the group
+        self.sce_metadata = None
         self.template = None
         self.local_env_yaml = None
+        self.current_product = None
 
     @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None):
+    def from_yaml(cls, yaml_file, env_yaml=None, sce_metadata=None):
         yaml_file = os.path.normpath(yaml_file)
 
         rule_id, ext = os.path.splitext(os.path.basename(yaml_file))
@@ -1145,6 +1147,12 @@ class Rule(object):
 
         if not rule.definition_location:
             rule.definition_location = yaml_file
+
+        if sce_metadata and rule_id in sce_metadata:
+            rule.sce_metadata = sce_metadata[rule_id]
+
+        if env_yaml and 'product' in env_yaml:
+            rule.current_product = env_yaml['product']
 
         rule.validate_prodtype(yaml_file)
         rule.validate_identifiers(yaml_file)
@@ -1399,8 +1407,67 @@ class Rule(object):
         if main_ref.attrib:
             rule.append(main_ref)
 
+        ocil_parent = rule
+        check_parent = rule
+
+        if self.sce_metadata:
+            # TODO: This is pretty much another hack, just like the previous OVAL
+            # one. However, we avoided the external SCE content as I'm not sure it
+            # is generally useful (unlike say, CVE checking with external OVAL)
+            #
+            # Additionally, we build the content (check subelement) here rather
+            # than in xslt due to the nature of our SCE metadata.
+            #
+            # Finally, before we begin, we might have an element with both SCE
+            # and OVAL. We have no way of knowing (right here) whether that is
+            # the case (due to a variety of issues, most notably, that linking
+            # hasn't yet occurred). So we must rely on the content author's
+            # good will, by annotating SCE content with a complex-check tag
+            # if necessary.
+
+            if 'complex-check' in self.sce_metadata:
+                # Here we have an issue: XCCDF allows EITHER one or more check
+                # elements OR a single complex-check. While we have an explicit
+                # case handling the OVAL-and-SCE interaction, OCIL entries have
+                # (historically) been alongside OVAL content and been in an
+                # "OR" manner -- preferring OVAL to SCE. In order to accomplish
+                # this, we thus need to add _yet another parent_ when OCIL data
+                # is present, and add update ocil_parent accordingly.
+                if self.ocil or self.ocil_clause:
+                    ocil_parent = ET.SubElement(ocil_parent, "complex-check")
+                    ocil_parent.set('operator', 'OR')
+
+                check_parent = ET.SubElement(ocil_parent, "complex-check")
+                check_parent.set('operator', self.sce_metadata['complex-check'])
+
+            # Now, add the SCE check element to the tree.
+            check = ET.SubElement(check_parent, "check")
+            check.set("system", SCE_SYSTEM)
+
+            if 'check-import' in self.sce_metadata:
+                if isinstance(self.sce_metadata['check-import'], str):
+                    self.sce_metadata['check-import'] = [self.sce_metadata['check-import']]
+                for entry in self.sce_metadata['check-import']:
+                    check_import = ET.SubElement(check, 'check-import')
+                    check_import.set('import-name', entry)
+                    check_import.text = None
+
+            if 'check-export' in self.sce_metadata:
+                if isinstance(self.sce_metadata['check-export'], str):
+                    self.sce_metadata['check-export'] = [self.sce_metadata['check-export']]
+                for entry in self.sce_metadata['check-export']:
+                    value, export = entry.split('=')
+                    check_export = ET.SubElement(check, 'check-export')
+                    check_export.set('value-id', value)
+                    check_export.set('export-name', export)
+                    check_export.text = None
+
+            check_ref = ET.SubElement(check, "check-content-ref")
+            href = self.current_product + "/checks/sce/" + self.sce_metadata['filename']
+            check_ref.set("href", href)
+
         if self.oval_external_content:
-            check = ET.SubElement(rule, 'check')
+            check = ET.SubElement(check_parent, 'check')
             check.set("system", "http://oval.mitre.org/XMLSchema/oval-definitions-5")
             external_content = ET.SubElement(check, "check-content-ref")
             external_content.set("href", self.oval_external_content)
@@ -1408,11 +1475,11 @@ class Rule(object):
             # TODO: This is pretty much a hack, oval ID will be the same as rule ID
             #       and we don't want the developers to have to keep them in sync.
             #       Therefore let's just add an OVAL ref of that ID.
-            oval_ref = ET.SubElement(rule, "oval")
+            oval_ref = ET.SubElement(check_parent, "oval")
             oval_ref.set("id", self.id_)
 
         if self.ocil or self.ocil_clause:
-            ocil = add_sub_element(rule, 'ocil', self.ocil if self.ocil else "")
+            ocil = add_sub_element(ocil_parent, 'ocil', self.ocil if self.ocil else "")
             if self.ocil_clause:
                 ocil.set("clause", self.ocil_clause)
 
@@ -1546,12 +1613,17 @@ class DirectoryLoader(object):
 
 
 class BuildLoader(DirectoryLoader):
-    def __init__(self, profiles_dir, bash_remediation_fns, env_yaml, resolved_rules_dir=None):
+    def __init__(self, profiles_dir, bash_remediation_fns, env_yaml,
+                 resolved_rules_dir=None, sce_metadata_path=None):
         super(BuildLoader, self).__init__(profiles_dir, bash_remediation_fns, env_yaml)
 
         self.resolved_rules_dir = resolved_rules_dir
         if resolved_rules_dir and not os.path.isdir(resolved_rules_dir):
             os.mkdir(resolved_rules_dir)
+
+        self.sce_metadata = None
+        if sce_metadata_path and os.path.getsize(sce_metadata_path):
+            self.sce_metadata = json.load(open(sce_metadata_path, 'r'))
 
     def _process_values(self):
         for value_yaml in self.value_files:
@@ -1562,7 +1634,7 @@ class BuildLoader(DirectoryLoader):
     def _process_rules(self):
         for rule_yaml in self.rule_files:
             try:
-                rule = Rule.from_yaml(rule_yaml, self.env_yaml)
+                rule = Rule.from_yaml(rule_yaml, self.env_yaml, self.sce_metadata)
             except DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 continue
@@ -1584,8 +1656,11 @@ class BuildLoader(DirectoryLoader):
                     yaml.dump(rule.to_contents_dict(), f)
 
     def _get_new_loader(self):
-        return BuildLoader(
+        loader = BuildLoader(
             self.profiles_dir, self.bash_remediation_fns, self.env_yaml, self.resolved_rules_dir)
+        # Do it this way so we only have to parse the SCE metadata once.
+        loader.sce_metadata = self.sce_metadata
+        return loader
 
     def export_group_to_file(self, filename):
         return self.loaded_group.to_file(filename)

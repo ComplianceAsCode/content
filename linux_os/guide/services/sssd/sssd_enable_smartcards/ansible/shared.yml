@@ -1,10 +1,10 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_rhv,multi_platform_ol
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_rhv,multi_platform_ol,multi_platform_sle
 # reboot = false
 # strategy = configure
 # complexity = low
 # disruption = medium
 - name: "Test for domain group"
-  command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
+  command: grep '^\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
   ignore_errors: yes
   changed_when: False

@@ -113,9 +113,13 @@ selections:
     - accounts_password_pam_ocredit
 
     # UBTU-20-010056 The Ubuntu operating system must prevent the use of dictionary words for passwords.
+    - var_password_pam_dictcheck=1
+    - accounts_password_pam_dictcheck
 
     # UBTU-20-010057 The Ubuntu operating system must be configured so that when passwords are changed or new passwords are established, pwquality must be used.
     - var_password_pam_retry=3
+    - package_pam_pwquality_installed
+    - accounts_password_pam_enforcing
     - accounts_password_pam_retry
 
     # UBTU-20-010060 The Ubuntu operating system, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.
@@ -131,6 +135,7 @@ selections:
     - smartcard_configure_cert_checking
 
     # UBTU-20-010066 The Ubuntu operating system for PKI-based authentication, must implement a local cache of revocation data in case of the inability to access revocation information via the network.
+    - smartcard_configure_crl
 
     # UBTU-20-010070 The Ubuntu operating system must prohibit password reuse for a minimum of five generations.
     - var_password_pam_unix_remember=5

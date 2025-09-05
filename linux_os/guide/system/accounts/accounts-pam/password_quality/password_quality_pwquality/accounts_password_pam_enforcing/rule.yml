@@ -1,0 +1,51 @@
+documentation_complete: true
+ 
+prodtype: ubuntu2004
+ 
+title: 'Ensure PAM Enforces Password Requirements - Enforcing'
+
+description: |-
+    Verify that the operating system uses "pwquality" to enforce the
+    password complexity rules.
+    
+    Verify the pwquality module is being enforced by operating system by
+    running the following command:
+    <pre>
+    $ grep -i enforcing /etc/security/pwquality.conf
+    enforcing = 1
+    </pre>
+
+    If the value of "enforcing" is not "1" or the line is commented out,
+    this is a finding.
+
+rationale: |-
+    Use of a complex password helps to increase the time and resources
+    required to compromise the password. Password complexity, or strength,
+    is a measure of the effectiveness of a password in resisting attempts at
+    guessing and brute-force attacks. Using enforcing=1 ensures "pwquality"
+    enforces complex password construction configuration and has the ability
+    to limit brute-force attacks on the system.
+
+severity: medium
+
+references:
+    disa: CCI-000366
+    srg: SRG-OS-000480-GPOS-00225
+    stigid@ubuntu2004: UBTU-20-010057
+
+ocil_clause: 'enforcing is not uncommented or configured correctly'
+
+ocil: |-
+    To verify that enforcing is correctly applied, run the following command:
+    <pre>$ grep -i enforcing /etc/security/pwquality.conf</pre>
+    The output should return <tt>enforcing = 1</tt> uncommented.
+
+platform: pam
+
+template:
+    name: "lineinfile"
+    vars:
+        text: "enforcing = 1"
+        path: "/etc/security/pwquality.conf"
+    oval_extend_definitions:
+        - accounts_password_pam_pwquality

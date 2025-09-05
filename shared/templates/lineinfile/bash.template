@@ -4,4 +4,8 @@
 # complexity = low
 # disruption = low
 
-{{{ set_config_file(PATH, TEXT, value="", create='yes', insert_after="", insert_before="", separator="", separator_regex="", prefix_regex="^\s*") -}}}
+{{% if SED_PATH_SEPARATOR %}}
+    {{{ set_config_file(PATH, TEXT, value="", create='yes', insert_after="", insert_before="", separator="", separator_regex="", prefix_regex="^\s*", sed_path_separator=SED_PATH_SEPARATOR) -}}}
+{{% else %}}
+    {{{ set_config_file(PATH, TEXT, value="", create='yes', insert_after="", insert_before="", separator="", separator_regex="", prefix_regex="^\s*") -}}}
+{{% endif %}}

@@ -55,7 +55,11 @@ selections:
     - banner_or_login_template_set
 
     # AU
+    - var_openshift_audit_profile=WriteRequestBodies
     - audit_profile_set
+
+    # AU-5 RESPONSE TO AUDIT PROCESSING FAILURES
+    - audit_error_alert_exists
 
     # AU-9
     - audit_log_forwarding_enabled
@@ -173,3 +177,6 @@ selections:
 
     # SI-7: SOFTWARE, FIRMWARE, AND INFORMATION INTEGRITY
     - file_integrity_exists
+
+    # SC-17: PUBLIC KEY INFRASTRUCTURE CERTIFICATES
+    - default_ingress_ca_replaced

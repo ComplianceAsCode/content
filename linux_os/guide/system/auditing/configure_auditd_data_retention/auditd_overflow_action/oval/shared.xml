@@ -1,0 +1,6 @@
+{{{ oval_check_config_file(
+    path="/etc/audit/auditd.conf",
+    prefix_regex="^[ \\t]*(?i)",
+    parameter="overflow_action",
+    value="(?i)(syslog|single|halt)(?-i)",
+    separator_regex="(?-i)[ \\t]*=[ \\t]*") }}}

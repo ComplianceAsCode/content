@@ -611,10 +611,14 @@ selections:
     - file_groupowner_cron_d
 
     ### 5.1.8 Ensure cron is restricted to authorized users (Automated)
-    # Needs rules
+    - file_permissions_cron_allow
+    - file_owner_cron_allow
+    - file_groupowner_cron_allow
 
     ### 5.1.9 Ensure at is restricted to authorized users (Automated)
-    # Needs rules
+    - file_permissions_at_allow
+    - file_owner_at_allow
+    - file_groupowner_at_allow
 
     ## 5.2 Configure SSH Server ##
     ### 5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Automated)

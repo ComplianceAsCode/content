@@ -4,7 +4,7 @@ title: 'DISA STIG for Oracle Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux V2R3.
+    DISA STIG for Oracle Linux V2R4.
 
 selections:
     - login_banner_text=dod_banners
@@ -161,7 +161,6 @@ selections:
     - auditd_data_retention_space_left
     - auditd_data_retention_space_left_action
     - auditd_data_retention_action_mail_acct
-    - audit_rules_privileged_commands
     - audit_rules_dac_modification_chown
     - audit_rules_dac_modification_fchown
     - audit_rules_dac_modification_lchown
@@ -294,7 +293,6 @@ selections:
     - dconf_gnome_disable_autorun
     - audit_rules_privileged_commands_mount
     - dir_perms_world_writable_system_owned_group
-    - package_MFEhiplsm_installed
     - sssd_ldap_configure_tls_reqcert
     - uefi_no_removeable_media
     - require_emergency_target_auth
@@ -304,3 +302,8 @@ selections:
     - sudoers_validate_passwd
     - sudo_restrict_privilege_elevation_to_authorized
     - xwindows_remove_packages
+    - package_mcafeetp_installed
+    - agent_mfetpd_running
+    - sudo_require_reauthentication
+    - auditd_overflow_action
+    - accounts_authorized_local_users

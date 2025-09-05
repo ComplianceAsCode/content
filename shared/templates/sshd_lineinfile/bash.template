@@ -3,4 +3,6 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-{{{ bash_sshd_config_set(parameter=PARAMETER, value=VALUE) }}}
+
+{{%- set products_with_distributed_configuration=("fedora", "rhel9") %}}
+{{{ bash_sshd_remediation(parameter=PARAMETER, value=VALUE, config_is_distributed=product in products_with_distributed_configuration) -}}}

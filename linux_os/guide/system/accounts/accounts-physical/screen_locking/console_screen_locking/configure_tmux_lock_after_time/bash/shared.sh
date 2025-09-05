@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora,Red Hat Enterprise Linux 8,Oracle Linux 8
+# platform = multi_platform_all
 
 tmux_conf="/etc/tmux.conf"
 

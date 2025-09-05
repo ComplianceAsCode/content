@@ -1,0 +1,43 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+
+- name: Perform remediation of Audit rules for umount for x86 platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=["umount"],
+      key="perm_mod",
+      syscall_grouping=[],
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=["umount"],
+      key="perm_mod",
+      syscall_grouping=[]
+      )|indent(4) }}}
+{{%- if CHECK_ROOT_USER %}}
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="-F auid=0",
+      syscalls=["umount"],
+      key="perm_mod",
+      syscall_grouping=[],
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="-F auid=0",
+      syscalls=["umount"],
+      key="perm_mod",
+      syscall_grouping=[]
+      )|indent(4) }}}
+{{%- endif %}}

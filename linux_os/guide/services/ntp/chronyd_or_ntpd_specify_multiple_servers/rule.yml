@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhv4,sle12,sle15
 
 title: 'Specify Additional Remote NTP Servers'
 
@@ -14,7 +14,7 @@ description: |-
     {{% elif product == "ol8" %}}
         {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/8/network/ol-nettime.html") }}}
     {{% else %}}
-        {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html") }}}
+        {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system_administrators_guide/ch-configuring_ntp_using_the_chrony_suite") }}}
     {{% endif %}}
     for more detailed comparison of the features of both of the choices, and for
     further guidance how to choose between the two NTP daemons.
@@ -93,6 +93,7 @@ identifiers:
     cce@rhcos4: CCE-82685-9
     cce@rhel7: CCE-27012-4
     cce@rhel8: CCE-80764-4
+    cce@sle15: CCE-85834-0
 
 references:
     cis-csc: 1,14,15,16,3,5,6

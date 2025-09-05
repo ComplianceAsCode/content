@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle15
+prodtype: sle12,sle15
 
 title: 'Disable GDM Unattended or Automatic Login'
 
@@ -21,12 +21,14 @@ rationale: |-
 severity: high
 
 identifiers:
+    cce@sle12: CCE-83245-1
     cce@sle15: CCE-85723-5
 
 references:
     disa: CCI-000366
     nist: CM-6(b),CM-6.1(iv)
     srg: SRG-OS-000480-GPOS-00229
+    stigid@sle12: SLES-12-010380
     stigid@sle15: SLES-15-040430
 
 ocil_clause: 'GDM allows users to automatically login or unattended login'

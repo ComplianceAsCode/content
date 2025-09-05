@@ -6,6 +6,7 @@ description: |-
     This profile contains rules to ensure standard security baseline of an Ubuntu 20.04 system. Regardless of your system's workload all of these checks should pass.
 
 selections:
+    - accounts_users_own_home_directories
     - partition_for_tmp
     - partition_for_var
     - partition_for_var_log

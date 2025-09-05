@@ -50,6 +50,19 @@ yum install ShellCheck
 # Ubuntu/Debian
 apt-get install shellcheck
 ```
+
+### Bats (Bash Unit Tests)
+
+Install the `bats` package to perform bash unit tests:
+
+```bash
+# Fedora/RHEL
+yum install bats
+
+# Ubuntu/Debian
+apt-get install bats
+```
+
 ### Ansible Static Analysis packages
 
 Install `yamllint` and `ansible-lint` packages to perform Ansible
@@ -62,6 +75,20 @@ yum install yamllint ansible-lint
 # Ubuntu/Debian (to install ansible-lint on Debian you will probably need to
 # enable Debian Backports repository)
 apt-get install yamllint ansible-lint
+```
+
+### Static Ansible Playbooks tests
+
+Install `yamlpath` and `pytest` to run tests cases that analyse the Ansible
+Playbooks' yaml nodes.
+```bash
+pip3 install yamlpath
+
+# Fedora/RHEL
+yum install python3-pytest
+
+# Ubuntu/Debian
+apt-get install python-pytest
 ```
 
 ### Ninja (Faster Builds)
@@ -137,6 +164,8 @@ whatever is in the `build` directory and builds a specific product:
 ```bash
 ./build_product rhel7
 ```
+
+For more information about available options, call `./build_product --help`.
 
 ### Building Specific Content
 
@@ -246,6 +275,21 @@ make
 
 And use the datastream with suffix `-1.2.xml`.
 
+### Building SCE (non-compliant) content
+
+By default, the build system will try to build XCCDF/OVAL standards-compliant
+content. To enable SCE content, specify the `-DSSG_SCE_ENABLED=ON` option to
+CMake:
+
+```bash
+cd build
+cmake -DSSG_SCE_ENABLED=ON ..
+make
+```
+
+This will add SCE content into the data stream files as well as create the
+`<product>/checks/sce` folder with individual SCE checks in it.
+
 ### Build outputs
 
 When the build has completed, the output will be in the build folder.
@@ -328,6 +372,16 @@ rhel7/playbooks/pci-dss/accounts_maximum_age_login_defs.yml
 rhel7/playbooks/pci-dss/accounts_password_pam_dcredit.yml
 rhel7/playbooks/pci-dss/accounts_password_pam_lcredit.yml
 ...
+```
+
+#### Rule SCE Checks
+
+These scripts contain SCE content for the specified rule.
+
+```bash
+$ ls -1 ubuntu2004/checks/sce/
+accounts_users_own_home_directories.sh
+metadata.json
 ```
 
 ### Profile Bash Scripts
@@ -415,6 +469,39 @@ make package
 Currently, RPM and DEB packages are supported by this mechanism. We recommend
 only using it for testing. Please follow downstream workflows for production
 packages.
+
+#### Use of pip3 packages when building
+
+There may be situations during the development and testing phases where it is
+convenient to use Python modules installed via pip3, as in [this example](https://github.com/ComplianceAsCode/content/pull/7376/files),
+where the `yamlpath` module is needed for some tests, but it is not available
+in the official distro repositories and therefore needs to be installed via pip3.
+
+However, for some time now, Python modules installed via pip3 have been located
+in a different path, to reduce the risk of user installed modules conflicting
+or even breaking official distro packages that depend on related Python modules.
+More information and context can be found [here](https://fedoraproject.org/wiki/Changes/Making_sudo_pip_safe).
+
+The consequence of this is that in some situations, such as during the build
+time of an RPM package, modules installed via pip3 are not detected, because in
+the context of rpmbuild there is no influence from external commands (pip3).
+
+To work around this in test environments, an OS environment variable was created
+to be evaluated by CMake for this purpose. If the OS environment variable
+`SSG_USE_PIP_PACKAGES` is set and has a [positive value](https://cmake.org/cmake/help/latest/command/if.html#basic-expressions), CMake will ensure that
+the [PYTHONPATH](https://docs.python.org/3/tutorial/modules.html#the-module-search-path) variable is set in the Python context with the proper location
+of the python packages installed via pip3.
+
+If `SSG_USE_PIP_PACKAGES` is not set or is set to a negative value (0, Off, No, False, N),
+it will simply be ignored by CMake without any effect on the build process.
+
+In the following example, Python modules installed via pip3 will be found
+during the RPM build phase, in a test environment:
+
+```bash
+export SSG_USE_PIP_PACKAGES=1
+rpmbuild -v -bc /root/rpmbuild/SPECS/scap-security-guide.spec
+```
 
 ### Building a ZIP file
 

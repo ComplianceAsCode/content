@@ -12,7 +12,14 @@ rationale: |-
     and subscriptions on a local system to help manage subscription assignments.
     It communicates with the backend subscription service (the Customer Portal
     or an on-premise server such as Subscription Asset Manager) and works with
-    content management tools such as yum.
+    content management tools such as {{{ package_manager }}}.
+
+    {{% if product in ["rhel9"] %}}
+    The package provides, among other things, {{{ package_manager }}} plugins
+    to interact with repositories and subscriptions
+    from the Red Hat entitlement platform - the subscription-manager and
+    product-id plugins.
+    {{% endif %}}
 
 severity: medium
 

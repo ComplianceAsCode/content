@@ -21,32 +21,54 @@
 	<xsl:variable name="rules" select="//xccdf:Rule"/>
 
     <xsl:for-each select="$overlays/xccdf:overlay">  <!-- make sure overlays file namespace is XCCDF (hack) -->
-      <xsl:variable name="overlay_id" select="@ownerid"/>
+      <xsl:variable name="overlay_id" select="xccdf:VMSinfo/@VKey"/>
+      <xsl:variable name="overlay_version" select="@ownerid"/>
       <xsl:variable name="overlay_rule" select="@ruleid"/>
       <xsl:variable name="overlay_severity" select="@severity"/>
       <xsl:variable name="overlay_ref" select="@disa"/>
       <xsl:variable name="overlay_title" select="xccdf:title/@text"/>
 
-      <xsl:for-each select="$rules">
-        <xsl:if test="@id=$overlay_rule">
-		  <Group id="{$overlay_id}">
-		    <title>SRG-OS-ID</title>
-		    <description></description>
-            <Rule id="{$overlay_rule}" severity="{$overlay_severity}" >
-			<version><xsl:value-of select="$overlay_id"/></version>
-          	<title><xsl:value-of select="$overlay_title"/></title>
-          	<description><xsl:copy-of select="xccdf:rationale/node()" /></description>
-          	<check system="C-{$overlay_id}_chk">
-              <check-content>
-					      <xsl:apply-templates select="xccdf:check[@system='http://scap.nist.gov/schema/ocil/2']"/>
-              </check-content>
-          	</check>
-		  	<ident system="https://public.cyber.mil/stigs/cci"><xsl:value-of select="$overlay_ref" /></ident>
-          	<fixtext><xsl:copy-of select="xccdf:description/node()" /></fixtext>
-          </Rule> 
+      <xsl:choose>
+        <xsl:when test="$overlay_rule='XXXX'">
+          <Group id="V-{$overlay_id}">
+            <title>SRG-OS-ID</title>
+            <description></description>
+                <Rule id="Missing Rule" severity="{$overlay_severity}" >
+          <version><xsl:value-of select="$overlay_version"/></version>
+                <title><xsl:value-of select="$overlay_title"/></title>
+                <description></description>
+                <check system="C-{$overlay_id}_chk">
+                  <check-content>
+                  </check-content>
+                </check>
+                <ident></ident>
+                <fixtext></fixtext>
+              </Rule>
           </Group>
-        </xsl:if>
-      </xsl:for-each> 
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:for-each select="$rules">
+            <xsl:if test="@id=$overlay_rule">
+          <Group id="V-{$overlay_id}">
+            <title>SRG-OS-ID</title>
+            <description></description>
+                <Rule id="{$overlay_rule}" severity="{$overlay_severity}" >
+          <version><xsl:value-of select="$overlay_version"/></version>
+                <title><xsl:value-of select="$overlay_title"/></title>
+                <description><xsl:copy-of select="xccdf:rationale/node()" /></description>
+                <check system="C-{$overlay_id}_chk">
+                  <check-content>
+                    <xsl:apply-templates select="xccdf:check[@system='http://scap.nist.gov/schema/ocil/2']"/>
+                  </check-content>
+                </check>
+            <ident system="https://public.cyber.mil/stigs/cci"><xsl:value-of select="$overlay_ref" /></ident>
+                <fixtext><xsl:copy-of select="xccdf:description/node()" /></fixtext>
+              </Rule>
+              </Group>
+            </xsl:if>
+          </xsl:for-each>
+        </xsl:otherwise>
+    </xsl:choose>
 
     </xsl:for-each> 
     </xsl:copy>

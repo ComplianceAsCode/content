@@ -3,9 +3,9 @@ documentation_complete: true
 title: 'Ensure /var/log/audit Located On Separate Partition'
 
 description: |-
-    Audit logs are stored in the <tt>/var/log/audit</tt> directory.  Ensure that it
-    has its own partition or logical volume at installation time, or migrate it
-    later using LVM. Make absolutely certain that it is large enough to store all
+    Audit logs are stored in the <tt>/var/log/audit</tt> directory.
+    {{{ partition_description(part="/var/log/audit") }}}
+    Make absolutely certain that it is large enough to store all
     audit logs that will be created by the auditing daemon.
 
 rationale: |-
@@ -30,7 +30,8 @@ references:
     cis-csc: 1,12,13,14,15,16,2,3,5,6,8
     cis@rhel7: 1.1.16
     cis@rhel8: 1.1.12
-    cis@sle15: 1.1.13
+    cis@sle12: 1.1.16
+    cis@sle15: 1.1.16
     cis@ubuntu1804: 1.1.11
     cis@ubuntu2004: 1.1.16
     cobit5: APO11.04,APO13.01,BAI03.05,BAI04.04,DSS05.02,DSS05.04,DSS05.07,MEA02.01
@@ -54,7 +55,12 @@ references:
 
 platform: machine
 
+# (jhrozek): at the moment, the mount probe checks the /proc filesystem
+# even if openscap looks at a chroot, which doesn't allow to check for
+# mount points when checking RHCOS4 via CO
+{{% if product != "rhcos4" %}}
 template:
     name: mount
     vars:
         mountpoint: /var/log/audit
+{{% endif %}}

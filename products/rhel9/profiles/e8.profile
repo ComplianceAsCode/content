@@ -126,6 +126,7 @@ selections:
   - audit_rules_kernel_module_loading
 
   ### Secure access
+  - sshd_use_directory_configuration
   - sshd_disable_root_login
   - sshd_disable_gssapi_auth
   - sshd_print_last_log

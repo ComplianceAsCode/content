@@ -51,3 +51,8 @@ template:
     name: audit_rules_unsuccessful_file_modification
     vars:
         name: fchown
+        syscall_grouping:
+          - chown
+          - fchown
+          - fchownat
+          - lchown

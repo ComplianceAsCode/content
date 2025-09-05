@@ -70,7 +70,7 @@
          * the chunk was retrieved from a row not starting with space, '#',
            or '$' characters
     -->
-    <ind:pattern operation="pattern match">^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[^(#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*\.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
     <filter action="exclude">state_owner_ignore_include_paths</filter>
   </ind:textfilecontent54_object>
@@ -81,7 +81,7 @@
          These paths are conf files, not log files. Their owner don't need to be as
          required for log files, thus, lets exclude them from the list of objects found
     -->
-    <ind:text operation="pattern match">(?:file="[^\s;]+"|\$IncludeConfig[\s]+[^\s;]+)</ind:text>
+    <ind:text operation="pattern match">(?:file="[^\s;]+"|\$IncludeConfig[\s]+[^\s;]+|\/dev\/.*)</ind:text>
   </ind:textfilecontent54_state>
 
   <!-- Define OVAL variable to hold all the various system log files locations

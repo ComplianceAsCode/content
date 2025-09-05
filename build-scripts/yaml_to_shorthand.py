@@ -38,6 +38,8 @@ def parse_args():
                         help="To which directory to put processed rule YAMLs.")
     parser.add_argument("--profiles-root",
                         help="Override where to look for profile files.")
+    parser.add_argument("--sce-metadata",
+                        help="Combined SCE metadata to read.")
     return parser.parse_args()
 
 
@@ -65,7 +67,7 @@ def main():
 
     loader = ssg.build_yaml.BuildLoader(
         profiles_root, args.bash_remediation_fns, env_yaml,
-        args.resolved_rules_dir)
+        args.resolved_rules_dir, args.sce_metadata)
     loader.process_directory_tree(benchmark_root, add_content_dirs)
 
     profiles = loader.loaded_group.profiles

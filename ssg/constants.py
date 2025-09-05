@@ -70,7 +70,7 @@ cui_ns = 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.p
 stig_refs = 'https://public.cyber.mil/stigs/'
 disa_cciuri = "https://public.cyber.mil/stigs/cci/"
 ssg_version_uri = \
-    "https://github.com/OpenSCAP/scap-security-guide/releases/latest"
+    "https://github.com/ComplianceAsCode/content/releases/latest"
 OSCAP_VENDOR = "org.ssgproject"
 OSCAP_DS_STRING = "xccdf_%s.content_benchmark_" % OSCAP_VENDOR
 OSCAP_PROFILE = "xccdf_%s.content_profile_" % OSCAP_VENDOR
@@ -90,6 +90,7 @@ standard_profiles = ['standard', 'pci-dss', 'desktop', 'server']
 xslt_ns = "http://www.w3.org/1999/XSL/Transform"
 generic_stig_ns = "https://public.cyber.mil/stigs/downloads/" + \
                   "?_dl_facet_stigs=operating-systems%2Cunix-linux"
+SCE_SYSTEM = "http://open-scap.org/page/SCE"
 
 
 OVAL_SUB_NS = dict(
@@ -248,11 +249,11 @@ CENTOS_NOTICE = \
     "\n" \
     "<p>Members of the <i>CentOS</i> community are invited to participate in " \
     "<a href=\"http://open-scap.org\">OpenSCAP</a> and " \
-    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
+    "<a href=\"https://github.com/ComplianceAsCode/content\">" \
     "SCAP Security Guide</a> development. Bug reports and patches " \
     "can be sent to GitHub: " \
-    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
-    "https://github.com/OpenSCAP/scap-security-guide</a>. " \
+    "<a href=\"https://github.com/ComplianceAsCode/content\">" \
+    "https://github.com/ComplianceAsCode/content</a>. " \
     "The mailing list is at " \
     "<a href=\"https://fedorahosted.org/mailman/listinfo/scap-security-guide\">" \
     "https://fedorahosted.org/mailman/listinfo/scap-security-guide</a>" \
@@ -288,11 +289,11 @@ SL_NOTICE = \
     "\n" \
     "<p>Members of the <i>Scientifc Linux</i> community are invited to participate in " \
     "<a href=\"http://open-scap.org\">OpenSCAP</a> and " \
-    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
+    "<a href=\"https://github.com/ComplianceAsCode/content\">" \
     "SCAP Security Guide</a> development. Bug reports and patches " \
     "can be sent to GitHub: " \
-    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
-    "https://github.com/OpenSCAP/scap-security-guide</a>. " \
+    "<a href=\"https://github.com/ComplianceAsCode/content\">" \
+    "https://github.com/ComplianceAsCode/content</a>. " \
     "The mailing list is at " \
     "<a href=\"https://fedorahosted.org/mailman/listinfo/scap-security-guide\">" \
     "https://fedorahosted.org/mailman/listinfo/scap-security-guide</a>" \
@@ -352,6 +353,7 @@ XCCDF_PLATFORM_TO_PACKAGE = {
   "uefi": None,
   "non-uefi": None,
   "not_s390x_arch": None,
+  "s390x_arch": None,
 }
 
 # _version_name_map = {
@@ -382,4 +384,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 # Application constants
 DEFAULT_UID_MIN = 1000
 DEFAULT_GRUB2_BOOT_PATH = '/boot/grub2'
+DEFAULT_GRUB2_UEFI_BOOT_PATH = '/boot/grub2'
 DEFAULT_DCONF_GDM_DIR = 'gdm.d'
+DEFAULT_AIDE_CONF_PATH = '/etc/aide.conf'
+DEFAULT_AIDE_BIN_PATH = '/usr/sbin/aide'

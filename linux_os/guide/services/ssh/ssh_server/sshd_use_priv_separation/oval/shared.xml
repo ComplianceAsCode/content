@@ -20,7 +20,7 @@
   </definition>
   
   {{{ oval_line_in_file_test(path='/etc/ssh/sshd_config', parameter='UsePrivilegeSeparation') }}}
-  {{{ oval_line_in_file_object(path='/etc/ssh/sshd_config', prefix_regex="^[ \\t]*(?i)", parameter='UsePrivilegeSeparation', separator_regex='(?-i)[ \\t]+') }}}
+  {{{ oval_line_in_file_object(path_or_filepath='/etc/ssh/sshd_config', prefix_regex="^[ \\t]*(?i)", parameter='UsePrivilegeSeparation', separator_regex='(?-i)[ \\t]+') }}}
   
   <ind:textfilecontent54_state id="state_sshd_use_priv_separation" version="1">
     <ind:subexpression operation="equals" var_ref="var_sshd_priv_separation" />

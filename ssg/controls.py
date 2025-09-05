@@ -1,6 +1,7 @@
 import collections
 import logging
 import os
+import copy
 from glob import glob
 
 import ssg.build_yaml
@@ -8,6 +9,58 @@ import ssg.yaml
 import ssg.utils
 
 from ssg.rules import get_rule_path_by_id
+
+
+class InvalidStatus(Exception):
+    pass
+
+class Status():
+    PENDING = "pending"
+    PLANNED = "planned"
+    NOT_APPLICABLE = "not applicable"
+    INHERENTLY_MET = "inherently met"
+    DOCUMENTATION = "documentation"
+    PARTIAL = "partial"
+    SUPPORTED = "supported"
+    AUTOMATED = "automated"
+
+    def __init__(self, status):
+        self.status = status
+
+    @classmethod
+    def from_control_info(cls, ctrl, status):
+        if status is None:
+            return cls.PENDING
+
+        valid_statuses = [
+            cls.PENDING,
+            cls.PLANNED,
+            cls.NOT_APPLICABLE,
+            cls.INHERENTLY_MET,
+            cls.DOCUMENTATION,
+            cls.PARTIAL,
+            cls.SUPPORTED,
+            cls.AUTOMATED,
+        ]
+
+        if status not in valid_statuses:
+            raise InvalidStatus(
+                    "The given status '{given}' in the control '{control}' "
+                    "was invalid. Please use one of "
+                    "the following: {valid}".format(given=status,
+                                                    control=ctrl,
+                                                    valid=valid_statuses))
+        return status
+
+    def __str__(self):
+        return self.status
+
+    def __eq__(self, other):
+        if isinstance(other, Status):
+            return self.status == other.status
+        elif isinstance(other, str):
+            return self.status == other
+        return False
 
 
 class Control():
@@ -20,6 +73,12 @@ class Control():
         self.title = ""
         self.description = ""
         self.automated = ""
+        self.status = None
+
+    def __hash__(self):
+        """ Controls are meant to be unique, so using the
+        ID should suffice"""
+        return hash(self.id)
 
     @classmethod
     def from_control_dict(cls, control_dict, env_yaml=None, default_level=["default"]):
@@ -27,7 +86,10 @@ class Control():
         control.id = ssg.utils.required_key(control_dict, "id")
         control.title = control_dict.get("title")
         control.description = control_dict.get("description")
-        control.automated = control_dict.get("automated", "yes")
+        control.status = Status.from_control_info(control.id, control_dict.get("status", None))
+        control.automated = control_dict.get("automated", "no")
+        if control.status == "automated":
+            control.automated = "yes"
         if control.automated not in ["yes", "no", "partially"]:
             msg = (
                 "Invalid value '%s' of automated key in control "
@@ -104,8 +166,14 @@ class Policy():
             default_level = [self.levels[0].id]
 
         for node in tree:
-            control = Control.from_control_dict(
-                node, self.env_yaml, default_level=default_level)
+            try:
+                control = Control.from_control_dict(
+                    node, self.env_yaml, default_level=default_level)
+            except Exception as exc:
+                msg = (
+                    "Unable to parse controls from {filename}: {error}"
+                    .format(filename=self.filepath, error=str(exc)))
+                raise RuntimeError(msg)
             if "controls" in node:
                 for sc in self._parse_controls_tree(node["controls"]):
                     yield sc
@@ -151,15 +219,17 @@ class Policy():
             )
             raise ValueError(msg)
 
-    def get_level_with_ancestors(self, level_id):
-        levels = set()
+    def get_level_with_ancestors_sequence(self, level_id):
+        # use OrderedDict for Python2 compatibility instead of ordered set
+        levels = collections.OrderedDict()
         level = self.get_level(level_id)
-        levels.add(level)
+        levels[level] = ""
         if level.inherits_from:
             for lv in level.inherits_from:
-                levels.update(self.get_level_with_ancestors(lv))
-        return levels
-
+                eligible_levels = [l for l in self.get_level_with_ancestors_sequence(lv) if l not in levels.keys()]
+                for l in eligible_levels:
+                    levels[l] = ""
+        return list(levels.keys())
 
 
 class ControlsManager():
@@ -197,15 +267,36 @@ class ControlsManager():
 
     def get_all_controls_of_level(self, policy_id, level_id):
         policy = self._get_policy(policy_id)
-        levels = policy.get_level_with_ancestors(level_id)
-        level_ids = set([lv.id for lv in levels])
-
+        levels = policy.get_level_with_ancestors_sequence(level_id)
         all_policy_controls = self.get_all_controls(policy_id)
         eligible_controls = []
-        for c in all_policy_controls:
-            if len(level_ids.intersection(c.levels)) > 0:
-                eligible_controls.append(c)
+        already_defined_variables = set()
+        # we will go level by level, from top to bottom
+        # this is done to enable overriding of variables by higher levels
+        for lv in levels:
+            for control in all_policy_controls:
+                if lv.id not in control.levels:
+                    continue
+
+                variables = set(control.variables.keys())
+
+                variables_to_remove = variables.intersection(already_defined_variables)
+                already_defined_variables.update(variables)
+
+                new_c = self._get_control_without_variables(variables_to_remove, control)
+                eligible_controls.append(new_c)
+
         return eligible_controls
+
+    @staticmethod
+    def _get_control_without_variables(variables_to_remove, control):
+        if not variables_to_remove:
+            return control
+
+        new_c = copy.deepcopy(control)
+        for var in variables_to_remove:
+            del new_c.variables[var]
+        return new_c
 
     def get_all_controls(self, policy_id):
         policy = self._get_policy(policy_id)

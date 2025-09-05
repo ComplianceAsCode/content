@@ -153,16 +153,20 @@ def load_macros(substitutions_dict=None):
 
     add_python_functions(substitutions_dict)
     try:
-        update_substitutions_dict(JINJA_MACROS_BASE_DEFINITIONS, substitutions_dict)
-        update_substitutions_dict(JINJA_MACROS_HIGHLEVEL_DEFINITIONS, substitutions_dict)
-        update_substitutions_dict(JINJA_MACROS_ANSIBLE_DEFINITIONS, substitutions_dict)
-        update_substitutions_dict(JINJA_MACROS_BASH_DEFINITIONS, substitutions_dict)
-        update_substitutions_dict(JINJA_MACROS_OVAL_DEFINITIONS, substitutions_dict)
-        update_substitutions_dict(JINJA_MACROS_IGNITION_DEFINITIONS, substitutions_dict)
-        update_substitutions_dict(JINJA_MACROS_KUBERNETES_DEFINITIONS, substitutions_dict)
+        filenames = [
+            JINJA_MACROS_BASE_DEFINITIONS,
+            JINJA_MACROS_HIGHLEVEL_DEFINITIONS,
+            JINJA_MACROS_ANSIBLE_DEFINITIONS,
+            JINJA_MACROS_BASH_DEFINITIONS,
+            JINJA_MACROS_OVAL_DEFINITIONS,
+            JINJA_MACROS_IGNITION_DEFINITIONS,
+            JINJA_MACROS_KUBERNETES_DEFINITIONS,
+        ]
+        for filename in filenames:
+            update_substitutions_dict(filename, substitutions_dict)
     except Exception as exc:
-        msg = ("Error extracting macro definitions: {0}"
-               .format(str(exc)))
+        msg = ("Error extracting macro definitions from '{1}': {0}"
+               .format(str(exc), filename))
         raise RuntimeError(msg)
 
     return substitutions_dict

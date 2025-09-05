@@ -44,6 +44,9 @@ def parse_args():
     parser_stats.add_argument("--implemented-ovals", default=False,
                         action="store_true", dest="implemented_ovals",
                         help="Show IDs of implemented OVAL checks.")
+    parser_stats.add_argument("--implemented-sces", default=False,
+                        action="store_true", dest="implemented_sces",
+                        help="Show IDs of implemented SCE checks.")
     parser_stats.add_argument("--missing-stig-ids", default=False,
                         action="store_true", dest="missing_stig_ids",
                         help="Show rules in STIG profiles that don't have STIG IDs.")
@@ -65,6 +68,9 @@ def parse_args():
     parser_stats.add_argument("--missing-ovals", default=False,
                         action="store_true", dest="missing_ovals",
                         help="Show IDs of unimplemented OVAL checks.")
+    parser_stats.add_argument("--missing-sces", default=False,
+                        action="store_true", dest="missing_sces",
+                        help="Show IDs of unimplemented SCE checks.")
     parser_stats.add_argument("--implemented-fixes", default=False,
                         action="store_true", dest="implemented_fixes",
                         help="Show IDs of implemented remediations.")
@@ -138,6 +144,7 @@ def parse_args():
 
         if args.missing:
             args.missing_ovals = True
+            args.missing_sces = True
             args.missing_fixes = True
             args.missing_cces = True
             args.missing_stig_ids = True
@@ -225,6 +232,7 @@ def main():
             'missing_ospp_refs',
             'missing_cui_refs',
             'missing_ovals',
+            'missing_sces',
             'missing_bash_fixes',
             'missing_ansible_fixes',
             'missing_ignition_fixes',

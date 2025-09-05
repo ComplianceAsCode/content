@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: fedora,rhel9
+
+title: 'Distribute the SSH Server configuration to multiple files in a config directory.'
+
+description: |-
+    Make sure to have the <tt>Include /etc/ssh/sshd_config.d/*.conf</tt> line in the <tt>/etc/ssh/sshd_config</tt> file.
+    Ideally, don't have any active configuration directives in that file, and distribute the service configuration
+    to several files in the <tt>/etc/ssh/sshd_config.d</tt> directory.
+
+rationale: |-
+    This form of distributed configuration is considered as a good practice, and as other sshd rules assume that directives in files in the <tt>/etc/ssh/sshd_config.d</tt> config directory are effective, there has to be a rule that ensures this.
+    Aside from that, having multiple configuration files makes the SSH Server configuration changes easier to partition according to the reason that they were introduced, and therefore it should help to perform merges of hardening updates.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-87681-3
+
+ocil_clause: "you don't include other configuration files from the main configuration file"
+
+ocil: |-
+    To determine whether the SSH server includes configuration files from the right directory, run the following command:
+    <pre>$ sudo grep -i '^Include' /etc/ssh/sshd_config</pre>
+    If a line <tt>Include /etc/ssh/sshd_config.d/*.conf</tt> is returned, then the configuration file inclusion is set correctly.

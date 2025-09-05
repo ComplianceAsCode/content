@@ -9,3 +9,8 @@
         contents=CONTENTS,
     )
 }}}
+
+- name: Remove any permissions from other group
+  file:
+    path: {{{ FILEPATH }}}
+    mode: o-rwx

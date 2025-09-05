@@ -60,6 +60,8 @@ email_mappings = {
     "phil@internal.reseau-libre.net": "phil@reseau-libre.net",
     "philippe.thierry@reseau-libre.net": "phil@reseau-libre.net",
     "philippe.thierry@thalesgroup.com": "phil@reseau-libre.net",
+    # Matej Tyc
+    "matej.tyc@gmail.com": "matyc@redhat.com",
     # Shawn Wells
     "shawn@localhost.localdomain": "shawn@redhat.com",
     "shawnw@localhost.localdomain": "shawn@redhat.com",
@@ -70,6 +72,9 @@ email_mappings = {
     "nick@null.net": "",
     "root@localhost.localdomain": "",
     "root@rhel6.(none)": "",
+    "root@ip-10-0-8-36.ec2.internal": "",
+    "badger@gitter.im": "",
+    "46447321+allcontributors[bot]@users.noreply.github.com": "",
 }
 
 name_mappings = {

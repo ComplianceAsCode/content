@@ -6,10 +6,11 @@ DIRS="" # directories which might contain playbooks
 for dir in `find . -type d`
 do
 	# tries to find which directories contain valid playbooks
-	FILES=$(ls $dir/*.yml 2> /dev/null | wc -l)
+	# The fourth parameter, when provided, is the product name.
+	FILES=$(ls $dir/$4*.yml 2> /dev/null | wc -l)
 	if [ ! "$FILES" -eq "0" ]; then
 		CONTAINS_VALID_FILES=1
-		DIRS="$DIRS $dir/*.yml"
+		DIRS="$DIRS $dir/$4*.yml"
 	fi
 done
 

@@ -52,6 +52,7 @@ selections:
   ## Identifiers 1418
   - package_usbguard_installed
   - service_usbguard_enabled
+  - usbguard_allow_hid_and_hub
 
   ## Authentication hardening
   ## Identifiers 1546 / 0974 / 1173 / 1504 / 1505 / 1401 / 1559 / 1560

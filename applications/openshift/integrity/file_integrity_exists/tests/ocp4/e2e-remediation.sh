@@ -12,7 +12,7 @@ while [ -z "$(oc get -n openshift-file-integrity --ignore-not-found deployment/f
 done
 
 echo "waiting for file-integrity-operator deployment to be ready"
-oc wait -n openshift-file-integrity --for=condition=Available  --timeout=120s \
+oc wait -n openshift-file-integrity --for=condition=Available  --timeout=300s \
     deployment/file-integrity-operator
 
 echo "installing file-integrity instance"

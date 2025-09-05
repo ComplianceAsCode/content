@@ -9,5 +9,6 @@ touch $RSYSLOG_CONF
 sed -i '/^[[:space:]]*cron\.\*/d' $RSYSLOG_CONF
 for rsyslog_d_file in $RSYSLOG_D_FILES
 do
+	[ -e "$rsyslog_d_file" ] || continue
 	sed -i '/^[[:space:]]*cron\.\*/d' $rsyslog_d_file
 done

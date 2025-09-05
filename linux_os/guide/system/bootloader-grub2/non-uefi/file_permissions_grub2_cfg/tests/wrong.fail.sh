@@ -1,3 +1,3 @@
 #!/bin/bash
 
-chmod 0644 /boot/grub2/grub.cfg
+chmod 0644 {{{ grub2_boot_path }}}/grub.cfg

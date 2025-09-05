@@ -23,7 +23,7 @@ controls:
     - l2_workstation
     notes: <-
       This is a helper rule to reload Dconf datbase correctly.
-    automated: yes
+    status: automated
     rules:
     - dconf_db_up_to_date
 
@@ -32,7 +32,7 @@ controls:
     levels:
     - l1_workstation
     - l1_server
-    automated: yes
+    status: automated
     rules:
     - kernel_module_cramfs_disabled
 
@@ -41,7 +41,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - kernel_module_squashfs_disabled
 
@@ -50,7 +50,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - kernel_module_udf_disabled
 
@@ -59,7 +59,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - partition_for_tmp
 
@@ -68,7 +68,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - mount_option_tmp_noexec
 
@@ -77,7 +77,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - mount_option_tmp_nodev
 
@@ -86,7 +86,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - mount_option_tmp_nosuid
 
@@ -95,15 +95,14 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
-#     rules:
+    automated: no # rule missing
 
   - id: 1.1.7
     title: Ensure noexec option set on /dev/shm partition (Automated)
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - mount_option_dev_shm_noexec
 
@@ -112,7 +111,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - mount_option_dev_shm_nodev
 
@@ -121,7 +120,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - mount_option_dev_shm_nosuid
 
@@ -130,7 +129,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - partition_for_var
 
@@ -139,7 +138,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - partition_for_var_tmp
 
@@ -148,7 +147,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - mount_option_var_tmp_noexec
 
@@ -157,7 +156,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - mount_option_var_tmp_nodev
 
@@ -166,7 +165,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - mount_option_var_tmp_nosuid
 
@@ -175,7 +174,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - partition_for_var_log
 
@@ -184,7 +183,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - partition_for_var_log_audit
 
@@ -193,7 +192,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - partition_for_home
 
@@ -202,7 +201,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - mount_option_home_nodev
 
@@ -211,7 +210,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - mount_option_noexec_removable_partitions
 
@@ -220,7 +219,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - mount_option_nodev_removable_partitions
 
@@ -229,7 +228,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - mount_option_nosuid_removable_partitions
 
@@ -238,7 +237,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - dir_perms_world_writable_sticky_bits
 
@@ -247,7 +246,7 @@ controls:
     levels:
     - l1_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - service_autofs_disabled
 
@@ -256,7 +255,7 @@ controls:
     levels:
     - l1_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - kernel_module_usb-storage_disabled
 
@@ -279,7 +278,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
@@ -310,7 +309,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_aide_installed
     - aide_build_database
@@ -320,7 +319,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - aide_periodic_cron_checking
 
@@ -329,7 +328,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - grub2_password
     - grub2_uefi_password
@@ -339,7 +338,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_grub2_cfg
     - file_owner_grub2_cfg
@@ -353,7 +352,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - require_emergency_target_auth
     - require_singleuser_auth
@@ -363,7 +362,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - disable_users_coredumps
     - sysctl_fs_suid_dumpable
@@ -375,7 +374,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially
+    status: partial
     notes: >-
       Automatic remediation of these rules is not available.
     rules:
@@ -387,7 +386,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sysctl_kernel_randomize_va_space
 
@@ -396,7 +395,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially
+    status: partial
     notes: >-
       The rule to remove prelink package is missing.
     rules:
@@ -407,7 +406,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_libselinux_installed
 
@@ -416,7 +415,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - grub2_enable_selinux # the rule does not check for uefi configuration
 
@@ -425,7 +424,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - selinux_policytype
     - var_selinux_policy_name=targeted
@@ -435,7 +434,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     notes: >-
       The SELinux mode is set to "enforcing" by default.
       Configuring the "permissive" mode greatly lowers security of the system.
@@ -449,7 +448,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - selinux_confinement_of_daemons
 
@@ -457,7 +456,7 @@ controls:
     title: Ensure SETroubleshoot is not installed (Automated)
     levels:
     - l1_server
-    automated: yes
+    status: automated
     rules:
     - package_setroubleshoot_removed
 
@@ -466,7 +465,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_mcstrans_removed
 
@@ -475,7 +474,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - banner_etc_motd
     - login_banner_text=usgcb_default
@@ -485,7 +484,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - banner_etc_issue
     - login_banner_text=usgcb_default
@@ -502,7 +501,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_etc_motd
     - file_owner_etc_motd
@@ -513,7 +512,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_etc_issue
     - file_owner_etc_issue
@@ -537,7 +536,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
@@ -548,7 +547,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - dconf_gnome_disable_user_list
 
@@ -557,7 +556,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - gnome_gdm_disable_xdmcp
 
@@ -573,7 +572,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_xinetd_removed
 
@@ -589,7 +588,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - chronyd_specify_remote_server
     - var_multiple_time_servers=rhel
@@ -600,7 +599,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - service_ntpd_enabled
     - ntpd_configure_restrictions
@@ -611,7 +610,7 @@ controls:
     title: Ensure X11 Server components are not installed (Automated)
     levels:
     - l1_server
-    automated: yes
+    status: automated
     notes: >-
       The rule also configures correct run level to prevent unbootable system.
     rules:
@@ -622,7 +621,7 @@ controls:
     levels:
     - l1_server
     - l2_workstation
-    automated: partially # rule for package removal is missing
+    status: partial # rule for package removal is missing
     rules:
     - service_avahi-daemon_disabled
 
@@ -637,7 +636,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_dhcp_removed
 
@@ -646,7 +645,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_openldap-servers_removed
 
@@ -655,7 +654,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_bind_removed
 
@@ -664,7 +663,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_vsftpd_removed
 
@@ -673,7 +672,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_httpd_removed
 
@@ -682,7 +681,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_dovecot_removed
 
@@ -691,7 +690,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_samba_removed
 
@@ -700,7 +699,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_squid_removed
 
@@ -709,7 +708,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_net-snmp_removed
 
@@ -718,7 +717,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_ypserv_removed
 
@@ -727,7 +726,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_telnet-server_removed
 
@@ -736,7 +735,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - postfix_network_listening_disabled
     - var_postfix_inet_interfaces=loopback-only
@@ -746,7 +745,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_nfs-utils_removed
 
@@ -755,7 +754,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially
+    status: partial
     rules:
     - service_rpcbind_disabled
 
@@ -764,7 +763,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - service_rsyncd_disabled
 
@@ -773,7 +772,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_ypbind_removed
 
@@ -782,7 +781,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_rsh_removed
 
@@ -791,7 +790,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_talk_removed
 
@@ -800,7 +799,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_telnet_removed
 
@@ -809,7 +808,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_openldap-clients_removed
 
@@ -832,7 +831,7 @@ controls:
     levels:
     - l1_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - wireless_disable_interfaces # the rule remediation is not exactly on par with the benchmark
 
@@ -841,7 +840,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sysctl_net_ipv4_ip_forward
     - sysctl_net_ipv6_conf_all_forwarding
@@ -852,7 +851,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sysctl_net_ipv4_conf_all_send_redirects
     - sysctl_net_ipv4_conf_default_send_redirects
@@ -862,7 +861,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sysctl_net_ipv4_conf_all_accept_source_route
     - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
@@ -878,7 +877,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sysctl_net_ipv4_conf_all_accept_redirects
     - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
@@ -894,7 +893,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sysctl_net_ipv4_conf_all_secure_redirects
     - sysctl_net_ipv4_conf_all_secure_redirects_value=disabled
@@ -906,7 +905,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sysctl_net_ipv4_conf_all_log_martians
     - sysctl_net_ipv4_conf_all_log_martians_value=enabled
@@ -918,7 +917,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
@@ -928,7 +927,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
     - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
@@ -938,7 +937,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sysctl_net_ipv4_conf_all_rp_filter
     - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
@@ -950,7 +949,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sysctl_net_ipv4_tcp_syncookies
     - sysctl_net_ipv4_tcp_syncookies_value=enabled
@@ -960,7 +959,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sysctl_net_ipv6_conf_all_accept_ra
     - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
@@ -972,7 +971,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - kernel_module_dccp_disabled
 
@@ -981,7 +980,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - kernel_module_sctp_disabled
 
@@ -990,7 +989,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_iptables_installed
     - package_firewalld_installed
@@ -1014,7 +1013,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # only checking systemd service, not running "firewall-cmd --state"
+    status: partial # only checking systemd service, not running "firewall-cmd --state"
     rules:
     - service_firewalld_enabled
 
@@ -1023,7 +1022,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # no exact rule is present
+    status: automated
+    rules:
+    - set_firewalld_default_zone
 
   - id: 3.5.1.6
     title: Ensure network interfaces are assigned to appropriate zone (Manual)
@@ -1236,7 +1237,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: partially # we do not check for audit-libs package
+    status: partial # we do not check for audit-libs package
     rules:
     - package_audit_installed
 
@@ -1245,7 +1246,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - service_auditd_enabled
 
@@ -1254,7 +1255,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - grub2_audit_argument
 
@@ -1263,7 +1264,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - auditd_data_retention_max_log_file
     - var_auditd_max_log_file=6
@@ -1273,7 +1274,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - auditd_data_retention_max_log_file_action
     - var_auditd_max_log_file_action=keep_logs
@@ -1283,7 +1284,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - auditd_data_retention_space_left_action
     - var_auditd_space_left_action=email
@@ -1297,7 +1298,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     notes: <-
       Note that currently the value is hardcoded to 8192
     rules:
@@ -1308,7 +1309,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: partially # we do not have rule for clock_settime
+    status: partial # we do not have rule for clock_settime
     rules:
     - audit_rules_time_adjtimex
     - audit_rules_time_settimeofday
@@ -1320,7 +1321,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - audit_rules_usergroup_modification_group
     - audit_rules_usergroup_modification_gshadow
@@ -1333,7 +1334,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - audit_rules_networkconfig_modification
 
@@ -1342,7 +1343,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: partially # rule for checking audit watch on /usr/share/selinux is missing
+    status: partial # rule for checking audit watch on /usr/share/selinux is missing
     rules:
     - audit_rules_mac_modification
 
@@ -1351,7 +1352,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
@@ -1361,7 +1362,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - audit_rules_session_events
 
@@ -1370,7 +1371,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - audit_rules_dac_modification_fchmod
     - audit_rules_dac_modification_fchmodat
@@ -1391,7 +1392,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - audit_rules_unsuccessful_file_modification_creat
     - audit_rules_unsuccessful_file_modification_open
@@ -1411,7 +1412,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - audit_rules_media_export
 
@@ -1420,7 +1421,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_renameat
@@ -1432,7 +1433,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - audit_rules_sysadmin_actions
 
@@ -1448,7 +1449,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - audit_rules_privileged_commands_insmod
     - audit_rules_privileged_commands_rmmod
@@ -1461,7 +1462,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - audit_rules_immutable
 
@@ -1470,7 +1471,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_rsyslog_installed
 
@@ -1479,7 +1480,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - service_rsyslog_enabled
 
@@ -1553,7 +1554,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - service_crond_enabled
 
@@ -1562,7 +1563,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_crontab
     - file_owner_crontab
@@ -1573,7 +1574,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_cron_hourly
     - file_owner_cron_hourly
@@ -1584,7 +1585,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_cron_daily
     - file_owner_cron_daily
@@ -1595,7 +1596,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_cron_weekly
     - file_owner_cron_weekly
@@ -1606,7 +1607,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_cron_monthly
     - file_owner_cron_monthly
@@ -1617,7 +1618,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_cron_d
     - file_owner_cron_d
@@ -1628,7 +1629,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # rules for removing cron.deny and checking permissions of cron.allow are missing
+    status: partial # rules for removing cron.deny and checking permissions of cron.allow are missing
     rules:
     - file_groupowner_cron_allow
     - file_owner_cron_allow
@@ -1645,7 +1646,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - package_sudo_installed
 
@@ -1654,7 +1655,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sudo_add_use_pty
 
@@ -1663,7 +1664,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sudo_custom_logfile
     - var_sudo_logfile=var_log_sudo_log
@@ -1673,7 +1674,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_sshd_config
     - file_owner_sshd_config
@@ -1691,7 +1692,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # missing rules for ownership
+    status: partial # missing rules for ownership
     rules:
     - file_permissions_sshd_pub_key
 
@@ -1710,7 +1711,7 @@ controls:
     notes: <-
       The default rule is configured to enforce the "verbose" log level. Use
       tailoring to change it to "info" level.
-    automated: yes # we have two rules either for info or verbose, no way to select
+    status: automated # we have two rules either for info or verbose, no way to select
     related_rules:
     - sshd_set_loglevel_info
     rules:
@@ -1721,7 +1722,7 @@ controls:
     levels:
     - l2_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sshd_disable_x11_forwarding
 
@@ -1730,7 +1731,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sshd_set_max_auth_tries
     - sshd_max_auth_tries_value=4
@@ -1740,7 +1741,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sshd_disable_rhosts
 
@@ -1749,7 +1750,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - disable_host_auth
 
@@ -1758,7 +1759,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sshd_disable_root_login
 
@@ -1767,7 +1768,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sshd_disable_empty_passwords
 
@@ -1776,7 +1777,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sshd_do_not_permit_user_env
 
@@ -1785,7 +1786,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     notes: <-
       The rule checks for default list of ciphers provided in the benchmark.
     rules:
@@ -1797,7 +1798,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     notes: <-
       The rule checks for default list of MACs provided in the benchmark.
     rules:
@@ -1816,7 +1817,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sshd_set_idle_timeout
     - sshd_idle_timeout_value=15_minutes
@@ -1849,7 +1850,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: yes
+    status: automated
     rules:
     - sshd_disable_tcp_forwarding
 
@@ -1858,7 +1859,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sshd_set_maxstartups
     - var_sshd_set_maxstartups=10:30:60
@@ -1868,7 +1869,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - sshd_set_max_sessions
     - var_sshd_max_sessions=10
@@ -1878,7 +1879,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # rule checking for retry needs modification and we are missing rule for try_first_pass
+    status: partial # rule checking for retry needs modification and we are missing rule for try_first_pass
     notes: <-
       There are two ways how to check this control.
       One way is to check for minclass, this is currently selected.
@@ -1910,7 +1911,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # our rule does not check for password-auth
+    status: partial # our rule does not check for password-auth
     rules:
     - set_password_hashing_algorithm_systemauth
 
@@ -1919,7 +1920,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     notes: |-
       Usage of pam_unix.so module together with "remember" option is deprecated and is not supported by this policy interpretation.
       See here for more details about pam_unix.so:
@@ -1935,7 +1936,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # missing rule for checking of /etc/shadow
+    status: partial # missing rule for checking of /etc/shadow
     rules:
     - accounts_maximum_age_login_defs
     - var_accounts_maximum_age_login_defs=365
@@ -1945,7 +1946,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # missing rule for checking of /etc/shadow
+    status: partial # missing rule for checking of /etc/shadow
     rules:
     - accounts_minimum_age_login_defs
     - var_accounts_minimum_age_login_defs=1
@@ -1955,7 +1956,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # missing rule for checking of /etc/shadow
+    status: partial # missing rule for checking of /etc/shadow
     rules:
     - accounts_password_warn_age_login_defs
     - var_accounts_password_warn_age_login_defs=7
@@ -1965,7 +1966,10 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: partial # we do not check /et/shadow
+    rules:
+    - account_disable_post_pw_expiration
+    - var_account_disable_post_pw_expiration=30
 
   - id: 5.5.1.5
     title: Ensure all users last password change date is in the past (Automated)
@@ -1979,7 +1983,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # missing rule for locking of accounts
+    status: partial # missing rule for locking of accounts
     rules:
     - no_shelllogin_for_systemaccounts
 
@@ -1995,7 +1999,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # we check only for value of tmout variable, no export or readonly and we do not check /etc/bashrc
+    status: partial # we check only for value of tmout variable, no export or readonly and we do not check /etc/bashrc
     rules:
     - accounts_tmout
     - var_accounts_tmout=15_min
@@ -2005,7 +2009,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # checking only for numeric umask and we do not check for user_enab in /etc/login.defs
+    status: partial # checking only for numeric umask and we do not check for user_enab in /etc/login.defs
     rules:
     - accounts_umask_etc_bashrc
     - accounts_umask_etc_login_defs
@@ -2024,7 +2028,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially  # we check only for usage of use_uid with pam_su, not for the group
+    status: partial  # we check only for usage of use_uid with pam_su, not for the group
     rules:
     - use_pam_wheel_for_su
 
@@ -2040,7 +2044,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_etc_passwd
     - file_owner_etc_passwd
@@ -2051,7 +2055,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_backup_etc_passwd
     - file_owner_backup_etc_passwd
@@ -2062,7 +2066,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_etc_shadow
     - file_owner_etc_shadow
@@ -2073,7 +2077,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_backup_etc_shadow
     - file_owner_backup_etc_shadow
@@ -2084,7 +2088,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_backup_etc_gshadow
     - file_owner_backup_etc_gshadow
@@ -2095,7 +2099,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_etc_gshadow
     - file_owner_etc_gshadow
@@ -2106,7 +2110,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_etc_group
     - file_owner_etc_group
@@ -2117,7 +2121,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_groupowner_backup_etc_group
     - file_owner_backup_etc_group
@@ -2128,7 +2132,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_permissions_unauthorized_world_writable
 
@@ -2137,7 +2141,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - no_files_unowned_by_user
 
@@ -2146,7 +2150,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - file_permissions_ungroupowned
 
@@ -2169,7 +2173,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - accounts_password_all_shadowed
 
@@ -2185,7 +2189,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - gid_passwd_group_same
 
@@ -2201,7 +2205,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+    - account_unique_name
 
   - id: 6.2.6
     title: Ensure no duplicate group names exist (Automated)
@@ -2215,7 +2221,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - account_unique_id
 
@@ -2231,7 +2237,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - accounts_no_uid_except_zero
 
@@ -2240,7 +2246,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     rules:
     - accounts_root_path_dirs_no_write
     - root_path_no_dot
@@ -2291,7 +2297,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
+    status: automated
     notes: <-
       The rule is checking only for existence of files, not for their permissions.
     rules:

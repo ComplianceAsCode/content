@@ -10,6 +10,7 @@ import ssg.build_profile
 import ssg.build_yaml
 import ssg.controls
 import ssg.products
+import ssg.environment
 
 def create_parser():
     parser = argparse.ArgumentParser()
