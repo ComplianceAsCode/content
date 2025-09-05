@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Enable Non-Secure Page Warnings'
+
+description: "When users browse websites, web pages can switch in between secure and \nnon-secure protocols. Users can be warned each time by\nsetting <tt>security.warn_leaving_secure</tt> to <tt>true</tt>."
+
+rationale: |-
+    Users may not be aware that the information being viewed under secure
+    conditions in a previous page are not currently being viewed under
+    the same security settings.
+
+severity: medium
+
+references:
+    nist: ECSC-1
+    stigid: DTBF130
+
+ocil_clause: 'it is not enabled'
+
+ocil: |-
+    To verify that non-secure page warnings are enabled,
+    run the following command:
+    <pre>$ grep 'security.warn_leaving_secure' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
+    The output should return:
+    <pre>lockPref("security.warn_leaving_secure", "true");</pre>

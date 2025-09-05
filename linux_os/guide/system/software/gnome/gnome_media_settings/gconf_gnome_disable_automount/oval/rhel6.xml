@@ -1,0 +1,68 @@
+<def-group>
+  <definition class="compliance" id="gconf_gnome_disable_automount" version="1">
+    <metadata>
+      <title>Disable GNOME Automounting</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>The system's default desktop environment, GNOME, will mount
+      devices and removable media (such as DVDs, CDs and USB flash drives)
+      whenever they are inserted into the system. Disable automount and autorun
+      within GNOME.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="GConf2 installed" definition_ref="package_GConf2_installed" negate="true" />
+      <criterion comment="Disable automount in GNOME" test_ref="test_gconf_gnome_disable_automount" />
+      <criterion comment="Disable automount in GNOME" test_ref="test_gconf_tree_gnome_disable_automount" />
+      <criterion comment="Disable autorun in GNOME" test_ref="test_gconf_gnome_disable_automount_autorun" />
+      <criterion comment="Disable autorun in GNOME" test_ref="test_gconf_tree_gnome_disable_automount_autorun" />
+    </criteria>
+  </definition>
+  <ind:xmlfilecontent_test check="all" check_existence="all_exist"
+  comment="Disable automount in GNOME" id="test_gconf_gnome_disable_automount"
+  version="1">
+    <ind:object object_ref="obj_gconf_gnome_disable_automount" />
+    <ind:state state_ref="state_gconf_gnome_disable_automount" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_gconf_gnome_disable_automount" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/apps/nautilus/preferences/%gconf.xml</ind:filepath>
+    <ind:xpath>/gconf/entry[@name='media_automount']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_test check="all" check_existence="all_exist" comment="Disable automount in GNOME" id="test_gconf_tree_gnome_disable_automount" version="1">
+    <ind:object object_ref="obj_gconf_tree_gnome_disable_automount" />
+    <ind:state state_ref="state_gconf_gnome_disable_automount" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_gconf_tree_gnome_disable_automount" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/%gconf-tree.xml</ind:filepath>
+    <ind:xpath>/gconf/dir/dir/dir/entry[@name='media_automount']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_state id="state_gconf_gnome_disable_automount" version="1">
+    <ind:value_of datatype="string">false</ind:value_of>
+  </ind:xmlfilecontent_state>
+
+  <ind:xmlfilecontent_test check="all" check_existence="all_exist"
+  comment="Disable autorun in GNOME"
+  id="test_gconf_gnome_disable_automount_autorun" version="1">
+    <ind:object object_ref="obj_gconf_gnome_disable_automount_autorun" />
+    <ind:state state_ref="state_gconf_gnome_disable_automount_autorun" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_gconf_gnome_disable_automount_autorun" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/apps/nautilus/preferences/%gconf.xml</ind:filepath>
+    <ind:xpath>/gconf/entry[@name='media_autorun_never']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_test check="all" check_existence="all_exist" comment="Disable autorun in GNOME" id="test_gconf_tree_gnome_disable_automount_autorun" version="1">
+    <ind:object object_ref="obj_gconf_tree_gnome_disable_automount_autorun" />
+    <ind:state state_ref="state_gconf_gnome_disable_automount_autorun" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_gconf_tree_gnome_disable_automount_autorun" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/%gconf-tree.xml</ind:filepath>
+    <ind:xpath>/gconf/dir/dir/dir/entry[@name='media_autorun_never']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_state id="state_gconf_gnome_disable_automount_autorun" version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+</def-group>

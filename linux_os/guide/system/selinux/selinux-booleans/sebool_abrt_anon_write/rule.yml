@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,rhv4
+
+title: 'Disable the abrt_anon_write SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>abrt_anon_write</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="abrt_anon_write") }}}
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80419-5
+
+references:
+    cui: 3.7.2
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="abrt_anon_write") }}}

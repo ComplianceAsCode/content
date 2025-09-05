@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhosp13
+
+title: 'Check-Dashboard-06: Is SESSION_COOKIE_HTTPONLY parameter set to True?'
+
+description: |-
+    The “HTTPONLY” cookie attribute instructs web browsers not to allow scripts (e.g.
+    JavaScript or VBscript) an ability to access the cookies via the DOM document.cookie
+    object. This session ID protection is mandatory to prevent session ID stealing through XSS attacks.
+    <br />
+    <br />
+    Pass: If value of parameter SESSION_COOKIE_HTTPONLY in
+    /var/lib/config-data/puppet-generated/horizon/etc/openstack-dashboard/local_settings is set to True.
+
+    <br />
+    <br />
+    Fail: If value of parameter SESSION_COOKIE_HTTPONLY in
+    /var/lib/config-data/puppet-generated/horizon/etc/openstack-dashboard/local_settings is set to False.
+
+rationale: ""
+
+severity: medium
+
+references:
+    nist: SI-10

@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,fedora
+
+title: 'Disable X Windows Startup By Setting Default Target'
+
+description: |-
+    Systems that do not require a graphical user interface should only boot by
+    default into <tt>multi-user.target</tt> mode. This prevents accidental booting of the system
+    into a <tt>graphical.target</tt> mode. Setting the system's default target to
+    <tt>multi-user.target</tt> will prevent automatic startup of the X server. To do so, run:
+    <pre>$ systemctl set-default multi-user.target</pre>
+    You should see the following output:
+    <pre>rm '/etc/systemd/system/default.target'
+    ln -s '/usr/lib/systemd/system/multi-user.target' '/etc/systemd/system/default.target'</pre>
+
+rationale: |-
+    Services that are not required for system and application processes
+    must not be active to decrease the attack surface of the system. X windows has a
+    long history of security vulnerabilities and should not be used unless approved
+    and documented.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27285-6
+
+references:
+    disa: "366"
+    nist: AC-17(8).1(ii)
+    nist-csf: PR.AC-3,PR.PT-4
+    srg: SRG-OS-000480-GPOS-00227
+    isa-62443-2013: 'SR 1.13,SR 2.6,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
+    isa-62443-2009: 4.3.3.6.6
+    cobit5: APO13.01,DSS01.04,DSS05.02,DSS05.03
+    iso27001-2013: A.11.2.6,A.13.1.1,A.13.2.1,A.14.1.3,A.6.2.1,A.6.2.2
+    cis-csc: 12,15,8
+
+ocil_clause: 'the X windows display server is running and/or has not been disabled'
+
+ocil: |-
+    To verify the default target is multi-user, run the following command:
+    <pre>$ systemctl get-default</pre>
+    The output should show the following:
+    <pre>multi-user.target</pre>

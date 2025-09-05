@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,fedora,ol7,ol8
+
+title: 'Ensure Users Cannot Change GNOME3 Screensaver Lock After Idle Period'
+
+description: |-
+    If not already configured, ensure that users cannot change GNOME3 screensaver lock settings
+    by adding <pre>/org/gnome/desktop/screensaver/lock-enabled</pre>
+    to <tt>/etc/dconf/db/local.d/00-security-settings</tt>.
+    For example:
+    <pre>/org/gnome/desktop/screensaver/lock-enabled</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
+    of the information system but does not want to logout because of the temporary nature of the absense.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80563-0
+
+references:
+    cjis: 5.5.5
+    cui: 3.1.10
+    disa: "56"
+    nist: AC-11(b)
+    nist-csf: PR.AC-7
+    ospp: FMT_MOF_EXT.1
+    pcidss: Req-8.1.8
+    srg: SRG-OS-000029-GPOS-00010
+    stigid@rhel7: "010062"
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    cobit5: DSS05.04,DSS05.10,DSS06.10
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
+    cis-csc: 1,12,15,16
+
+ocil_clause: 'screensaver locking is not locked'
+
+ocil: |-
+    To ensure that users cannot change how long until the the screensaver locks, run the following:
+    <pre>$ grep lock-enabled /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output for <tt>lock-enabled</tt> should be <tt>/org/gnome/desktop/screensaver/lock-enabled</tt>

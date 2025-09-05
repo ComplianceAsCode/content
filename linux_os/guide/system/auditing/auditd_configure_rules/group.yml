@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Configure auditd Rules for Comprehensive Auditing'
+
+description: |-
+    The <tt>auditd</tt> program can perform comprehensive
+    monitoring of system activity. This section describes recommended
+    configuration settings for comprehensive auditing, but a full
+    description of the auditing system's capabilities is beyond the
+    scope of this guide. The mailing list <i>linux-audit@redhat.com</i> exists
+    to facilitate community discussion of the auditing system.
+    <br /><br />
+    The audit subsystem supports extensive collection of events, including:
+    <br />
+    <ul>
+    <li>Tracing of arbitrary system calls (identified by name or number)
+    on entry or exit.</li>
+    <li>Filtering by PID, UID, call success, system call argument (with
+    some limitations), etc.</li>
+    <li>Monitoring of specific files for modifications to the file's
+    contents or metadata.</li>
+    </ul>
+    <br />
+    Auditing rules at startup are controlled by the file <tt>/etc/audit/audit.rules</tt>.
+    Add rules to it to meet the auditing requirements for your organization.
+    Each line in <tt>/etc/audit/audit.rules</tt> represents a series of arguments
+    that can be passed to <tt>auditctl</tt> and can be individually tested
+    during runtime. See documentation in <tt>/usr/share/doc/audit-<i>VERSION</i></tt> and
+    in the related man pages for more details.
+    <br /><br />
+    If copying any example audit rulesets from <tt>/usr/share/doc/audit-VERSION</tt>,
+    be sure to comment out the
+    lines containing <tt>arch=</tt> which are not appropriate for your system's
+    architecture. Then review and understand the following rules,
+    ensuring rules are activated as needed for the appropriate
+    architecture.
+    <br /><br />
+    After reviewing all the rules, reading the following sections, and
+    editing as needed, the new rules can be activated as follows:
+    <pre>$ sudo service auditd restart</pre>

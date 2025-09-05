@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Disable Runtime Permissions for Deployed Applications'
+
+description: |-
+    Deployed applications must not be granted runtime permissions.
+    These permissions are enforced by the Java Security Manager and the policies
+    it loads at startup. These permissions can be assigned or restricted in an
+    application-specific, granular manner.
+
+rationale: |-
+    Java permissions for deployed applications should be carefully restricted
+    to enforce the least privilege principle. Granting RuntimePermission to
+    applications allows these applications to modify classloaders or modify
+    the running security manager. Either of these actions can be used to
+    elevate permissions and increase the number of potential damaging actions
+    that can be taken.
+
+severity: medium
+
+references:
+    nist: AC-6
+
+ocil_clause: 'proper permissions are not set for java.lang.RuntimePermission for deployed applications'

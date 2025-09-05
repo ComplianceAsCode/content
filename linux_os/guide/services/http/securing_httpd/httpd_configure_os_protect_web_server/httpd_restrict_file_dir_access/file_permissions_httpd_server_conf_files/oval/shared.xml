@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance"
+  id="file_permissions_httpd_server_conf_files" version="2">
+    <metadata>
+      <title>Verify Permissions On Apache Web Server Configuration Files</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>The /etc/httpd/conf/* files should have the appropriate permissions (0640 or stronger).</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="httpd not present or in use"
+      definition_ref="package_httpd_removed" />
+      <criterion test_ref="test_file_permissions_httpd_server_conf_files"/>
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/httpd/conf/* permissions"
+  id="test_file_permissions_httpd_server_conf_files" version="1">
+    <unix:object object_ref="object_file_permissions_httpd_server_conf_files" />
+    <unix:state state_ref="state_wrong_file_permissions_httpd_server_conf_files" />
+  </unix:file_test>
+  <unix:file_state id="state_wrong_file_permissions_httpd_server_conf_files"
+  version="2" operator="AND">
+    <unix:suid datatype="boolean">false</unix:suid>
+    <unix:sgid datatype="boolean">false</unix:sgid>
+    <unix:sticky datatype="boolean">false</unix:sticky>
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+  <unix:file_object comment="/etc/httpd/conf/* permissions"
+  id="object_file_permissions_httpd_server_conf_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/etc/httpd/conf</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+</def-group>

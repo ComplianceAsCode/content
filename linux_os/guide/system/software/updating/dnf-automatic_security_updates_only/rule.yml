@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8,ol8
+
+title: Configure dnf-automatic to Install Only Security Updates
+
+description: |-
+    To configure <tt>dnf-automatic</tt> to install only security updates
+    automatically, set <tt>upgrade_type</tt> to <tt>security</tt> under
+    <tt>[commands]</tt> section in <tt>/etc/dnf/automatic.conf</tt>.
+
+rationale: |-
+    By default, <tt>dnf-automatic</tt> installs all available updates.
+    Reducing the amount of updated packages only to updates that were
+    issued as a part of a security advisory increases the system stability.
+
+severity: low
+
+identifiers:
+    cce@rhel8: 82267-6
+
+references:
+    ospp: FMT_SMF_EXT.1
+    nist: SI-2(5)
+
+ocil_clause: 'the upgrade_type is not set to security'
+
+ocil: |-
+    To verify that only security updates will be automatically installed by dnf-automatic, run the following command:
+    <pre>$ sudo grep upgrade_type /etc/dnf/automatic.conf</pre>
+    The output should return the following:
+    <pre>upgrade_type = security</pre>

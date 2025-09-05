@@ -1,0 +1,93 @@
+documentation_complete: true
+
+prodtype: wrlinux1019,rhel6,rhel7,ol7,rhv4,sle12
+
+title: 'Use Only FIPS 140-2 Validated MACs'
+
+description: |-
+    Limit the MACs to those hash algorithms which are FIPS-approved.
+    The following line in <tt>/etc/ssh/sshd_config</tt>
+    demonstrates use of FIPS-approved MACs:
+{{% if product == "sle12" %}}
+    <pre>MACs hmac-sha2-512,hmac-sha2-256</pre>
+{{% else %}}
+    <pre>MACs hmac-sha2-512,hmac-sha2-256,hmac-sha1</pre>
+{{% endif %}}
+    The man page <tt>sshd_config(5)</tt> contains a list of supported MACs.
+{{% if product in ["rhel7","ol7"] %}}
+    <br /><br />
+    Only the following message authentication codes are FIPS 140-2 certified on {{{ full_name }}}:
+    <br />- hmac-sha1
+    <br />- hmac-sha2-256
+    <br />- hmac-sha2-512
+    <br />- hmac-sha1-etm@openssh.com
+    <br />- hmac-sha2-256-etm@openssh.com
+    <br />- hmac-sha2-512-etm@openssh.com
+    <br /><br />
+    Any combination of the above MACs will pass this check. Official FIPS 140-2 paperwork for
+    {{{ full_name }}} can be found at
+    {{% if product == "ol7" %}}
+    {{{ weblink(link="https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp3028.pdf") }}}
+    {{% else %}}
+    {{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf") }}}
+    {{% endif %}}
+{{% endif %}}
+
+rationale: |-
+    DoD Information Systems are required to use FIPS-approved cryptographic hash
+    functions. The only SSHv2 hash algorithms meeting this requirement is SHA2.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82067-0
+    cce@rhel7: 27455-5
+    cce@rhel8: 82198-3
+
+references:
+    disa@rhel6: 2449,2450,68,803
+    cis: 5.2.12
+    cui: 3.1.13,3.13.11,3.13.8
+    disa: 68,803,1453,877,3123
+    hipaa: 164.308(b)(1),164.308(b)(2),164.312(e)(1),164.312(e)(2)(i),164.312(e)(2)(ii),164.314(b)(2)(i)
+    nist: AC-17(b),AC-17(2),IA-7,SC-13,MA-4(6)
+    nist-csf: PR.AC-1,PR.AC-3,PR.DS-5,PR.PT-4
+    srg: SRG-OS-000250-GPOS-00093,SRG-OS-000125-GPOS-00065,SRG-OS-000394-GPOS-00174
+    vmmsrg: SRG-OS-000033-VMM-000140,SRG-OS-000120-VMM-000600,SRG-OS-000478-VMM-001980,SRG-OS-000480-VMM-002000,SRG-OS-000396-VMM-001590
+    stigid@rhel7: "040400"
+    stigid@sle12: "030180"
+    isa-62443-2013: 'SR 1.1,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.6,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
+    isa-62443-2009: 4.3.3.5.1,4.3.3.6.6
+    cobit5: APO01.06,APO13.01,DSS01.04,DSS05.02,DSS05.03,DSS05.04,DSS05.07,DSS06.02,DSS06.03
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.11.2.6,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.6.2.1,A.6.2.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
+    cis-csc: 1,12,13,15,16,5,8
+
+ocil_clause: 'MACs option is commented out or not using FIPS-approved hash algorithms'
+
+ocil: |-
+    Only FIPS-approved MACs should be used. To verify that only FIPS-approved
+    MACs are in use, run the following command:
+    <pre>$ sudo grep -i macs /etc/ssh/sshd_config</pre>
+    The output should contain only those MACs which are FIPS-approved. Any use of other
+    ciphers or algorithms will result in the module entering the non-FIPS mode of
+    operation.
+
+warnings:
+    - general: |-
+        The system needs to be rebooted for these changes to take effect.
+    - regulatory: |-
+        The Federal Information Systems Modernization Act (FISMA), requires cryptography protecting sensitive
+        or valuable data to undergo FIPS 140 validation. The U.S. National Institute of Standards and
+        Technology (NIST) views unvalidated cryptography as providing no protection to the information or
+        data—in effect the data would be considered unprotected plaintext. If the agency specifies that the
+        information or data be cryptographically protected, FIPS 140 is applicable. This configuration
+        check will fail on platforms lacking FIPS 140 validation, such as the CentOS, Scientific Linux,
+        and Fedora projects, even if FIPS-approved ciphers can be installed and enabled.
+        <br /><br />
+        See <b>{{{ weblink(link="https://csrc.nist.gov/Projects/cryptographic-module-validation-program") }}}</b>
+        for more information about the Cryptographic Validation Program.
+        <br /><br />
+        A list of FIPS validated cryptographic modules can be found at
+        <b>{{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/1401vend.htm") }}}</b>. The
+        validated cryptographic modules only apply to the products and companies listed in the active validation
+        list.

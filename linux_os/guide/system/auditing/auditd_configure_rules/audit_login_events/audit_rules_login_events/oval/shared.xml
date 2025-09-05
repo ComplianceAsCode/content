@@ -1,0 +1,19 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_login_events" version="2">
+    <metadata>
+      <title>Record Attempts to Alter Login and Logout Events</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>Audit rules should be configured to log successful and unsuccessful login and logout events.</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="audit tallylog" definition_ref="audit_rules_login_events_tallylog" />
+      <extend_definition comment="audit faillock" definition_ref="audit_rules_login_events_faillock" />
+      <extend_definition comment="audit lastlog" definition_ref="audit_rules_login_events_lastlog" />
+    </criteria>
+  </definition>
+
+</def-group>

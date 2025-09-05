@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: SELinux
+
+description: |-
+    SELinux is a feature of the Linux kernel which can be
+    used to guard against misconfigured or compromised programs.
+    SELinux enforces the idea that programs should be limited in what
+    files they can access and what actions they can take.
+    <br /><br />
+    The default SELinux policy, as configured on {{{ full_name }}}, has been
+    sufficiently developed and debugged that it should be usable on
+    almost any system with minimal configuration and a small
+    amount of system administrator training. This policy prevents
+    system services - including most of the common network-visible
+    services such as mail servers, FTP servers, and DNS servers - from
+    accessing files which those services have no valid reason to
+    access. This action alone prevents a huge amount of possible damage
+    from network attacks against services, from trojaned software, and
+    so forth.
+    <br /><br />
+    This guide recommends that SELinux be enabled using the
+    default (targeted) policy on every {{{ full_name }}} system, unless that
+    system has unusual requirements which make a stronger policy
+    appropriate.
+    {{% if product == "rhel7" %}}
+    <br /><br />
+    For more information on SELinux, see <b>{{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/SELinux_Users_and_Administrators_Guide") }}}</b>.
+    {{% elif product == "ol7" %}}
+    For more information on SELinux, see <b>{{{ weblink(link="https://docs.oracle.com/cd/E52668_01/E54669/html/ol7-s1-syssec.html") }}}</b>.
+    {{% endif %}}
+
+platform: machine

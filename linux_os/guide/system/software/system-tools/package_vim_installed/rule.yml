@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Install vim Package'
+
+description: |-
+    {{{ describe_package_install(package="vim") }}}
+
+rationale: |-
+    Vim (Vi IMproved) is an almost compatible version of the UNIX editor <tt>vi</tt>. 
+
+severity: low
+
+identifiers:
+    cce@rhel6: 82958-0
+    cce@rhel7: 82957-2
+    cce@rhel8: 82956-4
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="vim") }}}'

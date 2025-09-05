@@ -1,0 +1,10 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+- name: Ensure {{{ PKGNAME }}} is removed
+  package:
+    name: "{{{ PKGNAME }}}"
+    state: absent
+

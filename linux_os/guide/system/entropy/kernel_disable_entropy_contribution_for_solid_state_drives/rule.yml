@@ -1,0 +1,15 @@
+documentation_complete: true
+
+title: 'Ensure Solid State Drives Do Not Contribute To Random-Number Entropy Pool'
+
+description: |-
+    For each solid-state drive on the system, run:
+    <pre> # echo 0 &gt; /sys/block/DRIVE/queue/add_random</pre>
+
+rationale: |-
+    In contrast to traditional electromechanical magnetic disks, containing
+    spinning disks and / or movable read / write heads, the solid-state storage
+    devices (SSDs) do not contain moving / mechanical components. Therefore the
+    I/O operation completion times are much more predictable for them.
+
+severity: medium

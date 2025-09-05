@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="firefox_preferences-verification"
+  version="1">
+    <metadata>
+      <title>Enable Certificate Verification</title>
+      <affected family="unix">
+        <platform>Mozilla Firefox</platform>
+      </affected>
+      <description>When a web site asks for a certificate for user authentication, Firefox must be configured to have the user choose which certificate to present. Websites within DOD require user authentication for access which increases security for DoD information. Access will be denied to the user if certificate management is not configured</description>
+    </metadata>
+    <criteria>
+      <criterion comment="verification installed" test_ref="test_firefox_preferences-verification" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Enable Certification verification" id="test_firefox_preferences-verification" version="1">
+    <ind:object object_ref="object_firefox_preferences-verification" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_firefox_preferences-verification" version="1">
+    <ind:path operation="pattern match">^\/usr\/(|local\/)lib(|64)\/firefox</ind:path>
+    <ind:filename operation="pattern match">^.*\.cfg$</ind:filename>
+    <ind:pattern operation="pattern match">^lockPref\("security.default_personal_cert",[\s]+"Ask Every Time"\);$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>  
+
+</def-group>
+

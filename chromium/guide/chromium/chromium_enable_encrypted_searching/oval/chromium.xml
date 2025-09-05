@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="chromium_enable_encrypted_searching"  version="1">
+    <metadata>
+      <title>Enable Encrypted Searching</title>
+      <affected family="unix">
+        <platform>Google Chromium Browser</platform>
+      </affected>
+      <description>The default search provider URL must be set to perform encrypted searches.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Chromium enable encrypted searching" test_ref="test_chromium_encrypted_search" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Chromium enable encrypted searching" id="test_chromium_encrypted_search" version="1">
+    <ind:object object_ref="object_chromium_encrypted_search" />
+    <ind:state state_ref="state_chromium_encrypted_search" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_chromium_encrypted_search" version="1">
+    <ind:filepath operation="pattern match">^/etc/chromium/policies/managed/.*\.json$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]+\"DefaultSearchProviderSearchURL\"\:[\s]+\"(\S+)",</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_chromium_encrypted_search" version="1">
+    <ind:subexpression operation="equals" var_check="all" var_ref="var_enable_encrypted_searching" />
+  </ind:textfilecontent54_state>
+
+  <external_variable id="var_enable_encrypted_searching" datatype="string" version="1" comment="Expected search provider name" />
+
+</def-group>

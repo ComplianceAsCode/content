@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Disable Automatic Search And Installation of Plugins'
+
+description: |-
+    Chromium will automatically detect, search, and install plugins as required. This
+    should be disabled by setting <tt>DisablePluginFinder</tt> to <tt>true</tt> in the
+    Chromium policy file.
+
+rationale: |-
+    The automatic search and installation of missing or not installed plugins should be
+    disabled as this can cause significant risk if a unapproved or vulnerable plugin were
+    to be installed without proper permissions or authorization.
+
+severity: unknown
+
+references:
+    stigid: DTBC0036
+
+ocil_clause: 'it is not disabled'
+
+ocil: |-
+    To verify that plugins cannot be automatically installed, run the following command:
+    <pre>$ grep DisablePluginFinder /etc/chromium/policies/managed/*.json</pre>
+    The output should contain:
+    <pre>"DisablePluginFinder": true,</pre>

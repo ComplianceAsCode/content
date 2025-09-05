@@ -1,0 +1,8 @@
+# platform = Red Hat Enterprise Linux 8,multi_platform_fedora,Oracle Linux 8
+# reboot = true
+# strategy = restrict
+# complexity = medium
+# disruption = medium
+
+- name: enable fips mode
+  command: /usr/bin/fips-mode-setup --enable

@@ -1,0 +1,69 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Set Interval For Counting Failed Password Attempts'
+
+description: |-
+    Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive
+    configures the system to lock out an account after a number of incorrect
+    login attempts within a specified time period. Modify the content of both
+    <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>
+    as follows:
+    <br /><br />
+    <ul>
+    <li>Add the following line immediately <tt>before</tt> the
+        <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+    <pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+    </li>
+    <li>Add the following line immediately <tt>after</tt> the
+        <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+    <pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" />
+    </pre>
+    </li>
+    <li>Add the following line immediately <tt>before</tt> the
+        <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
+    <pre>account required pam_faillock.so</pre>
+    </li>
+    </ul>
+
+rationale: |-
+    By limiting the number of failed logon attempts the risk of unauthorized system
+    access via user password guessing, otherwise known as brute-forcing, is reduced.
+    Limits are imposed by locking the account.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 27215-3
+    cce@rhel7: 27297-1
+    cce@rhel8: 80669-5
+
+references:
+    stigid@rhel6: "000357"
+    srg@rhel6: SRG-OS-000249
+    disa@rhel6: '1452'
+    disa: "2238,44"
+    nist: AC-7(a)
+    nist-csf: PR.AC-7
+    ospp: FMT_MOF_EXT.1
+    srg: SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005
+    vmmsrg: SRG-OS-000021-VMM-000050
+    stigid@rhel7: "010320"
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    cobit5: DSS05.04,DSS05.10,DSS06.10
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
+    cis-csc: 1,12,15,16
+
+ocil_clause: 'fail_interval is less than the required value'
+
+ocil: |-
+    To ensure the failed password attempt policy is configured correctly,
+    run the following command:
+    <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
+    For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt><sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></tt> or greater.
+    If the <tt>fail_interval</tt> parameter is not set, the default setting
+    of 900 seconds is acceptable.
+
+platform: pam

@@ -1,0 +1,12 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: disable core dumps with limits
+  lineinfile:
+    dest: /etc/security/limits.conf
+    regexp: '^[^#].*core'
+    line: '*        hard       core      0'
+    create: yes

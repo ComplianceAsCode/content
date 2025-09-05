@@ -1,0 +1,195 @@
+{{%- if target_oval_version == [5, 11] -%}}
+{{# there is no good alternative for symlink_test for OVAL 5.10 #}}
+{{%- macro crypto_policy_symlink_criterion(library) %}}
+      <criteria operator="OR" comment="checks if /etc/crypto-policies/back-ends/{{{ library }}}.config is either a symlink and in that case a drop in file in /etc/crypto-policies/local.d must not exist or /etc/crypto-policies/back-ends/{{{ library }}}.config is a regular file and the drop in file must exist">
+        <criteria operator="AND">
+          <criterion comment="Check if /etc/crypto-policies/back-ends/{{{ library }}}.config is linked to /usr/share/crypto-policies/POLICY/{{{ library }}}.txt" test_ref="test_crypto_policy_{{{ library }}}_symlink" />
+          <criterion comment="Checks if there is NOT a drop in file in /etc/crypto-policies/local.d associated with {{{ library }}}." test_ref="test_{{{ library }}}_dropin_file" negate="true" />
+        </criteria>
+        <criteria operator="AND">
+          <criterion comment="checks if the /etc/crypto-policies/back-ends/{{{ library }}}.config file is a regular file." test_ref="test_{{{ library }}}_regular_file"/>
+          <criterion comment="Checks if there is a drop in file in /etc/crypto-policies/local.d associated with {{{ library }}}." test_ref="test_{{{ library }}}_dropin_file" />
+        </criteria>
+      </criteria>
+{{%- endmacro %}}
+
+{{%- macro crypto_policy_symlink_check(library) %}}
+  <local_variable id="var_crypto_policy_{{{ library }}}_path" datatype="string" comment="Regex variable for canonical path to targeted {{{ library }}} policy" version="1">
+    <concat>
+      <literal_component>^/usr/share/crypto-policies/</literal_component>
+      <variable_component var_ref="var_system_crypto_policy"/>
+      <literal_component>/{{{ library }}}.txt$</literal_component>
+    </concat>
+  </local_variable>
+
+  <unix:symlink_test id="test_crypto_policy_{{{ library }}}_symlink"
+  comment="check if /etc/crypto-policies/back-ends/{{{ library }}}.config is linked to correct target library config"
+  check="all" check_existence="all_exist" version="1">
+    <unix:object object_ref="object_crypto_policy_{{{ library }}}_symlink" />
+    <unix:state state_ref="state_crypto_policy_{{{ library }}}_symlink" />
+  </unix:symlink_test>
+
+  <unix:symlink_object id="object_crypto_policy_{{{ library }}}_symlink" version="1">
+    <unix:filepath>/etc/crypto-policies/back-ends/{{{ library }}}.config</unix:filepath>
+  </unix:symlink_object>
+
+  <unix:symlink_state id="state_crypto_policy_{{{ library }}}_symlink" version="1">
+    <unix:filepath>/etc/crypto-policies/back-ends/{{{ library }}}.config</unix:filepath>
+    <unix:canonical_path operation="pattern match" var_ref="var_crypto_policy_{{{ library }}}_path"/>
+  </unix:symlink_state>
+
+  <unix:file_test id="test_{{{ library }}}_regular_file"
+  comment="Checks if a file in /etc/crypto-policies/back-ends/{{{ library }}}.config is a regular file"
+  check="all" check_existence="all_exist" version="1">
+    <unix:object object_ref="object_crypto_policy_{{{ library }}}_regular_file" />
+    <unix:state state_ref="state_crypto_policy_{{{ library }}}_regular_file" />
+  </unix:file_test>
+
+  <unix:file_object id="object_crypto_policy_{{{ library }}}_regular_file" version="1">
+    <unix:filepath>/etc/crypto-policies/back-ends/{{{ library }}}.config</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_crypto_policy_{{{ library }}}_regular_file" version="1">
+    <unix:filepath>/etc/crypto-policies/back-ends/{{{ library }}}.config</unix:filepath>
+    <unix:type>regular</unix:type>
+  </unix:file_state>
+
+  <unix:file_test id="test_{{{ library }}}_dropin_file"
+  comment="Checks if a file exists in /etc/crypto-policies/local.d/ which could be a drop in  file for one of libraries"
+  check="all" check_existence="all_exist" version="1">
+    <unix:object object_ref="object_crypto_policy_{{{ library }}}_dropin_file" />
+  </unix:file_test>
+
+  <unix:file_object id="object_crypto_policy_{{{ library }}}_dropin_file" version="1">
+    <unix:filepath operation="pattern match">^/etc/crypto-policies/local\.d/{{{ library }}}-.*\.config$</unix:filepath>
+  </unix:file_object>
+
+{{%- endmacro %}}
+
+{{% endif %}}
+
+<def-group>
+  <definition class="compliance" id="configure_crypto_policy" version="1">
+    <metadata>
+      <title>Configure System Cryptographic Policies</title>
+      <affected family="unix">
+        <platform>multi_platform_fedora</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>Oracle Linux 8</platform>
+      </affected>
+      <description>Look for crypto policy correctly configured in /etc/crypto-policies/config, and the policy is current.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/config"
+      test_ref="test_configure_crypto_policy" />
+      <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/state/current"
+      test_ref="test_configure_crypto_policy_current" />
+      <criterion comment="Check if update-crypto-policies has been run after config update" test_ref="test_crypto_policies_updated" />
+{{%- if target_oval_version == [5, 11] -%}}
+      {{{ crypto_policy_symlink_criterion(library="bind") }}}
+      {{{ crypto_policy_symlink_criterion(library="gnutls") }}}
+      {{{ crypto_policy_symlink_criterion(library="java") }}}
+      {{{ crypto_policy_symlink_criterion(library="krb5") }}}
+      {{{ crypto_policy_symlink_criterion(library="libreswan") }}}
+      {{{ crypto_policy_symlink_criterion(library="openssh") }}}
+      {{{ crypto_policy_symlink_criterion(library="opensshserver") }}}
+      {{{ crypto_policy_symlink_criterion(library="openssl") }}}
+  {{% endif %}}
+      <criterion comment="Check if /etc/crypto-policies/back-ends/nss.config exists" test_ref="test_crypto_policy_nss_config" />
+    </criteria>
+  </definition>
+
+  <unix:file_object id="crypto_policies_current_file" comment="crypto-policies current state" version="1">
+    <unix:filepath>/etc/crypto-policies/state/current</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_object id="crypto_policies_config_file" comment="crypto-policies config state" version="1">
+    <unix:filepath datatype="string">/etc/crypto-policies/config</unix:filepath>
+  </unix:file_object>
+
+  <local_variable id="variable_crypto_policies_current_file_age" version="1" comment="Age of /etc/crypto-policies/state/current" datatype="int">
+      <time_difference format_2="seconds_since_epoch">
+        <object_component object_ref="crypto_policies_current_file" item_field="m_time"/>
+      </time_difference>
+  </local_variable>
+
+  <local_variable id="variable_crypto_policies_config_file_age" version="1" comment="Age of /etc/crypto-policies/config" datatype="int">
+    <time_difference format_2="seconds_since_epoch">
+      <object_component object_ref="crypto_policies_config_file" item_field="m_time"/>
+    </time_difference>
+  </local_variable>
+
+  <ind:variable_test check="all" check_existence="all_exist" id="test_crypto_policies_updated" version="1" comment="Check if update-crypto-policies has been run">
+    <ind:object object_ref="object_crypto_policies_config_file_modified_time" />
+    <ind:state state_ref="state_crypto_current_file_newer_than_config_file" />
+  </ind:variable_test>
+
+  <ind:variable_object comment="Crypto policy current file age"
+id="object_crypto_policies_config_file_modified_time" version="1">
+     <ind:var_ref>variable_crypto_policies_config_file_age</ind:var_ref>
+   </ind:variable_object>
+
+  <ind:variable_state id="state_crypto_current_file_newer_than_config_file" version="1">
+    <ind:value datatype="int" operation="greater than or equal" var_check="all"
+    var_ref="variable_crypto_policies_current_file_age" />
+  </ind:variable_state>
+
+  <ind:textfilecontent54_test id="test_configure_crypto_policy"
+  comment="check for crypto policy correctly configured in /etc/crypto-policies/config"
+  check="all" check_existence="only_one_exists" version="1">
+    <ind:object object_ref="object_configure_crypto_policy" />
+    <ind:state state_ref="state_configure_crypto_policy" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_configure_crypto_policy" version="1">
+    <ind:filepath>/etc/crypto-policies/config</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#)(\S+)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_configure_crypto_policy" version="1">
+    <ind:subexpression operation="equals" var_check="all"
+    var_ref="var_system_crypto_policy" />
+  </ind:textfilecontent54_state>
+
+    <ind:textfilecontent54_test id="test_configure_crypto_policy_current"
+  comment="check for crypto policy correctly configured in /etc/crypto-policies/state/current"
+  check="all" check_existence="only_one_exists" version="1">
+    <ind:object object_ref="object_configure_crypto_policy_current" />
+    <ind:state state_ref="state_configure_crypto_policy_current" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_configure_crypto_policy_current" version="1">
+    <ind:filepath>/etc/crypto-policies/state/current</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#)(\S+)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_configure_crypto_policy_current" version="1">
+    <ind:subexpression operation="equals" var_check="all"
+    var_ref="var_system_crypto_policy" />
+  </ind:textfilecontent54_state>
+
+{{%- if target_oval_version == [5, 11] -%}}
+  {{{ crypto_policy_symlink_check(library="bind") }}}
+  {{{ crypto_policy_symlink_check(library="gnutls") }}}
+  {{{ crypto_policy_symlink_check(library="java") }}}
+  {{{ crypto_policy_symlink_check(library="krb5") }}}
+  {{{ crypto_policy_symlink_check(library="libreswan") }}}
+  {{{ crypto_policy_symlink_check(library="nss") }}}
+  {{{ crypto_policy_symlink_check(library="openssh") }}}
+  {{{ crypto_policy_symlink_check(library="opensshserver") }}}
+  {{{ crypto_policy_symlink_check(library="openssl") }}}
+{{% endif %}}
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Check if /etc/crypto-policies/back-ends/nss.config exists" id="test_crypto_policy_nss_config" version="1">
+    <unix:object object_ref="object_crypto_policy_nss_config" />
+  </unix:file_test>
+  <unix:file_object id="object_crypto_policy_nss_config" version="1">
+    <unix:filepath>/etc/crypto-policies/back-ends/nss.config</unix:filepath>
+  </unix:file_object>
+
+  <external_variable comment="defined crypto policy" datatype="string"
+  id="var_system_crypto_policy" version="1" />
+
+</def-group>

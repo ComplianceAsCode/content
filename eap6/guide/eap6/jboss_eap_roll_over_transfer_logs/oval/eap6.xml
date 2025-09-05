@@ -1,0 +1,45 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_roll_over_transfer_logs">
+    <metadata>
+      <title>Configure Logs to Rollover</title>
+      <description>Logger should be configured to rollover log files</description>
+      <affected family="undefined">
+        <platform>JBoss Enterprise Application Platform 6</platform>
+      </affected>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_eap_roll_over_transfer_logs" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_object id="obj_env_rollover_log" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+  <local_variable id="local_var_rollover_jboss_home" version="1" datatype="string" comment="version location">
+    <concat>
+      <object_component object_ref="obj_env_rollover_log" item_field="value" />
+      <literal_component datatype="string">/standalone/configuration/</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="local_var_profile_transfer_logs" version="1" datatype="string" comment="configuration profile">
+    <concat>
+      <variable_component var_ref="var_jboss_profile" />
+      <literal_component datatype="string">.xml</literal_component>
+    </concat>
+  </local_variable>
+
+  <external_variable comment="external variable for Jboss profile" datatype="string" id="var_jboss_profile" version="1" />
+
+  <ind:xmlfilecontent_test id="test_eap_roll_over_transfer_logs" version="1" check="all" comment="Check EAP roll over transfer logs">
+    <ind:object object_ref="obj_eap_roll_over_transfer_logs" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_eap_roll_over_transfer_logs" version="1">
+    <ind:path var_ref="local_var_rollover_jboss_home"/>
+    <ind:filename var_ref="local_var_profile_transfer_logs" />
+    <ind:xpath>//*[name()='server']/*[name()='profile']/*[name()='subsystem']/*[name()='periodic-rotating-file-handler'][@name='FILE']</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+</def-group>

@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Disable etcd Peer Self-Signed Certificates'
+
+description: |-
+    To ensure the <tt>etcd</tt> service is not using self-signed
+    certificates, edit the <tt>etcd</tt> configuration file
+    <tt>/etc/etcd/etcd.conf</tt> from the master node and set
+    <tt>ETCD_PEER_AUTO_TLS</tt> to <tt>false</tt>:
+    <pre>ETCD_PEER_AUTO_TLS=false</pre>
+
+rationale: |-
+    Without cryptographic integrity protections, information can be
+    altered by unauthorized users without detection. Using self-signed
+    certificates ensures that the certificates are never validated
+    against a certificate authority and could lead to compromised
+    and invalidated data.
+
+severity: medium
+
+identifiers:
+    cce@ocp3: 80583-8
+
+references:
+    cis: 1.5.6
+
+ocil_clause: 'the etcd is using peer self-signed certificates'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ grep ETCD_PEER_AUTO_TLS /etc/etcd/etcd.conf</pre>
+    The output should return <tt>false</tt>.

@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Disable Prelinking'
+
+description: |-
+    The prelinking feature changes binaries in an attempt to decrease their startup
+    time. In order to disable it, change or add the following line inside the file
+    <tt>/etc/sysconfig/prelink</tt>:
+    <pre>PRELINKING=no</pre>
+    Next, run the following command to return binaries to a normal, non-prelinked state:
+    <pre>$ sudo /usr/sbin/prelink -ua</pre>
+
+rationale: |-
+    Because the prelinking feature changes binaries, it can interfere with the
+    operation of certain software and/or modes such as AIDE, FIPS, etc.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 27221-1
+    cce@rhel7: 27078-5
+    cce@rhel8: 80787-5
+
+references:
+    cis: 1.5.4
+    cjis: 5.10.1.3
+    cui: 3.13.11
+    disa: 803,2450
+    nist: CM-6(d),CM-6(3),SC-13,SC-28,SI-7,IA-7
+    nist-csf: PR.DS-1,PR.DS-6,PR.DS-8,PR.IP-1
+    vmmsrg: SRG-OS-000120-VMM-000600,SRG-OS-000478-VMM-001980,SRG-OS-000396-VMM-001590
+    isa-62443-2013: 'SR 3.1,SR 3.3,SR 3.4,SR 3.8,SR 4.1,SR 7.6'
+    isa-62443-2009: 4.3.4.3.2,4.3.4.3.3,4.3.4.4.4
+    cobit5: APO01.06,BAI02.01,BAI03.05,BAI06.01,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS04.07,DSS05.03,DSS06.02,DSS06.06
+    iso27001-2013: A.11.2.4,A.12.1.2,A.12.2.1,A.12.5.1,A.12.6.2,A.14.1.2,A.14.1.3,A.14.2.2,A.14.2.3,A.14.2.4,A.8.2.3
+    cis-csc: 11,13,14,2,3,9
+    pcidss: Req-11.5

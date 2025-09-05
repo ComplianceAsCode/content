@@ -1,0 +1,322 @@
+<def-group>
+  <definition class="compliance" id="no_shelllogin_for_systemaccounts" version="2">
+    <metadata>
+      <title>System Accounts Do Not Run a Shell</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The root account is the only system account that should have
+      a login shell.</description>
+    </metadata>
+    <criteria operator="OR">
+      <!-- If SYS_UID_MIN and SYS_UID_MAX is not defined in /etc/login.defs
+           perform the check that all /etc/passwd entries having shell defined
+           have UIDs outside the default <0, UID_MIN -1> range.
+           If at least one UID with shell defined exists within that range,
+           the requirement isn't met -->
+      <criteria operator="AND">
+        <criterion comment="Test SYS_UID_MIN not defined in /etc/login.defs"
+        test_ref="test_sys_uid_min_not_defined" />
+        <criterion comment="Test SYS_UID_MAX not defined in /etc/login.defs"
+        test_ref="test_sys_uid_max_not_defined" />
+        <criterion comment="Test shell defined for UID from &lt;0, UID_MIN -1&gt;"
+        test_ref="test_shell_defined_default_uid_range" />
+      </criteria>
+      <!-- If both SYS_UID_MIN and SYS_UID_MAX are defined in /etc/login.defs
+           perform both checks:
+           * That all /etc/passwd entries having shell defined have UIDs outside
+           the range for reserved system accounts <0, SYS_UID_MIN> range,
+           * That all /etc/passwd entries having shell defined have UIDs outside
+           the range for dynamically allocated system accounts <SYS_UID_MIN, SYS_UID_MAX>
+           If at least one UID with shell defined exists within some of the two
+           ranges, the requirement isn't met -->
+      <criteria operator="AND">
+        <criterion comment="Test SYS_UID_MIN defined in /etc/login.defs"
+        test_ref="test_sys_uid_min_not_defined" negate="true" />
+        <criterion comment="Test SYS_UID_MAX defined in /etc/login.defs"
+        test_ref="test_sys_uid_max_not_defined" negate="true" />
+        <criterion comment="Test shell defined for reserved system UIDs"
+        test_ref="test_shell_defined_reserved_uid_range" />
+        <criterion comment="Test shell defined for dynamically allocated system UIDs"
+        test_ref="test_shell_defined_dynalloc_uid_range" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <!-- First define OVAL entities used by both criteria above -->
+
+  <!-- Get last occurrence of UID_MIN from /etc/login.defs as OVAL object -->
+  <ind:textfilecontent54_object id="object_last_uid_min_from_etc_login_defs"
+  version="1">
+    <ind:behaviors singleline="true" />
+    <ind:filepath>/etc/login.defs</ind:filepath>
+    <!-- Last (uncommented) instance od UID_MIN directive -->
+    <ind:pattern operation="pattern match">.*\n(?!#|SYS_)(UID_MIN[\s]+[\d]+)\s*\n</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Get last occurrence of SYS_UID_MIN from /etc/login.defs as OVAL object -->
+  <ind:textfilecontent54_object id="object_last_sys_uid_min_from_etc_login_defs"
+  version="1">
+    <ind:behaviors singleline="true" />
+    <ind:filepath>/etc/login.defs</ind:filepath>
+    <!-- Last (uncommented) instance of SYS_UID_MIN directive -->
+    <ind:pattern operation="pattern match">.*\n[^#]*(SYS_UID_MIN[\s]+[\d]+)\s*\n</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Get last occurrence of SYS_UID_MAX from /etc/login.defs as OVAL object -->
+  <ind:textfilecontent54_object id="object_last_sys_uid_max_from_etc_login_defs" version="1">
+    <ind:behaviors singleline="true" />
+    <ind:filepath>/etc/login.defs</ind:filepath>
+    <!-- Last (uncommented) instance of SYS_UID_MAX directive -->
+    <ind:pattern operation="pattern match">.*\n[^#]*(SYS_UID_MAX[\s]+[\d]+)\s*\n</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Get all /etc/passwd entries having shell defined as OVAL object -->
+  <ind:textfilecontent54_object id="object_etc_passwd_entries" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!root).*:x:([\d]+):[\d]+:[^:]*:[^:]*:(?!\/sbin\/nologin|\/bin\/sync|\/sbin\/shutdown|\/sbin\/halt).*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Extract UIDs from /etc/passwd entries into OVAL variable -->
+  <local_variable id="variable_sys_uids_etc_passwd" datatype="int"
+  comment="UIDs retrieved from /etc/passwd" version="1">
+    <object_component item_field="subexpression"
+    object_ref="object_etc_passwd_entries" />
+  </local_variable>
+
+  <!-- FIRST CRITERION -->
+  <!-- If both SYS_UID_MIN and SYS_UID_MAX aren't defined in /etc/login.defs
+       perform the check that all /etc/passwd entries having shell defined have
+       UIDs outside the <0, UID_MIN - 1> range -->
+
+  <!-- Actual /etc/login.defs UID_MIN value as OVAL variable -->
+  <local_variable id="variable_uid_min_value" datatype="int"
+  comment="Value of last UID_MIN from /etc/login.defs" version="1">
+    <regex_capture pattern="UID_MIN[\s]+(\d+)">
+      <object_component item_field="subexpression"
+      object_ref="object_last_uid_min_from_etc_login_defs" />
+    </regex_capture>
+  </local_variable>
+
+  <!-- OVAL entities below are workaround for the OpenSCAP bug:
+       https://github.com/OpenSCAP/openscap/issues/428
+
+       Within the test below we will check if all /etc/passwd entries
+       having shell defined have UIDs outside of <0, UID_MIN - 1> range.
+       If at least one UID is within the range, test will fail.
+
+       Observation: Number "x" is outside of <a, b> range if the following
+       inequality is met (x - a) * (x - b) > 0
+  -->
+
+  <!-- OVAL variable to hold (x - 0) * (x - (UID_MIN -1)) range -->
+  <local_variable id="variable_default_range_quad_expr" datatype="int"
+  comment="Construct (x - 0) * (x - (UID_MIN - 1)) expression"
+  version="1">
+    <!-- Construct the final multiplication -->
+    <arithmetic arithmetic_operation="multiply">
+      <!-- Get "x", thus retrieved /etc/passwd UIDs as int -->
+      <!-- (x - 0) = x => use just "x" value -->
+      <variable_component var_ref="variable_sys_uids_etc_passwd" />
+      <!-- Get (x - (UID_MIN -1)) result -->
+      <arithmetic arithmetic_operation="add">
+        <variable_component var_ref="variable_sys_uids_etc_passwd" />
+        <!-- Get -1 * (UID_MIN - 1) result -->
+        <arithmetic arithmetic_operation="multiply">
+          <literal_component datatype="int">-1</literal_component>
+          <!-- Get (UID_MIN -1) result -->
+          <arithmetic arithmetic_operation="add">
+            <!-- Get "x", thus retrieved /etc/passwd UIDs as int -->
+            <variable_component var_ref="variable_uid_min_value" />
+            <literal_component datatype="int">-1</literal_component>
+          </arithmetic>
+        </arithmetic>
+      </arithmetic>
+    </arithmetic>
+  </local_variable>
+
+  <!-- Foreach previously collected UID store the expression into
+       corresponding OVAL object -->
+  <ind:variable_object id="object_shell_defined_default_uid_range" version="1">
+    <ind:var_ref>variable_default_range_quad_expr</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- Finally verify that (x - a) * (x - b) > 0 -->
+  <ind:variable_state id="state_shell_defined_default_uid_range" version="1">
+    <ind:value datatype="int" operation="greater than">0</ind:value>
+  </ind:variable_state>
+
+  <!-- Perform the default <0, UID_MIN - 1> UID range test itself -->
+  <!-- Thus check that all /etc/passwd entries having shell defined
+       have UID outside of <0, UID_MIN -1> range -->
+  <ind:variable_test id="test_shell_defined_default_uid_range" check="all"
+  check_existence="all_exist" comment="&lt;0, UID_MIN - 1&gt; system UIDs having shell set"
+  version="1">
+    <ind:object object_ref="object_shell_defined_default_uid_range" />
+    <ind:state state_ref="state_shell_defined_default_uid_range" />
+  </ind:variable_test>
+
+  <!-- Test if SYS_UID_MIN not defined in /etc/login.defs -->
+  <ind:textfilecontent54_test id="test_sys_uid_min_not_defined"
+  comment="SYS_UID_MIN not defined in /etc/login.defs" check="all"
+  check_existence="none_exist" version="1">
+    <ind:object object_ref="object_last_sys_uid_min_from_etc_login_defs" />
+  </ind:textfilecontent54_test>
+
+  <!-- Test if SYS_UID_MAX not defined in /etc/login.defs -->
+  <ind:textfilecontent54_test id="test_sys_uid_max_not_defined"
+  comment="SYS_UID_MAX not defined in /etc/login.defs" check="all"
+  check_existence="none_exist" version="1">
+    <ind:object object_ref="object_last_sys_uid_max_from_etc_login_defs" />
+  </ind:textfilecontent54_test>
+
+  <!-- SECOND CRITERION -->
+  <!-- If both SYS_UID_MIN and SYS_UID_MAX are defined in /etc/login.defs,
+       perform more advanced test:
+       * Check that all /etc/passwd entries having shell defined have UIDs
+       outside the range of reserved system UIDs, thus <0, SYS_UID_MIN>,
+       * Also check that all /etc/passwd entries having shell defined have
+       UIDs outside the range of dynamically allocated system UIDs, thus
+       <SYS_UID_MIN, SYS_UID_MAX>
+  -->
+
+  <!-- Actual /etc/login.defs SYS_UID_MIN value as OVAL variable -->
+  <local_variable id="variable_sys_uid_min_value" datatype="int"
+  comment="Value of last SYS_UID_MIN from /etc/login.defs" version="1">
+    <regex_capture pattern="SYS_UID_MIN[\s]+(\d+)">
+      <object_component item_field="subexpression"
+      object_ref="object_last_sys_uid_min_from_etc_login_defs" />
+    </regex_capture>
+  </local_variable>
+
+  <!-- Actual /etc/login.defs SYS_UID_MAX value as OVAL variable -->
+  <local_variable id="variable_sys_uid_max_value" datatype="int"
+  comment="Value of last SYS_UID_MAX from /etc/login.defs" version="1">
+    <regex_capture pattern="SYS_UID_MAX[\s]+(\d+)">
+      <object_component item_field="subexpression"
+      object_ref="object_last_sys_uid_max_from_etc_login_defs" />
+    </regex_capture>
+  </local_variable>
+
+  <!-- OVAL entities below are workaround for the OpenSCAP bug:
+       https://github.com/OpenSCAP/openscap/issues/428
+
+       Within the test below we will check if all /etc/passwd entries
+       having shell defined have UIDs outside of <0, SYS_UID_MIN> range.
+       If at least one UID is within the range, test will fail.
+
+       Observation: Number "x" is outside of <a, b> range if the following
+       inequality is met (x - a) * (x - b) > 0
+  -->
+
+  <!-- OVAL variable to hold UIDs for reserved system accounts, thus
+       UIDs from the range <0, SYS_UID_MIN> -->
+  <local_variable id="variable_reserved_range_quad_expr" datatype="int"
+  comment="Construct (x - 0) * (x - SYS_UID_MIN) expression"
+  version="1">
+    <!-- Construct the final multiplication -->
+    <arithmetic arithmetic_operation="multiply">
+      <!-- Get "x", thus retrieved /etc/passwd UIDs as int -->
+      <!-- (x - 0) = x => use just "x" value -->
+      <variable_component var_ref="variable_sys_uids_etc_passwd" />
+      <!-- Construct (x - SYS_UID_MIN) expression -->
+      <arithmetic arithmetic_operation="add">
+        <!-- Get "x", thus retrieved /etc/passwd UIDs as int -->
+        <variable_component var_ref="variable_sys_uids_etc_passwd" />
+        <!-- Get negative value of SYS_UID_MIN -->
+        <arithmetic arithmetic_operation="multiply">
+          <literal_component datatype="int">-1</literal_component>
+          <variable_component var_ref="variable_sys_uid_min_value" />
+        </arithmetic>
+      </arithmetic>
+    </arithmetic>
+  </local_variable>
+
+  <!-- Foreach previously collected UID store the expression into
+       corresponding OVAL object -->
+  <ind:variable_object id="object_shell_defined_reserved_uid_range" version="1">
+    <ind:var_ref>variable_reserved_range_quad_expr</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- Finally verify that (x - a) * (x - b) > 0 -->
+  <ind:variable_state id="state_shell_defined_reserved_uid_range" version="1">
+    <ind:value datatype="int" operation="greater than">0</ind:value>
+  </ind:variable_state>
+
+  <!-- Perform the reserved UID range <0, SYS_UID_MIN> test itself -->
+  <!-- Thus check that all /etc/passwd entries having shell defined
+       have UID outside of <0, SYS_UID_MIN> range -->
+  <ind:variable_test id="test_shell_defined_reserved_uid_range" check="all"
+  check_existence="all_exist" comment="&lt;0, SYS_UID_MIN&gt; system UIDs having shell set"
+  version="1">
+    <ind:object object_ref="object_shell_defined_reserved_uid_range" />
+    <ind:state state_ref="state_shell_defined_reserved_uid_range" />
+  </ind:variable_test>
+
+  <!-- OVAL entities below are workaround for the OpenSCAP bug:
+       https://github.com/OpenSCAP/openscap/issues/428
+
+       Within the test below we will check if all /etc/passwd entries
+       having shell defined have UIDs outside of <SYS_UID_MIN, SYS_UID_MAX> range.
+       If at least one UID is within the range, test will fail.
+
+       Observation: Number "x" is outside of <a, b> range if the following
+       inequality is met (x - a) * (x - b) > 0
+  -->
+
+  <!-- OVAL variable to hold UIDs for dynamically allocated system accounts,
+       thus UIDs from the range <SYS_UID_MIN, SYS_UID_MAX> -->
+  <local_variable id="variable_dynalloc_range_quad_expr" datatype="int"
+  comment="Construct (x - SYS_UID_MIN) * (x - SYS_UID_MAX) expression"
+  version="1">
+    <!-- Construct the final multiplication -->
+    <arithmetic arithmetic_operation="multiply">
+      <!-- Construct (x - SYS_UID_MIN) expression -->
+      <arithmetic arithmetic_operation="add">
+        <!-- Get "x", thus retrieved /etc/passwd UIDs as int -->
+        <variable_component var_ref="variable_sys_uids_etc_passwd" />
+        <!-- Get negative value of SYS_UID_MIN -->
+        <arithmetic arithmetic_operation="multiply">
+          <literal_component datatype="int">-1</literal_component>
+          <variable_component var_ref="variable_sys_uid_min_value" />
+        </arithmetic>
+      </arithmetic>
+      <!-- Construct (x - SYS_UID_MAX) expression -->
+      <arithmetic arithmetic_operation="add">
+        <!-- Get "x", thus retrieved /etc/passwd UIDs as int -->
+        <variable_component var_ref="variable_sys_uids_etc_passwd" />
+        <!-- Get negative value of SYS_UID_MAX -->
+        <arithmetic arithmetic_operation="multiply">
+          <literal_component datatype="int">-1</literal_component>
+          <variable_component var_ref="variable_sys_uid_max_value" />
+        </arithmetic>
+      </arithmetic>
+    </arithmetic>
+  </local_variable>
+
+  <!-- Foreach previously collected UID store the expression into
+       corresponding OVAL object -->
+  <ind:variable_object id="object_shell_defined_dynalloc_uid_range" version="1">
+    <ind:var_ref>variable_dynalloc_range_quad_expr</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- Finally verify that (x - a) * (x - b) > 0 -->
+  <ind:variable_state id="state_shell_defined_dynalloc_uid_range" version="1">
+    <ind:value datatype="int" operation="greater than">0</ind:value>
+  </ind:variable_state>
+
+  <!-- Perform the dynamically allocated UID range <SYS_UID_MIN, SYS_UID_MAX> test itself -->
+  <!-- Thus check that all /etc/passwd entries having shell defined
+       have UID outside of <SYS_UID_MIN, SYS_UID_MAX> range -->
+  <ind:variable_test id="test_shell_defined_dynalloc_uid_range" check="all"
+  check_existence="all_exist" comment="&lt;SYS_UID_MIN, SYS_UID_MAX&gt; system UIDS having shell set"
+  version="1">
+    <ind:object object_ref="object_shell_defined_dynalloc_uid_range" />
+    <ind:state state_ref="state_shell_defined_dynalloc_uid_range" />
+  </ind:variable_test>
+
+</def-group>

@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Use OpenShift Projects to Maintain Boundaries Between Resources'
+
+description: |-
+    An OpenShift project is a namespace with additional annotations and is the central vehicle
+    by which access to resources is managed for regular users. Use OpenShift projects
+    to maintain boundaries between resources.
+
+rationale: |-
+    A project allows a community of users to organize and manage their content in isolation from other
+    communities. Users must be given access to projects by administrators, or if allowed to create projects,
+    automatically have access only to their own projects.
+
+severity: medium
+
+ocil_clause: 'they are not'
+
+ocil: |-
+    To display a list of projects configured on a system, run the following command:
+    <pre>$ oc get projects</pre>
+
+    Verify each project represents a unique community.
+
+# Since this is operational guidance and not a configuration check,
+# a CCE should not be assigned.
+#identifiers:
+#    cce@ocp3: 
+
+references:
+    cis: 1.6.3

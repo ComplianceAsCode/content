@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,ol7,ol8,rhv4
+
+title: 'Uninstall talk-server Package'
+
+description: '{{{ describe_package_remove(package="talk-server") }}}'
+
+rationale: |-
+    The talk software presents a security risk as it uses unencrypted protocols
+    for communications. Removing the <tt>talk-server</tt> package decreases the
+    risk of the accidental (or intentional) activation of talk services.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 27427-4
+    cce@rhel7: 27210-4
+
+references:
+    cis: 2.2.21
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+
+{{{ complete_ocil_entry_package(package="talk-server") }}}

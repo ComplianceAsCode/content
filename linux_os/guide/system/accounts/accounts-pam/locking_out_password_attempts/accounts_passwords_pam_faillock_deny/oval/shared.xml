@@ -1,0 +1,218 @@
+<def-group>
+  <definition class="compliance" id="accounts_passwords_pam_faillock_deny" version="4">
+    <metadata>
+      <title>Lock out account after failed login attempts</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The number of allowed failed logins should be set correctly.</description>
+    </metadata>
+    <criteria operator="AND" comment="Checks common to both scenarios">
+      <criterion test_ref="test_accounts_passwords_pam_faillock_preauth_silent_system-auth"
+      comment="pam_faillock.so preauth silent set in system-auth" />
+      <criterion test_ref="test_accounts_passwords_pam_faillock_account_phase_system-auth"
+      comment="pam_faillock.so set in account phase of system-auth" />
+      <criterion test_ref="test_accounts_passwords_pam_faillock_preauth_silent_password-auth"
+      comment="pam_faillock.so preauth silent set in password-auth" />
+      <criterion test_ref="test_accounts_passwords_pam_faillock_account_phase_password-auth"
+      comment="pam_faillock.so set in account phase of password-auth" />
+      <criteria operator="AND">
+        <criteria operator="OR" comment="system-auth">
+          <criterion test_ref="test_accounts_passwords_pam_faillock_numeric_default_check_system-auth"
+            comment="Perform check if pam_faillock authfail follows pam_unix even with lines skipped" />
+          <criterion test_ref="test_accounts_passwords_pam_faillock_authfail_deny_system-auth"
+            comment="Perform check if pam_faillock authfail follows pam_unix with either sufficient or default=ignore" />
+        </criteria>
+        <criteria operator="OR" comment="password-auth">
+          <criterion test_ref="test_accounts_passwords_pam_faillock_numeric_default_check_password-auth"
+            comment="Perform check if pam_faillock authfail follows pam_unix even with lines skipped" />
+          <criterion test_ref="test_accounts_passwords_pam_faillock_authfail_deny_password-auth"
+          comment="pam_faillock.so authfail deny value set in password-auth" />
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <!-- beginning of defaulting pam_unix section
+       Structure:
+    1    check if pam_unix defaults to number
+    2       - if no, then existing rules will handle it
+    3       - if yes, test pam_faillock is present even if lines skipped are deleted
+    4           * fetch number of lines skipped
+    5           * create regex utilizing this ^^ number
+  -->
+
+  <!-- step 1 and 3 test -->
+  <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_numeric_default_check_system-auth"
+  check="all" check_existence="all_exist"
+  comment="Checks if pam_faillock authfail is hit even if pam_unix skips lines by defaulting, and also authfail deny value" version="1">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_when_lines_skipped_system-auth" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value" />
+  </ind:textfilecontent54_test>
+
+  <!-- step 1 and 4 object -->
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_lines_value_system-auth" comment="Get number of lines pam_unix defaults to" version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+\[.*default=([0-9]+).*\][\s]+pam_unix\.so</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <!-- step 3 object -->
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_when_lines_skipped_system-auth" comment="Is pam_faillock not skipped?" version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_accounts_passwords_pam_faillock_preauth_default_lines_regex_system-auth"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- step 5 -->
+  <local_variable id="var_accounts_passwords_pam_faillock_preauth_default_lines_regex_system-auth" datatype="string" version="1" comment="Regex containing skipped lines">
+    <concat>
+      <literal_component datatype="string">pam_unix(?:.*[\n](?:.*[\n]){</literal_component>
+      <object_component item_field="subexpression" object_ref="object_accounts_passwords_pam_faillock_lines_value_system-auth" />
+      <literal_component datatype="string">})(?:.*[\n])*auth.*pam_faillock.so[\s]+[^\n]*deny=([0-9]+)</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- end of system-auth handling, and beginning of password-auth handling -->
+  <!-- step 1 and 3 test -->
+  <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_numeric_default_check_password-auth"
+  check="all" check_existence="all_exist"
+  comment="Checks if pam_faillock authfail is hit even if pam_unix skips lines by defaulting, and also authfail deny value" version="1">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_when_lines_skipped_password-auth" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value" />
+  </ind:textfilecontent54_test>
+
+  <!-- step 1 and 4 object -->
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_lines_value_password-auth" comment="Get number of lines pam_unix defaults to" version="1">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
+    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+\[[^\]]*default=([0-9]+)[^\]]*\][\s]+pam_unix\.so</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <!-- step 3 object -->
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_when_lines_skipped_password-auth" comment="Is pam_faillock not skipped?" version="1">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_accounts_passwords_pam_faillock_preauth_default_lines_regex_password-auth"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- step 5 -->
+  <local_variable id="var_accounts_passwords_pam_faillock_preauth_default_lines_regex_password-auth" datatype="string" version="1" comment="Regex containing skipped lines">
+    <concat>
+      <literal_component datatype="string">pam_unix(?:.*[\n](?:.*[\n]){</literal_component>
+      <object_component item_field="subexpression" object_ref="object_accounts_passwords_pam_faillock_lines_value_password-auth" />
+      <literal_component datatype="string">})(?:.*[\n])*auth.*pam_faillock.so[\s]+[^\n]*deny=([0-9]+)</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- end of numeric defaulting pam_unix section -->
+
+  <!-- Specify required external variable & create corresponding state from it -->
+  <external_variable id="var_accounts_passwords_pam_faillock_deny" datatype="int"
+  comment="number of failed login attempts allowed" version="1" />
+
+  <ind:textfilecontent54_state id="state_var_accounts_passwords_pam_faillock_deny_value" version="1">
+    <ind:subexpression datatype="int" operation="less than or equal" var_ref="var_accounts_passwords_pam_faillock_deny" />
+  </ind:textfilecontent54_state>
+
+  <!-- Check for preauth silent in /etc/pam.d/system-auth -->
+  <!-- Also check the 'deny' option value matches the number of failed login attempts allowed -->
+  <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_preauth_silent_system-auth"
+  check="all" check_existence="all_exist"
+  comment="Check pam_faillock.so preauth silent present, with correct deny value, and is followed by pam_unix." version="1">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_preauth_silent_system-auth" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_preauth_silent_system-auth" version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <!-- Since order of PAM modules matters ensure pam_faillock.so preauth silent in auth section is listed before
+         pam_unix.so module in auth section -->
+    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+required[\s]+pam_faillock\.so[\s]+preauth[\s]+[^\n]*silent[\s]+[^\n]*deny=([0-9]+)[\s]*(?s).*[\n][\s]*auth[^\n]+pam_unix\.so[^\n]*[\n]</ind:pattern>
+    <!-- Check only the first instance -->
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Check for authfail deny in /etc/pam.d/system-auth -->
+  <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_authfail_deny_system-auth"
+  check="all" check_existence="all_exist"
+  comment="Check control values of pam_unix, that it is followed by pam_faillock.so authfail and deny value of pam_faillock.so authfail" version="1">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_authfail_deny_system-auth" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_authfail_deny_system-auth" version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <!-- Since order of PAM modules matters ensure pam_faillock.so in auth section is listed right after pam_unix.so auth row -->
+    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+(?:(?:sufficient)|(?:\[[^\]]*default=ignore[^\]]*\]))[^\n]+pam_unix\.so(?:.*[\n])*auth[\s]+\[default=die\][\s]+pam_faillock\.so[\s]+authfail[^\n]+deny=([0-9]+)</ind:pattern>
+    <!-- Check only the first instance -->
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Check for pam_faillock.so present in account phase of /etc/pam.d/system-auth -->
+  <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_account_phase_system-auth"
+  check="all" check_existence="all_exist"
+  comment="Check if pam_faillock.so is called in account phase before pam_unix" version="1" >
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_account_phase_system-auth" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_account_phase_system-auth" version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <!-- Since order of PAM modules matters ensure pam_faillock.so in account section is listed right before pam_unix.so account row -->
+    <ind:pattern operation="pattern match">[\n][\s]*account[\s]+required[\s]+pam_faillock\.so[^\n]*[\n][\s]*account[\s]+required[\s]+pam_unix\.so[^\n]*[\n]</ind:pattern>
+    <!-- Check only the first instance -->
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Check for preauth silent in /etc/pam.d/password-auth -->
+  <!-- Also check the 'deny' option value matches the number of failed login attempts allowed -->
+  <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_preauth_silent_password-auth"
+  check="all" check_existence="all_exist"
+  comment="Check pam_faillock.so preauth silent present in /etc/pam.d/password-auth, has correct deny value, and is followed by pam_unix" version="1">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_preauth_silent_password-auth" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_preauth_silent_password-auth" version="1">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
+    <!-- Since order of PAM modules matters ensure pam_faillock.so preauth silent in auth section is listed before
+         pam_unix.so module in auth section -->
+    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+required[\s]+pam_faillock\.so[\s]+preauth[\s]+[^\n]*silent[\s]+[^\n]*deny=([0-9]+)[\s]*(?s).*[\n][\s]*auth[^\n]+pam_unix\.so[^\n]*[\n]</ind:pattern>
+    <!-- Check only the first instance -->
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Check for authfail deny in /etc/pam.d/password-auth -->
+  <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_authfail_deny_password-auth"
+  check="all" check_existence="all_exist"
+  comment="Check pam_faillock authfail is present after pam_unix, check pam_unix has proper control values, and authfail deny value is correct." version="1">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_authfail_deny_password-auth" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_authfail_deny_password-auth" version="1">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
+    <!-- Since order of PAM modules matters ensure pam_faillock.so in auth section is listed right after pam_unix.so auth row -->
+    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+(?:(?:sufficient)|(?:\[[^\]]*default=ignore[[^\]]*\]))[\s]+pam_unix\.so(?:.*[\n])*[^\n]*auth[\s]+\[default=die\][\s]+pam_faillock\.so[\s]+authfail[\s]+[^\n]*deny=([0-9]+)</ind:pattern>
+    <!-- Check only the first instance -->
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Check for pam_faillock.so present in account phase of /etc/pam.d/password-auth -->
+  <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_account_phase_password-auth"
+  check="all" check_existence="all_exist"
+  comment="Check if pam_faillock_so is called in account phase before pam_unix." version="1" >
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_account_phase_password-auth" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_account_phase_password-auth" version="1">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
+    <!-- Since order of PAM modules matters ensure pam_faillock.so in account section is listed right before pam_unix.so account row -->
+    <ind:pattern operation="pattern match">[\n][\s]*account[\s]+required[\s]+pam_faillock\.so[^\n]*[\n][\s]*account[\s]+required[\s]+pam_unix\.so[^\n]*[\n]</ind:pattern>
+    <!-- Check only the first instance -->
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

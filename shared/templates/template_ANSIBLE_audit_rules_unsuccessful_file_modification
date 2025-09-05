@@ -1,0 +1,77 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+#
+# What architecture are we on?
+#
+- name: Set architecture for audit {{{ NAME }}} tasks
+  set_fact:
+    audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
+
+#
+# Inserts/replaces the rule in /etc/audit/rules.d
+#
+- name: Search /etc/audit/rules.d for other DAC audit rules
+  find:
+    paths: "/etc/audit/rules.d"
+    recurse: no
+    contains: "-F key=perm_mod$"
+    patterns: "*.rules"
+  register: find_{{{ NAME }}}
+
+- name: If existing DAC ruleset not found, use /etc/audit/rules.d/access.rules as the recipient for the rule
+  set_fact:
+    all_files:
+      - /etc/audit/rules.d/access.rules
+  when: find_{{{ NAME }}}.matched is defined and find_{{{ NAME }}}.matched == 0
+
+- name: Use matched file as the recipient for the rule
+  set_fact:
+    all_files:
+      - "{{ find_{{{ NAME }}}.files | map(attribute='path') | list | first }}"
+  when: find_{{{ NAME }}}.matched is defined and find_{{{ NAME }}}.matched > 0
+
+- name: Inserts/replaces the {{{ NAME }}} rule in rules.d when on x86
+  lineinfile:
+    path: "{{ all_files[0] }}"
+    line: "{{ item }}"
+    create: yes
+  with_items:
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+
+- name: Inserts/replaces the {{{ NAME }}} rule in rules.d when on x86_64
+  lineinfile:
+    path: "{{ all_files[0] }}"
+    line: "{{ item }}"
+    create: yes
+  with_items:
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+  when: audit_arch is defined and audit_arch == 'b64'
+#   
+# Inserts/replaces the rule in /etc/audit/audit.rules
+#
+- name: Inserts/replaces the {{{ NAME }}} rule in /etc/audit/audit.rules when on x86
+  lineinfile:
+    line: "{{ item }}"
+    state: present
+    dest: /etc/audit/audit.rules
+    create: yes
+  with_items:
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+
+- name: Inserts/replaces the {{{ NAME }}} rule in audit.rules when on x86_64
+  lineinfile:
+    line: "{{ item }}"
+    state: present
+    dest: /etc/audit/audit.rules
+    create: yes
+  with_items:
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+  when: audit_arch is defined and audit_arch == 'b64'

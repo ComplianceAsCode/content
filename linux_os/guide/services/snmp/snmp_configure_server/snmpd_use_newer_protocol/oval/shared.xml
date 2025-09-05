@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="compliance" id="snmpd_use_newer_protocol" version="2">
+    <metadata>
+      <title>SNMP use newer protocols</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>SNMP version 1 and 2c must not be enabled.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="SMNP installed" definition_ref="package_net-snmp_removed"/>
+      <criterion comment="SNMP protocols" test_ref="test_snmp_versions" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="Check snmpd configuration" id="test_snmp_versions" version="1">
+    <ind:object object_ref="object_snmp_versions" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_snmp_versions" version="1">
+    <ind:filepath>/etc/snmp/snmpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(com2se|rocommunity|rwcommunity)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: rhosp13
+
+title: 'Check-Compute-05: Does Nova communicates with Glance securely?'
+
+description: |-
+    OpenStack components communicate with each other using various protocols
+    and the communication might involve sensitive / confidential data. An attacker
+    may try to eavesdrop on the channel in order to get access to sensitive information.
+    Thus all the components must communicate with each other using a secured
+    communication protocol.
+    <br />
+    <br />
+
+    Pass: If value of parameter glance_api_insecure under [DEFAULT] section in
+    /var/lib/config-data/puppet-generated/nova/etc/nova/nova.conf is set to False,
+    or if value of parameter api_insecure under [glance] section in
+    /var/lib/config-data/puppet-generated/nova/etc/nova/nova.conf is set to False.
+    <br />
+    <br />
+
+    Fail: If value of parameter glance_api_insecure under [DEFAULT] section in
+    /var/lib/config-data/puppet-generated/nova/etc/nova/nova.conf is set to True,
+    or if value of parameter api_insecure under [glance] section in
+    /var/lib/config-data/puppet-generated/nova/etc/nova/nova.conf is set to True.
+    <br />
+    <br />
+
+rationale: ""
+
+severity: high
+
+references:
+    nist: SC-8,SC-8(1)

@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="require_smb_client_signing" version="1">
+    <metadata>
+      <title>Require Client SMB Packet Signing in smb.conf</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>Require samba clients which use smb.conf, such as smbclient,
+      to use packet signing. A Samba client should only communicate with
+      servers who can support SMB packet signing.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="package samba-common is not installed"
+      definition_ref="package_samba-common_removed" />
+      <criteria operator="AND">
+        <extend_definition comment="samba-common installed" definition_ref="package_samba-common_installed" />
+        <criterion comment="check for client signing = mandatory in /etc/samba/smb.conf"
+        test_ref="test_require_smb_client_signing" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="check for client signing = mandatory in /etc/samba/smb.conf"
+  id="test_require_smb_client_signing" version="1">
+    <ind:object object_ref="obj_require_smb_client_signing" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_require_smb_client_signing"
+  version="1">
+    <ind:filepath>/etc/samba/smb.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*client[\s]+signing[\s]*=[\s]*mandatory</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

@@ -1,0 +1,60 @@
+<def-group>
+  <definition class="compliance" id="firewalld_sshd_disabled" version="1">
+    <metadata>
+      <title>Disallow inbound firewall access to the SSH Server port</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+      </affected>
+      <description>If inbound SSH access is not needed, the firewall should disallow or reject access to
+      the SSH port (22).</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="ssh service is not enabled in services" test_ref="test_firewalld_service_sshd" />
+      <criterion comment="ssh port is not enabled in services" test_ref="test_firewalld_service_sshd_port" />
+      <criterion comment="ssh service is not enabled in zones" test_ref="test_firewalld_zone_sshd" />
+      <criterion comment="ssh port is not enabled in zones" test_ref="test_firewalld_zone_sshd_port" />
+    </criteria>
+  </definition>
+
+  <ind:xmlfilecontent_test check="all" check_existence="none_exist" comment="ssh service is not enabled in services"
+  id="test_firewalld_service_sshd" version="1">
+    <ind:object object_ref="object_firewalld_service_sshd" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_firewalld_service_sshd" version="1">
+    <ind:path>/etc/firewalld/services</ind:path>
+    <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
+    <ind:xpath>/service/service[@name='ssh']</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_test check="all" check_existence="none_exist" comment="ssh port is not enabled in services"
+  id="test_firewalld_service_sshd_port" version="1">
+    <ind:object object_ref="object_firewalld_service_sshd_port" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_firewalld_service_sshd_port" version="1">
+    <ind:path>/etc/firewalld/services</ind:path>
+    <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
+    <ind:xpath>/service/port[@port='22']</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_test check="all" check_existence="none_exist" comment="ssh service is not enabled in zones"
+  id="test_firewalld_zone_sshd" version="1">
+    <ind:object object_ref="object_firewalld_zone_sshd" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_firewalld_zone_sshd" version="1">
+    <ind:path>/etc/firewalld/zones</ind:path>
+    <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
+    <ind:xpath>/zone/service[@name='ssh']</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_test check="all" check_existence="none_exist" comment="ssh port is not enabled in zones"
+  id="test_firewalld_zone_sshd_port" version="1">
+    <ind:object object_ref="object_firewalld_zone_sshd_port" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_firewalld_zone_sshd_port" version="1">
+    <ind:path>/etc/firewalld/zones</ind:path>
+    <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
+    <ind:xpath>/zone/port[@port='22']</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+</def-group>

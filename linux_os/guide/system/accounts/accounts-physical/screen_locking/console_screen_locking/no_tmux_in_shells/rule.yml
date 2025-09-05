@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Prevent user from disabling the screen lock'
+
+description: |-
+    The <tt>tmux</tt> terminal multiplexer is used to implement
+    autimatic session locking. It should not be listed in
+    <tt>/etc/shells</tt>.
+
+rationale: |-
+    Not listing <tt>tmux</tt> among permitted shells
+    prevents malicious program running as user
+    from lowering security by disabling the screen lock.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82361-7
+
+references:
+    ospp: FMT_SMF_EXT.1
+
+ocil_clause: 'tmux is listed in /etc/shells'
+
+ocil: |-
+    To verify that tmux is not listed as allowed shell on the system
+    run the following command:
+    <pre>$ grep 'tmux$' /etc/shells</pre>
+    The output should be empty.
+
+platform: machine

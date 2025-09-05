@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8,ol8
+
+title: 'Configure Kerberos to use System Crypto Policy'
+
+description: |-
+    Crypto Policies provide a centralized control over crypto algorithms usage of many packages.
+    Kerberos is supported by crypto policy, but it's configuration may be
+    set up to ignore it.
+    To check that Crypto Policies settings for Kerberos are configured correctly, examine that there is a symlink at
+    /etc/krb5.conf.d/crypto-policies targeting /etc/cypto-policies/back-ends/krb5.config.
+    If the symlink exists, kerberos is configured to use the system-wide crypto policy settings.
+
+rationale: |-
+    Overriding the system crypto policy makes the behavior of Kerberos violate expectations,
+    and makes system configuration more fragmented.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 80936-8
+
+ocil_clause: 'the symlink does not exist or points to a different target'
+
+ocil: |-
+    Check that the symlink exists and target the correct kerberos crypto policy, with the following command:
+    <pre>file /etc/krb5.conf.d/crypto-policies</pre>
+    If command ouput shows the following line, kerberos is configured to use the system-wide crypto policy.
+    <pre>/etc/krb5.conf.d/crypto-policies: symbolic link to /etc/crypto-policies/back-ends/krb5.config</pre>
+

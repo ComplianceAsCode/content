@@ -1,0 +1,16 @@
+<def-group>
+  <definition class="inventory" id="installed_env_is_a_machine" version="2">
+    <metadata>
+      <title>Check if the scan target is a machine</title>
+       <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check for absence of files characterizing container filesystems.</description>
+      <reference ref_id="cpe:/a:machine" source="CPE" />
+    </metadata>
+    <criteria>
+      <extend_definition comment="If environment is not a container, it is machine" definition_ref="installed_env_is_a_container" negate="true" />
+    </criteria>
+  </definition>
+
+</def-group>

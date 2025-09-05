@@ -1,0 +1,9 @@
+documentation_complete: true
+
+title: 'Disable netfs if Possible'
+
+description: |-
+    To determine if any network filesystems handled by netfs are
+    currently mounted on the system execute the following command:
+    <pre>$ mount -t nfs,nfs4,smbfs,cifs,ncpfs</pre>
+    If the command did not return any output then disable netfs.

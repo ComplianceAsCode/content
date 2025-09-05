@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Enable CAC Card Usage for Deployed Applications'
+
+description: |-
+    JBoss applications implementing authentication should
+    utilize the DoD Public Key Infrastructure. The DoD Public Key
+    Infrastructure is designed to use hardware tokens such as the Common
+    Access Card in conjunction with issued X.509 certificates. These tokens
+    are typically protected with a PIN that unlocks access to the private
+    certificate stored on the token.
+
+rationale: |-
+    Leveraging the DoD Public Key Infrastructure increases the security
+    of an application because the DoD PKI raises the bar for exploitation
+    of user identities. Applications that require authentication and do
+    not utilize PKI must then rely on a less secure form of authentication,
+    such as username and password. Additionally, current DoD guidance
+    requires the use of DoD PKI over username and password.
+
+severity: medium
+
+references:
+    nist: IA-5
+
+ocil_clause: 'deployed JBoss applications do not have CAC card usage enabled'

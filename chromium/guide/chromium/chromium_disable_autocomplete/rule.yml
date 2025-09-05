@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Disable the AutoFill Feature'
+
+description: |-
+    The AutoFill feature suggests possible matches when users are filling in forms. To
+    disable the AutoFill feature, set <tt>AutoFillEnabled</tt> to <tt>false</tt> in
+    the Chromium policy file.
+
+rationale: |-
+    It is possible with the AutoFill feature that it will cache sensitive data and store
+    it in the user's profile, where it might not be protected as rigorously as required by
+    organizational policy.
+
+severity: unknown
+
+references:
+    stigid: DTBC0022
+
+ocil_clause: 'it is not disabled'
+
+ocil: |-
+    To verify that the AutoFill feature is disabled, run the following command:
+    <pre>$ grep AutoFillEnabled /etc/chromium/policies/managed/*.json</pre>
+    The output should contain:
+    <pre>"AutoFillEnabled": false,</pre>

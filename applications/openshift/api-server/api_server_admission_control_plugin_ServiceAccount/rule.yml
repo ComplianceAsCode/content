@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Enable the ServiceAccount Admission Control Plugin'
+
+description: |-
+    To ensure <tt>ServiceAccount</tt> objects must be created and granted
+    before pod creation is allowed, follow the documentation and create
+    <tt>ServiceAccount</tt> objects as per your environment. Then, edit the
+    API Server pod specification file
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
+    set the <tt>admissionConfig</tt> to include <tt>ServiceAccount</tt>:
+    <pre>admissionConfig:
+      pluginConfig:
+        ServiceAccount:
+          configuration:
+          kind: DefaultAdmissionConfig
+          apiVersion: v1
+          disable: false</pre>
+
+rationale: |-
+    When a pod is created, if a service account is not specified, the pod
+    is automatically assigned the <i>default</i> service account in the same
+    namespace. OpenShift operators should create unique service accounts
+    and let the API Server manage its security tokens.
+
+severity: medium
+
+references:
+    cis: 1.1.27
+
+ocil_clause: '<tt>admissionConfig</tt> does not contain <tt>ServiceAccount</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep -A4 ServiceAccount /etc/origin/master/master-config.yaml</pre>
+    The output should return <pre>disable: false</pre>.

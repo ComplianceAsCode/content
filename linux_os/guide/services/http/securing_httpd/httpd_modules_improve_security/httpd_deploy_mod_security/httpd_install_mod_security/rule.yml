@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8
+
+title: 'Install mod_security'
+
+description: |-
+    Install the <tt>security</tt> module:
+    {{{ describe_package_install(package="mod_security") }}}
+
+rationale: |-
+    <tt>mod_security</tt> provides an additional level of protection for the web server by
+    enabling the administrator to implement content access policies and filters at the
+    application layer.
+
+severity: unknown
+
+identifiers:
+    cce@rhel6: 27525-5
+    cce@rhel7: 80321-3

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<overlays xmlns="http://checklists.nist.gov/xccdf/1.1">
+	<overlay owner="disastig" ruleid="java_jre_untrusted_sources" ownerid="JRE0001-UX" disa="612" severity="medium">
+		<VMSinfo VKey="32828" SVKey="43596" VRelease="2" />
+		<title>The dialog to enable users to grant permissions to execute signed content from an un-trusted authority must be disabled.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_untrusted_sources_locked" ownerid="JRE0010-UX" disa="" severity="medium">
+		<VMSinfo VKey="32829" SVKey="43601" VRelease="2" />
+		<title>The dialog enabling users to grant permissions to execute signed content from an un-trusted authority must be locked.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_validation_crl" ownerid="JRE0020-UX" disa="" severity="medium">
+		<VMSinfo VKey="32830" SVKey="43604" VRelease="2" />
+		<title>The setting for users to check publisher certificates for revocation must be enabled.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_validation_crl_locked" ownerid="JRE0030-UX" disa="" severity="medium">
+		<VMSinfo VKey="32831" SVKey="43617" VRelease="3" />
+		<title>The setting enabling users to configure the check publisher certificates for revocation must be locked.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_validation_ocsp" ownerid="JRE0040-UX" disa="" severity="medium">
+		<VMSinfo VKey="32832" SVKey="43618" VRelease="2" />
+		<title>The option to enable online certificate validation must be enabled.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_validation_ocsp_locked" ownerid="JRE0050-UX" disa="" severity="medium">
+		<VMSinfo VKey="32833" SVKey="43619" VRelease="2" />
+		<title>The option to enable online certificate validation must be locked.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_deployment_config_configured" ownerid="JRE0060-UX" disa="" severity="medium">
+		<VMSinfo VKey="32842" SVKey="43649" VRelease="1" />
+		<title>The configuration file must contain proper keys and values to deploy settings correctly.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_deployment_config_exists" ownerid="JRE0070-UX" disa="" severity="medium">
+		<VMSinfo VKey="32901" SVKey="43621" VRelease="1" />
+		<title>A configuration file must be present to deploy properties for JRE.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_deployment_properties_exists" ownerid="JRE0080-UX" disa="" severity="medium">
+		<VMSinfo VKey="32902" SVKey="43620" VRelease="2" />
+		<title>A properties file must be present to hold all the keys that establish properties within the Java control panel.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_updated" ownerid="JRE0090-UX" disa="" severity="medium">
+		<VMSinfo VKey="39239" SVKey="51133" VRelease="1" />
+		<title>The version of the JRE running on the system must be the most current available.</title>
+	</overlay>
+</overlays>

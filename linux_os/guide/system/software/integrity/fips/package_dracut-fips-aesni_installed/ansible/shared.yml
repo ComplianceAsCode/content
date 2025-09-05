@@ -1,0 +1,17 @@
+# platform = Red Hat Enterprise Linux 6,Red Hat Enterprise Linux 7,Oracle Linux 7
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+- name: Check if system supports AES-NI
+  command: grep -q -m1 -o aes /proc/cpuinfo
+  failed_when: aesni_supported.rc > 1
+  register: aesni_supported
+
+- name: Ensure dracut-fips-aesni is installed
+  package:
+    name: dracut-fips-aesni
+    state: present
+  when:
+    - aesni_supported.rc == 0
+    - ansible_distribution == 'RedHat'

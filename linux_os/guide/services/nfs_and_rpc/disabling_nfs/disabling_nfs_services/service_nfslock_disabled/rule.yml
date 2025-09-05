@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora
+
+title: 'Disable Network File System Lock Service (nfslock)'
+
+description: |-
+    The Network File System Lock (nfslock) service starts the required
+    remote procedure call (RPC) processes which allow clients to lock files on the
+    server. If the local system is not configured to mount NFS filesystems then
+    this service should be disabled.
+    {{{ describe_service_disable(service="nfslock") }}}
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce@rhel6: 27104-9
+    cce@rhel7: 80228-0

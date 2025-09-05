@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Set Password Quality Requirements with pam_pwquality'
+
+description: |-
+    The <tt>pam_pwquality</tt> PAM module can be configured to meet
+    requirements for a variety of policies.
+    <br /><br />
+    For example, to configure <tt>pam_pwquality</tt> to require at least one uppercase
+    character, lowercase character, digit, and other (special)
+    character, make sure that <tt>pam_pwquality</tt> exists in <tt>/etc/pam.d/system-auth</tt>:
+    <pre>password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=</pre>
+    If no such line exists, add one as the first line of the password section in <tt>/etc/pam.d/system-auth</tt>.
+    Next, modify the settings in <tt>/etc/security/pwquality.conf</tt> to match the following:
+    <pre>difok = 4
+    minlen = 14
+    dcredit = -1
+    ucredit = -1
+    lcredit = -1
+    ocredit = -1
+    maxrepeat = 3</pre>
+    The arguments can be modified to ensure compliance with
+    your organization's security policy. Discussion of each parameter follows.

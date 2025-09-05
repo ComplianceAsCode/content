@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Disable All Permission for Deployed Applications'
+
+description: |-
+    Deployed applications must not be granted all permissions.
+    These permissions are enforced by the Java Security Manager and the policies
+    it loads at startup. These permissions can be assigned or restricted in an
+    application-specific, granular manner.
+
+rationale: |-
+    Java permissions for deployed applications should be carefully restricted
+    to enforce the least privilege principle. Using AllPermissions is essentially
+    disabling the Java security sandbox and is inadvisable in nearly every scenario.
+
+severity: medium
+
+references:
+    nist: AC-6
+
+ocil_clause: 'proper permissions are not set for java.security.AllPermission for deployed applications'

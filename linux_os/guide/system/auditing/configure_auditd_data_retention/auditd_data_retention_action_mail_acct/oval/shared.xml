@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="compliance" id="auditd_data_retention_action_mail_acct" version="2">
+    <metadata>
+      <title>Auditd Email Account to Notify Upon Action</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>action_mail_acct setting in /etc/audit/auditd.conf is set to a certain account</description>
+    </metadata>
+    <criteria>
+        <criterion comment="action_mail_acct setting in auditd.conf" test_ref="test_auditd_data_retention_action_mail_acct" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="email account for actions" id="test_auditd_data_retention_action_mail_acct" version="1">
+    <ind:object object_ref="object_auditd_data_retention_action_mail_acct" />
+    <ind:state state_ref="state_auditd_data_retention_action_mail_acct" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_auditd_data_retention_action_mail_acct" version="2">
+    <ind:filepath>/etc/audit/auditd.conf</ind:filepath>
+    <!-- Allow only space (exactly) as delimiter: https://fedorahosted.org/audit/browser/trunk/src/auditd-config.c#L426 -->
+    <!-- Require at least one space before and after the equal sign -->
+    <ind:pattern operation="pattern match">^[ ]*action_mail_acct[ ]+=[ ]+(\S+)[ ]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_auditd_data_retention_action_mail_acct" version="1">
+    <ind:subexpression operation="equals" var_ref="var_auditd_action_mail_acct" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="audit action_mail_acct setting" datatype="string" id="var_auditd_action_mail_acct" version="1" />
+
+</def-group>

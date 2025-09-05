@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Ensure Deployed Applications Do Not Have Network Permissions'
+
+description: |-
+    Deployed applications must not be granted network permissions.
+    These permissions are enforced by the Java Security Manager and the policies
+    it loads at startup. These permissions can be assigned or restricted in an
+    application-specific, granular manner.
+
+rationale: |-
+    Java permissions for deployed applications should be carefully restricted
+    to enforce the least privilege principle.
+
+severity: medium
+
+references:
+    nist: AC-6
+
+ocil_clause: 'proper permissions are not set for java.net.NetPermission  for deployed applications'

@@ -1,0 +1,56 @@
+<def-group>
+  <definition class="compliance" id="accounts_root_path_dirs_no_write" version="2">
+    <metadata>
+      <title>Write permissions are disabled for group and other in all
+      directories in Root's Path</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check each directory in root's path and make use it does
+      not grant write permission to group and other</description>
+    </metadata>
+    <criteria comment="Check that write permission to group and other in root's path is denied">
+      <criterion comment="Check for write permission to group and other in root's path"
+      test_ref="test_accounts_root_path_dirs_no_group_other_write" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_object id="object_accounts_root_path_dirs_no_write_pathenv" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>PATH</ind:name>
+  </ind:environmentvariable58_object>
+
+  <local_variable comment="Split the PATH on the : delimiter" datatype="string"
+  id="var_accounts_root_path_dirs_no_write" version="1">
+    <split delimiter=":">
+      <object_component item_field="value"
+      object_ref="object_accounts_root_path_dirs_no_write_pathenv" />
+    </split>
+  </local_variable>
+
+  <unix:file_test check="all" check_existence="none_exist"
+  comment="Check if there aren't directories in root's path having write permission set for group or other"
+  id="test_accounts_root_path_dirs_no_group_other_write" version="1">
+    <unix:object object_ref="object_accounts_root_path_dirs_no_group_other_write" />
+  </unix:file_test>
+
+  <unix:file_object comment="root's path directories with wrong group / other write permissions"
+  id="object_accounts_root_path_dirs_no_group_other_write" version="1">
+    <unix:path var_ref="var_accounts_root_path_dirs_no_write" var_check="at least one" />
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_accounts_root_path_dirs_wrong_perms</filter>
+    <filter action="exclude">state_accounts_root_path_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state comment="group or other has write privilege"
+  id="state_accounts_root_path_dirs_wrong_perms" version="1" operator="OR">
+    <unix:gwrite datatype="boolean">true</unix:gwrite>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+  </unix:file_state>
+
+  <unix:file_state comment="symbolic link"
+  id="state_accounts_root_path_dirs_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+</def-group>

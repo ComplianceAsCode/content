@@ -1,0 +1,43 @@
+<def-group>
+  <definition class="compliance" id="cups_disable_printserver" version="1">
+    <metadata>
+      <title>Disable Printer Server if Possible</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>By default, locally configured printers will not be shared
+      over the network, but if this functionality has somehow been enabled,
+      these recommendations will disable it again. Be sure to disable outgoing
+      printer list broadcasts, or remote users will still be able to see the
+      locally configured printers, even if they cannot actually print to them.
+      To limit print serving to a particular set of users, use the Policy
+      directive.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Don't use port directive" test_ref="test_cups_disable_printserver_disable_port" />
+      <criterion comment="Do use the listen directive" test_ref="test_cups_disable_printserver_use_listen" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Disable the more general port directive"
+  id="test_cups_disable_printserver_disable_port" version="1">
+    <ind:object object_ref="obj_cups_disable_printserver_disable_port" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_cups_disable_printserver_disable_port" version="2">
+    <ind:filepath>/etc/cups/cupsd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*Port[\s]+(\d)+</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Listen only at the localhost level"
+  id="test_cups_disable_printserver_use_listen" version="1">
+    <ind:object object_ref="obj_cups_disable_printserver_use_listen" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_cups_disable_printserver_use_listen" version="2">
+    <ind:filepath>/etc/cups/cupsd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*Listen[\s]+(?:localhost|127\.0\.0\.1|::1):(\d)+</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

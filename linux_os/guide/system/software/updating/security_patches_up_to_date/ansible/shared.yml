@@ -1,0 +1,12 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = patch
+# complexity = low
+# disruption = high
+- name: "Security patches are up to date"
+  package:
+    name: "*"
+    state: "latest"
+  tags:
+    - skip_ansible_lint # [ANSIBLE0010] Skipping lint because ANSIBLE0010 is a bad security practice
+

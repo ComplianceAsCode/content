@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora
+
+title: 'Disable Booting from USB Devices in Boot Firmware'
+
+description: |-
+    Configure the system boot firmware (historically called BIOS on PC
+    systems) to disallow booting from USB drives.
+
+rationale: |-
+    Booting a system from a USB device would allow an attacker to
+    circumvent any security measures provided by the operating system. Attackers
+    could mount partitions and modify the configuration of the OS.
+
+severity: unknown
+
+identifiers:
+    cce@rhel6: 26923-3
+    cce@rhel7: 26960-5
+
+references:
+    disa: "1250"
+    nist: AC-19(a),AC-19(d),AC-19(e)
+    nist-csf: PR.AC-3,PR.AC-6
+    isa-62443-2013: 'SR 1.1,SR 1.13,SR 1.2,SR 1.4,SR 1.5,SR 1.9,SR 2.1,SR 2.6'
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.2,4.3.3.6.6,4.3.3.7.2,4.3.3.7.4
+    cobit5: APO13.01,DSS01.04,DSS05.03,DSS05.04,DSS05.05,DSS05.07,DSS06.03
+    iso27001-2013: A.11.2.6,A.13.1.1,A.13.2.1,A.6.2.1,A.6.2.2,A.7.1.1,A.9.2.1
+    cis-csc: 12,16
+
+platform: machine

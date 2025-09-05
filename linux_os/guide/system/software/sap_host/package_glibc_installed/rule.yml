@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Package glibc Installed'
+
+description: |-
+    The package <tt>glibc</tt> is installed on Linux by default, but the
+    <tt>glibc</tt> version might not be sufficient for SAP. Please refer to
+    SAP note of your Linux version for the minimum requirement on <tt>glibc</tt>.
+    {{{ describe_package_install(package="glibc") }}}
+
+rationale: |-
+    The <tt>glibc</tt> package contains standard C and math libraries used by
+    multiple programs on Linux. The <tt>glibc</tt> shipped with first release
+    of each major Linux version is often not sufficient for SAP.
+    An update is required after the first OS installation.
+
+severity: medium
+
+ocil_clause: 'the minimum required <tt>glibc</tt> version is not installed'
+
+ocil: '{{{ ocil_package(package="glibc") }}}'

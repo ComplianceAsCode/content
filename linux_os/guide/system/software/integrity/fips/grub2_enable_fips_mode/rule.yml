@@ -1,0 +1,77 @@
+documentation_complete: true
+
+prodtype: wrlinux1019,rhel7,ol7,rhv4
+
+title: 'Enable FIPS Mode in GRUB2'
+
+description: |-
+    To ensure FIPS mode is enabled, install package <tt>dracut-fips</tt>, and rebuild <tt>initramfs</tt> by running the following commands:
+    <pre>{{{ package_install("dracut-fips") }}}
+    dracut -f</pre>
+    After the <tt>dracut</tt> command has been run, add the argument <tt>fips=1</tt> to the default
+    GRUB 2 command line for the Linux operating system in
+    <tt>/etc/default/grub</tt>, in the manner below:
+    <pre>GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=VolGroup/LogVol06 rd.lvm.lv=VolGroup/lv_swap rhgb quiet rd.shell=0 fips=1"</pre>
+    Finally, rebuild the <tt>grub.cfg</tt> file by using the
+    <pre>grub2-mkconfig -o</pre> command as follows:
+    <ul>
+    <li>On BIOS-based machines, issue the following command as <tt>root</tt>:
+    <pre>~]# grub2-mkconfig -o /boot/grub2/grub.cfg</pre></li>
+    <li>On UEFI-based machines, issue the following command as <tt>root</tt>:
+    <pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
+    </ul>
+
+rationale: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 80359-3
+
+references:
+    cjis: 5.10.1.2
+    cui: 3.13.8,3.13.11
+    disa: 68,803,2450
+    nist: IA-5,SC-13,AC-17(2),IA-7
+    nist-csf: PR.AC-3,PR.PT-4
+    srg: SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223
+    vmmsrg: SRG-OS-000120-VMM-000600,SRG-OS-000478-VMM-001980,SRG-OS-000396-VMM-001590
+    stigid@rhel7: "021350"
+    isa-62443-2013: 'SR 1.13,SR 2.6,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
+    isa-62443-2009: 4.3.3.6.6
+    cobit5: APO13.01,DSS01.04,DSS05.02,DSS05.03
+    iso27001-2013: A.11.2.6,A.13.1.1,A.13.2.1,A.14.1.3,A.6.2.1,A.6.2.2
+    cis-csc: 12,15,8
+
+ocil_clause: 'FIPS is not configured or enabled in grub'
+
+ocil: |-
+    To verify that FIPS is enabled properly in grub, run the following command:
+    <pre>$ grep fips /etc/default/grub</pre>
+    The output should contain fips=1
+
+warnings:
+    - functionality: |-
+        Running <pre>dracut -f</pre> will overwrite the existing initramfs file.
+    - general: |-
+        The system needs to be rebooted for these changes to take effect.
+    - regulatory: |-
+        The Federal Information Systems Modernization Act (FISMA), requires cryptography protecting sensitive
+        or valuable data to undergo FIPS 140 validation. The U.S. National Institute of Standards and
+        Technology (NIST) views unvalidated cryptography as providing no protection to the information or
+        data—in effect the data would be considered unprotected plaintext. If the agency specifies that the
+        information or data be cryptographically protected, FIPS 140 is applicable. This configuration
+        check will fail on platforms lacking FIPS 140 validation, such as the CentOS, Scientific Linux,
+        and Fedora projects, even if FIPS-approved ciphers can be installed and enabled.
+        <br /><br />
+        See <b>{{{ weblink(link="https://csrc.nist.gov/Projects/cryptographic-module-validation-program") }}}</b>
+        for more information about the Cryptographic Validation Program.
+        <br /><br />
+        A list of FIPS validated cryptographic modules can be found at
+        <b>{{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/1401vend.htm") }}}</b>. The
+        validated cryptographic modules only apply to the products and companies listed in the active validation
+        list.

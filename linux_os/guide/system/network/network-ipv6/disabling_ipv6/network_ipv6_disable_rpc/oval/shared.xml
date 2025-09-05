@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="compliance"
+  id="network_ipv6_disable_rpc" version="1">
+    <metadata>
+      <title>Disable Support for RPC IPv6</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>Disable ipv6 based rpc services</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Disable udp6" test_ref="test_network_ipv6_disable_rpc_udp6" />
+      <criterion comment="Disable tcp6" test_ref="test_network_ipv6_disable_rpc_tcp6" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all"
+  check_existence="none_exist" comment="Test for udp6 based rpc services"
+  id="test_network_ipv6_disable_rpc_udp6" version="1">
+    <ind:object object_ref="obj_network_ipv6_disable_rpc_udp6" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="Test for udp6 based rpc services"
+  id="obj_network_ipv6_disable_rpc_udp6" version="1">
+    <ind:filepath>/etc/netconfig</ind:filepath>
+    <ind:pattern operation="pattern match">^udp6\s+tpi_clts\s+v\s+inet6\s+udp\s+-\s+-$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all"
+  check_existence="none_exist" comment="Test for tcp6 based rpc services"
+  id="test_network_ipv6_disable_rpc_tcp6" version="1">
+    <ind:object object_ref="obj_network_ipv6_disable_rpc_tcp6" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="Test for tcp6 based rpc services"
+  id="obj_network_ipv6_disable_rpc_tcp6" version="1">
+    <ind:filepath>/etc/netconfig</ind:filepath>
+    <ind:pattern operation="pattern match">^tcp6\s+tpi_cots_ord\s+v\s+inet6\s+tcp\s+-\s+-$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

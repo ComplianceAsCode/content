@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Record Information on Kernel Modules Loading and Unloading'
+
+description: |-
+    To capture kernel module loading and unloading events, use following lines, setting ARCH to
+    either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit:
+    <pre>
+    -a always,exit -F arch=<i>ARCH</i> -S init_module,delete_module -F key=modules
+    </pre>
+
+    Place to add the lines depends on a way <tt>auditd</tt> daemon is configured. If it is configured
+    to use the <tt>augenrules</tt> program (the default), add the lines to a file with suffix
+    <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>.
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility,
+    add the lines to file <tt>/etc/audit/audit.rules</tt>.

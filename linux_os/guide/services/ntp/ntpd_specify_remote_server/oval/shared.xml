@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="ntpd_specify_remote_server" version="2">
+    <metadata>
+      <title>Specify a Remote ntpd NTP Server for Time Data</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>A remote ntpd NTP Server for time synchronization should be
+      specified (and dependencies are met)</description>
+    </metadata>
+    <criteria comment="ntp.conf conditions are met">
+      <criterion test_ref="test_ntp_remote_server" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="Ensure at least one ntpd NTP server is set" id="test_ntp_remote_server"
+  version="1">
+    <ind:object object_ref="obj_ntp_remote_server" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="Ensure at least one ntpd NTP server is set"
+  id="obj_ntp_remote_server" version="1">
+    <ind:filepath>/etc/ntp.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*server[\s]+.+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

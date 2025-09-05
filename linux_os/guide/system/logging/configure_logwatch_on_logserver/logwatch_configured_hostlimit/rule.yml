@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora
+
+title: 'Configure Logwatch HostLimit Line'
+
+description: |-
+    On a central logserver, you want Logwatch to summarize all syslog entries,
+    including those which did not originate on the logserver itself. The
+    <tt>HostLimit</tt> setting tells Logwatch to report on all hosts, not just
+    the one on which it is running.
+    <pre> HostLimit = no </pre>
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce@rhel6: 27197-3
+    cce@rhel7: 80196-9

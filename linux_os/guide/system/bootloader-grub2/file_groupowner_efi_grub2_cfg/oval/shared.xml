@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="file_groupowner_efi_grub2_cfg" version="1">
+    <metadata>
+      <title>Verify the UEFI Boot Loader grub.cfg Group Owner</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Verify that UEFI Boot Loader grub.cfg is group owned by 0.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition definition_ref="system_boot_mode_is_uefi" negate="true" comment="Pass if system boot mode is not UEFI" />
+      <criterion comment="Check file group ownership of /boot/efi/EFI/redhat/grub.cfg" test_ref="test_file_groupowner_efi_grub2_cfg" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="all_exist" comment="Verify group ownership of /boot/efi/EFI/redhat/grub.cfg" id="test_file_groupowner_efi_grub2_cfg" version="1">
+    <unix:object object_ref="object_file_groupowner_efi_grub2_cfg" />
+    <unix:state state_ref="state_file_groupowner_efi_grub2_cfg_gid_0" />
+  </unix:file_test>
+  <unix:file_state id="state_file_groupowner_efi_grub2_cfg_gid_0" version="1">
+    <unix:group_id datatype="int">0</unix:group_id>
+  </unix:file_state>
+  <unix:file_object comment="/boot/efi/EFI/redhat/grub.cfg" id="object_file_groupowner_efi_grub2_cfg" version="1">
+    <unix:filepath operation="pattern match">^/boot/efi/EFI/(redhat|fedora)/grub.cfg$</unix:filepath>
+  </unix:file_object>
+</def-group>

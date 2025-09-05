@@ -1,0 +1,87 @@
+# platform = Red Hat Enterprise Linux 7,Oracle Linux 7,multi_platform_rhv
+# reboot = true
+# strategy = restrict
+# complexity = high
+# disruption = medium
+
+- name: check prelink binary installed
+  stat:
+    path: /usr/sbin/prelink
+  register: prelink_exists
+
+- name: disable prelink
+  lineinfile:
+      dest: /etc/sysconfig/prelink
+      regexp: ^#?PRELINKING
+      line: "PRELINKING=no"
+  when: prelink_exists.stat.exists == True
+
+- name: revert prelinking binaries
+  command: /usr/sbin/prelink -ua
+  when: prelink_exists.stat.exists == True
+
+- name: Check if system supports AES-NI
+  command: grep -q -m1 -o aes /proc/cpuinfo
+  failed_when: aesni_supported.rc > 1
+  register: aesni_supported
+
+- name: Ensure dracut-fips-aesni is installed
+  package:
+    name: dracut-fips-aesni
+    state: present
+  when:
+    - aesni_supported.rc == 0
+    - ansible_distribution == 'RedHat'
+
+- name: install dracut-fips
+  package:
+    name: dracut-fips
+    state: present
+
+- name: Rebuild initramfs
+  command: dracut -f
+
+- name: check fips argument exists
+  command: grep 'GRUB_CMDLINE_LINUX.*fips=' /etc/default/grub
+  failed_when: False
+  register: fipsargcheck
+
+- name: replace existing fips argument
+  replace:
+      path: /etc/default/grub
+      regexp: 'fips=.'
+      replace: 'fips=1'
+  when: fipsargcheck.rc == 0
+
+- name: add fips argument
+  replace:
+      path: /etc/default/grub
+      regexp: '(GRUB_CMDLINE_LINUX=.*)"'
+      replace: '\1 fips=1"'
+  when: fipsargcheck.rc != 0
+
+- name: get boot device uuid
+  command: findmnt --noheadings --output uuid --target /boot
+  register: bootuuid
+
+- name: check boot argument exists
+  command: grep 'GRUB_CMDLINE_LINUX.*boot=' /etc/default/grub
+  failed_when: False
+  register: bootargcheck
+
+- name: replace existing boot argument
+  replace:
+      path: /etc/default/grub
+      regexp: 'boot=\w*-\w*-\w*-\w*-\w*'
+      replace: 'boot={{ bootuuid.stdout }}'
+  when: bootargcheck.rc == 0
+
+- name: add boot argument
+  replace:
+      path: /etc/default/grub
+      regexp: '(GRUB_CMDLINE_LINUX=.*)"'
+      replace: '\1 boot=UUID={{ bootuuid.stdout }}"'
+  when: bootargcheck.rc != 0
+
+- name: update bootloader menu
+  command: /sbin/grubby --update-kernel=ALL --args="fips=1 boot=UUID={{ bootuuid.stdout }}"

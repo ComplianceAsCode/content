@@ -1,0 +1,52 @@
+documentation_complete: true
+
+prodtype: wrlinux1019,rhel6,rhel7,fedora,rhv4
+
+title: 'Install the screen Package'
+
+description: |-
+    To enable console screen locking, install the <tt>screen</tt> package.
+    {{{ describe_package_install(package="screen") }}}
+    Instruct users to begin new terminal sessions with the following command:
+    <pre>$ screen</pre>
+    The console can now be locked with the following key combination:
+    <pre>ctrl+a x</pre>
+
+rationale: |-
+    A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate
+    physical vicinity of the information system but does not logout because of the temporary nature of the absence.
+    Rather than relying on the user to manually lock their operation system session prior to vacating the vicinity,
+    operating systems need to be able to identify when a user's session has idled and take action to initiate the
+    session lock.
+    <br /><br />
+    The <tt>screen</tt> package allows for a session lock to be implemented and configured.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 26940-7
+    cce@rhel7: 27351-6
+
+references:
+    stigid@rhel6: "000071"
+    srg@rhel6: SRG-OS-000030
+    disa@rhel6: '58'
+    cui: 3.1.10
+    disa: "58"
+    nist: AC-11(a)
+    nist-csf: PR.AC-7
+    ospp: FMT_MOF_EXT.1
+    srg: SRG-OS-000029-GPOS-00010
+    vmmsrg: SRG-OS-000030-VMM-000110
+    stigid@rhel7: "010090"
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    cobit5: DSS05.04,DSS05.10,DSS06.10
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
+    cis-csc: 1,12,15,16
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="screen") }}}'
+
+platform: machine

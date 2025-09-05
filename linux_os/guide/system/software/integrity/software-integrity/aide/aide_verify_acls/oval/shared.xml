@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="aide_verify_acls" version="1">
+    <metadata>
+      <title>Configure AIDE to Verify Access Control Lists (ACLs)</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>AIDE should be configured to verify Access Control Lists (ACLs).</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
+      <criterion comment="acl is set in /etc/aide.conf" test_ref="test_aide_verify_acls" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_aide_verify_acls"
+  comment="acl is set in /etc/aide.conf" check="all"
+  check_existence="all_exist" version="1">
+    <ind:object object_ref="object_aide_verify_acls" />
+    <ind:state state_ref="state_aide_verify_acls" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_aide_verify_acls"
+  version="1">
+    <ind:filepath>/etc/aide.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!ALLXTRAHASHES)[A-Z]*[\s]*=[\s]*([a-z0-9\+]*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_aide_verify_acls" version="1">
+    <ind:subexpression operation="pattern match">^.*acl.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

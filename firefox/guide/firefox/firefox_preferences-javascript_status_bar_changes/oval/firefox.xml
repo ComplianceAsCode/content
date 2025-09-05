@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="firefox_preferences-javascript_status_bar_changes" version="1">
+    <metadata>
+      <title>Disable JavaScript's Ability To Change The Status Bar</title>
+      <affected family="unix">
+        <platform>Mozilla Firefox</platform>
+      </affected>
+      <description>Firefox should be configured to not allow JavaScript to
+      hide or change the status bar.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="disable hiding or changing status bar menus" test_ref="test_firefox_preferences-javascript_status_bar_changes" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check that hiding or changing status bar is disabled" id="test_firefox_preferences-javascript_status_bar_changes" version="1">
+    <ind:object object_ref="object_firefox_preferences-javascript_status_bar_changes" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_firefox_preferences-javascript_status_bar_changes" version="1">
+    <ind:path operation="pattern match">^\/usr\/(|local\/)lib(|64)\/firefox</ind:path>
+    <ind:filename operation="pattern match">^.*\.cfg$</ind:filename>
+    <ind:pattern operation="pattern match">^lockPref\("dom.disable_window_status_change",[\s]+true\);$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

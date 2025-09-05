@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhosp13
+
+title: 'Check-Dashboard-08: Is disable_password_reveal set to True?'
+
+description: |-
+    Similar to the previous check, it is recommended not to reveal password fields.
+    <br />
+    <br />
+    Pass: If value of parameter disable_password_reveal in
+    /var/lib/config-data/puppet-generated/horizon/etc/openstack-dashboard/local_settings is set to True.
+    <br />
+    <br />
+    Fail: If value of parameter disable_password_reveal in
+    /var/lib/config-data/puppet-generated/horizon/etc/openstack-dashboard/local_settings is set to False.
+
+rationale: ""
+
+severity: low
+
+references:
+    nist: IA-6

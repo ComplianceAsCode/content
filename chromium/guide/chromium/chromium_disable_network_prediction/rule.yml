@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Disable Network Prediction'
+
+description: |-
+    To disable the network prediction feature, set <tt>DnsPrefetchingEnabled</tt>
+    to <tt>false</tt> in the Chromium policy file.
+
+rationale: |-
+    This controls not only DNS prefetching but also TCP and SSL preconnection
+    and prerendering of web pages.
+
+severity: unknown
+
+references:
+    stigid: DTBC0025
+
+ocil_clause: 'it is not disabled'
+
+ocil: |-
+    To verify that network prediction is disabled, run the following command:
+    <pre>$ grep DnsPrefetchingEnabled /etc/chromium/policies/managed/*.json</pre>
+    The output should contain:
+    <pre>"DnsPrefetchingEnabled": false,</pre>

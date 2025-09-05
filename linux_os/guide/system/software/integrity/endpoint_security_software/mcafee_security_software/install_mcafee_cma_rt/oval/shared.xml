@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="install_mcafee_cma_rt"
+  version="1">
+    <metadata>
+      <title>Install the McAfee Runtime Libraries and Linux Agent</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Install the McAfee Runtime Libraries (MFErt) and Linux Agent (MFEcma).</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="McAfee runtime library package installed"
+      test_ref="test_mcafee_runtime_installed" />
+      <criterion comment="McAfee management agent package installed"
+      test_ref="test_mcafee_management_agent" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  id="test_mcafee_runtime_installed" version="1"
+  comment="Runtime Libraries package is installed">
+    <linux:object object_ref="obj_mcafee_runtime_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_mcafee_runtime_installed" version="1">
+    <linux:name>MFErt</linux:name>
+  </linux:rpminfo_object>
+
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  id="test_mcafee_management_agent" version="1"
+  comment="Agent package is installed">
+    <linux:object object_ref="obj_mcafee_management_agent" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_mcafee_management_agent" version="1">
+    <linux:name>MFEcma</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

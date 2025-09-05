@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_OS_is_sl6" version="2">
+    <metadata>
+      <title>Scientific Linux 6</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:scientificlinux:scientificlinux:6"
+      source="CPE" />
+      <description>The operating system installed on the system is
+      Scientific Linux 6</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family"
+      definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="Scientific Linux 6 is installed"
+      test_ref="test_sl6" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="sl-release is version 6" id="test_sl6" version="1">
+    <linux:object object_ref="obj_sl6" />
+    <linux:state state_ref="state_sl6" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_sl6" version="1">
+    <linux:version operation="pattern match">^6.*$</linux:version>
+  </linux:rpminfo_state>
+
+  <linux:rpminfo_object id="obj_sl6" version="1">
+    <linux:name>sl-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

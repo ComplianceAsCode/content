@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhosp13
+
+title: 'Check-Neutron-05: Is SSL enabled on Neutron API server?'
+
+description: |-
+    Similar to the previous check, it is recommended to enable secure communication on API server.
+
+    <br />
+    <br />
+    Pass: If value of parameter use_ssl under [DEFAULT] section in
+    /var/lib/config-data/puppet-generated/neutron/etc/neutron/neutron.conf is set to True.
+
+    <br />
+    <br />
+    Fail: If value of parameter use_ssl under [DEFAULT] section in
+    /var/lib/config-data/puppet-generated/neutron/etc/neutron/neutron.conf is set to False.
+
+rationale: ""
+
+severity: high
+
+references:
+    nist: SC-8,SC-8(1)

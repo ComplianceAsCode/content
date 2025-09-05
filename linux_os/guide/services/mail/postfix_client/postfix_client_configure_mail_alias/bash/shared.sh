@@ -1,0 +1,7 @@
+# platform = multi_platform_sle
+. /usr/share/scap-security-guide/remediation_functions
+populate var_postfix_root_mail_alias
+
+replace_or_append '/etc/aliases' '^root' "$var_postfix_root_mail_alias" '@CCENUM@' '%s: %s'
+
+newaliases

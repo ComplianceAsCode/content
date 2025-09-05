@@ -1,0 +1,41 @@
+# Files and directories not to track in git tree
+
+# Global files for the entire tree
+*.swp
+*~
+*.pyc
+
+# Build files
+rpmbuild
+scap-security-guide.spec
+container_build/
+build/
+
+# Ignore docs tmp directories
+docs/Developer_Guide/tmp
+docs/SCAP_and_STIG_Workshop/tmp
+docs/User_Guide/tmp
+
+# Ignore docs publish directories
+docs/Developer_Guide/publish
+docs/SCAP_and_STIG_Workshop/publish
+docs/User_Guide/publish
+
+# Ignore docs SCAP_Security_Guide directory
+docs/html/en-US/SCAP_Security_Guide
+
+# Ignore PCI_DSS_v3-1.pdf
+shared/transforms/pcidss/PCI_DSS_v3-1.pdf
+
+# Ignore zipfile and tarball dirs
+zipfile/
+tarball/
+
+# Ignore QtCreator files
+CMakeLists.txt.user
+
+# Ignore VIM's ropeproject files
+.ropeproject
+
+# Ignore pytest cache
+.pytest_cache/

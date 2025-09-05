@@ -1,0 +1,51 @@
+<def-group>
+  <definition class="compliance" id="disable_interactive_boot" version="3">
+    <metadata>
+      <title>Disable Interactive Boot</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>The ability for users to perform interactive startups should
+      be disabled.</description>
+    </metadata>
+    <criteria operator="AND">
+      <!-- Check if PROMPT option of /etc/sysconfig/init file is set to "no" value -->
+      <criterion comment="Check the value of PROMPT option in /etc/sysconfig/init. Fail if other than 'no'."
+                 test_ref="test_interactive_boot_disabled_in_sysconfig_init" />
+      <!-- Verify the "confirm" kernel boot argument not present in some of
+           kernel lines of /etc/grub.conf -->
+      <criterion comment="Check the presence of 'confirm' kernel boot argument in /etc/grub.conf. Fail if found."
+                 test_ref="test_confirm_kernel_boot_argument_not_present" />
+
+    </criteria>
+  </definition>
+
+  <!-- First verify PROMPT option is set to 'no' in /etc/sysconfig/init -->
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests that PROMPT=no in /etc/sysconfig/init"
+  id="test_interactive_boot_disabled_in_sysconfig_init" version="1">
+    <ind:object object_ref="object_interactive_boot_disabled_in_sysconfig_init" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_interactive_boot_disabled_in_sysconfig_init"
+  version="2">
+    <ind:filepath>/etc/sysconfig/init</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*PROMPT=no[\s]+</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Then ensure there is no 'confirm' kernel boot argument present for some of the 'kernel'
+       command lines in /etc/grub.conf -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Check the presence of 'confirm' kernel boot argument in /etc/grub.conf. Fail if found."
+  id="test_confirm_kernel_boot_argument_not_present" version="1">
+    <ind:object object_ref="object_confirm_kernel_boot_argument_not_present" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_confirm_kernel_boot_argument_not_present" version="1">
+    <ind:filepath>/etc/grub.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*kernel[\s]+.*confirm.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

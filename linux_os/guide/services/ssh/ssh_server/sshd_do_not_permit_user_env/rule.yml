@@ -1,0 +1,49 @@
+documentation_complete: true
+
+title: 'Do Not Allow SSH Environment Options'
+
+description: |-
+    To ensure users are not able to override environment
+    variables of the SSH daemon, add or correct the following line
+    in <tt>/etc/ssh/sshd_config</tt>:
+    <pre>PermitUserEnvironment no</pre>
+
+rationale: |-
+    SSH environment options potentially allow users to bypass
+    access restriction in some configurations.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 27201-3
+    cce@rhel7: 27363-1
+    cce@rhel8: 80903-8
+
+references:
+    stigid@rhel6: "000241"
+    srg@rhel6: SRG-OS-000242
+    disa@rhel6: '1414'
+    cis: 5.2.10
+    cjis: 5.5.6
+    cui: 3.1.12
+    disa: "366"
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-17(b),CM-6(b)
+    nist-csf: PR.IP-1
+    srg: SRG-OS-000480-GPOS-00229
+    vmmsrg: SRG-OS-000480-VMM-002000
+    stigid@rhel7: "010460"
+    stigid@sle12: "030150"
+    isa-62443-2013: 'SR 7.6'
+    isa-62443-2009: 4.3.4.3.2,4.3.4.3.3
+    cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05
+    iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4
+    cis-csc: 11,3,9
+
+ocil_clause: 'PermitUserEnvironment is not disabled'
+
+ocil: |-
+    To ensure users are not able to send environment variables, run the following command:
+    <pre>$ sudo grep PermitUserEnvironment /etc/ssh/sshd_config</pre>
+    If properly configured, output should be:
+    <pre>PermitUserEnvironment no</pre>

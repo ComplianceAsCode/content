@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_app_is_rhv4" version="1">
+    <metadata>
+      <title>Red Hat Virtualization 4</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/a:redhat:virtualization:4"
+      source="CPE" />
+      <description>The application installed installed on the system is
+      Red Hat Virtualization 4.</description>
+    </metadata>
+    <criteria>
+      <extend_definition comment="RHEL7 OS installed" definition_ref="installed_OS_is_rhel7" />
+      <criterion comment="Red Hat Virtualization Manager (RHVM)" test_ref="test_rhevm4_version" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="rhevm4-appliance is installed" id="test_rhevm4_version" version="1">
+    <linux:object object_ref="obj_rhevm4_version" />
+    <linux:state state_ref="state_rhevm4_version" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_rhevm4_version" version="1">
+    <linux:version operation="pattern match">^4.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_rhevm4_version" version="1">
+    <linux:name>rhvm-appliance</linux:name>
+  </linux:rpminfo_object>
+</def-group>

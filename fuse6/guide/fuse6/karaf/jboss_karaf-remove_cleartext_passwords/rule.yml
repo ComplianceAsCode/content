@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Disable and Remove Clear-Text Passwords'
+
+description: |-
+    Eliminate clear-text passwords in JBoss configuration files. All
+    passwords should be encrypted and all password files should have restricted
+    file permissions.
+
+rationale: |-
+    Clear-text passwords are an unnecessary security vulnerability. While risk
+    of exposure can be mitigated through configured permissions and file ownership,
+    these methods do not completely remediate the risk.
+
+severity: medium
+
+references:
+    nist: SC-28
+
+ocil_clause: 'clear-text passwords exist or are enabled'

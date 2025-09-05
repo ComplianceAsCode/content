@@ -1,0 +1,12 @@
+{{{
+oval_check_ini_file(
+    path="/etc/dnf/automatic.conf",
+    section="commands",
+    parameter="apply_updates",
+    value="yes",
+    missing_parameter_pass=false,
+    application="dnf-automatic",
+    multi_value=false,
+    missing_config_file_fail=true
+)
+}}}

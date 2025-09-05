@@ -1,0 +1,41 @@
+<def-group>
+  <definition class="compliance" id="gconf_gnome_disable_clock_weather" version="1">
+    <metadata>
+      <title>Disable the GNOME Clock Weather Feature</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>The GNOME clock weather feature should be disabled.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="GConf2 installed" definition_ref="package_GConf2_installed" negate="true" />
+      <criterion comment="weather is disabled" test_ref="test_disable_clock_weather" />
+      <criterion comment="weather is disabled" test_ref="test_gconf_tree_disable_clock_weather" />
+    </criteria>
+  </definition>
+  <ind:xmlfilecontent_test check="all"
+  comment="weather is disabled"
+  id="test_disable_clock_weather" version="1">
+    <ind:object object_ref="object_disable_clock_weather" />
+    <ind:state state_ref="state_disable_clock_weather" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_disable_clock_weather" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/apps/panel/applets/clock/prefs/%gconf.xml</ind:filepath>
+    <ind:xpath>/gconf/entry[@name='show_weather']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_test check="all"
+  comment="weather is disabled"
+  id="test_gconf_tree_disable_clock_weather" version="1">
+    <ind:object object_ref="object_gconf_tree_disable_clock_weather" />
+    <ind:state state_ref="state_disable_clock_weather" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_gconf_tree_disable_clock_weather" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/%gconf-tree.xml</ind:filepath>
+    <ind:xpath>/gconf/dir/dir/dir/dir/dir/entry[@name='show_weather']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_state id="state_disable_clock_weather" version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+</def-group>

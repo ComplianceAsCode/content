@@ -1,0 +1,106 @@
+documentation_complete: true
+
+title: 'System Accounting with auditd'
+
+description: |-
+    The audit service provides substantial capabilities
+    for recording system activities. By default, the service audits about
+    SELinux AVC denials and certain types of security-relevant events
+    such as system logins, account modifications, and authentication
+    events performed by programs such as sudo.
+    Under its default configuration, <tt>auditd</tt> has modest disk space
+    requirements, and should not noticeably impact system performance.
+    <br /><br />
+    NOTE: The Linux Audit daemon <tt>auditd</tt> can be configured to use
+    the <tt>augenrules</tt> program to read audit rules files (<tt>*.rules</tt>)
+    located in <tt>/etc/audit/rules.d</tt> location and compile them to create
+    the resulting form of the <tt>/etc/audit/audit.rules</tt> configuration file
+    during the daemon startup (default configuration). Alternatively, the <tt>auditd</tt>
+    daemon can use the <tt>auditctl</tt> utility to read audit rules from the
+    <tt>/etc/audit/audit.rules</tt> configuration file during daemon startup,
+    and load them into the kernel. The expected behavior is configured via the
+    appropriate <tt>ExecStartPost</tt> directive setting in the
+    <tt>/usr/lib/systemd/system/auditd.service</tt> configuration file.
+    To instruct the <tt>auditd</tt> daemon to use the <tt>augenrules</tt> program
+    to read audit rules (default configuration), use the following setting:
+    <br /> <pre>ExecStartPost=-/sbin/augenrules --load</pre>
+    in the <tt>/usr/lib/systemd/system/auditd.service</tt> configuration file.
+    In order to instruct the <tt>auditd</tt> daemon to use the <tt>auditctl</tt>
+    utility to read audit rules, use the following setting:
+    <br /> <pre>ExecStartPost=-/sbin/auditctl -R /etc/audit/audit.rules</pre>
+    in the <tt>/usr/lib/systemd/system/auditd.service</tt> configuration file.
+    Refer to <tt>[Service]</tt> section of the <tt>/usr/lib/systemd/system/auditd.service</tt>
+    configuration file for further details.
+    <br /><br />
+    Government networks often have substantial auditing
+    requirements and <tt>auditd</tt> can be configured to meet these
+    requirements.
+    Examining some example audit records demonstrates how the Linux audit system
+    satisfies common requirements.
+    The following example from Fedora Documentation available at
+    <tt>{{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/SELinux_Users_and_Administrators_Guide/sect-Security-Enhanced_Linux-Troubleshooting-Fixing_Problems.html#sect-Security-Enhanced_Linux-Fixing_Problems-Raw_Audit_Messages") }}}</tt>
+    shows the substantial amount of information captured in a
+    two typical "raw" audit messages, followed by a breakdown of the most important
+    fields. In this example the message is SELinux-related and reports an AVC
+    denial (and the associated system call) that occurred when the Apache HTTP
+    Server attempted to access the <tt>/var/www/html/file1</tt> file (labeled with
+    the <tt>samba_share_t</tt> type):
+    <pre>type=AVC msg=audit(1226874073.147:96): avc:  denied  { getattr } for pid=2465 comm="httpd"
+    path="/var/www/html/file1" dev=dm-0 ino=284133 scontext=unconfined_u:system_r:httpd_t:s0
+    tcontext=unconfined_u:object_r:samba_share_t:s0 tclass=file
+
+    type=SYSCALL msg=audit(1226874073.147:96): arch=40000003 syscall=196 success=no exit=-13
+    a0=b98df198 a1=bfec85dc a2=54dff4 a3=2008171 items=0 ppid=2463 pid=2465 auid=502 uid=48
+    gid=48 euid=48 suid=48 fsuid=48 egid=48 sgid=48 fsgid=48 tty=(none) ses=6 comm="httpd"
+    exe="/usr/sbin/httpd" subj=unconfined_u:system_r:httpd_t:s0 key=(null)
+    </pre>
+    <ul>
+    <li><tt>msg=audit(1226874073.147:96)</tt>
+    <ul><li>The number in parentheses is the unformatted time stamp (Epoch time)
+    for the event, which can be converted to standard time by using the
+    <tt>date</tt> command.
+    </li></ul>
+    </li>
+    <li><tt>{ getattr }</tt>
+    <ul><li>The item in braces indicates the permission that was denied. <tt>getattr</tt>
+    indicates the source process was trying to read the target file's status information.
+    This occurs before reading files. This action is denied due to the file being
+    accessed having the wrong label. Commonly seen permissions include <tt>getattr</tt>,
+    <tt>read</tt>, and <tt>write</tt>.</li></ul>
+    </li>
+    <li><tt>comm="httpd"</tt>
+    <ul><li>The executable that launched the process. The full path of the executable is
+    found in the <tt>exe=</tt> section of the system call (<tt>SYSCALL</tt>) message,
+    which in this case, is <tt>exe="/usr/sbin/httpd"</tt>.
+    </li></ul>
+    </li>
+    <li><tt>path="/var/www/html/file1"</tt>
+    <ul><li>The path to the object (target) the process attempted to access.
+    </li></ul>
+    </li>
+    <li><tt>scontext="unconfined_u:system_r:httpd_t:s0"</tt>
+    <ul><li>The SELinux context of the process that attempted the denied action. In
+    this case, it is the SELinux context of the Apache HTTP Server, which is running
+    in the <tt>httpd_t</tt> domain.
+    </li></ul>
+    </li>
+    <li><tt>tcontext="unconfined_u:object_r:samba_share_t:s0"</tt>
+    <ul><li>The SELinux context of the object (target) the process attempted to access.
+    In this case, it is the SELinux context of <tt>file1</tt>. Note: the <tt>samba_share_t</tt>
+    type is not accessible to processes running in the <tt>httpd_t</tt> domain.</li>
+    </ul>
+    </li>
+    <li> From the system call (<tt>SYSCALL</tt>) message, two items are of interest:
+    <ul><li><tt>success=no</tt>: indicates whether the denial (AVC) was enforced or not.
+    <tt>success=no</tt> indicates the system call was not successful (SELinux denied
+    access). <tt>success=yes</tt> indicates the system call was successful - this can
+    be seen for permissive domains or unconfined domains, such as <tt>initrc_t</tt>
+    and <tt>kernel_t</tt>.
+    </li>
+    <li><tt>exe="/usr/sbin/httpd"</tt>: the full path to the executable that launched
+    the process, which in this case, is <tt>exe="/usr/sbin/httpd"</tt>.
+    </li></ul>
+    </li></ul>
+
+platform: machine
+

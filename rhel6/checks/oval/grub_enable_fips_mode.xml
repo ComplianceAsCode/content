@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="grub_enable_fips_mode" version="1">
+    <metadata>
+      <title>Enable FIPS Mode in GRUB</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Look for argument fips=1 in the kernel line in /etc/grub.conf.</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is RHEL6" definition_ref="installed_OS_is_rhel6" />
+      <extend_definition comment="prelink disabled" definition_ref="disable_prelink" />
+      <extend_definition comment="package dracut-fips installed" definition_ref="package_dracut-fips_installed" />
+      <criterion test_ref="test_grub_enable_fips_mode" comment="check for fips=1 in /etc/grub.conf" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_grub_enable_fips_mode"
+  comment="check for fips=1 in /etc/grub.conf"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_grub_enable_fips_mode" />
+    <ind:state state_ref="state_grub_enable_fips_mode" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_grub_enable_fips_mode" version="1">
+    <ind:filepath>/etc/grub.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*kernel\s/vmlinuz(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_grub_enable_fips_mode" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^.*fips=1.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

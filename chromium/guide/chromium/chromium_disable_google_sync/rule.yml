@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Disable Data Synchronization to Google'
+
+description: '<tt>SyncDisabled</tt> to <tt>true</tt> in the Chromium policy file.'
+
+rationale: |-
+    Google Sync is used to sync information between different user devices,
+    this data is then stored on Google owned servers. The synced data may consist
+    of information such as email, calendars, viewing history, etc. This feature must
+    be disabled because the organization does not have control over the servers the
+    data is stored on.
+
+severity: unknown
+
+references:
+    stigid: DTBC0020
+
+ocil_clause: 'it is not disabled'
+
+ocil: |-
+    To verify that data synchronization is disabled, run the following command:
+    <pre>$ grep SyncDisabled /etc/chromium/policies/managed/*.json</pre>
+    The output should contain:
+    <pre>"SyncDisabled": true,</pre>

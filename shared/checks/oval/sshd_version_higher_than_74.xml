@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="sshd_version_equal_or_higher_than_74" version="1">
+    <metadata>
+      <title>OpenSSH Server is 7.4 or newer</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check if version of OpenSSH Server is equal or higher than 7.4</description>
+    </metadata>
+    <criteria comment="OpenSSH Server version is equal or higher than 7.4" operator="OR">
+        <criterion comment="Check if OpenSSH Server is equal or higher than 7.4"
+            test_ref="test_openssh-server_version" />
+    </criteria>
+  </definition>
+
+{{%- if pkg_system == "rpm" -%}}
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="OpenSSH is version 7.4 or higher" id="test_openssh-server_version" version="1">
+    <linux:object object_ref="obj_openssh-server_version" />
+    <linux:state state_ref="state_openssh-server_version" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_openssh-server_version" version="1">
+    <linux:name>openssh-server</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_openssh-server_version" version="1">
+    <linux:evr datatype="evr_string" operation="greater than or equal">0:7.4</linux:evr>
+  </linux:rpminfo_state>
+
+{{%- elif pkg_system == "dpkg" -%}}
+  <linux:dpkginfo_test check="at least one" check_existence="any_exist" comment="OpenSSH is version 7.4 or higher" id="test_openssh-server_version" version="1">
+    <linux:object object_ref="obj_openssh-server_version" />
+    <linux:state state_ref="state_openssh-server_version" />
+  </linux:dpkginfo_test>
+  <linux:dpkginfo_object id="obj_openssh-server_version" version="1">
+    <linux:name>openssh-server</linux:name>
+  </linux:dpkginfo_object>
+  <linux:dpkginfo_state id="state_openssh-server_version" version="1">
+    <linux:evr datatype="evr_string" operation="greater than or equal">0:7.4</linux:evr>
+  </linux:dpkginfo_state>
+{{%- endif -%}}
+</def-group>

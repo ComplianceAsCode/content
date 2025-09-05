@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="controller_disable_profiling" version="1">
+    <metadata>
+      <title>Ensure OPENSHIFT_PROFILE is not set to web</title>
+      <affected family="unix">
+        <platform>multi_platform_ocp</platform>
+      </affected>
+      <description>Ensure OPENSHIFT_PROFILE is not set to web.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="OPENSHIFT_PROFILE is not set to web" test_ref="test_controller_disable_profiling" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="OPENSHIFT_PROFILE is not set to web" id="test_controller_disable_profiling" version="1">
+    <ind:object object_ref="object_controller_disable_profiling" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_controller_disable_profiling" version="1">
+    <ind:filepath>/etc/origin/master/master.env</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*OPENSHIFT_PROFILE=web*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

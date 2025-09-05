@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,ol7,ol8,rhv4
+
+title: 'Enable SSH Server firewalld Firewall Exception'
+
+description: |-
+    By default, inbound connections to SSH's port are allowed. If
+    the SSH server is being used but denied by the firewall, this exception should
+    be added to the firewall configuration.
+    <br /><br />
+    {{{ describe_firewalld_allow(proto="tcp", service="ssh") }}}
+
+rationale: |-
+    If inbound SSH connections are expected, adding a firewall rule exception
+    will allow remote access through the SSH port.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80361-9
+    cce@rhel8: 80820-4
+
+references:
+    cui: 3.1.12
+    nist: AC-17(a)
+
+ocil: |
+    {{{ ocil_firewalld_allow_access(port="22", proto="tcp", service="ssh") }}}

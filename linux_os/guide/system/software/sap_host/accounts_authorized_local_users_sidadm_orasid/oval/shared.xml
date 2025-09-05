@@ -1,0 +1,244 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="accounts_authorized_local_users_sidadm_orasid" version="1">
+    <metadata>
+      <title>Only sidadm and orasid/oracle Exist as Local Users on Operating System</title>
+      <affected family="unix">
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description> SAP system users sidadm/sapadm and orasid/oracle should be the only
+      users besides the authorized usrs listed in var_accounts_authorized_local_users_regex
+      that exist locally on the operating system.
+      Limitation: only works with zero to one SAP system on each OS/VM. 
+      </description>
+    </metadata>
+    <criteria operator="AND">
+      <!-- users in the external list -->
+      <criterion test_ref="test_accounts_authorized_local_users_sidadm_orasid"
+      comment="authorized os user accounts except sidadm/sapadm and orasid/oracle" />
+      <!-- sidadm -->
+      <criterion test_ref="test_accounts_authorized_local_users_sidadm"
+      comment="sidadm in /etc/passwd has corresponding /sapmnt/SID directory" />
+      <!-- orasid -->
+      <criterion test_ref="test_accounts_authorized_local_users_orasid"
+      comment="orasid in /etc/passwd has corresponding /sapmnt/SID/exe/brspace 
+      or /sapmnt/SID/exe/type/platform/brspace files" />
+      <!-- sapadm -->
+      <criteria operator="OR"
+      comment="either sapadm does not exist or both sapadm and /usr/sap/hostctrl exist">
+        <criterion test_ref="test_accounts_authorized_local_users_sapadm"
+        comment="sapadm exists in /etc/passwd" negate="true"/>
+        <criteria operator="AND" comment="both sapadm and /usr/sap/hostctrl exist">
+          <criterion test_ref="test_accounts_authorized_local_users_sapadm"
+          comment="sapadm exists in /etc/passwd" />
+          <criterion test_ref="test_usr_sap_hostctrl_exits"
+          comment="/usr/sap/hostctrl exists as folder" />
+        </criteria>
+      </criteria>
+      <!-- oracle -->
+      <criteria operator="OR">
+        <criterion test_ref="test_accounts_authorized_local_users_oracle_for_db"
+        comment="oracle user account in /etc/passwd is used for oracle database"/>
+        <criterion test_ref="test_accounts_authorized_local_users_oracle_for_brspace"
+        comment="oracle user account in /etc/passwd is used for brsapce file"/>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <!-- authorized users in var_accounts_authorized_local_users_regex -->
+  <ind:textfilecontent54_test id="test_accounts_authorized_local_users_sidadm_orasid"
+  version="1" check_existence="any_exist" check="all"
+  comment="authorized os user accounts except sidadm and orasid/oracle">
+    <ind:object object_ref="object_accounts_authorized_local_users_sidadm_orasid" />
+    <ind:state state_ref="state_accounts_authorized_local_users_sidadm_orasid" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_authorized_local_users_sidadm_orasid"
+  version="1" comment="user accounts in /etc/passwd except sidadm and orasid/oracle">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match">^([a-zA-Z0-9_.-]+?):</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">filter_default_os_user</filter>
+    <filter action="exclude">filter_sidadm_sapadm_orasid_oracle_users</filter>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="filter_default_os_user" version="1"
+  comment="The user root is always allowed as default opering system user" >
+    <ind:subexpression operation="equals">root</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="filter_sidadm_sapadm_orasid_oracle_users" version="1"
+  comment="sidadm, orasid and oracle users" >
+    <ind:subexpression operation="pattern match">^([a-z][a-z0-9][a-z0-9]adm|ora[a-z][a-z0-9][a-z0-9]|oracle)$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_accounts_authorized_local_users_sidadm_orasid"
+  version="1" comment="query if user accounts from /etc/passwd are authrorized" >
+    <ind:subexpression operation="pattern match"
+    var_ref="var_accounts_authorized_local_users_regex"/>
+  </ind:textfilecontent54_state>
+
+  <!-- sidadm user -->
+  <ind:textfilecontent54_test id="test_accounts_authorized_local_users_sidadm" version="1"
+  check_existence="any_exist" check="all" comment="query /etc/passwd">
+    <ind:object object_ref="object_accounts_authorized_local_users_sidadm" />
+    <ind:state state_ref="state_accounts_authorized_local_users_sidadm" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_authorized_local_users_sidadm"
+  version="1" comment="get sid from sidadm user accounts in /etc/passwd">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match">^([a-z][a-z0-9][a-z0-9])adm:</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">filter_sapadm_user</filter>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="filter_sapadm_user"
+  version="1" comment="filter sapadm user" >
+    <ind:subexpression operation="equals">sap</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_accounts_authorized_local_users_sidadm"
+  version="1" comment="verify sid from sidadm user accounts with SID from /sapmnt/SID" >
+    <ind:subexpression operation="case insensitive equals"
+    var_ref="var_get_SID_from_sapmnt"></ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <unix:file_object id="object_get_SID_from_sapmnt" version="1"
+  comment="Query if /sapmnt/SID exist and is a folder, SID must be in three alphanumeric
+  characters in upper case and starting with an alphabetic character. If /sapmnt/SID exists,
+  then SID is a valid SAP System ID.">
+    <unix:path operation="pattern match">^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]$</unix:path>
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+
+  <local_variable id="var_get_SID_from_sapmnt" version="1" datatype="string" 
+  comment="variable of SAP System ID (SID) from /sapmnt/SID">
+    <regex_capture pattern="/sapmnt/([A-Z][A-Z0-9][A-Z0-9])">
+      <object_component item_field="path" object_ref="object_get_SID_from_sapmnt" />
+    </regex_capture>
+  </local_variable>
+
+  <!-- sapadm user -->
+  <ind:textfilecontent54_test id="test_accounts_authorized_local_users_sapadm" version="1"
+  check_existence="only_one_exists" check="all" comment="query sapadm from /etc/passwd">
+    <ind:object object_ref="object_accounts_authorized_local_users_sapadm" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_authorized_local_users_sapadm"
+  version="1" comment="get sapadm user account in /etc/passwd">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match">^(sapadm):</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <unix:file_test id="test_usr_sap_hostctrl_exits" version="1"
+  check_existence="only_one_exists" check="all" comment="query if /usr/sap/hostctrl exists">
+    <unix:object object_ref="object_usr_sap_hostctrl" />
+  </unix:file_test>
+
+  <unix:file_object id="object_usr_sap_hostctrl"
+  version="1" comment="query if /usr/sap/hostctrl exists" >
+    <unix:path>/usr/sap/hostctrl</unix:path>
+    <unix:filename xsi:nil="true"/>
+  </unix:file_object>
+
+  <!-- orasid user -->
+  <ind:textfilecontent54_test id="test_accounts_authorized_local_users_orasid" version="1"
+  check_existence="any_exist" check="all" comment="query /etc/passwd">
+    <ind:object object_ref="object_accounts_authorized_local_users_orasid" />
+    <ind:state state_ref="state_accounts_authorized_local_users_orasid" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_authorized_local_users_orasid"
+  version="1" comment="get sid from orasid user accounts in /etc/passwd">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match">^ora([a-z][a-z0-9][a-z0-9]):</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">filter_oracle_user</filter>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="filter_oracle_user"
+  version="1" comment="filter oracle user" >
+    <ind:subexpression operation="equals">cle</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_accounts_authorized_local_users_orasid"
+  version="1" comment="verify sid from orasid user accounts with SID from 
+  /sapmnt/SID/exe/brspace or /sapmnt/SID/exe/type/platform/brspace files" >
+    <ind:subexpression operation="case insensitive equals"
+    var_ref="var_get_SID_from_sapmnt_brspace"></ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <unix:file_object id="object_get_SID_from_sapmnt_brspace" version="1"
+  comment="If /sapmnt/SID/exe/brspace or /sapmnt/SID/exe/type/platform/brspace file exist, then
+  SID is a valid SAP System ID that connects with oracle database. The user orasid is required.">
+    <unix:filepath operation="pattern match">^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]/exe/(|(|n)uc/[A-Za-z0-9_]+/)brspace$</unix:filepath>
+  </unix:file_object>
+
+  <local_variable id="var_get_SID_from_sapmnt_brspace" version="1" datatype="string" 
+  comment="Get SID from /sapmnt/SID/.../brspace">
+    <regex_capture pattern="^/sapmnt/([A-Z][A-Z0-9][A-Z0-9])">
+      <object_component item_field="path" object_ref="object_get_SID_from_sapmnt_brspace" />
+    </regex_capture>
+  </local_variable>
+
+  <!-- oracle user -->
+  <!-- Verify if oracle user account is owner of /oracle/SID or brspace file -->
+  <ind:textfilecontent54_test id="test_accounts_authorized_local_users_oracle_for_db"
+  version="1" check_existence="any_exist" check="all" comment="query /etc/passwd">
+    <ind:object object_ref="object_accounts_authorized_local_users_oracle" />
+    <ind:state state_ref="state_accounts_authorized_local_users_oracle_for_db" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_accounts_authorized_local_users_oracle_for_brspace"
+  version="1" check_existence="any_exist" check="all" comment="query /etc/passwd">
+    <ind:object object_ref="object_accounts_authorized_local_users_oracle" />
+    <ind:state state_ref="state_accounts_authorized_local_users_oracle_for_brspace" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_authorized_local_users_oracle"
+  version="1" comment="get oracle user id in /etc/passwd">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match">^oracle:x:([\d]+)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_accounts_authorized_local_users_oracle_for_db"
+  version="1" comment="verify if oracle uid is used by /oracle/SID directory"> 
+    <ind:subexpression operation="equals"
+    var_ref="var_get_uid_oracle_SID"></ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_accounts_authorized_local_users_oracle_for_brspace"
+  version="1" comment="verify if oracle user id is used by 
+  /sapmnt/SID/exe/brspace or /sapmnt/SID/exe/type/platform/brspace files" >
+    <ind:subexpression operation="equals"
+    var_ref="var_get_uid_brspace"></ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <!-- object to get user id of /oracle/SID on the operating system. -->
+  <unix:file_object id="object_get_uid_oracle_SID" version="1"
+  comment="Query /oracle/SID directories">
+    <unix:path operation="pattern match">^/oracle/[A-Z][A-Z0-9][A-Z0-9]$</unix:path>
+    <unix:filename xsi:nil="true"/>
+  </unix:file_object>
+
+  <!-- object to get user id of brspace -->
+  <unix:file_object id="object_get_uid_brspace" version="1"
+  comment="Query brspace file">
+    <unix:filepath operation="pattern match">^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]/exe/(|(|n)uc/[A-Za-z0-9_]+/)brspace$</unix:filepath>
+  </unix:file_object>
+
+  <local_variable id="var_get_uid_oracle_SID" version="1" datatype="string"
+  comment="uid of /oracle/SID">
+    <object_component object_ref="object_get_uid_oracle_SID" item_field="user_id"/>
+  </local_variable>
+
+  <local_variable id="var_get_uid_brspace" version="1" datatype="string"
+  comment="uid of brspace file">
+    <object_component object_ref="object_get_uid_brspace" item_field="user_id"/>
+  </local_variable>
+
+  <external_variable id="var_accounts_authorized_local_users_regex" version="1"
+  datatype="string" comment="accounts authorized local users on operating system"/>
+</def-group>

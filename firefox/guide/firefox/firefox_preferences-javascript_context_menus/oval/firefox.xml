@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="firefox_preferences-javascript_context_menus"  version="1">
+    <metadata>
+      <title>Disable JavaScript Context Menus</title>
+      <affected family="unix">
+        <platform>Mozilla Firefox</platform>
+      </affected>
+      <description>Firefox should be configured to not allow JavaScript to
+      disable or replace context menus.</description>
+    </metadata> 
+    <criteria>
+      <criterion comment="disable javaScript context menus" test_ref="test_firefox_preferences-javascript_context_menus" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check for disable javaScript context menu is disabled" id="test_firefox_preferences-javascript_context_menus" version="1">
+    <ind:object object_ref="object_firefox_preferences-javascript_context_menus" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_firefox_preferences-javascript_context_menus" version="1">
+    <ind:path operation="pattern match">^\/usr\/(|local\/)lib(|64)\/firefox</ind:path>
+    <ind:filename operation="pattern match">^.*\.cfg$</ind:filename>
+    <ind:pattern operation="pattern match">^lockPref\("dom.event.contextmenu.enabled",[\s]+false\);$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object> 
+
+</def-group>

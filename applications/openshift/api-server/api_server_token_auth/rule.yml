@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Disable Token-based Authentication'
+
+description: |-
+    To ensure OpenShift does not accept token-based authentication,
+    follow the OpenShift documentation and configure alternate mechanisms for
+    authentication. Then, edit the API Server pod specification file
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master
+    node(s) and remove the <tt>token-auth-file</tt> setting.
+    <pre>kubernetesMasterConfig:
+      apiServerArguments:
+        token-auth-file:
+        - /path/to/file</pre>
+
+rationale: |-
+    The token-based authentication utilizes static tokens to authenticate
+    requests to the API Server. The tokens are stored in clear-text in a file
+    on the API Server, and cannot be revoked or rotated without restarting the
+    API Server.
+
+severity: high
+
+references:
+    cis: 1.1.20
+
+ocil_clause: '<tt>token-auth-file</tt> argument is configured'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep -A2 token-auth-file /etc/origin/master/master-config.yaml</pre>
+    The output should return no output.

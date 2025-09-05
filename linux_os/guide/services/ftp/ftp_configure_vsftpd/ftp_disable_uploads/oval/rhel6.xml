@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="ftp_disable_uploads" version="1">
+    <metadata>
+      <title>Disable FTP Uploads</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Disable FTP Uploads.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="vsftpd package is not installed" negate="true" definition_ref="package_vsftpd_installed" />
+      <criterion comment="Disable uploads" test_ref="test_ftp_disable_uploads" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Disable uploads" id="test_ftp_disable_uploads" version="1">
+    <ind:object object_ref="object_ftp_disable_uploads" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="Disable uploads" id="object_ftp_disable_uploads" version="1">
+    <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*write_enable=NO$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
+

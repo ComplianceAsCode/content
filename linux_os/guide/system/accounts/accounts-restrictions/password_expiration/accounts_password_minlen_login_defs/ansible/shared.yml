@@ -1,0 +1,14 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- (xccdf-var var_accounts_password_minlen_login_defs)
+
+- name: "Set Password Minimum Length in login.defs"
+  lineinfile:
+    dest: /etc/login.defs
+    regexp: "^PASS_MIN_LEN *[0-9]*"
+    state: present
+    line: "PASS_MIN_LEN        {{ var_accounts_password_minlen_login_defs }}"
+    create: yes

@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_fedora" version="3">
+    <metadata>
+      <title>Installed operating system is Fedora</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:fedoraproject:fedora:28" source="CPE" />
+      <description>The operating system installed on the system is Fedora</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family" definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="fedora-release RPM packages are installed" test_ref="test_fedora_release_rpm" />
+      <criterion comment="CPE vendor is 'fedoraproject' and product is 'fedora'" test_ref="test_fedora_vendor_product" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="fedora-release RPM packages are installed" id="test_fedora_release_rpm" version="1">
+    <linux:object object_ref="object_fedora_release_rpm" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="object_fedora_release_rpm" version="1">
+    <linux:name operation="pattern match">fedora-release.*</linux:name>
+  </linux:rpminfo_object>
+
+  <ind:textfilecontent54_test check="all" comment="CPE vendor is 'fedoraproject' and 'product' is fedora" id="test_fedora_vendor_product" version="1">
+    <ind:object object_ref="object_fedora_vendor_product" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_fedora_vendor_product" version="1">
+    <ind:filepath>/etc/system-release-cpe</ind:filepath>
+    <ind:pattern operation="pattern match">^cpe:\/o:fedoraproject:fedora:[\d]+$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

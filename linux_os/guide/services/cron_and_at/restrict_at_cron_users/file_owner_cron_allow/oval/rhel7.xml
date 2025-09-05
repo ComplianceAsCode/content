@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance"
+  id="file_owner_cron_allow" version="1">
+    <metadata>
+      <title>Verify user who owns 'cron.allow' file</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>The /etc/cron.allow file should be owned by the
+      appropriate user.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check file ownership of /etc/cron.allow"
+      test_ref="test_userowner_cron_allow_file" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="any_exist"
+  comment="Testing user ownership of /etc/cron.allow"
+  id="test_userowner_cron_allow_file" version="1">
+    <unix:object object_ref="object_file_etc_cron_allow" />
+    <unix:state state_ref="state_etc_cron_allow_uid_root" />
+  </unix:file_test>
+  <unix:file_state id="state_etc_cron_allow_uid_root"
+  version="1">
+    <unix:user_id datatype="int">0</unix:user_id>
+  </unix:file_state>
+  <unix:file_object comment="/etc/cron.allow"
+  id="object_file_etc_cron_allow" version="1">
+    <unix:filepath>/etc/cron.allow</unix:filepath>
+  </unix:file_object>
+</def-group>

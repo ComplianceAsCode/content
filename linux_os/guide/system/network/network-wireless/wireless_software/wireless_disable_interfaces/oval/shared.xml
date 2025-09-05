@@ -1,0 +1,22 @@
+<def-group>
+  <definition class="compliance" id="wireless_disable_interfaces" version="1">
+    <metadata>
+      <title>Deactivate Wireless Interfaces</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>All wireless interfaces should be disabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="query /proc/net/wireless" test_ref="test_wireless_disable_interfaces" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="query /proc/net/wireless" id="test_wireless_disable_interfaces" version="1">
+    <ind:object object_ref="object_wireless_disable_interfaces" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_wireless_disable_interfaces" version="1">
+    <ind:filepath>/proc/net/wireless</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*[-\w]+:</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

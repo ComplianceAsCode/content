@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="compliance" id="chromium_enable_browser_history"  version="1">
+    <metadata>
+      <title>Enable Browser History</title>
+      <affected family="unix">
+        <platform>Google Chromium Browser</platform>
+      </affected>
+      <description>Browser history must be saved.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Chromium enable browser history" test_ref="test_chromium_enable_browser_history" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Chromium enable browser history" id="test_chromium_enable_browser_history" version="1">
+    <ind:object object_ref="object_chromium_enable_browser_history" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_chromium_enable_browser_history" version="1">
+    <ind:filepath operation="pattern match">^/etc/chromium/policies/managed/.*\.json$</ind:filepath>
+    <ind:pattern operation="pattern match">^\{([^\n]*\n+)+[\s]+\"SavingBrowserHistoryDisabled\"\:[\s]+false,</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

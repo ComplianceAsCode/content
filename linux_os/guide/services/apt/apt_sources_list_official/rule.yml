@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'Ensure that official distribution repositories are used'
+
+description: 'Check that official Debian repositories, including security repository, are configured in apt.'
+
+rationale: |-
+    The Debian distribution deliver DSA (Debian Security Announce), through the official
+        Debian security repository, to correct various vulnerabilities impacting the Debian
+        packages. Using the official repositories is the best way to ensure that the Debian
+        updates are integrated soon enough.
+
+severity: unknown
+
+references:
+    anssi: NT28(R15)

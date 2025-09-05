@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="firefox_preferences-password_store"  version="1">
+    <metadata>
+      <title>Disable the Firefox Password Store</title>
+      <affected family="unix">
+        <platform>Mozilla Firefox</platform>
+      </affected>
+      <description>The Firefox password store should be disabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="password_store disabled" test_ref="test_firefox_preferences-password_store" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check that the password_store is disabled" id="test_firefox_preferences-password_store" version="1">
+    <ind:object object_ref="object_firefox_preferences-password_store" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_firefox_preferences-password_store" version="1">
+    <ind:path operation="pattern match">^\/usr\/(|local\/)lib(|64)\/firefox</ind:path>
+    <ind:filename operation="pattern match">^.*\.cfg$</ind:filename>
+    <ind:pattern operation="pattern match">^lockPref\("signon.rememberSignons",[\s]+false\);$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>  
+
+
+</def-group>

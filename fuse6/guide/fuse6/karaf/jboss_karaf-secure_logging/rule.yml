@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Ensure JBoss Logging Is Secured'
+
+description: |-
+    Only error messages that provide information necessary
+    for corrective actions without revealing sensitive or potentially harmful
+    information in error logs and administrative messages should be generated.
+
+rationale: |-
+    Any application providing too much information in error logs and in
+    administrative messages to the screen risks compromising the data and
+    security of the application and system. The structure and content of error
+    messages needs to be carefully considered by the organization and
+    development team.
+
+severity: medium
+
+ocil_clause: 'logging is not configured to prevent sensitive information from being revealed'

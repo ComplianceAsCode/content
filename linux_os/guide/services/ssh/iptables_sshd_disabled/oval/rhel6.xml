@@ -1,0 +1,39 @@
+<def-group>
+  <definition class="compliance"
+  id="iptables_sshd_disabled" version="1">
+    <metadata>
+      <title>Disallow inbound firewall access to the SSH Server port.</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>If inbound SSH access is not needed, the firewall should disallow or reject access to
+      the SSH port (22).</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Test ipv4 port 22 Deny" test_ref="test_iptables_sshd_disabled_ipv4" />
+      <criterion comment="Test ipv6 port 22 Deny" test_ref="test_iptables_sshd_disabled_ipv6" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="none_exist" comment="Test for port 22 access over ipv4"
+  id="test_iptables_sshd_disabled_ipv4" version="1">
+    <ind:object object_ref="obj_iptables_sshd_disabled_ipv4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="Test for port 22 access over ipv4"
+  id="obj_iptables_sshd_disabled_ipv4" version="1">
+    <ind:filepath>/etc/sysconfig/iptables</ind:filepath>
+    <ind:pattern operation="pattern match">^-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all"
+  check_existence="none_exist" comment="Test for port 22 access over ipv6"
+  id="test_iptables_sshd_disabled_ipv6" version="1">
+    <ind:object object_ref="obj_iptables_sshd_disabled_ipv6" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="Test for port 22 access over ipv6"
+  id="obj_iptables_sshd_disabled_ipv6" version="1">
+    <ind:filepath>/etc/sysconfig/ip6tables</ind:filepath>
+    <ind:pattern operation="pattern match">^-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

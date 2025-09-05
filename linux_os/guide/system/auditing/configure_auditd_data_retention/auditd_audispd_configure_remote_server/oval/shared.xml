@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="compliance" id="auditd_audispd_configure_remote_server" version="1">
+    <metadata>
+      <title>Configure audispd Plugin Remote Server IP address or Hostname</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+{{% if product in ["rhel8", "fedora", "ol8"] %}}
+      <description>remote_server setting in /etc/audit/audisp-remote.conf is set to a certain IP address or hostname</description>
+{{% else %}}
+      <description>remote_server setting in /etc/audisp/audisp-remote.conf is set to a certain IP address or hostname</description>
+{{% endif %}}
+    </metadata>
+    <criteria>
+        <criterion comment="remote_server setting in audisp-remote.conf" test_ref="test_auditd_audispd_configure_remote_server" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="remote server to send audit records" id="test_auditd_audispd_configure_remote_server" version="1">
+    <ind:object object_ref="object_auditd_audispd_configure_remote_server" />
+    <ind:state state_ref="state_auditd_audispd_configure_remote_server" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_auditd_audispd_configure_remote_server" version="1">
+{{% if product in ["rhel8", "fedora", "ol8"] %}}
+    <ind:filepath>/etc/audit/audisp-remote.conf</ind:filepath>
+{{% else %}}
+    <ind:filepath>/etc/audisp/audisp-remote.conf</ind:filepath>
+{{% endif %}}
+    <!-- Allow only space (exactly) as delimiter -->
+    <!-- Require at least one space before and after the equal sign -->
+    <ind:pattern operation="pattern match">^[ ]*remote_server[ ]+=[ ]+(\S+)[ ]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_auditd_audispd_configure_remote_server" version="1">
+    <ind:subexpression operation="equals" var_ref="var_audispd_remote_server" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="audispd remote_server setting" datatype="string" id="var_audispd_remote_server" version="1" />
+
+</def-group>

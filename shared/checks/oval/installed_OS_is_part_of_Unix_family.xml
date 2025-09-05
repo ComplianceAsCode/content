@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_part_of_Unix_family" version="1">
+    <metadata>
+      <title>Installed operating system is part of the Unix family</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+        <platform>Google Chromium Browser</platform>
+        <platform>Mozilla Firefox</platform>
+      </affected>
+      <description>The operating system installed on the system is part of the Unix OS family</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_unix_family" />
+    </criteria>
+  </definition>
+
+  <ind:family_test id="test_unix_family" check="all" check_existence="at_least_one_exists"
+  comment="Test installed OS is part of the unix family" version="1">
+    <ind:object object_ref="object_unix_family" />
+    <ind:state state_ref="state_unix_family" />
+  </ind:family_test>
+
+  <ind:family_object id="object_unix_family" version="1" />
+
+  <ind:family_state id="state_unix_family" version="1">
+    <ind:family>unix</ind:family>
+  </ind:family_state>
+
+</def-group>

@@ -1,0 +1,38 @@
+<def-group>
+  <definition class="compliance" id="dir_perms_var_log_httpd" version="2">
+    <metadata>
+      <title>Directory /var/log/httpd/ Permissions</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>Directory permissions for /var/log/httpd should be set to 0700 (or stronger).</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="httpd not present or in use"
+      definition_ref="package_httpd_removed" />
+      <criterion test_ref="test_dir_perms_var_log_httpd" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing directory permissions" id="test_dir_perms_var_log_httpd" version="1">
+    <unix:object object_ref="object_dir_perms_var_log_httpd" />
+    <unix:state state_ref="state_dir_perms_var_log_httpd" />
+  </unix:file_test>
+
+  <unix:file_object comment="/var/log/httpd/" id="object_dir_perms_var_log_httpd" version="1">
+    <unix:path>/var/log/httpd</unix:path>
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+
+  <unix:file_state id="state_dir_perms_var_log_httpd" version="2">
+    <unix:suid datatype="boolean">false</unix:suid>
+    <unix:sgid datatype="boolean">false</unix:sgid>
+    <unix:sticky datatype="boolean">false</unix:sticky>
+    <unix:gread datatype="boolean">false</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>

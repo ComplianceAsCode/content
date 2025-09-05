@@ -1,0 +1,16 @@
+<def-group>
+  <definition class="compliance" id="install_antivirus"
+  version="1">
+    <metadata>
+      <title>Package Antivirus Installed</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Antivirus software should be installed.</description>
+    </metadata>
+    <criteria comment="Antivirus is not being used or conditions are met">
+      <extend_definition comment="McAfee A/V Installed" definition_ref="install_mcafee_antivirus" />
+    </criteria>
+  </definition>
+
+</def-group>

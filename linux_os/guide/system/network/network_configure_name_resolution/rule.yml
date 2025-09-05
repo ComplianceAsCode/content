@@ -1,0 +1,46 @@
+documentation_complete: true
+
+prodtype: wrlinux1019,rhel7,rhel8,rhv4
+
+title: 'Configure Multiple DNS Servers in /etc/resolv.conf'
+
+description: |-
+    Multiple Domain Name System (DNS) Servers should be configured
+    in <tt>/etc/resolv.conf</tt>. This provides redundant name resolution services
+    in the event that a domain server crashes. To configure the system to contain
+    as least <tt>2</tt> DNS servers, add a corresponding <tt>nameserver
+    <i>ip_address</i></tt> entry in <tt>/etc/resolv.conf</tt> for each DNS
+    server where <i>ip_address</i> is the IP address of a valid DNS server.
+    For example:
+    <pre>search example.com
+    nameserver 192.168.0.1
+    nameserver 192.168.0.2</pre>
+
+rationale: |-
+    To provide availability for name resolution services, multiple redundant
+    name servers are mandated. A failure in name resolution could lead to the
+    failure of security functions requiring name resolution, which may include
+    time synchronization, centralized authentication, and remote system logging.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80438-5
+
+references:
+    disa: "366"
+    nist: SC-22
+    nist-csf: PR.PT-4
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040600"
+    isa-62443-2013: 'SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
+    cobit5: APO13.01,DSS05.02
+    iso27001-2013: A.13.1.1,A.13.2.1,A.14.1.3
+    cis-csc: 12,15,8
+
+ocil_clause: 'it does not exist or is not properly configured or less than 2 ''nameserver'' entries exist'
+
+ocil: |-
+    To verify that DNS servers have been configured properly, perform the following:
+    <pre>$ sudo grep nameserver /etc/resolv.conf</pre>
+    The output should return more than one <pre>nameserver</pre> entry.

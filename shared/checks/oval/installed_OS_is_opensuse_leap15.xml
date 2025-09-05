@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_opensuse_leap15" version="1">
+    <metadata>
+      <title>openSUSE Leap 15</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:opensuse:leap:15.0" source="CPE" />
+      <description>The operating system installed on the system is openSUSE Leap 15.</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="openSUSE is installed" definition_ref="installed_OS_is_opensuse" />
+      <criterion comment="openSUSE Leap 15 is installed" test_ref="test_opensuse_leap15_installed" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="openSUSE Leap 15 is installed" id="test_opensuse_leap15_installed" version="1">
+    <linux:object object_ref="obj_opensuse_leap15_installed" />
+    <linux:state state_ref="state_opensuse_leap15_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_opensuse_leap15_installed" version="1">
+    <linux:version operation="pattern match">^15.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_opensuse_leap15_installed" version="1">
+    <linux:name>openSUSE-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

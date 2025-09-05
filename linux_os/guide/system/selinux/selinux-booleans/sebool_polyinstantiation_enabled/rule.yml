@@ -1,0 +1,16 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,rhv4
+
+title: 'Disable the polyinstantiation_enabled SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>polyinstantiation_enabled</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="polyinstantiation_enabled") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="polyinstantiation_enabled") }}}

@@ -1,0 +1,68 @@
+documentation_complete: true
+
+title: 'Allow Only SSH Protocol 2'
+
+description: |-
+    Only SSH protocol version 2 connections should be
+    permitted. The default setting in
+    <tt>/etc/ssh/sshd_config</tt> is correct, and can be
+    verified by ensuring that the following
+    line appears:
+    <pre>Protocol 2</pre>
+
+rationale: |-
+    SSH protocol version 1 is an insecure implementation of the SSH protocol and
+    has many well-known vulnerability exploits. Exploits of the SSH daemon could provide
+    immediate root access to the system.
+
+severity: high
+
+identifiers:
+    cce@rhel6: 27072-8
+    cce@rhel7: 27320-1
+    cce@rhel8: 80894-9
+
+references:
+    nist@debian8: AC-17(7)
+    nist-csf@debian8: PR.AC-3,PR.PT-4
+    anssi@debian8: NT007(R1)
+    stigid@rhel6: "000227"
+    srg@rhel6: SRG-OS-000112
+    nist@rhel6: AC-3(10)
+    nist-csf@rhel6: PR.AC-4,PR.AC-6,PR.PT-3
+    disa@rhel6: 1436,774,776
+    cis: 5.2.2
+    cjis: 5.5.6
+    cui: 3.1.13,3.5.4
+    disa: 197,366
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-17(b),AC-17(8).1(ii),IA-5(1)(c)
+    nist-csf: PR.AC-1,PR.AC-3,PR.AC-6,PR.AC-7,PR.PT-4
+    srg: SRG-OS-000074-GPOS-00042,SRG-OS-000480-GPOS-00227
+    vmmsrg: SRG-OS-000033-VMM-000140
+    stigid@rhel7: "040390"
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.6,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.4
+    cobit5: APO13.01,DSS01.04,DSS05.02,DSS05.03,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
+    iso27001-2013: A.11.2.6,A.13.1.1,A.13.2.1,A.14.1.3,A.18.1.4,A.6.2.1,A.6.2.2,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
+    cis-csc: 1,12,15,16,5,8
+
+ocil_clause: 'it is commented out or is not set correctly to Protocol 2'
+
+ocil: |-
+    To check which SSH protocol version is allowed, check version of <tt>openssh-server</tt> with following command:
+    {{% if pkg_system == "rpm" %}}
+    <pre>$ rpm -qi openssh-server | grep Version</pre>
+    {{% else %}}
+    <pre>$ dpkg -s openssh-server | grep Version</pre>
+    {{% endif %}}
+    Versions equal to or higher than 7.4 only allow Protocol 2.
+    If version is lower than 7.4, run the following command to check configuration:
+    <pre>$ sudo grep Protocol /etc/ssh/sshd_config</pre>
+    If configured properly, output should be <pre>Protocol 2</pre>
+
+warnings:
+    - general: |-
+        As of <tt>openssh-server</tt> version <tt>7.4</tt> and above, the only protocol
+        supported is version 2, and line <pre>Protocol 2</pre> in
+        <tt>/etc/ssh/sshd_config</tt> is not necessary.

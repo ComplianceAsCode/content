@@ -1,0 +1,14 @@
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+
+- name: Disable Ctrl-Alt-Del Burst Action
+  lineinfile:
+    dest: /etc/systemd/system.conf
+    state: present
+    regexp: ^CtrlAltDelBurstAction
+    line: "CtrlAltDelBurstAction=none"
+    create: yes
+

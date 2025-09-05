@@ -1,0 +1,29 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: "Ensure AIDE is installed"
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - aide
+
+- name: "Build and Test AIDE Database"
+  command: /usr/sbin/aide --init
+  changed_when: True
+
+# mainly to allow ansible's check mode to work
+- name: "Check whether the stock AIDE Database exists"
+  stat:
+    path: /var/lib/aide/aide.db.new.gz
+  register: aide_database_stat
+
+- name: "Stage AIDE Database"
+  copy:
+    src: /var/lib/aide/aide.db.new.gz
+    dest: /var/lib/aide/aide.db.gz
+    backup: yes
+    remote_src: yes
+  when: (aide_database_stat.stat.exists is defined and aide_database_stat.stat.exists)

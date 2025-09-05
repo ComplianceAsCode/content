@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Install usbguard Package'
+
+description: |-
+    {{{ describe_package_install(package="usbguard") }}}
+
+rationale: |-
+    <tt>usbguard</tt> is a software framework that helps to protect
+    against rogue USB devices by implementing basic whitelisting/blacklisting
+    capabilities based on USB device attributes.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82961-4
+    cce@rhel7: 82960-6
+    cce@rhel8: 82959-8
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="usbguard") }}}'

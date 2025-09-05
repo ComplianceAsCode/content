@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="compliance" id="gconf_gnome_disable_wifi_disconnect" version="1">
+    <metadata>
+      <title>Disable WIFI Network Disconnect Notification in GNOME</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Disable GNOME's ability to notify users when disconnecting
+      from a wifi network.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="GConf2 installed" definition_ref="package_GConf2_installed" negate="true" />
+      <criterion comment="disable wifi disconnect" test_ref="test_disable_wifi_disconnect" />
+      <criterion comment="disable wifi disconnect" test_ref="test_gconf_tree_disable_wifi_disconnect" />
+    </criteria>
+  </definition>
+  <ind:xmlfilecontent_test check="all"
+  comment="disable wifi disconnect"
+  id="test_disable_wifi_disconnect" version="1">
+    <ind:object object_ref="object_disable_wifi_disconnect" />
+    <ind:state state_ref="state_disable_wifi_disconnect" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_disable_wifi_disconnect" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/apps/nm-applet/%gconf.xml</ind:filepath>
+    <ind:xpath>/gconf/entry[@name='disable-disconnected-notifications']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_test check="all"
+  comment="disable wifi disconnect"
+  id="test_gconf_tree_disable_wifi_disconnect" version="1">
+    <ind:object object_ref="object_gconf_tree_disable_wifi_disconnect" />
+    <ind:state state_ref="state_disable_wifi_disconnect" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_gconf_tree_disable_wifi_disconnect" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/%gconf-tree.xml</ind:filepath>
+    <ind:xpath>/gconf/dir/dir/entry[@name='disable-disconnected-notifications']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_state id="state_disable_wifi_disconnect" version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+</def-group>

@@ -1,0 +1,46 @@
+<def-group oval_version="5.10">
+  <definition class="compliance" id="mcafee_antivirus_definitions_updated" version="1">
+    <metadata>
+      <title>McAfee AntiVirus Definitions Updated</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Verify that McAfee AntiVirus definitions have been updated.</description>
+    </metadata>
+
+    <criteria>
+      <criterion comment="Check if McAfee AntiVirus definitions have been updated" test_ref="test_mcafee_antivirus_definitions_updated" />
+    </criteria>
+
+  </definition>
+
+  <unix:file_object id="mcafee_dat_files_mtime" comment="McAfee definition files" version="1">
+    <unix:path datatype="string">/opt/NAI/LinuxShield/engine/dat</unix:path>
+    <unix:filename datatype="string" operation="pattern match">^.*\.dat$</unix:filename>
+  </unix:file_object>
+
+  <local_variable id="variable_mcafee_dat_files_mtime" version="1" comment="Age of file for each McAfee definition file." datatype="int">
+      <time_difference format_2="seconds_since_epoch">
+        <object_component object_ref="mcafee_dat_files_mtime" item_field="m_time"/> 
+      </time_difference>
+  </local_variable>
+
+  <ind:variable_test check="all" check_existence="all_exist" id="test_mcafee_antivirus_definitions_updated" version="1" comment="McAfee AntiVirus definitions have been updated">
+    <ind:object object_ref="object_mcafee_definitions_modified_time" />
+    <ind:state state_ref="state_mcafee_definitions_max_age" />
+  </ind:variable_test>
+
+  <ind:variable_object comment="McAfee AntiVirus definitions age"
+id="object_mcafee_definitions_modified_time" version="1">
+     <ind:var_ref>variable_mcafee_dat_files_mtime</ind:var_ref>
+   </ind:variable_object>
+
+  <ind:variable_state id="state_mcafee_definitions_max_age" version="1">
+    <ind:value datatype="int" operation="less than or equal" var_check="all"
+    var_ref="var_mcafee_antivirus_definition_expire" />
+  </ind:variable_state>
+
+  <external_variable comment="defintions age" datatype="int"
+  id="var_mcafee_antivirus_definition_expire" version="1" />
+
+</def-group>

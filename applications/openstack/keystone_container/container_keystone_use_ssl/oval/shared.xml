@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="container_keystone_ssl_enable" version="1">
+    <metadata>
+      <title>Is enable parameter in the [ssl] section set to True?</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Is enable parameter in the [ssl] section set to True?</description>
+    </metadata>
+    <criteria comment="Is enable parameter in [ssl] section set to True?" operator="AND">
+      <criterion comment="Check enable parameter of [ssl] section in /var/lib/config-data/puppet-generated/keystone/etc/keystone/keystone.conf" test_ref="test_container_keystone_ssl_enable" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests the value of the enable parameneter in the ssl [\s]*(&lt;:nocomment:&gt;*) section of the /var/lib/config-data/puppet-generated/keystone/etc/keystone/keystone.conf file"
+  id="test_container_keystone_ssl_enable" version="1">
+    <ind:object object_ref="obj_container_keystone_ssl_enable" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_container_keystone_ssl_enable" version="2">
+    <ind:filepath>/var/lib/config-data/puppet-generated/keystone/etc/keystone/keystone.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)enable(?-i)[\s]+True[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

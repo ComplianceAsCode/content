@@ -1,0 +1,19 @@
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_rhv,multi_platform_ol
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+- (xccdf-var var_smartcard_drivers)
+
+- name: Check existence of opensc conf
+  stat:
+    path: /etc/opensc-{{ ansible_architecture }}.conf
+  register: opensc_conf_cd
+
+- name: "{{{ rule_title }}}"
+  lineinfile:
+    path: /etc/opensc-{{ ansible_architecture }}.conf
+    line: '        card_drivers = {{ var_smartcard_drivers }}'
+    regexp: '(^\s+#|^)\s+card_drivers\s+=\s+.*'
+    state: present
+  when: opensc_conf_cd.stat.exists    

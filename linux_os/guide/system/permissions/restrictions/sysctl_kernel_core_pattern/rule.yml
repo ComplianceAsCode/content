@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Disable storing core dumps'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.core_pattern", value="|/bin/false") }}}'
+
+rationale: |-
+    A core dump includes a memory image taken at the time the operating system
+    terminates an application. The memory image could contain sensitive data and is generally useful
+    only for developers trying to debug problems.
+
+severity: unknown
+
+identifiers:
+    cce@rhel8: 82215-5
+
+references:
+    ospp: FMT_SMF_EXT.1
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.core_pattern", value="|/bin/false") }}}
+
+platform: machine

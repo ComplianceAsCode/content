@@ -1,0 +1,52 @@
+documentation_complete: true
+
+prodtype: wrlinux1019,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Ensure gpgcheck Enabled for Local Packages'
+
+description: |-
+    <tt>{{{ pkg_manager }}}</tt> should be configured to verify the signature(s) of local packages
+    prior to installation. To configure <tt>{{{ pkg_manager }}}</tt> to verify signatures of local
+    packages, set the <tt>localpkg_gpgcheck</tt> to <tt>1</tt> in <tt>{{{ pkg_manager_config_file }}}</tt>.
+
+rationale: |-
+    Changes to any software components can have significant effects to the overall security
+    of the operating system. This requirement ensures the software has not been tampered and
+    has been provided by a trusted vendor.
+    <br /><br />
+    Accordingly, patches, service packs, device drivers, or operating system components must
+    be signed with a certificate recognized and approved by the organization.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 80347-8
+    cce@rhel8: 80791-7
+
+references:
+    cui: 3.4.8
+    disa: "1749"
+    hipaa: 164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)
+    nist: CM-5(3),CM-11
+    nist-csf: PR.IP-1
+    ospp: FAU_GEN.1.1.c
+    srg: SRG-OS-000366-GPOS-00153
+    vmmsrg: SRG-OS-000366-VMM-001430,SRG-OS-000370-VMM-001460,SRG-OS-000404-VMM-001650
+    stigid@rhel7: "020060"
+    isa-62443-2013: 'SR 7.6'
+    isa-62443-2009: 4.3.4.3.2,4.3.4.3.3
+    cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05
+    iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4
+    cis-csc: 11,3,9
+    anssi: NT28(R15)
+
+ocil_clause: 'gpgcheck is not enabled or configured correctly to verify local packages'
+
+ocil: |-
+    To verify that <tt>localpkg_gpgcheck</tt> is configured properly, run the following
+    command:
+    <pre>$ grep localpkg_gpgcheck {{{ pkg_manager_config_file }}}</pre>
+    The output should return something similar to:
+    <pre>localpkg_gpgcheck=1</pre>
+
+platform: yum

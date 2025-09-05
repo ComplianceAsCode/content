@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora
+
+title: 'Manually Assign IPv6 Router Address'
+
+description: |-
+    Edit the file
+    <tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt>, and add or correct
+    the following line (substituting your gateway IP as appropriate):
+    <pre>IPV6_DEFAULTGW=2001:0DB8::0001</pre>
+    Router addresses should be manually set and not accepted via any
+    auto-configuration or router advertisement.
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce@rhel6: 27234-4
+    cce@rhel7: 80186-0
+
+references:
+    nist@rhel6: CM-6(b)
+    disa: "366"

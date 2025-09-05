@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Use Views to Partition External and Internal Information'
+
+description: |-
+    If it is not possible to run external and internal nameservers on
+    separate physical systems, run BIND9 and simulate this feature using views.
+    Edit <tt>/etc/named.conf</tt>. Add or correct the following directives (where
+    SUBNET is the numerical IP representation of your organization in the form
+    xxx.xxx.xxx.xxx/xx):
+    <pre>acl internal {
+      SUBNET ;
+      localhost;
+    };
+    view "internal-view" {
+      match-clients { internal; };
+      zone "." IN {
+        type hint;
+        file "db.cache";
+      };
+      zone "internal.example.com " IN {
+        ...
+      };
+    };
+
+    view "external-view" {
+      match-clients { any; };
+      recursion no;
+      zone "example.com " IN {
+        ...
+      };
+    };</pre>
+
+warnings:
+    - general: |-
+        As shown in the example, database files which are
+        required for recursion, such as the root hints file, must be available to any
+        clients which are allowed to make recursive queries. Under typical
+        circumstances, this includes only the internal clients which are allowed to use
+        this server as a general-purpose nameserver.

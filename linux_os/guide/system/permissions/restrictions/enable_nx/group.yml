@@ -1,0 +1,7 @@
+documentation_complete: true
+
+title: |-
+    Enable Execute Disable (XD) or No Execute (NX) Support on
+    x86 Systems
+
+description: "Recent processors in the x86 family support the\nability to prevent code execution on a per memory page basis.\nGenerically and on AMD processors, this ability is called No\nExecute (NX), while on Intel processors it is called Execute\nDisable (XD). This ability can help prevent exploitation of buffer\noverflow vulnerabilities and should be activated whenever possible.\nExtra steps must be taken to ensure that this protection is\nenabled, particularly on 32-bit x86 systems. Other processors, such\nas Itanium and POWER, have included such support since inception\nand the standard kernel for those platforms supports the\nfeature. This is enabled by default on the latest Red Hat and \nFedora systems if supported by the hardware."

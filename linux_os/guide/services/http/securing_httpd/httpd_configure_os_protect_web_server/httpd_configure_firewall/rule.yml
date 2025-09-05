@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8
+
+title: 'Configure firewall to Allow Access to the Web Server'
+
+description: |-
+    {{% if product == "rhel7" %}}
+    By default, <tt>firewalld</tt>
+    blocks access to the ports used by the web server.
+    {{{ describe_firewalld_allow(proto="tcp", service="http") }}}
+    {{{ describe_firewalld_allow(proto="tcp", service="https") }}}
+    {{% else %}}
+    By default, <tt>iptables</tt>
+    blocks access to the ports used by the web server.
+    {{{ describe_iptables_allow(proto="tcp", port=80) }}}
+    {{{ describe_iptables_allow(proto="tcp", port=443) }}}
+    {{% endif %}}
+
+rationale: |-
+    Failure to comply with DoD ports, protocols, and services (PPS) requirements
+    can result in compromise of enclave boundary protections and/or functionality
+    of the AIS.
+
+severity: low
+
+references:
+    stigid@rhel7: WG610
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Review the web site to determine if HTTP and HTTPs are used in accordance with
+    well known ports (e.g., 80 and 443) or those ports and services as registered
+    and approved for use by the DoD PPSM.
+    {{{ describe_firewalld_allow(proto="tcp", service="http") }}}
+    {{{ describe_firewalld_allow(proto="tcp", service="https") }}}

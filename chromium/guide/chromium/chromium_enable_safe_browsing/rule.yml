@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Enable the Safe Browsing Feature'
+
+description: "Chromium has the capability to check URLs for known malware and phishing \nassociated with websites through the Safe Browsing Feature. This can be \nenabled by setting <tt>SafeBrowsingEnabled</tt> to <tt>true</tt> in the Chromium\npolicy file."
+
+rationale: |-
+    Safe browsing uses a signature database to test sites when they are be loaded
+    to ensure that sites do not contain any known malware.
+
+severity: unknown
+
+references:
+    stigid: DTBC0038
+
+ocil_clause: 'it is not enabled'
+
+ocil: |-
+    To verify that the safe browsing feature is enabled, run the following command:
+    <pre>$ grep SafeBrowsingEnabled /etc/chromium/policies/managed/*.json</pre>
+    The output should contain:
+    <pre>"SafeBrowsingEnabled": true,</pre>

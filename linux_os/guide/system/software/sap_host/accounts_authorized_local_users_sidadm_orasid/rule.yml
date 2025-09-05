@@ -1,0 +1,60 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Only sidadm and orasid/oracle User Accounts Exist on Operating System'
+
+description: |-
+    SAP tends to use the server or virtual machine exclusively. There should be only
+    SAP system users <tt>sidadm</tt> and <tt>orasid</tt> that exist on the operating
+    system (or virtual machine). If SAP Host Agent is installed, the user <tt>sapadm</tt>
+    must exist too. With Oracle Database using <tt>oracle</tt> user, the user <tt>oracle</tt>
+    should exist as well. While <tt>SID</tt> is the SAP System ID, which is always
+    three alphanumeric characters in upper case, beginning with an alphabetic character,
+    the user names <tt>sidadm</tt> and <tt>orasid</tt> are in lower case.
+    <br /> <br />
+    Besides the above SAP users that are automatically detected, other operating system
+    users can be customized in the refine value variable
+    <tt>var_accounts_authorized_local_users_regex</tt>.
+    OVAL regular expression is used for the user list.
+    <br /> <br />
+    Test result of both <tt>fail</tt> or <tt>error</tt> means mismatch of user names and
+    SAP system. The bash remediation commands can be used to delete unexpected users on
+    the operating system.
+
+rationale: |-
+    Accounts providing no operational purpose provide additional opportunities for
+    system compromise. Unnecessary accounts include user accounts for individuals not
+    requiring access to the system and application accounts for applications not installed
+    on the system.
+
+severity: medium
+
+ocil_clause: 'there are unauthorized local user accounts on the system'
+
+ocil: |-
+    To verify that there are no unauthorized local user accounts, run the following command:
+    <pre>$ less /etc/passwd </pre>
+    Inspect the results, and if unauthorized local user accounts exist, remove them by
+    running the following command:
+    <pre>$ sudo userdel <i>unauthorized_user</i></pre>
+
+warnings:
+    - general: |-
+        Currently this rule only works with following limitations:
+        <br />
+        1. <tt>SAP system mount directory</tt> is <tt>/sapmnt</tt> (mounted or local file system
+        or a symbolic link to the target directory);
+        <br />
+        2. there is maximum one SAP System on each operating system or virtual machine (maximum
+        one SID in /sapmnt and /usr/sap).
+        <br />
+        With the above limitations, the SAP system users <tt>sidadm</tt>, <tt>orasid</tt>, <tt>sapadm</tt>
+        and <tt>oracle</tt> can be automatically detected.
+        <br /> <br />
+        For other cases, please use the general purpose rule <tt>accounts_authorized_local_users</tt>
+        and customize the refine value variable <tt>var_accounts_authorized_local_users_regex</tt>
+        by adding all the authorized user names to the list.
+        <br /> <br />
+        The bash remediation is not limited by the above two conditions, it works in all the cases
+        regardless there is zero, one or multiple SAP systems on the OS/VM.

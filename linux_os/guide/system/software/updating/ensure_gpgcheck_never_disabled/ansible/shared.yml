@@ -1,0 +1,20 @@
+# platform = multi_platform_rhel,multi_platform_ol,multi_platform_fedora,multi_platform_rhv
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+#
+- name: Find All {{{ pkg_manager }}} Repositories
+  find:
+    paths: "/etc/yum.repos.d/"
+    patterns: "*.repo"
+    contains: ^\[.+]$
+  register: yum_find
+
+- name: Ensure gpgcheck Enabled For All {{{ pkg_manager }}} Package Repositories
+  with_items: "{{ yum_find.files }}"
+  lineinfile:
+    create: yes
+    dest: "{{ item.path }}"
+    regexp: '^gpgcheck'
+    line: 'gpgcheck=1'

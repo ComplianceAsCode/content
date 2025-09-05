@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="file_permissions{{{ FILEID }}}" version="1">
+    <metadata>
+      <title>Verify {{{ FILEPATH }}} Mode Permissions</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>This test makes sure that {{{ FILEPATH }}} has mode {{{ FILEMODE }}}.
+      If the target file or directory has an extended ACL, then it will fail the mode check.
+      </description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check file mode of {{{ FILEPATH }}}" test_ref="test_file_permissions{{{ FILEID }}}" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing mode of {{{ FILEPATH }}}" id="test_file_permissions{{{ FILEID }}}" version="1">
+    <unix:object object_ref="object_file_permissions{{{ FILEID }}}" />
+    <unix:state state_ref="state_file_permissions{{{ FILEID }}}_mode_{{{ FILEMODE }}}" />
+  </unix:file_test>
+  <unix:file_state id="state_file_permissions{{{ FILEID }}}_mode_{{{ FILEMODE }}}" version="1">
+    {{{ STATEMODE }}}
+  </unix:file_state>
+  <unix:file_object comment="{{{ FILEPATH }}}" id="object_file_permissions{{{ FILEID }}}" version="1">
+    {{{ UNIX_DIR }}}
+    {{{ UNIX_FILENAME }}}
+  </unix:file_object>
+</def-group>

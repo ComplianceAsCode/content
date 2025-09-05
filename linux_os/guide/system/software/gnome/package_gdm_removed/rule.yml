@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,fedora,rhv4
+
+title: 'Remove the GDM Package Group'
+
+description: |-
+    By removing the <tt>gdm</tt> package, the system no longer has GNOME installed
+    installed. If X Windows is not installed then the system cannot boot into graphical user mode.
+    This prevents the system from being accidentally or maliciously booted into a <tt>graphical.target</tt>
+    mode. To do so, run the following command:
+    <pre>$ sudo yum remove gdm</pre>
+
+rationale: |-
+    Unnecessary service packages must not be installed to decrease the attack surface of the system.
+    A graphical environment is unnecessary for certain types of systems including a virtualization
+    hypervisor.
+
+severity: medium
+
+references:
+    nist: AC-17(8).1(ii)
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'gdm has not been removed'
+
+ocil: |-
+    To ensure the gdm package group is removed, run the following command:
+    <pre>$ rpm -qi gdm</pre>
+    The output should be:
+    <pre>package gdm is not installed</pre>

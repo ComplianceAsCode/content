@@ -1,0 +1,108 @@
+<def-group>
+  <definition class="compliance" id="ensure_redhat_gpgkey_installed" version="2">
+    <metadata>
+      <title>Red Hat Release and Auxiliary gpg-pubkey Packages Installed</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_rhv</platform>
+      </affected>
+      <description>The Red Hat release and auxiliary key packages are required to be installed.</description>
+    </metadata>
+    <criteria comment="Vendor GPG keys" operator="OR">
+      <criteria comment="Red Hat Vendor Keys" operator="AND">
+        <criteria comment="Red Hat Installed" operator="OR">
+        {{%- if product == "rhel6" %}}
+          <extend_definition comment="SL6 installed" definition_ref="installed_OS_is_sl6" />
+        {{%- endif %}}
+        {{%- if product == "rhel7" or product == "rhv4" %}}
+          <extend_definition comment="SL7 installed" definition_ref="installed_OS_is_sl7" />
+        {{%- endif %}}
+          <extend_definition comment="{{{ product }}} installed" definition_ref="installed_OS_is_{{{ product }}}" />
+        </criteria>
+        <criterion comment="package gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}} is installed"
+        test_ref="test_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" />
+        <criteria comment="Auxiliary Red Hat Key Installed" operator="OR">
+          <criterion comment="package gpg-pubkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}} is installed"
+          test_ref="test_package_gpgkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}_installed" />
+        </criteria>
+      </criteria>
+      {{%- if product == "rhel6" %}}
+      <criteria comment="CentOS Vendor Keys" operator="AND">
+        <extend_definition comment="CentOS6 installed" definition_ref="installed_OS_is_centos6" />
+        <criterion comment="package gpg-pubkey-c105b9de-4e0fd3a3 is installed"
+        test_ref="test_package_gpgkey-c105b9de-4e0fd3a3_installed" />
+      </criteria>
+      {{%- endif %}}
+      {{%- if product == "rhel7" or product == "rhv4" %}}
+      <criteria comment="CentOS Vendor Keys" operator="AND">
+        <extend_definition comment="CentOS7 installed" definition_ref="installed_OS_is_centos7" />
+        <criterion comment="package gpg-pubkey-f4a80eb5-53a7ff4b is installed"
+        test_ref="test_package_gpgkey-f4a80eb5-53a7ff4b_installed" />
+      </criteria>
+      {{%- endif %}}
+    </criteria>
+  </definition>
+
+  <!-- First define global "object_package_gpg-pubkey" to be shared (reused) across multiple tests -->
+  <linux:rpminfo_object id="object_package_gpg-pubkey" version="1">
+    <linux:name>gpg-pubkey</linux:name>
+  </linux:rpminfo_object>
+
+  <!-- Perform the particular tests themselves -->
+  <!-- Test for Red Hat release key -->
+  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
+  id="test_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" version="1"
+  comment="Red Hat release key package is installed">
+    <linux:object object_ref="object_package_gpg-pubkey" />
+    <linux:state state_ref="state_package_gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}}" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_package_gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}}" version="1">
+    <linux:release>{{{ pkg_release }}}</linux:release>
+    <linux:version>{{{ pkg_version }}}</linux:version>
+  </linux:rpminfo_state>
+
+  <!-- Test for Red Hat auxiliary key -->
+  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
+  id="test_package_gpgkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}_installed" version="1"
+  comment="Red Hat auxiliary key package is installed">
+    <linux:object object_ref="object_package_gpg-pubkey" />
+    <linux:state state_ref="state_package_gpg-pubkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_package_gpg-pubkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}" version="1">
+    <linux:release>{{{ aux_pkg_release }}}</linux:release>
+    <linux:version>{{{ aux_pkg_version }}}</linux:version>
+  </linux:rpminfo_state>
+
+  {{%- if product == "rhel7" or product == "rhv4" %}}
+  <!-- Test for CentOS7 key -->
+  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
+  id="test_package_gpgkey-f4a80eb5-53a7ff4b_installed" version="1"
+  comment="CentOS7 key package is installed">
+    <linux:object object_ref="object_package_gpg-pubkey" />
+    <linux:state state_ref="state_package_gpg-pubkey-f4a80eb5-53a7ff4b" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_package_gpg-pubkey-f4a80eb5-53a7ff4b" version="1">
+    <linux:release>53a7ff4b</linux:release>
+    <linux:version>f4a80eb5</linux:version>
+  </linux:rpminfo_state>
+  {{%- endif %}}
+
+  {{%- if product == "rhel6" %}}
+  <!-- Test for CentOS6 key -->
+  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
+  id="test_package_gpgkey-c105b9de-4e0fd3a3_installed" version="1"
+  comment="CentOS6 key package is installed">
+    <linux:object object_ref="object_package_gpg-pubkey" />
+    <linux:state state_ref="state_package_gpg-pubkey-c105b9de-4e0fd3a3" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_package_gpg-pubkey-c105b9de-4e0fd3a3" version="1">
+    <linux:release>4e0fd3a3</linux:release>
+    <linux:version>c105b9de</linux:version>
+  </linux:rpminfo_state>
+  {{%- endif %}}
+
+</def-group>

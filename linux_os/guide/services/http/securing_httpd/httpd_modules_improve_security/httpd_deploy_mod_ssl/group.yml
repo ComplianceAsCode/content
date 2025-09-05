@@ -1,0 +1,14 @@
+documentation_complete: true
+
+title: 'Deploy mod_ssl'
+
+description: |-
+    Because HTTP is a plain text protocol, all traffic is susceptible to passive
+    monitoring. If there is a need for confidentiality, SSL should be configured
+    and enabled to encrypt content.
+    <br /><br />
+    Note: <tt>mod_nss</tt> is a FIPS 140-2 certified alternative to <tt>mod_ssl</tt>.
+    The modules share a considerable amount of code and should be nearly identical
+    in functionality. If FIPS 140-2 validation is required, then <tt>mod_nss</tt> should
+    be used. If it provides some feature or its greater compatibility is required,
+    then <tt>mod_ssl</tt> should be used.

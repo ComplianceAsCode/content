@@ -1,0 +1,17 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8
+
+title: 'Disable the squid_connect_any SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>squid_connect_any</tt> is enabled.
+    This setting should be disabled as squid should only connect on specified
+    ports.
+    {{{ describe_sebool_disable(sebool="squid_connect_any") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="squid_connect_any") }}}

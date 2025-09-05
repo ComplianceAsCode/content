@@ -1,0 +1,21 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_kernel_module_loading" version="1">
+    <metadata>
+      <title>Audit Kernel Module Loading and Unloading</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>The audit rules should be configured to log information about kernel module loading and unloading.</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="audit init_module" definition_ref="audit_rules_kernel_module_loading_init" />
+      <extend_definition comment="audit delete_module" definition_ref="audit_rules_kernel_module_loading_delete" />
+{{% if product != "rhel6" %}}
+      <extend_definition comment="audit finit_module" definition_ref="audit_rules_kernel_module_loading_finit" />
+{{% endif %}}
+    </criteria>
+  </definition>
+
+</def-group>

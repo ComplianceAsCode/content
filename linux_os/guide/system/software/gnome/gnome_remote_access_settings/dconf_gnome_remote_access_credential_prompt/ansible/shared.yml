@@ -1,0 +1,19 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Require Credential Prompting for Remote Access in GNOME3"
+  ini_file:
+    dest: /etc/dconf/db/local.d/00-security-settings
+    section: org/gnome/Vino
+    option: authentication-methods
+    value: "['vnc']"
+    create: yes
+
+- name: "Prevent user modification of GNOME3 Credential Prompting for Remote Access"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/Vino/authentication-methods'
+    line: '/org/gnome/Vino/authentication-methods'
+    create: yes

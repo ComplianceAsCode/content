@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Disable Background Processing'
+
+description: |-
+    Chromium can be set to run at all times and process in the background. This
+    should be disabled by setting <tt>BackgroundModeEnabled</tt> to <tt>false</tt>
+    in the Chromium policy file.
+
+rationale: |-
+    There is two reasons that this is not wanted. First, it can tie up system
+    resources that might otherwise be needed. Second, it does not make it
+    obvious to the user that it is running and poorly written extensions could
+    cause instability on the system.
+
+severity: unknown
+
+references:
+    stigid: DTBC0017
+
+ocil_clause: 'it is not disabled'
+
+ocil: |-
+    To verify that background processing is disabled, run the following command:
+    <pre>$ grep BackgroundModeEnabled /etc/chromium/policies/managed/*.json</pre>
+    The output should contain:
+    <pre>"BackgroundModeEnabled": false,</pre>

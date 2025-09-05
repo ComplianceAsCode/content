@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhosp13
+
+title: 'Check-Dashboard-03: Is USE_SSL parameter set to True?'
+
+description: |-
+    Openstack services communicate with each other using various protocols and the
+    communication might involve sensitive/confidential information. An attacker may
+    try to eavesdrop on the channel in order to get access to sensitive information.
+    Thus all the services must communicate with each other using a secured communication
+    protocol like HTTPS.
+    <br />
+    <br />
+    Pass: If value of parameter USE_SSL in
+    /var/lib/config-data/puppet-generated/horizon/etc/openstack-dashboard/local_settings is set to True.
+    <br />
+    <br />
+    Fail: If value of parameter USE_SSL in
+    /var/lib/config-data/puppet-generated/horizon/etc/openstack-dashboard/local_settings is set to False.
+
+rationale: ""
+
+severity: high
+
+references:
+    nist: SC-8,SC-8(1)

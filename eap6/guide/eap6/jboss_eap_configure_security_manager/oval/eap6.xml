@@ -1,0 +1,43 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_configure_security_manager">
+    <metadata>
+      <title>JBoss Enterprise Application Platform 6 Security Manager</title>
+      <description>Java security manager must be installed</description>
+      <affected family="undefined">
+        <platform>JBoss Enterprise Application Platform 6</platform>
+      </affected>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_eap_sec_mgr" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_object id="obj_env_eap_sec_mgr_home" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+  <ind:textfilecontent54_test id="test_eap_sec_mgr" version="1" check="all" comment="Check EAP Security Manager">
+    <ind:object object_ref="obj_eap_sec_mgr" />
+    <ind:state state_ref="state_eap_sec_mgr" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_eap_sec_mgr" version="1">
+    <ind:path var_ref="local_var_eap_sec_mgr_path"/>
+    <ind:filename>standalone.conf</ind:filename>
+    <ind:pattern operation="pattern match">^SECMGR="(.*)"</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_eap_sec_mgr" version="1">
+    <ind:subexpression operation="pattern match">true</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <local_variable id="local_var_eap_sec_mgr_path" version="1" datatype="string" comment="version location">
+    <concat>
+      <object_component object_ref="obj_env_eap_sec_mgr_home" item_field="value" />
+      <literal_component>/bin/</literal_component>
+    </concat>
+  </local_variable>
+
+</def-group>

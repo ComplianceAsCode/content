@@ -1,0 +1,41 @@
+<def-group>
+  <definition class="compliance" id="force_opensc_card_drivers" version="1">
+    <metadata>
+      <title>Force opensc To Use Defined Smart Card Driver</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_rhv</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>Force opensc to use the organization's smart card driver so that only
+      the smart card in use by the organization will be recognized by the system.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_force_opensc_card_drivers"
+      comment="Check that force_card_driver is configured for opensc" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_force_opensc_card_drivers"
+  comment="Check that force_card_driver is configured for opensc"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_force_opensc_card_drivers" />
+    <ind:state state_ref="state_force_opensc_card_drivers" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_force_opensc_card_drivers"
+  version="1">
+    <ind:filepath operation="pattern match">^/etc/opensc.*.conf$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]+force_card_driver[\s]+=[\s]+(\S+);$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_force_opensc_card_drivers" version="1">
+    <ind:subexpression datatype="string" operation="equals" var_check="all" var_ref="var_smartcard_drivers" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="external variable for opensc smartcard drivers" datatype="string" id="var_smartcard_drivers" version="1" />
+
+</def-group>

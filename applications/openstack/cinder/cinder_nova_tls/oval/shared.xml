@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="cinder_nova_api_insecure" version="1">
+    <metadata>
+      <title>Is nova_api_insecure parameter set to False?</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Is nova_api_insecure parameter set to False?</description>
+    </metadata>
+    <criteria comment="Is nova_api_insecure parameter set to False?" operator="AND">
+      <criterion comment="Check nova_api_insecure in /etc/cinder/cinder.conf" test_ref="test_cinder_nova_api_insecure" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests the value of the nova_api_insecure[\s]*(&lt;:nocomment:&gt;*) setting in the /etc/cinder/cinder.conf file"
+  id="test_cinder_nova_api_insecure" version="1">
+    <ind:object object_ref="obj_cinder_nova_api_insecure" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_cinder_nova_api_insecure" version="2">
+    <ind:filepath>/etc/cinder/cinder.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)nova_api_insecure(?-i)[\s]+False[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

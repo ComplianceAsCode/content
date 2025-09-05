@@ -1,0 +1,171 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_unsuccessful_file_modification_{{{ NAME }}}" version="1">
+    <metadata>
+      <title>Ensure auditd Collects Unauthorized Access Attempts to Files (unsuccessful) - {{{ NAME }}}</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_rhv</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>Audit rules about the unauthorized access attempts to files (unsuccessful) are enabled.</description>
+    </metadata>
+
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+        <criterion comment="audit augenrules 32-bit file eacces" test_ref="test_32bit_arufm_eacces_{{{ NAME }}}_augenrules" />
+        <criterion comment="audit augenrules 32-bit file eperm" test_ref="test_32bit_arufm_eperm_{{{ NAME }}}_augenrules" />
+        <criteria operator="OR">
+          <!-- System either isn't 64-bit => we just check presence of the 32-bit version of the EACCES / EPERM rules-->
+          <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
+          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit versions of the rules -->
+          <criteria operator="AND">
+            <criterion comment="audit augenrules 64-bit file eacces" test_ref="test_64bit_arufm_eacces_{{{ NAME }}}_augenrules" />
+            <criterion comment="audit augenrules 64-bit file eperm" test_ref="test_64bit_arufm_eperm_{{{ NAME }}}_augenrules" />
+          </criteria>
+        </criteria>
+      </criteria>
+
+      <!-- OR test the auditctl case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criterion comment="audit auditctl 32-bit file eacces" test_ref="test_32bit_arufm_eacces_{{{ NAME }}}_auditctl" />
+        <criterion comment="audit auditctl 32-bit file eperm" test_ref="test_32bit_arufm_eperm_{{{ NAME }}}_auditctl" />
+        <criteria operator="OR">
+          <!-- System either isn't 64-bit => we just check presence of the 32-bit version of the EACCES / EPERM rules -->
+          <extend_definition comment="64-bit_system" definition_ref="system_info_architecture_64bit" negate="true" />
+          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit versions of the rules -->
+          <criteria operator="AND">
+            <criterion comment="audit auditctl 64-bit file eacces" test_ref="test_64bit_arufm_eacces_{{{ NAME }}}_auditctl" />
+            <criterion comment="audit auditctl 64-bit file eperm" test_ref="test_64bit_arufm_eperm_{{{ NAME }}}_auditctl" />
+          </criteria>
+        </criteria>
+      </criteria>
+
+    </criteria>
+  </definition>
+
+  <!-- General rule boiler plate -->
+  <constant_variable id="var_32bit_arufm_{{{ NAME }}}_head" version="1" datatype="string" comment="audit rule arch and syscal">
+      <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+arch=b32[\s]+)(?:-S[\s]+(?:[\S]+,)*({{{ NAME }}})(?:,[\S]+)*)[\s]+</value>
+  </constant_variable>
+  <constant_variable id="var_64bit_arufm_{{{ NAME }}}_head" version="1" datatype="string" comment="audit rule arch and syscal">
+      <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+arch=b64[\s]+)(?:-S[\s]+(?:[\S]+,)*({{{ NAME }}})(?:,[\S]+)*)[\s]+</value>
+  </constant_variable>
+  <constant_variable id="var_arufm_{{{ NAME }}}_tail" version="1" datatype="string" comment="audit rule auid and key">
+    <value>[\s]+(?:-F\s+auid>={{{ auid }}}[\s]+)(?:-F\s+auid!=(unset|4294967295)[\s]+)(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</value>
+  </constant_variable>
+
+  <!-- 32bit EACCES rules -->
+  <local_variable id="var_32bit_arufm_eacces_{{{ NAME }}}_regex" version="1" datatype="string" comment="Expression to match 32bit {{{ NAME }}} EACCES syscall">
+    <concat>
+      <variable_component var_ref="var_32bit_arufm_{{{ NAME }}}_head" />
+      <literal_component>(?:-F\s+exit=-EACCES)</literal_component>
+      <variable_component var_ref="var_arufm_{{{ NAME }}}_tail" />
+    </concat>
+  </local_variable>
+
+  <!-- 32bit EPERM rules -->
+  <local_variable id="var_32bit_arufm_eperm_{{{ NAME }}}_regex" version="1" datatype="string" comment="Expression to match 32bit {{{ NAME }}} EPERM EACCES syscall">
+    <concat>
+      <variable_component var_ref="var_32bit_arufm_{{{ NAME }}}_head" />
+      <literal_component>(?:-F\s+exit=-EPERM)</literal_component>
+      <variable_component var_ref="var_arufm_{{{ NAME }}}_tail" />
+    </concat>
+  </local_variable>
+
+  <!-- 64bit EACCES rules -->
+  <local_variable id="var_64bit_arufm_eacces_{{{ NAME }}}_regex" version="1" datatype="string" comment="Expression to match 64bit {{{ NAME }}} EACCES syscall">
+    <concat>
+      <variable_component var_ref="var_64bit_arufm_{{{ NAME }}}_head" />
+      <literal_component>(?:-F\s+exit=-EACCES)</literal_component>
+      <variable_component var_ref="var_arufm_{{{ NAME }}}_tail" />
+    </concat>
+  </local_variable>
+
+  <!-- 64bit EPERM rules -->
+  <local_variable id="var_64bit_arufm_eperm_{{{ NAME }}}_regex" version="1" datatype="string" comment="Expression to match 64bit {{{ NAME }}} EPERM syscall">
+    <concat>
+      <variable_component var_ref="var_64bit_arufm_{{{ NAME }}}_head" />
+      <literal_component>(?:-F\s+exit=-EPERM)</literal_component>
+      <variable_component var_ref="var_arufm_{{{ NAME }}}_tail" />
+    </concat>
+  </local_variable>
+
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit file eacces" id="test_32bit_arufm_eacces_{{{ NAME }}}_augenrules" version="1">
+    <ind:object object_ref="object_32bit_arufm_eacces_{{{ NAME }}}_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_arufm_eacces_{{{ NAME }}}_augenrules" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_32bit_arufm_eacces_{{{ NAME }}}_regex" />
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit file eperm" id="test_32bit_arufm_eperm_{{{ NAME }}}_augenrules" version="1">
+    <ind:object object_ref="object_32bit_arufm_eperm_{{{ NAME }}}_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_arufm_eperm_{{{ NAME }}}_augenrules" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_32bit_arufm_eperm_{{{ NAME }}}_regex" />
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 64-bit file eacces" id="test_64bit_arufm_eacces_{{{ NAME }}}_augenrules" version="1">
+    <ind:object object_ref="object_64bit_arufm_eacces_{{{ NAME }}}_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_arufm_eacces_{{{ NAME }}}_augenrules" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_64bit_arufm_eacces_{{{ NAME }}}_regex" />
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 64-bit file eperm" id="test_64bit_arufm_eperm_{{{ NAME }}}_augenrules" version="1">
+    <ind:object object_ref="object_64bit_arufm_eperm_{{{ NAME }}}_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_arufm_eperm_{{{ NAME }}}_augenrules" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_64bit_arufm_eperm_{{{ NAME }}}_regex" />
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 32-bit file eacces" id="test_32bit_arufm_eacces_{{{ NAME }}}_auditctl" version="1">
+    <ind:object object_ref="object_32bit_arufm_eacces_{{{ NAME }}}_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_arufm_eacces_{{{ NAME }}}_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_32bit_arufm_eacces_{{{ NAME }}}_regex" />
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 32-bit file eperm" id="test_32bit_arufm_eperm_{{{ NAME }}}_auditctl" version="1">
+    <ind:object object_ref="object_32bit_arufm_eperm_{{{ NAME }}}_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_arufm_eperm_{{{ NAME }}}_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_32bit_arufm_eperm_{{{ NAME }}}_regex" />
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 64-bit file eacces" id="test_64bit_arufm_eacces_{{{ NAME }}}_auditctl" version="1">
+    <ind:object object_ref="object_64bit_arufm_eacces_{{{ NAME }}}_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_arufm_eacces_{{{ NAME }}}_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_64bit_arufm_eacces_{{{ NAME }}}_regex" />
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 64-bit file eperm" id="test_64bit_arufm_eperm_{{{ NAME }}}_auditctl" version="1">
+    <ind:object object_ref="object_64bit_arufm_eperm_{{{ NAME }}}_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_arufm_eperm_{{{ NAME }}}_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_64bit_arufm_eperm_{{{ NAME }}}_regex" />
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

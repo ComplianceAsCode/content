@@ -1,0 +1,47 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Ensure Pods use Least Privileged Security Context Constraints (SCC)'
+
+description: |-
+    Security Context Constraints (SCC) control what actions pods can perform and what resources
+    they can access. SCCs combine a set of security configurations into a single policy object
+    that can be applied to pods. These security configurations include, but are not limited to,
+    Linux Capabilities, Seccomp profiles, User and Group ID Ranges, and types of mounts.
+
+    OpenShift ships with several SCCs. The most constrained is the <tt>restricted</tt> SCC, and the
+    least constrained is the <tt>privileged</tt> SCC. The others provide intermediate levels of
+    constraint for various use cases. The <tt>restricted</tt> SCC is granted to all authenticated
+    users by default.
+
+    If required, a cluster administrator may allow certain pods to run with different SCCs. As
+    a general principal pods should always be ran with the most restrictive SCC possible.
+
+    Pods inherit their SCC from the Service Account used to run the pod. With the default project
+    template, new projects receive a Service Account named <tt>default</tt> that is used to run pods. This
+    default service account is only granted the ability to run the <tt>restricted</tt> SCC.
+
+rationale: |-
+    Ensure Pods are ran with the least privileges possible.
+
+severity: low
+
+ocil_clause: 'they are not'
+
+ocil: |-
+    To show all available SCCs:
+    <pre>$ oc describe scc</pre>
+
+    To audit a single pod:
+    <pre>$ oc describe <i>POD</i> | grep openshift.io\/scc</pre>
+
+    Ensure each Pod on the system is configured to use the least privilege SCC possible.
+
+# Since this is operational guidance and not a configuration check,
+# a CCE should not be assigned.
+#identifiers:
+#    cce@ocp3: 
+
+references:
+    cis: 1.6.2

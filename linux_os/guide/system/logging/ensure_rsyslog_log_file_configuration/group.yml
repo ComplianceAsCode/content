@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Ensure Proper Configuration of Log Files'
+
+description: |-
+    The file <tt>/etc/rsyslog.conf</tt> controls where log message are written.
+    These are controlled by lines called <i>rules</i>, which consist of a
+    <i>selector</i> and an <i>action</i>.
+    These rules are often customized depending on the role of the system, the
+    requirements of the environment, and whatever may enable
+    the administrator to most effectively make use of log data.
+    The default rules in {{{ full_name }}} are:
+    <pre>*.info;mail.none;authpriv.none;cron.none                /var/log/messages
+    authpriv.*                                              /var/log/secure
+    mail.*                                                  -/var/log/maillog
+    cron.*                                                  /var/log/cron
+    *.emerg                                                 *
+    uucp,news.crit                                          /var/log/spooler
+    local7.*                                                /var/log/boot.log</pre>
+    See the man page <tt>rsyslog.conf(5)</tt> for more information.
+    <i>Note that the <tt>rsyslog</tt> daemon can be configured to use a timestamp format that
+    some log processing programs may not understand. If this occurs,
+    edit the file <tt>/etc/rsyslog.conf</tt> and add or edit the following line:</i>
+    <pre>$ ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat</pre>

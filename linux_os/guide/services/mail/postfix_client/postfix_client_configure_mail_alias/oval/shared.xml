@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="postfix_client_configure_mail_alias" version="1">
+    <metadata>
+      <title>Ensure root has a mail alias</title>
+      <affected family="unix">
+          <platform>multi_platform_sle</platform>
+      </affected>
+      <description>Check if root has the correct mail alias.</description>
+    </metadata>
+    <criteria comment="Check if root has the correct mail alias.">
+      <criterion comment="Check if root has the correct mail alias." test_ref="test_postfix_client_configure_mail_alias"/>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check if root has the correct mail alias." id="test_postfix_client_configure_mail_alias" version="1" >
+    <ind:object object_ref="obj_root_mail_alias"/>
+    <ind:state state_ref="state_root_mail_alias"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_root_mail_alias" version="1">
+    <ind:filepath operation="equals">/etc/aliases</ind:filepath>
+    <ind:pattern operation="pattern match">^(?:[rR][oO][oO][tT]|"[rR][oO][oO][tT]")\s*:\s*(.+)$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_root_mail_alias" version="1" comment="root email alias">
+    <ind:subexpression operation="equals" var_check="all" var_ref="var_postfix_root_mail_alias" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="expected email alias" datatype="string" id="var_postfix_root_mail_alias" version="1" />
+</def-group>

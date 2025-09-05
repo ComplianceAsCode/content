@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_env_has_sssd-common_package" version="1">
+    <metadata>
+      <title>Package sssd-common is installed</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Checks if package sssd-common is installed.</description>
+      <reference ref_id="cpe:/a:sssd" source="CPE" />
+    </metadata>
+    <criteria>
+      <criterion comment="Package sssd-common is installed" test_ref="test_env_has_sssd-common_installed" />
+    </criteria>
+  </definition>
+
+{{% if pkg_system == "rpm" %}}
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists"
+  id="test_env_has_sssd-common_installed" version="1"
+  comment="system has package sssd-common installed">
+    <linux:object object_ref="obj_env_has_sssd-common_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_env_has_sssd-common_installed" version="1">
+    <linux:name>sssd-common</linux:name>
+  </linux:rpminfo_object>
+{{% elif pkg_system == "dpkg" %}}
+  <linux:dpkginfo_test check="all" check_existence="all_exist"
+  id="test_env_has_sssd-common_installed" version="1"
+  comment="system has package sssd-common installed">
+    <linux:object object_ref="obj_env_has_sssd-common_installed" />
+  </linux:dpkginfo_test>
+  <linux:dpkginfo_object id="obj_env_has_sssd-common_installed" version="1">
+    <linux:name>sssd-common</linux:name>
+  </linux:dpkginfo_object>
+{{% endif %}}
+
+</def-group>

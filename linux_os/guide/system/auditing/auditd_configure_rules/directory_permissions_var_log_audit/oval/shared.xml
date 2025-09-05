@@ -1,0 +1,67 @@
+<def-group>
+  <definition class="compliance" id="directory_permissions_var_log_audit" version="1">
+    <metadata>
+      <title>Verify /var/log/audit Directory Permissions</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>Checks for correct permissions for /var/log/audit.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion test_ref="test_dir_permissions_var_log_audit" negate="true" />
+      <criteria operator="AND" comment="log_group in auditd.conf is not root">
+        <extend_definition comment="log_group in auditd.conf is not root"
+        definition_ref="auditd_conf_log_group_not_root" />
+        <criterion test_ref="test_dir_permissions_var_log_audit-non_root" negate="true" /> 
+      </criteria>
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="at_least_one_exists" comment="/var/log/audit files mode 0750" id="test_dir_permissions_var_log_audit-non_root" version="1">
+    <unix:object object_ref="object_var_log_audit_directory-non_root" />
+    <unix:state state_ref="state_not_mode_0750" />
+  </unix:file_test>
+  <unix:file_object comment="/var/log/audit files" id="object_var_log_audit_directory-non_root" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/var/log/audit</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_not_mode_0750</filter>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="at_least_one_exists" comment="/var/log/audit mode 0700" id="test_dir_permissions_var_log_audit" version="1">
+    <unix:object object_ref="object_var_log_audit_directory" />
+    <unix:state state_ref="state_not_mode_0700" />
+  </unix:file_test>
+  <unix:file_object comment="/var/log/audit files" id="object_var_log_audit_directory" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/var/log/audit</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_not_mode_0700</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_not_mode_0700" version="1" operator="OR">
+    <!-- if any one of these is true then mode is NOT 0700 (hence the OR operator) -->
+    <unix:suid datatype="boolean">true</unix:suid>
+    <unix:sgid datatype="boolean">true</unix:sgid>
+    <unix:sticky datatype="boolean">true</unix:sticky>
+    <unix:gread datatype="boolean">true</unix:gread>
+    <unix:gwrite datatype="boolean">true</unix:gwrite>
+    <unix:gexec datatype="boolean">true</unix:gexec>
+    <unix:oread datatype="boolean">true</unix:oread>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+    <unix:oexec datatype="boolean">true</unix:oexec>
+  </unix:file_state>
+
+  <unix:file_state id="state_not_mode_0750" version="1" operator="OR">
+    <!-- if any one of these is true then mode is NOT 0750 (hence the OR operator) -->
+    <unix:suid datatype="boolean">true</unix:suid>
+    <unix:sgid datatype="boolean">true</unix:sgid>
+    <unix:sticky datatype="boolean">true</unix:sticky>
+    <unix:uexec datatype="boolean">true</unix:uexec>
+    <unix:gwrite datatype="boolean">true</unix:gwrite>
+    <unix:oread datatype="boolean">true</unix:oread>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+    <unix:oexec datatype="boolean">true</unix:oexec>
+  </unix:file_state>
+
+</def-group>

@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Configure the Audit Log Maximum Retention Days (maximumFileRetentionDays)'
+
+description: |-
+    To configure audit log retention, edit the API Server pod specification file
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s) and set
+    the <tt>maximumFileRetentionDays</tt> parameter to 30 or as appropriate number of days:
+    <pre>auditConfig:
+      auditFilePath: "/etc/origin/master/audit-ocp.log"
+      enabled: true
+      maximumFileRetentionDays: 30
+      maximumFileSizeMegabytes: 10
+      maximumRetainedFiles: 10</pre>
+
+rationale: |-
+    Retaining audit logs for a specified period of time allows OpenShift Operators
+    to retroactively review and correlate events, such as for investigative purposes.
+
+severity: medium
+
+references:
+    cis: 1.1.16
+
+ocil_clause: '<tt>maximumFileRetentionDays</tt> is set less than <tt>30</tt> or as appropriate'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep maximumFileRetentionDays /etc/origin/master/master-config.yaml</pre>
+    The output should return a value of <pre>30</pre> or as appropriate.

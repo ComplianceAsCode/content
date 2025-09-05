@@ -1,0 +1,11 @@
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 8,Oracle Linux 8
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+
+- name: "{{{ rule_title }}}"
+  lineinfile:
+    dest: /etc/sysconfig/sshd
+    state: absent
+    regexp: ^\s*CRYPTO_POLICY.*$

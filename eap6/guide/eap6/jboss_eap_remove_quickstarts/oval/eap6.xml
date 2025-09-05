@@ -1,0 +1,35 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_remove_quickstarts">
+    <metadata>
+      <title>JBoss Enterprise Application Platform 6 Security Manager Remove Quickstarts</title>
+      <description>Quickstarts must be removed</description>
+      <affected family="undefined">
+        <platform>JBoss Enterprise Application Platform 6</platform>
+      </affected>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_eap_quickstarts" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_object id="obj_env_eap_quickstarts_home" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+  <unix:file_test id="test_eap_quickstarts" version="1" check="all" check_existence="none_exist" comment="Check EAP for Quickstarts">
+    <unix:object object_ref="obj_eap_quickstarts" />
+  </unix:file_test>
+  <unix:file_object id="obj_eap_quickstarts" version="1">
+    <unix:path operation="pattern match" var_ref="local_var_eap_quickstart_path"/>
+    <unix:filename operation="pattern match">*</unix:filename>
+  </unix:file_object>
+
+  <local_variable id="local_var_eap_quickstart_path" version="1" datatype="string" comment="version location">
+    <concat>
+      <object_component object_ref="obj_env_eap_quickstarts_home" item_field="value" />
+      <literal_component>/.*quickstart.*</literal_component>
+    </concat>
+  </local_variable>
+
+</def-group>

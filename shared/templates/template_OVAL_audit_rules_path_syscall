@@ -1,0 +1,100 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}" version="1">
+    <metadata>
+      <title>Ensure auditd Collects Write Events to {{{ PATH }}}</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_rhv</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>Audit rules about the write events to {{{ PATH }}}</description>
+    </metadata>
+
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+        <criterion comment="audit rule to record write events to {{{ PATH }}}" test_ref="test_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_32bit_augenrules" />
+
+        <criteria operator="OR">
+          <!-- System either isn't 64-bit => we just check presence of the 32-bit version of the EACCES / EPERM rules-->
+          <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
+          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit versions of the rules -->
+          <criterion comment="audit rule to record write events to {{{ PATH }}}" test_ref="test_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_64bit_augenrules" />
+        </criteria>
+      </criteria>
+
+      <!-- OR test the auditctl case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criterion comment="audit rule to record write events to {{{ PATH }}}" test_ref="test_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_32bit_auditctl" />
+
+        <criteria operator="OR">
+          <!-- System either isn't 64-bit => we just check presence of the 32-bit version of the EACCES / EPERM rules -->
+          <extend_definition comment="64-bit_system" definition_ref="system_info_architecture_64bit" negate="true" />
+          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit versions of the rules -->
+          <criterion comment="audit rule to record write events to {{{ PATH }}}" test_ref="test_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_64bit_auditctl" />
+        </criteria>
+      </criteria>
+
+    </criteria>
+  </definition>
+
+
+  <!-- Access to /var/log/audit rule regex-->
+  <constant_variable id="var_audit_rule_32bit_{{{ SYSCALL }}}_write_{{{ PATHID }}}_regex" version="1" datatype="string" comment="audit rule arch and syscal">
+      <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+arch=b32[\s]+)(?:-S[\s]+(?:[\S]+,)*({{{ SYSCALL }}})(?:,[\S]+)*)[\s]+(?:-F[\s]+{{{ POS }}}&amp;03)[\s]+(?:-F[\s]+path={{{ PATH }}})[\s]+(?:-F\s+auid>={{{ auid }}}[\s]+)(?:-F\s+auid!=(unset|4294967295)[\s]+)(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</value>
+  </constant_variable>
+
+  <constant_variable id="var_audit_rule_64bit_{{{ SYSCALL }}}_write_{{{ PATHID }}}_regex" version="1" datatype="string" comment="audit rule arch and syscal">
+      <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+arch=b64[\s]+)(?:-S[\s]+(?:[\S]+,)*({{{ SYSCALL }}})(?:,[\S]+)*)[\s]+(?:-F[\s]+{{{ POS }}}&amp;03)[\s]+(?:-F[\s]+path={{{ PATH }}})[\s]+(?:-F\s+auid>={{{ auid }}}[\s]+)(?:-F\s+auid!=(unset|4294967295)[\s]+)(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</value>
+  </constant_variable>
+
+  <!-- directory access {{{ PATH }}} augenrule -->
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
+ comment="defined audit rule must exist" id="test_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_32bit_augenrules" version="1">
+    <ind:object object_ref="object_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_32bit_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_32bit_augenrules" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_audit_rule_32bit_{{{ SYSCALL }}}_write_{{{ PATHID }}}_regex" />
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
+ comment="defined audit rule must exist" id="test_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_64bit_augenrules" version="1">
+    <ind:object object_ref="object_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_64bit_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_64bit_augenrules" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_audit_rule_64bit_{{{ SYSCALL }}}_write_{{{ PATHID }}}_regex" />
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+
+  <!-- directory access {{{ PATH }}} augenrule -->
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
+ comment="defined audit rule must exist" id="test_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_32bit_auditctl" version="1">
+    <ind:object object_ref="object_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_32bit_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_32bit_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_audit_rule_32bit_{{{ SYSCALL }}}_write_{{{ PATHID }}}_regex" />
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
+ comment="defined audit rule must exist" id="test_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_64bit_auditctl" version="1">
+    <ind:object object_ref="object_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_64bit_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}_64bit_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_audit_rule_64bit_{{{ SYSCALL }}}_write_{{{ PATHID }}}_regex" />
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

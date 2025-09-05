@@ -1,0 +1,271 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<overlays xmlns="http://checklists.nist.gov/xccdf/1.1">
+  <overlay disa="68" owner="disastig" ownerid="JBOS-AS-000010" ruleid="jboss_eap_configure_secure_management_access" severity="medium">
+    <VMSinfo SVKey="76563" VKey="62073" VRelease="1"/>
+    <title>HTTP management session traffic must be encrypted.</title>
+  </overlay>
+  <overlay disa="1453" owner="disastig" ownerid="JBOS-AS-000015" ruleid="jboss_eap_configure_https" severity="medium">
+    <VMSinfo SVKey="76705" VKey="62215" VRelease="1"/>
+    <title>HTTPS must be enabled for JBoss web interfaces.</title>
+  </overlay>
+  <overlay disa="213" owner="disastig" ownerid="JBOS-AS-000025" ruleid="jboss_eap_configure_host_access_restrictions" severity="high">
+    <VMSinfo SVKey="76707" VKey="62217" VRelease="1"/>
+    <title>Java permissions must be set for hosted applications.</title>
+  </overlay>
+  <overlay disa="213" owner="disastig" ownerid="JBOS-AS-000030" ruleid="jboss_eap_configure_security_manager" severity="high">
+    <VMSinfo SVKey="76715" VKey="62225" VRelease="1"/>
+    <title>The Java Security Manager must be enabled for the JBoss application server.</title>
+  </overlay>
+  <overlay disa="213" owner="disastig" ownerid="JBOS-AS-000035" ruleid="jboss_eap_enable_rbac" severity="high">
+    <VMSinfo SVKey="76717" VKey="62227" VRelease="1"/>
+    <title>The JBoss server must be configured with Role Based Access Controls.</title>
+  </overlay>
+  <overlay disa="213" owner="disastig" ownerid="JBOS-AS-000040" ruleid="jboss_eap_configure_user_roles" severity="medium">
+    <VMSinfo SVKey="76709" VKey="62219" VRelease="1"/>
+    <title>Users in JBoss Management Security Realms must be in the appropriate role.</title>
+  </overlay>
+  <overlay disa="213" owner="disastig" ownerid="JBOS-AS-000045" ruleid="jboss_eap_configure_application_authentication" severity="high">
+    <VMSinfo SVKey="76711" VKey="62221" VRelease="1"/>
+    <title>Silent Authentication must be removed from the Default Application Security Realm.</title>
+  </overlay>
+  <overlay disa="213" owner="disastig" ownerid="JBOS-AS-000050" ruleid="jboss_eap_configure_management_authentication" severity="high">
+    <VMSinfo SVKey="76713" VKey="62223" VRelease="1"/>
+    <title>Silent Authentication must be removed from the Default Management Security Realm.</title>
+  </overlay>
+  <overlay disa="213" owner="disastig" ownerid="JBOS-AS-000075" ruleid="jboss_eap_configure_security_realm" severity="high">
+    <VMSinfo SVKey="76719" VKey="62229" VRelease="1"/>
+    <title>JBoss management interfaces must be secured.</title>
+  </overlay>
+  <overlay disa="169" owner="disastig" ownerid="JBOS-AS-000080" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76721" VKey="62231" VRelease="1"/>
+    <title>The JBoss server must generate log records for access and authentication events to the management interface.</title>
+  </overlay>
+  <overlay disa="171" owner="disastig" ownerid="JBOS-AS-000085" ruleid="jboss_eap_configure_auditor_roles" severity="medium">
+    <VMSinfo SVKey="76723" VKey="62233" VRelease="1"/>
+    <title>JBoss must be configured to allow only the ISSM (or individuals or roles appointed by the ISSM) to select which loggable events are to be logged.</title>
+  </overlay>
+  <overlay disa="1464" owner="disastig" ownerid="JBOS-AS-000095" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76725" VKey="62235" VRelease="1"/>
+    <title>JBoss must be configured to initiate session logging upon startup.</title>
+  </overlay>
+  <overlay disa="130" owner="disastig" ownerid="JBOS-AS-000105" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76727" VKey="62237" VRelease="1"/>
+    <title>JBoss must be configured to log the IP address of the remote system connecting to the JBoss system/cluster.</title>
+  </overlay>
+  <overlay disa="130" owner="disastig" ownerid="JBOS-AS-000110" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76729" VKey="62239" VRelease="1"/>
+    <title>JBoss must be configured to produce log records containing information to establish what type of events occurred.</title>
+  </overlay>
+  <overlay disa="131" owner="disastig" ownerid="JBOS-AS-000115" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76731" VKey="62241" VRelease="1"/>
+    <title>JBoss Log Formatter must be configured to produce log records that establish the date and time the events occurred.</title>
+  </overlay>
+  <overlay disa="132" owner="disastig" ownerid="JBOS-AS-000120" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76733" VKey="62243" VRelease="1"/>
+    <title>JBoss must be configured to produce log records that establish which hosted application triggered the events.</title>
+  </overlay>
+  <overlay disa="133" owner="disastig" ownerid="JBOS-AS-000125" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76735" VKey="62245" VRelease="1"/>
+    <title>JBoss must be configured to record the IP address and port information used by management interface network traffic.</title>
+  </overlay>
+  <overlay disa="134" owner="disastig" ownerid="JBOS-AS-000130" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76737" VKey="62247" VRelease="1"/>
+    <title>The application server must produce log records that contain sufficient information to establish the outcome of events.</title>
+  </overlay>
+  <overlay disa="1487" owner="disastig" ownerid="JBOS-AS-000135" ruleid="jboss_eap_configure_logging_level" severity="medium">
+    <VMSinfo SVKey="76739" VKey="62249" VRelease="1"/>
+    <title>JBoss ROOT logger must be configured to utilize the appropriate logging level.</title>
+  </overlay>
+  <overlay disa="162" owner="disastig" ownerid="JBOS-AS-000165" ruleid="jboss_eap_configure_log_permissions" severity="medium">
+    <VMSinfo SVKey="76741" VKey="62251" VRelease="1"/>
+    <title>File permissions must be configured to protect log information from any type of unauthorized read access.</title>
+  </overlay>
+  <overlay disa="163" owner="disastig" ownerid="JBOS-AS-000170" ruleid="jboss_eap_configure_log_permissions" severity="medium">
+    <VMSinfo SVKey="76743" VKey="62253" VRelease="1"/>
+    <title>File permissions must be configured to protect log information from unauthorized modification.</title>
+  </overlay>
+  <overlay disa="164" owner="disastig" ownerid="JBOS-AS-000175" ruleid="jboss_eap_configure_log_permissions" severity="medium">
+    <VMSinfo SVKey="76745" VKey="62255" VRelease="1"/>
+    <title>File permissions must be configured to protect log information from unauthorized deletion.</title>
+  </overlay>
+  <overlay disa="1348" owner="disastig" ownerid="JBOS-AS-000195" ruleid="jboss_eap_configure_offloading_max" severity="medium">
+    <VMSinfo SVKey="76747" VKey="62257" VRelease="1"/>
+    <title>JBoss log records must be off-loaded onto a different system or system component a minimum of every seven days.</title>
+  </overlay>
+  <overlay disa="1499" owner="disastig" ownerid="JBOS-AS-000210" ruleid="jboss_eap_configure_user_permissions" severity="medium">
+    <VMSinfo SVKey="76749" VKey="62259" VRelease="1"/>
+    <title>mgmt-users.properties file permissions must be set to allow access to authorized users only.</title>
+  </overlay>
+  <overlay disa="381" owner="disastig" ownerid="JBOS-AS-000220" ruleid="jboss_eap_restrict_jboss_account" severity="high">
+    <VMSinfo SVKey="76751" VKey="62261" VRelease="1"/>
+    <title>JBoss process owner interactive access must be restricted.</title>
+  </overlay>
+  <overlay disa="381" owner="disastig" ownerid="JBOS-AS-000225" ruleid="jboss_eap_disable_analytics" severity="medium">
+    <VMSinfo SVKey="76753" VKey="62263" VRelease="1"/>
+    <title>Google Analytics must be disabled in EAP Console.</title>
+  </overlay>
+  <overlay disa="381" owner="disastig" ownerid="JBOS-AS-000230" ruleid="jboss_eap_unprivileged_mode" severity="high">
+    <VMSinfo SVKey="76755" VKey="62265" VRelease="1"/>
+    <title>JBoss process owner execution permissions must be limited.</title>
+  </overlay>
+  <overlay disa="381" owner="disastig" ownerid="JBOS-AS-000235" ruleid="jboss_eap_remove_quickstarts" severity="medium">
+    <VMSinfo SVKey="76757" VKey="62267" VRelease="1"/>
+    <title>JBoss QuickStarts must be removed.</title>
+  </overlay>
+  <overlay disa="381" owner="disastig" ownerid="JBOS-AS-000240" ruleid="jboss_eap_remove_jmx" severity="medium">
+    <VMSinfo SVKey="76759" VKey="62269" VRelease="1"/>
+    <title>Remote access to JMX subsystem must be disabled.</title>
+  </overlay>
+  <overlay disa="381" owner="disastig" ownerid="JBOS-AS-000245" ruleid="jboss_eap_disable_replace_welcome_page" severity="low">
+    <VMSinfo SVKey="76761" VKey="62271" VRelease="1"/>
+    <title>Welcome Web Application must be disabled.</title>
+  </overlay>
+  <overlay disa="381" owner="disastig" ownerid="JBOS-AS-000250" ruleid="jboss_eap_remove_unnecessary_apps" severity="medium">
+    <VMSinfo SVKey="76763" VKey="62273" VRelease="1"/>
+    <title>Any unapproved applications must be removed.</title>
+  </overlay>
+  <overlay disa="382" owner="disastig" ownerid="JBOS-AS-000255" ruleid="jboss_eap_configure_ports" severity="medium">
+    <VMSinfo SVKey="76765" VKey="62275" VRelease="1"/>
+    <title>JBoss application and management ports must be approved by the PPSM CAL.</title>
+  </overlay>
+  <overlay disa="764" owner="disastig" ownerid="JBOS-AS-000260" ruleid="jboss_eap_configure_ldap" severity="medium">
+    <VMSinfo SVKey="76767" VKey="62277" VRelease="1"/>
+    <title>The JBoss Server must be configured to utilize a centralized authentication mechanism such as AD or LDAP.</title>
+  </overlay>
+  <overlay disa="765" owner="disastig" ownerid="JBOS-AS-000265" ruleid="jboss_eap_configure_multifactor_authentication" severity="medium">
+    <VMSinfo SVKey="76769" VKey="62279" VRelease="1"/>
+    <title>The JBoss Server must be configured to use certificates to authenticate admins.</title>
+  </overlay>
+  <overlay disa="770" owner="disastig" ownerid="JBOS-AS-000275" ruleid="jboss_eap_remove_group_accounts" severity="medium">
+    <VMSinfo SVKey="76771" VKey="62281" VRelease="1"/>
+    <title>The JBoss server must be configured to use individual accounts and not generic or shared accounts.</title>
+  </overlay>
+  <overlay disa="778" owner="disastig" ownerid="JBOS-AS-000285" ruleid="jboss_eap_configure_management_network" severity="medium">
+    <VMSinfo SVKey="76773" VKey="62283" VRelease="1"/>
+    <title>The JBoss server must be configured to bind the management interfaces to only management networks.</title>
+  </overlay>
+  <overlay disa="795" owner="disastig" ownerid="JBOS-AS-000290" ruleid="jboss_eap_configure_management_ldap" severity="medium">
+    <VMSinfo SVKey="76775" VKey="62285" VRelease="1"/>
+    <title>JBoss management Interfaces must be integrated with a centralized authentication mechanism that is configured to manage accounts according to DoD policy.</title>
+  </overlay>
+  <overlay disa="196" owner="disastig" ownerid="JBOS-AS-000295" ruleid="jboss_eap_configure_keystore" severity="medium">
+    <VMSinfo SVKey="76777" VKey="62287" VRelease="1"/>
+    <title>The JBoss Password Vault must be used for storing passwords or other sensitive configuration information.</title>
+  </overlay>
+  <overlay disa="196" owner="disastig" ownerid="JBOS-AS-000300" ruleid="jboss_eap_encrypt_keystore_passwords" severity="medium">
+    <VMSinfo SVKey="76779" VKey="62289" VRelease="1"/>
+    <title>JBoss KeyStore and Truststore passwords must not be stored in clear text.</title>
+  </overlay>
+  <overlay disa="197" owner="disastig" ownerid="JBOS-AS-000305" ruleid="jboss_eap_require_password_access" severity="medium">
+    <VMSinfo SVKey="76781" VKey="62291" VRelease="1"/>
+    <title>LDAP enabled security realm value allow-empty-passwords must be set to false.</title>
+  </overlay>
+  <overlay disa="197" owner="disastig" ownerid="JBOS-AS-000310" ruleid="jboss_eap_use_secure_ldap_port" severity="medium">
+    <VMSinfo SVKey="76783" VKey="62293" VRelease="1"/>
+    <title>JBoss must utilize encryption when using LDAP for authentication.</title>
+  </overlay>
+  <overlay disa="186" owner="disastig" ownerid="JBOS-AS-000320" ruleid="jboss_eap_secure_keystore_permissions" severity="medium">
+    <VMSinfo SVKey="76785" VKey="62295" VRelease="1"/>
+    <title>The JBoss server must be configured to restrict access to the web servers private key to authenticated system administrators.</title>
+  </overlay>
+  <overlay disa="1082" owner="disastig" ownerid="JBOS-AS-000355" ruleid="jboss_eap_service_separate_networks" severity="medium">
+    <VMSinfo SVKey="76787" VKey="62297" VRelease="1"/>
+    <title>The JBoss server must separate hosted application functionality from application server management functionality.</title>
+  </overlay>
+  <overlay disa="1199" owner="disastig" ownerid="JBOS-AS-000400" ruleid="jboss_eap_file_permissions" severity="medium">
+    <VMSinfo SVKey="76789" VKey="62299" VRelease="1"/>
+    <title>JBoss file permissions must be configured to protect the confidentiality and integrity of application files.</title>
+  </overlay>
+  <overlay disa="1314" owner="disastig" ownerid="JBOS-AS-000425" ruleid="jboss_eap_logs_permissions" severity="medium">
+    <VMSinfo SVKey="76791" VKey="62301" VRelease="1"/>
+    <title>Access to JBoss log files must be restricted to authorized users.</title>
+  </overlay>
+  <overlay disa="2322" owner="disastig" ownerid="JBOS-AS-000470" ruleid="jboss_eap_disable_domain_admin_console" severity="medium">
+    <VMSinfo SVKey="76793" VKey="62303" VRelease="1"/>
+    <title>Network access to HTTP management must be disabled on domain-enabled application servers not designated as the domain controller.</title>
+  </overlay>
+  <overlay disa="2235" owner="disastig" ownerid="JBOS-AS-000475" ruleid="jboss_eap_enable_rbac" severity="medium">
+    <VMSinfo SVKey="76795" VKey="62305" VRelease="1"/>
+    <title>The application server must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.</title>
+  </overlay>
+  <overlay disa="2234" owner="disastig" ownerid="JBOS-AS-000480" ruleid="jboss_eap_audit_privileged_actions" severity="medium">
+    <VMSinfo SVKey="76797" VKey="62307" VRelease="1"/>
+    <title>The JBoss server must be configured to log all admin activity.</title>
+  </overlay>
+  <overlay disa="1851" owner="disastig" ownerid="JBOS-AS-000505" ruleid="jboss_eap_configure_syslog" severity="medium">
+    <VMSinfo SVKey="76799" VKey="62309" VRelease="1"/>
+    <title>The JBoss server must be configured to utilize syslog logging.</title>
+  </overlay>
+  <overlay disa="1813" owner="disastig" ownerid="JBOS-AS-000545" ruleid="jboss_eap_disable_automatic_deployment" severity="medium">
+    <VMSinfo SVKey="76801" VKey="62311" VRelease="1"/>
+    <title>Production JBoss servers must not allow automatic application deployment.</title>
+  </overlay>
+  <overlay disa="1814" owner="disastig" ownerid="JBOS-AS-000550" ruleid="jboss_eap_log_deployments" severity="medium">
+    <VMSinfo SVKey="76803" VKey="62313" VRelease="1"/>
+    <title>Production JBoss servers must log when failed application deployments occur.</title>
+  </overlay>
+  <overlay disa="1814" owner="disastig" ownerid="JBOS-AS-000555" ruleid="jboss_eap_log_deployments" severity="medium">
+    <VMSinfo SVKey="76805" VKey="62315" VRelease="1"/>
+    <title>Production JBoss servers must log when successful application deployments occur.</title>
+  </overlay>
+  <overlay disa="2470" owner="disastig" ownerid="JBOS-AS-000625" ruleid="jboss_eap_use_approved_ca_cert" severity="medium">
+    <VMSinfo SVKey="76807" VKey="62317" VRelease="1"/>
+    <title>JBoss must be configured to use DoD PKI-established certificate authorities for verification of the establishment of protected sessions.</title>
+  </overlay>
+  <overlay disa="2385" owner="disastig" ownerid="JBOS-AS-000640" ruleid="jboss_eap_configure_ha_lb" severity="medium">
+    <VMSinfo SVKey="76809" VKey="62319" VRelease="1"/>
+    <title>The JBoss server, when hosting mission critical applications, must be in a high-availability (HA) cluster.</title>
+  </overlay>
+  <overlay disa="2418" owner="disastig" ownerid="JBOS-AS-000650" ruleid="jboss_eap_use_tls" severity="medium">
+    <VMSinfo SVKey="76811" VKey="62321" VRelease="2"/>
+    <title>JBoss must be configured to use an approved TLS version.</title>
+  </overlay>
+  <overlay disa="2421" owner="disastig" ownerid="JBOS-AS-000655" ruleid="jboss_eap_use_approved_ciphers" severity="medium">
+    <VMSinfo SVKey="76813" VKey="62323" VRelease="2"/>
+    <title>JBoss must be configured to use an approved cryptographic algorithm in conjunction with TLS.</title>
+  </overlay>
+  <overlay disa="2605" owner="disastig" ownerid="JBOS-AS-000680" ruleid="jboss_eap_vendor_supported" severity="high">
+    <VMSinfo SVKey="76815" VKey="62325" VRelease="1"/>
+    <title>Production JBoss servers must be supported by the vendor.</title>
+  </overlay>
+  <overlay disa="2605" owner="disastig" ownerid="JBOS-AS-000685" ruleid="jboss_eap_system_up_to_date" severity="high">
+    <VMSinfo SVKey="76817" VKey="62327" VRelease="1"/>
+    <title>The JRE installed on the JBoss server must be kept up to date.</title>
+  </overlay>
+  <overlay disa="172" owner="disastig" ownerid="JBOS-AS-000690" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76819" VKey="62329" VRelease="1"/>
+    <title>JBoss must be configured to generate log records when successful/unsuccessful attempts to modify privileges occur.</title>
+  </overlay>
+  <overlay disa="172" owner="disastig" ownerid="JBOS-AS-000695" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76821" VKey="62331" VRelease="1"/>
+    <title>JBoss must be configured to generate log records when successful/unsuccessful attempts to delete privileges occur.</title>
+  </overlay>
+  <overlay disa="172" owner="disastig" ownerid="JBOS-AS-000700" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76823" VKey="62333" VRelease="1"/>
+    <title>JBoss must be configured to generate log records when successful/unsuccessful logon attempts occur.</title>
+  </overlay>
+  <overlay disa="172" owner="disastig" ownerid="JBOS-AS-000705" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76825" VKey="62335" VRelease="1"/>
+    <title>JBoss must be configured to generate log records for privileged activities.</title>
+  </overlay>
+  <overlay disa="172" owner="disastig" ownerid="JBOS-AS-000710" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76827" VKey="62337" VRelease="1"/>
+    <title>JBoss must be configured to generate log records that show starting and ending times for access to the application server management interface.</title>
+  </overlay>
+  <overlay disa="172" owner="disastig" ownerid="JBOS-AS-000715" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76829" VKey="62339" VRelease="1"/>
+    <title>JBoss must be configured to generate log records when concurrent logons from different workstations occur to the application server management interface.</title>
+  </overlay>
+  <overlay disa="172" owner="disastig" ownerid="JBOS-AS-000720" ruleid="jboss_eap_configure_auditing" severity="medium">
+    <VMSinfo SVKey="76831" VKey="62341" VRelease="1"/>
+    <title>JBoss must be configured to generate log records for all account creations, modifications, disabling, and termination events.</title>
+  </overlay>
+  <overlay disa="2450" owner="disastig" ownerid="JBOS-AS-000730" ruleid="jboss_eap_use_dod_approved_certs" severity="medium">
+    <VMSinfo SVKey="76833" VKey="62343" VRelease="1"/>
+    <title>The JBoss server must be configured to use DoD- or CNSS-approved PKI Class 3 or Class 4 certificates.</title>
+  </overlay>
+  <overlay disa="1851" owner="disastig" ownerid="JBOS-AS-000735" ruleid="jboss_eap_roll_over_transfer_logs" severity="medium">
+    <VMSinfo SVKey="76835" VKey="62345" VRelease="1"/>
+    <title>JBoss servers must be configured to roll over and transfer logs on a minimum weekly basis.</title>
+  </overlay>
+</overlays>

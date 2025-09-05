@@ -1,0 +1,24 @@
+<def-group oval_version="5.10">
+  <definition class="compliance" id="etc_system_fips_exists" version="1">
+    <metadata>
+      <title>Check /etc/system-fips exists</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>Oracle Linux 8</platform>
+      </affected>
+      <description>Check /etc/system-fips exists</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_etc_system_fips" comment="/etc/system-fips exists" />
+    </criteria>
+  </definition>
+
+  <unix:file_test version="1" id="test_etc_system_fips" check="all" check_existence="all_exist" comment="/etc/system-fips exists">
+      <unix:object object_ref="object_etc_system_fips" />
+  </unix:file_test>
+
+  <unix:file_object version="1" id="object_etc_system_fips">
+      <unix:filepath>/etc/system-fips</unix:filepath>
+  </unix:file_object>
+</def-group>

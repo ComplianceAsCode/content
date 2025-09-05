@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="compliance" id="gconf_gnome_screensaver_idle_activation_enabled" version="1">
+    <metadata>
+      <title>Implement idle activation of screen saver</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Idle activation of the screen saver should be
+      enabled.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="GConf2 installed" definition_ref="package_GConf2_installed" negate="true" />
+      <criterion comment="gnome screensaver is activated on idle" test_ref="test_gnome_screensaver_idle_activated" />
+      <criterion comment="gnome screensaver is activated on idle" test_ref="test_gconf_tree_gnome_screensaver_idle_activated" />
+    </criteria>
+  </definition>
+  <ind:xmlfilecontent_test check="all"
+  comment="gnome screensaver is activated on idle"
+  id="test_gnome_screensaver_idle_activated" version="1">
+    <ind:object object_ref="object_gnome_screensaver_idle_activated" />
+    <ind:state state_ref="state_gnome_screensaver_idle_activated" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_gnome_screensaver_idle_activated" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/apps/gnome-screensaver/%gconf.xml</ind:filepath>
+    <ind:xpath>/gconf/entry[@name='idle_activation_enabled']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_test check="all"
+  comment="gnome screensaver is activated on idle"
+  id="test_gconf_tree_gnome_screensaver_idle_activated" version="1">
+    <ind:object object_ref="object_gconf_tree_gnome_screensaver_idle_activated" />
+    <ind:state state_ref="state_gnome_screensaver_idle_activated" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_gconf_tree_gnome_screensaver_idle_activated" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/%gconf-tree.xml</ind:filepath>
+    <ind:xpath>/gconf/dir/dir/entry[@name='idle_activation_enabled']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_state id="state_gnome_screensaver_idle_activated" version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+</def-group>

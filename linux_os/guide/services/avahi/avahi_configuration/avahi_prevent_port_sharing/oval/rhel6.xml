@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="avahi_prevent_port_sharing" version="1">
+    <metadata>
+      <title>Prevent Other Programs from using Avahi's Port</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Ensures that only Avahi is responsible for mDNS
+      traffic coming from the port on the system.
+      </description>
+    </metadata>
+    <criteria comment="Prevent Avahi Port Sharing" operator="OR">
+      <extend_definition comment="avahi package is not installed" definition_ref="package_avahi_installed" negate="true" />
+      <criterion comment="Prevent Avahi Port Sharing" test_ref="test_avahi_port_sharing" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Prevent Avahi Port Sharing" id="test_avahi_port_sharing" version="1">
+    <ind:object object_ref="object_avahi_port_sharing" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="Prevent Avahi Port Sharing" id="object_avahi_port_sharing" version="1">
+    <ind:filepath>/etc/avahi/avahi-daemon.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*disallow\-other\-stacks=yes$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
+

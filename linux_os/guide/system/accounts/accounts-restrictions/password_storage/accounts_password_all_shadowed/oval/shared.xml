@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="accounts_password_all_shadowed" version="1">
+    <metadata>
+      <title>All Password Hashes Shadowed</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>All password hashes should be shadowed.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="password hashes are shadowed" test_ref="test_accounts_password_all_shadowed" />
+    </criteria>
+  </definition>
+  <unix:password_test check="all" comment="password hashes are shadowed" id="test_accounts_password_all_shadowed" version="1">
+    <unix:object object_ref="object_accounts_password_all_shadowed" />
+    <unix:state state_ref="state_accounts_password_all_shadowed" />
+  </unix:password_test>
+  <unix:password_object id="object_accounts_password_all_shadowed" version="1">
+    <unix:username operation="pattern match">.*</unix:username>
+  </unix:password_object>
+  <unix:password_state id="state_accounts_password_all_shadowed" version="1">
+    <unix:password operation="pattern match">x|\*</unix:password>
+  </unix:password_state>
+</def-group>

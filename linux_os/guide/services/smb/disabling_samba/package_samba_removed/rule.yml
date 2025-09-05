@@ -1,0 +1,19 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8
+
+title: 'Uninstall Samba Package'
+
+description: '{{{ describe_package_remove(package="samba") }}}'
+
+rationale: |-
+    If there is no need to make the Samba software available,
+    removing it provides a safeguard against its activation.
+
+severity: unknown
+
+identifiers:
+    cce@rhel6: 27102-3
+    cce@rhel7: 80278-5
+
+{{{ complete_ocil_entry_package(package="samba") }}}

@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="firefox_preferences-ssl_version_2"  version="1">
+    <metadata>
+      <title>Disable SSL Version 2.0 in Firefox</title>
+      <affected family="unix">
+        <platform>Mozilla Firefox</platform>
+      </affected>
+      <description>SSL 2.0 and SSL 3.0 contain a number of security flaws.
+      Therefore, SSL 2.0 should be disabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="SSL 2.0 protocol disabled" test_ref="test_firefox_preferences-ssl_version_2" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check SSL 2.0 protocol disabled" id="test_firefox_preferences-ssl_version_2" version="1">
+    <ind:object object_ref="object_firefox_preferences-ssl_version_2" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_firefox_preferences-ssl_version_2" version="1">
+    <ind:path operation="pattern match">^\/usr\/(|local\/)lib(|64)\/firefox</ind:path>
+    <ind:filename operation="pattern match">^.*\.cfg$</ind:filename>
+    <ind:pattern operation="pattern match">^lockPref\("security.enable_ssl2",[\s]+false\);$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

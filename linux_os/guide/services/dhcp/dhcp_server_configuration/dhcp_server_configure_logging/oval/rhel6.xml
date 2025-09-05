@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="dhcp_server_configure_logging" version="1">
+    <metadata>
+      <title>Configure DHCP Logging</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Configure rsyslog to record
+      DHCP daemon errors.</description>
+    </metadata>
+    <criteria comment="DHCP is not being used or conditions are met"
+    operator="OR">
+      <extend_definition comment="dhcp package is not installed"
+      definition_ref="package_dhcp_removed" />
+      <criterion comment="Check for daemon in /etc/rsyslog.conf"
+      test_ref="test_dhcp_server_configure_logging" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests that rsyslog is logging dhcp"
+  id="test_dhcp_server_configure_logging" version="1">
+    <ind:object object_ref="obj_dhcp_server_configure_logging" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_server_configure_logging"
+  version="1">
+    <ind:filepath>/etc/rsyslog.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*daemon\.\*[\s]+\/var\/log\/daemon\.log$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

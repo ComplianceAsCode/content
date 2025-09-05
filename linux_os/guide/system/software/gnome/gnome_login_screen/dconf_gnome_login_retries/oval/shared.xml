@@ -1,0 +1,48 @@
+<def-group>
+  <definition class="compliance" id="dconf_gnome_login_retries" version="1">
+    <metadata>
+      <title>Set the GNOME3 Login Number of Failures</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>Set the GNOME3 number of login failure attempts.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
+      <criteria comment="Set number of login attempts and prevent user from changing it" operator="AND">
+        <extend_definition comment="dconf user profile exists" definition_ref="enable_dconf_user_profile" />
+        <criterion comment="Set number of login tries" test_ref="test_configure_allowed_failures" />
+        <criterion comment="Prevent user from changing" test_ref="test_prevent_user_allowed-failures_change" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Set number of login tries"
+  id="test_configure_allowed_failures" version="1">
+    <ind:object object_ref="obj_configure_allowed_failures" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_configure_allowed_failures"
+  version="1">
+    <ind:path>/etc/dconf/db/gdm.d/</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^\[org/gnome/login-screen]([^\n]*\n+)+?allowed-failures=3$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="number of login attempts cannot be changed"
+  id="test_prevent_user_allowed-failures_change" version="1">
+    <ind:object object_ref="obj_prevent_user_allowed-failures_change" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_prevent_user_allowed-failures_change"
+  version="1">
+    <ind:path>/etc/dconf/db/gdm.d/locks/</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^/org/gnome/login-screen/allowed-failures$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

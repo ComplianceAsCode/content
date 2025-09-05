@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_unsuccessful_file_modification" version="1">
+    <metadata>
+      <title>Ensure auditd Collects Unauthorized Access Attempts to Files (unsuccessful)</title>
+      <affected family="unix">
+        <platform>multi_platform_wrlinux</platform>
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>Audit rules about the unauthorized access attempts to files (unsuccessful) are enabled.</description>
+    </metadata>
+
+    <criteria operator="AND">
+      <extend_definition comment="audit creat" definition_ref="audit_rules_unsuccessful_file_modification_creat" />
+      <extend_definition comment="audit ftruncate" definition_ref="audit_rules_unsuccessful_file_modification_ftruncate" />
+      <extend_definition comment="audit openat" definition_ref="audit_rules_unsuccessful_file_modification_openat" />
+      <extend_definition comment="audit open_by_handle_at" definition_ref="audit_rules_unsuccessful_file_modification_open_by_handle_at" />
+      <extend_definition comment="audit open" definition_ref="audit_rules_unsuccessful_file_modification_open" />
+      <extend_definition comment="audit truncate" definition_ref="audit_rules_unsuccessful_file_modification_truncate" />
+    </criteria>
+  </definition>
+
+</def-group>

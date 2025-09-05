@@ -1,0 +1,63 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: Enable FIPS Mode
+
+description: |-
+    To enable FIPS mode, run the following command:
+    <pre>fips-mode-setup --enable</pre>
+    <br />
+    The <tt>fips-mode-setup</tt> command will configure the system in
+    FIPS mode by automatically configuring the following:
+    <ul>
+    <li>Setting the kernel FIPS mode flag (<tt>/proc/sys/crypto/fips_enabled</tt>) to <tt>1</tt></li>
+    <li>Creating <tt>/etc/system-fips</tt></li>
+    <li>Setting the system crypto policy in <tt>/etc/crypto-policies/config</tt> to <tt>FIPS</tt></li>
+    <li>Loading the Dracut <tt>fips</tt> module</li>
+    </ul>
+    Furthermore, the system running in FIPS mode should be FIPS certified by NIST.
+
+rationale: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+severity: high
+
+identifiers:
+    cce@rhel8: 80942-6
+
+references:
+    disa: 68,803,2450
+    nist: SC-13,AC-17(2),IA-7
+    vmmsrg: SRG-OS-000120-VMM-000600,SRG-OS-000478-VMM-001980,SRG-OS-000396-VMM-001590
+
+ocil_clause: 'FIPS mode is not enabled'
+
+ocil: |-
+    To verify that FIPS is enabled properly, run the following command:
+    <pre>fips-mode-setup --check</pre>
+    The output should contain the following:
+    <pre>FIPS mode is enabled.</pre>
+
+warnings:
+    - general: |-
+        The system needs to be rebooted for these changes to take effect.
+    - regulatory: |-
+        The Federal Information Systems Modernization Act (FISMA), requires cryptography protecting sensitive
+        or valuable data to undergo FIPS 140 validation. The U.S. National Institute of Standards and
+        Technology (NIST) views unvalidated cryptography as providing no protection to the information or
+        data—in effect the data would be considered unprotected plaintext. If the agency specifies that the
+        information or data be cryptographically protected, FIPS 140 is applicable. This configuration
+        check will fail on platforms lacking FIPS 140 validation, such as the CentOS, Scientific Linux,
+        and Fedora projects, even if FIPS-approved ciphers can be installed and enabled.
+        <br /><br />
+        See <b>{{{ weblink(link="https://csrc.nist.gov/Projects/cryptographic-module-validation-program") }}}</b>
+        for more information about the Cryptographic Validation Program.
+        <br /><br />
+        A list of FIPS validated cryptographic modules can be found at
+        <b>{{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/1401vend.htm") }}}</b>. The
+        validated cryptographic modules only apply to the products and companies listed in the active validation
+        list.

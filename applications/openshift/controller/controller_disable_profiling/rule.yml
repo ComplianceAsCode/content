@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Verify Controller Profiling is not Exposed to the Web'
+
+description: |-
+    Profiling endpoints are exposed at each master port and secured via Role-Based
+    Access Control (RBAC). By default profiling is accessible only to users bound to
+    <tt>cluster-admin</tt> or <tt>cluster-debugger</tt> roles, limiting access to authorized
+    users only.
+
+    Should <tt>OPENSHIFT_PROFILE</tt> be set to <tt>web</tt>, reflecting a change from
+    the secure defaults, this profiling data will be exposed via a web interface on the
+    systems localhost interface.
+
+    To ensure profiling data is not exposed over a web interface, ensure
+    <tt>OPENSHIFT_PROFILE</tt> is not set to <tt>web</tt> in <tt>/etc/origin/master/master.env</tt>.
+
+rationale: |-
+    Profiling data may include sensitive system information which could be exploited.
+
+severity: low
+
+identifiers:
+    cce@ocp3: 83000-0
+
+ocil_clause: |-
+    <tt>OPENSHIFT_PROFILE</tt> is configured to <tt>web</tt>
+
+ocil: |-
+    Verify that <tt>OPENSHIFT_PROFILE</tt> is not set to <tt>web</tt> by running the following command:
+    <pre>$ grep OPENSHIFT_PROFILE /etc/origin/master/master.env</pre>
+
+    Verify that <tt>OPENSHIFT_PROFILE=web</tt> is NOT returned.
+
+references:
+    cis: 1.1.8

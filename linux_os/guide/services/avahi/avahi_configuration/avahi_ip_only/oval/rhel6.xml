@@ -1,0 +1,44 @@
+<def-group>
+  <definition class="compliance" id="avahi_ip_only" version="1">
+    <metadata>
+      <title>Serve Avahi Only via Required Protocol</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Require Avahi to run on IPv4 or IPv6.</description>
+    </metadata>
+    <criteria comment="Check Avahi IPv4 and IPv6 settings" operator="OR">
+      <extend_definition comment="avahi package is not installed" definition_ref="package_avahi_installed" negate="true" />
+      <criteria comment="Test that Avahi IPv4 is enabled" operator="AND">
+        <criterion comment="Avahi IPv4 setting is enabled" test_ref="test_avahi_ipv4_setting" />
+        <criterion comment="Avahi IPv6 setting is disabled" test_ref="test_avahi_ipv6_setting" negate="true" />
+      </criteria>
+      <criteria comment="Test that Avahi IPv6 is enabled" operator="AND">
+        <criterion comment="Avahi IPv4 setting is disabled" test_ref="test_avahi_ipv4_setting" negate="true"/>
+        <criterion comment="Avahi IPv6 setting is enabled" test_ref="test_avahi_ipv6_setting" />
+      </criteria>
+      <criteria comment="Test that Avahi IPv4 and IPv6 are enabled" operator="AND">
+        <criterion comment="Avahi IPv4 setting is enabled" test_ref="test_avahi_ipv4_setting" />
+        <criterion comment="Avahi IPv6 setting is enabled" test_ref="test_avahi_ipv6_setting" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Avahi IPv4 setting" id="test_avahi_ipv4_setting" version="1">
+    <ind:object object_ref="object_avahi_ipv4_setting" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="Avahi IPv4 setting" id="object_avahi_ipv4_setting" version="1">
+    <ind:filepath>/etc/avahi/avahi-daemon.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*use\-ipv4=yes$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Avahi IPv6 setting" id="test_avahi_ipv6_setting" version="1">
+    <ind:object object_ref="object_avahi_ipv6_setting" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="Avahi IPv6 setting" id="object_avahi_ipv6_setting" version="1">
+    <ind:filepath>/etc/avahi/avahi-daemon.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*use\-ipv6=yes$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
+

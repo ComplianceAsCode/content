@@ -1,0 +1,59 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,ol7,ol8
+
+title: 'Ensure gpgcheck Enabled for Repository Metadata'
+
+description: |-
+    Verify the operating system prevents the installation of patches,
+    service packs, device drivers, or operating system components of
+    local packages without verification of the repository metadata.
+    Check that <tt>{{{ pkg_manager }}}</tt> verifies the repository
+    metadata prior to install with the following command.
+    This should be configured by setting <tt>repo_gpgcheck</tt> to <tt>1</tt>
+    in <tt>{{{ pkg_manager_config_file }}}</tt>.
+
+rationale: |-
+    Changes to any software components can have significant effects to the
+    overall security of the operating system. This requirement ensures the
+    software has not been tampered and has been provided by a trusted vendor.
+    Accordingly, patches, service packs, device drivers, or operating system
+    components must be signed with a certificate recognized and approved by
+    the organization. Verifying the authenticity of the software prior to
+    installation validates the integrity of the patch or upgrade received from
+    a vendor. This ensures the software has not been tampered with and that it
+    has been provided by a trusted vendor. Self-signed certificates are
+    disallowed by this requirement. The operating system should not have
+    to verify the software again. NOTE: For U.S. Military systems, this
+    requirement does not mandate DoD certificates for this purpose; however,
+    the certificate used to verify the software must be from an approved
+    Certificate Authority.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 80348-6
+    cce@rhel8: 80793-3
+
+references:
+    disa: "1749"
+    hipaa: 164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)
+    nist: CM-5(3)
+    nist-csf: PR.IP-1
+    srg: SRG-OS-000366-GPOS-00153
+    isa-62443-2013: 'SR 7.6'
+    isa-62443-2009: 4.3.4.3.2,4.3.4.3.3
+    cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05
+    iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4
+    cis-csc: 11,3,9
+
+ocil_clause: 'gpgcheck is not enabled or configured correctly to verify repository metadata'
+
+ocil: |-
+    To verify that <tt>repo_gpgcheck</tt> is configured properly, run the following
+    command:
+    <pre>$ grep repo_gpgcheck {{{ pkg_manager_config_file }}}</pre>
+    The output should return something similar to:
+    <pre>repo_gpgcheck=1</pre>
+
+platform: yum

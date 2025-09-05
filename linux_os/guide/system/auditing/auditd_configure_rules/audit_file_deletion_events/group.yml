@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Record File Deletion Events by User'
+
+description: |-
+    At a minimum, the audit system should collect file deletion events
+    for all users and root. If the <tt>auditd</tt> daemon is configured to use the
+    <tt>augenrules</tt> program to read audit rules during daemon startup (the
+    default), add the following line to a file with suffix <tt>.rules</tt> in the
+    directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
+    appropriate for your system:
+    <pre>-a always,exit -F arch=ARCH -S rmdir,unlink,unlinkat,rename,renameat -F auid&gt;={{{ auid }}} -F auid!=unset -F key=delete</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following line to
+    <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
+    appropriate for your system:
+    <pre>-a always,exit -F arch=ARCH -S rmdir,unlink,unlinkat,rename,renameat -F auid&gt;={{{ auid }}} -F auid!=unset -F key=delete</pre>

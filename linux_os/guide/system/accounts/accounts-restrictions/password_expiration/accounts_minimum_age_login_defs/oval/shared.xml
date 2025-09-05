@@ -1,0 +1,49 @@
+<def-group>
+  <definition class="compliance" id="accounts_minimum_age_login_defs" version="3">
+    <metadata>
+      <title>Set Password Expiration Parameters</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The minimum password age policy should be set appropriately.</description>
+    </metadata>
+    <criteria comment="The value of PASS_MIN_DAYS should be set appropriately in /etc/login.defs">
+      <criterion test_ref="test_pass_min_days" />
+    </criteria>
+  </definition>
+
+  <ind:variable_test id="test_pass_min_days" check="all" comment="The value of PASS_MIN_DAYS should be set appropriately in /etc/login.defs" version="1">
+    <ind:object object_ref="object_last_pass_min_days_instance_value" />
+    <ind:state state_ref="state_last_pass_min_days_instance_value" />
+  </ind:variable_test>
+
+  <ind:textfilecontent54_object id="object_last_pass_min_days_from_etc_login_defs" version="1">
+    <!-- Read whole /etc/login.defs as single line so we can retrieve last PASS_MIN_DAYS directive occurrence -->
+    <ind:behaviors singleline="true" />
+    <ind:filepath>/etc/login.defs</ind:filepath>
+    <!-- Retrieve last (uncommented) occurrence of PASS_MIN_DAYS directive -->
+    <ind:pattern operation="pattern match">.*\n[^#]*(PASS_MIN_DAYS\s+\d+)\s*\n</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Capture the actual PASS_MIN_DAYS integer value from the previously retrieved last instance -->
+  <local_variable id="variable_last_pass_min_days_instance_value" datatype="int" comment="The value of last PASS_MIN_DAYS directive in /etc/login.defs" version="1">
+    <regex_capture pattern="PASS_MIN_DAYS\s+(\d+)">
+      <object_component item_field="subexpression" object_ref="object_last_pass_min_days_from_etc_login_defs" />
+    </regex_capture>
+  </local_variable>
+
+  <!-- Construct OVAL object from this local variable so we can use it in variable test above -->
+  <ind:variable_object id="object_last_pass_min_days_instance_value" version="1">
+    <ind:var_ref>variable_last_pass_min_days_instance_value</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- Define corresponding variable state (the requirement) for the variable object -->
+  <!-- The check should PASS if retrieved last PASS_MIN_DAYS value is greater than or equal to the requirement -->
+  <ind:variable_state id="state_last_pass_min_days_instance_value" version="1">
+    <ind:value operation="greater than or equal" var_ref="var_accounts_minimum_age_login_defs" datatype="int" var_check="at least one" />
+  </ind:variable_state>
+
+  <external_variable comment="Minimum password age in days" datatype="int" id="var_accounts_minimum_age_login_defs" version="1" />
+
+</def-group>

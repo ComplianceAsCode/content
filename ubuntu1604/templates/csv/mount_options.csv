@@ -1,0 +1,21 @@
+# format:
+# <mount_point>,<mount_option>[,create_fstab_entry_if_needed]
+# - mount point mounted with specified option. for more than
+#     one option, use multiple lines with the same <mount_point>, use the 
+#     variable name (i.e. name beginning with var_, without the leading
+#     '$' to reference a variable, e.g. var_removable_partition,nodev)
+#  If the remediation can create (i.e. not just modify) an /etc/fstab line,
+#  add the 'create_fstab_entry_if_needed' literal string as the third argument.
+/home,nosuid
+/home,nodev
+/var/log,nosuid
+/var/log,nodev
+/var/log,noexec
+/var/lib,nodev
+/var/lib,nosuid
+/var,nosuid
+/var,nodev
+/var,noexec
+/tmp,nodev
+/tmp,nosuid
+/usr,nodev

@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="enable_selinux_bootloader" version="1">
+    <metadata>
+      <title>Enable SELinux in /etc/grub.conf</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>
+        Check if selinux=0 OR enforcing=0 within /etc/grub.conf lines, fail if found.
+      </description>
+    </metadata>
+    <criteria>
+      <criterion comment="check value selinux|enforcing=0 in /etc/grub.conf, fail if found" test_ref="test_selinux_grub" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="check value selinux|enforcing=0 in /etc/grub.conf, fail if found"
+  id="test_selinux_grub" version="1">
+    <ind:object object_ref="object_selinux_grub" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_selinux_grub" 
+  comment="check value selinux|enforcing=0 in /etc/grub.conf, fail if found"
+  version="1">
+    <ind:filepath>/etc/grub.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*kernel[\s]+.*(selinux|enforcing)=0.*$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: rhosp13
+
+title: 'Check-Block-07: Is NAS operating in secure enviornment?'
+
+description: |-
+    Cinder supports an NFS driver which works differently than a traditional block storage driver.
+    The NFS driver does not actually allow an instance to access a storage device at the block level.
+    Instead, files are created on an NFS share and mapped to instances, which emulates a block device.
+    Cinder supports secure configuration for such files by controlling the file permissions when cinder
+    volumes are created. Cinder configuration can also control whether file operations are run as the
+    root user or the current OpenStack process user.\n\n<br />\n<br />\n
+
+    Pass: If value of parameter nas_secure_file_permissions under [DEFAULT] section
+    in /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf is set to <tt>auto</tt>.
+
+    When set to auto, a check is done during cinder startup to determine if there are existing
+    cinder volumes, no volumes will set the option to <tt>True</tt>, and use secure file permissions.
+    The detection of existing volumes will set the option to <tt>False</tt>, and use the current
+    insecure method of handling file permissions. If value of parameter nas_secure_file_operations
+    under [DEFAULT] section in /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf
+    is set to auto. When set to &#8220;auto&#8221;, a check is done during cinder startup to determine
+    if there are existing cinder volumes, no volumes will set the option to True, be secure and do
+    NOT run as the root user. The detection of existing volumes will set the option to False, and
+    use the current method of running operations as the root user. For new installations,
+    a &#8220;marker file&#8221; is written so that subsequent restarts of cinder will know what 
+    the original determination had been.\n\n<br />\n<br />\n
+
+    Fail: If value of parameter nas_secure_file_permissions under [DEFAULT] section
+    in /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf is set to False
+    and if value of parameter nas_secure_file_operations under [DEFAULT] section
+    in /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf is set to False."
+
+rationale: ""
+
+severity: medium
+
+references:
+    nist: AC-6

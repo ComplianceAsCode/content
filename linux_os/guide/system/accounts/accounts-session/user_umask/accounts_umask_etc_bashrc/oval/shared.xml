@@ -1,0 +1,81 @@
+<def-group>
+  <definition class="compliance" id="accounts_umask_etc_bashrc" version="2">
+    <metadata>
+      <title>Ensure that Users Have Sensible Umask Values set for bash</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_wrlinux</platform>
+      </affected>
+      <description>The default umask for users of the bash shell</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Get value of var_accounts_user_umask variable as octal number"
+      definition_ref="var_accounts_user_umask_as_number" />
+      <criterion test_ref="tst_accounts_umask_etc_bashrc" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_object id="obj_umask_from_etc_bashrc"
+  comment="Umask value from /etc/bashrc" version="1">
+    <ind:filepath>/etc/bashrc</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)UMASK(?-i)[\s]+([^#\s]*)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_first_digit_of_umask_from_etc_bashrc"
+  comment="First octal digit of umask from /etc/bashrc"
+  datatype="int" version="1">
+    <substring substring_start="1" substring_length="1">
+      <object_component item_field="subexpression" object_ref="obj_umask_from_etc_bashrc" />
+    </substring>
+  </local_variable>
+
+  <local_variable id="var_second_digit_of_umask_from_etc_bashrc"
+  comment="Second octal digit of umask from /etc/bashrc"
+  datatype="int" version="1">
+    <substring substring_start="2" substring_length="1">
+      <object_component item_field="subexpression" object_ref="obj_umask_from_etc_bashrc" />
+    </substring>
+  </local_variable>
+
+  <local_variable id="var_third_digit_of_umask_from_etc_bashrc"
+  comment="Third octal digit of umask from /etc/bashrc"
+  datatype="int" version="1">
+    <substring substring_start="3" substring_length="1">
+      <object_component item_field="subexpression" object_ref="obj_umask_from_etc_bashrc" />
+    </substring>
+  </local_variable>
+
+  <local_variable id="var_etc_bashrc_umask_as_number"
+  comment="/etc/bashrc umask converted from string to a number"
+  datatype="int" version="1">
+    <arithmetic arithmetic_operation="add">
+      <arithmetic arithmetic_operation="multiply">
+        <literal_component datatype="int">64</literal_component>
+        <variable_component var_ref="var_first_digit_of_umask_from_etc_bashrc" />
+      </arithmetic>
+      <arithmetic arithmetic_operation="multiply">
+        <literal_component datatype="int">8</literal_component>
+        <variable_component var_ref="var_second_digit_of_umask_from_etc_bashrc" />
+      </arithmetic>
+      <variable_component var_ref="var_third_digit_of_umask_from_etc_bashrc" />
+    </arithmetic>
+  </local_variable>
+
+  <ind:variable_test id="tst_accounts_umask_etc_bashrc" version="1" check="all"
+  comment="Test the retrieved /etc/bashrc umask value(s) match the var_accounts_user_umask requirement">
+    <ind:object object_ref="obj_accounts_umask_etc_bashrc" />
+    <ind:state state_ref="ste_accounts_umask_etc_bashrc" />
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_accounts_umask_etc_bashrc" version="1">
+    <ind:var_ref>var_etc_bashrc_umask_as_number</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- The 'var_accounts_user_umask_umask_as_number' variable is created by evaluation of
+       the referenced 'var_accounts_user_umask_as_number' OVAL definition -->
+  <ind:variable_state id="ste_accounts_umask_etc_bashrc" version="1">
+    <ind:value datatype="int" operation="bitwise and" var_ref="var_accounts_user_umask_umask_as_number" />
+  </ind:variable_state>
+
+</def-group>

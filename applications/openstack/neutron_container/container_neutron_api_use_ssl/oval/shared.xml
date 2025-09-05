@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="container_neutron_use_ssl" version="1">
+    <metadata>
+      <title>Is use_ssl parameter in the [DEFAULT] section set to True?</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Is use_ssl parameter in the [DEFAULT] section set to True?</description>
+    </metadata>
+    <criteria comment="Is use_ssl parameter in [DEFAULT] section set to True?" operator="AND">
+      <criterion comment="Check use_ssl parameter of [DEFAULT] section in /var/lib/config-data/puppet-generated/neutron/etc/neutron/neutron.conf" test_ref="test_container_neutron_use_ssl" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests the value of the use_ssl parameneter in the ssl [\s]*(&lt;:nocomment:&gt;*) section of the /var/lib/config-data/puppet-generated/neutron/etc/neutron/neutron.conf file"
+  id="test_container_neutron_use_ssl" version="1">
+    <ind:object object_ref="obj_container_neutron_use_ssl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_container_neutron_use_ssl" version="2">
+    <ind:filepath>/var/lib/config-data/puppet-generated/neutron/etc/neutron/neutron.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)use_ssl(?-i)[\s]+True[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

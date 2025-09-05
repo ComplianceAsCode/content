@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora
+
+title: 'Disable Secure RPC Client Service (rpcgssd)'
+
+description: |-
+    The rpcgssd service manages RPCSEC GSS contexts required to secure protocols
+    that use RPC (most often Kerberos and NFS). The rpcgssd service is the
+    client-side of RPCSEC GSS. If the system does not require secure RPC then this
+    service should be disabled.
+    {{{ describe_service_disable(service="rpcgssd") }}}
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce@rhel6: 26864-9
+    cce@rhel7: 80229-8

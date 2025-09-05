@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Enact SMTP Relay Restrictions'
+
+description: |-
+    To configure Postfix to restrict addresses to which it
+    will send mail, see:
+    {{{ weblink(link="http://www.postfix.org/SMTPD_ACCESS_README.html#danger") }}}
+    <br />
+    The full contents of <tt>smtpd_recipient_restrictions</tt> will
+    vary by site, since this is a common place to put spam restrictions and other
+    site-specific options. The <tt>permit_mynetworks</tt> option allows all mail to
+    be relayed from the systems in <tt>mynetworks</tt>. Then, the
+    <tt>reject_unauth_destination</tt> option denies all mail whose destination
+    address is not local, preventing any other systems from relaying. These two
+    options should always appear in this order, and should usually follow one
+    another immediately unless SMTP AUTH is used.

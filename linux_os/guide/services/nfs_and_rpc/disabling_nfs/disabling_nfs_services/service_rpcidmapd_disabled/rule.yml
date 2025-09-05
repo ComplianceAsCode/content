@@ -1,0 +1,19 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora
+
+title: 'Disable RPC ID Mapping Service (rpcidmapd)'
+
+description: |-
+    The rpcidmapd service is used to map user names and groups to UID
+    and GID numbers on NFSv4 mounts. If NFS is not in use on the local system then
+    this service should be disabled.
+    {{{ describe_service_disable(service="rpcidmapd") }}}
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce@rhel6: 26870-6
+    cce@rhel7: 80231-4

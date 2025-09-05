@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Install policycoreutils Package'
+
+description: |-
+    {{{ describe_package_install(package="policycoreutils") }}}
+
+rationale: |-
+    Security-enhanced Linux is a feature of the Linux kernel and a number of utilities
+    with enhanced security functionality designed to add mandatory access controls to Linux.
+    The Security-enhanced Linux kernel contains new architectural components originally
+    developed to improve security of the Flask operating system. These architectural components
+    provide general support for the enforcement of many kinds of mandatory access control
+    policies, including those based on the concepts of Type Enforcement, Role-based Access
+    Control, and Multi-level Security. 
+
+    <tt>policycoreutils</tt> contains the policy core utilities that are required for
+    basic operation of an SELinux-enabled system. These utilities include <tt>load_policy</tt>
+    to load SELinux policies, <tt>setfiles</tt> to label filesystems, <tt>newrole</tt> to
+    switch roles, and <tt>run_init</tt> to run <tt>/etc/init.d</tt> scripts in the proper
+    context.
+
+severity: high
+
+identifiers:
+    cce@rhel6: 82978-8
+    cce@rhel7: 82977-0
+    cce@rhel8: 82976-2
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="policycoreutils") }}}'

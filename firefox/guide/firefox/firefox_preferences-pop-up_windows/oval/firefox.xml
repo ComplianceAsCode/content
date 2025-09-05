@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="firefox_preferences-pop-up_windows"  version="1">
+    <metadata>
+      <title>Enable Firefox Pop-up Blocker</title>
+      <affected family="unix">
+        <platform>Mozilla Firefox</platform>
+      </affected>
+      <description>The Firefox Pop-up blocker should be enabled as windows may be
+      used to launch an attack within a new browser window with altered settings.
+      </description>
+    </metadata>
+    <criteria>
+      <criterion comment="pop-up_windows installed" test_ref="test_firefox_preferences-pop-up_windows" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check for pop-up_windows installed" id="test_firefox_preferences-pop-up_windows" version="1">
+    <ind:object object_ref="object_firefox_preferences-pop-up_windows" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_firefox_preferences-pop-up_windows" version="1">
+    <ind:path operation="pattern match">^\/usr\/(|local\/)lib(|64)\/firefox</ind:path>
+    <ind:filename operation="pattern match">^.*\.cfg$</ind:filename>
+    <ind:pattern operation="pattern match">^lockPref\("dom.disable_window_open_feature.status",[\s]+true\);$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

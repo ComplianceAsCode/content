@@ -1,0 +1,16 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8
+
+title: 'Disable the ftpd_connect_db SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>ftpd_connect_db</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="ftpd_connect_db") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="ftpd_connect_db") }}}

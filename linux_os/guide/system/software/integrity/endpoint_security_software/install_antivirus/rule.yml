@@ -1,0 +1,49 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,rhv4
+
+title: 'Install Virus Scanning Software'
+
+description: |-
+    Virus scanning software can be used to protect a system from penetration from
+    computer viruses and to limit their spread through intermediate systems.
+
+    The virus scanning software should be configured to perform scans dynamically
+    on accessed files. If this capability is not available, the system must be
+    configured to scan, at a minimum, all altered files on the system on a daily
+    basis.
+
+    If the system processes inbound SMTP mail, the virus scanner must be configured
+    to scan all received mail.
+
+rationale: |-
+    Virus scanning software can be used to detect if a system has been compromised by
+    computer viruses, as well as to limit their spread to other systems.
+
+severity: high
+
+identifiers:
+    cce@rhel6: 27529-7
+    cce@rhel7: 27140-3
+
+references:
+    disa: 366,1239,1668
+    nist: SC-28,SI-3,SI-3(1)(ii)
+    nist-csf: DE.CM-4,DE.DP-3,PR.DS-1
+    srg@rhel6: SRG-OS-00270
+    stigid@rhel6: "000284"
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "032000"
+    isa-62443-2013: 'SR 3.2,SR 3.3,SR 3.4,SR 4.1'
+    isa-62443-2009: 4.3.4.3.8,4.4.3.2
+    cobit5: APO01.06,APO13.02,BAI02.01,BAI06.01,DSS04.07,DSS05.01,DSS05.02,DSS05.03,DSS06.06
+    iso27001-2013: A.12.2.1,A.14.2.8,A.8.2.3
+    cis-csc: 12,13,14,4,7,8
+
+ocil_clause: 'there is no anti-virus solution installed on the system'
+
+ocil: |-
+    Verify an anti-virus solution is installed on the system. The anti-virus solution may be
+    bundled with an approved host-based security solution.
+
+platform: machine

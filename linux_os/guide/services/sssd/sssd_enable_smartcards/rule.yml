@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,fedora,rhv4,ol7,ol8
+
+title: 'Enable Smartcards in SSSD'
+
+description: |-
+    SSSD should be configured to authenticate access to the system
+    using smart cards. To enable smart cards in SSSD, set <tt>pam_cert_auth</tt>
+    to <tt>true</tt> under the <tt>[pam]</tt>
+    section in <tt>/etc/sssd/sssd.conf</tt>. For example:
+    <pre>[pam]
+    pam_cert_auth = true
+    </pre>
+
+rationale: |-
+    Using an authentication device, such as a CAC or token that is separate from
+    the information system, ensures that even if the information system is
+    compromised, that compromise will not affect credentials stored on the
+    authentication device.
+    <br /><br />
+    Multifactor solutions that require devices separate from
+    information systems gaining access include, for example, hardware tokens
+    providing time-based or challenge-response authenticators and smart cards such
+    as the U.S. Government Personal Identity Verification card and the DoD Common
+    Access Card.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80570-5
+    cce@rhel8: 80909-5
+
+references:
+    disa: "1954"
+    srg: SRG-OS-000375-GPOS-00160
+    vmmsrg: SRG-OS-000107-VMM-000530
+
+ocil_clause: 'smart cards are not enabled in SSSD'
+
+ocil: |-
+    To verify that smart cards are enabled in SSSD, run the following command:
+    <pre>$ sudo grep pam_cert_auth /etc/sssd/sssd.conf</pre>
+    If configured properly, output should be
+    <pre>pam_cert_auth = true</pre>

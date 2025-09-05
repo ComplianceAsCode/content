@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Enable The Client Certificate Authentication'
+
+description: |-
+    To ensure the <tt>etcd</tt> service is serving TLS to clients,
+    edit the <tt>etcd</tt> configuration file
+    <tt>/etc/etcd/etcd.conf</tt> on the master node and set
+    <tt>ETCD_CLIENT_CERT_AUTH</tt> to <tt>true</tt>.
+    <pre>ETCD_CLIENT_CERT_AUTH=true</pre>
+
+rationale: |-
+    Without cryptographic integrity protections, information can be
+    altered by unauthorized users without detection.
+
+severity: medium
+
+identifiers:
+    cce@ocp3: 80579-6
+
+references:
+    cis: 1.5.2
+
+ocil_clause: 'the etcd client certificate authentication is not configured'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ grep ETCD_CLIENT_CERT_AUTH</pre>
+    The output should return <tt>true</tt>.

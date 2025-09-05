@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Run DNS Software in a chroot Jail'
+
+description: |-
+    Install the <tt>bind-chroot</tt> package:
+    <pre>$ sudo yum install bind-chroot</pre>
+    Place a valid named.conf file inside the chroot jail:
+    <pre>$ sudo cp /etc/named.conf /var/named/chroot/etc/named.conf
+    $ sudo chown root:root /var/named/chroot/etc/named.conf
+    $ sudo chmod 644 /var/named/chroot/etc/named.conf</pre>
+    Create and populate an appropriate zone directory within the jail, based on the
+    options directive. If your <tt>named.conf</tt> includes:
+    <pre>options {
+    directory "/path/to/DIRNAME ";
+    ...
+    }</pre>
+    then copy that directory and its contents from the original zone directory:
+    <pre>$ sudo cp -r /path/to/DIRNAME /var/named/chroot/DIRNAME</pre>
+    Add or correct the following line within <tt>/etc/sysconfig/named</tt>:
+    <pre>ROOTDIR=/var/named/chroot</pre>
+
+warnings:
+    - general: |-
+        If you are running BIND in a chroot jail, then you
+        should use the jailed <tt>named.conf</tt> as the primary nameserver
+        configuration file. That is, when this guide recommends editing
+        <tt>/etc/named.conf</tt>, you should instead edit
+        <tt>/var/named/chroot/etc/named.conf</tt>.

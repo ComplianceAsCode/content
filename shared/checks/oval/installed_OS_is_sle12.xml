@@ -1,0 +1,57 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_OS_is_sle12" version="1">
+    <metadata>
+      <title>SUSE Linux Enterprise 12</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:suse:linux_enterprise_server:12"
+      source="CPE" />
+      <reference ref_id="cpe:/o:suse:linux_enterprise_desktop:12"
+      source="CPE" />
+      <description>The operating system installed on the system is
+      SUSE Linux Enterprise 12.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_sle12_unix_family" />
+      <criteria operator="OR">
+        <criterion comment="SLE 12 Desktop is installed" test_ref="test_sle12_desktop" />
+        <criterion comment="SLE 12 Server is installed" test_ref="test_sle12_server" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:family_test check="all" check_existence="at_least_one_exists" comment="installed OS part of unix family" id="test_sle12_unix_family" version="1">
+    <ind:object object_ref="obj_sle12_unix_family" />
+    <ind:state state_ref="state_sle12_unix_family" />
+  </ind:family_test>
+  <ind:family_state id="state_sle12_unix_family" version="1">
+    <ind:family>unix</ind:family>
+  </ind:family_state>
+  <ind:family_object id="obj_sle12_unix_family" version="1" />
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="sled-release is version 6" id="test_sle12_desktop" version="1">
+    <linux:object object_ref="obj_sle12_desktop" />
+    <linux:state state_ref="state_sle12_desktop" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_sle12_desktop" version="1">
+    <linux:version operation="pattern match">^12.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_sle12_desktop" version="1">
+    <linux:name>sled-release</linux:name>
+  </linux:rpminfo_object>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="sles-release is version 6" id="test_sle12_server" version="1">
+    <linux:object object_ref="obj_sle12_server" />
+    <linux:state state_ref="state_sle12_server" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_sle12_server" version="1">
+    <linux:version operation="pattern match">^12.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_sle12_server" version="1">
+    <linux:name>sles-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

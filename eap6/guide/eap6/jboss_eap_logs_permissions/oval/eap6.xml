@@ -1,0 +1,60 @@
+<def-group>
+  <definition class="compliance" id="jboss_eap_logs_permissions" version="2">
+    <metadata>
+      <title>Configure JBoss Log Directory Permissions</title>
+      <affected family="undefined">
+        <platform>JBoss Enterprise Application Platform 6</platform>
+      </affected>
+      <description>File permissions for JBOSS_HOME/standalone/log should be set correctly.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_jboss_eap_logs_permissions_folder" />
+      <criterion test_ref="test_jboss_eap_logs_permissions_files" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_object id="obj_env_jboss_eap_logs_permissions" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+  <local_variable id="local_var_jboss_eap_logs_permissions_folder" version="1" datatype="string" comment="configuration location">
+    <concat>
+      <object_component object_ref="obj_env_jboss_eap_logs_permissions" item_field="value" />
+      <literal_component datatype="string">/standalone/log</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- check folders -->
+  <unix:file_test check="all" check_existence="all_exist" id="test_jboss_eap_logs_permissions_folder" version="1" comment="testing that the folder has the required permissions">
+    <unix:object object_ref="object_jboss_eap_logs_permissions_folder" />
+    <unix:state state_ref="state_jboss_eap_logs_permissions" />
+  </unix:file_test>
+
+  <unix:file_object id="object_jboss_eap_logs_permissions_folder" version="1" comment="JBOSS_HOME/standalone/log">
+    <unix:path var_ref="local_var_jboss_eap_logs_permissions_folder" />
+    <unix:filename xsi:nil="true"/> <!-- xsi:nil tests the folder -->
+  </unix:file_object>
+
+  <!-- check files -->
+  <unix:file_test check="all" check_existence="all_exist" id="test_jboss_eap_logs_permissions_files" version="1" comment="testing that the folder has the required permissions">
+    <unix:object object_ref="object_jboss_eap_logs_permissions_files" />
+    <unix:state state_ref="state_jboss_eap_logs_permissions" />
+  </unix:file_test>
+
+  <unix:file_object id="object_jboss_eap_logs_permissions_files" version="1" comment="JBOSS_HOME/standalone/log/*.log">
+    <unix:path var_ref="local_var_jboss_eap_logs_permissions_folder" />
+    <unix:filename operation="pattern match">.*\.log$</unix:filename>
+  </unix:file_object>  
+
+  <!-- single shared condition -->
+  <unix:file_state id="state_jboss_eap_logs_permissions" version="1" comment="checks for g-rwo,o-rwo">
+    <unix:gread datatype="boolean">false</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state> 
+
+</def-group>

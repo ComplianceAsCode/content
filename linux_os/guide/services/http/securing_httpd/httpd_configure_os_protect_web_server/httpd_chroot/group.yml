@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'Run httpd in a chroot Jail if Practical'
+
+description: |-
+    Running <tt>httpd</tt> inside a <tt>chroot</tt> jail is designed to isolate the
+    web server process to a small section of the filesystem, limiting the damage if
+    it is compromised. Versions of Apache greater than 2.2.10 (such as the one
+    included with {{{ full_name }}}) provide the <tt>ChrootDir</tt> directive. To run Apache
+    inside a chroot jail in <tt>/chroot/apache</tt>, add the following line to
+    <tt>/etc/httpd/conf/httpd.conf</tt>: <pre>ChrootDir /chroot/apache</pre> This
+    necessitates placing all files required by <tt>httpd</tt> inside
+    <tt>/chroot/apache</tt> , including <tt>httpd</tt>'s binaries, modules,
+    configuration files, and served web pages. The details of this configuration
+    are beyond the scope of this guide. This may also require additional SELinux
+    configuration.

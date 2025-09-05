@@ -1,0 +1,62 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,rhv4
+
+title: 'Verify and Correct Ownership with RPM'
+
+description: |-
+    The RPM package management system can check file ownership
+    permissions of installed software packages, including many that are
+    important to system security. After locating a file with incorrect
+    permissions, which can be found with
+    <pre>rpm -Va | awk '{ if (substr($0,6,1)=="U" || substr($0,7,1)=="G") print $NF }'</pre>
+    run the following command to determine which package owns it:
+    <pre>$ rpm -qf <i>FILENAME</i></pre>
+    Next, run the following command to reset its permissions to
+    the correct values:
+    <pre>$ sudo rpm --setugids <i>PACKAGENAME</i></pre>
+
+rationale: |-
+    Ownership of binaries and configuration files that is incorrect
+    could allow an unauthorized user to gain privileges that they should
+    not have. The ownership set by the vendor should be maintained. Any
+    deviations from this baseline should be investigated.
+
+severity: high
+
+identifiers:
+    cce@rhel6: 80499-7
+    cce@rhel7: 80545-7
+
+references:
+    nist@rhel6: SI-7
+    nist-csf@rhel6: PR.DS-6,PR.DS-8
+    srg@rhel6: SRG-OS-000257,SRG-OS-000258
+    stigid@rhel6: "000279"
+    cis: 1.2.6,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9,6.2.3
+    cjis: 5.10.4.1
+    cui: 3.3.8,3.4.1
+    disa: 1494,1496
+    nist: AC-6,AU-9(1),AU-9(3),CM-6(d),CM-6(3)
+    nist-csf: PR.AC-4,PR.DS-5,PR.IP-1,PR.PT-1
+    pcidss: Req-11.5
+    srg: SRG-OS-000257-GPOS-00098,SRG-OS-000278-GPOS-00108
+    isa-62443-2013: 'SR 2.1,SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9,SR 5.2,SR 7.6'
+    isa-62443-2009: 4.3.3.3.9,4.3.3.5.8,4.3.3.7.3,4.3.4.3.2,4.3.4.3.3,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
+    cobit5: APO01.06,APO11.04,BAI03.05,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.04,DSS05.07,DSS06.02,MEA02.01
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.12.1.2,A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.5.1,A.12.6.2,A.12.7.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.14.2.2,A.14.2.3,A.14.2.4,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    cis-csc: 1,11,12,13,14,15,16,18,3,5,6,9
+
+ocil_clause: 'there is output'
+
+ocil: |-
+    The following command will list which files on the system have ownership different from what
+    is expected by the RPM database:
+    <pre>$ rpm -Va | rpm -Va --nofiledigest | awk '{ if (substr($0,6,1)=="U" || substr($0,7,1)=="G") print $NF }'</pre>
+
+warnings:
+    - general: |-
+        <b>Note: Due to a bug in the <tt>gdm</tt> package,
+        the RPM verify command may continue to fail even after file permissions have
+        been correctly set on <tt>/var/log/gdm</tt>. This is being tracked in Red Hat
+        Bugzilla #1277603.</b>

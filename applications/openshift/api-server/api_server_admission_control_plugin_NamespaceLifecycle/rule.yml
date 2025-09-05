@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Enable the NamespaceLifecyle Admission Control Plugin'
+
+description: |-
+    To enable <tt>NamespaceLifecycle</tt>, edit the API Server pod specification
+    file <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
+    and set the <tt>admissionConfig</tt> to include <tt>NamespaceLifecyle</tt>:
+    <pre>admissionConfig:
+      pluginConfig:
+        NamespaceLifecyle:
+          configuration:
+          kind: DefaultAdmissionConfig
+          apiVersion: v1
+          disable: false</pre>
+
+rationale: |-
+    Setting admission control policy to <tt>NamespaceLifecycle</tt> ensures that
+    objects cannot be created in non-existent namespaces, and that namespaces
+    undergoing termination are not used for creating new objects. This
+    is recommended to enforce the integrity of the namespace termination process
+    and also for the availability of new objects.
+
+severity: medium
+
+references:
+    cis: 1.1.14
+
+ocil_clause: '<tt>admissionConfig</tt> does not contain <tt>NamespaceLifecycle</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep -A4 NamespaceLifecycle /etc/origin/master/master-config.yaml</pre>
+    The output should return <pre>disable: false</pre>.

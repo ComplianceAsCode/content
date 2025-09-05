@@ -1,0 +1,182 @@
+
+{{#
+  Constants.
+#}}
+{{%- set suffix_id_default_not_overriden = "_default_not_overriden" -%}}
+{{%- set common_prefix_regex = "^Match final all(?:.*\n)*?\s*" -%}}
+
+
+
+{{#
+  Macro to define the criterion of the OVAL check (Criterion definition).
+  Based on macro from shared/macros-oval.jinja, but made criterion name unique by appending the parameter
+  This macro can take three parameters:
+    - path (String): Path to the configuration file to be checked.
+    - parameter (String): The parameter to be checked in the configuration file.
+    - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
+#}}
+{{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false) -%}}
+{{%- set suffix_id = "_"~parameter -%}}
+{{%- set prefix_text = "Check the" -%}}
+{{%- if missing_parameter_pass %}}
+{{%- set suffix_id = "_"~parameter~suffix_id_default_not_overriden -%}}
+{{%- set prefix_text = prefix_text + " absence of" -%}}
+{{%- endif %}}
+      <criterion comment="{{{ prefix_text }}} {{{ parameter }}} in {{{ path }}}"
+      test_ref="test_{{{ rule_id }}}{{{ suffix_id }}}" />
+{{%- endmacro %}}
+
+{{#
+  Macro to define the OVAL test to be constructed (Test definition).
+  Based on macro in shared/macros-oval.jinja, but the test name is unique by embedding parameter.
+  This macro can take three parameters:
+    - path (String): Path to the configuration file to be checked.
+    - parameter (String): The parameter to be checked in the configuration file.
+    - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
+#}}
+{{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false) -%}}
+{{%- set suffix_id = "_"~parameter -%}}
+{{%- if missing_parameter_pass %}}
+{{%- set check_existence = "none_exist" -%}}
+{{%- set prefix_text = "value" -%}}
+{{%- set suffix_id = "_"~parameter~suffix_id_default_not_overriden -%}}
+{{%- else %}}
+{{%- set check_existence = "all_exist" -%}}
+{{%- set prefix_text = "absence" -%}}
+{{%- endif %}}
+  <ind:textfilecontent54_test check="all" check_existence="{{{ check_existence }}}"
+  comment="tests the {{{ prefix_text }}} of {{{ parameter }}} setting in the {{{ path }}} file"
+  id="test_{{{ rule_id }}}{{{ suffix_id }}}" version="1">
+  <ind:object object_ref="obj_{{{ rule_id }}}{{{ suffix_id }}}" />
+  {{%- if not missing_parameter_pass %}}
+  <ind:state state_ref="state_{{{ rule_id }}}{{{ suffix_id }}}" />
+  {{%- endif %}}
+  </ind:textfilecontent54_test>
+{{%- endmacro %}}
+
+{{#
+  Macro to check if a parameter in a configuration file is set (Object definition).
+  Based on shared/macros-oval-jinja, but support for tests with unique names was added by using the parameter, viz above.
+  This macro can take six parameters:
+    - path (String): Path to the configuration file to be checked.
+    - section (String): If set, the parameter will be checked only within the given section defined by [section].
+    - prefix_regex (String): Regular expression to be used in the beginning of the OVAL text file content check.
+    - parameter (String): The parameter to be checked in the configuration file.
+    - separator_regex (String): Regular expression to be used as the separator of parameter and value in a configuration file. If spaces are allowed, this should be included in the regular expression.
+    - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
+    - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
+#}}
+{{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false) -%}}
+{{%- set suffix_id = "_"~parameter -%}}
+{{%- if multi_value -%}}
+{{%- set group_regex = "([^#]*).*$" -%}}
+{{%- else -%}}
+{{%- set group_regex = "(.+?)[ \\t]*(?:$|#)" -%}}
+{{%- endif -%}}
+{{%- if section %}}
+{{%- set common_regex = "^\s*\["+section+"\].*(?:\\n\s*[^[\s].*)*\\n"+prefix_regex+parameter+separator_regex -%}}
+{{%- if missing_parameter_pass %}}
+{{#
+  There is no need for having a regular expression with a capture
+  group "(\S*)" when checking if the parameter is not present in
+  the configuration file.
+#}}
+{{%- set regex = common_regex -%}}
+{{%- else %}}
+{{%- set regex = common_regex+group_regex -%}}
+{{%- endif %}}
+{{%- else %}}
+{{%- if missing_parameter_pass %}}
+{{%- set suffix_id = "_"~parameter~suffix_id_default_not_overriden -%}}
+{{#
+  There is no need for having a regular expression with a capture
+  group "(.*)" when checking if the parameter is not present in
+  the configuration file.
+#}}
+{{%- set regex = prefix_regex+parameter+separator_regex -%}}
+{{%- else %}}
+{{%- set regex = prefix_regex+parameter+separator_regex+group_regex -%}}
+{{%- endif %}}
+{{%- endif %}}
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}{{{ suffix_id }}}" version="1">
+    <ind:filepath>{{{ path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{%- endmacro %}}
+
+{{#
+  Macro to check if a expected value can be found in the extracted information of an OVAL object (State definition).
+  Based on shared/macros-oval.jinja, but support for unique test names was added. If this should be supported, additional parameters called "parameter" and "missing_parameter_pass" have to be supplied.
+  This macro can take three parameters:
+    - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
+    - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
+    - parameter (String): The parameter to be checked in the configuration file. Not used in the actual state definition, but only to connect the state to the test.
+    - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied). Not used in the actual state definition, but only to connect the state to the test.
+#}}
+{{%- macro oval_line_in_file_state(value='', multi_value='', parameter='', missing_parameter_pass=false) -%}}
+{{%- if multi_value %}}
+{{%- set regex = "^.*\\b"+value+"\\b.*$" -%}}
+{{%- else %}}
+{{%- set regex = "^"+value+"$" -%}}
+{{%- endif %}}
+{{%- set suffix_id = "_"~parameter -%}}
+{{%- if missing_parameter_pass %}}
+{{%- set suffix_id = "_"~parameter~suffix_id_default_not_overriden -%}}
+{{%- endif %}}
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}{{{ suffix_id }}}" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">{{{ regex }}}</ind:subexpression>
+  </ind:textfilecontent54_state>
+{{%- endmacro %}}
+
+<def-group>
+  <definition class="compliance" id="harden_ssh_client_crypto_policy" version="3">
+    <metadata>
+      <title>Harden SSH client Crypto Policy</title>
+      <affected family="unix">
+        <platform>multi_platform_wrlinux</platform>
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>Look for specific parameters in /etc/ssh/ssh_config.d/02-ospp.conf</description>
+    </metadata>
+    <criteria comment="SSH client is configured correctly"
+    operator="AND">
+        {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Match') }}}
+        {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='RekeyLimit') }}}
+        {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='GSSAPIAuthentication') }}}
+        {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers') }}}
+        {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='PubkeyAcceptedKeyTypes') }}}
+        {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='MACs') }}}
+        {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='KexAlgorithms') }}}
+    </criteria>
+  </definition>
+  {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Match', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Match', separator_regex='[\s]+', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_state(parameter='Match', value='final all') }}}
+
+  {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='RekeyLimit', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='RekeyLimit', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
+  {{{ oval_line_in_file_state(parameter='RekeyLimit', value='512M 1h') }}}
+
+  {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='GSSAPIAuthentication', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='GSSAPIAuthentication', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
+  {{{ oval_line_in_file_state(parameter='GSSAPIAuthentication', value='no') }}}
+
+  {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
+  {{{ oval_line_in_file_state(parameter='Ciphers', value='aes256-ctr,aes256-cbc,aes128-ctr,aes128-cbc') }}}
+
+  {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='PubkeyAcceptedKeyTypes', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='PubkeyAcceptedKeyTypes', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
+  {{{ oval_line_in_file_state(parameter='PubkeyAcceptedKeyTypes', value='ssh-rsa,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256') }}}
+
+  {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='MACs', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='MACs', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
+  {{{ oval_line_in_file_state(parameter='MACs', value='hmac-sha2-512,hmac-sha2-256') }}}
+
+  {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='KexAlgorithms', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='KexAlgorithms', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
+  {{{ oval_line_in_file_state(parameter='KexAlgorithms', value='ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group14-sha1') }}}
+</def-group>

@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="nova_glance_api_insecure" version="1">
+    <metadata>
+      <title>Is glance_api_insecure parameter set to False?</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Is glance_api_insecure parameter set to False?</description>
+    </metadata>
+    <criteria comment="Is glance_api_insecure parameter set to False?" operator="OR">
+      <criterion comment="Check glance_api_insecure in /etc/nova/nova.conf" test_ref="test_nova_glance_api_insecure" />
+      <criterion comment="Check glance_api_insecure in /etc/nova/nova.conf" test_ref="test_nova_api_insecure" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests the value of the glance_api_insecure[\s]*(&lt;:nocomment:&gt;*) setting in the /etc/nova/nova.conf file"
+  id="test_nova_glance_api_insecure" version="1">
+    <ind:object object_ref="obj_nova_glance_api_insecure" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests the value of the api_insecure[\s]*(&lt;:nocomment:&gt;*) setting in the /etc/nova/nova.conf file"
+  id="test_nova_api_insecure" version="1">
+    <ind:object object_ref="obj_nova_api_insecure" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_nova_glance_api_insecure" version="2">
+    <ind:filepath>/etc/nova/nova.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)glance_api_insecure(?-i)[\s]+False[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="obj_nova_api_insecure" version="2">
+    <ind:filepath>/etc/nova/nova.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)api_insecure(?-i)[\s]+False[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

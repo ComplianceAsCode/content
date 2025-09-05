@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance" id="firefox_preferences-open_confirmation"  version="1">
+    <metadata>
+      <title>Enable Downloading and Opening File Confirmation</title>
+      <affected family="unix">
+        <platform>Mozilla Firefox</platform>
+      </affected>
+      <description>Firefox is not configured to prompt user before downloading and
+      opening required file types.</description>
+    </metadata>   
+    <criteria>
+      <criterion comment="open_confirmation configured" test_ref="test_firefox_preferences-open_confirmation" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check for open_confirmation configured" id="test_firefox_preferences-open_confirmation" version="1">
+    <ind:object object_ref="object_firefox_preferences-open_confirmation" />
+    <ind:state state_ref="state_firefox_preferences-open_confirmation" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_firefox_preferences-open_confirmation" version="1">
+    <ind:path operation="pattern match">^\/usr\/(|local\/)lib(|64)\/firefox</ind:path>
+    <ind:filename operation="pattern match">^.*\.cfg$</ind:filename>
+    <ind:pattern operation="pattern match">^lockPref\("plugin.disable_full_page_plugin_for_types",[\s]+"(\S+)"\);$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_firefox_preferences-open_confirmation" version="1">
+    <ind:subexpression operation="equals" var_check="all" var_ref="var_required_file_types" />
+  </ind:textfilecontent54_state>
+
+  <external_variable id="var_required_file_types" datatype="string" version="1" comment="Expected file types" />
+</def-group>

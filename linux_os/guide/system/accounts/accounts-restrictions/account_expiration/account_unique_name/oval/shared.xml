@@ -1,0 +1,65 @@
+<def-group>
+  <definition class="compliance" id="account_unique_name" version="1">
+    <metadata>
+      <title>Set All Accounts To Have Unique Names</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>All accounts on the system should have unique names for proper accountability.</description>
+    </metadata>
+
+      <criteria comment="There should not exist duplicate user name entries in /etc/passwd">
+        <criterion test_ref="test_etc_passwd_no_duplicate_user_names" />
+      </criteria>
+
+  </definition>
+
+  <!-- OVAL object to collect content of /etc/passwd file -->
+  <ind:textfilecontent54_object id="object_etc_passwd_content" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <!-- User names from /etc/passwd (1-th column) captured as subexpression of this object -->
+    <ind:pattern operation="pattern match">^([^:]+):.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- OVAL variable to hold the count of all the usernames defined in /etc/passwd
+       (including duplicate entries if any) -->
+  <local_variable id="variable_count_of_all_usernames_from_etc_passwd" datatype="int" version="1"
+  comment="Count of all username rows retrieved from /etc/passwd (including duplicates if any)">
+    <count>
+      <object_component item_field="subexpression" object_ref="object_etc_passwd_content" />
+    </count>
+  </local_variable>
+
+  <!-- Turn the OVAL variable representing count of user names into OVAL object
+       (for use in <variable_test> below)-->
+  <ind:variable_object id="object_count_of_all_usernames_from_etc_passwd" version="1">
+    <ind:var_ref>variable_count_of_all_usernames_from_etc_passwd</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- OVAL variable to hold the count of unique usernames defined in /etc/passwd -->
+  <local_variable id="variable_count_of_unique_usernames_from_etc_passwd" datatype="int" version="1"
+  comment="Count of unique username rows retrieved from /etc/passwd">
+    <count>
+      <unique>
+        <object_component item_field="subexpression" object_ref="object_etc_passwd_content" />
+      </unique>
+    </count>
+  </local_variable>
+
+  <!-- Create OVAL state from count of unique usernames OVAL variable (to be used in
+       <variable_test> below -->
+  <ind:variable_state id="state_etc_passwd_no_duplicate_user_names" version="1">
+    <ind:value var_ref="variable_count_of_unique_usernames_from_etc_passwd" datatype="int"
+    operation="equals" var_check="at least one" />
+  </ind:variable_state>
+
+  <!-- Check if count of all the different usernames defined in /etc/passwd matches the count
+       of all unique usernames defined in /etc/passwd (IOW if there aren't duplicate entries) -->
+  <ind:variable_test id="test_etc_passwd_no_duplicate_user_names" check="all" check_existence="all_exist"
+  comment="There should not exist duplicate user name entries in /etc/passwd" version="1">
+    <ind:object object_ref="object_count_of_all_usernames_from_etc_passwd" />
+    <ind:state state_ref="state_etc_passwd_no_duplicate_user_names" />
+  </ind:variable_test>
+
+</def-group>

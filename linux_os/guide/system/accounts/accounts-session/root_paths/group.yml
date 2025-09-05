@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Ensure that No Dangerous Directories Exist in Root''s Path'
+
+description: |-
+    The active path of the root account can be obtained by
+    starting a new root shell and running:
+    <pre># echo $PATH</pre>
+    This will produce a colon-separated list of
+    directories in the path.
+    <br /><br />
+    Certain path elements could be considered dangerous, as they could lead
+    to root executing unknown or
+    untrusted programs, which could contain malicious
+    code.
+    Since root may sometimes work inside
+    untrusted directories, the <tt>.</tt> character, which represents the
+    current directory, should never be in the root path, nor should any
+    directory which can be written to by an unprivileged or
+    semi-privileged (system) user.
+    <br /><br />
+    It is a good practice for administrators to always execute
+    privileged commands by typing the full path to the
+    command.

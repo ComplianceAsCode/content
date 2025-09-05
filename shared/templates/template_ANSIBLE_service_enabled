@@ -1,0 +1,18 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+- name: Enable service {{{ SERVICENAME }}}
+  block:
+  - name: Gather the package facts
+    package_facts:
+      manager: auto
+
+  - name: Enable service {{{ SERVICENAME }}}
+    service:
+      name: "{{{ DAEMONNAME }}}"
+      enabled: "yes"
+      state: "started"
+    when:
+    - '"{{{ PACKAGENAME }}}" in ansible_facts.packages'

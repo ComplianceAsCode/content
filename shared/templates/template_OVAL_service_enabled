@@ -1,0 +1,160 @@
+<def-group>
+
+{{% if init_system == "systemd" and target_oval_version >= [5, 11] %}}
+
+  <definition class="compliance" id="service_{{{ SERVICENAME }}}_enabled" version="1">
+    <metadata>
+      <title>Service {{{ SERVICENAME }}} Enabled</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The {{{ SERVICENAME }}} service should be enabled if possible.</description>
+    </metadata>
+    <criteria comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start" operator="AND">
+    <extend_definition comment="{{{ PACKAGENAME }}} installed" definition_ref="package_{{{ PACKAGENAME }}}_installed" />
+      <criteria comment="service {{{ SERVICENAME }}} is configured to start and is running" operator="AND">
+        <criterion comment="{{{ SERVICENAME }}} is running" test_ref="test_service_running_{{{ SERVICENAME }}}" />
+        <criteria operator="OR" comment="service {{{ SERVICENAME }}} is configured to start">
+          <criterion comment="multi-user.target wants {{{ SERVICENAME }}}" test_ref="test_multi_user_wants_{{{ SERVICENAME }}}" />
+          <criterion comment="multi-user.target wants {{{ SERVICENAME }}} socket" test_ref="test_multi_user_wants_{{{ SERVICENAME }}}_socket" />
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_multi_user_wants_{{{ SERVICENAME }}}" version="1">
+    <linux:object object_ref="object_multi_user_target_for_{{{ SERVICENAME }}}_enabled" />
+    <linux:state state_ref="state_systemd_{{{ SERVICENAME }}}_on"/>
+  </linux:systemdunitdependency_test>
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_{{{ SERVICENAME }}}_enabled" comment="list of dependencies of multi-user.target" version="1">
+    <linux:unit>multi-user.target</linux:unit>
+  </linux:systemdunitdependency_object>
+  <linux:systemdunitdependency_state id="state_systemd_{{{ SERVICENAME }}}_on" comment="{{{ SERVICENAME }}} listed at least once in the dependencies" version="1">
+    <linux:dependency entity_check="at least one">{{{ SERVICENAME }}}.service</linux:dependency>
+  </linux:systemdunitdependency_state>
+
+  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_multi_user_wants_{{{ SERVICENAME }}}_socket" version="1">
+    <linux:object object_ref="object_multi_user_target_for_{{{ SERVICENAME }}}_socket_enabled" />
+    <linux:state state_ref="state_systemd_{{{ SERVICENAME }}}_socket_on"/>
+  </linux:systemdunitdependency_test>
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_{{{ SERVICENAME }}}_socket_enabled" comment="list of dependencies of multi-user.target" version="1">
+    <linux:unit>multi-user.target</linux:unit>
+  </linux:systemdunitdependency_object>
+  <linux:systemdunitdependency_state id="state_systemd_{{{ SERVICENAME }}}_socket_on" comment="{{{ SERVICENAME }}} listed at least once in the dependencies" version="1">
+    <linux:dependency entity_check="at least one">{{{ SERVICENAME }}}.socket</linux:dependency>
+  </linux:systemdunitdependency_state>
+
+  <linux:systemdunitproperty_test id="test_service_running_{{{ SERVICENAME }}}" check="at least one" check_existence="at_least_one_exists" comment="Test that the {{{ SERVICENAME }}} service is running" version="1">
+    <linux:object object_ref="obj_service_running_{{{ SERVICENAME }}}"/>
+    <linux:state state_ref="state_service_running_{{{ SERVICENAME }}}"/>
+  </linux:systemdunitproperty_test>
+  <linux:systemdunitproperty_object id="obj_service_running_{{{ SERVICENAME }}}" comment="Retrieve the ActiveState property of {{{ SERVICENAME }}}" version="1">
+    <linux:unit operation="pattern match">{{{ SERVICENAME }}}\.(socket|service)</linux:unit>
+    <linux:property>ActiveState</linux:property>
+  </linux:systemdunitproperty_object>
+  <linux:systemdunitproperty_state id="state_service_running_{{{ SERVICENAME }}}" version="1" comment="{{{ SERVICENAME }}} is running">
+      <linux:value>active</linux:value>
+  </linux:systemdunitproperty_state>
+
+{{% else %}}
+
+  <definition class="compliance" id="service_{{{ SERVICENAME }}}_enabled"
+  version="1">
+    <metadata>
+      <title>Service {{{ SERVICENAME }}} Enabled</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The {{{ SERVICENAME }}} service should be enabled if possible.</description>
+    </metadata>
+    <criteria comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start" operator="AND">
+    <extend_definition comment="{{{ PACKAGENAME }}} installed" definition_ref="package_{{{ PACKAGENAME }}}_installed" />
+    <criteria operator="OR" comment="service {{{ SERVICENAME }}} is configured to start">
+      <criterion comment="{{{ SERVICENAME }}} runlevel 0" test_ref="test_runlevel0_{{{ SERVICENAME }}}_on" />
+      <criterion comment="{{{ SERVICENAME }}} runlevel 1" test_ref="test_runlevel1_{{{ SERVICENAME }}}_on" />
+      <criterion comment="{{{ SERVICENAME }}} runlevel 2" test_ref="test_runlevel2_{{{ SERVICENAME }}}_on" />
+      <criterion comment="{{{ SERVICENAME }}} runlevel 3" test_ref="test_runlevel3_{{{ SERVICENAME }}}_on" />
+      <criterion comment="{{{ SERVICENAME }}} runlevel 4" test_ref="test_runlevel4_{{{ SERVICENAME }}}_on" />
+      <criterion comment="{{{ SERVICENAME }}} runlevel 5" test_ref="test_runlevel5_{{{ SERVICENAME }}}_on" />
+      <criterion comment="{{{ SERVICENAME }}} runlevel 6" test_ref="test_runlevel6_{{{ SERVICENAME }}}_on" />
+    </criteria>
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel0_{{{ SERVICENAME }}}_on"
+  version="2">
+    <unix:object object_ref="obj_runlevel0_{{{ SERVICENAME }}}_on" />
+    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel1_{{{ SERVICENAME }}}_on"
+  version="2">
+    <unix:object object_ref="obj_runlevel1_{{{ SERVICENAME }}}_on" />
+    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel2_{{{ SERVICENAME }}}_on"
+  version="2">
+    <unix:object object_ref="obj_runlevel2_{{{ SERVICENAME }}}_on" />
+    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel3_{{{ SERVICENAME }}}_on"
+  version="2">
+    <unix:object object_ref="obj_runlevel3_{{{ SERVICENAME }}}_on" />
+    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel4_{{{ SERVICENAME }}}_on"
+  version="2">
+    <unix:object object_ref="obj_runlevel4_{{{ SERVICENAME }}}_on" />
+    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel5_{{{ SERVICENAME }}}_on"
+  version="2">
+    <unix:object object_ref="obj_runlevel5_{{{ SERVICENAME }}}_on" />
+    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel6_{{{ SERVICENAME }}}_on"
+  version="2">
+    <unix:object object_ref="obj_runlevel6_{{{ SERVICENAME }}}_on" />
+    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_runlevel0_{{{ SERVICENAME }}}_on" version="1">
+    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel1_{{{ SERVICENAME }}}_on" version="1">
+    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel2_{{{ SERVICENAME }}}_on" version="1">
+    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel3_{{{ SERVICENAME }}}_on" version="1">
+    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel4_{{{ SERVICENAME }}}_on" version="1">
+    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel5_{{{ SERVICENAME }}}_on" version="1">
+    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel6_{{{ SERVICENAME }}}_on" version="1">
+    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_state comment="configured to start" id="state_service_{{{ SERVICENAME }}}_on" version="1">
+    <unix:start datatype="boolean">true</unix:start>
+    <unix:kill datatype="boolean">false</unix:kill>
+  </unix:runlevel_state>
+
+{{% endif %}}
+
+</def-group>

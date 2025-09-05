@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_app_is_firefox" version="2">
+    <metadata>
+      <title>Mozilla Firefox</title>
+      <affected family="unix">
+        <product>Mozilla Firefox</product>
+      </affected>
+      <reference ref_id="cpe:/a:mozilla:firefox"
+      source="CPE" />
+      <description>The application installed on the system is firefox.</description>
+       </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family"
+      definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="Firefox is installed"
+      test_ref="test_firefox" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="Firefox is installed" id="test_firefox" version="1">
+    <linux:object object_ref="obj_firefox" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_firefox" version="1">
+    <linux:name>firefox</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

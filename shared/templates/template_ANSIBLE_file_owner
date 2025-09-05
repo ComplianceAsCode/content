@@ -1,0 +1,15 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+- name: Test for existence {{{ FILEPATH }}}
+  stat:
+    path: "{{{ FILEPATH }}}"
+  register: file_exists
+
+- name: Ensure owner {{{ FILEUID }}} on {{{ FILEPATH }}}
+  file:
+    path: "{{{ FILEPATH }}}"
+    owner: "{{{ FILEUID }}}"
+  when: file_exists.stat is defined and file_exists.stat.exists

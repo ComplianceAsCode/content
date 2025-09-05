@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="sysconfig_networking_bootproto_ifcfg"
+  version="2">
+    <metadata>
+      <title>Disable DHCP Client</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>DHCP configuration should be static for all
+      interfaces.</description>
+    </metadata>
+    <criteria comment="Test for BOOTPROTO=(static|none) across all interfaces">
+      <criterion test_ref="test_sysconfig_networking_bootproto_ifcfg" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests the value of the ^[\s]*BOOTPROTO[\s]*=[\s]*([^#]*) expression in the /etc/sysconfig/network-scripts/ifcfg-.* file"
+  id="test_sysconfig_networking_bootproto_ifcfg" version="1">
+    <ind:object object_ref="obj_sysconfig_networking_bootproto_ifcfg" />
+    <ind:state state_ref="state_sysconfig_networking_bootproto_ifcfg" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_state id="state_sysconfig_networking_bootproto_ifcfg"
+  version="2">
+    <ind:subexpression operation="pattern match">^(static|none)$</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_object id="obj_sysconfig_networking_bootproto_ifcfg"
+  version="1">
+    <ind:path>/etc/sysconfig/network-scripts</ind:path>
+    <ind:filename operation="pattern match">ifcfg-.*</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*BOOTPROTO[\s]*=[\s"]*([^#"\s]*)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

@@ -1,0 +1,60 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,rhv4
+
+title: 'Enable ExecShield via sysctl'
+
+description: |-
+    By default on Red Hat Enterprise Linux 7 64-bit systems, ExecShield is
+    enabled and can only be disabled if the hardware does not support
+    ExecShield or is disabled in <tt>/etc/default/grub</tt>. For Red Hat
+    Enterprise Linux 7 32-bit systems, <tt>sysctl</tt> can be used to enable
+    ExecShield.
+
+rationale: |-
+    ExecShield uses the segmentation feature on all x86 systems to prevent
+    execution in memory higher than a certain address. It writes an address as
+    a limit in the code segment descriptor, to control where code can be
+    executed, on a per-process basis. When the kernel places a process's memory
+    regions such as the stack and heap higher than this address, the hardware
+    prevents execution in that address range. This is enabled by default on the
+    latest Red Hat and Fedora systems if supported by the hardware.
+
+severity: medium
+
+identifiers:
+    cce@hrel6: 27007-4
+    cce@rhel7: 27211-2
+    cce@rhel8: 80914-5
+
+references:
+    srg@rhel6: SRG-OS-999999
+    stigid@rhel6: "000079"
+    cis: 1.5.2
+    cui: 3.1.7
+    disa: "2530"
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)
+    nist: SC-39
+    nist-csf: PR.PT-4
+    isa-62443-2013: 'SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
+    cobit5: APO13.01,DSS05.02
+    iso27001-2013: A.13.1.1,A.13.2.1,A.14.1.3
+    cis-csc: 12,15,8
+
+ocil_clause: 'ExecShield is not supported by the hardware, is not enabled, or has been disabled by the kernel configuration.'
+
+ocil: |-
+    To verify ExecShield is enabled on 64-bit Red Hat Enterprise Linux 7 systems,
+    run the following command:
+    <pre>$ dmesg | grep '[NX|DX]*protection'</pre>
+    The output should not contain <tt>'disabled by kernel command line option'</tt>.
+    To verify that ExecShield has not been disabled in the kernel configuration,
+    run the following command:
+    <pre>$ sudo grep noexec /boot/grub2/grub.cfg</pre>
+    The output should not return <tt>noexec=off</tt>.
+    For 32-bit Red Hat Enterprise Linux 7 systems, run the following command:
+    <pre>$ sysctl kernel.exec-shield</pre>
+    The output should be:
+    {{{ describe_sysctl_option_value(sysctl="kernel.exec-shield", value="1") }}}
+
+platform: machine

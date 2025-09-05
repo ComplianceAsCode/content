@@ -1,0 +1,41 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+# Inserts/replaces the rule in /etc/audit/rules.d
+
+- name: Search /etc/audit/rules.d for audit rule entries
+  find:
+    paths: "/etc/audit/rules.d"
+    recurse: no
+    contains: "^.*path={{{ PATH }}}.*$"
+    patterns: "*.rules"
+  register: find_{{{ NAME }}}
+
+- name: Use /etc/audit/rules.d/privileged.rules as the recipient for the rule
+  set_fact:
+    all_files:
+      - /etc/audit/rules.d/privileged.rules
+  when: find_{{{ NAME }}}.matched is defined and find_{{{ NAME }}}.matched == 0
+
+- name: Use matched file as the recipient for the rule
+  set_fact:
+    all_files:
+      - "{{ find_{{{ NAME }}}.files | map(attribute='path') | list | first }}"
+  when: find_{{{ NAME }}}.matched is defined and find_{{{ NAME }}}.matched > 0
+
+- name: Inserts/replaces the {{{ NAME }}} rule in rules.d
+  lineinfile:
+    path: "{{ all_files[0] }}"
+    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
+    create: yes
+
+# Inserts/replaces the {{{ NAME }}} rule in /etc/audit/audit.rules
+
+- name: Inserts/replaces the {{{ NAME }}} rule in audit.rules
+  lineinfile:
+    path: /etc/audit/audit.rules
+    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
+    create: yes

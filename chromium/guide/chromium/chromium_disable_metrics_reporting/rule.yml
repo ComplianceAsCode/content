@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Disable Metrics Reporting'
+
+description: "Whenever Chromium crashes, it sends its usage and crash-related data to Google.\nThis should be disabled by setting <tt>MetricsReportingEnabled</tt> to \n<tt>false</tt> in the Chromium policy file."
+
+rationale: |-
+    Anonymous reporting of usage and crash-related data is sent to Google.
+    A crash report could contain sensitive information from the computer's memory.
+
+severity: unknown
+
+references:
+    stigid: DTBC0026
+
+ocil_clause: 'it is not disabled'
+
+ocil: |-
+    To verify that metrics reporting is disabled, run the following command:
+    <pre>$ grep MetricsReportingEnabled /etc/chromium/policies/managed/*.json</pre>
+    The output should contain:
+    <pre>"MetricsReportingEnabled": false,</pre>

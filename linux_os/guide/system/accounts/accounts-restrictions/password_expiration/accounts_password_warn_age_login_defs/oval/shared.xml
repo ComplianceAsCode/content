@@ -1,0 +1,49 @@
+<def-group>
+  <definition class="compliance" id="accounts_password_warn_age_login_defs" version="3">
+    <metadata>
+      <title>Set Password Expiration Parameters</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The password expiration warning age should be set appropriately.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_pass_warn_age" />
+    </criteria>
+  </definition>
+
+  <ind:variable_test id="test_pass_warn_age" check="all" comment="The value of PASS_WARN_AGE should be set appropriately in /etc/login.defs" version="1">
+    <ind:object object_ref="object_last_pass_warn_age_instance_value" />
+    <ind:state state_ref="state_last_pass_warn_age_instance_value" />
+  </ind:variable_test>
+
+  <ind:textfilecontent54_object id="object_last_pass_warn_age_from_etc_login_defs" version="1">
+    <!-- Read whole /etc/login.defs as single line so we can retrieve last PASS_WARN_AGE directive occurrence -->
+    <ind:behaviors singleline="true" />
+    <ind:filepath>/etc/login.defs</ind:filepath>
+    <!-- Retrieve last (uncommented) occurrence of PASS_WARN_AGE directive -->
+    <ind:pattern operation="pattern match">.*\n[^#]*(PASS_WARN_AGE\s+\d+)\s*\n</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Capture the actual PASS_WARN_AGE integer value from the previously retrieved last instance -->
+  <local_variable id="variable_last_pass_warn_age_instance_value" datatype="int" comment="The value of last PASS_WARN_AGE directive in /etc/login.defs" version="1">
+    <regex_capture pattern="PASS_WARN_AGE\s+(\d+)">
+      <object_component item_field="subexpression" object_ref="object_last_pass_warn_age_from_etc_login_defs" />
+    </regex_capture>
+  </local_variable>
+
+  <!-- Construct OVAL object from this local variable so we can use it in variable test above -->
+  <ind:variable_object id="object_last_pass_warn_age_instance_value" version="1">
+    <ind:var_ref>variable_last_pass_warn_age_instance_value</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- Define corresponding variable state (the requirement) for the variable object -->
+  <!-- The check should PASS if retrieved last PASS_WARN_AGE value is greater than or equal to the requirement -->
+  <ind:variable_state id="state_last_pass_warn_age_instance_value" version="1">
+    <ind:value operation="greater than or equal" var_ref="var_accounts_password_warn_age_login_defs" datatype="int" var_check="at least one" />
+  </ind:variable_state>
+
+  <external_variable comment="password expiration warning age in days" datatype="int" id="var_accounts_password_warn_age_login_defs" version="1" />
+
+</def-group>

@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Deployed Applications - Java Permission Deployment Docs'
+
+description: |-
+    Java permissions for applications should be documented
+    and carefully reviewed prior to deployment. Developers and
+    administrators should strive to balance application permissions and
+    application functionality.
+
+rationale: |-
+    Java permissions for deployed applications should be carefully
+    restricted to enforce the least privilege principle. Careful
+    documentation, along with a thorough review will help prevent
+    needlessly insecure permission assignments for applications. An
+    overabundance of Java permissions can allow applications to
+    circumvent one of Java's strongest security features - the Java
+    Security Manager sandbox.
+
+severity: medium
+
+references:
+    nist: AC-1
+
+ocil_clause: 'there are no documents for java permissions for deployed applications'

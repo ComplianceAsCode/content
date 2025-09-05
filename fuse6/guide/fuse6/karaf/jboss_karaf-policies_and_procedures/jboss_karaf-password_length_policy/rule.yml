@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Define Minimum and Maximum Password Length Requirement'
+
+description: |-
+    Organizations should create an authenticator management
+    policy that defines minimum and maximum password sizes for user accounts
+    accessing JBoss and its deployed applications.
+
+rationale: |-
+    In brute force scenarios, passwords of extended lengths increase
+    password security and the length of time required to decrypt the password.
+    However, there are risks associated with requiring passwords of great
+    lengths, as users may take steps to circumvent policy; such as using
+    repetitive passwords, writing password reminders, or writing down their
+    passwords.
+
+severity: medium
+
+references:
+    nist: IA-5
+
+ocil_clause: 'no appropriate minimum and maximum password length policy exists'

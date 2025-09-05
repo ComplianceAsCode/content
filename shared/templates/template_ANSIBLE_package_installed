@@ -1,0 +1,10 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+- name: Ensure {{{ PKGNAME }}} is installed
+  package:
+    name: "{{{ PKGNAME }}}"
+    state: present
+

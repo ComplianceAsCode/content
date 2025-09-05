@@ -1,0 +1,22 @@
+<def-group>
+  <definition class="compliance" id="accounts_no_uid_except_zero" version="1">
+    <metadata>
+      <title>UID 0 Belongs Only To Root</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Only the root account should be assigned a user id of 0.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="tests that there are no accounts with UID 0 except root in the /etc/passwd file" test_ref="test_accounts_no_uid_except_root" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="test that there are no accounts with UID 0 except root in the /etc/passwd file" id="test_accounts_no_uid_except_root" version="1">
+    <ind:object object_ref="object_accounts_no_uid_except_root" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_accounts_no_uid_except_root" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!root:)[^:]*:[^:]*:0</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

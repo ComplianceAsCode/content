@@ -1,0 +1,36 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- (xccdf-var var_sssd_memcache_timeout)
+
+- name: "Test for domain group"
+  command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
+  register: test_grep_domain
+  ignore_errors: yes
+  changed_when: False
+
+- name: "Add default domain group (if no domain there)"
+  ini_file:
+    path: /etc/sssd/sssd.conf
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    create: yes
+    mode: 0600
+  with_items:
+    - { section: sssd, option: domains, value: default}
+    - { section: domain/default, option: id_provider, value: files }
+  when:
+    - test_grep_domain.stdout is defined
+    - test_grep_domain.stdout | length < 1
+
+- name: "Configure SSSD's Memory Cache to Expire"
+  ini_file:
+    dest: /etc/sssd/sssd.conf
+    section: nss
+    option: memcache_timeout
+    value: "{{ var_sssd_memcache_timeout }}"
+    create: yes
+    mode: 0600

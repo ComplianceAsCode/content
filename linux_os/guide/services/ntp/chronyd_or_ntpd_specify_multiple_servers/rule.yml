@@ -1,0 +1,52 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Specify Additional Remote NTP Servers'
+
+description: |-
+    Depending on specific functional requirements of a concrete
+    production environment, the {{{ full_name }}} system can be
+    configured to utilize the services of the <tt>chronyd</tt> NTP daemon (the
+    default), or services of the <tt>ntpd</tt> NTP daemon. Refer to
+    {{% if product in ["ol7", "ol8"] %}}
+        {{{ weblink(link="https://docs.oracle.com/cd/E52668_01/E54669/html/ol7-nettime.html") }}}
+    {{% else %}}
+        {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html") }}}
+    {{% endif %}}
+    for more detailed comparison of the features of both of the choices, and for
+    further guidance how to choose between the two NTP daemons.
+    <br />
+    Additional NTP servers can be specified for time synchronization. To do so,
+    perform the following:
+    <ul>
+    <li> if the system is configured to use the <tt>chronyd</tt> as the NTP daemon
+    (the default), edit the file <tt>/etc/chrony.conf</tt> as follows,</li>
+    <li> if the system is configured to use the <tt>ntpd</tt> as the NTP daemon,
+    edit the file <tt>/etc/ntp.conf</tt> as documented below.</li>
+    </ul>
+    Add additional lines of the following form, substituting the IP address or
+    hostname of a remote NTP server for <em>ntpserver</em>:
+    <pre>server <i>ntpserver</i></pre>
+
+rationale: |-
+    Specifying additional NTP servers increases the availability of
+    accurate time data, in the event that one of the specified servers becomes
+    unavailable. This is typical for a system acting as an NTP server for
+    other systems.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27012-4
+    cce@rhel8: 80764-4
+
+references:
+    nist: AU-8(1)
+    nist-csf: PR.PT-1
+    isa-62443-2013: 'SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9'
+    isa-62443-2009: 4.3.3.3.9,4.3.3.5.8,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
+    cobit5: APO11.04,BAI03.05,DSS05.04,DSS05.07,MEA02.01
+    iso27001-2013: A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1
+    cis-csc: 1,14,15,16,3,5,6
+    pcidss: Req-10.4.3

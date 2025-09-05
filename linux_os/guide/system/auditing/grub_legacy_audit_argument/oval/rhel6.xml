@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance" id="bootloader_audit_argument" version="3">
+    <metadata>
+      <title>Enable Auditing for Processes Which Start Prior to the Audit Daemon</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Look for argument audit=1 in the kernel line in /etc/grub.conf.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_bootloader_audit_argument" comment="check for audit=1 in /etc/grub.conf" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_bootloader_audit_argument"
+  comment="check for audit=1 in /etc/grub.conf"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_bootloader_audit_argument" />
+    <ind:state state_ref="state_bootloader_audit_argument" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_bootloader_audit_argument" version="1">
+    <ind:filepath>/etc/grub.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*kernel\s/vmlinuz(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_bootloader_audit_argument" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^.*audit=1.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

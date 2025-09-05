@@ -1,0 +1,50 @@
+documentation_complete: true
+
+prodtype: wrlinux1019,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session'
+
+description: |-
+    To configure the number of retry prompts that are permitted per-session:
+    Edit the <tt>pam_pwquality.so</tt> statement in <tt>/etc/pam.d/system-auth</tt> to
+    show <tt>retry=<sub idref="var_password_pam_retry" /></tt>, or a lower value if
+    site policy is more restrictive.
+    The DoD requirement is a maximum of 3 prompts per session.
+
+rationale: |-
+    Setting the password retry prompts that are permitted on a per-session basis to a low value
+    requires some software, such as SSH, to re-connect. This can slow down and
+    draw additional attention to some types of password-guessing attacks. Note that this
+    is different from account lockout, which is provided by the pam_faillock module.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27160-1
+    cce@rhel8: 80664-6
+
+references:
+    cis: 6.3.2
+    cjis: 5.5.3
+    disa: "366"
+    nist: CM-6(b),IA-5(c)
+    nist-csf: PR.AC-1,PR.AC-6,PR.AC-7,PR.IP-1
+    ospp: FMT_MOF_EXT.1
+    srg: SRG-OS-000480-GPOS-00225
+    stigid@rhel7: "010119"
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 7.6'
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.4,4.3.4.3.2,4.3.4.3.3
+    cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
+    iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
+    cis-csc: 1,11,12,15,16,3,5,9
+
+ocil_clause: 'it is not the required value'
+
+ocil: |-
+    To check how many retry attempts are permitted on a per-session basis, run the following command:
+    <pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
+    The <tt>retry</tt> parameter will indicate how many attempts are permitted.
+    The DoD required value is less than or equal to 3.
+    This would appear as <tt>retry=3</tt>, or a lower value.
+
+platform: pam

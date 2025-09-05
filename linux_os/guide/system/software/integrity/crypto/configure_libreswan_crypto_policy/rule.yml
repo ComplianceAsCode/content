@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8,ol8
+
+title: 'Configure Libreswan to use System Crypto Policy'
+
+description: |-
+    Crypto Policies provide a centralized control over crypto algorithms usage of many packages.
+    Libreswan is supported by system crypto policy, but the Libreswan configuration may be
+    set up to ignore it.
+
+    To check that Crypto Policies settings are configured correctly, ensure that the <tt>/etc/ipsec.conf</tt>
+    includes the appropriate configuration file.
+    In <tt>/etc/ipsec.conf</tt>, make sure that the following line
+    is not commented out or superseded by later includes:
+    <tt>include /etc/crypto-policies/back-ends/libreswan.config</tt>
+
+rationale: |-
+    Overriding the system crypto policy makes the behavior of the Libreswan
+    service violate expectations, and makes system configuration more
+    fragmented.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 80937-6
+
+ocil_clause: |-
+    Libreswan is installed and <tt>/etc/ipsec.conf</tt> does not contain <tt>include /etc/crypto-policies/back-ends/libreswan.config</tt>
+
+ocil: |-
+    To verify that Libreswan uses the system crypto policy, run the following command:
+    <pre>$ grep include /etc/ipsec.conf</pre>
+    The output should return something similar to:
+    <pre>include /etc/crypto-policies/back-ends/libreswan.config</pre>

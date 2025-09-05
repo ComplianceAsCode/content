@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Ensure All Downloaded Software Is Validated'
+
+description: |-
+    Software and packages should be downloaded from
+    redhat.com, and hash validated.
+
+rationale: |-
+    Without validating downloaded files are authentic, malicious users
+    may compromise software before it has even been installed. Attackers
+    may redirect traffic to alternate download locations and attempt to
+    trick administrators into downloading modified software.
+
+severity: medium
+
+references:
+    nist: CM-6
+
+ocil_clause: 'all JBoss software that has been downloaded is valid'

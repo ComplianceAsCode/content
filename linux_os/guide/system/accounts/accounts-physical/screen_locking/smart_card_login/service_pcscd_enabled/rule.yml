@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,fedora,rhv4,ol7,ol8
+
+title: 'Enable the pcscd Service'
+
+description: |-
+    {{{ describe_service_enable(service="pcscd") }}}
+
+rationale: |-
+    Using an authentication device, such as a CAC or token that is separate from
+    the information system, ensures that even if the information system is
+    compromised, that compromise will not affect credentials stored on the
+    authentication device.
+    <br /><br />
+    Multifactor solutions that require devices separate from
+    information systems gaining access include, for example, hardware tokens
+    providing time-based or challenge-response authenticators and smart cards such
+    as the U.S. Government Personal Identity Verification card and the DoD Common
+    Access Card.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80569-7
+    cce@rhel8: 80881-6
+
+references:
+    disa: "1954"
+    srg: SRG-OS-000375-GPOS-00160
+    vmmsrg: SRG-OS-000377-VMM-001530
+
+ocil_clause: 'the pcscd service is not enabled'
+
+ocil: '{{{ ocil_service_enabled(service="pcscd") }}}'

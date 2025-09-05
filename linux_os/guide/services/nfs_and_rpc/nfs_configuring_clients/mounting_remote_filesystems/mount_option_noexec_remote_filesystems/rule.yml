@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: wrlinux1019,rhel7,rhel8,rhv4
+
+title: 'Mount Remote Filesystems with noexec'
+
+description: '{{{ describe_mount(option="noexec", part="any NFS mounts") }}}'
+
+rationale: |-
+    The noexec mount option causes the system not to execute binary files. This option must be used
+    for mounting any file system not containing approved binary files as they may be incompatible. Executing
+    files from untrusted file systems increases the opportunity for unprivileged users to attain unauthorized
+    administrative access.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80436-9
+
+references:
+    disa: "366"
+    nist: AC-6
+    nist-csf: PR.AC-4,PR.DS-5
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "021021"
+    isa-62443-2013: 'SR 2.1,SR 5.2'
+    isa-62443-2009: 4.3.3.7.3
+    cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    cis-csc: 12,13,14,15,16,18,3,5
+
+ocil_clause: 'the setting does not show'
+
+ocil: |-
+    To verify the <tt>noexec</tt> option is configured for all NFS mounts, run the following command:
+    <pre>$ mount | grep nfs</pre>
+    All NFS mounts should show the <tt>noexec</tt> setting in parentheses.  This is not applicable if NFS is
+    not implemented.

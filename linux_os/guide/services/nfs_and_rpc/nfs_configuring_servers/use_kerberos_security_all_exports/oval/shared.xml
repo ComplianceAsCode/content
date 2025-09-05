@@ -1,0 +1,48 @@
+<def-group>
+  <definition class="compliance" id="use_kerberos_security_all_exports" version="3">
+    <metadata>
+      <title>Use Kerberos Security on All Exports</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>Using Kerberos Security allows to cryptography authenticate a
+      valid user to an NFS share.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="Check for Kerberos settings in /etc/exports"
+      test_ref="test_use_kerberos_security_all_exports" />
+      <criterion comment="Check for a share in /etc/exports"
+      test_ref="test_non_empty_exports_file" negate="true" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests the value of the Kerberos Settings in /etc/exports"
+  id="test_use_kerberos_security_all_exports" version="2">
+    <ind:object object_ref="obj_use_kerberos_security_all_exports" />
+    <ind:state state_ref="state_use_kerberos_security_all_exports" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_use_kerberos_security_all_exports"
+  version="2">
+    <ind:filepath>/etc/exports</ind:filepath>
+    <ind:pattern operation="pattern match">^\/.*\((\S+)\)$</ind:pattern>
+    <ind:instance datatype="int" operation="not equal">0</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_use_kerberos_security_all_exports" version="1">
+    <ind:subexpression operation="pattern match">^.*,sec=krb5\:krb5i\:krb5p.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests if a share is configured in /etc/exports"
+  id="test_non_empty_exports_file" version="1">
+    <ind:object object_ref="obj_non_empty_exports_file" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_non_empty_exports_file"
+  version="1">
+    <ind:filepath>/etc/exports</ind:filepath>
+    <ind:pattern operation="pattern match">^\/.*$</ind:pattern>
+    <ind:instance datatype="int" operation="not equal">0</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

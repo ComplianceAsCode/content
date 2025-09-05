@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="compliance" id="no_direct_root_logins" version="1">
+    <metadata>
+      <title>Direct root Logins Not Allowed</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Preventing direct root logins help ensure accountability for actions
+      taken on the system using the root account.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="serial ports /etc/securetty" test_ref="test_no_direct_root_logins" />
+      <criterion comment="serial ports /etc/securetty" test_ref="test_etc_securetty_exists" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="/etc/securetty file exists" id="test_etc_securetty_exists" version="1">
+    <ind:object object_ref="object_etc_securetty_exists" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="/etc/securetty file exists" id="object_etc_securetty_exists" version="1">
+    <ind:filepath>/etc/securetty</ind:filepath>
+    <ind:pattern operation="pattern match">^.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="no entries in /etc/securetty" id="test_no_direct_root_logins" version="1">
+    <ind:object object_ref="object_no_direct_root_logins" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="no entries /etc/securetty" id="object_no_direct_root_logins" version="1">
+    <ind:filepath>/etc/securetty</ind:filepath>
+    <ind:pattern operation="pattern match">^$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

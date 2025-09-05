@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="install_mcafee_antivirus"
+  version="1">
+    <metadata>
+      <title>Package McAfeeVSEForLinux Installed</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>McAfee Antivirus software should be installed.</description>
+    </metadata>
+    <criteria comment="Antivirus is not being used or conditions are met" operator="AND">
+      <extend_definition comment="McAfee Runtime Libraries and Agent" definition_ref="install_mcafee_cma_rt" />
+      <criterion comment="Linuxshield AntiVirus package is installed"
+      test_ref="test_linuxshield_install_antivirus" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  id="test_linuxshield_install_antivirus" version="1"
+  comment="AntiVirus package is installed">
+    <linux:object object_ref="obj_linuxshield_install_antivirus" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_linuxshield_install_antivirus" version="1">
+    <linux:name>McAfeeVSEForLinux</linux:name>
+  </linux:rpminfo_object>
+</def-group>

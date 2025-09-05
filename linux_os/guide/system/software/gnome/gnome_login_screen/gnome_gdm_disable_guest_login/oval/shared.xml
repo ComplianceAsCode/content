@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="gnome_gdm_disable_guest_login" version="2">
+    <metadata>
+      <title>Disable GDM Guest Login</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>Disable the GNOME Display Manager (GDM) ability to allow guest users
+      to login.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="gdm installed" definition_ref="package_gdm_installed" negate="true" />
+      <criterion comment="Disable GDM Guest Login" test_ref="test_disable_guest_login" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Disable GDM Guest Login"
+  id="test_disable_guest_login" version="1">
+    <ind:object object_ref="obj_disable_guest_login" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_disable_guest_login"
+  version="1">
+    <ind:filepath>/etc/gdm/custom.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\[daemon]([^\n]*\n+)+?TimedLoginEnable=[Ff]alse$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

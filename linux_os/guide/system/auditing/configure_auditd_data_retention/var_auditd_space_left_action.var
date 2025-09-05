@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Action for auditd to take when disk space just starts to run low'
+
+description: 'The setting for space_left_action in /etc/audit/auditd.conf'
+
+type: string
+
+interactive: false
+
+options:
+    default: email
+    email: email
+    exec: exec
+    halt: halt
+    single: single
+    suspend: suspend
+    syslog: syslog
+    rotate: rotate

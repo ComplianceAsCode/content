@@ -1,0 +1,13 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+include disable_{{{ SERVICENAME }}}
+
+class disable_{{{ SERVICENAME }}} {
+  service {'{{{ DAEMONNAME }}}':
+    enable => false,
+    ensure => 'stopped',
+  }
+}

@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Disable Incognito Mode'
+
+description: |-
+    Incognito Mode allows users to browse in private which prevents monitoring
+    and validating user browsing habits. This capability should be disabled by
+    setting <tt>IncognitoModeAvailability</tt> to <tt>1</tt> in the Chromium
+    policy file.
+
+rationale: |-
+    Incognito mode allows the user to browse the Internet without recording their
+    browsing history/activity. From a forensics perspective, this is unacceptable.
+    Best practice requires that browser history is retained.
+
+severity: unknown
+
+references:
+    stigid: DTBC0030
+
+ocil_clause: 'it is not disabled'
+
+ocil: |-
+    To verify that incognito mode is disabled, run the following command:
+    <pre>$ grep IncognitoModeAvailability /etc/chromium/policies/managed/*.json</pre>
+    The output should contain:
+    <pre>"IncognitoModeAvailability": 1,</pre>

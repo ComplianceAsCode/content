@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Ensure Default User Accounts Have Benn Removed'
+
+description: |-
+    Remove, rename, or comment out the default user
+    accounts defined in .properties files.
+
+rationale: |-
+    Default configurations are commonly leveraged by attackers to
+    gain entry into closed systems. Removing, renaming, or commenting
+    out default user accounts makes malicious exploitation more
+    complex.
+
+severity: medium
+
+references:
+    nist: IA-5
+
+ocil_clause: 'the default user accounts still exist'

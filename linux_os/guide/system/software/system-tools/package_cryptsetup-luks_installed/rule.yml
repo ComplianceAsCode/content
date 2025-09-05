@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Install cryptsetup-luks Package'
+
+description: |-
+    {{{ describe_package_install(package="cryptsetup-luks") }}}
+
+rationale: |-
+    LUKS is the upcoming standard for Linux hard disk encryption. By providing a standard
+    on-disk format, it does not only facilitate compatibility among distributions, but also
+    provide secure management of multiple user passwords. In contrast to existing solution,
+    LUKS stores all necessary setup information in the partition header, enabling the user
+    to transport or migrate their data seamlessly. LUKS for dm-crypt is implemented in
+    <tt>cryptsetup</tt>. <tt>cryptsetup-luks</tt> is intended as a complete replacement for the
+    original <tt>cryptsetup</tt>. It provides all the functionality of the original
+    version plus all LUKS features, that are accessible by luks* action.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82997-8
+    cce@rhel7: 82996-0
+    cce@rhel8: 82995-2
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="cryptsetup-luks") }}}'

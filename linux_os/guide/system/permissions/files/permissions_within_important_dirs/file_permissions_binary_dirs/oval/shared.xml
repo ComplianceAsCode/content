@@ -1,0 +1,41 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_binary_dirs" version="2">
+    <metadata>
+      <title>Verify that System Executables Have Restrictive Permissions</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>
+        Checks that binary files under /bin, /sbin, /usr/bin, /usr/sbin,
+        /usr/local/bin, /usr/local/sbin, and /usr/libexec are not group-writable or world-writable.
+      </description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_perms_binary_files" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="binary files go-w" id="test_perms_binary_files" version="1">
+    <unix:object object_ref="object_file_permissions_binary_files" />
+  </unix:file_test>
+
+  <unix:file_object comment="binary files" id="object_file_permissions_binary_files" version="1">
+    <!-- Check that binary files under /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin,
+         /usr/local/sbin, and /usr/libexec directories have safe permissions (go-w) -->
+    <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin|^\/usr\/libexec</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_perms_binary_files_nogroupwrite_noworldwrite</filter>
+    <filter action="exclude">state_perms_binary_files_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_perms_binary_files_nogroupwrite_noworldwrite" version="1" operator="OR">
+    <unix:gwrite datatype="boolean">true</unix:gwrite>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+  </unix:file_state>
+
+  <unix:file_state id="state_perms_binary_files_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+</def-group>

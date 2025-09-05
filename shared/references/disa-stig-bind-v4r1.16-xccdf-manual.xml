@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type='text/xsl' href='STIG_unclass.xsl'?><Benchmark xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cpe="http://cpe.mitre.org/language/2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" id="BIND_DNS" xml:lang="en" xsi:schemaLocation="http://checklists.nist.gov/xccdf/1.1 http://nvd.nist.gov/schema/xccdf-1.1.4.xsd http://cpe.mitre.org/dictionary/2.0 http://cpe.mitre.org/files/cpe-dictionary_2.1.xsd" xmlns="http://checklists.nist.gov/xccdf/1.1"><status date="2014-04-01">accepted</status><title>BIND DNS STIG</title><notice id="terms-of-use" xml:lang="en"></notice><reference href="http://iase.disa.mil"><dc:publisher>DISA, Field Security Operations</dc:publisher><dc:source>STIG.DOD.MIL</dc:source></reference><plain-text id="release-info">Release: 1.17 Benchmark Date: 25 Apr 2014</plain-text><version>4</version><Profile id="MAC-1_Classified"><title>I - Mission Critial Classified</title><description>&lt;ProfileDescription&gt;&lt;/ProfileDescription&gt;</description><select idref="V-3617" selected="true" /><select idref="V-3618" selected="true" /><select idref="V-3619" selected="true" /><select idref="V-3620" selected="true" /><select idref="V-3621" selected="true" /><select idref="V-3622" selected="true" /><select idref="V-3623" selected="true" /><select idref="V-3624" selected="true" /><select idref="V-3626" selected="true" /><select idref="V-4467" selected="true" /><select idref="V-4468" selected="true" /><select idref="V-4469" selected="true" /><select idref="V-4470" selected="true" /><select idref="V-4473" selected="true" /><select idref="V-4475" selected="true" /><select idref="V-4476" selected="true" /><select idref="V-4477" selected="true" /><select idref="V-4478" selected="true" /><select idref="V-4479" selected="true" /><select idref="V-4480" selected="true" /><select idref="V-4481" selected="true" /><select idref="V-4482" selected="true" /><select idref="V-4483" selected="true" /><select idref="V-4485" selected="true" /><select idref="V-4486" selected="true" /><select idref="V-4487" selected="true" /><select idref="V-4488" selected="true" /><select idref="V-4489" selected="true" /><select idref="V-4490" selected="true" /><select idref="V-4492" selected="true" /><select idref="V-4493" selected="true" /><select idref="V-4494" selected="true" /><select idref="V-4495" selected="true" /><select idref="V-4511" selected="true" /><select idref="V-12440" selected="true" /><select idref="V-12774" selected="true" /><select idref="V-12966" selected="true" /><select idref="V-12967" selected="true" /><select idref="V-14756" selected="true" /><select idref="V-14757" selected="true" /><select idref="V-14758" selected="true" /><select idref="V-14759" selected="true" /><select idref="V-14760" selected="true" /><select idref="V-14761" selected="true" /><select idref="V-14762" selected="true" /><select idref="V-14764" selected="true" /><select idref="V-14765" selected="true" /><select idref="V-14766" selected="true" /><select idref="V-14767" selected="true" /><select idref="V-24997" selected="true" /><select idref="V-39138" selected="true" /></Profile><Profile id="MAC-1_Public"><title>I - Mission Critial Public</title><description>&lt;ProfileDescription&gt;&lt;/ProfileDescription&gt;</description><select idref="V-3617" selected="true" /><select idref="V-3618" selected="true" /><select idref="V-3619" selected="true" /><select idref="V-3620" selected="true" /><select idref="V-3621" selected="true" /><select idref="V-3622" selected="true" /><select idref="V-3623" selected="true" /><select idref="V-3624" selected="true" /><select idref="V-3626" selected="true" /><select idref="V-4467" selected="true" /><select idref="V-4468" selected="true" /><select idref="V-4469" selected="true" /><select idref="V-4470" selected="true" /><select idref="V-4473" selected="true" /><select idref="V-4475" selected="true" /><select idref="V-4476" selected="true" /><select idref="V-4477" selected="true" /><select idref="V-4478" selected="true" /><select idref="V-4479" selected="true" /><select idref="V-4480" selected="true" /><select idref="V-4481" selected="true" /><select idref="V-4482" selected="true" /><select idref="V-4483" selected="true" /><select idref="V-4485" selected="true" /><select idref="V-4486" selected="true" /><select idref="V-4487" selected="true" /><select idref="V-4488" selected="true" /><select idref="V-4489" selected="true" /><select idref="V-4490" selected="true" /><select idref="V-4492" selected="true" /><select idref="V-4493" selected="true" /><select idref="V-4494" selected="true" /><select idref="V-4495" selected="true" /><select idref="V-4511" selected="true" /><select idref="V-12440" selected="true" /><select idref="V-12774" selected="true" /><select idref="V-12966" selected="true" /><select idref="V-12967" selected="true" /><select idref="V-14756" selected="true" /><select idref="V-14757" selected="true" /><select idref="V-14758" selected="true" /><select idref="V-14759" selected="true" /><select idref="V-14760" selected="true" /><select idref="V-14761" selected="true" /><select idref="V-14762" selected="true" /><select idref="V-14764" selected="true" /><select idref="V-14765" selected="true" /><select idref="V-14766" selected="true" /><select idref="V-14767" selected="true" /><select idref="V-24997" selected="true" /><select idref="V-39138" selected="true" /></Profile><Profile id="MAC-1_Sensitive"><title>I - Mission Critial Sensitive</title><description>&lt;ProfileDescription&gt;&lt;/ProfileDescription&gt;</description><select idref="V-3617" selected="true" /><select idref="V-3618" selected="true" /><select idref="V-3619" selected="true" /><select idref="V-3620" selected="true" /><select idref="V-3621" selected="true" /><select idref="V-3622" selected="true" /><select idref="V-3623" selected="true" /><select idref="V-3624" selected="true" /><select idref="V-3626" selected="true" /><select idref="V-4467" selected="true" /><select idref="V-4468" selected="true" /><select idref="V-4469" selected="true" /><select idref="V-4470" selected="true" /><select idref="V-4473" selected="true" /><select idref="V-4475" selected="true" /><select idref="V-4476" selected="true" /><select idref="V-4477" selected="true" /><select idref="V-4478" selected="true" /><select idref="V-4479" selected="true" /><select idref="V-4480" selected="true" /><select idref="V-4481" selected="true" /><select idref="V-4482" selected="true" /><select idref="V-4483" selected="true" /><select idref="V-4485" selected="true" /><select idref="V-4486" selected="true" /><select idref="V-4487" selected="true" /><select idref="V-4488" selected="true" /><select idref="V-4489" selected="true" /><select idref="V-4490" selected="true" /><select idref="V-4492" selected="true" /><select idref="V-4493" selected="true" /><select idref="V-4494" selected="true" /><select idref="V-4495" selected="true" /><select idref="V-4511" selected="true" /><select idref="V-12440" selected="true" /><select idref="V-12774" selected="true" /><select idref="V-12966" selected="true" /><select idref="V-12967" selected="true" /><select idref="V-14756" selected="true" /><select idref="V-14757" selected="true" /><select idref="V-14758" selected="true" /><select idref="V-14759" selected="true" /><select idref="V-14760" selected="true" /><select idref="V-14761" selected="true" /><select idref="V-14762" selected="true" /><select idref="V-14764" selected="true" /><select idref="V-14765" selected="true" /><select idref="V-14766" selected="true" /><select idref="V-14767" selected="true" /><select idref="V-24997" selected="true" /><select idref="V-39138" selected="true" /></Profile><Profile id="MAC-2_Classified"><title>II - Mission Support Classified</title><description>&lt;ProfileDescription&gt;&lt;/ProfileDescription&gt;</description><select idref="V-3617" selected="true" /><select idref="V-3618" selected="true" /><select idref="V-3619" selected="true" /><select idref="V-3620" selected="true" /><select idref="V-3621" selected="true" /><select idref="V-3622" selected="true" /><select idref="V-3623" selected="true" /><select idref="V-3624" selected="true" /><select idref="V-3626" selected="true" /><select idref="V-4467" selected="true" /><select idref="V-4468" selected="true" /><select idref="V-4469" selected="true" /><select idref="V-4470" selected="true" /><select idref="V-4473" selected="true" /><select idref="V-4475" selected="true" /><select idref="V-4476" selected="true" /><select idref="V-4477" selected="true" /><select idref="V-4478" selected="true" /><select idref="V-4479" selected="true" /><select idref="V-4480" selected="true" /><select idref="V-4481" selected="true" /><select idref="V-4482" selected="true" /><select idref="V-4483" selected="true" /><select idref="V-4485" selected="true" /><select idref="V-4486" selected="true" /><select idref="V-4487" selected="true" /><select idref="V-4488" selected="true" /><select idref="V-4489" selected="true" /><select idref="V-4490" selected="true" /><select idref="V-4492" selected="true" /><select idref="V-4493" selected="true" /><select idref="V-4494" selected="true" /><select idref="V-4495" selected="true" /><select idref="V-4511" selected="true" /><select idref="V-12440" selected="true" /><select idref="V-12774" selected="true" /><select idref="V-12966" selected="true" /><select idref="V-12967" selected="true" /><select idref="V-14756" selected="true" /><select idref="V-14757" selected="true" /><select idref="V-14758" selected="true" /><select idref="V-14759" selected="true" /><select idref="V-14760" selected="true" /><select idref="V-14761" selected="true" /><select idref="V-14762" selected="true" /><select idref="V-14764" selected="true" /><select idref="V-14765" selected="true" /><select idref="V-14766" selected="true" /><select idref="V-14767" selected="true" /><select idref="V-24997" selected="true" /><select idref="V-39138" selected="true" /></Profile><Profile id="MAC-2_Public"><title>II - Mission Support Public</title><description>&lt;ProfileDescription&gt;&lt;/ProfileDescription&gt;</description><select idref="V-3617" selected="true" /><select idref="V-3618" selected="true" /><select idref="V-3619" selected="true" /><select idref="V-3620" selected="true" /><select idref="V-3621" selected="true" /><select idref="V-3622" selected="true" /><select idref="V-3623" selected="true" /><select idref="V-3624" selected="true" /><select idref="V-3626" selected="true" /><select idref="V-4467" selected="true" /><select idref="V-4468" selected="true" /><select idref="V-4469" selected="true" /><select idref="V-4470" selected="true" /><select idref="V-4473" selected="true" /><select idref="V-4475" selected="true" /><select idref="V-4476" selected="true" /><select idref="V-4477" selected="true" /><select idref="V-4478" selected="true" /><select idref="V-4479" selected="true" /><select idref="V-4480" selected="true" /><select idref="V-4481" selected="true" /><select idref="V-4482" selected="true" /><select idref="V-4483" selected="true" /><select idref="V-4485" selected="true" /><select idref="V-4486" selected="true" /><select idref="V-4487" selected="true" /><select idref="V-4488" selected="true" /><select idref="V-4489" selected="true" /><select idref="V-4490" selected="true" /><select idref="V-4492" selected="true" /><select idref="V-4493" selected="true" /><select idref="V-4494" selected="true" /><select idref="V-4495" selected="true" /><select idref="V-4511" selected="true" /><select idref="V-12440" selected="true" /><select idref="V-12774" selected="true" /><select idref="V-12966" selected="true" /><select idref="V-12967" selected="true" /><select idref="V-14756" selected="true" /><select idref="V-14757" selected="true" /><select idref="V-14758" selected="true" /><select idref="V-14759" selected="true" /><select idref="V-14760" selected="true" /><select idref="V-14761" selected="true" /><select idref="V-14762" selected="true" /><select idref="V-14764" selected="true" /><select idref="V-14765" selected="true" /><select idref="V-14766" selected="true" /><select idref="V-14767" selected="true" /><select idref="V-24997" selected="true" /><select idref="V-39138" selected="true" /></Profile><Profile id="MAC-2_Sensitive"><title>II - Mission Support Sensitive</title><description>&lt;ProfileDescription&gt;&lt;/ProfileDescription&gt;</description><select idref="V-3617" selected="true" /><select idref="V-3618" selected="true" /><select idref="V-3619" selected="true" /><select idref="V-3620" selected="true" /><select idref="V-3621" selected="true" /><select idref="V-3622" selected="true" /><select idref="V-3623" selected="true" /><select idref="V-3624" selected="true" /><select idref="V-3626" selected="true" /><select idref="V-4467" selected="true" /><select idref="V-4468" selected="true" /><select idref="V-4469" selected="true" /><select idref="V-4470" selected="true" /><select idref="V-4473" selected="true" /><select idref="V-4475" selected="true" /><select idref="V-4476" selected="true" /><select idref="V-4477" selected="true" /><select idref="V-4478" selected="true" /><select idref="V-4479" selected="true" /><select idref="V-4480" selected="true" /><select idref="V-4481" selected="true" /><select idref="V-4482" selected="true" /><select idref="V-4483" selected="true" /><select idref="V-4485" selected="true" /><select idref="V-4486" selected="true" /><select idref="V-4487" selected="true" /><select idref="V-4488" selected="true" /><select idref="V-4489" selected="true" /><select idref="V-4490" selected="true" /><select idref="V-4492" selected="true" /><select idref="V-4493" selected="true" /><select idref="V-4494" selected="true" /><select idref="V-4495" selected="true" /><select idref="V-4511" selected="true" /><select idref="V-12440" selected="true" /><select idref="V-12774" selected="true" /><select idref="V-12966" selected="true" /><select idref="V-12967" selected="true" /><select idref="V-14756" selected="true" /><select idref="V-14757" selected="true" /><select idref="V-14758" selected="true" /><select idref="V-14759" selected="true" /><select idref="V-14760" selected="true" /><select idref="V-14761" selected="true" /><select idref="V-14762" selected="true" /><select idref="V-14764" selected="true" /><select idref="V-14765" selected="true" /><select idref="V-14766" selected="true" /><select idref="V-14767" selected="true" /><select idref="V-24997" selected="true" /><select idref="V-39138" selected="true" /></Profile><Profile id="MAC-3_Classified"><title>III - Administrative Classified</title><description>&lt;ProfileDescription&gt;&lt;/ProfileDescription&gt;</description><select idref="V-3617" selected="true" /><select idref="V-3618" selected="true" /><select idref="V-3619" selected="true" /><select idref="V-3620" selected="true" /><select idref="V-3621" selected="true" /><select idref="V-3622" selected="true" /><select idref="V-3623" selected="true" /><select idref="V-3624" selected="true" /><select idref="V-3626" selected="true" /><select idref="V-4467" selected="true" /><select idref="V-4468" selected="true" /><select idref="V-4469" selected="true" /><select idref="V-4470" selected="true" /><select idref="V-4473" selected="true" /><select idref="V-4475" selected="true" /><select idref="V-4476" selected="true" /><select idref="V-4477" selected="true" /><select idref="V-4478" selected="true" /><select idref="V-4479" selected="true" /><select idref="V-4480" selected="true" /><select idref="V-4481" selected="true" /><select idref="V-4482" selected="true" /><select idref="V-4483" selected="true" /><select idref="V-4485" selected="true" /><select idref="V-4486" selected="true" /><select idref="V-4487" selected="true" /><select idref="V-4488" selected="true" /><select idref="V-4489" selected="true" /><select idref="V-4490" selected="true" /><select idref="V-4492" selected="true" /><select idref="V-4493" selected="true" /><select idref="V-4494" selected="true" /><select idref="V-4495" selected="true" /><select idref="V-4511" selected="true" /><select idref="V-12440" selected="true" /><select idref="V-12774" selected="true" /><select idref="V-12966" selected="true" /><select idref="V-12967" selected="true" /><select idref="V-14756" selected="true" /><select idref="V-14757" selected="true" /><select idref="V-14758" selected="true" /><select idref="V-14759" selected="true" /><select idref="V-14760" selected="true" /><select idref="V-14761" selected="true" /><select idref="V-14762" selected="true" /><select idref="V-14764" selected="true" /><select idref="V-14765" selected="true" /><select idref="V-14766" selected="true" /><select idref="V-14767" selected="true" /><select idref="V-24997" selected="true" /><select idref="V-39138" selected="true" /></Profile><Profile id="MAC-3_Public"><title>III - Administrative Public</title><description>&lt;ProfileDescription&gt;&lt;/ProfileDescription&gt;</description><select idref="V-3617" selected="true" /><select idref="V-3618" selected="true" /><select idref="V-3619" selected="true" /><select idref="V-3620" selected="true" /><select idref="V-3621" selected="true" /><select idref="V-3622" selected="true" /><select idref="V-3623" selected="true" /><select idref="V-3624" selected="true" /><select idref="V-3626" selected="true" /><select idref="V-4467" selected="true" /><select idref="V-4468" selected="true" /><select idref="V-4469" selected="true" /><select idref="V-4470" selected="true" /><select idref="V-4473" selected="true" /><select idref="V-4475" selected="true" /><select idref="V-4476" selected="true" /><select idref="V-4477" selected="true" /><select idref="V-4478" selected="true" /><select idref="V-4479" selected="true" /><select idref="V-4480" selected="true" /><select idref="V-4481" selected="true" /><select idref="V-4482" selected="true" /><select idref="V-4483" selected="true" /><select idref="V-4485" selected="true" /><select idref="V-4486" selected="true" /><select idref="V-4487" selected="true" /><select idref="V-4488" selected="true" /><select idref="V-4489" selected="true" /><select idref="V-4490" selected="true" /><select idref="V-4492" selected="true" /><select idref="V-4493" selected="true" /><select idref="V-4494" selected="true" /><select idref="V-4495" selected="true" /><select idref="V-4511" selected="true" /><select idref="V-12440" selected="true" /><select idref="V-12774" selected="true" /><select idref="V-12966" selected="true" /><select idref="V-12967" selected="true" /><select idref="V-14756" selected="true" /><select idref="V-14757" selected="true" /><select idref="V-14758" selected="true" /><select idref="V-14759" selected="true" /><select idref="V-14760" selected="true" /><select idref="V-14761" selected="true" /><select idref="V-14762" selected="true" /><select idref="V-14764" selected="true" /><select idref="V-14765" selected="true" /><select idref="V-14766" selected="true" /><select idref="V-14767" selected="true" /><select idref="V-24997" selected="true" /><select idref="V-39138" selected="true" /></Profile><Profile id="MAC-3_Sensitive"><title>III - Administrative Sensitive</title><description>&lt;ProfileDescription&gt;&lt;/ProfileDescription&gt;</description><select idref="V-3617" selected="true" /><select idref="V-3618" selected="true" /><select idref="V-3619" selected="true" /><select idref="V-3620" selected="true" /><select idref="V-3621" selected="true" /><select idref="V-3622" selected="true" /><select idref="V-3623" selected="true" /><select idref="V-3624" selected="true" /><select idref="V-3626" selected="true" /><select idref="V-4467" selected="true" /><select idref="V-4468" selected="true" /><select idref="V-4469" selected="true" /><select idref="V-4470" selected="true" /><select idref="V-4473" selected="true" /><select idref="V-4475" selected="true" /><select idref="V-4476" selected="true" /><select idref="V-4477" selected="true" /><select idref="V-4478" selected="true" /><select idref="V-4479" selected="true" /><select idref="V-4480" selected="true" /><select idref="V-4481" selected="true" /><select idref="V-4482" selected="true" /><select idref="V-4483" selected="true" /><select idref="V-4485" selected="true" /><select idref="V-4486" selected="true" /><select idref="V-4487" selected="true" /><select idref="V-4488" selected="true" /><select idref="V-4489" selected="true" /><select idref="V-4490" selected="true" /><select idref="V-4492" selected="true" /><select idref="V-4493" selected="true" /><select idref="V-4494" selected="true" /><select idref="V-4495" selected="true" /><select idref="V-4511" selected="true" /><select idref="V-12440" selected="true" /><select idref="V-12774" selected="true" /><select idref="V-12966" selected="true" /><select idref="V-12967" selected="true" /><select idref="V-14756" selected="true" /><select idref="V-14757" selected="true" /><select idref="V-14758" selected="true" /><select idref="V-14759" selected="true" /><select idref="V-14760" selected="true" /><select idref="V-14761" selected="true" /><select idref="V-14762" selected="true" /><select idref="V-14764" selected="true" /><select idref="V-14765" selected="true" /><select idref="V-14766" selected="true" /><select idref="V-14767" selected="true" /><select idref="V-24997" selected="true" /><select idref="V-39138" selected="true" /></Profile><Group id="V-3617"><title>BIND is not running as a non-privileged account.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-3617r1_rule" severity="low" weight="10.0"><version>DNS4440</version><title>BIND is not configured to run as a dedicated non-privileged user account. BIND is running as a root user.</title><description>&lt;VulnDiscussion&gt;If an intruder gains control of named (BIND), the intruder will acquire the privileges of the user ID under which it runs.  Running as a non-privileged user account limits the extent of any breach.  When BIND runs as root (the default) intruders gain full control of the system.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECLP-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-3548r1_fix">The SA should create a new user account dedicated to DNS, configure it per the DNS STIG, and then restart the named process to run as a the new user account.</fixtext><fix id="F-3548r1_fix" /><check system="C-3454r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>:  In the presence of the reviewer, the SA should enter the following command:
+
+ps –ef | grep ‘named’ &gt; /etc/dns/srr/bindUser.srr
+
+The user identification (UID) utilized to run named should be found in the results.  If the UID is root (i.e., 0) or another built-in ID, then this constitutes a finding.  If it is not, then the next step is to check whether the UID is dedicated to this function.  The SA should enter the following command, substituting the UID obtained in the previous step for bindUID:
+
+ps –ef | grep  ‘bindUID’ &gt; bindUserDaemons.srr
+
+If bindUserDeamons.tmp contains daemons/programs other than BIND (named), then this constitutes a finding.  If the dedicated user is associated with named only, the next step is to check whether the user ID has any privileges other than those needed to run BIND.  To accomplish this, the SA will check the following:
+
+-	Whether the BIND UID is a member of any group other than dnsgroup.
+-	Whether the BIND UID has permissions to any files other than key files and named.stat.
+
+For the first item, the SA should run the following command (substituting the value for bindUID as appropriate):
+
+grep ‘bindUID’ /etc/group   &gt; /etc/dns/srr/bindUserGroups.srr
+
+For the second item, the SA should run the following command (substituting the name of the user ID for dnsuser if applicable):
+
+find / -uid bindUID &gt; /etc/dns/srr/bindUserFiles.srr
+
+With regards to the first item, if dnsuserGroups.srr contains any entry other than dnsgroup (or its equivalent), then this constitutes a finding.  With regards to the second item, if dnsuserFilePermissions.srr contains any entries other than the key files and named.stat, then this constitutes a finding.
+</check-content></check></Rule></Group><Group id="V-3618"><title>Unnecessary services are running on DNS server.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-3618r1_rule" severity="medium" weight="10.0"><version>DNS4450</version><title>A UNIX or UNIX-based name server is running unnecessary daemon/services and/or is configured to start an unnecessary daemon, service, or program upon boot up.</title><description>&lt;VulnDiscussion&gt;Unnecessary software running on a name server could introduce security vulnerabilities that would be avoided if it were not present.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;DNS4450&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;If SNMP is used for network management it must be documented and configured in accordance with the UNIX STIG.  SNMP is not a finding if operationally necessary and documented as such. &lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-3549r1_fix">The SA should edit startup files (e.g., inetd.conf) so that the unnecessary programs to not launch on boot-up.</fixtext><fix id="F-3549r1_fix" /><check system="C-3455r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>The reviewer should examine the start-up files to determine whether they launch unnecessary programs.  The file /etc/inetd.conf is common to UNIX implementations.  The reviewer may use the cat command to view this file.  If the file contains any of the daemons listed, this is a finding:
+
+If SNMP is used for network management it must be documented and configured in accordance with the UNIX STIG. 
+
+Below is a list of prohibited services.  If any of these processes are running (the reviewer may use the ps –ef | grep service name to verify if the process is running or not), or configured to be started upon boot-up (the reviewer my use the ls command in the /etc/rc2.d or /etc/rc3.d directory), then this is a finding (although inherently dangerous, if SNMP is used for network management purposes, it must be documented and configured in accordance with the UNIX STIG):
+
+-	NFS client (s73nfs.client in rc2.d)
+-	automounter (s74autofs in rc2.d)
+-	printer queue daemon (s80lp in rc2.d)
+-	RPC portmapper (s71rpc  in rc2.d)
+-	CDE login (s99dtlogin in rc2.d)
+-	NFS server process (s15nfs.server in rc3.d)
+-	SNMP daemon (s76snmpdx in rc3.d)
+</check-content></check></Rule></Group><Group id="V-3619"><title>It is possible to obtain a command shell.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-3619r1_rule" severity="low" weight="10.0"><version>DNS4460</version><title>It is possible to obtain a command shell by logging on to the DNS user account.</title><description>&lt;VulnDiscussion&gt;If an intruder gains access to a command shell, the intruder may be able to execute unauthorized commands.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECLP-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-3550r1_fix">The SA should edit /etc/passwd and change the shell of the DNS user account to /bin/false, /dev/null, or an alternative producing a similar effect.</fixtext><fix id="F-3550r1_fix" /><check system="C-3464r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>The SA should enter the following command (this command assumes that named is running as user dnsuser):
+
+grep dnsuser /etc/passwd
+
+Based on the command output, the reviewer can identify whether a shell exists for dnsuser.  The shell should be /dev/null or /bin/false.  If it is a legitimate shell, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-3620"><title>Permissions not restrictive on name server files.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-3620r1_rule" severity="medium" weight="10.0"><version>DNS4470</version><title>Permissions on critical UNIX name server files are not as restrictive as required.</title><description>&lt;VulnDiscussion&gt;Weak permissions could allow an intruder to view or modify zone, configuration and/or program files.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECCD-1, ECCD-2&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-3551r1_fix">The SA should modify permissions so that they are at least as restrictive as specified in the DNS STIG.</fixtext><fix id="F-3551r1_fix" /><check system="C-3465r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>Using the ls –l command from the directory containing the core BIND files, check that the permissions for the files listed are at least as restrictive as those listed:
+
+named.conf - owner: root, group: dnsgroup, permissions: 640
+named.pid - owner: root, group: dnsgroup, permissions: 600
+root hints - owner: root, group: dnsgroup, permissions: 640
+master zone file - owner: root, group: dnsgroup, permissions: 640
+slave zone file - owner: root, group: dnsgroup, permissions: 660
+
+The name of the root hints file is defined in named.conf.  Common names for the file are root.hints, named.cache, or db.cache.
+
+</check-content></check></Rule></Group><Group id="V-3621"><title>BIND is running as a privileged service.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-3621r1_rule" severity="medium" weight="10.0"><version>DNS4530</version><title>ISC BIND is not configured to run as a dedicated non-privileged service user account.</title><description>&lt;VulnDiscussion&gt;If an intruder gains control of named (BIND), then the intruder will acquire the privileges of the user ID under which it runs.  Running as a non-privileged user account limits the extent of any breach.  When BIND runs as SYSTEM (the default) intruders gain full control of the system.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECLP-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-3552r1_fix">The SA should create a new user account dedicated to DNS, configure it per the DNS STIG, configure the ISC BIND service to logon as the new user account, and then restart the ISC BIND Service.</fixtext><fix id="F-3552r1_fix" /><check system="C-3443r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>The reviewer will validate ISC BIND is configured to run as a dedicated non-privileged service user account.  Select the “Log On” tab of the properties of the ISC BIND service.  If the ISC BIND service logs on as the “Local System account”, then this is a finding.</check-content></check></Rule></Group><Group id="V-3622"><title>The ISC BIND service is a member incorrect group</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-3622r1_rule" severity="low" weight="10.0"><version>DNS4540</version><title>The ISC BIND service user is a member of a group other than Everyone and Authenticated Users.</title><description>&lt;VulnDiscussion&gt;Membership in configurable groups gives the BIND service user unnecessary privileges that could be used by an intruder to further breach name server security.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECLP-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-3553r1_fix">The SA should remove the BIND service user account from all configurable user groups.</fixtext><fix id="F-3553r1_fix" /><check system="C-3448r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>In Windows 2000/2003, select System Tools | Users and Groups | Users in the “Computer Management” tool.  View the “Member Of” tab in the “User Properties” dialog Box (which can be accessed by double-clicking on the user).  If the user is a member of any group besides “everyone” and “Authenticated Users”, then this is a finding.
+
+In Windows, a user does not have to be a member of any group other than the implicit groups "Everyone" and "Authenticated Users."  Thus, to best ensure security, dnsuser must be removed from all explicit groups, including the "Users" group, into which all users are placed by default.  There should not be a dnsgroup group as is recommended for UNIX.
+</check-content></check></Rule></Group><Group id="V-3623"><title>ISC BIND service does not have appropriate rights.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-3623r1_rule" severity="low" weight="10.0"><version>DNS4550</version><title>The ISC BIND service does not have the appropriate user rights required for the proper configuration and security of ISC BIND.</title><description>&lt;VulnDiscussion&gt;Having user rights beyond the minimum necessary gives the BIND service user unnecessary privileges that could be used by an intruder to further breach name server security.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECLP-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-3554r1_fix">The SA should grant the ISC BIND service the user rights of log on as service, Deny Access to This Computer from the Network, and Deny Logon as a Batch Job, which are required for the proper configuration and security of ISC BIND.</fixtext><fix id="F-3554r1_fix" /><check system="C-3450r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>In Windows NT, select User Rights from the menu bar in “User Manager.”  Select each user right and confirm that the DNS user account is not listed under any rights assignment other than “log on as a service.”  If it is, this is a finding.
+
+Windows 2000 is similar to Windows NT, but adds several relevant user rights (actually user prohibitions).  In “Local Security Settings” (a Microsoft Management Console Plug in), select Local Policies | User Rights Assignments in the left windowpane.  By looking at the assignments in the right windowpane, check that the DNS user account is not listed under any assignments other than “Log on as a service,” “Deny access to this computer from the network,” and “Deny logon as batch job.”  If the user has any additional rights beyond these, this is a finding.
+</check-content></check></Rule></Group><Group id="V-3624"><title>Encryption software is not installed.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-3624r1_rule" severity="medium" weight="10.0"><version>DNS4570</version><title>The appropriate encryption software is not correctly installed and configured on Windows ISC BIND name servers and it is required that in-band remote management be performed from hosts outside the enclave in which the name server resides.</title><description>&lt;VulnDiscussion&gt;In administrative network traffic is in the clear between external clients and name servers, then there is significant potential that authorized individuals can intercept and view that traffic, which may contain passwords and other sensitive information.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECCT-1, ECCT-2&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-3555r1_fix">The IAO should prohibit inband remote management until an appropriate network encryption solution has been deployed and tested.</fixtext><fix id="F-3555r1_fix" /><check system="C-3451r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>The Systems Administrator may state that the evaluated Windows BIND name server is administered from a host outside of the internal network (e.g., a home office or remote site).  In this case, there must be appropriate software on the Windows BIND name server to support encrypted communication.  Once the service has been identified, the reviewer should check that the software does require encrypted sessions and authentication.  Additional checks from the Secure Remote Computing STIG may apply.  If the reviewer determines that the installed remote access/control configuration is inadequate, then there should be a finding with a written explanation specifying why the configuration is inadequate.</check-content></check></Rule></Group><Group id="V-3626"><title>The ownership and permissions are not restrictive.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-3626r1_rule" severity="medium" weight="10.0"><version>DNS4590</version><title>The ownership and permissions on all Windows ISC BIND name servers are not as restrictive as required.</title><description>&lt;VulnDiscussion&gt;Weak permissions could allow an intruder to view or modify zone, configuration and/or program files.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECLP-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-3557r1_fix">The SA should modify permissions so that they are at least as restrictive as specified in the DNS STIG.</fixtext><fix id="F-3557r1_fix" /><check system="C-3453r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>The reviewer can check permissions and ownership by looking at the properties of each file in “Windows Explorer.”
+
+Note that there may be multiple zone files, key files, and log files.  The reviewer should be able to produce a list of the files based on a quick examination of named.conf, which should have been obtained at the beginning of this module.  The reviewer should check the permissions of each zone, key or log file when more than one exists on the name server.
+
+The name of the root hints file is defined in named.conf.  Common names for the root hints file are root.hints, named.cache, and db.cache.
+
+FOLDER/FILE NAME	OWNER	USER/GROUP	PERMISSIONS
+%systemroot%\system32\dns\bin	Administrators	Administrators	Full control
+		dns-admins	Read
+		dnsuser	Read&amp;Execute/List Folder Contents\Read
+%systemroot%\system32\dns\etc	Administrators	Administrators	Full control
+		dns-admins	Change
+		dnsuser	Change
+named.conf	Administrators	Administrators	Full control
+		dns-admins	Change
+		dnsuser	Read
+named.pid	Administrators	Administrators	Full control
+		dns-admins	Read
+		dnsuser	Change
+named.stat	Administrators	Administrators	Full control
+		dns-admins	Read
+		dnsuser	Change
+root hints file	Administrators	Administrators	Full control
+		dns-admins	Change
+		dnsuser	Read
+Any zone file	Administrators	Administrators	Full control
+		dns-admins	Change
+		dnsuser	Change
+Any TSIG key file	Administrators	dnsuser	Read
+
+If permissions are more permissive than required, then this is a finding.</check-content></check></Rule></Group><Group id="V-4467"><title>A zone record has not been validated.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4467r1_rule" severity="low" weight="10.0"><version>DNS0225</version><title>Record owners will validate their zones no less than annually.  The DNS database administrator will remove all zone records that have not been validated in over a year.  </title><description>&lt;VulnDiscussion&gt;If zone information has not been validated in over a year, then there is no assurance that it is still valid.  If invalid records are in a zone, then an adversary could potentially use their existence for improper purposes. An SOP detailing this process can resolve this requirement.
+&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;Information Assurance Officer&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4352r1_fix">Working with DNS Administrators and other appropriate technical personnel, the IAO should attempt to validate the hosts with expired validation dates.  If these cannot be validated within a reasonable period of time, they should be removed.
+
+A zone file should contain adequate documentation that would allow an IAO or newly assigned administrator to quickly learn the scope and structure of that zone.  In particular, each record (or related set of records, such as a group of LAN workstations) should be accompanied by a notation of the date the record was created, modified, or validated and record the owner’s name, title, and organizational affiliation.  The owner of a record is an individual with the authority to request that the record be modified or deleted.</fixtext><fix id="F-4352r1_fix" /><check system="C-3430r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+DNS zone record documentation will preferably reside in the zone file itself through comments, but if this is not feasible, the DNS database administrator will maintain a separate database for this purpose. The zone file location can be found by examining the named.conf and searching for the zone statement.  Within the zone statement will be a file option that will display the name of the zone file.  The reviewer should check that the record’s last verified date is less than one year prior to the date of the review.  If this is not the case for any host or group of hosts, then this is a finding.
+
+Windows
+Ask the DNS database administrator if they maintain a separate database with record documentation.  Windows DNS does not provide the capability to insert comments for records in a zone.  The reviewer should check that the record’s last verified date is less than one year prior to the date of the review.  If this is not the case for any host or group of hosts, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-4468"><title>The zone file contains an outside host record.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4468r1_rule" severity="low" weight="10.0"><version>DNS0230</version><title>Resource records for a host in a zone file are included and their fully qualified domain name resides in another zone. The exception is a glue record or CNAME record supporting a system migration.</title><description>&lt;VulnDiscussion&gt; If a name server were able to claim authority for a resource record in a domain for which it was not authoritative, this would pose a security risk.  In this environment, an adversary could use illicit control of a name server to impact IP address resolution beyond the scope of that name server (i.e., by claiming authority for records outside of that servers zones).  Fortunately, all but the oldest versions of BIND and most other DNS implementations do not allow for this behavior.  Nevertheless, the best way to eliminate this risk is to eliminate from the zone files any records for hosts in another zone.  The two key exceptions to this rule involve glue for NS records and CNAME records for legacy resolution support&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4353r1_fix">The DNS database administrator should remove any resource records for a host in a zone file if its fully qualified domain name resides in another zone, unless the record is a glue record or temporary CNAME record supporting a system migration.</fixtext><fix id="F-4353r1_fix" /><check system="C-3431r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>Review the zone files and confirm with the DNS administrator that the hosts defined in the zone files do not reside in another zone with its fully qualified domain name.  If extraneous resource records are maintained, then this is a finding.
+
+BIND
+The zone file location can be found by examining the named.conf and searching for the zone statement.  Within the zone statement will be a file option that will display the name of the zone file.  Review the zone file and check for records that contain domain names outside of the zone. I.E.  A zone named fso.chambersburg.com will not have a record for a host with a domain ending in disa.mil.
+
+Windows
+Open the DNS management snap in for the Administrative Tools menu.  Expand the Forward Lookup Zones folder.  Expand each zone and ensure the name column for each record does not contain a name for a record that resides outside of the zone. I.E.  A zone named fso.chambersburg.com will not have a record for a host with a domain ending in disa.mil.
+</check-content></check></Rule></Group><Group id="V-4469"><title>A CNAME record has been active too long.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4469r1_rule" severity="low" weight="10.0"><version>DNS0235</version><title>Zone-spanning CNAME records, that point to a zone with lesser security, are active for more than six months. </title><description>&lt;VulnDiscussion&gt;The use of CNAME records for exercises, tests or zone-spanning aliases should be temporary (e.g., to facilitate a migration).  When a host name is an alias for a record in another zone, an adversary has two points of attack  the zone in which the alias is defined and the zone authoritative for the aliases canonical name.  This configuration also reduces the speed of client resolution because it requires a second lookup after obtaining the canonical name. Furthermore, in the case of an authoritative name server, this information is promulgated throughout the enterprise to caching servers and thus compounding the vulnerability.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4354r1_fix">The DNS database administrator should remove any zone-spanning CNAME records that have been active for more than six months.</fixtext><fix id="F-4354r1_fix" /><check system="C-3432r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+The zone file location can be found by examining the named.conf and searching for the zone statement.  Within the zone statement will be a file option that will display the name of the zone file.  The record type column will display CNAME.  This is usually the third or fourth field in a record depending if the TTL value is utilized.  Without a TTL value, the CNAME type will be in the third field, otherwise it will display as the fourth field.  Review the zone files and the DNS zone record documentation to confirm that there are no CNAME records older than 6 months.  If there are CNAME records older than 6 months, then this is a finding.
+
+Windows
+Open the DNS management snap in for the Administrative Tools menu.  Expand the Forward Lookup Zones folder.  Review the type column for each record to locate those with a type of Alias (CNAME).  Ask the DNS administrator to see the database with the record documentation is stored to confirm there are not CNAME records older than 6 months. 
+</check-content></check></Rule></Group><Group id="V-4470"><title>Zone file contains invalid NS records.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4470r1_rule" severity="high" weight="10.0"><version>DNS0240</version><title>The DNS database administrator has not ensured each NS record in a zone file points to an active name server authoritative for the domain specified in that record.</title><description>&lt;VulnDiscussion&gt;Poorly constructed NS records pose a security risk because they create conditions under which an adversary might be able to provide the missing authoritative name services that are improperly specified in the zone file.  The adversary could issue bogus responses to queries that clients would accept because they learned of the adversary’s name server from a valid authoritative name server, one that need not be compromised for this attack to be successful.
+
+The list of slave servers must remain current within 72 hours of any changes to the zone architecture that would affect the list of slaves.  If a slave server has been retired or is not operational but remains on the list, then an adversary might have a greater opportunity to impersonate that slave without detection, rather than if the slave were actually online.  For example, the adversary may be able to spoof the retired slave’s IP address without an IP address conflict, which would likely not occur if the true slave were active.
+&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4355r1_fix">The DNS database administrator should remove any NS records in a zone file that do not point to an active name server authoritative for the domain specified in that record.</fixtext><fix id="F-4355r1_fix" /><check system="C-3442r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+The zone file location can be found by examining the named.conf and searching for the zone statement.  Within the zone statement will be a file option that will display the name of the zone file.  Review the zone files, and confirm with the DNS administrator that each NS record points to an active name server authoritative for the domain, it this is not the case, then this is a finding.
+
+Windows
+Open the DNS management snap in for the Administrative Tools menu.  Expand the Forward Lookup Zones folder.  Review the type column for each record to locate those with a type of Name Server (NS).  Confirm with the DNS administrator that each NS record points to an active name server authoritative for the domain, it this is not the case, then this is a finding.
+
+</check-content></check></Rule></Group><Group id="V-4473"><title>DNS software does not run on dedicated hardware.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4473r1_rule" severity="medium" weight="10.0"><version>DNS0415</version><title>DNS software does not run on dedicated (running only those services required for DNS) hardware. The only currently accepted exception of this requirement is Windows 2000/2003 DNS, which must run on a domain controller that is integrated with Active Directory services.
+
+</title><description>&lt;VulnDiscussion&gt;Even a securely configured operating system is vulnerable to the flaws of the programs that run on it.  To prevent DNS software from being subjected to the vulnerabilities of other programs and services, the DNS server will not run other programs and services at all,  or at least run only those programs that are necessary for either OS or DNS support.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;Information Assurance Officer&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4358r1_fix">Working with DNS and Systems Administrators, the IAO should migrate the DNS software to dedicated hardware for the purpose of supporting the name server or remove/migrate any additional programs or applications, running on the name server to ensure the name server is running on dedicated hardware.</fixtext><fix id="F-4358r1_fix" /><check system="C-3483r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>During the initial interviews, the reviewer may have already identified that a name server is supporting production services other than DNS.  At this point, the reviewer should validate that response through a hands-on check of the actual name server.
+
+UNIX
+
+The only permitted services to be running on a DNS UNIX BIND server are those implementing:
+
+-	DNS
+-	Secure shell
+-	Host intrusion detection
+-	Host file integrity
+-	Network management or monitoring
+-	Anti-virus
+-	Backup
+-	UPS
+-	NTP
+
+The below are not permitted:
+
+Services started through inetd.conf:
+admind, chargen, echo, etherstatd, fingerd, ftpd, httpd, ICQ server, identd, netstat, netstatd, nit, nntp, nsed, nsemntd, pfilt, portd, quaked, rexd, rexecd, rje_mapper, rlogind, rpc_3270, rpc_alias, rpc_database, rpc_keyserv, rpc_sched, rquotad, rsh, rstatd, rusersd, selectd, serverd, showfhd, sprayd, statmon, sunlink_mapper, sysstat, talkd, telnetd, tfsd, tftpd, timed, ttdb, ugidd, uucpd, and walld.
+
+Services started at boot time:
+NFS client, NFS server process and SNMP daemon, automounter, printer queue daemon, and RPC portmapper.  (For Solaris, disable the following scripts in rc2.d: S73nfs.client, S74autofs, S80lp, S71rpc, and S99dtlogin and the following scripts in rc3.d: S15nfs.server and S76snmpd.)
+
+Instruction:  In the presence of the reviewer, the SA should enter the following command:
+
+ps –ef
+
+Based on the command output, the reviewer should be able to determine if the machine is dedicated to DNS or if it is supporting other production services.  If additional services are running and it is determined the name server is not running on dedicated hardware, then this is a finding.
+
+Windows
+
+The only permitted services to be running on a ISC BIND or Windows DNS server are those implementing:
+
+-	DNS (i.e., the ISC BIND service) or
+-	DNS Server (i.e., Windows 2000 DNS)
+-	Host intrusion detection
+-	Host file integrity
+-	Network management or monitoring
+-	Anti-virus
+-	Backup
+-	UPS
+-	Active Directory/Domain Controller Services including:
+
+Alerter Service 
+COM+ Event System
+Computer Browser
+Distributed File System (DFS)
+DNS Client
+DNS Server
+Event Log
+File Replication Service
+Intersite Messaging
+IPSec Policy Agent
+Kerberos Key Distribution Center
+Logical Disk Manager
+Logical Disk Manager Administrative Service
+Messenger
+Net Logon	Network Connections 
+NTLM Security Support Provider
+Plug and Play
+Print Spooler
+Protected Storage
+Remote Procedure Call (RPC)
+Remote Procedure Call (RPC) Locator
+Remote Registry Service
+Security Accounts Manager 
+Server
+System Event Notification
+TCP/IP NetBIOS Helper Service
+Windows Management Instrumentation
+Windows Management Instrumentation Driver Extensions
+Windows Time 
+Workstation
+</check-content></check></Rule></Group><Group id="V-4475"><title>Encryption key file permissions are inadequate.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4475r1_rule" severity="medium" weight="10.0"><version>DNS0420</version><title>Permissions on files containing DNS encryption keys are inadequate.</title><description>&lt;VulnDiscussion&gt;Weak permissions could allow an intruder to view or modify DNS encryption key files. These keys should never be readable by Other or Everyone.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECCD-1, ECCD-2, ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4360r1_fix">The SA should modify permissions of the files containing DNS encryption keys so that only the DNS software process ID (PID) has read access to these files.</fixtext><fix id="F-4360r1_fix" /><check system="C-3493r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>UNIX
+
+Instruction:  The reviewer must work with the SA to obtain the user name running the named process.
+
+In the presence of the reviewer, the SA should enter the following command to obtain the owner of the named process:
+
+ps –ef  | grep named
+
+The location to the encryption keys can be found by examining the keys directive in the /etc/named.conf file.  In the presence of the reviewer, the SA should enter the following command while in the directory containing the DNS encryption keys:
+
+ls –la ‘encryption_key_file’
+
+If the DNS encryption key files have permissions weaker than 640, then this is a finding.
+
+Windows with BIND
+
+Instruction:  The reviewer must work with the SA to obtain the owner of the named.exe. 
+In the presence of the reviewer, the SA should right-click on the named.exe file and select Properties | Security tab | Advanced | Owner tab.
+
+For each DNS encryption key file listed in c:\named\etc\named.conf  keys directive , right-click on the file and select Properties | Security tab.
+
+If the DNS encryption key files have permissions that allow read access to anyone beyond the owner of the named.exe, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-4476"><title>File permissions on DNS zone files are inadequate.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4476r1_rule" severity="medium" weight="10.0"><version>DNS0425</version><title>Users and/or processes other than the DNS software Process ID (PID) and/or the DNS database administrator have edit/write access to the zone database files.</title><description>&lt;VulnDiscussion&gt;Weak permissions on key files could allow an intruder to view or modify DNS zone files. Permissions on these files will be 640 or more restrictive. &lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECCD-1, ECCD-2&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4361r1_fix">The SA should modify permissions of zone files that only the DNS software PID and/or the DNS database administrator have edit access to the zone database files. </fixtext><fix id="F-4361r1_fix" /><check system="C-3518r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>UNIX
+
+Instruction:  The reviewer must work with the SA to obtain the username and groupname of the DNS database administrator, DNS software administrator, and the username running the named daemon process.
+
+In the presence of the reviewer, the SA should enter the following command to obtain the owner of the named process:
+
+ps –ef  | grep named
+
+There are different ways (e.g., password/group file, NIS+, etc.) to obtain the DNS database administrator’s username and groupname, the reviewer is to work with the SA to obtain this information based on the configuration of the site’s UNIX OS.
+
+The zone files can be located by viewing the named.conf configuration for the zone statement and the file directive contained within the zone statement.  In the presence of the reviewer, the SA should enter the following command while in the directory containing the zone files:
+
+ls -l
+
+If the zone files have permissions that allow write access to anyone beyond the owner of the named process or the DNS database administrator then this is a finding.
+
+Windows
+
+Instruction:  The reviewer must obtain the username and groupname of the DNS database administrator.  The reviewer must work with the SA to obtain the owner of the named.exe or dns.exe  program.
+
+In the presence of the reviewer, the SA should right-click on the named.exe or dns.exe file and select Properties | Security tab | Advanced | Owner tab.
+	
+For each Standard or Primary zone file, right-click on the file in %SystemRoot%\System32\Dns and select Properties | Security tab.
+
+If the zone files have permissions that allow write access to anyone beyond Administrators, Enterprise Domain Controllers, Enterprise Admins, Domain Admins, System or DNS Admins, then this is a finding.
+
+For Active directory integrated zones, the permissions of the Active Directory database should be verified.  They usually reside in %SystemRoot%\NTDS\ntds.dit  The permissions should only give full control access to System, Administrators, Creator Owner, and Local Service.  Any others, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-4477"><title>Inadequate permissions on DNS configuration files.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4477r2_rule" severity="medium" weight="10.0"><version>DNS0430</version><title>Users or processes other than the DNS software administrator and the DNS software PID have read access to the DNS software configuration files and/or users other than the DNS software administrator have write access to these files. </title><description>&lt;VulnDiscussion&gt;Weak permissions on key DNS configuration files could allow an intruder to view or modify DNS name server configuration files.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECCD-1, ECCD-2&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-44112r1_fix">The SA should modify permissions of the DNS name server configuration files so that only the DNS software administrator and the DNS software PID have read access to the DNS software configuration files.
+
+The SA should modify permission to the DNS configuration files to allow “Authenticated Users” to have Create/Delete Child Object permission to support Secure Dynamic Updates.
+ 
+The SA should modify permission to limit all other write 
+access to the DNS configuration files to only the DNS software administrator.
+</fixtext><fix id="F-44112r1_fix" /><check system="C-46501r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>UNIX
+
+Instruction:  The reviewer must work with the SA to obtain the username and groupname of the DNS software administrator and the username running the named daemon process.
+
+In the presence of the reviewer, the SA should enter the following command to obtain the owner of the named process:
+
+ps –ef  | grep named
+
+There are different ways (i.e., password/group file, NIS+, etc.) to obtain the DNS software administrator’s username and groupname, the reviewer is to work with the SA to obtain this information based on the configuration of the site’s UNIX OS.
+
+In the presence of the reviewer, the SA should enter the following command while in the directory containing the DNS configuration files:
+
+ls –l /etc/named.conf
+
+If the DNS configuration files have permissions that allow write access to anyone beyond the DNS software administrator or permissions that allow read access to anyone beyond the owner of the named process or the DNS software administrator then this is a finding.
+
+Windows
+
+For ISC BIND:
+Instruction: The reviewer must work with the SA to obtain the username and groupname of the DNS software administrator and the owner of the named.exe or dns.exe or dns.exe program.
+
+In the presence of the reviewer, the SA should right-click on the named.exe or dns.exe file and select Properties | Security tab | Advanced | Owner tab.
+
+The reviewer should ask the SA for the location of the ISC BIND named.conf/zone files.  For each DNS configuration file, right-click on the file and select Properties | Security tab.
+
+If the DNS configuration files have permissions that allow write access to anyone beyond the DNS software administrator or permissions that allow read access to anyone beyond the owner of the named process or the DNS software administrator then this is a finding.
+
+For Windows DNS:
+
+Open the DNS management console and expand the Forward Lookup Zones.  Right click on each zone and select Properties.  Select the Security tab.
+
+In order to accommodate Secure Dynamic Updates the “Authenticated Users” group must have Create/Delete Child objects permission.
+
+If the DNS configuration files have permissions that allow write access to anyone beyond the DNS software administrator or permissions other than those needed to accommodate Secure Dynamic Updates, then this is a finding.
+
+If the DNS configuration files have permissions that allow read access, other than those needed to accommodate Secure Dynamic Updates, beyond the DNS system administrator or the owner of dns.exe, then this is a finding.  
+
+
+</check-content></check></Rule></Group><Group id="V-4478"><title>IP address is NOTstatically defined.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4478r1_rule" severity="medium" weight="10.0"><version>DNS0435</version><title>The name server’s IP address is NOT statically defined and configured locally on the server. The name server has a DHCP address. </title><description>&lt;VulnDiscussion&gt;Static IP addresses permit a machine to offer Internet services like web, ftp, DNS, and email. Because a specific, known address is associated with your connection, other machines on the Internet know where to send traffic destined for your server.  Required ACL restrictions at the router and or firewall are required to protect the DNS server from unauthorized access. Such ACLS  require a static IP address to be effective.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4363r1_fix">The SA should configure the name server with an IP address that is statically defined.</fixtext><fix id="F-4363r1_fix" /><check system="C-3522r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>UNIX
+
+Instruction:  In the presence of the reviewer, the SA should enter the following command to verify the IP address is not obtained by DHCP, hme0 is used as an example, please confirm the interface:
+
+ifconfig hme0 auto_dhcp status
+
+If “Ifconfig:  hme0:  interface is not under DHCP control,” is not displayed, then this is a finding.
+
+Please note this above mentioned command does not work on every version of UNIX, if this command does not work, please use the below instruction.
+
+In the presence of the reviewer, the SA enters the following command while in the /etc directory:  The reviewer should ensure the file /etc/dhpc.hme0 is not located on the server.
+
+ls -l
+
+If the file dhcp.hme0 is listed (interface designation may different), then this is a finding.
+
+Windows
+
+Instruction:  In the presence of the reviewer, the SA should select Start | Run, this will bring up the “Run” dialog box.  Type cmd at the command line, this will bring up the command screen.  Enter the following command:
+
+ipconfig /all
+
+If “DHCP Enabled” is not set to “No,” then this is a finding.
+</check-content></check></Rule></Group><Group id="V-4479"><title>An integrity checking tool is not utilized.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4479r1_rule" severity="medium" weight="10.0"><version>DNS0440</version><title>An integrity checking tool is not installed or not monitoring for modifications to the root.hints and named.conf files.
+
+</title><description>&lt;VulnDiscussion&gt;An integrity checking tool compares file and directory integrity to the baseline. It can alert the system administrator to unauthorized changes in files or directories. Unauthorized changes in files and directories can give a user unauthorized access to system resources.  Undetected changes to DNS name server root hints and configuration files is the single greatest risk to the security and stability of the DNS name server.  An integrity checking tool (e.g., Tripwire) aids in effectively monitoring and controlling changes to ensure improved security and system availability.  This applies to both authoritative and caching name servers.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4364r1_fix">The SA should install an integrity checking tool on the name server and configure the tool to monitor for any modifications to the root.hints and name server configuration files.</fixtext><fix id="F-4364r1_fix" /><check system="C-3579r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>UNIX
+
+Instruction:  The reviewer must work with the SA to obtain the program name.
+
+In the presence of the reviewer, the SA should enter the following command to confirm the integrity checking tool is installed and running:
+
+ps –ef | grep process name
+
+If an integrity checking tool is not installed and running, then this is a finding.
+
+With the assistance of the SA, confirm that the integrity checking tool is monitoring for any modifications to the root hints and name server’s configuration (e.g., named.conf), if this is not the case, then this is a finding.  If using ISC BIND name server software, common names for the root hints file are root.hints, named.cache, or db.cache.  The name is configurable within the named.conf file.  rndc.conf will be protected in the same manner.
+
+Windows
+
+Instruction:  The reviewer must work with the SA to obtain the service name.
+
+Instruction:  The reviewer should examine the Windows Services GUI to identify started services (in Windows 2000/2003, right click on “My Computer” and select “Manage”.  In the left windowpane, click on “Services and Applications”.  A list of services is displayed in the right windowpane.  Click on the “Status” column heading to sort by status.  The started services will be grouped together).  Also check the “Applications” tab of “Task Manager” for applications that do not run as a service (Simultaneously press Ctrl-Alt-Del keys and select the “Applications” tab).  The reviewer should be able to determine if an integrity checking tool is installed and running.
+
+If an integrity checking tool is not installed and running, then this is a finding.
+
+With the assistance of the SA, confirm that the integrity checking tool is monitoring for any modifications to the root hints, which can be found C:/Windows/System32/DNS/cache.dns.  In addition ensure the tool is checking the zone files.   Active directory zone files are stored in the active directory database.  The database can be found using the windows search feature and locating the ntds.dit file which is the database.  For non-active directory zones, obtain the name of the zone from the DNS management console list of forward zones.  Enter the zone name into the windows search and it will display the path to the actual zone files, normally found in a backup directory.
+
+</check-content></check></Rule></Group><Group id="V-4480"><title>A cryptographic key has not been changed.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4480r1_rule" severity="medium" weight="10.0"><version>DNS0445</version><title>A cryptographic key used to secure DNS transactions has been utilized on a name server for more than one year.</title><description>&lt;VulnDiscussion&gt;Keys are more likely to be compromised if they remain in use for over a year.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;DCNR-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4365r1_fix">The IAO should execute the organizations procedure for TSIG key supersession.</fixtext><fix id="F-4365r1_fix" /><check system="C-3526r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+
+Instruction:  With the SA’s assistance, the reviewer should locate the file directory that contains the TSIG keys (i.e., /etc/dns/keys/) and then list the files in that directory (e.g., by using the UNIX ls –l command).  The key statements in named.conf will provide the location of the key files.  If any of them have a last modified time stamp that is more than one year old, then this is a finding.
+
+</check-content></check></Rule></Group><Group id="V-4481"><title>Dynamic updates are not authenticated.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4481r1_rule" severity="high" weight="10.0"><version>DNS0450</version><title>Dynamic updates are not cryptographically authenticated.</title><description>&lt;VulnDiscussion&gt;The dynamic update capability has considerable appeal in an environment in which IP addresses change so frequently that it would be unacceptably burdensome or expensive to dedicate the time of a DNS database administrator to this function.  This condition would likely be met at sites that rely on the Dynamic Host Configuration Protocol (DHCP) to assign IP addresses to client devices such as workstations, laptops, and IP telephones.  It would also apply to sites that utilize frequently changing service (SRV) records.
+
+On the other hand, dynamic updates can pose a security risk if the proper security controls are not implemented. When dynamic updates are permitted without any mitigating controls, a host with network access to the name server can modify any zone record with an appropriately crafted dynamic update request.  
+
+The solution is to require cryptographic authentication of all dynamic update requests, but not all DNS software supports this functionality.  &lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;DCNR-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4366r1_fix">For BIND implementations, the DNS software administrator must ensure that each zone statement in named.conf contains the phrase allow update{none;};  to disable dynamic updates or allow-update {key ks1.kalamazoo.disa.mil_ns2.kalamazoo.disa.mil;}; (this is an example key name) to encrypt dynamic updates.  For Windows 2000 DNS, disable dynamic updates or if dynamic updates are allowed via the General tab within the Properties dialog box, the DNS software administrator should select Only secure updates.  In cases in which the name server is not running BIND or Windows 2000 DNS, the DNS software administrator must determine how to disable dynamic updates or encrypt them.  If this is not possible, then the product must be replaced as soon as it is feasible to do so.</fixtext><fix id="F-4366r1_fix" /><check system="C-3528r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+
+Instruction:  The reviewer should review the configuration files and check each zone statement for the presence of the allow-update phrase, which enables cryptographically authenticated dynamic updates:
+
+The reviewer should identify the allow-update phrase.  The following example disables dynamic updates: 
+
+allow-update {none;};
+
+In addition, the absence of the allow-update clause will deny updates by default.
+If dynamic updates are not disabled, as shown in the above example, they must be cryptographically authenticated as shown in the below example.
+
+The following example demonstrates cryptographically authenticated dynamic updates:
+
+allow-update {key ns1.kalamazoo.disa.mil_ns2.kalamazoo.disa.mil;
+};
+
+If dynamic updates are not disabled or cryptographically authenticated, then this is a finding.
+	
+Windows 2000/2003 DNS
+
+Instruction:  In the presence of the reviewer, the SA must review the “Properties” dialog box, select the “General” tab, and check to see if dynamic updates are allowed.  If dynamic updates are enabled, ensure that “Only secure updates” has been selected.  If this is not the case, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-4482"><title>A nameserver does not authenticate.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4482r1_rule" severity="high" weight="10.0"><version>DNS0455</version><title>The DNS software administrator will configure each master/slave server supporting a zone to cryptographically authenticate zone transfers.</title><description>&lt;VulnDiscussion&gt;A slave updates its zone information by requesting a zone transfer from its master.  In this transaction, the risk for the slave is that the response to its request is not in fact from its authorized master but from an adversary posing as the master.  In this scenario, such an adversary would be able to modify and insert records into the slaves zone at will.  To protect against this occurrence, the slave must be able to authenticate the master to provide assurance that any zone updates are valid.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;DNS0455&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;A violation of this requirement can have one of two severity levels depending upon the extent of the violation.  If slaves do not authenticate masters in any manner, then the discrepancy would be a Category I finding.  If some form of authentication exists (i.e., based on IP address), but it is not based on cryptography, then the discrepancy would be a Category II finding.&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;DCNR-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4367r1_fix">The DNS software administrator should configure each slave supporting a zone to cryptographically authenticate its master before accepting zone updates.  </fixtext><fix id="F-4367r1_fix" /><check system="C-3531r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+
+Instruction:  This check is only applicable to slave servers.  If there is not an allow-transfer phrase within the zone statement, then this is a CAT I finding.  If there is an allow-transfer statement, there must be a TSIG key corresponding to each of the zone partners.  The reviewer can validate this by examining the key and server statements within named.conf.  Check the keys phrase within each of the server statements.  Verify the key statement is configured to cryptographically authenticate the master name server; an example is provided below, if this is not configured, then this is a finding.  
+
+On the master name server, this is an example of a configured key statement:
+
+key ns1.kalamazoo.disa.mil_ns2.kalamazoo.disa.mil. {
+algorithm hmac-md5;
+include "/etc/dns/keys/tsig-example.key";
+};
+
+zone “disa.mil” {
+type master;file “db.disa.mil”;
+allow-transfer { key ns1.kalamazoo.disa.mil_ns2.kalamazoo.disa.mil.; };
+};
+On the slave name server, this is an example of a configured key statement:
+
+key ns1.kalamazoo.disa.mil_ns2.kalamazoo.disa.mil. {
+	algorithm hmac-,d5;
+	include "/etc/dns/keys/tsig-example.key";
+};
+
+server 10.2.2.2 {
+	keys {ns1.kalamazoo.disa.mil_ns2.kalamazoo.disa.mil};
+};
+
+zone “disa.mil” {
+	type slave;
+	masters { 10.1.1.1; };
+	file “db.disa.mil”;
+};
+
+A violation of this requirement can have one of two severity levels depending upon the extent of the violation.  If slaves do not authenticate master servers in any manner, then the discrepancy would be a Category I finding.  If some form of authentication exists (i.e., based on IP address), but it is not based on cryptography, then the discrepancy would be a Category II finding.
+
+Windows 2000/2003 DNS:
+
+Instruction:  This check only applies if the name server is not active directory integrated.  If the Windows DNS zone type is not active directory integrated, then the open the DNS management console snap-in, right click on the zone and select properties.  If name servers tab has entries, then this will still be a CAT II finding.  If the name servers tab does not have entries, then this is a CAT I.
+
+In cases in which the name server is not running BIND or Windows DNS, the reviewer must still examine the configuration and its documentation to validate this requirement.
+Mitigation:
+A violation of this requirement can have one of two severity levels depending upon the extent of the violation.  If slaves do not authenticate masters in any manner, then the discrepancy would be a Category I finding.  If some form of authentication exists (i.e., based on IP address), but it is not based on cryptography, then the discrepancy would be a Category II finding.
+</check-content></check></Rule></Group><Group id="V-4483"><title>Zone master server does not limit zone transfers.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4483r1_rule" severity="medium" weight="10.0"><version>DNS0460</version><title>A zone master server does not limit zone transfers to a list of active slave name servers authoritative for that zone.</title><description>&lt;VulnDiscussion&gt;The risk to the master in this situation, is that it would honor a request from a host that is not an authorized slave, but rather an adversary seeking information about the zone.  To protect against this possibility, the master must first have knowledge of what machines are authorized slaves.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECAN-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4368r1_fix">The DNS software administrator should configure each zone master server to limit zone transfers to a list of active slaves authoritative for that zone.  Configuration details may be found in the DNS STIG Section 4.2.8.</fixtext><fix id="F-4368r1_fix" /><check system="C-3539r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+
+Instruction:  This check is only applicable to zone master servers.  If there are no allow-transfer phrases within named.conf, then this is a finding.  If there are allow-transfer phrases, then check that there is one corresponding to each of the zone partners.  If this is not the case, then this is also a finding.
+
+If there are allow-transfer phrases for servers other than those supplied, then there may be a finding associated with the incompleteness of the list.
+
+If the key statement references a file, then no other key statement should reference the same file.
+
+If the key statement includes a character representation of the key itself (an improper configuration), then no other key statement should include the same character string.
+
+On the master name server, this is an example of a configured allow-transfer phrase:
+
+zone “disa.mil” {
+	type master;
+	file “db.disa.mil”;
+	allow-transfer {10.10.10.1; key ns1.kalamazoo.disa.mil_ns2.kalamazoo.disa.mil.; };
+};
+
+Windows 2000/2003 DNS
+This check only applies for Windows DNS zones not integrated with active directory.   From the DNS management console snap-in, expand the Forward Lookup zones branch, select the zone you want to configure and right click and select Properties.  Select the Zone Transfer tab.
+If “Allow zone transfers:” is checked, “Only to the following servers” must also be checked.  The reviewer must validate the name servers listed.  If this is not the case, then this is a finding
+</check-content></check></Rule></Group><Group id="V-4485"><title>Name server accepts invalid zone change notices.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4485r1_rule" severity="medium" weight="10.0"><version>DNS0470</version><title>A name server is not configured to only accept notifications of zone changes from a host authoritative for that zone.</title><description>&lt;VulnDiscussion&gt;A slave updates its zone information by requesting a zone transfer from its master.  In this transaction, the risk for the slave is that the response to its request is not in fact from its authorized master but from an adversary posing as the master.  In this scenario, such an adversary would be able to modify and insert records into the slaves zone at will.  To protect against this occurrence, the slave must be able to authenticate the master to provide assurance that any zone updates are valid.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4370r1_fix">The DNS software administrator should configure a name server to only accept notifications of zone changes from a host authoritative for that zone.  Configuration details may be found in the DNS STIG.</fixtext><fix id="F-4370r1_fix" /><check system="C-3543r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+
+Instruction:  If all of a zone’s NS records are valid, then the default behavior in BIND complies with this requirement and does not require the DNS software administrator to take any additional action.
+
+In some cases, the DNS software administrator must implement a non-default configuration to comply with operation requirements.  If this is the case, the DNS software administrator must have an understanding of the named.conf options that govern how master name servers notify other hosts of zone changes and when slave servers will accept notifications.  If none of these options are selected, the resulting behavior represents an acceptable security risk.  If these phrases are configured, then this is a finding.
+
+The phrases within the options statement that govern this behavior are:
+
+-	notify – which turns notification on or off (defaults to on)
+
+-	allow-notify – which defines from which servers a slave will accept notifications (defaults to the master name server only)
+
+Windows DNS
+
+Instruction:  This check is not applicable to those Windows DNS Zones that are active directory integrated.  Those zones will be replicated through active directory.  For those servers running as a standard secondary zone, verify the name servers listed are only those authoritative for the zone.  From the DNS management console snap-in, expand the Forward Lookup zones branch, select the zone you want to configure and right click and select Properties.  Verify the entries under the Name Servers tab are only those authoritative for the zone.
+
+In cases in which the name server is not running BIND or Windows DNS, the reviewer must still examine the configuration and its documentation to validate this requirement.
+</check-content></check></Rule></Group><Group id="V-4486"><title>Recursion is not prohibited.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4486r2_rule" severity="medium" weight="10.0"><version>DNS0475</version><title>Recursion is not prohibited on an authoritative name server.</title><description>&lt;VulnDiscussion&gt;A potential vulnerability of DNS is that an attacker can poison a name server's cache by sending queries that will cause the server to obtain host-to-IP address mappings from bogus name servers that respond with incorrect information. Once a name server has been poisoned, legitimate clients may be directed to non-existent hosts (which constitutes a denial of service) or, worse, hosts that masquerade as legitimate ones to obtain sensitive data or passwords.
+
+To guard against poisoning, name servers authoritative for .mil domains should be separated functionally from name servers that resolve queries on behalf of internal clients. Organizations may achieve this separation by dedicating machines to each function or, if possible, by running two instances of the name server software on the same machine; one for the authoritative function and the other for the resolving function. In this design, each name server process may be bound to a different IP address or network interface to implement the required segregation.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4371r1_fix">The DNS Administrator should configure the authoritative name server to prohibit recursion.  Configuration details may be found in the DNS STIG.</fixtext><fix id="F-4371r1_fix" /><check system="C-47004r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+
+The reviewer should identify the recursion and allow-query phrases.  They should look as follows:
+
+Options {
+recursion no;
+allow-query {none;};
+};
+
+Zone “example.com” {
+	Type master;
+	File “db.example.com”;
+	Allow-query { address_match_list };
+};
+
+If either of these phrases is missing or have a value other than what is listed above, then this is a finding.
+
+Windows 2003 DNS
+
+Instruction:  This check only applies if the name server is a master name server, the Windows DNS servers are to only be configured as master name servers.
+Open the DNS management console snap-in.  Right click on the server and select properties.  If available, under the forwarders tab ensure enable forwarders is not selected.  If “Enable forwarders” is checked, this constitutes a finding.
+Also examine the “Advanced” tab of the DNS server “Properties” dialog box.  If “Disable recursion” is not checked, then this is a finding. 
+</check-content></check></Rule></Group><Group id="V-4487"><title>Recursive queries not restricted.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4487r1_rule" severity="medium" weight="10.0"><version>DNS0480</version><title>A caching name server does not restrict recursive queries to only the IP addresses and IP address ranges of known supported clients.</title><description>&lt;VulnDiscussion&gt;Any host that can query a resolving name server has the potential to poison the servers name cache or take advantage of other vulnerabilities that may be accessed through the query service.  The best way to prevent this type of attack is to limit queries to internal hosts, which need to have this service available to them.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4372r1_fix">The DNS software administrator should configure the caching name server to accept recursive queries only from the IP addresses and address ranges of known supported.  Configuration details for BIND and Windows DNS  may be found in the DNS STIG.</fixtext><fix id="F-4372r1_fix" /><check system="C-3546r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+
+Instruction:  This check is only applicable to caching name servers.  Verify the allow-query and allow-recursion phrases are properly configured.
+
+The reviewer should identify the allow-query and allow-recursion phrases.  It should look as follows:
+
+allow-query {trustworthy_hosts;};
+allow-recursion {trustworthy_hosts;};
+
+The name of the ACL does not need to be “trustworthy_hosts” but the name should match the ACL name defined earlier in named.conf for this purpose.  If not, then this is a finding.  The reviewer will also check for whether non-internal IP addresses appear in either the referenced ACL (e.g., trustworthy_hosts) or directly in the statements themselves.  If non-internal IP addresses do appear, then this is a finding.
+
+Windows 2000/2003 DNS
+
+Instruction:  Windows 2000/2003 DNS should not be deployed as a caching name server.  Consequently, the use of forwarders and recursion is prohibited on Windows  DNS.  The reviewer will validate that the "Disable recursion" and the “Secure cache against pollution" on the “Advanced” tab of the name server properties are selected.  Examine the “Advanced” tab of the DNS Server “Properties” dialog box.  If “Disable recursion” and “Secure cache against pollution” is not checked, then this is a finding.
+
+The reviewer will also validate, if available, that the "Enable forwarders" on the “Forwarders” tab of the name server properties is not selected.  Examine the “Forwarders” tab of the DNS Server “Properties” dialog box.  If “Enable forwarders” is checked, then this is a finding.
+
+In cases in which the name server is not running BIND or Windows 2000/2003 DNS, the reviewer must still examine the configuration and its documentation to validate this requirement.
+</check-content></check></Rule></Group><Group id="V-4488"><title>Name server logging is inadequate.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4488r2_rule" severity="high" weight="10.0"><version>DNS0485</version><title>The DNS software must log success and failure events when starting and stopping of the name server service daemon, zone transfers, zone update notifications, and dynamic updates. </title><description>&lt;VulnDiscussion&gt;Logging must be comprehensive to be useful for both intrusion monitoring and security investigations. Setting logging at the severity notice should capture most relevant events without requiring unacceptable levels of data storage. The severity levels info and debug are also available to organizations that require additional logging for certain events or applications.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;DNS0485&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;A violation of this requirement can have one of two severity levels depending upon the extent of the violation.  If no logging exists, then the discrepancy would be a Category I finding.  If some logging exists, but not for all of the events listed, then the discrepancy would be a Category II finding.&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECAT-1, ECAT-2&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4373r1_fix">The DNS software administrator will configure the DNS software to log, at a minimum, success and failure of the following events:
+
+- start and stop of the name server service or daemon
+- zone transfers
+- zone update notifications
+- dynamic updates
+
+</fixtext><fix id="F-4373r1_fix" /><check system="C-3547r2_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>The default level for logging was modified in BIND version 9.7. Starting at that version logging is set to debugging level by default. Therefore, if the logging statement is missing AND the version is 9.7 or more recent, this is NOT a finding.
+
+For a BIND configuration for versions before 9.7, if a logging statement is present, it will have the form:
+
+logging {
+      channel channel_name
+            file path_name | syslog syslog_facility
+severity (critical | error | warning |
+            notice | info | debug [level]| dynamic);]
+print-severity yes/no;
+print-time yes/no;
+}; 
+
+category category_name {
+      channel_name ; [ channel_name ; … 
+            }; 
+};
+
+Instruction: If a logging statement is not present and the BIND version is prior to 9.7, then this is a finding. The reviewer will look at the severity clause in each of the channel phrases of the logging statement. It should read either notice, info or debug for each defined channel (although debug would not typically appear unless the review is concurrent with a troubleshooting effort). If the logging statement is not properly configured, then this is a finding.
+
+NOTE: Debug level may cause operational issues due to log file sizes and is therefore not a requirement for anything other than troubleshooting purposes.
+
+Windows DNS
+
+Instruction: For a Windows 2003 DNS configuration: On the “Logging Tab” or “Debug Logging” tab of the “DNS Server Properties” dialog box, if “Log Packets for “Notify” and “Update” are not checked, then this is a finding.
+
+Mitigation:
+A violation of this requirement can have one of two severity levels depending upon the extent of the violation. If no logging exists, then the discrepancy would be a Category I finding. If some logging exists, but not for all of the events listed, then the discrepancy would be a Category II finding.</check-content></check></Rule></Group><Group id="V-4489"><title>Name server logs are not adequately secured.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4489r1_rule" severity="medium" weight="10.0"><version>DNS0490</version><title>The DNS software administrator has not configured the DNS software to send all log data to either the system logging facility (e.g., UNIX syslog or Windows Application Event Log) or an alternative logging facility with security configuration equivalent to or more restrictive than the system logging facility.</title><description>&lt;VulnDiscussion&gt;On name servers, DNS log data is typically more sensitive than system log data and, consequently, should benefit from security controls at least as restrictive as those for the system logging facility.  DNS software administrators require DNS transaction logs for a wide variety of reasons including troubleshooting, intrusion detection, and forensics.  These logs should be appropriately secured, having file permissions that restrict unauthorized changes or viewing, and archived, being appropriately backed-up and stored in order for them to be examined at a future time.  Furthermore, it is required that the logs be reviewed daily.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;COBR-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4374r1_fix">The DNS software administrator should either configure named.conf to utilize the system logging facility or place additional technical controls (e.g., more restrictive file permissions) on the alternative logging facility so that it is as least as secure as the system logging facility.</fixtext><fix id="F-4374r1_fix" /><check system="C-3553r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>DNS software administrators need DNS transaction logs for a wide variety of reasons including troubleshooting, intrusion detection, and forensics.  These logs should be appropriately secured, having file permissions that restrict unauthorized changes or viewing, and archived, being appropriately backed-up and stored so that they can be examined at a future time.
+
+BIND
+
+The DNS software administrator will configure the DNS software to send all log data to either the system logging facility (e.g., UNIX syslog or Windows Application Event Log) or an alternative logging facility with security configuration equivalent to or more restrictive than the system logging facility.
+
+Instruction:  On an examination of the DNS configuration file (if BIND, named.conf), the reviewer can determine whether log data is sent to a facility other than the system logging facility.  If this is the case, then the reviewer should do the following at a minimum:
+
+-  Compare the file permissions of the operating system logs with the file permissions of the alternative logging facility for DNS (e.g., using ls –l).  If the permissions on the alternative are weaker in any manner, this constitutes a finding.
+
+-  Determine whether the system logs are transferred or copied to media on another machine (e.g., a cron job that periodically moves logs to another computer).  If this is the case and there is not a similar technology in place for the DNS logs, then this constitutes a finding.
+
+The reviewer can identify other ways in which the security of the DNS logs may be weaker than the security of the system logs, and can generate a finding based on that discovery so long as the explanation of the weakness is clearly documented in the SRR results.
+
+Windows DNS
+
+Windows DNS software log files will be equivalent to the system logging facility by default.  In addition,  the DNS debug log file should be checked at %systemroot%\system32\dns\dns.log. The permissions should be restricted to the Administrators and/or Auditors group (in accordance with the Windows STIG permission settings for Windows Event Log settings) on the local computer or the Domain Admins group.
+
+In cases in which the name server is not running BIND or Windows DNS, the reviewer must still examine the configuration and its documentation to validate this requirement.
+</check-content></check></Rule></Group><Group id="V-4490"><title>Name server logs do not contain timestamps.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4490r1_rule" severity="low" weight="10.0"><version>DNS0495</version><title>Entries in the name server logs do not contain timestamps and severity information.</title><description>&lt;VulnDiscussion&gt;Forensic analysis of security incidents and day-to-day monitoring are substantially more difficult if there are no timestamps on log entries.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECAR-1, ECAR-2, ECAR-3, ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4375r1_fix">The DNS software administrator should configure the DNS software to add timestamps and severity information to each entry in all logs. Configuration details for BIND may be found in the DNS STIG Section 4.2.5.</fixtext><fix id="F-4375r1_fix" /><check system="C-3554r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+
+Instruction:  Based on the logging statement in named.conf, the reviewer can determine where the DNS logs are located.  If there logging is not configured, then this is a finding.  These logs (which in many cases are likely to be the system logs), should be viewed using the UNIX cat or tail commands, a text editor, or – in the case of Windows – the “Event Viewer.”  When examining the logs, the reviewer should ensure that entries have timestamps and severity codes.  If timestamps and severity codes are not found on one or more entries, then this is a finding.
+
+logging {
+		channel channel_name
+			file path_name | syslog syslog_facility
+severity (critical | error | warning |
+  notice | info | debug [level]| dynamic);]
+			print-severity yes/no;
+			print-time yes/no;
+		}; 
+		category category_name {
+			channel_name ; [ channel_name ; … 
+		}; 
+};
+
+Instruction:  If the DNS entries in the logs do not note their severity (i.e., critical, error, warning, notice, or info), then this constitutes a finding.
+
+Windows DNS
+
+Windows DNS software adds timestamps and severity information by default.
+
+In cases in which the name server is not running BIND or Windows DNS, the reviewer must still examine the configuration and its documentation to validate this requirement.
+</check-content></check></Rule></Group><Group id="V-4492"><title>The root hints file is not deleted.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4492r1_rule" severity="low" weight="10.0"><version>DNS0505</version><title>The DNS software administrator has not removed the root hints file on an authoritative name server in order for it to resolve only those records for which it is authoritative, and ensure that all other queries are refused.</title><description>&lt;VulnDiscussion&gt;A potential vulnerability of DNS is that an attacker can poison a name servers cache by sending queries that will cause the server to obtain host-to-IP address mappings from bogus name servers that respond with incorrect information.   The DNS architecture needs to maintain one name server whose zone records are correct and the cache is not poisoned, in this effort the authoritative name server may not forward queries, one of the ways to prevent this, the root hints file is to be deleted.
+When authoritative servers are sent queries for zones that they are not authoritative for, and they are configured as a non-caching server (as recommended), they can either be configured to return a referral to the root servers or they can be configured to refuse to answer the query.  The requirement  is to configure authoritative servers to refuse to answer queries for any zones for which they are not authoritative.  This is more efficient for the server, and allows it to spend more of its resources doing what its intended purpose is; answering authoritatively for its zone.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4377r1_fix">The SA should remove the root hints file.  For a BIND installation, the SA should remove the root hints file. Common names for the root hints file are root.hints, named.cache, or db.cache.  The name is configurable within the named.conf file.  
+
+For a Windows 2000/2003 DNS configuration, the SA should: Select the Root Hints Tab of the DNS Server Properties dialog box, to remove entries, right click the entry and click the Remove button.</fixtext><fix id="F-4377r1_fix" /><check system="C-3558r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+
+Instruction:  This check only applies if the name server is an authoritative name server.  Ensure there is not a root hints on the name server.  Common names for the root hints file are root.hints, named.cache, or db.cache.  The name is configurable within the named.conf file.
+
+Windows DNS
+
+This check only applies if the name server is an authoritative name server.  For a Windows 2000/2003 DNS configuration: Select the “Root Hints” Tab of the “DNS Server Properties” dialog box, ensure the root name server entries have been removed.  To remove entries, right click the entry and click the “Remove” button.
+</check-content></check></Rule></Group><Group id="V-4493"><title>A TSIG key does not utilize 160 bit HMAC-SHA1.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4493r1_rule" severity="low" weight="10.0"><version>DNS0705</version><title>The DNS software administrator has not utilized at least 160 bit HMAC-SHA1 keys if available.</title><description>&lt;VulnDiscussion&gt;SHA-1 is the algorithm currently specified in the National Institute of Standards and Technology's (NISTs) Secure Hashing Standard (FIPS 180-1) and required throughout DoD. HMAC-MD5 will be replaced with HMAC-SHA1 or higher when available for DNS TSIG applications. In general, only NIST or National Security Agency (NSA) approved algorithms should be utilized in the DoD computing infrastructure. The US Government currently requires SHA-1 for hashing applications. It is considered an improvement over MD5, for which there are known instances of collisions.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;DCNR-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4378r1_fix">The DNS software administrator should include the phrase algorithm HMAC-SHA1 , HMAC-MD5 or greater in each key statement depending upon which is currently available.</fixtext><fix id="F-4378r1_fix" /><check system="C-3374r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>There is to be a properly configured key statement located in the named.conf file.  
+  
+BIND now supports HMAC-SHA1 and organizations are will be required to migrate to this algorithm or greater when operating system vendors add the capability.
+
+An example of a properly configured key statement in practice might be:
+
+key ns1.kalamazoo.disa.mil_ns2.kalamazoo.disa.mil {
+		algorithm hmac-sha1;
+		include “/etc/dns/keys/ns1_ns2.key”;
+	};
+
+If the key statement is not configured, this is a finding.
+
+If the key statement is not configured to implement least HMAC-SHA1, this is a finding.
+
+Note: rndc does not yet support the use of SHA-1; therefore, HMAC-MD5 is acceptable until such time that SHA support is available.
+
+</check-content></check></Rule></Group><Group id="V-4494"><title>A TSIG key is not in its own dedicated file.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4494r1_rule" severity="medium" weight="10.0"><version>DNS0710</version><title>A TSIG key is not in its own dedicated file.</title><description>&lt;VulnDiscussion&gt;Ideally, nobody  even DNS and Systems Administrators  should view the key.  If it is included in named.conf, they will view it on a regular basis, which means computer forensics is less likely to determine who may have obtained the key if it is compromised.  In addition, if the named.conf needs to be copied from the system for whatever reason (e.g., sent to an expert to troubleshoot a problem, appended to a change management work order, etc.), then others will see the key and could copy it.  On the other hand, if the key is in a dedicated file, then the operating system can be configured to log any instance when the key is accessed, which would make it easy for security personnel to determine when users other than the DNS name server software performed this function.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECCD-1, ECCD-2&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4379r1_fix">The DNS software administrator should cut and paste the secret phrase from each key statement and place it in a dedicated file.  Then, an include phrase should be added to the key statement.  
+
+Additional information on TSIG key generation and storage may be obtained from the DNS STIG. 
+
+Create a new designated file for that key
+
+Using a text editor, create a file with the following content:
+
+secret “generated_key”;
+
+In our example, the contents would be:
+
+secret “2njlQNnzn6HTwKLcjStUXg==”;
+
+The syntax of the statement is critical.  Ensure that:
+
+- The word “secret” appears at the beginning of the line followed by a space
+- The key is included in quotes with no extra spaces before or after the key
+- A semi-colon (;) follows the quotation mark after the key
+- There are no extra characters, lines, or carriage returns before or after the statement
+
+Importantly, any key longer than approximately 320 bits will contain a space within the key field of the original .key file.  This space can be left within the string, as long as it is enclosed within double quotes (") in the new file created to house the key.
+</fixtext><fix id="F-4379r1_fix" /><check system="C-3375r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>The key statement is located in the named.conf.  If the key statement includes a secret phrase followed by a character representation of the key, then this is a finding.  The correct configuration calls for an include statement embedded in the key statement.  The include statement references a separate file that contains the key so it does not need to appear in the named.conf file.
+
+An example of a properly configured key statement in practice might be:
+
+key ns1.kalamazoo.disa.mil_ns2.kalamazoo.disa.mil {
+		algorithm hmac-md5;
+		include “/etc/dns/keys/ns1_ns2.key”;
+	};
+
+If each key is not located in a dedicated file for each individual key, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-4495"><title>A unique TSIG key is not utilized.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4495r1_rule" severity="medium" weight="10.0"><version>DNS0720</version><title>A unique TSIG key is not utilized for communication between name servers sharing zone information.</title><description>&lt;VulnDiscussion&gt;If a secret key shared between two servers is not unique, then any breach of the key is not limited to those two servers.  In particular, if all servers in a zone share the same key, then there is the possibility that an attack could modify records all of the servers.  Recovering from a successful attack is considerably more difficult in this circumstance.  Furthermore, the more copies of any one key are in existence, the greater the likelihood that the confidentiality of that key will be lost at some point in time.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;DCNR-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4380r1_fix">The DNS software administrator should modify the named.conf and server statements so that the key shared between any two servers is unique.  This may involve the generation of additional keys and the creation of new files dedicated to those keys.</fixtext><fix id="F-4380r1_fix" /><check system="C-3373r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>Two name servers sharing zone information must utilize a unique TSIG key for communication between them or, in cases in which more than four servers support a zone, create a written key management plan that will document how keys are shared and replaced in a manner to reduce residual risk to an acceptable level.
+
+If there are no server statements within named.conf, this is a finding.  If there are server statements, then check that there is one corresponding to each of the zone partners.  If this is not the case, then this is also a finding.
+
+If there are server statements for servers other than those supplied, then there may be a finding associated with the incompleteness of the list.
+
+On the master name server, this is an example of a configured key statement:
+
+key ns1.kalamazoo.disa.mil_ns2.kalamazoo.disa.mil. {
+algorithm hmac-md5;
+include "/etc/dns/keys/tsig-example.key";
+};
+
+zone “disa.mil” {
+	type master;
+	file “db.disa.mil”;
+allow-transfer { key ns1.kalamazoo.disa.mil_ns2.kalamazoo.disa.mil.; };
+};
+
+On the slave name server, this is an example of a configured key statement:
+
+key ns1.kalamazoo.disa.mil_ns2.kalamazoo.disa.mil. {
+algorithm hmac-md5;
+include "/etc/dns/keys/tsig-example.key";
+};
+
+server 10.2.2.2 {
+		keys {ns1.kalamazoo.disa.mil_ns2.kalamazoo.disa.mil};
+};
+
+zone “disa.mil” {
+	type slave;
+	masters { 10.1.1.1; };
+	file “db.disa.mil”;
+};
+
+
+Check the keys phrase within each of the server statements to ensure uniqueness of keys.  If two or more server statements reference the same key, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-4511"><title>Name server accepts unauthorized control messages.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-4511r1_rule" severity="medium" weight="10.0"><version>DNS0715</version><title>A BIND name server is not configured to accept control messages only when the control messages are cryptographically authenticated and sent from an explicitly defined list of DNS administrator workstations. </title><description>&lt;VulnDiscussion&gt;The controls statement and the associated use of the rndc or ndc commands introduces the risk that an adversary could use them to remotely control the name server without having to authenticate to the operating system on which the name server resides.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;DCNR-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-4396r1_fix">If control messages are utilized, the DNS software administrator should properly configure the allow and keys phrases within the controls statement located in the named.conf to properly authenticate the control messages.
+
+rndc also has its own configuration file, rndc.conf, that has a similar syntax to the named.conf file, but is limited to the options, key, server, and include statements.  An example of a minimal configuration is as follows:
+
+	key rndc_key {
+		algorithm hmac-md5;
+		secret "2njlQNnzn6HTwKLcjStUXg==";
+	};
+	options {
+		default-server localhost;
+		default-key rndc_key;
+</fixtext><fix id="F-4396r1_fix" /><check system="C-3382r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>If control messages are utilized, there is to be a properly configured keys statement within the controls statement located in the named.conf.
+
+An example of a properly configured controls statement in practice might be:
+
+controls {
+                inet 127.0.0.1
+                allow 127.0.0.1 
+                keys { “rndc_key” };	
+};
+
+If controls messages are utilized and not cryptographically authenticated, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-12440"><title>Unique TSIG key not generated.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-12999r1_rule" severity="low" weight="10.0"><version>DNS0250</version><title>A unique TSIG key is not generated and utilized for each type of transaction. </title><description>&lt;VulnDiscussion&gt;To enable zone transfer (requests and responses) through authenticated messages, it is necessary to generate a key for every pair of name servers. The key also can be used for securing other transactions, such as dynamic updates, DNS queries, and responses.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;DCNR-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-11750r1_fix">The SA will ensure a new TSIG key is generated and utilized for each type of transaction (zone transfer, dynamic updates, etc)</fixtext><fix id="F-11750r1_fix" /><check system="C-8587r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>Verify in the named.conf file that the key statement has a unique file name and location depending on transaction type. </check-content></check></Rule></Group><Group id="V-12774"><title>Recursive DNS servers not configured for ERS forwarding.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-13339r2_rule" severity="medium" weight="10.0"><version>DNS0482</version><title>The forwarding configuration of DNS servers must prohibit the forwarding of queries to servers controlled by organizations outside of the U.S. Government. </title><description>&lt;VulnDiscussion&gt;If remote servers to which DoD DNS servers send queries are controlled by entities outside of the U.S. Government the possibility of a DNS attack is increased. 
+
+The Enterprise Recursive Service (ERS) provides the ability to apply enterprise-wide policy to all recursive DNS traffic that traverses the NIPRNet-to-Internet boundary.  All recursive DNS servers on the NIPRNet must be configured to exclusively forward DNS traffic traversing NIPRNet-to-Internet boundary to the ERS anycast IPs.
+Organizations need to carefully configure any forwarding that is being used by their caching
+name servers. They should only configure "forwarding of all queries" to servers within the DoD.
+Systems configured to use domain-based forwarding should not forward queries for mission critical
+domains to any servers that are not under the control of the US Government.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-12296r2_fix">The SA will ensure the forwarding configuration of DNS prohibits forwarding of queries to any servers other than those defined by Enterprise Recursive Service (ERS).</fixtext><fix id="F-12296r2_fix" /><check system="C-9299r2_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+
+This check applies to caching servers only. Review the named.conf file to validate that BIND is configured to forward all DNS traffic to the DISA Enterprise Recursive Service (ERS) anycast IP addresses (214.16.26.1, 214.27.166.1, 214.71.0.1).
+
+The global options section of the named.conf should contain the following:
+
+	forward only;
+	forwarders { 214.16.26.1; 214.27.166.1; 214.71.0.1; };
+
+If the named.conf options are not set to forward queries only to the ERS anycast IPs, this is a finding. Some DNS servers are preconfigured, the defaults must be changed. 
+
+Windows DNS:
+
+This check does not apply to Windows DNS servers as they should not be deployed as a caching name server. 
+
+The use of forwarders is prohibited on Windows 2003 and 2008 DNS. Windows servers should not have any forwarding enabled. This can be configured from the client side stub resolver. However if this should change, Windows DNS servers will also be required to forward queries only to the ERS anycast IPs.</check-content></check></Rule></Group><Group id="V-12966"><title>Inadequate file permissions on BIND NS. </title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-13534r1_rule" severity="medium" weight="10.0"><version>DNS4480</version><title>Inadequate file permissions on BIND name servers.</title><description>&lt;VulnDiscussion&gt;Weak permissions could allow an intruder to view or modify zone, configuration and/or program files.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECCD-1, ECCD-2&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-12412r1_fix">The SA will ensure that the file permissions on BIND 8 files as well as the log and TSIG key files are set in accordance with the DNS STIG requirements. </fixtext><fix id="F-12412r1_fix" /><check system="C-9625r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>On BIND name servers, the following permissions must be set:
+
+named.run - owner: root, group: dnsgroup, permissions: 660
+named_dump.db - owner: root, group: dnsgroup, permissions: 660
+ndc (FIFO) - owner: root, group: dnsgroup, permissions: 660
+ndc.d (directory containing ndc) - owner: root, group: dnsgroup, permissions: 700 
+
+The following must be set on log files:
+any log file - owner: dnsuser, group: dnsgroup, permissions: 660
+
+The following must be set on TSIG keys:
+
+unique to each key - owner: dnsuser, group: dnsgroup, permissions: 400</check-content></check></Rule></Group><Group id="V-12967"><title>BIND is not configured in chroot(ed) structure.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-13535r1_rule" severity="low" weight="10.0"><version>DNS4445</version><title>The SA has not configured BIND in a chroot(ed) directory structure.</title><description>&lt;VulnDiscussion&gt;With any network service, there is the potential that an attacker can exploit a vulnerability within the program that allows the attacker to gain control of the process and even run system commands with that control.  One possible defense against this attack is to limit the software to particular quarantined areas of the file system, memory or both.  This effectively restricts the service so that it will not have access to the full file system. If such a defense were in place, then even if an attacker gained control of the process, the attacker would be unable to reach other commands or files on the system.  This approach often is referred to as a padded cell, jail, or sandbox.  All of these terms allude to the fact that the software is contained in an area where it cannot harm either itself or others.  A more technical term is a chroot(ed) directory structure.
+
+BIND should be configured to run in a padded cell or chroot(ed) directory structure if supported by the operating system
+&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECLP-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-12413r1_fix">The SA will ensure BIND is configured in a chroot(ed) directory structure. </fixtext><fix id="F-12413r1_fix" /><check system="C-9626r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>Review the startup file and make sure -t option is included:
+
+Edit the startup files to start named with the -t option and option argument: -t /var/named. Similarly to syslogd, many modern versions of Unix start named from /etc/rc.d/init.d/named. </check-content></check></Rule></Group><Group id="V-14756"><title>IPv6 link-local scope addresses are not configured</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-15513r1_rule" severity="low" weight="10.0"><version>DNS4600</version><title>The DNS administrator will ensure non-routeable IPv6 link-local scope addresses are not configured in any zone.  Such addresses begin with the prefixes of “FE8”, “FE9”, “FEA”, or “FEB”.</title><description>&lt;VulnDiscussion&gt;IPv6 link local scope addresses are not globally routable and must not be configured in any DNS zone.  Similar to RFC1918, addresses, if a link-local scope address is inserted into a zone provided to clients, most routers will not forward this traffic beyond the local subnet.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;Responsibility&gt;Other&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-14234r1_fix">The SA should remove any link-local addresses and replace with appropriate Site-Local or Global scope addresses.</fixtext><fix id="F-14234r1_fix" /><check system="C-12979r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+
+•	Instruction:  Examine all zone statements contained in the named.conf file for a line containing the word file designating the actual file that stores the zones records.  Examine the file that contains zones records for any IPv6 addresses containing the prefixes “FE8”, “FE9”, “FEA”, or “FEB”. If any link-local scope addresses are found, then this is a finding.
+
+
+Windows DNS
+
+•	Instruction:  From the windows task bar, select Start, Programs/All Programs, Administrative Tools, DNS to open the DNS management console.  Expand the Forward Lookup Zones folder.  Expand each zone folder and examine the host record entries.  The third column titled Data will display the IP.  Verify this column does not contain any IP address that begin with the prefixes  “FE8”, “FE9”, “FEA”, or “FEB”.
+
+
+</check-content></check></Rule></Group><Group id="V-14757"><title>AAAA addresses are on host that is not IPv6 aware</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-15514r1_rule" severity="low" weight="10.0"><version>DNS4610</version><title>AAAA addresses are configured  on a host that is not IPv6 aware.</title><description>&lt;VulnDiscussion&gt;DNS is only responsible for resolving a domain name to an ip address.  Applications and operating systems are responsible for processing the IPv6 or IPv4 record that may be returned.  With this in mind, a denial of service could easily be implemented for an application that is not IPv6 aware.  When the application receives an i.p. address in hexadecimal, it is up to the application/operating system to decide how to handle the response.  Combining both IPv6 and IPv4 records into the same domain can lead to application problems that are beyond the scope of the DNS administrator.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;Other&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-14235r1_fix">The SA should remove the IPv6 records from the IPv4 zone and create a second zone with all IPv6 records.</fixtext><fix id="F-14235r1_fix" /><check system="C-12980r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND
+
+•	Instruction:  Examine all zone statements contained in the named.conf file for a line containing the word file designating the actual file that stores the zones records.  Examine the file that contains zones records and verify IPv6 and IPv4 resource records are not in the same file.  If the records are found in the same file, then this is a finding.
+
+
+Windows DNS
+
+Instruction:  From the Windows task bar, select Start, Programs/All Programs, Administrative Tools, DNS to open the DNS management console.  Expand the Forward Lookup Zones folder.  Expand each zone folder and examine the host record entries.  The third column titled Data will display the IP.  Verify this column does not contain both IPv4 and IPv6 addresses.
+
+</check-content></check></Rule></Group><Group id="V-14758"><title>named.conf is not configured properly for IPv6</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-15515r1_rule" severity="medium" weight="10.0"><version>DNS4620</version><title>The DNS software administrator will ensure the named.conf options statement does not include the option "listen-on-v6 { any; };” when an IPv6 interface is not configured and enabled.</title><description>&lt;VulnDiscussion&gt;To prevent the possibility of a denial of service in relation to an IPv4 DNS server trying to respond to an IPv6 request, the server should be configured not to listen on any of its IPv6 interfaces unless it does contain IPv6 AAAA resource records in one of the zones.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;Other&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-14236r1_fix">The DNS administrator should remove the “listen-on-v6” option from the named.conf file if there are no interfaces configured in the operating system for IPv6..</fixtext><fix id="F-14236r1_fix" /><check system="C-12981r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>BIND on UNIX
+•Instruction:  Examine the named.conf file which usually resides in the /etc directory.  Perform the following command to check if IPv6 is enabled for BIND.
+
+# grep –c “listen-on-v6” named.conf
+
+This will return the number of entries found in the named.conf file.  If the number is greater than zero, proceed to check if any IPv6 interfaces are configured.  Execute the following to check for IPv6 interfaces.
+
+# ifconfig –a
+
+BIND on Windows
+
+•Instruction:  Ask the SA the location of the named.conf.  This is configured on the initial installation of ISC BIND.  Right click on the file and select open with. Select notepad or wordpad to open the file.  Use Ctrl+F and enter “listen-on-v6” at the prompt.  If any entries are found, then check for any enabled IPv6 interfaces on the machine. Perform the following to check:
+
+-Click Start, click Control Panel, and the double-click Network Connections.
+-Right-click any local area connection, and then click Properties.
+-The display will contain,  Microsoft TCP/IP Version 6 with a check next to the item if IPv6 is installed..
+</check-content></check></Rule></Group><Group id="V-14759"><title>Separate key-pairs for key signing and zone </title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-15516r2_rule" severity="low" weight="10.0"><version>DNS4640</version><title>The DNS administrator, when implementing DNSSEC, will create and maintain separate key-pairs for key signing and zone signing.</title><description>&lt;VulnDiscussion&gt;DNSSEC specifies generation and verification of digital signatures using asymmetric keys. This requires generation of a public key-private key pair. Although the DNSSEC specification does not call for different keys (just one key pair), experience from pilot implementations suggests that for easier routine security administration operations such as key rollover (changing of keys) and zone re-signing, at least two different types of keys are needed.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;Responsibility&gt;Other&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-14237r1_fix">Generate a new key pair and update the DNSKEY record with the following:
+	# dnssec-keygen –n ZONE –a RSASHA1 –b 2048 example.com
+</fixtext><fix id="F-14237r1_fix" /><check system="C-43441r2_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>This rule is only applicable to DNS servers using DNSSEC.
+If DNSSEC is not enabled, then this is N/A.
+
+Instruction:  :  Examine the DNSKEY records in the zone file.  At least two should exist and display different keys in the eighth field. If at least two different keys are not displayed, this is a finding. 
+
+example.com.	86400	IN	DNSKEY	256  3  1	aghaghnl;knatnjkga;agn;g’a
+
+example.com.	86400	IN	DNSKEY	256  3  1	qrupotqtuipqtiqptouqptuqvi1
+</check-content></check></Rule></Group><Group id="V-14760"><title>Digital signatures are not RSASHA1.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-15517r3_rule" severity="low" weight="10.0"><version>DNS4650</version><title>The DNSSEC algorithm for digital signatures must be RSASHA1, RSASHA256, or RSASHA512.</title><description>&lt;VulnDiscussion&gt;MD5 is not collision resistant; therefore, RSAMD5 is not permitted for use in DNSSEC.  RSASHA1 is the minimum algorithm for zone signatures.  SHA2-based algorithms RSASHA256 and RSASHA512 offer greater security and are preferred over RSASHA1.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;Responsibility&gt;Other&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-14237r1_fix">Generate a new key pair and update the DNSKEY record with the following:
+	# dnssec-keygen –n ZONE –a RSASHA1 –b 2048 example.com
+</fixtext><fix id="F-14237r1_fix" /><check system="C-47003r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>This rule is only applicable to DNS servers using DNSSEC.
+If DNSSEC is not enabled, then this is N/A.
+
+Instruction: Examine the DNSKEY record in the zone file. The seventh field will contain a number representing the algorithm used to generate the key.
+
+Here is an example:
+
+example.com. 86400 IN DNSKEY 256 3 5 aghaghnl;knatnjkga;agn;g’a
+
+If this number is not a five, eight, or ten, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-14761"><title>DNSSEC key signing key is not at least 2048 bits</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-15518r2_rule" severity="low" weight="10.0"><version>DNS4660</version><title>The DNSSEC key signing key is not at least 2048 bits.		</title><description>&lt;VulnDiscussion&gt; The choice of key size is a tradeoff between the risk of key compromise and performance. The performance variables are signature generation and verification times. The size of the DNS response packet also is a factor because DNSKEY RRs may be sent in the additional section of the DNS response. Because the KSK is used only for signing the key set (DNSKEY RRSet), performance is not much of an issue. Compromise of a KSK could have a great impact, however, because the KSK is the entry point key for a zone. Rollover of a KSK in the event of a compromise involves potential update of trust anchors in many validating resolvers. Hence, a large key size is recommended for the KSK. A large key size decreases the chances of the key compromise and avoids the need for frequent rollovers as each rollover requires administrative monitoring and follow-up action.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;Responsibility&gt;Other&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-14238r1_fix">Generate a new key pair and update the DNSKEY record with the following:
+	# dnssec-keygen –n ZONE –a RSA –b 2048 example.com
+
+</fixtext><fix id="F-14238r1_fix" /><check system="C-43443r2_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>This rule is only applicable to DNS servers using DNSSEC.
+If DNSSEC is not enabled, then this is N/A.
+
+Instruction:  Examine the public key record type DNSKEY in the zone file.  The actual key contained in the file utilizing the RSA algorithm and a key size of 2048 bits will contain 351 characters.  If the key does not appear to contain at 351 characters, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-14762"><title>DNSSEC key signing roll over period</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-15519r2_rule" severity="low" weight="10.0"><version>DNS4670</version><title>The DNSSEC key signing key does not have a minimum roll over period of one year.</title><description>&lt;VulnDiscussion&gt;A good practice is to generate an extra set of key signing keys for rollover purposes.  The additional key will be readily available for emergency situations such as key compromise.  The key signing key should be rolled over on an annual basis.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;Responsibility&gt;Other&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-14239r1_fix">Generate new keys with the following command:
+	# dnssec-keygen –n ZONE –a RSASHA1 –b 2048 example.com
+</fixtext><fix id="F-14239r1_fix" /><check system="C-43444r2_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>This rule is only applicable to DNS servers using DNSSEC.
+If DNSSEC is not enabled, then this is N/A.
+
+BIND on UNIX
+Instruction:  Ask the DNS administrator for the location of the private key file for the KSK generated from the output of the dnssec-keygen command.  Perform the following:
+
+# ls –la ‘private_key_file’
+# date
+
+If the date returned compared to the date on the file is greater than a year, then this is a finding.
+
+BIND on Windows
+Instruction:  Ask the DNS administrator for the location of the private key file for the KSK generated from the output of the dnssec-keygen command.  
+Perform the following:
+
+Right click on the file and select Properties.  
+Select the General tab and view Created: row which displays the date of creation.
+Check the date of the machine in the lower right hand corner of the display.
+Compare the dates; if the difference is greater than a year, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-14764"><title>DNSSEC zone key size</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-15521r2_rule" severity="low" weight="10.0"><version>DNS4680</version><title>The DNSSEC zone signing key size is not at least 1024 bits.</title><description>&lt;VulnDiscussion&gt;As far as the choice of key size for the ZSK is concerned, performance certainly will be a factor because the ZSK is used for signing all RRsets in the zone. In terms of impact, however, it is restricted to just a single zone because the ZSKs usage is limited to signing RRsets only for that zone but not for providing authenticated delegation for a child zone. Hence, a key size smaller than that for the KSK can be used for the ZSK.
+
+&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;Responsibility&gt;Other&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-14240r1_fix">Generate a new key pair and update the DNSKEY record with the following:
+	# dnssec-keygen –n ZONE –a RSA –b 1024 example.com
+</fixtext><fix id="F-14240r1_fix" /><check system="C-43445r2_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>This rule is only applicable to DNS servers using DNSSEC.
+If DNSSEC is not enabled, then this is N/A.
+
+BIND 
+Instruction:  Examine the public key record type DNSKEY in the zone file.  The actual key contained in the file utilizing the RSA algorithm and key size of 1024 bits will contain 180 characters.  If the key does not appear to contain at 180 characters, then this is a finding.</check-content></check></Rule></Group><Group id="V-14765"><title>DNSSEC zone signing key roll over period</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-15522r2_rule" severity="low" weight="10.0"><version>DNS4690</version><title>The DNSSEC zone signing key minimum roll over period is not at least 60 days.</title><description>&lt;VulnDiscussion&gt;In the case of ZSK, the risk of key guessing is higher because of larger key exposure. The larger key exposure is a result of the fact that the number of signature sets generated is very large (because the ZSK signs all RRsets in a zone and other RRsets change much more frequently than DNSKEY RRsets, so the number of fresh signatures generated is high). This factor, combined with the relatively smaller size of the key, implies that ZSKs must be rolled over more frequently than KSKs (usually a month or two).&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-14241r1_fix">
+	Generate new keys with the following command:
+	# dnssec-keygen –n ZONE –a RSA –b 1024 example.com
+</fixtext><fix id="F-14241r1_fix" /><check system="C-43785r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>This rule is only applicable to DNS servers using DNSSEC.
+If DNSSEC is not enabled, then this is N/A.
+
+BIND on UNIX
+Instruction:  Ask the DNS administrator for the location of the private key file for the ZSK generated from the output of the dnssec-keygen command.  Perform the following:
+
+# ls –la ‘private_key_file’
+# date
+
+If the date returned compared to the date on the file is greater than 60 days, then this is a finding.
+
+BIND on Windows
+Instruction:  Ask the DNS administrator for the location of the private key file for the ZSK generated from the output of the dnssec-keygen command.  
+Perform the following:
+
+Right click on the file and select Properties.  
+Select the General tab and view Created: row which displays the date of creation.
+Check the date of the machine in the lower right hand corner of the display.
+Compare the dates, if the difference is greater than 60 days, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-14766"><title>DNSSEC private key permissions</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-15523r2_rule" severity="high" weight="10.0"><version>DNS4700</version><title>The DNSSEC private key file is not owned by the DNS administrator or the permissions are not set to a minimum of 600.</title><description>&lt;VulnDiscussion&gt;The private keys in the KSK and ZSK key pairs should be protected from unauthorized access. If possible, the private keys should be stored offline (with respect to the DNSSEC-aware name server) in a physically secure, non-network-accessible machine along with the zone file master copy. The signatures generated by using the private keys should be transferred to the primary authoritative name servers through a load process, using a dynamically established network connection (rather than a permanent network link).&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-14242r1_fix">For UNIX systems:
+# chown dnsadmin ‘keyfile’
+# chmod 600 ‘keyfile’
+
+For Windows systems:
+Ask the DNS administrator for the directory location containing the private key files.  Right click on the file and select Properties.  Under the file properties, select the Security tab.  Ensure the Administrator group has full control and the DNS user has read permission.
+</fixtext><fix id="F-14242r1_fix" /><check system="C-43786r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>This rule is only applicable to DNS servers using DNSSEC.
+If DNSSEC is not enabled, then this is N/A.
+
+BIND on UNIX 
+•Instruction:  Ask the DNS administrator for the directory location containing the private key files.  Perform the following to check the permissions:
+# ls –la ‘key file’
+
+If the owner of the file is not the DNS administrator or the permissions are weaker than 600, then this is a finding.
+
+BIND on Windows 
+•Instruction:  Ask the DNS administrator for the directory location containing the private key files.  Right click on the file and select Properties.  Under the file properties, select the Security tab.  If the Administrator group does not have full control or the DNS user is not restricted to read permission, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-14767"><title>Signing files between names servers</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-15524r3_rule" severity="medium" weight="10.0"><version>DNS4710</version><title>DNSSEC is not enabled for signing files between names servers with DNSSEC capabilities.</title><description>&lt;VulnDiscussion&gt;A powerful feature of DNSSEC is the ability to sign record sets to ensure their integrity and authenticity throughout the DNS infrastructure and not just between the authoritative name server and its zone partner or local client.  The advantages of this feature become apparent when DoD users wish to securely validate records from other organizations, including commercial vendors, business partners, and other Government agencies.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-44114r2_fix">Ensure that the version of BIND is 9.3.1 or higher with DNSSEC support. If the version is less than 9.5, then add the following entry to named.conf.
+
+options
+{ 
+ dnssec-enable yes;
+};
+</fixtext><fix id="F-44114r2_fix" /><check system="C-46503r2_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>This rule is only applicable to DNS servers using DNSSEC.
+If DNSSEC is not enabled, then this is N/A.
+
+BIND 
+• Instruction: Ask the DNS administrator for the directory location containing the named.conf file.
+
+Check for the following options:
+
+options
+{ 
+ dnssec-enable yes;
+};
+
+If this option is missing and the BIND version is 9.5 or greater, this is the default and is not a finding.
+
+If the dnssec-enable option is set to no or the BIND version is less than 9.5 and the dnssec-enable option is not in the named.conf file, then this is a finding.
+</check-content></check></Rule></Group><Group id="V-24997"><title>BIND Recursive servers enable query randomiaztion.</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-30737r1_rule" severity="medium" weight="10.0"><version>DNS4730</version><title>All DNS caching resolvers (A/K/A “recursive name servers”) will have port and Query ID randomization enabled for all DNS querypackets/frames.  </title><description>&lt;VulnDiscussion&gt;DNS queries are normally conducted over UDP for performance reasons, although the protocol will fall back to TCP in certain cases. Unfortunately, the lack of a true bi-directional connection in UDP greatly simplifies certain attacks that involve forged packets.  While the connectionless UDP is in use, DNS servers will typically treat the first DNS response that matches certain characteristics of the outgoing query as the true response, and act upon the information provided.  The relevant characteristics for a valid or forged response are the query source port (usually an “ephemeral” port above 1024), the responding IP address, the DNS transaction ID, and the Question section of the outgoing query.  In the DNS protocol specification, none of these are required to have a great degree of randomness or unpredictability which makes certain attacks possible.  Eugene Kashpureff demonstrated a fairly simple but effective attack in 1997, which led to software improvements that included verification that information included in the response was in fact something for which the responding server should be trusted (referred to as “in bailiwick”).
+
+Because this issue is fundamental to the DNS protocol over UDP, the IETF has devised the DNS Security Extensions (DNSSEC) and Transaction Authentication (TSIG) as protocol extensions to provide methods for cryptographic validation of data.  TSIG has been widely adopted and has been a DNS STIG requirement for several years, but DNSSEC has only recently become sufficiently mature and supported to be suitable for operational deployment.  Until DNSSEC is fully deployed, attacks on DNS-over-UDP, including cache poisoning attacks, will continue to be effective.
+&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-27640r1_fix">Upgrade to the required software stated in 2008-A-0045 and ensure the query-source statement is not configured in the named.conf file.</fixtext><fix id="F-27640r1_fix" /><check system="C-31147r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>Locate the named.conf file.  To determine if this is a recursive server look for the following statement;
+recursion yes;
+
+After determining this is a recursive server, determine the version of bind on the machine by running: named -v.  Port and query randomization are enabled by default in BIND versions 9.3.5-P1, 9.4.2-P1, 9.5.0-P1 and greater.  The absence of the query-source statement in the acceptable versions indicates the port and query randomization is in use.  If the query-source statement is found and in use, then this is a finding. </check-content></check></Rule></Group><Group id="V-39138"><title>Verify signed files between names servers</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-50954r1_rule" severity="medium" weight="10.0"><version>DNS4715</version><title>DNSSEC is not enabled for verifying signed files between names servers with DNSSEC capabilities.</title><description>&lt;VulnDiscussion&gt;A powerful feature of DNSSEC is the ability to sign record sets to ensure their integrity and authenticity throughout the DNS infrastructure and not just between the authoritative name server and its zone partner or local client.  The advantages of this feature become apparent when DoD users wish to securely validate records from other organizations, including commercial vendors, business partners, and other Government agencies.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;System Administrator&lt;/Responsibility&gt;&lt;IAControls&gt;ECSC-1&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target BIND</dc:title><dc:publisher>DISA FSO</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>BIND</dc:subject><dc:identifier>959</dc:identifier></reference><fixtext fixref="F-44113r3_fix">Ensure that the version of BIND is 9.3.1 or higher with DNSSEC support. If the version is less than 9.5, then add the following entry to named.conf.
+
+options
+{ 
+ dnssec-validation yes;
+};
+
+Define the zones which will use DNSSEC and create the corresponding key-pairs.
+</fixtext><fix id="F-44113r3_fix" /><check system="C-46502r4_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_BIND DNS.xml" /><check-content>This rule is only applicable to DNS servers using DNSSEC.
+If DNSSEC is not enabled, then this is N/A.
+
+BIND 
+• Instruction: Ask the DNS administrator for the directory location containing the named.conf file.
+
+Check for the following options:
+
+options
+{ 
+ dnssec-validation yes;
+};
+
+If this option is missing and the BIND version is 9.5 or greater, this is the default and is not a finding.
+
+
+If no secure zones are defined using DNSSEC validation, then no zone signing keys need exist and the server will support only unsecured zones whether or not the dnssec-validation option is specified.
+
+If secure zones are defined using DNSSEC, then if the dnssec-validation option is set to no or the BIND version is less than 9.5 and the dnssec-validation option is not in the named.conf file, then this is a finding.
+
+Verify that key-pairs for signing exist for each zone, which will support DNSSEC validation.
+</check-content></check></Rule></Group></Benchmark>

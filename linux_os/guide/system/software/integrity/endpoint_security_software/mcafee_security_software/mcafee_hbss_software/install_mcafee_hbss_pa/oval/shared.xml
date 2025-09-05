@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="install_mcafee_hbss_pa"
+  version="1">
+    <metadata>
+      <title>Install the Policy Auditor (PA) Module</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Install the Policy Auditor (PA) Module.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="McAfee Policy Auditor is installed"
+      test_ref="test_mcafee_auditengine_exists" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist"
+  comment="McAfee Policy Auditor installed" id="test_mcafee_auditengine_exists" version="1">
+    <unix:object object_ref="object_mcafee_auditengine_exists" />
+  </unix:file_test>
+  <unix:file_object id="object_mcafee_auditengine_exists" version="1">
+    <unix:path>/opt/McAfee/auditengine/bin</unix:path>
+    <unix:filename>auditmanager</unix:filename>
+  </unix:file_object>
+
+</def-group>

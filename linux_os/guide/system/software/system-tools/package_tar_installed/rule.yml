@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Install tar Package'
+
+description: |-
+    {{{ describe_package_install(package="tar") }}}
+
+rationale: |-
+    The GNU <tt>tar</tt> program saves many files together into one archive and
+    can restore individual files (or all of the files) from the archive. <tt>tar</tt>
+    includes multivolume support, automatic archive compression/decompression, the
+    the ability to perform incremental and full backups. If 
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82967-1
+    cce@rhel7: 82966-3
+    cce@rhel8: 82965-5
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="tar") }}}'

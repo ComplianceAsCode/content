@@ -1,0 +1,36 @@
+<def-group>
+  <definition class="compliance" id="dir_perms_etc_httpd_conf" version="2">
+    <metadata>
+      <title>Directory /etc/httpd/conf/ Permissions</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>Directory permissions for /etc/httpd/conf/ should be set to 0750 (or stronger).</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="httpd not present or in use"
+      definition_ref="package_httpd_removed" />
+      <criterion test_ref="test_dir_perms_etc_httpd_conf" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing directory permissions" id="test_dir_perms_etc_httpd_conf" version="1">
+    <unix:object object_ref="object_dir_perms_etc_httpd_conf" />
+    <unix:state state_ref="state_dir_perms_etc_httpd_conf" />
+  </unix:file_test>
+
+  <unix:file_object comment="/etc/httpd/conf/" id="object_dir_perms_etc_httpd_conf" version="1">
+    <unix:path>/etc/httpd/conf</unix:path>
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+
+  <unix:file_state id="state_dir_perms_etc_httpd_conf" operator="AND" version="2">
+    <unix:suid datatype="boolean">false</unix:suid>
+    <unix:sgid datatype="boolean">false</unix:sgid>
+    <unix:sticky datatype="boolean">false</unix:sticky>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>

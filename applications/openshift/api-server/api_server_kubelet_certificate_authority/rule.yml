@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Configure the kubelet Certificate Authority for the API Server'
+
+description: |-
+    To ensure OpenShift verifies kubelet certificates before establishing
+    connections, follow the OpenShift documentation and setup the TLS connection
+    between the API Server and kubelets. Then, verify
+    that <tt>kubeletClientInfo</tt> has the <tt>ca</tt> configured in 
+    the API Server pod specification file
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master
+    node(s) to something similar to:
+    <pre>kubeletClientInfo:
+      ca: ca-bundle.crt
+      certFile: master.kubelet-client.crt
+      keyFile: master.kubelet-client.key</pre>
+
+rationale: |-
+    Connections from the API Server to the kubelet are used for fetching logs
+    for pods, attaching (through kubectl) to running pods, and using the kubelet
+    port-forwarding functionality. These connections terminate at the kubelet
+    HTTPS endpoint. By default, teh API Server does not verify the kubelet serving
+    certificate, which makes the connection subject to man-in-the-middle attacks,
+    and unsafe to run over untrusted and/or public networks.
+
+severity: high
+
+references:
+    cis: 1.1.4,1.1.31
+
+ocil_clause: '<tt>ca</tt> is not set as appropriate for <tt>kubeletClientInfo</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep -A3 kubeletClientInfo /etc/origin/master/master-config.yaml</pre>
+    The output should contain something similar to:
+    <pre>kubeletClientInfo:
+      ca: ca-bundle.crt
+      certFile: master.kubelet-client.crt
+      keyFile: master.kubelet-client.key</pre>

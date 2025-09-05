@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Block Plugins by Default'
+
+description: |-
+    By default, websites are allowed to automatically run plugins.
+    Users should be prompted to allow plugins to execute plugins by setting
+    <tt>DefaultPluginsSetting</tt> to <tt>3</tt> in the Chromium policy file.
+
+rationale: |-
+    Websites should not be allowed to automatically run plugins as the plugins
+    may be outdated or compromised.
+
+severity: unknown
+
+references:
+    stigid: DTBC0040
+
+ocil_clause: 'it is not set correctly'
+
+ocil: |-
+    To verify that plugins cannot run automatically, run the following command:
+    <pre>$ grep DefaultPluginsSetting /etc/chromium/policies/managed/*.json</pre>
+    The output should contain:
+    <pre>"DefaultPluginsSetting": 3,</pre>

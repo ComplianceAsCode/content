@@ -1,0 +1,50 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,fedora,ol7,ol8
+
+title: 'Ensure Users Cannot Change GNOME3 Screensaver Settings'
+
+description: |-
+    If not already configured, ensure that users cannot change GNOME3 screensaver lock settings
+    by adding <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
+    to <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    For example:
+    <pre>/org/gnome/desktop/screensaver/lock-delay</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate
+    physical vicinity of the information system but does not logout because of the temporary nature of the absence.
+    Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity,
+    GNOME desktops can be configured to identify when a user's session has idled and take action to initiate the
+    session lock. As such, users should not be allowed to change session settings.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80371-8
+    cce@rhel8: 80780-0
+
+references:
+    cui: 3.1.10
+    disa: "57"
+    nist: AC-11(a)
+    nist-csf: PR.AC-7
+    ospp: FMT_MOF_EXT.1
+    srg: SRG-OS-00029-GPOS-0010
+    stigid@rhel7: "010081"
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    cobit5: DSS05.04,DSS05.10,DSS06.10
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
+    cis-csc: 1,12,15,16
+
+ocil_clause: 'GNOME3 session settings are not locked or configured properly'
+
+ocil: |-
+    To ensure that users cannot change session idle and lock settings, run the following:
+    <pre>$ grep 'lock-delay' /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output should return:
+    <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
+
+platform: machine

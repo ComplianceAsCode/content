@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Restrict SMB File Sharing to Configured Networks'
+
+description: |-
+    Only users with local user accounts will be able to log in to
+    Samba shares by default. Shares can be limited to particular users or network
+    addresses. Use the <tt>hosts allow</tt> and <tt>hosts deny</tt> directives
+    accordingly, and consider setting the valid users directive to a limited subset
+    of users or to a group of users. Separate each address, user, or user group
+    with a space as follows for a particular <i>share</i> or global:
+    <pre>[<i>share</i>]
+      hosts allow = 192.168.1. 127.0.0.1
+      valid users = userone usertwo @usergroup</pre>
+    It is also possible to limit read and write access to particular users with the
+    read list and write list options, though the permissions set by the system
+    itself will override these settings. Set the read only attribute for each share
+    to ensure that global settings will not accidentally override the individual
+    share settings. Then, as with the valid users directive, separate each user or
+    group of users with a space:
+    <pre>[<i>share</i>]
+      read only = yes
+      write list = userone usertwo @usergroup</pre>

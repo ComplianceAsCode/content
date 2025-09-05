@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="compliance" id="chromium_disable_cloud_print_sharing"  version="1">
+    <metadata>
+      <title>Disable Cloud Print Sharing</title>
+      <affected family="unix">
+        <platform>Google Chromium Browser</platform>
+      </affected>
+      <description>Cloud print sharing must be disabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Chromium disable cloud pring sharing" test_ref="test_chromium_disable_cloud_print_sharing" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Chromium disable cloud pring sharing" id="test_chromium_disable_cloud_print_sharing" version="1">
+    <ind:object object_ref="object_chromium_disable_cloud_print_sharing" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_chromium_disable_cloud_print_sharing" version="1">
+    <ind:filepath operation="pattern match">^/etc/chromium/policies/managed/.*\.json$</ind:filepath>
+    <ind:pattern operation="pattern match">^\{([^\n]*\n+)+[\s]+\"CloudPrintProxyEnabled\"\:[\s]+false,</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

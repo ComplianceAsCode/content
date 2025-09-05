@@ -1,0 +1,73 @@
+documentation_complete: true
+
+title: 'Ensure Logs Sent To Remote Host'
+
+description: |-
+    To configure rsyslog to send logs to a remote log server,
+    open <tt>/etc/rsyslog.conf</tt> and read and understand the last section of the file,
+    which describes the multiple directives necessary to activate remote
+    logging.
+    Along with these other directives, the system can be configured
+    to forward its logs to a particular log server by
+    adding or correcting one of the following lines,
+    substituting <tt><i>loghost.example.com</i></tt> appropriately.
+    The choice of protocol depends on the environment of the system;
+    although TCP and RELP provide more reliable message delivery,
+    they may not be supported in all environments.
+    <br />
+    To use UDP for log message delivery:
+    <pre>*.* @<i>loghost.example.com</i></pre>
+    <br />
+    To use TCP for log message delivery:
+    <pre>*.* @@<i>loghost.example.com</i></pre>
+    <br />
+    To use RELP for log message delivery:
+    <pre>*.* :omrelp:<i>loghost.example.com</i></pre>
+    <br />
+    There must be a resolvable DNS CNAME or Alias record set to "<sub idref="rsyslog_remote_loghost_address" />" for logs to be sent correctly to the centralized logging utility.
+
+rationale: |-
+    A log server (loghost) receives syslog messages from one or more
+    systems. This data can be used as an additional log source in the event a
+    system is compromised and its local logs are suspect. Forwarding log messages
+    to a remote loghost also provides system administrators with a centralized
+    place to view the status of multiple hosts within the enterprise.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 26801-1
+    cce@rhel7: 27343-3
+    cce@rhel8: 80863-4
+
+references:
+    cis@debian8: 5.1.5
+    anssi: NT28(R7),NT28(R43),NT12(R5)
+    stigid@rhel6: "000136"
+    srg@rhel6: SRG-OS-000043,SRG-OS-000215
+    cis: 4.2.1.4
+    disa: 366,1348,136,1851
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(5)(ii)(B),164.308(a)(5)(ii)(C),164.308(a)(6)(ii),164.308(a)(8),164.310(d)(2)(iii),164.312(b),164.314(a)(2)(i)(C),164.314(a)(2)(iii)
+    iso27001-2013: A.12.1.3,A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1,A.17.2.1
+    nist: AU-3(2),AU-4(1),AU-9
+    nist-csf: PR.DS-4,PR.PT-1
+    ospp: FAU_GEN.1.1.c
+    srg: SRG-OS-000480-GPOS-00227
+    vmmsrg: SRG-OS-000032-VMM-000130
+    stigid@rhel7: "031000"
+    isa-62443-2013: 'SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9,SR 7.1,SR 7.2'
+    isa-62443-2009: 4.3.3.3.9,4.3.3.5.8,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
+    cobit5: APO11.04,APO13.01,BAI03.05,BAI04.04,DSS05.04,DSS05.07,MEA02.01
+    cis-csc: 1,13,14,15,16,2,3,5,6
+
+ocil_clause: 'none of these are present'
+
+ocil: |-
+    To ensure logs are sent to a remote host, examine the file
+    <tt>/etc/rsyslog.conf</tt>.
+    If using UDP, a line similar to the following should be present:
+    <pre> *.* @<i>loghost.example.com</i></pre>
+    If using TCP, a line similar to the following should be present:
+    <pre> *.* @@<i>loghost.example.com</i></pre>
+    If using RELP, a line similar to the following should be present:
+    <pre> *.* :omrelp:<i>loghost.example.com</i></pre>

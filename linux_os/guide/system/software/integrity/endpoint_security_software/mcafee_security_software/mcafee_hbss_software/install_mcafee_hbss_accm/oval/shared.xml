@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="install_mcafee_hbss_accm"
+  version="1">
+    <metadata>
+      <title>Install the Asset Configuration Compliance Module (ACCM)</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Install the Asset Configuration Compliance Module (ACCM).</description>
+    </metadata>
+    <criteria>
+      <criterion comment="McAfee ACCM is installed"
+      test_ref="test_mcafee_accm_exists" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist"
+  comment="McAfee ACCM installed" id="test_mcafee_accm_exists" version="1">
+    <unix:object object_ref="object_mcafee_accm_exists" />
+  </unix:file_test>
+  <unix:file_object id="object_mcafee_accm_exists" version="1">
+    <unix:path>/opt/McAfee/accm/bin</unix:path>
+    <unix:filename>accm</unix:filename>
+  </unix:file_object>
+
+</def-group>

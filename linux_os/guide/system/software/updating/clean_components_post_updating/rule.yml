@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,ol7,ol8,rhv4
+
+title: 'Ensure {{{ pkg_manager }}} Removes Previous Package Versions'
+
+description: |-
+    <tt>{{{ pkg_manager }}}</tt> should be configured to remove previous software components after
+    new versions have been installed. To configure <tt>{{{ pkg_manager }}}</tt> to remove the
+    previous software components after updating, set the <tt>clean_requirements_on_remove</tt>
+    to <tt>1</tt> in <tt>{{{ pkg_manager_config_file }}}</tt>.
+
+rationale: |-
+    Previous versions of software components that are not removed from the information
+    system after updates have been installed may be exploited by some adversaries.
+
+severity: low
+
+identifiers:
+    cce@rhel7: 80346-0
+
+references:
+    cui: 3.4.8
+    disa: "2617"
+    nist: SI-2(6),CM-11
+    nist-csf: ID.RA-1,PR.IP-12
+    srg: SRG-OS-000437-GPOS-00194
+    vmmsrg: SRG-OS-000437-VMM-001760
+    stigid@rhel7: "020200"
+    isa-62443-2009: 4.2.3,4.2.3.12,4.2.3.7,4.2.3.9
+    cobit5: APO12.01,APO12.02,APO12.03,APO12.04,BAI03.10,DSS05.01,DSS05.02
+    iso27001-2013: A.12.6.1,A.14.2.3,A.16.1.3,A.18.2.2,A.18.2.3
+    cis-csc: 18,20,4
+
+ocil_clause: 'clean_requirements_on_remove is not enabled or configured correctly'
+
+ocil: |-
+    To verify that <tt>clean_requirements_on_remove</tt> is configured properly, run the
+    following command:
+    <pre>$ grep clean_requirements_on_remove {{{ pkg_manager_config_file }}}</pre>
+    The output should return something similar to:
+    <pre>clean_requirements_on_remove=1</pre>
+
+platform: yum

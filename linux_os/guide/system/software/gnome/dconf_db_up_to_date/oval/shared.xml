@@ -1,0 +1,77 @@
+<def-group>
+
+  {{% macro check_db_is_up_to_date(db_name) %}}
+  <unix:file_object id="obj_dconf_{{{ db_name }}}_db" comment="The binary system-wide dconf database with '{{{ db_name }}}' settings" version="1">
+    <unix:filepath>/etc/dconf/db/{{{ db_name }}}</unix:filepath>
+  </unix:file_object>
+
+  <local_variable id="var_dconf_{{{ db_name }}}_db_modified_time" datatype="string" version="1" comment="When the '{{{ db_name }}}' dconf DB has been modified">
+    <time_difference format_2="seconds_since_epoch">
+      <object_component object_ref="obj_dconf_{{{ db_name }}}_db" item_field="m_time"/>
+    </time_difference>
+  </local_variable>
+
+  <unix:file_object id="obj_dconf_{{{ db_name }}}_config" comment="The dconf keyfile with '{{{ db_name }}}' settings" version="1">
+    <unix:filepath operation="pattern match">^/etc/dconf/db/{{{ db_name }}}.d/.*</unix:filepath>
+  </unix:file_object>
+
+  <local_variable id="var_dconf_{{{ db_name }}}_keyfiles_modified_time" datatype="int" version="1" comment="When dconf keyfiles in the '{{{ db_name }}}' tree have been modified">
+    <time_difference format_2="seconds_since_epoch">
+      <object_component object_ref="obj_dconf_{{{ db_name }}}_config" item_field="m_time"/>
+    </time_difference>
+  </local_variable>
+
+  <ind:variable_test check="all" check_existence="all_exist" id="test_dconf_{{{ db_name }}}_up_to_date" version="1" comment="Check if the {{{ db_name }}} dconf DB is up-to-date with keyfiles in the {{{ db_name }}} tree.">
+    <ind:object object_ref="object_{{{ db_name }}}_db_modified_time" />
+    <ind:state state_ref="state_{{{ db_name }}}_db_is_up_to_date" />
+  </ind:variable_test>
+
+  <ind:variable_object comment="All modified times of all keyfiles" id="object_{{{ db_name }}}_db_modified_time" version="1">
+     <ind:var_ref>var_dconf_{{{ db_name }}}_db_modified_time</ind:var_ref>
+   </ind:variable_object>
+
+  <!-- The age of the DB has to be lower than age of any keyfile. -->
+  <ind:variable_state id="state_{{{ db_name }}}_db_is_up_to_date" version="1">
+    <ind:value datatype="int" operation="less than or equal" var_check="all" var_ref="var_dconf_{{{ db_name }}}_keyfiles_modified_time" />
+  </ind:variable_state>
+
+  <unix:file_test id="test_dconf_{{{ db_name }}}_no_keyfiles" check="all" check_existence="none_exist" comment="no keyfiles applicable to the {{{ db_name }}} database" version="1">
+    <unix:object object_ref="obj_dconf_{{{ db_name }}}_config" />
+  </unix:file_test>
+  {{% endmacro %}}
+
+  {{% macro check_db_criterion(db_name) %}}
+      <criteria comment="check that all DBs in question are up-to-date" operator="OR">
+        <criterion comment="{{{ db_name }}} database is up-to-date wrt keyfiles" test_ref="test_dconf_{{{ db_name }}}_up_to_date" />
+	<criterion comment="no keyfiles applicable to the {{{ db_name }}} database" test_ref="test_dconf_{{{ db_name }}}_no_keyfiles" />
+      </criteria>
+  {{% endmacro %}}
+
+  <definition class="compliance" id="dconf_db_up_to_date" version="2">
+    <metadata>
+      <title>The dconf databases are up-to-date.</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>Make sure that the dconf databases are up-to-date with regards to respective keyfiles.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
+      <criteria comment="check that all DBs in question are up-to-date" operator="AND">
+        {{% if product == 'rhel7' %}}
+          {{{ check_db_criterion("gdm") }}}
+        {{% endif %}}
+        {{{ check_db_criterion("local") }}}
+      </criteria>
+    </criteria>
+  </definition>
+
+  {{% if product == 'rhel7' %}}
+    {{{ check_db_is_up_to_date("gdm") }}}
+  {{% endif %}}
+  {{{ check_db_is_up_to_date("local") }}}
+
+</def-group>

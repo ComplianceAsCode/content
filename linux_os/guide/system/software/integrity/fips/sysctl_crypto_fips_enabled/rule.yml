@@ -1,0 +1,56 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: "Set kernel parameter 'crypto.fips_enabled' to 1"
+
+description: |-
+    System running in FIPS mode is indicated by kernel parameter
+    <tt>'crypto.fips_enabled'</tt>. This parameter should be set to <tt>1</tt>
+    in FIPS mode.
+    To enable FIPS mode, run the following command:
+    <pre>fips-mode-setup --enable</pre>
+
+rationale: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 80658-8
+
+references:
+    disa: 68,803,2450
+    nist: IA-5,SC-13,AC-17(2),IA-7
+    vmmsrg: SRG-OS-000120-VMM-000600,SRG-OS-000478-VMM-001980,SRG-OS-000396-VMM-001590
+
+ocil_clause: 'crypto.fips_enabled is not 1'
+
+ocil: |-
+    To verify that kernel parameter 'crypto.fips_enabled' is set properly, run the following command:
+    <pre>sysctl crypto.fips_enabled</pre>
+    The output should contain the following:
+    <pre>crypto.fips_enabled =  1</pre>
+
+warnings:
+    - general: |-
+        The system needs to be rebooted for these changes to take effect.
+    - regulatory: |-
+        The Federal Information Systems Modernization Act (FISMA), requires cryptography protecting sensitive
+        or valuable data to undergo FIPS 140 validation. The U.S. National Institute of Standards and
+        Technology (NIST) views unvalidated cryptography as providing no protection to the information or
+        data—in effect the data would be considered unprotected plaintext. If the agency specifies that the
+        information or data be cryptographically protected, FIPS 140 is applicable. This configuration
+        check will fail on platforms lacking FIPS 140 validation, such as the CentOS, Scientific Linux,
+        and Fedora projects, even if FIPS-approved ciphers can be installed and enabled.
+        <br /><br />
+        See <b>{{{ weblink(link="https://csrc.nist.gov/Projects/cryptographic-module-validation-program") }}}</b>
+        for more information about the Cryptographic Validation Program.
+        <br /><br />
+        A list of FIPS validated cryptographic modules can be found at
+        <b>{{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/1401vend.htm") }}}</b>. The
+        validated cryptographic modules only apply to the products and companies listed in the active validation
+        list.

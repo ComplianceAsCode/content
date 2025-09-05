@@ -1,0 +1,16 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8
+
+title: 'Disable the telepathy_connect_all_ports SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>telepathy_connect_all_ports</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="telepathy_connect_all_ports") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="telepathy_connect_all_ports") }}}

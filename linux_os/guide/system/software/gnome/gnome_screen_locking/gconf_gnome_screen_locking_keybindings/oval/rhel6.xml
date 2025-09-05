@@ -1,0 +1,41 @@
+<def-group>
+  <definition class="compliance" id="gconf_gnome_screen_locking_keybindings" version="1">
+    <metadata>
+      <title>Set GNOME Screen Locking Keybindings</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>GNOME Screen Locking Keybindings should be configured to lock the screen on entry.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="GConf2 installed" definition_ref="package_GConf2_installed" negate="true" />
+      <criterion comment="gnome screen locking keybindings set" test_ref="test_gnome_screen_locking_keybindings" />
+      <criterion comment="gnome screen locking keybindings set" test_ref="test_gconf_tree_gnome_screen_locking_keybindings" />
+    </criteria>
+  </definition>
+  <ind:xmlfilecontent_test check="all"
+  comment="gnome screen locking keybindings set"
+  id="test_gnome_screen_locking_keybindings" version="1">
+    <ind:object object_ref="object_gnome_screen_locking_keybindings" />
+    <ind:state state_ref="state_gnome_screen_locking_keybindings" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_gnome_screen_locking_keybindings" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/apps/gnome_settings_daemon/keybindings/%gconf.xml</ind:filepath>
+    <ind:xpath>/gconf/entry[@name='screen']/stringvalue[1]/text()</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_test check="all"
+  comment="gnome screen locking keybindings set"
+  id="test_gconf_tree_gnome_screen_locking_keybindings" version="1">
+    <ind:object object_ref="object_gconf_tree_gnome_screen_locking_keybindings" />
+    <ind:state state_ref="state_gnome_screen_locking_keybindings" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_gconf_tree_gnome_screen_locking_keybindings" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/%gconf-tree.xml</ind:filepath>
+    <ind:xpath>/gconf/dir/dir/dir/entry[@name='screen']/stringvalue[1]/text()</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_state id="state_gnome_screen_locking_keybindings" version="1">
+    <ind:value_of datatype="string">&lt;Control&gt;&lt;Alt&gt;l</ind:value_of>
+  </ind:xmlfilecontent_state>
+</def-group>

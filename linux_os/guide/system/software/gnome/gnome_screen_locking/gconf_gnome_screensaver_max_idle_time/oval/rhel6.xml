@@ -1,0 +1,47 @@
+<def-group>
+  <definition class="compliance" id="gconf_gnome_screensaver_max_idle_time" version="2">
+    <metadata>
+      <title>Set GNOME Login Maximum Allowed Inactivity</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>The allowed period of inactivity before a user is logged
+      off the system.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="GConf2 installed" definition_ref="package_GConf2_installed" negate="true" />
+      <criterion comment="check value of max_idle_time in GCONF" test_ref="test_gnome_screensaver_max_idle_time" />
+      <criterion comment="check value of max_idle_time in GCONF" test_ref="test_gconf_tree_gnome_screensaver_max_idle_time" />
+    </criteria>
+  </definition>
+  <ind:xmlfilecontent_test check="all"
+  comment="check value of max_idle_time in GCONF"
+  id="test_gnome_screensaver_max_idle_time" version="1">
+    <ind:object object_ref="object_gnome_screensaver_max_idle_time" />
+    <ind:state state_ref="state_gnome_screensaver_max_idle_time" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_gnome_screensaver_max_idle_time" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/desktop/gnome/session/%gconf.xml</ind:filepath>
+    <ind:xpath>/gconf/entry[@name='max_idle_time']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_test check="all"
+  comment="check value of max_idle_time in GCONF"
+  id="test_gconf_tree_gnome_screensaver_max_idle_time" version="1">
+    <ind:object object_ref="object_gconf_tree_gnome_screensaver_max_idle_time" />
+    <ind:state state_ref="state_gnome_screensaver_max_idle_time" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_gconf_tree_gnome_screensaver_max_idle_time" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/%gconf-tree.xml</ind:filepath>
+    <ind:xpath>/gconf/dir/dir/dir/entry[@name='max_idle_time']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_state comment="idle timeout"
+  id="state_gnome_screensaver_max_idle_time" version="1">
+    <ind:value_of datatype="int" operation="less than or equal" var_check="all"
+    var_ref="inactivity_timeout_value" />
+  </ind:xmlfilecontent_state>
+
+  <external_variable comment="inactivity timeout variable" datatype="int"
+  id="inactivity_timeout_value" version="1" />
+</def-group>

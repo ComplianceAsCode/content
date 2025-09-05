@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Require Outdated Plugins to be Authorized'
+
+description: |-
+    Chromium should prompt users for authorization to run outdated plugins. This
+    can be enabled by setting <tt>AlwaysAuthorizePlugins</tt> to <tt>false</tt>
+    in the Chromium policy file.
+
+rationale: |-
+    Outdated plugins can compromise security and should request authorization from
+    the user before running.
+
+severity: unknown
+
+references:
+    stigid: DTBC0014
+
+ocil_clause: 'it is not set'
+
+ocil: |-
+    To verify that plugins require authorization to run, run the following command:
+    <pre>$ grep AlwaysAuthorizePlugins /etc/chromium/policies/managed/*.json</pre>
+    The output should contain:
+    <pre>"AlwaysAuthorizePlugins": false,</pre>

@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Enable Encrypted Searching'
+
+description: |-
+    Specifies the URL of the search engine used when doing a default search.
+    The URL should contain the string <tt>{searchTerms}</tt>. To set the URL of the
+    search engine, set <tt>DefaultSearchProviderSearchURL</tt> to
+    <tt><sub idref="var_enable_encrypted_searching" /></tt> in the Chromium policy file.
+
+rationale: 'When doing internet searches, it is important to use an encrypted connection via https.'
+
+severity: unknown
+
+references:
+    stigid: DTBC0008
+
+ocil_clause: 'it is not set'
+
+ocil: |-
+    To verify that the URL of the search engine is set, run the following command:
+    <pre>$ grep DefaultSearchProviderSearchURL /etc/chromium/policies/managed/*.json</pre>
+    The output should contain:
+    <pre>"DefaultSearchProviderSearchURL": "<sub idref="var_enable_encrypted_searching" />",</pre>

@@ -1,0 +1,82 @@
+- trigger:
+    name: periodic
+    triggers:
+        - timed: "@daily"
+
+- scm:
+    name: git-scm
+    scm:
+        - git:
+            url: "{git_url}"
+            skip-tag: True
+            git-tool: ci-git
+
+- job-template:
+    name: '{ci_project}-{git_repo}'
+    description: |
+        Managed by Jenkins Job Builder, do not edit manually!
+    node: "{ci_project}"
+    properties:
+        - github:
+            url: https://github.com/{git_username}/{git_repo}/
+    scm:
+        - git-scm:
+            git_url: https://github.com/{git_username}/{git_repo}.git
+    triggers:
+        - periodic
+    builders:
+        - shell: |
+            set +e
+            export CICO_API_KEY=$(cat ~/duffy.key )
+            # get node
+            n=1
+            while true
+            do
+                cico_output=$(cico node get -f value -c ip_address -c comment)
+                if [ $? -eq 0 ]; then
+                    read CICO_hostname CICO_ssid <<< $cico_output
+                    if  [ ! -z "$CICO_hostname" ]; then
+                        # we got hostname from cico
+                        break
+                    fi
+                    echo "'cico node get' succeed, but can't get hostname from output"
+                fi
+                if [ $n -gt 5 ]; then
+                    # give up after 5 tries
+                    echo "giving up on 'cico node get'"
+                    exit 1
+                fi
+                echo "'cico node get' failed, trying again in 60s ($n/5)"
+                n=$[$n+1]
+                sleep 60
+            done
+            sshopts="-t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -l root"
+            ssh_cmd="ssh $sshopts $CICO_hostname"
+            # Save the jenkins environment if needed
+            env > jenkins-env
+            $ssh_cmd yum -y install rsync
+            rsync -e "ssh $sshopts" -Ha $(pwd)/ $CICO_hostname:payload \
+            && /usr/bin/timeout {timeout} $ssh_cmd -t "cd payload && {ci_cmd}"
+            rtn_code=$?
+            if [ $rtn_code -eq 0 ]; then
+                cico node done $CICO_ssid
+            else
+                if [[ $rtn_code -eq 124 ]]; then
+                   echo "BUILD TIMEOUT";
+                   cico node done $CICO_ssid
+                else
+                    # fail mode gives us 12 hrs to debug the machine
+                    curl "http://admin.ci.centos.org:8080/Node/fail?key=$CICO_API_KEY&ssid=$CICO_ssid"
+                fi
+            fi
+            exit $rtn_code
+
+- project:
+    name: openscap
+    jobs:
+        - '{ci_project}-{git_repo}':
+            git_username: openscap
+            git_repo: scap-security-guide
+            ci_project: '{name}'
+            ci_cmd: "yum -y install install cmake openscap-utils git PyYAML python-jinja2 python-pytest && cd build && cmake ../ && make -j4 && CTEST_OUTPUT_ON_FAILURE=1 ctest -j4"
+            timeout: '20m'

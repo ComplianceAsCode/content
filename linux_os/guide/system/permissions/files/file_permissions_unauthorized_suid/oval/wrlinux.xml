@@ -1,0 +1,55 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_unauthorized_suid" version="1">
+    <metadata>
+      <title>Find setuid files from system packages</title>
+      <affected family="unix">
+        <platform>Wind River Linux 8</platform>
+      </affected>
+      <description>All files with setuid should be owned by a base system package</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check all setuid files" test_ref="check_setuid_files" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="setuid files outside system RPMs" id="check_setuid_files" version="1">
+    <unix:object object_ref="object_file_permissions_unauthorized_suid" />
+  </unix:file_test>
+
+  <unix:file_object comment="files with suid set" id="object_file_permissions_unauthorized_suid" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_file_permissions_unauthorized_suid</filter>
+    <filter action="exclude">state_suid_whitelist</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_unauthorized_suid" version="1">
+    <unix:suid datatype="boolean">true</unix:suid>
+  </unix:file_state>
+
+<!-- List of all setuid files included with base WRL8 system -->
+<!-- KEEP THE LIST BELOW SORTED !!! -->
+  <unix:file_state id="state_suid_whitelist" version="1">
+    <unix:filepath var_ref="var_suid_whitelist" var_check="at least one" />
+  </unix:file_state>
+
+  <constant_variable id="var_suid_whitelist" version="1" datatype="string" comment="suid whitelist">
+    <value>/bin/su.shadow</value>
+    <value>/bin/su.util-linux</value>
+    <value>/usr/bin/chage</value>
+    <value>/usr/bin/chfn.shadow</value>
+    <value>/usr/bin/chsh.shadow</value>
+    <value>/usr/bin/expiry</value>
+    <value>/usr/bin/gpasswd</value>
+    <value>/usr/bin/newgidmap</value>
+    <value>/usr/bin/newgrp.shadow</value>
+    <value>/usr/bin/newuidmap</value>
+    <value>/usr/bin/passwd.shadow</value>
+    <value>/usr/bin/sudo</value>
+    <value>/usr/lib64/dbus/dbus-daemon-launch-helper</value>
+    <value>/usr/sbin/unix_chkpwd</value>
+    <value>/usr/sbin/vlock-main</value>
+  </constant_variable>
+
+</def-group>

@@ -1,0 +1,1332 @@
+# ComplianceAsCode Developer Guide
+:rootdir: ../..
+:imagesdir: ./images
+:templatesdir: ../../shared/templates
+:rhel7dir: ../../rhel7/templates/csv
+:toc:
+:toc-placement: preamble
+:numbered:
+
+toc::[]
+
+## Introduction
+
+This document tries to provide information useful for ComplianceAsCode/content project contributors.
+We will guide you through the structure of the project.
+We will explain the directory layout, used formats and the build system.
+
+## Mailing List
+Join the mailing list at https://fedorahosted.org/mailman/listinfo/scap-security-guide.
+
+## Building ComplianceAsCode
+
+### Installing build dependencies
+
+On *Red Hat Enterprise Linux 6/7* make sure the packages `cmake`, `openscap-utils`,
+`PyYAML`, `python-jinja2` and their dependencies are installed:
+
+```bash
+yum install cmake make openscap-utils PyYAML python-jinja2
+```
+
+On *Red Hat Enterprise Linux 8* and *Fedora* the package list is the same but python2 packages need to be replaced with python3 ones:
+
+```bash
+yum install cmake make openscap-utils python3-pyyaml python3-jinja2
+```
+
+On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
+`libxml2-utils`, `python3-jinja2`, `python3-yaml`, `xsltproc` and their dependencies are
+installed:
+
+```bash
+apt-get install cmake make expat libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml xsltproc
+```
+
+IMPORTANT: Version `1.0.8` or later of `openscap-utils` is required to build the content.
+
+(optional) Install git if you want to clone the GitHub repository to get the
+source code:
+
+```bash
+# Fedora/RHEL
+yum install git
+
+# Ubuntu/Debian
+apt-get install git
+```
+
+(optional) Install the `ShellCheck` package to perform fix script static analysis:
+
+```bash
+# Fedora/RHEL
+yum install ShellCheck
+
+# Ubuntu/Debian
+apt-get install shellcheck
+```
+
+(optional) Install `yamllint` and `ansible-lint` packages to perform Ansible
+playbooks checks. These checks are not enabled by default in CTest, to enable
+them add `-DANSIBLE_CHECKS=ON` option to `cmake`.
+```bash
+# Fedora/RHEL
+yum install yamllint ansible-lint
+
+# Ubuntu/Debian (to install ansible-lint on Debian you will probably need to
+# enable Debian Backports repository)
+apt-get install yamllint ansible-lint
+```
+
+(optional) Install the `ninja` build system if you want to use it instead of
+`make` for faster builds:
+
+```bash
+# Fedora/RHEL
+yum install ninja-build
+
+# Ubuntu/Debian
+apt-get install ninja-build
+```
+
+(optional) Install the `json2html` package if you want to generate HTML report statistics:
+
+```bash
+pip install json2html
+```
+if you are using python3:
+```bash
+pip3 install json2html
+```
+
+### Downloading the source code
+
+Download and extract a tarball from the link:https://github.com/ComplianceAsCode/content/releases[list of releases]:
+
+```bash
+# change X.Y.Z for desired version
+ssg_version="X.Y.Z"
+wget "https://github.com/ComplianceAsCode/content/releases/download/v$ssg_version/scap-security-guide-$ssg_version.tar.bz2"
+tar -xvjf ./scap-security-guide-$ssg_version.tar.bz2
+cd ./scap-security-guide-$ssg_version/
+```
+
+Or clone the GitHub repository:
+
+```bash
+git clone https://github.com/ComplianceAsCode/content.git
+cd content/
+# (optional) select release version - change X.Y.Z for desired version
+git checkout vX.Y.Z
+# (optional) select latest development version
+git checkout master
+```
+
+### Building
+
+To build all the security content:
+
+```bash
+cd build/
+cmake ../
+# To build all security content
+make -j4
+# To build security content for one specific product, for example for *Red Hat Enterprise Linux 7*
+make -j4 rhel7
+```
+
+Or use the `build_product` script from base directory that removes whatever is in the `build` directory and builds specific product:
+
+```bash
+./build_product rhel7
+```
+
+(optional) To build only specific content for one specific product:
+
+```bash
+cd build/
+cmake ../
+make -j4 rhel7-content  # SCAP XML files for RHEL7
+make -j4 rhel7-guides  # HTML guides for RHEL7
+make -j4 rhel7-tables  # HTML tables for RHEL7
+make -j4 rhel7-profile-bash-scripts  # remediation Bash scripts for all RHEL7 profiles
+make -j4 rhel7-profile-playbooks # Ansible Playbooks for all RHEL7 profiles
+make -j4 rhel7  # everything above for RHEL7
+```
+
+(optional) Configure options before building using a GUI tool:
+
+```bash
+cd build/
+cmake-gui ../
+make -j4
+```
+
+(optional) Use the `ninja` build system (requires the `ninja-build` package):
+
+```bash
+cd build/
+cmake -G Ninja ../
+ninja-build  # depending on the distribution just "ninja" may also work
+```
+
+(optional) Generate statistics for products and profiles. Some of the statistics generated are: implemented OVAL, bash, ansible for rules, missing CCE, etc:
+
+```bash
+cd build/
+cmake ../
+make -j4 stats # create statistics for all products
+make -j4 profile-stats # create statistics for all profiles in all products
+```
+
+You can also create statistics per product, to do that just prepend the product name (e.g.: `rhel7-stats`) to the make target.
+
+It is possible to generate HTML output by triggering similar command:
+
+```bash
+cd build/
+cmake ../
+make -j4 html-stats # create statistics for all products, as a result <product>/stats.html file is created.
+make -j4 html-profile-stats # create statistics for all profiles in all products, as a result <product>/profile-stats.html file is created
+```
+
+If you want to go deeper into statistics, refer to <<Profile Statistics and Utilities>> section.
+
+#### Building compliant SCAP 1.2 content
+
+By default, the build system builds SCAP content with OVAL 5.11. This means that the SCAP 1.3 datastream conforms to SCAP standard version 1.3. But the SCAP 1.2 datastream is not fully conformant with SCAP standard version 1.2, as up to OVAL 5.10 version is allowed.
+As SCAP 1.3 allows up to OVAL 5.11 and SCAP 1.2 allows up to OVAL 5.10.
+
+To build fully compliant SCAP 1.2 content:
+
+If you use `build_product` script, pass `--oval510` option:
+
+```bash
+./build_product --oval510 <product-name>
+```
+
+If you use `cmake` command, pass `-DSSG_TARGET_OVAL_MINOR_VERSION:STRING=10`:
+
+```bash
+cd build/
+cmake -DSSG_TARGET_OVAL_MINOR_VERSION:STRING=10 ../
+make
+```
+
+And use the datastream with suffix `-1.2.xml`.
+
+### Build outputs
+
+When the build has completed, the output will be in the build folder.
+That can be any folder you choose but if you followed the examples above
+it will be the `content/build` folder.
+
+#### SCAP XML files
+The SCAP XML files will be called `ssg-${PRODUCT}-${TYPE}.xml`. For example
+`ssg-rhel7-ds.xml` is the SCAP 1.3 *Red Hat Enterprise Linux 7* **source datastream**,
+and `ssg-rhel7-ds-1.2.xml` is the SCAP 1.2 **source datastream**.
+
+We recommend using **source datastream** if you have a choice.
+The build system also generates separate XCCDF, OVAL, OCIL and CPE files:
+
+```bash
+$ ls -1 ssg-rhel7-*.xml
+ssg-rhel7-cpe-dictionary.xml
+ssg-rhel7-cpe-oval.xml
+ssg-rhel7-ds.xml
+ssg-rhel7-ds-1.2.xml
+ssg-rhel7-ocil.xml
+ssg-rhel7-oval.xml
+ssg-rhel7-pcidss-xccdf-1.2.xml
+ssg-rhel7-xccdf-1.2.xml
+ssg-rhel7-xccdf.xml
+```
+
+These can be ingested by any SCAP-compatible scanning tool, to enable automated
+checking.
+
+#### HTML Guides
+The human readable HTML guide index files will be called
+`ssg-${PRODUCT}-guide-index.html`. For example `ssg-rhel7-guide-index.html`.
+This file will let the user browse all profiles available for that product.
+The prose guide HTML contains practical, actionable information for auditors
+and administrators. They are placed in the guides folder.
+```bash
+$ ls -1 guides/ssg-rhel7-*.html
+guides/ssg-rhel7-guide-ospp42.html
+guides/ssg-rhel7-guide-ospp.html
+guides/ssg-rhel7-guide-pci-dss.html
+...
+```
+
+#### HTML Reference Tables
+Spreadsheet HTML tables - potentially useful as the basis for a
+*Security Requirements Traceability Matrix (SRTM) document*:
+
+```bash
+$ ls -1 tables/table-rhel7-*.html
+...
+tables/table-rhel7-nistrefs-ospp.html
+tables/table-rhel7-nistrefs-stig.html
+tables/table-rhel7-pcidssrefs.html
+tables/table-rhel7-srgmap-flat.html
+tables/table-rhel7-srgmap.html
+tables/table-rhel7-stig.html
+...
+```
+
+#### Ansible Playbooks
+
+##### Profile Ansible Playbooks
+These Playboks contains the remediations for a profile.
+```bash
+$ ls -1 ansible/rhel7-playbook-*.yml
+ansible/rhel7-playbook-C2S.yml
+ansible/rhel7-playbook-ospp.yml
+ansible/rhel7-playbook-pci-dss.yml
+...
+```
+
+##### Rule Ansible Playbooks
+These Playboks contains just the remediation for a rule, in the context of a profile.
+```bash
+$ ls -1 ansible/rhel7-playbook-*.yml
+$ ls -1 rhel7/playbooks/pci-dss/*.yml
+rhel7/playbooks/pci-dss/account_disable_post_pw_expiration.yml
+rhel7/playbooks/pci-dss/accounts_maximum_age_login_defs.yml
+rhel7/playbooks/pci-dss/accounts_password_pam_dcredit.yml
+rhel7/playbooks/pci-dss/accounts_password_pam_lcredit.yml
+...
+```
+
+#### Profile Bash Scripts
+These Bash Scripts contains the remediations for a profile.
+```bash
+$ ls -1 bash/rhel7-script-*.sh
+bash/rhel7-script-C2S.sh
+...
+bash/rhel7-script-ospp.sh
+bash/rhel7-script-pci-dss.sh
+...
+```
+
+### Testing
+
+To ensure validity of built artifacts prior to installation, we recommend
+running our test suite against the build output. This is done with CTest:
+
+```bash
+cd content/
+cd build/
+cmake ../
+make -j4
+ctest -j4
+```
+
+Note: CTest does not run link:https://github.com/ComplianceAsCode/content/tree/master/tests[SSG Test Suite] which provides simple system of test scenarios for testing profiles and rule remediations.
+
+### Installation
+
+System-wide installation:
+
+```bash
+cd content/
+cd build/
+cmake ../
+make -j4
+sudo make install
+```
+
+(optional) Custom install location:
+
+```bash
+cd content/
+cd build/
+cmake ../
+make -j4
+sudo make DESTDIR=/opt/absolute/path/to/ssg/ install
+```
+
+(optional) System-wide installation using ninja:
+
+```bash
+cd content/
+cd build/
+cmake -G Ninja ../
+ninja-build
+ninja-build install
+```
+
+### (optional) Building a tarball
+
+To build a tarball with all the source code:
+
+```bash
+cd build/
+make package_source
+```
+
+### (optional) Building a package
+
+To build a package for testing purposes:
+
+```bash
+cd build/
+# disable any product you would not like to bundle in the package. For example:
+cmake -DSSG_PRODUCT_FEDORA:BOOL=OFF../
+# build the package.
+make package
+```
+
+Currently, RPM and DEB packages are supported by this mechanism. We recommend
+only using it for testing. Please follow downstream workflows for production
+packages.
+
+### (optional) Building a ZIP file
+
+To build a zip file with all generated source data streams and kickstarts:
+
+```bash
+cd build/
+make zipfile
+```
+
+There is also target to build zip file containing contents specific for a vendor's product.
+
+```bash
+cd build/
+# To build content zipfiles of all vendors:
+make vendor-zipfile
+# To build Red Hat zipfiles:
+make redhat-zipfile
+```
+
+### Build the docker container image
+
+Use a suitable Dockerfile present in the
+link:https://github.com/ComplianceAsCode/content/tree/master/Dockerfiles[Dockerfiles]
+directory and build the image.
+This will take care of the build environment and all necessary setup.
+
+```bash
+docker build --no-cache --file Dockerfile --tag oscap:$(date -u +%Y%m%d%H%M) --tag oscap:latest .
+```
+
+### Build the content using the container image
+
+To build all the content, run a container without any flags.
+
+```bash
+docker run --cap-drop=all --name scap-security-guide oscap:latest
+```
+
+Using `docker cp` to copy all the generated content to the your host:
+
+```bash
+docker cp scap-security-guide:/home/oscap/content/build $(pwd)/container_build
+```
+
+== Creating Content
+
+=== Directory Structure/Layout
+
+==== Top Level Structure/Layout
+
+Under the top level directory, there are directories and/or files for different products,
+shared content, documentation, READMEs, Licenses, build files/configuration, etc.
+
+===== Important Top Level Directory Descriptions
+
+|===
+|Directory |Description
+
+|`linux_os`
+| Contains security content for Linux operating systems. Contains rules, OVAL checks, Ansible tasks, Bash remediations, etc.
+
+|`applications`
+| Contains security content for applications such as OpenShift or OpenStack. Contains rules, OVAL checks, Ansible tasks, Bash remediations, etc.
+
+|`shared`
+| Contains templates which can generate, Jinja macros, Bash remediation functions.
+
+|`tests`
+| Contains the test suite for content validation and testing, contains also unit tests.
+
+|`build`
+| Can be used to build the content using CMake.
+
+|`build-scripts`
+| Scripts used by the build system.
+
+|`cmake`
+| Contains the CMake build configuration files.
+
+|`Dockerfiles`
+| Contains Dockerfiles to build content test suite container backends.
+
+|`docs`
+| Contains the User Guide and Developer Guide, manual page template, etc.
+
+|`ssg`
+| Contains Python `ssg` module which is used by most of the scripts in this repository.
+
+|`utils`
+| Miscellaneous scripts used for development but not used by the build system.
+|===
+
+The remaining directories such as `fedora`, `rhel7`, etc. are product
+directories.
+
+===== Important Top Level File Descriptions
+
+|===
+|File |Description
+
+|`CMakeLists.txt`
+| Top-level CMake build configuration file
+
+|`Contributors.md`
+| *DO NOT MANUALLY EDIT* script-generated file
+
+|`Contributors.xml`
+| *DO NOT MANUALLY EDIT* script-generated file
+
+|`DISCLAIMER`
+| Disclaimer for usage of content
+
+|`Dockerfile`
+| CentOS7 Docker build file
+
+|`LICENSE`
+| Content license
+
+|`README.md`
+| Project README file
+
+|===
+
+==== Benchmark Structure/Layout
+
+Benchmarks are directories that contain `benchmark.yml` file.
+We have multiple benchmarks in our project:
+
+|===
+| Name | Location
+| Linux OS | `/linux_os/guide`
+| Applications | `/applications` (Notice no `guide` subdirectory there!)
+| Java Runtime Environment | `/jre/guide`
+| Fuse 6 | `/fuse6/guide`
+| EAP6 | `/eap6/guide`
+| Firefox | `/firefox/guide`
+| Chromium | `/chromium/guide`
+|===
+
+The *Linux OS* benchmark describes Linux Operating System in general.
+This benchmark is used by multiple ComplianceAsCode products, eg. `rhel7`, `fedora`, `ubuntu1404`, `sle11` etc.
+The benchmark is located in `/linux_os/guide`.
+
+The products specify which benchmark they use as a source of content in their `product.yml` file using `benchmark_root` key. For example, `rhel7` product specifies that it uses the Linux OS benchmark.
+
+----
+$ cat rhel7/product.yml
+product: rhel7
+full_name: Red Hat Enterprise Linux 7
+type: platform
+
+benchmark_root: "../linux_os/guide"
+
+.....
+----
+
+The Benchmarks are organized into directory structure. The directories represent either groups or rules. The group directories contain `group.yml` and rule directories `rule.yml`.
+The name of the group directory is the group ID, without the prefix.
+Similarly, the name of the rule directory if the rule ID, without the prefix.
+
+For example, the Linux OS Benchmark is structured in this way:
+
+----
+.
+├── benchmark.yml
+├── intro
+│   ├── general-principles
+│   ├── group.yml
+│   └── how-to-use
+├── services
+│   ├── apt
+│   ├── avahi
+│   ├── cron_and_at
+│   ├── deprecated
+│   ├── dhcp
+│   ├── dns
+│   ├── ftp
+│   ├── group.yml
+│   ├── http
+│   ├── imap
+│   ├── ldap
+│   ├── mail
+│   ├── nfs_and_rpc
+│   .......
+│   .......
+└── system
+    ├── accounts
+    ├── auditing
+    ├── bootloader-grub2
+    ├── bootloader-grub-legacy
+    ├── entropy
+    ├── group.yml
+    ├── logging
+......
+----
+
+
+==== Product Structure/Layout
+
+When creating a new product, use the guidelines below for the directory layout:
+
+* *Do not* use capital letters
+* If product versions are required, use major versions only. For example,
+`rhel7`, `ubuntu16`, etc.
+* If the content to be produced does not matter on versions, *do not* add version
+numbers. For example: `fedora`, `firefox`, etc.
+* In addition, use only a maxdepth of 3 directories.
+* See the link:../../example/README.md[README] for more
+information about the changes needed.
+
+Following these guidelines help with the usability and browsability of
+using and navigating the content.
+
+For example:
+[source,bash]
+----
+$ tree -d rhel7
+rhel7
+├── cpe
+├── kickstart
+├── overlays
+├── profiles
+├── templates
+│   └── csv
+└── transforms
+
+7 directories
+----
+
+===== Product Level Directory Descriptions
+
+|===
+|Directory |Description
+|`cpe`
+|`[red]#Required#` Contains the Common Platform Enumeration (CPE) product
+identifier that is provided from link:https://nvd.nist.gov/products/cpe[NIST].
+
+|`kickstart`
+|`[red]#Optional#` Contains product kickstart or build files to be used in
+testing, development, or production (not recommended) of compliance content.
+
+|`overlays`
+|`[red]#Required#` Contains overlay files for specific standards
+organizations such as NIST, DISA STIG, PCI-DSS, etc.
+
+|`profiles`
+|`[red]#Required#` Contains profiles that are created and tailored to meet
+government or commercial compliance standards.
+
+|`templates`
+|`[red]#Required#` Can contain the following directories: `csv`.
+
+|`transforms`
+|`[red]#Required#` Contains XSLT files and scripts that are used to
+transform the content into the expected compliance document such as XCCDF, OVAL,
+Datastream, etc.
+|===
+
+[IMPORTANT]
+====
+For any of the `[red]#Required#` directories that may not yet add content,
+add a `.gitkeep` file for any empty directories.
+====
+
+== Updating Reference and Overlay Content
+
+=== Reference Content
+
+==== STIG Reference Content
+
+=== STIG Overlay Content
+
+`stig_overlay.xml` maps an official product/version STIG release with a
+SSG product/version STIG release.
+
+
+**`stig_overlay.xml` should never be manually created or updated. It should
+always be generated using `create-stig-overlay.py`.**
+
+==== Creating stig_overlay.xml
+
+To create `stig_overlay.xml`, there are two things that are required: an
+official non-draft STIG release from DISA containing a XCCDF file
+(e.g. `U_Red_Hat_Enterprise_Linux_7_STIG_V1R1_Manual-xccdf.xml` and an XCCDF file built
+by the project (e.g. `ssg-rhel7-xccdf.xml`)
+
+Example using `create-stig-overlay.py`:
+----
+$ PYTHONPATH=`./.pyenv.sh` utils/create-stig-overlay.py --disa-xccdf=disa-stig-rhel7-v1r12-xccdf-manual.xml --ssg-xccdf=ssg-rhel7-xccdf.xml -o rhel7/overlays/stig_overlay.xml
+----
+
+==== Updating stig_overlay.xml
+
+To update `stig_overlay.xml`, use the `create-stig-overlay.py` script as
+mentioned above. Then, submit a pull request to replace the `stig_overlay.xml`
+file that is needing to be updated. Please note that as a part of this
+update rules that have been removed from the official STIG will be removed
+here as well.
+
+== Tools and Utilities
+
+To run the Python utilities (those ending in `.py`), you will need to have the
+PYTHONPATH environment variable set. This can be accomplished one of two ways: by
+prefixing all commands with a local variable (`PYTHONPATH=/path/to/scap-security-guide`),
+or by exporting `PYTHONPATH` in your shell environment. We provide a script
+for making this easier: `.pyenv.sh`. To set `PYTHONPATH` correctly for the
+current shell, simply call `source .pyenv.sh`. For more information on how to
+use this script, please see the comments at the top of the file.
+
+
+=== Testing OVAL Content
+
+Located in `utils` directory, the `testoval.py` script allows easy testing of oval
+definitions. It wraps the definition and makes up an oval file ready for
+scanning, very useful for testing new OVAL content or modifying existing ones.
+
+Example usage:
+
+----
+$ PYTHONPATH=`./.pyenv.sh` ./utils/testoval.py install_hid.xml
+----
+
+Create or add an alias to the script so that you don't have to type out the full path
+everytime that you would like to use the `testoval.py` script.
+
+----
+$ alias testoval='/home/_username_/scap-security-guide/utils/testoval.py'
+----
+
+An alternative is adding the directory where `testoval.py` resides to your PATH.
+
+----
+$ export PATH=$PATH:/home/_username_/scap-security-guide/utils/
+----
+
+
+=== Profile Statistics and Utilities
+
+The `profile_tool.py` tool displays XCCDF profile statistics. It can show number of rules in the
+profile, how many of these rules have an OVAL check implemented, how many have a remediation available,
+shows rule IDs which are missing them and other useful information.
+
+To use the script, first build the content, then pass the built XCCDF (not DataStream) to the script.
+
+For example, to check which rules in RHEL8 OSPP profile are missing remediations, run this command:
+
+----
+$ ./build_product rhel8
+$ ./build-scripts/profile_tool.py stats --missing-fixes --profile ospp --benchmark build/ssg-rhel8-xccdf.xml
+----
+Note: There is an automated job which provides latest statistics from all products and all profiles, you can view it here: link:https://jenkins.complianceascode.io/job/scap-security-guide-stats/[Statistics]
+
+The tool also can subtract rules between YAML profiles.
+
+For example, to subtract selected rules from a given profile based on rules selected by another profile, run this command:
+----
+$ ./build-scripts/profile_tool.py sub --profile1 rhel7/profiles/ospp.profile --profile2 rhel7/profiles/pci-dss.profile
+----
+
+This will result in a new YAML profile containing exclusive rules to the profile pointed by the --profile1 option.
+
+== Contributing with XCCDFs, OVALs and remediations
+
+There are three main types of content in the project, they are rules, defined using the XCCDF standard, checks, usually written in link:https://oval.mitre.org/language/about/[OVAL] format, and remediations, that can be executed on ansible, bash, anaconda installer and puppet.
+ComplianceAsCode also has its own templating mechanism, allowing content writers to create models and use it to generate a number of checks and remediations.
+
+=== Contributing
+
+Contributions can be made for rules, checks, remediations or even utilities. There are different sets of guidelines for each type, for this reason there is a different topic for each of them.
+
+==== Rules
+
+Rules are input described in YAML which mirrors the XCCDF format (an XML container).
+Rules are translated to become members of a `Group` in an XML file.
+All existing rules for Linux products can be found in the `linux_os/guide` directory. For non-Linux products (e.g., `jre`), this content can be found in the `<product>/guide`.
+The exact location depends on the group (or category) that a rule belongs to.
+
+
+For an example of rule group, see `linux_os/guide/system/software/disk_partitioning/partition_for_tmp.rule`.
+The id of this rule is `partition_for_tmp.rule`; this rule belongs to the `disk_partitioning` group, which in turn belongs to the `software` group (which in turn belongs to the `system` group).
+Because this rule is in `linux_os/guide`, it can be shared by all Linux products.
+
+Rules describe the desired state of the system and may contain references if they are parts of higher-level standards.
+All rules should reflect only a single configuration change for compliance purposes.
+
+
+Structurally, a rule is a YAML file (which can contain Jinja macros) that represents a dictionary.
+
+A rule YAML file has one implied attribute:
+
+* `id`: The primary identifier for the rule to be referenced from profiles. This is inferred from the file name and links it to checks and fixes with the same file name.
+
+A rule itself contains these attributes:
+
+* `severity`: Is used for metrics and tracking. It can have one of the following values: `unknown`, `info`, `low`, `medium`, or `high`.
++
+[cols="2", options="header"]
+|===
+|Level | Description
+|`unknown`
+|Severity not defined (default)
+
+|`info`
+|Rule is informational only. Failing the rule doesn't imply failure to conform to the security guidance of the benchmark.
+
+|`low`
+|Not a serious problem
+
+|`medium`
+|Fairly serious problem
+
+|`high`
+|Grave or critical problem
+|===
++
+The severity of the rule can be overridden by a profile with `refine-rule` selector.
+
+* `title`: Human-readable title of the rule.
+* `rationale`: Human-readable HTML description of the reason why the rule exists and why it is important from the technical point of view. For example, rationale of the `partition_for_tmp` rule states that:
++
+The <tt>/tmp</tt> partition is used as temporary storage by many programs. Placing <tt>/tmp</tt> in its own partition enables the setting of more restrictive mount options, which can help protect programs which use it.
+* `description`: Human-readable HTML description, which provides broader context for non-experts than the rationale. For example, description of the `partition_for_tmp` rule states that:
++
+The <tt>/var/tmp</tt> directory is a world-writable directory used for temporary file storage. Ensure it has its own partition or logical volume at installation time, or migrate it using LVM.
+* `platform`: Defines applicability of a rule. For example, if a rule is not applicable to containers, this should be set to `machine`, which means it will be evaluated only if the targeted scan environment is either bare-metal or virtual machine. Also, it can restrict applicability on higher software layers. By setting to `shadow-utils`, the rule will have its applicability restricted to only environments which have `shadow-utils` package installed. The available options can be found in the file <product>/cpe/<product>-cpe-dictionary.xml (e.g.: rhel8/cpe/rhel8-cpe-dictionary.xml). In order to support a new value, an OVAL check (of `inventory` class) must be created under `shared/checks/oval/` and referenced in the dictionary file.
+* `ocil`: Defines asserting statements to check whether or not the rule is valid.
+* `ocil_clause`: This attribute contains the statement which describes how to determine whether the statement is true or false. Check out `encrypt_partitions.rule` in `linux_os/guide/system/software/disk_partitioning/`: this contains a `partitions do not have a type of crypto_LUKS` value for `ocil_clause`. This clause is prefixed with the phrase "It is the case that".
+
+A rule may contain those reference-type attributes:
+
+* `identifiers`: This is related to products/CCEs that the rule applies to; this is a dictionary, whose keys should be `cce` and a value. If `cce` is modified with a product (e.g., `cce@rhel6`), it restricts which products those identifiers applies to.
+* `references`: This is related to the compliance document line items that the rule applies to. These can be attributes such as `stig`, `srg`, `nist`, etc., whose keys may be modified with a product (e.g., `stig@rhel6`) to restrict what products an identifiers applies to.
++
+When the rule is related to RHEL, it should have a CCE.
+Available CCEs that can be assigned to new rules are listed in the `shared/references/cce-rhel-avail.txt` file.
+See `linux_os/guide/system/software/disk_partitioning/encrypt_partitions.rule` for an example of reference-type attributes.
+
+Some of existing rule definitions contain attributes that use macros.
+There are two implementations of macros:
+
+* link:http://jinja.pocoo.org/docs/2.10/[Jinja macros], that are defined in `shared/macros.jinja`, and `shared/macros-highlevel.jinja`.
+* Legacy XSLT macros, which are defined in `shared/transforms/*.xslt`.
+
+For example, the `ocil` attribute of `service_ntpd_enabled` uses the `ocil_service_enabled` jinja macro.
+Due to the need of supporting Ansible output, which also uses jinja, we had to modify control sequences, so macro operations require one more curly brace.
+For example, invocation of the partition macro looks like `{{{ complete_ocil_entry_separate_partition(part="/tmp") }}}` - there are three opening and closing curly braces instead of the two that are documented in the Jinja guide.
+
+`shared/macros.jinja` contains specific low-level macros s.a. `systemd_ocil_service_enabled`, whereas `shared/macros-highlevel.jinja` contains general macros s.a. `ocil_service_enabled`, that decide which one of the specialized macros to call based on the actual product being used.
+
+The macros that are likely to be used in descriptions begin by `describe_`, whereas macros likely to be used in OCIL entries begin with `ocil_`.
+Sometimes, a rule requires `ocil` and `ocil_clause` to be specified, and they depend on each other.
+Macros that begin with `complete_ocil_entry_` were designed for exactly this purpose, as they make sure that OCIL and OCIL clauses are defined and consistent.
+Macros that begin with underscores are not meant to be used in descriptions.
+
+To parametrize rules and remediations as well as Jinja macros, you can use product-specific variables defined in `product.yml` in product root directory.
+Moreover, you can define *implied properties* which are variables inferred from them.
+For example, you can define a condition that checks if the system uses `yum` or `dnf` as a package manager and based on that populate a variable containing correct path to the configuration file.
+The inferring logic is implemented in `_get_implied_properties` in `ssg/yaml.py`.
+Constants and mappings used in implied properties should be defined in `ssg/constants.py`.
+
+Rules are unselected by default - even if the scanner reads rule definitions, they are effectively ignored during the scan or remediation.
+A rule may be selected by any number of profiles, so when the scanner is scanning using a profile the rule is included in, the rule is taken into account.
+For example, the rule identified by `partition_for_tmp` defined in `shared/xccdf/system/software/disk_partitioning.xml` is included in the `RHEL7 C2S` profile in `rhel7/profiles/C2S.xml`.
+
+Checks are connected to rules by the `oval` element and the filename in which it is found.
+Remediations (i.e. fixes) are assigned to rules based on their basename.
+Therefore, the rule `sshd_print_last_log` has a `bash` fix associated as there is a `bash` script `shared/fixes/bash/sshd_print_last_log.sh`. As there is an Ansible playbook `shared/fixes/ansible/sshd_print_last_log.yml`, the rule has also an Ansible fix associated.
+
+==== Rule Directories
+
+The rule directory simplifies the structure of a rule and all of its
+associated content by placing it all under a common directory. The
+structure of a rule directory looks like the following example:
+
+----
+linux_os/guide/system/group/rule_id/rule.yml
+linux_os/guide/system/group/rule_id/bash/ol7.sh
+linux_os/guide/system/group/rule_id/bash/shared.sh
+linux_os/guide/system/group/rule_id/oval/rhel7.xml
+linux_os/guide/system/group/rule_id/oval/shared.xml
+----
+
+To be considered a rule directory, it must be a directory contained in a
+benchmark pointed to by some product. The directory must have a name that
+is the id of the rule, and must contain a file called `rule.yml` which
+is a YAML Rule description as described above. This directory can then
+contain the following subdirectories:
+
+ - `anaconda` -- for Anaconda remediation content, ending in `.anaconda`
+ - `ansible` -- for Ansible remediation content, ending in `.yml`
+ - `bash` -- for Bash remediation content, ending in `.sh`
+ - `oval` -- for OVAL check content, ending in `.xml`
+ - `puppet` -- for Puppet remediation content, ending in `.pp`
+
+In each of these subdirectories, a file named `shared.ext` will apply to all
+products and be included in all builds, but `{{{ product }}}.ext` will
+only get included in the build for `{{{ product }}}` (e.g., `rhel7.xml` above
+will only be included in the build of the `rhel7` guide content and not in the
+`ol7` content). Note that `.ext` must be substituted for the correct
+extension for content of that type (e.g., `.sh` for `bash` content). Further,
+all of these directories are optional and will only be searched for content if
+present. Lastly, the product naming of content will not override the contents
+of `platform` or `prodtype` fields in the content itself (e.g., if `rhel7` is
+not present in the `rhel7.xml` OVAL check platform specifier, it will be
+included in the build artifacts but later removed because it doesn't match
+the platform).
+
+Currently the build system supports both rule files (discussed above) and rule
+directories. For example content in this format, please see rules in
+`linux_os/guide`.
+
+To interact with build directories, the `ssg.rules` and `ssg.rule_dir_stats`
+modules have been created, as well as three utilities:
+
+  - `utils/rule_dir_json.py` -- to generate a JSON tree describing the
+    current content of all guides
+  - `utils/rule_dir_stats.py` -- for analyzing the JSON tree and finding
+    information about specific rules, products, or summary statistics
+  - `utils/rule_dir_diff.py` -- for diffing two JSON trees (e.g., before and
+    after a major change), using the same interface as `rule_dir_stats.py`.
+
+For more information about these utilities, please see their help text.
+
+To interact with `rule.yml` files and the OVALs inside a rule directory, the
+following utilities are provided:
+
+===== `utils/mod_prodtype.py`
+
+This utility modifies the prodtype field of rules. It supports several
+commands:
+
+   - `mod_prodtype.py <rule_id> list` - list the computed and actual prodtype
+     of the rule specified by `rule_id`.
+   - `mod_prodtype.py <rule_id> add <product> [<product> ...]` - add additional
+     products to the prodtype of the rule specified by `rule_id`.
+   - `mod_prodtype.py <rule_id> remove <product> [<product> ...]` - remove products
+     to the prodtype of the rule specified by `rule_id`.
+   - `mod_prodtype.py <rule_id> replace <replacement> [<replacement> ...]` - do
+     the specified replacement transformations. A replacement transformation is
+     of the form `match~replace` where `match` and `replace` are a comma
+     separated list of products. If all of the products in `match` exist in the
+     original `prodtype` of the rule, they are removed and the products in
+     `replace` are added.
+
+This utility requires an up to date JSON tree created by `rule_dir_json.py`.
+
+===== `utils/mod_checks.py`
+
+This utility modifies the `<affected>` element of an OVAL check. It supports
+several commands on a given rule:
+
+   - `mod_checks.py <rule_id> list` - list all OVALs, their computed products,
+     and their actual platforms.
+   - `mod_checks.py <rule_id> delete <product>` - delete the OVAL for the
+     the specified product.
+   - `mod_checks.py <rule_id> make_shared <product>` - moves the product OVAL
+     to the shared OVAL (e.g., `rhel7.xml` to `shared.xml`).
+   - `mod_checks.py <rule_id> diff <product> <product>` - Performs a diff
+     between two OVALs (product can be `shared` to diff against the shared
+     OVAL).
+
+In addition, the `mod_checks.py` utility supports modifying the shared OVAL
+with the following commands:
+
+   - `mod_checks.py <rule_id> add <platform> [<platform> ...]` - adds the
+     specified platforms to the shared OVAL for the rule specified by
+     `rule_id`.
+   - `mod_checks.py <rule_id> remove <platform> [<platform> ...]` - removes
+     the specified platforms from the shared OVAL.
+   - `mod_checks.py <rule_id> replace <replacement> [<replacement ...]` - do
+     the specified replacement against the platforms in the shared OVAL. See
+     the description of `replace` under `mod_prodtype.py` for more
+     information about the format of a replacement.
+
+This utility requires an up to date JSON tree created by `rule_dir_json.py`.
+
+===== `utils/mod_fixes.py`
+
+This utility modifies the `<affected>` element of a remediation. It supports
+several commands on a given rule and for the specified remediation language:
+
+   - `mod_fixes.py <rule_id> <lang> list` - list all fixes, their computed
+     products, and their actual platforms.
+   - `mod_fixes.py <rule_id> <lang> delete <product>` - delete the fix for
+     the specified product.
+   - `mod_fixes.py <rule_id> <lang> make_shared <product>` - moves the product
+     fix to the shared fix (e.g., `rhel7.sh` to `shared.sh`).
+   - `mod_fixes.py <rule_id> <lang> diff <product> <product>` - Performs a
+     diff between two fixes (product can be `shared` to diff against the
+     shared fix).
+
+In addition, the `mod_fixes.py` utility supports modifying the shared fixes
+with the following commands:
+
+   - `mod_fixes.py <rule_id> <lang> add <platform> [<platform> ...]` - adds
+     the specified platforms to the shared fix for the rule specified by
+     `rule_id`.
+   - `mod_fixes.py <rule_id> <lang> remove <platform> [<platform> ...]` - removes
+     the specified platforms from the shared fix.
+   - `mod_fixes.py <rule_id> <lang> replace <replacement> [<replacement ...]` - do
+     the specified replacement against the platforms in the shared fix. See
+     the description of `replace` under `mod_prodtype.py` for more
+     information about the format of a replacement.
+
+This utility requires an up to date JSON tree created by `rule_dir_json.py`.
+
+==== Checks
+
+Checks are used to evaluate a Rule. They are written using a custom OVAL syntax and are stored as xml files inside the _checks/oval_ directory for the desired platform.
+During the building process, the system will transform the checks in OVAL compliant checks.
+
+In order to create a new check, you must create a file in the appropriate directory, and name it the same as the Rule _id_. This _id_ will also be used as the OVAL _id_ attribute.
+The content of the file should follow the OVAL specification with these exceptions:
+
+ * The root tag must be `<def-group>`
+ * If the OVAL check has to be a certain OVAL version, you can add `oval_version="oval_version_number"` as an attribute to the root tag.
+   Otherwise if `oval_version` does not exist in `<def-group>`, it is assumed that the OVAL file applies to _any_ OVAL version.
+ * Don't use the tags `<definitions>` `<tests>` `<objects>` `<states>`, instead, put the tags `<definition>` `<*_test>` `<*_object>` `<*_state>` directly inside the `<def-group>` tag.
+ * *TODO* Namespaces
+
+This is an example of a check, written using the custom OVAL syntax, that checks if the group that owns the file _/etc/cron.allow_ is the root:
+
+[source,xml]
+----
+<def-group oval_version="5.11">
+  <definition class="compliance" id="file_groupowner_cron_allow" version="1">
+    <metadata>
+      <title>Verify group who owns 'cron.allow' file</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>The /etc/cron.allow file should be owned by the appropriate
+      group.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_groupowner_etc_cron_allow" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="any_exist"
+  comment="Testing group ownership /etc/cron.allow" id="test_groupowner_etc_cron_allow"
+  version="1">
+    <unix:object object_ref="object_groupowner_cron_allow_file" />
+    <unix:state state_ref="state_groupowner_cron_allow_file" />
+  </unix:file_test>
+  <unix:file_state id="state_groupowner_cron_allow_file" version="1">
+    <unix:group_id datatype="int">0</unix:group_id>
+  </unix:file_state>
+  <unix:file_object comment="/etc/cron.allow"
+  id="object_groupowner_cron_allow_file" version="1">
+    <unix:filepath>/etc/cron.allow</unix:filepath>
+  </unix:file_object>
+----
+
+===== Macros
+
+Jinja macros for OVAL checks are located in link:{rootdir}/shared/macros-oval.jinja[macros-oval.jinja]. These currently include the following high-level macros:
+
+- `oval_sshd_config` -- check a parameter and value in the sshd configuration file
+- `oval_grub_config` -- check a parameter and value in the grub configuration file
+- `oval_check_config_file` -- check a parameter and value in a given configuration file
+- `oval_check_ini_file` -- check a parameter and value in a given section of a given configuration file in "INI" format
+
+Always consider reusing `oval_check_config_file` when creating new macros, it has some logic that will save you some time (e.g.: platform applicability).
+
+They also include several low-level macros which are used to build the high level macros:
+
+- set of low-level macros to build the OVAL checks for line in file:
+```
+oval_line_in_file_criterion
+oval_line_in_file_test
+oval_line_in_file_object
+oval_line_in_file_state
+```
+
+- set of low-level macros to build the OVAL checks to test if a file exists:
+```
+oval_config_file_exists_criterion
+oval_config_file_exists_test
+oval_config_file_exists_object
+```
+
+====== Platform applicability
+Platform applicability is given by the `prodtype` property in the rule.yml file. If you are using `oval_check_config_file` macro directly or indirectly, it should be enough to define `prodtype`. Default is `all` platforms. If you intend to define your own OVAL check please consider using `oval_affected` macro from link:{rootdir}/shared/macros.jinja[macros.jinja].
+
+Whenever possible, please reuse the macros and form high-level simplifications.
+This ensures consistent, high quality OVAL checks that we can edit in one place and reuse in many places. For more details on which parameters are accepted by the macros, please refer to the inline documentation in the link:{rootdir}/shared/macros-oval.jinja[macros-oval.jinja] file.
+
+=== Remediations
+
+Remediations, also called fixes, are used to change the state of the machine, so that previously non-passing rules can pass. There can be multiple versions of the same remediation meant to be executed by different applications, more specifically Ansible, Bash, Anaconda and Puppet.
+They also have to be idempotent, meaning that they must be able to be executed multiple times without causing the fixes to accumulate. The Ansible's language works in such a way that this behavior is built-in, however, for the other versions, the remediations must have it implemented explicitly.
+Remediations also carry metadata that should be present at the beginning of the files. This meta data will be converted in link:https://scap.nist.gov/specifications/xccdf/xccdf_element_dictionary.html#fixType[XCCDF tags] during the building process. That is how it looks like and what it means:
+
+----
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+----
+
+[cols="3*", options="header"]
+|===
+| Field | Description | Accepted values
+
+| platform
+| CPE name, CPE applicability language expression or even wildcards declaring which platforms the fix can be applied
+| link:https://github.com/OpenSCAP/openscap/blob/maint-1.2/cpe/openscap-cpe-dict.xml[Default CPE dictionary is packaged along with openscap]. Custom CPE dictionaries can be used. Wildcards are multi_platform_[all, oval, fedora, debian, ubuntu, linux, rhel, openstack, opensuse, rhev, sle].
+
+| reboot
+| Whether or not a reboot is necessary after the fix
+| true, false
+
+
+| strategy
+| The method or approach for making the described fix. Only informative for now
+| unknown, configure, disable, enable, patch, policy, restrict, update
+
+| complexity
+| The estimated complexity or difficulty of applying the fix to the target. Only informative for now
+| unknown, low, medium, high
+
+
+| disruption
+| An estimate of the potential for disruption or operational degradation that the application of this fix will impose on the target. Only informative for now
+| unknown, low, medium, high
+|===
+
+==== Ansible
+
+IMPORTANT: The minimum version of Ansible must be at the latest supported version. See https://access.redhat.com/support/policy/updates/ansible-engine for information on the supported Ansible versions.
+
+Ansible remediations are either:
+
+- Stored as `.yml` files in directory `ansible` in the rule directory.
+- Generated from templates.
+- Generated using jinja2 macros.
+
+They are meant to be executed by Ansible itself when requested by openscap, so they are
+written using link:http://docs.ansible.com/ansible/latest/intro.html[Ansible's own language] with the following exceptions:
+
+* The remediation content must be only the _tasks_ section of what would be a playbook.
+    ** Tasks can include blocks for grouping related tasks.
+    ** The `when` clause will get augmented in certain scenarios.
+* Notifications and handlers are not supported.
+* Tags are not necessary, because they are automatically generated during build of content.
+
+Here is an example of an Ansible remediation that ensures the SELinux is enabled in grub:
+
+----
+# platform = multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: Ensure SELinux Not Disabled in /etc/default/grub
+  replace:
+    dest: /etc/default/grub
+    regexp: selinux=0
+----
+
+The Ansible remediation will get included by our build system to the SCAP datastream in the `fix` element of respective rule.
+
+The build system generates an Ansible Playbook from the remediation for all profiles.
+The generated Playbook is located in `/build/<product>/playbooks/<profile_id>/<rule_id>.yml`.
+
+For each rule in the given product we also generate an Ansible Playbook regardless presence of the rule in any profile.
+The generated Playbook is located in `/build/<product>/playbooks/all/<rule_id>.yml`.
+The `/build/<product>/playbooks/all/` directory represents the virtual `(all)` profile which consists of all rules in the product.
+Due to undefined XCCDF Value selectors in this pseudo-profile, these Playbooks use defaults of XCCDF Values when applicable.
+
+We also build profile Playbook that contains tasks for all rules in the profile.
+The Playbook is generated in `/build/ansible/<product>-playbook-<profile_id>.yml`.
+
+Jinja macros for Ansible content are located in `/shared/macros-ansible.jinja`. These currently include the following high-level macros:
+
+- `ansible_sshd_set` -- set a parameter in the sshd configuration
+- `ansible_etc_profile_set` -- ensure a command gets executed or a variable gets set in /etc/profile or /etc/profile.d
+- `ansible_tmux_set` -- set a command in tmux configuration
+
+They also include several low-level macros:
+
+- `ansible_lineinfile` -- ensure a line is in a given file
+- `ansible_stat` -- check the status of a path on the file system
+- `ansible_find` -- find all files with matched content
+- `ansible_only_lineinfile` -- ensure that no lines matching the regex are present and add the given line
+- `ansible_set_config_file` -- for configuration files; set the given configuration value and ensure no conflicting values
+- `ansible_set_config_file_dir` -- for configuration files and files in configuration directories; set the given configuration value and ensure no conflicting values
+
+When `msg` is absent from any of the above macros, rule title will be substituted instead.
+
+Whenever possible, please reuse the macros and form high-level simplifications.
+This ensures consistent, high quality remediations that we can edit in one place and reuse in many places.
+
+==== Bash
+
+Bash remediations are stored as shell script files in directory _/template/static/bash_ under the targeted platform. You can make use of any available command, but beware of too specific or complex solutions, as it may lead to a narrow range of supported platforms. There are a number of already written bash remediations functions available in _shared/bash_remediation_functions/_ directory, it is possible one of them is exactly what you are looking for.
+
+Following, you can see an example of a bash remediation that sets the maximum number of days a password may be used:
+
+----
+# platform = Red Hat Enterprise Linux 7
+. /usr/share/scap-security-guide/remediation_functions
+populate var_accounts_maximum_age_login_defs
+
+grep -q ^PASS_MAX_DAYS /etc/login.defs && \
+    sed -i "s/PASS_MAX_DAYS.*/PASS_MAX_DAYS     $var_accounts_maximum_age_login_defs/g" /etc/login.defs
+if [ $? -ne 0 ]; then
+    echo "PASS_MAX_DAYS      $var_accounts_maximum_age_login_defs" >> /etc/login.defs
+fi
+----
+
+When writing new bash remediations content, please follow the following guidelins:
+
+* Use four spaces for indentation rather than tabs.
+* You can use macros from `shared/macros-bash.jinja` in the remediation content.
+If the macro is used from a nested block, use the `indent` jinja2 filter assuming the 4-space indentation.
+Typically, you want to call the macro with the intended indentation, and as `indent` doesn't indent the first line by default, you just pass the number of spaces as the only argument.
+See the remediation for rule `ensure_fedora_gpgkey_installed` for reference.
+* Prefer to use `sed` rather than `awk`.
+* Try to keep expressions simple, avoid double negations. Use link:http://tldp.org/LDP/abs/html/list-cons.html[compound lists] with moderation and only link:https://mywiki.wooledge.org/BashPitfalls#cmd1_.26.26_cmd2_.7C.7C_cmd3[if you understand them].
+* Test your script in the "strict mode" with `set -e -o pipefail` specified at the top of it. Make sure that the script doesn't end prematurely in the strict mode.
+* Beware of constructs such as `[ $x = 1 ] && echo "$x is one"` as they violate the previous point. `[ $x != 1 ] || echo "$x is one"` is OK.
+* Use the `die` function defined in `remediation_functions` to handle exceptions, such as `[ -f "$config_file" ] || die "Couldn't find the configuration file '$config_file'"`.
+* Run `shellcheck` over your remediation script. Make sure that you fix all warnings that are applicable. If you are not sure, mention those warnings in the pull request description.
+* Use POSIX syntax in regular expressions, so prefer `grep '^[[:space:]]*something'` over `grep '^\s*something'`.
+
+Jinja macros that generate Bash remediations can be found in `shared/macros-bash.jinja`.
+
+Available high-level Jinja macros to generate Bash remediations:
+
+- `bash_sshd_config_set` - Set SSH Daemon configuration option in `/etc/ssh/sshd_config`.
+- `bash_auditd_config_set` - Set Audit Daemon option in `/etc/audit/auditd.conf`.
+- `bash_coredump_config_set` -  Set Coredump configuration in `/etc/systemd/coredump.conf`
+- `bash_package_install` - Install a package
+- `bash_package_remove` - Remove a package
+
+Available low-level Jinja macros that can be used in Bash remediations:
+
+- `die` - Function to terminate the remediation
+- `set_config_file` - Add an entry to a text configuration file
+
+==== Templating
+
+Often, a set of very related checks and/or remediations needs to be created. Instead of creating them individually, you can use the templating mechanism provided by the ComplianceAsCode project.
+It supports OVAL checks and Ansible, Bash, Anaconda and Puppet remediations.
+In order to use this mechanism, you have to:
+
+1) Create the template files, one for each type of file. Each one should be named `template_<TYPE>_<NAME>.jinja`. Where `<TYPE>` should be OVAL, ANSIBLE, BASH, ANACONDA or PUPPET and `<NAME>` is the what we will call hereafter the template name.
+Use the jinja syntax we use elsewhere in the project; refer to the earlier section on jinja macros for more information.
+
+This is an example of an OVAL template file called _template_OVAL_package_installed_
+
+[source,xml]
+----
+include::{templatesdir}/template_OVAL_package_installed
+----
+
+And here is the Ansible template file called _template_ANSIBLE_package_installed_:
+
+----
+include::{templatesdir}/template_ANSIBLE_package_installed
+----
+
+2) Create a csv (comma-separated-values) file in the _PRODUCT/template/csv_ directory with the same name of the template followed by the extension _.csv_. It should contain all the instances you want to generate from the template, one per line. Use the line to supply values to the variables. You can use `#` to make a comment until the end of the line.
+
+This is the file _rhel7/template/csv/packages_installed.csv_:
+
+----
+include::{rhel7dir}/template/csv/packages_installed.csv
+----
+
+3) Create a python file containing the generator class. The name of the file should start with _create__ and then be followed by the template name and the extension _.py_. The generator class name should also be the template name, in Camel case, followed by _Generator_.
+
+You have to define the function _generate(self, target, argv)_, where the second argument represents the type of template being used in that moment and the third argument is an array containing all the values in a single line of the csv file. Therefore, this function will be called once for each type of template and each line of the csv file.
+
+Inside the _generate_ function, you must call the other function _file_from_template_ passing as parameter one of the template files you've created, the variables you've defined and their values,  and the name of the output file, that should be named in the same manner as if it was created manually.
+
+This is the file with the generator class for the installed package template, it's called create_package_installed.py:
+
+[source,python]
+----
+include::{templatesdir}/create_package_installed.py
+----
+
+4) Finally, you have to ensure the build system knows your template. To do that, you have to edit the file _ssg/build_templates.py_ and include the generator class you've just created and declare which csv file to use along with it.
+
+This is an example of a patch to add a new template into the templating system:
+
+[source,patch]
+----
+@@ -21,6 +21,7 @@
+ from create_sysctl            import SysctlGenerator
+ from create_services_disabled import ServiceDisabledGenerator
+ from create_services_enabled  import ServiceEnabledGenerator
++from create_package_installed import PackageInstalledGenerator
+
+@@ -43,6 +44,7 @@ def __init__(self):
+             "sysctl_values.csv":       SysctlGenerator(),
+             "services_disabled.csv":   ServiceDisabledGenerator(),
+             "services_enabled.csv":    ServiceEnabledGenerator(),
++            "packages_installed.csv":  PackageInstalledGenerator(),
+         }
+         self.supported_ovals = ["oval_5.10"]
+----
+
+
+=== Tests (ctest)
+
+ComplianceAsCode uses ctest to orchestrate testing upstream. To run the test suite go to the build folder and execute `ctest`:
+
+----
+cd build/
+ctest -j 4
+----
+
+Check out the various `ctest` options to perform specific testing, you can rerun just one test or skip all tests that match a regex. (See -R, -E and other options in the ctest man page)
+
+Tests are added using the add_test cmake call. Each test should finish with a 0 exit-code in case everything went well and a non-zero if something failed. Output (both stdout and stderr) are collected by ctest and stored in logs or displayed. Make sure you never hard-code a path to any tool when doing testing (or anything really) in the cmake code. Always use configuration to find all the paths and then use the respective variable.
+
+See some of the existing testing code in `cmake/SSGCommon.cmake`.
+
+=== Contribution to infrastructure code
+
+The ComplianceAsCode build and templating system is mostly written in Python.
+
+==== Python
+
+* The common pattern is to dynamically add the `shared/modules` to the import path. The `ssgcommon` module has many useful utility functions and predefined constants. See scripts at `./build-scripts` as an example of this practice.
+* Follow the link:https://www.python.org/dev/peps/pep-0008/[PEP8 standard].
+* Try to keep most of your lines length under 80 characters. Although the 99 character limit is within link:https://www.python.org/dev/peps/pep-0008/#maximum-line-length[PEP8 requirements], there is no reason for most lines to be that long.
+
+== Legacy Notice
+
+This project has been created by renaming SCAP Security Guide Project (SSG).
+It was a project that provides security policies in SCAP format.
+Project outgrown former name SCAP Security Guide, and changed its name to imply broader scope than just SCAP.
+Therefore, the SCAP Security Guide has been transformed into ComplianceAsCode/content, which better
+describes the goal of the project.
+
+This git repository was created by simply renaming and moving the SCAP Security Guide (SSG)
+repository to a different GitHub organization.
+
+Due to this history, the repository contains mentions of SCAP Security Guide or `ssg`.
+Some of them are kept due to backwards compatibility.
+
+For example, the output files produced by our build system still start by `ssg-` prefix.
+Various Linux distributions still ship our files in `scap-security-guide` package.

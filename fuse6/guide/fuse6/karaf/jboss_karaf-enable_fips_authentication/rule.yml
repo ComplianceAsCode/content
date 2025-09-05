@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Enable FIPS for User and Process Authentication'
+
+description: |-
+    The Application Server must utilize FIPS 140-2 approved
+    encryption modules when authenticating users and processes.
+
+rationale: |-
+    Encryption is only as good as the encryption modules utilized. Unapproved
+    cryptographic module algorithms cannot be verified, and cannot be relied
+    upon to provide confidentiality or integrity and DoD data may be
+    compromised due to weak algorithms. FIPS 140-2 is the current standard for
+    validating cryptographic modules and NSA Type-X (where X=1, 2, 3, 4)
+    products are NSA certified hardware-based encryption modules.
+
+severity: medium
+
+ocil_clause: 'FIPS is not enabled or configured'

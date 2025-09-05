@@ -1,0 +1,21 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
+
+title: 'Uninstall abrt-cli Package'
+
+description: |-
+    {{{ describe_package_remove(package="abrt-cli") }}}
+
+rationale: |-
+    <tt>abrt-cli</tt> contains a command line client for controlling abrt daemon
+    over sockets.
+
+severity: low
+
+identifiers:
+    cce@rhel6: 82909-3
+    cce@rhel7: 82908-5
+    cce@rhel8: 82907-7
+
+{{{ complete_ocil_entry_package(package="abrt-cli") }}}

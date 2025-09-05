@@ -1,0 +1,45 @@
+documentation_complete: true
+
+title: 'Ensure Logrotate Runs Periodically'
+
+description: |-
+    The <tt>logrotate</tt> utility allows for the automatic rotation of
+    log files.  The frequency of rotation is specified in <tt>/etc/logrotate.conf</tt>,
+    which triggers a cron task.  To configure logrotate to run daily, add or correct
+    the following line in <tt>/etc/logrotate.conf</tt>:
+    <pre># rotate log files <i>frequency</i>
+    daily</pre>
+
+rationale: |-
+    Log files that are not properly rotated run the risk of growing so large
+    that they fill up the /var/log partition. Valuable logging information could be lost
+    if the /var/log partition becomes full.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 27014-0
+    cce@rhel7: 80195-1
+    cce@rhel8: 80794-1
+
+references:
+    stigid@rhel6: "000138"
+    srg@rhel6: SRG-OS-999999
+    disa: "366"
+    nist: AU-9
+    nist-csf: PR.PT-1
+    pcidss: Req-10.7
+    isa-62443-2013: 'SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9'
+    isa-62443-2009: 4.3.3.3.9,4.3.3.5.8,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
+    cobit5: APO11.04,BAI03.05,DSS05.04,DSS05.07,MEA02.01
+    iso27001-2013: A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1
+    cis-csc: 1,14,15,16,3,5,6
+    anssi: NT28(R43),NT12(R18)
+
+ocil_clause: 'logrotate is not configured to run daily'
+
+ocil: |-
+    To determine the status and frequency of logrotate, run the following command:
+    <pre>$ sudo grep logrotate /var/log/cron*</pre>
+    If logrotate is configured properly, output should include references to
+    <tt>/etc/cron.daily</tt>.

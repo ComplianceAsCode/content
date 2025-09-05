@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Enable the Hardware RNG Entropy Gatherer Service'
+
+description: |-
+    The Hardware RNG Entropy Gatherer service should be enabled.
+    {{{ describe_service_enable(service="rngd") }}}
+
+rationale: |-
+    The <tt>rngd</tt> service
+    feeds random data from hardware device to kernel random device.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82831-9
+
+references:
+    ospp: FCS_RBG_EXT.1
+
+ocil_clause: 'the service is not enabled'
+
+ocil: '{{{ ocil_service_enabled(service="rngd") }}}'

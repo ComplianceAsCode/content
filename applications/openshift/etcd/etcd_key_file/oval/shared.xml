@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="etcd_key_file" version="1">
+    <metadata>
+      <title>Ensure That etcd Key File Correctly Set</title>
+      <affected family="unix">
+        <platform>multi_platform_ocp</platform>
+      </affected>
+      <description>ETCD_KEY_FILE is correctly set</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_etcd_key_file" comment="Check ETCD_KEY_FILE in /etc/etcd/etcd.conf" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_etcd_key_file"
+  comment="check ETCD_KEY_FILE in /etc/etcd/etcd.conf"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_etcd_key_file" />
+    <ind:state state_ref="state_etcd_key_file" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_etcd_key_file" version="1">
+    <ind:filepath>/etc/etcd/etcd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*ETCD_KEY_FILE=(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_etcd_key_file"
+  version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^/etc/etcd/server.key$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

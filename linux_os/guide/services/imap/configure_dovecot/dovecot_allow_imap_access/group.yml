@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Allow IMAP Clients to Access the Server'
+
+description: |-
+    {{% if product == "rhel7" %}}
+    The default <tt>firewalld</tt> configuration does not allow inbound
+    access to any services. This modification will allow remote hosts to
+    initiate connections to the IMAP daemon, while keeping all other ports
+    on the server in their default protected state.
+    {{{ describe_firewalld_allow(port="143", proto="tcp") }}}
+    {{% else %}}
+    The default iptables configuration does not allow inbound access to any services.
+    This modification will allow remote hosts to initiate connections to the IMAP daemon,
+    while keeping all other ports on the server in their default protected state.
+    {{{ describe_iptables_allow(proto="tcp", port=143) }}}
+    {{% endif %}}

@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Configure tmux to lock session after inactivity'
+
+description: |-
+    To enable console screen locking in <tt>tmux</tt> terminal multiplexer
+    after a period of inactivity,
+    the <tt>lock-after-time</tt> option has to be set to nonzero value in
+    <tt>/etc/tmux.conf</tt>.
+
+rationale: |-
+    Locking the session after a period of inactivity limits the
+    potential exposure if the session is left unattended.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82199-1
+
+references:
+    ospp: FMT_SMF_EXT.1
+
+ocil_clause: 'lock-after-time is not set or set to zero'
+
+ocil: |-
+    To verify that session locking after period of inactivity is configured in tmux,
+    run the following command:
+    <pre>$ grep lock-after-time /etc/tmux.conf</pre>
+    The output should return the following:
+    <pre>set -g lock-after-time 900</pre>
+
+platform: machine

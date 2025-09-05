@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Enable FIPS Compliant Modules'
+
+description: |-
+    While JBoss itself has no need to load FIPS compliant modules,
+    the underlying technologies such as Java do. Utilizing only FIPS compliant
+    modules decreases compatibility with applications that are not FIPS enabled.
+
+rationale: |-
+    Enabling FIPS compliant algorithms ensures that the underlying technologies
+    that JBoss works through are using cryptographic modules that have been
+    vetted by NIST for security, stability, and strength. Failure to utilize
+    FIPS certified modules may cause the underlying technologies used by JBoss to
+    utilize older, less secure algorithms. Failure to enable only FIPS compliant
+    modules may also have regulatory consequences, as FIPS 140-2 requires the
+    use of FIPS compliant modules by all federal agencies.
+
+severity: medium
+
+references:
+    nist: SC-13
+
+ocil_clause: 'FIPS compliant modules are not enabled'

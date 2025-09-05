@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Disable All Plugins by Default'
+
+description: "Plugins are developed internally or by third party sources and are designed to extend\nGoogle Chromium's functionality. All plugins should be blacklisted from \ninstallation by default. To blacklist all plugins set <tt>DisabledPlugins</tt>\nto <tt>*</tt> in the Chromium policy file."
+
+rationale: |-
+    Plugins can access almost anything on a system and users can enable or install them
+    at will. This means they pose a high risk to any system that would allow all plugins
+    to be installed by default.
+
+severity: unknown
+
+references:
+    stigid: DTBC0034
+
+ocil_clause: 'they are not disabled'
+
+ocil: |-
+    To verify that all plugins are blacklisted, run the following command:
+    <pre>$ grep DisabledPlugins /etc/chromium/policies/managed/*.json</pre>
+    The output should contain:
+    <pre>"DisabledPlugins": ["*"],</pre>

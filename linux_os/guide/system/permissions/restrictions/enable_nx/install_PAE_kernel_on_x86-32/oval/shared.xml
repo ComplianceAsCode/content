@@ -1,0 +1,65 @@
+<def-group>
+  <definition class="compliance" id="install_PAE_kernel_on_x86-32" version="2">
+    <metadata>
+      <title>Package kernel-PAE Installed</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>The RPM package kernel-PAE should be installed on 32-bit
+      systems.</description>
+    </metadata>
+    <criteria operator="OR">
+      <!-- System is not 32-bit. In that case, there's
+           nothing more to check -->
+      <extend_definition comment="Not a 32-bit system"
+      definition_ref="system_info_architecture_x86" negate="true" />
+      <!-- Or system is 32-bit. Then, check if kernel-PAE rpm
+           is installed the test to succeed -->
+      <criteria operator="OR">
+        <criterion comment="Check if PAE or NX is supported by the CPUs"
+          test_ref="test_PAE_NX_cpu_support" negate="true"/>
+        <criteria operator="AND">
+          <extend_definition comment="A 32-bit system"
+            definition_ref="system_info_architecture_x86" />
+          <criterion comment="Package kernel-PAE is installed"
+            test_ref="test_package_kernel-PAE_installed" />
+          <criterion comment="check for DEFAULTKERNEL set to kernel-PAE in /etc/sysconfig/kernel"
+            test_ref="test_defaultkernel_sysconfig_kernel" />
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  id="test_package_kernel-PAE_installed" version="1"
+  comment="Package kernel-PAE is installed">
+    <linux:object object_ref="obj_package_kernel-PAE_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_package_kernel-PAE_installed" version="1">
+    <linux:name>kernel-PAE</linux:name>
+  </linux:rpminfo_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="CPUs support PAE kernel or NX bit"
+  id="test_PAE_NX_cpu_support" version="1">
+    <ind:object object_ref="obj_PAE_NX_cpu_support" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_PAE_NX_cpu_support" version="1">
+    <ind:filepath>/proc/cpuinfo</ind:filepath>
+    <ind:pattern operation="pattern match">^flags[\s]+:.*[\s]+pae[\s]+.*[\s]+nx[\s]+.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_defaultkernel_sysconfig_kernel"
+  comment="check for DEFAULTKERNEL set to kernel-PAE in /etc/sysconfig/kernel"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_defaultkernel_sysconfig_kernel" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_defaultkernel_sysconfig_kernel" version="1">
+    <ind:filepath>/etc/sysconfig/kernel</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*DEFAULTKERNEL[\s]*=[\s]*kernel-PAE$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

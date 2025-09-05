@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="chromium_disable_protocol_schemas"  version="1">
+    <metadata>
+      <title>Disable Javascript URL Protocol Schemas</title>
+      <affected family="unix">
+        <platform>Google Chromium Browser</platform>
+      </affected>
+      <description>The URL protocol schema javascript must be disabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Chromium disable URL protocol schemas" test_ref="test_chromium_disable_protocol_schemas" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Chromium disable URL protocol schemas" id="test_chromium_disable_protocol_schemas" version="1">
+    <ind:object object_ref="object_chromium_disable_protocol_schemas" />
+    <ind:state state_ref="state_chromium_disable_protocol_schemas" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_chromium_disable_protocol_schemas" version="1">
+    <ind:filepath operation="pattern match">^/etc/chromium/policies/managed/.*\.json$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]+\"URLBlacklist\"\:[\s]+\[\"(\S+)"\],</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_chromium_disable_protocol_schemas" version="1">
+    <ind:subexpression operation="equals" var_check="all" var_ref="var_url_blacklist" />
+  </ind:textfilecontent54_state>
+
+  <external_variable id="var_url_blacklist" datatype="string" version="1" comment="Expected URL protocol schema" />
+
+</def-group>

@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Use Security Context Constrains as Compensating Controls for Privileged Containers'
+
+description: |-
+    Security Context Constraints (SCCs) and Role-Based Access Control (RBAC) can be used as
+    compensating controls to mitigate the use of privileged containers. By default,
+    the <tt>restricted</tt> SCC is granted to all authenticated users by default. The
+    <tt>restricted</tt> SCC prevents privileged pods from running. Administrators may create
+    less restrictive SCCs based on individual container needs. For example, if a container requires
+    running as the root user, the <tt>anysuid</tt> SCC can be used, which will not expose additional
+    access granted by running privileged containers.
+
+    Refer to the <i>Managing Security Context Constraints</i> chapter of the OpenShift Cluster Administration
+    documentation for implementation guidance:
+
+    https://docs.openshift.com/container-platform/3.11/admin_guide/manage_scc.html
+
+rationale: |-
+    Usage of SCCs and RBAC may mitigate the risks of using privileged containers by restricting
+    workloads to minimal system calls and resource access.
+
+severity: medium
+
+ocil_clause: 'privileges are not minimized'
+
+ocil: |-
+    Determine all SCCs that allow privileged containers:
+    <pre>$ oc get scc -ocustom-columns=NAME:.metadata.name,ALLOWS_PRIVILEGED:.allowPrivilegedContainer</pre>
+
+    Review users and groups assigned to SCCs allowing privileged containers:
+    <pre>$ oc describe sccs <i>scc-id</i></pre>
+
+    Adjust or assign SCCs or create custom SCCs as needed to minimize privileges.
+
+# Since this is operational guidance and not a configuration check,
+# a CCE should not be assigned.
+#identifiers:
+#    cce@ocp3: 
+
+references:
+    cis: 1.6.9

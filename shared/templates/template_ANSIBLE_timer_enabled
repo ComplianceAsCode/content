@@ -1,0 +1,19 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+- name: Enable timer {{{ TIMERNAME }}}
+  block:
+  - name: Gather the package facts
+    package_facts:
+      manager: auto
+
+  - name: Enable timer {{{ TIMERNAME }}}
+    systemd:
+      name: "{{{ TIMERNAME }}}.timer"
+      enabled: "yes"
+      state: "started"
+    when:
+    - '"{{{ PACKAGENAME }}}" in ansible_facts.packages'
+

@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Ensure That The kubelet Client Certificate Is Correctly Set'
+
+description: |-
+    To ensure the kubelet TLS client certificate is configured, edit the
+    kubelet configuration file <tt>/etc/origin/node/node-config.yaml</tt>
+    and configure the <tt>cert-dir</tt> path for the kubelet certificates.
+    For example:
+    <pre>  cert-dir:
+      - /etc/origin/node/certificates</pre>
+    A corresponding certificate should exist in the <tt>cert-dir</tt>. For
+    example:
+    <pre>/etc/origin/node/certificates/kubelet-client-current.pem</pre>
+
+rationale: |-
+    Without cryptographic integrity protections, information can be
+    altered by unauthorized users without detection.
+
+severity: medium
+
+identifiers:
+    cce@ocp3: 80596-0
+
+references:
+    cis: 2.1.12
+
+ocil_clause: 'the kubelet certificate is not configured'
+
+ocil: |-
+    Run the following command on the kubelet node(s):
+    <pre>$ sudo grep -A1 cert-dir /etc/origin/node/node-config.yaml</pre>
+    Verify that a certificate path is configured.
+    <pre>$ sudo ls /etc/origin/node/certificates/kubelet-client-current.pem</pre>
+    Verify that a client certificate is configured.

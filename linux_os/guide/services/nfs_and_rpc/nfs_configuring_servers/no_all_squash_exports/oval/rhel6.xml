@@ -1,0 +1,46 @@
+<def-group>
+  <definition class="compliance" id="no_all_squash_exports" version="1">
+    <metadata>
+      <title>Ensure All-Squashing Disabled On All Exports</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>The all_squash option maps all uids and gids to an
+      anonymous user and should be disabled.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="Check for all_squash in /etc/exports"
+      test_ref="test_no_all_squash_exports" />
+      <criterion comment="Check for a share in /etc/exports"
+      test_ref="test_non_empty_exports_file" negate="true" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests the value of all_squash in /etc/exports"
+  id="test_no_all_squash_exports" version="1">
+    <ind:object object_ref="obj_no_all_squash_exports" />
+    <ind:state state_ref="state_no_all_squash_exports" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_no_all_squash_exports"
+  version="2">
+    <ind:filepath>/etc/exports</ind:filepath>
+    <ind:pattern operation="pattern match">^\/.*\((\S+)\)$</ind:pattern>
+    <ind:instance datatype="int" operation="not equal">0</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_no_all_squash_exports" version="1">
+    <ind:subexpression operation="pattern match">^.*all_squash*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests if a share is configured in /etc/exports"
+  id="test_non_empty_exports_file" version="1">
+    <ind:object object_ref="obj_non_empty_exports_file" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_non_empty_exports_file"
+  version="1">
+    <ind:filepath>/etc/exports</ind:filepath>
+    <ind:pattern operation="pattern match">^\/.*$</ind:pattern>
+    <ind:instance datatype="int" operation="not equal">0</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

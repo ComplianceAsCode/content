@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Minimize Various Optional Components'
+
+description: |-
+    The following modules perform very specific tasks, sometimes providing access to
+    just a few additional directives. If such functionality is not required (or if you
+    are not using these directives), comment out the associated module:
+    <ul>
+    <li>External filtering (response passed through external program prior to client delivery)
+    <pre>#LoadModule ext_filter_module modules/mod_ext_filter.so</pre></li>
+    <li>User-specified Cache Control and Expiration
+    <pre>#LoadModule expires_module modules/mod_expires.so</pre></li>
+    <li>Compression Output Filter (provides content compression prior to client delivery)
+    <pre>#LoadModule deflate_module modules/mod_deflate.so</pre></li>
+    <li>HTTP Response/Request Header Customization
+    <pre>#LoadModule headers_module modules/mod_headers.so</pre></li>
+    <li>User activity monitoring via cookies
+    <pre>#LoadModule usertrack_module modules/mod_usertrack.so</pre></li>
+    <li>Dynamically configured mass virtual hosting
+    <pre>#LoadModule vhost_alias_module modules/mod_vhost_alias.so</pre></li>
+    </ul>
+    Minimizing the number of loadable modules available to the web server reduces risk
+    by limiting the capabilities allowed by the web server.

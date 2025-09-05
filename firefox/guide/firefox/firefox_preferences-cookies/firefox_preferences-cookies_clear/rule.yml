@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Clear Data When Firefox Closes'
+
+description: |-
+    When a user browses to a website, cookies and other types of data
+    get stored on the system. This can be disabled by setting
+    <tt>privacy.sanitize.sanitizeOnShutdown</tt> to <tt>true</tt>.
+
+rationale: |-
+    Cookies can help websites perform better but can also be part of spyware.
+    To mitigate this risk, set browser preferences to perform a Clear Private
+    Data operation when closing the browser in order to clear cookies and
+    other data installed by websites visited during the session.
+
+severity: medium
+
+references:
+    nist: ECSC-1
+    stigid: DTBF170
+
+ocil_clause: 'it is not set to clear'
+
+ocil: |-
+    To verify that Firefox clears data on exit,
+    run the following command:
+    <pre>$ grep 'privacy.sanitize.sanitizeOnShutdown' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
+    The output should return:
+    <pre>lockPref("privacy.sanitize.sanitizeOnShutdown", true);</pre>

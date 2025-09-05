@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Ensure that Root''s Path Does Not Include World or Group-Writable Directories'
+
+description: |-
+    For each element in root's path, run:
+    <pre># ls -ld <i>DIR</i></pre>
+    and ensure that write permissions are disabled for group and
+    other.
+
+rationale: |-
+    Such entries increase the risk that root could
+    execute code provided by unprivileged users,
+    and potentially malicious code.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 26768-2
+    cce@rhel7: 80200-9
+    cce@rhel8: 80672-9
+
+references:
+    disa: "366"
+    nist: CM-6(b)
+    nist-csf: PR.IP-1
+    isa-62443-2013: 'SR 7.6'
+    isa-62443-2009: 4.3.4.3.2,4.3.4.3.3
+    cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05
+    iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4
+    cis-csc: 11,3,9
+
+ocil_clause: 'group or other write permissions exist'
+
+ocil: |-
+    To ensure write permissions are disabled for group and other
+     for each element in root's path, run the following command:
+    <pre># ls -ld <i>DIR</i></pre>

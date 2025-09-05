@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Only Authorized Local User Accounts Exist on Operating System'
+
+description: |-
+    Enterprise Application tends to use the server or virtual machine exclusively.
+    Besides the default operating system user, there should be only authorized local
+    users required by the installed softoware groups and applications that exist on
+    the operating system. The authorized user list can be customized in the refine
+    value variable <tt>var_accounts_authorized_local_users_regex</tt>.
+    OVAL regular expression is used for the user list.
+    Configure the system so all accounts on the system are assigned to an active system,
+    application, or user account. Remove accounts that do not support approved system
+    activities or that allow for a normal user to perform administrative-level actions.
+    To remove unauthorized system accounts, use the following command:
+    <pre>$ sudo userdel <i>unauthorized_user</i></pre>
+
+rationale: |-
+    Accounts providing no operational purpose provide additional opportunities for
+    system compromise. Unnecessary accounts include user accounts for individuals not
+    requiring access to the system and application accounts for applications not installed
+    on the system.
+
+severity: medium
+
+ocil_clause: 'there are unauthorized local user accounts on the system'
+
+ocil: |-
+    To verify that there are no unauthorized local user accounts, run the following command:
+    <pre>$ less /etc/passwd </pre>
+    Inspect the results, and if unauthorized local user accounts exist, remove them by running
+    the following command:
+    <pre>$ sudo userdel <i>unauthorized_user</i></pre>

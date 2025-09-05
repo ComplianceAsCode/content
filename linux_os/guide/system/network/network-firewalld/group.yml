@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: firewalld
+
+description: |-
+    The dynamic firewall daemon <tt>firewalld</tt> provides a
+    dynamically managed firewall with support for network &#8220;zones&#8221; to assign
+    a level of trust to a network and its associated connections and interfaces.
+    It has support for IPv4 and IPv6 firewall settings. It supports Ethernet
+    bridges and has a separation of runtime and permanent configuration options.
+    It also has an interface for services or applications to add firewall rules
+    directly.
+    <br />
+    A graphical configuration tool, <tt>firewall-config</tt>, is used to configure
+    <tt>firewalld</tt>, which in turn uses <tt>iptables</tt> tool to communicate
+    with <tt>Netfilter</tt> in the kernel which implements packet filtering.
+    <br />
+    The firewall service provided by <tt>firewalld</tt> is dynamic rather than
+    static because changes to the configuration can be made at anytime and are
+    immediately implemented. There is no need to save or apply the changes. No
+    unintended disruption of existing network connections occurs as no part of
+    the firewall has to be reloaded.
+
+platform: machine

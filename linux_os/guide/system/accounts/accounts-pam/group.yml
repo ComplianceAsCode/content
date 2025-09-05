@@ -1,0 +1,47 @@
+documentation_complete: true
+
+title: 'Protect Accounts by Configuring PAM'
+
+description: |-
+    PAM, or Pluggable Authentication Modules, is a system
+    which implements modular authentication for Linux programs. PAM provides
+    a flexible and configurable architecture for authentication, and it should be configured
+    to minimize exposure to unnecessary risk. This section contains
+    guidance on how to accomplish that.
+    <br /><br />
+    PAM is implemented as a set of shared objects which are
+    loaded and invoked whenever an application wishes to authenticate a
+    user. Typically, the application must be running as root in order
+    to take advantage of PAM, because PAM's modules often need to be able
+    to access sensitive stores of account information, such as /etc/shadow.
+    Traditional privileged network listeners
+    (e.g. sshd) or SUID programs (e.g. sudo) already meet this
+    requirement. An SUID root application, userhelper, is provided so
+    that programs which are not SUID or privileged themselves can still
+    take advantage of PAM.
+    <br /><br />
+    PAM looks in the directory <tt>/etc/pam.d</tt> for
+    application-specific configuration information. For instance, if
+    the program login attempts to authenticate a user, then PAM's
+    libraries follow the instructions in the file <tt>/etc/pam.d/login</tt>
+    to determine what actions should be taken.
+    <br /><br />
+    One very important file in <tt>/etc/pam.d</tt> is
+    <tt>/etc/pam.d/system-auth</tt>. This file, which is included by
+    many other PAM configuration files, defines 'default' system authentication
+    measures. Modifying this file is a good way to make far-reaching
+    authentication changes, for instance when implementing a
+    centralized authentication service.
+
+warnings:
+    - functionality: |-
+        Be careful when making changes to PAM's configuration files.
+        The syntax for these files is complex, and modifications can
+        have unexpected consequences. The default configurations shipped
+        with applications should be sufficient for most users.
+    - functionality: |-
+        Running <tt>authconfig</tt> or <tt>system-config-authentication</tt>
+        will re-write the PAM configuration files, destroying any manually
+        made changes and replacing them with a series of system defaults.
+        One reference to the configuration file syntax can be found at
+        {{{ weblink(link="http://www.linux-pam.org/Linux-PAM-html/sag-configuration-file.html") }}}.

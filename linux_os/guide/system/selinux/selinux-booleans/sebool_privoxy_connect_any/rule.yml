@@ -1,0 +1,16 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8
+
+title: 'Disable the privoxy_connect_any SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>privoxy_connect_any</tt> is enabled.
+    This setting should be disabled.
+    {{{ describe_sebool_disable(sebool="privoxy_connect_any") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="privoxy_connect_any") }}}

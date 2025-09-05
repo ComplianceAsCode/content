@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'kubelet - Enable Client Certificate Rotation'
+
+description: |-
+    To enable the kubelet to rotate client certificates, edit the kubelet configuration
+    file <tt>/etc/origin/node/node-config.yaml</tt>
+    on the kubelet node(s) and set the below parameter:
+    <pre>kubeletArguments:
+      feature-gates:
+        - RotateKubeletClientCertificate=true</pre>
+
+rationale: |-
+    Allowing the kubelet to auto-update the certificates ensure that there is no downtime
+    in certificate renewal as well as ensures confidentiality and integrity.
+
+severity: medium
+
+ocil_clause: 'the kubelet cannot rotate client certificate'
+
+ocil: |-
+    Run the following command on the kubelet node(s):
+    <pre>$ sudo grep RotateKubeletClientCertificate /etc/origin/node/node-config.yaml</pre>
+    The output should return <tt>true</tt>.
+
+identifiers:
+    cce@ocp3: 80603-4
+
+references:
+    cis: 2.1.14

@@ -1,0 +1,57 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,rhv4
+
+title: 'Install Intrusion Detection Software'
+
+description: |-
+    The base {{{ full_name }}} platform already includes a sophisticated auditing system that
+    can detect intruder activity, as well as SELinux, which provides host-based
+    intrusion prevention capabilities by confining privileged programs and user
+    sessions which may become compromised.
+
+rationale: |-
+    Host-based intrusion detection tools provide a system-level defense when an
+    intruder gains access to a system or network.
+
+severity: {{% if product == "rhel6" -%}}
+medium
+{{%- else -%}}
+high
+{{%- endif %}}
+
+identifiers:
+    cce@rhel6: 27409-2
+    cce@rhel7: 26818-5
+    cce@rhel8: 80831-1
+
+references:
+    disa: "1263"
+    nist: SC-7
+    nist-csf: DE.CM-1,PR.AC-5,PR.DS-5,PR.PT-4
+    pcidss: Req-11.4
+    srg@rhel6: SRG-OS-000196
+    stigid@rhel6: "000285"
+    isa-62443-2013: 'SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 6.2,SR 7.1,SR 7.6'
+    isa-62443-2009: 4.3.3.4
+    cobit5: APO01.06,APO13.01,DSS01.03,DSS01.05,DSS03.05,DSS05.02,DSS05.04,DSS05.07,DSS06.02
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    cis-csc: 1,12,13,14,15,16,18,7,8,9
+
+ocil_clause: 'no host-based intrusion detection tools are installed'
+
+ocil: |-
+    Inspect the system to determine if intrusion detection software has been installed.
+    Verify this intrusion detection software is active.
+
+warnings:
+    - general: |-
+        In DoD environments, supplemental intrusion detection and antivirus tools,
+        such as the McAfee Host-based Security System, are available to integrate with
+        existing infrastructure. Per DISA guidance, when these supplemental tools interfere
+        with proper functioning of SELinux, SELinux takes precedence. Should further
+        clarification be required, DISA contact information is published publicly at
+        https://public.cyber.mil/stigs/
+
+platform: machine
+

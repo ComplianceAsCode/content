@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="etcd_auto_tls" version="1">
+    <metadata>
+      <title>Disable etcd Self-Signed Certificates</title>
+      <affected family="unix">
+        <platform>multi_platform_ocp</platform>
+      </affected>
+      <description>Ensure OpenShift is not using Self-Signed Certificates</description>
+    </metadata>
+    <criteria>
+      <criterion comment="self-signed certs are disabled" test_ref="test_etcd_auto_tls" negate="true" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="ETCD_AUTO_TLS is false" id="test_etcd_auto_tls" version="1">
+    <ind:object object_ref="object_etcd_auto_tls" />
+    <ind:state state_ref="state_etcd_auto_tls" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_etcd_auto_tls" version="1">
+    <ind:filepath>/etc/etcd/etcd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*ETCD_AUTO_TLS=(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_etcd_auto_tls" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^true$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

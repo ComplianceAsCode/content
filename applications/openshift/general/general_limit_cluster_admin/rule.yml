@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Limit Use of cluster-admin Role'
+
+description: |-
+    Review users, groups, and service accounts, that are bound to the <tt>cluster-admin</tt>
+    role and decide whether they require such access. Consider creating custom, least-privilege roles
+    for users and service accounts.
+
+rationale: |-
+    The <tt>cluster-admin</tt> role contains elevated privileges and should only be used
+    when necessary.
+
+severity: low
+
+ocil_clause: 'they are not'
+
+ocil: |-
+    To ensure that <tt>cluster-admin</tt> role is only used as where required, run
+    the following command to receive a list of all associated bindings:
+    <pre>$ oc get clusterrolebindings | grep cluster-admin</pre>
+
+    Verify all bindings are appropriately bound to <tt>cluster-admin</tt>, which should
+    reflect the least privilege required.
+
+# Since this is operational guidance and not a configuration check,
+# a CCE should not be assigned.
+#identifiers:
+#    cce@ocp3: 
+
+references:
+    cis: 1.6.1

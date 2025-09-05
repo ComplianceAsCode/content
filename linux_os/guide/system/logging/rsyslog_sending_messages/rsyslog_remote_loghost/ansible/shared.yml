@@ -1,0 +1,14 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- (xccdf-var rsyslog_remote_loghost_address)
+
+- name: "Set rsyslog remote loghost"
+  lineinfile:
+    dest: /etc/rsyslog.conf
+    regexp: "^\\*\\.\\*"
+    line: "*.* @@{{ rsyslog_remote_loghost_address }}"
+    create: yes
+

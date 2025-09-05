@@ -1,0 +1,19 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Enable the GNOME3 Login Number of Failures"
+  ini_file:
+    dest: /etc/dconf/db/gdm.d/00-security-settings
+    section: org/gnome/login-screen
+    option: allowed-failures
+    value: "3"
+    create: yes
+
+- name: "Prevent user modification of GNOME3 Login Number of Failures"
+  lineinfile:
+    path: /etc/dconf/db/gdm.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/login-screen/allowed-failures'
+    line: '/org/gnome/login-screen/allowed-failures'
+    create: yes

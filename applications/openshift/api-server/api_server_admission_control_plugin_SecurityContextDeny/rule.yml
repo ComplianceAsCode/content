@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Enable the SecurityContextDeny Admission Control Plugin'
+
+description: |-
+    Instead of using a customized SecurityContext for pods, a Pod Security
+    Policy (PSP) should be used. PSP is a cluster-level resource that controls
+    the actions that a pod can perform and what resource the pod may access.
+    The <tt>SecurityContextDeny</tt> admission control policy enables PSP. To
+    configure OpenShift to use PSP, edit the API Server pod specification file
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s) and
+    set the <tt>admissionConfig</tt> to include <tt>SecurityContextDeny</tt>:
+    <pre>admissionConfig:
+      pluginConfig:
+        SecurityContextDeny:
+          configuration:
+          kind: DefaultAdmissionConfig
+          apiVersion: v1
+          disable: false</pre>
+
+rationale: |-
+    Setting admission control policy to <tt>SecurityContextDeny</tt> denies the
+    pod level SecurityContext customization. Any attempts to customize the
+    SecurityContext that are not explicitly defined in the Pod Security Policy
+    (PSP) are blocked. This ensures that all pods adhere to the PSP defined
+    by your organization and you have a uniform pod level security posture.
+
+severity: medium
+
+references:
+    cis: 1.1.17
+
+ocil_clause: '<tt>admissionConfig</tt> does not contain <tt>SecurityContextDeny</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep -A4 SecurityContextDeny /etc/origin/master/master-config.yaml</pre>
+    The output should return <pre>disable: false</pre>.

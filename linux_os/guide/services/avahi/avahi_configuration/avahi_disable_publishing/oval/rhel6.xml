@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="avahi_disable_publishing" version="1">
+    <metadata>
+      <title>Disable Avahi Publishing</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Disable Avahi from publishing records.</description>
+    </metadata>
+    <criteria comment="Disable Avahi Publishing" operator="OR">
+      <extend_definition comment="avahi package is not installed" definition_ref="package_avahi_installed" negate="true" />
+      <criterion comment="Avahi publishing is disabled" test_ref="test_avahi_disable_publishing" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Avahi disable publishing" id="test_avahi_disable_publishing" version="1">
+    <ind:object object_ref="object_avahi_disable_publishing" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="Avahi disable publishing" id="object_avahi_disable_publishing" version="1">
+    <ind:filepath>/etc/avahi/avahi-daemon.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*disable\-publishing=yes$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
+

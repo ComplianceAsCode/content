@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Set SSH Daemon LogLevel to VERBOSE'
+
+description: |-
+    The VERBOSE parameter specifices that record login and logout activity will be logged.
+    To specify the log level in
+    SSH, add or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+    <pre>LogLevel VERBOSE</pre>
+
+rationale: |-
+    SSH provides several logging levels with varying amounts of verbosity. <tt>DEBUG</tt> is specifically
+    not recommended other than strictly for debugging SSH communications since it provides
+    so much data that it is difficult to identify important security information. <tt>INFO</tt> or 
+    <tt>VERBOSE</tt> level is the basic level that only records login activity of SSH users. In many
+    situations, such as Incident Response, it is important to determine when a particular user was active
+    on a system. The logout record can eliminate those users who disconnected, which helps narrow the
+    field.
+
+severity: medium
+
+references:
+    srg: SRG-OS-000032-GPOS-00013
+    disa: "67"
+    nist: AC-17(1)
+    stigid@sle12: "030110"
+
+ocil_clause: 'it is commented out or is not enabled'
+
+ocil: |-
+    To check if LogLevel is enabled or set correctly, run the
+    following command:
+    <pre>$ sudo grep "^LogLevel" /etc/ssh/sshd_config</pre>
+    If configured properly, output should be <pre>LogLevel VERBOSE</pre>

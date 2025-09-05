@@ -1,0 +1,67 @@
+<def-group>
+  <definition class="compliance" id="kernel_disable_entropy_contribution_for_solid_state_drives" version="1">
+    <metadata>
+      <title>Configure solid-state drives (SSDs) not to contribute to random-number entropy pool</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>The add_random sysfs variable should be set correctly for each SSD drive on the system.</description>
+    </metadata>
+
+    <criteria>
+      <criterion comment="Check add_random sysfs variable set to '0' for each SSD drive. Fail if not"
+                 test_ref="test_kernel_disable_entropy_contribution_for_solid_state_drives" />
+    </criteria>
+
+  </definition>
+
+  <!-- OVAL object to hold the list of all directory names in /sys/block -->
+  <unix:file_object id="object_system_block_devices"
+  comment="Block device names on the system" version="1">
+    <!-- Traverse /sys/block directory hierarchy only one level to optimize efficiency -->
+    <unix:behaviors recurse="directories" recurse_direction="down"
+    recurse_file_system="local" max_depth="1" />
+    <unix:path operation="equals">/sys/block/</unix:path>
+    <unix:filename operation="pattern match">[^\/]+</unix:filename>
+  </unix:file_object>
+
+  <!-- Append '/queue/rotational' suffix to above retrieved filepaths of all block
+       devices on the system -->
+  <local_variable id="variable_system_block_devices_rotational_paths" datatype="string"
+  comment="Path to 'rotational' tunable for all block devices on the system" version="1">
+    <concat>
+      <object_component item_field="filepath" object_ref="object_system_block_devices" />
+      <literal_component>/queue/rotational</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- OVAL object to restrict the set of system block devices to SSD drives only
+       (having /sys/block/BLOCK_DEVICE/queue/rotational set to '0') -->
+  <ind:textfilecontent54_object id="object_system_ssd_drives" version="1">
+    <ind:filepath var_ref="variable_system_block_devices_rotational_paths" var_check="at least one" />
+    <ind:pattern operation="pattern match">^0$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Append '/add_random' tunable suffix to list of all SSD system block device paths -->
+  <local_variable id="variable_system_solid_state_drives_paths" datatype="string"
+  comment="Path to 'add_random' tunable for all SSD drives on system" version="1">
+    <concat>
+      <object_component item_field="path" object_ref="object_system_ssd_drives" />
+      <literal_component>/add_random</literal_component>
+    </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_test id="test_kernel_disable_entropy_contribution_for_solid_state_drives"
+  comment="Verify there doesn't exist SSD drive on system with 'add_random' set to '1'"
+  check="all" check_existence="none_exist" version="1">
+    <ind:object object_ref="object_kernel_disable_entropy_contribution_for_solid_state_drives" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_kernel_disable_entropy_contribution_for_solid_state_drives" version="1">
+    <ind:filepath var_ref="variable_system_solid_state_drives_paths" var_check="at least one" datatype="string" />
+    <ind:pattern operation="pattern match">^1$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

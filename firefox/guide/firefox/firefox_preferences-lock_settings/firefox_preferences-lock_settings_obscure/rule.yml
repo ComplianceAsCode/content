@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Disable Firefox Configuration File ROT-13 Encoding'
+
+description: |-
+    Disable ROT-13 encoding by setting <tt>general.config.obscure_value</tt>
+    to <tt>0</tt>.
+
+rationale: |-
+    ROT-13 encoded prevents system adminstrators from easily configuring
+    and deploying Firefox configuration settings. It also prevents validating
+    settings easily from automated security tools.
+
+severity: medium
+
+references:
+    nist: ECSC-1
+    stigid: DTBF070
+
+ocil_clause: 'users can change mandatory settings'
+
+ocil: |-
+    To verify that ROT-13 encoding is disabled, run the following command:
+    <pre>$ grep 'obscure_value' <i>FIREFOX_INSTALL_DIR</i>/defaults/preferences/*.js</pre>
+    The output should return something similar to:
+    <pre>pref("general.config.obscure_value", 0);</pre>

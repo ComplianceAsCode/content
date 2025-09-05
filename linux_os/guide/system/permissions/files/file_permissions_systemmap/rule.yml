@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Verify that local System.map file (if exists) is readable only by root'
+
+description: |-
+    Files containing sensitive informations should be protected by restrictive
+      permissions. Most of the time, there is no need that these files need to be read by any non-root user
+    {{{ describe_file_permissions(file="/boot/System.map-*", perms="0600") }}}
+
+rationale: |-
+    The <tt>System.map</tt> file contains information about kernel symbols and
+      can give some hints to generate local exploitation.
+
+severity: unknown
+
+references:
+    anssi: NT28(R13)
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/boot/Sysem.map-*", perms="-rw-------") }}}

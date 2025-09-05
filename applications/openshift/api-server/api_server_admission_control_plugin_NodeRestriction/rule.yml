@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Enable the NodeRestriction Admission Control Plugin'
+
+description: |-
+    To limit the <tt>Node</tt> and <tt>Pod</tt> objects that a kubelet could
+    modify, follow the OpenShift documentation and configure
+    <tt>NodeRestriction</tt> plugin on kubelets. Then, edit the API Server pod
+    specification file <tt>/etc/origin/master/master-config.yaml</tt>
+    on the master node(s) and set the <tt>admissionConfig</tt> to include <tt>NodeRestriction</tt>:
+    <pre>admissionConfig:
+      pluginConfig:
+        NodeRestriction:
+          configuration:
+          kind: DefaultAdmissionConfig
+          apiVersion: v1
+          disable: false</pre>
+
+rationale: |-
+    Using the <tt>NodeRestriction</tt> plugin ensures that the kubelet is
+    restricted to the <tt>Node</tt> and <tt>Pod</tt> objects that it could
+    modify as defined. Such kubelets will only be allowed to modify their
+    own <tt>Node</tt> API object, and only modify <tt>Pod</tt> API objects
+    that are bound to their node.
+
+severity: medium
+
+references:
+    cis: 1.1.32
+
+ocil_clause: '<tt>enable-admission-plugins</tt> does not contain <tt>NodeRestriction</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep -A4 NodeRestriction /etc/origin/master/master-config.yaml</pre>
+    The output should return <pre>disable: false</pre>.

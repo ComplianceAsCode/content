@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: |-
+    Ensure Administrators Can Only Change Security Related
+    Configuration Attributes
+
+description: |-
+    Security attributes are typically associated with internal
+    data structures and configuration (e.g., application deployment, logging,
+    monitoring) within the application server and are used to enable the
+    implementation of access control and flow control policies, reflect special
+    dissemination, handling or distribution instructions, or support other
+    aspects of the organizational information security policy.
+
+rationale: |-
+    If unauthorized entities were able to change security attributes, the
+    integrity and/or confidentiality of the server could be compromised.
+
+severity: medium
+
+ocil_clause: 'non-administrators are allowed to change security related attributes'

@@ -1,0 +1,34 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="sssd_run_as_sssd_user" version="1">
+    <metadata>
+      <title>Configure SSSD to run as user sssd</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>SSSD processes should be configured to run as user sssd, not root.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check user setting in SSSD configuration" test_ref="test_sssd_run_as_sssd_user" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_sssd_run_as_sssd_user"
+    comment="tests the value of user setting in SSSD config files"
+    check_existence="at_least_one_exists" check="all" version="1">
+    <ind:object object_ref="obj_sssd_user_value" />
+    <ind:state state_ref="state_sssd_user_value" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_sssd_user_value"
+    comment="get last user value from each [sssd] section" version="1">
+    <ind:filepath operation="pattern match">^/etc/sssd/(sssd|conf\.d/.*)\.conf$</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*\[sssd\].*(?:\n\s*[^[\s].*)*\n\s*user[ \t]*=[ \t]*(\S*)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_sssd_user_value" comment="value of user setting" version="1">
+    <ind:subexpression>sssd</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

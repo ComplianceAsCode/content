@@ -1,0 +1,12 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- (xccdf-var var_accounts_user_umask)
+
+- name: Set user umask in /etc/bashrc
+  replace:
+      path: /etc/bashrc
+      regexp: "umask.*"
+      replace: "umask {{ var_accounts_user_umask }}"

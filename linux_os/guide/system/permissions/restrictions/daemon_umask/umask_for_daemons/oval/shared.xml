@@ -1,0 +1,80 @@
+<def-group>
+  <definition class="compliance" id="umask_for_daemons" version="2">
+    <metadata>
+      <title>Set Daemon umask</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>The daemon umask should be set as appropriate</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Get value of var_accounts_user_umask variable as octal number"
+      definition_ref="var_umask_for_daemons_as_number" />
+      <criterion test_ref="tst_umask_for_daemons" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_object id="obj_umask_from_etc_init_d_functions"
+  comment="Umask value from /etc/init.d/functions" version="1">
+    <ind:filepath>/etc/init.d/functions</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)UMASK(?-i)[\s]+([^#\s]*)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_first_digit_of_umask_from_etc_init_d_functions"
+  comment="First octal digit of umask from /etc/init.d/functions"
+  datatype="int" version="1">
+    <substring substring_start="1" substring_length="1">
+      <object_component item_field="subexpression" object_ref="obj_umask_from_etc_init_d_functions" />
+    </substring>
+  </local_variable>
+
+  <local_variable id="var_second_digit_of_umask_from_etc_init_d_functions"
+  comment="Second octal digit of umask from /etc/init.d/functions"
+  datatype="int" version="1">
+    <substring substring_start="2" substring_length="1">
+      <object_component item_field="subexpression" object_ref="obj_umask_from_etc_init_d_functions" />
+    </substring>
+  </local_variable>
+
+  <local_variable id="var_third_digit_of_umask_from_etc_init_d_functions"
+  comment="Third octal digit of umask from /etc/init.d/functions"
+  datatype="int" version="1">
+    <substring substring_start="3" substring_length="1">
+      <object_component item_field="subexpression" object_ref="obj_umask_from_etc_init_d_functions" />
+    </substring>
+  </local_variable>
+
+  <local_variable id="var_etc_init_d_functions_umask_as_number"
+  comment="/etc/init.d/functions umask converted from string to a number"
+  datatype="int" version="1">
+    <arithmetic arithmetic_operation="add">
+      <arithmetic arithmetic_operation="multiply">
+        <literal_component datatype="int">64</literal_component>
+        <variable_component var_ref="var_first_digit_of_umask_from_etc_init_d_functions" />
+      </arithmetic>
+      <arithmetic arithmetic_operation="multiply">
+        <literal_component datatype="int">8</literal_component>
+        <variable_component var_ref="var_second_digit_of_umask_from_etc_init_d_functions" />
+      </arithmetic>
+      <variable_component var_ref="var_third_digit_of_umask_from_etc_init_d_functions" />
+    </arithmetic>
+  </local_variable>
+
+  <ind:variable_test id="tst_umask_for_daemons" version="1" check="all"
+  comment="Test the retrieved /etc/init.d/functions umask value(s) match the var_umask_for_daemons requirement">
+    <ind:object object_ref="obj_umask_for_daemons" />
+    <ind:state state_ref="ste_umask_for_daemons" />
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_umask_for_daemons" version="1">
+    <ind:var_ref>var_etc_init_d_functions_umask_as_number</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- The 'var_umask_for_daemons_umask_as_number' variable is created by evaluation of
+       the referenced 'var_umask_for_daemons_as_number' OVAL definition -->
+  <ind:variable_state id="ste_umask_for_daemons" version="1">
+    <ind:value datatype="int" operation="bitwise and" var_ref="var_umask_for_daemons_umask_as_number" />
+  </ind:variable_state>
+
+</def-group>

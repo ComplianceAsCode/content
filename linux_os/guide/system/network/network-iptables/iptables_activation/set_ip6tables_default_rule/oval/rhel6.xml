@@ -1,0 +1,44 @@
+<def-group>
+  <definition class="compliance" id="set_ip6tables_default_rule" version="2">
+    <metadata>
+      <title>Change the default policy to DROP (from ACCEPT) for
+      the INPUT built-in chain</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Change the default policy to DROP (from ACCEPT)
+      for the INPUT built-in chain.</description>
+    </metadata>
+    <criteria>
+      <criterion comment=":INPUT DROP [0:0]" test_ref="test_ip6tables_input_drop" />
+      <criterion comment=":INPUT ACCEPT [0:0]" negate="true" test_ref="test_ip6tables_input_accept" />
+    </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all"
+    check_existence="at_least_one_exists"
+    comment="Check /etc/sysconfig/ip6tables for line :INPUT DROP [0:0]"
+    id="test_ip6tables_input_drop" version="1">
+    <ind:object object_ref="obj_ip6tables_input_drop" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_ip6tables_input_drop" version="1">
+    <ind:filepath>/etc/sysconfig/ip6tables</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*:INPUT\sDROP\s\[0:0\]</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all"
+    check_existence="at_least_one_exists"
+    comment="Check /etc/sysconfig/ip6tables for line :INPUT ACCEPT [0:0]"
+    id="test_ip6tables_input_accept" version="1">
+    <ind:object object_ref="obj_ip6tables_input_accept" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_ip6tables_input_accept"
+  version="1">
+    <ind:filepath>/etc/sysconfig/ip6tables</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*:INPUT\sACCEPT\s\[0:0\]</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

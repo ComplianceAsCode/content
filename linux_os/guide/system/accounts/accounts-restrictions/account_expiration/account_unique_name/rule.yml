@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Ensure All Accounts on the System Have Unique Names'
+
+description: 'Change usernames, or delete accounts, so each has a unique name.'
+
+rationale: 'Unique usernames allow for accountability on the system.'
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 27609-7
+    cce@rhel7: 80208-2
+    cce@rhel8: 80674-5
+
+references:
+    stigid@rhel6: "000296"
+    srg@rhel6: SRG-OS-000121
+    cjis: 5.5.2
+    disa: 770,804
+    pcidss: Req-8.1.1
+
+ocil_clause: 'a line is returned'
+
+ocil: |-
+    Run the following command to check for duplicate account names:
+    <pre>$ sudo pwck -qr</pre>
+    If there are no duplicate names, no line will be returned.

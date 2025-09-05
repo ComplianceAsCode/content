@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="usbguard_allow_hid" version="1">
+    <metadata>
+      <title>Check that USB Human Interface Devices are allowed by USBGuard rules</title>
+      <affected family="unix">
+        <platform>multi_platform_fedora</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>Oracle Linux 8</platform>
+      </affected>
+      <description>Check that interface with class 3 is listed in rules.conf</description>
+    </metadata>
+    <criteria comment="Check that USB Human Interface Devices are allowed by USBGuard rules" operator="AND">
+      <criterion comment="Check that interface with class 3 is listed in rules.conf" test_ref="test_usbguard_allow_hid_1" />
+      <criterion comment="Check that interface with two class 3 is listed in rules.conf" test_ref="test_usbguard_allow_hid_2" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check_existence="at_least_one_exists" check="all"
+    comment="check that interface with class 3 is listed in rules.conf"
+    id="test_usbguard_allow_hid_1" version="1">
+    <ind:object object_ref="obj_usbguard_allow_hid_1" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check_existence="at_least_one_exists" check="all"
+    comment="check that interface with two class 3 is listed in rules.conf"
+    id="test_usbguard_allow_hid_2" version="1">
+    <ind:object object_ref="obj_usbguard_allow_hid_2" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_usbguard_allow_hid_1" version="1">
+    <ind:filepath>/etc/usbguard/rules.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*allow[ \t]+with-interface[ \t]+equals[ \t]+\{[ \t]+03:\*:\*[ \t]+\}[ \t]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="obj_usbguard_allow_hid_2" version="1">
+    <ind:filepath>/etc/usbguard/rules.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*allow[ \t]+with-interface[ \t]+equals[ \t]+\{[ \t]+03:\*:\*[ \t]+03:\*:\*[ \t]+\}[ \t]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
