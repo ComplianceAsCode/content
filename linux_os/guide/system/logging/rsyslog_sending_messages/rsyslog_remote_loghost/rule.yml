@@ -10,19 +10,19 @@ description: |-
     Along with these other directives, the system can be configured
     to forward its logs to a particular log server by
     adding or correcting one of the following lines,
-    substituting <tt><i>loghost.example.com</i></tt> appropriately.
+    substituting <tt><i><sub idref="rsyslog_remote_loghost_address" /></i></tt> appropriately.
     The choice of protocol depends on the environment of the system;
     although TCP and RELP provide more reliable message delivery,
     they may not be supported in all environments.
     <br />
     To use UDP for log message delivery:
-    <pre>*.* @<i>loghost.example.com</i></pre>
+    <pre>*.* @<i><sub idref="rsyslog_remote_loghost_address" /></i></pre>
     <br />
     To use TCP for log message delivery:
-    <pre>*.* @@<i>loghost.example.com</i></pre>
+    <pre>*.* @@<i><sub idref="rsyslog_remote_loghost_address" /></i></pre>
     <br />
     To use RELP for log message delivery:
-    <pre>*.* :omrelp:<i>loghost.example.com</i></pre>
+    <pre>*.* :omrelp:<i><sub idref="rsyslog_remote_loghost_address" /></i></pre>
     <br />
     There must be a resolvable DNS CNAME or Alias record set to "<sub idref="rsyslog_remote_loghost_address" />" for logs to be sent correctly to the centralized logging utility.
 
@@ -66,8 +66,8 @@ ocil: |-
     To ensure logs are sent to a remote host, examine the file
     <tt>/etc/rsyslog.conf</tt>.
     If using UDP, a line similar to the following should be present:
-    <pre> *.* @<i>loghost.example.com</i></pre>
+    <pre> *.* @<i><sub idref="rsyslog_remote_loghost_address" /></i></pre>
     If using TCP, a line similar to the following should be present:
-    <pre> *.* @@<i>loghost.example.com</i></pre>
+    <pre> *.* @@<i><sub idref="rsyslog_remote_loghost_address" /></i></pre>
     If using RELP, a line similar to the following should be present:
-    <pre> *.* :omrelp:<i>loghost.example.com</i></pre>
+    <pre> *.* :omrelp:<i><sub idref="rsyslog_remote_loghost_address" /></i></pre>

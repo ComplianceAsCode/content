@@ -206,3 +206,24 @@ selections:
     - gid_passwd_group_same
     - account_unique_name
     - no_netrc_files
+    - file_groupowner_sshd_config
+    - file_owner_sshd_config
+    - file_permissions_sshd_config
+    - file_groupowner_crontab
+    - file_owner_crontab
+    - file_permissions_crontab
+    - file_groupowner_cron_hourly
+    - file_owner_cron_hourly
+    - file_permissions_cron_hourly
+    - file_groupowner_cron_daily
+    - file_owner_cron_daily
+    - file_permissions_cron_daily
+    - file_groupowner_cron_weekly
+    - file_owner_cron_weekly
+    - file_permissions_cron_weekly
+    - file_groupowner_cron_monthly
+    - file_owner_cron_monthly
+    - file_permissions_cron_monthly
+    - file_groupowner_cron_d
+    - file_owner_cron_d
+    - file_permissions_cron_d

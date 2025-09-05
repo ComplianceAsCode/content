@@ -167,7 +167,12 @@ def main():
         if 'linux_os' not in guide_dir:
             product_list = [given_product]
 
-        rule_obj = handle_rule_yaml(product_list, product_yamls, rule_id, rule_dir, guide_dir)
+        try:
+            rule_obj = handle_rule_yaml(product_list, product_yamls, rule_id, rule_dir, guide_dir)
+        except ssg.yaml.DocumentationNotComplete:
+            # Happens on non-debug build when a rule is "documentation-incomplete"
+            continue
+
         rule_obj['ovals'], oval_products = handle_ovals(product_list, product_yamls, rule_obj)
         rule_obj['remediations'], r_products = handle_remediations(product_list, product_yamls, rule_obj)
 

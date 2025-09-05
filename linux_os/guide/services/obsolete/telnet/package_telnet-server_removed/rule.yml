@@ -27,6 +27,7 @@ severity: high
 identifiers:
     cce@rhel6: 27073-6
     cce@rhel7: 27165-0
+    cce@rhel8: 82182-7
 
 references:
     stigid@rhel6: "000206"
@@ -49,3 +50,8 @@ references:
     cis-csc: 11,12,14,15,3,8,9
 
 {{{ complete_ocil_entry_package(package="telnet-server") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: telnet-server

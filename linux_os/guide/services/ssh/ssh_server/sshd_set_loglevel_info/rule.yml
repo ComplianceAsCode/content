@@ -20,11 +20,12 @@ severity: low
 
 identifiers:
     cce@rhel7: 80645-5
+    cce@rhel8: 82282-5
 
 references:
     cis@debian8: 9.3.2
     cis@rhel7: 5.2.3
-    nist: AC-17(b)
+    nist: AC-17(a),AC-17(b)
 
 ocil_clause: 'it is commented out or is not enabled'
 
@@ -33,3 +34,11 @@ ocil: |-
     following command:
     <pre>$ sudo grep "^LogLevel" /etc/ssh/sshd_config</pre>
     If configured properly, output should be <pre>LogLevel INFO</pre>
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'true'
+        parameter: LogLevel
+        rule_id: sshd_set_loglevel_info
+        value: INFO

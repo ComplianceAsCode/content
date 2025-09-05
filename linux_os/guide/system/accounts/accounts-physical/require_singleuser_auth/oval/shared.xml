@@ -45,7 +45,7 @@
     {{%- if product in ["fedora", "rhel8"] -%}}
     <ind:pattern operation="pattern match">^ExecStart=\-.*/usr/lib/systemd/systemd-sulogin-shell[ ]+rescue</ind:pattern>
     {{%- else -%}}
-    <ind:pattern operation="pattern match">^ExecStart=\-.*/sbin/sulogin</ind:pattern>
+    <ind:pattern operation="pattern match">^ExecStart=\-/bin/sh[\s]+-c[\s]+\"(/usr)?/sbin/sulogin;[\s]+/usr/bin/systemctl[\s]+--fail[\s]+--no-block[\s]+default\"</ind:pattern>
     {{%- endif -%}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

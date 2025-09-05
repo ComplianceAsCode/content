@@ -1,4 +1,3 @@
 # platform = Mozilla Firefox
-. /usr/share/scap-security-guide/remediation_functions
 
-firefox_cfg_setting "stig.cfg" "dom.event.contextmenu.enabled" "false"
+{{{ bash_firefox_cfg_setting("stig.cfg", "dom.event.contextmenu.enabled", "false") }}}

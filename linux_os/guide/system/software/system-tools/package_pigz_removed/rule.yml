@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Uninstall pigz Package'
+
+description: |-
+    {{{ describe_package_remove(package="pigz") }}}
+
+rationale: |-
+    Binaries shipped in <tt>pigz</tt> package in Red Hat Enterprise Linux 8
+    have not been compiled using recommended compiler flags. The binaries
+    are compiled without sufficient stack protection and its address space
+    layout randomization (ASLR) is weak.
+
+severity: low
+
+identifiers:
+    cce@rhel8: 82397-1
+
+{{{ complete_ocil_entry_package(package="pigz") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: pigz

@@ -45,6 +45,9 @@ selections:
     - file_permissions_master_openshift_kubeconfig
     - file_permissions_master_scheduler_conf
     - file_permissions_var_lib_etcd
+    - file_groupowner_master_openvswitch
+    - file_owner_master_openvswitch
+    - file_permissions_master_openvswitch
     - scheduler_profiling_argument
     - controller_bind_address
     - controller_disable_profiling
@@ -92,10 +95,11 @@ selections:
     - api_server_kubelet_client_cert
     - api_server_kubelet_client_key
     - api_server_kubelet_https
-    - api_server_profiling
     - api_server_request_timeout
     - api_server_secure_port
-    - api_server_service_account_key
+    - api_server_service_account_ca
+    - api_server_service_account_private_key
+    - api_server_service_account_public_key
     - api_server_tls_cert
     - api_server_tls_cipher_suites
     - api_server_tls_private_key

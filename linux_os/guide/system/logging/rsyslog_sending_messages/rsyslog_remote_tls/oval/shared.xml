@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="compliance" id="rsyslog_remote_tls" version="1">
+    <metadata>
+      <title>Check that rsyslog is configured to use TLS for remote logging</title>
+      <affected family="unix">
+        <platform>multi_platform_fedora</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>Oracle Linux 8</platform>
+      </affected>
+      <description>Check that all needed TLS-related options are present</description>
+    </metadata>
+    <criteria comment="Check that rsyslog is configured to use TLS for remote logging" operator="AND">
+      <criterion comment="Check that all needed TLS-related options are present" test_ref="test_rsyslog_remote_tls" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_rsyslog_remote_tls"
+    comment="tests the omfwd action configuration"
+    check_existence="at_least_one_exists" check="all" version="1">
+    <ind:object object_ref="obj_rsyslog_remote_tls" />
+    <ind:state state_ref="state_rsyslog_remote_tls" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_rsyslog_remote_tls" version="1">
+    <ind:behaviors singleline="true" />
+    <ind:filepath operation="pattern match">^/etc/rsyslog\.(conf|d/.+\.conf)$</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*action\(type="omfwd"(.+?)\)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">0</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_rsyslog_remote_tls" comment="value of omfwd action" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">(?=[\S\s]*\sprotocol="tcp")(?=[\S\s]*\sTarget="[^"]+?")(?=[\S\s]*\sport="6514")(?=[\S\s]*\sStreamDriver="gtls")(?=[\S\s]*\sStreamDriverMode="1")(?=[\S\s]*\sStreamDriverAuthMode="x509/name")</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

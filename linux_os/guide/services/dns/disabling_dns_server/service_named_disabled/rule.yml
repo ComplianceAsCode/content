@@ -30,3 +30,9 @@ references:
 ocil: '{{{ ocil_service_disabled(service="named") }}}'
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        servicename: named
+        packagename: bind

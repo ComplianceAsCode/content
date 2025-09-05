@@ -45,3 +45,9 @@ ocil: |-
     permissions: <tt>-rwx------</tt>
 
 platform: machine
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /boot/efi/EFI/redhat/grub.cfg
+        filemode: '0700'

@@ -31,3 +31,10 @@ references:
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="user.max_user_namespaces", value="0") }}}
 
 platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: user.max_user_namespaces
+        sysctlval: '0'
+        datatype: int

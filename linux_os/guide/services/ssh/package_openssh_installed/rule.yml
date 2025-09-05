@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12
+prodtype: opensuse,sle11,sle12
 
 title: 'Install the OpenSSH Client and Server Package'
 
@@ -23,3 +23,8 @@ references:
 ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="openssh") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: openssh

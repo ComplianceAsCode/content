@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="kerberos_disable_no_keytab" version="1">
+    <metadata>
+      <title>Restrict Kerberos operation by removing keytab files</title>
+      <affected family="unix">
+        <platform>multi_platform_fedora</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>Oracle Linux 8</platform>
+      </affected>
+      <description>Check that there is no Kerberos keytab file present in /etc</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_kerberos_disable_no_keytab"
+        comment="Restrict Kerberos operation by removing keytab files" />
+    </criteria>
+  </definition>
+
+  <unix:file_object id="obj_kerberos_disable_no_keytab" version="1" comment="fapolicyd.mounts">
+    <unix:filepath operation="pattern match">^/etc/.+\.keytab$</unix:filepath>
+  </unix:file_object>
+  <unix:file_test id="test_kerberos_disable_no_keytab" check="all" check_existence="none_exist" version="1"
+    comment="Ensure a keytab file exists">
+    <unix:object object_ref="obj_kerberos_disable_no_keytab"/>
+  </unix:file_test>
+</def-group>

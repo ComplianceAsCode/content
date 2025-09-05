@@ -1,2 +1,2 @@
 # platform = multi_platform_all
-{{{ disable_prelink() }}}
+{{{ bash_disable_prelink() }}}

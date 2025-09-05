@@ -17,7 +17,7 @@ Requirements
 Role Variables
 --------------
 
-To customize the role to your liking, check out the [list of variables](vars/main.yml).
+To customize the role to your liking, check out the [list of variables](defaults/main.yml).
 
 Dependencies
 ------------

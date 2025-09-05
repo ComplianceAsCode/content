@@ -4,7 +4,7 @@ title: 'Ensure the audit Subsystem is Installed'
 
 description: 'The audit package should be installed.'
 
-rationale: 'The auditd service is an access monitoring and accounting daemon, watching system calls to audit any access, in comparision with potential local access control policy such as SELinux policy.'
+rationale: 'The auditd service is an access monitoring and accounting daemon, watching system calls to audit any access, in comparison with potential local access control policy such as SELinux policy.'
 
 severity: medium
 
@@ -13,5 +13,13 @@ identifiers:
     cce@rhel7: 81042-4
     cce@rhel8: 81043-2
 
+ocil_clause: 'the package is not installed'
+
 references:
+    nist: AU-7(a),AU-7(b),AU-7(1),AU-10
     anssi: NT28(R50)
+
+template:
+    name: package_installed
+    vars:
+        pkgname: audit

@@ -353,7 +353,11 @@ class AnsibleRemediation(Remediation):
     def from_snippet_and_rule(cls, snippet_fname, rule_fname):
         if os.path.isfile(snippet_fname) and os.path.isfile(rule_fname):
             result = cls(snippet_fname)
-            result.load_rule_from(rule_fname)
+            try:
+                result.load_rule_from(rule_fname)
+            except ssg.yaml.DocumentationNotComplete:
+                # Happens on non-debug build when a rule is "documentation-incomplete"
+                return None
             return result
 
 

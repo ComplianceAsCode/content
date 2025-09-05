@@ -15,6 +15,8 @@ rationale: |-
     should not be able to execute SUID or SGID binaries from partitions
     designated for log files.
 
+{{{ complete_ocil_entry_mount_option("/var/log", "nosuid") }}}
+
 severity: medium
 
 identifiers:
@@ -27,3 +29,10 @@ references:
     nist-csf: PR.IP-1,PR.PT-2,PR.PT-3
 
 platform: machine
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /var/log
+        mountoption: nosuid
+        mount_has_to_exist: 'yes'

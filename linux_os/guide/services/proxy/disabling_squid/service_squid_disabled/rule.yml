@@ -15,6 +15,7 @@ severity: unknown
 identifiers:
     cce@rhel6: 27146-0
     cce@rhel7: 80285-0
+    cce@rhel8: 82190-0
 
 references:
     cis: 2.2.13
@@ -22,3 +23,8 @@ references:
 ocil: '{{{ ocil_service_disabled(service="squid") }}}'
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        servicename: squid

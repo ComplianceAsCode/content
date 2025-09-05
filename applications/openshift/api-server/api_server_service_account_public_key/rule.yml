@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Configure the Service Account Public Key for the API Server'
+
+description: |-
+    To ensure the API Server utilizes its own key pair, edit the
+    API Server pod specification file
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
+    and set the <tt>publicKeyFiles</tt> parameter to the public
+    key file for service accounts:
+    <pre>serviceAccountConfig:
+    ...
+      publicKeyFiles:
+      - serviceaccounts.public.key
+    ...</pre>
+
+rationale: |-
+    By default, if no <tt>privateKeyFile</tt> is specified to the
+    API Server, the API Server uses the private key from the TLS serving
+    certificate to verify service account tokens. To ensure that the keys
+    for service account tokens could be rotated as needed, a separate
+    public/private key pair should be used for signing service account
+    tokens.
+
+severity: medium
+
+references:
+    cis: 1.2.25
+
+ocil_clause: '<tt>publicKeyFiles</tt> is not set as appropriate for <tt>serviceAccountConfig</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep -A9 serviceAccountConfig /etc/origin/master/master-config.yaml</pre>
+    The output should contain a line similar to:
+    <pre>publicKeyFiles:
+      - serviceaccounts.public.key</pre>

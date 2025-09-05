@@ -12,6 +12,8 @@ rationale: |-
     The only legitimate location for device files is the <tt>/dev</tt> directory
     located on the root partition. The only exception to this is chroot jails.
 
+{{{ complete_ocil_entry_mount_option("/dev/shm", "nodev") }}}
+
 severity: medium
 
 identifiers:
@@ -30,3 +32,26 @@ references:
     cis-csc: 11,13,14,3,8,9
 
 platform: machine
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /dev/shm
+        mountoption: nodev
+        mount_has_to_exist: 'no'
+        filesystem: tmpfs
+        type: tmpfs
+        mount_has_to_exist@rhel6: 'yes'
+        mount_has_to_exist@sle12: 'yes'
+        mount_has_to_exist@wrlinux8: 'yes'
+        mount_has_to_exist@wrlinux1019: 'yes'
+        filesystem@rhel6: ''
+        filesystem@sle12: ''
+        filesystem@wrlinux8: ''
+        filesystem@wrlinux1019: ''
+        type@rhel6: ''
+        type@sle12: ''
+        type@wrlinux8: ''
+        type@wrlinux1019: ''
+    backends:
+        anaconda: 'off'

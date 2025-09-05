@@ -28,3 +28,10 @@ references:
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/http/conf/*", perms="-rw-r-----") }}}'
 
 ocil: '{{{ ocil_file_permissions(file="/etc/http/conf/*", perms="-rw-r-----") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/httpd/conf/
+        file_regex: ^.*$
+        filemode: '0640'

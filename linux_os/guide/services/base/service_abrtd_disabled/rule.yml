@@ -39,3 +39,9 @@ references:
 ocil: '{{{ ocil_service_disabled(service="abrtd") }}}'
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        servicename: abrtd
+        packagename: abrt

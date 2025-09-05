@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="network_nmcli_permissions" version="1">
+    <metadata>
+      <title>Ensure non-Privileged Users Cannot Change Network Settings</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>multi_platform_rhv</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>polkit is properly configured to prevent non-privilged users from changing networking settings</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_network_nmcli_permissions" comment="check for properly configured .pkla file" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_network_nmcli_permissions"
+  comment="polkit is properly configured to prevent non-privilged users from changing networking settings"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_network_nmcli_permissions" />
+    <ind:state state_ref="state_network_nmcli_permissions" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_network_nmcli_permissions" version="1">
+    <ind:filepath operation="pattern match">^/etc/polkit-1/localauthority/20-org.d/.*$</ind:filepath>
+    <ind:pattern operation="pattern match">^\[.*\]\n\s*Identity=default\n\s*Action=org\.freedesktop\.NetworkManager\.\*\n\s*ResultAny=no\n\s*ResultInactive=no\n\s*(ResultActive=auth_admin)\n*\s*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_network_nmcli_permissions" version="1">
+    <ind:subexpression datatype="string">ResultActive=auth_admin</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

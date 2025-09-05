@@ -46,3 +46,9 @@ ocil: |-
     For DoD systems, the output should show <tt>maxclassrepeat</tt>=4.
 
 platform: pam
+
+template:
+    name: accounts_password
+    vars:
+        variable: maxclassrepeat
+        operation: less than or equal

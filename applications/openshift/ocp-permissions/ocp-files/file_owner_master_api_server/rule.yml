@@ -22,3 +22,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/origin/node/pods/apiserver.yaml", owner="root") }}}'
 
 ocil: '{{{ ocil_file_owner(file="/etc/origin/node/pods/apiserver.yaml", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/origin/node/pods/apiserver.yaml
+        fileuid: '0'

@@ -4,4 +4,8 @@
 # complexity = low
 # disruption = low
 
+{{% if IS_DIRECTORY and FILE_REGEX %}}
+find {{{ FILEPATH }}} -regex '{{{ FILE_REGEX }}}' -exec chgrp {{{ FILEGID }}} {} \;
+{{% else %}}
 chgrp {{{ FILEGID }}} {{{ FILEPATH }}}
+{{% endif %}}

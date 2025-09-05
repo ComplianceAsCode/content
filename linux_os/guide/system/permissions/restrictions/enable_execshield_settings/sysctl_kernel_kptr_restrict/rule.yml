@@ -24,3 +24,10 @@ references:
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.kptr_restrict", value="1") }}}
 
 platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.kptr_restrict
+        sysctlval: '1'
+        datatype: int

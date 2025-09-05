@@ -1,85 +1,62 @@
 <def-group>
-  <definition class="compliance" id="file_permissions_unauthorized_sgid" version="2">
-    <metadata>
-      <title>Find setgid files system packages</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>All files with setgid should be owned by a base system package</description>
-    </metadata>
-    <criteria>
-      <criterion comment="Check all setgid files" test_ref="check_setgid_files" />
-    </criteria>
-  </definition>
+    <definition id="file_permissions_unauthorized_sgid" version="1" class="compliance">
+        <metadata>
+            <title>Find SGID files that are not owned by RPM packages</title>
+            <affected family="unix">
+                <platform>multi_platform_fedora</platform>
+                <platform>multi_platform_rhel</platform>
+                <platform>multi_platform_ol</platform>
+                <platform>multi_platform_wrlinux</platform>
+            </affected>
+            <description>Evaluates to true if all files with SGID set are owned by RPM packages.</description>
+        </metadata>
+        <criteria>
+            <criterion comment="Check all sgid files" test_ref="test_file_permissions_unauthorized_sgid"/>
+        </criteria>
+    </definition>
 
-  <unix:file_test check="all" check_existence="none_exist" comment="setgid files outside system RPMs" id="check_setgid_files" version="1">
-    <unix:object object_ref="object_file_permissions_unauthorized_sgid" />
-  </unix:file_test>
+    <unix:file_test check="all" check_existence="none_exist" comment="sgid files outside system RPMs" id="test_file_permissions_unauthorized_sgid" version="1">
+        <unix:object object_ref="obj_file_permissions_unauthorized_sgid_unowned" />
+    </unix:file_test>
 
-  <unix:file_object comment="files with sgid set" id="object_file_permissions_unauthorized_sgid" version="1">
-    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
-    <unix:path operation="equals">/</unix:path>
-    <unix:filename operation="pattern match">^.*$</unix:filename>
-    <filter action="include">state_file_permissions_unauthorized_sgid</filter>
-    <filter action="exclude">state_sgid_whitelist</filter>
-  </unix:file_object>
+    <unix:file_object comment="files with sgid set which are not owned by any RPM package" id="obj_file_permissions_unauthorized_sgid_unowned" version="1">
+        <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+        <unix:path operation="equals">/</unix:path>
+        <unix:filename operation="pattern match">^.*$</unix:filename>
+        <filter action="include">state_file_permissions_unauthorized_sgid_sgid_set</filter>
+        <filter action="exclude">state_file_permissions_unauthorized_sgid_filepaths</filter>
+    </unix:file_object>
 
-  <unix:file_state id="state_file_permissions_unauthorized_sgid" version="1">
-    <unix:sgid datatype="boolean">true</unix:sgid>
-  </unix:file_state>
+    <linux:rpmverifyfile_object id="obj_file_permissions_unauthorized_sgid_rpms" version="1" comment="all files with sgid set that come from a RPM package">
+        <linux:behaviors nolinkto="true" nomd5="true" nosize="true" nouser="true" nogroup="true" nomtime="true" nomode="true" nordev="true" />
+        <linux:name operation="pattern match">.*</linux:name>
+        <linux:epoch operation="pattern match">.*</linux:epoch>
+        <linux:version operation="pattern match">.*</linux:version>
+        <linux:release operation="pattern match">.*</linux:release>
+        <linux:arch operation="pattern match">.*</linux:arch>
+        <linux:filepath var_ref="var_file_permissions_unauthorized_sgid_all" operation="equals" var_check="all" />
+    </linux:rpmverifyfile_object>
 
-  <!-- list of all setgid files included with base RHEL6,RHEL7,OL7 system -->
-  <unix:file_state id="state_sgid_whitelist" version="1">
-    <unix:filepath var_ref="var_sgid_whitelist" var_check="at least one" />
-  </unix:file_state>
+    <unix:file_object comment="all files with sgid set" id="obj_file_permissions_unauthorized_sgid_files" version="1">
+        <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+        <unix:path operation="equals">/</unix:path>
+        <unix:filename operation="pattern match">^.*$</unix:filename>
+        <filter action="include">state_file_permissions_unauthorized_sgid_sgid_set</filter>
+    </unix:file_object>
 
-  <constant_variable id="var_sgid_whitelist" version="1" datatype="string" comment="sgid whitelist">
-    {{% if product == "rhel6" %}}
-    <value>/bin/cgclassify</value>
-    <value>/bin/cgexec</value>
-    <value>/sbin/netreport</value>
-    {{% else %}}
-    <value>/usr/bin/cgclassify</value>
-    <value>/usr/bin/cgexec</value>
-    <value>/usr/sbin/netreport</value>
-    <value>/usr/lib/vte-2.90/gnome-pty-helper</value>
-    <value>/usr/lib/vte-2.91/gnome-pty-helper</value>
-    <value>/usr/lib64/vte/gnome-pty-helper</value>
-    <value>/usr/lib64/vte-2.90/gnome-pty-helper</value>
-    <value>/usr/lib64/vte-2.91/gnome-pty-helper</value>
-    <value>/usr/libexec/abrt-action-install-debuginfo-to-abrt-cache</value>
-    <value>/usr/libexec/openssh/ssh-keysign</value>
-    {{% endif %}}
-    <value>/usr/bin/crontab</value>
-    <value>/usr/bin/gnomine</value>
-    <value>/usr/bin/iagno</value>
-    <value>/usr/bin/locate</value>
-    <value>/usr/bin/lockfile</value>
-    <value>/usr/bin/same-gnome</value>
-    <value>/usr/bin/screen</value>
-    <value>/usr/bin/ssh-agent</value>
-    <value>/usr/bin/wall</value>
-    <value>/usr/bin/write</value>
-    <value>/usr/lib/vte/gnome-pty-helper</value>
-    <value>/usr/libexec/kde4/kdesud</value>
-    <value>/usr/libexec/utempter/utempter</value>
-    <value>/usr/lib/mailman/cgi-bin/admindb</value>
-    <value>/usr/lib/mailman/cgi-bin/admin</value>
-    <value>/usr/lib/mailman/cgi-bin/confirm</value>
-    <value>/usr/lib/mailman/cgi-bin/create</value>
-    <value>/usr/lib/mailman/cgi-bin/edithtml</value>
-    <value>/usr/lib/mailman/cgi-bin/listinfo</value>
-    <value>/usr/lib/mailman/cgi-bin/options</value>
-    <value>/usr/lib/mailman/cgi-bin/private</value>
-    <value>/usr/lib/mailman/cgi-bin/rmlist</value>
-    <value>/usr/lib/mailman/cgi-bin/roster</value>
-    <value>/usr/lib/mailman/cgi-bin/subscribe</value>
-    <value>/usr/lib/mailman/mail/mailman</value>
-    <value>/usr/sbin/lockdev</value>
-    <value>/usr/sbin/postdrop</value>
-    <value>/usr/sbin/postqueue</value>
-    <value>/usr/sbin/sendmail.sendmail</value>
-  </constant_variable>
+    <unix:file_state id="state_file_permissions_unauthorized_sgid_sgid_set" version="1">
+        <unix:sgid datatype="boolean">true</unix:sgid>
+    </unix:file_state>
 
+    <unix:file_state id="state_file_permissions_unauthorized_sgid_filepaths" version="1">
+        <unix:filepath var_ref="var_file_permissions_unauthorized_sgid_rpms" var_check="at least one" />
+    </unix:file_state>
+
+    <local_variable id="var_file_permissions_unauthorized_sgid_rpms" datatype="string" version="1" comment="all files with sgid set that come from a RPM package">
+        <object_component item_field="filepath" object_ref="obj_file_permissions_unauthorized_sgid_rpms" />
+    </local_variable>
+
+    <local_variable id="var_file_permissions_unauthorized_sgid_all" datatype="string" version="1" comment="all files with sgid set">
+        <object_component item_field="filepath" object_ref="obj_file_permissions_unauthorized_sgid_files" />
+    </local_variable>
 </def-group>

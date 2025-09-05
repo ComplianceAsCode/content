@@ -32,3 +32,9 @@ references:
 ocil: '{{{ ocil_service_disabled(service="cgconfig") }}}'
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        servicename: cgconfig
+        packagename: libcgroup

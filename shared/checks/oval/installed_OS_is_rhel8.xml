@@ -14,7 +14,10 @@
     <criteria>
       <criterion comment="Installed operating system is part of the unix family"
       test_ref="test_rhel8_unix_family" />
-      <criterion comment="RHEL 8 is installed" test_ref="test_rhel8" />
+      <criteria operator="OR">
+        <criterion comment="RHEL 8 is installed" test_ref="test_rhel8" />
+        <criterion comment="RHEL 8 CoreOS is installed" test_ref="test_rhel8_coreos" />
+      </criteria>
     </criteria>
   </definition>
 
@@ -38,5 +41,14 @@
     <linux:name>redhat-release</linux:name>
   </linux:rpminfo_object>
 
-
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="redhat-release-coreos is version 8" id="test_rhel8_coreos" version="1">
+    <linux:object object_ref="obj_rhel8_coreos" />
+    <linux:state state_ref="state_rhel8_coreos" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_rhel8_coreos" version="1">
+    <linux:version operation="pattern match">^[0-9\.]*8.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_rhel8_coreos" version="1">
+    <linux:name>redhat-release-coreos</linux:name>
+  </linux:rpminfo_object>
 </def-group>

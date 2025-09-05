@@ -1,0 +1,79 @@
+<def-group>
+  <definition class="compliance" id="require_emergency_target_auth" version="1">
+    <metadata>
+      <title>Require Authentication for Emergency Mode</title>
+      <affected family="unix">
+        <platform>multi_platform_fedora</platform>
+	<platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>multi_platform_rhv</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>The requirement for a password to boot into emergency mode
+      should be configured correctly.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_require_emergency_service" />
+      <criterion test_ref="test_require_emergency_service_emergency_target" />
+      <criterion test_ref="test_no_custom_emergency_target" negate="true"/>
+      <criterion test_ref="test_no_custom_emergency_service" negate="true"/>
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="Tests that
+    {{% if product in ["fedora", "rhel8"] -%}}
+    /usr/lib/systemd/systemd-sulogin-shell
+    {{%- else -%}}
+    /sbin/sulogin
+    {{%- endif %}}
+    was not removed from the default systemd emergency.service to ensure that a
+  password must be entered to access single user mode"
+  id="test_require_emergency_service" version="1">
+    <ind:object object_ref="obj_require_emergency_service" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_require_emergency_service" version="1">
+    <ind:filepath>/usr/lib/systemd/system/emergency.service</ind:filepath>
+    {{%- if product in ["fedora", "rhel8"] -%}}
+    <ind:pattern operation="pattern match">^ExecStart=\-/usr/lib/systemd/systemd-sulogin-shell[\s]+emergency</ind:pattern>
+    {{%- else -%}}
+    <ind:pattern operation="pattern match">^ExecStart=\-/bin/sh[\s]+-c[\s]+\"(/usr)?/sbin/sulogin;[\s]+/usr/bin/systemctl[\s]+--fail[\s]+--no-block[\s]+default\"</ind:pattern>
+    {{%- endif -%}}
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="Tests that the systemd emergency.service is in the emergency.target"
+    id="test_require_emergency_service_emergency_target" version="1">
+    <ind:object object_ref="obj_require_emergency_service_emergency" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_require_emergency_service_emergency" version="1">
+    <ind:filepath>/usr/lib/systemd/system/emergency.target</ind:filepath>
+    <ind:pattern operation="pattern match">^Requires=.*emergency.service</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <unix:file_test check="all" check_existence="at_least_one_exists" 
+  comment="look for emergency.service in /etc/systemd/system" 
+  id="test_no_custom_emergency_service" version="1">
+    <unix:object object_ref="object_no_custom_emergency_service" />
+  </unix:file_test>
+  <unix:file_object comment="look for emergency.service in /etc/systemd/system"
+  id="object_no_custom_emergency_service" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="all" />
+    <unix:path operation="equals">/etc/systemd/system</unix:path>
+    <unix:filename operation="pattern match">^emergency.service$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="at_least_one_exists" 
+  comment="look for emergency.target in /etc/systemd/system"
+  id="test_no_custom_emergency_target" version="1">
+    <unix:object object_ref="object_no_custom_emergency_target" />
+  </unix:file_test>
+  <unix:file_object comment="look for emergency.target in /etc/systemd/system"
+  id="object_no_custom_emergency_target" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="all" />
+    <unix:path operation="equals">/etc/systemd/system</unix:path>
+    <unix:filename operation="pattern match">^emergency.target$</unix:filename>
+  </unix:file_object>
+</def-group>

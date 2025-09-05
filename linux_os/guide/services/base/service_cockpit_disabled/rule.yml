@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,ol7,ol8
+
+title: 'Disable Cockpit Management Server'
+
+description: |-
+    The Cockpit Management Server (<tt>cockpit</tt>) provides a web based
+    login and management framework.
+    {{{ describe_service_disable(service="cockpit") }}}
+
+rationale: |-
+    Cockpit provides a form of remote login.
+
+severity: medium
+
+ocil: '{{{ ocil_service_disabled(service="cockpit") }}}'
+
+ocil_clause: 'it is not disabled'
+
+ocil: |-
+    To check the status of cockpit run the following command:
+    <pre>$ systemctl status cockpit.service cockpit.socket</pre>
+
+template:
+    name: service_disabled
+    vars:
+        servicename: cockpit
+        packagename: cockpit

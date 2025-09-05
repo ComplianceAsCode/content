@@ -1,6 +1,6 @@
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
 # reboot = false
-# strategy = unknown
+# strategy = restrict
 # complexity = high
 # disruption = medium
 - name: "Set fact: Package manager reinstall command (dnf)"
@@ -14,21 +14,30 @@
   when: (ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux")
 
 - name: "Read files with incorrect hash"
-  shell: |
-    set -o pipefail
-    rpm -Va | grep -E '^..5.* /(bin|sbin|lib|lib64|usr)/' | awk '{print $NF}'
+  command: rpm -Va --nodeps --nosize --nomtime --nordev --nocaps --nolinkto --nouser --nogroup --nomode --noconfig --noghost
   args:
     warn: False # Ignore ANSIBLE0006, we can't fetch files with incorrect hash using rpm module
-    executable: /bin/bash
   register: files_with_incorrect_hash
   changed_when: False
   failed_when: files_with_incorrect_hash.rc > 1
   when: (package_manager_reinstall_cmd is defined)
-  check_mode: no
+
+- name: Create list of packages
+  command: rpm -qf "{{ item }}"
+  args:
+    warn: False # Ignore ANSIBLE0006, we can't fetch packages with files with incorrect hash using rpm module
+  with_items: "{{ files_with_incorrect_hash.stdout_lines | map('regex_findall', '^[.]+[5]+.* (\\/.*)', '\\1') | map('join') | select('match', '(\\/.*)') | list | unique }}"
+  register: list_of_packages
+  changed_when: False
+  when:
+    - files_with_incorrect_hash.stdout_lines is defined
+    - (files_with_incorrect_hash.stdout_lines | length > 0)
 
 - name: "Reinstall packages of files with incorrect hash"
-  shell: "{{ package_manager_reinstall_cmd }} $(rpm -qf '{{ item }}')"
+  command: "{{ package_manager_reinstall_cmd }} '{{ item }}'"
   args:
     warn: False # Ignore ANSIBLE0006, this task is flexible with regards to package manager
-  with_items: "{{ files_with_incorrect_hash.stdout_lines }}"
-  when: (package_manager_reinstall_cmd is defined and (files_with_incorrect_hash.stdout_lines | length > 0))
+  with_items: "{{ list_of_packages.results | map(attribute='stdout_lines') | list | unique }}"
+  when:
+    - files_with_incorrect_hash.stdout_lines is defined
+    - (package_manager_reinstall_cmd is defined and (files_with_incorrect_hash.stdout_lines | length > 0))

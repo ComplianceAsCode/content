@@ -25,3 +25,9 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/origin/node/node.kubec
 
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/origin/node/node.kubeconfig", perms="-rw-------") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/origin/node/node.kubeconfig
+        filemode: '0600'

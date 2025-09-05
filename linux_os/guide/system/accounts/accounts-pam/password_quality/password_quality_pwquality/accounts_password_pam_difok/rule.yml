@@ -55,3 +55,9 @@ ocil: |-
     The <tt>difok</tt> parameter will indicate how many characters must differ.
 
 platform: pam
+
+template:
+    name: accounts_password
+    vars:
+        variable: difok
+        operation: greater than or equal

@@ -27,3 +27,8 @@ references:
 ocil_clause: 'the service is not enabled'
 
 ocil: '{{{ ocil_service_enabled(service="sssd") }}}'
+
+template:
+    name: service_enabled
+    vars:
+        servicename: sssd

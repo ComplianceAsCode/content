@@ -51,3 +51,9 @@ ocil: |-
     Your output should contain <tt>minlen = <sub idref="var_password_pam_minlen" /></tt>
 
 platform: pam
+
+template:
+    name: accounts_password
+    vars:
+        variable: minlen
+        operation: greater than or equal

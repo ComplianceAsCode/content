@@ -15,9 +15,8 @@ description: |-
 {{%- endif -%}}
     </pre>
     with an IP address or hostname of the system that the audispd plugin should
-    send audit records to. For example replacing <i>REMOTE_SYSTEM</i> with an IP
-    address or hostname:
-    <pre>remote_server = <i>REMOTE_SYSTEM</i></pre>
+    send audit records to. For example
+    <pre>remote_server = <i><sub idref="var_audispd_remote_server" /></i></pre>
 
 rationale: |-
     Information stored in one location is vulnerable to accidental or incidental
@@ -47,7 +46,6 @@ ocil: |-
 {{% else %}}
     <pre>$ sudo grep -i remote_server /etc/audisp/audisp-remote.conf</pre>
 {{% endif %}}
-    The output should return something similar to where <i>REMOTE_SYSTEM</i>
-    is an IP address or hostname:
-    <pre>remote_server = <i>REMOTE_SYSTEM</i></pre>
+    The output should return something similar to
+    <pre>remote_server = <i><sub idref="var_audispd_remote_server" /></i></pre>
 

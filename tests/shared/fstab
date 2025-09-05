@@ -1,0 +1,8 @@
+# /etc/fstab: static file system information
+# Example $SHARED/fstab file with mounted NFS file systems
+# <file system>                   <mount point>   <type>  <options>                             <dump>  <pass>
+
+/tmp/folder0                        /folder0       ext4   defaults,sec=krb5:krb5:krb5i:krb5p              0  0
+some.server:/remote/folder1         /folder1       nfs    defaults,noexec,nosuid,sec=krb5:krb5i:krb5p     0  0
+/home/folder2                       /folder2       auto   defaults                                        0  0
+another.server:/remote/folder3      /folder3       nfs4   defaults,noexec,nosuid,sec=krb5:krb5i:krb5p     0  0

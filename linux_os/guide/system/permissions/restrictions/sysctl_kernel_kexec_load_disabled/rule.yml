@@ -20,3 +20,10 @@ identifiers:
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.kexec_load_disabled", value="1") }}}
 
 platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.kexec_load_disabled
+        sysctlval: '1'
+        datatype: int

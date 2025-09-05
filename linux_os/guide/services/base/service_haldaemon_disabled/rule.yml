@@ -33,3 +33,9 @@ references:
 ocil: '{{{ ocil_service_disabled(service="haldaemon") }}}'
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        servicename: haldaemon
+        packagename: hal

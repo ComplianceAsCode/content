@@ -14,13 +14,9 @@
 - name: Read signatures in GPG key
   # According to /usr/share/doc/gnupg2/DETAILS fingerprints are in "fpr" record in field 10
   {{% if product == "rhel8" -%}}
-  shell: |
-    set -o pipefail
-    gpg --show-keys --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" | grep -A1 "^pub" | grep "^fpr" | cut -d ":" -f 10
+  command: gpg --show-keys --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
   {{%- else -%}}
-  shell: |
-    set -o pipefail
-    gpg --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" | grep "^fpr" | cut -d ":" -f 10
+  command: gpg --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
   {{%- endif %}}
   args:
     warn: False
@@ -29,9 +25,13 @@
   register: gpg_fingerprints
   check_mode: no
 
+- name: Set Fact - Installed GPG Fingerprints
+  set_fact:
+    gpg_installed_fingerprints: "{{ gpg_fingerprints.stdout | regex_findall('^pub.*\n(?:^fpr[:]*)([0-9A-Fa-f]*)', '\\1') | list }}"
+
 - name: Set Fact - Valid fingerprints
   set_fact:
-     gpg_valid_fingerprints: ("{{{ release_key_fingerprint }}}" "{{{ auxiliary_key_fingerprint }}}")
+    gpg_valid_fingerprints: ("{{{ release_key_fingerprint }}}" "{{{ auxiliary_key_fingerprint }}}")
 
 - name: Import RedHat GPG key
   rpm_key:
@@ -39,6 +39,6 @@
     key: /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
   when:
    - gpg_key_directory_permission.stat.mode <= '0755'
-   - ( gpg_fingerprints.stdout_lines | difference(gpg_valid_fingerprints)) | length == 0
-   - gpg_fingerprints.stdout_lines | length > 0
+   - (gpg_installed_fingerprints | difference(gpg_valid_fingerprints)) | length == 0
+   - gpg_installed_fingerprints | length > 0
    - ansible_distribution == "RedHat"

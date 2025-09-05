@@ -22,3 +22,10 @@ references:
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.unprivileged_bpf_disabled", value="1") }}}
 
 platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.unprivileged_bpf_disabled
+        sysctlval: '1'
+        datatype: int

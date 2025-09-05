@@ -164,21 +164,23 @@ selections:
     - package_sssd-ipa_installed
     - package_aide_installed
     - package_dnf-automatic_installed
+    - package_subscription-manager_installed
+    - package_dnf-plugin-subscription-manager_installed
     - package_firewalld_installed
     - package_iptables_installed
     - package_libcap-ng-utils_installed
     - package_openscap-scanner_installed
     - package_policycoreutils_installed
-    - package_python3-subscription-manager-rhsm_installed
     - package_rng-tools_installed
     - package_sudo_installed
     - package_usbguard_installed
     - package_audispd-plugins_installed
     - package_scap-security-guide_installed
     - package_audit_installed
-    - package_libreswan_installed
     - package_rsyslog_installed
     - package_rsyslog-gnutls_installed
+    - package_gnutls-utils_installed
+    - package_nss-tools_installed
 
     ### Remove Prohibited Packages
     - package_sendmail_removed
@@ -195,6 +197,7 @@ selections:
     - package_abrt-cli_removed
     - package_tuned_removed
     - package_abrt_removed
+    - package_pigz_removed
 
     ### Login
     - disable_users_coredumps
@@ -289,7 +292,8 @@ selections:
 
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
     ## AC-11(a) / FMT_MOF_EXT.1
-    - sshd_idle_timeout_value=10_minutes
+    ## We deliberately set sshd timeout to 1 minute before tmux lock timeout
+    - sshd_idle_timeout_value=14_minutes
     - sshd_set_idle_timeout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
@@ -391,3 +395,9 @@ selections:
     # Enable dnf-automatic Timer
     - timer_dnf-automatic_enabled
 
+    # Configure TLS for remote logging
+    - rsyslog_remote_tls
+    - rsyslog_remote_tls_cacert
+
+    # Prevent Kerberos use by system daemons
+    - kerberos_disable_no_keytab

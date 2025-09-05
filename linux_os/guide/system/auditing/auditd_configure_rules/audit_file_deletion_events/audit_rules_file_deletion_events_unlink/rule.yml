@@ -1,7 +1,5 @@
 documentation_complete: true
 
-prodtype: wrlinux1019,rhel7,rhel8,fedora,ol7,ol8,rhv4
-
 title: 'Ensure auditd Collects File Deletion Events by User - unlink'
 
 description: |-
@@ -49,3 +47,7 @@ references:
 
 {{{ complete_ocil_entry_audit_syscall(syscall="unlink") }}}
 
+template:
+    name: audit_rules_file_deletion_events
+    vars:
+        name: unlink

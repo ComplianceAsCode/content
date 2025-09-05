@@ -32,3 +32,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/gshadow", owner="root") }}}'
 
 ocil: '{{{ ocil_file_owner(file="/etc/gshadow", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/gshadow
+        fileuid: '0'

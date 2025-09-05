@@ -14,7 +14,7 @@ source fix_audit_syscall_rule.sh
 function perform_audit_adjtimex_settimeofday_stime_remediation {
 
 # Retrieve hardware architecture of the underlying system
-[ $(getconf LONG_BIT) = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
+[ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
 
 for ARCH in "${RULE_ARCHS[@]}"
 do

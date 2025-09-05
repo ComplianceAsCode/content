@@ -16,6 +16,9 @@ rationale: |-
 
 severity: low
 
+identifiers:
+    cce@rhel7: 82353-4
+
 references:
     cis: 1.1.7
     anssi: NT28(R12)
@@ -23,3 +26,8 @@ references:
 {{{ complete_ocil_entry_separate_partition(part="/var/tmp") }}}
 
 platform: machine
+
+template:
+    name: mount
+    vars:
+        mountpoint: /var/tmp

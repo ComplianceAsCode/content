@@ -14,6 +14,8 @@ rationale: |-
     The presence of SUID and SGID executables should be tightly controlled. Users
     should not be able to execute SUID or SGID binaries from temporary storage partitions.
 
+{{{ complete_ocil_entry_mount_option("/tmp", "nosuid") }}}
+
 severity: unknown
 
 identifiers:
@@ -33,3 +35,11 @@ references:
     anssi: NT28(R12)
 
 platform: machine
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /tmp
+        mountoption: nosuid
+        mount_has_to_exist: 'yes'
+# Note that /tmp on RHEL systems is not tmpfs

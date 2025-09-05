@@ -37,3 +37,10 @@ references:
 ocil: '{{{ ocil_service_disabled(service="quota_nld") }}}'
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        servicename: quota_nld
+        packagename: quota-nld
+        packagename@rhel6: quota

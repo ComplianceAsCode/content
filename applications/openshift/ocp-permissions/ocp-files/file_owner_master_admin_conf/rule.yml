@@ -22,3 +22,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/origin/master/admin.kubeconfig", owner="root") }}}'
 
 ocil: '{{{ ocil_file_owner(file="/etc/origin/master/admin.kubeconfig", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/origin/master/admin.kubeconfig
+        fileuid: '0'

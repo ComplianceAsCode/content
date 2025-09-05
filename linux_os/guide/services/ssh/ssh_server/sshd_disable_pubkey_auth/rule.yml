@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Disable PubkeyAuthentication Authentication'
+
+description: |-
+    Unless needed, SSH should not permit extraneous or unnecessary
+    authentication mechanisms. To disable PubkeyAuthentication authentication, add or
+    correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+    <pre>PubkeyAuthentication no</pre>
+
+rationale: |-
+    PubkeyAuthentication authentication is used to provide additional authentication mechanisms to
+    applications. Allowing PubkeyAuthentication authentication through SSH allows users to
+    generate their own authentication tokens, increasing the attack surface of the system.
+
+severity: medium
+
+ocil_clause: 'it is not disabled'
+
+identifiers:
+    cce@rhel6: 82343-5
+    cce@rhel7: 82344-3
+    cce@rhel8: 82345-0
+
+ocil: |-
+    To check if PubkeyAuthentication is disabled or set correctly, run the following
+    command:
+    <pre>$ sudo grep PubkeyAuthentication /etc/ssh/sshd_config</pre>
+    If configured properly, output should be <pre>no</pre>
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: PubkeyAuthentication
+        rule_id: sshd_disable_pubkey_auth
+        value: 'no'

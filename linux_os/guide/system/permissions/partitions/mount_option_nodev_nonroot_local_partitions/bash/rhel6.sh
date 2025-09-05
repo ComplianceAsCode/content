@@ -44,23 +44,20 @@ do
                 MOUNT_OPTIONS="$MOUNT_OPTIONS,nodev"
             fi
 
-            # Escape possible slash ('/') characters in target for use as sed
-            # expression below
-            TARGET_ESCAPED=${TARGET//$'/'/$'\/'}
             # This target doesn't contain 'nodev' in mount options yet (and meets
             # the above filtering criteria). Therefore obtain particular /etc/fstab's
             # row into FSTAB_TARGET_ROW variable separating the mount options field with
             # hash '#' character
-            FSTAB_TARGET_ROW=$(sed -n "s/\(.*$TARGET_ESCAPED[$SP]\+$FSTYPE[$SP]\+\)\([^$SP]\+\)/\1#\2#/p" /etc/fstab)
+            FSTAB_TARGET_ROW=$(sed -n "s|\\(.*${TARGET}[$SP]\\+${FSTYPE}[$SP]\\+\\)\\([^$SP]\\+\\)|\\1#\\2#|p" /etc/fstab)
             # Split the retrieved value by the hash '#' delimiter to get the
             # row's head & tail (i.e. columns other than mount options) which won't
             # get modified
             TARGET_HEAD=$(cut -f 1 -d '#' <<< "$FSTAB_TARGET_ROW")
-            TARGET_OPTS=$(cut -f 2 -d '#' <<< "$FSTAB_TARGET_ROW")
+            # TARGET_OPTS=$(cut -f 2 -d '#' <<< "$FSTAB_TARGET_ROW")
             TARGET_TAIL=$(cut -f 3 -d '#' <<< "$FSTAB_TARGET_ROW")
             # Replace old mount options for particular /etc/fstab's row (for this target
             # and fstype) with new mount options
-            sed -i "s#${TARGET_HEAD}\(.*\)${TARGET_TAIL}#${TARGET_HEAD}${MOUNT_OPTIONS}${TARGET_TAIL}#" /etc/fstab
+            sed -i "s|${TARGET_HEAD}\(.*\)${TARGET_TAIL}|${TARGET_HEAD}${MOUNT_OPTIONS}${TARGET_TAIL}|" /etc/fstab
         fi
     fi
 done

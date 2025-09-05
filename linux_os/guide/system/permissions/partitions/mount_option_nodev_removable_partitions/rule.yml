@@ -35,3 +35,12 @@ references:
     cis-csc: 11,12,13,14,16,3,8,9
 
 platform: machine
+
+template:
+    name: mount_option_removable_partitions
+    vars:
+        mount_has_to_exist: 'yes'
+        mountoption: nodev
+        mountpoint: var_removable_partition
+    backends:
+        anaconda: 'off'

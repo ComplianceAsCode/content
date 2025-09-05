@@ -1,0 +1,56 @@
+<def-group>
+  <definition class="compliance" id="network_disable_ddns_interfaces"
+  version="1">
+    <metadata>
+      <title>Disable Client Dynamic DNS Updates</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+      </affected>
+      <description>Clients should not automatically update their own
+      DNS record.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_network_disable_ddns_interfaces_ifcfg" />
+      <criterion test_ref="test_network_disable_ddns_interfaces_dhclient" />
+      <criterion test_ref="test_network_disable_ddns_interfaces_dhcp" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests for the existence of DHCP_HOSTNAME in the /etc/sysconfig/network-scripts/ifcfg-.* file"
+  id="test_network_disable_ddns_interfaces_ifcfg" version="1">
+    <ind:object object_ref="obj_network_disable_ddns_interfaces_ifcfg" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_network_disable_ddns_interfaces_ifcfg"
+  version="1">
+    <ind:path>/etc/sysconfig/network-scripts</ind:path>
+    <ind:filename operation="pattern match">ifcfg-.*</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*DHCP_HOSTNAME[\s]*=.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests for the existence of 'send host-name' in /etc/dhclient.conf file"
+  id="test_network_disable_ddns_interfaces_dhclient" version="1">
+    <ind:object object_ref="obj_network_disable_ddns_interfaces_dhclient" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_network_disable_ddns_interfaces_dhclient"
+  version="1">
+    <ind:filepath operation="pattern match">^/etc/dhclient.*\.conf$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*send[\s]+host-name.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests for the existence of 'send host-name' in the /etc/dhcp folder"
+  id="test_network_disable_ddns_interfaces_dhcp" version="1">
+    <ind:object object_ref="obj_network_disable_ddns_interfaces_dhcp" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_network_disable_ddns_interfaces_dhcp"
+  version="1">
+    <ind:path>/etc/dhcp</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*send[\s]+host-name.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

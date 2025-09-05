@@ -36,3 +36,9 @@ references:
 ocil: '{{{ ocil_service_disabled(service="saslauthd") }}}'
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        servicename: saslauthd
+        packagename: cyrus-sasl

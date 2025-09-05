@@ -3,6 +3,25 @@
 # strategy = configure
 # complexity = low
 # disruption = low
+
+{{% if IS_DIRECTORY and FILE_REGEX %}}
+
+- name: Find {{{ FILEPATH }}} file(s) matching {{{ FILE_REGEX }}}
+  find:
+    paths: "{{{ FILEPATH }}}"
+    patterns: "{{{ FILE_REGEX }}}"
+    use_regex: yes
+  register: files_found
+
+- name: Ensure group owner on {{{ FILEPATH }}} file(s) matching {{{ FILE_REGEX }}}
+  file:
+    path: "{{ item.path }}"
+    group: "{{{ FILEGID }}}"
+  with_items:
+    - "{{ files_found.files }}"
+
+{{% else %}}
+
 - name: Test for existence {{{ FILEPATH }}}
   stat:
     path: "{{{ FILEPATH }}}"
@@ -13,3 +32,5 @@
     path: "{{{ FILEPATH }}}"
     group: "{{{ FILEGID }}}"
   when: file_exists.stat is defined and file_exists.stat.exists
+
+{{% endif %}}

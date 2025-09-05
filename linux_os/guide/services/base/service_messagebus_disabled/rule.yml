@@ -35,3 +35,9 @@ references:
 ocil: '{{{ ocil_service_disabled(service="messagebus") }}}'
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        servicename: messagebus
+        packagename: dbus

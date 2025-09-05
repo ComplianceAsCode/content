@@ -22,7 +22,7 @@ severity: medium
 references:
     srg: SRG-OS-000032-GPOS-00013
     disa: "67"
-    nist: AC-17(1)
+    nist: AC-17(a),AC-17(b),AC-17(1)
     stigid@sle12: "030110"
 
 ocil_clause: 'it is commented out or is not enabled'
@@ -32,3 +32,11 @@ ocil: |-
     following command:
     <pre>$ sudo grep "^LogLevel" /etc/ssh/sshd_config</pre>
     If configured properly, output should be <pre>LogLevel VERBOSE</pre>
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'true'
+        parameter: LogLevel
+        rule_id: sshd_set_loglevel_verbose
+        value: VERBOSE

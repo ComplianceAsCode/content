@@ -5,20 +5,16 @@
 # disruption = medium
 
 - name: "Get nfs and nfs4 mount points, that don't have Kerberos security option"
-  shell: |
-    set -o pipefail
-    grep -E "[[:space:]]nfs[4]?[[:space:]]" /etc/fstab | grep -v "sec=krb5:krb5i:krb5p" | awk '{print $2}'
-  args:
-    warn: False
-    executable: /bin/bash
+  command: findmnt --fstab --types nfs,nfs4 -O nosec=krb5:krb5i:krb5p -n -o TARGET
   register: points_register
   check_mode: no
   changed_when: False
 
-- name: "Add Kerberos security to mount points"
-  shell: awk '$2=="{{ item }}"{$4=$4",sec=krb5:krb5i:krb5p"}1' /etc/fstab > fstab.tmp && mv fstab.tmp /etc/fstab
-  args:
-    warn: False
-  with_items:
-    - "{{ points_register.stdout_lines }}"
+- name: "Add Kerberos security to nfs and nfs4 mount points"
+  mount:
+    path: "{{ item.split()[0] }}"
+    src: "{{ item.split()[1] }}"
+    fstype: "{{ item.split()[2] }}"
+    state: mounted
+    opts: "{{ item.split()[3] }},sec=krb5:krb5i:krb5p"
   when: (points_register.stdout | length > 0)

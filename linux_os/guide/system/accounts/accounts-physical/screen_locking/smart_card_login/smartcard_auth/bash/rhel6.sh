@@ -1,12 +1,11 @@
 # platform = Red Hat Enterprise Linux 6
-. /usr/share/scap-security-guide/remediation_functions
 
 # Install required packages
 yum -y install esc
 yum -y install pam_pkcs11
 
 # Enable pcscd service
-service_command enable pcscd
+{{{ bash_service_command("enable", "pcscd") }}}
 
 # Configure the expected /etc/pam.d/system-auth{,-ac} settings directly
 #

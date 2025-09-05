@@ -49,3 +49,9 @@ ocil: |-
     <tt>maxrepeat=3</tt>.
 
 platform: pam
+
+template:
+    name: accounts_password
+    vars:
+        variable: maxrepeat
+        operation: less than or equal

@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Configure the Service Account Certificate Authority Key for the API Server'
+
+description: |-
+    To ensure the API Server utilizes a certificate authority, edit the
+    API Server pod specification file
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
+    and set the <tt>masterCA</tt> parameter to the certificate authority
+    key file for service accounts:
+    <pre>serviceAccountConfig:
+    ...
+      masterCA: ca-bundle.crt
+    ...</pre>
+
+rationale: |-
+    Service accounts authenticate to the API using tokens signed by a private RSA
+    key. The authentication layer verifies the signature using a matching public RSA key.
+    Configuring the certificate authority file ensures that the API server's signing
+    certificates are validated.
+
+severity: medium
+
+references:
+    cis: 1.3.5
+
+ocil_clause: '<tt>masterCA</tt> is not set as appropriate for <tt>serviceAccountConfig</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep -A9 serviceAccountConfig /etc/origin/master/master-config.yaml</pre>
+    The output should contain a line similar to:
+    <pre>masterCA: ca-bundle.crt</pre>

@@ -26,8 +26,12 @@ ocil_clause: 'exec tmux is not present at the end of bashrc'
 ocil: |-
     To verify that tmux is configured to execute,
     run the following command:
-    <pre>$ tail -1 /etc/bashrc</pre>
+    <pre>$ grep -A1 -B3 "case ..name. in sshd|login) exec tmux ;; esac" /etc/bashrc</pre>
     The output should return the following:
-    <pre>[ -n "$PS1" -a -z "$TMUX" ] &amp;&amp; exec tmux</pre>
+    <pre>if [ "$PS1" ]; then
+      parent=$(ps -o ppid= -p $$)
+      name=$(ps -o comm= -p $parent)
+      case "$name" in sshd|login) exec tmux ;; esac
+    fi</pre>
 
 platform: machine

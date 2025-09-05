@@ -27,3 +27,10 @@ references:
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.dmesg_restrict", value="1") }}}
 
 platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.dmesg_restrict
+        sysctlval: '1'
+        datatype: int

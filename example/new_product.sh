@@ -11,8 +11,6 @@ mkdir $NEW_PRODUCT \
         $NEW_PRODUCT/cpe \
         $NEW_PRODUCT/overlays \
         $NEW_PRODUCT/profiles \
-        $NEW_PRODUCT/templates \
-        $NEW_PRODUCT/templates/csv \
         $NEW_PRODUCT/transforms
 
 cat << EOF >> $NEW_PRODUCT/CMakeLists.txt

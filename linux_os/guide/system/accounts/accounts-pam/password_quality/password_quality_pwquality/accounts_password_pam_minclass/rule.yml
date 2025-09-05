@@ -63,3 +63,9 @@ ocil: |-
     then this would appear as <tt>minclass = 3</tt>.
 
 platform: pam
+
+template:
+    name: accounts_password
+    vars:
+        variable: minclass
+        operation: greater than or equal

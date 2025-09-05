@@ -1,5 +1,7 @@
 documentation_complete: true
 
+prodtype: ubuntu1604,ubuntu1804
+
 title: 'Enable systemd_timesyncd Service'
 
 description: '{{{ describe_service_enable(service="systemd_timesyncd") }}}'
@@ -30,3 +32,9 @@ references:
     cis-csc: 1,14,15,16,3,5,6
 
 ocil: '{{{ ocil_service_enabled(service="systemd_timesyncd") }}}'
+
+template:
+    name: service_enabled
+    vars:
+        servicename: systemd-timesyncd
+        packagename: systemd

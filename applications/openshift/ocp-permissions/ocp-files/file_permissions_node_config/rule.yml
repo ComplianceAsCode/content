@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Verify Permissions on the OpenShift Node Configuration File'
 
@@ -25,3 +25,9 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/origin/node/node-confi
 
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/origin/node/node-config.yaml", perms="-rw-------") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/origin/node/node-config.yaml
+        filemode: '0600'
