@@ -74,13 +74,13 @@ fixtext: |-
 
     If the log_group is not defined or it is set to root, configure the permissions the following way:
 
-    $ sudo chmod 0640 $log_file
-    $ sudo chmod 0440 $log_file.*
+    $ sudo chmod 0600 $log_file
+    $ sudo chmod 0400 $log_file.*
 
     Otherwise, configure the permisssions the following way:
 
-    $ sudo chmod 0600 $log_file
-    $ sudo chmod 0400 $log_file.*
+    $ sudo chmod 0640 $log_file
+    $ sudo chmod 0440 $log_file.*
 
 srg_requirement: |-
    {{{ full_name }}} audit log file must have mode 0640 or less permissive to prevent unauthorized access to the audit log.

@@ -1,0 +1,124 @@
+<def-group>
+  <definition class="compliance" id="directory_permissions_var_log_audit" version="1">
+    {{{ oval_metadata("Checks for correct permissions for audit logs.", rule_title=rule_title) }}}
+    <criteria operator="OR">
+      <criteria operator="AND" comment="log_file set">
+        <extend_definition comment="log file set in auditd.conf" definition_ref="auditd_conf_log_file_not_set" negate="true" />
+
+        <criteria operator="OR">
+          <criteria operator="AND" comment="log_file set and log_group set to not root">
+            <criterion comment="log_group in auditd.conf is set" test_ref="test_auditd_conf_log_group_not_set" negate="true"/>
+            <criterion comment="default log_file and log_group set" test_ref="test_permissions_audit_log_directory_not_root"/>
+          </criteria>
+          <criteria operator="AND" comment="log_file set and log_group root">
+            <criterion comment="log_group in auditd.conf is not set" test_ref="test_auditd_conf_log_group_not_set"/>
+            <criterion comment="default log_file and log_group root" test_ref="test_permissions_audit_log_directory_root"/>
+          </criteria>
+        </criteria>
+
+      </criteria>
+      <criteria operator="AND" comment="log_file not set">
+        <extend_definition comment="log file not set in auditd.conf" definition_ref="auditd_conf_log_file_not_set" />
+
+        <criteria operator="OR">
+          <criteria operator="AND" comment="default log_file and log_group set to not root">
+            <criterion comment="log_group in auditd.conf is set" test_ref="test_auditd_conf_log_group_not_set" negate="true"/>
+            <criterion comment="default log_file and log_group set" test_ref="test_permissions_default_audit_log_directory_not_root"/>
+          </criteria>
+          <criteria operator="AND" comment="default log_file and log_group root">
+            <criterion comment="log_group in auditd.conf is not set" test_ref="test_auditd_conf_log_group_not_set"/>
+            <criterion comment="default log_file and log_group root" test_ref="test_permissions_default_audit_log_directory_root"/>
+          </criteria>
+        </criteria>
+
+      </criteria>
+    </criteria>
+  </definition>
+
+
+  <ind:textfilecontent54_object id="object_auditd_conf_log_group_configured" comment="log_group is set" version="1">
+    <ind:filepath operation="equals">/etc/audit/auditd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[ ]*log_group[ ]+=[ ](\w+)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_auditd_conf_log_group_not_set" check="all" check_existence="none_exist" comment="log_group not set" version="1">
+    <ind:object object_ref="object_auditd_conf_log_group_configured" />
+  </ind:textfilecontent54_test>
+
+  <local_variable id="audit_log_dir" datatype="string" version="1" comment="path to audit log directory">
+    <regex_capture pattern="^(.*)\/([^\/]+$)">
+      <variable_component var_ref="audit_log_file_path" />
+    </regex_capture>
+  </local_variable>
+
+  <!-- non default file and state 0700 -->
+  <unix:file_test check="all" check_existence="all_exist" comment="non default audit log dir mode 0700" id="test_permissions_audit_log_directory_root" version="1">
+    <unix:object object_ref="object_var_log_audit_directory_non_default_root" />
+    <unix:state state_ref="state_mode_0700" />
+  </unix:file_test>
+  <unix:file_object comment="non default audit log dir" id="object_var_log_audit_directory_non_default_root" version="1">
+    <unix:path operation="equals" var_ref="audit_log_dir" />
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+
+  <!-- non default file and state 0750 -->
+  <unix:file_test check="all" check_existence="all_exist" comment="non default audit log dir mode 0700" id="test_permissions_audit_log_directory_not_root" version="1">
+    <unix:object object_ref="object_var_log_audit_directory_non_default_not_root" />
+    <unix:state state_ref="state_mode_0750" />
+  </unix:file_test>
+  <unix:file_object comment="non default audit log dir" id="object_var_log_audit_directory_non_default_not_root" version="1">
+    <unix:path operation="equals" var_ref="audit_log_dir" />
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+
+  <!-- default file and state 0700 -->
+  <unix:file_test check="all" check_existence="all_exist" comment="/var/log/audit mode 0700" id="test_permissions_default_audit_log_directory_root" version="1">
+    <unix:object object_ref="object_var_log_audit_directory_root" />
+    <unix:state state_ref="state_mode_0700" />
+  </unix:file_test>
+  <unix:file_object comment="/var/log/audit dir" id="object_var_log_audit_directory_root" version="1">
+    <unix:path>/var/log/audit</unix:path>
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+
+  <!-- default file and state 0750 -->
+  <unix:file_test check="all" check_existence="all_exist" comment="/var/log/audit mode 0750" id="test_permissions_default_audit_log_directory_not_root" version="1">
+    <unix:object object_ref="object_var_log_audit_directory_non_root" />
+    <unix:state state_ref="state_mode_0750" />
+  </unix:file_test>
+  <unix:file_object comment="/var/log/audit dir" id="object_var_log_audit_directory_non_root" version="1">
+    <unix:path>/var/log/audit</unix:path>
+    <unix:filename xsi:nil="true"/>
+  </unix:file_object>
+
+  <unix:file_state id="state_mode_0700" operator="AND" version="3">
+    <unix:suid datatype="boolean">false</unix:suid>
+    <unix:sgid datatype="boolean">false</unix:sgid>
+    <unix:sticky datatype="boolean">false</unix:sticky>
+    <unix:uread datatype="boolean">true</unix:uread>
+    <unix:uwrite datatype="boolean">true</unix:uwrite>
+    <unix:uexec datatype="boolean">true</unix:uexec>
+    <unix:gread datatype="boolean">false</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+
+  <unix:file_state id="state_mode_0750" operator="AND" version="3">
+    <unix:suid datatype="boolean">false</unix:suid>
+    <unix:sgid datatype="boolean">false</unix:sgid>
+    <unix:sticky datatype="boolean">false</unix:sticky>
+    <unix:uread datatype="boolean">true</unix:uread>
+    <unix:uwrite datatype="boolean">true</unix:uwrite>
+    <unix:uexec datatype="boolean">true</unix:uexec>
+    <unix:gread datatype="boolean">true</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">true</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>
