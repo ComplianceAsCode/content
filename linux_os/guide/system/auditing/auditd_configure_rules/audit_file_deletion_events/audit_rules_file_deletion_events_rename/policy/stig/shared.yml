@@ -15,15 +15,15 @@ checktext: |-
 
     $ sudo auditctl -l | grep 'rename\|unlink\|rmdir'
 
-    -a always,exit -F arch=b32 -S rename,unlink,rmdir,renameat,unlinkat -F auid>=1000 -F auid!=unset -k delete
-    -a always,exit -F arch=b64 -S rename,unlink,rmdir,renameat,unlinkat -F auid>=1000 -F auid!=unset -k delete
+    -a always,exit -F arch=b32 -S rename,unlink,rmdir,renameat,unlinkat -F auid&gt;=1000 -F auid!=unset -k delete
+    -a always,exit -F arch=b64 -S rename,unlink,rmdir,renameat,unlinkat -F auid&gt;=1000 -F auid!=unset -k delete
 
     If the command does not return an audit rule for "rename", "unlink", "rmdir", "renameat", and "unlinkat" or any of the lines returned are commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to generate an audit event for any successful/unsuccessful use of the "rename", "unlink", "rmdir", "renameat", and "unlinkat" system calls by adding or updating the following rules in the "/etc/audit/rules.d/audit.rules" file:
 
-    -a always,exit -F arch=b32 -S rename,unlink,rmdir,renameat,unlinkat -F auid>=1000 -F auid!=unset -k delete
-    -a always,exit -F arch=b64 -S rename,unlink,rmdir,renameat,unlinkat -F auid>=1000 -F auid!=unset -k delete
+    -a always,exit -F arch=b32 -S rename,unlink,rmdir,renameat,unlinkat -F auid&gt;=1000 -F auid!=unset -k delete
+    -a always,exit -F arch=b64 -S rename,unlink,rmdir,renameat,unlinkat -F auid&gt;=1000 -F auid!=unset -k delete
 
     The audit daemon must be restarted for the changes to take effect.

@@ -2,13 +2,19 @@ srg_requirement: |-
     The {{{ full_name }}} SSH daemon must be configured to use system-wide crypto policies.
 
 vuldiscussion: |-
-    Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
+    Without cryptographic integrity protections, information can be altered
+    by unauthorized users without detection.
 
-    Remote access (e.g., RDP) is access to DoD nonpublic information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
+    Remote access (e.g., RDP) is access to DoD nonpublic information systems
+     by an authorized user (or an information system) communicating through
+    an external, non-organization-controlled network. Remote access methods
+    include, for example, dial-up, broadband, and wireless.
 
-    Cryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.
-
-    The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/openssl.config file.
+    Cryptographic mechanisms used for protecting the integrity of
+    information include, for example, signed hash functions using asymmetric
+     cryptography enabling distribution of the public key to verify the hash
+     information while maintaining the confidentiality of the secret key
+    used to generate the hash.
 
 checktext: |-
     Verify that system-wide crypto policies are in effect:
@@ -23,4 +29,3 @@ fixtext: |-
     Configure the {{{ full_name }}} SSH daemon to use system-wide crypto policies by running the following commands:
 
     $ sudo dnf reinstall openssh-server
-    A reboot is required for the changes to take effect.

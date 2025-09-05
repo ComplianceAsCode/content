@@ -27,57 +27,6 @@ class OVALTester(object):
         self.result = True
         self.verbose = verbose
 
-    def _expand_shorthand(self, shorthand_path, oval_path, env_yaml):
-        shorthand_file_content = ssg.jinja.process_file_with_macros(
-            shorthand_path, env_yaml)
-        wrapped_shorthand = (ssg.constants.oval_header +
-                             shorthand_file_content +
-                             ssg.constants.oval_footer)
-        shorthand_tree = ssg.xml.ElementTree.fromstring(
-            wrapped_shorthand.encode("utf-8"))
-
-        definitions = ssg.xml.ElementTree.Element(
-            "{%s}definitions" % ssg.constants.oval_namespace)
-        tests = ssg.xml.ElementTree.Element(
-            "{%s}tests" % ssg.constants.oval_namespace)
-        objects = ssg.xml.ElementTree.Element(
-            "{%s}objects" % ssg.constants.oval_namespace)
-        states = ssg.xml.ElementTree.Element(
-            "{%s}states" % ssg.constants.oval_namespace)
-        variables = ssg.xml.ElementTree.Element(
-            "{%s}variables" % ssg.constants.oval_namespace)
-        for childnode in shorthand_tree.findall(".//{%s}def-group/*" %
-                                                ssg.constants.oval_namespace):
-            if childnode.tag is ssg.xml.ElementTree.Comment:
-                continue
-            elif childnode.tag.endswith("definition"):
-                ssg.build_ovals.append(definitions, childnode)
-            elif childnode.tag.endswith("_test"):
-                ssg.build_ovals.append(tests, childnode)
-            elif childnode.tag.endswith("_object"):
-                ssg.build_ovals.append(objects, childnode)
-            elif childnode.tag.endswith("_state"):
-                ssg.build_ovals.append(states, childnode)
-            elif childnode.tag.endswith("_variable"):
-                ssg.build_ovals.append(variables, childnode)
-            else:
-                sys.stderr.write(
-                    "Warning: Unknown element '%s'\n" % (childnode.tag))
-
-        header = ssg.xml.oval_generated_header("test", "5.11", "1.0")
-        skeleton = header + ssg.constants.oval_footer
-        root = ssg.xml.ElementTree.fromstring(skeleton.encode("utf-8"))
-        root.append(definitions)
-        root.append(tests)
-        root.append(objects)
-        root.append(states)
-        if list(variables):
-            root.append(variables)
-        id_translator = ssg.id_translate.IDTranslator("test")
-        root_translated = id_translator.translate(root)
-
-        ssg.xml.ElementTree.ElementTree(root_translated).write(oval_path)
-
     def _get_result(self, oscap_output):
         pattern = re.compile(
             r"^Definition oval:[A-Za-z0-9_\-\.]+:def:[1-9][0-9]*: (\w+)$")
@@ -100,7 +49,8 @@ class OVALTester(object):
         with open(shorthand_path, "w") as f:
             f.write(oval_content)
         oval_path = os.path.join(tmp_dir, "oval.xml")
-        self._expand_shorthand(shorthand_path, oval_path, self.mock_env_yaml)
+        ssg.build_ovals.expand_shorthand(
+            shorthand_path, oval_path, self.mock_env_yaml)
         return oval_path
 
     def _evaluate_oval(self, oval_path):

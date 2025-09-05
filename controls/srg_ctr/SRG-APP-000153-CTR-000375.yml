@@ -4,7 +4,16 @@ controls:
   - medium
   title: {{{ full_name }}} must ensure users are authenticated with an individual
     authenticator prior to using a group authenticator.
-  rules:
+  related_rules:
+  - idp_is_configured
   - ocp_idp_no_htpasswd
   - kubeadmin_removed
   status: inherently met
+  status_justfication: |-
+    RBAC policies support individual user accounts to be assigned to
+    groups/roles, and therefore shared accounts are not used.
+    Review the RBAC policy documentation at
+    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+    https://docs.openshift.com/container-platform/latest/authentication/index.html

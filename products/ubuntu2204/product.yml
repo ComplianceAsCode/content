@@ -8,14 +8,15 @@ benchmark_root: "../../linux_os/guide"
 profiles_root: "./profiles"
 
 pkg_manager: "apt_get"
+pkg_manager_config_file: "/etc/apt/apt.conf"
 
 init_system: "systemd"
-oval_feed_url: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.focal.cve.oval.xml"
+oval_feed_url: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.jammy.cve.oval.xml"
 
 grub2_boot_path: "/boot/grub"
 grub2_uefi_boot_path: "/boot/grub"
 
-aide_bin_path: "/usr/bin/aide.wrapper"
+aide_bin_path: "/usr/bin/aide"
 aide_conf_path: "/etc/aide/aide.conf"
 chrony_conf_path: "/etc/chrony/chrony.conf"
 
@@ -33,6 +34,7 @@ platform_package_overrides:
   gdm: gdm3
   grub2: grub2-common
   net-snmp: snmp
+  NetworkManager: network-manager
   nss-pam-ldapd: libpam-ldap
   pam: libpam-runtime
   shadow: login

@@ -29,7 +29,7 @@ remediations, run this command:
 
 Note: There is an automated job which provides latest statistics from
 all products and all profiles, you can view it here:
-[Statistics](https://jenkins.complianceascode.io/job/scap-security-guide-stats/)
+[Statistics](https://complianceascode.github.io/content-pages/statistics/index.html)
 
 The tool also can subtract rules between YAML profiles.
 
@@ -595,4 +595,32 @@ Example:
 ```bash
     $ ./utils/srg_diff.py --target submission.xlsx --base build/cac_stig_output.xlsx --output build/diff.html -p rhel9
     Wrote output to build/diff.html.
+```
+
+### Convert shorthand OVAL to a full OVAL - `utils/shorthand_to_oval.py`
+
+This script converts (resolved) shorthand OVAL files to a valid OVAL file.
+
+It can be useful for example when creating minimal bug reproducers.
+If you know that a problem is located in OVAL for a specific rule, you can use it to convert a resolved shorthand OVAL files from the `build/product/checks/oval` directory to a standalone valid OVAL file that you can then pass to `oscap`.
+
+Example:
+
+```bash
+$ ./build_product rhel9
+$ utils/shorthand_to_oval.py build/rhel9/checks/oval/accounts_tmout.xml oval.xml
+$ oscap oval eval oval.xml
+```
+
+### Ensure Control Files and Rules Are Consistent - `utils/controlrefcheck.py`
+
+This script helps ensure that control files and rules files are in sync.
+The script takes in what product, control, and reference you are looking for.
+The script loops over every rule in each control; the script then checks if the control's id is in the rule's reference that passed to the script.
+If a control's ID does not match or rule does not exist in the project the script will exit with a non-zero status.
+If the reference you are looking for is `cis` the script will not attempt to match anything that does not match a CIS section number.
+
+To execute:
+```bash
+$ ./utils/controlrefcheck.py rhel9 cis_rhel9 cis
 ```

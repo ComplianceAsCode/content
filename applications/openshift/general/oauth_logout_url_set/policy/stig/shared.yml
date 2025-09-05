@@ -1,0 +1,24 @@
+checktext: |-
+  Verify that the logout redirect setting in web console configuration
+  is set.
+
+  > oc get console.config.openshift.io cluster -o jsonpath='{.spec.authentication.logoutRedirect}{"\n"}'
+
+  If nothing is returned this is a finding.
+
+fixtext: |-
+  Configure the web console's logout redirect to direct to an appropriate
+  logout page.  If OpenShift is configured to use an OIDC provider,
+  then the redirect needs to first go to the OIDC provider's logout page,
+  and then it can be redirected to another logout page as needed.
+
+  Run the following command to update the console
+
+  > oc patch console.config.openshift.io cluster --type merge -p '{"spec":{"authentication":{"logoutRedirect":"<LOGOUT_URL>"}}}'
+
+  where LOGOUT_URL is set to the logout page
+
+srg_requirement: |-
+  Access to {{{ full_name }}} must display an explicit logout message
+  to user indicating the reliable termination of authenticated communication
+  sessions.

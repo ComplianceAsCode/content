@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 import os
 import sys
+import ssg.id_translate
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
@@ -32,9 +33,11 @@ class ProductCPEs(object):
         self.cpes_by_name = {}
         self.product_cpes = {}
         self.platforms = {}
-        self.algebra = Algebra(symbol_cls=CPEALFactRef, function_cls=CPEALLogicalTest)
+        self.algebra = Algebra(
+            symbol_cls=CPEALCheckFactRef, function_cls=CPEALLogicalTest)
 
     def load_product_cpes(self, env_yaml):
+        self.cpe_oval_href = "ssg-" + env_yaml["product"] + "-cpe-oval.xml"
         try:
             product_cpes_list = env_yaml["cpes"]
             for cpe_dict_repr in product_cpes_list:
@@ -84,8 +87,8 @@ class ProductCPEs(object):
             if CPEItem.is_cpe_name(cpe_id_or_name):
                 return self.cpes_by_name[cpe_id_or_name]
             else:
-                if CPEALFactRef.cpe_id_is_parametrized(cpe_id_or_name):
-                    cpe_id_or_name = CPEALFactRef.get_base_name_of_parametrized_cpe_id(
+                if CPEALCheckFactRef.cpe_id_is_parametrized(cpe_id_or_name):
+                    cpe_id_or_name = CPEALCheckFactRef.get_base_name_of_parametrized_cpe_id(
                         cpe_id_or_name)
                 return self.cpes_by_id[cpe_id_or_name]
         except KeyError:
@@ -176,6 +179,17 @@ class CPEItem(XCCDFEntity, Templatable):
     prefix = "cpe-dict"
     ns = PREFIX_TO_NS[prefix]
 
+    @property
+    def cpe_oval_short_def_id(self):
+        return self.check_id or self.id_
+
+    @property
+    def cpe_oval_def_id(self):
+        translator = ssg.id_translate.IDTranslator("ssg")
+        full_id = translator.generate_id(
+            "{" + oval_namespace + "}definition", self.cpe_oval_short_def_id)
+        return full_id
+
     def to_xml_element(self, cpe_oval_filename):
         cpe_item = ET.Element("{%s}cpe-item" % CPEItem.ns)
         cpe_item.set('name', self.name)
@@ -187,7 +201,7 @@ class CPEItem(XCCDFEntity, Templatable):
         cpe_item_check = ET.SubElement(cpe_item, "{%s}check" % CPEItem.ns)
         cpe_item_check.set('system', oval_namespace)
         cpe_item_check.set('href', cpe_oval_filename)
-        cpe_item_check.text = self.check_id or self.id_
+        cpe_item_check.text = self.cpe_oval_short_def_id
         return cpe_item
 
     @classmethod
@@ -253,7 +267,7 @@ class CPEALLogicalTest(Function):
         cpe_test.set('negate', ('true' if self.is_not() else 'false'))
         # Logical tests must go first, therefore we separate tests and factrefs
         tests = [t for t in self.args if isinstance(t, CPEALLogicalTest)]
-        factrefs = [f for f in self.args if isinstance(f, CPEALFactRef)]
+        factrefs = [f for f in self.args if isinstance(f, CPEALCheckFactRef)]
         for obj in tests + factrefs:
             cpe_test.append(obj.to_xml_element())
 
@@ -306,26 +320,31 @@ class CPEALLogicalTest(Function):
         return cond
 
 
-class CPEALFactRef(Symbol):
+class CPEALCheckFactRef(Symbol):
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
 
     def __init__(self, obj):
-        super(CPEALFactRef, self).__init__(obj)
+        super(CPEALCheckFactRef, self).__init__(obj)
         self.cpe_name = obj  # we do not want to modify original name used for platforms
         self.bash_conditional = ""
         self.ansible_conditional = ""
 
     def enrich_with_cpe_info(self, cpe_products):
-        self.bash_conditional = cpe_products.get_cpe(self.cpe_name).bash_conditional
-        self.ansible_conditional = cpe_products.get_cpe(self.cpe_name).ansible_conditional
+        self.cpe_oval_href = cpe_products.cpe_oval_href
+        cpe_item = cpe_products.get_cpe(self.cpe_name)
+        self.bash_conditional = cpe_item.bash_conditional
+        self.ansible_conditional = cpe_item.ansible_conditional
         self.cpe_name = cpe_products.get_cpe_name(self.cpe_name)
+        self.cpe_oval_def_id = cpe_item.cpe_oval_def_id
 
     def to_xml_element(self):
-        cpe_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
-        cpe_factref.set('name', self.cpe_name)
-        return cpe_factref
+        el = ET.Element("{%s}check-fact-ref" % CPEALCheckFactRef.ns)
+        el.set("system", oval_namespace)
+        el.set("href", self.cpe_oval_href)
+        el.set("id-ref", self.cpe_oval_def_id)
+        return el
 
     def to_bash_conditional(self):
         return self.bash_conditional

@@ -1,37 +1,25 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("User Initialization Files Must Be Group-Owned By The Primary User") }}}
+    {{{ oval_metadata("User Initialization Files Must Be Group-Owned By The Primary Group") }}}
     <criteria>
       <criterion test_ref="test_accounts_user_dot_group_ownership"
-                 comment="User Initialization Files Must Be Group-Owned By The Primary User"/>
+                 comment="User Initialization Files Must Be Group-Owned By The Primary Group"/>
     </criteria>
   </definition>
 
-  <unix:password_object id="object_accounts_user_dot_group_ownership_objects" version="1">
-    <unix:username datatype="string" operation="not equal">nobody</unix:username>
-    <filter action="include">state_accounts_user_dot_group_ownership_interactive_gids</filter>
-    <filter action="exclude">state_accounts_user_dot_group_ownership_nobody</filter>
-  </unix:password_object>
-
-  <unix:password_state id="state_accounts_user_dot_group_ownership_interactive_gids" version="1">
-    <unix:group_id datatype="int" operation="greater than or equal">{{{ gid_min }}}</unix:group_id>
-  </unix:password_state>
-
-  <unix:password_state id="state_accounts_user_dot_group_ownership_nobody" version="1">
-    <unix:group_id datatype="int" operation="equals">{{{ nobody_gid }}}</unix:group_id>
-  </unix:password_state>
-
+  {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
+  {{{ create_interactive_users_list_object(interactive_users_object) }}}
 
   <local_variable id="var_accounts_user_dot_group_ownership_dirs" datatype="string" version="1"
                   comment="Variable including all home dirs from interactive users">
     <object_component item_field="home_dir"
-                      object_ref="object_accounts_user_dot_group_ownership_objects"/>
+                      object_ref="{{{ interactive_users_object }}}"/>
   </local_variable>
 
   <local_variable id="var_accounts_user_dot_group_ownership_gids" datatype="int" version="1"
                   comment="List of interactive users gids">
     <object_component item_field="group_id"
-                      object_ref="object_accounts_user_dot_group_ownership_objects"/>
+                      object_ref="{{{ interactive_users_object }}}"/>
   </local_variable>
 
   <!-- #### creation of object #### -->

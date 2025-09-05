@@ -998,10 +998,10 @@ controls:
   notes: ''
   status: automated
   rules:
-  - files_permissions_openshift_pki_cert_files
+  - file_permissions_openshift_pki_cert_files
   - tls_version_check_apiserver
-  - tls version_check_masters_nodes
-  - tls version_check_router
+  - tls_version_check_masters_workers
+  - tls_version_check_router
   - etcd_check_cipher_suite
 
 - id: Req-4.1.1
@@ -1740,7 +1740,7 @@ controls:
       check applies to all sub section within 8.1
     status: automated
     rules:
-      idp_is_configured
+      - idp_is_configured
 
   - id: Req-8.1.2
     title: 8.1.2 Control addition, deletion, and modification of user IDs, credentials,

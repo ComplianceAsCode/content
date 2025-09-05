@@ -1,0 +1,46 @@
+prodtype: ocp4
+
+title: Ensure that the OpenShift OAuth logout URL is set
+
+description: |-
+  The user can be redirected to a configured URL upon logout
+  <br/>
+
+  This is achievable via the OAuth object by setting the <tt>logoutRedirect</tt>
+  attribute. Refer to
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/web_console/configuring-web-console.html",
+              text="the relevant documentation") }}}
+
+rationale: |-
+  The web console's default logout will invalidate the user's session token
+  and redirect back to the console page, which will redirect the user to
+  the authentication page. There is no explicit logout message. And in
+  addition, if the IdP provider type is OIDC, the session token from the
+  SSO provider will remain valid, which would effectively keep the user
+  logged in.  To correct this, the web console needs to be configured
+  to redirect the user to a logout page. If using an OIDC provider, this
+  would be the logout page for that provider.
+
+identifiers:
+  cce@ocp4: CCE-90780-8
+
+severity: medium
+
+references:
+  nist: AC-12(1)
+  srg: SRG-APP-000297-CTR-000705
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/consoles/cluster") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/config.openshift.io/v1/consoles/cluster
+    yamlpath: ".spec.authentication.logoutRedirect"
+    values:
+    - value: ".+"
+      operation: "pattern match"
+      type: "string"

@@ -1,0 +1,48 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("Ensure system-auth and password-auth files are symbolic links pointing to system-auth-local and password-auth-local") }}}
+        <criteria operator="AND" comment="password-auth and system-auth are symlinks">
+            <criterion comment="/etc/pam.d/password-auth is a symlink and
+                points to /etc/pam.d/password-auth-local"
+                test_ref="test_password-auth_is_a_symlink" />
+            <criterion comment="/etc/pam.d/system-auth is a symlink and
+                points to /etc/pam.d/system-auth-local"
+                test_ref="test_system-auth_is_a_symlink" />
+        </criteria>
+    </definition>
+
+    <unix:symlink_test check="all" check_existence="all_exist"
+      comment="/etc/pam.d/password-auth is a symlink and points to /etc/pam.d/password-auth-local"
+      id="test_password-auth_is_a_symlink" version="1">
+         <unix:object object_ref="object_password-auth_is_a_symlink" />
+         <unix:state state_ref="state_password-auth_is_a_symlink" />
+    </unix:symlink_test>
+
+    <unix:symlink_test check="all" check_existence="all_exist"
+      comment="/etc/pam.d/system-auth is a symlink and points to /etc/pam.d/system-auth-local"
+      id="test_system-auth_is_a_symlink" version="1">
+         <unix:object object_ref="object_system-auth_is_a_symlink" />
+         <unix:state state_ref="state_system-auth_is_a_symlink" />
+    </unix:symlink_test>
+
+    <unix:symlink_object comment="/etc/pam.d/system-auth is a symlink"
+      id="object_system-auth_is_a_symlink" version="1">
+        <unix:filepath>/etc/pam.d/system-auth</unix:filepath>
+    </unix:symlink_object>
+
+    <unix:symlink_object comment="/etc/pam.d/password-auth is a symlink"
+      id="object_password-auth_is_a_symlink" version="1">
+        <unix:filepath>/etc/pam.d/password-auth</unix:filepath>
+    </unix:symlink_object>
+
+    <unix:symlink_state comment="/etc/pam.d/system-auth points to /etc/pam.d/system-auth-local"
+      id="state_system-auth_is_a_symlink" version="1">
+        <unix:canonical_path>/etc/pam.d/system-auth-local</unix:canonical_path>
+    </unix:symlink_state>
+
+    <unix:symlink_state
+      comment="/etc/pam.d/password-auth points to /etc/pam.d/password-auth-local"
+      id="state_password-auth_is_a_symlink" version="1">
+        <unix:canonical_path>/etc/pam.d/password-auth-local</unix:canonical_path>
+    </unix:symlink_state>
+</def-group>

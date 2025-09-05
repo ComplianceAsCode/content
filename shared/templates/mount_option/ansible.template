@@ -8,7 +8,7 @@
 {{{ ansible_instantiate_variables(MOUNTOPTION_ARG_VAR) }}}
 {{% endif %}}
 
-{{% if MOUNT_HAS_TO_EXIST == "no" %}}
+{{% if not MOUNT_HAS_TO_EXIST %}}
    {{% set TABFILE='' %}}
 {{% else %}}
    {{% set TABFILE='--fstab' %}}

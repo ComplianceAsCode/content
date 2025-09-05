@@ -11,10 +11,7 @@ description: |-
 selections:
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
-    - file_owner_logfiles_value=root
-    - file_groupowner_logfiles_value=root
     - sshd_idle_timeout_value=5_minutes
-    - var_logind_session_timeout=5_minutes
     - var_accounts_minimum_age_login_defs=7
     - var_accounts_passwords_pam_faillock_deny=5
     - var_accounts_password_warn_age_login_defs=7
@@ -91,7 +88,6 @@ selections:
     - package_telnet_removed
     - sshd_allow_only_protocol2
     - sshd_set_idle_timeout
-    - logind_session_timeout
     - var_sshd_set_keepalive=0
     - sshd_set_keepalive_0
     - disable_host_auth

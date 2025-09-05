@@ -9,23 +9,15 @@
     </criteria>
   </definition>
 
-  <!-- #### prepare a password object for the two tests in this rule #### -->
-  <unix:password_object id="object_accounts_user_interactive_home_directory_exists_objects"
-                        version="1">
-    <unix:username datatype="string" operation="not equal">nobody</unix:username>
-    <filter action="include">state_accounts_user_interactive_home_directory_exists_uids</filter>
-  </unix:password_object>
-
-  <unix:password_state id="state_accounts_user_interactive_home_directory_exists_uids" version="1">
-    <unix:user_id datatype="int" operation="greater than or equal">{{{ uid_min }}}</unix:user_id>
-  </unix:password_state>
+  {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
+  {{{ create_interactive_users_list_object(interactive_users_object) }}}
 
   <!-- #### create a local variable composed by the list of home dirs from /etc/passwd #### -->
   <local_variable id="var_accounts_user_interactive_home_directory_exists_dirs_list"
                   datatype="string" version="1"
                   comment="Variable including all home dirs from interactive users">
     <object_component item_field="home_dir"
-                      object_ref="object_accounts_user_interactive_home_directory_exists_objects"/>
+                      object_ref="{{{ interactive_users_object }}}"/>
   </local_variable>
 
   <!-- #### create a local variable composed by the number of home dirs from /etc/passwd #### -->

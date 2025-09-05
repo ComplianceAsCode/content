@@ -1,0 +1,18 @@
+<def-group>
+  <definition class="compliance" id="tmux_conf_readable_by_others" version="1">
+    {{{ oval_metadata("Check /etc/tmux.conf is readable by others", affected_platforms=["multi_platform_all"]) }}}
+    <criteria operator="AND">
+      <criterion comment="Check /etc/tmux.conf is readable by others" test_ref="test_tmux_conf_readable_by_others"/>
+    </criteria>
+  </definition>
+  <unix:file_test check="all" comment="Check /etc/tmux.conf is readable by others" id="test_tmux_conf_readable_by_others" version="1">
+    <unix:object object_ref="object_tmux_conf_readable_by_others" />
+    <unix:state state_ref="state_tmux_conf_readable_by_others" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/tmux.conf" id="object_tmux_conf_readable_by_others" version="1">
+    <unix:filepath operation="equals">/etc/tmux.conf</unix:filepath>
+  </unix:file_object>
+  <unix:file_state id="state_tmux_conf_readable_by_others" version="1" operator="AND">
+    <unix:oread datatype="boolean">true</unix:oread>
+  </unix:file_state>
+</def-group>

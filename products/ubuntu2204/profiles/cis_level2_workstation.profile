@@ -1,10 +1,10 @@
 documentation_complete: true
 
-title: 'CIS Ubuntu 20.04 Level 2 Workstation Benchmark'
+title: 'CIS Ubuntu 22.04 Level 2 Workstation Benchmark'
 
 description: |-
     This baseline aligns to the Center for Internet Security
-    Ubuntu 20.04 LTS Benchmark, v1.0.0, released 07-21-2020.
+    Ubuntu 22.04 LTS Benchmark, v1.0.0, released 08-30-2022.
 
 extends: cis_level1_workstation
 
@@ -48,6 +48,7 @@ selections:
 
     ### 2.2.3 Ensure CUPS is not installed (Automated)
     - service_cups_disabled
+    - package_cups_removed
 
     ### 3.1.2 Ensure wireless interfaces are disabled (Automated)
     - wireless_disable_interfaces
@@ -93,10 +94,10 @@ selections:
     - audit_rules_sysadmin_actions
 
     #### 4.1.3.2 Ensure actions as another user are always logged (Automated)
-    # NEEDS RULE
+    - audit_rules_suid_privilege_function
 
     #### 4.1.3.3 Ensure events that modify the sudo log file are collected (Automated)
-    # NEEDS RULE
+    - audit_sudo_log_events
 
     #### 4.1.3.4 Ensure events that modify date and time information are collected (Automated)
     - audit_rules_time_clock_settime

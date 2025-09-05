@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2023-01-23 09:28 UTC
+Last Modified: 2023-03-23 19:40 UTC
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -14,6 +14,7 @@ The following people have contributed to the SCAP Security Guide project
 * Firas AlShafei <firas.alshafei@us.abb.com>
 * Rodrigo Alvares <ralvares@redhat.com>
 * Christopher Anderson <cba@fedoraproject.org>
+* Craig Andrews <candrews@integralblue.com>
 * angystardust <angystardust@users.noreply.github.com>
 * anivan-suse <anastasija.ivanovic@suse.com>
 * anixon-rh <55244503+anixon-rh@users.noreply.github.com>
@@ -48,6 +49,7 @@ The following people have contributed to the SCAP Security Guide project
 * Dan Clark <danclark@redhat.com>
 * Jayson Cofell <1051437+70k10@users.noreply.github.com>
 * Caleb Cooper <coopercd@ornl.gov>
+* cortesana <acortes@redhat.com>
 * Richard Maciel Costa <richard.maciel.costa@canonical.com>
 * Xavier Coulon <xavier.coulon@suse.com>
 * Deric Crago <deric.crago@gmail.com>
@@ -155,6 +157,7 @@ The following people have contributed to the SCAP Security Guide project
 * Neiloy <neiloy@redhat.com>
 * Axel Nennker <axel@nennker.de>
 * Michele Newman <mnewman@redhat.com>
+* nnerdmann <128606223+nnerdmann@users.noreply.github.com>
 * Sean O'Keeffe <seanokeeffe797@gmail.com>
 * Jiri Odehnal <jodehnal@redhat.com>
 * Ilya Okomin <ilya.okomin@oracle.com>
@@ -209,6 +212,7 @@ The following people have contributed to the SCAP Security Guide project
 * Dhriti Shikhar <dhriti.shikhar.rokz@gmail.com>
 * Spencer Shimko <sshimko@tresys.com>
 * Mark Shoger <mshoger@redhat.com>
+* Shane Siebken <shane.siebken@capellaspace.com>
 * THOBY Simon <Simon.THOBY@viveris.fr>
 * Thomas Sjögren <konstruktoid@users.noreply.github.com>
 * Jindrich Skacel <102800748+jskacel@users.noreply.github.com>

@@ -1,0 +1,21 @@
+checktext: |-
+  Verify that the CNI supports NetworkPolicies:
+  > oc get network cluster -oyaml -ojsonpath='{.spec.networkType}'
+
+  The result should list a CNI plugin that supports NetworkPolicies,
+  currently the plugins that do support NetworkPolicies are OpenShiftSDN,
+  OVN and Calico.
+
+  If the cluster does not return a CNI that supports NetworkPolicies,
+  this is a finding.
+
+fixtext: |-
+  Migration to a supported CNI plugin is not automated.
+
+  For additional information regarding network policies, see
+  https://docs.openshift.com/container-platform/latest/networking/network_policy/about-network-policy.html
+
+srg_requirement: |-
+  Red Hat OpenShift Container Platform 4 must enforce approved authorizations
+  for controlling the flow of information within Red Hat OpenShift Container
+  Platform 4 based on organization-defined information flow control policies.

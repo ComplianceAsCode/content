@@ -29,3 +29,8 @@ template:
     name: sebool
     vars:
         seboolid: secure_mode_insmod
+    {{% if "ol" in product %}}
+    backends:
+        ansible: "off"
+        bash: "off"
+    {{% endif %}}

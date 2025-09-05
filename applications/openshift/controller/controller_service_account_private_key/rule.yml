@@ -4,11 +4,14 @@ prodtype: ocp4
 
 title: 'Configure the Service Account Private Key for the Controller Manager'
 
-{{% set custom_jqfilter = '{{.var_kube_controller_manager_service_account_private_key_filter}}' %}}
 {{% set default_jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["service-account-private-key-file"]!=null then true else false end]' %}}
-{{% set custom_api_path = '{{.var_kube_controller_manager_config_filepath}}' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-controller-manager' %}}
+{{% set hypershift_jqfilter = '[[.items[0].spec.containers[0].args[] | select(. | match("--service-account-private-key-file") )] | length | if . ==1 then true else false end]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 
 description: |-
     To ensure the API Server utilizes its own key pair, set the <tt>privateKeyFile</tt>
@@ -42,7 +45,7 @@ references:
     nerc-cip: CIP-003-8 R4.2,CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R5.1,CIP-007-3 R6.1
     nist: CM-6,CM-6(1),SC-8,SC-8(1)
     pcidss: Req-2.2,Req-2.2.3,Req-2.3
-    srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
+    srg: SRG-APP-000516-CTR-001325
 
 ocil_clause: '<tt>service-account-private-key-file</tt> does not exist or is configured properly'
 

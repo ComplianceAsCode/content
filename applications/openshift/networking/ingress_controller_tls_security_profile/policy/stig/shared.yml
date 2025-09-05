@@ -1,0 +1,40 @@
+srg_requirement: |-
+  {{{ full_name }}} must use TLS 1.2 or greater for
+  secure communication.
+
+vuldiscussion: |-
+  The authenticity and integrity of the container platform and communication
+  between nodes and components must be secure. If an insecure protocol
+  is used during transmission of data, the data can be intercepted and
+  manipulated. The manipulation of data can be used to inject status changes
+  of the container platform, causing the execution of containers or reporting
+  an incorrect healthcheck. To thwart the manipulation of the data during
+  transmission, a secure protocol (TLS 1.2 or newer) must be used. Further
+  guidance on secure transport protocols can be found in NIST SP 800-52.
+
+checktext: |-
+  Verify that IngressController TLS Security Profile is not set to old, or a custom
+  profile that does not enforce TLS 1.2 or above.
+
+  > oc get IngressControllers -nopenshift-ingress-operator -o \
+  jsonpath='{range.items[]} Name: {.metadata.name} Profile: {.spec.tlsSecurityProfile}{"\n"}'
+
+  If the above returns a TLS profile of "Old", this is a finding.
+
+  If the above returns a TLS profile of "Custom" and the minTLSVersion
+  is not set to "VersionTLS12" or greater, this is a finding.
+
+fixtext: |-
+  Edit each resource and set the TLS Security Profile to Intermediate
+
+  > oc edit ingresscontroller <NAME> -nopenshift-ingress-operator
+
+  set to the following
+
+  apiVersion: config.openshift.io/v1
+  kind: IngressController
+  ...
+  spec:
+    tlsSecurityProfile:
+      intermediate: {}
+      type: Intermediate

@@ -1,0 +1,50 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Ensure all outbound and established connections are configured for nftables'
+
+description: |-
+   Configure the nftables firewall rules for new outbound and established connections
+
+rationale: |-
+    If rules are not in place for new outbound and established connections, all packets 
+    will be dropped by the default policy preventing network usage.
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-92564-4
+
+references:
+    cis@sle15: 3.5.2.7
+
+ocil_clause: 'All nftables rules for established incoming, and for new and outbound connections do not match site policy'
+
+ocil: |-
+    To verify that all nftables rules on your system for established incoming connections match site policy,
+    run the following command:
+    <pre>$ sudo  nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'</pre>
+    Output should be similar to:
+    <tt>
+      ip protocol tcp ct state established accept
+      ip protocol udp ct state established accept
+      ip protocol icmp ct state established accept
+    </tt>
+    To verify that all nftables rules for new and established outbound connections match site policy,
+    run:
+    <pre>$ sudo nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'</pre>
+    and output should be similar to:
+    <tt>
+      ip protocol tcp ct state established,related,new accept
+      ip protocol udp ct state established,related,new accept
+      ip protocol icmp ct state established,related,new accept
+    </tt>
+    To configure nftables in accordance with site policy which will allow all outbound and all 
+    established connections, run the following commands:
+    <pre>$ sudo nft add rule inet filter input ip protocol tcp ct state established accept</pre>
+    <pre>$ sudo nft add rule inet filter input ip protocol udp ct state established accept</pre>
+    <pre>$ sudo nft add rule inet filter input ip protocol icmp ct state established accept</pre>
+    <pre>$ sudo nft add rule inet filter output ip protocol tcp ct state new,related,established accept</pre>
+    <pre>$ sudo nft add rule inet filter output ip protocol udp ct state new,related,established accept</pre>
+    <pre>$ sudo nft add rule inet filter output ip protocol icmp ct state new,related,established accept</pre>

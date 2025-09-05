@@ -13,5 +13,4 @@ description: |-
 
 selections:
     - anssi:all:high
-    - '!sebool_secure_mode_insmod'
     - '!mount_option_nodev_nonroot_local_partitions'

@@ -4830,7 +4830,6 @@ controls:
   - file_permissions_kubelet_conf
   - file_permissions_kubelet
   - api_server_https_for_kubelet_conn
-  - kubelet_eviction_thresholds_set_soft_imagefs_available
   - file_owner_ovs_vswitchd_pid
   - api_server_audit_log_maxbackup
   - file_owner_ovs_conf_db_lock
@@ -4854,7 +4853,6 @@ controls:
   - secrets_no_environment_variables
   - api_server_admission_control_plugin_noderestriction
   - kubelet_configure_client_ca
-  - kubelet_eviction_thresholds_set_soft_nodefs_inodesfree
   - file_owner_ovs_sys_id_conf
   - scheduler_no_bind_address
   - file_permissions_cni_conf
@@ -4896,12 +4894,10 @@ controls:
   - file_owner_openshift_pki_key_files
   - directory_access_var_log_kube_audit
   - etcd_peer_client_cert_auth
-  - kubelet_eviction_thresholds_set_soft_imagefs_inodesfree
   - file_groupowner_master_admin_kubeconfigs
   - file_integrity_exists
   - file_owner_proxy_kubeconfig
   - file_groupowner_etcd_data_files
-  - kubelet_eviction_thresholds_set_hard_imagefs_inodesfree
   - api_server_auth_mode_node
   - controller_rotate_kubelet_server_certs
   - api_server_openshift_https_serving_cert
@@ -4916,7 +4912,6 @@ controls:
   - file_owner_kube_controller_manager
   - kubelet_enable_protect_kernel_sysctl
   - kubelet_enable_protect_kernel_defaults
-  - kubelet_eviction_thresholds_set_soft_nodefs_available
   - file_owner_kubelet_conf
   - file_owner_kubelet
   - file_groupowner_multus_conf
@@ -4958,7 +4953,6 @@ controls:
   - openshift_api_server_audit_log_path
   - api_server_profiling_protected_by_rbac
   - api_server_admission_control_plugin_alwaysadmit
-  - kubelet_eviction_thresholds_set_soft_memory_available
   - scc_limit_container_allowed_capabilities
   - file_owner_multus_conf
   - api_server_kubelet_client_key
@@ -5066,7 +5060,6 @@ controls:
   - file_permissions_kubelet_conf
   - file_permissions_kubelet
   - api_server_https_for_kubelet_conn
-  - kubelet_eviction_thresholds_set_soft_imagefs_available
   - file_owner_ovs_vswitchd_pid
   - api_server_audit_log_maxbackup
   - file_owner_ovs_conf_db_lock
@@ -5090,7 +5083,6 @@ controls:
   - secrets_no_environment_variables
   - api_server_admission_control_plugin_noderestriction
   - kubelet_configure_client_ca
-  - kubelet_eviction_thresholds_set_soft_nodefs_inodesfree
   - file_owner_ovs_sys_id_conf
   - scheduler_no_bind_address
   - file_permissions_cni_conf
@@ -5127,17 +5119,14 @@ controls:
   - scc_limit_root_containers
   - file_owner_openshift_pki_key_files
   - etcd_peer_client_cert_auth
-  - kubelet_eviction_thresholds_set_soft_imagefs_inodesfree
   - file_groupowner_master_admin_kubeconfigs
   - file_owner_proxy_kubeconfig
   - file_groupowner_etcd_data_files
-  - kubelet_eviction_thresholds_set_hard_imagefs_inodesfree
   - api_server_auth_mode_node
   - controller_rotate_kubelet_server_certs
   - api_server_openshift_https_serving_cert
   - api_server_service_account_lookup
   - file_groupowner_openshift_pki_cert_files
-  - kubelet_eviction_thresholds_set_soft_nodefs_available
   - general_namespaces_in_use
   - file_groupowner_kubelet_conf
   - kubelet_enable_protect_kernel_sysctl
@@ -5182,8 +5171,7 @@ controls:
   - file_groupowner_scheduler_kubeconfig
   - openshift_api_server_audit_log_path
   - api_server_profiling_protected_by_rbac
-  - api_server_admission_control_plugin_AlwaysAdmit
-  - kubelet_eviction_thresholds_set_soft_memory_available
+  - api_server_admission_control_plugin_alwaysadmit
   - scc_limit_container_allowed_capabilities
   - file_owner_multus_conf
   - api_server_kubelet_client_key

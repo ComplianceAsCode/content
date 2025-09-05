@@ -11,8 +11,6 @@ description: |-
 selections:
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
-    - file_owner_logfiles_value=root
-    - file_groupowner_logfiles_value=root
     - sshd_idle_timeout_value=5_minutes
     - var_accounts_minimum_age_login_defs=7
     - var_accounts_passwords_pam_faillock_deny=5

@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel8,ubuntu2204
+
+title: 'Install systemd-journal-remote Package'
+
+description: |-
+    Journald (via systemd-journal-remote ) supports the ability to send
+    log events it gathers to a remote log host or to receive messages
+    from remote hosts, thus enabling centralised log management.
+
+rationale: |-
+    Storing log data on a remote host protects log integrity from local
+    attacks. If an attacker gains root access on the local system, they
+    could tamper with or remove log data that is stored on the local system.
+
+severity: medium
+
+references:
+    cis@rhel8: 4.2.2.1.1
+    cis@ubuntu2204: 4.2.1.1.1
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="systemd-journal-remote") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: systemd-journal-remote
+
+fixtext: |-
+    {{{ describe_package_install(package="systemd-journal-remote") }}}

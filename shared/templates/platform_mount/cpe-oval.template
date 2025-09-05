@@ -1,0 +1,15 @@
+<def-group>
+  <definition class="inventory" id="installed_env_{{{ _RULE_ID }}}" version="1">
+    {{{ oval_metadata("", title="Mountpoint " + MOUNTPOINT + " is active (mounted) or configured in /etc/fstab", affected_platforms=[full_name]) }}}
+    <criteria operator="OR">
+      <criteria>
+        {{{ mount_active_criterion(MOUNTPOINT) }}}
+      </criteria>
+      <criteria>
+        {{{ mount_configured_fstab_criterion(MOUNTPOINT) }}}
+      </criteria>
+    </criteria>
+  </definition>
+  {{{ mount_active_test_object(MOUNTPOINT) }}}
+  {{{ mount_configured_fstab_test_object(MOUNTPOINT) }}}
+</def-group>

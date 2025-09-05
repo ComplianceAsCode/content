@@ -489,9 +489,9 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 
     -   **mount_has_to_exist** - Specifies if the **mountpoint**
         entry has to exist in `/etc/fstab` before the remediation is
-        executed. If set to `yes` and the **mountpoint** entry is not
+        executed. If set to `true` and the **mountpoint** entry is not
         present in `/etc/fstab` the Bash remediation terminates. If set
-        to `no` the **mountpoint** entry will be created in
+        to `false` the **mountpoint** entry will be created in
         `/etc/fstab`.
 
 -   Languages: Anaconda, Ansible, Bash, OVAL

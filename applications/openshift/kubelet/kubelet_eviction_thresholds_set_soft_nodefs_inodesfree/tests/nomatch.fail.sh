@@ -252,13 +252,6 @@ cat << EOF > $kube_apipath$api_path_worker
   "kubeAPIQPS": 50,
   "kubeAPIBurst": 100,
   "serializeImagePulls": false,
-  "evictionSoft": {
-    "imagefs.available": "10%",
-    "imagefs.inodesfree": "10%",
-    "memory.available": "500Mi",
-    "nodefs.available": "10%",
-    "nodefs.inodesFree": "12%"
-  },
   "evictionPressureTransitionPeriod": "5m0s",
   "enableControllerAttachDetach": true,
   "makeIPTablesUtilChains": true,
@@ -397,12 +390,11 @@ cat << EOF > $kube_apipath$api_path_master
   "kubeAPIQPS": 50,
   "kubeAPIBurst": 100,
   "serializeImagePulls": false,
-  "evictionSoft": {
-    "imagefs.available": "10%",
-    "imagefs.inodesfree": "10%",
-    "memory.available": "500Mi",
-    "nodefs.available": "10%",
-    "nodefs.inodesFree": "12%"
+  "evictionHard": {
+    "imagefs.available": "15%",
+    "memory.available": "100Mi",
+    "nodefs.available": "15%",
+    "nodefs.inodesFree": "5%"
   },
   "evictionPressureTransitionPeriod": "5m0s",
   "enableControllerAttachDetach": true,

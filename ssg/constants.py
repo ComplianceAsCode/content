@@ -26,16 +26,13 @@ SSG_REF_URIS = {
     'pcidss': 'https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf',
     'ospp': 'https://www.niap-ccevs.org/Profile/PP.cfm',
     'hipaa': 'https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf',
+    'ism': 'https://www.cyber.gov.au/acsc/view-all-content/ism',
     'iso27001-2013': 'https://www.iso.org/standard/54534.html',
     'nerc-cip': 'https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx',
     'stigid': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
     'os-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
     'app-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
     'stigref': 'https://public.cyber.mil/stigs/srg-stig-tools/',
-    # The following reference URIs were not defined in the XSLT constants
-    'ism': '',
-    'vmmsrg': '',
-    'vsrg': '',  # From the references, it looks like vsrg and vmmsrg are meant to be the same
 }
 
 product_directories = [
@@ -60,8 +57,8 @@ product_directories = [
     'uos20',
 ]
 
-JINJA_MACROS_DIRECTORY = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros")
+JINJA_MACROS_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(
+    __file__)), "shared", "macros"))
 
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 
@@ -86,7 +83,7 @@ kubernetes_system = "urn:xccdf:fix:script:kubernetes"
 blueprint_system = "urn:redhat:osbuild:blueprint"
 puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
-cce_uri = "https://nvd.nist.gov/cce/index.cfm"
+cce_uri = "https://ncp.nist.gov/cce"
 stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
 cis_ns = "https://www.cisecurity.org/benchmark/red_hat_linux/"
 hipaa_ns = "https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf"
@@ -457,7 +454,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 }
 
 # References that can not be used with product-qualifiers
-GLOBAL_REFERENCES = ("srg", "vmmsrg", "disa", "cis-csc",)
+GLOBAL_REFERENCES = ("srg", "disa", "cis-csc",)
 
 # Application constants
 DEFAULT_GID_MIN = 1000

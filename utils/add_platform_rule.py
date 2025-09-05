@@ -2,11 +2,13 @@
 
 import argparse
 import subprocess
-import pathlib
 import sys
 import textwrap
 import os
 import time
+
+from ssg.utils import mkdir_p
+
 
 PROG_DESC = (''' Create and test content files for Kubernetes API checks.
 
@@ -229,7 +231,7 @@ def createFunc(args):
         if len(url_part) > 0 and '/api' in url_part:
             url = url_part
 
-    if url == None:
+    if url is None:
         print('there was a problem finding the URL from the oc debug output. Hint: override this automatic check with --url')
         return 1
 
@@ -237,7 +239,7 @@ def createFunc(args):
         url, args.yamlpath, args.match))
     rule_yaml_path = os.path.join(rule_path, 'rule.yml')
 
-    pathlib.Path(rule_path).mkdir(parents=True, exist_ok=True)
+    mkdir_p(rule_path)
     with open(rule_yaml_path, 'w') as f:
         f.write(RULE_TEMPLATE.format(URL=url, TITLE=args.title, SEV=args.severity, IDENT=args.identifiers,
                                      DESC=args.description, YAMLPATH=args.yamlpath, MATCH=args.match,
@@ -320,7 +322,7 @@ def clusterTestFunc(args):
             break
         time.sleep(2)
 
-    if scan_result == None:
+    if scan_result is None:
         print('ERROR: Timeout waiting for scan to finish')
         return 1
 
@@ -344,9 +346,10 @@ def testFunc(args):
 
     # mock a passing result for the implicit ocp4 version check
     version_dir = args.objectdir + '/apis/config.openshift.io/v1/clusteroperators'
-    if not os.path.exists(version_dir):
-        pathlib.Path(version_dir).mkdir(parents=True, exist_ok=True)
-        with open(version_dir + '/openshift-apiserver', 'w') as f:
+    mock_version_file = os.path.join(version_dir, 'openshift-apiserver')
+    if not os.path.exists(mock_version_file):
+        mkdir_p(version_dir)
+        with open(mock_version_file, 'w') as f:
             f.write(MOCK_VERSION)
 
     oscap_cmd_opts = OSCAP_CMD_TEMPLATE % (args.verbosity)

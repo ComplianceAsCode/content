@@ -10,6 +10,8 @@ import ssg.xml
 import xml.dom.minidom
 
 from ssg.constants import XCCDF11_NS, XCCDF12_NS, OSCAP_RULE
+from ssg.utils import mkdir_p
+
 
 ET = ssg.xml.ElementTree
 
@@ -119,10 +121,8 @@ def new_stig_overlay(xccdftree, ssgtree, outfile, quiet):
     pretty_xml_as_string = dom.toprettyxml(indent='  ', encoding="UTF-8")
 
     overlay_directory = os.path.dirname(outfile)
-    if not os.path.exists(overlay_directory):
-        os.makedirs(overlay_directory)
-        if not quiet:
-            print("\nOverlay directory created: %s" % overlay_directory)
+    if mkdir_p(overlay_directory) and not quiet:
+        print("\nOverlay directory created: %s" % overlay_directory)
 
     with open(outfile, 'wb') as f:
         f.write(pretty_xml_as_string)

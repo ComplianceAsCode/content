@@ -21,3 +21,4 @@ description: |-
 
 selections:
     - cis_rhel9:all:l2_workstation
+    - '!package_avahi_removed'

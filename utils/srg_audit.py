@@ -97,11 +97,11 @@ def create_reduction_dicts() -> (dict, dict, dict, dict):
 
 def check_paths(file: str) -> None:
     if not os.path.exists(file):
-        sys.stderr.write(f"Unable to perform audit.\n")
+        sys.stderr.write("Unable to perform audit.\n")
         sys.stderr.write(f"File not found: {file}\n")
         exit(1)
     if not os.path.isfile(file):
-        sys.stderr.write(f"Unable to perform audit.\n")
+        sys.stderr.write("Unable to perform audit.\n")
         sys.stderr.write(f"Input must be a file: {file}\n")
         exit(2)
 

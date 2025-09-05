@@ -1,0 +1,61 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("FileCreateMode setting controls permissions applied to newly created files.") }}}
+    <criteria operator="AND">
+      <criterion test_ref="tst_filecreatemode_declared"
+          comment="FileCreateMode declared once in either /etc/rsyslog.conf or /etc/rsyslog.d/*"/>
+      <criterion test_ref="tst_filecreatemode_valid"
+          comment="FileCreateMode value is valid"/>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="tst_filecreatemode_declared"
+      version="1" comment="rsyslog FileCreateMode is configured in only one place"
+      check="all" check_existence="only_one_exists">
+    <ind:object object_ref="obj_filecreatemode" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_filecreatemode" version="1">
+    <ind:filepath operation="pattern match">^\/etc\/rsyslog(\.conf|\.d\/.*\.conf)$</ind:filepath>
+    <ind:pattern operation="pattern match">^\$FileCreateMode\s+(\d+)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_filecreatemode_dec"
+      comment="decimal conversion of octal value from FileCreateMode parameter"
+      version="1" datatype="int">
+    <arithmetic arithmetic_operation="add">
+      <arithmetic arithmetic_operation="multiply">
+        <literal_component datatype="int">64</literal_component>
+        <regex_capture pattern="\d(\d)\d\d">
+          <object_component object_ref="obj_filecreatemode" item_field="subexpression" />
+        </regex_capture>
+      </arithmetic>
+      <arithmetic arithmetic_operation="multiply">
+        <literal_component datatype="int">8</literal_component>
+        <regex_capture pattern="\d\d(\d)\d">
+          <object_component object_ref="obj_filecreatemode" item_field="subexpression" />
+        </regex_capture>
+      </arithmetic>
+      <regex_capture pattern="\d\d\d(\d)">
+        <object_component object_ref="obj_filecreatemode" item_field="subexpression" />
+      </regex_capture>
+    </arithmetic>
+  </local_variable>
+
+  <ind:variable_test id="tst_filecreatemode_valid" version="1"
+      comment="Test if FileCreateMode value is valid" check="all">
+    <ind:object object_ref="obj_filecreatemode_dec" />
+    <ind:state state_ref="ste_filecreatemode_is_0640_or_stricter" />
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_filecreatemode_dec" version="1">
+    <ind:var_ref>var_filecreatemode_dec</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- state to compare to -->
+  <ind:variable_state id="ste_filecreatemode_is_0640_or_stricter" version="1">
+    <!-- MODE octal 640 converted to decimal: 6 * 64 + 4 * 8 + 0 = 416 -->
+    <ind:value operation="bitwise or" datatype="int">416</ind:value>
+  </ind:variable_state>
+</def-group>

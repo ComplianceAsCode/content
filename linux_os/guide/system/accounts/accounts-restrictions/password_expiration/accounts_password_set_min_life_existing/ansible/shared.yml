@@ -4,13 +4,20 @@
 # complexity = low
 # disruption = low
 
+{{{ ansible_instantiate_variables("var_accounts_minimum_age_login_defs") }}}
+
 - name: Collect users with not correct minimum time period between password changes
   command: >
-    awk -F: '(/^[^:]+:[^!*]/ && ($4 < 1 || $4 == "")) {print $1}' /etc/shadow
+    awk -F':' '(/^[^:]+:[^!*]/ && ($4 < {{ var_accounts_minimum_age_login_defs }} || $4 == "")) {print $1}' /etc/shadow
   register: user_names
 
 - name: Change the minimum time period between password changes
+{{% if product in ["sle12", "sle15"] %}}
+  command: >
+    passwd -q -n {{ var_accounts_minimum_age_login_defs }} {{ item }}
+{{% else %}}
   command: >
     chage -m 1 {{ item }}
+{{% endif %}}    
   with_items: "{{ user_names.stdout_lines }}"
   when: user_names.stdout_lines | length > 0

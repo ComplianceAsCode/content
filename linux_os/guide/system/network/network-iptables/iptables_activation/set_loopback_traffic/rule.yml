@@ -1,19 +1,19 @@
 documentation_complete: true
 
-title: 'Set configuration for loopback traffic' 
+title: 'Set configuration for loopback traffic'
 
 description: |-
-    Configure the loopback interface to accept traffic. 
-    Configure all other interfaces to deny traffic to the loopback 
+    Configure the loopback interface to accept traffic.
+    Configure all other interfaces to deny traffic to the loopback
     network.
 
 rationale: |-
-    Loopback traffic is generated between processes on machine and is 
-    typically critical to operation of the system. The loopback interface 
-    is the only place that loopback network traffic should be seen, all 
+    Loopback traffic is generated between processes on machine and is
+    typically critical to operation of the system. The loopback interface
+    is the only place that loopback network traffic should be seen, all
     other interfaces should ignore traffic on this network as an
     anti-spoofing measure.
-   
+
 severity: medium
 
 identifiers:
@@ -21,23 +21,28 @@ identifiers:
     cce@sle15: CCE-91345-9
 
 references:
+    cis@alinux2: 3.5.1.2
     cis@sle12: 3.5.2.1
     cis@sle15: 3.5.2.6,3.5.3.2.2
+    cis@ubuntu2004: 3.5.3.2.2
+    cis@ubuntu2204: 3.5.3.2.2
     pcidss: Req-1.4.1
 
 warnings:
     - general: |-
-        Changing firewall settings while connected over network can 
+        Changing firewall settings while connected over network can
         result in being locked out of the system.
 
 ocil_clause: 'loopback traffic is not configured'
 
 ocil: |-
-    Verify that the loopback interface is configured:
+    Run the following commands and verify output:
     <pre>
-    # nft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr'
+    # iptables -L INPUT -v -n | grep lo | grep ACCEPT
     </pre>
-    If IPv6 is enabled, verify that the IPv6 loopback interface is configured:
     <pre>
-    # nft list ruleset | awk '/hook input/,/}/' | grep 'ip6 saddr'
+    # iptables -L INPUT -v -n | grep 127.0.0.0\/8 | grep DROP
+    </pre>
+    <pre>
+    # iptables -L OUTPUT -v -n | grep lo | grep ACCEPT
     </pre>

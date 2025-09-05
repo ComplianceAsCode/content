@@ -253,11 +253,11 @@ cat << EOF > $kube_apipath$api_path_worker
   "kubeAPIBurst": 100,
   "serializeImagePulls": false,
   "evictionSoft": {
-    "imagefs.available": "15%",
-    "imagefs.inodesfree": "10%",
+    "imagefs.available": "20%",
+    "imagefs.inodesfree": "15%",
     "memory.available": "500Mi",
-    "nodefs.available": "10%",
-    "nodefs.inodesFree": "5%"
+    "nodefs.available": "15%",
+    "nodefs.inodesFree": "10%"
   },
   "evictionPressureTransitionPeriod": "5m0s",
   "enableControllerAttachDetach": true,
@@ -398,11 +398,11 @@ cat << EOF > $kube_apipath$api_path_master
   "kubeAPIBurst": 100,
   "serializeImagePulls": false,
   "evictionSoft": {
-    "imagefs.available": "15%",
-    "imagefs.inodesfree": "10%",
+    "imagefs.available": "20%",
+    "imagefs.inodesfree": "15%",
     "memory.available": "500Mi",
-    "nodefs.available": "10%",
-    "nodefs.inodesFree": "5%"
+    "nodefs.available": "15%",
+    "nodefs.inodesFree": "10%"
   },
   "evictionPressureTransitionPeriod": "5m0s",
   "enableControllerAttachDetach": true,

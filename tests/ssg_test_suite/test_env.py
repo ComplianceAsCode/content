@@ -519,6 +519,7 @@ class PodmanTestEnv(ContainerTestEnv):
         podman_cmd = ["podman", "run", "--name", long_name,
                       "--cap-add=cap_audit_write",
                       "--cap-add=cap_sys_admin",
+                      "--cap-add=cap_sys_chroot",
                     #   "--privileged",
                       "--publish", "{}".format(self.internal_ssh_port), "--detach", image_name,
                       "/usr/sbin/sshd", "-p", "{}".format(self.internal_ssh_port), "-D"]

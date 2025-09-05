@@ -4,3 +4,12 @@ controls:
   - medium
   title: {{{ full_name }}} must limit privileges to the container platform registry.
   status: inherently met
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+
+    https://docs.openshift.com/container-platform/latest/registry/accessing-the-registry.html
+    https://docs.openshift.com/container-platform/latest/post_installation_configuration/preparing-for-users.html#post-install-using-rbac-to-define-and-apply-permissions
+  status_justification: |-
+    The OpenShift Container Platform provides RBAC policies and enforcement of those policies out of the box.  Verification of SRG-APP-000340-CTR-000770 will ensure that binding of user and groups to roles provides proper restriction of access to resources. For more information on how RBAC policies work in OpenShift.
+
+    The internal OpenShift registry is protected by the platform's RBAC policies. Users requiring access to the registry must be granted the role registry-viewer or registry-editor to access the internal registry.

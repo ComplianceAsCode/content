@@ -51,6 +51,12 @@ add_test(
 set_tests_properties("stable-profile-ids" PROPERTIES LABELS quick)
 
 add_test(
+    NAME "shorthand-to-oval"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/shorthand_to_oval.py" "${CMAKE_CURRENT_SOURCE_DIR}/data/utils/shorthand_oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval.xml"
+)
+set_tests_properties("shorthand-to-oval" PROPERTIES LABELS quick)
+
+add_test(
     NAME "stable-profiles"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_profile_stability.py" "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/data/profile_stability"
 )
@@ -297,3 +303,19 @@ if (PYTHON_VERSION_MAJOR GREATER 2)
     )
     set_tests_properties("test-compare-disa-xml" PROPERTIES LABELS quick)
 endif()
+
+macro(ssg_controlrefcheck_test PRODUCT CONTROL KEY)
+    if (PYTHON_VERSION_MAJOR GREATER 2)
+        add_test(
+            NAME "controlrefchecker-${PRODUCT}-${CONTROL}"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controlrefcheck.py" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" "${PRODUCT}" "${CONTROL}" "${KEY}"
+        )
+        set_tests_properties("controlrefchecker-${PRODUCT}-${CONTROL}" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+        set_tests_properties("controlrefchecker-${PRODUCT}-${CONTROL}" PROPERTIES DEPENDS "test-rule-dir-json")
+        set_tests_properties("controlrefchecker-${PRODUCT}-${CONTROL}" PROPERTIES LABELS quick)
+    endif()
+endmacro()
+
+ssg_controlrefcheck_test("rhel7" "cis_rhel7" "cis")
+ssg_controlrefcheck_test("rhel8" "cis_rhel8" "cis")
+ssg_controlrefcheck_test("rhel9" "cis_rhel9" "cis")

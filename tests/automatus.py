@@ -174,9 +174,7 @@ def parse_args():
 
     parser_rule = subparsers.add_parser("rule",
                                         help=("Testing remediations of particular "
-                                              "rule for various situations - "
-                                              "currently not supported "
-                                              "by openscap!"),
+                                              "rule for various situations"),
                                         parents=[common_parser])
     parser_rule.set_defaults(func=ssg_test_suite.rule.perform_rule_check)
     parser_rule.add_argument(

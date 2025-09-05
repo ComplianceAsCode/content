@@ -14,18 +14,14 @@ checktext: |-
     Verify SSH server is configured to use only ciphers employing FIPS 140-3 approved algorithms with the following command:
 
     $ sudo grep -i macs /etc/crypto-policies/back-ends/opensshserver.config
-    MACs hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha2-512
+    MACs hmac-sha2-512,hmac-sha2-256
 
 
-    If the MACs entries in the "opensshserver.config" file have any hashes other than "hmac-sha2-256-etm@openssh.com", "hmac-sha2-512-etm@openssh.com", "hmac-sha2-256", "hmac-sha2-512", the order differs from the example above, they are missing, or commented out, this is a finding.
+    If the MACs entries in the "opensshserver.config" file have any hashes other than "hmac-sha2-512" and "hmac-sha2-256", the order differs from the example above, they are missing, or commented out, this is a finding.
 
 fixtext: |-
-    Reinstall the crypto-policies package to remove any modifications.
+    Configure the {{{ full_name }}} SSH client to use only MACs employing FIPS 140-3 approved algorithms by updating the "/etc/crypto-policies/back-ends/openssh.config" file with the following line:
 
-    $ sudo dnf reinstall crypto-policies
+    MACs hmac-sha2-512,hmac-sha2-256
 
-    Then ensure that FIPS mode is setup with the following command:
-
-    $ sudo fips-mode-setup --enable
-
-    The system must be rebooted for the changes to take effect.
+    A reboot is required for the changes to take effect.

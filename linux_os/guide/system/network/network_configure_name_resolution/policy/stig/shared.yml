@@ -18,8 +18,17 @@ checktext: |-
     If less than two lines are returned that are not commented out, this is a finding.
 
 fixtext: |-
-    Configure the operating system to use two or more name servers for DNS resolution.
+    Configure the operating system to use two or more name servers for DNS resolution based on the DNS mode of the system.
 
-    By default, "NetworkManager" on {{{ full_name }}} dynamically updates the /etc/resolv.conf file with the DNS settings from active "NetworkManager" connection profiles. However, this feature can be disabled to allow manual configurations.
+    If the NetworkManager DNS mode is set to "none" then add the following lines to "/etc/resolv.conf":
 
-    If manually configuring DNS, edit the "/etc/resolv.conf" file to uncomment or add the two or more "nameserver" option lines with the IP address of local authoritative name servers.
+    nameserver [name server 1]
+    nameserver [name server 2]
+
+    Replace [name server 1] and [name server 2] with the IPs of two different DNS resolvers.
+
+    If the NetworkManager DNS mode is set to "default" then add two DNS servers to a NetworkManager connection. Using the following commands:
+    $ sudo nmcli connection modify [connection name] ipv4.dns [name server 1]
+    $ sudo nmcli connection modify [connection name] ipv4.dns [name server 2]
+
+    Replace [name server 1] and [name server 2] with the IPs of two different DNS resolvers. Replace [connection name] with a valid NetworkManager connection name on the system. Replace ipv4 with ipv6 if IPv6 DNS servers are used.

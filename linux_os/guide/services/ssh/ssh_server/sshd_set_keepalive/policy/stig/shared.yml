@@ -22,7 +22,7 @@ fixtext: |-
 
     Modify or append the following lines in the "/etc/ssh/sshd_config" file:
 
-    ClientAliveCountMax {{{ xccdf_value("var_sshd_set_keepalive") }}}
+    ClientAliveCountMax 0
 
     In order for the changes to take effect, the SSH daemon must be restarted.
 

@@ -240,7 +240,7 @@ def compose_ds(
     cpe_dict_dependencies = [cpe_oval_file_name]
     add_component(
         ds_collection, dictionaries, cpe_dict_file_name, cpe_dict_dependencies)
-    xccdf_dependencies = [oval_file_name, ocil_file_name]
+    xccdf_dependencies = [oval_file_name, ocil_file_name, cpe_oval_file_name]
     add_component(
         ds_collection, checklists, xccdf_file_name, xccdf_dependencies)
     add_component(ds_collection, checks, oval_file_name)

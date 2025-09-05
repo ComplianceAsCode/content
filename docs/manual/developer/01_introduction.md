@@ -88,7 +88,7 @@ Products may be subject to removal from the project if at **least one** of the f
 The following process shall be used to start the removal of the product:
 1. A GitHub issue is created proposing the removal of the product.
     The issue must contain the following:
-    1. The end date and time (in UTC) of the comment period 
+    1. The end date and time (in UTC) of the comment period
     1. A mention of the last contributor to the product, more than one is preferred
     1. The reason for removal (lack of contributions or product EOL)
 1. A comment period of **21 days** shall be observed.
@@ -101,6 +101,7 @@ The pull request removing the product should include the removal of
     1. the product from all `prodtype`
     1. any product specific checks or remediatons
     1. any product specific templates
+1. The removal must be documented in the [user guide](../user/30_content_notes.md#deprecated-content).
 
 All issues and pull requests for product removal must use the [product-removal](https://github.com/ComplianceAsCode/content/labels/product-removal) label.
 

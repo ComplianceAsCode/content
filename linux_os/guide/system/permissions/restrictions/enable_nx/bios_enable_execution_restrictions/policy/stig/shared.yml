@@ -1,9 +1,14 @@
 srg_requirement: |-
-    {{{ full_name }}} Must Implement Non-Executable Data To Protect Its Memory From Unauthorized Code Execution.
+    {{{ full_name }}} must implement non-executable data to protect its memory from unauthorized code execution.
 
 vuldiscussion: |-
-    Computers with the ability to prevent this type of code execution frequently put an option in the BIOS that will
-    allow users to turn the feature on or off at will.
+    ExecShield uses the segmentation feature on all x86 systems to prevent
+    execution in memory higher than a certain address. It writes an address as
+    a limit in the code segment descriptor, to control where code can be
+    executed, on a per-process basis. When the kernel places a process's memory
+    regions such as the stack and heap higher than this address, the hardware
+    prevents execution in that address range. This is enabled by default on the
+    latest Red Hat and Fedora systems if supported by the hardware.
 
 checktext: |-
     Verify the NX (no-execution) bit flag is set on the system.
@@ -16,20 +21,14 @@ checktext: |-
 
     If "dmesg" does not show "NX (Execute Disable) protection" active, check the cpuinfo settings with the following command:
 
-    $ sudo grep flags /proc/cpuinfo
-    flags : fpu vme de pse tsc ms nx rdtscp lm constant_ts
+    $ sudo grep -i flags /proc/cpuinfo
+    flags : fpu vme de pse tsc ms nx rdtscp lm constant_tsc
 
-    The output should contain the "nx" flag.
-
-    Then, verify that there are no log messsages stating that NX is disabled in the system log. Run the following command:
-    $ sudo grep -P "^.+protection: disabled.+" /var/log/dmesg
-    The output should be empty.
-
-    Then, check that NX is not disabled in the kernel command line.
-    $ sudo grep -P ".+noexec[0-9]*=off.+" /proc/cmdline
-    The output should be empty.
-
-    If NX is disabled, then this is a finding.
+    If "flags" does not contain the "nx" flag, this is a finding.
 
 fixtext: |-
-    The NX bit execute protection must be enabled in the system BIOS.
+    Update the GRUB 2 bootloader configuration.
+
+    Run the following command:
+
+    $ sudo grubby --update-kernel=ALL --remove-args=noexec

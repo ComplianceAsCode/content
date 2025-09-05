@@ -7,4 +7,5 @@ echo 'locked2:!!:18793:0:99999:7:::'
 echo 'locked3:!*:18793:0:99999:7:::'
 echo 'locked4:*:18793:0:99999:7:::'
 echo 'locked5:!locked:18793:0:99999:7:::'
+echo 'locked6:!!$6$.2mKSYajcpiOnmC7$2/H9H9vGwhlqKuRH7Jbn8UdwvOtz8KBx.QRYlYIvFy0BGPozWSI6xAoA8p.QA7yIOA/goUrV2X7pjSE762gwh1::0:99999:7:::'
 } >> /etc/shadow

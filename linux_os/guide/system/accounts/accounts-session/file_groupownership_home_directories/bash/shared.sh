@@ -4,4 +4,4 @@
 # complexity = low
 # disruption = low
 
-awk -F':' '{ if ($4 >= {{{ gid_min }}} && $4 != {{{ nobody_gid }}}) system("chgrp -f " $4" "$6) }' /etc/passwd
+awk -F':' '{ if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid }}}) system("chgrp -f " $4" "$6) }' /etc/passwd

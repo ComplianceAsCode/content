@@ -57,10 +57,10 @@ template:
     vars:
         mountpoint: /dev/shm
         mountoption: nodev
-        mount_has_to_exist: 'no'
+        mount_has_to_exist: false
         filesystem: tmpfs
         type: tmpfs
-        mount_has_to_exist@sle12: 'yes'
+        mount_has_to_exist@sle12: true
         filesystem@sle12: ''
         type@sle12: ''
     backends:

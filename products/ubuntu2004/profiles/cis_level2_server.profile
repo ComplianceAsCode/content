@@ -54,12 +54,17 @@ selections:
     - '!zipl_audit_backlog_limit_argument'
 
     #### 4.1.2.1 Ensure audit log storage size is configured (Automated)
+    - var_auditd_max_log_file=6
     - auditd_data_retention_max_log_file
 
     #### 4.1.2.2 Ensure audit logs are not automatically deleted (Automated)
+    - var_auditd_max_log_file_action=rotate
     - auditd_data_retention_max_log_file_action
 
     #### 4.1.2.3 Ensure system is disabled when audit logs are full (Automated)
+    - var_auditd_space_left_action=email
+    - var_auditd_action_mail_acct=root
+    - var_auditd_admin_space_left_action=halt
     - auditd_data_retention_space_left_action
     - auditd_data_retention_action_mail_acct
     - auditd_data_retention_admin_space_left_action

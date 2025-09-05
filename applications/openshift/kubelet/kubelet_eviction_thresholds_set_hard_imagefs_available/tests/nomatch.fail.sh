@@ -252,12 +252,6 @@ cat << EOF > $kube_apipath$api_path_worker
   "kubeAPIQPS": 50,
   "kubeAPIBurst": 100,
   "serializeImagePulls": false,
-  "evictionHard": {
-    "imagefs.available": "15%",
-    "memory.available": "100Mi",
-    "nodefs.available": "15%",
-    "nodefs.inodesFree": "5%"
-  },
   "evictionPressureTransitionPeriod": "5m0s",
   "enableControllerAttachDetach": true,
   "makeIPTablesUtilChains": true,

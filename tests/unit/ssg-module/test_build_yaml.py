@@ -255,10 +255,12 @@ def test_platform_from_text_simple(product_cpes):
     assert len(logical_tests) == 1
     assert logical_tests[0].get("operator") == "AND"
     assert logical_tests[0].get("negate") == "false"
-    fact_refs = logical_tests[0].findall(
-        "{%s}fact-ref" % cpe_language_namespace)
-    assert len(fact_refs) == 1
-    assert fact_refs[0].get("name") == "cpe:/a:machine"
+    check_fact_refs = logical_tests[0].findall(
+        "{%s}check-fact-ref" % cpe_language_namespace)
+    assert len(check_fact_refs) == 1
+    assert check_fact_refs[0].get("system") == "http://oval.mitre.org/XMLSchema/oval-definitions-5"
+    assert check_fact_refs[0].get("href") == "ssg-rhel7-cpe-oval.xml"
+    assert check_fact_refs[0].get("id-ref") == "oval:ssg-installed_env_is_a_machine:def:1"
 
 
 def test_platform_from_text_simple_product_cpe(product_cpes):
@@ -273,11 +275,12 @@ def test_platform_from_text_simple_product_cpe(product_cpes):
     assert len(logical_tests) == 1
     assert logical_tests[0].get("operator") == "AND"
     assert logical_tests[0].get("negate") == "false"
-    fact_refs = logical_tests[0].findall(
-        "{%s}fact-ref" % cpe_language_namespace)
-    assert len(fact_refs) == 1
-    assert fact_refs[0].get("name") == \
-        "cpe:/o:redhat:enterprise_linux:7::workstation"
+    check_fact_refs = logical_tests[0].findall(
+        "{%s}check-fact-ref" % cpe_language_namespace)
+    assert len(check_fact_refs) == 1
+    assert check_fact_refs[0].get("system") == "http://oval.mitre.org/XMLSchema/oval-definitions-5"
+    assert check_fact_refs[0].get("href") == "ssg-rhel7-cpe-oval.xml"
+    assert check_fact_refs[0].get("id-ref") == "oval:ssg-installed_OS_is_rhel7:def:1"
 
 
 def test_platform_from_text_or(product_cpes):
@@ -293,11 +296,15 @@ def test_platform_from_text_or(product_cpes):
     assert len(logical_tests) == 1
     assert logical_tests[0].get("operator") == "OR"
     assert logical_tests[0].get("negate") == "false"
-    fact_refs = logical_tests[0].findall(
-        "{%s}fact-ref" % cpe_language_namespace)
-    assert len(fact_refs) == 2
-    assert fact_refs[0].get("name") == "cpe:/a:chrony"
-    assert fact_refs[1].get("name") == "cpe:/a:ntp"
+    check_fact_refs = logical_tests[0].findall(
+        "{%s}check-fact-ref" % cpe_language_namespace)
+    assert len(check_fact_refs) == 2
+    assert check_fact_refs[0].get("system") == "http://oval.mitre.org/XMLSchema/oval-definitions-5"
+    assert check_fact_refs[0].get("href") == "ssg-rhel7-cpe-oval.xml"
+    assert check_fact_refs[0].get("id-ref") == "oval:ssg-installed_env_has_chrony_package:def:1"
+    assert check_fact_refs[1].get("system") == "http://oval.mitre.org/XMLSchema/oval-definitions-5"
+    assert check_fact_refs[1].get("href") == "ssg-rhel7-cpe-oval.xml"
+    assert check_fact_refs[1].get("id-ref") == "oval:ssg-installed_env_has_ntp_package:def:1"
 
 
 def test_platform_from_text_and_empty_conditionals(product_cpes):
@@ -325,21 +332,21 @@ def test_platform_from_text_complex_expression(product_cpes):
     assert len(logical_tests_2) == 2
     assert logical_tests_2[0].get("operator") == "OR"
     assert logical_tests_2[0].get("negate") == "false"
-    fact_refs = logical_tests_2[0].findall(
-        "{%s}fact-ref" % cpe_language_namespace)
-    assert len(fact_refs) == 2
-    assert fact_refs[0].get("name") == "cpe:/a:chrony"
-    assert fact_refs[1].get("name") == "cpe:/a:ntp"
+    check_fact_refs = logical_tests_2[0].findall(
+        "{%s}check-fact-ref" % cpe_language_namespace)
+    assert len(check_fact_refs) == 2
+    assert check_fact_refs[0].get("id-ref") == "oval:ssg-installed_env_has_chrony_package:def:1"
+    assert check_fact_refs[1].get("id-ref") == "oval:ssg-installed_env_has_ntp_package:def:1"
     assert logical_tests_2[1].get("operator") == "AND"
     assert logical_tests_2[1].get("negate") == "true"
-    fact_refs_2 = logical_tests_2[1].findall(
-        "{%s}fact-ref" % cpe_language_namespace)
-    assert len(fact_refs_2) == 1
-    assert fact_refs_2[0].get("name") == "cpe:/a:yum"
-    fact_refs_3 = logical_tests[0].findall(
-        "{%s}fact-ref" % cpe_language_namespace)
-    assert len(fact_refs_3) == 1
-    assert fact_refs_3[0].get("name") == "cpe:/a:systemd"
+    check_fact_refs_2 = logical_tests_2[1].findall(
+        "{%s}check-fact-ref" % cpe_language_namespace)
+    assert len(check_fact_refs_2) == 1
+    assert check_fact_refs_2[0].get("id-ref") == "oval:ssg-installed_env_has_yum_package:def:1"
+    check_fact_refs_3 = logical_tests[0].findall(
+        "{%s}check-fact-ref" % cpe_language_namespace)
+    assert len(check_fact_refs_3) == 1
+    assert check_fact_refs_3[0].get("id-ref") == "oval:ssg-installed_env_has_systemd_package:def:1"
 
 
 def test_platform_equality(product_cpes):

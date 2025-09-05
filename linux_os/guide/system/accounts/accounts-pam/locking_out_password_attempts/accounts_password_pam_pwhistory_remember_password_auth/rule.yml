@@ -65,7 +65,6 @@ references:
     stigid@ol8: OL08-00-020220
     stigid@rhel7: RHEL-07-010270
     stigid@rhel8: RHEL-08-020220
-    vmmsrg: SRG-OS-000077-VMM-000440
 
 ocil_clause: |-
     the pam_pwhistory.so module is not used, the "remember" module option is not set in
@@ -129,3 +128,7 @@ warnings:
        Newer versions of <tt>authselect</tt> contain an authselect feature to easily and properly
        enable <tt>pam_pwhistory.so</tt> module. If this feature is not yet available in your
        system, an authselect custom profile must be used to avoid integrity issues in PAM files.
+       If a custom profile was created and used in the system before this authselect feature was
+       available, the new feature can't be used with this custom profile and the
+       remediation will fail. In this case, the custom profile should be recreated or manually
+       updated.

@@ -4,4 +4,7 @@ controls:
   - medium
   title: Container images instantiated by the container platform must execute using
     least privileges.
-  status: pending
+  status: manual
+  rules:
+  - scc_limit_privileged_containers
+  - scc_limit_root_containers

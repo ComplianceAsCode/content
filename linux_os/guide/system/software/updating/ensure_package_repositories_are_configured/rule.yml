@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Ensure package manager repositories are configured'
+
+description: |-
+    Systems need to have package manager repositories configured to ensure they receive the
+    latest patches and updates.
+
+rationale: |-
+    If the system's package repositories are misconfigured important patches may not be
+    identified or a rogue repository could introduce compromised software.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92389-6
+    cce@sle15: CCE-92489-4
+
+references:
+    cis@sle12: 1.2.2
+    cis@sle15: 1.2.2
+
+ocil_clause: 'Your package manager repositories are not configured according to site policy'
+
+ocil: |-
+    To verify repositories are configured correctly run the following command: 
+    <pre>$ sudo zypper repos</pre>
+    If your package manager repositories are not configured correctly, you have to 
+    configure them according to site policy.  

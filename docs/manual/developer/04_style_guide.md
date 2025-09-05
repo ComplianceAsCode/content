@@ -52,6 +52,63 @@ Noteworthy additions to these principles:
 * Should use the [merge commit method](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges)
 * Should use the GitHub Web UI to document and ensure code reviews are done correctly
 
+### Commit Messages
+
+These guidelines are based on the [*How to write a commit message*](https://cbea.ms/git-commit/) post by cbeams.
+
+* Limit the subject line (first line) to 50 characters
+    * This is not a hard limit
+    * Keeping subject lines at this length ensures that they
+      are readable, and forces the author to think for a moment about the most concise way
+      to explain what’s going on
+    * If you’re having a hard time summarizing, you might be committing too many changes at once
+* Separate subject from body with a blank line
+    * Not every commit requires both a subject and a body.
+      Sometimes a single line is fine, especially when the change
+      is so simple that no further context is necessary
+* Capitalize the subject line
+* Do not end the subject line with a `.` (period)
+    * Trailing punctuation is unnecessary in subject lines
+* Use the imperative mood in the subject line
+    * Verbs like "fix", "update", "refactor", "remove" instead of "fixed", "updated", "refactors", and "removes"
+    * This convention matches up with commit messages generated
+      by commands like `git merge` and `git revert`
+* Wrap the body at 72 characters
+* Use the body to explain what and why instead of how
+    * In most cases, you can leave out details about **how** a change has been made
+      (other contributors can use `git show` or just look at the code for that)
+    * Focus on making clear the reasons **why** you made the change — the way things worked before the change
+      (and what was wrong with that), the way they work now, and why it was decided to solve it the way it was solved
+
+This is an example of an ideal commit message:
+
+```
+Summarize changes in around 50 characters or less
+
+More detailed explanatory text, if necessary. Wrap it to about 72
+characters or so. In some contexts, the first line is treated as the
+subject of the commit and the rest of the text as the body. The
+blank line separating the summary from the body is critical (unless
+you omit the body entirely); various tools like `log`, `shortlog`
+and `rebase` can get confused if you run the two together.
+
+Explain the problem that this commit is solving. Focus on why you
+are making this change as opposed to how (the code explains that).
+Are there side effects or other unintuitive consequences of this
+change? Here's the place to explain them.
+
+Further paragraphs come after blank lines.
+
+ - Bullet points are okay, too
+ - Typically a hyphen or asterisk is used for the bullet, preceded
+   by a single space
+
+Put references to issues at the bottom, like this:
+
+Resolves: #123
+See also: #456, #789
+```
+
 ## General Coding Style
 
 Prioritize the human-readability of code to its machine efficiency.
@@ -110,7 +167,7 @@ and keep these guidelines in mind when writing new code.
 ### Python
 
 * All Python files should follow [PEP 8](https://www.python.org/dev/peps/pep-0008/)
-    * We use [PEP 8 Speaks](https://pep8speaks.com/) and it leaves a comment on PR if you have PEP8 issues in the Python file(s) you touched
+    * We use [Code Climate](https://codeclimate.com/quality) to help automate the checking for PEP 8 issues.
     * We do make one change from PEP 8; our maximum line length is 99 characters
 * Methods should be defined before they are called
 * The files in the build system shall be Python 2.7 and Python 3 compatible
@@ -345,9 +402,32 @@ Value must be low, medium, or high.
 ### Ansible
 
 * Shall follow all the rules in the [YAML](#yaml) section
-* Should prefer using Ansible modules over just calling system commands
-* Shall be written to pass [`ansible-lint`](https://github.com/ansible-community/ansible-lint)
-* Task names should be prefixed by `{{{ rule_title }}}`, e.g. `- name: "{{{ rule_title }}} - ensure correct banner"`
+* Shall use fully-qualified collection names [(FQCN)](https://ansible-lint.readthedocs.io/rules/fqcn/). e.g. use `ansible.builtin.lineinfile:` instead of only `lineinfile:`
+* Shall use specific Ansible modules whenever possible instead of just calling system commands with `command`, `shell` or `raw` modules
+    * When no specific Ansible module is available, `command` module shall be used instead of `shell` or `raw` modules when the `command` module is sufficient.
+* Shall define short and objective task names that reflect the end state of a machine
+* Task names must be in [Title case](https://en.wikipedia.org/wiki/Title_case)
+* Task names shall be prefixed by `{{{ rule_title }}}`, e.g. `- name: "{{{ rule_title }}} - Ensure Correct Banner"`
+* Shall use [Native YAML Syntax](https://www.ansible.com/blog/ansible-best-practices-essentials) instead of `key=value` pairs shorthand. e.g.:
+
+Use:
+```yaml
+- name: "{{{ rule_title }}} - Ensure httpd Service is Started"
+  ansible.builtin.service:
+    name: httpd
+    state: started
+    enabled: yes
+```
+Instead of:
+```yaml
+- name: "{{{ rule_title }}} - Ensure httpd Service is Started"
+  ansible.builtin.service: name=httpd state=started enabled=yes
+```
+* Shall be written to pass [ansible-lint](https://github.com/ansible-community/ansible-lint)
+* Shall use `true` for booleans values instead `True`, `yes` or `1`
+* Shall use `false` for booleans values instead `False`, `no` or `0`
+* Consider to use explicit parameters when reasonable in order to improve readability
+    * While the default values for some modules are more intuitive, others are less used and hard to remember. In these cases, the reader will need to consult the current documentation to check the default values in order to better understand the task.
 
 ### Bash
 

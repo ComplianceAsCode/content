@@ -1,5 +1,7 @@
 from xml.sax.saxutils import escape
 
+from ..build_cpe import CPEDoesNotExist
+
 from ..xml import ElementTree as ET
 
 from .common import XCCDFEntity, SelectionHandler, add_sub_element

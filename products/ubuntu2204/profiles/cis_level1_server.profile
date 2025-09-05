@@ -157,17 +157,18 @@ selections:
     - grub2_enable_apparmor
 
     #### 1.6.1.3 Ensure all AppArmor Profiles are in enforce or complain mode (Automated)
-    # NEEDS RULE
+    - var_apparmor_mode=complain
+    - all_apparmor_profiles_in_enforce_complain_mode
 
     #### 1.6.1.4 Ensure all AppArmor Profiles are enforcing (Automated)
     # Skip due to being Level 2
 
     ## 1.7 Command Line Warning Banners ##
     ### 1.7.1 Ensure message of the day is configured properly (Automated)
-    # NEEDS RULE
+    - login_banner_text=cis_default
+    - banner_etc_motd
 
     ### 1.7.2 Ensure local login warning banner is configured properly (Automated)
-    - login_banner_text=cis_default
     - banner_etc_issue
 
     ### 1.7.3 Ensure remote login warning banner is configured properly (Automated)
@@ -229,7 +230,9 @@ selections:
     ## 2.1 Configure Time Synchronization ##
     ### 2.1.1 Ensure time synchronization is in use ###
     #### 2.1.1.1 Ensure a single time synchronization is in use (Automated)
-    - package_chrony_installed
+    - '!package_chrony_installed'
+    - '!package_ntp_installed'
+    - package_timesyncd_installed
 
     ### 2.1.2 Configure chrony ###
     #### 2.1.2.1 Ensure chrony is configured with autorized timeserver (Manual)
@@ -239,29 +242,27 @@ selections:
     - chronyd_run_as_chrony_user
 
     #### 2.1.2.3 Ensure chrony is enabled and running (Automated)
-    # NEEDS RULE
+    - service_chronyd_enabled
 
     ### 2.1.3 Configure systemd-timesyncd ###
     #### 2.1.3.1 Ensure systemd-timesyncd configured with autorized timeserver (Manual)
     # Skip due to being a manual test
 
     #### 2.1.3.2 Ensure systemd-timesyncd is enabled and running (Automated)
-    # - service_timesyncd_enabled
+    - service_timesyncd_enabled
 
     ### 2.1.4 Configure ntp ###
     #### 2.1.4.1 Ensure ntp access control is configured (Automated)
-    #- ntpd_configure_restrictions
+    - ntpd_configure_restrictions
 
     #### 2.1.4.2 Ensure ntp is configured with authorized timeserver (Manual)
     # Skip due to being a manual test
 
     #### 2.1.4.3 Ensure ntp is running as user ntp (Automated)
-    #- ntpd_run_as_ntp_user
+    - ntpd_run_as_ntp_user
 
     #### 2.1.4.4 Ensure ntp is enabled and running (Automated)
-    #- package_ntp_installed
-    #- package_chrony_removed
-    #- service_ntp_enabled
+    - service_ntp_enabled
 
     ## 2.2 Special Purpose Services ##
     ### 2.2.1 Ensure X Window System is not installed (Automated)
@@ -281,7 +282,7 @@ selections:
     - package_openldap-servers_removed
 
     ### 2.2.6 Ensure NFS is not installed (Automated)
-    # NEEDS RULE
+    - package_nfs-kernel-server_removed
 
     ### 2.2.7 Ensure DNS Server is not installed (Automated)
     - package_bind_removed
@@ -291,9 +292,11 @@ selections:
 
     ### 2.2.9 Ensure HTTP server is not installed (Automated)
     - package_httpd_removed
+    - package_nginx_removed
 
     ### 2.2.10 Ensure IMAP and POP3 server are not installed (Automated)
     - package_dovecot_removed
+    - package_cyrus-imapd_removed
 
     ### 2.2.11 Ensure Samba is not installed (Automated)
     - package_samba_removed
@@ -411,35 +414,37 @@ selections:
     - package_ufw_installed
 
     #### 3.5.1.2 Ensure iptables-persistent is not installed with ufw (Automated)
-    # NEEDS RULE
+    - package_iptables-persistent_removed
 
     #### 3.5.1.3 Ensure ufw service is enabled (Automated)
     - service_ufw_enabled
 
     #### 3.5.1.4 Ensure ufw loopback traffic is configured (Automated)
-    # NEEDS RULE
+    - set_ufw_loopback_traffic
 
     #### 3.5.1.5 Ensure ufw outbound connections are configured (Manual)
     # Skip due to being a manual test
 
     #### 3.5.1.6 Ensure ufw firewall rules exist for all open ports (Automated)
-    # NEEDS RULE
+    - ufw_rules_for_open_ports
 
     #### 3.5.1.7 Ensure ufw default deny firewall policy (Automated)
-    # NEEDS RULE
+    - set_ufw_default_rule
 
     ### 3.5.2 Configure nftables ###
     #### 3.5.2.1 Ensure nftables is installed (Automated)
     - package_nftables_installed
 
     #### 3.5.2.2 Ensure ufw is uninstalled or disabled with nftables (Automated)
-    # NEEDS RULE
+    - package_ufw_removed
 
     #### 3.5.2.3 Ensure iptables are flushed with nftables (Manual)
     # Skip due to being a manual test
 
     #### 3.5.2.4 Ensure a nftables table exists (Automated)
-    # NEEDS RULE
+    - var_nftables_family=inet
+    - var_nftables_table=filter
+    - set_nftables_table
 
     #### 3.5.2.5 Ensure nftables base chains exist (Automated)
     # NEEDS RULE
@@ -454,7 +459,7 @@ selections:
     # NEEDS RULE
 
     #### 3.5.2.9 Ensure nftables service is enabled (Automated)
-    # NEEDS RULE
+    - service_nftables_enabled
 
     #### 3.5.2.10 Ensure nftables rules are permanent (Automated)
     # NEEDS RULE
@@ -463,40 +468,40 @@ selections:
     #### 3.5.3.1 Configure iptables software ####
     ##### 3.5.3.1.1 Ensure iptables packages are installed (Automated)
     - package_iptables_installed
+    - package_iptables-persistent_installed
 
     ###### 3.5.3.1.2 Ensure nftables is not installed with iptables (Automated)
     - service_nftables_disabled
-    - packages_nftables_removed
+    - package_nftables_removed
 
     ###### 3.5.3.1.3 Ensure ufw is uninstalled or disabled with iptables (Automated)
-    # NEEDS RULE
+    - package_ufw_removed
 
     #### 3.5.3.2 Configure IPv4 iptables ####
     ##### 3.5.3.2.1 Ensure iptables default deny firewall policy (Automated)
-    # NEEDS RULE
+    - set_iptables_default_rule
 
     ##### 3.5.3.2.2 Ensure iptables loopback traffic is configured (Automated)
-    # NEEDS RULE
+    - set_loopback_traffic
 
     ##### 3.5.3.2.3 Ensure iptables outbound and established connections are configured (Manual)
     # Skip due to being a manual test
 
     ##### 3.5.3.2.4 Ensure iptables firewall rules exist for all open ports (Automated)
-    # not manual anymore
+    - iptables_rules_for_open_ports
 
     #### 3.5.3.3 Configure IPv6 ip6tables ####
     ##### 3.5.3.3.1 Ensure ip6tables default deny firewall policy (Automated)
-    # NEEDS RULE
+    - set_ip6tables_default_rule
 
     # 3.5.3.3.2 Ensure ip6tables loopback traffic is configured (Automated)
-    # NEEDS RULE
+    - set_ipv6_loopback_traffic
 
     # 3.5.3.3.3 Ensure ip6tables outbound and established connections are configured (Manual)
     # Skip due to being a manual test
 
     # 3.5.3.3.4 Ensure ip6tables firewall rules exist for all open ports (Automated)
-    # not manual anymore
-    # NEEDS RULE
+    - ip6tables_rules_for_open_ports
 
     # 4 Logging and Auditing #
     ## 4.1 Configure System Accounting (auditd) ##
@@ -626,7 +631,7 @@ selections:
     ### 4.2.1 Configure journald ###
     #### 4.2.1.1 Ensure journald is configured to send logs to a remote log host ####
     ##### 4.2.1.1.1 Ensure systemd-journal-remote is installed (Automated)
-    # NEEDS RULE
+    - package_systemd-journal-remote_installed
 
     ##### 4.2.1.1.2 Ensure systemd-journal-remote is configured (Manual)
     # Skip due to being a manual test
@@ -635,7 +640,7 @@ selections:
     # Skip due to being a manual test
 
     ##### 4.2.1.1.4 Ensure journald is not configured to receive logs from a remote client (Automated)
-    # NEEDS RULE
+    - socket_systemd-journal-remote_disabled
 
     #### 4.2.1.2 Ensure journald service is enabled (Automated)
     - service_systemd-journald_enabled
@@ -666,8 +671,7 @@ selections:
     # Skip due to being a manual test
 
     #### 4.2.2.4 Ensure rsyslog default file permissions are configured (Automated)
-    # not manual anymore
-    # NEEDS RULE
+    - rsyslog_filecreatemode
 
     #### 4.2.2.5 Ensure logging is configured (Manual)
     # Skip due to being a manual test
@@ -676,10 +680,11 @@ selections:
     - rsyslog_remote_loghost
 
     #### 4.2.2.7 Ensure rsyslog is not configured to receive logs from a remote client (Automated)
-    # NEEDS RULE
+    # This rule should be extended to consider rainerscript syntax
+    - rsyslog_nolisten
 
     ### 4.2.3 Ensure all logfiles have appropriate permissions and ownership (Automated)
-    # NEEDS RULE
+    - permissions_local_var_log
 
     # 5 Access, Authentication and Authorization #
     ## 5.1 Configure time-based job schedulers ##
@@ -776,7 +781,8 @@ selections:
     - sshd_use_approved_macs
 
     ### 5.2.15 Ensure only strong Key Exchange algorithms are used (Automated)
-    # NEEDS RULE
+    - sshd_strong_kex=cis_ubuntu2004
+    - sshd_use_strong_kex
 
     ### 5.2.16 Ensure SSH AllowTcpForwarding is disabled (Automated)
     # Skip due to being Level 2
@@ -859,7 +865,8 @@ selections:
     - accounts_password_pam_pwhistory_remember
 
     ### 5.4.4 Ensure password hashing algorithm is up to date with the latest standards (Automated)
-    # NEEDS RULE
+    - var_password_hashing_algorithm=yescrypt
+    - set_password_hashing_algorithm_logindefs
 
     ### 5.4.5 Ensure all current passwords uses the configured hashing algorithm (Manual)
     # Skip due to being a manual test
@@ -885,7 +892,7 @@ selections:
     - account_disable_post_pw_expiration
 
     #### 5.5.1.5 Ensure all users last password change date is in the past (Automated)
-    # NEEDS RULE
+    - accounts_password_last_change_is_in_past
 
     ### 5.5.2 Ensure system accounts are secured (Automated)
     - no_shelllogin_for_systemaccounts

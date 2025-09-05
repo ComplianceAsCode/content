@@ -43,3 +43,33 @@
     <ind:subexpression operation="pattern match">4</ind:subexpression>
   </ind:textfilecontent54_state>
 </def-group>
+
+<def-group>
+  <definition class="inventory" id="installed_OS_is_rhcos4_rhel9" version="1">
+    <metadata>
+      <title>Red Hat Enterprise Linux CoreOS RHEL9 Based</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:redhat:rhcos4:9" source="CPE" />
+      <description>The operating system installed on the system is
+      Red Hat Enterprise Linux CoreOS RHEL9 Based</description>
+    </metadata>
+    <criteria>
+        <criterion comment="RHCOS RHEL 9 is installed" test_ref="test_rhcos4_rhel9" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="rhcoreos is rhel9 based" id="test_rhcos4_rhel9" version="1">
+    <ind:object object_ref="obj_rhcos4_rhel9" />
+    <ind:state state_ref="state_rhcos4_rhel9" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_rhcos4_rhel9" version="1">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^RHEL_VERSION=&quot;(\d).*&quot;$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_rhcos4_rhel9" version="1">
+    <ind:subexpression operation="pattern match">9</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

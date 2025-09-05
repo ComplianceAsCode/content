@@ -1,5 +1,6 @@
 #!/bin/bash
 # platform = multi_platform_all
+# packages = sudo
 
 touch /etc/sudoers.d/empty
 # Code taken from macro bash_sudo_remove_config()

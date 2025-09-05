@@ -15,6 +15,7 @@ try:
     import ssg.environment
     import ssg.xml
     import ssg.build_yaml
+    from ssg.utils import mkdir_p
 except ImportError:
     print("The ssg module could not be found.")
     print("Run .pyenv.sh available in the project root diretory,"
@@ -229,12 +230,10 @@ def main():
         output_path = "./"
         if args.output:
             output_path = args.output
-            if not os.path.exists(output_path):
-                os.mkdir(output_path)
+            mkdir_p(output_path)
 
         content_path = os.path.join(output_path, "content")
-        if not os.path.exists(content_path):
-            os.mkdir(content_path)
+        mkdir_p(content_path)
 
         content_list = [
             'rules',

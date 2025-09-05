@@ -33,13 +33,18 @@ def parse_args():
         help="Directory to store intermediate built OVAL files."
     )
     p.add_argument("--output", type=argparse.FileType("wb"), required=True)
-    p.add_argument("ovaldirs", metavar="OVAL_DIR", nargs="+",
-                   help="Shared directory(ies) from which we will collect "
-                   "OVAL definitions to combine. Order matters, latter "
-                   "directories override former. These will be overwritten "
-                   "by OVALs in the product_yaml['guide'] directory (which "
-                   "in turn preference oval/{{{ product }}}.xml over "
-                   "oval/shared.xml for a given rule.")
+    p.add_argument(
+        "--include-benchmark", action="store_true",
+        help="Include OVAL checks from rule directories in the benchmark "
+        "directory tree which is specified by product.yml "
+        "in the `benchmark_root` key.")
+    p.add_argument(
+        "ovaldirs", metavar="OVAL_DIR", nargs="+",
+        help="Shared directory(ies) from which we will collect OVAL "
+        "definitions to combine. Order matters, latter directories override "
+        "former. If --include-benchmark is provided, these will be "
+        "overwritten by OVALs in the rule directory (which in turn preference "
+        "oval/{{{ product }}}.xml over oval/shared.xml for a given rule.")
 
     return p.parse_args()
 
@@ -57,12 +62,12 @@ def main():
         ssg.utils.required_key(env_yaml, "target_oval_version_str"),
         ssg.utils.required_key(env_yaml, "ssg_version"))
 
-    body = ssg.build_ovals.checks(
+    oval_builder = ssg.build_ovals.OVALBuilder(
         env_yaml,
         args.product_yaml,
-        ssg.utils.required_key(env_yaml, "target_oval_version_str"),
         args.ovaldirs,
         args.build_ovals_dir)
+    body = oval_builder.build_shorthand(args.include_benchmark)
 
     # parse new file(string) as an ssg.xml.ElementTree, so we can reorder elements
     # appropriately
@@ -96,7 +101,8 @@ def main():
     root.append(definitions)
     root.append(tests)
     root.append(objects)
-    root.append(states)
+    if list(states):
+        root.append(states)
     if list(variables):
         root.append(variables)
 

@@ -87,7 +87,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: manual # rule is missing
+    status: automated
+    rules:
+    - partition_for_dev_shm
 
   - id: 1.1.7
     title: Ensure noexec option set on /dev/shm partition (Automated)
@@ -255,7 +257,12 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: manual # rule is missing
+    status: manual 
+    notes: >- 
+       The control cannot be automated, 
+       and should be addressed manually. 
+    rules:
+    - ensure_package_repositories_are_configured
 
   - id: 1.2.3
     title: Ensure gpgcheck is globally activated (Automated)
@@ -420,7 +427,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule is missing
+    status: automated
+    rules: 
+      - all_apparmor_profiles_in_enforce_complain_mode
+      - var_apparmor_mode=complain
 
   - id: 1.7.1.4
     title: Ensure all AppArmor Profiles are enforcing (Automated)
@@ -492,33 +502,28 @@ controls:
       - file_owner_etc_issue_net
       - file_permissions_etc_issue_net
 
-  - id: 1.9
+  - id: "1.9"
     title: Ensure updates, patches, and additional security software are installed (Manual)
     levels:
     - l1_server
     - l1_workstation
     status: manual # rule is missing
+    related_rules:
+    - security_patches_up_to_date
 
-  - id: 1.10
-    title: Ensure GNOME Display Manager is removed (Automated)
-    levels:
-    - l2_server
-    status: manual
-
-  - id: 1.10
-    title: Ensure GNOME Display Manager is removed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation      
-    status: manual # Rule is missing: https://github.com/ComplianceAsCode/content/issues/7225
-
-  - id: 1.10
+  - id: "1.10"
     title: Ensure GDM login banner is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
+    notes: |-
+      The idea of the requirement is to have either package_gdm_removed rule
+      or the rest of the rules as they are mutually exclusive.
     rules:
+      - package_gdm_removed
+      - enable_dconf_user_profile
+      - dconf_gnome_disable_user_list
       - dconf_gnome_banner_enabled
       - dconf_gnome_login_banner_text
       - login_banner_text=cis_default
@@ -590,11 +595,11 @@ controls:
     levels:
       - l1_server
       - l2_workstation
-    automated: partially
-    notes: >-
-      Rule for package removal is missing!
+    status: automated
     rules:
       - service_avahi-daemon_disabled
+      - package_avahi_removed
+      - package_avahi-autoipd_removed
 
   - id: 2.2.4
     title: Ensure CUPS is not installed (Automated)
@@ -613,6 +618,7 @@ controls:
     status: automated
     rules:
       - package_dhcp_removed
+      - package_dhcp_client_removed
       - service_dhcpd_disabled
 
   - id: 2.2.6
@@ -1159,9 +1165,10 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: partially # rule for checking audit watch on /usr/share/selinux is missing
+    status: automated 
     rules:
     - audit_rules_mac_modification
+    - audit_rules_mac_modification_usr_share
 
   - id: 4.1.7
     title: Ensure login and logout events are collected (Automated)
@@ -1172,6 +1179,7 @@ controls:
     rules:
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
+    - audit_rules_login_events_tallylog
 
   - id: 4.1.8
     title: Ensure session initiation information is collected (Automated)
@@ -1321,7 +1329,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: manual 
+    automated: yes
+    rules:
+      - rsyslog_logging_configured
 
   - id: 4.2.1.5
     title: Ensure rsyslog is configured to send logs to a remote log host (Automated)
@@ -1738,11 +1748,6 @@ controls:
       - var_password_pam_minlen=14
       - cracklib_accounts_password_pam_retry
       - var_password_pam_retry=3
-      - accounts_password_pam_minlen
-      - accounts_password_pam_lcredit
-      - accounts_password_pam_ucredit
-      - accounts_password_pam_dcredit
-      - accounts_password_pam_ocredit
 
   - id: 5.3.2
     title: Ensure lockout for failed password attempts is configured (Automated)
@@ -1801,10 +1806,11 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially # missing rule for checking of /etc/shadow
+    status: automated
     rules:
       - accounts_password_warn_age_login_defs
       - var_accounts_password_warn_age_login_defs=7
+      - accounts_password_set_warn_age_existing
 
   - id: 5.4.1.5
     title: Ensure inactive password lock is 30 days or less (Automated)
@@ -1822,7 +1828,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing
+    automated: partially
+    rules:
+      - accounts_password_last_change_is_in_past
 
   - id: 5.4.2
     title: Ensure system accounts are secured (Automated)

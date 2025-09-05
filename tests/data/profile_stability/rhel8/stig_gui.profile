@@ -373,6 +373,7 @@ selections:
 - set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
 - set_password_hashing_min_rounds_logindefs
+- ssh_keys_passphrase_protected
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
 - sshd_disable_kerb_auth
@@ -386,6 +387,7 @@ selections:
 - sshd_rekey_limit
 - sshd_set_idle_timeout
 - sshd_set_keepalive
+- sshd_use_approved_kex_ordered_stig
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
 - sssd_certificate_verification
@@ -441,7 +443,7 @@ selections:
 - var_accounts_minimum_age_login_defs=1
 - var_accounts_max_concurrent_login_sessions=10
 - var_password_pam_remember=5
-- var_password_pam_remember_control_flag=requisite
+- var_password_pam_remember_control_flag=requisite_or_required
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted
 - var_password_pam_unix_rounds=5000

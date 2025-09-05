@@ -37,6 +37,8 @@ template:
     name: package_installed
     vars:
         pkgname: rsyslog-gnutls
+        pkgname@sle12: rsyslog-module-gtls 
+        pkgname@sle15: rsyslog-module-gtls 
 
 fixtext: |-
     {{{ describe_package_install("rsyslog-gnutls") }}}

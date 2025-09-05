@@ -1,0 +1,133 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="{{{_RULE_ID }}}" version="1">
+    {{{ oval_metadata("All syslog log files should have appropriate ownership.") }}}
+    <criteria operator="AND">
+      {{% if product in ["debian10", "debian11", "ubuntu1604"] %}}
+      <extend_definition definition_ref="package_rsyslog_installed"
+        comment="rsyslog daemon is used as local logging daemon"/>
+      {{% endif %}}
+      <criterion test_ref="test_{{{ _RULE_ID }}}"
+        comment="Check if all system log files have appropriate {{{ ATTRIBUTE }}} set"/>
+    </criteria>
+  </definition>
+
+  <!-- First obtain rsyslog's $IncludeConfig directive and include() object values.
+       The last was introduced in rsyslog v8.33.0). -->
+  <ind:textfilecontent54_object id="object_{{{ _RULE_ID }}}_include_config_value" version="1"
+       comment="rsyslog's $IncludeConfig and include() statements values.">
+    <ind:filepath>/etc/rsyslog.conf</ind:filepath>
+    <ind:pattern
+      operation="pattern match">^(?:include\([\n\s]*file="([^\s;]+)".*|\$IncludeConfig[\s]+([^\s;]+))$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Turn that glob value into Perl's regex so it can be used as filepath pattern below -->
+  <local_variable id="var_{{{ _RULE_ID }}}_include_config_regex" datatype="string" version="1"
+    comment="rsyslog's include config values converted to regex.">
+    <unique>
+      <glob_to_regex>
+        <object_component item_field="subexpression"
+          object_ref="object_{{{ _RULE_ID }}}_include_config_value"/>
+      </glob_to_regex>
+    </unique>
+  </local_variable>
+
+  <!-- Create a variable_object from the regex variable.
+       If the variable has no values, there won't be any objects. -->
+  <ind:variable_object id="object_var_{{{ _RULE_ID }}}_include_config_regex" version="1"
+    comment="Make variable object from regex variable.">
+    <ind:var_ref>var_{{{ _RULE_ID }}}_include_config_regex</ind:var_ref>
+  </ind:variable_object>
+
+  <local_variable id="var_{{{ _RULE_ID }}}_syslog_config" datatype="string" version="1"
+    comment="Main rsyslog configuration file.">
+    <literal_component datatype="string">^/etc/rsyslog.conf$</literal_component>
+  </local_variable>
+
+  <ind:variable_object id="object_var_{{{ _RULE_ID }}}_syslog_config" version="1"
+    comment="Make variable object from local variable.">
+    <ind:var_ref>var_{{{ _RULE_ID }}}_syslog_config</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- Combine the two variable_objects into one variable_object.
+       We do it this way to avoid referencing an empty variable in a state comparison, which will
+       cause a test to evaluate to fail. Combining an empty set of objects is fine though. -->
+  <ind:variable_object id="object_var_{{{ _RULE_ID }}}_all_conf_files" version="1"
+    comment="Variable containing all rsyslog configuration files.">
+    <set>
+      <object_reference>object_var_{{{ _RULE_ID }}}_include_config_regex</object_reference>
+      <object_reference>object_var_{{{ _RULE_ID }}}_syslog_config</object_reference>
+    </set>
+  </ind:variable_object>
+
+  <!-- In element filepath of object_rfg_log_files_paths we need to pass a list of values,
+       a list of objects won't do. So we make a local_variable from the variable_objects. -->
+  <local_variable id="var_{{{ _RULE_ID }}}_all_conf_files" datatype="string" version="1"
+    comment="Locations of all rsyslog configuration files as collection.">
+    <object_component object_ref="object_var_{{{ _RULE_ID }}}_all_conf_files" item_field="value"/>
+  </local_variable>
+
+  <!-- For each item from that collection (particular rsyslog's configuration files paths) search
+       that rsyslog's configuration files to select file paths for log files directives -->
+  <ind:textfilecontent54_object id="object_{{{ _RULE_ID }}}_log_files_paths" version="1"
+    comment="All rsyslog log files collected from rsyslog configuration files." >
+    <ind:filepath operation="pattern match" var_check="at least one"
+      var_ref="var_{{{ _RULE_ID }}}_all_conf_files"/>
+      <!-- Chunk of text retrieved from rsyslog's configuration file is considered to constitute
+           a log file path if all of the following conditions are met:
+            * the string represents a regular file on particular file system
+              (verified via corresponding file_state below),
+            * the chunk of text is in the last column in the row,
+              (possibly suffixed by ';' character and rsyslog Template name),
+            * contains at least one slash '/' character, and simultaneously doesn't contain any
+              of ';', ':' and space characters,
+            * the chunk was retrieved from a row not starting with space, '#', or '$' characters
+      -->
+    <ind:pattern
+      operation="pattern match">^\s*[^(\s|#|\$)]+\s+.*\s+-?[\w\(="\s]*(\/[^:;\s"]+)+.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_{{{ _RULE_ID }}}_ignore_include_paths</filter>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ _RULE_ID }}}_ignore_include_paths"
+    comment="ignore" version="1">
+    <!-- Among the paths matched in object_{{{ _RULE_ID }}}_log_files_paths there can be paths
+         from include() or $IncludeConfig statements. These paths are conf files, not log files.
+         Their properties don't need to be as required for log files, thus, lets exclude them
+         from the list of objects found. -->
+    <ind:text
+    operation="pattern match">(?:file="[^\s;]+"|\$IncludeConfig[\s]+[^\s;]+|\/dev\/.*)</ind:text>
+  </ind:textfilecontent54_state>
+
+  <!-- Define OVAL variable to hold all the various system log files locations
+       retrieved from the different rsyslog configuration files. -->
+  <local_variable id="var_{{{ _RULE_ID }}}_log_files_paths" datatype="string" version="1"
+    comment="File paths of all rsyslog log files">
+    <object_component item_field="subexpression"
+      object_ref="object_{{{ _RULE_ID }}}_log_files_paths" />
+  </local_variable>
+
+  <!-- Perform the test if all rsyslog system log files have appropriate attribute -->
+  <unix:file_test id="test_{{{ _RULE_ID }}}" check="all" check_existence="all_exist" version="1"
+    comment="System log files have appropriate {{{ ATTRIBUTE }}} set">
+    <unix:object object_ref="object_{{{ _RULE_ID }}}_{{{ ATTRIBUTE }}}" />
+    <unix:state state_ref="state_{{{ _RULE_ID }}}" />
+  </unix:file_test>
+
+  <unix:file_object id="object_{{{ _RULE_ID }}}_{{{ ATTRIBUTE }}}" version="1"
+    comment="All system log files collected from rsyslog configuration files">
+    <unix:filepath datatype="string" var_check="at least one"
+      var_ref="var_{{{ _RULE_ID }}}_log_files_paths"/>
+  </unix:file_object>
+
+  <unix:file_state id="state_{{{ _RULE_ID }}}" version="1">
+    <unix:type operation="equals">regular</unix:type>
+    {{% if ATTRIBUTE == "groupowner" %}}
+    <unix:group_id datatype="int">{{{ VALUE }}}</unix:group_id>
+    {{% elif ATTRIBUTE == "owner" %}}
+    <unix:user_id datatype="int">{{{ VALUE }}}</unix:user_id>
+    {{% else %}}
+    {{{ STATEMODE | indent(4) }}}
+   {{% endif %}}
+  </unix:file_state>
+</def-group>

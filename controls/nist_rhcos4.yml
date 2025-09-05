@@ -484,7 +484,8 @@ controls:
   rules:
   - var_selinux_policy_name=targeted
   - selinux_policytype
-  - selinux_confinement_of_daemons
+  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6969
+  #- selinux_confinement_of_daemons
   - var_selinux_state=enforcing
   - selinux_state
   - coreos_enable_selinux_kernel_argument
@@ -828,7 +829,8 @@ controls:
 
     https://issues.redhat.com/browse/CMP-115
   rules:
-  - selinux_confinement_of_daemons
+  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6969
+  #- selinux_confinement_of_daemons
   - no_shelllogin_for_systemaccounts
   - sysctl_kernel_perf_event_paranoid
   - sysctl_kernel_unprivileged_bpf_disabled
@@ -4920,6 +4922,7 @@ controls:
   - audit_rules_execution_setsebool
   - file_permissions_sshd_config
   - package_iptables_installed
+  - package_iptables-nft_installed
   - audit_rules_dac_modification_removexattr
   - audit_rules_unsuccessful_file_modification_lchown
   - audit_rules_unsuccessful_file_modification_openat_o_trunc_write
@@ -4990,7 +4993,8 @@ controls:
   - audit_rules_privileged_commands_userhelper
   - audit_rules_networkconfig_modification
   - audit_rules_etc_shadow_openat
-  - selinux_confinement_of_daemons
+  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6968
+  #- selinux_confinement_of_daemons
   - audit_rules_etc_gshadow_open_by_handle_at
   - audit_rules_etc_gshadow_open
   - var_auditd_space_left_action=syslog
@@ -5235,7 +5239,8 @@ controls:
   - service_bluetooth_disabled
   - kernel_module_tipc_disabled
   - sysctl_net_ipv6_conf_all_accept_redirects
-  - selinux_confinement_of_daemons
+  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6969
+  #- selinux_confinement_of_daemons
   - sysctl_net_ipv4_tcp_syncookies
   - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
   - coreos_vsyscall_kernel_argument
@@ -5476,7 +5481,7 @@ controls:
   rules:
   - package_usbguard_installed
   - service_usbguard_enabled
-  - configure_usbguard_audit_backend
+  - configure_usbguard_auditbackend
   - usbguard_allow_hid_and_hub
   description: |-
     The organization:

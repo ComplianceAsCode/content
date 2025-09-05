@@ -5,6 +5,15 @@ ComplianceAsCode/content
 .. toctree::
     :maxdepth: 2
     :glob:
+    :caption: User Guide
+    :name: User Guide
+
+    manual/user/*
+
+
+.. toctree::
+    :maxdepth: 2
+    :glob:
     :caption: Developer Guide
     :name: Developer Guide
 

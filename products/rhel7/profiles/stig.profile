@@ -253,6 +253,7 @@ selections:
     - accounts_max_concurrent_login_sessions
     - configure_firewalld_ports
     - sshd_use_approved_ciphers_ordered_stig
+    - sshd_use_approved_kex_ordered_stig
     - accounts_tmout
     - sshd_enable_warning_banner
     - sssd_ldap_start_tls
@@ -343,3 +344,4 @@ selections:
     - package_screen_installed
     - sysctl_kernel_dmesg_restrict
     - aide_build_database
+    - authconfig_config_files_symlinks

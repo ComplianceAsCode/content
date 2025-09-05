@@ -4,11 +4,14 @@ prodtype: ocp4
 
 title: 'Ensure Controller secure-port argument is set'
 
-{{% set custom_jqfilter = '{{.var_kube_controller_manager_secure_port_filter}}' %}}
 {{% set default_jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["secure-port"][]=="10257" then true else false end]' %}}
-{{% set custom_api_path = '{{.var_kube_controller_manager_config_filepath}}' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-controller-manager' %}}
+{{% set hypershift_jqfilter = '[[.items[0].spec.containers[0].args[] | select(. | match("--secure-port=10257") )] | length | if . ==1 then true else false end]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 
 description: |-
     To ensure the Controller Manager service is bound to secure loopback
@@ -48,7 +51,7 @@ references:
     nerc-cip: CIP-003-8 R4.2,CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R5.1,CIP-007-3 R6.1
     nist: CM-6,CM-6(1),SC-8,SC-8(1)
     pcidss: Req-2.2
-    srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
+    srg: SRG-APP-000516-CTR-001325
 
 warnings:
 - general: |-

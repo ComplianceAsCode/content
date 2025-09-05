@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R4
+    version: V1R5
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V1R4.
+    DISA STIG for Oracle Linux 8 V1R5.
 
 selections:
     ### Variables
@@ -18,7 +18,6 @@ selections:
     - var_accounts_user_umask=077
     - var_password_pam_difok=8
     - var_password_pam_maxrepeat=3
-    - var_sshd_disable_compression=no
     - var_password_hashing_algorithm=SHA512
     - var_password_pam_maxclassrepeat=4
     - var_password_pam_minclass=4
@@ -344,9 +343,6 @@ selections:
     # OL08-00-010500
     - sshd_enable_strictmodes
 
-    # OL08-00-010510
-    - sshd_disable_compression
-
     # OL08-00-010520
     - sshd_disable_user_known_hosts
 
@@ -531,9 +527,10 @@ selections:
 
     # OL08-00-020040
     - configure_tmux_lock_command
+    - configure_tmux_lock_keybinding
 
     # OL08-00-020041
-    - configure_bashrc_exec_tmux
+    - configure_bashrc_tmux
 
     # OL08-00-020042
     - no_tmux_in_shells
@@ -1198,6 +1195,9 @@ selections:
 
     # OL08-00-040341
     - sshd_x11_use_localhost
+
+    # OL08-00-040342
+    - sshd_use_approved_kex_ordered_stig
 
     # OL08-00-040350
     - tftpd_uses_secure_mode

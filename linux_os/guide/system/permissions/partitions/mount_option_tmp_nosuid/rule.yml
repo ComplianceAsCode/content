@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,sle12,sle15,ubuntu1804,ubuntu2204
+prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,sle12,sle15,ubuntu1804,ubuntu2004,ubuntu2204
 
 title: 'Add nosuid Option to /tmp'
 
@@ -36,6 +36,7 @@ references:
     cis@sle12: 1.1.5
     cis@sle15: 1.1.5
     cis@ubuntu1804: 1.1.4
+    cis@ubuntu2004: 1.1.4
     cis@ubuntu2204: 1.1.2.4
     cobit5: APO13.01,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS05.06,DSS06.06
     disa: CCI-001764
@@ -49,14 +50,13 @@ references:
     stigid@ol8: OL08-00-040124
     stigid@rhel8: RHEL-08-040124
 
-platform: machine and partition-tmp
+platform: machine and mount[tmp]
 
 template:
     name: mount_option
     vars:
         mountpoint: /tmp
         mountoption: nosuid
-        mount_has_to_exist: 'yes'
 # Note that /tmp on RHEL systems is not tmpfs
 
 fixtext: |-

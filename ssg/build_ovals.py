@@ -13,11 +13,41 @@ from .constants import oval_namespace as oval_ns
 from .constants import oval_footer
 from .constants import oval_header
 from .constants import MULTI_PLATFORM_LIST
+from .id_translate import IDTranslator
 from .jinja import process_file_with_macros
 from .rule_yaml import parse_prodtype
 from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs_in_paths
 from . import utils
-from .xml import ElementTree
+from .utils import mkdir_p
+from .xml import ElementTree, oval_generated_header
+
+
+def _create_subtree(shorthand_tree, category):
+    parent_tag = "{%s}%ss" % (oval_ns, category)
+    parent = ElementTree.Element(parent_tag)
+    for node in shorthand_tree.findall(".//{%s}def-group/*" % oval_ns):
+        if node.tag is ElementTree.Comment:
+            continue
+        elif node.tag.endswith(category):
+            append(parent, node)
+    return parent
+
+
+def expand_shorthand(shorthand_path, oval_path, env_yaml):
+    shorthand_file_content = process_file_with_macros(shorthand_path, env_yaml)
+    wrapped_shorthand = (oval_header + shorthand_file_content + oval_footer)
+    shorthand_tree = ElementTree.fromstring(wrapped_shorthand.encode("utf-8"))
+    header = oval_generated_header("test", "5.11", "1.0")
+    skeleton = header + oval_footer
+    root = ElementTree.fromstring(skeleton.encode("utf-8"))
+    for category in ["definition", "test", "object", "state", "variable"]:
+        subtree = _create_subtree(shorthand_tree, category)
+        if list(subtree):
+            root.append(subtree)
+    id_translator = IDTranslator("test")
+    root_translated = id_translator.translate(root)
+
+    ElementTree.ElementTree(root_translated).write(oval_path)
 
 
 def _check_is_applicable_for_product(oval_check_def, product):
@@ -260,106 +290,165 @@ def _check_rule_id(oval_file_tree, rule_id):
     return False
 
 
-def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
-    """
-    Concatenate all XML files in the oval directory, to create the document
-    body. Then concatenates this with all XML files in the guide directories,
-    preferring {{{ product }}}.xml to shared.xml.
+def _list_full_paths(directory):
+    full_paths = [os.path.join(directory, x) for x in os.listdir(directory)]
+    return sorted(full_paths)
 
-    oval_dirs: list of directory with oval files (later has higher priority)
 
-    Return: The document body
-    """
+class OVALBuilder:
+    def __init__(
+            self, env_yaml, product_yaml_path, shared_directories,
+            build_ovals_dir):
+        self.env_yaml = env_yaml
+        self.product_yaml_path = product_yaml_path
+        self.shared_directories = shared_directories
+        self.build_ovals_dir = build_ovals_dir
+        self.already_loaded = dict()
+        self.oval_version = utils.required_key(
+            env_yaml, "target_oval_version_str")
+        self.product = utils.required_key(env_yaml, "product")
 
-    body = []
-    product = utils.required_key(env_yaml, "product")
-    included_checks_count = 0
-    reversed_dirs = oval_dirs[::-1]  # earlier directory has higher priority
-    already_loaded = dict()  # filename -> oval_version
-    local_env_yaml = dict()
-    local_env_yaml.update(env_yaml)
+    def build_shorthand(self, include_benchmark):
+        if self.build_ovals_dir:
+            mkdir_p(self.build_ovals_dir)
+        all_checks = []
+        if include_benchmark:
+            all_checks += self._get_checks_from_benchmark()
+        all_checks += self._get_checks_from_shared_directories()
+        document_body = "".join(all_checks)
+        return document_body
 
-    product_dir = os.path.dirname(yaml_path)
-    relative_guide_dir = utils.required_key(env_yaml, "benchmark_root")
-    guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
-    additional_content_directories = env_yaml.get("additional_content_directories", [])
-    add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
+    def _get_checks_from_benchmark(self):
+        product_dir = os.path.dirname(self.product_yaml_path)
+        relative_guide_dir = utils.required_key(self.env_yaml, "benchmark_root")
+        guide_dir = os.path.abspath(
+            os.path.join(product_dir, relative_guide_dir))
+        additional_content_directories = self.env_yaml.get(
+            "additional_content_directories", [])
+        dirs_to_scan = [guide_dir]
+        for rd in additional_content_directories:
+            abspath = os.path.abspath(os.path.join(product_dir, rd))
+            dirs_to_scan.append(abspath)
+        rule_dirs = list(find_rule_dirs_in_paths(dirs_to_scan))
+        oval_checks = self._process_directories(rule_dirs, True)
+        return oval_checks
 
-    if build_ovals_dir:
-        # Create output directory if it doesn't yet exist.
-        if not os.path.exists(build_ovals_dir):
-            os.makedirs(build_ovals_dir)
+    def _get_checks_from_shared_directories(self):
+        # earlier directory has higher priority
+        reversed_dirs = self.shared_directories[::-1]
+        oval_checks = self._process_directories(reversed_dirs, False)
+        return oval_checks
 
-    for _dir_path in find_rule_dirs_in_paths([guide_dir] + add_content_dirs):
-        rule_id = get_rule_dir_id(_dir_path)
+    def _process_directories(self, directories, from_benchmark):
+        oval_checks = []
+        for directory in directories:
+            if not os.path.exists(directory):
+                continue
+            oval_checks += self._process_directory(directory, from_benchmark)
+        return oval_checks
 
-        rule_path = os.path.join(_dir_path, "rule.yml")
+    def _get_list_of_oval_files(self, directory, from_benchmark):
+        if from_benchmark:
+            oval_files = get_rule_dir_ovals(directory, self.product)
+        else:
+            oval_files = _list_full_paths(directory)
+        return oval_files
+
+    def _process_directory(self, directory, from_benchmark):
         try:
-            rule = Rule.from_yaml(rule_path, env_yaml)
+            context = self._get_context(directory, from_benchmark)
         except DocumentationNotComplete:
-            # Happens on non-debug build when a rule is "documentation-incomplete"
-            continue
-        prodtypes = parse_prodtype(rule.prodtype)
+            return []
+        oval_files = self._get_list_of_oval_files(directory, from_benchmark)
+        oval_checks = self._get_directory_oval_checks(
+            context, oval_files, from_benchmark)
+        return oval_checks
 
+    def _get_directory_oval_checks(self, context, oval_files, from_benchmark):
+        oval_checks = []
+        for file_path in oval_files:
+            xml_content = self._process_oval_file(
+                file_path, from_benchmark, context)
+            if xml_content is None:
+                continue
+            oval_checks.append(xml_content)
+        return oval_checks
+
+    def _read_oval_file(self, file_path, context, from_benchmark):
+        if from_benchmark or "checks_from_templates" not in file_path:
+            xml_content = process_file_with_macros(file_path, context)
+        else:
+            with open(file_path, "r") as f:
+                xml_content = f.read()
+        return xml_content
+
+    def _create_key(self, file_path, from_benchmark):
+        if from_benchmark:
+            rule_id = os.path.basename(
+                (os.path.dirname(os.path.dirname(file_path))))
+            oval_key = "%s.xml" % rule_id
+        else:
+            oval_key = os.path.basename(file_path)
+        return oval_key
+
+    def _process_oval_file(self, file_path, from_benchmark, context):
+        if not file_path.endswith(".xml"):
+            return None
+        oval_key = self._create_key(file_path, from_benchmark)
+        if _check_is_loaded(self.already_loaded, oval_key, self.oval_version):
+            return None
+        xml_content = self._read_oval_file(file_path, context, from_benchmark)
+        if not self._manage_oval_file_xml_content(
+                file_path, xml_content, from_benchmark):
+            return None
+        self.already_loaded[oval_key] = self.oval_version
+        return xml_content
+
+    def _manage_oval_file_xml_content(
+            self, file_path, xml_content, from_benchmark):
+        if not _check_is_applicable_for_product(xml_content, self.product):
+            return False
+        oval_file_tree = _create_oval_tree_from_string(xml_content)
+        if not _check_oval_version_from_oval(oval_file_tree, self.oval_version):
+            return False
+        if from_benchmark:
+            self._benchmark_specific_actions(
+                file_path, xml_content, oval_file_tree)
+        return True
+
+    def _benchmark_specific_actions(
+            self, file_path, xml_content, oval_file_tree):
+        rule_id = os.path.basename(
+            (os.path.dirname(os.path.dirname(file_path))))
+        self._store_intermediate_file(rule_id, xml_content)
+        if not _check_rule_id(oval_file_tree, rule_id):
+            msg = "ERROR: OVAL definition in '%s' doesn't match rule ID '%s'." % (
+                file_path, rule_id)
+            print(msg, file=sys.stderr)
+            sys.exit(1)
+
+    def _get_context(self, directory, from_benchmark):
+        if from_benchmark:
+            rule_path = os.path.join(directory, "rule.yml")
+            rule = Rule.from_yaml(rule_path, self.env_yaml)
+            context = self._create_local_env_yaml_for_rule(rule)
+        else:
+            context = self.env_yaml
+        return context
+
+    def _create_local_env_yaml_for_rule(self, rule):
+        local_env_yaml = dict()
+        local_env_yaml.update(self.env_yaml)
         local_env_yaml['rule_id'] = rule.id_
         local_env_yaml['rule_title'] = rule.title
-        local_env_yaml['products'] = prodtypes # default is all
+        prodtypes = parse_prodtype(rule.prodtype)
+        local_env_yaml['products'] = prodtypes  # default is all
+        return local_env_yaml
 
-        for _path in get_rule_dir_ovals(_dir_path, product):
-            # To be compatible with the later checks, use the rule_id
-            # (i.e., the value of _dir) to recreate the expected filename if
-            # this OVAL was in a rule directory.
-            filename = "%s.xml" % rule_id
-
-            xml_content = process_file_with_macros(_path, local_env_yaml)
-
-            if not _check_is_applicable_for_product(xml_content, product):
-                continue
-
-            if build_ovals_dir:
-                # store intermediate files
-                output_file_name = rule_id + ".xml"
-                output_filepath = os.path.join(build_ovals_dir, output_file_name)
-                with open(output_filepath, "w") as f:
-                    f.write(xml_content)
-
-            if _check_is_loaded(already_loaded, filename, oval_version):
-                continue
-            oval_file_tree = _create_oval_tree_from_string(xml_content)
-            if not _check_rule_id(oval_file_tree, rule_id,):
-                msg = "OVAL definition in '%s' doesn't match rule ID '%s'." % (
-                    _path, rule_id)
-                print(msg, file=sys.stderr)
-            if not _check_oval_version_from_oval(oval_file_tree, oval_version):
-                continue
-
-            body.append(xml_content)
-            included_checks_count += 1
-            already_loaded[filename] = oval_version
-
-    for oval_dir in reversed_dirs:
-        if not os.path.isdir(oval_dir):
-            continue
-        # sort the files to make output deterministic
-        for filename in sorted(os.listdir(oval_dir)):
-            if not filename.endswith(".xml"):
-                continue
-            oval_file_path = os.path.join(oval_dir, filename)
-            if "checks_from_templates" in oval_dir:
-                with open(oval_file_path, "r") as f:
-                    xml_content = f.read()
-            else:
-                xml_content = process_file_with_macros(oval_file_path, env_yaml)
-
-            if not _check_is_applicable_for_product(xml_content, product):
-                continue
-            if _check_is_loaded(already_loaded, filename, oval_version):
-                continue
-            oval_file_tree = _create_oval_tree_from_string(xml_content)
-            if not _check_oval_version_from_oval(oval_file_tree, oval_version):
-                continue
-            body.append(xml_content)
-            included_checks_count += 1
-            already_loaded[filename] = oval_version
-
-    return "".join(body)
+    def _store_intermediate_file(self, rule_id, xml_content):
+        if not self.build_ovals_dir:
+            return
+        output_file_name = rule_id + ".xml"
+        output_filepath = os.path.join(self.build_ovals_dir, output_file_name)
+        with open(output_filepath, "w") as f:
+            f.write(xml_content)

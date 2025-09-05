@@ -4,6 +4,14 @@ prodtype: ocp4
 
 title: 'Configure the Encryption Provider'
 
+{{% set default_jqfilter = '[.spec.encryption.type]' %}}
+{{% set default_api_path = '/apis/config.openshift.io/v1/apiservers/cluster' %}}
+{{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/clusters/hostedclusters/{{.hypershift_cluster}}' %}}
+{{% set hypershift_jqfilter = '[.spec.secretEncryption.type]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 description: |-
     To encrypt the etcd key-value store, set the encryption type <tt>aescbc</tt> in the
     <tt>apiserver</tt> object which configures the API server itself.
@@ -41,21 +49,19 @@ ocil_clause: '<tt>aescbc</tt> is not set as the encryption type for etcd.'
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get apiserver cluster -ojson | jq -r '.spec.encryption.type'</pre>
+    <pre>$ oc get --raw {{.var_apiserver_encryption_path}} | jq {{.var_apiserver_encryption_filter}} </pre>
     The output should return <tt>aescbc</tt> as the encryption type.
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/apiservers/cluster") | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    entity_check: "at least one"
-    filepath: '/apis/config.openshift.io/v1/apiservers/cluster'
-    yamlpath: '.spec.encryption.type'
-    values:
-    - value: 'aescbc'
-      type: "string"
-      operation: "pattern match"
+    entity_check: "all"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: "[:]"
+    xccdf_variable: var_apiserver_encryption_type
+    regex_data: true

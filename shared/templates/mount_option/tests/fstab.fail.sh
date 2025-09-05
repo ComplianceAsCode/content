@@ -13,4 +13,4 @@ make_fstab_given_partition_line {{{ MOUNTPOINT }}} ext2 nodev
 make_fstab_given_partition_line {{{ MOUNTPOINT }}} ext2 noexec
 {{% endif %}}
 
-mount_partition {{{ MOUNTPOINT }}}
+mount_partition {{{ MOUNTPOINT }}} || true

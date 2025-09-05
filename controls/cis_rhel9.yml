@@ -259,7 +259,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - partition_for_dev_shm
 
   - id: 1.1.8.2
     title: Ensure nodev option set on /dev/shm partition (Automated)
@@ -661,7 +663,7 @@ controls:
     related_rules:
       - security_patches_up_to_date
 
-  - id: 1.10
+  - id: "1.10"
     title: Ensure system-wide crypto policy is not legacy (Automated)
     levels:
       - l1_server
@@ -700,13 +702,14 @@ controls:
     rules:
       - package_xorg-x11-server-common_removed
 
-  # NEEDS RULE
   - id: 2.2.2
     title: Ensure Avahi Server is not installed (Automated)
     levels:
       - l1_server
       - l2_workstation
-    status: planned
+    status: automated
+    rules:
+      - package_avahi_removed
     related_rules:
       - service_avahi-daemon_disabled
 
@@ -756,27 +759,25 @@ controls:
     rules:
       - package_tftp-server_removed
 
-  # NEEDS RULE
   - id: 2.2.8
     title: Ensure a web server is not installed (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
       - package_httpd_removed
-      # Needs a rule to remove nginx
+      - package_nginx_removed
 
-  # NEEDS RULE
   - id: 2.2.9
     title: Ensure IMAP and POP3 server is not installed (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
       - package_dovecot_removed
-      # Needs a rule to remove cyrus-imapd
+      - package_cyrus-imapd_removed
 
   - id: 2.2.10
     title: Ensure Samba is not installed (Automated)
@@ -819,7 +820,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - package_dnsmasq_removed
+
 
   - id: 2.2.15
     title: Ensure mail transfer agent is configured for local-only mode (Automated)
@@ -897,7 +901,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - package_ftp_removed
 
   - id: 2.4
     title: Ensure nonessential services are removed or masked (Manual)
@@ -1357,17 +1363,15 @@ controls:
       - audit_rules_file_deletion_events_unlink
       - audit_rules_file_deletion_events_unlinkat
 
-  # NEEDS RULE
-  # -w /usr/share/selinux/ -p wa
-  # https://github.com/ComplianceAsCode/content/issues/5264
   - id: 4.1.3.14
     title: Ensure events that modify the system's Mandatory Access Controls are collected (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: partial
+    status: automated
     rules:
       - audit_rules_mac_modification
+      - audit_rules_mac_modification_usr_share
 
   - id: 4.1.3.15
     title: Ensure successful and unsuccessful attempts to use the chcon command are recorded (Automated)
@@ -1550,17 +1554,14 @@ controls:
     rules:
       - journald_forward_to_syslog
 
-  # NEEDS RULE
-  # The rsyslog_files_permissions rule is not sufficient. Needs check for $FileCreateMode.
-  # https://github.com/ComplianceAsCode/content/issues/7332
   - id: 4.2.1.4
     title: Ensure rsyslog default file permissions configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    related_rules:
-      - rsyslog_files_permissions
+    status: automated
+    rules:
+      - rsyslog_filecreatemode
 
   - id: 4.2.1.5
     title: Ensure logging is configured (Manual)
@@ -1609,13 +1610,14 @@ controls:
       - l1_workstation
     status: manual
 
-  # NEEDS RULE
   - id: 4.2.2.1.4
     title: Ensure journald is not configured to recieve logs from a remote client (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - socket_systemd-journal-remote_disabled
 
   - id: 4.2.2.2
     title: Ensure journald service is enabled (Automated)
@@ -1665,15 +1667,15 @@ controls:
       - l1_workstation
     status: manual
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5523
   - id: 4.2.3
     title: Ensure all logfiles have appropriate permissions and ownership (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
+      - rsyslog_files_groupownership
+      - rsyslog_files_ownership
       - rsyslog_files_permissions
 
   - id: 4.3
@@ -1923,16 +1925,15 @@ controls:
     rules:
       - configure_ssh_crypto_policy
 
-  # NEEDS RULE
-  # The current sshd_enable_warning_banner rule uses /etc/issue instead
-  # of the /etc/issue.net that the benchmark expects.
   - id: 5.2.15
     title: Ensure SSH warning banner is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
+      - sshd_enable_warning_banner_net
+    related_rules:
       - sshd_enable_warning_banner
 
   - id: 5.2.16
@@ -2061,6 +2062,8 @@ controls:
       - l1_server
       - l1_workstation
     status: manual
+    rules:
+      - no_empty_passwords
 
   - id: 5.4.2
     title: Ensure authselect includes with-faillock (Automated)
@@ -2071,15 +2074,17 @@ controls:
     rules:
       - accounts_passwords_pam_faillock_deny
 
-  # NEEDS RULE
-  # try_first_pass
-  # https://github.com/ComplianceAsCode/content/issues/5533
   - id: 5.5.1
     title: Ensure password creation requirements are configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
+    notes: |-
+      The Benchmark mentions that the try_first_pass option should be included in pam_pwquality.so
+      module. However, the pam_pwquality.so module, by default, is always the first module from in
+      the PAM password stack. Therefore, the option is useless and not necessary. It was already
+      proposed to update the requirement in the next CIS version.
     rules:
       - accounts_password_pam_minclass
       - accounts_password_pam_minlen
@@ -2112,7 +2117,7 @@ controls:
     rules:
       - accounts_password_pam_pwhistory_remember_password_auth
       - accounts_password_pam_pwhistory_remember_system_auth
-      - var_password_pam_remember_control_flag=requisite
+      - var_password_pam_remember_control_flag=requisite_or_required
       - var_password_pam_remember=5
 
   - id: 5.5.4
@@ -2124,6 +2129,8 @@ controls:
     rules:
       - set_password_hashing_algorithm_systemauth
       - set_password_hashing_algorithm_passwordauth
+      - set_password_hashing_algorithm_logindefs
+      - var_password_hashing_algorithm=SHA512
 
   - id: 5.6.1.1
     title: Ensure password expiration is 365 days or less (Automated)
@@ -2152,31 +2159,31 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: partial  # The rule below does not validate whether all current users' PASS_WARN_AGE setting conforms to the control.
+    status: automated
     rules:
       - accounts_password_warn_age_login_defs
       - var_accounts_password_warn_age_login_defs=7
+      - accounts_password_set_warn_age_existing
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5536
   - id: 5.6.1.4
     title: Ensure inactive password lock is 30 days or less (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial  # The rule below does not validate wheter all current users' INACTIVE setting conforms to the control.
+    status: automated
     rules:
       - account_disable_post_pw_expiration
       - var_account_disable_post_pw_expiration=30
+      - accounts_set_post_pw_existing
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5537
   - id: 5.6.1.5
     title: Ensure all users last password change date is in the past (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - accounts_password_last_change_is_in_past
 
   # NEEDS RULE
   # We are missing the component of this control which locks non-root system accounts
@@ -2403,8 +2410,6 @@ controls:
     status: automated
     rules:
       - no_empty_passwords_etc_shadow
-    related_rules:
-      - no_empty_passwords
 
   - id: 6.2.3
     title: Ensure all groups in /etc/passwd exist in /etc/group (Automated)
@@ -2498,25 +2503,23 @@ controls:
     rules:
       - file_permissions_home_directories
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5504
   - id: 6.2.13
     title: Ensure no local interactive user has .netrc files (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
       - no_netrc_files
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5505
   - id: 6.2.14
     title: Ensure no local interactive user has .forward files (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - no_forward_files
 
   - id: 6.2.15
     title: Ensure no local interactive user has .rhosts files (Automated)

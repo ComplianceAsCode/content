@@ -37,7 +37,7 @@ selections:
     - var_accounts_minimum_age_login_defs=1
     - var_accounts_max_concurrent_login_sessions=10
     - var_password_pam_remember=5
-    - var_password_pam_remember_control_flag=requisite
+    - var_password_pam_remember_control_flag=requisite_or_required
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
     - var_password_pam_unix_rounds=5000
@@ -120,6 +120,7 @@ selections:
     # RHEL-08-010090
 
     # RHEL-08-010100
+    - ssh_keys_passphrase_protected
 
     # RHEL-08-010110
     - set_password_hashing_algorithm_logindefs
@@ -1194,6 +1195,9 @@ selections:
 
     # RHEL-08-040341
     - sshd_x11_use_localhost
+
+    # RHEL-08-040342
+    - sshd_use_approved_kex_ordered_stig
 
     # RHEL-08-040350
     - tftpd_uses_secure_mode

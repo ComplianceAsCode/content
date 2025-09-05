@@ -62,12 +62,17 @@ selections:
     - '!zipl_audit_backlog_limit_argument'
 
     #### 4.1.2.1 Ensure audit log storage size is configured (Automated)
+    - var_auditd_max_log_file=6
     - auditd_data_retention_max_log_file
 
     #### 4.1.2.2 Ensure audit logs are not automatically deleted (Automated)
+    - var_auditd_max_log_file_action=keep_logs
     - auditd_data_retention_max_log_file_action
 
     #### 4.1.2.3 Ensure system is disabled when audit logs are full (Automated)
+    - var_auditd_space_left_action=email
+    - var_auditd_action_mail_acct=root
+    - var_auditd_admin_space_left_action=halt
     - auditd_data_retention_space_left_action
     - auditd_data_retention_action_mail_acct
     - auditd_data_retention_admin_space_left_action
@@ -76,10 +81,10 @@ selections:
     - audit_rules_sysadmin_actions
 
     #### 4.1.3.2 Ensure actions as another user are always logged (Automated)
-    # NEEDS RULE
+    - audit_rules_suid_privilege_function
 
     #### 4.1.3.3 Ensure events that modify the sudo log file are collected (Automated)
-    # NEEDS RULE
+    - audit_sudo_log_events
 
     #### 4.1.3.4 Ensure events that modify date and time information are collected (Automated)
     - audit_rules_time_clock_settime
