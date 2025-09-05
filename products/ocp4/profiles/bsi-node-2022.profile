@@ -31,3 +31,7 @@ filter_rules: '"ocp4-node" in platform or "ocp4-master-node" in platform or "ocp
 selections:
     - bsi_app_4_4:all
     - bsi_sys_1_6:all
+    ### Variables
+    - var_kubelet_tls_cipher_suites=2024-01-BSI-TR-02102-2
+    - var_kubelet_tls_cipher_suites_regex=2024-01-BSI-TR-02102-2
+
