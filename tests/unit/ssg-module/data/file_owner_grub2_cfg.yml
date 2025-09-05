@@ -10,7 +10,7 @@ description: 'The file <tt>/boot/grub2/grub.cfg</tt> should
   To properly set the owner of <code>/boot/grub2/grub.cfg</code>, run the command:
 
   <pre>$ sudo chown root /boot/grub2/grub.cfg </pre>'
-identifiers: {cce: 26860-7, cce@rhel7: 26860-7, cce@rhel8: 80805-5}
+identifiers: {cce: CCE-26860-7, cce@rhel7: CCE-26860-7, cce@rhel8: CCE-80805-5}
 ocil: ' To check the ownership of <code>/boot/grub2/grub.cfg</code>, run the command:
   <pre>$ ls -lL /boot/grub2/grub.cfg</pre> If properly configured, the output should
   indicate the following owner: <code>root</code>'
@@ -22,7 +22,7 @@ platform: machine
 prodtype: rhel7,rhel8,fedora,ol7,ol8
 rationale: Only root should be able to modify important boot parameters.
 references: {cis: 1.4.1, cis-csc: '12,13,14,15,16,18,3,5', cjis: 5.5.2.2, cobit5: 'APO01.06,DSS05.04,DSS05.07,DSS06.02',
-  cui: 3.4.5, disa: '225', hipaa: '164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)',
+  cui: 3.4.5, disa: 'CCI-000225', hipaa: '164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)',
   isa-62443-2009: 4.3.3.7.3, isa-62443-2013: 'SR 2.1,SR 5.2', iso27001-2013: 'A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5',
   nist: AC-6(7), nist-csf: 'PR.AC-4,PR.DS-5', pcidss: Req-7.1}
 severity: medium

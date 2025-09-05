@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="api_server_admission_control_plugin_NamespaceLifecycle" version="1">
     <metadata>
-      <title>Enable the NamespaceLifecyle Admission Control Plugin</title>
+      <title>Enable the NamespaceLifecycle Admission Control Plugin</title>
       <affected family="unix">
         <platform>multi_platform_ocp</platform>
       </affected>
@@ -9,18 +9,18 @@
     objects cannot be created in non-existent namespaces.</description>
     </metadata>
     <criteria operator="AND">
-      <criterion comment="NamespaceLifecyle is configured" test_ref="test_api_server_admission_control_plugin_NamespaceLifecycle" />
+      <criterion comment="NamespaceLifecycle is configured" test_ref="test_api_server_admission_control_plugin_NamespaceLifecycle" />
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="NamespaceLifecyle is configured" id="test_api_server_admission_control_plugin_NamespaceLifecycle" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="NamespaceLifecycle is configured" id="test_api_server_admission_control_plugin_NamespaceLifecycle" version="1">
     <ind:object object_ref="object_api_server_admission_control_plugin_NamespaceLifecycle" />
     <ind:state state_ref="state_api_server_admission_control_plugin_NamespaceLifecycle" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_api_server_admission_control_plugin_NamespaceLifecycle" version="1">
     <ind:filepath>/etc/origin/master/master-config.yaml</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*admissionConfig\:(?:[^\n]*\n+)+?[\s]*pluginConfig\:(?:[^\n]*\n+)+?[\s]*NamespaceLifecyle\:[\s]*[\n]+[\s]*configuration\:[\s]*[\n]+[\s]*kind\:[\s]+DefaultAdmissionConfig[\s]*[\n]+[\s]*apiVersion\:[\s]+v1[\s]*[\n]+[\s]*disable\:[\s]+(\S+)[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*admissionConfig\:(?:[^\n]*\n+)+?[\s]*pluginConfig\:(?:[^\n]*\n+)+?[\s]*NamespaceLifecycle\:[\s]*[\n]+[\s]*configuration\:[\s]*[\n]+[\s]*kind\:[\s]+DefaultAdmissionConfig[\s]*[\n]+[\s]*apiVersion\:[\s]+v1[\s]*[\n]+[\s]*disable\:[\s]+(\S+)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

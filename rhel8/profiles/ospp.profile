@@ -235,6 +235,7 @@ selections:
     - enable_fips_mode
     - var_system_crypto_policy=fips_ospp
     - configure_crypto_policy
+    - configure_ssh_crypto_policy
     - configure_bind_crypto_policy
     - configure_openssl_crypto_policy
     - configure_libreswan_crypto_policy
@@ -292,14 +293,14 @@ selections:
     - sshd_set_idle_timeout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
-    ## FIA_AFL.1
+    ## FIA_UAU.1
     - require_singleuser_auth
     - grub2_disable_interactive_boot
     - grub2_uefi_password
     - no_empty_passwords
 
     ## Set Maximum Number of Authentication Failures to 3 Within 15 Minutes
-    ## AC-7(a) / FMT_MOF_EXT.1
+    ## AC-7 / FIA_AFL.1
     - var_accounts_passwords_pam_faillock_deny=3
     - accounts_passwords_pam_faillock_deny
     - var_accounts_passwords_pam_faillock_fail_interval=900
@@ -415,3 +416,15 @@ selections:
     - ssh_client_rekey_limit
     - var_ssh_client_rekey_limit_size=1G
     - var_ssh_client_rekey_limit_time=1hour
+
+    # zIPl specific rules
+    - zipl_bls_entries_only
+    - zipl_bootmap_is_up_to_date
+    - zipl_audit_argument
+    - zipl_audit_backlog_limit_argument
+    - zipl_slub_debug_argument
+    - zipl_page_poison_argument
+    - zipl_vsyscall_argument
+    - zipl_vsyscall_argument.role=unscored
+    - zipl_vsyscall_argument.severity=info
+    - zipl_pti_argument

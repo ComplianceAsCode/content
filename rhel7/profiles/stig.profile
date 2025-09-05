@@ -70,6 +70,7 @@ selections:
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_idle_activation_locked
     - dconf_gnome_screensaver_lock_delay
+    - dconf_gnome_disable_ctrlaltdel_reboot
     - accounts_password_pam_ucredit
     - accounts_password_pam_lcredit
     - accounts_password_pam_dcredit
@@ -160,6 +161,7 @@ selections:
     - aide_verify_ext_attributes
     - aide_use_fips_hashes
     - grub2_no_removeable_media
+    - uefi_no_removeable_media
     - package_telnet-server_removed
     - service_auditd_enabled
     - audit_rules_system_shutdown
@@ -240,6 +242,7 @@ selections:
     - sshd_required=yes
     - service_sshd_enabled
     - sshd_set_idle_timeout
+    - sshd_disable_rhosts
     - sshd_disable_rhosts_rsa
     - sshd_set_keepalive
     - sshd_print_last_log
@@ -253,6 +256,7 @@ selections:
     - sshd_enable_strictmodes
     - sshd_use_priv_separation
     - sshd_disable_compression
+    - sshd_disable_user_known_hosts
     - chronyd_or_ntpd_set_maxpoll
     - configure_firewalld_rate_limiting
     - service_firewalld_enabled
@@ -296,3 +300,4 @@ selections:
     - mount_option_dev_shm_nodev
     - mount_option_dev_shm_noexec
     - mount_option_dev_shm_nosuid
+    - audit_rules_privileged_commands_mount

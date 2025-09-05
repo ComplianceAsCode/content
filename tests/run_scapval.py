@@ -46,35 +46,9 @@ def process_results(result_path):
     return ret_val
 
 
-def workaround_datastream(datastream_path):
-    tree = ET.parse(datastream_path)
-    root = tree.getroot()
-    # group_id and user_id cannot be zero
-    # tracked at https://github.com/OVAL-Community/OVAL/issues/23
-    for group_id_element in root.findall(".//{%s}group_id" % oval_unix_ns):
-        if group_id_element.text is not None:
-            group_id_element.text = "-1"
-    for user_id_element in root.findall(".//{%s}user_id" % oval_unix_ns):
-        if user_id_element.text is not None:
-            user_id_element.text = "-1"
-    # OCIL checks for security_patches_up_to_date is causing fail
-    # of SRC-377, when requirement is about OVAL checks.
-    rule_id = "xccdf_org.ssgproject.content_rule_security_patches_up_to_date"
-    for rule in root.findall(".//{%s}Rule[@id=\"%s\"]" % (xccdf_ns, rule_id)):
-        for check in rule.findall("{%s}check" % xccdf_ns):
-            system = check.get("system")
-            if system == "http://scap.nist.gov/schema/ocil/2":
-                rule.remove(check)
-    output_path = datastream_path + ".workaround.xml"
-    tree.write(output_path)
-    return output_path
-
-
 def test_datastream(datastream_path,  scapval_path, scap_version):
     result_path = datastream_path + ".result.xml"
     report_path = datastream_path + ".report.html"
-    if scap_version == "1.3":
-        datastream_path = workaround_datastream(datastream_path)
     scapval_command = [
             "java",
             "-Xmx1024m",

@@ -6,11 +6,11 @@
       <description>Anonymous access is allowed by default and should be disabled.</description>
     </metadata>
     <criteria operator="AND">
-      <criterion comment="profiling is configured" test_ref="test_api_server_anonymous_auth" />
+      <criterion comment="anonymous-auth is disabled" test_ref="test_api_server_anonymous_auth" />
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="profiling is configured" id="test_api_server_anonymous_auth" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="anonymous-auth is disabled" id="test_api_server_anonymous_auth" version="1">
     <ind:object object_ref="object_api_server_anonymous_auth" />
     <ind:state state_ref="state_api_server_anonymous_auth" />
   </ind:textfilecontent54_test>
@@ -18,13 +18,13 @@
 {{%- if product == "ocp4" %}}
   <ind:textfilecontent54_object id="object_api_server_anonymous_auth" version="1">
     <ind:filepath>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</ind:filepath>
-    <ind:pattern operation="pattern match">^.*"apiServerArguments":[\s]*{.*"profiling":[\s]*\[.*"(\S+)".*\][,]*.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^.*"apiServerArguments":[\s]*{.*"anonymous-auth":[\s]*\[.*"(\S+)".*\][,]*.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 {{% else %}}
   <ind:textfilecontent54_object id="object_api_server_anonymous_auth" version="1">
     <ind:filepath>/etc/origin/master/master-config.yaml</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*kubernetesMasterConfig\:(?:[^\n]*\n+)+?[\s]*apiServerArguments\:(?:[^\n]*\n+)+?[\s]*profiling\:[\s]*[\n]+[\s]*-[\s]+(\S+)[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*kubernetesMasterConfig\:(?:[^\n]*\n+)+?[\s]*apiServerArguments\:(?:[^\n]*\n+)+?[\s]*anonymous-auth\:[\s]*[\n]+[\s]*-[\s]+(\S+)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 {{%- endif %}}

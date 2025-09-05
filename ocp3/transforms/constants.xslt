@@ -12,7 +12,6 @@
 <!-- Define URI of official CIS Kubernetes Benchmark -->
 <xsl:variable name="cisuri">https://benchmarks.cisecurity.org/tools2/virtualization/CIS_Kubernetes_Benchmark_v1.2.0.pdf</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
-<xsl:variable name="os-stigid-concat"></xsl:variable>
 
 <!-- Define URI for custom CCE identifier which can be used for mapping to corporate policy -->
 <!--xsl:variable name="custom-cce-uri">https://www.example.org</xsl:variable-->

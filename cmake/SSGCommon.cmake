@@ -109,12 +109,6 @@ macro(ssg_build_shorthand_xml PRODUCT)
         list(APPEND BASH_REMEDIATION_FNS_DEPENDS "generate-internal-bash-remediation-functions.xml" "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml")
     endif()
 
-    execute_process(
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${BASH_REMEDIATION_FNS} --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" list-inputs
-        OUTPUT_VARIABLE SHORTHAND_INPUTS_STR
-    )
-    string(REPLACE "\n" ";" SHORTHAND_INPUTS "${SHORTHAND_INPUTS_STR}")
-
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
@@ -127,9 +121,8 @@ macro(ssg_build_shorthand_xml PRODUCT)
         # The command also produces the directory with rules, but this is done before the the shorthand XML.
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/rules"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${BASH_REMEDIATION_FNS} --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" build
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${BASH_REMEDIATION_FNS} --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        DEPENDS ${SHORTHAND_INPUTS}
         DEPENDS ${BASH_REMEDIATION_FNS_DEPENDS}
         DEPENDS "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py"
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
@@ -292,6 +285,7 @@ macro(ssg_build_ansible_playbooks PRODUCT)
         NAME "${PRODUCT}-ansible-playbooks-generated-for-all-rules"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/ansible_playbooks_generated_for_all_rules.py" --build-dir "${CMAKE_BINARY_DIR}" --product "${PRODUCT}"
     )
+    set_tests_properties("${PRODUCT}-ansible-playbooks-generated-for-all-rules" PROPERTIES LABELS quick)
     if("${PRODUCT}" MATCHES "rhel")
         add_test(
             NAME "${PRODUCT}-ansible-assert-playbooks-schema"
@@ -460,14 +454,17 @@ macro(ssg_build_xccdf_final PRODUCT)
         NAME "verify-references-ssg-${PRODUCT}-xccdf.xml"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/verify_references.py" --rules-with-invalid-checks --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
+    set_tests_properties("verify-references-ssg-${PRODUCT}-xccdf.xml" PROPERTIES LABELS quick)
     add_test(
         NAME "verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-titles"
         COMMAND "${XMLLINT_EXECUTABLE}" --xpath "//*[local-name()=\"Profile\"]/*[local-name()=\"title\"][not(@override=\"true\")]" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
+    set_tests_properties("verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-titles" PROPERTIES LABELS quick)
     add_test(
         NAME "verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-descriptions"
         COMMAND "${XMLLINT_EXECUTABLE}" --xpath "//*[local-name()=\"Profile\"]/*[local-name()=\"description\"][not(@override=\"true\")]" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
+    set_tests_properties("verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-descriptions" PROPERTIES LABELS quick)
     # Sets WILL_FAIL property for all '*-override-true-all-profile-*' tests to
     # true as it is expected that XPath of a passing test will be empty (and
     # non-zero exit code is returned in such case).
@@ -700,6 +697,19 @@ macro(ssg_make_html_stats_for_product PRODUCT)
     )
 endmacro()
 
+macro(ssg_make_all_tables PRODUCT)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/tables/tables-${PRODUCT}-all.html"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_tables.py" --build-dir "${CMAKE_BINARY_DIR}" --output-type html --output "${CMAKE_BINARY_DIR}/tables/tables-${PRODUCT}-all.html" "${PRODUCT}"
+        # Actually we mean that it depends on resolved rules - see also ssg_build_templated_content
+        DEPENDS generate-internal-${PRODUCT}-shorthand.xml
+    )
+    add_custom_target(generate-ssg-tables-${PRODUCT}-all
+        DEPENDS "${CMAKE_BINARY_DIR}/tables/tables-${PRODUCT}-all.html"
+    )
+endmacro()
+
 macro(ssg_build_product PRODUCT)
     # Enforce folder naming rules, we require SSG contributors to use
     # scap-security-guide/${PRODUCT}/ for all products. This makes it easier
@@ -723,6 +733,7 @@ macro(ssg_build_product PRODUCT)
     endforeach()
 
     ssg_build_shorthand_xml(${PRODUCT})
+    ssg_make_all_tables(${PRODUCT})
     ssg_build_templated_content(${PRODUCT})
     ssg_build_xccdf_unlinked(${PRODUCT})
     ssg_build_ocil_unlinked(${PRODUCT})
@@ -753,6 +764,7 @@ macro(ssg_build_product PRODUCT)
         generate-ssg-${PRODUCT}-ocil.xml
         generate-ssg-${PRODUCT}-cpe-dictionary.xml
         generate-ssg-${PRODUCT}-ds.xml
+        generate-ssg-tables-${PRODUCT}-all
     )
 
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
@@ -1243,6 +1255,7 @@ macro(ssg_define_guide_and_table_tests)
             NAME "unique-cces"
 	    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/tests/assert_cces_unique.sh"
         )
+        set_tests_properties("unique-cces" PROPERTIES LABELS quick)
     endif()
 endmacro()
 

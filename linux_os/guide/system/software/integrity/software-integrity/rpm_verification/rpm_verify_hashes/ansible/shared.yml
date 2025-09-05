@@ -1,4 +1,6 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# Note: RHEL6 is not included in the platform list because it doesn't support rpm option --noconfig
+# and the regex_findall does not filter out configuration files the same as bash remediation does
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
 # reboot = false
 # strategy = restrict
 # complexity = high
@@ -14,7 +16,7 @@
   when: (ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux")
 
 - name: "Read files with incorrect hash"
-  command: rpm -Va --nodeps --nosize --nomtime --nordev --nocaps --nolinkto --nouser --nogroup --nomode --noconfig --noghost
+  command: rpm -Va --nodeps --nosize --nomtime --nordev --nocaps --nolinkto --nouser --nogroup --nomode --noghost --noconfig
   args:
     warn: False # Ignore ANSIBLE0006, we can't fetch files with incorrect hash using rpm module
   register: files_with_incorrect_hash

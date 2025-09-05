@@ -1,0 +1,30 @@
+prodtype: ocp4
+
+title: "Allowed registries are configured"
+
+description: |-
+    The configuration <tt>registrySources.allowedRegistries</tt> determines the
+    permitted registries that the OpenShift container runtime can access for builds
+    and pods. This configuration setting ensures that all registries other than
+    those specified are blocked.
+
+rationale: |-
+    Allowed registries should be configured to restrict the registries that the
+    OpenShift container runtime can access, and all other registries should be
+    blocked.
+
+severity: medium
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/images/cluster") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        filepath: /apis/config.openshift.io/v1/images/cluster
+        yamlpath: ".spec.registrySources.allowedRegistries[:]"
+        value: ".*"
+        entity_check: "at least one"
+        operation: "pattern match"
+        ocp_data: 'true'

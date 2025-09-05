@@ -1,0 +1,11 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Prevent user modification of GNOME Screensaver lock-enabled"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/desktop/screensaver/lock-enabled'
+    line: '/org/gnome/desktop/screensaver/lock-enabled'
+    create: yes

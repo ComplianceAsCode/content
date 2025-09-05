@@ -1,7 +1,3 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_wrlinux,multi_platform_ol
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_wrlinux,multi_platform_ol,multi_platform_sle,multi_platform_fedora
 
-if ! grep -q ^CREATE_HOME /etc/login.defs; then
-	echo "CREATE_HOME     yes" >> /etc/login.defs
-else
-	sed -i "s/^\(CREATE_HOME\).*/\1 yes/g" /etc/login.defs
-fi
+{{{ set_config_file("/etc/login.defs", "CREATE_HOME", "yes", create=true, insert_after="", insert_before="^\s*CREATE_HOME", insensitive=true) }}}

@@ -8,8 +8,9 @@
     dest: /etc/dconf/db/local.d/00-security-settings
     section: org/gnome/settings-daemon/plugins/media-keys
     option: logout
-    value: string ''
+    value: "''"
     create: yes
+    no_extra_spaces: yes
 
 - name: "Prevent user modification of GNOME disablement of Ctrl-Alt-Del"
   lineinfile:

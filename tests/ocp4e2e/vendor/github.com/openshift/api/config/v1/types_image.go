@@ -13,8 +13,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // When exposing OpenShift's image registry to the public, this also lets cluster
 // admins specify the external hostname.
 type Image struct {
-	metav1.TypeMeta `json:",inline"`
-	// Standard object's metadata.
+	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// spec holds user settable values for configuration
@@ -80,9 +79,9 @@ type ImageStatus struct {
 
 type ImageList struct {
 	metav1.TypeMeta `json:",inline"`
-	// Standard object's metadata.
 	metav1.ListMeta `json:"metadata"`
-	Items           []Image `json:"items"`
+
+	Items []Image `json:"items"`
 }
 
 // RegistryLocation contains a location of the registry specified by the registry domain

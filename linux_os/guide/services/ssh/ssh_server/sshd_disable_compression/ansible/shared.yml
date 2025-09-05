@@ -3,4 +3,6 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-{{{ ansible_sshd_set(parameter="Compression", value="delayed") }}}
+- (xccdf-var var_sshd_disable_compression)
+
+{{{ ansible_sshd_set(parameter="Compression", value="{{ var_sshd_disable_compression }}") }}}

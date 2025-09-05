@@ -45,3 +45,15 @@ selections:
     - rsyslog_remote_tls
     - rsyslog_remote_tls_cacert
     - "!ssh_client_rekey_limit"
+
+    # Unselect zIPL rules from OSPP
+    - "!zipl_bls_entries_only"
+    - "!zipl_bootmap_is_up_to_date"
+    - "!zipl_audit_argument"
+    - "!zipl_audit_backlog_limit_argument"
+    - "!zipl_page_poison_argument"
+    - "!zipl_pti_argument"
+    - "!zipl_slub_debug_argument"
+    - "!zipl_vsyscall_argument"
+    - "!zipl_vsyscall_argument.role=unscored"
+    - "!zipl_vsyscall_argument.severity=info"

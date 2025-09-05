@@ -63,6 +63,7 @@ selections:
 - package_fapolicyd_installed
 - package_firewalld_installed
 - package_quagga_removed
+- package_rear_installed
 - package_rsh-server_removed
 - package_rsh_removed
 - package_rsyslog_installed

@@ -1,0 +1,16 @@
+# platform = Red Hat Enterprise Linux 8
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "Ensure that the correct crypto policy configuration exists in /etc/crypto-policies/local.d/opensslcnf-ospp.config"
+  lineinfile:
+    path: "/etc/crypto-policies/local.d/opensslcnf-ospp.config"
+    line: "Ciphersuites = TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256"
+    create: yes
+    insertafter: EOF
+
+- name: "Update system crypto policy for changes to take effect"
+  command:
+    cmd: "update-crypto-policies"

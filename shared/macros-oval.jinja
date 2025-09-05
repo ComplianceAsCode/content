@@ -25,11 +25,7 @@
 {{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    <metadata>
-      <title>{{{ rule_title }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>Ensure '{{{ parameter }}}' is configured with value '{{{ value | replace("(?i)", "") | replace("(?-i)", "")}}}' {{% if section -%}} in section '{{{ section }}}' {{% endif -%}} in '{{{ path }}}'</description>
-    </metadata>
+    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in '" + path) }}}
     {{%- if missing_config_file_fail %}}
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
     operator="AND">
@@ -484,11 +480,7 @@
 {{%- macro oval_file_contents(filepath='', filepath_id='', contents='') -%}}
   <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-      <metadata>
-        <title>Check that contents of {{{ filepath }}} are as expected</title>
-        {{{- oval_affected(products) }}}
-        <description>Inspect the contents of {{{ filepath }}}</description>
-      </metadata>
+      {{{ oval_metadata("Inspect the contents of " + filepath) }}}
       <criteria>
           <criterion comment="Check contents of file" test_ref="test_whole_file_contents_{{{ filepath_id }}}" />
       </criteria>
@@ -514,4 +506,31 @@
     </ind:textfilecontent54_state>
 
   </def-group>
+{{%- endmacro %}}
+
+{{#
+  Macro which generates the OVAL metadata section
+
+  title: Optional, the associated rule title is used by default
+  affected_platforms: Optional, list of unix platform strings (e.g. "Fedora") to put under the affected element.
+      Uses the oval_affected macro by default under the hood.
+#}}
+{{%- macro oval_metadata(description, title="", affected_platforms=None) -%}}
+    <metadata>
+{{%- if title %}}
+        <title>{{{ title }}}</title>
+{{%- else %}}
+        <title>{{{ rule_title }}}</title>
+{{%- endif -%}}
+{{%- if affected_platforms -%}}
+            <affected family="unix">
+{{%- for platform in affected_platforms %}}
+                <platform>{{{ platform }}}</platform>
+{{%- endfor %}}
+            </affected>
+{{%- else %}}
+        {{{ oval_affected(products) | indent -}}}
+{{%- endif %}}
+        <description>{{{ description }}}</description>
+    </metadata>
 {{%- endmacro %}}

@@ -1,0 +1,46 @@
+<def-group>
+  <definition class="compliance" id="zipl_bootmap_is_up_to_date" version="1">
+    <metadata>
+      <title>Ensure zIPL bootmap is up to date</title>
+      {{{- oval_affected(products) }}}
+      <description>Check if /boot/bootmap is up to date</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_zipl_bootmap_is_up_to_date"
+      comment="Compare mtime of /boot/bootmap against /etc/zipl.conf and /boot/loader/entries/*.conf" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" id="test_zipl_bootmap_is_up_to_date" version="1" comment="Check /boot/bootmap timestamps">
+    <unix:object object_ref="object_zipl_boot_bootmap_file" />
+    <unix:state state_ref="state_zipl_bootmap_is_newer_than_zipl_conf" />
+    <unix:state state_ref="state_zipl_bootmap_is_newer_than_boot_entries" />
+  </unix:file_test>
+
+  <unix:file_object id="object_zipl_boot_bootmap_file" comment="current bootmap state" version="1">
+    <unix:filepath>/boot/bootmap</unix:filepath>
+  </unix:file_object>
+
+  <!-- Newer means modified more recently, which means more seconds since epoch -->
+  <unix:file_state id="state_zipl_bootmap_is_newer_than_zipl_conf" version="1">
+    <unix:m_time datatype="int" operation="greater than or equal" var_check="all"
+    var_ref="variable_zipl_conf_file_age" />
+  </unix:file_state>
+  <local_variable id="variable_zipl_conf_file_age" version="1" comment="Age of /etc/zipl.conf" datatype="int">
+    <object_component object_ref="zipl_conf_file" item_field="m_time"/>
+  </local_variable>
+  <unix:file_object id="zipl_conf_file" comment="/etc/zipl.conf state" version="1">
+    <unix:filepath datatype="string">/etc/zipl.conf</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_zipl_bootmap_is_newer_than_boot_entries" version="1">
+    <unix:m_time datatype="int" operation="greater than or equal" var_check="all"
+    var_ref="variable_boot_entry_files_age" />
+  </unix:file_state>
+  <local_variable id="variable_boot_entry_files_age" version="1" comment="Age of /boot/loader/entries/*.conf files" datatype="int">
+    <object_component object_ref="boot_entry_files" item_field="m_time"/>
+  </local_variable>
+  <unix:file_object id="boot_entry_files" comment="/boot/loader/entries/*.conf states" version="1">
+    <unix:filepath datatype="string" operation="pattern match">^/boot/loader/entries/.*\.conf$</unix:filepath>
+  </unix:file_object>
+</def-group>

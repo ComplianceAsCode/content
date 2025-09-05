@@ -16,7 +16,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@ocp3: 80642-2
+    cce@ocp3: CCE-80642-2
 
 references:
     cis: 2.2.
@@ -30,4 +30,4 @@ template:
     name: file_permissions
     vars:
         filepath: /etc/origin/node/client-ca.crt
-        filemode: '0600'
+        filemode: '0644'

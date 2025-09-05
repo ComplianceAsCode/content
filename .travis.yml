@@ -22,7 +22,7 @@ matrix:
             - docker build --no-cache --tag ssg_$BASE_IMAGE:latest -f Dockerfiles/$BASE_IMAGE .
           script:
             - docker run ssg_$BASE_IMAGE:latest
-        - env: BASE_IMAGE="centos6"
+        - env: BASE_IMAGE="centos8"
           before_install:
             - docker build --no-cache --tag ssg_$BASE_IMAGE:latest -f Dockerfiles/$BASE_IMAGE .
           script:

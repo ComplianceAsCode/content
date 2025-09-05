@@ -4,6 +4,7 @@ from __future__ import print_function
 import os
 import os.path
 from collections import defaultdict
+from copy import deepcopy
 import datetime
 import re
 import sys
@@ -12,7 +13,6 @@ import yaml
 
 from .constants import XCCDF_PLATFORM_TO_CPE
 from .constants import PRODUCT_TO_CPE_MAPPING
-from .constants import STIG_PLATFORM_ID_MAP
 from .constants import XCCDF_REFINABLE_PROPERTIES
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
@@ -319,6 +319,62 @@ class Profile(object):
         return profile
 
 
+class ResolvableProfile(Profile):
+    def __init__(self, * args, ** kwargs):
+        super(ResolvableProfile, self).__init__(* args, ** kwargs)
+        self.resolved = False
+
+    def resolve(self, all_profiles):
+        if self.resolved:
+            return
+
+        resolved_selections = set(self.selected)
+        if self.extends:
+            if self.extends not in all_profiles:
+                msg = (
+                    "Profile {name} extends profile {extended}, but"
+                    "only profiles {known_profiles} are available for resolution."
+                    .format(name=self.id_, extended=self.extends,
+                            profiles=list(all_profiles.keys())))
+                raise RuntimeError(msg)
+            extended_profile = all_profiles[self.extends]
+            extended_profile.resolve(all_profiles)
+
+            extended_selects = set(extended_profile.selected)
+            resolved_selections.update(extended_selects)
+
+            updated_variables = dict(extended_profile.variables)
+            updated_variables.update(self.variables)
+            self.variables = updated_variables
+
+            extended_refinements = deepcopy(extended_profile.refine_rules)
+            updated_refinements = self._subtract_refinements(extended_refinements)
+            updated_refinements.update(self.refine_rules)
+            self.refine_rules = updated_refinements
+
+        for uns in self.unselected:
+            resolved_selections.discard(uns)
+
+        self.unselected = []
+        self.extends = None
+
+        self.selected = sorted(resolved_selections)
+
+        self.resolved = True
+
+    def _subtract_refinements(self, extended_refinements):
+        """
+        Given a dict of rule refinements from the extended profile,
+        "undo" every refinement prefixed with '!' in this profile.
+        """
+        for rule, refinements in list(self.refine_rules.items()):
+            if rule.startswith("!"):
+                for prop, val in refinements:
+                    extended_refinements[rule[1:]].remove((prop, val))
+                del self.refine_rules[rule]
+        return extended_refinements
+
+
 class Value(object):
     """Represents XCCDF Value
     """
@@ -475,7 +531,7 @@ class Benchmark(object):
 
         return benchmark
 
-    def add_profiles_from_dir(self, action, dir_, env_yaml):
+    def add_profiles_from_dir(self, dir_, env_yaml):
         for dir_item in os.listdir(dir_):
             dir_item_path = os.path.join(dir_, dir_item)
             if not os.path.isfile(dir_item_path):
@@ -502,19 +558,14 @@ class Benchmark(object):
                 continue
 
             self.profiles.append(new_profile)
-            if action == "list-inputs":
-                print(dir_item_path)
 
-    def add_bash_remediation_fns_from_file(self, action, file_):
+    def add_bash_remediation_fns_from_file(self, file_):
         if not file_:
             # bash-remediation-functions.xml doens't exist
             return
 
-        if action == "list-inputs":
-            print(file_)
-        else:
-            tree = ET.parse(file_)
-            self.bash_remediation_fns_group = tree.getroot()
+        tree = ET.parse(file_)
+        self.bash_remediation_fns_group = tree.getroot()
 
     def to_xml_element(self):
         root = ET.Element('Benchmark')
@@ -836,16 +887,24 @@ class Rule(object):
         rule.validate_references(yaml_file)
         return rule
 
-    def _make_stigid_product_specific(self, product):
+    def _verify_stigid_format(self, product):
         stig_id = self.references.get("stigid", None)
         if not stig_id:
             return
         if "," in stig_id:
             raise ValueError("Rules can not have multiple STIG IDs.")
-        stig_platform_id = STIG_PLATFORM_ID_MAP.get(product, product.upper())
-        product_specific_stig_id = "{platform_id}-{stig_id}".format(
-            platform_id=stig_platform_id, stig_id=stig_id)
-        self.references["stigid"] = product_specific_stig_id
+
+    def _verify_disa_cci_format(self):
+        cci_id = self.references.get("disa", None)
+        if not cci_id:
+            return
+        cci_ex = re.compile(r'^CCI-[0-9]{6}$')
+        for cci in cci_id.split(","):
+            if not cci_ex.match(cci):
+                raise ValueError("CCI '{}' is in the wrong format! "
+                                 "Format should be similar to: "
+                                 "CCI-XXXXXX".format(cci))
+        self.references["disa"] = cci_id
 
     def normalize(self, product):
         try:
@@ -913,9 +972,10 @@ class Rule(object):
             dic.update(new_items)
 
         self.references = general_references
+        self._verify_disa_cci_format()
         self.references.update(product_references)
 
-        self._make_stigid_product_specific(product)
+        self._verify_stigid_format(product)
 
     def _make_items_product_specific(self, items_dict, product_suffix, allow_overwrites=False):
         new_items = dict()
@@ -976,7 +1036,7 @@ class Rule(object):
                 raise ValueError("Identifiers must not be empty: %s in file %s"
                                  % (ident_type, yaml_file))
             if ident_type[0:3] == 'cce':
-                if not is_cce_format_valid("CCE-" + ident_val):
+                if not is_cce_format_valid(ident_val):
                     raise ValueError("CCE Identifier format must be valid: invalid format '%s' for CEE '%s'"
                                      " in file '%s'" % (ident_val, ident_type, yaml_file))
                 if not is_cce_value_valid("CCE-" + ident_val):
@@ -1146,7 +1206,7 @@ class DirectoryLoader(object):
     def load_benchmark_or_group(self, guide_directory):
         """
         Loads a given benchmark or group from the specified benchmark_file or
-        group_file, in the context of guide_directory, action, profiles_dir,
+        group_file, in the context of guide_directory, profiles_dir,
         env_yaml, and bash_remediation_fns.
 
         Returns the loaded group or benchmark.
@@ -1162,8 +1222,8 @@ class DirectoryLoader(object):
                 self.benchmark_file, 'product-name', self.env_yaml
             )
             if self.profiles_dir:
-                group.add_profiles_from_dir(self.action, self.profiles_dir, self.env_yaml)
-            group.add_bash_remediation_fns_from_file(self.action, self.bash_remediation_fns)
+                group.add_profiles_from_dir(self.profiles_dir, self.env_yaml)
+            group.add_bash_remediation_fns_from_file(self.bash_remediation_fns)
 
         if self.group_file:
             group = Group.from_yaml(self.group_file, self.env_yaml)
@@ -1211,8 +1271,6 @@ class BuildLoader(DirectoryLoader):
     def __init__(self, profiles_dir, bash_remediation_fns, env_yaml, resolved_rules_dir=None):
         super(BuildLoader, self).__init__(profiles_dir, bash_remediation_fns, env_yaml)
 
-        self.action = "build"
-
         self.resolved_rules_dir = resolved_rules_dir
         if resolved_rules_dir and not os.path.isdir(resolved_rules_dir):
             os.mkdir(resolved_rules_dir)
@@ -1249,33 +1307,3 @@ class BuildLoader(DirectoryLoader):
 
     def export_group_to_file(self, filename):
         return self.loaded_group.to_file(filename)
-
-
-class ListInputsLoader(DirectoryLoader):
-    def __init__(self, profiles_dir, bash_remediation_fns, env_yaml):
-        super(ListInputsLoader, self).__init__(profiles_dir, bash_remediation_fns, env_yaml)
-
-        self.action = "list-inputs"
-
-    def _process_values(self):
-        for value_yaml in self.value_files:
-            print(value_yaml)
-
-    def _process_rules(self):
-        for rule_yaml in self.rule_files:
-            print(rule_yaml)
-
-    def _get_new_loader(self):
-        return ListInputsLoader(
-            self.profiles_dir, self.bash_remediation_fns, self.env_yaml)
-
-    def load_benchmark_or_group(self, guide_directory):
-        result = super(ListInputsLoader, self).load_benchmark_or_group(guide_directory)
-
-        if self.benchmark_file:
-            print(self.benchmark_file)
-
-        if self.group_file:
-            print(self.group_file)
-
-        return result

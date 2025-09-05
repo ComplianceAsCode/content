@@ -131,3 +131,6 @@ selections:
   - sshd_disable_user_known_hosts
   - sshd_enable_strictmodes
   - sshd_use_strong_macs
+
+  ### Backup
+  - package_rear_installed

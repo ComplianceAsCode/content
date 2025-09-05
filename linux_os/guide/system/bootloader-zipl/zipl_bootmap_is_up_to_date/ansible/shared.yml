@@ -1,0 +1,24 @@
+# platform = Red Hat Enterprise Linux 8
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: "Ensure zIPL bootmap is up to date"
+  block:
+    - name: "Obtain stats of /boot/bootmap"
+      stat:
+        path: /boot/bootmap
+      register: boot_bootmap
+
+    - name: "Obtain stats of /etc/zipl.conf"
+      stat:
+        path: /etc/zipl.conf
+      register: zipl_conf
+
+    # TODO: handle /boot/loader/entries/*.conf
+
+    - name: "Update zIPL bootmap"
+      command: /usr/sbin/zipl
+      changed_when: True
+      when: boot_bootmap.stat.mtime is defined and zipl_conf.stat.mtime is defined and  boot_bootmap.stat.mtime < zipl_conf.stat.mtime

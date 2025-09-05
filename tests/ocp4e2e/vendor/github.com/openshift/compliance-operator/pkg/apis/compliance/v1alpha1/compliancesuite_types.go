@@ -1,6 +1,8 @@
 package v1alpha1
 
 import (
+	"reflect"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -8,6 +10,14 @@ import (
 // or a ComplianceRemediation) belongs to a certain ComplianceSuite.
 // This is an easy way to filter them.
 const SuiteLabel = "compliance.openshift.io/suite"
+
+// SuiteScriptLabel indicates that the object is a script belonging to the
+// compliance suite controller
+const SuiteScriptLabel = "compliance.openshift.io/suite-script"
+
+// SuiteFinalizer is a finalizer for ComplianceSuites. It gets automatically
+// added by the ComplianceSuite controller in order to delete resources.
+const SuiteFinalizer = "suite.finalizers.compliance.openshift.io"
 
 // ComplianceScanSpecWrapper provides a ComplianceScanSpec and a Name
 // +k8s:openapi-gen=true
@@ -17,6 +27,26 @@ type ComplianceScanSpecWrapper struct {
 	// Contains a human readable name for the scan. This is to identify the
 	// objects that it creates.
 	Name string `json:"name,omitempty"`
+}
+
+func (sw *ComplianceScanSpecWrapper) ScanSpecDiffers(other *ComplianceScan) bool {
+	if sw.Name != other.Name {
+		return true
+	}
+
+	// Avoid returning that the two differ if the other (typically retrieved through
+	// an API call) has the defaults set
+	swCopy := sw.DeepCopy()
+	if swCopy.RawResultStorage.Size == "" {
+		swCopy.RawResultStorage.Size = DefaultRawStorageSize
+	}
+	if swCopy.RawResultStorage.Rotation == 0 && other.Spec.RawResultStorage.Rotation == DefaultStorageRotation {
+		swCopy.RawResultStorage.Rotation = DefaultStorageRotation
+	}
+
+	// In case this ever gets slow, switch to comparing the fields one by
+	// one and fall back by deep equality on the complex types only
+	return !reflect.DeepEqual(swCopy.ComplianceScanSpec, other.Spec)
 }
 
 // ComplianceScanStatusWrapper provides a ComplianceScanStatus and a Name
@@ -29,15 +59,21 @@ type ComplianceScanStatusWrapper struct {
 	Name string `json:"name,omitempty"`
 }
 
-// ComplianceSuiteSpec defines the desired state of ComplianceSuite
+// ComplianceSuiteSettings groups together settings of a ComplianceSuite
 // +k8s:openapi-gen=true
-type ComplianceSuiteSpec struct {
+type ComplianceSuiteSettings struct {
 	// Defines whether or not the remediations should be applied automatically
 	AutoApplyRemediations bool `json:"autoApplyRemediations,omitempty"`
 	// Defines a schedule for the scans to run. This is in cronjob format.
 	// Note the scan will still be triggered immediately, and the scheduled
 	// scans will start running only after the initial results are ready.
 	Schedule string `json:"schedule,omitempty"`
+}
+
+// ComplianceSuiteSpec defines the desired state of ComplianceSuite
+// +k8s:openapi-gen=true
+type ComplianceSuiteSpec struct {
+	ComplianceSuiteSettings `json:",inline"`
 	// Contains a list of the scans to execute on the cluster
 	// +listType=atomic
 	Scans []ComplianceScanSpecWrapper `json:"scans"`
@@ -47,10 +83,10 @@ type ComplianceSuiteSpec struct {
 // +k8s:openapi-gen=true
 type ComplianceSuiteStatus struct {
 	// +listType=atomic
-	ScanStatuses     []ComplianceScanStatusWrapper `json:"scanStatuses"`
-	AggregatedPhase  ComplianceScanStatusPhase     `json:"aggregatedPhase,omitempty"`
-	AggregatedResult ComplianceScanStatusResult    `json:"aggregatedResult,omitempty"`
-	ErrorMessage     string                        `json:"errorMessage,omitempty"`
+	ScanStatuses []ComplianceScanStatusWrapper `json:"scanStatuses"`
+	Phase        ComplianceScanStatusPhase     `json:"phase,omitempty"`
+	Result       ComplianceScanStatusResult    `json:"result,omitempty"`
+	ErrorMessage string                        `json:"errorMessage,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -60,8 +96,8 @@ type ComplianceSuiteStatus struct {
 // +k8s:openapi-gen=true
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=compliancesuites,scope=Namespaced
-// +kubebuilder:printcolumn:name="Phase",type="string",JSONPath=`.status.aggregatedPhase`
-// +kubebuilder:printcolumn:name="Result",type="string",JSONPath=`.status.aggregatedResult`
+// +kubebuilder:printcolumn:name="Phase",type="string",JSONPath=`.status.phase`
+// +kubebuilder:printcolumn:name="Result",type="string",JSONPath=`.status.result`
 type ComplianceSuite struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

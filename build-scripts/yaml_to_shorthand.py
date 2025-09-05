@@ -34,9 +34,6 @@ def parse_args():
     parser.add_argument("--output", required=True,
                         help="Output XCCDF shorthand file. "
                         "e.g.: /tmp/shorthand.xml")
-    parser.add_argument("action",
-                        choices=["build", "list-inputs", "list-outputs"],
-                        help="Which action to perform.")
     parser.add_argument("--resolved-rules-dir", "-l",
                         help="To which directory to put processed rule YAMLs.")
     parser.add_argument("--profiles-root",
@@ -46,10 +43,6 @@ def parse_args():
 
 def main():
     args = parse_args()
-
-    if args.action == "list-outputs":
-        print(args.output)
-        sys.exit(0)
 
     env_yaml = ssg.yaml.open_environment(
         args.build_config_yaml, args.product_yaml)
@@ -70,25 +63,18 @@ def main():
         profiles_root = os.path.join(base_dir, profiles_root)
     add_content_dirs = [os.path.join(base_dir, er_root) for er_root in additional_content_directories if not os.path.isabs(er_root)]
 
-    if args.action == "build":
-        loader = ssg.build_yaml.BuildLoader(
-            profiles_root, args.bash_remediation_fns, env_yaml,
-            args.resolved_rules_dir)
-        loader.process_directory_tree(benchmark_root, add_content_dirs)
+    loader = ssg.build_yaml.BuildLoader(
+        profiles_root, args.bash_remediation_fns, env_yaml,
+        args.resolved_rules_dir)
+    loader.process_directory_tree(benchmark_root, add_content_dirs)
 
-        profiles = loader.loaded_group.profiles
-        for p in profiles:
-            p.validate_variables(loader.all_values)
-            p.validate_rules(loader.all_rules, loader.all_groups)
-            p.validate_refine_rules(loader.all_rules)
+    profiles = loader.loaded_group.profiles
+    for p in profiles:
+        p.validate_variables(loader.all_values)
+        p.validate_rules(loader.all_rules, loader.all_groups)
+        p.validate_refine_rules(loader.all_rules)
 
-        loader.export_group_to_file(args.output)
-    elif args.action == "list-inputs":
-        loader = ssg.build_yaml.ListInputsLoader(
-            profiles_root, args.bash_remediation_fns, env_yaml)
-        loader.process_directory_tree(benchmark_root, add_content_dirs)
-    else:
-        RuntimeError("Invalid action: {action}".format(action=args.action))
+    loader.export_group_to_file(args.output)
 
 
 if __name__ == "__main__":

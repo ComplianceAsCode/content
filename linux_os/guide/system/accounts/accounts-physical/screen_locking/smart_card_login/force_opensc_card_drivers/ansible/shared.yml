@@ -10,10 +10,17 @@
     path: /etc/opensc-{{ ansible_architecture }}.conf
   register: opensc_conf_fcd
 
-- name: "{{{ rule_title }}}"
-  lineinfile:
-    path: /etc/opensc-{{ ansible_architecture }}.conf
-    line: '        force_card_driver = {{ var_smartcard_drivers }}'
-    regexp: '(^\s+#|^)\s+force_card_driver\s+=\s+.*'
-    state: present
-  when: opensc_conf_fcd.stat.exists    
+- name: Force smartcard driver block
+  block:
+    - name: Check if force_card_driver is defined
+      command: /usr/bin/opensc-tool -G app:default:force_card_driver
+      changed_when: false
+      register: force_card_driver
+
+    - name: "{{{ rule_title }}}"
+      command: |
+        /usr/bin/opensc-tool -S app:default:force_card_driver:{{ var_smartcard_drivers }}
+      when:
+        - force_card_driver.stdout != var_smartcard_drivers
+  when:
+    - opensc_conf_fcd.stat.exists

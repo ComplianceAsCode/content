@@ -22,10 +22,10 @@
     <ind:state state_ref="state_aide_verify_ext_attributes" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_aide_verify_ext_attributes"
-  version="1">
+  version="2">
     <ind:filepath>/etc/aide.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^(?!ALLXTRAHASHES)[A-Z]*[\s]*=[\s]*([a-z0-9\+]*)$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than">1</ind:instance>
+    <ind:pattern operation="pattern match">^(?!ALLXTRAHASHES)[a-zA-Z]*[\s]*=[\s]*([a-zA-Z0-9\+]*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_aide_verify_ext_attributes" version="1">

@@ -375,6 +375,11 @@ def bls_entries_option(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
+def zipl_bls_entries_option(data, lang):
+    return bls_entries_option(data, lang)
+
+
 class Builder(object):
     """
     Class for building all templated content for a given product.

@@ -62,6 +62,7 @@ selections:
 - configure_kerberos_crypto_policy
 - configure_libreswan_crypto_policy
 - configure_openssl_crypto_policy
+- configure_ssh_crypto_policy
 - configure_tmux_lock_after_time
 - configure_tmux_lock_command
 - configure_usbguard_auditbackend
@@ -168,6 +169,7 @@ selections:
 - service_rngd_enabled
 - service_systemd-coredump_disabled
 - service_usbguard_enabled
+- ssh_client_rekey_limit
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
 - sshd_disable_kerb_auth
@@ -213,6 +215,14 @@ selections:
 - sysctl_user_max_user_namespaces
 - timer_dnf-automatic_enabled
 - usbguard_allow_hid_and_hub
+- zipl_audit_argument
+- zipl_audit_backlog_limit_argument
+- zipl_bls_entries_only
+- zipl_bootmap_is_up_to_date
+- zipl_page_poison_argument
+- zipl_pti_argument
+- zipl_slub_debug_argument
+- zipl_vsyscall_argument
 - var_sshd_set_keepalive=0
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
@@ -236,11 +246,12 @@ selections:
 - var_accounts_passwords_pam_faillock_deny=3
 - var_accounts_passwords_pam_faillock_fail_interval=900
 - var_accounts_passwords_pam_faillock_unlock_time=never
+- var_ssh_client_rekey_limit_size=1G
+- var_ssh_client_rekey_limit_time=1hour
 - grub2_vsyscall_argument.role=unscored
 - grub2_vsyscall_argument.severity=info
 - sysctl_user_max_user_namespaces.role=unscored
 - sysctl_user_max_user_namespaces.severity=info
-- ssh_client_rekey_limit
-- var_ssh_client_rekey_limit_size=1G
-- var_ssh_client_rekey_limit_time=1hour
+- zipl_vsyscall_argument.role=unscored
+- zipl_vsyscall_argument.severity=info
 title: Protection Profile for General Purpose Operating Systems

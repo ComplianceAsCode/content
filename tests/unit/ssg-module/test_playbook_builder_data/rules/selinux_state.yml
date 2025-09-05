@@ -6,7 +6,7 @@ description: 'The SELinux state should be set to <tt><sub idref="var_selinux_sta
   following line to configure the system to boot into enforcing mode:
 
   <pre>SELINUX=<sub idref="var_selinux_state" /></pre>'
-identifiers: {cce@rhel6: 26969-6, cce@rhel7: 27334-2, cce@rhel8: 80869-1}
+identifiers: {cce@rhel6: CCE-26969-6, cce@rhel7: CCE-27334-2, cce@rhel8: CCE-80869-1}
 ocil: 'Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
 
   <pre>SELINUX=<sub idref="var_selinux_state" /></pre>'
@@ -22,7 +22,7 @@ rationale: 'Setting the SELinux state to enforcing ensures SELinux is able to co
 
   privileges.'
 references: {cis: 1.6.1.2, cis-csc: '1,11,12,13,14,15,16,18,3,4,5,6,8,9', cobit5: 'APO01.06,APO11.04,APO13.01,BAI03.05,DSS01.05,DSS03.01,DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS06.02,DSS06.03,DSS06.06,MEA02.01',
-  cui: '3.1.2,3.7.2', disa: '2165,2696', disa@rhel6: '22,26,32', hipaa: '164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)',
+  cui: '3.1.2,3.7.2', disa: 'CCI-002165,CCI-002696', disa@rhel6: 'CCI-000022,CCI-000026,CCI-000032', hipaa: '164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)',
   isa-62443-2009: '4.2.3.4,4.3.3.2.2,4.3.3.3.9,4.3.3.4,4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4,4.4.3.3',
   isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR
     1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.10,SR 2.11,SR 2.12,SR 2.2,SR 2.3,SR
@@ -30,7 +30,7 @@ references: {cis: 1.6.1.2, cis-csc: '1,11,12,13,14,15,16,18,3,4,5,6,8,9', cobit5
     5.2,SR 5.3,SR 7.1,SR 7.6', iso27001-2013: 'A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.12.1.1,A.12.1.2,A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1,A.13.1.1,A.13.1.2,A.13.1.3,A.13.2.1,A.13.2.2,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.1,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5',
   nist: 'AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)', nist-csf: 'DE.AE-1,ID.AM-3,PR.AC-4,PR.AC-5,PR.AC-6,PR.DS-5,PR.PT-1,PR.PT-3,PR.PT-4',
   srg: SRG-OS-000445-GPOS-00199, srg@rhel6: SRG-OS-999999, stigid@rhel6: RHEL-06-000020,
-  stigid@rhel7: '020210'}
+  stigid@rhel7: 'RHEL-07-020210'}
 severity: high
 title: Ensure SELinux State is Enforcing
 warnings: []

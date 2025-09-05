@@ -4,6 +4,6 @@
 
 # verify (-V) all installed (-a) packages digests,
 # if digest differs from package metadata, then attribute '5' is printed
-result=$(rpm -Va | grep -E '^..5.* /(bin|sbin|lib|lib64|usr)/')
+result=$(rpm -Va --noconfig | grep -E '^..5')
 
 [ -z "$result" ]
