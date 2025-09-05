@@ -3,7 +3,8 @@ CHROME_POL_FILE="chrome_stig_policy.json"
 CHROME_POL_DIR="/etc/chromium/policies/managed/"
 
 if [ ! -d ${CHROME_POL_DIR} ] ; then
-   mkdir -p -m 755 ${CHROME_POL_DIR}
+   mkdir -p ${CHROME_POL_DIR}
+   chmod 755 ${CHROME_POL_DIR}
 fi
 
 if [ ! -f ${CHROME_POL_DIR}/${CHROME_POL_FILE} ] ; then

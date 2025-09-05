@@ -77,6 +77,7 @@ selections:
     - accounts_password_pam_difok
     - accounts_max_concurrent_login_sessions
     - set_password_hashing_algorithm_systemauth
+    - set_password_hashing_algorithm_passwordauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
     - file_owner_etc_shadow

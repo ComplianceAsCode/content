@@ -1,0 +1,16 @@
+<def-group>
+  <definition class="inventory" id="proc_sys_kernel_osrelease_arch_not_aarch64"
+  version="1">
+    <metadata>
+      <title>Test for different architecture than aarch64</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check that architecture of kernel in /proc/sys/kernel/osrelease is not aarch64</description>
+    </metadata>
+    <criteria>
+      <extend_definition comment="Architecture is not aarch64"
+      definition_ref="proc_sys_kernel_osrelease_arch_aarch64" negate="true"/>
+    </criteria>
+  </definition>
+</def-group>

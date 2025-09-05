@@ -19,14 +19,6 @@ description: |-
     {{% else %}}
     <pre>sudo {{{ pkg_manager }}} remove xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils xorg-x11-server-Xwayland</pre>
     {{% endif %}}
-    Additionally, setting the system's default target to
-    <tt>multi-user.target</tt> will prevent automatic startup of the X server.
-    To do so, run:
-    <pre>$ systemctl set-default multi-user.target</pre>
-    You should see the following output:
-    <pre>Removed symlink /etc/systemd/system/default.target.
-    Created symlink from /etc/systemd/system/default.target to /usr/lib/systemd/system/multi-user.target.</pre>
-
 
 rationale: |-
     Unnecessary service packages must not be installed to decrease the attack surface of the system. X windows has a long history of security
@@ -72,6 +64,8 @@ warnings:
         The installation and use of a Graphical User Interface (GUI) increases your attack vector and decreases your
         overall security posture. Removing the package xorg-x11-server-common package will remove the graphical target
         which might bring your system to an inconsistent state requiring additional configuration to access the system
-        again. If a GUI is an operational requirement, a tailored profile that removes this rule should used before
+        again.
+        The rule <tt>xwindows_runlevel_target</tt> can be used to configure the system to boot into the multi-user.target.
+        If a GUI is an operational requirement, a tailored profile that removes this rule should be used before
         continuing installation.
 {{{ ovirt_rule_notapplicable_warning("X11 graphic libraries are dependency of OpenStack Cinderlib storage provider") | indent(4) }}}

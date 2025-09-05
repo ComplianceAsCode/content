@@ -33,7 +33,7 @@ selections:
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled
-    # - var_accounts_authorized_local_users_regex=<authorized local user accounts>
+    # - var_accounts_authorized_local_users_regex=sle12
     #
     # NOTE: must configure "var_audispd_remote_server" when
     # "auditd_audispd_configure_remote_server" rule is enabled
@@ -125,7 +125,11 @@ selections:
     - audit_rules_unsuccessful_file_modification_open
     - audit_rules_unsuccessful_file_modification_openat
     - audit_rules_unsuccessful_file_modification_open_by_handle_at
+    - audit_rules_unsuccessful_file_modification_rename
+    - audit_rules_unsuccessful_file_modification_renameat
     - audit_rules_unsuccessful_file_modification_truncate
+    - audit_rules_unsuccessful_file_modification_unlink
+    - audit_rules_unsuccessful_file_modification_unlinkat
     - audit_rules_usergroup_modification_group
     - audit_rules_usergroup_modification_gshadow
     - audit_rules_usergroup_modification_opasswd
@@ -167,6 +171,7 @@ selections:
     - dir_system_commands_group_root_owned
     - dir_system_commands_root_owned
     - disable_ctrlaltdel_reboot
+    - disallow_bypass_password_sudo
     - display_login_attempts
     - enable_dconf_user_profile
     - encrypt_partitions
@@ -203,6 +208,7 @@ selections:
     - mount_option_nosuid_removable_partitions
     - network_sniffer_disabled
     - no_empty_passwords
+    - no_empty_passwords_etc_shadow
     - no_files_unowned_by_user
     - no_host_based_files
     - no_shelllogin_for_systemaccounts

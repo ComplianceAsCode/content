@@ -1,11 +1,11 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle15
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'Record Unsuccessul Delete Attempts to Files - unlink'
 
 description: |-
-    {{% if product not in ["sle15"] %}}
+    {{% if product not in ["sle12", "sle15"] %}}
     The audit system should collect unsuccessful file deletion
     attempts for all users and root. If the <tt>auditd</tt> daemon is configured
     to use the <tt>augenrules</tt> program to read audit rules during daemon
@@ -44,6 +44,7 @@ identifiers:
     cce@rhcos4: CCE-82652-9
     cce@rhel7: CCE-81106-7
     cce@rhel8: CCE-80971-5
+    cce@sle12: CCE-83254-3
     cce@sle15: CCE-85703-7
 
 references:
@@ -61,6 +62,7 @@ references:
     ospp: FAU_GEN.1.1.c
     pcidss: Req-10.2.4,Req-10.2.1
     srg: SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000468-GPOS-00212
+    stigid@sle12: SLES-12-020411
     stigid@sle15: SLES-15-030740
     vmmsrg: SRG-OS-000458-VMM-001810,SRG-OS-000461-VMM-001830
 
@@ -72,7 +74,7 @@ warnings:
         number of ways while still achieving the desired effect. Here the system calls
         have been placed independent of other system calls. Grouping system calls related
         to the same event is more efficient. See the following example:
-        {{% if product not in ["sle15"] %}}
+        {{% if product not in ["sle12", "sle15"] %}}
         <pre>-a always,exit -F arch=b32 -S unlink,unlinkat,rename,renameat -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-delete</pre>
         {{% else %}}
         <pre>
@@ -81,7 +83,7 @@ warnings:
         {{% endif %}} 
 
 template:
-    {{% if product not in ["sle15"] %}}
+    {{% if product not in ["sle12", "sle15"] %}}
     name: audit_rules_unsuccessful_file_modification
     vars:
         name: unlink

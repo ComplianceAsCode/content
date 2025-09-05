@@ -92,7 +92,7 @@
   <local_variable id="variable_smart_card_required_smartcard_auth" datatype="string"
   comment="Regular expression to check if smartcard authentication is required in /etc/pam.d/smartcard-auth" version="1">
     <concat>
-      <literal_component>\nauth[\s]+required[\s]+pam_env.so</literal_component>
+      <literal_component>\nauth[\s]+required[\s]+pam_env.so.*</literal_component>
       <literal_component>\nauth[\s]+\[success=done[\s]ignore=ignore[\s]default=die\][\s]</literal_component>
       <literal_component>pam_pkcs11.so[\s]nodebug[\s]wait_for_card\n.*</literal_component>
       <literal_component>\npassword[\s]+required[\s]+pam_pkcs11.so\n</literal_component>

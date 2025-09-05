@@ -1,0 +1,45 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="dconf_gnome_login_banner_text" version="1">
+    {{{ oval_metadata("Enable the GUI warning banner.") }}}
+    <criteria operator="OR">
+      <extend_definition comment="gdm installed" definition_ref="package_gdm_installed" negate="true" />
+      <criterion comment="Login banner is correctly set" test_ref="test_gdm_login_banner_text_setting" />
+      <criterion comment="Login banner is correctly set on gdm3 default" test_ref="test_gdm_login_banner_text_setting_gdm3" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="login banner text is correctly set"
+  id="test_gdm_login_banner_text_setting" version="1">
+    <ind:object object_ref="obj_gdm_login_banner_text_setting" />
+    <ind:state state_ref="state_gdm_login_banner_text_setting" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_gdm_login_banner_text_setting"
+  version="1">
+    <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^banner-message-text=\s*'([^']*)'$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="login banner text is correctly set on gdm3 default"
+  id="test_gdm_login_banner_text_setting_gdm3" version="1">
+    <ind:object object_ref="obj_gdm_login_banner_text_setting_gdm3" />
+    <ind:state state_ref="state_gdm_login_banner_text_setting" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_gdm_login_banner_text_setting_gdm3"
+  version="1">
+    <ind:filepath>/etc/gdm3/greeter.dconf-defaults</ind:filepath>
+    <ind:pattern operation="pattern match">^banner-message-text=\s*'([^']*)'$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <ind:textfilecontent54_state id="state_gdm_login_banner_text_setting" version="1">
+    <ind:subexpression datatype="string" operation="pattern match" var_ref="login_banner_text" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="warning banner text variable" datatype="string" id="login_banner_text" version="1" />
+
+</def-group>

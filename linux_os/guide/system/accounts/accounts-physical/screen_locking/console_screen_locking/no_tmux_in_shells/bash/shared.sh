@@ -1,5 +1,5 @@
 # platform = multi_platform_all
 
-if grep -q 'tmux$' /etc/shells ; then
-	sed -i '/tmux$/d' /etc/shells
+if grep -q 'tmux\s*$' /etc/shells ; then
+	sed -i '/tmux\s*$/d' /etc/shells
 fi

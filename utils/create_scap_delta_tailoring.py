@@ -4,6 +4,7 @@ import argparse
 import datetime
 import json
 import os
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -30,8 +31,12 @@ def get_profile(product, profile_name):
         './/{{{scap}}}component/{{{xccdf}}}Benchmark/{{{xccdf}}}Profile'.format(
             scap=NS["scap"], xccdf=NS["xccdf-1.2"])
     )
+
+    profile_name_fqdn = "xccdf_org.ssgproject.content_profile_{profile_name}".format(
+        profile_name=profile_name)
+
     for profile in profiles:
-        if profile.attrib['id'].endswith(profile_name):
+        if profile.attrib['id'] == profile_name_fqdn:
             return profile
 
 
@@ -102,24 +107,22 @@ def get_implemented_stigs(product, root_path, build_config_yaml_path,
                           build_root):
     platform_rules = get_platform_rules(product, json_path, resolved_rules_dir, build_root)
 
-    if resolved_rules_dir:
-        platform_rules_dict = dict()
-        for rule in platform_rules:
-            platform_rules_dict[rule['id']] = rule
-        return platform_rules_dict
     product_dir = os.path.join(root_path, "products", product)
     product_yaml_path = os.path.join(product_dir, "product.yml")
     env_yaml = ssg.environment.open_environment(build_config_yaml_path, str(product_yaml_path))
 
     known_rules = dict()
     for rule in platform_rules:
-        try:
-            rule_obj = handle_rule_yaml(product, rule['id'],
-                                        rule['dir'], rule['guide'], env_yaml)
-        except ssg.yaml.DocumentationNotComplete:
-            sys.stderr.write('Rule %s throw DocumentationNotComplete' % rule['id'])
-            # Happens on non-debug build when a rule is "documentation-incomplete"
-            continue
+        if resolved_rules_dir:
+            rule_obj = rule
+        else:
+            try:
+                rule_obj = handle_rule_yaml(product, rule['id'],
+                                            rule['dir'], rule['guide'], env_yaml)
+            except ssg.yaml.DocumentationNotComplete:
+                sys.stderr.write('Rule %s throw DocumentationNotComplete' % rule['id'])
+                # Happens on non-debug build when a rule is "documentation-incomplete"
+                continue
 
         if reference_str in rule_obj['references'].keys():
             ref = rule_obj['references'][reference_str]
@@ -127,6 +130,7 @@ def get_implemented_stigs(product, root_path, build_config_yaml_path,
                 known_rules[ref].append(rule['id'])
             else:
                 known_rules[ref] = [rule['id']]
+    return known_rules
 
 
 get_implemented_stigs.__annotations__ = {'product': str, 'root_path': str,
@@ -227,11 +231,19 @@ def main():
     ET.register_namespace('xccdf-1.2', ssg.constants.XCCDF12_NS)
     tailoring_root = create_tailoring(args)
     tree = ET.ElementTree(tailoring_root)
+    manual_version = re.search(r'(v[0-9]+r[0-9]+)', args.manual)
+    if manual_version is None:
+        sys.stderr.write("Unable to find version from file name.\n")
+        sys.stderr.write("The string v[NUM]r[NUM] must be in the filename.\n")
+        exit(1)
+
     if args.output:
         out = os.path.join(args.output)
     else:
-        out = os.path.join(SSG_ROOT, 'build', '{product}_{profile}_delta_tailoring.xml'
-                           .format(product=args.product, profile=args.profile))
+        out = os.path.join(SSG_ROOT, 'build',
+                           '{product}_{profile}_{manual_version}_delta_tailoring.xml'
+                           .format(product=args.product, profile=args.profile,
+                                   manual_version=manual_version.group(0)))
     tree.write(out)
     if not args.quiet:
         print("Wrote tailoring file to {out}.".format(out=out))

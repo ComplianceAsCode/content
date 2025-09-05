@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: eks
+
+title: 'Manage Users with AWS IAM'
+
+description: |-
+  Amazon EKS uses IAM to provide authentication to your Kubernetes cluster
+  through the AWS IAM Authenticator for Kubernetes. You can configure the stock
+  kubectl client to work with Amazon EKS by installing the AWS IAM
+  Authenticator for Kubernetes and modifying your kubectl configuration file to
+  use it for authentication.
+
+rationale: |-
+  On- and off-boarding users is often difficult to automate and prone to error.
+  Using a single source of truth for user permissions reduces the number of
+  locations that an individual must be off-boarded from, and prevents users
+  gaining unique permissions sets that increase the cost of audit.
+
+severity: unknown
+
+identifiers:
+  cce@eks: CCE-86301-9
+
+references:
+  cis@eks: 5.5.1
+
+ocil_clause: 'authorization and authentication is managed using AWS IAM'
+
+ocil: |-
+  <b>Audit:</b>
+
+  To Audit access to the namespace $NAMESPACE, assume the IAM role
+  yourIAMRoleName for a user that you created, and then run the following
+  command:
+
+  <tt>$ kubectl get role -n <i>$NAMESPACE</i></tt>
+  The response lists the RBAC role that has access to this Namespace.
+
+  <b>Remediation:</b>
+  
+  Refer to the 'Managing users or IAM roles for your cluster' in Amazon EKS
+  documentation.
+
+  https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html

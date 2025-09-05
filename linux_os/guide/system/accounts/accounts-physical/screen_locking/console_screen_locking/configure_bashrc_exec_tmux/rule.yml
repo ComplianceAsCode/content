@@ -7,7 +7,7 @@ title: 'Support session locking with tmux'
 description: |-
     The <tt>tmux</tt> terminal multiplexer is used to implement
     automatic session locking. It should be started from
-    <tt>/etc/bashrc</tt>.
+    <tt>/etc/bashrc</tt> or drop-in files within <tt>/etc/profile.d/</tt>.
 
 rationale: |-
     Unlike <tt>bash</tt> itself, the <tt>tmux</tt> terminal multiplexer
@@ -31,7 +31,7 @@ ocil_clause: 'exec tmux is not present at the end of bashrc'
 ocil: |-
     To verify that tmux is configured to execute,
     run the following command:
-    <pre>$ grep -A1 -B3 "case ..name. in sshd|login) exec tmux ;; esac" /etc/bashrc</pre>
+    <pre>$ grep -A1 -B3 "case ..name. in sshd|login) exec tmux ;; esac" /etc/bashrc /etc/profile.d/*</pre>
     The output should return the following:
     <pre>if [ "$PS1" ]; then
       parent=$(ps -o ppid= -p $$)

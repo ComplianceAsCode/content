@@ -1,7 +1,7 @@
 title: DISA STIG with GUI for Red Hat Enterprise Linux 8
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R4.
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R5.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -34,8 +34,9 @@ description: 'This profile contains configuration checks that align to the
     standard DISA STIG for Red Hat Enterprise Linux 8 profile.'
 extends: null
 metadata:
-    version: V1R4
+    version: V1R5
     SMEs:
+    - mab879
     - ggbecker
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
@@ -63,6 +64,8 @@ selections:
 - accounts_password_pam_ocredit
 - accounts_password_pam_pwhistory_remember_password_auth
 - accounts_password_pam_pwhistory_remember_system_auth
+- accounts_password_pam_pwquality_password_auth
+- accounts_password_pam_pwquality_system_auth
 - accounts_password_pam_retry
 - accounts_password_pam_ucredit
 - accounts_password_pam_unix_rounds_password_auth
@@ -168,6 +171,7 @@ selections:
 - chronyd_client_only
 - chronyd_no_chronyc_network
 - chronyd_or_ntpd_set_maxpoll
+- chronyd_server_directive
 - clean_components_post_updating
 - configure_bashrc_exec_tmux
 - configure_bind_crypto_policy
@@ -191,6 +195,8 @@ selections:
 - dconf_gnome_screensaver_idle_delay
 - dconf_gnome_screensaver_lock_enabled
 - dir_group_ownership_library_dirs
+- dir_ownership_library_dirs
+- dir_permissions_library_dirs
 - dir_perms_world_writable_root_owned
 - dir_perms_world_writable_sticky_bits
 - directory_group_ownership_var_log_audit
@@ -288,8 +294,6 @@ selections:
 - package_abrt-addon-ccpp_removed
 - package_abrt-addon-kerneloops_removed
 - package_abrt-cli_removed
-- package_abrt-plugin-logger_removed
-- package_abrt-plugin-rhtsupport_removed
 - package_abrt-plugin-sosreport_removed
 - package_abrt_removed
 - package_aide_installed
@@ -299,6 +303,8 @@ selections:
 - package_gssproxy_removed
 - package_iprutils_removed
 - package_krb5-workstation_removed
+- package_libreport-plugin-logger_removed
+- package_libreport-plugin-rhtsupport_removed
 - package_mcafeetp_installed
 - package_opensc_installed
 - package_openssh-server_installed
@@ -347,6 +353,7 @@ selections:
 - service_systemd-coredump_disabled
 - service_usbguard_enabled
 - set_password_hashing_algorithm_logindefs
+- set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
 - sshd_disable_compression
 - sshd_disable_empty_passwords
@@ -360,8 +367,6 @@ selections:
 - sshd_enable_warning_banner
 - sshd_print_last_log
 - sshd_rekey_limit
-- sshd_set_idle_timeout
-- sshd_set_keepalive_0
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
 - sssd_certificate_verification
@@ -372,6 +377,7 @@ selections:
 - sudo_remove_nopasswd
 - sudo_require_reauthentication
 - sudo_restrict_privilege_elevation_to_authorized
+- sudoers_default_includedir
 - sudoers_validate_passwd
 - sysctl_crypto_fips_enabled
 - sysctl_fs_protected_hardlinks
@@ -428,7 +434,6 @@ selections:
 - var_password_pam_ucredit=1
 - var_password_pam_lcredit=1
 - var_password_pam_retry=3
-- var_sshd_set_keepalive=0
 - sshd_approved_macs=stig
 - sshd_approved_ciphers=stig
 - sshd_idle_timeout_value=10_minutes
@@ -452,6 +457,7 @@ selections:
 - login_banner_text=dod_banners
 - var_system_crypto_policy=fips
 - var_sudo_timestamp_timeout=always_prompt
+- var_slub_debug_options=P
 platforms: !!set {}
 cpe_names: !!set {}
 platform: null

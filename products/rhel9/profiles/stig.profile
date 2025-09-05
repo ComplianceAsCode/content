@@ -52,7 +52,7 @@ selections:
     - var_password_pam_lcredit=1
     - var_password_pam_retry=3
     - var_password_pam_minlen=15
-    - var_sshd_set_keepalive=0
+    # - var_sshd_set_keepalive=0
     - sshd_approved_macs=stig
     - sshd_approved_ciphers=stig
     - sshd_idle_timeout_value=10_minutes
@@ -150,6 +150,9 @@ selections:
     # RHEL-08-010152
     - require_emergency_target_auth
 
+    # RHEL-08-010159
+    - set_password_hashing_algorithm_passwordauth
+
     # RHEL-08-010160
     - set_password_hashing_algorithm_systemauth
 
@@ -168,11 +171,13 @@ selections:
     # RHEL-08-010190
     - dir_perms_world_writable_sticky_bits
 
-    # RHEL-08-010200
-    - sshd_set_keepalive_0
-
-    # RHEL-08-010201
-    - sshd_set_idle_timeout
+    # These two items don't behave as they used to in RHEL8.6 and RHEL9
+    # anymore. They will be disabled for now until an alternative
+    # solution is found.
+    # # RHEL-08-010200
+    # - sshd_set_keepalive_0
+    # # RHEL-08-010201
+    # - sshd_set_idle_timeout
 
     # RHEL-08-010210
     - file_permissions_var_log_messages
@@ -192,9 +197,7 @@ selections:
     # RHEL-08-010260
     - file_groupowner_var_log
 
-    # *** SHARED *** #
-    # RHEL-08-010290 && RHEL-08-010291
-    # *** SHARED *** #
+    # RHEL-08-010287
     - configure_ssh_crypto_policy
 
     # RHEL-08-010290
@@ -229,15 +232,25 @@ selections:
     # RHEL-08-010330
     - file_permissions_library_dirs
 
+    # RHEL-08-010331
+    - dir_permissions_library_dirs
+
     # RHEL-08-010340
     - file_ownership_library_dirs
 
+    # RHEL-08-010341
+    - dir_ownership_library_dirs
+
     # RHEL-08-010350
     - root_permissions_syslibrary_files
+
+    # RHEL-08-010351
     - dir_group_ownership_library_dirs
 
-    # RHEL-08-010360
+    # RHEL-08-010359
     - package_aide_installed
+
+    # RHEL-08-010360
     - aide_scan_notification
 
     # RHEL-08-010370
@@ -357,9 +370,6 @@ selections:
 
     # RHEL-08-010550
     - sshd_disable_root_login
-
-    # RHEL-08-010560
-    - service_auditd_enabled
 
     # RHEL-08-010561
     - service_rsyslog_enabled
@@ -516,6 +526,20 @@ selections:
     - sssd_enable_certmap
 
     # RHEL-08-020100
+    - accounts_password_pam_pwquality_password_auth
+
+    # RHEL-08-020101
+    - accounts_password_pam_pwquality_system_auth
+
+    # RHEL-08-020102
+    # This is only required for RHEL8 systems below version 8.4 where the
+    # retry parameter was not yet available on /etc/security/pwquality.conf.
+
+    # RHEL-08-020103
+    # This is only required for RHEL8 systems below version 8.4 where the
+    # retry parameter was not yet available on /etc/security/pwquality.conf.
+
+    # RHEL-08-020104
     - accounts_password_pam_retry
 
     # RHEL-08-020110
@@ -553,6 +577,8 @@ selections:
 
     # RHEL-08-020220
     - accounts_password_pam_pwhistory_remember_system_auth
+
+    # RHEL-08-020221
     - accounts_password_pam_pwhistory_remember_password_auth
 
     # RHEL-08-020230
@@ -705,27 +731,17 @@ selections:
 
     # RHEL-08-030200
     - audit_rules_dac_modification_lremovexattr
-
-    # RHEL-08-030210
     - audit_rules_dac_modification_removexattr
-
-    # RHEL-08-030220
     - audit_rules_dac_modification_lsetxattr
-
-    # RHEL-08-030230
     - audit_rules_dac_modification_fsetxattr
-
-    # RHEL-08-030240
     - audit_rules_dac_modification_fremovexattr
+    - audit_rules_dac_modification_setxattr
 
     # RHEL-08-030250
     - audit_rules_privileged_commands_chage
 
     # RHEL-08-030260
     - audit_rules_execution_chcon
-
-    # RHEL-08-030270
-    - audit_rules_dac_modification_setxattr
 
     # RHEL-08-030280
     - audit_rules_privileged_commands_ssh_agent
@@ -780,27 +796,17 @@ selections:
 
     # RHEL-08-030360
     - audit_rules_kernel_module_loading_init
+    - audit_rules_kernel_module_loading_finit
 
     # RHEL-08-030361
     - audit_rules_file_deletion_events_rename
-
-    # RHEL-08-030362
     - audit_rules_file_deletion_events_renameat
-
-    # RHEL-08-030363
     - audit_rules_file_deletion_events_rmdir
-
-    # RHEL-08-030364
     - audit_rules_file_deletion_events_unlink
-
-    # RHEL-08-030365
     - audit_rules_file_deletion_events_unlinkat
 
     # RHEL-08-030370
     - audit_rules_privileged_commands_gpasswd
-
-    # RHEL-08-030380
-    - audit_rules_kernel_module_loading_finit
 
     # RHEL-08-030390
     - audit_rules_kernel_module_loading_delete
@@ -813,41 +819,21 @@ selections:
 
     # RHEL-08-030420
     - audit_rules_unsuccessful_file_modification_truncate
-
-    # RHEL-08-030430
     - audit_rules_unsuccessful_file_modification_openat
-
-    # RHEL-08-030440
     - audit_rules_unsuccessful_file_modification_open
-
-    # RHEL-08-030450
     - audit_rules_unsuccessful_file_modification_open_by_handle_at
-
-    # RHEL-08-030460
     - audit_rules_unsuccessful_file_modification_ftruncate
-
-    # RHEL-08-030470
     - audit_rules_unsuccessful_file_modification_creat
 
     # RHEL-08-030480
     - audit_rules_dac_modification_chown
+    - audit_rules_dac_modification_lchown
+    - audit_rules_dac_modification_fchownat
+    - audit_rules_dac_modification_fchown
 
     # RHEL-08-030490
     - audit_rules_dac_modification_chmod
-
-    # RHEL-08-030500
-    - audit_rules_dac_modification_lchown
-
-    # RHEL-08-030510
-    - audit_rules_dac_modification_fchownat
-
-    # RHEL-08-030520
-    - audit_rules_dac_modification_fchown
-
-    # RHEL-08-030530
     - audit_rules_dac_modification_fchmodat
-
-    # RHEL-08-030540
     - audit_rules_dac_modification_fchmod
 
     # RHEL-08-030550
@@ -923,6 +909,7 @@ selections:
     # RHEL-08-030740
     # remediation fails because default configuration file contains pool instead of server keyword
     - chronyd_or_ntpd_set_maxpoll
+    - chronyd_server_directive
 
     # RHEL-08-030741
     - chronyd_client_only

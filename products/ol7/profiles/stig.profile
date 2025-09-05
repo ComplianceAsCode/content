@@ -4,7 +4,7 @@ title: 'DISA STIG for Oracle Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux V2R4.
+    DISA STIG for Oracle Linux V2R6.
 
 selections:
     - login_banner_text=dod_banners
@@ -18,6 +18,7 @@ selections:
     - var_password_pam_ocredit=1
     - var_password_pam_lcredit=1
     - var_password_pam_ucredit=1
+    - var_accounts_authorized_local_users_regex=ol7
     - var_accounts_passwords_pam_faillock_unlock_time=never
     - var_accounts_passwords_pam_faillock_fail_interval=900
     - var_accounts_passwords_pam_faillock_deny=3
@@ -28,7 +29,7 @@ selections:
     - var_accounts_minimum_age_login_defs=1
     - var_password_pam_maxrepeat=3
     - var_accounts_maximum_age_login_defs=60
-    - var_account_disable_post_pw_expiration=0
+    - var_account_disable_post_pw_expiration=35
     - var_removable_partition=dev_cdrom
     - var_auditd_action_mail_acct=root
     - var_auditd_space_left_action=email
@@ -38,7 +39,7 @@ selections:
     - var_accounts_tmout=15_min
     - var_password_pam_remember=5
     - var_password_pam_remember_control_flag=required
-    - var_time_service_set_maxpoll=system_default
+    - var_time_service_set_maxpoll=18_hours
     - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
     - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
@@ -308,7 +309,11 @@ selections:
     - sudo_require_reauthentication
     - auditd_overflow_action
     - accounts_authorized_local_users
-    - grub2_password_legacy
-    - grub2_uefi_password_legacy
     - accounts_password_pam_pwhistory_remember_password_auth
     - accounts_password_pam_pwhistory_remember_system_auth
+    - sebool_ssh_sysadm_login
+    - selinux_confine_to_least_privilege
+    - selinux_context_elevation_for_sudo
+    - sudoers_default_includedir
+    - disallow_bypass_password_sudo
+    - no_empty_passwords_etc_shadow

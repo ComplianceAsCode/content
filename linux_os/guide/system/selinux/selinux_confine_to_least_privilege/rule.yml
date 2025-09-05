@@ -1,0 +1,53 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Confine SELinux Users To Roles That Conform To Least Privilege'
+
+description: |-
+    Configure the operating system to confine SELinux users to roles that conform
+    to least privilege. Use the following command to map the "staff_u" SELinux user
+    to the "staff_r" and "sysadm_r" roles:
+    <pre>$ sudo semanage user -m staff_u -R staff_r -R sysadm_r</pre>
+    <br /><br />
+    Use the following command to map the "user_u" SELinux user to the "user_r" role:
+    <pre>$ sudo semanage -m user_u -R user_r</pre>
+
+rationale: |-
+    Preventing non-privileged users from executing privileged functions mitigates
+    the risk that unauthorized individuals or processes may gain unnecessary access
+    to information or privileges.
+    <br /><br />
+    Privileged functions include, for example,
+    establishing accounts, performing system integrity checks, or administering
+    cryptographic key management activities. Non-privileged users are individuals
+    who do not possess appropriate authorizations. Circumventing intrusion detection
+    and prevention mechanisms or malicious code protection mechanisms are examples
+    of privileged functions that require protection from non-privileged users.
+
+severity: medium
+
+references:
+    disa: CCI-002165,CCI-002235
+    nist: AC-3(4),AC-6(10)
+    srg: SRG-OS-000324-GPOS-00125
+    stigid@ol7: OL07-00-020021
+
+ocil_clause: 'selinux users are not confined to least privilege'
+
+ocil: |-
+    Verify the operating system confines SELinux users to roles that conform to least
+    privilege. Check the SELinux User list to SELinux Roles mapping by using the 
+    following command:
+    <pre>sudo semanage user -l</pre>
+    The output should look like this:
+    <pre>SELinuxUser LabelingPrefix MLS/MCSLevel MLS/MCSRange SELinuxRoles
+    guest_u            user  s0  s0  guest_r
+    root                   user  s0  s0-s0:c0.c1023  staff_r sysadm_r system_r unconfined_r
+    staff_u              user  s0  s0-s0:c0.c1023  staff_r sysadm_r
+    sysadm_u         user  s0  s0-s0:c0.c1023  sysadm_r
+    system_u          user  s0  s0-s0:c0.c1023  system_r unconfined_r
+    unconfined_u  user  s0  s0-s0:c0.c1023  system_r unconfined_r
+    user_u               user  s0  s0  user_r
+    xguest_u           user  s0  s0  xguest_r
+    </pre>

@@ -1,0 +1,37 @@
+product: ol9
+full_name: Oracle Linux 9
+type: platform
+
+benchmark_id: OL-9
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "yum"
+
+init_system: "systemd"
+
+pkg_release: "61e772ef"
+pkg_version: "8d8b756f"
+
+aux_pkg_release: "61e77439"
+aux_pkg_version: "8b4efbe6"
+
+release_key_fingerprint: "3E6D826D3FBAB389C2F38E34BC4D06A08D8B756F"
+auxiliary_key_fingerprint: "982231759C7467065D0CE9B2A7DD07088B4EFBE6"
+
+oval_feed_url: "https://linux.oracle.com/security/oval/com.oracle.elsa-all.xml.bz2"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - ol9:
+      name: "cpe:/o:oracle:linux:9"
+      title: "Oracle Linux 9"
+      check_id: installed_OS_is_ol9_family
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  login_defs: "shadow-utils"
+
+reference_uris:
+  cis: ''

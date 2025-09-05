@@ -20,5 +20,5 @@ fi
 if [ ${#err_cnt} -gt 0 ] 
 then
   echo "Set the permissions"
-  chkstat --set --system
+  chkstat --set /etc/permissions.local
 fi

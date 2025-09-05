@@ -318,7 +318,6 @@ class RuleChecker(oscap.Checker):
         sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
                                                       self.slice_current,
                                                       self.slice_total)
-
         self._prepare_environment(sliced_scenarios_by_rule_id)
 
         with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
@@ -432,9 +431,15 @@ class RuleChecker(oscap.Checker):
         os.close(descriptor)
         log_file_name = os.path.join(LogHelper.LOG_DIR, "env-preparation.log")
         with open(log_file_name, "a") as log_file:
-            common.run_with_stdout_logging(
+            result = common.run_with_stdout_logging(
                     "xsltproc", ("--output", temp_datastream, xslt_filename, self.datastream),
                     log_file)
+            if result.returncode:
+                msg = (
+                    "Error changing value of '{varname}': {stdout}"
+                    .format(varname=varname, stderr=result.stderr)
+                )
+                raise RuntimeError(msg)
         os.rename(temp_datastream, self.datastream)
         os.unlink(xslt_filename)
 

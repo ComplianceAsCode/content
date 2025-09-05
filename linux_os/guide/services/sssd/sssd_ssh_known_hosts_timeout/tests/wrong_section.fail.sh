@@ -1,8 +1,6 @@
 #!/bin/bash
 # packages = /usr/lib/systemd/system/sssd.service
 
-# profiles = xccdf_org.ssgproject.content_profile_ospp
-
 SSSD_CONF="/etc/sssd/sssd.conf"
 TIMEOUT="180"
 

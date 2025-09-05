@@ -6,16 +6,13 @@
 {{%- if init_system == "systemd" %}}
 - name: Disable service {{{ SERVICENAME }}}
   block:
-  - name: Gather the service facts
-    service_facts:
-
   - name: Disable service {{{ SERVICENAME }}}
     systemd:
       name: "{{{ DAEMONNAME }}}.service"
       enabled: "no"
       state: "stopped"
       masked: "yes"
-    when: '"{{{ DAEMONNAME }}}.service" in ansible_facts.services'
+    ignore_errors: 'yes'
 
 - name: "Unit Socket Exists - {{{ DAEMONNAME }}}.socket"
   command: systemctl list-unit-files {{{ DAEMONNAME }}}.socket

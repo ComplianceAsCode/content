@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: eks
+
+title: 'Ensure Cluster Private Nodes'
+
+description: |-
+  Disable public IP addresses for cluster nodes, so that they only have private
+  IP addresses. Private Nodes are nodes with no public IP addresses.
+
+rationale: |-
+  Disabling public IP addresses on cluster nodes restricts access to only
+  internal networks, forcing attackers to obtain local network access before
+  attempting to compromise the underlying Kubernetes hosts.
+
+severity: unknown
+
+identifiers:
+  cce@eks: CCE-88669-7
+
+references:
+  cis@eks: 5.4.3
+
+ocil_clause: 'clusters are created with private nodes'
+
+ocil: |-
+  To enable Private Nodes, the cluster has to also be configured with a private
+  master IP range and IP Aliasing enabled. Private Nodes do not have outbound
+  access to the public internet.
+
+  If you want to provide outbound Internet access for your private nodes, you
+  can use Cloud NAT or you can manage your own NAT gateway.

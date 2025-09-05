@@ -1,8 +1,15 @@
+{{% if 'ubuntu' in product %}}
+{{% set gid = 'syslog' %}}
+{{% else %}}
+{{% set gid = 'root' %}}
+{{% endif %}}
+
+
 documentation_complete: true
 
 title: 'Verify Group Who Owns /var/log Directory'
 
-description: '{{{ describe_file_group_owner(file="/var/log", group="root") }}}'
+description: '{{{ describe_file_group_owner(file="/var/log", group=gid) }}}'
 
 rationale: |-
     The <tt>/var/log</tt> directory contains files with logs of error
@@ -22,13 +29,16 @@ references:
     stigid@rhel8: RHEL-08-010260
     stigid@ubuntu2004: UBTU-20-010417
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log", group=gid) }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/var/log", group="root") }}}
+    {{{ ocil_file_group_owner(file="/var/log", group=gid) }}}
 
 template:
     name: file_groupowner
     vars:
         filepath: /var/log/
         filegid: '0'
+        filegid@ubuntu1604: '110'
+        filegid@ubuntu1804: '110'
+        filegid@ubuntu2004: '110'

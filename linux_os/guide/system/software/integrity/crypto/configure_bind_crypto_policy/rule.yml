@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhcos4,rhel8,rhel9,rhv4
+prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9,rhv4
 
 title: 'Configure BIND to use System Crypto Policy'
 
@@ -19,7 +19,7 @@ rationale: |-
     Overriding the system crypto policy makes the behavior of the BIND service violate expectations,
     and makes system configuration more fragmented.
 
-severity: medium
+severity: high
 
 identifiers:
     cce@rhcos4: CCE-82544-8

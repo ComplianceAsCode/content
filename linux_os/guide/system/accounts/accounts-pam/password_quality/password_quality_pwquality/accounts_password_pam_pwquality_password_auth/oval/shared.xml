@@ -1,0 +1,21 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("The PAM module pam_pwquality is used in password-auth") }}}
+    <criteria comment="Condition for pam_pwquality in password-auth is satisfied">
+      <criterion comment="pam_pwquality password-auth"
+                 test_ref="test_accounts_password_pam_pwquality_password_auth"/>
+      </criteria>
+  </definition>
+
+  <ind:textfilecontent54_object id="object_accounts_password_pam_pwquality_password_auth" version="1">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^password[\s]*requisite[\s]*pam_pwquality\.so</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" version="1"
+                              id="test_accounts_password_pam_pwquality_password_auth"
+                              comment="check the configuration of /etc/pam.d/password-auth">
+    <ind:object object_ref="object_accounts_password_pam_pwquality_password_auth"/>
+  </ind:textfilecontent54_test>
+</def-group>

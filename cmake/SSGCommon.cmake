@@ -199,7 +199,7 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
     endforeach(LANGUAGE ${LANGUAGES})
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/collect-remediations-${PRODUCT}"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/collect_remediations.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${REMEDIATION_TYPE_OPTIONS} --output-dir "${CMAKE_CURRENT_BINARY_DIR}/fixes" --fixes-from-templates-dir "${BUILD_REMEDIATIONS_DIR}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/collect_remediations.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${REMEDIATION_TYPE_OPTIONS} --output-dir "${CMAKE_CURRENT_BINARY_DIR}/fixes" --fixes-from-templates-dir "${BUILD_REMEDIATIONS_DIR}" --platforms-dir "${CMAKE_CURRENT_BINARY_DIR}/platforms"
         COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/collect-remediations-${PRODUCT}"
         # Acutally we mean that it depends on resolved rules.
         DEPENDS ${PRODUCT}-compile-all
@@ -210,6 +210,13 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
         generate-internal-${PRODUCT}-all-fixes
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/collect-remediations-${PRODUCT}"
     )
+    if (SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED AND SHELLCHECK_EXECUTABLE)
+        add_test(
+            NAME "${PRODUCT}-bash-shellcheck"
+	    COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning
+        )
+        set_tests_properties("${PRODUCT}-bash-shellcheck" PROPERTIES LABELS quick)
+    endif()
 endmacro()
 
 # Builds the XML document containing all remediations of the given language.
@@ -560,20 +567,6 @@ macro(ssg_build_ocil_final PRODUCT)
     )
 endmacro()
 
-# Build a special XCCDF for the PCI-DSS profile.
-macro(ssg_build_pci_dss_xccdf PRODUCT)
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_SHARED_TRANSFORMS}/pcidss/transform_benchmark_to_pcidss.py" "${SSG_SHARED_TRANSFORMS}/pcidss/PCI_DSS.json" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
-        COMMENT "[${PRODUCT}-content] building ssg-${PRODUCT}-pcidss-xccdf-1.2.xml from ssg-${PRODUCT}-xccdf-1.2.xml (PCI-DSS centered benchmark)"
-    )
-    add_custom_target(
-        generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    )
-endmacro()
-
 # Build source data streams (as opposed to result data streams that occur after
 # evaluation using e.g., OpenSCAP) by combining XCCDF, OVAL, SCE, and OCIL
 # content. This relies heavily on the OpenSCAP executable here.
@@ -586,14 +579,11 @@ macro(ssg_build_sds PRODUCT)
             COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
             COMMAND "${SED_EXECUTABLE}" -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
             COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/sds_move_ocil_to_checks.py" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
             DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
             DEPENDS generate-ssg-${PRODUCT}-oval.xml
             DEPENDS generate-ssg-${PRODUCT}-ocil.xml
             DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
-            DEPENDS generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
             COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds-base.xml"
         )
     else()
@@ -646,7 +636,7 @@ macro(ssg_build_sds PRODUCT)
         )
     endif()
 
-    if("${PRODUCT}" MATCHES "rhel(6|7|8|9)")
+    if("${PRODUCT}" MATCHES "rhel(7|8|9)")
         add_test(
             NAME "missing-cces-${PRODUCT}"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/missing_cces.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
@@ -833,9 +823,6 @@ macro(ssg_build_product PRODUCT)
     ssg_build_xccdf_final(${PRODUCT})
     ssg_build_oval_final(${PRODUCT})
     ssg_build_ocil_final(${PRODUCT})
-    if("${PRODUCT}" MATCHES "rhel(6|7)")
-        ssg_build_pci_dss_xccdf(${PRODUCT})
-    endif()
     ssg_build_sds(${PRODUCT})
 
     add_custom_target(${PRODUCT} ALL)
@@ -1507,7 +1494,6 @@ macro(ssg_build_vendor_zipfile ZIPNAME)
         COMMENT "Building Red Hat zipfile at ${CMAKE_BINARY_DIR}/vendor-zipfile/${ZIPNAME}-RedHat.zip"
         DEPENDS products/rhel7
         DEPENDS products/rhel8
-        DEPENDS products/rhosp13
         DEPENDS products/rhv4
         )
     add_custom_target(

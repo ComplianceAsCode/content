@@ -132,8 +132,6 @@ selections:
 - package_abrt-addon-ccpp_removed
 - package_abrt-addon-kerneloops_removed
 - package_abrt-cli_removed
-- package_abrt-plugin-logger_removed
-- package_abrt-plugin-rhtsupport_removed
 - package_abrt-plugin-sosreport_removed
 - package_abrt_removed
 - package_aide_installed
@@ -149,6 +147,8 @@ selections:
 - package_gssproxy_removed
 - package_iprutils_removed
 - package_krb5-workstation_removed
+- package_libreport-plugin-logger_removed
+- package_libreport-plugin-rhtsupport_removed
 - package_nfs-utils_removed
 - package_openscap-scanner_installed
 - package_openssh-clients_installed
@@ -245,6 +245,7 @@ selections:
 - var_password_pam_difok=4
 - var_password_pam_maxrepeat=3
 - var_password_pam_maxclassrepeat=4
+- var_slub_debug_options=P
 - var_auditd_flush=incremental_async
 - var_accounts_max_concurrent_login_sessions=10
 - var_password_pam_unix_remember=5

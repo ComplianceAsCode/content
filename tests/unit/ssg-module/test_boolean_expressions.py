@@ -60,21 +60,26 @@ def test_as_cpe_xml(algebra, expression1):
     xml = algebra.as_cpe_lang_xml(algebra.dnf(expression1))
     assert xml == """<?xml version="1.0" ?>
 <cpe-lang:platform id="apple_and_banana_or_apple_and_oranges_eq_2.0_or_not_pie">
-	<cpe-lang:logical-test negate="false" operator="OR">
-		<cpe-lang:logical-test negate="false" operator="AND">
-			<cpe-lang:fact-ref name="cpe:/a:apple:"/>
-			<cpe-lang:fact-ref name="cpe:/a:banana:"/>
-		</cpe-lang:logical-test>
-		<cpe-lang:logical-test negate="false" operator="AND">
-			<cpe-lang:fact-ref name="cpe:/a:apple:"/>
-			<cpe-lang:fact-ref name="cpe:/a:oranges:2.0"/>
-		</cpe-lang:logical-test>
-		<cpe-lang:logical-test negate="true" operator="AND">
-			<cpe-lang:fact-ref name="cpe:/a:pie:"/>
-		</cpe-lang:logical-test>
-	</cpe-lang:logical-test>
+\t<cpe-lang:logical-test negate="false" operator="OR">
+\t\t<cpe-lang:logical-test negate="false" operator="AND">
+\t\t\t<cpe-lang:fact-ref name="cpe:/a:apple:"/>
+\t\t\t<cpe-lang:fact-ref name="cpe:/a:banana:"/>
+\t\t</cpe-lang:logical-test>
+\t\t<cpe-lang:logical-test negate="false" operator="AND">
+\t\t\t<cpe-lang:fact-ref name="cpe:/a:apple:"/>
+\t\t\t<cpe-lang:fact-ref name="cpe:/a:oranges:2.0"/>
+\t\t</cpe-lang:logical-test>
+\t\t<cpe-lang:logical-test negate="true" operator="AND">
+\t\t\t<cpe-lang:fact-ref name="cpe:/a:pie:"/>
+\t\t</cpe-lang:logical-test>
+\t</cpe-lang:logical-test>
 </cpe-lang:platform>
 """
+
+
+def test_underscores_and_dashes_in_name(algebra):
+    exp = algebra.parse(u'not_s390x_arch and dashed-name')
+    assert exp(**{'not_s390x_arch': True, 'dashed-name': True})
 
 
 def test_evaluate_simple_boolean_ops(algebra):

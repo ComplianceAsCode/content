@@ -25,7 +25,7 @@ HostKey /etc/ssh/ssh_host_ecdsa_key
 HostKey /etc/ssh/ssh_host_ed25519_key
 
 # Ciphers and keying
-RekeyLimit 512M 1h
+RekeyLimit {{.var_rekey_limit_size}} {{.var_rekey_limit_time}}
 
 # System-wide Crypto policy:
 # This system is following system-wide crypto policy. The changes to
@@ -43,7 +43,7 @@ SyslogFacility AUTHPRIV
 
 # Authentication:
 
-#LoginGraceTime 2m
+#LoginGraceTime {{.var_sshd_set_login_grace_time}}
 PermitRootLogin no
 StrictModes yes
 #MaxAuthTries 6
@@ -119,9 +119,9 @@ PrintMotd no
 PrintLastLog yes
 #TCPKeepAlive yes
 PermitUserEnvironment no
-Compression no
-ClientAliveInterval 600
-ClientAliveCountMax 0
+Compression {{.var_sshd_disable_compression}}
+ClientAliveInterval {{.sshd_idle_timeout_value}}
+ClientAliveCountMax {{.var_sshd_set_keepalive}}
 #UseDNS no
 #PidFile /var/run/sshd.pid
 #MaxStartups 10:30:100
@@ -148,7 +148,7 @@ Subsystem	sftp	/usr/libexec/openssh/sftp-server
 #	PermitTTY no
 #	ForceCommand cvs server
 
-UsePrivilegeSeparation sandbox
+UsePrivilegeSeparation {{.var_sshd_priv_separation}}
 {{%- endmacro -%}}
 
 

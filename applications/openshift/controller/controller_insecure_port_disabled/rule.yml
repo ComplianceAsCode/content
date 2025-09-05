@@ -16,6 +16,12 @@ description: |-
       "port": ["0"],
     ...
     </pre>
+    It is also acceptable for a system to deprecate the insecure port:
+    <pre>
+    "extendedArguments": {
+    ...
+    ...
+    </pre>
 
 rationale: |-
     The Controller Manager API service is used for health and metrics
@@ -24,6 +30,8 @@ rationale: |-
     attack surface.
 
 severity: low
+
+{{% set jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["port"]!=null then .extendedArguments["port"]==["0"] else true end]' %}}
 
 identifiers:
     cce@ocp4: CCE-83578-5
@@ -34,8 +42,8 @@ ocil_clause: |-
 ocil: |-
     To verify that <tt>port</tt> is configured correctly,
     run the following command:
-    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson |   jq -r '.data["config.yaml"]' | jq '.extendedArguments["port"][]'</pre>
-    Verify that it's disabled (the value is <pre>0</pre>).
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq '{{{ jqfilter }}}'</pre>
+    Verify that it's true in the console output (the value will be true if the insecure port is bind to loopback address or disabled) .
 
 references:
     cis@ocp4: 1.3.7
@@ -44,17 +52,18 @@ references:
     pcidss: Req-2.2
     srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
 
+
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config") | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({'/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config': jqfilter}) | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: /api/v1/namespaces/openshift-kube-controller-manager/configmaps/config
-    yamlpath: '.data["config.yaml"]'
+    filepath: |-
+      {{{ openshift_filtered_path('/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config', jqfilter) }}}
+    yamlpath: "[:]"
     values:
-    - value: '(\"port\":\[\"0\"\])'
-      operation: "pattern match"
-      type: "string"
+      - value: "true"
+        operation: "equals"

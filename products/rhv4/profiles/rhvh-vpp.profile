@@ -201,6 +201,7 @@ selections:
     - accounts_password_pam_unix_remember
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_systemauth
+    - set_password_hashing_algorithm_passwordauth
     - set_password_hashing_algorithm_libuserconf
     - no_empty_passwords
 

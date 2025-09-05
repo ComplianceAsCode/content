@@ -1,8 +1,6 @@
 #!/bin/bash
 # packages = /usr/lib/systemd/system/sssd.service
 
-# profiles = xccdf_org.ssgproject.content_profile_ospp
-
 SSSD_CONF="/etc/sssd/sssd.conf"
 # The smallest variable value for sssd_memcache_timeout is 180 so
 # this should pass for every product which contains ospp profile

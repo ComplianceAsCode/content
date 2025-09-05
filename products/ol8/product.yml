@@ -10,6 +10,12 @@ profiles_root: "./profiles"
 pkg_manager: "yum"
 
 init_system: "systemd"
+
+pkg_release: "5cabf60d"
+pkg_version: "ad986da3"
+
+release_key_fingerprint: "76FD3DB13AB67410B89DB10E82562EA9AD986DA3"
+
 oval_feed_url: "https://linux.oracle.com/security/oval/com.oracle.elsa-all.xml.bz2"
 
 cpes_root: "../../shared/applicability"
@@ -23,12 +29,5 @@ cpes:
 platform_package_overrides:
   login_defs: "shadow-utils"
 
-cpes_root: "../../shared/applicability"
-cpes:
-  - ol8:
-      name: "cpe:/o:oracle:linux:8"
-      title: "Oracle Linux 8"
-      check_id: installed_OS_is_ol8_family
-
 reference_uris:
-  cis: ''
+  cis: 'https://www.cisecurity.org/benchmark/oracle_linux/'

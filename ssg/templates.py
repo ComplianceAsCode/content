@@ -9,6 +9,7 @@ import glob
 import ssg.build_yaml
 import ssg.utils
 import ssg.yaml
+from ssg.build_cpe import ProductCPEs
 
 try:
     from urllib.parse import quote
@@ -128,6 +129,7 @@ class Builder(object):
             if maybe_template.looks_like_template():
                 maybe_template.load()
                 templates[item] = maybe_template
+        self.product_cpes = ProductCPEs(env_yaml)
 
     def build_lang_file(
             self, rule_id, template_name, template_vars, lang, local_env_yaml):
@@ -355,7 +357,7 @@ class Builder(object):
         for rule_file in sorted(os.listdir(self.resolved_rules_dir)):
             rule_path = os.path.join(self.resolved_rules_dir, rule_file)
             try:
-                rule = ssg.build_yaml.Rule.from_yaml(rule_path, self.env_yaml)
+                rule = ssg.build_yaml.Rule.from_yaml(rule_path, self.env_yaml, self.product_cpes)
             except ssg.build_yaml.DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 continue

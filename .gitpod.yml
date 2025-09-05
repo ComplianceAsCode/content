@@ -1,0 +1,30 @@
+# Commands to start on workspace startup
+image:
+  file: .gitpod.Dockerfile
+
+vscode:
+  extensions:
+    - ggbecker.content-navigator # useful extension for the ComplianceAsCode/content project
+    - ms-vscode.live-server # HTML preview
+    - rogalmic.bash-debug # support bashdb debug configurations
+    - eamodio.gitlens # cool git extension with a bunch of extra features
+    - twxs.cmake # support to CMakeLists.txt syntax highlighting and more
+
+tasks:
+  - name: Prepare Env
+    init: |
+      pip install docker ansible json2html docutils==0.17.1 \
+        commonmark \
+        recommonmark==0.6.0 \
+        sphinx \
+        sphinx-rtd-theme \
+        git+git://github.com/ggbecker/sphinxcontrib.jinjadomain.git#egg=sphinxcontrib-jinjadomain
+      [ -z "$PRODUCT" ] && PRODUCT="fedora"
+      [ -z "$CONTAINER" ] && CONTAINER="fedora:34"
+      [ -z "$CPE" ] && CPE="cpe:/o:fedoraproject:fedora:34"
+      mkdir -p .vscode && cp .gitpod.launch.json .vscode/launch.json
+      sed -i "s/&&DEFAULT_PRODUCT&&/$PRODUCT/g" .vscode/launch.json
+      sed -i "s,&&CPE&&,$CPE,g" .vscode/launch.json
+      ssh-keygen -N '' -f ~/.ssh/id_rsa
+      docker build --build-arg "CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" -t ssg_test_suite --build-arg IMAGE=$CONTAINER -f Dockerfiles/test_suite-fedora .
+      ./build_product $PRODUCT --datastream-only

@@ -116,19 +116,25 @@ class TestEnv(object):
     def get_ssh_additional_options(self):
         return list(common.SSH_ADDITIONAL_OPTS)
 
-    def execute_ssh_command(self, command, log_file, error_msg=None):
+    def execute_ssh_command(self, command, log_file, error_msg_template=None):
+        """
+        Args:
+            - command: Command to execute remotely as a single string
+            - log_file
+            - error_msg_template: A string that can contain references to:
+                ``command``, ``remote_dest``, ``rc``, and ``stderr``
+        """
+        if not error_msg_template:
+            error_msg_template = "Return code of '{command}' on {remote_dest} is {rc}: {stderr}"
         remote_dest = "root@{ip}".format(ip=self.domain_ip)
-        if not error_msg:
-            error_msg = (
-                "Failed to execute '{command}' on {remote_dest}"
-                .format(command=command, remote_dest=remote_dest))
-        try:
-            stdout = common.run_with_stdout_logging(
-                "ssh", tuple(self.ssh_additional_options) + (remote_dest, command), log_file)
-        except Exception as exc:
-            logging.error(error_msg + ": " + str(exc))
+        result = common.run_with_stdout_logging(
+            "ssh", tuple(self.ssh_additional_options) + (remote_dest, command), log_file)
+        if result.returncode:
+            error_msg = error_msg_template.format(
+                command=command, remote_dest=remote_dest,
+                rc=result.returncode, stderr=result.stderr)
             raise RuntimeError(error_msg)
-        return stdout
+        return result.stdout
 
     def scp_download_file(self, source, destination, log_file, error_msg=None):
         scp_src = "root@{ip}:{source}".format(ip=self.domain_ip, source=source)
@@ -144,7 +150,7 @@ class TestEnv(object):
                 "Failed to copy {source} to {destination}"
                 .format(source=source, destination=destination))
         try:
-            common.run_with_stdout_logging(
+            result = common.run_with_stdout_logging(
                 "scp", tuple(self.ssh_additional_options) + (source, destination), log_file)
         except Exception as exc:
             error_msg = error_msg + ": " + str(exc)

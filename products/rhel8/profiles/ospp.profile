@@ -130,6 +130,7 @@ selections:
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
     - grub2_slub_debug_argument
+    - var_slub_debug_options=P
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
     - grub2_vsyscall_argument.role=unscored
@@ -207,10 +208,10 @@ selections:
     - package_abrt-addon-kerneloops_removed
     - package_python3-abrt-addon_removed
     - package_abrt-addon-ccpp_removed
-    - package_abrt-plugin-rhtsupport_removed
-    - package_abrt-plugin-logger_removed
     - package_abrt-plugin-sosreport_removed
     - package_abrt-cli_removed
+    - package_libreport-plugin-rhtsupport_removed
+    - package_libreport-plugin-logger_removed
     - package_abrt_removed
 
     ### Login

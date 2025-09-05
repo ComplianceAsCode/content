@@ -275,8 +275,14 @@ do
         #   searched all of the files from /etc/audit/rules.d/*.rules location (since that audit rule can be defined
         #   in any of those files and if not, we want it to be inserted only once into /etc/audit/rules.d/privileged.rules file)
         #
-        elif [ "{{{ tool }}}" == "auditctl" ] || [[ "{{{ tool }}}" == "augenrules" && $count_of_inspected_files -eq "${#files_to_inspect[@]}" ]]
+	{{% if tool in ("augenrules", "auditctl") -%}}
+	{{% if tool == "augenrules" -%}}
+        elif [[ $count_of_inspected_files -eq "${#files_to_inspect[@]}" ]]
         then
+	{{%- endif %}}
+	{{% if tool == "auditctl" -%}}
+        else
+	{{%- endif %}}
             # Check if this sbinary wasn't already handled in some of the previous afile iterations
             # Return match only if whole sbinary definition matched (not in the case just prefix matched!!!)
             if [[ ! $(sed -ne "\|${sbinary}|p" <<< "${sbinaries_to_skip[*]}") ]]
@@ -286,6 +292,7 @@ do
                 echo "$expected_rule" >> "$output_audit_file"
             fi
             continue
+	{{%- endif %}}
         fi
     done
 done
@@ -638,7 +645,7 @@ zypper install -y "{{{ package }}}"
 {{%- if pkg_manager == "yum" or pkg_manager == "dnf" -%}}
 if rpm -q --quiet "{{{ package }}}" ; then
 {{% if SSG_TEST_SUITE_ENV %}}
-    {{{ pkg_manager }}} remove -y --setopt protected_packages= "{{{ package }}}"
+    rpm -e --nodeps "{{{ package }}}"
 {{% else %}}
     {{{ pkg_manager }}} remove -y "{{{ package }}}"
 {{% endif %}}
@@ -896,7 +903,8 @@ for firefox_dir in ${firefox_dirs}; do
             firefox_pref_dir="${firefox_dir}/${firefox_pref}"
         else
             firefox_pref_dir="${firefox_dir}/${firefox_preferences}"
-            mkdir -m 755 -p "${firefox_pref_dir}"
+            mkdir -p "${firefox_pref_dir}"
+            chmod 755 "${firefox_pref_dir}"
         fi
 
         # Make sure the Firefox .js file exists and has the appropriate permissions
@@ -946,10 +954,10 @@ for firefox_dir in ${firefox_dirs}; do
     if [ -d "${firefox_dir}" ]; then
         # Make sure the Firefox .cfg file exists and has the appropriate permissions
         if ! [ -f "${firefox_dir}/${firefox_cfg}" ] ; then
-            echo "//" "${firefox_dir}/${firefox_cfg}"
+            echo "//  IMPORTANT: Start your code on the 2nd line" > "${firefox_dir}/${firefox_cfg}"
             chmod 644 "${firefox_dir}/${firefox_cfg}"
-        elif ! [ $(head -1 "${firefox_dir}/${firefox_cfg}" | grep "^//$") ]; then
-            sed -i '1 i\//' "${firefox_dir}/${firefox_cfg}"
+        elif ! head -1 "${firefox_dir}/${firefox_cfg}" | grep -q "^//"; then
+            sed -i '1 i\// IMPORTANT: Start your code on the 2nd line' "${firefox_dir}/${firefox_cfg}"
         fi
 
         {{{ _put_into_firefox_cfg(config_item="lockPref", key=key, value_varname="value", where="${firefox_dir}/${firefox_cfg}", sed_separator=sed_separator) | indent(4 * 2) }}}
@@ -975,26 +983,100 @@ else
 fi
 {{%- endmacro -%}}
 
+{{#
+    Enable pam_faillock.so PAM module using authselect.
+    If an authselect profile is not selected or the selected profile is not intact, the operation is aborted.
+    If the operation is aborted, an informative message is shown in the remediation report.
+#}}
+{{%- macro bash_enable_pam_faillock_with_authselect() -%}}
+if authselect check; then
+    authselect enable-feature with-faillock
+    authselect apply-changes
+else
+    echo "
+authselect integrity check failed. Remediation aborted!
+This remediation could not be applied because an authselect profile was not selected or the selected profile is not intact.
+It is not recommended to manually edit the PAM files when authselect tool is available.
+In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended."
+    false
+fi
+{{%- endmacro -%}}
 
 {{#
-    Sets PAM faillock module options and values.
-    Also it adds pam_faillock.so as required module for account.
-
-:param option: faillock option eg. deny, unlock_time
-:param value: value of option
-
+    Enable pam_faillock.so PAM module by directly editing PAM files.
+    This option is only recommended when authselect tool is not available for the system.
 #}}
-{{%- macro bash_set_faillock_option(option, value) -%}}
+{{%- macro bash_enable_pam_faillock_directly_in_pam_files() -%}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
-
 for pam_file in "${AUTH_FILES[@]}"
 do
-    {{{ bash_set_faillock_option_preauth("$pam_file", option, value) | indent(4) }}}
-    {{{ bash_set_faillock_option_authfail("$pam_file", option, value) | indent(4) }}}
-    {{{ bash_set_faillock_option_account("$pam_file") | indent(4) }}}
+    if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+(preauth silent|authfail).*$' "$pam_file" ; then
+        sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent' "$pam_file"
+        sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/a auth        required      pam_faillock.so authfail' "$pam_file"
+        sed -i --follow-symlinks '/^account.*required.*pam_unix.so.*/i account     required      pam_faillock.so' "$pam_file"
+    fi
+    sed -Ei 's/(auth.*)(\[default=die\])(.*pam_faillock.so)/\1required     \3/g' "$pam_file"
 done
 {{%- endmacro -%}}
 
+{{%- macro bash_pam_faillock_enable() -%}}
+if [ -f /usr/bin/authselect ]; then
+    {{{ bash_enable_pam_faillock_with_authselect() }}}
+else
+    {{{ bash_enable_pam_faillock_directly_in_pam_files() }}}
+fi
+{{%- endmacro -%}}
+
+{{#
+    Sets PAM faillock module options and values.
+    It also adds pam_faillock.so as required module for account.
+
+:param option: faillock option eg. deny, unlock_time, fail_interval
+:param value: value of option
+
+#}}
+{{%- macro bash_pam_faillock_parameter_value(option, value='') -%}}
+FAILLOCK_CONF="/etc/security/faillock.conf"
+if [ -f $FAILLOCK_CONF ]; then
+    {{%- if value == '' %}}
+    regex="^\s*{{{ option }}}"
+    line="{{{ option }}}"
+    {{%- else %}}
+    regex="^\s*{{{ option }}}\s*="
+    line="{{{ option }}} = {{{ value }}}"
+    {{%- endif %}}
+    if ! grep -q $regex $FAILLOCK_CONF; then
+        echo $line >> $FAILLOCK_CONF
+    {{%- if value == '' %}}
+    fi
+    {{%- else %}}
+    else
+        sed -i --follow-symlinks 's/^\s*\({{{ option }}}\s*=\s*\)\([0-9]\+\)/\1'"{{{ value }}}"'/g' $FAILLOCK_CONF
+    fi
+    {{%- endif %}}
+else
+    AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
+    for pam_file in "${AUTH_FILES[@]}"
+    do
+        if ! grep -qE '^\s*auth.*pam_faillock.so (preauth|authfail).*{{{ option }}}' "$pam_file"; then
+            {{%- if value == '' %}}
+            sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ {{{ option }}}/' "$pam_file"
+            sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*authfail.*/ s/$/ {{{ option }}}/' "$pam_file"
+            {{%- else %}}
+            sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "$pam_file"
+            sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*authfail.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "$pam_file"
+            {{%- endif %}}
+        {{%- if value == '' %}}
+        fi
+        {{%- else %}}
+        else
+            sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock.so.*preauth.*silent.*\)\('"{{{ option }}}"'=\)[0-9]\+\(.*\)/\1\2'"{{{ value }}}"'\3/' "$pam_file"
+            sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock.so.*authfail.*\)\('"{{{ option }}}"'=\)[0-9]\+\(.*\)/\1\2'"{{{ value }}}"'\3/' "$pam_file"
+        fi
+        {{%- endif %}}
+    done
+fi
+{{%- endmacro -%}}
 
 {{#
     Print a message to stderr and exit the shell
@@ -1026,7 +1108,8 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 
 {{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/") -%}}
     {{%- set new_line = parameter+separator+value -%}}
-    {{%- set line_regex = prefix_regex + ((parameter | escape_regex) | replace("/", "\/")) + separator_regex -%}}
+    {{#- An escaped dollar in the parameter is escaped because of its significance for the shell, so when making a regex out of the parameter, we remove the shell escape, as the regex escape will do its thing. -#}}
+    {{%- set line_regex = prefix_regex + ((parameter | replace("\\$", "$") | escape_regex) | replace("/", "\/")) + separator_regex -%}}
 if [ -e "{{{ path }}}" ] ; then
     {{{ lineinfile_absent(path, line_regex, insensitive, sed_path_separator=sed_path_separator) | indent(4) }}}
 else
@@ -1107,49 +1190,6 @@ fi
 # Clean up after ourselves.
 rm "{{{ path }}}.bak"
 {{%- endmacro -%}}
-
-{{%- macro bash_set_faillock_option_preauth(pam_file, option, value) -%}}
-# is auth required pam_faillock.so preauth present?
-if grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "{{{ pam_file }}}" ; then
-    # is the option set?
-    if grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*'"{{{ option }}}"'=([0-9]*).*$' "{{{ pam_file }}}" ; then
-        # just change the value of option to a correct value
-        sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock.so.*preauth.*silent.*\)\('"{{{ option }}}"' *= *\).*/\1\2'"{{{ value }}}"'/' "{{{ pam_file }}}"
-    # the option is not set.
-    else
-        # append the option
-        sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ '"{{{ option }}}"'='"{{{ value }}}"'/' "{{{ pam_file }}}"
-    fi
-# auth required pam_faillock.so preauth is not present, insert the whole line
-else
-    sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent '"{{{ option }}}"'='"{{{ value }}}" "{{{ pam_file }}}"
-fi
-{{%- endmacro -%}}
-
-{{%- macro bash_set_faillock_option_authfail(pam_file, option, value) -%}}
-# is auth default pam_faillock.so authfail present?
-if grep -qE '^\s*auth\s+(\[default=die\])\s+pam_faillock\.so\s+authfail.*$' "{{{ pam_file }}}" ; then
-    # is the option set?
-    if grep -qE '^\s*auth\s+(\[default=die\])\s+pam_faillock\.so\s+authfail.*'"{{{ option }}}"'=([0-9]*).*$' "{{{ pam_file }}}" ; then
-        # just change the value of option to a correct value
-        sed -i --follow-symlinks 's/\(^auth.*[default=die].*pam_faillock.so.*authfail.*\)\('"{{{ option }}}"' *= *\).*/\1\2'"{{{ value }}}"'/' "{{{ pam_file }}}"
-    # the option is not set.
-    else
-        # append the option
-        sed -i --follow-symlinks '/^auth.*[default=die].*pam_faillock.so.*authfail.*/ s/$/ '"{{{ option }}}"'='"{{{ value }}}"'/' "{{{ pam_file }}}"
-    fi
-# auth default pam_faillock.so authfail is not present, insert the whole line
-else
-    sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/a auth        [default=die] pam_faillock.so authfail '"{{{ option }}}"'='"{{{ value }}}" "{{{ pam_file }}}"
-fi
-{{%- endmacro -%}}
-
-{{%- macro bash_set_faillock_option_account(pam_file) -%}}
-if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "{{{ pam_file }}}" ; then
-    sed -E -i --follow-symlinks '/^\s*account\s*required\s*pam_unix.so/i account     required      pam_faillock.so' "{{{ pam_file }}}"
-fi
-{{%- endmacro -%}}
-
 
 {{#
   Generates bash script code that puts 'contents' into a file at 'filepath'
@@ -1533,11 +1573,7 @@ do
         # Strip all the options and fields we know of,
         # than check if there was any field left over
         extra_fields=$(sed -E -e "s/{{{ action_arch_filters }}}//"  -e "s#{{{ other_filters }}}##" -e "s/{{{ auid_filters }}}//" -e "s/((:?-S [[:alnum:],]+)+)//g" -e "s/-F key=\w+|-k \w+//"<<< "$s_rule")
-        grep -q -- "-F" <<< "$extra_fields"
-        if [ $? -ne 0 ]
-        then
-            candidate_rules+=("$s_rule")
-        fi
+        grep -q -- "-F" <<< "$extra_fields" || candidate_rules+=("$s_rule")
     done
 
     if [[ ${#syscall_a[@]} -ge 1 ]]
@@ -1549,12 +1585,10 @@ do
             all_syscalls_found=0
             for syscall in "${syscall_a[@]}"
             do
-                grep -q -- "\b${syscall}\b" <<< "$rule_syscalls"
-                if [ $? -eq 1 ]
-                then
-                    # A syscall was not found in the candidate rule
-                    all_syscalls_found=1
-                fi
+                grep -q -- "\b${syscall}\b" <<< "$rule_syscalls" || {
+                   # A syscall was not found in the candidate rule
+                   all_syscalls_found=1
+                   }
             done
             if [[ $all_syscalls_found -eq 0 ]]
             then
@@ -1604,9 +1638,9 @@ if [ "$skip" -ne 0 ]; then
                 syscall_string+=" -S $syscall"
             done
         fi
-        other_string=$([[ {{{ other_filters }}} ]] && echo " {{{ other_filters }}}")
-        auid_string=$([[ {{{ auid_filters }}} ]] && echo " {{{ auid_filters }}}")
-        full_rule="{{{ action_arch_filters }}}${syscall_string}${other_string}${auid_string} -F key={{{ key }}}"
+        other_string=$([[ {{{ other_filters }}} ]] && echo " {{{ other_filters }}}") || /bin/true
+        auid_string=$([[ {{{ auid_filters }}} ]] && echo " {{{ auid_filters }}}") || /bin/true
+        full_rule="{{{ action_arch_filters }}}${syscall_string}${other_string}${auid_string} -F key={{{ key }}}" || /bin/true
         echo "$full_rule" >> "$default_file"
         chmod o-rwx ${default_file}
     else
@@ -1621,12 +1655,10 @@ if [ "$skip" -ne 0 ]; then
         new_grouped_syscalls="${rule_syscalls_to_edit}"
         for syscall in "${syscall_a[@]}"
         do
-            grep -q -- "\b${syscall}\b" <<< "${rule_syscalls_to_edit}"
-            if [ $? -eq 1 ]
-            then
-                # A syscall was not found in the candidate rule
-                new_grouped_syscalls+="${delimiter}${syscall}"
-            fi
+            grep -q -- "\b${syscall}\b" <<< "${rule_syscalls_to_edit}" || {
+               # A syscall was not found in the candidate rule
+               new_grouped_syscalls+="${delimiter}${syscall}"
+               }
         done
 
         # Group the syscall in the rule
@@ -1636,41 +1668,172 @@ fi
 {{%- endmacro %}}
 
 {{#
+    Ensures that /etc/default/grub file contains the ARG_NAME_VALUE.
+:param ARG_NAME: name of the grub parameter, e.g.: "audit"
+:param ARG_NAME_VALUE: parameter together with the value to ensure, e.g.: "audit=1"
+#}}
+{{%- macro update_etc_default_grub_manually(ARG_NAME, ARG_NAME_VALUE) -%}}
+# Correct the form of default kernel command line in GRUB
+if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ ARG_NAME }}}=.*"'  '/etc/default/grub' ; then
+       # modify the GRUB command-line if an {{{ ARG_NAME }}}= arg already exists
+       sed -i "s/\(^GRUB_CMDLINE_LINUX=\".*\){{{ ARG_NAME }}}=[^[:space:]]\+\(.*\"\)/\1{{{ ARG_NAME_VALUE }}}\2/"  '/etc/default/grub'
+else
+       # no {{{ ARG_NAME }}}=arg is present, append it
+       sed -i "s/\(^GRUB_CMDLINE_LINUX=\".*\)\"/\1 {{{ ARG_NAME_VALUE }}}\"/"  '/etc/default/grub'
+fi
+{{%- endmacro %}}
+
+{{#
 
     Remediation for grub2 bootloader arguments
 #}}
 {{% macro grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) %}}
-{{% if product in ["rhel7", "ol7", "rhel9"] or 'ubuntu' in product %}}
-{{% if '/' in ARG_NAME %}}
-{{{ raise("ARG_NAME (" + ARG_NAME + ") uses sed path separator (/) in " + rule_id) }}}
-{{% elif '/' in ARG_NAME_VALUE %}}
-{{{ raise("ARG_NAME_VALUE (" + ARG_NAME_VALUE + ") uses sed path separator (/) in " + rule_id) }}}
-{{% endif %}}
-# Correct the form of default kernel command line in GRUB
-if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ ARG_NAME }}}=.*"'  '/etc/default/grub' ; then
-	# modify the GRUB command-line if an {{{ ARG_NAME }}}= arg already exists
-	sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ ARG_NAME }}}=[^[:space:]]*\(.*"\)/\1 {{{ ARG_NAME_VALUE }}} \2/'  '/etc/default/grub'
-else
-	# no {{{ ARG_NAME }}}=arg is present, append it
-	sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\)"/\1 {{{ ARG_NAME_VALUE }}}"/'  '/etc/default/grub'
-fi
-
 {{% if 'ubuntu' in product %}}
-update-grub
+	{{% set grub_helper_executable = "update-grub" -%}}
 {{% else %}}
-# Correct the form of kernel command line for each installed kernel in the bootloader
-grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
+	{{% set grub_helper_executable = "grubby" -%}}
+{{% endif -%}}
+{{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ ARG_NAME_VALUE] -%}}
+
+{{% if 'ubuntu' in product or product in ['rhel7', 'ol7'] %}}
+{{{ update_etc_default_grub_manually(ARG_NAME, ARG_NAME_VALUE) }}}
+{{% endif -%}}
+
+{{% if product in ["rhel8", "ol8"] %}}
+{{# Suppress the None output of append -#}}
+{{{ grub_helper_args.append("--env=/boot/grub2/grubenv") or "" -}}}
+{{% endif -%}}
+
+{{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
+{{% endmacro %}}
+
+
+{{#
+  This macro creates a bash conditional which is used to determine if a remediation is applicable.
+  The macro takes package as an argument and chooses appropriate package manager.
+  If the package is installed, the Bash remediation will be applied.
+  The macro respects `platform_package_overrides` variable.
+#}}
+{{%- macro bash_pkg_conditional(package) -%}}
+{{%- if package in platform_package_overrides -%}}
+  {{%- set package = platform_package_overrides[package] -%}}
+{{%- endif -%}}
+  {{% if pkg_system is defined %}}
+    {{%- if pkg_system == "rpm" -%}}
+        {{{ bash_pkg_conditional_rpm(package) }}}
+    {{%- elif pkg_system == "dpkg" -%}}
+        {{{ bash_pkg_conditional_dpkg(package) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
+    {{%- endif -%}}
 {{% endif %}}
-{{% else %}}
-# Correct grub2 kernelopts value using grub2-editenv
-existing_kernelopts="$(grub2-editenv - list | grep kernelopts)"
-if ! printf '%s' "$existing_kernelopts" | grep -qE '^kernelopts=(.*\s)?{{{ ARG_NAME_VALUE }}}(\s.*)?$'; then
-  if test -n "$existing_kernelopts"; then
-    grub2-editenv - set "$existing_kernelopts {{{ ARG_NAME_VALUE }}}"
-  else
-    grub2-editenv - set "kernelopts={{{ ARG_NAME_VALUE }}}"
-  fi
-fi
+{{%- endmacro -%}}
+
+
+{{#
+  This macro creates a Bash conditional which uses rpm to check if a package passed as a parameter is installed.
+#}}
+{{%- macro bash_pkg_conditional_rpm(package) -%}}
+rpm --quiet -q {{{ package }}}
+{{%- endmacro %}}
+
+{{#
+  This macro creates a Bash conditional which uses dpkg to check if a package passed as a parameter is installed.
+#}}
+{{%- macro bash_pkg_conditional_dpkg (package) -%}}
+dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q installed
+{{%- endmacro -%}}
+
+{{#
+Macro to replace configuration setting(s) in the Chromium stig policy (.json) file or add the
+preference if it does not exist.
+
+Example macro invocation:
+
+    {{{ bash_chromium_pol_setting("chrome_stig_policy.json", "/etc/chromium/policies/managed/", "ExtensionInstallBlacklist", "\[\"*\"\]") }}}
+
+:param  chrome_pol_file:      Policy file to that will be modified
+:param  chrome_pol_dir:       Directory where the policy file is located
+:param  pol_setting:          The setting that will be modified
+:param  pol_setting_val:      Value of the setting to replace the current value with
+:param  pol_setting_val_edit: Value of the setting to be inserted if setting and value not present
+
+#}}
+{{%- macro bash_chromium_pol_setting(chrome_pol_file, chrome_pol_dir, pol_setting, pol_setting_val, pol_setting_val_edit=None) %}}
+{{% if not pol_setting_val_edit %}}
+{{% set pol_setting_val_edit = pol_setting_val %}}
 {{% endif %}}
 
-{{% endmacro %}}
+if ! grep -q {{{ pol_setting }}} {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}; then
+   sed -i -e '/{/a \  "'{{{ pol_setting }}}'": '{{{ pol_setting_val_edit }}}',' {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
+else
+   sed -i -e 's/\"'{{{ pol_setting }}}'.*/\"'{{{ pol_setting }}}'\": '{{{ pol_setting_val }}}',/g' {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
+fi
+{{%- endmacro -%}}
+
+
+{{#
+    Macro that lets you define the body of a loop that iterates over the output of the find command
+    Use with the call block syntax {{% call iterate_over_find_output("fname", "mydir -name *.conf") %}} ...
+#}}
+{{% macro iterate_over_find_output(varname, find_args="") -%}}
+while IFS= read -r -d '' {{{ varname }}}; do
+    {{{ caller() | indent(4) }}}
+done <   <(find {{{ find_args }}} -print0)
+{{%- endmacro %}}
+
+
+{{#
+    Macro that lets you define the body of a loop that iterates over the output of any command
+    Use with the call block syntax {{% call iterate_over_find_output("fname", "awk ... myfile") %}} ...
+#}}
+{{% macro iterate_over_command_output(varname, command_and_its_args) -%}}
+while IFS= read -r {{{ varname }}}; do
+    {{{ caller() | indent(4) }}}
+done <   <({{{ command_and_its_args }}})
+{{%- endmacro %}}
+
+{{#
+  # Ensure key is set to correct value under a correct section in an .ini style config file
+
+:param files:   list of space-separated files to add key = value to (may contain wildcards)
+                if none contain section, create and append to FIRST file
+:param section: section to add key = value under
+:param key:     key
+:param value:   value
+
+Example macro invocation(s):
+
+    bash_ensure_ini_config("/etc/sssd/sssd.conf", "pam", "offline_credentials_expiration", "1")
+    bash_ensure_ini_config("/etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf", "sssd", "user", "sssd")
+
+#}}
+{{% macro bash_ensure_ini_config(files, section, key, value) -%}}
+found=false
+
+# set value in all files if they contain section or key
+for f in $(echo -n "{{{ files }}}"); do
+    if [ ! -e "$f" ]; then
+        continue
+    fi
+
+    # find key in section and change value
+    if grep -qzosP "[[:space:]]*\[{{{ section }}}\]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}" "$f"; then
+            sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}} = {{{ value }}}/" "$f"
+            found=true
+
+    # find section and add key = value to it
+    elif grep -qs "[[:space:]]*\[{{{ section }}}\]" "$f"; then
+            sed -i "/[[:space:]]*{{{ section }}}/a {{{ key }}} = {{{ value }}}" "$f"
+            found=true
+    fi
+done
+
+# if section not in any file, append section with key = value to FIRST file in files parameter
+if ! $found ; then
+    file=$(echo "{{{ files }}}" | cut -f1 -d' ')
+    mkdir -p "$(dirname "$file")"
+    echo -e "[{{{ section }}}]\n{{{ key }}} = {{{ value }}}" >> "$file"
+fi
+{{%- endmacro %}}
+

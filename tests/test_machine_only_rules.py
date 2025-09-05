@@ -8,7 +8,7 @@ import ssg.constants
 import ssg.yaml
 import io
 
-machine_cpe = "#cpe_platform_machine"
+machine_cpe = "#machine"
 
 
 def main():

@@ -1,0 +1,56 @@
+prodtype: ocp4
+
+title: Ensure that all deployments has resource limits
+
+description: |-
+  When deploying an application, it is important to tune based on memory and CPU consumption,
+  allocating enough resources for the application to function properly. Images provided by
+  OpenShift Dedicated behave properly within the confines of the memory they are allocated.
+  However, any applicaiton images must pay attention to the specific resources required to
+  ensure they are available.
+
+  If the node where a Pod is running has enough of a resource available, it's possible (and allowed)
+  for a container to use more resource than its request for that resource specifies.
+  However, a container is not allowed to use more than its resource limit.
+
+# todo : better if we can keep openshift document link for this reference,
+
+rationale: |-
+  Resource requests/limits provide constraints that limit aggregate resource consumption
+  per container. This helps prevent resource starvation. When deploying your
+  application, it is important to tune based on memory and CPU consumption,
+  allocating enough resources for the application to function properly.
+
+
+identifiers: {}
+
+references:
+  nist: SC-6
+
+{{% set jqfilter = '[ .items[] | select(.metadata.namespace | startswith("kube-") or startswith("openshift-") | not) | select( .spec.template.spec.containers[].resources.requests.cpu == null  or  .spec.template.spec.containers[].resources.requests.memory == null or .spec.template.spec.containers[].resources.limits.cpu == null  or  .spec.template.spec.containers[].resources.limits.memory == null )  | .metadata.name ]' %}}
+
+ocil_clause: 'Resource requests and limits is not set'
+
+ocil: |-
+    Run the following command to retrieve a list of deployments that does not have resource requests and limits:
+    <pre>$  oc get deployment.apps  --all-namespaces -o json  | jq '{{{ jqfilter }}}'</pre>
+    Make sure that there is output nothing in the result.
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({'/apis/apps/v1/deployments?limit=500': jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path('/apis/apps/v1/deployments?limit=500', jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "none_exist"
+    entity_check: "all"
+    values:
+      - value: "(.*?)"
+        operation: "pattern match"

@@ -6,8 +6,10 @@ description: |-
     The <tt>RekeyLimit</tt> parameter specifies how often
     the session key of the is renegotiated, both in terms of
     amount of data that may be transmitted and the time
-    elapsed. To decrease the default limits, put line
-    <tt>RekeyLimit {{{ xccdf_value("var_rekey_limit_size") }}} {{{ xccdf_value("var_rekey_limit_time") }}}</tt> to file <tt>/etc/ssh/sshd_config</tt>.
+    elapsed.<br/>
+    To decrease the default limits, add or correct the following line in
+    {{{ sshd_config_file() }}}
+    <pre>RekeyLimit {{{ xccdf_value("var_rekey_limit_size") }}} {{{ xccdf_value("var_rekey_limit_time") }}}</pre>
 
 rationale: |-
     By decreasing the limit based on the amount of data and enabling
@@ -32,6 +34,10 @@ ocil_clause: 'it is commented out or is not set'
 ocil: |-
     To check if RekeyLimit is set correctly, run the
     following command:
+    {{% if sshd_distributed_config == "true" %}}
+    <pre>$ sudo grep RekeyLimit /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*</pre>
+    {{% else %}}
     <pre>$ sudo grep RekeyLimit /etc/ssh/sshd_config</pre>
+    {{% endif %}}
     If configured properly, output should be
     <pre>RekeyLimit {{{ xccdf_value("var_rekey_limit_size") }}} {{{ xccdf_value("var_rekey_limit_time") }}}</pre>

@@ -1,6 +1,6 @@
 <def-group>
-{{% set resourcequota_api_path = '/api/v1/resourcequotas?limit=500' %}}
-{{% set namespaces_api_path = '/api/v1/namespaces?limit=499' %}}
+{{% set resourcequota_api_path = '/api/v1/resourcequotas' %}}
+{{% set namespaces_api_path = '/api/v1/namespaces' %}}
 {{% set resourcequota_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default") | .metadata.namespace] | unique' %}}
 {{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default")]' %}}
   <definition class="compliance" id="resource_requests_quota_per_project" version="1">

@@ -4,6 +4,26 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_lineinfile(msg='Ensure that Defaults !targetpw is defined in sudoers', path='/etc/sudoers', new_line='Defaults !targetpw', create='yes', state='present') }}}
-{{{ ansible_lineinfile(msg='Ensure that Defaults !rootpw is defined in sudoers', path='/etc/sudoers', new_line='Defaults !rootpw', create='yes', state='present') }}}
-{{{ ansible_lineinfile(msg='Ensure that Defaults !runaspw is defined in sudoers', path='/etc/sudoers', new_line='Defaults !runaspw', create='yes', state='present') }}}
+{{%- macro delete_line_in_sudoers_d(line) %}}
+- name: "Find out if /etc/sudoers.d/* files contain {{{ line }}} to be deduplicated"
+  find:
+    path: "/etc/sudoers.d"
+    patterns: "*"
+    contains: '^{{{ line }}}$'
+  register: sudoers_d_defaults
+
+- name: "Remove found occurrences of {{{ line }}} from /etc/sudoers.d/* files"
+  lineinfile:
+    path: "{{ item.path }}"
+    regexp: "^{{{ line }}}$"
+    state: absent
+  with_items: "{{ sudoers_d_defaults.files }}"
+{{%- endmacro %}}
+
+{{{- delete_line_in_sudoers_d("Defaults !targetpw") }}}
+{{{- delete_line_in_sudoers_d("Defaults !rootpw") }}}
+{{{- delete_line_in_sudoers_d("Defaults !runaspw") }}}
+
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !targetpw is defined in sudoers', line_regex='^Defaults !targetpw$', path='/etc/sudoers', new_line='Defaults !targetpw') }}}
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !rootpw is defined in sudoers', line_regex='^Defaults !rootpw$', path='/etc/sudoers', new_line='Defaults !rootpw') }}}
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !runaspw is defined in sudoers', line_regex='^Defaults !runaspw$', path='/etc/sudoers', new_line='Defaults !runaspw') }}}

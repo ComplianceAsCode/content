@@ -1,0 +1,47 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Elevate The SELinux Context When An Administrator Calls The Sudo Command'
+
+description: |-
+    Configure the operating system to elevate the SELinux context when an administrator calls
+    the sudo command.
+    Edit a file in the /etc/sudoers.d directory with the following command:
+    <pre>sudo visudo -f /etc/sudoers.d/<i>CUSTOM_FILE</i></pre>
+    Use the following example to build the <i>CUSTOM_FILE</i> in the /etc/sudoers.d directory
+    to allow any administrator belonging to a designated sudoers admin group to elevate their
+    SELinux context with the use of the sudo command:
+    <pre>%wheel ALL=(ALL) TYPE=sysadm_t ROLE=sysadm_r ALL</pre>
+
+rationale: |-
+    Preventing non-privileged users from executing privileged functions mitigates
+    the risk that unauthorized individuals or processes may gain unnecessary access
+    to information or privileges.
+    <br /><br />
+    Privileged functions include, for example,
+    establishing accounts, performing system integrity checks, or administering
+    cryptographic key management activities. Non-privileged users are individuals
+    who do not possess appropriate authorizations. Circumventing intrusion detection
+    and prevention mechanisms or malicious code protection mechanisms are examples
+    of privileged functions that require protection from non-privileged users.
+
+severity: medium
+
+references:
+    disa: CCI-002165,CCI-002235
+    nist: AC-3(4),AC-6(10)
+    srg: SRG-OS-000324-GPOS-00125
+    stigid@ol7: OL07-00-020023
+
+ocil_clause: 'selinux context does not elevate when running sudo command'
+
+ocil: |-
+    Verify the operating system elevates the SELinux context when an administrator calls the
+    sudo command with the following command:
+    <br /><br />
+    This command must be ran as root:
+    <pre>grep sysadm_r /etc/sudoers.d/*
+    %wheel ALL=(ALL) TYPE=sysadm_t ROLE=sysadm_r ALL
+    </pre>
+

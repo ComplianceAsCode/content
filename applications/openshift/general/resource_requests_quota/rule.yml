@@ -47,9 +47,9 @@ references:
   nist: SC-5,SC-5(1),SC-5(2)
   srg: SRG-APP-000246-CTR-000605,SRG-APP-000435-CTR-001070
 
-{{% set resourcequotas_api_path = '/api/v1/resourcequotas?limit=500' %}}
-{{% set namespaces_api_path = '/api/v1/namespaces?limit=499' %}}
-{{% set clusterquotas_api_path = '/apis/quota.openshift.io/v1/clusterresourcequotas?limit=500' %}}
+{{% set resourcequotas_api_path = '/api/v1/resourcequotas' %}}
+{{% set namespaces_api_path = '/api/v1/namespaces' %}}
+{{% set clusterquotas_api_path = '/apis/quota.openshift.io/v1/clusterresourcequotas' %}}
 {{% set clusterquotas_filter = '[.items[] | .metadata.name]' %}}
 {{% set resourcequotas_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default") | .metadata.namespace] | unique' %}}
 {{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default")]' %}}

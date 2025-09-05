@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns /var/log/syslog File'
+
+description: '{{{ describe_file_owner(file="/var/log/syslog", owner="syslog") }}}'
+
+rationale: |-
+    The <tt>/var/log/syslog</tt> file contains logs of error messages in
+    the system and should only be accessed by authorized personnel.
+
+severity: medium
+
+references:
+    disa: CCI-001314
+    srg: SRG-OS-000206-GPOS-00084
+    stigid@ubuntu2004: UBTU-20-010421
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="syslog") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/syslog", owner="syslog") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: /var/log/syslog
+        fileuid: '104'

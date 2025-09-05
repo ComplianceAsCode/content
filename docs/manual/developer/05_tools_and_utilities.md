@@ -64,7 +64,7 @@ options:
 
 Example
 
-    $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r4-xccdf-manual.xml
+    $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r5-xccdf-manual.xml
 
 
 ## Generating login banner regular expressions
@@ -348,3 +348,107 @@ Examples:
 To execute:
 
     $ ./utils/compare_results.py ssg_results.xml disa_results.xml
+
+## Profiling the buildsystem
+
+The goal of `utils/build_profiler.sh` and `utils/build_profiler_report.py` is to help developers measure and compare build times of a single product or a group of products and determine what impact their changes had on the speed of the buildsystem.
+Both of these tools shouldn't be invoked alone but rather through the build_product script by using the -p|--profiling switch.
+
+The intended usage is:
+
+    $ ./build_product <products> -p|--profiling
+
+### `utils/build_profiler.sh` -- Handle directory structure for profiling files and invokes other script
+The goal of this tool is to create the directory structure necessary for the profiling system and create a new numbered logfile, as well as invoking the `utils/build_profiler_report.py` and subsequently generating an interactive HTML file using webtreenode.
+
+It is invoked by the `build_product` script. When invoked for the first time, it creates the `.build_profiling` directory and then a directory inside it named `product_string`, which is passed from the build_product script.
+This is done so that each product combination being built has its own directory for log files, because different combinations may affect each other and have different build times.
+
+The script then moves the ninja log from the build folder to the product_string folder and numbers it.
+The baseline script is number 0 and if missing, the script will call the `utils/build_profiler_report.py` script with the `--baseline` switch.
+
+It then invokes the `utils/build_profiler_report.py` script with a logfile name, as well as the optional baseline switch.
+After that, it checks if the .webtreenode file was generated and then uses the webtreenode command to generate an interactive HTML report.
+
+It supports exactly one argument:
+
+- `"product_string"` - Contains all the product names that were built joined by underscores
+
+To execute:
+
+    $ ./build_profiler.sh <product_string>
+
+### `utils/build_profiler_report.py` -- Parse a ninja file and display report to user
+The goal of this tool is to generate a report about differences in build times, both a text version in the terminal and a webtreenode version that is later converted into an interactive HTML report.
+
+The script parses the data from `"logfile"` as the current logfile and the data from `0.ninja_log` as the baseline logfile (if the `--baseline` switch is used, the baseline log is not loaded).
+It then generates a `.webtreemap` file and prints the report:
+
+- `Target` - The target/outputfile that was built
+- `%`      - The percentage of the total build time that the target took
+- `D`      - The difference of the `%` percentage between baseline and current logfile (dimensionless value, not a percentage)
+              - This is the most important metric, as it signifies the ratio of this target to the other targets, therefore it shouldn't be affected too much by the speed of the hardware
+- `T`      - The time that the target took to get built in an `h:m:s` format
+- `TD`     - The time difference between baseline and current logfile in an `h:m:s` format
+- `%TD`     - The percentage difference of build times between current and baseline logfile
+
+It supports up to two arguments:
+
+- `"logfile"`  - [mandatory] Name of the numbered ninja logfile, e.g. `0.ninja_log`
+- `--baseline` - [optional] If the switch is used, the values are not compared with a baseline log
+
+To execute:
+
+    $ ./build_profiler_report.py <logflie> [--baseline]
+
+### `utils/compare_disa_xml.py` - Compare DISA XML
+This script will output what SRG or STIG IDs where add or removed between two XML files from DISA.
+
+To execute:
+
+    $ ./utils/compare_disa_xml.py old.xml new.xml
+
+
+Example:
+
+    $ ./utils/compare_disa_xml.py U_RHEL_8_STIG_V1R4_Manual-xccdf.xml U_RHEL_8_STIG_V1R5_Manual-xccdf.xml
+    Base count: 381
+    Target count: 371
+    New rules: (13)
+        RHEL-08-010351
+        RHEL-08-020103
+        RHEL-08-020221
+        RHEL-08-020102
+        RHEL-08-040321
+        RHEL-08-010331
+        RHEL-08-010359
+        RHEL-08-010121
+        RHEL-08-010385
+        RHEL-08-020104
+        RHEL-08-010379
+        RHEL-08-010341
+        RHEL-08-020101
+    Removed rules (23)
+        RHEL-08-010560
+        RHEL-08-030500
+        RHEL-08-030210
+        RHEL-08-030440
+        RHEL-08-030365
+        RHEL-08-030540
+        RHEL-08-030530
+        RHEL-08-030364
+        RHEL-08-030240
+        RHEL-08-030363
+        RHEL-08-030362
+        RHEL-08-030460
+        RHEL-08-010131
+        RHEL-08-030230
+        RHEL-08-030220
+        RHEL-08-030450
+        RHEL-08-030520
+        RHEL-08-030050
+        RHEL-08-030510
+        RHEL-08-030380
+        RHEL-08-030470
+        RHEL-08-030430
+        RHEL-08-030270

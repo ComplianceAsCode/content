@@ -1,0 +1,27 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu,multi_platform_sle
+{{#
+   See the OVAL template for more comments.
+   Product-specific categorization should be synced across all template content types
+-#}}
+
+{{% set grub_helper_executable = "grubby" -%}}
+{{% set grub_helper_args = ["--update-kernel=ALL", "--remove-args=" ~ ARG_NAME] -%}}
+
+{{%- macro update_etc_default_grub_manually() -%}}
+# Correct the form of default kernel command line in GRUB
+if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ ARG_NAME }}}=.*"'  '/etc/default/grub' ; then
+       sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ ARG_NAME }}}=?[^[:space:]]*\(.*"\)/\1 \2/' '/etc/default/grub'
+fi
+{{%- endmacro %}}
+
+{{% if 'ubuntu' in product %}}
+{{{ update_etc_default_grub_manually() }}}
+{{% set grub_helper_executable = "update-grub" -%}}
+{{% endif -%}}
+
+{{% if product in ["rhel8", "ol8"] %}}
+{{# Suppress the None output of append -#}}
+{{{ grub_helper_args.append("--env=/boot/grub2/grubenv") or "" -}}}
+{{% endif -%}}
+
+{{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}

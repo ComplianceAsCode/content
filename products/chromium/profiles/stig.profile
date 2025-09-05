@@ -23,6 +23,7 @@ selections:
     - var_extension_whitelist=none
     - var_auth_schema=negotiate
     - var_trusted_home_page=blank
+    - var_enable_approved_plugins=none
     - chromium_policy_file
     - chromium_disable_firewall_traversal
     - chromium_block_desktop_notifications

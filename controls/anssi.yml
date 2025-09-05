@@ -72,6 +72,7 @@ controls:
       SELinux policies limit the privileges of services and daemons to only what they require.
     rules:
     - selinux_state
+    - var_selinux_state=enforcing
 
   - id: R4
     levels:
@@ -197,8 +198,6 @@ controls:
     levels:
     - intermediary
     title: Partitioning type
-    notes: >- 
-      The rule for the /proc file system is not implemented
     status: partial
     rules:
     # this covers nodev options
@@ -231,8 +230,6 @@ controls:
     - mount_option_home_nosuid
     - mount_option_home_noexec
 
-    # /proc hidepid = 2 Contains process information and the system
-
     # /usr nodev Contains the majority of utilities and system files
     - partition_for_usr
 
@@ -250,6 +247,11 @@ controls:
     - partition_for_var_tmp
     - mount_option_var_tmp_nosuid
     - mount_option_var_tmp_noexec
+
+    related_rules:
+    # /proc hidepid = 2 Contains process information and the system
+    - mount_option_proc_hidepid
+    - var_mount_option_proc_hidepid=2
 
   - id: R13
     levels:

@@ -1,0 +1,58 @@
+documentation_complete: true
+
+prodtype: fedora,rhel7,rhel8,rhel9
+
+title: 'Add hidepid Option to /proc'
+
+description: |-
+    The <tt>hidepid</tt> mount option is applicable to <tt>/proc</tt> and is used to
+    control who can access the information in <tt>/proc/[pid]</tt> directories.
+    The option can have one of the following values:
+    <pre>
+    0: Everybody may access all /proc/[pid] directories.
+    1: Users may not access files and subdirectories inside any /proc/[pid] directories
+       but their own. The /proc/[pid] directories themselves remain visible.
+    2: Same as for mode 1, but in addition the /proc/[pid] directories belonging to other
+       users become invisible.
+    </pre>
+    For example, if you choose the value 2:
+    {{{ describe_mount(option="hidepid=2", part="/proc") }}}
+
+rationale: |-
+    Users should not be able to see and access directories within /proc, which are not
+    related to their own processes in a system. Otherwise, sensitive information from
+    other users could be seem.
+
+warnings:
+    - functionality: |-
+        Hiding the <tt>pid</tt> of processes may lead to problems with <tt>PolicyKit</tt> and <tt>D-Bus</tt>,
+        it may also convey a false sense of security.
+        {{% if 'rhel' in product %}}
+        Proceed to {{{ weblink(link="https://access.redhat.com/solutions/6704531") }}} for more details.
+        {{% endif %}}
+
+{{{ complete_ocil_entry_mount_option("/proc", "hidepid=value") }}}
+
+severity: low
+
+identifiers:
+    cce@rhel7: CCE-85881-1
+    cce@rhel8: CCE-85882-9
+    cce@rhel9: CCE-85883-7
+
+references:
+    anssi: BP28(R12)
+
+platform: machine
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /proc
+        mountoption: hidepid
+        mountoption_arg_var: var_mount_option_proc_hidepid
+        mount_has_to_exist: 'no'
+        filesystem: proc
+        type: proc
+    backends:
+        anaconda: 'off'

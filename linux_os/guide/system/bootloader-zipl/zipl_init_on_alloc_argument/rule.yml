@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'Configure kernel to zero out memory before allocation in zIPL'
+
+description: |-
+    To ensure that the kernel is configured to zero out memory before
+    allocation, check that all boot entries in
+    <tt>/boot/loader/entries/*.conf</tt> have <tt>init_on_alloc=1</tt>
+    included in its options.<br />
+
+    To ensure that new kernels and boot entries continue to zero out memory
+    before allocation, add <tt>init_on_alloc=1</tt> to <tt>/etc/kernel/cmdline</tt>.
+
+rationale: |-
+    When the kernel configuration option <tt>init_on_alloc</tt> is enabled,
+    all page allocator and slab allocator memory will be zeroed when allocated,
+    eliminating many kinds of "uninitialized heap memory" flaws, effectively
+    preventing data leaks.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-85868-8
+
+ocil_clause: 'the kernel is not configured to zero out memory before allocation'
+
+ocil: |-
+  To check that the kernel is configured to zero out memory before allocation
+  time, check all boot entries with following command:
+  <pre>sudo grep -L"^options\s+.*\binit_on_alloc=1\b" /boot/loader/entries/*.conf</pre>
+  No line should be returned, each line returned is a boot entry that doesn't enable audit.
+
+platform: machine
+
+template:
+  name: zipl_bls_entries_option
+  vars:
+    arg_name: init_on_alloc
+    arg_value: '1'

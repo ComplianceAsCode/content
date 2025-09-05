@@ -12,6 +12,3 @@
 {{% if product not in ["rhel7", "ol7"] %}}
 {{{ bash_package_remove("xorg-x11-server-Xwayland") }}}
 {{% endif %}}
-
-# configure run level
-systemctl set-default multi-user.target

@@ -27,6 +27,8 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel8: CCE-89021-0
+    cce@rhel9: CCE-89022-8
     cce@sle12: CCE-83236-0
     cce@sle15: CCE-85735-9
 
@@ -34,6 +36,7 @@ references:
     disa: CCI-001499
     nist: CM-5(6),CM-5(6).1
     srg: SRG-OS-000259-GPOS-00100
+    stigid@rhel8: RHEL-08-010341
     stigid@sle12: SLES-12-010874
     stigid@sle15: SLES-15-010354
     stigid@ubuntu2004: UBTU-20-010429
@@ -49,3 +52,14 @@ ocil: |-
     For each of these directories, run the following command to find files not
     owned by root:
     <pre>$ sudo find -L <i>$DIR</i> ! -user root -type d -exec chown root {} \;</pre>
+
+template:
+    name: file_owner
+    vars:
+        filepath:
+            - /lib/
+            - /lib64/
+            - /usr/lib/
+            - /usr/lib64/
+        recursive: 'true'
+        fileuid: '0'

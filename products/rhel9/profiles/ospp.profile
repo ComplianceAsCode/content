@@ -11,14 +11,13 @@ reference: https://www.niap-ccevs.org/Profile/PP.cfm
 title: '[DRAFT] Protection Profile for General Purpose Operating Systems'
 
 description: |-
-    This profile reflects mandatory configuration controls identified in the
-    NIAP Configuration Annex to the Protection Profile for General Purpose
-    Operating Systems (Protection Profile Version 4.2.1).
+    This profile is part of Red Hat Enterprise Linux 9 Common Criteria Guidance
+    documentation for Target of Evaluation based on Protection Profile for
+    General Purpose Operating Systems (OSPP) version 4.2.1 and Functional
+    Package for SSH version 1.0.
 
-    This configuration profile is consistent with CNSSI-1253, which requires
-    U.S. National Security Systems to adhere to certain configuration
-    parameters. Accordingly, this configuration profile is suitable for
-    use in U.S. National Security Systems.
+    Where appropriate, CNSSI 1253 or DoD-specific values are used for
+    configuration, based on Configuration Annex to the OSPP.
 
 selections:
 
@@ -125,13 +124,9 @@ selections:
     ## Boot prompt
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
-    - grub2_slub_debug_argument
-    - grub2_page_poison_argument
     - grub2_vsyscall_argument
-    - grub2_vsyscall_argument.role=unscored
-    - grub2_vsyscall_argument.severity=info
-    - grub2_pti_argument
-    - grub2_kernel_trust_cpu_rng
+    - grub2_init_on_alloc_argument
+    - grub2_page_alloc_shuffle_argument
 
     ## Security Settings
     - sysctl_kernel_kptr_restrict
@@ -154,18 +149,13 @@ selections:
     - service_auditd_enabled
     - var_auditd_flush=incremental_async
     - auditd_data_retention_flush
-    - auditd_local_events
-    - auditd_write_logs
     - auditd_log_format
     - auditd_freq
     - auditd_name_format
 
     ### Module Blacklist
-    - kernel_module_cramfs_disabled
     - kernel_module_bluetooth_disabled
     - kernel_module_sctp_disabled
-    - kernel_module_firewire-core_disabled
-    - kernel_module_atm_disabled
     - kernel_module_can_disabled
     - kernel_module_tipc_disabled
 
@@ -418,8 +408,6 @@ selections:
     - zipl_bootmap_is_up_to_date
     - zipl_audit_argument
     - zipl_audit_backlog_limit_argument
-    - zipl_slub_debug_argument
-    - zipl_page_poison_argument
     - zipl_vsyscall_argument
-    - zipl_vsyscall_argument.role=unscored
-    - zipl_vsyscall_argument.severity=info
+    - zipl_init_on_alloc_argument
+    - zipl_page_alloc_shuffle_argument

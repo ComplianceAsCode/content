@@ -31,7 +31,7 @@ ocil_clause: 'The proper insecureEdgeTerminationPolicy is not set'
 ocil: |-
     Run the following command to retrieve the compliancesuites in the system:
     <pre>$ oc get routes --all-namespaces</pre>
-    Make sure that every route object has either <tt>Disable</tt> or <tt>Redirect</tt>
+    Make sure that every route object has either <tt>None</tt> or <tt>Redirect</tt>
     in the <tt>.spec.tls.insecureEdgeTerminationPolicy</tt> setting.
 
 severity: medium
@@ -50,5 +50,5 @@ template:
     entity_check: "all"
     check_existence: "all_exist"
     values:
-      - value: "^(Disable|Redirect)$"
+      - value: "^(None|Redirect)$"
         operation: "pattern match"

@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: eks
+
+title: 'Encrypt Traffic to Load Balancers and Workloads'
+
+description: |-
+  Encrypt traffic to HTTPS load balancers using TLS certificates.
+
+rationale: |-
+  Encrypting traffic between users and your Kubernetes workload is fundamental
+  to protecting data sent over the web.
+
+severity: unknown
+
+identifiers:
+  cce@eks: CCE-89133-3
+
+references:
+  cis@eks: 5.4.5
+
+ocil_clause: 'connections to load balancers and workloads are encrypted with TLS'
+
+ocil: |-
+  For more information about protecting your workloads using TLS please refer
+  to the AWS User Guide:
+
+  https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/data-protection.html

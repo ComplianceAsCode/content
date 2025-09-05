@@ -1,0 +1,55 @@
+documentation_complete: true
+
+title: 'Verify that System Executable Have Root Ownership'
+
+description: |-
+    <pre>/bin
+    /sbin
+    /usr/bin
+    /usr/sbin
+    /usr/local/bin
+    /usr/local/sbin</pre>
+    All these directories should be owned by the <tt>root</tt> user.
+    If any directory <i>DIR</i> in these directories is found
+    to be owned by a user other than root, correct its ownership with the
+    following command:
+    <pre>$ sudo chown root <i>DIR</i></pre>
+
+rationale: |-
+    System binaries are executed by privileged users as well as system services,
+    and restrictive permissions are necessary to ensure that their
+    execution of these programs cannot be co-opted.
+
+severity: medium
+
+references:
+    disa: CCI-001495
+    srg: SRG-OS-000258-GPOS-00099
+    stigid@ubuntu2004: UBTU-20-010424
+
+ocil_clause: 'any system executables directories are found to not be owned by root'
+
+ocil: |-
+    System executables are stored in the following directories by default:
+    <pre>/bin
+    /sbin
+    /usr/bin
+    /usr/local/bin
+    /usr/local/sbin
+    /usr/sbin</pre>
+    For each of these directories, run the following command to find files
+    not owned by root:
+    <pre>$ sudo find -L <i>DIR/</i> ! -user root -type d -exec chown root {} \;</pre>
+
+template:
+    name: file_owner
+    vars:
+        filepath:
+            - /bin/
+            - /sbin/
+            - /usr/bin/
+            - /usr/sbin/
+            - /usr/local/bin/
+            - /usr/local/sbin/
+        recursive: 'true'
+        fileuid: '0'

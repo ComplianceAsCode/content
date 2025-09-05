@@ -1,5 +1,9 @@
+title: PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 8
 description: Ensures PCI-DSS v3.2.1 security configuration settings are applied.
-documentation_complete: true
+extends: null
+metadata:
+    SMEs:
+    - yuumasato
 reference: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
 selections:
 - account_disable_post_pw_expiration
@@ -120,6 +124,7 @@ selections:
 - service_pcscd_enabled
 - set_password_hashing_algorithm_libuserconf
 - set_password_hashing_algorithm_logindefs
+- set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
 - sshd_set_idle_timeout
 - sshd_set_keepalive_0
@@ -136,4 +141,8 @@ selections:
 - var_multiple_time_servers=rhel
 - var_sshd_set_keepalive=0
 - var_smartcard_drivers=cac
-title: PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 8
+platforms: !!set {}
+cpe_names: !!set {}
+platform: null
+filter_rules: ''
+documentation_complete: true

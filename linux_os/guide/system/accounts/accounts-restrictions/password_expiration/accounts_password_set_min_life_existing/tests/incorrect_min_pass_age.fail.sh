@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# packages = passwd
+
 BAD_PAS_AGE=-1
 
 # Configure the OS to enforce a password age < 1 of each accout  

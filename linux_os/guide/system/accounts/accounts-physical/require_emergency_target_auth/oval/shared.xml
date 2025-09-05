@@ -12,7 +12,7 @@
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that
-    {{% if product in ["fedora", "rhel8", "rhel9", "ol8"] -%}}
+    {{% if product in ["fedora", "rhel8", "rhel9", "ol8", "sle12", "sle15"] -%}}
     /usr/lib/systemd/systemd-sulogin-shell
     {{%- else -%}}
     /sbin/sulogin
@@ -24,7 +24,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_require_emergency_service" version="1">
     <ind:filepath>/usr/lib/systemd/system/emergency.service</ind:filepath>
-    {{%- if product in ["fedora", "rhel8", "rhel9", "ol8"] -%}}
+    {{%- if product in ["fedora", "rhel8", "rhel9", "ol8", "sle12", "sle15"] -%}}
     <ind:pattern operation="pattern match">^ExecStart=\-/usr/lib/systemd/systemd-sulogin-shell[\s]+emergency</ind:pattern>
     {{%- else -%}}
     <ind:pattern operation="pattern match">^ExecStart=\-/bin/sh[\s]+-c[\s]+\"(/usr)?/sbin/sulogin;[\s]+/usr/bin/systemctl[\s]+--fail[\s]+--no-block[\s]+default\"</ind:pattern>

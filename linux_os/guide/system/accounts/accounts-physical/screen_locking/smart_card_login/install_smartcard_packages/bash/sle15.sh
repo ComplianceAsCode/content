@@ -11,5 +11,5 @@ SMARTCARD_PACKAGES+=("coolkey")
 
 for PKGNAME in "${SMARTCARD_PACKAGES[@]}"
 do
-    {{{ bash_package_install(package=PKGNAME) }}}
+    {{{ bash_package_install(package="$PKGNAME") }}}
 done

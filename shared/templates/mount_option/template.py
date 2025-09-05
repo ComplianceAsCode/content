@@ -11,4 +11,6 @@ def _mount_option(data, lang):
 
 
 def preprocess(data, lang):
+    if lang == "oval":
+        data["mountoptionid"] = data["mountoption"].split()[0]
     return _mount_option(data, lang)

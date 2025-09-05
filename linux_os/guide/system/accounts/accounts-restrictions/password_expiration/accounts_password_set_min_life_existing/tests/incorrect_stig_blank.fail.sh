@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # variables = var_accounts_minimum_age_login_defs=1
+# packages = passwd
 
 # make existing entities pass
 for acct in $(awk -F: '{print $1}' /etc/shadow ); do

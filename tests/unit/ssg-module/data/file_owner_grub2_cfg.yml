@@ -16,10 +16,12 @@ ocil: ' To check the ownership of <code>/boot/grub2/grub.cfg</code>, run the com
   indicate the following owner: <code>root</code>'
 ocil_clause: ' /boot/grub2/grub.cfg has owner root'
 oval_external_content: null
-platforms:
-  - machine
-# TODO: Make Rule get this from group, so it can be saved here
-# platforms: null
+platform: machine
+platforms: !!set
+    machine: null
+cpe_platform_names: !!set
+    machine: null
+inherited_platforms: []
 prodtype: rhel7,rhel8,fedora,ol7,ol8
 rationale: Only root should be able to modify important boot parameters.
 references: {cis: 1.4.1, cis-csc: '12,13,14,15,16,18,3,5', cjis: 5.5.2.2, cobit5: 'APO01.06,DSS05.04,DSS05.07,DSS06.02',

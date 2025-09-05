@@ -1,0 +1,13 @@
+name: machine
+original_expression: machine
+xml_content: !!binary |
+    PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0ndXRmOCc/Pgo8bnMwOnBsYXRmb3JtIHhtbG5z
+    Om5zMD0iaHR0cDovL2NwZS5taXRyZS5vcmcvbGFuZ3VhZ2UvMi4wIiBpZD0ibWFjaGluZSI+PG5z
+    MDpsb2dpY2FsLXRlc3Qgb3BlcmF0b3I9IkFORCIgbmVnYXRlPSJmYWxzZSI+PG5zMDpmYWN0LXJl
+    ZiBuYW1lPSJjcGU6L2E6bWFjaGluZSIgLz48L25zMDpsb2dpY2FsLXRlc3Q+PC9uczA6cGxhdGZv
+    cm0+
+bash_conditional: '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]'
+ansible_conditional: ansible_virtualization_type not in ["docker", "lxc", "openvz",
+    "podman", "container"]
+definition_location: ''
+documentation_complete: true

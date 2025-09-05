@@ -1,0 +1,46 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'Enable randomization of the page allocator in zIPL'
+
+description: |-
+    To enable the randomization of the page allocator in the kernel, check that
+    all boot entries in <tt>/boot/loader/entries/*.conf</tt> have
+    <tt>page_alloc.shuffle=1</tt> included in its options.<br />
+
+    To enable randomization of the page allocator also for  newly installed
+    kernels, add <tt>page_alloc.shuffle=1</tt> to <tt>/etc/kernel/cmdline</tt>.
+
+rationale: |-
+    The <tt>CONFIG_SHUFFLE_PAGE_ALLOCATOR</tt> config option is primarily
+    focused on improving the average utilization of a direct-mapped
+    memory-side-cache. Aside of this performance effect, it also reduces
+    predictability of page allocations in situations when the bad actor can
+    crash the system and somehow leverage knowledge of (page) allocation order
+    right after a fresh reboot, or can control the timing between a
+    hot-pluggable memory node (as in NUMA node) and applications allocating
+    memory ouf of that node. The <tt>page_alloc.shuffle=1</tt> kernel command
+    line parameter then forces this functionality irrespectively of memory cache
+    architecture.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-85880-3
+
+ocil_clause: 'randomization of the page allocator is not enabled in the kernel'
+
+ocil: |-
+  To check that the randomization of the page allocator in the kernel is
+  enabled, check all boot entries with following command:
+  <pre>sudo grep -L"^options\s+.*\bpage_alloc\.shuffle=1\b" /boot/loader/entries/*.conf</pre>
+  No line should be returned, each line returned is a boot entry that doesn't enable audit.
+
+platform: machine
+
+template:
+  name: zipl_bls_entries_option
+  vars:
+    arg_name: page_alloc.shuffle
+    arg_value: '1'

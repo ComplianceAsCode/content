@@ -17,4 +17,3 @@ description: |-
 
 selections:
     - anssi:all:enhanced
-    - '!selinux_state'

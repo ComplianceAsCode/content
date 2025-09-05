@@ -1,8 +1,14 @@
 # platform = multi_platform_ol
 # OL fingerprints below retrieved from Oracle Linux Yum Server "Frequently Asked Questions"
 # https://yum.oracle.com/faq.html#a10
-readonly OL_FINGERPRINT="42144123FECFC55B9086313D72F97B74EC551F03"
-readonly OL8_FINGERPRINT="76FD3DB13AB67410B89DB10E82562EA9AD986DA3"
+readonly OL_RELEASE_FINGERPRINT="{{{ release_key_fingerprint }}}"
+readonly OL_AUXILIARY_FINGERPRINT="{{{ auxiliary_key_fingerprint }}}"
+
+FINGERPRINTS_REGEX="${OL_RELEASE_FINGERPRINT}"
+
+if [[ -n "$OL_AUXILIARY_FINGERPRINT" ]]; then
+    FINGERPRINTS_REGEX+="|${OL_AUXILIARY_FINGERPRINT}"
+fi
 
 # Location of the key we would like to import (once it's integrity verified)
 readonly OL_RELEASE_KEY="/etc/pki/rpm-gpg/RPM-GPG-KEY-oracle"
@@ -21,7 +27,7 @@ then
   then
     # Filter just hexadecimal fingerprints from gpg's output from
     # processing of a key file
-    echo "${GPG_OUT[*]}" | grep -vE "${OL_FINGERPRINT}|${OL8_FINGERPRINT}" || {
+    echo "${GPG_OUT[*]}" | grep -vE "$FINGERPRINTS_REGEX" || {
       # If $ OL_RELEASE_KEY file doesn't contain any keys with unknown fingerprint, import it
       rpm --import "${OL_RELEASE_KEY}"
     }

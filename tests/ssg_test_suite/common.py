@@ -234,9 +234,7 @@ def run_with_stdout_logging(command, args, log_file):
     if result.stderr:
         log_file.write("STDERR: ")
         log_file.write(result.stderr)
-    if result.returncode:
-        raise RuntimeError("'%s' command returned non-zero." % command)
-    return result.stdout
+    return result
 
 
 def _exclude_garbage(tarinfo):
@@ -655,7 +653,7 @@ def install_packages(test_env, packages):
         log_file.flush()
         test_env.execute_ssh_command(
             command_str, log_file,
-            "Couldn't install required packages {packages}".format(packages=packages))
+            "Couldn't install required packages: {packages}".format(packages=",".join(packages)))
 
 
 def cpes_to_platform(cpes):

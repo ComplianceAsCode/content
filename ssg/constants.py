@@ -49,10 +49,9 @@ product_directories = [
     'macos1015',
     'ocp4',
     'rhcos4',
-    'ol7', 'ol8',
+    'ol7', 'ol8', 'ol9',
     'opensuse',
     'rhel7', 'rhel8', 'rhel9',
-    'rhosp10', 'rhosp13',
     'rhv4',
     'sle12', 'sle15',
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004',
@@ -120,7 +119,7 @@ OSCAP_PATH = "oscap"
 OSCAP_PROFILE_ALL_ID = "(all)"
 XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
 XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
-min_ansible_version = "2.5"
+min_ansible_version = "2.9"
 ansible_version_requirement_pre_task_name = \
     "Verify Ansible meets SCAP-Security-Guide version requirements."
 standard_profiles = ['standard', 'pci-dss', 'desktop', 'server']
@@ -210,12 +209,11 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Red Hat Enterprise Linux CoreOS 4": "rhcos4",
     "Oracle Linux 7": "ol7",
     "Oracle Linux 8": "ol8",
+    "Oracle Linux 9": "ol9",
     "openSUSE": "opensuse",
     "Red Hat Enterprise Linux 7": "rhel7",
     "Red Hat Enterprise Linux 8": "rhel8",
     "Red Hat Enterprise Linux 9": "rhel9",
-    "Red Hat OpenStack Platform 10": "rhosp10",
-    "Red Hat OpenStack Platform 13": "rhosp13",
     "Red Hat Virtualization 4": "rhv4",
     "SUSE Linux Enterprise 12": "sle12",
     "SUSE Linux Enterprise 15": "sle15",
@@ -261,7 +259,7 @@ REFERENCES = dict(
 )
 
 
-MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
+MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos",
                        "example", "eks"]
 
@@ -271,11 +269,10 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
     "multi_platform_opensuse": ["opensuse"],
-    "multi_platform_ol": ["ol7", "ol8"],
+    "multi_platform_ol": ["ol7", "ol8", "ol9"],
     "multi_platform_ocp": ["ocp4"],
     "multi_platform_rhcos": ["rhcos4"],
     "multi_platform_rhel": ["rhel7", "rhel8", "rhel9"],
-    "multi_platform_rhosp": ["rhosp10", "rhosp13"],
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle12", "sle15"],
     "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004"],
@@ -423,6 +420,8 @@ XCCDF_PLATFORM_TO_PACKAGE = {
   "non-uefi": None,
   "not_s390x_arch": None,
   "s390x_arch": None,
+  "not_aarch64_arch": None,
+  "aarch64_arch": None,
   "ovirt": None,
   "no_ovirt": None,
 }
@@ -434,7 +433,6 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'firefox': 'Mozilla Firefox',
     'jre': 'Java Runtime Environment',
     'macos': 'Apple macOS',
-    'rhosp': 'Red Hat OpenStack Platform',
     'rhel': 'Red Hat Enterprise Linux',
     'rhv': 'Red Hat Virtualization',
     'debian': 'Debian',

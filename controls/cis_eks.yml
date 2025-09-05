@@ -51,11 +51,11 @@ controls:
     Amazon EKS.
   levels:
   - level_1
-  status: pending
+  status: manual
   controls:
   - id: '2.1'
     title: '2.1 Logging'
-    status: pending
+    status: manual
     levels:
     - level_1
     controls:
@@ -80,12 +80,16 @@ controls:
       # ability to probe AWS endpoints (like the EKS one) to be able to do such
       # checks.
       notes: |-
-        It's not feasible to do such a check via automated means. e.g. via the
-        Compliance Operator using OpenSCAP. This has to be checked manually.
-      status: pending
+        Automating this check requires access to AWS endpoints, the aws or
+        eksctl client, the EKS cluster name, and the cluster region. It's not
+        feasible to automate this check until we find a way to incorporate the
+        information we need and use it to check AWS using the API. For now,
+        this must be checked manually.
+      status: manual
       levels:
       - level_1
-      rules: []
+      rules:
+      - audit_logging
 - id: '3'
   title: '3 Worker Nodes'
   description: |-
@@ -431,7 +435,10 @@ controls:
 - id: '4'
   title: >-
     4 Policies
-  status: pending
+  description: |-
+    This section contains recommendations for various Kubernetes policies which
+    are important to the security of Amazon EKS customer environment.
+  status: manual
   levels:
   - level_2
   controls:
@@ -445,42 +452,150 @@ controls:
     - id: 4.1.1
       title: >-
         4.1.1 Ensure that the cluster-admin role is only used where required
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          The RBAC role cluster-admin provides wide-ranging powers over the
+          environment and should be used only where and when needed.
+
+        Rationale:
+
+          Kubernetes provides a set of default roles where RBAC is used. Some
+          of these roles such as cluster-admin provide wide-ranging privileges
+          which should only be applied where absolutely necessary. Roles such
+          as cluster-admin allow super-user access to perform any action on any
+          resource. When used in a ClusterRoleBinding, it gives full control
+          over every resource in the cluster and in all namespaces. When used
+          in a RoleBinding, it gives full control over every resource in the
+          rolebinding's namespace, including the namespace itself.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        about users and their authorization.
       levels:
       - level_1
       rules: []
     - id: 4.1.2
       title: >-
         4.1.2 Minimize access to secrets
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          The Kubernetes API stores secrets, which may be service account
+          tokens for the Kubernetes API or credentials used by workloads in the
+          cluster. Access to these secrets should be restricted to the smallest
+          possible group of users to reduce the risk of privilege escalation.
+
+        Rationale:
+
+          Inappropriate access to secrets stored within the Kubernetes cluster
+          can allow for an attacker to gain additional access to the Kubernetes
+          cluster or external resources whose credentials are stored as
+          secrets.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        about users and their authorization.
       levels:
       - level_1
       rules: []
     - id: 4.1.3
       title: >-
         4.1.3 Minimize wildcard use in Roles and ClusterRoles
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Kubernetes Roles and ClusterRoles provide access to resources based
+          on sets of objects and actions that can be taken on those objects. It
+          is possible to set either of these to be the wildcard "*" which
+          matches all items. Use of wildcards is not optimal from a security
+          perspective as it may allow for inadvertent access to be granted when
+          new resources are added to the Kubernetes API either as CRDs or in
+          later versions of the product.
+
+        Rationale:
+
+          The principle of least privilege recommends that users are provided
+          only the access required for their role and nothing more. The use of
+          wildcard rights grants is likely to provide excessive rights to the
+          Kubernetes API.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        to audit effectively. The Compliance Operator also uses wildcards for
+        the compliance-operator roles.
       levels:
       - level_1
       rules: []
     - id: 4.1.4
       title: >-
         4.1.4 Minimize access to create pods
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          The ability to create pods in a namespace can provide a number of
+          opportunities for privilege escalation, such as assigning privileged
+          service accounts to these pods or mounting hostPaths with access to
+          sensitive data (unless Pod Security Policies are implemented to
+          restrict this access) As such, access to create new pods should be
+          restricted to the smallest possible group of users.
+
+        Rationale:
+
+          The ability to create pods in a cluster opens up possibilities for
+          privilege escalation and should be restricted, where possible.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        about users and their authorization.
       levels:
       - level_1
       rules: []
     - id: 4.1.5
       title: >-
         4.1.5 Ensure that default service accounts are not actively used.
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          The default service account should not be used to ensure that rights
+          granted to applications can be more easily audited and reviewed.
+
+        Rationale:
+
+          Kubernetes provides a default service account which is used by
+          cluster workloads where no specific service account is assigned to
+          the pod. Where access to the Kubernetes API from a pod is required, a
+          specific service account should be created for that pod, and rights
+          granted to that service account. The default service account should
+          be configured such that it does not provide a service account token
+          and does not have any explicit rights assignments.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        about each namespace in the deployment.
       levels:
       - level_1
       rules: []
     - id: 4.1.6
       title: >-
         4.1.6 Ensure that Service Account Tokens are only mounted where necessary
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Service accounts tokens should not be mounted in pods except where
+          the workload running in the pod explicitly needs to communicate with
+          the API server
+
+        Rationale:
+
+          Mounting service account tokens inside pods can provide an avenue for
+          privilege escalation attacks where an attacker is able to compromise
+          a single pod in the cluster. Avoiding mounting these tokens removes
+          this attack avenue.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        about each namespace and pod in the deployment.
       levels:
       - level_1
       rules: []
@@ -663,72 +778,195 @@ controls:
   title: >-
     5 Managed services
   status: pending
+  description: |-
+    This section consists of security recommendations for the Amazon EKS. These
+    recommendations are applicable for configurations that Amazon EKS customers
+    own and manage.
   levels:
   - level_2
   controls:
   - id: '5.1'
     title: >-
       5.1 Image Registry and Image Scanning
-    status: pending
+    status: manual
+    description: |-
+      This section contains recommendations relating to container image
+      registries and securing images in those registries, such as Amazon
+      Elastic Container Registry (ECR).
     levels:
     - level_2
     controls:
     - id: 5.1.1
       title: >-
         5.1.1 Ensure Image Vulnerability Scanning using Amazon ECR image scanning or a third party provider
-      status: pending
+      # NOTE(lbragstad): We're unable to automate this check because it
+      # requires access to an AWS endpoint. We should re-evaluate this if it
+      # becomes possible to write rules that use network connections.
+      status: manual
+      description: |-
+        Description:
+
+        Scan images being deployed to Amazon EKS for vulnerabilities.
+
+        Rationale:
+
+        Vulnerabilities in software packages can be exploited by hackers or
+        malicious users to obtain unauthorized access to local cloud resources.
+        Amazon ECR and other third party products allow images to be scanned
+        for known vulnerabilities.
       levels:
       - level_1
-      rules: []
+      rules:
+      - image_scanning
     - id: 5.1.2
       title: >-
         5.1.2 Minimize user access to Amazon ECR
-      status: pending
+      # NOTE(lbragstad): We're unable to automate this check because it
+      # requires access to an AWS endpoint. We should re-evaluate this if it
+      # becomes possible to write rules that use network connections.
+      status: manual
+      description: |-
+        Description:
+
+        Restrict user access to Amazon ECR, limiting interaction with build
+        images to only authorized personnel and service accounts.
+
+        Rationale:
+
+        Weak access control to Amazon ECR may allow malicious users to replace
+        built images with vulnerable containers.
       levels:
       - level_1
-      rules: []
+      rules:
+      - registry_access
     - id: 5.1.3
       title: >-
         5.1.3 Minimize cluster access to read-only for Amazon ECR
-      status: pending
+      # NOTE(lbragstad): We're unable to automate this check because it
+      # requires access to an AWS endpoint. We should re-evaluate this if it
+      # becomes possible to write rules that use network connections.
+      status: manual
+      description: |-
+        Description:
+
+          Configure the Cluster Service Account with Storage Object Viewer Role
+          to only allow read- only access to Amazon ECR.
+
+        Rationale:
+
+          The Cluster Service Account does not require administrative access to
+          Amazon ECR, only requiring pull access to containers to deploy onto
+          Amazon EKS. Restricting permissions follows the principles of least
+          privilege and prevents credentials from being abused beyond the
+          required role.
       levels:
       - level_1
-      rules: []
+      rules:
+      - read_only_registry_access
     - id: 5.1.4
       title: >-
         5.1.4 Minimize Container Registries to only those approved
-      status: pending
+      # NOTE(lbragstad): We're unable to automate this check because it
+      # requires access to an AWS endpoint. We should re-evaluate this if it
+      # becomes possible to write rules that use network connections.
+      status: manual
+      description: |-
+        Description:
+          Use approved container registries.
+
+        Rationale:
+
+          Allowing unrestricted access to external container registries
+          provides the opportunity for malicious or unapproved containers to be
+          deployed into the cluster. Allowlisting only approved container
+          registries reduces this risk.
       levels:
       - level_2
-      rules: []
+      rules:
+      - approved_registries
   - id: '5.2'
     title: >-
       5.2 Identity and Access Management (IAM)
-    status: pending
+    status: manual
     levels:
-    - level_2
+    - level_1
     controls:
     - id: 5.2.1
       title: >-
         5.2.1 Prefer using dedicated EKS Service Accounts
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Kubernetes workloads should not use cluster node service accounts to
+          authenticate to Amazon EKS APIs. Each Kubernetes workload that needs
+          to authenticate to other AWS services using AWS IAM should be
+          provisioned with a dedicated Service account.
+
+        Rationale:
+
+          Manual approaches for authenticating Kubernetes workloads running on
+          Amazon EKS against AWS APIs are: storing service account keys as a
+          Kubernetes secret (which introduces manual key rotation and potential
+          for key compromise); or use of the underlying nodes' IAM Service
+          account, which violates the principle of least privilege on a
+          multi-tenanted node, when one pod needs to have access to a service,
+          but every other pod on the node that uses the Service account does
+          not.
+      notes: |-
+        This must be checked manually since it requires deployment-specific
+        knowledge and requires network access to the AWS IAM endpoint.
+        Re-evaluate this if or when we have the ability to use network
+        connections in rules.
       levels:
       - level_1
-      rules: []
+      rules:
+      - dedicated_service_accounts
   - id: '5.3'
     title: >-
       5.3 AWS Key Management Service (KMS)
-    status: pending
+    status: manual
     levels:
     - level_1
     controls:
     - id: 5.3.1
       title: >-
         5.3.1 Ensure Kubernetes Secrets are encrypted using Customer Master Keys (CMKs) managed in AWS KMS
-      status: pending
+      status: manual
+      description: |
+        Description:
+
+          Encrypt Kubernetes secrets, stored in etcd, using secrets encryption
+          feature during Amazon EKS cluster creation.
+
+        Rationale:
+
+          Kubernetes can store secrets that pods can access via a mounted
+          volume. Today, Kubernetes secrets are stored with Base64 encoding,
+          but encrypting is the recommended approach. Amazon EKS clusters
+          version 1.13 and higher support the capability of encrypting your
+          Kubernetes secrets using AWS Key Management Service (KMS) Customer
+          Managed Keys (CMK). The only requirement is to enable the encryption
+          provider support during EKS cluster creation. Use AWS Key Management
+          Service (KMS) keys to provide envelope encryption of Kubernetes
+          secrets stored in Amazon EKS. Implementing envelope encryption is
+          considered a security best practice for applications that store
+          sensitive data and is part of a defense in depth security strategy.
+          Application-layer Secrets Encryption provides an additional layer of
+          security for sensitive data, such as user defined Secrets and Secrets
+          required for the operation of the cluster, such as service account
+          keys, which are all stored in etcd. Using this functionality, you can
+          use a key, that you manage in AWS KMS, to encrypt data at the
+          application layer. This protects against attackers in the event that
+          they manage to gain access to etcd.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        and access to the AWS KMS endpoint. Re-evaluate this if or when we have
+        the ability to use network connections in rules.
       levels:
-      - level_2
-      rules: []
+      - level_1
+      rules:
+      - secret_encryption
   - id: '5.4'
     title: >-
       5.4 Cluster Networking
@@ -739,63 +977,233 @@ controls:
     - id: 5.4.1
       title: >-
         5.4.1 Restrict Access to the Control Plane Endpoint
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Enable Endpoint Private Access to restrict access to the cluster's
+          control plane to only an allowlist of authorized IPs.
+
+        Rationale:
+
+          Authorized networks are a way of specifying a restricted range of IP
+          addresses that are permitted to access your cluster's control plane.
+          Kubernetes Engine uses both Transport Layer Security (TLS) and
+          authentication to provide secure access to your cluster's control
+          plane from the public internet. This provides you the flexibility to
+          administer your cluster from anywhere; however, you might want to
+          further restrict access to a set of IP addresses that you control.
+          You can set this restriction by specifying an authorized network.
+          Restricting access to an authorized network can provide additional
+          security benefits for
+          your container cluster, including:
+            * Better protection from outsider attacks: Authorized networks
+              provide an additional layer of security by limiting external
+              access to a specific set of addresses you designate, such as
+              those that originate from your premises. This helps protect
+              access to your cluster in the case of a vulnerability in the
+              cluster's authentication or authorization mechanism.
+            * Better protection from insider attacks: Authorized networks help
+              protect your cluster from accidental leaks of master certificates
+              from your company's premises. Leaked certificates used from
+              outside Amazon EC2 and outside the authorized IP ranges (for
+              example, from addresses outside your company) are still denied
+              access.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        and access to the AWS EKS endpoint. Re-evaluate this if or when we have
+        the ability to use network connections in rules.
       levels:
       - level_1
-      rules: []
+      rules:
+      - control_plane_access
     - id: 5.4.2
       title: >-
         5.4.2 Ensure clusters are created with Private Endpoint Enabled and Public Access Disabled
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Disable access to the Kubernetes API from outside the node network if
+          it is not required.
+
+        Rationale:
+
+          In a private cluster, the master node has two endpoints, a private
+          and public endpoint. The private endpoint is the internal IP address
+          of the master, behind an internal load balancer in the master's VPC
+          network. Nodes communicate with the master using the private
+          endpoint. The public endpoint enables the Kubernetes API to be
+          accessed from outside the master's VPC network. Although Kubernetes
+          API requires an authorized token to perform sensitive actions, a
+          vulnerability could potentially expose the Kubernetes publically with
+          unrestricted access. Additionally, an attacker may be able to
+          identify the current cluster and Kubernetes API version and determine
+          whether it is vulnerable to an attack. Unless required, disabling
+          public endpoint will help prevent such threats, and require the
+          attacker to be on the master's VPC network to perform any attack on
+          the Kubernetes API.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        and access to AWS endpoints. Re-evaluate this if or when we have the
+        ability to use network connections in rules.
       levels:
       - level_2
-      rules: []
+      rules:
+      - endpoint_configuration
     - id: 5.4.3
       title: >-
         5.4.3 Ensure clusters are created with Private Nodes
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Disable public IP addresses for cluster nodes, so that they only have
+          private IP addresses. Private Nodes are nodes with no public IP
+          addresses.
+
+        Rationale:
+
+          Disabling public IP addresses on cluster nodes restricts access to
+          only internal networks, forcing attackers to obtain local network
+          access before attempting to compromise the underlying Kubernetes
+          hosts.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        and access to AWS endpoints. Re-evaluate this if or when we have the
+        ability to use network connections in rules.
       levels:
       - level_1
-      rules: []
+      rules:
+      - private_nodes
     - id: 5.4.4
       title: >-
         5.4.4 Ensure Network Policy is Enabled and set as appropriate
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Use Network Policy to restrict pod to pod traffic within a cluster
+          and segregate workloads.
+
+        Rationale:
+
+          By default, all pod to pod traffic within a cluster is allowed.
+          Network Policy creates a pod-level firewall that can be used to
+          restrict traffic between sources. Pod traffic is restricted by having
+          a Network Policy that selects it (through the use of labels). Once
+          there is any Network Policy in a namespace selecting a particular
+          pod, that pod will reject any connections that are not allowed by any
+          Network Policy. Other pods in the namespace that are not selected by
+          any Network Policy will continue to accept all traffic. Network
+          Policies are managed via the Kubernetes Network Policy API and
+          enforced by a network plugin, simply creating the resource without a
+          compatible network plugin to implement it will have no effect. EKS
+          supports Network Policy enforcement through the use of Calico.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge.
       levels:
       - level_1
-      rules: []
+      rules:
+      - confirure_network_policy
     - id: 5.4.5
       title: >-
         5.4.5 Encrypt traffic to HTTPS load balancers with TLS certificates
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Encrypt traffic to HTTPS load balancers using TLS certificates.
+
+        Rationale:
+
+          Encrypting traffic between users and your Kubernetes workload is
+          fundamental to protecting data sent over the web.
+      notes: |-
+        This check is manual because it requires access to the Kubernetes API
+        server configuration, which requires access to the Kubernetes API or
+        the AWS EKS configuration.
       levels:
       - level_2
-      rules: []
+      rules:
+      - configure_tls
   - id: '5.5'
     title: >-
       5.5 Authentication and Authorization
-    status: pending
+    status: manual
     levels:
     - level_2
     controls:
     - id: 5.5.1
       title: >-
         5.5.1 Manage Kubernetes RBAC users with AWS IAM Authenticator for Kubernetes
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Amazon EKS uses IAM to provide authentication to your Kubernetes
+          cluster through the AWS IAM Authenticator for Kubernetes. You can
+          configure the stock kubectl client to work with Amazon EKS by
+          installing the AWS IAM Authenticator for Kubernetes and modifying
+          your kubectl configuration file to use it for authentication.
+
+        Rationale:
+
+          On- and off-boarding users is often difficult to automate and prone
+          to error. Using a single source of truth for user permissions reduces
+          the number of locations that an individual must be off-boarded from,
+          and prevents users gaining unique permissions sets that increase the
+          cost of audit.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        about the namespaces to audit it effectively.
       levels:
       - level_2
-      rules: []
+      rules:
+      - iam_integration
   - id: '5.6'
     title: >-
       5.6 Other Cluster Configurations
-    status: pending
+    status: manual
     levels:
     - level_1
     controls:
     - id: 5.6.1
       title: >-
         5.6.1 Consider Fargate for running untrusted workloads
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          It is Best Practice to restrict or fence untrusted workloads when
+          running in a multi-tenant environment.
+
+        Rationale:
+
+          AWS Fargate is a technology that provides on-demand, right-sized
+          compute capacity for containers. With AWS Fargate, you no longer have
+          to provision, configure, or scale groups of virtual machines to run
+          containers. This removes the need to choose server types, decide when
+          to scale your node groups, or optimize cluster packing. You can
+          control which pods start on Fargate and how they run with Fargate
+          profiles, which are defined as part of your Amazon EKS cluster.
+          Amazon EKS integrates Kubernetes with AWS Fargate by using
+          controllers that are built by AWS using the upstream, extensible
+          model provided by Kubernetes. These controllers run as part of the
+          Amazon EKS managed Kubernetes control plane and are responsible for
+          scheduling native Kubernetes pods onto Fargate. The Fargate
+          controllers include a new scheduler that runs alongside the default
+          Kubernetes scheduler in addition to several mutating and validating
+          admission controllers. When you start a pod that meets the criteria
+          for running on Fargate, the Fargate controllers running in the
+          cluster recognize, update, and schedule the pod onto Fargate. Each
+          pod running on Fargate has its own isolation boundary and does not
+          share the underlying kernel, CPU resources, memory resources, or
+          elastic network interface with another pod.
+      notes: |-
+        This check is manual because it requires access to the AWS Fargate
+        endpoint to audit and remediate.
       levels:
       - level_2
-      rules: []
+      rules:
+      - fargate

@@ -121,4 +121,52 @@
   </ind:yamlfilecontent_state>
 
 {{% endfor %}}
+
+  <!-- helpers for ovn/sdn network cpe check-->
+  <local_variable id="ocp4_network_dump_location" datatype="string" comment="The actual filepath of the network file to scan." version="1">
+      <literal_component>/kubernetes-api-resources/apis/config.openshift.io/v1/networks/cluster</literal_component>
+  </local_variable>
+
+  <unix:file_test id="test_file_for_ocp4_network" check="only one" comment="Find the actual file for the network to be scanned." version="1">
+      <unix:object object_ref="object_file_for_ocp4_network"/>
+  </unix:file_test>
+
+  <unix:file_object id="object_file_for_ocp4_network" version="1">
+      <unix:filepath var_ref="ocp4_network_dump_location"/>
+  </unix:file_object>
+
+  <ind:yamlfilecontent_object id="object_ocp4_platform_network" version="1">
+      <ind:filepath var_ref="ocp4_network_dump_location"/>
+      <ind:yamlpath>.status.networkType</ind:yamlpath>
+  </ind:yamlfilecontent_object>
+
+  <!-- Check for OpenShift Container Platform 4 using specific network type -->
+{{% for network in ["OpenShiftSDN", "OpenShiftOVN"] %}}
+  <definition class="inventory" id="installed_app_is_ocp4_on_{{{ network|lower }}}" version="1">
+    <metadata>
+      <title>Red Hat OpenShift Container network 4 on {{{ network }}}</title>
+      <affected family="unix">
+        <platform>Red Hat OpenShift Container network 4 on {{{ network }}}</platform>
+      </affected>
+      <reference ref_id="cpe:/a:redhat:openshift_container_network_on_{{{ network|lower }}}:4" source="CPE" />
+      <description>The application installed installed on the system is OpenShift version 4 on {{{ network }}}.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="cluster is OpenShift 4 on {{{ network }}}" test_ref="test_ocp4_on_{{{ network|lower }}}" />
+      <criterion comment="Make sure OCP4 networkstructure/cluster file is present" test_ref="test_file_for_ocp4_network"/>
+    </criteria>
+  </definition>
+
+  <ind:yamlfilecontent_test id="test_ocp4_on_{{{ network|lower }}}" check="at least one" comment="Find one match" version="1">
+      <ind:object object_ref="object_ocp4_platform_network"/>
+      <ind:state state_ref="state_ocp4_on_{{{ network|lower }}}"/>
+  </ind:yamlfilecontent_test>
+
+  <ind:yamlfilecontent_state id="state_ocp4_on_{{{ network|lower }}}" version="1">
+      <ind:value datatype="record">
+          <field name="#" datatype="string" operation="pattern match">^{{{ network }}}$</field>
+      </ind:value>
+  </ind:yamlfilecontent_state>
+{{% endfor %}}
 </def-group>
+

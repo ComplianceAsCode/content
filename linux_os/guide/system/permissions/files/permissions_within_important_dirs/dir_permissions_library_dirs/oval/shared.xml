@@ -1,8 +1,8 @@
 <def-group>
   <definition class="compliance" id="dir_permissions_library_dirs" version="1">
     {{{ oval_metadata("
-        Checks that /lib, /lib64, /usr/lib, /usr/lib64, /lib/modules, and
-        objects therein, are not group-writable or world-writable.
+        Checks that the directories /lib, /lib64, /usr/lib and /usr/lib64
+        are not group-writable or world-writable.
       ") }}}
     <criteria operator="AND">
       <criterion test_ref="dir_test_perms_lib_dir" />
@@ -19,7 +19,7 @@
     <unix:path operation="pattern match">^\/lib(|64)|^\/usr\/lib(|64)</unix:path>
     <unix:filename xsi:nil="true" />
     <filter action="include">dir_state_perms_nogroupwrite_noworldwrite</filter>
-    <filter action="exclude">dir_perms_state_symlink</filter>
+    <filter action="exclude">dir_perms_state_nogroupwrite_noworldwrite_symlink</filter>
   </unix:file_object>
 
   <unix:file_state id="dir_state_perms_nogroupwrite_noworldwrite" version="1" operator="OR">
@@ -27,7 +27,7 @@
     <unix:owrite datatype="boolean">true</unix:owrite>
   </unix:file_state>
 
-  <unix:file_state id="dir_perms_state_symlink" version="1">
+  <unix:file_state id="dir_perms_state_nogroupwrite_noworldwrite_symlink" version="1">
     <unix:type operation="equals">symbolic link</unix:type>
   </unix:file_state>
 

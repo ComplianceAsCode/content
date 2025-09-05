@@ -6,25 +6,11 @@
 
 {{{ bash_instantiate_variables("var_sssd_certificate_verification_digest_function") }}}
 
-found=false
-for f in /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf; do
-	if [ ! -e "$f" ]; then
-		continue
-	fi
-	cert=$(awk '/^\s*\[/{f=0} /^\s*\[sssd\]/{f=1} f{nu=gensub("^\\s*certificate_verification\\s*=\\s*ocsp_dgst\\s*=\\s*(\\w+).*","\\1",1); if($0!=nu){cert=nu}} END{print cert}' "$f")
-	if [ -n "$cert" ] ; then
-		if [ "$cert" != $var_sssd_certificate_verification_digest_function ] ; then
-			sed -i "s/^certificate_verification\s*=.*/certificate_verification = ocsp_dgst = $var_sssd_certificate_verification_digest_function/" "$f"
-		fi
-		found=true
-	fi
-done
+MAIN_CONF="/etc/sssd/conf.d/certificate_verification.conf"
 
-if ! $found ; then
-	SSSD_CONF="/etc/sssd/conf.d/certificate_verification.conf"
-	mkdir -p "$(dirname "$SSSD_CONF")"
-	touch "$SSSD_CONF"
-	chown root:root "$SSSD_CONF"
-	chmod 600 "$SSSD_CONF"
-	echo -e "[sssd]\ncertificate_verification = ocsp_dgst = $var_sssd_certificate_verification_digest_function" >> "$SSSD_CONF"
+{{{ bash_ensure_ini_config("$MAIN_CONF /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf", "sssd", "certificate_verification", "ocsp_dgst = $var_sssd_certificate_verification_digest_function") }}}
+
+if [ -e "$MAIN_CONF" ]; then
+    chown root:root "$MAIN_CONF"
+	chmod 600 "$MAIN_CONF"
 fi

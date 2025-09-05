@@ -2,17 +2,20 @@
 
 #### accounts_password
 -   Checks if PAM enforces password quality requirements. Checks the
-    configuration in `/etc/pam.d/system-auth` (for RHEL 6 systems) or
-    `/etc/security/pwquality.conf` (on other systems).
+    configuration in `/etc/security/pwquality.conf`.
 
 -   Parameters:
 
-    -   **variable** - PAM `pam_cracklib` (on RHEL 6) or `pam_pwquality`
-        (on other systems) module name, eg. `ucredit`, `ocredit`
+    -   **variable** - PAM `pam_pwquality` password quality
+        requirement, eg. `ucredit`, `ocredit`
 
     -   **operation** - OVAL operation, eg. `less than or equal`
 
--   Languages: OVAL
+    -   **zero_comparison_operation** - (optional) OVAL operation, eg. `greater than`.
+        When set, it will test if the **variable** value matches the OVAL operation
+        when compared to zero.
+
+-   Languages: Ansible, Bash, OVAL
 
 #### auditd_lineinfile
 -   Checks configuration options of the Audit Daemon in
@@ -82,6 +85,17 @@
 
     -   **path** - the path of the privileged command - eg.
         `/usr/bin/mount`
+
+-   Languages: Ansible, Bash, OVAL, Kubernetes
+
+#### audit_rules_syscall_events
+-   Ensure there is an audit rule to record for all uses of 
+    specified system call
+
+-   Parameters:
+
+    -   **attr** - the name of the system call - eg.
+        `unlinkat`
 
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
@@ -245,6 +259,8 @@
 
     -   **filepath** - File path to be checked. If the file path ends
         with `/` it describes a directory. Can also be a list of paths.
+        If **file_regex** is not specified, the rule will only check
+        and remediate directories.
 
     -   **filepath_is_regex** - If set to `"true"` the OVAL will
         consider the value of **filepath** as a regular expression.
@@ -280,6 +296,8 @@ they must be of the same length.
 
     -   **filepath** - File path to be checked. If the file path ends
         with `/` it describes a directory. Can also be a list of paths.
+        If **file_regex** is not specified, the rule will only check
+        and remediate directories.
 
     -   **filepath_is_regex** - If set to `"true"` the OVAL will
         consider the value of **filepath** as a regular expression.
@@ -315,6 +333,8 @@ they must be of the same length.
 
     -   **filepath** - File path to be checked. If the file path ends
         with `/` it describes a directory. Can also be a list of paths.
+        If **file_regex** is not specified, the rule will only check
+        and remediate directories.
 
     -   **filepath_is_regex** - If set to `"true"` the OVAL will
         consider the value of **filepath** as a regular expression.
@@ -348,8 +368,17 @@ is a **list** and **file_regex** is a string, it gets extended to be the same re
 for each path; if **filepath** and **file_regex** are both present and are lists,
 they must be of the same length.
 
+#### firefox_lockpreference
+-   Checks that a given Mozilla Firefox configuration item is locked and set.
+
+-   Parameters
+    -   **parameter** - Name of Mozilla Firefox configuration item to be checked/set.
+    -   **value** - Literal value to be set in the Mozilla Firefox default configuration.
+
+-   Languages: Bash, OVAL
+
 #### grub2_bootloader_argument
--   Checks kernel command line arguments in GRUB 2 configuration.
+-   Ensures that a kernel command line argument is present in GRUB 2 configuration.
 
 -   Parameters:
 
@@ -357,7 +386,28 @@ they must be of the same length.
 
     -   **arg_value** - argument value, eg. `'1'`
 
+    -   **arg_variable** - the variable used as the value for the argument, eg. `'var_slub_debug_options'`
+        This parameter is mutually exclusive with **arg_value**.
+
 -   Languages: Ansible, Bash, OVAL, Blueprint
+
+#### grub2_bootloader_argument_absent
+-   Ensures that a kernel command line argument is absent in GRUB 2 configuration.
+    The template can also remove arguments with a value assigned, eg. audit=1
+
+-   Parameters:
+
+    -   **arg_name** - argument name, eg. `audit`, `nosmep`
+
+-   Languages: Ansible, Bash, OVAL
+
+Example:
+```
+template:
+  name: grub2_bootloader_argument_absent
+  vars:
+    arg_name: audit
+```
 
 #### kernel_module_disabled
 -   Checks if the given Linux kernel module is disabled.
@@ -401,13 +451,15 @@ they must be of the same length.
 
 #### mount_option
 -   Checks if a given partition is mounted with a specific option such
-    as "nosuid".
+    as "nosuid". It is also possible to use options with arguments, such as "logdev=device". Finally, for options which expect an argument, like "hidepid=2", a variable can be informed for this argument.
 
 -   Parameters:
 
     -   **mountpoint** - mount point on the filesystem eg. `/dev/shm`
 
-    -   **mountoption** - mount option, eg. `nosuid`
+    -   **mountoption** - mount option, eg. `nosuid`, `logdev=device` or `hidepid`
+
+    -   **mountoption_arg_var** - variable which holds the argument for mount option, eg. `var_mount_option_proc_hidepid`
 
     -   **filesystem** - filesystem in `/etc/fstab`, eg. `tmpfs`. Used
         only in Bash remediation.

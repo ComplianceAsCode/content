@@ -92,6 +92,20 @@ def test_controls_levels():
     c_4b = controls_manager.get_control("abcd-levels", "S4.b")
     assert c_4b.levels == ["high"]
 
+    c_5 = controls_manager.get_control("abcd-levels", "S5")
+    assert c_5.levels == ["low"]
+
+    c_6 = controls_manager.get_control("abcd-levels", "S6")
+    assert c_6.levels == ["medium"]
+
+    c_7 = controls_manager.get_control("abcd-levels", "S7")
+    assert c_7.levels == ["high"]
+
+    # test if all crypto-policy controls have the rule selected
+    assert "configure_crypto_policy" in c_5.selections
+    assert "configure_crypto_policy" in c_6.selections
+    assert "configure_crypto_policy" in c_7.selections
+
     # just the essential controls
     low_controls = controls_manager.get_all_controls_of_level(
         "abcd-levels", "low")
@@ -104,25 +118,34 @@ def test_controls_levels():
 
     assert len(high_controls) == len(all_controls)
     assert len(low_controls) <= len(high_controls)
-    assert len(low_controls) == 4
-    assert len(medium_controls) == 5
+    assert len(low_controls) == 5
+    assert len(medium_controls) == 7
 
     # test overriding of variables in levels
     assert c_2.variables["var_password_pam_minlen"] == "1"
     assert "var_password_pam_minlen" not in c_3.variables.keys()
     assert c_4b.variables["var_password_pam_minlen"] == "2"
 
+    variable_found = False
     for c in low_controls:
         if "var_password_pam_minlen" in c.variables.keys():
+            variable_found = True
             assert c.variables["var_password_pam_minlen"] == "1"
+    assert variable_found
 
+    variable_found = False
     for c in medium_controls:
         if "var_password_pam_minlen" in c.variables.keys():
+            variable_found = True
             assert c.variables["var_password_pam_minlen"] == "1"
+    assert variable_found
 
+    variable_found = False
     for c in high_controls:
         if "var_password_pam_minlen" in c.variables.keys():
+            variable_found = True
             assert c.variables["var_password_pam_minlen"] == "2"
+    assert variable_found
 
     # now test if controls of lower level has the variable definition correctly removed
     # because it is overriden by higher level controls
@@ -140,6 +163,28 @@ def test_controls_levels():
     assert len(s2_low) == 1
     assert s2_low[0].variables["var_some_variable"] == "1"
     assert s2_low[0].variables["var_password_pam_minlen"] == "1"
+
+    # check that low, medium and high levels have crypto policy selected
+    s5_low = [c for c in low_controls if c.id == "S5"]
+    assert len(s5_low) == 1
+    assert "configure_crypto_policy" in s5_low[0].selections
+
+    s5_medium = [c for c in medium_controls if c.id == "S5"]
+    assert len(s5_medium) == 1
+    assert "configure_crypto_policy" in s5_medium[0].selections
+    s6_medium = [c for c in medium_controls if c.id == "S6"]
+    assert len(s6_medium) == 1
+    assert "configure_crypto_policy" in s6_medium[0].selections
+
+    s5_high = [c for c in high_controls if c.id == "S5"]
+    assert len(s5_high) == 1
+    assert "configure_crypto_policy" in s5_high[0].selections
+    s6_high = [c for c in high_controls if c.id == "S6"]
+    assert len(s6_high) == 1
+    assert "configure_crypto_policy" in s6_high[0].selections
+    s7_high = [c for c in high_controls if c.id == "S7"]
+    assert len(s7_high) == 1
+    assert "configure_crypto_policy" in s7_high[0].selections
 
 
 def test_controls_load_product():

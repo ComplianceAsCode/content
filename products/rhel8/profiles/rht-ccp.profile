@@ -54,6 +54,7 @@ selections:
     - accounts_password_pam_difok
     - accounts_passwords_pam_faillock_deny
     - set_password_hashing_algorithm_systemauth
+    - set_password_hashing_algorithm_passwordauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
     - require_singleuser_auth

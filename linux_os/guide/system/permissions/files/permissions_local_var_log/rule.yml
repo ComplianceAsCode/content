@@ -47,3 +47,10 @@ ocil: |-
     <pre>
     sudo find /var/log -perm /137 -type f -exec stat -c "%n %a" {} \;
     </pre>
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/log/
+        file_regex: '.*'
+        filemode: '0640'

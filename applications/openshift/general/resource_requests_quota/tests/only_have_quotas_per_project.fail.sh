@@ -8,7 +8,7 @@ kube_apipath="/kubernetes-api-resources"
 
 mkdir -p "$kube_apipath/api/v1"
 
-quota_apipath="/api/v1/resourcequotas?limit=500"
+quota_apipath="/api/v1/resourcequotas"
 
 # This file assumes three namespaces ns-one,ns-two,ns-three, only two have resource quota set
 
@@ -151,7 +151,7 @@ quota_filteredpath="$kube_apipath$quota_apipath#$(echo -n "$quota_apipath$quota_
 # populate filtered path with jq-filtered result
 jq "$quota_jq_filter" "$kube_apipath$quota_apipath" > "$quota_filteredpath"
 
-ns_apipath="/api/v1/namespaces?limit=499"
+ns_apipath="/api/v1/namespaces"
 
 cat <<EOF > "$kube_apipath$ns_apipath"
 {

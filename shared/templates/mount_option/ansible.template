@@ -4,19 +4,23 @@
 # complexity = low
 # disruption = high
 
+{{% if MOUNTOPTION_ARG_VAR %}}
+{{{ ansible_instantiate_variables(MOUNTOPTION_ARG_VAR) }}}
+{{% endif %}}
+
 {{% if MOUNT_HAS_TO_EXIST == "no" %}}
    {{% set TABFILE='' %}}
 {{% else %}}
    {{% set TABFILE='--fstab' %}}
 {{% endif %}}
 
-- name: Check information associated to mountpoint
+- name: "{{{ rule_title }}}: Check information associated to mountpoint"
   command: findmnt {{{ TABFILE }}} '{{{ MOUNTPOINT }}}'
   register: device_name
   failed_when: device_name.rc > 1
   changed_when: False
 
-- name: Create mount_info dictionary variable
+- name: "{{{ rule_title }}}: Create mount_info dictionary variable"
   set_fact:
     mount_info: "{{ mount_info|default({})|combine({item.0: item.1}) }}"
   with_together:
@@ -26,7 +30,7 @@
     - device_name.stdout is defined and device_name.stdout_lines is defined
     - (device_name.stdout | length > 0)
 
-- name: If {{{ MOUNTPOINT }}} not mounted, craft mount_info manually
+- name: "{{{ rule_title }}}: If {{{ MOUNTPOINT }}} not mounted, craft mount_info manually"
   set_fact:
     mount_info: '{{ mount_info|default({})|combine({item.0: item.1}) }}'
   with_together:
@@ -36,13 +40,17 @@
     - ("{{{ TABFILE }}}" | length == 0)
     - (device_name.stdout | length == 0)
 
-- name: Make sure {{{ MOUNTOPTION }}} option is part of the to {{{ MOUNTPOINT }}} options
+- name: "{{{ rule_title }}}: Make sure {{{ MOUNTOPTION }}} option is part of the to {{{ MOUNTPOINT }}} options"
   set_fact:
+{{% if MOUNTOPTION_ARG_VAR %}}
+    mount_info: "{{ mount_info | combine( {'options':''~mount_info.options~',{{{ MOUNTOPTION }}}='~{{{ MOUNTOPTION_ARG_VAR }}}~'' }) }}"
+{{% else %}}
     mount_info: "{{ mount_info | combine( {'options':''~mount_info.options~',{{{ MOUNTOPTION }}}' }) }}"
+{{% endif %}}
   when:
     - mount_info is defined and "{{{ MOUNTOPTION }}}" not in mount_info.options
 
-- name: Ensure {{{ MOUNTPOINT }}} is mounted with {{{ MOUNTOPTION }}} option
+- name: "{{{ rule_title }}}: Ensure {{{ MOUNTPOINT }}} is mounted with {{{ MOUNTOPTION }}} option"
   mount:
     path: "{{{ MOUNTPOINT }}}"
     src: "{{ mount_info.source }}"
