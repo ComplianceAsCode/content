@@ -4,15 +4,18 @@ documentation_complete: true
 title: 'Restrict Automounting of Service Account Tokens'
 
 description: |-
-    Service accounts tokens should not be mounted in pods except where the workload
-    running in the pod explicitly needs to communicate with the API server.
-    To ensure pods do not automatically mount tokens, set
-    <tt>automountServiceAccountToken</tt> to <tt>false</tt>.
+    Restrict automatic mounting of service account tokens in pods. Configure
+    pods to only mount service account tokens when the workload explicitly
+    needs to communicate with the API server. Set
+    `automountServiceAccountToken` to `false` to prevent automatic token
+    mounting.
 
 rationale: |-
-    Mounting service account tokens inside pods can provide an avenue
-    for privilege escalation attacks where an attacker is able to
-    compromise a single pod in the cluster.
+    Mounting service account tokens inside pods creates an attack vector for
+    privilege escalation. Attackers who compromise a single pod can use the
+    mounted token to access the Kubernetes API and potentially escalate
+    privileges within the cluster. Restricting token mounting reduces the
+    attack surface and limits the potential impact of pod compromises.
 
 severity: medium
 
@@ -26,7 +29,7 @@ references:
 ocil_clause: 'service account token usage needs review'
 
 ocil: |-
-    For each pod in the cluster, review the pod specification and
-    ensure that pods that do not need to explicitly communicate with
-    the API server have <tt>automountServiceAccountToken</tt>
-    configured to <tt>false</tt>.
+    Review each pod specification in the cluster to verify that pods not
+    requiring API server communication have `automountServiceAccountToken`
+    configured to `false`. Examine pod manifests and deployment configurations
+    to ensure proper token restriction.

@@ -3,18 +3,21 @@ documentation_complete: true
 title: 'Ensure no RoleBindings set for default Service Account'
 
 description: |-
-    Using the <tt>default</tt> service account prevents accurate application
-    rights review and audit tracing. Instead of <tt>default</tt>, create
-    a new and unique service account and associate the required RoleBindings.
+    Ensure no RoleBindings are set for the `default` service account.
+    Configure applications to use dedicated service accounts instead of the
+    `default` service account to enable accurate rights review and audit
+    tracing. Create unique service accounts for each application and associate
+    RoleBindings with those dedicated accounts.
 
 rationale: |-
-    Kubernetes provides a default service account which is used by
-    cluster workloads where no specific service account is assigned to the pod.
-    Where access to the Kubernetes API from a pod is required, a specific service account
-    should be created for that pod, and rights granted to that service account.
-    This increases auditability of service account rights and access making it
-    easier and more accurate to trace potential malicious behaviors to a specific
-    service account and project.
+    Kubernetes provides a default service account that cluster workloads use
+    when no specific service account is assigned to the pod. Configure specific
+    service accounts for pods that require access to the Kubernetes API and
+    grant rights to those dedicated accounts. This approach increases
+    auditability of service account rights and access, making it easier to
+    trace potential malicious behaviors to specific service accounts and
+    projects. Using the `default` service account creates security risks
+    through overly broad permissions and inadequate audit trails.
 
 severity: medium
 
@@ -25,11 +28,13 @@ identifiers: {}
 ocil_clause: 'default service account is given permissions using RoleBindings'
 
 ocil: |-
-    Run the following command to retrieve a list of RoleBindings that are
-    associated to the default service account:
-    <pre>$ oc get rolebindings --all-namespaces -o json | jq '{{{ jqfilter }}}'</pre>
-    There should be no RoleBindings associated with the the default service account
-    in any namespace.
+    Run the following command to retrieve RoleBindings associated with the
+    `default` service account:
+    ```
+    oc get rolebindings --all-namespaces -o json | jq '{{{ jqfilter }}}'
+    ```
+    Verify that no RoleBindings are associated with the `default` service
+    account in any namespace.
 
 warnings:
 - general: |-

@@ -4,19 +4,20 @@ documentation_complete: true
 title: 'Use Dedicated Service Accounts'
 
 description: |-
-  Kubernetes workloads should not use cluster node service accounts to
-  authenticate to Amazon EKS APIs. Each Kubernetes workload that needs to
-  authenticate to other AWS services using AWS IAM should be provisioned with a
-  dedicated Service account.
+    Configure Kubernetes workloads to use dedicated service accounts instead
+    of cluster node service accounts for Amazon EKS API authentication.
+    Provision each Kubernetes workload that requires AWS service authentication
+    with a dedicated service account linked to appropriate AWS IAM roles.
 
 rationale: |-
-  Manual approaches for authenticating Kubernetes workloads running on Amazon
-  EKS against AWS APIs are: storing service account keys as a Kubernetes secret
-  (which introduces manual key rotation and potential for key compromise); or
-  use of the underlying nodes' IAM Service account, which violates the
-  principle of least privilege on a multi-tenanted node, when one pod needs
-  to have access to a service, but every other pod on the node that uses the
-  Service account does not.
+    Manual authentication approaches for Kubernetes workloads on Amazon EKS
+    create security risks. Storing service account keys as Kubernetes secrets
+    introduces manual key rotation requirements and potential key compromise.
+    Using underlying node IAM service accounts violates the principle of least
+    privilege in multi-tenant environments, where one pod requires service
+    access but other pods on the same node do not. Dedicated service accounts
+    provide proper isolation and minimize security risks through appropriate
+    permission boundaries.
 
 severity: unknown
 
@@ -29,48 +30,11 @@ references:
 ocil_clause: 'dedicated service accounts are used'
 
 ocil: |-
-  <b>Audit:</b>
-
-  For each namespace in the cluster, review the rights assigned to the default
-  service account and ensure that it has no roles or cluster roles bound to it
-  apart from the defaults. Additionally ensure that the
-  <tt>automountServiceAccountToken: false</tt> setting is in place for each
-  default service account.
-
-  <b>Remediation:</b>
-
-  With IAM roles for service accounts on Amazon EKS clusters, you can associate
-  an IAM role with a Kubernetes service account. This service account can then
-  provide AWS permissions to the containers in any pod that uses that service
-  account. With this feature, you no longer need to provide extended
-  permissions to the worker node IAM role so that pods on that node can call
-  AWS APIs.
-  Applications must sign their AWS API requests with AWS credentials. This
-  feature provides a strategy for managing credentials for your applications,
-  similar to the way that Amazon EC2 instance profiles provide credentials to
-  Amazon EC2 instances. Instead of creating and distributing your AWS
-  credentials to the containers or using the Amazon EC2 instance’s role, you
-  can associate an IAM role with a Kubernetes service account. The applications
-  in the pod’s containers can then use an AWS SDK or the AWS CLI to make API
-  requests to authorized AWS services.
-
-  The IAM roles for service accounts feature provides the following benefits:
-
-  <ul>
-    <li>Least privilege — By using the IAM roles for service accounts feature,
-    you no longer need to provide extended permissions to the worker node IAM
-    role so that pods on that node can call AWS APIs. You can scope IAM
-    permissions to a service account, and only pods that use that service
-    account have access to those permissions. This feature also eliminates the
-    need for third-party solutions such as kiam or kube2iam.</li>
-    <li>Credential isolation — A container can only retrieve credentials for
-    the IAM role that is associated with the service account to which it
-    belongs. A container never has access to credentials that are intended for
-    another container that belongs to another pod.</li>
-    <li>Auditability — Access and event logging is available through CloudTrail
-    to help ensure retrospective auditing.</li>
-  </ul>
-
-  To get started, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html">Enabling IAM roles for service accounts on your cluster</a>.
-  For an end-to-end walkthrough using <tt>eksctl</tt>, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts-cni-walkthrough.html">Walkthrough: Updating
-  a DaemonSet to use IAM for service accounts</a>.
+    Review each namespace to verify that the `default` service account has no
+    roles or cluster roles bound to it beyond system defaults. Verify that
+    `automountServiceAccountToken: false` is configured for each `default`
+    service account. Configure IAM roles for service accounts on Amazon EKS
+    clusters to associate IAM roles with Kubernetes service accounts, enabling
+    AWS API access without extended worker node permissions. Reference the AWS
+    documentation for implementation guidance on IAM roles for service
+    accounts.
