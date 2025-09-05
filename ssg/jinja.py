@@ -10,7 +10,13 @@ from .constants import (JINJA_MACROS_BASE_DEFINITIONS,
                         JINJA_MACROS_BASH_DEFINITIONS,
                         JINJA_MACROS_OVAL_DEFINITIONS,
                         )
-from .utils import required_key, prodtype_to_name, name_to_platform, prodtype_to_platform
+from .utils import (required_key,
+                    prodtype_to_name,
+                    name_to_platform,
+                    prodtype_to_platform,
+                    banner_regexify,
+                    banner_anchor_wrap
+                    )
 
 
 class MacroError(RuntimeError):
@@ -71,6 +77,8 @@ def _get_jinja_environment(substitutions_dict):
             loader=AbsolutePathFileSystemLoader(),
             bytecode_cache=bytecode_cache
         )
+        _get_jinja_environment.env.filters['banner_regexify'] = banner_regexify
+        _get_jinja_environment.env.filters['banner_anchor_wrap'] = banner_anchor_wrap
 
     return _get_jinja_environment.env
 

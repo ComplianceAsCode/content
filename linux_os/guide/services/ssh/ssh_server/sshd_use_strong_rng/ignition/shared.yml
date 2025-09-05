@@ -1,0 +1,14 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ocp
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files:
+      - contents: 
+          source: data:,%23%20Configuration%20file%20for%20the%20sshd%20service.%0A%0A%23%20The%20server%20keys%20are%20automatically%20generated%20if%20they%20are%20missing.%0A%23%20To%20change%20the%20automatic%20creation%2C%20adjust%20sshd.service%20options%20for%0A%23%20example%20using%20%20systemctl%20enable%20sshd-keygen%40dsa.service%20%20to%20allow%20creation%0A%23%20of%20DSA%20key%20or%20%20systemctl%20mask%20sshd-keygen%40rsa.service%20%20to%20disable%20RSA%20key%0A%23%20creation.%0A%0A%23%20Do%20not%20change%20this%20option%20unless%20you%20have%20hardware%20random%0A%23%20generator%20and%20you%20REALLY%20know%20what%20you%20are%20doing%0A%0ASSH_USE_STRONG_RNG%3D32%0A%23%20SSH_USE_STRONG_RNG%3D1%0A%0A%23%20System-wide%20crypto%20policy%3A%0A%23%20To%20opt-out%2C%20uncomment%20the%20following%20line%0A%23%20CRYPTO_POLICY%3D%0A%0A
+        filesystem: root
+        mode: 0640
+        path: /etc/sysconfig/sshd

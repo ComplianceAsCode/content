@@ -2,6 +2,7 @@
 from __future__ import print_function
 
 import argparse
+import textwrap
 import logging
 import os
 import os.path
@@ -9,6 +10,8 @@ import time
 import sys
 from glob import glob
 import re
+import contextlib
+import tempfile
 
 ssg_dir = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(ssg_dir)
@@ -62,6 +65,22 @@ def parse_args():
                                default=0,
                                help="Selection number of reference ID related "
                                     "to benchmark to be used.")
+    common_parser.add_argument(
+            "--add-platform",
+            metavar="<CPE REGEX>",
+            default=None,
+            help="Find all CPEs that are present in local OpenSCAP's CPE dictionary "
+            "that match the provided regex, "
+            "and add them as platforms to all datastream benchmarks. "
+            "If the regex doesn't match anything, it will be treated "
+            "as a literal CPE, and added as a platform. "
+            "For example, use 'cpe:/o:fedoraproject:fedora:30' or 'enterprise_linux'.")
+    common_parser.add_argument(
+            "--remove-machine-only",
+            default=False,
+            action="store_true",
+            help="Removes machine-only platform constraint from rules "
+            "to enable testing these rules on container backends.")
     common_parser.add_argument("--loglevel",
                                dest="loglevel",
                                metavar="LOGLEVEL",
@@ -97,6 +116,15 @@ def parse_args():
     subparsers.required = True
 
     parser_profile = subparsers.add_parser("profile",
+                                           formatter_class=argparse.RawDescriptionHelpFormatter,
+                                           epilog=textwrap.dedent("""\
+                    In case that tested profile contains rules which might prevent root ssh access
+                    to the testing VM consider unselecting these rules. To unselect certain rules
+                    from a datastream use `ds_unselect_rules.sh` script. List of such rules already
+                    exists, see `unselect_rules_list` file.
+                    Example usage:
+                        ./ds_unselect_rules.sh ../build/ssg-fedora-ds.xml unselect_rules_list
+                                           """),
                                            help=("Testing profile-based "
                                                  "remediation applied on already "
                                                  "installed machine"),
@@ -242,6 +270,15 @@ def get_unique_datastream():
         "e.g. {1}".format(len(datastreams), datastreams))
 
 
+@contextlib.contextmanager
+def datastream_in_stash(current_location):
+    tfile = tempfile.NamedTemporaryFile(prefix="ssgts-ds-")
+
+    tfile.write(open(current_location, "rb").read())
+    tfile.flush()
+    yield tfile.name
+
+
 def normalize_passed_arguments(options):
     if 'ALL' in options.target:
         options.target = ['ALL']
@@ -316,7 +353,16 @@ def main():
 
     LogHelper.add_logging_dir(log, logging_dir)
 
-    options.func(options)
+    with datastream_in_stash(options.datastream) as stashed_datastream:
+        options.datastream = stashed_datastream
+
+        with xml_operations.datastream_root(stashed_datastream, stashed_datastream) as root:
+            if options.remove_machine_only:
+                xml_operations.remove_machine_platform(root)
+            if options.add_platform:
+                xml_operations.add_platform_to_benchmark(root, options.add_platform)
+
+        options.func(options)
 
 
 if __name__ == "__main__":

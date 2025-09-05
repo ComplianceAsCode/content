@@ -56,6 +56,7 @@
   </xsl:template>
 
   <!-- hack for OpenSCAP validation quirk: must place reference after description/warning, but prior to others -->
+  <!-- Another hack for OpenSCAP validation quirk: must place platform after reference/rationale, but prior to others -->
   <xsl:template match="Rule">
     <xsl:choose>
       <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all'">
@@ -73,9 +74,9 @@
           <xsl:apply-templates select="warning[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="ref[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="rationale[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
+          <xsl:apply-templates select="platform[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="requires[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="conflicts[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="platform[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="ident[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
           <xsl:apply-templates select="oval[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
@@ -122,9 +123,9 @@
           <xsl:apply-templates select="warning[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="ref[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="rationale[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
+          <xsl:apply-templates select="platform[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="requires[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="conflicts[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="platform[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::prodtype)]"/>
         </Group>
       </xsl:when>
@@ -140,9 +141,9 @@
       <xsl:apply-templates select="warning"/>
       <xsl:apply-templates select="ref"/>
       <xsl:apply-templates select="rationale"/>
+      <xsl:apply-templates select="platform"/>
       <xsl:apply-templates select="requires"/>
       <xsl:apply-templates select="conflicts"/>
-      <xsl:apply-templates select="platform"/>
       <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform)]"/>
     </Group>
   </xsl:template>

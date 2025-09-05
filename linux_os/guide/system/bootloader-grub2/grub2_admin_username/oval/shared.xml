@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="grub2_admin_username" version="1">
+    <metadata>
+      <title>Set Boot Loader Superuser Username to Unique Value</title>
+      {{{- oval_affected(products) }}}
+      <description>The grub2 boot loader superuser should have a username that is hard to guess.</description>
+    </metadata>
+
+    <criteria operator="OR">
+      {{{ oval_file_absent_criterion("/boot/grub2/grub.cfg", rule_id + "_grub_cfg") }}}
+      <criterion comment="Superuser is defined in /boot/grub2/grub.cfg and it isn't root, admin, or administrator." test_ref="test_bootloader_unique_superuser"/>
+    </criteria>
+  </definition>
+
+  {{{ oval_file_absent("/boot/grub2/grub.cfg", rule_id + "_grub_cfg") }}}
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/grub2/grub.cfg files. Superuser is not root, admin, or administrator" id="test_bootloader_unique_superuser" version="1">
+    <ind:object object_ref="object_bootloader_unique_superuser" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_bootloader_unique_superuser" version="1">
+    <ind:filepath>/boot/grub2/grub.cfg</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers="(?i)(?!root|admin|administrator)(?-i).*"$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# profiles = xccdf_org.ssgproject.content_profile_stig
-
-. grub-passwords.sh
+. $SHARED/grub2.sh
 
 make_grub_password
-set_superusers

@@ -14,7 +14,7 @@
         {{%- if product == "rhel6" %}}
           <extend_definition comment="SL6 installed" definition_ref="installed_OS_is_sl6" />
         {{%- endif %}}
-        {{%- if product == "rhel7" or product == "rhv4" %}}
+        {{%- if product == "rhel7" %}}
           <extend_definition comment="SL7 installed" definition_ref="installed_OS_is_sl7" />
         {{%- endif %}}
           <extend_definition comment="{{{ product }}} installed" definition_ref="installed_OS_is_{{{ product }}}" />
@@ -33,7 +33,7 @@
         test_ref="test_package_gpgkey-c105b9de-4e0fd3a3_installed" />
       </criteria>
       {{%- endif %}}
-      {{%- if product == "rhel7" or product == "rhv4" %}}
+      {{%- if product == "rhel7" %}}
       <criteria comment="CentOS Vendor Keys" operator="AND">
         <extend_definition comment="CentOS7 installed" definition_ref="installed_OS_is_centos7" />
         <criterion comment="package gpg-pubkey-f4a80eb5-53a7ff4b is installed"
@@ -75,7 +75,7 @@
     <linux:version>{{{ aux_pkg_version }}}</linux:version>
   </linux:rpminfo_state>
 
-  {{%- if product == "rhel7" or product == "rhv4" %}}
+  {{%- if product == "rhel7" %}}
   <!-- Test for CentOS7 key -->
   <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
   id="test_package_gpgkey-f4a80eb5-53a7ff4b_installed" version="1"

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ocp4,ol7,ol8,rhel7,rhel8,rhv4,wrlinux1019
+prodtype: fedora,ocp4,ol7,ol8,rhel7,rhel8,rhv4,sle15,wrlinux1019
 
 title: 'Ensure auditd Collects Information on Kernel Module Loading and Unloading - finit_module'
 
@@ -29,6 +29,7 @@ identifiers:
     cce@ocp4: 82581-0
 
 references:
+    stigid@ol7: "030821"
     cis: 5.2.17
     cui: 3.1.7
     disa: "172"
@@ -47,4 +48,3 @@ references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
 
 {{{ complete_ocil_entry_audit_syscall(syscall="finit_module") }}}
-

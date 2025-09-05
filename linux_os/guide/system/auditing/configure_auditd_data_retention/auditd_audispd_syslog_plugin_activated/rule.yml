@@ -6,7 +6,7 @@ description: |-
     To configure the <tt>auditd</tt> service to use the
     <tt>syslog</tt> plug-in of the <tt>audispd</tt> audit event multiplexor, set
     the <tt>active</tt> line in <tt>
-{{%- if product in ["rhel8", "fedora", "ol8"] -%}}
+{{%- if product in ["rhel8", "fedora", "ol8", "rhv4"] -%}}
     /etc/audit/plugins.d/syslog.conf
 {{%- else -%}}
     /etc/audisp/plugins.d/syslog.conf
@@ -51,7 +51,7 @@ ocil_clause: 'it is not activated'
 
 ocil: |-
     To verify the audispd's syslog plugin is active, run the following command:
-{{% if product in ["rhel8", "fedora"] %}}
+{{% if product in ["rhel8", "fedora", "rhv4"] %}}
     <pre>$ sudo grep active /etc/audit/plugins.d/syslog.conf</pre>
 {{% else %}}
     <pre>$ sudo grep active /etc/audisp/plugins.d/syslog.conf</pre>

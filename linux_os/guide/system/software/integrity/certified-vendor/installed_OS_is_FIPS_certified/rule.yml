@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ocp4,ol7,ol8,rhel6,rhel7,rhel8,rhv4
+prodtype: fedora,ocp4,ol7,ol8,rhel6,rhel7,rhel8,rhv4,sle12,sle15
 
 title: 'The Installed Operating System Is FIPS 140-2 Certified'
 
@@ -11,6 +11,10 @@ description: |-
 {{% if product in ["rhel6", "rhel7"] %}}
     Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
     Linux vendor, Red Hat, Inc. is responsible for maintaining government certifications and standards.
+{{% elif product in ["sle12", "sle15"] %}}
+    SUSE Enterprise Linux is supported by SUSE Software Solutions Germany GmbH. As the SUSE Enterprise
+    Linux vendor, SUSE Software Solutions Germany GmbH is responsible for maintaining government
+    certifications and standards.
 {{% endif %}}
 
 rationale: |-
@@ -67,6 +71,8 @@ ocil: |-
     <pre>$ grep -i "red hat" /etc/redhat-release</pre>
 {{% elif product == "ol7" %}}
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
+{{% elif product in ["sle12", "sle15"] %}}
+    <pre>$ grep -i "suse" /etc/os-release</pre>
 {{% endif %}}
     The output should contain something similar to:
     <pre>{{{ full_name }}}</pre>

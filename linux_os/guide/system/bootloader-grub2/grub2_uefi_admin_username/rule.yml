@@ -1,0 +1,77 @@
+documentation_complete: true
+
+prodtype: fedora,ocp4,ol7,ol8,rhel7,rhel8,rhv4,wrlinux1019
+
+title: 'Set the UEFI Boot Loader Admin Username to a Non-Default Value'
+
+description: |-
+    The grub2 boot loader should have a superuser account and password
+    protection enabled to protect boot-time settings.
+    <br /><br />
+    To maximize the protection, select a password-protected superuser account with unique name, and modify the
+    <tt>/etc/grub.d/01_users</tt> configuration file to reflect the account name change.
+    <br /><br />
+    It is highly suggested not to use common administrator account names like root,
+    admin, or administrator for the grub2 superuser account.
+    <br /><br />
+    Change the superuser to a different username (The default is 'root').
+    <pre>$ sed -i 's/\(set superuser=\).*/\1"&lt;unique user ID&gt;"/g' /etc/grub.d/01_users</pre>
+    <br /><br />
+    Once the superuser account has been added,
+    update the
+    <tt>grub.cfg</tt> file by running:
+    <pre>grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre>
+
+rationale: |-
+    Having a non-default grub superuser username makes password-guessing attacks less effective.
+    {{% if product == "rhel7" %}}
+    For more information on how to configure the grub2 superuser account and password,
+    please refer to
+    <ul>
+    <li>{{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-Protecting_GRUB_2_with_a_Password.html") }}}</li>.
+    </ul>
+    {{% endif %}}
+
+severity: low
+
+identifiers:
+    cce@rhel7: 83541-3
+    cce@rhel8: 83542-1
+    cce@ocp4: 83540-5
+
+references:
+    cis: 1.4.2
+    cui: 3.4.5
+    disa: "213"
+    hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)
+    nist: CM-6(a)
+    nist-csf: PR.AC-4,PR.AC-6,PR.PT-3
+    ospp: FIA_AFL.1
+    srg: SRG-OS-000080-GPOS-00048
+    stigid@rhel7: "010490"
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7'
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4
+    cobit5: DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS06.03,DSS06.06
+    iso27001-2013: A.6.1.2,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    cis-csc: 11,12,14,15,16,18,3,5
+    anssi: NT28(R17)
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    To verify the boot loader superuser account has been set, run the following
+    command:
+    <pre>sudo grep -A1 "superusers" /etc/grub2-efi.cfg</pre>
+    The output should show the following:
+    <pre>set superusers="<b>superusers-account</b>"
+    export superusers</pre>
+    where superusers-account is the actual account name different from common names like root,
+    admin, or administrator.
+
+warnings:
+    - general: |-
+        To prevent hard-coded admin usernames, automatic remediation of this control is not available. Remediation
+        must be automated as a component of machine provisioning, or followed manually as outlined above.
+
+        Also, do NOT manually add the superuser account and password to the
+        <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.

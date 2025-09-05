@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel6,rhel7,rhel8,rhv4,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8,rhv4,wrlinux1019
 
 title: 'Ensure All World-Writable Directories Are Owned by a System Account'
 
@@ -18,13 +18,14 @@ rationale: |-
     or replace any files that may be placed in the directory by other
     users.
 
-severity: unknown
+severity: medium
 
 identifiers:
     cce@rhel6: 26642-9
     cce@rhel7: 80136-5
 
 references:
+    stigid@ol7: "021030"
     stigid@rhel6: "000337"
     srg@rhel6: SRG-OS-999999
     disa: "366"

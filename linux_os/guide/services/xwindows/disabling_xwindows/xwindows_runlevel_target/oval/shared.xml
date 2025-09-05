@@ -1,0 +1,28 @@
+{{%- if init_system == "systemd" and target_oval_version == [5, 10] -%}}
+{{# this is the only scenario this definition cannot handle, there is no good alternative for symlink_test for OVAL 5.10 #}}
+{{%- else -%}}
+<def-group>
+  <definition class="compliance" id="xwindows_runlevel_target" version="1">
+    <metadata>
+      <title>Disable X Windows Startup By Setting Default SystemD Target</title>
+      {{{- oval_affected(products) }}}
+      <description>Ensure that the default runlevel target is set to multi-user.target.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="default.target systemd softlink exists" test_ref="test_disable_xwindows_runlevel_target" />
+    </criteria>
+  </definition>
+  <unix:symlink_test check="all" check_existence="all_exist" comment="default.target systemd softlink exists" id="test_disable_xwindows_runlevel_target" version="1">
+    <unix:object object_ref="object_disable_xwindows_runlevel_target" />
+    <unix:state state_ref="state_disable_xwindows_runlevel_target" />
+  </unix:symlink_test>
+  <unix:symlink_object comment="default.target systemd softlink exists" id="object_disable_xwindows_runlevel_target" version="1">
+    <unix:filepath>/etc/systemd/system/default.target</unix:filepath>
+  </unix:symlink_object>
+  <unix:symlink_state comment="default.target is linked to multi-user.target" id="state_disable_xwindows_runlevel_target" version="1">
+    <unix:filepath>/etc/systemd/system/default.target</unix:filepath>
+    <unix:canonical_path operation="pattern match">^(/usr)?/lib/systemd/system/multi-user.target$</unix:canonical_path>
+  </unix:symlink_state>
+</def-group>
+{{%- endif -%}}
+

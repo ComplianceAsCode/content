@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 7
+# platform = multi_platform_fedora,multi_platform_rhel
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 # remediation = bash
 

@@ -2,13 +2,11 @@ kind: ImageStream
 apiVersion: image.openshift.io/v1
 metadata:
   name: "openscap-$PRODUCT-ds" 
-  namespace: openshift-compliance
 ---
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
   name: "openscap-$PRODUCT-ds" 
-  namespace: openshift-compliance
 spec:
   runPolicy: "Serial" 
   triggers: 

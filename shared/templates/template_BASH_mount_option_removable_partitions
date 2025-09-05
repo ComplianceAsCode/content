@@ -4,19 +4,15 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-populate {{{ MOUNTPOINT }}}
+populate var_removable_partition
 
-include_mount_options_functions
+device_regex="^\s*$var_removable_partition\s\+"
+mount_option="{{{ MOUNTOPTION }}}"
 
-function perform_remediation {
-	# test "$mount_has_to_exist" = 'yes'
-	if test "{{{ MOUNT_HAS_TO_EXIST }}}" = 'yes'; then
-		assert_mount_point_in_fstab "${{{ MOUNTPOINT }}}" || { echo "Not remediating, because there is no record of ${{{ MOUNTPOINT }}} in /etc/fstab" >&2; return 1; }
-	fi
-
-	ensure_mount_option_in_fstab "${{{ MOUNTPOINT }}}" "{{{ MOUNTOPTION }}}" "{{{ FILESYSTEM }}}" "{{{ TYPE }}}"
-
-	ensure_partition_is_mounted "${{{ MOUNTPOINT }}}"
-}
-
-perform_remediation
+if grep -q $device_regex /etc/fstab ; then
+    previous_opts=$(grep $device_regex /etc/fstab | awk '{print $4}')
+    sed -i "s|\($device_regex.*$previous_opts\)|\1,$mount_option|" /etc/fstab
+else
+    echo "Not remediating, because there is no record of $var_removable_partition in /etc/fstab" >&2
+    return 1
+fi

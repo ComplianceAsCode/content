@@ -4,6 +4,7 @@ from __future__ import print_function
 import os
 import os.path
 import sys
+import re
 from copy import deepcopy
 import collections
 
@@ -47,9 +48,9 @@ def _check_is_applicable_for_product(oval_check_def, product):
         product_name = afftype + utils.map_name(product)
         # Append the product version to the official name
         if product_version is not None:
-            # Ubuntu versions have a dot in between the numbers
+            # Some product versions have a dot in between the numbers
             # While the prodtype doesn't have the dot, the full product name does
-            if product == "ubuntu":
+            if product == "ubuntu" or product == "macos":
                 product_version = product_version[:2] + "." + product_version[2:]
             product_name += ' ' + product_version
 

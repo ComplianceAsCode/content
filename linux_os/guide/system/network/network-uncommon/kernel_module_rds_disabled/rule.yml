@@ -4,7 +4,7 @@ title: 'Disable RDS Support'
 
 description: |-
     The Reliable Datagram Sockets (RDS) protocol is a transport
-    layer protocol designed to provide reliable high- bandwidth,
+    layer protocol designed to provide reliable high-bandwidth,
     low-latency communications between nodes in a cluster.
     {{{ describe_module_disable(module="rds") }}}
 
@@ -12,13 +12,16 @@ rationale: |-
     Disabling RDS protects
     the system against exploitation of any flaws in its implementation.
 
-severity: unknown
+severity: low
 
 identifiers:
     cce@rhel6: 26239-4
+    cce@rhel7: 82869-9
+    cce@rhel8: 82870-7
 
 references:
     disa@rhel6: "382"
+    cis@rhel8: 3.3.3
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
     srg@rhel6: SRG-OS-000096

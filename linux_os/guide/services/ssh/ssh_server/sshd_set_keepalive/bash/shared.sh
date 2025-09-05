@@ -5,4 +5,4 @@
 
 populate var_sshd_set_keepalive
 
-replace_or_append '/etc/ssh/sshd_config' '^ClientAliveCountMax' "$var_sshd_set_keepalive" '@CCENUM@' '%s %s'
+{{{ bash_sshd_config_set(parameter="ClientAliveCountMax", value="$var_sshd_set_keepalive") }}}

@@ -3,13 +3,20 @@
 # strategy = configure
 # complexity = low
 # disruption = high
-- name: get back mount information associated to mountpoint
-  command: findmnt --fstab '{{{ MOUNTPOINT }}}'
+
+{{% if MOUNT_HAS_TO_EXIST == "no" %}}
+   {{% set TABFILE="" %}}
+{{% else %}}
+   {{% set TABFILE="--fstab" %}}
+{{% endif %}}
+
+- name: Check information associated to mountpoint
+  command: findmnt {{{ TABFILE }}} '{{{ MOUNTPOINT }}}'
   register: device_name
   failed_when: device_name.rc > 1
   changed_when: False
 
-- name: create mount_info dictionary variable
+- name: Create mount_info dictionary variable
   set_fact:
     mount_info: "{{ mount_info|default({})|combine({item.0: item.1}) }}"
   with_together:
@@ -27,5 +34,6 @@
     state: "mounted"
     fstype: "{{ mount_info.fstype }}"
   when:
+    - mount_info is defined and "{{{ MOUNTOPTION }}}" not in mount_info.options
     - device_name.stdout is defined
     - (device_name.stdout | length > 0)

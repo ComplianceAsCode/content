@@ -9,7 +9,7 @@
       create: yes
       dest: /usr/lib/systemd/system/emergency.service
       regexp: "^#?ExecStart="
-      {{% if product in ["fedora", "rhel8"] -%}}
+      {{% if product in ["fedora", "rhel8", "ol8"] -%}}
       line: "ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency"
       {{%- else -%}}
       line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'

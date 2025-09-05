@@ -101,7 +101,9 @@ def generate_release_notes(repo, args):
         for changed_file in changed_files:
             changed_filename = changed_file.filename
 
-            if ".profile" in changed_filename:
+            # do not include files from profile_stability folder
+            # they are part of testing mechanisms
+            if ".profile" in changed_filename and "profile_stability" not in changed_filename:
                 # Track changes to product:profile
                 profile_match = re.match(r"(\w+)/profiles/([\w-]+).profile", changed_filename)
                 product, profile = profile_match.groups()

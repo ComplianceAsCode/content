@@ -28,7 +28,7 @@
     <metadata>
       <title>{{{ rule_title }}}</title>
       {{{- oval_affected(products) }}}
-      <description>Look for parameter '{{{ parameter }}}' with value '{{{ value }}}' {{% if section -%}} in section '{{{ section }}}' {{% endif -%}} in '{{{ path }}}'</description>
+      <description>Ensure '{{{ parameter }}}' is configured with value '{{{ value | replace("(?i)", "") | replace("(?-i)", "")}}}' {{% if section -%}} in section '{{{ section }}}' {{% endif -%}} in '{{{ path }}}'</description>
     </metadata>
     {{%- if missing_config_file_fail %}}
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
@@ -216,6 +216,31 @@
   <unix:file_test id="test_{{{ rule_id }}}_config_file_exists" check="all" check_existence="all_exist" comment="The configuration file {{{ path }}} exists for {{{ rule_id }}}" version="1">
     <unix:object object_ref="obj_{{{ rule_id }}}_config_file" />
   </unix:file_test>
+{{%- endmacro %}}
+
+{{#
+  Macro to define the OVAL criterion that requires a file not to exist.
+  Parameters:
+    - filepath (String): Path to the file to be checked.
+    - id of the test name - the test will be named test_<id>
+#}}
+{{%- macro oval_file_absent_criterion(filepath, id) -%}}
+	<criterion comment="Pass if {{{ filepath }}} does not exist" test_ref="test_{{{ id }}}" />
+{{%- endmacro %}}
+
+{{#
+  Macro to define the OVAL test to check if the configuration file exists (Test definition).
+  Parameters:
+    - filepath (String): Path to the configuration file to be checked.
+    - id of the test name - the test will be named test_<id>, the respective object object_<id> etc.
+#}}
+{{%- macro oval_file_absent(filepath, id) -%}}
+  <unix:file_test check="all" check_existence="none_exist" comment="{{{ filepath }}} does not exist" id="test_{{{ id }}}" version="1">
+    <unix:object object_ref="object_{{{ id }}}" />
+  </unix:file_test>
+  <unix:file_object id="object_{{{ id }}}" version="1">
+    <unix:filepath>{{{ filepath }}}</unix:filepath>
+  </unix:file_object>
 {{%- endmacro %}}
 
 {{#
@@ -462,9 +487,9 @@
       <metadata>
         <title>Check that contents of {{{ filepath }}} are as expected</title>
         {{{- oval_affected(products) }}}
-        <description>Inspects the contents of {{{ filepath }}}</description>
+        <description>Inspect the contents of {{{ filepath }}}</description>
       </metadata>
-      <criteria operator="AND">
+      <criteria>
           <criterion comment="Check contents of file" test_ref="test_whole_file_contents_{{{ filepath_id }}}" />
       </criteria>
     </definition>

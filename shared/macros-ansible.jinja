@@ -217,3 +217,265 @@
         {{{ contents|trim()|indent(8) }}}
     force: yes
 {{%- endmacro %}}
+
+{{#
+  Formats a banner regex for use in /etc/issue
+  Parameters:
+    - banner_var_name - name of ansible variable with the banner regex
+#}}
+{{% macro ansible_deregexify_banner_etc_issue(banner_var_name) -%}}
+{{ {{{ banner_var_name }}} |
+{{{ ansible_deregexify_banner_anchors() }}} |
+{{{ ansible_deregexify_multiple_banners() }}} |
+{{{ ansible_deregexify_banner_space() }}} |
+{{{ ansible_deregexify_banner_newline("\\n") }}} |
+{{{ ansible_deregexify_banner_backslash() }}} |
+wordwrap() }}
+{{%- endmacro %}}
+
+{{#
+  Formats a banner regex for use in dconf
+  Parameters:
+    - banner_var_name - name of ansible variable with the banner regex
+#}}
+{{% macro ansible_deregexify_banner_dconf_gnome(banner_var_name) -%}}
+''{{ {{{ banner_var_name }}} |
+{{{ ansible_deregexify_banner_anchors() }}} |
+{{{ ansible_deregexify_multiple_banners() }}} |
+{{{ ansible_deregexify_banner_space() }}} |
+{{{ ansible_deregexify_banner_newline("(n)*") }}} |
+{{{ ansible_deregexify_banner_backslash() }}} |
+{{{ ansible_deregexify_banner_newline_token()}}} }}''
+{{%- endmacro %}}
+
+{{# Strips anchors around the banner #}}
+{{% macro ansible_deregexify_banner_anchors() -%}}
+regex_replace("^\^(.*)\$$", "\1")
+{{%- endmacro %}}
+
+{{# Strips multibanner regex and keeps only the first banner #}}
+{{% macro ansible_deregexify_multiple_banners() -%}}
+regex_replace("^\((.*)\|.*\)$", "\1")
+{{%- endmacro %}}
+
+{{# Strips whitespace or newline regex #}}
+{{% macro ansible_deregexify_banner_space() -%}}
+regex_replace("\[\\s\\n\]\+"," ")
+{{%- endmacro %}}
+
+{{# Strips newline or newline escape sequence regex #}}
+{{% macro ansible_deregexify_banner_newline(newline) -%}}
+regex_replace("\(\?:\[\\n\]\+\|\(\?:\\\\n\)\+\)", "{{{ newline }}}")
+{{%- endmacro %}}
+
+{{# Strips newline token for a newline escape sequence regex #}}
+{{% macro ansible_deregexify_banner_newline_token() -%}}
+regex_replace("\(n\)\*", "\\n")
+{{%- endmacro %}}
+
+{{# Strips backslash regex #}}
+{{% macro ansible_deregexify_banner_backslash() -%}}
+regex_replace("\\", "")
+{{%- endmacro %}}
+
+{{#
+The following macro remediates one audit watch rule in /etc/audit/rules.d directory.
+The macro requires following parameters:
+- path: path to watch
+- permissions: permissions changes to watch for
+- key: key to use as identifier. Note that if there exists any other rule with the same find_mac_key
+in some file within /etc/audit/rules.d/, the new rule will be appended to this file.
+#}}
+{{% macro ansible_audit_augenrules_add_watch_rule(path='', permissions='', key='') -%}}
+- name: Check if watch rule for {{{ path }}} already exists in /etc/audit/rules.d/
+  find:
+    paths: "/etc/audit/rules.d"
+    contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
+    patterns: "*.rules"
+  register: find_existing_watch_rules_d
+
+- name: Search /etc/audit/rules.d for other rules with specified key {{{ key }}}
+  find:
+    paths: "/etc/audit/rules.d"
+    contains: '^.*(?:-F key=|-k\s+){{{ key }}}$'
+    patterns: "*.rules"
+  register: find_watch_key
+  when: find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
+
+- name: Use /etc/audit/rules.d/{{{ key }}}.rules as the recipient for the rule
+  set_fact:
+    all_files:
+      - /etc/audit/rules.d/{{{ key }}}.rules
+  when: find_watch_key.matched is defined and find_watch_key.matched == 0 and find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
+
+- name: Use matched file as the recipient for the rule
+  set_fact:
+    all_files:
+      - "{{ find_watch_key.files | map(attribute='path') | list | first }}"
+  when: find_watch_key.matched is defined and find_watch_key.matched > 0 and find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
+
+- name: Add watch rule for {{{ path }}} in /etc/audit/rules.d/
+  lineinfile:
+    path: "{{ all_files[0] }}"
+    line: "-w {{{ path }}} -p {{{ permissions }}} -k {{{ key }}}"
+    create: yes
+  when: find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
+{{%- endmacro %}}
+
+{{#
+The following macro remediates one audit watch rule in /etc/audit/audit.rules.
+The macro requires following parameters:
+- path: path to watch
+- permissions: permissions changes to watch for
+- key: key to use as identifier. 
+#}}
+{{% macro ansible_audit_auditctl_add_watch_rule(path='', permissions='', key='') -%}}
+- name: Check if watch rule for {{{ path }}} already exists in /etc/audit/audit.rules
+  find:
+    paths: "/etc/audit/"
+    contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
+    patterns: "audit.rules"
+  register: find_existing_watch_audit_rules
+
+- name: Add watch rule for {{{ path }}} in /etc/audit/audit.rules
+  lineinfile:
+    line: "-w {{{ path }}} -p {{{ permissions }}} -k {{{ key }}}"
+    state: present
+    dest: /etc/audit/audit.rules
+    create: yes
+  when: find_existing_watch_audit_rules.matched is defined and find_existing_watch_audit_rules.matched == 0
+{{%- endmacro %}}
+
+{{#
+The following macro remediates Audit syscall rule in /etc/audit/rules.d directory.
+The macro requires following parameters:
+- arch: an architecture to be used in the Audit rule (b32, b64)
+- syscalls: list of syscalls supplied as a list ["syscall1", "syscall2"] etc.
+- key: a key to use as rule identifier.
+- fields (optional): list of syscall fields to add (e.g.: auid=unset, exit=-EPERM, a0&0100);
+  Add them in the order you expect them to be in the audit rule.
+Note that if there  already exists a rule wit the same key in the /etc/audit/rules.d directory, the rule will be placed in the same file.
+#}}
+{{% macro ansible_audit_augenrules_add_syscall_rule(arch="", syscalls=[], key="", fields=[]) -%}}
+- name: Declare list of syscals
+  set_fact:
+    syscalls: {{{ syscalls }}}
+
+- name: Declare number of syscalls
+  set_fact: audit_syscalls_number_of_syscalls="{{ syscalls|length|int }}"
+
+{{#
+This dictionary is a Jinja2 trick to allow loops to change variables defined out of its scope.
+See official documentation: https://jinja.palletsprojects.com/en/2.11.x/templates/#assignments
+#}}
+{{% set fields_data = { 'regex' : "", 'plain_text': "" } %}}
+{{% for field in fields %}}
+    {{% set not_used = fields_data.update({'regex': fields_data.regex + '(?:-F[\s]+' + field + '[\s]+)'}) %}}
+    {{% set not_used = fields_data.update({'plain_text': fields_data.plain_text + ' -F ' + field }) %}}
+{{% endfor %}}
+
+- name: Check existence of syscalls for architecture {{{ arch }}} in /etc/audit/rules.d/
+  find:
+    paths: "/etc/audit/rules.d"
+    contains: '^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch={{{ arch }}}[\s]+)(?:.*(-S[\s]+{{ item }}[\s]+|([\s]+|[,]){{ item }}([\s]+|[,]))).*{{{ fields_data.regex }}}(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$'
+    patterns: "*.rules"
+  register: audit_syscalls_found_{{{ arch }}}_rules_d
+  loop: "{{ syscalls }}"
+
+- name: Get number of matched syscalls for architecture {{{ arch }}} in /etc/audit/rules.d/
+  set_fact: audit_syscalls_matched_{{{ arch }}}_rules_d="{{ audit_syscalls_found_{{{ arch }}}_rules_d.results|sum(attribute='matched')|int }}"
+
+- name: Search /etc/audit/rules.d for other rules with the key {{{ key }}}
+  find:
+    paths: "/etc/audit/rules.d"
+    contains: '^.*(?:-F key=|-k\s+){{{ key }}}$'
+    patterns: "*.rules"
+  register: find_syscalls_files
+
+- name: Use /etc/audit/rules.d/{{{ key }}}.rules as the recipient for the rule
+  set_fact:
+    all_files:
+      - /etc/audit/rules.d/{{{ key }}}.rules
+  when: find_syscalls_files.matched is defined and find_syscalls_files.matched == 0
+
+- name: Use matched file as the recipient for the rule
+  set_fact:
+    all_files:
+      - "{{ find_syscalls_files.files | map(attribute='path') | list | first }}"
+  when: find_syscalls_files.matched is defined and find_syscalls_files.matched > 0
+
+- name: "Insert the syscall rule in {{ all_files[0] }}"
+  block:
+    - name: "Construct rule: add rule list, action and arch"
+      set_fact: tmpline="-a always,exit -F arch={{{ arch }}}"
+    - name: "Construct rule: add syscalls"
+      set_fact: tmpline="{{ tmpline + ' -S ' + item.item }}"
+      loop: "{{ audit_syscalls_found_{{{ arch }}}_rules_d.results }}"
+      when: item.matched is defined and item.matched == 0
+    - name: "Construct rule: add fields and key"
+      set_fact: tmpline="{{ tmpline + '{{{ fields_data.plain_text }}} -k {{{ key }}}' }}"
+    - name: "Insert the line in {{ all_files[0] }}"
+      lineinfile:
+        path: "{{ all_files[0] }}"
+        line: "{{ tmpline }}"
+        create: true
+        state: present
+  when: audit_syscalls_matched_{{{ arch }}}_rules_d < audit_syscalls_number_of_syscalls
+{{%- endmacro %}}
+
+{{#
+The following macro remediates Audit syscall rule in /etc/audit/audit.rules file.
+The macro requires following parameters:
+- arch: an architecture to be used in the Audit rule (b32, b64)
+- syscalls: list of syscalls supplied as a list ["syscall1", "syscall2"] etc.
+- key: a key to use as rule identifier.
+- fields (optional): list of syscall fields to add (e.g.: auid=unset, exit=-EPERM, a0&0100);
+  Add them in the order you expect them to be in the audit rule.
+#}}
+{{% macro ansible_audit_auditctl_add_syscall_rule(arch="", syscalls=[], key="", fields=[]) -%}}
+- name: Declare list of syscals
+  set_fact:
+    syscalls: {{{ syscalls }}}
+
+- name: Declare number of syscalls
+  set_fact: audit_syscalls_number_of_syscalls="{{ syscalls|length|int }}"
+
+{{#
+This dictionary is a Jinja2 trick to allow loops to change variables defined out of its scope.
+See official documentation: https://jinja.palletsprojects.com/en/2.11.x/templates/#assignments
+#}}
+{{% set fields_data = { 'regex' : "", 'plain_text': "" } %}}
+{{% for field in fields %}}
+    {{% set not_used = fields_data.update({'regex': fields_data.regex + '(?:-F[\s]+' + field + '[\s]+)'}) %}}
+    {{% set not_used = fields_data.update({'plain_text': fields_data.plain_text + ' -F ' + field }) %}}
+{{% endfor %}}
+
+- name: Check existence of syscalls for architecture {{{ arch }}} in /etc/audit/audit.rules
+  find:
+    paths: "/etc/audit"
+    contains: '^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch={{{ arch }}}[\s]+)(?:.*(-S[\s]+{{ item }}[\s]+|([\s]+|[,]){{ item }}([\s]+|[,]))).*{{{ fields_data.regex }}}(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$'
+    patterns: "audit.rules"
+  register: audit_syscalls_found_{{{ arch }}}_audit_rules
+  loop: "{{ syscalls }}"
+
+- name: Get number of matched syscalls for architecture {{{ arch }}} in /etc/audit/audit.rules
+  set_fact: audit_syscalls_matched_{{{ arch }}}_audit_rules="{{ audit_syscalls_found_{{{ arch }}}_audit_rules.results|sum(attribute='matched')|int }}"
+
+- name: Insert the syscall rule in /etc/audit/audit.rules
+  block:
+    - name: "Construct rule: add rule list, action and arch"
+      set_fact: tmpline="-a always,exit -F arch={{{ arch }}}"
+    - name: "Construct rule: add syscalls"
+      set_fact: tmpline="{{ tmpline + ' -S ' + item.item }}"
+      loop: "{{ audit_syscalls_found_{{{ arch }}}_audit_rules.results }}"
+      when: item.matched is defined and item.matched == 0
+    - name: "Construct rule: add fields and key"
+      set_fact: tmpline="{{ tmpline + '{{{ fields_data.plain_text }}} -k {{{ key }}}' }}"
+    - name: Insert the line in /etc/audit/audit.rules
+      lineinfile:
+        path: "/etc/audit/audit.rules"
+        line: "{{ tmpline }}"
+        create: true
+        state: present
+  when: audit_syscalls_matched_{{{ arch }}}_audit_rules < audit_syscalls_number_of_syscalls
+{{%- endmacro %}}

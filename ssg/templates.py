@@ -8,7 +8,7 @@ from xml.sax.saxutils import unescape
 
 import ssg.build_yaml
 
-languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition"]
+languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition", "kubernetes"]
 
 lang_to_ext_map = {
     "anaconda": ".anaconda",
@@ -16,7 +16,8 @@ lang_to_ext_map = {
     "bash": ".sh",
     "oval": ".xml",
     "puppet": ".pp",
-    "ignition": ".yml"
+    "ignition": ".yml",
+    "kubernetes": ".yml"
 }
 
 def sanitize_input(string):
@@ -201,6 +202,11 @@ def file_permissions(data, lang):
 @template(["ansible", "bash", "oval"])
 def grub2_bootloader_argument(data, lang):
     data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
+    if lang == "oval":
+        # escape dot, this is used in oval regex
+        data["escaped_arg_name_value"] = data["arg_name_value"].replace(".", "\\.")
+        # replace . with _, this is used in test / object / state ids
+        data["sanitized_arg_name"] = data["arg_name"].replace(".", "_")
     return data
 
 
@@ -237,7 +243,7 @@ def mount_option_remote_filesystems(data, lang):
 
 @template(["anaconda", "ansible", "bash", "oval"])
 def mount_option_removable_partitions(data, lang):
-    return _mount_option(data, lang)
+    return data
 
 
 @template(["anaconda", "ansible", "bash", "oval", "puppet"])
@@ -280,7 +286,7 @@ def sebool(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval", "puppet"])
+@template(["ansible", "bash", "oval", "puppet", "ignition", "kubernetes"])
 def service_disabled(data, lang):
     if "packagename" not in data:
         data["packagename"] = data["servicename"]

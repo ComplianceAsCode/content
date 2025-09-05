@@ -24,7 +24,7 @@
   {{%- if init_system == "systemd" -%}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that
-    {{% if product in ["fedora", "rhel8"] -%}}
+    {{% if product in ["fedora", "rhel8", "ol8"] -%}}
     /usr/lib/systemd/systemd-sulogin-shell
     {{%- else -%}}
     /sbin/sulogin
@@ -36,7 +36,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_require_rescue_service" version="1">
     <ind:filepath>/usr/lib/systemd/system/rescue.service</ind:filepath>
-    {{%- if product in ["fedora", "rhel8"] -%}}
+    {{%- if product in ["fedora", "rhel8", "ol8"] -%}}
     <ind:pattern operation="pattern match">^ExecStart=\-.*/usr/lib/systemd/systemd-sulogin-shell[ ]+rescue</ind:pattern>
     {{%- else -%}}
     <ind:pattern operation="pattern match">^ExecStart=\-/bin/sh[\s]+-c[\s]+\"(/usr)?/sbin/sulogin;[\s]+/usr/bin/systemctl[\s]+--fail[\s]+--no-block[\s]+default\"</ind:pattern>

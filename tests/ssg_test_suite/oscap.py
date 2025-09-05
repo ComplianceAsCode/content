@@ -8,7 +8,9 @@ import collections
 import xml.etree.ElementTree
 import json
 import datetime
-
+import socket
+import sys
+import time
 
 from ssg.constants import OSCAP_PROFILE_ALL_ID
 
@@ -17,6 +19,12 @@ from ssg_test_suite import test_env
 from ssg_test_suite import common
 
 from ssg.shims import input_func
+
+# Needed for compatibility as there is no TimeoutError in python2.
+if sys.version_info[0] < 3:
+    TimeoutException = socket.timeout
+else:
+    TimeoutException = TimeoutError
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -144,7 +152,7 @@ def generate_fixes_remotely(formatting, verbose_path):
 
 def run_stage_remediation_ansible(run_type, formatting, verbose_path):
     """
-       Returns False on error, or True in case of successful bash scripts
+       Returns False on error, or True in case of successful Ansible playbook
        run."""
     formatting['output_template'] = _ANSIBLE_TEMPLATE
     send_arf_to_remote_machine_and_generate_remediations_there(
@@ -160,9 +168,9 @@ def run_stage_remediation_ansible(run_type, formatting, verbose_path):
     command_string = ' '.join(command)
     returncode, output = common.run_cmd_local(command, verbose_path)
     # Appends output of ansible-playbook to the verbose_path file.
-    with open(verbose_path, 'a') as f:
-        f.write('Stdout of "{}":'.format(command_string))
-        f.write(output)
+    with open(verbose_path, 'ab') as f:
+        f.write('Stdout of "{}":'.format(command_string).encode("utf-8"))
+        f.write(output.encode("utf-8"))
     if returncode != 0:
         msg = (
             'Ansible playbook remediation run has '
@@ -175,7 +183,7 @@ def run_stage_remediation_ansible(run_type, formatting, verbose_path):
 
 def run_stage_remediation_bash(run_type, formatting, verbose_path):
     """
-       Returns False on error, or True in case of successful Ansible playbook
+       Returns False on error, or True in case of successful bash scripts
        run."""
     formatting['output_template'] = _BASH_TEMPLATE
     send_arf_to_remote_machine_and_generate_remediations_there(
@@ -189,9 +197,9 @@ def run_stage_remediation_bash(run_type, formatting, verbose_path):
     returncode, output = common.run_cmd_remote(
         command_string, formatting['domain_ip'], verbose_path)
     # Appends output of script execution to the verbose_path file.
-    with open(verbose_path, 'a') as f:
-        f.write('Stdout of "{}":'.format(command_string))
-        f.write(output)
+    with open(verbose_path, 'ab') as f:
+        f.write('Stdout of "{}":'.format(command_string).encode("utf-8"))
+        f.write(output.encode("utf-8"))
     if returncode != 0:
         msg = (
             'Bash script remediation run has exited with return code {} '
@@ -269,6 +277,11 @@ class GenericRunner(object):
         self.command_base = []
         self.command_options = []
         self.command_operands = []
+        # number of seconds to sleep after reboot of vm to let
+        # the system to finish startup, there were problems with
+        # temporary files created by Dracut during image generation interfering
+        # with the scan
+        self.time_to_finish_startup = 30
 
     def _make_arf_path(self):
         self.arf_file = self._get_arf_file()
@@ -346,7 +359,7 @@ class GenericRunner(object):
             for fname in tuple(self._filenames_to_clean_afterwards):
                 try:
                     os.remove(fname)
-                except OSError as exc:
+                except OSError:
                     logging.error(
                         "Failed to cleanup file '{0}'"
                         .format(fname))
@@ -411,6 +424,16 @@ class ProfileRunner(GenericRunner):
 
     def _get_results_file(self):
         return '{0}-{1}-results'.format(self.profile, self.stage)
+
+    def final(self):
+        if self.environment.name == 'libvirt-based':
+            logging.info("Rebooting domain '{0}' before final scan."
+                         .format(self.environment.domain_name))
+            self.environment.reboot()
+            logging.info("Waiting for {0} seconds to let the system finish startup."
+                         .format(self.time_to_finish_startup))
+            time.sleep(self.time_to_finish_startup)
+        return GenericRunner.final(self)
 
     def make_oscap_call(self):
         self.prepare_online_scanning_arguments()
@@ -496,7 +519,7 @@ class RuleRunner(GenericRunner):
 
         if rule_result != self.context:
             local_success = False
-            if rule_result is 'notselected':
+            if rule_result == 'notselected':
                 msg = (
                     'Rule {0} has not been evaluated! '
                     'Wrong profile selected in test scenario?'
@@ -616,6 +639,8 @@ class Checker(object):
             logging.info("Terminating the test run due to keyboard interrupt.")
         except RuntimeError as exc:
             logging.error("Terminating due to error: {msg}.".format(msg=str(exc)))
+        except TimeoutException as exc:
+            logging.error("Terminating due to timeout: {msg}".format(msg=str(exc)))
         finally:
             self.finalize()
 

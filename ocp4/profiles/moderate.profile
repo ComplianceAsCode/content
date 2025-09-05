@@ -1,10 +1,10 @@
 documentation_complete: true
 
-title: 'NIST National Checklist for Red Hat Enterprise Linux CoreOS'
+title: 'NIST 800-53 Moderate-Impact Baseline for Red Hat Enterprise Linux CoreOS'
 
 description: |-
-    This compliance profile reflects the core set of security
-    related configuration settings for deployment of Red Hat Enterprise
+    This compliance profile reflects the core set of Moderate-Impact Baseline
+    configuration settings for deployment of Red Hat Enterprise
     Linux CoreOS into U.S. Defense, Intelligence, and Civilian agencies.
     Development partners and sponsors include the U.S. National Institute
     of Standards and Technology (NIST), U.S. Department of Defense,
@@ -13,12 +13,7 @@ description: |-
     This baseline implements configuration requirements from the following
     sources:
 
-    - Committee on National Security Systems Instruction No. 1253 (CNSSI 1253)
-    - NIST Controlled Unclassified Information (NIST 800-171)
-    - NIST 800-53 control selections for MODERATE impact systems (NIST 800-53)
-    - U.S. Government Configuration Baseline (USGCB)
-    - NIAP Protection Profile for General Purpose Operating Systems v4.2.1 (OSPP v4.2.1)
-    - DISA Operating System Security Requirements Guide (OS SRG)
+    - NIST 800-53 control selections for Moderate-Impact systems (NIST 800-53)
 
     For any differing configuration requirements, e.g. password lengths, the stricter
     security setting was chosen. Security Requirement Traceability Guides (RTMs) and
@@ -26,9 +21,9 @@ description: |-
     scap-security-guide-docs package.
 
     This profile reflects U.S. Government consensus content and is developed through
-    the OpenSCAP/SCAP Security Guide initiative, championed by the National
+    the ComplianceAsCode initiative, championed by the National
     Security Agency. Except for differences in formatting to accommodate
-    publishing processes, this profile mirrors OpenSCAP/SCAP Security Guide
+    publishing processes, this profile mirrors ComplianceAsCode
     content as minor divergences, such as bugfixes, work through the
     consensus and release processes.
 
@@ -84,27 +79,27 @@ selections:
     - chronyd_no_chronyc_network
 
     ### Network Settings
-    - sysctl_net_ipv6_conf_all_accept_ra
-    - sysctl_net_ipv6_conf_default_accept_ra
     - sysctl_net_ipv4_conf_all_accept_redirects
-    - sysctl_net_ipv4_conf_default_accept_redirects
-    - sysctl_net_ipv6_conf_all_accept_redirects
-    - sysctl_net_ipv6_conf_default_accept_redirects
     - sysctl_net_ipv4_conf_all_accept_source_route
-    - sysctl_net_ipv4_conf_default_accept_source_route
-    - sysctl_net_ipv6_conf_all_accept_source_route
-    - sysctl_net_ipv6_conf_default_accept_source_route
-    - sysctl_net_ipv4_conf_all_secure_redirects
-    - sysctl_net_ipv4_conf_default_secure_redirects
-    - sysctl_net_ipv4_conf_all_send_redirects
-    - sysctl_net_ipv4_conf_default_send_redirects
     - sysctl_net_ipv4_conf_all_log_martians
-    - sysctl_net_ipv4_conf_default_log_martians
     - sysctl_net_ipv4_conf_all_rp_filter
+    - sysctl_net_ipv4_conf_all_secure_redirects
+    - sysctl_net_ipv4_conf_all_send_redirects
+    - sysctl_net_ipv4_conf_default_accept_redirects
+    - sysctl_net_ipv4_conf_default_accept_source_route
+    - sysctl_net_ipv4_conf_default_log_martians
     - sysctl_net_ipv4_conf_default_rp_filter
-    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+    - sysctl_net_ipv4_conf_default_secure_redirects
+    - sysctl_net_ipv4_conf_default_send_redirects
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
     - sysctl_net_ipv4_tcp_syncookies
+    - sysctl_net_ipv6_conf_all_accept_ra
+    - sysctl_net_ipv6_conf_all_accept_redirects
+    - sysctl_net_ipv6_conf_all_accept_source_route
+    - sysctl_net_ipv6_conf_default_accept_ra
+    - sysctl_net_ipv6_conf_default_accept_redirects
+    - sysctl_net_ipv6_conf_default_accept_source_route
 
     ### systemd
     - disable_ctrlaltdel_reboot
@@ -143,9 +138,6 @@ selections:
     - sysctl_kernel_kexec_load_disabled
     - sysctl_kernel_yama_ptrace_scope
     - sysctl_kernel_perf_event_paranoid
-    - sysctl_user_max_user_namespaces
-    - sysctl_user_max_user_namespaces.role=unscored
-    - sysctl_user_max_user_namespaces.severity=info
     - sysctl_kernel_unprivileged_bpf_disabled
     - sysctl_net_core_bpf_jit_harden
 
@@ -237,10 +229,6 @@ selections:
     - var_selinux_policy_name=targeted
     - selinux_policytype
 
-    ### Application Whitelisting (RHEL 8)
-    - package_fapolicyd_installed
-    - service_fapolicyd_enabled
-
     ### Enable the Hardware RNG Entropy Gatherer Service
     - service_rngd_enabled
 
@@ -302,7 +290,7 @@ selections:
     ## FMT_MOF_EXT.1
     #- package_tmux_installed
     #- configure_bashrc_exec_tmux
-    #- no_tmux_in_shells
+    - no_tmux_in_shells
     #- configure_tmux_lock_command
     #- configure_tmux_lock_after_time
 
@@ -532,6 +520,21 @@ selections:
     #- mount_option_nodev_removable_partitions
     #- mount_option_noexec_removable_partitions
 
+    # AC-1
+    - configure_ssh_crypto_policy
+    - service_bluetooth_disabled
+    #- sshd_use_approved_macs
+    #- sshd_use_approved_ciphers
+    #- sshd_set_loglevel_verbose
+    #- sshd_set_loglevel_info
+    #- sshd_disable_compression
+    #- sshd_allow_only_protocol2
+    - file_permissions_sshd_pub_key
+    - file_permissions_sshd_private_key
+    - file_permissions_sshd_config
+    - file_owner_sshd_config
+    - file_groupowner_sshd_config
+
     # AC-3
     - sshd_limit_user_access
     - sshd_disable_rhosts
@@ -547,7 +550,7 @@ selections:
     - package_audit_installed
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
-    - grub2_slub_debug_argument
+    #- grub2_slub_debug_argument
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
 

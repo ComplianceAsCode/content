@@ -90,6 +90,14 @@ def add_warning_elements(element, warnings):
         warning.set("category", list(warning_dict.keys())[0])
 
 
+def add_nondata_subelements(element, subelement, attribute, attr_data):
+    """Add multiple iterations of a sublement that contains an attribute but no data
+       For example, <requires id="my_required_id"/>"""
+    for data in attr_data:
+        req = ET.SubElement(element, subelement)
+        req.set(attribute, data)
+
+
 class Profile(object):
     """Represents XCCDF profile
     """
@@ -327,7 +335,7 @@ class Value(object):
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
-        yaml_contents = open_and_expand(yaml_file, env_yaml)
+        yaml_contents = open_and_macro_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
@@ -600,6 +608,8 @@ class Group(object):
         self.title = ""
         self.description = ""
         self.warnings = []
+        self.requires = []
+        self.conflicts = []
         self.values = {}
         self.groups = {}
         self.rules = {}
@@ -619,6 +629,8 @@ class Group(object):
         group.description = required_key(yaml_contents, "description")
         del yaml_contents["description"]
         group.warnings = yaml_contents.pop("warnings", [])
+        group.conflicts = yaml_contents.pop("conflicts", [])
+        group.requires = yaml_contents.pop("requires", [])
         group.platform = yaml_contents.pop("platform", None)
 
         for warning_list in group.warnings:
@@ -649,6 +661,8 @@ class Group(object):
         title.text = self.title
         add_sub_element(group, 'description', self.description)
         add_warning_elements(group, self.warnings)
+        add_nondata_subelements(group, "requires", "id", self.requires)
+        add_nondata_subelements(group, "conflicts", "id", self.conflicts)
 
         if self.platform:
             platform_el = ET.SubElement(group, "platform")
@@ -681,13 +695,22 @@ class Group(object):
         # top level group, this ensures groups that further configure a package or service
         # are after rules that install or remove it.
         groups_in_group = list(self.groups.keys())
+        # The account group has to precede audit group because
+        # the rule package_screen_installed is desired to be executed before the rule
+        # audit_rules_privileged_commands, othervise the rule
+        # does not catch newly installed screeen binary during remediation
+        # and report fail
         # The FIPS group should come before Crypto - if we want to set a different (stricter) Crypto Policy than FIPS.
         # the firewalld_activation must come before ruleset_modifications, othervise
         # remediations for ruleset_modifications won't work
         # rules from group disabling_ipv6 must precede rules from configuring_ipv6,
         # otherwise the remediation prints error although it is successful
-        priority_order = ["fips", "crypto", "firewalld_activation",
-        "ruleset_modifications", "disabling_ipv6", "configuring_ipv6"]
+        priority_order = [
+            "accounts", "auditing",
+            "fips", "crypto",
+            "firewalld_activation", "ruleset_modifications",
+            "disabling_ipv6", "configuring_ipv6"
+        ]
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
         for group_id in groups_in_group:
             _group = self.groups[group_id]
@@ -745,6 +768,8 @@ class Rule(object):
         "ocil": lambda: None,
         "oval_external_content": lambda: None,
         "warnings": lambda: list(),
+        "conflicts": lambda: list(),
+        "requires": lambda: list(),
         "platform": lambda: None,
         "template": lambda: None,
     }
@@ -762,6 +787,8 @@ class Rule(object):
         self.ocil = None
         self.oval_external_content = None
         self.warnings = []
+        self.requires = []
+        self.conflicts = []
         self.platform = None
         self.template = None
 
@@ -1038,6 +1065,8 @@ class Rule(object):
                 ocil.set("clause", self.ocil_clause)
 
         add_warning_elements(rule, self.warnings)
+        add_nondata_subelements(rule, "requires", "id", self.requires)
+        add_nondata_subelements(rule, "conflicts", "id", self.conflicts)
 
         if self.platform:
             platform_el = ET.SubElement(rule, "platform")

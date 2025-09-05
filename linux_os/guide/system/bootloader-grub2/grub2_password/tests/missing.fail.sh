@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# profiles = xccdf_org.ssgproject.content_profile_stig
 # remediation = none
 
-. grub-passwords.sh
+. $SHARED/grub2.sh
 
-remove_grub_password || true
+touch "$GRUB_CFG_ROOT/grub.cfg"
+rm -f "$GRUB_CFG_ROOT/user.cfg"

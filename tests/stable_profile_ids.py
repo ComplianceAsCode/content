@@ -72,7 +72,7 @@ def gather_profiles_from_datastream(path, build_dir, profiles_per_benchmark):
                                "prefixed with '%s'."
                                % (bench_id, path, BENCHMARK_ID_PREFIX))
 
-        if profile_id == "":
+        if not profile_id:
             # default profile can be skipped, we know for sure that
             # it will be present in all benchmarks
             continue

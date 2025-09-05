@@ -1,12 +1,13 @@
 documentation_complete: true
 
-prodtype: fedora,ocp4,ol7,ol8,rhel6,rhel7,rhel8
+prodtype: fedora,ocp4,ol7,ol8,rhel6,rhel7,rhel8,sle15
 
 title: 'Disable Core Dumps for All Users'
 
 description: |-
     To disable core dumps for all users, add the following line to
-    <tt>/etc/security/limits.conf</tt>:
+    <tt>/etc/security/limits.conf</tt>, or to a file within the
+    <tt>/etc/security/limits.d/</tt> directory:
     <pre>*     hard   core    0</pre>
 
 rationale: |-
@@ -25,7 +26,7 @@ identifiers:
 references:
     stigid@rhel6: "000308"
     srg@rhel6: SRG-OS-999999
-    cis: 1.5.1
+    cis@rhel8: 1.6.1
     nist-csf: DE.CM-1,PR.DS-4
     isa-62443-2013: 'SR 6.2,SR 7.1,SR 7.2'
     cobit5: APO13.01,BAI04.04,DSS01.03,DSS03.05,DSS05.07

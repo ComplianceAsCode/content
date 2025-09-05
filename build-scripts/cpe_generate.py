@@ -165,7 +165,7 @@ def main():
             \n\tEnsure <platform> element is configured properly for \"%s\".  \
             \n\tExiting..\n" % (check.text, args.ovalfile, check.text)
             sys.stderr.write(error_msg)
-            # sys.exit(1)
+            sys.exit(1)
 
         # Referenced OVAL checks passed both of the above sanity tests
         check.text = translator.generate_id("{" + oval_ns + "}definition", check.text)

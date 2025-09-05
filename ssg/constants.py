@@ -13,13 +13,14 @@ product_directories = [
     'firefox',
     'fuse6',
     'jre',
+    'macos1015',
     'ocp3', 'ocp4',
     'ol7', 'ol8',
     'opensuse',
     'rhel6', 'rhel7', 'rhel8',
     'rhosp10', 'rhosp13',
     'rhv4',
-    'sle11', 'sle12',
+    'sle11', 'sle12', 'sle15',
     'ubuntu1404', 'ubuntu1604', 'ubuntu1804',
     'wrlinux8', 'wrlinux1019'
 ]
@@ -30,6 +31,10 @@ JINJA_MACROS_HIGHLEVEL_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirnam
     __file__)), "shared", "macros-highlevel.jinja")
 JINJA_MACROS_ANSIBLE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
     __file__)), "shared", "macros-ansible.jinja")
+JINJA_MACROS_IGNITION_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
+    __file__)), "shared", "macros-ignition.jinja")
+JINJA_MACROS_KUBERNETES_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
+    __file__)), "shared", "macros-kubernetes.jinja")
 JINJA_MACROS_OVAL_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
     __file__)), "shared", "macros-oval.jinja")
 JINJA_MACROS_BASH_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
@@ -48,9 +53,10 @@ xccdf_header = xml_version + "<xccdf>"
 xccdf_footer = "</xccdf>"
 bash_system = "urn:xccdf:fix:script:sh"
 ansible_system = "urn:xccdf:fix:script:ansible"
+ignition_system = "urn:xccdf:fix:script:ignition"
+kubernetes_system = "urn:xccdf:fix:script:kubernetes"
 puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
-ignition_system = "urn:xccdf:fix:script:ignition"
 cce_uri = "https://nvd.nist.gov/cce/index.cfm"
 stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
 stig_refs = 'https://public.cyber.mil/stigs/'
@@ -73,6 +79,33 @@ min_ansible_version = "2.5"
 ansible_version_requirement_pre_task_name = \
     "Verify Ansible meets SCAP-Security-Guide version requirements."
 standard_profiles = ['standard', 'pci-dss', 'desktop', 'server']
+
+
+OVAL_SUB_NS = dict(
+    ind="independent",
+    unix="unix",
+    linux="linux",
+)
+
+
+PREFIX_TO_NS = {
+    "oval-def": oval_namespace,
+    "oval": "http://oval.mitre.org/XMLSchema/oval-common-5",
+    "ds": datastream_namespace,
+    "ocil": ocil_namespace,
+    "xccdf-1.1": XCCDF11_NS,
+    "xccdf-1.2": XCCDF12_NS,
+    "xlink": xlink_namespace,
+    "cpe-dict": "http://cpe.mitre.org/dictionary/2.0",
+    "cat": cat_namespace,
+}
+
+
+for prefix, url_part in OVAL_SUB_NS.items():
+    assert prefix not in PREFIX_TO_NS, \
+        "Conflict between a namespace and OVAL sub-namespace '{prefix}'".format(prefix=prefix)
+    PREFIX_TO_NS[prefix] = "{oval_ns}#{suffix}".format(oval_ns=PREFIX_TO_NS["oval-def"], suffix=url_part)
+
 
 oval_header = (
     """
@@ -102,6 +135,7 @@ PKG_MANAGER_TO_SYSTEM = {
 PKG_MANAGER_TO_CONFIG_FILE = {
     "yum": "/etc/yum.conf",
     "dnf": "/etc/dnf/dnf.conf",
+    "zypper": "/etc/zypp/zypper.conf",
 }
 
 FULL_NAME_TO_PRODUCT_MAPPING = {
@@ -115,6 +149,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Firefox": "firefox",
     "JBoss Fuse 6": "fuse6",
     "Java Runtime Environment": "jre",
+    "Apple macOS 10.15": "macos1015",
     "Red Hat OpenShift Container Platform 3": "ocp3",
     "Red Hat OpenShift Container Platform 4": "ocp4",
     "Oracle Linux 7": "ol7",
@@ -128,6 +163,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Red Hat Virtualization 4": "rhv4",
     "SUSE Linux Enterprise 11": "sle11",
     "SUSE Linux Enterprise 12": "sle12",
+    "SUSE Linux Enterprise 15": "sle15",
     "Ubuntu 14.04": "ubuntu1404",
     "Ubuntu 16.04": "ubuntu1604",
     "Ubuntu 18.04": "ubuntu1804",
@@ -207,6 +243,9 @@ PRODUCT_TO_CPE_MAPPING = {
         "cpe:/a:redhat:openjdk:",
         "cpe:/a:ibm:jre:",
     ],
+    "macos1015": [
+        "cpe:/o:apple:macos:10.15",
+    ],
     "ocp3": [
         "cpe:/a:redhat:openshift_container_platform:3.10",
         "cpe:/a:redhat:openshift_container_platform:3.11",
@@ -247,13 +286,17 @@ PRODUCT_TO_CPE_MAPPING = {
     ],
     "rhv4": [
         "cpe:/a:redhat:enterprise_virtualization_manager:4",
-        "cpe:/o:redhat:enterprise_linux:7::hypervisor",
+        "cpe:/o:redhat:enterprise_linux:8::hypervisor",
     ],
     "sle11": [
         "cpe:/o:suse:linux_enterprise_server:11",
     ],
     "sle12": [
         "cpe:/o:suse:linux_enterprise_server:12",
+    ],
+    "sle15": [
+        "cpe:/o:suse:linux_enterprise_server:15",
+        "cpe:/o:suse:linux_enterprise_desktop:15",
     ],
     "ubuntu1404": [
         "cpe:/o:canonical:ubuntu_linux:14.04",
@@ -273,10 +316,12 @@ PRODUCT_TO_CPE_MAPPING = {
 }
 
 STIG_PLATFORM_ID_MAP = {
+    "ol7": "OL07-00",
     "rhel6": "RHEL-06",
     "rhel7": "RHEL-07",
     "rhel8": "RHEL-08",
     "sle12": "SLES-12",
+    "sle15": "SLES-15",
 }
 
 # see xccdf-addremediations.xslt <- shared_constants.xslt <- shared_shorthand2xccdf.xslt
@@ -302,7 +347,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_rhel": ["rhel6", "rhel7", "rhel8"],
     "multi_platform_rhosp": ["rhosp10", "rhosp13"],
     "multi_platform_rhv": ["rhv4"],
-    "multi_platform_sle": ["sle11", "sle12"],
+    "multi_platform_sle": ["sle11", "sle12", "sle15"],
     "multi_platform_ubuntu": ["ubuntu1404", "ubuntu1604", "ubuntu1804"],
     "multi_platform_wrlinux": ["wrlinux8", "wrlinux1019"],
 }
@@ -439,9 +484,11 @@ OCILREFATTR_TO_TAG = {
 XCCDF_PLATFORM_TO_CPE = {
     "machine": "cpe:/a:machine",
     "container": "cpe:/a:container",
+    "chrony": "cpe:/a:chrony",
     "gdm": "cpe:/a:gdm",
     "libuser": "cpe:/a:libuser",
     "nss-pam-ldapd": "cpe:/a:nss-pam-ldapd",
+    "ntp": "cpe:/a:ntp",
     "pam": "cpe:/a:pam",
     "login_defs": "cpe:/a:login_defs",
     "sssd": "cpe:/a:sssd",
@@ -455,6 +502,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
     'jre': 'Java Runtime Environment',
+    'macos': 'Apple macOS',
     'rhosp': 'Red Hat OpenStack Platform',
     'rhel': 'Red Hat Enterprise Linux',
     'rhv': 'Red Hat Virtualization',

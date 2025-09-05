@@ -1,0 +1,36 @@
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: "Detect if file /etc/sysconfig/chronyd is not empty or missing"
+  find:
+    path: /etc/sysconfig/
+    patterns: chronyd
+    contains: '^([\s]*OPTIONS=["]?[^"]*)("?)'
+  register: chronyd_file
+
+- name: "Remove any previous configuration of user used to run chronyd process"
+  replace:
+    path: /etc/sysconfig/chronyd
+    regexp: '\s*-u\s+\w+\s*'
+    replace: ' '
+  when: chronyd_file is defined and chronyd_file.matched > 0
+
+- name: "Correct existing line in /etc/sysconfig/chronyd to run chronyd as chrony user"
+  lineinfile:
+    path: /etc/sysconfig/chronyd
+    regexp: '^([\s]*OPTIONS=["]?[^"]*)("?)'
+    line: '\1 -u chrony\2'
+    state: present
+    backrefs: True
+  when: chronyd_file is defined and chronyd_file.matched > 0
+
+- name: "Insert correct line into /etc/sysconfig/chronyd ensuring chronyd runs as chrony user"
+  lineinfile:
+    path: /etc/sysconfig/chronyd
+    line: 'OPTIONS="-u chrony"'
+    state: present
+    create: True
+  when: chronyd_file is defined and chronyd_file.matched == 0

@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xccdf">
 
 <!-- This transform expects stringparams "bash_remediations", "ansible_remediations", "puppet_remediations",
-     "anaconda_remediations", "ignition_remediations"
+     "anaconda_remediations", "ignition_remediations", "kubernetes_remediations"
      specifying a filenames containing a list of remediations.  It inserts these into the Rules
      specified inside the remediations file. -->
 <xsl:param name="bash_remediations"/>
@@ -10,6 +10,7 @@
 <xsl:param name="puppet_remediations"/>
 <xsl:param name="anaconda_remediations"/>
 <xsl:param name="ignition_remediations"/>
+<xsl:param name="kubernetes_remediations"/>
 
 <xsl:variable name="bash_remediations_doc" select="document($bash_remediations)" />
 <xsl:variable name="bash_fixgroup" select="$bash_remediations_doc/xccdf:fix-content/xccdf:fix-group" />
@@ -31,10 +32,14 @@
 <xsl:variable name="ignition_fixgroup" select="$ignition_remediations_doc/xccdf:fix-content/xccdf:fix-group" />
 <xsl:variable name="ignition_fixcommongroup" select="$ignition_remediations_doc/xccdf:fix-content/xccdf:fix-common-group" />
 
+<xsl:variable name="kubernetes_remediations_doc" select="document($kubernetes_remediations)" />
+<xsl:variable name="kubernetes_fixgroup" select="$kubernetes_remediations_doc/xccdf:fix-content/xccdf:fix-group" />
+<xsl:variable name="kubernetes_fixcommongroup" select="$kubernetes_remediations_doc/xccdf:fix-content/xccdf:fix-common-group" />
 
 
-<xsl:variable name="fixgroups" select="$bash_fixgroup | $ansible_fixgroup | $puppet_fixgroup | $anaconda_fixgroup | $ignition_fixgroup" />
-<xsl:variable name="fixcommongroups" select="$bash_fixcommongroup | $ansible_fixcommongroup | $puppet_fixcommongroup | $anaconda_fixcommongroup | $ignition_fixcommongroup" />
+
+<xsl:variable name="fixgroups" select="$bash_fixgroup | $ansible_fixgroup | $puppet_fixgroup | $anaconda_fixgroup | $ignition_fixgroup | $kubernetes_fixgroup" />
+<xsl:variable name="fixcommongroups" select="$bash_fixcommongroup | $ansible_fixcommongroup | $puppet_fixcommongroup | $anaconda_fixcommongroup | $ignition_fixcommongroup | $kubernetes_fixcommongroup" />
 
 <xsl:template name="find-and-replace">
   <xsl:param name="text"/>
@@ -143,6 +148,10 @@
 
   <xsl:if test="$ignition_remediations='' or not($ignition_remediations_doc)">
     <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$ignition_remediations"/>".</xsl:message>
+  </xsl:if>
+
+  <xsl:if test="$kubernetes_remediations='' or not($kubernetes_remediations_doc)">
+    <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$kubernetes_remediations"/>".</xsl:message>
   </xsl:if>
 
   <xsl:copy>

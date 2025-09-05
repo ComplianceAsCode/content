@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ocp4,ol7,ol8,rhel6,rhel7,rhel8,rhv4,wrlinux1019
+prodtype: fedora,ocp4,ol7,ol8,rhel6,rhel7,rhel8,rhv4,sle15,wrlinux1019
 
 title: 'Require Authentication for Single User Mode'
 
@@ -35,6 +35,7 @@ identifiers:
     cce@ocp4: 82550-5
 
 references:
+    stigid@ol7: "010481"
     stigid@rhel6: "000069"
     stigid@rhel7: "010481"
     srg@rhel6: SRG-OS-000080
@@ -66,7 +67,7 @@ ocil: |-
 {{% else %}}
     <pre>$ grep sulogin /usr/lib/systemd/system/rescue.service</pre>
     The output should be similar to the following, and the line must begin with
-    {{% if product in ["fedora", "rhel8"] -%}}
+    {{% if product in ["fedora", "rhel8", "ol8"] -%}}
         ExecStart and /usr/lib/systemd/systemd-sulogin-shell.
         <pre>ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue</pre>
     {{%- else -%}}
