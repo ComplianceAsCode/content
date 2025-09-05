@@ -18,7 +18,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_disable_user_list"
   version="1">
-    <ind:path>/etc/dconf/db/gdm.d/</ind:path>
+    <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^\[org/gnome/login-screen]([^\n]*\n+)+?disable-user-list=true$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
@@ -31,7 +31,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_prevent_user_disable_user_list"
   version="1">
-    <ind:path>/etc/dconf/db/gdm.d/locks/</ind:path>
+    <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^/org/gnome/login-screen/disable-user-list$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>

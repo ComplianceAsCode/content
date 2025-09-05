@@ -1,0 +1,40 @@
+prodtype: ocp4
+
+title: Ensure that the OpenShift OAuth login template is set
+
+description: |-
+  A legal notice can be configured via a customized login template.
+  <br/>
+
+  This is achievable via the OAuth object by creating a custom login page,
+  storing it in a Kubernetes Secret and referencing it in the appropriate
+  field as
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.7/web_console/customizing-the-web-console.html#customizing-the-login-page_customizing-web-console",
+              text="described in the documentation") }}}
+
+rationale: |-
+  Displays to users organization-defined system use notification message or banner before granting
+  access to the system that provides privacy and security notices consistent with applicable federal laws.
+
+identifiers:
+  cce@ocp4: CCE-84198-1
+
+severity: medium
+
+references:
+  nist: AC-8
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/oauths/cluster") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/config.openshift.io/v1/oauths/cluster
+    yamlpath: ".spec.templates.login.name"
+    values:
+    - value: ".+"
+      operation: "pattern match"
+      type: "string"

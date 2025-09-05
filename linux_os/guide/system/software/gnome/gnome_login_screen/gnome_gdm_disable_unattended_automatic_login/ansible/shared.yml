@@ -1,0 +1,21 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Disable GDM Automatic Login"
+  ini_file:
+    dest: /etc/sysconfig/displaymanager
+    section:
+    option: DISPLAYMANAGER_AUTOLOGIN
+    value: '""'
+    no_extra_spaces: yes
+    create: no
+- name: "Disable password less Login"
+  ini_file:
+    dest: /etc/sysconfig/displaymanager
+    section:
+    option: DISPLAYMANAGER_PASSWORD_LESS_LOGIN
+    value: '"no"'
+    no_extra_spaces: yes
+    create: no

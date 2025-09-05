@@ -1,0 +1,11 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="banner_or_login_template_set" version="1">
+    {{{ oval_metadata("A Legal notice must be displayed by some means.") }}}
+
+    <criteria operator="OR">
+      <extend_definition comment="classification banner" definition_ref="classification_banner" />
+      <extend_definition comment="custom login page" definition_ref="oauth_login_template_set" />
+    </criteria>
+
+  </definition>
+</def-group>

@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Sudo - passwd_timeout value'
+
+description: |-
+    Defines the number of minutes before the <tt>sudo</tt> password prompt times out.
+    Defining 0 means no timeout. The default timeout value is 5 minutes.
+
+interactive: false
+
+type: string
+
+operator: equals
+
+options:
+    default: "5"
+    infinite: "0"
+    1_minute: "1"
+    2_minutes: "2"
+    3_minutes: "3"
+    5_minutes: "5"

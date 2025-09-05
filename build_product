@@ -7,6 +7,8 @@
 # ARG_OPTIONAL_SINGLE([jobs],[j],[Count of simultaneous jobs],[auto])
 # ARG_OPTIONAL_BOOLEAN([debug],[],[Make a debug build with draft profiles],[off])
 # ARG_OPTIONAL_BOOLEAN([derivatives],[],[Also build derivatives of products if applicable],[off])
+# ARG_OPTIONAL_BOOLEAN([ansible-playbooks],[],[Build Ansible Playbooks for every profile],[on])
+# ARG_OPTIONAL_BOOLEAN([bash-scripts],[],[Build Bash remediation scripts for every profile],[on])
 # ARG_OPTIONAL_BOOLEAN([datastream-only],[],[Build the datastream only. Do not build any of the guides, tables, etc],[off])
 # ARG_USE_ENV([ADDITIONAL_CMAKE_OPTIONS],[],[Whitespace-separated string of arguments to pass to CMake])
 # ARG_POSITIONAL_INF([product],[Products to build, ALL means all products],[0],[ALL])
@@ -71,19 +73,23 @@ _arg_builder="auto"
 _arg_jobs="auto"
 _arg_debug="off"
 _arg_derivatives="off"
+_arg_ansible_playbooks="on"
+_arg_bash_scripts="on"
 _arg_datastream_only="off"
 
 
 print_help()
 {
 	printf '%s\n' "Wipes out contents of the 'build' directory and builds only and only the given products."
-	printf 'Usage: %s [-o|--oval <VERSION>] [-b|--builder <BUILDER>] [-j|--jobs <arg>] [--(no-)debug] [--(no-)derivatives] [--(no-)datastream-only] [-h|--help] [<product-1>] ... [<product-n>] ...\n' "$0"
+	printf 'Usage: %s [-o|--oval <VERSION>] [-b|--builder <BUILDER>] [-j|--jobs <arg>] [--(no-)debug] [--(no-)derivatives] [--(no-)ansible-playbooks] [--(no-)bash-scripts] [--(no-)datastream-only] [-h|--help] [<product-1>] ... [<product-n>] ...\n' "$0"
 	printf '\t%s\n' "<product>: Products to build, ALL means all products (defaults for <product>: 'ALL')"
 	printf '\t%s\n' "-o, --oval: OVAL version. Can be one of: '5.10', '5.11' and 'auto' (default: 'auto')"
 	printf '\t%s\n' "-b, --builder: Builder engine. Can be one of: 'make', 'ninja' and 'auto' (default: 'auto')"
 	printf '\t%s\n' "-j, --jobs: Count of simultaneous jobs (default: 'auto')"
 	printf '\t%s\n' "--debug, --no-debug: Make a debug build with draft profiles (off by default)"
 	printf '\t%s\n' "--derivatives, --no-derivatives: Also build derivatives of products if applicable (off by default)"
+	printf '\t%s\n' "--ansible-playbooks, --no-ansible-playbooks: Build Ansible Playbooks for every profile (on by default)"
+	printf '\t%s\n' "--bash-scripts, --no-bash-scripts: Build Bash remediation scripts for every profile (on by default)"
 	printf '\t%s\n' "--datastream-only, --no-datastream-only: Build the datastream only. Do not build any of the guides, tables, etc (off by default)"
 	printf '\t%s\n' "-h, --help: Prints help"
 	printf '\nEnvironment variables that are supported:\n'
@@ -139,6 +145,14 @@ parse_commandline()
 			--no-derivatives|--derivatives)
 				_arg_derivatives="on"
 				test "${1:0:5}" = "--no-" && _arg_derivatives="off"
+				;;
+			--no-ansible-playbooks|--ansible-playbooks)
+				_arg_ansible_playbooks="on"
+				test "${1:0:5}" = "--no-" && _arg_ansible_playbooks="off"
+				;;
+			--no-bash-scripts|--bash-scripts)
+				_arg_bash_scripts="on"
+				test "${1:0:5}" = "--no-" && _arg_bash_scripts="off"
 				;;
 			--no-datastream-only|--datastream-only)
 				_arg_datastream_only="on"
@@ -339,6 +353,12 @@ done
 
 CMAKE_OPTIONS=(${ADDITIONAL_CMAKE_OPTIONS} "${build_type_option}" "${oval_major_version_option}" "${oval_minor_version_option}" '-DSSG_PRODUCT_DEFAULT=OFF' "${cmake_enable_args[@]}" -G "$cmake_generator")
 set_no_derivatives_options
+if [ "$_arg_ansible_playbooks" = off ] ; then
+	CMAKE_OPTIONS+=("-DSSG_ANSIBLE_PLAYBOOKS_ENABLED:BOOL=OFF")
+fi
+if [ "$_arg_bash_scripts" = off ] ; then
+	CMAKE_OPTIONS+=("-DSSG_BASH_SCRIPTS_ENABLED:BOOL=OFF")
+fi
 EXPLICIT_BUILD_TARGETS=()
 set_explict_build_targets
 

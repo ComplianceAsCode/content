@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004
 
 title: 'Ensure LDAP client is not installed'
 
@@ -18,10 +18,12 @@ severity: low
 identifiers:
     cce@rhel7: CCE-82884-8
     cce@rhel8: CCE-82885-5
+    cce@rhel9: CCE-90831-9
 
 references:
     cis@rhel7: 2.3.5
     cis@rhel8: 2.3.3
+    cis@ubuntu2004: 2.3.5
 
 ocil_clause: 'the package is installed'
 
@@ -32,3 +34,6 @@ template:
     name: package_removed
     vars:
         pkgname: openldap-clients
+        pkgname@ubuntu1604: ldap-utils
+        pkgname@ubuntu1804: ldap-utils
+        pkgname@ubuntu2004: ldap-utils

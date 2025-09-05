@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: ol7,ol8,rhel7,rhel8
+
+title: 'Ensure sudo passwd_timeout is appropriate - sudo passwd_timeout'
+
+description: |-
+    The sudo <tt>passwd_timeout</tt> tag sets the amount of time sudo password prompt waits.
+{{%- if product in ["rhel7", "rhel8"] %}}
+    On {{{ full_name }}}, the default <tt>passwd_timeout</tt> value is 5 minutes.
+{{% endif %}}
+    The passwd_timeout should be configured by making sure that the
+    <tt>passwd_timeout=sub_var_value("var_sudo_passwd_timeout")</tt> tag exists in
+    <tt>/etc/sudoers</tt> configuration file or any sudo configuration snippets
+    in <tt>/etc/sudoers.d/</tt>.
+
+rationale: |-
+    Reducing the time <tt>sudo</tt> waits for a a password reduces the time the process is exposed.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83963-9
+    cce@rhel8: CCE-83964-7
+
+references:
+    anssi: BP28(R58)
+
+ocil_clause: 'passwd_timeout is not set with the appropriate value for sudo'
+
+ocil: |-
+    To determine if <tt>passwd_timeout</tt> has been configured for sudo, run the following command:
+    <pre>$ sudo grep -ri '^Defaults.*passwd_timeout=sub_var_value("var_sudo_passwd_timeout")' /etc/sudoers /etc/sudoers.d/</pre>
+    The command should return a matching output.
+
+template:
+    name: sudo_defaults_option
+    vars:
+        option: passwd_timeout
+        variable_name: "var_sudo_passwd_timeout"

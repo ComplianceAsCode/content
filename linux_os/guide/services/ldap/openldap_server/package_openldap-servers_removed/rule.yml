@@ -1,11 +1,15 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,rhel9,sle15
+prodtype: rhel7,rhel8,rhel9,sle15,ubuntu2004
 
 title: 'Uninstall openldap-servers Package'
 
 description: |-
-    The openldap-servers RPM is not installed by default on a {{{ full_name }}}
+    {{% if 'ubuntu' not in product %}}
+    The openldap-servers package is not installed by default on a {{{ full_name }}}
+    {{% else %}}
+    The slapd package is not installed by default on a {{{ full_name }}}
+    {{% endif %}}
     system. It is needed only by the OpenLDAP server, not by the
     clients which use LDAP for authentication. If the system is not
     intended for use as an LDAP Server it should be removed.
@@ -22,27 +26,39 @@ identifiers:
     cce@rhel8: CCE-82415-1
 
 references:
-    disa: CCI-000366
-    nist: CM-7(a),CM-7(b),CM-6(a)
-    nist-csf: PR.IP-1,PR.PT-3
-    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7,SR 7.6'
-    isa-62443-2009: 4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.2,4.3.4.3.3
-    cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS06.06
-    iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.9.1.2
     cis-csc: 11,14,3,9
     cis@rhel7: 2.2.6
     cis@sle15: 2.2.6
+    cis@ubuntu2004: 2.2.6
+    cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS06.06
+    disa: CCI-000366
+    isa-62443-2009: 4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.2,4.3.4.3.3
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7,SR 7.6'
+    iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.9.1.2
+    nist: CM-7(a),CM-7(b),CM-6(a)
+    nist-csf: PR.IP-1,PR.PT-3
 
 ocil_clause: 'it does not'
 
 ocil: |-
+    {{% if 'ubuntu' not in product %}}
     To verify the <tt>openldap-servers</tt> package is not installed, run the
     following command:
     <pre>$ rpm -q openldap-servers</pre>
     The output should show the following:
     <pre>package openldap-servers is not installed</pre>
+    {{% else %}}
+    To verify the <tt>slapd</tt> package is not installed, run the
+    following command:
+    <pre>$ dpkg -l slapd</pre>
+    The output should show the following:
+    <pre>package slapd is not installed</pre>
+    {{% endif %}}
 
 template:
     name: package_removed
     vars:
         pkgname: openldap-servers
+        pkgname@ubuntu1604: slapd
+        pkgname@ubuntu1804: slapd
+        pkgname@ubuntu2004: slapd

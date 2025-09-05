@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8,rhel8,rhcos4
+prodtype: ol8,rhcos4,rhel8,rhel9
 
 title: 'Configure auditing of unsuccessful file accesses'
 
@@ -31,12 +31,13 @@ severity: medium
 
 identifiers:
     cce@rhel8: CCE-82833-5
+    cce@rhel9: CCE-83672-6
 
 references:
-    ospp: FAU_GEN.1.1.c
-    nist: AU-2(a)
-    srg: SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219,SRG-OS-000475-GPOS-00220,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209,SRG-OS-000461-GPOS-00205
     ism: 0582,0584,05885,0586,0846,0957
+    nist: AU-2(a)
+    ospp: FAU_GEN.1.1.c
+    srg: SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219,SRG-OS-000475-GPOS-00220,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209,SRG-OS-000461-GPOS-00205
 
 ocil_clause: 'the file does not exist or the content differs'
 

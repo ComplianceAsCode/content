@@ -15,7 +15,7 @@
 - name: "Prevent user modification of GNOME3 disablement of WiFi"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/nm-applet/suppress-wireless-networks-available'
+    regexp: '^/org/gnome/nm-applet/suppress-wireless-networks-available$'
     line: '/org/gnome/nm-applet/suppress-wireless-networks-available'
     create: yes
 

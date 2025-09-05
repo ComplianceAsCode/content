@@ -15,7 +15,7 @@
 - name: "Prevent user modification of GNOME3 Thumbnailers"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/desktop/thumbnailers/disable-all'
+    regexp: '^/org/gnome/desktop/thumbnailers/disable-all$'
     line: '/org/gnome/desktop/thumbnailers/disable-all'
     create: yes
 

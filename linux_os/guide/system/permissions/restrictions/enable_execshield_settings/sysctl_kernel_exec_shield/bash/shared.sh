@@ -1,7 +1,7 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_rhv
+# platform = multi_platform_all
 if [ "$(getconf LONG_BIT)" = "32" ] ; then
   #
   # Set runtime for kernel.exec-shield
@@ -19,7 +19,6 @@ if [ "$(getconf LONG_BIT)" = "64" ] ; then
   if grep --silent noexec {{{ grub2_boot_path }}}/grub*.cfg ; then
         sed -i "s/noexec.*//g" /etc/default/grub
         sed -i "s/noexec.*//g" /etc/grub.d/*
-        GRUBCFG={{{ grub2_boot_path }}}/*.cfg
-        grub2-mkconfig -o "$GRUBCFG"
+        grub2-mkconfig -o "{{{ grub2_boot_path }}}"/grub*.cfg
   fi
 fi

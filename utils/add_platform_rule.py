@@ -60,7 +60,7 @@ COMPLIANT
 PLATFORM_RULE_DIR = 'applications/openshift'
 OSCAP_TEST_IMAGE = 'quay.io/compliance-operator/openscap-ocp:1.3.4'
 OSCAP_CMD_TEMPLATE = 'oscap xccdf eval --verbose %s --fetch-remote-resources --profile xccdf_org.ssgproject.content_profile_test --results-arf /tmp/report-arf.xml /content/ssg-ocp4-ds.xml'
-PROFILE_PATH = 'ocp4/profiles/test.profile'
+PROFILE_PATH = 'products/ocp4/profiles/test.profile'
 
 MOCK_VERSION = ('''status:
   versions:

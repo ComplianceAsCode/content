@@ -1,3 +1,5 @@
+{{% if pkg_version %}}
+{{# If pkg_version isn't defined, then the rule should be NOTCHECKED, because we don't have data needed for the check #}}
 <def-group>
   <definition class="compliance" id="ensure_redhat_gpgkey_installed" version="2">
     {{{ oval_metadata("The Red Hat release and auxiliary key packages are required to be installed.") }}}
@@ -73,3 +75,4 @@
   {{%- endif %}}
 
 </def-group>
+{{% endif %}}

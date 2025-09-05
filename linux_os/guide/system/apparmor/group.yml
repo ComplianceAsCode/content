@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: AppArmor
+
+description: |-
+    Many security vulnerabilities result from bugs in trusted programs. A trusted
+    program runs with privileges that attackers want to possess. The program fails
+    to keep that trust if there is a bug in the program that allows the attacker to
+    acquire said privilege.
+    <br /><br />
+    AppArmor® is an application security solution designed specifically to apply
+    privilege confinement to suspect programs. AppArmor allows the administrator to
+    specify the domain of activities the program can perform by developing a
+    security profile. A security profile is a listing of files that the program may
+    access and the operations the program may perform. AppArmor secures
+    applications by enforcing good application behavior without relying on attack
+    signatures, so it can prevent attacks even if previously unknown
+    vulnerabilities are being exploited.
+    {{% if 'sle' in product %}}
+    <br /><br />
+    For more information on using AppArmor, see
+    {{{ weblink(link="https://www.suse.com/documentation/sles-12/book_security/data/cha_apparmor_intro.html") }}}.
+    {{% endif %}}

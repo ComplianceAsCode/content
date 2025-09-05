@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,sle15
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,sle15,ubuntu2004
 
 title: 'Extend Audit Backlog Limit for the Audit Daemon'
 
@@ -22,13 +22,16 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-82156-1
     cce@rhel8: CCE-80943-4
+    cce@rhel9: CCE-83652-8
 
 references:
-    srg: SRG-OS-000254-GPOS-00095,SRG-OS-000341-GPOS-00132
-    nist: CM-6(a)
+    cis@rhel7: 4.1.2.4
     cis@rhel8: 4.1.1.4
-    stigid@rhel8: RHEL-08-030602
+    cis@ubuntu2004: 4.1.1.4
     disa: CCI-001849
+    nist: CM-6(a)
+    srg: SRG-OS-000254-GPOS-00095,SRG-OS-000341-GPOS-00132
+    stigid@rhel8: RHEL-08-030602
 
 ocil_clause: 'audit backlog limit is not configured'
 

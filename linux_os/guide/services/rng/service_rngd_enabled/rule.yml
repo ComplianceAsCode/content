@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol8,rhel8
+prodtype: fedora,ol8,rhcos4,rhel8,rhel9
 
 title: 'Enable the Hardware RNG Entropy Gatherer Service'
 
@@ -15,14 +15,15 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel8: CCE-82831-9
     cce@rhcos4: CCE-82535-6
+    cce@rhel8: CCE-82831-9
+    cce@rhel9: CCE-84223-7
 
 references:
+    disa: CCI-000366
     ospp: FCS_RBG_EXT.1
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel8: RHEL-08-010471
-    disa: CCI-000366
 
 ocil_clause: 'the service is not enabled'
 

@@ -27,7 +27,7 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_uefi_no_removeable_media" version="1">
-    <ind:subexpression datatype="string" operation="pattern match">^['|\(](?!fd)(?!cd)(?!usb).*['|\)].*'$</ind:subexpression>
+    <ind:subexpression datatype="string" operation="pattern match">^['|\(](?!fd)(?!cd)(?!usb).*['|\)]$</ind:subexpression>
   </ind:textfilecontent54_state>
 
   {{{ oval_file_absent(grub_cfg_prefix + "/grub.cfg") }}}

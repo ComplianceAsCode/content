@@ -4,14 +4,21 @@ id: anssi
 version: '1.2'
 source: https://www.ssi.gouv.fr/uploads/2019/03/linux_configuration-en-v1.2.pdf
 levels:
-  - minimal
-  - intermediary
-  - enhanced
-  - high
+  - id: minimal
+  - id: intermediary
+    inherits_from:
+    - minimal
+  - id: enhanced
+    inherits_from:
+    - intermediary
+  - id: high
+    inherits_from:
+    - enhanced
 
 controls:
   - id: R1
-    level: minimal
+    levels:
+    - minimal
     title: Minimization of installed services
     description: >-
       Only the components strictly necessary to the service provided by the system should
@@ -19,39 +26,42 @@ controls:
       Those whose presence can not be justified should be disabled, removed or deleted.
     automated: partially  # The list of essential services is not objective.
     notes: >-
-      Use of obsolete or insecure services is not recommended.
-      The minimal install is a good starting point, but this doesn't provide any assurance over any package installed later.
+      Performing a minimal install is a good starting point, but doesn't provide any assurance
+      over any package installed later.
+      Manual review is required to assess if the installed services are minimal.
+      In general, use of obsolete or insecure services is not recommended and we remove some
+      of these in this recommendation.
     rules:
     - package_dhcp_removed
-    #- package_rsh_removed
-    #- package_rsh-server_removed
+    - package_rsh_removed
+    - package_rsh-server_removed
     - package_sendmail_removed
-    - package_telnetd_removed
-    #- package_talk_removed
-    #- package_talk-server_removed
-    #- package_telnet_removed
-    #- package_telnet-server_removed
-    #- package_tftp_removed
-    #- package_tftp-server_removed
-    #- package_xinetd_removed
-    #- package_ypbind_removed
-    #- package_ypserv_removed
+    - package_talk_removed
+    - package_talk-server_removed
+    - package_telnet_removed
+    - package_telnet-server_removed
+    - package_tftp_removed
+    - package_tftp-server_removed
+    - package_xinetd_removed
+    - package_ypbind_removed
+    - package_ypserv_removed
 
   - id: R2
-    level: intermediary
+    levels:
+    - intermediary
     title: Minimization of configuration
     description: >-
       Services are often installed with default configurations that enable features potentially
       problematic from a security point of view.
       The features configured at the level of launched services should be limited to the strict
       minimum.
+    automated: no
     notes: >-
       Define a list of most problematic components or features to be hardened or restricted.
-      # potential components: sshd, pam, chrony?
-    # rules: TBD
 
   - id: R3
-    level: enhanced
+    levels:
+    - enhanced
     title: Principle of least privilege
     description: >-
       The services and executables available on the system must be analyzed in order to
@@ -64,18 +74,24 @@ controls:
     - selinux_state
 
   - id: R4
-    level: high
+    levels:
+    - high
     title: Using access control features
     description: >-
       It is recommended to use the mandatory access control (MAC) features in
       addition to the traditional Unix user model (DAC), or possibly combine
       them with partitioning mechanisms.
+    notes: >-
+      Other partitioning mechanisms can include chroot and containers and are not contemplated
+      in this requirement.
+    automated: partially
     rules:
     - selinux_state
     - var_selinux_state=enforcing
 
   - id: R5
-    level: minimal
+    levels:
+    - minimal
     title: Defense in-depth principle
     description: >-
       Under Unix and derivatives, defense in depth must be based on a combination of
@@ -83,43 +99,52 @@ controls:
     automated: partially
     notes: >-
       Defense in-depth can be broadly divided into three areas - physical, technical and
-      administrative. The security profile is best suitedto protect the technical area.
+      administrative. The security profile is best suited to protect the technical area.
       Among the barriers that can be implemented within the technical area are antivirus software,
       authentication, multi-factor authentication, encryption, logging, auditing, sandboxing,
       intrusion detection systems, firewalls and vulnerability scanners.
+      The selection below is not in any way exaustive and should be adapted to the system's needs.
     rules:
-    #- package_audit_installed
-    #- service_auditd_enabled
     - sudo_remove_no_authenticate
     - package_rsyslog_installed
     - service_rsyslog_enabled
-    #- package_ntp_installed
-    #- package_firewalld_installed
-    #- service_firewalld_enabled
-    #- sssd_enable_smartcards
+    related_rules:
+    - package_audit_installed
+    - service_auditd_enabled
+    - package_ntp_installed
+    - package_firewalld_installed
+    - service_firewalld_enabled
+    - sssd_enable_smartcards
 
   - id: R6
-    level: enhanced
+    levels:
+    - enhanced
     title: Network services partitioning
     description: >-
       Network services should as much as possible be hosted on isolated environments.
       This avoids having other potentially affected services if one of them gets
       compromised under the same environment.
-    #rules: TBD
+    notes: >-
+      Manual analysis is required to determine if services are hosted appropriately in
+      separate or isolated system while maintaining functionality.
+    automated: no
 
   - id: R7
-    level: enhanced
+    levels:
+    - enhanced
     title: Logging of service activity
     description: >-
       The activities of the running system and services must be logged and
       archived on an external, non-local system.
+    automated: yes
     rules:
     # The default remote loghost is logcollector.
     # Change the default value to the hostname or IP of the system to send the logs to
     - rsyslog_remote_loghost
 
   - id: R8
-    level: minimal
+    levels:
+    - minimal
     title: Regular updates
     notes: Check the vendor CVE feed and configure automatic install of security related updates.
     automated: yes
@@ -133,7 +158,8 @@ controls:
     - dnf-automatic_security_updates_only
 
   - id: R9
-    level: intermediary
+    levels:
+    - intermediary
     title: Hardware configuration
     notes: >-
       Configurations recommended for this requirement are to be performed at the BIOS level.
@@ -146,7 +172,8 @@ controls:
     - install_PAE_kernel_on_x86-32
 
   - id: R10
-    level: intermediary
+    levels:
+    - intermediary
     title: 32 and 64 bit architecture
     description: When the machine supports 64-bit operating systems, prefer it.
     notes: This requirement can be checked, but remediation requires manual reinstall of the OS.
@@ -155,17 +182,20 @@ controls:
      - prefer_64bit_os
 
   - id: R11
-    level: high
+    levels:
+    - high
     title: IOMMU Configuration Guidelines
     description: >-
       The iommu = force directive must be added to the list of kernel parameters
       during startup in addition to those already present in the configuration
       files of the bootloader (/boot/grub/menu.lst or /etc/default/grub).
+    automated: yes
     rules:
     - grub2_enable_iommu_force
 
   - id: R12
-    level: intermediary
+    levels:
+    - intermediary
     title: Partitioning type
     notes: >- 
       The rule for the /proc file system is not implemented
@@ -222,7 +252,8 @@ controls:
     - mount_option_var_tmp_noexec
 
   - id: R13
-    level: enhanced
+    levels:
+    - enhanced
     title: Access Restrictions on the /boot directory
     description: >-
       When possible, the /boot partition should not be mounted. In any case, access to
@@ -230,11 +261,13 @@ controls:
     notes: >-
       The rule disabling auto-mount for /boot is commented until the rules checking for other
       /boot mount options are updated to handle this usecase.
+    automated: no
     #rules:
     #- mount_option_boot_noauto
 
   - id: R14
-    level: intermediary
+    levels:
+    - intermediary
     title: Installation of packages reduced to the bare necessities
     description: >-
       The selection of packages installed should be as small as possible,
@@ -245,7 +278,8 @@ controls:
     automated: no
 
   - id: R15
-    level: minimal
+    levels:
+    - minimal
     title: Choice of package repositories
     description: Only up-to-date official repositories of the distribution must be used.
     notes: >-
@@ -262,7 +296,8 @@ controls:
     - ensure_oracle_gpgkey_installed
 
   - id: R16
-    level: enhanced
+    levels:
+    - enhanced
     title: Hardened package repositories
     description: >-
       When the distribution provides several types of repositories, preference
@@ -270,20 +305,23 @@ controls:
       hardening measures.
       Between two packages providing the same service, those subject to hardening
       (at compilation, installation, or default configuration) must be preferred.
-    #rules: TBD
+    automated: no
 
   - id: R17
-    level: enhanced
+    levels:
+    - enhanced
     title: Boot loader password
     description: >-
       A boot loader to protect the password boot must be to be privileged.
       This password must prevent any user from changing their configuration options.
+    automated: yes # without remediation
     rules:
     - grub2_password
     - grub2_uefi_password
 
   - id: R18
-    level: minimal
+    levels:
+    - minimal
     title: Administrator password robustness
     notes: >-
       The rules selected below establish a general password strength baseline of 100 bits,
@@ -331,7 +369,8 @@ controls:
     - accounts_password_pam_unix_remember
 
   - id: R19
-    level: intermediary
+    levels:
+    - intermediary
     title: Accountability of administration
     notes: >-
       By disabling direct root logins proper accountability is ensured.
@@ -346,22 +385,41 @@ controls:
     - audit_rules_privileged_commands_sudo
 
   - id: R20
-    level: enhanced
+    levels:
+    - enhanced
     title: Installation of secret or trusted elements
     description: >-
       All secret elements or those contributing to the authentication mechanisms
       must be set up as soon as the system is installed: account and administration
       passwords, root authority certificates, public keys, or certificates of the
       host (and their respective private key).
-    # rules: TBD
+    notes: >-
+      This concerns two aspects, the first is administrative, and involves prompt
+      installation of secrets or trusted elements by the sysadmin.
+      The second involves removal of any default secret or trusted element
+      configured by the operating system during install process, e.g. default
+      known passwords.
+    automated: no
 
   - id: R21
-    level: intermediary
+    levels:
+    - intermediary
     title: Hardening and monitoring of services subject to arbitrary flows
-    # rules: TBD
+    notes: >-
+      SELinux can provide confinement and monitoring of services, and AIDE provides
+      basic integrity checking. System logs are configured as part of R43.
+      Hardening of particular services should be done on a case by case basis and is
+      not automated by this content.
+    automated: partially
+    rules:
+    - selinux_state
+    - var_selinux_state=enforcing
+    - package_aide_installed
+    - aide_build_database
 
   - id: R22
-    level: intermediary
+    levels:
+    - intermediary
     title: Setting up network sysctl
     automated: yes
     rules:
@@ -476,7 +534,8 @@ controls:
     - sysctl_net_ipv6_conf_default_max_addresses
 
   - id: R23
-    level: intermediary
+    levels:
+    - intermediary
     title: Setting up system sysctl
     automated: yes
     rules:
@@ -523,50 +582,68 @@ controls:
 
   
   - id: R24
-    level: enhanced
+    levels:
+    - enhanced
     title: Disabling the loading of kernel modules
     description: >-
       The loading of the kernel modules can be blocked by the activation of the
       sysctl kernel.modules_disabledconf:
       Prohibition of loading modules (except those already loaded to this point)
       kernel.modules_disabled = 1
+    automated: yes # without remediation
     rules:
     - sysctl_kernel_modules_disabled
 
   - id: R25
-    level: enhanced
+    levels:
+    - enhanced
     title: Yama module sysctl configuration
     description: >-
       It is recommended to load the Yama security module at startup (by example
       passing the security = yama argument to the kernel) and configure the
       sysctl kernel.yama.ptrace_scope to a value of at least 1.
+    automated: yes
     rules:
     - sysctl_kernel_yama_ptrace_scope
 
   - id: R26
-    level: enhanced
+    levels:
+    - enhanced
     title: Disabling unused user accounts
     description: >-
       Unused user accounts must be disabled at the system level.
-    # rules: TBD
+    notes: >-
+      The definition of unused user accounts is broad. It can include accounts
+      whose owners don't use the system anymore, or users created by services
+      or applications that should not be used.
+    automated: no
 
   - id: R27
     title: Disabling service accounts
-    level: intermediary
+    levels:
+    - intermediary
     notes: >-
       It is difficult to generally identify the system's service accounts.
+      UIDs of such accounts are generally between SYS_UID_MIN and SYS_UID_MAX, but their values
+      are not enforced by the OS and can be changed over time.
       Assisting rules could list users which are not disabled for manual review.
     automated: no
 
   - id: R28
-    level: enhanced
+    levels:
+    - enhanced
     title: Uniqueness and exclusivity of system service accounts
     description: >-
       Each service must have its own system account and be dedicated to it exclusively.
-    # rules: TBD
+    notes: >-
+      It is not trivial to identify whether a user account is a service account.
+      UIDs of such accounts are generally between SYS_UID_MIN and SYS_UID_MAX, but their values
+      are not enforced by the OS and can be changed over time.
+    automated: no
 
   - id: R29
-    level: enhanced
+    levels:
+    - enhanced
     title: User session timeout
     description: >-
       Remote user sessions (shell access, graphical clients) must be closed
@@ -590,7 +667,8 @@ controls:
     - sshd_set_keepalive
 
   - id: R30
-    level: minimal
+    levels:
+    - minimal
     title: Applications using PAM
     notes: >-
       Manual review is necessary to decide if the list of applications using PAM is minimal.
@@ -599,11 +677,13 @@ controls:
 
   - id: R31
     title: Securing PAM Authentication Network Services
-    level: intermediary
+    levels:
+    - intermediary
     # rules: TBD
 
   - id: R32
-    level: minimal
+    levels:
+    - minimal
     title: Protecting stored passwords
     description: Any password must be protected by cryptographic mechanisms.
     notes: >-
@@ -621,16 +701,19 @@ controls:
 
   - id: R33
     title: Securing access to remote user databases
-    level: intermediary
+    levels:
+    - intermediary
     # rules: TBD
 
   - id: R34
     title: Separation of System Accounts and Directory Administrator
-    level: intermediary
+    levels:
+    - intermediary
     # rules: TBD
 
   - id: R35
-    level: enhanced
+    levels:
+    - enhanced
     title: umask value
     description: >-
       The system umask must be set to 0027 (by default, any created file can
@@ -652,7 +735,8 @@ controls:
 
   - id: R36
     title: Rights to access sensitive content files
-    level: intermediary
+    levels:
+    - intermediary
     automated: yes
     rules:
     - file_owner_etc_shadow
@@ -664,7 +748,8 @@ controls:
     - file_permissions_sshd_private_key
 
   - id: R37
-    level: minimal
+    levels:
+    - minimal
     title: Executables with setuid and setgid bits
     notes: >-
       Only programs specifically designed to be used with setuid or setgid bits can have these privilege bits set.
@@ -678,7 +763,8 @@ controls:
     - file_permissions_unauthorized_sgid
 
   - id: R38
-    level: enhanced
+    levels:
+    - enhanced
     title: Executable setuid root
     description: >-
       Setuid executables should be as small as possible. When it is expected
@@ -687,7 +773,8 @@ controls:
     # rules: TBD
 
   - id: R39
-    level: intermediary
+    levels:
+    - intermediary
     title: Temporary directories dedicated to accounts
     description: >-
       Each user or service account must have its own temporary directory
@@ -702,7 +789,8 @@ controls:
     - sebool_polyinstantiation_enabled
 
   - id: R40
-    level: intermediary
+    levels:
+    - intermediary
     title: Sticky bit and write access rights
     automated: yes
     rules:
@@ -711,12 +799,14 @@ controls:
     - file_permissions_unauthorized_world_writable
 
   - id: R41
-    level: intermediary
+    levels:
+    - intermediary
     title: Securing access for named sockets and pipes
     # rules: TBD
 
   - id: R42
-    level: minimal
+    levels:
+    - minimal
     title: In memory services and daemons
     notes: >-
       Manual review is necessary to decide if the list of resident daemons is minimal.
@@ -725,7 +815,8 @@ controls:
 
   - id: R43
     title: Hardening and configuring the syslog
-    level: intermediary
+    levels:
+    - intermediary
     description: >-
       The chosen syslog server must be hardened according to the security guides associated with this server.
       The configuration of the service must be performed according to the
@@ -763,25 +854,30 @@ controls:
     - rsyslog_files_permissions
 
   - id: R44
-    level: intermediary
+    levels:
+    - intermediary
     title: Partitioning the syslog service by chroot
     # rules: TBD
 
   - id: R45
-    level: high
+    levels:
+    - high
     title: Partitioning the syslog service by container
     description: >-
       The syslog services must be isolated from the rest of the system in a
       dedicated container.
+    automated: no
     # rules: TBD
 
   - id: R46
-    level: intermediary
+    levels:
+    - intermediary
     title: Service Activity Logs
     # rules: TBD
 
   - id: R47
-    level: intermediary
+    levels:
+    - intermediary
     title: Dedicated partition for logs
     notes: This assumes that syslog stores its logs locally in "/var/log/audit".
     automated: yes
@@ -789,14 +885,16 @@ controls:
       - partition_for_var_log_audit
 
   - id: R48
-    level: intermediary
+    levels:
+    - intermediary
     title: Configuring the local messaging service
     automated: yes
     rules:
     - postfix_network_listening_disabled
 
   - id: R49
-    level: intermediary
+    levels:
+    - intermediary
     title: Messaging Aliases for Service Accounts
     automated: partially # it is hard to define what are "service accounts"
     notes: >-
@@ -805,14 +903,16 @@ controls:
     - postfix_client_configure_mail_alias
 
   - id: R50
-    level: enhanced
+    levels:
+    - enhanced
     title: Logging activity by auditd
     description: >-
       The logging of the system activity must be done through the auditd service.
     # rules: TBD
 
   - id: R51
-    level: high
+    levels:
+    - high
     title: Sealing and integrity of files
     description: >-
       Any file that is not transient (such as temporary files, databases, etc.)
@@ -820,6 +920,7 @@ controls:
       This includes: directories containing executables, libraries,
       configuration files, as well as any files that may contain sensitive
       elements (cryptographic keys, passwords, confidential data).
+    automated: yes
     rules:
     - package_aide_installed
     - aide_build_database
@@ -829,7 +930,8 @@ controls:
     - aide_verify_ext_attributes
 
   - id: R52
-    level: high
+    levels:
+    - high
     title: Protection of the seals database
     description: >-
       The sealing database must be protected from malicious access by
@@ -837,37 +939,54 @@ controls:
       not locally stored in clear), or possibly stored on a separate machine
       of the one on which the sealing is done.
       Check section "Database and config signing in AIDE manual"
-      https://github.com/aide/aide/blob/master/doc/manual.html
-    # rules: TBD
+      https://aide.github.io/doc/#signing
+    automated: no
 
   - id: R53
-    level: enhanced
+    levels:
+    - enhanced
     title: Restricting access of deployed services
     description: >-
       The deployed services must have their access restricted to the system
       strict minimum, especially when it comes to files, processes or network.
-    # rules: TBD
+    notes: >-
+      SELinux policies limit the privileges of services and daemons just to those which are required.
+    automated: partially
+    rules:
+    - selinux_policytype
+    - var_selinux_policy_name=targeted
 
   - id: R54
-    level: enhanced
+    levels:
+    - enhanced
     title: Virtualization components hardening
     description: >-
       Each component supporting the virtualization must be hardened, especially
       by applying technical measures to counter the exploit attempts.
-    # rules: TBD
+    notes: >-
+      It may be interesting to point out virtualization components that are installed and
+      should be hardened.
+    automated: no
 
   - id: R55
-    level: intermediary
+    levels:
+    - intermediary
     title: chroot jail and access right for partitioned service
-    # rules: TBD
+    notes: >-
+      Using automation to restrict access and chroot services is not generally reliable.
+    automated: no
 
   - id: R56
-    level: intermediary
+    levels:
+    - intermediary
     title: Enablement and usage of chroot by a service
-    # rules: TBD
+    notes: >-
+      Using automation to restrict access and chroot services is not generally reliable.
+    automated: no
 
   - id: R57
-    level: intermediary
+    levels:
+    - intermediary
     title: Group dedicated to the use of sudo
     description: >-
       A group dedicated to the use of sudo must be created, and only members of this
@@ -881,7 +1000,8 @@ controls:
     - var_sudo_dedicated_group=sudogrp
 
   - id: R58
-    level: intermediary
+    levels:
+    - intermediary
     title: Sudo configuration guidelines
     automated: partially
     rules:
@@ -892,10 +1012,12 @@ controls:
     - var_sudo_umask=0027
     - sudo_add_ignore_dot
     - sudo_add_env_reset
-    # passwd_timeout=1
+    - sudo_add_passwd_timeout
+    - var_sudo_passwd_timeout=1_minute
 
   - id: R59
-    level: minimal
+    levels:
+    - minimal
     title: User authentication running sudo
     description: >-
       The calling user must be authenticated before running any command with sudo.
@@ -905,7 +1027,8 @@ controls:
     - sudo_remove_no_authenticate
 
   - id: R60
-    level: intermediary
+    levels:
+    - intermediary
     title: Privileges of target sudo users
     description: The targeted users of a rule should be, as much as possible, non privileged users.
     automated: yes
@@ -913,15 +1036,20 @@ controls:
     - sudoers_no_root_target
 
   - id: R61
-    level: enhanced
+    levels:
+    - enhanced
     title: Limiting the number of commands requiring the use of the EXEC option
     description: >-
       The commands requiring the execution of sub-processes (EXEC tag) must be
       explicitly listed and their use should be reduced to a strict minimum.
-    # rules: TBD
+    notes: >-
+      Human review is required to assess if the set of commands requiring EXEC is minimal.
+      An auxiliary rule could list rules containing EXEC tag, for analysis.
+    automated: no
 
   - id: R62
-    level: intermediary
+    levels:
+    - intermediary
     title: Good use of negation in a sudoers file
     description: The sudoers configuration rules should not involve negation.
     automated: yes
@@ -929,36 +1057,48 @@ controls:
     - sudoers_no_command_negation
 
   - id: R63
-    level: intermediary
+    levels:
+    - intermediary
     title: Explicit arguments in sudo specifications
     automated: yes
     rules:
     - sudoers_explicit_command_args
 
   - id: R64
-    level: intermediary
+    levels:
+    - intermediary
     title: Good use of sudoedit
-    # rules: TBD
+    description: A file requiring sudo to be edited, must be edited through the sudoedit command.
+    notes: >-
+      In R62 we established that the sudoers files should not use negations, thus the approach
+      for this requirement is to ensure that sudoedit is the only text editor allowed.
+      But it is difficult to ensure that allowed binaries aren't text editors without human
+      review.
+    automated: no
 
   - id: R65
-    level: high
+    levels:
+    - high
     title: Enable AppArmor security profiles
     description: >-
       All AppArmor security profiles on the system must be enabled by default.
-    # rules: TBD
+    automated: no
 
   - id: R66
-    level: high
+    levels:
+    - high
     title: Enabling SELinux Targeted Policy
     description: >-
       It is recommended to enable the targeted policy when the distribution
       support it and that it does not operate another security module than SELinux.
+    automated: yes
     rules:
     - selinux_policytype
     - var_selinux_policy_name=targeted
 
   - id: R67
-    level: high
+    levels:
+    - high
     title: Setting SELinux booleans
     description: >-
       It is recommended to set the following Booleans:
@@ -967,28 +1107,40 @@ controls:
       allow_execstack to off, forbids processes to make their stack executable;
       secure_mode_insmod to on, prohibits dynamic loading of modules by any process;
       ssh_sysadm_login to off, forbids SSH logins to connect directly in sysadmin role.
+    notes:
+      In RHEL, the SELinux boolean allow_execheap is renamed to selinuxuser_execheap, and the
+      boolean allow_execstack is renamed to selinuxuser_execstack. And allow_execmem is not
+      available, deny_execmem provides the same functionality.
+    automated: yes
     rules:
-    # Add rule for sebool allow_execheap
-    # Add rule for sebool allow_execmem
-    # Add rule for sebool allow_execstack
+    - var_selinuxuser_execheap=off
+    - sebool_selinuxuser_execheap
+    - var_deny_execmem=on
+    - sebool_deny_execmem
+    - var_selinuxuser_execstack=off
+    - sebool_selinuxuser_execstack
     - var_secure_mode_insmod=on
     - sebool_secure_mode_insmod
     - sebool_ssh_sysadm_login
 
   - id: R68
-    level: high
+    levels:
+    - high
     title: Uninstalling SELinux Policy Debugging Tools
     description: >-
       SELinux policy manipulation and debugging tools should not be installed
       on a machine in production.
+    automated: yes
     rules:
     - package_setroubleshoot_removed
     - package_setroubleshoot-server_removed
     - package_setroubleshoot-plugins_removed
 
   - id: R69
-    level: high
+    levels:
+    - high
     title: Confining interactive non-privileged users
     description: >-
       Interactive non-privileged users of a system must be confined by associating them with a SELinux confined user.
-    # rules: TBD
+    notes: Interactive users who still need to perform administrative tasks should not be confined with user_u.
+    automated: no

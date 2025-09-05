@@ -1,12 +1,12 @@
 documentation_complete: true
 
-prodtype: sle12
+prodtype: sle12,ubuntu2004
 
 title: 'Policy Requires Immediate Change of Temporary Passwords'
 
 description: |-
-    Temporary passwords for SUSE operating system logons must require an
-    immediate change to a permanent password.
+    Temporary passwords for {{{ full_name }}} operating system logons must
+    require an immediate change to a permanent password.
 
     Verify that a policy exists that ensures when a user is created, it is
     creating using a method that forces a user to change their password upon
@@ -32,8 +32,9 @@ identifiers:
 references:
     disa: CCI-002041
     nist@sle12: IA-5(1)(f)
-    stigid@sle12: SLES-12-010660
     srg: SRG-OS-000380-GPOS-00165
+    stigid@sle12: SLES-12-010660
+    stigid@ubuntu2004: UBTU-20-010440
 
 ocil_clause: 'any temporary or emergency accounts have no expiration date set or do not expire within a documented time frame'
 
@@ -42,9 +43,9 @@ ocil: |-
     creating using a method that forces a user to change their password upon
     their next login.
 
-    Configure the SUSE operating system to allow the use of a temporary
-    password for system logons with an immediate change to a permanent
-    password.
+    Configure the {{{ full_name }}} operating system to allow the use of a
+    temporary password for system logons with an immediate change to a
+    permanent password.
 
     Using one of the acceptable methods listed below, force a user to change
     their password on their next logon by replacing "[UserName]" in the one of the

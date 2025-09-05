@@ -1,0 +1,50 @@
+<def-group>
+  <definition class="compliance" id="directory_access_var_log_kube_audit" version="1">
+    {{{ oval_metadata("Audit rules about the read events to /var/log/kube-apiserver") }}}
+
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+        <criterion comment="audit rule to record read access events to /var/log/kube-apiserver" test_ref="test_directory_acccess_var_log_kube_audit_augenrules" />
+      </criteria>
+
+      <!-- OR test the auditctl case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criterion comment="audit rule to record read access events to /var/log/kube-apiserver" test_ref="test_directory_acccess_var_log_kube_audit_auditctl" />
+      </criteria>
+
+    </criteria>
+  </definition>
+
+  <!-- Access to /var/log/audit rule regex-->
+  <constant_variable id="var_audit_rule_access_var_log_kube_audit_regex" version="1" datatype="string" comment="audit rule arch and syscal">
+      <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+dir=/var/log/kube-apiserver/)[\s]+(?:-F[\s]+perm=r)[\s]+(?:-F\s+auid>={{{ auid }}}[\s]+)(?:-F\s+auid!=(unset|4294967295)[\s]+)(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</value>
+  </constant_variable>
+
+  <!-- directory access /var/log/audit augenrule -->
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
+ comment="defined audit rule must exist" id="test_directory_acccess_var_log_kube_audit_augenrules" version="1">
+    <ind:object object_ref="object_directory_acccess_var_log_kube_audit_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_directory_acccess_var_log_kube_audit_augenrules" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_audit_rule_access_var_log_kube_audit_regex" />
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <!-- directory access /var/log/audit auditctl -->
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
+ comment="defined audit rule must exist" id="test_directory_acccess_var_log_kube_audit_auditctl" version="1">
+    <ind:object object_ref="object_directory_acccess_var_log_kube_audit_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_directory_acccess_var_log_kube_audit_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_audit_rule_access_var_log_kube_audit_regex" />
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

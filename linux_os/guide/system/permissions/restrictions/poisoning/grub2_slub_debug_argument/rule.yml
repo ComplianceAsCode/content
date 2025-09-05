@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9
 
 title: 'Enable SLUB/SLAB allocator poisoning'
 
@@ -23,12 +23,13 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-82157-9
     cce@rhel8: CCE-80945-9
+    cce@rhel9: CCE-83986-0
 
 references:
-    srg: SRG-OS-000433-GPOS-00192,SRG-OS-000134-GPOS-00068
-    nist: CM-6(a)
-    stigid@rhel8: RHEL-08-010423
     disa: CCI-001084
+    nist: CM-6(a)
+    srg: SRG-OS-000433-GPOS-00192,SRG-OS-000134-GPOS-00068
+    stigid@rhel8: RHEL-08-010423
 
 ocil_clause: 'SLUB/SLAB poisoning is not enabled'
 

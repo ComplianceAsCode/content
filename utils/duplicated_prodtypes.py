@@ -17,7 +17,7 @@ def _create_profile_cache(ssg_root):
 
     for product in product_list:
         found_obj_name = False
-        prod_profiles_dir = os.path.join(ssg_root, product, "profiles")
+        prod_profiles_dir = os.path.join(ssg_root, "products", product, "profiles")
         for _, dirs, files in os.walk(prod_profiles_dir):
             dirs.sort()
             files.sort()

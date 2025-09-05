@@ -62,7 +62,7 @@ def parse_args():
 
 def main():
     args = parse_args()
-    product_yaml = os.path.join(args.ssg_root, args.product, "product.yml")
+    product_yaml = os.path.join(args.ssg_root, "products", args.product, "product.yml")
     if args.input_dir:
         input_dir = args.input_dir
     else:

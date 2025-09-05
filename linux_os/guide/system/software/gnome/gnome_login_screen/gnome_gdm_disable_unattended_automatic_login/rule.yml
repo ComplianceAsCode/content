@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Disable GDM Unattended or Automatic Login'
+
+description: |-
+    The GNOME Display Manager (GDM) can allow users to automatically login without
+    user interaction or credentials or unattended login. User should always be required to authenticate themselves
+    to the system that they are authorized to use. To disable user ability to automatically
+    login to the system, set the <tt>DISPLAYMANAGER_AUTOLOGIN=""</tt>
+    or <tt>DISPLAYMANAGER_PASSWORD_LESS_LOGIN="no"</tt> in the
+    <tt>/etc/sysconfig/displaymanager</tt>. For example:
+    <pre>DISPLAYMANAGER_AUTOLOGIN=""
+    DISPLAYMANAGER_PASSWORD_LESS_LOGIN="no"</pre>
+
+rationale: |-
+    Failure to restrict system access to authenticated users negatively impacts operating
+    system security.
+
+severity: high
+
+identifiers:
+    cce@sle15: CCE-85723-5
+
+references:
+    disa: CCI-000366
+    nist: CM-6(b),CM-6.1(iv)
+    srg: SRG-OS-000480-GPOS-00229
+    stigid@sle15: SLES-15-040430
+
+ocil_clause: 'GDM allows users to automatically login or unattended login'
+
+ocil: |-
+    To verify that automatic or unattended logins are disabled, run the following command:
+    <pre>grep -i ^DISPLAYMANAGER_AUTOLOGIN /etc/sysconfig/displaymanager</pre>
+    The output should show the following:
+    <pre>DISPLAYMANAGER_AUTOLOGIN=""
+         DISPLAYMANAGER_PASSWORD_LESS_LOGIN="no"</pre>
+
+platform: machine

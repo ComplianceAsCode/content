@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9
 
 title: 'Enable the GNOME3 Login Smartcard Authentication'
 
@@ -10,11 +10,11 @@ description: |-
     to <tt>true</tt>.
     <br /><br />
     To enable, add or edit <tt>enable-smartcard-authentication</tt> to
-    <tt>/etc/dconf/db/gdm.d/00-security-settings</tt>. For example:
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>. For example:
     <pre>[org/gnome/login-screen]
     enable-smartcard-authentication=true</pre>
     Once the setting has been added, add a lock to
-    <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
     <pre>/org/gnome/login-screen/enable-smartcard-authentication</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -28,23 +28,24 @@ severity: medium
 
 identifiers:
     cce@rhel7: CCE-80108-4
+    cce@rhel9: CCE-86580-8
 
 references:
-    stigid@ol7: OL07-00-010061
     disa: CCI-000765,CCI-000766,CCI-000767,CCI-000768,CCI-000771,CCI-000772,CCI-000884,CCI-001948,CCI-001954
     nist: IA-2(3),IA-2(4),IA-2(8),IA-2(9),IA-2(11)
     pcidss: Req-8.3
     srg: SRG-OS-000375-GPOS-00160,SRG-OS-000376-GPOS-00161,SRG-OS-000377-GPOS-00162
+    stigid@ol7: OL07-00-010061
     stigid@rhel7: RHEL-07-010061
 
 ocil_clause: 'enable-smartcard-authentication has not been configured or is disabled'
 
 ocil: |-
     To ensure smart card authentication on the login screen is enabled, run the following command:
-    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/gdm.d/*</pre>
+    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/{{{ dconf_gdm_dir }}}/*</pre>
     The output should be <tt>true</tt>.
     To ensure that users cannot disable smart card authentication on the login screen, run the following:
-    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/gdm.d/locks/*</pre>
+    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/login-screen/enable-smartcard-authentication</tt>
 
 platform: machine

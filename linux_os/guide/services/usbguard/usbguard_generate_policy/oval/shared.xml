@@ -1,0 +1,8 @@
+<def-group>
+  <definition class="compliance" id="usbguard_generate_policy" version="1">
+    {{{ oval_metadata("Check that /etc/usbguard/rules.conf contains at least one non whitespace character and exists.") }}}
+    <criteria comment="Check that /etc/usbguard/rules.conf contains at least one non whitespace character." operator="AND">
+      <extend_definition comment="Check that /etc/usbguard/rules.conf contains at least one non whitespace character." definition_ref="usbguard_rules_not_empty_not_missing" />
+    </criteria>
+  </definition>
+</def-group>

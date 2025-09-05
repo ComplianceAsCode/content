@@ -23,14 +23,14 @@
 - name: "Prevent user modification of GNOME geolocation - location tracking"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/system/location/enabled'
+    regexp: '^/org/gnome/system/location/enabled$'
     line: '/org/gnome/system/location/enabled'
     create: yes
 
 - name: "Prevent user modification of GNOME geolocation - clock location tracking"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/clocks/geolocation'
+    regexp: '^/org/gnome/clocks/geolocation$'
     line: '/org/gnome/clocks/geolocation'
     create: yes
 

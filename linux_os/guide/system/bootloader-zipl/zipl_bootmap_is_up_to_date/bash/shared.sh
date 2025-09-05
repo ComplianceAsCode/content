@@ -1,3 +1,3 @@
-# platform = Red Hat Enterprise Linux 8
+# platform = multi_platform_all
 
 /usr/sbin/zipl

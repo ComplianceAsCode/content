@@ -8,7 +8,7 @@ from __future__ import print_function
 
 import os
 import sys
-from collections import namedtuple
+from collections import namedtuple, defaultdict
 import yaml
 
 from .rules import get_rule_dir_yaml
@@ -129,7 +129,7 @@ def parse_from_yaml(file_contents, lines):
 
     new_file_arr = file_contents[lines.start:lines.end + 1]
     new_file = "\n".join(new_file_arr)
-    return yaml.load(new_file)
+    return yaml.load(new_file, Loader=yaml.Loader)
 
 
 def get_yaml_contents(rule_obj):
@@ -175,3 +175,127 @@ def get_section_lines(file_path, file_contents, key_name):
         return section[0]
 
     return None
+
+
+def has_duplicated_subkeys(file_path, file_contents, sections):
+    """
+    Checks whether a section has duplicated keys. Note that these are silently
+    eaten by the YAML parser we use.
+    """
+
+    if isinstance(sections, str):
+        sections = [sections]
+
+    for section in sections:
+        # Get the lines in the file which match this section. If none exists,
+        # it should be safe to silently ignore it. Clearly if the section
+        # exists, there are no duplicated sections.
+        section_range = get_section_lines(file_path, file_contents, section)
+        if not section_range:
+            continue
+
+        # Get the YAML parser's version of events. :-)
+        parsed_section = parse_from_yaml(file_contents, section_range)
+
+        # Sort the YAML parser's subkeys.
+        parent_key = list(parsed_section.keys())[0]
+        subkeys = parsed_section[parent_key].keys()
+
+        # Create a dictionary for counting them.
+        subkey_counts = defaultdict(lambda: 0)
+
+        # Iterate over the lines, see if they match a known key. Ignore the
+        # first line (as it is the section header).
+        for line_num in range(section_range.start+1, section_range.end):
+            line = file_contents[line_num]
+            if not line:
+                continue
+
+            # We'll be lazy for the time being. Iterate over all keys.
+            for key in subkeys:
+                our_key = ' ' + key + ':'
+                if our_key in line:
+                    subkey_counts[our_key] += 1
+                    if subkey_counts[our_key] > 1:
+                        print("Duplicated key " + our_key + " in " + section + " of " + file_path)
+                        return True
+
+    return False
+
+
+def sort_section_keys(file_path, file_contents, sections, sort_func=None):
+    """
+    Sort subkeys in a YAML file's section.
+    """
+
+    if isinstance(sections, str):
+        sections = [sections]
+
+    new_contents = file_contents[:]
+
+    for section in sections:
+        section_range = get_section_lines(file_path, new_contents, section)
+        if not section_range:
+            continue
+
+        # Start by parsing the lines as YAML.
+        parsed_section = parse_from_yaml(new_contents, section_range)
+
+        # Ignore the section header. This header is included in the start range,
+        # so just increment by one.
+        start_offset = 1
+        while not new_contents[section_range.start + start_offset].strip():
+            start_offset += 1
+
+        # Ignore any trailing empty lines.
+        end_offset = 0
+        while not new_contents[section_range.end - end_offset].strip():
+            end_offset += 1
+
+        # Validate we only have a single section.
+        assert len(parsed_section.keys()) == 1
+
+        # Sort the parsed subkeys.
+        parent_key = list(parsed_section.keys())[0]
+        subkeys = sorted(parsed_section[parent_key].keys(), key=sort_func)
+
+        # Don't bother if there are zero or one subkeys. Sorting order thus
+        # doesn't matter.
+        if not subkeys or len(subkeys) == 1:
+            continue
+
+        # Now we need to map sorted subkeys onto lines in the new contents,
+        # so we can re-order them appropriately. We'll assume the section is
+        # small so we'll do it in O(n^2).
+        subkey_mapping = dict()
+        for key in subkeys:
+            our_line = None
+            spaced_key = ' ' + key + ':'
+            tabbed_key = '\t' + key + ':'
+            range_start = section_range.start + start_offset
+            range_end = section_range.end - end_offset + 1
+            for line_num in range(range_start, range_end):
+                this_line = new_contents[line_num]
+                if spaced_key in this_line or tabbed_key in this_line:
+                    if our_line:
+                        # Not supposed to be possible to have multiple keys
+                        # matching the same value in this file. We should've
+                        # already fixed this with fix-rules.py's duplicate_subkeys.
+                        msg = "File {0} has duplicated key {1}: {2} vs {3}"
+                        msg = msg.format(file_path, key, our_line, this_line)
+                        raise ValueError(msg)
+                    our_line = this_line
+            assert our_line
+            subkey_mapping[key] = our_line
+
+        # Now we'll remove all the section's subkeys and start over. Include
+        # section header but not any of the keys (or potential blank lines
+        # in the interior -- but we preserve them on either end of the
+        # section).
+        prefix = new_contents[:section_range.start+start_offset]
+        contents = list(map(lambda key: subkey_mapping[key], subkeys))
+        suffix = new_contents[section_range.end+1-end_offset:]
+
+        new_contents = prefix + contents + suffix
+
+    return new_contents

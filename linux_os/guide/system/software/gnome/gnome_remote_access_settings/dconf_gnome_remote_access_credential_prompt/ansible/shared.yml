@@ -15,7 +15,7 @@
 - name: "Prevent user modification of GNOME3 Credential Prompting for Remote Access"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/Vino/authentication-methods'
+    regexp: '^/org/gnome/Vino/authentication-methods$'
     line: '/org/gnome/Vino/authentication-methods'
     create: yes
 

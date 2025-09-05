@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,sle15
+prodtype: rhel7,rhel8,rhel9,sle15
 
 title: 'Disable Samba'
 
@@ -16,12 +16,13 @@ severity: low
 identifiers:
     cce@rhel7: CCE-80277-7
     cce@rhel8: CCE-82759-2
+    cce@rhel9: CCE-84201-3
 
 references:
     cis@rhel7: 2.2.12
     cis@rhel8: 2.2.7
-    disa: CCI-001436
     cis@sle15: 2.2.12
+    disa: CCI-001436
 
 ocil: |-
     {{{ ocil_service_disabled(service="smb") }}}

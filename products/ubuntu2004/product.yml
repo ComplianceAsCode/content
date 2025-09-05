@@ -1,0 +1,30 @@
+product: ubuntu2004
+full_name: "Ubuntu 20.04"
+type: platform
+
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "apt_get"
+
+init_system: "systemd"
+oval_feed_url: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.focal.cve.oval.xml"
+
+grub2_boot_path: "/boot/grub"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - ubuntu2004:
+      name: "cpe:/o:canonical:ubuntu_linux:20.04::~~lts~~~"
+      title: "Ubuntu release 20.04 (Focal Fossa)"
+      check_id: installed_OS_is_ubuntu2004
+
+platform_package_overrides:
+  gdm: gdm3
+  grub2: grub2-common
+  net-snmp: snmp
+  nss-pam-ldapd: libpam-ldap
+  pam: libpam-runtime
+  shadow: login
+  sssd: sssd-common

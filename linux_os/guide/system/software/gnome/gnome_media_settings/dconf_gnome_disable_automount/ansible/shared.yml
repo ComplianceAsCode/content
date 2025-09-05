@@ -15,7 +15,7 @@
 - name: "Prevent user modification of GNOME3 Automounting - automount"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/desktop/media-handling/automount'
+    regexp: '^/org/gnome/desktop/media-handling/automount$'
     line: '/org/gnome/desktop/media-handling/automount'
     create: yes
 

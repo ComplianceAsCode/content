@@ -1,0 +1,23 @@
+{{%- set regex = "\+VERS-ALL:-VERS-DTLS0\.9:-VERS-SSL3\.0:-VERS-TLS1\.0:-VERS-TLS1\.1:-VERS-DTLS1\.0" -%}}
+{{%- set TEXT = "+VERS-ALL:-VERS-DTLS0.9:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1:-VERS-DTLS1.0" -%}}
+{{%- set PATH = "/etc/crypto-policies/back-ends/gnutls.config" -%}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Check presence of " + TEXT + " in " + PATH) }}}
+   <criteria>
+      <criterion comment="Check that {{{ PATH }}} contains a line with certain text" test_ref="test_{{{ rule_id }}}" />
+   </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all"
+  comment="tests the presence of '{{{ TEXT }}}' setting in the {{{ PATH }}} file"
+  id="test_{{{ rule_id }}}" version="1">
+  <ind:object object_ref="obj_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:filepath>{{{ PATH }}}</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

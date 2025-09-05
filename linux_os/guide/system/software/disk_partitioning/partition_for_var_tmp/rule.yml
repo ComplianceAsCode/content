@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhcos4,sle15,ubuntu1804
+prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle15,ubuntu1804,ubuntu2004
 
 title: 'Ensure /var/tmp Located On Separate Partition'
 
@@ -17,17 +17,19 @@ rationale: |-
 severity: low
 
 identifiers:
+    cce@rhcos4: CCE-82734-5
     cce@rhel7: CCE-82353-4
     cce@rhel8: CCE-82730-3
-    cce@rhcos4: CCE-82734-5
+    cce@rhel9: CCE-83487-9
 
 references:
-    cis@rhel7: 1.1.7
-    cis@rhel8: 1.1.7
-    cis@ubuntu1804: 1.1.6
     anssi: BP28(R12)
-    srg: SRG-OS-000480-GPOS-00227
+    cis@rhel7: 1.1.11
+    cis@rhel8: 1.1.7
     cis@sle15: 1.1.8
+    cis@ubuntu1804: 1.1.6
+    cis@ubuntu2004: 1.1.11
+    srg: SRG-OS-000480-GPOS-00227
 
 {{{ complete_ocil_entry_separate_partition(part="/var/tmp") }}}
 

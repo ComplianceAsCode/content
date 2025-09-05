@@ -45,7 +45,7 @@ def walk_products(root, all_products):
     guide_to_products = defaultdict(set)
 
     for product in sorted(all_products):
-        product_dir = os.path.join(root, product)
+        product_dir = os.path.join(root, "products", product)
         product_yaml_path = os.path.join(product_dir, "product.yml")
         product_yaml = ssg.products.load_product_yaml(product_yaml_path)
         product_yamls[product] = product_yaml

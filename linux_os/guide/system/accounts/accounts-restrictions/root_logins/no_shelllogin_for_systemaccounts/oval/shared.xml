@@ -4,8 +4,8 @@
       a login shell.") }}}
     <criteria operator="OR">
       <!-- If SYS_UID_MIN and SYS_UID_MAX is not defined in /etc/login.defs
-           perform the check that all /etc/passwd entries having shell defined
-           have UIDs outside the default <0, UID_MIN -1> range.
+           perform the check that any /etc/passwd entry with shell defined
+           has UID outside the default <0, UID_MIN -1> range.
            If at least one UID with shell defined exists within that range,
            the requirement isn't met -->
       <criteria operator="AND">
@@ -18,9 +18,9 @@
       </criteria>
       <!-- If both SYS_UID_MIN and SYS_UID_MAX are defined in /etc/login.defs
            perform both checks:
-           * That all /etc/passwd entries having shell defined have UIDs outside
+           * That any /etc/passwd entry with shell defined has UID outside
            the range for reserved system accounts <0, SYS_UID_MIN> range,
-           * That all /etc/passwd entries having shell defined have UIDs outside
+           * That any /etc/passwd entries with shell defined has UID outside
            the range for dynamically allocated system accounts <SYS_UID_MIN, SYS_UID_MAX>
            If at least one UID with shell defined exists within some of the two
            ranges, the requirement isn't met -->
@@ -71,14 +71,14 @@
   <!-- Get all /etc/passwd entries having shell defined as OVAL object -->
   <ind:textfilecontent54_object id="object_etc_passwd_entries" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
-    <ind:pattern operation="pattern match">^(?!root).*:x:([\d]+):[\d]+:[^:]*:[^:]*:(?!\/usr\/sbin\/nologin|\/sbin\/nologin|\/bin\/sync|\/sbin\/shutdown|\/sbin\/halt).*$</ind:pattern>
+    <ind:pattern operation="pattern match">^(?!root).*:x:([\d]+):[\d]+:[^:]*:[^:]*:(?!\/usr\/sbin\/nologin|\/sbin\/nologin|\/bin\/sync|\/sbin\/shutdown|\/sbin\/halt|\/bin\/false|\/usr\/bin\/false).*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <!-- FIRST CRITERION -->
   <!-- If both SYS_UID_MIN and SYS_UID_MAX aren't defined in /etc/login.defs
-       perform the check that all /etc/passwd entries having shell defined have
-       UIDs outside the <0, UID_MIN - 1> range -->
+       perform the check that any /etc/passwd entry with shell defined has
+       UID outside the <0, UID_MIN - 1> range -->
 
   <!-- Actual /etc/login.defs UID_MIN value as OVAL variable -->
   <local_variable id="variable_uid_min_value" datatype="int"
@@ -90,10 +90,10 @@
   </local_variable>
 
   <!-- Perform the default <0, UID_MIN - 1> UID range test itself -->
-  <!-- Thus check that all /etc/passwd entries having shell defined
-       have UID outside of <0, UID_MIN -1> range -->
+  <!-- Thus check that any /etc/passwd entry with shell defined
+       has UID outside of <0, UID_MIN -1> range -->
   <ind:textfilecontent54_test state_operator="OR" id="test_shell_defined_default_uid_range" check="all"
-  check_existence="all_exist" comment="&lt;0, UID_MIN - 1&gt; system UIDs having shell set"
+  check_existence="any_exist" comment="&lt;0, UID_MIN - 1&gt; system UIDs having shell set"
   version="1">
     <ind:object object_ref="object_etc_passwd_entries" />
     <ind:state state_ref="state_uid_less_than_zero" />
@@ -124,10 +124,10 @@
   <!-- SECOND CRITERION -->
   <!-- If both SYS_UID_MIN and SYS_UID_MAX are defined in /etc/login.defs,
        perform more advanced test:
-       * Check that all /etc/passwd entries having shell defined have UIDs
+       * Check that any /etc/passwd entry with shell defined has UID
        outside the range of reserved system UIDs, thus <0, SYS_UID_MIN>,
-       * Also check that all /etc/passwd entries having shell defined have
-       UIDs outside the range of dynamically allocated system UIDs, thus
+       * Also check that any /etc/passwd entry with shell defined has
+       UID outside the range of dynamically allocated system UIDs, thus
        <SYS_UID_MIN, SYS_UID_MAX>
   -->
 
@@ -150,8 +150,8 @@
   </local_variable>
 
   <!-- Perform the reserved UID range <0, SYS_UID_MIN> test itself -->
-  <!-- Thus check that all /etc/passwd entries having shell defined
-       have UID outside of <0, SYS_UID_MIN> range -->
+  <!-- Thus check that any /etc/passwd entry with shell defined
+       has UID outside of <0, SYS_UID_MIN> range -->
   <ind:textfilecontent54_test state_operator="OR" id="test_shell_defined_reserved_uid_range" check="all"
   check_existence="any_exist" comment="&lt;0, SYS_UID_MIN&gt; system UIDs having shell set"
   version="1">
@@ -165,8 +165,8 @@
   </ind:textfilecontent54_state>
 
   <!-- Perform the dynamically allocated UID range <SYS_UID_MIN, SYS_UID_MAX> test itself -->
-  <!-- Thus check that all /etc/passwd entries having shell defined
-       have UID outside of <SYS_UID_MIN, SYS_UID_MAX> range -->
+  <!-- Thus check that any /etc/passwd entry with shell defined
+       has UID outside of <SYS_UID_MIN, SYS_UID_MAX> range -->
   <ind:textfilecontent54_test state_operator="OR" id="test_shell_defined_dynalloc_uid_range" check="all"
   check_existence="any_exist" comment="&lt;SYS_UID_MIN, SYS_UID_MAX&gt; system UIDS having shell set"
   version="1">

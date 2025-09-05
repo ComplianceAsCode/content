@@ -12,7 +12,12 @@ based on <a href="{{{ policy.source }}}">{{{ policy.source }}}</a>
 <div class="one_control">
   <h2>{{{ control.id }}}: {{{ control.title }}}</h2>
   <p>Description: {{{ control.description | safe }}}</p>
-  <p>Level: {{{ control.level }}}</p>
+  Levels: 
+  <ul>
+    {{%- for level in control.levels -%}}
+    <li>{{{ level }}}</li>
+    {{%- endfor %}}
+  </ul>
   <p>Automated: {{{ control.automated }}}</p>
   {{% if control.rules -%}}
   Selections:

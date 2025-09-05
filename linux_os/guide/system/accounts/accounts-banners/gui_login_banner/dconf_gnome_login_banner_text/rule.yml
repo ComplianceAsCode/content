@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,sle12,sle15
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
 
 title: 'Set the GNOME3 Login Warning Banner Text'
 
@@ -11,11 +11,11 @@ description: |-
     where <i>APPROVED_BANNER</i> is the approved banner for your environment.
     <br /><br />
     To enable, add or edit <tt>banner-message-text</tt> to
-    <tt>/etc/dconf/db/gdm.d/00-security-settings</tt>. For example:
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>. For example:
     <pre>[org/gnome/login-screen]
     banner-message-text='<i>APPROVED_BANNER</i>'</pre>
     Once the setting has been added, add a lock to
-    <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
     <pre>/org/gnome/login-screen/banner-message-text</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -31,35 +31,38 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-26892-0
     cce@rhel8: CCE-80770-1
+    cce@rhel9: CCE-86529-5
     cce@sle12: CCE-83007-5
     cce@sle15: CCE-83266-7
 
 references:
-    cis@rhel7: 1.7.2
+    cis-csc: 1,12,15,16
+    cis@rhel7: 1.8.2
     cis@rhel8: 1.8.2
-    stigid@ol7: OL07-00-010040
+    cis@ubuntu2004: '1.10'
+    cobit5: DSS05.04,DSS05.10,DSS06.10
     cui: 3.1.9
     disa: CCI-000048
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
     nist: AC-8(a),AC-8(c)
     nist-csf: PR.AC-7
     ospp: FMT_MOF_EXT.1
     srg: SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088
+    stigid@ol7: OL07-00-010040
     stigid@rhel7: RHEL-07-010040
+    stigid@rhel8: RHEL-08-010050
     stigid@sle12: SLES-12-010050
     stigid@sle15: SLES-15-010090
-    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
-    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
-    cobit5: DSS05.04,DSS05.10,DSS06.10
-    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
-    cis-csc: 1,12,15,16
-    stigid@rhel8: RHEL-08-010050
+    stigid@ubuntu2004: UBTU-20-010003
 
 ocil_clause: 'it does not'
 
 ocil: |-
     To ensure the login warning banner text is properly set, run the following:
-    <pre>$ grep banner-message-text /etc/dconf/db/gdm.d/*</pre>
+    <pre>$ grep banner-message-text /etc/dconf/db/{{{ dconf_gdm_dir }}}/*</pre>
     If properly configured, the proper banner text will appear.
     To ensure the login warning banner text is locked and cannot be changed by a user, run the following:
-    <pre>$ grep banner-message-text /etc/dconf/db/gdm.d/locks/*</pre>
+    <pre>$ grep banner-message-text /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/login-screen/banner-message-text</tt>.

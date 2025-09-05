@@ -1,3 +1,3 @@
-# platform = Oracle Linux 8,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_fedora
+# platform = multi_platform_all
 
 rm -f /etc/*.keytab

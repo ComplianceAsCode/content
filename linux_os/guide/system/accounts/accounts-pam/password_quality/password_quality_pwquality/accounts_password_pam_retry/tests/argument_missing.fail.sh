@@ -1,6 +1,5 @@
 #!/bin/bash
-
-# profiles = xccdf_org.ssgproject.content_profile_ospp
+# platform = Red Hat Enterprise Linux 7,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_wrlinux
 
 config_file="/etc/pam.d/system-auth"
 

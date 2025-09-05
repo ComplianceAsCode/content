@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora,Red Hat Enterprise Linux 8,Oracle Linux 8
+# platform = multi_platform_all
 
 # path of file with Usbguard rules
 rulesfile="/etc/usbguard/rules.conf"

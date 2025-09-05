@@ -1,5 +1,5 @@
 # This dockerfile builds the content in the current repo for OCP4
-FROM registry.fedoraproject.org/fedora-minimal:33 as builder
+FROM registry.fedoraproject.org/fedora-minimal:34 as builder
 
 WORKDIR /content
 
@@ -9,7 +9,7 @@ RUN microdnf -y install cmake make git /usr/bin/python3 python3-pyyaml python3-j
 
 RUN ./build_product --datastream-only --debug ocp4 rhel7 rhcos4
 
-FROM registry.access.redhat.com/ubi8/ubi-minimal
+FROM registry.access.redhat.com/ubi8/ubi-micro:latest
 WORKDIR /
 COPY --from=builder /content/build/ssg-ocp4-ds.xml .
 COPY --from=builder /content/build/ssg-rhel7-ds.xml .

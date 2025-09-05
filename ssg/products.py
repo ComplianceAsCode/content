@@ -9,6 +9,7 @@ from .build_cpe import ProductCPEs
 from .constants import (product_directories,
                         DEFAULT_UID_MIN,
                         DEFAULT_GRUB2_BOOT_PATH,
+                        DEFAULT_DCONF_GDM_DIR,
                         PKG_MANAGER_TO_SYSTEM,
                         PKG_MANAGER_TO_CONFIG_FILE,
                         XCCDF_PLATFORM_TO_PACKAGE)
@@ -29,7 +30,7 @@ def _validate_product_oval_feed_url(contents):
 
 
 def _get_implied_properties(existing_properties):
-    result = dict()
+    result = existing_properties.copy()
     if "pkg_manager" in existing_properties:
         pkg_manager = existing_properties["pkg_manager"]
         if "pkg_system" not in existing_properties:
@@ -47,7 +48,14 @@ def _get_implied_properties(existing_properties):
     if "grub2_boot_path" not in existing_properties:
         result["grub2_boot_path"] = DEFAULT_GRUB2_BOOT_PATH
 
+    if "dconf_gdm_dir" not in existing_properties:
+        result["dconf_gdm_dir"] = DEFAULT_DCONF_GDM_DIR
+
     return result
+
+
+def product_yaml_path(ssg_root, product):
+    return os.path.join(ssg_root, "products", product, "product.yml")
 
 
 def load_product_yaml(product_yaml_path):
@@ -86,7 +94,7 @@ def get_all(ssg_root):
     other_products = set()
 
     for product in product_directories:
-        product_yaml_path = os.path.join(ssg_root, product, "product.yml")
+        product_yaml_path = os.path.join(ssg_root, "products", product, "product.yml")
         product_yaml = load_product_yaml(product_yaml_path)
 
         guide_dir = os.path.join(product_yaml["product_dir"], product_yaml['benchmark_root'])

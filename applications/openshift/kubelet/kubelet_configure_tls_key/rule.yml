@@ -21,7 +21,8 @@ severity: medium
 
 references:
     cis@ocp4: 4.2.10
-    nist: SC-8(1),SC-8(2)
+    nerc-cip: CIP-003-3 R4.2,CIP-007-3 R5.1
+    nist: SC-8,SC-8(1),SC-8(2)
 
 ocil_clause: 'the kubelet server key certificate is not configured'
 
@@ -41,5 +42,5 @@ template:
         filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
         yamlpath: ".data['config.yaml']"
         values:
-          - value: '"kubelet-client-key":\["/etc/kubernetes/static-pod-resources/secrets/kubelet-client/tls.key"\]'
+          - value: '"kubelet-client-key":\["/etc/kubernetes/static-pod-(resources|certs)/secrets/kubelet-client/tls.key"\]'
             operation: "pattern match"

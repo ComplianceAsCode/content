@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9
 
 title: 'Ensure Users Cannot Change GNOME3 Session Idle Settings'
 
@@ -24,21 +24,22 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-80544-0
     cce@rhel8: CCE-80781-8
+    cce@rhel9: CCE-85971-0
 
 references:
-    stigid@ol7: OL07-00-010082
+    cis-csc: 1,12,15,16
+    cobit5: DSS05.04,DSS05.10,DSS06.10
     cui: 3.1.10
     disa: CCI-000057
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
     nist: CM-6(a)
     nist-csf: PR.AC-7
     ospp: FMT_MOF_EXT.1
     srg: SRG-OS-000029-GPOS-00010
+    stigid@ol7: OL07-00-010082
     stigid@rhel7: RHEL-07-010082
-    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
-    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
-    cobit5: DSS05.04,DSS05.10,DSS06.10
-    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
-    cis-csc: 1,12,15,16
 
 ocil_clause: 'GNOME3 session settings are not locked or configured properly'
 

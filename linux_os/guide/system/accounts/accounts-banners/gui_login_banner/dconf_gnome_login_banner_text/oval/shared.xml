@@ -18,7 +18,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_prevent_user_banner_change"
   version="1">
-    <ind:path>/etc/dconf/db/gdm.d/locks/</ind:path>
+    <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^/org/gnome/login-screen/banner-message-text$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
@@ -32,7 +32,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_gdm_login_banner_text_setting"
   version="1">
-    <ind:path>/etc/dconf/db/gdm.d/</ind:path>
+    <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^banner-message-text=[\s]*'*(.*?)'$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>

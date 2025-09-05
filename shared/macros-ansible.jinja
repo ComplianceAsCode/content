@@ -353,6 +353,7 @@ in some file within /etc/audit/rules.d/, the new rule will be appended to this f
     path: "{{ all_files[0] }}"
     line: "-w {{{ path }}} -p {{{ permissions }}} -k {{{ key }}}"
     create: yes
+    mode: '0640'
   when: find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
 {{%- endmacro %}}
 
@@ -377,6 +378,7 @@ The macro requires following parameters:
     state: present
     dest: /etc/audit/audit.rules
     create: yes
+    mode: '0640'
   when: find_existing_watch_audit_rules.matched is defined and find_existing_watch_audit_rules.matched == 0
 {{%- endmacro %}}
 

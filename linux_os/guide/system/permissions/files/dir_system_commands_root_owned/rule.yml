@@ -1,0 +1,59 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Verify that system commands directories have root ownership'
+
+description: |-
+    System commands are stored in the following directories by default:
+    <pre>/bin 
+    /sbin 
+    /usr/bin 
+    /usr/sbin 
+    /usr/local/bin 
+    /usr/local/sbin
+    </pre>
+    All these directories should be owned by the <tt>root</tt> user. 
+    If any system command directory is not owned by a user other than root 
+    correct its ownership with the following command:
+    <pre>$ sudo chown root <i>DIR</i></pre>
+
+rationale: |-
+    If the operating system were to allow any user to make changes to 
+    software libraries, then those changes might be implemented without 
+    undergoing the appropriate testing and approvals that are part of a 
+    robust change management process.
+    
+    This requirement applies to operating systems with software libraries
+    that are accessible and configurable, as in the case of interpreted languages. 
+    Software libraries also include privileged programs which execute with escalated 
+    privileges. Only qualified and authorized individuals must be allowed to obtain 
+    access to information system components for purposes of initiating changes, 
+    including upgrades and modifications.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83242-8
+    cce@sle15: CCE-85741-7
+
+references:
+    disa: CCI-001499
+    nist: CM-5(6),CM-5(6).1
+    srg: SRG-OS-000259-GPOS-00100
+    stigid@sle12: SLES-15-010881
+    stigid@sle15: SLES-15-010360
+
+ocil_clause: 'any of these directories are not owned by root'
+
+ocil: |-
+    System commands are stored in the following directories:
+    <pre>/bin 
+    /sbin 
+    /usr/bin 
+    /usr/sbin 
+    /usr/local/bin 
+    /usr/local/sbin</pre>
+    For each of these directories, run the following command to find directories not
+    owned by root:
+    <pre>$ sudo find -L <i>$DIR</i> ! -user root -type d</pre>

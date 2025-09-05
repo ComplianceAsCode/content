@@ -9,7 +9,7 @@ import argparse
 
 import ssg.build_yaml
 import ssg.controls
-import ssg.yaml
+import ssg.environment
 import ssg.jinja
 
 
@@ -68,7 +68,7 @@ class Renderer(object):
                 .format(product_yaml=product_yaml, build_config_yaml=build_config_yaml)
             )
             raise ValueError(msg)
-        env_yaml = ssg.yaml.open_environment(build_config_yaml, product_yaml)
+        env_yaml = ssg.environment.open_environment(build_config_yaml, product_yaml)
         return env_yaml
 
     def _set_rule_relative_definition_location(self, rule):

@@ -1,13 +1,14 @@
 documentation_complete: true
 
-prodtype: sle12,sle15
+prodtype: rhel8,sle12,sle15,ubuntu2004
 
 title: 'Configure a Sufficiently Large Partition for Audit Logs'
 
 description: |-
-    The SUSE operating system must allocate audit record storage capacity to
-    store at least one weeks worth of audit records when audit records are not
-    immediately sent to a central audit record storage facility.
+    The {{{ full_name }}} operating system must allocate audit record storage
+    capacity to store at least one weeks worth of audit records when audit
+    records are not immediately sent to a central audit record storage
+    facility.
 
     The partition size needed to capture a week's worth of audit records is
     based on the activity level of the system and the total storage capacity
@@ -34,15 +35,18 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel8: CCE-84005-8
     cce@sle12: CCE-83114-9
     cce@sle15: CCE-85697-1
 
 references:
     disa: CCI-001849
-    srg: SRG-OS-000341-GPOS-00132,SRG-OS-000342-GPOS-00133
     nist@sle15: AU-4
+    srg: SRG-OS-000341-GPOS-00132,SRG-OS-000342-GPOS-00133
+    stigid@rhel8: RHEL-08-030660
     stigid@sle12: SLES-12-020020 
     stigid@sle15: SLES-15-030660
+    stigid@ubuntu2004: UBTU-20-010215
 
 ocil_clause: 'audispd is not sending logs to a remote system and the local partition has inadequate'
 

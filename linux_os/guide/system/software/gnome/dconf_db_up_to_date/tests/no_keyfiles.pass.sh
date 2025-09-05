@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = dconf,gdm
 
 . $SHARED/dconf_test_functions.sh
 

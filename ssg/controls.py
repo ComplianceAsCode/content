@@ -15,14 +15,14 @@ class Control():
         self.id = None
         self.rules = []
         self.variables = {}
-        self.level = ""
+        self.levels = []
         self.notes = ""
         self.title = ""
         self.description = ""
         self.automated = ""
 
     @classmethod
-    def from_control_dict(cls, control_dict, env_yaml=None, default_level=""):
+    def from_control_dict(cls, control_dict, env_yaml=None, default_level=["default"]):
         control = cls()
         control.id = ssg.utils.required_key(control_dict, "id")
         control.title = control_dict.get("title")
@@ -34,7 +34,7 @@ class Control():
                 "%s '%s'. Can be only 'yes', 'no', 'partially'."
                 % (control.automated,  control.id, control.title))
             raise ValueError(msg)
-        control.level = control_dict.get("level", default_level)
+        control.levels = control_dict.get("levels", default_level)
         control.notes = control_dict.get("notes", "")
         selections = control_dict.get("rules", [])
 
@@ -74,6 +74,18 @@ class Control():
         return control
 
 
+class Level():
+    def __init__(self):
+        self.id = None
+        self.inherits_from = None
+
+    @classmethod
+    def from_level_dict(cls, level_dict):
+        level = cls()
+        level.id = ssg.utils.required_key(level_dict, "id")
+        level.inherits_from = level_dict.get("inherits_from")
+        return level
+
 class Policy():
     def __init__(self, filepath, env_yaml=None):
         self.id = None
@@ -82,14 +94,14 @@ class Policy():
         self.controls = []
         self.controls_by_id = dict()
         self.levels = []
-        self.level_value = {}
+        self.levels_by_id = dict()
         self.title = ""
         self.source = ""
 
     def _parse_controls_tree(self, tree):
-        default_level = ""
+        default_level = ["default"]
         if self.levels:
-            default_level = self.levels[0]
+            default_level = [self.levels[0].id]
 
         for node in tree:
             control = Control.from_control_dict(
@@ -108,9 +120,11 @@ class Policy():
         self.title = ssg.utils.required_key(yaml_contents, "title")
         self.source = yaml_contents.get("source", "")
 
-        self.levels = yaml_contents.get("levels", ["default"])
-        for i, level in enumerate(self.levels):
-            self.level_value[level] = i
+        level_list = yaml_contents.get("levels", [])
+        for lv in level_list:
+            level = Level.from_level_dict(lv)
+            self.levels.append(level)
+            self.levels_by_id[level.id] = level
 
         controls_tree = ssg.utils.required_key(yaml_contents, "controls")
         for c in self._parse_controls_tree(controls_tree):
@@ -126,6 +140,26 @@ class Policy():
                 control_id, self.id
             )
             raise ValueError(msg)
+
+    def get_level(self, level_id):
+        try:
+            lv = self.levels_by_id[level_id]
+            return lv
+        except KeyError:
+            msg = "Level %s not found in policy %s" % (
+                level_id, self.id
+            )
+            raise ValueError(msg)
+
+    def get_level_with_ancestors(self, level_id):
+        levels = set()
+        level = self.get_level(level_id)
+        levels.add(level)
+        if level.inherits_from:
+            for lv in level.inherits_from:
+                levels.update(self.get_level_with_ancestors(lv))
+        return levels
+
 
 
 class ControlsManager():
@@ -161,27 +195,16 @@ class ControlsManager():
             raise ValueError(msg)
         return policy
 
-    def _get_policy_level_value(self, policy, level_id):
-        if not level_id:
-            return 0
-
-        if level_id not in policy.levels:
-            msg = (
-                "Control level {level_id} not compatible "
-                "with policy {policy_id}"
-                .format(level_id=level_id, policy_id=policy.id)
-            )
-            raise ValueError(msg)
-        return policy.level_value[level_id]
-
-    def get_all_controls_of_level_at_least(self, policy_id, level_id=None):
+    def get_all_controls_of_level(self, policy_id, level_id):
         policy = self._get_policy(policy_id)
-        level = self._get_policy_level_value(policy, level_id)
+        levels = policy.get_level_with_ancestors(level_id)
+        level_ids = set([lv.id for lv in levels])
 
         all_policy_controls = self.get_all_controls(policy_id)
-        eligible_controls = [
-                c for c in all_policy_controls
-                if policy.level_value[c.level] <= level]
+        eligible_controls = []
+        for c in all_policy_controls:
+            if len(level_ids.intersection(c.levels)) > 0:
+                eligible_controls.append(c)
         return eligible_controls
 
     def get_all_controls(self, policy_id):

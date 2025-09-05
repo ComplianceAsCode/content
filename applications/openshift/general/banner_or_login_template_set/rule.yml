@@ -1,0 +1,50 @@
+prodtype: ocp4
+
+title: Ensure that a OpenShift OAuth login template or a classification banner is set
+
+description: |-
+  A legal notice must be configured.
+  <br/>
+
+  This is achievable via the OAuth object by creating a custom login page,
+  storing it in a Kubernetes Secret and referencing it in the appropriate
+  field as
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/web_console/customizing-the-web-console.html#customizing-the-login-page_customizing-web-console",
+              text="described in the documentation") }}}
+
+  <br/>
+
+  Another way of achieving this is via a custom classification banner
+  which is possible to set via the ConsoleNotification CRD as 
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.7/web_console/customizing-the-web-console.html#creating-custom-notification-banners_customizing-web-console",
+              text="described in the documentation") }}}
+
+rationale: |-
+  Displays to users organization-defined system use notification message or banner before granting
+  access to the system that provides privacy and security notices consistent with applicable federal laws.
+
+identifiers:
+  cce@ocp4: CCE-84195-7
+
+severity: medium
+
+references:
+  nist: AC-8
+
+ocil_clause: 'A legal notice is not set in the UI'
+
+ocil: |-
+  To verify that login template is properly set, do the following:
+  <pre>$ oc get oauths cluster</pre>
+  make sure that the login template is set in 
+  the path <tt>.spec.templates.login.name</tt>, and references a valid
+  secret.
+
+  Alternatively, verify that a <tt>ConsoleNotification</tt> object called
+  <tt>classification-banner</tt> exists and contains an appropriate
+  legal notice.
+
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting(["/apis/config.openshift.io/v1/oauths/cluster", "/apis/console.openshift.io/v1/consolenotifications/classification-banner"]) | indent(4) }}}

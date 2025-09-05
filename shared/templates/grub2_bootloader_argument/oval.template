@@ -2,7 +2,7 @@
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
     {{{ oval_metadata("Ensure " + ARG_NAME_VALUE + " is configured in the kernel line in /etc/default/grub.") }}}
     <criteria operator="AND">
-      {{% if product in ["rhel7", "ol7"] %}}
+      {{% if product in ["rhel7", "ol7"] or 'ubuntu' in product %}}
         <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg"
         comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the {{{ grub2_boot_path }}}/grub.cfg for all kernels" />
         <criteria operator="OR">
@@ -22,7 +22,7 @@
     </criteria>
   </definition>
 
-{{% if product in ["rhel7", "ol7"] %}}
+{{% if product in ["rhel7", "ol7"] or 'ubuntu' in product %}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
   comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX"
   check="all" check_existence="all_exist" version="1">
@@ -60,7 +60,7 @@
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg"
   version="1">
     <ind:filepath>{{{ grub2_boot_path }}}/grub.cfg</ind:filepath>
-    {{% if product == "rhel7" %}}
+    {{% if product in ["rhel7"] or 'ubuntu' in product %}}
       <ind:pattern operation="pattern match">^.*/vmlinuz.*(root=.*)$</ind:pattern>
     {{% else %}}
       <ind:pattern operation="pattern match">^set default_kernelopts=(.*)$</ind:pattern>

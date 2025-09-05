@@ -1,5 +1,5 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol,multi_platform_sle
+# platform = multi_platform_all
 
 
-{{{ bash_dconf_settings("org/gnome/login-screen", "banner-message-enable", "true", "gdm.d", "00-security-settings") }}}
-{{{ bash_dconf_lock("org/gnome/login-screen", "banner-message-enable", "gdm.d", "00-security-settings-lock") }}}
+{{{ bash_dconf_settings("org/gnome/login-screen", "banner-message-enable", "true", dconf_gdm_dir, "00-security-settings") }}}
+{{{ bash_dconf_lock("org/gnome/login-screen", "banner-message-enable", dconf_gdm_dir, "00-security-settings-lock") }}}

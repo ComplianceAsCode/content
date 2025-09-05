@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,ubuntu2004,wrlinux1019
 
 title: 'Verify ownership of Message of the Day Banner'
 
@@ -21,8 +21,9 @@ identifiers:
     cce@rhel8: CCE-83738-5
 
 references:
-    cis@rhel7: 1.7.1.4
+    cis@rhel7: 1.7.4
     cis@rhel8: 1.8.1.4
+    cis@ubuntu2004: 1.8.1.4
 
 ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/motd", owner="root") }}}'
 
@@ -34,3 +35,4 @@ template:
     vars:
         filepath: /etc/motd
         fileuid: '0'
+        missing_file_pass: 'true'

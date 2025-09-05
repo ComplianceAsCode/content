@@ -1,0 +1,10 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = high
+# disruption = medium
+
+- name: "Set ownership to root of system-wide library files"
+  command: "find {{ item }} ! -group root -type f -exec chgrp root '{}' \\;"
+  with_items: [ '/lib', '/lib64', '/usr/lib', '/usr/lib64' ]
+

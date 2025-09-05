@@ -15,7 +15,7 @@ def main():
     args = parse_command_line_args()
     test_result = 0
     for product in ssg.constants.product_directories:
-        product_dir = os.path.join(args.source_dir, product)
+        product_dir = os.path.join(args.source_dir, "products", product)
         product_yaml_path = os.path.join(product_dir, "product.yml")
         product_yaml = ssg.yaml.open_raw(product_yaml_path)
         guide_dir = os.path.abspath(

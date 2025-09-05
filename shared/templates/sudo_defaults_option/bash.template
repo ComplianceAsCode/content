@@ -11,7 +11,7 @@
 {{% endif %}}
 if /usr/sbin/visudo -qcf /etc/sudoers; then
     cp /etc/sudoers /etc/sudoers.bak
-    if ! grep -P "^[\s]*Defaults.*\b{{{ OPTION_REGEX }}}\b.*$" /etc/sudoers; then
+    if ! grep -P '^[\s]*Defaults.*\b{{{ OPTION_REGEX }}}\b.*$' /etc/sudoers; then
         # sudoers file doesn't define Option {{{ OPTION }}}
         echo "Defaults {{{ OPTION_VALUE }}}" >> /etc/sudoers
     {{%- if not VARIABLE_NAME %}}
@@ -20,7 +20,10 @@ if /usr/sbin/visudo -qcf /etc/sudoers; then
     else
         # sudoers file defines Option {{{ OPTION }}}, remediate if appropriate value is not set
         if ! grep -P "^[\s]*Defaults.*\b{{{ OPTION_VALUE }}}\b.*$" /etc/sudoers; then
-            sed -Ei "s/(^[\s]*Defaults.*\b{{{ OPTION }}}=)\w+(\b.*$)/\1{{{ '${' ~ VARIABLE_NAME ~ '}' }}}\2/" /etc/sudoers
+            {{% if '/' in OPTION %}}
+            {{{ raise("OPTION (" + OPTION + ") uses sed path separator (/) in " + rule_id) }}}
+            {{% endif %}}
+            sed -Ei "s/(^[\s]*Defaults.*\b{{{ OPTION }}}=)[-]?\w+(\b.*$)/\1{{{ '${' ~ VARIABLE_NAME ~ '}' }}}\2/" /etc/sudoers
         fi
     fi
     {{% endif %}}

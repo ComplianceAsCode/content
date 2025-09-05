@@ -1,0 +1,34 @@
+product: rhel9
+full_name: Red Hat Enterprise Linux 9
+type: platform
+
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "dnf"
+
+init_system: "systemd"
+
+dconf_gdm_dir: "distro.d"
+
+# The fingerprints below are retrieved from https://access.redhat.com/security/team/key
+pkg_release: ""
+pkg_version: ""
+aux_pkg_release: ""
+aux_pkg_version: ""
+
+release_key_fingerprint: "567E347AD0044ADE55BA8A5F199E2F91FD431D51"
+auxiliary_key_fingerprint: "6A6AA7C97C8890AEC6AEBFE2F76F66C3D4082792"
+oval_feed_url: "https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL9.xml"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - rhel9:
+      name: "cpe:/o:redhat:enterprise_linux:9"
+      title: "Red Hat Enterprise Linux 9"
+      check_id: installed_OS_is_rhel9
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  login_defs: "shadow-utils"

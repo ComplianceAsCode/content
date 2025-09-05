@@ -1,6 +1,6 @@
 {{{ oval_check_config_file(
     path="/etc/crypto-policies/back-ends/opensslcnf.config",
-    prefix_regex="^(?:.*\\n)*\s*",
+    prefix_regex="^(?:.*\\n)*\s*(?:TLS\.)?",
     parameter="MinProtocol",
     value="TLSv1.2",
     separator_regex="\s*=\s*", ) }}}

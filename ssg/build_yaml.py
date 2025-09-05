@@ -70,7 +70,7 @@ def reorder_according_to_ordering(unordered, ordering, regex=None):
             if priority_type in item and item in unordered:
                 ordered.append(item)
                 unordered.remove(item)
-    ordered.extend(list(unordered))
+    ordered.extend(sorted(unordered))
     return ordered
 
 
@@ -479,7 +479,7 @@ class ProfileWithSeparatePolicies(ResolvableProfile):
             elif ":" in cid:
                 _, level_id = cid.split(":", 1)
                 controls.extend(
-                    controls_manager.get_all_controls_of_level_at_least(policy_id, level_id))
+                    controls_manager.get_all_controls_of_level(policy_id, level_id))
             else:
                 controls.extend(controls_manager.get_all_controls(policy_id))
         return controls
@@ -514,7 +514,8 @@ class ProfileWithInlinePolicies(ResolvableProfile):
         self.controls_by_policy = defaultdict(list)
 
     def apply_selection(self, item):
-        if ":" in item:
+        # ":" is the delimiter for controls but not when the item is a variable
+        if ":" in item and "=" not in item:
             policy_id, control_id = item.split(":", 1)
             self.controls_by_policy[policy_id].append(control_id)
         else:
@@ -529,7 +530,7 @@ class ProfileWithInlinePolicies(ResolvableProfile):
             elif ":" in cid:
                 _, level_id = cid.split(":", 1)
                 controls.extend(
-                    controls_manager.get_all_controls_of_level_at_least(policy_id, level_id))
+                    controls_manager.get_all_controls_of_level(policy_id, level_id))
             else:
                 controls.extend(
                     controls_manager.get_all_controls(policy_id))
@@ -924,8 +925,11 @@ class Group(object):
         # The Rules are ordered in more logical way, and
         # remediation order is natural, first the package is installed, then configured.
         rules_in_group = list(self.rules.keys())
-        regex = r'(package_.*_(installed|removed))|(service_.*_(enabled|disabled))$'
-        priority_order = ["installed", "removed", "enabled", "disabled"]
+        regex = (r'(package_.*_(installed|removed))|' +
+                 r'(service_.*_(enabled|disabled))|' +
+                 r'install_smartcard_packages$')
+        priority_order = ["installed", "install_smartcard_packages", "removed",
+                          "enabled", "disabled"]
         rules_in_group = reorder_according_to_ordering(rules_in_group, priority_order, regex)
 
         # Add rules in priority order, first all packages installed, then removed,
@@ -1079,20 +1083,30 @@ class Rule(object):
         self.cpe_names = set()
         self.inherited_platforms = [] # platforms inherited from the group
         self.template = None
+        self.local_env_yaml = None
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
         yaml_file = os.path.normpath(yaml_file)
 
-        yaml_contents = open_and_macro_expand(yaml_file, env_yaml)
-        if yaml_contents is None:
-            return None
-
         rule_id, ext = os.path.splitext(os.path.basename(yaml_file))
         if rule_id == "rule" and ext == ".yml":
             rule_id = get_rule_dir_id(yaml_file)
 
+        local_env_yaml = None
+        if env_yaml:
+            local_env_yaml = dict()
+            local_env_yaml.update(env_yaml)
+            local_env_yaml["rule_id"] = rule_id
+
+        yaml_contents = open_and_macro_expand(yaml_file, local_env_yaml)
+        if yaml_contents is None:
+            return None
+
         rule = cls(rule_id)
+
+        if local_env_yaml:
+            rule.local_env_yaml = local_env_yaml
 
         try:
             rule._set_attributes_from_dict(yaml_contents)

@@ -18,5 +18,5 @@
 #    ( Needs to be done after 4, otherwise the escapce sequence will become just "n".
 {{{ bash_deregexify_banner_newline_token("login_banner_text")}}}
 
-{{{ bash_dconf_settings("org/gnome/login-screen", "banner-message-text", "'${login_banner_text}'", "gdm.d", "00-security-settings") }}}
-{{{ bash_dconf_lock("org/gnome/login-screen", "banner-message-text", "gdm.d", "00-security-settings-lock") }}}
+{{{ bash_dconf_settings("org/gnome/login-screen", "banner-message-text", "'${login_banner_text}'", dconf_gdm_dir, "00-security-settings") }}}
+{{{ bash_dconf_lock("org/gnome/login-screen", "banner-message-text", dconf_gdm_dir, "00-security-settings-lock") }}}

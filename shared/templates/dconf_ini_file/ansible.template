@@ -39,7 +39,7 @@
 - name: "Prevent user modification {{{ PARAMETER }}} - default file"
   lineinfile:
     path: {{{ LOCK_PATH }}}/00-security-settings-lock
-    regexp: '^/{{{ SECTION }}}/{{{ PARAMETER }}}'
+    regexp: '^/{{{ SECTION }}}/{{{ PARAMETER }}}$'
     line: '/{{{ SECTION }}}/{{{ PARAMETER }}}'
     create: yes
   when: {{{ rule_id }}}_lock_files is defined and {{{ rule_id }}}_lock_files.matched == 0
@@ -47,7 +47,7 @@
 - name: "Prevent user modification {{{ PARAMETER }}} - existing files"
   lineinfile:
     path: "{{ item.path }}"
-    regexp: '^/{{{ SECTION }}}/{{{ PARAMETER }}}'
+    regexp: '^/{{{ SECTION }}}/{{{ PARAMETER }}}$'
     line: '/{{{ SECTION }}}/{{{ PARAMETER }}}'
     create: yes
   with_items: "{{ {{{ rule_id }}}_lock_files.files }}"

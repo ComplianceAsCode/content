@@ -1,0 +1,45 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: "{{{ rule_title }}}: set_fact"
+  set_fact:
+    path: /etc/crypto-policies/back-ends/gnutls.config
+    correct_value: '+VERS-ALL:-VERS-DTLS0.9:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1:-VERS-DTLS1.0'
+    lineinfile_reg: \+VERS-ALL:-VERS-DTLS0\.9:-VERS-SSL3\.0:-VERS-TLS1\.0:-VERS-TLS1\.1:-VERS-DTLS1\.0
+
+- name: "{{{ rule_title }}}: stat"
+  stat:
+    path: "{{ path }}"
+    follow: yes
+  register: gnutls_file
+
+- name: "{{{ rule_title }}}: Add"
+  lineinfile:
+    path: "{{ path }}"
+    regexp: "{{ lineinfile_reg }}"
+    line: "{{ correct_value }}"
+    create: yes
+  when: not gnutls_file.stat.exists or gnutls_file.stat.size <= correct_value|length
+
+- name: "{{{ rule_title }}}"
+  block:
+    - name: "{{{ rule_title }}}: Existing value check"
+      lineinfile:
+        path: "{{ path }}"
+        create: false
+        regexp: "{{ lineinfile_reg }}"
+        state: absent
+      check_mode: true
+      changed_when: false
+      register: gnutls
+
+    - name: "{{{ rule_title }}}: Update"
+      replace:
+        path: "{{ path }}"
+        regexp: (\+VERS-ALL(?::-VERS-[A-Z]+\d\.\d)+)
+        replace: "{{ correct_value }}"
+      when: gnutls.found is defined and gnutls.found != 1
+
+  when: gnutls_file.stat.exists and gnutls_file.stat.size > correct_value|length

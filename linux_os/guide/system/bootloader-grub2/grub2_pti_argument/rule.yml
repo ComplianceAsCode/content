@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhel8
+prodtype: fedora,ol8,rhel8,rhel9
 
 title: 'Enable Kernel Page-Table Isolation (KPTI)'
 
@@ -21,12 +21,13 @@ severity: high
 
 identifiers:
     cce@rhel8: CCE-82194-2
+    cce@rhel9: CCE-83843-3
 
 references:
-    srg: SRG-OS-000433-GPOS-00193,SRG-OS-000095-GPOS-00049
-    nist: SI-16
-    stigid@rhel8: RHEL-08-040004
     disa: CCI-000381
+    nist: SI-16
+    srg: SRG-OS-000433-GPOS-00193,SRG-OS-000095-GPOS-00049
+    stigid@rhel8: RHEL-08-040004
 
 ocil_clause: 'Kernel page-table isolation is not enabled'
 

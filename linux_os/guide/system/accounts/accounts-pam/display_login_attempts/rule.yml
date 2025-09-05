@@ -1,3 +1,9 @@
+{{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
+{{% set pam_lastlog_path = "/etc/pam.d/login" %}}
+{{% else %}}
+{{% set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
+{{% endif %}}
+
 documentation_complete: true
 
 title: 'Ensure PAM Displays Last Logon/Access Notification'
@@ -6,16 +12,9 @@ description: |-
     To configure the system to notify users of last logon/access
     using <tt>pam_lastlog</tt>, add or correct the <tt>pam_lastlog</tt>
     settings in
-    {{% if product in ["sle12", "sle15"] %}}
-    <tt>/etc/pam.d/login</tt> to read as follows:
+    <tt>{{{ pam_lastlog_path }}}</tt> to read as follows:
     <pre>session     required pam_lastlog.so showfailed</pre>
     And make sure that the <tt>silent</tt> option is not set.
-    {{% else %}}
-    <tt>/etc/pam.d/postlogin</tt> to read as follows:
-    <pre>session     [success=1 default=ignore] pam_succeed_if.so service !~ gdm* service !~ su* quiet
-    session     [default=1]   pam_lastlog.so nowtmp showfailed
-    session     optional      pam_lastlog.so silent noupdate showfailed</pre>
-    {{% endif %}}
 
 rationale: |-
     Users need to be aware of activity that occurs regarding
@@ -29,40 +28,37 @@ severity: low
 identifiers:
     cce@rhel7: CCE-27275-7
     cce@rhel8: CCE-80788-3
+    cce@rhel9: CCE-83560-3
     cce@sle12: CCE-83149-5
     cce@sle15: CCE-85560-1
 
 references:
-    stigid@ol7: OL07-00-040530
+    cis-csc: 1,12,15,16
     cjis: 5.5.2
+    cobit5: DSS05.04,DSS05.10,DSS06.10
     disa: CCI-000366
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    ism: 0582,0584,05885,0586,0846,0957
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
     nist: AC-9(1),CM-6(a)
     nist-csf: PR.AC-7
     pcidss: Req-10.2.4
     srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-040530
     stigid@rhel7: RHEL-07-040530
-    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
-    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
-    cobit5: DSS05.04,DSS05.10,DSS06.10
-    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
-    cis-csc: 1,12,15,16
-    ism: 0582,0584,05885,0586,0846,0957
+    stigid@rhel8: RHEL-08-020340
     stigid@sle12: SLES-12-010390
     stigid@sle15: SLES-15-020080
-    stigid@rhel8: RHEL-08-020340
+    stigid@ubuntu2004: UBTU-20-010453
 
 ocil_clause: 'that is not the case'
 
 ocil: |-
     To ensure that last logon/access notification is configured correctly, run
     the following command:
-    {{% if product in ["sle12", "sle15"] %}}
-    <pre>$ grep pam_lastlog.so /etc/pam.d/login</pre>
+    <pre>$ grep pam_lastlog.so {{{ pam_lastlog_path }}}</pre>
     The output should show output <tt>showfailed</tt> and must not contain
     <tt>silent</tt>.
-    {{% else %}}
-    <pre>$ grep pam_lastlog.so /etc/pam.d/postlogin</pre>
-    The output should show output <tt>showfailed</tt>.
-    {{% endif %}}
 
 platform: pam

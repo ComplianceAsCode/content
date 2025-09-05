@@ -15,7 +15,7 @@
 - name: "Prevent user modification of GNOME disablement of Ctrl-Alt-Del"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/settings-daemon/plugins/media-keys/logout'
+    regexp: '^/org/gnome/settings-daemon/plugins/media-keys/logout$'
     line: '/org/gnome/settings-daemon/plugins/media-keys/logout'
     create: yes
 

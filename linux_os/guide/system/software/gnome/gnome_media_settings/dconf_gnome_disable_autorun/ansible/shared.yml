@@ -15,7 +15,7 @@
 - name: "Prevent user modification of GNOME3 Automounting - autorun-never"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/desktop/media-handling/autorun-never'
+    regexp: '^/org/gnome/desktop/media-handling/autorun-never$'
     line: '/org/gnome/desktop/media-handling/autorun-never'
     create: yes
 

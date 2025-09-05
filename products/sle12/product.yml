@@ -1,0 +1,32 @@
+product: sle12
+full_name: SUSE Linux Enterprise 12
+type: platform
+
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+init_system: "systemd"
+
+pkg_manager: "zypper"
+pkg_manager_config_file: "/etc/zypp/zypp.conf"
+oval_feed_url: "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.12.xml"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - sle12-server:
+      name: "cpe:/o:suse:linux_enterprise_server:12"
+      title: "SUSE Linux Enterprise Server 12"
+      check_id: installed_OS_is_sle12
+
+  - sle12-desktop:
+      name: "cpe:/o:suse:linux_enterprise_desktop:12"
+      title: "SUSE Linux Enterprise Desktop 12"
+      check_id: installed_OS_is_sle12
+
+platform_package_overrides:
+  login_defs: "shadow"
+  grub2: "grub2"
+  sssd: "sssd"
+
+auid: 1000

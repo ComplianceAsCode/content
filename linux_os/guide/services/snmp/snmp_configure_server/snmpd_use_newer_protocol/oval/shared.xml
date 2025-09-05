@@ -2,7 +2,7 @@
   <definition class="compliance" id="snmpd_use_newer_protocol" version="2">
     {{{ oval_metadata("SNMP version 1 and 2c must not be enabled.") }}}
     <criteria operator="OR">
-      <extend_definition comment="SMNP installed" definition_ref="package_net-snmp_removed"/>
+      <extend_definition comment="SNMP installed" definition_ref="package_net-snmp_removed"/>
       <criterion comment="SNMP protocols" test_ref="test_snmp_versions" />
     </criteria>
   </definition>

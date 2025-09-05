@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,ubuntu2004
 
 title: 'Ensure auditd Collects Information on the Use of Privileged Commands - at'
 
@@ -31,11 +31,12 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhcos4: CCE-82590-1
     cce@rhel7: CCE-81060-6
     cce@rhel8: CCE-80988-9
-    cce@rhcos4: CCE-82590-1
 
 references:
+    cis@ubuntu2004: 4.1.11
     disa: CCI-000172
     nist: AU-2(d),AU-12(c),AC-6(9),CM-6(a)
     ospp: FAU_GEN.1.1.c

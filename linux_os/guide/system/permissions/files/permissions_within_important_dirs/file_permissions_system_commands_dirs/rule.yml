@@ -1,0 +1,51 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Verify that system commands are protected from unauthorized access'
+
+description: |-
+    System commands are stored in the following directories by default:
+    <pre>/bin
+    /sbin
+    /usr/bin
+    /usr/sbin
+    /usr/local/bin
+    /usr/local/sbin</pre>
+    All files in these directories should not be group-writable or world-writable.
+    If any file <i>FILE</i> in these directories is found
+    to be group-writable or world-writable, correct its permission with the
+    following command:
+    <pre>$ sudo chmod 755 <i>FILE</i></pre>
+
+rationale: |-
+    System binaries are executed by privileged users, as well as system services,
+    and restrictive permissions are necessary to ensure execution of these programs
+    cannot be co-opted.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83239-4
+    cce@sle15: CCE-85738-3
+
+references:
+    disa: CCI-001499
+    nist: CM-5(6),CM-5(6).1
+    srg: SRG-OS-000259-GPOS-00100
+    stigid@sle12: SLES-12-010877
+    stigid@sle15: SLES-15-010357
+
+ocil_clause: 'any system commands are found to be group or world writable'
+
+ocil: |-
+    System commands are stored in the following directories by default:
+    <pre>/bin
+    /sbin
+    /usr/bin
+    /usr/local/bin
+    /usr/local/sbin
+    /usr/sbin</pre>
+    To find system commands that have mode 0755 or less permissive,
+    run the following command for each directory <i>DIR</i> which contains system executables:
+    <pre>$ sudo find -L <i>DIR</i> -perm /022 -type f</pre>

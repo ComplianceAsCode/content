@@ -1,0 +1,27 @@
+# platform = multi_platform_sle
+# reboot = false
+# complexity = low
+# strategy = configure
+# disruption = low
+
+- name: "Find log files"
+  find:
+    paths: '/var/log/'
+    recurse: yes
+    patterns: '*'
+  register: log_files
+
+- name: "Configure permission for /var/log/"
+  lineinfile:
+    path: "/etc/permissions.local"
+    regexp: '^{{ item.path }}\s+\w+\:\w+\d+\s*$'
+    line: "{{ item.path }}\t\t\t\t{{ item.pw_name }}:{{ item.gr_name }}\t640"
+    state: present
+  when: (item.mode | int) > 640
+  with_items: "{{ log_files.files }}"
+  register: update_permissions_local_logs_result
+
+- name: "Correct file permissions for /var/log"
+  shell: >
+    chkstat --set --system
+  when: update_permissions_local_logs_result.changed
