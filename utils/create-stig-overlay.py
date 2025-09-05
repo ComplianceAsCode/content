@@ -17,10 +17,10 @@ ET = ssg.xml.ElementTree
 
 
 owner = "disastig"
-stig_ns = ["https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux",
-           "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os",
-           "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security%2Capplication-servers",
-           "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security%2Capp-security-dev"]
+stig_ns = ["https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux",
+           "https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os",
+           "https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security%2Capplication-servers",
+           "https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security%2Capp-security-dev"]
 dc_ns = "http://purl.org/dc/elements/1.1/"
 outfile = "stig_overlay.xml"
 

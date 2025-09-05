@@ -7,7 +7,7 @@ metadata:
         - dodys
         - alanmcanonical
 
-reference: https://public.cyber.mil/stigs/downloads
+reference: https://www.cyber.mil/stigs/downloads
 
 title: 'Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide (STIG) V1R1'
 
