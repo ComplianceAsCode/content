@@ -10,7 +10,7 @@ description: |-
     <pre>[pam]
     pam_cert_auth = True
     </pre>
-    {{% if product in ["fedora", "ol8", "ol9"] or 'rhel' in product %}}
+    {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
     Add or update "pam_sss.so" line in auth section of "/etc/pam.d/system-auth" file to include
     "try_cert_auth" or "require_cert_auth" option, like in the following example:
     <pre>
@@ -19,6 +19,8 @@ description: |-
     Also add or update "pam_sss.so" line in auth section of "/etc/pam.d/smartcard-auth" file to
     include the "allow_missing_name" option, like in the following example:
     <pre>/etc/pam.d/smartcard-auth:auth sufficient pam_sss.so allow_missing_name</pre>
+    {{% elif product in ["rhel10"] %}}.
+    Ensure you are using the sssd authselect profile with the <tt>with-smartcard</tt> feature enabled.
     {{% endif %}}
 
 rationale: |-
@@ -43,7 +45,6 @@ identifiers:
     cce@sle15: CCE-85826-6
 
 references:
-    disa: CCI-000765,CCI-004047,CCI-004046
     ism: 0421,0422,0431,0974,1173,1401,1504,1505,1546,1557,1558,1559,1560,1561
     pcidss: Req-8.3
     srg: SRG-OS-000375-GPOS-00160,SRG-OS-000105-GPOS-00052,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000108-GPOS-00055

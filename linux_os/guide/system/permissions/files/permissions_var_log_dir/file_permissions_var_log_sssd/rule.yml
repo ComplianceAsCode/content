@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Verify Permissions of Files in /var/log/sssd'
+
+description: |-
+    {{{ describe_file_permissions(file="/var/log/sssd/*", perms="0660") }}}
+
+rationale: |-
+    The <tt>/var/log/sssd</tt> directory contains debug logs for the System
+    Security Services Daemon (SSSD) and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/sssd/*", perms="-rw-rw----") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/log/sssd/*", perms="-rw-rw----") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/log/sssd/
+        file_regex: '.*'
+        filemode: '0660'
+        recursive@ubuntu2404: 'true'

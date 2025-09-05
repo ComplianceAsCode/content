@@ -1,3 +1,8 @@
+{{%- if product == 'ubuntu2204' %}}
+{{%- set sshd_approved_ciphers = "aes256-ctr,aes256-gcm@openssh.com,aes192-ctr,aes128-ctr,aes128-gcm@openssh.com" %}}
+{{%- else %}}
+{{%- set sshd_approved_ciphers = "aes256-ctr,aes192-ctr,aes128-ctr" %}}
+{{%- endif %}}
 documentation_complete: true
 
 title: 'Use Only FIPS 140-2 Validated Ciphers'
@@ -7,7 +12,7 @@ description: |-
     The following line in <tt>/etc/ssh/sshd_config</tt>
     demonstrates use of FIPS-approved ciphers:
     {{%- if 'ubuntu' in product %}}
-    <pre>Ciphers {{{ xccdf_value("sshd_approved_ciphers") }}}</pre>
+    <pre>Ciphers {{{ sshd_approved_ciphers }}}</pre>
     If this line does not contain these ciphers in exact order,
     is commented out, or is missing, this is a finding.
     {{%- else %}}
@@ -34,7 +39,6 @@ identifiers:
     cce@slmicro5: CCE-93672-4
 
 references:
-    disa: CCI-000068,CCI-000366,CCI-000803,CCI-000877,CCI-002890,CCI-003123
     srg: SRG-OS-000033-GPOS-00014,SRG-OS-000120-GPOS-00061,SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173,SRG-OS-000394-GPOS-00174
     stigid@ol7: OL07-00-040110
     stigid@sle15: SLES-15-010160

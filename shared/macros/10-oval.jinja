@@ -43,30 +43,25 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type section: str
 :param quotes: If non-empty, one level of matching quotes is considered when checking the value. See comment of oval_line_in_file_state for more info.
 :type quotes: str
+:param xccdf_variable: the name of an XCCDF variable carrying the value, this conflicts with the value parameter
+:type xccdf_variable: str
 
 #}}
-{{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='', quotes='') -%}}
+{{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='', quotes='', xccdf_variable="") -%}}
 {{%- if application == '' -%}}
 	{{%- set application = "The respective application or service" -%}}
 {{%- endif -%}}
+{{%- if xccdf_variable -%}}
+{{%- set description= "Ensure '" + parameter + "' is configured with value configured through XCCDF variable " + xccdf_variable + (" in section '" + section if section else "") + "' in " + path -%}}
+{{%- else -%}}
+{{%- set description="Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path -%}}
+{{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
+    {{{ oval_metadata(description) }}}
     {{%- if missing_config_file_fail %}}
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
     operator="AND">
-    {{%- endif %}}
-    {{%- if application == "sshd" %}}
-{{#-
-    This condition is here to avoid regression in sshd configuration rules.
-    The OVAL checks for sshd configuration test if the package is installed
-    and if it is required or not by the profile. When rule applicability is
-    done for these rules, it can be removed.
-#}}
-    <criteria comment="{{{ application }}} is configured correctly or is not installed"
-    operator="OR">
-        {{{- application_not_required_or_requirement_unset() }}}
-        {{{- application_required_or_requirement_unset() }}}
     {{%- endif %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
@@ -75,18 +70,24 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
         {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass) }}}
         {{%- endif %}}
     </criteria>
-    {{%- if application == "sshd" %}}
-    </criteria> {{# close criteria left open in application_required_or_requirement_unset #}}
-    </criteria>
-    {{%- endif %}}
     {{%- if missing_config_file_fail %}}
         {{{- oval_config_file_exists_criterion(path) }}}
     </criteria>
     {{%- endif %}}
   </definition>
+
+  {{% if xccdf_variable %}}
+  {{{ oval_line_in_file_define_variable(xccdf_variable, datatype="string") }}}
+  {{% endif %}}
+
   {{{ oval_line_in_file_test(path, parameter) }}}
   {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
+  {{%- if xccdf_variable -%}}
+  {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, datatype="string") }}}
+  {{%- else -%}}
   {{{ oval_line_in_file_state(value, multi_value, quotes) }}}
+  {{%- endif -%}}
+
   {{%- if missing_parameter_pass %}}
   {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass) }}}
   {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
@@ -262,13 +263,14 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
 {{%- if multi_value -%}}
-{{%- set group_regex = "([^#]*).*$" -%}}
+{{%- set group_regex = "([^#\\n]*).*$" -%}}
 {{%- else -%}}
 {{%- set group_regex = "(.+?)[ \\t]*(?:$|#)" -%}}
 {{%- endif -%}}
 {{%- if section %}}
 {{%- set common_regex = "^\s*\["+section+"\].*(?:\\n\s*[^[\s].*)*\\n"+prefix_regex+parameter+separator_regex -%}}
 {{%- if missing_parameter_pass %}}
+{{%- set suffix_id = suffix_id_default_not_overriden -%}}
 {{#
   There is no need for having a regular expression with a capture
   group "(\S*)" when checking if the parameter is not present in
@@ -337,19 +339,13 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endmacro %}}
 
 {{% macro oval_line_in_file_define_variable(var_name, datatype) %}}
-<local_variable id="local_var_regex_{{{ rule_id }}}"
-comment="Regex that matches exact value represented by {{{ var_name }}} XCCDF variable"
-datatype="{{{ datatype }}}" version="1">
-    <variable_component var_ref="{{{ var_name }}}" />
-</local_variable>
-
 <external_variable comment="Variable defining the value the argument should have" datatype="{{{ datatype }}}" id="{{{ var_name }}}" version="1" />
 {{% endmacro %}}
 
 {{%- macro oval_line_in_file_state_xccdf_variable(var_name='', id_stem='', datatype='') -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
 <ind:textfilecontent54_state id="state_{{{ id_stem }}}" version="1">
-  <ind:subexpression datatype="{{{ datatype }}}" operation="equals" var_ref="local_var_regex_{{{ rule_id }}}" />
+  <ind:subexpression datatype="{{{ datatype }}}" operation="equals" var_ref="{{{ var_name }}}" />
 </ind:textfilecontent54_state>
 {{%- endmacro -%}}
 
@@ -604,25 +600,32 @@ datatype="{{{ datatype }}}" version="1">
 :type missing_config_file_fail: bool
 #}}
 
-{{%- macro oval_check_dropin_file(path, dropin_dir, section='', parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
+{{%- macro oval_check_dropin_file(path, dropin_dir, section='', parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, prefix_regex='^[ \\t]*', separator_regex='=') %}}
 <def-group>
-  {{%- set prefix_regex = "^[ \\t]*" -%}}
-  {{%- set separator_regex = '=' -%}}
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
     {{%- if missing_config_file_fail %}}
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
     operator="AND">
     {{%- endif %}}
-
+    {{%- if missing_parameter_pass %}}
+    <criteria comment="{{{ application }}} is configured correctly"
+    operator="AND">
+        <criteria comment="Check the main config file" operator="OR">
+            {{{- oval_line_in_file_criterion(path, parameter) }}}
+            {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass) }}}
+        </criteria>
+        <criteria comment="Check files in the dropin directory" operator="OR">
+            {{{ oval_line_in_directory_criterion(dropin_dir, parameter) }}}
+            {{{ oval_line_in_directory_criterion(dropin_dir, parameter, missing_parameter_pass) }}}
+        </criteria>
+    {{%- else %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
         {{{- oval_line_in_file_criterion(path, parameter) }}}
-        {{%- if missing_parameter_pass %}}
-        {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass) }}}
-        {{%- endif %}}
-        {{{ oval_line_in_file_criterion(dropin_dir, parameter, missing_parameter_pass, "", rule_id ~ "_dropin_file") }}}
+        {{{ oval_line_in_directory_criterion(dropin_dir, parameter) }}}
     </criteria>
+    {{%- endif %}}
     {{%- if missing_config_file_fail %}}
         {{{- oval_config_file_exists_criterion(path) }}}
     </criteria>
@@ -630,24 +633,27 @@ datatype="{{{ datatype }}}" version="1">
   </definition>
 
   {{%- set quotes = "'\"" -%}}
-  {{%- if no_quotes == "true" %}}
+  {{%- if no_quotes %}}
   {{%- set quotes = "" -%}}
   {{%- endif %}}
 
   {{{ oval_line_in_file_test(path, parameter) }}}
   {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
   {{{ oval_line_in_file_state(value, multi_value, quotes) }}}
+  {{{ oval_line_in_directory_test(dropin_dir, parameter) }}}
+  {{{ oval_line_in_directory_object(dropin_dir, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
+  {{{ oval_line_in_directory_state(value, multi_value, quotes,) }}}
   {{%- if missing_parameter_pass %}}
   {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass) }}}
   {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
+  {{{ oval_line_in_directory_test(dropin_dir, parameter, missing_parameter_pass) }}}
+  {{{ oval_line_in_directory_object(dropin_dir, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
   {{%- endif %}}
   {{%- if missing_config_file_fail %}}
   {{{ oval_config_file_exists_test(path) }}}
   {{{ oval_config_file_exists_object(path) }}}
   {{%- endif %}}
-  {{{ oval_line_in_file_test(dropin_dir, parameter, missing_parameter_pass, rule_id ~ "_dropin_file") }}}
-  {{{ oval_line_in_file_object(dropin_dir, section, prefix_regex, parameter, separator_regex, false, multi_value,'^.*\.conf$', rule_id ~ "_dropin_file") }}}
-  {{{ oval_line_in_file_state(value, multi_value, quotes, rule_id ~ "_dropin_file") }}}
+
 
 </def-group>
 {{%- endmacro %}}
@@ -1059,7 +1065,7 @@ datatype="{{{ datatype }}}" version="1">
      <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
           definition_ref="sshd_not_required_or_unset" />
-          {{% if product in ['opensuse', 'sle12','sle15', 'slmicro5'] %}}
+          {{% if product == "sle12" %}}
           <extend_definition definition_ref="package_openssh_removed"
           comment="rpm package openssh removed"/>
           {{% else %}}
@@ -1070,7 +1076,7 @@ datatype="{{{ datatype }}}" version="1">
      <criteria comment="sshd is installed and configured" operator="AND">
         <extend_definition comment="sshd is required or requirement is unset"
           definition_ref="sshd_required_or_unset" />
-        {{% if product in ['opensuse', 'sle12','sle15', 'slmicro5'] %}}
+        {{% if product == "sle12" %}}
         <extend_definition comment="rpm package openssh installed"
           definition_ref="package_openssh_installed" />
         {{% else %}}
@@ -1754,7 +1760,7 @@ The macros generates the OVAL test including the dependent OVAL object and OVAL 
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_proc_sys_kernel_osrelease_arch_{{{ arch }}}" version="1">
-    <ind:filepath operation="pattern match">/proc/sys/kernel/(osrelease|arch)</ind:filepath>
+    <ind:filepath operation="pattern match">^/proc/sys/kernel/(osrelease|arch)</ind:filepath>
     <ind:pattern operation="pattern match">^.*\.{{{ arch }}}$|^{{{ arch }}}$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>

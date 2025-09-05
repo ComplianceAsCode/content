@@ -34,6 +34,7 @@ from .constants import (XCCDF12_NS,
                         xhtml_namespace,
                         xsi_namespace,
                         timestamp,
+                        timestamp_yyyy_mm_dd,
                         SSG_BENCHMARK_LATEST_URI,
                         SSG_PROJECT_NAME,
                         SSG_REF_URIS,
@@ -256,7 +257,7 @@ def add_reference_title_elements(benchmark_el, env_yaml):
         reference.text = title
 
 
-def add_benchmark_metadata(element, contributors_file):
+def add_benchmark_metadata(element, include_contributors):
     """
     Adds benchmark metadata to an XML element.
 
@@ -265,7 +266,8 @@ def add_benchmark_metadata(element, contributors_file):
 
     Args:
         element (xml.etree.ElementTree.Element): The XML element to which the metadata will be added.
-        contributors_file (str): Path to the file containing contributors information.
+        include_contributors (bool): A flag indicating whether to include
+                                     contributors in the metadata.
 
     Returns:
         None
@@ -277,11 +279,12 @@ def add_benchmark_metadata(element, contributors_file):
 
     creator = ET.SubElement(metadata, "{%s}creator" % dc_namespace)
     creator.text = SSG_PROJECT_NAME
-
-    contrib_tree = parse_file(contributors_file)
-    for c in contrib_tree.iter('contributor'):
-        contributor = ET.SubElement(metadata, "{%s}contributor" % dc_namespace)
-        contributor.text = c.text
+    if include_contributors:
+        contributors_file = os.path.join(os.path.dirname(__file__), "../Contributors.xml")
+        contrib_tree = parse_file(contributors_file)
+        for c in contrib_tree.iter('contributor'):
+            contributor = ET.SubElement(metadata, "{%s}contributor" % dc_namespace)
+            contributor.text = c.text
 
     source = ET.SubElement(metadata, "{%s}source" % dc_namespace)
     source.text = SSG_BENCHMARK_LATEST_URI
@@ -327,8 +330,9 @@ class Value(XCCDFEntity):
         Raises:
             ValueError: If the operator in the input data is not one of the expected possible operators.
         """
-        input_contents["interactive"] = (
-            input_contents.get("interactive", "false").lower() == "true")
+        if "interactive" in input_contents and isinstance(input_contents["interactive"], str):
+            input_contents["interactive"] = (
+                input_contents.get("interactive", "false").lower() == "true")
 
         data = super(Value, cls).process_input_dict(input_contents, env_yaml)
 
@@ -575,7 +579,7 @@ class Benchmark(XCCDFEntity):
                 continue
 
             try:
-                new_profile = ProfileWithInlinePolicies.from_yaml(
+                new_profile = ProfileWithInlinePolicies.from_compiled_json(
                     dir_item_path, env_yaml, product_cpes)
             except DocumentationNotComplete:
                 continue
@@ -742,10 +746,7 @@ class Benchmark(XCCDFEntity):
         root.set('xml:lang', 'en-US')
 
         status = ET.SubElement(root, '{%s}status' % XCCDF12_NS)
-        status.set(
-            'date',
-            time.strftime("%Y-%m-%d",
-                          time.gmtime(int(os.environ.get('SOURCE_DATE_EPOCH', time.time())))))
+        status.set('date', timestamp_yyyy_mm_dd)
         status.text = self.status
 
         add_sub_element(root, "title", XCCDF12_NS, self.title)
@@ -907,7 +908,7 @@ class Benchmark(XCCDFEntity):
         version.text = self.version
         version.set('update', SSG_BENCHMARK_LATEST_URI)
 
-    def to_xml_element(self, env_yaml=None, product_cpes=None, components_to_not_include=None):
+    def to_xml_element(self, env_yaml=None, product_cpes=None, components_to_not_include=None, include_contributors=True):
         """
         Converts the current object to an XML element.
 
@@ -916,6 +917,8 @@ class Benchmark(XCCDFEntity):
             product_cpes (list, optional): List of product CPEs. Defaults to None.
             components_to_not_include (dict, optional): Components to exclude from the XML.
                                                         Defaults to None.
+            include_contributors (bool, optional): Whether to include contributors in the XML.
+                                                   Defaults to True.
 
         Returns:
             xml.etree.ElementTree.Element: The root XML element representing the object.
@@ -934,8 +937,7 @@ class Benchmark(XCCDFEntity):
 
         self._add_version_xml(root)
 
-        contributors_file = os.path.join(os.path.dirname(__file__), "../Contributors.xml")
-        add_benchmark_metadata(root, contributors_file)
+        add_benchmark_metadata(root, include_contributors)
 
         self._add_profiles_xml(root, components_to_not_include)
         self._add_values_xml(root, components_to_not_include)
@@ -1024,7 +1026,7 @@ class Benchmark(XCCDFEntity):
     def __str__(self):
         return self.id_
 
-    def get_benchmark_xml_for_profiles(self, env_yaml, profiles, rule_and_variables_dict):
+    def get_benchmark_xml_for_profiles(self, env_yaml, profiles, rule_and_variables_dict, include_contributors=True):
         """
         Generates the benchmark XML for the given profiles.
 
@@ -1056,7 +1058,8 @@ class Benchmark(XCCDFEntity):
             }
         return profiles_ids, self.to_xml_element(
             env_yaml,
-            components_to_not_include=components_to_not_include
+            components_to_not_include=components_to_not_include,
+            include_contributors=include_contributors
         )
 
 
@@ -1813,31 +1816,6 @@ class Rule(XCCDFEntity, Templatable):
         rule.validate_references(yaml_file)
         return rule
 
-    def _verify_disa_cci_format(self):
-        """
-        Verify that the DISA CCI format is correct.
-
-        This method checks if the CCI IDs in the 'disa' reference follow the expected format
-        'CCI-XXXXXX', where 'X' is a digit. If any CCI ID does not match this format, a ValueError
-        is raised.
-
-        Returns:
-            None
-
-        Raises:
-            ValueError: If any CCI ID is in the wrong format.
-        """
-        cci_id = self.references.get("disa", None)
-        if not cci_id:
-            return
-        cci_ex = re.compile(r'^CCI-[0-9]{6}$')
-        for cci in cci_id:
-            if not cci_ex.match(cci):
-                raise ValueError("CCI '{}' is in the wrong format! "
-                                 "Format should be similar to: "
-                                 "CCI-XXXXXX".format(cci))
-        self.references["disa"] = cci_id
-
     def normalize(self, product):
         """
         Normalize the given product by making references and identifiers product-specific and
@@ -2085,7 +2063,6 @@ class Rule(XCCDFEntity, Templatable):
             dic.update(new_items)
 
         self.references = general_references
-        self._verify_disa_cci_format()
         self.references.update(product_references)
 
     def validate_identifiers(self, yaml_file):
@@ -2891,9 +2868,9 @@ class DirectoryLoader(object):
         if not entities:
             return
         for entity in entities:
-            basename = entity.id_ + ".yml"
+            basename = entity.id_ + ".json"
             dest_filename = os.path.join(destdir, basename)
-            entity.dump_yaml(dest_filename)
+            entity.dump_json(dest_filename)
 
 
 class BuildLoader(DirectoryLoader):
@@ -3121,18 +3098,18 @@ class LinearLoader(object):
 
     def load_entities_by_id(self, filenames, destination, cls):
         """
-        Loads entities from a list of YAML files and stores them in a destination dictionary by their ID.
+        Loads entities from a list of JSON files and stores them in a destination dictionary by their ID.
 
         Args:
-            filenames (list of str): List of file paths to YAML files.
+            filenames (list of str): List of file paths to JSON files.
             destination (dict): Dictionary to store the loaded entities, keyed by their ID.
-            cls (type): Class type that has a `from_yaml` method to create an instance from a YAML file.
+            cls (type): Class type that has a `from_yaml` method to create an instance from a JSON file.
 
         Returns:
             None
         """
         for fname in filenames:
-            entity = cls.from_yaml(fname, self.env_yaml, self.product_cpes)
+            entity = cls.from_compiled_json(fname, self.env_yaml, self.product_cpes)
             destination[entity.id_] = entity
 
     def add_fixes_to_rules(self):
@@ -3211,10 +3188,11 @@ class LinearLoader(object):
             )
 
         for profile in self.benchmark.profiles:
-            profiles_ids, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
-                self.env_yaml, [profile], rule_and_variables_dict
-            )
-            yield profiles_ids.pop(), benchmark
+            if profile.single_rule_profile:
+                profiles_ids, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
+                    self.env_yaml, [profile], rule_and_variables_dict, include_contributors=False
+                )
+                yield profiles_ids.pop(), benchmark
 
     def load_compiled_content(self):
         """
@@ -3248,34 +3226,39 @@ class LinearLoader(object):
 
         self.fixes = ssg.build_remediations.load_compiled_remediations(self.fixes_dir)
 
-        filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.yml"))
+        filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.json"))
         self.load_entities_by_id(filenames, self.rules, Rule)
 
-        filenames = glob.glob(os.path.join(self.resolved_groups_dir, "*.yml"))
+        filenames = glob.glob(os.path.join(self.resolved_groups_dir, "*.json"))
         self.load_entities_by_id(filenames, self.groups, Group)
 
-        filenames = glob.glob(os.path.join(self.resolved_values_dir, "*.yml"))
+        filenames = glob.glob(os.path.join(self.resolved_values_dir, "*.json"))
         self.load_entities_by_id(filenames, self.values, Value)
 
-        filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.yml"))
+        filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.json"))
         self.load_entities_by_id(filenames, self.platforms, Platform)
         self.product_cpes.platforms = self.platforms
 
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
 
-    def export_benchmark_to_xml(self, rule_and_variables_dict):
+    def export_benchmark_to_xml(self, rule_and_variables_dict, ignore_single_rule_profiles):
         """
         Exports the benchmark data to an XML format.
 
         Args:
             rule_and_variables_dict (dict): A dictionary containing rules and variables.
+            ignore_single_rule_profiles (bool): All profiles that contain "single_rule_profile: true" will be skipping.
 
         Returns:
             str: The benchmark data in XML format.
         """
+        if ignore_single_rule_profiles:
+            profiles = [p for p in self.benchmark.profiles if not p.single_rule_profile]
+        else:
+            profiles = self.benchmark.profiles
         _, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
-            self.env_yaml, self.benchmark.profiles, rule_and_variables_dict
+            self.env_yaml, profiles, rule_and_variables_dict
         )
         return benchmark
 
@@ -3358,6 +3341,9 @@ class LinearLoader(object):
             questionnaires.append(questionnaire)
             test_actions.append(action)
             questions.append(boolean_question)
+
+        if len(questionnaires) == 0:
+            raise ValueError("No OCIL content found in the provided rules.")
 
     def _get_rules_from_benchmark(self, benchmark):
         """
@@ -3550,12 +3536,12 @@ class Platform(XCCDFEntity):
             Platform: A Platform object created from the YAML file.
         """
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
-        # If we received a product_cpes, we can restore also the original test object
-        # it can be later used e.g. for comparison
-        if product_cpes:
-            platform.test = product_cpes.algebra.parse(platform.original_expression, simplify=True)
-            product_cpes.add_resolved_cpe_items_from_platform(platform)
-        return platform
+        return restore_original_test_object(platform, product_cpes)
+
+    @classmethod
+    def from_compiled_json(cls, json_file_path, env_yaml=None, product_cpes=None):
+        platform = super(Platform, cls).from_compiled_json(json_file_path, env_yaml)
+        return restore_original_test_object(platform, product_cpes)
 
     def get_fact_refs(self):
         """
@@ -3616,4 +3602,13 @@ def add_platform_if_not_defined(platform, product_cpes):
         if platform == p:
             return p
     product_cpes.platforms[platform.id_] = platform
+    return platform
+
+
+def restore_original_test_object(platform, product_cpes):
+    # If we received a product_cpes, we can restore also the original test object
+    # it can be later used e.g. for comparison
+    if product_cpes:
+        platform.test = product_cpes.algebra.parse(platform.original_expression, simplify=True)
+        product_cpes.add_resolved_cpe_items_from_platform(platform)
     return platform

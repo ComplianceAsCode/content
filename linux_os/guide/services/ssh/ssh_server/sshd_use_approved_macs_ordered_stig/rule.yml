@@ -1,3 +1,8 @@
+{{%- if product == 'ubuntu2204' %}}
+{{%- set sshd_approved_macs = "hmac-sha2-512,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha2-256-etm@openssh.com" %}}
+{{%- else %}}
+{{%- set sshd_approved_macs = "hmac-sha2-512,hmac-sha2-256" %}}
+{{%- endif %}}
 documentation_complete: true
 
 title: 'Use Only FIPS 140-2 Validated MACs'
@@ -7,7 +12,7 @@ description: |-
     The following line in <tt>/etc/ssh/sshd_config</tt>
     demonstrates use of FIPS-approved MACs:
     {{%- if 'ubuntu' in product %}}
-    <pre>MACs {{{ xccdf_value("sshd_approved_macs") }}}</pre>
+    <pre>MACs {{{ sshd_approved_macs }}}</pre>
     If this line does not contain these MACs in exact order,
     is commented out, or is missing, this is a finding.
     {{%- else %}}
@@ -27,7 +32,6 @@ identifiers:
     cce@slmicro5: CCE-93690-6
 
 references:
-    disa: CCI-000068,CCI-000803,CCI-000877,CCI-001453,CCI-003123
     srg: SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000394-GPOS-00174
     stigid@ol7: OL07-00-040400
     stigid@sle15: SLES-15-010270

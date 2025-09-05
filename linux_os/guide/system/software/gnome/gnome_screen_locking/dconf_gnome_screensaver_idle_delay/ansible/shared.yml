@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle,multi_platform_almalinux
 # reboot = false
 # strategy = unknown
 # complexity = low
@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("inactivity_timeout_value") }}}
 
 - name: "Set GNOME3 Screensaver Inactivity Timeout"
-  ini_file:
+  community.general.ini_file:
     dest: "/etc/dconf/db/local.d/00-security-settings"
     section: "org/gnome/desktop/session"
     option: idle-delay

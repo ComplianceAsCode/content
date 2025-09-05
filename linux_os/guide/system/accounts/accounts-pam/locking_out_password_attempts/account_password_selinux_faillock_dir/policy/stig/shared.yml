@@ -9,7 +9,7 @@ checktext: |-
 
     Note: If the system does not have SELinux enabled and enforcing a targeted policy, or if the pam_faillock module is not configured for use, this requirement is Not Applicable.
 
-    $ grep 'dir =' /etc/security/faillock.conf
+    $ sudo grep -w dir /etc/security/faillock.conf
 
     dir = /var/log/faillock
 
@@ -24,9 +24,17 @@ checktext: |-
 fixtext: |-
     Configure {{{ full_name }}} to allow the use of a nondefault faillock tally directory while SELinux enforces a targeted policy.
 
+    First enable the feature using the following command:
+
+    $ sudo authselect enable-feature with-faillock
+
     Create a nondefault faillock tally directory (if it does not already exist) with the following example:
 
     $ sudo mkdir /var/log/faillock
+
+    Then add/modify the "/etc/security/faillock.conf" file to match the following line:
+
+    dir = /var/log/faillock
 
     Update the /etc/selinux/targeted/contexts/files/file_contexts.local with "faillog_t" context type for the nondefault faillock tally directory with the following command:
 
@@ -35,4 +43,5 @@ fixtext: |-
     Next, update the context type of the nondefault faillock directory/subdirectories and files with the following command:
 
     $ sudo restorecon -R -v /var/log/faillock
+
 

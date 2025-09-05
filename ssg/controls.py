@@ -810,6 +810,17 @@ class ControlsManager():
         self.existing_rules = existing_rules
         self.policies = {}
 
+    def _load(self, format):
+        if not os.path.exists(self.controls_dir):
+            return
+        for filename in sorted(glob(os.path.join(self.controls_dir, "*." + format))):
+            filepath = os.path.join(self.controls_dir, filename)
+            policy = Policy(filepath, self.env_yaml)
+            policy.load()
+            self.policies[policy.id] = policy
+        self.check_all_rules_exist()
+        self.resolve_controls()
+
     def load(self):
         """
         Load policies from YAML files in the controls directory.
@@ -822,15 +833,10 @@ class ControlsManager():
         Returns:
             None
         """
-        if not os.path.exists(self.controls_dir):
-            return
-        for filename in sorted(glob(os.path.join(self.controls_dir, "*.yml"))):
-            filepath = os.path.join(self.controls_dir, filename)
-            policy = Policy(filepath, self.env_yaml)
-            policy.load()
-            self.policies[policy.id] = policy
-        self.check_all_rules_exist()
-        self.resolve_controls()
+        self._load("yml")
+
+    def load_compiled(self):
+        self._load("json")
 
     def check_all_rules_exist(self):
         """
@@ -1050,7 +1056,7 @@ class ControlsManager():
 
     def save_everything(self, output_dir):
         """
-        Saves all policies to the specified output directory in YAML format.
+        Saves all policies to the specified output directory in JSON format.
 
         Args:
             output_dir (str): The directory where the policy files will be saved.
@@ -1060,8 +1066,8 @@ class ControlsManager():
         """
         ssg.utils.mkdir_p(output_dir)
         for policy_id, policy in self.policies.items():
-            filename = os.path.join(output_dir, "{}.{}".format(policy_id, "yml"))
-            policy.dump_yaml(filename)
+            filename = os.path.join(output_dir, "{}.{}".format(policy_id, "json"))
+            policy.dump_json(filename)
 
     def add_references(self, rules):
         """

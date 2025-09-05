@@ -3,7 +3,7 @@ documentation_complete: true
 platform: ocp4-node
 
 metadata:
-    version: V2R1
+    version: V2R2
     SMEs:
         - Vincent056
         - rhmdnd
@@ -17,4 +17,4 @@ description: |-
     This profile contains configuration checks that align to the DISA STIG for
     Red Hat OpenShift Container Platform 4.
 
-extends: stig-node-v2r1
+extends: stig-node-v2r2

@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 - name: "Disable GDM Automatic Login"
-  ini_file:
+  community.general.ini_file:
     dest: /etc/sysconfig/displaymanager
     section:
     option: DISPLAYMANAGER_AUTOLOGIN
@@ -12,7 +12,7 @@
     no_extra_spaces: yes
     create: no
 - name: "Disable password less Login"
-  ini_file:
+  community.general.ini_file:
     dest: /etc/sysconfig/displaymanager
     section:
     option: DISPLAYMANAGER_PASSWORD_LESS_LOGIN

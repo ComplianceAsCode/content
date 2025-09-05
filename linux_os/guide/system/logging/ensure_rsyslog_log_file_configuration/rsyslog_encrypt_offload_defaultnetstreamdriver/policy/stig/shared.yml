@@ -8,17 +8,22 @@ vuldiscussion: |-
 
     {{{ full_name }}} installation media provides "rsyslogd", a system utility providing support for message logging. Support for both internet and Unix domain sockets enables this utility to support both local and remote logging. Coupling this utility with "gnutls" (a secure communications library implementing the SSL, TLS and DTLS protocols) creates a method to securely encrypt and offload auditing.
 
+
+
 checktext: |-
     Verify {{{ full_name }}} uses the gtls driver to encrypt audit records offloaded onto a different system or media from the system being audited with the following command:
 
-    $ sudo grep -i '$DefaultNetstreamDriver' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
+    $ grep -Ei 'DefaultNetStreamDriver\b|StreamDriver.Name' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
 
     /etc/rsyslog.conf:$DefaultNetstreamDriver gtls
 
-    If the value of the "$DefaultNetstreamDriver" option is not set to "gtls" or the line is commented out, this is a finding.
+    If the value of the "$DefaultNetstreamDriver or StreamDriver" option is not set to "gtls" or the line is commented out, this is a finding.
+
+    If the variable name "StreamDriver" is present in an omfwd statement block, this is not a finding. However, if the "StreamDriver" variable is in a module block, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to use the gtls driver to encrypt offloaded audit records by setting the following options in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf":
 
     $DefaultNetstreamDriver gtls
+
 

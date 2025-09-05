@@ -3,6 +3,7 @@ aide_also_checks_rsyslog: 'no'
 aide_bin_path: /usr/bin/aide
 aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
+audit_watches_style: legacy
 auid: 1000
 basic_properties_derived: true
 benchmark_id: SLE-15
@@ -88,7 +89,13 @@ reference_uris:
   stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://public.cyber.mil/stigs/srg-stig-tools/
 release_key_fingerprint: FEAB502539D846DB2C0961CA70AF9E8139DB7C82
+rsyslog_cafile: /etc/pki/tls/cert.pem
 sshd_distributed_config: 'false'
 sysctl_remediate_drop_in_file: 'true'
 type: platform
 uid_min: 1000
+xwindows_packages:
+- xorg-x11-server
+- xorg-x11-server-extra
+- xorg-x11-server-Xvfb
+- xwayland

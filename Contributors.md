@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2025-01-31 08:16 UTC
+Last Modified: 2025-05-19 12:47 UTC
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -15,11 +15,13 @@ The following people have contributed to the SCAP Security Guide project
 * Gabe Alford <redhatrises@gmail.com>
 * Firas AlShafei <firas.alshafei@us.abb.com>
 * Rodrigo Alvares <ralvares@redhat.com>
+* am-tux <andrew.miller11@gmail.com>
 * Christopher Anderson <cba@fedoraproject.org>
 * Craig Andrews <candrews@integralblue.com>
 * angystardust <angystardust@users.noreply.github.com>
 * anivan-suse <anastasija.ivanovic@suse.com>
 * anixon-rh <55244503+anixon-rh@users.noreply.github.com>
+* Anna-Koudelkova <akoudelk@redhat.com>
 * Steve Arnold <sarnold@vctlabs.com>
 * Ikko Ashimine <eltociear@gmail.com>
 * Chuck Atkins <chuck.atkins@kitware.com>
@@ -51,6 +53,7 @@ The following people have contributed to the SCAP Security Guide project
 * Carlos <64919342+carlosmmatos@users.noreply.github.com>
 * James Cassell <james.cassell@ll.mit.edu>
 * Frank Caviggia <fcaviggia@users.noreply.github.com>
+* Sinong Chen <costinchen@tencent.com>
 * Eric Christensen <echriste@redhat.com>
 * Dan Clark <danclark@redhat.com>
 * Jayson Cofell <1051437+70k10@users.noreply.github.com>
@@ -66,9 +69,9 @@ The following people have contributed to the SCAP Security Guide project
 * cueball23 <christoph.alms@westnetz.de>
 * cyarbrough76 <42849651+cyarbrough76@users.noreply.github.com>
 * Maura Dailey <maura@eclipse.ncsc.mil>
+* Benjamin Deering <ben_deering@jeepingben.net>
 * Klaas Demter <demter@atix.de>
 * denknorr <dennis.knorr@suse.com>
-* dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
 * dhanushkar-wso2 <dhanushkar@wso2.com>
 * Andrew DiPrinzio <andrew.diprinzio@jhuapl.edu>
 * dom <dominique.blaze@devinci.fr>
@@ -80,8 +83,11 @@ The following people have contributed to the SCAP Security Guide project
 * François Duthilleul <francoisduthilleul@gmail.com>
 * Greg Elin <gregelin@gitmachines.com>
 * eradot4027 <jrtonmac@gmail.com>
+* ericeberry <ericeberry@gmail.com>
 * ermeratos <manuel.ermer@eviden.net>
+* Evelyn <evansvevelyn@gmail.com>
 * Alexis Facques <alexis.facques@mythalesgroup.io>
+* Jan Fader <jan.fader@web.de>
 * Henry Finucane <hfinucane@zscaler.com>
 * Leah Fisher <lfisher047@gmail.com>
 * Marco Fortina <marco_fortina@hotmail.it>
@@ -100,6 +106,7 @@ The following people have contributed to the SCAP Security Guide project
 * guangyee <gyee@suse.com>
 * Christian Hagenest <christian.hagenest@suse.com>
 * Marek Haicman <mhaicman@redhat.com>
+* Sun, Haoxiang <haoxiang.sun@intel.com>
 * Vern Hart <vern.hart@canonical.com>
 * Alex Haydock <alex@alexhaydock.co.uk>
 * Rebekah Hayes <rhayes@corp.rivierautilities.com>
@@ -150,10 +157,10 @@ The following people have contributed to the SCAP Security Guide project
 * Jan Lieskovsky <jlieskov@redhat.com>
 * Markus Linnala <Markus.Linnala@knowit.fi>
 * Flos Lonicerae <lonicerae@gmail.com>
-* Simon Lukasik <slukasik@redhat.com>
+* Šimon Lukašík <lukasiksimon@gmail.com>
+* Andrew Lukoshko <andrew.lukoshko@gmail.com>
 * Milan Lysonek <mlysonek@redhat.com>
 * Fredrik Lysén <fredrik@pipemore.se>
-* Mab879 <207087+Mab879@users.noreply.github.com>
 * Mackemania <8738793+Mackemania@users.noreply.github.com>
 * Caitlin Macleod <caitelatte@gmail.com>
 * Dmitry Makovey <dmakovey@yahoo.com>
@@ -229,6 +236,7 @@ The following people have contributed to the SCAP Security Guide project
 * Jesse Roland <jesse.roland@onyxpoint.com>
 * Joshua Roys <roysjosh@gmail.com>
 * rrenshaw <bofh69@yahoo.com>
+* Daniel Ruf <daniel@daniel-ruf.de>
 * Chris Ruffalo <chris.ruffalo@gmail.com>
 * Benjamin Ruland <benjamin.ruland@gmail.com>
 * rumch-se <77793453+rumch-se@users.noreply.github.com>
@@ -307,6 +315,7 @@ The following people have contributed to the SCAP Security Guide project
 * Guang Yee <guang.yee@suse.com>
 * Achilleas John Yfantis <ayfantis@redhat.com>
 * YiLin.Li <YiLin.Li@linux.alibaba.com>
+* Xiaojie Yuan <xiyuan@redhat.com>
 * yunimoo <yunimoo@nekocake.cafe>
 * YuQing <yyq0391@163.com>
 * zhaoyun <zhaoyun@kylinos.cn>

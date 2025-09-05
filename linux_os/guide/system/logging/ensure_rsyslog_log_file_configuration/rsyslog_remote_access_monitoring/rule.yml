@@ -8,8 +8,8 @@ description: |-
     attacks and ensure ongoing compliance with remote access policies are being
     audited and upheld. An examples of a remote access method is the use of the
     Remote Desktop Protocol (RDP) from an external, non-organization controlled
-    network. The <tt>/etc/rsyslog.conf</tt> or
-    <tt>/etc/rsyslog.d/*.conf</tt> file should contain a match for the following
+    network. The {{% if 'ubuntu' in product %}}<tt>/etc/rsyslog.d/50-default.conf</tt>{{% else %}}<tt>/etc/rsyslog.conf</tt> or
+    <tt>/etc/rsyslog.d/*.conf</tt>{{% endif %}} file should contain a match for the following
     selectors: <tt>auth.*</tt>, <tt>authpriv.*</tt>, and <tt>daemon.*</tt>. If
     not, use the following as an example configuration:
     <code>
@@ -31,7 +31,6 @@ identifiers:
     cce@rhel10: CCE-87341-4
 
 references:
-    disa: CCI-000067
     nist: AC-17(1)
     srg: SRG-OS-000032-GPOS-00013
     stigid@ol8: OL08-00-010070
@@ -44,14 +43,27 @@ ocil_clause: 'remote access methods are not logging to rsyslog'
 ocil: |-
     To verify that <tt>remote access methods</tt> are logging to <tt>rsyslog</tt>,
     run the following command:
+    {{% if product == 'ubuntu2204' %}}
+    <pre>grep -rE '^(auth\.\*,authpriv\.\*|daemon\.\*)' /etc/rsyslog.*</pre>
+    {{% elif 'ubuntu' in product %}}
+    <pre>grep -rE '^(auth,authpriv\.\*|daemon\.\*)' /etc/rsyslog.*</pre>
+    {{% else %}}
     <pre>grep -rE '(auth.\*|authpriv.\*|daemon.\*)' /etc/rsyslog.*</pre>
+    {{% endif %}}
     The output should contain <tt>auth.*</tt>, <tt>authpriv.*</tt>, and <tt>daemon.*</tt>
     pointing to a log file.
 
 fixtext: |-
+{{% if 'ubuntu' in product %}}
+    add or update the following lines to the "/etc/rsyslog.d/50-default.conf" file:
+
+    auth.*,authpriv.* /var/log/secure
+    daemon.* /var/log/messages
+{{% else %}}
     add or update the following lines to the "/etc/rsyslog.conf" file:
 
     auth.*;authpriv.*;daemon.* /var/log/secure
+{{% endif %}}
 
     The "rsyslog" service must be restarted for the changes to take effect. To restart the "rsyslog" service, run the following command:
 

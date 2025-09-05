@@ -28,3 +28,4 @@ extends: ospp
 
 selections:
     - inactivity_timeout_value=10_minutes
+    - var_system_crypto_policy=fips

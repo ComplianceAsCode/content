@@ -2,7 +2,7 @@ policy: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 title: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 id: stig_rhel9
 source: https://public.cyber.mil/stigs/downloads/
-version: V2R3
+version: V2R4
 reference_type: stigid
 product: rhel9
 levels:
@@ -166,7 +166,7 @@ controls:
             - medium
         title: RHEL 9 must clear SLUB/SLAB objects to prevent use-after-free attacks.
         rules:
-            - grub2_slub_debug_argument
+            - grub2_init_on_free
         status: automated
 
     -   id: RHEL-09-212050
@@ -356,7 +356,7 @@ controls:
             - medium
         title: RHEL 9 must disable the use of user namespaces.
         rules:
-            - sysctl_user_max_user_namespaces
+            - sysctl_user_max_user_namespaces_no_remediation
         status: automated
 
     -   id: RHEL-09-213110
@@ -469,17 +469,17 @@ controls:
         levels:
             - medium
         title: RHEL 9 must not have the ypserv package installed.
-        rules:
+        related_rules:
             - package_ypserv_removed
-        status: automated
+        status: not applicable # The ypserv package is not available in RHEL 9
 
     -   id: RHEL-09-215035
         levels:
             - medium
         title: RHEL 9 must not have the rsh-server package installed.
-        rules:
+        related_rules:
             - package_rsh-server_removed
-        status: automated
+        status: not applicable # The rsh-server package is not available in RHEL 9
 
     -   id: RHEL-09-215040
         levels:
@@ -527,9 +527,9 @@ controls:
         levels:
             - medium
         title: RHEL 9 must not have the quagga package installed.
-        rules:
+        related_rules:
             - package_quagga_removed
-        status: automated
+        status: not applicable # The quagga package is not available in RHEL 9
 
     -   id: RHEL-09-215070
         levels:
@@ -587,12 +587,22 @@ controls:
             - package_crypto-policies_installed
         status: automated
 
+    -   id: RHEL-09-215101
+        levels:
+            - medium
+        title: RHEL 9 must have the Postfix package installed.
+        status: automated
+        rules:
+            - package_postfix_installed
+
+
     -   id: RHEL-09-215105
         levels:
             - medium
         title: RHEL 9 must implement a FIPS 140-3 compliant systemwide cryptographic policy.
         rules:
             - configure_crypto_policy
+            - fips_crypto_subpolicy
         status: automated
 
     -   id: RHEL-09-231010
@@ -994,6 +1004,7 @@ controls:
         rules:
             - file_permission_user_init_files_root
             - var_user_initialization_files_regex=all_dotfiles
+            - rootfiles_configured
         status: automated
 
     -   id: RHEL-09-232050
@@ -1384,14 +1395,6 @@ controls:
             to prevent unauthorized modification.
         rules:
             - selinux_all_devicefiles_labeled
-        status: automated
-
-    -   id: RHEL-09-232265
-        levels:
-            - medium
-        title: RHEL 9 /etc/crontab file must have mode 0600.
-        rules:
-            - file_permissions_crontab
         status: automated
 
     -   id: RHEL-09-232270
@@ -1890,8 +1893,8 @@ controls:
             - medium
         title: The RHEL 9 SSH client must be configured to use only DOD-approved Message Authentication Codes (MACs) employing FIPS 140-3 validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
         rules:
-            - sshd_use_strong_macs
-            - sshd_strong_macs=stig_rhel9
+            - harden_sshd_macs_openssh_conf_crypto_policy
+            - sshd_approved_macs=stig_rhel9
 
     -   id: RHEL-09-255075
         levels:
@@ -1901,7 +1904,8 @@ controls:
             (MACs) employing FIPS 140-3 validated cryptographic hash algorithms.
         status: automated
         rules:
-            - configure_ssh_crypto_policy
+            - harden_sshd_macs_opensshserver_conf_crypto_policy
+            - sshd_approved_macs=stig_rhel9
 
     -   id: RHEL-09-255080
         levels:
@@ -2656,7 +2660,7 @@ controls:
         title: RHEL 9 must terminate idle user sessions.
         rules:
             - logind_session_timeout
-            - var_logind_session_timeout=15_minutes
+            - var_logind_session_timeout=10_minutes
         status: automated
 
     -   id: RHEL-09-431010
@@ -2678,6 +2682,14 @@ controls:
             - selinux_policytype
             - var_selinux_policy_name=targeted
         status: automated
+
+
+    -   id: RHEL-09-431016
+        title: 'RHEL 9 must elevate the SELinux context when an administrator calls the sudo command.'
+        rules:
+            - selinux_context_elevation_for_sudo
+        status: automated
+
 
     -   id: RHEL-09-431020
         levels:
@@ -3116,14 +3128,6 @@ controls:
         title: RHEL 9 must require authentication to access single-user mode.
         rules:
             - require_singleuser_auth
-        status: automated
-
-    -   id: RHEL-09-611205
-        levels:
-            - medium
-        title: RHEL 9 must prevent system daemons from using Kerberos for authentication.
-        rules:
-            - kerberos_disable_no_keytab
         status: automated
 
     -   id: RHEL-09-631010
@@ -4122,22 +4126,6 @@ controls:
         title: RHEL 9 must implement DOD-approved TLS encryption in the GnuTLS package.
         rules:
             - configure_crypto_policy
-        status: automated
-
-    -   id: RHEL-09-672035
-        levels:
-            - medium
-        title: RHEL 9 must implement DOD-approved encryption in the OpenSSL package.
-        rules:
-            - configure_openssl_crypto_policy
-        status: automated
-
-    -   id: RHEL-09-672040
-        levels:
-            - medium
-        title: RHEL 9 must implement DOD-approved TLS encryption in the OpenSSL package.
-        rules:
-            - configure_openssl_tls_crypto_policy
         status: automated
 
     -   id: RHEL-09-672050

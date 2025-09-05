@@ -17,6 +17,9 @@ description: |-
     /sbin/auditd root
     {{% if 'rhel' not in product %}}/sbin/audispd root{{% endif %}}
     /sbin/augenrules root
+    {{%- if 'rhel' in product %}}
+    /sbin/audisp-syslog root
+    {{%- endif %}}
     </pre>
 
     Audit tools needed to successfully view and manipulate audit information
@@ -42,13 +45,12 @@ identifiers:
 
 references:
     cis@ubuntu2204: 4.1.4.10
-    disa: CCI-001493,CCI-001494
-    srg: SRG-OS-000256-GPiOS-00097,SRG-OS-000257-GPOS-00098
+    srg: SRG-OS-000256-GPOS-00097,SRG-OS-000257-GPOS-00098
     stigid@ubuntu2004: UBTU-20-010201
 
 ocil: |-
     Verify it by running the following command:
-    <pre>$ stat -c "%n %G" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/audispd /sbin/augenrules
+    <pre>$ stat -c "%n %G" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/audispd /sbin/augenrules /sbin/audisp-syslog
 
     /sbin/auditctl root
     /sbin/aureport root
@@ -57,6 +59,7 @@ ocil: |-
     /sbin/auditd root
     {{% if 'rhel' not in product %}}/sbin/audispd root{{% endif %}}
     /sbin/augenrules root
+    {{% if 'rhel' in product %}}/sbin/audisp-syslog root{{% endif %}}
     </pre>
 
     If the command does not return all the above lines, the missing ones
@@ -79,4 +82,5 @@ template:
             - /sbin/auditd
             {{% if 'rhel' not in product %}}- /sbin/audispd{{% endif %}}
             - /sbin/augenrules
+            {{% if 'rhel' in product %}}- /sbin/audisp-syslog{{% endif %}}
         gid_or_name: '0'

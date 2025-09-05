@@ -26,7 +26,6 @@ identifiers:
     cce@rhel10: CCE-90134-8
 
 references:
-    disa: CCI-004066
     nist: IA-5(c),IA-5(1)(a),CM-6(a),IA-5(4)
     srg: SRG-OS-000072-GPOS-00040,SRG-OS-000071-GPOS-00039,SRG-OS-000070-GPOS-00038,SRG-OS-000266-GPOS-00101,SRG-OS-000078-GPOS-00046,SRG-OS-000480-GPOS-00225,SRG-OS-000069-GPOS-00037
 
@@ -51,7 +50,7 @@ fixtext: |-
 srg_requirement: |-
     {{{ full_name }}} must enforce password complexity rules for the root account.
 
-platform: package[pam]
+platform: package[libpwquality]
 
 template:
     name: "lineinfile"

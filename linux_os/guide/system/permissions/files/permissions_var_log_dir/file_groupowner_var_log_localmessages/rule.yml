@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Verify Group Who Owns /var/log/localmessages* File'
+
+description: '{{{ describe_file_group_owner(file="/var/log/localmessages*", group="adm|root") }}}'
+
+rationale: |-
+    The <tt>/var/log/localmessages*</tt> file contains log messages from certain boot scripts,
+    including the DHCP client, and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/localmessages*", group="adm|root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/log/localmessages*", group="adm|root") }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /var/log/
+        file_regex: .*localmessages.*
+        gid_or_name: 'adm|root'

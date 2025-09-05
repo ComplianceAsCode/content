@@ -3,6 +3,7 @@ aide_also_checks_rsyslog: 'yes'
 aide_bin_path: /usr/sbin/aide
 aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
+audit_watches_style: legacy
 auid: 1000
 aux_pkg_release: 6229229e
 aux_pkg_version: 5a6340b3
@@ -92,7 +93,13 @@ reference_uris:
   stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://public.cyber.mil/stigs/srg-stig-tools/
 release_key_fingerprint: 567E347AD0044ADE55BA8A5F199E2F91FD431D51
+rsyslog_cafile: /etc/pki/tls/cert.pem
 sshd_distributed_config: 'true'
 sysctl_remediate_drop_in_file: 'false'
 type: platform
 uid_min: 1000
+xwindows_packages:
+- xorg-x11-server-Xorg
+- xorg-x11-server-common
+- xorg-x11-server-utils
+- xorg-x11-server-Xwayland

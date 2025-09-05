@@ -1,0 +1,57 @@
+documentation_complete: true
+
+title: Ensure gpgcheck Is Enabled for All Package Repositories
+
+description: |-
+    To ensure signature checking is enabled for all package repositories, the
+    <tt>gpgcheck</tt> option must be enabled for all repos.
+    Configure the operating system to verify the signature of packages from
+    a repository prior to install by setting the following option in
+    the <tt>"/etc/yum.repos.d/[your_repo_name].repo"</tt> file:
+    <pre>gpgcheck=1</pre>
+
+rationale: |-
+    Changes to any software components can have significant effects on the
+    overall security of the operating system. This requirement ensures the
+    software has not been tampered with and that it has been provided by
+    a trusted vendor.
+
+severity: high
+
+identifiers:
+    cce@rhel8: CCE-86187-2
+
+references:
+    srg: SRG-OS-000366-GPOS-00153
+    stigid@rhel8: RHEL-08-010370
+
+ocil_clause: 'GPG checking is disabled'
+
+ocil: |-
+    To determine whether <tt>{{{ pkg_manager }}}</tt> has been configured to disable
+    <tt>gpgcheck</tt> for any repos, inspect all files in
+    <tt>{{{ pkg_manager_repos }}}</tt> and ensure the following does not appear in any
+    sections:
+    <pre>gpgcheck=0</pre>
+    A value of <tt>0</tt> indicates that <tt>gpgcheck</tt> has been disabled for that repo.
+
+fixtext: |-
+    Configure {{{ full_name }}} to verify the signature of packages from a repository prior to install by setting the following option in the "/etc/yum.repos.d/[your_repo_name].repo" file:
+
+    gpgcheck=1
+
+checktext: |-
+    Verify {{{ full_name }}} prevents the installation of patches, service packs, device drivers, or operating system components from a repository without verification that they have been digitally signed using a certificate that is recognized and approved by the organization.
+
+    Check that {{{ pkg_manager }}} verifies the signature of packages from a repository prior to install with the following command:
+
+    $ sudo grep -E '^\[.*\]|gpgcheck' /etc/yum.repos.d/*.repo
+
+    /etc/yum.repos.d/appstream.repo:[appstream]
+    /etc/yum.repos.d/appstream.repo:gpgcheck=1
+    /etc/yum.repos.d/baseos.repo:[baseos]
+    /etc/yum.repos.d/baseos.repo:gpgcheck=1
+
+    If "gpgcheck" is not set to "1", or if options are missing or commented out, ask the System Administrator how the certificates for patches and other operating system components are verified.
+
+    If there is no process to validate certificates that is approved by the organization, this is a finding.

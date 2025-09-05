@@ -59,6 +59,8 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     - '!ensure_shadow_group_empty'
     - '!service_timesyncd_enabled'
+    - '!audit_rules_file_deletion_events_renameat2'
+    - '!audit_rules_dac_modification_fchmodat2'
     # Not applicable to OL9, packages not available in OL9
     - '!package_cryptsetup-luks_installed'
     - '!service_rpcbind_disabled'

@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'The system must booted with init_on_free=1'
+
+description: |-
+    Setting <tt>init_on_free=1</tt> on boot guarantees that pages and heap objects are initialized right after they're freed, so it won't be possible to access stale data by using a dangling pointer.
+
+
+rationale: |-
+    <tt>init_on_free</tt> is a Linux kernel boot parameter that enhances security by initializing memory regions when they are freed, preventing data leakage.
+    This process ensures that stale data in freed memory cannot be accessed by malicious programs.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-90682-6
+    cce@rhel9: CCE-87483-4
+    cce@rhel10: CCE-90140-5
+
+references:
+    nist: SC-3
+    srg: SRG-OS-000134-GPOS-00068
+    stigid@ol8: OL08-00-010423
+    stigid@rhel8: RHEL-08-010423
+
+platform: grub2
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: init_on_free
+        arg_value: '1'

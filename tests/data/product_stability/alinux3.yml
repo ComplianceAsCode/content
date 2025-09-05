@@ -3,6 +3,7 @@ aide_also_checks_rsyslog: 'no'
 aide_bin_path: /usr/sbin/aide
 aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
+audit_watches_style: legacy
 auid: 1000
 basic_properties_derived: true
 benchmark_id: ALINUX-3
@@ -73,7 +74,13 @@ reference_uris:
   pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
   stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://public.cyber.mil/stigs/srg-stig-tools/
+rsyslog_cafile: /etc/pki/tls/cert.pem
 sshd_distributed_config: 'false'
 sysctl_remediate_drop_in_file: 'false'
 type: platform
 uid_min: 1000
+xwindows_packages:
+- xorg-x11-server-Xorg
+- xorg-x11-server-common
+- xorg-x11-server-utils
+- xorg-x11-server-Xwayland

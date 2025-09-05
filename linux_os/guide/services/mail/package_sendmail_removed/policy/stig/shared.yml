@@ -4,10 +4,12 @@ srg_requirement: |-
 vuldiscussion: |-
     The sendmail software was not developed with security in mind, and its design prevents it from being effectively contained by SELinux. Postfix must be used instead.
 
+
+
 checktext: |-
     Verify that the sendmail package is not installed with the following command:
 
-    $ sudo dnf list --installed sendmail
+    $ dnf list --installed sendmail
 
     Error: No matching Packages to list
 
@@ -17,4 +19,5 @@ fixtext: |-
     Remove the sendmail package with the following command:
 
     $ sudo dnf remove sendmail
+
 

@@ -1,7 +1,5 @@
-
-# packages = sssd
 #!/bin/bash
-#
+# packages = sssd
 
 rm -rf /etc/sssd/conf.d/
 mkdir -p /etc/sssd/conf.d/

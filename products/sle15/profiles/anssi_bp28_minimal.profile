@@ -44,3 +44,12 @@ selections:
   - '!ensure_almalinux_gpgkey_installed'
   - '!enable_authselect'
   - '!package_kea_removed'
+  - '!package_dnf-automatic_installed'
+  - '!timer_dnf-automatic_enabled'
+  - '!dnf-automatic_apply_updates'
+  - '!dnf-automatic_security_updates_only'
+  - '!accounts_password_pam_unix_remember'
+  - '!accounts_password_pam_minclass'
+  - '!accounts_password_pam_retry'
+  - '!file_groupowner_etc_chrony_keys'
+  - accounts_password_pam_pwhistory_remember

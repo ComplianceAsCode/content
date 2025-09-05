@@ -30,12 +30,10 @@ identifiers:
     cce@rhel10: CCE-89527-6
 
 references:
-    disa: CCI-000366
     nist: SC-39,CM-6(a)
     ospp: FMT_SMF_EXT.1
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-040284
-    stigid@rhel8: RHEL-08-040284
 
 ocil: |
     Verify that {{{ full_name }}} disables the use of user namespaces with the following commands:
@@ -63,3 +61,11 @@ template:
         sysctlvar: user.max_user_namespaces
         sysctlval: '0'
         datatype: int
+
+warnings:
+    - functionality: |-
+       Remediation of this rule might impair or prevent functionality of certain applications.
+       This stands especially for general container usage and for certain desktop applications.
+       There is an alternative rule which performs the same check but it intentionally lacks the remediation part.
+       If needed, you can use the rule <tt>sysctl_user_max_user_namespaces_no_remediation</tt>.
+       In that case, ensure that such use case is properly documented.

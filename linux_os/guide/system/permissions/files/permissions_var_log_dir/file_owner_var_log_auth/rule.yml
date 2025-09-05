@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns /var/log/auth.log File'
+
+description: '{{{ describe_file_owner(file="/var/log/auth.log", owner="syslog|root") }}}'
+
+rationale: |-
+    The <tt>/var/log/auth.log</tt> file contains records information about user
+    login attempts and authentication processes and should only be accessed by
+    authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/auth.log", owner="syslog|root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/auth.log", owner="syslog|root") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: /var/log/auth.log
+        uid_or_name: 'syslog|root'

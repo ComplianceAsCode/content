@@ -2,4 +2,5 @@
 
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 "$SYSTEMCTL_EXEC" unmask '{{{ MOUNTNAME }}}.mount'
+"$SYSTEMCTL_EXEC" enable '{{{ MOUNTNAME }}}.mount'
 "$SYSTEMCTL_EXEC" start '{{{ MOUNTNAME }}}.mount'

@@ -9,9 +9,9 @@ do
 	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
 	OTHER_FILTERS=""
 	AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
-	SYSCALL="rmdir unlink unlinkat rename renameat"
+	SYSCALL="rmdir unlink unlinkat rename renameat renameat2"
 	KEY="delete"
-	SYSCALL_GROUPING="rmdir unlink unlinkat rename renameat"
+	SYSCALL_GROUPING="rmdir unlink unlinkat rename renameat renameat2"
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 	{{{ bash_fix_audit_syscall_rule("augenrules", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
 	{{{ bash_fix_audit_syscall_rule("auditctl", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}

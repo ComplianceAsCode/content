@@ -60,6 +60,9 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then \
 	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-v2r1.profile && \
 	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-node-v2r1.profile && \
 	sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/stig-v2r1.profile; \
+    elif [ "$(uname -m)" = "ppc64le" ]; then \
+        find products/rhcos4 -name "*stig*.profile" | xargs sed -i 's/\(documentation_complete: \).*/\1true/' && \
+        find products/ocp4 -name "*stig*.profile" | xargs sed -i 's/\(documentation_complete: \).*/\1true/' ; \
 	fi
 
 # OCPBUGS-32794: Ensure stability of rules shipped
@@ -70,7 +73,7 @@ RUN grep -lr 'documentation_complete: false' ./products | xargs -I '{}' \
 
 # Build the OpenShift and RHCOS content for x86 architectures. Only build
 # OpenShift content for ppc64le and s390x architectures.
-RUN if [ "$(uname -m)" = "x86_64" ]; then \
+RUN if [ "$(uname -m)" = "x86_64" ] || [ "$(uname -m)" = "ppc64le" ]; then \
         ./build_product ocp4 rhcos4 --datastream-only; \
         else ./build_product ocp4 --datastream-only; \
         fi

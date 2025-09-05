@@ -24,7 +24,7 @@
       other_filters="",
       auid_filters="-F auid>="~auid~" -F auid!=unset",
       syscalls=ATTR,
-      key="perm_mod",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(
@@ -32,7 +32,7 @@
       other_filters="",
       auid_filters="-F auid>="~auid~" -F auid!=unset",
       syscalls=ATTR,
-      key="perm_mod",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
 {{%- if CHECK_ROOT_USER %}}
@@ -41,7 +41,7 @@
       other_filters="",
       auid_filters="-F auid=0",
       syscalls=ATTR,
-      key="perm_mod",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(
@@ -49,7 +49,7 @@
       other_filters="",
       auid_filters="-F auid=0",
       syscalls=ATTR,
-      key="perm_mod",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
 {{%- endif %}}
@@ -61,7 +61,7 @@
       other_filters="",
       auid_filters="-F auid>="~auid~" -F auid!=unset",
       syscalls=ATTR,
-      key="perm_mod",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(
@@ -69,7 +69,7 @@
       other_filters="",
       auid_filters="-F auid>="~auid~" -F auid!=unset",
       syscalls=ATTR,
-      key="perm_mod",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
 {{%- if CHECK_ROOT_USER %}}
@@ -78,7 +78,7 @@
       other_filters="",
       auid_filters="-F auid=0",
       syscalls=ATTR,
-      key="perm_mod",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(
@@ -86,7 +86,7 @@
       other_filters="",
       auid_filters="-F auid=0",
       syscalls=ATTR,
-      key="perm_mod",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
 {{%- endif %}}

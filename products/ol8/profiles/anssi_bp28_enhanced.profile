@@ -15,6 +15,9 @@ selections:
     - anssi:all:enhanced
     - var_password_hashing_algorithm=SHA512
     - var_password_pam_unix_rounds=65536
+    # An alternative solution for R67 is using nss-pam-ldapd package, in this case ensures SSL and certificate configuration
+    - ldap_client_start_tls
+    - ldap_client_tls_cacertpath
     # Following rules once had a prodtype incompatible with the ol8 product
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!timer_logrotate_enabled'
@@ -37,6 +40,8 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     - '!grub2_page_alloc_shuffle_argument'
     - '!package_kea_removed'
+    - '!audit_rules_file_deletion_events_renameat2'
+    - '!audit_rules_dac_modification_fchmodat2'
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'

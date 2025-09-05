@@ -16,8 +16,8 @@ selections:
     - sshd_approved_macs=cis_sle12
     - sshd_approved_ciphers=cis_sle12
     - var_multiple_time_servers=suse
-    - var_multiple_time_pools=suse 
-# Exclude from PCI DISS profile all rules related to ntp and timesyncd and keep only 
+    - var_multiple_time_pools=suse
+# Exclude from PCI DISS profile all rules related to ntp and timesyncd and keep only
 # rules related to chrony
     - '!ntpd_specify_multiple_servers'
     - '!ntpd_specify_remote_server'
@@ -36,3 +36,4 @@ selections:
     - '!accounts_passwords_pam_faillock_unlock_time'
     - '!accounts_password_pam_ucredit'
     - '!accounts_password_pam_minlen'
+    - '!audit_rules_mac_modification_etc_selinux'

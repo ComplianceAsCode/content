@@ -4,9 +4,9 @@ srg_requirement: |-
 vuldiscussion: |-
     The "nosuid" mount option causes the system not to execute "setuid" and "setgid" files with owner privileges. This option must be used for mounting any file system not containing approved "setuid" and "setguid" files. Executing files from untrusted file systems increases the opportunity for nonprivileged users to attain unauthorized administrative access.
 
-checktext: |-
-    Note: For systems that use UEFI, this requirement is Not Applicable.
 
+
+checktext: |-
     Verify the /boot directory is mounted with the "nosuid" option with the following command:
 
     $ mount | grep '\s/boot\s'
@@ -17,4 +17,5 @@ checktext: |-
 
 fixtext: |-
     Modify "/etc/fstab" to use the "nosuid" option on the "/boot" directory.
+
 

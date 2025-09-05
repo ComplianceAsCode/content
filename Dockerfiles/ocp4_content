@@ -7,7 +7,7 @@ RUN microdnf -y install cmake make git /usr/bin/python3 python3-pyyaml python3-j
 COPY . .
 
 # Enable only certain profiles on ppc64le and s390x
-RUN if [ "$(uname -m)" == "x86_64" ]; then \
+RUN if [ "$(uname -m)" == "x86_64" ] || [ "$(uname -m)" == "aarch64" ]; then \
     echo "Building OpenShift and RHCOS content for x86_64"; \
     else echo "Building OpenShift content for $(uname -m)" && \
         # Disable all profiles first
@@ -44,7 +44,7 @@ RUN if [ "$(uname -m)" == "x86_64" ]; then \
 # Build the OpenShift, EKS, and RHCOS content for x86 architectures. Only build
 # OpenShift content for ppc64le and s390x architectures since we're not
 # including any RHCOS profiles on those architectures right now anyway.
-RUN if [ "$(uname -m)" = "x86_64" ]; then \
+RUN if [ "$(uname -m)" = "x86_64" ] || [ "$(uname -m)" == "aarch64" ]; then \
         ./build_product ocp4 rhcos4 eks --datastream-only; \
         elif [ "$(uname -m)" = "ppc64le" ]; then \
         ./build_product ocp4 rhcos4 --datastream-only; \

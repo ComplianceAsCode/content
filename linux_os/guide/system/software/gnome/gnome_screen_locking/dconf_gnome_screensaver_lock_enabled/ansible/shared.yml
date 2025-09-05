@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle,multi_platform_almalinux
 # reboot = false
 # strategy = unknown
 # complexity = low
@@ -9,7 +9,7 @@
   when: ansible_distribution == 'SLES'
 
 - name: "Enable GNOME3 Screensaver Lock After Idle Period"
-  ini_file:
+  community.general.ini_file:
     dest: "/etc/dconf/db/local.d/00-security-settings"
     section: "org/gnome/desktop/screensaver"
     option: lock-enabled
@@ -27,7 +27,7 @@
   when: ansible_distribution != 'SLES'
 
 - name: "Enable GNOME3 Screensaver Lock After Idle Period"
-  ini_file:
+  community.general.ini_file:
     dest: "/etc/dconf/db/local.d/00-security-settings"
     section: "org/gnome/desktop/lockdown"
     option: disable-lock-screen

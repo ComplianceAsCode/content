@@ -8,7 +8,7 @@ description: |-
     ownership configured to protected against unauthorized access.
 
     Verify it by running the following command:
-    <pre>$ stat -c "%n %U" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/audispd /sbin/augenrules
+    <pre>$ stat -c "%n %U" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/audispd /sbin/augenrules /sbin/audisp-syslog
 
     /sbin/auditctl root
     /sbin/aureport root
@@ -17,6 +17,7 @@ description: |-
     /sbin/auditd root
     {{% if 'rhel' not in product %}}/sbin/audispd root{{% endif %}}
     /sbin/augenrules root
+    {{% if 'rhel' in product %}}/sbin/audisp-syslog root{{% endif %}}
     </pre>
 
     Audit tools needed to successfully view and manipulate audit information
@@ -42,8 +43,7 @@ identifiers:
 
 references:
     cis@ubuntu2204: 4.1.4.9
-    disa: CCI-001493,CCI-001494
-    srg: SRG-OS-000256-GPiOS-00097,SRG-OS-000257-GPOS-00098
+    srg: SRG-OS-000256-GPOS-00097,SRG-OS-000257-GPOS-00098
     stigid@ubuntu2004: UBTU-20-010200
     stigid@ubuntu2204: UBTU-22-232110
 
@@ -80,4 +80,5 @@ template:
             - /sbin/auditd
             {{% if 'rhel' not in product %}}- /sbin/audispd{{% endif %}}
             - /sbin/augenrules
-        fileuid: '0'
+            {{% if 'rhel' in product %}}- /sbin/audisp-syslog{{% endif %}}
+        uid_or_name: '0'

@@ -1,8 +1,11 @@
 #!/bin/bash
 # packages = audit
 # platform = multi_platform_all
+# variables = var_accounts_passwords_pam_faillock_dir=/var/log/faillock
 
 {{{ setup_auditctl_environment() }}}
 
 path="/var/log/faillock"
-. $SHARED/audit_rules_login_events/auditctl_wrong_rule_without_key.fail.sh
+style="{{{ audit_watches_style }}}"
+filter_type="path"
+. $SHARED/audit_rules_watch/auditctl_wrong_rule_without_key.fail.sh

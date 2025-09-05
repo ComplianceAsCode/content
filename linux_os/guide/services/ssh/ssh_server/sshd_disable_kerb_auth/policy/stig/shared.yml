@@ -9,7 +9,7 @@ vuldiscussion: |-
 checktext: |-
     Verify the SSH daemon does not allow Kerberos authentication with the following command:
 
-    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*kerberosauthentication'
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*kerberosauthentication'
 
     KerberosAuthentication no
 
@@ -18,10 +18,12 @@ checktext: |-
 fixtext: |-
     Configure the SSH daemon to not allow Kerberos authentication.
 
-    Add the following line in "/etc/ssh/sshd_config", or uncomment the line and set the value to "no":
+    Add the following line in "/etc/ssh/sshd_config" or to a file in "/etc/ssh/sshd_config.d", or uncomment the line and set the value to "no":
 
     KerberosAuthentication no
 
     The SSH service must be restarted for changes to take effect:
 
     $ sudo systemctl restart sshd.service
+
+

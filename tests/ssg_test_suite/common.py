@@ -20,8 +20,8 @@ from ssg.constants import OSCAP_RULE
 from ssg.jinja import process_file_with_macros
 from ssg.products import product_yaml_path, load_product_yaml
 from ssg.rules import get_rule_dir_yaml
-from ssg.utils import mkdir_p
-from ssg_test_suite.log import LogHelper
+from ssg.utils import mkdir_p, select_templated_tests
+from tests.ssg_test_suite.log import LogHelper
 
 import ssg.templates
 
@@ -185,52 +185,6 @@ def _run_cmd(command_list, verbose_path, env=None):
     return returncode, output.decode('utf-8')
 
 
-def _get_platform_cpes(platform):
-    ssg_root = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    if platform.startswith("multi_platform_"):
-        try:
-            products = MULTI_PLATFORM_MAPPING[platform]
-        except KeyError:
-            logging.error(
-                "Unknown multi_platform specifier: %s is not from %s"
-                % (platform, ", ".join(MULTI_PLATFORM_MAPPING.keys())))
-            raise ValueError
-        platform_cpes = set()
-        for p in products:
-            product_yaml_path = os.path.join(ssg_root, "products", p, "product.yml")
-            product_yaml = load_product_yaml(product_yaml_path)
-            p_cpes = ProductCPEs()
-            p_cpes.load_product_cpes(product_yaml)
-            p_cpes.load_content_cpes(product_yaml)
-            platform_cpes |= set(p_cpes.get_product_cpe_names())
-        return platform_cpes
-    else:
-        # scenario platform is specified by a full product name
-        try:
-            product = FULL_NAME_TO_PRODUCT_MAPPING[platform]
-        except KeyError:
-            logging.error(
-                "Unknown product name: %s is not from %s"
-                % (platform, ", ".join(FULL_NAME_TO_PRODUCT_MAPPING.keys())))
-            raise ValueError
-        product_yaml_path = os.path.join(ssg_root, "products", product, "product.yml")
-        product_yaml = load_product_yaml(product_yaml_path)
-        product_cpes = ProductCPEs()
-        product_cpes.load_product_cpes(product_yaml)
-        product_cpes.load_content_cpes(product_yaml)
-        platform_cpes = set(product_cpes.get_product_cpe_names())
-        return platform_cpes
-
-
-def matches_platform(scenario_platforms, benchmark_cpes):
-    if "multi_platform_all" in scenario_platforms:
-        return True
-    scenario_cpes = set()
-    for p in scenario_platforms:
-        scenario_cpes |= _get_platform_cpes(p)
-    return len(scenario_cpes & benchmark_cpes) > 0
-
-
 def run_with_stdout_logging(command, args, log_file):
     log_file.write("{0} {1}\n".format(command, " ".join(args)))
     result = subprocess.run(
@@ -386,6 +340,7 @@ def send_scripts(test_env, test_content_by_rule_id):
     archive_file_basename = os.path.basename(archive_file)
     remote_archive_file = os.path.join(remote_dir, archive_file_basename)
     logging.debug("Uploading scripts.")
+    logging.debug(f"LogHelper.LOG_DIR {LogHelper.LOG_DIR}")
     log_file_name = os.path.join(LogHelper.LOG_DIR, "env-preparation.log")
 
     with open(log_file_name, 'a') as log_file:
@@ -416,31 +371,6 @@ def get_test_dir_config(test_dir, product_yaml):
     if os.path.exists(test_config_filename):
         test_config = ssg.yaml.open_and_expand(test_config_filename, product_yaml)
     return test_config
-
-
-def select_templated_tests(test_dir_config, available_scenarios_basenames):
-    deny_scenarios = set(test_dir_config.get("deny_templated_scenarios", []))
-    available_scenarios_basenames = {
-        test_name for test_name in available_scenarios_basenames
-        if test_name not in deny_scenarios
-    }
-
-    allow_scenarios = set(test_dir_config.get("allow_templated_scenarios", []))
-    if allow_scenarios:
-        available_scenarios_basenames = {
-            test_name for test_name in available_scenarios_basenames
-            if test_name in allow_scenarios
-        }
-
-    allowed_and_denied = deny_scenarios.intersection(allow_scenarios)
-    if allowed_and_denied:
-        msg = (
-            "Test directory configuration contain inconsistencies: {allowed_and_denied} "
-            "scenarios are both allowed and denied."
-            .format(allowed_and_denied=allowed_and_denied)
-        )
-        raise ValueError(msg)
-    return available_scenarios_basenames
 
 
 def fetch_templated_tests_paths(
@@ -606,7 +536,7 @@ def install_packages(test_env, packages):
 
 def _match_rhel_version(cpe):
     rhel_cpe = {
-        "redhat:enterprise_linux": r":enterprise_linux:([^:]+):",
+        "redhat:enterprise_linux": r":enterprise_linux:([^:]+)",
         "centos:centos": r"centos:centos:([0-9]+)"}
     for cpe_item in rhel_cpe.keys():
         if cpe_item in cpe:

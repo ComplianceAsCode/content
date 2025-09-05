@@ -26,7 +26,6 @@ identifiers:
     cce@rhel10: CCE-88171-4
 
 references:
-    disa: CCI-000366
     nist: IA-5(c),IA-5(1)(a),CM-6(a),IA-5(4)
     srg: SRG-OS-000480-GPOS-00225,SRG-OS-000072-GPOS-00040
     stigid@ol8: OL08-00-020300
@@ -43,7 +42,7 @@ ocil: |-
 
     /etc/security/pwquality.conf:dictcheck=1</pre>
 
-platform: package[pam]
+platform: package[libpwquality]
 
 template:
     name: accounts_password

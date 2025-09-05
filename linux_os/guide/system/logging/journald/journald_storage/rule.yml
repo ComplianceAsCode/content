@@ -5,7 +5,7 @@ title: Ensure journald is configured to write log files to persistent disk
 
 description: |-
     The journald system may store log files in volatile memory or locally on disk.
-    If the logs are only stored in volatile memory they will we lost upon reboot.
+    If the logs are only stored in volatile memory they will be lost upon reboot.
 
 rationale:
     Log files contain valuable data and need to be persistent to aid in possible investigations.
@@ -23,7 +23,6 @@ identifiers:
 references:
     cis@sle12: 4.2.2.3
     cis@sle15: 4.2.2.3
-    cis@slmicro5: 4.2.2.3
     cis@ubuntu2004: 4.2.2.3
     cis@ubuntu2204: 4.2.1.4
 
@@ -54,6 +53,7 @@ template:
         param: Storage
         value: persistent
         no_quotes: 'true'
+        missing_config_file_fail: 'false'
 {{% else %}}
 template:
     name: shell_lineinfile
@@ -63,3 +63,7 @@ template:
         value: persistent
         no_quotes: 'true'
 {{% endif -%}}
+
+{{% if product in ['ubuntu2404'] %}}
+platform: service_disabled[rsyslog]
+{{% endif %}}

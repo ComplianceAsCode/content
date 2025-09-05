@@ -11,6 +11,9 @@ FILES_NOT_MANAGED_BY_PACKAGES=("/etc/sysctl.conf" "/etc/sysctl.d/*.conf" "/usr/l
 FILES_NOT_MANAGED_BY_PACKAGES=("/etc/sysctl.conf" "/etc/sysctl.d/*.conf" "/lib/sysctl.d/*.conf" "/usr/local/lib/sysctl.d/*.conf" "/run/sysctl.d/*.conf")
 {{% endif %}}
 FILES_MANAGED_BY_PACKAGES=("/usr/lib/sysctl.d/*.conf")
+{{% if product in [ "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
+FILES_NOT_MANAGED_BY_PACKAGES+=("/etc/ufw/sysctl.conf")
+{{% endif %}}
 
 function pass_if_set_correctly()
 {

@@ -69,3 +69,9 @@ selections:
     # Add oracle gpg key rule
     - 'ensure_oracle_gpgkey_installed'
     - '!ensure_redhat_gpgkey_installed'
+
+    # OL 10 uses a different rule for auditing changes to selinux configuration
+    - '!audit_rules_mac_modification'
+    - audit_rules_mac_modification_etc_selinux
+    #  Irrelevant for ol10
+    - '!enable_dconf_user_profile'

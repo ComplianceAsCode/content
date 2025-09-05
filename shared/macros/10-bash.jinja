@@ -332,7 +332,7 @@ fi
 {{#
     Macro to fix audit file system object watch rule for given path:
 
-    * if rule exists, also verifies the -w bits match the requirements
+    * if rule exists, also verifies the '-w' or '-F path' match the requirements
     * if rule doesn't exist yet, appends expected rule form to $files_to_inspect
       audit rules file, depending on the tool which was used to load audit rules
 
@@ -342,15 +342,22 @@ fi
 
 :param tool:                 tool used to load audit rules, either 'auditctl', or 'augenrules'
 :type tool: str
-:param path:                 value of -w audit rule's argument
+:param path:                 value of '-w' or '-F path=' or '-F dir=' audit rule's argument
 :type path: str
-:param required_access_bits: value of -p audit rule's argument
+:param required_access_bits: value of '-p' or '-F perm=' audit rule's argument
 :type required_access_bits: str
-:param key:                  value of -k audit rule's argument
+:param key:                  value of '-k' or '-F key=' audit rule's argument
 :type key: str
+:param style: Use "modern" or "legacy" style of audit watches
+:type style: str
+:param arch: Value of '-F arch=' audit rule's argument, generate audit watches for the "b32" or "b64" architecture. Only applicable if "style" is set to "modern".
+:type arch: str
+:param filter_type: The string after first `-F` before first `=`. can be either `path` or `dir`. Only applicable if "style" is set to "modern".
+:type filter_type: str
+
 
 #}}
-{{%- macro bash_fix_audit_watch_rule(tool, path, required_access_bits, key) -%}}
+{{%- macro bash_fix_audit_watch_rule(tool, path, required_access_bits, key, style="", arch="", filter_type="path") -%}}
 # Create a list of audit *.rules files that should be inspected for presence and correctness
 # of a particular audit rule. The scheme is as follows:
 #
@@ -372,7 +379,11 @@ files_to_inspect+=('/etc/audit/audit.rules')
 # If the audit is 'augenrules', then check if rule is already defined
 # If rule is defined, add '/etc/audit/rules.d/*.rules' to list of files for inspection.
 # If rule isn't defined, add '/etc/audit/rules.d/{{{ key }}}.rules' to list of files for inspection.
+{{% if style == "modern" %}}
+readarray -t matches < <(grep -HP "[\s]*-F[\s]+{{{ filter_type }}}={{{ path }}}" /etc/audit/rules.d/*.rules)
+{{% else %}}
 readarray -t matches < <(grep -HP "[\s]*-w[\s]+{{{ path }}}" /etc/audit/rules.d/*.rules)
+{{% endif %}}
 
 # For each of the matched entries
 for match in "${matches[@]}"
@@ -404,7 +415,11 @@ fi
 for audit_rules_file in "${files_to_inspect[@]}"
 do
     # Check if audit watch file system object rule for given path already present
+{{% if style == "modern" %}}
+    if grep -q -P -- "^[\s]*-F[\s]+{{{ filter_type }}}={{{ path }}}" "$audit_rules_file"
+{{% else %}}
     if grep -q -P -- "^[\s]*-w[\s]+{{{ path }}}" "$audit_rules_file"
+{{% endif %}}
     then
         # Rule is found => verify yet if existing rule definition contains
         # all of the required access type bits
@@ -412,7 +427,11 @@ do
         # Define BRE whitespace class shortcut
         sp="[[:space:]]"
         # Extract current permission access types (e.g. -p [r|w|x|a] values) from audit rule
+{{% if style == "modern" %}}
+        current_access_bits=$(sed -ne "s#$sp*-a$sp\+always,exit$sp\+-F$sp\+arch={{{ arch }}}$sp\+-F$sp\+{{{ filter_type }}}={{{ path }}}$sp\+-F$sp\+perm=\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
+{{% else %}}
         current_access_bits=$(sed -ne "s#$sp*-w$sp\+{{{ path }}} $sp\+-p$sp\+\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
+{{% endif %}}
         # Split required access bits string into characters array
         # (to check bit's presence for one bit at a time)
         for access_bit in $(echo "{{{ required_access_bits }}}" | grep -o .)
@@ -428,12 +447,20 @@ do
         done
         # Propagate the updated rule's access bits (original + the required
         # ones) back into the /etc/audit/audit.rules file for that rule
+{{% if style == "modern" %}}
+        sed -i "s#\($sp*-a$sp\+always,exit$sp\+-F$sp\+arch={{{ arch }}}$sp\+-F$sp\+{{{ filter_type }}}={{{ path }}}$sp\+-F$sp\+perm=\)\([rxwa]\{1,4\}\)\(.*\)#\1$current_access_bits\3#" "$audit_rules_file"
+{{% else %}}
         sed -i "s#\($sp*-w$sp\+{{{ path }}}$sp\+-p$sp\+\)\([rxwa]\{1,4\}\)\(.*\)#\1$current_access_bits\3#" "$audit_rules_file"
+{{% endif %}}
     else
         # Rule isn't present yet. Append it at the end of $audit_rules_file file
         # with proper key
 
+{{% if style == "modern" %}}
+        echo "-a always,exit -F arch={{{ arch }}} -F {{{ filter_type }}}={{{ path }}} -F perm={{{ required_access_bits }}} -F key={{{ key }}}" >> "$audit_rules_file"
+{{% else %}}
         echo "-w {{{ path }}} -p {{{ required_access_bits }}} -k {{{ key }}}" >> "$audit_rules_file"
+{{% endif %}}
     fi
 done
 {{%- endmacro -%}}
@@ -731,6 +758,7 @@ if ! grep -q '#[[:space:]]*server' "{{{ config_file }}}" ; then
 else
   sed -i 's/#[ \t]*server/server/g' "{{{ config_file }}}"
 fi
+{{{ bash_ensure_nl_at_eof(config_file) }}}
 {{%- endmacro -%}}
 
 
@@ -1408,7 +1436,7 @@ for f in /etc/sudoers /etc/sudoers.d/* ; do
   if ! test -z "$matching_list"; then
     while IFS= read -r entry; do
       # comment out "{{{ parameter }}}" matches to preserve user data
-      sed -i "s/^${entry}$/# &/g" $f
+      sed -i "s|^${entry}$|# &|g" $f
     done <<< "$matching_list"
 
     /usr/sbin/visudo -cf $f &> /dev/null || echo "Fail to validate $f with visudo"
@@ -1456,7 +1484,7 @@ done
 #}}
 {{%- macro bash_package_installed(pkgname) -%}}
 {{%- if pkg_manager == "apt_get" -%}}
-dpkg-query --show --showformat='${db:Status-Status}\n' "{{{ pkgname }}}" 2>/dev/null | grep -q ^installed
+dpkg-query --show --showformat='${db:Status-Status}' "{{{ pkgname }}}" 2>/dev/null | grep -q '^installed$'
 {{%- else -%}}
 rpm --quiet -q "{{{ pkgname }}}"
 {{%- endif -%}}
@@ -2147,9 +2175,9 @@ This macro creates a Bash conditional which uses dpkg to check if a package pass
 #}}
 {{%- macro bash_pkg_conditional_dpkg(package, op=None, ver=None) -%}}
 {{%- if ver -%}}
-dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q '^installed' && {{{ bash_compare_version_dpkg(package, op, ver) }}}
+dpkg-query --show --showformat='${db:Status-Status}' '{{{ package }}}' 2>/dev/null | grep -q '^installed$' && {{{ bash_compare_version_dpkg(package, op, ver) }}}
 {{%- else -%}}
-dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q '^installed'
+dpkg-query --show --showformat='${db:Status-Status}' '{{{ package }}}' 2>/dev/null | grep -q '^installed$'
 {{%- endif -%}}
 {{%- endmacro -%}}
 
@@ -2360,7 +2388,7 @@ if ! grep -qP "^\s*{{{ group }}}\s+{{{ control_regex }}}\s+{{{ module }}}\s*.*\s
 fi
 {{%- else %}}
 else
-    sed -i -E --follow-symlinks "s/(\s*{{{ group }}}\s+{{{ control_regex }}}\s+{{{ module }}}\s+.*)({{{ option }}}=)[[:alnum:]]+\s*(.*)/\1\2{{{ value }}} \3/" "{{{ pam_file }}}"
+    sed -i -E --follow-symlinks "s/(\s*{{{ group }}}\s+{{{ control_regex }}}\s+{{{ module }}}\s+.*)({{{ option }}}=)[[:alnum:]]*\s*(.*)/\1\2{{{ value }}} \3/" "{{{ pam_file }}}"
 fi
 {{%- endif %}}
 {{%- endmacro -%}}
@@ -2387,7 +2415,7 @@ if grep -qP "^\s*{{{ group }}}\s.*\b{{{ module }}}\s.*\b{{{ option }}}\b" "{{{ p
     sed -i -E --follow-symlinks "s/(.*{{{ group }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[[:alnum:]]*(.*)/\1\2/g" "{{{ pam_file }}}"
 {{%- else %}}
 if grep -qP "^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s.*\b{{{ option }}}\b" "{{{ pam_file }}}"; then
-    sed -i -E --follow-symlinks "s/(.*{{{ group }}}.*{{{ control }}}.*{{{ module }}}.*)\s{{{ option }}}=?[[:alnum:]]*(.*)/\1\2/g" "{{{ pam_file }}}"
+    sed -i -E --follow-symlinks "s/(.*{{{ group }}}.*{{{ control }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[[:alnum:]]*(.*)/\1\2/g" "{{{ pam_file }}}"
 {{%- endif %}}
 fi
 {{%- endmacro -%}}
@@ -2669,7 +2697,7 @@ This macro defines a conditional expression that is evaluated as true
 if the remediation is performed during a build of a bootable container image.
 #}}
 {{%- macro bash_bootc_build() -%}}
-[[ "$OSCAP_BOOTC_BUILD" == "YES" ]]
+{ rpm --quiet -q kernel rpm-ostree bootc && ! rpm --quiet -q openshift-kubelet && { [ -f "/run/.containerenv" ] || [ -f "/.containerenv" ]; }; }
 {{%- endmacro -%}}
 
 {{#
@@ -2677,7 +2705,7 @@ This macro defines a conditional expression that is evaluated as true
 if the remediation is not performed during a build of a bootable container image.
 #}}
 {{%- macro bash_not_bootc_build() -%}}
-[[ "$OSCAP_BOOTC_BUILD" != "YES" ]]
+! {{{ bash_bootc_build() }}}
 {{%- endmacro -%}}
 
 

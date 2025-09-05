@@ -22,7 +22,9 @@ description: |-
 
 selections:
     - anssi:all:enhanced
+    - var_password_hashing_algorithm_pam=yescrypt
     # Following rules are incompatible with rhel10 product
+    - '!enable_authselect'
     # tally2 is deprecated, replaced by faillock
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!accounts_passwords_pam_tally2'
@@ -54,6 +56,8 @@ selections:
     - '!file_groupowner_efi_user_cfg'
     - '!file_owner_efi_user_cfg'
     - '!file_permissions_efi_user_cfg'
+    # RHEL 10 unified the paths for grub2 files. This rule is selected in control file by R5.
+    - '!grub2_uefi_password'
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'
@@ -70,6 +74,9 @@ selections:
     - '!package_xinetd_removed'
     - '!package_ypbind_removed'
     - '!package_ypserv_removed'
+    # RHEL 10 uses a different rule for auditing changes to selinux configuration (R73)
+    - '!audit_rules_mac_modification'
+    - audit_rules_mac_modification_etc_selinux
     # these rules are failing when they are remediated with Ansible, removing them temporarily until they are fixed
     - '!accounts_password_pam_retry'
     # These rules are being modified and they are causing trouble in their current state (R67)

@@ -93,11 +93,14 @@ controls:
         - file_owner_ovs_pid
         - file_groupowner_ovs_pid
         - file_owner_ovs_conf_db
-        - file_groupowner_ovs_conf_db
+        - file_groupowner_ovs_conf_db_openvswitch
+        - file_groupowner_ovs_conf_db_hugetlbfs
         - file_owner_ovs_sys_id_conf
-        - file_groupowner_ovs_sys_id_conf
+        - file_groupowner_ovs_sys_id_conf_openvswitch
+        - file_groupowner_ovs_sys_id_conf_hugetlbfs
         - file_owner_ovs_conf_db_lock
-        - file_groupowner_ovs_conf_db_lock
+        - file_groupowner_ovs_conf_db_lock_openvswitch
+        - file_groupowner_ovs_conf_db_lock_hugetlbfs
         - file_owner_ovs_vswitchd_pid
         - file_groupowner_ovs_vswitchd_pid
         - file_owner_ovsdb_server_pid
@@ -222,9 +225,7 @@ controls:
       status: automated
       rules:
         - api_server_kubelet_client_cert
-        - api_server_kubelet_client_cert_pre_4_9
         - api_server_kubelet_client_key
-        - api_server_kubelet_client_key_pre_4_9
       levels: [ level_1, ]
     - id: 1.2.6
       title: Verify that the kubelet certificate authority is set as appropriate
@@ -390,7 +391,8 @@ controls:
       title: Ensure that the API Server only makes use of Strong Cryptographic Ciphers
       status: automated
       rules:
-        - api_server_tls_cipher_suites
+        - api_server_tls_security_profile_not_old
+        - api_server_tls_security_profile_custom_min_tls_version
       levels: [ level_1, ]
     - id: 1.2.33
       title: Ensure unsupported configuration overrides are not used

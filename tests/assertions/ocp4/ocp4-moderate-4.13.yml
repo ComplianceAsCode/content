@@ -224,11 +224,11 @@ rule_results:
     default_result: NOT-APPLICABLE
     result_after_remediation: NOT-APPLICABLE
   e2e-moderate-file-integrity-exists:
-    default_result: FAIL
-    result_after_remediation: PASS
+    default_result: FAIL or NOT-APPLICABLE
+    result_after_remediation: PASS or NOT-APPLICABLE
   e2e-moderate-file-integrity-notification-enabled:
-    default_result: FAIL
-    result_after_remediation: PASS
+    default_result: FAIL or NOT-APPLICABLE
+    result_after_remediation: PASS or NOT-APPLICABLE
   e2e-moderate-file-owner-proxy-kubeconfig:
     default_result: NOT-APPLICABLE
     result_after_remediation: NOT-APPLICABLE
@@ -395,4 +395,10 @@ rule_results:
     result_after_remediation: MANUAL
   e2e-moderate-kubelet-configure-tls-cipher-suites-ingresscontroller:
     default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-api-server-tls-security-profile-custom-min-tls-version:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-tls-security-profile-not-old:
+    default_result: PASS
     result_after_remediation: PASS

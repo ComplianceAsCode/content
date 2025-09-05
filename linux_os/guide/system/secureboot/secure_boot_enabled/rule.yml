@@ -1,0 +1,41 @@
+documentation_complete: true
+
+title: 'Ensure that Secure Boot is enabled'
+
+description: |-
+  Ensure that Secure Boot is enabled with the <tt>mokutil</tt> command.
+
+rationale: |-
+   By ensuring the integrity of the boot process, Secure Boot protects against rootkits,
+   bootkits, and other low-level malware that could compromise the system before traditional defenses activate. This helps maintain both the confidentiality and integrity of the system, ensuring that sensitive data remains protected and only trusted code is executed.
+
+severity: medium
+
+identifiers:
+  cce@rhel10: CCE-86748-1
+
+references:
+  ism: ISM-1745
+
+ocil_clause: 'Secure Boot is not enabled'
+
+ocil: |-
+  Check that Secure Boot is enabled with the <tt>mokutil</tt> command.
+
+  When Secure Boot is enabled:
+  <pre>
+  mokutil --sb-state
+  SecureBoot enabled
+  </pre>
+
+  When Secure Boot is disabled:
+  <pre>
+  mokutil --sb-state
+  Failed to read SecureBoot
+  </pre>
+
+  or:
+  <pre>
+  mokutil --sb-state
+  SecureBoot disabled
+  </pre>

@@ -8,6 +8,11 @@ description: |-
     Edit the <tt>password</tt> section in
     <tt>/etc/pam.d/password-auth</tt> to show
     <tt>password    requisite                                    pam_pwquality.so</tt>.
+    {{% if product == "rhel10" %}}
+    The <tt>pam_pwquality</tt> module should be enabled using the <tt>authselect</tt> tool.
+    By default, <tt>authselect</tt> always configures <tt>pam_pwquality local_users_only</tt> as a part of <tt>local</tt>, <tt>sssd</tt>, and <tt>winbind</tt> profiles.
+    No additional authselect feature is needed to be enabled.
+    {{% endif %}}
 
 rationale: |-
     Enabling PAM password complexity permits to enforce strong passwords and consequently
@@ -21,7 +26,6 @@ identifiers:
     cce@rhel10: CCE-89505-2
 
 references:
-    disa: CCI-004066
     srg: SRG-OS-000069-GPOS-00037,SRG-OS-000070-GPOS-00038,SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-020100
     stigid@rhel8: RHEL-08-020100
@@ -43,4 +47,4 @@ fixtext: |-
 
 srg_requirement: '{{{ full_name }}} must ensure the password complexity module is enabled in the password-auth file.'
 
-platform: package[pam]
+platform: package[libpwquality]

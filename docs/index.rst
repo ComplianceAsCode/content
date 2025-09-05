@@ -76,6 +76,15 @@ ComplianceAsCode/content
 
     release_process
 
+.. toctree::
+    :maxdepth: 1
+    :glob:
+    :caption: Architecture Decisions Records
+    :name: Architecture Decisions Records
+
+    adr/*
+
+
 Indices and tables
 ==================
 

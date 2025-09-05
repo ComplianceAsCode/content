@@ -14,6 +14,8 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_DCONF_GDM_DIR,
                         DEFAULT_AIDE_CONF_PATH,
                         DEFAULT_AIDE_BIN_PATH,
+                        DEFAULT_AUDIT_WATCHES_STYLE,
+                        DEFAULT_RSYSLOG_CAFILE,
                         DEFAULT_SSH_DISTRIBUTED_CONFIG,
                         DEFAULT_CHRONY_CONF_PATH,
                         DEFAULT_CHRONY_D_PATH,
@@ -21,6 +23,7 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_FAILLOCK_PATH,
                         DEFAULT_SYSCTL_REMEDIATE_DROP_IN_FILE,
                         DEFAULT_BOOTABLE_CONTAINERS_SUPPORTED,
+                        DEFAULT_XWINDOWS_PACKAGES,
                         PKG_MANAGER_TO_SYSTEM,
                         PKG_MANAGER_TO_CONFIG_FILE,
                         XCCDF_PLATFORM_TO_PACKAGE,
@@ -95,6 +98,12 @@ def _get_implied_properties(existing_properties):
     if "aide_bin_path" not in existing_properties:
         result["aide_bin_path"] = DEFAULT_AIDE_BIN_PATH
 
+    if "audit_watches_style" not in existing_properties:
+        result["audit_watches_style"] = DEFAULT_AUDIT_WATCHES_STYLE
+
+    if "rsyslog_cafile" not in existing_properties:
+        result["rsyslog_cafile"] = DEFAULT_RSYSLOG_CAFILE
+
     if "sshd_distributed_config" not in existing_properties:
         result["sshd_distributed_config"] = DEFAULT_SSH_DISTRIBUTED_CONFIG
 
@@ -118,6 +127,9 @@ def _get_implied_properties(existing_properties):
 
     if "bootable_containers_supported" not in existing_properties:
         result["bootable_containers_supported"] = DEFAULT_BOOTABLE_CONTAINERS_SUPPORTED
+
+    if "xwindows_packages" not in existing_properties:
+        result["xwindows_packages"] = DEFAULT_XWINDOWS_PACKAGES
 
     return result
 

@@ -16,7 +16,6 @@ identifiers:
   cce@rhel10: CCE-90730-3
 
 references:
-    disa: CCI-000044
     nist: AC-7 (a)
     srg: SRG-OS-000021-GPOS-00005
     stigid@ol8: OL08-00-020020,OL08-00-020021
@@ -45,3 +44,5 @@ fixtext: |-
     audit
 
 srg_requirement: '{{{ full_name }}} must log user name information when unsuccessful logon attempts occur.'
+
+platform: package[pam]

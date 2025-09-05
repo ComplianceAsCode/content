@@ -1,3 +1,10 @@
+{{%- if product == 'ubuntu2404' %}}
+{{%- set sshd_approved_macs = "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256" %}}
+{{%- elif product == 'ubuntu2204' %}}
+{{%- set sshd_approved_macs = "hmac-sha2-512,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha2-256-etm@openssh.com" %}}
+{{%- else %}}
+{{%- set sshd_approved_macs = "hmac-sha2-512,hmac-sha2-256" %}}
+{{%- endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Limit the Message Authentication Codes (MACs) to those which are FIPS-approved.") }}}
@@ -59,10 +66,8 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
-    <ind:subexpression datatype="string" operation="pattern match" var_ref="sshd_approved_macs"/>
+    <ind:subexpression datatype="string" operation="equals">{{{ sshd_approved_macs }}}</ind:subexpression>
   </ind:textfilecontent54_state>
-
-  <external_variable comment="sshd approved MACs" datatype="string" id="sshd_approved_macs" version="1" />
 
   <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_{{{ rule_id }}}" version="1">
     <set>

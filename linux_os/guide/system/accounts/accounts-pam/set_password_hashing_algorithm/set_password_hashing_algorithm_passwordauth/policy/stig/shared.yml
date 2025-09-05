@@ -17,7 +17,7 @@ checktext: |-
 
     If "sha512" is missing, or the line is commented out, this is a finding.
 
-
+    If the system administrator (SA) can demonstrate that the required configuration is contained in a PAM configuration file included or substacked from the system-auth file, this is not a finding.
 
 vuldiscussion: |-
     Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and; therefore, cannot be relied upon to provide confidentiality or integrity, and DOD data may be compromised.

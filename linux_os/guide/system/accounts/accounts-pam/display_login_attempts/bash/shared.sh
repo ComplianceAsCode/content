@@ -2,7 +2,11 @@
 
 {{%- if "sle" in product or "slmicro" in product or "ubuntu" in product %}}
 {{%- set pam_lastlog_path = "/etc/pam.d/login" %}}
+{{%- if "ubuntu" in product %}}
+{{%- set after_match = "BOF" %}}
+{{%- else %}}
 {{%- set after_match = "^\s*session.*include\s+common-session$" %}}
+{{%- endif %}}
 {{%- else %}}
 {{%- set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
 {{%- set after_match = "^\s*session\s+.*pam_succeed_if\.so.*" %}}

@@ -3,15 +3,7 @@ documentation_complete: true
 title: 'Record Events that Modify the System''s Mandatory Access Controls in usr/share'
 
 description: |-
-    If the <tt>auditd</tt> daemon is configured to use the
-    <tt>augenrules</tt> program to read audit rules during daemon startup (the
-    default), add the following line to a file with suffix <tt>.rules</tt> in the
-    directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-w /usr/share/selinux/ -p wa -k MAC-policy</pre>
-    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
-    utility to read audit rules during daemon startup, add the following line to
-    <tt>/etc/audit/audit.rules</tt> file:
-    <pre>-w /usr/share/selinux/ -p wa -k MAC-policy</pre>
+    {{{ describe_audit_rules_watch("/usr/share/selinux/", "MAC-policy") }}}
 
 rationale: |-
     The system's mandatory access policy (SELinux) should not be
@@ -31,7 +23,6 @@ identifiers:
 references:
     cis@sle12: 4.1.6
     cis@sle15: 4.1.6
-    cis@slmicro5: 4.1.6
     cobit5: APO10.01,APO10.03,APO10.04,APO10.05,APO11.04,APO12.06,APO13.01,BAI03.05,BAI08.02,DSS01.03,DSS01.04,DSS02.02,DSS02.04,DSS02.07,DSS03.01,DSS03.05,DSS05.02,DSS05.03,DSS05.04,DSS05.05,DSS05.07,MEA01.01,MEA01.02,MEA01.03,MEA01.04,MEA01.05,MEA02.01
     cui: 3.1.8
     hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
@@ -51,3 +42,9 @@ ocil: |-
     If the system is configured to watch for changes to its SELinux
     configuration, a line should be returned (including
     <tt>perm=wa</tt> indicating permissions that are watched).
+
+template:
+    name: audit_rules_watch
+    vars:
+        path: "/usr/share/selinux/"
+        key: MAC-policy

@@ -3,7 +3,7 @@ documentation_complete: true
 
 title: 'Set number of Password Hashing Rounds - password-auth'
 
-{{% if product in ["sle12", "sle15", "debian12"] %}}
+{{% if product in ["sle12", "sle15", "debian12", 'ubuntu2404'] %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
 {{% else %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/password-auth" %}}
@@ -15,7 +15,7 @@ description: |-
     <br /><br />
     In file <tt>{{{ pam_passwd_file_path }}}</tt> append <tt>rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</tt>
     to the <tt>pam_unix.so</tt> entry, as shown below:
-    {{% if product in ["debian12"] %}}  
+    {{% if product in ["debian12", 'ubuntu2404'] %}}  
     <pre>password [success=1 default=ignore] pam_unix.so <i>...existing_options...</i> rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
     {{% else %}}
     <pre>password sufficient pam_unix.so <i>...existing_options...</i> rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
@@ -41,7 +41,6 @@ identifiers:
     cce@sle15: CCE-91173-5
 
 references:
-    disa: CCI-000803,CCI-004062
     srg: SRG-OS-000073-GPOS-00041
 
 ocil_clause: 'rounds is not set to {{{ xccdf_value("var_password_pam_unix_rounds") }}} or is commented out'
@@ -50,7 +49,7 @@ ocil: |-
     To verify the number of rounds for the password hashing algorithm is configured, run the following command:
     <pre>$ sudo grep rounds {{{ pam_passwd_file_path }}}</pre>
     The output should show the following match:
-    {{% if product in ["debian12"] %}} 
+    {{% if product in ["debian12", 'ubuntu2404'] %}} 
     <pre>password [sucess=1 default=ignore] pam_unix.so sha512 rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
     {{% else %}}
     <pre>password sufficient pam_unix.so sha512 rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
@@ -63,7 +62,7 @@ fixtext: |-
 
     Add or modify the following line in "{{{ pam_passwd_file_path }}}" and set "rounds" to {{{ xccdf_value("var_password_pam_unix_rounds") }}}.
     For example:
-    {{% if product in ["debian12"] %}} 
+    {{% if product in ["debian12", 'ubuntu2404'] %}} 
     password [sucess=1 default=ignore] pam_unix.so sha512 rounds=5000
     {{% else %}}
     password sufficient pam_unix.so sha512 rounds=5000

@@ -18,7 +18,7 @@ description: |-
 
     This profile configures Red Hat Enterprise Linux 8 to the HIPAA Security
     Rule identified for securing of electronic protected health information.
-    Use of this profile in no way guarantees or makes claims against legal compliance against the HIPAA Security Rule(s).   
+    Use of this profile in no way guarantees or makes claims against legal compliance against the HIPAA Security Rule(s).
 
 selections:
     - grub2_password
@@ -41,18 +41,12 @@ selections:
     - sshd_disable_root_login
     - libreswan_approved_tunnels
     - no_rsh_trust_files
-    - package_rsh-server_removed
-    - package_talk_removed
-    - package_talk-server_removed
     - package_telnet_removed
     - package_telnet-server_removed
     - package_xinetd_removed
     - service_crond_enabled
-    - service_rexec_disabled
-    - service_rlogin_disabled
     - service_telnet_disabled
     - service_xinetd_disabled
-    - service_zebra_disabled
     - use_kerberos_security_all_exports
     - var_authselect_profile=sssd
     - enable_authselect
@@ -144,7 +138,9 @@ selections:
     - audit_rules_privileged_commands_umount
     - audit_rules_privileged_commands_unix_chkpwd
     - audit_rules_privileged_commands_userhelper
-    - audit_rules_session_events
+    - audit_rules_session_events_utmp
+    - audit_rules_session_events_btmp
+    - audit_rules_session_events_wtmp
     - audit_rules_sysadmin_actions
     - audit_rules_system_shutdown
     - var_audit_failure_mode=panic

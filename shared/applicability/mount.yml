@@ -7,18 +7,20 @@ template:
   name: platform_mount
 args:
   home:
-      mountpoint: /home
+    mountpoint: /home
   opt:
-      mountpoint: /opt
+    mountpoint: /opt
   srv:
-      mountpoint: /srv
+    mountpoint: /srv
   tmp:
     mountpoint: /tmp
   var:
-      mountpoint: /var
+    mountpoint: /var
   var-log:
-      mountpoint: /var/log
+    mountpoint: /var/log
   var-log-audit:
-      mountpoint: /var/log/audit
+    mountpoint: /var/log/audit
   var-tmp:
     mountpoint: /var/tmp
+  boot-efi:
+    mountpoint: /boot/efi

@@ -3,8 +3,7 @@ documentation_complete: true
 
 title: 'OpenShift Audit Logs Must Have Mode 0600'
 
-platforms:
-  - ocp4-master-node
+platform: ocp4-master-node
 
 description: |-
     {{{ describe_file_permissions(file="/var/log/openshift-apiserver/.*", perms="0600") }}}

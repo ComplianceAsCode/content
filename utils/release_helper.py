@@ -11,7 +11,7 @@ Script created to help maintainers during the release process by automating Gith
 # - https://pygithub.readthedocs.io/en/latest/github_objects.html
 # - https://docs.github.com/en/rest
 
-from datetime import datetime, timedelta, UTC
+from datetime import datetime, timedelta, UTC, date
 
 from github import Github
 import argparse
@@ -140,8 +140,8 @@ def get_contributors_last_update() -> str:
         # This comment informs when the file was updated.
         if 'Last Modified:' in line:
             elements = line.split('{+')
-            datetime = elements[1].replace('+}', '')
-            return datetime
+            last_modified_date_time = elements[1].replace('+}', '')
+            return last_modified_date_time
 
 
 def get_new_contributors(commit) -> str:
@@ -157,10 +157,10 @@ def get_new_contributors(commit) -> str:
 
 
 def is_contributors_list_updated(date_string) -> bool:
-    date = datetime.strptime(date_string[:16], '%Y-%m-%d %H:%M')
+    date = datetime.strptime(date_string[:16], '%Y-%m-%d %H:%M').replace(tzinfo=UTC)
     # As a rule of thumbs, this function consider contributors list
     # updated if not older than 2 weeks.
-    two_weeks_back = datetime.now() - timedelta(days=15)
+    two_weeks_back = datetime.now(tz=UTC) - timedelta(days=15)
     if date < two_weeks_back:
         return False
     return True
@@ -336,33 +336,31 @@ def get_monday_that_follows(date) -> datetime:
     return date + timedelta((0 - date.weekday()) % 7)
 
 
-def get_next_quarter_first_month(latest_release_date: datetime) -> int:
+def get_next_quarter_second_month(latest_release_date: datetime) -> int:
     last_release_quarter = (latest_release_date.month - 1) // 3 + 1
     if last_release_quarter == 4:
         next_release_quarter = 1
     else:
         next_release_quarter = last_release_quarter + 1
-    return (next_release_quarter - 1) * 3 + 1
+    return (next_release_quarter - 1) * 3 + 2
 
 
-def get_last_monday_of_month(year: int, month: int) -> datetime:
-    if month == 12:
-        last_month_day = datetime(year, month, 31)
-    else:
-        last_month_day = datetime(year, month + 1, 1) - timedelta(days=1)
-
-    days_since_monday = (last_month_day.weekday() - 0) % 7
-    return last_month_day - timedelta(days=days_since_monday)
+def get_third_monday_of_month(year: int, month: int) -> datetime:
+    first_day_of_month = date(year, month, 1)
+    first_day_weekday = first_day_of_month.weekday()
+    first_monday_date = 1 + (0 - first_day_weekday) % 7
+    third_monday_date = first_monday_date + 14
+    return datetime(year, month, third_monday_date, tzinfo=UTC)
 
 
-def get_next_stabilization_date(release_date) -> datetime:
+def get_next_stabilization_date(release_date: datetime) -> datetime:
     two_weeks_before = release_date - timedelta(weeks=2)
     stabilization_monday = get_monday_that_follows(two_weeks_before)
     return stabilization_monday.date()
 
 
 def get_next_release_date(latest_release_date: datetime) -> datetime:
-    month = get_next_quarter_first_month(latest_release_date)
+    month = get_next_quarter_second_month(latest_release_date)
     now = datetime.now(UTC)
 
     if month > 9 and latest_release_date <= now:
@@ -370,8 +368,8 @@ def get_next_release_date(latest_release_date: datetime) -> datetime:
     else:
         year = latest_release_date.year
 
-    last_monday = get_last_monday_of_month(year, month)
-    return get_friday_that_follows(last_monday + timedelta(weeks=1))
+    third_monday = get_third_monday_of_month(year, month)
+    return get_friday_that_follows(third_monday + timedelta(weeks=1))
 
 
 def is_next_release_in_progress(repo) -> bool:
@@ -602,13 +600,13 @@ def collect_release_info(repo) -> dict:
     data["latest_version"] = get_latest_version(repo)
 
     next_release_date = get_next_release_date(latest_release.published_at)
-    next_release_remaining_days = next_release_date - datetime.today()
+    next_release_remaining_days = next_release_date - datetime.now(tz=UTC)
     data["next_release_date"] = next_release_date
     data["next_release_remaining_days"] = next_release_remaining_days.days
     data["next_release_state"] = describe_next_release_state(repo)
     data["next_release_version"] = get_next_release_version(repo)
     next_stabilization_date = get_next_stabilization_date(next_release_date)
-    next_stabilization_remaining_days = next_stabilization_date - datetime.today().date()
+    next_stabilization_remaining_days = next_stabilization_date - datetime.now(tz=UTC).date()
     data["next_stabilization_date"] = next_stabilization_date
     data["next_stabilization_remaining_days"] = next_stabilization_remaining_days.days
 
@@ -651,7 +649,7 @@ def print_last_release_stats(data):
 
 
 def print_next_release_stats(data):
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now = datetime.now(tz=UTC).strftime("%Y-%m-%d %H:%M:%S%z")
     milestone = data['active_milestone']
     next_release_version = data['next_release_version']
     next_release_date = data['next_release_date']

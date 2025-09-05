@@ -98,26 +98,26 @@ def html_plain_text(source: str) -> str:
 
 def get_variable_value(root_path: str, product: str, name: str, selector: str) -> str:
     product_value_full_path = pathlib.Path(root_path).joinpath('build').joinpath(product)\
-        .joinpath('values').joinpath(f'{name}.yml').absolute()
+        .joinpath('values').joinpath(f'{name}.json').absolute()
     if not product_value_full_path.exists():
         sys.stderr.write(f'Undefined variable {name}\n')
         exit(7)
     with open(product_value_full_path, 'r') as f:
-        var_yaml = yaml.load(Loader=yaml.BaseLoader, stream=f)
-        if 'options' not in var_yaml:
+        var_json = json.load(f)
+        if 'options' not in var_json:
             sys.stderr.write(f'No options for {name}\n')
             exit(8)
-        if not selector and 'default' not in var_yaml['options']:
+        if not selector and 'default' not in var_json['options']:
             sys.stderr.write(f'No default selector for {name}\n')
             exit(10)
         if not selector:
-            return str(var_yaml['options']['default'])
+            return str(var_json['options']['default'])
 
-        if selector not in var_yaml['options']:
+        if selector not in var_json['options']:
             sys.stderr.write(f'Option {selector} does not exist for {name}\n')
             exit(9)
         else:
-            return str(var_yaml['options'][selector])
+            return str(var_json['options'][selector])
 
 
 def replace_variables(source: str, variables: dict, root_path: str, product: str) -> str:
@@ -295,7 +295,7 @@ def create_base_row(item: ssg.controls.Control, srgs: dict,
     row['SRG Check'] = html_plain_text(srg['check'])
     row['SRG Fix'] = srg['fix']
     row['Severity'] = ssg.build_stig.get_severity(srg.get('severity'))
-    row['IA Control'] = get_iacontrol(row['SRGID'])
+    row['IA Control'] = get_iacontrol(row['SRGID'].split(','))
     row['Mitigation'] = item.mitigation
     row['Artifact Description'] = item.artifact_description
     row['Status Justification'] = item.status_justification
@@ -352,8 +352,6 @@ def handle_csv_output(output: str, results: list) -> str:
 
 def handle_xlsx_output(output: str, product: str, results: list) -> str:
     output = output.replace('.csv', '.xlsx')
-    for row in results:
-        row['IA Control'] = get_iacontrol(row['SRGID'])
     xlsx.handle_dict(results, output, f'{product} SRG Mapping')
     return output
 

@@ -172,6 +172,7 @@ their `product.yml` file using `benchmark_root` key. For example,
     full_name: Red Hat Enterprise Linux 9
     type: platform
 
+    benchmark_id: RHEL-9
     benchmark_root: "../linux_os/guide"
 
     .....
@@ -431,6 +432,7 @@ product: $NEW_PRODUCT
 full_name: $FULL_NAME
 type: platform
 
+benchmark_id: $CAPITAL_NAME-$VERSION
 benchmark_root: "../../linux_os/guide"
 
 components_root: "../../components"
@@ -608,6 +610,9 @@ requirements or how it is applied.
 
 -   `reference`: URL pointing to page or organization that publishes the
     policy.
+
+-   `status`: The maturity and consensus level of the profile.
+    Accepted values are: `draft`, `interim`, `accepted` and `deprecated`.
 
 -   `version`: Version of the policy implemented by the profile.
 

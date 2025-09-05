@@ -11,6 +11,9 @@ description: |-
 {{% elif product in ["sle12", "sle15", "slmicro5"] %}}
     SUSE Linux Enterprise is supported by SUSE. As the SUSE Linux Enterprise
     vendor, SUSE is responsible for providing security patches.
+{{% elif 'almalinux' in product %}}
+    AlmaLinux OS is supported by AlmaLinux OS Foundation. As the AlmaLinux OS
+    vendor, AlmaLinux OS Foundation is responsible for providing security patches.
 {{% else %}}
     Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
     Linux vendor, Red Hat, Inc. is responsible for providing security patches.
@@ -40,7 +43,6 @@ identifiers:
 references:
     cis-csc: 18,20,4
     cobit5: APO12.01,APO12.02,APO12.03,APO12.04,BAI03.10,DSS05.01,DSS05.02
-    disa: CCI-000366
     isa-62443-2009: 4.2.3,4.2.3.12,4.2.3.7,4.2.3.9
     iso27001-2013: A.12.6.1,A.14.2.3,A.16.1.3,A.18.2.2,A.18.2.3
     nist: CM-6(a),MA-6,SA-13(a)
@@ -63,6 +65,8 @@ ocil: |-
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
 {{% elif product in ["sle12", "sle15", "slmicro5"] %}}
     <pre>$ grep -i "suse" /etc/os-release</pre>
+{{% elif 'ubuntu' in product %}}
+    <pre>$ grep DISTRIB_DESCRIPTION /etc/lsb-release</pre>
 {{% endif %}}
     <pre>{{{ full_name }}}</pre>
 

@@ -35,7 +35,6 @@
     name: "{{{ SEBOOLID }}}"
     state: "{{{ SEBOOL_BOOL }}}"
     persistent: yes
-  when: ansible_facts.selinux.status == 'enabled'  
 {{% else %}}
 - (xccdf-var var_{{{ SEBOOLID }}})
 - name: "{{{ rule_title }}} - Set SELinux Boolean {{{ SEBOOLID }}} Accordingly"
@@ -43,5 +42,4 @@
     name: {{{ SEBOOLID }}}
     state: "{{ var_{{{ SEBOOLID }}} }}"
     persistent: yes
-  when: ansible_facts.selinux.status == 'enabled'  
 {{% endif %}}

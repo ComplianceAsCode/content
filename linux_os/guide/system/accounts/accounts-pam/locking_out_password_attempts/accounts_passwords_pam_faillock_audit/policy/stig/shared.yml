@@ -7,7 +7,7 @@ vuldiscussion: |-
 checktext: |-
     Verify the "/etc/security/faillock.conf" file is configured to log username information when unsuccessful logon attempts occur with the following command:
 
-    $ grep audit /etc/security/faillock.conf
+    $ sudo grep audit /etc/security/faillock.conf
 
     audit
 
@@ -16,7 +16,12 @@ checktext: |-
 fixtext: |-
     Configure {{{ full_name }}} to log username information when unsuccessful logon attempts occur.
 
+    Enable the feature using the following command:
+
+    $ sudo authselect enable-feature with-faillock
+
     Add/modify the "/etc/security/faillock.conf" file to match the following line:
 
     audit
+
 

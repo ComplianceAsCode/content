@@ -34,6 +34,7 @@ selections:
     - sebool_puppetagent_manage_all_files
     - sshd_use_strong_rng
     - grub2_uefi_admin_username
+    - grub2_uefi_password
     - sebool_staff_use_svirt
     - audit_rules_successful_file_modification_lsetxattr
     - sebool_daemons_enable_cluster_mode
@@ -572,3 +573,13 @@ selections:
     - sshd_use_priv_separation
     - tftpd_uses_secure_mode
     - file_permissions_etc_audit_rulesd
+    - configure_openssl_tls_crypto_policy
+    - configure_openssl_crypto_policy
+    - audit_rules_login_events
+    - audit_rules_usergroup_modification
+    - audit_rules_unsuccessful_file_modification
+    - audit_rules_session_events
+    - kerberos_disable_no_keytab
+    - package_ypserv_removed
+    - package_quagga_removed
+    - package_rsh-server_removed

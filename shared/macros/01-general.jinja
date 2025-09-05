@@ -836,7 +836,10 @@ substituting the correct package management software.
 #}}
 {{%- macro describe_file_owner(file, owner) %}}
     To properly set the owner of <code>{{{ file }}}</code>, run the command:
-    <pre>$ sudo chown {{{ owner }}} {{{ file }}} </pre>
+    {{% for own in owner.split("|") %}}
+      <pre>$ sudo chown {{{ own }}} {{{ file }}} </pre>
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
 {{%- endmacro %}}
 
 {{#
@@ -850,7 +853,10 @@ substituting the correct package management software.
 #}}
 {{%- macro describe_directory_owner(directory, owner) %}}
     To properly set the owner of <code>{{{ directory }}}</code>, run the command:
-    <pre>$ sudo chown {{{ owner }}} {{{ directory }}}</pre>
+    {{% for own in owner.split("|") %}}
+      <pre>$ sudo chown {{{ own }}} {{{ directory }}} </pre>
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
 {{%- endmacro %}}
 
 {{#
@@ -879,7 +885,10 @@ substituting the correct package management software.
 #}}
 {{%- macro describe_file_group_owner(file, group) %}}
     To properly set the group owner of <code>{{{ file }}}</code>, run the command:
-    <pre>$ sudo chgrp {{{ group }}} {{{ file }}}</pre>
+    {{% for grp in group.split("|") %}}
+      <pre>$ sudo chgrp {{{ grp }}} {{{ file }}}</pre>
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
 {{%- endmacro %}}
 
 {{#
@@ -893,7 +902,10 @@ substituting the correct package management software.
 #}}
 {{%- macro describe_directory_group_owner(directory, group) %}}
     To properly set the group owner of <code>{{{ directory }}}</code>, run the command:
-    <pre>$ sudo chgrp {{{ group }}} {{{ directory }}}</pre>
+    {{% for grp in group.split("|") %}}
+      <pre>$ sudo chgrp {{{ grp }}} {{{ directory }}}</pre>
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
 {{%- endmacro %}}
 
 {{#
@@ -1158,7 +1170,7 @@ The kernel arguments should be set in <tt>/usr/lib/bootc/kargs.d</tt> in a TOML 
 # /usr/lib/bootc/kargs.d/10-example.toml
 kargs = ["{{{ arg_name_value }}}"]
 </pre>
-For more details on configuring kernel arguments in bootable container images, please refer to {{{ weblink(link="https://containers.github.io/bootc/building/kernel-arguments.html", text="Bootc documentation") }}}.
+For more details on configuring kernel arguments in bootable container images, please refer to {{{ weblink(link="https://bootc-dev.github.io/bootc//building/kernel-arguments.html", text="Bootc documentation") }}}.
 {{%- endif -%}}
 {{%- endmacro -%}}
 
@@ -1176,7 +1188,7 @@ Run the following command to update command line for already installed kernels:
 {{% if bootable_containers_supported == "true" %}}
 If the system is distributed as a bootable container image, GRUB2 can't be configured using the method described above, but the kernel arguments should be configured using TOML files located in the <tt>/usr/lib/bootc/kargs.d</tt> directory.
 Remove all occurences of <tt>{{{ arg_name }}}</tt> from all files in <tt>/usr/lib/bootc/kargs.d</tt>.
-For more details on configuring kernel arguments in bootable container images, please refer to {{{ weblink(link="https://containers.github.io/bootc/building/kernel-arguments.html", text="Bootc documentation") }}}.
+For more details on configuring kernel arguments in bootable container images, please refer to {{{ weblink(link="https://bootc-dev.github.io/bootc//building/kernel-arguments.html", text="Bootc documentation") }}}.
 {{%- endif -%}}
 {{%- endmacro -%}}
 
@@ -1332,4 +1344,73 @@ separated by an and and others are separated by a comma.
 {{%- endif -%}}
 {{%- endif -%}}
 {{%- endfor -%}}
+{{%- endmacro -%}}
+
+{{#
+Create a rule description text for rules that use the audit_rules_watch platform.
+
+:param path: The path that should be watched by the watch.
+:type path: str
+:param key: The audit key.
+:type key: str
+#}}
+
+{{% macro describe_audit_rules_watch(path, key) %}}
+{{% if path.endswith("/") %}}
+{{% set filter_type="dir" %}}
+{{% else %}}
+{{% set filter_type="path" %}}
+{{% endif %}}
+    If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+    program to read audit rules during daemon startup (the default), add the
+    following lines to a file with suffix <tt>.rules</tt> in the
+    directory <tt>/etc/audit/rules.d</tt>:
+{{% if audit_watches_style == "modern" %}}
+    <pre>-a always,exit -F arch=b32 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}
+    -a always,exit -F arch=b64 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}</pre>
+{{% else %}}
+    <pre>-w {{{ path }}} -p wa -k {{{ key }}}</pre>
+{{% endif %}}
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following lines to
+    <tt>/etc/audit/audit.rules</tt>:
+{{% if audit_watches_style == "modern" %}}
+    <pre>-a always,exit -F arch=b32 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}
+    -a always,exit -F arch=b64 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}</pre>
+{{% else %}}
+    <pre>-w {{{ path }}} -p wa -k {{{ key }}}</pre>
+{{% endif %}}
+{{% endmacro %}}
+
+{{#
+Create a rule description for rules using the `audit_rules_privileged_commands` template.
+
+:param path: path of the privileged command for which the audit rule should be defined
+:type path: str
+#}}
+
+{{% macro describe_arpc(path) %}}
+{{%- if product in ["almalinux9", "debian12", "fedora", "ol7", "ol8", "ol9", "ol10", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
+  {{%- set perm_x="-F perm=x " %}}
+{{%- endif -%}}
+{{%- if product == "rhel10" -%}}
+{{% set arch_clause=", setting ARCH to either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit" %}}
+{{% set rule="-a always,exit -F arch=ARCH -F path=" ~ path ~ " " ~ perm_x ~ "-F auid&gt;=" ~ auid ~ " -F auid!=unset -F key=privileged" %}}
+{{% else %}}
+{{% set arch_clause="" %}}
+{{% set rule="-a always,exit -F path=" ~ path ~ " " ~ perm_x ~ "-F auid&gt;=" ~ auid ~ " -F auid!=unset -F key=privileged" %}}
+{{%- endif %}}
+    At a minimum, the audit system should collect the execution of privileged
+    commands for all users and root.
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+    program to read audit rules during daemon startup (the default), add
+    a line of the following form to a file with suffix <tt>.rules</tt>
+    in the directory <tt>/etc/audit/rules.d</tt>{{{ arch_clause }}}:
+    <pre>{{{ rule }}}</pre>
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add a line of the
+    following form to <tt>/etc/audit/audit.rules</tt>{{{ arch_clause }}}:
+    <pre>{{{ rule }}}</pre>
 {{%- endmacro -%}}

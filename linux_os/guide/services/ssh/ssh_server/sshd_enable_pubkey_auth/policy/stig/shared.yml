@@ -7,19 +7,23 @@ vuldiscussion: |-
 
 
 checktext: |-
+    Note: If the system administrator demonstrates the use of an approved alternate multifactor authentication method, this requirement is Not Applicable.
+
     Verify that {{{ full_name }}} SSH daemon accepts public key encryption with the following command:
 
-    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*pubkeyauthentication'
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*pubkeyauthentication'
 
     PubkeyAuthentication yes
 
     If "PubkeyAuthentication" is set to no, the line is commented out, or the line is missing, this is a finding.
 
 fixtext: |-
-    To configure the system add or modify the following line in "/etc/ssh/sshd_config".
+    To configure the system, add or modify the following line in "/etc/ssh/sshd_config" or in a file in "/etc/ssh/sshd_config.d".
 
     PubkeyAuthentication yes
 
     Restart the SSH daemon for the settings to take effect:
 
     $ sudo systemctl restart sshd.service
+
+

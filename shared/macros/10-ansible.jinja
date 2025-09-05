@@ -424,17 +424,27 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d
 :type permissions: str
 :param key: key to use as identifier. Note that if there exists any other rule with the same find_mac_key in some file within :code:`/etc/audit/rules.d/`, the new rule will be appended to this file.
 :type key: str
+:param style: Use "modern" or "legacy" style of audit watches
+:type style: str
+:param arch: Generate audit watches for the "b32" or "b64" architecture. Only applicable if "style" is set to "modern".
+:type arch: str
+:param filter_type: The string after first `-F` before first `=`. can be either `path` or `dir`. Only applicable if "style" is set to "modern".
+:type filter_type: str
 
 #}}
-{{% macro ansible_audit_augenrules_add_watch_rule(path='', permissions='', key='') -%}}
-- name: Check if watch rule for {{{ path }}} already exists in /etc/audit/rules.d/
+{{% macro ansible_audit_augenrules_add_watch_rule(path='', permissions='', key='', style='', arch='', filter_type='path') -%}}
+- name: {{{ rule_title }}} - Check if watch rule for {{{ path }}} already exists in /etc/audit/rules.d/
   find:
     paths: "/etc/audit/rules.d"
+{{% if style == "modern" %}}
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch={{{ arch }}}\s+-F\s+{{{ filter_type }}}={{{ path }}}\s+-F\s+perm={{{ permissions }}}(\s|$)+'
+{{% else %}}
     contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
+{{% endif %}}
     patterns: "*.rules"
   register: find_existing_watch_rules_d
 
-- name: Search /etc/audit/rules.d for other rules with specified key {{{ key }}}
+- name: {{{ rule_title }}} - Search /etc/audit/rules.d for other rules with specified key {{{ key }}}
   find:
     paths: "/etc/audit/rules.d"
     contains: '^.*(?:-F key=|-k\s+){{{ key }}}$'
@@ -442,22 +452,26 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d
   register: find_watch_key
   when: find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
 
-- name: Use /etc/audit/rules.d/{{{ key }}}.rules as the recipient for the rule
+- name: {{{ rule_title }}} - Use /etc/audit/rules.d/{{{ key }}}.rules as the recipient for the rule
   set_fact:
     all_files:
       - /etc/audit/rules.d/{{{ key }}}.rules
   when: find_watch_key.matched is defined and find_watch_key.matched == 0 and find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
 
-- name: Use matched file as the recipient for the rule
+- name: {{{ rule_title }}} - Use matched file as the recipient for the rule
   set_fact:
     all_files:
       - "{{ find_watch_key.files | map(attribute='path') | list | first }}"
   when: find_watch_key.matched is defined and find_watch_key.matched > 0 and find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
 
-- name: Add watch rule for {{{ path }}} in /etc/audit/rules.d/
+- name: {{{ rule_title }}} - Add watch rule for {{{ path }}} in /etc/audit/rules.d/
   lineinfile:
     path: "{{ all_files[0] }}"
+{{% if style == 'modern' %}}
+    line: "-a always,exit -F arch={{{ arch }}} -F {{{ filter_type }}}={{{ path }}} -F perm={{{ permissions }}} -F key={{{ key }}}"
+{{% else %}}
     line: "-w {{{ path }}} -p {{{ permissions }}} -k {{{ key }}}"
+{{% endif %}}
     create: yes
     mode: '0600'
   when: find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
@@ -473,19 +487,33 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/audit.r
 :type permissions: str
 :param key: Key to use as identifier
 :type key: str
+:param style: Use "modern" or "legacy" style of audit watches
+:type style: str
+:param arch: Generate audit watches for the "b32" or "b64" architecture. Only applicable if "style" is set to "modern".
+:type arch: str
+:param filter_type: The string after first `-F` before first `=`. can be either `path` or `dir`. Only applicable if "style" is set to "modern".
+:type filter_type: str
 
 #}}
-{{% macro ansible_audit_auditctl_add_watch_rule(path='', permissions='', key='') -%}}
-- name: Check if watch rule for {{{ path }}} already exists in /etc/audit/audit.rules
+{{% macro ansible_audit_auditctl_add_watch_rule(path='', permissions='', key='', style='', arch='', filter_type='path') -%}}
+- name: {{{ rule_title }}} - Check if watch rule for {{{ path }}} already exists in /etc/audit/audit.rules
   find:
     paths: "/etc/audit/"
+{{% if style == 'modern' %}}
+    contains: '^\s*-F\s+{{{ filter_type }}}={{{ path }}}\s+-F\s+perms={{{ permissions }}}(\s|$)+'
+{{% else %}}
     contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
+{{% endif %}}
     patterns: "audit.rules"
   register: find_existing_watch_audit_rules
 
-- name: Add watch rule for {{{ path }}} in /etc/audit/audit.rules
+- name: {{{ rule_title }}} - Add watch rule for {{{ path }}} in /etc/audit/audit.rules
   lineinfile:
+{{% if style == 'modern' %}}
+    line: "-a always,exit -F arch={{{ arch }}} -F {{{ filter_type }}}={{{ path }}} -F perm={{{ permissions }}} -F key={{{ key }}}"
+{{% else %}}
     line: "-w {{{ path }}} -p {{{ permissions }}} -k {{{ key }}}"
+{{% endif %}}
     state: present
     dest: /etc/audit/audit.rules
     create: yes
@@ -1605,7 +1633,7 @@ Part of the grub2_bootloader_argument_absent template.
   ansible.builtin.lineinfile:
     path: "{{{ pam_file }}}"
     backrefs: true
-    regexp: ^(\s*{{{ group }}}\s+{{ pam_module_control | regex_escape() }}\s+{{{ module }}}\s+.*)({{{ option }}})=[0-9a-zA-Z]+\s*(.*)
+    regexp: ^(\s*{{{ group }}}\s+{{ pam_module_control | regex_escape() }}\s+{{{ module }}}\s+.*)({{{ option }}})=[0-9a-zA-Z]*\s*(.*)
     line: \1\2={{{ value }}} \3
   register: result_pam_{{{ rule_id }}}_edit
   when:
@@ -1885,6 +1913,7 @@ Part of the grub2_bootloader_argument_absent template.
   ansible.builtin.set_fact:
     excluded_fstypes:
       - afs
+      - autofs
       - ceph
       - cifs
       - smb3

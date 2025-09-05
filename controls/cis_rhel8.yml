@@ -106,7 +106,7 @@ controls:
   - id: 1.1.1.8
     title: Ensure usb-storage kernel module is not available (Automated)
     levels:
-      - l2_server
+      - l1_server
       - l2_workstation
     status: automated
     rules:
@@ -2531,7 +2531,9 @@ controls:
       - l2_workstation
     status: automated
     rules:
-      - audit_rules_session_events
+      - audit_rules_session_events_utmp
+      - audit_rules_session_events_btmp
+      - audit_rules_session_events_wtmp
 
   - id: 5.2.3.12
     title: Ensure login and logout events are collected (Automated)

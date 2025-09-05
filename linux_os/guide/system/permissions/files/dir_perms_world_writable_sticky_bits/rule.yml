@@ -38,12 +38,10 @@ references:
     cis-csc: 12,13,14,15,16,18,3,5
     cis@sle12: 1.1.22
     cis@sle15: 1.1.22
-    cis@slmicro5: 1.1.22
     cis@ubuntu1804: 1.1.20
     cis@ubuntu2004: 1.1.22
     cis@ubuntu2204: 1.1.22
     cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
-    disa: CCI-001090
     isa-62443-2009: 4.3.3.7.3
     isa-62443-2013: 'SR 2.1,SR 5.2'
     iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
@@ -99,3 +97,10 @@ warnings:
         amount of resources depending on the number of directories present on the system. It is
         not a problem in most cases, but especially systems with a large number of directories can
         be affected. See <code>https://access.redhat.com/articles/6999111</code>.
+    - general: |-
+        Please note that there might be cases where the rule remediation cannot fix directory permissions.
+        This can happen for example when running on a system with some immutable parts.
+        These immutable parts cannot be remediated because they are read-only.
+        Example of such directories can be OStree deployments located at <tt>/sysroot/ostree/deploy</tt>.
+        In such case, it is needed to make modifications to the underlying ostree snapshot and this is out of scope of regular rule remediation.
+

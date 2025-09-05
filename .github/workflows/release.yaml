@@ -32,20 +32,20 @@ jobs:
         working-directory: ./build
       - name: Set Version
         id: set_version
-        run: |- 
+        run: |-
           echo "tag=${GITHUB_REF/refs\/tags\//}"  >> $GITHUB_OUTPUT
           echo "ver=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_OUTPUT
         env:
           GITHUB_REF: ${{ github.ref }}
       - name: Build Changelog
         id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@be351b03e64e3d77ebb9b64b4d130436be1c02be # v4
+        uses: mikepenz/release-changelog-builder-action@e92187bd633e680ebfdd15961a7c30b2d097e7ad # v4
         with:
           configuration: .github/workflows/release-changelog.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
-        uses: softprops/action-gh-release@c95fe1489396fe8a9eb87c0abf8aa5b2ef267fda # v2.2.1
+        uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631 # v2.2.2
         with:
           draft: True
           name: Content ${{ steps.set_version.outputs.ver }}
@@ -56,5 +56,7 @@ jobs:
             build/scap-security-guide-*.tar.bz2.sha512
             build/zipfile/scap-security-guide-*.zip
             build/zipfile/scap-security-guide-*.zip.sha512
+            build/zipfile/scap-security-guide-*.tar.gz
+            build/zipfile/scap-security-guide-*.tar.gz.sha512
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

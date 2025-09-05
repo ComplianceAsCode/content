@@ -1,23 +1,9 @@
-{{%- if product in ["fedora", "sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404"] or 'ol' in families or 'rhel' in product %}}
-  {{%- set perm_x="-F perm=x " %}}
-{{%- endif %}}
-
 documentation_complete: true
-
 
 title: 'Record Any Attempts to Run setfiles'
 
 description: |-
-    At a minimum, the audit system should collect any execution attempt
-    of the <tt>setfiles</tt> command for all users and root. If the <tt>auditd</tt>
-    daemon is configured to use the <tt>augenrules</tt> program to read audit rules
-    during daemon startup (the default), add the following lines to a file with suffix
-    <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-a always,exit -F path=/usr/sbin/setfiles {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
-    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
-    utility to read audit rules during daemon startup, add the following lines to
-    <tt>/etc/audit/audit.rules</tt> file:
-    <pre>-a always,exit -F path=/usr/sbin/setfiles {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    {{{ describe_arpc("/usr/sbin/setfiles")}}}
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by
@@ -41,7 +27,6 @@ identifiers:
     cce@slmicro5: CCE-94099-9
 
 references:
-    disa: CCI-000172,CCI-000130,CCI-000135,CCI-000169,CCI-002884
     nist: AU-2(d),AU-12(c),AC-6(9),CM-6(a)
     srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209,SRG-APP-000495-CTR-001235,SRG-APP-000496-CTR-001240,SRG-APP-000497-CTR-001245,SRG-APP-000498-CTR-001250
     stigid@ol7: OL07-00-030590

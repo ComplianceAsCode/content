@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R1
+    version: V3R2
     SMEs:
         - abergmann
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 12'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 12 V3R1.
+    DISA STIG for SUSE Linux Enterprise 12 V3R2.
 
 selections:
     - sshd_approved_macs=stig
@@ -240,6 +240,7 @@ selections:
     - service_SuSEfirewall2_enabled
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_systemauth
+    - var_password_hashing_min_rounds_login_defs=100000
     - set_password_hashing_min_rounds_logindefs
     - smartcard_pam_enabled
     - smartcard_configure_ca

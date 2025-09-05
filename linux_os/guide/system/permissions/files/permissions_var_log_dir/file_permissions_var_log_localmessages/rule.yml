@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /var/log/localmessages(.*) Files'
+
+description: |-
+    {{{ describe_file_permissions(file="/var/log/localmessages", perms="0644") }}}
+
+rationale: |-
+    The <tt>/var/log/localmessages</tt> file contains log messages from certain boot scripts,
+    including the DHCP client, and should only be accessed by authorized personnel.
+
+severity: medium
+
+
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/localmessages", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/log/localmessages", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/log/
+        file_regex: .*localmessages([^\/]+)?$
+        filemode: '0644'
+
+fixtext: |-
+    {{{ fixtext_file_permissions("/var/log/localmessages", "0644") | indent(4) }}}

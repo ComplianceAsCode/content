@@ -24,17 +24,24 @@ description: |-
 
 selections:
     - hipaa:all
+
+    # RHEL 10 uses a different rule for auditing changes to selinux configuration
+    # HIPAA 164.308(a)(1)(ii)(D), 164.308(a)(3)(ii)(A), 164.308(a)(5)(ii)(C), 164.312(a)(2)(i), 164.312(b), 164.312(d) and 164.312(e)
+    - '!audit_rules_mac_modification'
+    - audit_rules_mac_modification_etc_selinux
+
     - '!coreos_disable_interactive_boot'
     - '!coreos_audit_option'
     - '!coreos_nousb_kernel_argument'
     - '!coreos_enable_selinux_kernel_argument'
     - '!dconf_gnome_remote_access_credential_prompt'
     - '!dconf_gnome_remote_access_encryption'
+    - '!enable_authselect'
     - '!ensure_suse_gpgkey_installed'
     - '!ensure_fedora_gpgkey_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!grub2_uefi_admin_username'
-    - '!grub2_uefi_pass'
+    - '!grub2_uefi_password'
     - '!service_ypbind_disabled'
     - '!service_zebra_disabled'
     - '!package_talk-server_removed'
@@ -56,3 +63,6 @@ selections:
     - '!sshd_allow_only_protocol2'
     - '!sshd_disable_kerb_auth'
     - '!sshd_disable_gssapi_auth'
+    - '!service_rlogin_disabled'
+    - '!service_rsh_disabled'
+    - '!service_rexec_disabled'

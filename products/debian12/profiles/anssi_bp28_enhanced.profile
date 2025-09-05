@@ -67,3 +67,5 @@ selections:
   - '!ensure_oracle_gpgkey_installed'
   - '!ensure_almalinux_gpgkey_installed'
   - '!package_dracut-fips-aesni_installed'
+  - '!audit_rules_file_deletion_events_renameat2'
+  - '!audit_rules_dac_modification_fchmodat2'

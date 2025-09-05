@@ -1,7 +1,7 @@
 {{% if product in ["sle12", "sle15"] %}}
 {{% set package_name = "openldap2-client" %}}
 {{% elif "ubuntu" in product %}}
-{{% set package_name = "lapd-utils" %}}
+{{% set package_name = "ldap-utils" %}}
 {{% else %}}
 {{% set package_name = "openldap-clients" %}}
 {{% endif %}}
@@ -34,7 +34,6 @@ identifiers:
 references:
     cis@sle12: 2.3.5
     cis@sle15: 2.3.5
-    cis@slmicro5: 2.3.5
     cis@ubuntu2004: 2.3.5
     cis@ubuntu2204: 2.3.5
 

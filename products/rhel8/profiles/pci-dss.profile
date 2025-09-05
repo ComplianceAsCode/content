@@ -38,6 +38,8 @@ selections:
     - '!package_talk-server_removed'
     - '!package_rsh_removed'
     - '!package_rsh-server_removed'
+    # Following rule are excluded since, "so far" no CCEs were defined for them and maybe irrelevant for rhel8
+    - '!enable_dconf_user_profile'
     # Following rules once had a prodtype incompatible with the rhel8 product
     - '!cracklib_accounts_password_pam_minlen'
     - '!nftables_ensure_default_deny_policy'
@@ -58,3 +60,6 @@ selections:
     - '!cracklib_accounts_password_pam_retry'
     - '!aide_periodic_checking_systemd_timer'
     - '!package_cryptsetup-luks_installed'
+    - '!audit_rules_file_deletion_events_renameat2'
+    - '!audit_rules_mac_modification_etc_selinux'
+    - '!audit_rules_dac_modification_fchmodat2'

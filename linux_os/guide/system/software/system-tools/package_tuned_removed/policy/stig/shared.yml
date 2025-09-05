@@ -8,10 +8,12 @@ vuldiscussion: |-
 
     The tuned package contains a daemon that tunes the system settings dynamically. It does so by monitoring the usage of several system components periodically. Based on that information, components will then be put into lower or higher power savings modes to adapt to the current usage. The tuned package is not needed for normal OS operations.
 
+
+
 checktext: |-
     Verify that the tuned package is not installed with the following command:
 
-    $ sudo dnf list --installed tuned
+    $ dnf list --installed tuned
 
     Error: No matching Packages to list
 
@@ -21,4 +23,3 @@ fixtext: |-
     Remove the tuned package with the following command:
 
     $ sudo dnf remove tuned
-

@@ -718,3 +718,10 @@ selections:
     - package_mcafeetp_installed
     - harden_sshd_ciphers_openssh_conf_crypto_policy
     - harden_sshd_macs_openssh_conf_crypto_policy
+    - package_quagga_removed
+    - audit_rules_session_events
+    - tftpd_uses_secure_mode
+    - service_rexec_disabled
+    - service_rlogin_disabled
+    - service_zebra_disabled
+    - package_rsh-server_removed

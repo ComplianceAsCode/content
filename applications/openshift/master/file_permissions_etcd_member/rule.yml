@@ -30,8 +30,7 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/manifests/e
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/kubernetes/manifests/etcd-pod.yaml", perms="-rw-------") }}}
 
-platforms:
-    - ocp4-master-node
+platform: ocp4-master-node
 
 warnings:
     - dependency: |-

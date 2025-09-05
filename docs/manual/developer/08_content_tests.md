@@ -84,3 +84,18 @@ This uses the build datastreams so the project must be rebuilt in order for chan
 The macro `stig_srg_mapping` in `tests/CMakeList.txt` should be used when adding a product for this test.
 
 This script uses `tests/stig_srg_mapping.py` to run the test.
+
+## Removed Rules
+This test ensures no rules are removed from the data stream.
+This test requires a built version of the "old" content to compare.
+In CI we use the last upstream release.
+Curently, this is only enabled for RHEL products.
+To run this test on your own machine follow the example below.
+You should replace `0.1.76` with the latest release of the project.
+
+1. `wget https://github.com/ComplianceAsCode/content/releases/download/v0.1.76/scap-security-guide-0.1.76.zip`
+1. `unzip scap-security-guide-0.1.76.zip`
+1. `export ADDITIONAL_CMAKE_OPTIONS="-DENABLE_CHECK_RULE_REMOVAL:BOOL=ON -DOLD_RELEASE_DIR=full/path/to/unziped/scap-security-guide-0.1.76"`
+1. `./build_product rhel10 rhel8 rhel9`
+1. `cd build`
+1. `ctest -R  rule-removal --output-on-failure`

@@ -1,5 +1,5 @@
 #!/bin/bash
-# remediation = None
+# remediation = none
 
 useradd testUser
 

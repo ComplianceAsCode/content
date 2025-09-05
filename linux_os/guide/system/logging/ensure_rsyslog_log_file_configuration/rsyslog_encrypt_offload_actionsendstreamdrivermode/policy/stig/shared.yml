@@ -14,17 +14,22 @@ vuldiscussion: |-
     x509/certvalid - certificate validation only
     x509/name - certificate validation and subject name authentication
 
+
+
 checktext: |-
     Verify {{{ full_name }}} encrypts audit records offloaded onto a different system or media from the system being audited via rsyslog with the following command:
 
-    $ sudo grep -i '$ActionSendStreamDriverMode' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
+    $ grep -i 'StreamDriver[\.]*Mode' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
 
     /etc/rsyslog.conf:$ActionSendStreamDriverMode 1
 
-    If the value of the "$ActionSendStreamDriverMode" option is not set to "1" or the line is commented out, this is a finding.
+    If the value of the "$ActionSendStreamDriverMode or StreamDriver.Mode" option is not set to "1" or the line is commented out, this is a finding.
+
+    If the variable name "StreamDriverAuthMode" is present in an omfwd statement block, this is not a finding. However, if the "StreamDriverAuthMode" variable is in a module block, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to encrypt offloaded audit records via rsyslog by setting the following options in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf":
 
     $ActionSendStreamDriverMode 1
+
 

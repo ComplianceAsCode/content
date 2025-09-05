@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Function to add cron logging line to specific file
 # Expects argument:
 # file:		Configuration file, where we want cron logging set

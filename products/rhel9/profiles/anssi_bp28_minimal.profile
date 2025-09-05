@@ -35,3 +35,8 @@ selections:
   - '!ensure_oracle_gpgkey_installed'
   - '!ensure_almalinux_gpgkey_installed'
   - '!package_kea_removed'
+  - '!package_rsh-server_removed'
+  - '!package_rsh_removed'
+  - '!package_xinetd_removed'
+  - '!package_ypbind_removed'
+  - '!package_ypserv_removed'

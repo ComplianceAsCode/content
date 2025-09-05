@@ -1,4 +1,5 @@
 #!/bin/bash
+# remediation = none
 
 # selinux does not allow unlabeled_t in /dev
 # we have to modify the selinux policy to allow that
@@ -8,7 +9,3 @@ semodule -i /tmp/unlabeled_t.cil
 
 mknod /dev/foo c 1 5
 chcon -t unlabeled_t /dev/foo
-
-
-mknod /dev/foo c 1 5
-chcon -t device_t /dev/foo

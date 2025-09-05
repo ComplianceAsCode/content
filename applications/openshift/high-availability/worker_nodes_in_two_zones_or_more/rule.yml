@@ -1,0 +1,50 @@
+documentation_complete: true
+
+title: 'Ensure Worker Nodes are Distributed Across Three Failure Zones'
+
+description: |- 
+    Distributing Kubernetes worker nodes across failure zones enhances security by mitigating
+    the risk of a single point of failure and reducing the impact of application workload
+    inavailability or attacks targeting a specific zone.
+
+rationale: |-
+    Distributing Kubernetes worker nodes across failure zones is crucial for enhancing overall 
+    system resilience and security. By spreading applications across different zones, the system 
+    becomes more fault-tolerant, reducing the risk of widespread outages due to failures or 
+    attacks in a single zone. 
+    For application workloads nodes, two failure zones are often deemed sufficient due to the nature 
+    of typical applications, which typically don't rely on quorum-based applications like etcd. 
+    Failure zones are marked on nodes using a well-known label called "topology.kubernetes.io/zone". 
+    This label is automatically assigned to each node by cloud providers but might need to be managed
+    manually in other environments
+
+identifiers:
+    cce@ocp4: CCE-88863-6
+
+severity: medium
+
+ocil_clause: 'Kubernetes worker nodes not distributed across three failure zones'
+
+ocil: |-
+    Run the following command to determine the failure zones of the worker nodes, indicated by
+    the label .
+    <pre>$ oc get nodes --selector "node-role.kubernetes.io/worker" -o custom-columns='NAME:.metadata.name,ZONE:.metadata.labels.topology\.kubernetes\.io/zone'</pre>
+    Make sure that three distinct zones are listed.
+
+{{% set jqfilter = '.items | map(select(.metadata.labels["node-role.kubernetes.io/worker"] == "") | .metadata.labels["topology.kubernetes.io/zone"]) | unique | length' %}}
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({'/api/v1/nodes': jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path('/api/v1/nodes', jqfilter) }}}
+    yamlpath: "$"
+    values:
+      - value: 2
+        type: int
+        operation: "greater than or equal"

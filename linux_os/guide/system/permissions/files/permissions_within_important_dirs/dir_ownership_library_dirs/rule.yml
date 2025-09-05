@@ -35,7 +35,6 @@ identifiers:
     cce@slmicro5: CCE-94068-4
 
 references:
-    disa: CCI-001499
     nist: CM-5(6),CM-5(6).1
     srg: SRG-OS-000259-GPOS-00100
     stigid@ol8: OL08-00-010341
@@ -61,7 +60,7 @@ template:
             - /usr/lib/
             - /usr/lib64/
         recursive: 'true'
-        fileuid: '0'
+        uid_or_name: '0'
 
 fixtext: |-
     Configure the system-wide shared library directories within (/lib, /lib64, /usr/lib and /usr/lib64) to be protected from unauthorized access.

@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R2
+    version: V2R3
     SMEs:
         - mab879
         - ggbecker
@@ -12,7 +12,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V2R2.
+    DISA STIG for Red Hat Enterprise Linux 8 V2R3.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, this
     configuration baseline is applicable to the operating system tier of
@@ -100,6 +100,7 @@ selections:
 
     # RHEL-08-010020
     - sysctl_crypto_fips_enabled
+    - fips_crypto_subpolicy
 
     # RHEL-08-010030
     - encrypt_partitions
@@ -220,6 +221,12 @@ selections:
     # RHEL-08-010295
     - configure_gnutls_tls_crypto_policy
 
+    # RHEL-08-010296
+    - harden_sshd_macs_openssh_conf_crypto_policy
+
+    # RHEL-08-010297
+    - harden_sshd_ciphers_openssh_conf_crypto_policy
+
     # RHEL-08-010300
     - file_permissions_binary_dirs
 
@@ -258,8 +265,7 @@ selections:
     - aide_scan_notification
 
     # RHEL-08-010370
-    - ensure_gpgcheck_globally_activated
-    - ensure_gpgcheck_never_disabled
+    - enable_gpgcheck_for_all_repositories
 
     # Necessary for package installs after gpgcheck is enabled
     - ensure_redhat_gpgkey_installed
@@ -323,8 +329,7 @@ selections:
     - grub2_vsyscall_argument
 
     # RHEL-08-010423
-    - grub2_slub_debug_argument
-    - var_slub_debug_options=P
+    - grub2_init_on_free
 
     # RHEL-08-010430
     - sysctl_kernel_randomize_va_space
@@ -334,6 +339,9 @@ selections:
 
     # RHEL-08-010450
     - selinux_policytype
+
+    # RHEL-08-010455
+    - selinux_context_elevation_for_sudo
 
     # RHEL-08-010460
     - no_host_based_files
@@ -477,6 +485,7 @@ selections:
     # RHEL-08-010770
     - file_permission_user_init_files_root
     - var_user_initialization_files_regex=all_dotfiles
+    - rootfiles_configured
 
     # RHEL-08-010780
     - no_files_unowned_by_user
@@ -566,14 +575,6 @@ selections:
 
     # RHEL-08-020101
     - accounts_password_pam_pwquality_system_auth
-
-    # RHEL-08-020102
-    # This is only required for RHEL8 systems below version 8.4 where the
-    # retry parameter was not yet available on /etc/security/pwquality.conf.
-
-    # RHEL-08-020103
-    # This is only required for RHEL8 systems below version 8.4 where the
-    # retry parameter was not yet available on /etc/security/pwquality.conf.
 
     # RHEL-08-020104
     - accounts_password_pam_retry
@@ -971,9 +972,6 @@ selections:
     # RHEL-08-040004
     - grub2_pti_argument
 
-    # RHEL-08-040010
-    - package_rsh-server_removed
-
     # RHEL-08-040020
     - kernel_module_uvcvideo_disabled
 
@@ -1171,7 +1169,7 @@ selections:
     - sysctl_kernel_kptr_restrict
 
     # RHEL-08-040284
-    - sysctl_user_max_user_namespaces
+    - sysctl_user_max_user_namespaces_no_remediation
 
     # RHEL-08-040285
     - sysctl_net_ipv4_conf_all_rp_filter
@@ -1207,7 +1205,7 @@ selections:
     - sshd_use_approved_kex_ordered_stig
 
     # RHEL-08-040350
-    - tftpd_uses_secure_mode
+    - tftp_uses_secure_mode_systemd
 
     # RHEL-08-040360
     - package_vsftpd_removed

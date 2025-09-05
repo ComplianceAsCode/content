@@ -17,6 +17,7 @@ jobs:
   - fedora-all-x86_64
   - centos-stream-8-x86_64
   - centos-stream-9-x86_64
+  - centos-stream-10-x86_64
 
 - <<: *build
   trigger: commit
@@ -31,6 +32,7 @@ jobs:
   targets:
     centos-stream-8: {}
     centos-stream-9: {}
+    centos-stream-10: {}
 
 # when modifying this, modify also tests/tmt-plans/
 
@@ -62,6 +64,9 @@ jobs:
 - <<: *test-static-checks
   identifier: /hardening/host-os/ansible/cui
   tmt_plan: /hardening/host-os/ansible/cui$
+  targets:
+    centos-stream-8: {}
+    centos-stream-9: {}
 - <<: *test-static-checks
   identifier: /hardening/host-os/ansible/e8
   tmt_plan: /hardening/host-os/ansible/e8$
@@ -104,6 +109,9 @@ jobs:
 - <<: *test-static-checks
   identifier: /hardening/host-os/oscap/cui
   tmt_plan: /hardening/host-os/oscap/cui$
+  targets:
+    centos-stream-8: {}
+    centos-stream-9: {}
 - <<: *test-static-checks
   identifier: /hardening/host-os/oscap/e8
   tmt_plan: /hardening/host-os/oscap/e8$

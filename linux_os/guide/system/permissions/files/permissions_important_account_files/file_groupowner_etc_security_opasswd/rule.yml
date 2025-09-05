@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns /etc/security/opasswd File'
 
-description: '{{{ describe_file_group_owner(file="/etc/security/opasswd", group=root) }}}'
+description: '{{{ describe_file_group_owner(file="/etc/security/opasswd", group="root") }}}'
 
 rationale: |-
     The <tt>/etc/security/opasswd</tt> file stores old passwords to prevent
@@ -10,14 +10,14 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/security/opasswd", group=root) }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/security/opasswd", group="root") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/etc/security/opasswd", group=root) }}}
+    {{{ ocil_file_group_owner(file="/etc/security/opasswd", group="root") }}}
 
-fixtext: '{{{ fixtext_file_group_owner(file="/etc/security/opasswd", group=root) }}}'
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/security/opasswd", group="root") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/security/opasswd", group=root) }}}'
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/security/opasswd", group="root") }}}'
 
 template:
     name: file_groupowner

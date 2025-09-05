@@ -22,7 +22,9 @@ description: |-
 
 selections:
     - anssi:all:minimal
+    - var_password_hashing_algorithm_pam=yescrypt
     # Following rules are incompatible with rhel10 product
+    - '!enable_authselect'
     # tally2 is deprecated, replaced by faillock
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!accounts_passwords_pam_tally2'
