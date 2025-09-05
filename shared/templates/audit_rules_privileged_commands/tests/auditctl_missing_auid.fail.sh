@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# packages = audit
 source common.sh
 
 sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/system/auditd.service

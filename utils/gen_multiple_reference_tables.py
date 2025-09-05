@@ -1,11 +1,7 @@
 #!/usr/bin/python3
 
-import os
-import re
-import glob
 import argparse
 
-import ssg.build_yaml
 import ssg.constants
 
 from utils import gen_reference_table

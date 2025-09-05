@@ -420,6 +420,7 @@ selections:
     - var_nftables_base_chain_types=chain_types
     - var_nftables_base_chain_hooks=chain_hooks
     - var_nftables_base_chain_priorities=chain_priorities
+    - var_nftables_base_chain_policies=chain_policies
     - set_nftables_base_chain
 
     #### 3.5.2.6 Ensure loopback traffic is configured (Automated)

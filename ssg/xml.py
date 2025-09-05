@@ -4,7 +4,6 @@ import collections
 
 import platform
 import re
-import xml.etree.ElementTree as ET
 
 from .constants import (
     xml_version, oval_header, timestamp, PREFIX_TO_NS, XCCDF11_NS, XCCDF12_NS)

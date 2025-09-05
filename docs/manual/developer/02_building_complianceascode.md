@@ -374,8 +374,8 @@ make -j4 docs # check docs/index.html file
 ### Building compliant SCAP 1.2 content
 
 The build system builds SCAP content with OVAL 5.11.
-This means that the SCAP 1.3 datastream conforms to SCAP standard version 1.3.
-But the SCAP 1.2 datastream is not fully conformant with SCAP standard version 1.2, as up to OVAL 5.10 version is allowed.
+This means that the SCAP 1.3 data stream conforms to SCAP standard version 1.3.
+But the SCAP 1.2 data stream is not fully conformant with SCAP standard version 1.2, as up to OVAL 5.10 version is allowed.
 As SCAP 1.3 allows up to OVAL 5.11 and SCAP 1.2 allows up to OVAL 5.10.
 This project no longer builds content that is fully SCAP 1.2 compliant as we no longer support OVAL 5.10.
 The last release supporting SCAP 1.2 content was [v0.1.64](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.64).
@@ -404,10 +404,10 @@ it will be the `content/build` folder.
 ### SCAP XML files
 
 The SCAP XML files will be called `ssg-${PRODUCT}-${TYPE}.xml`. For example
-`ssg-rhel7-ds.xml` is the SCAP 1.3 *Red Hat Enterprise Linux 7* **source datastream**,
-and `ssg-rhel7-ds-1.2.xml` is the SCAP 1.2 **source datastream**.
+`ssg-rhel7-ds.xml` is the SCAP 1.3 *Red Hat Enterprise Linux 7* **source data stream**,
+and `ssg-rhel7-ds-1.2.xml` is the SCAP 1.2 **source data stream**.
 
-We recommend using **source datastream** if you have a choice.
+We recommend using **source data stream** if you have a choice.
 The build system also generates separate XCCDF, OVAL, OCIL and CPE files:
 
 ```bash

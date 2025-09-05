@@ -2,7 +2,7 @@
 
 By installing distribution packages, you will get the built content.
 For example, on Red Hat-based distributions, those will be files under the `/usr/share/xml/scap/ssg/content/` directory.
-What files will that be depends on the distribution, but for example on Fedora, you will get the Fedora datastream at `/usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml`.
+What files will that be depends on the distribution, but for example on Fedora, you will get the Fedora data stream at `/usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml`.
 
 
 ## Installing from distribution packages

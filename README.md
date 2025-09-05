@@ -26,11 +26,11 @@ security content in all the commonly used formats.
 ![NIST logo](docs/readme_images/nist_logo.svg "NIST logo") &nbsp; &nbsp; ![Ansible logo](docs/readme_images/ansible_logo.svg "Ansible logo") &nbsp; &nbsp; ![Bash logo](docs/readme_images/bash_logo.png "Bash logo")
 
 *"SCAP content"* refers to documents  in the *XCCDF*, *OVAL* and
-*Source DataStream* formats.  These documents can be presented
+*SCAP source data stream* formats.  These documents can be presented
 in different forms and by different organizations to meet their security
 automation and technical implementation needs.  For general use, we
-recommend *Source DataStreams* because they contain all the data you
-need to evaluate and put machines into compliance. The datastreams are
+recommend *SCAP source data streams* because they contain all the data you
+need to evaluate and put machines into compliance. The data streams are
 part of our release ZIP archives.
 
 *"Ansible content"* refers to Ansible playbooks generated from security
@@ -123,7 +123,7 @@ apt install ssg-applications  # for application-oriented guides (Firefox, JBoss,
 
 Download pre-built SSG zip archive from
 [the release page](https://github.com/ComplianceAsCode/content/releases/latest).
-Each zip file is an archive with ready-made SCAP source datastreams.
+Each zip file is an archive with ready-made SCAP source data streams.
 
 
 ### From source
@@ -154,7 +154,7 @@ oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_rht-ccp --result
 <a href="docs/readme_images/report_sample.png"><img align="right" width="250" src="docs/readme_images/report_sample.png" alt="Evaluation report sample"></a>
 
 After evaluation, the `arf.xml` file will contain all results in a reusable
-*Result DataStream* format, `report.html` will contain a human readable
+*result data stream* (ARF) format, `report.html` will contain a human readable
 report that can be opened in a browser.
 
 Replace the profile with other profile of your choice, you can display
@@ -251,7 +251,7 @@ If you prefer more interactive contact with the community, you can join us on Gi
 
 This project started in 2011 as a collaboration between United States Government agencies and commercial operating system vendors.
 The original name was SCAP Security Guide, commonly abbreviated as SSG.
-The original scope was to create SCAP datastreams. Over time, it grew into the
+The original scope was to create SCAP data streams. Over time, it grew into the
 biggest open-source beyond-SCAP content project.
 
 The next few years saw the introduction of not just government-specific security

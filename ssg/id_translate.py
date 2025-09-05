@@ -106,3 +106,8 @@ class IDTranslator(object):
                                                 element.text)
 
         return tree
+
+    def translate_oval_document(self, oval_document, store_defname=False):
+        oval_document.translate_id(self, store_defname)
+        oval_document.validate_references()
+        return oval_document

@@ -5,9 +5,22 @@
     <criteria operator="AND">
       <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
       <criteria operator="OR">
-        <criterion comment="notify personnel when aide completes" test_ref="test_aide_scan_notification" />
-        <criterion comment="notify personnel when aide completes" test_ref="test_aide_var_cron_notification" />
-        <criterion comment="notify personnel when aide completes in cron.(d|daily|weekly|monthly)" test_ref="test_aide_crontabs_notification" />
+        <criterion comment="notify personnel when aide completes"
+          test_ref="test_aide_scan_notification" />
+        <criterion comment="notify personnel when aide completes"
+          test_ref="test_aide_var_cron_notification" />
+        <criterion comment="notify personnel when aide completes in cron.(d|daily|weekly|monthly)"
+          test_ref="test_aide_crontabs_notification" />
+{{% if product in ["sle15"] %}}
+        <criteria operator="AND">
+          <criterion comment="notification started after check"
+            test_ref="test_aidecheck_systemd_scan_before_notification"/>
+          <criterion comment="systemd aidecheck wants notification"
+            test_ref="test_aidecheck_systemd_scan_wants_notification"/>
+          <criterion comment="systemd aidecheck scan notification test"
+            test_ref="test_aidecheck_systemd_scan_report"/>
+        </criteria>
+{{% endif %}}
       </criteria>
     </criteria>
   </definition>
@@ -39,5 +52,39 @@
     <ind:pattern operation="pattern match">^.*{{{ aide_bin_path }}}[\s]*\-\-check.*\|.*/bin/mail[\s]*-s[\s]*".*"[\s]*.+@.+$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-   
+{{% if product in ["sle15"] %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    id="test_aidecheck_systemd_scan_report" version="1"
+    comment="report results of aide check, when started by systemd">
+    <ind:object object_ref="obj_aidecheck_systemd_report" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_aidecheck_systemd_report" version="1"
+    comment="run aide check with output to a report file">
+    <ind:filepath>/etc/systemd/system/aidecheck.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStart\=.*/usr/bin/aide[\s]*\-\-check.*\-r\s*file:\/w*.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    id="test_aidecheck_systemd_scan_before_notification" version="1"
+    comment="aide check is run before notification service">
+    <ind:object object_ref="obj_aidecheck_systemd_before_notification" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_aidecheck_systemd_before_notification" version="1"
+    comment="run aide check before notification">
+    <ind:filepath>/etc/systemd/system/aidecheck.service</ind:filepath>
+    <ind:pattern operation="pattern match">^Before\=.*aidecheck-notify.service$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="aide check systemd unit wants notification service"
+    id="test_aidecheck_systemd_scan_wants_notification" version="1">
+    <ind:object object_ref="object_aidecheck_for_notification_enabled"/>
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_aidecheck_for_notification_enabled" version="1"
+    comment="list of dependencies should include aidecheck.service">
+    <ind:filepath>/etc/systemd/system/aidecheck.service</ind:filepath>
+    <ind:pattern operation="pattern match">^Wants\=.*aidecheck-notify.service.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endif %}}
 </def-group>

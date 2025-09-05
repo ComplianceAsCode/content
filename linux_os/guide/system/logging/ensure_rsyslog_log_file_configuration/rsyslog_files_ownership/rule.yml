@@ -65,7 +65,7 @@ references:
     nist: CM-6(a),AC-6(1)
     nist-csf: PR.AC-4,PR.DS-5
     pcidss: Req-10.5.1,Req-10.5.2
-    pcidss4: "10.3.1,10.3.2"
+    pcidss4: '10.3.2'
 
 ocil_clause: 'the owner is not correct'
 
@@ -87,6 +87,6 @@ template:
   name: rsyslog_logfiles_attributes_modify
   vars:
     attribute: owner
-    value: 0
-    value@ubuntu2004: 104
-    value@ubuntu2204: 104
+    value: root
+    value@ubuntu2004: syslog
+    value@ubuntu2204: syslog

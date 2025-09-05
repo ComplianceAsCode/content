@@ -292,7 +292,7 @@ For example:
 </tr>
 <tr class="odd">
 <td><p><code>transforms</code></p></td>
-<td><p><code>Required</code> Contains XSLT files and scripts that are used to transform the content into the expected compliance document such as XCCDF, OVAL, Datastream, etc.</p></td>
+<td><p><code>Required</code> Contains XSLT files and scripts that are used to transform the content into the expected compliance document such as XCCDF, OVAL, data stream, etc.</p></td>
 </tr>
 </tbody>
 </table>

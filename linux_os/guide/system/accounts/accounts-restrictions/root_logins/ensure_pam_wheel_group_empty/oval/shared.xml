@@ -1,32 +1,48 @@
 <def-group>
-  <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Group referred by variable var_pam_wheel_group_for_su exists and has no members.") }}}
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    {{{ oval_metadata("Group referred by var_pam_wheel_group_for_su variable exists and has no members.") }}}
     <criteria operator="AND">
-      <criterion test_ref="test_ensure_pam_wheel_group_exist_and_has_no_member" />
+      <criterion test_ref="test_ensure_pam_wheel_group_empty_group_exists"/>
+      <criterion test_ref="test_ensure_pam_wheel_group_empty_has_no_members"/>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="at least one" check_existence="all_exist"
-      comment="check /etc/group for correct setting"
-      id="test_ensure_pam_wheel_group_exist_and_has_no_member" version="1">
-    <ind:object object_ref="object_ensure_pam_wheel_group_exist_and_has_no_member" />
-    <ind:state state_ref="state_ensure_pam_wheel_group_exist_and_has_no_member" />
+  <ind:textfilecontent54_test id="test_ensure_pam_wheel_group_empty_group_exists" version="1"
+    check="at least one" check_existence="all_exist"
+    comment="check if group in var_pam_wheel_group_for_su variable used by pam_wheel.so exists">
+    <ind:object object_ref="object_ensure_pam_wheel_group_exists"/>
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object comment="check /etc/group for empty groups"
-      id="object_ensure_pam_wheel_group_exist_and_has_no_member" version="1">
+  <ind:textfilecontent54_object id="object_ensure_pam_wheel_group_exists"
+    comment="locate the line referring the group used in pam_wheel.so module" version="1">
     <ind:filepath>/etc/group</ind:filepath>
-    <ind:pattern operation="pattern match">^([^:]+):[^:]+:[0-9]+:\s*$</ind:pattern>
+    <ind:pattern operation="pattern match" var_ref="var_ensure_pam_wheel_group_regex"/>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state comment="group must exist"
-      id="state_ensure_pam_wheel_group_exist_and_has_no_member" version="1">
-    <ind:subexpression operation="equals" datatype="string"
-          var_ref="var_pam_wheel_group_for_su" />
+  <local_variable id="var_ensure_pam_wheel_group_regex" datatype="string" version="1"
+    comment="Regex to match the whole group line in /etc/group">
+    <concat>
+      <literal_component>^</literal_component>
+      <escape_regex>
+        <variable_component var_ref="var_pam_wheel_group_for_su"/>
+      </escape_regex>
+      <literal_component>:[^:]+:[0-9]+:.*$</literal_component>
+    </concat>
+  </local_variable>
+
+  <external_variable id="var_pam_wheel_group_for_su" datatype="string" version="1"
+    comment="name of the group used by pam_wheel.so group option"/>
+
+  <ind:textfilecontent54_test id="test_ensure_pam_wheel_group_empty_has_no_members" version="1"
+    check="at least one" check_existence="all_exist"
+    comment="check if group defined by pam_wheel.so group option has no members">
+    <ind:object object_ref="object_ensure_pam_wheel_group_exists"/>
+    <ind:state state_ref="state_ensure_pam_wheel_group_has_no_members"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_ensure_pam_wheel_group_has_no_members" version="1"
+    comment="check if the group line does not contain members">
+    <ind:text operation="pattern match">^[^:]+:[^:]+:[0-9]+:\s*$</ind:text>
   </ind:textfilecontent54_state>
-
-  <external_variable comment="Name of the su group" datatype="string"
-      id="var_pam_wheel_group_for_su" version="1" />
 </def-group>
-

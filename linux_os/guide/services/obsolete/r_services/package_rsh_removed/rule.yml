@@ -61,3 +61,9 @@ template:
         pkgname@ubuntu1804: rsh-client
         pkgname@ubuntu2004: rsh-client
         pkgname@ubuntu2204: rsh-client
+
+{{% if product in ["rhel8", "rhel9"] %}}
+warnings:
+    - general:
+        The package is not available in {{{ full_name }}}.
+{{% endif %}}

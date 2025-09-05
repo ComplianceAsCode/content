@@ -5,7 +5,7 @@ title: 'Disable mutable hooks'
 description: |-
     Ensure kernel structures associated with LSMs are always mapped as read-only after system boot.
 
-    {{{ describe_kernel_build_config("CONFIG_SECURITY_WRITABLE_HOOKS", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_SECURITY_WRITABLE_HOOKS", "n") | indent(4) }}}
 
 rationale: |-
     If CONFIG_SECURITY_WRITABLE_HOOKS is enabled, then hooks can be loaded at runtime and
@@ -27,11 +27,11 @@ references:
 ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
-    {{{ ocil_kernel_build_config("CONFIG_SECURITY_WRITABLE_HOOKS", "y") | indent(4) }}}
+    {{{ ocil_kernel_build_config("CONFIG_SECURITY_WRITABLE_HOOKS", "n") | indent(4) }}}
 
 template:
     name: kernel_build_config
     vars:
         config: CONFIG_SECURITY_WRITABLE_HOOKS
-        value: 'y'
+        value: 'n'
 

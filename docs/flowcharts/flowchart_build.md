@@ -10,7 +10,7 @@ Note that colors are used to highlight components which interact with other fold
 flowchart TD
     subgraph build
     110[build-scripts] --> |populates| 111[build]
-        111[build] --> |generates| 112(datastream files)
+        111[build] --> |generates| 112(data stream files)
     110[build-scripts] --> |triggers| 114[cmake]
         114[cmake] --> |populates| 111[build]
         114[cmake] --> |can trigger| 115[tests]

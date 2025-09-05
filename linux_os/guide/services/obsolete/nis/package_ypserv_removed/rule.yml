@@ -44,6 +44,7 @@ references:
     srg: SRG-OS-000095-GPOS-00049
     stigid@ol7: OL07-00-020010
     stigid@rhel7: RHEL-07-020010
+    stigid@rhel9: RHEL-09-215030
 
 {{{ complete_ocil_entry_package(package="ypserv") }}}
 
@@ -51,3 +52,9 @@ template:
     name: package_removed
     vars:
         pkgname: ypserv
+
+{{% if product in ["rhel9"] %}}
+warnings:
+    - general:
+        The package is not available in {{{ full_name }}}.
+{{% endif %}}

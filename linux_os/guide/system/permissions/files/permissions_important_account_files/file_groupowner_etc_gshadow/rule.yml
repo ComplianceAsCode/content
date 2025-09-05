@@ -42,6 +42,7 @@ references:
     nist: CM-6(a),AC-6(1)
     nist-csf: PR.AC-4,PR.DS-5
     srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel9: RHEL-09-232115
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/gshadow", group=target_group) }}}'
 
@@ -56,10 +57,8 @@ template:
     name: file_groupowner
     vars:
         filepath: /etc/gshadow
+{{% if "ubuntu" in product or "debian" in product %}}
+        gid_or_name: '42'
+{{% else %}}
         gid_or_name: '0'
-        gid_or_name@debian10: '42'
-        gid_or_name@debian11: '42'
-        gid_or_name@ubuntu1604: '42'
-        gid_or_name@ubuntu1804: '42'
-        gid_or_name@ubuntu2004: '42'
-        gid_or_name@ubuntu2204: '42'
+{{% endif %}}

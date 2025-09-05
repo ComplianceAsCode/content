@@ -33,3 +33,9 @@ class Variable(OVALEntity):
 
     def get_xml_element(self):
         return super(Variable, self).get_xml_element(datatype=self.data_type)
+
+    def get_variable_references(self):
+        return self._get_references("var_ref")
+
+    def get_object_references(self):
+        return self._get_references("object_ref")

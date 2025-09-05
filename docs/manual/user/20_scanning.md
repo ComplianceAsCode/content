@@ -18,8 +18,8 @@ Five arguments to OpenSCAP are needed to perform a system scan against the upstr
 * `--report`
   * Optional, indicates location to place HTML formatted results
 
-* datastream location
-  * Mandatory, identifies location of SCAP Source Datastream file
+* data stream location
+  * Mandatory, identifies location of SCAP source data stream file
 
 Putting these arguments together, a properly formatted command would be:
 

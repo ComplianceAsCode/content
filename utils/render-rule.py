@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-from glob import glob
 import collections
 import sys
 import pathlib

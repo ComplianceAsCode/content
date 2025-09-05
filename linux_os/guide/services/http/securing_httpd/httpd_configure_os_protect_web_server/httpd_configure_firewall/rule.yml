@@ -8,8 +8,8 @@ description: |-
     {{% if product == "rhel7" %}}
     By default, <tt>firewalld</tt>
     blocks access to the ports used by the web server.
-    {{{ describe_firewalld_allow(proto="tcp", service="http") }}}
-    {{{ describe_firewalld_allow(proto="tcp", service="https") }}}
+    {{{ describe_firewalld_allow_service(service="http") }}}
+    {{{ describe_firewalld_allow_service(service="https") }}}
     {{% else %}}
     By default, <tt>iptables</tt>
     blocks access to the ports used by the web server.
@@ -33,5 +33,5 @@ ocil: |-
     Review the web site to determine if HTTP and HTTPs are used in accordance with
     well known ports (e.g., 80 and 443) or those ports and services as registered
     and approved for use by the DoD PPSM.
-    {{{ describe_firewalld_allow(proto="tcp", service="http") }}}
-    {{{ describe_firewalld_allow(proto="tcp", service="https") }}}
+    {{{ describe_firewalld_allow_service(service="http") }}}
+    {{{ describe_firewalld_allow_service(service="https") }}}

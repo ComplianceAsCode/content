@@ -28,7 +28,7 @@ def main():
     for product in ssg.constants.product_directories:
         ds_path = os.path.join(args.build_dir, "ssg-" + product + "-ds.xml")
         if not os.path.exists(ds_path):
-            sys.stderr.write("The product datastream '%s' hasn't been build, "
+            sys.stderr.write("The product data stream '%s' hasn't been build, "
                              "skipping the test.\n" % (ds_path))
             continue
         product_dir = os.path.join(args.source_dir, "products", product)
@@ -120,11 +120,11 @@ def machine_platform_missing_in_rules(ds_path, short_ids_to_check):
 def parse_command_line_args():
     parser = argparse.ArgumentParser(
         description="Tests if 'machine' CPEs are "
-                    "propagated to the built datastream")
+                    "propagated to the built data stream")
     parser.add_argument("--source_dir", required=True,
                         help="Content source directory path")
     parser.add_argument("--build_dir", required=True,
-                        help="Build directory containing built datastreams")
+                        help="Build directory containing built data streams")
     args = parser.parse_args()
     return args
 

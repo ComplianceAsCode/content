@@ -1,7 +1,5 @@
 import os
-import pytest
 import tempfile
-import xml.etree.ElementTree as ET
 
 import ssg.build_ovals
 
@@ -12,10 +10,8 @@ PRODUCT_YAML = os.path.join(DATADIR, "product.yml")
 SHARED_OVALS = os.path.join(DATADIR, "shared_ovals")
 BUILD_OVALS_DIR = tempfile.mkdtemp()
 
-shared_oval_1_def_tag = '<definition class="compliance" ' \
-    'id="tmux_conf_readable_by_others" version="1">'
-benchmark_oval_1_def_tag = '<definition class="compliance" ' \
-    'id="selinux_state" version="1">'
+shared_oval_1_def_id = "tmux_conf_readable_by_others"
+benchmark_oval_1_def_id = "selinux_state"
 
 
 def test_build_ovals():
@@ -23,11 +19,11 @@ def test_build_ovals():
         "product": "rhel9",
         "target_oval_version_str": "5.11",
     }
-    obuilder = ssg.build_ovals.OVALBuilder(
+    oval_builder = ssg.build_ovals.OVALBuilder(
         env_yaml, PRODUCT_YAML, [SHARED_OVALS], BUILD_OVALS_DIR)
-    shorthand = obuilder.build_shorthand(include_benchmark=False)
-    assert shared_oval_1_def_tag in shorthand
-    assert benchmark_oval_1_def_tag not in shorthand
+    oval_document = oval_builder.get_oval_document_from_shorthands(include_benchmark=False)
+    assert shared_oval_1_def_id in oval_document.definitions
+    assert benchmark_oval_1_def_id not in oval_document.definitions
 
 
 def test_build_ovals_include_benchmark():
@@ -36,8 +32,8 @@ def test_build_ovals_include_benchmark():
         "product": "rhel9",
         "target_oval_version_str": "5.11",
     }
-    obuilder = ssg.build_ovals.OVALBuilder(
+    oval_builder = ssg.build_ovals.OVALBuilder(
         env_yaml, PRODUCT_YAML, [SHARED_OVALS], BUILD_OVALS_DIR)
-    shorthand = obuilder.build_shorthand(include_benchmark=True)
-    assert shared_oval_1_def_tag in shorthand
-    assert benchmark_oval_1_def_tag in shorthand
+    oval_document = oval_builder.get_oval_document_from_shorthands(include_benchmark=True)
+    assert shared_oval_1_def_id in oval_document.definitions
+    assert benchmark_oval_1_def_id in oval_document.definitions

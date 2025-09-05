@@ -1,0 +1,15 @@
+checktext: |-
+    [main]
+    dns=none
+
+    If the dns key under main does not exist or is not set to "none" or "default", this is a finding.
+
+fixtext: |-
+    Configure NetworkManager in RHEL 9 to use a DNS mode.
+
+    In "/etc/NetworkManager/NetworkManager.conf" add the following line in the "[main]" section:
+
+    dns = none
+
+srg_requirement: |-
+    {{ full_name }} must configure a DNS processing mode set be Network Manager.

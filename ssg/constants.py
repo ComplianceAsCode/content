@@ -28,7 +28,7 @@ SSG_REF_URIS = {
     'ospp': 'https://www.niap-ccevs.org/Profile/PP.cfm',
     'hipaa': 'https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf',
     'ism': 'https://www.cyber.gov.au/acsc/view-all-content/ism',
-    'iso27001-2013': 'https://www.iso.org/standard/54534.html',
+    'iso27001-2013': 'https://www.iso.org/contents/data/standard/05/45/54534.html',
     'nerc-cip': 'https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx',
     'stigid': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
     'os-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
@@ -42,7 +42,7 @@ product_directories = [
     'anolis8',
     'anolis23',
     'chromium',
-    'debian10', 'debian11',
+    'debian10', 'debian11', 'debian12',
     'example',
     'eks',
     'fedora',
@@ -200,6 +200,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Chromium": "chromium",
     "Debian 10": "debian10",
     "Debian 11": "debian11",
+    "Debian 12": "debian12",
     "Example": "example",
     "Amazon Elastic Kubernetes Service": "eks",
     "Fedora": "fedora",
@@ -279,7 +280,7 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_alinux": ["alinux2", "alinux3"],
     "multi_platform_anolis": ["anolis8", "anolis23"],
-    "multi_platform_debian": ["debian10", "debian11"],
+    "multi_platform_debian": ["debian10", "debian11", "debian12"],
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
@@ -513,4 +514,9 @@ BENCHMARKS = {
     "linux_os/guide",
     "products/chromium/guide",
     "products/firefox/guide",
+}
+
+
+SSG_IDENT_URIS = {
+    'cce': cce_uri
 }

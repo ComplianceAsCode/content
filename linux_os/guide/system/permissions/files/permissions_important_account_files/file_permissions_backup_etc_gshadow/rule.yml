@@ -39,6 +39,7 @@ references:
     disa: CCI-002223
     nist: AC-6 (1)
     srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel9: RHEL-09-232070
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/gshadow-", perms=target_perms) }}}'
 
@@ -57,6 +58,7 @@ template:
         filemode: '0000'
         filemode@debian10: '0640'
         filemode@debian11: '0640'
+        filemode@debian12: '0640'
         filemode@ubuntu1604: '0640'
         filemode@ubuntu1804: '0640'
         filemode@ubuntu2004: '0640'

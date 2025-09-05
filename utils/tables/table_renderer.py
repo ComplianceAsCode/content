@@ -1,9 +1,6 @@
 import collections
 import os
-import sys
 import re
-
-import argparse
 
 import ssg.build_yaml
 import ssg.constants

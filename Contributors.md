@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2023-09-28 13:18 UTC
+Last Modified: 2023-11-28 11:44 UTC
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -188,6 +188,7 @@ The following people have contributed to the SCAP Security Guide project
 * Martin Preisler <mpreisle@redhat.com>
 * Wesley Ceraso Prudencio <wcerasop@redhat.com>
 * Raphael Sanchez Prudencio <rsprudencio@redhat.com>
+* Miha Purg <miha.purg@canonical.com>
 * T.O. Radzy Radzykewycz <radzy@windriver.com>
 * rain-Qing <yangyuqing6@qq.com>
 * Kenyon Ralph <kenyon@kenyonralph.com>
@@ -195,6 +196,7 @@ The following people have contributed to the SCAP Security Guide project
 * Federico Ramirez <federico.r.ramirez@oracle.com>
 * rchikov <rumen.chikov@suse.com>
 * Rick Renshaw <Richard_Renshaw@xtoenergy.com>
+* Paul Rensing <prensing@cimetrics.com>
 * Chris Reynolds <c.reynolds82@gmail.com>
 * rhayes <rhayes@rivierautilities.com>
 * Pat Riehecky <riehecky@fnal.gov>
@@ -230,6 +232,7 @@ The following people have contributed to the SCAP Security Guide project
 * THOBY Simon <Simon.THOBY@viveris.fr>
 * Thomas Sjögren <konstruktoid@users.noreply.github.com>
 * Jindrich Skacel <102800748+jskacel@users.noreply.github.com>
+* Alexandre Skrzyniarz <alexandre.skrzyniarz@laposte.net>
 * Francisco Slavin <fslavin@tresys.com>
 * Dave Smith <dsmith@eclipse.ncsc.mil>
 * David Smith <dsmith@fornax.eclipse.ncsc.mil>

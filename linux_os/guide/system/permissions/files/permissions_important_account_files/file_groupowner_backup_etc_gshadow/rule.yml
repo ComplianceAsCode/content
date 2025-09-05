@@ -38,6 +38,7 @@ references:
     pcidss: Req-8.7
     pcidss4: "7.2.6"
     srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel9: RHEL-09-232125
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/gshadow-", group=target_group) }}}'
 
@@ -55,6 +56,7 @@ template:
         gid_or_name: '0'
         gid_or_name@debian10: '42'
         gid_or_name@debian11: '42'
+        gid_or_name@debian12: '42'
         gid_or_name@ubuntu1604: '42'
         gid_or_name@ubuntu1804: '42'
         gid_or_name@ubuntu2004: '42'

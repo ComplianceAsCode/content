@@ -4,7 +4,6 @@ from __future__ import print_function
 import os
 import os.path
 import json
-import sys
 
 from .build_yaml import Rule, DocumentationNotComplete
 from .constants import (

@@ -1,0 +1,43 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Get Audit Log Files"
+  ansible.builtin.command: grep -iw ^log_file /etc/audit/auditd.conf
+  failed_when: false
+  register: log_file_exists
+
+- name: "{{{ rule_title }}} - Set Log File Facts"
+  ansible.builtin.set_fact:
+      log_file_line: "{{ log_file_exists.stdout | split(' ') | last }}"
+
+- name: "{{{ rule_title }}} - Set Default log_file if Not Set"
+  ansible.builtin.set_fact:
+      log_file: "/var/log/audit/audit.log"
+  when: (log_file_exists is undefined) or (log_file_exists.stdout | length == 0)
+
+- name: "{{{ rule_title }}} - Set log_file From log_file_line if Not Set Already"
+  ansible.builtin.set_fact:
+      log_file: "{{ log_file_line }}"
+  when: (log_file_line is defined) and (log_file_line | length > 0)
+
+- name: "{{{ rule_title }}} - List All Log File Backups"
+  ansible.builtin.find:
+      path: "{{ log_file | dirname }}"
+      patterns: "{{ log_file | basename }}.*"
+  register: backup_files
+
+- name: "{{{ rule_title }}} - Apply Mode to All Backup Log Files"
+  ansible.builtin.file:
+      path: "{{ item }}"
+      group: root
+  failed_when: false
+  loop: "{{ backup_files.files| map(attribute='path') | list }}"
+
+- name: "{{{ rule_title }}} - Apply Mode to Log File"
+  ansible.builtin.file:
+      path: "{{ log_file }}"
+      group: root
+  failed_when: false

@@ -8,7 +8,6 @@ import jinja2
 import argparse
 import json
 import re
-import random
 
 from ssg import yaml, cce, products
 from ssg.shims import input_func

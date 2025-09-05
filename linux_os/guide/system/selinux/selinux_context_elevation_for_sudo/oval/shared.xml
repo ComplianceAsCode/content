@@ -26,13 +26,13 @@
 
   <ind:textfilecontent54_object id="obj_sudo_selinux_elevation_type" version="1">
     <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*%wheel.*TYPE=(\w+).*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*%\w+.*TYPE=(\w+).*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="obj_sudo_selinux_elevation_role" version="1">
     <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*%wheel.*ROLE=(\w+).*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*%\w+.*ROLE=(\w+).*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 

@@ -42,7 +42,7 @@ ocil: |-
     with <pre>$ oc get machineset --all-namespaces -o yaml</pre>
 
     Run the following command to retrieve if the Azure disk encryption is enabled:
-    <pre>$ oc get machineset --all-namespaces -o json | jq '{{{ azurejqfilter }}}}'</pre>
+    <pre>$ oc get machineset --all-namespaces -o json | jq '{{{ azurejqfilter }}}'</pre>
     Make sure that the result is an array of machineset names where
     disk encryption is enabled.
     This can be inspected by going through them

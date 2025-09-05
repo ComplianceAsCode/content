@@ -1,5 +1,7 @@
 documentation_complete: true
 
+prodtype: alinux2,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15
+
 title: 'Enable the NTP Daemon'
 
 description: |-
@@ -21,6 +23,7 @@ severity: medium
 
 identifiers:
     cce@rhel7: CCE-84253-4
+    cce@rhel8: CCE-86486-8
     cce@rhel9: CCE-87863-7
     cce@sle12: CCE-91658-5
     cce@sle15: CCE-91295-6
@@ -37,7 +40,7 @@ references:
     nist: CM-6(a),AU-8(1)(a)
     nist-csf: PR.PT-1
     pcidss: Req-10.4
-    pcidss4: 10.6.1
+    pcidss4: '10.6.1'
 
 ocil: |-
     {{{ ocil_service_enabled(service="ntpd") }}}
@@ -49,3 +52,10 @@ template:
         packagename: ntp
 
 platform: package[ntp]
+
+{{% if prodtype in ["rhel8", "rhel9", "sle15"] %}}
+warnings:
+    - general:
+        The <pre>ntp</pre> package is not available in {{{ full_name }}}. Please
+        consider the <pre>chrony</pre> package instead together with the respective <pre>service_chronyd_enabled</pre> rule.
+{{% endif %}}

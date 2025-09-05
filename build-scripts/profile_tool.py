@@ -7,7 +7,6 @@ import argparse
 import jinja2
 import os
 import os.path
-import sys
 
 try:
     import ssg.build_profile

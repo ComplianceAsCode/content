@@ -43,7 +43,7 @@ def verify_file(ds, catalog_uris, file, build_dir):
         sys.exit(1)
 
 
-# Walk the datastream tree to find if every element of the chain from the Rules to the SCE script
+# Walk the data stream tree to find if every element of the chain from the Rules to the SCE script
 # content are present.
 def verify_component_refs(ds, check_files, build_dir):
     catalog_uris = {}
@@ -62,18 +62,18 @@ def verify_component_refs(ds, check_files, build_dir):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Checks a SCE test exists and was properly written in the datastream."
+        description="Checks a SCE test exists and was properly written in the data stream."
     )
     parser.add_argument(
         "build_dir", help="Path to the build directory")
     parser.add_argument(
-        "datastream_path", help="Path to a SCAP source datastream")
+        "datastream_path", help="Path to a SCAP source data stream")
     args = parser.parse_args()
     root = ssg.xml.parse_file(args.datastream_path)
 
     sce_checks = collect_sce_checks(root)
     if len(sce_checks) == 0:
-        print("Could not find SCE checks in the datastream")
+        print("Could not find SCE checks in the data stream")
         sys.exit(1)
     verify_component_refs(root, sce_checks, args.build_dir)
     print("The SCE content is OK")

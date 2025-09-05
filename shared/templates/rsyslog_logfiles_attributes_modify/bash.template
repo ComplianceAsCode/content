@@ -7,7 +7,7 @@ RSYSLOG_ETC_CONFIG="/etc/rsyslog.conf"
 #   (store the result into array for the case there's shell glob used as value of IncludeConfig)
 readarray -t OLD_INC < <(grep -e "\$IncludeConfig[[:space:]]\+[^[:space:];]\+" /etc/rsyslog.conf | cut -d ' ' -f 2)
 readarray -t RSYSLOG_INCLUDE_CONFIG < <(for INCPATH in "${OLD_INC[@]}"; do eval printf '%s\\n' "${INCPATH}"; done)
-readarray -t NEW_INC < <(awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(include\\(|\\s*)file=\"(\\S+)\".*","\\2",1); if($0!=nf){print nf}}' /etc/rsyslog.conf)
+readarray -t NEW_INC < <(sed -n '/^\s*include(/,/)/Ip' /etc/rsyslog.conf | sed -n 's@.*file\s*=\s*"\([/[:alnum:][:punct:]]*\)".*@\1@Ip')
 readarray -t RSYSLOG_INCLUDE < <(for INCPATH in "${NEW_INC[@]}"; do eval printf '%s\\n' "${INCPATH}"; done)
 
 # Declare an array to hold the final list of different log file paths
@@ -79,8 +79,8 @@ done
 # match only "logfile" expression
 for LOG_FILE in "${RSYSLOG_CONFIG_FILES[@]}"
 do
-	ACTION_OMFILE_LINES=$(grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" "${LOG_FILE}")
-	OMFILE_LINES=$(echo "${ACTION_OMFILE_LINES}"| grep -aoP "File\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)")
+	ACTION_OMFILE_LINES=$(grep -iozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" "${LOG_FILE}")
+	OMFILE_LINES=$(echo "${ACTION_OMFILE_LINES}"| grep -iaoP "File\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)")
 	LOG_FILE_PATHS+=("$(echo "${OMFILE_LINES}"| grep -oE "\"([/[:alnum:][:punct:]]*)\""|tr -d "\"")")
 done
 

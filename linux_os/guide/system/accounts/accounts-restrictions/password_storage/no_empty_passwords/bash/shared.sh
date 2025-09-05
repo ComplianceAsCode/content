@@ -11,10 +11,9 @@ for FILE in ${NULLOK_FILES}; do
    sed --follow-symlinks -i 's/\<nullok\>//g' ${FILE}
 done
 {{% elif 'ubuntu' in product %}}
-COMMON_PASSWORD_PATH="/etc/pam.d/common-password"
-if grep -l "nullok.*" ${COMMON_PASSWORD_PATH}; then
-    sed -i 's/nullok.*//g' ${COMMON_PASSWORD_PATH}
-fi
+for FILE in "/etc/pam.d/common-auth" "/etc/pam.d/common-password"; do
+    sed -i 's/\(.*pam_unix\.so.*\)\s\<nullok\>\(.*\)/\1\2/g' ${FILE}
+done
 {{% else %}}
 if [ -f /usr/bin/authselect ]; then
     {{{ bash_enable_authselect_feature('without-nullok') }}}

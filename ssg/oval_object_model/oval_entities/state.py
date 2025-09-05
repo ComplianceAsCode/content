@@ -30,3 +30,6 @@ class State(OVALEntity):
 
     def get_xml_element(self):
         return super(State, self).get_xml_element(operator=self.operator)
+
+    def get_variable_references(self):
+        return self._get_references("var_ref")

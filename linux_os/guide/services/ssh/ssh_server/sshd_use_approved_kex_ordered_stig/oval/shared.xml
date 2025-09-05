@@ -55,12 +55,18 @@
     comment="tests the value of Kex algorithms setting in the {{{ path }}} file"
     id="test_{{{ rule_id }}}" version="1">
     <ind:object object_ref="obj_{{{ rule_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
     <ind:filepath>{{{ path }}}</ind:filepath>
-    <ind:pattern operation="pattern match">{{{ kex_algos_regex }}}</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:pattern operation="pattern match">{{{ prefix_conf }}}.*</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal" >1</ind:instance>
   </ind:textfilecontent54_object>
+
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
+    <ind:text operation="pattern match">{{{ kex_algos_regex }}}</ind:text>
+  </ind:textfilecontent54_state>
 
 </def-group>

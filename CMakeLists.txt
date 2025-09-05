@@ -8,6 +8,11 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
         "MinSizeRel" "RelWithDebInfo")
 endif()
 
+set(LOG_LEVEL "WARNING")
+if(SSG_LOG)
+    set(LOG_LEVEL "DEBUG")
+endif()
+
 project(scap-security-guide NONE)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
@@ -34,7 +39,7 @@ set(SSG_TAILORING_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/tail
 
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
-set(SSG_PATCH_VERSION 70)
+set(SSG_PATCH_VERSION 71)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
@@ -76,6 +81,7 @@ option(SSG_PRODUCT_ANOLIS23 "If enabled, the Anolis OS 23 SCAP content will be b
 option(SSG_PRODUCT_CHROMIUM "If enabled, the Chromium SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN10 "If enabled, the Debian 10 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN11 "If enabled, the Debian 11 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_DEBIAN12 "If enabled, the Debian 12 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_EKS "If enabled, the EKS SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_EXAMPLE "If enabled, the Example SCAP content will be built" FALSE)
 option(SSG_PRODUCT_FEDORA "If enabled, the Fedora SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
@@ -222,6 +228,7 @@ message(STATUS "build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "generator: ${CMAKE_GENERATOR}")
 message(STATUS "source directory: ${CMAKE_SOURCE_DIR}")
 message(STATUS "build directory: ${CMAKE_BINARY_DIR}")
+message(STATUS "Logging: ${SSG_LOG}")
 message(STATUS " ")
 
 message(STATUS "Tools:")
@@ -294,6 +301,7 @@ message(STATUS "Anolis OS 23: ${SSG_PRODUCT_ANOLIS23}")
 message(STATUS "Chromium: ${SSG_PRODUCT_CHROMIUM}")
 message(STATUS "Debian 10: ${SSG_PRODUCT_DEBIAN10}")
 message(STATUS "Debian 11: ${SSG_PRODUCT_DEBIAN11}")
+message(STATUS "Debian 12: ${SSG_PRODUCT_DEBIAN12}")
 message(STATUS "Example: ${SSG_PRODUCT_EXAMPLE}")
 message(STATUS "EKS: ${SSG_PRODUCT_EKS}")
 message(STATUS "Fedora: ${SSG_PRODUCT_FEDORA}")
@@ -372,6 +380,9 @@ endif()
 if(SSG_PRODUCT_DEBIAN11)
     add_subdirectory("products/debian11" "debian11")
 endif()
+if(SSG_PRODUCT_DEBIAN12)
+    add_subdirectory("products/debian12" "debian12")
+endif()
 if(SSG_PRODUCT_EXAMPLE)
     add_subdirectory("products/example" "example")
 endif()
@@ -442,7 +453,7 @@ if(SSG_PRODUCT_OPENEMBEDDED)
     add_subdirectory("products/openembedded" "openembedded")
 endif()
 
-# ZIP only contains source datastreams and kickstarts, people who
+# ZIP only contains source data streams and kickstarts, people who
 # want sources to build from should get the tarball instead.
 ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
 

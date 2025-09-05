@@ -1,4 +1,6 @@
-# platform = multi_platform_ol
+#!/bin/bash
+
+# platform = multi_platform_all
 # packages = sudo
 # remediation = none
 

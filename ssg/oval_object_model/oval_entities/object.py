@@ -29,3 +29,12 @@ class ObjectOVAL(OVALEntity):
 
     def get_xml_element(self):
         return super(ObjectOVAL, self).get_xml_element()
+
+    def get_variable_references(self):
+        return self._get_references("var_ref")
+
+    def get_state_references(self):
+        return self._get_references("filter")
+
+    def get_object_references(self):
+        return self._get_references("object_reference")

@@ -34,7 +34,7 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
 def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
-    """Read datastream, and return set intersection of profiles of given
+    """Read data stream, and return set intersection of profiles of given
     benchmark and those provided in `selected_profiles` parameter.
     """
 
@@ -54,10 +54,10 @@ def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
 
     if not valid_profiles:
         if script:
-            logging.warning('Script {0} - profile {1} not found in datastream'
+            logging.warning('Script {0} - profile {1} not found in data stream'
                             .format(script, ", ".join(selected_profiles)))
         else:
-            logging.warning('Profile {0} not found in datastream'
+            logging.warning('Profile {0} not found in data stream'
                             .format(", ".join(selected_profiles)))
     return valid_profiles
 
@@ -280,7 +280,7 @@ class RuleChecker(oscap.Checker):
             List of named tuples Rule having these fields:
                 directory -- absolute path to the rule "tests" subdirectory
                             containing the test scenarios in Bash
-                id -- full rule id as it is present in datastream
+                id -- full rule id as it is present in data stream
                 short_id -- short rule ID, the same as basename of the directory
                             containing the test scenarios in Bash
                 template -- name of the template the rule uses

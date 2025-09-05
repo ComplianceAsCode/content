@@ -2,7 +2,6 @@
 
 import pathlib
 import pandas as pd
-import create_srg_export
 
 import utils.srg_export.data
 

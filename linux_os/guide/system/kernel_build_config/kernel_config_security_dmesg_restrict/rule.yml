@@ -5,7 +5,7 @@ title: 'Restrict unprivileged access to the kernel syslog'
 description: |-
     Enforce restrictions on unprivileged users reading the kernel syslog via dmesg(8).
 
-    {{{ describe_kernel_build_config("CONFIG_SECURITY_DMESG_RESTRICT", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_SECURITY_DMESG_RESTRICT", "y") | indent(4) }}}
 
 rationale: |-
     Prevents unprivileged users from retrieving kernel addresses with dmesg.
@@ -26,11 +26,11 @@ references:
 ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
-    {{{ ocil_kernel_build_config("CONFIG_SECURITY_DMESG_RESTRICT", "n") | indent(4) }}}
+    {{{ ocil_kernel_build_config("CONFIG_SECURITY_DMESG_RESTRICT", "y") | indent(4) }}}
 
 template:
     name: kernel_build_config
     vars:
         config: CONFIG_SECURITY_DMESG_RESTRICT
-        value: 'n'
+        value: 'y'
 

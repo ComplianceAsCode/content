@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 from copy import deepcopy
-import collections
 import datetime
 import json
 import os
@@ -32,6 +31,7 @@ from .constants import (XCCDF12_NS,
                         SSG_BENCHMARK_LATEST_URI,
                         SSG_PROJECT_NAME,
                         SSG_REF_URIS,
+                        SSG_IDENT_URIS,
                         PREFIX_TO_NS,
                         FIX_TYPE_TO_SYSTEM
                         )
@@ -113,13 +113,13 @@ def add_reference_elements(element, references, ref_uri_dict):
                 else:
                     raise ValueError("SRG {0} doesn't have a URI defined.".format(ref_val))
             else:
-                try:
-                    ref_href = ref_uri_dict[ref_type]
-                except KeyError as exc:
+                if ref_type not in ref_uri_dict.keys():
                     msg = (
-                        "Error processing reference {0}: {1} in Rule {2}."
-                        .format(ref_type, ref_vals, self.id_))
+                        "Error processing reference {0}: {1}. A reference type "
+                        "has been added that the project doesn't know about."
+                        .format(ref_type, ref_vals))
                     raise ValueError(msg)
+                ref_href = ref_uri_dict[ref_type]
 
             ref = ET.SubElement(element, '{%s}reference' % XCCDF12_NS)
             ref.set("href", ref_href)
@@ -961,6 +961,15 @@ class Rule(XCCDFEntity, Templatable):
             # into corresponding XCCDF <sub> elements
             ssg.build_remediations.expand_xccdf_subs(fix_el, fix_type)
 
+    def _add_ident_elements(self, rule):
+        for ident_type, ident_val in self.identifiers.items():
+            if ident_type not in SSG_IDENT_URIS:
+                msg = "Invalid identifier type '%s' in rule '%s'" % (ident_type, self.id_)
+                raise ValueError(msg)
+            ident = ET.SubElement(rule, '{%s}ident' % XCCDF12_NS)
+            ident.set("system", SSG_IDENT_URIS[ident_type])
+            ident.text = ident_val
+
     def to_xml_element(self, env_yaml=None):
         rule = ET.Element('{%s}Rule' % XCCDF12_NS)
         rule.set('selected', 'false')
@@ -989,11 +998,7 @@ class Rule(XCCDFEntity, Templatable):
             rule, "conflicts", "idref",
             list(map(lambda x: OSCAP_RULE + x, self.conflicts)))
 
-        for ident_type, ident_val in self.identifiers.items():
-            ident = ET.SubElement(rule, '{%s}ident' % XCCDF12_NS)
-            if ident_type == 'cce':
-                ident.set('system', cce_uri)
-                ident.text = ident_val
+        self._add_ident_elements(rule)
         self._add_fixes_elements(rule)
 
         ocil_parent = rule
@@ -1332,9 +1337,9 @@ class BuildLoader(DirectoryLoader):
         if stig_reference_path:
             self.stig_references = ssg.build_stig.map_versions_to_rule_ids(stig_reference_path)
         self.components_dir = None
-        self.rule_to_components = self._load_components()
+        self.rule_to_components = None
 
-    def _load_components(self):
+    def load_components(self):
         if "components_root" not in self.env_yaml:
             return None
         product_dir = self.env_yaml["product_dir"]
@@ -1342,9 +1347,8 @@ class BuildLoader(DirectoryLoader):
         self.components_dir = os.path.abspath(
             os.path.join(product_dir, components_root))
         components = ssg.components.load(self.components_dir)
-        rule_to_components = ssg.components.rule_component_mapping(
+        self.rule_to_components = ssg.components.rule_component_mapping(
             components)
-        return rule_to_components
 
     def _process_values(self):
         for value_yaml in self.value_files:

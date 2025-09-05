@@ -9,7 +9,7 @@ description: |-
     remote access through SSH. In more restrictive firewalld settings, the SSH port should be
     added to the proper firewalld zone in order to allow SSH remote access.
     <br /><br />
-    {{{ describe_firewalld_allow(proto="tcp", service="ssh") }}}
+    {{{ describe_firewalld_allow_service(service="ssh") }}}
 
 rationale: |-
     If inbound SSH connections are expected, adding the SSH port to the proper firewalld zone
@@ -27,6 +27,7 @@ references:
     ism: "1416"
     nist: AC-17(a),CM-6(b),CM-7(a),CM-7(b)
     srg: SRG-OS-000096-GPOS-00050
+    stigid@rhel9: RHEL-09-251035
 
 platform: machine
 
@@ -38,7 +39,7 @@ ocil: |
 fixtext: |-
     Enable SSH service in firewalld configuration.
 
-    {{{ describe_firewalld_allow(proto="tcp", service="ssh") }}}
+    {{{ describe_firewalld_allow_service(service="ssh") }}}
 
 warnings:
     - general: |-

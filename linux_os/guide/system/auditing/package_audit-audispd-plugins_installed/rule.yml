@@ -1,5 +1,7 @@
 documentation_complete: true
 
+prodtype: fedora,ol9,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
+
 title: 'Ensure the default plugins for the audit dispatcher are Installed'
 
 description: 'The audit-audispd-plugins package should be installed.'
@@ -32,3 +34,10 @@ template:
         pkgname@ubuntu1604: audispd-plugins
         pkgname@ubuntu1804: audispd-plugins
         pkgname@ubuntu2004: audispd-plugins
+
+{{% if prodtype in ["rhel7", "rhel8", "rhel9"] %}}
+warnings:
+    - general:
+        This package is not available in {{{ full_name }}}. The correct package
+        is called <pre>audispd-plugins</pre>. The rule <pre> is suggested as a replacement.
+{{% endif %}}

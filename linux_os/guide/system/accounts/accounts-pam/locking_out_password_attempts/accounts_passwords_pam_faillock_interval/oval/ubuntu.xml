@@ -40,7 +40,7 @@
   <constant_variable id="var_accounts_passwords_pam_faillock_interval_pam_faillock_account_regex"
                 datatype="string" version="1"
                 comment="regex to identify pam_faillock.so entry in account section of pam files">
-    <value>^\s*account\s+required\s+pam_faillock\.so$</value>
+    <value>^\s*account\s+required\s+pam_faillock\.so\s*(#.*)?$</value>
   </constant_variable>
 
   <constant_variable

@@ -3,7 +3,7 @@
 from __future__ import print_function
 
 """
-Takes given XCCDF or DataStream and adds RHEL derivative operating system(s) CPE name next
+Takes given XCCDF or data stream and adds RHEL derivative operating system(s) CPE name next
 to RHEL CPE names. Can automatically recognize RHEL CPEs and adds the derivitive OS ones
 next to those accordingly.
 
@@ -40,7 +40,7 @@ def parse_args():
                       action="store_true", help="Enable Scientific Linux")
     parser.add_option("-i", "--input", dest="input_content", default=False,
                       action="store",
-                      help="INPUT can be XCCDF or Source DataStream")
+                      help="INPUT can be XCCDF or Source data stream")
     parser.add_option("-o", "--output", dest="output", default=False,
                       action="store", help="XML Tree content")
     parser.add_option("--id-name", dest="id_name", default="ssg",

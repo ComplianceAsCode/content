@@ -161,160 +161,6 @@ fi
 
 
 {{#
-    Macro to perform remediation for 'audit_rules_privileged_commands' rule
-
-    Example macro invocation(s)::
-
-         perform_audit_rules_privileged_commands_remediation("auditctl", "500")
-         perform_audit_rules_privileged_commands_remediation("augenrules", "1000")
-
-:param tool: tool used to load audit rules either 'auditctl' or 'augenrules'
-:type tool: str
-:param min_auid: minimum original ID the user logged in with
-:type min_auid: str
-
-#}}
-{{%- macro bash_perform_audit_rules_privileged_commands_remediation(tool, min_auid) -%}}
-files_to_inspect=()
-{{% if tool == "auditctl" %}}
-# If the audit tool is 'auditctl', then:
-# * add '/etc/audit/audit.rules'to the list of files to be inspected,
-# * specify '/etc/audit/audit.rules' as the output audit file, where
-#   missing rules should be inserted
-files_to_inspect=("/etc/audit/audit.rules")
-output_audit_file="/etc/audit/audit.rules"
-{{%- elif tool == "augenrules" -%}}
-# If the audit tool is 'augenrules', then:
-# * add '/etc/audit/rules.d/*.rules' to the list of files to be inspected
-#   (split by newline),
-# * specify /etc/audit/rules.d/privileged.rules' as the output file, where
-#   missing rules should be inserted
-readarray -t files_to_inspect < <(find /etc/audit/rules.d -maxdepth 1 -type f -name '*.rules' -print)
-output_audit_file="/etc/audit/rules.d/privileged.rules"
-{{%- else -%}}
-{{{ raise("Unknown tool used: " + tool) }}}
-{{%- endif %}}
-
-# Obtain the list of SUID/SGID binaries on the particular system (split by newline)
-# into privileged_binaries array
-privileged_binaries=()
-readarray -t privileged_binaries < <(find / -not \( -fstype afs -o -fstype ceph -o -fstype cifs -o -fstype smb3 -o -fstype smbfs -o -fstype sshfs -o -fstype ncpfs -o -fstype ncp -o -fstype nfs -o -fstype nfs4 -o -fstype gfs -o -fstype gfs2 -o -fstype glusterfs -o -fstype gpfs -o -fstype pvfs2 -o -fstype ocfs2 -o -fstype lustre -o -fstype davfs -o -fstype fuse.sshfs \) -type f \( -perm -4000 -o -perm -2000 \) 2> /dev/null)
-
-# Keep list of SUID/SGID binaries that have been already handled within some previous iteration
-sbinaries_to_skip=()
-
-# For each found sbinary in privileged_binaries list
-for sbinary in "${privileged_binaries[@]}"
-do
-
-    # Check if this sbinary wasn't already handled in some of the previous sbinary iterations
-    # Return match only if whole sbinary definition matched (not in the case just prefix matched!!!)
-    if [[ $(sed -ne "\|${sbinary}|p" <<< "${sbinaries_to_skip[*]}") ]]
-    then
-        # If so, don't process it second time & go to process next sbinary
-        continue
-    fi
-
-    # Reset the counter of inspected files when starting to check
-    # presence of existing audit rule for new sbinary
-    count_of_inspected_files=0
-
-    # Define expected rule form for this binary
-    expected_rule="-a always,exit -F path=${sbinary} -F auid>={{{ min_auid }}} -F auid!=unset -F key=privileged"
-
-    # If list of audit rules files to be inspected is empty, just add new rule and move on to next binary
-    if [[ ${#files_to_inspect[@]} -eq 0 ]]; then
-        echo "$expected_rule" >> "$output_audit_file"
-        continue
-    fi
-
-    # Replace possible slash '/' character in sbinary definition so we could use it in sed expressions below
-    sbinary_esc=${sbinary//$'/'/$'\/'}
-
-    # For each audit rules file from the list of files to be inspected
-    for afile in "${files_to_inspect[@]}"
-    do
-        # Search current audit rules file's content for match. Match criteria:
-        # * existing rule is for the same SUID/SGID binary we are currently processing (but
-        #   can contain multiple -F path= elements covering multiple SUID/SGID binaries)
-        # * existing rule contains all arguments from expected rule form (though can contain
-        #   them in arbitrary order)
-
-        base_search=$(sed -e '/-a always,exit/!d' -e '/-F path='"${sbinary_esc}"'[^[:graph:]]/!d'		\
-                -e '/-F path=[^[:space:]]\+/!d'						\
-                -e '/-F auid>='"{{{ min_auid }}}"'/!d' -e '/-F auid!=\(4294967295\|unset\)/!d'	\
-                -e '/-k \|-F key=/!d' "$afile")
-
-        # Increase the count of inspected files for this sbinary
-        count_of_inspected_files=$((count_of_inspected_files + 1))
-
-        # Search current audit rules file's content for presence of rule pattern for this sbinary
-        if [[ $base_search ]]
-        then
-
-            # Current audit rules file already contains rule for this binary =>
-            # Store the exact form of found rule for this binary for further processing
-            concrete_rule=$base_search
-
-            # Select all other SUID/SGID binaries possibly also present in the found rule
-
-            readarray -t handled_sbinaries < <(grep -o -e "-F path=[^[:space:]]\+" <<< "$concrete_rule")
-            handled_sbinaries=("${handled_sbinaries[@]//-F path=/}")
-
-            # Merge the list of such SUID/SGID binaries found in this iteration with global list ignoring duplicates
-            readarray -t sbinaries_to_skip < <(for i in "${sbinaries_to_skip[@]}" "${handled_sbinaries[@]}"; do echo "$i"; done | sort -du)
-
-            # if there is a -F perm flag, remove it
-            if grep -q '.*-F\s\+perm=[rwxa]\+.*' <<< "$concrete_rule"; then
-
-                # Separate concrete_rule into three sections using hash '#'
-                # sign as a delimiter around rule's permission section borders
-                # note that the trailing space after perm flag is captured because there would be
-                # two consecutive spaces after joining remaining parts of the rule together
-                concrete_rule="$(echo "$concrete_rule" | sed -n "s/\(.*\)\+\(-F perm=[rwax]\+\ \?\)\+/\1#\2#/p")"
-
-                # Split concrete_rule into head and tail sections using hash '#' delimiter
-                # The second column contains the permission section, which we don't need to extract
-                rule_head=$(cut -d '#' -f 1 <<< "$concrete_rule")
-                rule_tail=$(cut -d '#' -f 3 <<< "$concrete_rule")
-
-                # Remove permissions section from existing rule in the file
-                sed -i "s#${rule_head}\(.*\)${rule_tail}#${rule_head}${rule_tail}#" "$afile"
-            fi
-        # If the required audit rule for particular sbinary wasn't found yet, insert it under following conditions:
-        #
-        # * in the "auditctl" mode of operation insert particular rule each time
-        #   (because in this mode there's only one file -- /etc/audit/audit.rules to be inspected for presence of this rule),
-        #
-        # * in the "augenrules" mode of operation insert particular rule only once and only in case we have already
-        #   searched all of the files from /etc/audit/rules.d/*.rules location (since that audit rule can be defined
-        #   in any of those files and if not, we want it to be inserted only once into /etc/audit/rules.d/privileged.rules file)
-        #
-	{{% if tool in ("augenrules", "auditctl") -%}}
-	{{% if tool == "augenrules" -%}}
-        elif [[ $count_of_inspected_files -eq "${#files_to_inspect[@]}" ]]
-        then
-	{{%- endif %}}
-	{{% if tool == "auditctl" -%}}
-        else
-	{{%- endif %}}
-            # Check if this sbinary wasn't already handled in some of the previous afile iterations
-            # Return match only if whole sbinary definition matched (not in the case just prefix matched!!!)
-            if [[ ! $(sed -ne "\|${sbinary}|p" <<< "${sbinaries_to_skip[*]}") ]]
-            then
-                # Current audit rules file's content doesn't contain expected rule for this
-                # SUID/SGID binary yet => append it
-                echo "$expected_rule" >> "$output_audit_file"
-            fi
-            continue
-	{{%- endif %}}
-        fi
-    done
-done
-{{%- endmacro -%}}
-
-
-{{#
     Set set a parameter in /etc/sshd_config
 
 :parameter parameter: Parameter to set
@@ -761,7 +607,6 @@ then
     fi
 fi
 
-
 [ ! -z "${DCONFFILE}" ] && echo "" >> "${DCONFFILE}"
 if ! grep -q "\\[{{{ path }}}\\]" "${DCONFFILE}"
 then
@@ -853,147 +698,6 @@ sed -i "s/disable.*/disable         = no/gI" "/etc/xinetd.d/$xinetd"
 sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
     {{%- endif -%}}
 {{%- endif -%}}
-{{%- endmacro -%}}
-
-
-{{%- macro _put_into_firefox_cfg(config_item, key, value_varname, where, sed_separator) -%}}
-# If the key exists, change it. Otherwise, add it to the config_file.
-if LC_ALL=C grep -m 1 -q '^{{{ config_item }}}("{{{ key }}}", ' "{{{ where }}}"; then
-    {{% if sed_separator in config_item %}}
-    {{{ raise("config_item (" + config_item + ") uses sed path separator (" + sed_separator + ") in " + rule_id) }}}
-    {{% elif sed_separator in key %}}
-    {{{ raise("key (" + key + ") uses sed path separator (" + sed_separator + ") in " + rule_id) }}}
-    {{% endif %}}
-    sed -i 's{{{ sed_separator }}}{{{ config_item }}}("{{{ key }}}".*{{{ sed_separator }}}{{{ config_item }}}("{{{ key }}}", '"${{{ value_varname }}})"';{{{ sed_separator }}}g' "{{{ where }}}"
-else
-    echo '{{{ config_item }}}("{{{ key }}}", '"${{{ value_varname }}}"');' >> "{{{ where }}}"
-fi
-{{%- endmacro -%}}
-
-
-{{%- macro _make_bash_variable_assignment(varname, value="", quoted_value="") -%}}
-{{% if value -%}}
-    {{{ varname }}}="{{{ value }}}"
-{{%- elif quoted_value -%}}
-    {{{ varname }}}="\"{{{ quoted_value }}}\""
-{{%- else %}}
-    {{{ raise("Specify either 'value' or 'quoted_value' as macro arguments.") }}}
-{{%- endif -%}}
-{{%- endmacro -%}}
-
-
-{{#
-
-Example Calls:
-
-    With a fixed integer value::
-
-        bash_firefox_js_setting("local-settings.js", "general.config.obscure_value", "0")
-
-    With a fixed string value::
-
-        bash_firefox_js_setting("local-settings.js", "general.config.filename", quoted_value="mozilla.cfg")
-
-    With a string variable::
-
-        bash_firefox_js_setting("local-settings.js", "general.config.filename", quoted_value="$var_config_file_name")
-
-:param config_file:          Configuration file that will be modified
-:type config_file: str
-:param key:                  Configuration option to change
-:type key: str
-:param value:                Value of the configuration option to change
-:type value: str
-:param quoted_value:
-:type quoted_value: str
-:param sed_separator:
-:type sed_separator: char
-
-#}}
-{{%- macro bash_firefox_js_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
-{{{ _make_bash_variable_assignment(varname="value", value=value, quoted_value=quoted_value) }}}
-firefox_js="{{{ config_file }}}"
-firefox_dirs="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/local/lib64/firefox"
-firefox_pref="defaults/pref"
-firefox_preferences="defaults/preferences"
-
-# Check the possible Firefox install directories
-for firefox_dir in ${firefox_dirs}; do
-    # If the Firefox directory exists, then Firefox is installed
-    if [ -d "${firefox_dir}" ]; then
-        # Different versions of Firefox have different preferences directories, check for them and set the right one
-        if [ -d "${firefox_dir}/${firefox_preferences}" ] ; then
-            firefox_pref_dir="${firefox_dir}/${firefox_preferences}"
-        elif [ -d "${firefox_dir}/${firefox_pref}" ] ; then
-            firefox_pref_dir="${firefox_dir}/${firefox_pref}"
-        else
-            firefox_pref_dir="${firefox_dir}/${firefox_preferences}"
-            mkdir -p "${firefox_pref_dir}"
-            chmod 755 "${firefox_pref_dir}"
-        fi
-
-        # Make sure the Firefox .js file exists and has the appropriate permissions
-        if ! [ -f "${firefox_pref_dir}/${firefox_js}" ] ; then
-            touch "${firefox_pref_dir}/${firefox_js}"
-            chmod 644 "${firefox_pref_dir}/${firefox_js}"
-        fi
-
-        {{{ _put_into_firefox_cfg(config_item="pref", key=key, value_varname="value", where="${firefox_pref_dir}/${firefox_js}", sed_separator=sed_separator) | indent(4 * 2) }}}
-    fi
-done
-{{%- endmacro -%}}
-
-
-{{#
-Function to replace configuration setting(s) in the Firefox preferences configuration (.cfg) file or add the
-preference if it does not exist.
-
-Example Call(s):
-
-    Without string or variable::
-
-        bash_firefox_cfg_setting("mozilla.cfg" "extensions.update.enabled" value="false")
-
-    With string::
-
-        bash_firefox_cfg_setting("mozilla.cfg" "security.default_personal_cert" quoted_value="Ask Every Time")
-
-    With a string variable::
-
-        bash_firefox_cfg_setting("mozilla.cfg" "browser.startup.homepage" quoted_value="${var_default_home_page}")
-
-:param config_file:           Configuration file that will be modified
-:type config_file: str
-:param key:                  Configuration option to change
-:type key: str
-:param value:                Value of the configuration option to change
-:type value: str
-:param quoted_value:
-:type quoted_value: str
-:param sed_separator:
-:type sed_separator: char
-
-#}}
-{{%- macro bash_firefox_cfg_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
-firefox_cfg="{{{ config_file }}}"
-{{{ _make_bash_variable_assignment(varname="value", value=value, quoted_value=quoted_value) }}}
-firefox_dirs="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/local/lib64/firefox"
-
-# Check the possible Firefox install directories
-for firefox_dir in ${firefox_dirs}; do
-    # If the Firefox directory exists, then Firefox is installed
-    if [ -d "${firefox_dir}" ]; then
-        # Make sure the Firefox .cfg file exists and has the appropriate permissions
-        if ! [ -f "${firefox_dir}/${firefox_cfg}" ] ; then
-            echo "//  IMPORTANT: Start your code on the 2nd line" > "${firefox_dir}/${firefox_cfg}"
-            chmod 644 "${firefox_dir}/${firefox_cfg}"
-        elif ! head -1 "${firefox_dir}/${firefox_cfg}" | grep -q "^//"; then
-            sed -i '1 i\// IMPORTANT: Start your code on the 2nd line' "${firefox_dir}/${firefox_cfg}"
-        fi
-
-        {{{ _put_into_firefox_cfg(config_item="lockPref", key=key, value_varname="value", where="${firefox_dir}/${firefox_cfg}", sed_separator=sed_separator) | indent(4 * 2) }}}
-    fi
-done
 {{%- endmacro -%}}
 
 
@@ -1860,7 +1564,6 @@ Notes:
 #}}
 {{% macro bash_fix_audit_syscall_rule(tool, action_arch_filters, other_filters, auid_filters, syscall, syscall_groupings, key) -%}}
 
-
 unset syscall_a
 unset syscall_grouping
 unset syscall_string
@@ -1889,7 +1592,6 @@ read -a syscall_grouping <<< {{{ syscall_groupings }}}
 # -----------------------------------------------------------------------------------------
 #
 files_to_inspect=()
-
 
 {{% if tool == "auditctl" %}}
 # If audit tool is 'auditctl', then add '/etc/audit/audit.rules'

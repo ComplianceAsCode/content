@@ -23,8 +23,9 @@
 
 * Should follow [the template](https://github.com/ComplianceAsCode/content/blob/master/.github/pull_request_template.md)
 * Shall remove the sample text from the template pull request
-* Shall not have merge commits; they should have to be taken out by [rebasing](https://docs.github.com/en/get-started/using-git/about-git-rebase)
+* Shall not have merge commits; they should have been taken out by [rebasing](https://docs.github.com/en/get-started/using-git/about-git-rebase)
 * Should target `master` unless pulling an already merged pull request to a stabilization branch
+* Shall have a useful title so that it can used in the changelog
 
 ### Before Merging
 
@@ -159,8 +160,11 @@ and keep these guidelines in mind when writing new code.
 * Shall use 4-space indentation
 * Shall have a docstring comment describe what the macro does
 * Shall have a docstring comment describing all parameters and their types
-    * Types shall be Python class names. (E.g. `str`, `bool`, `dict`, etc)
+    * Types shall be Python built-in types with | operator. (E.g. `str`,
+      `bool`, `dict`, `None | int`, `list[str]`, etc), with exceptions:
+        * `char`: `str` with length exactly 1
     * Shall be the last section of the docstring
+    * Shall start at the beginning of the line
     * Shall have one blank after a list before the close of the docstring block
 * Shall have two blank lines between macros
 
@@ -226,6 +230,7 @@ Rules sections must be in the following order, if they are present.
     * Comma separated list
     * No spaces between items
     * Items must be in alphabetical order
+    * Required on all new rules
 * `title`
     * Must be one line
     * Must be in [Title case](https://en.wikipedia.org/wiki/Title_case)

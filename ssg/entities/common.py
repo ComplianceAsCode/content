@@ -153,6 +153,8 @@ class XCCDFEntity(object):
 
     MANDATORY_KEYS = set()
 
+    ALTERNATIVE_KEYS = dict()
+
     GENERIC_FILENAME = ""
     ID_LABEL = "id"
 
@@ -192,6 +194,8 @@ class XCCDFEntity(object):
         """
         data = dict()
 
+        # Lets keep a list of the initial keys for alternative comparison
+        initial_input_keys = input_contents.keys()
         for key, default in cls.KEYS.items():
             if key in input_contents:
                 if input_contents[key] is not None:
@@ -201,6 +205,10 @@ class XCCDFEntity(object):
 
             if key not in cls.MANDATORY_KEYS:
                 data[key] = cls.KEYS[key]()
+            elif key in cls.ALTERNATIVE_KEYS:
+                if cls.ALTERNATIVE_KEYS[key] in initial_input_keys:
+                    data[key] = cls.KEYS[key]()
+                    continue
             else:
                 msg = (
                     "Key '{key}' is mandatory for definition of '{class_name}'."

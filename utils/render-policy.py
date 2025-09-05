@@ -1,11 +1,7 @@
 #!/usr/bin/python3
 
 from glob import glob
-import collections
 import os
-import pathlib
-
-import argparse
 
 import ssg.build_yaml
 import ssg.controls

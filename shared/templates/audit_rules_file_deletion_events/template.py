@@ -1,6 +1,3 @@
-import ssg.utils
-
-
 def _audit_rules_file_deletion_events(data, lang):
     if lang == "bash":
         if "syscall_grouping" in data:

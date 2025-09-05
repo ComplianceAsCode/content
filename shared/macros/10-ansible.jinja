@@ -142,7 +142,7 @@ value: :code:`Setting={{ varname1 }}`
   instead of lineinfile-based solutions.
 
 #}}
-{{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', create='no', validate='', insert_after='', insert_before='', escape_regex=False, mode='') %}}
+{{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', create='no', validate='', insert_after='', insert_before='', mode='') %}}
 {{{ ansible_only_lineinfile(msg, file, prefix_regex + parameter + separator_regex, parameter + separator + value, create=create, block=True, validate=validate, insert_after=insert_after, insert_before=insert_before, mode=mode) }}}
 {{%- endmacro %}}
 
@@ -203,7 +203,7 @@ value: :code:`Setting={{ varname1 }}`
 {{% if product in ["ol8", "ol9"] %}}
 - name: "Find sshd_config included files"
   shell: |-
-    included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/Include\s*//i' | sed -e 's|^[^/]|/etc/ssh/&|')
+    included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*Include\s*//i' | sed -e 's|^[^/]|/etc/ssh/&|')
     [[ -n $included_files ]] && ls $included_files || true
   register: sshd_config_included_files
 
@@ -260,18 +260,6 @@ value: :code:`Setting={{ varname1 }}`
 #}}
 {{%- macro ansible_tmux_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file(msg, "/etc/tmux.conf", "set -g " + parameter, value=value, create="yes", mode="0644") }}}
-{{%- endmacro %}}
-
-
-{{#
-  High level macro to set a value in /etc/profile (and /etc/profile.d) bash
-  files. Note this is only suitable for calling a single command once with the
-  correct arguments and not for calling the same command multiple times with
-  different arguments. This includes setting an environment variable once.
-
-#}}
-{{%- macro ansible_etc_profile_set(msg='', parameter='', value='') %}}
-{{{ ansible_set_config_file_dir(msg, "/etc/profile", "/etc/profile.d", "/etc/profile", parameter, separator='=', separator_regex='=', value=value, create='yes', validate="bash -n %s") }}}
 {{%- endmacro %}}
 
 
@@ -733,17 +721,25 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     mode: 0644
 {{%- endmacro %}}
 
+{{#
+    This macro comments out a given line of the sudoers and then validates it before saving.
 
+:param parameter: The parameter to remove
+:type parameter: str
+:param pattern: The pattern to remove
+:type pattern: str
+
+#}}
 {{%- macro ansible_sudo_remove_config(parameter, pattern) -%}}
 
 - name: Find /etc/sudoers.d/ files
-  find:
+  ansible.builtin.find:
     paths:
       - /etc/sudoers.d/
   register: sudoers
 
 - name: "Remove lines containing {{{ parameter }}} from sudoers files"
-  replace:
+  ansible.builtin.replace:
     regexp: '(^(?!#).*[\s]+{{{ pattern }}}.*$)'
     replace: '# \g<1>'
     path: "{{ item.path }}"
@@ -765,7 +761,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
 :type op: str
 :param ver: package version (optional argument, use together with "op")
-:type ver: version
+:type ver: str
 
 #}}
 {{%- macro ansible_pkg_conditional(package, op=None, ver=None) -%}}
@@ -1161,7 +1157,6 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/password-auth','auth','','pam_faillock.so',parameter) | indent(4) }}}
   when:
     - result_faillock_conf_check.stat.exists
-
 
 - name: {{{ rule_title }}} - Ensure the pam_faillock.so {{{ parameter }}} parameter in PAM files
   block:

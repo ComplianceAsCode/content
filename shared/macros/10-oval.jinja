@@ -317,7 +317,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type id_stem: str
 
 #}}
-{{%- macro oval_line_in_file_state(value='', multi_value='', quotes='', id_stem='') -%}}
+{{%- macro oval_line_in_file_state(value='', multi_value=false, quotes='', id_stem='') -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
 {{%- set regex = value -%}}
 {{%- if quotes != "" %}}
@@ -471,7 +471,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type is_regex: bool
 
 #}}
-{{%- macro oval_argument_value_in_line_test(filepath, name, value, line_prefix='', line_suffix='', is_regex=False) -%}}
+{{%- macro oval_argument_value_in_line_test(filepath, name, value='', line_prefix='', line_suffix='', is_regex=False) -%}}
 {{%- if value -%}}
   {{%- set name_value = name+"="+value -%}}
 {{%- else -%}}
@@ -1293,8 +1293,8 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
   The macro receives a string as parameter, which is used as the password_object id in the rule.
 
-  :param object_id: Object id to be created.
-  :type object_id: str
+:param object_id: Object id to be created.
+:type object_id: str
 
 #}}
 {{%- macro create_system_accounts_list_object(object_id) -%}}

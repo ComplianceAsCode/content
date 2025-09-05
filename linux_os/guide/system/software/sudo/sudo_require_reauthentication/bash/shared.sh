@@ -17,9 +17,8 @@ if /usr/sbin/visudo -qcf /etc/sudoers; then
         # sudoers file doesn't define Option timestamp_timeout
         echo "Defaults timestamp_timeout=${var_sudo_timestamp_timeout}" >> /etc/sudoers
     else
-        # sudoers file defines Option timestamp_timeout, remediate if appropriate value is not set
-        if ! grep -P "^[\s]*Defaults.*timestamp_timeout[\s]*=[\s]*${var_sudo_timestamp_timeout}.*$" /etc/sudoers; then
-            
+        # sudoers file defines Option timestamp_timeout, remediate wrong values if present
+        if grep -qP "^[\s]*Defaults\s.*\btimestamp_timeout[\s]*=[\s]*(?!${var_sudo_timestamp_timeout}\b)[-]?\w+\b.*$" /etc/sudoers; then
             sed -Ei "s/(^[[:blank:]]*Defaults.*timestamp_timeout[[:blank:]]*=)[[:blank:]]*[-]?\w+(.*$)/\1${var_sudo_timestamp_timeout}\2/" /etc/sudoers
         fi
     fi
