@@ -13,11 +13,17 @@
 {{% else %}}
 - (xccdf-var var_{{{ SEBOOLID }}})
 
+{{% if product == "rhel8" %}}
+- name: Ensure python3-libsemanage installed
+  package:
+    name: python3-libsemanage
+    state: present
+{{% else %}}
 - name: Ensure libsemanage-python installed
   package:
     name: libsemanage-python
     state: present
-
+{{% endif %}}
 - name: Set SELinux boolean {{{ SEBOOLID }}} accordingly
   seboolean:
     name: {{{ SEBOOLID }}}

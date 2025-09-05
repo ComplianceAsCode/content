@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Limit Access to the Host Network Namespace'
+
+description: |-
+    Containers should not be allowed access to the host's network
+    namespace. To prevent containers from getting access to a host's
+    network namespace, the appropriate Security Context Constraints (SCCs)
+    should set <tt>allowHostNetwork</tt> to <tt>false</tt>.
+
+rationale: |-
+    A container running in the host's network namespace could
+    access the host network traffic to and from other pods
+    potentially allowing an attacker to exploit pods and network
+    traffic.
+
+severity: medium
+
+references:
+    cis: 5.2.4
+
+ocil_clause: 'allowHostNetwork is set to true or too many SCCs have allowHostNetwork enabled'
+
+ocil: |-
+    Inspect each SCC returned from running the following command:
+    <pre>$ oc get scc</pre>
+    Review each SCC and determine that <tt>allowHostNetwork</tt> is either
+    completely disabled, or that <tt>allowHostNetwork</tt> is only enabled to
+    a small set of containers and SCCs.

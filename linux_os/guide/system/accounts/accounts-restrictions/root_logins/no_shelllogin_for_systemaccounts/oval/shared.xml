@@ -79,13 +79,6 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <!-- Extract UIDs from /etc/passwd entries into OVAL variable -->
-  <local_variable id="variable_sys_uids_etc_passwd" datatype="int"
-  comment="UIDs retrieved from /etc/passwd" version="1">
-    <object_component item_field="subexpression"
-    object_ref="object_etc_passwd_entries" />
-  </local_variable>
-
   <!-- FIRST CRITERION -->
   <!-- If both SYS_UID_MIN and SYS_UID_MAX aren't defined in /etc/login.defs
        perform the check that all /etc/passwd entries having shell defined have
@@ -100,63 +93,23 @@
     </regex_capture>
   </local_variable>
 
-  <!-- OVAL entities below are workaround for the OpenSCAP bug:
-       https://github.com/OpenSCAP/openscap/issues/428
-
-       Within the test below we will check if all /etc/passwd entries
-       having shell defined have UIDs outside of <0, UID_MIN - 1> range.
-       If at least one UID is within the range, test will fail.
-
-       Observation: Number "x" is outside of <a, b> range if the following
-       inequality is met (x - a) * (x - b) > 0
-  -->
-
-  <!-- OVAL variable to hold (x - 0) * (x - (UID_MIN -1)) range -->
-  <local_variable id="variable_default_range_quad_expr" datatype="int"
-  comment="Construct (x - 0) * (x - (UID_MIN - 1)) expression"
-  version="1">
-    <!-- Construct the final multiplication -->
-    <arithmetic arithmetic_operation="multiply">
-      <!-- Get "x", thus retrieved /etc/passwd UIDs as int -->
-      <!-- (x - 0) = x => use just "x" value -->
-      <variable_component var_ref="variable_sys_uids_etc_passwd" />
-      <!-- Get (x - (UID_MIN -1)) result -->
-      <arithmetic arithmetic_operation="add">
-        <variable_component var_ref="variable_sys_uids_etc_passwd" />
-        <!-- Get -1 * (UID_MIN - 1) result -->
-        <arithmetic arithmetic_operation="multiply">
-          <literal_component datatype="int">-1</literal_component>
-          <!-- Get (UID_MIN -1) result -->
-          <arithmetic arithmetic_operation="add">
-            <!-- Get "x", thus retrieved /etc/passwd UIDs as int -->
-            <variable_component var_ref="variable_uid_min_value" />
-            <literal_component datatype="int">-1</literal_component>
-          </arithmetic>
-        </arithmetic>
-      </arithmetic>
-    </arithmetic>
-  </local_variable>
-
-  <!-- Foreach previously collected UID store the expression into
-       corresponding OVAL object -->
-  <ind:variable_object id="object_shell_defined_default_uid_range" version="1">
-    <ind:var_ref>variable_default_range_quad_expr</ind:var_ref>
-  </ind:variable_object>
-
-  <!-- Finally verify that (x - a) * (x - b) > 0 -->
-  <ind:variable_state id="state_shell_defined_default_uid_range" version="1">
-    <ind:value datatype="int" operation="greater than">0</ind:value>
-  </ind:variable_state>
-
   <!-- Perform the default <0, UID_MIN - 1> UID range test itself -->
   <!-- Thus check that all /etc/passwd entries having shell defined
        have UID outside of <0, UID_MIN -1> range -->
-  <ind:variable_test id="test_shell_defined_default_uid_range" check="all"
+  <ind:textfilecontent54_test state_operator="OR" id="test_shell_defined_default_uid_range" check="all"
   check_existence="all_exist" comment="&lt;0, UID_MIN - 1&gt; system UIDs having shell set"
   version="1">
-    <ind:object object_ref="object_shell_defined_default_uid_range" />
-    <ind:state state_ref="state_shell_defined_default_uid_range" />
-  </ind:variable_test>
+    <ind:object object_ref="object_etc_passwd_entries" />
+    <ind:state state_ref="state_uid_less_than_zero" />
+    <ind:state state_ref="state_uid_greater_than_or_equal_uid_min" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_uid_less_than_zero" version="1">
+    <ind:subexpression datatype="int" operation="less than">0</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_uid_greater_than_or_equal_uid_min" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="variable_uid_min_value" />
+  </ind:textfilecontent54_state>
 
   <!-- Test if SYS_UID_MIN not defined in /etc/login.defs -->
   <ind:textfilecontent54_test id="test_sys_uid_min_not_defined"
@@ -200,121 +153,36 @@
     </regex_capture>
   </local_variable>
 
-  <!-- OVAL entities below are workaround for the OpenSCAP bug:
-       https://github.com/OpenSCAP/openscap/issues/428
-
-       Within the test below we will check if all /etc/passwd entries
-       having shell defined have UIDs outside of <0, SYS_UID_MIN> range.
-       If at least one UID is within the range, test will fail.
-
-       Observation: Number "x" is outside of <a, b> range if the following
-       inequality is met (x - a) * (x - b) > 0
-  -->
-
-  <!-- OVAL variable to hold UIDs for reserved system accounts, thus
-       UIDs from the range <0, SYS_UID_MIN> -->
-  <local_variable id="variable_reserved_range_quad_expr" datatype="int"
-  comment="Construct (x - 0) * (x - SYS_UID_MIN) expression"
-  version="1">
-    <!-- Construct the final multiplication -->
-    <arithmetic arithmetic_operation="multiply">
-      <!-- Get "x", thus retrieved /etc/passwd UIDs as int -->
-      <!-- (x - 0) = x => use just "x" value -->
-      <variable_component var_ref="variable_sys_uids_etc_passwd" />
-      <!-- Construct (x - SYS_UID_MIN) expression -->
-      <arithmetic arithmetic_operation="add">
-        <!-- Get "x", thus retrieved /etc/passwd UIDs as int -->
-        <variable_component var_ref="variable_sys_uids_etc_passwd" />
-        <!-- Get negative value of SYS_UID_MIN -->
-        <arithmetic arithmetic_operation="multiply">
-          <literal_component datatype="int">-1</literal_component>
-          <variable_component var_ref="variable_sys_uid_min_value" />
-        </arithmetic>
-      </arithmetic>
-    </arithmetic>
-  </local_variable>
-
-  <!-- Foreach previously collected UID store the expression into
-       corresponding OVAL object -->
-  <ind:variable_object id="object_shell_defined_reserved_uid_range" version="1">
-    <ind:var_ref>variable_reserved_range_quad_expr</ind:var_ref>
-  </ind:variable_object>
-
-  <!-- Finally verify that (x - a) * (x - b) > 0 -->
-  <ind:variable_state id="state_shell_defined_reserved_uid_range" version="1">
-    <ind:value datatype="int" operation="greater than">0</ind:value>
-  </ind:variable_state>
-
   <!-- Perform the reserved UID range <0, SYS_UID_MIN> test itself -->
   <!-- Thus check that all /etc/passwd entries having shell defined
        have UID outside of <0, SYS_UID_MIN> range -->
-  <ind:variable_test id="test_shell_defined_reserved_uid_range" check="all"
-  check_existence="all_exist" comment="&lt;0, SYS_UID_MIN&gt; system UIDs having shell set"
+  <ind:textfilecontent54_test state_operator="OR" id="test_shell_defined_reserved_uid_range" check="all"
+  check_existence="any_exist" comment="&lt;0, SYS_UID_MIN&gt; system UIDs having shell set"
   version="1">
-    <ind:object object_ref="object_shell_defined_reserved_uid_range" />
-    <ind:state state_ref="state_shell_defined_reserved_uid_range" />
-  </ind:variable_test>
+    <ind:object object_ref="object_etc_passwd_entries" />
+    <ind:state state_ref="state_uid_less_than_zero" />
+    <ind:state state_ref="state_uid_greater_than_or_equal_sys_uid_min" />
+  </ind:textfilecontent54_test>
 
-  <!-- OVAL entities below are workaround for the OpenSCAP bug:
-       https://github.com/OpenSCAP/openscap/issues/428
-
-       Within the test below we will check if all /etc/passwd entries
-       having shell defined have UIDs outside of <SYS_UID_MIN, SYS_UID_MAX> range.
-       If at least one UID is within the range, test will fail.
-
-       Observation: Number "x" is outside of <a, b> range if the following
-       inequality is met (x - a) * (x - b) > 0
-  -->
-
-  <!-- OVAL variable to hold UIDs for dynamically allocated system accounts,
-       thus UIDs from the range <SYS_UID_MIN, SYS_UID_MAX> -->
-  <local_variable id="variable_dynalloc_range_quad_expr" datatype="int"
-  comment="Construct (x - SYS_UID_MIN) * (x - SYS_UID_MAX) expression"
-  version="1">
-    <!-- Construct the final multiplication -->
-    <arithmetic arithmetic_operation="multiply">
-      <!-- Construct (x - SYS_UID_MIN) expression -->
-      <arithmetic arithmetic_operation="add">
-        <!-- Get "x", thus retrieved /etc/passwd UIDs as int -->
-        <variable_component var_ref="variable_sys_uids_etc_passwd" />
-        <!-- Get negative value of SYS_UID_MIN -->
-        <arithmetic arithmetic_operation="multiply">
-          <literal_component datatype="int">-1</literal_component>
-          <variable_component var_ref="variable_sys_uid_min_value" />
-        </arithmetic>
-      </arithmetic>
-      <!-- Construct (x - SYS_UID_MAX) expression -->
-      <arithmetic arithmetic_operation="add">
-        <!-- Get "x", thus retrieved /etc/passwd UIDs as int -->
-        <variable_component var_ref="variable_sys_uids_etc_passwd" />
-        <!-- Get negative value of SYS_UID_MAX -->
-        <arithmetic arithmetic_operation="multiply">
-          <literal_component datatype="int">-1</literal_component>
-          <variable_component var_ref="variable_sys_uid_max_value" />
-        </arithmetic>
-      </arithmetic>
-    </arithmetic>
-  </local_variable>
-
-  <!-- Foreach previously collected UID store the expression into
-       corresponding OVAL object -->
-  <ind:variable_object id="object_shell_defined_dynalloc_uid_range" version="1">
-    <ind:var_ref>variable_dynalloc_range_quad_expr</ind:var_ref>
-  </ind:variable_object>
-
-  <!-- Finally verify that (x - a) * (x - b) > 0 -->
-  <ind:variable_state id="state_shell_defined_dynalloc_uid_range" version="1">
-    <ind:value datatype="int" operation="greater than">0</ind:value>
-  </ind:variable_state>
+  <ind:textfilecontent54_state id="state_uid_greater_than_or_equal_sys_uid_min" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="variable_sys_uid_min_value" />
+  </ind:textfilecontent54_state>
 
   <!-- Perform the dynamically allocated UID range <SYS_UID_MIN, SYS_UID_MAX> test itself -->
   <!-- Thus check that all /etc/passwd entries having shell defined
        have UID outside of <SYS_UID_MIN, SYS_UID_MAX> range -->
-  <ind:variable_test id="test_shell_defined_dynalloc_uid_range" check="all"
-  check_existence="all_exist" comment="&lt;SYS_UID_MIN, SYS_UID_MAX&gt; system UIDS having shell set"
+  <ind:textfilecontent54_test state_operator="OR" id="test_shell_defined_dynalloc_uid_range" check="all"
+  check_existence="any_exist" comment="&lt;SYS_UID_MIN, SYS_UID_MAX&gt; system UIDS having shell set"
   version="1">
-    <ind:object object_ref="object_shell_defined_dynalloc_uid_range" />
-    <ind:state state_ref="state_shell_defined_dynalloc_uid_range" />
-  </ind:variable_test>
+    <ind:object object_ref="object_etc_passwd_entries" />
+    <ind:state state_ref="state_uid_less_than_sys_uid_min" />
+    <ind:state state_ref="state_uid_greater_than_or_equal_sys_uid_max" />
+  </ind:textfilecontent54_test>
 
+  <ind:textfilecontent54_state id="state_uid_less_than_sys_uid_min" version="1">
+    <ind:subexpression datatype="int" operation="less than" var_ref="variable_sys_uid_min_value" />
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_uid_greater_than_or_equal_sys_uid_max" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="variable_sys_uid_max_value" />
+  </ind:textfilecontent54_state>
 </def-group>

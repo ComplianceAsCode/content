@@ -6,6 +6,19 @@ title: 'Enable terminated-pod-gc-threshold for the Controller Manager'
 
 description: |-
     To ensure the garbage collector is activated upon pod termination,
+{{%- if product == "ocp4" %}}
+    set the <tt>terminated-pod-gc-threshold</tt> option to <tt>12500</tt>
+    or a value greater than zeroin the <tt>openshift-kube-controller-manager</tt>
+    configmap on the master node(s):
+    <pre>
+    "extendedArguments": {
+    ...
+      "terminated-pod-gc-threshold": [
+        "12500"
+      ],
+    ...
+    </pre>
+{{% else %}}
     edit the Controller Manager pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the
     master node(s) and set the <tt>terminated-pod-gc-threshold</tt> to
@@ -14,6 +27,7 @@ description: |-
       controllerArguments:
         terminated-pod-gc-threshold:
           - true</pre>
+{{%- endif %}}
 
 rationale: |-
     Garbage collection is important to ensure sufficient resource availability
@@ -29,15 +43,15 @@ severity: low
 ocil_clause: '<tt>terminated-pod-gc-threshold</tt> is not enabled'
 
 ocil: |-
-    Run the following command on the master node(s):
+    To verify that <tt>terminated-pod-gc-threshold</tt> is configured correctly,
+{{%- if product == "ocp4" %}}
+    run the following command:
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["terminated-pod-gc-threshold"]'</pre>
+{{% else %}}
+    fun the following command on the master node(s):
     <pre>$ sudo grep terminated-pod-gc-threshold /etc/origin/master/master-config.yaml</pre>
-
-    Verify that the <tt>terminated-pod-gc-threshold</tt> argument is not set
-    to <tt>false</tt>.
-
-    If the configuration file does not explicitly set
-    <tt>terminated-pod-gc-threshold</tt>, and the grep command returns no
-    text, the default value of <tt>true</tt> is being used.
+{{%- endif %}}
+    The returned value of <tt>terminated-pod-gc-threshold</tt> should be greater than zero.
 
 identifiers:
     cce@ocp3: 80592-9

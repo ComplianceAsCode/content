@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Disable Anonymous Authentication to the Kubelet'
+
+description: |-
+    By default, anonymous access to the Kubelet server is enabled. This
+    configuration check ensures that anonymous requests to the Kubelet
+    server are disabled. Edit the Kubelet server configuration file
+    <tt>/etc/kubernetes/kubelet.conf</tt> on the worker node(s)
+    and set the below parameter:
+    <pre>
+    authentication:
+      ...
+      anonymous:
+        enabled: false
+      ...
+    </pre>
+
+rationale: |-
+    When enabled, requests that are not rejected by other configured
+    authentication methods are treated as anonymous requests. These
+    requests are then served by the Kubelet server. OpenShift Operators should
+    rely on authentication to authorize access and disallow anonymous
+    requests.
+
+severity: medium
+
+references:
+    cis: 4.2.1
+
+ocil_clause: '<tt>anonymous</tt> authentication is not set to <tt>false</tt>'
+
+ocil: |-
+    Run the following command on the worker node(s):
+    <pre>$ sudo grep -A1 anonymous /etc/kubernetes/kubernetes.conf</pre>
+    The output should return <pre>enabled: false</pre>.

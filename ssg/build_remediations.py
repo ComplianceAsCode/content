@@ -305,7 +305,7 @@ class AnsibleRemediation(Remediation):
             else:
                 reboot_tag = "no_reboot_needed"
             tags.append(reboot_tag)
-        to_update["tags"] = tags
+        to_update["tags"] = sorted(tags)
 
     def update_tags_from_rule(self, to_update):
         if not self.associated_rule:
@@ -321,7 +321,7 @@ class AnsibleRemediation(Remediation):
 
         refs = self.get_references()
         tags.extend(refs)
-        to_update["tags"] = tags
+        to_update["tags"] = sorted(tags)
 
     def _get_cce(self):
         return self.associated_rule.identifiers.get("cce", None)
@@ -419,7 +419,11 @@ def write_fixes_to_xml(remediation_type, build_dir, output_path, fixes):
                                      xmlns="http://checklists.nist.gov/xccdf/1.1")
     fixgroup = get_fixgroup_for_type(fixcontent, remediation_type)
 
-    remediation_functions = get_available_functions(build_dir)
+    if remediation_type == "bash":
+        # (bash_)remediation_functions are really only used for bash
+        remediation_functions = get_available_functions(build_dir)
+    else:
+        remediation_functions = None
 
     for fix_name in fixes:
         fix_contents, config = fixes[fix_name]
@@ -735,7 +739,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
         # First concat output form of modified fix text (including text appended
         # to all children of the fix)
         modfix = [fix.text]
-        for child in fix.getchildren():
+        for child in list(fix):
             if child is not None and child.text is not None:
                 modfix.append(child.text)
         modfixtext = "".join(modfix)

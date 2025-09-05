@@ -1,11 +1,24 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Ensure that the --use-service-account-credentials argument is set'
 
 description: |-
     To ensure individual service account credentials are used,
+{{%- if product == "ocp4" %}}
+    set the <tt>use-service-account-credentials</tt> option to <tt>true</tt>
+    in the <tt>openshift-kube-controller-manager</tt> configmap on the master
+    node(s):
+    <pre>
+    "extendedArguments": {
+    ...
+      "use-service-account-credentials": [
+        "true"
+      ],
+    ...
+    </pre>
+{{% else %}}
     edit the Controller Manager pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the
     master node(s) and set the <tt>use-service-account-credentials</tt> option,
@@ -14,6 +27,7 @@ description: |-
       controllerArguments:
         use-service-account-credentials:
         - true</pre>
+{{%- endif %}}
 
 rationale: |-
     The controller manager creates a service account per controller in
@@ -31,16 +45,15 @@ severity: medium
 ocil_clause: '<tt>use-service-account-credentials</tt> is set to <tt>false</tt>'
 
 ocil: |-
-    Run the following command on the master node(s):
-    <pre>$ sudo grep service-account-credentials /etc/origin/master/master-config.yaml</pre> 
-
-    Verify that the <tt>controllerArguments</tt> option
-    <tt>use-service-account-credentials</tt> argument is not set to
-    <tt>false</tt>.
-
-    If the configuration file does not explicitly set 
-    <tt>use-service-account-credentials</tt>, and the grep command returns no
-    text, the default value of <tt>true</tt> is being used.
+    To verify that <tt>service-account-credentials</tt> is configured correctly,
+{{%- if product == "ocp4" %}}
+    run the following command:
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["service-account-credentials"]'</pre>
+{{% else %}}
+    run the following command on the master node(s):
+    <pre>$ sudo grep service-account-credentials /etc/origin/master/master-config.yaml</pre>
+{{%- endif %}}
+    The value of <tt>use-service-account-credentials</tt> should be <tt>true</tt>.
 
 identifiers:
     cce@ocp3: 80593-7

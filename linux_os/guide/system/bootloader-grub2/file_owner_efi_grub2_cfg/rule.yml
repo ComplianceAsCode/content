@@ -49,6 +49,8 @@ ocil: |-
     {{{ ocil_file_owner(file="/boot/efi/EFI/redhat/grub.cfg", owner="root") }}}
 {{%- endif %}}
 
+platform: machine
+
 template:
     name: file_owner
     vars:

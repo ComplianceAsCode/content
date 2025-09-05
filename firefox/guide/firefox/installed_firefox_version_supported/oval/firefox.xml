@@ -16,12 +16,12 @@
     </criteria>
   </definition>
 
-  <linux:rpminfo_test check="all" check_existence="any_exist" comment="Installed version of firefox is greater than ESR 31.5" id="test_supported_version_of_firefox" version="1">
+  <linux:rpminfo_test check="all" check_existence="any_exist" comment="Installed version of firefox is greater than 68.4.0" id="test_supported_version_of_firefox" version="1">
     <linux:object object_ref="obj_supported_version_of_firefox" />
     <linux:state state_ref="state_supported_version_of_firefox" />
   </linux:rpminfo_test>
   <linux:rpminfo_state id="state_supported_version_of_firefox" version="1">
-    <linux:evr operation="greater than" datatype="evr_string">3.0.0</linux:evr> 
+    <linux:evr operation="greater than" datatype="evr_string">68.4.0</linux:evr> 
   </linux:rpminfo_state>
 <linux:rpminfo_object id="obj_supported_version_of_firefox" version="1">
     <linux:name>firefox</linux:name>

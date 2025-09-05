@@ -86,7 +86,17 @@
     -->
     <ind:pattern operation="pattern match">^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_groupownership_ignore_include_paths</filter>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_groupownership_ignore_include_paths" comment="ignore" version="1">
+    <!-- Among the paths matched in object_rfp_log_files_paths there can be paths from
+         include() or $IncludeConfig statements.
+         These paths are conf files, not log files. Their groupownership don't need to be as
+         required for log files, thus, lets exclude them from the list of objects found
+    -->
+    <ind:text operation="pattern match">(?:file="[^\s;]+"|\$IncludeConfig[\s]+[^\s;]+)</ind:text>
+  </ind:textfilecontent54_state>
 
   <!-- Define OVAL variable to hold all the various system log files locations
        retrieved from the different rsyslog configuration files

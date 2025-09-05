@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Permissions on the Kube Scheduler Pod Specification File'
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod.yaml", perms="0644") }}}
+
+rationale: |-
+    If the Kube specification file is writable by a group-owner or the
+    world the risk of its compromise is increased. The file contains the configuration of
+    an OpenShift scheduler that is configured on the system. Protection of this file is
+    critical for OpenShift security.
+
+severity: medium
+
+#identifiers:
+#    cce@ocp4:
+
+references:
+    cis: 1.1.5
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod.yaml", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod.yaml", perms="-rw-r--r--") }}}
+
+#template:
+#    name: file_permissions
+#    vars:
+#        filepath: /etc/kubernetes/static-pod-resources/kube-scheduler-pod.yaml
+#        filemode: '0644'

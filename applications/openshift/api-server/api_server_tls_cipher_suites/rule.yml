@@ -6,7 +6,24 @@ title: 'Use Strong Cryptographic Ciphers on the API Server'
 
 description: |-
     To ensure that the API Server is configured to only use strong
-    cryptographic ciphers, edit the API Server pod specification file
+    cryptographic ciphers,
+{{%- if product == "ocp4" %}}
+    verify the <tt>openshift-kube-apiserver</tt> configmap on the master
+    node(s) to something similar to:
+    <pre>
+    "servingInfo":{
+      ...
+      "cipherSuites": [
+        "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+        "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+        "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+        "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305",
+        "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+      ],
+      ...
+    </pre>
+{{% else %}}edit the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node and set the parameter below:
     <pre>servingInfo:
@@ -19,13 +36,13 @@ description: |-
       - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
       - TLS_RSA_WITH_AES_256_GCM_SHA384
       - TLS_RSA_WITH_AES_128_GCM_SHA256</pre>
-
+{{%- endif %}}
 
 rationale: |-
-     TLS ciphers have had a number of known vulnerabilities and weaknesses,
-     which can reduce the protection provided. By default OpenShift supports
-     a number of TLS ciphersuites including some that have security concerns,
-     weakening the protection provided.
+    TLS ciphers have had a number of known vulnerabilities and weaknesses,
+    which can reduce the protection provided. By default, OpenShift supports
+    a number of TLS ciphersuites including some that have security concerns,
+    weakening the protection provided.
 
 severity: medium
 
@@ -36,6 +53,18 @@ ocil_clause: '<tt>cipherSuites</tt> does not contain TLS_ECDHE_ECDSA_WITH_AES_12
 
 ocil: |-
     Run the following command on the master node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.servingInfo["cipherSuites"]'</pre>
+    Verify that the output is similar to:
+    <pre>
+    "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+    "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+    "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+    "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+    "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305",
+    "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+    </pre>
+{{% else %}}
     <pre>$ sudo grep -A8 cipherSuites /etc/origin/master/master-config.yaml</pre>
     Verify that the output is similar to:
     <pre>cipherSuites:
@@ -47,6 +76,7 @@ ocil: |-
       - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
       - TLS_RSA_WITH_AES_256_GCM_SHA384
       - TLS_RSA_WITH_AES_128_GCM_SHA256</pre>
+{{%- endif %}}
 
 warnings:
     - management: |-

@@ -1,0 +1,29 @@
+prodtype: ocp4
+
+title: "Allowed registries for import are configured"
+
+description: |-
+    The configuration <tt>allowedRegistriesForImport</tt> limits the container
+    image registries from which normal users may import images. This is important
+    to control, as a user who can stand up a malicious registry can then import
+    content which claims to include the SHAs of legimitate content layers.
+
+rationale: |-
+    Allowed registries for import should be specified to limit the registries 
+    from which users may import images.
+
+severity: medium
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/images/cluster") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        filepath: /apis/config.openshift.io/v1/images/cluster
+        yamlpath: ".spec.allowedRegistriesForImport[:].domainName"
+        value: ".*"
+        entity_check: "at least one"
+        operation: "pattern match"
+        ocp_data: 'true'

@@ -1,4 +1,18 @@
 {{#
+Pass strings that correspond to XCCDF value names as arguments to this macro:
+ansible_instantiate_variables("varname1", "varname2")
+
+Then, assume that the task that follows can work with the variable by referencing it, e.g.
+value: "Setting={{ varname1 }}"
+
+#}}
+{{%- macro ansible_instantiate_variables() -%}}
+{{%- for name in varargs -%}}
+- (xccdf-var {{{ name }}})
+{{% endfor -%}}
+{{%- endmacro -%}}
+
+{{#
   A wrapper over the Ansible lineinfile module. This handles the most common
   options for us. regex is optional and when blank, it won't be included in
   the Ansible script; this allows arbitrary additions to files. new_line will
@@ -201,6 +215,17 @@
 #}}
 {{%- macro ansible_coredump_config_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file(msg, "/etc/systemd/coredump.conf", parameter=parameter, value=value, create="no", separator="=", separator_regex="\s*=\s*") }}}
+{{%- endmacro %}}
+
+{{#
+  High level macro to set a parameter in /etc/selinux/config.
+  Parameters:
+  - msg: the name for the Ansible task
+  - parameter: parameter to be set in the configuration file
+  - value: value of the parameter
+#}}
+{{%- macro ansible_selinux_config_set(msg='', parameter='', value='') %}}
+{{{ ansible_set_config_file(msg, "/etc/selinux/config", parameter=parameter, value=value, create="yes", separator="=", separator_regex="=", prefix_regex='^') }}}
 {{%- endmacro %}}
 
 {{#

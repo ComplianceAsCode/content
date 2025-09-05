@@ -80,7 +80,6 @@ def builder(queue):
                 "Fatal error encountered when generating guide '%s'. "
                 "Error details:\n%s\n\n" % (guide_path, error)
             )
-            queue.task_done()
             with queue.mutex:
                 queue.queue.clear()
             raise error

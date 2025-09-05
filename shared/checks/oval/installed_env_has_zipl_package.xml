@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_env_has_zipl_package" version="1">
+    <metadata>
+      <title>System uses zIPL</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Checks if system uses zIPL bootloader.</description>
+      <reference ref_id="cpe:/a:zipl" source="CPE" />
+    </metadata>
+    <criteria>
+      <criterion comment="Package s390utils-base is installed" test_ref="test_env_has_zipl_installed" />
+    </criteria>
+  </definition>
+
+{{% if pkg_system == "rpm" %}}
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists"
+  id="test_env_has_zipl_installed" version="1"
+  comment="system has package zipl installed">
+    <linux:object object_ref="obj_env_has_zipl_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_env_has_zipl_installed" version="1">
+    <linux:name>s390utils-base</linux:name>
+  </linux:rpminfo_object>
+{{% elif pkg_system == "dpkg" %}}
+  <linux:dpkginfo_test check="all" check_existence="all_exist"
+  id="test_env_has_zipl_installed" version="1"
+  comment="system has package zipl installed">
+    <linux:object object_ref="obj_env_has_zipl_installed" />
+  </linux:dpkginfo_test>
+  <linux:dpkginfo_object id="obj_env_has_zipl_installed" version="1">
+    <linux:name>s390utils-base</linux:name>
+  </linux:dpkginfo_object>
+{{% endif %}}
+
+</def-group>

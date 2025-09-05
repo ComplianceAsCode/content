@@ -7,7 +7,7 @@ title: 'Configure the Encryption Provider Cipher'
 description: |-
     To configure OpenShift to use the <tt>aescbc</tt> encryption provider,
     follow the OpenShift documentation to create or modify an
-    <tt>EncryptionConfig</tt> file at <tt>/etc/origin/master/encryption-config.yaml</tt>.
+    <tt>EncryptionConfig</tt> file.
     In this file, choose <tt>aescbc</tt> as the encryption provider:
     <pre>kind: EncryptionConfig
     apiVersion: v1
@@ -33,7 +33,7 @@ ocil_clause: '<tt>aescbc</tt> is not configured as the encryption provider'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ sudo grep -A4 aescbc /etc/origin/master/encryption-config.yaml</pre>
+    <pre>$ oc get secrets encryption-config -n openshift-kube-apiserver -o json | jq -r '.data["encryption-config"]' | base64 -d | jq -r '.resources'</pre>
     Verify that the <tt>aescbc</tt> encryption provider is used for all the desired
     <tt>resources</tt>.
 

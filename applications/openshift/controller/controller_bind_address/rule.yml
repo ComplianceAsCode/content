@@ -1,12 +1,26 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Ensure Controller bind-address argument is set'
 
 description: |-
     To ensure the Controller Manager service is bound to secure loopback
-    address, edit the Controller Manager pod specification file
+    address,
+{{%- if product == "ocp4" %}}
+    set the <tt>RotateKubeletServerCertificate</tt> option to <tt>true</tt>
+    in the <tt>openshift-kube-controller-manager</tt> configmap on the master
+    node(s):
+    <pre>
+    "extendedArguments": {
+    ...
+      "bind-address": [
+        "127.0.0.1",
+      ],
+    ...
+    </pre>
+{{% else %}}
+    edit the Controller Manager pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the
     master node(s) and ensure the correct value for the <tt>bind-address</tt>
     parameter. For example:
@@ -14,13 +28,7 @@ description: |-
       controllerArguments:
         bind-address:
           - '192.168.1.101'</pre>
-
-
-warnings:
-  - functionality: |-
-      The associated value must be reachable by the rest of the cluster, and by
-      CLI/web clients. If blank all interfaces will be used (<tt>0.0.0.0</tt> for IPv4
-      and ``::`` for IPv6).
+{{%- endif %}}
 
 rationale: |-
     The Controller Manager API service (which runs on a port specified by the
@@ -38,11 +46,22 @@ ocil_clause: |-
     <tt>bind-address</tt> is not configured to a secure IP address
 
 ocil: |-
-    Run the following command on the master node(s):
+    To verify that <tt>bind-address</tt> is configured correctly,
+{{%- if product == "ocp4" %}}
+    run the following command:
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["bind-address"]'</pre>
+{{% else %}}
+    run the following command on the master node(s):
     <pre>$ sudo grep bind-address /etc/origin/master/master-config.yaml</pre>
-
+{{%- endif %}}
     Verify that the <tt>bind-address</tt> argument is set to a secure
     IP address.
 
 references:
     cis: 1.3.7
+
+warnings:
+  - functionality: |-
+      The associated value must be reachable by the rest of the cluster, and by
+      CLI/web clients. If blank all interfaces will be used (<tt>0.0.0.0</tt> for IPv4
+      and ``::`` for IPv6).

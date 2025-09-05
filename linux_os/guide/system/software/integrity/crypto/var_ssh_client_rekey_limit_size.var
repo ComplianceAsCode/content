@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'SSH client RekeyLimit - size'
+
+description: |-
+    Specify the size component of the rekey limit. This limit signifies amount
+    of data. After this amount of data is transferred through the connection,
+    the session key is renegotiated. The number is followed by K, M or G for
+    kilobytes, megabytes or gigabytes. Note that the RekeyLimit can be also
+    configured according to elapsed time.
+
+interactive: true
+
+type: string
+
+operator: equals
+
+options:
+    default: "512M"
+    "512M": "512M"
+    "1G": "1G"

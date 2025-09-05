@@ -4,11 +4,19 @@ from __future__ import print_function
 import os.path
 import jinja2
 
+try:
+    from urllib.parse import quote
+except ImportError:
+    from urllib import quote
+
+
 from .constants import (JINJA_MACROS_BASE_DEFINITIONS,
                         JINJA_MACROS_HIGHLEVEL_DEFINITIONS,
                         JINJA_MACROS_ANSIBLE_DEFINITIONS,
                         JINJA_MACROS_BASH_DEFINITIONS,
                         JINJA_MACROS_OVAL_DEFINITIONS,
+                        JINJA_MACROS_IGNITION_DEFINITIONS,
+                        JINJA_MACROS_KUBERNETES_DEFINITIONS,
                         )
 from .utils import (required_key,
                     prodtype_to_name,
@@ -120,6 +128,7 @@ def add_python_functions(substitutions_dict):
     substitutions_dict['prodtype_to_name'] = prodtype_to_name
     substitutions_dict['name_to_platform'] = name_to_platform
     substitutions_dict['prodtype_to_platform'] = prodtype_to_platform
+    substitutions_dict['url_encode'] = url_encode
     substitutions_dict['raise'] = raise_exception
 
 
@@ -137,6 +146,8 @@ def load_macros(substitutions_dict=None):
         update_substitutions_dict(JINJA_MACROS_ANSIBLE_DEFINITIONS, substitutions_dict)
         update_substitutions_dict(JINJA_MACROS_BASH_DEFINITIONS, substitutions_dict)
         update_substitutions_dict(JINJA_MACROS_OVAL_DEFINITIONS, substitutions_dict)
+        update_substitutions_dict(JINJA_MACROS_IGNITION_DEFINITIONS, substitutions_dict)
+        update_substitutions_dict(JINJA_MACROS_KUBERNETES_DEFINITIONS, substitutions_dict)
     except Exception as exc:
         msg = ("Error extracting macro definitions: {0}"
                .format(str(exc)))
@@ -155,3 +166,7 @@ def process_file_with_macros(filepath, substitutions_dict):
     substitutions_dict = load_macros(substitutions_dict)
     assert 'indent' not in substitutions_dict
     return process_file(filepath, substitutions_dict)
+
+
+def url_encode(source):
+    return quote(source)

@@ -2,7 +2,12 @@ documentation_complete: true
 
 title: 'Ensure All Accounts on the System Have Unique Names'
 
-description: 'Change usernames, or delete accounts, so each has a unique name.'
+description: |-
+    Ensure accounts on the system have unique names.
+
+    To ensure all accounts have unique names, run the following command:
+    <pre>$ sudo getent passwd | awk -F: '{ print $1}' | uniq -d</pre>
+    If a username is returned, change or delete the username.
 
 rationale: 'Unique usernames allow for accountability on the system.'
 
@@ -19,10 +24,11 @@ references:
     cjis: 5.5.2
     disa: 770,804
     pcidss: Req-8.1.1
+    cis@rhel8: 6.2.17
 
 ocil_clause: 'a line is returned'
 
 ocil: |-
-    Run the following command to check for duplicate account names:
-    <pre>$ sudo pwck -qr</pre>
-    If there are no duplicate names, no line will be returned.
+    To verify all accounts have unique names, run the following command:
+    <pre>$ sudo getent passwd | awk -F: '{ print $1}' | uniq -d</pre>
+    No output should be returned.

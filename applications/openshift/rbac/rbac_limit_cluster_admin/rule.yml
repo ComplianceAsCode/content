@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Limit Access to Cluser Admin'
+
+description: |-
+    The <tt>cluster-admin</tt> role provides superuser or privilaged
+    access to an OpenShift cluster. As such, it should be limited to
+    a small subset of trusted users. To remove users from the <tt>cluster-admin</tt>
+    role, run the following command where <tt><i>username</i></tt> is the name
+    of the user to remove:
+    <pre>$ oc adm policy remove-cluster-role-from-user cluster-admin <i>username</i></pre>
+
+rationale: |-
+    The RBAC role cluster-admin provides superuser or privilaged
+    access to an OpenShift cluster. As such, it should be limited to
+    a small subset of trusted users.
+
+severity: medium
+
+references:
+    cis: 5.1.1
+
+ocil_clause: 'cluster-admin role is in use by more personnel then necessary'
+
+ocil: |-
+    To review the <tt>cluster-admin</tt> role, run the following command:
+    <pre>$ oc get clusterrolebinding -o json | jq '.items[] | select(.metadata.name |  startswith("cluster-admin"))'</pre>
+    Review the output and ensure that authorized users have
+    the <tt>cluster-admin</tt> role.

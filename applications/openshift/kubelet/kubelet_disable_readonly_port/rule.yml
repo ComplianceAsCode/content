@@ -1,20 +1,26 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'kubelet - Disable the Read-Only Port'
 
 description: |-
     To disable the read-only port, edit the kubelet configuration
+{{%- if product == "ocp4" %}}
+    file <tt>/etc/kubernetes/kubernetes.conf</tt>
+    on the kubelet node(s) and set the below parameter:
+    <pre>readOnlyPort: 0</pre>
+{{% else %}}
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>kubeletArguments:
       read-only-port:
       - '0'</pre>
+{{%- endif %}}
 
 rationale: |-
     OpenShift disables the read-only port (<tt>10255</tt>) on all nodes by setting the
-    <tt>read-only-port</tt> kubelet flag to <tt>0</tt>. This ensures only
+    read-only port kubelet flag to <tt>0</tt>. This ensures only
     authenticated connections are able to receive information about the OpenShift
     system.
 
@@ -24,11 +30,17 @@ ocil_clause: 'the read-only port is not disabled'
 
 ocil: |-
     Run the following command on the kubelet node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep readOnlyPort /etc/kubernetes/kubernetes.conf</pre>
+    The output should be <tt>0</tt>.
+{{% else %}}
     <pre>$ sudo grep -A1 read-only-port /etc/origin/node/node-config.yaml</pre>
     The output should be <tt>0</tt>.
+{{%- endif %}}
 
 identifiers:
     cce@ocp3: 80601-8
 
 references:
-    cis: 2.1.5
+    cis@ocp3: 2.1.5
+    cis@ocp4: 4.2.3

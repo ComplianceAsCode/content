@@ -2,7 +2,8 @@ documentation_complete: true
 
 title: 'Enable TLS Usage in Firefox'
 
-description: 'To enable TLS, set <tt>security.enable_tls</tt> to <tt>true</tt>.'
+description: 'To enable TLS, set <tt>security.tls.version.min</tt> to <tt>2</tt>
+ and set <tt>security.tls.version.max</tt> to <tt>4</tt>.'
 
 rationale: |-
     Earlier versions of SSL have known security vulnerabilities and are not
@@ -11,13 +12,17 @@ rationale: |-
 severity: medium
 
 references:
-    nist: ECSC-1
+    disa: "2450"
+    nist: SC-13
     stigid: DTBF030
 
 ocil_clause: 'it is not enabled'
 
 ocil: |-
-    To verify that TLS is enabled, run the following command:
-    <pre>$ grep 'security.enable_tls' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
+    To verify that TLS is enabled, run the following commands:
+    <pre>$ grep 'security.tls.version.min' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
     The output should return:
-    <pre>lockPref("security.enable_tls", "true");</pre>
+    <pre>lockPref("security.tls.version.min", "2");</pre>
+    <pre>$ grep 'security.tls.version.max' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
+    The output should return:
+    <pre>lockPref("security.tls.version.max", "4");</pre>

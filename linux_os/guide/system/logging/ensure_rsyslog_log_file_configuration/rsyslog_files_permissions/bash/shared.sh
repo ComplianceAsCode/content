@@ -6,12 +6,14 @@ RSYSLOG_ETC_CONFIG="/etc/rsyslog.conf"
 # * And also the log file paths listed after rsyslog's $IncludeConfig directive
 #   (store the result into array for the case there's shell glob used as value of IncludeConfig)
 readarray -t RSYSLOG_INCLUDE_CONFIG < <(grep -e "\$IncludeConfig[[:space:]]\+[^[:space:];]\+" /etc/rsyslog.conf | cut -d ' ' -f 2)
+readarray -t RSYSLOG_INCLUDE < <(awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(include\\(|\\s*)file=\"(\\S+)\".*","\\2",1); if($0!=nf){print nf}}' /etc/rsyslog.conf)
+
 # Declare an array to hold the final list of different log file paths
 declare -a LOG_FILE_PATHS
 
 # Browse each file selected above as containing paths of log files
 # ('/etc/rsyslog.conf' and '/etc/rsyslog.d/*.conf' in the default configuration)
-for LOG_FILE in "${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}"
+for LOG_FILE in "${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYSLOG_INCLUDE[@]}"
 do
 	# From each of these files extract just particular log file path(s), thus:
 	# * Ignore lines starting with space (' '), comment ('#"), or variable syntax ('$') characters,

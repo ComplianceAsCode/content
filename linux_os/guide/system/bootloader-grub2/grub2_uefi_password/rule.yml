@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ocp4,ol7,ol8,rhel7,rhel8,rhv4,wrlinux1019
+prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,wrlinux1019
 
 title: 'Set the UEFI Boot Loader Password'
 
@@ -23,20 +23,13 @@ rationale: |-
     users with physical access cannot trivially alter
     important bootloader settings. These include which kernel to use,
     and whether to enter single-user mode.
-    {{% if product == "rhel7" %}}
-    For more information on how to configure the grub2 superuser account and password,
-    please refer to
-    <ul>
-    <li>{{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-Protecting_GRUB_2_with_a_Password.html") }}}</li>.
-    </ul>
-    {{% endif %}}
 
 severity: medium
 
 identifiers:
     cce@rhel7: 80354-4
     cce@rhel8: 80829-5
-    cce@ocp4: 82552-1
+    cce@rhcos4: 82552-1
 
 references:
     stigid@ol7: "010490"
@@ -80,3 +73,5 @@ warnings:
 
         Also, do NOT manually add the superuser account and password to the
         <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
+
+platform: machine

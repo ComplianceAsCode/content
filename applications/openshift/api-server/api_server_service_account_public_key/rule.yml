@@ -5,10 +5,9 @@ prodtype: ocp3,ocp4
 title: 'Configure the Service Account Public Key for the API Server'
 
 description: |-
-    To ensure the API Server utilizes its own key pair, edit the
-    API Server pod specification file
+    To ensure the API Server utilizes its own key pair,
 {{%- if product == "ocp4" %}}
-    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master node(s)
+    edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
     and set the <tt>serviceAccountPublicKeyFiles</tt> parameter to the public
     key file for service accounts:
     <pre>
@@ -19,6 +18,7 @@ description: |-
     ...
     </pre>
 {{% else %}}
+    edit the API server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
     and set the <tt>publicKeyFiles</tt> parameter to the public
     key file for service accounts:
@@ -47,13 +47,8 @@ ocil_clause: '{{%- if product == "ocp4" %}}serviceAccountPublicKeyFiles is not c
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep -A3 serviceAccountPublicKeyFiles /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
-    The output should contain a line similar to:
-    <pre>
-    "serviceAccountPublicKeyFiles":[
-      "/etc/kubernetes/static-pod-resources/configmaps/sa-token-signing-certs"
-    ],
-    </pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r .serviceAccountPublicKeyFiles</pre>
+    The output should return configured certificate key file(s).
 {{% else %}}
     <pre>$ sudo grep -A9 serviceAccountConfig /etc/origin/master/master-config.yaml</pre>
     The output should contain a line similar to:

@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: ocp3
 
-title: 'Verify Controller Profiling is not Exposed to the Web'
+title: 'Disable Profiling for the Controller Manager'
 
 description: |-
     Profiling endpoints are exposed at each master port and secured via Role-Based
@@ -15,7 +15,22 @@ description: |-
     systems localhost interface.
 
     To ensure profiling data is not exposed over a web interface, ensure
+{{%- if product == "ocp4" %}}
+    the <tt>profiling</tt> option to <tt>false</tt>
+    in the <tt>openshift-kube-controller-manager</tt> configmap on the master
+    node(s):
+    <pre>
+    "extendedArguments": {
+    ...
+      "profiling": [
+        "false"
+      ],
+    ...
+    </pre>
+{{% else %}}
+    To ensure profiling data is not exposed over a web interface, ensure
     <tt>OPENSHIFT_PROFILE</tt> is not set to <tt>web</tt> in <tt>/etc/origin/master/master.env</tt>.
+{{%- endif %}}
 
 rationale: |-
     Profiling data may include sensitive system information which could be exploited.
@@ -26,13 +41,18 @@ identifiers:
     cce@ocp3: 83000-0
 
 ocil_clause: |-
-    <tt>OPENSHIFT_PROFILE</tt> is configured to <tt>web</tt>
+    <tt>OPENSHIFT_PROFILE</tt> is configured to <tt>web</tt> or enabled.
 
 ocil: |-
-    Verify that <tt>OPENSHIFT_PROFILE</tt> is not set to <tt>web</tt> by running the following command:
+{{%- if product == "ocp4" %}}
+    To verify that <tt>profiling</tt> is configured correctly,
+    run the following command:
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["profiling"]'</pre>
+    The output should return <tt>false</tt>.
+{{% else %}}
     <pre>$ grep OPENSHIFT_PROFILE /etc/origin/master/master.env</pre>
-
     Verify that <tt>OPENSHIFT_PROFILE=web</tt> is NOT returned.
+{{%- endif %}}
 
 references:
-    cis: 1.1.8
+    cis: 1.3.2

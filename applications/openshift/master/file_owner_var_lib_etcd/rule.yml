@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify User Who Owns The OpenShift etcd Data Directory'
+
+description: '{{{ describe_file_owner(file="/var/lib/etcd", owner="root") }}}'
+
+rationale: |-
+    The <tt>/var/lib/etcd</tt> directory contains highly-avaliable distributed key/value data storage
+    across an OpenShift cluster. Allowing access to users to this directory could compromise OpenShift
+    data and the cluster.
+
+severity: medium
+
+references:
+    cis: 1.1.12
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/lib/etcd", owner="root") }}}'
+
+ocil: '{{{ ocil_file_owner(file="/var/lib/etcd", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /var/lib/etcd/
+        fileuid: '0'

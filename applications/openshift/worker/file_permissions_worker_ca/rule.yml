@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Permissions on the Worker Certificate Authority File'
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/kubernetes/kubelet-ca.crt", perms="0644") }}}
+
+rationale: |-
+    If the worker certificate authority file is writable by a group-owner or the
+    world the risk of its compromise is increased. The file contains the certificate authority
+    certificate for an OpenShift node that is configured on the system. Protection of this file is
+    critical for OpenShift security.
+
+severity: medium
+
+#identifiers:
+#    cce@ocp4: 80619-0
+
+references:
+    cis: 4.1.7
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/kubelet-ca.crt", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/kubernetes/kubelet-ca.crt", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/kubernetes/kubelet-ca.crt
+        filemode: '0600'

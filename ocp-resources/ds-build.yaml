@@ -1,12 +1,12 @@
 kind: ImageStream
 apiVersion: image.openshift.io/v1
 metadata:
-  name: "openscap-$PRODUCT-ds" 
+  name: "openscap-ocp4-ds" 
 ---
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
-  name: "openscap-$PRODUCT-ds" 
+  name: "openscap-ocp4-ds" 
 spec:
   runPolicy: "Serial" 
   triggers: 
@@ -16,11 +16,14 @@ spec:
     dockerfile: |
       FROM registry.access.redhat.com/ubi8/ubi-minimal
       WORKDIR /
-      COPY ssg-$PRODUCT-ds.xml .
+      COPY ssg-ocp4-ds.xml .
+      COPY ssg-rhel7-ds.xml .
+      COPY ssg-rhel8-ds.xml .
+      COPY ssg-rhcos4-ds.xml .
   strategy: 
     dockerStrategy:
       noCache: true
   output: 
     to:
       kind: "ImageStreamTag"
-      name: "openscap-$PRODUCT-ds:latest"
+      name: "openscap-ocp4-ds:latest"

@@ -1,0 +1,135 @@
+documentation_complete: true
+
+title: 'CIS Red Hat OpenShift Container Platform 4 Benchmark'
+
+description: |-
+    This profile defines a baseline that aligns to the Center for Internet Security®
+    Red Hat OpenShift Container Platform 4 Benchmark™, v1.0.0, currently unreleased.
+
+    This profile includes Center for Internet Security®
+    Red Hat OpenShift Container Platform 4 CIS Benchmarks™ content.
+
+selections:
+    - scc_limit_process_id_namespace
+    - scc_limit_privilege_escalation
+    - scc_limit_net_raw_capability
+    - scc_limit_ipc_namespace
+    - scc_limit_root_containers
+    - scc_limit_container_allowed_capabilities
+    - scc_limit_network_namespace
+    - scc_drop_container_capabilities
+    - scc_limit_privileged_containers
+    - kubelet_enable_client_cert_rotation
+    - kubelet_enable_streaming_connections
+    - kubelet_anonymous_auth
+    - kubelet_configure_client_ca
+    - kubelet_configure_tls_cert
+    - kubelet_authorization_mode
+    - kubelet_configure_event_creation
+    - kubelet_enable_server_cert_rotation
+    - kubelet_configure_tls_key
+    - kubelet_disable_readonly_port
+    - etcd_peer_cert_file
+    - etcd_peer_key_file
+    - etcd_key_file
+    - etcd_unique_ca
+    - etcd_auto_tls
+    - etcd_cert_file
+    - etcd_peer_client_cert_auth
+    - etcd_peer_auto_tls
+    - etcd_client_cert_auth
+    - rbac_limit_secrets_access
+    - rbac_limit_cluster_admin
+    - rbac_wildcard_use
+    - rbac_pod_creation_access
+    - controller_rotate_kubelet_server_certs
+    - controller_use_service_account
+    - controller_service_account_private_key
+    - controller_service_account_ca
+    - controller_bind_address
+    - general_configure_imagepolicywebhook
+    - scheduler_profiling_argument
+    - secrets_no_environment_variables
+    - configure_network_policies_namespaces
+    - configure_network_policies
+    - file_groupowner_controller_manager_kubeconfig
+    - file_owner_controller_manager_kubeconfig
+    - file_owner_openvswitch
+    - file_groupowner_kube_apiserver
+    - file_owner_kube_controller_manager
+    - file_owner_var_lib_etcd
+    - file_owner_cni_conf
+    - file_owner_kube_scheduler
+    - file_owner_etcd_member
+    - file_permissions_openvswitch
+    - file_permissions_kubeconfig
+    - file_permissions_controller_manager_kubeconfig
+    - file_owner_scheduler_kubeconfig
+    - file_permissions_var_lib_etcd
+    - file_permissions_kube_apiserver
+    - file_permissions_cni_conf
+    - file_groupowner_etcd_member
+    - file_groupowner_scheduler_kubeconfig
+    - file_permissions_etcd_member
+    - file_owner_kubeconfig
+    - file_groupowner_cni_conf
+    - file_owner_kube_apiserver
+    - file_groupowner_kube_scheduler
+    - file_permissions_scheduler_kubeconfig
+    - file_groupowner_kube_controller_manager
+    - file_permissions_kube_scheduler
+    - file_groupowner_openvswitch
+    - file_groupowner_kubeconfig
+    - file_permissions_kube_controller_manager
+    - accounts_restrict_service_account_tokens
+    - accounts_unique_service_account
+    - api_server_tls_cipher_suites
+    - api_server_etcd_cert
+    - api_server_encryption_provider_config
+    - api_server_audit_log_maxsize
+    - api_server_admission_control_plugin_SecurityContextDeny
+    - api_server_admission_control_plugin_ServiceAccount
+    - api_server_insecure_port
+    - api_server_client_ca
+    - api_server_encryption_provider_cipher
+    - api_server_admission_control_plugin_NamespaceLifecycle
+    - api_server_authorization_mode
+    - api_server_etcd_key
+    - api_server_tls_cert
+    - api_server_kubelet_client_key
+    - api_server_secure_port
+    - api_server_token_auth
+    - api_server_admission_control_plugin_AlwaysPullImages
+    - api_server_admission_control_plugin_NodeRestriction
+    - api_server_service_account_public_key
+    - api_server_basic_auth
+    - api_server_kubelet_client_cert
+    - api_server_tls_private_key
+    - api_server_request_timeout
+    - api_server_etcd_ca
+    - api_server_audit_log_maxbackup
+    - api_server_anonymous_auth
+    - api_server_audit_log_maxage
+    - api_server_insecure_bind_address
+    - api_server_admission_control_plugin_PodSecurityPolicy
+    - api_server_admission_control_plugin_EventRateLimit
+    - api_server_kubelet_certificate_authority
+    - api_server_profiling
+    - api_server_admission_control_plugin_AlwaysAdmit
+    - api_server_kubelet_https
+    - api_server_audit_log_path
+    - file_groupowner_proxy_kubeconfig
+    - file_groupowner_kubelet_conf
+    - file_owner_worker_ca
+    - file_groupowner_worker_ca
+    - file_permissions_worker_kubeconfig
+    - file_groupowner_worker_service
+    - file_permissions_proxy_kubeconfig
+    - file_groupowner_worker_kubeconfig
+    - file_owner_kubelet_conf
+    - file_owner_worker_kubeconfig
+    - file_owner_worker_service
+    - file_owner_proxy_kubeconfig
+    - file_permissions_worker_ca
+    - file_permissions_worker_service
+    - file_permissions_kubelet_conf

@@ -15,6 +15,7 @@ product_directories = [
     'jre',
     'macos1015',
     'ocp3', 'ocp4',
+    'rhcos4',
     'ol7', 'ol8',
     'opensuse',
     'rhel6', 'rhel7', 'rhel8',
@@ -22,6 +23,7 @@ product_directories = [
     'rhv4',
     'sle11', 'sle12', 'sle15',
     'ubuntu1404', 'ubuntu1604', 'ubuntu1804',
+    'vsel',
     'wrlinux8', 'wrlinux1019'
 ]
 
@@ -152,6 +154,8 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Apple macOS 10.15": "macos1015",
     "Red Hat OpenShift Container Platform 3": "ocp3",
     "Red Hat OpenShift Container Platform 4": "ocp4",
+    "McAfee VirusScan Enterprise for Linux": "vsel",
+    "Red Hat Enterprise Linux CoreOS 4": "rhcos4",
     "Oracle Linux 7": "ol7",
     "Oracle Linux 8": "ol8",
     "openSUSE": "opensuse",
@@ -253,6 +257,9 @@ PRODUCT_TO_CPE_MAPPING = {
     "ocp4": [
         "cpe:/a:redhat:openshift_container_platform:4.1",
     ],
+    "rhcos4": [
+        "cpe:/o:redhat:enterprise_linux_coreos:4",
+    ],
     "ol7": [
         "cpe:/o:oracle:linux:7",
     ],
@@ -307,6 +314,10 @@ PRODUCT_TO_CPE_MAPPING = {
     "ubuntu1804": [
         "cpe:/o:canonical:ubuntu_linux:18.04",
     ],
+    "vsel": [
+        "cpe:/a:mcafee:virusscan_enterprise_for_linux:1.9",
+        "cpe:/a:mcafee:virusscan_enterprise_for_linux:2.0",
+    ],
     "wrlinux8": [
         "cpe:/o:windriver:wrlinux:8",
     ],
@@ -335,7 +346,7 @@ REF_PREFIX_MAP = {
 }
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
-                       "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
+                       "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos", "example"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_debian": ["debian8", "debian9", "debian10"],
@@ -344,6 +355,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_opensuse": ["opensuse"],
     "multi_platform_ol": ["ol7", "ol8"],
     "multi_platform_ocp": ["ocp3", "ocp4"],
+    "multi_platform_rhcos": ["rhcos4"],
     "multi_platform_rhel": ["rhel6", "rhel7", "rhel8"],
     "multi_platform_rhosp": ["rhosp10", "rhosp13"],
     "multi_platform_rhv": ["rhv4"],
@@ -486,6 +498,7 @@ XCCDF_PLATFORM_TO_CPE = {
     "container": "cpe:/a:container",
     "chrony": "cpe:/a:chrony",
     "gdm": "cpe:/a:gdm",
+    "grub2": "cpe:/a:grub2",
     "libuser": "cpe:/a:libuser",
     "nss-pam-ldapd": "cpe:/a:nss-pam-ldapd",
     "ntp": "cpe:/a:ntp",
@@ -494,6 +507,7 @@ XCCDF_PLATFORM_TO_CPE = {
     "sssd": "cpe:/a:sssd",
     "systemd": "cpe:/a:systemd",
     "yum": "cpe:/a:yum",
+    "zipl": "cpe:/a:zipl",
 }
 
 # _version_name_map = {
@@ -512,10 +526,12 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'fuse': 'JBoss Fuse',
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
+    'vsel': 'McAfee VirusScan Enterprise for Linux',
     'wrlinux': 'WRLinux',
     'example': 'Example Linux Content',
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',
+    'rhcos': 'Red Hat Enterprise Linux CoreOS',
 }
 
 

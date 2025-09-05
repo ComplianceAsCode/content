@@ -1,4 +1,7 @@
 PROFILE?=
+# Defines the product that the test aims to test
+# Since we already have test for RHCOS4, this is the default for now.
+PRODUCT?=rhcos4
 CONTENT_IMAGE?=
 export ROOT_DIR=$(shell git rev-parse --show-toplevel)
 TEST_DIR=$(ROOT_DIR)/tests/ocp4e2e
@@ -12,9 +15,9 @@ INSTALL_OPERATOR?=true
 all: e2e
 
 .PHONY: e2e
-e2e: image-to-cluster ## Run the e2e tests. This requires that the PROFILE environment variable be set. This will upload images to the cluster as part of the run with the `image-to-cluster` target.
+e2e: image-to-cluster ## Run the e2e tests. This requires that the PROFILE and PRODUCT environment variables be set. This will upload images to the cluster as part of the run with the `image-to-cluster` target.
 	pushd $(TEST_DIR) && \
-	go test $(TEST_FLAGS) . -profile="$(PROFILE)" -content-image="$(CONTENT_IMAGE)" -install-operator=$(INSTALL_OPERATOR)
+	go test $(TEST_FLAGS) . -profile="$(PROFILE)" -product="$(PRODUCT)" -content-image="$(CONTENT_IMAGE)" -install-operator=$(INSTALL_OPERATOR)
 
 .PHONY: image-to-cluster
 image-to-cluster: ## Upload a content image to the cluster. The SKIP_CONTAINER_PUSH environment variable skips this step; the CONTENT_IMAGE environment variable takes a pre-uploaded image into use.
@@ -26,7 +29,7 @@ else ifeq ($(SKIP_CONTAINER_PUSH), true)
 	@echo "Skipping content image upload, will use '$(CONTENT_IMAGE)'"
 else
 	@echo "Building content image"
-	$(ROOT_DIR)/utils/build_ds_container.sh ocp4
+	$(ROOT_DIR)/utils/build_ds_container.sh
 	$(eval CONTENT_IMAGE = image-registry.openshift-image-registry.svc:5000/openshift-compliance/openscap-ocp4-ds:latest)
 	@echo "Content image built and available through: $(CONTENT_IMAGE)"
 endif

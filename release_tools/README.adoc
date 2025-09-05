@@ -120,8 +120,19 @@ It will also create a `bump_version_{version}` branch and a "Bump version" commi
 * Announce on link:https://lists.fedorahosted.org/admin/lists/scap-security-guide.lists.fedorahosted.org/[scap-security-guide] and link:https://www.redhat.com/mailman/listinfo/open-scap-list[open-scap] mailing lists.
 * Announce on twitter via link:https://twitter.com/openscap[@OpenSCAP]
 
-=== Fedora and Copr builds ===
+=== Fedora builds ===
 * Submit Fedora updates, check:
      * the link:https://fedoraproject.org/wiki/Package_maintenance_guide[Package Maintenance Guide]
      * and link:https://fedoraproject.org/wiki/Package_update_HOWTO[Package Update How To]
-* Do build for COPR repository: https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/builds/
+
+=== Copr builds ===
+* Move to the directory where you did the latest Fedora build.
+* Create a srpm with `fedpkg srpm`. This srpm will be used for epel-8 builds, rename it appropriately.
+* Copy the `copr_packages.patch` from the directory where this readme is placed into the directory where the spec file is.
+* Apply the patch with `patch -p1 < copr_packages.patch`
+* Create another srpm with `fedpkg srpm` and name it appropriately. This srpm will be used for epel-6 and epel-7 builds.
+* Upload both SRPMs into publicly visible folder in your `fedorapeople.org` space.
+* Use your Fedora account and login into link:https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/[COPR repo].
+* Verify that you have build permissions through settings -> permissions.
+     * If you don't have build permissions, you can ask for them directly from the interface. Wait for one of administrators to confirm.
+* Make new builds. One for epel-6 and epel-7, one for epel-8 only. Use URLs pointing to SRPMs which you have just uploaded.

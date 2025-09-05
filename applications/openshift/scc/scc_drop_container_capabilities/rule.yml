@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Limit Container Capabilities'
+
+description: |-
+    Containers should not enable more capabilites than needed as this
+    opens the door for malicious use. To enable only the
+    required capabilities, the appropriate Security Context Constraints (SCCs)
+    should set capabilities as a list in <tt>allowedCapabilities</tt>.
+
+rationale: |-
+    By default, containers run with a default set of capabilities as assigned
+    by the Container Runtime which can include dangerous or highly privileged
+    capabilities. Capabilities should be dropped unless absolutely critical for
+    the container to run software as added capabilities that are not required
+    allow for malicious containers or attackers.
+
+severity: medium
+
+references:
+    cis: 5.2.8
+
+ocil_clause: 'allowed capabilities are not configured or limited in allowedCapabilities'
+
+ocil: |-
+    Inspect each SCC returned from running the following command:
+    <pre>$ oc get scc</pre>
+    Review each SCC and determine that only required capabilities are either
+    completely added as a list entry under <tt>allowedCapabilities</tt>,
+    or that all the un-required capabilities are dropped for containers and SCCs.

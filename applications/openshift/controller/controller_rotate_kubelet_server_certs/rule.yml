@@ -1,11 +1,25 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Ensure that the RotateKubeletServerCertificate argument is set'
 
 description: |-
     To enforce kublet server certificate rotation on the Controller Manager,
+{{%- if product == "ocp4" %}}
+    set the <tt>RotateKubeletServerCertificate</tt> option to <tt>true</tt>
+    in the <tt>openshift-kube-controller-manager</tt> configmap on the master
+    node(s):
+    <pre>
+    "extendedArguments": {
+    ...
+      "feature-gates": [
+      ...
+        "RotateKubeletServerCertificate=true",
+      ...
+    ...
+    </pre>
+{{% else %}}
     edit the Controller Manager pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the
     master node(s) and set the <tt>controllerArguments</tt> parameter to include
@@ -14,18 +28,14 @@ description: |-
       controllerArguments:
         feature-gates:
           - RotateKubeletServerCertificate=true</pre>
+{{%- endif %}}
 
 rationale: |-
-    <tt>RotateKubeletServerCertificate</tt> causes the kubelet to both request
+    Enabling kubelet certificate rotation causes the kubelet to both request
     a serving certificate after bootstrapping its client credentials and rotate the
     certificate as its existing credentials expire. This automated periodic rotation
     ensures that there are no downtimes due to expired certificates and thus
     addressing the availability in the C/I/A security triad.
-
-    NOTE: This recommendation only applies if you let kubelets get their
-    certificates from the API Server. In case your certificates come from an
-    outside Certificate Authority/tool (e.g. Vault) then you need to take care
-    of rotation yourself.
 
 severity: medium
 
@@ -34,13 +44,26 @@ ocil_clause: |-
     <tt>controllerArguments</tt> options
 
 ocil: |-
+    To verify that <tt>RotateKubeletServerCertificate</tt> is configured correctly,
+{{%- if product == "ocp4" %}}
+    run the following command:
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["feature-gates"]'</pre>
+    The output should return <tt>RotateKubeletServerCertificate=true</tt>.
+{{% else %}}
     Run the following command on the master node(s):
     <pre>$ grep RotateKubeletServerCertificate</pre>
-
     The output should return <tt>true</tt>.
+{{%- endif %}}
 
 identifiers:
     cce@ocp3: 80590-3
 
 references:
     cis: 1.3.6
+
+warnings:
+    - functionality: |-
+        This recommendation only applies if you let kubelets get their
+        certificates from the API Server. In case your certificates come from an
+        outside Certificate Authority/tool (e.g. Vault) then you need to take care
+        of rotation yourself.

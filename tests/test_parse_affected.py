@@ -67,6 +67,8 @@ def parse_affected(cur_dir, env_yaml):
             xml_content = ssg.jinja.process_file_with_macros(oval, env_yaml)
             # Some OVAL definitions may render to an empty definition
             # when building OVAL 5.10 only content
+            # Macros may leave empty new lines behind, lets strip them.
+            xml_content = xml_content.strip()
             if not xml_content:
                 continue
 
@@ -80,7 +82,8 @@ def parse_affected(cur_dir, env_yaml):
                 assert isinstance(results[1], int)
 
             except ValueError as e:
-                print("No <affected> element found in file {}".format(oval))
+                print("No <affected> element found in file {}. "
+                      " Parsed XML was:\n{}".format(oval, xml_content))
                 raise e
 
 

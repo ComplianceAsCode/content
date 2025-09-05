@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Minimize Access to Pod Creation'
+
+description: |-
+    The ability to create pods in a namespace can provide a
+    number of opportunities for privilege escalation. Where
+    applicable, remove <tt>create</tt> access to <tt>pod</tt>
+    objects in the cluster.
+
+rationale: |-
+    The ability to create pods in a cluster opens up the cluster
+    for privilege escalation.
+
+severity: medium
+
+references:
+    cis: 5.1.4
+
+ocil_clause: 'wildcards are in use by more roles than necessary'
+
+ocil: |-
+    To review the wildcard usage in roles, run the following commands:
+    <pre>$ oc get roles --all-namespaces -o yaml</pre>
+    <pre>$ oc get clusterroles -o yaml</pre>
+    Review the output and ensure that wildcard use is limited to
+    a small subset as possible.

@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Ensure Project Namespaces Use Network Policies'
+
+description: |-
+    Network policies should be configured for each project to isolate
+    traffic on the network.
+
+rationale: |-
+    Running different applications on the same Kubernetes cluster creates a risk of one
+    compromised application attacking a neighboring application. Network segmentation is
+    important to ensure that containers can communicate only with those they are supposed
+    to. When a network policy is introduced to a given namespace, all traffic not allowed
+    by the policy is denied. However, if there are no network policies in a namespace all
+    traffic will be allowed into and out of the pods in that namespace.
+
+severity: high
+
+ocil_clause: 'the NetworkPolicy plugin is not configured or network policies are not in use'
+
+ocil: |-
+    Verify on OpenShift namespaces that network policies are in use:
+    <pre>$ oc get networkpolicy --all-namespaces</pre>
+
+references:
+    cis: 5.3.2

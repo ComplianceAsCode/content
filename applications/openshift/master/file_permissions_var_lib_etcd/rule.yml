@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'The OpenShift etcd Data Directory Must Have Mode 0700'
+
+description: |-
+    {{{ describe_file_permissions(file="/var/lib/etcd", perms="0700") }}}
+
+rationale: |-
+    The <tt>/var/lib/etcd</tt> directory contains highly-avaliable distributed key/value data storage
+    across an OpenShift cluster. Allowing access to users to this directory could compromise OpenShift
+    data and the cluster.
+
+severity: medium
+
+references:
+    cis: 1.1.11
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/lib/etcd", perms="-rwx------") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/lib/etcd", perms="-rwx------") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/lib/etcd/
+        filemode: '0700'

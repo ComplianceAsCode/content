@@ -6,15 +6,14 @@ title: 'Configure the Encryption Provider'
 
 description: |-
     To encrypt the etcd key-value store, follow the OpenShift documentation
-    and configure a <tt>EncryptionConfig</tt> file. Then, edit the API Server
-    pod specification file
-    <tt>/etc/origin/master/master-config.yaml</tt> on the master
-    node(s) and set <tt>experimental-encryption-provider-config</tt>
-    to the path of that file:
-    <pre>kubernetesMasterConfig:
-      apiServerArguments:
-        experimental-encryption-provider-config:
-        - /etc/origin/master/encryption-config.yaml</pre>
+    and configure a <tt>EncryptionConfig</tt> file. Then, verify that the
+    <tt>openshift-kube-apiserver</tt> configmap on the master
+    node(s) and set <tt>encryption-provider-config</tt>
+    to the path of the <tt>EncryptionConfig</tt> file.
+    <pre>
+    apiServerArguments:
+      encryption-provider-config:
+      - /etc/kubernetes/static-pod-resources/secrets/encryption-config/encryption-config</pre>
 
 rationale: |-
     etcd is a highly available key-value store used by OpenShift deployments
@@ -27,9 +26,9 @@ severity: medium
 references:
     cis: 1.2.33
 
-ocil_clause: '<tt>experimental-encryption-provider-config</tt> arguments do not point to the <tt>EncryptionConfig</tt> file'
+ocil_clause: '<tt>encryption-provider-config</tt> arguments do not point to the <tt>EncryptionConfig</tt> file'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ sudo grep -A2 experimental-encryption-provider-config /etc/origin/master/master-config.yaml</pre>
-    The output should return <pre>/etc/origin/master/encryption-config.yaml</pre>.
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["encryption-provider-config"]'</pre>
+    The output should return a file path configured for <tt>EncryptionConfig</tt>.

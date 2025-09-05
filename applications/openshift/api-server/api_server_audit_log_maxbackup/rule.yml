@@ -5,19 +5,19 @@ prodtype: ocp3,ocp4
 title: 'Configure the Maximum Retained Audit Logs'
 
 description: |-
-    To configure how many rotations of audit logs are retained, edit the API Server
+    To configure how many rotations of audit logs are retained,
 {{%- if product == "ocp4" %}}
-    pod specification file <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt>
+    edit the <tt>openshift-kube-apiserver</tt> configmap
     on the master node(s) and set the <tt>maximumRetainedFiles</tt> parameter to
     <tt>10</tt> or to an organizationally appropriate value:
-       <pre>
+    <pre>
     "auditConfig":{
       ...
-      "maximumRetainedFiles":10,
+      "maximumRetainedFiles": 10,
       ...
-     </pre>
+    </pre>
 {{% else %}}
-    pod specification file <tt>/etc/origin/master/master-config.yaml</tt>
+    edit the API Server pod specification file <tt>/etc/origin/master/master-config.yaml</tt>
     on the master node(s) and set the <tt>maximumRetainedFiles</tt> parameter to
     <tt>10</tt> or to an organizationally appropriate value:
     <pre>auditConfig:
@@ -45,7 +45,7 @@ ocil_clause: '<tt>maximumRetainedFiles</tt> is set to <tt>10</tt> or as appropri
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep maximumRetainedFiles /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.auditConfig["maximumRetainedFiles"]'</pre>
 {{% else %}}
     <pre>$ sudo grep maximumRetainedFiles /etc/origin/master/master-config.yaml</pre>
 {{%- endif %}}

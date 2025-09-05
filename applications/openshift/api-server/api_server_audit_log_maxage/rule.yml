@@ -5,17 +5,18 @@ prodtype: ocp3,ocp4
 title: 'Configure the Audit Log Maximum Retention Days (maximumFileRetentionDays)'
 
 description: |-
-    To configure audit log retention, edit the API Server pod specification file
+    To configure audit log retention,
 {{%- if product == "ocp4" %}}
-    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master node(s) and set
+    edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s) and set
     the <tt>maximumFileRetentionDays</tt> parameter to <tt>30</tt> or as appropriate for the number of days:
     <pre>
     "auditConfig":{
       ...
-      "maximumFileRetentionDays":30,
+      "maximumFileRetentionDays": 30,
       ...
-     </pre>
+    </pre>
 {{% else %}}
+    edit the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s) and set
     the <tt>maximumFileRetentionDays</tt> parameter to <tt>30</tt> or as appropriate for the number of days:
     <pre>auditConfig:
@@ -40,7 +41,7 @@ ocil_clause: '<tt>maximumFileRetentionDays</tt> is set less than <tt>30</tt> or 
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep maximumFileRetentionDays /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.auditConfig["maximumFileRetentionDays"]'</pre>
 {{% else %}}
     <pre>$ sudo grep maximumFileRetentionDays /etc/origin/master/master-config.yaml</pre>
 {{%- endif %}}

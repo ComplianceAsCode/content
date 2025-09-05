@@ -58,6 +58,8 @@ selections:
     - sshd_set_keepalive
     - sshd_enable_warning_banner
     - sshd_rekey_limit
+    - var_rekey_limit_size=1G
+    - var_rekey_limit_time=1hour
     - sshd_use_strong_rng
     - openssl_use_strong_entropy
 
@@ -408,3 +410,8 @@ selections:
 
     # Prevent Kerberos use by system daemons
     - kerberos_disable_no_keytab
+
+    # set ssh client rekey limit
+    - ssh_client_rekey_limit
+    - var_ssh_client_rekey_limit_size=1G
+    - var_ssh_client_rekey_limit_time=1hour

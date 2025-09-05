@@ -506,6 +506,10 @@ class Benchmark(object):
                 print(dir_item_path)
 
     def add_bash_remediation_fns_from_file(self, action, file_):
+        if not file_:
+            # bash-remediation-functions.xml doens't exist
+            return
+
         if action == "list-inputs":
             print(file_)
         else:
@@ -700,6 +704,11 @@ class Group(object):
         # audit_rules_privileged_commands, othervise the rule
         # does not catch newly installed screeen binary during remediation
         # and report fail
+        # the software group should come before the
+        # bootloader-grub2 group because of conflict between
+        # rules rpm_verify_permissions and file_permissions_grub2_cfg
+        # specific rules concerning permissions should
+        # be applied after the general rpm_verify_permissions
         # The FIPS group should come before Crypto - if we want to set a different (stricter) Crypto Policy than FIPS.
         # the firewalld_activation must come before ruleset_modifications, othervise
         # remediations for ruleset_modifications won't work
@@ -707,6 +716,7 @@ class Group(object):
         # otherwise the remediation prints error although it is successful
         priority_order = [
             "accounts", "auditing",
+            "software", "bootloader-grub2",
             "fips", "crypto",
             "firewalld_activation", "ruleset_modifications",
             "disabling_ipv6", "configuring_ipv6"

@@ -1,0 +1,8 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_rekey_limit_size", "var_rekey_limit_time") }}}
+
+{{{ ansible_sshd_set(parameter="RekeyLimit", value="{{ var_rekey_limit_size }} {{ var_rekey_limit_time }}") }}}

@@ -5,18 +5,19 @@ prodtype: ocp3,ocp4
 title: 'Configure Maximum Audit Log Size'
 
 description: |-
-    To rotate audit logs upon reaching a maximum size, edit the API Server pod
+    To rotate audit logs upon reaching a maximum size,
 {{%- if product == "ocp4" %}}
-    specification file <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on
+    edit the <tt>openshift-kube-apiserver</tt> configmap on
     the master node(s) and set the <tt>maximumFileSizeMegabytes</tt> parameter to
     an appropriate size in MB. For example, to set it to 100 MB:
     <pre>
     "auditConfig":{
       ...
-      "maximumFileSizeMegabytes":100,
+      "maximumFileSizeMegabytes": 100,
       ...
-     </pre>
+    </pre>
 {{% else %}}
+    edit the API Server pod
     specification file <tt>/etc/origin/master/master-config.yaml</tt> on
     the master node(s) and set the <tt>maximumFileSizeMegabytes</tt> parameter to
     an appropriate size in MB. For example, to set it to 100 MB:
@@ -45,7 +46,7 @@ ocil_clause: '<tt>maximumFileSizeMegabytes</tt> is set to <tt>100</tt> or as app
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep maximumFileSizeMegabytes /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["maximumFileSizeMegabytes"]'</pre>
 {{% else %}}
     <pre>$ sudo grep maximumFileSizeMegabytes /etc/origin/master/master-config.yaml</pre>
 {{%- endif %}}

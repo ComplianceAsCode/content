@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Permissions on the Worker Proxy Kubeconfig File'
+
+description: |-
+    {{{ describe_file_permissions(file="/config/kube-proxy-config.yaml", perms="0600") }}}
+
+rationale: |-
+    If the worker proxy kubeconfig file is writable by a group-owner or the
+    world the risk of its compromise is increased. The file contains the administration configuration of the
+    OpenShift cluster that is configured on the system. Protection of this file is
+    critical for OpenShift security.
+
+severity: medium
+
+#identifiers:
+#    cce@ocp4: 80633-1
+
+references:
+    cis: 4.1.3
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/config/kube-proxy-config.yaml", perms="-rw-------") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/config/kube-proxy-config.yaml", perms="-rw-------") }}}
+
+#template:
+#    name: file_permissions
+#    vars:
+#        filepath: /config/kube-proxy-config.yaml
+#        filemode: '0600'

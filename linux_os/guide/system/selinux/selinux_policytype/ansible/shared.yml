@@ -1,13 +1,8 @@
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
-# reboot = false
+# reboot = true
 # strategy = restrict
 # complexity = low
 # disruption = low
-- (xccdf-var var_selinux_policy_name)
+{{{ ansible_instantiate_variables("var_selinux_policy_name") }}}
 
-- name: "{{{ rule_title }}}"
-  lineinfile:
-    path: /etc/sysconfig/selinux
-    regexp: '^SELINUXTYPE='
-    line: "SELINUXTYPE={{ var_selinux_policy_name }}"
-    create: yes
+{{{ ansible_selinux_config_set(parameter="SELINUXTYPE", value="{{ var_selinux_policy_name }}") }}}

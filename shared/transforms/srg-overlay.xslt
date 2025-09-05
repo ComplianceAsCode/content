@@ -26,65 +26,62 @@
       <xsl:attribute name="id">benchmark-with-overlays-for-srg</xsl:attribute>
       <xccdf:status>draft</xccdf:status>
       <xsl:copy-of select="$profile/xccdf:title"/>
-      <xsl:apply-templates select=".//xccdf:Rule"/>
+
+      <xsl:variable name="srgsNeeded" select=".//xccdf:Rule/xccdf:version/text()"/>
+      <xsl:variable name="srgsImplemented" select="$selectedRules/xccdf:reference[@href=$disaSrgUri][not(text() = preceding::text())]/text()"/>
+
+      <xsl:for-each select="$selectedRules[xccdf:reference[@href=$disaSrgUri]]">
+          <xsl:call-template name="copyProductRule">
+            <xsl:with-param name="rule" select="."/>
+          </xsl:call-template>
+      </xsl:for-each>
+
+      <xsl:for-each select=".//xccdf:Rule[not(contains($srgsImplemented, xccdf:version/text()))]">
+         <xsl:apply-templates select="."/>
+      </xsl:for-each>
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="xccdf:Rule">
     <xsl:variable name="disaRule" select="."/>
-	  <xsl:variable name="currSrg" select="xccdf:version"/>
-    <xsl:variable name="relevantRules" select="$selectedRules[xccdf:reference[@href=$disaSrgUri and text()=$currSrg]]"/>
-    <xsl:choose>
-      <xsl:when test="$relevantRules">
-        <xsl:for-each select="$relevantRules">
-          <xsl:call-template name="copyProductRule">
-            <xsl:with-param name="rule" select="."/>
-            <xsl:with-param name="cci" select="$disaRule/xccdf:ident/text()"/>
-          </xsl:call-template>
-        </xsl:for-each>
-      </xsl:when>
-      <xsl:otherwise>
 
-        <xsl:variable name="override-rtf">
-          <xsl:call-template name="findOverlay">
-            <xsl:with-param name="cci" select="$disaRule/xccdf:ident/text()"/>
-          </xsl:call-template>
-        </xsl:variable>
-        <xsl:variable name="override" select="exsl:node-set($override-rtf)//Rule[1]" xmlns:exsl="http://exslt.org/common"/>
+    <xsl:variable name="override-rtf">
+      <xsl:call-template name="findOverlay">
+        <xsl:with-param name="cci" select="$disaRule/xccdf:ident/text()"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="override" select="exsl:node-set($override-rtf)//Rule[1]" xmlns:exsl="http://exslt.org/common"/>
 
-        <xsl:if test="$override">
-          <xsl:element name="Rule" namespace="http://checklists.nist.gov/xccdf/1.1">
-            <xsl:attribute name="id">
-              <xsl:value-of select="concat($override/@id, '-overlay-', $disaRule/xccdf:ident/text())"/>
-            </xsl:attribute>
-            <xsl:attribute name="severity">
-              <xsl:value-of select="$disaRule/@severity"/>
-            </xsl:attribute>
-            <xsl:element name="title">
-              <xsl:value-of select="$override/title"/>
-            </xsl:element>
-            <xsl:element name="description">
-              <xsl:value-of select="$override/description"/>
-            </xsl:element>
-            <xsl:element name="reference">
-              <xsl:attribute name="href">
-                <xsl:value-of select="$disaSrgUri"/>
-              </xsl:attribute>
-              <xsl:value-of select="$disaRule/xccdf:version"/>
-            </xsl:element>
-            <xsl:element name="check">
-              <xsl:attribute name="system">http://scap.nist.gov/schema/ocil/2</xsl:attribute>
-              <xsl:value-of select="$override/ocil"/>
-            </xsl:element>
-          </xsl:element>
-        </xsl:if>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:if test="$override">
+      <xsl:element name="Rule" namespace="http://checklists.nist.gov/xccdf/1.1">
+        <xsl:attribute name="id">
+          <xsl:value-of select="concat($override/@id, '-overlay-', $disaRule/xccdf:ident/text())"/>
+        </xsl:attribute>
+        <xsl:attribute name="severity">
+          <xsl:value-of select="$disaRule/@severity"/>
+        </xsl:attribute>
+        <xsl:element name="title">
+          <xsl:value-of select="$override/title"/>
+        </xsl:element>
+        <xsl:element name="description">
+          <xsl:value-of select="$override/description"/>
+        </xsl:element>
+        <xsl:element name="reference">
+          <xsl:attribute name="href">
+            <xsl:value-of select="$disaSrgUri"/>
+          </xsl:attribute>
+          <xsl:value-of select="$disaRule/xccdf:version"/>
+        </xsl:element>
+        <xsl:element name="check">
+          <xsl:attribute name="system">http://scap.nist.gov/schema/ocil/2</xsl:attribute>
+          <xsl:value-of select="$override/ocil"/>
+        </xsl:element>
+      </xsl:element>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="copyProductRule">
     <xsl:param name="rule"/>
-    <xsl:param name="cci"/>
     <xsl:copy-of select="$rule"/>
   </xsl:template>
 

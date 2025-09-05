@@ -26,14 +26,19 @@
     - device_name.stdout is defined and device_name.stdout_lines is defined
     - (device_name.stdout | length > 0)
 
-- name: Ensure permission {{{ MOUNTOPTION }}} are set on {{{ MOUNTPOINT }}}
+- name: Make sure {{{ MOUNTOPTION }}} option is part of the to {{{ MOUNTPOINT }}} options
+  set_fact:
+    mount_info: "{{ mount_info | combine( {'options':''~mount_info.options~',{{{ MOUNTOPTION }}}' }) }}"
+  when:
+    - mount_info is defined and "{{{ MOUNTOPTION }}}" not in mount_info.options
+
+- name: Ensure {{{ MOUNTPOINT }}} is mounted with {{{ MOUNTOPTION }}} option
   mount:
     path: "{{{ MOUNTPOINT }}}"
     src: "{{ mount_info.source }}"
-    opts: "{{ mount_info.options }},{{{ MOUNTOPTION }}}"
+    opts: "{{ mount_info.options }}"
     state: "mounted"
     fstype: "{{ mount_info.fstype }}"
   when:
-    - mount_info is defined and "{{{ MOUNTOPTION }}}" not in mount_info.options
     - device_name.stdout is defined
     - (device_name.stdout | length > 0)

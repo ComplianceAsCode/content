@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="ods_program" version="1">
+    <metadata>
+      <title>The McAfee VirusScan Enterprise for Linux  Web interface must be disabled unless the system is on a segregated network.</title>
+      <affected family="unix">
+        <product>McAfee VirusScan Enterprise for Linux</product>
+      </affected>
+      <description></description>
+    </metadata>
+    <!-- nailsd.profile.ODS.program is configured ... -->
+    <criteria>
+	  <criterion comment="Check nailsd.profile.ODS.program" test_ref="test_ods_program" />
+	</criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check nailsd.profile.ODS.program" id="test_ods_program" version="1">
+    <ind:object object_ref="object_ods_program" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ods_program" version="1">
+    <ind:filepath>/var/opt/NAI/LinuxShield/etc/ods.cfg</ind:filepath>
+    <ind:pattern operation="pattern match">^nailsd.profile.ODS.program: true$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+</def-group>

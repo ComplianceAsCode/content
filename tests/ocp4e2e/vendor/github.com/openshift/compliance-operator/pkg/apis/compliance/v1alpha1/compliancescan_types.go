@@ -6,6 +6,14 @@ import (
 
 // +genclient
 
+// ComplianceScanRescanAnnotation indicates that a ComplianceScan
+// should be re-run
+const ComplianceScanRescanAnnotation = "compliance.openshift.io/rescan"
+
+// ComplianceScanIndicatorLabel serves as an indicator for which ComplianceScan
+// owns the referenced object
+const ComplianceScanIndicatorLabel = "compliance-scan"
+
 // Represents the status of the compliance scan run.
 type ComplianceScanStatusPhase string
 
@@ -48,6 +56,8 @@ const (
 	ResultError ComplianceScanStatusResult = "ERROR"
 	// ResultNonCompliant represents the compliance scan having found a gap
 	ResultNonCompliant ComplianceScanStatusResult = "NON-COMPLIANT"
+	ScanTypeNode       ComplianceScanType         = "Node"
+	ScanTypePlatform   ComplianceScanType         = "Platform"
 )
 
 func resultCompare(lowResult ComplianceScanStatusResult, scanResult ComplianceScanStatusResult) ComplianceScanStatusResult {
@@ -63,9 +73,23 @@ func resultCompare(lowResult ComplianceScanStatusResult, scanResult ComplianceSc
 	return lowResult
 }
 
+// TailoringConfigMapRef is a reference to a ConfigMap that contains the
+// tailoring file. It assumes a key called `tailoring.xml` which will
+// have the tailoring contents.
+type TailoringConfigMapRef struct {
+	// Name of the ConfigMap being referenced
+	Name string `json:"name"`
+}
+
+// ComplianceScanType
+// +k8s:openapi-gen=true
+type ComplianceScanType string
+
 // ComplianceScanSpec defines the desired state of ComplianceScan
 // +k8s:openapi-gen=true
 type ComplianceScanSpec struct {
+	// The type of Compliance scan.
+	ScanType ComplianceScanType `json:"scanType,omitempty"`
 	// Is the image with the content (Data Stream), that will be used to run
 	// OpenSCAP.
 	ContentImage string `json:"contentImage,omitempty"`
@@ -85,6 +109,10 @@ type ComplianceScanSpec struct {
 	// scan, this should match the selector of the MachineConfigPool you want
 	// to apply the remediations to.
 	NodeSelector map[string]string `json:"nodeSelector,omitempty"`
+	// Is a reference to a ConfigMap that contains the
+	// tailoring file. It assumes a key called `tailoring.xml` which will
+	// have the tailoring contents.
+	TailoringConfigMap *TailoringConfigMapRef `json:"tailoringConfigMap,omitempty"`
 	// Disables cleaning up resources in the DONE phase, this might be useful for debugging.
 	Debug bool `json:"debug,omitempty"`
 }
@@ -103,6 +131,9 @@ type ComplianceScanStatus struct {
 	// If there are issues on the scan, this will be filled up with an error
 	// message.
 	ErrorMessage string `json:"errormsg,omitempty"`
+	// Specifies the current index of the scan. Given multiple scans, this marks the
+	// amount that have been executed.
+	CurrentIndex int64 `json:"currentIndex,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -124,6 +155,17 @@ type ComplianceScan struct {
 	// scan; and, more importantly, if the scan is successful (compliant) or
 	// not (non-compliant)
 	Status ComplianceScanStatus `json:"status,omitempty"`
+}
+
+// NeedsRescan indicates whether a ComplianceScan needs to
+// rescan or not
+func (cs *ComplianceScan) NeedsRescan() bool {
+	annotations := cs.GetAnnotations()
+	if annotations == nil {
+		return false
+	}
+	_, needsRescan := annotations[ComplianceScanRescanAnnotation]
+	return needsRescan
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

@@ -8,6 +8,11 @@ from xml.sax.saxutils import unescape
 
 import ssg.build_yaml
 
+try:
+    from urllib.parse import quote
+except ImportError:
+    from urllib import quote
+
 languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition", "kubernetes"]
 
 lang_to_ext_map = {
@@ -55,7 +60,7 @@ def auditd_lineinfile(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval"])
+@template(["ansible", "bash", "oval", "kubernetes"])
 def audit_rules_dac_modification(data, lang):
     return data
 
@@ -65,7 +70,7 @@ def audit_rules_file_deletion_events(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval"])
+@template(["ansible", "bash", "oval", "kubernetes"])
 def audit_rules_login_events(data, lang):
     path = data["path"]
     name = re.sub(r'[-\./]', '_', os.path.basename(os.path.normpath(path)))
@@ -85,7 +90,7 @@ def audit_rules_path_syscall(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval"])
+@template(["ansible", "bash", "oval", "kubernetes"])
 def audit_rules_privileged_commands(data, lang):
     path = data["path"]
     name = re.sub(r"[-\./]", "_", os.path.basename(path))
@@ -94,6 +99,11 @@ def audit_rules_privileged_commands(data, lang):
         data["id"] = data["_rule_id"]
         data["title"] = "Record Any Attempts to Run " + name
         data["path"] = path.replace("/", "\\/")
+    elif lang == "kubernetes":
+        npath = path.replace("/", "_")
+        if npath[0] == '_':
+            npath = npath[1:]
+        data["normalized_path"] = npath
     return data
 
 @template(["ansible", "bash", "oval"])
@@ -306,7 +316,7 @@ def service_enabled(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval"])
+@template(["ansible", "bash", "oval", "kubernetes"])
 def sshd_lineinfile(data, lang):
     missing_parameter_pass = data["missing_parameter_pass"]
     if missing_parameter_pass == "true":
@@ -344,6 +354,24 @@ def shell_lineinfile(data, lang):
 def timer_enabled(data, lang):
     if "packagename" not in data:
         data["packagename"] = data["timername"]
+    return data
+
+
+@template(["oval"])
+def yamlfile_value(data, lang):
+    data["negate"] = data.get("negate", "false") == "true"
+    data["ocp_data"] = data.get("ocp_data", "false") == "true"
+    return data
+
+
+@template(["oval"])
+def bls_entries_option(data, lang):
+    data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
+    if lang == "oval":
+        # escape dot, this is used in oval regex
+        data["escaped_arg_name_value"] = data["arg_name_value"].replace(".", "\\.")
+        # replace . with _, this is used in test / object / state ids
+        data["sanitized_arg_name"] = data["arg_name"].replace(".", "_")
     return data
 
 

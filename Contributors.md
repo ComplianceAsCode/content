@@ -1,5 +1,5 @@
-<!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2020-05-15 09:43
+<!---This file is generated using the contributors.pyc script. DO NOT MANUALLY EDIT!!!!
+Last Modified: 2020-07-17 09:11
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -26,13 +26,16 @@ The following people have contributed to the SCAP Security Guide project
 * Ted Brunell <tbrunell@redhat.com>
 * Blake Burkhart <blake.burkhart@us.af.mil>
 * Patrick Callahan <pmc@patrickcallahan.com>
+* George Campbell <gcampbell@palantir.com>
 * Nick Carboni <ncarboni@redhat.com>
+* Carlos <64919342+carlosmmatos@users.noreply.github.com>
 * James Cassell <james.cassell@ll.mit.edu>
 * Frank Caviggia <fcaviggi@ra.iad.redhat.com>
 * Eric Christensen <echriste@redhat.com>
 * Jayson Cofell <1051437+70k10@users.noreply.github.com>
 * Caleb Cooper <coopercd@ornl.gov>
 * Deric Crago <deric.crago@gmail.com>
+* Will Cushen <wcushen@redhat.com>
 * Maura Dailey <maura@eclipse.ncsc.mil>
 * Klaas Demter <demter@atix.de>
 * dhanushkar-wso2 <dhanushkar@wso2.com>
@@ -102,6 +105,7 @@ The following people have contributed to the SCAP Security Guide project
 * Zbynek Moravec <zmoravec@redhat.com>
 * Kazuo Moriwaka <moriwaka@users.noreply.github.com>
 * Michael Moseley <michael@eclipse.ncsc.mil>
+* Renaud Métrich <rmetrich@redhat.com>
 * Joe Nall <joe@nall.com>
 * Neiloy <neiloy@redhat.com>
 * Axel Nennker <axel@nennker.de>

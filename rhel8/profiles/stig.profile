@@ -44,3 +44,4 @@ selections:
     - package_rsyslog-gnutls_installed
     - rsyslog_remote_tls
     - rsyslog_remote_tls_cacert
+    - "!ssh_client_rekey_limit"

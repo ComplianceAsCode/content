@@ -1,0 +1,33 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: Configure daily log rotation in /etc/logrotate.conf
+  lineinfile:
+    create: yes
+    dest: "/etc/logrotate.conf"
+    regexp: "^daily$"
+    line: "daily"
+
+- name: Make sure daily log rotation setting is not overriden in /etc/logrotate.conf
+  lineinfile:
+    create: no
+    dest: "/etc/logrotate.conf"
+    regexp: "^(weekly|monthly|yearly)$"
+    state: absent
+
+- name: Configure cron.daily if not already
+  block:
+    - name: Add shebang
+      lineinfile:
+        path: "/etc/cron.daily/logrotate"
+        line: "#!/bin/sh"
+        insertbefore: BOF
+        create: yes
+    - name: Add logrotate call
+      lineinfile:
+        path: "/etc/cron.daily/logrotate"
+        line: '/usr/sbin/logrotate /etc/logrotate.conf'
+        regexp: '^[\s]*/usr/sbin/logrotate[\s\S]*/etc/logrotate.conf$'

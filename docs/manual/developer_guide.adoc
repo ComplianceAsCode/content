@@ -1119,6 +1119,36 @@ with the following commands:
 
 This utility requires an up to date JSON tree created by `rule_dir_json.py`.
 
+===== `utils/add_platform_rule.py`
+
+This utility can be used to bootstrap and test Kubernetes/OpenShift application
+checks. See the help output for more detailed usage examples of each of the
+supported subcommands:
+
+   - `utils/add_platform_rule.py create --rule=<rule_name> <options>` - creates
+     files for a new rule.
+   - `utils/add_platform_rule.py test --rule=<rule_name> <options>` - tests a
+     rule against local files using an oscap container.
+   - `utils/add_platform_rule.py cluster-test --rule=<rule_name> <options>` -
+     tests a rule against a running OCP4 cluster using compliance-operator.
+
+This utility requires the following:
+
+   - KUBECONFIG env set to a kubeconfig file for a running OCP4 cluster.
+   - `oc` and `podman` in PATH.
+
+Tips:
+
+   - The --yamlpath option requires a specialized format to specify the
+     resource element to check. See
+     https://github.com/OpenSCAP/yaml-filter/wiki/YAML-Path-Definition for
+     documentation.
+   - To use the local `test` subcommand, first create a yaml file under a
+     directory structure under /tmp that mirrors the API path. For example, if
+     the resource's full path is /api/v1/foo, save the yaml to /tmp/api/v1/foo.
+     Running `test` will then check the rule against the local file by
+     launching an openscap-1.3.3 container using podman.
+
 ==== Checks
 
 Checks are used to evaluate a Rule. They are written using a custom OVAL syntax and are stored as xml files inside the _checks/oval_ directory for the desired platform.
@@ -1202,7 +1232,15 @@ This ensures consistent, high quality OVAL checks that we can edit in one place 
 
 === Remediations
 
-Remediations, also called fixes, are used to change the state of the machine, so that previously non-passing rules can pass. There can be multiple versions of the same remediation meant to be executed by different applications, more specifically Ansible, Bash, Anaconda, Puppet, Ignition and Kubernetes.
+Remediations, also called fixes, are used to change the state of the machine, so that previously non-passing rules can pass. There can be multiple versions of the same remediation meant to be executed by different applications, more specifically Ansible, Bash, Anaconda, Puppet, Ignition and Kubernetes. By default all remediation languages are built and included in the DataStream.
+
+But each product can specify its own set of remediation to include in the DataStream via a CMake Variable in the product's `CMakeLists.txt`.
+See example below, from OCP4 product, `ocp4/CMakeLists.txt`:
+
+----
+set(PRODUCT_REMEDIATION_LANGUAGES "ignition;kubernetes")
+----
+
 They also have to be idempotent, meaning that they must be able to be executed multiple times without causing the fixes to accumulate. The Ansible's language works in such a way that this behavior is built-in, however, for the other versions, the remediations must have it implemented explicitly.
 Remediations also carry metadata that should be present at the beginning of the files. This meta data will be converted in link:https://scap.nist.gov/specifications/xccdf/xccdf_element_dictionary.html#fixType[XCCDF tags] during the building process. That is how it looks like and what it means:
 
@@ -1379,6 +1417,16 @@ Low level macros to make login banner regular expressions usable in Bash remedia
 - `bash_deregexify_banner_newline_token` - Strips newline token for a newline escape sequence regex
 - `bash_deregexify_banner_backslash` - Strips backslash regex
 
+==== Kubernetes
+
+Jinja macros for Kubernetes content are located in `/shared/macros-kubernetes.jinja`. These currently include the following high-level macros:
+
+- `kubernetes_sshd_set` - Set SSH Daemon configuration file in `/etc/ssh/sshd_config`.
+
+Available low-level Jinja macros that can be used in Kubernetes remediations:
+
+- `kubernetes_machine_config_file` - Set a configuration file to a given path
+
 === Templating
 
 Writing OVAL checks, Bash, or any other content can be tedious work. For
@@ -1432,6 +1480,9 @@ template:
         bash: "off"
 ----
 
+
+IMPORTANT: The build system does not support implicit conversion of bool strings when *Python 2* is used, so `bash: True` argument in the example above would cause a *build error*. One should always use quoted strings as arguments until *Python 2* is completely removed from the list of supported interpreters.
+
 ==== List of available templates
 
 accounts_password::
@@ -1453,7 +1504,7 @@ audit_rules_dac_modification::
 * Checks Audit Discretionary Access Control rules
 * Parameters:
 ** *attr* - value of `-S` argument in Audit rule, eg. `chmod`
-* Languages: Ansible, Bash, OVAL
+* Languages: Ansible, Bash, OVAL, Kubernetes
 
 audit_rules_file_deletion_events::
 * Ensure auditd Collects file deletion events
@@ -1465,7 +1516,7 @@ audit_rules_login_events::
 * Checks if there are Audit rules that record attempts to alter logon and logout events.
 * Parameters:
 ** *path* - value of `-w` in the Audit rule, eg. `/var/run/faillock`
-* Languages: Ansible, Bash, OVAL
+* Languages: Ansible, Bash, OVAL, Kubernetes
 
 audit_rules_path_syscall::
 * Check if there are Audit rules to record events that modify user/group information via a syscall on a specific file.
@@ -1479,7 +1530,7 @@ audit_rules_privileged_commands::
 * Ensure Auditd collects information on the use of specified privileged command.
 * Parameters:
 ** *path* - the path of the privileged command - eg. `/usr/bin/mount`
-* Languages: Ansible, Bash, OVAL
+* Languages: Ansible, Bash, OVAL, Kubernetes
 
 audit_file_contents::
 * Ensure that audit `.rules` file specified by parameter `filepath` contains the contents specified in parameter `contents`.
@@ -1520,6 +1571,13 @@ audit_rules_usergroup_modification::
 * Parameters:
 ** *path* - path that should be part of the audit rule as a value of `-w` argument, eg. `/etc/group`.
 * Languages: Ansible, Bash, OVAL
+
+bls_bootloader_option::
+* Checks kernel command line arguments in BLS-compatible (Boot Loader Specification) boot loader configuration.
+* Parameters:
+** *arg_name* - argument name, eg. `audit`
+** *arg_value* - argument value, eg. `'1'`
+* Languages: OVAL
 
 file_groupowner::
 * Check group that owns the given file.
@@ -1656,7 +1714,7 @@ sshd_lineinfile::
 ** *parameter* - name of the SSH configuration option, eg. `KerberosAuthentication`
 ** *value* - value of the SSH configuration option specified by *parameter*, eg. `"no"`.
 ** *missing_parameter_pass* - If set to `"true"` the OVAL check will pass if the parameter is not present in `/etc/ssh/sshd_config`.
-* Languages: Ansible, Bash, OVAL
+* Languages: Ansible, Bash, OVAL, Kubernetes
 
 sysctl::
 * Checks sysctl parameters. The OVAL definition checks both configuration and runtime settings and require both of them to be set to the desired value to return true.
@@ -1672,6 +1730,19 @@ timer_enabled::
 ** *timername* - name of the SystemD timer unit, without the `timer` suffix, eg. `dnf-automatic`.
 ** *packagename* - name of the RPM package which provides the SystemD timer unit. This parameter is optional, if it is not provided it is assumed that the name of the RPM package is the same as the name of the SystemD timer unit.
 * Languages: Ansible, Bash, OVAL
+
+yamlfile_value::
+* Check if value(s) of certain type is (are) present in a YAML (or JSON) file at a given path.
+* Parameters:
+** *filepath* - full path to the file to check
+** *yamlpath* - OVAL's link:https://github.com/OpenSCAP/yaml-filter/wiki/YAML-Path-Definition[YAML Path] expression.
+** *value* - the value to check.
+** *type* (SimpleDatatypeEnumeration) - datatype for state's value_of, optional. If omitted, datatype would be treated as OVAL's default 'string'.
+** *entity_check* (CheckEnumeration) - entity_check value for state's value_of, optional. If omitted, entity_check attribute would not be set and will be treated by OVAL as 'all'.
+** *operation* (OperationEnumeration) - operation value for state's value_of, optional. If omitted, operation attribute would not be set. OVAL's default operation is 'equals'.
+** *negate* - if set to `"true"` the meaning of the value check criterion would be inverted, optional.
+** *ocp_data* - if set to `"true"` then the filepath would be treated as a part of the dump of OCP configuration with the `ocp_data_root` prefix; optional.
+* Languages: OVAL
 
 
 ==== Creating Templates

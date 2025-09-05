@@ -24,20 +24,13 @@ description: |-
 
 rationale: |-
     Having a non-default grub superuser username makes password-guessing attacks less effective.
-    {{% if product == "rhel7" %}}
-    For more information on how to configure the grub2 superuser account and password,
-    please refer to
-    <ul>
-    <li>{{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-Protecting_GRUB_2_with_a_Password.html") }}}</li>.
-    </ul>
-    {{% endif %}}
 
 severity: low
 
 identifiers:
     cce@rhel7: 83562-9
     cce@rhel8: 83561-1
-    cce@ocp4: 83582-7
+    cce@rhcos4: 83582-7
 
 references:
     cis: 1.4.2
@@ -75,3 +68,5 @@ warnings:
 
         Also, do NOT manually add the superuser account and password to the
         <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
+
+platform: machine

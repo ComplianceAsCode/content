@@ -93,7 +93,10 @@ def main():
                     variables.clear()
                     variables.append(local_var)
                     env_obj = ssg.build_cpe.extract_env_obj(env_objects, local_var)
-                    objects.append(env_obj)
+                    # env_obj will return no objects if the local variable doesn't
+                    # reference any object via object_ref
+                    if env_obj:
+                        objects.append(env_obj)
         else:
             ovaltree.remove(variables)
 

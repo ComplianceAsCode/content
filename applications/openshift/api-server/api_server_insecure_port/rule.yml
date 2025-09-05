@@ -7,10 +7,19 @@ title: 'Prevent Insecure Port Access'
 description: |-
     By default, traffic for the OpenShift API server is served over
     HTTPS with authentication and authorization, and the secure API endpoint
-    is bound to 0.0.0.0:8443. To ensure that the insecure port configuration
+    is bound to <tt>0.0.0.0:8443</tt>. To ensure that the insecure port configuration
     has not been enabled, the <tt>insecure-port</tt> setting should not exist
 {{%- if product == "ocp4" %}}
-    in <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master node(s).
+    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
+    and remove the <tt>insecure-bind-address</tt> if it exists:
+    <pre>
+    "apiServerArguments":{
+      ...
+      "insecure-port":[
+        "1234"
+      ],
+      ...
+    </pre>
 {{% else %}}
     in <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s).
 {{%- endif %}}
@@ -32,7 +41,8 @@ ocil_clause: '<tt>insecure-port</tt> setting exists'
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep -A2 insecure-port /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["insecure-port"]'</pre>
+    The output should return <pre>false</pre>.
 {{% else %}}
     <pre>$ sudo grep -A2 insecure-port /etc/origin/master/master-config.yaml</pre>
 {{%- endif %}}

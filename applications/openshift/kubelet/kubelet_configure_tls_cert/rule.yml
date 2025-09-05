@@ -1,11 +1,16 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Ensure That The kubelet Client Certificate Is Correctly Set'
 
 description: |-
     To ensure the kubelet TLS client certificate is configured, edit the
+{{%- if product == "ocp4" %}}
+    kubelet configuration file <tt>/etc/kubernetes/kubernetes.conf</tt>
+    and configure the kubelet certificate file.
+    <pre>tlsCertFile: /path/to/TLS/cert.key</pre>
+{{% else %}}
     kubelet configuration file <tt>/etc/origin/node/node-config.yaml</tt>
     and configure the <tt>cert-dir</tt> path for the kubelet certificates.
     For example:
@@ -14,6 +19,7 @@ description: |-
     A corresponding certificate should exist in the <tt>cert-dir</tt>. For
     example:
     <pre>/etc/origin/node/certificates/kubelet-client-current.pem</pre>
+{{%- endif %}}
 
 rationale: |-
     Without cryptographic integrity protections, information can be
@@ -25,13 +31,19 @@ identifiers:
     cce@ocp3: 80596-0
 
 references:
-    cis: 2.1.12
+    cis@ocp3: 2.1.12
+    cis@ocp4: 4.2.10
 
 ocil_clause: 'the kubelet certificate is not configured'
 
 ocil: |-
     Run the following command on the kubelet node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep tlsCertFile /etc/kubernetes/kubernetes.conf</pre>
+    Verify that a TLS certificate is configured.
+{{% else %}}
     <pre>$ sudo grep -A1 cert-dir /etc/origin/node/node-config.yaml</pre>
     Verify that a certificate path is configured.
     <pre>$ sudo ls /etc/origin/node/certificates/kubelet-client-current.pem</pre>
+{{%- endif %}}
     Verify that a client certificate is configured.
