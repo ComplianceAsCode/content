@@ -40,7 +40,7 @@ def process_results(result_path):
         id_ = base_req.get("id")
         status = base_req.find("./{%s}status" % scapval_results_ns).text
         if status == "FAIL":
-            if 'ssg-ocp4-ds' in result_path and id_ == "SRC-329":
+            if ('ssg-ocp4-ds' in result_path or 'ssg-eks-ds' in result_path) and id_ == "SRC-329":
                 print("    %s: %s" % (id_, "WARNING (Contains non-standardized yamlfilecontent_test)"))
             else:
                 print("    %s: %s" % (id_, status))
@@ -54,6 +54,7 @@ def test_datastream(datastream_path,  scapval_path, scap_version):
     scapval_command = [
             "java",
             "-Xmx1024m",
+            "-Djava.protocol.handler.pkgs=sun.net.www.protocol",
             "-jar", scapval_path,
             "-scapversion", scap_version,
             "-file", datastream_path,

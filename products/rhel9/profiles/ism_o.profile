@@ -8,7 +8,7 @@ metadata:
 
 reference: https://www.cyber.gov.au/ism
 
-title: '[RHEL9 DRAFT] Australian Cyber Security Centre (ACSC) ISM Official'
+title: 'Australian Cyber Security Centre (ACSC) ISM Official'
 
 description: |-
   This profile contains configuration checks for Red Hat Enterprise Linux 9

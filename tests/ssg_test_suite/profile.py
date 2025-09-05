@@ -25,15 +25,17 @@ class ProfileChecker(ssg_test_suite.oscap.Checker):
         self.executed_tests += 1
 
         runner_cls = ssg_test_suite.oscap.REMEDIATION_PROFILE_RUNNERS[self.remediate_using]
-        runner = runner_cls(
-            self.test_env, profile, self.datastream, self.benchmark_id)
+        with runner_cls(
+                self.test_env, profile, self.datastream, self.benchmark_id) as runner:
 
-        for stage in ("initial", "remediation", "final"):
-            result = runner.run_stage(stage)
-            if result:
-                logging.info("Evaluation of the profile has passed: {0} ({1} stage).".format(profile, stage))
-            else:
-                logging.error("Evaluation of the profile has failed: {0} ({1} stage).".format(profile, stage))
+            for stage in ("initial", "remediation", "final"):
+                result = runner.run_stage(stage)
+                if result:
+                    logging.info("Evaluation of the profile has passed: {0} ({1} stage)."
+                                 .format(profile, stage))
+                else:
+                    logging.error("Evaluation of the profile has failed: {0} ({1} stage)."
+                                  .format(profile, stage))
 
 
 def perform_profile_check(options):

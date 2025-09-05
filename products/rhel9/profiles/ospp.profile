@@ -4,12 +4,11 @@ metadata:
     version: 4.2.1
     SMEs:
         - comps
-        - carlosmmatos
         - stevegrubb
 
 reference: https://www.niap-ccevs.org/Profile/PP.cfm
 
-title: '[RHEL9 DRAFT] Protection Profile for General Purpose Operating Systems'
+title: '[DRAFT] Protection Profile for General Purpose Operating Systems'
 
 description: |-
     This profile reflects mandatory configuration controls identified in the
@@ -72,7 +71,6 @@ selections:
 
     # Time Server
     - chronyd_client_only
-    - chronyd_no_chronyc_network
 
     ### Network Settings
     - sysctl_net_ipv6_conf_all_accept_ra
@@ -200,14 +198,6 @@ selections:
     - package_gssproxy_removed
     - package_nfs-utils_removed
     - package_krb5-workstation_removed
-    - package_abrt-addon-kerneloops_removed
-    - package_abrt-addon-python_removed
-    - package_abrt-addon-ccpp_removed
-    - package_abrt-plugin-rhtsupport_removed
-    - package_abrt-plugin-logger_removed
-    - package_abrt-plugin-sosreport_removed
-    - package_abrt-cli_removed
-    - package_abrt_removed
 
     ### Login
     - disable_users_coredumps

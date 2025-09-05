@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000031-GPOS-00012
+        levels:
+            - medium
+        title: The operating system must conceal, via the session lock, information previously
+            visible on the display with a publicly viewable image.
+        rules:
+            - configure_bashrc_exec_tmux
+            - dconf_gnome_screensaver_mode_blank
+        status: automated

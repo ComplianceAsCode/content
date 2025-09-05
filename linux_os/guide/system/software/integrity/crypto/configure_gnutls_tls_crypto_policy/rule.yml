@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel8
+prodtype: fedora,ol8,rhel8
 
 title: 'Configure GnuTLS library to use DoD-approved TLS Encryption'
 
@@ -23,11 +23,13 @@ severity: medium
 
 identifiers:
     cce@rhel8: CCE-84254-2
+    cce@rhel9: CCE-86860-4
 
 references:
     disa: CCI-001453
     nist: AC-17(2)
     srg: SRG-OS-000250-GPOS-00093,SRG-OS-000423-GPOS-00187
+    stigid@ol8: OL08-00-010295
     stigid@rhel8: RHEL-08-010295
 
 ocil_clause: 'cryptographic policy for gnutls is not configured or is configured incorrectly'

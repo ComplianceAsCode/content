@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000395-GPOS-00175
+        levels:
+            - medium
+        title: The operating system must verify remote disconnection at the termination
+            of nonlocal maintenance and diagnostic sessions, when used for nonlocal maintenance
+            sessions.
+        rules:
+            - sshd_set_idle_timeout
+        status: automated

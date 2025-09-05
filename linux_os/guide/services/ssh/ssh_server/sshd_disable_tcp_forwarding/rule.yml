@@ -4,8 +4,8 @@ title: 'Disable SSH TCP Forwarding'
 
 description: |-
     The <tt>AllowTcpForwarding</tt> parameter specifies whether TCP forwarding is permitted.
-    To disable TCP forwarding, add or correct the
-    following line in <tt>/etc/ssh/sshd_config</tt>:
+    To disable TCP forwarding, add or correct the following line in
+    {{{ sshd_config_file() }}}
     <pre>AllowTcpForwarding no</pre>
 
 rationale: |-
@@ -22,7 +22,7 @@ references:
     cis@rhel7: 5.3.20
     cis@rhel8: 5.2.17
     cis@sle12: 5.3.21
-    cis@sle15: 5.2.21
+    cis@sle15: 5.2.20
     cis@ubuntu2004: 5.2.20
 
 ocil_clause: "The AllowTcpForwarding option exists and is disabled"

@@ -6,7 +6,7 @@ endif()
 set(PRODUCT "sle15")
 ssg_build_product("sle15")
 
-ssg_build_html_nistrefs_table(${PRODUCT} "standard")
+ssg_build_html_profile_table("table-${PRODUCT}-nistrefs-standard" "${PRODUCT}" "standard" "nist")
 
 ssg_build_html_cce_table(${PRODUCT})
 

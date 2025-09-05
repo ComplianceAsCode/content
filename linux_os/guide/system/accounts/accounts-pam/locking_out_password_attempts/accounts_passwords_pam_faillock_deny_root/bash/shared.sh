@@ -1,45 +1,32 @@
-# platform = multi_platform_wrlinux,multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# platform = multi_platform_wrlinux,multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
 
-AUTH_FILES[0]="/etc/pam.d/system-auth"
-AUTH_FILES[1]="/etc/pam.d/password-auth"
+if [ -f /usr/sbin/authconfig ]; then
+    authconfig --enablefaillock --update
+elif [ -f /usr/bin/authselect ]; then
+    if authselect check; then
+        authselect enable-feature with-faillock
+        authselect apply-changes
+    else
+        echo "
+authselect integrity check failed. Remediation aborted!
+This remediation could not be applied because the authselect profile is not intact.
+It is not recommended to manually edit the PAM files when authselect is available
+In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended."
+        false
+    fi
+fi
 
-# This script fixes absence of pam_faillock.so in PAM stack or the
-# absense of even_deny_root in pam_faillock.so arguments
-# When inserting auth pam_faillock.so entries,
-# the entry with preauth argument will be added before pam_unix.so module
-# and entry with authfail argument will be added before pam_deny.so module.
-
-# The placement of pam_faillock.so entries will not be changed
-# if they are already present
-
-for pamFile in "${AUTH_FILES[@]}"
-do
-	# if PAM file is missing, system is not using PAM or broken
-	if [ ! -f $pamFile ]; then
-		continue
-	fi
-
-	# is 'auth required' here?
-	if grep -q "^auth.*required.*pam_faillock.so.*" $pamFile; then
-		# has 'auth required' even_deny_root option?
-		if ! grep -q "^auth.*required.*pam_faillock.so.*preauth.*even_deny_root" $pamFile; then
-			# even_deny_root is not present
-			sed -i --follow-symlinks "s/\(^auth.*required.*pam_faillock.so.*preauth.*\).*/\1 even_deny_root/" $pamFile
+FAILLOCK_CONF="/etc/security/faillock.conf"
+if [ -f $FAILLOCK_CONF ]; then
+    if [ ! $(grep -q '^\s*even_deny_root' $FAILLOCK_CONF) ]; then
+        echo "even_deny_root" >> $FAILLOCK_CONF
+    fi
+else
+    SYSTEM_AUTH="/etc/pam.d/system-auth"
+    PASSWORD_AUTH="/etc/pam.d/password-auth"
+    for file in $SYSTEM_AUTH $PASSWORD_AUTH; do
+        if ! grep -q "^auth.*pam_faillock.so \(preauth silent\|authfail\).*even_deny_root" $file; then
+			sed -i --follow-symlinks 's/\(pam_faillock.so \(preauth silent\|authfail\).*\)$/\1 even_deny_root/g' $file
 		fi
-	else
-		# no 'auth required', add it
-		sed -i --follow-symlinks "/^auth.*pam_unix.so.*/i auth required pam_faillock.so preauth silent even_deny_root" $pamFile
-	fi
-
-	# is 'auth [default=die]' here?
-	if grep -q "^auth.*\[default=die\].*pam_faillock.so.*" $pamFile; then
-		# has 'auth [default=die]' even_deny_root option?
-		if ! grep -q "^auth.*\[default=die\].*pam_faillock.so.*authfail.*even_deny_root" $pamFile; then
-			# even_deny_root is not present
-			sed -i --follow-symlinks "s/\(^auth.*\[default=die\].*pam_faillock.so.*authfail.*\).*/\1 even_deny_root/" $pamFile
-		fi
-	else
-		# no 'auth [default=die]', add it
-		sed -i --follow-symlinks "/^auth.*pam_unix.so.*/a auth [default=die] pam_faillock.so authfail silent even_deny_root" $pamFile
-	fi
-done
+    done
+fi

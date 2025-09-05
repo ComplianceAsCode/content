@@ -4,7 +4,6 @@ metadata:
     version: 4.2.1
     SMEs:
         - comps
-        - carlosmmatos
         - stevegrubb
 
 reference: https://www.niap-ccevs.org/Profile/PP.cfm
@@ -164,6 +163,7 @@ selections:
     - auditd_log_format
     - auditd_freq
     - auditd_name_format
+    - auditd_audispd_syslog_plugin_activated
 
     ### Module Blacklist
     - kernel_module_cramfs_disabled
@@ -205,7 +205,7 @@ selections:
     - package_nfs-utils_removed
     - package_krb5-workstation_removed
     - package_abrt-addon-kerneloops_removed
-    - package_abrt-addon-python_removed
+    - package_python3-abrt-addon_removed
     - package_abrt-addon-ccpp_removed
     - package_abrt-plugin-rhtsupport_removed
     - package_abrt-plugin-logger_removed

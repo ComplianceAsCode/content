@@ -5,8 +5,16 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_accounts_user_umask") }}}
 
-- name: Set user umask in /etc/csh.cshrc
+- name: Replace user umask in /etc/csh.cshrc
   replace:
-      path: /etc/csh.cshrc
-      regexp: "umask.*"
-      replace: "umask {{ var_accounts_user_umask }}"
+    path: /etc/csh.cshrc
+    regexp: "umask.*"
+    replace: "umask {{ var_accounts_user_umask }}"
+  register: umask_replace
+
+- name: Append user umask in /etc/csh.cshrc
+  lineinfile:
+    create: yes
+    path: /etc/csh.cshrc
+    line: "umask {{ var_accounts_user_umask }}"
+  when: umask_replace is not changed

@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # platform = multi_platform_sle
 
 CORRECT_PERMISSIONS="/var/log/messages root:root 640"

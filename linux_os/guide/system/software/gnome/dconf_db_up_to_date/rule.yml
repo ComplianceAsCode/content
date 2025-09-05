@@ -6,7 +6,11 @@ title: 'Make sure that the dconf databases are up-to-date with regards to respec
 
 description: |-
     By default, DConf uses a binary database as a data backend.
-    The system-level database is compiled from keyfiles in the /etc/dconf/db/ directory by the <pre>dconf update</pre> command.
+    The system-level database is compiled from keyfiles in the /etc/dconf/db/
+    directory by the <pre>dconf update</pre> command. More specifically, content present
+    in the following directories:
+    <pre>/etc/dconf/db/{{{dconf_gdm_dir}}}</pre>
+    <pre>/etc/dconf/db/local.d</pre>
 
 rationale: |-
     Unlike text-based keyfiles, the binary database is impossible to check by OVAL.

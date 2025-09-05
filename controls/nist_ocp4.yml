@@ -12133,8 +12133,16 @@ controls:
     signed and from an authorized registry. Signature verification is
     done in the Container Runtime level before running the containers.
     Therefore, the OpenShift Platform inherently meets this control.
+
+    Integrity of the OpenShift platform is handled to start by the cluster
+    version operator. Today the CVO will by default GPG verify the integrity
+    of the release image before applying it. [1]
+
+    [1] https://github.com/openshift/machine-config-operator/blob/master/docs/OSUpgrades.md#questions-and-answers
   rules:
   - reject_unsigned_images_by_default
+  - cluster_version_operator_exists
+  - cluster_version_operator_verify_integrity
   description: |-
     The organization requires the developer of the information system, system component, or information system service to enable integrity verification of software and firmware components.
 
@@ -13172,7 +13180,9 @@ controls:
     [6] https://kubernetes.io/docs/concepts/cluster-administration/flow-control/
 
     https://issues.redhat.com/browse/CMP-427
-  rules: []
+  rules: 
+  - routes_rate_limit
+  - resource_requests_quota
   description: |-
     The information system protects against or limits the effects of the following types of denial of service attacks: [Assignment: organization-defined types of denial of service attacks or reference to source for such information] by employing [Assignment: organization-defined security safeguards].
 
@@ -13206,6 +13216,7 @@ controls:
     [4] https://docs.openshift.com/container-platform/4.7/nodes/pods/nodes-pods-configuring.html#nodes-pods-configuring-bandwidth_nodes-pods-configuring
   rules: 
   - routes_rate_limit
+  - resource_requests_quota
 - id: SC-5(2)
   status: supported
   notes: |-
@@ -13221,7 +13232,9 @@ controls:
     [2] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-per-project.html
     [3] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-across-multiple-projects.html
     [4] https://docs.openshift.com/container-platform/4.7/nodes/pods/nodes-pods-priority.html
-  rules: []
+  rules: 
+  - routes_rate_limit
+  - resource_requests_quota
 - id: SC-5(3)
   status: not applicable
   notes: |-
@@ -13393,8 +13406,16 @@ controls:
     planned. Progress can be tracked via:
 
     https://issues.redhat.com/browse/CMP-424
+
+    OpenShift Routes provide IP whitelist support, so that only authorized
+    access to a route is allowed. If a workload is to be exposed externally, 
+    it is recommended that it's behind an OpenShift Route. Routes allow for 
+    the configuration of several security attributes, but most relevant to 
+    this control is the IP whitelist settings that it allows to configure 
+    in the form of annotations. 
   rules:
   - configure_network_policies_namespaces
+  - route_ip_whitelist
   description: |-
     The information system at managed interfaces denies network communications traffic by default and allows network communications traffic by exception (i.e., deny all, permit by exception).
 
@@ -15761,6 +15782,8 @@ controls:
     https://issues.redhat.com/browse/CMP-542
   rules:
   - file_integrity_exists
+  - file_integrity_notification_enabled
+  - compliance_notification_enabled
   description: |-
     The information system:
      a. Verifies the correct operation of [Assignment: organization-defined security functions];

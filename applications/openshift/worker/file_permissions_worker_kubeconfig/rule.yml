@@ -1,13 +1,22 @@
 documentation_complete: true
 
-prodtype: ocp4
+prodtype: eks,ocp4
 
-platform: ocp4-node
+platforms:
+- {{{ product }}}-node
+
+{{%- if product == "eks" %}}
+{{%- set octal_perms = "0644" %}}
+{{%- set text_perms = "-rw-r--r--" %}}
+{{%- else %}}
+{{%- set octal_perms = "0600" %}}
+{{%- set text_perms = "-rw-------" %}}
+{{%- endif %}}
 
 title: 'Verify Permissions on the Worker Kubeconfig File'
 
 description: |-
-    {{{ describe_file_permissions(file="/var/lib/kubelet/kubeconfig", perms="0600") }}}
+    {{{ describe_file_permissions(file="/var/lib/kubelet/kubeconfig", perms=octal_perms) }}}
 
 rationale: |-
     If the worker kubeconfig file is writable by a group-owner or the
@@ -21,17 +30,20 @@ identifiers:
     cce@ocp4: CCE-83509-0
 
 references:
+    cis@eks: 3.1.1
     cis@ocp4: 4.1.9
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
-
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/lib/kubelet/kubeconfig", perms="-rw-------") }}}'
+    srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
+ocil_clause: |-
+    {{{ ocil_clause_file_permissions(file="/var/lib/kubelet/kubeconfig", perms=text_perms) }}}
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/var/lib/kubelet/kubeconfig", perms="-rw-------") }}}
+    {{{ ocil_file_permissions(file="/var/lib/kubelet/kubeconfig", perms=text_perms) }}}
 
 template:
     name: file_permissions
     vars:
         filepath: /var/lib/kubelet/kubeconfig
         filemode: '0600'
+        filemode@eks: '0644'

@@ -16,7 +16,9 @@
 
 
 - name: Read signatures in GPG key
-  shell: gpg --with-fingerprint --with-colons "{{ item }}" | grep -A1 "^pub" | grep "^fpr" | cut -d ":" -f 10
+  shell: |-
+    set -o pipefail
+    gpg --with-fingerprint --with-colons "{{ item }}" | grep -A1 "^pub" | grep "^fpr" | cut -d ":" -f 10
   changed_when: False
   register: suse_gpg_fingerprints
   check_mode: no

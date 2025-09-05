@@ -1,0 +1,14 @@
+controls:
+    -   id: SRG-OS-000163-GPOS-00072
+        levels:
+            - medium
+        title: 'The operating system must terminate all network connections associated with
+    a communications session at the end of the session, or as follows: for in-band
+    management sessions (privileged sessions), the session must be terminated after
+    10 minutes of inacti'
+        rules:
+            - sshd_set_idle_timeout
+            - sshd_set_keepalive
+            - sshd_set_keepalive_0
+            - accounts_tmout
+        status: automated

@@ -1,0 +1,13 @@
+controls:
+    -   id: SRG-OS-000373-GPOS-00156
+        levels:
+            - medium
+        title: The operating system must require users to re-authenticate for privilege
+            escalation.
+        rules:
+            - use_pam_wheel_for_su
+            - sudo_remove_no_authenticate
+            - sudo_remove_nopasswd
+            - sudo_require_authentication
+            - sudo_require_reauthentication
+        status: automated

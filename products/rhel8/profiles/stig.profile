@@ -1,8 +1,9 @@
 documentation_complete: true
 
 metadata:
-    version: V1R3
+    version: V1R4
     SMEs:
+        - mab879
         - ggbecker
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
@@ -11,7 +12,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V1R3.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R4.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -162,8 +163,6 @@ selections:
 
     # RHEL-08-010171
     - package_policycoreutils_installed
-
-    # RHEL-08-010180
 
     # RHEL-08-010190
     - dir_perms_world_writable_sticky_bits
@@ -353,7 +352,6 @@ selections:
     - partition_for_tmp
 
     # RHEL-08-010544
-    ### NOTE: Will probably show up in V1R3 - Q3 of 21'
     - partition_for_var_tmp
 
     # RHEL-08-010550
@@ -463,37 +461,26 @@ selections:
     # RHEL-08-020000
     - account_temp_expire_date
 
-    # RHEL-08-020010
+    # RHEL-08-020010, RHEL-08-020011, RHEL-08-020025, RHEL-08-020026
     - accounts_passwords_pam_faillock_deny
 
-    # RHEL-08-020011
-
-    # RHEL-08-020012
+    # RHEL-08-020012, RHEL-08-020013
     - accounts_passwords_pam_faillock_interval
 
-    # RHEL-08-020013
-
-    # RHEL-08-020014
+    # RHEL-08-020014, RHEL-08-020016, RHEL-08-020017
     - accounts_passwords_pam_faillock_unlock_time
 
     # RHEL-08-020015
 
-    # RHEL-08-020016
-
-    # RHEL-08-020017
-
-    # RHEL-08-020018
-
-    # RHEL-08-020019
+    # RHEL-08-020018, RHEL-08-020019
+    - accounts_passwords_pam_faillock_deny
 
     # RHEL-08-020020
 
     # RHEL-08-020021
 
-    # RHEL-08-020022
+    # RHEL-08-020022, RHEL-08-020023
     - accounts_passwords_pam_faillock_deny_root
-
-    # RHEL-08-020023
 
     # RHEL-08-020024
     - accounts_max_concurrent_login_sessions
@@ -622,6 +609,8 @@ selections:
 
     # RHEL-08-020353
     - accounts_umask_etc_bashrc
+    - accounts_umask_etc_csh_cshrc
+    - accounts_umask_etc_profile
 
     # RHEL-08-030000
     - audit_rules_suid_privilege_function
@@ -947,7 +936,7 @@ selections:
     - package_abrt_removed
     - package_abrt-addon-ccpp_removed
     - package_abrt-addon-kerneloops_removed
-    - package_abrt-addon-python_removed
+    - package_python3-abrt-addon_removed
     - package_abrt-cli_removed
     - package_abrt-plugin-logger_removed
     - package_abrt-plugin-rhtsupport_removed

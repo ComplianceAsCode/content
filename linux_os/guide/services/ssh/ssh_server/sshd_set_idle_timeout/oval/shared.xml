@@ -25,8 +25,14 @@
         <extend_definition comment="rpm package openssh-server installed"
         definition_ref="package_openssh-server_installed" />
         {{% endif %}}
-        <criterion comment="Check ClientAliveInterval in /etc/ssh/sshd_config"
-        test_ref="test_sshd_idle_timeout" />
+        <criteria comment="ClientAliveInterval is configured correctly" operator="OR">
+          <criterion comment="Check ClientAliveInterval in /etc/ssh/sshd_config"
+          test_ref="test_sshd_idle_timeout" />
+          {{%- if sshd_distributed_config == "true" %}}
+          <criterion comment="Check ClientAliveInterval in /etc/ssh/sshd_config.d/"
+          test_ref="test_sshd_idle_timeout_config_dir" />
+          {{%- endif %}}
+        </criteria>
         <extend_definition comment="The SSH ClientAliveCountMax is set to zero" definition_ref="sshd_set_keepalive" />
       </criteria>
     </criteria>
@@ -44,6 +50,22 @@
     <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveInterval[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  {{%- if sshd_distributed_config == "true" %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="timeout is configured in config directory" id="test_sshd_idle_timeout_config_dir" version="1">
+    <ind:object object_ref="object_sshd_idle_timeout_config_dir" />
+    <ind:state state_ref="state_timeout_value_upper_bound" />
+    <ind:state state_ref="state_timeout_value_lower_bound" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_sshd_idle_timeout_config_dir" version="2">
+    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveInterval[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{%- endif %}}
 
   <ind:textfilecontent54_state comment="upper bound of ClientAliveInterval in seconds"
   id="state_timeout_value_upper_bound" version="1">

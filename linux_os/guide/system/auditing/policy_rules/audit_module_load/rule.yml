@@ -10,8 +10,7 @@ title: 'Configure auditing of loading and unloading of kernel modules'
 -a always,exit -F arch=b32 -S init_module,finit_module -F key=module-load
 -a always,exit -F arch=b64 -S init_module,finit_module -F key=module-load
 -a always,exit -F arch=b32 -S delete_module -F key=module-unload
--a always,exit -F arch=b64 -S delete_module -F key=module-unload
-" %}}
+-a always,exit -F arch=b64 -S delete_module -F key=module-unload" %}}
 
 description: |-
     Ensure that loading and unloading of kernel modules is audited.

@@ -42,11 +42,30 @@ profile pointed by the `--profile1` option.
 
 ## Generating Controls from DISA's XCCDF Files
 If you want a control file for product from DISA's XCCDF files you can run the following command:
+It supports the following arguments:
 
-    $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r3-xccdf-manual.xml
+```
+options:
+  -h, --help            show this help message and exit
+  -r ROOT, --root ROOT  Path to SSG root directory (defaults to the root of the repository)
+  -o OUTPUT, --output OUTPUT
+                        File to write yaml output to (defaults to build/stig_control.yml)
+  -p PRODUCT, --product PRODUCT
+                        What product to get STIGs for
+  -m MANUAL, --manual MANUAL
+                        Path to XML XCCDF manual file to use as the source of the STIGs
+  -j JSON, --json JSON  Path to the rules_dir.json (defaults to build/rule_dirs.json)
+  -c BUILD_CONFIG_YAML, --build-config-yaml BUILD_CONFIG_YAML
+                        YAML file with information about the build configuration.
+  -ref REFERENCE, --reference REFERENCE
+                        Reference system to check for, defaults to stigid
+  -s, --split           Splits the each ID into its own file.
+```
 
-Where `-p` is the id the comes after `stigid@` in the `references` section of a rule and `-m` is the path to the
-XCCDF Manual file from DISA.
+Example
+
+    $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r4-xccdf-manual.xml
+
 
 ## Generating login banner regular expressions
 
@@ -298,4 +317,34 @@ It supports the following arguments:
 
 To execute:
 
-    $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m shared/references/disa-stig-rhel8-v1r3-xccdf-scap.xml
+    $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m shared/references/disa-stig-rhel8-v1r4-xccdf-scap.xml
+
+### `utils/compare_results.py` - Compare to two ARF result files
+The goal of this script is to compare the result of two ARF files.
+It will show what rules are missing, different, and the same between the two files.
+The script can take results from content created by this repo and by [DISA](https://public.cyber.mil/stigs/scap/).
+If the result files come from the same source the script will use XCCDF ids as basis for the comparison.
+Otherwise, the script will use STIG ids to compare.
+
+
+If one STIG ID has more than one result (this is the case for a few STIG IDs in this repo) the results will be merged.
+Given a set of status the script will select the status from the group that is the highest value on the list below.
+
+1. Error
+2. Fail
+3. Not applicable
+4. Not selected
+5. Not checked
+6. Informational
+7. Pass
+
+Examples:
+- `[pass, pass]` will result in `pass`
+- `[pass, fail]` will result in `fail`
+- `[pass, error, fail]` will result in `error`
+
+
+
+To execute:
+
+    $ ./utils/compare_results.py ssg_results.xml disa_results.xml

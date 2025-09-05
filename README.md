@@ -246,7 +246,7 @@ The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/lis
 
 If you encounter issues with OpenSCAP or SCAP Workbench, use [https://www.redhat.com/mailman/listinfo/open-scap-list](https://www.redhat.com/mailman/listinfo/open-scap-list)
 
-You can also join the `#openscap` IRC channel on `chat.freenode.net`.
+You can also join the `#openscap` IRC channel on `libera.chat`.
 
 ## A little bit of history
 

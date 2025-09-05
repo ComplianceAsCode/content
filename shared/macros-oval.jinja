@@ -734,7 +734,7 @@
     </ind:textfilecontent54_object>
 
     <ind:textfilecontent54_state id="state_whole_file_contents_{{{ filepath_id }}}" version="1">
-      <ind:text operation="equals">{{{ contents|trim() }}}
+      <ind:text operation="equals">{{{ contents }}}
 </ind:text>
     </ind:textfilecontent54_state>
 
@@ -844,8 +844,8 @@
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
 {{%- set description = "Ensure '" ~ parameter ~ "' is configured with value '" ~ value ~ "' in " ~ sshd_config_path %}}
-{{%- if config_is_distributed %}}
-{{%- set description = description  ~ " and in " ~ sshd_config_dir -%}}
+{{%- if config_is_distributed == "true" %}}
+{{%- set description = description  ~ " or in " ~ sshd_config_dir -%}}
 {{%- endif %}}
 {{%- set case_insensitivity_kwargs = dict(prefix_regex="^[ \\t]*(?i)", separator_regex = "(?-i)[ \\t]+") -%}}
 
@@ -896,8 +896,8 @@
   {{{ oval_line_in_directory_state(value) | indent (2) }}}
 
   {{%- if missing_parameter_pass %}}
-  {{{ oval_line_in_directory_test(sshd_config_path, parameter, missing_parameter_pass) | indent(2) }}}
-  {{{ oval_line_in_directory_object(sshd_config_path, parameter=parameter, missing_parameter_pass=missing_parameter_pass, ** case_insensitivity_kwargs) | indent(2) }}}
+  {{{ oval_line_in_directory_test(sshd_config_dir, parameter, missing_parameter_pass) | indent(2) }}}
+  {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, missing_parameter_pass=missing_parameter_pass, ** case_insensitivity_kwargs) | indent(2) }}}
   {{%- endif %}}
   {{%- endif %}}
 </def-group>

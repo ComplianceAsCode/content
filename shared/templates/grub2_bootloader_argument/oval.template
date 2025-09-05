@@ -2,9 +2,14 @@
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
     {{{ oval_metadata("Ensure " + ARG_NAME_VALUE + " is configured in the kernel line in /etc/default/grub.") }}}
     <criteria operator="AND">
-      {{% if product in ["rhel7", "ol7"] or 'ubuntu' in product %}}
-        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg"
-        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the {{{ grub2_boot_path }}}/grub.cfg for all kernels" />
+      {{% if product in ["rhel7", "ol7", "rhel9"] or 'ubuntu' in product %}}
+        {{% if product in ['rhel9'] %}}
+          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries"
+                     comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the /boot/loader/entries/*.conf" />
+        {{% else %}}
+          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg"
+          comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the {{{ grub2_boot_path }}}/grub.cfg for all kernels" />
+        {{% endif %}}
         <criteria operator="OR">
           <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
           comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX" />
@@ -22,7 +27,7 @@
     </criteria>
   </definition>
 
-{{% if product in ["rhel7", "ol7"] or 'ubuntu' in product %}}
+{{% if product in ["rhel7", "ol7", "rhel9"] or 'ubuntu' in product %}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
   comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX"
   check="all" check_existence="all_exist" version="1">
@@ -50,6 +55,21 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  {{% if product in ["rhel9"] %}}
+    <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries"
+                                comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} for all boot entries."
+                                check="all" check_existence="all_exist" version="1">
+      <ind:object object_ref="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries" />
+      <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
+    </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries" version="1">
+    <ind:path>/boot/loader/entries/</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% else %}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg"
   comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} in {{{ grub2_boot_path }}}/grub.cfg for all kernels"
   check="all" check_existence="all_exist" version="1">
@@ -67,6 +87,8 @@
     {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  {{% endif %}}
 
 {{% else %}}
 

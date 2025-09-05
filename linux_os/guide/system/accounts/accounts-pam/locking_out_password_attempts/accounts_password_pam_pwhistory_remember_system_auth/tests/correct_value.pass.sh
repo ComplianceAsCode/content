@@ -1,6 +1,7 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 7,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_wrlinux
 # packages = pam
+# platform = Red Hat Enterprise Linux 7,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_wrlinux
+# variables = var_password_pam_remember=5,var_password_pam_remember_control_flag=requisite
 
 remember_cnt=5
 control_flag='requisite'

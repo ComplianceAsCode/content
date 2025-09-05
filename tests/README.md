@@ -345,6 +345,12 @@ UserKnownHostsFile /dev/null
 
 All logs of Test Suite are stored in `logs` directory. The specific diretory is shown at the beginning of each test run.
 
+If you want more verbose logs, pass the `--dontclean` argument that preserves result files, reports and verbose scanner output
+even in cases when the test result went according to the expectations.
+If your system has the [oval-graph](://github.com/OpenSCAP/oval-graph) package installed that provides the `arf-to-html` command,
+the test suite will use it to extract OVAL evaluation details from ARFs, and save those condensed reports to the `logs` directory
+even if the `--dontclean` argument has been specified.
+
 ## Rule-based testing
 
 ```
@@ -499,7 +505,6 @@ If you would like to test all profile's rules against their test scenarios:
 ```
 ./test_suite.py combined --libvirt qemu:///system ssg-test-suite-rhel8 --datastream ../build/ssg-rhel8-ds.xml ospp
 ```
-
 
 
 # Analysis of results

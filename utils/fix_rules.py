@@ -786,6 +786,7 @@ def parse_args():
         help="Path to root of the project directory")
     parser.add_argument("--product", "-p", help="Path to the main product.yml")
     subparsers = parser.add_subparsers(title="command", help="What to perform.")
+    subparsers.required = True
     create_parser_from_functions(subparsers)
     create_other_parsers(subparsers)
     return parser.parse_args()

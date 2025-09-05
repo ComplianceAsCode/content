@@ -34,7 +34,7 @@ function remediate_gpgkey_installed {
         GPG_RESULT=$?
         # No CRC error, safe to proceed
         if [ "${GPG_RESULT}" -eq "0" ]; then
-            echo "${GPG_OUT}" | grep -vE "${FEDORA_RELEASE_FINGERPRINT}" || {
+            echo "${GPG_OUT[*]}" | grep -vE "${FEDORA_RELEASE_FINGERPRINT}" || {
             # If file doesn't contain any keys with unknown fingerprint, import it
             rpm --import "${REDHAT_RELEASE_KEY}"
             }

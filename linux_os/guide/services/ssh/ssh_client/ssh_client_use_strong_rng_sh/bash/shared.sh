@@ -1,4 +1,3 @@
-#!/bin/bash
 # platform = Red Hat Enterprise Linux 8,Oracle Linux 8
 
 # put line into the file

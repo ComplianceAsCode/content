@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ubuntu
+# platform = multi_platform_all
 
 declare -A REMOTE_METHODS=( ['auth.*']='^.*auth\.\*.*$' ['authpriv.*']='^.*authpriv\.\*.*$' ['daemon.*']='^.*daemon\.\*.*$' )
 
@@ -10,7 +10,7 @@ fi
 APPEND_LINE=$(sed -rn '/^\S+\s+\/var\/log\/secure$/p' /etc/rsyslog.conf)
 
 # Loop through the remote methods associative array
-for K in ${!REMOTE_METHODS[@]}
+for K in "${!REMOTE_METHODS[@]}"
 do
 	# Check to see if selector/value exists
 	if ! grep -rq "${REMOTE_METHODS[$K]}" /etc/rsyslog.*; then

@@ -1,0 +1,33 @@
+product: eks
+full_name:  Amazon Elastic Kubernetes Service
+type: platform
+
+benchmark_id: EKS
+benchmark_root: "../../applications"
+
+profiles_root: "./profiles"
+
+pkg_system: "rpm"
+
+init_system: "systemd"
+
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/kubernetes/'
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - eks:
+      name: "cpe:/a:amazon:elastic_kubernetes_service:1"
+      title: "Amazon Elastic Kubernetes Service"
+      check_id: installed_app_is_eks
+  - eks-node:
+      name: "cpe:/o:amazon:elastic_kubernetes_service_node:1"
+      title: "Amazon Elastic Kubernetes Service Node"
+      check_id: installed_app_is_eks_node
+  - eks-1.21:
+      name: "cpe:/a:amazon:elastic_kubernetes_service_node:1.21"
+      title: "Amazon Elastic Kubernetes Service 1.21"
+      check_id: installed_app_is_eks_1_21
+
+# Requirement string, see: https://setuptools.readthedocs.io/en/latest/pkg_resources.html#requirements-parsing
+# requires: "openscap>=1.3.4"

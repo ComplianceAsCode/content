@@ -3,6 +3,21 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
+
+- name: List /etc/sysctl.d/*.conf files
+  find:
+    paths: "/etc/sysctl.d/"
+    contains: '^[\s]*{{{ SYSCTLVAR }}}.*$'
+    patterns: "*.conf"
+  register: find_sysctl_d
+
+- name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
+  replace:
+    path: "{{ item }}"
+    regexp: '^[\s]*{{{ SYSCTLVAR }}}'
+    replace: '#{{{ SYSCTLVAR }}}'
+  loop: "{{ find_sysctl_d.files }}"
+
 {{%- if SYSCTLVAL == "" %}}
 - (xccdf-var sysctl_{{{ SYSCTLID }}}_value)
 

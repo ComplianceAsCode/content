@@ -1,0 +1,18 @@
+controls:
+    -   id: SRG-OS-000191-GPOS-00080
+        levels:
+            - medium
+        title: 'The operating system must employ automated mechanisms to determine the state
+    of system components with regard to flaw remediation using the following frequency:
+    continuously, where HBSS is used; 30 days, for any additional internal network
+    scans not cover'
+        rules:
+            - agent_mfetpd_running
+            - package_mcafeetp_installed
+            - package_MFEhiplsm_installed
+            - package_openscap-scanner_installed
+            - dnf-automatic_apply_updates
+            - dnf-automatic_security_updates_only
+            - package_dnf-automatic_installed
+            - timer_dnf-automatic_enabled
+        status: automated

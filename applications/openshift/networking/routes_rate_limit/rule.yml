@@ -17,7 +17,8 @@ identifiers:
   cce@ocp4: CCE-90779-0
 
 references:
-  nist: SC-5(1)
+  nist: SC-5,SC-5(1),SC-5(2)
+  srg: SRG-APP-000246-CTR-000605,SRG-APP-000435-CTR-001070
 
 {{% set jqfilter = '[.items[] | select(.metadata.namespace | startswith("kube-") or startswith("openshift-") | not) | select(.metadata.annotations["haproxy.router.openshift.io/rate-limit-connections"] == "true" | not) | .metadata.name]' %}}
 
@@ -25,7 +26,7 @@ ocil_clause: 'Rate limit is not enabled for all routes outside the openshift nam
 
 ocil: |-
     Run the following command to retrieve a list routes that does not have rate limit enabled:
-    <pre>$  oc get routes --all-namespaces -o json | jq {{{ jqfilter }}}</pre>
+    <pre>$  oc get routes --all-namespaces -o json | jq '{{{ jqfilter }}}'</pre>
     Make sure that there is output nothing in the result.
 
 severity: medium

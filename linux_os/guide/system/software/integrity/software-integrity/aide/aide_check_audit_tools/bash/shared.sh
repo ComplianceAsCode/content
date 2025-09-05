@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_ubuntu,multi_platform_sle
+# platform = multi_platform_ol,multi_platform_rhel,multi_platform_ubuntu,multi_platform_sle
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -14,7 +14,7 @@
       "/usr/sbin/autrace",
       "/usr/sbin/augenrules" ] %}}
 
-{{% if 'rhel' not in product %}}
+{{% if 'rhel' not in product and product != 'ol8' %}}
 {{% set auditfiles = auditfiles + ["/usr/sbin/audispd"] %}}
 {{% endif %}}
 

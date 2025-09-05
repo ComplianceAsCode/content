@@ -306,7 +306,8 @@ class XCCDFEntity(object):
 
         for key, default in cls.KEYS.items():
             if key in input_contents:
-                data[key] = input_contents[key]
+                if input_contents[key] is not None:
+                    data[key] = input_contents[key]
                 del input_contents[key]
                 continue
 
@@ -1253,11 +1254,13 @@ class Rule(XCCDFEntity):
         ocil_clause=lambda: None,
         ocil=lambda: None,
         oval_external_content=lambda: None,
+        fix=lambda: "",
         warnings=lambda: list(),
         conflicts=lambda: list(),
         requires=lambda: list(),
         platform=lambda: None,
         platforms=lambda: set(),
+        sce_metadata=lambda: dict(),
         inherited_platforms=lambda: list(),
         template=lambda: None,
         cpe_platform_names=lambda: set(),

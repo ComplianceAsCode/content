@@ -14,6 +14,8 @@ print_usage() {
     echo "    $cmdname -c                      Build content in-cluster (NOTE: This ignores the products and debug flags)."
     echo "    $cmdname -d                      Build content using the --debug flag."
     echo "    $cmdname -P [product] (-P ...)   Specify applicable product(s) to build. This option can be specified multiple times. (Defaults to 'ocp4' 'rhcos4')"
+    echo "    $cmdname -r [repository]         Specify container image repository to push to"
+    echo "    $cmdname -t [tag]                The tag for the container image (defaults to latest)"
     exit 0
 }
 
@@ -26,8 +28,10 @@ create_profile_bundles="false"
 build_in_cluster="false"
 products=()
 default_products=(ocp4 rhcos4)
+imagerepo=""
+container_image_tag="latest"
 
-while getopts ":hdpcn:P:" opt; do
+while getopts ":hdpcn:P:r:t:" opt; do
     case ${opt} in
         n ) # Set the namespace
             namespace=$OPTARG
@@ -47,6 +51,12 @@ while getopts ":hdpcn:P:" opt; do
             ;;
         P ) # A product to build
             products+=($OPTARG)
+            ;;
+        r ) # The container image repo to push to
+            imagerepo="$OPTARG"
+            ;;
+        t ) # 
+            container_image_tag="$OPTARG"
             ;;
         \? ) 
             print_usage
@@ -72,7 +82,39 @@ if [ "$namespace" == "openshift-compliance" ]; then
     oc apply -f "$root_dir/ocp-resources/compliance-operator-ns.yaml"
 fi
 
-if [ "$build_in_cluster" == "false" ];then
+if [ -z "$imagerepo" ]; then
+    if [ "$build_in_cluster" == "false" ];then
+        # build the product's content
+        "$root_dir/build_product" ${products[@]} "${params[@]}"
+        result=$?
+
+        if [ "$result" != "0" ]; then
+            echo "Error building content"
+            exit $result
+        fi
+
+        # Create buildconfig and ImageStream
+        # This enables us to create a configuration so we can build a container
+        # with the datastream
+        # If they already exist, this is not a problem
+        oc apply -n "$namespace" -f "$root_dir/ocp-resources/ds-from-local-build.yaml"
+
+        # Create output directory
+        from_dir=$(mktemp -d)
+
+        # Copy datastream files to output directory
+        cp "$root_dir/build/"*-ds.xml "$from_dir"
+    else
+        # Create buildconfig and ImageStream
+        # This enables us to create a configuration so we can build a container
+        # with the datastream
+        # If they already exist, this is not a problem
+        oc apply -n "$namespace" -f "$root_dir/ocp-resources/ds-build-remote.yaml"
+
+        # We'll copy the local contents for the build to happen remotely
+        from_dir="."
+    fi
+else
     # build the product's content
     "$root_dir/build_product" ${products[@]} "${params[@]}"
     result=$?
@@ -82,26 +124,37 @@ if [ "$build_in_cluster" == "false" ];then
         exit $result
     fi
 
-    # Create buildconfig and ImageStream
-    # This enables us to create a configuration so we can build a container
-    # with the datastream
-    # If they already exist, this is not a problem
-    oc apply -n "$namespace" -f "$root_dir/ocp-resources/ds-from-local-build.yaml"
+    podman build \
+        -f "$root_dir/Dockerfiles/compliance_operator_content.Dockerfile" \
+        -t localcontentbuild:latest .
+    result=$?
 
-    # Create output directory
-    from_dir=$(mktemp -d)
+    if [ "$result" != "0" ]; then
+        echo "Error building container"
+        exit $result
+    fi
 
-    # Copy datastream files to output directory
-    cp "$root_dir/build/"*-ds.xml "$from_dir"
-else
-    # Create buildconfig and ImageStream
-    # This enables us to create a configuration so we can build a container
-    # with the datastream
-    # If they already exist, this is not a problem
-    oc apply -n "$namespace" -f "$root_dir/ocp-resources/ds-build-remote.yaml"
+    # Push to given repo
+    echo "Pushing to image repo $imagerepo:$container_image_tag"
+    podman push localhost/localcontentbuild:latest "$imagerepo:$container_image_tag"
+    result=$?
 
-    # We'll copy the local contents for the build to happen remotely
-    from_dir="."
+    if [ "$result" != "0" ]; then
+        echo "Error building container"
+        exit $result
+    fi
+    echo "image available in $imagerepo:$container_image_tag"
+
+    if [ "$create_profile_bundles" == "true" ]; then
+        echo "Creating profile bundles"
+        for prod in ${products[@]}
+        do
+            sed "s/\$PRODUCT/$prod/g" "$root_dir/ocp-resources/profile-bundle.yaml.tpl" | \
+                sed "s%contentImage:.*%contentImage: $imagerepo:$container_image_tag%g" | \
+                oc apply -n "$namespace" -f -
+        done
+    fi
+    exit 0
 fi
 
 # Start build

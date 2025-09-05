@@ -1,13 +1,13 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,sle12,sle15
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'Only Authorized Local User Accounts Exist on Operating System'
 
 description: |-
     Enterprise Application tends to use the server or virtual machine exclusively.
     Besides the default operating system user, there should be only authorized local
-    users required by the installed softoware groups and applications that exist on
+    users required by the installed software groups and applications that exist on
     the operating system. The authorized user list can be customized in the refine
     value variable <tt>var_accounts_authorized_local_users_regex</tt>.
     OVAL regular expression is used for the user list.
@@ -28,6 +28,7 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-88380-1
     cce@rhel8: CCE-85987-6
+    cce@rhel9: CCE-88048-4
     cce@sle12: CCE-83195-8
     cce@sle15: CCE-85561-9
 
@@ -36,6 +37,7 @@ references:
     nist@sle12: CM-6(b),CM-6.1(iv)
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol7: OL07-00-020270
+    stigid@ol8: OL08-00-020320
     stigid@rhel7: RHEL-07-020270
     stigid@rhel8: RHEL-08-020320
     stigid@sle12: SLES-12-010630

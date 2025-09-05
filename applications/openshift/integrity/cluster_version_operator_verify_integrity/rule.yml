@@ -1,0 +1,48 @@
+prodtype: ocp4
+
+title: Ensure that Cluster Version Operator verifies integrity
+
+description: |-
+  Integrity of the OpenShift platform is handled to start by the cluster version operator.
+  Cluster Version Operator will by default GPG verify the integrity of the release 
+  image before applying it. This rule check if there is an unverified cluster image.
+
+rationale: |-
+  Unverified cluster image will compromise the system integrity. Integrity check prevent 
+  a malicious actor from using a unauthorized system image, hence it will ensure the
+  image has not been tampered with, or corrupted.
+
+identifiers:
+  cce@ocp4: CCE-90671-9
+
+references:
+  nist: SA-10(1)
+
+{{% set jqfilter = '[.status.history[] | .verified]' %}}
+{{% set apipath = '/apis/config.openshift.io/v1/clusterversions/version' %}}
+
+ocil_clause: 'Cluster image is not verified'
+
+ocil: |-
+    Run the following command to retrieve the Cluster Version objects in the system:
+    <pre>$ oc get clusterversion version -o yaml</pre>
+    Make sure verified is true under status history for each item.
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({apipath: jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path(apipath, jqfilter) }}}
+    yamlpath: "[:]"
+    entity_check: "all"
+    values:
+      - value: "true"
+        operation: "equals"
+

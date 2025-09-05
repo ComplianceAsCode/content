@@ -1,0 +1,14 @@
+controls:
+    -   id: SRG-OS-000423-GPOS-00187
+        levels:
+            - medium
+        title: The operating system must protect the confidentiality and integrity of transmitted
+            information.
+        rules:
+            - package_openssh-server_installed
+            - service_sshd_enabled
+            - ssh_client_rekey_limit
+            - configure_bind_crypto_policy
+            - configure_gnutls_tls_crypto_policy
+            - sysctl_crypto_fips_enabled
+        status: automated

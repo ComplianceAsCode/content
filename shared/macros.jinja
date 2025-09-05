@@ -106,7 +106,11 @@ oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ nam
 #}}
 {{% macro ocil_sshd_option(default, option, value) -%}}
     To determine how the SSH daemon's <tt>{{{ option }}}</tt> option is set, run the following command:
+    {{% if sshd_distributed_config == "true" %}}
+    <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</pre>
+    {{% else %}}
     <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config</pre>
+    {{% endif %}}
     {{% if default == "yes" -%}}
     If no line, a commented line, or a line indicating the value <tt>{{{ value }}}</tt> is returned, then the required value is set.
     {{%- else %}}
@@ -135,6 +139,14 @@ ocil: |
     {{{ ocil_sshd_option(default, option, value) }}}
 
 {{{ ocil_clause_entry_sshd_option() }}}
+{{%- endmacro %}}
+
+{{% macro sshd_config_file() %}}
+    {{% if sshd_distributed_config == "true" %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
 {{%- endmacro %}}
 
 
@@ -1561,4 +1573,50 @@ Operator see
     <pre>
     # chroot /host
     </pre>
+{{% endmacro %}}
+
+{{#
+    How to fix an audit rule that watches a file.
+
+:param path: Full path of file to watch
+:type path: str
+:param key: Auditd key for the system
+:type key: str
+:param rule_path: Full path to where the rule wil
+:type rule_path: str
+#}}
+{{% macro fix_audit_file_watch_rule(path, key, rule_path) -%}}
+Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that affect <tt>{{{ path }}}</tt>.
+
+Add or update the following file system rule to <tt>{{{ rule_path }}}</tt>:
+
+-w {{{ path }}} -p wa -k {{{ key }}}
+
+The audit daemon must be restarted for the changes to take effect.
+{{% endmacro %}}
+
+{{#
+    Adds a boiler plate warning with a justification why a rule is disabled on RHV.
+    Note: This is only applied on RHEL8 content.
+
+    :param rationale: Explanation why RHV needs the rule disabled.
+#}}
+{{% macro ovirt_rule_notapplicable_warning(rationale) %}}
+{{%- if product == "rhel8" %}}
+- general: |-
+    This rule is disabled on Red Hat Virtualization Hosts and Managers, it will report not applicable.
+    {{{ rationale }}}.
+{{%- endif %}}
+{{% endmacro %}}
+
+{{#
+
+    Makes a rule not applicable on systems where oVirt is installed.
+    Note: This is only applied on RHEL8 content.
+
+#}}
+{{% macro rule_notapplicable_when_ovirt_installed() %}}
+{{%- if product == "rhel8" %}}
+- no_ovirt
+{{%- endif %}}
 {{% endmacro %}}

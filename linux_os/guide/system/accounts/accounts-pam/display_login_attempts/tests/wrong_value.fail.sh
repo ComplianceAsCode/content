@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_rhel,multi_platform_ol
+# platform = Red Hat Enterprise Linux 7,multi_platform_ol
 
 rm -f /etc/pam.d/postlogin
 # pamd ansible module has a bug that if there is only one line in the file it raises an Out of Index exception

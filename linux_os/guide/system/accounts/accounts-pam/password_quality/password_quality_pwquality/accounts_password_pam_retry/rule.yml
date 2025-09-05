@@ -8,7 +8,7 @@ description: |-
     To configure the number of retry prompts that are permitted per-session:
     Edit the <tt>pam_pwquality.so</tt> statement in
     {{% if 'ubuntu' not in product %}}
-    <tt>/etc/pam.d/system-auth</tt> {{% if product == "rhel8" %}} and
+    <tt>/etc/pam.d/system-auth</tt> {{% if product in ['rhel8', 'rhel9'] %}} and
     <tt>/etc/pam.d/password-auth</tt> {{% endif %}} to show
     {{% else %}}
     <tt>/etc/pam.d/common-password</tt> to show
@@ -46,6 +46,7 @@ references:
     ospp: FMT_MOF_EXT.1
     srg: SRG-OS-000480-GPOS-00225,SRG-OS-000069-GPOS-00037
     stigid@ol7: OL07-00-010119
+    stigid@ol8: OL08-00-020100
     stigid@rhel7: RHEL-07-010119
     stigid@rhel8: RHEL-08-020100
     stigid@ubuntu2004: UBTU-20-010057
@@ -57,7 +58,7 @@ ocil: |-
     {{% if 'ubuntu' in product %}}
     <pre>$ grep pam_pwquality /etc/pam.d/common-password</pre>
     {{% else %}}
-    <pre>$ grep pam_pwquality /etc/pam.d/system-auth {{% if product == "rhel8" %}}/etc/pam.d/password-auth{{% endif %}}</pre>
+    <pre>$ grep pam_pwquality /etc/pam.d/system-auth {{% if product in ['rhel8', 'rhel9'] %}}/etc/pam.d/password-auth{{% endif %}}</pre>
     {{% endif %}}
     The <tt>retry</tt> parameter will indicate how many attempts are permitted.
     The DoD required value is less than or equal to 3.

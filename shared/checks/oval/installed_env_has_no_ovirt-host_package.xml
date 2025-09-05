@@ -1,0 +1,16 @@
+<def-group>
+  <definition class="inventory" id="installed_env_has_no_ovirt"
+  version="1">
+    <metadata>
+      <title>Check if the system doesn't act as an oVirt host or manager</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check if the system has neither ovirt-host nor ovirt-engine installed.</description>
+    </metadata>
+    <criteria>
+      <extend_definition comment="Package ovirt-host is not installed"
+      definition_ref="installed_env_has_ovirt" negate="true"/>
+    </criteria>
+  </definition>
+</def-group>

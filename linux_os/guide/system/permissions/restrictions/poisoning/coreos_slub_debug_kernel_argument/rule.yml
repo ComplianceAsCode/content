@@ -32,7 +32,7 @@ ocil: |-
     ('options' line) in <tt>/boot/loader/entries/*.conf</tt>. If they include
     <tt>slub_debug=P</tt>, then SLUB/SLAB poisoning is enabled at boot time.
     <br /><br />
-    To ensure <tt>vsyscall=none</tt> is configured on the installed kernel, add
+    To ensure <tt>slub_debug=P</tt> is configured on the installed kernel, add
     the kernel argument via a <pre>MachineConfig</pre> object to the appropriate
     pools.
 

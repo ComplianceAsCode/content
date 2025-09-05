@@ -11,9 +11,9 @@ description: |-
     Since plaintext passwords are a security risk, generate a hash for the password
     by running the following command:
     {{% if product in ["sle12", "sle15", "ubuntu2004"] %}}
-    <pre>$ grub2-mkpasswd-pbkdf2</pre>
+    <pre># grub2-mkpasswd-pbkdf2</pre>
     {{% else %}}
-    <pre>$ grub2-setpassword</pre>
+    <pre># grub2-setpassword</pre>
     {{% endif %}}
     When prompted, enter the password that was selected.
     <br /><br />
@@ -25,14 +25,14 @@ description: |-
     </pre>
     NOTE: the bootloader superuser account and password MUST differ from the
     root account and password.
-    {{% endif %}}
     Once the superuser password has been added,
     update the
     <tt>grub.cfg</tt> file by running:
     {{% if "ubuntu" in product %}}
     <pre>update-grub</pre>
-    {{% else %}}
+    {{% elif product in ["sle12", "sle15"] %}}
     <pre>grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
+    {{% endif %}}
     {{% endif %}}
 
 rationale: |-
@@ -70,6 +70,7 @@ references:
     ospp: FIA_UAU.1
     srg: SRG-OS-000080-GPOS-00048
     stigid@ol7: OL07-00-010491
+    stigid@ol8: OL08-00-010140
     stigid@rhel7: RHEL-07-010491
     stigid@rhel8: RHEL-08-010140
     stigid@sle12: SLES-12-010440

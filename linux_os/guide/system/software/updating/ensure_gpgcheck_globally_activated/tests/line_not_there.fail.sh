@@ -1,5 +1,5 @@
 #!/bin/bash
-#
+# packages = python3-libselinux
 
 . $SHARED/group_updating_utils.sh
 

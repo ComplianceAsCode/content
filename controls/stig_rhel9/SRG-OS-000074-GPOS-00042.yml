@@ -1,0 +1,9 @@
+controls:
+    -   id: SRG-OS-000074-GPOS-00042
+        levels:
+            - medium
+        title: The operating system must transmit only encrypted representations of passwords.
+        rules:
+            - package_vsftpd_removed
+            - sshd_allow_only_protocol2
+        status: automated

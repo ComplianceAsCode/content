@@ -1,4 +1,4 @@
-# platform = multi_platform_sle,multi_platform_rhel
+# platform = multi_platform_sle,multi_platform_ol,multi_platform_rhel
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -23,7 +23,7 @@
 - name: Set audit_tools fact
   set_fact:
     audit_tools:
-      {{% if 'rhel' not in product %}}- /usr/sbin/audispd{{% endif %}}
+      {{% if 'rhel' not in product and product != 'ol8' %}}- /usr/sbin/audispd{{% endif %}}
       - /usr/sbin/auditctl
       - /usr/sbin/auditd
       - /usr/sbin/augenrules

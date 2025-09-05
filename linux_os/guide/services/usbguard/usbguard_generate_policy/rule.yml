@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel8
+prodtype: ol8,rhel8,rhel9
 
 title: 'Generate USBGuard Policy'
 
@@ -20,12 +20,14 @@ platform: machine
 
 identifiers:
     cce@rhel8: CCE-83774-0
+    cce@rhel9: CCE-88882-6
 
 references:
     disa: CCI-000416,CCI-001958
     nist: CM-8(3)(a),IA-3
     ospp: FMT_SMF_EXT.1
     srg: SRG-OS-000378-GPOS-00163
+    stigid@ol8: OL08-00-040140
     stigid@rhel8: RHEL-08-040140
 
 ocil_clause: '/etc/usbguard/rules.conf does not exist or is empty'

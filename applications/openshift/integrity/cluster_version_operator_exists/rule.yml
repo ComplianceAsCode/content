@@ -1,0 +1,49 @@
+prodtype: ocp4
+
+title: Ensure that Cluster Version Operator is deployed
+
+description: |-
+  Integrity of the OpenShift platform is handled to start by the cluster version operator.
+  Cluster Version Operator will by default GPG verify the integrity of the release 
+  image before applying it. [1]
+  This rule checks if Cluster Version Operator is deployed and available in the system.
+
+  [1] https://github.com/openshift/machine-config-operator/blob/master/docs/OSUpgrades.md#questions-and-answers
+
+rationale: |-
+  Integrity check prevent a malicious actor from using a unauthorized system image, hence it will ensure the
+  image has not been tampered with, or corrupted.
+
+identifiers:
+  cce@ocp4: CCE-90670-1
+
+references:
+  nist: SA-10(1)
+
+{{% set jqfilter = '[.status.conditions[] | select(.type=="Available") | .status]' %}}
+{{% set apipath = '/apis/config.openshift.io/v1/clusterversions/version' %}}
+
+ocil_clause: 'Cluster Version Operator is not installed'
+
+ocil: |-
+    Run the following command to retrieve the Cluster Version objects in the system:
+    <pre>$ oc get clusterversion version</pre>
+    Make sure the Cluster Version Operator is installed and the AVAILABLE is True.
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({apipath: jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path(apipath, jqfilter) }}}
+    yamlpath: "[:]"
+    entity_check: "all"
+    values:
+      - value: "True"
+        operation: "equals"

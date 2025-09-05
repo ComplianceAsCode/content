@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 8,multi_platform_fedora
+# platform = Oracle Linux 8,Red Hat Enterprise Linux 8,multi_platform_fedora
 
 {{{ bash_instantiate_variables("sshd_approved_macs") }}}
 

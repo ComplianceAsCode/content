@@ -1,0 +1,9 @@
+controls:
+    -   id: SRG-OS-000364-GPOS-00151
+        levels:
+            - medium
+        title: The operating system must enforce access restrictions.
+        rules:
+            - sshd_disable_gssapi_auth
+            - sshd_disable_kerb_auth
+        status: automated

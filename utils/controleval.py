@@ -3,8 +3,31 @@ import collections
 import argparse
 import os
 
-from ssg import controls
-import ssg.products
+# NOTE: This is not to be confused with the https://pypi.org/project/ssg/
+# package. The ssg package we're referencing here is actually a relative import
+# within this repository. Because of this, you need to ensure
+# ComplianceAsCode/content/ssg is discoverable from PYTHONPATH before you
+# invoke this script.
+try:
+    from ssg import controls
+    import ssg.products
+except ModuleNotFoundError as e:
+    # NOTE: Only emit this message if we're dealing with an import error for
+    # ssg. Since the local ssg module imports other things, like PyYAML, we
+    # don't want to emit misleading errors for legit dependencies issues if the
+    # user hasn't installed PyYAML or other transitive dependencies from ssg.
+    # We should revisit this if or when we decide to implement a python package
+    # management strategy for the python scripts provided in this repository.
+    if e.name == 'ssg':
+        msg = """Unable to import local 'ssg' module.
+
+The 'ssg' package from within this repository must be discoverable before
+invoking this script. Make sure the top-level directory of the
+ComplianceAsCode/content repository is available in the PYTHONPATH environment
+variable (example: $ export PYTHONPATH=($pwd)).
+"""
+        raise RuntimeError(msg) from e
+    raise
 
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -42,6 +65,10 @@ def calculate_stats(ctrls):
     ctrlstats = collections.defaultdict(int)
     ctrllist = collections.defaultdict(set)
 
+    if total == 0:
+        print("No controls founds with the given inputs. Maybe try another level.")
+        exit(1)
+
     for ctrl in ctrls:
         ctrlstats[str(ctrl.status)] += 1
         ctrllist[str(ctrl.status)].add(ctrl)
@@ -56,16 +83,18 @@ def calculate_stats(ctrls):
     print_specific_stat("Assessed", assessed, applicable)
     print()
     print_specific_stat("Automated", ctrlstats[controls.Status.AUTOMATED], applicable)
+    print_specific_stat("Manual", ctrlstats[controls.Status.MANUAL], applicable)
     print_specific_stat("Supported", ctrlstats[controls.Status.SUPPORTED], applicable)
     print_specific_stat("Documentation", ctrlstats[controls.Status.DOCUMENTATION], applicable)
     print_specific_stat("Inherently Met", ctrlstats[controls.Status.INHERENTLY_MET], applicable)
+    print_specific_stat("Does Not Meet", ctrlstats[controls.Status.DOES_NOT_MEET], applicable)
     print_specific_stat("Partial", ctrlstats[controls.Status.PARTIAL], applicable)
 
     applicablelist = ctrls - ctrllist[controls.Status.NOT_APPLICABLE]
     assessedlist = set().union(ctrllist[controls.Status.AUTOMATED]).union(ctrllist[controls.Status.SUPPORTED])\
         .union(ctrllist[controls.Status.DOCUMENTATION]).union(ctrllist[controls.Status.INHERENTLY_MET])\
-        .union(ctrllist[controls.Status.PARTIAL])
-    print("Missing:", ", ".join(sorted(c.id for c in applicablelist - assessedlist)))
+        .union(ctrllist[controls.Status.PARTIAL]).union(ctrllist[controls.Status.MANUAL])
+    print("Missing:", ", ".join(sorted(str(c.id) for c in applicablelist - assessedlist)))
 
 
 def print_specific_stat(stat, current, total):
@@ -98,13 +127,17 @@ def create_parser():
     subparsers = parser.add_subparsers(dest="subcmd", required=True)
     statsparser = subparsers.add_parser(
         'stats',
-        help="outputs statistics for the given benchmark and level.")
-    statsparser.add_argument("-i", "--id", dest="id", help="id of the controls file.",
-                             required=True)
-    statsparser.add_argument("-l", "--level", dest="level", help="level to display statistics of.",
-                             required=True)
-    statsparser.add_argument("-p", "--product", type=str,
-                             help="Product to check has required references")
+        help="calculate and return the statistics for the given benchmark")
+    statsparser.add_argument(
+        "-i", "--id",
+        help="the ID or name of the controls file in the controls/ directory",
+        required=True)
+    statsparser.add_argument(
+        "-l", "--level",
+        help="the compliance target level to analyze",
+        required=True)
+    statsparser.add_argument(
+        "-p", "--product", help="product to check has required references")
     return parser
 
 

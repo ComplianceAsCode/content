@@ -1,5 +1,9 @@
 documentation_complete: true
 
+metadata:
+    SMEs:
+        - yuumasato
+
 title: 'ANSSI-BP-028 (enhanced)'
 
 description: |-

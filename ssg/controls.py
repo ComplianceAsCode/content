@@ -12,7 +12,8 @@ import ssg.utils
 class InvalidStatus(Exception):
     pass
 
-class Status():
+
+class Status:
     PENDING = "pending"
     PLANNED = "planned"
     NOT_APPLICABLE = "not applicable"
@@ -21,6 +22,8 @@ class Status():
     PARTIAL = "partial"
     SUPPORTED = "supported"
     AUTOMATED = "automated"
+    MANUAL = "manual"
+    DOES_NOT_MEET = "does not meet"
 
     def __init__(self, status):
         self.status = status
@@ -39,6 +42,8 @@ class Status():
             cls.PARTIAL,
             cls.SUPPORTED,
             cls.AUTOMATED,
+            cls.MANUAL,
+            cls.DOES_NOT_MEET
         ]
 
         if status not in valid_statuses:
@@ -69,8 +74,14 @@ class Control(ssg.build_yaml.SelectionHandler):
         self.notes = ""
         self.title = ""
         self.description = ""
+        self.rationale = ""
         self.automated = ""
         self.status = None
+        self.mitigation = ""
+        self.artifact_description = ""
+        self.status_justification = ""
+        self.fix = ""
+        self.check = ""
 
     def __hash__(self):
         """ Controls are meant to be unique, so using the
@@ -83,8 +94,14 @@ class Control(ssg.build_yaml.SelectionHandler):
         control.id = ssg.utils.required_key(control_dict, "id")
         control.title = control_dict.get("title")
         control.description = control_dict.get("description")
+        control.rationale = control_dict.get("rationale")
         control.status = Status.from_control_info(control.id, control_dict.get("status", None))
         control.automated = control_dict.get("automated", "no")
+        control.status_justification = control_dict.get('status_justification')
+        control.artifact_description = control_dict.get('artifact_description')
+        control.mitigation = control_dict.get('mitigation')
+        control.fix = control_dict.get('fix')
+        control.check = control_dict.get('check')
         if control.status == "automated":
             control.automated = "yes"
         if control.automated not in ["yes", "no", "partially"]:
@@ -130,6 +147,7 @@ class Policy():
         self.id = None
         self.env_yaml = env_yaml
         self.filepath = filepath
+        self.controls_dir = os.path.splitext(filepath)[0]
         self.controls = []
         self.controls_by_id = dict()
         self.levels = []
@@ -169,7 +187,21 @@ class Policy():
             self.levels.append(level)
             self.levels_by_id[level.id] = level
 
-        controls_tree = ssg.utils.required_key(yaml_contents, "controls")
+        if os.path.exists(self.controls_dir) and os.path.isdir(self.controls_dir):
+            controls_tree = yaml_contents.get("controls", list())
+            files = os.listdir(self.controls_dir)
+            for file in files:
+                if file.endswith('.yml'):
+                    full_path = os.path.join(self.controls_dir, file)
+                    yaml_contents = ssg.yaml.open_and_expand(full_path, self.env_yaml)
+                    for control in yaml_contents['controls']:
+                        controls_tree.append(control)
+                elif file.startswith('.'):
+                    continue
+                else:
+                    raise RuntimeError("Found non yaml file in %s" % self.controls_dir)
+        else:
+            controls_tree = ssg.utils.required_key(yaml_contents, "controls")
         for c in self._parse_controls_tree(controls_tree):
             self.controls.append(c)
             self.controls_by_id[c.id] = c

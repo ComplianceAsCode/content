@@ -340,7 +340,7 @@ def fix_ocil_clause(ssg_root, path, obj_name):
 def parse_from_yaml(file_contents, lines):
     new_file_arr = file_contents[lines[0]:lines[1] + 1]
     new_file = "\n".join(new_file_arr)
-    return yaml.load(new_file)
+    return yaml.load(new_file, Loader=yaml.Loader)
 
 
 def print_file(file_contents):

@@ -82,13 +82,23 @@
             <literal_component>.xml</literal_component>
         </concat>
   </local_variable>
+{{% if product in ["fedora", "rhel9"] %}}
+  <ind:textfilecontent54_object comment="Check config of all NIC"
+  id="object_nic_assigned_to_firewalld_zone" version="2">
+    <ind:path>/etc/NetworkManager/system-connections</ind:path>
+    <ind:filename operation="pattern match">.*\.nmconnection</ind:filename>
+    <ind:pattern operation="pattern match">^zone=(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% else %}}
   <ind:textfilecontent54_object comment="Check config of all NIC"
   id="object_nic_assigned_to_firewalld_zone" version="1">
     <ind:path>/etc/sysconfig/network-scripts</ind:path>
     <ind:filename operation="pattern match">ifcfg-.*</ind:filename>
     <ind:pattern operation="pattern match">^ZONE=(.*)$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+{{% endif %}}
 
   <ind:textfilecontent54_state comment="port ssh is listening" id="state_sshd_listening_port" version="1">
     <ind:subexpression datatype="int" operation="equals" var_ref="sshd_listening_port" />

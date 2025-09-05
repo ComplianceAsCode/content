@@ -100,6 +100,7 @@ Rules sections must be in the following order, if they are present.
 * `platforms`
 * `ocil_clause`
 * `ocil` (HTML Like)
+* `fix` (HTML Like)
 * `warnings`
     * All subsections are HTML-Like
     * If defined must have at least one of the following sub-sections:

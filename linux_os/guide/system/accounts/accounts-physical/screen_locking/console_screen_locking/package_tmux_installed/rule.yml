@@ -6,7 +6,9 @@ title: 'Install the tmux Package'
 
 description: |-
     To enable console screen locking, install the <tt>tmux</tt> package.
-    {{{ describe_package_install(package="tmux") }}}
+    A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.
+    The session lock is implemented at the point where session activity can be determined.
+    Rather than be forced to wait for a period of time to expire before the user session can be locked, {{{ full_name }}} needs to provide users with the ability to manually invoke a session lock so users can secure their session if it is necessary to temporarily vacate the immediate physical vicinity.
     Instruct users to begin new terminal sessions with the following command:
     <pre>$ tmux</pre>
     The console can now be locked with the following key combination:
@@ -40,12 +42,15 @@ references:
     nist-csf: PR.AC-7
     ospp: FMT_MOF_EXT.1
     srg: SRG-OS-000030-GPOS-00011,SRG-OS-000028-GPOS-00009
+    stigid@ol8: OL08-00-020039
     stigid@rhel8: RHEL-08-020039
     vmmsrg: SRG-OS-000030-VMM-000110
 
 ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="tmux") }}}'
+
+fix: '{{{ describe_package_install(package="tmux") }}}'
 
 platform: machine
 

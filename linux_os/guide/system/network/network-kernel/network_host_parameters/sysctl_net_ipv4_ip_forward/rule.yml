@@ -41,6 +41,7 @@ references:
     nist@sle15: CM-6(b),CM-6.1(iv)
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol7: OL07-00-040740
+    stigid@ol8: OL08-00-040260
     stigid@rhel7: RHEL-07-040740
     stigid@rhel8: RHEL-08-040260
     stigid@sle12: SLES-12-030430
@@ -55,8 +56,10 @@ warnings:
         Certain technologies such as virtual machines, containers, etc. rely on IPv4 forwarding to enable and use networking.
         Disabling IPv4 forwarding would cause those technologies to stop working. Therefore, this rule should not be used in
         profiles or benchmarks that target usage of IPv4 forwarding.
+{{{ ovirt_rule_notapplicable_warning("RHV host requires IPv4 forwarding for the Hosted Engine bootstrap VM to reach network outside of the initial host") | indent(4) }}}
 
-platform: machine
+platforms:
+{{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
 
 template:
     name: sysctl

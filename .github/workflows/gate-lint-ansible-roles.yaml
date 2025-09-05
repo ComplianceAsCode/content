@@ -10,7 +10,7 @@ jobs:
       image: fedora:latest
     steps:
       - name: Install Deps
-        run: dnf install -y cmake make ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pygithub ansible ansible-lint expat libxslt
+        run: dnf install -y cmake make ninja-build openscap-utils python3-pyyaml python3-setuptools python3-jinja2 python3-pygithub ansible ansible-lint expat libxslt
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure

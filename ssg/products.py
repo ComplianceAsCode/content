@@ -6,7 +6,7 @@ from collections import namedtuple
 from glob import glob
 
 from .build_cpe import ProductCPEs
-from .constants import (product_directories,
+from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_GID_MIN,
                         DEFAULT_UID_MIN,
                         DEFAULT_GRUB2_BOOT_PATH,
@@ -14,6 +14,7 @@ from .constants import (product_directories,
                         DEFAULT_DCONF_GDM_DIR,
                         DEFAULT_AIDE_CONF_PATH,
                         DEFAULT_AIDE_BIN_PATH,
+                        DEFAULT_SSH_DISTRIBUTED_CONFIG,
                         PKG_MANAGER_TO_SYSTEM,
                         PKG_MANAGER_TO_CONFIG_FILE,
                         XCCDF_PLATFORM_TO_PACKAGE,
@@ -67,6 +68,12 @@ def _get_implied_properties(existing_properties):
 
     if "aide_bin_path" not in existing_properties:
         result["aide_bin_path"] = DEFAULT_AIDE_BIN_PATH
+
+    if "sshd_distributed_config" not in existing_properties:
+        result["sshd_distributed_config"] = DEFAULT_SSH_DISTRIBUTED_CONFIG
+
+    if "product" not in existing_properties:
+        result["product"] = DEFAULT_PRODUCT
 
     return result
 

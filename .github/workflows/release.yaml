@@ -60,7 +60,10 @@ jobs:
           body: ${{ steps.build_changelog.outputs.changelog }}
           files: |
             build/scap-security-guide-*.tar.bz2
+            build/scap-security-guide-*.tar.bz2.sha512
             build/zipfile/scap-security-guide-*.zip
+            build/zipfile/scap-security-guide-*.zip.sha512
             build-oval510/zipfile/scap-security-guide-*.zip
+            build-oval510/zipfile/scap-security-guide-*.zip.sha512
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -12,9 +12,7 @@ readarray -t RSYSLOG_INCLUDE < <(awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(i
 declare -a LOG_FILE_PATHS
 
 declare -a RSYSLOG_CONFIGS
-RSYSLOG_CONFIGS=(${RSYSLOG_CONFIGS[@]} ${RSYSLOG_ETC_CONFIG})
-RSYSLOG_CONFIGS=(${RSYSLOG_CONFIGS[@]} ${RSYSLOG_INCLUDE_CONFIG[@]})
-RSYSLOG_CONFIGS=(${RSYSLOG_CONFIGS[@]} ${RSYSLOG_INCLUDE[@]})
+RSYSLOG_CONFIGS+=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYSLOG_INCLUDE[@]}")
 
 # Browse each file selected above as containing paths of log files
 # ('/etc/rsyslog.conf' and '/etc/rsyslog.d/*.conf' in the default configuration)

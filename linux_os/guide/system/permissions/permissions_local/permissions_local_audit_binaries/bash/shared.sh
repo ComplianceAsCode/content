@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # platform = multi_platform_sle
 
 current_permissions_rules=$(grep "^/usr/sbin/au" /etc/permissions.local)

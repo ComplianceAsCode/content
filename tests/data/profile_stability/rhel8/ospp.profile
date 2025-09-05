@@ -1,3 +1,4 @@
+title: Protection Profile for General Purpose Operating Systems
 description: 'This profile reflects mandatory configuration controls identified in
     the
 
@@ -13,7 +14,12 @@ description: 'This profile reflects mandatory configuration controls identified 
     parameters. Accordingly, this configuration profile is suitable for
 
     use in U.S. National Security Systems.'
-documentation_complete: true
+extends: null
+metadata:
+    version: 4.2.1
+    SMEs:
+    - comps
+    - stevegrubb
 reference: https://www.niap-ccevs.org/Profile/PP.cfm
 selections:
 - accounts_max_concurrent_login_sessions
@@ -49,6 +55,7 @@ selections:
 - audit_owner_change_success
 - audit_perm_change_failed
 - audit_perm_change_success
+- auditd_audispd_syslog_plugin_activated
 - auditd_data_retention_flush
 - auditd_freq
 - auditd_local_events
@@ -124,7 +131,6 @@ selections:
 - openssl_use_strong_entropy
 - package_abrt-addon-ccpp_removed
 - package_abrt-addon-kerneloops_removed
-- package_abrt-addon-python_removed
 - package_abrt-cli_removed
 - package_abrt-plugin-logger_removed
 - package_abrt-plugin-rhtsupport_removed
@@ -149,6 +155,7 @@ selections:
 - package_openssh-server_installed
 - package_policycoreutils-python-utils_installed
 - package_policycoreutils_installed
+- package_python3-abrt-addon_removed
 - package_rsyslog-gnutls_installed
 - package_rsyslog_installed
 - package_scap-security-guide_installed
@@ -262,4 +269,8 @@ selections:
 - sysctl_user_max_user_namespaces.severity=info
 - zipl_vsyscall_argument.role=unscored
 - zipl_vsyscall_argument.severity=info
-title: Protection Profile for General Purpose Operating Systems
+platforms: !!set {}
+cpe_names: !!set {}
+platform: null
+filter_rules: ''
+documentation_complete: true

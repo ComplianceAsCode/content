@@ -258,9 +258,9 @@ do
                 # two consecutive spaces after joining remaining parts of the rule together
                 concrete_rule="$(echo "$concrete_rule" | sed -n "s/\(.*\)\+\(-F perm=[rwax]\+\ \?\)\+/\1#\2#/p")"
 
-                # Split concrete_rule into head, perm, and tail sections using hash '#' delimiter
+                # Split concrete_rule into head and tail sections using hash '#' delimiter
+                # The second column contains the permission section, which we don't need to extract
                 rule_head=$(cut -d '#' -f 1 <<< "$concrete_rule")
-                rule_perm=$(cut -d '#' -f 2 <<< "$concrete_rule")
                 rule_tail=$(cut -d '#' -f 3 <<< "$concrete_rule")
 
                 # Remove permissions section from existing rule in the file
@@ -332,7 +332,7 @@ done
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
 
-{{%- if config_is_distributed %}}
+{{%- if config_is_distributed == "true" %}}
 {{%- set prefix_regex = "^\s*" -%}}
 {{%- set separator_regex = "\s\+" -%}}
 {{%- set hardening_config_basename = "00-complianceascode-hardening.conf" %}}
@@ -1160,7 +1160,7 @@ fi
 #}}
 {{%- macro bash_file_contents(filepath='', contents='') %}}
 cat << 'EOF' > {{{ filepath }}}
-{{{ contents|trim() }}}
+{{{ contents }}}
 EOF
 {{%- endmacro %}}
 
@@ -1514,9 +1514,6 @@ then
 fi
 {{%- endif %}}
 
-# Indicator that we want to append $full_rule into $audit_file or edit a rule in it
-append_expected_rule=0
-
 # After converting to jinja, we cannot return; therefore we skip the rest of the macro if needed instead
 skip=1
 
@@ -1579,7 +1576,7 @@ do
         done
     else
         # If there is any candidate rule, it is compliant; skip rest of macro
-        if [[ $candidate_rules ]]
+        if [ "${#candidate_rules[@]}" -gt 0 ]
         then
             skip=0
         fi
@@ -1599,7 +1596,7 @@ if [ "$skip" -ne 0 ]; then
     if [ -z ${rule_to_edit+x} ]
     then
         # Build full_rule while avoid adding double spaces when other_filters is empty
-        if [[ ${syscall_a} ]]
+        if [ "${#syscall_a[@]}" -gt 0 ]
         then
             syscall_string=""
             for syscall in "${syscall_a[@]}"
@@ -1637,3 +1634,43 @@ if [ "$skip" -ne 0 ]; then
     fi
 fi
 {{%- endmacro %}}
+
+{{#
+
+    Remediation for grub2 bootloader arguments
+#}}
+{{% macro grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) %}}
+{{% if product in ["rhel7", "ol7", "rhel9"] or 'ubuntu' in product %}}
+{{% if '/' in ARG_NAME %}}
+{{{ raise("ARG_NAME (" + ARG_NAME + ") uses sed path separator (/) in " + rule_id) }}}
+{{% elif '/' in ARG_NAME_VALUE %}}
+{{{ raise("ARG_NAME_VALUE (" + ARG_NAME_VALUE + ") uses sed path separator (/) in " + rule_id) }}}
+{{% endif %}}
+# Correct the form of default kernel command line in GRUB
+if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ ARG_NAME }}}=.*"'  '/etc/default/grub' ; then
+	# modify the GRUB command-line if an {{{ ARG_NAME }}}= arg already exists
+	sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ ARG_NAME }}}=[^[:space:]]*\(.*"\)/\1 {{{ ARG_NAME_VALUE }}} \2/'  '/etc/default/grub'
+else
+	# no {{{ ARG_NAME }}}=arg is present, append it
+	sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\)"/\1 {{{ ARG_NAME_VALUE }}}"/'  '/etc/default/grub'
+fi
+
+{{% if 'ubuntu' in product %}}
+update-grub
+{{% else %}}
+# Correct the form of kernel command line for each installed kernel in the bootloader
+grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
+{{% endif %}}
+{{% else %}}
+# Correct grub2 kernelopts value using grub2-editenv
+existing_kernelopts="$(grub2-editenv - list | grep kernelopts)"
+if ! printf '%s' "$existing_kernelopts" | grep -qE '^kernelopts=(.*\s)?{{{ ARG_NAME_VALUE }}}(\s.*)?$'; then
+  if test -n "$existing_kernelopts"; then
+    grub2-editenv - set "$existing_kernelopts {{{ ARG_NAME_VALUE }}}"
+  else
+    grub2-editenv - set "kernelopts={{{ ARG_NAME_VALUE }}}"
+  fi
+fi
+{{% endif %}}
+
+{{% endmacro %}}

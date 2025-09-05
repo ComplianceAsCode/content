@@ -4,6 +4,7 @@ from __future__ import print_function
 import os.path
 import os
 import time
+import collections
 
 
 SSG_PROJECT_NAME = "SCAP Security Guide Project"
@@ -40,6 +41,7 @@ product_directories = [
     'chromium',
     'debian9', 'debian10', 'debian11',
     'example',
+    'eks',
     'fedora',
     'firefox',
     'fuse6',
@@ -197,6 +199,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Debian 10": "debian10",
     "Debian 11": "debian11",
     "Example": "example",
+    "Amazon Elastic Kubernetes Service": "eks",
     "Fedora": "fedora",
     "Firefox": "firefox",
     "JBoss Fuse 6": "fuse6",
@@ -234,12 +237,38 @@ REF_PREFIX_MAP = {
     "stigid": "DISA-STIG",
 }
 
+Reference = collections.namedtuple("Reference", ("id", "name", "url", "regex_with_groups"))
+
+REFERENCES = dict(
+    anssi=Reference(
+        id="anssi", name="ANSSI", url=anssi_ns,
+        regex_with_groups=r"BP28\(R(\d+)\)"),
+    cis=Reference(
+        id="cis", name="CIS", url=cis_ns,
+        regex_with_groups=r"(\d+)\.(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+    cui=Reference(
+        id="cui", name=REF_PREFIX_MAP["cui"], url=cui_ns,
+        regex_with_groups=r"(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+    nist=Reference(
+        id="nist", name=REF_PREFIX_MAP["nist"], url="",
+        regex_with_groups=r".*-(\d+)(?:\((\d+)\))?"),
+    ospp=Reference(
+        id="ospp", name="OSPP", url=SSG_REF_URIS["ospp"],
+        regex_with_groups=r"(\w+)(?:\.(\d+)(?:\.([^\.]+)(?:\.([^\.]+))?)?)?"),
+    pcidss=Reference(
+        id="pcidss", name=REF_PREFIX_MAP["pcidss"], url="",
+        regex_with_groups=r"Req-(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+)
+
+
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
-                       "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos", "example"]
+                       "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos",
+                       "example", "eks"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_debian": ["debian9", "debian10", "debian11"],
     "multi_platform_example": ["example"],
+    "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
     "multi_platform_opensuse": ["opensuse"],
     "multi_platform_ol": ["ol7", "ol8"],
@@ -257,6 +286,7 @@ RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:centos:centos:6",
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:centos:centos:7",
     "cpe:/o:redhat:enterprise_linux:8": "cpe:/o:centos:centos:8",
+    "cpe:/o:redhat:enterprise_linux:9": "cpe:/o:centos:centos:9",
 }
 
 RHEL_SL_CPE_MAPPING = {
@@ -393,6 +423,8 @@ XCCDF_PLATFORM_TO_PACKAGE = {
   "non-uefi": None,
   "not_s390x_arch": None,
   "s390x_arch": None,
+  "ovirt": None,
+  "no_ovirt": None,
 }
 
 # _version_name_map = {
@@ -417,6 +449,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',
     'rhcos': 'Red Hat Enterprise Linux CoreOS',
+    'eks': 'Amazon Elastic Kubernetes Service',
 }
 
 
@@ -428,3 +461,6 @@ DEFAULT_GRUB2_UEFI_BOOT_PATH = '/boot/grub2'
 DEFAULT_DCONF_GDM_DIR = 'gdm.d'
 DEFAULT_AIDE_CONF_PATH = '/etc/aide.conf'
 DEFAULT_AIDE_BIN_PATH = '/usr/sbin/aide'
+DEFAULT_SSH_DISTRIBUTED_CONFIG = 'false'
+DEFAULT_PRODUCT = 'example'
+

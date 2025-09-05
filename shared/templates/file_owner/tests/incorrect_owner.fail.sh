@@ -10,6 +10,7 @@ echo "Create specific tests for this rule because of regex"
 find -L {{{ path }}} -type d -exec chown testuser_123 {} \;
 {{% else %}}
 if [ ! -f {{{ path }}} ]; then
+    mkdir -p "$(dirname '{{{ path }}}')"
     touch {{{ path }}}
 fi
 chown testuser_123 {{{ path }}}
