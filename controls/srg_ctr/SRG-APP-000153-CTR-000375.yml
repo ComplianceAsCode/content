@@ -8,12 +8,6 @@ controls:
   - idp_is_configured
   - ocp_idp_no_htpasswd
   - kubeadmin_removed
-  status: inherently met
-  status_justification: |-
-    RBAC policies support individual user accounts to be assigned to
-    groups/roles, and therefore shared accounts are not used.
-    Review the RBAC policy documentation at
-    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
-  artifact_description: |-
-    Supporting evidence is in the following documentation
-    https://docs.openshift.com/container-platform/latest/authentication/index.html
+  rules:
+  - rbac_least_privilege
+  status: manual

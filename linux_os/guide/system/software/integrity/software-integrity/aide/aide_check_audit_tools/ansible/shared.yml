@@ -15,14 +15,18 @@
 - name: Set audit_tools fact
   set_fact:
     audit_tools:
-      {{% if 'rhel' not in product and 'ol' not in product %}}- /usr/sbin/audispd{{% endif %}}
+      {{% if aide_also_checks_audispd == "yes" -%}}
+      - /usr/sbin/audispd
+      {{%- endif %}}
       - /usr/sbin/auditctl
       - /usr/sbin/auditd
       - /usr/sbin/augenrules
       - /usr/sbin/aureport
       - /usr/sbin/ausearch
       - /usr/sbin/autrace
-      {{% if 'ol' in product or 'rhel' in product %}}- /usr/sbin/rsyslogd{{% endif %}}
+      {{% if aide_also_checks_rsyslog == "yes" -%}}
+      - /usr/sbin/rsyslogd
+      {{%- endif %}}
 
 - name: Ensure existing AIDE configuration for audit tools are correct
   lineinfile:

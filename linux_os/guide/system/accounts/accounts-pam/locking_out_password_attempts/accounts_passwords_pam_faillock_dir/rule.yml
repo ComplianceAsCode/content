@@ -16,6 +16,8 @@ description: |-
     recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
     depending on the OS version.
 
+    The chosen profile expects the directory to be <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}}</tt>.
+
 rationale: |-
     Locking out user accounts after a number of incorrect attempts prevents direct password
     guessing attacks. In combination with the <tt>silent</tt> option, user enumeration attacks

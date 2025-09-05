@@ -4,7 +4,7 @@ controls:
   - medium
   title: {{{ full_name }}} must use cryptographic mechanisms to protect the integrity
     of audit tools.
-  related:rules:
+  related_rules:
   - audit_log_forwarding_uses_tls
   status: inherently met
   status_justification: |-
@@ -14,7 +14,7 @@ controls:
 
     The file that contains the checksums of the installer tooling and listing of container image manifest hashes is signed and the signature, validatable with Red Hat's product security GPG key, is published alongside the listing. See, for example, https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.8/sha256sum.txt.gpg
 
-    Included in the release of the base platform are the components that index the available installation sources for additional components, delivered as Operators, from Red Hat. The images for the OpenShift Logging Operator, which are the only supported mechanism for exporting audit logs from the cluster and forwarding to an external log aggregation solution, 
+    Included in the release of the base platform are the components that index the available installation sources for additional components, delivered as Operators, from Red Hat. The images for the OpenShift Logging Operator, which are the only supported mechanism for exporting audit logs from the cluster and forwarding to an external log aggregation solution,
   artifact_description: |-
     Supporting evidence is in the following documentation
 

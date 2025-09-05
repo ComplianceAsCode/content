@@ -4,4 +4,35 @@ controls:
   - medium
   title: {{{ full_name }}} must separate user functionality (including user interface
     services) from information system management functionality.
-  status: inherently met
+  status: manual
+  check: |-
+    Verify that root and core are the only user accounts on the nodes by executing the following:
+
+    for node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n "$HOSTNAME "; cat /etc/passwd' 2>/dev/null; done
+
+    The output will look something like
+
+    <node_name> root:x:0:0:root:/root:/bin/bash
+    core:x:1000:1000:CoreOS Admin:/var/home/core:/bin/bash
+    containers:x:993:995:User for housing the sub ID range for containers:/var/home/containers:/sbin/nologin
+
+    If there are any user accounts in addition to root, containers and core, this is a finding.
+
+    Verify the root and core users are set to disable password logon by executing the following:
+
+    for node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n "$HOSTNAME "; grep -e "^root" -e "^core" /etc/shadow' 2>/dev/null; done
+
+    The output will look something like
+    <node_name>
+    root:*:18367:0:99999:7:::
+    core:*:18939:0:99999:7:::
+
+    If the password entry has anything other than '*', this is a finding.
+  fixtext: |-
+    Disable and remove passwords from root and core accounts by executing the following:
+
+    for node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'usermod -p "*" root; usermod -p "*" core' 2>/dev/null; done
+
+    Remove any additional user accounts from the nodes by executing the following:
+
+    oc debug node/<node> -- chroot /host /bin/bash -c 'userdel <user>'

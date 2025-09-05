@@ -1,3 +1,10 @@
+{{% if product in ["sle12","sle15"] %}}
+{{% set auth_config="/etc/pam.d/login" %}}
+{{% set audit_cmd="grep -E '^\s*auth\s+\S+\s+pam_(tally2|unix)\.so' /etc/pam.d/login" %}}
+{{% else %}}
+{{% set auth_config="/etc/pam.d/common-auth" %}}
+{{% set audit_cmd="grep pam_tally2.so /etc/pam.d/common-auth" %}}
+{{% endif %}}
 documentation_complete: true
 
 prodtype: sle12,sle15,ubuntu2004
@@ -15,12 +22,12 @@ rationale: |-
 
     To configure the operating system to lock an account after three
     unsuccessful consecutive access attempts using <tt>pam_tally2.so</tt>,
-    modify the content of both <tt>/etc/pam.d/common-auth</tt> and
+    modify the content of both <tt>{{{ auth_config }}}</tt> and
     <tt>/etc/pam.d/common-account</tt> as follows:
     <br /><br />
     <ul>
     <li> add or modify the <tt>pam_tally2.so</tt> module line in
-    <tt>/etc/pam.d/common-auth</tt> to ensure both <tt>onerr=fail</tt> and
+    <tt>{{{ auth_config }}}</tt> to ensure both <tt>onerr=fail</tt> and
     <tt>deny={{{ xccdf_value("var_password_pam_tally2") }}}</tt> are present. For example:
     <pre>auth required pam_tally2.so onerr=fail silent audit deny={{{ xccdf_value("var_password_pam_tally2") }}}</pre></li>
     <li> add or modify the following line in <tt>/etc/pam.d/common-account</tt>:
@@ -52,7 +59,7 @@ ocil: |-
     Check that the systems locks a user account after - at most - <tt>{{{ xccdf_value("var_password_pam_tally2") }}}</tt>
     consecutive failed login attempts with the following command:
 
-    <pre># grep pam_tally2.so /etc/pam.d/common-auth
+    <pre># {{{ audit_cmd }}}
     auth required pam_tally2.so onerr=fail deny={{{ xccdf_value("var_password_pam_tally2") }}}</pre>
 
     If no line is returned, the line is commented out, or the line is missing

@@ -1,0 +1,38 @@
+<def-group>
+    <definition class="inventory" id="{{{ _RULE_ID }}}" version="1">
+        {{{ oval_metadata("", title="IPv6 is " + STATE + " on system", affected_platforms=[full_name]) }}}
+        <criteria operator="OR">
+            <criterion test_ref="test_grub2_ipv6_disable_is_correct"
+                comment="check if ipv6.disable argument is correct in GRUB_CMDLINE_LINUX"/>
+            {{%- if STATE == "enabled" -%}}
+            <criterion test_ref="test_grub2_ipv6_disable_is_absent"
+                comment="check if ipv6.disable parameter is defined in /etc/default/grub"/>
+            {{%- endif -%}}
+        </criteria>
+    </definition>
+
+    <ind:textfilecontent54_test id="test_grub2_ipv6_disable_is_correct" version="1"
+        check="all" check_existence="all_exist"
+        comment="check GRUB_CMDLINE_LINUX parameters in /etc/default/grub">
+        <ind:object object_ref="object_grub2_ipv6_disable_parameter"/>
+        <ind:state state_ref="state_grub2_ipv6_disable_argument"/>
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="object_grub2_ipv6_disable_parameter" version="1">
+        <ind:filepath>/etc/default/grub</ind:filepath>
+        <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX=".*ipv6\.disable=(\d).*$</ind:pattern>
+        <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_state id="state_grub2_ipv6_disable_argument" version="1">
+        <ind:subexpression datatype="int" operation="equals">{{{ IPV6_DISABLE_VALUE }}}</ind:subexpression>
+    </ind:textfilecontent54_state>
+
+    {{%- if STATE == "enabled" -%}}
+    <ind:textfilecontent54_test id="test_grub2_ipv6_disable_is_absent" version="1"
+        check="all" check_existence="none_exist"
+        comment="ipv6.disable is not defined in /etc/default/grub">
+        <ind:object object_ref="object_grub2_ipv6_disable_parameter"/>
+    </ind:textfilecontent54_test>
+    {{%- endif -%}}
+</def-group>

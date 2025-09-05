@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
+prodtype: alinux2,alinux3,anolis23,anolis8,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Verify {{{ grub2_boot_path }}}/grub.cfg Group Ownership'
 
@@ -24,6 +24,7 @@ identifiers:
     cce@sle15: CCE-85849-8
 
 references:
+    ccn@rhel9: A.6.SEC-RHEL2
     cis-csc: 12,13,14,15,16,18,3,5
     cis@alinux2: 1.4.1
     cis@alinux3: 1.5.2
@@ -61,4 +62,4 @@ template:
     name: file_groupowner
     vars:
         filepath: {{{ grub2_boot_path }}}/grub.cfg
-        filegid: '0'
+        gid_or_name: '0'

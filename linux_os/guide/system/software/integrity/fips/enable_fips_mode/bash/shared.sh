@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,Red Hat Virtualization 4
+# platform = multi_platform_all
 {{{ bash_instantiate_variables("var_system_crypto_policy") }}}
 
 fips-mode-setup --enable

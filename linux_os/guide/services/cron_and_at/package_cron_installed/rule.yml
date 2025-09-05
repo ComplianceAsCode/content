@@ -1,3 +1,9 @@
+{{% if product in ["sle12", "sle15"] %}}
+{{% set package_name = "cronie" %}}
+{{% else %}}
+{{% set package_name = "cron" %}}
+{{% endif %}}
+
 documentation_complete: true
 
 title: 'Install the cron service'
@@ -8,9 +14,15 @@ rationale: 'The cron service allow periodic job execution, needed for almost all
 
 severity: medium
 
+identifiers:
+    cce@sle12: CCE-92263-3
+    cce@sle15: CCE-91379-8
+
 references:
     anssi: BP28(R50)
     cis-csc: 11,14,3,9
+    cis@sle12: 5.1.1
+    cis@sle15: 5.1.1
     cis@ubuntu2004: 5.1.1
     cis@ubuntu2204: 5.1.1
     cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS06.06
@@ -20,7 +32,14 @@ references:
     nist: CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
 
+ocil_clause: 'the package is installed'
+
+ocil: |-
+    {{{ ocil_package(package_name) }}}
+
 template:
     name: package_installed
     vars:
         pkgname: cron
+        pkgname@sle12: cronie
+        pkgname@sle15: cronie

@@ -8,13 +8,6 @@ controls:
   - idp_is_configured
   - ocp_idp_no_htpasswd
   - kubeadmin_removed
-  status: inherently met
-  status_justification: |-
-    OpenShift does not execute containers with a user's account. Pods use service
-    accounts to launch containers.  Service accounts are uniquely identified
-    by project and name.  Service accounts provide a means to control access
-    to the API without using the user's credentials. Service Accounts can be
-    assigned roles defined and enforced by the RBAC policy.
-  artifact_description: |-
-    Supporting evidence is in the following documentation:
-    https://docs.openshift.com/container-platform/latest/authentication/understanding-and-creating-service-accounts.html
+  rules:
+  - rbac_least_privilege
+  status: manual

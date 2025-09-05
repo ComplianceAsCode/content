@@ -1,0 +1,27 @@
+groups:
+- rpm_verification
+- updating
+name: rpm
+packages:
+- rpm
+rules:
+- clean_components_post_updating
+- dnf-automatic_apply_updates
+- dnf-automatic_security_updates_only
+- ensure_GPG_keys_are_configured
+- ensure_fedora_gpgkey_installed
+- ensure_gpgcheck_globally_activated
+- ensure_gpgcheck_local_packages
+- ensure_gpgcheck_never_disabled
+- ensure_gpgcheck_repo_metadata
+- ensure_oracle_gpgkey_installed
+- ensure_package_repositories_are_configured
+- ensure_redhat_gpgkey_installed
+- ensure_suse_gpgkey_installed
+- package_dnf-automatic_installed
+- package_gnome_software_installed
+- rpm_verify_hashes
+- rpm_verify_ownership
+- rpm_verify_permissions
+- security_patches_up_to_date
+- timer_dnf-automatic_enabled

@@ -22,14 +22,13 @@ description: 'This profile contains configuration checks that align to the
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 extends: null
 metadata:
-    version: V1R9
+    version: V1R10
     SMEs:
     - mab879
     - ggbecker
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
 - account_disable_post_pw_expiration
-- account_emergency_expire_date
 - account_password_selinux_faillock_dir
 - account_temp_expire_date
 - account_unique_id
@@ -41,6 +40,7 @@ selections:
 - accounts_minimum_age_login_defs
 - accounts_no_uid_except_zero
 - accounts_password_all_shadowed_sha512
+- accounts_password_minlen_login_defs
 - accounts_password_pam_dcredit
 - accounts_password_pam_dictcheck
 - accounts_password_pam_difok
@@ -111,6 +111,7 @@ selections:
 - audit_rules_kernel_module_loading_delete
 - audit_rules_kernel_module_loading_finit
 - audit_rules_kernel_module_loading_init
+- audit_rules_login_events_faillock
 - audit_rules_login_events_lastlog
 - audit_rules_media_export
 - audit_rules_privileged_commands_chage
@@ -202,6 +203,7 @@ selections:
 - disable_ctrlaltdel_burstaction
 - disable_ctrlaltdel_reboot
 - disable_users_coredumps
+- disallow_bypass_password_sudo
 - display_login_attempts
 - enable_authselect
 - enable_dracut_fips_module
@@ -263,6 +265,7 @@ selections:
 - kernel_module_sctp_disabled
 - kernel_module_tipc_disabled
 - kernel_module_usb-storage_disabled
+- logind_session_timeout
 - mount_option_boot_efi_nosuid
 - mount_option_boot_nosuid
 - mount_option_dev_shm_nodev
@@ -292,6 +295,7 @@ selections:
 - network_configure_name_resolution
 - network_sniffer_disabled
 - no_empty_passwords
+- no_empty_passwords_etc_shadow
 - no_files_unowned_by_user
 - no_host_based_files
 - no_tmux_in_shells
@@ -311,6 +315,7 @@ selections:
 - package_krb5-workstation_removed
 - package_libreport-plugin-logger_removed
 - package_libreport-plugin-rhtsupport_removed
+- package_mailx_installed
 - package_mcafeetp_installed
 - package_opensc_installed
 - package_openssh-server_installed
@@ -355,6 +360,7 @@ selections:
 - service_fapolicyd_enabled
 - service_firewalld_enabled
 - service_kdump_disabled
+- service_rngd_enabled
 - service_rsyslog_enabled
 - service_sshd_enabled
 - service_systemd-coredump_disabled
@@ -383,6 +389,7 @@ selections:
 - sssd_certificate_verification
 - sssd_enable_certmap
 - sssd_enable_smartcards
+- sssd_has_trust_anchor
 - sssd_offline_cred_expiration
 - sudo_remove_no_authenticate
 - sudo_remove_nopasswd
@@ -447,7 +454,7 @@ selections:
 - var_password_pam_lcredit=1
 - var_password_pam_retry=3
 - var_sshd_set_keepalive=1
-- sshd_approved_macs=stig
+- sshd_approved_macs=stig_extended
 - sshd_approved_ciphers=stig
 - sshd_idle_timeout_value=10_minutes
 - var_accounts_authorized_local_users_regex=rhel8

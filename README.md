@@ -8,13 +8,18 @@
 [![Join the chat at https://gitter.im/Compliance-As-Code-The/content](https://badges.gitter.im/Compliance-As-Code-The/content.svg)](https://gitter.im/Compliance-As-Code-The/content?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/ComplianceAsCode/content)
 
-<a href="docs/readme_images/report_sample.png"><img align="right" width="250" src="docs/readme_images/report_sample.png" alt="Evaluation report sample"></a>
 
 The purpose of this project is to create *security policy content* for various
 platforms &mdash; *Red Hat Enterprise Linux*, *Fedora*, *Ubuntu*, *Debian*, *SUSE Linux Enterprise Server (SLES)*,... &mdash;
 as well as products &mdash; *Firefox*, *Chromium*, ...
 We aim to make it as easy as possible to write new and maintain existing
 security content in all the commonly used formats.
+
+* [ComplianceAsCode Documentation](https://complianceascode.readthedocs.io/)
+* [ComplianceAsCode Blog](https://complianceascode.github.io/)
+* [Online Workshops](docs/workshop/README.adoc) - Perfect as a starting point
+* [Profiles in ComplianceAsCode](https://complianceascode.github.io/content-pages/guides/index.html) - online HTML guides for each profile
+
 
 ## We build security content in various formats
 
@@ -84,8 +89,6 @@ identifiers:
     cce: "80551-5"
 ```
 
----
-
 ### Scan targets
 
 Our security content can be used to scan bare-metal machines, virtual machines,
@@ -147,6 +150,8 @@ the OpenSCAP project. It can be used to scan the local machine.
 ```bash
 oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_rht-ccp --results-arf arf.xml --report report.html --oval-results /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
 ```
+
+<a href="docs/readme_images/report_sample.png"><img align="right" width="250" src="docs/readme_images/report_sample.png" alt="Evaluation report sample"></a>
 
 After evaluation, the `arf.xml` file will contain all results in a reusable
 *Result DataStream* format, `report.html` will contain a human readable
@@ -260,15 +265,6 @@ decided to change the name of the project to `ComplianceAsCode`, in order to avo
 
 We envision that the future will be format-agnostic. That's why opted for an
 abstraction instead of using XCCDF for the input format.
-
-## Further reading
-
-The SSG homepage is [https://www.open-scap.org/security-policies/scap-security-guide/](https://www.open-scap.org/security-policies/scap-security-guide/).
-
-* [SSG User Manual](docs/manual/user_guide.adoc)
-* [SSG Developer Guide](https://complianceascode.readthedocs.io/)
-* [Compliance As Code Blog](https://complianceascode.github.io/)
-* [Online Workshops - Perfect as a starting point](docs/workshop/README.adoc)
 
 ## Contributors
 This project is welcome to new contributors. We are continually trying to remove the complexities to make contributions easier and more enjoyable for everyone. This is a nice project and a friendly community.

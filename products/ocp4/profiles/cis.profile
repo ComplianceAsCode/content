@@ -93,9 +93,6 @@ selections:
     - api_server_audit_log_maxsize
     - ocp_api_server_audit_log_maxsize
   # 1.2.26 Ensure that the --request-timeout argument is set as appropriate
-    # (jhrozek) Temporarily disabling the rule because the benchmark
-    #           specifies one value (60) for the request-timeout parameter, while we
-    #           use 3600 in OCP. It is unclear if this value is appropriate...
     - api_server_request_timeout
   # 1.2.27 Ensure that the --service-account-lookup argument is set to true
     - api_server_service_account_lookup
@@ -113,6 +110,7 @@ selections:
     - api_server_etcd_ca
   # 1.2.33 Ensure that the --encryption-provider-config argument is set as appropriate
   # 1.2.34 Ensure that encryption providers are appropriately configured
+  # 2.8 Encrypt etc
     - api_server_encryption_provider_cipher
   # 1.2.35 Ensure that the API Server only makes use of Strong Cryptographic Ciphers
     - api_server_tls_cipher_suites
@@ -139,7 +137,7 @@ selections:
   # 1.4.1 Ensure that the --profiling argument is set to false  (info only)
   # Handled by rbac_debug_role_protects_pprof
   # 1.4.2 Ensure that the --bind-address argument is set to 127.0.0.1
-    - scheduler_no_bind_address
+  # In the latest draft, there is a manual procedure that checks for RBAC
 
   ### 2 etcd
   # 2.1 Ensure that the --cert-file and --key-file arguments are set as appropriate

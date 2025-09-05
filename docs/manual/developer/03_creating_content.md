@@ -49,24 +49,32 @@ build files/configuration, etc.
 <td><p>Contains the CMake build configuration files.</p></td>
 </tr>
 <tr class="odd">
+<td><p><code>components</code></p></td>
+<td><p>Contains the component files which provide mapping of operating system components to CaC rules.</p></td>
+</tr>
+<tr class="even">
 <td><p><code>Dockerfiles</code></p></td>
 <td><p>Contains Dockerfiles to build content test suite container backends.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p><code>docs</code></p></td>
 <td><p>Contains the User Guide and Developer Guide, manual page template, etc.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p><code>products</code></p></td>
 <td><p>Contains per-product directories (such as <code>rhel8</code>) of product-specific information and profiles.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p><code>ssg</code></p></td>
 <td><p>Contains Python <code>ssg</code> module which is used by most of the scripts in this repository.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p><code>utils</code></p></td>
 <td><p>Miscellaneous scripts used for development but not used by the build system.</p></td>
+</tr>
+<tr class="even">
+<td><p><code>product_properties</code></p></td>
+<td><p>Directory with its own README and with drop-in files that can define product properties across more products at once using jinja macros.</p></td>
 </tr>
 </tbody>
 </table>
@@ -334,13 +342,13 @@ message(STATUS "JBoss EAP 6: ${SSG_PRODUCT_EAP6}")
 </pre>
 <pre>
 ...
-if (SSG_PRODUCT_DEBIAN11)
+if(SSG_PRODUCT_DEBIAN11)
     add_subdirectory("products/debian11")
 endif()
-<b>if (SSG_PRODUCT_CUSTOM6)
+<b>if(SSG_PRODUCT_CUSTOM6)
       add_subdirectory("products/custom6")
 endif()</b>
-if (SSG_PRODUCT_EAP6)
+if(SSG_PRODUCT_EAP6)
     add_subdirectory("products/eap6")
 endif()
 ...
@@ -414,7 +422,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 ```
 cat << EOF >  $NEW_PRODUCT/CMakeLists.txt
 # Sometimes our users will try to do: "cd $NEW_PRODUCT; cmake ." That needs to error in a nice way.
-if ("\${CMAKE_SOURCE_DIR}" STREQUAL "\${CMAKE_CURRENT_SOURCE_DIR}")
+if("\${CMAKE_SOURCE_DIR}" STREQUAL "\${CMAKE_CURRENT_SOURCE_DIR}")
     message(FATAL_ERROR "cmake has to be used on the root CMakeLists.txt, see the Building ComplianceAsCode section in the Developer Guide!")
 endif()
 
@@ -430,6 +438,8 @@ full_name: $FULL_NAME
 type: platform
 
 benchmark_root: "../../linux_os/guide"
+
+components_root: "../../components"
 
 profiles_root: "./profiles"
 
@@ -698,6 +708,14 @@ In the real world, controls (requirements) can be nested. For example, PCI-DSS
 has a tree-like structure, within requirement 2.3, we can find 2.3.a, 2.3.b,
 etc. Therefore, each item in `controls` list can contain a `controls` list.
 
+Nesting can be accomplished both by
+
+* nesting whole control definitions, or by
+* nesting references to existing controls in the `policy:control` format, where the `policy:` part can be skipped
+if the reference points to a control in that policy.
+
+Nesting using references allows reuse of controls across multiple policies.
+
 Once we have the initial file, we can read through the policy requirements and
 assess each requirement. For each control, we will have to identify whether it
 can be automated by SCAP. If so, we should look if we already have existing
@@ -965,9 +983,10 @@ This is a complete schema of the YAML file format.
 ```
 id: policy ID (required key)
 title: short title (required key)
+original_title: used as a reference for policies not yet available in English
 source: a link to the original policy, eg. a URL of a PDF document
 controls_dir: a directory containing files representing controls that will be imported into this policy
-levels: a list of levels, the first one is default.
+levels: a list of levels, the first one is default
   - id: level ID (required key)
     inherits_from: a list of IDs of levels inheriting from
 
@@ -975,11 +994,11 @@ controls: a list of controls (required key)
   - id: control ID (required key)
     title: control title
     description: description of the control in a few sentences
-    levels: The list of policy levels that the control belongs to.
+    levels: The list of policy levels that the control belongs to
     notes: a short paragraph of text
     rules: a list of rule IDs that cover this control
-    related_rules: a list of related rules
-    controls: a nested list of controls
+    related_rules: a list of related rules only for reference
+    controls: a (nested) list of either control definitions, or of control references in the policy:id format
     status: a keyword that reflects the current status of the implementation of this control
     tickets: a list of URLs reflecting the work that still needs to be done to address this control
 ```
@@ -1054,6 +1073,7 @@ controls:
           - accounts_password_pam_minlen
           - accounts_password_pam_ocredit
           - var_password_pam_ocredit=1
+      - other-policy:other-control
 ```
 
 ### Using controls in profiles
@@ -1145,6 +1165,38 @@ instead is automatically generated during build from a semantic data source. It
 seamlessly integrates with the build system to include the generated profile in
 the resulting SCAP source data stream.
 
+### Controls File Life Cycle
+
+This flowchart represents a high level overview of the control file life cycle based on security policies.
+
+Initial Control File creation using as source a security policy:
+
+<div class="mermaid" style="width=100%;">
+flowchart TD
+    A[Security Policy V1] -->|Convert | B(Control File V1)
+    B[Control File V1] --> |Map Rules | C(Existing Rules)
+    B[Control File V1] --> |Create New Rules | D(Rules)
+    C(Existing Rules) --> |Assign References | D(Rules)
+    D(Rules) --> |Select | F(Populated Control File V1)
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
+Control File Update with newer version of the security policy
+
+<div class="mermaid" style="width=100%;">
+flowchart TD
+    control_file_v1(Control File V1) -->|Combine | A
+    control_file_v1(Control File V1) -->|Compare | C
+    A[Security Policy V2] -->|Generate | B(Control File V2)
+    B[Control File V2] --> |Compare | C(Differences of V1 and V2)
+    C[Difference of V1 and V2]-->| Process | D(Update/creation of rules and selections update)
+    D(Update/creation of rules and selections update) --> |Finish | E(Populated Control File V2)
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
 ### Presentation of data
 
 Apart to the build system, the controls files can be also processed by
@@ -1225,3 +1277,258 @@ To export the spreadsheet use the following command:
 
 The output by default will be out in CSV file in build directory.
 The file will be a csv file named as the UNIX timestamp of when the file was created.
+
+## Components
+
+The `/components` directory contains files that provide mapping of operating system components to individual rules.
+
+The component in ComplianceAsCode doesn't necessary have to correspond to operating system components, we are free to define our components where we see fit.
+For example, SELinux is spread into `policycoreutils`, `libselinux` and others, but ComplianceAsCode has a `selinux` component.
+
+Each component is represented by a separate YAML file in the `/components` directory.
+The component YAML file name is equal to the component name.
+
+YAML file keys:
+
+- `name` (string) - component name
+- `rules` (list) - rules that belong to this component
+- `groups` (list) - groups that indicate that rules in these groups should belong to this component (optional)
+- `packages` (list) - names of packages that are part of this component (optional)
+- `templates` (list) - templates that indicate that rules using these templates should belong to this component (optional)
+- `changelog` (list) - records substantial changes in the given component that affected rules and remediations (optional)
+
+Each rule in the benchmark in the `/linux_os/guide` directory must be a member of at least 1 component.
+
+Products specify a path to the directory with component files by the `components_root` key in the `product.yml`.
+
+The mappings of components to rules can be converted to HTML by the `utils/render_components.py` script.
+
+
+## Preventing Problems
+
+This section outlines some situations that are uncontrollably recurring, and that could cause problems in the project if they are handled impulsively.
+Following subsections aim to provide a helping hand to navigate through the risks consciously, and to prevent taking of completely wrong decisions.
+
+### Handling Rule Updates
+
+Handling rule updates and changes is an essential aspect of maintaining a project's rules and ensuring their relevance and effectiveness along the time.
+As products evolve and components undergo modifications, it becomes necessary to update the rules that configure them within the project.
+These updates may involve addressing divergences in rule behavior, which can arise due to differences between products, versions, or architectures.
+
+In this section, we will explore the approaches and considerations involved in handling rule divergences, including the use of conditionals and spawning new rules.
+
+By effectively managing these updates, we can ensure that the project's rules remain up to date and aligned with the evolving landscape of supported products.
+
+#### Updates and Changes
+
+By design it is expected that the rules in the project will be shared and used by the supported products.
+And during the lifespan of a product a component may change and require that one or more rules be updated.
+
+When a component supported by CaC undergoes changes, it is essential to update and align the rules configuring it in the project accordingly.
+This is necessary to keep the rules in the project up to date and relevant.
+
+But some changes may not apply to all products, sometimes a change is specific to a Linux distro, or a specific minor version or architecture of that distro.
+In these situations the behavior of the rule needs to be different for a product or one of its versions.
+The rule behavior needs to diverge according to the product and version.
+
+A rule can diverge in two ways:
+
+- Cross-product wise
+- In-product wise
+
+A *cross-product divergence* is a difference in rule behavior stemming from product differences.
+
+In other words, a rule that configures a different key, or value, in different products.
+
+These divergences are the most common in the project since we support a wide range of products, examples of these kinds of divergences are:
+
+- Package names that differ between products. e.g.: In rule `package_audit_installed`, some products have the "audit" package and others have the "auditd" package.
+- File paths that differ between products. e.g.: The faillock directory, some products use `/var/run/faillock` and others use `/var/log/faillock`
+
+These divergences are handled in the content
+
+- Jinja conditionals (e.g.: [{{{% if product in ... }}}](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/linux_os/guide/system/software/integrity/fips/enable_fips_mode/rule.yml#L8)) - commonly used in rule descriptions and remediations.
+- Product identifiers (e.g.: [attribute@ubuntu1604](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/linux_os/guide/system/auditing/package_audit_installed/rule.yml#LL62C9-L62C9)) - commonly used in templated rules and when defining references.
+- Product properties (in [product.yml](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/products/rhel8/product.yml#LL32C35-L32C35) file or `product_properties` directory) - useful for more generic properties, applicable to different rules.
+- Product-specific files (e.g.: [sle12.yml](https://github.com/ComplianceAsCode/content/blob/master/linux_os/guide/system/auditing/auditd_configure_rules/audit_privileged_commands/audit_rules_privileged_commands_kmod/ansible/sle12.yml)) - Less common option which is usually used when the differences are drastic and it is not worth using the other options.
+
+An *in-product divergence* is a difference in rule behavior stemming from component changes between a product’s minor versions or supported architectures.
+
+In other words, a rule that configures a different key, or value, in different versions of the same product from the standpoint of ComplianceAsCode, typically because
+
+- a component changed between minor product versions, or
+- behaves differently on different architectures.
+
+These divergences emerge as the result of continued support of a minor version, in other words, once a new minor version of a product is released the previous version doesn’t go End Of Life immediately and needs support.
+
+Examples of in-product divergences are:
+
+- Configuration of [SSHD Compression](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/linux_os/guide/services/ssh/ssh_server/sshd_disable_compression/rule.yml#L52), which makes sense only on rhel < 7.4.
+- Configuration of [systemd's StopIdleSessionSec](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/linux_os/guide/system/accounts/accounts-physical/logind_session_timeout/rule.yml#L22), which are available on rhel >= 8.7 and rhel > 9.0.
+- Different configurations for different architectures. e.g. [audit_access_failed](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/linux_os/guide/system/auditing/policy_rules/audit_access_failed/rule.yml#L34), [audit_access_failed_aarch64](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/linux_os/guide/system/auditing/policy_rules/audit_access_failed_aarch64/rule.yml#L31) and [audit_access_failed_ppc64le](https://github.com/ComplianceAsCode/content/blob/328eac5d78ee756d158c389a91633f5dd74a5d60/linux_os/guide/system/auditing/policy_rules/audit_access_failed_ppc64le/rule.yml#L29) configure different audit rules in each architecture.
+
+Note: The fist two examples above didn't require a new rule to be spawned because they are only limiting the applicability to specific minor versions.
+The divergence is the absence of configuration in the complementary set of minor versions.
+The third example differs in one single syscall (`open`) not present in aarch64 and ppc64le but present in x86.
+In that case there is no mechanism currently available to dynamically update the rule description or the rule parameters, limiting the options to rule spawning.
+
+### Approaches How to Handle Rule Divergence
+
+Basically rule’s divergence can be handled in two ways: Either by
+
+- expanding the affected rule, typically by adding a conditional; or by
+- spawning a new rule.
+
+Expansion of a rule allows it to handle the divergence, whereas spawning creates a new rule according to the new behavior, resulting in two separate single-purpose rules.
+Each approach has its benefits and drawbacks that need to be evaluated, and they are discussed in the next section.
+
+
+#### Adding Conditionals to a Rule
+
+One way to handle divergences in a rule is to add conditionals to it.
+The conditionals need to be explained in the rule description and added to the checks and remediations, so that each divergence is identified and checked correctly.
+In general, the remediation process should be capable of identifying all compliant states, ensuring idempotence, while also favoring a specific approach in cases where the system is incompliant.
+
+If the divergence is cross-product, the conditionals can be handled at build-time through the techniques mentioned previously.
+An in-product divergence will require the use of conditionals that can be evaluated at scan-time.
+
+#### Spawning a New Rule
+
+Another way to handle divergences is to create rules that will handle the newly required behavior.
+Each rule will describe what they check for and remediate, they will be pretty similar but different regarding their specific divergence.
+
+If the divergence is cross-product, the rule only needs to have the appropriate prototype.
+If the divergence is in-product, the rules will need to have disjoint applicabilities in their platforms.
+
+### Aspects to Consider When Picking One Approach
+
+There is no direct guidance on how to handle every case of divergence.
+Evaluate the following aspects against the rule update you are dealing, and pick your poison.
+
+#### Granularity and Reusability
+
+##### Conditionals
+
+Pros
+
+- Expected behavior of the rule is maintained, no expectation is violated.
+- Rules may already be expected to handle different conditions, now it’s only one more such condition.
+- Lower granularity means less rules in the project without compromising on the abilities of the project.
+
+Cons
+
+- Profiles or policies that allow or require only one of the behaviors don’t align well with polymorphic rules.
+
+##### Spawning
+
+Pros
+
+- The original rule and the spawned one are clear and direct about what they do.
+- The increased rule granularity promotes reusability, making such rules great  blocks for profiles and controls.
+
+Cons
+
+- Too much granularity in profiles and controls may create noise and impact the user experience.
+- Spawning may result in creation of almost identical rules without any real benefit of granularity.
+- Bugs affecting multiple spawned rules may be more laborious to be consistently fixed along the time.
+
+#### Profile and control selections
+
+##### Conditionals
+
+Pros
+
+- Unlike with spawning, no changes in profile selections, controls or tailoring.
+
+##### Spawning
+
+Remarks
+
+- The ability to define extendable controls may mitigate the shortcomings mentioned right above.
+
+#### Content Clarity
+
+##### Conditionals
+
+Cons
+
+- Difficulty knowing what the rule is checking for and what it configures.
+- Difficulty to write a concise rule description.
+- Difficulty to interpret a rule check (why it passed/failed?)
+- Tendency to have an opinionated approach to remediations, or remediations full of conditionals that need to be checked for coverage and consistency.
+
+Remarks
+
+- The Conditionals approach works better when the individual rule conditions are equivalent or it doesn’t matter which approach is applied on the system.
+- Analysis of results can be facilitated by oscap-report as an interface to ARF/results files.
+
+##### Spawning
+
+Cons
+
+- Need to ensure that new and existing rules have distinct titles and descriptions, so the difference between them is clear, specially in tiny changes, like a single syscall in a list of multiple syscalls in a rule.
+
+#### Code duplication
+
+Reducing code duplication is important to keep the maintenance costs low.
+
+Both of the update approaches are susceptible to code duplication.
+
+
+A rule that spawns another rule will lead to duplication of code, especially if templates or macros are not used in the new rule.
+
+Similarly, rule updates solved with conditionals can also lead to code duplication if the behavior handled by the new conditional is similar and doesn’t use templates or macros.
+
+
+In summary, code duplication is mitigated by refactoring or using templates and macros.
+Transform the existing code into a macro or template, and use it in the new rule or conditional.
+
+#### Stability
+
+##### Conditionals
+
+Pros
+
+- Customers expect rules to be capable of dealing with new behaviors, like compatibility with RainerScript syntax in rsyslog rules, for example.
+
+Cons
+
+- Rule may break expectations from customers, especially if they use it in a tailoring to handle a specific case - a rule that once accepted just one posture as compliant, will start accepting multiple postures as compliant.
+
+##### Spawning
+
+Pros
+
+- Rule doesn’t change, it just slowly erodes.
+  But less changes means less surface for emerging problems.
+
+Cons
+
+- Customers will have to actively select spawned rules in case of e.g. extending profiles by tailoring.
+
+#### Deprecation and Removal
+
+The need to configure a component can appear and disappear, just as the component itself.
+
+Once a rule is deemed obsolete or unnecessary it is deprecated so that new products don’t pick it up into their content.
+The rule deprecation process is detailed here.
+
+Once no product is including the deprecated rule in their content the rule can be removed.
+
+##### Conditionals
+
+Pros
+
+- Opportunity to remove "dead" code sooner than a "dead" rule, since a rule cannot be removed from a product's data stream, but unnecessary code can.
+
+Cons
+
+- Getting rid of "dead" conditionals requires refactoring.
+- Unless actively pruned, the conditionals in the rule might stay there indefinitely.
+
+##### Spawning
+
+Pros
+
+- Spawn that is not needed any more can just be unselected in the profile, control or tailoring.
+- Eventually, it can be removed from the project by removing files without closer examination.

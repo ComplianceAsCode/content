@@ -1259,7 +1259,7 @@ controls:
       - l2_workstation
     status: automated
     rules:
-      - audit_rules_suid_privilege_function
+      - audit_rules_suid_auid_privilege_function
 
   - id: 4.1.3.3
     title: Ensure events that modify the sudo log file are collected (Automated)
@@ -1826,20 +1826,22 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: partial # missing rule for group ownership
+    status: automated
     rules:
       - file_permissions_sshd_private_key
       - file_ownership_sshd_private_key
+      - file_groupownership_sshd_private_key
 
   - id: 5.2.3
     title: Ensure permissions on SSH public host key files are configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial # missing rule for group ownership
+    status: automated
     rules:
       - file_permissions_sshd_pub_key
       - file_ownership_sshd_pub_key
+      - file_groupownership_sshd_pub_key
 
   - id: 5.2.4
     title: Ensure SSH access is limited (Automated)
@@ -2074,7 +2076,9 @@ controls:
       use of "sudo" for privileged access. Therefore, members of these groups should be manually
       checked or a different group should be informed.
     rules:
-      - use_pam_wheel_for_su
+      - var_pam_wheel_group_for_su=cis
+      - use_pam_wheel_group_for_su
+      - ensure_pam_wheel_group_empty
 
   - id: 5.4.1
     title: Ensure custom authselect profile is used (Manual)

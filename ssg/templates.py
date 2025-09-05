@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import os
-import imp
 import glob
 
 from collections import namedtuple
@@ -36,6 +35,24 @@ LANGUAGES = {
 
 PREPROCESSING_FILE_NAME = "template.py"
 TEMPLATE_YAML_FILE_NAME = "template.yml"
+
+
+def load_module(module_name, module_path):
+    try:
+        # Python 2.7
+        from imp import load_source
+        return load_source(module_name, module_path)
+    except ImportError:
+        # https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly
+        import importlib
+        spec = importlib.util.spec_from_file_location(module_name, module_path)
+        if not spec:
+            raise ValueError("Error loading '%s' module" % module_path)
+        module = importlib.util.module_from_spec(spec)
+        if not spec.loader:
+            raise ValueError("Error loading '%s' module" % module_path)
+        spec.loader.exec_module(module)
+        return module
 
 
 class Template:
@@ -83,8 +100,8 @@ class Template:
     def _preprocess_with_template_module(self, parameters, lang):
         if self.preprocessing_file_path is not None:
             unique_dummy_module_name = "template_" + self.name
-            preprocess_mod = imp.load_source(unique_dummy_module_name,
-                                             self.preprocessing_file_path)
+            preprocess_mod = load_module(
+                unique_dummy_module_name, self.preprocessing_file_path)
             if not hasattr(preprocess_mod, "preprocess"):
                 msg = (
                     "The '{name}' template's preprocessing file {preprocessing_file} "

@@ -40,6 +40,7 @@ product_directories = [
     'alinux2',
     'alinux3',
     'anolis8',
+    'anolis23',
     'chromium',
     'debian10', 'debian11',
     'example',
@@ -194,6 +195,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Alibaba Cloud Linux 2": "alinux2",
     "Alibaba Cloud Linux 3": "alinux3",
     "Anolis OS 8": "anolis8",
+    "Anolis OS 23": "anolis23",
     "Chromium": "chromium",
     "Debian 10": "debian10",
     "Debian 11": "debian11",
@@ -240,6 +242,9 @@ REFERENCES = dict(
     anssi=Reference(
         id="anssi", name="ANSSI", url=anssi_ns,
         regex_with_groups=r"BP28\(R(\d+)\)"),
+    ccn=Reference(
+        id="ccn", name="CCN", url="",
+        regex_with_groups=r"A.(\d+).SEC-RHEL(\d+)"),
     cis=Reference(
         id="cis", name="CIS", url=cis_ns,
         regex_with_groups=r"(\d+)\.(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
@@ -271,7 +276,7 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_alinux": ["alinux2", "alinux3"],
-    "multi_platform_anolis": ["anolis8"],
+    "multi_platform_anolis": ["anolis8", "anolis23"],
     "multi_platform_debian": ["debian10", "debian11"],
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
@@ -460,12 +465,6 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 GLOBAL_REFERENCES = ("srg", "disa", "cis-csc",)
 
 # Application constants
-DEFAULT_GID_MIN = 1000
-DEFAULT_UID_MIN = 1000
-DEFAULT_NOBODY_GID = 65534
-DEFAULT_NOBODY_UID = 65534
-DEFAULT_GRUB2_BOOT_PATH = '/boot/grub2'
-DEFAULT_GRUB2_UEFI_BOOT_PATH = '/boot/grub2'
 DEFAULT_DCONF_GDM_DIR = 'gdm.d'
 DEFAULT_AIDE_CONF_PATH = '/etc/aide.conf'
 DEFAULT_AIDE_BIN_PATH = '/usr/sbin/aide'

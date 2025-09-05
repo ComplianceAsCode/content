@@ -25,7 +25,7 @@ references:
     cis@rhel8: 1.1.7.4
     nist: CM-6(b)
 
-platform: machine
+
 
 {{{ complete_ocil_entry_mount_option("/home", "usrquota") }}}
 
@@ -53,11 +53,13 @@ warnings:
 {{% endif %}}
 
 {{% if "ol" in product %}}
+platform: machine
 template:
     name: mount_option_home
     vars:
         mountoption: usrquota
 {{% else %}}
+platform: machine and mount[home]
 template:
     name: mount_option
     vars:

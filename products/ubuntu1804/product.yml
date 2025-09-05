@@ -2,6 +2,12 @@ product: ubuntu1804
 full_name: "Ubuntu 18.04"
 type: platform
 
+families:
+  - debian-like
+  - ubuntu
+
+major_version_ordinal: 1804
+
 benchmark_id: UBUNTU-BIONIC
 benchmark_root: "../../linux_os/guide"
 
@@ -12,8 +18,6 @@ pkg_manager_config_file: "/etc/apt/apt.conf"
 
 init_system: "systemd"
 
-grub2_boot_path: "/boot/grub"
-grub2_uefi_boot_path: "/boot/efi/EFI/ubuntu"
 
 chrony_conf_path: "/etc/chrony/chrony.conf"
 

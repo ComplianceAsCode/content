@@ -20,4 +20,4 @@
   loop: '{{ local_users }}'
   when:
     - item.value[2]|int >= {{{ uid_min }}}
-    - item.value[2]|int != 65534
+    - item.value[2]|int != {{{ nobody_uid }}}

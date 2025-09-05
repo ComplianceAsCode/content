@@ -15,13 +15,13 @@ checktext: |-
 
     $ sudo auditctl -l | grep /usr/bin/sudoedit
 
-    -a always,exit -F path=/usr/bin/sudoedit -F perm=x -F auid&gt;=1000 -F auid!=unset -k priv_cmd
+    -a always,exit -F path=/usr/bin/sudoedit -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k priv_cmd
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to generate audit records upon successful/unsuccessful attempts to use the "sudoedit" command by adding or updating the following rule in "/etc/audit/rules.d/audit.rules":
 
-    -a always,exit -F path=/usr/bin/sudoedit -F perm=x -F auid&gt;=1000 -F auid!=unset -k priv_cmd
+    -a always,exit -F path=/usr/bin/sudoedit -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k priv_cmd
 
     The audit daemon must be restarted for the changes to take effect.

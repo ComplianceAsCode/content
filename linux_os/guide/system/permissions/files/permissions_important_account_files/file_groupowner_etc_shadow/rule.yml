@@ -60,9 +60,9 @@ template:
     vars:
         filepath: /etc/shadow
 {{% if "sle" in product %}}
-        filegid: '15'
+        gid_or_name: '15'
 {{% elif "ubuntu" in product or "debian" in product %}}
-        filegid: '42'
+        gid_or_name: '42'
 {{% else %}}
-        filegid: '0'
+        gid_or_name: '0'
 {{% endif %}}

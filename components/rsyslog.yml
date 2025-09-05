@@ -1,0 +1,44 @@
+groups:
+- ensure_rsyslog_log_file_configuration
+- logging
+- rsyslog_accepting_remote_messages
+- rsyslog_sending_messages
+name: rsyslog
+packages:
+- rsyslog
+- rsyslog-gnutls
+rules:
+- disable_logwatch_for_logserver
+- ensure_logrotate_activated
+- ensure_rtc_utc_configuration
+- journald_compress
+- journald_forward_to_syslog
+- journald_storage
+- logwatch_configured_hostlimit
+- logwatch_configured_splithosts
+- package_logrotate_installed
+- package_rsyslog-gnutls_installed
+- package_rsyslog_installed
+- package_syslogng_installed
+- package_systemd-journal-remote_installed
+- rsyslog_accept_remote_messages_tcp
+- rsyslog_accept_remote_messages_udp
+- rsyslog_cron_logging
+- rsyslog_encrypt_offload_actionsendstreamdriverauthmode
+- rsyslog_encrypt_offload_actionsendstreamdrivermode
+- rsyslog_encrypt_offload_defaultnetstreamdriver
+- rsyslog_filecreatemode
+- rsyslog_files_groupownership
+- rsyslog_files_ownership
+- rsyslog_files_permissions
+- rsyslog_logging_configured
+- rsyslog_nolisten
+- rsyslog_remote_access_monitoring
+- rsyslog_remote_loghost
+- rsyslog_remote_tls
+- rsyslog_remote_tls_cacert
+- service_rsyslog_enabled
+- service_syslogng_enabled
+- service_systemd-journald_enabled
+- socket_systemd-journal-remote_disabled
+- timer_logrotate_enabled

@@ -1,0 +1,27 @@
+
+default:
+  grub2_boot_path: "/boot/grub2"
+  grub2_uefi_boot_path: "/boot/grub2"
+  grub_helper_executable: "grubby"
+
+overrides:
+{{% if "rhel-like" in families and major_version_ordinal <= 8 %}}
+  grub2_uefi_boot_path: "/boot/efi/EFI/redhat"
+{{% endif %}}
+{{% if "suse" in families %}}
+  grub_helper_executable: "grub2-mkconfig"
+{{% if major_version_ordinal <= 12 %}}
+  grub2_uefi_boot_path: "/boot/efi/EFI/sles"
+{{% endif %}}
+{{% endif %}}
+{{% if "debian-like" in families %}}
+  grub2_boot_path: "/boot/grub"
+  grub_helper_executable: "update-grub"
+{{% endif %}}
+{{% if "ubuntu" in families %}}
+{{% if major_version_ordinal <= 1804 %}}
+  grub2_uefi_boot_path: "/boot/efi/EFI/ubuntu"
+{{% else %}}
+  grub2_uefi_boot_path: "/boot/grub"
+{{% endif %}}
+{{% endif %}}

@@ -14,7 +14,7 @@ from typing import TextIO
 import xml.etree.ElementTree as ET
 
 from utils.srg_export import html, md, xlsx
-from utils.srg_export.data import HEADERS, srgid_to_iacontrol
+from utils.srg_export.data import HEADERS, get_iacontrol_mapping
 
 try:
     import ssg.build_stig
@@ -44,8 +44,11 @@ def get_iacontrol(srg_str: str) -> str:
     srgs = srg_str.split(',')
     result = list()
     for srg in srgs:
-        if srg in srgid_to_iacontrol:
-            result.append(srgid_to_iacontrol[srg])
+        mapping = get_iacontrol_mapping(srg)
+        if mapping is None:
+            continue
+        if srg in mapping:
+            result.append(mapping[srg])
     result_set = set(result)
     return ','.join(str(srg) for srg in result_set)
 
@@ -199,6 +202,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-m", "--manual", type=str, action="store",
                         help="Path to XML XCCDF manual file to use as the source of the SRGs",
                         default=SRG_PATH)
+    parser.add_argument("--prefer-controls", action="store_true",
+                        help="When creating rows prefer checks and fixes from controls over rules",
+                        default=False)
     parser.add_argument("-f", "--out-format", type=str, choices=("csv", "xlsx", "html", "md"),
                         action="store", help="The format the output should take. Defaults to csv",
                         default="csv")
@@ -215,9 +221,16 @@ def get_policy_specific_content(key: str, rule_object: ssg.build_yaml.Rule) -> s
     return stig.get(key, "")
 
 
+def use_rule_content(control: ssg.controls.Control, prefer_controls: bool) -> bool:
+    if control.fixtext is not None and control.check is not None and prefer_controls:
+        return False
+    return True
+
+
 def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.environment,
-                   rule_json: dict, srgs: dict, used_rules: list, root_path: str) -> list:
-    if len(control.selections) > 0:
+                   rule_json: dict, srgs: dict, used_rules: list, root_path: str,
+                   prefer_controls: bool) -> list:
+    if len(control.selections) > 0 and use_rule_content(control, prefer_controls):
         rows = list()
         for selection in control.selections:
             if selection not in used_rules and selection in control.selected:
@@ -369,11 +382,48 @@ def handle_output(output: str, results: list, format_type: str, product: str) ->
     print(f'Wrote output to {output}')
 
 
-def get_env_yaml(root: str, product: str, build_config_yaml: str) -> dict:
-    product_dir = os.path.join(root, "products", product)
+def get_env_yaml(root: str, product_path: str, build_config_yaml: str) -> dict:
+    product_dir = os.path.join(root, "products", product_path)
     product_yaml_path = os.path.join(product_dir, "product.yml")
-    env_yaml = ssg.environment.open_environment(build_config_yaml, str(product_yaml_path))
+    env_yaml = ssg.environment.open_environment(
+            build_config_yaml, product_yaml_path, os.path.join(root, "product_properties"))
     return env_yaml
+
+
+def rows_match(old: dict, new: dict) -> bool:
+    must_match = ['Requirement', 'Fix', 'Check']
+    for k in must_match:
+        if old[k] != new[k]:
+            return False
+    return True
+
+
+def merge_rows(old: dict, new: dict) -> None:
+    old["SRGID"] = old["SRGID"] + "," + new["SRGID"]
+
+
+def extend_results(results: list, rows: list, prefer_controls: bool) -> None:
+    # We always extend with rows that are generated based on rule selection
+    # We also only attempt to merge the new row if we prefer control-based
+    # policy data over rule-based
+    if len(rows) > 1 or not prefer_controls:
+        results.extend(rows)
+        return
+
+    if len(rows) == 0:
+        return
+
+    # If we only have one row, possibly with check and fix from the control
+    # file and not rules, let's find a row with the same requirement, fix
+    # and check and if they match, merge
+    new_row = rows[0]
+    for r in results:
+        if rows_match(r, new_row):
+            merge_rows(r, new_row)
+            return
+
+    # We didn't find any match, so we just add the row as new
+    results.extend(rows)
 
 
 def main() -> None:
@@ -383,8 +433,8 @@ def main() -> None:
 
     srgs = ssg.build_stig.parse_srgs(args.manual)
     product_dir = os.path.join(args.root, "products", args.product)
-    product_yaml_path = os.path.join(product_dir, "product.yml")
-    env_yaml = ssg.environment.open_environment(args.build_config_yaml, str(product_yaml_path))
+    env_yaml = get_env_yaml(
+            args.root, args.product, args.build_config_yaml)
     policy = get_policy(args, env_yaml)
     rule_json = get_rule_json(args.json)
 
@@ -392,8 +442,8 @@ def main() -> None:
     results = list()
     for control in policy.controls:
         rows = handle_control(args.product, control, env_yaml, rule_json, srgs, used_rules,
-                              args.root)
-        results.extend(rows)
+                              args.root, args.prefer_controls)
+        extend_results(results, rows, args.prefer_controls)
 
     handle_output(args.output, results, args.out_format, args.product)
 

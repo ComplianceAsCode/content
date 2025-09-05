@@ -1,0 +1,28 @@
+groups:
+- ntp
+name: ntp
+packages:
+- ntp
+rules:
+- chronyd_client_only
+- chronyd_configure_pool_and_server
+- chronyd_no_chronyc_network
+- chronyd_or_ntpd_set_maxpoll
+- chronyd_or_ntpd_specify_multiple_servers
+- chronyd_or_ntpd_specify_remote_server
+- chronyd_run_as_chrony_user
+- chronyd_server_directive
+- chronyd_specify_remote_server
+- chronyd_sync_clock
+- ntpd_configure_restrictions
+- ntpd_run_as_ntp_user
+- ntpd_specify_multiple_servers
+- ntpd_specify_remote_server
+- package_chrony_installed
+- package_ntp_installed
+- package_timesyncd_installed
+- service_chronyd_enabled
+- service_chronyd_or_ntpd_enabled
+- service_ntp_enabled
+- service_ntpd_enabled
+- service_timesyncd_enabled

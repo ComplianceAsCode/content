@@ -1,0 +1,14 @@
+name: fips
+packages:
+- fips
+rules:
+- aide_use_fips_hashes
+- enable_dracut_fips_module
+- enable_fips_mode
+- etc_system_fips_exists
+- grub2_enable_fips_mode
+- is_fips_mode_enabled
+- package_dracut-fips-aesni_installed
+- package_dracut-fips_installed
+- sebool_fips_mode
+- sysctl_crypto_fips_enabled

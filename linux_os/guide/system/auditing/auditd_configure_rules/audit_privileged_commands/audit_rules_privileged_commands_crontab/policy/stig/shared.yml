@@ -15,13 +15,13 @@ checktext: |-
 
     $ sudo auditctl -l | grep crontab
 
-    -a always,exit -F path=/usr/bin/crontab -F perm=x -F auid&gt;=1000 -F auid!=unset -k privileged-crontab
+    -a always,exit -F path=/usr/bin/crontab -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-crontab
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to generate audit records upon successful/unsuccessful attempts to use the "crontab" command by adding or updating the following rule in "/etc/audit/rules.d/audit.rules":
 
-    -a always,exit -F path=/usr/bin/crontab -F perm=x -F auid&gt;=1000 -F auid!=unset -k privileged-crontab
+    -a always,exit -F path=/usr/bin/crontab -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-crontab
 
     The audit daemon must be restarted for the changes to take effect.

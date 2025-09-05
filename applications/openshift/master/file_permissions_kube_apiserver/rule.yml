@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify Permissions on the Kubernetes API Server Pod Specification File'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-*/kube-apiserver-pod.yaml", perms="0644") }}}
+    {{{ describe_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-*/kube-apiserver-pod.yaml", perms="0600") }}}
 
 rationale: |-
     If the Kubernetes specification file is writable by a group-owner or the
@@ -27,7 +27,7 @@ references:
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-*/kube-apiserver-pod.yaml", perms="-rw-r--r--") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-*/kube-apiserver-pod.yaml", perms="-rw-r--r--") }}}
+    {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-*/kube-apiserver-pod.yaml", perms="-rw-------") }}}
 
 platforms:
   - ocp4-master-node
@@ -43,4 +43,4 @@ template:
   vars:
     filepath: "^/etc/kubernetes/static-pod-resources/kube-apiserver-pod-.*/kube-apiserver-pod.yaml$"
     filepath_is_regex: "true"
-    filemode: '0644'
+    filemode: '0600'

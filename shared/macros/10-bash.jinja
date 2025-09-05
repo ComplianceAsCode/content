@@ -434,7 +434,8 @@ EOF
 
 
 {{#
-   Set parameter in /etc/systemd/coredump.conf
+   Set parameter in /etc/systemd/coredump.conf.
+   For SLE platforms put remediation in drop-in configuration file /etc/systemd/coredump.conf.d/oscap-autoremedy.conf.
 
 :parameter parameter: Parameter to set
 :type parameter: str
@@ -443,8 +444,17 @@ EOF
 
 #}}
 {{%- macro bash_coredump_config_set(parameter, value) -%}}
+{{% if 'sle' in product %}}
+mkdir -p /etc/systemd/coredump.conf.d/
+if [ ! -f "/etc/systemd/coredump.conf.d/oscap-autoremedy.conf" ]; then
+   echo "[Coredump]" > "/etc/systemd/coredump.conf.d/oscap-autoremedy.conf"
+fi
+{{%- set target_path="/etc/systemd/coredump.conf.d/oscap-autoremedy.conf" -%}}
+{{% else %}}
+{{%- set target_path="/etc/systemd/coredump.conf" -%}}
+{{% endif %}}
 {{{ set_config_file(
-        path="/etc/systemd/coredump.conf",
+        path=target_path,
         parameter=parameter,
         value=value,
         create=true,
@@ -1064,7 +1074,18 @@ if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "$pam_file" 
     sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/i auth        required      pam_faillock.so preauth' "$pam_file"
 fi
 if ! grep -qE '^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail.*$' "$pam_file" ; then
-    sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/a auth        [default=die]      pam_faillock.so authfail' "$pam_file"
+    num_lines=$(sed -n 's/^auth.*success=\([0-9]\).*pam_unix\.so.*/\1/p' "$pam_file")
+    if [ ! -z "$num_lines" ]; then
+        echo "$num_lines"
+        pattern=""
+        for ((i=1; i <= num_lines; i++)); do
+            pattern="${pattern}n;"
+        done;
+        sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/{'$pattern'a auth        [default=die]      pam_faillock.so authfail
+ }' "$pam_file"
+    else
+        sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/a auth        [default=die]      pam_faillock.so authfail' "$pam_file"
+    fi
 fi
 if ! grep -qE '^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc.*$' "$pam_file" ; then
     sed -i --follow-symlinks '/^auth.*pam_faillock\.so.*authfail.*/a auth        sufficient      pam_faillock.so authsucc' "$pam_file"
@@ -1598,6 +1619,18 @@ fi
 :type format: str
 
 #}}
+
+{{%- macro bash_comment_config_line(config_file, key) -%}}
+# If the key exists, comment it. Otherwise do nothing
+# We search for the key string followed by a blank space,
+# so if we search for 'setting', 'setting2' won't match.
+if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}[[:blank:]]" "{{{ config_file }}}"; then
+    LC_ALL=C sed -i --follow-symlinks "s/{{{ key }}}[[:blank:]].*/#&/gi" "{{{ config_file }}}"
+fi
+{{%- endmacro -%}}
+
+
+
 {{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
 # Strip any search characters in the key arg so that the key can be replaced without
 # adding any search characters to the config file.
@@ -1689,7 +1722,7 @@ Ensures that given mount point is in :code:`/etc/fstab`.
 
 #}}
 {{% macro bash_ensure_mount_option_in_fstab(mount_point, mount_opt, fs_spec, type) -%}}
-mount_point_match_regexp="$(printf "[[:space:]]%s[[:space:]]" {{{ mount_point }}})"
+mount_point_match_regexp="$(printf "[^#].*[[:space:]]%s[[:space:]]" {{{ mount_point }}})"
 
 # If the mount point is not in /etc/fstab, get previous mount options from /etc/mtab
 if ! grep "$mount_point_match_regexp" /etc/fstab; then
@@ -1697,6 +1730,12 @@ if ! grep "$mount_point_match_regexp" /etc/fstab; then
     previous_mount_opts=$(grep "$mount_point_match_regexp" /etc/mtab | head -1 |  awk '{print $4}' \
                 | sed -E "s/(rw|defaults|seclabel|{{{ mount_opt }}})(,|$)//g;s/,$//")
     [ "$previous_mount_opts" ] && previous_mount_opts+=","
+    # In iso9660 filesystems mtab could describe a "blocksize" value, this should be reflected in
+    # fstab as "block".  The next variable is to satisfy shellcheck SC2050.
+    fs_type="{{{ type }}}"
+    if [  "$fs_type" == "iso9660" ] ; then
+        previous_mount_opts=$(sed 's/blocksize=/block=/' <<< "$previous_mount_opts")
+    fi
     echo "{{{ fs_spec }}} {{{ mount_point }}} {{{ type }}} defaults,${previous_mount_opts}{{{ mount_opt }}} 0 0" >> /etc/fstab
 # If the mount_opt option is not already in the mount point's /etc/fstab entry, add it
 elif ! grep "$mount_point_match_regexp" /etc/fstab | grep "{{{ mount_opt }}}"; then
@@ -1711,7 +1750,7 @@ fi
 
 #}}
 {{% macro bash_assert_mount_point_in_fstab(mount_point) -%}}
-mount_point_match_regexp="$(printf "[[:space:]]%s[[:space:]]" "{{{ mount_point }}}")"
+mount_point_match_regexp="$(printf "[^#].*[[:space:]]%s[[:space:]]" "{{{ mount_point }}}")"
 {{#
     This macro gets expanded to code that will return 1 if MOUNTPOINT is not in /etc/fstab;
     This is consistent with the behavior prior to converting this function to a jinja macro
@@ -1765,7 +1804,7 @@ Notes:
 :type action_arch_filters: str
 :param other_filters: Other filters that may characterize the rule. For example, "-F a2&03 -F path=/etc/passwd"
 :type other_filters: str
-:param auid_filters: The auid filters of the rule. For example, "-F auid>=1000 -F auid!=unset"
+:param auid_filters: The auid filters of the rule. For example, "-F auid>=" ~ uid_min ~ " -F auid!=unset"
 :type auid_filters: str
 :param syscall: The syscall to ensure presense among audit rules. For example, "chown"
 :type syscall: str
@@ -2648,4 +2687,17 @@ from /etc/os-release from VERSION_ID variable.
 #}}
 {{%- macro bash_get_version_os_linux(os_release_path="/etc/os-release") -%}}
 grep -P "^VERSION_ID=[\"']?[\w.]+[\"']?$" {{{ os_release_path }}} | sed "s/^VERSION_ID=[\"']\?\([^\"']\+\)[\"']\?$/\1/"
+{{%- endmacro -%}}
+
+
+{{#
+Remove all interactive users (UID >= uid_min) from /etc/passwd
+#}}
+{{%- macro bash_remove_interactive_users_from_passwd_by_uid() -%}}
+# remove all interactive users (UID >= {{{ uid_min }}}) from /etc/passwd
+del=""
+while read -r user; do
+    del+="/^${user}:/d;"
+done < <(awk -F: '($3 >= {{{ uid_min }}}) { print $1 }' /etc/passwd)
+sed -i "${del}" /etc/passwd
 {{%- endmacro -%}}

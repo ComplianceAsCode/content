@@ -1,0 +1,10 @@
+groups:
+- docker
+name: docker
+packages:
+- docker
+rules:
+- docker_selinux_enabled
+- docker_storage_configured
+- package_docker_installed
+- service_docker_enabled

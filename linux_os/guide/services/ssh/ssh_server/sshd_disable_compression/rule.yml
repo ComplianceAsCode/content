@@ -53,6 +53,8 @@ ocil: |-
 platform: os_linux[rhel]<7.4
 {{% elif product == "ol7" %}}
 platform: os_linux[ol]<7.4
+{{% elif product == "sle12" %}}
+platform: package[openssh]<7.4
 {{% endif %}}
 
 fixtext: '{{{ fixtext_sshd_lineinfile("Compression", xccdf_value("var_sshd_disable_compression"), no) }}}'

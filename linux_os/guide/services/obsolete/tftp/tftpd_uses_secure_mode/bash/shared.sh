@@ -1,4 +1,4 @@
-# platform = Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4
+# platform = multi_platform_all
 
 {{{ bash_instantiate_variables ("var_tftpd_secure_directory") }}}
 

@@ -195,10 +195,10 @@ def test_make_items_product_specific():
     assert rule.template["backends"]["anaconda"]
 
     rule.references = {
-        "stigid@rhel7": "RHEL-07-040370,RHEL-07-057364",
+        "stigid@rhel8": "RHEL-08-020012,RHEL-08-020013",
     }
-    with pytest.raises(ValueError, match="Rules can not have multiple STIG IDs."):
-        rule.make_refs_and_identifiers_product_specific("rhel7")
+    rule.normalize("rhel8")
+    assert rule.references["stigid"] == "RHEL-08-020012,RHEL-08-020013"
 
 
 def test_priority_ordering():

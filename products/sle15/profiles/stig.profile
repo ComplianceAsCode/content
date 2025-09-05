@@ -58,6 +58,7 @@ selections:
     - accounts_password_set_min_life_existing
     - accounts_passwords_pam_faildelay_delay
     - accounts_passwords_pam_tally2
+    - var_password_pam_tally2=3
     - accounts_password_pam_unix_remember
     - accounts_tmout
     - accounts_umask_etc_login_defs
@@ -69,6 +70,7 @@ selections:
     - account_unique_id
     - aide_build_database
     - aide_check_audit_tools
+    - aide_scan_notification
     - aide_verify_acls
     - aide_verify_ext_attributes
     - aide_periodic_cron_checking
@@ -225,6 +227,7 @@ selections:
     - package_aide_installed
     - package_audit-audispd-plugins_installed
     - package_audit_installed
+    - package_mailx_installed
     - package_pam_apparmor_installed
     - package_telnet-server_removed
     - package_firewalld_installed
@@ -265,6 +268,7 @@ selections:
     - sshd_set_keepalive_0
     - sshd_set_loglevel_verbose
     - sshd_use_approved_ciphers_ordered_stig
+    - sshd_use_approved_kex_ordered_stig
     - sshd_use_approved_macs_ordered_stig
     - sssd_memcache_timeout
     - sssd_offline_cred_expiration

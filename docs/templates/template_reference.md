@@ -279,7 +279,10 @@
         subdirectories under the directory specified by **filepath**. Default
         value is `"false"`.
 
-    -   **filegid** - group ID (GID)
+    -   **gid_or_name** - group ID (GID) or a group name.
+        If the parameter is an integer, it is treated as group ID. If the
+        parameter is not an integer, it is treated as a group name and it is
+        converted to GID by reading /etc/group.
 
 -   Languages: Ansible, Bash, OVAL
 
@@ -753,6 +756,19 @@ When the remediation is applied duplicate occurrences of `key` are removed.
         If the `no_quotes` would be set in the template, only the first
         form would be checked for, and the unquoted assignment would be
         inserted to the file by the remediation if not present.
+
+#### socket_disabled
+- Ensures that a Systemd socket is masked.
+
+- parameters:
+
+    - **socketname** - name of the socket without the ".socket" extension
+
+    - **packagename** - name of the package providing the socket file; if no
+        package name is provided, socketname is used. Currently, the package name
+        is used when running Automatus test scenarios.
+
+- languages: Ansible, Bash, OVAL
 
 #### sshd_lineinfile
 -   Checks SSH server configuration items in `/etc/ssh/sshd_config` or

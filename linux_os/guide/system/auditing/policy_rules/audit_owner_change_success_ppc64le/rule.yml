@@ -6,7 +6,7 @@ title: 'Configure auditing of successful ownership changes (ppc64le)'
 
 {{% set file_contents_audit_owner_change_success =
 "## Successful ownership change
--a always,exit -F arch=b64 -S lchown,fchown,chown,fchownat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-owner-change" %}}
+-a always,exit -F arch=b64 -S lchown,fchown,chown,fchownat -F success=1 -F auid>=" ~ uid_min ~ " -F auid!=unset -F key=successful-owner-change" %}}
 
 description: |-
     Ensure that successful attempts to change an ownership of files or directories are audited.

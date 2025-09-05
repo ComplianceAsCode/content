@@ -3,7 +3,7 @@ documentation_complete: true
 prodtype: ocp4
 
 
-title: 'Ensure Eviction threshold Settings Are Set - evictionHard: imagefs.inodesFree'
+title: 'Ensure Eviction threshold Settings Are Set - evictionHard: memory.available'
 
 description: |-
   <p>Two types of garbage collection are performed on an OpenShift Container Platform node:</p>
@@ -33,12 +33,12 @@ description: |-
 
   <p>
   To configure, follow the directions in
-  {{{ weblink(link="https://docs.openshift.com/container-platform/4.5/nodes/nodes/nodes-nodes-garbage-collection.html#nodes-nodes-garbage-collection-configuring_nodes-nodes-configuring",
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/nodes/nodes/nodes-nodes-garbage-collection.html#nodes-nodes-garbage-collection-configuring_nodes-nodes-configuring",
               text="the documentation") }}}
   </p>
 
   <p>
-  This rule pertains to the <tt>imagefs.inodesFree</tt> setting of the <tt>evictionHard</tt>
+  This rule pertains to the <tt>memory.available</tt> setting of the <tt>evictionHard</tt>
   section.
   </p>
 
@@ -58,7 +58,7 @@ references:
   srg: SRG-APP-000516-CTR-001325
 
 
-ocil_clause: '<tt>imagefs.inodesFree</tt> is not set in <tt>evictionHard</tt> section'
+ocil_clause: '<tt>memory.available</tt> is not set in <tt>evictionHard</tt> section'
 
 ocil: |-
   Run the following command on the kubelet node(s):
@@ -76,4 +76,3 @@ template:
     values:
     - value: "^.+$"
       operation: "pattern match"
-

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
+prodtype: alinux2,alinux3,anolis23,anolis8,fedora,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'All Interactive User Home Directories Must Be Owned By The Primary User'
 
@@ -46,7 +46,7 @@ ocil_clause: 'the user ownership is incorrect'
 
 ocil: |-
     To verify the home directory ownership, run the following command:
-    <pre># ls -ld $(awk -F: '($3&gt;=1000)&amp;&amp;($7 !~ /nologin/){print $6}' /etc/passwd)</pre>
+    <pre># ls -ld $(awk -F: '($3&gt;={{{ uid_min }}})&amp;&amp;($7 !~ /nologin/){print $6}' /etc/passwd)</pre>
 
 warnings:
     - general: |-

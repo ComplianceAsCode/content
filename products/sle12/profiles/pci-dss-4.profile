@@ -21,6 +21,7 @@ selections:
     -  disable_host_auth
     -  disable_prelink
     -  disable_users_coredumps
+    -  ensure_pam_wheel_group_empty
     -  file_at_deny_not_exist
     -  file_cron_deny_not_exist
     -  file_groupowner_at_allow
@@ -52,14 +53,19 @@ selections:
     -  group_unique_id
     -  group_unique_name
     -  no_files_unowned_by_user
+    -  '!ntpd_specify_multiple_servers'
+    -  '!ntpd_specify_remote_server'
     -  package_bind_removed
+    -  package_cron_installed
     -  package_dhcp_removed
     -  package_httpd_removed
     -  package_net-snmp_removed
     -  package_nfs-utils_removed
+    -  '!package_ntp_installed'
     -  package_openldap-servers_removed
     -  package_rsh_removed
     -  package_samba_removed
+    -  '!package_libreswan_installed'
     -  package_talk_removed
     -  package_telnet_removed
     -  package_xinetd_removed
@@ -67,8 +73,11 @@ selections:
     -  service_avahi-daemon_disabled
     -  service_cron_enabled
     -  service_cups_disabled
+    -  '!service_ntp_enabled'
+    -  '!service_ntpd_enabled'
     -  service_rpcbind_disabled
     -  service_rsyncd_disabled
+    -  '!service_timesyncd_enabled'
     -  sshd_disable_rhosts
     -  sshd_disable_tcp_forwarding
     -  sshd_disable_x11_forwarding
@@ -82,3 +91,6 @@ selections:
     -  sshd_strong_kex=pcidss
     -  sshd_approved_macs=cis_sle12
     -  sysctl_fs_suid_dumpable
+    -  '!use_pam_wheel_for_su'
+    -  use_pam_wheel_group_for_su
+    -  var_pam_wheel_group_for_su=cis

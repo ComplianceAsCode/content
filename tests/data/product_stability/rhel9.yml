@@ -1,3 +1,5 @@
+aide_also_checks_audispd: 'no'
+aide_also_checks_rsyslog: 'yes'
 aide_bin_path: /usr/sbin/aide
 aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
@@ -12,6 +14,7 @@ centos_major_version: '9'
 centos_pkg_release: 5ccc5b19
 centos_pkg_version: 8483c65d
 chrony_conf_path: /etc/chrony.conf
+components_root: ../../components
 cpes:
 - rhel9:
     check_id: installed_OS_is_rhel9
@@ -20,6 +23,9 @@ cpes:
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: distro.d
 faillock_path: /var/log/faillock
+families:
+- rhel
+- rhel-like
 full_name: Red Hat Enterprise Linux 9
 gid_min: 1000
 groups:
@@ -27,10 +33,12 @@ groups:
     name: ssh_keys
 grub2_boot_path: /boot/grub2
 grub2_uefi_boot_path: /boot/grub2
+grub_helper_executable: grubby
 init_system: systemd
+major_version_ordinal: 9
 nobody_gid: 65534
 nobody_uid: 65534
-oval_feed_url: https://access.redhat.com/security/data/oval/com.redhat.rhsa-RHEL9.xml.bz2
+oval_feed_url: https://access.redhat.com/security/data/oval/v2/RHEL9/rhel-9.oval.xml.bz2
 pkg_manager: dnf
 pkg_manager_config_file: /etc/dnf/dnf.conf
 pkg_release: 4ae0493b
@@ -55,6 +63,7 @@ profiles_root: ./profiles
 reference_uris:
   anssi: http://www.ssi.gouv.fr/administration/bonnes-pratiques/
   app-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
+  ccn: https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html
   cis: https://www.cisecurity.org/benchmark/red_hat_linux/
   cis-csc: https://www.cisecurity.org/controls/
   cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf

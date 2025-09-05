@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhcos4
+
+title: 'Verify Owner on the system journal'
+
+description: '{{{ describe_file_owner(file="/var/log/journal/.*/system.journal", owner="root") }}}'
+
+rationale: |-
+  RHCOS must protect system  journal file from any type of unauthorized access by setting file ownership
+
+identifiers:
+  cce@rhcos4: CCE-87682-1
+
+severity: medium
+
+references:
+  srg: SRG-APP-000118-CTR-000240
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/journal/.*/system.journal", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/journal/.*/system.journal", owner="root") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: ^/var/log/journal/.*/system.journal$
+        fileuid: '0'
+        filepath_is_regex: "true"

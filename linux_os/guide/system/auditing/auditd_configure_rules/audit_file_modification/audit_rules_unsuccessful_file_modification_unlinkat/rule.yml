@@ -30,8 +30,8 @@ description: |-
     Add or update the following lines to <tt>/etc/audit/rules.d/audit.rules</tt> to configure the operating system to generate
     an audit record for all uses of the <tt>unlinkat</tt> system call:
     <pre>
-    -a always,exit -F arch=b32 -S unlinkat -F auid>=1000 -F auid!=-1 -k perm_mod
-    -a always,exit -F arch=b64 -S unlinkat -F auid>=1000 -F auid!=-1 -k perm_mod</pre>
+    -a always,exit -F arch=b32 -S unlinkat -F auid>={{{ uid_min }}} -F auid!=-1 -k perm_mod
+    -a always,exit -F arch=b64 -S unlinkat -F auid>={{{ uid_min }}} -F auid!=-1 -k perm_mod</pre>
     {{% endif %}}
 
 rationale: |-
@@ -87,8 +87,8 @@ warnings:
         <pre>-a always,exit -F arch=b32 -S unlink,unlinkat,rename,renameat -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-delete</pre>
         {{% else %}}
         <pre>
-        -a always,exit -F arch=b32 -S unlinkat -F auid>=1000 -F auid!=4294967295 -k perm_mod
-        -a always,exit -F arch=b64 -S unlinkat -F auid>=1000 -F auid!=4294967295 -k perm_mod</pre>
+        -a always,exit -F arch=b32 -S unlinkat -F auid>={{{ uid_min }}} -F auid!=4294967295 -k perm_mod
+        -a always,exit -F arch=b64 -S unlinkat -F auid>={{{ uid_min }}} -F auid!=4294967295 -k perm_mod</pre>
         {{% endif %}}
 
 template:

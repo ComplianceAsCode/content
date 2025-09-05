@@ -1,27 +1,44 @@
 documentation_complete: true
 
-title: 'Disable SSH Server If Possible (Unusual)'
+title: 'Disable SSH Server If Possible'
 
 description: |-
-    The SSH server service, sshd, is commonly needed.
-    However, if it can be disabled, do so.
-    {{% if product in ['debian10', 'debian11', 'ubuntu1604', 'ubuntu1804'] %}}
+    {{% if product == "rhcos4" %}}
+    Instead of using ssh to remotely log in to a cluster node, it is recommended
+    to use <tt>oc debug</tt>
     {{{ describe_service_disable(service="sshd") }}}
     {{% else %}}
-    {{{ describe_service_disable(service="sshd") }}}
-    {{% endif %}}
+    The SSH server service, sshd, is commonly needed.
+    However, if it can be disabled, do so.
     This is unusual, as SSH is a common method for encrypted and authenticated
     remote access.
+    {{% endif %}}
 
-rationale: ""
+rationale: |-
+    {{% if product == "rhcos4" %}}
+    Red Hat Enterprise Linux CoreOS (RHCOS) is a single-purpose container
+    operating system. RHCOS is only supported as a component of the
+    OpenShift Container Platform. Remote management of the RHCOS nodes is
+    performed at the OpenShift Container Platform API level. As a result,
+    any direct remote access to the RHCOS nodes is unnecessary. Disabling
+    the SSHD service helps reduce the number of open ports on each host.
+    {{% endif %}}
 
 references:
   nist: CM-3(6),IA-2(4)
+  srg: SRG-APP-000185-CTR-000490,SRG-APP-000141-CTR-000315
 
-severity: unknown
+severity: high
 
 identifiers:
+    cce@rhcos4: CCE-86189-8
     cce@rhel7: CCE-80217-3
+
+ocil_clause: |-
+    {{{ ocil_clause_service_disabled(service="sshd") }}}
+
+ocil: |-
+    {{{ ocil_service_disabled(service="sshd") }}}
 
 template:
     name: service_disabled

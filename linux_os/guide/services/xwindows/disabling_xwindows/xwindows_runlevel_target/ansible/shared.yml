@@ -1,4 +1,4 @@
-# platform = multi_platform_sle,multi_platform_rhv,multi_platform_fedora,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_ol
+# platform = multi_platform_all
 # reboot = true
 # strategy = restrict
 # complexity = low

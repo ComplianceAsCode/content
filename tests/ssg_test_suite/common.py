@@ -264,7 +264,7 @@ def _make_file_root_owned(tarinfo):
     return tarinfo
 
 
-def get_product_context(product=None):
+def get_product_context(product_id=None):
     """
     Returns a product YAML context if any product is specified. Hard-coded to
     assume a debug build.
@@ -272,9 +272,11 @@ def get_product_context(product=None):
     # Load product's YAML file if present. This will allow us to parse
     # tests in the context of the product we're executing under.
     product_yaml = dict()
-    if product:
-        yaml_path = product_yaml_path(SSG_ROOT, product)
-        product_yaml.update(load_product_yaml(yaml_path))
+    if product_id:
+        product = load_product_yaml(product_yaml_path(SSG_ROOT, product_id))
+        product_properties_path = os.path.join(SSG_ROOT, "product_properties")
+        product.read_properties_from_directory(product_properties_path)
+        product_yaml.update(product)
 
     # We could run into a DocumentationNotComplete error when loading a
     # rule's YAML contents. However, because the test suite isn't executed

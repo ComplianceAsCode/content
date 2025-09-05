@@ -34,6 +34,7 @@ identifiers:
 
 references:
     anssi: BP28(R73)
+    ccn@rhel9: A.3.SEC-RHEL1
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
     cis@alinux2: 4.1.8
     cis@alinux3: 4.1.3.12
@@ -65,9 +66,9 @@ ocil_clause: 'the command does not return a line, or the line is commented out'
 ocil: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/security/opasswd" with the following command:
 
-    $ sudo auditctl -l | grep /var/run/faillock
+    $ sudo auditctl -l | grep {{{ faillock_path }}}
 
-    -w /var/run/faillock -p wa -k logins
+    -w {{{ faillock_path }}} -p wa -k logins
 
 template:
     name: audit_rules_login_events

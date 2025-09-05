@@ -1,0 +1,101 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Configure the access control program to grant or deny access to
+      specific hosts and services") }}}
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <extend_definition comment="package firewalld installed" definition_ref="package_firewalld_installed" />
+        <extend_definition comment="service firewalld enabled" definition_ref="service_firewalld_enabled" />
+        <criteria operator="OR">
+            <criterion comment="firewalld's default zone is configured to grant access to
+                specific hosts" test_ref="test_firewalld_default_zone_hosts_configured" />
+            <criterion comment="firewalld's default zone is configured to grant access to
+                specific services" test_ref="test_firewalld_default_zone_services_configured" />
+        </criteria>
+      </criteria>
+      <criteria operator="OR">
+         <criterion comment="tcpwrappers allow list is configured"
+           test_ref="test_tcpwrappers_allow_list_not_empty" />
+         <criterion comment="tcpwrappers deny list is configured"
+           test_ref="test_tcpwrappers_deny_list_not_empty" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <local_variable id="var_firewalld_default_zone_filename" datatype="string" version="1"
+      comment="Name of the zone definition file">
+    <concat>
+       <object_component item_field="subexpression" object_ref="obj_firewalld_default_zone"/>
+       <literal_component>.xml</literal_component>
+    </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_test id="test_tcpwrappers_allow_list_not_empty" check="all"
+      check_existence="all_exist" comment="check if /etc/hosts.allow is empty" version="1">
+    <ind:object object_ref="obj_file_empty_hosts_allow"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_file_empty_hosts_allow" version="1">
+    <ind:filepath>/etc/hosts.allow</ind:filepath>
+    <ind:pattern operation="pattern match">^[^#]+</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_tcpwrappers_deny_list_not_empty" check="all"
+      check_existence="all_exist" comment="check if /etc/hosts.deny is empty" version="1">
+    <ind:object object_ref="obj_file_empty_hosts_deny"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_file_empty_hosts_deny" version="1">
+    <ind:filepath>/etc/hosts.deny</ind:filepath>
+    <ind:pattern operation="pattern match">^[^#]+</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_firewalld_default_zone" version="1">
+    <ind:filepath>/etc/firewalld/firewalld.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*DefaultZone=(\w+)$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="check if firewalld's default zone is configured to grant access to specific hosts"
+    id="test_firewalld_default_zone_hosts_configured" version="1">
+    <ind:object object_ref="obj_firewalld_public_zone_hosts_configured" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_firewalld_public_zone_hosts_configured"
+    version="1">
+  <ind:path operation="pattern match">^/(etc|usr/lib)/firewalld/zones/</ind:path>
+    <ind:filename var_ref="var_firewalld_default_zone_filename"></ind:filename>
+    <ind:pattern operation="pattern match">^[\s]+&lt;source (address|mac|ipset)="[\w:]+"[\s]*/&gt;$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="check if firewalld's default zone is configured to grant access to specific services"
+    id="test_firewalld_default_zone_services_configured" version="1">
+    <ind:object object_ref="obj_firewalld_public_zone_services_configured" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_firewalld_public_zone_services_configured"
+    version="1">
+  <ind:path operation="pattern match">^/(etc|usr/lib)/firewalld/zones/</ind:path>
+    <ind:filename var_ref="var_firewalld_default_zone_filename"></ind:filename>
+    <ind:pattern operation="pattern match">^[\s]+&lt;service name="\w+"[\s]*/&gt;$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    comment="check if there is an user-defined public zone definition file"
+    id="test_no_user_defined_public_zone_file" version="1">
+    <ind:object object_ref="obj_no_user_defined_public_zone_file" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_no_user_defined_public_zone_file"
+    version="1">
+    <ind:filepath>/etc/firewalld/zones/public.xml</ind:filepath>
+    <ind:pattern operation="pattern match">.*</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

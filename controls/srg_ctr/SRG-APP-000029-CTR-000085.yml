@@ -7,9 +7,30 @@ controls:
   - idp_is_configured
   - ocp_idp_no_htpasswd
   - kubeadmin_removed
-  status: not applicable
-  status_justification: |-
-    Not Applicable. Applicable to Identity Management Provider and not
-    OCP. Only configurable check is to ensure OCP is configured for an
-    IDP under SRG-APP-000023-CTR-000055. Verify with IdM service provider
-    admins that the IdM meets the requirements.
+  rules:
+  - audit_rules_privileged_commands_chage
+  - audit_rules_privileged_commands_dbus_daemon_launch_helper
+  - audit_rules_privileged_commands_fusermount
+  - audit_rules_privileged_commands_fusermount3
+  - audit_rules_privileged_commands_gpasswd
+  - audit_rules_privileged_commands_grub2_set_bootflag
+  - audit_rules_privileged_commands_mount
+  - audit_rules_privileged_commands_mount_nfs
+  - audit_rules_privileged_commands_newgrp
+  - audit_rules_privileged_commands_passwd
+  - audit_rules_privileged_commands_pkexec
+  - audit_rules_privileged_commands_sssd_krb5_child
+  - audit_rules_privileged_commands_sssd_ldap_child
+  - audit_rules_privileged_commands_sssd_proxy_child
+  - audit_rules_privileged_commands_sssd_selinux_child
+  - audit_rules_privileged_commands_ssh_keysign
+  - audit_rules_privileged_commands_su
+  - audit_rules_privileged_commands_sudo
+  - audit_rules_privileged_commands_umount
+  - audit_rules_privileged_commands_utempter
+  - audit_rules_privileged_commands_polkit_helper
+  - audit_rules_privileged_commands_pam_timestamp_check
+  - audit_rules_privileged_commands_unix_chkpwd
+  - audit_rules_privileged_commands_write
+  status: automated
+

@@ -4,7 +4,7 @@
 . $SHARED/partition.sh
 
 mkdir -p /srv/home
-awk -F':' '{if ($3>=1000 && $3!= 65534) print $1}' /etc/passwd \
+awk -F':' '{if ($3>={{{ uid_min }}} && $3!= {{{ nobody_uid }}}) print $1}' /etc/passwd \
         | xargs -I{} userdel -r {}
 
 umount /srv || true  # no problem if not mounted

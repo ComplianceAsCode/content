@@ -3,12 +3,6 @@ controls:
   levels:
   - medium
   title: {{{ full_name }}} must limit privileges to the container platform keystore.
-  status: inherently met
-  artifact_description: |-
-    Supporting evidence is in the following documentation
-
-    https://docs.openshift.com/container-platform/latest/authentication/index.html
-  status_justification: |-
-    The OpenShift Container Platform provides RBAC policies and enforcement of those policies out of the box.  Verification of SRG-APP-000340-CTR-000770 will ensure that binding of user and groups to roles provides proper restriction of access to resources. For more information on how RBAC policies work in OpenShift.
-
-    OpenShift Container Platform stores private keys and certs as Secret objects within the platform. Access to those objects is enforced by the platform's RBAC policies.
+  status: manual
+  rules:
+  - rbac_least_privilege

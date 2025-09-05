@@ -9,7 +9,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/group" with the following command:
 
-    $ sudo auditctl -l | egrep '(/etc/group)'
+    $ sudo auditctl -l | grep -E '(/etc/group)'
 
     -w /etc/group -p wa -k identity
 

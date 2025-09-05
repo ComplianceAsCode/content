@@ -77,14 +77,14 @@ ocil: |-
 warnings:
 - general: |-
     {{{ openshift_filtered_cluster_setting({
-            "/apis/monitoring.coreos.com/v1/prometheusrules?limit=500": '[.items[].spec.groups[].rules[].expr]',
+        "/apis/monitoring.coreos.com/v1/prometheusrules": '[.items[].spec.groups[].rules[].expr]',
         }) | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: "{{{ openshift_filtered_path('/apis/monitoring.coreos.com/v1/prometheusrules?limit=500', '[.items[].spec.groups[].rules[].expr]') }}}"
+    filepath: "{{{ openshift_filtered_path('/apis/monitoring.coreos.com/v1/prometheusrules', '[.items[].spec.groups[].rules[].expr]') }}}"
     yamlpath: "[:]"
     entity_check: "all"
     values:

@@ -48,7 +48,11 @@ fixtext: '{{{ fixtext_service_disabled("systemd-coredump") }}}'
 srg_requirement: '{{{ srg_requirement_service_disabled("systemd-coredump") }}}'
 
 template:
-    name: service_disabled
+    name: socket_disabled
     vars:
-        servicename: systemd-coredump
+        socketname: systemd-coredump
+{{% if product in ["ol8", "rhel8"] %}}
         packagename: systemd
+{{% else %}}
+        packagename: systemd-udev
+{{% endif %}}

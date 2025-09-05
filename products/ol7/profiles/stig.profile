@@ -278,7 +278,6 @@ selections:
     - sysctl_net_ipv4_ip_forward
     - mount_option_krb_sec_remote_filesystems
     - snmpd_not_default_password
-    - set_firewalld_default_zone
     - libreswan_approved_tunnels
     - sysctl_net_ipv6_conf_all_accept_source_route
     - install_smartcard_packages
@@ -339,3 +338,4 @@ selections:
     - ensure_oracle_gpgkey_installed
     - dconf_gnome_disable_user_list
     - package_mailx_installed
+    - network_implement_access_control

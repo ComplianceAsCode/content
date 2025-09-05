@@ -1620,8 +1620,8 @@ controls:
       - l1_workstation
     status: automated
     rules:
+      - package_cron_installed
       - service_cron_enabled
-      - service_crond_enabled
 
   - id: 5.1.2
     title: Ensure permissions on /etc/crontab are configured (Automated)
@@ -1879,7 +1879,7 @@ controls:
       - sshd_set_idle_timeout
       - sshd_idle_timeout_value=5_minutes
       - sshd_set_keepalive
-      - var_sshd_set_keepalive=3
+      - var_sshd_set_keepalive=0
 
   - id: 5.2.17
     title: Ensure SSH LoginGraceTime is set to one minute or less (Automated)
@@ -1968,6 +1968,8 @@ controls:
       - accounts_passwords_pam_tally2
       - var_password_pam_tally2=5
       - accounts_passwords_pam_tally2_deny_root
+      - accounts_passwords_pam_tally2_unlock_time
+      - var_accounts_passwords_pam_tally2_unlock_time=1800
 
   - id: 5.3.3
     title: Ensure password reuse is limited (Automated)
@@ -2100,7 +2102,9 @@ controls:
       - l1_workstation
     automated: partially # we check only for usage of use_uid with pam_su, not for the group
     rules:
-      - use_pam_wheel_for_su
+      - ensure_pam_wheel_group_empty
+      - use_pam_wheel_group_for_su
+      - var_pam_wheel_group_for_su=cis
 
   - id: 6.1.1
     title: Audit system file permissions (Manual)

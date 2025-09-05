@@ -30,28 +30,44 @@ less ~/OpenSCAP/STARTGUIDE.md
 ## Installing build dependencies
 
 ### Required Dependencies
-On *Red Hat Enterprise Linux 7* make sure the packages `cmake`, `openscap-utils`,
-`PyYAML`, `python-jinja2`, `python-setuptools` and their dependencies are installed:
+On *Red Hat Enterprise Linux 7* make sure the following packages are installed:
 
 ```bash
-yum install cmake make openscap-utils openscap-scanner PyYAML python-jinja2
+yum install cmake make openscap-utils openscap-scanner
 ```
 
-On *Red Hat Enterprise Linux 8* and *Fedora* the package list is the same but python2 packages need to be replaced with python3 ones:
+On *Red Hat Enterprise Linux 8* and *Fedora* the package list but must also include python3:
 
 ```bash
-yum install cmake make openscap-utils openscap-scanner python3 python3-pyyaml python3-jinja2 python3-setuptools
+yum install cmake make openscap-utils openscap-scanner python3
 ```
 
 On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
-`libxml2-utils`, `python3-jinja2`, `python3-yaml`, `python3-setuptools`, `xsltproc` and their dependencies are
-installed:
+`libxml2-utils`, `xsltproc` and their dependencies are installed:
 
 ```bash
-apt-get install cmake make libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml python3-setuptools xsltproc
+apt-get install cmake make libopenscap8 libxml2-utils ninja-build xsltproc
 ```
 
 IMPORTANT: Version `1.0.8` or later of `openscap-utils` is required to build the content.
+
+### Python Dependencies
+
+Some python dependencies must be installed through pip because they're not
+packaged by a distribution.
+
+Dependencies for developing are in `requirements.txt` and you can install them using:
+
+```bash
+$ pip3 install -r requirements.txt
+```
+
+Test dependencies are kept in a separate requirements file called
+`test-requirements.txt` and are installed using the same process:
+
+```bash
+$ pip3 install -r test-requirements.txt
+```
 
 ### Git (Clone the Repository)
 
@@ -92,11 +108,9 @@ apt-get install bats
 
 ### xmldiff (Python unit tests)
 
-Install the  `xmldiff` and `lxml` packages to execute Python unit tests that use these packages.
+Install the `lxml` package to execute Python unit tests that use these packages.
 
 ```bash
-pip3 install xmldiff
-
 # Fedora/RHEL
 yum install python3-lxml
 
@@ -120,11 +134,9 @@ apt-get install yamllint ansible-lint
 
 ### Static Ansible Playbooks tests
 
-Install `yamlpath` and `pytest` to run tests cases that analyse the Ansible
+Install `pytest` to run tests cases that analyse the Ansible
 Playbooks' yaml nodes.
 ```bash
-pip3 install yamlpath
-
 # Fedora/RHEL
 yum install python3-pytest
 
@@ -143,14 +155,6 @@ yum install ninja-build
 
 # Ubuntu/Debian
 apt-get install ninja-build
-```
-
-### json2html (HTML Report Statistics)
-
-Install the `json2html` package if you want to generate HTML report statistics:
-
-```bash
-pip install json2html
 ```
 
 ### Sphinx packages (Developer Documentation)
@@ -209,17 +213,6 @@ yum install python3-mypy
 
 # Ubuntu/Debian
 apt-get install python3-mypy
-```
-
-#### Type stubs
-
-```bash
-pip install types-openpyxl types-PyYAML openpyxl-stubs
-```
-
-### cmakelint (Linting CMake Files)
-```bash
-pip install cmakelint
 ```
 
 ## Downloading the source code

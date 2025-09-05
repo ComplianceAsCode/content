@@ -21,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure
-        run: cmake -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF -DANSIBLE_CHECKS=ON ..
+        run: cmake -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF -DANSIBLE_CHECKS=ON -DENABLE_SCAPVAL13=ON -DSCAPVAL_PATH='/opt/scapval/SCAP-Content-Validation-Tool-1.3.5/scapval-1.3.5.jar' ..
         working-directory: ./build
       - name: Build All
         run: make -j2 all
@@ -30,8 +30,6 @@ jobs:
         run: wget $SCAPVAL_URL/$SCAPVAL_FILENAME.zip
       - name: Unpack SCAPVAL
         run: mkdir -p /opt/scapval/ && unar $SCAPVAL_FILENAME.zip -o /opt/scapval/
-      - name: Run SCAP Validation (1.3)
-        run: $GITHUB_WORKSPACE/tests/run_scapval.py --scap-version 1.3 --scapval-path /opt/scapval/$SCAPVAL_FILENAME/$SCAPVAL_JAR --build-dir $GITHUB_WORKSPACE/build
       - name: Lint Check
         # Performs ansible-lint and yamllint checks on generated ansible playbooks
         run: ctest -j2 -R ansible-playbook --output-on-failure

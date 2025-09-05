@@ -25,8 +25,6 @@ references:
     cis@rhel8: 1.1.7.5
     nist: CM-6(b)
 
-platform: machine
-
 {{{ complete_ocil_entry_mount_option("/home", "grpquota") }}}
 
 fixtext: '{{{ fixtext_mount_option("/home", "grpquota") }}}'
@@ -53,11 +51,13 @@ warnings:
 {{% endif %}}
 
 {{% if "ol" in product %}}
+platform: machine
 template:
     name: mount_option_home
     vars:
         mountoption: grpquota
 {{% else %}}
+platform: machine and mount[home]
 template:
     name: mount_option
     vars:

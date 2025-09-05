@@ -284,7 +284,8 @@ class XCCDFEntity(object):
             value = getattr(self, key)
             if value or True:
                 data[key] = getattr(self, key)
-        del data["id_"]
+        if "id_" in data:
+            del data["id_"]
         return data
 
     def dump_yaml(self, file_name, documentation_complete=True):

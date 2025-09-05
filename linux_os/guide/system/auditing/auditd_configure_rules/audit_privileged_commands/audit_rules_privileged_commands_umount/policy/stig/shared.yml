@@ -15,14 +15,14 @@ checktext: |-
 
     $ sudo auditctl -l | grep umount
 
-    -a always,exit -F path=/usr/bin/umount -F perm=x -F auid&gt;=1000 -F auid!=unset -k privileged-mount
+    -a always,exit -F path=/usr/bin/umount -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-mount
 
     If the command does not return an audit rule for "umount" or any of the lines returned are commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to generate audit records upon successful/unsuccessful attempts to use the "umount" command by adding or updating the following rules in "/etc/audit/rules.d/audit.rules":
 
-    -a always,exit -F path=/usr/bin/umount -F perm=x -F auid&gt;=1000 -F auid!=unset -k privileged-mount
+    -a always,exit -F path=/usr/bin/umount -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-mount
 
 
     The audit daemon must be restarted for the changes to take effect.

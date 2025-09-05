@@ -194,3 +194,11 @@ def expand_yaml_path(path, parameter):
         else:
             out += i * "  " + x
     return out
+
+
+def render_template(data, template_path, output_path, loader):
+    env = _get_jinja_environment(dict())
+    env.loader = loader
+    result = process_file(template_path, data)
+    with open(output_path, "wb") as f:
+        f.write(result.encode('utf8', 'replace'))

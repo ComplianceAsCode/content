@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R10
+    version: V3R12
     SMEs:
         - ggbecker
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux V3R10.
+    DISA STIG for Red Hat Enterprise Linux V3R12.
 
     In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -340,8 +340,14 @@ selections:
     - package_aide_installed
     - selinux_context_elevation_for_sudo
     - audit_rules_kernel_module_loading_create
-    - account_emergency_expire_date
+    - account_temp_expire_date
     - package_screen_installed
     - sysctl_kernel_dmesg_restrict
     - aide_build_database
     - authconfig_config_files_symlinks
+    - no_empty_passwords_etc_shadow
+    - disallow_bypass_password_sudo
+    - selinux_confine_to_least_privilege
+    - ensure_redhat_gpgkey_installed
+    - dconf_gnome_disable_user_list
+    - package_mailx_installed

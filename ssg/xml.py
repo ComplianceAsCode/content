@@ -444,5 +444,5 @@ class XMLCPEPlatform(XMLElement):
     def __init__(self, root):
         super(XMLCPEPlatform, self).__init__(root)
 
-    def find_all_fact_ref_elements(self):
-        return self.root.findall(".//cpe-lang:fact-ref", self.ns)
+    def find_all_check_fact_ref_elements(self):
+        return self.root.findall(".//cpe-lang:check-fact-ref", self.ns)

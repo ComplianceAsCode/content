@@ -13,8 +13,10 @@
     </criteria>
   </definition>
 
-  {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
-  {{{ create_interactive_users_list_object(interactive_users_object) }}}
+  {{%- set interactive_users_home_dirs_object = "object_" ~ rule_id ~ "_home_dirs" -%}}
+  {{{ create_local_interactive_users_home_dirs_list_object(interactive_users_home_dirs_object) }}}
+  {{%- set interactive_users_uids_object = "object_" ~ rule_id ~ "_uids" -%}}
+  {{{ create_local_interactive_users_uids_list_object(interactive_users_uids_object) }}}
 
   <!-- 
     #### prepare for test_file_groupownership_home_directories ####
@@ -22,7 +24,7 @@
   -->
   <local_variable id="var_file_ownership_home_directories_dirs" datatype="string" version="1"
                   comment="Variable including all home dirs from interactive users">
-    <object_component item_field="home_dir" object_ref="{{{ interactive_users_object }}}"/>
+    <object_component item_field="subexpression" object_ref="{{{ interactive_users_home_dirs_object }}}"/>
   </local_variable>
 
   <!-- 
@@ -30,7 +32,7 @@
   -->
   <local_variable id="var_file_ownership_home_directories_uids" datatype="int" version="1"
                   comment="List of interactive users uids">
-    <object_component item_field="user_id" object_ref="{{{ interactive_users_object }}}"/>
+    <object_component item_field="subexpression" object_ref="{{{ interactive_users_uids_object }}}"/>
   </local_variable>
 
   <!-- 

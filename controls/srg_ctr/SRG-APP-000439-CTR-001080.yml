@@ -4,4 +4,18 @@ controls:
   - medium
   title: The application must protect the confidentiality and integrity of transmitted
     information.
-  status: pending
+  status: manual
+  check: |-
+    Verify that routes and ingress are using secured transmission ports and protocols by executing the following:
+
+    oc get routes --all-namespaces
+
+    Review the ingress ports, if the Ingress is not using a secure TLS transport, this is a finding.
+  fixtext: |-
+    Delete any Route or Ingress that does not use a secure transport.
+
+    oc delete route <NAME> -n <NAMESPACE>
+
+    or
+
+    oc delete ingress <NAME> -n <NAMESPACE>

@@ -29,7 +29,7 @@ template:
     name: file_groupowner
     vars:
         filepath: /var/log/messages
-        filegid: '0'
+        gid_or_name: '0'
 fixtext: |-
     {{{ describe_file_group_owner(file="/var/log/messages", group="root") }}}
 

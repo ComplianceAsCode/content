@@ -6,7 +6,7 @@ title: 'Configure auditing of successful permission changes (ppc64le)'
 
 {{% set file_contents_audit_perm_change_success =
 "## Successful permission change
--a always,exit -F arch=b64 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change" %}}
+-a always,exit -F arch=b64 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F success=1 -F auid>=" ~ uid_min ~ " -F auid!=unset -F key=successful-perm-change" %}}
 
 description: |-
     Ensure that successful attempts to modify permissions of files or directories are audited.

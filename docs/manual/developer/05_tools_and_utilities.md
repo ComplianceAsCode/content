@@ -707,3 +707,24 @@ $ python utils/generate_profile.py -i benchmark.xlsx generate --product-type ocp
 
 The `PLACEHOLDER` values must be filled in later, ideally when the rules are
 provided for each control.
+
+
+### Compare ComplianceAsCode versions - `utils/compare_versions.py`
+
+Show differences between two ComplianceAsCode versions.
+Lists added or removed rules, profiles, changes in profile composition and changes in remediations and platforms.
+For comparison, you can use git tags or ComplianceAsCode JSON manifest files directly.
+
+To compare 2 ComplianceAsCode JSON manifests, provide the manifest files.
+
+```
+python3 utils/compare_versions.py compare_manifests ~/manifests/old.json ~/manifests/new.json
+```
+
+To compare 2 upstream versions, you need to specify the version git tags and a product ID.
+
+```
+$ python3 utils/compare_versions.py compare_tags v0.1.67 v0.1.68 rhel9
+```
+
+It will internally clone the upstream project, checkout these tags, generate ComplianceAsCode JSON manifests, compare them and print the output.

@@ -6,8 +6,8 @@ title: 'Configure auditing of unsuccessful file deletions (ppc64le)'
 
 {{% set file_contents_audit_delete_failed =
 "## Unsuccessful file delete
--a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-delete
--a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-delete" %}}
+-a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F exit=-EACCES -F auid>=" ~ uid_min ~ " -F auid!=unset -F key=unsuccessful-delete
+-a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F exit=-EPERM -F auid>=" ~ uid_min ~ " -F auid!=unset -F key=unsuccessful-delete" %}}
 
 description: |-
     Ensure that unsuccessful attempts to delete a file are audited.

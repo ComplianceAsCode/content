@@ -36,3 +36,8 @@ ocil: |-
 
 fixtext: |-
     {{{ fixtext_socket_disabled("systemd-journal-remote.socket") }}}
+
+template:
+    name: socket_disabled
+    vars:
+        socketname: systemd-journal-remote

@@ -7,19 +7,21 @@
     </criteria>
   </definition>
 
-  {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
-  {{{ create_interactive_users_list_object(interactive_users_object) }}}
+  {{%- set interactive_users_home_dirs_object = "object_" ~ rule_id ~ "_home_dirs" -%}}
+  {{{ create_local_interactive_users_home_dirs_list_object(interactive_users_home_dirs_object) }}}
+  {{%- set interactive_users_gids_object = "object_" ~ rule_id ~ "_gids" -%}}
+  {{{ create_local_interactive_users_gids_list_object(interactive_users_gids_object) }}}
 
   <local_variable id="var_accounts_user_dot_group_ownership_dirs" datatype="string" version="1"
                   comment="Variable including all home dirs from interactive users">
-    <object_component item_field="home_dir"
-                      object_ref="{{{ interactive_users_object }}}"/>
+    <object_component item_field="subexpression"
+                      object_ref="{{{ interactive_users_home_dirs_object }}}"/>
   </local_variable>
 
   <local_variable id="var_accounts_user_dot_group_ownership_gids" datatype="int" version="1"
                   comment="List of interactive users gids">
-    <object_component item_field="group_id"
-                      object_ref="{{{ interactive_users_object }}}"/>
+    <object_component item_field="subexpression"
+                      object_ref="{{{ interactive_users_gids_object }}}"/>
   </local_variable>
 
   <!-- #### creation of object #### -->

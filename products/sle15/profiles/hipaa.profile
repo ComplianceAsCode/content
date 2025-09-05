@@ -144,6 +144,7 @@ selections:
     - ensure_gpgcheck_local_packages
     - grub2_disable_interactive_boot
     - libreswan_approved_tunnels
+    - package_cron_installed
     - package_rsh-server_removed
     - package_talk-server_removed
     - sebool_selinuxuser_execheap
@@ -157,4 +158,3 @@ selections:
     - service_xinetd_disabled
     - service_zebra_disabled
     - use_kerberos_security_all_exports
-

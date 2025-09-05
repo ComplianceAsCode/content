@@ -5,11 +5,13 @@
 
 :param endpoint: The Kubernetes object path(s) to fetch
 :type endpoint: str/list
+:param suppress: Whether to suppress the warning
+:type suppress: bool
 
 #}}
-{{% macro openshift_cluster_setting(endpoint) -%}}
+{{% macro openshift_cluster_setting(endpoint, suppress) -%}}
 This rule's check operates on the cluster configuration dump.
-Therefore, you need to use a tool that can query the OCP API, retrieve the {{% if endpoint is string %}}<code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ endpoint.lstrip("/") }}}</code> file.{{% else %}}{{% for item in endpoint %}}<code class="ocp-api-endpoint">{{{ item }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ item.lstrip("/") }}}</code> file{{% endfor %}}.{{% endif %}}
+Therefore, you need to use a tool that can query the OCP API, retrieve the {{% if endpoint is string %}}<code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ endpoint.lstrip("/") }}}</code> file. {{% if suppress %}} {{{suppressed_warning()}}} {{% endif %}}{{% else %}}{{% for item in endpoint %}}<code class="ocp-api-endpoint">{{{ item }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ item.lstrip("/") }}}</code> file {{% if suppress %}} {{{suppressed_warning()}}} {{% endif %}}{{% endfor %}}.{{% endif %}}
 {{%- endmacro %}}
 
 {{% macro openshift_cluster_setting_kubeletconfig() -%}}
@@ -91,6 +93,80 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 
 
 {{#
+  Macro which generates a warning indicating how to make use of a
+  Kubernetes/OpenShift-related rule as well as how to filter it. This
+  is used by the Compliance Operator to automatically figure
+  out what resources to fetch. The filtering directive can be used
+  by the jq command ( https://stedolan.github.io/jq/manual/ ).
+  This macro will suppress any non-fatal failed to fetch api warnings.
+
+:param path_filter_pairs: Kubernetes object path/filter directive pairs
+:type path_filter_pairs: dict
+:param varargs: A list of path_filter_pairs (in case repeated paths need to be used)
+:type path_filter_pairs: list
+
+#}}
+{{% macro openshift_filtered_cluster_setting_suppressed(path_filter_pairs) -%}}
+This rule's check operates on the cluster configuration dump.
+Therefore, you need to use a tool that can query the OCP API, retrieve the following:
+<ul>
+{{% for obj_path, v in path_filter_pairs.items() %}}
+  {{% set vars = v.split(',') %}}
+  {{% if vars|length == 2 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[1] %}}
+  {{% elif vars|length == 3 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[2] %}}
+  {{% else %}}
+    {{% set dump_path = obj_path %}}
+    {{% set default_filter = v %}}
+    {{% set custom_filter = v %}}
+  {{% endif %}}
+  <li>
+    <code class="ocp-api-endpoint" id="{{{ (dump_path+default_filter)|sha256 }}}">{{{ obj_path }}}</code>
+    API endpoint, filter with with the <code>jq</code> utility using the following filter
+    <code class="ocp-api-filter" id="filter-{{{ (dump_path+default_filter)|sha256 }}}">{{{ custom_filter }}}</code>
+    and persist it to the local
+    <code class="ocp-dump-location" id="dump-{{{ (dump_path+default_filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ dump_path.lstrip("/") }}}#{{{ (dump_path+default_filter)|sha256 }}}</code>
+    file.
+    {{{ suppressed_warning() }}}
+  </li>
+{{% endfor %}}
+
+{{% for arg in varargs %}}
+    {{% for obj_path, v in arg.items() %}}
+  {{% set vars = v.split(',') %}}
+  {{% if vars|length == 2 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[1] %}}
+  {{% elif vars|length == 3 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[2] %}}
+  {{% else %}}
+    {{% set dump_path = obj_path %}}
+    {{% set default_filter = v %}}
+    {{% set custom_filter = v %}}
+  {{% endif %}}
+    <li>
+        <code class="ocp-api-endpoint" id="{{{ (dump_path+default_filter)|sha256 }}}">{{{ obj_path }}}</code>
+        API endpoint, filter with with the <code>jq</code> utility using the following filter
+        <code class="ocp-api-filter" id="filter-{{{ (dump_path+default_filter)|sha256 }}}">{{{ custom_filter }}}</code>
+        and persist it to the local
+        <code class="ocp-dump-location" id="dump-{{{ (dump_path+default_filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ dump_path.lstrip("/") }}}#{{{ (dump_path+default_filter)|sha256 }}}</code>
+        file.
+        {{{ suppressed_warning() }}}
+    </li>
+    {{% endfor %}}
+{{% endfor %}}
+</ul>
+{{%- endmacro %}}
+
+{{#
   Macro which generates a unique identifier for Compliance Operator, this will hide the rule from ComplianceCheckResult
 
 #}}
@@ -99,6 +175,12 @@ This rule will be a hidden rule
 <code class="ocp-hide-rule" id="ocp-hide-rule">true</code>
 {{%- endmacro %}}
 
+{{#
+  Macro which generate a unique identifier for Compliance Operator, this will suppress the warning
+#}}
+{{% macro suppressed_warning() -%}}
+<code class="ocp-suppress-warning" id="ocp-suppress-warning">true</code>
+{{%- endmacro %}}
 
 {{% macro openshift_filtered_version(path_filter_pairs) -%}}
 This rule's check operates on the cluster configuration dump.
@@ -116,6 +198,7 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
     <code class="ocp-dump-location" id="dump-{{{ (dump_path+default_filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ dump_path.lstrip("/") }}}</code>
     file.
     {{{ hide_rule() }}}
+    {{{ suppressed_warning() }}}
   </li>
 {{% endfor %}}
 </ul>
@@ -1106,14 +1189,11 @@ Part of the grub2_bootloader_argument(_absent) templates.
 
 #}}
 {{% macro grub_command(action, arg_name_value=None) -%}}
-{{%- if 'ubuntu' in product -%}}
-    {{%- set grub_helper_executable = "update-grub" -%}}
+{{%- if "update-grub" in grub_helper_executable -%}}
     {{%- set grub_helper_args = [] -%}}
-{{%- elif product in ["sle12", "sle15"] -%}}
-    {{%- set grub_helper_executable = "grub2-mkconfig" -%}}
+{{%- elif "grub2-mkconfig" in grub_helper_executable -%}}
     {{%- set grub_helper_args = ["-o " ~ grub2_boot_path ~ "/grub2.cfg"] -%}}
-{{%- else -%}}
-    {{%- set grub_helper_executable = "grubby" -%}}
+{{%- elif "grubby" in grub_helper_executable -%}}
     {{%- if action == "update" -%}}
         {{%- set grub_helper_args = ["--update-kernel=ALL"] -%}}
     {{%- elif action == "add" -%}}
@@ -1123,10 +1203,12 @@ Part of the grub2_bootloader_argument(_absent) templates.
     {{%- else -%}}
         {{{ raise("Unknown action" + action) }}}
     {{%- endif -%}}
-    {{%- if product in ["rhel8", "ol8"] -%}}
+    {{%- if 'rhel-like' in families and major_version_ordinal == 8 -%}}
         {{# Suppress the None output of append -#}}
         {{{ grub_helper_args.append("--env=/boot/grub2/grubenv") or "" }}}
     {{%- endif -%}}
+{{%- elif grub_helper_executable -%}}
+        {{{ raise("Unknown grub helper executable: " ~ grub_helper_executable) }}}
 {{%- endif -%}}
 {{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
 {{%- endmacro %}}
@@ -1141,38 +1223,38 @@ Part of the grub2_bootloader_argument(_absent) templates.
 ## 10-base-config.rules, 11-loginuid.rules, and 43-module-load.rules installed.
 
 ## Unsuccessful file creation (open with O_CREAT)
--a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
--a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
--a always,exit -F arch=b32 -S open -F a1&0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
--a always,exit -F arch=b64 -S open -F a1&0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
--a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
--a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
--a always,exit -F arch=b32 -S open -F a1&0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
--a always,exit -F arch=b64 -S open -F a1&0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
--a always,exit -F arch=b32 -S creat -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
--a always,exit -F arch=b64 -S creat -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
--a always,exit -F arch=b32 -S creat -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
--a always,exit -F arch=b64 -S creat -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&0100 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&0100 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S open -F a1&0100 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S open -F a1&0100 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&0100 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&0100 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S open -F a1&0100 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S open -F a1&0100 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S creat -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S creat -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S creat -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S creat -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
 
 ## Unsuccessful file modifications (open for write or truncate)
--a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
--a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
--a always,exit -F arch=b32 -S open -F a1&01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
--a always,exit -F arch=b64 -S open -F a1&01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
--a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
--a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
--a always,exit -F arch=b32 -S open -F a1&01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
--a always,exit -F arch=b64 -S open -F a1&01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
--a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
--a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
--a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
--a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&01003 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&01003 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S open -F a1&01003 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S open -F a1&01003 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&01003 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&01003 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S open -F a1&01003 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S open -F a1&01003 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
 
 ## Unsuccessful file access (any other opens) This has to go last.
--a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
--a always,exit -F arch=b64 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
--a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
--a always,exit -F arch=b64 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
+-a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-access
+-a always,exit -F arch=b64 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-access
+-a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-access
+-a always,exit -F arch=b64 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-access
 {{%- endmacro -%}}
 
 

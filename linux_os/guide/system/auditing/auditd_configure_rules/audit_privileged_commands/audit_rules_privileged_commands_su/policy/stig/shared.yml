@@ -15,13 +15,13 @@ checktext: |-
 
     $ sudo auditctl -l | grep /usr/bin/su
 
-    -a always,exit -F path=/usr/bin/su -F perm=x -F auid&gt;=1000 -F auid!=unset -k privileged-priv_change
+    -a always,exit -F path=/usr/bin/su -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-priv_change
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to generate audit records upon successful/unsuccessful attempts to use the "su" command by adding or updating the following rule in "/etc/audit/rules.d/audit.rules":
 
-    -a always,exit -F path=/usr/bin/su -F perm=x -F auid&gt;=1000 -F auid!=unset -k privileged-priv_change
+    -a always,exit -F path=/usr/bin/su -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-priv_change
 
     The audit daemon must be restarted for the changes to take effect.

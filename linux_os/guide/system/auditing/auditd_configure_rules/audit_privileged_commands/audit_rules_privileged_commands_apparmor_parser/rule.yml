@@ -36,7 +36,7 @@ ocil: |-
     To verify that execution of the command is being audited, run the following command:
     <pre>sudo auditctl -l | grep apparmor_parser</pre>
     The output should return something similar to:
-    <pre>-a always,exit -F path=/sbin/apparmor_parser -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged</pre>
+    <pre>-a always,exit -F path=/sbin/apparmor_parser -F perm=x -F auid>={{{ uid_min }}} -F auid!=-1 -F key=privileged</pre>
 
 template:
     name: audit_rules_privileged_commands

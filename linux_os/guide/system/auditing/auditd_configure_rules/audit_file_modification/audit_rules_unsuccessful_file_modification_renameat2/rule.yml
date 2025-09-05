@@ -12,8 +12,8 @@ description: |-
     Add or update the following lines to <tt>/etc/audit/rules.d/audit.rules</tt> to configure the operating system to generate 
     an audit record for all uses of the <tt>renameat2</tt> system call:  
     <pre>
-    -a always,exit -F arch=b32 -S renameat2 -F auid>=1000 -F auid!=-1 -k perm_mod
-    -a always,exit -F arch=b64 -S renameat2 -F auid>=1000 -F auid!=-1 -k perm_mod</pre>
+    -a always,exit -F arch=b32 -S renameat2 -F auid>={{{ uid_min }}} -F auid!=-1 -k perm_mod
+    -a always,exit -F arch=b64 -S renameat2 -F auid>={{{ uid_min }}} -F auid!=-1 -k perm_mod</pre>
 
 rationale: |-
     Unsuccessful attempts to delete files could be an indicator of malicious activity on a system. Auditing
@@ -39,8 +39,8 @@ warnings:
         have been placed independent of other system calls. Grouping system calls related
         to the same event is more efficient. See the following example:
         <pre>
-        -a always,exit -F arch=b32 -S renameat2 -F auid>=1000 -F auid!=4294967295 -k perm_mod
-        -a always,exit -F arch=b64 -S renameat2 -F auid>=1000 -F auid!=4294967295 -k perm_mod</pre>
+        -a always,exit -F arch=b32 -S renameat2 -F auid>={{{ uid_min }}} -F auid!=4294967295 -k perm_mod
+        -a always,exit -F arch=b64 -S renameat2 -F auid>={{{ uid_min }}} -F auid!=4294967295 -k perm_mod</pre>
 
 template:
     name: audit_rules_unsuccessful_file_modification

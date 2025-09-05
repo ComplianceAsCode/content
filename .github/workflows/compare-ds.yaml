@@ -81,14 +81,12 @@ jobs:
       - name: Get diff.log
         if: ${{ steps.compare_ds.outputs.COMPARE_DS_OUTPUT_SIZE != '0'}}
         id: diff
-        run: | # set -f to disable any glob expansion that can be triggered in the echo command
-          set -f
+        run: |
           body=$(cat diff.log)
-          body="${body//'%'/'%25'}"
-          body="${body//$'\n'/'%0A'}"
-          body="${body//$'\r'/'%0D'}"
-          echo "log=${body:0:65000}">> $GITHUB_OUTPUT
-          set +f
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "log<<$EOF" >> "$GITHUB_OUTPUT"
+          echo "${body:0:65000}" >> "$GITHUB_OUTPUT"
+          echo "$EOF" >> "$GITHUB_OUTPUT"
       - name: Find Comment
         uses: peter-evans/find-comment@v2
         id: fc

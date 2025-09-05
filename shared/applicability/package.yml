@@ -4,6 +4,8 @@ versioned: true
 template:
   name: platform_package
 args:
+  apport:
+    pkgname: apport
   audit:
     {{% if pkg_system == "rpm" %}}
     pkgname: audit
@@ -12,12 +14,16 @@ args:
     {{% endif %}}
   chrony:
     pkgname: chrony
+  firewalld:
+    pkgname: firewalld
   gdm:
     {{% if pkg_system == "rpm" %}}
     pkgname: gdm
     {{% else %}}
     pkgname: gdm3
     {{% endif %}}
+  iptables:
+    pkgname: iptables
   libuser:
     pkgname: libuser
   net-snmp:
@@ -79,3 +85,5 @@ args:
     pkgname: yum
   zypper:
     pkgname: zypper
+  openssh:
+    pkgname: openssh

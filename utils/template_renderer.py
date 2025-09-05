@@ -12,6 +12,12 @@ import ssg.environment
 import ssg.jinja
 
 
+def render_template(data, template_path, output_filename):
+    loader = FlexibleLoader(os.path.dirname(template_path))
+    return ssg.jinja.render_template(
+        data, template_path, output_filename, loader)
+
+
 """
 Loader that extends the AbsolutePathFileSystemLoader so it accepts
 relative paths of templates if those are located in selected directories.
@@ -58,7 +64,7 @@ class Renderer(object):
         self.verbose = verbose
 
     def get_env_yaml(self, build_dir):
-        product_yaml = os.path.join(self.project_directory, "products", self.product, "product.yml")
+        product_yaml = os.path.join(build_dir, self.product, "product.yml")
         build_config_yaml = os.path.join(build_dir, "build_config.yml")
         if not (os.path.exists(product_yaml) and os.path.exists(build_config_yaml)):
             msg = (

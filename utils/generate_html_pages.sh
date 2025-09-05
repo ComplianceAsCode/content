@@ -102,6 +102,16 @@ if [ $retVal -ne 0 ]; then
     exit 1
 fi
 
+# Generate Components page
+COMPONENTS_DIR="$PAGES_DIR/components"
+mkdir -p "$COMPONENTS_DIR"
+utils/render_components.py -r "$(pwd)" "$COMPONENTS_DIR"
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    echo "Something wrong happened while generating components HTML pages."
+    exit 1
+fi
+
 pushd $PAGES_DIR
 touch index.html
 echo "<!DOCTYPE html>" > index.html
@@ -118,6 +128,7 @@ echo "<li><a href=\"guides/index.html\">Guides</a></li>" >> index.html
 echo "<li><a href=\"tables/index.html\">Mapping Tables</a></li>" >> index.html
 echo "<li><a href=\"srg_mapping/index.html\">SRG Mapping Tables</a></li>" >> index.html
 echo "<li><a href=\"rendered-policies/index.html\">Rendered Policies</a></li>" >> index.html
+echo "<li><a href=\"components/index.html\">Components</a></li>" >> index.html
 echo "</ul>" >> index.html
 echo "</body>" >> index.html
 echo "</html>" >> index.html

@@ -17,7 +17,7 @@ checktext: |-
 
     Check that the configuration files are present to enable this kernel parameter.
 
-    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F kernel.yama.ptrace_scope| tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | grep -Ev '^(#|;)' | grep -F kernel.yama.ptrace_scope| tail -1
     kernel.yama.ptrace_scope = 1
 
     If the network parameter "kernel.yama.ptrace_scope" is not equal to "1" or nothing is returned, this is a finding.

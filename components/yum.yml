@@ -1,0 +1,8 @@
+name: yum
+packages:
+- yum
+rules:
+- clean_components_post_updating
+- ensure_gpgcheck_globally_activated
+- ensure_gpgcheck_local_packages
+- ensure_gpgcheck_repo_metadata

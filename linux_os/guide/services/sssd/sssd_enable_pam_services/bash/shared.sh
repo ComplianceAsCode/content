@@ -1,5 +1,12 @@
 # platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_ol
 
+
+
+# sssd configuration files must be created with 600 permissions if they don't exist
+# otherwise the sssd module fails to start
+OLD_UMASK=$(umask)
+umask u=rw,go=
+
 SSSD_CONF="/etc/sssd/sssd.conf"
 SSSD_CONF_DIR="/etc/sssd/conf.d/*.conf"
 
@@ -40,3 +47,5 @@ EOF
         break
     done
 fi
+
+umask $OLD_UMASK

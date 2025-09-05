@@ -1,5 +1,5 @@
 # Sometimes our users will try to do: "cd rhel9; cmake ." That needs to error in a nice way.
-if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
+if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
     message(FATAL_ERROR "cmake has to be used on the root CMakeLists.txt, see the Building ComplianceAsCode section in the Developer Guide!")
 endif()
 
@@ -11,7 +11,7 @@ ssg_build_html_cce_table(${PRODUCT})
 
 ssg_build_html_srgmap_tables(${PRODUCT})
 
-if (SSG_SRG_XLSX_EXPORT)
+if(SSG_SRG_XLSX_EXPORT)
     ssg_build_xlsx_srg_export(${PRODUCT} "srg_gpos")
 endif()
 
@@ -19,6 +19,6 @@ endif()
 
 #ssg_build_html_stig_tables(${PRODUCT} "ospp")
 
-if (SSG_CENTOS_DERIVATIVES_ENABLED)
+if(SSG_CENTOS_DERIVATIVES_ENABLED)
     ssg_build_derivative_product(${PRODUCT} "centos" "cs9")
 endif()

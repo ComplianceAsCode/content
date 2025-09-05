@@ -1,0 +1,10 @@
+groups:
+- fapolicyd
+name: fapolicyd
+packages:
+- fapolicyd
+rules:
+- fapolicy_default_deny
+- fapolicyd_prevent_home_folder_access
+- package_fapolicyd_installed
+- service_fapolicyd_enabled

@@ -4,19 +4,6 @@ controls:
   - high
   title: {{{ full_name }}} runtime must prohibit the instantiation of container
     images without explicit privileged status.
-  status: inherently met
-  artifact_description: |-
-    Supporting evidence is in the following documentation
-    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
-  status_justification: |-
-    User's of the OpenShift platform do not directly instantiate
-    a container image. Instead in order to instantiate a container, the user creates
-    a Deployment object with the details of the requested state.  OpenShift will then
-    instantiate the containers inside pods on behalf of the users using a service
-    account. OpenShift employs a robust RBAC policy to allow an administrator to control
-    who has access to create, update, modify container deployments. Thus only user's
-    with the appropriate permissions to a given namespace may create or modify deployment
-    objects.
-
-    See also:
-    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+  status: manual
+  rules:
+  - rbac_least_privilege

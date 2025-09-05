@@ -1,0 +1,15 @@
+{{% extends "html-template.html" %}}
+
+{{% block body %}}
+{{{ super() }}}
+
+{{% for product_components_data in product_components %}}
+<h3>{{{ product_components_data.product_full_name }}}</h3>
+<ul>
+{{% for component in product_components_data.components %}}
+<li><a href="./{{{ product_components_data.product_id }}}/{{{ component }}}.html">{{{ component }}}</a></li>
+{{% endfor %}}
+</ul>
+{{% endfor %}}
+
+{{% endblock %}}

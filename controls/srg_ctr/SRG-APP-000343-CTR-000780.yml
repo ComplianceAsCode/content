@@ -3,8 +3,10 @@ controls:
   levels:
   - medium
   title: {{{ full_name }}} must audit the execution of privileged functions.
-  rules:
+  related_rules:
   - directory_access_var_log_kube_audit
   - directory_access_var_log_oauth_audit
   - directory_access_var_log_ocp_audit
-  status: inherently met
+  rules:
+  - audit_rules_suid_privilege_function
+  status: automated

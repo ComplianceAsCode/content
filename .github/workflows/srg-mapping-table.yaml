@@ -32,11 +32,11 @@ jobs:
       - name: Create data directory
         run: mkdir -p $PAGES_DIR
       - name: Generate XLSX for OCP4
-        run: python3 utils/create_srg_export.py -c controls/srg_ctr.yml -p ocp4 -m shared/references/disa-ctr-srg-v1r3.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-ocp4.xlsx
+        run: python3 utils/create_srg_export.py -c controls/srg_ctr.yml -p ocp4 -m shared/references/disa-ctr-srg-v1r3.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-ocp4.xlsx --prefer-controls
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML for OCP4
-        run: python3 utils/create_srg_export.py -c controls/srg_ctr.yml -p ocp4 -m shared/references/disa-ctr-srg-v1r3.xml --out-format html --output $PAGES_DIR/srg-mapping-ocp4.html
+        run: python3 utils/create_srg_export.py -c controls/srg_ctr.yml -p ocp4 -m shared/references/disa-ctr-srg-v1r3.xml --out-format html --output $PAGES_DIR/srg-mapping-ocp4.html --prefer-controls
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate XLSX for RHEL9

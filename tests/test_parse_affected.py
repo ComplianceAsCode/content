@@ -15,6 +15,7 @@ import ssg.utils
 import ssg.yaml
 import ssg.build_yaml
 import ssg.rule_yaml
+import ssg.products
 
 
 def main():
@@ -34,16 +35,20 @@ def main():
 
     known_dirs = set()
     for product in ssg.constants.product_directories:
-        product_dir = os.path.join(ssg_root, "products", product)
-        product_yaml_path = os.path.join(product_dir, "product.yml")
-        product_yaml = ssg.yaml.open_raw(product_yaml_path)
+        product_yaml_path = ssg.products.product_yaml_path(ssg_root, product)
+        product = ssg.products.Product(product_yaml_path)
 
-        env_yaml = ssg.environment.open_environment(ssg_build_config_yaml, product_yaml_path)
+        product_properties_path = os.path.join(ssg_root, "product_properties")
+        env_yaml = ssg.environment.open_environment(
+                ssg_build_config_yaml, product_yaml_path, product_properties_path)
+        env_yaml.update(product)
         ssg.jinja.add_python_functions(env_yaml)
 
-        guide_dir = os.path.join(product_dir, product_yaml['benchmark_root'])
-        additional_content_directories = product_yaml.get("additional_content_directories", [])
-        add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
+        guide_dir = os.path.join(product["product_dir"], product['benchmark_root'])
+        additional_content_directories = product.get("additional_content_directories", [])
+        add_content_dirs = [
+                os.path.abspath(os.path.join(product["product_dir"], rd))
+                for rd in additional_content_directories]
 
         for cur_dir in [guide_dir] + add_content_dirs:
             if cur_dir not in known_dirs:

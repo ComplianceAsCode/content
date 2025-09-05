@@ -5,27 +5,5 @@ controls:
   title: {{{ full_name }}} must employ strong authenticators in the establishment
     of non-local maintenance and diagnostic sessions.
   related_rules:
-  - idp_is_configured
-  - ocp_idp_no_htpasswd
-  - kubeadmin_removed
-  status: inherently met
-  status_justification: |-
-    Typically maintenance of the OpenShift Platform is performed remotely
-    using the API server by means of the web console or cli tools. Access
-    to host nodes is done either through SSH using SSH keys provided during
-    install, or through the OpenShift CLI (oc) tool. Note, that applying
-    SRG-OS-000480-GPOS-00227 will disable SSH access to the node's host
-    machine. Thus limiting any remote management access to using only the
-    API Server. The API server requires TLS encryption, and enforces the
-    authentication and authorization policies configured on the platform.
-
-    Accessing hosts instructions for SSH
-    https://docs.openshift.com/container-platform/latest/networking/accessing-hosts.html
-
-    Accessing hosts via cluster admin oc commands
-    https://docs.openshift.com/container-platform/latest/nodes/nodes/nodes-nodes-working.html
-
-    OpenShift TLS documentation https://access.redhat.com/articles/5348961
-  artifact_description: |-
-    Supporting evidence is in the following documentation
-    https://docs.openshift.com/container-platform/latest/authentication/index.html
+  - service_sshd_disabled
+  status: automated

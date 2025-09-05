@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis8,fedora,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
+prodtype: alinux2,alinux3,anolis23,anolis8,fedora,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Verify Group Who Owns SSH Server config file'
 
@@ -55,4 +55,4 @@ template:
     name: file_groupowner
     vars:
         filepath: /etc/ssh/sshd_config
-        filegid: '0'
+        gid_or_name: '0'

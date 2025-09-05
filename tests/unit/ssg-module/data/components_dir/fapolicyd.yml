@@ -1,0 +1,14 @@
+name: fapolicyd
+groups:
+- fapolicy
+- integrity
+packages:
+- fapolicyd-server
+rules:
+- fapolicy_default_deny
+- fapolicyd_prevent_home_folder_access
+- service_fapolicyd_enabled
+templates:
+- file_policy_blocked
+changelog:
+- created in 2023

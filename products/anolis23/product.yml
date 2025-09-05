@@ -1,0 +1,23 @@
+product: anolis23
+full_name: Anolis OS 23
+type: platform
+
+benchmark_id: ANOLIS-23
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "yum"
+
+init_system: "systemd"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - anolis23:
+      name: "cpe:/o:anolis:anolis_os:23"
+      title: "Anolis OS 23"
+      check_id: installed_OS_is_anolis23
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  login_defs: "shadow-utils"

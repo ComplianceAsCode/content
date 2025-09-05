@@ -1,0 +1,22 @@
+groups:
+- firewalld_activation
+- network-firewalld
+name: firewalld
+packages:
+- firewalld
+rules:
+- configure_firewalld_ports
+- configure_firewalld_rate_limiting
+- configured_firewalld_default_deny
+- ensure_firewall_rules_for_open_ports
+- firewalld-backend
+- firewalld_loopback_traffic_restricted
+- firewalld_loopback_traffic_trusted
+- network_implement_access_control
+- package_firewalld_installed
+- package_firewalld_removed
+- service_firewalld_disabled
+- service_firewalld_enabled
+- set_firewalld_appropriate_zone
+- set_firewalld_default_zone
+- unnecessary_firewalld_services_ports_disabled

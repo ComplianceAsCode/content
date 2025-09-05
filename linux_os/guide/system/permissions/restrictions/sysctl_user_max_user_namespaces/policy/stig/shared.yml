@@ -18,7 +18,7 @@ checktext: |-
 
     Check that the configuration files are present to enable this kernel parameter.
 
-    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F user.max_user_namespaces | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | grep -Ev '^(#|;)' | grep -F user.max_user_namespaces | tail -1
     user.max_user_namespaces = 0
 
     If the network parameter "user.max_user_namespaces" is not equal to "0" or nothing is returned, this is a finding.

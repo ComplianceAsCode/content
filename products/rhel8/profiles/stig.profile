@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R9
+    version: V1R11
     SMEs:
         - mab879
         - ggbecker
@@ -12,7 +12,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V1R9.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R11.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -50,7 +50,7 @@ selections:
     - var_password_pam_retry=3
     - var_password_pam_minlen=15
     - var_sshd_set_keepalive=1
-    - sshd_approved_macs=stig
+    - sshd_approved_macs=stig_extended
     - sshd_approved_ciphers=stig
     - sshd_idle_timeout_value=10_minutes
     - var_accounts_authorized_local_users_regex=rhel8
@@ -96,6 +96,9 @@ selections:
     # RHEL-08-010010
     - security_patches_up_to_date
 
+    # RHEL-08-010019
+    - ensure_redhat_gpgkey_installed
+
     # RHEL-08-010020
     - sysctl_crypto_fips_enabled
 
@@ -118,6 +121,7 @@ selections:
     - rsyslog_remote_access_monitoring
 
     # RHEL-08-010090
+    - sssd_has_trust_anchor
 
     # RHEL-08-010100
     - ssh_keys_passphrase_protected
@@ -127,6 +131,9 @@ selections:
 
     # RHEL-08-010120
     - accounts_password_all_shadowed_sha512
+
+    # RHEL-08-010121
+    - no_empty_passwords_etc_shadow
 
     # RHEL-08-010130
     - set_password_hashing_min_rounds_logindefs
@@ -170,9 +177,6 @@ selections:
     # RHEL-08-010190
     - dir_perms_world_writable_sticky_bits
 
-    # Although these rules have a different behavior in RHEL>=8.6
-    # they still need to be selected so it follows exactly what STIG
-    # states.
     # RHEL-08-010200
     - sshd_set_keepalive
     # RHEL-08-010201
@@ -246,6 +250,9 @@ selections:
     # RHEL-08-010351
     - dir_group_ownership_library_dirs
 
+    # RHEL-08-010358
+    - package_mailx_installed
+
     # RHEL-08-010359
     - package_aide_installed
     - aide_build_database
@@ -297,6 +304,9 @@ selections:
     - sudo_require_reauthentication
     - var_sudo_timestamp_timeout=always_prompt
 
+    # RHEL-08-010385
+    - disallow_bypass_password_sudo
+
     # RHEL-08-010390
     - install_smartcard_packages
 
@@ -335,7 +345,8 @@ selections:
     - no_user_host_based_files
 
     # RHEL-08-010471
-    # currently there is not a relevant rule which would improve RNG for RHEL in this context
+    # Not applicable for RHEL 8.4+
+    - service_rngd_enabled
 
     # RHEL-08-010472
     - package_rng-tools_installed
@@ -520,9 +531,12 @@ selections:
     # RHEL-08-020031, RHEL-08-020080
     - dconf_gnome_screensaver_lock_delay
     - var_screensaver_lock_delay=5_seconds
-    
+
     # RHEL-08-020032
     - dconf_gnome_disable_user_list
+
+    # RHEL-08-020035
+    - logind_session_timeout
 
     # RHEL-08-020039
     - package_tmux_installed
@@ -614,6 +628,9 @@ selections:
     # RHEL-08-020230
     - accounts_password_pam_minlen
 
+    # RHEL-08-020231
+    - accounts_password_minlen_login_defs
+
     # RHEL-08-020240
     - account_unique_id
 
@@ -624,7 +641,7 @@ selections:
     - account_disable_post_pw_expiration
 
     # RHEL-08-020270
-    - account_emergency_expire_date
+    - account_temp_expire_date
 
     # RHEL-08-020280
     - accounts_password_pam_ocredit
@@ -875,9 +892,7 @@ selections:
     - audit_rules_privileged_commands_kmod
 
     # RHEL-08-030590
-    # This one needs to be updated to use /var/log/faillock, but first RHEL-08-020017 should be
-    # implemented as it is the one that configures a different path for the events of failing locks
-    # - audit_rules_login_events_faillock
+    - audit_rules_login_events_faillock
 
     # RHEL-08-030600
     - audit_rules_login_events_lastlog
@@ -995,7 +1010,7 @@ selections:
     - configure_firewalld_ports
 
     # RHEL-08-040060
-    ### NOTE: Will be removed in V1R2
+    ### NOTE: Removed in V1R2
 
     # RHEL-08-040070
     - service_autofs_disabled

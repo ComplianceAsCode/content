@@ -1,0 +1,48 @@
+{{%- if product in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9", "sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
+  {{%- set perm_x="-F perm=x " %}}
+{{%- endif %}}
+
+documentation_complete: true
+
+prodtype: rhcos4
+
+title: 'Ensure auditd Collects Information on the Use of Privileged Commands - utempter'
+
+description: |-
+    At a minimum, the audit system should collect the execution of
+    privileged commands for all users and root. If the <tt>auditd</tt> daemon is
+    configured to use the <tt>augenrules</tt> program to read audit rules during
+    daemon startup (the default), add a line of the following form to a file with
+    suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+    <pre>-a always,exit -F path= /usr/libexec/utempter {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add a line of the following
+    form to <tt>/etc/audit/audit.rules</tt>:
+    <pre>-a always,exit -F path= /usr/libexec/utempter {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+
+rationale: |-
+    Misuse of privileged functions, either intentionally or unintentionally by
+    authorized users, or by unauthorized external entities that have compromised system accounts,
+    is a serious and ongoing concern and can have significant adverse impacts on organizations.
+    Auditing the use of privileged functions is one way to detect such misuse and identify
+    the risk from insider and advanced persistent threats.
+    <br /><br />
+    Privileged programs are subject to escalation-of-privilege attacks,
+    which attempt to subvert their normal role of providing some necessary but
+    limited capability. As such, motivation exists to monitor these programs for
+    unusual activity.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-88210-0
+
+references:
+    srg: SRG-APP-000029-CTR-000085
+
+{{{ ocil_fix_srg_privileged_command("/usr/libexec/utempter") }}}
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/libexec/utempter

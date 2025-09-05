@@ -4,16 +4,13 @@ type: platform
 
 benchmark_id: FEDORA
 benchmark_root: "../../linux_os/guide"
+components_root: "../../components"
 
 profiles_root: "./profiles"
 
 pkg_manager: "dnf"
 
 init_system: "systemd"
-
-# EFI and non-EFI configs are stored in same path, see https://fedoraproject.org/wiki/Changes/UnifyGrubConfig
-grub2_boot_path: "/boot/grub2"
-grub2_uefi_boot_path: "/boot/grub2"
 
 groups:
   dedicated_ssh_keyowner:

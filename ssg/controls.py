@@ -71,7 +71,27 @@ class Status:
         return False
 
 
-class Control(ssg.entities.common.SelectionHandler):
+class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEntity):
+    KEYS = dict(
+        id=str,
+        levels=list,
+        notes=str,
+        title=str,
+        description=str,
+        rationale=str,
+        automated=str,
+        status=None,
+        mitigation=str,
+        artifact_description=str,
+        status_justification=str,
+        fixtext=str,
+        check=str,
+    )
+
+    MANDATORY_KEYS = {
+        "title",
+    }
+
     def __init__(self):
         super(Control, self).__init__()
         self.id = None
@@ -87,6 +107,7 @@ class Control(ssg.entities.common.SelectionHandler):
         self.status_justification = ""
         self.fixtext = ""
         self.check = ""
+        self.controls = []
 
     def __hash__(self):
         """ Controls are meant to be unique, so using the
@@ -94,7 +115,15 @@ class Control(ssg.entities.common.SelectionHandler):
         return hash(self.id)
 
     @classmethod
+    def _check_keys(cls, control_dict):
+        for key in control_dict.keys():
+            if key not in cls.KEYS.keys() and key not in [
+                    'controls', 'original_title', 'related_rules', 'rules']:
+                raise ValueError("Key %s is not a valid for a control." % key)
+
+    @classmethod
     def from_control_dict(cls, control_dict, env_yaml=None, default_level=["default"]):
+        cls._check_keys(control_dict)
         control = cls()
         control.id = ssg.utils.required_key(control_dict, "id")
         control.title = control_dict.get("title")
@@ -119,22 +148,24 @@ class Control(ssg.entities.common.SelectionHandler):
         control.notes = control_dict.get("notes", "")
         selections = control_dict.get("rules", {})
 
-        product = None
-        product_dir = None
-        benchmark_root = None
-        if env_yaml:
-            product = env_yaml.get('product', None)
-            product_dir = env_yaml.get('product_dir', None)
-            benchmark_root = env_yaml.get('benchmark_root', None)
-            content_dir = os.path.join(product_dir, benchmark_root)
-
         control.selections = selections
 
         control.related_rules = control_dict.get("related_rules", [])
         return control
 
+    def represent_as_dict(self):
+        data = super(Control, self).represent_as_dict()
+        data["rules"] = self.selections
+        data["controls"] = self.controls
+        return data
 
-class Level():
+
+class Level(ssg.entities.common.XCCDFEntity):
+    KEYS = dict(
+        id=lambda: str,
+        inherits_from=lambda: None,
+    )
+
     def __init__(self):
         self.id = None
         self.inherits_from = None
@@ -146,7 +177,8 @@ class Level():
         level.inherits_from = level_dict.get("inherits_from")
         return level
 
-class Policy():
+
+class Policy(ssg.entities.common.XCCDFEntity):
     def __init__(self, filepath, env_yaml=None):
         self.id = None
         self.env_yaml = env_yaml
@@ -159,25 +191,93 @@ class Policy():
         self.title = ""
         self.source = ""
 
-    def _parse_controls_tree(self, tree):
-        default_level = ["default"]
-        if self.levels:
-            default_level = [self.levels[0].id]
+    def represent_as_dict(self):
+        data = dict()
+        data["id"] = self.id
+        data["title"] = self.title
+        data["source"] = self.source
+        data["definition_location"] = self.filepath
+        data["controls"] = [c.represent_as_dict() for c in self.controls]
+        data["levels"] = [l.represent_as_dict() for l in self.levels]
+        return data
 
-        for node in tree:
-            try:
-                control = Control.from_control_dict(
-                    node, self.env_yaml, default_level=default_level)
-            except Exception as exc:
-                msg = (
-                    "Unable to parse controls from {filename}: {error}"
-                    .format(filename=self.filepath, error=str(exc)))
-                raise RuntimeError(msg)
-            if "controls" in node:
-                for sc in self._parse_controls_tree(node["controls"]):
-                    yield sc
-                    control.update_with(sc)
-            yield control
+    @property
+    def default_level(self):
+        result = ["default"]
+        if self.levels:
+            result = [self.levels[0].id]
+        return result
+
+    def remove_selections_not_known(self, known_rules):
+        for c in self.controls:
+            selections = set(c.selected).intersection(known_rules)
+            c.selected = list(selections)
+            unselections = set(c.unselected).intersection(known_rules)
+            c.unselected = list(unselections)
+
+    def _create_control_from_subtree(self, subtree):
+        try:
+            control = Control.from_control_dict(
+                subtree, self.env_yaml, default_level=self.default_level)
+        except Exception as exc:
+            msg = (
+                "Unable to parse controls from {filename}: {error}"
+                .format(filename=self.filepath, error=str(exc)))
+            raise RuntimeError(msg)
+        return control
+
+    def _extract_and_record_subcontrols(self, current_control, controls_tree):
+        subcontrols = []
+        if "controls" not in controls_tree:
+            return subcontrols
+
+        for control_def_or_ref in controls_tree["controls"]:
+            if isinstance(control_def_or_ref, str):
+                control_ref = control_def_or_ref
+                current_control.controls.append(control_ref)
+                continue
+            control_def = control_def_or_ref
+            for sc in self._parse_controls_tree([control_def]):
+                current_control.controls.append(sc.id)
+                current_control.update_with(sc)
+                subcontrols.append(sc)
+        return subcontrols
+
+    def _parse_controls_tree(self, tree):
+        controls = []
+
+        for control_subtree in tree:
+            control = self._create_control_from_subtree(control_subtree)
+            subcontrols = self._extract_and_record_subcontrols(control, control_subtree)
+            controls.extend(subcontrols)
+            controls.append(control)
+        return controls
+
+    def save_controls_tree(self, tree):
+        for c in self._parse_controls_tree(tree):
+            self.controls.append(c)
+            self.controls_by_id[c.id] = c
+
+    def _parse_file_into_control_trees(self, dirname, basename):
+        controls_trees = []
+        if basename.endswith('.yml'):
+            full_path = os.path.join(dirname, basename)
+            yaml_contents = ssg.yaml.open_and_expand(full_path, self.env_yaml)
+            for control in yaml_contents['controls']:
+                controls_trees.append(control)
+        elif basename.startswith('.'):
+            pass
+        else:
+            raise RuntimeError("Found non yaml file in %s" % self.controls_dir)
+        return controls_trees
+
+    def _load_from_subdirectory(self, yaml_contents):
+        controls_tree = yaml_contents.get("controls", list())
+        files = os.listdir(self.controls_dir)
+        for file in files:
+            trees = self._parse_file_into_control_trees(self.controls_dir, file)
+            controls_tree.extend(trees)
+        return controls_tree
 
     def load(self):
         yaml_contents = ssg.yaml.open_and_expand(self.filepath, self.env_yaml)
@@ -195,23 +295,10 @@ class Policy():
             self.levels_by_id[level.id] = level
 
         if os.path.exists(self.controls_dir) and os.path.isdir(self.controls_dir):
-            controls_tree = yaml_contents.get("controls", list())
-            files = os.listdir(self.controls_dir)
-            for file in files:
-                if file.endswith('.yml'):
-                    full_path = os.path.join(self.controls_dir, file)
-                    yaml_contents = ssg.yaml.open_and_expand(full_path, self.env_yaml)
-                    for control in yaml_contents['controls']:
-                        controls_tree.append(control)
-                elif file.startswith('.'):
-                    continue
-                else:
-                    raise RuntimeError("Found non yaml file in %s" % self.controls_dir)
+            controls_tree = self._load_from_subdirectory(yaml_contents)
         else:
             controls_tree = ssg.utils.required_key(yaml_contents, "controls")
-        for c in self._parse_controls_tree(controls_tree):
-            self.controls.append(c)
-            self.controls_by_id[c.id] = c
+        self.save_controls_tree(controls_tree)
 
     def get_control(self, control_id):
         try:
@@ -261,13 +348,29 @@ class ControlsManager():
             policy = Policy(filepath, self.env_yaml)
             policy.load()
             self.policies[policy.id] = policy
+        self.resolve_controls()
+
+    def remove_selections_not_known(self, known_rules):
+        known_rules = set(known_rules)
+        for p in self.policies.values():
+            p.remove_selections_not_known(known_rules)
+
+    def resolve_controls(self):
+        for pid, policy in self.policies.items():
+            for control in policy.controls:
+                self._resolve_control(pid, control)
+
+    def _resolve_control(self, pid, control):
+        for sub_name in control.controls:
+            policy_id = pid
+            if ":" in sub_name:
+                policy_id, sub_name = sub_name.split(":", 1)
+            subcontrol = self.get_control(policy_id, sub_name)
+            self._resolve_control(pid, subcontrol)
+            control.update_with(subcontrol)
 
     def get_control(self, policy_id, control_id):
-        try:
-            policy = self.policies[policy_id]
-        except KeyError:
-            msg = "policy '%s' doesn't exist" % (policy_id)
-            raise ValueError(msg)
+        policy = self._get_policy(policy_id)
         control = policy.get_control(control_id)
         return control
 
@@ -315,3 +418,9 @@ class ControlsManager():
     def get_all_controls(self, policy_id):
         policy = self._get_policy(policy_id)
         return policy.controls_by_id.values()
+
+    def save_everything(self, output_dir):
+        ssg.utils.mkdir_p(output_dir)
+        for policy_id, policy in self.policies.items():
+            filename = os.path.join(output_dir, "{}.{}".format(policy_id, "yml"))
+            policy.dump_yaml(filename)

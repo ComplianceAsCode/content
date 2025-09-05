@@ -29,6 +29,10 @@
       <literal_component>/kubernetes-api-resources/hypershift/version</literal_component>
   </local_variable>
 
+  <local_variable id="ocp4_operator_deployment_dump_location" datatype="string" comment="The actual filepath of the file to scan." version="1">
+      <literal_component>/kubernetes-api-resources/api/v1/namespaces/openshift-compliance/pods/api-checks-pod</literal_component>
+  </local_variable>
+
   <unix:file_test id="test_file_for_ocp4" check="only one" comment="Find the actual file to be scanned." version="1">
       <unix:object object_ref="object_file_for_ocp4"/>
   </unix:file_test>
@@ -77,6 +81,23 @@
   <ind:yamlfilecontent_state id="state_hypershift_version" version="1">
       <ind:value datatype="record">
           <field name="#" datatype="string" operation="pattern match">4\..*</field>
+      </ind:value>
+  </ind:yamlfilecontent_state>
+
+  <ind:yamlfilecontent_test id="test_hypershift_hosted" check="at least one" comment="Find one match" version="1">
+      <ind:object object_ref="object_hypershift_hosted"/>
+      <ind:state state_ref="state_hypershift_hosted"/>
+  </ind:yamlfilecontent_test>
+
+
+  <ind:yamlfilecontent_object id="object_hypershift_hosted" version="1">
+      <ind:filepath var_ref="ocp4_operator_deployment_dump_location"/>
+      <ind:yamlpath>.spec.containers[:].command[:]</ind:yamlpath>
+  </ind:yamlfilecontent_object>
+
+  <ind:yamlfilecontent_state id="state_hypershift_hosted" version="1">
+      <ind:value datatype="record" entity_check="at least one">
+          <field name="#" datatype="string" operation="pattern match" entity_check="at least one">^--platform=HyperShift$</field>
       </ind:value>
   </ind:yamlfilecontent_state>
 
@@ -223,7 +244,7 @@
   </ind:yamlfilecontent_state>
 {{% endfor %}}
 
-  <!-- Check for OpenShift Container Platform 4 on HyperShift -->
+  <!-- Check for OpenShift Container Platform 4 on HyperShift Management Cluster -->
   <definition class="inventory" id="installed_app_is_ocp4_on_hypershift" version="1">
     <metadata>
       <title>Red Hat OpenShift Container Platform</title>
@@ -231,10 +252,25 @@
         <platform>Red Hat OpenShift Container Platform 4 on HyperShift</platform>
       </affected>
       <reference ref_id="cpe:/a:redhat:openshift_container_platform_on_hypershift:4" source="CPE" />
-      <description>The application installed installed on the system is OpenShift 4 on HyperShift.</description>
+      <description>The application installed installed on the system is OpenShift 4 on HyperShift Management Cluster.</description>
     </metadata>
     <criteria operator="AND">
       <criterion comment="Make sure there is version for HyperShift HostedCluster" test_ref="test_hypershift_version"/>
+    </criteria>
+  </definition>
+
+    <!-- Check for OpenShift Container Platform 4 on HyperShift Hosted Cluster -->
+  <definition class="inventory" id="installed_app_is_ocp4_on_hypershift_hosted" version="1">
+    <metadata>
+      <title>Red Hat OpenShift Container Platform</title>
+      <affected family="unix">
+        <platform>Red Hat OpenShift Container Platform 4 on HyperShift</platform>
+      </affected>
+      <reference ref_id="cpe:/a:redhat:openshift_container_platform_on_hypershift_hosted:4" source="CPE" />
+      <description>The application installed installed on the system is OpenShift 4 on HyperShift Hosted Cluster.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Make sure there is HyperShift in the Compliance Operator Command flag" test_ref="test_hypershift_hosted"/>
     </criteria>
   </definition>
 

@@ -42,7 +42,7 @@ ocil: |-
     "umount" system call, run the following command:
     <pre space="preserve">$ sudo grep "umount" /etc/audit/audit.*</pre>
     If the system is configured to audit this activity, it will return a line like the following.
-    -a always,exit -F arch=b32 -S umount -F auid>=1000 -F auid!=unset -k privileged-umount
+    -a always,exit -F arch=b32 -S umount -F auid>={{{ uid_min }}} -F auid!=unset -k privileged-umount
 
 warnings:
     - general: |-

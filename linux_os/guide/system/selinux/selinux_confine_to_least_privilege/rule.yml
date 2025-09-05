@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7
+prodtype: ol7,rhel7
 
 title: 'Confine SELinux Users To Roles That Conform To Least Privilege'
 
@@ -27,17 +27,21 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel7: CCE-86544-4
+
 references:
     disa: CCI-002165,CCI-002235
     nist: AC-3(4),AC-6(10)
     srg: SRG-OS-000324-GPOS-00125
     stigid@ol7: OL07-00-020021
+    stigid@rhel7: RHEL-07-020021
 
 ocil_clause: 'selinux users are not confined to least privilege'
 
 ocil: |-
     Verify the operating system confines SELinux users to roles that conform to least
-    privilege. Check the SELinux User list to SELinux Roles mapping by using the 
+    privilege. Check the SELinux User list to SELinux Roles mapping by using the
     following command:
     <pre>sudo semanage user -l</pre>
     The output should look like this:

@@ -73,7 +73,8 @@ def get_rule_object(all_rules, args, control_rule, env_yaml) -> ssg.build_yaml.R
 def get_controls_env(args):
     product_base = os.path.join(SSG_ROOT, "products", args.product)
     product_yaml = os.path.join(product_base, "product.yml")
-    env_yaml = ssg.environment.open_environment(args.build_config_yaml, product_yaml)
+    env_yaml = ssg.environment.open_environment(
+        args.build_config_yaml, product_yaml, os.path.join(SSG_ROOT, "product_properties"))
     controls_manager = ssg.controls.ControlsManager(args.controls, env_yaml)
     controls_manager.load()
     return controls_manager, env_yaml

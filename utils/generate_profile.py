@@ -186,7 +186,7 @@ class Generator:
             'rules': []
         }
         if hasattr(node, 'level'):
-            d['level'] = node.level.replace(' ', '_').lower()
+            d['levels'] = node.level.replace(' ', '_').lower()
         if node.children:
             d['controls'] = []
         for node in node.children:
@@ -220,7 +220,7 @@ class RuleGenerator(Generator):
             'warnings': self.placeholder(),
             'template': self.placeholder(),
         }
-        print(yaml.dump(output, sort_keys=False))
+        print(yaml.dump(output, sort_keys=False, width=float("inf")))
 
 
 class SectionGenerator(Generator):
@@ -229,7 +229,7 @@ class SectionGenerator(Generator):
         output = {
             'controls': self._get_controls(section=section)
         }
-        print(yaml.dump(output, sort_keys=False))
+        print(yaml.dump(output, sort_keys=False, width=float("inf")))
 
 
 class ProfileGenerator(Generator):

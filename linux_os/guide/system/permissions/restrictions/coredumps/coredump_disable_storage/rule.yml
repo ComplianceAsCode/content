@@ -4,7 +4,11 @@ title: 'Disable storing core dump'
 
 description: |-
     The <tt>Storage</tt> option in <tt>[Coredump]</tt> section
+{{%- if 'sle' in product %}}
+    of <tt>/etc/systemd/coredump.conf</tt> or <tt>/etc/systemd/coredump.conf.d/*.conf</tt>
+{{%- else -%}}
     of <tt>/etc/systemd/coredump.conf</tt>
+{{%- endif %}}
     can be set to <tt>none</tt> to disable storing core dumps permanently.
 
 rationale: |-

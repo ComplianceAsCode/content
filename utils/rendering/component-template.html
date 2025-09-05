@@ -1,0 +1,69 @@
+{{% extends "html-template.html" %}}
+
+{{% block body %}}
+{{{ super() }}}
+
+{{% set component = component_data.component %}}
+{{% set rules = component_data.rules %}}
+
+<h2>Component overview</h2>
+
+<h3>Relevant packages:</h3>
+{{% if component.packages %}}
+<ul>
+{{% for package in component.packages %}}
+<li>{{{ package }}}</li>
+{{% endfor %}}
+</ul>
+{{% else %}}
+<div>None</div>
+{{% endif %}}
+
+<h3>Relevant groups:</h3>
+{{% if component.groups %}}
+<ul>
+{{% for group in component.groups %}}
+<li>{{{ group }}}</li>
+{{% endfor %}}
+</ul>
+{{% else %}}
+<div>None</div>
+{{% endif %}}
+
+<h3>Changelog:</h3>
+{{% if component.changelog %}}
+<ul>
+{{% for entry in component.changelog %}}
+<li>{{{ entry }}}</li>
+{{% endfor %}}
+</ul>
+{{% else %}}
+<div>No changes recorded.</div>
+{{% endif %}}
+
+<h3>Relevant rules:</h3>
+{{% if rules %}}
+<ul>
+{{% for rule in rules %}}
+<li><a href="#{{{ rule.id }}}">{{{ rule.id }}}</a></li>
+{{% endfor %}}
+</ul>
+{{% else %}}
+<div>None</div>
+{{% endif %}}
+
+
+<h2>Rule details</h2>
+
+{{% for rule in rules %}}
+<div id="{{{ rule.id }}}" class="rule" style="border-bottom: 2px solid; margin-bottom: 1cm; padding-bottom: 1cm;">
+<h3>{{{ rule.title }}}</h3>
+<div>{{{ rule.id }}}</div>
+<h4>Description</h4>
+<p>{{{ rule.description }}}</p>
+<h4>Rationale</h4>
+<p>{{{ rule.rationale }}}</p>
+</div>
+{{% endfor %}}
+
+{{% endblock %}}

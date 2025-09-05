@@ -29,11 +29,13 @@ identifiers:
 severity: medium
 
 references:
-  cis@ocp4: 1.2.27
+  cis@ocp4: 1.2.25
   nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
   nist: CM-6,CM-6(1)
   pcidss: Req-2.2
   srg: SRG-APP-000516-CTR-001325
+
+platform: not ocp4-on-hypershift-hosted
 
 ocil_clause: 'API server argument <tt>--service-account-lookup</tt> contains <tt>true</tt>'
 
@@ -47,7 +49,7 @@ ocil: |-
 warnings:
 - general: |-
     {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
-      
+
 template:
   name: yamlfile_value
   vars:

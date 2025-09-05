@@ -8,6 +8,18 @@ description: |-
     This rule configures the system to lock out accounts during a specified time period after a
     number of incorrect login attempts using <tt>pam_faillock.so</tt>.
 
+    {{% if product in ["rhel7"] %}}
+    Ensure that pam_faillock.so module entries in
+    <tt>/etc/pam.d/password-auth</tt> and <tt>/etc/pam.d/system-auth</tt> are
+    followed by the assignment
+    <tt>unlock_time=&lt;interval-in-seconds&gt;</tt> where
+    <tt>interval-in-seconds</tt> is <tt>{{{xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
+    {{% else %}}
+    Ensure that the file <tt>/etc/security/faillock.conf</tt> contains the following entry:
+    <tt>unlock_time=&lt;interval-in-seconds&gt;</tt> where
+    <tt>interval-in-seconds</tt> is <tt>{{{xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
+    {{% endif %}}
+
     pam_faillock.so module requires multiple entries in pam files. These entries must be carefully
     defined to work as expected. In order to avoid any errors when manually editing these files,
     it is recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
@@ -31,8 +43,9 @@ identifiers:
 
 references:
     anssi: BP28(R18)
+    ccn@rhel9: A.30.SEC-RHEL1
     cis-csc: 1,12,15,16
-    cis@rhel7: 5.3.2
+    cis@rhel7: 5.4.2
     cis@rhel8: 5.5.2
     cis@rhel9: 5.5.2
     cis@ubuntu2204: 5.4.2
@@ -53,7 +66,7 @@ references:
     stigid@ol7: OL07-00-010320
     stigid@ol8: OL08-00-020014
     stigid@rhel7: RHEL-07-010320
-    stigid@rhel8: RHEL-08-020016
+    stigid@rhel8: RHEL-08-020015
 
 platform: package[pam]
 

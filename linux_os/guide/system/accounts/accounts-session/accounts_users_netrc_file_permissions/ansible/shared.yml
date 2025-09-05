@@ -20,7 +20,7 @@
   loop: '{{ local_users }}'
   when:
     - item.value[1]|int >= {{{ uid_min }}}
-    - item.value[1]|int != 65534
+    - item.value[1]|int != {{{ nobody_uid }}}
 
 - name: Ensure group and world cannot access respective .netrc files
   ansible.builtin.file:

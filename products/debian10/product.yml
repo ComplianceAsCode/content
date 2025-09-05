@@ -2,6 +2,12 @@ product: debian10
 full_name: Debian 10
 type: platform
 
+families:
+  - debian
+  - debian-like
+
+major_version_ordinal: 10
+
 benchmark_id: DEBIAN-10
 benchmark_root: "../../linux_os/guide"
 
@@ -11,7 +17,6 @@ pkg_manager: "apt_get"
 
 init_system: "systemd"
 
-grub2_boot_path: "/boot/grub"
 
 chrony_conf_path: "/etc/chrony/chrony.conf"
 

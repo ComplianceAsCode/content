@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis8,debian10,debian11,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
+prodtype: alinux2,alinux3,anolis23,anolis8,debian10,debian11,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure auditd Collects Information on Kernel Module Unloading - delete_module'
 
@@ -8,7 +8,7 @@ description: |-
     To capture kernel module unloading events, use following line, setting ARCH to
     either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit:
     {{% if "ol" in product or 'rhel' in product %}}
-    <pre>-a always,exit -F arch=<i>ARCH</i> -S delete_module -F auid>=1000 -F auid!=unset -F key=modules</pre>
+    <pre>-a always,exit -F arch=<i>ARCH</i> -S delete_module -F auid>={{{ uid_min }}} -F auid!=unset -F key=modules</pre>
     {{% else %}}
     <pre>-a always,exit -F arch=<i>ARCH</i> -S delete_module -F key=modules</pre>
     {{% endif %}}

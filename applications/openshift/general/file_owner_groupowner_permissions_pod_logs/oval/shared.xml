@@ -1,0 +1,12 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="file_owner_groupowner_permissions_pod_logs" version="1">
+    {{{ oval_metadata("The pod logs must have the expected permissions and ownership") }}}
+
+    <criteria operator="AND">
+      <extend_definition comment="user ownership" definition_ref="file_owner_pod_logs" />
+      <extend_definition comment="group ownership" definition_ref="file_groupowner_pod_logs" />
+      <extend_definition comment="permissions" definition_ref="file_permissions_pod_logs" />
+    </criteria>
+
+  </definition>
+</def-group>

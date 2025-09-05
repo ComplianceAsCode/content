@@ -2,7 +2,7 @@
   <definition class="compliance" id="file_permissions_var_log_audit" version="2">
     {{{ oval_metadata("Checks for correct permissions for all audit log files.") }}}
     <criteria operator="OR">
-      {{% if 'ol' not in product and "rhel" not in product %}}
+      {{% if 'ol' not in product and "rhel" not in product and "rhcos4" not in product %}}
       <criteria operator="AND" comment="log_file set">
         <extend_definition comment="log_file set in auditd.conf" definition_ref="auditd_conf_log_file_not_set" negate="true" />
         <criteria operator="AND" comment="log_group in auditd.conf is not root">
@@ -40,7 +40,7 @@
     <filter action="include">state_not_mode_0600</filter>
   </unix:file_object>
 
-  {{% if 'ol' in product or "rhel" in product %}}
+  {{% if 'ol' in product or "rhel" in product or "rhcos4" in product %}}
   <unix:file_test check="all" check_existence="at_least_one_exists"
       comment="default audit log files mode 0600"
       id="test_file_permissions_default_audit_log" version="1">

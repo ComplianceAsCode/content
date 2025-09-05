@@ -1,0 +1,18 @@
+groups:
+- ldap
+- ldap_server_config_certificate_files
+- openldap_client
+- openldap_server
+name: openldap
+packages:
+- openldap
+- openldap-clients
+- openldap-servers
+rules:
+- enable_ldap_client
+- ldap_client_start_tls
+- ldap_client_tls_cacertpath
+- package_389-ds-base_removed
+- package_openldap-clients_removed
+- package_openldap-servers_removed
+- service_slapd_disabled

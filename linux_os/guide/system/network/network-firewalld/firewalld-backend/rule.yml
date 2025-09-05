@@ -13,6 +13,8 @@ rationale: |-
 
 severity: medium
 
+platform: package[firewalld]
+
 identifiers:
     cce@rhel8: CCE-86506-3
     cce@rhel9: CCE-86507-1
@@ -53,3 +55,4 @@ template:
         path: /etc/firewalld/firewalld.conf
         parameter: FirewallBackend
         value: nftables
+        no_quotes: 'true'
