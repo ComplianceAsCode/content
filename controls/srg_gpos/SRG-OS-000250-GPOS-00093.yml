@@ -5,8 +5,10 @@ controls:
         title: {{{ full_name }}} must implement cryptography to protect the integrity
             of remote access sessions.
         rules:
-            - configure_gnutls_tls_crypto_policy
+            # https://github.com/ComplianceAsCode/content/issues/9385
+            # - configure_gnutls_tls_crypto_policy
             - configure_openssl_crypto_policy
             - configure_openssl_tls_crypto_policy
             - configure_ssh_crypto_policy
+            - harden_sshd_ciphers_opensshserver_conf_crypto_policy
         status: automated

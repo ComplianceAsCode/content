@@ -12,6 +12,13 @@ This rule's check operates on the cluster configuration dump.
 Therefore, you need to use a tool that can query the OCP API, retrieve the {{% if endpoint is string %}}<code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ endpoint.lstrip("/") }}}</code> file.{{% else %}}{{% for item in endpoint %}}<code class="ocp-api-endpoint">{{{ item }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ item.lstrip("/") }}}</code> file{{% endfor %}}.{{% endif %}}
 {{%- endmacro %}}
 
+#}}
+{{% macro openshift_cluster_setting_kubeletconfig() -%}}
+This rule's check operates on the cluster configuration dump. This will be a Platform rule, var_role_worker and var_role_master needed to be set if scan is not expected to run on master, and worker nodes.
+Therefore, you need to use a tool that can query the OCP API, retrieve KubeletConfig through <code class="ocp-api-endpoint-kubeletconfig">"/api/v1/nodes/NODE_NAME/proxy/configz"</code> API endpoint to the local <code class="ocp-dump-location-kubeletconfig">{{{ xccdf_value("ocp_data_root") }}}"/kubeletconfig/role/role"</code> file.
+{{%- endmacro %}}
+
+
 
 {{#
   Macro which generates a warning indicating how to make use of a
@@ -103,7 +110,8 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 
 
 {{#
-    Calls :code:`xccdf_value` macro under the hood
+    Calls :code:`xccdf_value` macro under the hood. Deprecated: Use
+    :code:`xccdf_value`.
 
 :param varname: The name of the variable to reference
 :type varname: str
@@ -254,10 +262,6 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 {{%- endmacro %}}
 
 
-{{%- macro upstart_describe_socket_disable(socket) %}}
-{{%- endmacro %}}
-
-
 {{#
     Describe how to enable a socket in systemd.
 
@@ -268,10 +272,6 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 {{%- macro systemd_describe_socket_enable(socket) %}}
     The <code>{{{ socket }}}</code> socket can be enabled with the following command:
     <pre>$ sudo systemctl enable {{{ socket }}}.socket</pre>
-{{%- endmacro %}}
-
-
-{{%- macro upstart_describe_socket_enable(socket) %}}
 {{%- endmacro %}}
 
 
@@ -287,8 +287,6 @@ substituting the correct init system.
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_socket_enable(socket) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_describe_socket_enable(socket) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
@@ -308,8 +306,6 @@ substituting the correct init system.
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_socket_disable(socket) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_describe_socket_disable(socket) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
@@ -395,32 +391,6 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 {{%- endmacro %}}
 
 
-{{#
-    Describe how to disable a service in upstart.
-
-:param service: The service to check
-:type service: str
-
-#}}
-{{%- macro upstart_describe_service_disable(service) %}}
-    The <code>{{{ service }}}</code> service can be disabled with the following command:
-    <pre>$ sudo chkconfig {{{ service }}} off</pre>
-{{%- endmacro %}}
-
-
-{{#
-    Describe how to enable a service in upstart.
-
-:param service: The service to check
-:type service: str
-
-#}}
-{{%- macro upstart_describe_service_enable(service) %}}
-    The <code>{{{ service }}}</code> service can be enabled with the following command:
-    <pre>$ sudo chkconfig --level 2345 {{{ service }}} on</pre>
-{{%- endmacro %}}
-
-
 {{%- macro systemd_describe_timer_enable(timer) %}}
     The <code>{{{ timer }}}</code> timer can be enabled with the following command:
     <pre>$ sudo systemctl enable {{{ timer }}}.timer</pre>
@@ -458,8 +428,6 @@ substituting the correct init system.
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_service_enable(service) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_describe_service_enable(service) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
@@ -479,12 +447,23 @@ substituting the correct init system.
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_service_disable(service) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_describe_service_disable(service) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
   {{%- endif -%}}
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to set an SELinux boolean depending on a variable.
+
+:param sebool: The SELinux boolean to disable
+:type sebool: str
+
+#}}
+{{%- macro describe_sebool_var(sebool) %}}
+    To set the <code>{{{ sebool }}}</code> SELinux boolean, run the following command:
+    <pre>$ sudo setsebool -P {{{ sebool }}} {{{ xccdf_value("var_" + sebool) }}}</pre>
 {{%- endmacro %}}
 
 
@@ -973,7 +952,7 @@ Operator see
     The parameter should be in form `parameter=value`.
 #}}
 {{%- macro describe_grub2_argument(arg_name_value) -%}}
-{{%- if product in ["rhel7", "ol7", "rhel8", "ol8", "rhel9"] or 'ubuntu' in product -%}}
+{{%- if product in ["ol7", "ol8", "ol9", "rhel7", "rhel8", "rhel9"] or 'ubuntu' in product -%}}
 To ensure that <tt>{{{ arg_name_value }}}</tt> is added as a kernel command line
 argument to newly installed kernels, add <tt>{{{ arg_name_value }}}</tt> to the
 default Grub2 command line for Linux operating systems. Modify the line within
@@ -1092,7 +1071,7 @@ Part of the grub2_bootloader_argument(_absent) templates.
     {{%- set grub_helper_args = [] -%}}
 {{%- elif product in ["sle12", "sle15"] -%}}
     {{%- set grub_helper_executable = "grub2-mkconfig" -%}}
-    {{%- set grub_helper_args = ["-o " + grub2_boot_path + "/grub2.cfg"] -%}}
+    {{%- set grub_helper_args = ["-o " ~ grub2_boot_path ~ "/grub2.cfg"] -%}}
 {{%- else -%}}
     {{%- set grub_helper_executable = "grubby" -%}}
     {{%- if action == "update" -%}}
@@ -1112,11 +1091,11 @@ Part of the grub2_bootloader_argument(_absent) templates.
 {{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
 {{%- endmacro %}}
 
-{{% macro ocil_fix_srg_privileged_command(cmd, path_prefix="/usr/bin/") %}}
-{{{ complete_ocil_entry_audit_privileged_commands(cmd, path_prefix) }}}
+{{% macro ocil_fix_srg_privileged_command(cmd, path_prefix="/usr/bin/", key="") %}}
+{{{ complete_ocil_entry_audit_privileged_commands(cmd, path_prefix, key) }}}
 
 fixtext: |-
-    {{{ fixtext_audit_rules_privileged_commands(cmd, path_prefix) | indent(4) }}}
+    {{{ fixtext_audit_rules_privileged_commands(cmd, path_prefix, key) | indent(4) }}}
 
 srg_requirement: '{{{ srg_requirement_audit_command(cmd) }}}'
 {{%- endmacro %}}

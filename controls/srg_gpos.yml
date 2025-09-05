@@ -19,7 +19,6 @@ controls:
             - var_sshd_disable_compression=no
             - var_password_hashing_algorithm=SHA512
             - var_password_pam_dictcheck=1
-            - var_password_pam_retry=3
             - sshd_approved_macs=stig
             - sshd_approved_ciphers=stig
             - sshd_idle_timeout_value=10_minutes
@@ -29,3 +28,4 @@ controls:
             - var_auditd_space_left_percentage=25pc
             - var_auditd_space_left_action=email
             - login_banner_text=dod_banners
+            - var_authselect_profile=sssd

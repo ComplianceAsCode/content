@@ -1,3 +1,3 @@
-# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_rhel
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_rhel,multi_platform_ol
 
-{{{ bash_ensure_pam_module_configuration('/etc/pam.d/system-auth', 'password', 'requisite', 'pam_pwquality.so', '', '', '^account.*required.*pam_permit.so') }}}
+{{{ bash_ensure_pam_module_configuration('/etc/pam.d/system-auth', 'password', 'requisite', 'pam_pwquality.so', '', '', '^account.*required.*pam_permit\.so') }}}

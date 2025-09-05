@@ -1,0 +1,40 @@
+product: ubuntu2204
+full_name: "Ubuntu 22.04"
+type: platform
+
+benchmark_id: UBUNTU_22-04
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "apt_get"
+
+init_system: "systemd"
+oval_feed_url: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.focal.cve.oval.xml"
+
+grub2_boot_path: "/boot/grub"
+grub2_uefi_boot_path: "/boot/efi/EFI/ubuntu"
+
+aide_bin_path: "/usr/bin/aide.wrapper"
+aide_conf_path: "/etc/aide/aide.conf"
+chrony_conf_path: "/etc/chrony/chrony.conf"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - ubuntu2204:
+      name: "cpe:/o:canonical:ubuntu_linux:22.04::~~lts~~~"
+      title: "Ubuntu release 22.04 (Focal Fossa)"
+      check_id: installed_OS_is_ubuntu2204
+
+platform_package_overrides:
+  audit: auditd
+  gdm: gdm3
+  grub2: grub2-common
+  net-snmp: snmp
+  nss-pam-ldapd: libpam-ldap
+  pam: libpam-runtime
+  shadow: login
+  sssd: sssd-common
+
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/ubuntu_linux/'

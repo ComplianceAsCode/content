@@ -17,7 +17,7 @@
 
   <ind:textfilecontent54_object id="object_configure_opensc_card_drivers"
   version="1">
-    <ind:filepath operation="pattern match">^/etc/opensc.*.conf$</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/opensc.*\.conf$</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]+card_drivers[\s]+=[\s]+(\S+);$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>

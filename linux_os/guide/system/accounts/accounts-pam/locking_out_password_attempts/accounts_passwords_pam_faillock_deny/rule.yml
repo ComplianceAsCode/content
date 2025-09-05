@@ -14,9 +14,9 @@ description: |-
     depending on the OS version.
 
 rationale: |-
-    Locking out user accounts after a number of incorrect attempts prevents direct password
-    guessing attacks. In combination with the <tt>silent</tt> option, user enumeration attacks
-    are also mitigated.
+    By limiting the number of failed logon attempts, the risk of unauthorized system access via
+    user password guessing, also known as brute-forcing, is reduced. Limits are imposed by locking
+    the account.
 
 severity: medium
 
@@ -50,21 +50,28 @@ references:
     stigid@rhel8: RHEL-08-020010
     vmmsrg: SRG-OS-000021-VMM-000050
 
-ocil_clause: 'limiting the number of failed logon attempts for users is not configured'
+platform: pam
+
+ocil_clause: |-
+    the "deny" option is not set to "{{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}"
+    or less (but not "0"), is missing or commented out
 
 ocil: |-
-    To ensure the failed password attempt policy is configured correctly, run the following command:
+    Verify {{{ full_name }}} is configured to lock an account after {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}
+    unsuccessful logon attempts with the command:
+
     {{% if product in ["rhel7"] %}}
     <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
     For each file, the output should show <tt>deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}</tt>.
     {{% else %}}
-    <pre>$ grep deny /etc/security/faillock.conf</pre>
-    The output should show <tt>deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}</tt>.
+    <pre>$ grep 'deny =' /etc/security/faillock.conf</pre>
+    deny = {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}.
     {{% endif %}}
 
 fixtext: |-
-    To configure {{{ full_name }}} to lock out accounts after a number of incorrect login attempts
-    using <tt>pam_faillock.so</tt>, first enable the feature using the following command:
+    Configure {{{ full_name }}} to lock an account when {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}
+    unsuccessful logon attempts occur. First enable the feature using the following command:
+
     {{% if product in ["rhel7"] %}}
     $ sudo authconfig --enablefaillock --update
 
@@ -81,14 +88,8 @@ fixtext: |-
     $ sudo authselect enable-feature with-faillock
 
     Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
-    add, uncomment or edit the following line:
-    <pre>deny = {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}</pre>
-
-    add or uncomment the following line:
-    <pre>silent</pre>
+    deny = {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}
     {{% endif %}}
-
-platform: pam
 
 warnings:
     - general: |-

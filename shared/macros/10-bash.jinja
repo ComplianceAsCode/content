@@ -779,14 +779,6 @@ dconf update
 # so let's reset the state so OVAL checks pass.
 # Service should be 'inactive', not 'failed' after reboot though.
 /usr/bin/systemctl reset-failed "{{{ service }}}"
-{{%- elif init_system == "upstart" -%}}
-  {{%- if service_state == "disable" -%}}
-/sbin/service "{{{ service }}}" disable
-/sbin/chkconfig --level 0123456 "{{{ service }}}" off
-  {{%- else -%}}
-/sbin/service "{{{ service }}}" enable
-/sbin/chkconfig --level 0123456 "{{{ service }}}" on
-  {{%- endif -%}}
 {{%- endif -%}}
 
 {{%- if xinetd != "" -%}}
@@ -997,11 +989,11 @@ AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
 for pam_file in "${AUTH_FILES[@]}"
 do
     if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+(preauth silent|authfail).*$' "$pam_file" ; then
-        sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent' "$pam_file"
-        sed -i --follow-symlinks '/^auth.*required.*pam_deny.so.*/i auth        required      pam_faillock.so authfail' "$pam_file"
-        sed -i --follow-symlinks '/^account.*required.*pam_unix.so.*/i account     required      pam_faillock.so' "$pam_file"
+        sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix\.so.*/i auth        required      pam_faillock.so preauth silent' "$pam_file"
+        sed -i --follow-symlinks '/^auth.*required.*pam_deny\.so.*/i auth        required      pam_faillock.so authfail' "$pam_file"
+        sed -i --follow-symlinks '/^account.*required.*pam_unix\.so.*/i account     required      pam_faillock.so' "$pam_file"
     fi
-    sed -Ei 's/(auth.*)(\[default=die\])(.*pam_faillock.so)/\1required     \3/g' "$pam_file"
+    sed -Ei 's/(auth.*)(\[default=die\])(.*pam_faillock\.so)/\1required     \3/g' "$pam_file"
 done
 {{%- endmacro -%}}
 
@@ -1021,9 +1013,10 @@ fi
 
 :param option: faillock option eg. deny, unlock_time, fail_interval
 :param value: value of option
+:param authfail: check the pam_faillock.so conf line with authfail 
 
 #}}
-{{%- macro bash_pam_faillock_parameter_value(option, value='') -%}}
+{{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
 FAILLOCK_CONF="/etc/security/faillock.conf"
 if [ -f $FAILLOCK_CONF ]; then
@@ -1050,20 +1043,26 @@ if [ -f $FAILLOCK_CONF ]; then
 else
     for pam_file in "${AUTH_FILES[@]}"
     do
-        if ! grep -qE '^\s*auth.*pam_faillock.so (preauth|authfail).*{{{ option }}}' "$pam_file"; then
+        if ! grep -qE '^\s*auth.*pam_faillock\.so (preauth|authfail).*{{{ option }}}' "$pam_file"; then
             {{%- if value == '' %}}
-            sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ {{{ option }}}/' "$pam_file"
-            sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*authfail.*/ s/$/ {{{ option }}}/' "$pam_file"
+            sed -i --follow-symlinks '/^auth.*required.*pam_faillock\.so.*preauth.*silent.*/ s/$/ {{{ option }}}/' "$pam_file"
+            {{%- if authfail %}}
+            sed -i --follow-symlinks '/^auth.*required.*pam_faillock\.so.*authfail.*/ s/$/ {{{ option }}}/' "$pam_file"
+            {{%- endif %}}
             {{%- else %}}
-            sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "$pam_file"
-            sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*authfail.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "$pam_file"
+            sed -i --follow-symlinks '/^auth.*required.*pam_faillock\.so.*preauth.*silent.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "$pam_file"
+            {{%- if authfail %}}
+            sed -i --follow-symlinks '/^auth.*required.*pam_faillock\.so.*authfail.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "$pam_file"
+            {{%- endif %}}
             {{%- endif %}}
         {{%- if value == '' %}}
         fi
         {{%- else %}}
         else
-            sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock.so.*preauth.*silent.*\)\('"{{{ option }}}"'=\)[0-9]\+\(.*\)/\1\2'"{{{ value }}}"'\3/' "$pam_file"
-            sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock.so.*authfail.*\)\('"{{{ option }}}"'=\)[0-9]\+\(.*\)/\1\2'"{{{ value }}}"'\3/' "$pam_file"
+            sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock\.so.*preauth.*silent.*\)\('"{{{ option }}}"'=\)[0-9]\+\(.*\)/\1\2'"{{{ value }}}"'\3/' "$pam_file"
+            {{%- if authfail %}}
+            sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock\.so.*authfail.*\)\('"{{{ option }}}"'=\)[0-9]\+\(.*\)/\1\2'"{{{ value }}}"'\3/' "$pam_file"
+            {{%- endif %}}
         fi
         {{%- endif %}}
     done
@@ -1876,7 +1875,7 @@ fi
     If the line was already present, but with a different control, the control will be updated.
     Note: If there are multiple lines matching the "group" + "module", no lines will be updated.
     Instead, a new line will be included after the regex informed in "after_match" or at the
-    end of file if "after_match" parameter is empty.
+    end of file if "after_match" parameter is empty or there is no match.
     This is a conservative safeguard for improper use of this macro in rare cases of modules
     configured by multiple lines, like pam_sss.so, pam_faillock.so and pam_lastlog.so. In some
     situations, these special modules may have similar lines sharing the same "group" and "module".
@@ -1903,7 +1902,12 @@ if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*' "{
         {{%- elif after_match == 'BOF'  %}}
         sed -i --follow-symlinks '1i {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
         {{%- else %}}
-        sed -i --follow-symlinks '/{{{ after_match }}}/a {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
+        LAST_MATCH_LINE=$(grep -nP "{{{ after_match }}}" "{{{ pam_file }}}" | tail -n 1 | cut -d: -f 1)
+        if [ ! -z $LAST_MATCH_LINE ]; then
+            sed -i --follow-symlinks $LAST_MATCH_LINE' a {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
+        else
+            echo '{{{ group }}}    '"{{{ control }}}"'    {{{ module }}}' >> "{{{ pam_file }}}"
+        fi
         {{%- endif %}}
     fi
 fi
@@ -2073,3 +2077,40 @@ else
     echo "{{{ pam_file }}} was not found" >&2
 fi
 {{%- endmacro -%}}
+
+
+{{%- macro bash_partition_conditional(path) -%}}
+'findmnt --kernel "{{{ path }}}" > /dev/null'
+{{%- endmacro -%}}
+
+
+{{#
+    Macro to insert script to find a Python interpreter on the target system.
+#}}
+{{% macro find_python() -%}}
+
+declare __REMEDIATE_PYTHON
+if [ -x /usr/bin/python ]; then
+    __REMEDIATE_PYTHON=/usr/bin/python
+elif [ -x /usr/bin/python3 ]; then
+    __REMEDIATE_PYTHON=/usr/bin/python3
+elif [ -x /usr/bin/python2 ]; then
+    __REMEDIATE_PYTHON=/usr/bin/python2
+else
+    echo "Python required and no python interpreter found."
+    exit 1
+fi
+{{%- endmacro %}}
+
+{{#
+    Macro to insert script to find Mozilla Firefox location on the target system.
+#}}
+{{% macro find_firefox() -%}}
+
+declare __FIREFOX_DISTRIBUTION
+if find /usr -iname firefox\* -type f -print | grep -qe "firefox.sh$\|firefox-bin$"; then
+   __FIREFOX_DISTRIBUTION=$(dirname "$(find /usr -iname firefox\* -type f -print | grep -e "firefox.sh$\|firefox-bin$" | head -n1)")/distribution
+fi
+{{%- endmacro %}}
+
+

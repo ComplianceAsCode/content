@@ -2,7 +2,8 @@ documentation_complete: true
 
 title: 'Set the Default Search Provider''s URL'
 
-description: "Specifies the URL of the default search provider that is to be used. To set the \nURL of the default search provider, set <tt>DefaultSearchProviderName</tt> to \n<tt><sub idref=\"var_default_search_provider\" /></tt> in the Chromium policy file."
+description: |-
+    Specifies the URL of the default search provider that is to be used. To set the URL of the default search provider, set <tt>DefaultSearchProviderName</tt> to <tt>{{{ xccdf_value("var_default_search_provider_name") }}}</tt> in the Chromium policy file.
 
 rationale: |-
     When doing internet searches, it is important to set an organizationally approved search
@@ -19,4 +20,4 @@ ocil: |-
     To verify that a default search provider is set, run the following command:
     <pre>$ grep DefaultSearchProviderName /etc/chromium/policies/managed/*.json</pre>
     The output should contain:
-    <pre>"DefaultSearchProviderName": "<sub idref="var_default_search_provider" />",</pre>
+    <pre>"DefaultSearchProviderName": "{{{ xccdf_value("var_default_search_provider_name") }}}",</pre>

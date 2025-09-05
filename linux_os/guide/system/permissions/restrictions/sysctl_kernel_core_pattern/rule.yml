@@ -13,6 +13,11 @@ rationale: |-
 
 severity: medium
 
+{{% if product in ["rhel9"] %}}
+conflicts:
+    - sysctl_kernel_core_pattern_empty_string
+{{% endif %}}
+
 identifiers:
     cce@rhcos4: CCE-82527-3
     cce@rhel8: CCE-82215-5
@@ -26,7 +31,10 @@ references:
     stigid@ol8: OL08-00-010671
     stigid@rhel8: RHEL-08-010671
 
-ocil_clause: 'the returned line does not have a value of "|/bin/false", or a line is not returned and the need for core dumps is not documented with the Information System Security Officer (ISSO) as an operational requirement'
+ocil_clause:  |-
+    the returned line does not have a value of "|/bin/false", or a line is not
+    returned and the need for core dumps is not documented with the Information
+    System Security Officer (ISSO) as an operational requirement
 
 ocil: |
     {{{ ocil_sysctl_option_value(sysctl="kernel.core_pattern", value="|/bin/false") }}}

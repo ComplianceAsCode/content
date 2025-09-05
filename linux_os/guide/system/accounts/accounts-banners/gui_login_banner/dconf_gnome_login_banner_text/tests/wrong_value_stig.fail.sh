@@ -1,11 +1,6 @@
 #!/bin/bash
 # profiles = xccdf_org.ssgproject.content_profile_stig
 
-{{% set dconf_db = "distro.d" %}}
-{{% if product not in ("fedora", "rhel9") %}}
-{{% set dconf_db = "gdm.d" %}}
-{{% endif %}}
-
 login_banner_text="Wrong Banner Text"
 expanded=$(echo "$login_banner_text" | sed 's/(\\\\\x27)\*/\\\x27/g;s/(\\\x27)\*//g;s/(\\\\\x27)/tamere/g;s/(\^\(.*\)\$|.*$/\1/g;s/\[\\s\\n\][+*]/ /g;s/\\//g;s/(n)\*/\\n/g;s/\x27/\\\x27/g;')
 
@@ -16,8 +11,8 @@ install_dconf_and_gdm_if_needed
 
 
 clean_dconf_settings
-add_dconf_setting "org/gnome/login-screen" "banner-message-text" "'${expanded}'" "{{{ dconf_db }}}" "00-security-settings"
-add_dconf_lock "org/gnome/login-screen" "banner-message-text" "{{{ dconf_db }}}" "00-security-settings-lock"
+add_dconf_setting "org/gnome/login-screen" "banner-message-text" "'${expanded}'" "{{{ dconf_gdm_dir }}}" "00-security-settings"
+add_dconf_lock "org/gnome/login-screen" "banner-message-text" "{{{ dconf_gdm_dir }}}" "00-security-settings-lock"
 
 {{% else %}}
     apt update

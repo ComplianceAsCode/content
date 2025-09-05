@@ -8,7 +8,7 @@ description: |-
     The file <tt>{{{ grub2_uefi_boot_path }}}/grub.cfg</tt> should
     be owned by the <tt>root</tt> user to prevent destruction
     or modification of the file.
-    {{{ describe_file_owner(file="{{{ grub2_uefi_boot_path }}}/grub.cfg", owner="root") }}}
+    {{{ describe_file_owner(file=grub2_uefi_boot_path ~ "/grub.cfg", owner="root") }}}
 
 rationale: 'Only root should be able to modify important boot parameters.'
 
@@ -35,10 +35,10 @@ references:
     nist-csf: PR.AC-4,PR.DS-5
     pcidss: Req-7.1
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="{{{ grub2_uefi_boot_path }}}/grub.cfg", owner="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file=grub2_uefi_boot_path ~ "/grub.cfg", owner="root") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="{{{ grub2_uefi_boot_path }}}/grub.cfg", owner="root") }}}
+    {{{ ocil_file_owner(file=grub2_uefi_boot_path ~ "/grub.cfg", owner="root") }}}
 
 platform: machine
 

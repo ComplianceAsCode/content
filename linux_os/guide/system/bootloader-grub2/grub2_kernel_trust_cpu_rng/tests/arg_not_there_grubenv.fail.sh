@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 8
+# platform = Oracle Linux 8,Red Hat Enterprise Linux 8
 # Based on shared/templates/grub2_bootloader_argument/tests/arg_not_there_grubenv.fail.sh
 
 # Fake the kernel compile config, this is necessary when the distro's kernel is already compiled

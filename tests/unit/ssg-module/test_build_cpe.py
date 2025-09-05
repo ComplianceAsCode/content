@@ -129,7 +129,7 @@ def test_product_cpes():
     # the same object as when CPE name was used above
     rhel7_cpe_2 = product_cpes.get_cpe("cpe:/o:redhat:enterprise_linux:7")
     assert(rhel7_cpe_2.name == rhel7_cpe.name)
-    assert(rhel7_cpe_2.title == rhel7_cpe_2.title)
+    assert(rhel7_cpe_2.title == rhel7_cpe.title)
     assert(rhel7_cpe_2.check_id == rhel7_cpe.check_id)
     assert(rhel7_cpe_2.bash_conditional == rhel7_cpe.bash_conditional)
     assert(rhel7_cpe_2.ansible_conditional == rhel7_cpe.ansible_conditional)

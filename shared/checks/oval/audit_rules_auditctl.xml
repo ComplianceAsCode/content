@@ -14,7 +14,6 @@
   </definition>
 
   <!-- Test the auditctl case -->
-{{% if init_system == "systemd" %}}
   <ind:textfilecontent54_test check="all" comment="audit auditctl" id="test_audit_rules_auditctl" version="1">
     <ind:object object_ref="object_audit_rules_auditctl" />
   </ind:textfilecontent54_test>
@@ -23,20 +22,5 @@
     <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/auditctl.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-{{% else %}}
-  {{# Older versions of audit didn't have option to use augenrules, hence check_existence="any_exist" #}}
-  <ind:textfilecontent54_test check="all" check_existence="any_exist" comment="audit auditctl" id="test_audit_rules_auditctl" version="1">
-    <ind:object object_ref="object_audit_rules_auditctl" />
-    <ind:state state_ref="state_audit_rules_auditctl" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_audit_rules_auditctl" version="1">
-    <ind:filepath>/etc/sysconfig/auditd</ind:filepath>
-    <ind:pattern operation="pattern match">^USE_AUGENRULES="(.*)"$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-  <ind:textfilecontent54_state id="state_audit_rules_auditctl" version="1">
-    <ind:subexpression datatype="string" operation="equals">no</ind:subexpression>
-  </ind:textfilecontent54_state>
-{{% endif %}}
 
 </def-group>

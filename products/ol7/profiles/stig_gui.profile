@@ -4,7 +4,7 @@ title: 'DISA STIG with GUI for Oracle Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG with GUI for Oracle Linux V2R6.
+    DISA STIG with GUI for Oracle Linux V2R8.
 
     Warning: The installation and use of a Graphical User Interface (GUI)
     increases your attack vector and decreases your overall security posture. If

@@ -10,7 +10,7 @@ description: |-
     On {{{ full_name }}}, the default <tt>passwd_timeout</tt> value is 5 minutes.
 {{% endif %}}
     The passwd_timeout should be configured by making sure that the
-    <tt>passwd_timeout=sub_var_value("var_sudo_passwd_timeout")</tt> tag exists in
+    <tt>passwd_timeout={{{ xccdf_value("var_sudo_passwd_timeout") }}}</tt> tag exists in
     <tt>/etc/sudoers</tt> configuration file or any sudo configuration snippets
     in <tt>/etc/sudoers.d/</tt>.
 
@@ -32,7 +32,7 @@ ocil_clause: 'passwd_timeout is not set with the appropriate value for sudo'
 
 ocil: |-
     To determine if <tt>passwd_timeout</tt> has been configured for sudo, run the following command:
-    <pre>$ sudo grep -ri '^Defaults.*passwd_timeout=sub_var_value("var_sudo_passwd_timeout")' /etc/sudoers /etc/sudoers.d/</pre>
+    <pre>$ sudo grep -ri '^Defaults.*passwd_timeout={{{ xccdf_value("var_sudo_passwd_timeout") }}}' /etc/sudoers /etc/sudoers.d/</pre>
     The command should return a matching output.
 
 template:

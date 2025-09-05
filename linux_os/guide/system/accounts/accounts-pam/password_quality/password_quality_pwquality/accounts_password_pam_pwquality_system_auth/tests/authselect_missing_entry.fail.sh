@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = authselect
-# platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
+# platform = Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
 
 authselect create-profile hardening -b sssd
 CUSTOM_PROFILE="custom/hardening"

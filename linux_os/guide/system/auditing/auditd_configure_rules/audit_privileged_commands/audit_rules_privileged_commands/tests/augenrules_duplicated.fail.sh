@@ -2,7 +2,7 @@
 # packages = audit
 # Remediation for this rule cannot remove the duplicates
 # remediation = none
-# platform = Fedora,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
+# platform = Fedora,Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
 
 ./generate_privileged_commands_rule.sh 1000 privileged /tmp/privileged.rules
 

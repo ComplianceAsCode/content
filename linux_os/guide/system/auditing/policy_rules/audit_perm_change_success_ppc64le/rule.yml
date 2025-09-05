@@ -1,0 +1,51 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'Configure auditing of successful permission changes (ppc64le)'
+
+{{% set file_contents_audit_perm_change_success =
+"## Successful permission change
+-a always,exit -F arch=b64 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change" %}}
+
+description: |-
+    Ensure that successful attempts to modify permissions of files or directories are audited.
+
+    The following rules configure audit as described above:
+    <pre>{{{ file_contents_audit_perm_change_success|indent }}}    </pre>
+
+    Load new Audit rules into kernel by running:
+    <pre>augenrules --load</pre>
+
+    Note: This rule uses a special set of Audit rules to comply with OSPP 4.2.1. You may reuse this rule in different profiles. If you decide to do so, it is recommended that you inspect contents of the file closely and make sure that they are alligned with your needs.
+
+rationale: |-
+    Auditing successful file or directory permission changes helps in monitoring and investigating of activities performed on the system.
+
+severity: medium
+
+platforms:
+    - ppc64le_arch
+
+identifiers:
+    cce@rhel9: CCE-86002-3
+
+references:
+    nist: AU-2(a)
+    ospp: FAU_GEN.1.1.c
+    srg: SRG-OS-000462-GPOS-00206,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209,SRG-OS-000474-GPOS-00219,SRG-OS-000475-GPOS-00220,SRG-OS-000466-GPOS-00210,SRG-OS-000064-GPOS-00033
+
+ocil_clause: 'the file does not exist or the content differs'
+
+ocil: |-
+    To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
+    <pre>cat /etc/audit/rules.d/30-ospp-v42-5-perm-change-success.rules</pre>
+    The output has to be exactly as follows:
+    <pre>{{{ file_contents_audit_perm_change_success|indent }}}    </pre>
+
+template:
+    name: audit_file_contents
+    vars:
+        filepath: /etc/audit/rules.d/30-ospp-v42-5-perm-change-success.rules
+        contents: |-
+            {{{ file_contents_audit_perm_change_success|indent(12) }}}

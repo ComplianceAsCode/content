@@ -26,6 +26,13 @@ rationale: |-
 
 severity: medium
 
+# on RHEL9 there are rules which cover particular hardware architectures
+# so do not apply this rule but apply the specific one instead
+{{% if product == "rhel9" %}}
+platforms:
+    - not ppc64le_arch
+{{% endif %}}
+
 identifiers:
     cce@rhel8: CCE-82838-4
     cce@rhel9: CCE-90814-5

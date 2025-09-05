@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_fedora,Red Hat Enterprise Linux 8
+# platform = Oracle Linux 8,Red Hat Enterprise Linux 8,multi_platform_fedora
 # profiles = xccdf_org.ssgproject.content_profile_stig
 
 incorrect_sshd_approved_ciphers=aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes256-cbc

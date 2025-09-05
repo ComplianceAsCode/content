@@ -1,0 +1,908 @@
+= Lab Exercise 3: Create Your Own Security Policy From Scratch
+:toc2:
+:linkattrs:
+:experimental:
+:imagesdir: images
+
+// Variables
+:container_name: fedora_container
+:cpe_identifier: cpe:/o:fedoraproject:fedora:34
+
+== Introduction
+
+Imagine that your company has approved an internal security policy that enforces certain configurations for laptops being used outside the company site.
+Your task is to implement an automated way of checking the laptop configuration.
+In this lab exercise, you learn how to solve the task using `ComplianceAsCode`.
+
+.*Goals*
+
+* Learn how to represent your company security policy as a security profile in `ComplianceAsCode`
+* Learn how to operate with basic building blocks (rules) of `ComplianceAsCode`
+* Learn how to choose between hundreds of existing rules and add them into a profile
+* Learn how to customize the rules for your needs by using variables
+* Learn how to create a new rule
+* Learn how to scan your system against the profile you created
+
+
+.*Preconfigured Lab Environment*
+
+* The `ComplianceAsCode` repository was already cloned.
+* The following dependencies required for the `ComplianceAsCode` content build were installed using `yum install`:
+** Generic build utilities: `cmake` and `make`
+** Utilities for generating SCAP content: `openscap-scanner`
+** The Python dependencies for putting content together: `python3-pyyaml` and `python3-jinja2`
+
+IMPORTANT: Content used in this lab has been altered to increase its educative
+potential, and is therefore different from the content in
+ComplianceAsCode upstream repository.
+
+== Hands-on Lab
+
+The `ComplianceAsCode` project consists of human-readable files that are compiled into standard-compliant files that are difficult to read and edit directly.
+
+For your convenience, the environment is already set up, so the content is built and ready to be used.
+No worries, though--you get to rebuild it later in the exercise.
+
+To start the hands-on section, take the following steps:
+
+. Go to: link:https://gitpod.io/#WORKSHOP=lab3_profiles/https://github.com/ComplianceAsCode/content[Lab 3 Environment]
+. Wait until all the steps being executed in the terminal are complete.
+
+== Creating a New Empty Profile
+
+The basic building block of a security policy in `ComplianceAsCode` is a rule.
+The rule represents a single configuration setting--for example,
+"Password length is at least 8 characters" or "Logging is enabled."
+
+A set of rules is called a profile.
+A profile represents a specific security policy.
+In `ComplianceAsCode`, there are multiple profiles.
+
+Rules and profiles are also standardized by the XCCDF standard, which is part of SCAP.
+However, there is also a concept in-between -- a Security Control.
+As profiles are usually based on policies that are available as documents that group requirements by chapters or sections, it makes sense to introduce this concept of Security Controls that corresponds to that sectioning.
+As a result, the profile definition doesn't have to reference tens or hundreds of rules individually, but it can reference Security Controls that point directly to the essence of the policy the profile implements.
+
+Security Control has the same structure as profile -- it consists of selections and associated metadata.
+One can use available Security Controls as an additional means of how to define profiles -- one can use Security Controls in addition to already mentioned rules and other selections.
+
+There are profiles for different products.
+The term "product" means operating systems or applications--for example,
+Red Hat^(R)^ Enterprise Linux^(R)^ 8 or Red Hat^(R)^ OpenShift^(R)^ Container Platform 4.
+The products are represented by directories in the `products` directory of the `ComplianceAsCode` repository--for example,
+`rhel8`, `fedora` or `ocp4` subdirectories.
+
+Each product has a different set of profiles because some security policies are relevant only for certain operating systems or applications.
+The profiles are located in the `profiles` directory in the product directory.
+The profiles are represented by a simple YAML (YAML Ain't Markup Language) file, such as
+`ospp.profile`, which defines a profile.
+
+In this lab, you create a new `Travel` profile for Red Hat^(R)^ Enterprise Linux^(R)^ 8.
+The profile represents your company's new security policy for laptops.
+
+=== Navigating the Profiles Directory
+
+. Go to the profiles directory for Red Hat^(R)^ Enterprise Linux^(R)^ 8 using the terminal (you can open it with Ctrl+`):
++
+----
+[... ]$ cd products/rhel8/profiles
+[... profiles]$ ls -1
+anssi_bp28_enhanced.profile
+anssi_bp28_high.profile
+anssi_bp28_intermediary.profile
+anssi_bp28_minimal.profile
+cis.profile
+cis_server_l1.profile
+cis_workstation_l1.profile
+cis_workstation_l2.profile
+cjis.profile
+cui.profile
+e8.profile
+hipaa.profile
+ism_o.profile
+ospp-mls.profile
+ospp.profile
+pci-dss.profile
+rht-ccp.profile
+standard.profile
+stig_gui.profile
+stig.profile
+----
++
+As you can see, there are already some `.profile` files in the `profiles` directory.
+You can get some inspiration from them.
+
+=== Creating the New Profile
+
+. Create a new `travel.profile` file in the `profiles` directory and open it in the editor:
++
+----
+[... profiles]$ open travel.profile
+----
++
+[NOTE]
+====
+`profile` is a file in YAML format.
+Expect it to be fine if you copy and paste the content from the previous listing.
+When creating a new YAML file from scratch, the most common mistake tends to be incorrect indentation.
+Make sure you use spaces, not tabs.
+Also check that there is no trailing whitespace.
+
+The profile consists of four items that are required:
+
+.. `documentation_complete: true` means that your profile is not in a draft state, so the build system picks it up.
+.. `title` is a short profile title.
+.. `description` consists of a few paragraphs that describe the purpose of the profile.
+.. `selections` is a list of rules and variables that make up the profile.
+It cannot be an empty list, so for now you add the `sshd_enable_strictmodes` rule. You learn how to find and add other rules later in this lab exercise.
+====
+
+. Next, create the basic structure and fill in the profile title and description as specified in this listing.
+You can copy and paste the following text to the editor--just keep in mind that when pasting to the console, you
+have to use
+`Ctrl+V`.
++
+----
+documentation_complete: true
+
+title: Travel profile for corporate laptops
+
+description: This profile represents settings that are required by company security policy for employee laptops.
+
+selections:
+    - sshd_enable_strictmodes
+----
+
+. When you are finished editing,
+press `Ctrl+S` to save the file.
+
+=== Rebuilding and Reviewing the Content [[content_review]]
+. Go back to the project's root directory.
++
+[%nowrap]
+----
+[... profiles]$ cd -
+----
+
+. Rebuild the content:
++
+----
+[... ]$ ./build_product rhel8
+...
+----
++
+This command rebuilds content for all of the product profiles in Red Hat^(R)^ Enterprise Linux^(R)^ 8, including your new `Travel` profile.
+The command builds the human-readable HTML guide that can be displayed in a web browser and the machine-readable SCAP files that can be consumed by OpenSCAP.
+
+. Check the resulting HTML guide to see your new profile.
+. This is the same thing you did in the first lab--you navigate to the `build/guides` folder.:
+. Right click the `ssg-rhel8-guide-travel.html` file and select `Open with Live Server` to preview the file. Note: Your browser may block the pop-up. You must allow it when asked.
++
+.Travel Profile Guide
+image::navigatetravel.png[]
+. A new tab opens and you can see the guide for your `Travel` profile, which contains just the single `sshd_enable_strictmodes` rule:
++
+.The header of the HTML Guide generated by OpenSCAP during the build
+image::2-01-guide.png[HTML Guide]
+
+== Adding Rules to the Profile
+
+Next, imagine that one of the requirements of your company policy is that the `root` user cannot log in to the machine via SSH.
+`ComplianceAsCode` already contains a rule implementing this requirement.
+You only need to add this rule to your `Travel` profile.
+
+=== Finding the Relevant Rule
+
+Rules are represented by directories in `ComplianceAsCode`.
+Each rule directory contains a file called `rule.yml`, which contains a rule description and metadata.
+
+. In this case, you are looking to see if you have a `rule.yml` file in your repository that contains “SSH root login.” You can use `git grep` for this:
++
+----
+[... ]$ git grep -i "SSH root login'" "*rule.yml"
+linux_os/guide/services/ssh/ssh_server/sshd_disable_root_login/rule.yml:title: 'Disable SSH Root Login'
+----
+
+. If you want, you can verify that this is the right rule by opening the `rule.yml` file and reading the description section.
++
+----
+[... ]$ open linux_os/guide/services/ssh/ssh_server/sshd_disable_root_login/rule.yml
+----
++
+It looks like this:
++
+----
+documentation_complete: true
+
+title: 'Disable SSH Root Login'
+
+description: |-
+    The root user should never be allowed to login to a
+    system directly over a network.
+    To disable root login via SSH, add or correct the following line
+[ ... snip ... ]
+----
+
+. In order to add the rule to your new `Travel` profile, you need to determine the ID of the rule you found.
+The rule ID is the name of the directory where the `rule.yml` file is located.
+In this case, the rule ID is `sshd_disable_root_login`.
+
+
+=== Including the Rule in the New Profile
+
+. Add the rule ID to the selections list in your `Travel` profile.
++
+----
+[... ]$ open products/rhel8/profiles/travel.profile
+----
+
+. Add `sshd_disable_root_login` as a new item in `selections` list.
+The `selections` list is a list of rules that the profile consists of.
++
+Please make sure that you use spaces for indentation.
+. After you are finished editing, press `Ctrl+S` to save the file.
++
+Expect your `travel.profile` file to look like this:
++
+----
+documentation_complete: true
+
+title: Travel profile for corporate laptops
+
+description: This profile represents settings which are required by company security policy for employee laptops.
+
+selections:
+    - sshd_enable_strictmodes
+    - sshd_disable_root_login
+----
+
+
+=== Verifying the Result
+
+. To review the result, you need to rebuild the content:
++
+----
+[... ]$ ./build_product rhel8
+----
++
+The `sshd_disable_root_login` rule is included in your profile by the build system.
+
+. Check the resulting HTML guide.
+. Navigate to the `build/guides` folder.:
+. Right click the `ssg-rhel8-guide-travel.html` file and select `Open with Live Server` to preview the file.
+. A new tab opens and you can see your `Travel` profile, which contains two rules.
+
+If that is not the case, refer to the end of the <<content_review>> section for the steps to get there.
+
+
+== Adding Customizable Rules to the Profile and Customizing Them
+
+Imagine that one of the requirements set in your company policy is that the user sessions must timeout if the user is inactive for more than 5 minutes.
+
+`ComplianceAsCode` already contains an implementation of this requirement in the form of a rule.
+You now need to add this rule to your `Travel` profile.
+
+However, the rule in `ComplianceAsCode` is generic--or, in other words, customizable.
+It can check for an arbitrary period of user inactivity.
+You need to set the specific value of 5 minutes in the profile.
+
+
+=== Adding Another Rule to the List
+
+This is similar to the previous section.
+
+. First, use command line tools to search for the correct rule file:
++
+----
+[... ]$ git grep -i "Interactive Session Timeout" "*rule.yml"
+linux_os/guide/system/accounts/accounts-session/accounts_tmout/rule.yml:title: 'Set Interactive Session Timeout'
+----
++
+As you already know from the first lab exercise, the rule is located in `linux_os/guide/system/accounts/accounts-session/accounts_tmout/rule.yml`.
+It is easy to spot that the rule ID is `accounts_tmout` because the rule ID is the name of the directory where the rule is located.
+
+. Add the rule ID to the selections list in your `Travel` profile.
++
+----
+[... ]$ open products/rhel8/profiles/travel.profile
+----
+
+. Add `accounts_tmout` as a new item in the selections list.
++
+Make sure your indentation is consistent and use spaces, not tabs.
+Also make sure there is no trailing whitespace.
+
+. Check the rule contents to find out whether there is a variable involved:
++
+----
+[... ]$ open linux_os/guide/system/accounts/accounts-session/accounts_tmout/rule.yml
+----
++
+You can see there are two occurences of `xccdf_value("var_accounts_tmout")`. This is the reference we are looking for.
+
+From the rule contents you can clearly see that it is parameterized by the `var_accounts_tmout` variable.
+Note that the `var_accounts_tmout` variable is used in the description instead of an exact value.
+In the HTML guide, you later see that `var_accounts_tmout` has been assigned a value.
+The value is also automatically substituted into OVAL checks, Ansible^(R)^ Playbooks, and the remediation scripts.
+
+
+=== Examining the Parameterization
+
+. In order to learn more about the parameterization, find and review the variable definition file.
+. Press `Ctrl+P` and paste the value `var_accounts_tmout.var`.
+. Click in the shown item to open the file. 
+
+. The variable has multiple options, which you can see in the options list:
++
+----
+options:
+    30_min: 1800
+    10_min: 600
+    15_min: 900
+    5_min: 300
+    default: 600
+----
++
+`options:` is defined as a YAML dictionary that maps keys to values.
+In `ComplianceAsCode`, the YAML dictionary keys are used as selectors and the YAML dictionary values are concrete values that are used in the checks.
+You use the selector to choose the value in the profile.
+You can add a new key and value to the `options` dictionary if none of the values suits your needs.
+Later, you add a new pair--variable name and selector--into the profile and you use the `5_min` selector to choose 300 seconds.
+
+. To apply the variable parameterization, the variable and the selector have to be added to the `travel` profile.
+. Press `Ctrl+P` and paste the value `products/rhel8/profiles/travel.profile`.
+. Click in the shown item to open the file. 
++
+As with the rule IDs, the variable values also belong to the `selections` list in the profile.
+However, the entry for a variable has the format `variable=selector`. So in this case, the format of the list entry is `var_accounts_tmout=5_min`.
++
+. Modify the file accordingly and press `Ctrl+S` to save the file.
+. The resulting file should look like:
++
+----
+documentation_complete: true
+
+title: Travel profile for corporate laptops
+
+description: This profile represents settings which are required by company security policy for employee laptops.
+
+selections:
+    - sshd_enable_strictmodes
+    - sshd_disable_root_login
+    - accounts_tmout
+    - var_accounts_tmout=5_min
+----
+
+
+=== Modify rule attributes
+
+Some rule properties depend on the context of the particular security policy in question.
+Such obvious property is the rule severity -- different policies may emphasize individual security requirements differently.
+The SCAP standard allows to override rule properties in profile definitions by a mechanics that is referred to as "rule refinement".
+
+The syntax for this is similar to setting of a value:
+
+----
+- rule_id.property=new_value
+----
+
+So let's change the severity of our `accounts_tmout` rule to `high` as it is our favourite rule.
+Edit `products/rhel8/profiles/travel.profile` and add the refinement to the selections list:
+
+----
+...
+
+selections:
+    ...
+    - accounts_tmout
+    - accounts_tmout.severity=high
+    ...
+----
+
+After you are finished editing, press `Ctrl+S` to save the file.
+
+
+=== Completing the Parameterization
+
+Make sure your `travel.profile` file matches the following listing:
+
+----
+documentation_complete: true
+
+title: Travel profile for corporate laptops
+
+description: This profile represents settings which are required by company security policy for employee laptops.
+
+selections:
+    - sshd_enable_strictmodes
+    - sshd_disable_root_login
+    - accounts_tmout
+    - accounts_tmout.severity=high
+    - var_accounts_tmout=5_min
+----
+
+After you are finished editing, press `Ctrl+S` to save the file.
+
+=== Reviewing the Result
+
+. To review the result, rebuild the content again:
++
+----
+[... ]$ ./build_product rhel8
+----
++
+The `accounts_tmout` rule gets included into your profile by the build system.
+. Check the resulting HTML guide.
+
+.. The file browser already has the corresponding guide loaded, so you just need to refresh it to review the changes.
+Click the "Refresh" icon in the top left corner of the browser window.
++
+If that is not the case, refer to the end of the <<content_review>> section for the steps to get there.
+
+.. The Travel profile now contains three rules.
+Scroll down to the *Account Inactivity Timeout* rule and note that `300 seconds` is substituted there.
+
+
+== Creating a New Rule from Scratch
+
+Imagine that one of the requirements in your corporate policy is that users have to install the Hexchat application when their laptops are used during travel outside the company site because Hexchat is the preferred way to communicate with the company IT support center.
+
+You want to add a check to your new profile that checks if Hexchat is installed.
+
+`ComplianceAsCode` does not have a rule ready for installing this application yet.
+That means you need to add a new rule for that.
+
+=== Creating the rule definition file
+
+You will now create the `rule.yml` file for your new rule.
+
+. Find a group directory that best fits your new rule.
++
+The rules are located in the `linux_os` directory.
+Rules in the `ComplianceAsCode` project are organized into groups, which are represented by directories.
+It is up to you to decide which group the new rule belongs to.
+You can browse the directory tree to find a suitable group:
++
+.. You are in the `linux_os/guide` directory, which has `intro`, `system`, and `services` directories.
+.. You definitely do not want to configure a service setting, so explore `system`.
+.. There are more subdirectories under `system`, and as you want a new software package installed, it makes sense to explore the `software` directory.
+.. Here, you create the directory for your rule.
++
+. Create a new rule directory in a group directory.
++
+The name of the directory is the rule ID.
+In this case, `package_hexchat_installed` is a suitable ID.
+You create the directory using `mkdir` and use the `-p` switch to make sure that the directory is created along with its parents if needed.
++
+----
+[... ]$ cd /workspace/content
+[... ]$ mkdir -p linux_os/guide/system/software/package_hexchat_installed
+----
+
+. Create `rule.yml` in the rule directory.
++
+A description of the rule is stored.
+Each rule needs to have it.
+`rule.yml` is a simple YAML file.
++
+----
+[... ]$ open linux_os/guide/system/software/package_hexchat_installed/rule.yml
+----
+
+. Add the following content to the `rule.yml` file:
++
+----
+documentation_complete: true
+
+title: Install Hexchat Application
+
+description: As of company policy, the traveling laptops have to have the Hexchat application installed.
+
+rationale: The Hexchat application enables IRC communication with the corporate IT support centre.
+
+severity: medium
+----
+
+. When you have finished editing,
+press `Ctrl+s` to save the file.
++
+[NOTE]
+====
+.. `documentation_complete: true` again indicates that the rule is picked up by the build system whenever it is applicable.
+.. `title` is the rule title, which is displayed on the command line and in SCAP Workbench.
+.. `description` is a section that describes the check.
+.. `rationale` needs to contain a justification for why the rule exists.
+.. `severity` can be either `low`, `medium`, or `high`.
+====
+. Add the rule ID to the profile selections.
+
+.. As described in the previous section, you need to add the ID of your new rule (`package_hexchat_installed`) to the selections list in your profile (`travel.profile`).
+You do it by editing the travel profile file:
++
+----
+[... ]$ open products/rhel8/profiles/travel.profile
+----
+
+.. When adding the `package_hexchat_installed` item, please make sure that you use spaces, not tabs for indentation:
++
+----
+documentation_complete: true
+
+title: Travel profile for corporate laptops
+
+description: This profile represents settings which are required by company security policy for employee laptops.
+
+selections:
+    - sshd_enable_strictmodes
+    - sshd_disable_root_login
+    - accounts_tmout
+    - accounts_tmout.severity=high
+    - var_accounts_tmout=5_min
+    - package_hexchat_installed
+----
+
+.. When you have finished editing,
+press `Ctrl+S` to save the file.
+
+
+=== Use templates to generate checks automatically
+
+You have successfully defined the rule and added it to the profile.
+However, the rule currently has no check nor remediation.
+That means OpenSCAP can't check if the Hexchat package is installed.
+Writing OVAL checks is a process out of scope of this chapter and it is described in a separate lab.
+However, in some cases you can use the already created templates.
+You can try to search by keyword in link:https://complianceascode.readthedocs.io/en/latest/templates/template_reference.html[list of templates] to find out if some template suits your case.
+In this case it does.
+
+Templates are a great way of simplifying development of new rules and avoiding unnecessarily large amount of duplicated code.
+There are sets of rules which perform very similar checks and can be remediated in a similar way.
+This applies for example to checks that a certain package is installed, that a certain Systemd service is disabled, etc.
+Using templates is recommended whenever possible to avoid code duplication and possible inconsistencies.
+Another benefit of templates is ease of creation of new rules.
+As demonstrated below, you don't have to know how to write OVAL checks or Bash remediations to create a fully working rule.
+The template will create this for you automatically.
+You only need to append a special block at the end of the particular `rule.yml` file.
+
+. Open the link:https://complianceascode.readthedocs.io/en/latest/templates/template_reference.html[list of templates] in your web browser.
+
+. You can quickly glance through the list of templates.
+Notice that every template is accompanied by a description and one or more parameters.
+Finally, search for the `package_installed` template.
+Notice that the template has two parameters:
++
+pkgname:: name of the RPM or DEB package, eg. tmux
++
+evr:: Optional parameter. It can be used to check if the package is of a specific version or newer. Provide epoch, version, release in epoch:version-release format, eg. 0:2.17-55.0.4.el7_0.3. Used only in OVAL checks. The OVAL state uses operation "greater than or equal" to compare the collected package
+
+. Open  the `rule.yml` file for the `package_hexchat_installed` rule .
++
+----
+[... ]$ open linux_os/guide/system/software/package_hexchat_installed/rule.yml
+----
+
+. Add the special block at the end of the file, so it looks like this:
++
+----
+documentation_complete: true
+
+title: Install Hexchat Application
+
+description: As of company policy, the traveling laptops have to have the Hexchat application installed.
+
+rationale: The Hexchat application enables IRC communication with the corporate IT support centre.
+
+severity: medium
+
+template:
+    name: package_installed
+    vars:
+        pkgname: hexchat
+----
++
+Notice that you used one of the two possible parameters; `pkgname`.
+
+. When you have finished editing,
+press `Ctrl+S` to save the file.
++
+. Build the content.
++
+----
+[... ]$ ./build_product rhel8
+----
+
+. Check the resulting HTML guide.
+Expect to still have it as a tab in your browser, which you can refresh by clicking the refresh button in the browser window.
+Alternatively, you can locate the `ssg-rhel8-guide-travel.html` file in the `build/guides` directory as you already did earlier in this exercise.
++
+Either way, you see your `Travel` profile with four rules, including the newly added rule.
++
+.New "Install Hexchat Application" rule displayed in the HTML guide
+image::2-04-rule.png[New rule]
++
+Note that the rule is using `yum install` in the Bash remediation snippet. This template is product aware, and so it always use the recommended way how to install packages. For example if the rule was built into a profile on Fedora, the recommendation would be `dnf install` instead.
+
+For more details about the `rule.yml` format, please refer to link:https://complianceascode.readthedocs.io/en/latest/manual/developer/06_contributing_with_content.html#rules[contributor's section of the developer guide].
+For more information about the templating system, including the list of currently available templates, refer to the link:https://complianceascode.readthedocs.io/en/latest/manual/developer/06_contributing_with_content.html#templating[Templating section of the developer guide].
+
+
+== Scanning the System Against the New Profile
+
+In the final section, you use the new profile that you just created to scan your machine using OpenSCAP.
+
+You have examined only the HTML guide so far, but for automated scanning, you use a datastream instead.
+A datastream is an XML file that contains all of the data (rules, checks, remediations, and metadata) in a single file.
+The datastream that contains your new profile was also built during the content build.
+It is called `ssg-rhel8-ds.xml` and is located in the `build` directory.
+
+. Run an OpenSCAP scan using the built content.
++
+`oscap` is the command line tool that you use to scan the machine.
+You need to give `oscap` the name of the profile (`travel`) and the path to the built datastream (`ssg-rhel8-ds.xml`) as arguments.
+You also add arguments to turn on full reporting, which generates XML and HTML results that you can review later.
++
+[subs="attributes"]
+----
+[... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py profile \
+            --docker {container_name} \
+            --datastream build/ssg-rhel8-ds.xml \
+            --remediate-using bash \
+            --remove-machine-only \
+            --add-platform "{cpe_identifier}" \
+            --logdir profile-log \
+            travel
+----
++
+. Review the details in the HTML report.
+. The report is located in the `profile-log` directory, so you can locate it using the file explorer as you did in previous exercises:
+.. Right click the `xccdf_org.ssgproject.content_profile_travel-initial.html` file and select `Open with Live Server` to preview the file. Note: Your browser may block the pop-up. You must allow it when asked.
++
+The structure of the HTML report is similar to the HTML guide, but it contains the evaluation results.
+.. After clicking the rule title, you can see the detailed rule results.
++
+In the detailed rule results for the *Set Interactive Session Timeout* rule, you can review the rule description to see which requirement was not met by the scanned system.
+.. Review the *OVAL details* section to examine the reason why this rule failed.
+It states that items were missing, which means that objects described by the table shown below the message do not exist on the scanned system.
+In this specific example, there was no string to match the pattern in `/etc/profile`, which means there is no `declare TMOUT` entry in `/etc/profile`.
+To fix this problem, you would need to insert `declare TMOUT=300` into `/etc/profile` and then run the scan again.
++
+.Details of the rule evaluation displayed in the HTML report
+image::2-03-report.png[Report]
+
+. Check the results of remediation.
+.. In the directory `profile-log`, Right click the `xccdf_org.ssgproject.content_profile_travel-final.html` file and select `Open with Live Server` to preview the file. Note: Your browser may block the pop-up. You must allow it when asked.
+.. The rules should be now passing.
++
+.Details of profile evaluation displayed in the HTML report after remediation
+image::2-03-remediation.png[Final Report After Remediation]
+
+== Protecting a Profile
+
+Profiles can grow quite complex -- check out e.g. the `products/rhel8/profiles/ospp.profile` that contains group of rule selections and comments.
+Such files can get non-functional changes that regroup selections or modify comments, and this creates noise in the profile commit's history.
+As a result, it is not clear how a profile really changed in course of its history.
+
+The project addresses this problem -- it allows you to "freeze" a profile in a certain state, so each substantial change to it has to be confirmed, and the history of changes is easily available.
+
+It's the build artifacts that play the key role here.
+One of those artifacts is a compiled profile, which is a profile file that doesn't contain any comments, and whose selections are sorted lexicographically.
+For instance, let's take a look at our compiled travel profile:
+
+----
+[... ]$ open build/rhel8/profiles/travel.profile
+title: Travel profile for corporate laptops
+description: This profile represents settings which are required by company security
+    policy for employee laptops.
+...
+selections:
+- accounts_tmout
+- package_hexchat_installed
+- sshd_disable_root_login
+- sshd_enable_strictmodes
+- var_accounts_tmout=5_min
+- accounts_tmout.severity=high
+...
+----
+
+As the exact form of the compiled profile is not relevant to content authors and also a likely subject to change, in the future, we escape those lines from the listing using the ellipsis (...).
+As we can see, first come rule selections, then variable assignments, and finally rule refinements.
+
+Then, we copy the file to a directory where reference compiled profiles are expected, and we also remove yaml keys except `selections` and `title`.
+Only selections are taken into the account when comparing the reference profile with the actual profile, so the title isn't needed, but we include it to see that other keys are allowed.
+So we make sure that the directory `tests/data/profile_stability/<product>` exists, we copy the build artifact, and we remove redundant lines.
+
+----
+[... ]$ mkdir -p tests/data/profile_stability/rhel8
+[... ]$ cp build/rhel8/profiles/travel.profile tests/data/profile_stability/rhel8
+[... ]$ open tests/data/profile_stability/rhel8/travel.profile
+----
+
+Note that the keyboard shortcut `Ctrl+Shift+K` is useful -- it removes the current line.
+In case when you remove wrong line by accident, remember that you can undo using `Ctrl+Z`.
+So edit the file, that it matches the listing below:
+
+----
+title: Travel profile for corporate laptops
+selections:
+- accounts_tmout
+- package_hexchat_installed
+- sshd_disable_root_login
+- sshd_enable_strictmodes
+- var_accounts_tmout=5_min
+- accounts_tmout.severity=high
+----
+
+After you are done editing, press `Ctrl+S` to save the file.
+
+Time to try it out - let's execute the profile stability test!
+We do so by executing `ctest` to execute tests that have `stability` in mind, considering the `build` directory as the base test directory:
+
+----
+[... ]$ ctest -R profiles --output-on-failure --test-dir build
+----
+
+The test should have 100% passed.
+
+Will the test fail if we change the profile?
+Let's try that out by modifying the project's profile.
+
+----
+[... ]$ open products/rhel8/profiles/travel.profile
+----
+
+Let's change the severity override in the selections section from `high` to `medium` in the profile file, then recompile and retest.
+
+----
+...
+
+selections:
+    - sshd_enable_strictmodes
+    - sshd_disable_root_login
+    - accounts_tmout
+    - accounts_tmout.severity=medium
+    ...
+----
+
+----
+[... ]$ ./build_product rhel8 -d
+...
+[... ]$ ctest -R profiles --output-on-failure --test-dir build
+----
+
+This time, the test will fail, and thanks to the `--output-on-failure` option, it will tell us that the changed severity is indeed a problem.
+We will keep the original profile reference in the tests directory, and we will restore the severity back to `high` in the upcoming section.
+
+
+== Defining the Company Policy
+
+We have created a travel profile, but perhaps we would also create other company profiles that could share the same big-picture concepts.
+For instance, the travel profile is about session protection, SSH hardening, and about installing a communication tool.
+Therefore, let's formally define a company policy file with Security Controls, and use those in the profile definition.
+
+
+=== Creating a Control File
+
+Policies are defined in the `controls` folder of the project, so let's create a `controls/my-company.yml` policy file in that directory with basic metadata:
+
+----
+[... ]$ open controls/my-company.yml
+----
+
+and enter the following metadata to start:
+
+----
+title: 'Security Guidelines of My Company'
+id: my-company
+----
+
+Next, we add two security controls -- one for the the SSH hardening and the other one for the interactive terminal session protection.
+So add the following contents to the file --
+you can copy-paste it into the editor using the usual `Ctrl+C` and `Ctrl+V`.
+
+----
+controls:
+  - id: ssh-protection
+    title: Protection of the SSH session
+    rules:
+    - sshd_enable_strictmodes
+    - sshd_disable_root_login
+
+  - id: session-protection
+    title: Protection of the interactive terminal session
+    rules:
+    - accounts_tmout
+    - accounts_tmout.severity=high
+    - var_accounts_tmout=5_min
+    - package_hexchat_installed
+----
+
+After you are done editing, press `Ctrl+S` to save the file.
+
+The main purpose of security controls is to assist content authors in interpretation of security policies.
+Therefore, the control file can mirror the document, and link:https://complianceascode.readthedocs.io/en/latest/manual/developer/03_creating_content.html?highlight=controls#controls-file-format[optional keys] s.a. `description` or `notes` can assist in clarifying choices that were taken when the policy got interpreted to a profile.
+On the policy level, only the keys `id`, `title` and `controls` are required, and on the control level, only the key `id` is required.
+
+You can add some more optional metadata, so the link between the real-world policy and its projection into a SCAP profile is strenghtened.
+Adding `policy`, `version` and `source` allows content authors to quickly understand exact details concerning the security policy that is interpreted.
+That additional metadata isn't processed by the build system, it only serves as a context that can facilitate content creation, completion assesment and so on.
+
+As a result, the whole control file `controls/my-company.yml` will look like
+
+----
+title: 'Security Guidelines of My Company'
+id: 'my-company'
+policy: 'MCSecurity'
+version: '0.1'
+source: https://my.company/security-policy.pdf
+
+controls:
+  - id: ssh-protection
+    title: Protection of the SSH session
+    rules:
+    - sshd_enable_strictmodes
+    - sshd_disable_root_login
+
+  - id: session-protection
+    title: Protection of the interactive terminal session
+    rules:
+    - accounts_tmout
+    - accounts_tmout.severity=high
+    - var_accounts_tmout=5_min
+    - package_hexchat_installed
+----
+
+
+=== Migrating the Profile to Controls
+
+Let's use those new controls in our `travel` profile.
+We do it by replacing respective selections with security controls invocations.
+A security control is identified by `policy id:control id`, and when we select it, all rules that are applicable for the product that we build get selected by the profile.
+
+Security controls can contain rules that are built only for a limited set of products by means of restricting the rule's `prodtype`, which is an link:https://complianceascode.readthedocs.io/en/latest/manual/developer/06_contributing_with_content.html#rules[optional rule attribute].
+Such rules are skipped when expanding security controls into profiles, so a profiles that are defined using the same security controls on different products can vary.
+This may surprise content authors, but it is a useful way how to make security controls reusable despite product differences s.a. different names of packages.
+
+So let's modify the profile definition and alter its `selections`.
+
+----
+[... ]$ open products/rhel8/profiles/travel.profile
+----
+
+Substitute the three `accounts_tmout`--related selections with `my-company:session-protection`, and the two SSH-related selections with `my-company:ssh-protection`.
+In other words, make sure that file contents match the following snippet:
+The updated definition of the profile that mixes selection of rules with selection of controls will look like this:
+
+----
+documentation_complete: true
+
+title: Travel profile for corporate laptops
+
+description: This profile represents settings which are required by company security policy for employee laptops.
+
+selections:
+    - my-company:ssh-protection
+    - my-company:session-protection
+    - package_hexchat_installed
+----
+
+After you are done editing, press `Ctrl+S` to save the file.
+Then, let's compile the product:
+
+----
+[... ]$ ./build_product rhel8 -d
+----
+
+Hopefully the build terminated without issues.
+This indicates that control files are loaded automatically -- as soon as you create them, you can start to use them in profile definitions.
+
+Finally, we execute the profile stability test from before -- as we have aimed to change the syntax of the new profile, but not to alter its behavior, we expect the test to pass:
+
+----
+[... ]$ ctest -R profiles --output-on-failure --test-dir build
+----
+
+And indeed, the test passes, which proves that the control-based way of defining profiles is compatible with the literal profile definition in a profile file.
+
+<<top>>
+
+link:README.adoc#table-of-contents[ Table of Contents ] | link:lab4_ansible.adoc[Lab Exercise 4: Using Ansible in ComplianceAsCode]

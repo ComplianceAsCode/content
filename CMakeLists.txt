@@ -32,7 +32,7 @@ set(SSG_TAILORING_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/tail
 
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
-set(SSG_PATCH_VERSION 63)
+set(SSG_PATCH_VERSION 64)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
@@ -44,9 +44,8 @@ set(SSG_TARGET_OVAL_VERSION "${SSG_TARGET_OVAL_MAJOR_VERSION}.${SSG_TARGET_OVAL_
 
 option(SSG_BUILD_SCAP_12_DS "If enabled, ssg-*-ds-1.2.xml will be built along with ssg-*-ds.xml" TRUE)
 option(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED "If enabled, schematron validation will be performed as part of the ctest tests. Schematron takes a lot of time to complete but can find more issues than just plain XSD validation." TRUE)
-option(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED "If enabled, shellcheck validation of bash fixes will be performed as part of the ctest tests. Shellcheck tests don't pass right now, this option is discouraged until that's fixed." TRUE)
+option(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED "If enabled, shellcheck validation of bash fixes will be performed as part of the ctest tests." TRUE)
 option(SSG_LINKCHECKER_VALIDATION_ENABLED "If enabled, linkchecker will be used to validate URLs in all the HTML guides and tables." TRUE)
-option(SSG_SVG_IN_XCCDF_ENABLED "If enabled, the built XCCDFs will include the SVG SCAP Security Guide logo." TRUE)
 option(SSG_SEPARATE_SCAP_FILES_ENABLED "If enabled, separate SCAP files (OVAL, XCCDF, CPE dict, ...) will be installed alongside the source data-streams" TRUE)
 option(SSG_ANSIBLE_PLAYBOOKS_ENABLED "If enabled, Ansible Playbooks for each profile will be built and installed." TRUE)
 option(SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED "If enabled, Ansible Playbooks for each rule will be built and installed." FALSE)
@@ -67,8 +66,8 @@ option(SSG_PRODUCT_DEFAULT "If enabled, all default release products will be bui
 # Products to build content for. These generally correspond to directories in
 # the root of this project. Note that the example product is always disabled
 # unless explicitly asked for.
-option(SSG_PRODUCT_ALINUX2 "If enabled, the Alinux 2 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_ALINUX3 "If enabled, the Alinux 3 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_ALINUX2 "If enabled, the Alibaba Cloud Linux 2 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_ALINUX3 "If enabled, the Alibaba Cloud Linux 3 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_CHROMIUM "If enabled, the Chromium SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN9 "If enabled, the Debian 9 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN10 "If enabled, the Debian 10 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
@@ -95,6 +94,7 @@ option(SSG_PRODUCT_SLE15 "If enabled, the SLE15 SCAP content will be built" ${SS
 option(SSG_PRODUCT_UBUNTU1604 "If enabled, the Ubuntu 16.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU1804 "If enabled, the Ubuntu 18.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2004 "If enabled, the Ubuntu 20.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_UBUNTU2204 "If enabled, the Ubuntu 22.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UOS20 "If enabled, the Uos 20 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_VSEL "If enabled, the McAfee VSEL SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 
@@ -153,16 +153,6 @@ endif()
 
 if (NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.10" AND NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
     message(WARNING "You are targetting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.10 and 5.11 only!")
-endif()
-
-execute_process(
-    COMMAND "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/oscap_svg_support.py" "${OPENSCAP_OSCAP_EXECUTABLE}"
-    RESULT_VARIABLE OSCAP_SVG_SUPPORT_RESULT
-)
-# OSCAP_SVG_SUPPORT_RESULT == 0 means SVG is supported
-if (SSG_SVG_IN_XCCDF_ENABLED AND NOT OSCAP_SVG_SUPPORT_RESULT EQUAL 0)
-    set(SSG_SVG_IN_XCCDF_ENABLED OFF CACHE BOOL "SVG in XCCDF disabled because your version OpenSCAP doesn't support it" FORCE)
-    message(WARNING "Your version of OpenSCAP does not support having the SVG logo in the XCCDF, disabling SVG logo.")
 endif()
 
 # OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support
@@ -257,7 +247,6 @@ message(STATUS "Target OVAL version: ${SSG_TARGET_OVAL_VERSION}")
 message(STATUS "Build SCAP 1.2 source data streams: ${SSG_BUILD_SCAP_12_DS}")
 message(STATUS "OVAL schematron validation: ${SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED}")
 message(STATUS "shellcheck bash fixes validation: ${SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED}")
-message(STATUS "SVG logo in XCCDFs: ${SSG_SVG_IN_XCCDF_ENABLED}")
 message(STATUS "Separate SCAP files: ${SSG_SEPARATE_SCAP_FILES_ENABLED}")
 message(STATUS "Ansible Playbooks: ${SSG_ANSIBLE_PLAYBOOKS_ENABLED}")
 message(STATUS "Ansible Playbooks Per Rule: ${SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED}")
@@ -272,8 +261,8 @@ message(STATUS "STIG Delta Taloring files: ${SSG_BUILD_DISA_DELTA_FILES}")
 message(STATUS " ")
 
 message(STATUS "Products:")
-message(STATUS "Alinux 2: ${SSG_PRODUCT_ALINUX2}")
-message(STATUS "Alinux 3: ${SSG_PRODUCT_ALINUX3}")
+message(STATUS "Alibaba Cloud Linux 2: ${SSG_PRODUCT_ALINUX2}")
+message(STATUS "Alibaba Cloud Linux 3: ${SSG_PRODUCT_ALINUX3}")
 message(STATUS "Chromium: ${SSG_PRODUCT_CHROMIUM}")
 message(STATUS "Debian 9: ${SSG_PRODUCT_DEBIAN9}")
 message(STATUS "Debian 10: ${SSG_PRODUCT_DEBIAN10}")
@@ -300,6 +289,7 @@ message(STATUS "SUSE 15: ${SSG_PRODUCT_SLE15}")
 message(STATUS "Ubuntu 16.04: ${SSG_PRODUCT_UBUNTU1604}")
 message(STATUS "Ubuntu 18.04: ${SSG_PRODUCT_UBUNTU1804}")
 message(STATUS "Ubuntu 20.04: ${SSG_PRODUCT_UBUNTU2004}")
+message(STATUS "Ubuntu 22.04: ${SSG_PRODUCT_UBUNTU2204}")
 message(STATUS "Uos 20: ${SSG_PRODUCT_UOS20}")
 message(STATUS "McAfee VSEL: ${SSG_PRODUCT_VSEL}")
 
@@ -422,6 +412,9 @@ if (SSG_PRODUCT_UBUNTU1804)
 endif()
 if (SSG_PRODUCT_UBUNTU2004)
     add_subdirectory("products/ubuntu2004" "ubuntu2004")
+endif()
+if (SSG_PRODUCT_UBUNTU2204)
+    add_subdirectory("products/ubuntu2204" "ubuntu2204")
 endif()
 if (SSG_PRODUCT_UOS20)
     add_subdirectory("products/uos20" "uos20")

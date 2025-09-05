@@ -115,14 +115,10 @@ refer to their help text for more information and usage:
  - `expand_jinja.py` -- helper script used by the BATS (Bash unit test
    framework) to expand Jinja in test scripts.
  - `generate_man_page.py` -- generates the ComplianceAsCode man page.
- - `oscap_svg_support.py` -- helper script to check if OpenSCAP supports
-   inline SVGs (used by the build system for feature detection).
  - `profile_tool.py` -- utility script to generate statistics about profiles
    in a specific XCCDF/Datastream file.
  - `relabel_ids.py` -- updates various internal identifiers to their final
    resolved values (e.g., with the `xccdf_org.ssgproject.content_` prefix).
- - `unselect_empty_xccdf_groups.py` -- updates the XCCDF document to remove
-   selections of groups without any rules.
  - `verify_references.py` -- used by the test system to verify cross-linkage
    of identifiers between XCCDF and OVAL/OCIL documents.
  - `yaml_to_shorthand.py` -- generates the shorthand XML document from the

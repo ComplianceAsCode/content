@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Configure Time Service Maxpoll Interval'
 
@@ -64,11 +64,9 @@ description: |-
     {{% endif %}}
 
 rationale: |-
-    Inaccurate time stamps make it more difficult to correlate
-    events and can lead to an inaccurate analysis. Determining the correct
-    time a particular event occurred on a system is critical when conducting
-    forensic analysis and investigating system events. Sources outside the
-    configured acceptable allowance (drift) may be inaccurate.
+    Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. Sources outside the configured acceptable allowance (drift) may be inaccurate.
+    Synchronizing internal information system clocks provides uniformity of time stamps for information systems with multiple system clocks and systems connected over a network.
+    Organizations should consider endpoints that may not have regular access to the authoritative time server (e.g., mobile, teleworking, and tactical endpoints).
 
 severity: medium
 
@@ -102,19 +100,17 @@ references:
     stigid@sle15: SLES-15-010400
     stigid@ubuntu2004: UBTU-20-010435
 
-ocil_clause: 'maxpoll does not exist or maxpoll has not been set to the expected value of {{{ xccdf_value("var_time_service_set_maxpoll") }}}'
+ocil_clause: '"maxpoll" has not been set to the value of "{{{ xccdf_value("var_time_service_set_maxpoll") }}}", is commented out, or is missing'
 
 ocil: |-
-    Verify {{{ full_name }}} is securely comparing internal information system clocks at a regular interval with an NTP server with the following commands:
-    
-    To verify that <tt>maxpoll</tt> has been set properly, perform the following:
+    Verify {{{ full_name }}} is securely comparing internal information system clocks at a regular interval with an NTP server with the following command:
     <pre>$ sudo grep maxpoll /etc/ntp.conf {{{ chrony_conf_path }}}</pre>
-    The output should return:
-    <pre>maxpoll {{{ xccdf_value("var_time_service_set_maxpoll") }}}</pre>.
+    <pre>server [ntp.server.name] iburst maxpoll {{{ xccdf_value("var_time_service_set_maxpoll") }}}</pre>.
 
 fixtext: |-
     Configure {{{ full_name }}} to securely compare internal information system clocks at a regular interval with an NTP server by adding/modifying the following line in the {{{ chrony_conf_path }}} file.
 
     server [ntp.server.name] iburst maxpoll {{{ xccdf_value("var_time_service_set_maxpoll") }}}
 
-srg_requirement: '{{{ full_name }}} must securely compare internal information system clocks at least every 24 hours with a server synchronized to an authoritative time source, such as the United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate network, and/or the Global Positioning System (GPS).'
+srg_requirement: |-
+    {{{ full_name }}} must securely compare internal information system clocks at least every 24 hours with a server synchronized to an authoritative time source, such as the United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).

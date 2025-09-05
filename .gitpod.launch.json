@@ -30,7 +30,7 @@
           "rhosp10", "rhosp13",
           "rhv4",
           "sle12", "sle15",
-          "ubuntu1604", "ubuntu1804", "ubuntu2004"
+          "ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204"
       ],
       "default": "&&DEFAULT_PRODUCT&&"
       },
@@ -66,7 +66,10 @@
           "--add-platform",
           "&&CPE&&",
           "${command:content-navigator.getRuleId}"
-      ]
+      ],
+      "env": {
+        "SSH_ADDITIONAL_OPTIONS": "-o IdentityFile=${workspaceFolder}/&&PRIVATE_KEY_FILEPATH&&"
+      }
     },
     {
       "name": "Run Automatus using Docker backend (test_rule_in_container.sh)",
@@ -85,7 +88,8 @@
           "${command:content-navigator.getRuleId}"
       ],
       "env": {
-        "ADDITIONAL_SSGTS_OPTIONS": "--debug --duplicate-templates --add-product-to-fips-certified fedora"
+        "ADDITIONAL_SSGTS_OPTIONS": "--debug --duplicate-templates --add-product-to-fips-certified fedora",
+        "SSH_ADDITIONAL_OPTIONS": "-o IdentityFile=${workspaceFolder}/&&PRIVATE_KEY_FILEPATH&&"
       }
     }
   ]

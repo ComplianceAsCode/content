@@ -4,4 +4,7 @@ controls:
             - medium
         title: {{{ full_name }}} must automatically terminate a user session after inactivity
             time-outs have expired or at shutdown.
-        status: pending
+        status: automated
+        rules:
+            - sshd_set_idle_timeout
+            - sshd_set_keepalive_0

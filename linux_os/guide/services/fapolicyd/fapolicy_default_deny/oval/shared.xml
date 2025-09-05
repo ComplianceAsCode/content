@@ -1,0 +1,39 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{
+        oval_metadata("Configure Fapolicy Module to Employ a Deny-all, Permit-by-exception Policy")
+        }}}
+        <criteria>
+        <criterion comment="fapolicyd employs a deny-all policy"
+        test_ref="test_fapolicy_default_deny_policy" />
+        <criterion comment="fapolicyd is in enforcement mode"
+        test_ref="test_fapolicy_default_deny_enforcement" />
+        </criteria>
+    </definition>
+
+    <ind:textfilecontent54_test check_existence="only_one_exists" check="all"
+    comment="fapolicyd employs a deny-all policy"
+    id="test_fapolicy_default_deny_policy" version="1">
+        <ind:object object_ref="obj_fapolicy_default_deny_policy" />
+    </ind:textfilecontent54_test>
+    <ind:textfilecontent54_object id="obj_fapolicy_default_deny_policy" version="1">
+        <ind:behaviors multiline="false" />
+        <ind:filepath>/etc/fapolicyd/fapolicyd.rules</ind:filepath>
+        <ind:pattern operation="pattern match">(^|\n)\s*deny\s*perm=any\s*all\s*:\s*all\s*$</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+    <ind:textfilecontent54_test check_existence="all_exist" check="all"
+    comment="fapolicyd is in enforcement mode"
+    id="test_fapolicy_default_deny_enforcement" version="1">
+        <ind:object object_ref="obj_fapolicy_default_deny_enforcement" />
+        <ind:state state_ref="state_fapolicy_default_deny_enforcement" />
+    </ind:textfilecontent54_test>
+    <ind:textfilecontent54_object id="obj_fapolicy_default_deny_enforcement" version="1">
+        <ind:filepath>/etc/fapolicyd/fapolicyd.conf</ind:filepath>
+        <ind:pattern operation="pattern match">^\s*permissive\s*=\s*(\d+)</ind:pattern>
+        <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    </ind:textfilecontent54_object>
+    <ind:textfilecontent54_state id="state_fapolicy_default_deny_enforcement" version="1" comment="root email alias">
+    <ind:subexpression operation="equals" datatype="int">0</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

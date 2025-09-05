@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhel8,rhel9
 
 title: 'Assign Expiration Date to Emergency Accounts'
 
@@ -61,6 +61,22 @@ warnings:
         Due to the unique requirements of each sysetem, automated
         remediation is not available for this configuration check.
 
+vuldiscussion: |-
+    If emergency user accounts remain active when no longer needed or for
+    an excessive period, these accounts may be used to gain unauthorized access.
+    To mitigate this risk, automated termination of all emergency accounts
+    must be set upon account creation.
+
+checktext: |-
+    Verify emergency accounts have been provisioned with an expiration date of 72 hours.
+
+    For every emergency account, run the following command to obtain its account aging and expiration information:
+
+    $ sudo chage -l  emergency_account_name
+
+    Verify each of these accounts has an expiration date set within 72 hours or as documented.
+
+    If any emergency accounts have no expiration date set or do not expire within 72 hours, this is a finding.
 
 fixtext: |-
     If an emergency account must be created, configure the system to terminate the account after

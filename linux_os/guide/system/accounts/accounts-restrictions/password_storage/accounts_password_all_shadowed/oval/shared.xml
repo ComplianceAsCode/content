@@ -1,11 +1,13 @@
 <def-group>
-  <definition class="compliance" id="accounts_password_all_shadowed" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("All password hashes should be shadowed.") }}}
     <criteria>
-      <criterion comment="password hashes are shadowed" test_ref="test_accounts_password_all_shadowed" />
+      <criterion test_ref="test_accounts_password_all_shadowed"
+                 comment="password hashes are shadowed"/>
     </criteria>
   </definition>
-  <unix:password_test check="all" comment="password hashes are shadowed" id="test_accounts_password_all_shadowed" version="1">
+  <unix:password_test check="all" id="test_accounts_password_all_shadowed" version="1"
+                      comment="password hashes are shadowed">
     <unix:object object_ref="object_accounts_password_all_shadowed" />
     <unix:state state_ref="state_accounts_password_all_shadowed" />
   </unix:password_test>
@@ -13,6 +15,6 @@
     <unix:username operation="pattern match">.*</unix:username>
   </unix:password_object>
   <unix:password_state id="state_accounts_password_all_shadowed" version="1">
-    <unix:password operation="pattern match">^[x*]$</unix:password>
+    <unix:password operation="pattern match" mask="true">^[x*]$</unix:password>
   </unix:password_state>
 </def-group>

@@ -1,7 +1,7 @@
 title: DISA STIG for Red Hat Enterprise Linux 8
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 8 V1R6.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R7.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -23,7 +23,7 @@ description: 'This profile contains configuration checks that align to the
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 extends: null
 metadata:
-    version: V1R6
+    version: V1R7
     SMEs:
     - mab879
     - ggbecker
@@ -258,6 +258,7 @@ selections:
 - kernel_module_sctp_disabled
 - kernel_module_tipc_disabled
 - kernel_module_usb-storage_disabled
+- mount_option_boot_efi_nosuid
 - mount_option_boot_nosuid
 - mount_option_dev_shm_nodev
 - mount_option_dev_shm_noexec
@@ -369,6 +370,8 @@ selections:
 - sshd_enable_warning_banner
 - sshd_print_last_log
 - sshd_rekey_limit
+- sshd_set_idle_timeout
+- sshd_set_keepalive_0
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
 - sssd_certificate_verification
@@ -395,13 +398,13 @@ selections:
 - sysctl_net_core_bpf_jit_harden
 - sysctl_net_ipv4_conf_all_accept_redirects
 - sysctl_net_ipv4_conf_all_accept_source_route
+- sysctl_net_ipv4_conf_all_forwarding
 - sysctl_net_ipv4_conf_all_rp_filter
 - sysctl_net_ipv4_conf_all_send_redirects
 - sysctl_net_ipv4_conf_default_accept_redirects
 - sysctl_net_ipv4_conf_default_accept_source_route
 - sysctl_net_ipv4_conf_default_send_redirects
 - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-- sysctl_net_ipv4_ip_forward
 - sysctl_net_ipv6_conf_all_accept_ra
 - sysctl_net_ipv6_conf_all_accept_redirects
 - sysctl_net_ipv6_conf_all_accept_source_route

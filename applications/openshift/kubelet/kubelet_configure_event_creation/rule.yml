@@ -2,8 +2,6 @@ documentation_complete: true
 
 prodtype: ocp4
 
-platform: ocp4-node
-
 title: 'Kubelet - Ensure Event Creation Is Configured'
 
 description: |-
@@ -27,6 +25,8 @@ description: |-
             eventRecordQPS: {{{ xccdf_value("var_event_record_qps") }}}
     </pre>
 
+identifiers:
+    cce@ocp4: CCE-83576-9
 
 warnings:
     - functionality: |-
@@ -47,11 +47,8 @@ ocil_clause: 'event creation limits are not configured'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep eventRecordQPS /etc/kubernetes/kubelet.conf</pre>
+    <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1"' | grep eventRecordQPS; done</pre>
     The output should return <tt>{{{ xccdf_value("var_event_record_qps") }}}</tt>.
-
-identifiers:
-    cce@ocp4: CCE-83576-9
 
 references:
     cis@ocp4: 4.2.9
@@ -59,15 +56,9 @@ references:
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
 
-# This check ensures that the option is not left defaulted in the config.  The
-# default of 5 might be sufficient for a deployment; here the point is to check
-# that at least _some_ value has been considered.
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
+
 template:
-    name: yamlfile_value
-    vars:
-        filepath: /etc/kubernetes/kubelet.conf
-        yamlpath: ".eventRecordQPS"
-        values:
-         - value: 0
-           type: int
-           operation: "greater than or equal"
+    name: kubelet_combine

@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Disable Firefox deprecated ciphers'
+
+description: |-
+    Pocket may be disabled by setting
+    <tt>TLS_RSA_WITH_3DES_EDE_CBC_SHA</tt> to <tt>true</tt> under <tt>DisabledCiphers</tt>
+    in the policies file.
+
+rationale: |-
+    Weak ciphers are encryption/decryption algorithms that use keys of insufficient length. Using an insufficient length for a key increases
+    the probability that the encryption scheme could be broken.
+
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000027
+
+ocil: |-
+    To verify that deprecated ciphers are disabled,
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following under DisabledCiphers:
+    <pre>"TLS_RSA_WITH_3DES_EDE_CBC_SHA": true</pre>
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable deprecated ciphers
+        policies:
+          - {path: "DisabledCiphers", parameter: "TLS_RSA_WITH_3DES_EDE_CBC_SHA", value: true}

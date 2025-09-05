@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Set Password Hashing Algorithm in /etc/login.defs'
 
@@ -58,7 +58,7 @@ ocil: |-
     {{% else %}}
     Verify that the shadow password suite configuration is set to encrypt password with a FIPS 140-2 approved cryptographic hashing algorithm.
     {{%- endif %}}
-    
+
     Check the hashing algorithm that is being used to hash passwords with the following command:
 
     $ sudo grep -i ENCRYPT_METHOD /etc/login.defs

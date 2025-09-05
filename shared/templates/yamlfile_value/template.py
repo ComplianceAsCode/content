@@ -8,6 +8,7 @@ def preprocess(data, lang):
 
     regex_data = parse_template_boolean_value(data, parameter="regex_data", default_value=False)
     data["regex_data"] = regex_data
+    data["filepath_suffix"] = data.get("filepath_suffix")
 
     if data.get("xccdf_variable") and embedded_data:
         values = data.get("values", [{}])

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,sle12,sle15
+prodtype: ol7,ol8,ol9,rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'The operating system must require Re-Authentication when using the sudo command.
  Ensure sudo timestamp_timeout is appropriate - sudo timestamp_timeout'
@@ -12,7 +12,7 @@ description: |-
     <tt>timestamp_timeout</tt> tag exists in
     <tt>/etc/sudoers</tt> configuration file or any sudo configuration snippets
     in <tt>/etc/sudoers.d/</tt>.
-    If the value is set to an integer less than 0, the user's time stamp will not expire 
+    If the value is set to an integer less than 0, the user's time stamp will not expire
     and the user will not have to re-authenticate for privileged actions until the user's session is terminated.
 
 rationale: |-
@@ -46,12 +46,12 @@ references:
 ocil_clause: 'timestamp_timeout is not set with the appropriate value for sudo'
 
 ocil: |-
-    Verify the operating system requires re-authentication 
+    Verify the operating system requires re-authentication
     when using the "sudo" command to elevate privileges, run the following command:
     <pre>sudo grep -ri '^Defaults.*timestamp_timeout' /etc/sudoers /etc/sudoers.d</pre>
     The output should be:
     <pre>/etc/sudoers:Defaults timestamp_timeout=0</pre> or "timestamp_timeout" is set to a positive number.
-    If results are returned from more than one file location, this is a finding.
+    If conflicting results are returned, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to re-authenticate "sudo" commands after the specified timeout:
@@ -61,4 +61,3 @@ fixtext: |-
     Defaults timestamp_timeout={{{ xccdf_value("var_sudo_timestamp_timeout") }}}
 
 srg_requirement: '{{{ full_name }}} must require re-authentication when using the "sudo" command.'
-

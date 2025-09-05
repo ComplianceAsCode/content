@@ -5,28 +5,42 @@
 RSYSLOG_ETC_CONFIG="/etc/rsyslog.conf"
 # * And also the log file paths listed after rsyslog's $IncludeConfig directive
 #   (store the result into array for the case there's shell glob used as value of IncludeConfig)
-readarray -t RSYSLOG_INCLUDE_CONFIG < <(grep -e "\$IncludeConfig[[:space:]]\+[^[:space:];]\+" /etc/rsyslog.conf | cut -d ' ' -f 2)
-readarray -t RSYSLOG_INCLUDE < <(awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(include\\(|\\s*)file=\"(\\S+)\".*","\\2",1); if($0!=nf){print nf}}' /etc/rsyslog.conf)
+readarray -t OLD_INC < <(grep -e "\$IncludeConfig[[:space:]]\+[^[:space:];]\+" /etc/rsyslog.conf | cut -d ' ' -f 2)
+readarray -t RSYSLOG_INCLUDE_CONFIG < <(for INCPATH in "${OLD_INC[@]}"; do eval printf '%s\\n' "${INCPATH}"; done)
+readarray -t NEW_INC < <(awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(include\\(|\\s*)file=\"(\\S+)\".*","\\2",1); if($0!=nf){print nf}}' /etc/rsyslog.conf)
+readarray -t RSYSLOG_INCLUDE < <(for INCPATH in "${NEW_INC[@]}"; do eval printf '%s\\n' "${INCPATH}"; done)
 
 # Declare an array to hold the final list of different log file paths
 declare -a LOG_FILE_PATHS
 
+# Array to hold all rsyslog config entries
 RSYSLOG_CONFIGS=()
 RSYSLOG_CONFIGS=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYSLOG_INCLUDE[@]}")
 
 # Get full list of files to be checked
-# RSYSLOG_CONFIGS may contain globs such as 
+# RSYSLOG_CONFIGS may contain globs such as
 # /etc/rsyslog.d/*.conf /etc/rsyslog.d/*.frule
 # So, loop over the entries in RSYSLOG_CONFIGS and use find to get the list of included files.
-RSYSLOG_FILES=()
+RSYSLOG_CONFIG_FILES=()
 for ENTRY in "${RSYSLOG_CONFIGS[@]}"
 do
-     mapfile -t FINDOUT < <(find "$(dirname "${ENTRY}")" -maxdepth 1 -name "$(basename "${ENTRY}")")
-     RSYSLOG_FILES+=("${FINDOUT[@]}")
+	# If directory, rsyslog will search for config files in recursively.
+	# However, files in hidden sub-directories or hidden files will be ignored.
+	if [ -d "${ENTRY}" ]
+	then
+		readarray -t FINDOUT < <(find "${ENTRY}" -not -path '*/.*' -type f)
+		RSYSLOG_CONFIG_FILES+=("${FINDOUT[@]}")
+	elif [ -f "${ENTRY}" ]
+	then
+		RSYSLOG_CONFIG_FILES+=("${ENTRY}")
+	else
+		echo "Invalid include object: ${ENTRY}"
+	fi
 done
 
-# Check file and fix if needed.
-for LOG_FILE in "${RSYSLOG_FILES[@]}"
+# Browse each file selected above as containing paths of log files
+# ('/etc/rsyslog.conf' and '/etc/rsyslog.d/*.conf' in the default configuration)
+for LOG_FILE in "${RSYSLOG_CONFIG_FILES[@]}"
 do
 	# From each of these files extract just particular log file path(s), thus:
 	# * Ignore lines starting with space (' '), comment ('#"), or variable syntax ('$') characters,
@@ -43,7 +57,7 @@ do
 	then
 		NORMALIZED_CONFIG_FILE_LINES=$(sed -e "/^[#|$]/d" "${LOG_FILE}")
 		LINES_WITH_PATHS=$(grep '[^/]*\s\+\S*/\S\+$' <<< "${NORMALIZED_CONFIG_FILE_LINES}")
-		FILTERED_PATHS=$(sed -e 's/[^\/]*[[:space:]]*\([^:;[:space:]]*\)/\1/g' <<< "${LINES_WITH_PATHS}")
+		FILTERED_PATHS=$(awk '{if(NF>=2&&($2~/^\//||$2~/^-\//)){sub(/^-\//,"/",$2);print $2}}' <<< "${LINES_WITH_PATHS}")
 		CLEANED_PATHS=$(sed -e "s/[\"')]//g; /\\/etc.*\.conf/d; /\\/dev\\//d" <<< "${FILTERED_PATHS}")
 		MATCHED_ITEMS=$(sed -e "/^$/d" <<< "${CLEANED_PATHS}")
 		# Since above sed command might return more than one item (delimited by newline), split the particular
@@ -56,7 +70,7 @@ do
 		unset ARRAY_FOR_LOG_FILE
 	fi
 done
-{{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "sle15", "sle12"] %}}
+{{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204", "sle15", "sle12"] %}}
 DESIRED_PERM_MOD=640
 {{% else %}}
 DESIRED_PERM_MOD=600

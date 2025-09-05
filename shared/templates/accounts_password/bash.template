@@ -4,6 +4,6 @@
 # complexity = low
 # disruption = low
 
-{{{ bash_instantiate_variables("var_password_pam_" + VARIABLE) }}}
+{{{ bash_instantiate_variables("var_password_pam_" ~ VARIABLE) }}}
 
-{{{ bash_replace_or_append('/etc/security/pwquality.conf', '^' + VARIABLE , '$var_password_pam_' + VARIABLE , '%s = %s') }}}
+{{{ bash_replace_or_append('/etc/security/pwquality.conf', '^' ~ VARIABLE , '$var_password_pam_' ~ VARIABLE , '%s = %s') }}}

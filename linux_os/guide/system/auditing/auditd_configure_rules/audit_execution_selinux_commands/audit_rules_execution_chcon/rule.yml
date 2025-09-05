@@ -1,10 +1,10 @@
-{{%- if product in ["fedora", "ol8", "rhel8", "rhel9", "sle12", "sle15", "ubuntu2004"] %}}
+{{%- if product in ["fedora", "ol7", "ol8", "ol9", "rhel7", "rhel8", "rhel9", "sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
   {{%- set perm_x="-F perm=x " %}}
 {{%- endif %}}
 
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Record Any Attempts to Run chcon'
 
@@ -66,19 +66,7 @@ references:
     stigid@ubuntu2004: UBTU-20-010165
     vmmsrg: SRG-OS-000463-VMM-001850
 
-ocil_clause: '{{{ ocil_clause_audit() }}}'
-
-ocil: |-
-    Verify {{{ full_name }}} generates an audit record for all uses of the "chcon" command.
-    To verify that execution of the command is being audited, run the following command:
-    <pre>$ sudo grep "path=/usr/bin/chcon" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
-    The output should return something similar to:
-    <pre>-a always,exit -F path=/usr/bin/chcon {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-
-fixtext: |-
-    {{{ fixtext_audit_rules_command("chcon", "/usr/bin/chcon", "perm_mod") | indent(4) }}}
-
-srg_requirement: '{{{ srg_requirement_audit_syscall("chcon") }}}'
+{{{ ocil_fix_srg_privileged_command("chcon", "/usr/bin/", "perm_mod") }}}
 
 template:
     name: audit_rules_privileged_commands

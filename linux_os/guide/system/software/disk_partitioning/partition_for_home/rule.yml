@@ -35,6 +35,7 @@ references:
     cis@sle15: 1.1.17
     cis@ubuntu1804: 1.1.12
     cis@ubuntu2004: 1.1.17
+    cis@ubuntu2204: 1.1.17
     cobit5: APO13.01,DSS05.02
     disa: CCI-000366,CCI-001208
     isa-62443-2013: 'SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
@@ -51,7 +52,8 @@ references:
 
 {{{ complete_ocil_entry_separate_partition(part="/home") }}}
 
-fixtext: '{{{ fixtext_separate_partition(part="/home") }}}'
+fixtext: |-
+    Migrate the "/home" directory onto a separate file system.
 
 srg_requirement: 'A separate {{{ full_name }}} filesystem must be used for user home directories (such as /home or an equivalent).'
 
@@ -62,3 +64,12 @@ template:
     vars:
         mountpoint: /home
         min_size: 1073741824
+
+checktext: |-
+    Verify that a separate file system/partition has been created for "/home" with the following command:
+
+    $ mount | grep /home
+
+    UUID=fba5000f-2ffa-4417-90eb-8c54ae74a32f on /home type ext4 (rw,nodev,nosuid,noexec,seclabel)
+
+    If a separate entry for "/home" is not in use, this is a finding.

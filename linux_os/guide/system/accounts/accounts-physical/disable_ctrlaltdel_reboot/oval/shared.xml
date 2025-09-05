@@ -1,22 +1,14 @@
-{{%- if init_system == "systemd" and target_oval_version == [5, 10] -%}}
-{{# this is the only scenario this definition cannot handle, there is no good alternative for symlink_test for OVAL 5.10 #}}
+{{%- if target_oval_version == [5, 10] -%}}
+{{# there is no good alternative for symlink_test for OVAL 5.10 #}}
 {{%- else -%}}
 <def-group>
   <definition class="compliance" id="disable_ctrlaltdel_reboot" version="1">
     {{{ oval_metadata("By default, the system will reboot when the
       Ctrl-Alt-Del key sequence is pressed.") }}}
-    {{%- if init_system == "systemd" -%}}
     <criteria>
       <criterion comment="Disable Ctrl-Alt-Del systemd softlink exists" test_ref="test_disable_ctrlaltdel_exists" />
     </criteria>
-    {{%- else -%}}
-    <criteria>
-      <criterion comment="Disable Ctrl-Alt-Del key sequence" test_ref="test_disable_ctrlaltdel" />
-      <criterion comment="Disable Ctrl-Alt-Del key sequence override exists" test_ref="test_disable_ctrlaltdel_exists" />
-    </criteria>
-    {{%- endif -%}}
   </definition>
-  {{%- if init_system == "systemd" -%}}
   <unix:symlink_test check="all" check_existence="all_exist" comment="Disable Ctrl-Alt-Del key sequence override exists" id="test_disable_ctrlaltdel_exists" version="1">
     <unix:object object_ref="object_disable_ctrlaltdel_exists" />
     <unix:state state_ref="state_disable_ctrlaltdel_exists" />
@@ -28,22 +20,5 @@
     <unix:filepath>/etc/systemd/system/ctrl-alt-del.target</unix:filepath>
     <unix:canonical_path>/dev/null</unix:canonical_path>
   </unix:symlink_state>
-  {{%- else -%}}
-  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="Disable Ctrl-Alt-Del key sequence" id="test_disable_ctrlaltdel" version="1">
-    <ind:object object_ref="object_test_disable_ctrlaltdel" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object comment="Disable Ctrl-Alt-Del key sequence" id="object_test_disable_ctrlaltdel" version="1">
-    <ind:filepath>/etc/init/control-alt-delete.override</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*exec[\s]*/sbin/shutdown[\s]*\-r[\s]*now.*$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <unix:file_test check="all" check_existence="all_exist" comment="Disable Ctrl-Alt-Del key sequence override exists" id="test_disable_ctrlaltdel_exists" version="1">
-    <unix:object object_ref="object_test_disable_ctrlaltdel_exists" />
-  </unix:file_test>
-  <unix:file_object comment="Disable Ctrl-Alt-Del key sequence override exists" id="object_test_disable_ctrlaltdel_exists" version="1">
-    <unix:filepath>/etc/init/control-alt-delete.override</unix:filepath>
-  </unix:file_object>
-  {{%- endif -%}}
 </def-group>
 {{%- endif -%}}

@@ -10,7 +10,7 @@ description: |-
     {{% if product == "rhel7" %}}
     <li><b>{{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system-level_authentication_guide/smartcards#authconfig-smartcards") }}}</b></li>
     {{% elif product == "ol7" %}}
-    <li><b>{{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/7/userauth/ol7-auth.html#ol7-s4-auth") }}}</b></li>
+    <li><b>{{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/7/userauth/userauth-AuthenticationConfiguration.html#ol7-s4-auth") }}}</b></li>
     {{% endif %}}
     </ul>
 
@@ -28,7 +28,8 @@ rationale: |-
 
 severity: medium
 
-platform: machine  # The check uses service_... extended definition, which doesnt support offline mode
+platforms:
+    - not_s390x_arch
 
 identifiers:
     cce@rhel7: CCE-80207-4

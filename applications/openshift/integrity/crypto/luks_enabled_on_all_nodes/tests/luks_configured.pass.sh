@@ -808,6 +808,35 @@ cat <<EOF > "$kube_apipath/$machineconfig_apipath"
                         ]
                     },
                     "storage": {
+                        "luks": [
+                        {
+                            "clevis": {
+                            "tang": [
+                                {
+                                "thumbprint": "tHdgisfhr3ifQLraAONRPtFKWD4",
+                                "url": "http://192.168.0.94:80"
+                            },
+                                {
+                                "thumbprint": "4L4G-q8xvHT2F7FGFpjJ9e18zi4",
+                                "url": "http://192.168.0.87:80"
+                            },
+                                {
+                                "thumbprint": "jy-t4rarV1dbq4bsPCgxLg_ghpw",
+                                "url": "http://192.168.0.160:80"
+                            }
+                            ],
+                            "threshold": 1
+                        },
+                            "device": "/dev/disk/by-partlabel/root",
+                            "label": "luks-root",
+                            "name": "root",
+                            "options": [
+                            "--cipher",
+                            "aes-cbc-essiv:sha256"
+                            ],
+                            "wipeVolume": true
+                        }
+                        ],
                         "files": [
                             {
                                 "contents": {
@@ -910,6 +939,35 @@ cat <<EOF > "$kube_apipath/$machineconfig_apipath"
                         ]
                     },
                     "storage": {
+                        "luks": [
+                        {
+                            "clevis": {
+                            "tang": [
+                                {
+                                "thumbprint": "tHdgisfhr3ifQLraAONRPtFKWD4",
+                                "url": "http://192.168.0.94:80"
+                            },
+                                {
+                                "thumbprint": "4L4G-q8xvHT2F7FGFpjJ9e18zi4",
+                                "url": "http://192.168.0.87:80"
+                            },
+                                {
+                                "thumbprint": "jy-t4rarV1dbq4bsPCgxLg_ghpw",
+                                "url": "http://192.168.0.160:80"
+                            }
+                            ],
+                            "threshold": 1
+                        },
+                            "device": "/dev/disk/by-partlabel/root",
+                            "label": "luks-root",
+                            "name": "root",
+                            "options": [
+                            "--cipher",
+                            "aes-cbc-essiv:sha256"
+                            ],
+                            "wipeVolume": true
+                        }
+                        ],
                         "files": [                            
                             {
                                 "contents": {
@@ -987,7 +1045,7 @@ cat <<EOF > "$kube_apipath/$machineconfig_apipath"
 }
 EOF
 
-jq_filter='[.items[] | select(.metadata.name | test("^[0-9]{2}-worker$|^[0-9]{2}-master$"))]|map(.spec.config.storage.luks[0].clevis != null)'
+jq_filter='[.items[] | select(.metadata.name | test("^rendered-worker-[0-9a-z]+$|^rendered-master-[0-9a-z]+$"))] | map(.spec.config.storage.luks[0].clevis != null)'
 
 # Get filtered path. This will actually be read by the scan
 filteredpath="$kube_apipath/$machineconfig_apipath#$(echo -n "$machineconfig_apipath$jq_filter" | sha256sum | awk '{print $1}')"

@@ -1,5 +1,5 @@
-{{%- if init_system == "systemd" and target_oval_version == [5, 10] -%}}
-{{# this is the only scenario this definition cannot handle, there is no good alternative for symlink_test for OVAL 5.10 #}}
+{{%- if target_oval_version == [5, 10] -%}}
+{{# there is no good alternative for symlink_test for OVAL 5.10 #}}
 {{%- else -%}}
 <def-group>
   <definition class="compliance" id="xwindows_runlevel_target" version="1">

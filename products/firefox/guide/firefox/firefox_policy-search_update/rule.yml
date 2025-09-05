@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Disable Installed Search Plugins Update Checking'
+
+description: |-
+    Firefox automatically checks for updated versions of search plugins.
+    To disable the automatic updates of plugins, set value of
+    <tt>browser.search.update</tt> to <tt>false</tt> via policies.json.
+
+rationale: |-
+    Updates need to be controlled and installed from authorized and trusted servers.
+    This setting overrides a number of other settings which may direct the application
+    to access external URLs.
+
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000004
+
+ocil_clause: 'it is not disabled'
+
+ocil: |-
+    To verify that checks for installed search plugin updates are disabled,
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following under browser.search.update:
+    <pre>Value: false</pre>
+    <pre>Status: "locked"</pre>
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable Search Plugin Updates
+        policies:
+          - {path: "Preferences browser.search.update", parameter: "Value", value: false}
+          - {path: "Preferences browser.search.update", parameter: "Status", value: "locked"}

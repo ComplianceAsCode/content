@@ -1,15 +1,14 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Assign Expiration Date to Temporary Accounts'
 
 description: |-
     Temporary accounts are established as part of normal account activation
     procedures when there is a need for short-term accounts. In the event
-    temporary or emergency accounts are required, configure the system to
-    terminate them after a documented time period. For every temporary and
-    emergency account, run the following command to set an expiration date on
+    temporary accounts are required, configure the system to
+    terminate them after a documented time period. For every temporary account, run the following command to set an expiration date on
     it, substituting <tt><i>USER</i></tt> and <tt><i>YYYY-MM-DD</i></tt>
     appropriately:
     <pre>$ sudo chage -E <i>YYYY-MM-DD USER</i></pre>
@@ -51,16 +50,15 @@ references:
     stigid@ubuntu2004: UBTU-20-010000
     vmmsrg: SRG-OS-000002-VMM-000020,SRG-OS-000123-VMM-000620
 
-ocil_clause: 'temporary accounts have no expiration date set or do not expire within 72 hours'
+ocil_clause: 'any temporary accounts have no expiration date set or do not expire within 72 hours'
 
 ocil: |-
-    Verify that temporary accounts have been provisioned with an expiration date of 72 hours.
-    
-    For every temporary account, run the following command to obtain its account aging and expiration information:
-    
-    $ sudo chage -l  temporary_account_name
-    
-    Verify each of these accounts has an expiration date set within 72 hours or as documented.
+    Verify that temporary accounts have been provisioned with an expiration date
+    of 72 hours. For every temporary account, run the following command to
+    obtain its account aging and expiration information:
+    <pre>$ sudo chage -l temporary_account_name</pre>
+    Verify each of these accounts has an expiration date set within 72 hours or
+    as documented.
 
 fixtext: |-
     If a temporary account must be created configure the system to terminate the account after a 72

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
+prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: "Set PAM''s Password Hashing Algorithm"
 
@@ -84,7 +84,7 @@ ocil: |-
     and ensure that the <tt>pam_unix.so</tt> module  is configured to use the argument
     <tt>sha512</tt>:
 
-    <pre>$ sudo grep "^password.*pam_unix.so.*sha512" {{{ pam_passwd_file_path }}}
+    <pre>$ sudo grep "^password.*pam_unix\.so.*sha512" {{{ pam_passwd_file_path }}}
     {{% if product in ["sle12", "sle15"] -%}}
     password required pam_unix.so sha512
     {{% else %}}

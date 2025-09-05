@@ -1,0 +1,64 @@
+documentation_complete: true
+
+prodtype: eks,ocp4
+
+platform: {{{ product }}}
+
+{{%- if product == "eks" %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- set ca_path = "/etc/kubernetes/pki/ca.crt" %}}
+{{%- else %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- set ca_path = "/etc/kubernetes/kubelet-ca.crt" %}}
+{{%- endif %}}
+
+title: 'kubelet - Configure the Client CA Certificate'
+
+description: |-
+    By default, the kubelet is not configured with a CA certificate which
+    can subject the kubelet to man-in-the-middle attacks.
+
+    To configure a client CA certificate, edit the kubelet configuration
+    file <tt>{{{ kubeletconf_path }}}</tt>
+    on the kubelet node(s) and set the below parameter:
+    <pre>
+    authentication:
+    ...
+      x509:
+        clientCAFile: {{{ ca_path}}}
+    ...
+    </pre>
+
+rationale: |-
+    Not having a CA certificate for the kubelet will subject the kubelet to possible
+    man-in-the-middle attacks especially on unsafe or untrusted networks.
+    Certificate validation for the kubelet allows the API server to validate
+    the kubelet's identity.
+
+severity: medium
+
+ocil_clause: 'no client CA certificate has been configured'
+
+ocil: |-
+    Run the following command on the kubelet node(s):
+    <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1"' | grep -A1 x509; done</pre>
+    The output should contain a configured certificate like <tt>{{{ ca_path}}}</tt>.
+
+references:
+    cis@eks: 3.2.3
+    cis@ocp4: 4.2.3
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/kubeletconfig/role'
+        filepath_suffix: var_role_worker
+        yamlpath: ".authentication.x509.clientCAFile"
+        check_existence: "all_exist"
+        values:
+         - value: "{{{ ca_path}}}"
+           operation: "equals"

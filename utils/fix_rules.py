@@ -630,7 +630,7 @@ def fix_empty_references(args, product_yaml):
             print(rule_path + " has one or more empty references")
             continue
 
-        fix_file_prompt(rule_path, product_yaml, fix_empty_reference)
+        fix_file_prompt(rule_path, product_yaml, fix_empty_reference, args)
 
     exit(int(len(results) > 0))
 
@@ -648,7 +648,7 @@ def find_prefix_cce(args):
             print(rule_path + " has one or more CCE with CCE- prefix")
             continue
 
-        fix_file_prompt(rule_path, product_yaml, fix_prefix_cce)
+        fix_file_prompt(rule_path, product_yaml, fix_prefix_cce, args)
 
     exit(int(len(results) > 0))
 
@@ -666,7 +666,7 @@ def find_invalid_cce(args, product_yamls):
             print(rule_path + " has one or more invalid CCEs")
             continue
 
-        fix_file_prompt(rule_path, product_yaml, fix_invalid_cce)
+        fix_file_prompt(rule_path, product_yaml, fix_invalid_cce, args)
     exit(int(len(results) > 0))
 
 
@@ -683,7 +683,7 @@ def find_int_identifiers(args, product_yaml):
             print(rule_path + " has one or more integer references")
             continue
 
-        fix_file_prompt(rule_path, product_yaml, fix_int_identifier)
+        fix_file_prompt(rule_path, product_yaml, fix_int_identifier, args)
 
     exit(int(len(results) > 0))
 
@@ -701,7 +701,7 @@ def find_int_references(args, product_yaml):
             print(rule_path + " has one or more unsorted references")
             continue
 
-        fix_file_prompt(rule_path, product_yaml, fix_int_reference)
+        fix_file_prompt(rule_path, product_yaml, fix_int_reference, args)
 
     exit(int(len(results) > 0))
 

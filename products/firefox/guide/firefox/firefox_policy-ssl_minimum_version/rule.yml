@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox must be configured to allow only TLS 1.2 or above.'
+
+description: |-
+    Firefox may be configured via administrative policy to allow TLS 1.2 at minimum
+    by setting <tt>SSLVersionMin</tt> to <tt>tls1.2</tt>.
+
+rationale: |-
+    Use of versions prior to TLS 1.2 are not permitted. SSL 2.0 and SSL 3.0 contain a number of security flaws. 
+    These versions must be disabled in compliance with the Network Infrastructure and Secure Remote Computing STIGs.
+severity: medium
+
+references:
+    disa: CCI-001453
+    nist: AC-17 (2)
+    stigid@firefox: FFOX-00-000002
+
+template:
+    name: firefox_policy-setting
+    vars:
+      name: Disable Firefox Sync
+      policies:
+        - {path: "policies", parameter: "SSLVersionMin", search_value: "tls1\\.[23]", value: "tls1.2"}

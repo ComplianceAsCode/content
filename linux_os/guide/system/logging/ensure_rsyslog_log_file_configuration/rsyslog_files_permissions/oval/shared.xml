@@ -17,7 +17,16 @@
     <ind:filepath>/etc/rsyslog.conf</ind:filepath>
     <ind:pattern operation="pattern match">^(?:include\([\n\s]*file="([^\s;]+)".*|\$IncludeConfig[\s]+([^\s;]+))$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_permissions_ignore_hidden_paths</filter>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_permissions_ignore_hidden_paths" comment="ignore hidden conf files" version="1">
+    <!-- Among the paths matched in object_rfp_rsyslog_include_config_value there can be paths from
+         include() or $IncludeConfig that point to hidden dirs or files.
+         Rsyslog ignores these conf files, so we should ignore them too.
+    -->
+    <ind:subexpression operation="pattern match">^.*\/\..*$</ind:subexpression>
+  </ind:textfilecontent54_state>
 
   <!-- Turn that glob value into Perl's regex so it can be used as filepath pattern below -->
   <local_variable id="var_rfp_include_config_regex" datatype="string" version="1" comment="$IncludeConfig value converted to regex">
@@ -108,7 +117,7 @@
   <unix:file_state id="state_rsyslog_files_permissions" version="1">
     <unix:type operation="equals">regular</unix:type>
     <unix:uexec datatype="boolean">false</unix:uexec>
-    {{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "sle15", "sle12"] %}}
+    {{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204", "sle15", "sle12"] %}}
     <unix:gread datatype="boolean">true</unix:gread>
     {{% else %}}
     <unix:gread datatype="boolean">false</unix:gread>

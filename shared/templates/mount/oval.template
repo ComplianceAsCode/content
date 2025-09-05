@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata("If stored locally, create a separate partition for
-      {{{ MOUNTPOINT }}}. If {{{ MOUNTPOINT }}} will be mounted from another
+      " ~ MOUNTPOINT ~ ". If " ~ MOUNTPOINT ~ " will be mounted from another
       system such as an NFS server, then creating a separate partition is not
       necessary at this time, and the mountpoint can instead be configured
       later.") }}}

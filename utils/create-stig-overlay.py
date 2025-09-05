@@ -2,13 +2,14 @@
 
 from __future__ import print_function
 
-import re
 import sys
 import argparse
 import os
 import ssg
 import ssg.xml
 import xml.dom.minidom
+
+from ssg.constants import XCCDF11_NS, XCCDF12_NS, OSCAP_RULE
 
 ET = ssg.xml.ElementTree
 
@@ -18,7 +19,6 @@ stig_ns = ["https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-
            "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os",
            "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security%2Capplication-servers",
            "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security%2Capp-security-dev"]
-xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 dc_ns = "http://purl.org/dc/elements/1.1/"
 outfile = "stig_overlay.xml"
 
@@ -36,7 +36,7 @@ def yes_no_prompt():
 
 
 def element_value(element, element_obj):
-    for elem in element_obj.findall("./{%s}%s" % (xccdf_ns, element)):
+    for elem in element_obj.findall("./{%s}%s" % (XCCDF11_NS, element)):
         elem = elem.text
     try:
         return elem
@@ -45,6 +45,7 @@ def element_value(element, element_obj):
 
 
 def ssg_xccdf_stigid_mapping(ssgtree):
+    xccdf_ns = ssg.xml.determine_xccdf_tree_namespace(ssgtree)
     xccdftostig_idmapping = {}
 
     for rule in ssgtree.findall(".//{%s}Rule" % xccdf_ns):
@@ -52,6 +53,8 @@ def ssg_xccdf_stigid_mapping(ssgtree):
         rhid = ""
 
         xccdfid = rule.get("id")
+        if xccdf_ns == XCCDF12_NS:
+            xccdfid = xccdfid.replace(OSCAP_RULE, "")
         if xccdfid is not None:
             for references in stig_ns:
                 stig = [ids for ids in rule.findall(".//{%s}reference[@href='%s']" % (xccdf_ns, references))]
@@ -75,12 +78,12 @@ def new_stig_overlay(xccdftree, ssgtree, outfile, quiet):
     else:
         ssg_mapping = ssg_xccdf_stigid_mapping(ssgtree)
 
-    new_stig_overlay = ET.Element("overlays", xmlns=xccdf_ns)
-    for group in xccdftree.findall("./{%s}Group" % xccdf_ns):
+    new_stig_overlay = ET.Element("overlays", xmlns=XCCDF11_NS)
+    for group in xccdftree.findall("./{%s}Group" % XCCDF11_NS):
         vkey = group.get("id").strip('V-')
-        for title in group.findall("./{%s}title" % xccdf_ns):
+        for title in group.findall("./{%s}title" % XCCDF11_NS):
             srg = title.text
-        for rule in group.findall("./{%s}Rule" % xccdf_ns):
+        for rule in group.findall("./{%s}Rule" % XCCDF11_NS):
             svkey_raw = rule.get("id")
             svkey = svkey_raw.strip()[3:9]
             severity = rule.get("severity")
@@ -136,12 +139,12 @@ def parse_args():
                               For example: disa-stig-rhel8-v1r12-xccdf-manual.xml")
     parser.add_argument("--ssg-xccdf", default=None,
                         action="store", dest="ssg_xccdf_filename",
-                        help="A SSG generated XCCDF file. \
+                        help="A SSG generated XCCDF file. Can be XCCDF 1.1 or XCCDF 1.2 \
                               For example: ssg-rhel8-xccdf.xml")
     parser.add_argument("-o", "--output", default=outfile,
                         action="store", dest="output_file",
                         help="STIG overlay XML content file \
-                             [default: %default]")
+                            [default: %s]" % outfile)
     parser.add_argument("-q", "--quiet", dest="quiet", default=False,
                       action="store_true", help="Do not print anything and assume yes for everything")
 

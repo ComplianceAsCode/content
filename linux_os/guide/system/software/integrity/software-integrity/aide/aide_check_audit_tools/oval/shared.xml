@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="aide_check_audit_tools" version="1">
-    {{{ oval_metadata("The {{{ full_name }}} operating system file integrity tool must be configured to protect the integrity of the audit tools.", title="Configure AIDE to Verify the Audit Tools") }}}
+    {{{ oval_metadata("The " ~ full_name ~ " operating system file integrity tool must be configured to protect the integrity of the audit tools.", title="Configure AIDE to Verify the Audit Tools") }}}
     <criteria operator="AND">
       <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
       <criterion comment="auditctl is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_auditctl" />
@@ -11,7 +11,7 @@
       {{% if 'rhel' not in product and product != 'ol8' %}}
       <criterion comment="audispd is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_audispd" />
       {{% endif %}}
-      {{% if product == 'ol8' %}}
+      {{% if product == 'ol8' or 'rhel' in product %}}
       <criterion comment="rsyslogd is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_rsyslogd" />
       {{% endif %}}
       <criterion comment="augenrules is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_augenrules" />

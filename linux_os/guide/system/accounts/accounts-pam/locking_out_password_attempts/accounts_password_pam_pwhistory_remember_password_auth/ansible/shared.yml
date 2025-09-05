@@ -4,5 +4,14 @@
 # complexity = low
 # disruption = medium
 
-{{{ ansible_instantiate_variables("var_password_pam_remember", "var_password_pam_remember_control_flag") }}}
-{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/password-auth', 'password', '{{ var_password_pam_remember_control_flag }}', 'pam_pwhistory.so', 'remember', '{{ var_password_pam_remember }}', '^password.*requisite.*pam_pwquality.so') }}}
+{{{ ansible_instantiate_variables("var_password_pam_remember",
+                                  "var_password_pam_remember_control_flag") }}}
+{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/password-auth',
+                                            'password',
+                                            '{{ 
+                                              var_password_pam_remember_control_flag.split(",")[0]
+                                            }}',
+                                            'pam_pwhistory.so',
+                                            'remember',
+                                            '{{ var_password_pam_remember }}',
+                                            '^password.*requisite.*pam_pwquality\.so') }}}

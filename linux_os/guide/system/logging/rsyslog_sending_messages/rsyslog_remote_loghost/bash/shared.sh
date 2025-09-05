@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_rhel,multi_platform_sle
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_rhel,multi_platform_sle,multi_platform_ol
 
 {{{ bash_instantiate_variables("rsyslog_remote_loghost_address") }}}
 

@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:cci="https://public.cyber.mil/stigs/cci" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ovalns="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.2" xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" xmlns:cci="http://iase.disa.mil/cci" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ovalns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:ocil2="http://scap.nist.gov/schema/ocil/2.0">
 
 <!-- this style sheet expects parameter $profile, which is the id of the Profile to be shown -->
 
 <xsl:variable name="cci_list" select="document('../references/disa-cci-list.xml')/cci:cci_list" />
-<xsl:variable name="os_srg" select="document('../references/disa-os-srg-v2r3.xml')/cdf:Benchmark" />
+<xsl:variable name="os_srg" select="document('../references/disa-os-srg-v2r3.xml')/xccdf-1.1:Benchmark" />
 
 <xsl:param name="profile" select="''"/>
 <xsl:param name="testinfo" select="''" />
 
+<xsl:param name="ocil-document" select="''"/>
+<xsl:variable name="ocil" select="document($ocil-document)/ocil2:ocil"/>
+
+<xsl:variable name="profile_id" select="concat('xccdf_org.ssgproject.content_profile_', $profile)" />
+
 	<xsl:template match="/">
-		<xsl:if test="not(/cdf:Benchmark/cdf:Profile[@id=$profile])">
-			<xsl:message terminate="yes">Profile '<xsl:value-of select="$profile"/>' not found.</xsl:message>
+		<xsl:if test="not(/cdf:Benchmark/cdf:Profile[@id=$profile_id])">
+			<xsl:message terminate="yes">Profile '<xsl:value-of select="$profile_id"/>' not found.</xsl:message>
 		</xsl:if>
 		<html>
 		<head>
-			<title><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:title" /></title>
+			<title><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile_id]/cdf:title" /></title>
 		</head>
 		<body>
 			<br/>
 			<br/>
-			<div style="text-align: center; font-size: x-large; font-weight:bold"><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:title" /></div>
-			<div style="text-align: center; font-size: normal "><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:description" /></div>
+			<div style="text-align: center; font-size: x-large; font-weight:bold"><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile_id]/cdf:title" /></div>
+			<div style="text-align: center; font-size: normal "><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile_id]/cdf:description" /></div>
 			<br/>
 			<br/>
 			<xsl:apply-templates select="/cdf:Benchmark"/>
@@ -46,7 +51,7 @@
 				<td>800-53 Refs</td>
 			</thead>
 
-		<xsl:for-each select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:select">
+		<xsl:for-each select="/cdf:Benchmark/cdf:Profile[@id=$profile_id]/cdf:select">
 			<xsl:variable name="idrefer" select="@idref" />
 			<xsl:variable name="enabletest" select="@selected" />
 			<xsl:for-each select="//cdf:Rule">
@@ -76,16 +81,18 @@
 
 			<td>
 			<!-- print the manual check text -->
-			<xsl:apply-templates select="cdf:check" /> 
+				<pre>
+					<xsl:apply-templates select="cdf:check[@system='http://scap.nist.gov/schema/ocil/2']"/>
+				</pre>
 			</td>
 
 			<td> 
 			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
             	<xsl:variable name="cci_formatted" select='self::node()[text()]' />
 				<xsl:variable name="cci_expanded" select="$cci_formatted"  />
-				<xsl:for-each select="$os_srg/cdf:Group/cdf:Rule" >
-					<xsl:if test="cdf:ident=$cci_expanded">
-						<xsl:value-of select="cdf:version"/>
+				<xsl:for-each select="$os_srg/xccdf-1.1:Group/xccdf-1.1:Rule" >
+					<xsl:if test="xccdf-1.1:ident=$cci_expanded">
+						<xsl:value-of select="xccdf-1.1:version"/>
 						<br/>
 					</xsl:if>
 				</xsl:for-each>
@@ -121,28 +128,6 @@
 		</xsl:if>
 	</xsl:template>
 
-
-	<xsl:template match="cdf:check">
-	    <xsl:if test="@system=$ociltransitional">
-			<xsl:apply-templates select="cdf:check-content" />
-			<!-- print clause with "finding" text -->
-			 <xsl:if test="cdf:check-export/@export-name != ''">
-			 <br/>If <xsl:value-of select="cdf:check-export/@export-name" />, this is a finding. 
-			 </xsl:if>
-		</xsl:if>
-<!--	    <xsl:if test="@system=$ovaluri">
-		<xsl:for-each select="cdf:check-export">
-			<xsl:variable name="rulevar" select="@value-id" />
-				<xsl:for-each select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:refine-value">
-					<xsl:if test="@idref=$rulevar">
-						<xsl:value-of select="@selector" />
-					</xsl:if>
-				</xsl:for-each>
-		</xsl:for-each>
-		</xsl:if> -->
-	</xsl:template>
-
-
     <!-- getting rid of XHTML namespace -->
 	<xsl:template match="xhtml:*">
 		<xsl:element name="{local-name()}">
@@ -170,4 +155,11 @@
         <xsl:apply-templates select="@*|node()" />
     </xsl:template>
 
+	<xsl:template match="cdf:check[@system='http://scap.nist.gov/schema/ocil/2']">
+		<xsl:variable name="questionaireId" select="cdf:check-content-ref/@name"/>
+		<xsl:variable name="questionaire" select="$ocil/ocil2:questionnaires/ocil2:questionnaire[@id=$questionaireId]"/>
+		<xsl:variable name="testActionRef" select="$questionaire/ocil2:actions/ocil2:test_action_ref/text()"/>
+		<xsl:variable name="questionRef" select="$ocil/ocil2:test_actions/*[@id=$testActionRef]/@question_ref"/>
+		<xsl:value-of select="$ocil/ocil2:questions/ocil2:*[@id=$questionRef]/ocil2:question_text"/>
+	</xsl:template>
 </xsl:stylesheet>

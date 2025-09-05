@@ -1,12 +1,12 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Add noexec Option to /home'
 
 description: |-
     The <tt>noexec</tt> mount option can be used to prevent binaries from being
-    executed out of <tt>/home</tt>. 
+    executed out of <tt>/home</tt>.
     {{{ describe_mount(option="noexec", part="/home") }}}
 
 rationale: |-
@@ -39,9 +39,27 @@ fixtext: '{{{ fixtext_mount_option("/home", "noexec") }}}'
 
 srg_requirement: '{{{ srg_requirement_mount_option("/home", "noexec") }}}'
 
+{{% if "ol" not in product %}}
 template:
     name: mount_option
     vars:
         mountpoint: /home
         mountoption: noexec
         mount_has_to_exist: 'yes'
+{{% else %}}
+warnings:
+    - functionality: |-
+        OVAL looks for partitions whose mount point is a substring of any interactive user's home
+        directory and validates that noexec option is there. Because of this, there could be false
+        negatives when several partitions share a base substring. For example, if there is a home
+        directory in <tt>/var/tmp/user1</tt> and there are partitions mounted in <tt>/var</tt> and
+        <tt>/var/tmp</tt>. The noexec option is only expected in <tt>/var/tmp</tt>, but OVAL will
+        check both.<br/>
+        Bash remediation uses the <tt>df</tt> command to find out the partition where the home
+        directory is mounted. However, if the directory doesn't exist the remediation won't be
+        applied.
+template:
+    name: mount_option_home
+    vars:
+        mountoption: noexec
+{{% endif %}}

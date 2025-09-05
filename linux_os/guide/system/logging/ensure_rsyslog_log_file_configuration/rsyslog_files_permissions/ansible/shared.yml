@@ -7,7 +7,7 @@
 - name: "Set rsyslog logfile configuration facts"
   set_fact:
     rsyslog_etc_config: "/etc/rsyslog.conf"
-{{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "sle15", "sle12"] %}}
+{{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204", "sle15", "sle12"] %}}
     desired_perm_mode: "640"
 {{% else %}}
     desired_perm_mode: "600"
@@ -19,20 +19,28 @@
   shell: |
     set -o pipefail
     grep -e '$IncludeConfig' {{ rsyslog_etc_config }} | cut -d ' ' -f 2 || true
-  register: include_config_output
+  register: rsyslog_old_inc
   changed_when: False
 
 - name: "Get include files directives"
   shell: |
     set -o pipefail
     grep -oP '^\s*include\s*\(\s*file.*' {{ rsyslog_etc_config }} |cut  -d"\"" -f 2 || true
-  register: include_files_output
+  register: rsyslog_new_inc
   changed_when: False
 
+- name: "Expand glob expressions"
+  shell: |
+    set -o pipefail
+    eval printf '%s\\n' {{ item }}
+  register: include_config_output
+  loop: "{{ rsyslog_old_inc.stdout_lines + rsyslog_new_inc.stdout_lines }}"
+
 - name: "List all config files"
-  shell: find "$(dirname "{{ item }}" )" -maxdepth 1 -name "$(basename "{{ item }}")"
-  loop: "{{ include_config_output.stdout_lines + include_files_output.stdout_lines }}"
+  shell: find {{ item }} -not -path "*/.*" -type f
+  loop: "{{ include_config_output.results|map(attribute='stdout_lines')|list|flatten }}"
   register: rsyslog_config_files
+  failed_when: False
   changed_when: False
 
 - name: "Extract log files"

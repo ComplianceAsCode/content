@@ -1,46 +1,49 @@
+{{% if 'ubuntu' in product %}}
+{{% set configuration_files = ["common-password"] %}}
+{{% elif product in ['ol8','ol9','rhel8', 'rhel9'] %}}
+{{% set configuration_files = ["password-auth","system-auth"] %}}
+{{% else %}}
+{{% set configuration_files = ["system-auth"] %}}
+{{% endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("The password retry should meet minimum requirements") }}}
     <criteria operator="OR" comment="Conditions for retry are satisfied">
       <criteria operator="AND" comment="Conditions for retry in PAM files are satisfied">
-        {{% if 'ubuntu' not in product %}}
-        <criterion comment="pam_pwquality system-auth"
-                  test_ref="test_password_pam_pwquality_retry_system_auth"/>
-        {{% else %}}
-        <criterion comment="pam_pwquality common-password"
-                  test_ref="test_password_pam_pwquality_retry_common_password"/>
-        {{% endif %}}
-        {{% if product in ['rhel8', 'rhel9'] -%}}
-        <criterion comment="pam_pwquality password-auth"
-                  test_ref="test_password_pam_pwquality_retry_password_auth"/>
-        {{%- endif %}}
+        {{% for file in configuration_files %}}
+        <criterion comment="pam_pwquality has correctly set the retry argument in  {{{ file }}}"
+        test_ref="test_password_pam_pwquality_retry_{{{ file | escape_id }}}" />
+        {{% endfor %}}
       </criteria>
       <criteria operator="AND" comment="Conditions for retry in pwquality.conf file are satisfied">
-        <extend_definition comment="pwquality.so exists in system-auth"
-                           definition_ref="accounts_password_pam_pwquality"/>
+        {{% for file in configuration_files %}}
+        <criterion 
+        comment="retry value not set in PAM files"
+        test_ref="test_password_pam_pwquality_retry_{{{ (file | escape_id) }}}_not_set"/>
+        {{% endfor %}}
         <criterion comment="check retry parameter in pwquality.conf"
-                   test_ref="test_password_pam_pwquality_retry_pwquality_conf"/>
+        test_ref="test_password_pam_pwquality_retry_pwquality_conf"/>
       </criteria>
     </criteria>
   </definition>
 
   {{% macro test_pwquality_retry(path, test_ref) %}}
   <ind:textfilecontent54_test check="all" id="test_{{{ test_ref }}}" version="1"
-                              comment="check the configuration of {{{ path }}}">
+  check_existence="at_least_one_exists"
+  comment="check the configuration of {{{ path }}}">
     <ind:object object_ref="obj_{{{ test_ref }}}" />
     <ind:state state_ref="state_password_pam_retry_upper_bound"/>
     <ind:state state_ref="state_password_pam_retry_lower_bound"/>
   </ind:textfilecontent54_test>
   {{% endmacro %}}
 
-  {{% if 'ubuntu' not in product %}}
-  {{{ test_pwquality_retry( path="/etc/pam.d/system-auth", test_ref="password_pam_pwquality_retry_system_auth") }}}
-  {{% else %}}
-  {{{ test_pwquality_retry( path="/etc/pam.d/common-password", test_ref="password_pam_pwquality_retry_common_password") }}}
-  {{% endif %}}
-  {{% if product in ['rhel8', 'rhel9'] -%}}
-  {{{ test_pwquality_retry( path="/etc/pam.d/password-auth", test_ref="password_pam_pwquality_retry_password_auth") }}}
-  {{%- endif %}}
+  {{% macro test_pwquality_notset(file, test_ref, pam_retry_test_ref) %}}
+  <ind:textfilecontent54_test check="all" id="test_{{{ test_ref }}}" version="1"
+                              check_existence="none_exist"
+                              comment="check the configuration of /etc/pam.d/{{{ file }}}">
+    <ind:object object_ref="obj_{{{ pam_retry_test_ref }}}" />
+  </ind:textfilecontent54_test>
+  {{% endmacro %}}
 
   {{% macro object_pwquality_retry(path, test_ref) %}}
   <ind:textfilecontent54_object id="obj_{{{ test_ref }}}" version="1">
@@ -50,14 +53,16 @@
   </ind:textfilecontent54_object>
   {{% endmacro %}}
 
-  {{% if 'ubuntu' not in product %}}
-  {{{ object_pwquality_retry( path="/etc/pam.d/system-auth", test_ref="password_pam_pwquality_retry_system_auth") }}}
-  {{% else %}}
-  {{{ object_pwquality_retry( path="/etc/pam.d/common-password", test_ref="password_pam_pwquality_retry_common_password") }}}
-  {{% endif %}}
-  {{% if product in ['rhel8', 'rhel9'] -%}}
-  {{{ object_pwquality_retry( path="/etc/pam.d/password-auth", test_ref="password_pam_pwquality_retry_password_auth") }}}
-  {{%- endif %}}
+  {{% for file in configuration_files %}}
+  {{{ test_pwquality_retry( path="/etc/pam.d/" ~ file ,
+                            test_ref="password_pam_pwquality_retry_" ~ (file | escape_id)) }}}
+  {{{ object_pwquality_retry( path="/etc/pam.d/" ~ file ,
+                            test_ref="password_pam_pwquality_retry_" ~ (file | escape_id)) }}}
+
+  {{{ test_pwquality_notset(file,
+                            "password_pam_pwquality_retry_" ~ (file | escape_id) ~"_not_set",
+                            "password_pam_pwquality_retry_" ~ (file | escape_id)) }}}
+  {{% endfor %}}
 
   <ind:textfilecontent54_state id="state_password_pam_retry_upper_bound" version="1"
                                comment="upper bound of password_pam_retry">
@@ -83,7 +88,7 @@
 
   <ind:textfilecontent54_object id="obj_password_pam_pwquality_retry_pwquality_conf" version="1">
     <ind:filepath>/etc/security/pwquality.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^retry[\s]*=[\s]*(\d+)(?:[\s]|$)</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*retry[\s]*=[\s]*(\d+)(?:[\s]|$)</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

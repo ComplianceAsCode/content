@@ -45,7 +45,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: ./build_product alinux2 alinux3 chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004 uos20
+        run: ./build_product alinux2 alinux3 chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004 ubuntu2204 uos20
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -99,6 +99,7 @@ jobs:
               sle12 \
               sle15 \
               ubuntu2004 \
+              ubuntu2204 \
               uos20
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
@@ -132,6 +133,7 @@ jobs:
               sle12 \
               sle15 \
               ubuntu2004 \
+              ubuntu2204 \
               uos20 \
               ocp4 \
               eks
@@ -149,6 +151,17 @@ jobs:
           CC_TEST_REPORTER_ID: e67e068471d32b63f8e9561dba8f6a3f84dcc76b05ebfd98e44ced1a91cff854
         with:
           coverageLocations: build/tests/coverage.xml:coverage.py
+      - name: Build 5.10 (sanity only)
+        run: |-
+          ./build_product \
+              -d \
+              --oval '5.10' \
+              rhel7 \
+              rhel8 \
+              rhel9
+      - name: Validate OVAL Build 5.10
+        working-directory: ./build
+        run: ctest -j2 -R validate-ssg-rhel[0-9]+-oval.xml --output-on-failure -E unique-stigids
 
   validate-fedora-rawhide:
     name: Build, Test on Fedora Rawhide (Container)
@@ -178,6 +191,7 @@ jobs:
                 sle12 \
                 sle15 \
                 ubuntu2004 \
+                ubuntu2204 \
                 uos20 \
                 ocp4
       -   name: Test

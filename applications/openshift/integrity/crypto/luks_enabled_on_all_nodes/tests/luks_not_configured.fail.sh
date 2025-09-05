@@ -770,6 +770,35 @@ cat <<EOF > "$kube_apipath/$machineconfig_apipath"
                         ]
                     },
                     "storage": {
+                        "luks": [
+                        {
+                            "clevis": {
+                            "tang": [
+                                {
+                                "thumbprint": "tHdgisfhr3ifQLraAONRPtFKWD4",
+                                "url": "http://192.168.0.94:80"
+                            },
+                                {
+                                "thumbprint": "4L4G-q8xvHT2F7FGFpjJ9e18zi4",
+                                "url": "http://192.168.0.87:80"
+                            },
+                                {
+                                "thumbprint": "jy-t4rarV1dbq4bsPCgxLg_ghpw",
+                                "url": "http://192.168.0.160:80"
+                            }
+                            ],
+                            "threshold": 1
+                        },
+                            "device": "/dev/disk/by-partlabel/root",
+                            "label": "luks-root",
+                            "name": "root",
+                            "options": [
+                            "--cipher",
+                            "aes-cbc-essiv:sha256"
+                            ],
+                            "wipeVolume": true
+                        }
+                        ],
                         "files": [
                             {
                                 "contents": {
@@ -872,6 +901,35 @@ cat <<EOF > "$kube_apipath/$machineconfig_apipath"
                         ]
                     },
                     "storage": {
+                        "luks": [
+                        {
+                            "clevis": {
+                            "tang": [
+                                {
+                                "thumbprint": "tHdgisfhr3ifQLraAONRPtFKWD4",
+                                "url": "http://192.168.0.94:80"
+                            },
+                                {
+                                "thumbprint": "4L4G-q8xvHT2F7FGFpjJ9e18zi4",
+                                "url": "http://192.168.0.87:80"
+                            },
+                                {
+                                "thumbprint": "jy-t4rarV1dbq4bsPCgxLg_ghpw",
+                                "url": "http://192.168.0.160:80"
+                            }
+                            ],
+                            "threshold": 1
+                        },
+                            "device": "/dev/disk/by-partlabel/root",
+                            "label": "luks-root",
+                            "name": "root",
+                            "options": [
+                            "--cipher",
+                            "aes-cbc-essiv:sha256"
+                            ],
+                            "wipeVolume": true
+                        }
+                        ],
                         "files": [                            
                             {
                                 "contents": {

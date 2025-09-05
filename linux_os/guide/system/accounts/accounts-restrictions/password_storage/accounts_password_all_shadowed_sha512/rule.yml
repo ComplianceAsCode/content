@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhel8,rhel9,sle12,sle15,ubuntu2004
+prodtype: fedora,ol8,ol9,rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Verify All Account Password Hashes are Shadowed with SHA512'
 
@@ -18,9 +18,9 @@ description: |-
     this is a finding.
 
 rationale: |-
-    The system must use a strong hashing algorithm to store the password. The
-    system must use a sufficient number of hashing rounds to ensure the required
-    level of entropy.
+    Passwords need to be protected at all times, and encryption is the standard method for
+    protecting passwords. If passwords are not encrypted, they can be plainly read
+    (i.e., clear text) and easily compromised.
 
 severity: medium
 
@@ -33,6 +33,7 @@ identifiers:
 references:
     cis@sle15: 5.4.1.1
     cis@ubuntu2004: 5.3.4
+    cis@ubuntu2204: 5.3.4
     disa: CCI-000196,CCI-000803
     nist: IA-5(1)(c),IA-5(1).1(v),IA-7,IA-7.1
     srg:  SRG-OS-000073-GPOS-00041,SRG-OS-000120-GPOS-00061
@@ -42,10 +43,10 @@ references:
     stigid@sle15: SLES-15-020180
 
 
-ocil_clause: 'passwords hashed with an unauthorized algorithm are found in /etc/shadow'
+ocil_clause: 'any interactive user password hash does not begin with "$6"'
 
 ocil: |-
-    Check that the interactive user account passwords are using a strong
+    Verify that the interactive user account passwords are using a strong
     password hash with the following command:
 
     <pre>$ sudo cut -d: -f2 /etc/shadow
@@ -55,15 +56,8 @@ ocil: |-
     Password hashes <tt>!</tt> or <tt>*</tt> indicate inactive accounts not
     available for logon and are not evaluated.
 
-    If any interactive user password hash does not begin with <tt>$6</tt>,
-    this is a finding.
-
 fixtext: |-
     Lock all interactive user accounts not using SHA-512 hashing until the passwords can be regenerated with SHA-512.
 
 srg_requirement: |-
-    {{% if product in ['rhel9'] %}}
     {{{ full_name }}} must employ FIPS 140-3 approved cryptographic hashing algorithms for all stored passwords.
-    {{% else %}}
-    {{{ full_name }}} must employ FIPS 140-2 approved cryptographic hashing algorithms for all stored passwords.
-    {{% endif %}}

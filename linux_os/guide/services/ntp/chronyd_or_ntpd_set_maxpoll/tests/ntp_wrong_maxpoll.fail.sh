@@ -2,7 +2,7 @@
 # packages = ntp
 #
 # profiles = xccdf_org.ssgproject.content_profile_stig
-# platform = Red Hat Enterprise Linux 7
+# platform = Oracle Linux 7,Red Hat Enterprise Linux 7
 
 yum remove -y chrony
 

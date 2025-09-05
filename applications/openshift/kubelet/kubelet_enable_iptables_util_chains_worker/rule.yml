@@ -1,0 +1,59 @@
+documentation_complete: true
+
+prodtype: eks,ocp4
+
+platform: {{{ product }}}
+
+title: 'kubelet - Allow Automatic Firewall Configuration'
+
+description: |-
+    The kubelet has the ability to automatically configure the firewall to allow
+    the containers required ports and connections to networking resources and destinations
+    parameters potentially creating a security incident.
+    To allow the kubelet to modify the firewall, edit the kubelet configuration
+    To set the <tt>makeIPTablesUtilChains</tt> option for the kubelet,
+    create a <tt>KubeletConfig</tt> option along these lines:
+    <pre>
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: KubeletConfig
+    metadata:
+       name: kubelet-config-$pool
+    spec:
+        machineConfigPoolSelector:
+            matchLabels:
+                pools.operator.machineconfiguration.openshift.io/$pool_name: ""
+        kubeletConfig:
+            makeIPTablesUtilChains: true
+    </pre>
+rationale: |-
+    The kubelet should automatically configure the firewall settings to allow access and
+    networking traffic through. This ensures that when a pod or container is running that
+    the correct ports are configured as well as removing the ports when a pod or
+    container is no longer in existence.
+
+severity: medium
+
+ocil_clause: 'the kubelet cannot modify the firewall settings'
+
+ocil: |-
+    Run the following command on the kubelet node(s):
+    <pre>$ oc get --raw /api/v1/nodes/${NODE_NAME}/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1"' | grep makeIPTablesUtilChains </pre>
+    The output should return <tt>true</tt>.
+
+references:
+    cis@eks: 3.2.7
+    cis@ocp4: 4.2.7
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/kubeletconfig/role'
+        filepath_suffix: var_role_worker
+        yamlpath: ".makeIPTablesUtilChains"
+        values:
+         - value: "true"
+           operation: "equals"

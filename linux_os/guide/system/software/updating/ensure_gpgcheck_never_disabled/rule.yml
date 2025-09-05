@@ -61,10 +61,18 @@ ocil: |-
     A value of <tt>0</tt> indicates that <tt>gpgcheck</tt> has been disabled for that repo.
 
 fixtext: |-
-    Ensure signature checking is enabled for all package repositories.
-    Run the following command:
+    Ensure signature checking is enabled for all package repositories with the command:
 
     $ sudo sed -i 's/gpgcheck\s*=.*/gpgcheck=1/g' /etc/yum.repos.d/*
 
 srg_requirement: |-
-    {{{ full_name }}} must not have any repositories with GPG checking disabled.
+    {{{ full_name }}} must have gpgcheck enabled for all repositories.
+
+checktext: |-
+    Verify that {{{ pkg_manager }}} has not been configured to disable gpgcheck for any repos with the following command:
+
+    $ grep gpgcheck /etc/yum.repos.d/*.repo | more
+
+    gpgcheck = 1
+
+    If "gpgcheck" is not set to "1" for all returned lines, this is a finding.

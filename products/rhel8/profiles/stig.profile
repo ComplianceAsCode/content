@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R6
+    version: V1R7
     SMEs:
         - mab879
         - ggbecker
@@ -12,7 +12,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V1R6.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R7.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -170,13 +170,13 @@ selections:
     # RHEL-08-010190
     - dir_perms_world_writable_sticky_bits
 
-    # These two items don't behave as they used to in RHEL8.6 and RHEL9
-    # anymore. They will be disabled for now until an alternative
-    # solution is found.
-    # # RHEL-08-010200
-    # - sshd_set_keepalive_0
-    # # RHEL-08-010201
-    # - sshd_set_idle_timeout
+    # Although these rules have a different behavior in RHEL>=8.6
+    # they still need to be selected so it follows exactly what STIG
+    # states.
+    # RHEL-08-010200
+    - sshd_set_keepalive_0
+    # RHEL-08-010201
+    - sshd_set_idle_timeout
 
     # RHEL-08-010210
     - file_permissions_var_log_messages
@@ -386,6 +386,9 @@ selections:
 
     # RHEL-08-010571
     - mount_option_boot_nosuid
+
+    # RHEL-08-010572
+    - mount_option_boot_efi_nosuid
 
     # RHEL-08-010580
     - mount_option_nodev_nonroot_local_partitions
@@ -1127,7 +1130,7 @@ selections:
     - sysctl_net_ipv6_conf_default_accept_source_route
 
     # RHEL-08-040259
-    - sysctl_net_ipv4_ip_forward
+    - sysctl_net_ipv4_conf_all_forwarding
 
     # RHEL-08-040260
     - sysctl_net_ipv6_conf_all_forwarding

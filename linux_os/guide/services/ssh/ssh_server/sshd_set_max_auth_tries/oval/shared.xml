@@ -2,11 +2,21 @@
   <definition class="compliance" id="sshd_set_max_auth_tries" version="1">
     {{{ oval_metadata("The SSH MaxAuthTries should be set to an
       appropriate value.") }}}
-    <criteria comment="SSH is not being used or conditions are met" operator="OR">
-      <extend_definition comment="sshd service is disabled"
-      definition_ref="service_sshd_disabled" />
-      <criterion comment="Check MaxAuthTries in /etc/ssh/sshd_config"
-      test_ref="test_sshd_max_auth_tries" />
+    <criteria comment="sshd is configured correctly or is not installed" operator="OR">
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+          definition_ref="sshd_not_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server removed"
+          definition_ref="package_openssh-server_removed" />
+      </criteria>
+      <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset"
+          definition_ref="sshd_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server installed"
+          definition_ref="package_openssh-server_installed" />
+        <criterion comment="Check MaxAuthTries in /etc/ssh/sshd_config"
+        test_ref="test_sshd_max_auth_tries" />
+      </criteria>
     </criteria>
   </definition>
 

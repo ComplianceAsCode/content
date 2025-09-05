@@ -29,7 +29,7 @@ references:
     stigid@ol8: OL08-00-010572
     stigid@rhel8: RHEL-08-010572
 
-platform: machine
+platform: machine and uefi
 
 template:
     name: mount_option
@@ -37,6 +37,8 @@ template:
         mountpoint: /boot/efi
         mountoption: nosuid
         mount_has_to_exist: "no"
+    backends:
+        anaconda: "off"
 
 fixtext: |-
     {{{ fixtext_mount_option("/boot/efi", "nosuid") }}}

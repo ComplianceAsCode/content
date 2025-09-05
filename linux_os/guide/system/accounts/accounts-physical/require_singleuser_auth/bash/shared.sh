@@ -1,7 +1,5 @@
 # platform = multi_platform_all
 
-{{% if init_system == "systemd" -%}}
-
 service_file="/usr/lib/systemd/system/rescue.service"
 
 {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15"] -%}}
@@ -17,11 +15,3 @@ if grep "^ExecStart=.*" "$service_file" ; then
 else
     echo "ExecStart=-$sulogin" >> "$service_file"
 fi
-
-{{%- else -%}}
-grep -q ^SINGLE /etc/sysconfig/init && \
-  sed -i "s/SINGLE.*/SINGLE=\/sbin\/sulogin/g" /etc/sysconfig/init
-if ! [ $? -eq 0 ]; then
-    echo "SINGLE=/sbin/sulogin" >> /etc/sysconfig/init
-fi
-{{%- endif -%}}

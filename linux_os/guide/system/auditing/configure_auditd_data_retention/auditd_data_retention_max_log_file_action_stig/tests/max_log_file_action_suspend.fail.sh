@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = audit
-# variables = var_auditd_max_log_file_action=syslog
+# variables = var_auditd_max_log_file_action=rotate
 
 
 . $SHARED/auditd_utils.sh

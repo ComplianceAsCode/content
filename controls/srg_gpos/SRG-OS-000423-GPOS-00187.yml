@@ -8,6 +8,7 @@ controls:
             - package_openssh-server_installed
             - service_sshd_enabled
             - configure_bind_crypto_policy
-            - configure_gnutls_tls_crypto_policy
+            # https://github.com/ComplianceAsCode/content/issues/9385
+            # - configure_gnutls_tls_crypto_policy
             - sysctl_crypto_fips_enabled
         status: automated

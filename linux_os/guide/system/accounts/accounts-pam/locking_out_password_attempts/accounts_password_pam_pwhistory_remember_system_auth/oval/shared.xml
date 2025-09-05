@@ -13,7 +13,8 @@
 
   <ind:textfilecontent54_object id="obj_accounts_password_pam_pwhistory_remember_system_auth" version="1">
     <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
-    <ind:pattern var_ref="pwhistory_line_regex_system_auth" operation="pattern match"></ind:pattern>
+    <ind:pattern var_ref="pwhistory_line_regex_system_auth" var_check="at least one"
+    operation="pattern match" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -24,9 +25,15 @@
   <local_variable id="pwhistory_line_regex_system_auth" datatype="string" comment="The regex of the directive" version="1">
     <concat>
       <literal_component>^\s*password\s+(?:</literal_component>
-      <variable_component var_ref="var_password_pam_remember_control_flag"/>
+      <variable_component var_ref="var_possible_control_flags_system_auth"/>
       <literal_component>)\s+pam_pwhistory\.so.*remember=([0-9]*).*$</literal_component>
     </concat>
+  </local_variable>
+
+ <local_variable id="var_possible_control_flags_system_auth" datatype="string" comment="All accepted control flags" version="1">
+  <split delimiter=",">
+      <variable_component var_ref="var_password_pam_remember_control_flag"/>
+  </split> 
   </local_variable>
 
   <external_variable comment="number of passwords that should be remembered" datatype="int" id="var_password_pam_remember" version="1" />

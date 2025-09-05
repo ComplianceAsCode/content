@@ -30,12 +30,6 @@
     state: "stopped"
     masked: "yes"
   when: '"{{{ DAEMONNAME }}}.socket" in socket_file_exists.stdout_lines[1]'
-{{% elif init_system == "upstart" %}}
-- name: Stop {{{ SERVICENAME }}}
-  command: /sbin/service '{{{ DAEMONNAME }}}' stop
-
-- name: Switch off {{{ SERVICENAME }}}
-  command: /sbin/chkconfig --level 0123456 '{{{ DAEMONNAME }}}' off
 {{%- else %}}
 JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
 {{%- endif %}}

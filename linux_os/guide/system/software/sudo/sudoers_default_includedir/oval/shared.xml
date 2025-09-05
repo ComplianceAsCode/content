@@ -1,15 +1,22 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Check if sudo includes only the default includedir") }}}
-    <criteria operator="AND">
-      <criterion comment="Check /etc/sudoers for #includedir" test_ref="test_sudoers_default_includedir" />
-      <criterion comment="Check /etc/sudoers for #include" test_ref="test_sudoers_without_include" />
-      <criterion comment="Check /etc/sudoers.d for includes" test_ref="test_sudoersd_without_includes" />
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <criterion comment="Check /etc/sudoers doesn't have any #include or @include" test_ref="test_sudoers_without_include" />
+        <criterion comment="Check /etc/sudoers doesn't have any #includedir" test_ref="test_sudoers_without_includedir" />
+      </criteria>
+      <criteria operator="AND">
+        <criterion comment="Check /etc/sudoers for #includedir" test_ref="test_sudoers_default_includedir" />
+        <criterion comment="Check /etc/sudoers doesn't have any #include" test_ref="test_sudoers_without_include" />
+        <criterion comment="Check /etc/sudoers doesn't have any @includedir" test_ref="test_sudoers_without_includedir_new" />
+        <criterion comment="Check /etc/sudoers.d doesn't have any #include or #includedir" test_ref="test_sudoersd_without_includes" />
+      </criteria>
     </criteria>
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
-      comment="audit augenrules rmmod" id="test_sudoers_default_includedir" version="1">
+      comment="test only one sudoers #includedir" id="test_sudoers_default_includedir" version="1">
     <ind:object object_ref="object_sudoers_default_includedir" />
     <ind:state state_ref="state_sudoers_default_includedir" />
   </ind:textfilecontent54_test>
@@ -23,23 +30,43 @@
   </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist"
-      comment="audit augenrules rmmod" id="test_sudoers_without_include" version="1">
+      comment="test none sudoers #include or @include" id="test_sudoers_without_include" version="1">
     <ind:object object_ref="object_sudoers_without_include" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_sudoers_without_include" version="1">
     <ind:filepath>/etc/sudoers</ind:filepath>
-    <ind:pattern operation="pattern match">^#include[\s]+.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[#@]include[\s]+.*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist"
-      comment="audit augenrules rmmod" id="test_sudoersd_without_includes" version="1">
+      comment="test none sudoers @includedir" id="test_sudoers_without_includedir_new" version="1">
+    <ind:object object_ref="object_sudoers_without_include_new" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_sudoers_without_include_new" version="1">
+    <ind:filepath>/etc/sudoers</ind:filepath>
+    <ind:pattern operation="pattern match">^@includedir[\s]+.*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+      comment="test none sudoers #includedir or @includdir" id="test_sudoers_without_includedir" version="1">
+    <ind:object object_ref="object_sudoers_without_includedir" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_sudoers_without_includedir" version="1">
+    <ind:filepath>/etc/sudoers</ind:filepath>
+    <ind:pattern operation="pattern match">^[#@]includedir[\s]+.*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+      comment="test none sudoers.d #include, @include, #includedir or @includedir" id="test_sudoersd_without_includes" version="1">
     <ind:object object_ref="object_sudoersd_without_includes" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_sudoersd_without_includes" version="1">
     <ind:path>/etc/sudoers.d/</ind:path>
     <ind:filename operation="pattern match">.*</ind:filename>
-    <ind:pattern operation="pattern match">^#include(dir)?[\s]+.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[#@]include(?:dir)?[\s]+.*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

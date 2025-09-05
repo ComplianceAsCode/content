@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox search suggestions must be disabled.'
+
+description: |-
+    Search Suggestions may be disabled in an administrative policy by setting
+    the <tt>SearchSuggestEnabled</tt> key under <tt>policies</tt> to <tt>false</tt>.
+
+rationale: |-
+    Search suggestions must be disabled as this could lead to searches being conducted that were never intended to be made.
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000020
+
+ocil: |-
+    To verify that search suggestions are disabled,
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following:
+    <pre>"SearchSuggestEnabled": false</pre>
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable search suggestion
+        policies:
+          - {path: "policies", parameter: "SearchSuggestEnabled", value: false}

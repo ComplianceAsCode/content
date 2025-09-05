@@ -4,7 +4,8 @@ cpes:
       name: "cpe:/a:container"
       title: "Container"
       check_id: installed_env_is_a_container
-      bash_conditional: '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]'
+      bash_conditional: '[ -f /.dockerenv ] || [ -f /run/.containerenv ]'
+      ansible_conditional: 'ansible_virtualization_type in ["docker", "lxc", "openvz", "podman", "container"]'
 
   - machine:
       name: "cpe:/a:machine"

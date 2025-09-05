@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
+prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Verify {{{ grub2_boot_path }}}/grub.cfg Group Ownership'
 
@@ -8,7 +8,7 @@ description: |-
     The file <tt>{{{ grub2_boot_path }}}/grub.cfg</tt> should
     be group-owned by the <tt>root</tt> group to prevent
     destruction or modification of the file.
-    {{{ describe_file_group_owner(file="{{{ grub2_boot_path }}}/grub.cfg", group="root") }}}
+    {{{ describe_file_group_owner(file=grub2_boot_path ~ "/grub.cfg", group="root") }}}
 
 rationale: |-
     The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
@@ -43,14 +43,14 @@ references:
     pcidss: Req-7.1
     srg: SRG-OS-000480-GPOS-00227
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(grub2_boot_path + "/grub.cfg", "root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(grub2_boot_path ~ "/grub.cfg", "root") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file=grub2_boot_path + "/grub.cfg", group="root") }}}
+    {{{ ocil_file_group_owner(file=grub2_boot_path ~ "/grub.cfg", group="root") }}}
 
-fixtext: '{{{ fixtext_file_group_owner(grub2_boot_path + "/grub.cfg", "root") }}}'
+fixtext: '{{{ fixtext_file_group_owner(grub2_boot_path ~ "/grub.cfg", "root") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_group_owner(grub2_boot_path + "/grub.cfg", "root") }}}'
+srg_requirement: '{{{ srg_requirement_file_group_owner(grub2_boot_path ~ "/grub.cfg", "root") }}}'
 
 platform: machine
 

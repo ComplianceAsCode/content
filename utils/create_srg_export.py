@@ -416,6 +416,13 @@ def get_requirement(control: ssg.controls.Control, rule_obj: ssg.build_yaml.Rule
         return control.title()
 
 
+def get_rationale(rule_object):
+    if rule_object.vuldiscussion != "":
+        return rule_object.vuldiscussion
+    else:
+        return rule_object.rationale
+
+
 def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.environment,
                    rule_json: dict, srgs: dict, used_rules: list, root_path: str) -> list:
     if len(control.selections) > 0:
@@ -429,7 +436,8 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                 row['Requirement'] = handle_variables(get_requirement(control.title, rule_object),
                                                       control.variables, root_path,
                                                       product)
-                row['Vul Discussion'] = handle_variables(rule_object.rationale, control.variables,
+                rationale = get_rationale(rule_object)
+                row['Vul Discussion'] = handle_variables(rationale, control.variables,
                                                          root_path, product)
                 ocil_var = handle_variables(rule_object.ocil, control.variables, root_path,
                                             product)

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8
+prodtype: ol8,rhel9
 
 title: 'OpenSSH Service Must Use Passcode for Their Private Keys'
 
@@ -17,6 +17,9 @@ rationale: |-
     have unauthorized access to any system where the associated public key has been installed.
 
 severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86194-8
 
 references:
     disa: CCI-000186

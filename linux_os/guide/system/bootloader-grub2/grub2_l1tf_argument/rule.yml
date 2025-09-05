@@ -8,9 +8,9 @@ description: |-
     the page table entry isn't present.
 
     Select the appropriate mitigation by adding the argument
-    <tt>l1tf={{{ xccdf_value(var_l1tf_options) }}}</tt> to the default
+    <tt>l1tf={{{ xccdf_value("var_l1tf_options") }}}</tt> to the default
     GRUB 2 command line for the Linux operating system.
-    {{{ describe_grub2_argument("l1tf=xccdf_value(var_l1tf_options)") | indent(4) }}}
+    {{{ describe_grub2_argument("l1tf=" + xccdf_value("var_l1tf_options")) | indent(4) }}}
 
     Since Linux Kernel 4.19 you can check the L1TF vulnerability state with the
     following command:
@@ -33,7 +33,7 @@ identifiers:
 ocil_clause: 'l1tf mitigations are not configured appropriately'
 
 ocil: |-
-    {{{ ocil_grub2_argument("l1tf=xccdf_value(var_l1tf_options)") | indent(4) }}}
+    {{{ ocil_grub2_argument("l1tf=" + xccdf_value("var_l1tf_options")) | indent(4) }}}
 
 platform: machine
 

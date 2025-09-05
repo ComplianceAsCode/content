@@ -16,7 +16,8 @@ import yaml
 
 import ssg.build_remediations
 from .build_cpe import CPEDoesNotExist, CPEALLogicalTest, CPEALFactRef
-from .constants import (XCCDF_REFINABLE_PROPERTIES,
+from .constants import (XCCDF11_NS,
+                        XCCDF_REFINABLE_PROPERTIES,
                         SCE_SYSTEM,
                         cce_uri,
                         dc_namespace,
@@ -55,7 +56,7 @@ def dump_yaml_preferably_in_original_order(dictionary, file_object):
         return yaml.dump(dictionary, file_object, indent=4)
 
 
-def add_sub_element(parent, tag, data):
+def add_sub_element(parent, tag, ns, data):
     """
     Creates a new child element under parent with tag tag, and sets
     data as the content under the tag. In particular, data is a string
@@ -73,7 +74,8 @@ def add_sub_element(parent, tag, data):
     # and therefore it does not add child elements
     # we need to do a hack instead
     # TODO: Remove this function after we move to Markdown everywhere in SSG
-    ustr = unicode_func('<{0} xmlns:xhtml="{2}">{1}</{0}>').format(tag, namespaced_data, xhtml_namespace)
+    ustr = unicode_func('<{0} xmlns="{3}" xmlns:xhtml="{2}">{1}</{0}>').format(
+        tag, namespaced_data, xhtml_namespace, ns)
 
     try:
         element = ET.fromstring(ustr.encode("utf-8"))
@@ -117,7 +119,8 @@ def add_warning_elements(element, warnings):
     #
     # Each of the {dict} should have only one key/value pair.
     for warning_dict in warnings:
-        warning = add_sub_element(element, "warning", list(warning_dict.values())[0])
+        warning = add_sub_element(
+            element, "warning", XCCDF11_NS, list(warning_dict.values())[0])
         warning.set("category", list(warning_dict.keys())[0])
 
 
@@ -156,13 +159,13 @@ def add_reference_elements(element, references, ref_uri_dict):
                         .format(ref_type, ref_vals, self.id_))
                     raise ValueError(msg)
 
-            ref = ET.SubElement(element, 'reference')
+            ref = ET.SubElement(element, '{%s}reference' % XCCDF11_NS)
             ref.set("href", ref_href)
             ref.text = ref_val
 
 
 def add_benchmark_metadata(element, contributors_file):
-    metadata = ET.SubElement(element, "metadata")
+    metadata = ET.SubElement(element, "{%s}metadata" % XCCDF11_NS)
 
     publisher = ET.SubElement(metadata, "{%s}publisher" % dc_namespace)
     publisher.text = SSG_PROJECT_NAME
@@ -184,6 +187,7 @@ class SelectionHandler(object):
         self.refine_rules = defaultdict(list)
         self.variables = dict()
         self.unselected = []
+        self.unselected_groups = []
         self.selected = []
 
     @property
@@ -429,6 +433,7 @@ class Profile(XCCDFEntity, SelectionHandler):
         metadata=lambda: None,
         reference=lambda: None,
         selections=lambda: list(),
+        unselected_groups=lambda: list(),
         platforms=lambda: set(),
         cpe_names=lambda: set(),
         platform=lambda: None,
@@ -471,42 +476,50 @@ class Profile(XCCDFEntity, SelectionHandler):
             return noop_rule_filterfunc
 
     def to_xml_element(self):
-        element = ET.Element('Profile')
+        element = ET.Element('{%s}Profile' % XCCDF11_NS)
         element.set("id", self.id_)
         if self.extends:
             element.set("extends", self.extends)
-        title = add_sub_element(element, "title", self.title)
+        title = add_sub_element(element, "title", XCCDF11_NS, self.title)
         title.set("override", "true")
-        desc = add_sub_element(element, "description", self.description)
+        desc = add_sub_element(
+            element, "description", XCCDF11_NS, self.description)
         desc.set("override", "true")
 
         if self.reference:
-            add_sub_element(element, "reference", escape(self.reference))
+            add_sub_element(
+                element, "reference", XCCDF11_NS, escape(self.reference))
 
         for cpe_name in self.cpe_names:
-            plat = ET.SubElement(element, "platform")
+            plat = ET.SubElement(element, "{%s}platform" % XCCDF11_NS)
             plat.set("idref", cpe_name)
 
         for selection in self.selected:
-            select = ET.Element("select")
+            select = ET.Element("{%s}select" % XCCDF11_NS)
             select.set("idref", selection)
             select.set("selected", "true")
             element.append(select)
 
         for selection in self.unselected:
-            unselect = ET.Element("select")
+            unselect = ET.Element("{%s}select" % XCCDF11_NS)
+            unselect.set("idref", selection)
+            unselect.set("selected", "false")
+            element.append(unselect)
+
+        for selection in self.unselected_groups:
+            unselect = ET.Element("{%s}select" % XCCDF11_NS)
             unselect.set("idref", selection)
             unselect.set("selected", "false")
             element.append(unselect)
 
         for value_id, selector in self.variables.items():
-            refine_value = ET.Element("refine-value")
+            refine_value = ET.Element("{%s}refine-value" % XCCDF11_NS)
             refine_value.set("idref", value_id)
             refine_value.set("selector", selector)
             element.append(refine_value)
 
         for refined_rule, refinement_list in self.refine_rules.items():
-            refine_rule = ET.Element("refine-rule")
+            refine_rule = ET.Element("{%s}refine-rule" % XCCDF11_NS)
             refine_rule.set("idref", refined_rule)
             for refinement in refinement_list:
                 refine_rule.set(refinement[0], refinement[1])
@@ -600,6 +613,32 @@ class Profile(XCCDFEntity, SelectionHandler):
                     .format(rule_id=id_, profile_id=self.id_)
                 )
                 raise ValueError(msg)
+
+    def _find_empty_groups(self, group, profile_rules):
+        is_empty = True
+        empty_groups = []
+        for child in group.groups.values():
+            child_empty, child_empty_groups = self._find_empty_groups(child, profile_rules)
+            if not child_empty:
+                is_empty = False
+            empty_groups.extend(child_empty_groups)
+        if is_empty:
+            group_rules = set(group.rules.keys())
+            if profile_rules & group_rules:
+                is_empty = False
+        if is_empty:
+            empty_groups.append(group.id_)
+        return is_empty, empty_groups
+
+    def unselect_empty_groups(self, root_group):
+        # Unselecting empty groups is necessary to make HTML guides shorter
+        # and the XCCDF more usable in tools such as SCAP Workbench.
+        profile_rules = set(self.selected)
+        is_empty, empty_groups = self._find_empty_groups(root_group, profile_rules)
+        if is_empty:
+            msg = "Profile {0} unselects all groups.".format(self.id_)
+            raise ValueError(msg)
+        self.unselected_groups.extend(sorted(empty_groups))
 
     def __sub__(self, other):
         profile = Profile(self.id_)
@@ -768,22 +807,22 @@ class Value(XCCDFEntity):
         return value
 
     def to_xml_element(self):
-        value = ET.Element('Value')
+        value = ET.Element('{%s}Value' % XCCDF11_NS)
         value.set('id', self.id_)
         value.set('type', self.type)
         if self.operator != "equals":  # equals is the default
             value.set('operator', self.operator)
         if self.interactive:  # False is the default
             value.set('interactive', 'true')
-        title = ET.SubElement(value, 'title')
+        title = ET.SubElement(value, '{%s}title' % XCCDF11_NS)
         title.text = self.title
-        add_sub_element(value, 'description', self.description)
+        add_sub_element(value, 'description', XCCDF11_NS, self.description)
         add_warning_elements(value, self.warnings)
 
         for selector, option in self.options.items():
             # do not confuse Value with big V with value with small v
             # value is child element of Value
-            value_small = ET.SubElement(value, 'value')
+            value_small = ET.SubElement(value, '{%s}value' % XCCDF11_NS)
             # by XCCDF spec, default value is value without selector
             if selector != "default":
                 value_small.set('selector', str(selector))
@@ -908,25 +947,29 @@ class Benchmark(XCCDFEntity):
 
             self.profiles.append(new_profile)
 
+    def unselect_empty_groups(self):
+        for p in self.profiles:
+            p.unselect_empty_groups(self)
+
     def to_xml_element(self, env_yaml=None, product_cpes=None):
-        root = ET.Element('Benchmark')
+        root = ET.Element('{%s}Benchmark' % XCCDF11_NS)
         root.set('id', self.id_)
-        root.set('xmlns', "http://checklists.nist.gov/xccdf/1.1")
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
         root.set('xsi:schemaLocation',
                  'http://checklists.nist.gov/xccdf/1.1 xccdf-1.1.4.xsd')
         root.set('style', 'SCAP_1.1')
         root.set('resolved', 'true')
         root.set('xml:lang', 'en-US')
-        status = ET.SubElement(root, 'status')
+        status = ET.SubElement(root, '{%s}status' % XCCDF11_NS)
         status.set('date', datetime.date.today().strftime("%Y-%m-%d"))
         status.text = self.status
-        add_sub_element(root, "title", self.title)
-        add_sub_element(root, "description", self.description)
-        notice = add_sub_element(root, "notice", self.notice_description)
+        add_sub_element(root, "title", XCCDF11_NS, self.title)
+        add_sub_element(root, "description", XCCDF11_NS, self.description)
+        notice = add_sub_element(
+            root, "notice", XCCDF11_NS, self.notice_description)
         notice.set('id', self.notice_id)
-        add_sub_element(root, "front-matter", self.front_matter)
-        add_sub_element(root, "rear-matter", self.rear_matter)
+        add_sub_element(root, "front-matter", XCCDF11_NS, self.front_matter)
+        add_sub_element(root, "rear-matter",  XCCDF11_NS, self.rear_matter)
         # if there are no platforms, do not output platform-specification at all
         if len(self.product_cpes.platforms) > 0:
             cpe_platform_spec = ET.Element(
@@ -938,10 +981,10 @@ class Benchmark(XCCDFEntity):
         # The Benchmark applicability is determined by the CPEs
         # defined in the product.yml
         for cpe_name in self.product_cpe_names:
-            plat = ET.SubElement(root, "platform")
+            plat = ET.SubElement(root, "{%s}platform" % XCCDF11_NS)
             plat.set("idref", cpe_name)
 
-        version = ET.SubElement(root, 'version')
+        version = ET.SubElement(root, '{%s}version' % XCCDF11_NS)
         version.text = self.version
         version.set('update', SSG_BENCHMARK_LATEST_URI)
 
@@ -1005,10 +1048,6 @@ class Benchmark(XCCDFEntity):
 class Group(XCCDFEntity):
     """Represents XCCDF Group
     """
-    ATTRIBUTES_TO_PASS_ON = (
-        "platforms",
-        "cpe_platform_names",
-    )
 
     GENERIC_FILENAME = "group.yml"
 
@@ -1024,6 +1063,7 @@ class Group(XCCDFEntity):
         rules=lambda: dict(),
         platform=lambda: "",
         platforms=lambda: set(),
+        inherited_platforms=lambda: set(),
         cpe_platform_names=lambda: set(),
         ** XCCDFEntity.KEYS
     )
@@ -1094,22 +1134,24 @@ class Group(XCCDFEntity):
         return yaml_contents
 
     def to_xml_element(self, env_yaml=None):
-        group = ET.Element('Group')
+        group = ET.Element('{%s}Group' % XCCDF11_NS)
         group.set('id', self.id_)
-        title = ET.SubElement(group, 'title')
+        title = ET.SubElement(group, '{%s}title' % XCCDF11_NS)
         title.text = self.title
-        add_sub_element(group, 'description', self.description)
+        add_sub_element(group, 'description', XCCDF11_NS, self.description)
         add_warning_elements(group, self.warnings)
 
         # This is where references should be put if there are any
         # This is where rationale should be put if there are any
 
         for cpe_platform_name in self.cpe_platform_names:
-            platform_el = ET.SubElement(group, "platform")
+            platform_el = ET.SubElement(group, "{%s}platform" % XCCDF11_NS)
             platform_el.set("idref", "#"+cpe_platform_name)
 
-        add_nondata_subelements(group, "requires", "idref", self.requires)
-        add_nondata_subelements(group, "conflicts", "idref", self.conflicts)
+        add_nondata_subelements(
+            group, "{%s}requires" % XCCDF11_NS, "idref", self.requires)
+        add_nondata_subelements(
+            group, "{%s}conflicts" % XCCDF11_NS, "idref", self.conflicts)
 
         for _value in self.values.values():
             group.append(_value.to_xml_element())
@@ -1184,28 +1226,20 @@ class Group(XCCDFEntity):
     def add_group(self, group, env_yaml=None, product_cpes=None):
         self._add_child(group, self.groups, env_yaml, product_cpes)
 
-    def _pass_our_properties_on_to(self, obj):
-        for attr in self.ATTRIBUTES_TO_PASS_ON:
-            if hasattr(obj, attr) and getattr(obj, attr) is None:
-                setattr(obj, attr, getattr(self, attr))
-
     def add_rule(self, rule, env_yaml=None, product_cpes=None):
         self._add_child(rule, self.rules, env_yaml, product_cpes)
+        if env_yaml:
+            for platform in rule.inherited_platforms:
+                cpe_platform = Platform.from_text(platform, product_cpes)
+                cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
+                rule.inherited_cpe_platform_names.add(cpe_platform.id_)
 
     def _add_child(self, child, childs, env_yaml=None, product_cpes=None):
         if child is None:
             return
-        if self.platforms and not child.platforms:
-            child.platforms = self.platforms
+        child.inherited_platforms.update(self.platforms, self.inherited_platforms)
         childs[child.id_] = child
-        self._pass_our_properties_on_to(child)
 
-        # Once the child has inherited properties, update cpe_names
-        if env_yaml:
-            for platform in child.platforms:
-                cpe_platform = Platform.from_text(platform, product_cpes)
-                cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
-                child.cpe_platform_names.add(cpe_platform.id_)
 
     def __str__(self):
         return self.id_
@@ -1240,6 +1274,8 @@ class Rule(XCCDFEntity):
         ocil=lambda: None,
         oval_external_content=lambda: None,
         fixtext=lambda: "",
+        checktext=lambda: "",
+        vuldiscussion=lambda: "",
         srg_requirement=lambda: "",
         warnings=lambda: list(),
         conflicts=lambda: list(),
@@ -1247,10 +1283,10 @@ class Rule(XCCDFEntity):
         platform=lambda: None,
         platforms=lambda: set(),
         sce_metadata=lambda: dict(),
-        inherited_platforms=lambda: list(),
+        inherited_platforms=lambda: set(),
         template=lambda: None,
         cpe_platform_names=lambda: set(),
-        inherited_cpe_platform_names=lambda: list(),
+        inherited_cpe_platform_names=lambda: set(),
         bash_conditional=lambda: None,
         fixes=lambda: dict(),
         ** XCCDFEntity.KEYS
@@ -1523,7 +1559,7 @@ class Rule(XCCDFEntity):
 
     def _add_fixes_elements(self, rule_el):
         for fix_type, fix in self.fixes.items():
-            fix_el = ET.SubElement(rule_el, "fix")
+            fix_el = ET.SubElement(rule_el, "{%s}fix" % XCCDF11_NS)
             fix_el.set("system", FIX_TYPE_TO_SYSTEM[fix_type])
             fix_el.set("id", self.id_)
             fix_contents, config = fix
@@ -1536,12 +1572,12 @@ class Rule(XCCDFEntity):
             ssg.build_remediations.expand_xccdf_subs(fix_el, fix_type)
 
     def to_xml_element(self, env_yaml=None):
-        rule = ET.Element('Rule')
+        rule = ET.Element('{%s}Rule' % XCCDF11_NS)
         rule.set('selected', 'false')
         rule.set('id', self.id_)
         rule.set('severity', self.severity)
-        add_sub_element(rule, 'title', self.title)
-        add_sub_element(rule, 'description', self.description)
+        add_sub_element(rule, 'title', XCCDF11_NS, self.title)
+        add_sub_element(rule, 'description', XCCDF11_NS, self.description)
         add_warning_elements(rule, self.warnings)
 
         if env_yaml:
@@ -1550,17 +1586,19 @@ class Rule(XCCDFEntity):
             ref_uri_dict = SSG_REF_URIS
         add_reference_elements(rule, self.references, ref_uri_dict)
 
-        add_sub_element(rule, 'rationale', self.rationale)
+        add_sub_element(rule, 'rationale', XCCDF11_NS, self.rationale)
 
         for cpe_platform_name in sorted(self.cpe_platform_names):
-            platform_el = ET.SubElement(rule, "platform")
+            platform_el = ET.SubElement(rule, "{%s}platform" % XCCDF11_NS)
             platform_el.set("idref", "#"+cpe_platform_name)
 
-        add_nondata_subelements(rule, "requires", "idref", self.requires)
-        add_nondata_subelements(rule, "conflicts", "idref", self.conflicts)
+        add_nondata_subelements(
+            rule, "{%s}requires" % XCCDF11_NS, "idref", self.requires)
+        add_nondata_subelements(
+            rule, "{%s}conflicts" % XCCDF11_NS, "idref", self.conflicts)
 
         for ident_type, ident_val in self.identifiers.items():
-            ident = ET.SubElement(rule, 'ident')
+            ident = ET.SubElement(rule, '{%s}ident' % XCCDF11_NS)
             if ident_type == 'cce':
                 ident.set('system', cce_uri)
                 ident.text = ident_val
@@ -1593,21 +1631,24 @@ class Rule(XCCDFEntity):
                 # this, we thus need to add _yet another parent_ when OCIL data
                 # is present, and add update ocil_parent accordingly.
                 if self.ocil or self.ocil_clause:
-                    ocil_parent = ET.SubElement(ocil_parent, "complex-check")
+                    ocil_parent = ET.SubElement(
+                        ocil_parent, "{%s}complex-check" % XCCDF11_NS)
                     ocil_parent.set('operator', 'OR')
 
-                check_parent = ET.SubElement(ocil_parent, "complex-check")
+                check_parent = ET.SubElement(
+                    ocil_parent, "{%s}complex-check" % XCCDF11_NS)
                 check_parent.set('operator', self.sce_metadata['complex-check'])
 
             # Now, add the SCE check element to the tree.
-            check = ET.SubElement(check_parent, "check")
+            check = ET.SubElement(check_parent, "{%s}check" % XCCDF11_NS)
             check.set("system", SCE_SYSTEM)
 
             if 'check-import' in self.sce_metadata:
                 if isinstance(self.sce_metadata['check-import'], str):
                     self.sce_metadata['check-import'] = [self.sce_metadata['check-import']]
                 for entry in self.sce_metadata['check-import']:
-                    check_import = ET.SubElement(check, 'check-import')
+                    check_import = ET.SubElement(
+                        check, '{%s}check-import' % XCCDF11_NS)
                     check_import.set('import-name', entry)
                     check_import.text = None
 
@@ -1616,18 +1657,21 @@ class Rule(XCCDFEntity):
                     self.sce_metadata['check-export'] = [self.sce_metadata['check-export']]
                 for entry in self.sce_metadata['check-export']:
                     export, value = entry.split('=')
-                    check_export = ET.SubElement(check, 'check-export')
+                    check_export = ET.SubElement(
+                        check, '{%s}check-export' % XCCDF11_NS)
                     check_export.set('value-id', value)
                     check_export.set('export-name', export)
                     check_export.text = None
 
-            check_ref = ET.SubElement(check, "check-content-ref")
+            check_ref = ET.SubElement(
+                check, "{%s}check-content-ref" % XCCDF11_NS)
             href = self.sce_metadata['relative_path']
             check_ref.set("href", href)
 
-        check = ET.SubElement(check_parent, 'check')
+        check = ET.SubElement(check_parent, '{%s}check' % XCCDF11_NS)
         check.set("system", oval_namespace)
-        check_content_ref = ET.SubElement(check, "check-content-ref")
+        check_content_ref = ET.SubElement(
+            check, "{%s}check-content-ref" % XCCDF11_NS)
         if self.oval_external_content:
             check_content_ref.set("href", self.oval_external_content)
         else:
@@ -1642,9 +1686,10 @@ class Rule(XCCDFEntity):
 
         patches_up_to_date = (self.id_ == "security_patches_up_to_date")
         if (self.ocil or self.ocil_clause) and not patches_up_to_date:
-            ocil_check = ET.SubElement(check_parent, "check")
+            ocil_check = ET.SubElement(check_parent, "{%s}check" % XCCDF11_NS)
             ocil_check.set("system", ocil_cs)
-            ocil_check_ref = ET.SubElement(ocil_check, "check-content-ref")
+            ocil_check_ref = ET.SubElement(
+                ocil_check, "{%s}check-content-ref" % XCCDF11_NS)
             ocil_check_ref.set("href", "ocil-unlinked.xml")
             ocil_check_ref.set("name", self.id_ + "_ocil")
 
@@ -1694,7 +1739,8 @@ class Rule(XCCDFEntity):
         # be escaped by ET.Subelement() so we need to use add_sub_element()
         # instead because we don't want to escape them.
         question_text = add_sub_element(
-            boolean_question, "question_text", ocil_without_tags)
+            boolean_question, "question_text", ocil_namespace,
+            ocil_without_tags)
         # The "ocil_clause" key in compiled rules also contains HTML and XML
         # elements but unlike the "ocil" we want to escape the '<' and '>'
         # characters.
@@ -1799,6 +1845,8 @@ class DirectoryLoader(object):
             prodtypes = parse_prodtype(group.prodtype)
             if "all" in prodtypes or self.product in prodtypes:
                 self.all_groups[group.id_] = group
+            else:
+                return None
 
         return group
 
@@ -1908,9 +1956,6 @@ class BuildLoader(DirectoryLoader):
             self.loaded_group.add_rule(
                 rule, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
 
-            if self.loaded_group.cpe_platform_names:
-                rule.inherited_cpe_platform_names += self.loaded_group.cpe_platform_names
-
             rule.normalize(self.env_yaml["product"])
             if self.stig_references:
                 rule.add_stig_references(self.stig_references)
@@ -1979,6 +2024,7 @@ class LinearLoader(object):
             except KeyError as exc:
                 # Add only the groups we have compiled and loaded
                 pass
+        self.benchmark.unselect_empty_groups()
 
     def load_compiled_content(self):
         self.fixes = ssg.build_remediations.load_compiled_remediations(self.fixes_dir)
@@ -1988,9 +2034,6 @@ class LinearLoader(object):
 
         filenames = glob.glob(os.path.join(self.resolved_groups_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.groups, Group)
-
-        filenames = glob.glob(os.path.join(self.resolved_profiles_dir, "*.yml"))
-        self.load_entities_by_id(filenames, self.profiles, Profile)
 
         filenames = glob.glob(os.path.join(self.resolved_values_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.values, Value)

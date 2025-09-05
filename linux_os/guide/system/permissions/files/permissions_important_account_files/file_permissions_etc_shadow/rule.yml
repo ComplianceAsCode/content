@@ -39,6 +39,7 @@ references:
     cis@sle12: 6.1.3
     cis@sle15: 6.1.3
     cis@ubuntu2004: 6.1.4
+    cis@ubuntu2204: 6.1.4
     cjis: 5.5.2.2
     cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
     disa: CCI-002223
@@ -58,7 +59,11 @@ ocil: |-
 
 fixtext: '{{{ fixtext_file_permissions(file="/etc/shadow", mode=target_perms_octal) }}}'
 
+{{% if target_perms_octal == "0000" %}}
+srg_requirement: 'The {{{ full_name }}} /etc/shadow file must have a mode of 0000 to prevent unauthorized access.'
+{{% else %}}
 srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/shadow", mode=target_perms_octal) }}}'
+{{% endif %}}
 
 template:
     name: file_permissions

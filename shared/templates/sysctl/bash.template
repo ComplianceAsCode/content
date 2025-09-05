@@ -20,8 +20,8 @@ for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf; do
   fi
 done
 
-{{%- if SYSCTLVAL == "" %}}
-{{{ bash_instantiate_variables("sysctl_" + SYSCTLID + "_value") }}}
+{{%- if SYSCTLVAL == "" or SYSCTLVAL is not string %}}
+{{{ bash_instantiate_variables("sysctl_" ~ SYSCTLID ~ "_value") }}}
 
 #
 # Set runtime for {{{ SYSCTLVAR }}}
@@ -32,7 +32,7 @@ done
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to appropriate value
 #	else, add "{{{ SYSCTLVAR }}} = value" to /etc/sysctl.conf
 #
-{{{ bash_replace_or_append('/etc/sysctl.conf', '^' + SYSCTLVAR , '$sysctl_' + SYSCTLID + '_value') }}}
+{{{ bash_replace_or_append('/etc/sysctl.conf', '^' ~ SYSCTLVAR , '$sysctl_' ~ SYSCTLID ~ '_value') }}}
 {{%- else %}}
 
 #
@@ -44,5 +44,5 @@ done
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to "{{{ SYSCTLVAL }}}"
 #	else, add "{{{ SYSCTLVAR }}} = {{{ SYSCTLVAL }}}" to /etc/sysctl.conf
 #
-{{{ bash_replace_or_append('/etc/sysctl.conf', '^' + SYSCTLVAR , SYSCTLVAL ) }}}
+{{{ bash_replace_or_append('/etc/sysctl.conf', '^' ~ SYSCTLVAR , SYSCTLVAL ) }}}
 {{%- endif %}}

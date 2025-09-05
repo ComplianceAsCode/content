@@ -7,10 +7,13 @@ title: 'Ensure sudo only includes the default configuration directory'
 description: |-
     Administrators can configure authorized <tt>sudo</tt> users via drop-in files, and it is possible to include
     other directories and configuration files from the file currently being parsed.
-  
-    Make sure that <tt>/etc/sudoers</tt> only includes drop-in configuration files from <tt>/etc/sudoers.d</tt>.
-    The <tt>/etc/sudoers</tt> should contain only one <tt>#includedir</tt> directive pointing to
-    <tt>/etc/sudoers.d</tt>, and no file in <tt>/etc/sudoers.d/</tt> should include other files or directories.
+
+    Make sure that <tt>/etc/sudoers</tt> only includes drop-in configuration files from <tt>/etc/sudoers.d</tt>,
+    or that no drop-in file is included.
+    Either the <tt>/etc/sudoers</tt> should contain only one <tt>#includedir</tt> directive pointing to
+    <tt>/etc/sudoers.d</tt>, and no file in <tt>/etc/sudoers.d/</tt> should include other files or directories;
+    Or the <tt>/etc/sudoers</tt> should not contain any <tt>#include</tt>,
+    <tt>@include</tt>, <tt>#includedir</tt> or <tt>@includedir</tt> directives.
     Note that the '#' character doesn't denote a comment in the configuration file.
 
 rationale: |-
@@ -42,6 +45,6 @@ ocil_clause: "the /etc/sudoers doesn't include /etc/sudores.d or includes other 
 ocil: |-
     To determine whether <tt>sudo</tt> command includes configuration files from the appropriate directory,
     run the following command:
-    <pre>$ sudo grep -rP '^#include(dir)?' /etc/sudoers /etc/sudoers.d</pre>
+    <pre>$ sudo grep -rP '^[#@]include(dir)?' /etc/sudoers /etc/sudoers.d</pre>
     If only the line <tt>/etc/sudoers:#includedir /etc/sudoers.d</tt> is returned, then the drop-in include configuration is set correctly.
     Any other line returned is a finding.

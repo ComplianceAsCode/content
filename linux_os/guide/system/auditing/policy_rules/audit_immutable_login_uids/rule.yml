@@ -41,7 +41,7 @@ ocil_clause: 'the file does not exist or the content differs'
 
 ocil: |-
     To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
-    <pre>cat /etc/audit/rules.d/11-loginuid.rules</pre>
+    <pre>$ sudo cat /etc/audit/rules.d/11-loginuid.rules</pre>
     The output has to be exactly as follows:
     <pre>{{{ file_contents_audit_immutable_login|indent }}}    </pre>
 

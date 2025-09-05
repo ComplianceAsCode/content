@@ -52,6 +52,7 @@ references:
     cis@sle12: 4.2.1.5
     cis@sle15: 4.2.1.5
     cis@ubuntu2004: 4.2.1.5
+    cis@ubuntu2204: 4.2.1.5
     cobit5: APO11.04,APO13.01,BAI03.05,BAI04.04,DSS05.04,DSS05.07,MEA02.01
     disa: CCI-000366,CCI-001348,CCI-000136,CCI-001851
     hipaa: 164.308(a)(1)(ii)(D),164.308(a)(5)(ii)(B),164.308(a)(5)(ii)(C),164.308(a)(6)(ii),164.308(a)(8),164.310(d)(2)(iii),164.312(b),164.314(a)(2)(i)(C),164.314(a)(2)(iii)
@@ -90,3 +91,20 @@ fixtext: |-
     *.* @@[remoteloggingserver]:[port]"
 
 srg_requirement: 'The {{{ full_name }}} audit records must be off-loaded onto a different system or storage media from the system being audited.'
+
+warnings:
+    - functionality: |-
+        It is important to configure queues in case the client is sending log
+        messages to a remote server. If queues are not configured,
+        the system will stop functioning when the connection
+        to the remote server is not available. Please consult Rsyslog
+        documentation for more information about configuration of queues. The
+        example configuration which should go into <tt>/etc/rsyslog.conf</tt>
+        can look like the following lines:
+        <pre>
+        $ActionQueueType LinkedList
+        $ActionQueueFileName queuefilename
+        $ActionQueueMaxDiskSpace 1g
+        $ActionQueueSaveOnShutdown on
+        $ActionResumeRetryCount -1
+        </pre>

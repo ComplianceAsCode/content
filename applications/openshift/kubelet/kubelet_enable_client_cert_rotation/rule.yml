@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: eks,ocp4
 
-platform: {{{ product }}}-node
+platform: {{{ product }}}
 
 {{%- if product == "eks" %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
@@ -33,8 +33,8 @@ ocil_clause: 'the kubelet cannot rotate client certificate'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep RotateKubeletClientCertificate {{{ kubeletconf_path }}}</pre>
-    The output should return <tt>true</tt>.
+    <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1"' | grep RotateKubeletClientCertificate; done</pre>
+    The output should return nothing or <tt>true</tt>.
 
 identifiers:
     cce@ocp4: CCE-83352-5
@@ -46,12 +46,11 @@ references:
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
 
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
+
+
 template:
-    name: yamlfile_value
-    vars:
-        filepath: {{{ kubeletconf_path }}}
-        yamlpath: ".featureGates.RotateKubeletClientCertificate"
-        check_existence: "any_exist"
-        values:
-         - value: "false"
-           operation: "not equal"
+    name: kubelet_combine
+

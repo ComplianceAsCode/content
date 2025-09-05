@@ -122,27 +122,32 @@ def remove_machine_remediation_condition(root):
 
 
 def remove_bash_machine_remediation_condition(root):
-    query = BENCHMARK_QUERY + '//xccdf-1.2:fix[@system="urn:xccdf:fix:script:sh"]'
-    fix_elements = root.findall(query, PREFIX_TO_NS)
+    system = "urn:xccdf:fix:script:sh"
     considered_machine_platform_checks = [
         r"\[\s+!\s+-f\s+/\.dockerenv\s+\]\s+&&\s+\[\s+!\s+-f\s+/run/\.containerenv\s+\]",
     ]
-    for el in fix_elements:
-        if not el.text:
-            continue
-        for check in considered_machine_platform_checks:
-            el.text = re.sub(check, "true", el.text)
+    repl = "true"
+    _replace_in_fix(root, system, considered_machine_platform_checks, repl)
 
 
 def remove_ansible_machine_remediation_condition(root):
-    query = BENCHMARK_QUERY + '//xccdf-1.2:fix[@system="urn:xccdf:fix:script:ansible"]'
-    fix_elements = root.findall(query, PREFIX_TO_NS)
+    system = "urn:xccdf:fix:script:ansible"
     considered_machine_platform_checks = [
         r"\bansible_virtualization_type\s+not\s+in.*docker.*",
     ]
+    repl = "True"
+    _replace_in_fix(root, system, considered_machine_platform_checks, repl)
+
+
+def _replace_in_fix(root, system, considered_machine_platform_checks, repl):
+    query = BENCHMARK_QUERY + '//xccdf-1.2:fix[@system="' + system + '"]'
+    fix_elements = root.findall(query, PREFIX_TO_NS)
     for el in fix_elements:
         for check in considered_machine_platform_checks:
-            el.text = re.sub(check, "True", el.text)
+            sub_els = el.findall(".//xccdf-1.2:sub", PREFIX_TO_NS)
+            for sub_el in sub_els:
+                sub_el.tail = re.sub(check, repl, sub_el.tail)
+            el.text = re.sub(check, repl, el.text)
 
 
 def get_oscap_supported_cpes():

@@ -1,0 +1,131 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'Perform general configuration of Audit for OSPP (ppc64le)'
+
+{{% set file_contents_audit_ospp_general =
+"## The purpose of these rules is to meet the requirements for Operating
+## System Protection Profile (OSPP)v4.2. These rules depends on having
+## the following rule files copied to /etc/audit/rules.d:
+##
+## 10-base-config.rules, 11-loginuid.rules,
+## 30-ospp-v42-1-create-failed.rules, 30-ospp-v42-1-create-success.rules,
+## 30-ospp-v42-2-modify-failed.rules, 30-ospp-v42-2-modify-success.rules,
+## 30-ospp-v42-3-access-failed.rules, 30-ospp-v42-3-access-success.rules,
+## 30-ospp-v42-4-delete-failed.rules, 30-ospp-v42-4-delete-success.rules,
+## 30-ospp-v42-5-perm-change-failed.rules,
+## 30-ospp-v42-5-perm-change-success.rules,
+## 30-ospp-v42-6-owner-change-failed.rules,
+## 30-ospp-v42-6-owner-change-success.rules
+##
+## original copies may be found in /usr/share/audit/sample-rules/
+
+
+## User add delete modify. This is covered by pam. However, someone could
+## open a file and directly create or modify a user, so we'll watch passwd and
+## shadow for writes
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;03 -F path=/etc/passwd -F auid>=1000 -F auid!=unset -F key=user-modify
+-a always,exit -F arch=b64 -S open -F a1&amp;03 -F path=/etc/passwd -F auid>=1000 -F auid!=unset -F key=user-modify
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;03 -F path=/etc/shadow -F auid>=1000 -F auid!=unset -F key=user-modify
+-a always,exit -F arch=b64 -S open -F a1&amp;03 -F path=/etc/shadow -F auid>=1000 -F auid!=unset -F key=user-modify
+
+## User enable and disable. This is entirely handled by pam.
+
+## Group add delete modify. This is covered by pam. However, someone could
+## open a file and directly create or modify a user, so we'll watch group and
+## gshadow for writes
+-a always,exit -F path=/etc/passwd -F perm=wa -F auid>=1000 -F auid!=unset -F key=user-modify
+-a always,exit -F path=/etc/shadow -F perm=wa -F auid>=1000 -F auid!=unset -F key=user-modify
+-a always,exit -F path=/etc/group -F perm=wa -F auid>=1000 -F auid!=unset -F key=group-modify
+-a always,exit -F path=/etc/gshadow -F perm=wa -F auid>=1000 -F auid!=unset -F key=group-modify
+
+
+## Use of special rights for config changes. This would be use of setuid
+## programs that relate to user accts. This is not all setuid apps because
+## requirements are only for ones that affect system configuration.
+-a always,exit -F path=/usr/sbin/unix_chkpwd -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
+-a always,exit -F path=/usr/sbin/usernetctl -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
+-a always,exit -F path=/usr/sbin/userhelper -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
+-a always,exit -F path=/usr/sbin/seunshare -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
+-a always,exit -F path=/usr/bin/mount -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
+-a always,exit -F path=/usr/bin/newgrp -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
+-a always,exit -F path=/usr/bin/newuidmap -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
+-a always,exit -F path=/usr/bin/gpasswd -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
+-a always,exit -F path=/usr/bin/newgidmap -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
+-a always,exit -F path=/usr/bin/umount -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
+-a always,exit -F path=/usr/bin/passwd -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
+-a always,exit -F path=/usr/bin/crontab -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
+-a always,exit -F path=/usr/bin/at -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
+
+## Privilege escalation via su or sudo. This is entirely handled by pam.
+
+## Watch for configuration changes to privilege escalation.
+-a always,exit -F path=/etc/sudoers -F perm=wa -F key=special-config-changes
+-a always,exit -F dir=/etc/sudoers.d/ -F perm=wa -F key=special-config-changes
+
+## Audit log access
+-a always,exit -F dir=/var/log/audit/ -F perm=r -F auid>=1000 -F auid!=unset -F key=access-audit-trail
+## Attempts to Alter Process and Session Initiation Information
+-a always,exit -F path=/var/run/utmp -F perm=wa -F auid>=1000 -F auid!=unset -F key=session
+-a always,exit -F path=/var/log/btmp -F perm=wa -F auid>=1000 -F auid!=unset -F key=session
+-a always,exit -F path=/var/log/wtmp -F perm=wa -F auid>=1000 -F auid!=unset -F key=session
+
+## Attempts to modify MAC controls
+-a always,exit -F dir=/etc/selinux/ -F perm=wa -F auid>=1000 -F auid!=unset -F key=MAC-policy
+
+## Software updates. This is entirely handled by rpm.
+
+## System start and shutdown. This is entirely handled by systemd
+
+## Kernel Module loading. This is handled in 43-module-load.rules
+
+## Application invocation. The requirements list an optional requirement
+## FPT_SRP_EXT.1 Software Restriction Policies. This event is intended to
+## state results from that policy. This would be handled entirely by
+## that daemon." %}}
+
+description: |-
+    Configure some basic <tt>Audit</tt> parameters specific for OSPP profile.
+    In particular, configure <tt>Audit</tt> to watch for direct modification of files storing system user and group information, and usage of applications with special rights which can change system configuration.
+    Further audited events include access to audit log it self, attempts to Alter Process and Session Initiation Information, and attempts to modify MAC controls.
+
+    The following rules configure audit as described above:
+    <pre>{{{ file_contents_audit_ospp_general|indent }}}    </pre>
+
+    Load new Audit rules into kernel by running:
+    <pre>augenrules --load</pre>
+
+    Note: This rule uses a special set of Audit rules to comply with OSPP 4.2.1. You may reuse this rule in different profiles. If you decide to do so, it is recommended that you inspect contents of the file closely and make sure that they are alligned with your needs.
+
+rationale: |-
+    Auditing of events listed in the description provides data for monitoring and investigation of potentially malicious events e.g. tampering with <tt>Audit</tt> logs, malicious access to files storing information about system users and groups etc.
+
+severity: medium
+
+platforms:
+    - ppc64le_arch
+
+identifiers:
+    cce@rhel9: CCE-90786-5
+
+references:
+    nist: AU-2(a)
+    ospp: FAU_GEN.1.1.c
+    srg: SRG-OS-000004-GPOS-00004,SRG-OS-000241-GPOS-00091,SRG-OS-000476-GPOS-00221,SRG-OS-000327-GPOS-00127,SRG-OS-000475-GPOS-00220,SRG-OS-000239-GPOS-00089,SRG-OS-000274-GPOS-00104,SRG-OS-000275-GPOS-00105,SRG-OS-000303-GPOS-00120,SRG-OS-000304-GPOS-00121
+
+ocil_clause: 'the file does not exist or the content differs'
+
+ocil: |-
+    To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
+    <pre>cat /etc/audit/rules.d/30-ospp-v42.rules</pre>
+    The output has to be exactly as follows:
+    <pre>{{{ file_contents_audit_ospp_general|indent }}}    </pre>
+
+template:
+    name: audit_file_contents
+    vars:
+        filepath: /etc/audit/rules.d/30-ospp-v42.rules
+        contents: |+
+            {{{ file_contents_audit_ospp_general|indent(12) }}}
+#do not remove this comment, it stops Jinja from including more blank lines to the variable

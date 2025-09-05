@@ -1,0 +1,53 @@
+documentation_complete: true
+
+prodtype: eks,ocp4
+
+platform: {{{ product }}}
+
+{{%- if product == "eks"  %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- else %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- endif %}}
+
+title: 'kubelet - Hostname Override handling'
+
+description: |-
+    Normally, OpenShift lets the kubelet get the hostname from either the
+    cloud provider itself, or from the node's hostname. This ensures that
+    the PKI allocated by the deployment uses the appropriate values, is valid
+    and keeps working throughout the lifecycle of the cluster. IP addresses
+    are not used, and hence this makes it easier for security analysts to
+    associate kubelet logs with the appropriate node.
+rationale: |-
+    Allowing hostnames to be overridden creates issues around resolving nodes
+    in addition to TLS configuration, certificate validation, and log correlation
+    and validation.
+{{%- if product == "ocp4"  %}}
+    However, in some cases explicit overriding this parameter is
+    necessary to ensure that the appropriate node name stays as it is in case of
+    certain upgrade conditions. e.g. as is the case in AWS and OpenStack when migrating
+    to external cloud providers.
+{{%- endif %}}
+
+severity: low
+
+references:
+    cis@eks: 3.2.8
+    cis@ocp4: 4.2.8
+    nerc-cip: CIP-003-3 R6,CIP-004-3 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+
+{{%- if product == "eks"  %}}
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/kubeletconfig/role'
+        filepath_suffix: var_role_worker
+        yamlpath: ".hostname-override"
+        check_existence: "none_exist"
+        values:
+         - value: ".*"
+           operation: "pattern match"
+{{%- endif %}}

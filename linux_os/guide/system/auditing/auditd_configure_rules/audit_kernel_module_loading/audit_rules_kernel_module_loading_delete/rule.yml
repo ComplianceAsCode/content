@@ -1,13 +1,13 @@
 documentation_complete: true
 
-prodtype: alinux2,debian10,debian11,debian9,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: alinux2,alinux3,debian10,debian11,debian9,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure auditd Collects Information on Kernel Module Unloading - delete_module'
 
 description: |-
     To capture kernel module unloading events, use following line, setting ARCH to
     either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit:
-    {{% if product in ["ol8", "rhel8"] %}}
+    {{% if product in ["ol7", "ol8"] or 'rhel' in product %}}
     <pre>-a always,exit -F arch=<i>ARCH</i> -S delete_module -F auid>=1000 -F auid!=unset -F key=modules</pre>
     {{% else %}}
     <pre>-a always,exit -F arch=<i>ARCH</i> -S delete_module -F key=modules</pre>
@@ -38,11 +38,13 @@ identifiers:
 references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
     cis@alinux2: 4.1.17
+    cis@alinux3: 4.1.3.26
     cis@rhel7: 4.1.16
     cis@rhel8: 4.1.3.19
     cis@sle12: 4.1.16
     cis@sle15: 4.1.16
     cis@ubuntu2004: 4.1.16
+    cis@ubuntu2204: 4.1.16
     cobit5: APO10.01,APO10.03,APO10.04,APO10.05,APO11.04,APO12.06,APO13.01,BAI03.05,BAI08.02,DSS01.03,DSS01.04,DSS02.02,DSS02.04,DSS02.07,DSS03.01,DSS03.05,DSS05.02,DSS05.03,DSS05.04,DSS05.05,DSS05.07,MEA01.01,MEA01.02,MEA01.03,MEA01.04,MEA01.05,MEA02.01
     cui: 3.1.7
     disa: CCI-000130,CCI-000135,CCI-000169,CCI-000172,CCI-002884

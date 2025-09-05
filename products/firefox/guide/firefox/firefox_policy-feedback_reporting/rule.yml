@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox feedback reporting must be disabled.'
+
+description: |-
+    Feedback reporting feature may be disabled via administrative policy by setting
+    <tt>DisableFeedbackCommands</tt> under <tt>policies</tt> to <tt>true</tt>.
+
+rationale: |-
+    Disable the menus for reporting sites (Submit Feedback, Report Deceptive Site). 
+    It is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.
+    Applications are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).
+    Examples of non-essential capabilities include but are not limited to advertising software or browser plug-ins that are not related to requirements or provide a wide array of functionality not required for every mission but that cannot be disabled.
+
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000036
+
+template:
+    name: firefox_policy-setting
+    vars:
+      name: Disable Firefox Site Feedback
+      policies:
+        - {path: "policies", parameter: "DisableFeedbackCommands", value: true}

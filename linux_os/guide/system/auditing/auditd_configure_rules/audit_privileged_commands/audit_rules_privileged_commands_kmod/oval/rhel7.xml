@@ -1,0 +1,38 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_privileged_commands_kmod" version="1">
+    {{{ oval_metadata("Ensure audit rule for all uses of the kmod command is enabled.") }}}
+
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+        <criterion comment="audit augenrules kmod" test_ref="test_kmod_augenrules" />
+      </criteria>
+
+      <!-- Test the auditctl case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criterion comment="audit auditctl kmod" test_ref="test_kmod_auditctl" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="audit augenrules kmod" id="test_kmod_augenrules" version="1">
+    <ind:object object_ref="object_kmod_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_kmod_augenrules" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-w[\s]+/usr/bin/kmod[\s]+-p[\s]+x[\s]+-F[\s]+auid!=(?:4294967295|unset|-1)[\s]+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="audit auditctl kmod" id="test_kmod_auditctl" version="1">
+    <ind:object object_ref="object_kmod_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_kmod_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-w[\s]+/usr/bin/kmod[\s]+-p[\s]+x[\s]+-F[\s]+auid!=(?:4294967295|unset|-1)[\s]+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

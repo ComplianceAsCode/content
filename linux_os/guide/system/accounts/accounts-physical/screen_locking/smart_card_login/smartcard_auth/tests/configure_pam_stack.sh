@@ -5,7 +5,7 @@
 # Define system-auth config location
 SYSTEM_AUTH_CONF="/etc/pam.d/system-auth"
 # Define expected 'pam_env.so' row in $SYSTEM_AUTH_CONF
-PAM_ENV_SO="auth.*required.*pam_env.so"
+PAM_ENV_SO="auth.*required.*pam_env\.so"
 
 # Define 'pam_succeed_if.so' row to be appended past $PAM_ENV_SO row into $SYSTEM_AUTH_CONF
 SYSTEM_AUTH_PAM_SUCCEED="\
@@ -23,7 +23,7 @@ SMARTCARD_AUTH_CONF="/etc/pam.d/smartcard-auth"
 SMARTCARD_AUTH_SECTION="\
 auth        [success=done ignore=ignore default=die] pam_pkcs11.so wait_for_card card_only"
 # Define expected 'pam_permit.so' row in $SMARTCARD_AUTH_CONF
-PAM_PERMIT_SO="account.*required.*pam_permit.so"
+PAM_PERMIT_SO="account.*required.*pam_permit\.so"
 # Define 'pam_pkcs11.so' password section
 SMARTCARD_PASSWORD_SECTION="\
 password    required      pam_pkcs11.so"

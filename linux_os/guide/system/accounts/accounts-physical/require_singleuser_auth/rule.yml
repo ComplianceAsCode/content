@@ -8,8 +8,7 @@ title: 'Require Authentication for Single User Mode'
 description: |-
     Single-user mode is intended as a system recovery
     method, providing a single user root access to the system by
-    providing a boot option at startup. By default, no authentication
-    is performed if single-user mode is selected.
+    providing a boot option at startup.
     <br /><br />
     By default, single-user mode is protected by requiring a password and is set
     in <tt>/usr/lib/systemd/system/rescue.service</tt>.
@@ -75,7 +74,7 @@ ocil: |-
     {{% if product not in ["ol8", "rhel8"] %}}
     Then, verify that the rescue service is in the runlevel1.target.
     Run the following command:
-    <pre>$ sudo grep "^Requires=.*rescue.service" /usr/lib/systemd/system/runlevel1.target</pre>
+    <pre>$ sudo grep "^Requires=.*rescue\.service" /usr/lib/systemd/system/runlevel1.target</pre>
     The output should be the following:
     <pre>Requires=sysinit.target rescue.service</pre>
 
@@ -95,7 +94,6 @@ platform: machine
 fixtext: |-
     Configure {{{ full_name }}} to require authentication in single user mode.
 
-    {{% if init_system == "systemd" -%}}
     Add or update the following line in "/usr/lib/systemd/system/rescue.service":
     {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15"] -%}}
     ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue
@@ -103,10 +101,6 @@ fixtext: |-
     ExecStart=-/bin/sh -c "/usr/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"
     {{%- else -%}}
     ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"
-    {{%- endif %}}
-    {{%- else -%}}
-    Add or update the following line in "/etc/sysconfig/init":
-    SINGLE=/sbin/sulogin
     {{%- endif %}}
 
 srg_requirement: '{{{ full_name }}} must require authentication upon booting into rescue mode.'

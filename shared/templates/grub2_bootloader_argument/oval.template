@@ -12,16 +12,16 @@
 {{% set system_with_expanded_kernel_options_in_grub_cfg = false -%}}
 {{% set system_with_bios_and_uefi_support = false -%}}
 
-{{% if product in ["rhel9"] -%}}
+{{% if product in ["fedora", "ol9", "rhel9"] -%}}
 {{% set system_with_expanded_kernel_options_in_loader_entries = true %}}
 {{%- endif -%}}
 
-{{% if product in ["ol8","rhel8"] -%}}
+{{% if product in ["ol8", "rhel8"] -%}}
 {{% set system_with_referenced_kernel_options_in_loader_entries = true %}}
 {{% set system_with_kernel_options_in_grubenv = true %}}
 {{%- endif -%}}
 
-{{% if product in ["rhel7", "ol7"] or 'ubuntu' in product -%}}
+{{% if product in ["ol7", "rhel7"] or 'ubuntu' in product -%}}
 {{% set system_with_expanded_kernel_options_in_grub_cfg = true %}}
 {{%- endif -%}}
 
@@ -148,7 +148,7 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_grub2_rescue_entry_for_{{{ _RULE_ID }}}" version="1">
-    <ind:filename operation="pattern match">.*rescue.conf$</ind:filename>
+    <ind:filename operation="pattern match">.*rescue\.conf$</ind:filename>
   </ind:textfilecontent54_state>
 {{%- endif %}}
 
@@ -164,7 +164,7 @@
   <ind:textfilecontent54_object id="object_{{{ base_name }}}"
   version="1">
     <ind:filepath>{{{ path }}}</ind:filepath>
-    {{% if product in ["rhel7", "ol7"] or 'ubuntu' in product %}}
+    {{% if product in ["ol7", "rhel7"] or 'ubuntu' in product %}}
       <ind:pattern operation="pattern match">^.*/vmlinuz.*(root=.*)$</ind:pattern>
     {{% else %}}
       <ind:pattern operation="pattern match">^set default_kernelopts=(.*)$</ind:pattern>

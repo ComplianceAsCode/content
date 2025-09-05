@@ -34,7 +34,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_bootloader_uefi_unique_superuser" version="1">
-    <ind:filepath>{{{ grub2_uefi_boot_path + "/grub.cfg" }}}</ind:filepath>
+    <ind:filepath>{{{ grub2_uefi_boot_path }}}/grub.cfg</ind:filepath>
     <ind:pattern operation="pattern match"
           >^[\s]*set[\s]+superusers="(?i)\b(?!(?:root|admin|administrator)\b)(\w+)"$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>

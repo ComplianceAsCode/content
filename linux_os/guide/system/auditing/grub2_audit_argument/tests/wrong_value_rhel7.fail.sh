@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 7
+# platform = Oracle Linux 7,Red Hat Enterprise Linux 7
 
 # Break the audit argument in kernel command line in /boot/grub2/grub.cfg
 file="/boot/grub2/grub.cfg"

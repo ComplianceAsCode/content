@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox must not recommend extensions as the user is using the browser.'
+
+description: |-
+    The extension recommendation messages may be disabled in an administrative policy by setting
+    the <tt>ExtensionRecommendations</tt> key under <tt>UserMessaging</tt> to <tt>false</tt>.
+
+rationale: |-
+    The Recommended Extensions program recommends extensions to users as they surf the web.
+    The user must not be encouraged to install extensions from the websites they visit. Allowed extensions are to be centrally managed.
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000028
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable Extension Recommendation Messages
+        policies:
+          - {path: "UserMessaging", parameter: "ExtensionRecommendations", value: false}

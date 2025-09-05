@@ -6,7 +6,7 @@
       {{% if product in ["sle12", "sle15"] %}}
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_blacklisted"
       comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d" />
-      {{% elif product in ["ol7", "ol8", "rhcos4", "rhel7", "rhel8"] %}}
+      {{% elif product in ["ol7", "ol8", "rhcos4"] or 'rhel' in product %}}
       <criteria operator="AND">
         <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_blacklisted"
         comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d" />
@@ -49,7 +49,7 @@
   </constant_variable>
 {{% endif %}}
 
-{{% if product in ["ol7", "ol8", "rhcos4", "rhel7", "rhel8", "sle12", "sle15"] %}}
+{{% if product in ["ol7", "ol8", "rhcos4", "sle12", "sle15"]  or 'rhel' in product %}}
   <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_blacklisted" version="1" check="all"
   comment="kernel module {{{ KERNMODULE }}} blacklisted">
     <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_blacklisted" />

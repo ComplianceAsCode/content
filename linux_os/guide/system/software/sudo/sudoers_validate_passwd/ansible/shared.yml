@@ -20,9 +20,23 @@
   with_items: "{{ sudoers_d_defaults.files }}"
 {{%- endmacro %}}
 
-{{{- delete_line_in_sudoers_d("Defaults !targetpw") }}}
-{{{- delete_line_in_sudoers_d("Defaults !rootpw") }}}
-{{{- delete_line_in_sudoers_d("Defaults !runaspw") }}}
+{{%- macro delete_line_in_sudoers_file(line) %}}
+- name: "Remove any ocurrences of {{{ line }}} in /etc/sudoers"
+  lineinfile:
+    path: "/etc/sudoers"
+    regexp: "^{{{ line }}}$"
+    validate: /usr/sbin/visudo -cf %s
+    state: absent
+  register: sudoers_file_defaults
+{{%- endmacro %}}
+
+{{{- delete_line_in_sudoers_d("Defaults targetpw") }}}
+{{{- delete_line_in_sudoers_d("Defaults rootpw") }}}
+{{{- delete_line_in_sudoers_d("Defaults runaspw") }}}
+
+{{{- delete_line_in_sudoers_file("Defaults targetpw") }}}
+{{{- delete_line_in_sudoers_file("Defaults rootpw") }}}
+{{{- delete_line_in_sudoers_file("Defaults runaspw") }}}
 
 {{{ ansible_only_lineinfile(msg='Ensure that Defaults !targetpw is defined in sudoers', line_regex='^Defaults !targetpw$', path='/etc/sudoers', new_line='Defaults !targetpw') }}}
 {{{ ansible_only_lineinfile(msg='Ensure that Defaults !rootpw is defined in sudoers', line_regex='^Defaults !rootpw$', path='/etc/sudoers', new_line='Defaults !rootpw') }}}

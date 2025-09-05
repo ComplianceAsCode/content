@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}"
   version="1">
-    {{{ oval_metadata("The kernel " + CONFIG + " should have value " + (VALUE if VALUE else "according to " + VARIABLE), affected_platforms=["multi_platform_all"]) }}}
+    {{{ oval_metadata("The kernel " ~ CONFIG ~ " should have value " ~ (VALUE if VALUE else "according to " ~ VARIABLE), affected_platforms=["multi_platform_all"]) }}}
     <criteria operator="OR">
       <criteria operator="AND">
         <criterion comment="Check presence of build configuration of installed kernels"
@@ -17,7 +17,7 @@
   </definition>
 
   <ind:textfilecontent54_test check="all"
-  comment="Check /boot/config-.* files for {{{ CONFIG }}}{{{ '=' + VALUE if VALUE else " according to " + VARIABLE }}}"
+  comment="Check /boot/config-.* files for {{{ CONFIG }}}{{{ '=' ~ VALUE if VALUE else " according to " ~ VARIABLE }}}"
   id="test_kernel_{{{ CONFIG | lower }}}" version="1">
     <ind:object object_ref="object_kernel_{{{ CONFIG | lower }}}" />
     <ind:state state_ref="state_kernel_{{{ CONFIG | lower }}}" />

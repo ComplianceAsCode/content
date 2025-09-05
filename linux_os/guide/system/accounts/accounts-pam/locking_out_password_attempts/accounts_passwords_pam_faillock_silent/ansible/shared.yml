@@ -1,0 +1,36 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ ansible_pam_faillock_enable() }}}
+
+- name: {{{ rule_title }}} - Check the presence of /etc/security/faillock.conf file
+  ansible.builtin.stat:
+    path: /etc/security/faillock.conf
+  register: result_faillock_conf_check
+
+- name: {{{ rule_title }}} - Ensure the pam_faillock.so silent parameter in /etc/security/faillock.conf
+  ansible.builtin.lineinfile:
+    path: /etc/security/faillock.conf
+    regexp: ^\s*silent
+    line: silent
+    state: present
+  when:
+    - result_faillock_conf_check.stat.exists
+
+- name: {{{ rule_title }}} - Ensure the pam_faillock.so silent parameter in PAM files
+  block:
+
+    - name: {{{ rule_title }}} - Ensure the inclusion of pam_faillock.so preauth silent parameter in auth section
+      ansible.builtin.lineinfile:
+        path: "{{ item }}"
+        backrefs: true
+        regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so preauth(:?(?!silent).)*)
+        line: \1required\3 silent
+        state: present
+      loop:
+        - /etc/pam.d/system-auth
+        - /etc/pam.d/password-auth
+  when:
+    - not result_faillock_conf_check.stat.exists

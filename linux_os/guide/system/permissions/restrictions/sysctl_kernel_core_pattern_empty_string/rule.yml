@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'Disable storing core dumps'
+
+description: |-
+    The <tt>kernel.core_pattern</tt> option specifies the core dumpfile pattern
+    name. It can be set to an empty string. In this case, the kernel
+    behaves differently based on another related option. If
+    <tt>kernel.core_uses_pid</tt> is set to <tt>1</tt>, then a file named as
+    <tt>.PID</tt> (where <tt>PID</tt> is process ID of the crashed process) is
+    created in the working directory. If <tt>kernel.core_uses_pid</tt> is set to
+    <tt>0</tt>, no coredump is saved.
+    {{{ describe_sysctl_option_value(sysctl="kernel.core_pattern", value="") }}}
+
+rationale: |-
+    A core dump includes a memory image taken at the time the operating system
+    terminates an application. The memory image could contain sensitive data and is generally useful
+    only for developers trying to debug problems.
+
+severity: medium
+
+requires:
+    - sysctl_kernel_core_uses_pid
+
+conflicts:
+    - sysctl_kernel_core_pattern
+
+identifiers:
+    cce@rhel9: CCE-86005-6
+
+references:
+    ospp: FMT_SMF_EXT.1
+
+ocil_clause: |-
+    the returned line does not have an empty string
+
+ocil: |
+    The runtime status of the <code>kernel.core_pattern</code> kernel parameter can be queried
+    by running the following command:
+    <pre>$ sysctl kernel.core_pattern | cat -A</pre>
+    <code>kernel.core_pattern = $</code>
+
+platform: machine

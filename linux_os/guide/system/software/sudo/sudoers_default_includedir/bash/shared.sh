@@ -4,7 +4,7 @@ sudoers_config_file="/etc/sudoers"
 sudoers_config_dir="/etc/sudoers.d"
 sudoers_includedir_count=$(grep -c "#includedir" "$sudoers_config_file")
 if [ "$sudoers_includedir_count" -gt 1 ]; then
-    sed -i "/#includedir.*/d" "$sudoers_config_file"
+    sed -i "/#includedir/d" "$sudoers_config_file"
     echo "#includedir /etc/sudoers.d" >> "$sudoers_config_file"
 elif [ "$sudoers_includedir_count" -eq 0 ]; then
     echo "#includedir /etc/sudoers.d" >> "$sudoers_config_file"
@@ -14,8 +14,8 @@ else
     fi
 fi
 
-sed -i "/^#include\s\+.*/d" "$sudoers_config_file"
+sed -Ei "/^#include\s/d; /^@includedir\s/d" "$sudoers_config_file"
 
-if grep -Pr "^#include(dir)? .*" "$sudoers_config_dir" ; then
-    sed -i "/^#include\(dir\)\?\s\+.*/d" "$sudoers_config_dir"/*
+if grep -Pr "^[#@]include(dir)?\s" "$sudoers_config_dir" ; then
+    sed -Ei "/^[#@]include(dir)?\s/d" "$sudoers_config_dir"/*
 fi

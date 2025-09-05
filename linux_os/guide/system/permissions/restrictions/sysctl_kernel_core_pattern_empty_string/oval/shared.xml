@@ -1,0 +1,215 @@
+
+
+<def-group>
+  <definition class="compliance" id="sysctl_kernel_core_pattern_empty_string" version="3">
+    {{{ oval_metadata("The kernel 'kernel.core_pattern' parameter should be set to the appropriate value in both system configuration and system runtime.") }}}
+    <criteria operator="AND">
+      <extend_definition comment="kernel.core_pattern configuration setting check"
+                         definition_ref="sysctl_kernel_core_pattern_empty_string_static"/>
+      <extend_definition comment="kernel.core_pattern runtime setting check"
+                         definition_ref="sysctl_kernel_core_pattern_empty_string_runtime"/>
+    </criteria>
+  </definition>
+</def-group>
+
+<def-group>
+  <definition class="compliance" id="sysctl_kernel_core_pattern_empty_string_runtime" version="3">
+    {{{ oval_metadata("The kernel 'kernel.core_pattern' parameter should be set to an empty string in the system runtime.") }}}
+    <criteria operator="AND">
+      <criterion comment="kernel runtime parameter kernel.core_pattern set to an empty string"
+                 test_ref="test_sysctl_kernel_core_pattern_empty_string_runtime"/>
+    </criteria>
+  </definition>
+
+  <unix:sysctl_test id="test_sysctl_kernel_core_pattern_empty_string_runtime" version="1"
+                    comment="kernel runtime parameter kernel.core_pattern set to an empty string"
+                    check="all" check_existence="all_exist" state_operator="OR">
+    <unix:object object_ref="object_sysctl_kernel_core_pattern_empty_string_runtime"/>
+    <unix:state state_ref="state_sysctl_kernel_core_pattern_empty_string_runtime"/>
+  </unix:sysctl_test>
+
+  <unix:sysctl_object id="object_sysctl_kernel_core_pattern_empty_string_runtime" version="1">
+    <unix:name>kernel.core_pattern</unix:name>
+  </unix:sysctl_object>
+
+  <unix:sysctl_state id="state_sysctl_kernel_core_pattern_empty_string_runtime" version="1">
+    <unix:value datatype="string" operation="equals"></unix:value>
+  </unix:sysctl_state>
+
+</def-group>
+<def-group>
+  <definition class="compliance" id="sysctl_kernel_core_pattern_empty_string_static" version="3">
+    {{{ oval_metadata("The kernel 'kernel.core_pattern' parameter should be set to an empty string in the system configuration.") }}}
+    <criteria operator="AND">
+      <criteria operator="OR">
+        <criterion comment="kernel static parameter kernel.core_pattern set to an empty string in /etc/sysctl.conf"
+                   test_ref="test_sysctl_kernel_core_pattern_empty_string_static"/>
+        <!-- see sysctl.d(5) -->
+        <criterion comment="kernel static parameter kernel.core_pattern set to an empty string in /etc/sysctl.d/*.conf"
+                   test_ref="test_sysctl_kernel_core_pattern_empty_string_static_etc_sysctld"/>
+        <criterion comment="kernel static parameter kernel.core_pattern set to an empty string in /run/sysctl.d/*.conf"
+                   test_ref="test_sysctl_kernel_core_pattern_empty_string_static_run_sysctld"/>
+      </criteria>
+
+{{% if target_oval_version >= [5, 11] %}}
+      <criterion comment="Check that kernel_core_pattern is defined in only one file" test_ref="test_sysctl_kernel_core_pattern_empty_string_defined_in_one_file" />
+{{% endif %}}
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_sysctl_kernel_core_pattern_empty_string_static" version="1"
+                              check="all" check_existence="all_exist"
+                              comment="kernel.core_pattern static configuration" state_operator="OR">
+    <ind:object object_ref="object_static_sysctl_sysctl_kernel_core_pattern_empty_string"/>
+    <ind:state state_ref="state_static_sysctld_sysctl_kernel_core_pattern_empty_string"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_sysctl_kernel_core_pattern_empty_string_static_etc_sysctld" version="1" check="all"
+                          comment="kernel.core_pattern static configuration in /etc/sysctl.d/*.conf" state_operator="OR">
+    <ind:object object_ref="object_static_etc_sysctld_sysctl_kernel_core_pattern_empty_string"/>
+    <ind:state state_ref="state_static_sysctld_sysctl_kernel_core_pattern_empty_string"/>
+
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_sysctl_kernel_core_pattern_empty_string_static_run_sysctld" version="1" check="all"
+                          comment="kernel.core_pattern static configuration in /run/sysctl.d/*.conf" state_operator="OR">
+    <ind:object object_ref="object_static_run_sysctld_sysctl_kernel_core_pattern_empty_string"/>
+    <ind:state state_ref="state_static_sysctld_sysctl_kernel_core_pattern_empty_string"/>
+
+  </ind:textfilecontent54_test>
+{{% if target_oval_version >= [5, 11] %}}
+  <ind:variable_test check="all" check_existence="all_exist" comment="Check that only one file contains kernel_core_pattern"
+  id="test_sysctl_kernel_core_pattern_empty_string_defined_in_one_file" version="1">
+    <ind:object object_ref="object_sysctl_kernel_core_pattern_empty_string_defined_in_one_file" />
+    <ind:state state_ref="state_sysctl_kernel_core_pattern_empty_string_defined_in_one_file" />
+  </ind:variable_test>
+
+  <ind:variable_object id="object_sysctl_kernel_core_pattern_empty_string_defined_in_one_file" version="1">
+    <ind:var_ref>local_var_sysctl_kernel_core_pattern_empty_string_counter</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="state_sysctl_kernel_core_pattern_empty_string_defined_in_one_file" version="1">
+    <ind:value operation="equals" datatype="int">1</ind:value>
+  </ind:variable_state>
+
+  <local_variable comment="Count unique sysctls" datatype="int" id="local_var_sysctl_kernel_core_pattern_empty_string_counter" version="1">
+    <count>
+      <unique>
+        <object_component object_ref="object_sysctl_kernel_core_pattern_empty_string_static_set_sysctls" item_field="filepath" />
+      </unique>
+    </count>
+  </local_variable>
+
+  <ind:textfilecontent54_object id="object_sysctl_kernel_core_pattern_empty_string_static_set_sysctls" version="1">
+    <set>
+      <object_reference>object_sysctl_kernel_core_pattern_empty_string_static_set_sysctls_unfiltered</object_reference>
+      <filter action="exclude">state_sysctl_kernel_core_pattern_empty_string_filepath_is_symlink</filter>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_sysctl_kernel_core_pattern_empty_string_filepath_is_symlink" version="1">
+    <ind:filepath operation="equals" var_check="at least one" var_ref="local_var_sysctl_kernel_core_pattern_empty_string_safe_symlinks" datatype="string" />
+  </ind:textfilecontent54_state>
+
+  <!-- <no symlink handling> -->
+  <!-- We craft a variable with blank string to combine with the symlink paths found.
+       This ultimately avoids referencing a variable with "no values",
+       we reference a variable with a blank string -->
+  <local_variable comment="Unique list of symlink conf files" datatype="string" id="local_var_sysctl_kernel_core_pattern_empty_string_safe_symlinks" version="1">
+    <unique>
+      <object_component object_ref="var_object_symlink_sysctl_kernel_core_pattern_empty_string" item_field="value" />
+    </unique>
+  </local_variable>
+
+  <ind:variable_object id="var_object_symlink_sysctl_kernel_core_pattern_empty_string" comment="combine the blank string with symlink paths found" version="1">
+    <set>
+      <object_reference>var_obj_symlink_sysctl_kernel_core_pattern_empty_string</object_reference>
+      <object_reference>var_obj_blank_sysctl_kernel_core_pattern_empty_string</object_reference>
+    </set>
+  </ind:variable_object>
+
+  <ind:variable_object id="var_obj_blank_sysctl_kernel_core_pattern_empty_string" comment="variable object of the blank string" version="1">
+    <ind:var_ref>local_var_blank_path_sysctl_kernel_core_pattern_empty_string</ind:var_ref>
+  </ind:variable_object>
+
+  <local_variable comment="Blank string" datatype="string" id="local_var_blank_path_sysctl_kernel_core_pattern_empty_string" version="1">
+    <literal_component datatype="string"></literal_component>
+  </local_variable>
+
+  <ind:variable_object id="var_obj_symlink_sysctl_kernel_core_pattern_empty_string" comment="variable object of the symlinks found" version="1">
+    <ind:var_ref>local_var_symlinks_sysctl_kernel_core_pattern_empty_string</ind:var_ref>
+  </ind:variable_object>
+  <!-- </no symlink handling> -->
+
+  <local_variable comment="Unique list of symlink conf files" datatype="string" id="local_var_symlinks_sysctl_kernel_core_pattern_empty_string" version="1">
+    <unique>
+      <object_component object_ref="object_sysctl_kernel_core_pattern_empty_string_symlinks" item_field="filepath" />
+    </unique>
+  </local_variable>
+
+  <!-- "pattern match" doesn't seem to work with symlink_object, not sure if a bug or not.
+       Workaround by querying for all conf files found -->
+  <unix:symlink_object comment="Symlinks referencing files in default dirs" id="object_sysctl_kernel_core_pattern_empty_string_symlinks" version="1">
+    <unix:filepath operation="equals" var_ref="local_var_conf_files_sysctl_kernel_core_pattern_empty_string" />
+    <filter action="exclude">state_symlink_points_outside_usual_dirs_sysctl_kernel_core_pattern_empty_string</filter>
+  </unix:symlink_object>
+
+  <!-- The state matches symlinks that don't point to the default dirs, i.e. paths that are not:
+       ^/etc/sysctl.conf$
+       ^/etc/sysctl.d/.*$
+       ^/run/sysctl.d/.*$
+       ^/usr/lib/sysctl.d/.*$ -->
+  <unix:symlink_state comment="State that matches symlinks referencing files not in the default dirs" id="state_symlink_points_outside_usual_dirs_sysctl_kernel_core_pattern_empty_string" version="1">
+    <unix:canonical_path operation="pattern match">^(?!(\/etc\/sysctl\.conf$|(\/etc|\/run|\/usr\/lib)\/sysctl\.d\/)).*$</unix:canonical_path>
+  </unix:symlink_state>
+{{% endif %}}
+  <local_variable comment="List of conf files" datatype="string" id="local_var_conf_files_sysctl_kernel_core_pattern_empty_string" version="1">
+    <object_component object_ref="object_sysctl_kernel_core_pattern_empty_string_static_set_sysctls_unfiltered" item_field="filepath" />
+  </local_variable>
+
+  <!-- Avoid directly referencing a possibly empty collection, one empty collection will cause the
+       variable to have no value even when there are valid objects. -->
+  <ind:textfilecontent54_object id="object_sysctl_kernel_core_pattern_empty_string_static_set_sysctls_unfiltered" version="1">
+    <set>
+      <object_reference>object_static_etc_sysctls_sysctl_kernel_core_pattern_empty_string</object_reference>
+      <object_reference>object_static_run_usr_sysctls_sysctl_kernel_core_pattern_empty_string</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_etc_sysctls_sysctl_kernel_core_pattern_empty_string" version="1">
+    <set>
+      <object_reference>object_static_sysctl_sysctl_kernel_core_pattern_empty_string</object_reference>
+      <object_reference>object_static_etc_sysctld_sysctl_kernel_core_pattern_empty_string</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_run_usr_sysctls_sysctl_kernel_core_pattern_empty_string" version="1">
+    <set>
+      <object_reference>object_static_run_sysctld_sysctl_kernel_core_pattern_empty_string</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_sysctl_sysctl_kernel_core_pattern_empty_string" version="1">
+    <ind:filepath>/etc/sysctl.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[[:blank:]]*kernel.core_pattern[[:blank:]]*=[[:blank:]]*(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_etc_sysctld_sysctl_kernel_core_pattern_empty_string" version="1">
+    <ind:path>/etc/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[[:blank:]]*kernel.core_pattern[[:blank:]]*=[[:blank:]]*(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_run_sysctld_sysctl_kernel_core_pattern_empty_string" version="1">
+    <ind:path>/run/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[[:blank:]]*kernel.core_pattern[[:blank:]]*=[[:blank:]]*(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_static_sysctld_sysctl_kernel_core_pattern_empty_string" version="1">
+    <ind:subexpression operation="equals" datatype="string"></ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

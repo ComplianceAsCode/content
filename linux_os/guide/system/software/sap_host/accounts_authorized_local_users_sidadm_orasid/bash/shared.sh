@@ -18,7 +18,7 @@ function verify_oracle_user_to_userlist {
 	local path_list="$1"
 	local is_oracle=no
 	for path in $path_list ; do
-		if [ $(ls -ld "$path" | awk '{print $3}') = "oracle" ]; then
+		if [ "$(stat -c %U -- "$path")" = "oracle" ]; then
 			is_oracle=yes
 		fi
 	done

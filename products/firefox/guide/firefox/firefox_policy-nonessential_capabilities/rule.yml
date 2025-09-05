@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'The Firefox New Tab page must not show Top Sites, Sponsored Top sites, Pocket Recommendations, Sponsored Pocket Stories, Searches, Highlights, or Snippets.'
+
+description: |-
+    Display of top sites may be disabled in an administrative policy by setting the following items under <tt>FirefoxHome</tt>
+    to <tt>false</tt> and by setting the <tt>locked</tt> key to <tt>true</tt>.
+    <tt>Search</tt>
+    <tt>TopSites</tt>
+    <tt>SponsoredTopSites</tt>
+    <tt>Pocket</tt>
+    <tt>SponsoredPocket</tt>
+    <tt>Highlights</tt>
+    <tt>Snippets</tt>
+
+rationale: |-
+     The New Tab page by default shows a list of built-in top sites, as well as the top sites the user has visited.
+     It is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.
+     Applications are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).
+     Examples of non-essential capabilities include but are not limited to advertising software or browser plug-ins that are not related to requirements or provide a wide array of functionality not required for every mission but that cannot be disabled.
+     The new tab page must not actively show user activity.
+
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000029
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable dynamic New Tab features
+        policies:
+          - {path: "FirefoxHome", parameter: "Search", value: false}
+          - {path: "FirefoxHome", parameter: "TopSites", value: false}
+          - {path: "FirefoxHome", parameter: "SponsoredTopSites", value: false}
+          - {path: "FirefoxHome", parameter: "Pocket", value: false}
+          - {path: "FirefoxHome", parameter: "SponsoredPocket", value: false}
+          - {path: "FirefoxHome", parameter: "Highlights", value: false}
+          - {path: "FirefoxHome", parameter: "Snippets", value: false}
+          - {path: "FirefoxHome", parameter: "locked", value: true}

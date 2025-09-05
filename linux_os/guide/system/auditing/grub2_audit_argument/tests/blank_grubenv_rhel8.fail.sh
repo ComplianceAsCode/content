@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# platform = Red Hat Enterprise Linux 8
+# platform = Oracle Linux 8,Red Hat Enterprise Linux 8
 # remediation = none
 
 # Removes audit argument from kernel command line in /boot/grub2/grubenv

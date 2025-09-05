@@ -9,9 +9,9 @@
 :type rule_path: str
 #}}
 {{% macro fixtext_audit_file_watch_rule(path, key, rule_path) -%}}
-Configure {{{ full_name }}} to generate audit records for all modifications that affect <tt>{{{ path }}}</tt>.
+Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that <tt>"{{{ path }}}"</tt>.
 
-Add or update the following file system rule to <tt>{{{ rule_path }}}</tt>:
+Add or update the following file system rule to <tt>"{{{ rule_path }}}"</tt>:
 
 -w {{{ path }}} -p wa -k {{{ key }}}
 
@@ -386,10 +386,10 @@ Fixtext for ensuring that a privileged command is audited.
 :param path_prefix: The directory the command is in
 :type path_prefix: str
 #}}
-{{% macro fixtext_audit_rules_privileged_commands(cmd, path_prefix) -%}}
-Configure the audit system to generate an audit event for any successful/unsuccessful uses of the "{{{ cmd }}}" command by adding or updating the following rule in the "/etc/audit/rules.d/audit.rules" file:
+{{% macro fixtext_audit_rules_privileged_commands(cmd, path_prefix, key) -%}}
+Configure {{{ full_name }}} to generate audit records upon successful/unsuccessful attempts to use the "{{{ cmd }}}" command by adding or updating the following rule in "/etc/audit/rules.d/audit.rules":
 
--a always,exit -F path={{{path_prefix}}}{{{ cmd }}} -F perm=x -F auid>=1000 -F auid!=unset -k privileged-{{{ cmd }}}
+-a always,exit -F path={{{path_prefix}}}{{{ cmd }}} -F perm=x -F auid>=1000 -F auid!=unset -k {{% if key %}}{{{ key }}}{{% else %}}privileged-{{{ cmd }}}{{% endif %}}
 
 The audit daemon must be restarted for the changes to take effect.
 {{%- endmacro %}}
@@ -524,7 +524,7 @@ Fixtext for setting the permissions on a file.
 
 #}}
 {{% macro fixtext_file_permissions(file, mode) %}}
-Change the permissions of the file "{{{ file }}}" to "{{{ mode }}}" by running the following command:
+Configure the "{{{ file }}}" file to "{{{ mode }}}" by running the following command:
 
 $ sudo chmod {{{ mode }}} {{{ file }}}
 {{%- endmacro %}}
@@ -537,5 +537,5 @@ Fixtext for having a mount point on another partition
 
 #}}
 {{% macro fixtext_separate_partition(part) -%}}
-Migrate the "{{{ part }}}" directory onto a separate file system/partition.
+Migrate the "{{{ part }}}" path onto a separate file system.
 {{%- endmacro %}}

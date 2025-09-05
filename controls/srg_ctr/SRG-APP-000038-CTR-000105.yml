@@ -8,4 +8,61 @@ controls:
   rules:
   - configure_network_policies_namespaces
   - routes_protected_by_tls
+  related_rules:
+  - configure_network_policies
   status: automated
+  check: |-
+    Verify that each user namespace has a Network Policy
+
+    1. Get a list of existing projects(namespaces)
+
+    > oc get projects
+
+    2. For each user namespace (exclude default, kube-*, openshift-*) verify
+    that one or more Network Policy objects exist.
+
+    > oc get NetworkPolicy -n <PROJECT>
+
+    If a project does not have any NetworkPolicy definitions, this is a finding.
+  fixtext: |-
+    Configure a default network policy as necessary to protect the flow of
+    information by performing the following steps.
+
+    1. Create a networkpolicy.yaml file with the NetworkPolicy object
+    definitions desired. For example, the following section defines two
+    policies one to allow requests from the same namespace, the other to
+    allow from the openshift ingress routing service.
+
+    apiVersion: v1
+    kind: List
+    items:
+    - apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        name: allow-from-same-namespace
+      spec:
+        podSelector:
+        ingress:
+        - from:
+          - podSelector: {}
+    - apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        name: allow-from-openshift-ingress
+      spec:
+        ingress:
+        - from:
+          - namespaceSelector:
+              matchLabels:
+                network.openshift.io/policy-group: ingress
+        podSelector: {}
+        policyTypes:
+        - Ingress
+
+    3. Apply the NetworkPolicy object to the appropriate namespaces by
+    running the following command:
+
+    > oc apply -f networkpolicy.yaml -n <PROJECT>
+
+    For additional information regarding network policies, see
+    https://docs.openshift.com/container-platform/latest/networking/network_policy/about-network-policy.html

@@ -1,6 +1,6 @@
 #!/bin/bash
 PYTHON_EXECUTABLE="$1"
-BENCHMARK="$2"
+DATASTREAM="$2"
 shift 2
 PROFILES=()
 while test $# -gt 0; do
@@ -21,7 +21,8 @@ function check_missing_references() {
         refs_argument="--missing-$profile-refs"
     fi
 
-    profile_stats="$("$PYTHON_EXECUTABLE" "$PROJECT_ROOT/build-scripts/profile_tool.py" stats --benchmark "$BENCHMARK" --profile $profile $refs_argument --skip-stats)"
+    full_profile_id="xccdf_org.ssgproject.content_profile_$profile"
+    profile_stats="$("$PYTHON_EXECUTABLE" "$PROJECT_ROOT/build-scripts/profile_tool.py" stats --benchmark "$DATASTREAM" --profile "$full_profile_id" "$refs_argument" --skip-stats)"
 
     if [ ! -z "$profile_stats" ]; then
         printf '%s\n' "$profile_stats" >&2

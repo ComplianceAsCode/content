@@ -138,7 +138,7 @@ The following elements are not allowed:
 
 ### Rule
 
-This section describes the styleguide around the `rule.yml` files.
+This section describes the style guide around the `rule.yml` files.
 * All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
 * A rule should only address one configuration item change.
 * A variable should be when a configuration change can be multiple different values.
@@ -169,6 +169,7 @@ Rules sections must be in the following order, if they are present.
 * `ocil_clause`
 * `ocil` (HTML Like)
 * `fixtext` (HTML Like)
+* `checktext` (HTML Like)
 * `srg_requirement`
 * `warnings`
     * All subsections are HTML-Like
@@ -186,7 +187,7 @@ Rules sections must be in the following order, if they are present.
 
 ### Group
 
-This section describes the styleguide around the `group.yml` files.
+This section describes the style guide around the `group.yml` files.
 
 * All the above [YAML](manual/developer/04_style_guide:yaml) rules apply
 * A group should only contain rules that effect the same software or service
@@ -203,7 +204,7 @@ Group sections must be in the following order, if present.
 
 ### Benchmark
 
-This section describes the styleguide around the `benchmark.yml` files.
+This section describes the style guide around the `benchmark.yml` files.
 All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
 
 #### Benchmark Sections
@@ -269,7 +270,7 @@ Control sections must be in the following order, all sections are required unles
     * `version`
     * `SMEs`
 * `title`
-    * Shall be short and descriptive 
+    * Shall be short and descriptive
 * `description` (HTML-Like)
 * `extends` (Optional)
     * Must be valid id of another profile id
@@ -293,9 +294,14 @@ The header should start on the first line.
 
 #### `platform`
 
-Unless there is a good reason this should be `multi_platform_all`. 
-But if the rule only applies to a specific operating system or family of operating then should be used. 
+Unless there is a good reason this should be `multi_platform_all`.
+But if the rule only applies to a specific operating system or family of operating then should be used.
 The values can be product names or values from `MULTI_PLATFORM_LIST` or `MULTI_PLATFORM_LIST` in [ssg/constants.py](https://github.com/ComplianceAsCode/content/blob/master/ssg/constants.py).
+
+
+The `platform` key should first list specific products, then list the `multi_platform`.
+Products and `multi_platform` shall be placed in alphabetical order.
+For example, Oracle Linux 9, Red Hat Enterprise Linux 9, multi_platform_fedora.
 
 #### `reboot`
 
@@ -325,6 +331,7 @@ Value must be low, medium, or high.
 * Shall follow all the rules in the [YAML](manual/developer/04_style_guide:yaml) section
 * Should prefer using Ansible modules over just calling system commands
 * Shall be written to pass [`ansible-lint`](https://github.com/ansible-community/ansible-lint)
+* Task names should be prefixed by `{{{ rule_title }}}`, e.g. `- name: "{{{ rule_title }}} - ensure correct banner"`
 
 ### Bash
 

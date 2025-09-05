@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux3,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: alinux3,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Set Existing Passwords Maximum Age'
 
@@ -29,6 +29,7 @@ references:
     cis@alinux3: 5.6.1.1
     cis@rhel8: 5.6.1.1
     cis@ubuntu2004: 5.4.1.1
+    cis@ubuntu2204: 5.4.1.1
     disa: CCI-000199
     nist: IA-5(f),IA-5(1)(d),CM-6(a)
     srg: SRG-OS-000076-GPOS-00044
@@ -52,7 +53,7 @@ ocil: |-
 fixtext: |-
     Configure non-compliant accounts to enforce a 60-day maximum password lifetime restriction.
 
-    passwd -x {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} [user]
+    chage -M {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} [user]
 
 srg_requirement: |-
     {{{ full_name }}} user account passwords must have a 60-day maximum password lifetime restriction.

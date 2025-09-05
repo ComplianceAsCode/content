@@ -407,11 +407,40 @@ class RoleGithubUpdater(object):
         new_content = self.role.file(filepath)
         return new_content
 
+    def _get_blob_content(self, branch, path_name):
+        """
+        see:
+        https://github.com/PyGithub/PyGithub/issues/661
+        """
+        ref = self.remote_repo.get_git_ref(f'heads/{branch}')
+        tree = self.remote_repo.get_git_tree(ref.object.sha, recursive='/' in path_name).tree
+        sha = [x.sha for x in tree if x.path == path_name]
+        if not sha:
+            return None
+        blob = self.remote_repo.get_git_blob(sha[0])
+        import base64
+        b64 = base64.b64decode(blob.content)
+        return (b64.decode("utf8"), sha[0])
+
+    def _get_contents(self, path_name, branch='master'):
+        """
+        First try to use traditional's github API to get package contents,
+        since this API can't fetch file size more than 1MB, use another API when failed.
+        """
+        content = self.remote_repo.get_contents(path_name, ref=branch)
+        if content.content:
+            return (remote.decoded_content.decode("utf-8"), remote.sha)
+
+        blob = self._get_blob_content(branch, path_name)
+        if blob is None:
+            raise UnknownObjectException(
+                'unable to locate file: ' + path_name + ' in branch: ' + branch)
+        return blob
+
     def _remote_content(self, filepath):
-        remote = self.remote_repo.get_contents(filepath)
         # We want the raw string to compare against _local_content
-        content = remote.decoded_content.decode("utf-8")
-        return content, remote.sha
+        content, sha = self._get_contents(filepath)
+        return content, sha
 
     def _update_content_if_needed(self, filepath):
         remote_content, sha = self._remote_content(filepath)

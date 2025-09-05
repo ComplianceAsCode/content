@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7
+prodtype: ol7,rhel7
 
 title: 'Elevate The SELinux Context When An Administrator Calls The Sudo Command'
 
@@ -28,11 +28,15 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel7: CCE-86020-5
+
 references:
     disa: CCI-002165,CCI-002235
     nist: AC-3(4),AC-6(10)
     srg: SRG-OS-000324-GPOS-00125
     stigid@ol7: OL07-00-020023
+    stigid@rhel7: RHEL-07-020023
 
 ocil_clause: 'selinux context does not elevate when running sudo command'
 

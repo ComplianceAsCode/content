@@ -36,6 +36,7 @@ references:
     cis@sle15: 1.1.16
     cis@ubuntu1804: 1.1.11
     cis@ubuntu2004: 1.1.16
+    cis@ubuntu2204: 1.1.16
     cobit5: APO11.04,APO13.01,BAI03.05,BAI04.04,DSS05.02,DSS05.04,DSS05.07,MEA02.01
     disa: CCI-000366,CCI-001849
     hipaa: 164.312(a)(2)(ii)
@@ -57,9 +58,11 @@ references:
 
 {{{ complete_ocil_entry_separate_partition(part="/var/log/audit") }}}
 
-fixtext: '{{{ fixtext_separate_partition(part="/var/log/audit") }}}'
+fixtext: |-
+    Migrate the system audit data path onto a separate file system.
 
-srg_requirement: '{{{ srg_requirement_separate_partition("/var/log/audit") }}}'
+srg_requirement: |-
+    {{{ full_name }}} must use a separate file system for the system audit data path.
 
 platform: machine
 

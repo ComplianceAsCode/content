@@ -5,7 +5,7 @@ controls:
   title: {{{ full_name }}} must use TLS 1.2 or greater for secure container image
     transport from trusted sources.
   related_rules:
-    - fips_mode_enabled
+    - fips_mode_enabled_on_all_nodes
   status: manual
   check: |-
     Verify that no insecure registries configured:

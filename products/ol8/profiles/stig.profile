@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R2
+    version: V1R3
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V1R2.
+    DISA STIG for Oracle Linux 8 V1R3.
 
 selections:
     ### Variables
@@ -25,7 +25,7 @@ selections:
     - var_accounts_minimum_age_login_defs=1
     - var_accounts_max_concurrent_login_sessions=10
     - var_password_pam_remember=5
-    - var_password_pam_remember_control_flag=required
+    - var_password_pam_remember_control_flag=ol8
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
     - var_accounts_password_minlen_login_defs=15
@@ -44,12 +44,14 @@ selections:
     - sshd_idle_timeout_value=10_minutes
     - var_accounts_authorized_local_users_regex=ol8
     - var_accounts_passwords_pam_faillock_deny=3
+    - var_accounts_passwords_pam_faillock_dir=ol8
     - var_accounts_passwords_pam_faillock_fail_interval=900
     - var_accounts_passwords_pam_faillock_unlock_time=never
     - var_ssh_client_rekey_limit_size=1G
     - var_ssh_client_rekey_limit_time=1hour
     - var_accounts_fail_delay=4
     - var_account_disable_post_pw_expiration=35
+    - var_account_disable_inactivity=35
     - var_auditd_action_mail_acct=root
     - var_time_service_set_maxpoll=18_hours
     - var_accounts_maximum_age_login_defs=60
@@ -496,17 +498,14 @@ selections:
     # OL08-00-020014, OL08-00-020015
     - accounts_passwords_pam_faillock_unlock_time
 
-    # OL08-00-020016
+    # OL08-00-020016, OL08-00-020017
+    - accounts_passwords_pam_faillock_dir
 
-    # OL08-00-020017
+    # OL08-00-020018, OL08-00-020019
+    - accounts_passwords_pam_faillock_silent
 
-    # OL08-00-020018
-
-    # OL08-00-020019
-
-    # OL08-00-020020
-
-    # OL08-00-020021
+    # OL08-00-020020, OL08-00-020021
+    - account_passwords_pam_faillock_audit
 
     # OL08-00-020022, OL08-00-020023
     - accounts_passwords_pam_faillock_deny_root
@@ -514,9 +513,8 @@ selections:
     # OL08-00-020024
     - accounts_max_concurrent_login_sessions
 
-    # OL08-00-020027
-
-    # OL08-00-020028
+    # OL08-00-020027, OL08-00-020028
+    - account_password_selinux_faillock_dir
 
     # OL08-00-020030, OL08-00-020082
     - dconf_gnome_screensaver_lock_enabled
@@ -567,11 +565,7 @@ selections:
     # OL08-00-020101
     - accounts_password_pam_pwquality_system_auth
 
-    # OL08-00-020102
-
-    # OL08-00-020103
-
-    # OL08-00-020104
+    # OL08-00-020102, OL08-00-020103, OL08-00-020104
     - accounts_password_pam_retry
 
     # OL08-00-020110
@@ -633,8 +627,10 @@ selections:
 
     # OL08-00-020260
     - account_disable_post_pw_expiration
+    - account_disable_inactivity_system_auth
 
     # OL08-00-020261
+    - account_disable_inactivity_password_auth
 
     # OL08-00-020262
     - file_permissions_lastlog
@@ -667,10 +663,8 @@ selections:
     # OL08-00-020330
     - sshd_disable_empty_passwords
 
-    # OL08-00-020331
+    # OL08-00-020331, OL08-00-020332
     - no_empty_passwords
-
-    # OL08-00-020332
 
     # OL08-00-020340
     - display_login_attempts
@@ -1075,6 +1069,7 @@ selections:
     - service_fapolicyd_enabled
 
     # OL08-00-040137
+    - fapolicy_default_deny
 
     # OL08-00-040139
     - package_usbguard_installed

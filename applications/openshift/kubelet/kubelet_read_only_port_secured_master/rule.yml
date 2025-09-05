@@ -1,0 +1,46 @@
+documentation_complete: true
+
+prodtype: eks,ocp4
+
+platform: {{{ product }}}
+
+{{%- if product == "eks"  %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- else %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- endif %}}
+
+title: 'kubelet - Ensure that the --read-only-port is secured'
+
+description: |-
+  Disable the read-only port.
+
+rationale: |-
+  The Kubelet process provides a read-only API in addition to the main Kubelet API.
+  Unauthenticated access is provided to this read-only API which could possibly retrieve
+  potentially sensitive information about the cluster.
+
+severity: medium
+
+ocil_clause: 'readOnlyPort is not secured'
+
+ocil: |-
+  Run the following command on the kubelet node(s):
+  <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1"' | grep readOnlyPort; done</pre>
+  and make sure it outputs 0.
+
+references:
+    cis@eks: 3.2.4
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/kubeletconfig/role'
+        filepath_suffix: var_role_master
+        yamlpath: ".readOnlyPort"
+        values:
+         - value: "0"
+           operation: "equals"

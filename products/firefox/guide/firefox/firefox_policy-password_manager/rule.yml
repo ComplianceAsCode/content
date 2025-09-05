@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox must be configured to not use a password store with or without a master password.'
+
+description: |-
+    The update check may be disabled in an administrative policy by setting
+    the <tt>PasswordManager</tt> key under <tt>policies</tt> to <tt>false</tt>.
+
+rationale: |-
+    Firefox can be set to store passwords for sites visited by the user. These individual passwords are stored in a file and can be protected by a master password. Autofill of the password can then be enabled when the site is visited. This feature could also be used to autofill the certificate PIN, which could lead to compromise of DoD information.
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000008
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable password manager
+        policies:
+          - {path: "policies", parameter: "PasswordManagerEnabled", value: false}

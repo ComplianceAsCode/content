@@ -1,0 +1,53 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'Configure auditing of successful file accesses (ppc64le)'
+
+{{% set file_contents_audit_access_success =
+"## Successful file access (any other opens) This has to go last.
+## These next two are likely to result in a whole lot of events
+-a always,exit -F arch=b64 -S open,openat,openat2,open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access" %}}
+
+description: |-
+    Ensure that successful attempts to access a file are audited.
+
+    The following rules configure audit as described above:
+    <pre>{{{ file_contents_audit_access_success|indent }}}    </pre>
+
+    Load new Audit rules into kernel by running:
+    <pre>augenrules --load</pre>
+
+    Note: This rule uses a special set of Audit rules to comply with OSPP 4.2.1. You may reuse this rule in different profiles. If you decide to do so, it is recommended that you inspect contents of the file closely and make sure that they are alligned with your needs.
+
+rationale: |-
+    Auditing of successful attempts to access a file helps in investigation of activities performed on the system.
+
+severity: medium
+
+platforms:
+    - ppc64le_arch
+
+identifiers:
+    cce@rhel9: CCE-85999-1
+
+references:
+    ism: 0582,0584,05885,0586,0846,0957
+    nist: AU-2(a)
+    ospp: FAU_GEN.1.1.c
+    srg: SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219,SRG-OS-000475-GPOS-00220,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209,SRG-OS-000461-GPOS-00205
+
+ocil_clause: 'the file does not exist or the content differs'
+
+ocil: |-
+    To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
+    <pre>cat /etc/audit/rules.d/30-ospp-v42-3-access-success.rules</pre>
+    The output has to be exactly as follows:
+    <pre>{{{ file_contents_audit_access_success|indent }}}    </pre>
+
+template:
+    name: audit_file_contents
+    vars:
+        filepath: /etc/audit/rules.d/30-ospp-v42-3-access-success.rules
+        contents: |-
+            {{{ file_contents_audit_access_success|indent(12) }}}

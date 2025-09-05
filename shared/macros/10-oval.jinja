@@ -926,3 +926,23 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- else %}}
   {{%- set user_list="nobody" %}}
 {{%- endif %}}
+
+
+{{%- macro partition_exists_criterion(path) %}}
+{{%- set escaped_path = path | escape_id %}}
+      <criterion comment="The path {{{ path }}} is a partition's mount point" test_ref="test_partition_{{{ escaped_path  }}}_exists" />
+{{%- endmacro %}}
+
+{{%- macro partition_exists_test_object(path) %}}
+{{%- set escaped_path = path | escape_id %}}
+  <linux:partition_test check="all" check_existence="all_exist"
+      comment="Partition {{{ path }}} exists"
+      id="test_partition_{{{ escaped_path }}}_exists"
+  version="1">
+    <linux:object object_ref="object_partition_{{{ escaped_path }}}_exists" />
+  </linux:partition_test>
+
+  <linux:partition_object id="object_partition_{{{ escaped_path }}}_exists" version="1">
+    <linux:mount_point>{{{ path }}}</linux:mount_point>
+  </linux:partition_object>
+{{%- endmacro %}}

@@ -1,12 +1,16 @@
 <def-group>
-  <definition class="compliance" id="accounts_password_all_shadowed_sha512" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("All password hashes should be shadowed.") }}}
     <criteria>
-      <criterion comment="password hashes are shadowed using sha512" test_ref="test_accounts_password_all_shadowed_sha512" />
+      <criterion comment="password hashes are shadowed using sha512"
+                 test_ref="test_accounts_password_all_shadowed_sha512" negate="true"/>
     </criteria>
   </definition>
-  <unix:shadow_test check="all" check_existence="none_exist" comment="password hashes are shadowed using sha512" id="test_accounts_password_all_shadowed_sha512" version="1">
-    <unix:object object_ref="object_accounts_password_all_shadowed_sha512" />
+  <unix:shadow_test check="all" check_existence="at_least_one_exists" version="1"
+                    id="test_accounts_password_all_shadowed_sha512"
+                    comment="password hashes are shadowed using sha512">
+    <unix:object object_ref="object_accounts_password_all_shadowed_sha512"/>
+    <unix:state state_ref="state_accounts_password_all_shadowed_sha512_hidepass"/>
   </unix:shadow_test>
   <unix:shadow_object id="object_accounts_password_all_shadowed_sha512" version="1">
     <unix:username operation="pattern match">.*</unix:username>
@@ -14,9 +18,12 @@
     <filter action="exclude">state_accounts_password_all_shadowed_sha512</filter>
   </unix:shadow_object>
   <unix:shadow_state id="state_accounts_password_all_shadowed_has_no_password" version="1">
-      <unix:password operation="pattern match">^(!|!!|\*)$</unix:password>
+      <unix:password operation="pattern match">^(!|!!|!\*|\*|!locked)$</unix:password>
   </unix:shadow_state>
   <unix:shadow_state id="state_accounts_password_all_shadowed_sha512" version="1">
       <unix:encrypt_method operation="equals">SHA-512</unix:encrypt_method>
+  </unix:shadow_state>
+  <unix:shadow_state id="state_accounts_password_all_shadowed_sha512_hidepass" version="1">
+      <unix:password operation="pattern match" mask="true">.*</unix:password>
   </unix:shadow_state>
 </def-group>

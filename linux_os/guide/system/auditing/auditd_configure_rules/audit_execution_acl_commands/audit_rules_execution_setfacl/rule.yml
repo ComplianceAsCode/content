@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8,rhel8,rhel9,sle12,sle15,ubuntu2004
+prodtype: ol8,ol9,rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Record Any Attempts to Run setfacl'
 
@@ -42,19 +42,7 @@ references:
     stigid@sle15: SLES-15-030430
     stigid@ubuntu2004: UBTU-20-010167
 
-ocil_clause: '{{{ ocil_clause_audit() }}}'
-
-ocil: |-
-    Verify {{{ full_name }}} generates an audit record for all uses of the "setfacl" command.
-    To verify that execution of the command is being audited, run the following command:
-    <pre>$ sudo grep "path=/usr/bin/setfacl" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
-    The output should return something similar to:
-    <pre>-a always,exit -F path=/usr/bin/setfacl -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-
-fixtext: |-
-    {{{ fixtext_audit_rules_command("setfacl", "/usr/bin/setfacl", "perm_mod") | indent(4) }}}
-
-srg_requirement: '{{{ srg_requirement_audit_syscall("setfacl") }}}'
+{{{ ocil_fix_srg_privileged_command("setfacl", "/usr/bin/", "perm_mod") }}}
 
 template:
     name: audit_rules_privileged_commands

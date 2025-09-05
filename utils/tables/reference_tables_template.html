@@ -4,26 +4,28 @@
 
 {{% block table %}}
 <table>
-<thead>
-  <td>Mapping</td>
-  <td>Rule Title</td>
-  <td>Description</td>
-  <td>Rationale</td>
-</thead>
-{{% for ref in sorted_refs -%}}
-{{% set rules = rules_by_shortref[ref] -%}}
-{{% for rule in rules -%}}
-<tr>
-  <td>{{{ "<br/>".join(rule.relevant_refs) }}}</td>
-  <td>{{{ rule.title }}}</td>
-  <td xml:lang="en-US">
-{{{ rule.description }}}
-  </td>
-  <td xml:lang="en-US">
-{{{ rule.rationale }}}
-  </td>
-</tr>
-{{% endfor -%}}
-{{% endfor -%}}
+  <thead>
+    <th>Mapping</th>
+    <th>Rule Title</th>
+    <th>Description</th>
+    <th>Rationale</th>
+  </thead>
+  <tbody>
+  {{% for ref in sorted_refs -%}}
+    {{% set rules = rules_by_shortref[ref] -%}}
+    {{% for rule in rules -%}}
+    <tr>
+      <td>{{{ "<br/>".join(rule.relevant_refs) }}}</td>
+      <td>{{{ rule.title }}}</td>
+      <td xml:lang="en-US">
+        {{{ rule.description }}}
+      </td>
+      <td xml:lang="en-US">
+        {{{ rule.rationale }}}
+      </td>
+    </tr>
+    {{% endfor -%}}
+  {{% endfor -%}}
+  </tbody>
 </table>
 {{% endblock %}}

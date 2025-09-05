@@ -1,0 +1,34 @@
+# platform = multi_platform_all
+# reboot = false
+
+{{% set non_allowed_partitions = ["/",
+                                  "/lib",
+                                  "/opt",
+                                  "/usr",
+                                  "/bin",
+                                  "/sbin",
+                                  "/boot",
+                                  "/dev",
+                                  "/proc"] %}}
+
+function perform_remediation (){
+
+    {{{ bash_ensure_mount_option_in_fstab( "$1", MOUNTOPTION, FILESYSTEM, TYPE ) | indent(4) }}}
+
+    {{{ bash_ensure_partition_is_mounted( "$1" ) | indent(4) }}}
+}
+
+readarray -t home_directories  < \
+    <(awk -F':' '{if ($3>=1000 && $3!= 65534) print $6}' /etc/passwd )
+
+
+for home_directory in "${home_directories[@]}"
+do
+    if [ -d $home_directory ]; then
+        fstab_mount_point=$(df $home_directory | awk '/^\/dev/ {print $6}')
+        if  ! grep -qP "^{{{ non_allowed_partitions | join("$|^") }}}$" <<< $fstab_mount_point
+        then
+            perform_remediation "$fstab_mount_point"
+        fi
+    fi
+done

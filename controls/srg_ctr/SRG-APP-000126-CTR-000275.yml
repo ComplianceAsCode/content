@@ -5,5 +5,78 @@ controls:
   title: {{{ full_name }}} must use FIPS validated cryptographic mechanisms to
     protect the integrity of log information.
   rules:
+  - fips_mode_enabled_on_all_nodes
   - audit_log_forwarding_uses_tls
   status: automated
+  check: |-
+    OpenShift must be configurated at the time of installation.  Because FIPS
+    must be enabled before the operating system that your cluster uses boots
+    for the first time, you cannot enable FIPS after you deploy a cluster. If
+    a cluster is installed in FIPS mode, the nodes will indicate FIPS mode
+    and this will propogate into the platform.
+
+    To validate that the OpenShift cluster is running with FIPS enabled on
+    each node run the command:
+
+    > for node in $(oc get node -oname); \
+    do oc debug $node -- chroot /host /bin/bash -c 'echo -n "$HOSTNAME "; \ 
+    sysctl crypto.fips_enabled' 2>/dev/null; done
+
+    If any lines of output end in anything other than a 1, this is a finding.
+
+    Verify that the Cluster Log Forwarder is using an encrypted transport:
+
+    > oc get clusterlogforwarder -n openshift-logging
+
+    For each Cluster Log Forwarder, run the following command to display the configuration
+
+    > oc describe clusterlogforwarder <name> -n openshift-logging
+
+    Review the configuration and determine if the transport is secure, such
+    as tls:// or https://. If there are any tranports configured that are
+    not secured by TLS, this is a finding.
+  fixtext: |-
+    Reinstall the OpenShift cluster in FIPS mode. The file install-config.yaml
+    has a top level key that enables FIPS mode for all nodes and the cluster
+    platform layer. If your install-config.yaml was not backed up prior to
+    consumption as part of the installation, you will need to recreate it. An
+    example install-config.yaml with some sections trimmed out for brevity,
+    and the "fips: true" key applied at the top level is shown below:
+
+    apiVersion: v1 baseDomain: example.com controlPlane:
+      name: master platform:
+        aws:
+          [...]
+      replicas: 3
+    compute: - name: worker
+      platform:
+        aws:
+      replicas: 3
+    metadata:
+      name: fips-cluster
+    networking:
+      [...]
+    platform:
+      aws:
+        [...]
+    sshKey: ssh-ed25519 AAAA...  pullSecret: '{"auths": ...}' fips: true
+
+    Once you have saved the install-config.yaml with corresponding
+    correct information for your installation infrastructure, run the
+    installer to create a cluster that uses FIPS Validated / Modules in
+    Process cryptographic libraries. The command to install a cluster and
+    consume the install-config.yaml is: 
+    > ./openshift-install create cluster --dir=<installation_directory> \
+    --log-level=info 
+    Where <installation_directory> is the directory that contains install-config.yaml
+
+    Additional Details can be found here:
+    https://docs.openshift.com/container-platform/latest/installing/installing-fips.html
+
+    Edit the Cluster Log Forwarder configuration to configure TLS on the transport.
+
+    > oc edit clusterlogforwarder <name> -n openshift-logging
+
+    For detailed information regarding
+    configuration of the Cluster Log Forwarder see
+    https://docs.openshift.com/container-platform/latest/logging/cluster-logging-external.html

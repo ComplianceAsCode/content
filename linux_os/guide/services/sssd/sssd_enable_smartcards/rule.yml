@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Enable Smartcards in SSSD'
 
@@ -11,7 +11,7 @@ description: |-
     <pre>[pam]
     pam_cert_auth = True
     </pre>
-    {{% if product in ["fedora", "ol8", "rhel8", "rhel9"] %}}
+    {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
     Add or update "pam_sss.so" line in auth section of "/etc/pam.d/system-auth" file to include
     "try_cert_auth" or "require_cert_auth" option, like in the following example:
     <pre>
@@ -44,7 +44,7 @@ identifiers:
     cce@rhel9: CCE-89155-6
     cce@sle12: CCE-91467-1
     cce@sle15: CCE-85826-6
-    
+
 references:
     disa: CCI-001954,CCI-000765,CCI-000766,CCI-000767,CCI-000768
     ism: 0421,0422,0431,0974,1173,1401,1504,1505,1546,1557,1558,1559,1560,1561
@@ -61,9 +61,9 @@ ocil: |-
     If configured properly, output should be
     <pre>pam_cert_auth = True</pre>
 
-    {{% if product in ["fedora", "ol8", "rhel8", "rhel9"] %}}
+    {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
     To verify that smart cards are enabled in PAM files, run the following command:
-    <pre>$ sudo grep -e "auth.*pam_sss.so.*\(allow_missing_name\|try_cert_auth\)" /etc/pam.d/smartcard-auth /etc/pam.d/system-auth</pre>
+    <pre>$ sudo grep -e "auth.*pam_sss\.so.*\(allow_missing_name\|try_cert_auth\)" /etc/pam.d/smartcard-auth /etc/pam.d/system-auth</pre>
     If configured properly, output should be
     <pre>
     /etc/pam.d/smartcard-auth:auth        sufficient                                   pam_sss.so allow_missing_name
@@ -76,7 +76,7 @@ fixtext: |-
 
     pam_cert_auth = True
 
-    {{% if product in ["fedora", "ol8", "rhel8", "rhel9"] %}}
+    {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
     Enable the <tt>with-smartcard</tt> feature using the <tt>authselect</tt> command:
     sudo authselect enable-feature with-smartcard
     sudo authselect apply-changes -b

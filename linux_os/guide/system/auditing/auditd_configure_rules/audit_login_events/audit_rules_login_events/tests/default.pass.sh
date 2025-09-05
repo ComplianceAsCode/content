@@ -2,7 +2,7 @@
 # packages = audit
 # remediation = bash
 
-{{% if product in ["rhel8", "rhel9"] %}}
+{{% if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
 {{% set faillock_path="/var/log/faillock" %}}
 {{% else %}}
 {{% set faillock_path="/var/run/faillock" %}}

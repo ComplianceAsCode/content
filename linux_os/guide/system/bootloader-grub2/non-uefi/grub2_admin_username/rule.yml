@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4
 
 title: 'Set the Boot Loader Admin Username to a Non-Default Value'
 
@@ -57,7 +57,7 @@ ocil_clause: 'superuser account is not set or is set to root, admin, administrat
 ocil: |-
     To verify the boot loader superuser account has been set, run the following
     command:
-    <pre>sudo grep -A1 "superusers" {{{ grub2_boot_path + "/grub.cfg" }}}</pre>
+    <pre>sudo grep -A1 "superusers" {{{ grub2_boot_path }}}/grub.cfg</pre>
     The output should show the following:
     <pre>set superusers="<b>superusers-account</b>"
     export superusers</pre>

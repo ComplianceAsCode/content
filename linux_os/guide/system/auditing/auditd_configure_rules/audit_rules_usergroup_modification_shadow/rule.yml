@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Record Events that Modify User/Group Information - /etc/shadow'
 
@@ -44,6 +44,7 @@ references:
     cis@sle12: 4.1.4
     cis@sle15: 4.1.4
     cis@ubuntu2004: 4.1.4
+    cis@ubuntu2204: 4.1.4
     cjis: 5.4.1.1
     cobit5: APO10.01,APO10.03,APO10.04,APO10.05,APO11.04,APO12.06,APO13.01,BAI03.05,BAI08.02,DSS01.03,DSS01.04,DSS02.02,DSS02.04,DSS02.07,DSS03.01,DSS03.05,DSS05.02,DSS05.03,DSS05.04,DSS05.05,DSS05.07,DSS06.03,MEA01.01,MEA01.02,MEA01.03,MEA01.04,MEA01.05,MEA02.01
     cui: 3.1.7
@@ -71,11 +72,11 @@ ocil_clause: 'command does not return a line, or the line is commented out'
 
 ocil: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/passwd with the following command:
-    
-    $  sudo auditctl -l | egrep '(/etc/shadow)' 
-    
+
+    $  sudo auditctl -l | egrep '(/etc/shadow)'
+
     -w /etc/shadow -p wa -k identity
-    
+
 
 fixtext: '{{{ fixtext_audit_file_watch_rule("/etc/shadow", "identity", "/etc/audit/rules.d/audit.rules") }}}'
 

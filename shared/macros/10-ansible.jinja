@@ -170,11 +170,11 @@ value: :code:`Setting={{ varname1 }}`
 
 {{#
   High level macro to set a value in the ssh daemon configuration file.
-  We specify a case insensitive comparison in the prefix since this is 
+  We specify a case insensitive comparison in the prefix since this is
   used to deduplicate since sshd_config has case-insensitive parameters
   (but case-sensitive values). We also specify the validation program here;
   -t specifies test and -f allows Ansible to pass a file at a different path.
-  
+
   Set set a parameter in /etc/sshd_config or /etc/ssh/sshd_config.d/
 
 :parameter msg: Message to be set as Task Title, if not set the rule's title will be used instead
@@ -812,7 +812,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - name: {{{ rule_title }}} - Check if pam_faillock.so is already enabled
       ansible.builtin.lineinfile:
         path: /etc/pam.d/system-auth
-        regexp: .*auth.*pam_faillock.so (preauth|authfail)
+        regexp: .*auth.*pam_faillock\.so (preauth|authfail)
         state: absent
       check_mode: yes
       changed_when: false
@@ -822,7 +822,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       ansible.builtin.lineinfile:
         path: '{{ item }}'
         line: auth        required      pam_faillock.so preauth
-        insertbefore: ^auth.*sufficient.*pam_unix.so.*
+        insertbefore: ^auth.*sufficient.*pam_unix\.so.*
         state: present
       loop:
         - /etc/pam.d/system-auth
@@ -834,7 +834,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       ansible.builtin.lineinfile:
         path: '{{ item }}'
         line: auth        required      pam_faillock.so authfail
-        insertbefore: ^auth.*required.*pam_deny.so.*
+        insertbefore: ^auth.*required.*pam_deny\.so.*
         state: present
       loop:
         - /etc/pam.d/system-auth
@@ -846,7 +846,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       ansible.builtin.lineinfile:
         path: '{{ item }}'
         line: account     required      pam_faillock.so
-        insertbefore: ^account.*required.*pam_unix.so.*
+        insertbefore: ^account.*required.*pam_unix\.so.*
         state: present
       loop:
         - /etc/pam.d/system-auth
@@ -864,8 +864,10 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
   :param parameter:         The pam_faillock.so parameter name.
   :param faillock_var_name: If the parameter expects a value from a variable, the variable name is informed here.
+  :param authfail: check the pam_faillock.so conf line with authfail
+
 #}}
-{{%- macro ansible_pam_faillock_parameter_value(parameter, faillock_var_name='') -%}}
+{{%- macro ansible_pam_faillock_parameter_value(parameter, faillock_var_name='', authfail=True) -%}}
 
 {{%- if faillock_var_name != '' %}}
 {{{ ansible_instantiate_variables( faillock_var_name ) }}}
@@ -903,7 +905,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - name: {{{ rule_title }}} - Check if pam_faillock.so {{{ parameter }}} parameter is already enabled in pam files
       ansible.builtin.lineinfile:
         path: /etc/pam.d/system-auth
-        regexp: .*auth.*pam_faillock.so (preauth|authfail).*{{{ parameter }}}
+        regexp: .*auth.*pam_faillock\.so (preauth|authfail).*{{{ parameter }}}
         state: absent
       check_mode: yes
       changed_when: false
@@ -926,6 +928,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       when:
         - result_pam_faillock_{{{ parameter }}}_parameter_is_present.found == 0
 
+    {{%- if authfail %}}
     - name: {{{ rule_title }}} - Ensure the inclusion of pam_faillock.so authfail {{{ parameter }}} parameter in auth section
       ansible.builtin.lineinfile:
         path: "{{ item }}"
@@ -942,6 +945,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
         - /etc/pam.d/password-auth
       when:
         - result_pam_faillock_{{{ parameter }}}_parameter_is_present.found == 0
+    {{%- endif %}}
 
     {{%- if faillock_var_name != '' %}}
     - name: {{{ rule_title }}} - Ensure the desired value for pam_faillock.so preauth {{{ parameter }}} parameter in auth section
@@ -957,6 +961,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       when:
         - result_pam_faillock_{{{ parameter }}}_parameter_is_present.found > 0
 
+    {{%- if authfail %}}
     - name: {{{ rule_title }}} - Ensure the desired value for pam_faillock.so authfail {{{ parameter }}} parameter in auth section
       ansible.builtin.lineinfile:
         path: "{{ item }}"
@@ -969,6 +974,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
         - /etc/pam.d/password-auth
       when:
         - result_pam_faillock_{{{ parameter }}}_parameter_is_present.found > 0
+    {{%- endif %}}
     {{%- endif %}}
   when:
     - not result_faillock_conf_check.stat.exists
@@ -1094,7 +1100,7 @@ Part of the grub2_bootloader_argument_absent template.
     If the line was already present, but with a different control, the control will be updated.
     Note: If there are multiple lines matching the "group" + "module", no lines will be updated.
     Instead, a new line will be included after the regex informed in "after_match" or at the
-    end of file if "after_match" parameter is empty.
+    end of file if "after_match" parameter is empty or there is no match.
     This is a conservative safeguard for improper use of this macro in rare cases of modules
     configured by multiple lines, like pam_sss.so, pam_faillock.so and pam_lastlog.so. In some
     situations, these special modules may have similar lines sharing the same "group" and "module".
@@ -1150,9 +1156,10 @@ Part of the grub2_bootloader_argument_absent template.
         - result_pam_line_other_control_present.found == 0 or result_pam_line_other_control_present.found > 1
 
     {{{ ansible_apply_authselect_changes() | indent(4) }}}
-      when:
-        - result_authselect_present.stat.exists
-        - (result_pam_module_add is defined and result_pam_module_add.changed) or (result_pam_module_edit is defined and result_pam_module_edit.changed)
+      when: >
+        result_authselect_present is defined and result_authselect_present.stat.exists and
+        ((result_pam_module_add is defined and result_pam_module_add.changed)
+        or (result_pam_module_edit is defined and result_pam_module_edit.changed))
   when:
     - result_pam_line_present.found is defined
     - result_pam_line_present.found == 0
@@ -1431,4 +1438,9 @@ Part of the grub2_bootloader_argument_absent template.
         - result_pam_option_removal is changed
   when:
     - result_pam_file_present.stat.exists
+{{%- endmacro -%}}
+
+
+{{%- macro ansible_partition_conditional(path) -%}}
+'"{{{ path }}}" in ansible_mounts | map(attribute="mount") | list'
 {{%- endmacro -%}}

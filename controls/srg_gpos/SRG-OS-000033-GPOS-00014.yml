@@ -5,6 +5,7 @@ controls:
         title: {{{ full_name }}} must implement DoD-approved encryption to protect the
             confidentiality of remote access sessions.
         rules:
+            - configure_libreswan_crypto_policy
             - sshd_rekey_limit
             - var_rekey_limit_size=1G
             - var_rekey_limit_time=1hour

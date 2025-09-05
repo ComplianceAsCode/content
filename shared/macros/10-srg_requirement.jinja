@@ -6,7 +6,7 @@
 
 #}}
 {{% macro srg_requirement_audit_file_watch_rule(path) %}}
-{{{ full_name }}} must generate audit records for all modifications that affect {{{ path }}}.
+{{{ full_name }}} must generate audit records for all account creations, modifications, disabling, and termination events that affect {{{ path }}}.
 {{%- endmacro %}}
 
 {{#
@@ -39,7 +39,7 @@ Unsuccessful uses of the {{{ event }}} system call in {{{ full_name }}} must gen
 
 #}}
 {{% macro srg_requirement_audit_command(command) %}}
-Successful/unsuccessful uses of the {{{ command }}} command in {{{ full_name }}} must generate an audit record.
+{{{ full_name }}} must audit all uses of the {{{ command }}} command.
 {{%- endmacro %}}
 
 {{#
@@ -50,7 +50,7 @@ Successful/unsuccessful uses of the {{{ command }}} command in {{{ full_name }}}
 
 #}}
 {{% macro srg_requirement_package_removed(package) %}}
-The package {{{ package }}} must be removed in {{{ full_name }}}.
+{{{ full_name }}} must not have the {{{ package }}} package installed.
 {{%- endmacro %}}
 
 {{#
@@ -72,7 +72,7 @@ The kernel module {{{ module }}} must be disabled in {{{ full_name }}}.
 
 #}}
 {{% macro srg_requirement_package_installed(package) %}}
-The {{{ full_name }}} package {{{ package }}} must be installed.
+{{{ full_name }}} must have the {{{ package }}} package installed.
 {{%- endmacro %}}
 
 {{#
@@ -153,7 +153,7 @@ SRG requirement for setting permissions on a file
 
 #}}
 {{% macro srg_requirement_file_permission(file, mode) %}}
-The {{{ full_name }}} {{{ file }}} file must have {{{ mode }}} or less permissive to prevent unauthorized access.
+The {{{ full_name }}} {{{ file }}} file must have mode {{{ mode }}} or less permissive to prevent unauthorized access.
 {{%- endmacro %}}
 
 
@@ -167,7 +167,7 @@ SRG requirement for setting permissions on a directory
 
 #}}
 {{% macro srg_requirement_directory_permission(file, mode) %}}
-The {{{ full_name }}} {{{ file }}} directory must have {{{ mode }}} or less permissive to prevent unauthorized access.
+The {{{ full_name }}} {{{ file }}} directory must have mode {{{ mode }}} or less permissive.
 {{%- endmacro %}}
 
 
@@ -205,5 +205,5 @@ SRG requirement for separate filesystems
 
 #}}
 {{% macro srg_requirement_separate_partition(part) -%}}
-A separate {{{ full_name }}} filesystem must be used for the {{{ part }}} directory.
+{{{ full_name }}} must use a separate file system for {{{ part }}}.
 {{%- endmacro -%}}

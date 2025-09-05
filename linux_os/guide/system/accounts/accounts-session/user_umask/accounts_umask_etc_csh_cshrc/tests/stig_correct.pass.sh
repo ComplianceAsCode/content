@@ -1,6 +1,6 @@
 #!/bin/bash
 # profiles = xccdf_org.ssgproject.content_profile_stig
-# platform = Red Hat Enterprise Linux 8
+# platform = Oracle Linux 8,Red Hat Enterprise Linux 8
 
 sed -i '/umask/d' /etc/csh.cshrc
 echo "umask 077" >> /etc/csh.cshrc

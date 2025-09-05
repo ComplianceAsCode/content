@@ -59,3 +59,9 @@ ocil: |-
     If any output is returned, this is a finding.
 
 platform: machine
+
+warnings:
+    - general: |-
+       This rule only checks the <tt>/etc/securetty</tt> file existence and its content.
+       If you need to restrict user access using the <tt>/etc/securetty</tt> file, make sure
+       the <tt>pam_securetty.so</tt> PAM module is properly enabled in relevant PAM files.

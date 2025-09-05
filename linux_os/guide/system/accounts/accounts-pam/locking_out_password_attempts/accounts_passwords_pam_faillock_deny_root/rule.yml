@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Configure the root Account for Failed Password Attempts'
 
@@ -45,22 +45,24 @@ references:
     stigid@rhel7: RHEL-07-010330
     stigid@rhel8: RHEL-08-020022
 
-ocil_clause: 'limiting the number of failed logon attempts for the root user is not configured'
+ocil_clause: 'the "even_deny_root" option is not set, is missing or commented out'
 
 ocil: |-
-    To ensure that even the <tt>root</tt> account is locked after a defined number of failed password
-    attempts, run the following command:
+    Verify {{{ full_name }}} is configured to lock the root account after {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}
+    unsuccessful logon attempts with the command:
+
     {{% if product in ["rhel7"] %}}
     <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
     For each file, the output should contain <tt>even_deny_root</tt>.
     {{% else %}}
     <pre>$ grep even_deny_root /etc/security/faillock.conf</pre>
-    The output should show <tt>even_deny_root</tt>.
+    even_deny_root
     {{% endif %}}
 
 fixtext: |-
-    To configure the system to lock out the <tt>root</tt> account after a number of incorrect login
+    Configure {{{ full_name }}} to lock out the <tt>root</tt> account after a number of incorrect login
     attempts using <tt>pam_faillock.so</tt>, first enable the feature using the following command:
+
     {{% if product in ["rhel7"] %}}
     $ sudo authconfig --enablefaillock --update
 
@@ -79,9 +81,6 @@ fixtext: |-
     Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
     add or uncomment the following line:
     <pre>even_deny_root</pre>
-
-    add or uncomment the following line:
-    <pre>silent</pre>
     {{% endif %}}
 
 platform: pam

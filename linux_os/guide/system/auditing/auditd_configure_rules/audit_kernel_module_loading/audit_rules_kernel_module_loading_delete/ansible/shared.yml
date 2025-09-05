@@ -4,7 +4,7 @@
 # disruption = low
 # strategy = configure
 
-{{% if product in ["ol8", "rhel8"] %}}
+{{% if product in ["ol7", "ol8"] or 'rhel' in product %}}
 {{% set auid_filters = "-F auid>=" ~ auid ~ " -F auid!=unset" %}}
 {{% else %}}
 {{% set auid_filters = "" %}}

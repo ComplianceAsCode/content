@@ -89,7 +89,7 @@ selections:
 - ensure_redhat_gpgkey_installed
 - grub2_audit_argument
 - grub2_audit_backlog_limit_argument
-- grub2_disable_interactive_boot
+- grub2_disable_recovery
 - grub2_kernel_trust_cpu_rng
 - grub2_page_poison_argument
 - grub2_pti_argument
@@ -242,7 +242,7 @@ selections:
 - var_slub_debug_options=P
 - var_auditd_flush=incremental_async
 - var_accounts_max_concurrent_login_sessions=10
-- var_authselect_profile=sssd
+- var_authselect_profile=minimal
 - var_password_pam_unix_remember=5
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted

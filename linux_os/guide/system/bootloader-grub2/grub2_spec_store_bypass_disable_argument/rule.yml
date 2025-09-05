@@ -15,9 +15,9 @@ description: |-
     <tt>cat /sys/devices/system/cpu/vulnerabilities/spec_store_bypass</tt>
 
     Select the appropriate SSB state by adding the argument
-    <tt>spec_store_bypass_disable={{{ xccdf_value(var_spec_store_bypass_disable_options) }}}</tt> to the default
+    <tt>spec_store_bypass_disable={{{ xccdf_value("var_spec_store_bypass_disable_options") }}}</tt> to the default
     GRUB 2 command line for the Linux operating system.
-    {{{ describe_grub2_argument("spec_store_bypass_disable=xccdf_value(var_spec_store_bypass_disable_options)") | indent(4) }}}
+    {{{ describe_grub2_argument("spec_store_bypass_disable=" + xccdf_value("var_spec_store_bypass_disable_options")) | indent(4) }}}
 
 rationale: |-
     In vulnerable processsors, the speculatively forwarded store can be used in a cache side channel
@@ -36,7 +36,7 @@ identifiers:
 ocil_clause: 'SSB is not configured appropriately'
 
 ocil: |-
-    {{{ ocil_grub2_argument("spec_store_bypass_disable=xccdf_value(var_spec_store_bypass_disable_options)") | indent(4) }}}
+    {{{ ocil_grub2_argument("spec_store_bypass_disable=" + xccdf_value("var_spec_store_bypass_disable_options")) | indent(4) }}}
 
 platform: machine
 

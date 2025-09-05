@@ -949,7 +949,7 @@ cat <<EOF > "$kube_apipath/$machineconfig_apipath"
 }
 EOF
 
-jq_filter='[.items[] | select(.metadata.name | test("^[0-9]{2}-worker$|^[0-9]{2}-master$"))]|map(.spec.fips == true)'
+jq_filter='[.items[] | select(.metadata.name | test("^rendered-worker-[0-9a-z]+$|^rendered-master-[0-9a-z]+$"))] | map(.spec.fips == true)'
 
 # Get filtered path. This will actually be read by the scan
 filteredpath="$kube_apipath/$machineconfig_apipath#$(echo -n "$machineconfig_apipath$jq_filter" | sha256sum | awk '{print $1}')"

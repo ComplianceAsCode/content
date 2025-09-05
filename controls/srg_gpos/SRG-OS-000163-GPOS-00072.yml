@@ -8,12 +8,12 @@ controls:
             10 minutes of inactivity; and for user sessions (non-privileged session), the
             session must be terminated after 15 minutes of inactivity, except to fulfill
             documented and validated mission requirements.'
-        #rules:
-            #- sshd_set_idle_timeout
-            #- sshd_set_keepalive
-            #- sshd_set_keepalive_0
-            #- accounts_tmout
-            #- var_accounts_tmout=10_min
+        rules:
+            - sshd_set_idle_timeout
+            - sshd_set_keepalive
+            - sshd_set_keepalive_0
+            - accounts_tmout
+            - var_accounts_tmout=10_min
         status: does not meet
         status_justification: |-
             {{{ full_name }}} does not have configuration options to

@@ -50,6 +50,9 @@ controls:
             - file_permissions_cron_monthly
             - file_permissions_cron_weekly
             - file_permissions_crontab
+            - file_permissions_cron_allow
+            - file_owner_cron_allow
+            - file_groupowner_cron_allow
             - file_groupowner_sshd_config
             - file_owner_sshd_config
             - file_permissions_sshd_config
@@ -84,6 +87,7 @@ controls:
             - package_iprutils_removed
             - package_tuned_removed
             - package_gdm_removed
+            - package_xorg-x11-server-common_removed
 
             # package installed
             - package_openssh-clients_installed
@@ -93,7 +97,6 @@ controls:
             - package_rsyslog_installed
             - package_firewalld_installed
             - package_gnutls-utils_installed
-            - package_nss-tools_installed
             - package_rng-tools_installed
             - package_MFEhiplsm_installed
             - package_policycoreutils-python-utils_installed
@@ -111,6 +114,7 @@ controls:
             - mount_option_nodev_removable_partitions
             - mount_option_noexec_removable_partitions
             - mount_option_nosuid_removable_partitions
+            - mount_option_krb_sec_remote_filesystems
 
             # sshd config
             - sshd_disable_compression
@@ -146,6 +150,7 @@ controls:
             - sysctl_net_ipv4_conf_all_rp_filter
             - sysctl_net_ipv4_conf_all_secure_redirects
             - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+            - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
             - sysctl_net_ipv4_tcp_syncookies
             - sysctl_net_ipv4_conf_all_send_redirects
             - sysctl_net_ipv4_conf_default_accept_redirects
@@ -181,6 +186,7 @@ controls:
             - dconf_gnome_disable_automount_open
             - dconf_gnome_disable_autorun
             - dconf_gnome_disable_ctrlaltdel_reboot
+            - dconf_db_up_to_date
 
             # partition
             - partition_for_home
@@ -210,20 +216,24 @@ controls:
             # grub2
             - grub2_vsyscall_argument
             - grub2_page_poison_argument
+            - grub2_disable_interactive_boot
 
             # network
             - configured_firewalld_default_deny
             - network_configure_name_resolution
             - network_sniffer_disabled
             - postfix_prevent_unrestricted_relay
+            - set_firewalld_default_zone
+            - firewalld_sshd_port_enabled
             
             # misc
+            - enable_authselect
             - no_host_based_files
             - no_user_host_based_files
             - tftpd_uses_secure_mode
             - display_login_attempts
             - installed_OS_is_vendor_supported
-            - rpm_verify_hashes
             - security_patches_up_to_date
+            - grub2_kernel_trust_cpu_rng
 
         status: automated

@@ -15,4 +15,4 @@ echo "{{{ SYSCTLVAR }}} = {{{ SYSCTL_CORRECT_VALUE }}}" >> /etc/sysctl.d/90-test
 # and add a symlink
 ln -s /etc/sysctl.d/90-test.conf /etc/sysctl.d/99-sysctl.conf
 
-sysctl -w {{{ SYSCTLVAR }}}={{{ SYSCTL_CORRECT_VALUE }}}
+sysctl -w {{{ SYSCTLVAR }}}="{{{ SYSCTL_CORRECT_VALUE }}}"

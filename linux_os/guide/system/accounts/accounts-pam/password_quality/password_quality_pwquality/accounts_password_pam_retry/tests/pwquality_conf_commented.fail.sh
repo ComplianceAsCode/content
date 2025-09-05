@@ -1,7 +1,9 @@
 #!/bin/bash
 # packages = authselect
-# platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
+# platform = Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
 # variables = var_password_pam_retry=3
+
+source common.sh
 
 CONF_FILE="/etc/security/pwquality.conf"
 
@@ -12,6 +14,9 @@ else
 	echo "# retry = $retry_cnt" >> "$CONF_FILE"
 fi
 
-authselect select minimal --force
-{{{ bash_remove_pam_module_option_configuration('/etc/pam.d/system-auth', 'password', '', 'pam_pwquality.so', 'retry') }}}
-{{{ bash_remove_pam_module_option_configuration('/etc/pam.d/password-auth', 'password', '', 'pam_pwquality.so', 'retry') }}}
+for file in ${configuration_files[@]}; do
+	echo "password required pam_pwquality.so" >> \
+		"/etc/authselect/custom/testingProfile/$file"
+done
+
+authselect apply-changes

@@ -32,6 +32,7 @@ references:
     cis@sle12: 5.5.5
     cis@sle15: 5.4.5
     cis@ubuntu2004: 5.4.4
+    cis@ubuntu2204: 5.4.4
     cobit5: APO13.01,BAI03.01,BAI03.02,BAI03.03
     disa: CCI-000366
     isa-62443-2009: 4.3.4.3.3
@@ -43,20 +44,32 @@ references:
     stigid@ol8: OL08-00-020353
     stigid@rhel8: RHEL-08-020353
 
-ocil_clause: 'the above command returns no output, or the umask is configured incorrectly'
+ocil_clause: |-
+    the value for the "umask" parameter is not "{{{ xccdf_value("var_accounts_user_umask") }}}",
+    or the "umask" parameter is missing or is commented out
 
 ocil: |-
-    Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/profile</tt> file by
-    running the following command:
-    <pre>$ sudo grep "umask" /etc/profile</pre>
-    All output must show the value of <tt>umask</tt> set as shown in the below:
+    Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/profile</tt> file
+    with the following command:
+    <pre>$ grep "umask" /etc/profile</pre>
     <pre>umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
 fixtext: |-
-    Configure the {{{ full_name }}} to define default permissions for all authenticated users in such a way that the user can only read and modify their own files.
+    Configure {{{ full_name }}} to define default permissions for all authenticated users in such
+    a way that the user can only read and modify their own files.
 
-    Add or edit the lines for the "umask" parameter in the "/etc/profile" files to "{{{ xccdf_value("var_accounts_user_umask") }}}":
+    Add or edit the lines for the "umask" parameter in the "/etc/profile" file to "{{{ xccdf_value("var_accounts_user_umask") }}}":
 
     umask {{{ xccdf_value("var_accounts_user_umask") }}}
 
-srg_requirement: '{{{ full_name }}} must define default permissions for logon and non-logon shells.'
+checktext: |-
+    Verify the "umask" setting is configured correctly in the "/etc/profile" file with the
+    following command:
+    Note: If the value of the "umask" parameter is set to "000" in "/etc/profile" file, the
+    Severity is raised to a CAT I.
+    $ grep umask /etc/profile
+    umask {{{ xccdf_value("var_accounts_user_umask") }}}
+    If the value for the <tt>umask</tt> parameter is not "{{{ xccdf_value("var_accounts_user_umask") }}}",
+    or the "umask" parameter is missing or is commented out, this is a finding.
+
+srg_requirement: '{{{ full_name }}} must define default permissions for the system default profile.'

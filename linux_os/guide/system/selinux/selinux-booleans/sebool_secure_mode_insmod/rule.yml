@@ -1,13 +1,13 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4
+prodtype: ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
-title: 'Disable the secure_mode_insmod SELinux Boolean'
+title: 'Configure the secure_mode_insmod SELinux Boolean'
 
 description: |-
     By default, the SELinux boolean <tt>secure_mode_insmod</tt> is disabled.
-    If this setting is enabled, it should be disabled.
-    {{{ describe_sebool_disable(sebool="secure_mode_insmod") }}}
+    This setting should be configured to {{{ xccdf_value("var_secure_mode_insmod") }}}.
+    <br/>{{{ describe_sebool_var(sebool="secure_mode_insmod") }}}
 
 rationale: ""
 
@@ -20,8 +20,10 @@ identifiers:
     cce@rhel7: CCE-82308-8
     cce@rhel8: CCE-83310-3
     cce@rhel9: CCE-84087-6
+    cce@sle12: CCE-91576-9
+    cce@sle15: CCE-91266-7
 
-{{{ complete_ocil_entry_sebool_disabled(sebool="secure_mode_insmod") }}}
+{{{ complete_ocil_entry_sebool_var(sebool="secure_mode_insmod") }}}
 
 template:
     name: sebool

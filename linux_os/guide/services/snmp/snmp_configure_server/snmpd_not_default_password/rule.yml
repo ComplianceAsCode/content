@@ -7,7 +7,7 @@ title: 'Ensure Default SNMP Password Is Not Used'
 description: |-
     Edit <tt>/etc/snmp/snmpd.conf</tt>, remove or change the default community strings of
     <tt>public</tt> and <tt>private</tt>.
-    This profile configures new read-only community string to <tt>{{{ sub_var_value("var_snmpd_ro_string") }}}</tt> and read-write community string to <tt>{{{ sub_var_value("var_snmpd_rw_string") }}}</tt>.
+    This profile configures new read-only community string to <tt>{{{ xccdf_value("var_snmpd_ro_string") }}}</tt> and read-write community string to <tt>{{{ sub_var_value("var_snmpd_rw_string") }}}</tt>.
     Once the default community strings have been changed, restart the SNMP service:
     <pre>$ sudo service snmpd restart</pre>
 

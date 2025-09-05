@@ -368,12 +368,34 @@ class RuleChecker(oscap.Checker):
                 new_sbr[rule_id] = RuleTestContent(scenarios, other_content)
         return new_sbr
 
+    def _find_tests_paths(self, rule, template_builder, product_yaml):
+        # Start by checking for templating tests
+        templated_tests_paths = common.fetch_templated_tests_paths(
+            rule, template_builder, product_yaml)
+
+        # Add additional tests from the local rule directory. Note that,
+        # like the behavior in template_tests, this will overwrite any
+        # templated tests with the same file name.
+        local_tests_paths = common.fetch_local_tests_paths(rule.directory)
+
+        for filename in local_tests_paths:
+            templated_tests_paths.pop(filename, None)
+        if self.target_type != "template":
+            for filename in self.used_templated_test_scenarios[rule.template]:
+                templated_tests_paths.pop(filename, None)
+            self.used_templated_test_scenarios[rule.template] |= set(
+                templated_tests_paths.keys())
+        return templated_tests_paths.values(), local_tests_paths.values()
+
     def _load_all_tests(self, rule):
         product_yaml = common.get_product_context(self.test_env.product)
         # Initialize a mock template_builder.
         empty = "/ssgts/empty/placeholder"
         template_builder = ssg.templates.Builder(
             product_yaml, empty, common._SHARED_TEMPLATES, empty, empty)
+
+        templated_tests_paths, local_tests_paths = self._find_tests_paths(
+            rule, template_builder, product_yaml)
 
         # All tests is a mapping from path (in the tarball) to contents
         # of the test case. This is necessary because later code (which
@@ -382,29 +404,13 @@ class RuleChecker(oscap.Checker):
         # here, we can save later code from having to understand the
         # templating system.
         all_tests = dict()
-
-        # Start by checking for templating tests and provision them if
-        # present.
-        all_templated_test_scenarios = common.fetch_templated_test_scenarios(
-            rule.rule, template_builder, rule.local_env_yaml)
-        templated_test_scenarios = common.apply_test_config(
-            rule.directory, product_yaml, all_templated_test_scenarios)
-
-        # Add additional tests from the local rule directory. Note that,
-        # like the behavior in template_tests, this will overwrite any
-        # templated tests with the same file name.
-        local_test_scenarios = common.fetch_local_test_scenarios(
-            rule.directory, rule.local_env_yaml)
-
-        for filename in local_test_scenarios:
-            templated_test_scenarios.pop(filename, None)
-        if self.target_type != "template":
-            for filename in self.used_templated_test_scenarios[rule.template]:
-                templated_test_scenarios.pop(filename, None)
-            self.used_templated_test_scenarios[rule.template] |= set(
-                templated_test_scenarios.keys())
-        all_tests.update(templated_test_scenarios)
-        all_tests.update(local_test_scenarios)
+        templated_tests = common.load_templated_tests(
+            templated_tests_paths, template_builder, rule.rule.template,
+            rule.local_env_yaml)
+        local_tests = common.load_local_tests(
+            local_tests_paths, rule.local_env_yaml)
+        all_tests.update(templated_tests)
+        all_tests.update(local_tests)
         return all_tests
 
     def _get_rule_test_content(self, rule):
@@ -507,7 +513,7 @@ class RuleChecker(oscap.Checker):
                     log_file)
             if result.returncode:
                 msg = (
-                    "Error changing value of '{varname}': {stdout}"
+                    "Error changing value of '{varname}': {stderr}"
                     .format(varname=varname, stderr=result.stderr)
                 )
                 raise RuntimeError(msg)
@@ -583,8 +589,18 @@ class Scenario():
                 self.contents, re.MULTILINE)
             if found is None:
                 continue
-            splitted = found.group(1).split(',')
-            params[parameter] = [value.strip() for value in splitted]
+            if parameter == "variables":
+                variables = []
+                for token in found.group(1).split(','):
+                    token = token.strip()
+                    if '=' in token:
+                        variables.append(token)
+                    else:
+                        variables[-1] += "," + token
+                params["variables"] = variables
+            else:
+                splitted = found.group(1).split(',')
+                params[parameter] = [value.strip() for value in splitted]
 
         if not params["profiles"]:
             params["profiles"].append(OSCAP_PROFILE_ALL_ID)

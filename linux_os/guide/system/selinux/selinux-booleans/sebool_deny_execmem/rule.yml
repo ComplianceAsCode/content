@@ -1,13 +1,13 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4
+prodtype: ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
-title: 'Enable the deny_execmem SELinux Boolean'
+title: 'Configure the deny_execmem SELinux Boolean'
 
 description: |-
     By default, the SELinux boolean <tt>deny_execmem</tt> is disabled.
-    If this setting is disabled, it should be enabled.
-    {{{ describe_sebool_disable(sebool="deny_execmem") }}}
+    This setting should be configured to {{{ xccdf_value("var_deny_execmem") }}}.
+    <br/>{{{ describe_sebool_var(sebool="deny_execmem") }}}
 
 rationale: |-
     Allowing user domain applications to map a memory region as both writable and
@@ -19,18 +19,21 @@ identifiers:
     cce@rhel7: CCE-82290-8
     cce@rhel8: CCE-83307-9
     cce@rhel9: CCE-84082-7
+    cce@sle12: CCE-91575-1
+    cce@sle15: CCE-91265-9
 
 references:
     anssi: BP28(R67)
 
-{{{ complete_ocil_entry_sebool_enabled(sebool="deny_execmem") }}}
+{{{ complete_ocil_entry_sebool_var(sebool="deny_execmem") }}}
 
 warnings:
     - general: |-
         This rule doesn't come with a remediation, as enabling this SELinux boolean can cause
         applications to malfunction, for example Graphical login managers and Firefox.
     - functionality: |-
-        Proper function and stability should be assessed before applying enabling the SELinux boolean in production systems.
+        Proper function and stability should be assessed before applying enabling the SELinux
+        boolean in production systems.
 
 template:
     name: sebool

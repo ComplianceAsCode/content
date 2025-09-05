@@ -1,6 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="chronyd_client_only" version="1">
-    {{{ oval_metadata("Configure the port setting in {{{ chrony_conf_path }}} to disable
+    {{{ oval_metadata("Configure the port setting in " ~ chrony_conf_path ~ " to disable
       server operation.") }}}
     <criteria operator="AND">
       <extend_definition definition_ref="service_chronyd_enabled" comment="service chronyd enabled" />

@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox must be configured to not delete data upon shutdown.'
+
+description: |-
+    The default certificate to present may be configured by setting multiple options
+    under <tt>SanitizeOnShutdown</tt> key.
+    <ul>
+    <li><tt>Cache</tt> = <tt>false</tt></li>
+    </ul>
+
+rationale: |-
+    For diagnostic purposes, data must remain behind when the browser is closed. This is required to meet non-repudiation controls.
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7 a
+    stigid@firefox: FFOX-00-000017
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Require default personal certificate be chosen every time
+        policies:
+          - {path: "SanitizeOnShutdown", parameter: "Cache", value: false}
+          - {path: "SanitizeOnShutdown", parameter: "Cookies", value: false}
+          - {path: "SanitizeOnShutdown", parameter: "Downloads", value: false}
+          - {path: "SanitizeOnShutdown", parameter: "FormData", value: false}
+          - {path: "SanitizeOnShutdown", parameter: "History", value: false}
+          - {path: "SanitizeOnShutdown", parameter: "Sessions", value: false}
+          - {path: "SanitizeOnShutdown", parameter: "SiteSettings", value: false}
+          - {path: "SanitizeOnShutdown", parameter: "OfflineApps", value: false}
+          - {path: "SanitizeOnShutdown", parameter: "Locked", value: true}

@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 8
+# platform = Oracle Linux 8,Red Hat Enterprise Linux 8
 
 cat > /etc/profile.d/openssl-rand.sh <<- 'EOM'
 # provide a default -rand /dev/random option to openssl commands that

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Encrypt Partitions'
 
@@ -103,4 +103,18 @@ fixtext: |-
     Encrypting a partition in an already installed system is more difficult, because existing partitions will need to be resized and changed.
     To encrypt an entire partition, dedicate a partition for encryption in the partition layout.
 
-srg_requirement: 'All {{{ full_name }}} local disk partitions must implement cryptographic mechanisms to prevent unauthorized disclosure or modification of all information that requires at rest protection.'
+srg_requirement: |-
+    {{{ full_name }}} local disk partitions must implement cryptographic mechanisms to prevent unauthorized disclosure or modification of all information that requires at-rest protection.
+
+checktext: |-
+    Verify {{{ full_name }}} prevents unauthorized disclosure or modification of all information requiring at-rest protection by using disk encryption.
+
+    If there is a documented and approved reason for not having data-at-rest encryption, this requirement is Not Applicable.
+
+    Verify all system partitions are encrypted with the following command:
+
+    $ blkid
+
+    /dev/map per/rhel-root:  UUID="67b7d7fe-de60-6fd0-befb-e6748cf97743" TYPE="crypto_LUKS"
+
+    Every persistent disk partition present must be of type "crypto_LUKS". If any partitions other than the boot partition or pseudo file systems (such as /proc or /sys) or temporary file systems (that are tmpfs) are not type "crypto_LUKS", ask the administrator to indicate how the partitions are encrypted.  If there is no evidence that these partitions are encrypted, this is a finding.

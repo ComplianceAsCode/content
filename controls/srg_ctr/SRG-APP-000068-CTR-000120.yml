@@ -6,7 +6,118 @@ controls:
     Consent Banner before granting access to platform components.
   rules:
   - banner_or_login_template_set
-  - classification_banner
-  - oauth_login_template_set
   - openshift_motd_exists
   status: automated
+  check: |-
+    From a web browser, go to the Openshift web console to login (logout
+    if already logged in). Verify that the DOD notice and consent banner is
+    displayed before proceeding to the login page.
+
+    If the DOD notice and consent banner is not displayed, this is a finding.
+
+    To verify that the OpenShift CLI tool is configured to display the DoD 
+    Notice and Consent Banner do eith of the following steps:
+
+    Login to OpenShift using the oc cli tool
+
+    > oc login -u <USER> <OPENSHIFT_URL>
+    enter password when prompted
+
+    If the DoD Notice and Consent Banner is not displayed, this is a finding.
+
+    Or
+
+    Verify that motd config map exists and contains the DoD Notice and Constent Banner
+
+    > oc describe configmap/motd -n openshift
+
+    If the configmap does not exist, or it does not contain the DoD Notice
+    and Constent Banner text in the message data attribute, this is a finding.
+  fixtext: |-
+    The following steps may be used to provide a custom login page that will
+    diplay the DOD notice and consent banner. This will replace OpenShift's
+    default login page and the login providers selection page. Please note
+    that deending on the number and type of identity providers configured,
+    it is possible that these pages will not be used. If that is the case,
+    then it is the responsibility of the identity provider being used to
+    display the DOD notice and consent banner.
+    
+    1. Create a login page template
+    
+    > oc adm create-login-template > login.html
+
+    2. Create a providers page template
+    
+    > oc adm create-provider-selection-template > providers.html
+    
+    3. Edit each template to add the DOD notice and consent banner by adding
+    the following lines at the end of the html body. In addition, any look
+    and feel custimizations should also be applied to the pages.
+
+        <script type="text/javascript">
+          window.onload = function(){
+                    alert("You are accessing a U.S. Government (USG)
+                    Information System (IS) that is provided for USG-authorized
+                    use only. By using this IS (which includes any device
+                    attached to this IS), you consent to the following
+                    conditions:\n\n-The USG routinely intercepts and monitors
+                    communications on this IS for purposes including, but
+                    not limited to, penetration testing, COMSEC monitoring,
+                    network operations and defense, personnel misconduct
+                    (PM), law enforcement (LE), and counterintelligence (CI)
+                    investigations.\n\n-At any time, the USG may inspect and
+                    seize data stored on this IS.\n\n-Communications using,
+                    or data stored on, this IS are not private, are subject to
+                    routine monitoring, interception, and search, and may be
+                    disclosed or used for any USG-authorized purpose.\n\n-This
+                    IS includes security measures (e.g., authentication and
+                    access controls) to protect USG interests--not for your
+                    personal benefit or privacy.\n\n-Notwithstanding the above,
+                    using this IS does not constitute consent to PM, LE or
+                    CI investigative searching or monitoring of the content
+                    of privileged communications, or work product, related
+                    to personal representation or services by attorneys,
+                    psychotherapists, or clergy, and their assistants. Such
+                    communications and work product are private and
+                    confidential. See User Agreement for details.");
+          }
+        </script>
+
+    4. Add custom login pages to OpenShift
+
+    > oc create secret generic login-template --from-file=login.html \
+    -n openshift-config > oc create secret generic providers-template \
+    --from-file=providers.html -n openshift-config > oc patch oauths cluster \
+    --type='json' -p '[{ "op":"add","path":"/spec/templates", \
+    "value":{"login": { "name": "login-template" }, \
+    "providerSelection": { "name": "providers-template" }}}]'
+    
+    The following command will create a configmap that diplays the DOD notice
+    and consent banner when logging in using the OpenShift CLI tool (oc)
+
+    > echo 'apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: motd
+      namespace: openshift
+    data:
+      message: "You are accessing a U.S. Government (USG) Information System
+      (IS) that is provided for USG-authorized use only. By using this IS
+      (which includes any device attached to this IS), you consent to the
+      following conditions:\n\n-The USG routinely intercepts and monitors
+      communications on this IS for purposes including, but not limited to,
+      penetration testing, COMSEC monitoring, network operations and defense,
+      personnel misconduct (PM), law enforcement (LE), and counterintelligence
+      (CI) investigations.\n\n-At any time, the USG may inspect and seize data
+      stored on this IS.\n\n-Communications using, or data stored on, this
+      IS are not private, are subject to routine monitoring, interception,
+      and search, and may be disclosed or used for any USG-authorized
+      purpose.\n\n-This IS includes security measures (e.g., authentication
+      and access controls) to protect USG interests--not for your personal
+      benefit or privacy.\n\n-Notwithstanding the above, using this IS
+      does not constitute consent to PM, LE or CI investigative searching
+      or monitoring of the content of privileged communications, or work
+      product, related to personal representation or services by attorneys,
+      psychotherapists, or clergy, and their assistants. Such communications
+      and work product are private and confidential. See User Agreement for
+      details."' | oc apply -f -

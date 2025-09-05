@@ -9,7 +9,7 @@ description: |-
     to change its root directory at startup. To do so, ensure
     <tt>/etc/xinetd.d/tftp</tt> includes <tt>-s</tt> as a command line argument, as shown in
     the following example:
-    <pre>server_args = -s {{{ sub_var_value("var_tftpd_secure_directory") }}}</pre>
+    <pre>server_args = -s {{{ xccdf_value("var_tftpd_secure_directory") }}}</pre>
 
 rationale: |-
     Using the <tt>-s</tt> option causes the TFTP service to only serve files from the
@@ -54,11 +54,11 @@ ocil: |-
     Verify <tt>tftp</tt> is configured by with the <tt>-s</tt> option by
     running the following command:
     <pre>grep "server_args" /etc/xinetd.d/tftp</pre>
-    <pre>server_args = -s {{{ sub_var_value("var_tftpd_secure_directory") }}}</pre>
+    <pre>server_args = -s {{{ xccdf_value("var_tftpd_secure_directory") }}}</pre>
 
 fixtext: |-
     Configure the TFTP daemon to operate in secure mode by adding the following line to "/etc/xinetd.d/tftp" (or modify the line to have the required value):
 
-    server_args = -s {{{ sub_var_value("var_tftpd_secure_directory") }}}
+    server_args = -s {{{ xccdf_value("var_tftpd_secure_directory") }}}
 
 srg_requirement: 'If the Trivial File Transfer Protocol (TFTP) server is required, the {{{ full_name }}} TFTP daemon must be configured to operate in secure mode.'

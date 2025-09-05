@@ -5,21 +5,23 @@
       <criterion comment="Check Defaults !targetpw exists in /etc/sudoers file" test_ref="test_sudoers_targetpw_config" />
       <criterion comment="Check Defaults !rootpw exists in /etc/sudoers file" test_ref="test_sudoers_rootpw_config" />
       <criterion comment="Check Defaults !runaspw exists in /etc/sudoers file" test_ref="test_sudoers_runaspw_config" />
-      <criterion comment="Verify that results come from only one file" test_ref="test_sudoers_passwd_n_files" />
+      <criterion comment="Check Defaults targetpw is not defined in /etc/sudoers file" test_ref="test_sudoers_targetpw_not_defined" />
+      <criterion comment="Check Defaults rootpw is not defined in /etc/sudoers file" test_ref="test_sudoers_rootpw_not_defined" />
+      <criterion comment="Check Defaults runaspw is not defined in /etc/sudoers file" test_ref="test_sudoers_runaspw_not_defined" />
       </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="Ensure invoking user's password for privilege escalation when using sudo"
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Ensure invoking user's password for privilege escalation when using sudo"
   id="test_sudoers_targetpw_config" version="1">
     <ind:object object_ref="object_test_sudoers_targetpw_config" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="Ensure invoking user's password for privilege escalation when using sudo"
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Ensure invoking user's password for privilege escalation when using sudo"
   id="test_sudoers_rootpw_config" version="1">
     <ind:object object_ref="object_test_sudoers_rootpw_config" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="Ensure invoking user's password for privilege escalation when using sudo"
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Ensure invoking user's password for privilege escalation when using sudo"
   id="test_sudoers_runaspw_config" version="1">
     <ind:object object_ref="object_test_sudoers_runaspw_config" />
   </ind:textfilecontent54_test>
@@ -42,33 +44,37 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:variable_test check="all" check_existence="all_exist"
-  comment="Verify that results come from only one file"
-  id="test_sudoers_passwd_n_files" version="1">
-    <ind:object object_ref="obj_sudoers_passwd_n_files" />
-    <ind:state state_ref="state_sudoers_passwd_n_files" />
-  </ind:variable_test>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="Ensure invoking user's password for privilege escalation when using sudo"
+  id="test_sudoers_targetpw_not_defined" version="1">
+    <ind:object object_ref="object_test_sudoers_targetpw_not_defined" />
+  </ind:textfilecontent54_test>
 
-  <ind:variable_object id="obj_sudoers_passwd_n_files" version="1">
-    <ind:var_ref>local_variable_counter_sudoers_passwd_n_files</ind:var_ref>
-  </ind:variable_object>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="Ensure invoking user's password for privilege escalation when using sudo"
+  id="test_sudoers_rootpw_not_defined" version="1">
+    <ind:object object_ref="object_test_sudoers_rootpw_not_defined" />
+  </ind:textfilecontent54_test>
 
-  <ind:variable_state id="state_sudoers_passwd_n_files" version="1">
-    <ind:value operation="equals" datatype="int">1</ind:value>
-  </ind:variable_state>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="Ensure invoking user's password for privilege escalation when using sudo"
+  id="test_sudoers_runaspw_not_defined" version="1">
+    <ind:object object_ref="object_test_sudoers_runaspw_not_defined" />
+  </ind:textfilecontent54_test>
 
-  <local_variable comment="Items counter" datatype="int" 
-  id="local_variable_counter_sudoers_passwd_n_files" version="1">
-    <count>
-      <unique> 
-        <object_component object_ref="object_test_sudoers_targetpw_config"
-        item_field="filepath" />
-        <object_component object_ref="object_test_sudoers_rootpw_config"
-        item_field="filepath" />
-        <object_component object_ref="object_test_sudoers_runaspw_config"
-        item_field="filepath" />
-      </unique>
-    </count>
-  </local_variable>
+  <ind:textfilecontent54_object id="object_test_sudoers_targetpw_not_defined" version="1">
+    <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
+    <ind:pattern operation="pattern match">^Defaults targetpw$\r?\n</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_test_sudoers_rootpw_not_defined" version="1">
+    <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
+    <ind:pattern operation="pattern match">^Defaults rootpw$\r?\n</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_test_sudoers_runaspw_not_defined" version="1">
+    <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
+    <ind:pattern operation="pattern match">^Defaults runaspw$\r?\n</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 
 </def-group>

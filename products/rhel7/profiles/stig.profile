@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R7
+    version: V3R8
     SMEs:
         - ggbecker
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux V3R7.
+    DISA STIG for Red Hat Enterprise Linux V3R8.
 
     In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -230,6 +230,7 @@ selections:
     - audit_rules_privileged_commands_postqueue
     - audit_rules_privileged_commands_ssh_keysign
     - audit_rules_privileged_commands_crontab
+    - audit_rules_privileged_commands_kmod
     - audit_rules_privileged_commands_pam_timestamp_check
     - audit_rules_kernel_module_loading_init
     - audit_rules_kernel_module_loading_finit
@@ -330,3 +331,5 @@ selections:
     - sebool_ssh_sysadm_login
     - sudoers_default_includedir
     - package_aide_installed
+    - selinux_context_elevation_for_sudo
+    - audit_rules_kernel_module_loading_create

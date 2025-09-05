@@ -3,4 +3,165 @@ controls:
   levels:
   - medium
   title: {{{ full_name }}} must initiate session auditing upon startup.
-  status: pending
+  rules:
+  - cluster_logging_operator_exist
+  - audit_log_forwarding_enabled
+  status: automated
+  check: |-
+    Determine if cluster log forwarding is configured by performing the
+    following commands.
+
+    Verify that the cluster-logging operator is installed:
+
+    > oc get subscription/cluster-logging -n openshift-logging 
+    NAME            PACKAGE         SOURCE            CHANNEL 
+    cluster-logging cluster-logging redhat-operators  stable
+
+    If the cluster-logging operator is not present, this is a finding.
+
+    List the cluster log forwarders defined:
+
+    > oc get clusterlogforwarder -n openshift-logging
+
+    If there are no clusterlogforwarders defined, this is a finding.
+
+    For each cluster log forwarder listed above, view the configuration details:
+
+    > oc describe clusterlogforwarder/<CLF_NAME> -n openshift-logging
+
+    Review the details of the cluster log forwarder. If the configuration is
+    not set to forward logs the organization's centralized logging service,
+    this is a finding.
+  fixtext: |-
+    To resolve this, the OpenShift Cluster Logging operator first needs to
+    be installed, then the Cluster Log Forwarder is configured to forward
+    logs to a centralized log aggregation service.
+
+    In order to install the OpenShift Cluter Logging operator, Run the
+    following command to apply the subscription manifests to your cluster:
+
+    > oc apply -f - << 'EOF' --- 
+    apiVersion: project.openshift.io/v1 
+    kind:Project 
+    metadata:
+      labels:
+        kubernetes.io/metadata.name: openshift-logging
+        openshift.io/cluster-monitoring: "true"
+      name: openshift-logging
+    spec: {} 
+    ...  
+    --- 
+    apiVersion: operators.coreos.com/v1 
+    kind: OperatorGroup
+    metadata:
+      name: openshift-logging 
+      namespace: openshift-logging
+    spec:
+      targetNamespaces: 
+      - openshift-logging
+    ...  
+    --- 
+    apiVersion: operators.coreos.com/v1alpha1 
+    kind: Subscription
+    metadata:
+      labels:
+        operators.coreos.com/cluster-logging.openshift-logging: ""
+      name: cluster-logging 
+      namespace: openshift-logging
+    spec:
+      channel: stable 
+      installPlanApproval: Automatic 
+      name: cluster-logging
+      source: redhat-operators 
+      sourceNamespace: openshift-marketplace
+    ...  
+    EOF
+
+    After the OpenShift Logging operator has finished installing, you can
+    create a ClusterLogForwarder instance to forward cluster logs to a log
+    aggregator. A basic configuration that would forward OpenShift audit,
+    application, and infrastructure logs to an rsyslog server that you manage
+    separately, and is configured for mTLS authentication over TCP when
+    sending Audit logs but traditional UDP access for other types of logs,
+    can be provided by editing the appropriate values in the Secret resource
+    below and changing the "url" parameters in the "outputs" section of the
+    "spec" below, then running the command to apply it like this: 
+
+    oc apply -f - << 'EOF' 
+    --- 
+    apiVersion: v1 
+    kind: Secret 
+    metadata:
+      name: rsyslog-tls-secret 
+      namespace: openshift-logging
+    data:
+      tls.crt: <base64 encoded client certificate> 
+      tls.key: <base64 encoded client key> 
+      ca-bundle.crt: <base64 encoded CA bundle that signed the
+      certificate of your rsyslog server>
+    ...  
+    --- 
+    apiVersion: logging.openshift.io/v1 
+    kind: ClusterLogForwarder
+    metadata:
+      name: instance 
+      namespace: openshift-logging
+    spec:
+      outputs: 
+      - name: rsyslog-audit
+        type: syslog 
+        syslog:
+          facility: security 
+          rfc: RFC5424 
+          severity: Informational
+          appName: openshift 
+          msgID: audit 
+          procID: audit
+        url: 'tls://rsyslogserver.example.com:514' 
+        secret:
+          name: rsyslog-tls-secret
+      - name: rsyslog-apps
+        type: syslog 
+        syslog:
+          facility: user 
+          rfc: RFC5424 
+          severity: Informational 
+          appName: openshift 
+          msgID: apps 
+          procID: apps
+        url: 'udp://rsyslogserver.example.com:514'
+      - name: rsyslog-infra
+        type: syslog 
+        syslog:
+          facility: local0 
+          rfc: RFC5424 
+          severity: Informational 
+          appName: openshift 
+          msgID: infra 
+          procID: infra
+        url: 'udp://rsyslogserver.example.com:514'
+      pipelines: 
+      - name: audit-logs
+        inputRefs:
+          - audit
+        outputRefs:
+          - rsyslog-audit
+      - name: apps-logs
+        inputRefs:
+          - application
+        outputRefs:
+          - rsyslog-apps
+      - name: infrastructure-logs
+        inputRefs:
+          - infrastructure
+        outputRefs:
+          - rsyslog-infra
+    ...  
+    EOF
+
+    Please note that many log forwarding destinations are
+    supported, and the fix does not require that you forward your
+    audit logs to rsyslog over mTLS. To better understand how to
+    configure the ClusterLogForwarder for your infrastructure and
+    environment, please consult the OpenShift Logging documentation:
+    https://docs.openshift.com/container-platform/latest/logging/cluster-logging-external.html

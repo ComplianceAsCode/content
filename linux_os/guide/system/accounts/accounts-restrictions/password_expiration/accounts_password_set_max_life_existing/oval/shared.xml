@@ -1,25 +1,28 @@
 <def-group>
-  <definition class="compliance" id="accounts_password_set_max_life_existing" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
       {{{ oval_metadata("Set Existing Passwords Maximum Age") }}}
     <criteria operator="AND">
-        <criterion comment="Passwords must be restricted to the appropriate maximum age for existing accounts." test_ref="test_password_max_life_existing" />
-        <criterion comment="Passwords must have a maximum lifetime greater than or equal minimum password age." test_ref="test_password_max_life_existing_minimum" />
+        <criterion test_ref="test_password_max_life_existing"
+          comment="Passwords must be restricted to the appropriate maximum age for existing accounts."/>
+        <criterion test_ref="test_password_max_life_existing_minimum"
+          comment="Passwords must have a maximum lifetime greater than or equal minimum password age."/>
     </criteria>
   </definition>
 
-  <!-- Define a test for the shadow file for non-system accounts to look for the maximum password change interval. -->
-  <unix:shadow_test
-      id="test_password_max_life_existing" 
-      check="all"
-      check_existence="at_least_one_exists"
-      version="1" 
-      comment="Password maximum lifetime for existing accounts is at least the minimum.">
+  <!-- Define a test for the shadow file for non-system accounts to look for the maximum
+       password change interval. -->
+  <unix:shadow_test id="test_password_max_life_existing" version="1"
+    check="all" check_existence="at_least_one_exists"
+    comment="Password maximum lifetime for existing accounts is at least the minimum.">
     <unix:object object_ref="object_shadow_password_users_max_life_existing"/>
     <unix:state state_ref="max_password_change_interval"/>
   </unix:shadow_test>
 
-  <!-- Define a second test to ensure the maximum password life is at least the defined minimum (usually 1). -->
-  <unix:shadow_test id="test_password_max_life_existing_minimum"  check="all" check_existence="at_least_one_exists" version="1" comment="Password maximum life entry is at least a defined minimum">
+  <!-- Define a second test to ensure the maximum password life is at least the defined
+       minimum (usually 1). -->
+  <unix:shadow_test id="test_password_max_life_existing_minimum" version="1"
+    check="all" check_existence="at_least_one_exists"
+    comment="Password maximum life entry is at least a defined minimum">
     <unix:object object_ref="object_shadow_password_users_max_life_existing"/>
     <unix:state state_ref="min_max_password_change_interval"/>
   </unix:shadow_test>
@@ -28,31 +31,24 @@
     <unix:username operation="pattern match">.*</unix:username>
   </unix:shadow_object>
 
-  <unix:shadow_state id="min_max_password_change_interval" version="1" comment="change passwords every minimum interval or more">
-    <unix:chg_req
-      operation="greater than or equal"
-      datatype="int"
+  <unix:shadow_state id="min_max_password_change_interval" version="1"
+    comment="change passwords every minimum interval or more">
+    <unix:password operation="pattern match" mask="true">.*</unix:password>
+    <unix:chg_req operation="greater than or equal" datatype="int"
       var_ref="var_accounts_minimum_age_login_defs"/>
   </unix:shadow_state>
 
-  <unix:shadow_state id="max_password_change_interval" version="1" comment="change passwords at at the recommended interval or less">
-    <unix:chg_req
-      operation="less than or equal"
-      datatype="int"
+  <unix:shadow_state id="max_password_change_interval" version="1"
+    comment="change passwords at the recommended interval or less">
+    <unix:password operation="pattern match" mask="true">.*</unix:password>
+    <unix:chg_req operation="less than or equal" datatype="int"
       var_ref="var_accounts_maximum_age_login_defs"/>
   </unix:shadow_state>
 
-  <!-- these external variables are defined at the group level, reusing the account-level definitions. -->
-  <external_variable
-      comment="Maximum password age"
-      datatype="int"
-      id="var_accounts_maximum_age_login_defs"
-      version="1" />
-
-  <external_variable
-      comment="Minimum password age"
-      datatype="int"
-      id="var_accounts_minimum_age_login_defs"
-      version="1" />
-
+  <!-- these external variables are defined at the group level,
+       reusing the account-level definitions. -->
+  <external_variable id="var_accounts_maximum_age_login_defs" datatype="int" version="1"
+                     comment="Maximum password age"/>
+  <external_variable id="var_accounts_minimum_age_login_defs" datatype="int" version="1"
+                     comment="Minimum password age"/>
 </def-group>

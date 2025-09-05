@@ -38,6 +38,7 @@ references:
     cis@sle12: 6.2.3
     cis@sle15: 6.2.3
     cis@ubuntu2004: 6.2.2
+    cis@ubuntu2204: 6.2.2
     cobit5: APO01.06,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.02,DSS06.03,DSS06.10
     cui: 3.1.1,3.1.5
     disa: CCI-000366
@@ -57,17 +58,18 @@ references:
     stigid@sle12: SLES-12-010650
     stigid@sle15: SLES-15-020100
 
-ocil_clause: 'any account other than root has a UID of 0'
+ocil_clause: 'any accounts other than "root" have a UID of "0"'
 
 ocil: |-
-    Check the system for duplicate UID "0" assignments with the following command:
-    <pre>$ awk -F: '($3 == \"0\") {print}' /etc/passwd</pre>
+    Verify that only the "root" account has a UID "0" assignment with the
+    following command:
+    <pre>$ awk -F: '$3 == 0 {print $1}' /etc/passwd</pre>
+    <pre>root</pre>
 
 fixtext: |-
     Change the UID of any account on the system, other than root, that has a UID of "0".
-
-    If the account is associated with system commands or applications, the UID should be changed to one greater than "0" but less than "1000".
-    Otherwise, assign a UID of greater than "1000" that has not already been assigned.
-
+    If the account is associated with system commands or applications, the UID
+    should be changed to one greater than "0" but less than "1000". Otherwise,
+    assign a UID of greater than "1000" that has not already been assigned.
 
 srg_requirement: 'The root account must be the only account having unrestricted access to the {{{ full_name }}} system.'

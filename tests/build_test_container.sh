@@ -139,6 +139,6 @@ test -n "$public_key" || public_key=$(ls "$HOME"/.ssh/*.pub | head -n 1)
 test -f "$public_key" || die "Couldn't find your public key, specify its location as the script's argument."
 
 # build without context
-podman build --build-arg ADDITIONAL_PACKAGES="${_arg_package[*]}" --build-arg CLIENT_PUBLIC_KEY="$(cat "$public_key")" -t ssg_test_suite - < "$script_dir/../Dockerfiles/test_suite-$_arg_flavor"
+podman build --build-arg ADDITIONAL_PACKAGES="${_arg_package[*]}" --build-arg CLIENT_PUBLIC_KEY="$(cat "$public_key")" -t "${_arg_name}" - < "$script_dir/../Dockerfiles/test_suite-$_arg_flavor"
 
 # ] <-- needed because of Argbash

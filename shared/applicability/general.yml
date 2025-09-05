@@ -77,6 +77,20 @@ cpes:
       bash_conditional: {{{ bash_pkg_conditional("pam") }}}
       ansible_conditional: {{{ ansible_pkg_conditional("pam") }}}
 
+  - partition-var-tmp:
+      name: "cpe:/a:partition-var-tmp"
+      title: "There is a /var/tmp partition"
+      check_id: installed_env_mounts_var_tmp
+      bash_conditional: {{{ bash_partition_conditional("/var/tmp") }}}
+      ansible_conditional: {{{ ansible_partition_conditional("/var/tmp") }}}
+
+  - partition-tmp:
+      name: "cpe:/a:partition-tmp"
+      title: "There is a /tmp partition"
+      check_id: installed_env_mounts_tmp
+      bash_conditional: {{{ bash_partition_conditional("/tmp") }}}
+      ansible_conditional: {{{ ansible_partition_conditional("/tmp") }}}
+
   - polkit:
       name: "cpe:/a:polkit"
       title: "Package polkit is installed"

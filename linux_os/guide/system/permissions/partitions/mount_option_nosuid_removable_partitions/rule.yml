@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu1804
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu1804
 
 title: 'Add nosuid Option to Removable Media Partitions'
 
@@ -58,11 +58,11 @@ ocil: |-
     Verify file systems that are used for removable media are mounted with the "nosuid" option with the following command:
 
     $ sudo more /etc/fstab
-    
+
     UUID=2bc871e4-e2a3-4f29-9ece-3be60c835222 /mnt/usbflash vfat noauto,owner,ro,nosuid,nodev,noexec 0 0
 
 fixtext: |-
-    Configure the "/etc/fstab" to use the "nosuid" option on file systems that are associated with removable media. 
+    Configure the "/etc/fstab" to use the "nosuid" option on file systems that are associated with removable media.
 
 srg_requirement: '{{{ full_name }}} must prevent files with the setuid and setgid bit set from being executed on file systems that are used with removable media.'
 

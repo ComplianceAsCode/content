@@ -1,14 +1,14 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9
 
 title: 'Enable SLUB/SLAB allocator poisoning'
 
 description: |-
     To enable poisoning of SLUB/SLAB objects,
-    add the argument <tt>slub_debug=P</tt> to the default
+    add the argument <tt>slub_debug={{{ xccdf_value("var_slub_debug_options") }}}</tt> to the default
     GRUB 2 command line for the Linux operating system.
-    {{{ describe_grub2_argument("slub_debug=P") | indent(4) }}}
+    {{{ describe_grub2_argument("slub_debug=" ~ xccdf_value("var_slub_debug_options") ) | indent(4) }}}
 
 rationale: |-
     Poisoning writes an arbitrary value to freed objects, so any modification or
@@ -34,7 +34,7 @@ references:
 ocil_clause: 'SLUB/SLAB poisoning is not enabled'
 
 ocil: |-
-    {{{ ocil_grub2_argument("slub_debug=P") | indent(4) }}}
+    {{{ ocil_grub2_argument("slub_debug=" ~ xccdf_value("var_slub_debug_options")) | indent(4) }}}
 
 platform: grub2
 
@@ -45,7 +45,7 @@ template:
         arg_variable: var_slub_debug_options
 
 fixtext: |-
-    {{{ describe_grub2_argument("slub_debug=P") | indent(4) }}}
+    {{{ describe_grub2_argument("slub_debug=" ~ xccdf_value("var_slub_debug_options")) | indent(4) }}}
 
 srg_requirement: |-
     {{{ full_name }}} must clear SLUB/SLAB objects to prevent use-after-free attacks.

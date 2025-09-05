@@ -1,8 +1,19 @@
 ---
 # platform = multi_platform_ocp
-# {{.var_kubelet_tls_cipher_suites_regex}} we have to put variable array name here for mutilines remediation 
 apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
+metadata:
+  annotations:
+    complianceascode.io/node-role: "{{.var_role_worker}}"
+spec:
+  kubeletConfig:
+    tlsCipherSuites: [{{.var_kubelet_tls_cipher_suites}}]
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  annotations:
+    complianceascode.io/node-role: "{{.var_role_master}}"
 spec:
   kubeletConfig:
     tlsCipherSuites: [{{.var_kubelet_tls_cipher_suites}}]

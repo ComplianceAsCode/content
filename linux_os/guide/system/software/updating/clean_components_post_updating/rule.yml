@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure {{{ pkg_manager }}} Removes Previous Package Versions'
 
@@ -54,13 +54,13 @@ references:
     vmmsrg: SRG-OS-000437-VMM-001760
 
 ocil_clause: |-
-    {{% if 'sle' in product %}}
+    {{%- if 'sle' in product %}}
     'solver.upgradeRemoveDroppedPackages is not enabled or configured correctly'
-    {{% elif 'ubuntu' in product %}}
+    {{%- elif 'ubuntu' in product %}}
     '::Remove-Unused-Dependencies and ::Remove-Unused-Kernel-Packages is not
     enabled or configured correctly'
-    {{% else %}}
-    'clean_requirements_on_remove is not enabled or configured correctly'
+    {{%- else %}}
+    '"clean_requirements_on_remove" is not set to "1"'
     {{% endif %}}
 
 ocil: |-
@@ -78,23 +78,21 @@ ocil: |-
     <pre>Unattended-Upgrade::Remove-Unused-Dependencies "true";
     Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";</pre>
     {{% else %}}
-    To verify that <tt>clean_requirements_on_remove</tt> is configured properly, run the
-    following command:
     <pre>$ grep clean_requirements_on_remove {{{ pkg_manager_config_file }}}</pre>
-    The output should return something similar to:
     <pre>clean_requirements_on_remove=1</pre>
     {{% endif %}}
 
 {{% if product in ['fedora'] or 'rhel' in product %}}
 fixtext: |-
     Configure {{{ full_name }}} to remove all software components after updated versions have been installed.
-    
+
     Edit the file {{{ pkg_manager_config_file }}} by adding or editing the following line:
 
     <pre>clean_requirements_on_remove=1</pre>
 {{% endif %}}
 
-srg_requirement: '{{{ pkg_manager }}} must remove all software components after updated versions have been installed on {{{ full_name }}}.'
+srg_requirement: |-
+    {{{ full_name }}} must remove all software components after updated versions have been installed.
 
 {{% if 'sle' in product %}}
 platform: zypper

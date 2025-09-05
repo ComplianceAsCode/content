@@ -1,10 +1,10 @@
 #!/bin/bash
 # Based on shared/templates/grub2_bootloader_argument/tests/arg_not_there.fail.sh
-# platform = Red Hat Enterprise Linux 8
+# platform = Oracle Linux 8,Red Hat Enterprise Linux 8
 
 # Removes audit argument from kernel command line in /boot/grub2/grubenv
 file="/boot/grub2/grubenv"
-if grep -q '^.*random.trust_cpu=.*'  "$file" ; then
+if grep -q '^.*random\.trust_cpu=.*'  "$file" ; then
 	sed -i 's/\(^.*\)random.trust_cpu=[^[:space:]]*\(.*\)/\1 \2/'  "$file"
 fi
 

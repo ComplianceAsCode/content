@@ -1,10 +1,10 @@
-{{%- if product in ["fedora", "ol8", "rhel8", "rhel9", "sle12", "sle15", "ubuntu2004"] %}}
+{{%- if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
   {{%- set perm_x="-F perm=x " %}}
 {{%- endif %}}
 
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure auditd Collects Information on the Use of Privileged Commands - sudoedit'
 
@@ -44,6 +44,7 @@ identifiers:
 references:
     cis-csc: 1,12,13,14,15,16,2,3,5,6,7,8,9
     cis@ubuntu2004: 4.1.11
+    cis@ubuntu2204: 4.1.11
     cobit5: APO10.01,APO10.03,APO10.04,APO10.05,APO11.04,BAI03.05,DSS01.03,DSS03.05,DSS05.02,DSS05.04,DSS05.05,DSS05.07,MEA01.01,MEA01.02,MEA01.03,MEA01.04,MEA01.05,MEA02.01
     cui: 3.1.7
     disa: CCI-000130,CCI-000135,CCI-000169,CCI-000172,CCI-002884

@@ -7,7 +7,7 @@ title: 'Verify the UEFI Boot Loader grub.cfg Permissions'
 
 description: |-
     File permissions for <tt>{{{ grub2_uefi_boot_path }}}/grub.cfg</tt> should be set to 700.
-    {{{ describe_file_permissions(file="{{{ grub2_uefi_boot_path }}}/grub.cfg", perms="700") }}}
+    {{{ describe_file_permissions(file=grub2_uefi_boot_path ~ "/grub.cfg", perms="700") }}}
 
 rationale: |-
     Proper permissions ensure that only the root user can modify important boot

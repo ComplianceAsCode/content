@@ -39,7 +39,7 @@ cat << EOF > /kubernetes-api-resources/apis/oauth.openshift.io/v1/oauthclients
             "apiVersion": "oauth.openshift.io/v1",
             "grantMethod": "auto",
             "kind": "OAuthClient",
-            "accessTokenInactivityTimeoutSeconds": "10m0s",
+            "accessTokenInactivityTimeoutSeconds": "600",
             "metadata": {
                 "creationTimestamp": "2022-06-20T15:52:50Z",
                 "name": "openshift-browser-client",

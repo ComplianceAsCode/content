@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: ocp4
 
-platform: ocp4-node
+platform: ocp4
 
 title: "Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers"
 
@@ -37,8 +37,8 @@ rationale: |-
 
 severity: medium
 
-#identifiers:
-#    cce@ocp4:
+identifiers:
+    cce@ocp4: CCE-86030-4
 
 references:
   cis@ocp4: 4.2.13
@@ -50,7 +50,7 @@ ocil_clause: "TLS cipher suite configuration is not configured or contains insec
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep tlsCipherSuites /etc/kubernetes/kubelet.conf</pre>
+    <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1"' | grep tlsCipherSuites; done</pre>
     Verify that the set of ciphers contains only the following:
     <pre>
     TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
@@ -59,11 +59,10 @@ ocil: |-
     TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
     </pre>
 
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
+
 
 template:
-  name: yamlfile_value
-  vars:
-    filepath: /etc/kubernetes/kubelet.conf
-    yamlpath: ".tlsCipherSuites[:]"
-    xccdf_variable: var_kubelet_tls_cipher_suites_regex
-    regex_data: true
+    name: kubelet_combine

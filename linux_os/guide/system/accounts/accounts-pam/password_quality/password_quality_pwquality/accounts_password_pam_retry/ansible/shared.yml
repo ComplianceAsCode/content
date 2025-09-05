@@ -3,15 +3,38 @@
 # strategy = configure
 # complexity = low
 # disruption = medium
+{{% if 'ubuntu' in product %}}
+{{% set configuration_files = ["common-password"] %}}
+{{% elif product in ['ol8', 'ol9', 'rhel8', 'rhel9'] %}}
+{{% set configuration_files = ["password-auth","system-auth"] %}}
+{{% else %}}
+{{% set configuration_files = ["system-auth"] %}}
+{{% endif %}}
+
 {{{ ansible_instantiate_variables("var_password_pam_retry") }}}
 
-{{% if product in ['rhel8', 'rhel9'] -%}}
+{{% if product in ['ol8', 'ol9', 'rhel8', 'rhel9'] -%}}
 - name: Ensure PAM variable retry is set accordingly
   ansible.builtin.lineinfile:
     create: yes
     dest: "/etc/security/pwquality.conf"
-    regexp: '^#?\s*retry'
+    regexp: '^\s*retry'
     line: "retry = {{ var_password_pam_retry }}"
+{{% for cfile in configuration_files %}}
+{{{ ansible_remove_pam_module_option_configuration(pam_file='/etc/pam.d/' ~ cfile,
+                                                   group='password',
+                                                   control=".*",
+                                                   module='pam_pwquality.so',
+                                                   option='retry') }}}
+{{% endfor %}}
 {{%- else -%}}
-{{{ ansible_ensure_pam_module_option('/etc/pam.d/system-auth', 'password', 'requisite', 'pam_pwquality.so', 'retry', '{{ var_password_pam_retry }}', '^account.*required.*pam_permit.so') }}}
+{{% for cfile in configuration_files %}}
+{{{ ansible_ensure_pam_module_option('/etc/pam.d/' ~ cfile,
+                                     'password',
+                                     'requisite',
+                                     'pam_pwquality.so',
+                                     'retry',
+                                     '{{ var_password_pam_retry }}',
+                                     '^\s*account') }}}
+{{% endfor %}}
 {{%- endif %}}

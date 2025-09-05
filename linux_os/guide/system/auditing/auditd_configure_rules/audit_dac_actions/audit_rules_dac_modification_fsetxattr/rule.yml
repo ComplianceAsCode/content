@@ -9,24 +9,24 @@ description: |-
     startup (the default), add the following line to a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
     <pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-{{%- if product in ["ol8", "rhel8", "rhel9"] %}}
+{{%- if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
     <pre>-a always,exit -F arch=b32 -S fsetxattr -F auid=0 -F key=perm_mod</pre>
 {{%- endif %}}
     If the system is 64 bit then also add the following line:
     <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-{{%- if product in ["ol8", "rhel8", "rhel9"] %}}
+{{%- if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
     <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid=0 -F key=perm_mod</pre>
 {{%- endif %}}
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following line to
     <tt>/etc/audit/audit.rules</tt> file:
     <pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-{{%- if product in ["ol8", "rhel8", "rhel9"] %}}
+{{%- if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
     <pre>-a always,exit -F arch=b32 -S fsetxattr -F auid=0 -F key=perm_mod</pre>
 {{%- endif %}}
     If the system is 64 bit then also add the following line:
     <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-{{%- if product in ["ol8", "rhel8", "rhel9"] %}}
+{{%- if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
     <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid=0 -F key=perm_mod</pre>
 {{%- endif %}}
 
@@ -54,6 +54,7 @@ references:
     cis@sle12: 4.1.9
     cis@sle15: 4.1.9
     cis@ubuntu2004: 4.1.9
+    cis@ubuntu2204: 4.1.9
     cjis: 5.4.1.1
     cobit5: APO10.01,APO10.03,APO10.04,APO10.05,APO11.04,APO12.06,APO13.01,BAI03.05,BAI08.02,DSS01.03,DSS01.04,DSS02.02,DSS02.04,DSS02.07,DSS03.01,DSS03.05,DSS05.02,DSS05.03,DSS05.04,DSS05.05,DSS05.07,MEA01.01,MEA01.02,MEA01.03,MEA01.04,MEA01.05,MEA02.01
     cui: 3.1.7

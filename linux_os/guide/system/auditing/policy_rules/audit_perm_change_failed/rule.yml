@@ -31,7 +31,7 @@ severity: medium
 # so do not apply this rule but apply the specific one instead
 {{% if product == "rhel9" %}}
 platforms:
-    - not aarch64_arch
+    - not aarch64_arch and not ppc64le_arch
 {{% endif %}}
 
 identifiers:

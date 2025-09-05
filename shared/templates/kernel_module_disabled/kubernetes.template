@@ -15,5 +15,5 @@ spec:
       - contents:
           source: data:,install%20{{{ KERNMODULE | urlencode }}}%20/bin/true%0Ablacklist%20{{{ KERNMODULE | urlencode }}}%0A
         mode: 0644
-        path: /etc/modprobe.d/75-kernel_module_{{{ KERNMODULE }}}_disabled.conf
+        path: /etc/modprobe.d/{{{ KERNMODULE }}}.conf
         overwrite: true

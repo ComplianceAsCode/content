@@ -1,0 +1,51 @@
+# platform = multi_platform_all
+# reboot = false
+# complexity = low
+# disruption = low
+# strategy = configure
+
+# What architecture are we on?
+
+- name: Set architecture for audit finit_module tasks
+  set_fact:
+    audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
+
+- name: Perform remediation of Audit rules for finit_module for x86 platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="",
+      syscalls=["create_module"],
+      key="module-change",
+      syscall_grouping=[],
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="",
+      syscalls=["create_module"],
+      key="module-change",
+      syscall_grouping=[],
+      )|indent(4) }}}
+
+- name: Perform remediation of Audit rules for finit_module for x86_64 platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters="",
+      syscalls=["create_module"],
+      key="module-change",
+      syscall_grouping=[],
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters="",
+      syscalls=["create_module"],
+      key="module-change",
+      syscall_grouping=[],
+      )|indent(4) }}}
+  when: audit_arch == "b64"
+

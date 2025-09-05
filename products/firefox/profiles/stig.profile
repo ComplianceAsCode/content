@@ -1,11 +1,11 @@
 documentation_complete: true
 
 metadata:
-   version: V6R1
+   version: V6R3
    SMEs:
        - lenox-joseph
 
-title: 'Upstream Firefox STIG'
+title: 'Mozilla Firefox STIG'
 
 description: |-
     This profile is developed under the DoD consensus model and DISA FSO Vendor STIG process,
@@ -23,34 +23,37 @@ description: |-
 
 selections:
     - var_default_home_page=about_blank
-    - firefox_preferences-dod_root_certificate_installed
-    - firefox_preferences-enable_ca_trust
-    - firefox_preferences-addons_plugin_updates
-    - firefox_preferences-auto-download_actions
-    - firefox_preferences-autofill_forms
-    - firefox_preferences-autofill_passwords
-    - firefox_preferences-background_data
-    - firefox_preferences-development_tools
-    - firefox_preferences-dod_root_certificate_installed
-    - firefox_preferences-enable_ca_trust
-    - firefox_preferences-install_extensions
-    - firefox_preferences-javascript_context_menus
-    - firefox_preferences-javascript_window_changes
-    - firefox_preferences-javascript_window_resizing
-    - firefox_preferences-lock_settings_obscure
-    - firefox_preferences-lock_settings_config_file
-    - firefox_preferences-open_confirmation
-    - firefox_preferences-password_store
-    - firefox_preferences-pop-up_windows
-    - firefox_preferences-search_update
-    - firefox_preferences-shell_protocol
-    - firefox_preferences-ssl_protocol_tls
-    - firefox_preferences-verification
     - installed_firefox_version_supported
-    - firefox_preferences-telemetry
-    - firefox_preferences-cryptomining
-    - firefox_preferences-disable_ssl_weak_ciphers
-    - firefox_preferences-enhanced_tracking
-    - firefox_preferences-extension_recommendation
-    - firefox_preferences-fingerprinting-protection
-    - firefox_preferences-telemetry-archive
+    - firefox_policy-addons_permission
+    - firefox_policy-autoplay_video
+    - firefox_policy-cryptomining
+    - firefox_policy-development_tools
+    - firefox_policy-disable_deprecated_ciphers
+    - firefox_policy-disable_form_history
+    - firefox_policy-disable_pocket
+    - firefox_policy-disable_studies
+    - firefox_policy-dns_over_https
+    - firefox_policy-encrypted_media_extensions
+    - firefox_policy-enhanced_tracking
+    - firefox_policy-extension_recommendation
+    - firefox_policy-extension_update
+    - firefox_policy-feedback_reporting
+    - firefox_policy-fingerprinting_protection
+    - firefox_policy-forget_button
+    - firefox_policy-javascript_window_changes
+    - firefox_policy-javascript_window_resizing
+    - firefox_policy-network_prediction
+    - firefox_policy-no_sanitize_on_shutdown
+    - firefox_policy-nonessential_capabilities
+    - firefox_policy-password_manager
+    - firefox_policy-pop-up_windows
+    - firefox_policy-private_browsing
+    - firefox_policy-search_suggestion
+    - firefox_policy-search_update
+    - firefox_policy-ssl_minimum_version
+    - firefox_policy-sync
+    - firefox_policy-telemetry
+    - firefox_policy-user_messaging
+    - firefox_policy-verification
+    - firefox_preferences-auto-download_actions
+    - firefox_preferences-dod_root_certificate

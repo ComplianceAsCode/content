@@ -104,18 +104,6 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
 </xsl:stylesheet>
 EOF
 
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-byref.xslt 
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-<xsl:import href="../../../shared/transforms/shared_xccdf2table-byref.xslt"/>
-
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-</xsl:stylesheet>
-EOF
-
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cce="http://cce.mitre.org" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -248,41 +236,6 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:cci="https://public.cyber.mil/stigs/cci" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ovalns="http://oval.mitre.org/XMLSchema/oval-definitions-5">
 
 <xsl:import href="../../../shared/transforms/shared_xccdf2table-profileccirefs.xslt"/>
-
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-</xsl:stylesheet>
-EOF
-
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilecisrefs.xslt
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-<xsl:import href="../../../shared/transforms/shared_xccdf2table-profilecisrefs.xslt"/>
-
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-</xsl:stylesheet>
-EOF
-
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilenistrefs.xslt
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-<xsl:import href="../../../shared/transforms/shared_xccdf2table-profilenistrefs.xslt"/>
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-</xsl:stylesheet>
-EOF
-
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-stig.xslt
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-<xsl:import href="../../../shared/transforms/shared_xccdf2table-stig.xslt"/>
 
 <xsl:include href="constants.xslt"/>
 <xsl:include href="table-style.xslt"/>

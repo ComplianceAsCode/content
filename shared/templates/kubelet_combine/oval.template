@@ -1,0 +1,10 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("The combined kubeletconfig check") }}}
+
+    <criteria operator="AND">
+      <extend_definition comment="check kubeletconfig worker" definition_ref="{{{ rule_id }}}_worker" />
+      <extend_definition comment="check kubeletconfig master" definition_ref="{{{ rule_id }}}_master" />
+    </criteria>
+  </definition>
+</def-group>

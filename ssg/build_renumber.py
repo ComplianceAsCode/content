@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 import sys
 import collections
+import os
 
 
 from .constants import oval_namespace, XCCDF11_NS, cce_uri, ocil_cs, ocil_namespace
@@ -26,12 +27,13 @@ class FileLinker(object):
     CHECK_SYSTEM = None
     CHECK_NAMESPACE = None
 
-    def __init__(self, translator, xccdftree, checks):
+    def __init__(self, translator, xccdftree, checks, output_file_name):
         self.translator = translator
         self.checks_related_to_us = self._get_related_checks(checks)
         self.fname = self._get_input_fname()
         self.tree = None
-        self.linked_fname = self.fname.replace("unlinked", "linked")
+        self.linked_fname = output_file_name
+        self.linked_fname_basename = os.path.basename(self.linked_fname)
         self.xccdftree = xccdftree
 
     def _get_related_checks(self, checks):
@@ -100,7 +102,7 @@ class FileLinker(object):
         checkid = self.translator.generate_id(
             self._get_checkid_string(), checkcontentref.get("name"))
         checkcontentref.set("name", checkid)
-        checkcontentref.set("href", self.linked_fname)
+        checkcontentref.set("href", self.linked_fname_basename)
 
         variable_str = "{%s}variable" % self.CHECK_NAMESPACE
         for checkexport in checkexports:
@@ -113,8 +115,9 @@ class OVALFileLinker(FileLinker):
     CHECK_SYSTEM = oval_cs
     CHECK_NAMESPACE = oval_ns
 
-    def __init__(self, translator, xccdftree, checks):
-        super(OVALFileLinker, self).__init__(translator, xccdftree, checks)
+    def __init__(self, translator, xccdftree, checks, output_file_name):
+        super(OVALFileLinker, self).__init__(
+            translator, xccdftree, checks, output_file_name)
         self.oval_groups = None
 
     def _get_checkid_string(self):
@@ -225,7 +228,7 @@ class OVALFileLinker(FileLinker):
                       "out which variables it needs." % (def_id), file=sys.stderr)
                 continue
             all_vars |= resolve_definition(self.oval_groups, extended_def)
-        for varname in all_vars:
+        for varname in sorted(all_vars):
             export = ET.Element("{%s}check-export" % XCCDF11_NS)
             export.attrib["export-name"] = varname
             export.attrib["value-id"] = varname
@@ -411,6 +414,9 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
 
         # This is the required XCCDF 'type' for <xccdf:Value> derived
         # from OVAL variable 'datatype' and mapping above
+        assert ovalvartype in OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS, \
+            ('datatype not known: "%s" "%s known types "%s"' %
+             (ovalvarid, ovalvartype, OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS))
         reqxccdftype = OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS[ovalvartype]
         # Compare the actual value of 'type' of <xccdf:Value> with the requirement
         if xccdfvartype != reqxccdftype:

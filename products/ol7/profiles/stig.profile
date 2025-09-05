@@ -4,7 +4,7 @@ title: 'DISA STIG for Oracle Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux V2R7.
+    DISA STIG for Oracle Linux V2R8.
 
 selections:
     - login_banner_text=dod_banners

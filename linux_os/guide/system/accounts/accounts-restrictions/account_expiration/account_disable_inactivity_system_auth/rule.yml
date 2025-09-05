@@ -1,0 +1,64 @@
+documentation_complete: true
+
+prodtype: ol8,ol9
+
+title: 'Set Account Expiration Following Inactivity in system-auth'
+
+description: |-
+    Verify the account identifiers (individuals, groups, roles, and devices) are disabled after
+    {{{ xccdf_value("var_account_disable_inactivity") }}} or less days of inactivity by
+    checking the account inactivity value with the following command:
+    <pre>grep 'inactive\|pam_unix' /etc/pam.d/password-auth | grep -w auth
+    
+    auth required pam_lastlog.so inactive=35
+    auth sufficient pam_unix.so</pre>
+    The line with the inactive parameter should be placed before <tt>pam_unix.so</tt> module as in
+    the example output.
+
+rationale: |-
+    Inactive identifiers pose a risk to systems and applications because attackers may exploit an
+    inactive identifier and potentially obtain undetected access to the system. Owners of inactive
+    accounts will not notice if unauthorized access to their user account has been obtained.
+
+severity: medium
+
+references:
+    disa: CCI-000795
+    nist: IA-4(e)
+    srg: SRG-OS-000118-GPOS-00060
+    stigid@ol8: OL08-00-020260
+
+platform: pam
+
+ocil_clause: 'the value of inactive is incorrect or is not set before pam_unix.so'
+
+ocil: |-
+    To verify the <tt>inactive</tt> setting, run the following command:
+    <pre>$ grep 'inactive\|pam_unix' /etc/pam.d/system-auth | grep -w auth</pre>
+    The output should indicate the <tt>inactive</tt> configuration option is set
+    to an appropriate integer between 1 and
+    {{{ xccdf_value("var_account_disable_inactivity") }}}; and should appear
+    before the <tt>pam_unix.so</tt> module as shown in the example below:
+    <pre>$ grep 'inactive\|pam_unix' /etc/pam.d/system-auth | grep -w auth
+    auth required pam_lastlog.so inactive={{{
+    xccdf_value("var_account_disable_inactivity") }}}
+    auth sufficient pam_unix.so</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable account identifiers after
+    {{{ xccdf_value("var_account_disable_inactivity") }}} days of inactivity.
+    Add or correct the following line in <tt>/etc/pam.d/system-auth</tt>:
+    <pre>auth required pam_lastlog.so inactive=<i>{{{
+    xccdf_value("var_account_disable_inactivity") }}}</i></pre>
+    This line should be placed before <tt>pam_unix.so</tt> module as in the line:
+    <pre>auth sufficient pam_unix.so</pre>
+    A recommendation is {{{ xccdf_value("var_account_disable_inactivity") }}} days, but a
+    lower value is acceptable.
+
+warnings:
+    - general: |-
+       If the system relies on <tt>authselect</tt> tool to manage PAM settings, the remediation
+       will also use <tt>authselect</tt> tool. However, if any manual modification was made in
+       PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
+       aborted in order to preserve intentional changes. In this case, an informative message will
+       be shown in the remediation report.

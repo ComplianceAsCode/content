@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Set Account Expiration Following Inactivity'
 
@@ -41,6 +41,7 @@ references:
     cis@sle12: 5.5.1.5
     cis@sle15: 5.4.1.5
     cis@ubuntu2004: 5.4.1.4
+    cis@ubuntu2204: 5.4.1.4
     cjis: 5.6.2.1.1
     cobit5: DSS01.03,DSS03.05,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     cui: 3.5.6
@@ -73,7 +74,7 @@ ocil: |-
     INACTIVE={{{ xccdf_value("var_account_disable_post_pw_expiration") }}}</pre>
 
 fixtext: |-
-    Configure {{{ full_name }}} to disable account identifiers after {{{ xccdf_value("var_account_disable_post_pw_expiration") }}} days of inactivity after the password expiration. 
+    Configure {{{ full_name }}} to disable account identifiers after {{{ xccdf_value("var_account_disable_post_pw_expiration") }}} days of inactivity after the password expiration.
 
     Run the following command to change the configuration for useradd:
 

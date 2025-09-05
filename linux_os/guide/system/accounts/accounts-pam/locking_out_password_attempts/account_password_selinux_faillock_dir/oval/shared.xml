@@ -1,0 +1,54 @@
+{{% set faillock_files = ["/etc/pam.d/password-auth",
+                          "/etc/pam.d/system-auth",
+                          "/etc/security/faillock.conf"] %}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+  {{{ oval_metadata("An SELinux Context must be configued for the Faillock directory.") }}}
+    <criteria operator="OR">
+      <criterion test_ref="test_account_password_selinux_faillock_dir"
+                 comment="The faillock directories should have faillog_t as context"/>
+      <criterion test_ref="test_account_password_selinux_faillock_dir_not_set"
+                 comment="There is no faillock directory set in pam_faillock.so settings"/>
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_object id="object_account_password_selinux_faillock_dir_collector" version="1">
+    <ind:filepath operation="pattern match">{{{ faillock_files | join("|")}}}</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*(?:auth.*pam_faillock\.so.*)?dir\s*=\s*(\S+)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_account_password_selinux_faillock_dir_collector" version="1"
+    datatype="string" comment="List of directories defined in pam_faillock.so dir parameters">
+    <object_component item_field="subexpression"
+                      object_ref="object_account_password_selinux_faillock_dir_collector"/>
+  </local_variable>
+
+  <linux:selinuxsecuritycontext_test id="test_account_password_selinux_faillock_dir" version="2"
+    check="all" check_existence="all_exist"
+    comment="faillog_t context is set in pam_faillock.so tally directories">
+    <linux:object object_ref="object_account_password_selinux_faillock_dir"/>
+    <linux:state state_ref="state_account_password_selinux_faillock_dir"/>
+  </linux:selinuxsecuritycontext_test>
+
+  <linux:selinuxsecuritycontext_object id="object_account_password_selinux_faillock_dir"
+    comment="SELinux context information from pam_faillock.so tally directories" version="1">
+    <linux:path operation="equals" var_check="at least one"
+                var_ref="var_account_password_selinux_faillock_dir_collector"/>
+    <linux:filename xsi:nil="true"/>
+  </linux:selinuxsecuritycontext_object>
+
+  <linux:selinuxsecuritycontext_state id="state_account_password_selinux_faillock_dir" version="1"
+    comment="faillog_t context is set">
+    <linux:type datatype="string" operation="equals">faillog_t</linux:type>
+  </linux:selinuxsecuritycontext_state>
+
+  <ind:variable_test id="test_account_password_selinux_faillock_dir_not_set" check="all"
+                     check_existence="none_exist" version="1"
+                     comment="Check the existence of faillock tally dirs">
+    <ind:object object_ref="object_account_password_selinux_faillock_dir_not_set"/>
+  </ind:variable_test>
+
+  <ind:variable_object id="object_account_password_selinux_faillock_dir_not_set" version="1">
+    <ind:var_ref>var_account_password_selinux_faillock_dir_collector</ind:var_ref>
+  </ind:variable_object>
+</def-group>

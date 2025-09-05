@@ -1,4 +1,4 @@
-# platform = multi_platform_all
+# platform = multi_platform_rhel,multi_platform_rhv,multi_platform_sle
 
 {{{ bash_instantiate_variables("var_postfix_root_mail_alias") }}}
 

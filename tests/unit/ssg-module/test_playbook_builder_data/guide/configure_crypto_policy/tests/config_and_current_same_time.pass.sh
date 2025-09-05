@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
+# platform = Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
 # packages = crypto-policies-scripts
 
 # IMPORTANT: This is a false negative scenario.

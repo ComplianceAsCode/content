@@ -13,7 +13,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_{{{ OPTION }}}_sudoers" version="1">
     <ind:filepath operation="pattern match">^/etc/sudoers(|\.d/.*)$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*Defaults.*\b{{{ OPTION_REGEX }}}.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*Defaults[\s]*\b{{{ OPTION_REGEX }}}.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal" >1</ind:instance>
   </ind:textfilecontent54_object>
 

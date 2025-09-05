@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'number of days after the last login of the user when the user will be locked out'
+
+description: |-
+    'This option is specific for the auth or account phase. It specifies the number of days after
+    the last login of the user when the user will be locked out by the pam_lastlog module.'
+
+type: number
+
+interactive: false
+
+options:
+    "0": "0"
+    180: 180
+    30: 30
+    35: 35
+    40: 40
+    60: 60
+    90: 90
+    default: 35

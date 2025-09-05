@@ -1,4 +1,4 @@
-# platform = multi_platform_ol,multi_platform_rhel,multi_platform_sle
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -47,8 +47,8 @@
     name: auditd.service
     state: restarted
 {{%- else %}} # restarting auditd through systemd doesn't work, see: https://access.redhat.com/solutions/5515011
-- name: Reload Auditd
-  command: /usr/sbin/service auditd reload
+- name: Restart Auditd
+  command: /usr/sbin/service auditd restart
   args:
     warn: false
 {{%- endif %}}

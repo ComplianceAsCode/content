@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 8
+# platform = Oracle Linux 8,Red Hat Enterprise Linux 8
 
 # Break the audit_backlog_limit argument in kernel command line in /boot/grub2/grubenv
 file="/boot/grub2/grubenv"

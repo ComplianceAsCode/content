@@ -10,6 +10,10 @@ description: |-
     To enable FIPS mode, run the following command:
     <pre>fips-mode-setup --enable</pre>
 
+    To enable strict FIPS compliance, the fips=1 kernel option needs to be added to the kernel boot
+    parameters during system installation so key generation is done with FIPS-approved algorithms
+    and continuous monitoring tests in place.
+
 rationale: |-
     Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
     protect data. The operating system must implement cryptographic modules adhering to the higher
@@ -61,17 +65,21 @@ warnings:
         this process.
 
 fixtext: |-
-    Configure {{{ full_name }}} to implement DoD-approved encryption by following the steps below:
-
-    To enable strict FIPS compliance, the fips=1 kernel option needs to be added to the kernel boot
-    parameters during system installation so key generation is done with FIPS-approved algorithms
-    and continuous monitoring tests in place.
-
-    Enable FIPS mode after installation (not strict FIPS compliant) with the following command:
+    Configure the operating system to implement FIPS mode with the following command:
 
     $ sudo fips-mode-setup --enable
 
     Reboot the system for the changes to take effect.
 
 srg_requirement:
-    '{{{ full_name }}} must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.'
+    '{{{ full_name }}} must implement NIST FIPS-validated cryptography for the following: to
+    provision digital signatures, to generate cryptographic hashes, and to
+    protect data requiring data-at-rest protections in accordance with
+    applicable federal laws, Executive Orders, directives, policies,
+    regulations, and standards.'
+
+checktext: |-
+    Verify that {{{ full_name }}} is in FIPS mode with the following command:
+    $ sudo fips-mode-setup --check
+    FIPS mode is enabled.
+    If FIPS mode is not enabled, this is a finding.

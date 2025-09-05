@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import re
 import sys
 
 try:
@@ -133,18 +134,34 @@ def get_results(xml: ElementTree.ElementTree) -> dict:
     return rules
 
 
-def get_identifiers(xml: ElementTree.ElementTree) -> dict:
+def get_identifiers(rule: ElementTree.ElementTree) -> str:
+    try:
+        return rule.find('xccdf-1.2:ident', PREFIX_TO_NS).text
+    except AttributeError:
+        return "MISSING_IDREF"
+
+
+def get_check_ids(rule: ElementTree.ElementTree) -> str:
+    try:
+        check_content_ref = rule.find('xccdf-1.2:check/xccdf-1.2:check-content-ref', PREFIX_TO_NS)
+        check_name = check_content_ref.get('name', "")
+        return re.search(r'oval:ssg-(.*):def:\d+', check_name).group(1)
+    except AttributeError:
+        return ""
+
+
+def loop_rule_results(xml: ElementTree.ElementTree) -> dict:
     rules = dict()
 
     results_xml = xml.findall('.//xccdf-1.2:rule-result', PREFIX_TO_NS)
     for result in results_xml:
+        rule = dict()
         idref = result.attrib['idref']
         idref = idref.replace("xccdf_mil.disa.stig_rule_", "")
-        try:
-            rules[idref] = result.find('xccdf-1.2:ident', PREFIX_TO_NS).text
-        except AttributeError:
-            rules[idref] = "MISSING_IDREF"
+        rules[idref] = rule
 
+        rule['ident'] = get_identifiers(result)
+        rule['check'] = get_check_ids(result)
     return rules
 
 
@@ -190,17 +207,18 @@ def get_results_by_stig(results: dict, stigs: dict) -> dict:
     return base_stig_results
 
 
-def print_summary(comparison: Comparison, base_ident: dict, target_ident: dict) -> None:
+def print_summary(comparison: Comparison, base: dict, target: dict) -> None:
     print(f'Same Status: {len(comparison.same_status)}')
     for rule in comparison.same_status:
-        print(f'  {base_ident[rule]} {target_ident[rule]} - {rule:<75}'
+        print(f'  {base[rule]["ident"]} {target[rule]["ident"]} - {rule} {base[rule]["check"]:<75}'
               f'{comparison.base_results[rule]}')
     print(f'Missing in target: {len(comparison.missing_in_target)}')
     for rule in comparison.missing_in_target:
-        print(f'  {base_ident[rule]} - {rule}')
+        print(f'  {base[rule]["ident"]} - {rule} {base[rule]["check"]:<75}')
     print(f'Different results: {len(comparison.different_results)}')
     for rule, value in comparison.different_results.items():
-        print(f'  {base_ident[rule]} {target_ident[rule]} - {rule:<75}   {value[0]} - {value[1]}')
+        print(f'  {base[rule]["ident"]} {target[rule]["ident"]} - {rule} {base[rule]["check"]:<75}'
+              f'{value[0]} - {value[1]}')
 
 
 def process_stig_results(base_results: dict, target_results: dict,
@@ -239,9 +257,9 @@ def main():
     base_tree = ssg.xml.open_xml(args.base)
     target_tree = ssg.xml.open_xml(args.target)
     comparison = match_results(base_tree, target_tree)
-    base_ident = get_identifiers(base_tree)
-    target_tree = get_identifiers(target_tree)
-    print_summary(comparison, base_ident, target_tree)
+    base_rules = loop_rule_results(base_tree)
+    target_rules = loop_rule_results(target_tree)
+    print_summary(comparison, base_rules, target_rules)
     if comparison.are_results_same():
         exit(0)
     else:

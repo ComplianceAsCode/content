@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8,rhel8,rhel9
+prodtype: ol8,ol9,rhel8,rhel9
 
 title: 'System Audit Directories Must Be Owned By Root'
 
@@ -61,6 +61,6 @@ fixtext: |-
     Run the following command:
 
     $ sudo chown root [audit_log_directory]
-    
+
     Replace "[audit_log_directory]" with the correct audit log directory path. By default, this
     location is usually "/var/log/audit".

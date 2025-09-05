@@ -44,19 +44,22 @@ references:
     pcidss: Req-10.7
     srg: SRG-OS-000047-GPOS-00023
 
-ocil_clause: 'the value of the "max_log_file_action" option is set to "ignore", "rotate", or "suspend", or the line is commented out'
+ocil_clause: 'the value of the "disk_full_action" option is not "ROTATE", "SINGLE", or the line is commented out, ask the system administrator to indicate how the system takes appropriate action when an audit storage volume is full. If there is no evidence of appropriate action'
 
 ocil: |-
-    Verify that the SA and ISSO (at a minimum) are notified when the audit storage volume is full.
+    Verify {{{ full_name }}} takes the appropriate action when the audit files have reached maximum size.
 
-    Check which action {{{ full_name }}} takes when the audit storage volume is full with the following command:
+    Check that {{{ full_name }}} takes the appropriate action when the audit files have reached maximum size with the following command:
 
     <pre>$ sudo grep max_log_file_action /etc/audit/auditd.conf
+
     max_log_file_action = {{{ xccdf_value("var_auditd_max_log_file_action") }}}</pre>
 
 fixtext: |-
-    Configure {{{ full_name }}} to notify the SA and ISSO when the audit storage volume is full by configuring the "max_log_file_action" parameter in the "/etc/audit/auditd.conf" file with the a value of "syslog" or "keep_logs":
+    Configure {{{ full_name }}} to rotate the audit log when it reaches maximum size.
+
+    Add or update the following line in "/etc/audit/auditd.conf" file:
 
     max_log_file_action = {{{ xccdf_value("var_auditd_max_log_file_action") }}}
 
-srg_requirement: The {{{ full_name }}} audit system must take appropriate action when the audit storage volume is full.
+srg_requirement: The {{{ full_name }}} audit system must take appropriate action when the audit files have reached maximum size.

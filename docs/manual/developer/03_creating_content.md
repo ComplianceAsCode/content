@@ -519,22 +519,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
 EOF
 ```
 
-13. Create a new file under `transforms` directory called `xccdf2table-byref.xslt`:
-```
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-byref.xslt 
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-<xsl:import href="../../shared/transforms/shared_xccdf2table-byref.xslt"/>
-
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-</xsl:stylesheet>
-EOF
-```
-
-14. Create a new file under `transforms` directory called `xccdf2table-cce.xslt`:
+13. Create a new file under `transforms` directory called `xccdf2table-cce.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -549,7 +534,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
 EOF
 ```
 
-15. Create a new file under `transforms` directory called `xccdf2table-profileanssirefs.xslt `:
+14. Create a new file under `transforms` directory called `xccdf2table-profileanssirefs.xslt `:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileanssirefs.xslt 
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -667,7 +652,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileanssirefs.xslt
 EOF
 ```
 
-16. Create a new file under `transforms` directory called `xccdf2table-profileccirefs.xslt`:
+15. Create a new file under `transforms` directory called `xccdf2table-profileccirefs.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -682,51 +667,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 EOF
 ```
 
-17. Create a new file under `transforms` directory called `xccdf2table-profilecisrefs.xslt`:
-```
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilecisrefs.xslt
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-<xsl:import href="../../shared/transforms/shared_xccdf2table-profilecisrefs.xslt"/>
-
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-</xsl:stylesheet>
-EOF
-```
-
-18. Create a new file under `transforms` directory called `xccdf2table-profilenistrefs.xslt`:
-```
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilenistrefs.xslt
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-<xsl:import href="../../shared/transforms/shared_xccdf2table-profilenistrefs.xslt"/>
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-</xsl:stylesheet>
-EOF
-```
-
-19. Create a new file under `transforms` directory called `xccdf2table-stig.xslt`:
-```
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-stig.xslt
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-<xsl:import href="../../shared/transforms/shared_xccdf2table-stig.xslt"/>
-
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-</xsl:stylesheet>
-EOF
-```
-
-20. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
+16. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
 ```
 cat << EOF >> shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 <def-group>

@@ -1,13 +1,13 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
-title: 'Disable the polyinstantiation_enabled SELinux Boolean'
+title: 'Configure the polyinstantiation_enabled SELinux Boolean'
 
 description: |-
     By default, the SELinux boolean <tt>polyinstantiation_enabled</tt> is disabled.
-    If this setting is enabled, it should be disabled.
-    {{{ describe_sebool_disable(sebool="polyinstantiation_enabled") }}}
+    This setting should be configured to {{{ xccdf_value("var_polyinstantiation_enabled") }}}.
+    <br/>{{{ describe_sebool_var(sebool="polyinstantiation_enabled") }}}
 
 rationale: ""
 
@@ -17,12 +17,13 @@ identifiers:
     cce@rhel7: CCE-82305-4
     cce@rhel8: CCE-84230-2
     cce@rhel9: CCE-84083-5
+    cce@sle12: CCE-91579-3
     cce@sle15: CCE-91238-6
 
 references:
     anssi: BP28(R39)
 
-{{{ complete_ocil_entry_sebool_disabled(sebool="polyinstantiation_enabled") }}}
+{{{ complete_ocil_entry_sebool_var(sebool="polyinstantiation_enabled") }}}
 
 template:
     name: sebool

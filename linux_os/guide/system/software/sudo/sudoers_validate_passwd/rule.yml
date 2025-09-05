@@ -2,13 +2,18 @@ documentation_complete: true
 
 title: 'Ensure invoking users password for privilege escalation when using sudo'
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,sle12,sle15
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,sle12,sle15
 
 description: |-
     The sudoers security policy requires that users authenticate themselves before they can use sudo.
     When sudoers requires authentication, it validates the invoking user's credentials.
     The expected output for:
-    <pre>sudo egrep -i '(!rootpw|!targetpw|!runaspw)' /etc/sudoers /etc/sudoers.d/* | grep -v '#'</pre>
+    <pre> sudo cvtsudoers -f sudoers /etc/sudoers | grep -E '^Defaults !?(rootpw|targetpw|runaspw)$' </pre>
+    <pre> Defaults !targetpw
+          Defaults !rootpw
+          Defaults !runaspw </pre>
+    or if cvtsudoers not supported:
+    <pre> sudo find /etc/sudoers /etc/sudoers.d \( \! -name '*~' -a \! -name '*.*' \) -exec grep -E --with-filename '^[[:blank:]]*Defaults[[:blank:]](.*[[:blank:]])?!?\b(rootpw|targetpw|runaspw)' -- {} \; </pre>
     <pre> /etc/sudoers:Defaults !targetpw
           /etc/sudoers:Defaults !rootpw
           /etc/sudoers:Defaults !runaspw </pre>
@@ -41,9 +46,11 @@ ocil_clause: 'invoke user passwd when using sudo'
 
 ocil: |-
     Run the following command to Verify that the sudoers security policy is configured to use the invoking user's password for privilege escalation:
-    <pre> sudo egrep -i '(!rootpw|!targetpw|!runaspw)' /etc/sudoers /etc/sudoers.d/* | grep -v '#'</pre>
+    <pre> sudo cvtsudoers -f sudoers /etc/sudoers | grep -E '^Defaults !?(rootpw|targetpw|runaspw)' </pre>
+    or if cvtsudoers not supported:
+    <pre> sudo find /etc/sudoers /etc/sudoers.d \( \! -name '*~' -a \! -name '*.*' \) -exec grep -E --with-filename '^[[:blank:]]*Defaults[[:blank:]](.*[[:blank:]])?!?\b(rootpw|targetpw|runaspw)' -- {} \; </pre>
     If no results are returned, this is a finding.
-    If results are returned from more than one file location, this is a finding.
+    If conflicting results are returned, this is a finding.
     If "Defaults !targetpw" is not defined, this is a finding.
     If "Defaults !rootpw" is not defined, this is a finding.
     If "Defaults !runaspw" is not defined, this is a finding.

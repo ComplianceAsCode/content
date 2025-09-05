@@ -1,6 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="chronyd_no_chronyc_network" version="1">
-    {{{ oval_metadata("Configure the cmdport setting in {{{ chrony_conf_path }}} to disable
+    {{{ oval_metadata("Configure the cmdport setting in " ~ chrony_conf_path ~ " to disable
       chronyc management connections over network.") }}}
     <criteria operator="AND">
       <extend_definition definition_ref="service_chronyd_enabled" comment="service chronyd enabled" />

@@ -15,7 +15,7 @@
 {{% if product in ['sle12', 'sle15'] %}}
     <ind:filepath operation="pattern match">^/etc/pam.d/.*$</ind:filepath>
 {{% else %}}
-    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/pam.d/(system|password)-auth$</ind:filepath>
 {{% endif %}}
     <ind:pattern operation="pattern match">^[^#]*\bnullok\b.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>

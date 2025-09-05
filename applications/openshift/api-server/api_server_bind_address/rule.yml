@@ -49,7 +49,7 @@ template:
     entity_check: "all"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
     yamlpath: '.servingInfo["bindAddress"]'
-    xccdf_value: var_apiserver_bind_address
+    xccdf_variable: var_apiserver_bind_address
     embedded_data: "true"
     values:
     - value: '(.+)'

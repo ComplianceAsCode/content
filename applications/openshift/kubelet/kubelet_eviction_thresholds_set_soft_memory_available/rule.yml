@@ -2,8 +2,6 @@ documentation_complete: true
 
 prodtype: ocp4
 
-platform: ocp4-node
-
 title: 'Ensure Eviction threshold Settings Are Set - evictionSoft: memory.available'
 
 description: |-
@@ -50,6 +48,9 @@ rationale: |-
   Based on your system resources and tests, choose an appropriate threshold
   value to activate garbage collection.
 
+identifiers:
+  cce@ocp4: CCE-84222-9
+
 severity: medium
 
 references:
@@ -58,22 +59,17 @@ references:
   nist: CM-6,CM-6(1)
   srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
 
-identifiers:
-  cce@ocp4: CCE-84222-9
 
 ocil_clause: '<tt>memory.available</tt> is not set in <tt>evictionSoft</tt> section'
 
 ocil: |-
   Run the following command on the kubelet node(s):
-  <pre>$ oc debug -q node/$NODE -- jq -r '.evictionSoft."memory.available"' /host/etc/kubernetes/kubelet.conf</pre>
-  and make sure it outputs a value.
+  <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1" | .evictionSoft."memory.available"'; done</pre>
+  and make sure it outputs {{.var_kubelet_evictionsoft_memory_available}}.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
 
 template:
-  name: yamlfile_value
-  vars:
-    filepath: /etc/kubernetes/kubelet.conf
-    yamlpath: ".evictionSoft['memory.available']"
-    check_existence: "only_one_exists"
-    values:
-      - value: ".*"
-        operation: "pattern match"
+    name: kubelet_combine

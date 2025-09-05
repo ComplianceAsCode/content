@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 7
+# platform = Oracle Linux 7,Red Hat Enterprise Linux 7
 
 # Correct the form of default kernel command line in GRUB /etc/default/grub and applies value through Grubby
 if grep -q '^GRUB_CMDLINE_LINUX=.*audit_backlog_limit=.*"'  '/etc/default/grub' ; then

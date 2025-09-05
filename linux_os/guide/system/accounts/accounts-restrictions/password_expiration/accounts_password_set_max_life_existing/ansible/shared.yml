@@ -1,15 +1,23 @@
-# platform = multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_sle
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: Collect users with not correct maximum time period between password changes  
-  command: >
-    awk -F: '$5 > 60 || $5 == "" {print $1}' /etc/shadow
+{{{ ansible_instantiate_variables("var_accounts_maximum_age_login_defs") }}}
+
+- name: Collect users with not correct maximum time period between password changes
+  ansible.builtin.command: >
+    awk -F: '$5 > {{ var_accounts_maximum_age_login_defs }} || $5 == "" {print $1}' /etc/shadow
   register: user_names
-  
-- name: Change the maximum time period between password changes 
-  command: >
-    chage -M 60 {{ item }}
-  with_items: "{{ user_names.stdout_lines }}"
+
+- name: Change the maximum time period between password changes
+{{% if product not in ["rhel7", "ol7"] %}}
+  ansible.builtin.user:
+    user: '{{ item }}'
+    password_expire_max: '{{ var_accounts_maximum_age_login_defs }}'
+{{% else %}}
+  ansible.builtin.command: >
+    chage -M {{ var_accounts_maximum_age_login_defs }} {{ item }}
+{{% endif %}}
+  with_items: '{{ user_names.stdout_lines }}'
   when: user_names.stdout_lines | length > 0

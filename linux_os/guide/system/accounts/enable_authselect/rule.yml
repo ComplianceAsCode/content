@@ -1,32 +1,26 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhel8,rhel9
 
 title: 'Enable authselect'
 
-
 description: |-
     Configure user authentication setup to use the <tt>authselect</tt> tool.
-
     If authselect profile is selected, the rule will enable the {{{ xccdf_value("var_authselect_profile") }}} profile.
-
 
 rationale: |-
     Authselect is a successor to authconfig.
-    It is a tool to select system authentication and identity sources from a list of supported profiles
-    instead of letting the administrator build the PAM stack with a tool.
+    It is a tool to select system authentication and identity sources from a list of supported
+    profiles instead of letting the administrator manually build the PAM stack.
 
-    That way, it avoids potential breakage of configuration,
-    as it ships several tested profiles that are well tested and supported and that each solve a use-case.
-
+    That way, it avoids potential breakage of configuration, as it ships several tested profiles
+    that are well tested and supported to solve different use-cases.
 
 severity: medium
-
 
 identifiers:
     cce@rhel8: CCE-88248-0
     cce@rhel9: CCE-89732-2
-
 
 references:
     anssi: BP28(R5)
@@ -34,12 +28,28 @@ references:
     disa: CCI-000213
     hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)  # taken from require_singleuser_auth
     nist: AC-3
+    ospp: FIA_UAU.1,FIA_AFL.1
     srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'authselect is not used to manage user authentication setup on the system'
 
 ocil: |-
     Verify that <tt>authselect</tt> is enabled by running
     <pre>authselect current</pre>
     If authselect is enabled on the system, the output should show the ID of the profile which is currently in use.
 
+fixtext: |-
+    Configure {{{ full_name }}} to select an authselect profile if one is not already selected.
+    Use the following command to enable the {{{ xccdf_value("var_authselect_profile") }}} profile:
 
-ocil_clause: 'authselect is not used to manage user authentication setup on the system'
+    sudo authselect select {{{ xccdf_value("var_authselect_profile") }}}
+
+srg_requirement: '{{{ full_name }}} must use authselect to manage PAM settings'
+
+warnings:
+    - general: |-
+       If the <tt>sudo authselect select</tt> command returns an error informing that the chosen
+       profile cannot be selected, it is probably because PAM files have already been modified by
+       the administrator. If this is the case, in order to not overwrite the desired changes made
+       by the administrator, the current PAM settings should be investigated before forcing the
+       selection of the chosen authselect profile.

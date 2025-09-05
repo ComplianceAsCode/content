@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,rhel7,rhel8,rhel9,sle15,ubuntu2004
+prodtype: alinux2,alinux3,rhel7,rhel8,rhel9,sle15,ubuntu2004,ubuntu2204
 
 title: 'Verify Permissions on /etc/cron.allow file'
 
@@ -16,7 +16,7 @@ description: |-
     If <tt>/etc/cron.allow</tt> exists, it must have permissions <tt>{{{ target_perms_octal }}}</tt>
     or more restrictive.
 
-    {{{ describe_file_permissions(file="/etc/cron.allow", perms="{{{ target_perms_octal }}}") }}}
+    {{{ describe_file_permissions(file="/etc/cron.allow", perms=target_perms_octal) }}}
 
 rationale: |-
     If the permissions of the cron.allow file are not set to {{{ target_perms_octal }}} or more restrictive,
@@ -36,6 +36,8 @@ references:
     cis@rhel8: 5.1.8
     cis@sle15: 5.1.8
     cis@ubuntu2004: 5.1.8
+    cis@ubuntu2204: 5.1.8
+    srg: SRG-OS-000480-GPOS-00227
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cron.allow", perms=target_perms) }}}'
 

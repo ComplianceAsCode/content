@@ -28,7 +28,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arse_utmp_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/run/utmp\s+\-p\s+wa\s+(-k[\s]+|-F[\s]+key=)[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/run/utmp\s+\-p\s+wa\b.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -37,7 +37,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arse_btmp_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/btmp\s+\-p\s+wa\s+(-k[\s]+|-F[\s]+key=)[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/btmp\s+\-p\s+wa\b.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -46,7 +46,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arse_wtmp_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/wtmp\s+\-p\s+wa\s+(-k[\s]+|-F[\s]+key=)[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/wtmp\s+\-p\s+wa\b.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -55,7 +55,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arse_utmp_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/run/utmp\s+\-p\s+wa\s+(-k[\s]+|-F[\s]+key=)[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/run/utmp\s+\-p\s+wa\b.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -64,7 +64,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arse_btmp_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/btmp\s+\-p\s+wa\s+(-k[\s]+|-F[\s]+key=)[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/btmp\s+\-p\s+wa\b.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -73,7 +73,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arse_wtmp_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/wtmp\s+\-p\s+wa\s+(-k[\s]+|-F[\s]+key=)[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/wtmp\s+\-p\s+wa\b.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

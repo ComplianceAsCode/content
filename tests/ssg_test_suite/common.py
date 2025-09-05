@@ -436,41 +436,58 @@ def select_templated_tests(test_dir_config, available_scenarios_basenames):
     return available_scenarios_basenames
 
 
-def fetch_templated_test_scenarios(rule, template_builder, local_env_yaml):
+def fetch_templated_tests_paths(
+        rule_namedtuple, template_builder, product_yaml):
+    rule = rule_namedtuple.rule
     if not rule.template or not rule.template['vars']:
         return dict()
-    templated_tests = template_builder.get_all_tests(
-        rule.id_, rule.template, local_env_yaml)
+    tests_paths = template_builder.get_all_tests(rule.template)
+    test_config = get_test_dir_config(rule_namedtuple.directory, product_yaml)
+    allowed_tests_paths = select_templated_tests(
+        test_config, tests_paths.keys())
+    templated_test_scenarios = {
+        name: tests_paths[name] for name in allowed_tests_paths}
+    return templated_test_scenarios
+
+
+def load_templated_tests(
+        templated_tests_paths, template_builder, template, local_env_yaml):
+    templated_tests = dict()
+    for path in templated_tests_paths:
+        test = template_builder.get_test(path, template, local_env_yaml)
+        basename = os.path.basename(path)
+        templated_tests[basename] = test
     return templated_tests
-
-
-def apply_test_config(tests_dir, product_yaml, templated_tests):
-    test_config = get_test_dir_config(tests_dir, product_yaml)
-    allowed_templated_tests = select_templated_tests(
-        test_config, templated_tests.keys())
-    all_tests = {name: templated_tests[name] for name in allowed_templated_tests}
-    return all_tests
 
 
 def file_known_as_useless(file_name):
     return file_name.endswith(".swp")
 
 
-def fetch_local_test_scenarios(tests_dir, local_env_yaml):
+def fetch_local_tests_paths(tests_dir):
+    if not os.path.exists(tests_dir):
+        return dict()
     all_tests = dict()
-    if os.path.exists(tests_dir):
-        tests_dir_files = os.listdir(tests_dir)
-        for test_case in tests_dir_files:
-            # Skip vim swap files, they are not relevant and cause Jinja
-            # expansion tracebacks
-            if file_known_as_useless(test_case):
-                continue
-            test_path = os.path.join(tests_dir, test_case)
-            if os.path.isdir(test_path):
-                continue
-            all_tests[test_case] = process_file_with_macros(
-                test_path, local_env_yaml)
+    tests_dir_files = os.listdir(tests_dir)
+    for test_case in tests_dir_files:
+        # Skip vim swap files, they are not relevant and cause Jinja
+        # expansion tracebacks
+        if file_known_as_useless(test_case):
+            continue
+        test_path = os.path.join(tests_dir, test_case)
+        if os.path.isdir(test_path):
+            continue
+        all_tests[test_case] = test_path
     return all_tests
+
+
+def load_local_tests(local_tests_paths, local_env_yaml):
+    local_tests = dict()
+    for path in local_tests_paths:
+        test = process_file_with_macros(path, local_env_yaml)
+        basename = os.path.basename(path)
+        local_tests[basename] = test
+    return local_tests
 
 
 def get_cpe_of_tested_os(test_env, log_file):

@@ -1,3 +1,5 @@
 ---
 # platform = multi_platform_ocp
-{{{ kubelet_config_fixed(path='kubeletConfig',parameter='eventRecordQPS', value='10') }}}
+{{{ kubelet_config_fixed(path='kubeletConfig',parameter='eventRecordQPS', value='{{.var_event_record_qps}}', role='var_role_worker') }}}
+---
+{{{ kubelet_config_fixed(path='kubeletConfig',parameter='eventRecordQPS', value='{{.var_event_record_qps}}', role='var_role_master') }}}

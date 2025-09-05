@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Disable Firefox Studies'
+
+description: |-
+    Pocket may be disabled by setting
+    <tt>DisableFirefoxStudies</tt> to <tt>true</tt>
+    in the policies file.
+
+rationale: |-
+    Studies try out different features and ideas prior to release to all Firefox users. Testing beta software is not in the DoD user's mission.
+
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000039
+
+ocil: |-
+    To verify that Studies is disabled,
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following:
+    <pre>"DisableFirefoxStudies": true</pre>
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable Firefox Studies
+        policies:
+          - {path: "policies", parameter: "DisableFirefoxStudies", value: true}

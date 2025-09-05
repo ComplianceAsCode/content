@@ -220,7 +220,7 @@ selections:
     - var_accounts_max_concurrent_login_sessions=10
     - accounts_max_concurrent_login_sessions
     - securetty_root_login_console_only
-    - var_authselect_profile=sssd
+    - var_authselect_profile=minimal
     - enable_authselect
     - var_password_pam_unix_remember=5
     - accounts_password_pam_unix_remember
@@ -304,7 +304,7 @@ selections:
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_UAU.1
     - require_singleuser_auth
-    - grub2_disable_interactive_boot
+    - grub2_disable_recovery
     - grub2_uefi_password
     - no_empty_passwords
 

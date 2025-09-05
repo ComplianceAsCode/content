@@ -36,7 +36,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_ardm_init_module_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    {{% if product in ["ol8", "rhel8"] %}}
+    {{% if product in ["ol7", "ol8"] or 'rhel' in product %}}
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+init_module[\s]+|([\s]+|[,])init_module([\s]+|[,]))).*(?:-F\s+auid>=1000[\s]+)(?:-F\s+auid!=(unset|4294967295))\s+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+init_module[\s]+|([\s]+|[,])init_module([\s]+|[,]))).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
@@ -49,7 +49,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_ardm_init_module_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    {{% if product in ["ol8", "rhel8"] %}}
+    {{% if product in ["ol7", "ol8"] or 'rhel' in product %}}
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+init_module[\s]+|([\s]+|[,])init_module([\s]+|[,]))).*(?:-F\s+auid>=1000[\s]+)(?:-F\s+auid!=(unset|4294967295))\s+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+init_module[\s]+|([\s]+|[,])init_module([\s]+|[,]))).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
@@ -62,7 +62,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_ardm_init_module_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    {{% if product in ["ol8", "rhel8"] %}}
+    {{% if product in ["ol7", "ol8"] or 'rhel' in product %}}
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+init_module[\s]+|([\s]+|[,])init_module([\s]+|[,]))).*(?:-F\s+auid>=1000[\s]+)(?:-F\s+auid!=(unset|4294967295))\s+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+init_module[\s]+|([\s]+|[,])init_module([\s]+|[,]))).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
@@ -75,7 +75,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_ardm_init_module_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    {{% if product in ["ol8", "rhel8"] %}}
+    {{% if product in ["ol7", "ol8"] or 'rhel' in product %}}
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+init_module[\s]+|([\s]+|[,])init_module([\s]+|[,]))).*(?:-F\s+auid>=1000[\s]+)(?:-F\s+auid!=(unset|4294967295))\s+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+init_module[\s]+|([\s]+|[,])init_module([\s]+|[,]))).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>

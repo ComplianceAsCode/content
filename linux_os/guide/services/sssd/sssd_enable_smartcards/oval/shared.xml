@@ -5,7 +5,7 @@
     <criteria operator="AND">
       <criterion comment="Check pam_cert_auth in /etc/sssd/sssd.conf"
                  test_ref="test_sssd_enable_smartcards"/>
-      {{% if product in ["fedora", "ol8", "rhel8", "rhel9"] %}}
+      {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
       <criterion comment="Check allow_missing_name in /etc/pam.d/smartcard-auth"
                  test_ref="test_sssd_enable_smartcards_allow_missing_name_smartcard_auth"/>
       <criterion comment="Check try_cert_auth or require_cert_auth in /etc/pam.d/system-auth"
@@ -25,7 +25,7 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  {{% if product in ["fedora", "ol8", "rhel8", "rhel9"] %}}
+  {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="tests the presence of try_cert_auth or require_cert_auth in /etc/pam.d/smartcard-auth"
   id="test_sssd_enable_smartcards_allow_missing_name_smartcard_auth" version="2">

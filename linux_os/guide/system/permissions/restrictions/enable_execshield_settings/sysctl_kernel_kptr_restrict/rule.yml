@@ -34,6 +34,33 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.kptr_restrict", value="1") }}}
 
+ocil: |-
+    The runtime status of the <code>kernel.kptr_restrict</code> kernel parameter can be queried
+    by running the following command:
+    <pre>$ sysctl kernel.kptr_restrict</pre>
+    The output of the command should indicate either:
+    <code>kernel.kptr_restrict = 1</code>
+    or:
+    <code>kernel.kptr_restrict = 2</code>
+    The output of the command should not indicate:
+    <code>kernel.kptr_restrict = 0</code>
+
+    The preferable way how to assure the runtime compliance is to have
+    correct persistent configuration, and rebooting the system.
+
+    The persistent kernel parameter configuration is performed by specifying the appropriate
+    assignment in any file located in the <pre>/etc/sysctl.d</pre> directory.
+    Verify that there is not any existing incorrect configuration by executing the following command:
+    <pre>$ grep -r '^\s*kernel.kptr_restrict\s*=' /etc/sysctl.conf /etc/sysctl.d</pre>
+    The command should not find any assignments other than:
+    kernel.kptr_restrict = 1
+    or:
+    kernel.kptr_restrict = 2
+
+    Conflicting assignments are not allowed.
+
+ocil_clause: "the kernel.kptr_restrict is not set to 1 or 2 or is configured to be 0"
+
 srg_requirement: '{{{ full_name }}} must restrict exposed kernel pointer addresses access.'
 
 platform: machine
@@ -42,8 +69,14 @@ template:
     name: sysctl
     vars:
         sysctlvar: kernel.kptr_restrict
+        {{% if 'ol' in product or 'rhel' in product %}}
+        sysctlval:
+        - '1'
+        - '2'
+        wrong_sysctlval_for_testing: "0"
+        {{% endif %}}
         datatype: int
 
 fixtext: |-
     Configure {{{ full_name }}} to restrict exposed kernel pointer addresses access.
-    {{{ fixtext_sysctl("kernel.kptr_restrict", "1") | indent(4) }}}
+    {{{ fixtext_sysctl("kernel.kptr_restrict", value=xccdf_value("sysctl_kernel_kptr_restrict_value")) | indent(4) }}}

@@ -53,10 +53,28 @@ fixtext: |-
 
 srg_requirement: '{{{ srg_requirement_mount_option("/home", "nosuid") }}}'
 
+{{% if "ol" not in product %}}
 template:
     name: mount_option
     vars:
         mountpoint: /home
         mountoption: nosuid
         mount_has_to_exist: 'yes'
+{{% else %}}
+warnings:
+    - functionality: |-
+        OVAL looks for partitions whose mount point is a substring of any interactive user's home
+        directory and validates that noexec option is there. Because of this, there could be false
+        negatives when several partitions share a base substring. For example, if there is a home
+        directory in <tt>/var/tmp/user1</tt> and there are partitions mounted in <tt>/var</tt> and
+        <tt>/var/tmp</tt>. The noexec option is only expected in <tt>/var/tmp</tt>, but OVAL will
+        check both.<br/>
+        Bash remediation uses the <tt>df</tt> command to find out the partition where the home
+        directory is mounted. However, if the directory doesn't exist the remediation won't be
+        applied.
+template:
+    name: mount_option_home
+    vars:
+        mountoption: nosuid
+{{% endif %}}
 

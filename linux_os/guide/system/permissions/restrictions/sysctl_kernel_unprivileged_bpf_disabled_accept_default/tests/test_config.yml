@@ -1,0 +1,6 @@
+deny_templated_scenarios:
+  # this rule uses missing_parameter_pass: true which means the check should pass
+  # if the configuration is missing (or commented out) therefore we disable
+  # line_not_there.fail.sh and comment.fail.sh test scenarios
+  - line_not_there.fail.sh
+  - comment.fail.sh

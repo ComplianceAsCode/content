@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel7,rhel8,rhel9,rhv4,ubuntu2004
+prodtype: fedora,rhel7,rhel8,rhel9,rhv4,ubuntu2004,ubuntu2204
 
 title: 'Remove the GDM Package Group'
 
@@ -33,6 +33,7 @@ identifiers:
 
 references:
     cis@ubuntu2004: '1.10'
+    cis@ubuntu2204: '1.10'
     nist: CM-7(a),CM-7(b),CM-6(a)
     srg: SRG-OS-000480-GPOS-00227
 
@@ -56,9 +57,9 @@ ocil: |-
     <pre>dpkg-query: no packages found matching gdm3</pre>
 {{% endif %}}
 
-fixtext: '{{{ fixtext_package_removed("quagga") }}}'
+fixtext: '{{{ fixtext_package_removed("gdm") }}}'
 
-srg_requirement: '{{{ srg_requirement_package_removed("quagga") }}}'
+srg_requirement: '{{{ srg_requirement_package_removed("gdm") }}}'
 
 template:
     name: package_removed

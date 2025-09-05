@@ -1,32 +1,35 @@
 {{%- if SYSCTLVAL == "" %}}
 {{%- set COMMENT_VALUE="the appropriate value" %}}
-{{%- else %}}
+{{%- elif SYSCTLVAL is string %}}
 {{%- set COMMENT_VALUE=SYSCTLVAL %}}
+{{%- else %}}
+{{%- set COMMENT_VALUE = SYSCTLVAL | join(" or " ) %}}
 {{%- endif %}}
 
 {{% macro state_static_sysctld(prefix) -%}}
-    <ind:object object_ref="object_static_{{{ prefix }}}_{{{ SYSCTLID }}}"/>
-    <ind:state state_ref="state_static_sysctld_{{{ SYSCTLID }}}"/>
+    <ind:object object_ref="object_static_{{{ prefix }}}_{{{ rule_id }}}"/>
+{{% if SYSCTLVAL is string %}}
+    <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}"/>
+{{% elif SYSCTLVAL is sequence %}}
+{{% for x in SYSCTLVAL %}}
+    <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}" />
+{{% endfor %}}
+{{% endif %}}
 {{%- endmacro -%}}
 {{%- macro sysctl_match() -%}}
-{{%- if SYSCTLVAL == "" -%}}
-    <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*(\d+)[\s]*$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-{{%- else -%}}
     <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*(.*)[\s]*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-{{%- endif -%}}
 {{%- endmacro -%}}
 {{%- if "P" in FLAGS -%}}
 
 <def-group>
-  <definition class="compliance" id="sysctl_{{{ SYSCTLID }}}" version="3">
+  <definition class="compliance" id="{{{ rule_id }}}" version="3">
     {{{ oval_metadata("The '" + SYSCTLVAR + "' kernel parameter should be set to the appropriate value in both system configuration and system runtime.") }}}
     <criteria operator="AND">
       <extend_definition comment="{{{ SYSCTLVAR }}} configuration setting check"
-                         definition_ref="sysctl_static_{{{ SYSCTLID }}}"/>
+                         definition_ref="{{{ rule_id }}}_static"/>
       <extend_definition comment="{{{ SYSCTLVAR }}} runtime setting check"
-                         definition_ref="sysctl_runtime_{{{ SYSCTLID }}}"/>
+                         definition_ref="{{{ rule_id }}}_runtime"/>
     </criteria>
   </definition>
 </def-group>
@@ -34,7 +37,7 @@
 {{%- elif "I" in FLAGS -%}}
 
 <def-group>
-  <definition class="compliance" id="sysctl_{{{ SYSCTLID }}}" version="4">
+  <definition class="compliance" id="{{{ rule_id }}}" version="4">
     {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to the appropriate value in both system configuration and system runtime.") }}}
     <criteria comment="IPv6 disabled or {{{ SYSCTLVAR }}} set correctly" operator="OR">
 {{% if product in ["ubuntu1604", "ubuntu1804"] %}}
@@ -46,9 +49,9 @@
 {{% endif %}}
       <criteria operator="AND">
         <extend_definition comment="{{{ SYSCTLVAR }}} configuration setting check"
-                           definition_ref="sysctl_static_{{{ SYSCTLID }}}"/>
+                           definition_ref="{{{ rule_id }}}_static"/>
         <extend_definition comment="{{{ SYSCTLVAR }}} runtime setting check"
-                           definition_ref="sysctl_runtime_{{{ SYSCTLID }}}"/>
+                           definition_ref="{{{ rule_id }}}_runtime"/>
       </criteria>
     </criteria>
   </definition>
@@ -58,33 +61,41 @@
 {{%- if "R" in FLAGS -%}}
 
 <def-group>
-  <definition class="compliance" id="sysctl_runtime_{{{ SYSCTLID }}}" version="3">
+  <definition class="compliance" id="{{{ rule_id }}}_runtime" version="3">
     {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system runtime.") }}}
     <criteria operator="AND">
       <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}}"
-                 test_ref="test_sysctl_runtime_{{{ SYSCTLID }}}"/>
+                 test_ref="test_{{{ rule_id }}}_runtime"/>
     </criteria>
   </definition>
-  <unix:sysctl_test id="test_sysctl_runtime_{{{ SYSCTLID }}}" version="1"
+
+  <unix:sysctl_test id="test_{{{ rule_id }}}_runtime" version="1"
                     comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}}"
-                    check="all" check_existence="all_exist">
-    <unix:object object_ref="object_sysctl_runtime_{{{ SYSCTLID }}}"/>
-    <unix:state state_ref="state_sysctl_runtime_{{{ SYSCTLID }}}"/>
+                    check="all" check_existence="all_exist" state_operator="OR">
+    <unix:object object_ref="object_{{{ rule_id }}}_runtime"/>
+{{% if SYSCTLVAL is string %}}
+    <unix:state state_ref="state_{{{ rule_id }}}_runtime"/>
+{{% elif SYSCTLVAL is sequence %}}
+{{% for x in SYSCTLVAL %}}
+    <unix:state state_ref="state_{{{ rule_id }}}_runtime_{{{ x }}}" />
+{{% endfor %}}
+{{% endif %}}
   </unix:sysctl_test>
 
-  <unix:sysctl_object id="object_sysctl_runtime_{{{ SYSCTLID }}}" version="1">
+  <unix:sysctl_object id="object_{{{ rule_id }}}_runtime" version="1">
     <unix:name>{{{ SYSCTLVAR }}}</unix:name>
   </unix:sysctl_object>
+{{% if SYSCTLVAL is string %}}
 {{% if SYSCTLVAL == "" %}}
-  <unix:sysctl_state id="state_sysctl_runtime_{{{ SYSCTLID }}}" version="1">
+  <unix:sysctl_state id="state_{{{ rule_id }}}_runtime" version="1">
     <unix:value datatype="{{{ DATATYPE }}}" operation="equals"
-                var_ref="sysctl_{{{ SYSCTLID }}}_value"/>
+                var_ref="{{{ rule_id }}}_value"/>
   </unix:sysctl_state>
 
-  <external_variable id="sysctl_{{{ SYSCTLID }}}_value" version="1"
+  <external_variable id="{{{ rule_id }}}_value" version="1"
                      comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}"/>
 {{%- else %}}
-  <unix:sysctl_state id="state_sysctl_runtime_{{{ SYSCTLID }}}" version="1">
+  <unix:sysctl_state id="state_{{{ rule_id }}}_runtime" version="1">
 {{% if OPERATION == "pattern match" %}}
     <unix:value datatype="{{{ DATATYPE }}}"
                 operation="{{{ OPERATION }}}">{{{ SYSCTLVAL_REGEX }}}</unix:value>
@@ -94,133 +105,161 @@
 {{% endif %}}
   </unix:sysctl_state>
 {{%- endif %}}
+{{% elif SYSCTLVAL is sequence %}}
+{{% for x in SYSCTLVAL %}}
+  <unix:sysctl_state id="state_{{{ rule_id }}}_runtime_{{{ x }}}" version="1">
+    <unix:value datatype="{{{ DATATYPE }}}"
+                operation="{{{ OPERATION }}}">{{{ x }}}</unix:value>
+  </unix:sysctl_state>
+{{% endfor %}}
+{{% endif %}}
 </def-group>
 
 {{%- endif -%}}
 {{%- if "S" in FLAGS -%}}
 
 <def-group>
-  <definition class="compliance" id="sysctl_static_{{{ SYSCTLID }}}" version="3">
+  <definition class="compliance" id="{{{ rule_id }}}_static" version="3">
     {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system configuration.") }}}
+
+{{% if target_oval_version >= [5, 11] %}}
+{{% if MISSING_PARAMETER_PASS == "true" %}}
+    <criteria operator="OR">
+{{% endif %}}
+{{% endif %}}
     <criteria operator="AND">
       <criteria operator="OR">
         <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /etc/sysctl.conf"
-                   test_ref="test_static_sysctl_{{{ SYSCTLID }}}"/>
+                   test_ref="test_{{{ rule_id }}}_static"/>
         <!-- see sysctl.d(5) -->
         <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /etc/sysctl.d/*.conf"
-                   test_ref="test_static_etc_sysctld_{{{ SYSCTLID }}}"/>
+                   test_ref="test_{{{ rule_id }}}_static_etc_sysctld"/>
         <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /run/sysctl.d/*.conf"
-                   test_ref="test_static_run_sysctld_{{{ SYSCTLID }}}"/>
+                   test_ref="test_{{{ rule_id }}}_static_run_sysctld"/>
 {{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
         <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /usr/lib/sysctl.d/*.conf"
-                   test_ref="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}"/>
+                   test_ref="test_{{{ rule_id }}}_static_usr_lib_sysctld"/>
 {{% endif %}}
       </criteria>
 {{% if target_oval_version >= [5, 11] %}}
-      <criterion comment="Check that {{{ SYSCTLID }}} is defined in only one file" test_ref="test_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" />
+      <criterion comment="Check that {{{ SYSCTLID }}} is defined in only one file" test_ref="test_{{{ rule_id }}}_defined_in_one_file" />
+{{% if MISSING_PARAMETER_PASS == "true" %}}
+    </criteria>
+      <criterion comment="Check that {{{ SYSCTLID }}} is not defined in any file" test_ref="test_{{{ rule_id }}}_not_defined" />
+{{% endif %}}
 {{% endif %}}
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test id="test_static_sysctl_{{{ SYSCTLID }}}" version="1"
-                              check="all" check_existence="all_exist"
+{{% if target_oval_version >= [5, 11] %}}
+{{% if MISSING_PARAMETER_PASS == "true" %}}
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_not_defined" version="1"
+                              check="all" check_existence="none_exist"
                               comment="{{{ SYSCTLVAR }}} static configuration">
+    <ind:object object_ref="object_{{{ rule_id }}}_static_set_sysctls" />
+  </ind:textfilecontent54_test>
+{{% endif %}}
+{{% endif %}}
+
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static" version="1"
+                              check="all" check_existence="all_exist"
+                              comment="{{{ SYSCTLVAR }}} static configuration" state_operator="OR">
     {{{ state_static_sysctld("sysctl") }}}
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_test id="test_static_etc_sysctld_{{{ SYSCTLID }}}" version="1" check="all"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf">
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_etc_sysctld" version="1" check="all"
+                          comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf" state_operator="OR">
     {{{ state_static_sysctld("etc_sysctld") }}}
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_test id="test_static_run_sysctld_{{{ SYSCTLID }}}" version="1" check="all"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /run/sysctl.d/*.conf">
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_run_sysctld" version="1" check="all"
+                          comment="{{{ SYSCTLVAR }}} static configuration in /run/sysctl.d/*.conf" state_operator="OR">
     {{{ state_static_sysctld("run_sysctld") }}}
   </ind:textfilecontent54_test>
 
 {{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
-  <ind:textfilecontent54_test id="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}" version="1"
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_usr_lib_sysctld" version="1"
                           check="all"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /usr/lib/sysctl.d/*.conf">
+                          comment="{{{ SYSCTLVAR }}} static configuration in /usr/lib/sysctl.d/*.conf" state_operator="OR">
     {{{ state_static_sysctld("usr_lib_sysctld") }}}
   </ind:textfilecontent54_test>
 {{% endif %}}
 
 {{% if target_oval_version >= [5, 11] %}}
   <ind:variable_test check="all" check_existence="all_exist" comment="Check that only one file contains {{{ SYSCTLID }}}"
-  id="test_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" version="1">
-    <ind:object object_ref="oject_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" />
-    <ind:state state_ref="state_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" />
+  id="test_{{{ rule_id }}}_defined_in_one_file" version="1">
+    <ind:object object_ref="object_{{{ rule_id }}}_defined_in_one_file" />
+    <ind:state state_ref="state_{{{ rule_id }}}_defined_in_one_file" />
   </ind:variable_test>
 
-  <ind:variable_object id="oject_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" version="1">
-    <ind:var_ref>local_var_unique_sysctl_{{{ SYSCTLID }}}_counter</ind:var_ref>
+  <ind:variable_object id="object_{{{ rule_id }}}_defined_in_one_file" version="1">
+    <ind:var_ref>local_var_{{{ rule_id }}}_counter</ind:var_ref>
   </ind:variable_object>
 
-  <ind:variable_state id="state_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" version="1">
+  <ind:variable_state id="state_{{{ rule_id }}}_defined_in_one_file" version="1">
     <ind:value operation="equals" datatype="int">1</ind:value>
   </ind:variable_state>
 
-  <local_variable comment="Count unique sysctls" datatype="int" id="local_var_unique_sysctl_{{{ SYSCTLID }}}_counter" version="1">
+  <local_variable comment="Count unique sysctls" datatype="int" id="local_var_{{{ rule_id }}}_counter" version="1">
     <count>
       <unique>
-        <object_component object_ref="object_static_set_sysctls_{{{ SYSCTLID }}}" item_field="filepath" />
+        <object_component object_ref="object_{{{ rule_id }}}_static_set_sysctls" item_field="filepath" />
       </unique>
     </count>
   </local_variable>
 
-  <ind:textfilecontent54_object id="object_static_set_sysctls_{{{ SYSCTLID }}}" version="1">
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_static_set_sysctls" version="1">
     <set>
-      <object_reference>object_static_set_unfiltered_sysctls_{{{ SYSCTLID }}}</object_reference>
-      <filter action="exclude">state_{{{ SYSCTLID }}}_filepath_is_symlink</filter>
+      <object_reference>object_{{{ rule_id }}}_static_set_sysctls_unfiltered</object_reference>
+      <filter action="exclude">state_{{{ rule_id }}}_filepath_is_symlink</filter>
     </set>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_{{{ SYSCTLID }}}_filepath_is_symlink" version="1">
-    <ind:filepath operation="equals" var_check="at least one" var_ref="local_var_safe_symlinks_{{{ SYSCTLID }}}" datatype="string" />
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_filepath_is_symlink" version="1">
+    <ind:filepath operation="equals" var_check="at least one" var_ref="local_var_{{{ rule_id }}}_safe_symlinks" datatype="string" />
   </ind:textfilecontent54_state>
 
-  <!-- <no simlink handling> -->
+  <!-- <no symlink handling> -->
   <!-- We craft a variable with blank string to combine with the symlink paths found.
        This ultimately avoids referencing a variable with "no values",
        we reference a variable with a blank string -->
-  <local_variable comment="Unique list of symlink conf files" datatype="string" id="local_var_safe_symlinks_{{{ SYSCTLID }}}" version="1">
+  <local_variable comment="Unique list of symlink conf files" datatype="string" id="local_var_{{{ rule_id }}}_safe_symlinks" version="1">
     <unique>
-      <object_component object_ref="var_object_symlink_{{{ SYSCTLID }}}" item_field="value" />
+      <object_component object_ref="var_object_symlink_{{{ rule_id }}}" item_field="value" />
     </unique>
   </local_variable>
 
-  <ind:variable_object id="var_object_symlink_{{{ SYSCTLID }}}" comment="combine the blank string with symlink paths found" version="1">
+  <ind:variable_object id="var_object_symlink_{{{ rule_id }}}" comment="combine the blank string with symlink paths found" version="1">
     <set>
-      <object_reference>var_obj_symlink_{{{ SYSCTLID }}}</object_reference>
-      <object_reference>var_obj_blank_{{{ SYSCTLID }}}</object_reference>
+      <object_reference>var_obj_symlink_{{{ rule_id }}}</object_reference>
+      <object_reference>var_obj_blank_{{{ rule_id }}}</object_reference>
     </set>
   </ind:variable_object>
 
-  <ind:variable_object id="var_obj_blank_{{{ SYSCTLID }}}" comment="variable object of the blank string" version="1">
-    <ind:var_ref>local_var_blank_path_{{{ SYSCTLID }}}</ind:var_ref>
+  <ind:variable_object id="var_obj_blank_{{{ rule_id }}}" comment="variable object of the blank string" version="1">
+    <ind:var_ref>local_var_blank_path_{{{ rule_id }}}</ind:var_ref>
   </ind:variable_object>
 
-  <local_variable comment="Blank string" datatype="string" id="local_var_blank_path_{{{ SYSCTLID }}}" version="1">
+  <local_variable comment="Blank string" datatype="string" id="local_var_blank_path_{{{ rule_id }}}" version="1">
     <literal_component datatype="string"></literal_component>
   </local_variable>
 
-  <ind:variable_object id="var_obj_symlink_{{{ SYSCTLID }}}" comment="variable object of the symlinks found" version="1">
-    <ind:var_ref>local_var_symlinks_{{{ SYSCTLID }}}</ind:var_ref>
+  <ind:variable_object id="var_obj_symlink_{{{ rule_id }}}" comment="variable object of the symlinks found" version="1">
+    <ind:var_ref>local_var_symlinks_{{{ rule_id }}}</ind:var_ref>
   </ind:variable_object>
-  <!-- </no simlink handling> -->
+  <!-- </no symlink handling> -->
 
-  <local_variable comment="Unique list of symlink conf files" datatype="string" id="local_var_symlinks_{{{ SYSCTLID }}}" version="1">
+  <local_variable comment="Unique list of symlink conf files" datatype="string" id="local_var_symlinks_{{{ rule_id }}}" version="1">
     <unique>
-      <object_component object_ref="object_{{{ SYSCTLID }}}_symlinks" item_field="filepath" />
+      <object_component object_ref="object_{{{ rule_id }}}_symlinks" item_field="filepath" />
     </unique>
   </local_variable>
 
   <!-- "pattern match" doesn't seem to work with symlink_object, not sure if a bug or not.
        Workaround by querying for all conf files found -->
-  <unix:symlink_object comment="Symlinks referencing files in default dirs" id="object_{{{ SYSCTLID }}}_symlinks" version="1">
-    <unix:filepath operation="equals" var_ref="local_var_conf_files_{{{ SYSCTLID }}}" />
-    <filter action="exclude">state_symlink_points_outside_usual_dirs_{{{ SYSCTLID }}}</filter>
+  <unix:symlink_object comment="Symlinks referencing files in default dirs" id="object_{{{ rule_id }}}_symlinks" version="1">
+    <unix:filepath operation="equals" var_ref="local_var_conf_files_{{{ rule_id }}}" />
+    <filter action="exclude">state_symlink_points_outside_usual_dirs_{{{ rule_id }}}</filter>
   </unix:symlink_object>
 
   <!-- The state matches symlinks that don't point to the default dirs, i.e. paths that are not:
@@ -228,81 +267,89 @@
        ^/etc/sysctl.d/.*$
        ^/run/sysctl.d/.*$
        ^/usr/lib/sysctl.d/.*$ -->
-  <unix:symlink_state comment="State that matches symlinks referencing files not in the default dirs" id="state_symlink_points_outside_usual_dirs_{{{ SYSCTLID }}}" version="1">
+  <unix:symlink_state comment="State that matches symlinks referencing files not in the default dirs" id="state_symlink_points_outside_usual_dirs_{{{ rule_id }}}" version="1">
     <unix:canonical_path operation="pattern match">^(?!(\/etc\/sysctl\.conf$|(\/etc|\/run|\/usr\/lib)\/sysctl\.d\/)).*$</unix:canonical_path>
   </unix:symlink_state>
 {{% endif %}}
 
-  <local_variable comment="List of conf files" datatype="string" id="local_var_conf_files_{{{ SYSCTLID }}}" version="1">
-    <object_component object_ref="object_static_set_unfiltered_sysctls_{{{ SYSCTLID }}}" item_field="filepath" />
+  <local_variable comment="List of conf files" datatype="string" id="local_var_conf_files_{{{ rule_id }}}" version="1">
+    <object_component object_ref="object_{{{ rule_id }}}_static_set_sysctls_unfiltered" item_field="filepath" />
   </local_variable>
 
   <!-- Avoid directly referencing a possibly empty collection, one empty collection will cause the
        variable to have no value even when there are valid objects. -->
-  <ind:textfilecontent54_object id="object_static_set_unfiltered_sysctls_{{{ SYSCTLID }}}" version="1">
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_static_set_sysctls_unfiltered" version="1">
     <set>
-      <object_reference>object_static_etc_sysctls_{{{ SYSCTLID }}}</object_reference>
-      <object_reference>object_static_run_usr_sysctls_{{{ SYSCTLID }}}</object_reference>
+      <object_reference>object_static_etc_sysctls_{{{ rule_id }}}</object_reference>
+      <object_reference>object_static_run_usr_sysctls_{{{ rule_id }}}</object_reference>
     </set>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_object id="object_static_etc_sysctls_{{{ SYSCTLID }}}" version="1">
+  <ind:textfilecontent54_object id="object_static_etc_sysctls_{{{ rule_id }}}" version="1">
     <set>
-      <object_reference>object_static_sysctl_{{{ SYSCTLID }}}</object_reference>
-      <object_reference>object_static_etc_sysctld_{{{ SYSCTLID }}}</object_reference>
+      <object_reference>object_static_sysctl_{{{ rule_id }}}</object_reference>
+      <object_reference>object_static_etc_sysctld_{{{ rule_id }}}</object_reference>
     </set>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_object id="object_static_run_usr_sysctls_{{{ SYSCTLID }}}" version="1">
+  <ind:textfilecontent54_object id="object_static_run_usr_sysctls_{{{ rule_id }}}" version="1">
     <set>
-      <object_reference>object_static_run_sysctld_{{{ SYSCTLID }}}</object_reference>
+      <object_reference>object_static_run_sysctld_{{{ rule_id }}}</object_reference>
 {{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
-      <object_reference>object_static_usr_lib_sysctld_{{{ SYSCTLID }}}</object_reference>
+      <object_reference>object_static_usr_lib_sysctld_{{{ rule_id }}}</object_reference>
 {{% endif %}}
     </set>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_object id="object_static_sysctl_{{{ SYSCTLID }}}" version="1">
+  <ind:textfilecontent54_object id="object_static_sysctl_{{{ rule_id }}}" version="1">
     <ind:filepath>/etc/sysctl.conf</ind:filepath>
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_object id="object_static_etc_sysctld_{{{ SYSCTLID }}}" version="1">
+  <ind:textfilecontent54_object id="object_static_etc_sysctld_{{{ rule_id }}}" version="1">
     <ind:path>/etc/sysctl.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_object id="object_static_run_sysctld_{{{ SYSCTLID }}}" version="1">
+  <ind:textfilecontent54_object id="object_static_run_sysctld_{{{ rule_id }}}" version="1">
     <ind:path>/run/sysctl.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
 
 {{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
-  <ind:textfilecontent54_object id="object_static_usr_lib_sysctld_{{{ SYSCTLID }}}" version="1">
+  <ind:textfilecontent54_object id="object_static_usr_lib_sysctld_{{{ rule_id }}}" version="1">
     <ind:path>/usr/lib/sysctl.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
 {{% endif %}}
+{{% if SYSCTLVAL is string %}}
 {{% if SYSCTLVAL == "" %}}
 
-  <ind:textfilecontent54_state id="state_static_sysctld_{{{ SYSCTLID }}}" version="1">
-    <ind:subexpression operation="{{{ OPERATION }}}" var_ref="sysctl_{{{ SYSCTLID }}}_value"
+  <ind:textfilecontent54_state id="state_static_sysctld_{{{ rule_id }}}" version="1">
+    <ind:subexpression operation="{{{ OPERATION }}}" var_ref="{{{ rule_id }}}_value"
                        datatype="{{{ DATATYPE }}}" />
   </ind:textfilecontent54_state>
 
-  <external_variable id="sysctl_{{{ SYSCTLID }}}_value" version="1"
+  <external_variable id="{{{ rule_id }}}_value" version="1"
                      comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}"/>
 {{% else %}}
-  <ind:textfilecontent54_state id="state_static_sysctld_{{{ SYSCTLID }}}" version="1">
+  <ind:textfilecontent54_state id="state_static_sysctld_{{{ rule_id }}}" version="1">
 {{% if OPERATION == "pattern match" %}}
     <ind:subexpression operation="{{{ OPERATION }}}" datatype="{{{ DATATYPE }}}">{{{ SYSCTLVAL_REGEX }}}</ind:subexpression>
 {{% else %}}
     <ind:subexpression operation="{{{ OPERATION }}}" datatype="{{{ DATATYPE }}}">{{{ SYSCTLVAL }}}</ind:subexpression>
 {{% endif %}}
   </ind:textfilecontent54_state>
+{{% endif %}}
+{{% elif SYSCTLVAL is sequence %}}
+{{% for x in SYSCTLVAL %}}
+  <ind:textfilecontent54_state id="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}" version="1">
+    <ind:subexpression operation="{{{ OPERATION }}}" datatype="{{{ DATATYPE }}}">{{{ x }}}</ind:subexpression>
+  </ind:textfilecontent54_state>
+{{% endfor %}}
 {{% endif %}}
 </def-group>
 {{%- endif -%}}

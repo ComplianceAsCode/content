@@ -1,0 +1,55 @@
+documentation_complete: true
+
+prodtype: eks,ocp4
+
+platform: {{{ product }}}
+
+{{%- if product == "eks" %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- else %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- endif %}}
+
+title: 'kubelet - Enable Server Certificate Rotation'
+
+description: |-
+    To enable the kubelet to rotate server certificates, edit the kubelet configuration
+    file <tt>{{{ kubeletconf_path }}}</tt>
+    on the kubelet node(s) and set the below parameter:
+    <pre>
+    featureGates:
+    ...
+      RotateKubeletServerCertificate: true
+    ...
+    </pre>
+
+rationale: |-
+    Allowing the kubelet to auto-update the certificates ensure that there is no downtime
+    in certificate renewal as well as ensures confidentiality and integrity.
+
+severity: medium
+
+ocil_clause: 'the kubelet cannot rotate server certificate'
+
+ocil: |-
+    Run the following command on the kubelet node(s):
+    <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1"' | grep RotateKubeletServerCertificate; done</pre>
+    The output should return <tt>true</tt>.
+
+references:
+    cis@eks: 3.2.11
+    cis@ocp4: 4.2.12
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/kubeletconfig/role'
+        filepath_suffix: var_role_worker
+        yamlpath: ".featureGates.RotateKubeletServerCertificate"
+        values:
+         - value: "true"
+           operation: "equals"

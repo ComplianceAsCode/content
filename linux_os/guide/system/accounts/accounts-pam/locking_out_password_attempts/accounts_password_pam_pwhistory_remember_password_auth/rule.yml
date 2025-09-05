@@ -1,12 +1,20 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4
+prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4
 
 title: 'Limit Password Reuse: password-auth'
 
 description: |-
     Do not allow users to reuse recent passwords. This can be accomplished by using the
     <tt>remember</tt> option for the <tt>pam_pwhistory</tt> PAM module.
+    <br /><br />
+    In the file <tt>/etc/pam.d/password-auth</tt>, make sure the parameter
+    <tt>remember</tt> is present and it has a value equal to or greater than
+    {{{ xccdf_value("var_password_pam_remember") }}}. For example:
+    <pre>password <i>control_flag</i> pam_pwhistory.so <i>...existing_options...</i> remember={{{
+    xccdf_value("var_password_pam_remember") }}} use_authtok</pre>
+    <i>control_flag</i> should be one of the next values: <tt>{{{
+    xccdf_value("var_password_pam_remember_control_flag") }}}</tt><br />
 
 rationale: 'Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.'
 
@@ -42,24 +50,22 @@ references:
     vmmsrg: SRG-OS-000077-VMM-000440
 
 ocil_clause: |-
-     the value of remember is not set equal to or greater than {{{ xccdf_value("var_password_pam_remember") }}}
+     the line containing "pam_pwhistory.so" does not have the "remember" module argument set,
+     is commented out, or the value of the "remember" module argument is set to less than
+     "{{{ xccdf_value("var_password_pam_remember") }}}"
 
 ocil: |-
-    Check that the operating system prohibits the reuse of a password for
-    a minimum of <tt>{{{ xccdf_value("var_password_pam_remember") }}}</tt> generations with the following command:
-    <pre># grep pam_pwhistory.so /etc/pam.d/password-auth
-    password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so remember={{{ xccdf_value("var_password_pam_remember") }}} use_authtok</pre>
-    If the command does not return a result, or the returned line is commented
-    out, has a second column value different from <tt>{{{ xccdf_value("var_password_pam_remember_control_flag") }}}</tt>, does not contain
-    "remember" value, or the value is less than
-    <tt>{{{ xccdf_value("var_password_pam_remember") }}}</tt>, this is a finding.
+    Verify {{{ full_name }}} is configured in the password-auth file to prohibit password reuse
+    for a minimum of {{{ xccdf_value("var_password_pam_remember") }}} generations with the following command:
+
+    <pre>$ grep -i remember /etc/pam.d/password-auth
+    password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok remember={{{ xccdf_value("var_password_pam_remember") }}} retry=3</pre>
 
 fixtext: |-
-    To configure the <tt>remember</tt> option for the <tt>pam_pwhistory</tt> PAM module, in the
-    file <tt>/etc/pam.d/password-auth</tt>, make sure the parameter <tt>remember</tt> is present,
-    and that the value for the <tt>remember</tt> parameter is {{{ xccdf_value("var_password_pam_remember") }}} or greater.
-    For example:
-    <pre>password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so <i>...existing_options...</i> remember={{{ xccdf_value("var_password_pam_remember") }}} use_authtok</pre>
+    Configure the {{{ full_name }}} password-auth file to prohibit password reuse for a minimum of
+    {{{ xccdf_value("var_password_pam_remember") }}} generations. Add the following line in
+    "/etc/pam.d/password-auth" (or modify the line to have the required value):
+    <pre>password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok remember={{{ xccdf_value("var_password_pam_remember") }}} retry=3</pre>
 
 srg_requirement: '{{{ full_name }}} must be configured in the password-auth file to prohibit password reuse for a minimum of five generations.'
 

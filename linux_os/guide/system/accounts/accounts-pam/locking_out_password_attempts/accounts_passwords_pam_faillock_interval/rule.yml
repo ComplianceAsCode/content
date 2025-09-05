@@ -42,7 +42,11 @@ references:
     stigid@rhel8: RHEL-08-020012
     vmmsrg: SRG-OS-000021-VMM-000050
 
-ocil_clause: 'fail_interval is less than the required value'
+platform: pam
+
+ocil_clause: |-
+    the "fail_interval" option is not set to "{{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}"
+    or less (but not "0"), the line is commented out, or the line is missing
 
 ocil: |-
     To ensure the failed password attempt policy is configured correctly, run the following command:
@@ -55,8 +59,10 @@ ocil: |-
     {{% endif %}}
 
 fixtext: |-
-    To configure the fail_interval directive, first make sure the feature is enabled using the
-    following command:
+    Configure {{{ full_name }}} to lock out an account after a number of incorrect login attempts
+    within 15 minutes using <tt>pam_faillock.so</tt>. First enable the feature using the following
+    command:
+
     {{% if product in ["rhel7"] %}}
     $ sudo authconfig --enablefaillock --update
 
@@ -73,17 +79,23 @@ fixtext: |-
     $ sudo authselect enable-feature with-faillock
 
     Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
-    add, uncomment or edit the following line:
     <pre>fail_interval = {{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre>
-
-    add or uncomment the following line:
-    <pre>silent</pre>
     {{% endif %}}
 
-srg_requirement: |-
-    {{{ full_name }}} must automatically lock an account when three unsuccessful logon attempts occur within {{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}} seconds.
+checktext: |-
+    Verify {{{ full_name }}} locks an account after {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}
+    unsuccessful logon attempts within a period of 15 minutes with the following command:
 
-platform: pam
+    Note: If the System Administrator demonstrates the use of an approved centralized account
+    management method that locks an account after three unsuccessful logon attempts within a
+    period of 15 minutes, this requirement is not applicable.
+
+    $ grep fail_interval /etc/security/faillock.conf
+
+    <pre>fail_interval = 900</pre>
+
+srg_requirement: |-
+    {{{ full_name }}} must automatically lock an account when three unsuccessful logon attempts occur during a 15-minute time period.
 
 warnings:
     - general: |-

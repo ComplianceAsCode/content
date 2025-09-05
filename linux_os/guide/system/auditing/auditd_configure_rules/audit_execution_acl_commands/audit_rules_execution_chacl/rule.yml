@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8,rhel8,rhel9,sle12,sle15,ubuntu2004
+prodtype: ol8,ol9,rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Record Any Attempts to Run chacl'
 
@@ -42,19 +42,7 @@ references:
     stigid@sle15: SLES-15-030440
     stigid@ubuntu2004: UBTU-20-010168
 
-ocil_clause: '{{{ ocil_clause_audit() }}}'
-
-ocil: |-
-    Verify {{{ full_name }}} generates an audit record for all uses of the "chacl" command.
-    To verify that execution of the command is being audited, run the following command:
-    $ sudo grep chacl /etc/audit/rules.d/audit.*
-    The output should be similar to:
-    -a always,exit -F path=/usr/bin/chacl -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod
-
-fixtext: |-
-    {{{ fixtext_audit_rules_command("chacl", "/usr/bin/chacl", "perm_mod") | indent(4) }}}
-
-srg_requirement: '{{{ srg_requirement_audit_syscall("chacl") }}}'
+{{{ ocil_fix_srg_privileged_command("chacl", "/usr/bin/", "perm_mod") }}}
 
 template:
     name: audit_rules_privileged_commands

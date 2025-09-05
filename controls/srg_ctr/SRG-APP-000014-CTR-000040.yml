@@ -4,7 +4,7 @@ controls:
   - medium
   title: {{{ full_name }}} must use TLS 1.2 or greater for secure communication.
   related_rules:
-  - fips_mode_enabled
+  - fips_mode_enabled_on_all_nodes
   status: manual
   check: |-
     Verify that the TLS Security Profile is not set to old, or a custom

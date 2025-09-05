@@ -3,6 +3,7 @@
     <metadata>
       <title>Kernel Runtime Parameter IPv6 Check</title>
       <affected family="unix">
+	<platform>multi_platform_alinux</platform>
 	<platform>multi_platform_debian</platform>
 	<platform>multi_platform_example</platform>
 	<platform>multi_platform_fedora</platform>
@@ -19,8 +20,8 @@
     </metadata>
     <criteria comment="IPv6 disabled or net.ipv6.conf.all.disable_ipv6 set correctly" operator="OR">
       <criteria operator="AND">
-        <extend_definition comment="net.ipv6.conf.all.disable_ipv6 configuration setting check" definition_ref="sysctl_static_net_ipv6_conf_all_disable_ipv6" />
-        <extend_definition comment="net.ipv6.conf.all.disable_ipv6 runtime setting check" definition_ref="sysctl_runtime_net_ipv6_conf_all_disable_ipv6" />
+        <extend_definition comment="net.ipv6.conf.all.disable_ipv6 configuration setting check" definition_ref="sysctl_net_ipv6_conf_all_disable_ipv6_static" />
+        <extend_definition comment="net.ipv6.conf.all.disable_ipv6 runtime setting check" definition_ref="sysctl_net_ipv6_conf_all_disable_ipv6_runtime" />
       </criteria>
     </criteria>
   </definition>
