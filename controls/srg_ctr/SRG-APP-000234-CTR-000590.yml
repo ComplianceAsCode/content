@@ -1,0 +1,11 @@
+controls:
+- id: SRG-APP-000234-CTR-000590
+  levels:
+  - medium
+  title: {{{ full_name }}} must never automatically remove or disable emergency
+    accounts.
+  rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  status: inherently met

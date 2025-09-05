@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
+prodtype: alinux2,alinux3,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
 
 title: 'Ensure that System Accounts Do Not Run a Shell Upon Login'
 
@@ -34,8 +34,10 @@ identifiers:
 
 references:
     cis-csc: 1,12,13,14,15,16,18,3,5,7,8
+    cis@alinux2: 5.4.2
+    cis@alinux3: 5.6.2
     cis@rhel7: 5.5.2
-    cis@rhel8: 5.5.2
+    cis@rhel8: 5.6.2
     cis@sle12: 5.5.2
     cis@sle15: 5.4.2
     cis@ubuntu2004: 5.4.2
@@ -60,6 +62,15 @@ ocil: |-
     with UID numbers less than UID_MIN, other than root. Value of the UID_MIN
     directive is set in /etc/login.defs configuration file. In the default
     configuration UID_MIN is set to 1000.
+
+fixtext: |-
+    Configure {{{ full_name }}} so that all non-interactive accounts on the system have no interactive shell assigned to them.
+
+    Run the following command to disable the interactive shell for a specific non-interactive user account:
+
+    $ sudo usermod --shell /sbin/nologin nobody
+
+srg_requirement: '{{{ full_name }}} system accounts must not have have login shell.'
 
 warnings:
     - functionality: |-

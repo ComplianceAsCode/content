@@ -32,3 +32,5 @@ template:
         filegid: '0'
 fixtext: |-
     {{{ describe_file_group_owner(file="/var/log/messages", group="root") }}}
+
+srg_requirement: '{{{ srg_requirement_file_group_owner("/var/log/messages", group="root") }}}'

@@ -17,6 +17,7 @@ identifiers:
     cce@rhel9: CCE-83917-5
 
 references:
+    cis@alinux2: 4.2.3
     disa: CCI-001314
     srg: SRG-OS-000206-GPOS-00084
     stigid@ol8: OL08-00-010240
@@ -35,4 +36,6 @@ template:
         filemode: '0755'
 
 fixtext: |-
-    {{{ describe_file_permissions(file="/var/log", perms="0755") }}}
+    {{{ fixtext_directory_permissions("/var/log", "0755") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_directory_permission("/var/log", "0755") }}}'

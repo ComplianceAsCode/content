@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,ubuntu2004,wrlinux1019
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,ubuntu2004
 
 title: 'Ensure PAM Enforces Password Requirements - Minimum Different Characters'
 
@@ -75,3 +75,5 @@ fixtext: |-
     Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
 
     difok = {{{ xccdf_value("var_password_pam_difok") }}}
+
+srg_requirement: '{{{ full_name }}} must require the change of at least 8 characters when passwords are changed.'

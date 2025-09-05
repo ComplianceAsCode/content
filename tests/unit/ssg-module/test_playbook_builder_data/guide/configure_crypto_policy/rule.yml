@@ -54,7 +54,7 @@ rationale: |-
 severity: high
 
 references:
-    cis@rhel8: 1.10,1.11
+    cis@rhel8: 1.10
     hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.312(e)(1),164.312(e)(2)(ii)
     ism: "1446"
     nerc-cip: CIP-003-3 R4.2,CIP-007-3 R5.1,CIP-007-3 R7.1
@@ -80,6 +80,13 @@ ocil: |-
     Subsequently, check if matching libraries have drop in files in the <pre>/etc/crypto-policies/local.d</pre> directory.
     <pre>$ ls /etc/crypto-policies/local.d/ | awk -F'-' '{print $1}' | uniq | sort</pre>
     Outputs of two previous commands should match.
+
+fixtext: |-
+    Configure {{{ full_name }}} to implement approved encryption.
+    
+    update-crypto-policies --set {{{ xccdf_value("var_system_crypto_policy") }}}
+
+srg_requirement: '{{{ full_name }}} must use the {{{ xccdf_value("var_system_crypto_policy") }}} crypto policy.'
 
 warnings:
     - general: |-

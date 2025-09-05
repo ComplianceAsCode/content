@@ -30,14 +30,14 @@ references:
     cis-csc: 1,12,15,16
     cobit5: DSS05.04,DSS05.10,DSS06.10
     cui: 3.1.10
-    disa: CCI-000057
+    disa: CCI-000057,CCI-000060
     isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
     iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
     nist: CM-6(a)
     nist-csf: PR.AC-7
     ospp: FMT_MOF_EXT.1
-    srg: SRG-OS-000029-GPOS-00010
+    srg: SRG-OS-000029-GPOS-00010,SRG-OS-000031-GPOS-00012
     stigid@ol7: OL07-00-010081
     stigid@ol8: OL08-00-020080
     stigid@rhel7: RHEL-07-010081
@@ -53,5 +53,7 @@ ocil: |-
 
 fixtext: |-
     {{{ fixtext_dconf_lock_settings("/org/gnome/desktop/screensaver/lock-delay") }}}
+
+srg_requirement: '{{{ full_name }}} must prevent a user from overriding the session lock-delay setting for the graphical user interface.'
 
 platform: machine

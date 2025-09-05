@@ -37,7 +37,21 @@ references:
 ocil_clause: the directory is not owned by root
 
 ocil: |-
-    {{{ describe_file_owner(file="/var/log/audit", owner="root") }}}
+    Determine where the audit logs are stored with the following command:
+
+    $ sudo grep -iw log_file /etc/audit/auditd.conf
+
+    log_file = /var/log/audit/audit.log
+
+    Determine the owner of the audit log directory by using the output of the above command
+    (default: "/var/log/audit/"). Run the following command with the correct audit log directory
+    path:
+
+    $ sudo ls -ld /var/log/audit
+
+    drwx------ 2 root root 23 Jun 11 11:56 /var/log/audit
+
+    The audit log directory must be owned by "root"
 
 srg_requirement: |-
     {{{ full_name }}} audit log directory must be owned by root to prevent unauthorized read access.
@@ -46,4 +60,7 @@ fixtext: |-
     Change the owner of the directory /var/log/audit to root.
     Run the following command:
 
-    $ sudo chown root /var/log/audit
+    $ sudo chown root [audit_log_directory]
+    
+    Replace "[audit_log_directory]" with the correct audit log directory path. By default, this
+    location is usually "/var/log/audit".

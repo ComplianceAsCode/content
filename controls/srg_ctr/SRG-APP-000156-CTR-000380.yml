@@ -1,0 +1,10 @@
+controls:
+- id: SRG-APP-000156-CTR-000380
+  levels:
+  - medium
+  title: {{{ full_name }}} must use FIPS-validated SHA-1 or higher hash function
+    to provide replay-resistant authentication mechanisms for network access to privileged
+    accounts.
+  rules:
+  - ocp_no_ldap_insecure
+  status: automated

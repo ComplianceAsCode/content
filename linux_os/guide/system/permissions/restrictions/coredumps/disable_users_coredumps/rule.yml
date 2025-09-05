@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
+prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
 
 title: 'Disable Core Dumps for All Users'
 
@@ -25,6 +25,8 @@ identifiers:
 
 references:
     cis-csc: 1,12,13,15,16,2,7,8
+    cis@alinux2: 1.5.1
+    cis@alinux3: 1.6.1
     cis@rhel7: 1.5.1
     cis@rhel8: 1.6.1
     cis@sle12: 1.5.1
@@ -40,12 +42,20 @@ references:
     stigid@ol8: OL08-00-010673
     stigid@rhel8: RHEL-08-010673
 
-ocil_clause: 'it is not'
+ocil_clause: 'the "core" item is missing, commented out, or the value is anything other than "0" and the need for core dumps is not documented with the Information System Security Officer (ISSO) as an operational requirement for all domains that have the "core"'
 
 ocil: |-
-    To verify that core dumps are disabled for all users, run the following command:
+    Verify that core dumps are disabled for all users, run the following command:
     <pre>$ grep core /etc/security/limits.conf</pre>
-    The output should be:
     <pre>*     hard   core    0</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable core dumps for all users.
+
+    Add the following line to the top of the /etc/security/limits.conf or in a ".conf" file defined in /etc/security/limits.d/:
+
+    * hard core 0
+
+srg_requirement: '{{{ full_name }}} must disable core dumps for all users.'
 
 platform: pam

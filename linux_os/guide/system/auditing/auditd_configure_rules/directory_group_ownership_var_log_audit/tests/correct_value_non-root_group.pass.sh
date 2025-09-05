@@ -1,5 +1,6 @@
 #!/bin/bash
 # packages = audit
+# platform = multi_platform_rhel
 
 groupadd group_test
 

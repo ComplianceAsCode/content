@@ -5,13 +5,7 @@ title: 'Configure auditd to use audispd''s syslog plugin'
 description: |-
     To configure the <tt>auditd</tt> service to use the
     <tt>syslog</tt> plug-in of the <tt>audispd</tt> audit event multiplexor, set
-    the <tt>active</tt> line in <tt>
-{{%- if product in ["rhel8", "rhel9", "fedora", "ol8", "rhv4"] -%}}
-    /etc/audit/plugins.d/syslog.conf
-{{%- else -%}}
-    /etc/audisp/plugins.d/syslog.conf
-{{%- endif -%}}
-    </tt> to <tt>yes</tt>.
+    the <tt>active</tt> line in <tt>{{{ audisp_conf_path }}}/plugins.d/syslog.conf</tt> to <tt>yes</tt>.
     Restart the <tt>auditd</tt> service:
     <pre>$ sudo service auditd restart</pre>
 
@@ -19,7 +13,7 @@ rationale: |-
     The auditd service does not include the ability to send audit
     records to a centralized server for management directly. It does, however,
     include a plug-in for audit event multiplexor (audispd) to pass audit records
-    to the local syslog server
+    to the local syslog server.
 
 severity: medium
 
@@ -50,10 +44,16 @@ ocil_clause: 'it is not activated'
 
 ocil: |-
     To verify the audispd's syslog plugin is active, run the following command:
-{{% if product in ["rhel8", "rhel9", "fedora", "rhv4"] %}}
-    <pre>$ sudo grep active /etc/audit/plugins.d/syslog.conf</pre>
-{{% else %}}
-    <pre>$ sudo grep active /etc/audisp/plugins.d/syslog.conf</pre>
-{{% endif %}}
+    <pre>$ sudo grep active {{{ audisp_conf_path }}}/plugins.d/syslog.conf</pre>
     If the plugin is active, the output will show <tt>yes</tt>.
 
+fixtext: |-
+    Configure {{{ full_name }}} to use the audispd syslog plugin.
+
+    Add or edit the following line in {{{ audisp_conf_path }}}/plugins.d/syslog.conf:
+
+    active = yes
+
+    The auditd daemon needs to be restarted in order for changes to take effect.
+
+srg_requirement: "{{{ full_name }}} must use the syslog plugin in the audit event multiplexor."

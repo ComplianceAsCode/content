@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4
 
 title: 'Ensure tftp Daemon Uses Secure Mode'
 
@@ -44,7 +44,7 @@ references:
     stigid@rhel7: RHEL-07-040720
     stigid@rhel8: RHEL-08-040350
 
-ocil_clause: 'this flag is missing'
+ocil_clause: '"server_args" line does not have a "-s" option, and a subdirectory is not assigned'
 
 ocil: |-
     If TFTP is not installed, this is not applicable. To determine if TFTP is
@@ -54,7 +54,11 @@ ocil: |-
     Verify <tt>tftp</tt> is configured by with the <tt>-s</tt> option by
     running the following command:
     <pre>grep "server_args" /etc/xinetd.d/tftp</pre>
-    The output should indicate the <tt>server_args</tt> variable is configured
-    with the <tt>-s</tt> flag, matching the example below:
-    <pre>$ grep "server_args" /etc/xinetd.d/tftp
-    server_args = -s {{{ sub_var_value("var_tftpd_secure_directory") }}}</pre>
+    <pre>server_args = -s {{{ sub_var_value("var_tftpd_secure_directory") }}}</pre>
+
+fixtext: |-
+    Configure the TFTP daemon to operate in secure mode by adding the following line to "/etc/xinetd.d/tftp" (or modify the line to have the required value):
+
+    server_args = -s {{{ sub_var_value("var_tftpd_secure_directory") }}}
+
+srg_requirement: 'If the Trivial File Transfer Protocol (TFTP) server is required, the {{{ full_name }}} TFTP daemon must be configured to operate in secure mode.'

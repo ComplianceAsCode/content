@@ -1,13 +1,8 @@
 #!/bin/bash
+# platform = Red Hat Enterprise Linux 7,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol
 
-AUTH_FILES[0]="/etc/pam.d/system-auth"
-{{%- if product == "rhel7" %}}
-AUTH_FILES[1]="/etc/pam.d/password-auth"
-{{%- endif %}}
+pam_file="/etc/pam.d/system-auth"
 
-for pamFile in "${AUTH_FILES[@]}"
-do
-	if ! grep -q "^password.*sufficient.*pam_unix.so.*sha512" $pamFile; then
-		sed -i --follow-symlinks "/^password.*sufficient.*pam_unix.so/ s/$/ sha512/" $pamFile
-	fi
-done
+if ! grep -q "^password.*sufficient.*pam_unix.so.*sha512" "$pam_file"; then
+	sed -i --follow-symlinks '/^password.*sufficient.*pam_unix.so/ s/$/ sha512/' "$pam_file"
+fi

@@ -25,8 +25,10 @@ identifiers:
     cce@rhel9: CCE-83979-5
 
 references:
+    cis@alinux2: 1.5.1
+    cis@alinux3: 1.6.1
     cis@rhel7: 1.5.1
-    cis@rhel8: 1.6.1
+    cis@rhel8: 1.5.1
     cis@sle12: 1.5.1
     cis@sle15: 1.6.1
     disa: CCI-000366
@@ -36,13 +38,20 @@ references:
     stigid@ol8: OL08-00-010674
     stigid@rhel8: RHEL-08-010674
 
-ocil_clause: Storage is not set to none
+ocil_clause: Storage is not set to none or is commented out and the need for core dumps is not documented with the Information System Security Officer (ISSO) as an operational requirement for all domains that have the "core" item assigned
 
 ocil: |-
-    To verify that storing core dumps are disabled, run the following command:
+    Verify that storing core dumps are disabled, run the following command:
     <pre>$ grep Storage /etc/systemd/coredump.conf</pre>
-    The output should be:
-    <pre>Storage=none</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable storing core dumps for all users.
+
+    Add or modify the following line in /etc/systemd/coredump.conf:
+
+    Storage=none
+
+srg_requirement: '{{{ full_name }}} must disable storing core dumps.'
 
 warnings:
     - general: |-

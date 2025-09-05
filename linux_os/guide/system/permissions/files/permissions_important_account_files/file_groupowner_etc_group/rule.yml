@@ -18,8 +18,10 @@ identifiers:
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
+    cis@alinux2: 6.1.4
+    cis@alinux3: 6.1.5
     cis@rhel7: 6.1.8
-    cis@rhel8: 6.1.8
+    cis@rhel8: 6.1.5
     cis@sle12: 6.1.4
     cis@sle15: 6.1.4
     cis@ubuntu2004: 6.1.5
@@ -37,6 +39,10 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/group", group="root") 
 
 ocil: |-
     {{{ ocil_file_group_owner(file="/etc/group", group="root") }}}
+
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/group", group="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/group", group="root") }}}'
 
 template:
     name: file_groupowner

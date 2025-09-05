@@ -24,14 +24,18 @@ severity: high
 platform: machine
 
 identifiers:
+    cce@rhel8: CCE-85953-8
+    cce@rhel9: CCE-85972-8
     cce@sle12: CCE-83249-3
     cce@sle15: CCE-91155-2
 
 references:
+    cis@rhel8: 6.2.1
     disa: CCI-000366
     nist: CM-6(b),CM-6.1(iv)
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol7: OL07-00-010291
+    stigid@ol8: OL08-00-010121
     stigid@sle12: SLES-12-010221
     stigid@sle15: SLES-15-020181
 
@@ -42,12 +46,17 @@ ocil: |-
     <pre>$ sudo awk -F: '!$2 {print $1}' /etc/shadow</pre>
     If this produces any output, it may be possible to log into accounts
     with empty passwords.
-    Configure all accounts on the system to have a password or lock
+
+
+fixtext: |-
+    Configure all accounts on {{{ full_name }}} to have a password or lock
     the account with the following commands:
     Perform a password reset:
     <pre>$ sudo passwd [username]</pre>
     Lock an account:
     <pre>$ sudo passwd -l [username]</pre>
+
+srg_requirement: '{{{ full_name }}} must have no accounts With blank or null passwords.'
 
 warnings:
     - general:

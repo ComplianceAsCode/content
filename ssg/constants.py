@@ -39,6 +39,8 @@ SSG_REF_URIS = {
 }
 
 product_directories = [
+    'alinux2',
+    'alinux3',
     'chromium',
     'debian9', 'debian10', 'debian11',
     'example',
@@ -56,8 +58,8 @@ product_directories = [
     'rhv4',
     'sle12', 'sle15',
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004',
+    'uos20',
     'vsel',
-    'wrlinux8', 'wrlinux1019'
 ]
 
 JINJA_MACROS_DIRECTORY = os.path.join(os.path.dirname(os.path.dirname(
@@ -191,6 +193,8 @@ PKG_MANAGER_TO_CONFIG_FILE = {
 }
 
 FULL_NAME_TO_PRODUCT_MAPPING = {
+    "Alinux 2": "alinux2",
+    "Alinux 3": "alinux3",
     "Chromium": "chromium",
     "Debian 9": "debian9",
     "Debian 10": "debian10",
@@ -218,8 +222,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Ubuntu 16.04": "ubuntu1604",
     "Ubuntu 18.04": "ubuntu1804",
     "Ubuntu 20.04": "ubuntu2004",
-    "WRLinux 8": "wrlinux8",
-    "WRLinux 1019": "wrlinux1019",
+    "UnionTech OS Server 20": "uos20",
 }
 
 
@@ -254,14 +257,20 @@ REFERENCES = dict(
     pcidss=Reference(
         id="pcidss", name=REF_PREFIX_MAP["pcidss"], url="",
         regex_with_groups=r"Req-(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+    srg=Reference(
+        id="srg", name="SRG", url="",
+        regex_with_groups=r"(SRG-OS-\d+-GPOS-\d+)"
+    )
 )
 
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
-                       "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos",
-                       "example", "eks"]
+                       "opensuse", "sle", "ol", "ocp", "rhcos",
+                       "example", "eks", "alinux", "uos"]
 
 MULTI_PLATFORM_MAPPING = {
+    "multi_platform_alinux": ["alinux2"],
+    "multi_platform_alinux": ["alinux3"],
     "multi_platform_debian": ["debian9", "debian10", "debian11"],
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
@@ -274,7 +283,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle12", "sle15"],
     "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004"],
-    "multi_platform_wrlinux": ["wrlinux8", "wrlinux1019"],
+    "multi_platform_uos": ["uos20"],
 }
 
 RHEL_CENTOS_CPE_MAPPING = {
@@ -426,6 +435,7 @@ XCCDF_PLATFORM_TO_PACKAGE = {
 
 # _version_name_map = {
 MAKEFILE_ID_TO_PRODUCT_MAP = {
+    'alinux': 'Alibaba Cloud Linux',
     'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
@@ -435,12 +445,12 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'rhv': 'Red Hat Virtualization',
     'debian': 'Debian',
     'ubuntu': 'Ubuntu',
+    'uos': 'UnionTech OS Server',
     'eap': 'JBoss Enterprise Application Platform',
     'fuse': 'JBoss Fuse',
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
     'vsel': 'McAfee VirusScan Enterprise for Linux',
-    'wrlinux': 'WRLinux',
     'example': 'Example',
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',
@@ -462,3 +472,4 @@ DEFAULT_AIDE_BIN_PATH = '/usr/sbin/aide'
 DEFAULT_SSH_DISTRIBUTED_CONFIG = 'false'
 DEFAULT_PRODUCT = 'example'
 DEFAULT_CHRONY_CONF_PATH = '/etc/chrony.conf'
+DEFAULT_AUDISP_CONF_PATH = '/etc/audit'

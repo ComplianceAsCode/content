@@ -4,7 +4,6 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
 endif()
 
 set(PRODUCT "eks")
-set(DISA_SRG_TYPE "os")
 set(PRODUCT_REMEDIATION_LANGUAGES "kubernetes")
 
 ssg_build_product(${PRODUCT})

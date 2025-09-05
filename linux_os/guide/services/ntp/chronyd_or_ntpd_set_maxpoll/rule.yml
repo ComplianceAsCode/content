@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Configure Time Service Maxpoll Interval'
 
@@ -28,7 +28,7 @@ description: |-
     which would allow the creation of configuration files to set these servers.
     </p>
 
-    If we'd like to set a configuration like the following:linux_os/guide/services/ntp/chronyd_or_ntpd_set_maxpoll/rule.yml
+    If we'd like to set a configuration like the following:
     <pre>
     pool 2.rhel.pool.ntp.org iburst
 
@@ -116,3 +116,5 @@ fixtext: |-
     Configure {{{ full_name }}} to securely compare internal information system clocks at a regular interval with an NTP server by adding/modifying the following line in the {{{ chrony_conf_path }}} file.
 
     server [ntp.server.name] iburst maxpoll {{{ xccdf_value("var_time_service_set_maxpoll") }}}
+
+srg_requirement: '{{{ full_name }}} must securely compare internal information system clocks at least every 24 hours with a server synchronized to an authoritative time source, such as the United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate network, and/or the Global Positioning System (GPS).'

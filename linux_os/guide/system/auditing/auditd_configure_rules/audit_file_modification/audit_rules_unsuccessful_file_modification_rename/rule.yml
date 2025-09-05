@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle12,sle15
 
-title: 'Record Unsuccessul Delete Attempts to Files - rename'
+title: 'Record Unsuccessful Delete Attempts to Files - rename'
 
 description: |-
     The audit system should collect unsuccessful file deletion
@@ -30,6 +30,7 @@ identifiers:
     cce@rhcos4: CCE-82648-7
     cce@rhel7: CCE-81108-3
     cce@rhel8: CCE-80973-1
+    cce@rhel9: CCE-88011-2
     cce@sle12: CCE-83251-9
     cce@sle15: CCE-85701-1
 
@@ -52,7 +53,15 @@ references:
     stigid@sle15: SLES-15-030740
     vmmsrg: SRG-OS-000458-VMM-001810,SRG-OS-000461-VMM-001830
 
-{{{ complete_ocil_entry_audit_syscall(syscall="rename") }}}
+ocil: |-
+    {{{ ocil_audit_rules_unsuccessful_file_modification("rename", "unsuccessful-delete") | indent(4) }}}
+
+ocil_clause: the command does not return a line, or the line is commented out
+
+fixtext: |-
+    {{{ fixtext_audit_rules("rename", "perm_mod", "perm_mod") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("rename") }}}'
 
 warnings:
     - general: |-
@@ -74,3 +83,10 @@ template:
           {{% endif %}}
           - unlink
           - unlinkat
+
+fixtext: |-
+    {{%- if product in ['sle15'] %}}
+    {{{ fixtext_audit_rules_unsuccessful_file_modification("rename", ["renameat", "renameat2", "unlink", "unlinkat"]) | indent(4) }}}
+    {{%- else %}}
+    {{{ fixtext_audit_rules_unsuccessful_file_modification("rename", ["renameat", "unlink", "unlinkat"]) | indent(4) }}}
+    {{%- endif %}}

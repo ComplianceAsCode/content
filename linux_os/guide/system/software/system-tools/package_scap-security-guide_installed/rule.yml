@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4
 
 title: 'Install scap-security-guide Package'
 
@@ -26,11 +26,16 @@ identifiers:
     cce@rhel9: CCE-83505-8
 
 references:
+    ospp: AGD_PRE.1,AGD_OPE.1
     srg: SRG-OS-000480-GPOS-00227
  
 ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="scap-security-guide") }}}'
+
+fixtext: "{{{ fixtext_package_installed("scap-security-guide") }}}"
+
+srg_requirement: '{{{ srg_requirement_package_installed("scap-security-guide") }}}'
 
 template:
     name: package_installed

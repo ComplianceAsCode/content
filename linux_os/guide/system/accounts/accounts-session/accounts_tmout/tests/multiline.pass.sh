@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# platform = multi_platform_sle
 # variables = var_accounts_tmout=700
 
 if grep -q "TMOUT" /etc/profile; then

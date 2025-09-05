@@ -56,3 +56,5 @@ fixtext: |-
     Remove any occurrence of "!authenticate" found in "/etc/sudoers" file or files in the "/etc/sudoers.d" directory.
 
     $ sed -i '/\!authenticate/ s/^/# /g' /etc/sudoers /etc/sudoers.d/*
+
+srg_requirement: '{{{ full_name }}} must require users to reauthenticate for privilege escalation.'

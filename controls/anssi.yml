@@ -109,6 +109,9 @@ controls:
     - sudo_remove_no_authenticate
     - package_rsyslog_installed
     - service_rsyslog_enabled
+
+    - var_authselect_profile=sssd
+    - enable_authselect
     related_rules:
     - package_audit_installed
     - service_auditd_enabled
@@ -340,9 +343,6 @@ controls:
     # Ensure passwords with minimum of 18 characters
     - var_password_pam_minlen=18
     - accounts_password_pam_minlen
-    # Enforce password lenght for new accounts
-    - var_accounts_password_minlen_login_defs=18
-    - accounts_password_minlen_login_defs
     # Require at Least 1 Special Character in Password
     - var_password_pam_ocredit=1
     - accounts_password_pam_ocredit

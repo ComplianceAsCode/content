@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Shutdown System When Auditing Failures Occur'
 
@@ -70,3 +70,5 @@ fixtext: |-
     audit rules during daemon startup, add the following line to the
     bottom of the /etc/audit/audit.rules file:
     -f 2
+
+srg_requirement: The {{{ full_name }}} system must shut down when an audit processing failure occurs.

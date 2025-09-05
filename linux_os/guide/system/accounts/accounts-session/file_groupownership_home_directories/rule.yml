@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: alinux3,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'All Interactive User Home Directories Must Be Group-Owned By The Primary User'
 
@@ -30,7 +30,8 @@ identifiers:
     cce@sle15: CCE-85711-0
 
 references:
-    cis@rhel8: 6.2.8
+    cis@alinux3: 6.2.5
+    cis@rhel8: 6.2.10
     cis@sle15: 6.2.7
     disa: CCI-000366
     nist@sle15: CM-6(b),CM-6.1(iv)
@@ -48,6 +49,15 @@ ocil: |-
     To verify the assigned home directory of all interactive users is group-
     owned by that users primary GID, run the following command:
     <pre># ls -ld $(awk -F: '($3&gt;=1000)&amp;&amp;($7 !~ /nologin/){print $6}' /etc/passwd)</pre>
+
+fixtext: |-
+    Change the group owner of a local interactive user’s home directory to the group found in "/etc/passwd". To change the group owner of a local interactive user’s home directory, use the following command:
+
+    Note: The example will be for the user "smithj", who has a home directory of "/home/smithj", and has a primary group of users.
+
+    $ sudo chgrp users /home/smithj
+
+srg_requirement: 'All {{{ full_name }}} local interactive user home directories must be group-owned by the home directory owner’s primary group.'
 
 warnings:
     - general: |-

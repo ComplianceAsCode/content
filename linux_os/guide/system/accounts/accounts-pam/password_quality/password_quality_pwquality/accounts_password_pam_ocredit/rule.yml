@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: alinux2,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004
 
 title: 'Ensure PAM Enforces Password Requirements - Minimum Special Characters'
 
@@ -36,6 +36,7 @@ identifiers:
 references:
     anssi: BP28(R18)
     cis-csc: 1,12,15,16,5
+    cis@alinux2: 5.3.1
     cis@rhel7: 5.4.1
     cis@sle12: 5.4.1
     cis@sle15: 5.3.1
@@ -70,6 +71,8 @@ fixtext: |-
     Add or modify the "ocredit" option line in /etc/security/pwquality.conf to have the required
     value, like in the following example:
     ocredit = {{{ xccdf_value("var_password_pam_ocredit") }}}
+
+srg_requirement: '{{{ full_name }}} passwords must contain at least one special character.'
 
 platform: pam
 

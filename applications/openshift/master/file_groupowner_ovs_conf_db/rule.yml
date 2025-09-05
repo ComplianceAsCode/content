@@ -7,7 +7,9 @@ platform: ocp4-node
 title: 'Verify Group Who Owns The Open vSwitch Configuration Database'
 
 description: |-
-    {{{ describe_file_group_owner(file="/etc/openvswitch/conf.db", group="hugetlbfs") }}}
+    Check if the group owner of <code>/etc/openvswitch/conf.db</code> is
+    <code>hugetlbfs</code> on architectures other than s390x or <code>openvswitch</code>
+    on s390x.
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -18,7 +20,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@ocp4: CCE-84226-0
+    cce@ocp4: CCE-88281-1
 
 references:
     cis@ocp4: 1.1.9
@@ -26,13 +28,25 @@ references:
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/openvswitch/conf.db", group="hugetlbfs") }}}'
+ocil_clause: |-
+  <code>/etc/openvswitch/conf.db</code> does not have a group owner of
+  code>hugetlbfs</code> on architectures other than s390x or <code>openvswitch</code>
+  on s390x.
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/etc/openvswitch/conf.db", group="hugetlbfs") }}}
-
-template:
-    name: file_groupowner
-    vars:
-        filepath: /etc/openvswitch/conf.db
-        filegid: '801'
+    To check the group ownership of <code>/etc/openvswitch/conf.db</code>,
+    you'll need to log into a node in the cluster.
+    As a user with administrator privileges, log into a node in the relevant pool:
+    <pre>
+    $ oc debug node/$NODE_NAME
+    </pre>
+    At the <pre>sh-4.4#</pre> prompt, run:
+    <pre>
+    # chroot /host
+    </pre>
+    Then,
+    run the command:
+    <pre>$ ls -lL /etc/openvswitch/conf.db</pre>
+    If properly configured, the output should indicate the following group-owner:
+    <code>hugetlbfs</code> on architectures other than s390x. On s390x, the
+    group-owner should be <code>openvswitch</code>.

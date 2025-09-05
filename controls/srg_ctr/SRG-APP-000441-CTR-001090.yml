@@ -1,0 +1,19 @@
+controls:
+- id: SRG-APP-000441-CTR-001090
+  levels:
+  - medium
+  title: {{{ full_name }}} must maintain the confidentiality and integrity of
+    information during preparation for transmission.
+  rules:
+  - api_server_client_ca
+  - api_server_etcd_ca
+  - api_server_tls_cert
+  - api_server_tls_private_key
+  - etcd_peer_cert_file
+  - etcd_peer_key_file
+  - kubelet_configure_tls_cert
+  - kubelet_configure_tls_cert_pre_4_9
+  - kubelet_configure_tls_key
+  - kubelet_configure_tls_key_pre_4_9
+  - routes_protected_by_tls
+  status: inherently met

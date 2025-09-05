@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle15,wrlinux1019
+prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle15
 
 title: 'Configure Kernel to Rate Limit Sending of Duplicate TCP Acknowledgments'
 
@@ -66,3 +66,5 @@ fixtext: |-
     Configure {{{ full_name }}} to limit the maximal rate for sending duplicate acknowledgments.
 
     {{{ fixtext_sysctl("net.ipv4.tcp_invalid_ratelimit", xccdf_value("sysctl_net_ipv4_tcp_invalid_ratelimit_value")) | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must protect against or limit the effects of Denial of Service (DoS) attacks by validating the operating system is implementing rate-limiting measures on impacted network interfaces.'

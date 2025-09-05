@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15,wrlinux1019
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Ensure gpgcheck Enabled for Local Packages'
 
@@ -23,6 +23,7 @@ identifiers:
     cce@rhel7: CCE-80347-8
     cce@rhel8: CCE-80791-7
     cce@rhel9: CCE-83463-0
+    cce@sle12: CCE-91475-4
     cce@sle15: CCE-91167-7
 
 references:
@@ -60,3 +61,5 @@ fixtext: |-
     Configure {{{ full_name }}} to always check package signatures before installation of local packages.
     Add or update the following line in {{{ pkg_manager_config_file }}}:
     localpkg_gpgcheck=1
+
+srg_requirement: '{{{ full_name }}} package manage must check GPG signatures of local packages.'

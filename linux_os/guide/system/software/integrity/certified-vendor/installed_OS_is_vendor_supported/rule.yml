@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'The Installed Operating System Is Vendor Supported'
 
@@ -65,5 +65,9 @@ ocil: |-
 {{% elif product in ["sle12", "sle15"] %}}
     <pre>$ grep -i "suse" /etc/os-release</pre>
 {{% endif %}}
-    The output should contain something similar to:
     <pre>{{{ full_name }}}</pre>
+
+fixtext: |-
+     Upgrade to a supported version of {{{ full_name }}}.
+
+srg_requirement: '{{{ full_name }}} must be a vendor-supported release.'

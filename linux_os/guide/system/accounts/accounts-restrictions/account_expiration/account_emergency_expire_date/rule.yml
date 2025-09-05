@@ -45,13 +45,16 @@ references:
     stigid@rhel8: RHEL-08-020270
     vmmsrg: SRG-OS-000002-VMM-000020,SRG-OS-000123-VMM-000620
 
-ocil_clause: 'any emergency accounts have no expiration date set or do not expire within a documented time frame'
+ocil_clause: 'any emergency accounts have no expiration date set or do not expire within 72 hours'
 
 ocil: |-
-    For every emergency account, run the following command
-    to obtain its account aging and expiration information:
-    <pre>$ sudo chage -l <i>ACCOUNT_NAME</i></pre>
-    Verify each of these accounts has an expiration date set as documented.
+    Verify emergency accounts have been provisioned with an expiration date of 72 hours.
+
+    For every emergency account, run the following command to obtain its account aging and expiration information:
+
+    $ sudo chage -l  emergency_account_name
+
+    Verify each of these accounts has an expiration date set within 72 hours or as documented.
 
 warnings:
     - general: |-
@@ -62,9 +65,9 @@ warnings:
 fixtext: |-
     If an emergency account must be created, configure the system to terminate the account after
     72 hours with the following command to set an expiration date for the account.
-    Substitute "system_account_name" with the account to be created.
+    Substitute "emergency_account_name" with the account to be created.
 
-    $ sudo chage -E `date -d "+3 days" +%Y-%m-%d` system_account_name
+    $ sudo chage -E `date -d "+3 days" +%Y-%m-%d` emergency_account_name
 
     The automatic expiration or disabling time period may be extended as needed until the crisis
     is resolved.

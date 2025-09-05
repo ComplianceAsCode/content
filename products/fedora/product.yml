@@ -21,6 +21,11 @@ dconf_gdm_dir: "distro.d"
 
 cpes_root: "../../shared/applicability"
 cpes:
+  - fedora_38:
+      name: "cpe:/o:fedoraproject:fedora:38"
+      title: "Fedora 38"
+      check_id: installed_OS_is_fedora
+
   - fedora_37:
       name: "cpe:/o:fedoraproject:fedora:37"
       title: "Fedora 37"
@@ -36,42 +41,37 @@ cpes:
       title: "Fedora 35"
       check_id: installed_OS_is_fedora
 
-  - fedora_34:
-      name: "cpe:/o:fedoraproject:fedora:34"
-      title: "Fedora 34"
-      check_id: installed_OS_is_fedora
-
 # Retrieve the fingerprint as follows:
 #   gpg --show-keys --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-<version>-primary" | grep '^fpr' | cut -d ":" -f 10
 # For current supported releases, this can be verified by comparing it to the keys published on:
 #   https://getfedora.org/keys/
-rawhide_version: 37
-rawhide_release_fingerprint: "ACB5EE4E831C74BB7C168D27F55AD3FB5323552A"
+rawhide_version: 38
+rawhide_release_fingerprint: "6A51BBABBA3D5467B6171221809A8D7CEB10B464"
 # The shortened version of the key, to be used for the pkg_version variable can be derived as follows:
 #   gpg --show-keys --keyid-format short "/etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-<version>-primary" | grep 'rsa' | cut -d "/" -f 2 | awk '{print $1}'
 # Alternatively, you can simply take the last 8 digits of the fingerprint above.
 # For currently supported releases, this can also be verified by comparing it to the keyid values published on:
 #   https://getfedora.org/keys/
-rawhide_pkg_version: "5323552a"
+rawhide_pkg_version: "eb10b464"
 # The pkg_release can be derived as follows:
 #   rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-<version>-x86_64
 #   rpm -q gpg-pubkey --qf '%{VERSION}-%{RELEASE}-%{SUMMARY}\n' | grep -i <pkg_version> | cut -f 2 -d -
-rawhide_pkg_release: "6112bcdc"
+rawhide_pkg_release: "60242b08"
 
-future_version: 36
-future_release_fingerprint: "53DED2CB922D8B8D9E63FD18999F7CBF38AB71F4"
-future_pkg_version: "38ab71f4"
-future_pkg_release: "60242b08"
+future_version: 37
+future_release_fingerprint: "ACB5EE4E831C74BB7C168D27F55AD3FB5323552A"
+future_pkg_version: "5323552a"
+future_pkg_release: "6112bcdc"
 
-latest_version: 35
-latest_release_fingerprint: "787EA6AE1147EEE56C40B30CDB4639719867C58F"
-latest_pkg_version: "9867c58f"
-latest_pkg_release: "601c49ca"
+latest_version: 36
+latest_release_fingerprint: "53DED2CB922D8B8D9E63FD18999F7CBF38AB71F4"
+latest_pkg_version: "38ab71f4"
+latest_pkg_release: "60242b08"
 
-previous_version: 34
-previous_release_fingerprint: "8C5BA6990BDB26E19F2A1A801161AE6945719A39"
-previous_pkg_version: "45719a39"
-previous_pkg_release: "5f2c0192"
+previous_version: 35
+previous_release_fingerprint: "787EA6AE1147EEE56C40B30CDB4639719867C58F"
+previous_pkg_version: "9867c58f"
+previous_pkg_release: "601c49ca"
 
 # Mapping of CPE platform to package
 platform_package_overrides:

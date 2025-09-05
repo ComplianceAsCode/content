@@ -2,7 +2,10 @@ documentation_complete: true
 
 title: 'Verify Permissions on SSH Server Private *_key Key Files'
 
+{{% set dedicated_ssh_groupname = groups.get("dedicated_ssh_keyowner", {}).get("name") %}}
+
 {{% if product == 'rhcos4' %}}
+{{# CoreOS is special - it is immutable, so it is more predictable, and it uses the dedicated group as key owner by default #}}
 {{% set perms = "-rw-r-----" %}}
 {{% set perms_num = "0640" %}}
 {{% else %}}
@@ -11,7 +14,11 @@ title: 'Verify Permissions on SSH Server Private *_key Key Files'
 {{% endif %}}
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/ssh/*_key", perms=perms_num) }}}
+    SSH server private keys - files that match the <code>/etc/ssh/*_key</code> glob, have to have restricted permissions.
+    If those files are owned by the <code>root</code> user and the <code>root</code> group, they have to have the <code>{{{ perms_num }}}</code> permission or stricter.
+    {{% if dedicated_ssh_groupname -%}}
+    If they are owned by the <code>root</code> user, but by a dedicated group <code>{{{ dedicated_ssh_groupname }}}</code>, they can have the <code>0640</code> permission or stricter.
+    {{%- endif %}}
 
 rationale: |-
     If an unauthorized user obtains the private SSH host key file, the host could be
@@ -29,6 +36,7 @@ identifiers:
 references:
     anssi: BP28(R36)
     cis-csc: 12,13,14,15,16,18,3,5
+    cis@alinux2: 5.2.3
     cis@rhel8: 5.2.3
     cis@sle12: 5.3.2
     cis@sle15: 5.2.2
@@ -55,11 +63,6 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/*_key", perms=perm
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/ssh/*_key", perms=perms) }}}
 
-template:
-    name: file_permissions
-    vars:
-        filepath: /etc/ssh/
-        missing_file_pass: 'true'
-        file_regex: ^.*_key$
-        filemode: '0600'
-        filemode@rhcos4: '0640'
+fixtext: '{{{ srg_requirement_file_permission(file="/etc/ssh/*_key", mode="0600") }}}'
+
+srg_requirement: 'The {{{ full_namne }}} SSH private host key files must have mode 0600 or less permissive.'

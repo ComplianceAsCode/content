@@ -49,7 +49,7 @@ def create_reduction_dicts() -> (dict, dict, dict, dict):
     #
     # Optional values should reduce to 2 if defined or if not defined should remain 3.
     config_dict = {'Requirement': 1,
-                   'VulDiscussion': 1,
+                   'Vul Discussion': 1,
                    'Status': 1,
                    'Check': 1,
                    'Fix': 1,
@@ -71,7 +71,7 @@ def create_reduction_dicts() -> (dict, dict, dict, dict):
                   'CCI': 1,
                   'SRGID': 1}
     does_not_meet = {'Requirement': 1,
-                     'VulDiscussion': 1,
+                     'Vul Discussion': 1,
                      'Status': 1,
                      'Check': 0,
                      'Fix': 0,
@@ -82,7 +82,7 @@ def create_reduction_dicts() -> (dict, dict, dict, dict):
                      'CCI': 1,
                      'SRGID': 1}
     not_applicable = {'Requirement': 1,
-                      'VulDiscussion': 0,
+                      'Vul Discussion': 0,
                       'Status': 1,
                       'Check': 0,
                       'Fix': 0,
@@ -139,22 +139,22 @@ def get_results_dict(row: dict) -> dict:
 def process_row_results(errors: dict, results: dict, row: dict) -> None:
     for result in results:
         if results[result] == 1:
-            errors[row["SRGID"]].append(f'Field {result} is not defined.')
+            errors[get_row_id(row)].append(f'Field {result} is not defined.')
         elif results[result] == -1:
-            errors[row["SRGID"]].append(f'Field {result} is defined and should not be.')
+            errors[get_row_id(row)].append(f'Field {result} is defined and should not be.')
         elif results[result] not in [0, 2, 3]:
             raise AttributeError(f"Config data is not defined correctly. "
                                  f"Result = {result}, {results[result]}")
 
 
 def validate_base_rows(errors: dict, row: dict) -> None:
-    if row['SRGID'] not in errors:
-        errors[row['SRGID']] = list()
+    if get_row_id(row) not in errors:
+        errors[get_row_id(row)] = list()
     if not row['Requirement']:
-        errors[row['SRGID']].append(Problems.MISSING_REQUIREMENT.value)
+        errors[get_row_id(row)].append(Problems.MISSING_REQUIREMENT.value)
     req_bad_chars = ['\"', "&", "'", "<", ">"]
     if has_element(req_bad_chars, row['Requirement']):
-        errors[row['SRGID']].append(Problems.REQUIREMENT_HAS_INVALID_CHARS.value)
+        errors[get_row_id(row)].append(Problems.REQUIREMENT_HAS_INVALID_CHARS.value)
 
 
 def set_blank_rows_results(results: dict, row: dict) -> None:
@@ -166,9 +166,18 @@ def set_blank_rows_results(results: dict, row: dict) -> None:
 
 def print_results(errors: dict) -> None:
     for result in errors:
-        print(result)
-        for error in errors[str(result)]:
-            print(f'\t{error}')
+        result_errors = errors[str(result)]
+        if len(result_errors) > 0:
+            print(result)
+            for error in result_errors:
+                print(f'\t{error}')
+
+
+def get_row_id(row: dict) -> str:
+    if row['STIGID'] is not None and row['STIGID'] != '':
+        return row['STIGID']
+    else:
+        return row['SRGID']
 
 
 def main():
@@ -182,9 +191,9 @@ def main():
             validate_base_rows(errors, row)
             results = get_results_dict(row)
             if row['Status'] == DisaStatus.AUTOMATED:
-                validate_check_fix(errors, row, row['SRGID'])
+                validate_check_fix(errors, row, get_row_id(row))
             if row['Status'] not in DisaStatus.STATUSES:
-                errors[row['SRGID']].append(Problems.INVALID_STATUS.value)
+                errors[get_row_id(row)].append(Problems.INVALID_STATUS.value)
                 continue
             set_blank_rows_results(results, row)
             process_row_results(errors, results, row)

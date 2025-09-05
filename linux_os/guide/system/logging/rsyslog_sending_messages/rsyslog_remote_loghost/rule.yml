@@ -45,8 +45,10 @@ identifiers:
 references:
     anssi: BP28(R7),NT28(R43),NT12(R5)
     cis-csc: 1,13,14,15,16,2,3,5,6
+    cis@alinux2: 4.2.1.4
+    cis@alinux3: 4.2.1.5
     cis@rhel7: 4.2.1.4
-    cis@rhel8: 4.2.1.5
+    cis@rhel8: 4.2.1.6
     cis@sle12: 4.2.1.5
     cis@sle15: 4.2.1.5
     cis@ubuntu2004: 4.2.1.5
@@ -83,6 +85,8 @@ ocil: |-
     <pre> *.* :omrelp:<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
 
 fixtext: |-
-    Configure {{{ full_name }}} to off-load audit records onto a different system or media from the system being audited by specifying the remote logging server in "/etc/rsyslog.conf"" or "/etc/rsyslog.d/[customfile].conf" with the name or IP address of the log aggregation server.
+    Configure {{{ full_name }}} to off-load audit records onto a different system or media from the system being audited by specifying the remote logging server in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf" with the name or IP address of the log aggregation server.
 
     *.* @@[remoteloggingserver]:[port]"
+
+srg_requirement: 'The {{{ full_name }}} audit records must be off-loaded onto a different system or storage media from the system being audited.'

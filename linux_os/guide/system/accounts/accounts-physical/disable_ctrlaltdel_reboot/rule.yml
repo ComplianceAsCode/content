@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Disable Ctrl-Alt-Del Reboot Activation'
 
@@ -72,6 +72,7 @@ references:
     nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
     nist: CM-6(a),AC-6(1)
     nist-csf: PR.AC-4,PR.DS-5
+    ospp: FAU_GEN.1.2
     srg: SRG-OS-000324-GPOS-00125,SRG-OS-000480-GPOS-00227
     stigid@ol7: OL07-00-020230
     stigid@ol8: OL08-00-040170
@@ -100,5 +101,7 @@ fixtext: |-
 
     $ sudo systemctl disable --now ctrl-alt-del.target
     $ sudo systemctl mask --now ctrl-alt-del.target
+
+srg_requirement: 'The x86 Ctrl-Alt-Delete key sequence must be disabled on {{{ full_name }}}.'
 
 platform: machine

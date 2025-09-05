@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Remove User Host-Based Authentication Files'
 
@@ -37,10 +37,16 @@ references:
     stigid@sle12: SLES-12-010400
     stigid@sle15: SLES-15-040020
 
-ocil_clause: 'these files exist'
+ocil_clause: '.shosts files exist'
 
 ocil: |-
     To verify that there are no <tt>.shosts</tt> files
     on the system, run the following command:
     <pre>$ sudo find / -name '.shosts'</pre>
-    No output should be returned.
+
+fixtext: |-
+    Remove any found ".shosts" files from the system.
+
+    $ sudo rm /[path]/[to]/[file]/.shosts
+
+srg_requirement: 'There must be no .shosts files on {{{ full_name }}}.'

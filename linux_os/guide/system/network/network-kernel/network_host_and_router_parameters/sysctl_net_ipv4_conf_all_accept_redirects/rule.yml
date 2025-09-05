@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Disable Accepting ICMP Redirects for All IPv4 Interfaces'
 
@@ -28,8 +28,10 @@ identifiers:
 references:
     anssi: BP28(R22)
     cis-csc: 1,11,12,13,14,15,16,2,3,7,8,9
+    cis@alinux2: 3.2.2
+    cis@alinux3: 3.3.2
     cis@rhel7: 3.3.2
-    cis@rhel8: 3.2.2
+    cis@rhel8: 3.3.2
     cis@sle12: 3.3.2
     cis@sle15: 3.3.2
     cis@ubuntu2004: 3.3.2
@@ -51,6 +53,12 @@ references:
     stigid@sle15: SLES-15-040330
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.accept_redirects", value="0") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to ignore IPv4 ICMP redirect messages.
+    {{{ fixtext_sysctl(sysctl="net.ipv4.conf.all.accept_redirects", value="0") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must ignore IPv4 Internet Control Message Protocol (ICMP) redirect messages.'
 
 template:
     name: sysctl

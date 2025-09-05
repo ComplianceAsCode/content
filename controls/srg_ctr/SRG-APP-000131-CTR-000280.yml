@@ -1,0 +1,10 @@
+controls:
+- id: SRG-APP-000131-CTR-000280
+  levels:
+  - medium
+  title: {{{ full_name }}} must be built from verified packages.
+  rules:
+  - reject_unsigned_images_by_default
+  - ocp_allowed_registries
+  - ocp_allowed_registries_for_import
+  status: inherently met

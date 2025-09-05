@@ -4,5 +4,7 @@ controls:
             - medium
         title: {{{ full_name }}} must protect audit tools from unauthorized deletion.
         rules:
-            - rpm_verify_permissions
+            - file_audit_tools_permissions
+            - file_audit_tools_ownership
+            - file_audit_tools_group_ownership
         status: automated

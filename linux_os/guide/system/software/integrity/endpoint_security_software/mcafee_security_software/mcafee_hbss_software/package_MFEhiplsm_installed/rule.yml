@@ -16,6 +16,7 @@ severity: medium
 
 identifiers:
     cce@rhel7: CCE-80368-4
+    cce@rhel9: CCE-89466-7
 
 references:
     cis-csc: 1,11,12,13,14,15,16,18,19,2,3,4,5,6,7,8,9
@@ -34,6 +35,10 @@ ocil_clause: 'the HBSS HIPS module is not installed'
 ocil: |-
     To verify that McAfee HIPS is installed, run the following command(s):
     <pre>$ rpm -q MFEhiplsm</pre>
+
+fixtext: '{{{ fixtext_package_installed("MFEhiplsm") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("MFEhiplsm") }}}'
 
 conflicts:
     - selinux_state

@@ -39,7 +39,9 @@ selections:
     - api_server_oauth_https_serving_cert
   # 1.2.5 Ensure that the --kubelet-client-certificate and --kubelet-client-key arguments are set as appropriate
     - api_server_kubelet_client_cert
+    - api_server_kubelet_client_cert_pre_4_9
     - api_server_kubelet_client_key
+    - api_server_kubelet_client_key_pre_4_9
   # 1.2.6 Ensure that the --kubelet-certificate-authority argument is set as appropriate
     - api_server_kubelet_certificate_authority
   # 1.2.7 Ensure that the --authorization-mode argument is not set to AlwaysAllow
@@ -51,7 +53,6 @@ selections:
   # 1.2.10 Ensure that the admission control plugin EventRateLimit is set
     - api_server_api_priority_gate_enabled
     - api_server_api_priority_flowschema_catch_all
-    - api_server_api_priority_v1alpha1_flowschema_catch_all
   # 1.2.11 Ensure that the admission control plugin AlwaysAdmit is not set
     - api_server_admission_control_plugin_AlwaysAdmit
   # 1.2.12 Ensure that the admission control plugin AlwaysPullImages is set
@@ -171,8 +172,10 @@ selections:
     - kubelet_disable_readonly_port
   # 4.2.10 Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate
     - kubelet_configure_tls_cert
+    - kubelet_configure_tls_cert_pre_4_9
     # Like kubelet_disable_readonly_port but check for .apiServerArguments["kubelet-client-certificate"]
     - kubelet_configure_tls_key
+    - kubelet_configure_tls_key_pre_4_9
     # Like kubelet_disable_readonly_port but check for .apiServerArguments["kubelet-client-key"]
 
 

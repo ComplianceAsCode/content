@@ -6,6 +6,14 @@ title: 'Configure SSSD to Expire Offline Credentials'
 
 description: |-
     SSSD should be configured to expire offline credentials after 1 day.
+    {{% if product in ["ol8", "rhel8"] %}}
+    Check if SSSD allows cached authentications with the following command:
+    <pre>
+    $ sudo grep cache_credentials /etc/sssd/sssd.conf
+    cache_credentials = true
+    </pre>
+    If "cache_credentials" is set to "false" or is missing no further checks are required.<br/>
+    {{% endif %}}
     To configure SSSD to expire offline credentials, set
     <tt>offline_credentials_expiration</tt> to <tt>1</tt> under the <tt>[pam]</tt>
     section in <tt>/etc/sssd/sssd.conf</tt>. For example:
@@ -48,6 +56,14 @@ references:
 ocil_clause: 'it does not exist or is not configured properly'
 
 ocil: |-
+    {{% if product in ["ol8", "rhel8"] %}}
+    Check if SSSD allows cached authentications with the following command:
+    <pre>
+    $ sudo grep cache_credentials /etc/sssd/sssd.conf
+    cache_credentials = true
+    </pre>
+    If "cache_credentials" is set to "false" or is missing no further checks are required.<br/>
+    {{% endif %}}
     To verify that SSSD expires offline credentials, run the following command:
     <pre>$ sudo grep offline_credentials_expiration /etc/sssd/sssd.conf</pre>
     If configured properly, output should be
@@ -59,3 +75,5 @@ fixtext:
     Add or change the following line in "/etc/sssd/sssd.conf" just below the line "[pam]".
 
     offline_credentials_expiration = 1
+
+srg_requirement: '{{{ full_name }}} must prohibit the use of cached authentications after one day.'

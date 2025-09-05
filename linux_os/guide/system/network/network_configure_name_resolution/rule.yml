@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4
 
 title: 'Configure Multiple DNS Servers in /etc/resolv.conf'
 
@@ -56,9 +56,19 @@ references:
     stigid@rhel7: RHEL-07-040600
     stigid@rhel8: RHEL-08-010680
 
-ocil_clause: 'it does not exist or is not properly configured or less than 2 ''nameserver'' entries exist'
+ocil_clause: 'less than two lines are returned that are not commented out'
 
 ocil: |-
-    To verify that DNS servers have been configured properly, perform the following:
+    Verify that DNS servers have been configured properly, perform the following:
     <pre>$ sudo grep nameserver /etc/resolv.conf</pre>
-    The output should return more than one <pre>nameserver</pre> entry.
+
+fixtext: |-
+    Configure {{{ full_name }}} to use two or more name servers for DNS resolution.
+
+    By default, "NetworkManager" on {{{ full_name }}} dynamically updates the /etc/resolv.conf file with the DNS settings from active "NetworkManager" connection profiles. However, this feature can be disabled to allow manual configurations.
+
+    If manually configuring DNS, edit the "/etc/resolv.conf" file to uncomment or add the two or more "nameserver" option lines with the IP address of local authoritative name servers. If local host resolution is being performed, the "/etc/resolv.conf" file must be empty. An empty "/etc/resolv.conf" file can be created as follows:
+
+    $ sudo echo -n > /etc/resolv.conf
+
+srg_requirement: 'For {{{ full_name }}} systems using Domain Name Servers (DNS) resolution, at least two name servers must be configured.'

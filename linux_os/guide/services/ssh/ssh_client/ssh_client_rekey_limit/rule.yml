@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8,rhcos4,rhel8,rhel9
+prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Configure session renegotiation for SSH client'
 
@@ -31,7 +31,7 @@ identifiers:
 
 references:
     disa: CCI-000068
-    ospp: FCS_SSHS_EXT.1
+    ospp: FCS_SSH_EXT.1.8
     srg: SRG-OS-000423-GPOS-00187,SRG-OS-000033-GPOS-00014,SRG-OS-000424-GPOS-00188
 
 ocil_clause: 'it is commented out or is not set'
@@ -54,3 +54,4 @@ fixtext: |-
     Restart the SSH daemon for the settings to take effect.
 
     $ sudo systemctl restart sshd.service
+

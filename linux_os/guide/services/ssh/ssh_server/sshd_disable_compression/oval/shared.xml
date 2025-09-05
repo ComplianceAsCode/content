@@ -17,9 +17,6 @@
         <criterion comment="Check Compression in /etc/ssh/sshd_config"
         test_ref="test_sshd_disable_compression" />
       </criteria>
-      {{% if product != "ol8" %}}
-      <extend_definition comment="OpenSSH version 7.4 or higher contains fix for authentication Compression exploit" definition_ref="sshd_version_equal_or_higher_than_74" />
-      {{% endif %}}
     </criteria>
   </definition>
 

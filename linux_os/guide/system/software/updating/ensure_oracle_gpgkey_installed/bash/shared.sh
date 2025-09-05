@@ -1,6 +1,5 @@
 # platform = multi_platform_ol
-# OL fingerprints below retrieved from Oracle Linux Yum Server "Frequently Asked Questions"
-# https://yum.oracle.com/faq.html#a10
+# OL fingerprints below retrieved from: https://linux.oracle.com/security/gpg/#gpg
 readonly OL_RELEASE_FINGERPRINT="{{{ release_key_fingerprint }}}"
 readonly OL_AUXILIARY_FINGERPRINT="{{{ auxiliary_key_fingerprint }}}"
 
@@ -20,7 +19,12 @@ if [ "${RPM_GPG_DIR_PERMS}" -le "755" ]
 then
   # If they are safe, try to obtain fingerprints from the key file
   # (to ensure there won't be e.g. CRC error)
-  readarray -t GPG_OUT < <(gpg --with-fingerprint --with-colons "$OL_RELEASE_KEY" | grep "^fpr" | cut -d ":" -f 10)
+  {{% if product in ["ol8", "ol9"] %}}
+    readarray -t GPG_OUT < <(gpg --show-keys --with-fingerprint --with-colons "$OL_RELEASE_KEY" | grep -A1 "^pub" | grep "^fpr" | cut -d ":" -f 10)
+  {{% else %}}
+    readarray -t GPG_OUT < <(gpg --with-fingerprint --with-colons "$OL_RELEASE_KEY" | grep "^fpr" | cut -d ":" -f 10)
+  {{% endif %}}
+
   GPG_RESULT=$?
   # No CRC error, safe to proceed
   if [ "${GPG_RESULT}" -eq "0" ]

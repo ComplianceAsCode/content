@@ -220,6 +220,8 @@ selections:
     - var_accounts_max_concurrent_login_sessions=10
     - accounts_max_concurrent_login_sessions
     - securetty_root_login_console_only
+    - var_authselect_profile=sssd
+    - enable_authselect
     - var_password_pam_unix_remember=5
     - accounts_password_pam_unix_remember
     - use_pam_wheel_for_su
@@ -262,8 +264,6 @@ selections:
 
     ## Configure Minimum Password Length to 12 Characters
     ## IA-5 (1)(a) / FMT_MOF_EXT.1
-    - var_accounts_password_minlen_login_defs=12
-    - accounts_password_minlen_login_defs
     - var_password_pam_minlen=12
     - accounts_password_pam_minlen
 
@@ -435,6 +435,3 @@ selections:
     - zipl_audit_backlog_limit_argument
     - zipl_slub_debug_argument
     - zipl_page_poison_argument
-    - zipl_vsyscall_argument
-    - zipl_vsyscall_argument.role=unscored
-    - zipl_vsyscall_argument.severity=info

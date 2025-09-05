@@ -1,0 +1,40 @@
+# platform=multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+{{% set find_command_base = 'find -H /etc/ssh/ -maxdepth 1 -user root -regex ".*_key$" -type f' %}}
+{{% set dedicated_ssh_groupname = groups.get("dedicated_ssh_keyowner", {}).get("name") %}}
+
+- name: Find root:root-owned keys
+  command: '{{{ find_command_base }}} -group root -perm /u+xs,g+xwrs,o+xwrt'
+  register: root_owned_keys
+  changed_when: False
+  failed_when: False
+  check_mode: no
+
+- name: Set permissions for root:root-owned keys
+  file:
+    path: "{{ item }}"
+    mode: "u-xs,g-xwrs,o-xwrt"
+    state: file
+  with_items:
+    - "{{ root_owned_keys.stdout_lines }}"
+
+{{% if dedicated_ssh_groupname -%}}
+- name: Find root:{{{ dedicated_ssh_groupname }}}-owned keys
+  command: '{{{ find_command_base }}} -group {{{ dedicated_ssh_groupname }}} -perm /u+xs,g+xws,o+xwrt'
+  register: dedicated_group_owned_keys
+  changed_when: False
+  failed_when: False
+  check_mode: no
+
+- name: Set permissions for root:{{{ dedicated_ssh_groupname }}}-owned keys
+  file:
+    path: "{{ item }}"
+    mode: "u-xs,g-xws,o-xwrt"
+    state: file
+  with_items:
+    - "{{ dedicated_group_owned_keys.stdout_lines }}"
+{{%- endif %}}

@@ -6,11 +6,7 @@
 
 - name: enable syslog plugin
   lineinfile:
-    {{% if product in ["rhel8", "rhel9", "fedora", "ol8", "rhv4"] -%}}
-    dest: /etc/audit/plugins.d/syslog.conf
-    {{%- else -%}}
-    dest: /etc/audisp/plugins.d/syslog.conf
-    {{%- endif %}}
+    dest: {{{ audisp_conf_path }}}/plugins.d/syslog.conf
     regexp: "^active"
     line: active = yes
     create: yes

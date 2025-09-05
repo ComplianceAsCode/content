@@ -1,4 +1,4 @@
-# platform = multi_platform_wrlinux,Red Hat Enterprise Linux 7,Oracle Linux 7
+# platform = Red Hat Enterprise Linux 7,Oracle Linux 7
 
 {{{ bash_instantiate_variables("sshd_approved_ciphers") }}}
 

@@ -36,6 +36,7 @@ references:
     disa: CCI-001499
     nist: CM-5(6),CM-5(6).1
     srg: SRG-OS-000259-GPOS-00100
+    stigid@ol8: OL08-00-010341
     stigid@rhel8: RHEL-08-010341
     stigid@sle12: SLES-12-010874
     stigid@sle15: SLES-15-010354
@@ -65,3 +66,5 @@ fixtext: |-
     Run the following command, replacing "[DIRECTORY]" with any library directory not owned by "root".
 
     $ sudo chown root [DIRECTORY]
+
+srg_requirement: '{{{ full_name }}} library directories must be owned by root.'

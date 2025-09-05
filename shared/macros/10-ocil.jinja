@@ -1,0 +1,1246 @@
+{{#
+    How to log in to a Red Hat CoreOS Node
+#}}
+{{% macro rhcos_node_login_instructions() -%}}
+    As a user with administrator privileges, log into a node in the relevant pool:
+    <pre>
+    $ oc debug node/$NODE_NAME
+    </pre>
+    At the <pre>sh-4.4#</pre> prompt, run:
+    <pre>
+    # chroot /host
+    </pre>
+{{% endmacro %}}
+
+
+{{# OC macros #}}
+
+{{#
+  Macro that creates a check from :code:`oc` output
+#}}
+{{% macro ocil_oc_pipe_jq_filter(object, jqfilter, namespace=none, all_namespaces=false) -%}}
+oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ namespace }}}{{% endif %}} {{{ object }}} -o json | jq '{{{ jqfilter }}}'
+{{%- endmacro %}}
+
+
+{{% macro sshd_config_file() %}}
+    {{% if sshd_distributed_config == "true" %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
+{{%- endmacro %}}
+
+
+{{# Audit macros #}}
+
+{{#
+Standard audit OCIL clause
+
+#}}
+{{%- macro ocil_clause_audit() -%}}
+the command does not return a line, or the line is commented out
+{{%- endmacro %}}
+
+{{#
+OCIL and OCIL clause for ensuring that a privileged command is audited.
+
+:param cmd: The command to audit
+:type cmd: str
+:param path_prefix: The directory the command is in
+:type path_prefix: str
+
+#}}
+{{% macro complete_ocil_entry_audit_privileged_commands(cmd, path_prefix) %}}
+ocil_clause: '{{{ ocil_clause_audit() }}}'
+
+ocil: |-
+    Verify that an audit event is generated for any successful/unsuccessful use of the {{{ cmd }}} command by performing the following command to check the file system rules in "/etc/audit/audit.rules":
+
+    $ sudo grep -w {{{ cmd }}} /etc/audit/audit.rules
+
+    -a always,exit -F path={{{ path_prefix }}}{{{ cmd }}} -F perm=x -F auid>=1000 -F auid!=unset -k privileged-{{{ cmd }}}
+{{% endmacro %}}
+
+{{#
+    OCIL for adding a syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
+{{% macro ocil_audit_syscall(syscall) -%}}
+    To determine if the system is configured to audit calls to the
+    <code>{{{ syscall }}}</code> system call, run the following command:
+    <pre space="preserve">$ sudo grep "{{{ syscall }}}" /etc/audit/audit.*</pre>
+    If the system is configured to audit this activity, it will return a line.
+{{%- endmacro %}}
+
+
+{{#
+    OCIL clause for adding a syscall to audit logs
+#}}
+{{% macro ocil_clause_entry_audit_syscall() -%}}
+ocil_clause: "no line is returned"
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause for adding a syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
+{{% macro complete_ocil_entry_audit_syscall(syscall) -%}}
+ocil: |
+    {{{ ocil_audit_syscall(syscall) }}}
+
+{{{ ocil_clause_entry_audit_syscall() }}}
+{{%- endmacro %}}
+
+
+{{#
+    OCIL for adding a successful syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
+{{% macro ocil_audit_successful_syscall(syscall) -%}}
+    To determine if the system is configured to audit successful calls
+    to the <code>{{{ syscall }}}</code> system call, run the following command:
+    <pre space="preserve">$ sudo grep "{{{ syscall }}}" /etc/audit.*</pre>
+    If the system is configured to audit this activity, it will return a line.
+{{%- endmacro %}}
+
+{{#
+    OCIL for adding a unsuccessful syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
+{{% macro ocil_audit_unsuccessful_syscall(syscall) -%}}
+    To determine if the system is configured to audit unsuccessful calls
+    to the <code>{{{ syscall }}}</code> system call, run the following command:
+    <pre space="preserve">$ sudo grep "{{{ syscall }}}" /etc/audit.*</pre>
+    If the system is configured to audit this activity, it will return a line.
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause for adding a successful syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
+{{% macro complete_ocil_entry_audit_successful_syscall(syscall) -%}}
+ocil: |
+    {{{ ocil_audit_successful_syscall(syscall) }}}
+
+{{{ ocil_clause_entry_audit_syscall() }}}
+{{%- endmacro %}}
+
+{{#
+    OCIL and OCIL clause for adding a unsuccessful syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
+{{% macro complete_ocil_entry_audit_unsuccessful_syscall(syscall) -%}}
+ocil: |
+    {{{ ocil_audit_unsuccessful_syscall(syscall) }}}
+
+{{{ ocil_clause_entry_audit_syscall() }}}
+{{%- endmacro %}}
+
+
+
+{{# Package macros #}}
+
+{{#
+    Describe how to check if a package is installed with rpm.
+
+:param package: The package to check
+:type package: str
+
+#}}
+{{%- macro rpm_ocil_package(package) -%}}
+    Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
+    <pre>$ rpm -q {{{ package }}}</pre>
+{{%- endmacro -%}}
+
+
+{{#
+    Describe how to check if a package is installed with dpkg.
+
+:param package: The package to check
+:type package: str
+
+#}}
+{{%- macro dpkg_ocil_package(package) %}}
+    Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
+    <pre>$ dpkg -l  {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Insert general ocil clause to check if a package is installed, substituting the
+    correct package management software.
+
+:param package: Name of package
+:type package: str
+
+#}}
+{{% macro ocil_package(package) -%}}
+  {{% if pkg_system is defined %}}
+    {{%- if pkg_system == "rpm" -%}}
+        {{{ rpm_ocil_package(package) }}}
+    {{%- elif pkg_system == "dpkg" -%}}
+        {{{ dpkg_ocil_package(package) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause how to check if a package is installed with rpm.
+
+:param package: The package to check
+:type package: str
+
+#}}
+{{%- macro rpm_complete_ocil_entry_package(package) %}}
+ocil: |-
+    {{{ rpm_ocil_package(package) }}}
+
+ocil_clause: "the package is installed"
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause how to check if a package is installed with dpkg.
+
+:param package: The package to check
+:type package: str
+#}}
+{{%- macro dpkg_complete_ocil_entry_package(package) %}}
+ocil: |-
+    {{{ dpkg_ocil_package(package) }}}
+
+ocil_clause: "the package is installed"
+{{%- endmacro %}}
+
+
+{{#
+    Insert a complete OCIL block for a case when a package should be removed,
+    substituting the correct package management software.
+
+:param package: Name of package
+:type package: str
+
+#}}
+{{% macro complete_ocil_entry_package(package) -%}}
+  {{% if pkg_system is defined %}}
+    {{%- if pkg_system == "rpm" %}}
+        {{{ rpm_complete_ocil_entry_package(package) }}}
+    {{%- elif pkg_system == "dpkg" %}}
+        {{{ dpkg_complete_ocil_entry_package(package) }}}
+    {{%- else -%}}
+ocil: |-
+    JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+
+{{# Service Enabled macros #}}
+
+{{#
+    Describe how to check if a service is enabled via systemd.
+
+:param service: The service to check
+:type service: str
+
+#}}
+{{%- macro systemd_ocil_service_enabled(service) %}}
+    {{% if product == "rhcos4" -%}}
+    {{{ rhcos_node_login_instructions() }}}
+    {{%- endif %}}
+    Run the following command to determine the current status of the
+    <code>{{{ service }}}</code> service:
+    <pre>$ sudo systemctl is-active {{{ service }}}</pre>
+    If the service is running, it should return the following: <pre>active</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to check if a service is enabled via upstart.
+
+:param service: The service to check
+:type service: str
+
+#}}
+{{%- macro upstart_ocil_service_enabled(service) %}}
+    Run the following command to determine the current status of the
+    <code>{{{ service }}}</code> service:
+    <pre>$ sudo service {{{ service }}} status</pre>
+    If the service is enabled, it should return the following: <pre>{{{ service }}} is running...</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Inserts an OCIL for a case when a service should be enabled,
+    substituting the correct init system.
+
+:param service: Name of service
+:type service: str
+
+#}}
+{{% macro ocil_service_enabled(service) -%}}
+  {{% if init_system is defined %}}
+    {{%- if init_system == "systemd" -%}}
+        {{{ systemd_ocil_service_enabled(service) }}}
+    {{%- elif init_system == "upstart" -%}}
+        {{{ upstart_ocil_service_enabled(service) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+{{#
+    Inserts an OCIL Clause for a case when a service should be enabled.
+
+:param service: Name of service
+:type service: str
+
+#}}
+{{% macro ocil_clause_service_enabled(service) -%}}
+    the "{{{ service }}}" service is disabled, masked, or not started.
+{{%- endmacro %}}
+
+
+{{# Service Disabled macros #}}
+
+{{#
+    Describe how to check if a service is disabled via systemd.
+
+:param service: The service to check
+:type service: str
+
+#}}
+{{%- macro systemd_ocil_service_disabled(service) -%}}
+    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration,
+    {{% if product == "rhcos4" -%}}
+    You'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Subsequently,
+    {{%- endif -%}}
+    run the following command:
+    <pre>$ sudo systemctl is-enabled <code>{{{ service }}}</code></pre>
+    Output should indicate the <code>{{{ service }}}</code> service has either not been installed,
+    or has been disabled at all runlevels, as shown in the example below:
+    <pre>$ sudo systemctl is-enabled <code>{{{ service }}}</code><br/> disabled</pre>
+
+    Run the following command to verify <code>{{{ service }}}</code> is not active (i.e. not running) through current runtime configuration:
+    <pre>$ sudo systemctl is-active {{{ service }}}</pre>
+
+    If the service is not running the command will return the following output:
+    <pre>inactive</pre>
+
+    The service will also be masked, to check that the <code>{{{ service }}}</code> is masked, run the following command:
+    <pre>$ sudo systemctl show <code>{{{ service }}}</code> | grep "LoadState\|UnitFileState"</pre>
+
+    If the service is masked the command will return the following outputs:
+
+    <pre>LoadState=masked</pre>
+
+    <pre>UnitFileState=masked</pre>
+
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to check if a service is disabled via upstart.
+
+:param service: The service to check
+:type service: str
+
+#}}
+{{%- macro upstart_ocil_service_disabled(service) %}}
+    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration, run the following command:
+    <pre>$ sudo chkconfig <code>{{{ service }}}</code> --list</pre>
+    Output should indicate the <code>{{{ service }}}</code> service has either not been installed,
+    or has been disabled at all runlevels, as shown in the example below:
+    <pre>$ sudo chkconfig <code>{{{ service }}}</code> --list
+    <code>{{{ service }}}</code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</pre>
+
+    Run the following command to verify <code>{{{ service }}}</code> is disabled through current runtime configuration:
+    <pre>$ sudo service {{{ service }}} status</pre>
+
+    If the service is disabled the command will return the following output:
+    <pre>{{{ service }}} is stopped</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Inserts an OCIL for a case when a service should be disabled,
+    substituting the correct init system.
+
+:param service: Name of service
+:type service: str
+
+#}}
+{{% macro ocil_service_disabled(service) -%}}
+  {{% if init_system is defined %}}
+    {{%- if init_system == "systemd" -%}}
+        {{{ systemd_ocil_service_disabled(service) }}}
+    {{%- elif init_system == "upstart" -%}}
+        {{{ upstart_ocil_service_disabled(service) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+{{#
+    Inserts an OCIL Clause for a case when a service should be disabled.
+
+:param service: Name of service
+:type service: str
+
+#}}
+{{% macro ocil_clause_service_disabled(service) -%}}
+    the "{{{ service }}}" is loaded and not masked
+{{%- endmacro %}}
+
+
+{{# Socket and Service Disabled macros #}}
+
+{{#
+    Describe how to check if service is disabled in system boot configuration with xinetd.
+
+:param service: service to disable
+:type service: str
+
+#}}
+{{%- macro xinetd_disabled_check_with_systemd(service) %}}
+    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration with xinetd, run the following command:
+    <pre>$ chkconfig <code>{{{ service }}}</code> --list</pre>
+    Output should indicate the <code>{{{ service }}}</code> service has either not been installed, or has been disabled, as shown in the example below:
+    <pre>$ chkconfig <code>{{{ service }}}</code> --list
+
+    Note: This output shows SysV services only and does not include native
+    systemd services. SysV configuration data might be overridden by native
+    systemd configuration.
+
+    If you want to list systemd services use 'systemctl list-unit-files'.
+    To see services enabled on particular target use
+    'systemctl list-dependencies [target]'.
+
+    <code>{{{ service }}}</code>       off</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to check if socket is disabled with systemd.
+
+:param socket: The socket to check
+:type socket: str
+
+#}}
+{{%- macro socket_disabled_check_with_systemd(socket) %}}
+    To check that the <code>{{{ socket }}}</code> socket is disabled in system boot configuration with systemd, run the following command:
+    <pre>$ systemctl is-enabled <code>{{{ socket }}}</code></pre>
+    Output should indicate the <code>{{{ socket }}}</code> socket has either not been installed,
+    or has been disabled at all runlevels, as shown in the example below:
+    <pre>$ sudo systemctl is-enabled <code>{{{ socket }}}</code><br/>disabled</pre>
+
+    Run the following command to verify <code>{{{ socket }}}</code> is not active (i.e. not running) through current runtime configuration:
+    <pre>$ sudo systemctl is-active {{{ socket }}}</pre>
+
+    If the socket is not running the command will return the following output:
+    <pre>inactive</pre>
+
+    The socket will also be masked, to check that the <code>{{{ socket }}}</code> is masked, run the following command:
+    <pre>$ sudo systemctl show <code>{{{ socket }}}</code> | grep "LoadState\|UnitFileState"</pre>
+
+    If the socket is masked the command will return the following outputs:
+
+    <pre>LoadState=masked</pre>
+
+    <pre>UnitFileState=masked</pre>
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause for ensure socket is disabled in systemd and xinetd.
+
+:param name: The socket to check
+:type name: str
+
+#}}
+{{%- macro systemd_complete_ocil_entry_socket_and_service_disabled(name) %}}
+ocil: |-
+    {{{ xinetd_disabled_check_with_systemd(name) }}}
+    {{{ socket_disabled_check_with_systemd(name) }}}
+
+ocil_clause: "service and/or socket are running"
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause for ensure socket is disabled in systemd.
+
+:param name: The socket to check
+:type name: str
+
+#}}
+{{%- macro upstart_complete_ocil_entry_socket_and_service_disabled(name) %}}
+ocil:
+
+ocil_clause: "service and/or socket are running"
+{{%- endmacro %}}
+
+
+{{#
+    Inserts an OCIL for a case when a service and a corresponding socket should be
+    disabled, substituting the correct init system.
+
+:param service: Name of service
+:type service: str
+
+#}}
+{{% macro complete_ocil_entry_socket_and_service_disabled(service) -%}}
+  {{% if init_system is defined %}}
+    {{%- if init_system == "systemd" -%}}
+        {{{ systemd_complete_ocil_entry_socket_and_service_disabled(service) }}}
+    {{%- elif init_system == "upstart" -%}}
+        {{{ upstart_complete_ocil_entry_socket_and_service_disabled(service) }}}
+    {{%- else -%}}
+ocil: |-
+    JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+
+{{# SSHD macros #}}
+
+{{#
+    An OCIL clause for an sshd option
+#}}
+{{% macro ocil_clause_entry_sshd_option() -%}}
+ocil_clause: "the required value is not set"
+{{%- endmacro %}}
+
+
+{{#
+    OCIL for an sshd option.
+
+    Example usage::
+
+        ocil_sshd_option(default="no", option="Banner", value="/etc/issue")
+
+:param default: If set to yes the default value is accepted
+:type default: str
+:param option: The sshd option to configure
+:type option: str
+:param value: The value for the given option
+:type value: str
+
+#}}
+{{% macro ocil_sshd_option(default, option, value) -%}}
+    To determine how the SSH daemon's <tt>{{{ option }}}</tt> option is set, run the following command:
+    {{% if sshd_distributed_config == "true" %}}
+    <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</pre>
+    {{% if default == "yes" -%}}
+    <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config.d/01-complianceascode-reinforce-os-defaults.conf</pre>
+    {{%- endif %}}
+    {{% else %}}
+    <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config</pre>
+    {{% endif %}}
+    If a line indicating <tt>{{{ value }}}</tt> is returned, then the required value is set.
+{{%- endmacro %}}
+
+
+{{#
+OCIL and OCIL clause for and sshd option.
+
+    Example usage::
+
+        complete_ocil_entry_sshd_option(default="no", option="Banner", value="/etc/issue")
+
+:param default: If set to yes the default value is accepted
+:type default: str
+:param option: The sshd option to configure
+:type option: str
+:param value: The value for the given option
+:type value: str
+
+#}}
+{{% macro complete_ocil_entry_sshd_option(default, option, value) -%}}
+ocil: |
+    {{{ ocil_sshd_option(default, option, value) }}}
+
+{{{ ocil_clause_entry_sshd_option() }}}
+{{%- endmacro %}}
+
+
+{{# Mount option macros #}}
+
+{{#
+    The OCIL text for mount options.
+
+:param point: The mount point to check
+:type point: str
+:param option: The options the mount point should have
+:type option: str
+
+#}}
+{{% macro ocil_mount_option(point, option) -%}}
+    Verify the <tt>{{{ option }}}</tt> option is configured for the <tt>{{{ point }}}</tt> mount point,
+    {{% if product == "rhcos4" -%}}
+    You'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Subsequently,
+    {{%- endif -%}}
+    run the following command:
+    <pre>$ sudo mount | grep '\s{{{ point }}}\s'</pre>
+    <pre>. . . {{{ point }}} . . . {{{ option }}} . . ./pre>
+{{%- endmacro %}}
+
+
+{{#
+    The OCIL clause for mount options.
+
+:param point: The mount point to check
+:type point: str
+:param option: The options the mount point should have
+:type option: str
+
+#}}
+{{% macro ocil_clause_entry_mount_option(point, option) -%}}
+ocil_clause: the "{{{ point }}}" file system does not have the "{{{ option }}}" option set
+{{%- endmacro %}}
+
+
+{{#
+    The OCIL and OCIL clause for mount options.
+
+:param point: The mount point to check
+:type point: str
+:param option: The options the mount point should have
+:type option: str
+
+#}}
+{{% macro complete_ocil_entry_mount_option(point, option) -%}}
+ocil: |
+    {{{ ocil_mount_option(point, option) | indent(4) }}}
+
+{{{ ocil_clause_entry_mount_option(point, option) }}}
+{{%- endmacro %}}
+
+
+{{# Partition macros #}}
+
+{{#
+    Describe how to check if given path is on its own partition or logical volume.
+
+:param part: Path to check
+:type part: str
+
+#}}
+{{% macro partition_check(part) -%}}
+    {{% if product == "rhcos4" -%}}
+    You'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Subsequently,
+    {{%- endif -%}}
+    Run the following command to determine if <code>{{{ part }}}</code>
+    is on its own partition or logical volume:
+    <pre>$ mount | grep "on {{{ part }}}"</pre>
+    If <code>{{{ part }}}</code> has its own partition or volume group, a line will be returned.
+{{%- endmacro %}}
+
+
+{{#
+    OCIL for how to check if given path is on its own partition or logical volume and the
+    correct OCIL clause.
+
+:param part: Path to check
+:type part: str
+
+#}}
+{{% macro complete_ocil_entry_separate_partition(part) -%}}
+ocil: |
+    {{{ partition_check(part) }}}
+
+ocil_clause: "no line is returned"
+{{%- endmacro %}}
+
+
+{{# Firewalld macros #}}
+
+{{%- macro _firewalld_check(access_action, port, proto, service) %}}
+    To determine if <code>firewalld</code> is configured to {{{ access_action }}} to <code>{{{ service }}}</code>
+    on port <code>{{{ port }}}/{{{ proto }}}</code>, run the following command(s):
+    {{% if port %}}
+        <code>firewall-cmd --list-ports</code>
+    {{% endif %}}
+    {{% if service %}}
+        <code>firewall-cmd --list-services</code>
+    {{% endif %}}
+{{%- endmacro %}}
+
+
+{{#
+    OCIL for allowing a port or service in firewalld. If the :code:`service` parameter is defined
+    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
+
+:param port: The port to allow
+:type port: int
+:param proto: The protocol to allow
+:type proto: str
+:param service: The service to allow
+:type service: str
+
+#}}
+{{%- macro ocil_firewalld_allow_access(port, proto, service) %}}
+{{{ _firewalld_check("allow access", port, proto, service) }}}
+    If <code>firewalld</code> is configured to allow access through the firewall, something similar to the following will be output:
+    {{% if service %}}
+    If it is a service:
+    <code>{{{ service }}}</code>
+    {{% endif %}}
+    {{% if port %}}
+    If it is a port:
+    <code>{{{ port }}}/{{{ proto }}}</code>
+    {{% endif %}}
+{{%- endmacro %}}
+
+
+{{#
+    OCIL for preventing access a port or service in firewalld. If the :code:`service` parameter is defined
+    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
+
+:param port: The port to allow
+:type port: int
+:param proto: The protocol to allow
+:type proto: str
+:param service: The service to allow
+:type service: str
+
+#}}
+{{%- macro ocil_firewalld_prevent_access(port, proto, service) %}}
+{{{ _firewalld_check("prevent access", port, proto, service) }}}
+    If <code>firewalld</code> is configured to prevent access, no output will be returned.
+{{%- endmacro %}}
+
+{{# Kernel modules macros #}}
+
+{{#
+    OCIL for disabling a kernel module.
+
+:param module: The module to disable.
+:type module: str
+
+#}}
+{{%- macro ocil_module_disable(module) %}}
+    If the system is configured to prevent the loading of the <code>{{{ module }}}</code> kernel module,
+    it will contain lines inside any file in <code>/etc/modprobe.d</code> or the deprecated<code> /etc/modprobe.conf</code>.
+    These lines instruct the module loading system to run another program (such as <code>/bin/true</code>) upon a module <code>install</code> event.
+    {{% if product in ["ol7", "ol8", "rhel7", "rhel8"] %}}
+    These lines can also instruct the module loading system to ignore the <code>{{{ module }}}</code> kernel module via <code>blacklist</code> keyword.
+    {{% endif %}}
+    Run the following command to search for such lines in all files in <code>/etc/modprobe.d</code> and the deprecated <code>/etc/modprobe.conf</code>:
+    <pre>$ grep -r {{{ module }}} /etc/modprobe.conf /etc/modprobe.d</pre>
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause for disabling a kernel module.
+
+:param module: The module to disable.
+:type module: str
+
+#}}
+{{%- macro complete_ocil_entry_module_disable(module) %}}
+ocil: |-
+    {{{ ocil_module_disable(module) }}}
+
+ocil_clause: "no line is returned"
+{{%- endmacro %}}
+
+
+{{# SELinux boolean macros #}}
+
+{{#
+    Describe how to check if given SELinux boolean is disabled.
+
+:param sebool: The SELinux boolean to check
+:type sebool: str
+
+#}}
+{{%- macro describe_sebool_check_disabled(sebool) %}}
+    Run the following command to determine if the <code>{{{ sebool }}}</code> SELinux boolean is disabled:
+    <pre>$ getsebool {{{ sebool }}}</pre>
+    If properly configured, the output should show the following:
+    <code>{{{ sebool }}} --> off</code>
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause for how to check if given SELinux boolean is disabled.
+
+:param sebool: The SELinux boolean to check
+:type sebool: str
+
+#}}
+{{%- macro complete_ocil_entry_sebool_disabled(sebool) %}}
+ocil: |-
+    {{{ describe_sebool_check_disabled(sebool) }}}
+
+ocil_clause: "{{{ sebool }}} is not disabled"
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to check if given SELinux boolean is enabled.
+
+:param sebool: The SELinux boolean to check
+:type sebool: str
+
+#}}
+{{%- macro describe_sebool_check_enabled(sebool) %}}
+    Run the following command to determine if the <code>{{{ sebool }}}</code> SELinux boolean is enabled:
+    <pre>$ getsebool {{{ sebool }}}</pre>
+    If properly configured, the output should show the following:
+    <code>{{{ sebool }}} --> on</code>
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause for how to check if given SELinux boolean is enabled.
+
+:param sebool: The SELinux boolean to check
+:type sebool: str
+
+#}}
+{{%- macro complete_ocil_entry_sebool_enabled(sebool) %}}
+ocil: |-
+    {{{ describe_sebool_check_enabled(sebool) }}}
+
+ocil_clause: "{{{ sebool }}} is not enabled"
+{{%- endmacro %}}
+
+
+{{# Timer enabled macros #}}
+
+{{#
+    Describe how to check if timer is enabled in upstart.
+
+:param service: The service to check
+:type service: str
+
+#}}
+{{%- macro systemd_ocil_timer_enabled(timer) %}}
+    Run the following command to determine the current status of the
+    <code>{{{ timer }}}</code> timer:
+    <pre>$ sudo systemctl is-active {{{ timer }}}.timer</pre>
+    If the timer is running, it should return the following: <pre>active</pre>
+{{%- endmacro %}}
+
+
+{{#
+Inserts an OCIL for a case when a timer should be enabled,
+substituting the correct init system.
+
+:param timer: Name of timer
+:type timer: str
+
+#}}
+{{% macro ocil_timer_enabled(timer) -%}}
+  {{% if init_system is defined %}}
+    {{%- if init_system == "systemd" -%}}
+        {{{ systemd_ocil_timer_enabled(timer) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+
+{{# File macros #}}
+
+{{#
+    OCIL for how to check the permissions on a file.
+
+:param file: File to change
+:type file: str
+:param perms: The permissions for the file
+:type perms: str
+
+#}}
+{{%- macro ocil_file_permissions(file, perms) -%}}
+    To check the permissions of <code>{{{ file }}}</code>,
+    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
+    <pre>$ ls -l {{{ file }}}</pre>
+    If properly configured, the output should indicate the following permissions:
+    <code>{{{ perms }}}</code>
+{{%- endmacro %}}
+
+
+{{#
+    OCIL clause for file permissions
+
+:param file: File to change
+:type file: str
+:param perms: the permissions for the file
+:type perms: str
+
+#}}
+{{%- macro ocil_clause_file_permissions(file, perms) -%}}
+    {{{ file }}} does not have unix mode {{{ perms }}}
+{{%- endmacro %}}
+
+
+{{#
+    OCIL how to check the file owner of a file.
+
+:param file: File to change
+:type file: str
+:param owner: The owner for the file
+:type owner: str
+
+#}}
+{{%- macro ocil_file_owner(file, owner) -%}}
+    To check the ownership of <code>{{{ file }}}</code>,
+    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
+    <pre>$ ls -lL {{{ file }}}</pre>
+    If properly configured, the output should indicate the following owner:
+    <code>{{{ owner }}}</code>
+{{%- endmacro %}}
+
+
+{{#
+    OCIL clause for file owner
+
+:param file: File to change
+:type file: str
+:param owner: the owner for the file
+:type owner: str
+
+#}}
+{{%- macro ocil_clause_file_owner(file, owner) -%}}
+    {{{ file }}} does not have an owner of {{{ owner }}}
+{{%- endmacro %}}
+
+
+{{#
+    OCIL how to check the file group owner of a file.
+
+:param file: File to change
+:type file: str
+:param group: the group owner for the file
+:type group: str
+
+#}}
+{{%- macro ocil_file_group_owner(file, group) -%}}
+    To check the group ownership of <code>{{{ file }}}</code>,
+    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
+    <pre>$ ls -lL {{{ file }}}</pre>
+    If properly configured, the output should indicate the following group-owner:
+    <code>{{{ group }}}</code>
+{{%- endmacro %}}
+
+
+{{#
+    OCIL clause for file group owner
+
+:param file: File to change
+:type file: str
+:param owner: the group owner for the file
+:type owner: str
+
+#}}
+{{%- macro ocil_clause_file_group_owner(file, group) -%}}
+    {{{ file }}} does not have a group owner of {{{ group }}}
+{{%- endmacro %}}
+
+
+{{# Sysctl option macros #}}
+
+{{#
+    OCIL for a sysctl option
+
+:param sysctl: The kernel parameter to change
+:type sysctl: str
+:param value: The value to be set
+:type value: str
+
+#}}
+{{% macro ocil_sysctl_option_value(sysctl, value) -%}}
+    The runtime status of the <code>{{{ sysctl }}}</code> kernel parameter can be queried
+    by running the following command:
+    <pre>$ sysctl {{{ sysctl }}}</pre>
+    <code>{{{ value }}}</code>.
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause for a sysctl option
+
+:param sysctl: The kernel parameter to change
+:type sysctl: str
+:param value: The value to be set
+:type value: str
+
+#}}
+{{% macro complete_ocil_entry_sysctl_option_value(sysctl, value) -%}}
+ocil: |
+    {{{ ocil_sysctl_option_value(sysctl, value) }}}
+
+ocil_clause: "the correct value is not returned"
+{{%- endmacro %}}
+
+
+{{# GRUB2 argument macros #}}
+
+{{#
+    Provide OCIL for checking if an argument for kernel command line is configured with Grub2.
+    The parameter should have form `parameter=value`.
+#}}
+{{%- macro ocil_grub2_argument(arg_name_value) -%}}
+{{%- if product in ["rhel7", "ol7", "rhel8", "ol8", "rhel9"] or 'ubuntu' in product -%}}
+Inspect the form of default GRUB 2 command line for the Linux operating system
+in <tt>/etc/default/grub</tt>. If it includes <tt>{{{ arg_name_value }}}</tt>,
+then the parameter will be configured for newly installed kernels.
+First check if the GRUB recovery is enabled:
+<pre>$ sudo grep 'GRUB_DISABLE_RECOVERY' /etc/default/grub</pre>
+If this option is set to true, then check that a line is output by the following command:
+<pre>$ sudo grep 'GRUB_CMDLINE_LINUX_DEFAULT.*{{{ arg_name_value }}}.*' /etc/default/grub</pre>
+If the recovery is disabled, check the line with
+<pre>$ sudo grep 'GRUB_CMDLINE_LINUX.*{{{ arg_name_value }}}.*' /etc/default/grub</pre>.
+{{%- if 'ubuntu' in product -%}}
+Moreover, current Grub config file <tt>grub.cfg</tt> must be checked. The file can be found
+either in <tt>{{{ grub2_boot_path }}}</tt> in case of legacy BIOS systems, or in <tt>{{{ grub2_uefi_boot_path }}}</tt> in case of UEFI systems.
+If they include <tt>{{{ arg_name_value }}}</tt>, then the parameter
+is configured at boot time.
+<pre>$ sudo grep vmlinuz GRUB_CFG_FILE_PATH | grep -v '{{{ arg_name_value }}}'</pre>
+Fill in <tt>GRUB_CFG_FILE_PATH</tt> based on information above.
+This command should not return any output.
+{{%- else -%}}
+Moreover, command line parameters for currently installed kernels should be checked as well.
+Run the following command:
+<pre>$ sudo grubby --info=ALL | grep args | grep -v '{{{ arg_name_value }}}'</pre>
+The command should not return any output.
+{{%- endif -%}}
+{{%- else -%}}
+Inspect the form of default GRUB 2 command line for the Linux operating system
+{{% if grub2_boot_path == grub2_uefi_boot_path or not grub2_uefi_boot_path -%}}
+in <tt>{{{ grub2_boot_path }}}/grubenv</tt>.
+{{%- else -%}}
+in <tt>grubenv</tt> that can be found either in <tt>{{{ grub2_boot_path }}}</tt> in case of legacy BIOS systems, or in <tt>{{{ grub2_uefi_boot_path }}}</tt> in case of UEFI systems.
+{{%- endif %}}
+If they include <tt>{{{ arg_name_value }}}</tt>, then the parameter
+is configured at boot time.
+<pre>$ sudo grep 'kernelopts.*{{{ arg_name_value }}}.*' GRUBENV_FILE_LOCATION</pre>
+Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
+{{%- endif -%}}
+{{%- endmacro -%}}
+
+
+{{# Kernel build config macros #}}
+
+{{#
+    OCIL for a kernel build config rule.
+
+    Example usage::
+
+        ocil_kernel_build_config(config="config_kernel_strict_rwx", value="y")
+
+:param config: The kernel config parameter
+:type config: str
+:param value: The value for the given config
+:type value: str
+
+#}}
+{{% macro ocil_kernel_build_config(config, value) -%}}
+    To determine the config value the kernel was built with, run the following command:
+    <pre>$ grep {{{ config }}} /boot/config.*</pre>
+    {{% if value == "n" %}}
+    Configs with value 'n' are not explicitly set in the file, so either commented lines or no
+    lines should be returned.
+    {{% else %}}
+    For each kernel installed, a line with value "{{{ value }}}" should be returned.
+    {{% endif %}}
+{{%- endmacro %}}
+
+
+{{# Firefox macros #}}
+
+{{#
+Write out the OCIL for generating the common check for Firefox configuration
+:param preference: Name of preference
+:type preference: str
+:param config: configuration item name in Firefox
+:type config: str
+:param value: Expected value for preference
+:type value: str
+#}}
+{{% macro ocil_firefox_config(preference, config, value) -%}}
+{{%- if value == "true" -%}}
+ocil_clause: 'it is not enabled'
+{{%- elif value == "false" %}}
+ocil_clause: 'it is not disabled'
+{{%- endif %}}
+
+ocil: |-
+    {{% if value == "true" -%}}
+    To verify that {{preference}} is enabled,
+    {{%- elif value == "false" %}}
+    To verify that {{preference}} is disabled,
+{{% else %}}
+    To verify the correct setting of {{preference}},
+{{% endif %}}
+    run the following command:
+    <pre>$ grep '{{config}}' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
+    The output should return:
+    <pre>lockPref("{{config}}", "{{value}}");</pre>
+{{%- endmacro %}}
+
+{{#
+Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification template
+
+:param syscall: system call
+:type syscall: str
+#}}
+{{% macro ocil_audit_rules_unsuccessful_file_modification(syscall, key) -%}}
+Verify {{{ full_name }}} generates an audit record for unsuccessful attempts to use the {{{ syscall }}} system call.
+
+If the auditd daemon is configured to use the "augenrules" program to to read audit rules during daemon startup (the default), run the following command:
+
+$ sudo grep -r {{{ syscall }}} /etc/audit/rules.d
+
+If the auditd daemon is configured to use the "auditctl" utility to read audit rules during daemon startup, run the following command:
+
+$ sudo grep {{{ syscall }}} /etc/audit/audit.rules
+
+The output should be the following:
+
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
+
+{{%- endmacro %}}
+
+
+{{#
+Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification_o_creat template
+
+:param syscall: system call
+:type syscall: str
+:param position: the position of the system call O_CREAT argument, eg. a2
+:type position: str
+#}}
+{{% macro ocil_audit_rules_unsuccessful_file_modification_o_creat(syscall, position) -%}}
+Verify {{{ full_name }}} generates an audit record for unsuccessful attempts to create files using the {{{ syscall }}} system call with O_CREAT flag.
+
+If the auditd daemon is configured to use the "augenrules" program to read audit rules during daemon startup (the default), run the following command:
+
+$ sudo grep -r {{{ syscall }}} /etc/audit/rules.d
+
+If the auditd daemon is configured to use the "auditctl" utility to read audit rules during daemon startup, run the following command:
+
+$ sudo grep {{{ syscall }}} /etc/audit/audit.rules
+
+The output should be the following:
+
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F {{{ position }}}&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F {{{ position }}}&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F {{{ position }}}&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F {{{ position }}}&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+
+{{%- endmacro %}}
+
+{{#
+Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification_o_trunc_write template
+
+:param syscall: system call
+:type syscall: str
+:param position: the position of the system call O_TRUNC_WRITE argument, eg. a2
+:type position: str
+#}}
+{{% macro ocil_audit_rules_unsuccessful_file_modification_o_trunc_write(syscall, position) -%}}
+Verify {{{ full_name }}} generates an audit record for unsuccessful attempts to modify files using the {{{ syscall }}} system call with O_TRUNC_WRITE flag.
+
+If the auditd daemon is configured to use the "augenrules" program to read audit rules during daemon startup (the default), run the following command:
+
+$ sudo grep -r {{{ syscall }}} /etc/audit/rules.d
+
+If the auditd daemon is configured to use the "auditctl" utility to read audit rules during daemon startup, run the following command:
+
+$ sudo grep {{{ syscall }}} /etc/audit/audit.rules
+
+The output should be the following:
+
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+
+{{%- endmacro %}}
+
+{{#
+Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification_rule_order template
+
+:param syscall: system call
+:type syscall: str
+:param position: the position of the system call O_TRUNC_WRITE and O_CREAT arguments, eg. a2
+:type position: str
+#}}
+{{% macro ocil_audit_rules_unsuccessful_file_modification_rule_order(syscall, position) -%}}
+    Verify that rules for unsuccessful calls of the {{{ syscall }}} syscall are in the order shown below.
+
+    If the auditd daemon is configured to use the "augenrules" program to read audit rules during daemon startup (the default), check the order of rules below in a file with suffix ".rules" in the directory "/etc/audit/rules.d".
+    If the auditd daemon is configured to use the "auditctl" utility to read audit rules during daemon startup, check the order of rules below in "/etc/audit/audit.rules" file.
+
+    -a always,exit -F arch=b32 -S {{{ syscall }}} -F {{{ position }}}&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+    -a always,exit -F arch=b32 -S {{{ syscall }}} -F {{{ position }}}&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+    -a always,exit -F arch=b32 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-modification
+    -a always,exit -F arch=b32 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-modification
+    -a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
+    -a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
+
+    If the system is 64 bit then also add the following lines:
+
+    -a always,exit -F arch=b64 -S {{{ syscall }}} -F {{{ position }}}&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+    -a always,exit -F arch=b64 -S {{{ syscall }}} -F {{{ position }}}&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+    -a always,exit -F arch=b64 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-modification
+    -a always,exit -F arch=b64 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-modification
+    -a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
+    -a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
+{{%- endmacro %}}

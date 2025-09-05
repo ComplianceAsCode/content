@@ -1,0 +1,69 @@
+documentation_complete: true
+
+prodtype: ubuntu2004
+
+title: 'Only Allow Authorized Network Services in ufw'
+
+description: |-
+    Check the firewall configuration for any unnecessary or prohibited
+    functions, ports, protocols, and/or services by running the following
+    command:
+    <pre>$ sudo ufw show raw
+    Chain OUTPUT (policy ACCEPT)
+    target prot opt sources destination
+    Chain INPUT (policy ACCEPT 1 packets, 40 bytes)
+    pkts bytes target prot opt in out source destination
+    Chain FORWARD (policy ACCEPT 0 packets, 0 bytes)
+    pkts bytes target prot opt in out source destination
+    Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)
+    pkts bytes target prot opt in out source destination</pre>
+
+    Ask the System Administrator for the site or program PPSM CLSA. Verify
+    the services allowed by the firewall match the PPSM CLSA.
+
+rationale: |-
+    To prevent unauthorized connection of devices, unauthorized transfer of
+    information, or unauthorized tunneling (i.e., embedding of data types
+    within data types), organizations must disable or restrict unused or
+    unnecessary physical and logical ports/protocols on information systems.
+    
+    Operating systems are capable of providing a wide variety of functions
+    and services. Some of the functions and services provided by default
+    may not be necessary to support essential organizational operations.
+    Additionally, it is sometimes convenient to provide multiple services
+    from a single component (e.g., VPN and IPS); however, doing so
+    increases risk over limiting the services provided by any one component.
+
+    To support the requirements and principles of least functionality, the
+    operating system must support the organizational requirements, providing
+    only essential capabilities and limiting the use of ports, protocols,
+    and/or services to only those required, authorized, and approved to
+    conduct official business or to address authorized quality of life
+    issues.
+
+severity: medium
+
+references:
+    disa: CCI-000382
+    srg: SRG-OS-000096-GPOS-00050
+    stigid@ubuntu2004: UBTU-20-010407
+
+ocil_clause: 'unauthorized network services can be accessed from the network'
+
+ocil: |-
+    Check the firewall configuration for any unnecessary or prohibited
+    functions, ports, protocols, and/or services by running the following
+    command:
+    <pre>$ sudo ufw show raw</pre>
+
+    Ask the System Administrator for the site or program PPSM CLSA. Verify
+    the services allowed by the firewall match the PPSM CLSA.
+
+    Add all ports, protocols, or services allowed by the PPSM CLSA by using
+    the following command:
+    <pre>$ sudo ufw allow "direction" "port/protocol/service"</pre>
+    where the direction is "in" or "out" and the port is the one
+    corresponding to the protocol or service allowed.
+
+    To deny access to ports, protocols, or services, use:
+    <pre>$ sudo ufw deny "direction" "port/protocol/service"</pre>

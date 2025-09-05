@@ -18,6 +18,8 @@ jobs:
       - name: Build
         run: |-
           ./build_product \
+              alinux2 \
+              alinux3 \
               chromium \
               fedora \
               firefox \
@@ -26,6 +28,7 @@ jobs:
               rhel7 \
               rhel8 \
               rhel9 \
+              uos20 \
               --derivatives
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
@@ -42,7 +45,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: ./build_product chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004
+        run: ./build_product alinux2 alinux3 chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004 uos20
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -83,36 +86,8 @@ jobs:
       - name: Build
         run: |-
           ./build_product \
-              chromium \
-              fedora \
-              firefox \
-              fuse6 \
-              rhcos4 \
-              rhel7 \
-              rhel8 \
-              rhel9 \
-              sle12 \
-              sle15 \
-              ubuntu2004
-      - name: Test
-        run: ctest -j2 --output-on-failure -E unique-stigids
-        working-directory: ./build
-
-  validate-fedora:
-    name: Build, Test on Fedora 34 (Container)
-    runs-on: ubuntu-latest
-    container:
-      image: fedora:34
-    steps:
-      - name: Install Deps
-        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck
-      - name: Install deps python
-        run: pip install ruamel.yaml yamlpath
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build
-        run: |-
-          ./build_product \
+              alinux2 \
+              alinux3 \
               chromium \
               fedora \
               firefox \
@@ -124,6 +99,40 @@ jobs:
               sle12 \
               sle15 \
               ubuntu2004 \
+              uos20
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build
+
+  validate-fedora:
+    name: Build, Test on Fedora Latest (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+    steps:
+      - name: Install Deps
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck git
+      - name: Install deps python
+        run: pip install ruamel.yaml yamlpath
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: |-
+          ./build_product \
+              alinux2 \
+              alinux3 \
+              chromium \
+              fedora \
+              firefox \
+              fuse6 \
+              rhcos4 \
+              rhel7 \
+              rhel8 \
+              rhel9 \
+              sle12 \
+              sle15 \
+              ubuntu2004 \
+              uos20 \
               ocp4 \
               eks
         env:
@@ -131,6 +140,15 @@ jobs:
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
+      - name: "Set git safe directory, ref: https://github.com/actions/checkout/issues/760"
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Upload coverage to Code Climate  # Requires: git package
+        if: ${{ github.repository == 'ComplianceAsCode/content' }}
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: e67e068471d32b63f8e9561dba8f6a3f84dcc76b05ebfd98e44ced1a91cff854
+        with:
+          coverageLocations: build/tests/coverage.xml:coverage.py
 
   validate-fedora-rawhide:
     name: Build, Test on Fedora Rawhide (Container)
@@ -147,6 +165,8 @@ jobs:
       -   name: Build
           run: |-
             ./build_product \
+                alinux2 \
+                alinux3 \
                 chromium \
                 fedora \
                 firefox \
@@ -158,6 +178,7 @@ jobs:
                 sle12 \
                 sle15 \
                 ubuntu2004 \
+                uos20 \
                 ocp4
       -   name: Test
           run: ctest -j2 --output-on-failure -E unique-stigids

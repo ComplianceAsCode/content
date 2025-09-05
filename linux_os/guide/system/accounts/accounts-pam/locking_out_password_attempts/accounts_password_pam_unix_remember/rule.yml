@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004,wrlinux1019
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004
 
 title: 'Limit Password Reuse'
 
@@ -41,7 +41,6 @@ references:
     nist@sle15: IA-5(1)(e),IA-5(1).1(v)
     pcidss: Req-8.2.5
     srg: SRG-OS-000077-GPOS-00045
-    stigid@rhel7: RHEL-07-010270
     stigid@sle15: SLES-15-020250
     stigid@ubuntu2004: UBTU-20-010070
     vmmsrg: SRG-OS-000077-VMM-000440
@@ -77,3 +76,5 @@ warnings:
        PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
        aborted in order to preserve intentional changes. In this case, an informative message will
        be shown in the remediation report.
+
+srg_requirement: '{{{ full_name }}} must not allow passwords to be reused for a minimum of five generations.'

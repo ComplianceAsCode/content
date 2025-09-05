@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9
 
 title: 'Restrict usage of ptrace to descendant processes'
 
@@ -29,6 +29,12 @@ references:
     stigid@rhel8: RHEL-08-040282
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.yama.ptrace_scope", value="1") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to restrict usage of ptrace to descendant processes.
+    {{{ fixtext_sysctl(sysctl="kernel.yama.ptrace_scope", value="1") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must restrict usage of ptrace to descendant processes.'
 
 platform: machine
 

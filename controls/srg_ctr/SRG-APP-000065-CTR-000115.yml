@@ -1,0 +1,10 @@
+controls:
+- id: SRG-APP-000065-CTR-000115
+  levels:
+  - medium
+  title: {{{ full_name }}} must enforce the limit of three consecutive invalid
+    logon attempts by a user during a 15-minute time period.
+  rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  status: not applicable

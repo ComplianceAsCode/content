@@ -16,11 +16,14 @@ identifiers:
     cce@rhel7: CCE-80188-6
     cce@rhel8: CCE-80886-5
     cce@rhel9: CCE-83989-4
+    cce@sle12: CCE-91460-6
     cce@sle15: CCE-91162-8
 
 references:
     anssi: BP28(R5),NT28(R46)
     cis-csc: 1,12,13,14,15,16,2,3,5,6,7,8,9
+    cis@alinux2: 4.2.1.1
+    cis@alinux3: 4.2.1.2
     cis@rhel7: 4.2.1.2
     cis@rhel8: 4.2.1.2
     cis@sle12: 4.2.1.2
@@ -39,8 +42,14 @@ references:
     stigid@rhel8: RHEL-08-010561
     stigid@ubuntu2004: UBTU-20-010432
 
+ocil_clause: '{{{ ocil_clause_service_enabled(service="rsyslog") }}}'
+
 ocil: |-
     {{{ ocil_service_enabled(service="rsyslog") }}}
+
+fixtext: '{{{ fixtext_service_enabled("rsyslog") }}}'
+
+srg_requirement: '{{{ srg_requirement_service_enabled("rsyslog") }}}'
 
 template:
     name: service_enabled

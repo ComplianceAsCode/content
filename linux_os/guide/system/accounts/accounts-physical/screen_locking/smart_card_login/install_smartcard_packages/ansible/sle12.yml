@@ -1,0 +1,22 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+
+- name: Set smartcard packages fact
+  set_fact:
+    smartcard_packages:
+      - pam_pkcs11
+      - mozilla-nss
+      - mozilla-nss-tools
+      - pcsc-ccid
+      - pcsc-lite
+      - pcsc-tools
+      - opensc
+      - coolkey
+
+- name: Ensure {{ smartcard_packages }} are installed
+  package:
+    name: "{{ smartcard_packages }}"
+    state: present

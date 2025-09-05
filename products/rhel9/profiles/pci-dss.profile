@@ -97,6 +97,8 @@ selections:
     - no_empty_passwords
     - display_login_attempts
     - account_disable_post_pw_expiration
+    - var_authselect_profile=sssd
+    - enable_authselect
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
     - dconf_db_up_to_date

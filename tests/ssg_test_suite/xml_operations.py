@@ -272,6 +272,17 @@ def find_rule_in_benchmark(datastream, benchmark_id, rule_id, logging=None):
     return rule
 
 
+def get_all_rules_in_benchmark(datastream, benchmark_id, logging=None):
+    """
+    Returns all rule IDs in the given benchmark.
+    """
+    rules = []
+    benchmark_node = _get_benchmark_node(datastream, benchmark_id, logging)
+    for rule in benchmark_node.findall(".//xccdf-1.2:Rule", PREFIX_TO_NS):
+        rules.append(rule.get("id"))
+    return rules
+
+
 def find_fix_in_benchmark(datastream, benchmark_id, rule_id, fix_type='bash', logging=None):
     """
     Return fix from benchmark. None if not found.

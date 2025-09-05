@@ -42,7 +42,7 @@ ocil_clause: 'Certmap is not configured in SSSD'
 
 ocil: |-
     To verify Certmap is enabled in SSSD, run the following command:
-    <pre>$ cat sudo cat /etc/sssd/sssd.conf</pre>
+    <pre>$ sudo cat /etc/sssd/sssd.conf</pre>
     If configured properly, output should contain section like the following
     <pre>
     [certmap/testing.test/rule_name]
@@ -70,7 +70,8 @@ template:
     name: lineinfile
     vars:
       path: '/etc/sssd/sssd.conf'
-      text: '^\[certmap\/.+\/.+\]$'
+      text: '\[certmap\/.+\/.+\]'
+      escape_text: "false"
     backends:
         ansible: "off"
         bash: "off"

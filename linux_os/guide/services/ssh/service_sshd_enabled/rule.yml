@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Enable the OpenSSH Service'
 
@@ -64,3 +64,5 @@ template:
 
 fixtext: |-
     {{{ fixtext_service_enabled("sshd") }}}
+
+srg_requirement: '{{{ srg_requirement_service_enabled("sshd") }}}'

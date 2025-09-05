@@ -1,0 +1,63 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Configure the kubelet Certificate File for the API Server'
+
+description: |-
+    To enable certificate based kubelet authentication,
+    edit the <tt>config</tt> configmap in the <tt>openshift-kube-apiserver</tt>
+    namespace and set the below parameter in the <tt>config.yaml</tt> key if
+    it is not already configured:
+    <pre>
+    "apiServerArguments":{
+    ...
+      "kubelet-client-certificate":"/etc/kubernetes/static-pod-resources/secrets/kubelet-client/tls.crt",
+    ...
+    }
+    </pre>
+    <pre>
+    Note that this particular rule is only valid for OCP releases up to and
+    including 4.8
+    </pre>
+
+rationale: |-
+    By default the API Server does not authenticate itself to the kublet's
+    HTTPS endpoints. Requests from the API Server are treated anonymously.
+    Configuring certificate-based kubelet authentication ensures that the
+    API Server authenticates itself to kubelets when submitting requests.
+
+identifiers:
+  cce@ocp4: CCE-85890-2
+
+platforms:
+    - ocp4.6 or ocp4.7 or ocp4.8
+
+severity: high
+
+references:
+    cis@ocp4: 1.2.5
+    nist: CM-6,CM-6(1),SC-8,SC-8(1)
+
+ocil_clause: '<tt>kubelet-client-certificate</tt> is not set as appropriate in <tt>apiServerArguments:</tt>'
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["kubelet-client-certificate"]'</pre>
+    The output should return <tt>/etc/kubernetes/static-pod-resources/secrets/kubelet-client/tls.crt</tt>
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "all"
+    filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '"kubelet-client-certificate":\["/etc/kubernetes/static-pod-resources/secrets/kubelet-client/tls.crt"\]'
+      type: "string"
+      operation: "pattern match"

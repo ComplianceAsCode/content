@@ -1,0 +1,541 @@
+{{#
+    How to fix an audit rule that watches a file.
+
+:param path: Full path of file to watch
+:type path: str
+:param key: Auditd key for the system
+:type key: str
+:param rule_path: Full path to where the rule wil
+:type rule_path: str
+#}}
+{{% macro fixtext_audit_file_watch_rule(path, key, rule_path) -%}}
+Configure {{{ full_name }}} to generate audit records for all modifications that affect <tt>{{{ path }}}</tt>.
+
+Add or update the following file system rule to <tt>{{{ rule_path }}}</tt>:
+
+-w {{{ path }}} -p wa -k {{{ key }}}
+
+The audit daemon must be restarted for the changes to take effect.
+{{% endmacro %}}
+
+{{% macro fixtext_audit_rules(event, key, event_group, extra_params=False, flag=None) -%}}
+Configure the audit system to generate an audit event for any successful/unsuccessful use of the "{{{ event }}}" system call by adding or updating the following rules in "/etc/audit/audit.rules" and adding the following rules to "/etc/audit/rules.d/{{{ key }}}.rules" or updating the existing rules in files in the "/etc/audit/rules.d/" directory:
+
+{{% if extra_params -%}}
+{{% if flag -%}}
+-a always,exit -F arch=b32 -S {{{ event }}} -F {{{ flag }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ event }}} -F {{{ flag }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
+
+-a always,exit -F arch=b32 -S {{{ event }}} -F {{{ flag }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ event }}} -F {{{ flag }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
+{{% else -%}}
+-a always,exit -F arch=b32 -S {{{ event }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ event }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
+
+-a always,exit -F arch=b32 -S {{{ event }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ event }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
+{{% endif %}}
+{{% else %}}
+-a always,exit -F arch=b32 -S {{{ event }}} -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ event }}} -F auid>=1000 -F auid!=unset -k {{{ key }}}
+{{%- endif -%}}
+
+{{%- if event_group %}}
+It's allowed to group this system call within the same line as {{{ event_group }}}.
+{{%- endif %}}
+
+The audit daemon must be restarted for the changes to take effect.
+{{% endmacro %}}
+
+{{#
+    Generate a fixtext for audit rules for file deletion events
+
+:param syscall: syscall name
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_file_deletion_events(syscall) -%}}
+{{{ fixtext_audit_rules(syscall, "delete", '"rename", "unlink", "rmdir", "renameat", and "unlinkat"') }}}
+{{% endmacro %}}
+
+{{#
+    Generate a fixtext for audit rules for dac modification events - chmod
+
+:param syscall: syscall name
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_dac_modification_chmod(syscall) -%}}
+{{{ fixtext_audit_rules(syscall, "perm_mod", '"chmod", "fchmod" and "fchmodat"') }}}
+{{% endmacro %}}
+
+{{#
+    Generate a fixtext for audit rules for dac modification events - chown
+
+:param syscall: syscall name
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_dac_modification_chown(syscall) -%}}
+{{{ fixtext_audit_rules(syscall, "perm_mod", '"chown", "fchown", "fchownat" and "lchown"') }}}
+{{% endmacro %}}
+
+{{#
+    Generate a fixtext for audit rules for dac modification events - chown
+
+:param syscall: syscall name
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_dac_modification_chown(syscall) -%}}
+{{{ fixtext_audit_rules(syscall, "perm_mod", '"chown", "fchown", "fchownat" and "lchown"') }}}
+{{% endmacro %}}
+
+{{#
+    Generate a fixtext for audit rules for dac modification events - attr
+
+:param syscall: syscall name
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_dac_modification_attr(syscall) -%}}
+{{{ fixtext_audit_rules(syscall, "perm_mod", '"fremovexattr", "lremovexattr", "removexattr", "fsetxattr", "lsetxattr" and "setxattr"') }}}
+{{% endmacro %}}
+
+{{#
+    Generate a fixtext for audit rules for unsuccessful file modification
+    Used in rules using template audit_rules_unsuccessful_file_modification
+
+:param syscall: syscall name
+:type path: str
+:param syscall_grouping: A list of other syscalls that can be audited with the
+    same audit rules.
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_unsuccessful_file_modification(syscall, syscall_grouping) -%}}
+{{%- set syscall_grouping_text = join_list(syscall_grouping) -%}}
+{{{ fixtext_audit_rules(syscall, "access", syscall_grouping_text, extra_params=True) }}}
+{{% endmacro %}}
+
+{{#
+    Generate a fixtext for audit rules for unsuccessful file modification
+    when O_CREAT flag is specified.
+    Used in rules using template audit_rules_unsuccessful_file_modification_o_creat
+
+:param syscall: syscall name
+:type path: str
+:param pos: position of the O_CREAT argument in the syscall parameters
+:type pos: str
+
+#}}
+{{% macro fixtext_audit_rules_unsuccessful_file_modification_o_creat(syscall, pos) -%}}
+{{{ fixtext_audit_rules(syscall, "unsuccesful-create", '"open", "openat" and "open_by_handle_at"', extra_params=True, flag=pos+"&amp;0100") }}}
+{{% endmacro %}}
+
+{{#
+    Generate a fixtext for audit rules for unsuccessful file modification
+    when O_TRUNC_WRITE flag is specified.
+    Used in rules using template audit_rules_unsuccessful_file_modification_o_trunc_write
+
+:param syscall: syscall name
+:type path: str
+:param pos: position of the O_CREAT argument in the syscall parameters
+:type pos: str
+
+#}}
+{{% macro fixtext_audit_rules_unsuccessful_file_modification_o_trunc_write(syscall, pos) -%}}
+{{{ fixtext_audit_rules(syscall, "unsuccesful-modification", '"openat" and "open_by_handle_at"', extra_params=True, flag=pos+"&amp;01003") }}}
+{{% endmacro %}}
+
+{{#
+    Generate a fixtext for ordering of audit rules for unsuccessful file modification.
+    Used in rules using template audit_rules_unsuccessful_file_modification_rule_order.
+
+:param syscall: syscall name
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_unsuccessful_file_modification_rule_order(syscall) -%}}
+    Make sure that rules for unsuccessful calls of the {{{ syscall }}} syscall are in the order shown below.
+
+    Create the file "/etc/audit/rules.d/30-ospp-v42-remediation.rules" and insert exactly this content:
+
+    {{{ audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() }}}
+
+    The audit daemon must be restarted for the changes to take effect.
+{{% endmacro %}}
+
+{{#
+    Human readable text for how to fix ini files
+
+:param section: Section on the value to be set
+:type section: str
+:param parameter: parameter to be change
+:type parameter: str
+:param value: value to be set
+:type value: str
+
+#}}
+{{%- macro fixtext_dconf_ini_file(section, parameter, value) -%}}
+    The dconf settings can be edited in the /etc/dconf/db/* location.
+
+    First, add or update the [{{{ section }}}] section of the "/etc/dconf/db/local.d/00-security-settings" database file and add or update the following lines:
+
+    [{{{ section }}}]
+    {{{ parameter }}}={{{ value }}}
+
+    Then, add the following line to "/etc/dconf/db/local.d/locks/00-security-settings-lock" to prevent user modification:
+
+    /{{{ section }}}/{{{ parameter }}}
+
+    Finally, update the dconf system databases:
+
+    $ sudo dconf update
+{{%- endmacro -%}}
+
+{{#
+    Human readable text for how to lock dconf settings
+
+:param section: Section on the value to be locked
+:type section: str
+
+#}}
+{{%- macro fixtext_dconf_lock_settings(section) -%}}
+    Configure the operating system to prevent a user from overriding settings for graphical user interfaces.
+
+    Create a database to contain the system-wide screensaver settings (if it does not already exist) with the following command:
+
+    Note: The example below is using the database "local" for the system, so if the system is using another database in "/etc/dconf/profile/user", the file should be created under the appropriate subdirectory.
+
+    $ sudo touch /etc/dconf/db/local.d/locks/session
+
+    Add the following setting to prevent non-privileged users from modifying it:
+
+    {{{ section }}}
+{{%- endmacro -%}}
+
+{{#
+    Describe how to fix an ssh configure
+
+:param parameter: parameter to set
+:type parameter: str
+:parameter value: Value to set
+:type value: str
+:param config_is_distributed: Should the value go in 00-complianceascode-hardening.conf vs the main sshd config file
+
+#}}
+{{%- macro fixtext_sshd_lineinfile(parameter, value, config_is_distributed) -%}}
+{{%- if config_is_distributed -%}}
+{{%- set path = "/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf" -%}}
+{{%- else -%}}
+{{%- set path = "/etc/ssh/sshd_config" -%}}
+{{%- endif -%}}
+    To configure the system add or modify the following line in "{{{ path }}}".
+
+    {{{parameter}}} {{{value}}}
+
+    Restart the SSH daemon for the settings to take effect:
+
+    $ sudo systemctl restart sshd.service
+
+{{%- endmacro -%}}
+
+{{#
+    Describe how to enable a service
+
+:param parameter: service to enable
+:type parameter: str
+
+#}}
+{{%- macro fixtext_service_enabled(service) -%}}
+    To enable the {{{ service }}} service run the following command:
+
+    $ sudo systemctl enable --now {{{ service }}}
+{{%- endmacro -%}}
+
+{{#
+    Describe how to disable a service
+
+:param parameter: service to be disabled
+:type parameter: str
+
+#}}
+{{%- macro fixtext_service_disabled(service) -%}}
+To disable the {{{ service }}} service run the following command:
+
+$ sudo systemctl disable --now {{{ service }}}
+
+$ sudo systemctl mask --now {{{ service }}}
+{{%- endmacro -%}}
+
+
+{{#
+    Macro describing fix for sysctl rules.
+
+:param sysctl: The kernel parameter to be changed.
+:type sysctl: str
+:param value: The value of the kernel parameter.
+:type value: str
+
+#}}
+{{% macro fixtext_sysctl(sysctl, value) -%}}
+Add or edit the following line in a system configuration file in the "/etc/sysctl.d/" directory:
+{{{ sysctl }}} = {{{ value }}}
+
+Load settings from all system configuration files with the following command:
+
+$ sudo sysctl --system
+{{%- endmacro %}}
+
+{{#
+    Describe fix for GRUB 2 bootloader kernel argument
+    This can be used for rules that use grub2_bootloader_argument template
+    or have macro grub2_bootloader_argument_remediation in their remediation.
+
+:param argument: Kernel argument
+:type argument: str
+:param value: The argument's value
+:type value: str
+
+#}}
+{{% macro fixtext_grub2_bootloader_argument(argument, value) %}}
+{{% if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
+Update the GRUB_CMDLINE_LINUX line in '/etc/default/grub' so that it contains {{{ argument }}}={{{ value }}}.
+{{% endif -%}}
+
+Run the following command:
+
+$ sudo {{{ grub_command("add", argument + "=" + value) }}}
+{{% endmacro %}}
+
+{{#
+    Describe fix for removal of a GRUB 2 bootloader kernel argument
+    This can be used for rules that use grub2_bootloader_argument_absent template
+    or have macro grub2_bootloader_argument_remediation in their remediation.
+
+:param argument: Kernel argument
+:type argument: str
+
+#}}
+{{% macro fixtext_grub2_bootloader_argument_absent(argument) %}}
+{{%- if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] -%}}
+Update the GRUB_CMDLINE_LINUX line in '/etc/default/grub' so that it does not contain any occurrence of {{{ argument }}} using the following command:
+
+$ sudo sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ argument }}}=?[^[:space:]]*\(.*"\)/\1 \2/' '/etc/default/grub'
+{{%- endif -%}}
+
+Run the following command:
+
+$ sudo {{{ grub_command("remove", argument) }}}
+{{% endmacro %}}
+
+
+{{#
+    Macro describing fix for audit configuration.
+
+:param param: The audit configuration to be changed.
+:type param: str
+:param value: The value of the audit configuration.
+:type value: str
+#}}
+{{% macro fixtext_audit_configuration(param, value) -%}}
+Edit the file "/etc/audit/auditd.conf" and add or edit the following line:
+{{{ param }}} = {{{ value }}}
+
+{{%- endmacro %}}
+
+{{#
+Fixtext macro describing configuration of mount option,
+for rules using the mount_option template.
+
+:param mountpoint: mount point on the filesystem eg. /dev/shm
+:type mountpoint: str
+:param mountoption: mount option, eg. nosuid, logdev=device or hidepid
+:type mountoption: str
+
+#}}
+{{% macro fixtext_mount_option(mountpoint, mountoption) -%}}
+Modify "/etc/fstab" to use the "{{{ mountoption }}}" option on the "{{{ mountpoint }}}" directory.
+{{%- endmacro %}}
+
+{{#
+Fixtext macro describing how to audit a command.
+
+:param command: The command to be audited
+:type command: str
+:param filepath: The full path to the command to be audited
+:type filepath: str
+:param key: The key for the audit messages
+:type key: str
+
+#}}
+{{% macro fixtext_audit_rules_command(command, filepath, key) -%}}
+Configure the audit system to generate an audit event for any successful/unsuccessful use of the "{{{ command }}}" command by adding or updating the following rule in the "/etc/audit/rules.d/audit.rules" file:
+
+-a always,exit -F path={{{ filepath }}} -F perm=x -F auid>=1000 -F auid!=unset -k {{{ key }}}
+
+The audit daemon must be restarted for the changes to take effect.
+{{%- endmacro %}}
+
+{{#
+Fixtext for ensuring that a privileged command is audited.
+
+:param cmd: The command to audit
+:type cmd: str
+:param path_prefix: The directory the command is in
+:type path_prefix: str
+#}}
+{{% macro fixtext_audit_rules_privileged_commands(cmd, path_prefix) -%}}
+Configure the audit system to generate an audit event for any successful/unsuccessful uses of the "{{{ cmd }}}" command by adding or updating the following rule in the "/etc/audit/rules.d/audit.rules" file:
+
+-a always,exit -F path={{{path_prefix}}}{{{ cmd }}} -F perm=x -F auid>=1000 -F auid!=unset -k privileged-{{{ cmd }}}
+
+The audit daemon must be restarted for the changes to take effect.
+{{%- endmacro %}}
+
+{{#
+Fixtext for removing a package
+
+:param package: The package to remove
+:type package: str
+
+#}}
+{{% macro fixtext_package_removed(package) %}}
+To remove the {{{ full_name }}} package {{{ package }}} run the following command:
+
+{{{ package_remove(package) }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for installing a package
+
+:param package: The package to install
+:type package: str
+
+#}}
+{{% macro fixtext_package_installed(package) %}}
+To install the {{{ full_name }}} package {{{ package }}} run the following command:
+
+{{{ package_install(package) }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for disabling a kernel module
+
+:param module: module to disable
+:type module: str
+
+#}}
+{{% macro fixtext_kernel_module_disabled(module) %}}
+Configure {{{ full_name }}} to disable the ability to use the {{{ module }}} kernel module.
+
+Add or update the following lines in the file "/etc/modprobe.d/blacklist.conf":
+
+install {{{ module }}} /bin/true
+blacklist {{{ module }}}
+
+Reboot the system for the settings to take effect.
+{{%- endmacro %}}
+
+{{#
+Fixtext for setting the owner on a file.
+
+:param file: The file to set the owner on
+:type file: str
+:param owner: The owner to be set
+:type owner: str
+
+#}}
+{{% macro fixtext_file_owner(file, owner) %}}
+Change the owner of the file {{{ file }}} to {{{ owner }}} by running the following command:
+
+$ sudo chown {{{ owner }}} {{{ file }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for setting the group owner on a file.
+
+:param file: The file to set the group owner on
+:type file: str
+:param owner: The group to be set
+:type owner: str
+
+#}}
+{{% macro fixtext_file_group_owner(file, group) %}}
+Change the group of the file {{{ file }}} to {{{ group }}} by running the following command:
+
+$ sudo chgrp {{{ group }}} {{{ file }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for setting the owner on a directory.
+
+:param file: The directory to set the owner on
+:type file: str
+:param owner: The owner to be set
+:type owner: str
+
+#}}
+{{% macro fixtext_directory_owner(file, owner) %}}
+Change the owner of the directory {{{ file }}} to {{{ owner }}} by running the following command:
+
+$ sudo chown {{{ owner }}} {{{ file }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for setting the group owner on a directory.
+
+:param file: The directory to set the group owner on
+:type file: str
+:param group: The group to be set
+:type group: str
+
+#}}
+{{% macro fixtext_directory_group_owner(file, group) %}}
+Change the group of the directory {{{ file }}} to {{{ group }}} by running the following command:
+
+$ sudo chgrp {{{ group }}} {{{ file }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for setting the permissions on a directory.
+
+:param file: The directory to set the permissions on
+:type file: str
+:param mode: The permissions to be set
+:type mode: str
+
+#}}
+{{% macro fixtext_directory_permissions(file, mode) %}}
+Change the permissions of the directory "{{{ file }}}" to "{{{ mode }}}" by running the following command:
+
+$ sudo chmod {{{ mode }}} {{{ file }}}
+{{%- endmacro %}}
+
+
+{{#
+Fixtext for setting the permissions on a file.
+
+:param file: The file to set the permissions on
+:type file: str
+:param mode: The permissions to be set
+:type mode: str
+
+#}}
+{{% macro fixtext_file_permissions(file, mode) %}}
+Change the permissions of the file "{{{ file }}}" to "{{{ mode }}}" by running the following command:
+
+$ sudo chmod {{{ mode }}} {{{ file }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for having a mount point on another partition
+
+:param part: The mount point
+:type part: str
+
+#}}
+{{% macro fixtext_separate_partition(part) -%}}
+Migrate the "{{{ part }}}" directory onto a separate file system/partition.
+{{%- endmacro %}}

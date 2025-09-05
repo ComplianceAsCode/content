@@ -28,6 +28,10 @@ def parse_args():
         help="YAML file with information about the product we are building. "
         "e.g.: ~/scap-security-guide/rhel7/product.yml"
     )
+    p.add_argument(
+        "--build-ovals-dir", required=True, dest="build_ovals_dir",
+        help="Directory to store intermediate built OVAL files."
+    )
     p.add_argument("--output", type=argparse.FileType("wb"), required=True)
     p.add_argument("ovaldirs", metavar="OVAL_DIR", nargs="+",
                    help="Shared directory(ies) from which we will collect "
@@ -57,7 +61,8 @@ def main():
         env_yaml,
         args.product_yaml,
         ssg.utils.required_key(env_yaml, "target_oval_version_str"),
-        args.ovaldirs)
+        args.ovaldirs,
+        args.build_ovals_dir)
 
     # parse new file(string) as an ssg.xml.ElementTree, so we can reorder elements
     # appropriately

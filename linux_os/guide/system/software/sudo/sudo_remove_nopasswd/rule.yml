@@ -63,3 +63,5 @@ fixtext: |-
     Remove any occurrence of "NOPASSWD" found in "/etc/sudoers" file or files in the "/etc/sudoers.d" directory.
 
     $ sed -i '/NOPASSWD/ s/^/# /g' /etc/sudoers /etc/sudoers.d/*
+
+srg_requirement: '{{{ full_name }}} must require users to provide a password for privilege escalation.'

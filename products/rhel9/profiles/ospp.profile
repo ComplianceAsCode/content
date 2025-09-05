@@ -6,9 +6,9 @@ metadata:
         - comps
         - stevegrubb
 
-reference: https://www.niap-ccevs.org/Profile/PP.cfm
+reference: https://www.niap-ccevs.org/Profile/Info.cfm?PPID=442&id=442
 
-title: '[DRAFT] Protection Profile for General Purpose Operating Systems'
+title: 'Protection Profile for General Purpose Operating Systems'
 
 description: |-
     This profile is part of Red Hat Enterprise Linux 9 Common Criteria Guidance
@@ -27,28 +27,6 @@ selections:
     #######################################################
 
     ### Partitioning
-    - mount_option_home_nodev
-    - mount_option_home_nosuid
-    - mount_option_tmp_nodev
-    - mount_option_tmp_noexec
-    - mount_option_tmp_nosuid
-    - partition_for_var_tmp
-    - mount_option_var_tmp_nodev
-    - mount_option_var_tmp_noexec
-    - mount_option_var_tmp_nosuid
-    - mount_option_dev_shm_nodev
-    - mount_option_dev_shm_noexec
-    - mount_option_dev_shm_nosuid
-    - mount_option_nodev_nonroot_local_partitions
-    - mount_option_boot_nodev
-    - mount_option_boot_nosuid
-    - partition_for_home
-    - partition_for_var
-    - mount_option_var_nodev
-    - partition_for_var_log
-    - mount_option_var_log_nodev
-    - mount_option_var_log_nosuid
-    - mount_option_var_log_noexec
     - partition_for_var_log_audit
     - mount_option_var_log_audit_nodev
     - mount_option_var_log_audit_nosuid
@@ -58,12 +36,10 @@ selections:
     # sshd
     - sshd_use_directory_configuration
     - sshd_disable_root_login
-    - sshd_enable_strictmodes
     - disable_host_auth
     - sshd_disable_empty_passwords
     - sshd_disable_kerb_auth
     - sshd_disable_gssapi_auth
-    - sshd_enable_warning_banner
     - sshd_rekey_limit
     - var_rekey_limit_size=1G
     - var_rekey_limit_time=1hour
@@ -71,54 +47,17 @@ selections:
     # Time Server
     - chronyd_client_only
 
-    ### Network Settings
-    - sysctl_net_ipv6_conf_all_accept_ra
-    - sysctl_net_ipv6_conf_default_accept_ra
-    - sysctl_net_ipv4_conf_all_accept_redirects
-    - sysctl_net_ipv4_conf_default_accept_redirects
-    - sysctl_net_ipv6_conf_all_accept_redirects
-    - sysctl_net_ipv6_conf_default_accept_redirects
-    - sysctl_net_ipv4_conf_all_accept_source_route
-    - sysctl_net_ipv4_conf_default_accept_source_route
-    - sysctl_net_ipv6_conf_all_accept_source_route
-    - sysctl_net_ipv6_conf_default_accept_source_route
-    - sysctl_net_ipv4_conf_all_secure_redirects
-    - sysctl_net_ipv4_conf_default_secure_redirects
-    - sysctl_net_ipv4_conf_all_send_redirects
-    - sysctl_net_ipv4_conf_default_send_redirects
-    - sysctl_net_ipv4_conf_all_log_martians
-    - sysctl_net_ipv4_conf_default_log_martians
-    - sysctl_net_ipv4_conf_all_rp_filter
-    - sysctl_net_ipv4_conf_default_rp_filter
-    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
-    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-    - sysctl_net_ipv4_ip_forward
-    - sysctl_net_ipv4_tcp_syncookies
-
     ### systemd
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_burstaction
     - service_debug-shell_disabled
-
-    ### umask
-    - var_accounts_user_umask=027
-    - accounts_umask_etc_profile
-    - accounts_umask_etc_bashrc
-    - accounts_umask_etc_csh_cshrc
+    - grub2_systemd_debug-shell_argument_absent
 
     ### Software update
     - ensure_redhat_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_local_packages
     - ensure_gpgcheck_never_disabled
-
-    ### Passwords
-    - var_password_pam_difok=4
-    - accounts_password_pam_difok
-    - var_password_pam_maxrepeat=3
-    - accounts_password_pam_maxrepeat
-    - var_password_pam_maxclassrepeat=4
-    - accounts_password_pam_maxclassrepeat
 
     ### Kernel Config
     ## Boot prompt
@@ -135,15 +74,9 @@ selections:
     - sysctl_kernel_yama_ptrace_scope
     - sysctl_kernel_perf_event_paranoid
     - sysctl_user_max_user_namespaces
-    - sysctl_user_max_user_namespaces.role=unscored
-    - sysctl_user_max_user_namespaces.severity=info
     - sysctl_kernel_unprivileged_bpf_disabled
     - sysctl_net_core_bpf_jit_harden
     - service_kdump_disabled
-
-    ## File System Settings
-    - sysctl_fs_protected_hardlinks
-    - sysctl_fs_protected_symlinks
 
     ### Audit
     - service_auditd_enabled
@@ -162,12 +95,10 @@ selections:
     ### rpcbind
 
     ### Install Required Packages
-    - package_aide_installed
     - package_dnf-automatic_installed
     - package_subscription-manager_installed
     - package_firewalld_installed
     - package_openscap-scanner_installed
-    - package_policycoreutils_installed
     - package_sudo_installed
     - package_usbguard_installed
     - package_scap-security-guide_installed
@@ -175,19 +106,8 @@ selections:
     - package_crypto-policies_installed
     - package_openssh-server_installed
     - package_openssh-clients_installed
-    - package_policycoreutils-python-utils_installed
-    - package_rsyslog_installed
-    - package_rsyslog-gnutls_installed
-    - package_audispd-plugins_installed
     - package_chrony_installed
     - package_gnutls-utils_installed
-
-    ### Remove Prohibited Packages
-    - package_sendmail_removed
-    - package_iprutils_removed
-    - package_gssproxy_removed
-    - package_nfs-utils_removed
-    - package_krb5-workstation_removed
 
     ### Login
     - disable_users_coredumps
@@ -195,11 +115,8 @@ selections:
     - coredump_disable_storage
     - coredump_disable_backtraces
     - service_systemd-coredump_disabled
-    - var_accounts_max_concurrent_login_sessions=10
-    - accounts_max_concurrent_login_sessions
-    - securetty_root_login_console_only
-    - var_password_pam_unix_remember=5
-    - accounts_password_pam_unix_remember
+    - var_authselect_profile=sssd
+    - enable_authselect
     - use_pam_wheel_for_su
 
     ### SELinux Configuration
@@ -223,10 +140,7 @@ selections:
     - var_system_crypto_policy=fips_ospp
     - configure_crypto_policy
     - configure_ssh_crypto_policy
-    - configure_bind_crypto_policy
     - configure_openssl_crypto_policy
-    - configure_libreswan_crypto_policy
-    - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
 
     #######################################################
@@ -239,48 +153,45 @@ selections:
     #######################################################
 
     ## Configure Minimum Password Length to 12 Characters
-    ## IA-5 (1)(a) / FMT_MOF_EXT.1
-    - var_accounts_password_minlen_login_defs=12
-    - accounts_password_minlen_login_defs
+    ## IA-5 (1)(a) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - var_password_pam_minlen=12
     - accounts_password_pam_minlen
 
     ## Require at Least 1 Special Character in Password
-    ## IA-5(1)(a) / FMT_MOF_EXT.1
+    ## IA-5(1)(a) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - var_password_pam_ocredit=1
     - accounts_password_pam_ocredit
 
     ## Require at Least 1 Numeric Character in Password
-    ## IA-5(1)(a) / FMT_MOF_EXT.1
+    ## IA-5(1)(a) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - var_password_pam_dcredit=1
     - accounts_password_pam_dcredit
 
     ## Require at Least 1 Uppercase Character in Password
-    ## IA-5(1)(a) / FMT_MOF_EXT.1
+    ## IA-5(1)(a) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - var_password_pam_ucredit=1
     - accounts_password_pam_ucredit
 
     ## Require at Least 1 Lowercase Character in Password
-    ## IA-5(1)(a) / FMT_MOF_EXT.1
+    ## IA-5(1)(a) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - var_password_pam_lcredit=1
     - accounts_password_pam_lcredit
 
     ## Enable Screen Lock
-    ## FMT_MOF_EXT.1
+    ## FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - package_tmux_installed
     - configure_bashrc_exec_tmux
     - no_tmux_in_shells
     - configure_tmux_lock_command
-    - configure_tmux_lock_after_time
 
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
-    ## AC-11(a) / FMT_MOF_EXT.1
-    ## We deliberately set sshd timeout to 1 minute before tmux lock timeout
+    ## AC-11(a) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
+    - configure_tmux_lock_after_time
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_UAU.1
     - require_singleuser_auth
-    - grub2_disable_interactive_boot
+    - grub2_disable_recovery
     - grub2_uefi_password
     - no_empty_passwords
 
@@ -294,20 +205,22 @@ selections:
     - accounts_passwords_pam_faillock_unlock_time
 
     ## Enable Host-Based Firewall
-    ## SC-7(12) / FMT_MOF_EXT.1
+    ## SC-7(12) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - service_firewalld_enabled
 
     ## Configure Name/Addres of Remote Management Server
     ##  From Which to Receive Config Settings
     ## CM-3(3) / FMT_MOF_EXT.1
+    # Management server not selected in FTP_ITC_EXT.1
 
     ## Configure the System to Offload Audit Records to a Log
     ##  Server
     ## AU-4(1) / FAU_GEN.1.1.c
-    # temporarily dropped
+    # Audit server not selected in FTP_ITC_EXT.1
 
     ## Set Logon Warning Banner
-    ## AC-8(a) / FMT_MOF_EXT.1
+    ## AC-8(a) / FMT_MOF_EXT.1 (FTA_TAB.1)
+    - sshd_enable_warning_banner
 
     ## Audit All Logons (Success/Failure) and Logoffs (Success)
     ##  CNSSI 1253 Value or DoD-Specific Values:
@@ -366,37 +279,44 @@ selections:
     - audit_basic_configuration
     - audit_immutable_login_uids
     - audit_create_failed
+    - audit_create_failed_aarch64
     - audit_create_success
+    - audit_create_success_aarch64
     - audit_modify_failed
+    - audit_modify_failed_aarch64
     - audit_modify_success
+    - audit_modify_success_aarch64
     - audit_access_failed
+    - audit_access_failed_aarch64
     - audit_access_success
+    - audit_access_success.severity=info
+    - audit_access_success.role=unscored
+    - audit_access_success_aarch64
+    - audit_access_success_aarch64.severity=info
+    - audit_access_success_aarch64.role=unscored
     - audit_delete_failed
+    - audit_delete_failed_aarch64
     - audit_delete_success
+    - audit_delete_success_aarch64
     - audit_perm_change_failed
+    - audit_perm_change_failed_aarch64
     - audit_perm_change_success
+    - audit_perm_change_success_aarch64
     - audit_owner_change_failed
+    - audit_owner_change_failed_aarch64
     - audit_owner_change_success
+    - audit_owner_change_success_aarch64
     - audit_ospp_general
+    - audit_ospp_general_aarch64
     - audit_module_load
 
     ## Enable Automatic Software Updates
-    ## SI-2 / FMT_MOF_EXT.1
-    # Configure dnf-automatic to Install Only Security Updates
-    - dnf-automatic_security_updates_only
-
+    ## SI-2 / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     # Configure dnf-automatic to Install Available Updates Automatically
     - dnf-automatic_apply_updates
 
     # Enable dnf-automatic Timer
     - timer_dnf-automatic_enabled
-
-    # Configure TLS for remote logging
-    - rsyslog_remote_tls
-    - rsyslog_remote_tls_cacert
-
-    # Prevent Kerberos use by system daemons
-    - kerberos_disable_no_keytab
 
     # set ssh client rekey limit
     - ssh_client_rekey_limit
@@ -408,6 +328,6 @@ selections:
     - zipl_bootmap_is_up_to_date
     - zipl_audit_argument
     - zipl_audit_backlog_limit_argument
-    - zipl_vsyscall_argument
     - zipl_init_on_alloc_argument
     - zipl_page_alloc_shuffle_argument
+    - zipl_systemd_debug-shell_argument_absent

@@ -1,0 +1,62 @@
+documentation_complete: true
+
+title: 'Configure auditd max_log_file_action Upon Reaching Maximum Log Size'
+
+description: |-
+    The default action to take when the logs reach their maximum size
+    is to rotate the log files, discarding the oldest one. To configure the action taken
+    by <tt>auditd</tt>, add or correct the line in <tt>/etc/audit/auditd.conf</tt>:
+    <pre>max_log_file_action = <i>ACTION</i></pre>
+    Possible values for <i>ACTION</i> are described in the <tt>auditd.conf</tt> man
+    page. These include:
+    <ul>
+    <li><tt>ignore</tt></li>
+    <li><tt>syslog</tt></li>
+    <li><tt>suspend</tt></li>
+    <li><tt>rotate</tt></li>
+    <li><tt>keep_logs</tt></li>
+    </ul>
+    Set the <tt><i>ACTION</i></tt> to <tt>rotate</tt> to ensure log rotation
+    occurs. This is the default. The setting is case-insensitive.
+
+rationale: |-
+    Automatically rotating logs (by setting this to <tt>rotate</tt>)
+    minimizes the chances of the system unexpectedly running out of disk space by
+    being overwhelmed with log data. However, for systems that must never discard
+    log data, or which use external processes to transfer it and reclaim space,
+    <tt>keep_logs</tt> can be employed.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-88396-7
+
+references:
+    cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8
+    cobit5: APO11.04,APO12.06,APO13.01,BAI03.05,BAI04.04,BAI08.02,DSS02.02,DSS02.04,DSS02.07,DSS03.01,DSS05.04,DSS05.07,MEA02.01
+    disa: CCI-000140
+    hipaa: 164.312(a)(2)(ii)
+    isa-62443-2009: 4.2.3.10,4.3.3.3.9,4.3.3.5.8,4.3.4.4.7,4.3.4.5.6,4.3.4.5.7,4.3.4.5.8,4.4.2.1,4.4.2.2,4.4.2.4
+    isa-62443-2013: 'SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9,SR 6.1,SR 7.1,SR 7.2'
+    iso27001-2013: A.12.1.3,A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1,A.16.1.4,A.16.1.5,A.16.1.7,A.17.2.1
+    nist: AU-5(b),AU-5(2),AU-5(1),AU-5(4),CM-6(a)
+    nist-csf: DE.AE-3,DE.AE-5,PR.DS-4,PR.PT-1,RS.AN-1,RS.AN-4
+    pcidss: Req-10.7
+    srg: SRG-OS-000047-GPOS-00023
+
+ocil_clause: 'the value of the "max_log_file_action" option is set to "ignore", "rotate", or "suspend", or the line is commented out'
+
+ocil: |-
+    Verify that the SA and ISSO (at a minimum) are notified when the audit storage volume is full.
+
+    Check which action {{{ full_name }}} takes when the audit storage volume is full with the following command:
+
+    <pre>$ sudo grep max_log_file_action /etc/audit/auditd.conf
+    max_log_file_action = {{{ xccdf_value("var_auditd_max_log_file_action") }}}</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to notify the SA and ISSO when the audit storage volume is full by configuring the "max_log_file_action" parameter in the "/etc/audit/auditd.conf" file with the a value of "syslog" or "keep_logs":
+
+    max_log_file_action = {{{ xccdf_value("var_auditd_max_log_file_action") }}}
+
+srg_requirement: The {{{ full_name }}} audit system must take appropriate action when the audit storage volume is full.

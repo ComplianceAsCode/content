@@ -6,17 +6,19 @@ controls:
             Banner until users acknowledge the usage conditions and take explicit actions
             to log on for further access via CLI and Graphical access.
         status: does not meet
-        rationle: |-
+        rationale: |-
             The banner must be acknowledged by the user prior to allowing the user access to the operating system.
             This provides assurance that the user has seen the message and accepted the conditions for access.
             If the consent banner is not acknowledged by the user, DoD will not be in compliance with system use notifications required by law.
 
             To establish acceptance of the application usage policy, a click-through banner at system logon is required.
             The system must prevent further activity until the user executes a positive action to manifest agreement by clicking on a box indicating "OK".
+        fixtext: |-
+            This requirement is a permanent finding and cannot be fixed.
+            An appropriate mitigation for the system must be implemented, but this finding cannot be considered fixed.
         mitigation: |-
             Ensure that the banner is prior to entering the user password to act as the "OK".
 
             Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
-
         status_justification: |-
           {{{ full_name }}} does not natively support a method of presenting an interactive acknowledgement of the login banner.

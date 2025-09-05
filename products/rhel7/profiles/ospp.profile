@@ -180,8 +180,6 @@ selections:
 
     ## Configure Minimum Password Length to 12 Characters
     ## IA-5 (1)(a) / FMT_MOF_EXT.1
-    - var_accounts_password_minlen_login_defs=12
-    - accounts_password_minlen_login_defs
     - var_password_pam_minlen=12
     - accounts_password_pam_minlen
 

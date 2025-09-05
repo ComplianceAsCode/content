@@ -38,7 +38,7 @@ references:
     iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4
     nist: CM-7(a),CM-7(b),CM-6(a),AC-17(a)
     nist-csf: PR.IP-1
-    ospp: FTP_ITC_EXT.1
+    ospp: FTP_ITC_EXT.1,FCS_SSH_EXT.1.2
     srg: SRG-OS-000364-GPOS-00151,SRG-OS-000480-GPOS-00227
     stigid@ol7: OL07-00-040430
     stigid@ol8: OL08-00-010522
@@ -47,6 +47,11 @@ references:
     vmmsrg: SRG-OS-000480-VMM-002000
 
 {{{ complete_ocil_entry_sshd_option(default="yes", option="GSSAPIAuthentication", value="no") }}}
+
+fixtext: |-
+    {{{ fixtext_sshd_lineinfile("GSSAPIAuthentication", "no") }}}
+
+srg_requirement: 'The {{{ full_name }}} SSH daemon must not allow GSSAPI authentication, except to fulfill documented and validated mission requirements.'
 
 template:
     name: sshd_lineinfile

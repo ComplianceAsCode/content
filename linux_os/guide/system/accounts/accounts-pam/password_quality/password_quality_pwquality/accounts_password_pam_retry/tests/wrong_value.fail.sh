@@ -1,5 +1,6 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 7,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_wrlinux,multi_platform_ubuntu
+# platform = Red Hat Enterprise Linux 7,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_ubuntu
+# variables = var_password_pam_retry=3
 
 retry_cnt=7
 {{% if 'ubuntu' not in product %}}

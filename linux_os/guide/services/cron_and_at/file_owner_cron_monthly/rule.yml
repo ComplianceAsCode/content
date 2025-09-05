@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: alinux2,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Verify Owner on cron.monthly'
 
@@ -21,6 +21,7 @@ identifiers:
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
+    cis@alinux2: 5.1.6
     cis@rhel7: 5.1.6
     cis@rhel8: 5.1.6
     cis@sle12: 5.2.6
@@ -38,6 +39,10 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/cron.monthly", owner="root")
 
 ocil: |-
     {{{ ocil_file_owner(file="/etc/cron.monthly", owner="root") }}}
+
+fixtext: '{{{ fixtext_directory_owner(file="/etc/cron.monthly/", owner="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_directory_owner(file="/etc/cron.monthly", owner="root") }}}'
 
 template:
     name: file_owner

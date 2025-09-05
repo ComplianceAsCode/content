@@ -1,0 +1,51 @@
+documentation_complete: true
+
+title: 'Ensure debug-shell service is not enabled during boot'
+
+description: |-
+    systemd's <tt>debug-shell</tt> service is intended to
+    diagnose systemd related boot issues with various <tt>systemctl</tt>
+    commands. Once enabled and following a system reboot, the root shell
+    will be available on <tt>tty9</tt> which is access by pressing
+    <tt>CTRL-ALT-F9</tt>. The <tt>debug-shell</tt> service should only be used
+    for systemd related issues and should otherwise be disabled.
+    <br /><br />
+    By default, the <tt>debug-shell</tt> systemd service is already disabled.
+
+    Ensure the debug-shell is not enabled by the <tt>systemd.debug-shel=1</tt>
+    boot paramenter option.
+
+    Check that the line <pre>GRUB_CMDLINE_LINUX="..."</pre> within <tt>/etc/default/grub</tt>
+    doesn't contain the argument <tt>systemd.debug-shell=1</tt>.
+    Run the following command to update command line for already installed kernels:
+    <pre># grubby --update-kernel=ALL --remove-args="systemd.debug-shell"</pre>
+
+rationale: |-
+    This prevents attackers with physical access from trivially bypassing security
+    on the machine through valid troubleshooting configurations and gaining root
+    access when the system is rebooted.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86292-0
+
+references:
+    ospp: FIA_UAU.1
+
+ocil_clause: 'the comand returns a line'
+
+ocil: |-
+    Ensure that debug-shell service is not enabled with the following command:
+    <pre>grep systemd\.debug-shell=1 /boot/grub2/grubenv /etc/default/grub</pre>
+    If the command returns a line, it means that debug-shell service is being enabled.
+
+fixtext: |-
+    {{{ fixtext_grub2_bootloader_argument_absent("debug-shell") | indent(4) }}}
+
+platform: machine
+
+template:
+    name: grub2_bootloader_argument_absent
+    vars:
+        arg_name: systemd.debug-shell

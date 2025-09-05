@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8,rhcos4,rhel8,rhel9
+prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Configure auditing of unsuccessful permission changes'
 
@@ -17,21 +17,22 @@ description: |-
     The following rules configure audit as described above:
     <pre>{{{ file_contents_audit_perm_change_failed|indent }}}    </pre>
 
-    The <tt>Audit</tt> package provides pre-configured  rules in <tt>/usr/share/audit/sample-rules</tt>. The above content can be found in <tt>/usr/share/audit/sample-rules/30-ospp-v42-5-perm-change-failed.rules</tt>.
-    To deploy this configuration, it is recommended to copy it over to the <tt>/etc/audit/rules.d/</tt> directory:
-    <pre>
-    cp /usr/share/audit/sample-rules/30-ospp-v42-5-perm-change-failed.rules /etc/audit/rules.d/
-    </pre>
-    
     Load new Audit rules into kernel by running:
     <pre>augenrules --load</pre>
-    
-    Note: This rule utilizes a file provided by <tt>Audit</tt> package to comply with OSPP 4.2.1. You may reuse this rule in different profiles. If you decide to do so, it is recommended that you inspect contents of the file closely and make sure that they are alligned with your needs.
+
+    Note: This rule uses a special set of Audit rules to comply with OSPP 4.2.1. You may reuse this rule in different profiles. If you decide to do so, it is recommended that you inspect contents of the file closely and make sure that they are alligned with your needs.
 
 rationale: |-
-    Unsuccessful attempts to change permissions of files or directories might be signs of malicious activity. Having such events audited helps in monitoring and investigation of such activities. 
+    Unsuccessful attempts to change permissions of files or directories might be signs of malicious activity. Having such events audited helps in monitoring and investigation of such activities.
 
 severity: medium
+
+# on RHEL9 there are rules which cover particular hardware architectures
+# so do not apply this rule but apply the specific one instead
+{{% if product == "rhel9" %}}
+platforms:
+    - not aarch64_arch
+{{% endif %}}
 
 identifiers:
     cce@rhel8: CCE-82837-6

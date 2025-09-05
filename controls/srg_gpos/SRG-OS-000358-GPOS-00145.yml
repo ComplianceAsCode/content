@@ -13,6 +13,9 @@ controls:
         check: |-
           {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
           {{{ full_name }}} inherently meets this requirement.
+        fixtext: |-
+             {{{ full_name }}} inherently meets this requirement.
+             No fix is required.
         artifact_description: |-
             Linux kernel audit subsystem always adds a timestamp to each audit buffer used to contain the entire audit log data.
             Function kernel/audit.c:audit_log_start() calls kernel/audit.c:audit_get_stamp() to fetch the timestamp and formats the message into the audit log buffer.

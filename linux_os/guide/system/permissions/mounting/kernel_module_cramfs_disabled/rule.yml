@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu1804,ubuntu2004
+prodtype: alinux3,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu1804,ubuntu2004
 
 title: 'Disable Mounting of cramfs'
 
@@ -29,6 +29,7 @@ identifiers:
 
 references:
     cis-csc: 11,14,3,9
+    cis@alinux3: 1.1.1.1
     cis@rhel7: 1.1.1.1
     cis@rhel8: 1.1.1.1
     cis@sle15: 1.1.1.1
@@ -47,6 +48,10 @@ references:
     stigid@rhel8: RHEL-08-040025
 
 {{{ complete_ocil_entry_module_disable(module="cramfs") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("cramfs") }}}'
+
+srg_requirement: '{{{ srg_requirement_kernel_module_disable("cramfs") }}}'
 
 template:
     name: kernel_module_disabled

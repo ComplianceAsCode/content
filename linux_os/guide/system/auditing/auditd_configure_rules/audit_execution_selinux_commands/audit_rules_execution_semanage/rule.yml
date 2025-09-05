@@ -4,7 +4,7 @@
 
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,wrlinux1019
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Record Any Attempts to Run semanage'
 
@@ -61,11 +61,19 @@ references:
     stigid@rhel8: RHEL-08-030313
     vmmsrg: SRG-OS-000463-VMM-001850
 
+ocil_clause: '{{{ ocil_clause_audit() }}}'
+
 ocil: |-
+    Verify {{{ full_name }}} generates an audit record for all uses of the "semanage" command.
     To verify that execution of the command is being audited, run the following command:
     <pre>$ sudo grep "path=/usr/sbin/semanage" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
     The output should return something similar to:
-    <pre>-a always,exit -F path=/usr/sbin/semanage {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    <pre>-a always,exit -F path=/usr/sbin/semanage {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
+
+fixtext: |-
+    {{{ fixtext_audit_rules_command("semanage", "/usr/sbin/semanage", "perm_mod") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("semanage") }}}'
 
 template:
     name: audit_rules_privileged_commands

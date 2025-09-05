@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Set number of Password Hashing Rounds - system-auth'
 
@@ -27,13 +27,14 @@ identifiers:
     cce@rhel7: CCE-83384-8
     cce@rhel8: CCE-83386-3
     cce@rhel9: CCE-83621-3
+    cce@sle12: CCE-91471-3
     cce@sle15: CCE-91172-7
 
 references:
   anssi: BP28(R32)
   disa: CCI-000196
   srg: SRG-OS-000073-GPOS-00041
-  stigid@ol8: OL08-00-010131
+  stigid@ol8: OL08-00-010130
 
 ocil_clause: 'rounds is not set to {{{ xccdf_value("var_password_pam_unix_rounds") }}} or is commented out'
 
@@ -52,3 +53,5 @@ fixtext: |-
     For example:
 
     password sufficient pam_unix.so sha512 rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}
+
+srg_requirement: '{{{ full_name }}} shadow password suite must be configured to use a sufficient number of hashing rounds in /etc/pam.d/system-auth.'

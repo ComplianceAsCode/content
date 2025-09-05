@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel7,rhel8,rhel9
+prodtype: alinux2,alinux3,fedora,rhel7,rhel8,rhel9
 
 title: 'Ensure that /etc/at.deny does not exist'
 
@@ -21,8 +21,10 @@ identifiers:
     cce@rhel9: CCE-86946-1
 
 references:
+    cis@alinux2: 5.1.8
+    cis@alinux3: 5.1.8
     cis@rhel7: 5.1.9
-    cis@rhel8: 5.1.8
+    cis@rhel8: 5.1.9
 
 ocil_clause: 'the file /etc/at.deny exists'
 

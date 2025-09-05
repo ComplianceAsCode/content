@@ -5,16 +5,24 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_accounts_user_umask") }}}
 
-- name: Replace user umask in /etc/profile
-  replace:
+- name: Check if umask is already set
+  ansible.builtin.lineinfile:
     path: /etc/profile
-    regexp: '^[^#]*umask'
-    replace: "umask {{ var_accounts_user_umask }}"
-  register: umask_replace
+    regexp: (^[\s]*[^#]umask)\s+(\d+)
+    state: absent
+  check_mode: yes
+  changed_when: false
+  register: result_umask_is_set
+
+- name: Replace user umask in /etc/profile
+  ansible.builtin.replace:
+    path: /etc/profile
+    regexp: '^(\s*)umask\s+\d+'
+    replace: '\1umask {{ var_accounts_user_umask }}'
 
 - name: Append user umask in /etc/profile
-  lineinfile:
+  ansible.builtin.lineinfile:
     create: yes
     path: /etc/profile
     line: "umask {{ var_accounts_user_umask }}"
-  when: umask_replace is not changed
+  when: result_umask_is_set.found == 0

@@ -23,7 +23,6 @@ metadata:
 reference: https://www.niap-ccevs.org/Profile/PP.cfm
 selections:
 - accounts_max_concurrent_login_sessions
-- accounts_password_minlen_login_defs
 - accounts_password_pam_dcredit
 - accounts_password_pam_difok
 - accounts_password_pam_lcredit
@@ -81,6 +80,7 @@ selections:
 - disable_users_coredumps
 - dnf-automatic_apply_updates
 - dnf-automatic_security_updates_only
+- enable_authselect
 - enable_dracut_fips_module
 - enable_fips_mode
 - ensure_gpgcheck_globally_activated
@@ -232,7 +232,6 @@ selections:
 - zipl_bootmap_is_up_to_date
 - zipl_page_poison_argument
 - zipl_slub_debug_argument
-- zipl_vsyscall_argument
 - var_sshd_set_keepalive=0
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
@@ -243,11 +242,11 @@ selections:
 - var_slub_debug_options=P
 - var_auditd_flush=incremental_async
 - var_accounts_max_concurrent_login_sessions=10
+- var_authselect_profile=sssd
 - var_password_pam_unix_remember=5
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted
 - var_system_crypto_policy=fips_ospp
-- var_accounts_password_minlen_login_defs=12
 - var_password_pam_minlen=12
 - var_password_pam_ocredit=1
 - var_password_pam_dcredit=1
@@ -263,8 +262,6 @@ selections:
 - grub2_vsyscall_argument.severity=info
 - sysctl_user_max_user_namespaces.role=unscored
 - sysctl_user_max_user_namespaces.severity=info
-- zipl_vsyscall_argument.role=unscored
-- zipl_vsyscall_argument.severity=info
 platforms: !!set {}
 cpe_names: !!set {}
 platform: null

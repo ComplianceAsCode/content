@@ -23,6 +23,7 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel9: CCE-89272-9
     cce@sle12: CCE-83218-8
     cce@sle15: CCE-85734-2
 
@@ -33,7 +34,15 @@ references:
     stigid@sle12: SLES-12-020300
     stigid@sle15: SLES-15-030360
 
-{{{ complete_ocil_entry_audit_syscall(syscall="umount") }}}
+ocil_clause: '{{{ ocil_clause_audit() }}}'
+
+ocil: |-
+    Verify that {{{ full_name }}} generates an audit record for all uses of the "umount" and system call.
+    To determine if the system is configured to audit calls to the
+    "umount" system call, run the following command:
+    <pre space="preserve">$ sudo grep "umount" /etc/audit/audit.*</pre>
+    If the system is configured to audit this activity, it will return a line like the following.
+    -a always,exit -F arch=b32 -S umount -F auid>=1000 -F auid!=unset -k privileged-umount
 
 warnings:
     - general: |-
@@ -42,3 +51,6 @@ warnings:
         have been placed independent of other system calls. Grouping these system
         calls with others as identifying earlier in this guide is more efficient.
 
+fixtext: '{{{ fixtext_audit_rules(event="umount", key="perm_mod") }}}'
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("umount") }}}'

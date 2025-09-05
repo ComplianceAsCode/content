@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,sle12,sle15
+prodtype: alinux2,alinux3,ol7,ol8,rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'Disable graphical user interface'
 
@@ -32,8 +32,9 @@ identifiers:
     cce@rhel9: CCE-84106-4
 
 references:
+    cis@alinux2: 2.1.2
+    cis@alinux3: 2.2.2
     cis@rhel7: 2.2.2
-    cis@rhel8: 2.2.2
     cis@sle12: 2.2.2
     cis@sle15: 2.2.2
     disa: CCI-000366
@@ -55,6 +56,17 @@ ocil: |-
     {{% endif %}}
     For each <tt>package</tt> mentioned above you should receive following line:
     <pre>package &lt;package&gt; is not installed</pre>
+
+fixtext: |-
+    To ensure the X Windows package group is removed, run the following command:
+    {{% if product in ["rhel7", "ol7"] %}}
+    <pre>$ sudo yum remove xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils</pre>
+    {{% else %}}
+    {{{ package_remove("xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils xorg-x11-server-Xwayland") }}}
+    {{% endif %}}
+
+
+srg_requirement: 'The graphical display manager must not be installed on {{{ full_name }}} unless approved.'
 
 platforms:
 {{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}

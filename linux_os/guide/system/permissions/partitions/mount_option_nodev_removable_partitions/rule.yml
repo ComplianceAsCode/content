@@ -47,6 +47,20 @@ references:
 
 platform: machine
 
+ocil_clause: 'a file system found in "/etc/fstab" refers to removable media and it does not have the "nodev" option set'
+
+ocil: |-
+    Verify file systems that are used for removable media are mounted with the "nodev" option with the following command:
+
+    $ sudo more /etc/fstab
+
+    UUID=2bc871e4-e2a3-4f29-9ece-3be60c835222 /mnt/usbflash vfat noauto,owner,ro,nosuid,nodev,noexec 0 0
+
+fixtext: |-
+    Configure the "/etc/fstab" to use the "nodev" option on file systems that are associated with removable media.
+
+srg_requirement: '{{{ full_name }}} must prevent special devices on file systems that are used with removable media.'
+
 template:
     name: mount_option_removable_partitions
     vars:

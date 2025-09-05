@@ -272,8 +272,8 @@ class OCILFileLinker(FileLinker):
         self.tree = self.translator.translate(self.tree, store_defname=True)
 
 
-def _find_identcce(rule):
-    for ident in rule.findall("./{%s}ident" % XCCDF11_NS):
+def _find_identcce(rule, namespace=XCCDF11_NS):
+    for ident in rule.findall("./{%s}ident" % namespace):
         if ident.get("system") == cce_uri:
             return ident
     return None

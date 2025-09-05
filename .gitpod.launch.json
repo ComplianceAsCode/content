@@ -8,8 +8,8 @@
       "id": "pickContainerName",
       "description": "Select Container Name",
       "type": "pickString",
-      "options": ["ssg_test_suite"],
-      "default": "ssg_test_suite"
+      "options": ["&&CONTAINER_NAME&&"],
+      "default": "&&CONTAINER_NAME&&"
       },
       {
       "id": "pickProductName",
@@ -30,8 +30,7 @@
           "rhosp10", "rhosp13",
           "rhv4",
           "sle12", "sle15",
-          "ubuntu1604", "ubuntu1804", "ubuntu2004",
-          "wrlinux8", "wrlinux1019"
+          "ubuntu1604", "ubuntu1804", "ubuntu2004"
       ],
       "default": "&&DEFAULT_PRODUCT&&"
       },
@@ -45,11 +44,11 @@
   ],
   "configurations": [
     {
-      "name": "Run SSGTS using Docker backend",
+      "name": "Run Automatus using Docker backend",
       "type": "python",
       "request": "launch",
       "console": "integratedTerminal",
-      "program": "${workspaceFolder}/tests/test_suite.py",
+      "program": "${workspaceFolder}/tests/automatus.py",
       "args": [
           "rule",
           "--dontclean",
@@ -70,7 +69,7 @@
       ]
     },
     {
-      "name": "Run SSGTS using Docker backend (test_rule_in_container.sh)",
+      "name": "Run Automatus using Docker backend (test_rule_in_container.sh)",
       "type": "bashdb",
       "request": "launch",
       "program": "${workspaceFolder}/tests/test_rule_in_container.sh",

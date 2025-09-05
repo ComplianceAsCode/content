@@ -25,7 +25,7 @@ references:
     disa: CCI-002165
     nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
     nist: CM-6(a),AC-6(1)
-    srg: SRG-OS-000312-GPOS-00123,SRG-OS-000324-GPOS-00125
+    srg: SRG-OS-000312-GPOS-00122,SRG-OS-000312-GPOS-00123,SRG-OS-000324-GPOS-00125
     stigid@ol8: OL08-00-010373
     stigid@rhel8: RHEL-08-010373
 
@@ -34,6 +34,8 @@ references:
 fixtext: |-
     Verify the operating system is configured to enable DAC on symlinks with the following commands:
     {{{ fixtext_sysctl("fs.protected_symlinks", "1") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must enable kernel parameters to enforce discretionary access control on symlinks.'
 
 template:
     name: sysctl

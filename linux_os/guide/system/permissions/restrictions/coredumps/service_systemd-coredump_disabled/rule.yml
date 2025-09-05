@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhcos4,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Disable acquiring, saving, and processing core dumps'
 
@@ -42,6 +42,10 @@ ocil: |-
        Loaded: masked (Reason: Unit systemd-coredump.socket is masked.)
        Active: inactive (dead) ...
     </pre>
+
+fixtext: '{{{ fixtext_service_disabled("systemd-coredump") }}}'
+
+srg_requirement: '{{{ srg_requirement_service_disabled("systemd-coredump") }}}'
 
 template:
     name: service_disabled

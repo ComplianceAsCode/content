@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_alinux2" version="1">
+    <metadata>
+      <title>Alibaba Cloud Linux 2</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:Alibaba Cloud Linux:2" source="CPE" />
+      <description>The operating system installed on the system is Alibaba Cloud Linux 2</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family" definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="Alibaba Cloud Linux 2 is installed" test_ref="test_alinux2" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="alinux-release is version 2" id="test_alinux2" version="1">
+    <linux:object object_ref="obj_alinux2" />
+    <linux:state state_ref="state_alinux2" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_alinux2" version="1">
+    <linux:version operation="pattern match">^2.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_alinux2" version="1">
+    <linux:name>alinux-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
+prodtype: alinux2,alinux3,fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Verify {{{ grub2_boot_path }}}/grub.cfg Group Ownership'
 
@@ -24,8 +24,10 @@ identifiers:
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
+    cis@alinux2: 1.4.1
+    cis@alinux3: 1.5.2
     cis@rhel7: 1.4.2
-    cis@rhel8: 1.5.1
+    cis@rhel8: 1.4.2
     cis@sle12: 1.4.2
     cis@sle15: 1.5.2
     cjis: 5.5.2.2
@@ -39,11 +41,16 @@ references:
     nist: CM-6(a),AC-6(1)
     nist-csf: PR.AC-4,PR.DS-5
     pcidss: Req-7.1
+    srg: SRG-OS-000480-GPOS-00227
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="{{{ grub2_boot_path }}}/grub.cfg", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(grub2_boot_path + "/grub.cfg", "root") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="{{{ grub2_boot_path }}}/grub.cfg", group="root") }}}
+    {{{ ocil_file_group_owner(file=grub2_boot_path + "/grub.cfg", group="root") }}}
+
+fixtext: '{{{ fixtext_file_group_owner(grub2_boot_path + "/grub.cfg", "root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(grub2_boot_path + "/grub.cfg", "root") }}}'
 
 platform: machine
 

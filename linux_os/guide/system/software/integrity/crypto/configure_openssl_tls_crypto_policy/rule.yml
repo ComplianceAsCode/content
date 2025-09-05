@@ -43,7 +43,7 @@ identifiers:
 references:
     disa: CCI-001453
     nist: AC-17(2)
-    srg: SRG-OS-000250-GPOS-00093
+    srg: SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173,SRG-OS-000394-GPOS-00174
     stigid@ol8: OL08-00-010294
     stigid@rhel8: RHEL-08-010294
 
@@ -55,8 +55,18 @@ ocil: |-
     and verify that the value is
     <pre>TLSv1.2</pre>
 
+fixtext: |-
+    Configure {{{ full_name }}} to use the {{{ xccdf_value("var_system_crypto_policy") }}} crypto policy.
+
+    Run the following command:
+
+    <pre>$ sudo update-crypto-policies --set {{{ xccdf_value("var_system_crypto_policy") }}}</pre>
+
 warnings:
     - general: |-
         This rule doesn't come with a remediation, automatically changing the crypto-policies may be too disruptive.
         Ensure the variable <tt>xccdf_org.ssgproject.content_value_var_system_crypto_policy</tt> is set to a
         Crypto Policy that satisfies OpenSSL minimum TLS protocol version 1.2. Custom policies may be applied too.
+
+srg_requirement: |-
+    {{{ full_name }}} must use at minimum TLSv1.2 for TLS connections.

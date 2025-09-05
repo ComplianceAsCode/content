@@ -24,8 +24,10 @@ identifiers:
 
 references:
     cis-csc: 11,13,14,3,8,9
+    cis@alinux2: 1.1.16
+    cis@alinux3: 1.1.8.3
     cis@rhel7: 1.1.9
-    cis@rhel8: 1.1.16
+    cis@rhel8: 1.1.8.3
     cis@sle12: 1.1.9
     cis@sle15: 1.1.18
     cis@ubuntu1804: 1.1.15
@@ -55,16 +57,12 @@ template:
         filesystem: tmpfs
         type: tmpfs
         mount_has_to_exist@sle12: 'yes'
-        mount_has_to_exist@wrlinux8: 'yes'
-        mount_has_to_exist@wrlinux1019: 'yes'
         filesystem@sle12: ''
-        filesystem@wrlinux8: ''
-        filesystem@wrlinux1019: ''
         type@sle12: ''
-        type@wrlinux8: ''
-        type@wrlinux1019: ''
     backends:
         anaconda: 'off'
 
 fixtext: |-
     {{{ fixtext_mount_option("/dev/shm", "nosuid") }}}
+
+srg_requirement: '{{{ srg_requirement_mount_option("/dev/shm", "nosuid") }}}'

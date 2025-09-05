@@ -1,11 +1,11 @@
-{{%- if product in ["rhel7", "ol7"] %}}
-  {{%- set auditd_conf_path="/etc/audisp/audispd.conf" %}}
-{{%- else %}}
-  {{%- set auditd_conf_path="/etc/audit/auditd.conf" %}}
-{{%- endif %}}
+{{% if product in ["rhel7", "ol7"] %}}
+{{% set audisp_conf_file = "/audispd.conf" %}}
+{{% else %}}
+{{% set audisp_conf_file = "/auditd.conf" %}}
+{{% endif %}}
 
 {{{ oval_check_config_file(
-    path=auditd_conf_path,
+    path=audisp_conf_path + audisp_conf_file,
     prefix_regex="^[ \\t]*(?i)",
     parameter="overflow_action",
     value="(?i)(syslog|single|halt)(?-i)",

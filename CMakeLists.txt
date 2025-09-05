@@ -32,7 +32,7 @@ set(SSG_TAILORING_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/tail
 
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
-set(SSG_PATCH_VERSION 62)
+set(SSG_PATCH_VERSION 63)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
@@ -67,6 +67,8 @@ option(SSG_PRODUCT_DEFAULT "If enabled, all default release products will be bui
 # Products to build content for. These generally correspond to directories in
 # the root of this project. Note that the example product is always disabled
 # unless explicitly asked for.
+option(SSG_PRODUCT_ALINUX2 "If enabled, the Alinux 2 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_ALINUX3 "If enabled, the Alinux 3 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_CHROMIUM "If enabled, the Chromium SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN9 "If enabled, the Debian 9 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN10 "If enabled, the Debian 10 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
@@ -93,9 +95,8 @@ option(SSG_PRODUCT_SLE15 "If enabled, the SLE15 SCAP content will be built" ${SS
 option(SSG_PRODUCT_UBUNTU1604 "If enabled, the Ubuntu 16.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU1804 "If enabled, the Ubuntu 18.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2004 "If enabled, the Ubuntu 20.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_UOS20 "If enabled, the Uos 20 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_VSEL "If enabled, the McAfee VSEL SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_WRLINUX8 "If enabled, the WRLinux8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_WRLINUX1019 "If enabled, the WRLinux1019 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
@@ -271,6 +272,8 @@ message(STATUS "STIG Delta Taloring files: ${SSG_BUILD_DISA_DELTA_FILES}")
 message(STATUS " ")
 
 message(STATUS "Products:")
+message(STATUS "Alinux 2: ${SSG_PRODUCT_ALINUX2}")
+message(STATUS "Alinux 3: ${SSG_PRODUCT_ALINUX3}")
 message(STATUS "Chromium: ${SSG_PRODUCT_CHROMIUM}")
 message(STATUS "Debian 9: ${SSG_PRODUCT_DEBIAN9}")
 message(STATUS "Debian 10: ${SSG_PRODUCT_DEBIAN10}")
@@ -297,9 +300,9 @@ message(STATUS "SUSE 15: ${SSG_PRODUCT_SLE15}")
 message(STATUS "Ubuntu 16.04: ${SSG_PRODUCT_UBUNTU1604}")
 message(STATUS "Ubuntu 18.04: ${SSG_PRODUCT_UBUNTU1804}")
 message(STATUS "Ubuntu 20.04: ${SSG_PRODUCT_UBUNTU2004}")
+message(STATUS "Uos 20: ${SSG_PRODUCT_UOS20}")
 message(STATUS "McAfee VSEL: ${SSG_PRODUCT_VSEL}")
-message(STATUS "WRLinux 8: ${SSG_PRODUCT_WRLINUX8}")
-message(STATUS "WRLinux 1019: ${SSG_PRODUCT_WRLINUX1019}")
+
 
 
 
@@ -336,6 +339,12 @@ endif()
 
 ssg_build_man_page()
 
+if (SSG_PRODUCT_ALINUX2)
+    add_subdirectory("products/alinux2" "alinux2")
+endif()
+if (SSG_PRODUCT_ALINUX3)
+    add_subdirectory("products/alinux3" "alinux3")
+endif()
 if (SSG_PRODUCT_CHROMIUM)
     add_subdirectory("products/chromium" "chromium")
 endif()
@@ -414,24 +423,19 @@ endif()
 if (SSG_PRODUCT_UBUNTU2004)
     add_subdirectory("products/ubuntu2004" "ubuntu2004")
 endif()
+if (SSG_PRODUCT_UOS20)
+    add_subdirectory("products/uos20" "uos20")
+endif()
 if (SSG_PRODUCT_VSEL)
     add_subdirectory("products/vsel" "vsel")
-endif()
-if (SSG_PRODUCT_WRLINUX8)
-    add_subdirectory("products/wrlinux8" "wrlinux8")
-endif()
-if (SSG_PRODUCT_WRLINUX1019)
-    add_subdirectory("products/wrlinux1019" "wrlinux1019")
 endif()
 
 # ZIP only contains source datastreams and kickstarts, people who
 # want sources to build from should get the tarball instead.
 if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
     ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
-    ssg_build_vendor_zipfile("scap-security-guide-${SSG_VERSION}-SCAP-1.3")
 else()
     ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
-    ssg_build_vendor_zipfile("scap-security-guide-${SSG_VERSION}-SCAP-1.2")
 endif()
 
 ssg_define_guide_and_table_tests()

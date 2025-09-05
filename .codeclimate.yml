@@ -1,0 +1,56 @@
+---
+version: "2"
+checks:
+  file-lines:
+    config:
+      threshold: 400
+
+  similar-code:
+     config:
+       languages:
+         python:
+           threshold: 40
+
+  method-complexity:
+    config:
+      threshold: 7
+
+plugins:
+  markdownlint:
+    enabled: true
+  pep8:
+    enabled: true
+  radon:
+    enabled: true
+  sonar-python:
+    enabled: true
+  shellcheck:
+    enabled: true
+  editorconfig:
+    enabled: true
+
+exclude_patterns:
+  - "**/*"
+  - "**/.*"
+
+  - "!build-scripts/*.py"
+  - "!ssg/*.py"
+  - "!ssg/**/*.py"
+  - "!utils/*.py"
+
+  - "!shared/**/*.py"
+
+  - "!*.md"
+  - "!**/*.md"
+  - "!.*/*.md"
+
+  - ".editorconfig"
+
+  - "!tests/*.sh"
+  - "!tests/shared/*.sh"
+  - "!utils/*.sh"
+  - "!build_product"
+
+  - "!tests/*.py"
+  - "!tests/ssg_test_suite/*.py"
+  - "!tests/ssg_test_suite/**/*.py"

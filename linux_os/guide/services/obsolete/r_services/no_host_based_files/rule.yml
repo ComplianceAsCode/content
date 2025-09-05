@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Remove Host-Based Authentication Files'
 
@@ -37,10 +37,16 @@ references:
     stigid@sle12: SLES-12-010410
     stigid@sle15: SLES-15-040030
 
-ocil_clause: 'these files exist'
+ocil_clause: 'shosts.equiv files exist'
 
 ocil: |-
-    To verify that there are no <tt>shosts.equiv</tt> files
+    Verify that there are no <tt>shosts.equiv</tt> files
     on the system, run the following command:
     <pre>$ find / -name shosts.equiv</pre>
-    No output should be returned.
+
+fixtext: |-
+    Remove any found "shosts.equiv" files from the system.
+
+    $ sudo rm  /[path]/[to]/[file]/shosts.equiv
+
+srg_requirement: 'There must be no shosts.equiv files on {{{ full_name }}}'

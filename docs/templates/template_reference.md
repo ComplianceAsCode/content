@@ -426,12 +426,15 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 
 #### kernel_module_disabled
 -   Checks if the given Linux kernel module is disabled.
+    The default method is to check the `install` keyword.
+    On OL and RHEL products the `blacklist` keyword is also checked.
+    The SLE products only check for  the `blacklist` keyword.
 
 -   Parameters:
 
     -   **kernmodule** - name of the Linux kernel module, eg. `cramfs`
 
--   Languages: Ansible, Bash, OVAL
+-   Languages: Ansible, Bash, Kubernetes, OVAL
 
 #### lineinfile
 -   Checks that the given text is present in a file.
@@ -439,6 +442,9 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
     only for simple statements.
 
 -   Parameters:
+
+    -   **escape_text** - if set to true the given text is escaped to treat it as regex,
+        when set to false the text is taken directly as it is.
 
     -   **path** - path to the file to check.
 

@@ -27,7 +27,7 @@ identifiers:
 
 references:
     cis@rhel7: 5.3.19
-    cis@rhel8: 5.2.16
+    cis@rhel8: 5.2.6
     cis@sle15: 5.2.19
     cis@ubuntu2004: 5.2.19
     disa: CCI-000877
@@ -45,3 +45,5 @@ template:
 
 fixtext: |-
     {{{ fixtext_sshd_lineinfile('UsePAM', 'yes') }}}
+
+srg_requirement: '{{{ full_name }}} must use strong authenticators in establishing nonlocal maintenance and diagnostic sessions.'

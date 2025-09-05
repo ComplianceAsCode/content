@@ -4,11 +4,23 @@
 # complexity = low
 # disruption = medium
 
-- name: Ensure GPG check Enabled for Local Packages (Yum)
-  ini_file:
-    dest: {{{ pkg_manager_config_file }}}
-    section: main
-    option: localpkg_gpgcheck
-    value: 1
-    no_extra_spaces: yes
-    create: True
+- name: Ensure GPG check Enabled for Local Packages ({{{ pkg_manager }}})
+  block:
+    - name: Check stats of {{{ pkg_manager }}}
+      stat:
+        path: {{{ pkg_manager_config_file }}}
+      register: pkg
+
+    - name:  Check if config file of {{{ pkg_manager }}} is a symlink
+      ansible.builtin.set_fact:
+        pkg_config_file_symlink: '{{ pkg.stat.lnk_target if pkg.stat.lnk_target is match("^/.*") else "{{{ pkg_manager_config_file }}}" | dirname ~ "/" ~ pkg.stat.lnk_target }}'
+      when: pkg.stat.lnk_target is defined
+
+    - name: Ensure GPG check Enabled for Local Packages ({{{ pkg_manager }}})
+      ini_file:
+        dest: '{{ pkg_config_file_symlink |  default("{{{ pkg_manager_config_file }}}") }}'
+        section: main
+        option: localpkg_gpgcheck
+        value: 1
+        no_extra_spaces: yes
+        create: True

@@ -5,4 +5,6 @@ controls:
         title: The operating system, for PKI-based authentication, must implement a local
             cache of revocation data to support path discovery and validation in case of the
             inability to access revocation information via the network.
-        status: pending
+        status: manual
+        rules:
+            - sssd_has_trust_anchor

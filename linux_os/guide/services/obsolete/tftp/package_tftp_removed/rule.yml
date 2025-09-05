@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,rhel9,sle15
+prodtype: rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'Remove tftp Daemon'
 
@@ -21,10 +21,12 @@ identifiers:
     cce@rhel7: CCE-80443-5
     cce@rhel8: CCE-83590-0
     cce@rhel9: CCE-84153-6
+    cce@sle12: CCE-91465-5
     cce@sle15: CCE-91158-6
 
 references:
     anssi: BP28(R1)
+    cis@rhel8: 2.3.6
 
 ocil: '{{{ describe_package_remove(package="tftp") }}}'
 

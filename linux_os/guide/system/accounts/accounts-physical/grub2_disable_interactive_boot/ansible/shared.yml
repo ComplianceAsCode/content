@@ -14,7 +14,7 @@
 - name: Verify that Interactive Boot is Disabled in /etc/default/grub
   replace:
     dest: /etc/default/grub
-    regexp: systemd.confirm_spawn=(1|yes|true|on)
+    regexp: systemd.confirm_spawn(=(1|yes|true|on)|\b)
     replace: systemd.confirm_spawn=no
 
 {{% if 'sle' in product %}}

@@ -1,0 +1,52 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Ensure That The kubelet Server Key Is Correctly Set'
+
+description: |-
+    To ensure the kubelet TLS private server key certificate is configured, edit the
+    kubelet configuration file <tt>/etc/kubernetes/kubelet.conf</tt>
+    and configure the kubelet private key file.
+    <pre>tlsPrivateKeyFile: /path/to/TLS/private.key</pre>
+    <pre>
+    Note that this particular rule is only valid for OCP releases up to and
+    including 4.8
+    </pre>
+
+rationale: |-
+    Without cryptographic integrity protections, information can be
+    altered by unauthorized users without detection.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-90542-2
+
+platforms:
+    - ocp4.6 or ocp4.7 or ocp4.8
+
+references:
+    cis@ocp4: 4.2.10
+    nist: SC-8,SC-8(1),SC-8(2)
+
+ocil_clause: 'the kubelet server key certificate is not configured'
+
+ocil: |-
+    Run the following command on the kubelet node(s):
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments["kubelet-client-key"]'</pre>
+    Verify that a client certificate is configured.
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
+        yamlpath: ".data['config.yaml']"
+        values:
+          - value: '"kubelet-client-key":\["/etc/kubernetes/static-pod-resources/secrets/kubelet-client/tls.key"\]'
+            operation: "pattern match"

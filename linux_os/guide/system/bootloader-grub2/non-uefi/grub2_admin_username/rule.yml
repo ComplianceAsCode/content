@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4
 
 title: 'Set the Boot Loader Admin Username to a Non-Default Value'
 
@@ -20,7 +20,7 @@ description: |-
     Once the superuser account has been added,
     update the
     <tt>grub.cfg</tt> file by running:
-    <pre>grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre>
+    <pre>{{{ grub_command("update") }}}</pre>
 
 rationale: |-
     Having a non-default grub superuser username makes password-guessing attacks less effective.
@@ -52,17 +52,17 @@ references:
     stigid@rhel7: RHEL-07-010483
     stigid@rhel8: RHEL-08-010149
 
-ocil_clause: 'it does not'
+ocil_clause: 'superuser account is not set or is set to root, admin, administrator or any other existing user name'
 
 ocil: |-
     To verify the boot loader superuser account has been set, run the following
     command:
-    <pre>sudo grep -A1 "superusers" /etc/grub2.cfg</pre>
+    <pre>sudo grep -A1 "superusers" {{{ grub2_boot_path + "/grub.cfg" }}}</pre>
     The output should show the following:
     <pre>set superusers="<b>superusers-account</b>"
     export superusers</pre>
     where superusers-account is the actual account name different from common names like root,
-    admin, or administrator.
+    admin, or administrator and different from any other existing user name.
 
 warnings:
     - general: |-
@@ -73,3 +73,17 @@ warnings:
         <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
 
 platform: machine
+
+fixtext: |-
+    Configure {{{ full_name }}} to have a unique username for the grub superuser account.
+
+    Edit the "/etc/grub.d/01_users" file and add or modify the following lines in the "### BEGIN /etc/grub.d/01_users ###" section:
+
+    set superusers="superusers-account"
+    export superusers
+
+    Once the superuser account has been added, update the grub.cfg file by running:
+
+    $ sudo {{{ grub_command("update") }}}
+
+srg_requirement: '{{{ full_name }}} systems booted with a BIOS must require a unique superusers name upon booting into single-user and maintenance modes.'

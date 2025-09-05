@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel8,rhel9
+prodtype: ol8,rhel8,rhel9
 
 title: Audit Tools Must Be Owned by Root
 
@@ -22,9 +22,10 @@ identifiers:
     cce@rhel9: CCE-86263-1
 
 references:
-    disa: CCI-001493
+    disa: CCI-001493,CCI-001494,CCI-001495
     nist: AU-9
-    srg: SRG-OS-000256-GPOS-00097
+    srg: SRG-OS-000256-GPOS-00097,SRG-OS-000257-GPOS-00098,SRG-OS-000258-GPOS-00099
+    stigid@ol8: OL08-00-030630
     stigid@rhel8: RHEL-08-030630
 
 ocil_clause: 'any audit tools are not owned by root'
@@ -50,6 +51,8 @@ fixtext: |-
     $ sudo chown root [audit_tool]
 
     Replace "[audit_tool]" with each audit tool not owned by "root".
+
+srg_requirement: '{{{ full_name }}} audit tools must be owned by root.'
 
 template:
     name: file_owner

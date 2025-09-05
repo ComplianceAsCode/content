@@ -1,0 +1,44 @@
+documentation_complete: true
+
+title: 'Enable systemd-journald Service'
+
+description: |-
+    The <tt>systemd-journald</tt> service is an essential component of
+    systemd.
+    {{{ describe_service_enable(service="systemd-journald") }}}
+
+rationale: |-
+    In the event of a system failure, {{{ full_name }}} must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to system processes.
+severity: medium
+
+
+identifiers:
+    cce@rhel8: CCE-85921-5
+    cce@rhel9: CCE-85941-3
+
+
+references:
+    cis@rhel8: 4.2.2.2
+    disa: CCI-001665
+    nist: SC-24
+    srg: SRG-OS-000269-GPOS-00103
+
+ocil_clause: 'the systemd-journald service is not running'
+
+ocil: |-
+    {{{ ocil_service_enabled(service="systemd-journald") }}}
+
+fixtext: |-
+    {{{ fixtext_service_enabled("systemd-journald") }}}
+
+
+srg_requirement: '{{{ srg_requirement_service_enabled("systemd-journald") }}}'
+
+platform: machine
+
+template:
+    name: service_enabled
+    vars:
+        servicename: systemd-journald
+        packagename: systemd
+

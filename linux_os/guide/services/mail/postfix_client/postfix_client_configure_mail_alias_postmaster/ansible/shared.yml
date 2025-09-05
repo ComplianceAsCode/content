@@ -1,0 +1,24 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+{{{ ansible_set_config_file(file="/etc/aliases",
+                            parameter='postmaster',
+                            separator=': ',
+                            separator_regex='\s*:\s*',
+                            value='root',
+                            create='yes') }}}
+
+- name: 'Check if newaliases command is available'
+  ansible.builtin.stat:
+    path: /usr/bin/newaliases
+  register: result_newaliases_present
+
+- name: Update postfix aliases
+  ansible.builtin.command:
+    cmd: newaliases
+  when:
+    - result_newaliases_present.stat.exists
+

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhcos4,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Configure the tmux Lock Command'
 
@@ -27,7 +27,8 @@ identifiers:
 references:
     disa: CCI-000056,CCI-000058
     nist: AC-11(a),AC-11(b),CM-6(a)
-    srg: SRG-OS-000028-GPOS-00009
+    ospp: FMT_SMF_EXT.1,FMT_MOF_EXT.1,FTA_SSL.1
+    srg: SRG-OS-000028-GPOS-00009,SRG-OS-000030-GPOS-00011
     stigid@ol8: OL08-00-020040
     stigid@rhel8: RHEL-08-020040
     vmmsrg: SRG-OS-000028-VMM-000090,SRG-OS-000030-VMM-000110
@@ -36,13 +37,26 @@ ocil_clause: 'lock-command is not set'
 
 ocil: |-
     To verify that vlock is configured as a locking mechanism in tmux, run the following command:
-    <pre>$ grep lock-command /etc/tmux.conf</pre>
+
+    <pre>$ sudo grep lock-command /etc/tmux.conf</pre>
+
     The output should return the following:
+
     <pre>set -g lock-command vlock</pre>
+
+    Then, verify that the /etc/tmux.conf file can be read by other users than root:
+
+    <pre>$ sudo ls -al /etc/tmux.conf
 
 fixtext: |-
     Add the following line to the file "/etc/tmux.conf":
 
     <pre>set -g lock-command vlock</pre>
+
+    Then, ensure a correct mode of /etc/tmux.conf using this command:
+
+    $ sudo chmod 0644 /etc/tmux.conf
+
+srg_requirement: '{{{ full_name }}} must enable a user session lock until that user re-establishes access using established identification and authentication procedures for command line sessions.'
 
 platform: machine

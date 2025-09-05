@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: alinux2,alinux3,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Verify Owner on SSH Server config file'
 
@@ -22,6 +22,8 @@ identifiers:
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
+    cis@alinux2: 5.2.1
+    cis@alinux3: 5.2.1
     cis@rhel7: 5.3.1
     cis@rhel8: 5.2.1
     cis@sle12: 5.3.1
@@ -40,6 +42,10 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/ssh/sshd_config", owner="roo
 
 ocil: |-
     {{{ ocil_file_owner(file="/etc/ssh/sshd_config", owner="root") }}}
+
+fixtext: '{{{ fixtext_file_owner(file="/etc/ssh/sshd_config", owner="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_owner(file="/etc/ssh/sshd_config", owner="root") }}}'
 
 template:
     name: file_owner

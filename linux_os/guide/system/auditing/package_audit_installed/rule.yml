@@ -18,12 +18,13 @@ identifiers:
 
 references:
     anssi: BP28(R50)
+    cis@alinux3: 4.1.1.1
     cis@rhel7: 4.1.1.1
     cis@rhel8: 4.1.1.1
     cis@sle12: 4.1.1.1
     cis@sle15: 4.1.1.1
     cis@ubuntu2004: 4.1.1.1
-    disa: CCI-000172,CCI-001814,CCI-001875,CCI-001877,CCI-001878,CCI-001879,CCI-001880,CCI-001881,CCI-001882,CCI-001889,CCI-001914,CCI-000169
+    disa: CCI-000130,CCI-000131,CCI-000132,CCI-000133,CCI-000134,CCI-000135,CCI-000154,CCI-000158,CCI-000172,CCI-001464,CCI-001487,CCI-001814,CCI-001875,CCI-001876,CCI-001877,CCI-001878,CCI-001879,CCI-001880,CCI-001881,CCI-001882,CCI-001889,CCI-001914,CCI-002884,CCI-000169
     nerc-cip: CIP-004-6 R3.3,CIP-007-3 R6.5
     nist: AC-7(a),AU-7(1),AU-7(2),AU-14,AU-12(2),AU-2(a),CM-6(a)
     nist@sle12: AU-7(a),AU-7(b),AU-8(b),AU-12.1(iv),AU-12(3),AU-12(c),CM-5(1)
@@ -44,8 +45,11 @@ fixtext: |-
 
     {{{ package_install("audit") }}}
 
-srg_requirement: |-
-    {{{ full_name }}} audit records must contain information to establish what type of events occurred, the source of events, where events occurred, and the outcome of events.
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
+srg_requirement: '{{{ srg_requirement_package_installed("audit") }}}'
+{{% else %}}
+srg_requirement: '{{{ srg_requirement_package_installed("auditd") }}}'
+{{% endif %}}
 
 template:
     name: package_installed

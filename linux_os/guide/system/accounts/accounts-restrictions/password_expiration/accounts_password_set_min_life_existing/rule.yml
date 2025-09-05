@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: alinux3,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Set Existing Passwords Minimum Age'
 
@@ -26,7 +26,8 @@ identifiers:
     cce@sle15: CCE-85710-2
 
 references:
-    cis@rhel8: 5.5.1.2
+    cis@alinux3: 5.6.1.2
+    cis@rhel8: 5.6.1.2
     cis@ubuntu2004: 5.4.1.2
     disa: CCI-000198
     nist: IA-5(f),IA-5(1)(d),CM-6(a)
@@ -45,7 +46,7 @@ ocil_clause: 'any results are returned that are not associated with a system acc
 ocil: |-
     Check whether the minimum time period between password changes for each user account is one day or greater.
 
-    $ sudo awk -F: '$4 &lt; 1 {print $1 "" "" $4}' /etc/shadow
+    $ sudo awk -F: '$4 &lt; 1 {print $1 " " $4}' /etc/shadow
 
 fixtext: |-
     Configure non-compliant accounts to enforce a 24 hours/1 day minimum password lifetime:

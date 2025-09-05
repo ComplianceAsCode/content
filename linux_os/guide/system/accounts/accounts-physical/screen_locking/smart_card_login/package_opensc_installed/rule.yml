@@ -62,3 +62,10 @@ fixtext: |-
     {{% else %}}
     {{{ describe_package_install(package="opensc-pkcs11") }}}
     {{% endif %}}
+
+srg_requirement: |-
+    {{% if 'ubuntu' not in product %}}
+    {{{ srg_requirement_package_installed(package="opensc") | indent(4) }}}
+    {{% else %}}
+    {{{ srg_requirement_package_installed(package="opensc-pkcs11") | indent(4) }}}
+    {{% endif %}}

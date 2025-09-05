@@ -1,7 +1,7 @@
 title: DISA STIG for Red Hat Enterprise Linux 8
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 8 V1R5.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R6.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -23,7 +23,7 @@ description: 'This profile contains configuration checks that align to the
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 extends: null
 metadata:
-    version: V1R5
+    version: V1R6
     SMEs:
     - mab879
     - ggbecker
@@ -31,6 +31,7 @@ reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-s
 selections:
 - account_disable_post_pw_expiration
 - account_emergency_expire_date
+- account_passwords_pam_faillock_audit
 - account_temp_expire_date
 - account_unique_id
 - accounts_authorized_local_users
@@ -41,7 +42,6 @@ selections:
 - accounts_minimum_age_login_defs
 - accounts_no_uid_except_zero
 - accounts_password_all_shadowed_sha512
-- accounts_password_minlen_login_defs
 - accounts_password_pam_dcredit
 - accounts_password_pam_dictcheck
 - accounts_password_pam_difok
@@ -72,6 +72,8 @@ selections:
 - accounts_user_home_paths_only
 - accounts_user_interactive_home_directory_defined
 - accounts_user_interactive_home_directory_exists
+- accounts_users_home_files_groupownership
+- accounts_users_home_files_permissions
 - agent_mfetpd_running
 - aide_check_audit_tools
 - aide_scan_notification
@@ -176,13 +178,14 @@ selections:
 - coredump_disable_storage
 - dconf_gnome_banner_enabled
 - dconf_gnome_disable_ctrlaltdel_reboot
+- dconf_gnome_disable_user_list
 - dconf_gnome_lock_screen_on_smartcard_removal
 - dconf_gnome_login_banner_text
 - dconf_gnome_screensaver_idle_delay
-- dconf_gnome_session_idle_user_locks
 - dconf_gnome_screensaver_lock_delay
 - dconf_gnome_screensaver_lock_enabled
 - dconf_gnome_screensaver_user_locks
+- dconf_gnome_session_idle_user_locks
 - dir_group_ownership_library_dirs
 - dir_ownership_library_dirs
 - dir_permissions_library_dirs
@@ -196,13 +199,17 @@ selections:
 - disable_ctrlaltdel_reboot
 - disable_users_coredumps
 - display_login_attempts
+- enable_authselect
 - enable_dracut_fips_module
 - enable_fips_mode
 - encrypt_partitions
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_local_packages
+- ensure_gpgcheck_never_disabled
+- ensure_redhat_gpgkey_installed
 - file_audit_tools_group_ownership
 - file_audit_tools_ownership
+- file_audit_tools_permissions
 - file_group_ownership_var_log_audit
 - file_groupowner_var_log
 - file_groupowner_var_log_messages
@@ -302,6 +309,7 @@ selections:
 - package_opensc_installed
 - package_openssh-server_installed
 - package_policycoreutils_installed
+- package_postfix_installed
 - package_python3-abrt-addon_removed
 - package_rng-tools_installed
 - package_rsh-server_removed
@@ -320,7 +328,7 @@ selections:
 - partition_for_var_log
 - partition_for_var_log_audit
 - partition_for_var_tmp
-- postfix_client_configure_mail_alias
+- postfix_client_configure_mail_alias_postmaster
 - postfix_prevent_unrestricted_relay
 - require_emergency_target_auth
 - require_singleuser_auth
@@ -397,6 +405,7 @@ selections:
 - sysctl_net_ipv6_conf_all_accept_ra
 - sysctl_net_ipv6_conf_all_accept_redirects
 - sysctl_net_ipv6_conf_all_accept_source_route
+- sysctl_net_ipv6_conf_all_forwarding
 - sysctl_net_ipv6_conf_default_accept_ra
 - sysctl_net_ipv6_conf_default_accept_redirects
 - sysctl_net_ipv6_conf_default_accept_source_route
@@ -421,7 +430,6 @@ selections:
 - var_password_pam_remember_control_flag=required
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted
-- var_accounts_password_minlen_login_defs=15
 - var_password_pam_unix_rounds=5000
 - var_password_pam_minlen=15
 - var_password_pam_ocredit=1
@@ -446,11 +454,12 @@ selections:
 - var_accounts_maximum_age_login_defs=60
 - var_auditd_space_left_percentage=25pc
 - var_auditd_space_left_action=email
-- var_auditd_disk_error_action=halt
+- var_auditd_disk_error_action=rhel8
 - var_auditd_max_log_file_action=syslog
-- var_auditd_disk_full_action=halt
+- var_auditd_disk_full_action=rhel8
 - var_sssd_certificate_verification_digest_function=sha1
 - login_banner_text=dod_banners
+- var_authselect_profile=sssd
 - var_system_crypto_policy=fips
 - var_sudo_timestamp_timeout=always_prompt
 - var_slub_debug_options=P

@@ -56,10 +56,12 @@ ocil: |-
     To ensure the system is configured to ignore the Ctrl-Alt-Del sequence,
     run the following command:
     <pre>$ gsettings get org.gnome.settings-daemon.plugins.media-keys logout</pre>
-    If properly configured, the output should be <tt>''</tt>.
-    To ensure that users cannot enable the Ctrl-Alt-Del sequence, run the following:
     <pre>$ grep logout /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output should be
     <tt>/org/gnome/settings-daemon/plugins/media-keys/logout</tt>
+
+fixtext: '{{{ fixtext_dconf_ini_file("/org/gnome/settings-daemon/plugins/media-keys", "logout", "") }}}'
+
+srg_requirement: 'The x86 Ctrl-Alt-Delete key sequence in {{{ full_name }}} must be disabled if a graphical user interface is installed.'
 
 platform: machine

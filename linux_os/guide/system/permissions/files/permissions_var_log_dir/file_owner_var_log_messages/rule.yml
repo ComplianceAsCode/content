@@ -33,3 +33,5 @@ template:
 
 fixtext: |-
     {{{ describe_file_owner(file="/var/log/messages", owner="root") }}}
+
+srg_requirement: '{{{ srg_requirement_file_owner("/var/log/messages", owner="root") }}}'

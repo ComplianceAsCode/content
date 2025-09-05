@@ -1,12 +1,12 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Configure audispd''s Plugin disk_full_action When Disk Is Full'
 
 description: |-
     Configure the action the operating system takes if the disk the audit records
-    are written to becomes full. Edit the file <tt>/etc/audisp/audisp-remote.conf</tt>.
+    are written to becomes full. Edit the file <tt>{{{ audisp_conf_path }}}/audisp-remote.conf</tt>.
     Add or modify the following line, substituting <i>ACTION</i> appropriately:
     <pre>disk_full_action = <i>ACTION</i></pre>
     Set this value to <tt>single</tt> to cause the system to switch to single user
@@ -23,6 +23,7 @@ severity: medium
 
 identifiers:
     cce@rhel7: CCE-80539-0
+    cce@rhel9: CCE-88477-5
     cce@sle12: CCE-83116-4
     cce@sle15: CCE-85617-9
 
@@ -38,12 +39,19 @@ references:
 ocil_clause: 'the system is not configured to switch to single user mode for corrective action'
 
 ocil: |-
-    Inspect <tt>/etc/audisp/audisp-remote.conf</tt> and locate the following line to
+    Inspect <tt>{{{ audisp_conf_path }}}/audisp-remote.conf</tt> and locate the following line to
     determine if the system is configured to either send to syslog, switch to single user mode,
     or halt when the disk is full:
-    <pre>grep -i disk_full_action /etc/audisp/audisp-remote.conf</pre>
+    <pre>$ sudo grep -i disk_full_action {{{ audisp_conf_path }}}/audisp-remote.conf</pre>
     The output should return something similar to:
     <pre>disk_full_action = single</pre>
-    Acceptable values also include <tt>syslog</tt> and
-    <tt>halt</tt>.
+    Acceptable values also include <tt>syslog</tt> and <tt>halt</tt>.
 
+fixtext: |-
+    Configure {{{ full_name }}} to switch to single user mode when the disk is full.
+
+    Add or edit the following line in "{{{ audisp_conf_path }}}/audisp-remote.conf":
+
+    disk_full_action = single
+
+srg_requirement: '{{{ full_name }}} must switch to single user mode when the disk is full.'

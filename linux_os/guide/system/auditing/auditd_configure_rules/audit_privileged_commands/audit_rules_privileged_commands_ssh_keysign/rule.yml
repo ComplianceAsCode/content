@@ -10,7 +10,7 @@
 
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Ensure auditd Collects Information on the Use of Privileged Commands - ssh-keysign'
 
@@ -53,7 +53,7 @@ references:
     cis@ubuntu2004: 4.1.11
     cobit5: APO10.01,APO10.03,APO10.04,APO10.05,APO11.04,BAI03.05,DSS01.03,DSS03.05,DSS05.02,DSS05.04,DSS05.05,DSS05.07,MEA01.01,MEA01.02,MEA01.03,MEA01.04,MEA01.05,MEA02.01
     cui: 3.1.7
-    disa: CCI-000135,CCI-000169,CCI-000172,CCI-002884
+    disa: CCI-000130,CCI-000135,CCI-000169,CCI-000172,CCI-002884
     hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
     isa-62443-2009: 4.3.2.6.7,4.3.3.3.9,4.3.3.5.8,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
     isa-62443-2013: 'SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9,SR 6.1,SR 6.2'
@@ -71,13 +71,7 @@ references:
     stigid@ubuntu2004: UBTU-20-010141
     vmmsrg: SRG-OS-000471-VMM-001910
 
-ocil_clause: 'it is not the case'
-
-ocil: |-
-    To verify that auditing of privileged command use is configured, run the
-    following command:
-    <pre>$ sudo grep ssh-keysign /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
-    It should return a relevant line in the audit rules.
+{{{ ocil_fix_srg_privileged_command("ssh-keysign", "/usr/libexec/openssh/") }}}
 
 template:
     name: audit_rules_privileged_commands

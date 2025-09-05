@@ -27,8 +27,10 @@ identifiers:
 references:
     anssi: BP28(R12)
     cis-csc: 12,15,8
+    cis@alinux2: 1.1.13
+    cis@alinux3: 1.1.7.1
     cis@rhel7: 1.1.17
-    cis@rhel8: 1.1.13
+    cis@rhel8: 1.1.7.1
     cis@sle12: 1.1.17
     cis@sle15: 1.1.17
     cis@ubuntu1804: 1.1.12
@@ -48,6 +50,10 @@ references:
     stigid@sle15: SLES-15-040200
 
 {{{ complete_ocil_entry_separate_partition(part="/home") }}}
+
+fixtext: '{{{ fixtext_separate_partition(part="/home") }}}'
+
+srg_requirement: 'A separate {{{ full_name }}} filesystem must be used for user home directories (such as /home or an equivalent).'
 
 platform: machine
 

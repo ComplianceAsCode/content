@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel8,rhel9,sle12,sle15
+prodtype: ol8,rhel8,rhel9,sle12,sle15
 
 title: 'Set Password Hashing Rounds in /etc/login.defs'
 
@@ -31,12 +31,13 @@ identifiers:
     cce@sle15: CCE-85567-6
 
 references:
-    disa: CCI-000803
+    disa: CCI-000196,CCI-000803
     nist@sle12: IA-5(1)(c),IA-5(1).1(v),IA-7,IA-7.1
     srg: SRG-OS-000073-GPOS-00041,SRG-OS-000120-GPOS-00061
+    stigid@ol8: OL08-00-010130
     stigid@rhel8: RHEL-08-010130
     stigid@sle12: SLES-12-010240
-    stigid@sle15: SLES-15-020180
+    stigid@sle15: SLES-15-020190
 
 ocil_clause: 'it does not'
 
@@ -44,3 +45,12 @@ ocil: |-
     Inspect <tt>/etc/login.defs</tt> and ensure that if eihter
     <tt>SHA_CRYPT_MIN_ROUNDS</tt> or <tt>SHA_CRYPT_MAX_ROUNDS</tt>
     are set, they must have the minimum value of <tt>5000</tt>.
+
+srg_requirement: '{{{ full_name }}} shadow password suite must be configured to use a sufficient number of hashing rounds.'
+
+fixtext: |-
+    Configure {{{ full_name }}} to encrypt all stored passwords with a strong cryptographic hash.
+
+    Edit/modify the following line in the "/etc/login.defs" file and set "SHA_CRYPT_MIN_ROUNDS" to a value no lower than "5000":
+
+    SHA_CRYPT_MIN_ROUNDS 5000

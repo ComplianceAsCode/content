@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9
 
 title: 'Add nodev Option to /boot'
 
@@ -42,3 +42,5 @@ template:
 
 fixtext: |-
     {{{ fixtext_mount_option("/boot", "nodev") }}}
+
+srg_requirement: '{{{ srg_requirement_mount_option("/boot", "nodev") }}}'

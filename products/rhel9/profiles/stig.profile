@@ -42,7 +42,6 @@ selections:
     - var_password_pam_remember_control_flag=required
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
-    - var_accounts_password_minlen_login_defs=15
     - var_password_pam_unix_rounds=5000
     - var_password_pam_minlen=15
     - var_password_pam_ocredit=1
@@ -74,6 +73,7 @@ selections:
     - var_auditd_disk_full_action=halt
     - var_sssd_certificate_verification_digest_function=sha1
     - login_banner_text=dod_banners
+    - var_authselect_profile=sssd
 
     ### Enable / Configure FIPS
     - enable_fips_mode
@@ -83,6 +83,9 @@ selections:
     - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
+
+    # Other needed rules
+    - enable_authselect
 
     ### Rules:
     # RHEL-08-010000
@@ -152,12 +155,6 @@ selections:
 
     # RHEL-08-010160
     - set_password_hashing_algorithm_systemauth
-
-    # RHEL-08-010161
-    - kerberos_disable_no_keytab
-
-    # RHEL-08-010162
-    - package_krb5-workstation_removed
 
     # RHEL-08-010170
     - selinux_state
@@ -584,9 +581,6 @@ selections:
     # RHEL-08-020230
     - accounts_password_pam_minlen
 
-    # RHEL-08-020231
-    - accounts_password_minlen_login_defs
-
     # RHEL-08-020240
     - account_unique_id
 
@@ -650,6 +644,7 @@ selections:
 
     # RHEL-08-030030
     - postfix_client_configure_mail_alias
+    - package_postfix_installed
 
     # RHEL-08-030040
     - auditd_data_disk_error_action

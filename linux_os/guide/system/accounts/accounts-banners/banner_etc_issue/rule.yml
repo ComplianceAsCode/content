@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: alinux2,alinux3,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Modify the System Login Banner'
 
@@ -96,13 +96,15 @@ identifiers:
 
 references:
     cis-csc: 1,12,15,16
+    cis@alinux2: 1.7.1.2
+    cis@alinux3: 1.2.2
     cis@rhel7: 1.7.2
-    cis@rhel8: 1.8.1.2
+    cis@rhel8: 1.7.2
     cis@sle12: 1.7.1.2
     cis@sle15: 1.8.1.2
     cobit5: DSS05.04,DSS05.10,DSS06.10
     cui: 3.1.9
-    disa: CCI-000048,CCI-000050
+    disa: CCI-000048,CCI-000050,CCI-001384,CCI-001385,CCI-001386,CCI-001387,CCI-001388
     isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
     iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
@@ -144,6 +146,8 @@ fixtext: |-
   -This IS includes security measures (e.g., authentication and access controls) to protect USG interests -- not for your personal benefit or privacy.
 
   -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+
+srg_requirement: '{{{ full_name }}} must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a command line user logon.'
 
 platform: machine
 

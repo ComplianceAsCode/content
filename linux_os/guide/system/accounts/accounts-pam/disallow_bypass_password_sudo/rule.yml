@@ -17,6 +17,7 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel9: CCE-85967-8
     cce@sle12: CCE-83250-1
     cce@sle15: CCE-91156-0
 
@@ -25,6 +26,7 @@ references:
     nist: IA-11
     srg: SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158
     stigid@ol7: OL07-00-010344
+    stigid@ol8: OL08-00-010385
     stigid@sle12: SLES-12-010114
     stigid@sle15: SLES-15-020104
 
@@ -35,5 +37,15 @@ ocil: |-
     Verify the operating system is not configured to bypass password requirements for privilege
     escalation. Check the configuration of the "/etc/pam.d/sudo" file with the following command:
     <pre>$ sudo grep pam_succeed_if /etc/pam.d/sudo</pre>
+
+fixtext: |-
+    Configure the operating system to require users to supply a password for privilege escalation.
+
+    Check the configuration of the "/etc/pam.d/sudo" file with the following command:
+    $ sudo vi /etc/pam.d/sudo
+
+    Remove any occurrences of " pam_succeed_if " in the file.
+
+srg_requirement: '{{{ full_name }}} must not be configured to bypass password requirements for privilege escalation.'
 
 platform: pam

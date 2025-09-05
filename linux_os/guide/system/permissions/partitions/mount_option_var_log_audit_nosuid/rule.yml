@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9
 
 title: 'Add nosuid Option to /var/log/audit'
 
@@ -25,6 +25,7 @@ identifiers:
     cce@rhel9: CCE-83893-8
 
 references:
+    cis@rhel8: 1.1.6.4
     disa: CCI-001764
     nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
     nist: CM-7(a),CM-7(b),CM-6(a),AC-6,AC-6(1),MP-7
@@ -44,3 +45,5 @@ template:
 
 fixtext: |-
     {{{ fixtext_mount_option("/var/log/audit", "nosuid") }}}
+
+srg_requirement: '{{{ srg_requirement_mount_option("/var/log/audit", "nosuid") }}}'

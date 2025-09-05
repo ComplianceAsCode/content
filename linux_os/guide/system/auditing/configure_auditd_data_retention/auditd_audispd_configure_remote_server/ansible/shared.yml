@@ -1,15 +1,10 @@
-# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_wrlinux,multi_platform_sle
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
 # reboot = false
 # strategy = configure
 # complexity = low
 # disruption = low
 {{{ ansible_instantiate_variables("var_audispd_remote_server") }}}
-
-{{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
-{{% set audisp_config_file_path = "/etc/audit/audisp-remote.conf" %}}
-{{% else %}}
-{{% set audisp_config_file_path = "/etc/audisp/audisp-remote.conf" %}}
-{{% endif %}}
+{{% set audisp_config_file_path = audisp_conf_path + "/audisp-remote.conf" %}}
 
 - name: Make sure that a remote server is configured for Audispd
   lineinfile:

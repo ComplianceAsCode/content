@@ -1,4 +1,4 @@
-name: Nightly builds
+name: Nightly builds with OVAL 5.11
 on:
     schedule:
         # Run daily at 03:00
@@ -11,7 +11,7 @@ jobs:
             image: fedora:latest
         steps:
             -   name: Install Dependencies
-                run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint expat libxslt
+                run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint expat libxslt ansible
             -   name: Checkout
                 uses: actions/checkout@v2
             -   name: Configure

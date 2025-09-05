@@ -9,7 +9,7 @@
 
 - name: Check the rules script being used
   command:
-    grep '^ExecStartPost' /usr/lib/systemd/system/auditd.service
+    grep -E '^(ExecStartPost|Requires)' /usr/lib/systemd/system/auditd.service
   register: check_rules_scripts_result
 
 - name: Find audit rules in /etc/audit/rules.d

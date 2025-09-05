@@ -26,8 +26,10 @@ identifiers:
 references:
     anssi: BP28(R12)
     cis-csc: 12,15,8
+    cis@alinux2: 1.1.6
+    cis@alinux3: 1.1.3.1
     cis@rhel7: 1.1.10
-    cis@rhel8: 1.1.6
+    cis@rhel8: 1.1.3.1
     cis@sle12: 1.1.10
     cis@sle15: 1.1.7
     cis@ubuntu1804: 1.1.5
@@ -48,6 +50,11 @@ references:
     vmmsrg: SRG-OS-000341-VMM-001220
 
 {{{ complete_ocil_entry_separate_partition(part="/var") }}}
+
+fixtext: '{{{ fixtext_separate_partition(part="/var") }}}'
+
+srg_requirement: '{{{ srg_requirement_separate_partition("/var") }}}'
+
 
 platform: machine
 

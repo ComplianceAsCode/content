@@ -1,0 +1,39 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+  {{{ oval_metadata("Ensure systemd.debug-shell option is not configured in the 'options' line in /boot/loader/entries/*.conf. Make sure that newly installed kernels won't have this option, it should not be configured in /etc/kernel/cmdline.") }}}
+    <criteria operator="AND">
+      <criterion comment="Check if argument systemd.debug-shell for Linux kernel is not present in /boot/loader/entries/.*.conf"
+      test_ref="test_zipl_systemd_debug-shell_argument_in_boot_loader_entries_conf" negate="true"/>
+      <criterion comment="Check if argument systemd.debug-shell for Linux kernel is not present in /etc/kernel/cmdline"
+      test_ref="test_zipl_systemd_debug-shell_argument_in_etc_kernel_cmdline" negate="true"/>
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test id="test_zipl_systemd_debug-shell_argument_in_boot_loader_entries_conf"
+  comment="Check if argument systemd.debug-shell is present in the line starting with 'options ' in /boot/loader/entries/.*.conf"
+  check="at least one" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_zipl_systemd_debug-shell_argument_in_boot_loader_entries_conf" />
+    <ind:state state_ref="state_zipl_systemd_debug-shell_argument_in_boot_loader_entries_conf" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_zipl_systemd_debug-shell_argument_in_boot_loader_entries_conf" version="1">
+    <ind:filepath operation="pattern match">^/boot/loader/entries/.*.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_zipl_systemd_debug-shell_argument_in_boot_loader_entries_conf" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">\bsystemd.debug-shell\b</ind:subexpression>
+
+  </ind:textfilecontent54_state><ind:textfilecontent54_test id="test_zipl_systemd_debug-shell_argument_in_etc_kernel_cmdline"
+  comment="Check if argument systemd.debug-shell is present in /etc/kernel/cmdline"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_zipl_systemd_debug-shell_argument_in_etc_kernel_cmdline" />
+    <ind:state state_ref="state_zipl_systemd_debug-shell_argument_in_etc_kernel_cmdline" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_zipl_systemd_debug-shell_argument_in_etc_kernel_cmdline" version="1">
+    <ind:filepath operation="pattern match">^/etc/kernel/cmdline</ind:filepath>
+    <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_zipl_systemd_debug-shell_argument_in_etc_kernel_cmdline" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">\bsystemd.debug-shell\b</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

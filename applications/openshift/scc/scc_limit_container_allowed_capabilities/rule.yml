@@ -42,15 +42,18 @@ ocil: |-
     completely added as a list entry under <tt>allowedCapabilities</tt>,
     or that all the un-required capabilities are dropped for containers and SCCs.
 
+{{% set jqfilter = '[.items[] | select(.metadata.name | test("{{.var_sccs_with_allowed_capabilities_regex}}"; "") | not)] | map(.allowedCapabilities == null)' %}}
+
+
 warnings:
 - general: |-
-    {{{ openshift_filtered_cluster_setting({'/apis/security.openshift.io/v1/securitycontextconstraints': '[.items[] | select(.metadata.name != "privileged")] | map(.allowedCapabilities == null)'}) | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({'/apis/security.openshift.io/v1/securitycontextconstraints': jqfilter}) | indent(4) }}}
 
 template:
     name: yamlfile_value
     vars:
         ocp_data: "true"
-        filepath: "{{{ openshift_filtered_path('/apis/security.openshift.io/v1/securitycontextconstraints', '[.items[] | select(.metadata.name != \"privileged\")] | map(.allowedCapabilities == null)') }}}"
+        filepath: "{{{ openshift_filtered_path('/apis/security.openshift.io/v1/securitycontextconstraints', jqfilter) }}}"
         yamlpath: "[:]"
         check_existence: "all_exist"
         entity_check: "all"

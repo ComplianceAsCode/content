@@ -21,12 +21,16 @@ identifiers:
     cce@rhel9: CCE-83494-5
 
 references:
-    ospp: FIA_X509_EXT
+    ospp: FIA_X509_EXT.1,FIA_X509_EXT.2
     srg: SRG-OS-000480-GPOS-00227
 
 ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="gnutls-utils") }}}'
+
+fixtext: '{{{ fixtext_package_installed("gnutls-utils") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("gnutls-utils") }}}'
 
 template:
     name: package_installed

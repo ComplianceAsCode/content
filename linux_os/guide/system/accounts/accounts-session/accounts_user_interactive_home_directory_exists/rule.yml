@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: alinux2,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'All Interactive Users Home Directories Must Exist'
 
@@ -27,8 +27,9 @@ identifiers:
     cce@sle15: CCE-85628-6
 
 references:
+    cis@alinux2: 6.2.7
     cis@rhel7: 6.2.11
-    cis@rhel8: 6.2.20
+    cis@rhel8: 6.2.9
     cis@sle12: 6.2.5
     cis@sle15: 6.2.5
     cis@ubuntu2004: 6.2.4
@@ -47,4 +48,15 @@ ocil: |-
     To verify the assigned home directory of all interactive users on the system
     exist, run the following command:
     <pre>$ sudo pwck -r</pre>
-    The output should not return any interactive users.
+
+fixtext: |-
+    Create home directories to all local interactive users that currently do not have a home directory assigned. Use the following commands to create the user home directory assigned in "/etc/passwd":
+
+    Note: The example will be for the user smithj, who has a home directory of "/home/smithj", a UID of "smithj", and a Group Identifier (GID) of "users assigned" in "/etc/passwd".
+
+    $ sudo mkdir /home/smithj
+    $ sudo chown smithj /home/smithj
+    $ sudo chgrp users /home/smithj
+    $ sudo chmod 0750 /home/smithj
+
+srg_requirement: 'All {{{ full_name }}} local interactive user home directories defined in the /etc/passwd file must exist.'

@@ -5,13 +5,23 @@ prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004
 title: 'System Audit Logs Must Have Mode 0640 or Less Permissive'
 
 description: |-
-    If <tt>log_group</tt> in <tt>/etc/audit/auditd.conf</tt> is set to a group other than the <tt>root</tt>
+    {{% if product in ["ol8"] or "rhel" in product %}}
+    Determine where the audit logs are stored with the following command:
+    <pre>$ sudo grep -iw log_file /etc/audit/auditd.conf
+    log_file = /var/log/audit/audit.log</pre>
+    Configure the audit log to be protected from unauthorized read access by setting the correct
+    permissive mode with the following command:
+    <pre>$ sudo chmod 0600 <i>audit_log_file</i></pre>
+    By default, <i>audit_log_file</i> is "/var/log/audit/audit.log".
+    {{% else %}}
+    If <tt>log_group</tt> in <tt>/etc/audit/auditd.conf</tt> is set to a group other than the
+    <tt>root</tt>
     group account, change the mode of the audit log files with the following command:
     <pre>$ sudo chmod 0640 <i>audit_file</i></pre>
     <br />
     Otherwise, change the mode of the audit log files with the following command:
     <pre>$ sudo chmod 0600 <i>audit_file</i></pre>
-
+    {{% endif %}}
 rationale: 'If users can write to audit logs, audit trails can be modified or destroyed.'
 
 severity: medium

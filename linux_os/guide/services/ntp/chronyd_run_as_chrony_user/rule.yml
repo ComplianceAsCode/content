@@ -1,8 +1,13 @@
 documentation_complete: true
 
-prodtype: fedora,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
+prodtype: alinux2,alinux3,fedora,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
 
 title: 'Ensure that chronyd is running under chrony user account'
+
+{{%- set ok_by_default = false %}}
+{{%- if product in ["rhel7", "ol7", "rhel8", "ol8", "rhel9", "ol9", "fedora"] %}}
+{{%- set ok_by_default = true %}}
+{{%- endif %}}
 
 description: |-
     chrony is a daemon which implements the Network Time Protocol (NTP). It is designed to
@@ -10,9 +15,15 @@ description: |-
     accurate. More information on chrony can be found at
     {{{ weblink(link="http://chrony.tuxfamily.org/") }}}.
     Chrony can be configured to be a client and/or a server.
-    To ensure that chronyd is running under chrony user account, Add or edit the
+    To ensure that chronyd is running under chrony user account,
+    {{% if not ok_by_default -%}}
+    add or edit the
     <tt>OPTIONS</tt> variable in <tt>/etc/sysconfig/chronyd</tt> to include <tt>-u chrony</tt>:
     <pre>OPTIONS="-u chrony"</pre>
+    {{% else -%}}
+    remove any <tt>-u ...</tt> option from <tt>OPTIONS</tt> other than <tt>-u chrony</tt>,
+    as chrony is run under its own user by default.
+    {{%- endif %}}
     This recommendation only applies if chrony is in use on the system.
 
 rationale: |-
@@ -24,8 +35,10 @@ severity: medium
 platform: chrony
 
 references:
+    cis@alinux2: 2.1.1.3
+    cis@alinux3: 2.2.1.2
     cis@rhel7: 2.2.1.2
-    cis@rhel8: 2.2.1.2
+    cis@rhel8: 2.1.2
     cis@sle12: 2.2.1.3
     cis@sle15: 2.2.1.3
     cis@ubuntu2004: 2.2.1.3
@@ -38,6 +51,11 @@ identifiers:
 ocil_clause: 'chronyd is not running under chrony user account'
 
 ocil: |-
-    Run the following command and verify that <tt>-u chrony</tt> is included in <tt>OPTIONS</tt>:
+    {{% if not ok_by_default -%}}
+    Run the following command and verify that <tt>OPTIONS</tt> are configured correctly:
     <pre># grep "^OPTIONS" /etc/sysconfig/chronyd
     OPTIONS="-u chrony"</pre>
+    {{% else -%}}
+    <pre># grep "^OPTIONS.*-u" /etc/sysconfig/chronyd | grep -v -e '-u\s*chrony\b'</pre>
+    returns no output
+    {{%- endif %}}

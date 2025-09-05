@@ -23,8 +23,10 @@ identifiers:
 
 references:
     anssi: BP28(R23)
+    cis@alinux2: 1.5.2
+    cis@alinux3: 1.6.2
     cis@rhel7: 1.5.3
-    cis@rhel8: 1.6.2
+    cis@rhel8: 1.5.3
     cis@sle12: 1.5.3
     cis@sle15: 1.6.3
     cis@ubuntu2004: 1.6.2
@@ -44,6 +46,8 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.randomize_va_space", value="2") }}}
 
+srg_requirement: '{{{ full_name }}} must implement address space layout randomization (ASLR) to protect its memory from unauthorized code execution.'
+
 platform: machine
 
 template:
@@ -54,4 +58,5 @@ template:
         datatype: int
 
 fixtext: |-
+    Configure {{{ full_name }}} to implement virtual address space randomization.
     {{{ fixtext_sysctl("kernel.randomize_va_space", "2") | indent(4) }}}

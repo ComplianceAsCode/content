@@ -8,8 +8,8 @@
 {{% set etc_bash_rc = "/etc/bashrc" %}}
 {{% endif %}}
 
-grep -q umask {{{ etc_bash_rc }}} && \
-  sed -i "s/umask.*/umask $var_accounts_user_umask/g" {{{ etc_bash_rc }}}
+grep -q "^\s*umask" {{{ etc_bash_rc }}} && \
+  sed -i -E -e "s/^(\s*umask).*/\1 $var_accounts_user_umask/g" {{{ etc_bash_rc }}}
 if ! [ $? -eq 0 ]; then
     echo "umask $var_accounts_user_umask" >> {{{ etc_bash_rc }}}
 fi

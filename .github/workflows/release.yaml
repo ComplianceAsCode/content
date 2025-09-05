@@ -7,10 +7,10 @@ jobs:
     name: Release on Fedora Latest (Container)
     runs-on: ubuntu-latest
     container:
-      image: fedora:34
+      image: fedora:latest
     steps:
       - name: Install Deps
-        run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint expat libxslt
+        run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible ansible-lint expat libxslt
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure

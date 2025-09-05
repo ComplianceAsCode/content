@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
   {{% if FILEPATH is not string %}}
-    {{{ oval_metadata("This test makes sure that FILEPATH has mode " + FILEMODE + ".
+    {{{ oval_metadata("This test makes sure that " + FILEPATH|join(", ") + " has mode " + FILEMODE + ".
       If the target file or directory has an extended ACL, then it will fail the mode check.
       ") }}}
     <criteria>

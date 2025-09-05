@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhcos4,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Log USBGuard daemon audit events using Linux Audit'
 
@@ -22,10 +22,10 @@ identifiers:
     cce@rhel9: CCE-84206-2
 
 references:
-    disa: CCI-000169
+    disa: CCI-000169,CCI-000172
     nist: AU-2,CM-8(3),IA-3
     ospp: FMT_SMF_EXT.1
-    srg: SRG-OS-000062-GPOS-00031
+    srg: SRG-OS-000062-GPOS-00031,SRG-OS-000471-GPOS-00215
     stigid@ol8: OL08-00-030603
     stigid@rhel8: RHEL-08-030603
 
@@ -39,3 +39,10 @@ ocil: |-
     <pre>$ sudo grep AuditBackend /etc/usbguard/usbguard-daemon.conf</pre>
     The output should be
     <pre>AuditBackend=LinuxAudit</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to enable Linux audit logging of the USBGuard daemon by adding or modifying the following line in "/etc/usbguard/usbguard-daemon.conf":
+
+    AuditBackend=LinuxAudit
+
+srg_requirement: '{{{ full_name }}} must enable Linux audit logging for the USBGuard daemon.'

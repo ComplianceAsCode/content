@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_rhel
+# platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_ol
 
 
 # Use LDAP for authentication

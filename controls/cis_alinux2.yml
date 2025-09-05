@@ -1,0 +1,1761 @@
+policy: 'CIS benchmark for Aliyun Linux 2'
+title: 'CIS benchmark for Aliyun Linux 2'
+id: cis_alinux2
+version: '1.0.0'
+source: https://www.cisecurity.org/cis-benchmarks/aliyun_linux
+levels:
+  - id: l1
+  - id: l2
+    inherits_from:
+    - l1
+
+controls:
+  - id: 1.1.1
+    title: Ensure mounting of squashfs filesystems is disabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - kernel_module_squashfs_disabled
+
+  - id: 1.1.2
+    title: Ensure /tmp is configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - partition_for_tmp
+
+  - id: 1.1.3
+    title: Ensure nodev option set on /tmp partition (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - mount_option_tmp_nodev
+
+  - id: 1.1.4
+    title: Ensure nosuid option set on /tmp partition (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - mount_option_tmp_nosuid
+
+  - id: 1.1.5
+    title: Ensure noexec option set on /tmp partition (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - mount_option_tmp_noexec
+
+  - id: 1.1.6
+    title: Ensure separate partition exists for /var (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - partition_for_var
+
+  - id: 1.1.7
+    title: Ensure separate partition exists for /var/tmp (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - partition_for_var_tmp
+
+  - id: 1.1.8
+    title: Ensure nodev option set on /var/tmp partition (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - mount_option_var_tmp_nodev
+
+  - id: 1.1.9
+    title: Ensure nosuid option set on /var/tmp partition (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - mount_option_var_tmp_nosuid
+
+  - id: 1.1.10
+    title: Ensure noexec option set on /var/tmp partition (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - mount_option_var_tmp_noexec
+
+  - id: 1.1.11
+    title: Ensure separate partition exists for /var/log (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - partition_for_var_log
+
+  - id: 1.1.12
+    title: Ensure separate partition exists for /var/log/audit (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - partition_for_var_log_audit
+
+  - id: 1.1.13
+    title: Ensure separate partition exists for /home (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - partition_for_home
+
+  - id: 1.1.14
+    title: Ensure nodev option set on /home partition (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - mount_option_home_nodev
+
+  - id: 1.1.15
+    title: Ensure nodev option set on /dev/shm partition (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - mount_option_dev_shm_nodev
+
+  - id: 1.1.16
+    title: Ensure nosuid option set on /dev/shm partition (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - mount_option_dev_shm_nosuid
+
+  - id: 1.1.17
+    title: Ensure noexec option set on /dev/shm partition (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - mount_option_dev_shm_noexec
+
+  - id: 1.1.18
+    title: Ensure sticky bit is set on all world-writable directories (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - dir_perms_world_writable_sticky_bits
+
+  - id: 1.1.19
+    title: Disable Automounting (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_autofs_disabled
+
+  - id: 1.2.1
+    title: Ensure package manager repositories are configured (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 1.2.2
+    title: Ensure GPG keys are configured (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 1.2.3
+    title: Ensure gpgcheck is globally activated (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - ensure_gpgcheck_globally_activated
+    - ensure_gpgcheck_never_disabled
+
+  - id: 1.3.1
+    title: Ensure AIDE is installed (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - package_aide_installed
+    - aide_build_database
+
+  - id: 1.3.2
+    title: Ensure filesystem integrity is regularly checked (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - aide_periodic_cron_checking
+
+  - id: 1.4.1
+    title: Ensure permissions on bootloader config are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_grub2_cfg
+    - file_owner_grub2_cfg
+    - file_permissions_grub2_cfg
+    - file_groupowner_efi_grub2_cfg
+    - file_owner_efi_grub2_cfg
+    - file_permissions_efi_grub2_cfg
+
+  - id: 1.4.2
+    title: Ensure authentication required for single user mode (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - require_emergency_target_auth
+    - require_singleuser_auth
+
+  - id: 1.5.1
+    title: Ensure core dumps are restricted (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - disable_users_coredumps
+    - sysctl_fs_suid_dumpable
+    - coredump_disable_backtraces
+    - coredump_disable_storage
+
+  - id: 1.5.2
+    title: Ensure address space layout randomization (ASLR) is enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sysctl_kernel_randomize_va_space
+
+  - id: 1.5.3
+    title: Ensure prelink is disabled (Scored)
+    levels:
+    - l1
+    status: planned
+    rules:
+    - disable_prelink
+
+  - id: 1.6.1.1
+    title: Ensure SELinux is not disabled in bootloader configuration (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - grub2_enable_selinux # the rule does not check for uefi configuration
+
+  - id: 1.6.1.2
+    title: Ensure the SELinux state is enforcing (Scored)
+    levels:
+    - l2
+    status: automated
+    notes: >-
+      The SELinux mode is set to "enforcing" by default.
+    rules:
+    - selinux_state
+    - var_selinux_state=enforcing
+
+  - id: 1.6.1.3
+    title: Ensure SELinux policy is configured (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - selinux_policytype
+    - var_selinux_policy_name=targeted
+
+  - id: 1.6.1.4
+    title: Ensure SETroubleshoot is not installed (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - package_setroubleshoot_removed
+
+  - id: 1.6.1.5
+    title: Ensure the MCS Translation Service (mcstrans) is not installed (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - package_mcstrans_removed
+
+  - id: 1.6.1.6
+    title: Ensure no unconfined daemons exist (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - selinux_confinement_of_daemons
+
+  - id: 1.6.2
+    title: Ensure SELinux is installed (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - package_libselinux_installed
+
+  - id: 1.7.1.1
+    title: Ensure message of the day is configured properly (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - banner_etc_motd
+    - login_banner_text=cis_banners
+
+  - id: 1.7.1.2
+    title: Ensure local login warning banner is configured properly (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - banner_etc_issue
+    - login_banner_text=cis_banners
+
+  - id: 1.7.1.3
+    title: Ensure remote login warning banner is configured properly (Scored)
+    levels:
+    - l1
+    automated: no # rule is missing
+
+  - id: 1.7.1.4
+    title: Ensure permissions on /etc/motd are configured (Not Scored)
+    levels:
+    - l1
+    status: manual
+    rules:
+    - file_groupowner_etc_motd
+    - file_owner_etc_motd
+    - file_permissions_etc_motd
+
+  - id: 1.7.1.5
+    title: Ensure permissions on /etc/issue are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_etc_issue
+    - file_owner_etc_issue
+    - file_permissions_etc_issue
+
+  - id: 1.7.1.6
+    title: Ensure permissions on /etc/issue.net are configured (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 1.8
+    title: Ensure updates, patches, and additional security software are installed (Scored)
+    levels:
+    - l1
+    automated: no # rule is missing
+
+  - id: 2.1.1.1
+    title: Ensure time synchronization is in use (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 2.1.1.2
+    title: Ensure ntp is configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_ntpd_enabled
+    - ntpd_configure_restrictions
+    - ntpd_specify_remote_server
+    - ntpd_run_as_ntp_user
+
+  - id: 2.1.1.3
+    title: Ensure chrony is configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - chronyd_specify_remote_server
+    - var_multiple_time_servers=alinux
+    - chronyd_run_as_chrony_user
+
+  - id: 2.1.2
+    title: Ensure X Window System is not installed (Scored)
+    levels:
+    - l1
+    status: automated
+    notes: >-
+      The rule also configures correct run level to prevent unbootable system.
+    rules:
+    - xwindows_remove_packages
+
+  - id: 2.1.3
+    title: Ensure Avahi Server is not enabled (Scored)
+    levels:
+    - l1
+    status: partial # rule for package removal is missing
+    rules:
+    - service_avahi-daemon_disabled
+
+  - id: 2.1.4
+    title: Ensure CUPS is not enabled (Scored)
+    levels:
+    - l1
+    automated: no # rule for package removal is missing
+
+  - id: 2.1.5
+    title: Ensure DHCP Server is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_dhcpd_disabled
+
+  - id: 2.1.6
+    title: Ensure LDAP server is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_slapd_disabled
+
+  - id: 2.1.7
+    title: Ensure NFS and RPC are not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_nfs_disabled
+    - service_rpcbind_disabled
+
+  - id: 2.1.8
+    title: Ensure DNS Server is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_named_disabled
+
+  - id: 2.1.9
+    title: Ensure FTP Server is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_vsftpd_disabled
+
+  - id: 2.1.10
+    title: Ensure HTTP server is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_httpd_disabled
+
+  - id: 2.1.11
+    title: Ensure IMAP and POP3 server is not installed (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - package_dovecot_removed
+
+  - id: 2.1.12
+    title: Ensure Samba is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_smb_disabled
+
+  - id: 2.1.13
+    title: Ensure HTTP Proxy Server is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_squid_disabled
+
+  - id: 2.1.14
+    title: Ensure SNMP Server is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_snmpd_disabled
+
+  - id: 2.1.15
+    title: Ensure mail transfer agent is configured for local-only mode (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - postfix_network_listening_disabled
+    - var_postfix_inet_interfaces=loopback-only
+
+  - id: 2.1.16
+    title: Ensure NIS Server is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_ypserv_disabled
+
+  - id: 2.1.17
+    title: Ensure rsh server is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_rsh_disabled
+
+  - id: 2.1.18
+    title: Ensure telnet server is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_telnet_disabled
+
+  - id: 2.1.19
+    title: Ensure tftp server is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_tftp_disabled
+
+  - id: 2.1.20
+    title: Ensure rsync service is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_rsyncd_disabled
+
+  - id: 2.1.21
+    title: Ensure talk server is not enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - package_talk-server_removed
+
+  - id: 2.2.1
+    title: Ensure NIS Client is not installed (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - package_ypbind_removed
+
+  - id: 2.2.2
+    title: Ensure rsh client is not installed (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - package_rsh_removed
+
+  - id: 2.2.3
+    title: Ensure talk client is not installed (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - package_talk_removed
+
+  - id: 2.2.4
+    title: Ensure telnet client is not installed (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - package_telnet_removed
+
+  - id: 2.2.5
+    title: Ensure LDAP client is not installed (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - package_openldap-clients_removed
+
+  - id: 3.1.1
+    title: Ensure IP forwarding is disabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sysctl_net_ipv4_ip_forward
+    - sysctl_net_ipv6_conf_all_forwarding
+    - sysctl_net_ipv6_conf_all_forwarding_value=disabled
+
+  - id: 3.1.2
+    title: Ensure packet redirect sending is disabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sysctl_net_ipv4_conf_all_send_redirects
+    - sysctl_net_ipv4_conf_default_send_redirects
+
+  - id: 3.2.1
+    title: Ensure source routed packets are not accepted (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sysctl_net_ipv4_conf_all_accept_source_route
+    - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
+    - sysctl_net_ipv4_conf_default_accept_source_route
+    - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
+    - sysctl_net_ipv6_conf_all_accept_source_route
+    - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
+    - sysctl_net_ipv6_conf_default_accept_source_route
+    - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
+
+  - id: 3.2.2
+    title: Ensure ICMP redirects are not accepted (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sysctl_net_ipv4_conf_all_accept_redirects
+    - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+    - sysctl_net_ipv4_conf_default_accept_redirects
+    - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
+    - sysctl_net_ipv6_conf_all_accept_redirects
+    - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
+    - sysctl_net_ipv6_conf_default_accept_redirects
+    - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
+
+  - id: 3.2.3
+    title: Ensure secure ICMP redirects are not accepted (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sysctl_net_ipv4_conf_all_secure_redirects
+    - sysctl_net_ipv4_conf_all_secure_redirects_value=disabled
+    - sysctl_net_ipv4_conf_default_secure_redirects
+    - sysctl_net_ipv4_conf_default_secure_redirects_value=disabled
+
+  - id: 3.2.4
+    title: Ensure suspicious packets are logged (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sysctl_net_ipv4_conf_all_log_martians
+    - sysctl_net_ipv4_conf_all_log_martians_value=enabled
+    - sysctl_net_ipv4_conf_default_log_martians
+    - sysctl_net_ipv4_conf_default_log_martians_value=enabled
+
+  - id: 3.2.5
+    title: Ensure broadcast ICMP requests are ignored (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
+
+  - id: 3.2.6
+    title: Ensure bogus ICMP responses are ignored (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
+
+  - id: 3.2.7
+    title: Ensure Reverse Path Filtering is enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sysctl_net_ipv4_conf_all_rp_filter
+    - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
+    - sysctl_net_ipv4_conf_default_rp_filter
+    - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
+
+  - id: 3.2.8
+    title: Ensure TCP SYN Cookies is enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sysctl_net_ipv4_tcp_syncookies
+    - sysctl_net_ipv4_tcp_syncookies_value=enabled
+
+  - id: 3.2.9
+    title: Ensure IPv6 router advertisements are not accepted (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sysctl_net_ipv6_conf_all_accept_ra
+    - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
+    - sysctl_net_ipv6_conf_default_accept_ra
+    - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
+
+  - id: 3.3.1
+    title: Ensure TCP Wrappers is installed (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - package_tcp_wrappers_installed
+
+  - id: 3.3.2
+    title: Ensure /etc/hosts.allow is configured (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 3.3.3
+    title: Ensure /etc/hosts.deny is configured (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 3.3.4
+    title: Ensure permissions on /etc/hosts.allow are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_permissions_etc_hosts_allow
+
+  - id: 3.3.5
+    title: Ensure permissions on /etc/hosts.deny are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_permissions_etc_hosts_deny
+
+  - id: 3.4.1
+    title: Ensure DCCP is disabled (Not Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - kernel_module_dccp_disabled
+
+  - id: 3.4.2
+    title: Ensure SCTP is disabled (Not Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - kernel_module_sctp_disabled
+
+  - id: 3.4.3
+    title: Ensure RDS is disabled (Not Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - kernel_module_rds_disabled
+
+  - id: 3.4.4
+    title: Ensure TIPC is disabled (Not Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - kernel_module_tipc_disabled
+
+  - id: 3.5.1.1
+    title: Ensure default deny firewall policy (Scored)
+    levels:
+    - l1
+    automated: no # rule not completed
+
+  - id: 3.5.1.2
+    title: Ensure loopback traffic is configured (Scored)
+    levels:
+    - l1
+    automated: no # rule missing
+
+  - id: 3.5.1.3
+    title: Ensure outbound and established connections are configured (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 3.5.1.4
+    title: Ensure firewall rules exist for all open ports (Scored)
+    levels:
+    - l1
+    automated: no # rule missing
+
+  - id: 3.5.2.1
+    title: Ensure IPv6 default deny firewall policy (Scored)
+    levels:
+    - l1
+    automated: no # rule missing
+
+  - id: 3.5.2.2
+    title: Ensure IPv6 loopback traffic is configured (Scored)
+    levels:
+    - l1
+    automated: no # rule missing
+
+  - id: 3.5.2.3
+    title: Ensure IPv6 outbound and established connections are configured (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 3.5.2.4
+    title: Ensure IPv6 firewall rules exist for all open ports (Not Scored)
+    levels:
+    - l1
+    automated: no # rule missing
+
+  - id: 3.5.3
+    title: Ensure iptables is installed (Scored)
+    levels:
+    - l1
+    automated: no
+    notes: <-
+      CIS benchmark allows to choose from several firewall applications. This interpretation of the benchmark chose the Firewalld application and other subsections are not automated.
+    related_rules:
+    - package_iptables_installed
+
+  - id: 3.6
+    title: Disable IPv6 (Not Scored)
+    levels:
+    - l2
+    status: manual # rule missing
+
+  - id: 4.1.1.1
+    title: Ensure audit log storage size is configured (Not Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - auditd_data_retention_max_log_file
+    - var_auditd_max_log_file=6
+
+  - id: 4.1.1.2
+    title: Ensure system is disabled when audit logs are full (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - auditd_data_retention_space_left_action
+    - var_auditd_space_left_action=email
+    - auditd_data_retention_action_mail_acct
+    - var_auditd_action_mail_acct=root
+    - auditd_data_retention_admin_space_left_action
+    - var_auditd_admin_space_left_action=halt 
+
+  - id: 4.1.1.3
+    title: Ensure audit logs are not automatically deleted (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - auditd_data_retention_max_log_file_action
+    - var_auditd_max_log_file_action=keep_logs
+ 
+  - id: 4.1.2
+    title: Ensure auditd service is enabled (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - service_auditd_enabled
+
+  - id: 4.1.3
+    title: Ensure auditing for processes that start prior to auditd is enabled (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - grub2_audit_argument
+
+  - id: 4.1.4
+    title: Ensure events that modify date and time information are collected (Scored)
+    levels:
+    - l2
+    status: partial # we do not have rule for clock_settime
+    rules:
+    - audit_rules_time_adjtimex
+    - audit_rules_time_settimeofday
+    - audit_rules_time_stime
+    - audit_rules_time_watch_localtime
+
+  - id: 4.1.5
+    title: Ensure events that modify user/group information are collected (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - audit_rules_usergroup_modification_group
+    - audit_rules_usergroup_modification_gshadow
+    - audit_rules_usergroup_modification_opasswd
+    - audit_rules_usergroup_modification_passwd
+    - audit_rules_usergroup_modification_shadow
+
+  - id: 4.1.6
+    title: Ensure events that modify the system's network environment are collected (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - audit_rules_networkconfig_modification
+
+  - id: 4.1.7
+    title: Ensure events that modify the system's Mandatory Access Controls are collected (Scored)
+    levels:
+    - l2
+    status: partial # rule for checking audit watch on /usr/share/selinux is missing
+    rules:
+    - audit_rules_mac_modification
+
+  - id: 4.1.8
+    title: Ensure login and logout events are collected (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - audit_rules_login_events_faillock
+    - audit_rules_login_events_lastlog
+
+  - id: 4.1.9
+    title: Ensure session initiation information is collected (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - audit_rules_session_events
+
+  - id: 4.1.10
+    title: Ensure discretionary access control permission modification events are collected (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - audit_rules_dac_modification_fchmod
+    - audit_rules_dac_modification_fchmodat
+    - audit_rules_dac_modification_chmod
+    - audit_rules_dac_modification_fchown
+    - audit_rules_dac_modification_fchownat
+    - audit_rules_dac_modification_chown
+    - audit_rules_dac_modification_lchown
+    - audit_rules_dac_modification_fremovexattr
+    - audit_rules_dac_modification_fsetxattr
+    - audit_rules_dac_modification_lremovexattr
+    - audit_rules_dac_modification_lsetxattr
+    - audit_rules_dac_modification_removexattr
+    - audit_rules_dac_modification_setxattr
+
+  - id: 4.1.11
+    title: Ensure unsuccessful unauthorized file access attempts are collected (Scored)
+    levels:
+    - l2_server
+    status: automated
+    rules:
+    - audit_rules_unsuccessful_file_modification_creat
+    - audit_rules_unsuccessful_file_modification_open
+    - audit_rules_unsuccessful_file_modification_openat
+    - audit_rules_unsuccessful_file_modification_truncate
+    - audit_rules_unsuccessful_file_modification_ftruncate
+
+  - id: 4.1.12
+    title: Ensure use of privileged commands is collected (Automated)
+    levels:
+    - l2
+    automated: no # we have audit_rules_privileged_commands, but it does not set perm=x
+
+  - id: 4.1.13
+    title: Ensure successful file system mounts are collected (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - audit_rules_media_export
+
+  - id: 4.1.14
+    title: Ensure file deletion events by users are collected (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - audit_rules_file_deletion_events_rename
+    - audit_rules_file_deletion_events_renameat
+    - audit_rules_file_deletion_events_unlink
+    - audit_rules_file_deletion_events_unlinkat
+
+  - id: 4.1.15
+    title: Ensure changes to system administration scope (sudoers) is collected (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - audit_rules_sysadmin_actions
+
+  - id: 4.1.16
+    title: Ensure system administrator actions (sudolog) are collected (Scored)
+    levels:
+    - l2
+    automated: no # missing rule
+
+  - id: 4.1.17
+    title: Ensure kernel module loading and unloading is collected (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - audit_rules_privileged_commands_insmod
+    - audit_rules_privileged_commands_rmmod
+    - audit_rules_privileged_commands_modprobe
+    - audit_rules_kernel_module_loading_delete
+    - audit_rules_kernel_module_loading_init
+
+  - id: 4.1.18
+    title: Ensure the audit configuration is immutable (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - audit_rules_immutable
+
+  - id: 4.2.1.1
+    title: Ensure rsyslog Service is enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_rsyslog_enabled
+
+  - id: 4.2.1.2
+    title: Ensure logging is configured (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 4.2.1.3
+    title: Ensure rsyslog default file permissions configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - rsyslog_files_permissions
+
+  - id: 4.2.1.4
+    title: Ensure rsyslog is configured to send logs to a remote log host (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - rsyslog_remote_loghost
+
+  - id: 4.2.1.5
+    title: Ensure remote rsyslog messages are only accepted on designated log hosts. (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 4.2.2
+    title: Ensure rsyslog is installed (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - package_rsyslog_installed
+
+  - id: 4.2.3
+    title: Ensure permissions on all logfiles are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_permissions_var_log
+
+  - id: 4.3
+    title: Ensure logrotate is configured (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 5.1.1
+    title: Ensure cron daemon is enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - service_crond_enabled
+
+  - id: 5.1.2
+    title: Ensure permissions on /etc/crontab are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_crontab
+    - file_owner_crontab
+    - file_permissions_crontab
+
+  - id: 5.1.3
+    title: Ensure permissions on /etc/cron.hourly are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_cron_hourly
+    - file_owner_cron_hourly
+    - file_permissions_cron_hourly
+
+  - id: 5.1.4
+    title: Ensure permissions on /etc/cron.daily are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_cron_daily
+    - file_owner_cron_daily
+    - file_permissions_cron_daily
+
+  - id: 5.1.5
+    title: Ensure permissions on /etc/cron.weekly are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_cron_weekly
+    - file_owner_cron_weekly
+    - file_permissions_cron_weekly
+
+  - id: 5.1.6
+    title: Ensure permissions on /etc/cron.monthly are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_cron_monthly
+    - file_owner_cron_monthly
+    - file_permissions_cron_monthly
+
+  - id: 5.1.7
+    title: Ensure permissions on /etc/cron.d are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_cron_d
+    - file_owner_cron_d
+    - file_permissions_cron_d
+
+  - id: 5.1.8
+    title: Ensure at/cron is restricted to authorized users (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_cron_allow
+    - file_owner_cron_allow
+    - file_cron_deny_not_exist
+    - file_permissions_cron_allow
+    - file_groupowner_at_allow
+    - file_owner_at_allow
+    - file_at_deny_not_exist
+    - file_permissions_at_allow
+
+  - id: 5.2.1
+    title: Ensure permissions on /etc/ssh/sshd_config are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_sshd_config
+    - file_owner_sshd_config
+    - file_permissions_sshd_config
+
+  - id: 5.2.2
+    title: Ensure SSH Protocol is set to 2 (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sshd_allow_only_protocol2 
+
+  - id: 5.2.3
+    title: Ensure permissions on SSH private host key files are configured (Scored)
+    levels:
+    - l1
+    automated: no # rule missing (we have similar)
+
+  - id: 5.2.4
+    title: Ensure permissions on SSH public host key files are configured (Scored)
+    levels:
+    - l1
+    status: partial # missing rules for ownership
+    rules:
+    - file_permissions_sshd_pub_key
+
+  - id: 5.2.5
+    title: Ensure SSH LogLevel is appropriate (Scored)
+    levels:
+    - l1
+    notes: <-
+      The default rule is configured to enforce the "verbose" log level. Use
+      tailoring to change it to "info" level.
+    status: automated # we have two rules either for info or verbose, no way to select
+    related_rules:
+    - sshd_set_loglevel_info
+    rules:
+    - sshd_set_loglevel_verbose
+
+  - id: 5.2.6
+    title: Ensure SSH X11 forwarding is disabled (Scored)
+    levels:
+    - l2
+    status: automated
+    rules:
+    - sshd_disable_x11_forwarding
+
+  - id: 5.2.7
+    title: Ensure SSH MaxAuthTries is set to 4 or less (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sshd_set_max_auth_tries
+    - sshd_max_auth_tries_value=4
+
+  - id: 5.2.8
+    title: Ensure SSH IgnoreRhosts is enabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sshd_disable_rhosts
+
+  - id: 5.2.9
+    title: Ensure SSH HostbasedAuthentication is disabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - disable_host_auth
+
+  - id: 5.2.10
+    title: Ensure SSH root login is disabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sshd_disable_root_login
+
+  - id: 5.2.11
+    title: Ensure SSH PermitEmptyPasswords is disabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sshd_disable_empty_passwords
+
+  - id: 5.2.12
+    title: Ensure SSH PermitUserEnvironment is disabled (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sshd_do_not_permit_user_env
+
+  - id: 5.2.13
+    title: Ensure only strong MAC algorithms are used (Scored)
+    levels:
+    - l1
+    status: automated
+    notes: <-
+      The rule checks for default list of MACs provided in the benchmark.
+    rules:
+    - sshd_approved_macs=cis_alinux2
+    - sshd_use_approved_macs
+
+  - id: 5.2.14
+    title: Ensure SSH Idle Timeout Interval is configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sshd_set_idle_timeout
+    - sshd_idle_timeout_value=15_minutes
+    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+
+  - id: 5.2.15
+    title: Ensure SSH LoginGraceTime is set to one minute or less (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+      - sshd_set_login_grace_time
+      - var_sshd_set_login_grace_time=60
+
+  - id: 5.2.16
+    title: Ensure only strong Key Exchange algorithms are used (Scored)
+    levels:
+    - l1
+    automated: no # rule missing
+
+  - id: 5.2.17
+    title: Ensure only strong Ciphers are used (Scored)
+    levels:
+    - l1
+    status: automated
+    notes: <-
+      The rule checks for default list of ciphers provided in the benchmark.
+    rules:
+    - sshd_approved_ciphers=cis_alinux2
+    - sshd_use_approved_ciphers
+
+  - id: 5.2.18
+    title: Ensure SSH access is limited (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sshd_limit_user_access
+
+  - id: 5.2.19
+    title: Ensure SSH warning banner is configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - sshd_enable_warning_banner
+
+  - id: 5.3.1
+    title: Ensure password creation requirements are configured (Scored)
+    levels:
+    - l1
+    status: partial # rule checking for retry needs modification and we are missing rule for try_first_pass
+    notes: <-
+      There are two ways how to check this control.
+      One way is to check for minclass, this is currently selected.
+      Another way is to check for dcredit, lcredit,ocredit, ucredit, this is shown in rleated_rules.
+    related_rules:
+    - accounts_password_pam_dcredit
+    - var_password_pam_dcredit=1
+    - accounts_password_pam_ucredit
+    - var_password_pam_ucredit=1
+    - accounts_password_pam_lcredit
+    - var_password_pam_lcredit=1
+    - accounts_password_pam_ocredit
+    - var_password_pam_ocredit=1
+    rules:
+    - accounts_password_pam_minlen
+    - var_password_pam_minlen=14
+    - accounts_password_pam_minclass
+    - var_password_pam_minclass=4
+
+  - id: 5.3.2
+    title: Ensure lockout for failed password attempts is configured (Scored)
+    levels:
+    - l1
+    automated: no # we can check only certain parts, we need probably some complex rule for this
+
+  - id: 5.3.3
+    title: Ensure password reuse is limited (Scored)
+    levels:
+    - l1
+    status: automated
+    notes: |-
+      Usage of pam_unix.so module together with "remember" option is deprecated and is not supported by this policy interpretation.
+    rules:
+    - var_password_pam_remember=5
+    - var_password_pam_remember_control_flag=required
+    - accounts_password_pam_pwhistory_remember_system_auth
+    - accounts_password_pam_pwhistory_remember_password_auth
+
+  - id: 5.3.4
+    title: Ensure password hashing algorithm is SHA-512 (Scored)
+    levels:
+    - l1
+    status: partial # our rule does not check for password-auth
+    rules:
+    - set_password_hashing_algorithm_systemauth
+
+  - id: 5.4.1.1
+    title: Ensure password expiration is 365 days or less (Scored)
+    levels:
+    - l1
+    status: partial # missing rule for checking of /etc/shadow
+    rules:
+    - accounts_maximum_age_login_defs
+    - var_accounts_maximum_age_login_defs=365
+
+  - id: 5.4.1.2
+    title: Ensure minimum days between password changes is 7 or more (Scored)
+    levels:
+    - l1
+    status: partial # missing rule for checking of /etc/shadow
+    rules:
+    - accounts_minimum_age_login_defs
+    - var_accounts_minimum_age_login_defs=1
+
+  - id: 5.4.1.3
+    title: Ensure password expiration warning days is 7 or more (Scored)
+    levels:
+    - l1
+    status: partial # missing rule for checking of /etc/shadow
+    rules:
+    - accounts_password_warn_age_login_defs
+    - var_accounts_password_warn_age_login_defs=7
+
+  - id: 5.4.1.4
+    title: Ensure inactive password lock is 30 days or less (Scored)
+    levels:
+    - l1
+    status: partial # we do not check /et/shadow
+    rules:
+    - account_disable_post_pw_expiration
+    - var_account_disable_post_pw_expiration=30
+
+  - id: 5.4.1.5
+    title: Ensure all users last password change date is in the past (Scored)
+    levels:
+    - l1
+    automated: no # rule missing
+
+  - id: 5.4.2
+    title: Ensure system accounts are non-login (Scored)
+    levels:
+    - l1
+    status: partial # missing rule for locking of accounts
+    rules:
+    - no_shelllogin_for_systemaccounts
+
+  - id: 5.4.3
+    title: Ensure default group for the root account is GID 0 (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+      - accounts_root_gid_zero
+
+  - id: 5.4.4
+    title: Ensure default user umask is 027 or more restrictive (Scored)
+    levels:
+    - l1
+    status: partial # checking only for numeric umask and we do not check for user_enab in /etc/login.defs
+    rules:
+    - accounts_umask_etc_bashrc
+    - accounts_umask_etc_login_defs
+    - accounts_umask_etc_profile
+    - var_accounts_user_umask=027
+
+  - id: 5.4.5
+    title: Ensure default user shell timeout is 900 seconds or less (Scored)
+    levels:
+    - l1
+    status: partial # we check only for value of tmout variable, no export or readonly and we do not check /etc/bashrc
+    rules:
+    - accounts_tmout
+    - var_accounts_tmout=15_min
+
+  - id: 5.5
+    title: Ensure root login is restricted to system console (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 5.6
+    title: Ensure access to the su command is restricted (Scored)
+    levels:
+    - l1
+    status: partial  # we check only for usage of use_uid with pam_su, not for the group
+    rules:
+    - use_pam_wheel_for_su
+
+  - id: 6.1.1
+    title: Audit system file permissions (Not Scored)
+    levels:
+    - l2
+    status: manual
+
+  - id: 6.1.2
+    title: Ensure permissions on /etc/passwd are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_etc_passwd
+    - file_owner_etc_passwd
+    - file_permissions_etc_passwd
+
+  - id: 6.1.3
+    title: Ensure permissions on /etc/shadow are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_etc_shadow
+    - file_owner_etc_shadow
+    - file_permissions_etc_shadow
+
+  - id: 6.1.4
+    title: Ensure permissions on /etc/group are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_etc_group
+    - file_owner_etc_group
+    - file_permissions_etc_group
+
+  - id: 6.1.5
+    title: Ensure permissions on /etc/gshadow are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_etc_gshadow
+    - file_owner_etc_gshadow
+    - file_permissions_etc_gshadow
+
+  - id: 6.1.6
+    title: Ensure permissions on /etc/passwd- are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_backup_etc_passwd
+    - file_owner_backup_etc_passwd
+    - file_permissions_backup_etc_passwd
+
+  - id: 6.1.7
+    title: Ensure permissions on /etc/shadow- are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_backup_etc_shadow
+    - file_owner_backup_etc_shadow
+    - file_permissions_backup_etc_shadow
+
+  - id: 6.1.8
+    title: Ensure permissions on /etc/group- are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_backup_etc_group
+    - file_owner_backup_etc_group
+    - file_permissions_backup_etc_group
+
+  - id: 6.1.9
+    title: Ensure permissions on /etc/gshadow- are configured (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_groupowner_backup_etc_gshadow
+    - file_owner_backup_etc_gshadow
+    - file_permissions_backup_etc_gshadow
+
+  - id: 6.1.10
+    title: Ensure no world writable files exist (Not Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_permissions_unauthorized_world_writable
+
+  - id: 6.1.11
+    title: Ensure no unowned files or directories exist (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - no_files_unowned_by_user
+
+  - id: 6.1.12
+    title: Ensure no ungrouped files or directories exist (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_permissions_ungroupowned
+
+  - id: 6.1.13
+    title: Audit SUID executables (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 6.1.14
+    title: Audit SGID executables (Not Scored)
+    levels:
+    - l1
+    status: manual
+
+  - id: 6.2.1
+    title: Ensure password fields are not empty (Scored)
+    levels:
+    - l1
+    automated: no # rule missing
+
+  - id: 6.2.2
+    title: Ensure no legacy "+" entries exist in /etc/passwd (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - no_legacy_plus_entries_etc_passwd
+
+  - id: 6.2.3
+    title: Ensure no legacy "+" entries exist in /etc/shadow (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - no_legacy_plus_entries_etc_shadow
+
+  - id: 6.2.4
+    title: Ensure no legacy "+" entries exist in /etc/group (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - no_legacy_plus_entries_etc_group
+
+  - id: 6.2.5
+    title: Ensure root is the only UID 0 account (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - accounts_no_uid_except_zero
+
+  - id: 6.2.6
+    title: Ensure root PATH Integrity (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - accounts_root_path_dirs_no_write
+    - root_path_no_dot
+
+  - id: 6.2.7
+    title: Ensure all users' home directories exist (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - accounts_user_interactive_home_directory_exists
+
+  - id: 6.2.8
+    title: Ensure users' home directories permissions are 750 or more restrictive (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_permissions_home_directories
+
+  - id: 6.2.9
+    title: Ensure users own their home directories (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - file_ownership_home_directories
+
+  - id: 6.2.10
+    title: Ensure users' dot files are not group or world writable (Scored)
+    levels:
+    - l1
+    automated: no # rule missing
+
+  - id: 6.2.11
+    title: Ensure no users have .forward files (Scored)
+    levels:
+    - l1
+    automated: no # rule missing
+
+  - id: 6.2.12
+    title: Ensure no users have .netrc files (Scored)
+    levels:
+    - l1
+    status: automated
+    notes: <-
+      The rule is checking only for existence of files, not for their permissions.
+    rules:
+    - no_netrc_files
+
+  - id: 6.2.13
+    title: Ensure users' .netrc Files are not group or world accessible (Scored)
+    levels:
+    - l1
+    automated: no # rule missing
+
+  - id: 6.2.14
+    title: Ensure no users have .rhosts files (Scored)
+    levels:
+    - l1
+    status: automated
+    notes: The rule also removes /etc/hosts.equiv
+    rules:
+    - no_rsh_trust_files
+
+  - id: 6.2.15
+    title: Ensure all groups in /etc/passwd exist in /etc/group (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - gid_passwd_group_same
+
+  - id: 6.2.16
+    title: Ensure no duplicate UIDs exist (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - account_unique_id
+
+  - id: 6.2.17
+    title: Ensure no duplicate GIDs exist (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+      - group_unique_id
+
+  - id: 6.2.18
+    title: Ensure no duplicate user names exist (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+    - account_unique_name
+
+  - id: 6.2.19
+    title: Ensure no duplicate group names exist (Scored)
+    levels:
+    - l1
+    status: automated
+    rules:
+      - group_unique_name

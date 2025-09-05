@@ -27,8 +27,10 @@ identifiers:
 
 references:
     cis-csc: 11,3,9
+    cis@alinux2: 5.2.12
+    cis@alinux3: 5.2.12
     cis@rhel7: 5.3.12
-    cis@rhel8: 5.2.12
+    cis@rhel8: 5.2.10
     cis@sle12: 5.3.13
     cis@sle15: 5.2.12
     cis@ubuntu2004: 5.2.11
@@ -57,6 +59,8 @@ references:
 
 fixtext: |-
     {{{ fixtext_sshd_lineinfile("PermitUserEnvironment", "no") }}}
+
+srg_requirement: '{{{ full_name }}} must not allow users to override SSH environment variables.'
 
 template:
     name: sshd_lineinfile

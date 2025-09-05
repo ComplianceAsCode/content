@@ -338,7 +338,7 @@ class XCCDFEntity(object):
         - `definition_location` as the original location whenre the entity got defined.
         """
         file_basename = os.path.basename(yaml_file)
-        entity_id = file_basename.split(".")[0]
+        entity_id = derive_id_from_file_name(file_basename)
         if file_basename == cls.GENERIC_FILENAME:
             entity_id = os.path.basename(os.path.dirname(yaml_file))
 
@@ -412,6 +412,11 @@ class XCCDFEntity(object):
 
     def to_xml_element(self):
         raise NotImplementedError()
+
+    def to_file(self, file_name):
+        root = self.to_xml_element()
+        tree = ET.ElementTree(root)
+        tree.write(file_name)
 
 
 class Profile(XCCDFEntity, SelectionHandler):
@@ -786,11 +791,6 @@ class Value(XCCDFEntity):
 
         return value
 
-    def to_file(self, file_name):
-        root = self.to_xml_element()
-        tree = ET.ElementTree(root)
-        tree.write(file_name)
-
 
 class Benchmark(XCCDFEntity):
     """Represents XCCDF Benchmark
@@ -1093,15 +1093,6 @@ class Group(XCCDFEntity):
 
         return yaml_contents
 
-    def validate_prodtype(self, yaml_file):
-        for ptype in self.prodtype.split(","):
-            if ptype.strip() != ptype:
-                msg = (
-                    "Comma-separated '{prodtype}' prodtype "
-                    "in {yaml_file} contains whitespace."
-                    .format(prodtype=self.prodtype, yaml_file=yaml_file))
-                raise ValueError(msg)
-
     def to_xml_element(self, env_yaml=None):
         group = ET.Element('Group')
         group.set('id', self.id_)
@@ -1134,7 +1125,7 @@ class Group(XCCDFEntity):
                  r'install_smartcard_packages|' +
                  r'sshd_set_keepalive(_0)?|' +
                  r'sshd_set_idle_timeout$')
-        priority_order = ["installed", "install_smartcard_packages", "removed",
+        priority_order = ["enable_authselect", "installed", "install_smartcard_packages", "removed",
                           "enabled", "disabled", "sshd_set_keepalive_0",
                           "sshd_set_keepalive", "sshd_set_idle_timeout"]
         rules_in_group = reorder_according_to_ordering(rules_in_group, priority_order, regex)
@@ -1185,30 +1176,13 @@ class Group(XCCDFEntity):
 
         return group
 
-    def to_file(self, file_name):
-        root = self.to_xml_element()
-        tree = ET.ElementTree(root)
-        tree.write(file_name)
-
     def add_value(self, value):
         if value is None:
             return
         self.values[value.id_] = value
 
     def add_group(self, group, env_yaml=None, product_cpes=None):
-        if group is None:
-            return
-        if self.platforms and not group.platforms:
-            group.platforms = self.platforms
-        self.groups[group.id_] = group
-        self._pass_our_properties_on_to(group)
-
-        # Once the group has inherited properties, update cpe_names
-        if env_yaml:
-            for platform in group.platforms:
-                cpe_platform = Platform.from_text(platform, product_cpes)
-                cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
-                group.cpe_platform_names.add(cpe_platform.id_)
+        self._add_child(group, self.groups, env_yaml, product_cpes)
 
     def _pass_our_properties_on_to(self, obj):
         for attr in self.ATTRIBUTES_TO_PASS_ON:
@@ -1216,19 +1190,22 @@ class Group(XCCDFEntity):
                 setattr(obj, attr, getattr(self, attr))
 
     def add_rule(self, rule, env_yaml=None, product_cpes=None):
-        if rule is None:
-            return
-        if self.platforms and not rule.platforms:
-            rule.platforms = self.platforms
-        self.rules[rule.id_] = rule
-        self._pass_our_properties_on_to(rule)
+        self._add_child(rule, self.rules, env_yaml, product_cpes)
 
-        # Once the rule has inherited properties, update cpe_platform_names
+    def _add_child(self, child, childs, env_yaml=None, product_cpes=None):
+        if child is None:
+            return
+        if self.platforms and not child.platforms:
+            child.platforms = self.platforms
+        childs[child.id_] = child
+        self._pass_our_properties_on_to(child)
+
+        # Once the child has inherited properties, update cpe_names
         if env_yaml:
-            for platform in rule.platforms:
+            for platform in child.platforms:
                 cpe_platform = Platform.from_text(platform, product_cpes)
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
-                rule.cpe_platform_names.add(cpe_platform.id_)
+                child.cpe_platform_names.add(cpe_platform.id_)
 
     def __str__(self):
         return self.id_
@@ -1663,7 +1640,8 @@ class Rule(XCCDFEntity):
             check_content_ref.set("href", "oval-unlinked.xml")
             check_content_ref.set("name", self.id_)
 
-        if self.ocil or self.ocil_clause:
+        patches_up_to_date = (self.id_ == "security_patches_up_to_date")
+        if (self.ocil or self.ocil_clause) and not patches_up_to_date:
             ocil_check = ET.SubElement(check_parent, "check")
             ocil_check.set("system", ocil_cs)
             ocil_check_ref = ET.SubElement(ocil_check, "check-content-ref")
@@ -1671,11 +1649,6 @@ class Rule(XCCDFEntity):
             ocil_check_ref.set("name", self.id_ + "_ocil")
 
         return rule
-
-    def to_file(self, file_name):
-        root = self.to_xml_element()
-        tree = ET.ElementTree(root)
-        tree.write(file_name)
 
     def to_ocil(self):
         if not self.ocil and not self.ocil_clause:
@@ -2150,3 +2123,7 @@ def add_platform_if_not_defined(platform, product_cpes):
             return p
     product_cpes.platforms[platform.id_] = platform
     return platform
+
+
+def derive_id_from_file_name(filename):
+    return os.path.splitext(filename)[0]

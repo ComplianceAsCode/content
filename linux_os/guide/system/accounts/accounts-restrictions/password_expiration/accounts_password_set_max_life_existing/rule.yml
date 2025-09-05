@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: alinux3,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Set Existing Passwords Maximum Age'
 
@@ -26,7 +26,8 @@ identifiers:
     cce@sle15: CCE-85571-8
 
 references:
-    cis@rhel8: 5.5.1.1
+    cis@alinux3: 5.6.1.1
+    cis@rhel8: 5.6.1.1
     cis@ubuntu2004: 5.4.1.1
     disa: CCI-000199
     nist: IA-5(f),IA-5(1)(d),CM-6(a)
@@ -44,9 +45,9 @@ ocil_clause: 'any results are returned that are not associated with a system acc
 ocil: |-
     Check whether the maximum time period for existing passwords is restricted to {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} days with the following commands:
 
-    $ sudo awk -F: '$5 &gt; 60 {print $1 "" "" $5}' /etc/shadow
+    $ sudo awk -F: '$5 &gt; 60 {print $1 " " $5}' /etc/shadow
 
-    $ sudo awk -F: '$5 &lt;= 0 {print $1 "" "" $5}' /etc/shadow
+    $ sudo awk -F: '$5 &lt;= 0 {print $1 " " $5}' /etc/shadow
 
 fixtext: |-
     Configure non-compliant accounts to enforce a 60-day maximum password lifetime restriction.

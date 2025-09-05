@@ -1,0 +1,15 @@
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_audispd_network_failure_action") }}}
+{{% set audisp_config_file_path = audisp_conf_path + "/audisp-remote.conf" %}}
+
+- name: Make sure that network failure action is configured for Audispd
+  lineinfile:
+    path: "{{{ audisp_config_file_path }}}"
+    line: "network_failure_action = {{ var_audispd_network_failure_action }}"
+    regexp: '^\s*network_failure_action\s*=.*$'
+    create: true
+    state: present

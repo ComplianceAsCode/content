@@ -32,8 +32,10 @@ identifiers:
 references:
     anssi: NT007(R17)
     cis-csc: 11,12,13,14,15,16,18,3,5,9
+    cis@alinux2: 5.2.11
+    cis@alinux3: 5.2.11
     cis@rhel7: 5.3.11
-    cis@rhel8: 5.2.11
+    cis@rhel8: 5.2.9
     cis@sle12: 5.3.12
     cis@sle15: 5.2.11
     cis@ubuntu2004: 5.2.10
@@ -63,6 +65,8 @@ references:
 
 fixtext: |-
     {{{ fixtext_sshd_lineinfile("PermitEmptyPasswords", "no") }}}
+
+srg_requirement: 'The {{{ full_name }}} SSH daemon must not allow accounts configured with blank or null passwords.'
 
 template:
     name: sshd_lineinfile

@@ -141,19 +141,19 @@ multiple benchmarks in our project:
 </tr>
 <tr class="even">
 <td><p>Java Runtime Environment</p></td>
-<td><p><code>/jre/guide</code></p></td>
+<td><p><code>/products/jre/guide</code></p></td>
 </tr>
 <tr class="odd">
 <td><p>Fuse 6</p></td>
-<td><p><code>/fuse6/guide</code></p></td>
+<td><p><code>/products/fuse6/guide</code></p></td>
 </tr>
 <tr class="even">
 <td><p>Firefox</p></td>
-<td><p><code>/firefox/guide</code></p></td>
+<td><p><code>/products/firefox/guide</code></p></td>
 </tr>
 <tr class="odd">
 <td><p>Chromium</p></td>
-<td><p><code>/chromium/guide</code></p></td>
+<td><p><code>/products/chromium/guide</code></p></td>
 </tr>
 </tbody>
 </table>
@@ -306,7 +306,7 @@ For example:
 
 Follow these steps to create a new product in the project:
 
-1. Create a new folder in the root directory which will hold the files related to your new product. To illustrate the process we will use the name `custom6` which basically means that the product is called `custom` and the major version is `6`. For more details in the naming conventions and directory structure, check the `Product/Structure Layout` section in the [Developer Guide](../docs/manual/developer_guide.adoc). You can use the following commands to create the basic directory structure, `content` is the root directory of the project:
+1. Create a new folder in the `products/` directory which will hold the files related to your new product. To illustrate the process we will use the name `custom6` which basically means that the product is called `custom` and the major version is `6`. For more details in the naming conventions and directory structure, check the `Product/Structure Layout` section in the [Developer Guide](../docs/manual/developer_guide.adoc). You can use the following commands to create the basic directory structure, `content` is the root directory of the project:
 <pre>
 cd content
 export SHORTNAME="C"
@@ -351,7 +351,7 @@ endif()
 ...
 </pre>
 
-3. Add the product to [build_product](../build_product) script:
+3. Add the product to [build_product](../../../build_product) script:
 <pre>
 ...
 all_cmake_products=(
@@ -362,12 +362,12 @@ all_cmake_products=(
 ...
 </pre>
 
-4. Add the product to [constants.py](../ssg/constants.py) file:
+4. Add the product to [constants.py](../../../ssg/constants.py) file:
 <pre>
 ...
 product_directories = ['debian9', 'fedora', 'ol7', 'ol8', 'opensuse',
                        'rhel7', 'rhel8', 'sle12',
-                       'ubuntu1604', 'ubuntu1804', 'wrlinux', 'rhosp13',
+                       'ubuntu1604', 'ubuntu1804', 'rhosp13',
                        'chromium', 'eap6', 'firefox', 'fuse6', 'jre',
                        'example'<b>, 'custom6'</b>]
 ...
@@ -387,7 +387,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
 <pre>
 ...
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
-                       "wrlinux", "opensuse", "sle", "ol", "ocp", "example"<b>, "custom"</b>]
+                       "opensuse", "sle", "ol", "ocp", "example"<b>, "custom"</b>]
 ...
 </pre>
 <pre>
@@ -505,24 +505,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/table-style.xslt
 EOF
 ```
 
-12. Create a new file under `transforms` directory called `table-srgmap.xslt`:
-```
-cat << EOF >> $NEW_PRODUCT/transforms/table-srgmap.xslt 
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-<xsl:include href="../../shared/transforms/shared_table-srgmap.xslt"/>
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-<xsl:variable name="items" select="document($map-to-items)//*[cdf:reference]" />
-<xsl:variable name="title" select="document($map-to-items)/cdf:Benchmark/cdf:title" />
-
-</xsl:stylesheet>
-EOF
-```
-
-13. Create a new file under `transforms` directory called `xccdf-apply-overlay-stig.xslt`:
+12. Create a new file under `transforms` directory called `xccdf-apply-overlay-stig.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
 <?xml version="1.0"?>
@@ -536,7 +519,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
 EOF
 ```
 
-14. Create a new file under `transforms` directory called `xccdf2table-byref.xslt`:
+13. Create a new file under `transforms` directory called `xccdf2table-byref.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-byref.xslt 
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -551,7 +534,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-byref.xslt
 EOF
 ```
 
-15. Create a new file under `transforms` directory called `xccdf2table-cce.xslt`:
+14. Create a new file under `transforms` directory called `xccdf2table-cce.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -566,7 +549,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
 EOF
 ```
 
-16. Create a new file under `transforms` directory called `xccdf2table-profileanssirefs.xslt `:
+15. Create a new file under `transforms` directory called `xccdf2table-profileanssirefs.xslt `:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileanssirefs.xslt 
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -684,7 +667,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileanssirefs.xslt
 EOF
 ```
 
-17. Create a new file under `transforms` directory called `xccdf2table-profileccirefs.xslt`:
+16. Create a new file under `transforms` directory called `xccdf2table-profileccirefs.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -699,7 +682,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 EOF
 ```
 
-18. Create a new file under `transforms` directory called `xccdf2table-profilecisrefs.xslt`:
+17. Create a new file under `transforms` directory called `xccdf2table-profilecisrefs.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilecisrefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -714,7 +697,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilecisrefs.xslt
 EOF
 ```
 
-19. Create a new file under `transforms` directory called `xccdf2table-profilenistrefs.xslt`:
+18. Create a new file under `transforms` directory called `xccdf2table-profilenistrefs.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilenistrefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -728,7 +711,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilenistrefs.xslt
 EOF
 ```
 
-20. Create a new file under `transforms` directory called `xccdf2table-stig.xslt`:
+19. Create a new file under `transforms` directory called `xccdf2table-stig.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-stig.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -743,7 +726,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-stig.xslt
 EOF
 ```
 
-21. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
+20. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
 ```
 cat << EOF >> shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 <def-group>
@@ -1175,7 +1158,6 @@ controls: a list of controls (required key)
   - id: control ID (required key)
     title: control title
     description: description of the control in a few sentences
-    automated: Can be one of: ["yes", "no", "partially"]. Default value: "yes".
     levels: The list of policy levels that the control belongs to.
     notes: a short paragraph of text
     rules: a list of rule IDs that cover this control
@@ -1383,7 +1365,7 @@ In order for export for DISA the IDs of your control must be SRG ID form the Gen
 
 If you have an existing product that you want to base your new STIG you can create the skeleton with the following command:
 
-    $ ./utils/build_stig_control.py --split -p rhel9 -m shared/references/disa-os-srg-v2r2.xml -o controls/srg_gpos.yml
+    $ ./utils/build_stig_control.py --split -p rhel9 -m shared/references/disa-os-srg-v2r3.xml -o controls/srg_gpos.yml
 
 The manual (`-m`) should be an SRG XML from DISA.  
 
@@ -1399,31 +1381,31 @@ The **bolded** items are under direct control of content authors.
 * CCI -> DISA OS SRG XML
 * SRGID -> The control id
 * SRG Requirement ->  DISA OS SRG XML
-* **Requirement** -> The rule's description or if there are no rules the control's description.
+* **Requirement** -> The rule's `srg_requirement` or if there are no rules the control's `title`.
 * SRG VulDiscussion -> DISA OS SRG XML
-* **Vul Discussion** -> Rule's rationale
+* **Vul Discussion** -> Rule's `rationale` or the control's `rationale`
 * **Status** -> Control
-  * If there are rules the status will be `Applicable - Configurable`
+  * If there are rules the status should be `Applicable - Configurable`
   * The status can be set on the control as well
 * SRG Check -> DISA OS SRG XML
-* **Check** -> OCIL and OCIL clause from the rule
-  * The first part of the check comes from OCIL of the rule
-  * The last part is "If {OCIL clause}, then it is a finding"
+* **Check** -> `ocil` and `ocil_clause` from the rule
+  * The first part of the check comes from `ocil` of the rule
+  * The last part is "If {ocil_clause}, then it is a finding"
 * SRG Fix -> DISA OS SRG XML
   * As of V2R1 that field is blank
-* **Fix** -> Rule's fix
+* **Fixtext** -> Rule's `fixtext` or the control's `fix`
 * **Severity** -> DISA OS SRG XML or Control
   * By default, it comes from the DISA OS SRG
   * Can be overridden by the control
 * **Mitigation** -> Control
 * **Artifact Description** -> Control
 * **Status Justification** -> Control
-* **Status** -> Control
+
 
 #### Exporting
 To export the spreadsheet use the following command:
 
     $ ./utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9
 
-The output will be out in CSV file in build directory.
+The output by default will be out in CSV file in build directory.
 The file will be a csv file named as the UNIX timestamp of when the file was created.

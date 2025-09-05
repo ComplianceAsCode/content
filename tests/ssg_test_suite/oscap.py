@@ -693,10 +693,10 @@ class Checker(object):
         now = datetime.datetime.now()
         self.test_timestamp_str = now.strftime("%Y-%m-%d %H:%M")
 
-    def test_target(self, target):
+    def test_target(self):
         self.start()
         try:
-            self._test_target(target)
+            self._test_target()
         except KeyboardInterrupt:
             logging.info("Terminating the test run due to keyboard interrupt.")
         except RuntimeError as exc:
@@ -714,7 +714,7 @@ class Checker(object):
         elif profiles:
             self._run_test(profiles[0], test_data)
 
-    def _test_target(self, target):
+    def _test_target(self):
         raise NotImplementedError()
 
     def _run_test(self, profile, test_data):

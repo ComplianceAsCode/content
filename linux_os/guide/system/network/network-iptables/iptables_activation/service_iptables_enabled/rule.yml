@@ -11,9 +11,14 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel8: CCE-85961-1
+    cce@rhel9: CCE-85962-9
+
 references:
     cis-csc: 1,11,12,13,14,15,16,18,3,4,6,8,9
     cis@rhel7: 3.5.3.2.6
+    cis@rhel8: 3.4.3.2.6
     cis@sle12: 3.5.1.1
     cis@sle15: 3.5.3.2.6
     cis@ubuntu2004: 3.5.3.1.1
@@ -25,6 +30,8 @@ references:
     nist: AC-4,CM-7(b),CA-3(5),SC-7(21),CM-6(a)
     nist-csf: DE.AE-1,ID.AM-3,PR.AC-5,PR.DS-5,PR.IP-1,PR.PT-3,PR.PT-4
 
+platform: machine
+
 ocil: |-
     {{{ ocil_service_enabled(service="iptables") }}}
 
@@ -32,5 +39,3 @@ template:
     name: service_enabled
     vars:
         servicename: iptables
-
-platform: machine

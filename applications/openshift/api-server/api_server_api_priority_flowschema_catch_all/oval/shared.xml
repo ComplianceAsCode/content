@@ -1,0 +1,12 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="api_server_api_priority_flowschema_catch_all" version="1">
+    {{{ oval_metadata("One of the flowschema versions should exist, but it doesn't matter which") }}}
+
+    <criteria operator="OR">
+      <extend_definition comment="flowschema v1alpha1" definition_ref="api_server_api_priority_v1alpha1_flowschema_catch_all" />
+      <extend_definition comment="flowschema v1beta1" definition_ref="api_server_api_priority_v1beta1_flowschema_catch_all" />
+      <extend_definition comment="flowschema v1beta2" definition_ref="api_server_api_priority_v1beta2_flowschema_catch_all" />
+    </criteria>
+
+  </definition>
+</def-group>

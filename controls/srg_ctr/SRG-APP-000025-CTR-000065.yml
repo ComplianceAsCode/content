@@ -1,0 +1,10 @@
+controls:
+- id: SRG-APP-000025-CTR-000065
+  levels:
+  - medium
+  title: {{{ full_name }}} must automatically disable accounts after a 35-day
+    period of account inactivity.
+  rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  status: not applicable

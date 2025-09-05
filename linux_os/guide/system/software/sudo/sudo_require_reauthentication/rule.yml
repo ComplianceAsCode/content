@@ -32,9 +32,10 @@ identifiers:
     cce@sle15: CCE-85764-9
 
 references:
+    cis@rhel8: 5.3.5
     disa: CCI-002038
     nist: IA-11
-    srg: SRG-OS-000373-GPOS-00156
+    srg: SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158
     stigid@ol7: OL07-00-010343
     stigid@ol8: OL08-00-010384
     stigid@rhel7: RHEL-07-010343
@@ -58,3 +59,6 @@ fixtext: |-
     Add the following line to "/etc/sudoers":
 
     Defaults timestamp_timeout={{{ xccdf_value("var_sudo_timestamp_timeout") }}}
+
+srg_requirement: '{{{ full_name }}} must require re-authentication when using the "sudo" command.'
+

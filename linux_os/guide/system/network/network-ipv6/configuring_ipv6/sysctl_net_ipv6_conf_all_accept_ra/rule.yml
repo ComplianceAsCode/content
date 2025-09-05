@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: alinux2,alinux3,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Configure Accepting Router Advertisements on All IPv6 Interfaces'
 
@@ -18,8 +18,10 @@ identifiers:
 
 references:
     cis-csc: 11,14,3,9
+    cis@alinux2: 3.2.9
+    cis@alinux3: 3.3.9
     cis@rhel7: 3.3.9
-    cis@rhel8: 3.2.9
+    cis@rhel8: 3.3.9
     cis@sle12: 3.3.9
     cis@sle15: 3.3.9
     cis@ubuntu2004: 3.3.9
@@ -36,6 +38,12 @@ references:
     stigid@rhel8: RHEL-08-040261
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.all.accept_ra", value="0") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to not accept router advertisements on all IPv6 interfaces unless the system is a router.
+    {{{ fixtext_sysctl("net.ipv6.conf.all.accept_ra", "0") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must not accept router advertisements on all IPv6 interfaces.'
 
 platform: machine
 

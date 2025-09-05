@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,uos20
 
 title: 'Install libreswan Package'
 
@@ -39,10 +39,12 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="libreswan") }}}'
 
+fixtext: '{{{ fixtext_package_installed("libreswan") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("libreswan") }}}'
+
 template:
     name: package_installed
     vars:
         pkgname: libreswan
 
-fixtext: |-
-    {{{ describe_package_install("libreswan") }}}

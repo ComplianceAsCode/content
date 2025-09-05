@@ -6,105 +6,133 @@ controls:
             settings based on DoD security configuration or implementation guidance, including
             STIGs, NSA configuration guides, CTOs, and DTMs.
         rules:
-            - service_kdump_disabled
+            # file permissions
             - file_groupowner_cron_d
             - file_groupowner_cron_daily
             - file_groupowner_cron_hourly
             - file_groupowner_cron_monthly
             - file_groupowner_cron_weekly
             - file_groupowner_crontab
+            - file_groupowner_etc_group
+            - file_groupowner_etc_gshadow
+            - file_groupowner_etc_passwd
+            - file_groupowner_etc_shadow
+            - file_groupowner_grub2_cfg
             - file_owner_cron_d
             - file_owner_cron_daily
             - file_owner_cron_hourly
             - file_owner_cron_monthly
             - file_owner_cron_weekly
+            - file_owner_etc_group
+            - file_owner_etc_gshadow
+            - file_owner_etc_passwd
+            - file_owner_etc_shadow
+            - file_groupowner_backup_etc_group
+            - file_groupowner_backup_etc_gshadow
+            - file_groupowner_backup_etc_passwd
+            - file_groupowner_backup_etc_shadow
+            - file_owner_backup_etc_group
+            - file_owner_backup_etc_gshadow
+            - file_owner_backup_etc_passwd
+            - file_owner_backup_etc_shadow
+            - file_permissions_backup_etc_group
+            - file_permissions_backup_etc_gshadow
+            - file_permissions_backup_etc_passwd
+            - file_permissions_backup_etc_shadow
             - file_owner_crontab
+            - file_permissions_etc_group
+            - file_permissions_etc_gshadow
+            - file_permissions_etc_passwd
+            - file_permissions_etc_shadow
             - file_permissions_cron_d
             - file_permissions_cron_daily
             - file_permissions_cron_hourly
             - file_permissions_cron_monthly
             - file_permissions_cron_weekly
             - file_permissions_crontab
-            - file_groupowner_cron_allow
-            - file_owner_cron_allow
-            - package_vsftpd_removed
-            - package_sendmail_removed
-            - postfix_prevent_unrestricted_relay
-            - mount_option_krb_sec_remote_filesystems
-            - mount_option_nodev_remote_filesystems
-            - mount_option_noexec_remote_filesystems
-            - mount_option_nosuid_remote_filesystems
-            - use_kerberos_security_all_exports
-            - no_host_based_files
-            - no_user_host_based_files
-            - package_tftp-server_removed
-            - tftpd_uses_secure_mode
-            - service_rngd_enabled
-            - package_quagga_removed
             - file_groupowner_sshd_config
             - file_owner_sshd_config
             - file_permissions_sshd_config
             - file_permissions_sshd_private_key
             - file_permissions_sshd_pub_key
+            - file_groupownership_home_directories
+            - file_permission_user_init_files
+            - file_permissions_home_directories
+            - file_permissions_ungroupowned
+            - dir_perms_world_writable_root_owned
+            - no_files_unowned_by_user
+
+            # service disabled
+            - service_kdump_disabled
+            - service_debug-shell_disabled
+            - service_autofs_disabled
+            - service_systemd-coredump_disabled
+
+            # service enabled
+            - service_rngd_enabled
+            - service_auditd_enabled
+            - service_rsyslog_enabled
+            - service_firewalld_enabled
+
+            # package removed
+            - package_vsftpd_removed
+            - package_sendmail_removed
+            - package_tftp-server_removed
+            - package_quagga_removed
+            - xwindows_remove_packages
+            - package_gssproxy_removed
+            - package_iprutils_removed
+            - package_tuned_removed
+            - package_gdm_removed
+
+            # package installed
             - package_openssh-clients_installed
-            - sshd_allow_only_protocol2
+            - package_libreswan_installed
+            - package_audit_installed
+            - package_rsyslog-gnutls_installed
+            - package_rsyslog_installed
+            - package_firewalld_installed
+            - package_gnutls-utils_installed
+            - package_nss-tools_installed
+            - package_rng-tools_installed
+            - package_MFEhiplsm_installed
+            - package_policycoreutils-python-utils_installed
+            - package_policycoreutils_installed
+
+            # mount options
+            - mount_option_nodev_remote_filesystems
+            - mount_option_noexec_remote_filesystems
+            - mount_option_nosuid_remote_filesystems
+            - mount_option_boot_nosuid
+            - mount_option_boot_efi_nosuid
+            - mount_option_home_noexec
+            - mount_option_home_nosuid
+            - mount_option_nodev_nonroot_local_partitions
+            - mount_option_nodev_removable_partitions
+            - mount_option_noexec_removable_partitions
+            - mount_option_nosuid_removable_partitions
+
+            # sshd config
             - sshd_disable_compression
             - sshd_disable_empty_passwords
             - sshd_disable_gssapi_auth
             - sshd_disable_kerb_auth
             - sshd_disable_rhosts
-            - sshd_disable_rhosts_rsa
             - sshd_disable_root_login
             - sshd_disable_user_known_hosts
             - sshd_disable_x11_forwarding
             - sshd_enable_strictmodes
-            - sshd_enable_x11_forwarding
             - sshd_print_last_log
             - sshd_rekey_limit
-            - sshd_use_priv_separation
             - sshd_use_strong_rng
             - sshd_x11_use_localhost
-            - package_xorg-x11-server-common_removed
-            - xwindows_remove_packages
-            - xwindows_runlevel_target
-            - display_login_attempts
-            - disable_ctrlaltdel_burstaction
-            - disable_ctrlaltdel_reboot
-            - grub2_disable_interactive_boot
-            - service_debug-shell_disabled
-            - accounts_authorized_local_users
-            - no_empty_passwords
-            - accounts_no_uid_except_zero
-            - no_shelllogin_for_systemaccounts
-            - accounts_have_homedir_login_defs
-            - accounts_user_dot_no_world_writable_programs
-            - accounts_user_home_paths_only
-            - accounts_user_interactive_home_directory_defined
-            - accounts_user_interactive_home_directory_exists
-            - file_groupownership_home_directories
-            - file_permission_user_init_files
-            - file_permissions_home_directories
-            - accounts_umask_etc_bashrc
-            - accounts_umask_interactive_users
-            - auditd_data_retention_flush
+
+            # auditd config
             - auditd_local_events
             - auditd_log_format
             - auditd_write_logs
-            - package_audit_installed
-            - service_auditd_enabled
-            - grub2_kernel_trust_cpu_rng
-            - grub2_vsyscall_argument
-            - rsyslog_cron_logging
-            - package_rsyslog-gnutls_installed
-            - package_rsyslog_installed
-            - rsyslog_nolisten
-            - rsyslog_remote_loghost
-            - service_rsyslog_enabled
-            - package_firewalld_installed
-            - service_firewalld_enabled
-            - set_firewalld_default_zone
-            - libreswan_approved_tunnels
-            - package_libreswan_installed
+
+            # sysctl
             - sysctl_net_ipv6_conf_all_accept_ra
             - sysctl_net_ipv6_conf_all_accept_redirects
             - sysctl_net_ipv6_conf_all_accept_source_route
@@ -117,75 +145,85 @@ controls:
             - sysctl_net_ipv4_conf_all_log_martians
             - sysctl_net_ipv4_conf_all_rp_filter
             - sysctl_net_ipv4_conf_all_secure_redirects
-            - sysctl_net_ipv4_conf_default_accept_redirects
-            - sysctl_net_ipv4_conf_default_accept_source_route
-            - sysctl_net_ipv4_conf_default_log_martians
-            - sysctl_net_ipv4_conf_default_rp_filter
-            - sysctl_net_ipv4_conf_default_secure_redirects
             - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-            - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
             - sysctl_net_ipv4_tcp_syncookies
             - sysctl_net_ipv4_conf_all_send_redirects
+            - sysctl_net_ipv4_conf_default_accept_redirects
             - sysctl_net_ipv4_conf_default_send_redirects
             - sysctl_net_ipv4_ip_forward
-            - network_configure_name_resolution
-            - network_sniffer_disabled
-            - dir_perms_world_writable_root_owned
-            - file_permissions_ungroupowned
-            - no_files_unowned_by_user
-            - kernel_module_usb-storage_disabled
-            - service_autofs_disabled
-            - mount_option_boot_nosuid
-            - mount_option_home_noexec
-            - mount_option_home_nosuid
-            - mount_option_nodev_nonroot_local_partitions
-            - mount_option_nodev_removable_partitions
-            - mount_option_noexec_removable_partitions
-            - mount_option_nosuid_removable_partitions
-            - coredump_disable_backtraces
-            - coredump_disable_storage
-            - disable_users_coredumps
-            - service_systemd-coredump_disabled
-            - sysctl_kernel_kptr_restrict
-            - sysctl_kernel_randomize_va_space
-            - grub2_page_poison_argument
             - sysctl_kernel_core_pattern
             - sysctl_kernel_kexec_load_disabled
             - sysctl_kernel_unprivileged_bpf_disabled
             - sysctl_kernel_yama_ptrace_scope
             - sysctl_net_core_bpf_jit_harden
             - sysctl_user_max_user_namespaces
-            - package_policycoreutils-python-utils_installed
-            - package_policycoreutils_installed
-            - selinux_all_devicefiles_labeled
+            - sysctl_kernel_kptr_restrict
+            - sysctl_kernel_randomize_va_space
+
+            # accounts
+            - accounts_have_homedir_login_defs
+            - accounts_user_dot_no_world_writable_programs
+            - accounts_user_home_paths_only
+            - accounts_user_interactive_home_directory_defined
+            - accounts_user_interactive_home_directory_exists
+            - accounts_umask_etc_bashrc
+            - accounts_umask_interactive_users
+            - accounts_authorized_local_users
+            - accounts_no_uid_except_zero
+            - no_empty_passwords
+            - no_shelllogin_for_systemaccounts
+            - sudoers_validate_passwd
+            - sudo_restrict_privilege_elevation_to_authorized
+            - no_empty_passwords_etc_shadow
+            - xwindows_runlevel_target
+
+            # dconf
+            - dconf_gnome_disable_automount_open
+            - dconf_gnome_disable_autorun
+            - dconf_gnome_disable_ctrlaltdel_reboot
+
+            # partition
             - partition_for_home
             - partition_for_tmp
             - partition_for_var
             - partition_for_var_log
             - partition_for_var_log_audit
             - partition_for_var_tmp
-            - dconf_db_up_to_date
-            - dconf_gnome_disable_restart_shutdown
-            - dconf_gnome_disable_automount_open
-            - dconf_gnome_disable_autorun
-            - dconf_gnome_remote_access_encryption
-            - dconf_gnome_disable_ctrlaltdel_reboot
-            - package_gdm_removed
-            - installed_OS_is_vendor_supported
-            - package_MFEhiplsm_installed
-            - aide_use_fips_hashes
+
+            # rsyslog
+            - rsyslog_cron_logging
+            - rsyslog_nolisten
+            - rsyslog_remote_loghost
+
+            # disable misc
+            - kernel_module_usb-storage_disabled
+            - coredump_disable_backtraces
+            - coredump_disable_storage
+            - disable_users_coredumps
+            - disable_ctrlaltdel_burstaction
+            - disable_ctrlaltdel_reboot
+
+            # aide
             - aide_verify_acls
             - aide_verify_ext_attributes
+
+            # grub2
+            - grub2_vsyscall_argument
+            - grub2_page_poison_argument
+
+            # network
+            - configured_firewalld_default_deny
+            - network_configure_name_resolution
+            - network_sniffer_disabled
+            - postfix_prevent_unrestricted_relay
+            
+            # misc
+            - no_host_based_files
+            - no_user_host_based_files
+            - tftpd_uses_secure_mode
+            - display_login_attempts
+            - installed_OS_is_vendor_supported
             - rpm_verify_hashes
-            - sudo_restrict_privilege_elevation_to_authorized
-            - sudoers_validate_passwd
-            - package_gnutls-utils_installed
-            - package_gssproxy_removed
-            - package_iprutils_removed
-            - package_nss-tools_installed
-            - package_openscap-scanner_installed
-            - package_rng-tools_installed
-            - package_scap-security-guide_installed
-            - package_tuned_removed
             - security_patches_up_to_date
+
         status: automated

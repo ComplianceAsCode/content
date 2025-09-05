@@ -29,6 +29,7 @@ identifiers:
     cce@rhel7: CCE-82049-8
     cce@rhel8: CCE-80652-1
     cce@rhel9: CCE-83608-0
+    cce@sle12: CCE-83257-6
     cce@sle15: CCE-91168-5
 
 references:
@@ -44,10 +45,8 @@ references:
     iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     nist: IA-5(f),IA-5(1)(a),CM-6(a)
     nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
-    ospp: FMT_MOF_EXT.1
     srg: SRG-OS-000078-GPOS-00046
     stigid@ol8: OL08-00-020231
-    stigid@rhel8: RHEL-08-020231
 
 ocil_clause: 'it is not set to the required value'
 
@@ -62,5 +61,7 @@ fixtext: |-
     Add, or modify the following line in the "/etc/login.defs" file:
 
     PASS_MIN_LEN {{{ xccdf_value("var_accounts_password_minlen_login_defs") }}}
+
+srg_requirement: '{{{ full_name }}} passwords for new users must have a minimum of 15 characters.'
 
 platform: login_defs

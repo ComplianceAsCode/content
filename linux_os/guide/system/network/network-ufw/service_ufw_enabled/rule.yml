@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Verify ufw Enabled'
+
+description: |-
+    {{{ describe_service_enable(service="ufw") }}}
+
+rationale: |-
+    The ufw service must be enabled and running in order for ufw to protect the system
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 3.5.1.3
+    disa: CCI-002314
+    srg: SRG-OS-000297-GPOS-00115
+    stigid@ubuntu2004: UBTU-20-010434
+
+ocil_clause: 'the service is not enabled'
+
+ocil: |-
+    {{{ ocil_service_enabled(service="ufw") }}}
+
+template:
+    name: service_enabled
+    vars:
+        servicename: ufw
+
+platform: machine

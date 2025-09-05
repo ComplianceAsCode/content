@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004
+prodtype: ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004
 
 title: 'Disable Ctrl-Alt-Del Burst Action'
 
@@ -69,6 +69,7 @@ references:
     nist: CM-6(a),AC-6(1),CM-6(a)
     nist-csf: PR.AC-4,PR.DS-5
     nist@sle15: CM-6(b),CM-6.1(iv)
+    ospp: FAU_GEN.1.2
     srg: SRG-OS-000324-GPOS-00125,SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-040172
     stigid@rhel8: RHEL-08-040172
@@ -88,6 +89,8 @@ fixtext: |-
     Edit "/etc/systemd/system.conf" and add or edit the following line:
 
     CtrlAltDelBurstAction=none
+
+srg_requirement: 'The systemd Ctrl-Alt-Delete burst key sequence in {{{ full_name }}} must be disabled.'
 
 {{% if product != "ubuntu2004" %}}
 warnings:

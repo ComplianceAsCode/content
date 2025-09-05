@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Ensure auditd Collects Information on the Use of Privileged Commands - init'
+
+description: |-
+    At a minimum, the audit system should collect the execution of
+    privileged commands for all users and root. If the <tt>auditd</tt> daemon is
+    configured to use the <tt>augenrules</tt> program to read audit rules during
+    daemon startup (the default), add a line of the following form to a file with
+    suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+    <pre>-a always,exit -F path=/usr/sbin/init {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add a line of the following
+    form to <tt>/etc/audit/audit.rules</tt>:
+    <pre>-a always,exit -F path=/usr/sbin/init {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+
+rationale:
+    Misuse of the init command may cause availability issues for the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-85956-1
+
+references:
+    disa: CCI-000172
+    nist: AU-12(c)
+    srg: SRG-OS-000477-GPOS-00222
+
+{{{ ocil_fix_srg_privileged_command("init", "/usr/sbin/") }}}
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/sbin/init

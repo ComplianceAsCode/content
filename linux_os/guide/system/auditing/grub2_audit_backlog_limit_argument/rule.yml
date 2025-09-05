@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
+prodtype: alinux3,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
 
 title: 'Extend Audit Backlog Limit for the Audit Daemon'
 
@@ -24,15 +24,16 @@ identifiers:
     cce@rhel9: CCE-83652-8
 
 references:
+    cis@alinux3: 4.1.1.4
     cis@rhel7: 4.1.2.4
     cis@rhel8: 4.1.1.4
     cis@sle12: 4.1.2.4
     cis@sle15: 4.1.2.4
     cis@ubuntu2004: 4.1.1.4
-    disa: CCI-001849
+    disa: CCI-000130,CCI-000135,CCI-000169,CCI-000172,CCI-001849,CCI-002884
     nist: CM-6(a)
     ospp: FAU_STG.1,FAU_STG.3
-    srg: SRG-OS-000254-GPOS-00095,SRG-OS-000341-GPOS-00132
+    srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000254-GPOS-00095,SRG-OS-000341-GPOS-00132,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215
     stigid@ol8: OL08-00-030602
     stigid@rhel8: RHEL-08-030602
 
@@ -43,6 +44,8 @@ ocil: |-
 
 fixtext: |-
     {{{ fixtext_grub2_bootloader_argument("audit_backlog_limit", "8192") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must allocate an audit_backlog_limit of sufficient size to capture processes that start prior to the audit daemon.'
 
 platform: grub2
 

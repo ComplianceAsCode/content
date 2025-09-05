@@ -7,6 +7,10 @@
       <extend_definition comment="Dracut FIPS module is enabled" definition_ref="enable_dracut_fips_module" />
       <extend_definition comment="system cryptography policy is configured" definition_ref="configure_crypto_policy" />
       <criterion comment="check if system crypto policy selection in var_system_crypto_policy in the profile is set to FIPS" test_ref="test_system_crypto_policy_value" />
+      {{% if product in ["ol8","rhel8"] %}}
+      <criterion comment="check if the kernel boot parameter is configured for FIPS mode"
+      test_ref="test_grubenv_fips_mode" />
+      {{% endif %}}
     </criteria>
   </definition>
   <ind:variable_test check="at least one" comment="tests if var_system_crypto_policy is set to FIPS" id="test_system_crypto_policy_value" version="1">
@@ -17,7 +21,24 @@
     <ind:var_ref>var_system_crypto_policy</ind:var_ref>
   </ind:variable_object>
   <ind:variable_state comment="variable value is set to 'FIPS' or 'FIPS:modifier', where the modifier corresponds to a crypto policy module that further restricts the modified crypto policy." id="ste_system_crypto_policy_value" version="2">
+  {{% if product in ["ol9","rhel9"] -%}}
+    <ind:value operation="pattern match" datatype="string">^FIPS(:OSPP)?$</ind:value>
+  {{%- else %}}
+  {{# Legacy and more relaxed list of crypto policies that were historically considered FIPS-compatible. More recent products should use the more restricted list of options #}}
     <ind:value operation="pattern match" datatype="string">^FIPS(:(OSPP|NO-SHA1|NO-CAMELLIA))?$</ind:value>
+  {{%- endif %}}
   </ind:variable_state>
+  {{% if product in ["ol8","rhel8"] %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" id="test_grubenv_fips_mode"
+  comment="Fips mode selected in running kernel opts" version="1">
+    <ind:object object_ref="obj_grubenv_fips_mode" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_grubenv_fips_mode"
+  version="1">
+    <ind:filepath>/boot/grub2/grubenv</ind:filepath>
+    <ind:pattern operation="pattern match">fips=1</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endif %}}
   <external_variable comment="defined crypto policy" datatype="string" id="var_system_crypto_policy" version="1" />
 </def-group>

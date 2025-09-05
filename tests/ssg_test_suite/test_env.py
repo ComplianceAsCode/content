@@ -127,7 +127,7 @@ class TestEnv(object):
         if not error_msg_template:
             error_msg_template = "Return code of '{command}' on {remote_dest} is {rc}: {stderr}"
         remote_dest = "root@{ip}".format(ip=self.domain_ip)
-        result = common.run_with_stdout_logging(
+        result = common.retry_with_stdout_logging(
             "ssh", tuple(self.ssh_additional_options) + (remote_dest, command), log_file)
         if result.returncode:
             error_msg = error_msg_template.format(
@@ -240,6 +240,9 @@ class VMTestEnv(TestEnv):
 
         self.domain = virt.connect_domain(
             self.hypervisor, self.domain_name)
+
+        if self.domain is None:
+            sys.exit(1)
 
         if not self.keep_snapshots:
             self.snapshots_cleanup()

@@ -5,7 +5,7 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_postfix_root_mail_alias") }}}
 
-- name: Make sure that that "/etc/aliases" has a defined value for root
+- name: Make sure that "/etc/aliases" has a defined value for root
   lineinfile:
     path: "/etc/aliases"
     line: "root: {{ var_postfix_root_mail_alias }}"
@@ -13,3 +13,13 @@
     create: true
     state: present
 
+- name: 'Check if newaliases command is available'
+  ansible.builtin.stat:
+    path: /usr/bin/newaliases
+  register: result_newaliases_present
+
+- name: Update postfix aliases
+  ansible.builtin.command:
+    cmd: newaliases
+  when:
+    - result_newaliases_present.stat.exists

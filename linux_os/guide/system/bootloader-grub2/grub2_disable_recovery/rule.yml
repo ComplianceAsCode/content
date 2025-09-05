@@ -1,0 +1,43 @@
+documentation_complete: true
+
+title: 'Disable Recovery Booting'
+
+description: |-
+    {{{ full_name }}} systems support an "recovery boot" option that can be used
+    to prevent services from being started. The <tt>GRUB_DISABLE_RECOVERY</tt>
+    configuration option in <tt>/etc/default/grub</tt> should be set to
+    <tt>true</tt> to disable the generation of recovery mode menu entries. It is
+    also required to change the runtime configuration, run:
+    <pre>$ sudo {{{ grub_command("update") }}}</pre>
+
+rationale: |-
+    Using recovery boot, the console user could disable auditing, firewalls,
+    or other services, weakening system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-85986-8
+
+references:
+    ospp: FIA_UAU.1
+
+ocil_clause: 'GRUB_DISABLE_RECOVERY is not set to true or is missing'
+
+ocil: |-
+    Verify that <tt>GRUB_DISABLE_RECOVERY</tt> is set to </tt>true</tt> in <tt>/etc/default/grub</tt> to disable recovery boot.
+    Run the following command:
+
+    $ sudo grep GRUB_DISABLE_RECOVERY /etc/default/grub
+
+fixtext: |-
+    Configure the GRUB 2 boot loader to disable recovery mode boot loader entries.
+    Add or edit the following line in /etc/default/grub:
+
+    GRUB_DISABLE_RECOVERY=true
+
+    Then, run the following command:
+
+    $ sudo {{{ grub_command("update") }}}
+
+platform: grub2

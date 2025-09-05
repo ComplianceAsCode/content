@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Ensure All World-Writable Directories Are Owned by root user'
 
@@ -22,6 +22,7 @@ identifiers:
     cce@rhel7: CCE-83374-9
     cce@rhel8: CCE-83375-6
     cce@rhel9: CCE-83903-5
+    cce@sle15: CCE-91239-4
 
 references:
     anssi: BP28(R40)
@@ -39,7 +40,7 @@ ocil: |-
 fixtext: |-
     Configure all public directories to be owned by root or a system account to prevent unauthorized and unintended information transferred via shared system resources.
 
-    Set the owner of all public directories as root or a system account using the command, replace ""[Public Directory]"" with any directory path not owned by root or a system account:
+    Set the owner of all public directories as root or a system account using the command, replace "[Public Directory]" with any directory path not owned by root or a system account:
 
     $ sudo chown root [Public Directory]
 

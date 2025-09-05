@@ -1,7 +1,7 @@
 {{%- if product in ["rhel7", "ol7"] %}}
-  {{%- set auditd_conf_path="/etc/audisp/audispd.conf" %}}
+  {{%- set auditd_conf_path = audisp_conf_path + "/audispd.conf" %}}
 {{%- else %}}
-  {{%- set auditd_conf_path="/etc/audit/auditd.conf" %}}
+  {{%- set auditd_conf_path = audisp_conf_path + "/auditd.conf" %}}
 {{%- endif %}}
 
 documentation_complete: true
@@ -34,14 +34,26 @@ references:
     stigid@rhel7: RHEL-07-030210
     stigid@rhel8: RHEL-08-030700
 
-ocil_clause: 'auditd overflow action is not setup correctly'
+ocil_clause: 'auditd overflow action is not set correctly'
 
 ocil: |-
     Verify the audit system is configured to take an appropriate action when the internal event queue is full:
     <pre>$ sudo grep -i overflow_action {{{ auditd_conf_path }}}</pre>
 
-    The output should contain be like <tt>overflow_action = syslog</tt>
+    The output should contain <tt>overflow_action = syslog</tt>
 
-    If the value of the "overflow_action" option is not set to <tt>syslog</tt>, 
+    If the value of the "overflow_action" option is not set to <tt>syslog</tt>,
     <tt>single</tt>, <tt>halt</tt> or the line is commented out, ask the System Administrator
-    to indicate how the audit logs are off-loaded to a different system or media. 
+    to indicate how the audit logs are off-loaded to a different system or media.
+
+fixtext: |-
+    Configure {{{ full_name }}} to take an appropriate action when the internal audit event queue is full.
+
+    Add or edit the following line in "{{{ auditd_conf_path }}}":
+
+    overflow_action = syslog
+
+    The auditd daemon needs to be restarted in order for changes to take effect.
+
+srg_requirement: |-
+    {{{ full_name }}} must take an action when the internal audit event queue is full.

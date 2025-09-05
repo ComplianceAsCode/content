@@ -21,7 +21,7 @@ identifiers:
    cce@rhel9: CCE-87088-1
 
 references:
-    disa: CCI-001948
+    disa: CCI-001948,CCI-001954
     nist: IA-2(11)
     srg: SRG-OS-000375-GPOS-00160,SRG-OS-000377-GPOS-00162
     stigid@ol8: OL08-00-010400
@@ -56,3 +56,5 @@ fixtext: |-
     The "sssd" service must be restarted for the changes to take effect. To restart the "sssd" service, run the following command:
 
     $ sudo systemctl restart sssd.service
+
+srg_requirement: '{{{ full_name }}} must implement certificate status checking for multifactor authentication.'

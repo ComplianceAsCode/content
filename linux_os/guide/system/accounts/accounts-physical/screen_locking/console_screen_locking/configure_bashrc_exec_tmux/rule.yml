@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhcos4,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Support session locking with tmux'
 
@@ -24,11 +24,13 @@ identifiers:
     cce@rhel9: CCE-90586-9
 
 references:
-    disa: CCI-000056
-    ospp: FMT_SMF_EXT.1
-    srg: SRG-OS-000031-GPOS-00012,SRG-OS-000028-GPOS-00009
+    disa: CCI-000056,CCI-000058
+    ospp: FMT_SMF_EXT.1,FMT_MOF_EXT.1,FTA_SSL.1
+    srg: SRG-OS-000031-GPOS-00012,SRG-OS-000028-GPOS-00009,SRG-OS-000030-GPOS-00011
     stigid@ol8: OL08-00-020041
     stigid@rhel8: RHEL-08-020041
+
+platform: tmux
 
 ocil_clause: 'exec tmux is not present at the end of bashrc'
 
@@ -51,5 +53,8 @@ fixtext: |-
         case "$name" in sshd|login) exec tmux ;; esac
     fi
 
+    Then, ensure a correct mode of /etc/profile.d/tmux.sh using this command:
 
-platform: machine
+    $ sudo chmod 0644 /etc/profile.d/tmux.sh
+
+srg_requirement: '{{{ full_name }}} must ensure session control is automatically started at shell initialization.'

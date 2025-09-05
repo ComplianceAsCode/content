@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Ensure All SGID Executables Are Authorized'
 
-prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,sle15,wrlinux1019,wrlinux8
+prodtype: alinux3,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,sle12,sle15,uos20
 
 description: |-
     The SGID (set group id) bit should be set only on files that were
@@ -28,13 +28,15 @@ identifiers:
     cce@rhel7: CCE-80132-4
     cce@rhel8: CCE-80816-2
     cce@rhel9: CCE-83901-9
+    cce@sle12: CCE-91472-1
     cce@sle15: CCE-91175-0
 
 references:
     anssi: BP28(R37),BP28(R38)
     cis-csc: 12,13,14,15,16,18,3,5
+    cis@alinux3: 6.1.15
     cis@rhel7: 6.1.14
-    cis@rhel8: 6.1.14
+    cis@rhel8: 6.1.15
     cis@sle15: 6.1.12
     cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
     isa-62443-2009: 4.3.3.7.3

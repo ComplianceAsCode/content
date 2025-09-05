@@ -38,8 +38,7 @@ ocil: |-
 fixtext: |-
     {{{ describe_file_permissions(file="/etc/audit/rules.d/*.rules", perms="0640") }}}
 
-srg_requirement: |-
-    {{{ full_name }}} must allow only the Information System Security Manager (ISSM) (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited.
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/audit/rules.d/*.rules", mode="0640")  }}}'
 
 template:
     name: file_permissions

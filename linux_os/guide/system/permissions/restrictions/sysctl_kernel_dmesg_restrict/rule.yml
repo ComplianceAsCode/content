@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Restrict Access to Kernel Message Buffer'
 
@@ -22,7 +22,7 @@ identifiers:
 references:
     anssi: BP28(R23)
     cui: 3.1.5
-    disa: CCI-001314
+    disa: CCI-001090,CCI-001314
     hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)
     nist: SI-11(a),SI-11(b)
     srg: SRG-OS-000132-GPOS-00067,SRG-OS-000138-GPOS-00069
@@ -30,6 +30,12 @@ references:
     stigid@rhel8: RHEL-08-010375
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.dmesg_restrict", value="1") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to restrict access to the dmesg bus.
+    {{{ fixtext_sysctl("kernel.dmesg_restrict", "1") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must restrict access to the kernel message buffer.'
 
 platform: machine
 

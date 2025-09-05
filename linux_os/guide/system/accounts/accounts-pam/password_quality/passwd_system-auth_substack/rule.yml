@@ -1,0 +1,30 @@
+prodtype: ol7,ol8,rhel7
+
+title: 'Configure PAMs passwd Module To Implement system-auth Substack When Changing Passwords'
+
+description: |-
+    Verify that pam is configured to use <tt>/etc/pam.d/system-auth</tt>
+    when changing passwords. Look for the following line in <tt>/etc/pam.d/passwd</tt>:
+    <pre>password substack system-auth</pre>
+
+rationale: |-
+    Including system-auth from the passwd module ensures that the user must pass through
+    the PAM configuration for system authentication as found in /etc/pam.d/system-auth
+    when changing passwords.
+
+severity: medium
+
+references:
+    disa: CCI-000192
+    nist: IA-5(1)(a),IA-5(1).1(v),IA-5(1)(a)
+    srg: SRG-OS-000069-GPOS-00037
+    stigid@ol7: OL07-00-010118
+    stigid@rhel7: RHEL-07-010118
+
+ocil_clause: '/etc/pam.d/passwd does not implement /etc/pam.d/system-auth'
+
+ocil: |-
+    To verify that PAM implements <tt>system-auth</tt> when changing passwords
+    run the following command:
+    <pre># cat /etc/pam.d/passwd | grep -i substack | grep -i system-auth
+    password substack system-auth</pre>

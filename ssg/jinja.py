@@ -147,7 +147,7 @@ def load_macros(substitutions_dict=None):
 
     add_python_functions(substitutions_dict)
     try:
-        for filename in os.listdir(JINJA_MACROS_DIRECTORY):
+        for filename in sorted(os.listdir(JINJA_MACROS_DIRECTORY)):
             if filename.endswith(".jinja"):
                 macros_file = os.path.join(JINJA_MACROS_DIRECTORY, filename)
                 update_substitutions_dict(macros_file, substitutions_dict)

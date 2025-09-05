@@ -1,0 +1,51 @@
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+- name: "Set rsyslog logfile configuration facts"
+  set_fact:
+    rsyslog_etc_config: "/etc/rsyslog.conf"
+{{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "sle15", "sle12"] %}}
+    desired_perm_mode: "640"
+{{% else %}}
+    desired_perm_mode: "600"
+{{% endif %}}
+
+# * And also the log file paths listed after rsyslog's $IncludeConfig directive
+#   (store the result into array for the case there's shell glob used as value of IncludeConfig)
+- name: "Get IncludeConfig directive"
+  shell: |
+    set -o pipefail
+    grep -e '$IncludeConfig' {{ rsyslog_etc_config }} | cut -d ' ' -f 2 || true
+  register: include_config_output
+  changed_when: False
+
+- name: "Get include files directives"
+  shell: |
+    set -o pipefail
+    grep -oP '^\s*include\s*\(\s*file.*' {{ rsyslog_etc_config }} |cut  -d"\"" -f 2 || true
+  register: include_files_output
+  changed_when: False
+
+- name: "List all config files"
+  shell: find "$(dirname "{{ item }}" )" -maxdepth 1 -name "$(basename "{{ item }}")"
+  loop: "{{ include_config_output.stdout_lines + include_files_output.stdout_lines }}"
+  register: rsyslog_config_files
+  changed_when: False
+
+- name: "Extract log files"
+  shell: |
+    set -o pipefail
+    grep -oP '^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*\.*$' {{ item }}  |awk '{print $NF}'|sed -e 's/^-//' || true
+  loop: "{{ rsyslog_config_files.results|map(attribute='stdout_lines')|list|flatten|unique + [ rsyslog_etc_config ] }}"
+  register: log_files
+  changed_when: False
+
+- name: "Setup log files permissions"
+  ignore_errors: yes
+  file:
+    path: "{{ item }}"
+    mode: "{{ desired_perm_mode }}"
+  loop: "{{ log_files.results|map(attribute='stdout_lines')|list|flatten|unique }}"

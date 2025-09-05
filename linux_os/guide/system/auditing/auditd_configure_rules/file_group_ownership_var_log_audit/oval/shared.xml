@@ -3,73 +3,56 @@
     {{{ oval_metadata("Checks that all audit log files are group owned by the root user.") }}}
     <criteria operator="OR">
       <criteria operator="AND" comment="log_file set">
-        <extend_definition comment="log file set in auditd.conf" definition_ref="auditd_conf_log_file_not_set" negate="true" />
-        <criteria operator="AND" comment="log_group in auditd.conf is not root">
+        <extend_definition comment="log file set in auditd.conf"
+        definition_ref="auditd_conf_log_file_not_set" negate="true" />
+        <criteria operator="XOR">
+          <criterion comment="audit log files are root group owned"
+          test_ref="test_group_ownership_audit_log_files"/>
+          {{% if product != "ol8" %}}
+          <extend_definition comment="log_group in auditd.conf is not root"
+          definition_ref="auditd_conf_log_group_not_root"/>
+          {{% endif %}}
+        </criteria>
+      </criteria>
+      <criteria operator="AND" comment="log_file not set">
+        <extend_definition comment="log file not set in auditd.conf"
+        definition_ref="auditd_conf_log_file_not_set" />
+        <criteria operator="XOR">
+          <criterion comment="default audit log files are root group owned"
+          test_ref="test_group_ownership_default_audit_log_files"/>
+          {{% if product != "ol8" %}}
           <extend_definition comment="log_group in auditd.conf is not root"
           definition_ref="auditd_conf_log_group_not_root" />
-          <criterion test_ref="test_group_ownership_audit_log_files-non_root" />
+          {{% endif %}}
         </criteria>
-        <criterion comment="audit log files are root group owned" test_ref="test_group_ownership_audit_log_files"/>
       </criteria>
-      <criteria operator="AND" comment="log_group in auditd.conf is not root">
-        <extend_definition comment="log_group in auditd.conf is not root"
-        definition_ref="auditd_conf_log_group_not_root" />
-        <criterion test_ref="test_group_ownership_var_log_audit_files-non_root" />
-      </criteria>
-      <criterion comment="files are root group owned" test_ref="test_group_ownership_var_log_audit_files"/>
     </criteria>
   </definition>
 
-  <unix:file_test check="all" check_existence="none_exist" comment="audit log files gid root" id="test_group_ownership_audit_log_files" version="1">
+  <unix:file_test check="all" check_existence="none_exist" comment="audit log files gid root"
+  id="test_group_ownership_audit_log_files" version="1">
     <unix:object object_ref="object_group_ownership_audit_log_files" />
   </unix:file_test>
 
-  <unix:file_object comment="audit log files" id="object_group_ownership_audit_log_files" version="1">
-    <unix:filepath operation="pattern match" var_ref="audit_log_file_path" />
+  <unix:file_test check="all" check_existence="none_exist" comment="audit log files gid root"
+  id="test_group_ownership_default_audit_log_files" version="1">
+    <unix:object object_ref="object_group_ownership_default_audit_log_files" />
+  </unix:file_test>
+
+  <unix:file_object comment="audit log files" id="object_group_ownership_audit_log_files"
+  version="1">
+    <unix:filepath operation="equals" var_ref="audit_log_file_path" />
     <filter action="include">state_group_owner_not_root_var_log_audit</filter>
   </unix:file_object>
 
-  <unix:file_test check="all" check_existence="none_exist" comment="/var/log/audit files gid root" id="test_group_ownership_var_log_audit_files" version="1">
-    <unix:object object_ref="object_group_ownership_var_log_audit_files" />
-  </unix:file_test>
-
-  <unix:file_object comment="/var/log/audit files" id="object_group_ownership_var_log_audit_files" version="1">
-    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
-    <unix:path operation="equals">/var/log/audit</unix:path>
-    <unix:filename operation="pattern match">^.*$</unix:filename>
+  <unix:file_object comment="/var/log/audit files"
+  id="object_group_ownership_default_audit_log_files" version="1">
+    <unix:filepath operation="equals">/var/log/audit/audit.log</unix:filepath>
     <filter action="include">state_group_owner_not_root_var_log_audit</filter>
   </unix:file_object>
 
   <unix:file_state id="state_group_owner_not_root_var_log_audit" version="1" operator="OR">
     <unix:group_id datatype="int" operation="not equal">0</unix:group_id>
-  </unix:file_state>
-
-  <unix:file_test check="all" check_existence="all_exist" comment="audit log files gid not root" id="test_group_ownership_audit_log_files-non_root" version="1">
-    <unix:object object_ref="object_group_ownership_audit_log_files-non_root" />
-  </unix:file_test>
-
-  <unix:file_object comment="audit log files" id="object_group_ownership_audit_log_files-non_root" version="1">
-    <unix:filepath operation="pattern match" var_ref="audit_log_file_path" />
-    <filter action="include">state_group_owner_not_root_var_log_audit-non_root</filter>
-  </unix:file_object>
-
-  <unix:file_test check="all" check_existence="all_exist" comment="/var/log/audit files gid not root " id="test_group_ownership_var_log_audit_files-non_root" version="1">
-    <unix:object object_ref="object_group_ownership_var_log_audit_files-non_root" />
-  </unix:file_test>
-
-  <unix:file_object comment="/var/log/audit files" id="object_group_ownership_var_log_audit_files-non_root" version="1">
-    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
-    <unix:path operation="equals">/var/log/audit</unix:path>
-    <unix:filename operation="pattern match">^.*$</unix:filename>
-    <filter action="include">state_group_owner_not_root_var_log_audit-non_root</filter>
-  </unix:file_object>
-
-  <unix:file_state id="state_group_owner_not_root_var_log_audit-non_root" version="1" operator="OR">
-    {{% if 'ubuntu' not in product %}}
-    <unix:group_id datatype="int" operation="not equal">0</unix:group_id>
-    {{% else %}}
-    <unix:group_id datatype="int" operation="equals">4</unix:group_id>
-    {{% endif %}}
   </unix:file_state>
 
 </def-group>

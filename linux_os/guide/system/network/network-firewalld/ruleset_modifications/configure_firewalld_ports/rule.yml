@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4
 
 title: 'Configure the Firewalld Ports'
 
@@ -67,3 +67,5 @@ fixtext: |-
     $ sudo firewall-cmd --permanent --add-port=port_number/tcp
     or
     $ sudo firewall-cmd --permanent --add-service=service_name
+
+srg_requirement: '{{{ full_name }}} must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the Ports, Protocols, and Services Management (PPSM) Category Assignments List (CAL) and vulnerability assessments.'

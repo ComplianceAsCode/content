@@ -28,8 +28,10 @@ identifiers:
 
 references:
     cis-csc: 11,12,14,15,16,18,3,5,9
+    cis@alinux2: 5.2.8
+    cis@alinux3: 5.2.8
     cis@rhel7: 5.3.8
-    cis@rhel8: 5.2.8
+    cis@rhel8: 5.2.11
     cis@sle12: 5.3.9
     cis@sle15: 5.2.8
     cis@ubuntu2004: 5.2.7
@@ -49,6 +51,11 @@ references:
     vmmsrg: SRG-OS-000107-VMM-000530
 
 {{{ complete_ocil_entry_sshd_option(default="yes", option="IgnoreRhosts", value="yes") }}}
+
+fixtext: |-
+    {{{ fixtext_sshd_lineinfile("IgnoreRhosts", "yes") }}}
+
+srg_requirement: '{{{ full_namne }}} must be configured so that the SSH daemon does not allow authentication using rhosts authentication.'
 
 template:
     name: sshd_lineinfile

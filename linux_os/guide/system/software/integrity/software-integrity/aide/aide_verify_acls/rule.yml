@@ -53,3 +53,10 @@ ocil: |-
     To determine that AIDE is verifying ACLs, run the following command:
     <pre>$ grep acl /etc/aide.conf</pre>
     Verify that the <tt>acl</tt> option is added to the correct ruleset.
+
+fixtext: |-
+    Configure the file integrity tool to check file and directory ACLs.
+
+    If AIDE is installed, ensure the "acl" rule is present on all file and directory selection lists.
+
+srg_requirement: 'The {{{ full_name }}} file integrity tool must be configured to verify Access Control Lists (ACLs).'

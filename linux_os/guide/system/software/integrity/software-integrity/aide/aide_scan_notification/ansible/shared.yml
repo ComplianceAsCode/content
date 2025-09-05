@@ -1,14 +1,8 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_wrlinux,multi_platform_ol,multi_platform_sle
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_ol,multi_platform_sle
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = low
-{{% if product in ["sle12", "sle15"] %}}
-    {{% set aide_path = "/usr/bin/aide" %}}
-{{% else %}}
-    {{% set aide_path = "/usr/sbin/aide" %}}
-{{% endif %}}
-
 - (xccdf-var var_aide_scan_notification_email)
 
 - name: "Ensure AIDE is installed"
@@ -25,4 +19,4 @@
     hour: 04
     weekday: 0
     user: root
-    job: '{{{aide_path}}}  --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" {{ var_aide_scan_notification_email }}'
+    job: '{{{ aide_bin_path }}}  --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" {{ var_aide_scan_notification_email }}'

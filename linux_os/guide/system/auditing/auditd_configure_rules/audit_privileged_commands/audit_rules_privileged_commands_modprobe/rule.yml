@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,sle12,sle15,ubuntu2004
+prodtype: alinux2,rhel7,sle12,sle15,ubuntu2004
 
 title: 'Ensure auditd Collects Information on the Use of Privileged Commands - modprobe'
 
@@ -36,8 +36,9 @@ identifiers:
     cce@sle15: CCE-85731-8
 
 references:
+    cis@alinux2: 4.1.17
     cis@rhel7: 4.1.16
-    cis@rhel8: 4.1.15
+    cis@rhel8: 4.1.3.19
     cis@sle12: 4.1.16
     cis@sle15: 4.1.16
     cis@ubuntu2004: 4.1.16
@@ -47,7 +48,7 @@ references:
     stigid@sle15: SLES-15-030400
     stigid@ubuntu2004: UBTU-20-010296
 
-ocil_clause: 'it is not the case'
+ocil_clause: '{{{ ocil_clause_audit() }}}'
 
 ocil: |-
     To verify that auditing of privileged command use is configured, run the

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: alinux3,fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Set Boot Loader Password in grub2'
 
@@ -28,11 +28,7 @@ description: |-
     Once the superuser password has been added,
     update the
     <tt>grub.cfg</tt> file by running:
-    {{% if "ubuntu" in product %}}
-    <pre>update-grub</pre>
-    {{% elif product in ["sle12", "sle15"] %}}
-    <pre>grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
-    {{% endif %}}
+    <pre>{{{ grub_command("update") }}}</pre>
     {{% endif %}}
 
 rationale: |-
@@ -53,8 +49,9 @@ identifiers:
 references:
     anssi: BP28(R17)
     cis-csc: 1,11,12,14,15,16,18,3,5
+    cis@alinux3: 1.5.1
     cis@rhel7: 1.4.1
-    cis@rhel8: 1.5.2
+    cis@rhel8: 1.4.1
     cis@sle12: 1.4.1
     cis@sle15: 1.5.1
     cis@ubuntu2004: 1.5.1
@@ -77,33 +74,18 @@ references:
     stigid@sle15: SLES-15-010190
     stigid@ubuntu2004: UBTU-20-010009
 
-ocil_clause: 'it does not'
+ocil_clause: 'it does not produce any output'
 
 ocil: |-
-    To verify the boot loader superuser password has been set, run the following
-    command:
-    {{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
-    <pre>sudo grep "boot" {{{ grub2_boot_path }}}/grub.cfg</pre>
-    {{% else %}}
-    <pre>sudo grep "superusers" /etc/grub2.cfg</pre>
-    {{% endif %}}
-    The output should show the following:
-    <pre>password_pbkdf2 <b>superusers-account</b> <b>${GRUB2_PASSWORD}</b></pre>
-    To verify the boot loader superuser account password has been set,
-    and the password encrypted, run the following command:
-    {{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
-    <pre>sudo cat /etc/grub.d/40_custom</pre>
-    The output should be similar to:
-    <pre>set superusers="boot"
-    password_pbkdf2 boot grub.pbkdf2.sha512.10000.5DE5DF6E01A52E17A8C2FEDF585A3916B345F654C9D19C9ECD0BC958DF8C8A5E1AB15862D9C0B6DCE1F3209D8E8B46101DB3AE7146BB9D7D6C1D379E1854AF9E.CD75F981FE5223C583FB7887544C3A4C96431B5C089801D26855B93A1CB0BC0A508D189F1799A1CC40036B069C36EAD51DAE6A2EE6C0732353B2B5B4F5C49088</pre>
-    {{% else %}}
-    <pre>sudo cat {{{ grub2_boot_path }}}/user.cfg</pre>
-    The output should be similar to:
-    <pre>GRUB2_PASSWORD=grub.pbkdf2.sha512.10000.C4E08AC72FBFF7E837FD267BFAD7AEB3D42DDC
-    2C99F2A94DD5E2E75C2DC331B719FE55D9411745F82D1B6CFD9E927D61925F9BBDD1CFAA0080E0
-    916F7AB46E0D.1302284FCCC52CD73BA3671C6C12C26FF50BA873293B24EE2A96EE3B57963E6D7
-    0C83964B473EC8F93B07FE749AA6710269E904A9B08A6BBACB00A2D242AD828</pre>
-    {{% endif %}}
+    First, check whether the password is defined in either {{{ grub2_boot_path }}}/user.cfg or
+    {{{ grub2_boot_path }}}/grub.cfg.
+    Run the following commands:
+    <pre>$ sudo grep '^[\s]*GRUB2_PASSWORD=grub\.pbkdf2\.sha512.*$' {{{ grub2_boot_path }}}/user.cfg
+    $ sudo grep '^[\s]*password_pbkdf2[\s]+.*[\s]+grub\.pbkdf2\.sha512.*$' {{{ grub2_boot_path }}}/grub.cfg
+    </pre>
+
+    Second, check that a superuser is defined in {{{ grub2_boot_path }}}/grub.cfg.
+    <pre>$ sudo grep '^[\s]*set[\s]+superusers=("?)[a-zA-Z_]+\1$'  {{{ grub2_boot_path }}}/grub.cfg</pre>
 
 warnings:
     - general: |-
@@ -114,3 +96,23 @@ warnings:
         <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
 
 platform: machine
+
+fixtext: |-
+    Configure {{{ full_name }}} to require a grub bootloader password for the grub superuser account.
+
+    Generate an encrypted grub2 password for the grub superuser account with the following command:
+
+    $ sudo grub2-setpassword
+    Enter password:
+    Confirm password:
+
+    Edit the /etc/grub.d/40_custom file and add or modify the following lines in the "### BEGIN /etc/grub.d/01_users ###" section:
+
+    set superusers="[someuniquestringhere]"
+    export superusers
+
+    Once the superuser account has been added, update the grub.cfg file by running:
+
+    $ sudo {{{ grub_command("update") }}}
+
+srg_requirement: '{{{ full_name }}} systems booted with a BIOS must require authentication upon booting into single-user and maintenance modes.'

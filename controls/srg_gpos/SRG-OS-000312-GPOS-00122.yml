@@ -4,4 +4,19 @@ controls:
             - medium
         title: {{{ full_name }}} must allow operating system admins to pass information
             to any other operating system admin or user.
-        status: pending
+        status: inherently met
+        rationale: |-
+            Discretionary Access Control (DAC) is based on the notion that individual users are "owners" of objects and therefore have discretion over who should be authorized to access the object and in which mode (e.g., read or write).
+            Ownership is usually acquired as a consequence of creating the object or via specified ownership assignment. DAC allows the owner to determine who will have access to objects they control.
+            An example of DAC includes user-controlled file permissions.
+        check:
+            {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
+            {{{ full_name }}} inherently meets this requirement.
+        fixtext:
+            {{{ full_name }}} inherently meets this requirement.
+            No fix is required.
+        status_justification:
+            The UNIX file permission model allows operating system admins to pass information to operating system admins and users.
+        artifact_description:
+            The group and other or world permission on a file allows an operating system admins to pass information
+            to any other operating system admin or user.

@@ -24,7 +24,7 @@ identifiers:
 
 references:
     disa: CCI-000068
-    ospp: FCS_SSHS_EXT.1
+    ospp: FCS_SSH_EXT.1.8
     srg: SRG-OS-000480-GPOS-00227,SRG-OS-000033-GPOS-00014
     stigid@ol8: OL08-00-040161
     stigid@rhel8: RHEL-08-040161
@@ -54,3 +54,5 @@ fixtext: |-
     Restart the SSH daemon for the settings to take effect.
 
     $ sudo systemctl restart sshd.service
+
+srg_requirement: '{{{ full_name }}} must force a frequent session key renegotiation for SSH connections to the server.'

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhcos4,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Enable the USBGuard Service'
 
@@ -39,3 +39,8 @@ template:
     name: service_enabled
     vars:
         servicename: usbguard
+
+fixtext: |-
+    {{{ fixtext_service_enabled("usbguard") }}}
+
+srg_requirement: '{{{ srg_requirement_service_enabled("usbguard") }}}'

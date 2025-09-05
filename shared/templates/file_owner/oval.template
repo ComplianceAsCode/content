@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
   {{% if FILEPATH is not string %}}
-    {{{ oval_metadata("This test makes sure that FILEPATH is owned by " + FILEUID + ".") }}}
+    {{{ oval_metadata("This test makes sure that " + FILEPATH|join(", ") + " is owned by " + FILEUID + ".") }}}
      <criteria>
    {{% for filepath in FILEPATH %}}
      <criterion comment="Check file ownership of {{{ filepath }}}" test_ref="test_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}" />

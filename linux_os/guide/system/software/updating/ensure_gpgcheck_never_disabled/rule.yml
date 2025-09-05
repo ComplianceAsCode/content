@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
+prodtype: alinux2,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Ensure gpgcheck Enabled for All {{{ pkg_manager }}} Package Repositories'
 
@@ -23,11 +23,13 @@ identifiers:
     cce@rhel7: CCE-26876-3
     cce@rhel8: CCE-80792-5
     cce@rhel9: CCE-83464-8
+    cce@sle12: CCE-83258-4
     cce@sle15: CCE-85797-9
 
 references:
     anssi: BP28(R15)
     cis-csc: 11,2,3,9
+    cis@alinux2: 1.2.3
     cis@rhel7: 1.2.3
     cis@sle12: 1.2.3
     cis@sle15: 1.2.3
@@ -44,6 +46,8 @@ references:
     ospp: FPT_TUD_EXT.1,FPT_TUD_EXT.2
     pcidss: Req-6.2
     srg: SRG-OS-000366-GPOS-00153
+    stigid@ol8: OL08-00-010370
+    stigid@rhel8: RHEL-08-010370
     vmmsrg: SRG-OS-000366-VMM-001430,SRG-OS-000370-VMM-001460,SRG-OS-000404-VMM-001650
 
 ocil_clause: 'GPG checking is disabled'
@@ -58,6 +62,9 @@ ocil: |-
 
 fixtext: |-
     Ensure signature checking is enabled for all package repositories.
-    Run the following commnad:
+    Run the following command:
 
     $ sudo sed -i 's/gpgcheck\s*=.*/gpgcheck=1/g' /etc/yum.repos.d/*
+
+srg_requirement: |-
+    {{{ full_name }}} must not have any repositories with GPG checking disabled.

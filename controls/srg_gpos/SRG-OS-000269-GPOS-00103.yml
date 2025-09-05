@@ -5,4 +5,6 @@ controls:
         title: In the event of a system failure, {{{ full_name }}} must preserve any
             information necessary to determine cause of failure and any information necessary
             to return to operations with least disruption to mission processes.
-        status: pending
+        status: automated
+        rules:
+            - service_systemd-journald_enabled

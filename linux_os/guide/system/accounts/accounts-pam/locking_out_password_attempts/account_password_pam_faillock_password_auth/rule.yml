@@ -1,0 +1,47 @@
+documentation_complete: true
+
+prodtype: rhel8,rhel9
+
+title: 'Configure the Use of the pam_faillock.so Module in the /etc/pam.d/password-auth File.'
+
+description: |-
+    The pam_faillock.so module must be loaded in preauth in /etc/pam.d/password-auth.
+
+rationale: |-
+    If the pam_faillock.so module is not loaded the system will not correctly lockout accounts to prevent
+    password guessing attacks.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86931-3
+    cce@rhel9: CCE-86932-1
+
+references:
+    disa: CCI-000044
+    nist: AC-7 (a)
+    srg: SRG-OS-000021-GPOS-00005
+    stigid@rhel8: RHEL-08-020026
+
+ocil_clause: 'the pam_faillock.so module is not present in the "/etc/pam.d/password-auth" file with the "preauth" line listed before pam_unix.so'
+
+ocil: |-
+    Verify the pam_faillock.so module is present in the "/etc/pam.d/password-auth" file:
+
+    $ sudo grep pam_faillock.so /etc/pam.d/password-auth
+
+    auth required pam_faillock.so preauth
+    auth required pam_faillock.so authfail
+    account required pam_faillock.so
+
+fixtext: |-
+    Configure {{{ full_name }}} to include the use of the pam_faillock.so module in the /etc/pam.d/password-auth file.
+
+    Add/Modify the appropriate sections of the "/etc/pam.d/password-auth" file to match the following lines:
+    Note: The "preauth" line must be listed before pam_unix.so.
+
+    auth required pam_faillock.so preauth
+    auth required pam_faillock.so authfail
+    account required pam_faillock.so
+
+srg_requirement: '{{{ full_name }}} must configure the use of the pam_faillock.so module in the /etc/pam.d/password-auth file.'

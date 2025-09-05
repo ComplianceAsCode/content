@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Disable debug-shell SystemD Service'
 
@@ -46,11 +46,9 @@ ocil_clause: |-
 ocil: |-
     {{{ ocil_service_disabled(service="debug-shell") }}}
 
-fixtext: |-
-    Configure the system to mask the debug-shell systemd service with the following command:
+fixtext: '{{{ srg_requirement_service_disabled("debug-shell") }}}'
 
-    $ sudo systemctl disable --now debug-shell.target
-    $ sudo systemctl mask --now debug-shell.target
+srg_requirement: '{{{ srg_requirement_service_disabled("debug-shell") }}}'
 
 platform: machine
 

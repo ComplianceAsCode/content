@@ -1,0 +1,55 @@
+documentation_complete: true
+
+title: 'Configure System to Forward All Mail From Postmaster to The Root Account'
+
+description: |-
+    Verify the administrators are notified in the event of an audit processing failure.
+    Check that the "/etc/aliases" file has a defined value for "root".
+    <pre>$ sudo grep "postmaster:\s*root$" /etc/aliases
+
+    postmaster: root</pre>
+
+rationale: |-
+    It is critical for the appropriate personnel to be aware if a system is at risk of failing to
+    process audit logs as required. Without this notification, the security personnel may be
+    unaware of an impending failure of the audit capability, and system operation may be adversely
+    affected.
+    
+    Audit processing failures include software/hardware errors, failures in the audit capturing
+    mechanisms, and audit storage capacity being reached or exceeded.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-89063-2
+    cce@rhel9: CCE-89064-0
+
+references:
+    disa: CCI-000139
+    nist: AU-5(a),AU-5.1(ii)
+    srg: SRG-OS-000046-GPOS-00022
+    stigid@ol8: OL08-00-030030
+    stigid@rhel8: RHEL-08-030030
+
+ocil_clause: 'the alias is not set or is not root'
+
+ocil: |-
+    Find the list of alias maps used by the Postfix mail server:
+    <pre>$ sudo postconf alias_maps</pre>
+    Query the Postfix alias maps for an alias for the <i>postmaster</i> user:
+    <pre>$ sudo postmap -q postmaster hash:/etc/aliases</pre>
+    The output should return root.
+
+fixtext: |-
+    Configure a valid email address as an alias for the root account.
+
+    Append the following line to "/etc/aliases":
+
+    postmaster: root
+
+    Then, run the following command:
+
+    $ sudo newaliases
+
+srg_requirement: |-
+    {{{ full_name }}} must forward mails from postmaster to the root account using a postfix alias

@@ -35,7 +35,7 @@ identifiers:
 
 references:
     cis@ubuntu2004: 4.1.11
-    disa: CCI-000130,CCI-000169,CCI-000172
+    disa: CCI-000130,CCI-000135,CCI-000169,CCI-000172,CCI-002884
     nist@sle12: AU-3,AU-3.1,AU-12(a),AU-12(c),AU-12.1(a),AU-12.1(ii),AU-12.1(iv),MA-4(1)(a)
     srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215
     stigid@ol8: OL08-00-030280
@@ -44,13 +44,7 @@ references:
     stigid@sle15: SLES-15-030370
     stigid@ubuntu2004: UBTU-20-010140
 
-ocil_clause: 'it is not the case'
-
-ocil: |-
-    To verify that execution of the command is being audited, run the following command:
-    <pre>$ sudo grep "path=/usr/bin/ssh-agent" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
-    The output should return something similar to:
-    <pre>-a always,exit -F path=/usr/bin/ssh-agent -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -k privileged-ssh-agent</pre>
+{{{ ocil_fix_srg_privileged_command("ssh-agent") }}}
 
 template:
     name: audit_rules_privileged_commands

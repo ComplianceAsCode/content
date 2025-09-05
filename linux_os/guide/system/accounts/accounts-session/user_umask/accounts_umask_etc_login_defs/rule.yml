@@ -24,8 +24,10 @@ identifiers:
 references:
     anssi: BP28(R35)
     cis-csc: 11,18,3,9
+    cis@alinux2: 5.4.4
+    cis@alinux3: 5.6.5
     cis@rhel7: 5.5.5
-    cis@rhel8: 5.5.5
+    cis@rhel8: 5.6.5
     cis@sle12: 5.5.5
     cis@sle15: 5.4.5
     cis@ubuntu2004: 5.4.4
@@ -63,3 +65,5 @@ fixtext: |-
     Add or edit the lines for the "UMASK" parameter in the "/etc/login.defs" files to "{{{ xccdf_value("var_accounts_user_umask") }}}":
 
     UMASK {{{ xccdf_value("var_accounts_user_umask") }}}
+
+srg_requirement: '{{{ full_name }}} must define default permissions for all authenticated users in such a way that the user can only read and modify their own files.'

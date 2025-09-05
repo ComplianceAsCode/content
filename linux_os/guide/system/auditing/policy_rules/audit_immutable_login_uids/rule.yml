@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8,rhcos4,rhel8,rhel9
+prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Configure immutable Audit login UIDs'
 
@@ -10,22 +10,18 @@ title: 'Configure immutable Audit login UIDs'
 
 description: |-
     Configure kernel to prevent modification of login UIDs once they are set.
-    Changing login UIDs while this configuration is enforced requires special capabilities which are not available to unprivileged users.
+    Changing login UIDs while this configuration is enforced requires special capabilities which
+    are not available to unprivileged users.
 
     The following rules configure audit as described above:
     <pre>{{{ file_contents_audit_immutable_login|indent }}}    </pre>
 
-    The <tt>Audit</tt> provides pre-configured  rules in <tt>/usr/share/audit/sample-rules</tt>. The above content can be found in <tt>/usr/share/audit/sample-rules/11-loginuid.rules</tt>.
-    To deploy this configuration, it is recommended to copy it over to the <tt>/etc/audit/rules.d/</tt> directory:
-    <pre>
-    cp /usr/share/audit/sample-rules/11-loginuid.rules /etc/audit/rules.d/
-    </pre>
-    
     Load new Audit rules into kernel by running:
     <pre>augenrules --load</pre>
 
 rationale: |-
-    If modification of login UIDs is not prevented, they can be changed by unprivileged users and make auditing complicated or impossible. 
+    If modification of login UIDs is not prevented, they can be changed by unprivileged users and
+    make auditing complicated or impossible.
 
 severity: medium
 
@@ -34,7 +30,7 @@ identifiers:
     cce@rhel9: CCE-83673-4
 
 references:
-    disa: CCI-000162
+    disa: CCI-000162,CCI-000163,CCI-000164
     nist: AU-2(a)
     ospp: FAU_GEN.1.2
     srg: SRG-OS-000462-GPOS-00206,SRG-OS-000475-GPOS-00220,SRG-OS-000057-GPOS-00027,SRG-OS-000058-GPOS-00028,SRG-OS-000059-GPOS-00029
@@ -60,13 +56,21 @@ template:
 fixtext: |-
     Configure {{{ full_name }}} kernel to prevent modification of login UIDs once they are set.
 
-    Create file "/etc/audit/rules.d/11-loginuid.rules" with the exactly following content:
+    Make sure the file "/etc/audit/rules.d/11-loginuid.rules" contains the following content:
 
-    {{{ file_contents_audit_immutable_login|indent(4) }}}
+    <pre>--loginuid-immutable</pre>
+
+    If the file doesn't exist, it can be copied from <tt>/usr/share/audit/sample-rules</tt>
+    using the next command
+
+    <pre>
+    cp /usr/share/audit/sample-rules/11-loginuid.rules /etc/audit/rules.d/
+    </pre>
 
     Then, run the following commands:
 
     $ sudo chmod o-rwx "/etc/audit/rules.d/11-loginuid.rules"
     $ sudo augenrules --load
+
 srg_requirement: |-
     {{{ full_name }}} audit system must protect logon UIDs from unauthorized change.

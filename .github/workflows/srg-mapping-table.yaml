@@ -23,7 +23,7 @@ jobs:
         run: cmake .. -G Ninja
         working-directory: ./build
       - name: Build
-        run: ninja -j2 rhel9
+        run: ninja -j2 rhel9 ocp4
         working-directory: ./build
       - name: Build rule dir json
         run: python3 utils/rule_dir_json.py
@@ -31,12 +31,20 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}
       - name: Create data directory
         run: mkdir -p $PAGES_DIR
-      - name: Generate XLSX
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v2r2.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
+      - name: Generate XLSX for OCP4
+        run: python3 utils/create_srg_export.py -c controls/srg_ctr.yml -p ocp4 -m shared/references/disa-ctr-srg-v1r3.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-ocp4.xlsx
         env:
           PYTHONPATH: ${{ github.workspace }}
-      - name: Generate HTML
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v2r2.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel9.html
+      - name: Generate HTML for OCP4
+        run: python3 utils/create_srg_export.py -c controls/srg_ctr.yml -p ocp4 -m shared/references/disa-ctr-srg-v1r3.xml --out-format html --output $PAGES_DIR/srg-mapping-ocp4.html
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+      - name: Generate XLSX for RHEL9
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v2r3.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+      - name: Generate HTML for RHEL9
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v2r3.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel9.html
         env:
           PYTHONPATH: ${{ github.workspace }}
       - uses: actions/upload-artifact@v2
@@ -49,8 +57,18 @@ jobs:
         with:
           name: srg-mapping-rhel9.html
           path: ${{ env.PAGES_DIR }}/srg-mapping-rhel9.html
+      - uses: actions/upload-artifact@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          name: srg-mapping-ocp4.xlsx
+          path: ${{ env.PAGES_DIR }}/srg-mapping-ocp4.xlsx
+      - uses: actions/upload-artifact@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          name: srg-mapping-ocp4.html
+          path: ${{ env.PAGES_DIR }}/srg-mapping-ocp4.html
       - name: Generate HTML pages
-        run: utils/generate_html_index_srg_mapping.sh $PAGES_DIR "rhel9" # add more products to this list to generate their index
+        run: utils/generate_html_index_srg_mapping.sh $PAGES_DIR "rhel9 ocp4" # add more products to this list to generate their index
         shell: bash
       - name: Configure git to trust the workspace despite the different owner
         run:

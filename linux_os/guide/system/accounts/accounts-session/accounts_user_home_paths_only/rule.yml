@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Ensure that Users Path Contains Only Local Directories'
 
@@ -47,3 +47,10 @@ ocil: |-
     directory other than the users home directory, run the following command:
     <pre>$ sudo grep -r PATH /home/</pre>
     Inspect the output for any PATH is references directories outside the home directory.
+
+fixtext: |-
+    Edit the local interactive user initialization files to change any PATH variable statements that reference directories other than their home directory.
+
+    If a local interactive user requires path variables to reference a directory owned by the application, it must be documented with the ISSO.
+
+srg_requirement: 'Executable search paths within the initialization files of all local interactive {{{ full_name }}} users must only contain paths that resolve to the system default or the users home directory.'

@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_rhel
+# platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_ol
 
 # Drop 'tcp6' and 'udp6' entries from /etc/netconfig to prevent RPC
 # services for NFSv4 from attempting to start IPv6 network listeners

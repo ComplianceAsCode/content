@@ -87,6 +87,7 @@ selections:
 - dconf_gnome_screensaver_lock_enabled
 - dconf_gnome_screensaver_mode_blank
 - display_login_attempts
+- enable_authselect
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_never_disabled
 - ensure_logrotate_activated
@@ -140,6 +141,7 @@ selections:
 - var_accounts_maximum_age_login_defs=90
 - var_auditd_num_logs=5
 - var_multiple_time_servers=rhel
+- var_authselect_profile=sssd
 - var_sshd_set_keepalive=0
 - var_smartcard_drivers=cac
 platforms: !!set {}

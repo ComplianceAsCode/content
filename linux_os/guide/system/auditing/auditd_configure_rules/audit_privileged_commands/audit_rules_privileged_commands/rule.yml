@@ -41,6 +41,7 @@ identifiers:
     cce@rhel7: CCE-27437-3
     cce@rhel8: CCE-80724-8
     cce@rhel9: CCE-83759-1
+    cce@sle15: CCE-91251-9
 
 references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
@@ -62,7 +63,7 @@ references:
     srg: SRG-OS-000327-GPOS-00127
     vmmsrg: SRG-OS-000471-VMM-001910
 
-ocil_clause: 'it is not the case'
+ocil_clause: "any setuid or setgid programs doesn't have a line in the audit rules"
 
 ocil: |-
     To verify that auditing of privileged command use is configured, run the
@@ -72,7 +73,7 @@ ocil: |-
     Run the following command to verify entries in the audit rules for all programs
     found with the previous command:
     <pre>$ sudo grep path /etc/audit/audit.rules</pre>
-    It should be the case that all relevant setuid / setgid programs have a line
+    All relevant setuid / setgid programs have a line
     in the audit rules.
 
 warnings:

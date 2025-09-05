@@ -1,0 +1,37 @@
+{{% set pam_config_map = {
+    "fingerprint": "fingerprint-auth",
+    "password": "password-auth",
+    "postlogin": "postlogin",
+    "smartcard": "smartcard-auth",
+    "system": "system-auth",
+} -%}}
+{{% if target_oval_version >= [5, 11] %}}
+<def-group>
+	<definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Check that authselect is enabled") }}}
+    <criteria operator="AND" comment="Check that authselect symlinks are set up properly.">
+      {{%- for name_element, filename in pam_config_map.items() -%}}
+	    <criterion comment="The '{{{ filename }}}' PAM config is a symlink to its authselect counterpart"
+		    test_ref="test_pam_{{{ name_element }}}_symlinked_to_authselect" />
+      {{% endfor %}}
+    </criteria>
+  </definition>
+
+  {{%- for name_element, filename in pam_config_map.items() %}}
+  <unix:symlink_test check="all" check_existence="all_exist" id="test_pam_{{{ name_element }}}_symlinked_to_authselect"
+	  comment="The '{{{ filename }}}' PAM config is a symlink to its authselect counterpart" version="1">
+  <unix:object object_ref="object_pam_{{{ name_element }}}_symlinked_to_authselect" />
+    <unix:state state_ref="state_pam_{{{ name_element }}}_symlinked_to_authselect" />
+  </unix:symlink_test>
+
+  <unix:symlink_object comment="see the test comment" id="object_pam_{{{ name_element }}}_symlinked_to_authselect" version="1">
+	  <unix:filepath>/etc/pam.d/{{{ filename }}}</unix:filepath>
+  </unix:symlink_object>
+
+  <unix:symlink_state comment="see the test comment" id="state_pam_{{{ name_element }}}_symlinked_to_authselect" version="1">
+	  <unix:filepath>/etc/pam.d/{{{ filename }}}</unix:filepath>
+	  <unix:canonical_path>/etc/authselect/{{{ filename }}}</unix:canonical_path>
+  </unix:symlink_state>
+  {{% endfor %}}
+</def-group>
+{{% endif %}}

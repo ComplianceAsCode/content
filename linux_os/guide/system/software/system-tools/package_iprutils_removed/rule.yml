@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9
 
 title: 'Uninstall iprutils Package'
 
@@ -25,6 +25,10 @@ references:
     stigid@rhel8: RHEL-08-040380
 
 {{{ complete_ocil_entry_package(package="iprutils") }}}
+
+fixtext: '{{{ fixtext_package_removed("iprutils") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_removed("iprutils") }}}'
 
 template:
     name: package_removed

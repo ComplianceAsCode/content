@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: alinux3,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Verify and Correct Ownership with RPM'
 
@@ -32,6 +32,7 @@ identifiers:
 
 references:
     cis-csc: 1,11,12,13,14,15,16,18,3,5,6,9
+    cis@alinux3: 6.1.1
     cis@rhel7: 1.7.1.4,1.7.1.5,1.7.1.6,6.1.1,6.1.2,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9
     cis@rhel8: 1.8.1.4,1.8.1.5,1.8.1.6,6.1.1,6.1.2,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9
     cis@sle15: 6.1.1
@@ -56,6 +57,17 @@ ocil: |-
     The following command will list which files on the system have ownership different from what
     is expected by the RPM database:
     <pre>$ rpm -Va | rpm -Va --nofiledigest | awk '{ if (substr($0,6,1)=="U" || substr($0,7,1)=="G") print $NF }'</pre>
+
+fixtext: |-
+    Run the following command to determine which package owns the file:
+
+    $ sudo rpm -qf [path to file]
+
+    Reset the user and group ownership of files within a package with the following command:
+
+    $ sudo rpm --setugids [package]
+
+srg_requirement: '{{{ full_name }}} must be configured so that the file ownership and group membership of system files and commands match the vendor values.'
 
 warnings:
     - general: |-

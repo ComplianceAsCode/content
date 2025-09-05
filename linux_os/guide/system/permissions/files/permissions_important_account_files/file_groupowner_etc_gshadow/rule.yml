@@ -23,6 +23,8 @@ identifiers:
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
+    cis@alinux2: 6.1.5
+    cis@alinux3: 6.1.6
     cis@rhel7: 6.1.7
     cis@rhel8: 6.1.6
     cis@ubuntu2004: 6.1.9
@@ -38,6 +40,10 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/gshadow", group=target
 
 ocil: |-
     {{{ ocil_file_group_owner(file="/etc/gshadow", group=target_group) }}}
+
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/gshadow", group=target_group) }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/gshadow", group=target_group) }}}'
 
 template:
     name: file_groupowner

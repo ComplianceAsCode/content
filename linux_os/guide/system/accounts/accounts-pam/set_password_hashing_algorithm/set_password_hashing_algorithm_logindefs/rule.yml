@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Set Password Hashing Algorithm in /etc/login.defs'
 
@@ -53,13 +53,21 @@ references:
 ocil_clause: 'ENCRYPT_METHOD is not set to SHA512'
 
 ocil: |-
+    {{% if product in ['rhel9'] -%}}
+    Verify that the shadow password suite configuration is set to encrypt password with a FIPS 140-3 approved cryptographic hashing algorithm.
+    {{% else %}}
     Verify that the shadow password suite configuration is set to encrypt password with a FIPS 140-2 approved cryptographic hashing algorithm.
-
+    {{%- endif %}}
+    
     Check the hashing algorithm that is being used to hash passwords with the following command:
 
     $ sudo grep -i ENCRYPT_METHOD /etc/login.defs
 
     ENCRYPT_METHOD SHA512
+
+{{% if product in ['rhel9'] -%}}
+srg_requirement: 'The {{{ full_name }}} pam_unix.so module must be configured in the system-auth file to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.'
+{{%- endif %}}
 
 platform: login_defs
 

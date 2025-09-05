@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhcos4,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Disable Access to Network bpf() Syscall From Unprivileged Processes'
 
@@ -27,6 +27,11 @@ references:
     stigid@rhel8: RHEL-08-040281
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.unprivileged_bpf_disabled", value="1") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent privilege escalation thru the kernel by disabling access to the bpf syscall.
+
+srg_requirement: '{{{ full_name }}} must disable access to network bpf syscall from unprivileged processes.'
 
 platform: machine
 

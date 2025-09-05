@@ -1,9 +1,26 @@
 controls:
     -   id: SRG-OS-000274-GPOS-00104
         levels:
-            - medium
+            - low
         title: {{{ full_name }}} must notify system administrators and ISSOs when accounts
             are created.
-        rules:
-            - audit_rules_usergroup_modification_passwd
-        status: automated
+        status: does not meet
+        rationale: |-
+            Once an attacker establishes access to a system, the attacker often attempts to create a persistent method of reestablishing access.
+            One way to accomplish this is for the attacker to create a new account. Notification of account creation is one method for mitigating this risk.
+            A comprehensive account management process will ensure an audit trail that documents the creation of operating system user accounts and notifies administrators and ISSOs that it exists.
+            Such a process greatly reduces the risk that accounts will be surreptitiously created and provides logging that can be used for forensic purposes.
+    
+            To address access requirements, many operating systems can be integrated with enterprise-level authentication/access/auditing mechanisms that meet or exceed access control policy requirements.
+        check: |-
+            {{{ full_name }}} does not support this requirement.
+            This is an applicable-does not meet finding.
+        fixtext: |-
+            This requirement is a permanent finding and cannot be fixed.
+            An appropriate mitigation for the system must be implemented, but this finding cannot be considered fixed.
+        mitigation:
+            Mitigate with third-party software.  
+
+            Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
+        status_justification:
+            Notification when accounts are created/modified/deleted must be provided by a third-party application that will communicate that an audit record of these actions has been created.

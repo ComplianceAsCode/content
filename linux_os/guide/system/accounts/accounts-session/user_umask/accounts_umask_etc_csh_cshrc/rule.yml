@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle15,ubuntu2004
+prodtype: ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,sle15,ubuntu2004
 
 title: 'Ensure the Default C Shell Umask is Set Correctly'
 
@@ -51,3 +51,5 @@ fixtext: |-
     Add or edit the lines for the "umask" parameter in the "/etc/csh.cshrc" files to "{{{ xccdf_value("var_accounts_user_umask") }}}":
 
     umask {{{ xccdf_value("var_accounts_user_umask") }}}
+
+srg_requirement: '{{{ full_name }}} must define default permissions for logon and non-logon shells.'

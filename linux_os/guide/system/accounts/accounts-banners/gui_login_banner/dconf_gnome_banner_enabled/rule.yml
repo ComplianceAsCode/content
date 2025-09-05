@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
+prodtype: alinux3,fedora,ol7,ol8,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
 
 title: 'Enable GNOME3 Login Warning Banner'
 
@@ -39,6 +39,7 @@ identifiers:
 
 references:
     cis-csc: 1,12,15,16
+    cis@alinux3: 1.8.2
     cis@rhel7: 1.8.2
     cis@rhel8: 1.8.2
     cis@sle12: "1.9"
@@ -91,3 +92,4 @@ fixtext: |-
 
     $ sudo dconf update
 
+srg_requirement: '{{{ full_name }}} must display a banner before granting local or remote access to the system via a graphical user logon.'

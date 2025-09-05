@@ -2446,10 +2446,10 @@ controls:
     and:
     https://docs.openshift.com/container-platform/4.7/security/audit-log-policy-config.html
 
-    Note that in order to correlate RHCOS audit.log entries that audit
-    process activity with container workloads, the CRI-O container runtime
-    is being enhanced to log the PID<->container relation:
-      https://github.com/cri-o/cri-o/pull/5134
+    It is also possible to correlate the container IDs that can be found
+    in the Kubernetes audit log in the RequestResponses with Linux audit
+    subsystem logs that track processes by their PID. The containerID to PID
+    link is logged by the container runtime into the system journal.
 
     Section b: Coordinating the security audit function with other
     organizational entities is outside the scope of
@@ -4854,7 +4854,6 @@ controls:
   - kubelet_configure_client_ca
   - kubelet_eviction_thresholds_set_soft_nodefs_inodesfree
   - file_owner_ovs_sys_id_conf
-  - api_server_api_priority_v1alpha1_flowschema_catch_all
   - scheduler_no_bind_address
   - file_permissions_cni_conf
   - file_groupowner_worker_service
@@ -4949,6 +4948,7 @@ controls:
   - general_configure_imagepolicywebhook
   - file_permissions_etcd_data_files
   - api_server_kubelet_client_cert
+  - api_server_kubelet_client_cert_pre_4_9
   - file_owner_etcd_data_files
   - file_permissions_etcd_member
   - file_groupowner_scheduler_kubeconfig
@@ -4960,6 +4960,7 @@ controls:
   - scc_limit_container_allowed_capabilities
   - file_owner_multus_conf
   - api_server_kubelet_client_key
+  - api_server_kubelet_client_key_pre_4_9
   - api_server_basic_auth
   - api_server_etcd_cert
   - file_permissions_scheduler
@@ -5083,7 +5084,6 @@ controls:
   - kubelet_configure_client_ca
   - kubelet_eviction_thresholds_set_soft_nodefs_inodesfree
   - file_owner_ovs_sys_id_conf
-  - api_server_api_priority_v1alpha1_flowschema_catch_all
   - scheduler_no_bind_address
   - file_permissions_cni_conf
   - file_groupowner_worker_service
@@ -5168,6 +5168,7 @@ controls:
   - general_configure_imagepolicywebhook
   - file_permissions_etcd_data_files
   - api_server_kubelet_client_cert
+  - api_server_kubelet_client_cert_pre_4_9
   - file_owner_etcd_data_files
   - file_permissions_etcd_member
   - file_groupowner_scheduler_kubeconfig
@@ -5178,6 +5179,7 @@ controls:
   - scc_limit_container_allowed_capabilities
   - file_owner_multus_conf
   - api_server_kubelet_client_key
+  - api_server_kubelet_client_key_pre_4_9
   - api_server_basic_auth
   - api_server_etcd_cert
   - file_permissions_scheduler
@@ -13880,6 +13882,7 @@ controls:
   - api_server_kubelet_certificate_authority
   - etcd_auto_tls
   - api_server_kubelet_client_cert
+  - api_server_kubelet_client_cert_pre_4_9
   - kubelet_configure_tls_key
   - etcd_peer_client_cert_auth
   - controller_secure_port
@@ -13889,7 +13892,9 @@ controls:
   - api_server_openshift_https_serving_cert
   - api_server_etcd_key
   - kubelet_configure_tls_cert
+  - kubelet_configure_tls_cert_pre_4_9
   - api_server_kubelet_client_key
+  - api_server_kubelet_client_key_pre_4_9
   description: |-
     The information system protects the [Selection (one or more): confidentiality; integrity] of transmitted information.
 
@@ -13931,6 +13936,7 @@ controls:
   - api_server_kubelet_certificate_authority
   - etcd_auto_tls
   - api_server_kubelet_client_cert
+  - api_server_kubelet_client_cert_pre_4_9
   - kubelet_configure_tls_key
   - etcd_peer_client_cert_auth
   - controller_secure_port
@@ -13940,7 +13946,9 @@ controls:
   - api_server_openshift_https_serving_cert
   - api_server_etcd_key
   - kubelet_configure_tls_cert
+  - kubelet_configure_tls_cert_pre_4_9
   - api_server_kubelet_client_key
+  - api_server_kubelet_client_key_pre_4_9
   description: "The information system implements cryptographic mechanisms to [Selection\
     \ (one or more): prevent unauthorized disclosure of information; detect changes\
     \ to information] during transmission unless otherwise protected by [Assignment:\
@@ -13978,6 +13986,7 @@ controls:
   - api_server_tls_cert
   - routes_protected_by_tls
   - kubelet_configure_tls_cert
+  - kubelet_configure_tls_cert_pre_4_9
 - id: SC-8(3)
   status: pending
   notes: |-

@@ -1,0 +1,27 @@
+controls:
+- id: SRG-APP-000089-CTR-000150
+  levels:
+  - medium
+  title: {{{ full_name }}} must generate audit records for all DoD-defined 
+    auditable events within all components in the platform.
+  rules:
+  - audit_profile_set
+  status: automated
+  check: |-
+    To determine at what level the OpenShift audit policy logging verbosity is
+    configured, run the following command as a cluster-administrator: 
+    
+    > oc get apiserver.config.openshift.io/cluster -ojsonpath='{.spec.audit.profile}'
+
+    If the output, from the options of Default, WriteRequestBodies, and
+    AllRequestBodies, does not match the defined auditable event threshhold,
+    this is a finding.
+  fixtext: |-
+    As the cluster administrator, update the
+    APIServer.config.openshift.io/cluster object to set the profile to
+    the defined level of detail. For example, to configure the profile to
+    Write Request Bodies, meaning that all write requests to any API server
+    object are logged in their entirety, run the following command: 
+    
+    > oc patch apiserver.config.openshift.io/cluster --type=merge \
+    -p '{"spec":{"audit": {"profile": "WriteRequestBodies"}}}'

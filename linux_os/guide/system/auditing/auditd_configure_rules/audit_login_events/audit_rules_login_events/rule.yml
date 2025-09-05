@@ -1,8 +1,14 @@
 documentation_complete: true
 
-prodtype: debian10,debian11,debian9,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: alinux2,debian10,debian11,debian9,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Record Attempts to Alter Logon and Logout Events'
+
+{{% if product in ["rhel8", "rhel9"] %}}
+{{% set faillock_path = "/var/log/faillock" %}}
+{{% else %}}
+{{% set faillock_path = "/var/run/faillock" %}}
+{{% endif %}}
 
 description: |-
     The audit system already collects login information for all users
@@ -12,14 +18,14 @@ description: |-
     directory <tt>/etc/audit/rules.d</tt> in order to watch for attempted manual
     edits of files involved in storing logon events:
     <pre>-w /var/log/tallylog -p wa -k logins
-    -w /var/run/faillock -p wa -k logins
+    -w {{{ faillock_path }}} -p wa -k logins
     -w /var/log/lastlog -p wa -k logins</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file in order to watch for unattempted manual
     edits of files involved in storing logon events:
     <pre>-w /var/log/tallylog -p wa -k logins
-    -w /var/run/faillock -p wa -k logins
+    -w {{{ faillock_path }}} -p wa -k logins
     -w /var/log/lastlog -p wa -k logins</pre>
 
 rationale: |-

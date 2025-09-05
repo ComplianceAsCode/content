@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Encrypt Audit Records Sent With audispd Plugin'
 
@@ -8,10 +8,10 @@ description: |-
     Configure the operating system to encrypt the transfer of off-loaded audit
     records onto a different system or media from the system being audited.
 {{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
-    Set the <tt>transport</tt> option in <pre>/etc/audit/audisp-remote.conf</pre>
+    Set the <tt>transport</tt> option in <pre>{{{ audisp_conf_path }}}/audisp-remote.conf</pre>
     to <tt>KRB5</tt>.
 {{% else %}}
-    Uncomment the <tt>enable_krb5</tt> option in <pre>/etc/audisp/audisp-remote.conf</pre>,
+    Uncomment the <tt>enable_krb5</tt> option in <pre>{{{ audisp_conf_path }}}/audisp-remote.conf</pre>,
     and set it with the following line:
     <pre>enable_krb5 = yes</pre>
 {{% endif %}}
@@ -26,7 +26,8 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-80540-8
     cce@rhel8: CCE-80926-9
-    cce@sle12: CCE-83063-8 
+    cce@rhel9: CCE-86621-0
+    cce@sle12: CCE-83063-8
     cce@sle15: CCE-85614-6
 
 references:
@@ -45,12 +46,23 @@ ocil: |-
     To verify the audispd plugin encrypts audit records off-loaded onto a different
     system or media from the system being audited, run the following command:
 {{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
-    <pre>$ sudo grep -i transport /etc/audit/audisp-remote.conf</pre>
+    <pre>$ sudo grep -i transport {{{ audisp_conf_path }}}/audisp-remote.conf</pre>
     The output should return the following:
     <pre>transport = KRB5</pre>
 {{% else %}}
-    <pre>$ sudo grep -i enable_krb5 /etc/audisp/audisp-remote.conf</pre>
+    <pre>$ sudo grep -i enable_krb5 {{{ audisp_conf_path }}}/audisp-remote.conf</pre>
     The output should return the following:
     <pre>enable_krb5 = yes</pre>
 {{% endif %}}
 
+fixtext: |-
+    Configure {{{ full_name }}} to encrypt audit records sent with audispd plugin.
+{{% if product in ["rhel8", "rhel9", "fedora", "ol8", "rhv4"] %}}
+    Set the "transport" option in "{{{ audisp_conf_path }}}/audisp-remote.conf" to "KRB5".
+{{% else %}}
+    Uncomment the "enable_krb5" option in "{{{ audisp_conf_path }}}/audisp-remote.conf",
+    and set it with the following line:
+    enable_krb5 = yes
+{{% endif %}}
+
+srg_requirement: "{{{ full_name }}} must encrypt audit records sent over the network."

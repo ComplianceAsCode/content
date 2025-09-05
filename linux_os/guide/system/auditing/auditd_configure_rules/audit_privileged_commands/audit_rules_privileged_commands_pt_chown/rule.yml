@@ -38,6 +38,7 @@ identifiers:
     cce@rhcos4: CCE-82603-2
     cce@rhel7: CCE-80409-6
     cce@rhel8: CCE-80734-7
+    cce@rhel9: CCE-88512-9
 
 references:
     cis-csc: 1,12,13,14,15,16,2,3,5,6,7,8,9
@@ -52,13 +53,7 @@ references:
     srg: SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215
     vmmsrg: SRG-OS-000471-VMM-001910
 
-ocil_clause: 'it is not the case'
-
-ocil: |-
-    To verify that auditing of privileged command use is configured, run the
-    following command:
-    <pre>$ sudo grep pt_chown /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
-    It should return a relevant line in the audit rules.
+{{{ ocil_fix_srg_privileged_command("pt_chown", "/usr/libexec/") }}}
 
 template:
     name: audit_rules_privileged_commands

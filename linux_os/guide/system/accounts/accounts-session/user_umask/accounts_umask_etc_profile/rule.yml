@@ -19,12 +19,16 @@ identifiers:
     cce@rhel7: CCE-80204-1
     cce@rhel8: CCE-81035-8
     cce@rhel9: CCE-90828-5
+    cce@sle12: CCE-91531-4
+    cce@sle15: CCE-91216-2
 
 references:
     anssi: BP28(R35)
     cis-csc: '18'
+    cis@alinux2: 5.4.4
+    cis@alinux3: 5.6.5
     cis@rhel7: 5.5.5
-    cis@rhel8: 5.5.4
+    cis@rhel8: 5.6.5
     cis@sle12: 5.5.5
     cis@sle15: 5.4.5
     cis@ubuntu2004: 5.4.4
@@ -36,6 +40,7 @@ references:
     nist: AC-6(1),CM-6(a)
     nist-csf: PR.IP-2
     srg: SRG-OS-000480-GPOS-00228,SRG-OS-000480-GPOS-00227
+    stigid@ol8: OL08-00-020353
     stigid@rhel8: RHEL-08-020353
 
 ocil_clause: 'the above command returns no output, or the umask is configured incorrectly'
@@ -53,3 +58,5 @@ fixtext: |-
     Add or edit the lines for the "umask" parameter in the "/etc/profile" files to "{{{ xccdf_value("var_accounts_user_umask") }}}":
 
     umask {{{ xccdf_value("var_accounts_user_umask") }}}
+
+srg_requirement: '{{{ full_name }}} must define default permissions for logon and non-logon shells.'

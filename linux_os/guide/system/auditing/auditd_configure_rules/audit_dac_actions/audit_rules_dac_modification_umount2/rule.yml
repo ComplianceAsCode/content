@@ -27,7 +27,9 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel9: CCE-88570-7
     cce@sle12: CCE-83219-6
+    cce@sle15: CCE-91250-1
 
 references:
     disa: CCI-000130,CCI-000169,CCI-000172,CCI-002884
@@ -44,6 +46,11 @@ warnings:
         number of ways while still achieving the desired effect. Here the system calls
         have been placed independent of other system calls. Grouping these system
         calls with others as identifying earlier in this guide is more efficient.
+
+fixtext: |-
+    {{{ fixtext_audit_rules(event="umount2", key="perm_mod") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("umount2") }}}'
 
 template:
     name: audit_rules_dac_modification

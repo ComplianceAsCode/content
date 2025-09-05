@@ -24,6 +24,8 @@ identifiers:
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
+    cis@alinux2: 6.1.3
+    cis@alinux3: 6.1.4
     cis@rhel7: 6.1.4
     cis@rhel8: 6.1.4
     cis@sle12: 6.1.3
@@ -43,6 +45,10 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/shadow", group=target_
 
 ocil: |-
     {{{ ocil_file_group_owner(file="/etc/shadow", group=target_group) }}}
+
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/shadow", group=target_group) }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/shadow", group=target_group) }}}'
 
 template:
     name: file_groupowner

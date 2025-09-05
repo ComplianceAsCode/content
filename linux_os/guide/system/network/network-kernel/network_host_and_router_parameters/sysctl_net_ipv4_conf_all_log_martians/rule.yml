@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Enable Kernel Parameter to Log Martian Packets on all IPv4 Interfaces'
 
@@ -19,12 +19,16 @@ identifiers:
     cce@rhel7: CCE-80160-5
     cce@rhel8: CCE-81018-4
     cce@rhel9: CCE-84000-9
+    cce@sle12: CCE-91537-1
+    cce@sle15: CCE-91222-0
 
 references:
     anssi: BP28(R22)
     cis-csc: 1,11,12,13,14,15,16,2,3,7,8,9
+    cis@alinux2: 3.2.4
+    cis@alinux3: 3.3.4
     cis@rhel7: 3.3.4
-    cis@rhel8: 3.2.4
+    cis@rhel8: 3.3.4
     cis@sle12: 3.3.4
     cis@sle15: 3.3.4
     cis@ubuntu2004: 3.3.4
@@ -39,6 +43,13 @@ references:
     srg: SRG-OS-000480-GPOS-00227
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.log_martians", value="1") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to log malformed packets.
+    {{{ fixtext_sysctl(sysctl="net.ipv4.conf.all.log_martians", value="1") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must log malformed packets.'
+
 
 template:
     name: sysctl

@@ -5,7 +5,7 @@
 # disruption = low
 
 # Verify that Interactive Boot is Disabled in /etc/default/grub
-CONFIRM_SPAWN_YES="systemd.confirm_spawn=\(1\|yes\|true\|on\)"
+CONFIRM_SPAWN_YES="systemd.confirm_spawn\(=\(1\|yes\|true\|on\)\|\b\)"
 CONFIRM_SPAWN_NO="systemd.confirm_spawn=no"
 
 if grep -q "\(GRUB_CMDLINE_LINUX\|GRUB_CMDLINE_LINUX_DEFAULT\)" /etc/default/grub

@@ -8,7 +8,7 @@
 - name: Configure auditd Disk Full Action when Disk Space Is Full
   lineinfile:
     dest: /etc/audit/auditd.conf
-    line: "disk_full_action = {{ var_auditd_disk_full_action }}"
+    line: "disk_full_action = {{ var_auditd_disk_full_action.split('|')[0] }}"
     regexp: '^\s*disk_full_action\s*=\s*.*$'
     state: present
     create: yes

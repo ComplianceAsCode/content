@@ -25,15 +25,25 @@ identifiers:
     cce@rhel9: CCE-83942-3
 
 references:
+    cis@alinux2: 6.1.9
+    cis@alinux3: 6.1.10
     cis@rhel7: 6.1.6
-    cis@rhel8: 6.1.7
+    cis@rhel8: 6.1.10
     cis@sle15: 6.1.3
     cis@ubuntu2004: 6.1.3
+    disa: CCI-002223
+    nist: AC-6 (1)
+    srg: SRG-OS-000480-GPOS-00227
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/gshadow-", perms=target_perms) }}}'
 
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/gshadow-", perms=target_perms) }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/gshadow-", mode=target_perms_octal) }}}'
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/gshadow-", mode=target_perms_octal) }}}'
+
 
 template:
     name: file_permissions

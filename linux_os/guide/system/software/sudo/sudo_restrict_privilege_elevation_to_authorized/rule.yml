@@ -38,13 +38,19 @@ references:
     stigid@sle12: SLES-12-010111
     stigid@sle15: SLES-15-020101
 
-ocil_clause: '/etc/sudoers file does not restrict sudo access to authorized personnel'
+ocil_clause: 'either of the commands returned a line'
 
 ocil: |-
-    To determine if "sudoers" file, restricts sudo access, run the following commands:
+    Determine if "sudoers" file restricts sudo access run the following commands:
     <pre>$ sudo grep -PR '^\s*ALL\s+ALL\=\(ALL\)\s+ALL\s*$' /etc/sudoers /etc/sudoers.d/*</pre>
     <pre>$ sudo grep -PR '^\s*ALL\s+ALL\=\(ALL\:ALL\)\s+ALL\s*$' /etc/sudoers /etc/sudoers.d/*</pre>
-    Both commands should return no output.
+
+fixtext: |-
+    Remove the following entries from /etc/sudoers or any file in /etc/sudoers.d/*:
+    ALL ALL=(ALL) ALL
+    ALL ALL=(ALL:ALL) ALL
+
+srg_requirement: '{{{ full_name }}} must restrict privilege elevation to authorized personnel.'
 
 platform: sudo
 

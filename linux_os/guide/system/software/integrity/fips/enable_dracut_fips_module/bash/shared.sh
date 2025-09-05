@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,Oracle Linux 8,Red Hat Virtualization 4
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,Red Hat Virtualization 4
 
 fips-mode-setup --enable
 FIPS_CONF="/etc/dracut.conf.d/40-fips.conf"

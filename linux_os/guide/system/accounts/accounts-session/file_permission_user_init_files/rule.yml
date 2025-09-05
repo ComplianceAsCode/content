@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Ensure All User Initialization Files Have Mode 0740 Or Less Permissive'
 
@@ -40,3 +40,12 @@ ocil: |-
     less permissive, run the following command:
     <pre>$ sudo find /home -type f -name '\.*' \( -perm -0002 -o -perm -0020 \)</pre>
     There should be no output.
+
+fixtext: |-
+    Set the mode of the local initialization files to "0740" with the following command:
+
+    Note: The example will be for the smithj user, who has a home directory of "/home/smithj".
+
+    $ sudo chmod 0740 /home/smithj/.
+
+srg_requirement: 'All {{{ full_name }}} local initialization files must have mode 0740 or less permissive.'

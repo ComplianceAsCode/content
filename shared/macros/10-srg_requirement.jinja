@@ -1,0 +1,209 @@
+{{#
+    Generate a SRG requirement text for audit file watch rules.
+
+:param path: Full path of file to watch
+:type path: str
+
+#}}
+{{% macro srg_requirement_audit_file_watch_rule(path) %}}
+{{{ full_name }}} must generate audit records for all modifications that affect {{{ path }}}.
+{{%- endmacro %}}
+
+{{#
+    Generate a SRG requirement text for auditing all calls to a syscall.
+
+:param event: Name of the syscall
+:type event: str
+
+#}}
+{{% macro srg_requirement_audit_syscall(event) -%}}
+Successful/unsuccessful uses of the {{{ event }}} system call in {{{ full_name }}} must generate an audit record.
+{{%- endmacro %}}
+
+{{#
+    Generate a SRG requirement text for auditing unsuccessful calls to a syscall.
+
+:param event: Name of the syscall
+:type event: str
+
+#}}
+{{% macro srg_requirement_audit_unsuccessful_syscall(event) -%}}
+Unsuccessful uses of the {{{ event }}} system call in {{{ full_name }}} must generate an audit record.
+{{%- endmacro %}}
+
+{{#
+    Generate a SRG requirement text for auditing a command.
+
+:param command: Name of the command
+:type command: str
+
+#}}
+{{% macro srg_requirement_audit_command(command) %}}
+Successful/unsuccessful uses of the {{{ command }}} command in {{{ full_name }}} must generate an audit record.
+{{%- endmacro %}}
+
+{{#
+    Generate a SRG requirement text for package removal.
+
+:param package: Name of the package to be removed
+:type package: str
+
+#}}
+{{% macro srg_requirement_package_removed(package) %}}
+The package {{{ package }}} must be removed in {{{ full_name }}}.
+{{%- endmacro %}}
+
+{{#
+    Generate a SRG requirement text for package removal.
+
+:param module: Name of the kernel module to be disabled
+:type module: str
+
+#}}
+{{% macro srg_requirement_kernel_module_disable(module) %}}
+The kernel module {{{ module }}} must be disabled in {{{ full_name }}}.
+{{%- endmacro %}}
+
+{{#
+    Generate a SRG requirement text for package installed.
+
+:param package: Name of the package to be installed
+:type package: str
+
+#}}
+{{% macro srg_requirement_package_installed(package) %}}
+The {{{ full_name }}} package {{{ package }}} must be installed.
+{{%- endmacro %}}
+
+{{#
+    Generate a SRG requirement text for service enabled.
+
+:param service: Name of the service to be enabled
+:type service: str
+
+#}}
+{{% macro srg_requirement_service_enabled(service) -%}}
+The {{{ full_name }}} service {{{ service }}} must be enabled.
+{{%- endmacro %}}
+
+
+{{#
+SRG requirement for setting the owner on a file.
+
+:param file: The file to set the owner on
+:type file: str
+:param owner: The owner to be set
+:type owner: str
+
+#}}
+{{% macro srg_requirement_file_owner(file, owner) %}}
+The {{{ full_name }}} {{{ file }}} file must be owned by {{{ owner }}}.
+{{%- endmacro %}}
+
+
+{{#
+SRG requirement for setting the group owner on a file.
+
+:param file: The file to set the group owner on
+:type file: str
+:param group: The group to be set
+:type group: str
+
+#}}
+{{% macro srg_requirement_file_group_owner(file, group) %}}
+The {{{ full_name }}} {{{ file }}} file must be group-owned by {{{ group }}}.
+{{%- endmacro %}}
+
+
+{{#
+SRG requirement for setting the owner on a directory.
+
+:param file: The directory to set the owner on
+:type file: str
+:param owner: The owner to be set
+:type owner: str
+
+#}}
+{{% macro srg_requirement_directory_owner(file, owner) %}}
+The {{{ full_name }}} {{{ file }}} directory must be owned by {{{ owner }}}.
+{{%- endmacro %}}
+
+
+{{#
+SRG requirement for setting the group owner on a directory.
+
+:param file: The directory to set the group owner on
+:type file: str
+:param owner: The group to be set
+:type owner: str
+
+#}}
+{{% macro srg_requirement_directory_group_owner(file, group) %}}
+The {{{ full_name }}} {{{ file }}} directory must be group-owned by {{{ group }}}.
+{{%- endmacro %}}
+
+
+{{#
+SRG requirement for setting permissions on a file
+
+:param file: The file to set permissions on
+:type file: str
+:param mode: The mode to be set
+:type mode: str
+
+#}}
+{{% macro srg_requirement_file_permission(file, mode) %}}
+The {{{ full_name }}} {{{ file }}} file must have {{{ mode }}} or less permissive to prevent unauthorized access.
+{{%- endmacro %}}
+
+
+{{#
+SRG requirement for setting permissions on a directory
+
+:param file: The directory to set permissions on
+:type file: str
+:param mode: The mode to be set
+:type mode: str
+
+#}}
+{{% macro srg_requirement_directory_permission(file, mode) %}}
+The {{{ full_name }}} {{{ file }}} directory must have {{{ mode }}} or less permissive to prevent unauthorized access.
+{{%- endmacro %}}
+
+
+{{#
+SRG requirement for mount point options
+
+:param path: The path to check
+:type path:  str
+:param option: The mount option to use
+:type option:  str
+
+#}}
+{{% macro srg_requirement_mount_option(path, option) -%}}
+{{{ full_name }}} must mount {{{ path }}} with the {{{ option }}} option.
+{{%- endmacro -%}}
+
+
+{{#
+Generate a SRG requirement text for disabling services.
+
+:param service: Name of the service to be disabled
+:type service: str
+
+#}}
+{{% macro srg_requirement_service_disabled(service) -%}}
+The {{{ full_name }}} service {{{ service }}} must be disabled.
+{{%- endmacro %}}
+
+
+{{#
+SRG requirement for separate filesystems
+
+:param part: The path to check
+:type part:  str
+
+#}}
+{{% macro srg_requirement_separate_partition(part) -%}}
+A separate {{{ full_name }}} filesystem must be used for the {{{ part }}} directory.
+{{%- endmacro -%}}

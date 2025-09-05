@@ -4,4 +4,14 @@
 # complexity = low
 # disruption = low
 
-awk -F':' '{ if ($4 >= {{{ uid_min }}} && $4 != 65534) system("chmod -f g-w,o-w "$6"/.[^\.]?*") }' /etc/passwd
+readarray -t world_writable_files < <(find / -xdev -type f -perm -0002 2> /dev/null)
+readarray -t interactive_home_dirs < <(awk -F':' '{ if ($3 >= 1000 && $3 != 65534) print $6 }' /etc/passwd)
+
+for world_writable in "${world_writable_files[@]}"; do
+    for homedir in "${interactive_home_dirs[@]}"; do
+        if grep -q -d skip "$world_writable" "$homedir"/.*; then
+            chmod o-w $world_writable
+            break
+        fi
+    done
+done

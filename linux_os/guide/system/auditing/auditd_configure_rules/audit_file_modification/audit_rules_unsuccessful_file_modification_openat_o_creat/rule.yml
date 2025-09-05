@@ -42,6 +42,7 @@ identifiers:
     cce@rhcos4: CCE-82635-4
     cce@rhel7: CCE-81115-8
     cce@rhel8: CCE-80962-4
+    cce@rhel9: CCE-86238-3
 
 references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
@@ -59,7 +60,10 @@ references:
     srg: SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172
     vmmsrg: SRG-OS-000458-VMM-001810,SRG-OS-000461-VMM-001830
 
-{{{ complete_ocil_entry_audit_syscall(syscall="openat") }}}
+ocil: |-
+    {{{ ocil_audit_rules_unsuccessful_file_modification_o_creat("openat", "a2") | indent(4) }}}
+
+ocil_clause: the command does not return a line, or the line is commented out
 
 warnings:
     - general: |-
@@ -74,3 +78,6 @@ template:
         pos: a2
         syscall: openat
     name: audit_rules_unsuccessful_file_modification_o_creat
+
+fixtext: |-
+    {{{ fixtext_audit_rules_unsuccessful_file_modification_o_creat("openat", "a2") | indent(4) }}}

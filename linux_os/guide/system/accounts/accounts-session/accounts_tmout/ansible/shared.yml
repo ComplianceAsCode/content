@@ -1,8 +1,8 @@
-# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = low
 {{{ ansible_instantiate_variables("var_accounts_tmout") }}}
 
-{{{ ansible_set_config_file(file='/etc/profile.d/tmout.sh', parameter='TMOUT', separator='=', separator_regex='=', value='{{ var_accounts_tmout }}', create='yes') }}}
+{{{ ansible_only_lineinfile(path='/etc/profile.d/tmout.sh', line_regex='TMOUT=', new_line='declare -xr TMOUT={{ var_accounts_tmout }}', create='yes') }}}

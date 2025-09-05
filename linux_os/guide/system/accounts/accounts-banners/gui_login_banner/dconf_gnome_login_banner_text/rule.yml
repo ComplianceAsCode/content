@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
+prodtype: alinux3,fedora,ol7,ol8,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
 
 title: 'Set the GNOME3 Login Warning Banner Text'
 
@@ -43,6 +43,7 @@ identifiers:
 
 references:
     cis-csc: 1,12,15,16
+    cis@alinux3: 1.8.2
     cis@rhel7: 1.8.2
     cis@rhel8: 1.8.2
     cis@sle12: "1.9"
@@ -50,7 +51,7 @@ references:
     cis@ubuntu2004: '1.10'
     cobit5: DSS05.04,DSS05.10,DSS06.10
     cui: 3.1.9
-    disa: CCI-000048
+    disa: CCI-000048,CCI-001384,CCI-001385,CCI-001386,CCI-001387,CCI-001388
     isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
     iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
@@ -101,3 +102,4 @@ fixtext: |-
 
     $ sudo dconf update
 
+srg_requirement: '{{{ full_name }}} must display the Standard Mandatory Notice and Consent Banner before granting local or remote access to the system via a graphical user logon.'

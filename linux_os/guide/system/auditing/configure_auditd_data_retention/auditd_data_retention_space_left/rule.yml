@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Configure auditd space_left on Low Disk Space'
 
@@ -23,6 +23,7 @@ identifiers:
     cce@rhcos4: CCE-82681-8
     cce@rhel7: CCE-80537-4
     cce@rhel8: CCE-83619-7
+    cce@rhel9: CCE-87414-9
     cce@sle12: CCE-83026-5
     cce@sle15: CCE-85616-1
 
@@ -49,4 +50,3 @@ ocil: |-
     Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
     determine if the system is configured correctly:
     <pre>space_left <i>SIZE_in_MB</i></pre>
-

@@ -84,16 +84,18 @@ def _search_element_for_reference_attributes(element):
     return None
 
 
-def resolve_definition(oval_groups, defn):
+def _find_attr(oval_groups, defn, elem, attr):
     finder = ElementFinder(oval_groups)
-    finder.find_element(defn, "external_variable", "id")
+    finder.find_element(defn, elem, attr)
     return finder.result
+
+
+def resolve_definition(oval_groups, defn):
+    return _find_attr(oval_groups, defn, "external_variable", "id")
 
 
 def find_extending_defs(oval_groups, defn):
-    finder = ElementFinder(oval_groups)
-    finder.find_element(defn, "extend_definition", "definition_ref")
-    return finder.result
+    return _find_attr(oval_groups, defn, "extend_definition", "definition_ref")
 
 
 def get_container_groups(fname):

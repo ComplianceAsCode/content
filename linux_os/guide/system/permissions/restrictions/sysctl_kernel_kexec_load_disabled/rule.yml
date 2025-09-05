@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9
 
 title: 'Disable Kernel Image Loading'
 
@@ -27,6 +27,8 @@ references:
 
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.kexec_load_disabled", value="1") }}}
+
+srg_requirement: '{{{ full_name }}} must prevent the loading of a new kernel for later execution.'
 
 platform: machine
 

@@ -176,6 +176,15 @@ yum install python3-openpyxl
 apt-get install python3-openpyxl
 ```
 
+### pygithub (Ansible Playbooks to Ansible roles)
+```bash
+# Fedora/RHEL
+yum install python3-pygithub
+
+# Ubuntu/Debian
+apt-get install python3-pygithub
+```
+
 ## Downloading the source code
 
 Download and extract a tarball from the [list of releases](https://github.com/ComplianceAsCode/content/releases):
@@ -574,16 +583,6 @@ To build a zip file with all generated source data streams and kickstarts:
 ```bash
 cd build/
 make zipfile
-```
-
-There is also target to build zip file containing contents specific for a vendor's product.
-
-```bash
-cd build/
-# To build content zipfiles of all vendors:
-make vendor-zipfile
-# To build Red Hat zipfiles:
-make redhat-zipfile
 ```
 
 ### Build the Docker container image

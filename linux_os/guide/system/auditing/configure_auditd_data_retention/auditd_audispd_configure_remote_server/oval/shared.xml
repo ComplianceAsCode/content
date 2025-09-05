@@ -1,9 +1,5 @@
-{{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
-{{% set audisp_config_file_path = "/etc/audit/audisp-remote.conf" %}}
-{{% else %}}
-{{% set audisp_config_file_path = "/etc/audisp/audisp-remote.conf" %}}
+{{% set audisp_config_file_path = audisp_conf_path + "/audisp-remote.conf" %}}
 {{% set auremoteconfig = "/etc/audisp/plugins.d/au-remote.conf" %}}
-{{% endif %}}
 <def-group>
   <definition class="compliance" id="auditd_audispd_configure_remote_server" version="1">
     {{{ oval_metadata("remote_server setting in " + audisp_config_file_path + " is set to a certain IP address or hostname") }}}

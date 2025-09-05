@@ -33,6 +33,8 @@ identifiers:
 
 references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
+    cis@alinux2: 4.1.2
+    cis@alinux3: 4.1.1.2
     cis@rhel7: 4.1.1.2
     cis@rhel8: 4.1.1.2
     cis@sle12: 4.1.1.2
@@ -41,7 +43,7 @@ references:
     cjis: 5.4.1.1
     cobit5: APO10.01,APO10.03,APO10.04,APO10.05,APO11.04,APO12.06,APO13.01,BAI03.05,BAI08.02,DSS01.03,DSS01.04,DSS02.02,DSS02.04,DSS02.07,DSS03.01,DSS03.05,DSS05.02,DSS05.03,DSS05.04,DSS05.05,DSS05.07,MEA01.01,MEA01.02,MEA01.03,MEA01.04,MEA01.05,MEA02.01
     cui: 3.3.1,3.3.2,3.3.6
-    disa: CCI-000126,CCI-000130,CCI-000131,CCI-000132,CCI-000133,CCI-000134,CCI-000135,CCI-000154,CCI-000158,CCI-000366,CCI-001464,CCI-001487,CCI-001814,CCI-001876,CCI-002884,CCI-000169
+    disa: CCI-000126,CCI-000130,CCI-000131,CCI-000132,CCI-000133,CCI-000134,CCI-000135,CCI-000154,CCI-000158,CCI-000172,CCI-000366,CCI-001464,CCI-001487,CCI-001814,CCI-001875,CCI-001876,CCI-001877,CCI-002884,CCI-001878,CCI-001879,CCI-001880,CCI-001881,CCI-001882,CCI-001889,CCI-001914,CCI-000169
     hipaa: 164.308(a)(1)(ii)(D),164.308(a)(5)(ii)(C),164.310(a)(2)(iv),164.310(d)(2)(iii),164.312(b)
     isa-62443-2009: 4.2.3.10,4.3.2.6.7,4.3.3.3.9,4.3.3.5.8,4.3.3.6.6,4.3.4.4.7,4.3.4.5.6,4.3.4.5.7,4.3.4.5.8,4.4.2.1,4.4.2.2,4.4.2.4
     isa-62443-2013: 'SR 1.13,SR 2.10,SR 2.11,SR 2.12,SR 2.6,SR 2.8,SR 2.9,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 6.1,SR 6.2,SR 7.1,SR 7.6'
@@ -69,8 +71,12 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_service_enabled("auditd") }}}
 
-srg_requirement: |-
-    {{{ full_name }}} audit records must contain information to establish what type of events occurred, the source of events, where events occurred, and the outcome of events.
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
+srg_requirement: '{{{ srg_requirement_service_enabled("audit") }}}'
+{{% else %}}
+srg_requirement: '{{{ srg_requirement_service_enabled("auditd") }}}'
+{{% endif %}}
+
 
 platform: audit
 

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: alinux2,alinux3,fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Ensure All Files Are Owned by a Group'
 
@@ -35,8 +35,10 @@ identifiers:
 
 references:
     cis-csc: 1,11,12,13,14,15,16,18,3,5
+    cis@alinux2: 6.1.12
+    cis@alinux3: 6.1.13
     cis@rhel7: 6.1.12
-    cis@rhel8: 6.1.12
+    cis@rhel8: 6.1.13
     cis@sle12: 6.1.10
     cis@sle15: 6.1.10
     cobit5: APO01.06,DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.02,DSS06.03,DSS06.06,DSS06.10
@@ -64,6 +66,13 @@ ocil: |-
     Either remove all files and directories from the system that do not have a valid group,
     or assign a valid group with the chgrp command:
     <pre>$ sudo chgrp <i>group</i> <i>file</i></pre>
+
+fixtext: |-
+    Either remove all files and directories from RHEL 8 that do not have a valid group, or assign a valid group to all files and directories on the system with the "chgrp" command:
+
+    $ sudo chgrp
+
+srg_requirement: 'All {{{ full_name }}} local files and directories must have a valid group owner.'
 
 warnings:
     - general: |-

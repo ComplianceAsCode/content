@@ -1,0 +1,15 @@
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_auditd_max_log_file_action") }}}
+
+- name: Configure auditd max_log_file_action Upon Reaching Maximum Log Size
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: "max_log_file_action = {{ var_auditd_max_log_file_action }}"
+    regexp: '^\s*max_log_file_action\s*=\s*.*$'
+    state: present
+    create: yes
+  #notify: reload auditd

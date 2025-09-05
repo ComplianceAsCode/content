@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel8,rhel9
+prodtype: ol8,rhel8,rhel9
 
 title: Audit Tools Must Have a Mode of 0755 or Less Permissive
 
@@ -24,7 +24,8 @@ identifiers:
 references:
     disa: CCI-001493
     nist: AU-9
-    srg: SRG-OS-000256-GPOS-00097
+    srg: SRG-OS-000256-GPOS-00097,SRG-OS-000257-GPOS-00098,SRG-OS-000258-GPOS-00099
+    stigid@ol8: OL08-00-030620
     stigid@rhel8: RHEL-08-030620
 
 ocil_clause: 'any of these files have more permissive permissions than 0755'
@@ -42,6 +43,8 @@ fixtext: |-
     $ sudo chmod 0755 [audit_tool]
 
     Replace "[audit_tool]" with each audit tool that has a more permissive mode than 0755.
+
+srg_requirement: '{{{ full_name }}} audit tools must have a mode of 0755 or less permissive.'
 
 template:
     name: file_permissions

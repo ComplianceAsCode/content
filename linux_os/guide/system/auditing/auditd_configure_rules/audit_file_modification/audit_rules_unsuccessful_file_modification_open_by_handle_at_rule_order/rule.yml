@@ -48,6 +48,7 @@ severity: medium
 identifiers:
     cce@rhcos4: CCE-82643-8
     cce@rhel8: CCE-80967-3
+    cce@rhel9: CCE-89998-9
 
 references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
@@ -65,10 +66,16 @@ references:
     srg: SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172
     vmmsrg: SRG-OS-000458-VMM-001810,SRG-OS-000461-VMM-001830
 
-{{{ complete_ocil_entry_audit_syscall(syscall="open_by_handle_at") }}}
+ocil: |-
+    {{{ ocil_audit_rules_unsuccessful_file_modification_rule_order("open_by_handle_at", "a2") | indent(4) }}}
+
+ocil_clause: the rules are in a different order
 
 template:
     vars:
         pos: a2
         syscall: open_by_handle_at
     name: audit_rules_unsuccessful_file_modification_rule_order
+
+fixtext: |-
+    {{{ fixtext_audit_rules_unsuccessful_file_modification_rule_order("open_by_handle_at") | indent(4) }}}

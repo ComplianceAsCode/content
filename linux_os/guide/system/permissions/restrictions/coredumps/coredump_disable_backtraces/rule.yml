@@ -29,8 +29,10 @@ identifiers:
     cce@rhel9: CCE-83984-5
 
 references:
+    cis@alinux2: 1.5.1
+    cis@alinux3: 1.6.1
     cis@rhel7: 1.5.1
-    cis@rhel8: 1.6.1
+    cis@rhel8: 1.5.2
     cis@sle12: 1.5.1
     cis@sle15: 1.6.1
     disa: CCI-000366
@@ -43,11 +45,19 @@ references:
 ocil_clause: ProcessSizeMax is not set to zero
 
 ocil: |-
-    To verify that logging core dump backtraces is disabled, run the
+    Verify that logging core dump backtraces is disabled, run the
     following command:
     <pre>$ grep ProcessSizeMax /etc/systemd/coredump.conf</pre>
-    The output should be:
-    <pre>ProcessSizeMax=0</pre>
+
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable core dump backtraces.
+
+    Add or modify the following line in /etc/systemd/coredump.conf:
+
+    ProcessSizeMax=0
+
+srg_requirement: '{{{ full_name }}} must disable core dump backtraces.'
 
 warnings:
     - general: |-

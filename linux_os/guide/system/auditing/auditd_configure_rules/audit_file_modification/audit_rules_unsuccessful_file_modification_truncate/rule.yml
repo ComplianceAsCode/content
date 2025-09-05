@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: debian10,debian11,debian9,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: alinux2,debian10,debian11,debian9,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Record Unsuccessful Access Attempts to Files - truncate'
 
@@ -45,14 +45,15 @@ identifiers:
 
 references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
+    cis@alinux2: 4.1.11
     cis@rhel7: 4.1.10
-    cis@rhel8: 4.1.10
+    cis@rhel8: 4.1.3.7
     cis@sle12: 4.1.10
     cis@sle15: 4.1.10
     cis@ubuntu2004: 4.1.10
     cobit5: APO10.01,APO10.03,APO10.04,APO10.05,APO11.04,APO12.06,APO13.01,BAI03.05,BAI08.02,DSS01.03,DSS01.04,DSS02.02,DSS02.04,DSS02.07,DSS03.01,DSS03.05,DSS05.02,DSS05.03,DSS05.04,DSS05.05,DSS05.07,MEA01.01,MEA01.02,MEA01.03,MEA01.04,MEA01.05,MEA02.01
     cui: 3.1.7
-    disa: CCI-000169,CCI-000172,CCI-002884
+    disa: CCI-000130,CCI-000135,CCI-000169,CCI-000172,CCI-002884
     hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
     isa-62443-2009: 4.2.3.10,4.3.2.6.7,4.3.3.3.9,4.3.3.5.8,4.3.3.6.6,4.3.4.4.7,4.3.4.5.6,4.3.4.5.7,4.3.4.5.8,4.4.2.1,4.4.2.2,4.4.2.4
     isa-62443-2013: 'SR 1.13,SR 2.10,SR 2.11,SR 2.12,SR 2.6,SR 2.8,SR 2.9,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 6.1,SR 6.2,SR 7.1,SR 7.6'
@@ -71,7 +72,10 @@ references:
     stigid@ubuntu2004: UBTU-20-010156
     vmmsrg: SRG-OS-000458-VMM-001810,SRG-OS-000461-VMM-001830
 
-{{{ complete_ocil_entry_audit_syscall(syscall="truncate") }}}
+ocil: |-
+    {{{ ocil_audit_rules_unsuccessful_file_modification("truncate", "access") | indent(4) }}}
+
+ocil_clause: the command does not return a line, or the line is commented out
 
 warnings:
     - general: |-
@@ -81,7 +85,7 @@ warnings:
         calls with others as identifying earlier in this guide is more efficient.
 
 fixtext: |-
-    {{{ fixtext_audit_rules_unsuccessful_file_modification_creat("truncate") | indent(4) }}}
+    {{{ fixtext_audit_rules_unsuccessful_file_modification("truncate", ["creat", "ftruncate", "open", "openat", "open_by_handle_at"]) | indent(4) }}}
 
 srg_requirement: '{{{ srg_requirement_audit_syscall("truncate") }}}'
 

@@ -1,0 +1,72 @@
+controls:
+- id: SRG-APP-000014-CTR-000040
+  levels:
+  - medium
+  title: {{{ full_name }}} must use TLS 1.2 or greater for secure communication.
+  related_rules:
+  - fips_mode_enabled
+  status: manual
+  check: |-
+    Verify that the TLS Security Profile is not set to old, or a custom
+    profile that does not enforce TLS 1.2 or above.
+
+    View the TLS security profile for the control planes
+
+    > oc get IngressControllers --all-namespaces -o \ 
+    jsonpath='{range.items[]} Name: {.metadata.name} Profile: {.spec.tlsSecurityProfile}{"\n"}'
+
+    View the TLS security profile for the control plane
+
+    > oc get APIServer cluster -o jsonpath='{.spec.tlsSecurityProfile}'
+
+    View the TLS profile for the Kubelet
+
+    > oc get KubeletConfigs -o \
+    jsonpath='{range .items[]} Name: {.metadata.name} Profile: {.spec.tlsSecurityProfile}{"\n"}'
+
+    If any of the above returns a TLS profile of "Old", this is a finding.
+
+    If any of the above returns a TLS profile of "Custom" and the minTLSVersion
+    is not set to "VersionTLS12" or greater, this is a finding.
+  fixtest: |-
+    Edit each resource and set the TLS Security Profile to Intermediate
+
+    > oc edit ingresscontroller <NAME> -n <NAMESPACE>
+
+    set to the following
+
+    apiVersion: config.openshift.io/v1 
+    kind: IngressController 
+    ...  
+    spec:
+      tlsSecurityProfile: 
+        intermediate: {} 
+        type: Intermediate
+
+    > oc edit APIServer
+
+    set to the following
+
+    apiVersion: config.openshift.io/v1 
+    kind: APIServer 
+    ...  
+    spec:
+      tlsSecurityProfile:
+        intermediate: {} 
+        type: Intermediate
+
+    > oc edit KubeletConfig <NAME>
+
+
+    set to the following
+
+    apiVersion: config.openshift.io/v1 
+    kind: KubeletConfig 
+    ...  
+    spec:
+      tlsSecurityProfile:
+        intermediate: {} 
+        type: Intermediate
+  notes:
+    Creating an automated rule is being tracked with
+    https://issues.redhat.com/browse/CMP-1389

@@ -37,6 +37,8 @@ identifiers:
 
 references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8
+    cis@alinux2: 4.1.1.3
+    cis@alinux3: 4.1.2.2
     cis@rhel7: 4.1.2.2
     cis@rhel8: 4.1.2.2
     cis@sle12: 4.1.2.2
@@ -55,12 +57,17 @@ references:
     srg: SRG-OS-000047-GPOS-00023
     stigid@ol8: OL08-00-030050
 
-ocil_clause: 'the system has not been properly configured to rotate audit logs'
+ocil_clause: 'the value of the "max_log_file_action" option is set to "ignore", "rotate", or "suspend", or the line is commented out'
 
 ocil: |-
-    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
-    determine if the system is configured to rotate logs when they reach their
-    maximum size:
-    <tt>$ sudo grep max_log_file_action /etc/audit/auditd.conf</tt>
-    <pre>max_log_file_action <tt>rotate</tt></pre>
+    Verify that the SA and ISSO (at a minimum) are notified when the audit storage volume is full.
 
+    Check which action {{{ full_name }}} takes when the audit storage volume is full with the following command:
+
+    <pre>$ sudo grep max_log_file_action /etc/audit/auditd.conf
+    max_log_file_action = {{{ xccdf_value("var_auditd_max_log_file_action") }}}</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to notify the SA and ISSO when the audit storage volume is full by configuring the "max_log_file_action" parameter in the "/etc/audit/auditd.conf" file with the a value of "syslog" or "keep_logs":
+
+    max_log_file_action = {{{ xccdf_value("var_auditd_max_log_file_action") }}}

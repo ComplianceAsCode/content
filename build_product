@@ -297,6 +297,8 @@ set_explict_build_targets() {
 # Get this using
 # grep 'option(SSG_PRODUCT' CMakeLists.txt  | sed -e 's/option(SSG_PRODUCT_\(\w\+\).*/\1/'
 all_cmake_products=(
+	ALINUX2
+	ALINUX3
 	CHROMIUM
 	DEBIAN9
 	DEBIAN10
@@ -322,9 +324,8 @@ all_cmake_products=(
 	UBUNTU1604
 	UBUNTU1804
 	UBUNTU2004
+	UOS20
 	VSEL
-	WRLINUX8
-	WRLINUX1019
 	MACOS1015
 )
 

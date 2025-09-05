@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9
 
 title: 'Prevent Unrestricted Mail Relaying'
 
@@ -29,11 +29,17 @@ references:
     stigid@rhel7: RHEL-07-040680
     stigid@rhel8: RHEL-08-040290
 
-ocil_clause: 'it is not'
+ocil_clause: 'the "smtpd_client_restrictions" parameter contains any entries other than "permit_mynetworks" and "reject"'
 
 ocil: |-
-    To verify the system is configured to prevent unrestricted mail relaying,
+    Verify that {{{ full_name }}} is configured to prevent unrestricted mail relaying,
     run the following command:
     <pre>$ sudo postconf -n smtpd_client_restrictions</pre>
-    The output should return:
-    <pre>smtpd_client_restrictions = permit_mynetworks,reject</pre>
+
+
+fixtext: |-
+    If "postfix" is installed, modify the "/etc/postfix/main.cf" file to restrict client connections to the local network with the following command:
+
+    $ sudo postconf -e 'smtpd_client_restrictions = permit_mynetworks,reject'
+
+srg_requirement: '{{{ full_name }}} must be configured to prevent unrestricted mail relaying.'

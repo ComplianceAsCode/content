@@ -33,7 +33,7 @@ identifiers:
     cce@sle15: CCE-85595-7
 
 references:
-    disa: CCI-000130,CCI-000169,CCI-000172,CCI-002884
+    disa: CCI-000130,CCI-000135,CCI-000169,CCI-000172,CCI-002884
     nist@sle12: AU-3,AU-3.1,AU-12.1(ii),AU-12(a),AU-12.1(iv),AU-12(c),MA-4(1)(a)
     srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215,SRG-OS-000466-GPOS-00210
     stigid@ol8: OL08-00-030570
@@ -42,14 +42,19 @@ references:
     stigid@sle15: SLES-15-030440
     stigid@ubuntu2004: UBTU-20-010168
 
+ocil_clause: '{{{ ocil_clause_audit() }}}'
+
 ocil: |-
+    Verify {{{ full_name }}} generates an audit record for all uses of the "chacl" command.
     To verify that execution of the command is being audited, run the following command:
-    Configure the operating system to generate an audit record for all uses of the "chacl" command.
-    Add or update the following rules in the "/etc/audit/audit.rules" file:
-    -a always,exit -F arch=b32 path=/usr/bin/chacl -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged
-    -a always,exit -F arch=b64 path=/usr/bin/chacl -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged
-    The audit daemon must be restarted for the changes to take effect.
-    # sudo systemctl restart auditd.service
+    $ sudo grep chacl /etc/audit/rules.d/audit.*
+    The output should be similar to:
+    -a always,exit -F path=/usr/bin/chacl -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod
+
+fixtext: |-
+    {{{ fixtext_audit_rules_command("chacl", "/usr/bin/chacl", "perm_mod") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("chacl") }}}'
 
 template:
     name: audit_rules_privileged_commands

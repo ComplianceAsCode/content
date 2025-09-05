@@ -1,14 +1,14 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhcos4,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Configure tmux to lock session after inactivity'
 
 description: |-
     To enable console screen locking in <tt>tmux</tt> terminal multiplexer
     after a period of inactivity,
-    the <tt>lock-after-time</tt> option has to be set to nonzero value in
-    <tt>/etc/tmux.conf</tt>.
+    the <tt>lock-after-time</tt> option has to be set to a value greater than 0 and less than
+    or equal to 900 in <tt>/etc/tmux.conf</tt>.
 
 rationale: |-
     Locking the session after a period of inactivity limits the
@@ -21,25 +21,38 @@ identifiers:
     cce@rhel9: CCE-89876-7
 
 references:
-    disa: CCI-000057
-    ospp: FMT_SMF_EXT.1
+    disa: CCI-000057,CCI-000060
+    ospp: FMT_SMF_EXT.1,FMT_MOF_EXT.1,FTA_SSL.1
     srg: SRG-OS-000029-GPOS-00010,SRG-OS-000031-GPOS-00012
     stigid@ol8: OL08-00-020070
     stigid@rhel8: RHEL-08-020070
 
-ocil_clause: 'lock-after-time is not set to 900 or set to zero'
+ocil_clause: 'lock-after-time is set to a value greater than 900 or zero'
 
 ocil: |-
     To verify that session locking after period of inactivity is configured in tmux,
     run the following command:
-    <pre>$ grep lock-after-time /etc/tmux.conf</pre>
+
+    <pre>$ sudo grep lock-after-time /etc/tmux.conf</pre>
+
     The output should return the following:
+
     <pre>set -g lock-after-time 900</pre>
+
+    Then, verify that the /etc/tmux.conf file can be read by other users than root:
+
+    <pre>$ sudo ls -al /etc/tmux.conf
 
 fixtext: |-
     Configure the operating system to enforce session lock after a period of 15 minutes
     of inactivity by adding the following line to the "/etc/tmux.conf" global configuration file:
 
     set -g lock-after-time 900
+
+    Then, ensure a correct mode of /etc/tmux.conf using this command:
+
+    $ sudo chmod 0644 /etc/tmux.conf
+
+srg_requirement: '{{{ full_name }}} must automatically lock command line user sessions after 15 minutes of inactivity.'
 
 platform: machine

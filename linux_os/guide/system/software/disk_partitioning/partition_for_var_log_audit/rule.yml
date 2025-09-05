@@ -28,8 +28,10 @@ identifiers:
 references:
     anssi: BP28(R43)
     cis-csc: 1,12,13,14,15,16,2,3,5,6,8
+    cis@alinux2: 1.1.12
+    cis@alinux3: 1.1.6.1
     cis@rhel7: 1.1.16
-    cis@rhel8: 1.1.12
+    cis@rhel8: 1.1.6.1
     cis@sle12: 1.1.16
     cis@sle15: 1.1.16
     cis@ubuntu1804: 1.1.11
@@ -43,6 +45,7 @@ references:
     nerc-cip: CIP-007-3 R6.5
     nist: CM-6(a),AU-4,SC-5(2)
     nist-csf: PR.DS-4,PR.PT-1,PR.PT-4
+    ospp: FMT_SMF_EXT.1
     srg: SRG-OS-000341-GPOS-00132,SRG-OS-000480-GPOS-00227
     stigid@ol7: OL07-00-021330
     stigid@ol8: OL08-00-010542
@@ -54,8 +57,9 @@ references:
 
 {{{ complete_ocil_entry_separate_partition(part="/var/log/audit") }}}
 
-fixtext: |-
-    Migrate the system audit data path onto a separate file system.
+fixtext: '{{{ fixtext_separate_partition(part="/var/log/audit") }}}'
+
+srg_requirement: '{{{ srg_requirement_separate_partition("/var/log/audit") }}}'
 
 platform: machine
 

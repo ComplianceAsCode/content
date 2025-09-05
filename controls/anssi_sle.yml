@@ -131,7 +131,11 @@ controls:
     description: >-
       The activities of the running system and services must be logged and
       archived on an external, non-local system.
-    # rules: TBD
+    status: automated
+    rules:
+    # The default remote loghost is logcollector.
+    # Change the default value to the hostname or IP of the system to send the logs to
+    - rsyslog_remote_loghost
 
   - id: R8
     levels:
@@ -164,7 +168,9 @@ controls:
     title: 32 and 64 bit architecture
     description: When the machine supports 64-bit operating systems, prefer it.
     notes: This requirement can be checked, but remediation requires manual reinstall of the OS.
-    # rules: TBD
+    status: automated
+    rules:
+     - prefer_64bit_os
 
   - id: R11
     levels:
@@ -180,7 +186,36 @@ controls:
     levels:
     - intermediary
     title: Partitioning type
-    # rules: TBD
+    status: partial
+    rules:
+    # The recommended partitioning type is as follows:
+    # / <without option> Root partition, contains the rest of the tree
+    # /boot nosuid, nodev, noexec (optional noauto) Contains the kernel and the bootloader. No access required once the boot finished (except update)
+    - partition_for_boot
+
+    # /opt nosuid, nodev (optional ro) Additional packages to the system.  Read-only editing if not used
+    - partition_for_opt
+
+    # /tmp nosuid, nodev, noexec Temporary files. Must contain only non-executable elements. Cleaned after reboot
+    - partition_for_tmp
+
+    # /srv nosuid, nodev (noexec, optional ro) Contains files served by a service type web, ftp, etc
+    - partition_for_srv
+
+    # /home nosuid, nodev, noexec Contains the HOME users.  Read-only editing if not in use
+    - partition_for_home
+
+    # /usr nodev Contains the majority of utilities and system files
+    - partition_for_usr
+
+    # /var nosuid, nodev, noexec Partition containing variable files during the life of the system (mails, PID files, databases of a service)
+    - partition_for_var
+
+    # /var/log nosuid, nodev, noexec Contains system logs
+    - partition_for_var_log
+
+    # /var/tmp nosuid, nodev, noexec Temporary files kept after extinction
+    - partition_for_var_tmp
 
   - id: R13
     levels:
@@ -222,8 +257,7 @@ controls:
     - ensure_gpgcheck_never_disabled
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_local_packages
-    - ensure_redhat_gpgkey_installed
-    - ensure_oracle_gpgkey_installed
+    - ensure_suse_gpgkey_installed
 
   - id: R16
     levels:
@@ -304,7 +338,15 @@ controls:
       Users will first login, then escalate to privileged (root) access.
       Change of privilege operations must be based on executables to monitor the activities
       performed (for example sudo).
-    # rules: TBD
+    status: partial
+    rules:
+    - no_direct_root_logins
+    #- sshd_disable_root_login
+    - package_sudo_installed
+    - audit_rules_privileged_commands_sudo
+
+    # This rule should be present in the profile at least once
+    - sshd_use_directory_configuration
 
   - id: R20
     levels:
@@ -332,13 +374,128 @@ controls:
       basic integrity checking. System logs are configured as part of R43.
       Hardening of particular services should be done on a case by case basis and is
       not automated by this content.
-    # rules: TBD
+    status: partial
+    rules:
+    #- selinux_state
+    #- var_selinux_state=enforcing
+    #- package_aide_installed
+    - aide_build_database
 
   - id: R22
     levels:
     - intermediary
     title: Setting up network sysctl
-    # rules: TBD
+    status: automated
+    rules:
+    # No routing between interfaces
+    # net.ipv4.ip_forward = 0
+    - sysctl_net_ipv4_ip_forward
+
+    # Reverse path filtering
+    # net.ipv4.conf.all.rp_filter = 1
+    - sysctl_net_ipv4_conf_all_rp_filter
+
+    # net.ipv4.conf.default.rp_filter = 1
+    - sysctl_net_ipv4_conf_default_rp_filter
+
+    # Do not send ICMP redirects
+    # net.ipv4.conf.all.send_redirects = 0
+    - sysctl_net_ipv4_conf_all_send_redirects
+
+    # net.ipv4.conf.default.send_redirects = 0
+    - sysctl_net_ipv4_conf_default_send_redirects
+
+    # Deny source routing packets
+    # net.ipv4.conf.all.accept_source_route = 0
+    - sysctl_net_ipv4_conf_all_accept_source_route
+
+    # net.ipv4.conf.default.accept_source_route = 0
+    - sysctl_net_ipv4_conf_default_accept_source_route
+
+    # Do not accept ICMPs of redirect type
+    # net.ipv4.conf.all.accept_redirects = 0
+    - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+    - sysctl_net_ipv4_conf_all_accept_redirects
+
+    # net.ipv4.conf.all.secure_redirects = 0
+    - sysctl_net_ipv4_conf_all_secure_redirects
+
+    # net.ipv4.conf.default.accept_redirects = 0
+    - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
+    - sysctl_net_ipv4_conf_default_accept_redirects
+
+    # net.ipv4.conf.default.secure_redirects = 0
+    - sysctl_net_ipv4_conf_default_secure_redirects
+
+    # Log packets with abnormal IPs
+    # net.ipv4.conf.all.log_martians = 1
+    - sysctl_net_ipv4_conf_all_log_martians
+
+    # RFC 1337
+    # net.ipv4.tcp_rfc1337 = 1
+    - sysctl_net_ipv4_tcp_rfc1337
+
+    # Ignore responses that do not comply with RFC 1122
+    # net.ipv4.icmp_ignore_bogus_error_responses = 1
+    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+
+    # Increase the range for ephemeral ports
+    # net.ipv4.ip_local_port_range = 32768 65535
+    - sysctl_net_ipv4_ip_local_port_range
+
+    # Use SYN cookies
+    # net.ipv4.tcp_syncookies = 1
+    - sysctl_net_ipv4_tcp_syncookies
+
+    # Disable support for "router solicitations"
+    # net.ipv6.conf.all.router_solicitations = 0
+    # net.ipv6.conf.default.router_solicitations = 0
+    - sysctl_net_ipv6_conf_all_router_solicitations
+    - sysctl_net_ipv6_conf_default_router_solicitations
+
+    # Do not accept "router preferences" by "router advertisements"
+    # net.ipv6.conf.all.accept_ra_rtr_pref = 0
+    # net.ipv6.conf.default.accept_ra_rtr_pref = 0
+    - sysctl_net_ipv6_conf_all_accept_ra_rtr_pref
+    - sysctl_net_ipv6_conf_default_accept_ra_rtr_pref
+
+    # No auto configuration of prefixes by router advertisements
+    # net.ipv6.conf.all.accept_ra_pinfo = 0
+    # net.ipv6.conf.default.accept_ra_pinfo = 0
+    - sysctl_net_ipv6_conf_all_accept_ra_pinfo
+    - sysctl_net_ipv6_conf_default_accept_ra_pinfo
+
+    # No default router learning by router advertisements
+    # net.ipv6.conf.all.accept_ra_defrtr = 0
+    # net.ipv6.conf.default.accept_ra_defrtr = 0
+    - sysctl_net_ipv6_conf_all_accept_ra_defrtr
+    - sysctl_net_ipv6_conf_default_accept_ra_defrtr
+
+    # No auto configuration of addresses from "routers" advertisements
+    # net.ipv6.conf.all.autoconf = 0
+    # net.ipv6.conf.default.autoconf = 0
+    - sysctl_net_ipv6_conf_all_autoconf
+    - sysctl_net_ipv6_conf_default_autoconf
+
+    # Do not accept ICMPs of redirect type
+    # net.ipv6.conf.all_accept_redirects = 0
+    - sysctl_net_ipv6_conf_all_accept_redirects
+
+    # net.ipv6.conf.default.accept_redirects = 0
+    - sysctl_net_ipv6_conf_default_accept_redirects
+
+    # Deny routing source packets
+    # net.ipv6.conf.all.accept_source_route = 0
+    - sysctl_net_ipv6_conf_all_accept_source_route
+
+    # net.ipv6.conf.default.accept_source_route = 0
+    - sysctl_net_ipv6_conf_default_accept_source_route
+
+    # Maximum number of autoconfigured addresses per interface
+    # net.ipv6.conf.all.max_addresses = 1
+    # net.ipv6.conf.default.max_addresses = 1
+    - sysctl_net_ipv6_conf_all_max_addresses
+    - sysctl_net_ipv6_conf_default_max_addresses
 
   - id: R23
     levels:
@@ -483,7 +640,11 @@ controls:
       (e.g. /etc/profile or /etc/bashrc).
       The current implementation checks and fixes both umask to the same value.
     status: partial
-    # rules: TBD
+    rules:
+    - var_accounts_user_umask=077
+    - accounts_umask_etc_login_defs
+    - accounts_umask_etc_profile
+    - accounts_umask_etc_bashrc
 
   - id: R36
     title: Rights to access sensitive content files
@@ -532,7 +693,13 @@ controls:
       Each user or service account must have its own temporary directory
       and dispose of it exclusively.
     notes: The approach of the selected rules is to use and configure pam_namespace module.
-    # rules: TBD
+    status: partial
+    rules:
+    - enable_pam_namespace
+    - accounts_polyinstantiated_tmp
+    - accounts_polyinstantiated_var_tmp
+    - var_polyinstantiation_enabled=on
+    #- sebool_polyinstantiation_enabled
 
   - id: R40
     levels:
@@ -567,7 +734,21 @@ controls:
       A lot of recommendations and requirements from the DAT-NT-012 document are administrative and hard to automate.
       The rules selected below address a few of the aspects that can be covered, keep in mind that these configurations should
       be customized for the systems deployment requirements.
-    # rules: TBD
+    status: partial
+    rules:
+    # Derived from DAT-NT-012 R12
+    - package_rsyslog-gnutls_installed
+    - rsyslog_remote_tls
+    - rsyslog_remote_tls_cacert
+
+    # Based on DAT-NT-012 R18
+    # The rules sets the rotation frequency to daily
+    - ensure_logrotate_activated
+
+    # Based on DAT-NT-012 R20
+    - rsyslog_files_ownership
+    - rsyslog_files_groupownership
+    - rsyslog_files_permissions
 
   - id: R44
     levels:
@@ -632,7 +813,13 @@ controls:
       configuration files, as well as any files that may contain sensitive
       elements (cryptographic keys, passwords, confidential data).
     status: automated
-    # rules: TBD
+    rules:
+    - package_aide_installed
+    - aide_build_database
+    - aide_periodic_cron_checking
+    - aide_scan_notification
+    - aide_verify_acls
+    - aide_verify_ext_attributes
 
   - id: R52
     levels:
@@ -696,13 +883,26 @@ controls:
     notes: >-
       The rules below create and configure a group named sudogrp, to change the group customize the
       value of var_sudo_dedicated_group.
-    # rules: TBD
+    status: automated
+    rules:
+    - sudo_dedicated_group
+    - var_sudo_dedicated_group=sudogrp
 
   - id: R58
     levels:
     - intermediary
     title: Sudo configuration guidelines
-    # rules: TBD
+    status: partial
+    rules:
+    - sudo_add_noexec
+    - sudo_add_requiretty
+    - sudo_add_use_pty
+    - sudo_add_umask
+    - var_sudo_umask=0027
+    - sudo_add_ignore_dot
+    - sudo_add_env_reset
+    - sudo_add_passwd_timeout
+    - var_sudo_passwd_timeout=1_minute
 
   - id: R59
     levels:
@@ -740,13 +940,16 @@ controls:
     title: Good use of negation in a sudoers file
     description: The sudoers configuration rules should not involve negation.
     status: automated
-    # rules: TBD
+    rules:
+    - sudoers_no_command_negation
 
   - id: R63
     levels:
     - intermediary
     title: Explicit arguments in sudo specifications
-    # rules: TBD
+    status: automated
+    rules:
+    - sudoers_explicit_command_args
 
   - id: R64
     levels:

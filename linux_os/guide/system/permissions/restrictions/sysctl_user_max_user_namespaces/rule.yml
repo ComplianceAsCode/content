@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhcos4,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Disable the use of user namespaces'
 
@@ -10,6 +10,9 @@ description: |-
     to large non-zero value.
 
 rationale: |-
+    It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or system objectives.
+    These unnecessary capabilities or services are often overlooked and therefore may remain unsecured.
+    They increase the risk to the platform by providing additional attack vectors.
     User namespaces are used primarily for Linux containers. The value 0
     disallows the use of user namespaces.
 
@@ -34,7 +37,23 @@ references:
     stigid@ol8: OL08-00-040284
     stigid@rhel8: RHEL-08-040284
 
-{{{ complete_ocil_entry_sysctl_option_value(sysctl="user.max_user_namespaces", value="0") }}}
+ocil: |
+    Verify that {{{ full_name }}} disables the use of user namespaces with the following commands:
+
+    Note: User namespaces are used primarily for Linux containers. If containers are in use, this requirement is not applicable.
+
+    {{{ ocil_sysctl_option_value(sysctl="user.max_user_namespaces", value="0") }}}
+
+ocil_clause: "the correct value is not returned"
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable the use of user namespace.
+
+    Note: User namespaces are used primarily for Linux containers. If containers are in use, this requirement is not applicable.
+
+    {{{ fixtext_sysctl(sysctl="user.max_user_namespaces", value="0") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must disable the use of user namespaces.'
 
 platform: machine
 

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9,rhv4
+prodtype: alinux2,alinux3,fedora,ol8,ol9,rhcos4,rhel8,rhel9,rhv4,uos20
 
 title: 'Configure Kerberos to use System Crypto Policy'
 
@@ -43,3 +43,5 @@ fixtext: |-
     Configure Kerberos to use system crypto policy.
     Create a symlink pointing to system crypto policy in the Kerberos configuration using the following command:
     $ sudo ln -s /etc/crypto-policies/back-ends/krb5.config /etc/krb5.conf.d/crypto-policies
+
+srg_requirement: '{{{ full_name }}} must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.'

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel7,rhel8,rhel9,rhv4
+prodtype: fedora,ol8,rhel7,rhel8,rhel9,rhv4
 
 title: 'Ensure PAM password complexity module is enabled in password-auth'
 
@@ -23,10 +23,21 @@ identifiers:
 
 references:
     disa: CCI-000366
-    srg: SRG-OS-000480-GPOS-00227
+    srg: SRG-OS-000069-GPOS-00037,SRG-OS-000070-GPOS-00038,SRG-OS-000480-GPOS-00227
+    stigid@ol8: OL08-00-020100
     stigid@rhel8: RHEL-08-020100
 
 ocil_clause: 'pam_pwquality.so is not enabled in password-auth'
+
+fixtext: |-
+    Configure {{{ full_name }}} to use "pwquality" to enforce password complexity rules.
+
+    Add the following line to the "/etc/pam.d/password-auth" file (or modify the line to have the required value):
+
+    password required pam_pwquality.so
+
+srg_requirement: '{{{ full_name }}} must ensure the password complexity module is enabled in the password-auth file.'
+
 
 ocil: |-
     To check if pam_pwhistory.so is enabled in password-auth, run the following command:

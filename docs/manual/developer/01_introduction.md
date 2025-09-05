@@ -77,8 +77,32 @@ Those areas are going to be segmented by
 
 - Keeping track of the decomposition: Metadata in product.yml files, CODEOWNERS file
 - Area of effect: All PSPs that don’t have specific stakeholders, associated content and test scenarios.
-- Guidelines: Care needs to be taken when content requires a slightly different approach for different products - don’t copy paste, and also don’t change existing behavior for everybody (link to coding guidelines needed).
+- Guidelines: Care needs to be taken when content requires a slightly different approach for different products - don’t copy and paste, and also don’t change existing behavior for everybody.
+  See the [style guide](04_style_guide.md) for more details.
 
+##### Removal of Products
+Products may be subject to removal from the project if at **least one** of the following is true:
+  - Past their declared end-of-life date
+  - Have not had contributions to files in their respective product folder for **two years**
+
+The following process shall be used to start the removal of the product:
+1. A GitHub issue is created proposing the removal of the product.
+    The issue must contain the following:
+    1. The end date and time (in UTC) of the comment period 
+    1. A mention of the last contributor to the product, more than one is preferred
+    1. The reason for removal (lack of contributions or product EOL)
+1. A comment period of **21 days** shall be observed.
+The issue description must explicitly state the date and time (in UTC) when the comment period will close.
+1. In the case of lack of contributions, if there are no new contributors that volunteer once the comment period closes the product shall be removed.
+   Products that are going EOL the product shall be removed unless there is an objection form a representative of product.
+The pull request removing the product should include the removal of
+    1. The product folder in `products/`
+    1. any Jinja templates that use the product
+    1. the product from all `prodtype`
+    1. any product specific checks or remediatons
+    1. any product specific templates
+
+All issues and pull requests for product removal must use the [product-removal](https://github.com/ComplianceAsCode/content/labels/product-removal) label.
 
 #### Product Specific Profiles (PSPs)
 
@@ -130,7 +154,14 @@ Those areas are going to be segmented by
 
 TLDR: 6 non-trivial PRs within 6 months => merge rights for 1 year since the last activity.
 
-Contributors can ask for merge rights on the mailing list or on Gitter.
+Contributors can ask for merge rights by opening a Github issue using the `Request Merge Rights` issue template.
+1. The issue must contain the following:
+    1. The Github ID of the user
+    1. The Reasoning for the requested merge rights
+    1. The links for PRs
+
+1. The rights can only be granted after, at least, three maintainers express their approval by commenting on the issue.
+
 Although one can technically merge code, the code contribution guidelines still have to be obeyed.
 
 Loss of merge rights:
@@ -151,4 +182,3 @@ The project maintainers decide about granting or strip of rights and about excep
 Aside from an organization (s.a. a company or an institution) being composed of individuals with individual rights, other developers associated with the organization may get “backup” merge rights or organization administration rights.
 Those rights can be granted for a period of 12 months and their renewal can be requested.
 These rights can only be used in cases when regular developers aren’t available and the organization needs to get their things through.
-

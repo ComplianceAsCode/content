@@ -1,0 +1,10 @@
+controls:
+- id: SRG-APP-000343-CTR-000780
+  levels:
+  - medium
+  title: {{{ full_name }}} must audit the execution of privileged functions.
+  rules:
+  - directory_access_var_log_kube_audit
+  - directory_access_var_log_oauth_audit
+  - directory_access_var_log_ocp_audit
+  status: inherently met

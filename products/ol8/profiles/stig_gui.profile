@@ -1,10 +1,13 @@
 documentation_complete: true
 
+metadata:
+    version: V1R2
+
 title: 'DISA STIG with GUI for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG with GUI for Oracle Linux V1R1.
+    DISA STIG with GUI for Oracle Linux V1R2.
 
     Warning: The installation and use of a Graphical User Interface (GUI)
     increases your attack vector and decreases your overall security posture. If
@@ -16,3 +19,4 @@ extends: stig
 
 selections:
     - '!xwindows_remove_packages'
+    - '!xwindows_runlevel_target'

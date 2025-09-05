@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# platform = multi_platform_sle
 # variables = var_accounts_tmout=900
 
 sed -i "/.*TMOUT.*/d" /etc/profile.d/*.sh

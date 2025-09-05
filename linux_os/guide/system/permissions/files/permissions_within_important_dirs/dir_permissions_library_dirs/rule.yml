@@ -43,6 +43,7 @@ references:
     nerc-cip: CIP-003-8 R6
     nist: CM-5,CM-5(6),CM-5(6).1
     srg: SRG-OS-000259-GPOS-00100
+    stigid@ol8: OL08-00-010331
     stigid@rhel8: RHEL-08-010331
     stigid@sle12: SLES-12-010872
     stigid@sle15: SLES-15-010352
@@ -61,6 +62,13 @@ ocil: |-
     run the following command for each directory <i>DIR</i> which contains shared libraries:
     <pre>$ sudo find -L <i>DIR</i> -perm /022 -type d</pre>
 
+fixtext: |-
+    Configure the {{{ full_name }}} library directories to be protected from unauthorized access. Run the following command, replacing "[DIRECTORY]" with any library directory with a mode more permissive than 755.
+
+    $ sudo chmod 755 [DIRECTORY]
+
+srg_requirement: '{{{ full_name }}} library directories must have mode 755 or less permissive.'
+
 template:
     name: file_permissions
     vars:
@@ -70,4 +78,4 @@ template:
             - /usr/lib/
             - /usr/lib64/
         recursive: 'true'
-        filemode: '0755'
+        filemode: '7755'

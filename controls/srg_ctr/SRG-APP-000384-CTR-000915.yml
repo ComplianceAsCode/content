@@ -1,0 +1,12 @@
+controls:
+- id: SRG-APP-000384-CTR-000915
+  levels:
+  - medium
+  title: {{{ full_name }}} must prevent component execution in accordance with
+    organization-defined policies regarding software program usage and restrictions,
+    and/or rules authorizing the terms and conditions of software program usage.
+  rules:
+  - reject_unsigned_images_by_default
+  - ocp_allowed_registries
+  - ocp_allowed_registries_for_import
+  status: inherently met

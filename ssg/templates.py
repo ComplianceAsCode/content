@@ -180,6 +180,9 @@ class Builder(object):
                 continue
 
             for filename in filenames:
+                if filename.endswith(".swp"):
+                    continue
+
                 # Relative path to the file becomes our results key.
                 absolute_path = os.path.abspath(os.path.join(dirpath, filename))
                 relative_path = os.path.relpath(absolute_path, base_dir)

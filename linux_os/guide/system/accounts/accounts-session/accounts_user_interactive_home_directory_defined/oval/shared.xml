@@ -23,7 +23,7 @@
 
   <!-- #### creation of state #### -->
   <unix:password_state id="state_accounts_user_interactive_home_directory_defined" version="1">
-    <unix:home_dir operation="pattern match">^\/\w*\/\w{1,}[\/\w]*$</unix:home_dir>
+    <unix:home_dir operation="pattern match">^\/[^\/\n]*\/[^\/\n]{1,}.*$</unix:home_dir>
   </unix:password_state>
 
   <!-- #### creation of test #### -->

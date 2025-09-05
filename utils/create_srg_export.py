@@ -16,8 +16,10 @@ import xml.etree.ElementTree as ET
 
 import convert_srg_export_to_xlsx
 import convert_srg_export_to_html
+import convert_srg_export_to_md
 
 try:
+    import ssg.build_stig
     import ssg.build_yaml
     import ssg.constants
     import ssg.controls
@@ -34,11 +36,10 @@ RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
 BUILD_CONFIG = os.path.join(SSG_ROOT, "build", "build_config.yml")
 OUTPUT = os.path.join(SSG_ROOT, 'build',
                       f'{datetime.datetime.now().strftime("%s")}_stig_export.csv')
-SRG_PATH = os.path.join(SSG_ROOT, 'shared', 'references', 'disa-os-srg-v2r2.xml')
+SRG_PATH = os.path.join(SSG_ROOT, 'shared', 'references', 'disa-os-srg-v2r3.xml')
 NS = {'scap': ssg.constants.datastream_namespace,
       'xccdf-1.2': ssg.constants.XCCDF12_NS,
       'xccdf-1.1': ssg.constants.XCCDF11_NS}
-SEVERITY = {'low': 'CAT III', 'medium': 'CAT II', 'high': 'CAT I'}
 
 HEADERS = [
     'IA Control', 'CCI', 'SRGID', 'STIGID', 'SRG Requirement', 'Requirement',
@@ -254,15 +255,6 @@ def get_iacontrol(srg_str: str) -> str:
     return ','.join(str(srg) for srg in result_set)
 
 
-def get_severity(input_severity: str) -> str:
-    if input_severity not in ['CAT I', 'CAT II', 'CAT III', 'low', 'medium', 'high']:
-        raise ValueError(f'Severity of {input_severity} is not valid')
-    elif input_severity in ['CAT I', 'CAT II', 'CAT III']:
-        return input_severity
-    else:
-        return SEVERITY[input_severity]
-
-
 class DisaStatus:
     PENDING = "pending"
     PLANNED = "planned"
@@ -370,7 +362,7 @@ def get_srg_dict(xml_path: str) -> dict:
         for srg in group.findall('xccdf-1.1:Rule', NS):
             srg_id = srg.find('xccdf-1.1:version', NS).text
             srgs[srg_id] = dict()
-            srgs[srg_id]['severity'] = get_severity(srg.get('severity'))
+            srgs[srg_id]['severity'] = ssg.build_stig.get_severity(srg.get('severity'))
             srgs[srg_id]['title'] = srg.find('xccdf-1.1:title', NS).text
             description_root = get_description_root(srg)
             srgs[srg_id]['vuln_discussion'] = \
@@ -411,7 +403,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-m", "--manual", type=str, action="store",
                         help="Path to XML XCCDF manual file to use as the source of the SRGs",
                         default=SRG_PATH)
-    parser.add_argument("-f", "--out-format", type=str, choices=("csv", "xlsx", "html"),
+    parser.add_argument("-f", "--out-format", type=str, choices=("csv", "xlsx", "html", "md"),
                         action="store", help="The format the output should take. Defaults to csv",
                         default="csv")
     return parser.parse_args()
@@ -426,7 +418,6 @@ def get_requirement(control: ssg.controls.Control, rule_obj: ssg.build_yaml.Rule
 
 def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.environment,
                    rule_json: dict, srgs: dict, used_rules: list, root_path: str) -> list:
-
     if len(control.selections) > 0:
         rows = list()
         for selection in control.selections:
@@ -434,8 +425,10 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                 rule_object = handle_rule_yaml(product, rule_json[selection]['dir'], env_yaml)
                 row = create_base_row(control, srgs, rule_object)
                 if control.levels is not None:
-                    row['Severity'] = get_severity(control.levels[0])
-                row['Requirement'] = get_requirement(control.title, rule_object)
+                    row['Severity'] = ssg.build_stig.get_severity(control.levels[0])
+                row['Requirement'] = handle_variables(get_requirement(control.title, rule_object),
+                                                      control.variables, root_path,
+                                                      product)
                 row['Vul Discussion'] = handle_variables(rule_object.rationale, control.variables,
                                                          root_path, product)
                 ocil_var = handle_variables(rule_object.ocil, control.variables, root_path,
@@ -482,10 +475,10 @@ def create_base_row(item: ssg.controls.Control, srgs: dict,
     row['SRGID'] = rule_object.references.get('srg', srg_id)
     row['CCI'] = rule_object.references.get('disa', srg['cci'])
     row['SRG Requirement'] = srg['title']
-    row['SRG VulDiscussion'] = srg['vuln_discussion']
-    row['SRG Check'] = srg['check']
+    row['SRG VulDiscussion'] = html_plain_text(srg['vuln_discussion'])
+    row['SRG Check'] = html_plain_text(srg['check'])
     row['SRG Fix'] = srg['fix']
-    row['Severity'] = get_severity(srg.get('severity'))
+    row['Severity'] = ssg.build_stig.get_severity(srg.get('severity'))
     row['IA Control'] = get_iacontrol(row['SRGID'])
     row['Mitigation'] = item.mitigation
     row['Artifact Description'] = item.artifact_description
@@ -533,14 +526,15 @@ def get_policy(args, env_yaml) -> ssg.controls.Policy:
     return policy
 
 
-def handle_csv_output(output, results):
+def handle_csv_output(output: str, results: list) -> str:
     with open(output, 'w') as csv_file:
         csv_writer = setup_csv_writer(csv_file)
         for row in results:
             csv_writer.writerow(row)
+        return output
 
 
-def handle_xlsx_output(output, product, results):
+def handle_xlsx_output(output: str, product: str, results: list) -> str:
     output = output.replace('.csv', '.xlsx')
     for row in results:
         row['IA Control'] = get_iacontrol(row['SRGID'])
@@ -548,7 +542,7 @@ def handle_xlsx_output(output, product, results):
     return output
 
 
-def handle_html_output(output, product, results):
+def handle_html_output(output: str, product: str, results: list) -> str:
     for row in results:
         row['IA Control'] = get_iacontrol(row['SRGID'])
     output = output.replace('.csv', '.html')
@@ -556,11 +550,21 @@ def handle_html_output(output, product, results):
     return output
 
 
+def handle_md_output(output: str, product: str, results: list) -> str:
+    output = output.replace('.csv', '.md')
+    for row in results:
+        row['IA Control'] = get_iacontrol(row['SRGID'])
+    convert_srg_export_to_md.handle_dict(results, output, f'{product} SRG Mapping')
+    return output
+
+
 def handle_output(output: str, results: list, format_type: str, product: str) -> None:
     if format_type == 'csv':
-        handle_csv_output(output, results)
+        output = handle_csv_output(output, results)
     elif format_type == 'xlsx':
         output = handle_xlsx_output(output, product, results)
+    elif format_type == 'md':
+        output = handle_md_output(output, product, results)
     elif format_type == 'html':
         output = handle_html_output(output, product, results)
 
@@ -579,8 +583,10 @@ def main() -> None:
     check_paths(args.control, args.json)
     check_product_value_path(args.root, args.product)
 
-    srgs = get_srg_dict(args.manual)
-    env_yaml = get_env_yaml(args.root, args.product, args.build_config_yaml)
+    srgs = ssg.build_stig.parse_srgs(args.manual)
+    product_dir = os.path.join(args.root, "products", args.product)
+    product_yaml_path = os.path.join(product_dir, "product.yml")
+    env_yaml = ssg.environment.open_environment(args.build_config_yaml, str(product_yaml_path))
     policy = get_policy(args, env_yaml)
     rule_json = get_rule_json(args.json)
 

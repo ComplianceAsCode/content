@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Ensure Home Directories are Created for New Users'
 
@@ -42,5 +42,12 @@ ocil: |-
     <br /><br />
     <pre>$ sudo grep create_home /etc/login.defs</pre>
     <br /><br />
+
+fixtext: |-
+    Configure {{{ full_name }}} to assign home directories to all new local interactive users by setting the "CREATE_HOME" parameter in "/etc/login.defs" to "yes" as follows.
+
+    CREATE_HOME yes
+
+srg_requirement: "All {{{ full_name }}} local interactive user accounts must be assigned a home directory upon creation."
 
 platform: login_defs

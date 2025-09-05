@@ -1,19 +1,20 @@
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
 
-# Include source function library.
-. /usr/share/scap-security-guide/remediation_functions
-
 # First perform the remediation of the syscall rule
 # Retrieve hardware architecture of the underlying system
 [ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
 
 for ARCH in "${RULE_ARCHS[@]}"
 do
-	PATTERN="-a always,exit -F arch=$ARCH -S {{{ ATTR }}}.*"
-	GROUP="perm_mod"
-	FULL_RULE="-a always,exit -F arch=$ARCH -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=perm_mod"
+	# FULL_RULE="-a always,exit -F arch=$ARCH -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=perm_mod"
+	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+	SYSCALL="{{{ ATTR }}}"
+	SYSCALL_GROUPING="{{{ ATTR }}}"
+	AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=4294967295"
+	KEY="perm_mod"
+	OTHER_FILTERS=""
 
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	{{{ bash_fix_audit_syscall_rule("augenrules","$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
+	{{{ bash_fix_audit_syscall_rule("auditctl",  "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
 done

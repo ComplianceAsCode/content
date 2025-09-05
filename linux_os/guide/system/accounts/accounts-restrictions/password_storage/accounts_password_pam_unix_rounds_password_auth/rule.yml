@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Set number of Password Hashing Rounds - password-auth'
 
@@ -33,6 +33,7 @@ identifiers:
     cce@rhel7: CCE-83402-8
     cce@rhel8: CCE-83403-6
     cce@rhel9: CCE-83615-5
+    cce@sle12: CCE-91470-5
     cce@sle15: CCE-91173-5
 
 references:
@@ -58,3 +59,5 @@ fixtext: |-
     For example:
 
     password sufficient pam_unix.so sha512 rounds=5000
+
+srg_requirement: '{{{ full_name }}} shadow password suite must be configured to use a sufficient number of hashing rounds in {{{ pam_passwd_file_path }}}.'

@@ -1,0 +1,11 @@
+controls:
+- id: SRG-APP-000345-CTR-000785
+  levels:
+  - medium
+  title: {{{ full_name }}} must automatically lock an account until the locked
+    account is released by an administrator when three unsuccessful login attempts
+    in 15 minutes are exceeded.
+  rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  status: not applicable

@@ -1,9 +1,9 @@
 # platform = multi_platform_sle
 
 if [ -f "/usr/lib/systemd/system/auditd.service" ] ; then
-    EXECSTARTPOST_SCRIPT=$(grep '^ExecStartPost=' /usr/lib/systemd/system/auditd.service | sed 's/ExecStartPost=//')
+    IS_AUGENRULES=$(grep -E "^(ExecStartPost=|Requires=augenrules\.service)" /usr/lib/systemd/system/auditd.service)
 
-    if [[ "$EXECSTARTPOST_SCRIPT" == *"augenrules"* ]] ; then
+    if [[ "$IS_AUGENRULES" == *"augenrules"* ]] ; then
         for f in /etc/audit/rules.d/*.rules ; do
             sed -E -i --follow-symlinks 's/^(\s*-a\s+task,never)/#\1/' "$f"
         done

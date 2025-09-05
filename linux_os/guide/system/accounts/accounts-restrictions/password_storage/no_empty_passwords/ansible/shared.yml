@@ -3,52 +3,19 @@
 # strategy = configure
 # complexity = low
 # disruption = medium
-- name: Check if system relies on authselect
+- name: '{{{ rule_title }}} - Check if system relies on authselect'
   ansible.builtin.stat:
     path: /usr/bin/authselect
   register: result_authselect_present
 
-- name: Check integrity of authselect current profile
-  ansible.builtin.command:
-    cmd: authselect check
-  register: result_authselect_check_cmd
-  changed_when: false
-  ignore_errors: yes
+- name: '{{{ rule_title }}} - Remediate using authselect'
+  block:
+    {{{ ansible_enable_authselect_feature('without-nullok') | indent(4) }}}
   when:
     - result_authselect_present.stat.exists
 
-- name: Get authselect current features
-  ansible.builtin.shell:
-    cmd: authselect current | tail -n+3 | awk '{ print $2 }'
-  register: result_authselect_features
-  changed_when: false
-  when:
-    - result_authselect_present.stat.exists
-    - result_authselect_check_cmd is success
-
-- name: Ensure nullok property is absent via authselect tool
-  ansible.builtin.command:
-    cmd: authselect enable-feature without-nullok
-  register: result_authselect_cmd
-  when:
-    - result_authselect_present.stat.exists
-    - result_authselect_check_cmd is success
-    - result_authselect_features.stdout is not search("without-nullok")
-
-- name: Informative message based on the authselect integrity check result
-  ansible.builtin.assert:
-    that:
-      - result_authselect_check_cmd is success
-    fail_msg:
-    - authselect integrity check failed. Remediation aborted!
-    - This remediation could not be applied because the authselect profile is not intact.
-    - It is not recommended to manually edit the PAM files when authselect is available
-    - In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended.
-    success_msg:
-    - authselect integrity check passed
-
-- name: Ensure nullok property is absent by directly editing pam files
-  replace:
+- name: '{{{ rule_title }}} - Remediate directly editing PAM files'
+  ansible.builtin.replace:
     dest: "{{ item }}"
     regexp: 'nullok'
   loop:

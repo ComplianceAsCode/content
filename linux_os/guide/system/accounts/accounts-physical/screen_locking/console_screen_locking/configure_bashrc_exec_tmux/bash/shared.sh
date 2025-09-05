@@ -12,4 +12,5 @@ if [ "$PS1" ]; then
   case "$name" in sshd|login) exec tmux ;; esac
 fi
 EOF
+    chmod 0644 /etc/profile.d/tmux.sh
 fi

@@ -27,6 +27,7 @@ identifiers:
 
 references:
     cis-csc: 1,12,15,16
+    cis@alinux2: 5.2.19
     cis@rhel7: 5.2.15
     cis@rhel8: 5.2.15
     cis@sle12: 5.3.19
@@ -56,11 +57,12 @@ references:
 fixtext: |-
     Configure {{{ full_name }}} to display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system via the ssh.
 
-    Edit the ""/etc/ssh/sshd_config"" file to uncomment the banner keyword and configure it to point to a file that will contain the logon banner (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor).
+    Edit the "/etc/ssh/sshd_config" file to uncomment the banner keyword and configure it to point to a file that will contain the logon banner (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor).
     An example configuration line is:
 
     Banner /etc/issue
 
+srg_requirement: '{{{ full_name }}} must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a ssh logon.'
 
 template:
     name: sshd_lineinfile

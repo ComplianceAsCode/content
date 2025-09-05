@@ -260,7 +260,7 @@ def _check_rule_id(oval_file_tree, rule_id):
     return False
 
 
-def checks(env_yaml, yaml_path, oval_version, oval_dirs):
+def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
     """
     Concatenate all XML files in the oval directory, to create the document
     body. Then concatenates this with all XML files in the guide directories,
@@ -284,6 +284,11 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
     guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
     additional_content_directories = env_yaml.get("additional_content_directories", [])
     add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
+
+    if build_ovals_dir:
+        # Create output directory if it doesn't yet exist.
+        if not os.path.exists(build_ovals_dir):
+            os.makedirs(build_ovals_dir)
 
     for _dir_path in find_rule_dirs_in_paths([guide_dir] + add_content_dirs):
         rule_id = get_rule_dir_id(_dir_path)
@@ -310,6 +315,14 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
 
             if not _check_is_applicable_for_product(xml_content, product):
                 continue
+
+            if build_ovals_dir:
+                # store intermediate files
+                output_file_name = rule_id + ".xml"
+                output_filepath = os.path.join(build_ovals_dir, output_file_name)
+                with open(output_filepath, "w") as f:
+                    f.write(xml_content)
+
             if _check_is_loaded(already_loaded, filename, oval_version):
                 continue
             oval_file_tree = _create_oval_tree_from_string(xml_content)

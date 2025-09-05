@@ -20,6 +20,16 @@ cpes:
       bash_conditional: {{{ bash_pkg_conditional("gdm") }}}
       ansible_conditional: {{{ ansible_pkg_conditional("gdm") }}}
 
+  - krb5_server_older_than_1_17-18:
+      name: "cpe:/a:krb5_server_older_than_1_17-18"
+      title: "Package krb5 server is installed and version is lesser than 1.17-18"
+      check_id: krb5_server_older_than_1_17_18
+
+  - krb5_workstation_older_than_1_17-18:
+      name: "cpe:/a:krb5_workstation_older_than_1_17-18"
+      title: "Package krb5 workstation is installed and version is lesser than 1.17-18"
+      check_id: krb5_workstation_older_than_1_17_18
+
   - libuser:
       name: "cpe:/a:libuser"
       title: "Package libuser is installed"
@@ -112,12 +122,20 @@ cpes:
       bash_conditional: {{{ bash_pkg_conditional("tftp-server") }}}
       ansible_conditional: {{{ ansible_pkg_conditional("tftp-server") }}}
 
+  - tmux:
+      name: "cpe:/a:tmux"
+      title: "Package tmux is installed"
+      check_id: installed_env_has_tmux_package
+      bash_conditional: {{{ bash_pkg_conditional("tmux") }}}
+      ansible_conditional: {{{ ansible_pkg_conditional("tmux") }}}
+      
   - usbguard:
       name: "cpe:/a:usbguard"
       title: "Package usbguard is installed"
       check_id: installed_env_has_usbguard_package
       bash_conditional: {{{ bash_pkg_conditional("usbguard") }}}
       ansible_conditional: {{{ ansible_pkg_conditional("usbguard") }}}
+
   - yum:
       name: "cpe:/a:yum"
       title: "Package yum is installed"

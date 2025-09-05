@@ -1,12 +1,12 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Configure audispd''s Plugin network_failure_action On Network Failure'
 
 description: |-
     Configure the action the operating system takes if there is an error sending
-    audit records to a remote system. Edit the file <tt>/etc/audisp/audisp-remote.conf</tt>.
+    audit records to a remote system. Edit the file <tt>{{{ audisp_conf_path }}}/audisp-remote.conf</tt>.
     Add or modify the following line, substituting <i>ACTION</i> appropriately:
     <pre>network_failure_action = <i>ACTION</i></pre>
     Set this value to <tt>single</tt> to cause the system to switch to single user
@@ -24,6 +24,7 @@ severity: medium
 
 identifiers:
     cce@rhel7: CCE-80538-2
+    cce@rhel9: CCE-90187-6
     cce@sle12: CCE-83115-6
     cce@sle15: CCE-85705-2
 
@@ -40,8 +41,17 @@ references:
 ocil_clause: 'the system is not configured to switch to single user mode for corrective action'
 
 ocil: |-
-    Inspect <tt>/etc/audisp/audisp-remote.conf</tt> and locate the following line to
+    Inspect <tt>{{{ audisp_conf_path }}}/audisp-remote.conf</tt> and locate the following line to
     determine if the system is configured to perform a correct action according to the policy:
-    <pre>grep -i network_failure_action /etc/audisp/audisp-remote.conf</pre>
+    <pre>$ sudo grep -i network_failure_action {{{ audisp_conf_path }}}/audisp-remote.conf</pre>
     The output should return:
     <pre>network_failure_action = {{{ xccdf_value("var_audispd_network_failure_action") }}}</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to take an appropriate action when there is an error sending audit records to a remote system.
+
+    Add or edit the following line in "{{{ audisp_conf_path }}}/audisp-remote.conf":
+
+    network_failure_action = {{{ xccdf_value("var_audispd_network_failure_action") }}}
+
+srg_requirement: "{{{ full_name }}} must switch to single user mode on a network failure."

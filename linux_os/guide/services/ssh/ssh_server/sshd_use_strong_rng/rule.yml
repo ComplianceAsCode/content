@@ -13,10 +13,11 @@ description: |-
     <pre>SSH_USE_STRONG_RNG=32</pre>
 
 rationale: |-
-    SSH implementation in RHEL8 uses the openssl library, which doesn't use high-entropy sources by default.
-    Randomness is needed to generate data-encryption keys, and as plaintext padding and initialization vectors
-    in encryption algorithms, and high-quality entropy elliminates the possibility that the output of
-    the random number generator used by SSH would be known to potential attackers.
+    SSH implementation in {{{ full_name }}} uses the openssl library, which doesn't use
+    high-entropy sources by default. Randomness is needed to generate data-encryption keys, and as
+    plaintext padding and initialization vectors in encryption algorithms, and high-quality
+    entropy elliminates the possibility that the output of the random number generator used by SSH
+    would be known to potential attackers.
 
 severity: low
 
@@ -27,7 +28,7 @@ identifiers:
 references:
     disa: CCI-000366
     ospp: FCS_RBG_EXT.1.2
-    srg: SRG-OS-000480-GPOS-00227
+    srg: SRG-OS-000480-GPOS-00232,SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-010292
     stigid@rhel8: RHEL-08-010292
 
@@ -38,7 +39,18 @@ ocil: |-
     then the option is set correctly.
 
 ocil_clause: |-
-    The SSH_USE_STRONG_RNG is not set to 32 in /etc/sysconfig/sshd
+    the SSH_USE_STRONG_RNG is not set to 32 in /etc/sysconfig/sshd
+
+fixtext: |-
+    Configure the {{{ full_name }}} SSH server to use strong entropy.
+
+    Add or modify the following line in the "/etc/sysconfig/sshd" file.
+
+    SSH_USE_STRONG_RNG=32
+
+    The SSH service must be restarted for changes to take effect.
+
+srg_requirement: 'The {{{ full_name }}} must ensure the SSH server uses strong entropy.'
 
 warnings:
     - general: "This setting can cause problems on computers without the hardware random generator, because insufficient entropy causes the connection to be blocked until enough entropy is available."

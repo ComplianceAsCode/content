@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhcos4,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Harden the operation of the BPF just-in-time compiler'
 
@@ -27,6 +27,12 @@ references:
     stigid@rhel8: RHEL-08-040286
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.core.bpf_jit_harden", value="2") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}}  to enable hardening for the BPF JIT compiler.
+    {{{ fixtext_sysctl(sysctl="net.core.bpf_jit_harden", value="2") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must enable hardening for the Berkeley Packet Filter Just-in-time compiler.'
 
 platform: machine
 

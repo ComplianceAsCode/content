@@ -4,7 +4,7 @@
 
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Ensure auditd Collects Information on the Use of Privileged Commands - su'
 
@@ -65,13 +65,7 @@ references:
     stigid@ubuntu2004: UBTU-20-010136
     vmmsrg: SRG-OS-000471-VMM-001910
 
-ocil_clause: 'it is not the case'
-
-ocil: |-
-    To verify that auditing of privileged command use is configured, run the
-    following command:
-    <pre>$ sudo grep su /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
-    It should return a relevant line in the audit rules.
+{{{ ocil_fix_srg_privileged_command("su") }}}
 
 template:
     name: audit_rules_privileged_commands

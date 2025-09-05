@@ -5,6 +5,7 @@ controls:
         title: {{{ full_name }}} must enforce the limit of three consecutive invalid
             logon attempts by a user during a 15-minute time period.
         rules:
+            - account_passwords_pam_faillock_audit
             - var_accounts_passwords_pam_faillock_deny=3
             - var_accounts_passwords_pam_faillock_fail_interval=900
             - var_accounts_passwords_pam_faillock_unlock_time=never
@@ -12,4 +13,9 @@ controls:
             - accounts_passwords_pam_faillock_deny_root
             - accounts_passwords_pam_faillock_interval
             - accounts_passwords_pam_faillock_unlock_time
+            - account_passwords_pam_faillock_dir
+            - account_password_selinux_faillock_dir
+            - account_password_pam_faillock_system_auth
+            - account_password_pam_faillock_password_auth
+            - audit_rules_login_events_faillock
         status: automated

@@ -5,22 +5,26 @@ cpes:
       title: "System architecture is not S390X"
       check_id: proc_sys_kernel_osrelease_arch_not_s390x
       bash_conditional: "! grep -q s390x /proc/sys/kernel/osrelease"
+      ansible_conditional: 'ansible_architecture != "s390x"'
 
   - s390x_arch:
       name: "cpe:/a:s390x_arch"
       title: "System architecture is S390X"
       check_id: proc_sys_kernel_osrelease_arch_s390x
       bash_conditional: 'grep -q s390x /proc/sys/kernel/osrelease'
+      ansible_conditional: 'ansible_architecture == "s390x"'
 
   - not_aarch64_arch:
       name: "cpe:/a:not_aarch64_arch"
       title: "System architecture is not AARCH64"
       check_id: proc_sys_kernel_osrelease_arch_not_aarch64
       bash_conditional: "! grep -q aarch64 /proc/sys/kernel/osrelease"
+      ansible_conditional: 'ansible_architecture != "aarch64"'
 
   - aarch64_arch:
       name: "cpe:/a:aarch64_arch"
       title: "System architecture is AARCH64"
       check_id: proc_sys_kernel_osrelease_arch_aarch64
       bash_conditional: 'grep -q aarch64 /proc/sys/kernel/osrelease'
+      ansible_conditional: 'ansible_architecture == "aarch64"'
 

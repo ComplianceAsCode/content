@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4
 
 title: 'Ensure cron Is Logging To Rsyslog'
 
@@ -43,8 +43,17 @@ references:
 ocil_clause: 'cron is not logging to rsyslog'
 
 ocil: |-
-    To verify that <tt>cron</tt> is logging to <tt>rsyslog</tt>,
+    Verify that <tt>cron</tt> is logging to <tt>rsyslog</tt>,
     run the following command:
     <pre>grep -rni "cron\.\*" /etc/rsyslog.*</pre>
-    The output should return some similar to:
     <pre>cron.*                                                  /var/log/cron</pre>
+
+fixtext: |-
+    Configure "rsyslog" to log all cron messages by adding or updating the following line to "/etc/rsyslog.conf" or a configuration file in the /etc/rsyslog.d/ directory:
+
+    cron.* /var/log/cron
+
+    The rsyslog daemon must be restarted for the changes to take effect:
+    $ sudo systemctl restart rsyslog.service
+
+srg_requirement: 'Cron logging must be implemented in {{{ full_name }}}'

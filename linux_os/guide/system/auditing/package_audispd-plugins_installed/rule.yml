@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4
 
 title: 'Install audispd-plugins Package'
 
@@ -27,7 +27,11 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="audispd-plugins") }}}'
 
+fixtext: '{{{ fixtext_package_installed("audispd-plugins") }}}'
+
 template:
     name: package_installed
     vars:
         pkgname: audispd-plugins
+
+srg_requirement: "{{{ full_name }}} must off-load audit records onto a different system or media from the system being audited."

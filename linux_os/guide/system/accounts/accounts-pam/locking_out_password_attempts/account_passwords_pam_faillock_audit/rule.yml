@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Account lockouts must be logged'
+
+description: |-
+    PAM faillock locks an account due to excessive password failures, this event must be logged.
+
+
+rationale:
+    Without auditing of these events it may be harder or impossible to identify what an attacker did after an attack.
+
+severity: medium
+
+identifiers:
+  cce@rhel8: CCE-86107-0
+  cce@rhel9: CCE-86108-8
+
+references:
+    disa: CCI-000044
+    nist: AC-7 (a)
+    srg: SRG-OS-000021-GPOS-00005
+    stigid@rhel8: RHEL-08-020021
+
+ocil_clause: 'the "audit" option is not set, is missing or commented out'
+
+ocil: |-
+    Verify the "/etc/security/faillock.conf" file is configured to log user name information when unsuccessful logon attempts occur:
+
+    $ sudo grep audit /etc/security/faillock.conf
+
+    audit
+
+fixtext: |-
+    Configure {{{ full_name }}} to log user name information when unsuccessful logon attempts occur.
+
+    Add/Modify the "/etc/security/faillock.conf" file to match the following line:
+
+    audit
+
+srg_requirement: '{{{ full_name }}} must log user name information when unsuccessful logon attempts occur.'

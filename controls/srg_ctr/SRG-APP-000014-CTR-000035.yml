@@ -1,0 +1,31 @@
+controls:
+- id: SRG-APP-000014-CTR-000035
+  levels:
+  - medium
+  title: {{{ full_name }}} must use TLS 1.2 or greater for secure container image
+    transport from trusted sources.
+  related_rules:
+    - fips_mode_enabled
+  status: manual
+  check: |-
+    Verify that no insecure registries configured:
+
+    $ oc get image.config.openshift.io/cluster -ojsonpath='{.spec.allowedRegistriesForImport}'
+
+    If any registries set the "insecure: true" flag, this is a finding
+
+    Also check:
+
+    $ oc get image.config.openshift.io/cluster -ojsonpath='{.spec.registrySources}'
+
+    If the results contain any "insecureRegistrySources", this is a finding
+  fixtext: |-
+    Remove insecure registries from the cluster's image registry configuration
+
+    $ oc edit image.config.openshift.io/cluster
+
+    Edit or remove any registries where insecure is set to true, or are listed under insecureRegistries.
+
+    Refer to https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html for more details on configuring registries in OpenShift
+  notes: |-
+    Creating an automated rule is being tracked with https://issues.redhat.com/browse/CMP-1353

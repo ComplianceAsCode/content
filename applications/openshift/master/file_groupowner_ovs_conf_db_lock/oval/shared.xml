@@ -1,0 +1,11 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="file_groupowner_ovs_conf_db_lock" version="1">
+    {{{ oval_metadata("One of the permission checks must pass") }}}
+
+    <criteria operator="OR">
+      <extend_definition comment="ovs conf db lock outside s390x" definition_ref="file_groupowner_ovs_conf_db_lock_not_s390x" />
+      <extend_definition comment="ovs conf db lock on s390x" definition_ref="file_groupowner_ovs_conf_db_lock_s390x" />
+    </criteria>
+
+  </definition>
+</def-group>

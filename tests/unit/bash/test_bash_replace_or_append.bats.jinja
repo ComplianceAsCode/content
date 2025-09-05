@@ -112,3 +112,16 @@ function call_bash_replace_or_append_w_format {
 
     rm "$tmp_file"
 }
+
+@test "bash_replace_or_append - Remediate value containing forward slash" {
+    tmp_file="$(mktemp)"
+    printf "%s\n" "kernel.core_pattern=|/bin/true" > "$tmp_file"
+    expected_output="kernel.core_pattern=|/bin/false\n"
+
+    call_bash_replace_or_append_w_format "$tmp_file" '^kernel.core_pattern' '|/bin/false' '%s=%s'
+
+    run diff "$tmp_file" <(printf "$expected_output")
+    [ "$status" -eq 0 ]
+
+    rm "$tmp_file"
+}

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu1604,ubuntu1804
+prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu1604,ubuntu1804,uos20
 
 title: 'Ensure Software Patches Installed'
 
@@ -48,6 +48,7 @@ identifiers:
 references:
     anssi: BP28(R08)
     cis-csc: 18,20,4
+    cis@alinux2: "1.8"
     cis@rhel7: "1.8"
     cis@rhel8: "1.9"
     cjis: 5.10.4.1
@@ -81,3 +82,34 @@ warnings:
 warnings:
     - general: '{{{ full_name }}} does not have a corresponding OVAL CVE Feed. Therefore, this will result in a "not checked" result during a scan.'
 {{% endif %}}
+
+ocil_clause: '{{{ full_name }}} is in non-compliance with the organizational patching policy'
+
+ocil: |-
+    Verify {{{ full_name }}} security patches and updates are installed and up to date.
+    Updates are required to be applied with a frequency determined by organizational policy.
+
+    {{% if 'rhel' in product %}}
+    Obtain the list of available package security updates from Red Hat. The URL for updates is https://access.redhat.com/errata-search/.
+    It is important to note that updates provided by Red Hat may not be present on the system if the underlying packages are not installed.
+
+
+    Check that the available package security updates have been installed on the system with the following command:
+
+    $ sudo yum history list | more
+
+    Loaded plugins: langpacks, product-id, subscription-manager
+    ID | Command line | Date and time | Action(s) | Altered
+    -------------------------------------------------------------------------------
+    70 | install aide | 2020-03-05 10:58 | Install | 1
+    69 | update -y | 2020-03-04 14:34 | Update | 18 EE
+    68 | install vlc | 2020-02-21 17:12 | Install | 21
+    67 | update -y | 2020-02-21 17:04 | Update | 7 EE
+    {{% endif %}}
+
+    Typical update frequency may be overridden by Information Assurance Vulnerability Alert (IAVA) notifications from CYBERCOM.
+
+fixtext: |-
+    Install {{{ full_name }}} patches or updated packages available from Red Hat within 30 days or sooner as local policy dictates.
+
+srg_requirement: '{{{ full_name }}} vendor packaged system security patches and updates must be installed and up to date.'

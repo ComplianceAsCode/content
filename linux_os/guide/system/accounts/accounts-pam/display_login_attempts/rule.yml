@@ -14,7 +14,8 @@ description: |-
     settings in
     <tt>{{{ pam_lastlog_path }}}</tt> to read as follows:
     <pre>session     required pam_lastlog.so showfailed</pre>
-    And make sure that the <tt>silent</tt> option is not set.
+    And make sure that the <tt>silent</tt> option is not set for
+    <tt>pam_lastlog</tt> module.
 
 rationale: |-
     Users need to be aware of activity that occurs regarding
@@ -53,13 +54,21 @@ references:
     stigid@sle15: SLES-15-020080
     stigid@ubuntu2004: UBTU-20-010453
 
-ocil_clause: 'that is not the case'
+ocil_clause: '"pam_lastlog" is missing from "/etc/pam.d/postlogin" file, or the silent option is present'
 
 ocil: |-
-    To ensure that last logon/access notification is configured correctly, run
-    the following command:
+    Verify users are provided with feedback on when account accesses last occurred with the following command:
+
     <pre>$ grep pam_lastlog.so {{{ pam_lastlog_path }}}</pre>
-    The output should show output <tt>showfailed</tt> and must not contain
-    <tt>silent</tt>.
+
+
+fixtext: |-
+    Configure {{{ full_name }}} to provide users with feedback on when account accesses last occurred by setting the required configuration options in "/etc/pam.d/postlogin".
+
+    Add the following line to the top of "/etc/pam.d/postlogin":
+
+    session required pam_lastlog.so showfailed
+
+srg_requirement: '{{{ full_name }}} must display the date and time of the last successful account logon upon logon.'
 
 platform: pam

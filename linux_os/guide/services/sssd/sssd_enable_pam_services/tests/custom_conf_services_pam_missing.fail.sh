@@ -1,5 +1,5 @@
 
-# packages = /usr/lib/systemd/system/sssd.service
+# packages = sssd
 #!/bin/bash
 #
 

@@ -13,12 +13,17 @@ calibrated.
 
 Issues
 ---
+Before filing a new issue, search through existing issues to ensure a similar issue is not already reported. Sometimes there are similar issues with subtle differences or spanning different use cases, but essentially related to the same issue. If this is the case, we recommend expressing your support and including relevant information to existing issues.
+
 When creating an issue, please be detailed as possible without writing an essay! This makes the
 issue actionable. Ideally, issues with small tasks should be created to help others understand what
 needs to be accomplished.
 
+
 Pull Requests
 ---
+
+### Contributor Information
 
 Two-party review is needed for merging pull requests. This second set of eyes helps review the code
 for functionality and style, and helps create a shared understanding of why certain things are
@@ -53,6 +58,29 @@ approach is to keep the *one step = one commit* approach.
 
 Avoid merge commits in pull requests - use `git rebase` to get rid of them. This helps us keep git
 tree clean and helps to make it easy to understand historical changes done in past commits.
+
+
+### Maintainer Information
+
+Reviewers should pay attention to the following points:
+
+The PR ...
+* ... has been approved by an SME of the area that the PR addresses, which indicates that it is generally a step in a right direction.
+* ... passes PR gating tests, or failing tests are waived in a comment by the reviewer explaining the reasoning.
+* ... adheres to the [coding style](docs/manual/developer/04_style_guide.md#complianceascode-style-guide).
+* ... has been tested. The following options allow for testing various aspects of the project:
+  * [SSG Test Suite](tests/README.md) for rule tests to ensure that OVAL checks are correct and test the ability of remediations to satisfy those checks.
+    Every testable rule that is newly created or that just got modified has to have at least one test scenario.
+    If a PR interacts with a testable rule without tests, the author shall supply a test scenario as part of the PR to get it merged.
+  * [BATS framework](tests/unit/bash) for bash tests that allows for fast and exhaustive testing of remediations that are parametrized by Jinja2.
+  * [Unit tests](tests/unit) that test components of the build system as well as components of the SSG Test Suite.
+  * Ad-hoc tests that are integrated into the `ctest` chain directly, i.e. the shellcheck test.
+* ... updates READMEs, man pages or other documentation when changes of described behavior are introduced.
+* ... doesn't contain merge commits - those can be removed by rebasing.
+* ... is rebased against recent-enough branch that executes the whole range of relevant integrated gating tests.
+* ... doesn't increase maintenance costs, and if it does, there is a substantial counterbalance.
+* ... doesn't prolong the build time in a significant way.
+
 
 Contributing Content
 ---

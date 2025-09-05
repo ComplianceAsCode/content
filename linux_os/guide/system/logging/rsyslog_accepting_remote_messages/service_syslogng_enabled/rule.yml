@@ -23,8 +23,14 @@ references:
     nist: CM-6(a),AU-4(1)
     nist-csf: DE.CM-1,DE.CM-3,DE.CM-7,ID.SC-4,PR.DS-4,PR.PT-1
 
+ocil_clause: '{{{ ocil_clause_service_enabled(service="syslog-ng") }}}'
+
 ocil: |-
     {{{ ocil_service_enabled(service="syslog-ng") }}}
+
+fixtext: '{{{ fixtext_service_enabled("syslog-ng") }}}'
+
+srg_requirement: '{{{ srg_requirement_service_enabled("syslog-ng") }}}'
 
 template:
     name: service_enabled

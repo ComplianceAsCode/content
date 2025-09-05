@@ -30,6 +30,21 @@ references:
     stigid@ol8: OL08-00-040140
     stigid@rhel8: RHEL-08-040140
 
-ocil_clause: '/etc/usbguard/rules.conf does not exist or is empty'
+ocil_clause: 'there is no evidence that unauthorized peripherals are being blocked before establishing a connection'
 
-ocil: Check that the file /etc/usbguard/rules.conf exists and contains a valid configuration
+ocil: |-
+    Verify the USBGuard has a policy configured with the following command:
+
+    $ sudo usbguard list-rules
+
+    If the command does not return results or an error is returned, ask the SA to indicate how unauthorized peripherals are being blocked.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enable the blocking of unauthorized peripherals with the following command:
+    This command must be run from a root shell and will create an allow list for any usb devices currently connected to the system.
+
+    # usbguard generate-policy > /etc/usbguard/rules.conf
+
+    Note: Enabling and starting usbguard without properly configuring it for an individual system will immediately prevent any access over a usb device such as a keyboard or mouse.
+
+srg_requirement: '{{{ full_name }}} must block unauthorized peripherals before establishing a connection.'

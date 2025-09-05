@@ -1,15 +1,15 @@
 documentation_complete: true
 
-prodtype: debian10,debian11,debian9,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: alinux2,debian10,debian11,debian9,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Build and Test AIDE Database'
 
 description: |-
     Run the following command to generate a new database:
-    {{% if 'sle' in product %}}
-    <pre>$ sudo /usr/bin/aide --init</pre>
+    {{% if 'ubuntu' in product %}}
+    <pre>$ sudo aideinit</pre>
     {{% else %}}
-    <pre>$ sudo /usr/sbin/aide --init</pre>
+    <pre>$ sudo {{{ aide_bin_path }}} --init</pre>
     {{% endif %}}
     By default, the database will be written to the file
     {{% if 'ubuntu' in product or 'sle' in product %}}
@@ -18,11 +18,7 @@ description: |-
     <tt>/var/lib/aide/aide.db.new.gz</tt>.
     {{% endif %}}
     Storing the database, the configuration file <tt>/etc/aide.conf</tt>, and the binary
-    {{% if 'sle' in product %}}
-    <tt>/usr/bin/aide</tt>
-    {{% else %}}
-    <tt>/usr/sbin/aide</tt>
-    {{% endif %}}
+    <tt>{{{ aide_bin_path }}}</tt>
     (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
     The newly-generated database can be installed as follows:
     {{% if 'ubuntu' in product or 'sle' in product %}}
@@ -31,11 +27,7 @@ description: |-
     <pre>$ sudo cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
     {{% endif %}}
     To initiate a manual check, run the following command:
-    {{% if 'sle' in product %}}
-    <pre>$ sudo /usr/bin/aide --check</pre>
-    {{% else %}}
-    <pre>$ sudo /usr/sbin/aide --check</pre>
-    {{% endif %}}
+    <pre>$ sudo {{{ aide_bin_path }}} --check</pre>
     If this check produces any unexpected output, investigate.
 
 rationale: |-
@@ -48,12 +40,15 @@ identifiers:
     cce@rhel7: CCE-27220-3
     cce@rhel8: CCE-80675-2
     cce@rhel9: CCE-83438-2
+    cce@sle12: CCE-91483-8
     cce@sle15: CCE-85787-0
 
 references:
     anssi: BP28(R51)
     cis-csc: 1,11,12,13,14,15,16,2,3,5,7,8,9
+    cis@alinux2: 1.3.1
     cis@rhel7: 1.3.1
+    cis@rhel8: 1.3.1
     cis@sle12: 1.3.1
     cis@sle15: 1.4.1
     cis@ubuntu2004: 1.4.1
@@ -69,5 +64,5 @@ references:
 ocil_clause: 'there is no database file'
 
 ocil: |-
-    To find the location of the AIDE databse file, run the following command:
+    To find the location of the AIDE database file, run the following command:
     <pre>$ sudo ls -l <i>DBDIR</i>/<i>database_file_name</i></pre>

@@ -31,6 +31,8 @@ identifiers:
 
 references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8
+    cis@alinux2: 4.1.1.2
+    cis@alinux3: 4.1.2.3
     cis@rhel7: 4.1.2.3
     cis@rhel8: 4.1.2.3
     cis@sle12: 4.1.2.3
@@ -49,7 +51,6 @@ references:
     pcidss: Req-10.7
     srg: SRG-OS-000343-GPOS-00134
     stigid@ol7: OL07-00-030340
-    stigid@rhel7: RHEL-07-030340
 
 ocil_clause: 'the system is not configured to switch to single user mode for corrective action'
 
@@ -59,3 +60,12 @@ ocil: |-
     or halt when disk space has run low:
     <pre>admin_space_left_action single</pre>
 
+fixtext: |-
+    Configure the {{{ full_name }}} audit system to take an action when the disk is audit disk is getting full.
+
+    Add or edit the following line in "/etc/audit/auditd.conf"
+    <pre>admin_space_left_action halt</pre>
+    The value must be one of the following: <tt>email</tt>, <tt>suspend</tt>, <tt>single</tt>, and <tt>halt</tt>.
+
+srg_requirement: |-
+  {{{ full_name }}} must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) via email when the threshold for the repository maximum audit record storage capacity is reached.

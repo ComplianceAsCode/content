@@ -1,0 +1,13 @@
+controls:
+- id: SRG-APP-000118-CTR-000240
+  levels:
+  - medium
+  title: {{{ full_name }}} must protect audit information from any type of unauthorized
+    read access.
+  rules:
+  - audit_log_forwarding_uses_tls
+  - audit_profile_set
+  - directory_permissions_var_log_kube_audit
+  - directory_permissions_var_log_oauth_audit
+  - directory_permissions_var_log_ocp_audit
+  status: does not meet

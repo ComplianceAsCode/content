@@ -34,6 +34,8 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.kptr_restrict", value="1") }}}
 
+srg_requirement: '{{{ full_name }}} must restrict exposed kernel pointer addresses access.'
+
 platform: machine
 
 template:
@@ -43,4 +45,5 @@ template:
         datatype: int
 
 fixtext: |-
+    Configure {{{ full_name }}} to restrict exposed kernel pointer addresses access.
     {{{ fixtext_sysctl("kernel.kptr_restrict", "1") | indent(4) }}}

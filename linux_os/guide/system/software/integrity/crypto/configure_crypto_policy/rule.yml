@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9,rhv4,sle15
+prodtype: alinux2,alinux3,fedora,ol8,ol9,rhcos4,rhel8,rhel9,rhv4,sle15,uos20
 
 title: 'Configure System Cryptography Policy'
 
@@ -60,6 +60,7 @@ identifiers:
     cce@sle15: CCE-85776-3
 
 references:
+    cis@alinux3: "1.10"
     cis@rhel8: 1.10,1.11
     hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.312(e)(1),164.312(e)(2)(ii)
     ism: "1446"
@@ -107,3 +108,11 @@ warnings:
         party review by an accredited lab. While open source software is
         capable of meeting this, it does not meet FIPS-140 unless the vendor
         submits to this process.
+
+fixtext: |-
+    Configure {{{ full_name }}} to use system cryptography policy.
+    Run the following command:
+
+    $ sudo update-crypto-policies --set {{{ xccdf_value("var_system_crypto_policy") }}}
+
+srg_requirement: '{{{ full_name }}} must use {{{ xccdf_value("var_system_crypto_policy") }}} for the system cryptography policy.'

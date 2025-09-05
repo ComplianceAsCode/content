@@ -16,8 +16,8 @@ description: |-
 rationale: |-
     Kerberos authentication for SSH is often implemented using GSSAPI. If Kerberos
     is enabled through SSH, the SSH daemon provides a means of access to the
-    system's Kerberos implementation. Vulnerabilities in the system's Kerberos
-    implementations may be subject to exploitation.
+    system's Kerberos implementation. 
+    Configuring these settings for the SSH daemon provides additional assurance that remote logon via SSH will not use unused methods of authentication, even in the event of misconfiguration elsewhere. 
 
 severity: medium
 
@@ -39,7 +39,7 @@ references:
     iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4
     nist: AC-17(a),CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1
-    ospp: FTP_ITC_EXT.1
+    ospp: FTP_ITC_EXT.1,FCS_SSH_EXT.1.2
     srg: SRG-OS-000364-GPOS-00151,SRG-OS-000480-GPOS-00227
     stigid@ol7: OL07-00-040440
     stigid@ol8: OL08-00-010521
@@ -48,6 +48,11 @@ references:
     vmmsrg: SRG-OS-000480-VMM-002000
 
 {{{ complete_ocil_entry_sshd_option(default="yes", option="KerberosAuthentication", value="no") }}}
+
+fixtext: |-
+    {{{ fixtext_sshd_lineinfile("KerberosAuthentication", "no") }}}
+
+srg_requirement: 'The {{{ full_name }}} SSH daemon must not allow Kerberos authentication, except to fulfill documented and validated mission requirements.'
 
 template:
     name: sshd_lineinfile

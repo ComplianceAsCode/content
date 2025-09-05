@@ -2,27 +2,27 @@
   <definition class="compliance" id="file_groupownership_system_commands_dirs" version="1">
     {{{ oval_metadata("
         Checks that system commands in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin 
-        are owned by root group.
+        are owned by root group or a system account.
       ") }}}
     <criteria >
       <criterion test_ref="test_groupownership_system_commands_dirs" />
     </criteria>
   </definition>
 
-  <unix:file_test  check="all" check_existence="none_exist" comment="system commands are owned by root" id="test_groupownership_system_commands_dirs" version="1">
+  <unix:file_test  check="all" check_existence="none_exist" comment="system commands are owned by root or a system account" id="test_groupownership_system_commands_dirs" version="1">
     <unix:object object_ref="object_groupownership_system_commands_dirs" />
   </unix:file_test>
 
   <unix:file_object comment="system commands files" id="object_groupownership_system_commands_dirs" version="1">
     <!-- Check that system commands within directories /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin 
-         belong to group with gid 0 (root) -->
+         belong to group with gid 0 (root) or gid < 1000 (system account)-->
     <unix:path operation="pattern match">^\/s?bin|^\/usr\/s?bin|^\/usr\/local\/s?bin</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
-   <filter action="include">state_groupowner_system_commands_dirs_not_root</filter>
+   <filter action="include">state_groupowner_system_commands_dirs_not_root_or_system_account</filter>
   </unix:file_object>
 
-  <unix:file_state id="state_groupowner_system_commands_dirs_not_root" version="1">
-    <unix:group_id datatype="int" operation="not equal">0</unix:group_id>
+  <unix:file_state id="state_groupowner_system_commands_dirs_not_root_or_system_account" version="1">
+    <unix:group_id datatype="int" operation="greater than or equal">1000</unix:group_id>
   </unix:file_state>
 
 </def-group>

@@ -211,8 +211,10 @@ class PlaybookToRoleConverter():
             elif isinstance(task["when"], str):
                 task["when"] = [task["when"]]
 
-            variables_to_add = {tag for tag in task["tags"] if self._tag_is_valid_variable(tag)}
-            task["when"] = ["{varname} | bool".format(varname=v) for v in sorted(variables_to_add)] + task["when"]
+            variables_to_add = {self._sanitize_tag(tag)
+                                for tag in task["tags"] if self._tag_is_valid_variable(tag)}
+            task["when"] = ["{varname} | bool".format(
+                varname=v) for v in sorted(variables_to_add)] + task["when"]
             variables.update(variables_to_add)
 
             if not task["when"]:
@@ -320,7 +322,18 @@ class PlaybookToRoleConverter():
         return galaxy_tags
 
     def _tag_is_valid_variable(self, tag):
+        if "DISA-STIG" in tag:
+            return True
+
+        # rules of kind package_* and service_* can have hyphen in their rule IDs
+        pattern = re.compile('(package_.*_(installed|removed))|(service_.*_(enabled|disabled))')
+        if pattern.match(tag):
+            return True
+
         return '-' not in tag and tag != 'always'
+
+    def _sanitize_tag(self, tag):
+        return tag.replace("-", "_")
 
     def file(self, filepath):
         if filepath == 'tasks/main.yml':

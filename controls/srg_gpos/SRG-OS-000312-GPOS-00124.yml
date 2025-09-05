@@ -4,4 +4,21 @@ controls:
             - medium
         title: {{{ full_name }}} must allow operating system admins to change security
             attributes on users, the operating system, or the operating systems components.
-        status: pending
+        status: inherently met
+        rationale: |-
+            Administrators of {{{ full_name }}} need to be able change attributes on users, the operating system, 
+            or {{{ full_name }}} components in order secure the system and ensure that the system is setup
+            to perform the mission.
+        check: |-
+            {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
+            {{{ full_name }}} inherently meets this requirement.
+        fixtext: |-
+            {{{ full_name }}} inherently meets this requirement.
+            No fix is required.
+        artifact_description:
+            UID 0 is the root account as defined by POSIX standard.
+            The root user has the abiliy to full administrator {{{ full_name }}}.
+        status_justification:
+          {{{ full_name }}} meets this requirement and it is not configurable.
+
+        

@@ -5,9 +5,9 @@
 # disruption = low
 
 {{%- if product in ["rhel7", "ol7"] %}}
-  {{%- set auditd_conf_path="/etc/audisp/audispd.conf" %}}
+  {{%- set auditd_conf_path=audisp_conf_path + "/audispd.conf" %}}
 {{%- else %}}
-  {{%- set auditd_conf_path="/etc/audit/auditd.conf" %}}
+  {{%- set auditd_conf_path=audisp_conf_path + "/auditd.conf" %}}
 {{%- endif %}}
 
 {{{ ansible_set_config_file(file=auditd_conf_path,

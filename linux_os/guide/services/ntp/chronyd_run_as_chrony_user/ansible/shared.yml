@@ -4,6 +4,11 @@
 # complexity = low
 # disruption = low
 
+{{%- set ok_by_default = false %}}
+{{%- if product in ["rhel7", "ol7", "rhel8", "ol8", "rhel9", "ol9", "fedora"] %}}
+{{%- set ok_by_default = true %}}
+{{%- endif %}}
+
 - name: "Detect if file /etc/sysconfig/chronyd is not empty or missing"
   find:
     path: /etc/sysconfig/
@@ -14,10 +19,11 @@
 - name: "Remove any previous configuration of user used to run chronyd process"
   replace:
     path: /etc/sysconfig/chronyd
-    regexp: '\s*-u\s+\w+\s*'
+    regexp: '\s*-u\s*\w+\s*'
     replace: ' '
   when: chronyd_file is defined and chronyd_file.matched > 0
 
+{{%- if not ok_by_default %}}
 - name: "Correct existing line in /etc/sysconfig/chronyd to run chronyd as chrony user"
   lineinfile:
     path: /etc/sysconfig/chronyd
@@ -34,3 +40,4 @@
     state: present
     create: True
   when: chronyd_file is defined and chronyd_file.matched == 0
+{{%- endif %}}

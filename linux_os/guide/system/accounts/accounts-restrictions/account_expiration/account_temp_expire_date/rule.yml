@@ -51,17 +51,22 @@ references:
     stigid@ubuntu2004: UBTU-20-010000
     vmmsrg: SRG-OS-000002-VMM-000020,SRG-OS-000123-VMM-000620
 
-ocil_clause: 'any temporary accounts have no expiration date set or do not expire within a documented time frame'
+ocil_clause: 'temporary accounts have no expiration date set or do not expire within 72 hours'
 
 ocil: |-
-    For every temporary account, run the following command
-    to obtain its account aging and expiration information:
-    <pre>$ sudo chage -l <i>USER</i></pre>
-    Verify each of these accounts has an expiration date set as documented.
+    Verify that temporary accounts have been provisioned with an expiration date of 72 hours.
+    
+    For every temporary account, run the following command to obtain its account aging and expiration information:
+    
+    $ sudo chage -l  temporary_account_name
+    
+    Verify each of these accounts has an expiration date set within 72 hours or as documented.
 
 fixtext: |-
     If a temporary account must be created configure the system to terminate the account after a 72
     hour time period with the following command to set an expiration date on it. Substitute
-    "system_account_name" with the account to be created.
+    "temporary_account_name" with the account to be created.
 
-    $ sudo chage -E `date -d "+3 days" +%Y-%m-%d` system_account_name
+    $ sudo chage -E `date -d "+3 days" +%Y-%m-%d` temporary_account_name
+
+srg_requirement: '{{{ full_name }}} temporary user accounts must be provisioned with an expiration time of 72 hours or less.'

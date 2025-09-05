@@ -23,7 +23,7 @@
     <!-- GSettings expects proper datatype specifier when setting 'picture-uri' per:
          https://bugzilla.redhat.com/show_bug.cgi?id=1141779#c3
          Thus require 'string' datatype to be specified in 'picture-uri' configuration too -->
-    <ind:pattern operation="pattern match">^\[org/gnome/desktop/screensaver]([^\n]*\n+)+?picture-uri=(string[\s])?\'\'$</ind:pattern>
+    <ind:pattern operation="pattern match">^\[org/gnome/desktop/screensaver\]([^\n]*\n+)+?picture-uri=string \'\'$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

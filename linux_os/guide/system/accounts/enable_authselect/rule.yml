@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: fedora,ol8,rhel8,rhel9
+
+title: 'Enable authselect'
+
+
+description: |-
+    Configure user authentication setup to use the <tt>authselect</tt> tool.
+
+    If authselect profile is selected, the rule will enable the {{{ xccdf_value("var_authselect_profile") }}} profile.
+
+
+rationale: |-
+    Authselect is a successor to authconfig.
+    It is a tool to select system authentication and identity sources from a list of supported profiles
+    instead of letting the administrator build the PAM stack with a tool.
+
+    That way, it avoids potential breakage of configuration,
+    as it ships several tested profiles that are well tested and supported and that each solve a use-case.
+
+
+severity: medium
+
+
+identifiers:
+    cce@rhel8: CCE-88248-0
+    cce@rhel9: CCE-89732-2
+
+
+references:
+    anssi: BP28(R5)
+    cis@rhel8: 1.2.3
+    disa: CCI-000213
+    hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)  # taken from require_singleuser_auth
+    nist: AC-3
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil: |-
+    Verify that <tt>authselect</tt> is enabled by running
+    <pre>authselect current</pre>
+    If authselect is enabled on the system, the output should show the ID of the profile which is currently in use.
+
+
+ocil_clause: 'authselect is not used to manage user authentication setup on the system'

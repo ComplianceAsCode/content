@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_rhv,multi_platform_ol,multi_platform_sle
+# platform = multi_platform_all
 # reboot = false
 # strategy = configure
 # complexity = low
@@ -30,6 +30,26 @@
     dest: /etc/sssd/sssd.conf
     section: pam
     option: pam_cert_auth
-    value: 'true'
+    value: 'True'
     create: yes
     mode: 0600
+
+{{% if product in ["fedora", "ol8", "rhel8", "rhel9"] %}}
+- name: '{{{ rule_title }}} - Check if system relies on authselect'
+  ansible.builtin.stat:
+    path: /usr/bin/authselect
+  register: result_authselect_present
+
+- name: '{{{ rule_title }}} - Remediate using authselect'
+  block:
+    {{{ ansible_enable_authselect_feature('with-smartcard') | indent(4) }}}
+  when:
+    - result_authselect_present.stat.exists
+
+- name: '{{{ rule_title }}} - Remediate by directly editing PAM files'
+  block:
+    {{{ ansible_ensure_pam_module_option('/etc/pam.d/smartcard-auth', 'auth', 'sufficient', 'pam_sss.so', 'allow_missing_name', '', '') | indent(4) }}}
+    {{{ ansible_ensure_pam_module_option('/etc/pam.d/system-auth', 'auth', '\[success=done authinfo_unavail=ignore ignore=ignore default=die\]', 'pam_sss.so', 'try_cert_auth', '', '') | indent(4) }}}
+  when:
+    - not result_authselect_present.stat.exists
+{{% endif %}}

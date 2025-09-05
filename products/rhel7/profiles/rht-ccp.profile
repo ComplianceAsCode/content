@@ -14,7 +14,6 @@ selections:
     - file_owner_logfiles_value=root
     - file_groupowner_logfiles_value=root
     - sshd_idle_timeout_value=5_minutes
-    - var_accounts_password_minlen_login_defs=6
     - var_accounts_minimum_age_login_defs=7
     - var_accounts_passwords_pam_faillock_deny=5
     - var_accounts_password_warn_age_login_defs=7
@@ -43,7 +42,6 @@ selections:
     - no_empty_passwords
     - accounts_password_all_shadowed
     - accounts_no_uid_except_zero
-    - accounts_password_minlen_login_defs
     - accounts_minimum_age_login_defs
     - accounts_password_warn_age_login_defs
     - accounts_password_pam_retry

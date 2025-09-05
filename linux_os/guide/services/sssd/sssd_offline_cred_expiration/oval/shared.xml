@@ -2,13 +2,12 @@
   <definition class="compliance" id="sssd_offline_cred_expiration" version="1">
     {{{ oval_metadata("SSSD should be configured to expire offline credentials after 1 day.") }}}
     <criteria operator="OR">
-      <criteria operator="OR">
-        <extend_definition comment="Check if sssd service is disabled" definition_ref="service_sssd_disabled" />
-        <extend_definition comment="Check if /etc/sssd/sssd.conf is configured for usage"
-        definition_ref="sssd_conf_exists" negate="true"/>
-      </criteria>
       <criterion comment="Check offline_credentials_expiration in /etc/sssd/sssd.conf"
       test_ref="test_sssd_offline_cred_expiration" />
+      {{% if product in ["ol8", "rhel8"] %}}
+      <criterion comment="Check cache_credentials in /etc/sssd/sssd.conf"
+      test_ref="test_sssd_cache_credentials" />
+      {{% endif %}}
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
@@ -18,7 +17,23 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sssd_offline_cred_expiration" version="1">
     <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*\[pam](?:[^\n\[]*\n+)+?[\s]*offline_credentials_expiration[\s]*=[\s]*1$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*\[pam](?:[^\n\[]*\n+)+?[\s]*offline_credentials_expiration[\s]*=[\s]*1\s*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+  {{% if product in ["ol8", "rhel8"] %}}
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+  comment="tests the value of cache_credentials setting in the /etc/sssd/sssd.conf file"
+  id="test_sssd_cache_credentials" version="1">
+    <ind:object object_ref="obj_sssd_cache_credentials" />
+    <ind:state state_ref="state_sssd_cache_credentials" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_sssd_cache_credentials" version="1">
+    <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*cache_credentials\s*=\s*(\w+)\s*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_sssd_cache_credentials" version="1">
+    <ind:subexpression operation="case insensitive equals">false</ind:subexpression>
+  </ind:textfilecontent54_state>
+  {{% endif %}}
 </def-group>

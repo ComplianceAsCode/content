@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle12,sle15
 
-title: 'Record Unsuccessul Delete Attempts to Files - renameat'
+title: 'Record Unsuccessful Delete Attempts to Files - renameat'
 
 description: |-
     {{% if product not in ["sle12", "sle15"] %}}
@@ -41,6 +41,7 @@ identifiers:
     cce@rhcos4: CCE-82649-5
     cce@rhel7: CCE-82082-9
     cce@rhel8: CCE-80974-9
+    cce@rhel9: CCE-87670-6
     cce@sle12: CCE-83252-7
     cce@sle15: CCE-85702-9
 
@@ -63,7 +64,15 @@ references:
     stigid@sle15: SLES-15-030740
     vmmsrg: SRG-OS-000458-VMM-001810,SRG-OS-000461-VMM-001830
 
-{{{ complete_ocil_entry_audit_syscall(syscall="renameat") }}}
+ocil: |-
+    {{{ ocil_audit_rules_unsuccessful_file_modification("renameat", "unsuccessful-delete") | indent(4) }}}
+
+ocil_clause: the command does not return a line, or the line is commented out
+
+fixtext: |-
+    {{{ fixtext_audit_rules("renameat", "perm_mod", "perm_mod") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("renameat") }}}'
 
 warnings:
     - general: |-
@@ -93,3 +102,9 @@ template:
           - unlink
           - unlinkat
 
+fixtext: |-
+    {{%- if product in ['sle15'] %}}
+    {{{ fixtext_audit_rules_unsuccessful_file_modification("renameat", ["rename", "renameat2", "unlink", "unlinkat"]) | indent(4) }}}
+    {{%- else %}}
+    {{{ fixtext_audit_rules_unsuccessful_file_modification("renameat", ["rename", "unlink", "unlinkat"]) | indent(4) }}}
+    {{%- endif %}}

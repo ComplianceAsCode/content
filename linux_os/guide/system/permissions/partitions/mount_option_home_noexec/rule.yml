@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Add noexec Option to /home'
 
@@ -14,14 +14,14 @@ rationale: |-
     this directory should not be considered as trusted and users should not be
     able to execute them.
 
-{{{ complete_ocil_entry_mount_option("/home", "noexec") }}}
-
 severity: medium
 
 identifiers:
     cce@rhel7: CCE-83327-7
     cce@rhel8: CCE-83328-5
     cce@rhel9: CCE-83875-5
+    cce@sle12: CCE-91543-9
+    cce@sle15: CCE-91236-0
 
 references:
     anssi: BP28(R12)
@@ -32,6 +32,12 @@ references:
     stigid@rhel8: RHEL-08-010590
 
 platform: machine
+
+{{{ complete_ocil_entry_mount_option("/home", "noexec") }}}
+
+fixtext: '{{{ fixtext_mount_option("/home", "noexec") }}}'
+
+srg_requirement: '{{{ srg_requirement_mount_option("/home", "noexec") }}}'
 
 template:
     name: mount_option

@@ -1140,8 +1140,8 @@ controls:
         levels:
             - medium
         title: RHEL 8 passwords for new users must have a minimum of 15 characters.
-        rules:
-            - accounts_password_minlen_login_defs
+        related_rules:
+            - accounts_password_pam_minlen
         status: automated
     -   id: RHEL-08-020240
         levels:
@@ -2731,7 +2731,9 @@ controls:
         levels:
             - medium
         title: RHEL 8 must disable the user list at logon for graphical user interfaces.
-        status: pending
+        status: automated
+        rules:
+            - dconf_gnome_disable_user_list
     -   id: RHEL-08-020039
         levels:
             - medium

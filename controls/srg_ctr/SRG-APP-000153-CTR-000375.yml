@@ -1,0 +1,10 @@
+controls:
+- id: SRG-APP-000153-CTR-000375
+  levels:
+  - medium
+  title: {{{ full_name }}} must ensure users are authenticated with an individual
+    authenticator prior to using a group authenticator.
+  rules:
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  status: inherently met

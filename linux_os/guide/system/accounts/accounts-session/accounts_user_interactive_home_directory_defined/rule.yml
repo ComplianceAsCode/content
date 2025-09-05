@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'All Interactive Users Must Have A Home Directory Defined'
 
@@ -44,3 +44,8 @@ ocil: |-
     <pre>$ sudo awk -F":" '{print $1 ":" $6}' /etc/passwd</pre>
     Inspect the output and verify that all interactive users have a home directory
     defined.
+
+fixtext: |-
+    Assign home directories to all local interactive users on {{{ full_name }}} that currently do not have a home directory assigned.
+
+srg_requirement: 'All {{{ full_name }}} local interactive users must have a home directory assigned in the /etc/passwd file.'

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhcos4,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Prevent user from disabling the screen lock'
 
@@ -21,10 +21,10 @@ identifiers:
     cce@rhel9: CCE-89538-3
 
 references:
-    disa: CCI-000056
+    disa: CCI-000056,CCI-000058
     nist: CM-6
-    ospp: FMT_SMF_EXT.1
-    srg: SRG-OS-000324-GPOS-00125,SRG-OS-000028-GPOS-00009
+    ospp: FMT_SMF_EXT.1,FMT_MOF_EXT.1,FTA_SSL.1
+    srg: SRG-OS-000324-GPOS-00125,SRG-OS-000028-GPOS-00009,SRG-OS-000030-GPOS-00011
     stigid@ol8: OL08-00-020042
     stigid@rhel8: RHEL-08-020042
 
@@ -40,3 +40,5 @@ fixtext: |-
     Edit the file "/etc/shells" and remove any line that ends in "tmux".
 
 platform: machine
+
+srg_requirement: '{{{ full_name }}} must prevent users from disabling session control mechanisms.'

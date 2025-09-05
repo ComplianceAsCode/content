@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: alinux3,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Set the UEFI Boot Loader Password'
 
@@ -28,11 +28,7 @@ description: |-
     Once the superuser password has been added,
     update the
     <tt>grub.cfg</tt> file by running:
-    {{% if "ubuntu" in product %}}
-    <pre>update-grub</pre>
-    {{% elif product in ["sle12", "sle15"] %}}
-    <pre>grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
-    {{% endif %}}
+    <pre>{{{ grub_command("update") }}}</pre>
     {{% endif %}}
 
 rationale: |-
@@ -54,8 +50,9 @@ identifiers:
 references:
     anssi: BP28(R17)
     cis-csc: 11,12,14,15,16,18,3,5
+    cis@alinux3: 1.5.1
     cis@rhel7: 1.4.1
-    cis@rhel8: 1.5.2
+    cis@rhel8: 1.4.1
     cis@sle12: 1.4.1
     cis@sle15: 1.5.1
     cobit5: DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS06.03,DSS06.06
@@ -77,39 +74,17 @@ references:
     stigid@sle15: SLES-15-010200
     stigid@ubuntu2004: UBTU-20-010009
 
-ocil_clause: 'it does not'
+ocil_clause: 'no password is set'
 
 ocil: |-
-    To verify the boot loader superuser password has been set, run the following
-    command:
-    {{% if product in ["sle12", "sle15", "ubuntu2004"] %}}
-    <pre>sudo grep -A1 "superusers\|password" /etc/grub.d/40_custom</pre>
-    {{% else %}}
-    <pre>sudo grep "password" /etc/grub2-efi.cfg</pre>
-    {{% endif %}}
-    The output should show the following:
-    <pre>password_pbkdf2 <b>superusers-account</b> <b>${GRUB2_PASSWORD}</b></pre>
-    To verify the boot loader superuser account password has been set,
-    and the password encrypted, run the following command:
-    {{% if product in ["sle12", "sle15"] %}}
-    <pre>sudo cat {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
-    The output should be similar to:
-    <pre>password_pbkdf2 superuser grub.pbkdf2.sha512.10000.C4E08AC72FBFF7E837FD267BFAD7AEB3D42DDC
-    2C99F2A94DD5E2E75C2DC331B719FE55D9411745F82D1B6CFD9E927D61925F9BBDD1CFAA0080E0
-    916F7AB46E0D.1302284FCCC52CD73BA3671C6C12C26FF50BA873293B24EE2A96EE3B57963E6D7
-    0C83964B473EC8F93B07FE749AA6710269E904A9B08A6BBACB00A2D242AD828</pre>
-    {{% elif "ubuntu" in product %}}
-    <pre>grep -i password {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
-    The output should contain something similar to:
-    <pre>password_pbkdf2 root grub.pbkdf2.sha512.10000.MFU48934NJA87HF8NSD34493GDHF84NG</pre>
-    {{% else %}}
-    <pre>sudo cat {{{ grub2_uefi_boot_path}}}/user.cfg</pre>
+    To verify the boot loader superuser password has been set, run the following command:
+    $ sudo grep "^[\s]*GRUB2_PASSWORD=grub\.pbkdf2\.sha512.*$" {{{ grub2_uefi_boot_path }}}/user.cfg
     The output should be similar to:
     <pre>GRUB2_PASSWORD=grub.pbkdf2.sha512.10000.C4E08AC72FBFF7E837FD267BFAD7AEB3D42DDC
     2C99F2A94DD5E2E75C2DC331B719FE55D9411745F82D1B6CFD9E927D61925F9BBDD1CFAA0080E0
     916F7AB46E0D.1302284FCCC52CD73BA3671C6C12C26FF50BA873293B24EE2A96EE3B57963E6D7
     0C83964B473EC8F93B07FE749AA6710269E904A9B08A6BBACB00A2D242AD828</pre>
-    {{% endif %}}
+
 
 warnings:
     - general: |-
@@ -120,3 +95,22 @@ warnings:
         <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
 
 platform: machine
+
+fixtext: |-
+    Configure {{{ full_name }}} to use a secure UEFI boot loader password.
+
+    Run the following command:
+    $ sudo grub2-setpassword
+
+    When prompted, enter the password that was selected.
+    Using the hash from the output, modify the "/etc/grub.d/40_custom" file with the following content:
+    Use a unique account name for the superusers account.
+
+    set superusers="superusers-account"
+    password_pbkdf2 superusers-account grub.pbkdf2.sha512.$password_hash
+
+    Then, update the grub.cfg file by running:
+
+    $ sudo {{{ grub_command("update") }}}
+
+srg_requirement: '{{{ full_name }}} systems with United Extensible Firmware Interface (UEFI) must require authentication upon booting into single-user mode and maintenance.'

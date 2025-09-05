@@ -24,8 +24,6 @@ rationale: |-
 
 severity: medium
 
-{{{ complete_ocil_entry_sshd_option(default="yes", option="X11Forwarding", value="no") }}}
-
 identifiers:
     cce@rhel7: CCE-83359-0
     cce@rhel8: CCE-83360-8
@@ -33,8 +31,10 @@ identifiers:
     cce@sle15: CCE-85707-8
 
 references:
+    cis@alinux2: 5.2.6
+    cis@alinux3: 5.2.6
     cis@rhel7: 5.3.6
-    cis@rhel8: 5.2.6
+    cis@rhel8: 5.2.12
     cis@sle12: 5.3.7
     cis@sle15: 5.2.6
     cis@ubuntu2004: 5.2.5
@@ -48,6 +48,12 @@ references:
     stigid@rhel8: RHEL-08-040340
     stigid@sle15: SLES-15-040290
     stigid@ubuntu2004: UBTU-20-010048
+
+{{{ complete_ocil_entry_sshd_option(default="yes", option="X11Forwarding", value="no") }}}
+
+fixtext: '{{{ fixtext_sshd_lineinfile("X11Forwarding", "no", "no") }}}'
+
+srg_requirement: '{{{ full_name }}} remote X connections for interactive users must be disabled unless to fulfill documented and validated mission requirements.'
 
 template:
     name: sshd_lineinfile

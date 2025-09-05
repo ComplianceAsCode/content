@@ -29,17 +29,21 @@ references:
     stigid@ol8: OL08-00-030710
     stigid@rhel8: RHEL-08-030710
 
-ocil_clause: 'rsyslogd ActionSendStreamDriverMode not set to 1'
+ocil_clause: 'rsyslogd ActionSendStreamDriverMode is not set to 1'
 
 ocil: |-
     Verify the operating system encrypts audit records off-loaded onto a different system
     or media from the system being audited with the following commands:
 
     <pre>$ sudo grep -i '$ActionSendStreamDriverMode' /etc/rsyslog.conf /etc/rsyslog.d/*.conf</pre>
-    The output should be
+
+    The output should be:
+
     <pre>/etc/rsyslog.conf:$ActionSendStreamDriverMode 1</pre>
 
 fixtext: |-
     Configure the operating system to encrypt off-loaded audit records by setting the following options in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf":
 
     $ActionSendStreamDriverMode 1
+
+srg_requirement: '{{{ full_name }}}  must encrypt the transfer of audit records off-loaded onto a different system or media from the system being audited.'

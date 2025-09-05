@@ -1,13 +1,13 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'User Initialization Files Must Not Run World-Writable Programs'
 
 description: |-
     Set the mode on files being executed by the user initialization files with the
     following command:
-    <pre>$ sudo chmod 0755 <i>FILE</i></pre>
+    <pre>$ sudo chmod o-w <i>FILE</i></pre>
 
 rationale: |-
     If user start-up files execute world-writable programs, especially in
@@ -26,6 +26,7 @@ identifiers:
     cce@sle15: CCE-85632-8
 
 references:
+    cis@rhel8: 6.2.12
     cis@sle15: 6.2.8
     disa: CCI-000366
     srg: SRG-OS-000480-GPOS-00227
@@ -36,10 +37,22 @@ references:
     stigid@sle12: SLES-12-010780
     stigid@sle15: SLES-15-040130
 
-ocil_clause: 'files are executing world-writable programs'
+ocil_clause: 'user initialization files are executing world-writable programs'
 
 ocil: |-
-    To verify that local initialization files do not execute world-writable programs,
+    Verify that local initialization files do not execute world-writable programs,
     execute the following command:
     <pre>$ sudo find /home -perm -002 -type f -name ".[^.]*" -exec ls -ld {} \;</pre>
-    There should be no output.
+    For all files listed, check for their presence in the local
+    initialization files with the following command:
+    Note: The example will be for a system that is configured to create
+    users' home directories in the "/home" directory.
+    <pre> sudo find /home/* -maxdepth 1 -type f -name \.\* -exec grep -H &lt;file&gt; {} \; </pre>
+
+fixtext: |-
+    Set the mode on files being executed by the local initialization files with the following command:
+
+    $ sudo chmod 0755
+
+srg_requirement: |-
+    Local {{{ full_name }}} initialization files must not execute world-writable programs.

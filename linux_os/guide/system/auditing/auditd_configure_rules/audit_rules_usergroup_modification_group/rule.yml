@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: alinux2,alinux3,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Record Events that Modify User/Group Information - /etc/group'
 
@@ -37,15 +37,17 @@ identifiers:
 
 references:
     cis-csc: 1,11,12,13,14,15,16,18,19,2,3,4,5,6,7,8,9
+    cis@alinux2: 4.1.5
+    cis@alinux3: 4.1.3.8
     cis@rhel7: 4.1.4
-    cis@rhel8: 4.1.11
+    cis@rhel8: 4.1.3.8
     cis@sle12: 4.1.4
     cis@sle15: 4.1.4
     cis@ubuntu2004: 4.1.4
     cjis: 5.4.1.1
     cobit5: APO10.01,APO10.03,APO10.04,APO10.05,APO11.04,APO12.06,APO13.01,BAI03.05,BAI08.02,DSS01.03,DSS01.04,DSS02.02,DSS02.04,DSS02.07,DSS03.01,DSS03.05,DSS05.02,DSS05.03,DSS05.04,DSS05.05,DSS05.07,DSS06.03,MEA01.01,MEA01.02,MEA01.03,MEA01.04,MEA01.05,MEA02.01
     cui: 3.1.7
-    disa: CCI-000018,CCI-000169,CCI-000172,CCI-001403,CCI-001404,CCI-001405,CCI-001683,CCI-001684,CCI-001685,CCI-001686,CCI-002130,CCI-002132,CCI-002884
+    disa: CCI-000018,CCI-000130,CCI-000135,CCI-000169,CCI-000172,CCI-001403,CCI-001404,CCI-001405,CCI-001683,CCI-001684,CCI-001685,CCI-001686,CCI-002130,CCI-002132,CCI-002884
     hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
     isa-62443-2009: 4.2.3.10,4.3.2.6.7,4.3.3.2.2,4.3.3.3.9,4.3.3.5.1,4.3.3.5.2,4.3.3.5.8,4.3.3.6.6,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.4.7,4.3.4.5.6,4.3.4.5.7,4.3.4.5.8,4.4.2.1,4.4.2.2,4.4.2.4
     isa-62443-2013: 'SR 1.1,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.10,SR 2.11,SR 2.12,SR 2.6,SR 2.8,SR 2.9,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 6.1,SR 6.2,SR 7.1,SR 7.6'
@@ -55,7 +57,7 @@ references:
     nist-csf: DE.AE-3,DE.AE-5,DE.CM-1,DE.CM-3,DE.CM-7,ID.SC-4,PR.AC-1,PR.AC-3,PR.AC-4,PR.AC-6,PR.PT-1,PR.PT-4,RS.AN-1,RS.AN-4
     ospp: FAU_GEN.1.1.c
     pcidss: Req-10.2.5
-    srg: SRG-OS-000004-GPOS-00004,SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000304-GPOS-00121,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000470-GPOS-00214,SRG-OS-000471-GPOS-00215,SRG-OS-000239-GPOS-00089,SRG-OS-000240-GPOS-00090,SRG-OS-000241-GPOS-00091,SRG-OS-000303-GPOS-00120,SRG-OS-000304-GPOS-00121,SRG-OS-000466-GPOS-00210,SRG-OS-000476-GPOS-00221
+    srg: SRG-OS-000004-GPOS-00004,SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000304-GPOS-00121,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000470-GPOS-00214,SRG-OS-000471-GPOS-00215,SRG-OS-000239-GPOS-00089,SRG-OS-000240-GPOS-00090,SRG-OS-000241-GPOS-00091,SRG-OS-000303-GPOS-00120,SRG-OS-000466-GPOS-00210,SRG-OS-000476-GPOS-00221
     stigid@ol7: OL07-00-030871
     stigid@ol8: OL08-00-030170
     stigid@rhel7: RHEL-07-030871
@@ -65,16 +67,15 @@ references:
     stigid@ubuntu2004: UBTU-20-010101
     vmmsrg: SRG-OS-000004-VMM-000040,SRG-OS-000239-VMM-000810,SRG-OS-000240-VMM-000820,SRG-OS-000241-VMM-000830,SRG-OS-000274-VMM-000960,SRG-OS-000275-VMM-000970,SRG-OS-000276-VMM-000980,SRG-OS-000277-VMM-000990,SRG-OS-000303-VMM-001090,SRG-OS-000304-VMM-001100,SRG-OS-000476-VMM-001960
 
-ocil_clause: 'the system is not configured to audit account changes'
+ocil_clause: 'the command does not return a line, or the line is commented out'
 
 ocil: |-
-    To determine if the system is configured to audit account changes,
-    run the following command:
-    <br /><br />
-    <pre>auditctl -l | egrep '(/etc/group)'</pre>
-    <br /><br />
-    If the system is configured to watch for account changes, lines should be returned for
-    each file specified (and with <tt>perm=wa</tt> for each).
+    Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/group" with the following command:
+
+    $ sudo auditctl -l | egrep '(/etc/group)'
+
+    -w /etc/group -p wa -k identity
+
 
 fixtext: '{{{ fixtext_audit_file_watch_rule("/etc/group", "identity", "/etc/audit/rules.d/audit.rules") }}}'
 

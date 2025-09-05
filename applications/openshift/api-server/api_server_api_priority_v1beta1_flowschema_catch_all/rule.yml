@@ -1,0 +1,69 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Ensure catch-all FlowSchema object for API Priority and Fairness Exists'
+
+description: |-
+  Using <tt>APIPriorityAndFairness</tt> feature provides a fine-grained way
+  to control the behaviour of the Kubernetes API server in an overload
+  situation. The well-known FlowSchema <tt>catch-all</tt> should be available
+  to make sure that every request gets some kind of classification. By default,
+  the <tt>catch-all</tt> priority level only allows one concurrency share and
+  does not queue requests. To inspect all the <tt>FlowSchema</tt> objects, run:
+  <pre>oc get flowschema</pre>
+  To inspect the well-known <tt>catch-all</tt> object, run the following:
+  <pre>oc describe flowschema catch-all</pre>
+
+rationale: |-
+  The <tt>FlowSchema</tt> API objects enforce a limit on the
+  number of events that the API Server will accept in a given time slice
+  In a large multi-tenant cluster, there might be a small percentage of
+  misbehaving tenants which could have a significant impact on the
+  performance of the cluster overall. It is recommended to limit the rate
+  of events that the API Server will accept.
+
+identifiers:
+  cce@ocp4: CCE-83522-3
+
+platforms:
+  - ocp4.8 or ocp4.9 or ocp4.10
+
+severity: medium
+
+references:
+  cis@ocp4: 1.2.10
+  nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+  nist: CM-6,CM-6(1)
+  pcidss: Req-2.2
+  srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
+
+ocil_clause: 'A FlowSchema object <tt>catch-all</tt> exists'
+
+ocil: |-
+  Run the following commands:
+  <pre>oc get flowschema</pre>
+  and inspect the FlowSchema objects. Make sure that at least the <tt>catch-all</tt>
+  object exists by calling:
+  <pre>oc describe flowschema catch-all</pre>
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/flowcontrol.apiserver.k8s.io/v1beta1/flowschemas/catch-all") | indent(4) }}}
+- dependency: |-
+    Note that this is only applicable in OpenShift Container Platform version 4.8
+    and higher
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: "/apis/flowcontrol.apiserver.k8s.io/v1beta1/flowschemas/catch-all"
+    yamlpath: '.spec.rules[0].subjects[:].group["name"]'
+    check_existence: "at_least_one_exists"
+    entity_check: "at least one"
+    values:
+      - value: "system:authenticated"
+        operation: "pattern match"
+        check_existence: "at_least_one_exists"
+        entity_check: "at least one"

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Uninstall tftp-server Package'
 
@@ -21,10 +21,12 @@ identifiers:
     cce@rhel7: CCE-80213-2
     cce@rhel8: CCE-82436-7
     cce@rhel9: CCE-84154-4
+    cce@sle15: CCE-91227-9
 
 references:
     anssi: BP28(R1)
     cis-csc: 11,12,14,15,3,8,9
+    cis@rhel8: 2.2.9
     cobit5: APO13.01,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS01.04,DSS05.02,DSS05.03,DSS05.05,DSS06.06
     disa: CCI-000318,CCI-000366,CCI-000368,CCI-001812,CCI-001813,CCI-001814
     isa-62443-2009: 4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.2,4.3.4.3.3
@@ -39,6 +41,10 @@ references:
     stigid@rhel8: RHEL-08-040190
 
 {{{ complete_ocil_entry_package(package="tftp-server") }}}
+
+fixtext: '{{{ fixtext_package_removed("tftp-server") }}}'
+
+srg_requirement: 'The Trivial File Transfer Protocol (TFTP) server package must not be installed if not required for {{{ full_name }}} operational support.'
 
 template:
     name: package_removed

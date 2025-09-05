@@ -1,0 +1,11 @@
+controls:
+- id: SRG-APP-000024-CTR-000060
+  levels:
+  - medium
+  title: {{{ full_name }}} must automatically remove or disable temporary user
+    accounts after 72 hours.
+  rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  status: not applicable

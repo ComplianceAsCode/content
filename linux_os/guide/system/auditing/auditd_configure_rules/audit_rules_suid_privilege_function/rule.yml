@@ -6,7 +6,14 @@ title: 'Record Events When Privileged Executables Are Run'
 
 description: |-
     Verify the system generates an audit record when privileged functions are executed.
-    <pre># grep -iw execve <tt>/etc/audit/audit.rules</tt></pre>
+
+    If audit is using the "auditctl" tool to load the rules, run the following command:
+
+    <pre>$ sudo grep execve /etc/audit/audit.rules</pre>
+
+    If audit is using the "augenrules" tool to load the rules, run the following command:
+
+    <pre>$ sudo grep -r execve /etc/audit/rules.d</pre>
 
     {{% if product == "ol8" %}}
     <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -k setuid</pre>
@@ -42,7 +49,7 @@ identifiers:
 
 references:
     cis@ubuntu2004: 4.1.15
-    disa: CCI-001814,CCI-001882,CCI-001889,CCI-001880,CCI-001881,CCI-001878,CCI-001879,CCI-001875,CCI-001877,CCI-001914,CCI-002234
+    disa: CCI-001814,CCI-001882,CCI-001889,CCI-001880,CCI-001881,CCI-001878,CCI-001879,CCI-001875,CCI-001877,CCI-001914,CCI-002233,CCI-002234
     nist: CM-5(1),AU-7(a),AU-7(b),AU-8(b),AU-12(3),AC-6(9)
     srg: SRG-OS-000326-GPOS-00126,SRG-OS-000327-GPOS-00127
     stigid@ol7: OL07-00-030360
@@ -58,25 +65,48 @@ warnings:
         Note that these rules can be configured in a
         number of ways while still achieving the desired effect.
 
-ocil_clause: 'the lines are commented out or do not exist'
+ocil_clause: 'the command does not return all lines, or the lines are commented out'
 
 ocil: |-
-      Add or update the following rules in "<tt>/etc/audit/rules.d/audit.rules</tt>":
+    Verify {{{ full_name }}} audits the execution of privileged functions.
 
-      {{% if product == "ol8" %}}
-      <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -k setuid</pre>
-      <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -k setuid</pre>
-      <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -k setgid</pre>
-      <pre>-a always,exit -F arch=b64 -S execve -C gid!=egid -k setgid</pre>
-      {{% else %}}
-      <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k setuid</pre>
-      <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k setuid</pre>
-      <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k setgid</pre>
-      <pre>-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k setgid</pre>
-      {{% endif %}}
+    Check if {{{ full_name }}} is configured to audit the execution of the "execve" system call using the following command:
 
-      The audit daemon must be restarted for the changes to take effect.
+    <pre>$ sudo grep execve /etc/audit/audit.rules</pre>
 
-      <pre># sudo systemctl restart <tt>auditd.service</tt></pre>
+    The output should be the following:
+
+    {{% if product == "ol8" %}}
+    <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -k setuid</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -k setuid</pre>
+    <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -k setgid</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -C gid!=egid -k setgid</pre>
+    {{% else %}}
+    <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k setuid</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k setuid</pre>
+    <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k setgid</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k setgid</pre>
+    {{% endif %}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to audit the execution of the "execve" system call.
+
+    Add or update the following rules to "/etc/audit/rules.d/audit.rules":
+
+    {{% if product == "ol8" %}}
+    <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -k setuid</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -k setuid</pre>
+    <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -k setgid</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -C gid!=egid -k setgid</pre>
+    {{% else %}}
+    <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k setuid</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k setuid</pre>
+    <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k setgid</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k setgid</pre>
+    {{% endif %}}
+
+    The audit daemon must be restarted for the changes to take effect.
 
 platform: machine
+
+srg_requirement: '{{{ full_name }}} must audit the execution of privileged functions.'

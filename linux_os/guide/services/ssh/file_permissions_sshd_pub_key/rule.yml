@@ -19,8 +19,10 @@ identifiers:
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
+    cis@alinux2: 5.2.4
+    cis@alinux3: 5.2.4
     cis@rhel7: 5.3.3
-    cis@rhel8: 5.2.4
+    cis@rhel8: 5.2.3
     cis@sle12: 5.3.3
     cis@sle15: 5.2.3
     cis@ubuntu2004: 5.2.3
@@ -45,6 +47,10 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/*.pub", perms="-rw
 
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/ssh/*.pub", perms="-rw-r--r--") }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/ssh/*_key.pub", mode="0600") }}}'
+
+srg_requirement: 'The {{{ full_name }}} SSH public host key files must have mode 0644 or less permissive.'
 
 template:
     name: file_permissions

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Disable Kernel Parameter for Sending ICMP Redirects on all IPv4 Interfaces'
 
@@ -26,8 +26,10 @@ identifiers:
 references:
     anssi: BP28(R22)
     cis-csc: 1,11,12,13,14,15,16,18,2,3,4,6,7,8,9
+    cis@alinux2: 3.1.2
+    cis@alinux3: 3.2.2
     cis@rhel7: 3.2.2
-    cis@rhel8: 3.1.2
+    cis@rhel8: 3.2.2
     cis@sle12: 3.2.2
     cis@sle15: 3.2.2
     cis@ubuntu2004: 3.2.1
@@ -51,6 +53,11 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.send_redirects", value="0") }}}
 
+fixtext: |-
+    Configure {{{ full_name }}} to not allow interfaces to perform IPv4 ICMP redirects.
+    {{{ fixtext_sysctl(sysctl="net.ipv4.conf.all.send_redirects", value="0") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must not send Internet Control Message Protocol (ICMP) redirects.'
 template:
     name: sysctl
     vars:

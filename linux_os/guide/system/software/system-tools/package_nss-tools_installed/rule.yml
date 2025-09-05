@@ -16,6 +16,7 @@ severity: medium
 
 identifiers:
     cce@rhel8: CCE-82396-3
+    cce@rhel9: CCE-89706-6
 
 references:
     ospp: FMT_SMF_EXT.1
@@ -24,6 +25,11 @@ references:
 ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="nss-tools") }}}'
+
+fixtext: '{{{ fixtext_package_installed("nss-tools") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("nss-tools") }}}'
+
 
 template:
     name: package_installed

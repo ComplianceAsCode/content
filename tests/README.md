@@ -1,25 +1,26 @@
 # Introduction
 
-In this document, we will describe the SSG Test Suite.
+Test your rule content in a robust way with minimal effort required using Automatus -
+the test framework that is integrated into the content project.
 
-Goal of this Test Suite is primarily to ensure Remediation scripts are usable,
-and to define scenarios in which these should work.
+Use Automatus to define various scenarios that can test your scanning and remediation code.
+Ensure that OVAL evaluates as expected under those scenarios.
+Test your remediation on scenarios that put the system into an incompliant, but fixable state -
+make sure that your remediations are able to fix such insecure system, so it passes when it is scanned again.
 
-Priority is to provide very simple system of test scenarios, easily extendable
-so everyone contributing remediation can also provide cases where this
-remediation works.
+Automatus provisions systems according to test scenarios using VMs or containers.
+Then, it scans the provisioned systems, and if the scan results in failure, it runs a remediation and rescans.
+Finally, it retrieves results and presents them, so they can be acted upon.
 
-The Test Suite executes the scans, remediations, and test scenarios on VMs or containers.
 To test content using VMs, *Libvirt backend* is used;
 to test content using containers, either *Podman* or *Docker* backend can be used.
 
-Once a domain or container is prepared it can be used indefinitely.\
-The Test Suite can perform tests focused on a profile or a specific rule.\
-Typically, for a test run, a sequence of scan, remediation and scan is peformed.
+Once a domain or container is prepared it can be used indefinitely.
+Automatus can perform tests focused on a profile or a specific rule.
 
 # Preparing a backend for testing
 
-For the test suite to work, you need to have a backend image prepared for testing.
+For Automatus to work, you need to have a backend image prepared for testing.
 You can use a powerful full-blown VM backend, or a lightweight container backend.
 
 ## Libvirt backend
@@ -57,7 +58,7 @@ $ python install_vm.py --domain test-suite-fedora --distro fedora
 By default, the key at `~/.ssh/id_rsa.pub` is used. You can change default key used via `--ssh-pubkey` option.
 
 By default, the VM will be created on the user hypervisor, i.e. `qemu:///session`.
-For Test Suite this should be enough, in case you need the VM to reside under `qemu:///system`, use the install script with `--libvirt qemu:///system`.
+This should be enough for the testing, in case you need the VM to reside under `qemu:///system`, use the install script with `--libvirt qemu:///system`.
 
 When installing a RHEL VM, you will still need to subscribe it. You can also run installation and provide custom URLs pointing to your repositories:
 ```
@@ -68,10 +69,10 @@ By default, the script creates a BIOS based machine. If you need to create UEFI
 based machine, supply the `--uefi normal` or `--uefi secureboot` command line
 argument. The script will create UEFI based machine and make necessary changes
 to partitioning scheme. Note that the Libvirt backend cannot make snapshots of
-UEFI based machines. Therefore, you can't use them with SSG test suite.
+UEFI based machines. Therefore, you can't use them with Automatus.
 
 *TIP*: Create a snapshot as soon as your VM is setup. This way, you can manually revert
-in case the test suite breaks something and fails to revert. Do not use snapshot names starting with `ssg_`.\
+in case the test run breaks something and fails to revert. Do not use snapshot names starting with the `_ssgts` prefix.
 You can create a snapshot using `virsh` or `virt-manager`.
 
 ## Container backends
@@ -90,7 +91,6 @@ The image needs to fulfil the following requirements:
   - You may want to include other packages, as base images tend to be bare-bone and tests may require more packages to be present.
 
 You can use `test_suite-*` Dockerfiles in the [`content/Dockerfiles`](../Dockerfiles) directory to build the images.
-We recommend to use RHEL-based containers, as the test suite is optimized for testing the RHEL content.
 
 ### Podman
 
@@ -99,7 +99,10 @@ To use Podman backend, you need to have:
 - `podman` package installed
 
 #### Building podman base image
-The Test Suite will log in to the container via SSH, so, if you don't have an SSH key pair, lets setup a key without passphrase, so the procedure could happen without any additional interaction. You can skip this step if you already have an SSH key pair.
+
+Automatus will interact with the container by means of the root SSH access.
+If you don't have an SSH key pair, setup a key without passphrase, so the procedure could happen without any additional interaction.
+You can skip this step if you already have an SSH key pair.
 
 ```
 ssh-keygen -N ""
@@ -151,7 +154,7 @@ For example:
 * `something.pass.sh`: Success scenario - script is expected to prepare machine
   in such way that the rule is expected to pass.
 * `something.fail.sh`: Fail scenario - script is expected to break machine so
-  the rule fails. Test Suite than, if initial scan fails as expected, tries to
+  the rule fails. If initial scan fails as expected, Automatus tries to
   remediate machine and expects evaluation to pass after the remediation.
 
 ## Scenarios format
@@ -179,7 +182,7 @@ The header consists of comments (starting by `#`). Possible keys are:
   `bash`, `ansible`, `none`). The `none` value means that the tested rule has no
   implemented remediation. The `none` value can also be used in case that
   remediation breaks test environment (for example unmounting /tmp in a test
-  scenario would break test suite because OpenSCAP generates reports into the
+  scenario would break test runs, because OpenSCAP generates reports into the
   /tmp directory).
 - `templates` has no effect at the moment.
 - `variables` is a comma-separated list of XCCDF values that sets a different
@@ -249,9 +252,9 @@ Let's add test scenarios for rule `accounts_password_minlen_login_defs`.
  into *DIR*
 3. write a pass script into *DIR* - (some rules can have more than one pass scenario)
 4. build the data stream by running `./build_product --datastream-only fedora`
-5. run `test_suite.py` with command:
+5. run `automatus.py` with command:
 ```
-./test_suite.py rule --libvirt qemu:///session ssg-test-suite-fedora accounts_password_minlen_login_defs
+./automatus.py rule --libvirt qemu:///session ssg-test-suite-fedora accounts_password_minlen_login_defs
 ```
 
 Example of test scenarios for this rule can be found at: [#3697](https://github.com/ComplianceAsCode/content/pull/3697)
@@ -276,8 +279,8 @@ common code to the shared directory.
 
 # Running tests
 
-To test you profile or rule use `test_suite.py` script. It can take your SCAP source data stream, and test it on the specified backend.
-The Test Suite can test a whole profile or just a specific rule within a profile.
+To test you profile or rule use `automatus.py` script. It can take your SCAP source data stream, and test it on the specified backend.
+Automatus can test a whole profile or just a specific rule within a profile.
 
 ## Argument summary
 
@@ -300,7 +303,7 @@ Specify backend and image to use:
 libvirt: QEMU Driver error : operation failed Failed to take snapshot: Error: Nested VMX virtualization does not support live migration yet
 ```
 
-This error might be followed by Python tracebacks where the above message is repeated. First make sure that you are running the test suite on the physical machine and that you really DO NOT use nested virtualization by running VM in VM.
+This error might be followed by Python tracebacks where the above message is repeated. First make sure that you are running Automatus on the physical machine and that you really DO NOT use nested virtualization by running VM in VM.
 
 If you pass this requirement, it might happen that nested virtualization is enabled for your KVM kernel module. Libvirt will refuse to do live migration in this case. You can check this by running:
 
@@ -352,18 +355,18 @@ StrictHostKeyChecking no
 UserKnownHostsFile /dev/null
 ```
 
-All logs of Test Suite are stored in `logs` directory. The specific diretory is shown at the beginning of each test run.
+All test logs are stored in `logs` directory. The specific diretory is shown at the beginning of each test run.
 
 If you want more verbose logs, pass the `--dontclean` argument that preserves result files, reports and verbose scanner output
 even in cases when the test result went according to the expectations.
 If your system has the [oval-graph](://github.com/OpenSCAP/oval-graph) package installed that provides the `arf-to-html` command,
-the test suite will use it to extract OVAL evaluation details from ARFs, and save those condensed reports to the `logs` directory
+Automatus will use it to extract OVAL evaluation details from ARFs, and save those condensed reports to the `logs` directory
 even if the `--dontclean` argument has been specified.
 
 ## Rule-based testing
 
 ```
-./test_suite.py rule RULE ...
+./automatus.py rule RULE ...
 ```
 
 In this mode, you supply one or more rule IDs or wildcards as positional
@@ -386,12 +389,12 @@ If you would like to test the rule `sshd_disable_kerb_auth`:
 
 Using Libvirt:
 ```
-./test_suite.py rule --libvirt qemu:///system ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+./automatus.py rule --libvirt qemu:///system ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
 ```
 
 Using Podman:
 ```
-./test_suite.py rule --container ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+./automatus.py rule --container ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
 ```
 
 or just call the `test_rule_in_container.sh` script that passes the backend options for you
@@ -400,7 +403,7 @@ that remove some testing limitations of the container backend.
 
 Using Docker:
 ```
-./test_suite.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+./automatus.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
 ```
 
 Notice we didn't use full rule name on the command line. The prefix `xccdf_org.ssgproject.content_rule_` is added if not provided.
@@ -411,10 +414,10 @@ rules which ID starts with `accounts_passwords`.
 If the data stream file path is not supplied, auto detection is attempted by
 looking into the `/build` directory.
 
-In the rule mode, the test suite follows the `profiles` metadata key from the
+In the rule mode, the Automatus follows the `profiles` metadata key from the
 scenario headers. It will run test scenario for each profile listed in this
 `profile` key. If there is no `profiles` key in the test scenario header the
-test suite will use the virtual `(all)` profile. It is a profile that contains
+Automatus will use the virtual `(all)` profile. It is a profile that contains
 all the rules.
 
 Moreover, there is the `--profile` option which can be used to override the
@@ -425,27 +428,27 @@ selections will be done according to this profile.
 ### Debug mode
 
 Use `--debug` option, to investigate a test scenario which is not evaluating to expected result.
-The Test Suite will pause its execution, and you will be able to SSH into the environment to inspect its state manually.
+Automatus will pause the test run, and you will be able to SSH into the environment to inspect its state manually.
 
 ## Profile-based testing
 
 In this operation mode, you specify the `profile` command and you supply the
-profile ID as a positional argument.  The test suite then runs scans over the
+profile ID as a positional argument.  Automatus then runs scans over the
 target domain and remediates it based on particular profile.
 
 To test RHEL7 STIG Profile on a VM:
 ```
-./test_suite.py profile --libvirt qemu:///session ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml stig
+./automatus.py profile --libvirt qemu:///session ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml stig
 ```
 
 To test Fedora Standard Profile on a Podman container:
 ```
-./test_suite.py profile --container ssg_test_suite --datastream ../build/ssg-fedora-ds.xml standard
+./automatus.py profile --container ssg_test_suite --datastream ../build/ssg-fedora-ds.xml standard
 ```
 
 To test Fedora Standard Profile on a Docker container:
 ```
-./test_suite.py profile --docker ssg_test_suite --datastream ../build/ssg-fedora-ds.xml standard
+./automatus.py profile --docker ssg_test_suite --datastream ../build/ssg-fedora-ds.xml standard
 ```
 
 Note that `profile-id` is matched by the suffix, so it works the same as in `oscap` tool
@@ -459,8 +462,8 @@ testing it.
 
 Also, some rules need to be skipped in the profile mode because they might break
 the test backend. For example, the rule `sshd_disable_root_login` which disables
-root login to the tested VM will prevent the test suite from execution because
-the test suite uses root user in all underlying SSH commands.
+root login to the tested VM will interfere with tests execution, because
+the Automatus uses root user in all underlying SSH commands.
 
 For these situations, use `ds_unselect_rules.sh` to unselect these rules in all profiles of the data stream.
 It will copy your data stream to `/tmp` and unselect rules listed in `rules_list`
@@ -512,13 +515,13 @@ If a rule doesn't have any test scenario, it will be skipped and a `INFO` messag
 
 If you would like to test all profile's rules against their test scenarios:
 ```
-./test_suite.py combined --libvirt qemu:///system ssg-test-suite-rhel8 --datastream ../build/ssg-rhel8-ds.xml ospp
+./automatus.py combined --libvirt qemu:///system ssg-test-suite-rhel8 --datastream ../build/ssg-rhel8-ds.xml ospp
 ```
 
 ## Template-based testing
 
 ```
-./test_suite.py template ... <template_name1>[ <template_name2> <template_name3> ...]
+./automatus.py template ... <template_name1>[ <template_name2> <template_name3> ...]
 
 ```
 

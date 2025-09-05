@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8,rhcos4,rhel8,rhel9
+prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Enable the File Access Policy Service'
 
@@ -20,10 +20,10 @@ identifiers:
     cce@rhel9: CCE-84227-8
 
 references:
-    disa: CCI-001764
+    disa: CCI-001764,CCI-001774
     nist: CM-6(a),SI-4(22)
     ospp: FMT_SMF_EXT.1
-    srg: SRG-OS-000370-GPOS-00155,SRG-OS-000368-GPOS-00154
+    srg: SRG-OS-000370-GPOS-00155,SRG-OS-000368-GPOS-00154,SRG-OS-000480-GPOS-00230
     stigid@ol8: OL08-00-040136
     stigid@rhel8: RHEL-08-040136
 
@@ -34,6 +34,8 @@ ocil: |-
 
 fixtext: |-
     {{{ fixtext_service_enabled("fapolicyd") }}}
+
+srg_requirement: '{{{ srg_requirement_service_enabled(service="fapolicyd") }}}'
 
 template:
     name: service_enabled

@@ -35,6 +35,10 @@ ocil_clause: 'the chronyd process is not running'
 ocil: |-
     {{{ ocil_service_enabled(service="chronyd") }}}
 
+fixtext: '{{{ fixtext_service_enabled(service="chronyd") }}}'
+
+srg_requirement: '{{{ srg_requirement_service_enabled(service="chronyd") }}}'
+
 template:
     name: service_enabled
     vars:

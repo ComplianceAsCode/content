@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="auditd_data_retention_max_log_file_action_stig" version="1">
+    {{{ oval_metadata("max_log_file_action setting in /etc/audit/auditd.conf is set to a certain action") }}}
+
+    <criteria operator="OR">
+        <criterion comment="max_log_file_action setting in auditd.conf" test_ref="test_auditd_data_retention_max_log_file_action_stig_syslog" />
+        <criterion comment="max_log_file_action setting in auditd.conf" test_ref="test_auditd_data_retention_max_log_file_action_stig_keep_logs" />
+    </criteria>
+
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="admin space left action " id="test_auditd_data_retention_max_log_file_action_stig_syslog" version="1">
+    <ind:object object_ref="object_auditd_data_retention_max_log_file_action_stig" />
+    <ind:state state_ref="state_auditd_data_retention_max_log_file_action_stig_syslog" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check="all" comment="admin space left action " id="test_auditd_data_retention_max_log_file_action_stig_keep_logs" version="1">
+    <ind:object object_ref="object_auditd_data_retention_max_log_file_action_stig" />
+    <ind:state state_ref="state_auditd_data_retention_max_log_file_action_stig_keep_logs" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_auditd_data_retention_max_log_file_action_stig" version="2">
+    <ind:filepath>/etc/audit/auditd.conf</ind:filepath>
+    <!-- Allow only space (exactly) as delimiter: https://fedorahosted.org/audit/browser/trunk/src/auditd-config.c#L426 -->
+    <!-- Require at least one space before and after the equal sign -->
+    <ind:pattern operation="pattern match">^[ ]*max_log_file_action[ ]+=[ ]+(\S+)[ ]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_auditd_data_retention_max_log_file_action_stig_syslog" version="1">
+    <ind:subexpression operation="case insensitive equals">syslog</ind:subexpression>
+  </ind:textfilecontent54_state>
+    <ind:textfilecontent54_state id="state_auditd_data_retention_max_log_file_action_stig_keep_logs" version="1">
+    <ind:subexpression operation="case insensitive equals">keep_logs</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+
+</def-group>

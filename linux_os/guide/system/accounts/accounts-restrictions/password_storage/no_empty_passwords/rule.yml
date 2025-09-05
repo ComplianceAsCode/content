@@ -67,6 +67,15 @@ ocil: |-
     with empty passwords. Remove any instances of the <tt>nullok</tt> option to
     prevent logins with empty passwords.
 
+fixtext: |-
+    Configure {{{ full_name }}} in the system-auth file to not allow null passwords.
+
+    Remove any instances of the "nullok" option in the "/etc/pam.d/system-auth" file to prevent logons with empty passwords.
+
+    Note: Manual changes to the listed file may be overwritten by the "authselect" program.
+
+srg_requirement: '{{{ full_name }}} must not allow blank or null passwords in the system-auth file.'
+
 warnings:
     - general: |-
        If the system relies on <tt>authselect</tt> tool to manage PAM settings, the remediation

@@ -6,7 +6,11 @@
 - name: Grep for {{{ pkg_manager }}} repo section names
   shell: |
     set -o pipefail
+{{%- if product in ["sle12", "sle15"] %}}
+    grep -HEr '^\[.+\]' -r /etc/zypp/repos.d/
+{{%- else %}}
     grep -HEr '^\[.+\]' -r /etc/yum.repos.d/
+{{%- endif %}}
   register: repo_grep_results
   ignore_errors: True
   changed_when: False

@@ -24,12 +24,7 @@ rationale: |-
   of events that the API Server will accept.
 
 identifiers:
-  cce@ocp4: CCE-83522-3
-
-platforms:
-  - ocp4.8
-  - ocp4.9
-  - ocp4.10
+  cce@ocp4: CCE-85891-0
 
 severity: medium
 
@@ -50,22 +45,5 @@ ocil: |-
   <pre>oc describe flowschema catch-all</pre>
 
 warnings:
-- general: |-
-    {{{ openshift_cluster_setting("/apis/flowcontrol.apiserver.k8s.io/v1beta1/flowschemas/catch-all") | indent(4) }}}
-- dependency: |-
-    Note that this is only applicable in OpenShift Container Platform version 4.8
-    and higher
-
-template:
-  name: yamlfile_value
-  vars:
-    ocp_data: "true"
-    filepath: "/apis/flowcontrol.apiserver.k8s.io/v1beta1/flowschemas/catch-all"
-    yamlpath: '.spec.rules[0].subjects[:].group["name"]'
-    check_existence: "at_least_one_exists"
-    entity_check: "at least one"
-    values:
-      - value: "system:authenticated"
-        operation: "pattern match"
-        check_existence: "at_least_one_exists"
-        entity_check: "at least one"
+    - general: |-
+        {{{ openshift_cluster_setting(["/apis/flowcontrol.apiserver.k8s.io/v1alpha1/flowschemas/catch-all", "/apis/flowcontrol.apiserver.k8s.io/v1beta1/flowschemas/catch-all", "/apis/flowcontrol.apiserver.k8s.io/v1beta2/flowschemas/catch-all"]) | indent(8) }}}

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhcos4,rhel7,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhcos4,rhel7,rhel8,rhel9
 
 title: 'Disable CAN Support'
 
@@ -23,14 +23,18 @@ identifiers:
     cce@rhel9: CCE-84134-6
 
 references:
-    disa: CCI-000381
+    disa: CCI-000381,CCI-000366
     nist: AC-18
     ospp: FMT_SMF_EXT.1
-    srg: SRG-OS-000095-GPOS-00049
+    srg: SRG-OS-000095-GPOS-00049,SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-040022
     stigid@rhel8: RHEL-08-040022
 
 {{{ complete_ocil_entry_module_disable(module="can") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("can") }}}'
+
+srg_requirement: '{{{ srg_requirement_kernel_module_disable("can") }}}'
 
 template:
     name: kernel_module_disabled

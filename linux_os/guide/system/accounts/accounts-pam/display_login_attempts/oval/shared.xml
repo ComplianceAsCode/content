@@ -28,7 +28,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_display_login_attempts_silent" version="1">
     <ind:filepath>{{{ pam_lastlog_path }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*session\s+required\s+pam_lastlog\.so(?:\s+[\w=]+)*\s+silent(\s|$)</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*session\s+.*\s+pam_lastlog\.so(?:\s+[\w=]+)*\s+silent(\s|$)</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

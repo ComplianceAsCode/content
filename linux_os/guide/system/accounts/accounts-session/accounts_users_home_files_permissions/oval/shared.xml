@@ -1,12 +1,13 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("All User Files and Directories In The Home Directory Must Have Mode 0750 Or Less Permissive") }}}
-    <criteria>
-      <criterion test_ref="test_accounts_users_home_files_permissions"
+    <criteria operator="AND">
+      <criterion test_ref="test_accounts_users_home_files_permissions_files"
                  comment="All files under interactive user's Home Directories must have proper permissions"/>
+      <criterion test_ref="test_accounts_users_home_files_permissions_dirs"
+                 comment="All direcories under home directories must have proper permissions"/>
     </criteria>
   </definition>
-
   <!-- For detailed comments about logic used in this OVAL, check the
        "file_ownership_home_directories" rule. -->
   <unix:password_object id="object_accounts_users_home_files_permissions_objects" version="1">
@@ -14,29 +15,30 @@
     <filter action="include">state_accounts_users_home_files_permissions_interactive_uids</filter>
     <filter action="exclude">state_accounts_users_home_files_permissions_user_list</filter>
   </unix:password_object>
-
   <unix:password_state id="state_accounts_users_home_files_permissions_interactive_uids" version="1">
     <unix:user_id datatype="int" operation="greater than or equal">{{{ uid_min }}}</unix:user_id>
   </unix:password_state>
-
   <unix:password_state id="state_accounts_users_home_files_permissions_user_list" version="1">
     <unix:username datatype="string" operation="pattern match">^{{{ user_list }}}$</unix:username>
   </unix:password_state>
-
   <!-- #### prepare for test_file_permissions_home_directories #### -->
   <local_variable id="var_accounts_users_home_files_permissions_dirs" datatype="string" version="1"
                   comment="Variable including all home dirs from interactive users">
     <object_component item_field="home_dir" object_ref="object_accounts_users_home_files_permissions_objects"/>
   </local_variable>
-
   <!-- #### creation of object #### -->
   <unix:file_object id="object_accounts_users_home_files_permissions_dirs" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
                     recurse_file_system="local"/>
     <unix:path var_ref="var_accounts_users_home_files_permissions_dirs" var_check="at least one"/>
-    <unix:filename operation="pattern match">.*</unix:filename>
+    <unix:filename xsi:nil="true" />
   </unix:file_object>
-
+  <unix:file_object id="object_accounts_users_home_files_permissions_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+                    recurse_file_system="local"/>
+    <unix:path var_ref="var_accounts_users_home_files_permissions_dirs" var_check="at least one"/>
+    <unix:filename operation="pattern match">^[^\.].*</unix:filename>
+  </unix:file_object>
   <!-- #### creation of state #### -->
   <unix:file_state id="state_accounts_users_home_files_permissions_dirs" version="1" operator='AND'>
     <unix:suid datatype="boolean">false</unix:suid>
@@ -47,10 +49,16 @@
     <unix:owrite datatype="boolean">false</unix:owrite>
     <unix:oexec datatype="boolean">false</unix:oexec>
   </unix:file_state>
-
   <!-- #### creation of test #### -->
-  <unix:file_test id="test_accounts_users_home_files_permissions" check="all" check_existence="any_exist"
-                  version="1" comment="All home directories have proper permissions">
+  <unix:file_test id="test_accounts_users_home_files_permissions_files" check="all"
+                  check_existence="any_exist"
+                  version="1" comment="All files into home directories have proper permissions">
+    <unix:object object_ref="object_accounts_users_home_files_permissions_files"/>
+    <unix:state state_ref="state_accounts_users_home_files_permissions_dirs"/>
+  </unix:file_test>
+  <unix:file_test id="test_accounts_users_home_files_permissions_dirs" check="all"
+                  check_existence="any_exist" version="1"
+                  comment="All directories into home directories have proper permissions">
     <unix:object object_ref="object_accounts_users_home_files_permissions_dirs"/>
     <unix:state state_ref="state_accounts_users_home_files_permissions_dirs"/>
   </unix:file_test>

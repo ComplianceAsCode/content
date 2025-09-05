@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="auditd_audispd_syslog_plugin_activated" version="1">
-    {{{ oval_metadata("active setting in " + ("/etc/audit/plugins.d/syslog.conf" if product in ["rhel8", "rhel9", "fedora", "ol8", "rhv4"] else "/etc/audisp/plugins.d/syslog.conf") + " is set to 'yes'") }}}
+    {{{ oval_metadata("active setting in " + audisp_conf_path + "/plugins.d/syslog.conf is set to 'yes'") }}}
 
     <criteria>
         <criterion comment="active setting in syslog.conf" test_ref="test_auditd_audispd_syslog_plugin_activated" />
@@ -13,11 +13,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_auditd_audispd_syslog_plugin_activated" version="1">
-{{% if product in ["rhel8", "rhel9", "fedora", "ol8", "rhv4"] %}}
-    <ind:filepath>/etc/audit/plugins.d/syslog.conf</ind:filepath>
-{{% else %}}
-    <ind:filepath>/etc/audisp/plugins.d/syslog.conf</ind:filepath>
-{{% endif %}}
+    <ind:filepath>{{{ audisp_conf_path }}}/plugins.d/syslog.conf</ind:filepath>
     <!-- Allow only space (exactly) as delimiter: https://fedorahosted.org/audit/browser/trunk/src/auditd-config.c#L426 -->
     <!-- Require at least one space before and after the equal sign -->
     <ind:pattern operation="pattern match">^[ ]*active[ ]+=[ ]+yes[ ]*$</ind:pattern>

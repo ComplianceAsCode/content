@@ -30,7 +30,7 @@ identifiers:
     cce@rhel9: CCE-86452-0
 
 references:
-    disa: CCI-000056
+    disa: CCI-000056,CCI-000058
     srg: SRG-OS-000028-GPOS-00009,SRG-OS-000030-GPOS-00011
     stigid@ol8: OL08-00-020050
     stigid@rhel8: RHEL-08-020050
@@ -47,6 +47,8 @@ ocil: |-
 
 fixtext: |-
   {{{ fixtext_dconf_ini_file("org/gnome/settings-daemon/peripherals/smartcard", "removal-action", "'lock-screen'") }}}
+
+srg_requirement: '{{{ full_name }}} must be able to initiate directly a session lock for all connection types using smartcard when the smartcard is removed.'
 
 platform: machine
 

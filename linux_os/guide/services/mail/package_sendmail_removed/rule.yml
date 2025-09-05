@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle15
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'Uninstall Sendmail Package'
 
@@ -20,6 +20,7 @@ identifiers:
     cce@rhel7: CCE-80288-4
     cce@rhel8: CCE-81039-0
     cce@rhel9: CCE-90830-1
+    cce@sle12: CCE-91463-0
     cce@sle15: CCE-85761-5
 
 references:
@@ -37,6 +38,10 @@ references:
     stigid@rhel8: RHEL-08-040002
 
 {{{ complete_ocil_entry_package(package="sendmail") }}}
+
+fixtext: '{{{ fixtext_package_removed("sendmail") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_removed("sendmail") }}}'
 
 template:
     name: package_removed

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Set Password Hashing Algorithm in /etc/libuser.conf'
 
@@ -52,7 +52,11 @@ references:
 ocil_clause: crypt_style is not set to sha512
 
 ocil: |-
+    {{% if product in ['rhel9'] -%}}
+    Verify that the libuser is set to encrypt password with a FIPS 140-3 approved cryptographic hashing algorithm.
+    {{% else %}}
     Verify that the libuser is set to encrypt password with a FIPS 140-2 approved cryptographic hashing algorithm.
+    {{%- endif %}}
 
     Check the hashing algorithm that is being used to hash passwords with the following command:
 
@@ -68,3 +72,7 @@ fixtext: |-
     Add or change the following line in the "[default]" section of "/etc/libuser.conf" file:
 
     crypt_style = sha512
+
+{{% if product in ['rhel9'] -%}}
+srg_requirement: '{{{ full_name }}} must be configured so that user and group account administration utilities are configured to store only encrypted representations of passwords.'
+{{%- endif %}}

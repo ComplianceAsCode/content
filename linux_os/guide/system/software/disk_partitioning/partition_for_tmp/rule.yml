@@ -18,12 +18,16 @@ identifiers:
     cce@rhel7: CCE-82053-0
     cce@rhel8: CCE-80851-9
     cce@rhel9: CCE-90845-9
+    cce@sle12: CCE-91487-9
+    cce@sle15: CCE-91179-2
 
 references:
     anssi: BP28(R12)
     cis-csc: 12,15,8
+    cis@alinux2: 1.1.2
+    cis@alinux3: 1.1.2.1
     cis@rhel7: 1.1.2
-    cis@rhel8: 1.1.2
+    cis@rhel8: 1.1.2.1
     cis@sle12: 1.1.2
     cis@sle15: 1.1.2
     cis@ubuntu1804: 1.1.2
@@ -41,6 +45,10 @@ references:
     stigid@rhel8: RHEL-08-010543
 
 {{{ complete_ocil_entry_separate_partition(part="/tmp") }}}
+
+fixtext: '{{{ fixtext_separate_partition(part="/tmp") }}}'
+
+srg_requirement: '{{{ srg_requirement_separate_partition("/tmp") }}}'
 
 platform: machine
 

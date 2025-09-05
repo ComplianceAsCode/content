@@ -1,15 +1,16 @@
 <def-group oval_version="5.11">
-  <definition class="compliance" id="sssd_enable_smartcards" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("SSSD should be configured to authenticate access to the system
     using smart cards.") }}}
-    <criteria operator="OR">
-      <criteria operator="OR">
-        <extend_definition comment="Check if sssd service is disabled" definition_ref="service_sssd_disabled" />
-        <extend_definition comment="Check if /etc/sssd/sssd.conf is configured for usage"
-        definition_ref="sssd_conf_exists" negate="true"/>
-      </criteria>
+    <criteria operator="AND">
       <criterion comment="Check pam_cert_auth in /etc/sssd/sssd.conf"
-      test_ref="test_sssd_enable_smartcards" />
+                 test_ref="test_sssd_enable_smartcards"/>
+      {{% if product in ["fedora", "ol8", "rhel8", "rhel9"] %}}
+      <criterion comment="Check allow_missing_name in /etc/pam.d/smartcard-auth"
+                 test_ref="test_sssd_enable_smartcards_allow_missing_name_smartcard_auth"/>
+      <criterion comment="Check try_cert_auth or require_cert_auth in /etc/pam.d/system-auth"
+                 test_ref="test_sssd_enable_smartcards_cert_auth_system_auth"/>
+      {{% endif %}}
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
@@ -17,9 +18,48 @@
   id="test_sssd_enable_smartcards" version="1">
     <ind:object object_ref="obj_sssd_enable_smartcards" />
   </ind:textfilecontent54_test>
+
   <ind:textfilecontent54_object id="obj_sssd_enable_smartcards" version="1">
     <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*\[pam](?:[^\n\[]*\n+)+?[\s]*pam_cert_auth[\s]*=[\s]*true$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*\[pam](?:[^\n\[]*\n+)+?[\s]*pam_cert_auth[\s]*=[\s]*(?i)true\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  {{% if product in ["fedora", "ol8", "rhel8", "rhel9"] %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the presence of try_cert_auth or require_cert_auth in /etc/pam.d/smartcard-auth"
+  id="test_sssd_enable_smartcards_allow_missing_name_smartcard_auth" version="2">
+    <ind:object object_ref="obj_sssd_enable_smartcards_smartcard_auth_options" />
+    <ind:state state_ref="state_sssd_enable_smartcards_allow_missing_name" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the presence of try_cert_auth or require_cert_auth in /etc/pam.d/system-auth"
+  id="test_sssd_enable_smartcards_cert_auth_system_auth" version="2">
+    <ind:object object_ref="obj_sssd_enable_smartcards_system_auth_options" />
+    <ind:state state_ref="state_sssd_enable_smartcards_cert_auth" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_sssd_enable_smartcards_smartcard_auth_options" version="2">
+    <ind:filepath>/etc/pam.d/smartcard-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*auth.*?pam_sss\.so(.*)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_sssd_enable_smartcards_system_auth_options" version="2">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*auth.*?pam_sss\.so(.*)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_sssd_enable_smartcards_cert_auth" version="1">
+    <ind:subexpression
+    operation="pattern match">^.*(try_cert_auth|require_cert_auth).*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_sssd_enable_smartcards_allow_missing_name" version="1">
+    <ind:subexpression operation="pattern match">^.*allow_missing_name.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+  {{% endif %}}
+
 </def-group>

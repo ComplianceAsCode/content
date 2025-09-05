@@ -1,0 +1,10 @@
+controls:
+- id: SRG-APP-000292-CTR-000680
+  levels:
+  - medium
+  title: {{{ full_name }}} must notify system administrators and ISSO when accounts
+    are modified.
+  rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  status: not applicable

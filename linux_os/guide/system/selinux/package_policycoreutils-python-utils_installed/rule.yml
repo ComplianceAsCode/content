@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8,rhel8,rhel9
+prodtype: ol8,ol9,rhel8,rhel9
 
 title: 'Install policycoreutils-python-utils package'
 
@@ -23,6 +23,11 @@ references:
 ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="policycoreutils-python-utils") }}}'
+
+fixtext: '{{{ fixtext_package_installed("policycoreutils-python-utils") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("policycoreutils-python-utils") }}}'
+
 
 template:
     name: package_installed

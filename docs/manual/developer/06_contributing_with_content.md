@@ -193,6 +193,13 @@ A rule itself contains these attributes:
     this contains a `partitions do not have a type of crypto_LUKS` value
     for `ocil_clause`. This clause is prefixed with the phrase `Is it
     the case that <ocil_clause> ?`.
+    If you are using the SRG Export the clause will be used in the sentence `If <ocil_clause>, then this is a finding.`
+
+- `check`: Describes how to manually check the rule.
+   This should be based on the OVAL.
+
+- `fixtext`: This describes how to fix the rule if the system is not compliant.
+    For most Linux systems this should be based on the bash fix.
 
 A rule may contain those reference-type attributes:
 

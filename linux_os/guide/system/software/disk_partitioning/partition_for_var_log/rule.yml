@@ -18,12 +18,16 @@ identifiers:
     cce@rhel7: CCE-82034-0
     cce@rhel8: CCE-80853-5
     cce@rhel9: CCE-90848-3
+    cce@sle12: CCE-91489-5
+    cce@sle15: CCE-91181-8
 
 references:
     anssi: BP28(R12),BP28(R47)
     cis-csc: 1,12,14,15,16,3,5,6,8
+    cis@alinux2: 1.1.11
+    cis@alinux3: 1.1.5.1
     cis@rhel7: 1.1.15
-    cis@rhel8: 1.1.11
+    cis@rhel8: 1.1.5.1
     cis@sle12: 1.1.15
     cis@sle15: 1.1.15
     cis@ubuntu1804: 1.1.10
@@ -41,6 +45,10 @@ references:
     stigid@rhel8: RHEL-08-010541
 
 {{{ complete_ocil_entry_separate_partition(part="/var/log") }}}
+
+fixtext: '{{{ fixtext_separate_partition(part="/var/log") }}}'
+
+srg_requirement: '{{{ srg_requirement_separate_partition("/var/log") }}}'
 
 platform: machine
 

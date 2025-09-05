@@ -4,7 +4,7 @@
 <!-- this style sheet expects parameter $profile, which is the id of the Profile to be shown -->
 
 <xsl:variable name="cci_list" select="document('../references/disa-cci-list.xml')/cci:cci_list" />
-<xsl:variable name="os_srg" select="document('../references/disa-os-srg-v2r2.xml')/cdf:Benchmark" />
+<xsl:variable name="os_srg" select="document('../references/disa-os-srg-v2r3.xml')/cdf:Benchmark" />
 
 <xsl:param name="profile" select="''"/>
 <xsl:param name="testinfo" select="''" />

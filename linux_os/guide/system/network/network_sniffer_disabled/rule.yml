@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Ensure System is Not Acting as a Network Sniffer'
 
@@ -54,6 +54,15 @@ references:
 ocil_clause: 'any network device is in promiscuous mode'
 
 ocil: |-
-    To verify that Promiscuous mode of an interface is disabled, run the following command:
+    Verify that Promiscuous mode of an interface is disabled, run the following command:
     <pre>$ ip link | grep PROMISC</pre>
-    The output returned should not return any network device containing <tt>PROMISC</tt>.
+
+fixtext: |-
+    Configure network interfaces to turn off promiscuous mode unless approved by the ISSO and documented.
+
+    Set the promiscuous mode of an interface to off with the following command:
+
+    $ sudo ip link set dev multicast off promisc off
+
+
+srg_requirement: '{{{ full_name }}} network interfaces must not be in promiscuous mode.'

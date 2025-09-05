@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_uos20" version="1">
+    <metadata>
+      <title>UnionTech OS Server 20</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:UnionTech OS Server:20" source="CPE" />
+      <description>The operating system installed on the system is UnionTech OS Server 20</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family" definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="UnionTech OS Server 20 is installed" test_ref="test_uos20" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="uos-release is version 20" id="test_uos20" version="1">
+    <linux:object object_ref="obj_uos20" />
+    <linux:state state_ref="state_uos20" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_uos20" version="1">
+    <linux:version operation="pattern match">^20.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_uos20" version="1">
+    <linux:name>uos-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

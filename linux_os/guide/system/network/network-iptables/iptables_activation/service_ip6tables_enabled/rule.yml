@@ -11,9 +11,14 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel8: CCE-85955-3
+    cce@rhel9: CCE-85960-3
+
 references:
     cis-csc: 1,11,12,13,14,15,16,18,3,4,6,8,9
     cis@rhel7: 3.5.3.3.6
+    cis@rhel8: 3.4.3.3.6
     cobit5: APO01.06,APO13.01,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS01.05,DSS03.01,DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS06.02,DSS06.06
     isa-62443-2009: 4.2.3.4,4.3.3.4,4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.2,4.3.4.3.3,4.4.3.3
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
@@ -21,6 +26,8 @@ references:
     nerc-cip: CIP-003-8 R4,CIP-003-8 R5,CIP-004-6 R3
     nist: AC-4,CM-7(b),CA-3(5),SC-7(21),CM-6(a)
     nist-csf: DE.AE-1,ID.AM-3,PR.AC-5,PR.DS-5,PR.IP-1,PR.PT-3,PR.PT-4
+
+platform: machine
 
 ocil: |-
     If IPv6 is disabled, this is not applicable.
@@ -32,5 +39,3 @@ template:
     vars:
         servicename: ip6tables
         packagename: iptables-ipv6
-
-platform: machine

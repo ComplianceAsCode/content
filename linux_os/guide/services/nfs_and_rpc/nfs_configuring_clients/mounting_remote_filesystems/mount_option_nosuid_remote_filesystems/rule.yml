@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Mount Remote Filesystems with nosuid'
 
@@ -44,6 +44,10 @@ ocil: |-
     <pre>$ mount | grep nfs</pre>
     All NFS mounts should show the <tt>nosuid</tt> setting in parentheses. This
     is not applicable if NFS is not implemented.
+
+fixtext: 'Configure the "/etc/fstab" to use the "nosuid" option on file systems that are being imported via NFS.'
+
+srg_requirement: '{{{ full_name }}} must prevent files with the setuid and setgid bit set from being executed on file systems that are imported via Network File System (NFS).'
 
 template:
     name: mount_option_remote_filesystems

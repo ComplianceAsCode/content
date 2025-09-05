@@ -24,8 +24,9 @@ identifiers:
 
 references:
     anssi: BP28(R43)
+    cis@alinux3: 2.2.1.1
     cis@rhel7: 2.2.1.1
-    cis@rhel8: 2.2.1.1
+    cis@rhel8: 2.1.1
     cis@sle15: 2.2.1.1
     cis@ubuntu2004: 2.2.1.1
     ism: 0988,1405
@@ -36,6 +37,10 @@ references:
 ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="chrony") }}}'
+
+fixtext: '{{{ describe_package_install(package="chrony") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("chrony") }}}'
 
 template:
     name: package_installed

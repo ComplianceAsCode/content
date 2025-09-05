@@ -22,6 +22,11 @@ auxiliary_key_fingerprint: "43A6E49C4A38F4BE9ABF2A5345689C882FA658E0"
 oval_feed_url: "https://access.redhat.com/security/data/oval/com.redhat.rhsa-RHEL7.xml.bz2"
 
 grub2_uefi_boot_path: "/boot/efi/EFI/redhat"
+audisp_conf_path: "/etc/audisp"
+
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
 
 cpes_root: "../../shared/applicability"
 cpes:

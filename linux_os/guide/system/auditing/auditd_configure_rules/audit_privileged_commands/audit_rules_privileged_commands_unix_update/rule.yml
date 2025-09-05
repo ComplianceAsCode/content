@@ -35,19 +35,13 @@ identifiers:
     cce@rhel9: CCE-89481-6
 
 references:
-    disa: CCI-000169,CCI-000172
+    disa: CCI-000130,CCI-000135,CCI-000169,CCI-000172,CCI-002884
     srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215
     stigid@ol8: OL08-00-030310
     stigid@rhel8: RHEL-08-030310
     stigid@ubuntu2004: UBTU-20-010173
 
-ocil_clause: 'it is not the case'
-
-ocil: |-
-    To verify that auditing of privileged command use is configured, run the
-    following command:
-    <pre>$ sudo grep unix_update /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
-    It should return a relevant line in the audit rules.
+{{{ ocil_fix_srg_privileged_command("unix_update") }}}
 
 template:
     name: audit_rules_privileged_commands

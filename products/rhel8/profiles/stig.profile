@@ -41,7 +41,6 @@ selections:
     - var_password_pam_remember_control_flag=required
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
-    - var_accounts_password_minlen_login_defs=15
     - var_password_pam_unix_rounds=5000
     - var_password_pam_minlen=15
     - var_password_pam_ocredit=1
@@ -68,11 +67,12 @@ selections:
     - var_accounts_maximum_age_login_defs=60
     - var_auditd_space_left_percentage=25pc
     - var_auditd_space_left_action=email
-    - var_auditd_disk_error_action=halt
+    - var_auditd_disk_error_action=rhel8
     - var_auditd_max_log_file_action=syslog
-    - var_auditd_disk_full_action=halt
+    - var_auditd_disk_full_action=rhel8
     - var_sssd_certificate_verification_digest_function=sha1
     - login_banner_text=dod_banners
+    - var_authselect_profile=sssd
 
     ### Enable / Configure FIPS
     - enable_fips_mode
@@ -82,6 +82,9 @@ selections:
     - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
+
+    # Other needed rules
+    - enable_authselect
 
     ### Rules:
     # RHEL-08-010000
@@ -251,6 +254,10 @@ selections:
 
     # RHEL-08-010370
     - ensure_gpgcheck_globally_activated
+    - ensure_gpgcheck_never_disabled
+
+    # Necessary for package installs after gpgcheck is enabled
+    - ensure_redhat_gpgkey_installed
 
     # RHEL-08-010371
     - ensure_gpgcheck_local_packages
@@ -443,8 +450,14 @@ selections:
     # RHEL-08-010730
     - file_permissions_home_directories
 
+    # RHEL-08-010731
+    - accounts_users_home_files_permissions
+
     # RHEL-08-010740
     - file_groupownership_home_directories
+
+    # RHEL-08-010741
+    - accounts_users_home_files_groupownership
 
     # RHEL-08-010750
     - accounts_user_interactive_home_directory_exists
@@ -490,6 +503,7 @@ selections:
     # RHEL-08-020020
 
     # RHEL-08-020021
+    - account_passwords_pam_faillock_audit
 
     # RHEL-08-020022, RHEL-08-020023
     - accounts_passwords_pam_faillock_deny_root
@@ -503,6 +517,9 @@ selections:
     # RHEL-08-020031, RHEL-08-020080
     - dconf_gnome_screensaver_lock_delay
     - var_screensaver_lock_delay=5_seconds
+    
+    # RHEL-08-020032
+    - dconf_gnome_disable_user_list
 
     # RHEL-08-020039
     - package_tmux_installed
@@ -593,9 +610,6 @@ selections:
     # RHEL-08-020230
     - accounts_password_pam_minlen
 
-    # RHEL-08-020231
-    - accounts_password_minlen_login_defs
-
     # RHEL-08-020240
     - account_unique_id
 
@@ -658,7 +672,8 @@ selections:
     - auditd_data_retention_action_mail_acct
 
     # RHEL-08-030030
-    - postfix_client_configure_mail_alias
+    - postfix_client_configure_mail_alias_postmaster
+    - package_postfix_installed
 
     # RHEL-08-030040
     - auditd_data_disk_error_action
@@ -877,7 +892,7 @@ selections:
     - file_permissions_etc_audit_rulesd
 
     # RHEL-08-030620
-    - file_audit_tool_permissions
+    - file_audit_tools_permissions
 
     # RHEL-08-030630
     - file_audit_tools_ownership
@@ -1111,8 +1126,11 @@ selections:
     # RHEL-08-040250
     - sysctl_net_ipv6_conf_default_accept_source_route
 
-    # RHEL-08-040260
+    # RHEL-08-040259
     - sysctl_net_ipv4_ip_forward
+
+    # RHEL-08-040260
+    - sysctl_net_ipv6_conf_all_forwarding
 
     # RHEL-08-040261
     - sysctl_net_ipv6_conf_all_accept_ra

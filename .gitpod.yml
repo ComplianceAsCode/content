@@ -9,6 +9,7 @@ vscode:
     - rogalmic.bash-debug # support bashdb debug configurations
     - eamodio.gitlens # cool git extension with a bunch of extra features
     - twxs.cmake # support to CMakeLists.txt syntax highlighting and more
+    - ms-python.python # running python configurations
 
 tasks:
   - name: Prepare Env
@@ -20,11 +21,14 @@ tasks:
         sphinx-rtd-theme \
         git+https://github.com/ggbecker/sphinxcontrib.jinjadomain.git#egg=sphinxcontrib-jinjadomain
       [ -z "$PRODUCT" ] && PRODUCT="fedora"
-      [ -z "$CONTAINER" ] && CONTAINER="fedora:34"
+      [ -z "$CONTAINER" ] && CONTAINER=$PRODUCT
+      [ -z "$CONTAINER_VERSION" ] && CONTAINER_VERSION="$CONTAINER:34"
       [ -z "$CPE" ] && CPE="cpe:/o:fedoraproject:fedora:34"
       mkdir -p .vscode && cp .gitpod.launch.json .vscode/launch.json
+      CONTAINER_NAME=${CONTAINER}_container
+      sed -i "s/&&CONTAINER_NAME&&/$CONTAINER_NAME/g" .vscode/launch.json
       sed -i "s/&&DEFAULT_PRODUCT&&/$PRODUCT/g" .vscode/launch.json
       sed -i "s,&&CPE&&,$CPE,g" .vscode/launch.json
       ssh-keygen -N '' -f ~/.ssh/id_rsa
-      docker build --build-arg "CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" -t ssg_test_suite --build-arg IMAGE=$CONTAINER -f Dockerfiles/test_suite-fedora .
+      docker build --build-arg "CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" -t $CONTAINER_NAME --build-arg IMAGE=$CONTAINER_VERSION -f Dockerfiles/test_suite-$CONTAINER .
       ./build_product $PRODUCT --datastream-only

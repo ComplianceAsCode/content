@@ -111,7 +111,7 @@
                    test_ref="test_static_etc_sysctld_{{{ SYSCTLID }}}"/>
         <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /run/sysctl.d/*.conf"
                    test_ref="test_static_run_sysctld_{{{ SYSCTLID }}}"/>
-{{% if product not in [ "ol7", "ol8", "rhel7", "rhel8", "rhel9"] %}}
+{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
         <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /usr/lib/sysctl.d/*.conf"
                    test_ref="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}"/>
 {{% endif %}}
@@ -134,14 +134,14 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_test id="test_static_run_sysctld_{{{ SYSCTLID }}}" version="1" check="all"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf">
+                          comment="{{{ SYSCTLVAR }}} static configuration in /run/sysctl.d/*.conf">
     {{{ state_static_sysctld("run_sysctld") }}}
   </ind:textfilecontent54_test>
 
-{{% if product not in [ "ol7", "ol8", "rhel7", "rhel8", "rhel9"] %}}
+{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
   <ind:textfilecontent54_test id="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}" version="1"
                           check="all"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf">
+                          comment="{{{ SYSCTLVAR }}} static configuration in /usr/lib/sysctl.d/*.conf">
     {{{ state_static_sysctld("usr_lib_sysctld") }}}
   </ind:textfilecontent54_test>
 {{% endif %}}
@@ -256,7 +256,7 @@
   <ind:textfilecontent54_object id="object_static_run_usr_sysctls_{{{ SYSCTLID }}}" version="1">
     <set>
       <object_reference>object_static_run_sysctld_{{{ SYSCTLID }}}</object_reference>
-{{% if product not in [ "ol7", "ol8", "rhel7", "rhel8", "rhel9"] %}}
+{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
       <object_reference>object_static_usr_lib_sysctld_{{{ SYSCTLID }}}</object_reference>
 {{% endif %}}
     </set>
@@ -279,7 +279,7 @@
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
 
-{{% if product not in [ "ol7", "ol8", "rhel7", "rhel8", "rhel9"] %}}
+{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
   <ind:textfilecontent54_object id="object_static_usr_lib_sysctld_{{{ SYSCTLID }}}" version="1">
     <ind:path>/usr/lib/sysctl.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>

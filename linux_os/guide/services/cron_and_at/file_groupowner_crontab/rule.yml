@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: alinux2,alinux3,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Verify Group Who Owns Crontab'
 
@@ -21,6 +21,8 @@ identifiers:
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
+    cis@alinux2: 5.1.2
+    cis@alinux3: 5.1.2
     cis@rhel7: 5.1.2
     cis@rhel8: 5.1.2
     cis@sle12: 5.2.2
@@ -38,6 +40,10 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/crontab", group="root"
 
 ocil: |-
     {{{ ocil_file_group_owner(file="/etc/crontab", group="root") }}}
+
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/crontab", group="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/crontab", group="root") }}}'
 
 template:
     name: file_groupowner

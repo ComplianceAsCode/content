@@ -4,8 +4,8 @@
 # complexity = low
 # disruption = low
 
-if ! grep -s "\$ActionSendStreamDriverAuthMode\s*x509/name" /etc/rsyslog.conf /etc/rsyslog.d/*.conf; then
-	mkdir -p /etc/rsyslog.d
-    sed -i '/^.*\$ActionSendStreamDriverAuthMode.*/d' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
-    echo "\$ActionSendStreamDriverAuthMode x509/name" > /etc/rsyslog.d/stream_driver_auth.conf
-fi
+sed -i '/^.*\$ActionSendStreamDriverAuthMode.*/d' /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2> /dev/null
+
+{{{ set_config_file(path="/etc/rsyslog.d/stream_driver_auth.conf",
+             parameter="\$ActionSendStreamDriverAuthMode", value="x509/name", create=true, separator=" ", separator_regex=" ")
+}}}
