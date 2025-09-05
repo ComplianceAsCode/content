@@ -22,7 +22,7 @@ except ImportError:
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 BINARY_DIR = os.path.join(SSG_ROOT, "build")
 PREFIX = "xccdf_org.ssgproject.content_"
-SRG_GPOS_URL = "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os"
+SRG_GPOS_URL = "https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os"
 SRG_PREFIX = "SRG-OS"
 
 

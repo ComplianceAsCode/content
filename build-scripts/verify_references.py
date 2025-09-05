@@ -40,7 +40,7 @@ sce_cs = ssg.constants.SCE_SYSTEM
 
 # we use these strings to look for references within the XCCDF rules
 nist_ref_href = "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf"
-disa_ref_href = "https://public.cyber.mil/stigs/cci/"
+disa_ref_href = "https://www.cyber.mil/stigs/cci/"
 
 # default exit value - success
 exit_value = 0
