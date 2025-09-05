@@ -34,4 +34,3 @@ selections:
     ### Variables
     - var_kubelet_tls_cipher_suites=2024-01-BSI-TR-02102-2
     - var_kubelet_tls_cipher_suites_regex=2024-01-BSI-TR-02102-2
-
