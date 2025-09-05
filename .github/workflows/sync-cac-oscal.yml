@@ -162,6 +162,7 @@ jobs:
           done < "$GITHUB_WORKSPACE"/updates
       # Step 10: Check if there is any existing open PR
       - name: Check if there is any existing open PR
+        if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
           cd oscal-content
           # Use the GitHub CLI to search for an open PR.
@@ -332,7 +333,7 @@ jobs:
                 --head $BRANCH_NAME --state open --json id \
                 | jq length)
               if [ "$PR_EXISTS" -gt 0 ]; then
-                echo "PR ${{ env.BRANCH_NAME }} already exists. Skipping PR creation.
+                echo "PR ${{ env.BRANCH_NAME }} already exists. Skipping PR creation."
                 echo "Add a comment for the CAC PR ${{ env.PR_NUMBER }}."
                 gh pr comment ${{ env.BRANCH_NAME }} --body "${PR_BODY}"
               else
