@@ -1,8 +1,7 @@
----
-policy: 'DRAFT - CIS Benchmark for Red Hat Enterprise Linux 10'
-title: 'DRAFT - CIS Benchmark for Red Hat Enterprise Linux 10'
+policy: CIS Benchmark for Red Hat Enterprise Linux 10
+title: CIS Benchmark for Red Hat Enterprise Linux 10
 id: cis_rhel10
-version: 'Draft'
+version: 1.0
 source: https://www.cisecurity.org/cis-benchmarks/#red_hat_linux
 
 levels:
@@ -19,6 +18,7 @@ reference_type: cis
 product: rhel10
 
 controls:
+
     - id: reload_dconf_db
       title: Reload Dconf database
       levels:
@@ -30,7 +30,61 @@ controls:
       rules:
           - dconf_db_up_to_date
 
+    - id: 1.1.1.1
+      title: Ensure cramfs kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - kernel_module_cramfs_disabled
+
+    - id: 1.1.1.2
+      title: Ensure freevxfs kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - kernel_module_freevxfs_disabled
+
+    - id: 1.1.1.3
+      title: Ensure hfs kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - kernel_module_hfs_disabled
+
+    - id: 1.1.1.4
+      title: Ensure hfsplus kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - kernel_module_hfsplus_disabled
+
+    - id: 1.1.1.5
+      title: Ensure jffs2 kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - kernel_module_jffs2_disabled
+
     - id: 1.1.1.6
+      title: Ensure overlay kernel module is not available (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+      rules:
+          - kernel_module_overlayfs_disabled
+
+    - id: 1.1.1.7
       title: Ensure squashfs kernel module is not available (Automated)
       levels:
           - l2_server
@@ -39,7 +93,7 @@ controls:
       rules:
           - kernel_module_squashfs_disabled
 
-    - id: 1.1.1.7
+    - id: 1.1.1.8
       title: Ensure udf kernel module is not available (Automated)
       levels:
           - l2_server
@@ -48,7 +102,14 @@ controls:
       rules:
           - kernel_module_udf_disabled
 
-    - id: 1.1.1.8
+    - id: 1.1.1.9
+      title: Ensure firewire-core kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l2_workstation
+      status: automated
+
+    - id: 1.1.1.10
       title: Ensure usb-storage kernel module is not available (Automated)
       levels:
           - l1_server
@@ -57,21 +118,19 @@ controls:
       rules:
           - kernel_module_usb-storage_disabled
 
-    - id: 1.1.1.9
+    - id: 1.1.1.11
       title: Ensure unused filesystems kernel modules are not available (Manual)
       levels:
           - l1_server
-          - l2_workstation
+          - l1_workstation
       status: manual
 
     - id: 1.1.2.1.1
-      title: Ensure /tmp is a separate partition (Automated)
+      title: Ensure /tmp is tmpfs or a separate partition (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
-      rules:
-          - partition_for_tmp
 
     - id: 1.1.2.1.2
       title: Ensure nodev option set on /tmp partition (Automated)
@@ -101,13 +160,11 @@ controls:
           - mount_option_tmp_noexec
 
     - id: 1.1.2.2.1
-      title: Ensure /dev/shm is a separate partition (Automated)
+      title: Ensure /dev/shm is tmpfs or a separate partition (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
-      rules:
-          - partition_for_dev_shm
 
     - id: 1.1.2.2.2
       title: Ensure nodev option set on /dev/shm partition (Automated)
@@ -308,7 +365,7 @@ controls:
           - ensure_redhat_gpgkey_installed
 
     - id: 1.2.1.2
-      title: Ensure gpgcheck is globally activated (Automated)
+      title: Ensure gpgcheck is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -329,6 +386,13 @@ controls:
           - l1_server
           - l1_workstation
       status: manual
+
+    - id: 1.2.1.5
+      title: Ensure weak dependencies are configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
 
     - id: 1.2.2.1
       title: Ensure updates, patches, and additional security software are installed (Manual)
@@ -427,9 +491,8 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          This requirement demands a deeper review of the rules.
+      status: automated
+      notes: This requirement demands a deeper review of the rules.
       rules:
           - file_groupowner_grub2_cfg
           - file_owner_grub2_cfg
@@ -439,27 +502,65 @@ controls:
           - file_permissions_user_cfg
 
     - id: 1.5.1
-      title: Ensure address space layout randomization is enabled (Automated)
+      title: Ensure core file size is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
-      notes: |-
-          Address Space Layout Randomization (ASLR)
       rules:
-          - sysctl_kernel_randomize_va_space
+          - disable_users_coredumps
 
     - id: 1.5.2
-      title: Ensure ptrace_scope is restricted (Automated)
+      title: Ensure fs.protected_hardlinks is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
-      rules:
-          - sysctl_kernel_yama_ptrace_scope
 
     - id: 1.5.3
-      title: Ensure core dump backtraces are disabled (Automated)
+      title: Ensure fs.protected_symlinks is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 1.5.4
+      title: Ensure fs.suid_dumpable is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+
+    - id: 1.5.5
+      title: Ensure kernel.dmesg_restrict is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+
+    - id: 1.5.6
+      title: Ensure kernel.kptr_restrict is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+
+    - id: 1.5.7
+      title: Ensure kernel.yama.ptrace_scope is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+
+    - id: 1.5.8
+      title: Ensure kernel.randomize_va_space is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+
+    - id: 1.5.9
+      title: Ensure systemd-coredump ProcessSizeMax is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -467,8 +568,8 @@ controls:
       rules:
           - coredump_disable_backtraces
 
-    - id: 1.5.4
-      title: Ensure core dump storage is disabled (Automated)
+    - id: 1.5.10
+      title: Ensure systemd-coredump Storage is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -487,65 +588,36 @@ controls:
           - var_system_crypto_policy=default_policy
 
     - id: 1.6.2
-      title: Ensure system wide crypto policy is not set in sshd configuration (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: automated
-      rules:
-          - configure_ssh_crypto_policy
-
-    - id: 1.6.3
       title: Ensure system wide crypto policy disables sha1 hash and signature support (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
-      notes: |-
-          This requirement is already satisfied by 1.6.1.
+      notes: This requirement is already satisfied by 1.6.1.
       related_rules:
           - configure_crypto_policy
 
-    - id: 1.6.4
-      title: Ensure system wide crypto policy disables macs less than 128 bits (Automated)
+    - id: 1.6.3
+      title: Ensure system wide crypto policy macs are configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          It is necessary a new rule to ensure a module disabling weak MACs in
-          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
-      related_rules:
-          - configure_crypto_policy
+      status: automated
 
-    - id: 1.6.5
+    - id: 1.6.4
       title: Ensure system wide crypto policy disables cbc for ssh (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      status: automated
       notes: |-
           It is necessary a new rule to ensure a module disabling CBC in
           /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
       related_rules:
           - configure_crypto_policy
 
-    - id: 1.6.6
-      title: Ensure system wide crypto policy disables chacha20-poly1305 for ssh (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: manual
-
-    - id: 1.6.7
-      title: Ensure system wide crypto policy disables EtM for ssh (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: manual
-
     - id: 1.7.1
-      title: Ensure message of the day is configured properly (Automated)
+      title: Ensure /etc/motd is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -555,7 +627,7 @@ controls:
           - cis_banner_text=cis
 
     - id: 1.7.2
-      title: Ensure local login warning banner is configured properly (Automated)
+      title: Ensure /etc/issue is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -565,7 +637,7 @@ controls:
           - cis_banner_text=cis
 
     - id: 1.7.3
-      title: Ensure remote login warning banner is configured properly (Automated)
+      title: Ensure /etc/issue.net is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -608,14 +680,6 @@ controls:
           - file_permissions_etc_issue_net
 
     - id: 1.8.1
-      title: Ensure GNOME Display Manager is removed (Automated)
-      levels:
-          - l2_server
-      status: automated
-      rules:
-          - package_gdm_removed
-
-    - id: 1.8.2
       title: Ensure GDM login banner is configured (Automated)
       levels:
           - l1_server
@@ -626,8 +690,8 @@ controls:
           - dconf_gnome_login_banner_text
           - login_banner_text=cis_banners
 
-    - id: 1.8.3
-      title: Ensure GDM disable-user-list option is enabled (Automated)
+    - id: 1.8.2
+      title: Ensure GDM disable-user-list is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -635,8 +699,8 @@ controls:
       rules:
           - dconf_gnome_disable_user_list
 
-    - id: 1.8.4
-      title: Ensure GDM screen locks when the user is idle (Automated)
+    - id: 1.8.3
+      title: Ensure GDM screen lock is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -647,66 +711,31 @@ controls:
           - inactivity_timeout_value=15_minutes
           - var_screensaver_lock_delay=5_seconds
 
+    - id: 1.8.4
+      title: Ensure GDM automount is configured (Automated)
+      levels:
+          - l1_server
+          - l2_workstation
+      status: automated
+      rules:
+          - dconf_gnome_disable_automount
+          - dconf_gnome_disable_automount_open
+
     - id: 1.8.5
-      title: Ensure GDM screen locks cannot be overridden (Automated)
+      title: Ensure GDM autorun-never is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
       rules:
-          - dconf_gnome_session_idle_user_locks
-          - dconf_gnome_screensaver_user_locks
+          - dconf_gnome_disable_autorun
 
     - id: 1.8.6
-      title: Ensure GDM automatic mounting of removable media is disabled (Automated)
+      title: Ensure Xwayland is configured (Automated)
       levels:
-          - l1_server
+          - l2_server
           - l2_workstation
       status: automated
-      rules:
-          - dconf_gnome_disable_automount
-          - dconf_gnome_disable_automount_open
-
-    - id: 1.8.7
-      title: Ensure GDM disabling automatic mounting of removable media is not overridden (Automated)
-      levels:
-          - l1_server
-          - l2_workstation
-      status: automated
-      rules:
-          - dconf_gnome_disable_automount
-          - dconf_gnome_disable_automount_open
-
-    - id: 1.8.8
-      title: Ensure GDM autorun-never is enabled (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: automated
-      rules:
-          - dconf_gnome_disable_autorun
-
-    - id: 1.8.9
-      title: Ensure GDM autorun-never is not overridden (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: automated
-      rules:
-          - dconf_gnome_disable_autorun
-
-    - id: 1.8.10
-      title: Ensure XDMCP is not enabled (Automated)
-      notes: |-
-          This was inherited from the RHEL 9 profile.
-          However, it was reported that XDMCP is no
-          longer in RHEL 10.
-      levels:
-          - l1_server
-          - l1_workstation
-      status: automated
-      related_rules:
-          - gnome_gdm_disable_xdmcp
 
     - id: 2.1.1
       title: Ensure autofs services are not in use (Automated)
@@ -729,6 +758,15 @@ controls:
           - package_avahi_removed
 
     - id: 2.1.3
+      title: Ensure cockpit web services are not in use (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+      rules:
+          - service_cockpit_disabled
+
+    - id: 2.1.4
       title: Ensure dhcp server services are not in use (Automated)
       levels:
           - l1_server
@@ -739,7 +777,7 @@ controls:
       related_rules:
           - service_dhcpd_disabled
 
-    - id: 2.1.4
+    - id: 2.1.5
       title: Ensure dns server services are not in use (Automated)
       levels:
           - l1_server
@@ -750,7 +788,7 @@ controls:
       related_rules:
           - service_named_disabled
 
-    - id: 2.1.5
+    - id: 2.1.6
       title: Ensure dnsmasq services are not in use (Automated)
       levels:
           - l1_server
@@ -758,17 +796,6 @@ controls:
       status: automated
       rules:
           - package_dnsmasq_removed
-
-    - id: 2.1.6
-      title: Ensure samba file server services are not in use (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: automated
-      rules:
-          - package_samba_removed
-      related_rules:
-          - service_smb_disabled
 
     - id: 2.1.7
       title: Ensure ftp server services are not in use (Automated)
@@ -792,7 +819,6 @@ controls:
           - package_cyrus-imapd_removed
       related_rules:
           - service_dovecot_disabled
-    # new rule would be nice to disable cyrus-imapd service
 
     - id: 2.1.9
       title: Ensure network file system services are not in use (Automated)
@@ -809,16 +835,6 @@ controls:
           - package_nfs-utils_removed
 
     - id: 2.1.10
-      title: Ensure nis server services are not in use (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: automated
-      related_rules:
-          - service_ypserv_disabled
-          - package_ypserv_removed
-
-    - id: 2.1.11
       title: Ensure print server services are not in use (Automated)
       levels:
           - l1_server
@@ -828,7 +844,7 @@ controls:
       related_rules:
           - package_cups_removed
 
-    - id: 2.1.12
+    - id: 2.1.11
       title: Ensure rpcbind services are not in use (Automated)
       levels:
           - l1_server
@@ -842,7 +858,7 @@ controls:
       related_rules:
           - package_rpcbind_removed
 
-    - id: 2.1.13
+    - id: 2.1.12
       title: Ensure rsync services are not in use (Automated)
       levels:
           - l1_server
@@ -852,6 +868,17 @@ controls:
           - package_rsync_removed
       related_rules:
           - service_rsyncd_disabled
+
+    - id: 2.1.13
+      title: Ensure samba file server services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_samba_removed
+      related_rules:
+          - service_smb_disabled
 
     - id: 2.1.14
       title: Ensure snmp services are not in use (Automated)
@@ -908,7 +935,14 @@ controls:
           - package_nginx_removed
       related_rules:
           - service_httpd_disabled
-    # rule would be nice to disable nginx service
+
+    - id: 2.1.19
+      title: Ensure GNOME Display Manager is removed (Automated)
+      levels:
+          - l2_server
+      status: automated
+      rules:
+          - package_gdm_removed
 
     - id: 2.1.20
       title: Ensure X window server services are not in use (Automated)
@@ -962,15 +996,6 @@ controls:
           - package_openldap-clients_removed
 
     - id: 2.2.3
-      title: Ensure nis client is not installed (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: automated
-      related_rules:
-          - package_ypbind_removed
-
-    - id: 2.2.4
       title: Ensure telnet client is not installed (Automated)
       levels:
           - l1_server
@@ -979,7 +1004,7 @@ controls:
       rules:
           - package_telnet_removed
 
-    - id: 2.2.5
+    - id: 2.2.4
       title: Ensure tftp client is not installed (Automated)
       levels:
           - l1_server
@@ -1005,7 +1030,6 @@ controls:
       status: automated
       rules:
           - chronyd_specify_remote_server
-          - var_multiple_time_servers=rhel
 
     - id: 2.3.3
       title: Ensure chrony is not run as the root user (Automated)
@@ -1023,11 +1047,10 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - package_cron_installed
           - service_crond_enabled
 
     - id: 2.4.1.2
-      title: Ensure permissions on /etc/crontab are configured (Automated)
+      title: Ensure access to /etc/crontab is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1038,7 +1061,7 @@ controls:
           - file_permissions_crontab
 
     - id: 2.4.1.3
-      title: Ensure permissions on /etc/cron.hourly are configured (Automated)
+      title: Ensure access to /etc/cron.hourly is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1049,7 +1072,7 @@ controls:
           - file_permissions_cron_hourly
 
     - id: 2.4.1.4
-      title: Ensure permissions on /etc/cron.daily are configured (Automated)
+      title: Ensure access to /etc/cron.daily is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1060,7 +1083,7 @@ controls:
           - file_permissions_cron_daily
 
     - id: 2.4.1.5
-      title: Ensure permissions on /etc/cron.weekly are configured (Automated)
+      title: Ensure access to /etc/cron.weekly is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1071,7 +1094,7 @@ controls:
           - file_permissions_cron_weekly
 
     - id: 2.4.1.6
-      title: Ensure permissions on /etc/cron.monthly are configured (Automated)
+      title: Ensure access to /etc/cron.monthly is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1082,7 +1105,14 @@ controls:
           - file_permissions_cron_monthly
 
     - id: 2.4.1.7
-      title: Ensure permissions on /etc/cron.d are configured (Automated)
+      title: Ensure access to /etc/cron.yearly is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+
+    - id: 2.4.1.8
+      title: Ensure access to /etc/cron.d is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1092,8 +1122,8 @@ controls:
           - file_owner_cron_d
           - file_permissions_cron_d
 
-    - id: 2.4.1.8
-      title: Ensure crontab is restricted to authorized users (Automated)
+    - id: 2.4.1.9
+      title: Ensure access to crontab is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1106,7 +1136,7 @@ controls:
           - file_permissions_cron_allow
 
     - id: 2.4.2.1
-      title: Ensure at is restricted to authorized users (Automated)
+      title: Ensure access to at is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1128,7 +1158,7 @@ controls:
       status: manual
 
     - id: 3.1.2
-      title: Ensure wireless interfaces are disabled (Automated)
+      title: Ensure wireless interfaces are not available (Automated)
       levels:
           - l1_server
       status: automated
@@ -1144,47 +1174,101 @@ controls:
       rules:
           - service_bluetooth_disabled
 
+    - id: 3.2.1
+      title: Ensure atm kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+
     - id: 3.2.2
-      title: Ensure tipc kernel module is not available (Automated)
+      title: Ensure can kernel module is not available (Automated)
       levels:
-          - l2_server
-          - l2_workstation
+          - l1_server
+          - l1_workstation
       status: automated
-      rules:
-          - kernel_module_tipc_disabled
 
-    - id: 3.2.4
-      title: Ensure sctp kernel module is not available (Automated)
-      levels:
-          - l2_server
-          - l2_workstation
-      status: automated
-      rules:
-          - kernel_module_sctp_disabled
-
-    - id: 3.3.1
-      title: Ensure IP forwarding is disabled (Automated)
+    - id: 3.2.3
+      title: Ensure dccp kernel module is not available (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
       rules:
-          - sysctl_net_ipv4_ip_forward
-          - sysctl_net_ipv6_conf_all_forwarding
-          - sysctl_net_ipv6_conf_all_forwarding_value=disabled
+          - kernel_module_dccp_disabled
 
-    - id: 3.3.2
-      title: Ensure packet redirect sending is disabled (Automated)
+    - id: 3.2.4
+      title: Ensure tipc kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - kernel_module_tipc_disabled
+
+    - id: 3.2.5
+      title: Ensure rds kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - kernel_module_rds_disabled
+
+    - id: 3.2.6
+      title: Ensure sctp kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - kernel_module_sctp_disabled
+
+    - id: 3.3.1.1
+      title: Ensure net.ipv4.ip_forward is configured (Automated)
+      levels:
+          - l1_workstation
+          - l2_server
+      status: automated
+      rules:
+          - sysctl_net_ipv4_ip_forward
+
+    - id: 3.3.1.2
+      title: Ensure net.ipv4.conf.all.forwarding is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - sysctl_net_ipv4_conf_all_forwarding
+
+    - id: 3.3.1.3
+      title: Ensure net.ipv4.conf.default.forwarding is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+
+    - id: 3.3.1.4
+      title: Ensure net.ipv4.conf.all.send_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
       rules:
           - sysctl_net_ipv4_conf_all_send_redirects
+
+    - id: 3.3.1.5
+      title: Ensure net.ipv4.conf.default.send_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
           - sysctl_net_ipv4_conf_default_send_redirects
 
-    - id: 3.3.3
-      title: Ensure bogus icmp responses are ignored (Automated)
+    - id: 3.3.1.6
+      title: Ensure net.ipv4.icmp_ignore_bogus_error_responses is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1193,8 +1277,8 @@ controls:
           - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
           - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
 
-    - id: 3.3.4
-      title: Ensure broadcast icmp requests are ignored (Automated)
+    - id: 3.3.1.7
+      title: Ensure net.ipv4.icmp_echo_ignore_broadcasts is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1203,8 +1287,8 @@ controls:
           - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
           - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
 
-    - id: 3.3.5
-      title: Ensure icmp redirects are not accepted (Automated)
+    - id: 3.3.1.8
+      title: Ensure net.ipv4.conf.all.accept_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1212,15 +1296,19 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_all_accept_redirects
           - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+
+    - id: 3.3.1.9
+      title: Ensure net.ipv4.conf.default.accept_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
           - sysctl_net_ipv4_conf_default_accept_redirects
           - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
-          - sysctl_net_ipv6_conf_all_accept_redirects
-          - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
-          - sysctl_net_ipv6_conf_default_accept_redirects
-          - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
 
-    - id: 3.3.6
-      title: Ensure secure icmp redirects are not accepted (Automated)
+    - id: 3.3.1.10
+      title: Ensure net.ipv4.conf.all.secure_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1228,11 +1316,19 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_all_secure_redirects
           - sysctl_net_ipv4_conf_all_secure_redirects_value=disabled
+
+    - id: 3.3.1.11
+      title: Ensure net.ipv4.conf.default.secure_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
           - sysctl_net_ipv4_conf_default_secure_redirects
           - sysctl_net_ipv4_conf_default_secure_redirects_value=disabled
 
-    - id: 3.3.7
-      title: Ensure reverse path filtering is enabled (Automated)
+    - id: 3.3.1.12
+      title: Ensure net.ipv4.conf.all.rp_filter is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1240,11 +1336,19 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_all_rp_filter
           - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
+
+    - id: 3.3.1.13
+      title: Ensure net.ipv4.conf.default.rp_filter is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
           - sysctl_net_ipv4_conf_default_rp_filter
           - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
 
-    - id: 3.3.8
-      title: Ensure source routed packets are not accepted (Automated)
+    - id: 3.3.1.14
+      title: Ensure net.ipv4.conf.all.accept_source_route is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1252,15 +1356,19 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_all_accept_source_route
           - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
+
+    - id: 3.3.1.15
+      title: Ensure net.ipv4.conf.default.accept_source_route is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
           - sysctl_net_ipv4_conf_default_accept_source_route
           - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
-          - sysctl_net_ipv6_conf_all_accept_source_route
-          - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
-          - sysctl_net_ipv6_conf_default_accept_source_route
-          - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
 
-    - id: 3.3.9
-      title: Ensure suspicious packets are logged (Automated)
+    - id: 3.3.1.16
+      title: Ensure net.ipv4.conf.all.log_martians is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1268,11 +1376,19 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_all_log_martians
           - sysctl_net_ipv4_conf_all_log_martians_value=enabled
+
+    - id: 3.3.1.17
+      title: Ensure net.ipv4.conf.default.log_martians is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
           - sysctl_net_ipv4_conf_default_log_martians
           - sysctl_net_ipv4_conf_default_log_martians_value=enabled
 
-    - id: 3.3.10
-      title: Ensure tcp syn cookies is enabled (Automated)
+    - id: 3.3.1.18
+      title: Ensure net.ipv4.tcp_syncookies is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1281,8 +1397,62 @@ controls:
           - sysctl_net_ipv4_tcp_syncookies
           - sysctl_net_ipv4_tcp_syncookies_value=enabled
 
-    - id: 3.3.11
-      title: Ensure IPv6 router advertisements are not accepted (Automated)
+    - id: 3.3.2.1
+      title: Ensure  net.ipv6.conf.all.forwarding is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+
+    - id: 3.3.2.2
+      title: Ensure  net.ipv6.conf.default.forwarding is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+
+    - id: 3.3.2.3
+      title: Ensure net.ipv6.conf.all.accept_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_redirects
+          - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
+
+    - id: 3.3.2.4
+      title: Ensure net.ipv6.conf.default.accept_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_redirects
+          - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
+
+    - id: 3.3.2.5
+      title: Ensure net.ipv6.conf.all.accept_source_route is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_source_route
+          - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
+
+    - id: 3.3.2.6
+      title: Ensure net.ipv6.conf.default.accept_source_route is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_source_route
+          - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
+
+    - id: 3.3.2.7
+      title: Ensure net.ipv6.conf.all.accept_ra is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1290,103 +1460,68 @@ controls:
       rules:
           - sysctl_net_ipv6_conf_all_accept_ra
           - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
+
+    - id: 3.3.2.8
+      title: Ensure net.ipv6.conf.default.accept_ra is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
           - sysctl_net_ipv6_conf_default_accept_ra
           - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
 
     - id: 4.1.1
-      title: Ensure nftables is installed (Automated)
+      title: Ensure firewalld is installed (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
-      rules:
-          - package_nftables_installed
 
     - id: 4.1.2
-      title: Ensure a single firewall configuration utility is in use (Automated)
+      title: Ensure firewalld backend is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
-      rules:
-          - service_firewalld_enabled
-          - package_firewalld_installed
-          - service_nftables_disabled
 
-    - id: 4.2.1
-      title: Ensure firewalld drops unnecessary services and ports (Manual)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: manual
-      related_rules:
-          - configure_firewalld_ports
-
-    - id: 4.2.2
-      title: Ensure firewalld loopback traffic is configured (Automated)
+    - id: 4.1.3
+      title: Ensure firewalld.service is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
-      rules:
-          - firewalld_loopback_traffic_trusted
-          - firewalld_loopback_traffic_restricted
 
-    - id: 4.3.1
-      title: Ensure nftables base chains exist (Automated)
+    - id: 4.1.4
+      title: Ensure firewalld active zone target is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: supported
-      notes: |-
-          RHEL systems use firewalld for firewall management. Although nftables is the default
-          back-end for firewalld, it is not recommended to use nftables directly when firewalld
-          is in use. When using firewalld the base chains are installed by default.
-      related_rules:
-          - set_nftables_base_chain
-          - var_nftables_table=firewalld
-          - var_nftables_family=inet
-          - var_nftables_base_chain_names=chain_names
-          - var_nftables_base_chain_types=chain_types
-          - var_nftables_base_chain_hooks=chain_hooks
-          - var_nftables_base_chain_priorities=chain_priorities
-          - var_nftables_base_chain_policies=chain_policies
+      status: automated
 
-    - id: 4.3.2
-      title: Ensure nftables established connections are configured (Manual)
+    - id: 4.1.5
+      title: Ensure firewalld loopback traffic is configured (Manual)
       levels:
           - l1_server
           - l1_workstation
       status: manual
 
-    - id: 4.3.3
-      title: Ensure nftables default deny firewall policy (Automated)
+    - id: 4.1.6
+      title: Ensure firewalld loopback source address traffic is configured (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: supported
-      notes: |-
-          RHEL systems use firewalld for firewall management. Although nftables is the default
-          back-end for firewalld, it is not recommended to use nftables directly when firewalld
-          is in use.
-      related_rules:
-          - nftables_ensure_default_deny_policy
+      status: manual
 
-    - id: 4.3.4
-      title: Ensure nftables loopback traffic is configured (Automated)
+    - id: 4.1.7
+      title: Ensure firewalld services and ports are configured (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: supported
-      notes: |-
-          RHEL systems use firewalld for firewall management. Although nftables is the default
-          back-end for firewalld, it is not recommended to use nftables directly when firewalld
-          is in use.
-      related_rules:
-          - set_nftables_loopback_traffic
+      status: manual
 
     - id: 5.1.1
-      title: Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
+      title: Ensure access to /etc/ssh/sshd_config is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1397,67 +1532,28 @@ controls:
           - file_permissions_sshd_config
 
     - id: 5.1.2
-      title: Ensure permissions on SSH private host key files are configured (Automated)
+      title: Ensure access to SSH private host key files is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
       rules:
-          - file_permissions_sshd_private_key
-          - file_ownership_sshd_private_key
           - file_groupownership_sshd_private_key
+          - file_ownership_sshd_private_key
+          - file_permissions_sshd_private_key
 
     - id: 5.1.3
-      title: Ensure permissions on SSH public host key files are configured (Automated)
+      title: Ensure access to SSH public host key files is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
       rules:
-          - file_permissions_sshd_pub_key
-          - file_ownership_sshd_pub_key
           - file_groupownership_sshd_pub_key
+          - file_ownership_sshd_pub_key
+          - file_permissions_sshd_pub_key
 
     - id: 5.1.4
-      title: Ensure sshd Ciphers are configured (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: pending
-      notes: |-
-          The status was automated but we need to double check the approach used in this rule.
-          Therefore I moved it to pending until deeper investigation.
-      related_rules:
-          - sshd_use_approved_ciphers
-          - sshd_approved_ciphers=cis_rhel8
-
-    - id: 5.1.5
-      title: Ensure sshd KexAlgorithms is configured (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: pending
-      notes: |-
-          The status was automated but we need to double check the approach used in this rule.
-          Therefore I moved it to pending until deeper investigation.
-      rules:
-          - sshd_use_strong_kex
-          - sshd_strong_kex=cis_rhel8
-
-    - id: 5.1.6
-      title: Ensure sshd MACs are configured (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: pending
-      notes: |-
-          The status was automated but we need to double check the approach used in this rule.
-          Therefore I moved it to pending until deeper investigation.
-      rules:
-          - sshd_use_strong_macs
-          - sshd_strong_macs=cis_rhel8
-
-    - id: 5.1.7
       title: Ensure sshd access is configured (Automated)
       levels:
           - l1_server
@@ -1466,7 +1562,7 @@ controls:
       rules:
           - sshd_limit_user_access
 
-    - id: 5.1.8
+    - id: 5.1.5
       title: Ensure sshd Banner is configured (Automated)
       levels:
           - l1_server
@@ -1477,7 +1573,20 @@ controls:
       related_rules:
           - sshd_enable_warning_banner
 
-    - id: 5.1.9
+    - id: 5.1.6
+      title: Ensure sshd Ciphers are configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      notes: |-
+          The status was automated but we need to double check the approach used in this rule.
+          Therefore I moved it to pending until deeper investigation.
+      related_rules:
+          - sshd_use_approved_ciphers
+          - sshd_approved_ciphers=cis_rhel8
+
+    - id: 5.1.7
       title: Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured (Automated)
       levels:
           - l1_server
@@ -1487,33 +1596,34 @@ controls:
           The requirement gives an example of 45 seconds, but is flexible about the values. It is only
           necessary to ensure there is a timeout configured in alignment to the site policy.
       rules:
-          - sshd_idle_timeout_value=5_minutes
           - sshd_set_idle_timeout
+          - sshd_idle_timeout_value=5_minutes
           - sshd_set_keepalive
           - var_sshd_set_keepalive=1
 
-    - id: 5.1.10
+    - id: 5.1.8
       title: Ensure sshd DisableForwarding is enabled (Automated)
       levels:
-          - l2_server
           - l1_workstation
-      status: pending
-      notes: |-
-          New templated rule is necessary for "disableforwarding" option.
+          - l2_server
+      status: automated
+      notes: New templated rule is necessary for "disableforwarding" option.
       related_rules:
           - sshd_disable_tcp_forwarding
           - sshd_disable_x11_forwarding
+      rules:
+          - sshd_disable_forwarding
 
-    - id: 5.1.11
+    - id: 5.1.9
       title: Ensure sshd GSSAPIAuthentication is disabled (Automated)
       levels:
-          - l2_server
           - l1_workstation
+          - l2_server
       status: automated
       rules:
           - sshd_disable_gssapi_auth
 
-    - id: 5.1.12
+    - id: 5.1.10
       title: Ensure sshd HostbasedAuthentication is disabled (Automated)
       levels:
           - l1_server
@@ -1522,7 +1632,7 @@ controls:
       rules:
           - disable_host_auth
 
-    - id: 5.1.13
+    - id: 5.1.11
       title: Ensure sshd IgnoreRhosts is enabled (Automated)
       levels:
           - l1_server
@@ -1531,7 +1641,20 @@ controls:
       rules:
           - sshd_disable_rhosts
 
-    - id: 5.1.14
+    - id: 5.1.12
+      title: Ensure sshd KexAlgorithms is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      notes: |-
+          The status was automated but we need to double check the approach used in this rule.
+          Therefore I moved it to pending until deeper investigation.
+      rules:
+          - sshd_use_strong_kex
+          - sshd_strong_kex=cis_rhel8
+
+    - id: 5.1.13
       title: Ensure sshd LoginGraceTime is configured (Automated)
       levels:
           - l1_server
@@ -1541,7 +1664,7 @@ controls:
           - sshd_set_login_grace_time
           - var_sshd_set_login_grace_time=60
 
-    - id: 5.1.15
+    - id: 5.1.14
       title: Ensure sshd LogLevel is configured (Automated)
       levels:
           - l1_server
@@ -1556,6 +1679,19 @@ controls:
       related_rules:
           - sshd_set_loglevel_info
 
+    - id: 5.1.15
+      title: Ensure sshd MACs are configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      notes: |-
+          The status was automated but we need to double check the approach used in this rule.
+          Therefore I moved it to pending until deeper investigation.
+      rules:
+          - sshd_use_strong_macs
+          - sshd_strong_macs=cis_rhel8
+
     - id: 5.1.16
       title: Ensure sshd MaxAuthTries is configured (Automated)
       levels:
@@ -1563,8 +1699,8 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - sshd_max_auth_tries_value=4
           - sshd_set_max_auth_tries
+          - sshd_max_auth_tries_value=4
 
     - id: 5.1.17
       title: Ensure sshd MaxStartups is configured (Automated)
@@ -1665,10 +1801,10 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - sudo_require_reauthentication
+          - sudo_require_authentication
 
     - id: 5.2.6
-      title: Ensure sudo authentication timeout is configured correctly (Automated)
+      title: Ensure sudo timestamp_timeout is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1693,35 +1829,6 @@ controls:
           - ensure_pam_wheel_group_empty
 
     - id: 5.3.1.1
-      title: Ensure latest version of pam is installed (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: pending
-      notes: |-
-          It is necessary a new rule to ensure PAM package is updated.
-
-    - id: 5.3.1.2
-      title: Ensure latest version of authselect is installed (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: pending
-      notes: |-
-          It is necessary a new rule to ensure authselect package is updated.
-
-    - id: 5.3.1.3
-      title: Ensure latest version of libpwquality is installed (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: pending
-      notes: |-
-          It is necessary a new rule to ensure libpwquality package is updated.
-      rules:
-          - package_pam_pwquality_installed
-
-    - id: 5.3.2.1
       title: Ensure active authselect profile includes pam modules (Automated)
       levels:
           - l1_server
@@ -1736,30 +1843,28 @@ controls:
       related_rules:
           - no_empty_passwords
 
-    - id: 5.3.2.2
+    - id: 5.3.1.2
       title: Ensure pam_faillock module is enabled (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
-      notes: |-
-          This requirement is also indirectly satisfied by the requirement 5.3.3.1.
+      notes: This requirement is also indirectly satisfied by the requirement 5.3.3.1.
       rules:
           - account_password_pam_faillock_password_auth
           - account_password_pam_faillock_system_auth
 
-    - id: 5.3.2.3
+    - id: 5.3.1.3
       title: Ensure pam_pwquality module is enabled (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
-      notes: |-
-          This requirement is also indirectly satisfied by the requirement 5.3.3.2.
+      notes: This requirement is also indirectly satisfied by the requirement 5.3.3.2.
       related_rules:
           - package_pam_pwquality_installed
 
-    - id: 5.3.2.4
+    - id: 5.3.1.4
       title: Ensure pam_pwhistory module is enabled (Automated)
       levels:
           - l1_server
@@ -1767,12 +1872,12 @@ controls:
       status: automated
       notes: |-
           The module is properly enabled by the rules mentioned in related_rules.
-          Requirements in 5.3.3.3 use these rules.
+          Requirements in 5.3.2.3 use these rules.
       related_rules:
           - accounts_password_pam_pwhistory_remember_password_auth
           - accounts_password_pam_pwhistory_remember_system_auth
 
-    - id: 5.3.2.5
+    - id: 5.3.1.5
       title: Ensure pam_unix module is enabled (Automated)
       levels:
           - l1_server
@@ -1785,7 +1890,7 @@ controls:
       related_rules:
           - no_empty_passwords
 
-    - id: 5.3.3.1.1
+    - id: 5.3.2.1.1
       title: Ensure password failed attempts lockout is configured (Automated)
       levels:
           - l1_server
@@ -1793,9 +1898,8 @@ controls:
       status: automated
       rules:
           - accounts_passwords_pam_faillock_deny
-          - var_accounts_passwords_pam_faillock_deny=5
 
-    - id: 5.3.3.1.2
+    - id: 5.3.2.1.2
       title: Ensure password unlock time is configured (Automated)
       levels:
           - l1_server
@@ -1807,9 +1911,8 @@ controls:
           attack to legitimate users.
       rules:
           - accounts_passwords_pam_faillock_unlock_time
-          - var_accounts_passwords_pam_faillock_unlock_time=900
 
-    - id: 5.3.3.1.3
+    - id: 5.3.2.1.3
       title: Ensure password failed attempts lockout includes root account (Automated)
       levels:
           - l2_server
@@ -1818,7 +1921,7 @@ controls:
       rules:
           - accounts_passwords_pam_faillock_deny_root
 
-    - id: 5.3.3.2.1
+    - id: 5.3.2.2.1
       title: Ensure password number of changed characters is configured (Automated)
       levels:
           - l1_server
@@ -1826,9 +1929,8 @@ controls:
       status: automated
       rules:
           - accounts_password_pam_difok
-          - var_password_pam_difok=2
 
-    - id: 5.3.3.2.2
+    - id: 5.3.2.2.2
       title: Ensure password length is configured (Automated)
       levels:
           - l1_server
@@ -1836,30 +1938,28 @@ controls:
       status: automated
       rules:
           - accounts_password_pam_minlen
-          - var_password_pam_minlen=14
 
-    - id: 5.3.3.2.3
+    - id: 5.3.2.2.3
       title: Ensure password complexity is configured (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: manual
       notes: |-
           This requirement is expected to be manual. However, in previous versions of the policy
           it was already automated the configuration of "minclass" option. This posture was kept for
-          RHEL 9 in this new version. Rules related to other options are informed in related_rules.
+          RHEL 10 in this new version. Rules related to other options are informed in related_rules.
           In short, minclass=4 alone can achieve the same result achieved by the combination of the
           other 4 options mentioned in the policy.
-      rules:
-          - accounts_password_pam_minclass
-          - var_password_pam_minclass=4
       related_rules:
           - accounts_password_pam_dcredit
           - accounts_password_pam_lcredit
           - accounts_password_pam_ocredit
           - accounts_password_pam_ucredit
+      rules:
+          - accounts_password_pam_minclass
 
-    - id: 5.3.3.2.4
+    - id: 5.3.2.2.4
       title: Ensure password same consecutive characters is configured (Automated)
       levels:
           - l1_server
@@ -1867,18 +1967,16 @@ controls:
       status: automated
       rules:
           - accounts_password_pam_maxrepeat
-          - var_password_pam_maxrepeat=3
 
-    - id: 5.3.3.2.5
+    - id: 5.3.2.2.5
       title: Ensure password maximum sequential characters is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: |-
-          A new templated rule and variable are necessary for the maxsequence option.
+      status: automated
+      notes: A new templated rule and variable are necessary for the maxsequence option.
 
-    - id: 5.3.3.2.6
+    - id: 5.3.2.2.6
       title: Ensure password dictionary check is enabled (Automated)
       levels:
           - l1_server
@@ -1886,9 +1984,8 @@ controls:
       status: automated
       rules:
           - accounts_password_pam_dictcheck
-          - var_password_pam_dictcheck=1
 
-    - id: 5.3.3.2.7
+    - id: 5.3.2.2.7
       title: Ensure password quality is enforced for the root user (Automated)
       levels:
           - l1_server
@@ -1897,7 +1994,7 @@ controls:
       rules:
           - accounts_password_pam_enforce_root
 
-    - id: 5.3.3.3.1
+    - id: 5.3.2.3.1
       title: Ensure password history remember is configured (Automated)
       levels:
           - l1_server
@@ -1910,52 +2007,49 @@ controls:
       rules:
           - accounts_password_pam_pwhistory_remember_password_auth
           - accounts_password_pam_pwhistory_remember_system_auth
-          - var_password_pam_remember_control_flag=requisite_or_required
-          - var_password_pam_remember=24
       related_rules:
           - accounts_password_pam_retry
 
-    - id: 5.3.3.3.2
+    - id: 5.3.2.3.2
       title: Ensure password history is enforced for the root user (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: planned
+      status: automated
       notes: |-
           A new rule needs to be created to check and remediate the enforce_for_root option in
           /etc/security/pwhistory.conf. accounts_password_pam_enforce_root can be used as reference.
 
-    - id: 5.3.3.3.3
+    - id: 5.3.2.3.3
       title: Ensure pam_pwhistory includes use_authtok (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: partial
       notes: |-
-          In RHEL 9 pam_pwhistory is enabled via authselect feature, as required in 5.3.2.4. The
+          In RHEL 10 pam_pwhistory is enabled via authselect feature, as required in 5.3.1.4. The
           feature automatically set "use_authok" option. In any case, we don't have a rule to check
           this option specifically.
       related_rules:
           - accounts_password_pam_pwhistory_remember_password_auth
           - accounts_password_pam_pwhistory_remember_system_auth
 
-    - id: 5.3.3.4.1
+    - id: 5.3.2.4.1
       title: Ensure pam_unix does not include nullok (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
-      notes: |-
-          The rule more specifically used in this requirement also satify the requirement 5.3.2.5.
+      notes: The rule more specifically used in this requirement also satify the requirement 5.3.1.5.
       rules:
           - no_empty_passwords
 
-    - id: 5.3.3.4.2
+    - id: 5.3.2.4.2
       title: Ensure pam_unix does not include remember (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      status: automated
       notes: |-
           Usage of pam_unix.so module together with "remember" option is deprecated and is not
           recommened by this policy. Instead, it should be used remember option of pam_pwhistory
@@ -1963,29 +2057,27 @@ controls:
           https://bugzilla.redhat.com/show_bug.cgi?id=1778929
           A new rule needs to be created to remove the remember option from pam_unix module.
 
-    - id: 5.3.3.4.3
+    - id: 5.3.2.4.3
       title: Ensure pam_unix includes a strong password hashing algorithm (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: automated
-      notes: |-
-          Changes in logindefs mentioned in this requirement are more specifically covered by 5.4.1.4
+      notes: Changes in logindefs mentioned in this requirement are more specifically covered by 5.4.1.4
       rules:
           - set_password_hashing_algorithm_systemauth
           - set_password_hashing_algorithm_passwordauth
-          - var_password_hashing_algorithm_pam=yescrypt
 
-    - id: 5.3.3.4.4
+    - id: 5.3.2.4.4
       title: Ensure pam_unix includes use_authtok (Automated)
       levels:
           - l1_server
           - l1_workstation
       status: partial
       notes: |-
-          In RHEL 9 pam_unix is enabled by default in all authselect profiles already with the
+          In RHEL 10 pam_unix is enabled by default in all authselect profiles already with the
           use_authtok option set. In any case, we don't have a rule to check this option specifically,
-          like in 5.3.3.3.3.
+          like in 5.3.2.3.3.
 
     - id: 5.4.1.1
       title: Ensure password expiration is configured (Automated)
@@ -1995,18 +2087,16 @@ controls:
       status: automated
       rules:
           - accounts_maximum_age_login_defs
-          - var_accounts_maximum_age_login_defs=365
           - accounts_password_set_max_life_existing
 
     - id: 5.4.1.2
-      title: Ensure minimum password days is configured (Automated)
+      title: Ensure minimum password days is configured (Manual)
       levels:
           - l2_server
           - l2_workstation
-      status: automated
+      status: manual
       rules:
           - accounts_minimum_age_login_defs
-          - var_accounts_minimum_age_login_defs=1
           - accounts_password_set_min_life_existing
 
     - id: 5.4.1.3
@@ -2017,7 +2107,6 @@ controls:
       status: automated
       rules:
           - accounts_password_warn_age_login_defs
-          - var_accounts_password_warn_age_login_defs=7
           - accounts_password_set_warn_age_existing
 
     - id: 5.4.1.4
@@ -2032,8 +2121,6 @@ controls:
       rules:
           - set_password_hashing_algorithm_libuserconf
           - set_password_hashing_algorithm_logindefs
-          - var_password_hashing_algorithm=yescrypt
-          - var_password_hashing_algorithm_pam=yescrypt
 
     - id: 5.4.1.5
       title: Ensure inactive password lock is configured (Automated)
@@ -2044,7 +2131,6 @@ controls:
       rules:
           - account_disable_post_pw_expiration
           - accounts_set_post_pw_existing
-          - var_account_disable_post_pw_expiration=30
 
     - id: 5.4.1.6
       title: Ensure all users last password change date is in the past (Automated)
@@ -2082,9 +2168,8 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          New rule is necessary.
+      status: automated
+      notes: New rule is necessary.
 
     - id: 5.4.2.4
       title: Ensure root account access is controlled (Automated)
@@ -2110,7 +2195,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      status: automated
       notes: |-
           There is no rule to ensure umask in /root/.bash_profile and /root/.bashrc. A new rule have
           to be created. It can be based on accounts_umask_interactive_users.
@@ -2130,16 +2215,15 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          New rule is necessary.
+      status: automated
+      notes: New rule is necessary.
 
     - id: 5.4.3.1
       title: Ensure nologin is not listed in /etc/shells (Automated)
       levels:
           - l2_server
           - l2_workstation
-      status: pending
+      status: automated
       notes: |-
           It is necessary to create a new rule to check and remove nologin from /etc/shells.
           The no_tmux_in_shells rule can be used as referece.
@@ -2152,7 +2236,6 @@ controls:
       status: automated
       rules:
           - accounts_tmout
-          - var_accounts_tmout=15_min
 
     - id: 5.4.3.3
       title: Ensure default user umask is configured (Automated)
@@ -2164,7 +2247,6 @@ controls:
           - accounts_umask_etc_bashrc
           - accounts_umask_etc_login_defs
           - accounts_umask_etc_profile
-          - var_accounts_user_umask=027
 
     - id: 6.1.1
       title: Ensure AIDE is installed (Automated)
@@ -2197,7 +2279,7 @@ controls:
           - aide_use_fips_hashes
 
     - id: 6.2.1.1
-      title: Ensure journald service is enabled and active (Automated)
+      title: Ensure journald service is active (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -2224,10 +2306,34 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      status: automated
       notes: |-
           It is necessary to create a new rule to check the status of journald and rsyslog.
           It would also be necessary a new rule to disable or remove rsyslog.
+
+    - id: 6.2.2.2
+      title: Ensure journald ForwardToSyslog is disabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      notes: This rule conflicts with 6.2.3.3. More investigation is needed to properly solve this.
+      related_rules:
+          - journald_forward_to_syslog
+
+    - id: 6.2.2.3
+      title: Ensure journald Compress is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+
+    - id: 6.2.2.4
+      title: Ensure journald Storage is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
 
     - id: 6.2.2.1.1
       title: Ensure systemd-journal-remote is installed (Automated)
@@ -2235,8 +2341,6 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
-      rules:
-          - package_systemd-journal-remote_installed
 
     - id: 6.2.2.1.2
       title: Ensure systemd-journal-upload authentication is configured (Manual)
@@ -2250,9 +2354,8 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          New templated rule is necessary.
+      status: automated
+      notes: New templated rule is necessary.
 
     - id: 6.2.2.1.4
       title: Ensure systemd-journal-remote service is not in use (Automated)
@@ -2260,44 +2363,13 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
-      rules:
-          - socket_systemd-journal-remote_disabled
-
-    - id: 6.2.2.2
-      title: Ensure journald ForwardToSyslog is disabled (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: pending
-      notes: |-
-          This rule conflicts with 6.2.3.3. More investigation is needed to properly solve this.
-      related_rules:
-          - journald_forward_to_syslog
-
-    - id: 6.2.2.3
-      title: Ensure journald Compress is configured (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: automated
-      rules:
-          - journald_compress
-
-    - id: 6.2.2.4
-      title: Ensure journald Storage is configured (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: automated
-      rules:
-          - journald_storage
 
     - id: 6.2.3.1
       title: Ensure rsyslog is installed (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: supported
+      status: automated
       related_rules:
           - package_rsyslog_installed
 
@@ -2306,7 +2378,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: supported
+      status: automated
       related_rules:
           - service_rsyslog_enabled
 
@@ -2315,7 +2387,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: supported
+      status: automated
       related_rules:
           - journald_forward_to_syslog
 
@@ -2324,7 +2396,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: supported
+      status: automated
       related_rules:
           - rsyslog_filecreatemode
 
@@ -2349,7 +2421,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: supported
+      status: automated
       related_rules:
           - rsyslog_nolisten
 
@@ -2370,8 +2442,7 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
-      notes: |-
-          It is not harmful to run these rules even if rsyslog is not installed or active.
+      notes: It is not harmful to run these rules even if rsyslog is not installed or active.
       rules:
           - rsyslog_files_groupownership
           - rsyslog_files_ownership
@@ -2397,7 +2468,7 @@ controls:
           - grub2_audit_argument
 
     - id: 6.3.1.3
-      title: Ensure audit_backlog_limit is sufficient (Automated)
+      title: Ensure audit_backlog_limit is configured (Automated)
       levels:
           - l2_server
           - l2_workstation
@@ -2422,7 +2493,6 @@ controls:
       status: automated
       rules:
           - auditd_data_retention_max_log_file
-          - var_auditd_max_log_file=6
 
     - id: 6.3.2.2
       title: Ensure audit logs are not automatically deleted (Automated)
@@ -2432,7 +2502,6 @@ controls:
       status: automated
       rules:
           - auditd_data_retention_max_log_file_action
-          - var_auditd_max_log_file_action=keep_logs
 
     - id: 6.3.2.3
       title: Ensure system is disabled when audit logs are full (Automated)
@@ -2443,8 +2512,6 @@ controls:
       rules:
           - auditd_data_disk_error_action
           - auditd_data_disk_full_action
-          - var_auditd_disk_error_action=cis_rhel8
-          - var_auditd_disk_full_action=cis_rhel8
 
     - id: 6.3.2.4
       title: Ensure system warns when audit logs are low on space (Automated)
@@ -2453,21 +2520,15 @@ controls:
           - l2_workstation
       status: automated
       rules:
-          - auditd_data_retention_action_mail_acct
           - auditd_data_retention_admin_space_left_action
           - auditd_data_retention_space_left_action
-          - var_auditd_action_mail_acct=root
-          - var_auditd_admin_space_left_action=cis_rhel8
-          - var_auditd_space_left_action=cis_rhel8
 
     - id: 6.3.3.1
-      title: Ensure changes to system administration scope (sudoers) is collected (Automated)
+      title: Ensure modification of the /etc/sudoers file is collected (Automated)
       levels:
           - l2_server
           - l2_workstation
       status: automated
-      rules:
-          - audit_rules_sysadmin_actions
 
     - id: 6.3.3.2
       title: Ensure actions as another user are always logged (Automated)
@@ -2502,18 +2563,41 @@ controls:
           - audit_rules_time_stime
 
     - id: 6.3.3.5
-      title: Ensure events that modify the system's network environment are collected (Automated)
+      title: Ensure events that modify sethostname and setdomainname are collected (Automated)
       levels:
           - l2_server
           - l2_workstation
-      status: partial
-      notes: |-
-          These rules are not covering "/etc/hostname" and "/etc/NetworkManager/".
-      rules:
-          - audit_rules_networkconfig_modification
-          - audit_rules_networkconfig_modification_network_scripts
+      status: automated
 
     - id: 6.3.3.6
+      title: Ensure events that modify /etc/issue and /etc/issue.net are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.7
+      title: Ensure events that modify /etc/hosts and /etc/hostname are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.8
+      title: Ensure events that modify /etc/sysconfig/network and /etc/sysconfig/network-scripts/ are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.9
+      title: Ensure events that modify /etc/NetworkManager directory are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.10
       title: Ensure use of privileged commands are collected (Automated)
       levels:
           - l2_server
@@ -2522,7 +2606,7 @@ controls:
       rules:
           - audit_rules_privileged_commands
 
-    - id: 6.3.3.7
+    - id: 6.3.3.11
       title: Ensure unsuccessful file access attempts are collected (Automated)
       levels:
           - l2_server
@@ -2535,44 +2619,87 @@ controls:
           - audit_rules_unsuccessful_file_modification_openat
           - audit_rules_unsuccessful_file_modification_truncate
 
-    - id: 6.3.3.8
-      title: Ensure events that modify user/group information are collected (Automated)
+    - id: 6.3.3.12
+      title: Ensure events that modify /etc/group information are collected (Automated)
       levels:
           - l2_server
           - l2_workstation
-      status: partial
-      notes: |-
-          Missing rules to check "/etc/nsswitch.conf", "/etc/pam.conf" and "/etc/pam.d"
-      rules:
-          - audit_rules_usergroup_modification_group
-          - audit_rules_usergroup_modification_gshadow
-          - audit_rules_usergroup_modification_opasswd
-          - audit_rules_usergroup_modification_passwd
-          - audit_rules_usergroup_modification_shadow
+      status: automated
 
-    - id: 6.3.3.9
-      title: Ensure discretionary access control permission modification events are collected (Automated)
+    - id: 6.3.3.13
+      title: Ensure events that modify /etc/passwd information are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.14
+      title: Ensure events that modify /etc/shadow and /etc/gshadow are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.15
+      title: Ensure events that modify /etc/security/opasswd are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.16
+      title: Ensure events that modify /etc/nsswitch.conf file are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.17
+      title: Ensure events that modify /etc/pam.conf and /etc/pam.d/ information are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.18
+      title: Ensure discretionary access control permission modification events chmod,fchmod,fchmodat,fchmodat2 are collected (Automated)
       levels:
           - l2_server
           - l2_workstation
       status: automated
       rules:
           - audit_rules_dac_modification_chmod
-          - audit_rules_dac_modification_chown
           - audit_rules_dac_modification_fchmod
           - audit_rules_dac_modification_fchmodat
           - audit_rules_dac_modification_fchmodat2
+
+    - id: 6.3.3.19
+      title: Ensure discretionary access control permission modification events chown,fchown,lchown,fchownat are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+      rules:
+          - audit_rules_dac_modification_chown
           - audit_rules_dac_modification_fchown
           - audit_rules_dac_modification_fchownat
+          - audit_rules_dac_modification_lchown
+
+    - id: 6.3.3.20
+      title: Ensure discretionary access control permission modification events setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+      rules:
           - audit_rules_dac_modification_fremovexattr
           - audit_rules_dac_modification_fsetxattr
-          - audit_rules_dac_modification_lchown
           - audit_rules_dac_modification_lremovexattr
           - audit_rules_dac_modification_lsetxattr
           - audit_rules_dac_modification_removexattr
           - audit_rules_dac_modification_setxattr
 
-    - id: 6.3.3.10
+    - id: 6.3.3.21
       title: Ensure successful file system mounts are collected (Automated)
       levels:
           - l2_server
@@ -2581,7 +2708,7 @@ controls:
       rules:
           - audit_rules_media_export
 
-    - id: 6.3.3.11
+    - id: 6.3.3.22
       title: Ensure session initiation information is collected (Automated)
       levels:
           - l2_server
@@ -2592,7 +2719,7 @@ controls:
           - audit_rules_session_events_btmp
           - audit_rules_session_events_wtmp
 
-    - id: 6.3.3.12
+    - id: 6.3.3.23
       title: Ensure login and logout events are collected (Automated)
       levels:
           - l2_server
@@ -2601,22 +2728,22 @@ controls:
       rules:
           - audit_rules_login_events_faillock
           - audit_rules_login_events_lastlog
-          - var_accounts_passwords_pam_faillock_dir=run
 
-    - id: 6.3.3.13
-      title: Ensure file deletion events by users are collected (Automated)
+    - id: 6.3.3.24
+      title: Ensure unlink file deletion events by users are collected (Automated)
       levels:
           - l2_server
           - l2_workstation
       status: automated
-      rules:
-          - audit_rules_file_deletion_events_rename
-          - audit_rules_file_deletion_events_renameat
-          - audit_rules_file_deletion_events_renameat2
-          - audit_rules_file_deletion_events_unlink
-          - audit_rules_file_deletion_events_unlinkat
 
-    - id: 6.3.3.14
+    - id: 6.3.3.25
+      title: Ensure rename file deletion events by users are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.26
       title: Ensure events that modify the system's Mandatory Access Controls are collected (Automated)
       levels:
           - l2_server
@@ -2626,7 +2753,7 @@ controls:
           - audit_rules_mac_modification_etc_selinux
           - audit_rules_mac_modification_usr_share
 
-    - id: 6.3.3.15
+    - id: 6.3.3.27
       title: Ensure successful and unsuccessful attempts to use the chcon command are collected (Automated)
       levels:
           - l2_server
@@ -2635,7 +2762,7 @@ controls:
       rules:
           - audit_rules_execution_chcon
 
-    - id: 6.3.3.16
+    - id: 6.3.3.28
       title: Ensure successful and unsuccessful attempts to use the setfacl command are collected (Automated)
       levels:
           - l2_server
@@ -2644,7 +2771,7 @@ controls:
       rules:
           - audit_rules_execution_setfacl
 
-    - id: 6.3.3.17
+    - id: 6.3.3.29
       title: Ensure successful and unsuccessful attempts to use the chacl command are collected (Automated)
       levels:
           - l2_server
@@ -2653,7 +2780,7 @@ controls:
       rules:
           - audit_rules_execution_chacl
 
-    - id: 6.3.3.18
+    - id: 6.3.3.30
       title: Ensure successful and unsuccessful attempts to use the usermod command are collected (Automated)
       levels:
           - l2_server
@@ -2662,7 +2789,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_usermod
 
-    - id: 6.3.3.19
+    - id: 6.3.3.31
       title: Ensure kernel module loading unloading and modification is collected (Automated)
       levels:
           - l2_server
@@ -2675,7 +2802,35 @@ controls:
           - audit_rules_kernel_module_loading_query
           - audit_rules_privileged_commands_kmod
 
-    - id: 6.3.3.20
+    - id: 6.3.3.32
+      title: Ensure kernel "init_module" and "finit_module" loading unloading and modification is collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.33
+      title: Ensure kernel "delete_module" loading unloading and modification is collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.34
+      title: Ensure kernel "create_module" and "query_module" loading unloading and modification is collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.35
+      title: Ensure the audit configuration is loaded regardless of errors (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+
+    - id: 6.3.3.36
       title: Ensure the audit configuration is immutable (Automated)
       levels:
           - l2_server
@@ -2684,7 +2839,7 @@ controls:
       rules:
           - audit_rules_immutable
 
-    - id: 6.3.3.21
+    - id: 6.3.3.37
       title: Ensure the running and on disk configuration is the same (Manual)
       levels:
           - l2_server
@@ -2782,7 +2937,7 @@ controls:
           - file_groupownership_audit_binaries
 
     - id: 7.1.1
-      title: Ensure permissions on /etc/passwd are configured (Automated)
+      title: Ensure access to /etc/passwd is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -2793,7 +2948,7 @@ controls:
           - file_permissions_etc_passwd
 
     - id: 7.1.2
-      title: Ensure permissions on /etc/passwd- are configured (Automated)
+      title: Ensure access to /etc/passwd- is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -2804,7 +2959,7 @@ controls:
           - file_permissions_backup_etc_passwd
 
     - id: 7.1.3
-      title: Ensure permissions on /etc/group are configured (Automated)
+      title: Ensure access to /etc/group is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -2815,7 +2970,7 @@ controls:
           - file_permissions_etc_group
 
     - id: 7.1.4
-      title: Ensure permissions on /etc/group- are configured (Automated)
+      title: Ensure access to /etc/group- is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -2826,7 +2981,7 @@ controls:
           - file_permissions_backup_etc_group
 
     - id: 7.1.5
-      title: Ensure permissions on /etc/shadow are configured (Automated)
+      title: Ensure access to /etc/shadow is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -2837,7 +2992,7 @@ controls:
           - file_permissions_etc_shadow
 
     - id: 7.1.6
-      title: Ensure permissions on /etc/shadow- are configured (Automated)
+      title: Ensure access to /etc/shadow- is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -2848,7 +3003,7 @@ controls:
           - file_permissions_backup_etc_shadow
 
     - id: 7.1.7
-      title: Ensure permissions on /etc/gshadow are configured (Automated)
+      title: Ensure access to /etc/gshadow is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -2859,7 +3014,7 @@ controls:
           - file_permissions_etc_gshadow
 
     - id: 7.1.8
-      title: Ensure permissions on /etc/gshadow- are configured (Automated)
+      title: Ensure access to /etc/gshadow- is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -2870,7 +3025,7 @@ controls:
           - file_permissions_backup_etc_gshadow
 
     - id: 7.1.9
-      title: Ensure permissions on /etc/shells are configured (Automated)
+      title: Ensure access to /etc/shells is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -2881,13 +3036,12 @@ controls:
           - file_permissions_etc_shells
 
     - id: 7.1.10
-      title: Ensure permissions on /etc/security/opasswd are configured (Automated)
+      title: Ensure access to /etc/security/opasswd is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: partial
+      status: automated
       rules:
-    # TODO: We need another rule that checks /etc/security/opasswd.old
           - file_etc_security_opasswd
 
     - id: 7.1.11
@@ -2906,8 +3060,8 @@ controls:
           - l1_server
           - l1_workstation
       status: partial
-      rules:
     # TODO: add rules for unowned/ungrouped directories
+      rules:
           - no_files_unowned_by_user
           - file_permissions_ungroupowned
 
@@ -2920,16 +3074,6 @@ controls:
       related_rules:
           - file_permissions_unauthorized_suid
           - file_permissions_unauthorized_sgid
-
-    - id: 7.1.14
-      title: Audit system file permissions (Manual)
-      levels:
-          - l2_server
-          - l2_workstation
-      status: manual
-      related_rules:
-          - rpm_verify_permissions
-          - rpm_verify_ownership
 
     - id: 7.2.1
       title: Ensure accounts in /etc/passwd use shadowed passwords (Automated)
@@ -3012,15 +3156,13 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      notes: |-
-          Missing a rule to check that .bash_history is mode 0600 or more restrictive.
       status: partial
+      notes: Missing a rule to check that .bash_history is mode 0600 or more restrictive.
       rules:
           - accounts_user_dot_group_ownership
           - accounts_user_dot_user_ownership
           - accounts_user_dot_no_world_writable_programs
           - file_permission_user_init_files
-          - var_user_initialization_files_regex=all_dotfiles
           - no_forward_files
           - no_netrc_files
       related_rules:
