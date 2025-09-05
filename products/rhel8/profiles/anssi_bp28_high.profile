@@ -24,6 +24,7 @@ selections:
     - anssi:all:high
     - var_password_hashing_algorithm=SHA512
     - var_password_pam_unix_rounds=65536
+    - '!service_chronyd_enabled'
 
     # the following rule renders UEFI systems unbootable
     - '!sebool_secure_mode_insmod'
@@ -77,3 +78,4 @@ selections:
     # Following rules are not applicable to RHEL
     - '!package_talk_removed'
     - '!package_talk-server_removed'
+    - '!audit_rules_mac_modification_etc_selinux'

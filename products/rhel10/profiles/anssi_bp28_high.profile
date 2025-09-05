@@ -99,3 +99,6 @@ selections:
     - '!kernel_config_refcount_full'
     - '!kernel_config_retpoline'
     - '!kernel_config_security_writable_hooks'
+    - '!ldap_client_tls_cacertpath'
+    - '!no_nis_in_nsswitch'
+    - '!ldap_client_start_tls'

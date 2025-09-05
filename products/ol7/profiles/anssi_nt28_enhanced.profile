@@ -50,3 +50,8 @@ selections:
     - '!package_kea_removed'
     - '!audit_rules_file_deletion_events_renameat2'
     - '!audit_rules_dac_modification_fchmodat2'
+    - '!no_nis_in_nsswitch'
+    - '!audit_rules_mac_modification_etc_selinux'
+    - '!service_chronyd_enabled'
+    - '!ldap_client_start_tls'
+    - '!ldap_client_tls_cacertpath'

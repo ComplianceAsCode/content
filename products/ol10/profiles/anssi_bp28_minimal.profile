@@ -30,6 +30,7 @@ selections:
     - '!ensure_redhat_gpgkey_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!security_patches_up_to_date'
+    - '!no_nis_in_nsswitch'
     # authselect is enabled by default
     - '!enable_authselect'
     # these packages do not exist in ol10 (R62)
