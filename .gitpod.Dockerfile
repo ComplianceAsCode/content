@@ -8,7 +8,6 @@ RUN sudo apt-get update -q && \
         cmake \
         ninja-build \
         libxml2-utils \
-        expat \
         xsltproc \
         python3-jinja2 \
         python3-yaml \

@@ -1,0 +1,27 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_multiple_time_servers") }}}
+{{{ ansible_instantiate_variables("var_multiple_time_pools") }}}
+
+- name: {{{ rule_title }}} - Add missing / update wrong records for remote time servers
+  ansible.builtin.lineinfile:
+    path: {{{ chrony_conf_path }}}
+    regexp: '^\s*\bserver\b\s*\b{{ item }}\b$'
+    state: present
+    line: 'server {{ item }}'
+    create: true
+  with_items: 
+    - '{{ var_multiple_time_servers.split(",") }}'
+
+- name: {{{ rule_title }}} - Add missing / update wrong records for remote time pools
+  ansible.builtin.lineinfile:
+    path: {{{ chrony_conf_path }}}
+    regexp: '^\s*\bpool\b\s*\b{{ item }}\b$'
+    state: present
+    line: 'pool {{ item }}'
+    create: true
+  with_items: 
+    - '{{ var_multiple_time_pools.split(",") }}'

@@ -9,7 +9,7 @@ chmod -R u-s,g-ws,o-wt /lib /lib64 /usr/lib /usr/lib64
 # Let's setup a symlink to a directory that contains an incomplient file
 
 # Directory with correct perms
-mkdir /home/user_test/directory
+mkdir -p /home/user_test/directory
 chmod 0755 /home/user_test/directory
 
 # File with incorrect perms

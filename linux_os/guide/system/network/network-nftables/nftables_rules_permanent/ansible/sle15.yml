@@ -1,0 +1,20 @@
+# platform = SUSE Linux Enterprise 15
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_nftables_master_config_file") }}}
+
+- name: Check the top-level configuration file exists
+  ansible.builtin.stat:
+    path: "{{ var_nftables_master_config_file }}"
+
+- name: Check the {{{ family }}} relevant file is included configuration
+  ansible.builtin.lineinfile:
+    path: "{{ var_nftables_master_config_file }}"
+    line: 'include "/etc/nftables/{{ item }}-filter"'
+    create: yes
+  loop:
+    - bridge
+    - arp
+    - inet

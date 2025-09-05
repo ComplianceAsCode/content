@@ -31,6 +31,11 @@
       <unix:path>{{{ filepath[:-1] }}}</unix:path>
       {{%- if FILE_REGEX %}}
       <unix:filename operation="pattern match">{{{ FILE_REGEX[loop.index0] }}}</unix:filename>
+      {{%- if EXCLUDED_FILES %}}
+      {{%- for excluded_file in EXCLUDED_FILES %}}
+      <filter action="exclude">exclude_files_{{{ FILEID }}}_{{{ loop.index0 }}}</filter>
+      {{%- endfor %}}
+      {{%- endif %}}
       {{%- else %}}
       <unix:filename xsi:nil="true" />
       {{%- endif %}}
@@ -49,4 +54,11 @@
   <unix:file_state id="exclude_symlinks_{{{ FILEID }}}" version="1">
     <unix:type operation="equals">symbolic link</unix:type>
   </unix:file_state>
+  {{%- if EXCLUDED_FILES %}}
+  {{%- for excluded_file in EXCLUDED_FILES %}}
+  <unix:file_state id="exclude_files_{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
+    <unix:filename operation="pattern match">^{{{ excluded_file|replace("*", ".*") }}}$</unix:filename>
+  </unix:file_state>
+  {{%- endfor %}}
+  {{%- endif %}}
 </def-group>

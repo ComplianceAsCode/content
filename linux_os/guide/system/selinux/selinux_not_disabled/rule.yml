@@ -1,0 +1,55 @@
+documentation_complete: true
+
+title: 'Ensure SELinux is Not Disabled'
+
+description: |-
+    The SELinux state should be set to <tt>enforcing</tt> or <tt>permissive</tt> at system boot
+    time. In the file <tt>/etc/selinux/config</tt>, add or correct the following line to configure
+    the system to boot into enforcing or permissive mode:
+    <pre>SELINUX=enforcing</pre>
+    OR
+    <pre>SELINUX=permissive</pre>
+
+rationale: |-
+    Running SELinux in disabled mode is strongly discouraged. It prevents enforcing the SELinux
+    controls without a system reboot. It also avoids labeling any persistent objects such as
+    files, making it difficult to enable SELinux in the future.
+
+severity: high
+
+identifiers:
+    cce@rhel8: CCE-86151-8
+    cce@rhel9: CCE-86152-6
+
+references:
+    cis@rhel8: 1.6.1.4
+    cis@rhel9: 1.6.1.4
+
+ocil_clause: 'SELinux is disabled'
+
+ocil: |-
+    Ensure that {{{ full_name }}} does not disable SELinux.
+
+    Check if "SELinux" is active and in "enforcing" or "permissive" mode with the following command:
+
+    $ sudo getenforce
+    Enforcing
+    -OR-
+    Permissive
+
+fixtext: |-
+    Configure {{{ full_name }}} to enable SELinux.
+
+    Edit the file <tt>/etc/selinux/config</tt> and add or modify the following line:
+    <pre>SELINUX=enforcing</pre>
+    OR
+    <pre>SELINUX=permissive</pre>
+
+    A reboot is required for the changes to take effect.
+
+warnings:
+    - general: |-
+        In case the SELinux is "disabled", the automated remediation will adopt a more
+        conservative approach and set it to "permissive" in order to avoid any system disruption
+        and give the administrator the opportunity to assess the impact and necessary efforts
+        before setting it to "enforcing", which is strongly recommended.

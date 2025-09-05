@@ -15,6 +15,7 @@ description: |-
 
 selections:
     - sshd_approved_macs=stig
+    - sshd_approved_ciphers=stig
     - var_account_disable_post_pw_expiration=35
     - var_accounts_fail_delay=4
     - var_accounts_tmout=15_min
@@ -69,7 +70,9 @@ selections:
     - accounts_user_interactive_home_directory_defined
     - accounts_user_interactive_home_directory_exists
     - account_temp_expire_date
+    - aide_build_database
     - aide_check_audit_tools
+    - aide_periodic_cron_checking
     - aide_scan_notification
     - aide_verify_acls
     - aide_verify_ext_attributes
@@ -272,6 +275,7 @@ selections:
     - sudoers_validate_passwd
     - susefirewall2_ddos_protection
     - susefirewall2_only_required_services
+    - sysctl_kernel_dmesg_restrict
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_randomize_va_space
     - sysctl_net_ipv4_conf_all_accept_redirects

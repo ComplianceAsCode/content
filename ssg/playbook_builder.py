@@ -13,6 +13,7 @@ import ssg.yaml
 import ssg.build_yaml
 import ssg.build_remediations
 import ssg.environment
+import ssg.products
 
 COMMENTS_TO_PARSE = ["strategy", "complexity", "disruption"]
 
@@ -25,8 +26,8 @@ class PlaybookBuilder():
         self.rules_dir = rules_dir
         self.build_config_yaml = build_config_yaml
         self.product_yaml_path = product_yaml_path
-        product_yaml = ssg.yaml.open_raw(product_yaml_path)
-        product_dir = os.path.dirname(product_yaml_path)
+        product_yaml = ssg.products.Product(product_yaml_path)
+        product_dir = product_yaml["product_dir"]
         relative_guide_dir = ssg.utils.required_key(product_yaml,
                                                     "benchmark_root")
         self.guide_dir = os.path.abspath(os.path.join(product_dir,

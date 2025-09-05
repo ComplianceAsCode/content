@@ -12,7 +12,7 @@
 - name: "Test for crypto_policy group"
   command: grep '^\s*\[\s*crypto_policy\s*]' {{{ openssl_cnf_path }}}
   register: test_crypto_policy_group
-  ignore_errors: yes
+  failed_when: test_crypto_policy_group.rc not in [0, 1]
   changed_when: False
   check_mode: no
 

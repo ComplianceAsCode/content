@@ -2,9 +2,14 @@
 extends: default
 
 rules:
+  document-start:
+    present: true
+  indentation:
+    spaces: consistent
+    indent-sequences: whatever
   line-length:
     level: warning
-    max: 160
+    max: 170
     allow-non-breakable-words: true
     allow-non-breakable-inline-mappings: true
   comments: disable
@@ -12,4 +17,3 @@ rules:
   empty-lines:
     level: warning
   truthy: disable
-  document-start: {present: false}

@@ -1,0 +1,69 @@
+checktext: |-
+  Review the cluster configuration to validate that all required security functions are being validated with the Compliance Operator.
+  
+  To see if any scans have been applied to your cluster, and what their status is, run the following command:
+  > oc get compliancescan -n openshift-compliance
+  
+  Example output:
+  NAME PHASE RESULT
+  ocp4-cis DONE NON-COMPLIANT
+  ocp4-cis-manual DONE NON-COMPLIANT
+  ocp4-cis-node-master DONE NON-COMPLIANT
+  ocp4-cis-node-master-manual DONE NON-COMPLIANT
+  ocp4-cis-node-worker DONE NON-COMPLIANT
+  ocp4-cis-node-worker-manual DONE NON-COMPLIANT
+  ocp4-moderate DONE NON-COMPLIANT
+  ocp4-moderate-manual DONE NON-COMPLIANT
+  rhcos4-moderate-master DONE NON-COMPLIANT
+  rhcos4-moderate-master-manual DONE NON-COMPLIANT
+  rhcos4-moderate-worker DONE NON-COMPLIANT
+  rhcos4-moderate-worker-manual DONE NON-COMPLIANT
+  
+  If no ComplianceScan names return, the scans don't align to the organizationally-defined appropriate security functions, the command returns with an error, or any of the results show "NON-COMPLIANT" as their result, then this is a finding.
+
+fixtext: |-
+  The compliance operator can be leveraged to ensure that components are configured in alignment with the SSP. To install the Compliance Operator, run the following command:
+
+  > oc apply -f - << 'EOF'
+  ---
+  apiVersion: project.openshift.io/v1
+  kind: Project
+  metadata:
+    labels:
+      kubernetes.io/metadata.name: openshift-compliance
+      openshift.io/cluster-monitoring: "true"
+    name: openshift-compliance
+  spec: {}
+  ...
+  ---
+  apiVersion: operators.coreos.com/v1
+  kind: OperatorGroup
+  metadata:
+    name: compliance-operator
+    namespace: openshift-compliance
+  spec:
+    targetNamespaces:
+    - openshift-compliance
+  ...
+  ---
+  apiVersion: operators.coreos.com/v1alpha1
+  kind: Subscription
+  metadata:
+    name: compliance-operator
+    namespace: openshift-compliance
+  spec:
+    channel: stable
+    installPlanApproval: Automatic
+    name: compliance-operator
+    source: redhat-operators
+    sourceNamespace: openshift-marketplace
+  ...
+  EOF
+  
+  Following installation of the Compliance Operator, a ScanSettingBinding object that configures the Compliance Operator to use the desired Profile sets must be created. TailoredProfiles enable customization of controls to meet specific organizational controls defined in the SSP, and can be based on existing profiles or written from scratch in standard SCAP format. If you have the definition for your ScanSettingBinding that aligns your profiles with your ScanSettings in a YAML file named my-scansettingbinding.yml, you would apply that ScanSettingBinding with the following command:
+  > oc apply -f my-scansettingbinding.yml -n openshift-compliance
+  
+  For more information about the compliance operator and its use, including the creation of TailoredProfiles and the ScanSettings available to meet specific security functions or organizational goals defined in the SSP, please see the product documentation https://docs.openshift.com/container-platform/4.8/security/compliance_operator/compliance-operator-understanding.html
+
+srg_requirement: |-
+  The organization-defined role must verify correct operation of security functions in the container platform.

@@ -6,7 +6,7 @@ title: 'Disable Use of the Insecure Bind Address'
 
 {{% set default_jqfilter = '.data."config.yaml" | fromjson | .apiServerArguments' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
-{{% set hypershift_path = '/api/v1/namespaces/clusters-{{.hypershift_cluster}}/configmaps/kas-config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/configmaps/kas-config' %}}
 {{% set hypershift_jqfilter = '.data."config.json" | fromjson | .apiServerArguments' %}}
 {{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
 {{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
@@ -27,7 +27,7 @@ description: |-
 
 rationale: |-
     If the API Server is bound to an insecure address the installation would
-    be susceptible to unauthented and unencrypted access to the master node(s).
+    be susceptible to unauthenticated and unencrypted access to the master node(s).
     The API Server does not perform authentication checking for insecure
     binds and the traffic is generally not encrypted.
 

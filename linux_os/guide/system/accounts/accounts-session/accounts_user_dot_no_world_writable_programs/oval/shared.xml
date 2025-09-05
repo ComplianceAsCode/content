@@ -36,18 +36,16 @@
     <unix:owrite datatype="boolean">true</unix:owrite>
   </unix:file_state>
 
-  <unix:file_object id="object_world_writable_programs" version="1">
+  <unix:file_object id="object_world_writable_programs" version="2">
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
-      recurse_file_system="local"/>
+      recurse_file_system="defined"/>
     <unix:path>/</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
     <filter action="include">state_world_writable_programs</filter>
   </unix:file_object>
 
   <ind:textfilecontent54_object id="object_accounts_user_dot_no_world_writable_programs_init_files"
-      version="2">
-    <ind:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
-      recurse_file_system="local"/>
+      version="3">
     <ind:path var_ref="var_accounts_user_dot_no_world_writable_programs_dirs"
       var_check="at least one"/>
     <ind:filename operation="pattern match" var_ref="var_user_initialization_files_regex"/>

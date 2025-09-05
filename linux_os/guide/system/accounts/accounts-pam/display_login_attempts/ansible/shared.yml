@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-{{% if product in ["sle12", "sle15", "ubuntu"] %}}
+{{% if product in ["sle12", "sle15"] or "ubuntu" in product %}}
 {{{ ansible_ensure_pam_module_configuration('/etc/pam.d/login', 'session', 'required', 'pam_lastlog.so', 'showfailed', '', 'BOF') }}}
 {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/login', 'session', '', 'pam_lastlog.so', 'silent') }}}
 {{% else %}}

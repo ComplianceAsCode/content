@@ -15,5 +15,6 @@ controls:
             {{% if 'rhel' in product %}}
             - ensure_redhat_gpgkey_installed
             {{% endif %}}
+            - ensure_oracle_gpgkey_installed
 
         status: automated

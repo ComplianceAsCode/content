@@ -14,11 +14,11 @@ jobs:
       PAGES_DIR: __pages
     steps:
       - name: Install Deps
-        run: dnf install -y cmake git ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint expat libxslt python3-pip rsync
+        run: dnf install -y cmake git ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint libxslt python3-pip rsync
       - name: Install deps python
         run: pip3 install json2html
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Build
         run: cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug
         working-directory: ./build
@@ -27,6 +27,9 @@ jobs:
         working-directory: ./build
       - name: Build Statistics
         run: ninja html-stats html-profile-stats -j2
+        working-directory: ./build
+      - name: Render Policies (Using control files)
+        run: ninja render-policies -j2
         working-directory: ./build
       - name: Generate HTML pages
         run: utils/generate_html_pages.sh $PAGES_DIR
@@ -48,3 +51,9 @@ jobs:
           token: ${{ secrets.CONTENT_PAGES_TOKEN }}
           git-config-name: openscap-ci
           git-config-email: openscap-ci@gmail.com
+      - name: Upload artifact if the event is pull request
+        uses: actions/upload-artifact@v3
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          name: built-content
+          path: ${{ env.PAGES_DIR }}

@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2023-03-23 19:40 UTC
+Last Modified: 2023-05-29 11:01 UTC
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -80,6 +80,7 @@ The following people have contributed to the SCAP Security Guide project
 * Nick Gompper <forestgomp@yahoo.com>
 * David Fernandez Gonzalez <david.fernandezgonzalez@canonical.com>
 * Loren Gordon <lorengordon@users.noreply.github.com>
+* Gene Gotimer <otherdevopsgene@portinfo.com>
 * Patrik Greco <sikevux@sikevux.se>
 * Steve Grubb <sgrubb@redhat.com>
 * guangyee <gyee@suse.com>
@@ -196,6 +197,7 @@ The following people have contributed to the SCAP Security Guide project
 * rrenshaw <bofh69@yahoo.com>
 * Chris Ruffalo <chris.ruffalo@gmail.com>
 * rumch-se <77793453+rumch-se@users.noreply.github.com>
+* rutvik23 <rutksh@gmail.com>
 * Ray Shaw (Cont ARL/CISD) rvshaw <rvshaw@esme.arl.army.mil>
 * Earl Sampson <ESampson@suse.com>
 * sampsone <esampson@suse.com>
@@ -226,6 +228,7 @@ The following people have contributed to the SCAP Security Guide project
 * Brian Stinson <brian@bstinson.com>
 * Jake Stookey <jakestookey@gmail.com>
 * Jonathan Sturges <jsturges@redhat.com>
+* svet-se <svetlin.boychev@suse.com>
 * teacup-on-rockingchair <315160+teacup-on-rockingchair@users.noreply.github.com>
 * Ian Tewksbury <itewk@redhat.com>
 * Philippe Thierry <phil@reseau-libre.net>

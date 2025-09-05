@@ -1,13 +1,7 @@
 #!/usr/bin/python3
 
-import os
-import os.path
-import errno
-import re
-import sys
-from copy import deepcopy
 import argparse
-import collections
+import sys
 
 import ssg.build_ovals
 import ssg.constants

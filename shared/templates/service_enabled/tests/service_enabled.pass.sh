@@ -1,7 +1,7 @@
 #!/bin/bash
-{{% if SERVICENAME == sshd %}}
+{{% if SERVICENAME == "sshd" %}}
 # platform = Not Applicable
-{{% endif%}}
+{{% endif %}}
 # packages = {{{ PACKAGENAME }}}
 
 SYSTEMCTL_EXEC='/usr/bin/systemctl'

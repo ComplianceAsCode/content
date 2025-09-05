@@ -12,7 +12,7 @@ CHATTR="chgrp"
 ATTR_VALUE="root"
 {{% else %}}
 CHATTR="chmod"
-ATTR_VALUE="0600"
+ATTR_VALUE="0640"
 {{% endif %}}
 
 # create three test log file

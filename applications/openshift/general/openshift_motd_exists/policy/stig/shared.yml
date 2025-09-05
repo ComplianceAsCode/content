@@ -8,15 +8,15 @@ checktext: |-
 
   Or
 
-  Verify that motd config map exists and contains the DoD Notice and Constent Banner
+  Verify that motd config map exists and contains the DoD Notice and Consent Banner
 
   > oc describe configmap/motd -n openshift
 
   If the configmap does not exist, or it does not contain the DoD Notice
-  and Constent Banner text in the message data attribute, this is a finding.
+  and Consent Banner text in the message data attribute, this is a finding.
 
 fixtext: |-
-  The following command will create a configmap that diplays the DOD notice
+  The following command will create a configmap that displays the DOD notice
   and consent banner when logging in using the OpenShift CLI tool (oc)
 
   > echo 'apiVersion: v1

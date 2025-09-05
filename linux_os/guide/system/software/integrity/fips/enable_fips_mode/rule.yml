@@ -5,6 +5,7 @@ prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9,rhv4
 title: Enable FIPS Mode
 
 description: |-
+{{% if product != "rhcos4" %}}
     To enable FIPS mode, run the following command:
     <pre>fips-mode-setup --enable</pre>
     <br />
@@ -16,6 +17,13 @@ description: |-
     <li>Setting the system crypto policy in <tt>/etc/crypto-policies/config</tt> to <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt></li>
     <li>Loading the Dracut <tt>fips</tt> module</li>
     </ul>
+{{% else %}}
+    OpenShift has an installation-time flag that can enable FIPS mode
+    for the cluster. The flag <pre>fips: true</pre> must be enabled
+    at install time in the <pre>install-config.yaml</pre> file. If
+    this rule fails on an installed cluster, then this is a permanent
+    finding and cannot be fixed.
+{{% endif %}}
 
 rationale: |-
     Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to

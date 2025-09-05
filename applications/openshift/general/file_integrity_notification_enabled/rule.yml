@@ -10,6 +10,7 @@ description: |-
 rationale: |-
   File Integrity Operator is able to send out alerts
 
+severity: medium
 
 identifiers:
   cce@ocp4: CCE-90572-9
@@ -17,6 +18,8 @@ identifiers:
 references:
   nist: SI-6,SI-7(2),SI-4(24)
   pcidss: Req-11.5.1,Req-12.10.5
+
+platform: not ocp4-on-hypershift
 
 {{% set jqfilter = '[.items[] | select(.metadata.name =="file-integrity") | .metadata.name]' %}}
 
@@ -26,8 +29,6 @@ ocil: |-
     Run the following command to see if alert monitor is enabled by File Integrity Operator:
     <pre>$  oc get prometheusrules --all-namespaces -o json | jq '{{{ jqfilter }}}'</pre>
     Make sure that there is one output named: file-integrity
-
-severity: medium
 
 warnings:
 - general: |-

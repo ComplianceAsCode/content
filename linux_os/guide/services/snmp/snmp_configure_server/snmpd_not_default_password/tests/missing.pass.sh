@@ -1,4 +1,4 @@
 #!/bin/bash
+# packages = net-snmp
 
-yum -y install net-snmp
 rm -f /etc/snmp/snmpd.conf

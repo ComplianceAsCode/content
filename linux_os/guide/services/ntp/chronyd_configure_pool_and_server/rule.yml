@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Chrony Configure Pool and Server'
+
+description: |-
+    <tt>Chrony</tt> is a daemon which implements the Network Time Protocol (NTP). It is designed to
+    synchronize system clocks across a variety of systems and use a source that is highly
+    accurate. More information on <tt>chrony</tt> can be found at
+    {{{ weblink(link="http://chrony.tuxfamily.org/") }}}.
+    <tt>Chrony</tt> can be configured to be a client and/or a server.
+    Add or edit server or pool lines to <tt>{{{ chrony_conf_path }}}</tt> as appropriate:
+    <pre>server &lt;remote-server&gt;</pre>
+    Multiple servers may be configured.
+
+rationale: |-
+    If <tt>chrony</tt> is in use on the system proper configuration is vital to ensuring time
+    synchronization is working properly.
+
+severity: medium
+
+platform: package[chrony]
+
+identifiers:
+    cce@sle12: CCE-92394-6 
+    cce@sle15: CCE-92526-3 
+
+references:
+    anssi: BP28(R43)
+    cis@sle12: 2.2.1.3
+    cis@sle15: 2.2.1.3
+    disa:  CCI-000160,CCI-001891
+    ism: 0988,1405
+    nist: CM-6(a),AU-8(1)(a)
+    pcidss: Req-10.4.3
+
+ocil_clause: 'a remote time server is not configured'
+
+ocil: |-
+    Run the following command and verify remote servers are configured properly:
+    <pre># grep -E "^(server|pool)" {{{ chrony_conf_path }}}</pre>

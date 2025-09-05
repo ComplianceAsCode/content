@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Limit Use of the CAP_NET_RAW'
 
 description: |-
-    Containers should not enable more capabilites than needed as this
+    Containers should not enable more capabilities than needed as this
     opens the door for malicious use. <tt>CAP_NET_RAW</tt> enables a container
     to launch a network attack on another container or cluster. To disable the
     <tt>CAP_NET_RAW</tt> capability, the appropriate Security Context Constraints (SCCs)

@@ -1,8 +1,7 @@
 #!/bin/bash
 # platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel
+# packages = aide
 
-
-yum -y install aide
 aide --init
 
 declare -a bins

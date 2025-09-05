@@ -1,10 +1,9 @@
 #!/usr/bin/python3
-import xml.etree.cElementTree as ET
-
-import logging
 import contextlib
+import logging
 import re
 import subprocess
+import xml.etree.cElementTree as ET
 
 from ssg.constants import OSCAP_RULE
 from ssg.constants import PREFIX_TO_NS

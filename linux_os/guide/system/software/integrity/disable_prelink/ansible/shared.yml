@@ -8,7 +8,7 @@
     path: /etc/sysconfig/prelink
   register: prelink_exists
 
-- name: disable prelinking
+- name: Disable prelinking
   lineinfile:
     path: /etc/sysconfig/prelink
     regexp: '^PRELINKING='

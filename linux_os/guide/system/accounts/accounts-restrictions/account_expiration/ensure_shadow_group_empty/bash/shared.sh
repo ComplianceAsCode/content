@@ -1,4 +1,3 @@
-# platform = multi_platform_sle,multi_platform_ubuntu
+# platform = multi_platform_all
 
-grep '^shadow:[^:]*:[^:]*:[^:]+' /etc/group
-awk -F: '($4 == "<shadow-gid>") { print }' /etc/passwd
+sed -ri 's/(^shadow:[^:]*:[^:]*:)([^:]+$)/\1/' /etc/group

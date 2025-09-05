@@ -145,27 +145,7 @@ class Remediation(object):
                 if p not in inherited_cpe_platform_names}
         return rule_specific_cpe_platform_names
 
-    def _check_if_platform_uses_version_comparison(self, platform, language):
-        version_comparison_characters = ("<", ">", "=")
-        languages_with_not_working_version_comparison = ("ansible", "bash")
-        if language in languages_with_not_working_version_comparison:
-            for char in version_comparison_characters:
-                if char in platform.original_expression:
-                    return True
-        return False
-
     def _get_stripped_conditional(self, language, platform):
-        # if a platform uses specification of versions as an applicability criteria
-        # it is currently correctly used in OVAL checks
-        # but it is not implemented in conditionals, therefore creating inconsitency
-        # we prevent building content which uses
-        # such a platform with a remediation conditional specified
-        if self._check_if_platform_uses_version_comparison(platform, language):
-            raise ValueError(
-                "The platform definition you are trying to use uses version comparison. "
-                "Remediation conditionals for such platforms are currently not implemented "
-                "for {0} remediations. {1} can't be used.".format(
-                    language, platform.original_expression))
         conditional = platform.get_remediation_conditional(language)
         if conditional is not None:
             stripped_conditional = conditional.strip()

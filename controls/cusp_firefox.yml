@@ -1,0 +1,23 @@
+---
+policy: 'Firefox Common User Security Policy'
+title: 'Firefox Common User Security Policy'
+id: cusp_firefox
+version: '1.0.0'
+source: "jodehnal's bachelor thesis on creating a SCAP profile for common users of Fedora workstation - link will be added after publication"
+
+controls:
+  - id: 1.0
+    title: Firefox Hardening
+    description: >-
+      Secure configuration of Mozilla Firefox.
+    status: automated
+    rules:
+      - firefox_policy-autoplay_video
+      - firefox_policy-cryptomining
+      - firefox_policy-enhanced_tracking
+      - firefox_policy-fingerprinting_protection
+      - firefox_policy-javascript_window_changes
+      - firefox_policy-javascript_window_resizing
+      - firefox_policy-pop-up_windows
+      - firefox_policy-ssl_minimum_version
+      - firefox_policy-content_blocker

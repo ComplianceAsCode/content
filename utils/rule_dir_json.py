@@ -93,9 +93,10 @@ def handle_rule_yaml(product_list, product_yamls, rule_id, rule_dir, guide_dir):
     rule_file = ssg.rules.get_rule_dir_yaml(rule_dir)
 
     prod_type = product_list[0]
-    product_yaml = product_yamls[prod_type]
+    env_yaml = dict()
+    env_yaml.update(product_yamls[prod_type])
 
-    rule_yaml = ssg.build_yaml.Rule.from_yaml(rule_file, product_yaml)
+    rule_yaml = ssg.build_yaml.Rule.from_yaml(rule_file, env_yaml)
     rule_products = set()
     for product in product_list:
         if ssg.utils.is_applicable(rule_yaml.prodtype, product):
@@ -155,8 +156,10 @@ def handle_remediations(product_list, product_yamls, rule_obj):
                 prod_type = r_product
             product_yaml = product_yamls[prod_type]
 
+            env_yaml = dict()
+            env_yaml.update(product_yaml)
             _, config = ssg.build_remediations.parse_from_file_with_jinja(
-                r_path, product_yaml
+                r_path, env_yaml
             )
             platforms = config['platform']
             if not platforms:

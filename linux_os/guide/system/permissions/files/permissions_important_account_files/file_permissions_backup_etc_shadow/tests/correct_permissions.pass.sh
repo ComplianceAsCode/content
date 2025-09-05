@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 
-{{% if product in ("ubuntu", "debian") %}}
+{{% if "debian" in product or "ubuntu" in product %}}
     {{% set target_perms_octal="0640" %}}
 {{% else %}}
     {{% set target_perms_octal="0000" %}}

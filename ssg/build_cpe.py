@@ -33,6 +33,7 @@ class ProductCPEs(object):
         self.cpes_by_name = {}
         self.product_cpes = {}
         self.platforms = {}
+        self.cpe_oval_href = ""
         self.algebra = Algebra(
             symbol_cls=CPEALCheckFactRef, function_cls=CPEALLogicalTest)
 

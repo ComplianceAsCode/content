@@ -104,6 +104,9 @@ class Renderer(object):
         if not args.output:
             print(result)
         else:
+            dir = os.path.dirname(args.output)
+            if not os.path.exists(dir):
+                os.makedirs(dir)
             with open(args.output, "wb") as outfile:
                 result_for_output = result.encode('utf8', 'replace')
                 outfile.write(result_for_output)

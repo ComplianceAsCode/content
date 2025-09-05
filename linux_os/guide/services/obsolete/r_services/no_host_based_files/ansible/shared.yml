@@ -3,26 +3,25 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- block:
-    - name: "Find local mount points"
-      shell: |
-          set -o pipefail
-          df --local | awk '{print $6}' | grep -v Mounted | grep -v '^/dev' || true
-      register: local_mount_points
+- name: "Find local mount points"
+  shell: |
+      set -o pipefail
+      df --local | awk '{print $6}' | grep -v Mounted | grep -v '^/dev' || true
+  register: local_mount_points
 
-    - name: "Detect the shosts.equiv files on the system"
-      find:
-          paths: "{{ item }}"
-          recurse: yes
-          patterns: ["shosts.equiv"]
-          file_type: "file"
-      check_mode: no
-      with_items: "{{ local_mount_points.stdout_lines }}"
-      register: shosts_equiv_locations
+- name: "Detect the shosts.equiv files on the system"
+  find:
+      paths: "{{ item }}"
+      recurse: yes
+      patterns: ["shosts.equiv"]
+      file_type: "file"
+  check_mode: no
+  with_items: "{{ local_mount_points.stdout_lines }}"
+  register: shosts_equiv_locations
 
-    - name: "Remove shosts.equiv Files"
-      file:
-          path: "{{ item.path }}"
-          state: absent
-      with_items: "{{ shosts_equiv_locations.results | map(attribute='files') | list }}"
-      when: shosts_equiv_locations is success
+- name: "Remove shosts.equiv Files"
+  file:
+      path: "{{ item.path }}"
+      state: absent
+  with_items: "{{ shosts_equiv_locations.results | map(attribute='files') | list }}"
+  when: shosts_equiv_locations is success

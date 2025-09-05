@@ -14,13 +14,13 @@ jobs:
       - name: Install deps python
         run: pip install gitpython xmldiff
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Checkout (CTF)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          repository: mildas/content-test-filtering
+          repository: ComplianceAsCode/content-test-filtering
           path: ctf
       # https://github.com/actions/checkout/issues/766
       - name: Set git safe directory
@@ -28,12 +28,12 @@ jobs:
       - name: Find forking point
         env:
           BASE_BRANCH: ${{ github.base_ref }}
-        run: echo "::set-output name=FORK_POINT::$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})"
+        run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
         id: fork_point
       - name: Detect content changes in the PR
         run: python3 ./ctf/content_test_filtering.py pr --base ${{ steps.fork_point.outputs.FORK_POINT }} --remote_repo ${{ github.server_url }}/${{ github.repository }}  --verbose --rule --output json ${{ github.event.pull_request.number }} > output.json
       - name: Test if there are no content changes
-        run: echo "::set-output name=CTF_OUTPUT_SIZE::$(stat --printf="%s" output.json)"
+        run: echo "CTF_OUTPUT_SIZE=$(stat --printf="%s" output.json)" >> $GITHUB_OUTPUT
         id: ctf
       - uses: actions/upload-artifact@v2
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
@@ -64,13 +64,11 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Install Deps
-        uses: mstksg/get-package@master
-        with:
-          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml ansible-lint podman
+        run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml ansible-lint podman
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Get cached CTF output
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         id: get_ctf_output
         with:
           name: output.json
@@ -79,7 +77,7 @@ jobs:
         continue-on-error: true
       - name: Test if there are no content changes
         if: ${{ steps.get_ctf_output.outcome == 'success' }}
-        run: echo "::set-output name=CTF_OUTPUT_SIZE::$(stat --printf="%s" output.json)"
+        run: echo "CTF_OUTPUT_SIZE=$(stat --printf="%s" output.json)" >> $GITHUB_OUTPUT
         id: ctf
       - name: Print changes to content detected if any
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
@@ -127,13 +125,13 @@ jobs:
         with:
           path: 'output.json'
           prop_path: 'ansible'
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
           name: ssg-${{steps.product.outputs.prop}}-ds.xml
       - name: Run tests in a container - Bash
         if: ${{steps.bash.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: tests/test_rule_in_container.sh --dontclean --logdir logs_bash --remediate-using bash --name ssg_test_suite --datastream ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(steps.rules.outputs.prop)}}
+        run: tests/test_rule_in_container.sh --no-remove-machine-only --dontclean --logdir logs_bash --remediate-using bash --name ssg_test_suite --datastream ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(steps.rules.outputs.prop)}}
         env:
           ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --add-product-to-fips-certified fedora"
       - name: Check for ERROR in logs
@@ -154,7 +152,7 @@ jobs:
           path: logs_bash/
       - name: Run tests in a container - Ansible
         if: ${{ steps.ansible.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: tests/test_rule_in_container.sh --dontclean --logdir logs_ansible --remediate-using ansible --name ssg_test_suite --datastream ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(steps.rules.outputs.prop)}}
+        run: tests/test_rule_in_container.sh --no-remove-machine-only --dontclean --logdir logs_ansible --remediate-using ansible --name ssg_test_suite --datastream ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(steps.rules.outputs.prop)}}
         env:
           ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --add-product-to-fips-certified fedora"
       - name: Check for ERROR in logs

@@ -30,6 +30,14 @@ references:
   nist: AC-12(1)
   srg: SRG-APP-000297-CTR-000705
 
+ocil_clause: 'logout URL is not set'
+
+ocil: |-
+  Verify that the logout redirect setting in web console configuration
+  is set:
+  <code>oc get console.config.openshift.io cluster -o jsonpath='{.spec.authentication.logoutRedirect}{"\n"}'</code>
+  Make sure that the command returns the expected logout URL.
+
 warnings:
 - general: |-
     {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/consoles/cluster") | indent(4) }}}

@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 from __future__ import print_function
 
-import libvirt
 import logging
+import socket
+import sys
 import time
 import xml.etree.ElementTree as ET
-import sys
-import socket
+
+import libvirt
 
 # Needed for compatibility as there is no TimeoutError in python2.
 if sys.version_info[0] < 3:

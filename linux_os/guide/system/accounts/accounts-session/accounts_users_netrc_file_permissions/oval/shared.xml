@@ -1,0 +1,56 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Netrc User File In The Home Directory Must Not be group or world
+    accessible") }}}
+    <criteria>
+      <criterion test_ref="test_accounts_users_home_netrc_file_permissions"
+                 comment="Netrc User File In The Home Directory Must Not be group or world
+                          accessible"/>
+    </criteria>
+  </definition>
+
+  {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
+  {{{ create_interactive_users_list_object(interactive_users_object) }}}
+
+  <local_variable id="var_accounts_users_home_netrc_file_permissions_dirs" datatype="string"
+                  version="1" comment="Variable including all home dirs from interactive users">
+    <object_component item_field="home_dir"
+                      object_ref="{{{ interactive_users_object }}}"/>
+  </local_variable>
+
+  <unix:file_object id="object_accounts_users_home_netrc_file_permissions" version="1">
+    <unix:path var_ref="var_accounts_users_home_netrc_file_permissions_dirs"
+               var_check="at least one"/>
+    <unix:filename operation="pattern match">\.netrc</unix:filename>
+  </unix:file_object>
+
+  <unix:file_state id="state_accounts_users_home_netrc_file_permissions_gread" version="1">
+    <unix:gread datatype="boolean">false</unix:gread>
+  </unix:file_state>
+  <unix:file_state id="state_accounts_users_home_netrc_file_permissions_gwrite" version="1">
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+  </unix:file_state>
+  <unix:file_state id="state_accounts_users_home_netrc_file_permissions_gexec" version="1">
+    <unix:gexec datatype="boolean">false</unix:gexec>
+  </unix:file_state>
+  <unix:file_state id="state_accounts_users_home_netrc_file_permissions_oread" version="1">
+    <unix:oread datatype="boolean">false</unix:oread>
+  </unix:file_state>
+  <unix:file_state id="state_accounts_users_home_netrc_file_permissions_owrite" version="1">
+    <unix:owrite datatype="boolean">false</unix:owrite>
+  </unix:file_state>
+  <unix:file_state id="state_accounts_users_home_netrc_file_permissions_oexec" version="1">
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+
+  <unix:file_test id="test_accounts_users_home_netrc_file_permissions" check="all" version="1"
+      check_existence="any_exist" comment=".netrc files are not group or world accessible">
+    <unix:object object_ref="object_accounts_users_home_netrc_file_permissions"/>
+    <unix:state state_ref="state_accounts_users_home_netrc_file_permissions_gread" />
+    <unix:state state_ref="state_accounts_users_home_netrc_file_permissions_gwrite" />
+    <unix:state state_ref="state_accounts_users_home_netrc_file_permissions_gexec" />
+    <unix:state state_ref="state_accounts_users_home_netrc_file_permissions_oread" />
+    <unix:state state_ref="state_accounts_users_home_netrc_file_permissions_owrite" />
+    <unix:state state_ref="state_accounts_users_home_netrc_file_permissions_oexec" />
+  </unix:file_test>
+</def-group>

@@ -125,8 +125,8 @@ def test_get_rule_dir_remediations():
     assert len(something_bash) == 1
     assert something_bash != rhel_bash
 
-def test_deny_to_parse_remediation_if_platform_has_version_comparison(cpe_platforms_with_version_comparison):
+def test_parse_remediation_if_platform_has_version_comparison(cpe_platforms_with_version_comparison):
     remediation_cls = sbr.REMEDIATION_TO_CLASS["bash"]
     remediation_obj = remediation_cls(rhel_bash)
-    with pytest.raises(ValueError):
-        remediation_obj.get_stripped_conditionals("bash", ["package_ntp_eq_1_0"], cpe_platforms_with_version_comparison)
+    conditionals = remediation_obj.get_stripped_conditionals("bash", ["package_ntp_eq_1_0"], cpe_platforms_with_version_comparison)
+    assert conditionals == ["rpm --quiet -q ntp && { real=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}' ntp); ver=1.0;[[ \"$real\" == \"$ver\" ]]; }"]

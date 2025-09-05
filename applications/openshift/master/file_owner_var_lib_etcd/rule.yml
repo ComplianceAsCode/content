@@ -7,7 +7,7 @@ title: 'Verify User Who Owns The OpenShift etcd Data Directory'
 description: '{{{ describe_file_owner(file="/var/lib/etcd", owner="root") }}}'
 
 rationale: |-
-    The <tt>/var/lib/etcd</tt> directory contains highly-avaliable distributed key/value data storage
+    The <tt>/var/lib/etcd</tt> directory contains highly-available distributed key/value data storage
     across an OpenShift cluster. Allowing access to users to this directory could compromise OpenShift
     data and the cluster.
 

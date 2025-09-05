@@ -1,8 +1,7 @@
 #!/bin/bash
 # packages = nfs-utils
 
-mkdir -p /tmp/testdir/testdir2
-mkdir /tmp/testmount
+mkdir -p /tmp/testdir/testdir2 /tmp/testmount
 chown 2 /tmp/testdir/testdir2
 chmod 777 /tmp/testdir/testdir2
 

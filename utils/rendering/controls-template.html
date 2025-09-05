@@ -19,10 +19,10 @@ based on <a href="{{{ policy.source }}}">{{{ policy.source }}}</a>
     {{%- endfor %}}
   </ul>
   <p>Automated: {{{ control.automated }}}</p>
-  {{% if control.rules -%}}
+  {{% if control.selections -%}}
   Selections:
   <ul>
-    {{%- for ruleobj in control.rules -%}}
+    {{%- for ruleobj in control.selections -%}}
     {{%- set rule_id = ruleobj|string %}}
     {{%- if rule_id in rules %}}
     <li><a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ rules[rule_id].relative_definition_location }}}">{{{ rule_id }}}</a>: {{{ rules[rule_id].title }}}</li>

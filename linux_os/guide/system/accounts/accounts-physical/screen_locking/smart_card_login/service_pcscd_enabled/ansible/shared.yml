@@ -9,13 +9,17 @@
     package_facts:
       manager: auto
 
+{{%- if init_system == "systemd" %}}
   - name: Start service pcscd
-    service:
+    systemd:
       name: "pcscd"
       state: "started"
       masked: "no"
     when:
     - '"pcsc-lite" in ansible_facts.packages'
+{{%- else %}}
+JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
+{{%- endif %}}
 
   - name: Enable service pcscd
     ansible.builtin.command:

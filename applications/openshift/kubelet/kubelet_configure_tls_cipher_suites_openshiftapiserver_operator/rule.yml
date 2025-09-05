@@ -24,7 +24,7 @@ references:
 ocil_clause: "TLS cipher suite configuration is not configured"
 
 ocil: |-
-  Run the following comman on the kubelete node(s):
+  Run the following command on the kubelet node(s):
   {{% raw %}}<pre>oc patch openshiftapiservers.operator.openshift.io cluster --type merge -p '{"spec":{"unsupportedConfigOverrides":{"servingInfo":{"cipherSuites":["TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256","TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256","TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305","TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384","TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305","TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384","TLS_RSA_WITH_AES_256_GCM_SHA384","TLS_RSA_WITH_AES_128_GCM_SHA256"] } } } }'</pre>{{% endraw %}}
 
 warnings:

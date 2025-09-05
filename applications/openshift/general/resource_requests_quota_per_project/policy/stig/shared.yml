@@ -1,0 +1,40 @@
+srg_requirement: |-
+  {{{ full_name }}} must restrict individuals the ability to launch organizational-defined Denial-of-Service (DOS) attacks against other information systems.
+
+check: |-
+  Verify that each user namespace has a resource quota defined
+
+  1. Get a list of existing projects(namespaces)
+
+  > oc get projects
+
+  2. For each user namespace (exclude default, kube-*, openshift-*) verify that one or more Resource Quota objects exist.
+
+  > oc get resourcequota -n <PROJECT>
+
+  If a user project or the default project template does not have any ResourceQuota definitions, this is a finding
+
+fixtext: |-
+  Add a resource quota to an existing project namespace by performing the following steps:
+
+  1. Create a quota.yml file with the ResourceQuota object definition, and edit the file with the desired resource quota content. The following is an example resource quota definition.
+
+  apiVersion: v1
+  kind: ResourceQuota
+  metadata:
+    name: compute-resources
+  spec:
+    hard:
+      pods: "4"
+      requests.cpu: "1"
+      requests.memory: 1Gi
+      requests.ephemeral-storage: 2Gi
+      limits.cpu: "2"
+      limits.memory: 2Gi
+      limits.ephemeral-storage: 4Gi
+
+  2. Apply the ResourceQuota definition to the project namespace
+  > oc apply -f quota.yml -n <PROJECT>
+
+  Details regarding the configuration of resource quotas can be reviewed at the below documentation.
+  https://docs.openshift.com/container-platform/latest/applications/quotas/quotas-setting-per-project.html

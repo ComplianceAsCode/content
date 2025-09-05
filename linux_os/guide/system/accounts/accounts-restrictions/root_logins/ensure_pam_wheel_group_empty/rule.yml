@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: ubuntu2004,ubuntu2204
+
+title: 'Ensure the Group Used by pam_wheel Module Exists on System and is Empty'
+
+description: |-
+    Ensure that the group {{{ xccdf_value("var_pam_wheel_group_for_su") }}}
+    referenced by the pam_wheel  <tt>group</tt> parameter exists and has no
+    members. This ensures that no user can run commands with altered
+    privileges through the <tt>su</tt> command.
+
+rationale: |-
+    The <tt>su</tt> program allows to run commands with a substitute user and
+    group ID. It is commonly used to run commands as the root user. Limiting
+    access to such command is considered a good security practice.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: '5.6'
+    cis@ubuntu2204: 5.3.7
+
+ocil_clause: 'group {{{ var_pam_wheel_group_for_su }}} exists and has no user members'
+
+ocil: |-
+    Run the following command to check if the group {{{ var_pam_wheel_group_for_su }}}
+    exists:
+    <pre>grep {{{ var_pam_wheel_group_for_su }}} /etc/group</pre>
+    The output should contain the following line:
+    <pre>{{{ var_pam_wheel_group_for_su }}}:x:</pre>

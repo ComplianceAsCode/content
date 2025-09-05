@@ -13,6 +13,8 @@ description: |-
 
 selections:
     -  pcidss_3:all:base
+    -  var_multiple_time_servers=suse
+    -  var_multiple_time_pools=suse      
     -  account_unique_id
     -  coredump_disable_backtraces
     -  coredump_disable_storage
@@ -75,6 +77,8 @@ selections:
     -  sshd_set_max_sessions
     -  sshd_set_maxstartups
     -  sshd_use_approved_ciphers
+    -  sshd_approved_ciphers=cis_sle12
     -  sshd_use_approved_macs
+    -  sshd_strong_kex=pcidss
+    -  sshd_approved_macs=cis_sle12
     -  sysctl_fs_suid_dumpable
-    

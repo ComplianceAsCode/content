@@ -1,7 +1,8 @@
+#!/bin/bash
 # platform = multi_platform_all
-if ! [ -d /tmp/tmp-inst ] ; then
-    mkdir --mode 000 /tmp/tmp-inst
-fi
+
+# shellcheck disable=SC2174
+mkdir -p --mode 000 /tmp/tmp-inst
 chmod 000 /tmp/tmp-inst
 chcon --reference=/tmp /tmp/tmp-inst
 

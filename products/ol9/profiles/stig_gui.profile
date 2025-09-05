@@ -21,5 +21,16 @@ description: |-
 extends: stig
 
 selections:
+    # Unselect rules that remove packages required by "server with GUI" installation
     # OL08-00-040320
     - '!xwindows_remove_packages'
+
+    # SRG-OS-000480-GPOS-00227
+    - '!package_xorg-x11-server-common_removed'
+
+    # SRG-OS-000095-GPOS-00049
+    - '!package_nfs-utils_removed'
+
+    # Unselect to allow the system to start in graphical.target mode
+    # OL08-00-040321
+    - '!xwindows_runlevel_target'

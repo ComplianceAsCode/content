@@ -1,0 +1,97 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure loopback traffic is configured in nft") }}}
+    <criteria operator="AND">
+      <criterion test_ref="test_{{{ rule_id }}}_file"
+        comment="Check the existence of top level nftables configuration file" />
+      <criterion test_ref="test_{{{ rule_id }}}_include_lo_interface"
+        comment="Check the contents of configuration files for loopback interface"/>
+      <criterion test_ref="test_{{{ rule_id }}}_drop_ipv4_src_loopback"
+        comment="Check the contents of configuration for traffic with lo source"/>
+      <criteria operator="OR">
+        <extend_definition comment="IPv6 disabled or..."
+          definition_ref="sysctl_kernel_ipv6_disable" />
+        <criterion test_ref="test_{{{ rule_id }}}_drop_ipv6_src_loopback"
+          comment="Check the contents of configuration for traffic with lo source"/>
+      </criteria>
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_file"
+  comment="Check top level configuration file is named as expected"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_{{{ rule_id }}}_file" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_file" version="1">
+    <ind:filepath operation="equals" var_ref="var_nftables_master_config_file"/>
+    <ind:pattern operation="pattern match">^include\s+"(/etc/nftables/inet\-filter)"$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <external_variable comment="file path" datatype="string"
+    id="var_nftables_master_config_file" version="1"/>
+  <local_variable id="var_{{{ rule_id }}}_families_config_paths" datatype="string" version="1"
+    comment="File paths of all needed families part of the permanent configuration">
+    <unique>
+      <glob_to_regex>
+        <object_component item_field="subexpression" object_ref="object_{{{ rule_id }}}_file" />
+      </glob_to_regex>
+    </unique>
+  </local_variable>
+
+    <local_variable id="var_{{{ rule_id }}}_chain_input" datatype="string" version="1"
+      comment="Input chain configuration">
+    <unique>
+      <glob_to_regex>
+        <object_component item_field="subexpression" object_ref="object_{{{ rule_id }}}_chain_input" />
+      </glob_to_regex>
+    </unique>
+  </local_variable>
+
+  <ind:variable_object id="object_var_{{{ rule_id }}}_chain_input" version="1">
+    <ind:var_ref>var_{{{ rule_id }}}_chain_input</ind:var_ref>
+  </ind:variable_object>
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_chain_input" version="1">
+    <ind:filepath operation="pattern match" var_check="at least one"
+      var_ref="var_{{{ rule_id }}}_families_config_paths"/>
+    <ind:pattern operation="pattern match"
+      >\s*hook input\s*([\w\W]*)\s+chain\s+</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:variable_state id="state_{{{ rule_id }}}_accept_lo"
+    comment="accept loopback interface" version="1">
+   <ind:value datatype="string" operation="pattern match">\s*iif\s*\"lo\"\s*accept\s*</ind:value>
+  </ind:variable_state>
+
+  <ind:variable_state id="state_{{{ rule_id }}}_drop_src_ipv4_lo"
+    comment="drop traffic from 127 to other interfaces" version="1">
+    <ind:value datatype="string"
+      operation="pattern match">\s*ip\s*saddr\s*127\\.0\\.0\\.1/8[\w\W]*\s*drop\s*</ind:value>
+  </ind:variable_state>
+
+  <ind:variable_state id="state_{{{ rule_id }}}_drop_src_ipv6_lo"
+    comment="drop traffic from ::1 to other interfaces" version="1">
+    <ind:value datatype="string"
+      operation="pattern match">\s*ip6\ssaddr\s*\:\:1\s*[\w\W]*drop\s*</ind:value>
+  </ind:variable_state>
+
+  <ind:variable_test id="test_{{{ rule_id }}}_include_lo_interface" check="all"
+    check_existence="all_exist" version="1"
+    comment="Check configuration to accept loopback interface">
+    <ind:object object_ref="object_var_{{{ rule_id }}}_chain_input" />
+    <ind:state state_ref="state_{{{ rule_id }}}_accept_lo" />
+  </ind:variable_test>
+
+  <ind:variable_test id="test_{{{ rule_id }}}_drop_ipv4_src_loopback" check="all"
+    check_existence="all_exist" version="1"
+    comment="Check configuration drop from ipv4 source loopback to other">
+    <ind:object object_ref="object_var_{{{ rule_id }}}_chain_input" />
+    <ind:state state_ref="state_{{{ rule_id }}}_drop_src_ipv4_lo" />
+  </ind:variable_test>
+
+  <ind:variable_test id="test_{{{ rule_id }}}_drop_ipv6_src_loopback" check="all"
+    check_existence="all_exist" version="1"
+    comment="Check configuration drop from source loopback to other">
+    <ind:object object_ref="object_var_{{{ rule_id }}}_chain_input" />
+    <ind:state state_ref="state_{{{ rule_id }}}_drop_src_ipv6_lo" />
+  </ind:variable_test>
+</def-group>

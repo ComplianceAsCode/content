@@ -24,7 +24,7 @@ ocil: '{{{ ocil_package(package="rear") }}}'
 
 
 platforms:
-    - not ((s390x_arch and rhel_less_equal_8_4) or (rhel_greater_equal_9_0 and aarch64_arch) or (ol_greater_equal_9_0 and aarch64_arch))
+    - not ((s390x_arch and os_linux[rhel]<=8.4) or (os_linux[rhel]>=9.0 and aarch64_arch) or (os_linux[ol]>=9.0 and aarch64_arch))
 
 template:
     name: package_installed

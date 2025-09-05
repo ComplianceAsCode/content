@@ -19,6 +19,11 @@ selections:
     - var_accounts_fail_delay=4
     - var_accounts_tmout=15_min
     - inactivity_timeout_value=15_minutes
+    - var_password_pam_dcredit=1
+    - var_password_pam_lcredit=1
+    - var_password_pam_minlen=15
+    - var_password_pam_ocredit=1
+    - var_password_pam_ucredit=1
     - var_sudo_timestamp_timeout=always_prompt
     - var_password_pam_unix_remember=5
     - var_accounts_maximum_age_login_defs=60
@@ -62,6 +67,7 @@ selections:
     - accounts_user_interactive_home_directory_exists
     - account_temp_expire_date
     - account_unique_id
+    - aide_build_database
     - aide_check_audit_tools
     - aide_verify_acls
     - aide_verify_ext_attributes
@@ -245,7 +251,6 @@ selections:
     - smartcard_configure_ca
     - smartcard_configure_cert_checking
     - smartcard_pam_enabled
-    - sshd_disable_compression
     - sshd_disable_empty_passwords
     - sshd_disable_root_login
     - sshd_disable_user_known_hosts
@@ -270,6 +275,7 @@ selections:
     - sudo_require_reauthentication
     - sudoers_default_includedir
     - sudoers_validate_passwd
+    - sysctl_kernel_dmesg_restrict
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_randomize_va_space
     - sysctl_net_ipv4_conf_all_accept_redirects

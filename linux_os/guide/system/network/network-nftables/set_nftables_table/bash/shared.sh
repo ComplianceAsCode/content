@@ -1,4 +1,4 @@
-# platform = multi_platform_sle,multi_platform_ubuntu
+# platform = multi_platform_all
 
 #Set nftables family name
 {{{ bash_instantiate_variables("var_nftables_family") }}}

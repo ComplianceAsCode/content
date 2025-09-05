@@ -1,0 +1,26 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = medium
+
+- name: {{{ rule_title }}} - Get All Local Users From /etc/passwd
+  ansible.builtin.getent:
+    database: passwd
+    split: ':'
+
+- name: {{{ rule_title }}} - Create local_users Variable From getent_passwd Facts
+  ansible.builtin.set_fact:
+    local_users: '{{ ansible_facts.getent_passwd | dict2items }}'
+    # Creates a dictionary where the key is the first field of the /etc/passwd file, the username.
+    # The list of values are the next 6 fields from /etc/passwd. Example for the root entry:
+    # The "root" key would have these values: ["x", "0", "0", "root", "/root", "/bin/bash"]
+
+- name: {{{ rule_title }}} - Lock System Accounts
+  ansible.builtin.user:
+    name: '{{ item.key }}'
+    password_lock: true
+  loop: '{{ local_users }}'
+  when:
+    - item.value[1]|int < {{{ uid_min }}}
+    - item.key not in ['root', 'halt', 'sync', 'shutdown', 'nfsnobody']

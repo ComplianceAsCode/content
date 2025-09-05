@@ -13,6 +13,8 @@
 - name: "Build and Test AIDE Database"
 {{% if 'sle' in product %}}
   command: /usr/bin/aide --init
+{{% elif 'ubuntu' in product %}}
+  command: /usr/sbin/aideinit -y -f
 {{% else %}}
   command: /usr/sbin/aide --init
 {{% endif %}}

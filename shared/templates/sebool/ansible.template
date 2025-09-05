@@ -13,7 +13,7 @@
 {{% else %}}
 - (xccdf-var var_{{{ SEBOOLID }}})
 
-{{% if product in ['rhel8', 'rhel9'] %}}
+{{% if product in ['ol8', 'ol9', 'rhel8', 'rhel9'] %}}
 - name: Ensure python3-libsemanage installed
   package:
     name: python3-libsemanage

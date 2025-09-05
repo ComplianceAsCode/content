@@ -10,7 +10,7 @@
     df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null
   register: dir_output
 
-- name: ensure sticky bit is set
+- name: Ensure sticky bit is set
   file:
     path: "{{ item }}"
     mode: a+t

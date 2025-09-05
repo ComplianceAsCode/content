@@ -89,7 +89,7 @@
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
 #### audit_rules_syscall_events
--   Ensure there is an audit rule to record for all uses of 
+-   Ensure there is an audit rule to record for all uses of
     specified system call
 
 -   Parameters:
@@ -215,7 +215,7 @@
 
 #### dconf_ini_file
 -   Checks for `dconf` configuration. Additionally checks if the
-    configuration is locked so it cannot be overriden by the user.
+    configuration is locked so it cannot be overridden by the user.
     The `locks` directory is always the **path** appended by `locks/`.
 
 -   Parameters:
@@ -359,6 +359,10 @@ they must be of the same length.
     -   **allow_stricter_permissions** - If set to `"true"` the OVAL
         will also consider permissions stricter than **filemode** as compliant.
         Default value is `"true"`.
+
+    -   **excluded_files** - A list with files to be excluded. The file could
+        be also a pattern using the metacharacters `('*', '?', and '[ ]')`.
+        For example: `['*[bw]tmp', '*lastlog']`.
 
 -   Languages: Ansible, Bash, OVAL
 
@@ -562,8 +566,8 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 #### key_value_pair_in_file
 Checks if a given key and value are configured in a file.
 
-The check passes if the file has multiple occurences of `key` as long as they all
-have the same value `value`. If multiple occurences of `key` have conflicting values,
+The check passes if the file has multiple occurrences of `key` as long as they all
+have the same value `value`. If multiple occurrences of `key` have conflicting values,
 the check will evaluate to fail.
 
 When the remediation is applied duplicate occurrences of `key` are removed.
@@ -632,7 +636,7 @@ When the remediation is applied duplicate occurrences of `key` are removed.
            is not required and will be ignored if present. It is required when
            a value argument needs to be added or modified.
         -  **argument_value** - (optional) the expected argument value for a
-           value argument to be added or modifed, when the **argument_match**
+           value argument to be added or modified, when the **argument_match**
            regular expression failed to yield a match. The argument's existing
            value will be replaced by **argument_value**. When the argument has
            no value, or when the argument is to be removed, this parameter is
@@ -640,11 +644,11 @@ When the remediation is applied duplicate occurrences of `key` are removed.
            argument needs to be added or modified.
         -  **new_argument** - (optional) the argument to be added if not
            already present, eg, `dcredit=-1`. It is required when the argument
-           is not already present and needs to be added. 
+           is not already present and needs to be added.
         -  **remove_argument** - (optional) the argument will be
            removed, if the argument is present. This parameter must not be
            specified when the argument is being added or modified.
-       
+
 -    Language: Ansible, OVAL
 
 #### sebool
@@ -872,6 +876,10 @@ The selected value can be changed in the profile (consult the actual variable fo
     -   **sysctlval_regex** - if **operation** is `pattern match`, this
         parameter is used instead of **sysctlval**.
 
+    In case the **sysctl_remediate_drop_in_file** property is set to true in the product file,
+    the remediation scripts will set the variable with correct value to a drop-in file in
+    `/etc/sysctl.d/var_name.conf` file.
+
 -   Languages: Ansible, Bash, OVAL
 
 #### timer_enabled
@@ -928,7 +936,7 @@ The selected value can be changed in the profile (consult the actual variable fo
 
     -   **embedded_data** - if set to `"true"` and used combined with `xccdf_variable`, the data retrieved by `yamlpath`
         is considered as a blob and the field `value` has to contain a capture regex.
-   
+
     -   **regex_data** - if set to `"true"` and combined with `xccdf_variable`, it will use the value of `xccdf_variable` as a regex
         and does pattern match operation instead of equal operation.
 
@@ -1036,7 +1044,7 @@ where *LANG* should be the language  identifier in lower case, e.g.
 3) Create a file called `template.yml` within the template directory. This file
 stores template metadata. Currently, it stores list of supported languages. Note
 that each language listed in this file must have associated implementation
-file with the *.template* extension, see above. 
+file with the *.template* extension, see above.
 
     An example can look like this:
 
@@ -1089,6 +1097,13 @@ ComplianceAsCode support all built-in Jinja
 There are also some custom filters useful for content authoring defined
 in the project:
 
+banner_anchor_wrap
+-   Wrap banner text as regex, no quoting.
+
+banner_regexify
+-   Wrap banner text in such way that space (' ') is replaced with
+    `[\\s\\n]` and newline ('\n') with `(?:[\\n]+|(?:\\\\n)+)`.
+
 escape_id
 -   Replaces all non-word (regex **\\W**) characters with underscore.
     Useful for sanitizing ID strings as it is compatible with OVAL IDs
@@ -1098,3 +1113,13 @@ escape_regex
 -   Escapes characters in the string for it to be usable as a part of
     some regular expression, behaves similar to the Python 3’s
     [**re.escape**](https://docs.python.org/3/library/re.html#re.escape).
+
+escape_yaml_key
+-   Escape uppercase letters and `^` with additional `^` and convert letters
+    to lovercase. This is because of OVAL's name argument limitations.
+
+quote
+-   Escape string to be used as POSIX shell value. Like Ansible `quote`.
+
+sha256
+-   Get SHA-256 hexdigest of value.

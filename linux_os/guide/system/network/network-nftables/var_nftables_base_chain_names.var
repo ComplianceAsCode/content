@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Nftables Chain Names'
+
+description: |-
+   The rules in nftables are attached to chains. Unlike in iptables, 
+   there are no predefined chains like INPUT, OUTPUT, etc. Instead, 
+   to filter packets at a particular processing step, a base chain with a 
+   chosen name should be created, and attached it to the appropriate 
+   Netfilter hook. 
+    
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+    default: "input,forward,output"
+    input: input
+    output: output
+    forward: forward
+    chain_names: "input,forward,output"

@@ -81,6 +81,27 @@ echo "</body>" >> index.html
 echo "</html>" >> index.html
 popd
 
+
+# Generate Rendered Policies page
+POLICY_DIR="$PAGES_DIR/rendered-policies"
+mkdir -p "$POLICY_DIR"
+products=$(echo -e "import ssg.constants\nprint(ssg.constants.product_directories)" | python3 | sed -s "s/'//g; s/,//g; s/\[//g; s/\]//g")
+for product in $products
+do
+    if [ -d build/$product ]; then
+        mkdir -p "$POLICY_DIR/$product"
+        if [ -d "build/$product/rendered-policies/" ]; then
+            cp -rf "build/${product}/rendered-policies/"* "$POLICY_DIR/$product/"
+        fi
+    fi
+done
+utils/gen_rendered_policies_index.py . "$PAGES_DIR/rendered-policies/index.html"
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    echo "Something wrong happened while generating the HTML Rendered Policy Index page"
+    exit 1
+fi
+
 pushd $PAGES_DIR
 touch index.html
 echo "<!DOCTYPE html>" > index.html
@@ -96,6 +117,7 @@ echo "<li><a href=\"statistics/index.html\">Statistics</a></li>" >> index.html
 echo "<li><a href=\"guides/index.html\">Guides</a></li>" >> index.html
 echo "<li><a href=\"tables/index.html\">Mapping Tables</a></li>" >> index.html
 echo "<li><a href=\"srg_mapping/index.html\">SRG Mapping Tables</a></li>" >> index.html
+echo "<li><a href=\"rendered-policies/index.html\">Rendered Policies</a></li>" >> index.html
 echo "</ul>" >> index.html
 echo "</body>" >> index.html
 echo "</html>" >> index.html

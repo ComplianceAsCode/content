@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
-mkdir /test
+mkdir -p /test
 chown 2 /test
 chmod 777 /test

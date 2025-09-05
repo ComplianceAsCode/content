@@ -16,10 +16,16 @@
 {{% set PERMS="\! -perm " + SEARCH_MODE %}}
 {{%- endif %}}
 
+{{%- if EXCLUDED_FILES %}}
+{{% set EXCLUDED_FILES_ARGS="! -name '" + EXCLUDED_FILES|join("' ! -name '") + "'" %}}
+{{%- else %}}
+{{% set EXCLUDED_FILES_ARGS="" %}}
+{{%- endif %}}
+
 {{% for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
-find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type f -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chmod {{{ FILEMODE }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} -type f -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chmod {{{ FILEMODE }}} {} \;
 {{%- else %}}
 find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type d -exec chmod {{{ FILEMODE }}} {} \;
 {{%- endif %}}

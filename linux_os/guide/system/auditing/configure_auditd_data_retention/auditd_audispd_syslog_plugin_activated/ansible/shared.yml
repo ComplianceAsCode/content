@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-- name: enable syslog plugin
+- name: Enable syslog plugin
   lineinfile:
     dest: {{{ audisp_conf_path }}}/plugins.d/syslog.conf
     regexp: "^active"

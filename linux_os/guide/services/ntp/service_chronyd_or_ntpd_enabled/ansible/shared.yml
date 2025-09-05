@@ -7,21 +7,23 @@
   ansible.builtin.package_facts:
     manager: auto
 
+{{%- if init_system == "systemd" %}}
 - name: Start ntpd service if ntp installed
-  service:
+  systemd:
     name: "ntpd"
     enabled: "yes"
     state: "started"
     masked: "no"
   when: "'ntp' in ansible_facts.packages"
-  ignore_errors: yes
 
 
 - name: Start chronyd service if chrony or chronyd installed
-  service:
+  systemd:
     name: "chronyd"
     enabled: "yes"
     state: "started"
     masked: "no"
   when: ('chrony' in ansible_facts.packages) or ('chronyd' in ansible_facts.packages)
-  ignore_errors: yes
+{{%- else %}}
+JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
+{{%- endif %}}

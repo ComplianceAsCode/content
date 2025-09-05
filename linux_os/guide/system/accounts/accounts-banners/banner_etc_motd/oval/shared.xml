@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="banner_etc_motd" version="2">
-    {{{ oval_metadata("The system login banner text should be set correctly.") }}}
+    {{{ oval_metadata("The system motd banner text should be set correctly.") }}}
     <criteria>
       <criterion comment="/etc/motd is set appropriately" test_ref="test_banner_etc_motd" />
     </criteria>
@@ -19,9 +19,9 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_banner_etc_motd" version="1">
-    <ind:subexpression datatype="string" var_ref="login_banner_text" operation="pattern match" />
+    <ind:subexpression datatype="string" var_ref="motd_banner_text" operation="pattern match" />
   </ind:textfilecontent54_state>
 
-  <external_variable comment="warning banner text variable" datatype="string" id="login_banner_text" version="1" />
+  <external_variable comment="warning banner text variable" datatype="string" id="motd_banner_text" version="1" />
 
 </def-group>

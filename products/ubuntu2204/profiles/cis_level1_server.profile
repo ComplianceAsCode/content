@@ -132,7 +132,7 @@ selections:
     - file_permissions_grub2_cfg
 
     ### 1.4.3 Ensure authentication required for single user mode (Automated)
-    # NEEDS RULE
+    - ensure_root_password_configured
 
     ## 1.5 Additional Process Hardening ##
     ### 1.5.1 Ensure address space layout randomization (ASLR) is enabled (Automated)
@@ -270,6 +270,7 @@ selections:
 
     ### 2.2.2 Ensure Avahi Server is not installed (Automated)
     - service_avahi-daemon_disabled
+    - package_avahi_removed
 
     ### 2.2.3 Ensure CUPS is not installed (Automated)
     - service_cups_disabled
@@ -313,6 +314,7 @@ selections:
     ### 2.2.15 Ensure mail transfer agent is configured for local-only mode (Automated)
     - var_postfix_inet_interfaces=loopback-only
     - postfix_network_listening_disabled
+    - has_nonlocal_mta
 
     ### 2.2.16 Ensure rsync service is not installed (Automated)
     - package_rsync_removed
@@ -411,7 +413,7 @@ selections:
     ## 3.5 Firewall Configuration ##
     ### 3.5.1 Configure UncomplicatedFirewall ###
     #### 3.5.1.1 Ensure ufw is installed (Automated)
-    - package_ufw_installed
+    - '!package_ufw_installed'
 
     #### 3.5.1.2 Ensure iptables-persistent is not installed with ufw (Automated)
     - package_iptables-persistent_removed
@@ -447,32 +449,33 @@ selections:
     - set_nftables_table
 
     #### 3.5.2.5 Ensure nftables base chains exist (Automated)
-    # NEEDS RULE
+    - set_nftables_base_chain
 
     #### 3.5.2.6 Ensure nftables loopback traffic is configured (Automated)
-    # NEEDS RULE
+    - set_nftables_loopback_traffic
 
     #### 3.5.2.7 Ensure nftables outbound and established connections are configured (Manual)
     # Skip due to being a manual test
 
     #### 3.5.2.8 Ensure nftables default deny firewall policy (Automated)
-    # NEEDS RULE
+    - nftables_ensure_default_deny_policy
 
     #### 3.5.2.9 Ensure nftables service is enabled (Automated)
     - service_nftables_enabled
 
     #### 3.5.2.10 Ensure nftables rules are permanent (Automated)
-    # NEEDS RULE
+    - var_nftables_master_config_file=etc
+    - nftables_rules_permanent
 
     ### 3.5.3 Configure iptables ###
     #### 3.5.3.1 Configure iptables software ####
     ##### 3.5.3.1.1 Ensure iptables packages are installed (Automated)
     - package_iptables_installed
-    - package_iptables-persistent_installed
+    - '!package_iptables-persistent_installed'
 
     ###### 3.5.3.1.2 Ensure nftables is not installed with iptables (Automated)
-    - service_nftables_disabled
-    - package_nftables_removed
+    - '!service_nftables_disabled'
+    - '!package_nftables_removed'
 
     ###### 3.5.3.1.3 Ensure ufw is uninstalled or disabled with iptables (Automated)
     - package_ufw_removed
@@ -746,7 +749,7 @@ selections:
     - file_permissions_sshd_pub_key
 
     ### 5.2.4 Ensure SSH access is limited (Automated)
-    # NEEDS RULE
+    - sshd_limit_user_access
 
     ### 5.2.5 Ensure SSH LogLevel is appropriate (Automated)
     - sshd_set_loglevel_info
@@ -773,12 +776,10 @@ selections:
     # Skip due to being Level 2
 
     ### 5.2.13 Ensure only strong Ciphers are used (Automated)
-    - sshd_approved_ciphers=cis_ubuntu
-    - sshd_use_approved_ciphers
+    - sshd_use_strong_ciphers
 
     ### 5.2.14 Ensure only strong MAC algorithms are used (Automated)
-    - sshd_approved_macs=cis_ubuntu
-    - sshd_use_approved_macs
+    - sshd_use_strong_macs
 
     ### 5.2.15 Ensure only strong Key Exchange algorithms are used (Automated)
     - sshd_strong_kex=cis_ubuntu2004
@@ -833,7 +834,9 @@ selections:
     - sudo_require_reauthentication
 
     ### 5.3.7 Ensure access to the su command is restricted (Automated)
-    # NEEDS RULE
+    - var_pam_wheel_group_for_su=cis
+    - use_pam_wheel_group_for_su
+    - ensure_pam_wheel_group_empty
 
     ## 5.4 Configure PAM ##
     ### 5.4.1 Ensure password creation requirements are configured (Automated)
@@ -862,7 +865,7 @@ selections:
 
     ### 5.4.3 Ensure password reuse is limited (Automated)
     - var_password_pam_remember=5
-    - accounts_password_pam_pwhistory_remember
+    - accounts_password_pam_unix_remember
 
     ### 5.4.4 Ensure password hashing algorithm is up to date with the latest standards (Automated)
     - var_password_hashing_algorithm=yescrypt

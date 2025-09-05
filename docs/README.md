@@ -1,6 +1,6 @@
 # ReadTheDocs.org Integration
 
-The [ComplianceAsCode developer documentation](manual/developer) is integrated into the ReadTheDocs.org documentation hosting platform: https://complianceascode.readthedocs.io
+The [ComplianceAsCode developer documentation](manual/developer/01_introduction.md) is integrated into the ReadTheDocs.org documentation hosting platform: https://complianceascode.readthedocs.io
 
 A webhook exists to build the Markdown files into a complete set of documentation.
 

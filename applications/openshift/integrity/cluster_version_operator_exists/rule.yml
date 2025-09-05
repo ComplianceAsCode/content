@@ -19,6 +19,7 @@ identifiers:
 
 references:
   nist: SA-10(1)
+  srg: SRG-APP-000384-CTR-000915
 
 {{% set jqfilter = '[.status.conditions[] | select(.type=="Available") | .status]' %}}
 {{% set apipath = '/apis/config.openshift.io/v1/clusterversions/version' %}}

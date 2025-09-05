@@ -15,6 +15,11 @@ rationale: |-
   Offloading audit logs from the cluster ensures that an attacker that has access to the cluster will not be able to
   tamper with the logs because of the logs being stored off-site.
 
+severity: medium
+
+identifiers:
+  cce@ocp4: CCE-84076-9
+
 references:
   cis@ocp4: 1.2.23
   nerc-cip: CIP-003-8 R5.2,CIP-004-6 R2.2.2,CIP-004-6 R2.2.3,CIP-004-6 R3.3,CIP-007-3 R.1.3,CIP-007-3 R5,CIP-007-3 R5.1.1,CIP-007-3 R5.2,CIP-007-3 R5.3.1,CIP-007-3 R5.3.2,CIP-007-3 R5.3.3,CIP-007-3 R6.5
@@ -22,10 +27,7 @@ references:
   pcidss: Req-2.2,Req-10.5.3,Req-10.5.4
   srg: SRG-APP-000092-CTR-000165,SRG-APP-000111-CTR-000220,SRG-APP-000358-CTR-000805
 
-identifiers:
-  cce@ocp4: CCE-84076-9
-
-severity: medium
+platform: not ocp4-on-hypershift
 
 ocil_clause: 'Logs are not forwarded outside the cluster'
 

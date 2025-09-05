@@ -4,4 +4,6 @@ controls:
   - medium
   title: {{{ full_name }}} registry must remove old container images after updating
     versions have been made available.
-  status: pending
+  status: automated
+  rules:
+    - image_pruner_active

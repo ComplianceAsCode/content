@@ -15,8 +15,7 @@ for partition in ${partitions[@]}; do
     mount -o remount "$partition"
 done
 
-mkdir /tmp/testdir
-mkdir /tmp/testmount
+mkdir -p /tmp/testdir /tmp/testmount
 chown 2 /tmp/testdir
 chmod 777 /tmp/testdir
 

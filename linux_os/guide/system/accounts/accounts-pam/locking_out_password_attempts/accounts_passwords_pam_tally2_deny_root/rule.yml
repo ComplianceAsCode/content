@@ -22,6 +22,8 @@ identifiers:
 references:
     anssi: BP28(R18)
     cis-csc: 1,12,15,16
+    cis@sle12: 5.3.2
+    cis@sle15: 5.3.2
     cobit5: DSS05.04,DSS05.10,DSS06.10
     disa: CCI-002238,CCI-000044
     isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
@@ -38,17 +40,17 @@ ocil_clause: 'limiting the number of failed logon attempts for the root user is 
 ocil: |-
     To ensure that even the <tt>root</tt> account is locked after a defined number of failed password
     attempts, run the following command:
-    <pre>$ grep even_deny_root /etc/pam.d/common-auth</pre>
+    <pre>$ grep even_deny_root /etc/pam.d/login</pre>
     The output should show <tt>even_deny_root</tt>.
 
 fixtext: |-
     To configure the system to lock out the <tt>root</tt> account after a number of incorrect login
-    attempts using <tt>pam_tally2.so</tt>, modify the content of both <tt>/etc/pam.d/common-auth</tt> and
+    attempts using <tt>pam_tally2.so</tt>, modify the content of both <tt>/etc/pam.d/login</tt> and
     <tt>/etc/pam.d/common-account</tt> as follows:
     <br /><br />
     <ul>
     <li> add or modify the <tt>pam_tally2.so</tt> module line in
-    <tt>/etc/pam.d/common-auth</tt> to ensure  <tt>even_deny_root</tt> is present. For example:
+    <tt>/etc/pam.d/login</tt> to ensure  <tt>even_deny_root</tt> is present. For example:
     <pre>auth     required       pam_tally2.so deny=4 even_deny_root unlock_time=1200</pre>
     <li> add or modify the following line in <tt>/etc/pam.d/common-account</tt>:
     <pre>account required pam_tally2.so</pre></li>

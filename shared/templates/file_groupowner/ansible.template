@@ -4,14 +4,14 @@
 # complexity = low
 # disruption = low
 
-{{% for path in FILEPATH %}}
-{{% if IS_DIRECTORY %}}
-{{% if FILE_REGEX %}}
+{{%- for path in FILEPATH %}}
+{{%- if IS_DIRECTORY %}}
+{{%- if FILE_REGEX %}}
 
 {{%- if RECURSIVE %}}
-{{% set FIND_RECURSE_ARGS="" %}}
+{{%- set FIND_RECURSE_ARGS="" %}}
 {{%- else %}}
-{{% set FIND_RECURSE_ARGS="-maxdepth 1" %}}
+{{%- set FIND_RECURSE_ARGS="-maxdepth 1" %}}
 {{%- endif %}}
 
 - name: Find {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}{{% if RECURSIVE %}} recursively{{% endif %}}

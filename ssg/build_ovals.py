@@ -17,7 +17,7 @@ from .id_translate import IDTranslator
 from .jinja import process_file_with_macros
 from .rule_yaml import parse_prodtype
 from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs_in_paths
-from . import utils
+from . import utils, products
 from .utils import mkdir_p
 from .xml import ElementTree, oval_generated_header
 
@@ -300,7 +300,7 @@ class OVALBuilder:
             self, env_yaml, product_yaml_path, shared_directories,
             build_ovals_dir):
         self.env_yaml = env_yaml
-        self.product_yaml_path = product_yaml_path
+        self.product_yaml = products.Product(product_yaml_path)
         self.shared_directories = shared_directories
         self.build_ovals_dir = build_ovals_dir
         self.already_loaded = dict()
@@ -319,7 +319,7 @@ class OVALBuilder:
         return document_body
 
     def _get_checks_from_benchmark(self):
-        product_dir = os.path.dirname(self.product_yaml_path)
+        product_dir = self.product_yaml["product_dir"]
         relative_guide_dir = utils.required_key(self.env_yaml, "benchmark_root")
         guide_dir = os.path.abspath(
             os.path.join(product_dir, relative_guide_dir))

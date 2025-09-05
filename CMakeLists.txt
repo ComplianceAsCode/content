@@ -32,7 +32,7 @@ set(SSG_TAILORING_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/tail
 
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
-set(SSG_PATCH_VERSION 67)
+set(SSG_PATCH_VERSION 68)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
@@ -106,6 +106,7 @@ set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
 set(SSG_SHARED_REFS "${SSG_SHARED}/references")
 set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_BUILD_SCRIPTS "${CMAKE_SOURCE_DIR}/build-scripts")
+set(SSG_UTILS_SCRIPTS "${CMAKE_SOURCE_DIR}/utils")
 
 message(STATUS "SCAP Security Guide ${SSG_VERSION}")
 message(STATUS "(see ${CMAKE_SOURCE_DIR}/docs/manual/developer_guide.adoc for build instructions)")
@@ -115,11 +116,11 @@ message(STATUS "")
 # discourage our users from using them
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     message(FATAL_ERROR "In-source builds are not supported! Please use out of source builds:\n"
-       "$ cd content\n"
-       "$ rm CMakeCache.txt\n"
-       "$ cd build\n"
-       "$ cmake ../\n"
-       "$ make -j4"
+        "$ cd content\n"
+        "$ rm CMakeCache.txt\n"
+        "$ cd build\n"
+        "$ cmake ../\n"
+        "$ make -j4"
     )
 endif()
 
@@ -136,6 +137,7 @@ find_python_module(yamlpath)
 find_python_module(mypy)
 find_python_module(openpyxl)
 find_python_module(pandas)
+find_python_module(cmakelint)
 
 # sphinx documentation requirements
 find_python_module(sphinx)
@@ -188,11 +190,6 @@ if (NOT XMLLINT_EXECUTABLE)
     message(SEND_ERROR "xmllint is required!")
 endif()
 
-find_program(XMLWF_EXECUTABLE NAMES xmlwf)
-if (NOT XMLWF_EXECUTABLE)
-    message(SEND_ERROR "xmlwf is required!")
-endif()
-
 find_program(SED_EXECUTABLE NAMES sed)
 if (NOT SED_EXECUTABLE)
     message(SEND_ERROR "sed is required!")
@@ -224,7 +221,6 @@ message(STATUS "python jinja2 module: ${PY_JINJA2}")
 message(STATUS "oscap: ${OPENSCAP_OSCAP_EXECUTABLE} (version: ${OSCAP_VERSION})")
 message(STATUS "xsltproc: ${XSLTPROC_EXECUTABLE}")
 message(STATUS "xmllint: ${XMLLINT_EXECUTABLE}")
-message(STATUS "xmlwf: ${XMLWF_EXECUTABLE}")
 message(STATUS "sed: ${SED_EXECUTABLE}")
 message(STATUS "shellcheck (optional): ${SHELLCHECK_EXECUTABLE}")
 message(STATUS "linkchecker (optional): ${LINKCHECKER_EXECUTABLE}")
@@ -319,6 +315,8 @@ add_custom_target(profile-stats)
 
 add_custom_target(html-stats)
 add_custom_target(html-profile-stats)
+
+add_custom_target(render-policies)
 
 if(PY_SPHINX AND PY_SPHINXCONTRIB.AUTOJINJA AND PY_SPHINX_RTD_THEME AND PY_MYST_PARSER)
     message(STATUS "Enabling docs directory as system supports Sphinx builds.")

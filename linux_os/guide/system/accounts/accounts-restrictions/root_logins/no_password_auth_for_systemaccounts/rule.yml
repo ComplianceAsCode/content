@@ -3,38 +3,40 @@ documentation_complete: true
 title: 'Ensure that System Accounts Are Locked'
 
 description: |-
-    Some accounts are not associated with a human user of the system, and exist to
-    perform some administrative function. An attacker should not be able to log into
-    these accounts.
-    <br /><br />
-    System accounts are those user accounts with a user ID
-    less than UID_MIN, where value of the UID_MIN directive is set in
-    <tt>/etc/login.defs</tt> configuration file. In the default configuration UID_MIN is set
-    to 500, thus system accounts are those user accounts with a user ID less than
-    500. If any system account <i>SYSACCT</i> (other than root) has an unlocked password,
-    disable it with the command:
-    <pre>$ sudo passwd -l <i>SYSACCT</i></pre>
+    Some accounts are not associated with a human user of the system, and exist to perform some
+    administrative functions. An attacker should not be able to log into these accounts.
+    <br/><br/>
+    System accounts are those user accounts with a user ID less than <tt>{{{ uid_min }}}</tt>.
+    If any system account other than <tt>root</tt>, <tt>halt</tt>, <tt>sync</tt>, <tt>shutdown</tt>
+    and <tt>nfsnobody</tt> has an unlocked password, disable it with the command:
+    <pre>$ sudo usermod -L <i>account</i></pre>
 
 rationale: |-
-    Disabling authentication for default system accounts makes it more difficult
-    for attackers to make use of them to compromise a system.false
+    Disabling authentication for default system accounts makes it more difficult for attackers
+    to make use of them to compromise a system.
 
 severity: medium
 
 identifiers:
     cce@rhel7: CCE-80650-5
+    cce@rhel8: CCE-86112-0
+    cce@rhel9: CCE-86113-8
 
 references:
+    cis@rhel8: 5.6.2
+    cis@rhel9: 5.6.2
     nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
     nist: AC-6,CM-6(a)
 
-ocil_clause: 'it is not'
+ocil_clause: 'system accounts are not locked'
 
 ocil: |-
-    To obtain a listing of all users and the contents of their shadow password
-    field, run the command:
-    <pre>$ sudo awk -F: '$1 !~ /^root$/ &amp;&amp; $2 !~ /^[!*]/ {print $1 ":" $2}' /etc/shadow</pre>
-    Identify the system accounts from this listing. These will primarily be the accounts
-    with UID numbers less than UID_MIN, other than root. Value of the UID_MIN
-    directive is set in <tt>/etc/login.defs</tt> configuration file. In the default
-    configuration, UID_MIN is set to 500.
+    To obtain a list of all users and the content of their shadow password field, run the command:
+    <pre>$ sudo readarray -t systemaccounts < <(awk -F: \
+        '($3 < {{{ uid_min }}} && $3 != root && $3 != halt && $3 != sync && $3 != shutdown \
+        && $3 != nfsnobody) { print $1 }' /etc/passwd)
+
+        for account in "${systemaccounts[@]}"; do
+            awk -v user="$account" -F: '$1~account { print $1 ":" $2 }' /etc/shadow
+        done</pre>
+    Verify if all accounts are locked.

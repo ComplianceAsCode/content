@@ -7,10 +7,19 @@
 - name: Service facts
   service_facts:
 
-- name: Check the rules script being used
-  command:
-    grep -E '^(ExecStartPost|Requires)' /usr/lib/systemd/system/auditd.service
-  register: check_rules_scripts_result
+- name: Check if auditctl rules script being used
+  ansible.builtin.find:
+    paths: '/usr/lib/systemd/system/'
+    patterns: 'auditd.service'
+    contains: '^\s*(ExecStartPost|Requires)\s*=[\s\-]*[\w\/]*auditctl'
+  register: auditd_svc_auditctl_used
+
+- name: Check augenrules rules script being used
+  ansible.builtin.find:
+    paths: '/usr/lib/systemd/system/'
+    patterns: 'auditd.service'
+    contains: '^\s*(ExecStartPost|Requires)\s*=[\s\-]*[\w\/]*augenrules'
+  register: auditd_svc_augen_used
 
 - name: Find audit rules in /etc/audit/rules.d
   find:
@@ -20,7 +29,7 @@
   register: find_audit_rules_result
   when:
     - '"auditd.service" in ansible_facts.services'
-    - '"augenrules" in check_rules_scripts_result.stdout'
+    - auditd_svc_augen_used is defined and auditd_svc_augen_used.matched >= 1
 
 - name: Enable syscall auditing (augenrules)
   lineinfile:
@@ -30,7 +39,7 @@
   with_items: "{{ find_audit_rules_result.files }}"
   when:
     - '"auditd.service" in ansible_facts.services'
-    - '"augenrules" in check_rules_scripts_result.stdout'
+    - auditd_svc_augen_used is defined and auditd_svc_augen_used.matched >= 1
   register: augenrules_syscall_auditing_rule_update_result
 
 - name: Enable syscall auditing (auditctl)
@@ -40,7 +49,7 @@
     line: '#-a task,never'
   when:
     - '"auditd.service" in ansible_facts.services'
-    - '"auditctl" in check_rules_scripts_result.stdout'
+    - auditd_svc_auditctl_used is defined and auditd_svc_auditctl_used.matched >= 1
   register: auditctl_syscall_auditing_rule_update_result
 
 - name: Restart auditd.service

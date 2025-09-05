@@ -40,7 +40,7 @@ yum install cmake make openscap-utils openscap-scanner PyYAML python-jinja2
 On *Red Hat Enterprise Linux 8* and *Fedora* the package list is the same but python2 packages need to be replaced with python3 ones:
 
 ```bash
-yum install cmake make openscap-utils openscap-scanner python3-pyyaml python3-jinja2 python3-setuptools
+yum install cmake make openscap-utils openscap-scanner python3 python3-pyyaml python3-jinja2 python3-setuptools
 ```
 
 On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
@@ -48,7 +48,7 @@ On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
 installed:
 
 ```bash
-apt-get install cmake make expat libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml python3-setuptools xsltproc
+apt-get install cmake make libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml python3-setuptools xsltproc
 ```
 
 IMPORTANT: Version `1.0.8` or later of `openscap-utils` is required to build the content.
@@ -216,6 +216,12 @@ apt-get install python3-mypy
 ```bash
 pip install types-openpyxl types-PyYAML openpyxl-stubs
 ```
+
+### cmakelint (Linting CMake Files)
+```bash
+pip install cmakelint
+```
+
 ## Downloading the source code
 
 Download and extract a tarball from the [list of releases](https://github.com/ComplianceAsCode/content/releases):

@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_sle,Ubuntu 20.04
+# platform = multi_platform_sle
 
 cat >/etc/pam.d/common-account <<CAPTAC
 account	[success=1 new_authtok_reqd=done default=ignore]	pam_unix.so
@@ -8,7 +8,7 @@ account required                        pam_tally2.so
 account	required			pam_permit.so
 CAPTAC
 
-cat >/etc/pam.d/common-auth <<CAPTDM
+cat >/etc/pam.d/login <<CAPTDM
 auth required pam_tally2.so onerr=fail audit silent even_deny_root unlock_time=900
 auth	[success=1 default=ignore]	pam_unix.so nullok_secure
 auth	requisite			pam_deny.so

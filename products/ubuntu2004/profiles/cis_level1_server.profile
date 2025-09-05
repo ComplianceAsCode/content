@@ -137,8 +137,7 @@ selections:
     - file_permissions_grub2_cfg
 
     ### 1.5.3 Ensure authentication required for single user mode (Automated)
-    # Needs variable
-    # Needs rule
+    - ensure_root_password_configured
 
     ## 1.6 Additional Process Hardening ##
     ### 1.6.1 Ensure XD/NX support is enabled (Automated)
@@ -239,7 +238,7 @@ selections:
 
     ### 2.2.3 Ensure Avahi Server is not installed (Automated)
     - service_avahi-daemon_disabled
-    # Needs rule: package_avahi-daemon_removed
+    - package_avahi_removed
 
     ### 2.2.4 Ensure CUPS is not installed (Automated)
     - service_cups_disabled
@@ -280,6 +279,7 @@ selections:
     ### 2.2.15 Ensure mail transfer agent is configured for local-only mode (Automated)
     - var_postfix_inet_interfaces=loopback-only
     - postfix_network_listening_disabled
+    - has_nonlocal_mta
 
     ### 2.2.16 Ensure rsync service is not installed (Automated)
     - package_rsync_removed
@@ -416,22 +416,23 @@ selections:
     - set_nftables_table
 
     #### 3.5.2.5 Ensure base chains exist (Automated)
-    # Needs rule
+    - set_nftables_base_chain
 
     #### 3.5.2.6 Ensure loopback traffic is configured (Automated)
-    # Needs rule
+    - set_nftables_loopback_traffic
 
     #### 3.5.2.7 Ensure outbound and established connections are configured (Manual)
     # Skip due to being a manual test
 
     #### 3.5.2.8 Ensure default deny firewall policy (Automated)
-    # Needs rule
+    - nftables_ensure_default_deny_policy
 
     #### 3.5.2.9 Ensure nftables service is enabled (Automated)
     - service_nftables_enabled
 
     #### 3.5.2.10 Ensure nftables rules are permanent (Automated)
-    # Needs rule
+    - var_nftables_master_config_file=etc
+    - nftables_rules_permanent
 
     ### 3.5.3 Configure iptables ###
     #### 3.5.3.1 Configure software ####
@@ -687,7 +688,7 @@ selections:
     - sshd_set_login_grace_time
 
     ### 5.2.17 Ensure SSH access is limited (Automated)
-    # Needs rules
+    - sshd_limit_user_access
 
     ### 5.2.18 Ensure SSH warning banner is configured (Automated)
     - sshd_enable_warning_banner_net
@@ -783,7 +784,9 @@ selections:
     # Skip due to being a manual test
 
     ## 5.6 Ensure access to the su command is restricted (Automated)
-    - use_pam_wheel_for_su
+    - var_pam_wheel_group_for_su=cis
+    - use_pam_wheel_group_for_su
+    - ensure_pam_wheel_group_empty
 
     # 6 System Maintenance #
     ## 6.1 System File Permissions ##

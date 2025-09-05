@@ -1,17 +1,17 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,rhel9,sle12,sle15
+prodtype: rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Uninstall avahi Server Package'
 
 description: |-
-    If the system does not need to have an Avahi server which implements 
+    If the system does not need to have an Avahi server which implements
     the DNS Service Discovery and Multicast DNS protocols,
     the avahi-autoipd and avahi packages can be uninstalled.
 
 rationale: |-
-    Automatic discovery of network services is not normally required for 
-    system functionality. It is recommended to remove this package to reduce 
+    Automatic discovery of network services is not normally required for
+    system functionality. It is recommended to remove this package to reduce
     the potential attack surface.
 
 severity: medium
@@ -22,7 +22,7 @@ identifiers:
     cce@rhel9: CCE-86513-9
     cce@sle12: CCE-92314-4
     cce@sle15: CCE-92464-7
-    
+
 references:
     cis-csc: 11,14,3,9
     cis@rhel7: 2.2.3
@@ -30,6 +30,8 @@ references:
     cis@rhel9: 2.2.2
     cis@sle12: 2.2.3
     cis@sle15: 2.2.3
+    cis@ubuntu2004: 2.2.3
+    cis@ubuntu2204: 2.2.2
     cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS06.06
     disa: CCI-000366
     isa-62443-2009: 4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.2,4.3.4.3.3
@@ -45,3 +47,5 @@ template:
     name: package_removed
     vars:
         pkgname: avahi
+        pkgname@ubuntu2004: avahi-daemon
+        pkgname@ubuntu2204: avahi-daemon

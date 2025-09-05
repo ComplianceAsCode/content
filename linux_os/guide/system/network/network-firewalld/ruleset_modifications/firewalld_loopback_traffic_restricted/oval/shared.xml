@@ -1,0 +1,100 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("Configure Firewalld to Restrict Loopback Traffic") }}}
+        <criteria operator="OR">
+            <criteria operator="AND">
+                <!-- The test_firewalld_trusted_zone_not_overridden test is defined in the
+                     firewalld_loopback_traffic_trusted rule -->
+                <criterion
+                    comment="Ensure default trusted zone file was not overridden"
+                    test_ref="test_firewalld_trusted_zone_not_overridden"/>
+                <criterion
+                    comment="Ensure default trusted restrict loopback source"
+                    test_ref="test_firewalld_loopback_restricted_source_usr"/>
+                <criterion
+                    comment="Ensure default trusted zone restrict loopback destination"
+                    test_ref="test_firewalld_loopback_restricted_destination_usr"/>
+                <criterion
+                    comment="Ensure default trusted zone restrict loopback traffic"
+                    test_ref="test_firewalld_loopback_restricted_policy_usr"/>
+            </criteria>
+            <criteria operator="AND">
+                <criterion
+                    comment="Ensure custom trusted zone restrict loopback source"
+                    test_ref="test_firewalld_loopback_restricted_source_etc"/>
+                <criterion
+                    comment="Ensure custom trusted zone zone restrict loopback destination"
+                    test_ref="test_firewalld_loopback_restricted_destination_etc"/>
+                <criterion
+                    comment="Ensure custom trusted zone zone restrict loopback traffic"
+                    test_ref="test_firewalld_loopback_restricted_policy_etc"/>
+            </criteria>
+        </criteria>
+    </definition>
+
+    <ind:xmlfilecontent_test id="test_firewalld_loopback_restricted_source_usr" version="1"
+        check="all" check_existence="all_exist"
+        comment="default trusted zone has rich-rule to restrict loopback source">
+        <ind:object object_ref="object_firewalld_loopback_restricted_source_usr"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_loopback_restricted_source_usr" version="1">
+        <ind:filepath>/usr/lib/firewalld/zones/trusted.xml</ind:filepath>
+        <ind:xpath>/zone/rule/source[@address='127.0.0.1' or @address='::1']</ind:xpath>
+    </ind:xmlfilecontent_object>
+
+    <ind:xmlfilecontent_test id="test_firewalld_loopback_restricted_destination_usr" version="1"
+        check="all" check_existence="all_exist"
+        comment="default trusted zone has rich-rule to restrict loopback destination">
+        <ind:object object_ref="object_firewalld_loopback_restricted_destination_usr"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_loopback_restricted_destination_usr" version="1">
+        <ind:filepath>/usr/lib/firewalld/zones/trusted.xml</ind:filepath>
+        <ind:xpath>/zone/rule/destination[@address='127.0.0.1' or @address='::1' and @invert='True']</ind:xpath>
+    </ind:xmlfilecontent_object>
+
+    <ind:xmlfilecontent_test id="test_firewalld_loopback_restricted_policy_usr" version="1"
+        check="all" check_existence="all_exist"
+        comment="default trusted zone has rich-rule to restrict loopback traffic">
+        <ind:object object_ref="object_firewalld_loopback_restricted_policy_usr"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_loopback_restricted_policy_usr" version="1">
+        <ind:filepath>/usr/lib/firewalld/zones/trusted.xml</ind:filepath>
+        <ind:xpath>/zone/rule/drop</ind:xpath>
+    </ind:xmlfilecontent_object>
+
+    <ind:xmlfilecontent_test id="test_firewalld_loopback_restricted_source_etc" version="1"
+        check="all" check_existence="all_exist"
+        comment="custom trusted zone has rich-rule to restrict loopback source">
+        <ind:object object_ref="object_firewalld_loopback_restricted_source_etc"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_loopback_restricted_source_etc" version="1">
+        <ind:filepath>/etc/firewalld/zones/trusted.xml</ind:filepath>
+        <ind:xpath>/zone/rule/source[@address='127.0.0.1' or @address='::1']</ind:xpath>
+    </ind:xmlfilecontent_object>
+
+    <ind:xmlfilecontent_test id="test_firewalld_loopback_restricted_destination_etc" version="1"
+        check="all" check_existence="all_exist"
+        comment="custom trusted zone has rich-rule to restrict loopback destination">
+        <ind:object object_ref="object_firewalld_loopback_restricted_destination_etc"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_loopback_restricted_destination_etc" version="1">
+        <ind:filepath>/etc/firewalld/zones/trusted.xml</ind:filepath>
+        <ind:xpath>/zone/rule/destination[@address='127.0.0.1' or @address='::1' and @invert='True']</ind:xpath>
+    </ind:xmlfilecontent_object>
+
+    <ind:xmlfilecontent_test id="test_firewalld_loopback_restricted_policy_etc" version="1"
+        check="all" check_existence="all_exist"
+        comment="custom trusted zone has rich-rule to restrict loopback traffic">
+        <ind:object object_ref="object_firewalld_loopback_restricted_policy_etc"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_loopback_restricted_policy_etc" version="1">
+        <ind:filepath>/etc/firewalld/zones/trusted.xml</ind:filepath>
+        <ind:xpath>/zone/rule/drop</ind:xpath>
+    </ind:xmlfilecontent_object>
+</def-group>

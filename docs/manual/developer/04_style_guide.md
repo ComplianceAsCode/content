@@ -248,10 +248,14 @@ Rules sections must be in the following order, if they are present.
     * All subsections are HTML-Like
     * If defined must have at least one of the following sub-sections:
         * `general`
-        * `dependency`
-        * `performance`
-        * `management`
         * `functionality`
+        * `performance`
+        * `hardware`
+        * `legal`
+        * `regulatory`
+        * `management`
+        * `audit`
+        * `dependency`
 * `conflicts`
     * Must be a valid rule id
 * `requires`
@@ -328,7 +332,10 @@ Control sections must be in the following order, if they are present.
     * `notes`
         * Must be a block
     * `rules`
+        * Must be a list of valid rule ids
+    * `related_rules`
         * Must be a list of valid rule id
+
 
 ### Profile
 
@@ -382,9 +389,10 @@ Shall be true if the system needs to be rebooted in order for the changes to tak
 
 #### `strategy`
 
-Should be one of the following values:
+Shall be one of the following values:
 
 * configure
+* combination
 * disable
 * enable
 * patch
@@ -497,6 +505,12 @@ or
 ```
 
 * Must follow all the rules in the [Bash](#bash) section
+
+## CMake
+
+* Shall use 2-space indentation
+* Shall use lower case for commands
+* `endif`, `endforeach`, and similar commands shall not have any arguments
 
 ## Markup Languages
 

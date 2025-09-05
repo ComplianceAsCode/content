@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Nftables Base Chain Hooks'
+
+description: |-
+   The possible hooks which can be used to configure the base chain are:
+   <tt>ingress</tt> (only in netdev family since Linux kernel 4.2, and inet family since Linux kernel 5.10): 
+   sees packets immediately after they are passed up from the NIC driver, before even prerouting. 
+   <tt>prerouting</tt> sees all incoming packets, before any routing decision has been made. 
+   Packets may be addressed to the local or remote systems.
+   <tt>input</tt> sees incoming packets that are addressed to and have now been routed 
+   to the local system and processes running there.
+   <tt>forward</tt> sees incoming packets that are not addressed to the local system.
+   <tt>output</tt> sees packets that originated from processes in the local machine.
+   <tt>postrouting</tt> sees all packets after routing, just before they leave the 
+   local system.
+
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+    default: "input,forward,output"
+    ingress: ingress 
+    prerouting: prerouting
+    input: input
+    forward: forward
+    output: output
+    postrouting: postrouting
+    chain_hooks: "input,forward,output"

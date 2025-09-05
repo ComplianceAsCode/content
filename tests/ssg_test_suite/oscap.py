@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 from __future__ import print_function
 
+import collections
+import datetime
+import json
 import logging
 import os.path
 import re
-import collections
-import xml.etree.ElementTree
-import json
-import datetime
 import socket
+import subprocess
 import sys
 import time
-import subprocess
+import xml.etree.ElementTree
 
 from ssg.constants import OSCAP_PROFILE_ALL_ID
 
@@ -68,22 +68,6 @@ def triage_xml_results(fname):
         triaged[status].add(idref)
 
     return triaged
-
-
-def send_files_remote(verbose_path, remote_dir, domain_ip, *files):
-    """Upload files to VM."""
-    # files is a list of absolute paths on the host
-    success = True
-    destination = 'root@{0}:{1}'.format(domain_ip, remote_dir)
-    files_string = ' '.join(files)
-
-    logging.debug('Uploading files {0} to {1}'.format(files_string,
-                                                      destination))
-    command = ['scp'] + list(common.SSH_ADDITIONAL_OPTS) + list(files) + [destination]
-    if common.run_cmd_local(command, verbose_path)[0] != 0:
-        logging.error('Failed to upload files {0}'.format(files_string))
-        success = False
-    return success
 
 
 def get_file_remote(test_env, verbose_path, local_dir, remote_path):

@@ -13,14 +13,14 @@ set(OPENSCAP_POSSIBLE_ROOT_DIRS
 )
 
 foreach(NAME ${OPENSCAP_POSSIBLE_ROOT_DIRS})
-	FIND_FILE(OPENSCAP_XCCDF_XSL_1_2 NAMES xccdf_1.1_to_1.2.xsl
+    find_file(OPENSCAP_XCCDF_XSL_1_2 NAMES xccdf_1.1_to_1.2.xsl
         PATHS "${NAME}"
         PATH_SUFFIXES "share/openscap/xsl/"
     )
 endforeach()
 
 foreach(NAME ${OPENSCAP_POSSIBLE_ROOT_DIRS})
-    FIND_PROGRAM(OPENSCAP_OSCAP_EXECUTABLE NAMES oscap
+    find_program(OPENSCAP_OSCAP_EXECUTABLE NAMES oscap
         PATHS "${NAME}"
         PATH_SUFFIXES "bin/"
     )
@@ -35,7 +35,7 @@ if (NOT EXISTS "${OPENSCAP_OSCAP_EXECUTABLE}")
 endif()
 
 if (OscapErrors)
-    MESSAGE(FATAL_ERROR "${OscapErrors}")
+    message(FATAL_ERROR "${OscapErrors}")
 endif()
 
 execute_process(

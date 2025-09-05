@@ -75,6 +75,10 @@ class VersionSpecifier:
         return VersionSpecifier.evr_dict_to_str(self._evr_ver_dict, True)
 
     @property
+    def ev_ver(self):
+        return VersionSpecifier.evr_dict_to_str(self._evr_ver_dict, True).split("-")[0]
+
+    @property
     def title(self):
         return '{0} {1}'.format(comparison_to_oval(self.op), self.ver)
 

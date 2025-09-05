@@ -81,7 +81,7 @@ ocil: |-
     <pre>clean_requirements_on_remove=1</pre>
     {{% endif %}}
 
-{{% if product in ['fedora'] or 'rhel' in product %}}
+{{% if product in ['fedora'] or 'rhel' in product or 'ol' in product %}}
 fixtext: |-
     Configure {{{ full_name }}} to remove all software components after updated versions have been installed.
 

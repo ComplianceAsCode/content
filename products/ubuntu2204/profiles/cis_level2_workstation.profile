@@ -37,7 +37,8 @@ selections:
     - kernel_module_usb-storage_disabled
 
     #### 1.6.1.4 Ensure all AppArmor Profiles are enforcing (Automated)
-    #- ensure_apparmor_enforce
+    - var_apparmor_mode=enforce
+    - all_apparmor_profiles_enforced
 
     ### 1.8.6 Ensure GDM automatic mounting of removable media is disabled (Automated)
     - dconf_gnome_disable_automount

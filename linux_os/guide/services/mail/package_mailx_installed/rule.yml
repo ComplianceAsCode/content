@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'The mailx Package Is Installed'
+
+description: |-
+    A mail server is required for sending emails.
+    {{{ describe_package_install(package="mailx") }}}
+
+rationale: |-
+    Emails can be used to notify designated personnel about important
+    system events such as failures or warnings.
+
+severity: medium
+
+references:
+    disa: CCI-001744
+    nist: CM-3(5)
+    srg: SRG-OS-000363-GPOS-00150
+    stigid@ol7: OL07-00-020028
+    stigid@ol8: OL08-00-010358
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="mailx") }}}'
+
+fixtext: '{{{ fixtext_package_installed(package="mailx") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("mailx") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: mailx

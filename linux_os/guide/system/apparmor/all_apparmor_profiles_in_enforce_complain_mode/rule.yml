@@ -12,7 +12,11 @@ description: |-
     run the following command to set all profiles to <tt>complain</tt> mode:
     <pre>$ sudo aa-complain /etc/apparmor.d/*</pre>
     To list unconfined processes run the following command:
+    {{% if 'ubuntu' in product %}}
+    <pre>$ sudo apparmor_status | grep processes</pre>
+    {{% else %}}
     <pre>$ sudo aa-unconfined</pre>
+    {{% endif %}}
     Any unconfined processes may need to have a profile created or activated
     for them and then be restarted.
 

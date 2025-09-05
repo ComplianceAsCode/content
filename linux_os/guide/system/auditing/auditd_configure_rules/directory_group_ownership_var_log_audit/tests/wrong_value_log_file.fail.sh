@@ -6,7 +6,7 @@ sed -i "/\s*log_file.*/d" /etc/audit/auditd.conf
 echo "log_group = root" >> /etc/audit/auditd.conf
 echo "log_file = /var/log/audit2/audit.log" >> /etc/audit/auditd.conf
 
-mkdir /var/log/audit2
+mkdir -p /var/log/audit2
 groupadd group_test
 
 chgrp root /var/log/audit

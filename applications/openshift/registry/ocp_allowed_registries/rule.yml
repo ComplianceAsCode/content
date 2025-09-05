@@ -26,6 +26,13 @@ rationale: |-
 
 severity: medium
 
+ocil_clause: 'allowed registries are not set explicitly'
+
+ocil: |-
+  To verify that the allowed registries are configured, run the following:
+  <pre>$ oc get image.config.openshift.io cluster -ojsonpath='{.spec.registrySources.allowedRegistries}'</pre>
+  make sure the output is not empty and matches the registries that you wish to allow.
+
 references:
     nist: CM-5(3),CM-7(2),CM-7(5),CM-11
     srg: SRG-APP-000456-CTR-001125

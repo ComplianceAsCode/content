@@ -1,15 +1,15 @@
 from __future__ import print_function
 
-import os
-import logging
-import subprocess
-from collections import namedtuple
 import functools
-import tarfile
-import tempfile
+import logging
+import os
 import re
 import shutil
+import subprocess
+import tarfile
+import tempfile
 import time
+from collections import namedtuple
 
 import ssg.yaml
 from ssg.build_cpe import ProductCPEs
@@ -160,7 +160,7 @@ class RuleResult(object):
 
     def __eq__(self, other):
         return (self.success == other.success
-                and tuple(self.passed_stages) == tuple(self.passed_stages))
+                and tuple(self.passed_stages) == tuple(other.passed_stages))
 
     def __lt__(self, other):
         return self.passed_stages_count > other.passed_stages_count
@@ -274,7 +274,7 @@ def get_product_context(product=None):
     product_yaml = dict()
     if product:
         yaml_path = product_yaml_path(SSG_ROOT, product)
-        product_yaml = load_product_yaml(yaml_path)
+        product_yaml.update(load_product_yaml(yaml_path))
 
     # We could run into a DocumentationNotComplete error when loading a
     # rule's YAML contents. However, because the test suite isn't executed

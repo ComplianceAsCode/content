@@ -1,0 +1,47 @@
+srg_requirement: |-
+  {{{ full_name }}} must restrict individuals the ability to launch organizational-defined Denial-of-Service (DOS) attacks against other information systems.
+
+check: |-
+  Verify that a default project template is defined
+
+  > oc get project.config.openshift.io/cluster -o jsonpath="{.spec.projectRequestTemplate.name}"
+
+  If no template is defined, this is a finding.
+
+  Verify that the new project template includes a default resource quota.
+
+  > oc get templates/project-request -n openshift-config -o jsonpath="{.objects[?(.kind=='ResourceQuota')]}{'\n'}"
+
+  If the template is not assigned to the default project request, this is a finding.
+
+fixtext: |-
+  Configure a default resource quota as necessary to protect resource over utilization by performing the following steps.
+
+  1. Create a bootstrap project template
+
+  > oc adm create-bootstrap-project-template -o yaml > template.yaml
+
+  2. Edit the template and add a ResourceQuota object definition before the parameters section
+
+  - apiVersion: v1
+    kind: ResourceQuota
+    metadata:
+      name: example
+    spec:
+      hard:
+        persistentvolumeclaims: "10"
+        requests.storage: "50Gi"
+        ...
+  parameters:
+
+   3. Apply the project template to the cluster
+
+  > oc create -f template.yaml -n openshift-config
+
+   4. Set the default cluster project request template
+
+   > oc patch project.config.openshift.io/cluster --type=merge -p '{"spec":{"projectRequestTemplate":{"name": "<PROJECT_REQUEST_TEMPLATE>"}}}'
+
+  Details regarding the configuration of resource quotas can be reviewed at the below documentation.
+  https://docs.openshift.com/container-platform/latest/applications/quotas/quotas-setting-per-project.html
+

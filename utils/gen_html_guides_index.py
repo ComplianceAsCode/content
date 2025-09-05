@@ -29,13 +29,9 @@ def create_index(data, template_name, output_filename):
 def get_data(ssg_root):
     products = []
     p = pathlib.Path(ssg_root)
-    for product_file in p.glob("**/product.yml"):
+    for product_file in p.glob("products/**/product.yml"):
         product_dir = product_file.parent
         product_id = product_dir.name
-        # disregard folders that contain samples of product.yml files
-        # they are not a real product folder
-        if product_id in ["data", "example", "test_playbook_builder_data"]:
-            continue
         with open(product_file, "r") as f:
             product_yaml = yaml.full_load(f)
         product_name = product_yaml["full_name"]

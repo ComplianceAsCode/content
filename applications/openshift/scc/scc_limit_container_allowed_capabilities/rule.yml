@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Limit Container Capabilities'
 
 description: |-
-    Containers should not enable more capabilites than needed as this
+    Containers should not enable more capabilities than needed as this
     opens the door for malicious use. To enable only the
     required capabilities, the appropriate Security Context Constraints (SCCs)
     should set capabilities as a list in <tt>allowedCapabilities</tt>.
@@ -43,7 +43,7 @@ ocil: |-
     Review each SCC and determine that only required capabilities are either
     completely added as a list entry under <tt>allowedCapabilities</tt>,
     or that all the un-required capabilities are dropped for containers and SCCs.
-    varible var_sccs_with_allowed_capabilities_regex can be set to exclude certain
+    variable var_sccs_with_allowed_capabilities_regex can be set to exclude certain
     SCCs from the check.
     Use following command to verify if the correct regex is being used, this ouput
     will list unqualified SCCs:

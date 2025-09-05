@@ -22,7 +22,7 @@ controls:
     - l2_server
     - l2_workstation
     notes: <-
-      This is a helper rule to reload Dconf datbase correctly.
+      This is a helper rule to reload Dconf database correctly.
     status: automated
     rules:
     - dconf_db_up_to_date
@@ -34,7 +34,7 @@ controls:
     - l2_workstation
     status: automated
     rules:
-    - kernel_module_cramfs_disabled 
+    - kernel_module_cramfs_disabled
     - kernel_module_squashfs_disabled
 
   - id: 1.1.1.2
@@ -248,19 +248,24 @@ controls:
   - id: 1.2.1
     title: Ensure GPG keys are configured (Manual)
     levels:
-    - l1_server
-    - l1_workstation
-    status: manual # rule is missing
+      - l1_server
+      - l1_workstation
+    status: manual
+    notes: >-
+       The control cannot be automated,
+       and should be addressed manually.
+    rules:
+      - ensure_GPG_keys_are_configured
 
   - id: 1.2.2
     title: Ensure package manager repositories are configured (Manual)
     levels:
     - l1_server
     - l1_workstation
-    status: manual 
-    notes: >- 
-       The control cannot be automated, 
-       and should be addressed manually. 
+    status: manual
+    notes: >-
+       The control cannot be automated,
+       and should be addressed manually.
     rules:
     - ensure_package_repositories_are_configured
 
@@ -428,7 +433,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rules: 
+    rules:
       - all_apparmor_profiles_in_enforce_complain_mode
       - var_apparmor_mode=complain
 
@@ -437,7 +442,9 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: manual # # rule is missing
+    status: automated
+    rules:
+      - all_apparmor_profiles_enforced
 
   - id: 1.8.1.1
     title: Ensure message of the day is configured properly (Automated)
@@ -447,7 +454,7 @@ controls:
     status: automated
     rules:
       - banner_etc_motd
-      - login_banner_text=cis_banners
+      - motd_banner_text=cis_banners
 
   - id: 1.8.1.2
     title: Ensure local login warning banner is configured properly (Automated)
@@ -467,7 +474,7 @@ controls:
     status: automated
     rules:
       - banner_etc_issue_net
-      - login_banner_text=cis_banners 
+      - remote_login_banner_text=cis_banners
 
   - id: 1.8.1.4
     title: Ensure permissions on /etc/motd are configured (Automated)
@@ -511,7 +518,7 @@ controls:
     related_rules:
     - security_patches_up_to_date
 
-  - id: "1.10"
+  - id: 1.10
     title: Ensure GDM login banner is configured (Automated)
     levels:
       - l1_server
@@ -564,8 +571,10 @@ controls:
     - l1_workstation
     status: automated
     rules:
-    - chronyd_specify_remote_server
     - chronyd_run_as_chrony_user
+    - chronyd_configure_pool_and_server
+    - var_multiple_time_servers=suse
+    - var_multiple_time_pools=suse
 
   - id: 2.2.1.4
     title: Ensure ntp is configured (Automated)
@@ -820,6 +829,7 @@ controls:
     status: automated
     rules:
       - grub2_ipv6_disable_argument
+      - sysctl_net_ipv6_conf_all_disable_ipv6
 
   - id: 3.1.2
     title: Ensure wireless interfaces are disabled (Manual)
@@ -1005,22 +1015,24 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: manual # rule is missing
+    status: manual
+    rules:
+    - set_iptables_outbound_n_established
 
   - id: 3.5.2.3
     title: Ensure firewall rules exist for all open ports (Automated)
     levels:
     - l1_server
     - l1_workstation
-    status: manual # rule is missing / difficult to automate
+    status: manual # rule is missing
 
   - id: 3.5.2.4
     title: Ensure default deny firewall policy (Automated)
     levels:
     - l1_server
     - l1_workstation
-    status: automated 
-    rules: 
+    status: automated
+    rules:
     - set_iptables_default_rule
 
   - id: 3.5.3.1
@@ -1028,8 +1040,8 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: automated 
-    rules: 
+    status: automated
+    rules:
     - set_ipv6_loopback_traffic
 
   - id: 3.5.3.2
@@ -1037,7 +1049,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: manual 
+    status: manual
+    rules:
+    - set_iptables_outbound_n_established
 
   - id: 3.5.3.3
     title: Ensure IPv6 firewall rules exist for all open ports (Automated)
@@ -1058,7 +1072,7 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: automated 
+    status: automated
     rules:
       - package_audit_installed
       - package_audit-libs_installed
@@ -1165,7 +1179,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    status: automated 
+    status: automated
     rules:
     - audit_rules_mac_modification
     - audit_rules_mac_modification_usr_share
@@ -1319,7 +1333,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rules: 
+    rules:
       - rsyslog_files_permissions
       - rsyslog_files_ownership
       - rsyslog_files_groupownership
@@ -1659,6 +1673,7 @@ controls:
     status: automated
     rules:
       - sshd_use_strong_kex
+      - sshd_strong_kex=cis_sle12
 
   - id: 5.2.16
     title: Ensure SSH Idle Timeout Interval is configured (Automated)
@@ -1758,6 +1773,7 @@ controls:
     rules:
       - accounts_passwords_pam_tally2
       - var_password_pam_tally2=5
+      - accounts_passwords_pam_tally2_deny_root
 
   - id: 5.3.3
     title: Ensure password reuse is limited (Automated)
@@ -1784,7 +1800,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated 
+    status: automated
     rules:
       - accounts_maximum_age_login_defs
       - var_accounts_maximum_age_login_defs=365
@@ -1795,7 +1811,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated 
+    status: automated
     rules:
       - accounts_minimum_age_login_defs
       - var_accounts_minimum_age_login_defs=1
@@ -2061,7 +2077,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated 
+    status: automated
     rules:
       - accounts_user_interactive_home_directory_exists
 
@@ -2121,7 +2137,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing
+    status: automated
+    rules:
+      - accounts_users_netrc_file_permissions
 
   - id: 6.2.12
     title: Ensure no users have .rhosts files (Automated)
@@ -2182,6 +2200,6 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated 
+    status: automated
     rules:
       - ensure_shadow_group_empty

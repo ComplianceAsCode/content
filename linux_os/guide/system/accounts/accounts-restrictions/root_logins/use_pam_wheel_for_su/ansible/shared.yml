@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-- name: "restrict usage of su command only to members of wheel group"
+- name: "Restrict usage of su command only to members of wheel group"
   replace:
     path: "/etc/pam.d/su"
     regexp: '^[\s]*#[\s]*auth[\s]+required[\s]+pam_wheel\.so[\s]+use_uid$'

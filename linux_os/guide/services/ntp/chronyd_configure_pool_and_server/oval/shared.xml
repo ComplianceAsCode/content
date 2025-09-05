@@ -1,0 +1,58 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("A remote NTP Server for time synchronization should be specified (and dependencies are met)") }}}
+    <criteria comment="chrony.conf conditions are met" operator="OR">
+      <criterion test_ref="test_chrony_remote_server_configuration" />
+      <criterion test_ref="test_chrony_remote_pool_configuration" />
+    </criteria>
+  </definition>
+
+  <external_variable comment="remote vendor-approved time servers" datatype="string"
+   id="var_multiple_time_servers" version="1" />  
+
+  <local_variable id="temp_variable_test_servers" datatype="string" version="1" comment="a local variable which includes all vendor-approved time servers">
+      <concat>
+          <literal_component>^(?:server)[[:space:]]</literal_component>
+          <split delimiter=",">
+              <variable_component var_ref="var_multiple_time_servers" />
+          </split>
+          <literal_component>$</literal_component>
+      </concat>
+  </local_variable>
+
+  <external_variable comment="remote vendor-approved pool servers" datatype="string"
+   id="var_multiple_time_pools" version="1" />  
+
+  <local_variable id="temp_variable_test_pools" datatype="string" version="1" comment="a local variable which includes all vendor-approved pool servers">
+      <concat>
+          <literal_component>^(?:pool)[[:space:]]</literal_component>
+          <split delimiter=",">
+              <variable_component var_ref="var_multiple_time_pools" />
+          </split>
+          <literal_component>$</literal_component>
+      </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="Ensure remote NTP server is set" id="test_chrony_remote_server_configuration" version="1">
+    <ind:object object_ref="object_chrony_remote_server_configuration" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="Ensure at least one NTP server is set" id="object_chrony_remote_server_configuration" version="1">
+    <ind:filepath>{{{ chrony_conf_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="temp_variable_test_servers"/>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="Ensure remote NTP pool is set" id="test_chrony_remote_pool_configuration" version="1">
+    <ind:object object_ref="object_chrony_remote_pool_configuration" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="Ensure at least one NTP pool is set" id="object_chrony_remote_pool_configuration" version="1">
+    <ind:filepath>{{{ chrony_conf_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="temp_variable_test_pools"/>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

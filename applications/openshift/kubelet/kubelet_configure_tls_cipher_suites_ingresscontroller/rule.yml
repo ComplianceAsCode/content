@@ -24,7 +24,7 @@ references:
 ocil_clause: "TLS cipher suite configuration is not configured"
 
 ocil: |-
-  Run the following comman on the kubelete nodes(s):
+  Run the following command on the kubelet nodes(s):
   {{% raw %}}<pre>oc -n openshift-ingress-operator patch ingresscontroller/default --type merge -p '{"spec":{"tlsSecurityProfile":{"type":"Custom","custom":{"ciphers":["ECDHE-ECDSA-AES128-GCM-SHA256","ECDHE-RSA-AES128-GCM-SHA256","ECDHE-RSA-AES256-GCM-SHA384"],"minTLSVersion":"VersionTLS12"} } } }'</pre>{{% endraw %}}
 
 warnings:

@@ -8,7 +8,7 @@ description: |-
   {{{ describe_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-*/configmaps/scheduler-kubeconfig/kubeconfig", perms="0644") }}}
 
 rationale: |-
-  The kubeconfig for the Scheduler contains paramters for the scheduler
+  The kubeconfig for the Scheduler contains parameters for the scheduler
   to access the Kube API. You should restrict its file permissions to maintain
   the integrity of the file. The file should be writable by only the
   administrators on the system.

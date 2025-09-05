@@ -1,0 +1,154 @@
+aide_bin_path: /usr/sbin/aide
+aide_conf_path: /etc/aide.conf
+audisp_conf_path: /etc/audit
+auid: 1000
+basic_properties_derived: true
+benchmark_id: OCP-4
+benchmark_root: ../../applications
+chrony_conf_path: /etc/chrony.conf
+cpes:
+- ocp4:
+    check_id: installed_app_is_ocp4
+    name: cpe:/a:redhat:openshift_container_platform:4.1
+    title: Red Hat OpenShift Container Platform 4
+- ocp4-node:
+    check_id: installed_app_is_ocp4_node
+    name: cpe:/o:redhat:openshift_container_platform_node:4
+    title: Red Hat OpenShift Container Platform 4 Node
+- ocp4-node-on-ovn:
+    check_id: installed_app_is_ocp4_node_on_openshift-ovn
+    name: cpe:/a:redhat:openshift_container_platform_node_on_ovn:4
+    title: Red Hat OpenShift Container Platform 4 Node on OVN
+- ocp4-node-on-sdn:
+    check_id: installed_app_is_ocp4_node_on_openshift-sdn
+    name: cpe:/a:redhat:openshift_container_platform_node_on_sdn:4
+    title: Red Hat OpenShift Container Platform 4 Node on SDN
+- ocp4.6:
+    check_id: installed_app_is_ocp4_6
+    name: cpe:/a:redhat:openshift_container_platform:4.6
+    title: Red Hat OpenShift Container Platform 4.6
+- ocp4.7:
+    check_id: installed_app_is_ocp4_7
+    name: cpe:/a:redhat:openshift_container_platform:4.7
+    title: Red Hat OpenShift Container Platform 4.7
+- ocp4.8:
+    check_id: installed_app_is_ocp4_8
+    name: cpe:/a:redhat:openshift_container_platform:4.8
+    title: Red Hat OpenShift Container Platform 4.8
+- ocp4.9:
+    check_id: installed_app_is_ocp4_9
+    name: cpe:/a:redhat:openshift_container_platform:4.9
+    title: Red Hat OpenShift Container Platform 4.9
+- ocp4.10:
+    check_id: installed_app_is_ocp4_10
+    name: cpe:/a:redhat:openshift_container_platform:4.10
+    title: Red Hat OpenShift Container Platform 4.10
+- ocp4.11:
+    check_id: installed_app_is_ocp4_11
+    name: cpe:/a:redhat:openshift_container_platform:4.11
+    title: Red Hat OpenShift Container Platform 4.11
+- ocp4.12:
+    check_id: installed_app_is_ocp4_12
+    name: cpe:/a:redhat:openshift_container_platform:4.12
+    title: Red Hat OpenShift Container Platform 4.12
+- ocp4.13:
+    check_id: installed_app_is_ocp4_13
+    name: cpe:/a:redhat:openshift_container_platform:4.13
+    title: Red Hat OpenShift Container Platform 4.13
+- ocp4.14:
+    check_id: installed_app_is_ocp4_14
+    name: cpe:/a:redhat:openshift_container_platform:4.14
+    title: Red Hat OpenShift Container Platform 4.14
+- ocp4.15:
+    check_id: installed_app_is_ocp4_15
+    name: cpe:/a:redhat:openshift_container_platform:4.15
+    title: Red Hat OpenShift Container Platform 4.15
+- ocp4.16:
+    check_id: installed_app_is_ocp4_16
+    name: cpe:/a:redhat:openshift_container_platform:4.16
+    title: Red Hat OpenShift Container Platform 4.16
+- ocp4.17:
+    check_id: installed_app_is_ocp4_17
+    name: cpe:/a:redhat:openshift_container_platform:4.17
+    title: Red Hat OpenShift Container Platform 4.17
+- ocp4.18:
+    check_id: installed_app_is_ocp4_18
+    name: cpe:/a:redhat:openshift_container_platform:4.18
+    title: Red Hat OpenShift Container Platform 4.18
+- ocp4-on-aws:
+    check_id: installed_app_is_ocp4_on_aws
+    name: cpe:/a:redhat:openshift_container_platform_on_aws:4
+    title: Red Hat OpenShift Container Platform 4 on AWS
+- ocp4-on-azure:
+    check_id: installed_app_is_ocp4_on_azure
+    name: cpe:/a:redhat:openshift_container_platform_on_azure:4
+    title: Red Hat OpenShift Container Platform 4 on Azure
+- ocp4-on-gcp:
+    check_id: installed_app_is_ocp4_on_gcp
+    name: cpe:/a:redhat:openshift_container_platform_on_gcp:4
+    title: Red Hat OpenShift Container Platform 4 on GCP
+- ocp4-on-ovn:
+    check_id: installed_app_is_ocp4_on_openshiftovn
+    name: cpe:/a:redhat:openshift_container_platform_on_ovn:4
+    title: Red Hat OpenShift Container Platform 4 on OVN
+- ocp4-on-sdn:
+    check_id: installed_app_is_ocp4_on_openshiftsdn
+    name: cpe:/a:redhat:openshift_container_platform_on_sdn:4
+    title: Red Hat OpenShift Container Platform 4 on SDN
+cpes_root: ../../shared/applicability
+dconf_gdm_dir: gdm.d
+faillock_path: /var/run/faillock
+full_name: Red Hat OpenShift Container Platform 4
+gid_min: 1000
+groups: {}
+grub2_boot_path: /boot/grub2
+grub2_uefi_boot_path: /boot/grub2
+init_system: systemd
+nobody_gid: 65534
+nobody_uid: 65534
+pkg_system: rpm
+platform_package_overrides:
+  aarch64_arch: null
+  grub2: grub2-common
+  login_defs: login
+  no_ovirt: null
+  non-uefi: null
+  not_aarch64_arch: null
+  not_s390x_arch: null
+  ovirt: null
+  s390x_arch: null
+  sssd: sssd-common
+  sssd-ldap: null
+  uefi: null
+  zipl: s390utils-base
+product: ocp4
+profiles_root: ./profiles
+reference_uris:
+  anssi: http://www.ssi.gouv.fr/administration/bonnes-pratiques/
+  app-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
+  cis: https://www.cisecurity.org/benchmark/kubernetes/
+  cis-csc: https://www.cisecurity.org/controls/
+  cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
+  cnss: http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf
+  cobit5: https://www.isaca.org/resources/cobit
+  cui: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
+  dcid: not_officially_available
+  disa: https://public.cyber.mil/stigs/cci/
+  hipaa: https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf
+  isa-62443-2009: https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat
+  isa-62443-2013: https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu
+  ism: https://www.cyber.gov.au/acsc/view-all-content/ism
+  iso27001-2013: https://www.iso.org/standard/54534.html
+  nerc-cip: https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx
+  nist: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf
+  nist-csf: https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf
+  os-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os
+  ospp: https://www.niap-ccevs.org/Profile/PP.cfm
+  pcidss: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
+  pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
+  stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+  stigref: https://public.cyber.mil/stigs/srg-stig-tools/
+sshd_distributed_config: 'false'
+sysctl_remediate_drop_in_file: 'false'
+type: platform
+uid_min: 1000

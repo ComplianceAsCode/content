@@ -148,7 +148,7 @@ A rule itself contains these attributes:
     <tr class="even">
     <td><p><code>low</code></p></td>
     <td><p><code>CAT III</code></p></td>
-    <td><p>Any vulnerability, the existence of which degrades measures to protect againstloss of Confidentiality, Availability, or Integrity.</p></td>
+    <td><p>Any vulnerability, the existence of which degrades measures to protect against loss of Confidentiality, Availability, or Integrity.</p></td>
     </tr>
     </tbody>
     </table>
@@ -1240,6 +1240,60 @@ The `platform` property of a rule (or a group) can contain a [Boolean expression
 that describes the relationship of a set of individual CPEs (symbols), which would later be converted
 by the build system into the CPE AL definition in the XCCDF document.
 
+#### Package CPEs
+
+Package CPEs are used to define rule applicability based on presence of a package or of a specific version of the package.
+
+The `package` platform is defined in `shared/applicability/package.yml`.
+To add a new package-based CPE, simply create a new entry in this file.
+The platform is using the `platform_package` template which is defined in `shared/templates/platform_package`.
+
+The package platform supports version checking.
+That allows you to define a platform for specific version.
+For example, to make a rule applicable only on systems with `systemd` version 250 and newer, add the following to the `rule.yml`:
+
+    platform: package[systemd]>=250
+
+Only numeric versions are allowed, versions containing letters can't be used in the expressions.
+Versions with epochs are supported.
+It isn't mandatory to put a 0 epoch if the package doesn't have epoch.
+The 0 epoch will be prepended automatically by the build system in order to normalize the comparison.
+The generated OVAL, Bash and Ansible code will always contain epoch string.
+We don't support using the release component (eg. `-1` or `-1.el8`) in the version expressions.
+
+> **NOTE**: It's tricky to create a correct version expression due to existence of epoch and release components of the version in the rpm or deb package versions.
+For example, upstream package `foo` version `1.2.3` can be packaged in RHEL 8 as `foo-1.2.3-1.el8`.
+Imagine that you create a rule for a feature that has been introduced in upstream version `1.2.4` of this software.
+You would like to make the rule applicable if the `1.2.4` version or newer is installed.
+You would expect tha the rule will not be applicable if `foo-1.2.3-1.el8` (or older) is installed.
+However, in this example, the expression `package[foo]>1.2.3` will be evaluated as *true* because `1.2.3-1.el8` is greater than `1.2.3` using the `rpmvercmp` algorithm that is used by OVAL.
+That means that a correct expression in this example is `package[foo]>=1.2.4`.
+In general, find the first version where the feature you want is present and use the `>=` operator.
+On contrary, if you want to make some rule not applicable starting some version, use the `<` operator with that version.
+
+> **NOTE**: The package CPEs might seem a go-to approach for most of the applicability problems.
+But, in general, we recommend to derive rule applicability from operating system release version instead of basing that on a version of a specific package.
+The reason for this recommendation is that packages in Linux distributions might be patched, bug fixes and features sometimes get backported to older stable versions, so the behavior of the software might differ from upstream release behavior.
+If the check would be based on operating system version, you can track what packages are distributed there and what patches they contain.
+Examine the actual contents and changelog of the rpm/deb pakcage in the specific product.
+Then, use the `os_linux` platform instead of `package` platform.
+For example, use `os_linux[rhel]>=8.6` instead of `package[foo]>=1.2.4`, if you know that an up-to-date RHEL 8.6 and later comes with `foo` that contains the feature that you are interested in.
+
+#### OS Linux CPEs
+
+OS Linux CPEs are used to define rule applicability based on the operating system and its version.
+The platform name is `os_linux`.
+To limit the applicability of a rule to a specific version of the operating system, use this platform in the `platform` key in the `rule.yml` file.
+The platform supports versioned expressions.
+
+For example, if you want to make the rule applicable only on RHEL 8.6 and newer, add the following line to the `rule.yml`:
+
+   platform: os_linux[rhel]>=8.6
+
+The `os_linux` platform is defined in `shared/applicability/os_linux.yml`.
+To add a new CPE based on the OS type, add a new entry there.
+The platform is implemented using the `platform_os_linux` template which is defined in `shared/templates/platform_os_linux`.
+
 ## Tests (ctest)
 
 ComplianceAsCode uses ctest to orchestrate testing upstream. To run the
@@ -1449,7 +1503,7 @@ The logs will be located in the `logs_bash` directory.
 
 The ComplianceAsCode/content repo runs some end-to-end tests for the
 ocp4 content. These tests run over the OpenShift infrastructure, spawn
-an ephemeral cluster and run tests targetted at a specific profile.
+an ephemeral cluster and run tests targeted at a specific profile.
 
 The current workflow is as follows:
 
@@ -1501,7 +1555,7 @@ Where:
     scan is run. The second scan takes place after remediations are
     applied.
 
-Note that this format applies if the result of a rule will be the same accross
+Note that this format applies if the result of a rule will be the same across
 roles in the cluster.
 
 It is also possible to differentiate results between roles. For such a thing,
@@ -1537,7 +1591,7 @@ passing result. So `e2e.yml` has the following content:
 
 Let's look at another example:
 
-For the `api_server_encryption_provider_config` we want to apply a
+For the `api_server_encryption_provider_cipher` we want to apply a
 remediation which cannot be applied via the `compliance-operator`. So
 we'll need a manual remediation for this.
 
@@ -1582,7 +1636,7 @@ Here, we apply the remediation (through the `patch` command) and probe
 the cluster for status. Once the cluster converges, we exit the script
 with `0`, which is a successful status.
 
-The e2e test run will time out at **15 minuntes** if a script doesn't
+The e2e test run will time out at **15 minutes** if a script doesn't
 converge.
 
 Note that the scripts will be run in parallel, but the test run will

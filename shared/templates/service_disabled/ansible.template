@@ -4,21 +4,25 @@
 # complexity = low
 # disruption = low
 {{%- if init_system == "systemd" %}}
-- name: Disable service {{{ SERVICENAME }}}
+- name: Block Disable service {{{ SERVICENAME }}}
   block:
-  - name: Disable service {{{ SERVICENAME }}}
-    systemd:
-      name: "{{{ DAEMONNAME }}}.service"
-      enabled: "no"
-      state: "stopped"
-      masked: "yes"
-    ignore_errors: 'yes'
+    - name: Disable service {{{ SERVICENAME }}}
+      block:
+        - name: Disable service {{{ SERVICENAME }}}
+          systemd:
+            name: "{{{ DAEMONNAME }}}.service"
+            enabled: "no"
+            state: "stopped"
+            masked: "yes"
+      rescue:
+        - name: "Intentionally ignored previous 'Disable service {{{ SERVICENAME }}}' failure, service was already disabled"
+          meta: noop
 
 - name: "Unit Socket Exists - {{{ DAEMONNAME }}}.socket"
   command: systemctl list-unit-files {{{ DAEMONNAME }}}.socket
   register: socket_file_exists
   changed_when: False
-  ignore_errors: True
+  failed_when: socket_file_exists.rc not in [0, 1]
   check_mode: False
 
 - name: Disable socket {{{ SERVICENAME }}}

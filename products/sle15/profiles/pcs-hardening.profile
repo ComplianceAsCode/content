@@ -19,6 +19,11 @@ selections:
     - var_accounts_fail_delay=4
     - var_accounts_tmout=15_min
     - inactivity_timeout_value=15_minutes
+    - var_password_pam_dcredit=1
+    - var_password_pam_lcredit=1
+    - var_password_pam_minlen=15
+    - var_password_pam_ocredit=1
+    - var_password_pam_ucredit=1
     - sshd_idle_timeout_value=15_minutes
     - var_sudo_timestamp_timeout=always_prompt
     - var_password_pam_unix_remember=5

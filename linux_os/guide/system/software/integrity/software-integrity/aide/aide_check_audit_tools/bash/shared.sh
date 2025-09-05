@@ -14,11 +14,11 @@
       "/usr/sbin/autrace",
       "/usr/sbin/augenrules" ] %}}
 
-{{% if 'rhel' not in product and product != 'ol8' %}}
+{{% if 'rhel' not in product and 'ol' not in product %}}
 {{% set auditfiles = auditfiles + ["/usr/sbin/audispd"] %}}
 {{% endif %}}
 
-{{% if product == 'ol8' or 'rhel' in product %}}
+{{% if 'ol' in product or 'rhel' in product %}}
 {{% set auditfiles = auditfiles + ["/usr/sbin/rsyslogd"] %}}
 {{% endif %}}
 

@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R5
+    version: V1R6
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V1R5.
+    DISA STIG for Oracle Linux 8 V1R6.
 
 selections:
     ### Variables
@@ -82,6 +82,9 @@ selections:
     # OL08-00-010010
     - security_patches_up_to_date
 
+    # OL08-00-010019
+    - ensure_oracle_gpgkey_installed
+
     # OL08-00-010020
     - sysctl_crypto_fips_enabled
     - harden_sshd_ciphers_openssh_conf_crypto_policy
@@ -123,7 +126,6 @@ selections:
 
     # OL08-00-010130
     - set_password_hashing_min_rounds_logindefs
-    - accounts_password_pam_unix_rounds_system_auth
 
     # OL08-00-010140
     - grub2_uefi_password
@@ -236,6 +238,9 @@ selections:
 
     # OL08-00-010351
     - dir_group_ownership_library_dirs
+
+    # OL08-00-010358
+    - package_mailx_installed
 
     # OL08-00-010359
     - package_aide_installed
@@ -959,6 +964,7 @@ selections:
     - package_abrt_removed
     - package_abrt-libs_removed
     - package_abrt-server-info-page_removed
+    - package_libreport-plugin-logger_removed
 
     # OL08-00-040002
     - package_sendmail_removed

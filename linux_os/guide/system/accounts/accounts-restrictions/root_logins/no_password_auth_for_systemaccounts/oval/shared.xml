@@ -1,0 +1,32 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("Ensure that System Accounts Are Locked") }}}
+        <criteria >
+            <criterion test_ref="test_{{{ rule_id }}}"
+                comment="system accounts must not have a password defined"/>
+        </criteria>
+    </definition>
+
+    {{%- set system_accounts_object = "object_" ~ rule_id ~ "_objects" -%}}
+    {{{ create_system_accounts_list_object(system_accounts_object) }}}
+
+    <local_variable id="var_{{{ rule_id }}}_usernames" datatype="string" version="1"
+        comment="Variable including usernames of system accounts">
+        <object_component item_field="username" object_ref="{{{ system_accounts_object }}}"/>
+    </local_variable>
+
+    <unix:shadow_object id="object_{{{ rule_id }}}" version="1">
+        <unix:username var_ref="var_{{{ rule_id }}}_usernames" var_check="at least one"/>
+        <filter action="exclude">filter_{{{ rule_id }}}_no_passwords_or_locked_accounts</filter>
+    </unix:shadow_object>
+
+    <unix:shadow_state id="filter_{{{ rule_id }}}_no_passwords_or_locked_accounts" version="1">
+        <unix:password operation="pattern match">^(!|!!|!\*|\*|!locked).*$</unix:password>
+    </unix:shadow_state>
+
+    <unix:shadow_test id="test_{{{ rule_id }}}" version="1"
+        check="all" check_existence="none_exist"
+        comment="system accounts with a password defined">
+        <unix:object object_ref="object_{{{ rule_id }}}"/>
+    </unix:shadow_test>
+</def-group>

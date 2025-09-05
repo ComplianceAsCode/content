@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 7,multi_platform_ol,multi_platform_ubuntu
+# platform = Oracle Linux 7,Red Hat Enterprise Linux 7,multi_platform_ubuntu
 
 {{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
 {{% set pam_lastlog_path = "/etc/pam.d/login" %}}

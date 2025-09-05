@@ -83,6 +83,7 @@ controls:
     rules:
       - configure_network_policies
       - configure_network_policies_namespaces
+      - configure_network_policies_hypershift_hosted
 
   - id: Req-1.1.5
     title: 1.1.5 Description of groups, roles, and responsibilities for management of
@@ -150,6 +151,7 @@ controls:
     status: partial
     rules:
       - configure_network_policies_namespaces
+      - configure_network_policies_hypershift_hosted
 
   - id: Req-1.2.2
     title: 1.2.2 Secure and synchronize router configuration files.
@@ -200,6 +202,7 @@ controls:
     # TODO(jaosorior): Add rules to check for egress policies and ingress configurations
     rules:
       - configure_network_policies_namespaces
+      - configure_network_policies_hypershift_hosted
 
   - id: Req-1.3.2
     title: 1.3.2 Limit inbound Internet traffic to IP addresses within the DMZ.
@@ -214,6 +217,7 @@ controls:
     # TODO(jaosorior): Add rules to check for egress policies and ingress configurations
     rules:
       - configure_network_policies_namespaces
+      - configure_network_policies_hypershift_hosted
 
   - id: Req-1.3.3
     title: >-
@@ -278,6 +282,7 @@ controls:
     # TODO(jaosorior): Add rules to check for egress policies and ingress configurations
     rules:
       - configure_network_policies_namespaces
+      - configure_network_policies_hypershift_hosted
 
   - id: Req-1.3.7
     title: >-
@@ -474,7 +479,7 @@ controls:
       drift.
     status: automated
     rules:
-    - compliancesuite_exists
+    - scansettingbinding_exists
 
   - id: Req-2.2.5
     title: 2.2.5 Remove all unnecessary functionality, such as scripts, drivers, features,
@@ -730,7 +735,6 @@ controls:
   - machine_volume_encrypted
   - storageclass_encryption_enabled
   - api_server_encryption_provider_cipher
-  - api_server_encryption_provider_config
 
 - id: Req-3.5
   title: '3.5 Document and implement procedures to protect keys used to secure stored
@@ -816,7 +820,7 @@ controls:
         that is stored in the AWS KMS, separately from the data key.
       * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key, which is used to decrypt the data key is
         stored in the TPM (Trusted Platform Module), on the motherboard of the node.
-      * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored to disk. Only the provisionning
+      * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored to disk. Only the provisioning
         metadata is. A POST to the Tang server would allow the node to recompute the encryption key from this metadata.
         See https://github.com/latchset/tang
     status: inherently met
@@ -832,7 +836,7 @@ controls:
         The KEK is stored in the AWS KMS only.
       * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key is stored in the TPM (Trusted Platform Module) only.
         The encrypted data key is stored on the MBR of the disk only.
-      * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored to disk. Only the provisionning
+      * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored to disk. Only the provisioning
         metadata is. A POST to the Tang server would allow the node to recompute the encryption key from this metadata.
         See https://github.com/latchset/tang
     status: inherently met
@@ -2583,6 +2587,7 @@ controls:
     status: automated
     rules:
       - audit_log_forwarding_enabled
+      - audit_log_forwarding_webhook
       - partition_for_var_log_kube_apiserver
       - partition_for_var_log_oauth_apiserver
       - partition_for_var_log_openshift_apiserver
@@ -2600,6 +2605,7 @@ controls:
     status: automated
     rules:
       - audit_log_forwarding_enabled
+      - audit_log_forwarding_webhook
       - partition_for_var_log_kube_apiserver
       - partition_for_var_log_oauth_apiserver
       - partition_for_var_log_openshift_apiserver

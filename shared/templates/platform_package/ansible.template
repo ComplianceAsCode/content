@@ -1,0 +1,7 @@
+
+{{%- for spec in VER_SPECS -%}}
+{{{ ansible_pkg_conditional(PKGNAME, op=spec.op, ver=spec.ev_ver) | trim }}}
+{{%- if not loop.last %}} and {{% endif -%}}
+{{%- else -%}}
+{{{ ansible_pkg_conditional(PKGNAME) }}}
+{{%- endfor -%}}

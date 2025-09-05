@@ -32,6 +32,14 @@
     replace: '#{{{ SYSCTLVAR }}}'
   loop: "{{ find_sysctl_d.files }}"
 
+{{% if sysctl_remediate_drop_in_file == "true" %}}
+- name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.conf
+  replace:
+    path: "/etc/sysctl.conf"
+    regexp: '^[\s]*{{{ SYSCTLVAR }}}'
+    replace: '#{{{ SYSCTLVAR }}}'
+{{% endif %}}
+
 {{%- if SYSCTLVAL == "" or SYSCTLVAL is not string  %}}
 - (xccdf-var sysctl_{{{ SYSCTLID }}}_value)
 
@@ -45,6 +53,11 @@
     name: "{{{ SYSCTLVAR }}}"
     value: "{{{ SYSCTLVAL }}}"
 {{%- endif %}}
+{{% if sysctl_remediate_drop_in_file == "true" %}}
+    sysctl_file: "/etc/sysctl.d/{{{ SYSCTLVAR | replace('.','_') }}}.conf"
+{{% else %}}
+    sysctl_file: "/etc/sysctl.conf"
+{{% endif %}}
     state: present
     reload: yes
 

@@ -2,10 +2,10 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Ensure that the ClusterLogging and ClusterLogingForwarder resources are protected from unauthorized modification'
+title: 'Ensure that the ClusterLogging and ClusterLoggingForwarder resources are protected from unauthorized modification'
 
 description: |-
-    The ClusterLogging and ClusterLogingForwarder Custom Resources provide 
+    The ClusterLogging and ClusterLoggingForwarder Custom Resources provide 
     a way to configure the logging forwarding subsystem and modification access to it
     should be restricted to as-needed basis.
 
@@ -26,7 +26,7 @@ references:
     nist: AU-9
     srg: SRG-APP-000122-CTR-000260
 
-ocil_clause: 'modification access to ClusterLogging and ClusterLogingForwarder resources needs review'
+ocil_clause: 'modification access to ClusterLogging and ClusterLoggingForwarder resources needs review'
 
 ocil: |-
     {{{ ocil_cluster_logging_rbac_review("edit") | indent(4) }}}

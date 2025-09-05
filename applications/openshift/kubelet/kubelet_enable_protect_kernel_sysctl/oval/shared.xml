@@ -3,7 +3,6 @@
     {{{ oval_metadata("The sysctl parameter needs to be set before enabling kernel protection") }}}
   <criteria operator="OR">
     <criteria operator="AND">
-      <extend_definition comment="sysctl file exist" definition_ref="kubelet_enable_protect_kernel_sysctl_file_exist" />
       <extend_definition comment="sysctl kernel_panic" definition_ref="kubelet_enable_protect_kernel_sysctl_kernel_panic" />
       <extend_definition comment="sysctl kernel_panic_on_oops" definition_ref="kubelet_enable_protect_kernel_sysctl_kernel_panic_on_oops" />
       <extend_definition comment="sysctl kernel_keys_root_maxbytes" definition_ref="kubelet_enable_protect_kernel_sysctl_kernel_keys_root_maxbytes" />

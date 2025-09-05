@@ -17,7 +17,7 @@ controls:
             When a process terminates, Linux kernel executes the kernel/exit.c:do_exit() function which indirectly calls fs/file.c:close_files().
             The latter iterates over all file descriptors of the process and close them. 
             Since a socket also receives a file descriptor, the kernel close those, as well.
-        status_justificaton:
+        status_justification:
             The use of the "exit" command will end any communication session on the system.
             This is part of the kernel and cannot be removed without recompiling.
         status: inherently met

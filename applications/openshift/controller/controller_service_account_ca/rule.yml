@@ -7,7 +7,7 @@ title: 'Configure the Service Account Certificate Authority Key for the Controll
 
 {{% set default_jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["root-ca-file"]!=null then true else false end]' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config' %}}
-{{% set hypershift_path = '/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-controller-manager' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-controller-manager' %}}
 {{% set hypershift_jqfilter = '[[.items[0].spec.containers[0].args[] | select(. | match("--root-ca-file") )] | length | if . ==1 then true else false end]' %}}
 {{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
 {{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}

@@ -3,25 +3,24 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- block:
-    - name: "Detect .rhosts files in users home directories"
-      find:
-          paths: ["/root","/home"]
-          recurse: yes
-          patterns: .rhosts
-          hidden: yes
-          file_type: file
-      check_mode: no
-      register: rhosts_locations
+- name: "Detect .rhosts files in users home directories"
+  find:
+      paths: ["/root","/home"]
+      recurse: yes
+      patterns: .rhosts
+      hidden: yes
+      file_type: file
+  check_mode: no
+  register: rhosts_locations
 
-    - name: "Remove .rhosts files"
-      file:
-          path: "{{ item }}"
-          state: absent
-      with_items: "{{ rhosts_locations.files | map(attribute='path') | list }}"
-      when: rhosts_locations is success
+- name: "Remove .rhosts files"
+  file:
+      path: "{{ item }}"
+      state: absent
+  with_items: "{{ rhosts_locations.files | map(attribute='path') | list }}"
+  when: rhosts_locations is success
 
-    - name: "Remove /etc/hosts.equiv file"
-      file:
-          path: /etc/hosts.equiv
-          state: absent
+- name: "Remove /etc/hosts.equiv file"
+  file:
+      path: /etc/hosts.equiv
+      state: absent

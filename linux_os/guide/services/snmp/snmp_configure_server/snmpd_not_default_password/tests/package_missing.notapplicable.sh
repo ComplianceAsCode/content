@@ -1,3 +1,3 @@
 #!/bin/bash
 
-yum -y remove net-snmp
+{{{ bash_package_remove("net-snmp") }}}

@@ -1,0 +1,64 @@
+prodtype: ocp4
+
+title: "All configured ImageStreams are configured to periodically check for updates"
+
+description: |-
+    <p>
+    The configuration <tt>imagestream.spec.tags.importPolicy.scheduled</tt>
+    determines whether the imagestream is configured to periodically check
+    for updates. This is useful when working with an external container
+    image registry, to periodically re-import an image, for example to
+    get latest security updates.
+    </p>
+    <p>
+    You can set the scheduled update by calling:
+    <pre>$ oc patch imagestream NAME -n NAMESPACE --type merge -p '{"spec":{"tags":[{"name":"TAG_NAME","importPolicy":{"scheduled":true}}]}}'</pre>
+    </p>
+    <p>
+    For more information, follow the
+    {{{
+      weblink(link="https://docs.openshift.com/container-platform/latest/openshift_images/image-streams-manage.html#images-imagestream-import_image-streams-managing",
+              text="ImageStreams documentation")
+    }}}
+    </p>
+
+rationale: |-
+    Periodical refresh of container images helps keep the images up-to-date
+    and apply any relevant updates in a timely manner.
+
+severity: medium
+
+references:
+    nist: SI-2(c)
+    srg: SRG-APP-000456-CTR-001125
+
+{{% set api_path = '/apis/image.openshift.io/v1/imagestreams' %}}
+{{% set jqfilter = '[.items[]] | map(.spec.tags[]?.importPolicy.scheduled != true) | any' %}}
+
+ocil_clause: 'imagestream is not configured to perform periodical updates'
+
+ocil: |-
+  To list all the imagestreams and identify which imagestream tags are
+  configured to periodically check for updates (<pre>imagePolicy = { scheduled: true }</pre>), run the following command:
+  <pre>oc get imagestream  --all-namespaces -o jsonpath='{{{ jqfilter }}}'</pre>
+  Alternatively, to view a list of ImageStreams that do not schedule updates,
+  run:
+  <pre>oc get imagestreams -A -ojson | jq '.items[] | select(.spec.tags[]?.importPolicy.scheduled != true) | .metadata.name' | sort | uniq</pre>
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({api_path: jqfilter}) | indent(4) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: |-
+          {{{ openshift_filtered_path(api_path, jqfilter) }}}
+        yamlpath: "[:]"
+        check_existence: "all_exist"
+        entity_check: "all"
+        values:
+        - value: "true"
+          operation: "equals"
+

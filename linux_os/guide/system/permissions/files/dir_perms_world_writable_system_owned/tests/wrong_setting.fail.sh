@@ -3,7 +3,7 @@
 
 useradd testUser
 
-mkdir testDir
+mkdir -p testDir
 
 chown testUser  testDir/
 

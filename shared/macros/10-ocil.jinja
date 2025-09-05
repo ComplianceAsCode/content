@@ -1,5 +1,6 @@
 {{#
     How to log in to a Red Hat CoreOS Node
+
 #}}
 {{% macro rhcos_node_login_instructions() -%}}
     As a user with administrator privileges, log into a node in the relevant pool:
@@ -17,6 +18,7 @@
 
 {{#
   Macro that creates a check from :code:`oc` output
+
 #}}
 {{% macro ocil_oc_pipe_jq_filter(object, jqfilter, namespace=none, all_namespaces=false) -%}}
 oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ namespace }}}{{% endif %}} {{{ object }}} -o json | jq '{{{ jqfilter }}}'
@@ -42,6 +44,7 @@ Standard audit OCIL clause
 the command does not return a line, or the line is commented out
 {{%- endmacro %}}
 
+
 {{#
 OCIL and OCIL clause for ensuring that a privileged command is audited.
 
@@ -62,6 +65,7 @@ ocil: |-
     -a always,exit -F path={{{ path_prefix }}}{{{ cmd }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -k {{% if key %}}{{{ key }}}{{% else %}}privileged-{{{ cmd }}}{{% endif %}}
 {{% endmacro %}}
 
+
 {{#
     OCIL for adding a syscall to audit logs
 
@@ -79,6 +83,7 @@ ocil: |-
 
 {{#
     OCIL clause for adding a syscall to audit logs
+
 #}}
 {{% macro ocil_clause_entry_audit_syscall() -%}}
 ocil_clause: "no line is returned"
@@ -114,6 +119,7 @@ ocil: |
     If the system is configured to audit this activity, it will return a line.
 {{%- endmacro %}}
 
+
 {{#
     OCIL for adding a unsuccessful syscall to audit logs
 
@@ -143,6 +149,7 @@ ocil: |
 {{{ ocil_clause_entry_audit_syscall() }}}
 {{%- endmacro %}}
 
+
 {{#
     OCIL and OCIL clause for adding a unsuccessful syscall to audit logs
 
@@ -156,7 +163,6 @@ ocil: |
 
 {{{ ocil_clause_entry_audit_syscall() }}}
 {{%- endmacro %}}
-
 
 
 {{# Package macros #}}
@@ -228,6 +234,7 @@ ocil_clause: "the package is installed"
 
 :param package: The package to check
 :type package: str
+
 #}}
 {{%- macro dpkg_complete_ocil_entry_package(package) %}}
 ocil: |-
@@ -296,6 +303,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
   {{%- endif -%}}
 {{%- endmacro %}}
+
 
 {{#
     Inserts an OCIL Clause for a case when a service should be enabled.
@@ -366,6 +374,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
   {{%- endif -%}}
 {{%- endmacro %}}
+
 
 {{#
     Inserts an OCIL Clause for a case when a service should be disabled.
@@ -477,6 +486,7 @@ ocil: |-
 
 {{#
     An OCIL clause for an sshd option
+
 #}}
 {{% macro ocil_clause_entry_sshd_option() -%}}
 ocil_clause: "the required value is not set"
@@ -646,7 +656,7 @@ ocil_clause: '"{{{ part }}} is not a mountpoint" is returned'
     it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
 
 :param port: The port to allow
-:type port: int
+:type port: str
 :param proto: The protocol to allow
 :type proto: str
 :param service: The service to allow
@@ -684,6 +694,7 @@ ocil_clause: '"{{{ part }}} is not a mountpoint" is returned'
     If <code>firewalld</code> is configured to prevent access, no output will be returned.
 {{%- endmacro %}}
 
+
 {{# Kernel modules macros #}}
 
 {{#
@@ -697,7 +708,7 @@ ocil_clause: '"{{{ part }}} is not a mountpoint" is returned'
     If the system is configured to prevent the loading of the <code>{{{ module }}}</code> kernel module,
     it will contain lines inside any file in <code>/etc/modprobe.d</code> or the deprecated<code> /etc/modprobe.conf</code>.
     These lines instruct the module loading system to run another program (such as <code>/bin/true</code>) upon a module <code>install</code> event.
-    {{% if product in ["ol7", "ol8", "rhel7", "rhel8"] %}}
+    {{% if "ol" in product or product in ["rhel7", "rhel8"] %}}
     These lines can also instruct the module loading system to ignore the <code>{{{ module }}}</code> kernel module via <code>blacklist</code> keyword.
     {{% endif %}}
     Run the following command to search for such lines in all files in <code>/etc/modprobe.d</code> and the deprecated <code>/etc/modprobe.conf</code>:
@@ -735,6 +746,7 @@ ocil: |-
 
 ocil_clause: "{{{ sebool }}} is not set as expected"
 {{%- endmacro %}}
+
 
 {{#
     Describe how to check if given SELinux boolean is set depending on a variable.
@@ -819,8 +831,8 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{#
     Describe how to check if timer is enabled in systemd.
 
-:param service: The service to check
-:type service: str
+:param timer: The timer to check
+:type timer: str
 
 #}}
 {{%- macro systemd_ocil_timer_enabled(timer) %}}
@@ -863,7 +875,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 #}}
 {{%- macro ocil_file_permissions(file, perms) -%}}
     To check the permissions of <code>{{{ file }}}</code>,
-    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    {{% if product in ["ocp4", "rhcos4"] -%}}
     you'll need to log into a node in the cluster.
     {{{ rhcos_node_login_instructions() }}}
     Then,
@@ -900,7 +912,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 #}}
 {{%- macro ocil_file_owner(file, owner) -%}}
     To check the ownership of <code>{{{ file }}}</code>,
-    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    {{% if product in ["ocp4", "rhcos4"] -%}}
     you'll need to log into a node in the cluster.
     {{{ rhcos_node_login_instructions() }}}
     Then,
@@ -937,7 +949,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 #}}
 {{%- macro ocil_file_group_owner(file, group) -%}}
     To check the group ownership of <code>{{{ file }}}</code>,
-    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    {{% if product in ["ocp4", "rhcos4"] -%}}
     you'll need to log into a node in the cluster.
     {{{ rhcos_node_login_instructions() }}}
     Then,
@@ -954,8 +966,8 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 :param file: File to change
 :type file: str
-:param owner: the group owner for the file
-:type owner: str
+:param group: the group owner for the file
+:type group: str
 
 #}}
 {{%- macro ocil_clause_file_group_owner(file, group) -%}}
@@ -1076,12 +1088,14 @@ Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
 
 {{#
 Write out the OCIL for generating the common check for Firefox configuration
+
 :param preference: Name of preference
 :type preference: str
 :param config: configuration item name in Firefox
 :type config: str
-:param value: Expected value for preference
+:param value: Expected value for preference, "true" or "false"
 :type value: str
+
 #}}
 {{% macro ocil_firefox_config(preference, config, value) -%}}
 {{%- if value == "true" -%}}
@@ -1104,11 +1118,13 @@ ocil: |-
     <pre>lockPref("{{config}}", "{{value}}");</pre>
 {{%- endmacro %}}
 
+
 {{#
 Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification template
 
 :param syscall: system call
 :type syscall: str
+
 #}}
 {{% macro ocil_audit_rules_unsuccessful_file_modification(syscall, key) -%}}
 Verify {{{ full_name }}} generates an audit record for unsuccessful attempts to use the {{{ syscall }}} system call.
@@ -1138,6 +1154,7 @@ Create an OCIL text for rules using the audit_rules_unsuccessful_file_modificati
 :type syscall: str
 :param position: the position of the system call O_CREAT argument, eg. a2
 :type position: str
+
 #}}
 {{% macro ocil_audit_rules_unsuccessful_file_modification_o_creat(syscall, position) -%}}
 Verify {{{ full_name }}} generates an audit record for unsuccessful attempts to create files using the {{{ syscall }}} system call with O_CREAT flag.
@@ -1159,6 +1176,7 @@ The output should be the following:
 
 {{%- endmacro %}}
 
+
 {{#
 Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification_o_trunc_write template
 
@@ -1166,6 +1184,7 @@ Create an OCIL text for rules using the audit_rules_unsuccessful_file_modificati
 :type syscall: str
 :param position: the position of the system call O_TRUNC_WRITE argument, eg. a2
 :type position: str
+
 #}}
 {{% macro ocil_audit_rules_unsuccessful_file_modification_o_trunc_write(syscall, position) -%}}
 Verify {{{ full_name }}} generates an audit record for unsuccessful attempts to modify files using the {{{ syscall }}} system call with O_TRUNC_WRITE flag.
@@ -1187,6 +1206,7 @@ The output should be the following:
 
 {{%- endmacro %}}
 
+
 {{#
 Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification_rule_order template
 
@@ -1194,6 +1214,7 @@ Create an OCIL text for rules using the audit_rules_unsuccessful_file_modificati
 :type syscall: str
 :param position: the position of the system call O_TRUNC_WRITE and O_CREAT arguments, eg. a2
 :type position: str
+
 #}}
 {{% macro ocil_audit_rules_unsuccessful_file_modification_rule_order(syscall, position) -%}}
     Verify that rules for unsuccessful calls of the {{{ syscall }}} syscall are in the order shown below.
@@ -1218,13 +1239,14 @@ Create an OCIL text for rules using the audit_rules_unsuccessful_file_modificati
     -a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
 {{%- endmacro %}}
 
+
 {{# OpenShift Logging Macros #}}
 
 {{#
     OCIL for how to check RBAC permissions for cluster logging
 
 :param verb: The RBAC verb to check
-:type file: str
+:type verb: str
 
 #}}
 {{%- macro ocil_cluster_logging_rbac_review(verb) -%}}

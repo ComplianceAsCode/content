@@ -1,5 +1,4 @@
 #!/bin/bash
-# remediation = none
 
 useradd --system --shell /sbin/nologin -u 999 sysuser
 useradd -u 1000 testuser

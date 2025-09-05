@@ -3,7 +3,6 @@ from __future__ import print_function
 
 import logging
 
-
 import ssg_test_suite.oscap
 from ssg_test_suite.rule import get_viable_profiles
 

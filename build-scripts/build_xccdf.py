@@ -11,6 +11,7 @@ import ssg.utils
 import ssg.environment
 import ssg.id_translate
 import ssg.build_renumber
+import ssg.products
 
 
 def parse_args():
@@ -53,7 +54,8 @@ def main():
 
     env_yaml = ssg.environment.open_environment(
         args.build_config_yaml, args.product_yaml)
-    base_dir = os.path.dirname(args.product_yaml)
+    product_yaml = ssg.products.Product(args.product_yaml)
+    base_dir = product_yaml["product_dir"]
     benchmark_root = ssg.utils.required_key(env_yaml, "benchmark_root")
 
     # we have to "absolutize" the paths the right way, relative to the

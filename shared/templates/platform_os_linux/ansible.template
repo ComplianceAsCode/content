@@ -1,2 +1,6 @@
-{{%- set ansible_os_release_name_cond = 'ansible_distribution == "' + OS_ID_ANSIBLE + '"' -%}}
-  {{{ ansible_os_release_name_cond.strip() }}}
+{{%- for spec in VER_SPECS -%}}
+  ansible_distribution == '{{{ OS_ID_ANSIBLE }}}' and ansible_distribution_version is version('{{{ spec.ver }}}', '{{{ spec.op }}}')
+{{%- if not loop.last %}} and {{% endif -%}}
+{{%- else -%}}
+  ansible_distribution == '{{{ OS_ID_ANSIBLE }}}'
+{{%- endfor -%}}
