@@ -802,11 +802,16 @@ authselect enable-feature {{{ feature }}}
 
 #}}
 {{%- macro bash_enable_pam_faillock_directly_in_pam_files() -%}}
-{{% if 'debian' in product %}}
+{{% if 'debian' in product or 'sle15' in product %}}
 pam_file="/etc/pam.d/common-auth"
 if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "$pam_file" ; then
+    {{% if  'sle15' in product %}}
+    # insert before pam_unix.so
+    sed -i --follow-symlinks '/^auth.*required.*pam_unix\.so.*/i auth        required      pam_faillock.so preauth' "$pam_file"
+    {{% else %}}
     # insert at the top
     sed -i --follow-symlinks '/^# here are the per-package modules/i auth        required      pam_faillock.so preauth' "$pam_file"
+    {{% endif %}}
 fi
 if ! grep -qE '^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail.*$' "$pam_file" ; then
 
@@ -1136,7 +1141,7 @@ fi
 
 #}}
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
-{{% if 'ubuntu' in product or 'debian' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product or 'sle15' in product %}}
 AUTH_FILES=("/etc/pam.d/common-auth")
 SKIP_FAILLOCK_CHECK=true
 {{% else %}}
