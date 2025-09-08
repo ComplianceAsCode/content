@@ -2,7 +2,7 @@
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="6">
     {{{ oval_metadata(DESCRIPTION, rule_title=rule_title) }}}
 
-    {{% if 'debian' in product or 'ubuntu' in product %}}
+    {{% if 'debian' in product or 'ubuntu' in product or 'sle15' in product %}}
 
     <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
       <criteria operator="AND" comment="Check if pam_faillock.so is properly enabled">
@@ -126,7 +126,7 @@
       id="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_faillock_auth_regex"
       datatype="string" version="2"
       comment="regex to identify pam_faillock.so entries in auth section of pam files">
-    {{% if 'debian' in product %}}
+    {{% if 'debian' in product or 'sle15' in product %}}
     <value>^\s*auth\s+required\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail[\s\S]*^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc</value>
     {{% elif 'ubuntu' in product %}}
     <value>^\s*auth\s+(requisite|required)\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail</value>
@@ -141,7 +141,7 @@
       id="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_faillock_account_regex"
       datatype="string" version="2"
       comment="regex to identify pam_faillock.so entry in account section of pam files">
-    {{% if 'debian' in product or 'ubuntu' in product %}}
+    {{% if 'debian' in product or 'ubuntu' in product or 'sle15' in product %}}
     <value>^\s*account\s+required\s+pam_faillock\.so\s*(#.*)?$</value>
     {{% elif 'openeuler' in product or 'kylinserver' in product %}}
     <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_unix\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_faillock\.so</value>
