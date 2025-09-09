@@ -422,109 +422,6 @@ controls:
           - kernel_config_security_yama
           - kernel_config_security_writable_hooks
 
-    - id: SLES-15-150750075
-      title: Enable compile options for abnormal situations
-      levels:
-          - medium
-      status: automated
-      rules:
-          - kernel_config_bug
-          - kernel_config_panic_on_oops
-          - kernel_config_panic_timeout
-
-    - id: SLES-15-150750090
-      title: Enable compile options for the memory allocator
-      levels:
-          - medium
-      status: automated
-      rules:
-          - kernel_config_slab_freelist_random
-          - kernel_config_slab_freelist_hardened
-          - kernel_config_slab_merge_default
-          - kernel_config_slub_debug
-          - kernel_config_page_poisoning
-          - kernel_config_page_poisoning_no_sanity
-          - kernel_config_page_poisoning_zero
-          - kernel_config_compat_brk
-
-    - id: SLES-15-150750105
-      title: Enable compile options for safe memory management
-      levels:
-          - medium
-      status: automated
-      rules:
-          - kernel_config_strict_kernel_rwx
-          - kernel_config_debug_wx
-          - kernel_config_debug_fs
-          - kernel_config_stackprotector
-          - kernel_config_stackprotector_strong
-          - kernel_config_sched_stack_end_check
-          - kernel_config_hardened_usercopy
-          - kernel_config_hardened_usercopy_fallback
-          - kernel_config_vmap_stack
-          - kernel_config_refcount_full
-          - kernel_config_fortify_source
-          - kernel_config_acpi_custom_method
-          - kernel_config_devkmem
-          - kernel_config_proc_kcore
-          - kernel_config_compat_vdso
-          - kernel_config_security_dmesg_restrict
-          - kernel_config_retpoline
-          - kernel_config_legacy_vsyscall_none
-          - kernel_config_legacy_vsyscall_emulate
-          - kernel_config_legacy_vsyscall_xonly
-          - kernel_config_x86_vsyscall_emulation
-
-    - id: SLES-15-150750120
-      title: Enable compile options for safe kernel module management
-      levels:
-          - medium
-      status: automated
-      rules:
-          - kernel_config_strict_module_rwx
-          - kernel_config_module_sig
-          - kernel_config_module_sig_force
-          - kernel_config_module_sig_all
-          - kernel_config_module_sig_sha512
-          - kernel_config_module_sig_hash
-          - kernel_config_module_sig_key
-
-    - id: SLES-15-150750135
-      title: Enable compile options for safe kernel data structures handling
-      levels:
-          - low
-      status: automated
-      rules:
-          - kernel_config_debug_credentials
-          - kernel_config_debug_notifiers
-          - kernel_config_debug_list
-          - kernel_config_debug_sg
-          - kernel_config_bug_on_data_corruption
-
-    - id: SLES-15-150750150
-      title: Enable safe compile options for x86_64 architectures
-      levels:
-          - medium
-      status: automated
-      rules:
-          - kernel_config_default_mmap_min_addr
-          - kernel_config_randomize_base
-          - kernel_config_randomize_memory
-          - kernel_config_page_table_isolation
-          - kernel_config_ia32_emulation
-          - kernel_config_modify_ldt_syscall
-
-    - id: SLES-15-150750165
-      title: Enable safe compile options for x86_64 architectures
-      levels:
-          - medium
-      status: automated
-      rules:
-          - kernel_config_default_mmap_min_addr
-          - kernel_config_randomize_base
-          - kernel_config_arm64_sw_ttbr0_pan
-          - kernel_config_unmap_kernel_at_el0
-
     - id: SLES-15-150750180
       title: Enable Kernel Parameter to Enforce DAC on Hardlinks and Softlinks
       levels:
@@ -1722,12 +1619,6 @@ controls:
       rules:
           - sudoers_no_root_target
 
-    - id: SLES-15-600450015
-      title: Install the latest version of pam
-      levels:
-          - medium
-      status: pending
-
     - id: SLES-15-600450030
       title: Configure lockout for failed password attempts
       levels:
@@ -1787,24 +1678,6 @@ controls:
           - cracklib_accounts_password_pam_ocredit
           - var_password_pam_ocredit=1
 
-    - id: SLES-15-600450135
-      title: Configure password same consecutive characters
-      levels:
-          - medium
-      status: pending
-
-    - id: SLES-15-600450150
-      title: Configure password maximum sequential characters
-      levels:
-          - medium
-      status: pending
-
-    - id: SLES-15-600450165
-      title: Ensure PAM Enforces Password Requirements - Enforce for root User
-      levels:
-          - medium
-      status: pending
-
     - id: SLES-15-600450180
       title: Configure password history remember
       levels:
@@ -1814,18 +1687,6 @@ controls:
           - accounts_password_pam_pwhistory_remember
           - var_password_pam_remember=5
 
-    - id: SLES-15-600450195
-      title: Limit Password Reuse
-      levels:
-          - medium
-      status: pending
-
-    - id: SLES-15-600450210
-      title: Includes use_authtok in pam_pwhistory
-      levels:
-          - medium
-      status: pending
-
     - id: SLES-15-600450225
       title: Prevent Login to Accounts With Empty Password
       levels:
@@ -1833,12 +1694,6 @@ controls:
       status: automated
       rules:
           - no_empty_passwords
-
-    - id: SLES-15-600450240
-      title: Avoid using remember in pam_unix module
-      levels:
-          - medium
-      status: pending
 
     - id: SLES-15-600450255
       title: Set PAM's Password Hashing Algorithm
@@ -1849,12 +1704,6 @@ controls:
           - set_password_hashing_algorithm_systemauth
           - set_password_hashing_algorithm_passwordauth
           - var_password_hashing_algorithm_pam=sha512
-
-    - id: SLES-15-600450270
-      title: Require use_authtok for pam_unix.so
-      levels:
-          - medium
-      status: pending
 
     - id: SLES-15-600600015
       title: Configure password expiration
