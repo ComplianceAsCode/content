@@ -1,0 +1,42 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Get audit log file from /etc/audit/auditd.conf"
+  ansible.builtin.command: grep -iw ^log_file /etc/audit/auditd.conf
+  check_mode: False
+  failed_when: false
+  register: log_file_exists
+
+- name: "{{{ rule_title }}} - Set audit log file fact"
+  ansible.builtin.set_fact:
+      log_file_line: "{{ log_file_exists.stdout | split(' ') | last }}"
+
+- name: "{{{ rule_title }}} - Set default log_file if not configured in /etc/audit/auditd.conf"
+  ansible.builtin.set_fact:
+      log_file: "/var/log/audit/audit.log"
+  when: (log_file_exists is undefined) or (log_file_exists.stdout | length == 0)
+
+- name: "{{{ rule_title }}} - Set log_file from log_file_line if configured"
+  ansible.builtin.set_fact:
+      log_file: "{{ log_file_line }}"
+  when: (log_file_line is defined) and (log_file_line | length > 0)
+
+- name: "{{{ rule_title }}} - Get all audit backup log file(s)"
+  ansible.builtin.find:
+      path: "{{ log_file | dirname }}"
+      patterns: "{{ log_file | basename }}.*"
+  register: backup_files
+
+- name: "{{{ rule_title }}} - Set root as owner to all audit backup log file(s)"
+  ansible.builtin.file:
+      path: "{{ item }}"
+      owner: root
+  loop: "{{ backup_files.files| map(attribute='path') | list }}"
+
+- name: "{{{ rule_title }}} - Set root as owner to audit log file"
+  ansible.builtin.file:
+      path: "{{ log_file }}"
+      owner: root
