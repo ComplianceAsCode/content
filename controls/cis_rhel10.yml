@@ -131,6 +131,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - partition_for_tmp
 
     - id: 1.1.2.1.2
       title: Ensure nodev option set on /tmp partition (Automated)
@@ -165,6 +167,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - partition_for_dev_shm
 
     - id: 1.1.2.2.2
       title: Ensure nodev option set on /dev/shm partition (Automated)
@@ -560,6 +564,10 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      notes: |-
+          Address Space Layout Randomization (ASLR)
+      rules:
+          - sysctl_kernel_randomize_va_space
 
     - id: 1.5.9
       title: Ensure systemd-coredump ProcessSizeMax is configured (Automated)
@@ -605,6 +613,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      related_rules:
+          - configure_crypto_policy
 
     - id: 1.6.4
       title: Ensure system wide crypto policy disables cbc for ssh (Automated)
@@ -1034,6 +1044,7 @@ controls:
       status: automated
       rules:
           - chronyd_specify_remote_server
+          - var_multiple_time_servers=rhel
 
     - id: 2.3.3
       title: Ensure chrony is not run as the root user (Automated)
@@ -1051,6 +1062,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
+          - package_cron_installed
           - service_crond_enabled
 
     - id: 2.4.1.2
@@ -1407,6 +1419,9 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - sysctl_net_ipv6_conf_all_forwarding
+          - sysctl_net_ipv6_conf_all_forwarding_value=disabled
 
     - id: 3.3.2.2
       title: Ensure  net.ipv6.conf.default.forwarding is configured (Automated)
@@ -1414,6 +1429,9 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - sysctl_net_ipv6_conf_default_forwarding
+          - sysctl_net_ipv6_conf_default_forwarding_value=disabled
 
     - id: 3.3.2.3
       title: Ensure net.ipv6.conf.all.accept_redirects is configured (Automated)
@@ -1481,13 +1499,15 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - package_firewalld_installed
 
     - id: 4.1.2
       title: Ensure firewalld backend is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: pending
 
     - id: 4.1.3
       title: Ensure firewalld.service is configured (Automated)
@@ -1495,20 +1515,25 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - service_firewalld_enabled
 
     - id: 4.1.4
       title: Ensure firewalld active zone target is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: pending
 
     - id: 4.1.5
-      title: Ensure firewalld loopback traffic is configured (Manual)
+      title: Ensure firewalld loopback traffic is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: manual
+      status: supported
+      rules:
+          - firewalld_loopback_traffic_trusted
+          - firewalld_loopback_traffic_restricted
 
     - id: 4.1.6
       title: Ensure firewalld loopback source address traffic is configured (Manual)
@@ -1523,6 +1548,8 @@ controls:
           - l1_server
           - l1_workstation
       status: manual
+      related_rules:
+          - configure_firewalld_ports
 
     - id: 5.1.1
       title: Ensure access to /etc/ssh/sshd_config is configured (Automated)
@@ -1902,6 +1929,7 @@ controls:
       status: automated
       rules:
           - accounts_passwords_pam_faillock_deny
+          - var_accounts_passwords_pam_faillock_deny=5
 
     - id: 5.3.2.1.2
       title: Ensure password unlock time is configured (Automated)
@@ -1915,6 +1943,7 @@ controls:
           attack to legitimate users.
       rules:
           - accounts_passwords_pam_faillock_unlock_time
+          - var_accounts_passwords_pam_faillock_unlock_time=900
 
     - id: 5.3.2.1.3
       title: Ensure password failed attempts lockout includes root account (Automated)
@@ -1933,6 +1962,7 @@ controls:
       status: automated
       rules:
           - accounts_password_pam_difok
+          - var_password_pam_difok=2
 
     - id: 5.3.2.2.2
       title: Ensure password length is configured (Automated)
@@ -1942,6 +1972,7 @@ controls:
       status: automated
       rules:
           - accounts_password_pam_minlen
+          - var_password_pam_minlen=14
 
     - id: 5.3.2.2.3
       title: Ensure password complexity is configured (Manual)
@@ -1955,13 +1986,14 @@ controls:
           RHEL 10 in this new version. Rules related to other options are informed in related_rules.
           In short, minclass=4 alone can achieve the same result achieved by the combination of the
           other 4 options mentioned in the policy.
+      rules:
+          - accounts_password_pam_minclass
+          - var_password_pam_minclass=4
       related_rules:
           - accounts_password_pam_dcredit
           - accounts_password_pam_lcredit
           - accounts_password_pam_ocredit
           - accounts_password_pam_ucredit
-      rules:
-          - accounts_password_pam_minclass
 
     - id: 5.3.2.2.4
       title: Ensure password same consecutive characters is configured (Automated)
@@ -1971,6 +2003,7 @@ controls:
       status: automated
       rules:
           - accounts_password_pam_maxrepeat
+          - var_password_pam_maxrepeat=3
 
     - id: 5.3.2.2.5
       title: Ensure password maximum sequential characters is configured (Automated)
@@ -1988,6 +2021,7 @@ controls:
       status: automated
       rules:
           - accounts_password_pam_dictcheck
+          - var_password_pam_dictcheck=1
 
     - id: 5.3.2.2.7
       title: Ensure password quality is enforced for the root user (Automated)
@@ -2011,6 +2045,8 @@ controls:
       rules:
           - accounts_password_pam_pwhistory_remember_password_auth
           - accounts_password_pam_pwhistory_remember_system_auth
+          - var_password_pam_remember_control_flag=requisite_or_required
+          - var_password_pam_remember=24
       related_rules:
           - accounts_password_pam_retry
 
@@ -2071,6 +2107,7 @@ controls:
       rules:
           - set_password_hashing_algorithm_systemauth
           - set_password_hashing_algorithm_passwordauth
+          - var_password_hashing_algorithm_pam=yescrypt
 
     - id: 5.3.2.4.4
       title: Ensure pam_unix includes use_authtok (Automated)
@@ -2091,6 +2128,7 @@ controls:
       status: automated
       rules:
           - accounts_maximum_age_login_defs
+          - var_accounts_maximum_age_login_defs=365
           - accounts_password_set_max_life_existing
 
     - id: 5.4.1.2
@@ -2111,6 +2149,7 @@ controls:
       status: automated
       rules:
           - accounts_password_warn_age_login_defs
+          - var_accounts_password_warn_age_login_defs=7
           - accounts_password_set_warn_age_existing
 
     - id: 5.4.1.4
@@ -2125,6 +2164,7 @@ controls:
       rules:
           - set_password_hashing_algorithm_libuserconf
           - set_password_hashing_algorithm_logindefs
+          - var_password_hashing_algorithm=yescrypt
 
     - id: 5.4.1.5
       title: Ensure inactive password lock is configured (Automated)
@@ -2135,6 +2175,7 @@ controls:
       rules:
           - account_disable_post_pw_expiration
           - accounts_set_post_pw_existing
+          - var_account_disable_post_pw_expiration=30
 
     - id: 5.4.1.6
       title: Ensure all users last password change date is in the past (Automated)
@@ -2240,6 +2281,7 @@ controls:
       status: automated
       rules:
           - accounts_tmout
+          - var_accounts_tmout=15_min
 
     - id: 5.4.3.3
       title: Ensure default user umask is configured (Automated)
@@ -2321,7 +2363,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: pending
       notes: This rule conflicts with 6.2.3.3. More investigation is needed to properly solve this.
       related_rules:
           - journald_forward_to_syslog
@@ -2332,6 +2374,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - journald_compress
 
     - id: 6.2.2.4
       title: Ensure journald Storage is configured (Automated)
@@ -2339,6 +2383,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - journald_storage
 
     - id: 6.2.2.1.1
       title: Ensure systemd-journal-remote is installed (Automated)
@@ -2346,6 +2392,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - package_systemd-journal-remote_installed
 
     - id: 6.2.2.1.2
       title: Ensure systemd-journal-upload authentication is configured (Manual)
@@ -2359,7 +2407,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: pending
       notes: New templated rule is necessary.
 
     - id: 6.2.2.1.4
@@ -2368,6 +2416,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - socket_systemd-journal-remote_disabled
 
     - id: 6.2.3.1
       title: Ensure rsyslog is installed (Automated)
