@@ -2593,6 +2593,8 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      rules:
+          - audit_rules_sysadmin_actions
 
     - id: 6.3.3.2
       title: Ensure actions as another user are always logged (Automated)
@@ -2818,6 +2820,7 @@ controls:
       rules:
           - audit_rules_login_events_faillock
           - audit_rules_login_events_lastlog
+          - var_accounts_passwords_pam_faillock_dir=run
 
     - id: 6.3.3.24
       title: Ensure unlink file deletion events by users are collected (Automated)
