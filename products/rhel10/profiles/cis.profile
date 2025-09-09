@@ -2,17 +2,22 @@
 documentation_complete: true
 
 metadata:
+    version: 1.0.0
     SMEs:
-        - marcusburghardt
+        - mab879
+        - ggbecker
 
 reference: https://www.cisecurity.org/benchmark/red_hat_linux/
 
-title: 'DRAFT - CIS Red Hat Enterprise Linux 10 Benchmark for Level 2 - Server'
+title: 'CIS Red Hat Enterprise Linux 10 Benchmark for Level 2 - Server'
 
 description: |-
-    This is a draft profile for experimental purposes.
-    It is based on the CIS RHEL 9 profile, because an equivalent policy for RHEL 10 didn't yet
-    exist at time of the release.
+    This profile defines a baseline that aligns to the "Level 2 - Server"
+    configuration from the Center for Internet Security® Red Hat Enterprise
+    Linux 10 Benchmark™, v1.0.0, released 2025-08-27.
+
+    This profile includes Center for Internet Security®
+    Red Hat Enterprise Linux 10 CIS Benchmarks™ content.
 
 selections:
     - cis_rhel10:all:l2_server
