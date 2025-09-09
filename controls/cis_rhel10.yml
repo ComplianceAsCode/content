@@ -2579,8 +2579,12 @@ controls:
           - l2_workstation
       status: automated
       rules:
+          - auditd_data_retention_action_mail_acct
           - auditd_data_retention_admin_space_left_action
           - auditd_data_retention_space_left_action
+          - var_auditd_action_mail_acct=root
+          - var_auditd_admin_space_left_action=cis_rhel10
+          - var_auditd_space_left_action=cis_rhel10
 
     - id: 6.3.3.1
       title: Ensure modification of the /etc/sudoers file is collected (Automated)
@@ -2627,6 +2631,9 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      notes: This requirement is covered by 6.3.3.6.
+      related_rules:
+          - audit_rules_networkconfig_modification
 
     - id: 6.3.3.6
       title: Ensure events that modify /etc/issue and /etc/issue.net are collected (Automated)
@@ -2634,6 +2641,9 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      # TODO: The rule covering this requirement needs to be split into multiple rules.
+      rules:
+          - audit_rules_networkconfig_modification
 
     - id: 6.3.3.7
       title: Ensure events that modify /etc/hosts and /etc/hostname are collected (Automated)
@@ -2641,6 +2651,9 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      notes: This requirement is partially covered by 6.3.3.6.
+      related_rules:
+          - audit_rules_networkconfig_modification
 
     - id: 6.3.3.8
       title: Ensure events that modify /etc/sysconfig/network and /etc/sysconfig/network-scripts/ are collected (Automated)
@@ -2648,6 +2661,11 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      notes: This requirement is partially covered by 6.3.3.6.
+      rules:
+          - audit_rules_networkconfig_modification_network_scripts
+      related_rules:
+          - audit_rules_networkconfig_modification
 
     - id: 6.3.3.9
       title: Ensure events that modify /etc/NetworkManager directory are collected (Automated)
@@ -2655,6 +2673,9 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      notes: This requirement is covered by 6.3.3.6.
+      related_rules:
+          - audit_rules_networkconfig_modification
 
     - id: 6.3.3.10
       title: Ensure use of privileged commands are collected (Automated)
