@@ -759,7 +759,7 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      status: automated
+      status: pending
 
     - id: 2.1.1
       title: Ensure autofs services are not in use (Automated)
@@ -1135,7 +1135,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: pending
 
     - id: 2.4.1.8
       title: Ensure access to /etc/cron.d is configured (Automated)
@@ -1273,7 +1273,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: pending
 
     - id: 3.3.1.4
       title: Ensure net.ipv4.conf.all.send_redirects is configured (Automated)
@@ -1648,7 +1648,6 @@ controls:
           - l1_workstation
           - l2_server
       status: automated
-      notes: New templated rule is necessary for "disableforwarding" option.
       related_rules:
           - sshd_disable_tcp_forwarding
           - sshd_disable_x11_forwarding
@@ -1687,7 +1686,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: pending
       notes: |-
           The status was automated but we need to double check the approach used in this rule.
           Therefore I moved it to pending until deeper investigation.
@@ -1725,7 +1724,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: pending
       notes: |-
           The status was automated but we need to double check the approach used in this rule.
           Therefore I moved it to pending until deeper investigation.
@@ -1989,7 +1988,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: manual
+      status: automated
       notes: |-
           This requirement is expected to be manual. However, in previous versions of the policy
           it was already automated the configuration of "minclass" option. This posture was kept for
@@ -2065,7 +2064,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: planned
       notes: |-
           A new rule needs to be created to check and remediate the enforce_for_root option in
           /etc/security/pwhistory.conf. accounts_password_pam_enforce_root can be used as reference.
@@ -2099,7 +2098,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: pending
       notes: |-
           Usage of pam_unix.so module together with "remember" option is deprecated and is not
           recommened by this policy. Instead, it should be used remember option of pam_pwhistory
@@ -2225,7 +2224,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
-      notes: New rule is necessary.
+      rules:
+          - groups_no_zero_gid_except_root
 
     - id: 5.4.2.4
       title: Ensure root account access is controlled (Automated)
@@ -2252,9 +2252,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
-      notes: |-
-          There is no rule to ensure umask in /root/.bash_profile and /root/.bashrc. A new rule have
-          to be created. It can be based on accounts_umask_interactive_users.
+      rules:
+          - accounts_umask_root
 
     - id: 5.4.2.7
       title: Ensure system accounts do not have a valid login shell (Automated)
@@ -2280,9 +2279,8 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
-      notes: |-
-          It is necessary to create a new rule to check and remove nologin from /etc/shells.
-          The no_tmux_in_shells rule can be used as referece.
+      rules:
+          - no_nologin_in_shells
 
     - id: 5.4.3.2
       title: Ensure default user shell timeout is configured (Automated)
@@ -2364,7 +2362,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: pending
       notes: |-
           It is necessary to create a new rule to check the status of journald and rsyslog.
           It would also be necessary a new rule to disable or remove rsyslog.
