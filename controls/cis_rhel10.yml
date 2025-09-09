@@ -2132,13 +2132,14 @@ controls:
           - accounts_password_set_max_life_existing
 
     - id: 5.4.1.2
-      title: Ensure minimum password days is configured (Manual)
+      title: Ensure minimum password days is configured (Automated)
       levels:
           - l2_server
           - l2_workstation
-      status: manual
+      status: automated
       rules:
           - accounts_minimum_age_login_defs
+          - var_accounts_minimum_age_login_defs=1
           - accounts_password_set_min_life_existing
 
     - id: 5.4.1.3
