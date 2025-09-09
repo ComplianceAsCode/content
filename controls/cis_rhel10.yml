@@ -551,6 +551,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - sysctl_kernel_yama_ptrace_scope
 
     - id: 1.5.8
       title: Ensure kernel.randomize_va_space is configured (Automated)
