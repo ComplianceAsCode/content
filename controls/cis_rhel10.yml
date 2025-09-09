@@ -2680,6 +2680,8 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      rules:
+          - audit_rules_usergroup_modification_group
 
     - id: 6.3.3.13
       title: Ensure events that modify /etc/passwd information are collected (Automated)
@@ -2687,6 +2689,8 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      rules:
+          - audit_rules_usergroup_modification_passwd
 
     - id: 6.3.3.14
       title: Ensure events that modify /etc/shadow and /etc/gshadow are collected (Automated)
@@ -2694,6 +2698,9 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      rules:
+          - audit_rules_usergroup_modification_gshadow
+          - audit_rules_usergroup_modification_shadow
 
     - id: 6.3.3.15
       title: Ensure events that modify /etc/security/opasswd are collected (Automated)
@@ -2701,20 +2708,22 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      rules:
+          - audit_rules_usergroup_modification_opasswd
 
     - id: 6.3.3.16
       title: Ensure events that modify /etc/nsswitch.conf file are collected (Automated)
       levels:
           - l2_server
           - l2_workstation
-      status: automated
+      status: pending
 
     - id: 6.3.3.17
       title: Ensure events that modify /etc/pam.conf and /etc/pam.d/ information are collected (Automated)
       levels:
           - l2_server
           - l2_workstation
-      status: automated
+      status: pending
 
     - id: 6.3.3.18
       title: Ensure discretionary access control permission modification events chmod,fchmod,fchmodat,fchmodat2 are collected (Automated)
