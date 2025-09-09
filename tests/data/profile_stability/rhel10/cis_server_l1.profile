@@ -27,6 +27,7 @@ accounts_tmout
 accounts_umask_etc_bashrc
 accounts_umask_etc_login_defs
 accounts_umask_etc_profile
+accounts_umask_root
 accounts_user_dot_group_ownership
 accounts_user_dot_no_world_writable_programs
 accounts_user_dot_user_ownership
@@ -149,6 +150,7 @@ firewalld_loopback_traffic_trusted
 gid_passwd_group_same
 group_unique_id
 group_unique_name
+groups_no_zero_gid_except_root
 grub2_enable_selinux
 grub2_password
 has_nonlocal_mta
@@ -265,6 +267,10 @@ sudo_add_use_pty
 sudo_custom_logfile
 sudo_require_authentication
 sudo_require_reauthentication
+sysctl_fs_protected_hardlinks
+sysctl_fs_suid_dumpable
+sysctl_kernel_dmesg_restrict
+sysctl_kernel_kptr_restrict
 sysctl_kernel_randomize_va_space
 sysctl_kernel_yama_ptrace_scope
 sysctl_net_ipv4_conf_all_accept_redirects
