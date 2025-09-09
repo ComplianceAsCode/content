@@ -520,6 +520,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - sysctl_fs_protected_hardlinks
 
     - id: 1.5.3
       title: Ensure fs.protected_symlinks is configured (Automated)
@@ -527,6 +529,8 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      rules:
+          - sysctl_fs_protected_symlinks
 
     - id: 1.5.4
       title: Ensure fs.suid_dumpable is configured (Automated)
@@ -534,6 +538,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - sysctl_fs_suid_dumpable
 
     - id: 1.5.5
       title: Ensure kernel.dmesg_restrict is configured (Automated)
@@ -541,6 +547,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - sysctl_kernel_dmesg_restrict
 
     - id: 1.5.6
       title: Ensure kernel.kptr_restrict is configured (Automated)
@@ -548,6 +556,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - sysctl_kernel_kptr_restrict
 
     - id: 1.5.7
       title: Ensure kernel.yama.ptrace_scope is configured (Automated)
