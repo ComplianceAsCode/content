@@ -2433,7 +2433,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: supported
       related_rules:
           - package_rsyslog_installed
 
@@ -2442,7 +2442,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: supported
       related_rules:
           - service_rsyslog_enabled
 
@@ -2451,7 +2451,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: supported
       related_rules:
           - journald_forward_to_syslog
 
@@ -2460,7 +2460,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: supported
       related_rules:
           - rsyslog_filecreatemode
 
@@ -2485,7 +2485,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: supported
       related_rules:
           - rsyslog_nolisten
 
@@ -2904,10 +2904,6 @@ controls:
           - l2_workstation
       status: automated
       rules:
-          - audit_rules_kernel_module_loading_delete
-          - audit_rules_kernel_module_loading_finit
-          - audit_rules_kernel_module_loading_init
-          - audit_rules_kernel_module_loading_query
           - audit_rules_privileged_commands_kmod
 
     - id: 6.3.3.32
@@ -2916,6 +2912,9 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      rules:
+          - audit_rules_kernel_module_loading_init
+          - audit_rules_kernel_module_loading_finit
 
     - id: 6.3.3.33
       title: Ensure kernel "delete_module" loading unloading and modification is collected (Automated)
@@ -2923,6 +2922,8 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      rules:
+          - audit_rules_kernel_module_loading_delete
 
     - id: 6.3.3.34
       title: Ensure kernel "create_module" and "query_module" loading unloading and modification is collected (Automated)
@@ -2930,6 +2931,9 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      rules:
+          - audit_rules_kernel_module_loading_create
+          - audit_rules_kernel_module_loading_query
 
     - id: 6.3.3.35
       title: Ensure the audit configuration is loaded regardless of errors (Automated)
