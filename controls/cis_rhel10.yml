@@ -2548,6 +2548,7 @@ controls:
       status: automated
       rules:
           - auditd_data_retention_max_log_file
+          - var_auditd_max_log_file=6
 
     - id: 6.3.2.2
       title: Ensure audit logs are not automatically deleted (Automated)
@@ -2557,6 +2558,7 @@ controls:
       status: automated
       rules:
           - auditd_data_retention_max_log_file_action
+          - var_auditd_max_log_file_action=keep_logs
 
     - id: 6.3.2.3
       title: Ensure system is disabled when audit logs are full (Automated)
@@ -2799,6 +2801,9 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      rules:
+          - audit_rules_file_deletion_events_unlink
+          - audit_rules_file_deletion_events_unlinkat
 
     - id: 6.3.3.25
       title: Ensure rename file deletion events by users are collected (Automated)
@@ -2806,6 +2811,10 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
+      rules:
+          - audit_rules_file_deletion_events_rename
+          - audit_rules_file_deletion_events_renameat
+          - audit_rules_file_deletion_events_renameat2
 
     - id: 6.3.3.26
       title: Ensure events that modify the system's Mandatory Access Controls are collected (Automated)
