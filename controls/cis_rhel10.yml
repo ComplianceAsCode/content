@@ -1615,7 +1615,7 @@ controls:
           Therefore I moved it to pending until deeper investigation.
       related_rules:
           - sshd_use_approved_ciphers
-          - sshd_approved_ciphers=cis_rhel8
+          - sshd_approved_ciphers=cis_rhel10
 
     - id: 5.1.7
       title: Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured (Automated)
@@ -1683,7 +1683,7 @@ controls:
           Therefore I moved it to pending until deeper investigation.
       rules:
           - sshd_use_strong_kex
-          - sshd_strong_kex=cis_rhel8
+          - sshd_strong_kex=cis_rhel10
 
     - id: 5.1.13
       title: Ensure sshd LoginGraceTime is configured (Automated)
@@ -1721,7 +1721,7 @@ controls:
           Therefore I moved it to pending until deeper investigation.
       rules:
           - sshd_use_strong_macs
-          - sshd_strong_macs=cis_rhel8
+          - sshd_strong_macs=cis_rhel10
 
     - id: 5.1.16
       title: Ensure sshd MaxAuthTries is configured (Automated)
