@@ -30,6 +30,7 @@ accounts_tmout
 accounts_umask_etc_bashrc
 accounts_umask_etc_login_defs
 accounts_umask_etc_profile
+accounts_umask_root
 accounts_user_dot_group_ownership
 accounts_user_dot_no_world_writable_programs
 accounts_user_dot_user_ownership
@@ -60,6 +61,7 @@ audit_rules_file_deletion_events_renameat2
 audit_rules_file_deletion_events_unlink
 audit_rules_file_deletion_events_unlinkat
 audit_rules_immutable
+audit_rules_kernel_module_loading_create
 audit_rules_kernel_module_loading_delete
 audit_rules_kernel_module_loading_finit
 audit_rules_kernel_module_loading_init
@@ -226,6 +228,7 @@ firewalld_loopback_traffic_trusted
 gid_passwd_group_same
 group_unique_id
 group_unique_name
+groups_no_zero_gid_except_root
 grub2_audit_argument
 grub2_audit_backlog_limit_argument
 grub2_enable_selinux
@@ -272,6 +275,7 @@ no_empty_passwords_etc_shadow
 no_files_unowned_by_user
 no_forward_files
 no_netrc_files
+no_nologin_in_shells
 no_password_auth_for_systemaccounts
 no_shelllogin_for_systemaccounts
 package_aide_installed
@@ -361,6 +365,11 @@ sudo_add_use_pty
 sudo_custom_logfile
 sudo_require_authentication
 sudo_require_reauthentication
+sysctl_fs_protected_hardlinks
+sysctl_fs_protected_symlinks
+sysctl_fs_suid_dumpable
+sysctl_kernel_dmesg_restrict
+sysctl_kernel_kptr_restrict
 sysctl_kernel_randomize_va_space
 sysctl_kernel_yama_ptrace_scope
 sysctl_net_ipv4_conf_all_accept_redirects
