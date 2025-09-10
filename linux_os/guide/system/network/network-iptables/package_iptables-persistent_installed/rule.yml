@@ -17,7 +17,7 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="iptables-persistent") }}}'
 
-{{%- if product in [ "ubuntu2404" ] %}}
+{{%- if 'ubuntu' in product %}}
 template:
     name: package_installed_guard_var
     vars:
