@@ -19,7 +19,7 @@ references:
     nist-csf: PR.PT-1
     pcidss: Req-10.4
 
-{{%- if product in [ "ubuntu2404" ] %}}
+{{%- if 'ubuntu' in product %}}
 template:
     name: package_installed_guard_var
     vars:
