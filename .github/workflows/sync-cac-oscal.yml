@@ -62,16 +62,48 @@ jobs:
         if: ${{ env.SKIP == 'false' }}
         id: changed-files
         run: |
-          repo=${{ github.repository }}
+          OWNER="ComplianceAsCode"
+          REPO="content"
           # Fetch all pages of the files for the pull request
-          url="repos/$repo/pulls/${{ env.PR_NUMBER }}/files"
+          url="repos/$OWNER/$REPO/pulls/${{ env.PR_NUMBER }}/files"
           response=$(gh api "$url" --paginate)
           echo "$response" | jq -r '.[].filename' > filenames.txt
           echo "CHANGE_FOUND=false" >> $GITHUB_ENV
-          if grep -E "controls/|.profile|rule.yml|.var" filenames.txt ; then
+          cd cac-content
+          has_change() {
+            local file="$1"
+            local key="$2"
+            ! python compare_rule_var.py \
+              --owner "$OWNER" \
+              --repo "$REPO" \
+              "${{ env.PR_NUMBER }}" \
+              "$file" \
+              "$key"
+          }
+          while IFS= read -r line; do
+            case "$line" in
+              *controls/*|*.profile*)
+                echo "$line" >> updated_filenames.txt
+                ;;
+              *rule.yml)
+                if has_change "$line" "description"; then
+                  echo "Change detected: The description in '$line' was updated."
+                  echo "$line" >> updated_filenames.txt
+                fi
+                ;;
+              *.var)
+                if has_change "$line" "description" || has_change "$line" "options"; then
+                  echo "Change detected: The description or options in '$line' were updated."
+                  echo "$line" >> updated_filenames.txt
+                fi
+              ;;
+            esac
+          done < ../filenames.txt
+          if [[ -f valid_files.txt ]]; then
+            echo "Shows valid_files:"
+            cat valid_files.txt
             echo "CHANGE_FOUND=true" >> $GITHUB_ENV
           fi
-          cat filenames.txt
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
       # Step 6: Setup the complyscribe environment
@@ -130,8 +162,7 @@ jobs:
       - name: Handle the detected updates
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
-          cat filenames.txt
-          python cac-content/utils/handle_detected_updates.py 'filenames.txt' > updates 2>&1
+          python cac-content/utils/handle_detected_updates.py 'cac-content/valid_files.txt' > updates 2>&1
           cd complyscribe && source venv/bin/activate
           RH_PRODUCTS=${{ env.RH_PRODUCTS }}
           i=0
@@ -325,7 +356,7 @@ jobs:
           commit=$(git log -1 --format=%H)
           PR_BODY="This is an auto-generated commit $commit from CAC PR [${{ env.PR_NUMBER }}]("$CAC_PR_URL")"
           if [[ "$(git branch --show-current)" == "${{ env.BRANCH_NAME }}" ]]; then
-            if [ "${{ env.SQUASH_COUNT }} -eq 0" ]; then
+            if [ "${{ env.SQUASH_COUNT }}" -eq 0 ]; then
               echo "No commits from the CAC PR ${{ env.PR_NUMBER }}. Skipping PR creation."
             else
               # Check if the PR exists
