@@ -257,6 +257,20 @@ macro(ssg_build_ansible_playbooks PRODUCT)
     endif()
 endmacro()
 
+macro(ssg_build_ansible_roles)
+    set(ANSIBLE_ROLES_DIR "${CMAKE_BINARY_DIR}/ansible_roles")
+    add_custom_command(
+        OUTPUT "${ANSIBLE_ROLES_DIR}/ansible_roles-${PRODUCT}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/ansible_playbook_to_role.py" --dry-run "${ANSIBLE_ROLES_DIR}" --product "${PRODUCT}" --build-playbooks-dir "${CMAKE_BINARY_DIR}/ansible"
+        DEPENDS generate-all-profile-playbooks-${PRODUCT}
+        COMMENT "[${PRODUCT}-content] Generating Ansible Roles"
+    )
+    add_custom_target(
+        generate-${PRODUCT}-ansible-roles
+        DEPENDS "${ANSIBLE_ROLES_DIR}/ansible_roles-${PRODUCT}"
+    )
+endmacro()
+
 macro(ssg_build_remediations PRODUCT)
     message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet, anaconda, ignition, kubernetes and blueprint)...")
 
@@ -772,7 +786,16 @@ macro(ssg_build_product PRODUCT)
         )
         add_dependencies(${PRODUCT} ${PRODUCT}-profile-playbooks)
         add_dependencies(zipfile ${PRODUCT}-profile-playbooks)
+
+        if(SSG_ANSIBLE_ROLES_ENABLED)
+            ssg_build_ansible_roles(${PRODUCT})
+            add_dependencies(
+                ${PRODUCT}-content
+                generate-${PRODUCT}-ansible-roles
+            )
+        endif()
     endif()
+
 
     if("${PRODUCT_BASH_REMEDIATION_ENABLED}" AND SSG_BASH_SCRIPTS_ENABLED)
         ssg_build_profile_bash_scripts(${PRODUCT})
@@ -891,6 +914,18 @@ macro(ssg_build_product PRODUCT)
             endif()
             "
         )
+    endif()
+    if(SSG_ANSIBLE_PLAYBOOKS_ENABLED AND SSG_ANSIBLE_ROLES_ENABLED)
+        if(NOT IS_ABSOLUTE "${SSG_ANSIBLE_ROLES_INSTALL_DIR}")
+            set(DESTINATION_DIR "${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLES_INSTALL_DIR}")
+        else()
+            set(DESTINATION_DIR "${SSG_ANSIBLE_ROLES_INSTALL_DIR}")
+        endif()
+
+        install(
+            DIRECTORY "${CMAKE_BINARY_DIR}/ansible_roles/"
+            DESTINATION "${DESTINATION_DIR}"
+            )
     endif()
 
     if(ENABLE_SCAPVAL13)
