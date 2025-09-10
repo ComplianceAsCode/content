@@ -399,6 +399,8 @@ spec:
         value: $(tasks.prefetch-dependencies.results.SOURCE_ARTIFACT)
       - name: CACHI2_ARTIFACT
         value: $(tasks.prefetch-dependencies.results.CACHI2_ARTIFACT)
+      - name: ARGS
+        value: "--project-name=openshift/compliance-operator --report --org=86a5b6bf-8aad-4842-ab41-e5c7358c202e"
       runAfter:
       - build-image-index
       taskRef:
