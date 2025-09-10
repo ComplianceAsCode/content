@@ -612,8 +612,10 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
-      notes: This requirement is already satisfied by 1.6.1.
+      status: manual
+      notes: |-
+          It is necessary a new rule to ensure a module disabling sha1 in
+          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
       related_rules:
           - configure_crypto_policy
 
@@ -622,7 +624,10 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: manual
+      notes: |-
+          It is necessary a new rule to ensure a module disabling weak MACs in
+          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
       related_rules:
           - configure_crypto_policy
 
@@ -631,7 +636,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
+      status: manual
       notes: |-
           It is necessary a new rule to ensure a module disabling CBC in
           /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
