@@ -538,7 +538,7 @@ var_sshd_disable_compression=no
 var_sshd_set_keepalive=1
 var_sssd_certificate_verification_digest_function=sha512
 var_sudo_timestamp_timeout=always_prompt
-var_system_crypto_policy=fips
+var_system_crypto_policy=fips_stig
 var_time_service_set_maxpoll=18_hours
 var_user_initialization_files_regex=all_dotfiles
 wireless_disable_interfaces
