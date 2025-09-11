@@ -34,3 +34,10 @@ selections:
     - package_scap-security-guide_installed
     - set_password_hashing_yescrypt_cost_factor_logindefs
     - var_authselect_profile=local
+    - audit_rules_networkconfig_modification_network_scripts
+    - package_pam_pwquality_installed
+    - journald_compress
+    - socket_systemd-journal-remote_disabled
+    - package_systemd-journal-remote_installed
+    - journald_storage
+    - partition_for_dev_shm
