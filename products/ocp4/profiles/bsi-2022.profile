@@ -35,3 +35,15 @@ selections:
     ### This is a helper rule to fetch the required api resource for detecting OCP version
     - version_detect_in_ocp
     - version_detect_in_hypershift
+    # variables
+    - var_apiserver_tls_cipher_suites=2024-01-BSI-TR-02102-2
+    - var_apiserver_tls_cipher_suites_regex=2024-01-BSI-TR-02102-2
+    - var_etcd_tls_cipher_suites_regex=2024-01-BSI-TR-02102-2
+    - var_ingresscontroller_tls_cipher_suites_regex=2024-01-BSI-TR-02102-2
+    - var_ingresscontroller_tls_cipher_suites=2024-01-BSI-TR-02102-2
+    # to ensure that the cipher suites are used across all components, additional tests, which are not
+    # required in the control files for SYS.1.6 and APP.4.4, need to be added
+    # apiserver_tls_cipher_suites and kubelet_tls_cipher_suites are not needed, as they are covered by the
+    # controls for SYS.1.6 and APP.4.4
+    - ingress_controller_tls_cipher_suites
+    - etcd_check_cipher_suite
