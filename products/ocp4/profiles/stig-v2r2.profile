@@ -2,6 +2,7 @@
 documentation_complete: true
 
 platform: ocp4
+status: deprecated
 
 metadata:
     version: V2R2
@@ -23,10 +24,10 @@ filter_rules: '"ocp4-node" not in platform and "ocp4-master-node" not in platfor
 
 selections:
     - stig_ocp4:all
-  ### Variables
+    ### Variables
     - var_openshift_audit_profile=WriteRequestBodies
     - var_oauth_token_maxage=8h
-  ### Helper Rules
-  ### This is a helper rule to fetch the required api resource for detecting OCP version
+    ### Helper Rules
+    ### This is a helper rule to fetch the required api resource for detecting OCP version
     - version_detect_in_ocp
     - version_detect_in_hypershift
