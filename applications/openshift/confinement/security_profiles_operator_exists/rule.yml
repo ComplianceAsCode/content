@@ -25,6 +25,8 @@ ocil: |-
 
 severity: medium
 
+platform: not aarch64_arch
+
 warnings:
 - general: |-
     {{{ openshift_cluster_setting("/apis/operators.coreos.com/v1alpha1/namespaces/openshift-security-profiles/subscriptions/security-profiles-operator") | indent(4) }}}
