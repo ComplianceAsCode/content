@@ -1044,6 +1044,10 @@ controls:
           - file_owner_cron_allow
           - file_permissions_cron_allow
       status: automated
+      notes: |
+          Current benchmark requires cron.allow group owned by
+          root which will cause cron have no access. See ticket:
+          https://workbench.cisecurity.org/tickets/21619
 
     - id: 2.4.2.1
       title: Ensure at is restricted to authorized users (Automated)
@@ -2100,7 +2104,7 @@ controls:
       rules:
           - ensure_root_access_controlled
       status: automated
-      notes:
+      notes: |
           This rule doesn't come with a remediation, as the exact requirement allows root to either
           have a password or be locked.
 
