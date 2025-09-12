@@ -27,3 +27,4 @@ selections:
     - '!ensure_redhat_gpgkey_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!package_kea_removed'
+    - '!no_nis_in_nsswitch'

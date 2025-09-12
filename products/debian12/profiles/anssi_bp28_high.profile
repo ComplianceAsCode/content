@@ -71,3 +71,9 @@ selections:
 
   # The following rule is not applicable to Debian 12
   - '!logind_session_timeout'
+  - '!ldap_client_tls_cacertpath'
+  - '!ldap_client_start_tls'
+  - '!service_chronyd_enabled'
+  - '!audit_rules_mac_modification_etc_selinux'
+  - '!no_nis_in_nsswitch'
+

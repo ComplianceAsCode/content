@@ -58,3 +58,6 @@ selections:
 
   # The following rule is not applicable to Debian 13
   - '!logind_session_timeout'
+  - '!ldap_client_tls_cacertpath'
+  - '!ldap_client_start_tls'
+  - '!no_nis_in_nsswitch'

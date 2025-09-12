@@ -99,3 +99,8 @@ selections:
 
     # The following rules are not applicable to SLE 15
     - '!logind_session_timeout'
+    - '!ldap_client_start_tls'
+    - '!ldap_client_tls_cacertpath'
+    - '!service_chronyd_enabled'
+    - '!audit_rules_mac_modification_etc_selinux'
+    - '!no_nis_in_nsswitch'

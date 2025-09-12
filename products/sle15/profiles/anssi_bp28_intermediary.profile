@@ -69,3 +69,6 @@ selections:
 
     # The following rules are not applicable to SLE 15
     - '!logind_session_timeout'
+    - '!ldap_client_start_tls'
+    - '!ldap_client_tls_cacertpath'
+    - '!no_nis_in_nsswitch'

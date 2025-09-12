@@ -38,3 +38,6 @@ selections:
     - '!sudo_add_env_reset'
     - '!package_xinetd_removed'
     - '!package_kea_removed'
+    - '!no_nis_in_nsswitch'
+    - '!ldap_client_tls_cacertpath'
+    - '!ldap_client_start_tls'

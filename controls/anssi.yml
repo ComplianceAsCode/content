@@ -1386,6 +1386,8 @@ controls:
           - sssd_enable_pam_services
           - sssd_ldap_configure_tls_reqcert
           - sssd_ldap_start_tls
+          - ldap_client_start_tls
+          - ldap_client_tls_cacertpath
       related_rules:
           - package_sssd-ipa_installed
 
@@ -1422,7 +1424,7 @@ controls:
           Another such service is winbind which is by default configured to connect securely to Samba domains.
           Other relevant services are NIS and Hesiod. These should not be used.
       status: pending
-      related_rules:
+      rules:
           - no_nis_in_nsswitch
 
     - id: R70
@@ -1451,6 +1453,7 @@ controls:
           # Based on DAT-PA-012 R5
           - package_chrony_installed
           - service_chronyd_or_ntpd_enabled
+          - service_chronyd_enabled
           - chronyd_specify_remote_server
           - chronyd_configure_pool_and_server
 
@@ -1561,6 +1564,8 @@ controls:
           - audit_rules_privileged_commands_modprobe
           - audit_rules_privileged_commands_rmmod
           - audit_rules_privileged_commands_kmod
+
+          - audit_rules_mac_modification_etc_selinux
 
           - audit_rules_immutable
           - service_auditd_enabled

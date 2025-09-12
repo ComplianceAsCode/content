@@ -25,6 +25,7 @@ selections:
     - var_password_hashing_algorithm=SHA512
     - var_password_pam_unix_rounds=65536
     - '!timer_logrotate_enabled'
+    - '!service_chronyd_enabled'
 
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
@@ -65,6 +66,9 @@ selections:
     - '!audit_rules_dac_modification_fchmodat2'
     - '!package_rsh-server_removed'
     - '!package_rsh_removed'
+
+    # Rules that only for higher levels
+    - '!audit_rules_mac_modification_etc_selinux'
 
     # Following rules are not applicable to RHEL
     - '!package_talk_removed'

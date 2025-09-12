@@ -120,3 +120,8 @@ selections:
     - '!ensure_almalinux_gpgkey_installed'
     - '!audit_rules_file_deletion_events_renameat2'
     - '!audit_rules_dac_modification_fchmodat2'
+    - '!audit_rules_mac_modification_etc_selinux'
+    - '!no_nis_in_nsswitch'
+    - '!service_chronyd_enabled'
+    - '!ldap_client_start_tls'
+    - '!ldap_client_tls_cacertpath'
