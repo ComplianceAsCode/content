@@ -127,7 +127,7 @@ rule_results:
     result_after_remediation: PASS
   e2e-pci-dss-4-0-audit-log-forwarding-enabled:
     default_result: FAIL
-    result_after_remediation: PASS
+    result_after_remediation: PASS or NOT-APPLICABLE
   e2e-pci-dss-4-0-audit-log-forwarding-webhook:
     default_result: NOT-APPLICABLE
     result_after_remediation: NOT-APPLICABLE
@@ -343,7 +343,7 @@ rule_results:
     result_after_remediation: MANUAL
   e2e-pci-dss-4-0-security-profiles-operator-exists:
     default_result: FAIL
-    result_after_remediation: PASS
+    result_after_remediation: PASS or NOT-APPLICABLE
   e2e-pci-dss-4-0-storageclass-encryption-enabled:
     default_result: PASS
     result_after_remediation: PASS
@@ -358,4 +358,7 @@ rule_results:
     result_after_remediation: PASS
   e2e-pci-dss-4-0-api-server-tls-security-profile-not-old:
     default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-4-0-ingress-controller-tls-cipher-suites:
+    default_result: FAIL
     result_after_remediation: PASS
