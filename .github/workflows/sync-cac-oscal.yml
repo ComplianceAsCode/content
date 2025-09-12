@@ -86,8 +86,8 @@ jobs:
                 echo "$line" >> updated_filenames.txt
                 ;;
               *rule.yml)
-                if has_change "$line" "description"; then
-                  echo "Change detected: The description in '$line' was updated."
+                if has_change "$line" "title"; then
+                  echo "Change detected: The title in '$line' was updated."
                   echo "$line" >> updated_filenames.txt
                 fi
                 ;;
