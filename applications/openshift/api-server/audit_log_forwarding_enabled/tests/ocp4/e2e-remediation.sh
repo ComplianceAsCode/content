@@ -1,20 +1,18 @@
 #!/bin/bash
 set -xe
 
-ocp_version=$(oc version -ojson | jq -r '.openshiftVersion')
-clo_v6_available_from="4.14.0"
+export CLO_CHANNEL=$(oc get packagemanifest -o jsonpath='{range .status.channels[*]}{.name}{"\n"}{end}' -n openshift-marketplace cluster-logging | sort | tail -1)
 
-if [ "$(printf '%s\n' "$ocp_version" "$clo_v6_available_from" | sort -V | head -n1)" = "$clo_v6_available_from" ]; then
+if [ "${CLO_CHANNEL}" =~ stable-6\.* ]; then
     echo "OCP ${ocp_version} has CLO 6.0 is available for install";
     install_v6=true
 fi
 
+echo "installing cluster-logging-operator from channel ${CLO_CHANNEL}"
 if [ "$install_v6" = true ] ; then
-    echo "installing cluster-logging-operator V6.0"
-    oc apply -f ${ROOT_DIR}/ocp-resources/e2e/cluster-logging-install-observability.yaml
+    envsubst < <(cat ${ROOT_DIR}/ocp-resources/e2e/cluster-logging-install-observability.yaml) | oc apply -f
 else
-    echo "installing cluster-logging-operator"
-    oc apply -f ${ROOT_DIR}/ocp-resources/e2e/cluster-logging-install.yaml
+    envsusbst < <(cat ${ROOT_DIR}/ocp-resources/e2e/cluster-logging-install.yaml) | oc apply -f
 fi
 
 sleep 30
