@@ -6,6 +6,7 @@
 <table>
   <thead>
     <th>Mapping</th>
+    <th>CCE</th>
     <th>Rule Title</th>
     <th>Description</th>
     <th>Rationale</th>
@@ -16,6 +17,9 @@
     {{% for rule in rules -%}}
     <tr>
       <td>{{{ "<br/>".join(rule.relevant_refs) }}}</td>
+      <td xml:lang="en-US">
+        {{{ rule.identifiers["cce"] }}}
+      </td>
       <td>{{{ rule.title }}}</td>
       <td xml:lang="en-US">
         {{{ rule.description }}}

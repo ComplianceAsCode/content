@@ -7,6 +7,8 @@ set(PRODUCT "rhel10")
 
 ssg_build_product(${PRODUCT})
 
+ssg_build_html_ref_tables("${PRODUCT}" "table-${PRODUCT}-{ref_id}refs" "anssi;cis;cui;nist;pcidss")
+
 ssg_build_html_cce_table(${PRODUCT})
 
 ssg_build_html_srgmap_tables(${PRODUCT})
