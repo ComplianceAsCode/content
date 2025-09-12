@@ -39,7 +39,7 @@ fixtext: '{{{ fixtext_service_enabled(service="chronyd") }}}'
 
 srg_requirement: '{{{ srg_requirement_service_enabled(service="chronyd") }}}'
 
-{{%- if product in [ "ubuntu2404" ] %}}
+{{%- if 'ubuntu' in product %}}
 template:
     name: service_enabled_guard_var
     vars:
