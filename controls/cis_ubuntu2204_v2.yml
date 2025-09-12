@@ -19,7 +19,6 @@ reference_type: cis_v2
 product: ubuntu2204
 
 controls:
-
     - id: 1.1.1.1
       title: Ensure cramfs kernel module is not available (Automated)
       levels:
@@ -2101,7 +2100,8 @@ controls:
       rules:
           - ensure_root_access_controlled
       status: automated
-      notes: This rule doesn't come with a remediation, as the exact requirement allows root to either
+      notes:
+          This rule doesn't come with a remediation, as the exact requirement allows root to either
           have a password or be locked.
 
     - id: 5.4.2.5
