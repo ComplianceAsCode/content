@@ -17,6 +17,9 @@ platform: package[systemd]
 
 severity: medium
 
+identifiers:
+    cce@sle15: CCE-92566-9
+
 {{%- if product in ["rhel8", "rhel9", "sle15"] %}}
 template:
     name: systemd_dropin_configuration
