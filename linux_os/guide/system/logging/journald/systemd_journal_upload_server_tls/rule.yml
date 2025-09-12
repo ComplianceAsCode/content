@@ -37,6 +37,6 @@ fixtext: |-
     Configure systemd-journal-upload ServerCertificateFile to {{{ xccdf_value("var_journal_upload_server_certificate_file") }}}
     Configure systemd-journal-upload TrustedCertificateFile to {{{ xccdf_value("var_journal_upload_server_trusted_certificate_file") }}}
 
-{{% if product in ['ubuntu2404'] %}}
+{{% if 'ubuntu' in product %}}
 platform: service_disabled[rsyslog]
 {{% endif %}}
