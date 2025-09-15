@@ -2,16 +2,15 @@
 documentation_complete: true
 
 platform: ocp4-node
-status: deprecated
 
 metadata:
-    version: V2R2
+    version: V2R3
     SMEs:
         - Vincent056
         - rhmdnd
         - yuumasato
 
-reference: https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_RH_OpenShift_Container_Platform_4-12_V2R2_STIG.zip
+reference: https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_RH_OpenShift_Container_Platform_4-x_V2R3_STIG.zip
 
 title: 'DISA STIG for Red Hat OpenShift Container Platform 4 - Node level'
 

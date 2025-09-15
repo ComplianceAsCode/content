@@ -18,4 +18,15 @@ description: |-
     This profile contains configuration checks that align to the DISA STIG for
     Red Hat OpenShift Container Platform 4.
 
-extends: stig-v2r3
+filter_rules: '"ocp4-node" not in platform and "ocp4-master-node" not in platform and "ocp4-node-on-sdn"
+    not in platform and "ocp4-node-on-ovn" not in platform'
+
+selections:
+    - stig_ocp4:all
+    ### Variables
+    - var_openshift_audit_profile=WriteRequestBodies
+    - var_oauth_token_maxage=8h
+    ### Helper Rules
+    ### This is a helper rule to fetch the required api resource for detecting OCP version
+    - version_detect_in_ocp
+    - version_detect_in_hypershift
