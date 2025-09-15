@@ -155,6 +155,8 @@ has_nonlocal_mta
 inactivity_timeout_value=15_minutes
 journald_compress
 journald_storage
+kernel_module_atm_disabled
+kernel_module_can_disabled
 kernel_module_cramfs_disabled
 kernel_module_dccp_disabled
 kernel_module_freevxfs_disabled

@@ -108,6 +108,8 @@ controls:
           - l1_server
           - l2_workstation
       status: automated
+      rules:
+          - kernel_module_firewire-core_disabled
 
     - id: 1.1.1.10
       title: Ensure usb-storage kernel module is not available (Automated)
@@ -1211,6 +1213,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - kernel_module_atm_disabled
 
     - id: 3.2.2
       title: Ensure can kernel module is not available (Automated)
@@ -1218,6 +1222,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
+      rules:
+          - kernel_module_can_disabled
 
     - id: 3.2.3
       title: Ensure dccp kernel module is not available (Automated)
@@ -2945,7 +2951,7 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      status: automated
+      status: pending
 
     - id: 6.3.3.36
       title: Ensure the audit configuration is immutable (Automated)
