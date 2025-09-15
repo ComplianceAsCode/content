@@ -1,4 +1,4 @@
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'sle15' in product %}}
 # platform = Not Applicable
 {{% else %}}
 # platform = multi_platform_all
