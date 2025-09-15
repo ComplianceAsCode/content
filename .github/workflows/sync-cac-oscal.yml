@@ -99,9 +99,9 @@ jobs:
               ;;
             esac
           done < ../filenames.txt
-          if [[ -f valid_files.txt ]]; then
-            echo "Shows valid_files:"
-            cat valid_files.txt
+          if [[ -f updated_filenames.txt ]]; then
+            echo "Shows updated_filenames:"
+            cat updated_filenames.txt
             echo "CHANGE_FOUND=true" >> $GITHUB_ENV
           fi
         env:
@@ -162,7 +162,7 @@ jobs:
       - name: Handle the detected updates
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
-          python cac-content/utils/handle_detected_updates.py 'cac-content/valid_files.txt' > updates 2>&1
+          python cac-content/utils/handle_detected_updates.py 'cac-content/updated_filenames.txt' > updates 2>&1
           cd complyscribe && source venv/bin/activate
           RH_PRODUCTS=${{ env.RH_PRODUCTS }}
           i=0
