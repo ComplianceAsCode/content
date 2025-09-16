@@ -29,6 +29,6 @@ template:
     prm_name: root_unlock_time
     prm_regex_conf: ^[\s]*root_unlock_time[\s]*=[\s]*([0-9]+)
     prm_regex_pamd: ^[\s]*auth[\s]+.+[\s]+pam_faillock.so[\s]+[^\n]*root_unlock_time=([0-9]+)
-    ext_variable: var_accounts_passwords_pam_faillock_unlock_time
+    ext_variable: var_accounts_passwords_pam_faillock_root_unlock_time
     description: The unlock time after number of failed logins should be set correctly.
     variable_lower_bound: use_ext_variable
