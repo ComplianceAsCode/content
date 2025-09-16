@@ -9,7 +9,7 @@ description: |-
 
     Ensure that the file <tt>/etc/security/faillock.conf</tt> contains the following entry:
     <tt>root_unlock_time=&lt;interval-in-seconds&gt;</tt> where
-    <tt>interval-in-seconds</tt> is <tt>{{{xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
+    <tt>interval-in-seconds</tt> is <tt>{{{xccdf_value("var_accounts_passwords_pam_faillock_root_unlock_time") }}}</tt> or greater.
 
     If <tt>root_unlock_time</tt> is set to <tt>0</tt>, it may enable attacker to
     apply denial of service to legitimate users.
