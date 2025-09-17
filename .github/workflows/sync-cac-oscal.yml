@@ -73,7 +73,7 @@ jobs:
           has_change() {
             local file="$1"
             local key="$2"
-            ! python compare_rule_var.py \
+            ! python utils/compare_rule_var.py \
               --owner "$OWNER" \
               --repo "$REPO" \
               "${{ env.PR_NUMBER }}" \
@@ -81,6 +81,10 @@ jobs:
               "$key"
           }
           while IFS= read -r line; do
+            # Exclude lines containing 'tests/data/'
+            if [[ "$line" == *tests/data/* ]]; then
+              continue
+            fi
             case "$line" in
               *controls/*|*.profile*)
                 echo "$line" >> updated_filenames.txt
