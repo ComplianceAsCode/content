@@ -3,9 +3,9 @@ documentation_complete: true
 metadata:
     version: 2.0.0
     SMEs:
+        - alanmcanonical
         - mpurg
         - dodys
-        - alanmcanonical
         - ericeberry
 
 reference: https://www.cisecurity.org/benchmark/ubuntu_linux
