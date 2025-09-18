@@ -6,5 +6,10 @@ useradd user_test
 TESTDIR="/usr/lib/dir/"
 
 mkdir -p "${TESTDIR}"
+{{% if 'ol8' in product %}}
+touch "${TESTDIR}"/test_me.so
+chown user_test "${TESTDIR}"/test_me.so
+{{% else %}}
 touch "${TESTDIR}"/test_me
 chown user_test "${TESTDIR}"/test_me
+{{% endif %}}
