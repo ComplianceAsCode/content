@@ -1193,8 +1193,7 @@ selections:
     - sshd_use_approved_kex_ordered_stig
 
     # OL08-00-040350
-    - tftpd_uses_secure_mode
-    - tftpd_uses_secure_mode.severity=medium
+    - tftp_uses_secure_mode_systemd
 
     # OL08-00-040360
     - package_vsftpd_removed
