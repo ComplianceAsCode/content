@@ -15,5 +15,10 @@ title: Bootable containers
 # containers don't contain kernel.
 #
 check_id: bootc
-bash_conditional: "{ rpm --quiet -q kernel ;} && { rpm --quiet -q rpm-ostree ;} && { rpm --quiet -q bootc ;} && { ! rpm --quiet -q openshift-kubelet ;}"
-ansible_conditional: '"kernel" in ansible_facts.packages and "rpm-ostree" in ansible_facts.packages and "bootc" in ansible_facts.packages and not "openshift-kubelet" in ansible_facts.packages'
+{{% if product == "fedora" %}}
+{{% set kernel_package = "kernel-core" %}}
+{{% else %}}
+{{% set kernel_package = "kernel" %}}
+{{% endif %}}
+bash_conditional: "{ rpm --quiet -q {{{ kernel_package }}} ;} && { rpm --quiet -q rpm-ostree ;} && { rpm --quiet -q bootc ;} && { ! rpm --quiet -q openshift-kubelet ;}"
+ansible_conditional: '"{{{ kernel_package }}}" in ansible_facts.packages and "rpm-ostree" in ansible_facts.packages and "bootc" in ansible_facts.packages and not "openshift-kubelet" in ansible_facts.packages'
