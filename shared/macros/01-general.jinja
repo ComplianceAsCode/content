@@ -351,6 +351,11 @@ Describe allowing access to a service in firewalld.
     To configure the system to prevent the <code>{{{ module }}}</code>
     kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
     <pre>install {{{ module }}} /bin/false</pre>
+    This entry will cause a non-zero return value during a <code>{{{ module }}}</code> module installation
+    and additionally convey the meaning of the entry to the user in form of an error message. 
+    If you would like to omit a non-zero return value and an error message, you may want to add a different line instead
+    (both <code>/bin/true</code> and <code>/bin/false</code> are allowed by OVAL and will be accepted by the scan):
+    <pre>install {{{ module }}} /bin/true</pre>
     {{% if "ol" in product or product in ["rhel8"] %}}
     To configure the system to prevent the <code>{{{ module }}}</code> from being used,
     add the following line to file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
