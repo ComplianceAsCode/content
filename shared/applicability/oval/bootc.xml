@@ -8,7 +8,7 @@
       <criterion comment="openshift-kubelet is not installed" test_ref="bootc_platform_test_openshift_kubelet_removed" />
     </criteria>
   </definition>
-{{% if product == "fedora" %}}
+{{% if product == "fedora" or "rhel" in product %}}
 {{% set kernel_package = "kernel-core" %}}
 {{% else %}}
 {{% set kernel_package = "kernel" %}}
