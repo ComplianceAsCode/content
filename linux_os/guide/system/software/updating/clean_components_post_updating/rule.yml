@@ -91,5 +91,5 @@ srg_requirement: |-
     {{{ full_name }}} must remove all software components after updated versions have been installed.
 
 {{% if 'ubuntu' not in product %}}
-platform: package[{{{ pkg_manager }}}]
+platform: package[{{{ pkg_manager }}}] and not bootc
 {{% endif %}}

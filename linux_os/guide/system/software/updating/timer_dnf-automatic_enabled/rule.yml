@@ -28,7 +28,7 @@ ocil_clause: 'the dnf-automatic.timer is not enabled'
 
 ocil: "{{{ ocil_timer_enabled(timer='dnf-automatic') }}}"
 
-platform: not bootc
+platform: not bootc and not container
 
 template:
     name: timer_enabled

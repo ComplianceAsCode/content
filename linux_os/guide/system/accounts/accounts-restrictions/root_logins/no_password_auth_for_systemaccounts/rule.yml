@@ -40,3 +40,5 @@ ocil: |-
             awk -v user="$account" -F: '$1~account { print $1 ":" $2 }' /etc/shadow
         done</pre>
     Verify if all accounts are locked.
+
+platform: system_with_kernel
