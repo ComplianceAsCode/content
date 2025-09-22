@@ -20,9 +20,9 @@
     {{% elif product == 'slmicro6' %}}
       <ind:pattern operation="pattern match">^database_in=file:/([/a-z.]+)$</ind:pattern>
     {{% elif product in [ 'ol10', 'rhel10', 'fedora' ] %}}
-      <ind:pattern operation="pattern match">^database_in=file:@@{DBDIR}/([a-z.]+)$</ind:pattern>
+      <ind:pattern operation="pattern match">^database_in=file:(?:@@{DBDIR})?/(?:[a-z.]+/)*[a-z.]+$</ind:pattern>
     {{% else %}}
-      <ind:pattern operation="pattern match">^database=file:@@{DBDIR}/([a-z.]+)$</ind:pattern>
+      <ind:pattern operation="pattern match">^database=file:(?:@@{DBDIR})?/(?:[a-z.]+/)*[a-z.]+$</ind:pattern>
     {{% endif %}}
     <!-- From aide.conf(5) - "If there are multiple database_out lines, then the first one is used" =>
                   therefore we will retrieve only the first instance -->
