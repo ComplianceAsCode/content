@@ -11,6 +11,7 @@
     value: "3"
     create: yes
     no_extra_spaces: yes
+  register: result_ini
 
 - name: "Prevent user modification of GNOME3 Login Number of Failures"
   ansible.builtin.lineinfile:
@@ -18,6 +19,8 @@
     regexp: '^/org/gnome/login-screen/allowed-failures$'
     line: '/org/gnome/login-screen/allowed-failures'
     create: yes
+  register: result_lineinfile
 
 - name: Dconf Update
   ansible.builtin.command: dconf update
+  when: result_ini is changed or result_lineinfile is changed

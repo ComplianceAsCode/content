@@ -11,6 +11,7 @@
     value: "false"
     create: yes
     no_extra_spaces: yes
+  register: result_ini1
 
 - name: "Disable Geolocation in GNOME3 - clock location tracking"
   community.general.ini_file:
@@ -19,6 +20,7 @@
     option: gelocation
     value: "false"
     create: yes
+  register: result_ini2
 
 - name: "Prevent user modification of GNOME geolocation - location tracking"
   ansible.builtin.lineinfile:
@@ -26,6 +28,7 @@
     regexp: '^/org/gnome/system/location/enabled$'
     line: '/org/gnome/system/location/enabled'
     create: yes
+  register: result_lineinfile1
 
 - name: "Prevent user modification of GNOME geolocation - clock location tracking"
   ansible.builtin.lineinfile:
@@ -33,6 +36,8 @@
     regexp: '^/org/gnome/clocks/geolocation$'
     line: '/org/gnome/clocks/geolocation'
     create: yes
+  register: result_lineinfile2
 
 - name: Dconf Update
   ansible.builtin.command: dconf update
+  when: result_ini1 is changed or result_ini2 is changed or result_lineinfile1 is changed or result_lineinfile2 is changed

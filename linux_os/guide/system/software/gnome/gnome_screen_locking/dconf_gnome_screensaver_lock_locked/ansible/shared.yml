@@ -9,6 +9,8 @@
     regexp: '^/org/gnome/desktop/screensaver/lock-enabled$'
     line: '/org/gnome/desktop/screensaver/lock-enabled'
     create: yes
+  register: result_lineinfile
 
 - name: Dconf Update
   ansible.builtin.command: dconf update
+  when: result_lineinfile is changed
