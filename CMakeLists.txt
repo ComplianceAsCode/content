@@ -37,7 +37,7 @@ set(SSG_PATCH_VERSION 79)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_TARGET_OVAL_MAJOR_VERSION "5" CACHE STRING "Which major version of OVAL are we targetting. Only 5 is supported at the moment.")
-set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Only 11 is supported at the moment.")
+set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Only 11, up to 11.3, is supported at the moment.")
 set(SSG_TARGET_OVAL_VERSION "${SSG_TARGET_OVAL_MAJOR_VERSION}.${SSG_TARGET_OVAL_MINOR_VERSION}")
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
 
@@ -191,8 +191,8 @@ find_python_module(prometheus_client)
 find_python_module(requests)
 find_python_module(trestle)
 
-if(NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    message(WARNING "You are targeting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.11 only!")
+if(NOT (SSG_TARGET_OVAL_VERSION VERSION_GREATER_EQUAL "5.11" AND SSG_TARGET_OVAL_VERSION VERSION_LESS_EQUAL "5.11.3"))
+    message(WARNING "You are targeting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test up to 5.11.3 only!")
 endif()
 
 # OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support it.
