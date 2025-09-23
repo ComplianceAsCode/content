@@ -24,6 +24,7 @@ identifiers:
 
 references:
     srg: SRG-OS-000471-GPOS-00215
+    stigid@ol8: OL08-00-030645
     stigid@sle15: SLES-15-030015
 
 
@@ -40,4 +41,5 @@ template:
     name: audit_rules_watch
     vars:
         path: /etc/cron.d/
+        key@ol8: cronjobs
         key: actions

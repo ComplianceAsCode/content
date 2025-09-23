@@ -902,6 +902,10 @@ selections:
     # OL08-00-030640
     - file_audit_tools_group_ownership
 
+    # OL08-00-030645
+    - audit_rules_etc_cron_d
+    - audit_rules_var_spool_cron
+
     # OL08-00-030650
     - aide_check_audit_tools
 
