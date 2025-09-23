@@ -13,7 +13,7 @@
 {{% else %}}
 {{% set kernel_package = "kernel" %}}
 {{% endif %}}
-{{{ oval_test_package_installed(package="{{{ kernel_package }}}", test_id="bootc_platform_test_kernel_installed") }}}
+{{{ oval_test_package_installed(package=kernel_package, test_id="bootc_platform_test_kernel_installed") }}}
 {{{ oval_test_package_installed(package="rpm-ostree", test_id="bootc_platform_test_rpm_ostree_installed") }}}
 {{{ oval_test_package_installed(package="bootc", test_id="bootc_platform_test_bootc_installed") }}}
 {{{ oval_test_package_removed(package="openshift-kubelet", test_id="bootc_platform_test_openshift_kubelet_removed") }}}
