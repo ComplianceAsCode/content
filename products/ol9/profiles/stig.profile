@@ -1,3 +1,4 @@
+---
 documentation_complete: true
 
 metadata:
@@ -11,6 +12,5 @@ description: |-
     This profile contains configuration checks that align to the
     DISA STIG for Oracle Linux 9 V1R2.
 
-
 selections:
-  - stig_ol9:all
+    - stig_ol9:all
