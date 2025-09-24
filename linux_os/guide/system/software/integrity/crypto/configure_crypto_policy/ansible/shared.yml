@@ -20,5 +20,11 @@
     line: "{{ var_system_crypto_policy }}"
     create: yes
 
+- name: Check current Crypto Policy (runtime)
+  ansible.builtin.command: /usr/bin/update-crypto-policies --show
+  changed_when: False
+  register: current_crypto_policy
+
 - name: Verify that Crypto Policy is Set (runtime)
   ansible.builtin.command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
+  when: current_crypto_policy.stdout.strip() != var_system_crypto_policy
