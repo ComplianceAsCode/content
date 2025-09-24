@@ -13,12 +13,13 @@
     state: present
 {{% endif %}}
 
-- name: "{{{ rule_title }}}"
-  ansible.builtin.lineinfile:
-    path: /etc/crypto-policies/config
-    regexp: '^(?!#)(\S+)$'
-    line: "{{ var_system_crypto_policy }}"
-    create: yes
+- name: "{{{ rule_title }}} - Check current crypto policy (runtime)"
+  ansible.builtin.command: /usr/bin/update-crypto-policies --show
+  register: current_crypto_policy
+  changed_when: false
+  failed_when: false
+  check_mode: false
 
-- name: Verify that Crypto Policy is Set (runtime)
+- name: "{{{ rule_title }}} - Verify that Crypto Policy is Set (runtime)"
   ansible.builtin.command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
+  when: current_crypto_policy.stdout.strip() != var_system_crypto_policy
