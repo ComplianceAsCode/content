@@ -1085,7 +1085,7 @@ The `references` key in `rule.yml` maps the rule to a requirement of an external
 If a control file is used to map the policy requirements, then the references don't need to be specified in `rule.yml`.
 Instead, the build system is able to assign the references to rules automatically at the build time.
 This feature of the build system saves time and avoids data duplication, because the references are centralized in the control file, and they are not specified in `rule.yml` files.
-To use the automated reference assignement, the `reference_type` key must be added to the control file.
+To use the automated reference assignment, the `reference_type` key must be added to the control file.
 The value of this key represents the type of reference that will be assigned.
 
 For example, to instruct the build system to use the control file to automatically assign `anssi` references to all rules listed in the control file, add the following line to the control file:

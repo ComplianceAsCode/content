@@ -18,7 +18,7 @@ selections:
     ## FCS_CKM.1 Cryptographic Key Generation
 
     ### FCS_CKM.1.1: https://www.niap-ccevs.org/MMO/PP/-424-/#FCS_CKM.1.1
-    ### The OS shall generate asymetric cryptographic
+    ### The OS shall generate asymmetric cryptographic
     ### keys in accordance with a specified cryptographic key
     ### generation algorithm.
 
@@ -154,7 +154,7 @@ selections:
     # 5.1.2 User Data Protection (FDP)
 
     #######################################################
-    ## FDP_ACF_EXT.1 Access Controlls for Protecting User Data
+    ## FDP_ACF_EXT.1 Access Controls for Protecting User Data
 
     ### FDP_ACF_EXT.1.1: https://www.niap-ccevs.org/MMO/PP/-424-/#FDP_ACF_EXT.1.1
     ### The OS shall implement access controls which can prohibit
@@ -400,7 +400,7 @@ selections:
     #### USER ENABLE (Success/Failure)
 
 
-    #### GROUP/ROLE ADD (Succes/Failure)
+    #### GROUP/ROLE ADD (Success/Failure)
     - audit_rules_privileged_commands_newgidmap
     - audit_rules_privileged_commands_newgrp
     - audit_rules_privileged_commands_newuidmap
@@ -487,7 +487,7 @@ selections:
     ### FPT_ASLR_EXT.1.1: https://www.niap-ccevs.org/MMO/PP/-424-/#FPT_ASLR_EXT.1.1
     ### The OS shall always randomize address space memory locations
     ### with [selection: 8, [assignment: number greater than 8]] bits of
-    ### entropy except for [assignment: list of explicity exceptions]
+    ### entropy except for [assignment: list of explicit exceptions]
 
     #######################################################
     ## FPT_SBOP_EXT.1 Stack Buffer Overflow Protection
@@ -509,7 +509,7 @@ selections:
     ###
     ### ] prior to its execution through the use of [selection:
     ###     - a digital signature using a hardware-protected
-    ###       asymetric key,
+    ###       asymmetric key,
     ###     - a hardware-protected hash]
 
     #######################################################
@@ -569,7 +569,7 @@ selections:
     ## FIA_AFL.1 Authentication failure handling (Refined)
 
     ### FIA_AFL.1.1: https://www.niap-ccevs.org/MMO/PP/-424-/#FIA_AFL.1.1
-    ### The OS shall detet when [selection:
+    ### The OS shall detect when [selection:
     ###     - [assignment: positive integer number],
     ###     - an administrator configurable positive integer within
     ###       [assignment: range of acceptable values]
@@ -582,7 +582,7 @@ selections:
     ### ]
 
     ### FIA_AFL.1.2: https://www.niap-ccevs.org/MMO/PP/-424-/#FIA_AFL.1.2
-    ### When the defined number of unsuccesful authentication attempts
+    ### When the defined number of unsuccessful authentication attempts
     ### for an account has been met, the OS shall: [selection:
     ### Account Lockout, Account Disablement, Mandatory Credential Reset,
     ### [assignment: list of actions]].
@@ -614,7 +614,7 @@ selections:
     ### in accordance with the following rules:
     ###     - RFC 5280 certificate validation and certificate path validation
     ###     - The certificate path must terminate with a trusted CA certificate
-    ###     - The OS shall validate a certificate path by ensuring the presense
+    ###     - The OS shall validate a certificate path by ensuring the presence
     ###       of the basicConstraints extension and that the CA flag is set to
     ###       TRUE for all CA certificates
     ###     - The OS shall validate the revocation status of the certificate
