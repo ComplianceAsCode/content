@@ -30,10 +30,6 @@ extends: e8
 
 selections:
     - ism_o:all
-    # Add rules missing from the control file that where in RHEL 8
-    - accounts_password_all_shadowed
-    - usbguard_allow_hid_and_hub
-    - sshd_allow_only_protocol2
     # Remove rules that where not the original profile for RHEL 8
     - '!accounts_password_minlen_login_defs'
     - '!accounts_password_pam_dcredit'
