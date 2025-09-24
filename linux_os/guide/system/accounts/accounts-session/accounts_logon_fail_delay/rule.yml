@@ -42,7 +42,7 @@ ocil: |-
     <pre>$ sudo grep -i "FAIL_DELAY" {{{ login_defs_path }}}
     FAIL_DELAY {{{ xccdf_value("var_accounts_fail_delay") }}}</pre>
 
-platform: package[shadow-utils]
+platform: package[shadow-utils] and system_with_kernel
 
 fixtext: |-
     Configure the {{{ full_name }}} to enforce a delay of at least {{{ xccdf_value("var_accounts_fail_delay") }}} seconds between logon prompts following a failed console logon attempt.

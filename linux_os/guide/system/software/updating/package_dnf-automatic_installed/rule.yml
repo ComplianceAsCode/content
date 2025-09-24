@@ -27,7 +27,7 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="dnf-automatic") }}}'
 
-platform: not bootc
+platform: not bootc and not container
 
 template:
     name: package_installed
