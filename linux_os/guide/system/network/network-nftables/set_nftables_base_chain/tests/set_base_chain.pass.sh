@@ -3,7 +3,7 @@
 #Set name of the table
 var_nftables_table='filter'
 
-#Set familiy of the table 
+#Set family of the table 
 var_nftables_family='inet'
 
 #Set name(s) of base chain

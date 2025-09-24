@@ -7,7 +7,7 @@ description: |-
     The audit system should collect detailed unauthorized file accesses for
     all users and root. The <tt>open</tt> syscall can be used to modify files
     if called for write operation of with O_TRUNC_WRITE flag.
-    The following auidt rules will asure that unsuccessful attempts to modify a
+    The following auidt rules will assure that unsuccessful attempts to modify a
     file via <tt>open</tt> syscall are collected.
     If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
     program to read audit rules during daemon startup (the default), add the

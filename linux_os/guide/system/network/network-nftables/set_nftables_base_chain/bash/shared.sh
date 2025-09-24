@@ -6,7 +6,7 @@
 
 #Name of the table
 {{{ bash_instantiate_variables("var_nftables_table") }}}
-#Familiy of the table 
+#Family of the table 
 {{{ bash_instantiate_variables("var_nftables_family") }}}
 #Name(s) of base chain
 {{{ bash_instantiate_variables("var_nftables_base_chain_names") }}}

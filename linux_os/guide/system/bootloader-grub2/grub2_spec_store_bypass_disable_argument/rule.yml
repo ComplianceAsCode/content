@@ -20,7 +20,7 @@ description: |-
     {{{ describe_grub2_argument("spec_store_bypass_disable=" + xccdf_value("var_spec_store_bypass_disable_options")) | indent(4) }}}
 
 rationale: |-
-    In vulnerable processsors, the speculatively forwarded store can be used in a cache side channel
+    In vulnerable processors, the speculatively forwarded store can be used in a cache side channel
     attack. An example of this is reading memory to which the attacker does not directly have access,
     for example inside the sandboxed code.
 

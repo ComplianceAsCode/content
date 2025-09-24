@@ -4,17 +4,17 @@
     defined failed attempts has been reached.", rule_title=rule_title) }}}
     <criteria operator="AND" comment="Checks common to both scenarios">
       <criterion test_ref="test_accounts_passwords_pam_tally2_even_deny_root"
-      comment="Verify deny root configuation of pam_tally2 in common-auth" />
+      comment="Verify deny root configuration of pam_tally2 in common-auth" />
       <criterion test_ref="test_accounts_passwords_pam_tally2_deny_number"
-      comment="Verify deny number configuation of pam_tally2 in common-auth" />
+      comment="Verify deny number configuration of pam_tally2 in common-auth" />
       <criterion test_ref="test_accounts_passwords_pam_tally2_even_deny_root_account"
-      comment="Verify deny configuation of pam_tally2 in common-account" />
+      comment="Verify deny configuration of pam_tally2 in common-account" />
     </criteria>
   </definition>
 
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_even_deny_root"
   check="all" check_existence="all_exist"
-  comment="Verify even_deny_root configuation of pam_tally2" version="1">
+  comment="Verify even_deny_root configuration of pam_tally2" version="1">
     <ind:object object_ref="object_accounts_passwords_pam_tally2_even_deny_root" />
   </ind:textfilecontent54_test>
 
@@ -26,7 +26,7 @@
 
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_deny_number"
   check="all" check_existence="all_exist"
-  comment="Verify deny number configuation of pam_tally2" version="1">
+  comment="Verify deny number configuration of pam_tally2" version="1">
     <ind:object object_ref="object_accounts_passwords_pam_tally2_deny_number" />
   </ind:textfilecontent54_test>
 
@@ -38,7 +38,7 @@
 
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_even_deny_root_account"
   check="all" check_existence="all_exist"
-  comment="Verify deny configuation of pam_tally2_account" version="1">
+  comment="Verify deny configuration of pam_tally2_account" version="1">
     <ind:object object_ref="object_accounts_passwords_pam_tally2_even_deny_root_account" />
   </ind:textfilecontent54_test>
 

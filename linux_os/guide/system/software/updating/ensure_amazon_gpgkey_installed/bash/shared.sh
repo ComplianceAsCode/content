@@ -1,5 +1,5 @@
 # platform = multi_platform_al
-# The fingerprint below are retrieved from the offical amazon linux 2023 machine
+# The fingerprint below are retrieved from the official amazon linux 2023 machine
 readonly AMAZON_RELEASE_FINGERPRINT="{{{ release_key_fingerprint }}}"
 
 # Location of the key we would like to import (once it's integrity verified)
