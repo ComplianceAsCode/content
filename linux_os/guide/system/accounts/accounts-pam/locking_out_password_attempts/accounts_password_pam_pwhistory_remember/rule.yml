@@ -46,7 +46,7 @@ ocil: |-
 
 platform: package[pam]
 
-{{% if product != 'ubuntu2404' %}}
+{{% if 'ubuntu' not in product %}}
 template:
     name: pam_options
     vars:
