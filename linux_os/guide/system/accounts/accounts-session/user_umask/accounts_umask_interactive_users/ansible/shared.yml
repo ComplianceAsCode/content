@@ -4,13 +4,42 @@
 # complexity = low
 # disruption = low
 
-- name: Ensure interactive local users are the owners of their respective initialization files
-  ansible.builtin.shell:
-    cmd: |
-      for dir in $(awk -F':' '{ if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid }}}) print $6}' /etc/passwd); do
-        for file in $(find $dir -maxdepth 1 -type f -name ".*"); do
-          if [ "$(basename $file)" != ".bash_history" ]; then
-            sed -i 's/^\(\s*umask\s*\)/#\1/g' $file
-          fi
-        done
-      done
+- name: {{{ rule_title }}} - Get interactive users from passwd file
+  ansible.builtin.getent:
+    database: passwd
+  register: passwd_entries
+
+- name: {{{ rule_title }}} - Filter interactive users and get home directories
+  ansible.builtin.set_fact:
+    interactive_user_homes: "{{ interactive_user_homes | default([]) + [item.value[4]] }}"
+  loop: "{{ passwd_entries.ansible_facts.getent_passwd | dict2items }}"
+  when:
+    - item.value[2] | int >= {{{ uid_min }}} | int
+    - item.value[2] | int != {{{ nobody_uid }}} | int
+    - item.value[4] != ""
+
+- name: {{{ rule_title }}} - Find dot files in interactive user home directories
+  ansible.builtin.find:
+    paths: "{{ item }}"
+    patterns: ".*"
+    file_type: file
+    hidden: yes
+    depth: 1
+  register: user_dotfiles
+  with_items: "{{ interactive_user_homes }}"
+  failed_when: false
+  when: item != ""
+
+- name: {{{ rule_title }}} - Comment out umask statements in user initialization files
+  ansible.builtin.replace:
+    path: "{{ item.1.path }}"
+    regexp: '^\s*umask\s+'
+    replace: '#\g<0>'
+    backup: no
+  with_subelements:
+    - "{{ user_dotfiles.results }}"
+    - files
+  when:
+    - item.0 is not skipped
+    - item.1.path is defined
+    - "'.bash_history' not in item.1.path"
