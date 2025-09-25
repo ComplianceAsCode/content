@@ -12,22 +12,14 @@ description: |-
     apiVersion: machineconfiguration.openshift.io/v1
     kind: KubeletConfig
     metadata:
-       name: kubelet-config-$pool
+        name: kubelet-config-$pool
     spec:
         machineConfigPoolSelector:
             matchLabels:
                 pools.operator.machineconfiguration.openshift.io/$pool_name: ""
         kubeletConfig:
           tlsCipherSuites:
-          - TLS_AES_128_GCM_SHA256
-          - TLS_AES_256_GCM_SHA384
-          - TLS_CHACHA20_POLY1305_SHA256
-          - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-          - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
-          - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
-          - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+            [ {{ .var_kubelet_tls_cipher_suites }} ]
     </pre>
   In order to configure this rule to check for an alternative cipher, both var_kubelet_tls_cipher_suites_regex
   and var_kubelet_tls_cipher_suites have to be set
@@ -57,15 +49,7 @@ ocil: |-
     <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1" | .tlsCipherSuites'; done</pre>
     Verify that the set of ciphers contains only the following:
     <pre>
-    TLS_AES_128_GCM_SHA256,
-    TLS_AES_256_GCM_SHA384,
-    TLS_CHACHA20_POLY1305_SHA256,
-    TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-    TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-    TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
-    TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
-    TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,
-    TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+    {{ .var_kubelet_tls_cipher_suites }}
     </pre>
 
 template:
