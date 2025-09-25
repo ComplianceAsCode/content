@@ -50,7 +50,7 @@ ocil: |-
     <pre>$ sudo grep rounds {{{ pam_passwd_file_path }}}</pre>
     The output should show the following match:
     {{% if product in ["debian12", "debian13", 'ubuntu2404'] %}}
-    <pre>password [sucess=1 default=ignore] pam_unix.so sha512 rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
+    <pre>password [success=1 default=ignore] pam_unix.so sha512 rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
     {{% else %}}
     <pre>password sufficient pam_unix.so sha512 rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
     {{% endif %}}
@@ -63,7 +63,7 @@ fixtext: |-
     Add or modify the following line in "{{{ pam_passwd_file_path }}}" and set "rounds" to {{{ xccdf_value("var_password_pam_unix_rounds") }}}.
     For example:
     {{% if product in ["debian12", "debian13", 'ubuntu2404'] %}}
-    password [sucess=1 default=ignore] pam_unix.so sha512 rounds=5000
+    password [success=1 default=ignore] pam_unix.so sha512 rounds=5000
     {{% else %}}
     password sufficient pam_unix.so sha512 rounds=5000
     {{% endif %}}

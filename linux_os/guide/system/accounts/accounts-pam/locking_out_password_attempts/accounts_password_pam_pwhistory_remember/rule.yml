@@ -14,7 +14,7 @@ description: |-
     <pre>password requisite pam_pwhistory.so <i>...existing_options...</i> remember={{{ xccdf_value("var_password_pam_remember") }}} use_authtok</pre>
     The profile requirement is {{{ xccdf_value("var_password_pam_remember") }}} passwords.
 
-rationale: 'Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.'
+rationale: 'Preventing reuse of previous passwords helps ensure that a compromised password is not reused by a user.'
 
 severity: medium
 

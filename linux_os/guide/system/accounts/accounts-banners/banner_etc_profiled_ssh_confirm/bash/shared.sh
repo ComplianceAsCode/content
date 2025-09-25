@@ -9,7 +9,7 @@
 {{{ bash_deregexify_banner_space("var_ssh_confirm_text") }}}
 # 2 - Adds newlines. (Transforms "(?:\[\n\]+|(?:\n)+)" into "\n")
 {{{ bash_deregexify_banner_newline("var_ssh_confirm_text", "\\n") }}}
-# 3 - Remove any leftover backslash. (From any parethesis in the banner, for example).
+# 3 - Remove any leftover backslash. (From any parenthesis in the banner, for example).
 {{{ bash_deregexify_banner_backslash("var_ssh_confirm_text") }}}
 formatted=$(echo "$var_ssh_confirm_text")
 

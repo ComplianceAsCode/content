@@ -11,7 +11,7 @@
     regexp: "^daily$"
     line: "daily"
 
-- name: Make sure daily log rotation setting is not overriden in /etc/logrotate.conf
+- name: Make sure daily log rotation setting is not overridden in /etc/logrotate.conf
   ansible.builtin.lineinfile:
     create: no
     dest: "/etc/logrotate.conf"

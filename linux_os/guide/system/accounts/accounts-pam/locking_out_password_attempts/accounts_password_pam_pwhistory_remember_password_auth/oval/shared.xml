@@ -136,13 +136,13 @@
   <!-- variables used to collect the remember parameter value -->
   <local_variable id="var_accounts_password_pam_pwhistory_remember_password_auth_pam_param_regex"
     datatype="string" version="1"
-    comment="The regex is to collect the pam_pwhistory.so remember paramerter from PAM files">
+    comment="The regex is to collect the pam_pwhistory.so remember parameter from PAM files">
     <literal_component>^\s*password\b.*\bpam_pwhistory\.so\b.*\bremember=([0-9]*).*$</literal_component>
   </local_variable>
 
   <local_variable id="var_accounts_password_pam_pwhistory_remember_password_auth_conf_param_regex"
     datatype="string" version="1"
-    comment="The regex is to collect the pam_pwhistory.so remember paramerter in pwhistory.conf">
+    comment="The regex is to collect the pam_pwhistory.so remember parameter in pwhistory.conf">
     <literal_component>^\s*remember\s*=\s*([0-9]+)</literal_component>
   </local_variable>
 </def-group>

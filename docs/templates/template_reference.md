@@ -959,7 +959,7 @@ The selected value can be changed in the profile (consult the actual variable fo
     -   **missing_parameter_pass** - if set to `true` the check will pass if the
         setting for the given **sysctlvar** is not present in sysctl
         configuration files. In other words, the check will pass if the system
-        default isn't overriden by configuration. Default value: `false`.
+        default isn't overridden by configuration. Default value: `false`.
 
     -   **operation** - operation used for comparison of collected object
         with **sysctlval**. Default value: `equals`.
@@ -1012,7 +1012,7 @@ The selected value can be changed in the profile (consult the actual variable fo
     - **remediation_xccdf_variable** - if specified, then the given XCCDF
         variable is used during remediation instead of hardcoded value. The
         variable is NOT used during checking. But you can specify multiple values
-        separated by | as a `value` parameter and they wil be used during
+        separated by | as a `value` parameter and they will be used during
         checking.
 
 -   Languages: Ansible, Bash, OVAL
