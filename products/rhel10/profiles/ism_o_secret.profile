@@ -52,3 +52,6 @@ selections:
     # This rule is not applicable for RHEL 10
     - '!force_opensc_card_drivers'
     - '!service_chronyd_or_ntpd_enabled'
+    - '!accounts_password_all_shadowed'
+    - '!usbguard_allow_hid_and_hub'
+    - '!sshd_allow_only_protocol2'

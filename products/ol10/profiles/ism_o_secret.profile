@@ -72,4 +72,7 @@ selections:
     # Packages not available in OL
     - "!package_libdnf-plugin-subscription-manager_installed"
     - "!package_subscription-manager_installed"
+    - "!accounts_password_all_shadowed"
+    - "!usbguard_allow_hid_and_hub"
+    - "!sshd_allow_only_protocol"
     - var_authselect_profile=local

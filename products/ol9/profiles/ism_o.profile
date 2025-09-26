@@ -8,8 +8,8 @@ description: |-
     This profile contains configuration checks for Oracle Linux 9
     that align to the Australian Cyber Security Centre (ACSC) Information Security Manual (ISM).
 
-    The ISM uses a risk-based approach to cyber security. This profile provides a guide to aligning 
-    Oracle Linux security controls with the ISM, which can be used to select controls 
+    The ISM uses a risk-based approach to cyber security. This profile provides a guide to aligning
+    Oracle Linux security controls with the ISM, which can be used to select controls
     specific to an organisation's security posture and risk profile.
 
     A copy of the ISM can be found at the ACSC website:
@@ -26,7 +26,7 @@ selections:
     - var_smartcard_drivers=cac
 
     # ISM 0418,1055,1402
-    # Rule is for authconfig not used in 
+    # Rule is for authconfig not used in
     - "!enable_ldap_client"
     # Not applicable to OL9 due to krb5-server version
     - "!kerberos_disable_no_keytab"
@@ -37,7 +37,7 @@ selections:
 
     # ISM 1277,1552
     # Not applicable to OL9 as per openssl man page
-    - "!openssl_use_strong_entropy"     
+    - "!openssl_use_strong_entropy"
 
     # ISM 0988,1405
     # Always use chronyd
@@ -55,7 +55,7 @@ selections:
     - "!audit_access_success_aarch64"
     - "!audit_access_success_ppc64le"
 
-    # Doesn't cover the expected requirement 
+    # Doesn't cover the expected requirement
     # 1319 "Static addressing is not used..."
     - "!network_ipv6_static_address"
 
@@ -67,5 +67,9 @@ selections:
     # These rules are introduced by ism_o control
     - "!package_pcsc-lite-ccid_installed"
     - "!system_booted_in_fips_mode"
+    - '!accounts_password_all_shadowed'
+    - '!usbguard_allow_hid_and_hub'
+    - '!sshd_allow_only_protocol2'
+
     - "var_password_hashing_algorithm_pam=sha512"
     - "enable_dracut_fips_module"
