@@ -7,7 +7,7 @@
 
 {{{ ansible_selinux_config_set(parameter="SELINUX", value="{{ var_selinux_state }}", rule_title=rule_title) }}}
 
-- name: "{{{ RULE_TITLE }}} - Mark system to relabel SELinux on next boot"
+- name: "{{{ rule_title }}} - Mark system to relabel SELinux on next boot"
   ansible.builtin.file:
     path: /.autorelabel
     state: touch
