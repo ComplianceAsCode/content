@@ -4,25 +4,66 @@
 # complexity = low
 # disruption = low
 
-- name: Collect all files from /etc/audit/rules.d with .rules extension
+- name: {{{ rule_title }}} - Collect all files from /etc/audit/rules.d with .rules extension
   ansible.builtin.find:
     paths: "/etc/audit/rules.d/"
     patterns: "*.rules"
   register: find_rules_d
 
-- name: Remove the -e option from all Audit config files
+- name: {{{ rule_title }}} - Check if target files exist and get their content
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  register: audit_files_stat
+  loop:
+    - "/etc/audit/audit.rules"
+    - "/etc/audit/rules.d/immutable.rules"
+
+- name: {{{ rule_title }}} - Read content of existing audit files
+  ansible.builtin.slurp:
+    src: "{{ item.item }}"
+  register: audit_files_content
+  loop: "{{ audit_files_stat.results }}"
+  when: item.stat.exists
+
+- name: {{{ rule_title }}} - Check if -e 2 is already correctly set in target files
+  ansible.builtin.set_fact:
+    immutable_correctly_set: >-
+      {{
+        audit_files_content.results
+        | selectattr('content', 'defined')
+        | map(attribute='content')
+        | map('b64decode')
+        | select('search', '^-e 2$', multiline=True)
+        | list
+        | length == 2
+      }}
+
+- name: {{{ rule_title }}} - Remove any existing -e option from all Audit config files
   ansible.builtin.lineinfile:
     path: "{{ item }}"
-    regexp: '^\s*(?:-e)\s+.*$'
+    regexp: '^\s*-e\s+.*$'
     state: absent
   loop: "{{ find_rules_d.files | map(attribute='path') | list + ['/etc/audit/audit.rules'] }}"
+  when: not immutable_correctly_set
 
-- name: Add Audit -e option into /etc/audit/rules.d/immutable.rules and /etc/audit/audit.rules
+- name: {{{ rule_title }}} - Ensure target directories exist
+  ansible.builtin.file:
+    path: "{{ item | dirname }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "/etc/audit/audit.rules"
+    - "/etc/audit/rules.d/immutable.rules"
+  when: not immutable_correctly_set
+
+- name: {{{ rule_title }}} - Add Audit -e 2 option to make rules immutable
   ansible.builtin.lineinfile:
     path: "{{ item }}"
     create: True
     line: "-e 2"
+    regexp: '^\s*-e\s+.*$'
     mode: g-rwx,o-rwx
   loop:
     - "/etc/audit/audit.rules"
     - "/etc/audit/rules.d/immutable.rules"
+  when: not immutable_correctly_set
