@@ -9,6 +9,9 @@
     regexp: '^/org/gnome/desktop/screensaver/idle-activation-enabled$'
     line: '/org/gnome/desktop/screensaver/idle-activation-enabled'
     create: yes
+  register: result_lineinfile
+  changed_when: result_lineinfile.changed
 
 - name: Dconf Update
   ansible.builtin.command: dconf update
+  when: result_lineinfile.changed

@@ -11,6 +11,8 @@
     value: "true"
     create: yes
     no_extra_spaces: yes
+  register: result_ini
+  changed_when: result_ini.changed
 
 - name: "Prevent user modification of GNOME3 disablement of WiFi"
   ansible.builtin.lineinfile:
@@ -18,6 +20,9 @@
     regexp: '^/org/gnome/nm-applet/disable-wifi-create$'
     line: '/org/gnome/nm-applet/disable-wifi-create'
     create: yes
+  register: result_lineinfile
+  changed_when: result_lineinfile.changed
 
 - name: Dconf Update
   ansible.builtin.command: dconf update
+  when: result_ini.changed or result_lineinfile.changed

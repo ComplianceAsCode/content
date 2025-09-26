@@ -13,6 +13,9 @@
     value: "uint32 {{ var_screensaver_lock_delay }}"
     create: yes
     no_extra_spaces: yes
+  register: result_ini
+  changed_when: result_ini.changed
 
 - name: Dconf Update
   ansible.builtin.command: dconf update
+  when: result_ini.changed
