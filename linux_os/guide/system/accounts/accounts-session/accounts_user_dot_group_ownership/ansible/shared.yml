@@ -4,11 +4,45 @@
 # complexity = low
 # disruption = low
 
-- name: Ensure interactive local users are the group-owners of their respective initialization files
-  ansible.builtin.shell:
-    cmd: |
+- name: {{{ rule_title }}} - Get interactive users from passwd file
+  ansible.builtin.getent:
+    database: passwd
+  register: passwd_entries
+
+- name: {{{ rule_title }}} - Create list of interactive users with GID and home directory
+  ansible.builtin.set_fact:
+    interactive_users: "{{ interactive_users | default([]) + [{'home': item.value[4], 'gid': item.value[2]}] }}"
+  loop: "{{ passwd_entries.ansible_facts.getent_passwd | dict2items }}"
+  when:
 {{% if product in ["sle12", "sle15", "slmicro5"] %}}
-      awk -F: '{if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid }}}) print $4":"$6}' /etc/passwd | while IFS=: read -r gid home; do find -P "$home" -maxdepth 1 -type f -name "\.[^.]*" -exec chgrp -f --no-dereference -- $gid "{}" \;; done
+    - item.value[1] | int >= {{{ uid_min }}} | int
+    - item.value[1] | int != {{{ nobody_uid }}} | int
+    - item.value[4] != ""
 {{% else %}}
-      awk -F: '{if ($4 >= {{{ gid_min }}} && $4 != {{{ nobody_gid }}}) print $4":"$6}' /etc/passwd | while IFS=: read -r gid home; do find -P "$home" -maxdepth 1 -type f -name "\.[^.]*" -exec chgrp -f --no-dereference -- $gid "{}" \;; done
+    - item.value[2] | int >= {{{ gid_min }}} | int
+    - item.value[2] | int != {{{ nobody_gid }}} | int
+    - item.value[4] != ""
 {{% endif %}}
+
+- name: {{{ rule_title }}} - Find dot files in interactive user home directories
+  ansible.builtin.find:
+    paths: "{{ item.home }}"
+    patterns: ".*"
+    file_type: file
+    hidden: yes
+    depth: 1
+    follow: no
+  register: user_dotfiles
+  loop: "{{ interactive_users | default([]) }}"
+  failed_when: false
+  when: item.home != ""
+
+- name: {{{ rule_title }}} - Set correct group ownership for user initialization files
+  ansible.builtin.file:
+    path: "{{ item.1.path }}"
+    group: "{{ item.0.item.gid }}"
+    follow: no
+  loop: "{{ user_dotfiles.results | subelements('files', skip_missing=True) }}"
+  when:
+    - item.0 is not skipped
+    - item.1.path is defined
