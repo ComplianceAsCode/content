@@ -26,15 +26,16 @@
   with_items:
     - aide
 
-- name: "{{{ rule_title }}} - Build and Test AIDE Database"
-  ansible.builtin.command: {{{ aide_init_command }}}
-  changed_when: True
-
-# mainly to allow ansible's check mode to work
 - name: "{{{ rule_title }}} - Check Whether the Stock AIDE Database Exists"
   ansible.builtin.stat:
      path: {{{ aide_stage_src }}}
   register: aide_database_stat
+
+- name: "{{{ rule_title }}} - Build and Test AIDE Database"
+  ansible.builtin.command: {{{ aide_init_command }}}
+  changed_when: True
+  when: not (aide_database_stat.stat.exists is defined and aide_database_stat.stat.exists)
+  register: aide_database_init
 
 - name: "{{{ rule_title }}} - Stage AIDE Database"
   ansible.builtin.copy:
@@ -42,4 +43,4 @@
     dest: {{{ aide_stage_dest }}}
     backup: yes
     remote_src: yes
-  when: (aide_database_stat.stat.exists is defined and aide_database_stat.stat.exists)
+  when: aide_database_init is changed
