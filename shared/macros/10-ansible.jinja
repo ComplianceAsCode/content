@@ -122,17 +122,17 @@ value: :code:`Setting={{ varname1 }}`
   the new line is appended to the file.
 
 #}}
-{{%- macro ansible_only_lineinfile(msg, path, line_regex, new_line, insensitive='false', create='no', block=False, validate='', insert_after='', insert_before='', mode='', rule_title=None) -%}}
+{{%- macro ansible_only_lineinfile(msg, path, line_regex, new_line, insensitive='false', create='no', block=False, validate='', insert_after='', insert_before='', mode='', register='', rule_title=None) -%}}
 {{%- if block %}}
 - name: "{{{ msg or rule_title }}}"
   block:
     {{{ ansible_lineinfile("Check for duplicate values", path, mode=mode, regex=line_regex, insensitive=insensitive, create=create, state='absent', register='dupes', check_mode=True)|indent }}}
     {{{ ansible_lineinfile("Deduplicate values from " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, create=create, state='absent', when='dupes.found is defined and dupes.found > 1')|indent }}}
-    {{{ ansible_lineinfile("Insert correct line to " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
+    {{{ ansible_lineinfile("Insert correct line to " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before, register=register)|indent }}}
 {{%- else %}}
 {{{ ansible_lineinfile("Check for duplicate values", path, mode=mode, regex=line_regex, insensitive=insensitive, create=create, state='absent', register='dupes', check_mode=True, rule_title=rule_title) }}}
 {{{ ansible_lineinfile("Deduplicate values from " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, create=create, state='absent', when='dupes.found is defined and dupes.found > 1', rule_title=rule_title) }}}
-{{{ ansible_lineinfile("Insert correct line into " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before, rule_title=rule_title) }}}
+{{{ ansible_lineinfile("Insert correct line into " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before, rule_title=rule_title, register=register) }}}
 {{%- endif %}}
 {{%- endmacro %}}
 
@@ -144,8 +144,8 @@ value: :code:`Setting={{ varname1 }}`
   instead of lineinfile-based solutions.
 
 #}}
-{{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', insensitive='false', create='no', validate='', insert_after='', insert_before='', mode='', rule_title=None) %}}
-{{{ ansible_only_lineinfile(msg, file, prefix_regex + parameter + separator_regex, parameter + separator + value, insensitive=insensitive, create=create, block=True, validate=validate, insert_after=insert_after, insert_before=insert_before, mode=mode, rule_title=rule_title) }}}
+{{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', insensitive='false', create='no', validate='', insert_after='', insert_before='', mode='', register='', rule_title=None) %}}
+{{{ ansible_only_lineinfile(msg, file, prefix_regex + parameter + separator_regex, parameter + separator + value, insensitive=insensitive, create=create, block=True, validate=validate, insert_after=insert_after, insert_before=insert_before, mode=mode, register=register, rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 
