@@ -1803,3 +1803,30 @@ Macro to check if external variable is set to value
 
   <external_variable comment="External variable {{{ variable }}}" datatype="string" id="{{{ variable }}}" version="1" />
 {{%- endmacro -%}}
+
+{{#
+  Macro which generates the OVAL metadata section
+
+:param description: The text to place in the description section
+:type description: str
+:param title: Optional, the associated rule title is used by default
+:type title: str
+:param affected_platforms: Optional, list of unix platform strings (e.g. "Fedora") to put under the affected element. Uses the oval_affected macro by default under the hood.
+:type affected_platforms: list[str]
+
+#}}
+{{%- macro oval_test_aide_audit_tools(audit_tool) -%}}
+  <ind:textfilecontent54_test id="test_aide_verify_{{{ audit_tool }}}"
+  comment="{{{ audit_tool }}} is checked in {{{ aide_conf_path }}}" check="all"
+  check_existence="all_exist" version="1">
+    <ind:object object_ref="object_aide_verify_{{{ audit_tool }}}" />
+    <ind:state state_ref="state_aide_check_attributes" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_aide_verify_{{{ audit_tool }}}"
+  version="1">
+    <ind:filepath>{{{ aide_conf_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^(?:/usr)?/sbin/{{{ audit_tool }}}\s+([^\n]+)$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+{{%- endmacro -%}}
