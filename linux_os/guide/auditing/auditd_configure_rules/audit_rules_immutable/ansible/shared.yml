@@ -50,7 +50,7 @@
   ansible.builtin.file:
     path: "{{ item | dirname }}"
     state: directory
-    mode: '0755'
+    mode: '0750'
   loop:
     - "/etc/audit/audit.rules"
     - "/etc/audit/rules.d/immutable.rules"
