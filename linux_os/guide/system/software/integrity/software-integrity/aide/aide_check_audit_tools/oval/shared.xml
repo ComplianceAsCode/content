@@ -26,13 +26,8 @@
     {{% endif %}}
   </ind:textfilecontent54_state>
 
-  {{{ oval_test_aide_audit_tools(audit_tool='auditctl') }}}
-  {{{ oval_test_aide_audit_tools(audit_tool='auditd') }}}
-  {{{ oval_test_aide_audit_tools(audit_tool='ausearch') }}}
-  {{{ oval_test_aide_audit_tools(audit_tool='aureport') }}}
-  {{{ oval_test_aide_audit_tools(audit_tool='autrace') }}}
-  {{{ oval_test_aide_audit_tools(audit_tool='audispd') }}}
-  {{{ oval_test_aide_audit_tools(audit_tool='rsyslogd') }}}
-  {{{ oval_test_aide_audit_tools(audit_tool='augenrules') }}}
-
+  {{%- set audit_tools_list = ['auditctl', 'auditd', 'ausearch', 'aureport', 'autrace', 'audispd', 'rsyslogd', 'augenrules'] -%}}
+  {{%- for audit_tool in audit_tools_list -%}}
+    {{{ oval_test_aide_audit_tools(audit_tool) }}}
+  {{%- endfor %}}
 </def-group>
