@@ -1527,8 +1527,21 @@ Part of the grub2_bootloader_argument template.
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /usr/sbin/update-grub
 {{% else %}}
+- name: Check if {{{ arg_name }}} argument is already present in /etc/default/grub
+  ansible.builtin.slurp:
+    src: /etc/default/grub
+  register: etc_default_grub
+
+- name: Check if {{{ arg_name }}} argument is already present
+  ansible.builtin.command: /sbin/grubby --info=ALL
+  register: grubby_info
+  check_mode: False
+  changed_when: False
+  failed_when: False
+
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /sbin/grubby --update-kernel=ALL --args="{{{ arg_name_value }}}"
+  when: (grubby_info.stdout is not search('{{{ arg_name_value }}}')) or ((etc_default_grub['content'] | b64decode) is not search('{{{ arg_name_value }}}'))
 {{% endif -%}}
 {{%- endmacro -%}}
 
