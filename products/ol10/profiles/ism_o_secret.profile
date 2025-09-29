@@ -74,5 +74,5 @@ selections:
     - "!package_subscription-manager_installed"
     - "!accounts_password_all_shadowed"
     - "!usbguard_allow_hid_and_hub"
-    - "!sshd_allow_only_protocol"
+    - "!sshd_allow_only_protocol2"
     - var_authselect_profile=local
