@@ -236,6 +236,18 @@ spec:
 {{{ kubernetes_machine_config_file(path='/etc/ssh/sshd_config', file_permissions_mode='0600', source=sshd_config_source(), ocp_version_range=ocp_version_range) }}}
 {{%- endmacro -%}}
 
+{{#
+  High level macro to generate Kubernetes remediation to set SSH daemon configuration via drop-in files.
+  This is used for OCP >= 4.13.0 where drop-in files are preferred over modifying /etc/ssh/sshd_config directly.
+  Parameters:
+    sshd_dropin_content: Content for the SSHD drop-in configuration file
+    ocp_version_range: Optional OpenShift version range (default: '>=4.13.0')
+    config_basename: Optional basename for the drop-in file (default: '00-complianceascode-hardening.conf')
+#}}
+{{%- macro kubernetes_sshd_dropin(sshd_dropin_content, ocp_version_range='>=4.13.0', config_basename='00-complianceascode-hardening.conf') -%}}
+{{{ kubernetes_machine_config_file(path='/etc/ssh/sshd_config.d/' + config_basename, file_permissions_mode='0600', source=sshd_dropin_content, ocp_version_range=ocp_version_range) }}}
+{{%- endmacro -%}}
+
 
 {{% macro usbguard_config_source() %}}
 #
