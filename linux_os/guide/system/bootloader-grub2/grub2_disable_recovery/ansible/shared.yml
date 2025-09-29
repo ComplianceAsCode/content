@@ -4,17 +4,19 @@
 # complexity = low
 # disruption = low
 
-- name: Verify GRUB_DISABLE_RECOVERY=true
+- name: {{{ rule_title }}} - Verify GRUB_DISABLE_RECOVERY=true
   ansible.builtin.lineinfile:
     path: /etc/default/grub
     regexp: '^GRUB_DISABLE_RECOVERY=.*'
     line: 'GRUB_DISABLE_RECOVERY=true'
     state: present
+  register: grub_config_changed
 
 {{% if product in ['sle12', 'sle15'] %}}
-- name: Update grub defaults and the bootloader menu
+- name: {{{ rule_title }}} - Update grub defaults and the bootloader menu
   ansible.builtin.command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
 {{% else %}}
-- name: Update grub defaults and the bootloader menu
+- name: {{{ rule_title }}} - Update grub defaults and the bootloader menu
   ansible.builtin.command: /sbin/grubby --update-kernel=ALL
+  when: grub_config_changed is changed
 {{% endif -%}}
