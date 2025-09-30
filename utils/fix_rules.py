@@ -328,7 +328,7 @@ def add_to_the_section(file_contents, yaml_contents, section, new_keys):
     template_line = str(file_contents[end - 1])
     leading_whitespace = re.match(r"^\s*", template_line).group()
     if leading_whitespace in ['', '\n']:
-        leading_whitespace += ' '*4
+        leading_whitespace += ' ' * 4
     for key, value in new_keys.items():
         to_insert.append(leading_whitespace + key + ": " + value)
 
