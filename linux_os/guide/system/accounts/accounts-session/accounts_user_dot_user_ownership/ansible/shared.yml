@@ -39,4 +39,7 @@
   loop: "{{ user_dotfiles.results | subelements('files', skip_missing=True) }}"
   when:
     - item.0 is not skipped
+    - item.0 is not failed
+    - item.0.item is defined
+    - item.0.item.username is defined
     - item.1.path is defined
