@@ -5,6 +5,8 @@ policy: 'Australian Signals Directorate Information Security Manual'
 version: '2024.03'
 source: 'https://www.cyber.gov.au/resources-business-and-government/essential-cyber-security/ism'
 
+reference_type: ism
+
 levels:
     - id: base
     - id: secret
@@ -398,6 +400,7 @@ controls:
           - set_password_hashing_algorithm_passwordauth
           - set_password_hashing_algorithm_systemauth
           - sshd_disable_gssapi_auth
+          - accounts_password_all_shadowed
       status: automated
 
     - id: '1405'
@@ -450,6 +453,7 @@ controls:
       rules:
           - package_usbguard_installed
           - service_usbguard_enabled
+          - usbguard_allow_hid_and_hub
       status: automated
 
     - id: '1446'
@@ -493,6 +497,7 @@ controls:
           - dnf-automatic_apply_updates
           - package_libdnf-plugin-subscription-manager_installed
           - package_subscription-manager_installed
+          - sshd_allow_only_protocol2
       status: automated
 
     - id: '1491'
