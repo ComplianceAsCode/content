@@ -2,6 +2,8 @@ documentation_complete: true
 
 title: Verify that Control Plane Nodes are not schedulable for workloads
 
+{{% set jqfilter = '[ .items[] | select(.spec.taints[]?.key == "node-role.kubernetes.io/master" and .spec.taints[]?.effect == "NoSchedule") | .metadata.name ]' %}}
+
 description: -|
     <p>
     User workloads should not be colocated with control plane workloads. To ensure that the scheduler won't
@@ -25,22 +27,22 @@ rationale: -|
     In some setups it might be necessary to make the control plane schedulable for workloads i.e.
     Single Node Openshift (SNO) or Compact Cluster (Three Node Cluster) setups.
 
-{{% set jqfilter = '.items[] | select(.metadata.labels."node-role.kubernetes.io/master" == "" or .metadata.labels."node-role.kubernetes.io/control-plane" == "" ) | .spec.taints[] | select(.key == "node-role.kubernetes.io/master" and .effect == "NoSchedule")' %}}
-
 identifiers:
     cce@ocp4: CCE-88731-5
 
 severity: medium
 
+platform: not ocp4-on-hypershift-hosted
+
 ocil_clause: 'Control Plane is schedulable'
 
 ocil: |-
     Run the following command to see if control planes are schedulable
-    <pre>$oc get --raw /api/v1/nodes | jq '.items[] | select(.metadata.labels."node-role.kubernetes.io/master" == "" or .metadata.labels."node-role.kubernetes.io/control-plane" == "" ) | .spec.taints[] | select(.key == "node-role.kubernetes.io/master" and .effect == "NoSchedule" )'</pre>
-    for each master node, there should be an output of a key with the NoSchedule effect.
+    <pre>$oc get --raw /api/v1/nodes | jq '[ .items[] | select(.spec.taints[]?.key == "node-role.kubernetes.io/master" and .spec.taints[]?.effect == "NoSchedule") | .metadata.name ]'</pre>
+    for each non-schedulable master node, there should be the name in the output.
 
-    By editing the cluster scheduler you can centrally configure the masters as schedulable or not
-    by setting .spec.mastersSchedulable to true.
+    By editing the cluster scheduler you can centrally configure the masters as not schedulable
+    by setting .spec.mastersSchedulable to false.
     Use <pre>$oc edit schedulers.config.openshift.io cluster</pre> to configure the scheduling.
 
 warnings:
@@ -53,9 +55,9 @@ template:
         ocp_data: "true"
         filepath: |-
             {{{ openshift_filtered_path('/api/v1/nodes', jqfilter) }}}
-        yamlpath: ".effect"
+        yamlpath: "[:]"
         check_existence: "at_least_one_exists"
         entity_check: "at least one"
         values:
-            - value: "NoSchedule"
+            - value: "(.*?)"
               operation: "pattern match"
