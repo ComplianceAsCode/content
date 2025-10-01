@@ -1,0 +1,23 @@
+---
+policy: Basis System Security Profile for SUSE Linux Enterprise 16
+title: asis System Security Profile SUSE Linux Enterprise 16
+id: base_sle16
+version: '1.0'
+source: not_publicly_available
+reference_type: suse-base-sle16
+
+levels:
+    - id: high
+    - id: medium
+    - id: low
+
+product: sle16
+
+controls:
+    - id: SLES-16-16016015
+      levels:
+          - high
+      title: SLES 16 must be a vendor-supported release.
+      rules:
+          - installed_OS_is_vendor_supported
+      status: automated
