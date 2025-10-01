@@ -2,7 +2,6 @@
 
 # Created by argbash-init v2.8.1
 # Rearrange the order of options below according to what you would like to see in the help message.
-# ARG_OPTIONAL_SINGLE([oval],[o],[OVAL version],[auto])
 # ARG_OPTIONAL_SINGLE([builder],[b],[Builder engine],[auto])
 # ARG_OPTIONAL_SINGLE([jobs],[j],[Count of simultaneous jobs],[auto])
 # ARG_OPTIONAL_BOOLEAN([debug],[],[Make a debug build with draft profiles],[off])
@@ -14,7 +13,6 @@
 # ARG_USE_ENV([ADDITIONAL_CMAKE_OPTIONS],[],[Whitespace-separated string of arguments to pass to CMake])
 # ARG_POSITIONAL_INF([product],[Products to build, ALL means all products],[0],[ALL])
 # ARG_DEFAULTS_POS([])
-# ARG_TYPE_GROUP_SET([oval_ver],[VERSION],[oval],[5.11,auto])
 # ARG_TYPE_GROUP_SET([builder_type],[BUILDER],[builder],[make,ninja,auto])
 # ARG_HELP([Wipes out contents of the 'build' directory and builds only and only the given products.])
 # ARGBASH_GO()
@@ -35,17 +33,6 @@ die()
 }
 
 # validators
-
-oval_ver()
-{
-	local _allowed=("5.11" "auto") _seeking="$1"
-	for element in "${_allowed[@]}"
-	do
-		test "$element" = "$_seeking" && echo "$element" && return 0
-	done
-	die "Value '$_seeking' (of argument '$2') doesn't match the list of allowed values: '5.11' and 'auto'" 4
-}
-
 
 builder_type()
 {
@@ -69,7 +56,6 @@ begins_with_short_option()
 _positionals=()
 _arg_product=("ALL")
 # THE DEFAULTS INITIALIZATION - OPTIONALS
-_arg_oval="auto"
 _arg_builder="auto"
 _arg_jobs="auto"
 _arg_debug="off"
@@ -87,9 +73,8 @@ _arg_render_test_scenarios="off"
 print_help()
 {
 	printf '%s\n' "Wipes out contents of the 'build' directory and builds only and only the given products."
-	printf 'Usage: %s [-o|--oval <VERSION>] [-b|--builder <BUILDER>] [-j|--jobs <arg>] [--(no-)debug] [--(no-)derivatives] [--(no-)ansible-playbooks] [--(no-)bash-scripts] [-d|--(no-)datastream-only] [-p|--(no-)profiling] [-h|--help] [<product-1>] ... [<product-n>] ...\n' "$0"
+	printf 'Usage: %s [-b|--builder <BUILDER>] [-j|--jobs <arg>] [--(no-)debug] [--(no-)derivatives] [--(no-)ansible-playbooks] [--(no-)bash-scripts] [-d|--(no-)datastream-only] [-p|--(no-)profiling] [-h|--help] [<product-1>] ... [<product-n>] ...\n' "$0"
 	printf '\t%s\n' "<product>: Products to build, ALL means all products (defaults for <product>: 'ALL')"
-	printf '\t%s\n' "-o, --oval: OVAL version. Can be one of: '5.11' or 'auto' (default: 'auto')"
 	printf '\t%s\n' "-b, --builder: Builder engine. Can be one of: 'make', 'ninja' and 'auto' (default: 'auto')"
 	printf '\t%s\n' "-j, --jobs: Count of simultaneous jobs (default: 'auto')"
 	printf '\t%s\n' "--debug, --no-debug: Make a debug build with draft profiles (off by default)"
@@ -117,17 +102,6 @@ parse_commandline()
 	do
 		_key="$1"
 		case "$_key" in
-			-o|--oval)
-				test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
-				_arg_oval="$(oval_ver "$2" "oval")" || exit 1
-				shift
-				;;
-			--oval=*)
-				_arg_oval="$(oval_ver "${_key##--oval=}" "oval")" || exit 1
-				;;
-			-o*)
-				_arg_oval="$(oval_ver "${_key##-o}" "oval")" || exit 1
-				;;
 			-b|--builder)
 				test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
 				_arg_builder="$(builder_type "$2" "builder")" || exit 1
@@ -160,7 +134,7 @@ parse_commandline()
 				shift
 				;;
 			--rule-id=*)
-				_arg_rule_id="${_key##--oval=}"
+				_arg_rule_id="${_key##--rule-id=}"
 				;;
 			-r*)
 				_arg_rule_id="${_key##-r}"
@@ -390,21 +364,9 @@ all_cmake_products=(
 	UBUNTU2404
 )
 
-DEFAULT_OVAL_MAJOR_VERSION=5
-DEFAULT_OVAL_MINOR_VERSION=11
-
 build_type_option="-DCMAKE_BUILD_TYPE=Release"
 
 cores=$(nproc 2>/dev/null) || cores=1
-
-
-if test "$_arg_oval" = auto; then
-	oval_major_version_option="-DSSG_TARGET_OVAL_MAJOR_VERSION:STRING=$DEFAULT_OVAL_MAJOR_VERSION"
-	oval_minor_version_option="-DSSG_TARGET_OVAL_MINOR_VERSION:STRING=$DEFAULT_OVAL_MINOR_VERSION"
-else
-	oval_major_version_option="-DSSG_TARGET_OVAL_MAJOR_VERSION:STRING=$(cut -f 1 -d . <<< "$_arg_oval")"
-	oval_minor_version_option="-DSSG_TARGET_OVAL_MINOR_VERSION:STRING=$(cut -f 1 -d . --complement <<< "$_arg_oval")"
-fi
 
 test "$_arg_debug" = on && build_type_option="-DCMAKE_BUILD_TYPE=Debug"
 
@@ -433,7 +395,7 @@ for chosen_product in "${_arg_product[@]}"; do
 	fi
 done
 
-CMAKE_OPTIONS=(${ADDITIONAL_CMAKE_OPTIONS} "${build_type_option}" "${oval_major_version_option}" "${oval_minor_version_option}" '-DSSG_PRODUCT_DEFAULT=OFF' "${cmake_enable_args[@]}" -G "$cmake_generator")
+CMAKE_OPTIONS=(${ADDITIONAL_CMAKE_OPTIONS} "${build_type_option}" '-DSSG_PRODUCT_DEFAULT=OFF' "${cmake_enable_args[@]}" -G "$cmake_generator")
 set_no_derivatives_options
 if [ "$_arg_ansible_playbooks" = off ] ; then
 	CMAKE_OPTIONS+=("-DSSG_ANSIBLE_PLAYBOOKS_ENABLED:BOOL=OFF")
