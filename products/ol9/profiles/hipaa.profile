@@ -18,7 +18,6 @@ description: |-
 
 selections:
     - grub2_password
-    - grub2_uefi_password
     - file_groupowner_grub2_cfg
     - file_owner_grub2_cfg
     - grub2_disable_interactive_boot
@@ -38,9 +37,6 @@ selections:
     - sshd_disable_root_login
     - libreswan_approved_tunnels
     - no_rsh_trust_files
-    - package_rsh-server_removed
-    - package_talk_removed
-    - package_talk-server_removed
     - package_telnet_removed
     - package_telnet-server_removed
     - package_cron_installed

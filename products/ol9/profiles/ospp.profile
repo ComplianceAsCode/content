@@ -185,7 +185,7 @@ selections:
     ## FIA_UAU.1
     - require_singleuser_auth
     - grub2_disable_recovery
-    - grub2_uefi_password
+    - grub2_password
     - no_empty_passwords
 
     ## Set Maximum Number of Authentication Failures to 3 Within 15 Minutes
