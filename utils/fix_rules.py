@@ -303,6 +303,17 @@ def rewrite_value_remove_prefix(line):
     return key + ": " + new_value
 
 
+def add_section(file_contents, yaml_contents, section):
+    severity_index = list(yaml_contents.keys()).index('severity')
+    yaml_items = list(yaml_contents.items())
+    yaml_items.insert(severity_index, (section, {}))
+    new_yaml_contents = dict(yaml_items)
+    severity_start, _ = find_section_lines(file_contents, "severity")[0]
+    file_contents.insert(severity_start-1, '')
+    file_contents.insert(severity_start, f"{section}:")
+    return file_contents, new_yaml_contents
+
+
 def add_to_the_section(file_contents, yaml_contents, section, new_keys):
     to_insert = []
 
@@ -316,6 +327,8 @@ def add_to_the_section(file_contents, yaml_contents, section, new_keys):
     assert end > begin, "We need at least one identifier there already"
     template_line = str(file_contents[end - 1])
     leading_whitespace = re.match(r"^\s*", template_line).group()
+    if leading_whitespace in ['', '\n']:
+        leading_whitespace += ' ' * 4
     for key, value in new_keys.items():
         to_insert.append(leading_whitespace + key + ": " + value)
 
@@ -442,7 +455,7 @@ def add_product_cce(file_contents, yaml_contents, product, cce):
     section = 'identifiers'
 
     if section not in yaml_contents:
-        return file_contents
+        file_contents, yaml_contents = add_section(file_contents, yaml_contents, section)
 
     new_contents = add_to_the_section(
         file_contents, yaml_contents, section, {"cce@{product}".format(product=product): cce})
