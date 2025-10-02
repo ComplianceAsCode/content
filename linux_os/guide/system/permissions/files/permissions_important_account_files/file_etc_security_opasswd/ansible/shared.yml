@@ -4,10 +4,12 @@
 # complexity = low
 # disruption = low
 
-- name: Ensure /etc/security/opasswd exist and has the correct permissions
+- name: {{{ rule_title }}}
   ansible.builtin.file:
     path: /etc/security/opasswd
     owner: root
     group: root
     mode: 0600
     state: touch
+    modification_time: preserve
+    access_time: preserve
