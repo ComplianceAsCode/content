@@ -461,7 +461,9 @@ controls:
                 - id: 1.2.33
                   title: Ensure unsupported configuration overrides are not used
                   status: pending
-                  rules: []
+                  rules:
+                      - api_server_no_unsupported_config_overrides
+                      - api_server_kube_no_unsupported_config_overrides
                   levels:
                       - level_1
           - id: '1.3'
