@@ -5,6 +5,7 @@
 declare -a bins
 bins=('/sbin/auditctl' '/sbin/auditd' '/sbin/augenrules' '/sbin/aureport' '/sbin/ausearch' '/sbin/autrace' '/sbin/rsyslogd' '/sbin/audispd')
 
+echo >> {{{ aide_conf_path }}}
 for theFile in "${bins[@]}"
 do
     echo "$theFile p+i+n+u+g+s+b+acl+xattrs+sha512"  >> {{{ aide_conf_path }}}
