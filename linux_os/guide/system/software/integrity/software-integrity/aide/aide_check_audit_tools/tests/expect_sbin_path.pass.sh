@@ -2,10 +2,8 @@
 # platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_ubuntu,multi_platform_almalinux
 # packages = aide
 
-aide --init
-
 declare -a bins
-bins=('/usr/sbin/auditctl' '/usr/sbin/auditd' '/usr/sbin/augenrules' '/usr/sbin/aureport' '/usr/sbin/ausearch' '/usr/sbin/autrace' '/usr/sbin/rsyslogd' '/usr/sbin/audispd')
+bins=('/sbin/auditctl' '/sbin/auditd' '/sbin/augenrules' '/sbin/aureport' '/sbin/ausearch' '/sbin/autrace' '/sbin/rsyslogd' '/sbin/audispd')
 
 echo >> {{{ aide_conf_path }}}
 for theFile in "${bins[@]}"
