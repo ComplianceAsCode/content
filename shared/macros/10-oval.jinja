@@ -846,7 +846,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </linux:dpkginfo_object>
   {{% if evr %}}
     <linux:dpkginfo_state id="ste_{{{ test_id }}}" version="1">
-      <linux:evr datatype="evr_string" operation="{{{ evr_op }}}">{{{ evr }}}</linux:evr>
+      <linux:evr datatype="debian_evr_string" operation="{{{ evr_op }}}">{{{ evr }}}</linux:evr>
     </linux:dpkginfo_state>
   {{% endif %}}
 {{% endif %}}
