@@ -23,54 +23,64 @@
       ansible.builtin.shell:
         cmd: nmcli -g UUID,TYPE con | grep -v loopback | awk -F ':' '{ print $1 }'
       register: result_nmcli_cmd_connections_names
+      check_mode: false
       changed_when: false
+      failed_when: false
 
     - name: '{{{ rule_title }}} - Collect NetworkManager connections zones'
       ansible.builtin.shell:
         cmd: nmcli -f connection.zone connection show {{ item | trim }} | awk '{ print $2}'
       register: result_nmcli_cmd_connections_zones
       changed_when: false
+      failed_when: false
       with_items:
-          - "{{ result_nmcli_cmd_connections_names.stdout_lines }}"
+          - "{{ result_nmcli_cmd_connections_names.stdout_lines | default([]) }}"
+      when:
+        - result_nmcli_cmd_connections_names.stdout_lines is defined
+        - result_nmcli_cmd_connections_names.stdout_lines | length > 0
 
     - name: '{{{ rule_title }}} - Ensure NetworkManager connections are assigned to a firewalld zone'
       ansible.builtin.command:
         cmd: nmcli connection modify {{ item.0 }} connection.zone {{ firewalld_sshd_zone }}
-      register: result_nmcli_cmd_connections_assignment
+      register: result_nmcli_cmd_zone_assignment
+      changed_when: true
       with_together:
-        - "{{ result_nmcli_cmd_connections_names.stdout_lines }}"
-        - "{{ result_nmcli_cmd_connections_zones.results }}"
+        - "{{ result_nmcli_cmd_connections_names.stdout_lines | default([]) }}"
+        - "{{ result_nmcli_cmd_connections_zones.stdout_lines | default([]) }}"
       when:
-        - item.1.stdout == '--'
+        - result_nmcli_cmd_connections_zones.stdout_lines is defined
+        - result_nmcli_cmd_connections_zones.stdout_lines | length > 0
+        - item.1.stdout == '--' or item.1.stdout != firewalld_sshd_zone
 
     - name: '{{{ rule_title }}} - Ensure NetworkManager connections changes are applied'
       ansible.builtin.service:
         name: NetworkManager
         state: restarted
       when:
-        - result_nmcli_cmd_connections_assignment is changed
+        - result_nmcli_cmd_zone_assignment is defined
+        - result_nmcli_cmd_zone_assignment is changed
+        - result_nmcli_cmd_zone_assignment.results | selectattr('changed', 'equalto', true) | list | length > 0
 
     - name: '{{{ rule_title }}} - Collect firewalld active zones'
       ansible.builtin.shell:
         cmd: firewall-cmd --get-active-zones | grep -v "^ " | cut -d " " -f 1
       register: result_firewall_cmd_zones_names
       changed_when: false
+      failed_when: false
 
     - name: '{{{ rule_title }}} - Ensure firewalld zones allow SSH'
-      ansible.builtin.command:
-        cmd: firewall-cmd --permanent --zone={{ item }} --add-service=ssh
-      register: result_nmcli_cmd_connections_assignment
-      changed_when:
-          - "'ALREADY_ENABLED' not in result_nmcli_cmd_connections_assignment.stderr"
+      ansible.posix.firewalld:
+        zone: "{{ item }}"
+        service: ssh
+        permanent: true
+        state: enabled
+        immediate: true
+      register: result_firewall_ssh_service_assignment
       with_items:
-        - "{{ result_firewall_cmd_zones_names.stdout_lines }}"
-
-    - name: '{{{ rule_title }}} - Ensure firewalld changes are applied'
-      ansible.builtin.service:
-        name: firewalld
-        state: reloaded
+        - "{{ result_firewall_cmd_zones_names.stdout_lines | default([]) }}"
       when:
-        - result_nmcli_cmd_connections_assignment is changed
+        - result_firewall_cmd_zones_names.stdout_lines is defined
+        - result_firewall_cmd_zones_names.stdout_lines | length > 0
   when:
     - ansible_facts.services['firewalld.service'].state == 'running'
     - ansible_facts.services['NetworkManager.service'].state == 'running'
