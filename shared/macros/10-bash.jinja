@@ -2282,12 +2282,14 @@ for f in $(echo -n "{{{ files }}}"); do
         continue
     fi
 
-    # find key in section and change value
+# find key in section and change value
     if grep -qzosP "[[:space:]]*\[{{{ section }}}\]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}" "$f"; then
 {{% if no_quotes %}}
-            sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value | replace("/", "\/") }}}/" "$f"
+            # sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value | replace("/", "\/") }}}/" "$f"
+            sed -i "/{{{ key }}}/{s/{{{ key }}}[^(\\n)]*/{{{ key }}}={{{ value | replace("/", "\/") }}}/; q}" "$f"
 {{% else %}}
-            sed -i 's/{{{ key }}}[^(\n)]*/{{{ key }}}="{{{ value | replace("/", "\/") }}}"/' "$f"
+            # sed -i 's/{{{ key }}}[^(\n)]*/{{{ key }}}="{{{ value | replace("/", "\/") }}}"/' "$f"
+            sed -i '/{{{ key }}}/{s/{{{ key }}}[^(\n)]*/{{{ key }}}="{{{ value | replace("/", "\/") }}}"/; q}' "$f"
 {{% endif %}}
             found=true
 
