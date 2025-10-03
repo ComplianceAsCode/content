@@ -1168,7 +1168,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 {{#
   Extract from system password database a list composed of password objects related to non-system UIDs.
-  This list is then filtered to exclude some special usernames and users with /sbin/nologin shell.
+  This list is then filtered to exclude some special usernames and users with /sbin/nologin or /usr/sbin/nologin shell.
   The list includes non-local (LDAP) users, because the implementation of "unix:password_object" in OpenSCAP makes use of getpwent(), which browses all users provided by the NSS.
 
   The macro receives a string as parameter, which is used as the password_object id in the rule.
@@ -1213,7 +1213,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </unix:password_state>
 
   <unix:password_state id="state_{{{ rule_id }}}_users_nologin_shell" version="1">
-    <unix:login_shell datatype="string" operation="pattern match">^/sbin/nologin$</unix:login_shell>
+    <unix:login_shell datatype="string" operation="pattern match">^(?:/usr)?/sbin/nologin$</unix:login_shell>
   </unix:password_state>
 {{%- endmacro %}}
 
