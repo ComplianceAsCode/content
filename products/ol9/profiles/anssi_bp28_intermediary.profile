@@ -41,3 +41,10 @@ selections:
     - '!no_nis_in_nsswitch'
     - '!ldap_client_tls_cacertpath'
     - '!ldap_client_start_tls'
+    - '!grub2_uefi_password'
+
+    # talk package not available in OL9
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
+    - '!package_rsh-server_removed'
+    - '!package_rsh_removed'

@@ -54,6 +54,7 @@ selections:
     - '!file_groupowner_efi_user_cfg'
     - '!file_owner_efi_user_cfg'
     - '!file_permissions_efi_user_cfg'
+    - '!grub2_uefi_password'
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'
@@ -65,3 +66,9 @@ selections:
     - '!service_chronyd_enabled'
     - '!ldap_client_start_tls'
     - '!ldap_client_tls_cacertpath'
+
+    # package not available in OL9
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
+    - '!package_rsh-server_removed'
+    - '!package_rsh_removed'
