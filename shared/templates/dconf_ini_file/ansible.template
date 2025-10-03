@@ -19,6 +19,7 @@
     value: "{{{ VALUE }}}"
     create: yes
   when: {{{ rule_id }}}_config_files is defined and {{{ rule_id }}}_config_files.matched == 0
+  register: default_file
 
 - name: "Configure {{{ PARAMETER }}} - existing files"
   community.general.ini_file:
@@ -29,6 +30,7 @@
     create: yes
   with_items: "{{ {{{ rule_id }}}_config_files.files }}"
   when: {{{ rule_id }}}_config_files is defined and {{{ rule_id }}}_config_files.matched > 0
+  register: existing_files
 
 - name: "Detect if lock for {{{ PARAMETER }}} can be found on {{{ PATH }}}"
   ansible.builtin.find:
@@ -55,3 +57,4 @@
 
 - name: "Dconf Update - {{{ PARAMETER }}}"
   ansible.builtin.command: dconf update
+  when: default_file is changed or existing_files is changed
