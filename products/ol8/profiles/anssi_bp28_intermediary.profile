@@ -35,3 +35,6 @@ selections:
     - '!ensure_almalinux_gpgkey_installed'
     - '!package_kea_removed'
     - '!no_nis_in_nsswitch'
+    # package not available in OL8
+    - '!package_talk-server_removed'
+    - '!package_talk_removed'
