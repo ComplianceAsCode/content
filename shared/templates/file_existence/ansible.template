@@ -6,12 +6,12 @@
 
 
 {{% if not EXISTS %}}
-- name: Remove {{{ FILEPATH }}}
+- name: {{{ rule_title }}} - Remove {{{ FILEPATH }}}
   ansible.builtin.file:
       path: {{{ FILEPATH }}}
       state: absent
 {{% else %}}
-- name: Add empty {{{ FILEPATH }}}
+- name: {{{ rule_title }}} - Add empty {{{ FILEPATH }}}
   ansible.builtin.file:
       path: {{{ FILEPATH }}}
       state: touch
@@ -21,4 +21,6 @@
     {{%- if FILEMODE %}}
       mode: "{{{ FILEMODE }}}"
     {{%- endif %}}
+      modification_time: preserve
+      access_time: preserve
 {{% endif %}}
