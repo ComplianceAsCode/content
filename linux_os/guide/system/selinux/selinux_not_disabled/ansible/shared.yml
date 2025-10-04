@@ -4,9 +4,19 @@
 # complexity = low
 # disruption = low
 
+- name: "{{{ rule_title }}} - Check current SELinux state"
+  ansible.builtin.command:
+    cmd: getenforce
+  register: selinux_state
+  check_mode: false
+  changed_when: false
+
 {{{ ansible_selinux_config_set(parameter="SELINUX", value="permissive", rule_title=rule_title) }}}
 
 - name: "{{{ rule_title }}} - Mark system to relabel SELinux on next boot"
   ansible.builtin.file:
     path: /.autorelabel
     state: touch
+    access_time: preserve
+    modification_time: preserve
+  when: selinux_state.stdout | lower != "permissive"
