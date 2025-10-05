@@ -21,3 +21,28 @@ controls:
       rules:
           - installed_OS_is_vendor_supported
       status: automated
+
+    - id: SLES-16-16016020
+      title: Enable NX/XD Support
+      levels:
+          - medium
+      automated: partially
+      rules:
+          - bios_enable_execution_restrictions
+          - install_PAE_kernel_on_x86-32
+
+    - id: SLES-16-16016025
+      title: Ensure All Files Are Owned by a Group
+      levels:
+          - medium
+      rules:
+          - file_permissions_ungroupowned
+      status: automated
+
+    - id: SLES-16-16016030
+      title: Ensure All Files Are Owned by a Use
+      levels:
+          - medium
+      rules:
+          - no_files_unowned_by_user
+      status: automated
