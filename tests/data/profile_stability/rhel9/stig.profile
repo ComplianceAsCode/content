@@ -48,7 +48,6 @@ accounts_user_interactive_home_directory_defined
 accounts_user_interactive_home_directory_exists
 aide_build_database
 aide_check_audit_tools
-aide_periodic_cron_checking
 aide_scan_notification
 aide_use_fips_hashes
 aide_verify_acls
