@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'OpenShift Kube APIServer TLS Cipher Suites'
+
+description: 'OpenShift Kube APIServer TLS Cipher Suites comma separated string, used for Remediation and manual check text. They need to follow openSSL notation'
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+  default: '"TLS_AES_128_GCM_SHA256","TLS_AES_256_GCM_SHA384","TLS_CHACHA20_POLY1305_SHA256","ECDHE-ECDSA-AES128-GCM-SHA256","ECDHE-RSA-AES128-GCM-SHA256","ECDHE-ECDSA-AES256-GCM-SHA384","ECDHE-RSA-AES256-GCM-SHA384","ECDHE-ECDSA-CHACHA20-POLY1305","ECDHE-RSA-CHACHA20-POLY1305"'
+  mozilla_intermediate: '"TLS_AES_128_GCM_SHA256","TLS_AES_256_GCM_SHA384","TLS_CHACHA20_POLY1305_SHA256","ECDHE-ECDSA-AES128-GCM-SHA256","ECDHE-RSA-AES128-GCM-SHA256","ECDHE-ECDSA-AES256-GCM-SHA384","ECDHE-RSA-AES256-GCM-SHA384","ECDHE-ECDSA-CHACHA20-POLY1305","ECDHE-RSA-CHACHA20-POLY1305","DHE-RSA-AES128-GCM-SHA256","DHE-RSA-AES256-GCM-SHA384","DHE-RSA-CHACHA20-POLY1305"'
+
+  # the BSI does not recommend CHACHA cipher in the 2024-01 Version of BSI-TR-02102-2
+  # we do not add the DH Ciphers, as they are only considered secure until 2029 and are not in the APIServer default Ciphers
+  2024-01-BSI-TR-02102-2: '"TLS_AES_128_GCM_SHA256","TLS_AES_256_GCM_SHA384","ECDHE-ECDSA-AES128-GCM-SHA256","ECDHE-RSA-AES128-GCM-SHA256","ECDHE-ECDSA-AES256-GCM-SHA384","ECDHE-RSA-AES256-GCM-SHA384"'
