@@ -2287,7 +2287,7 @@ for f in $(echo -n "{{{ files }}}"); do
         if ! grep -qPz "{{{ key }}}={{{ value }}}" "$f"; then
 {{% if no_quotes %}}    
             sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value | replace("/", "\/") }}}/" "$f"
-{{% else %}}    
+{{% else %}}
             sed -i 's/{{{ key }}}[^(\n)]*/{{{ key }}}="{{{ value | replace("/", "\/") }}}"/' "$f"
 {{% endif %}}    
         fi
