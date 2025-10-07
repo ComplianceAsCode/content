@@ -14,4 +14,4 @@ description: |-
     Ensures PCI-DSS v4 security configuration settings are applied.
 
 selections:
-    -  pcidss_4_sle16:all:base
+    - base_sle16:all:pcidss4
