@@ -178,6 +178,7 @@ mount_option_var_nosuid
 mount_option_var_tmp_nodev
 mount_option_var_tmp_noexec
 mount_option_var_tmp_nosuid
+no_dirs_unowned_by_root
 no_empty_passwords
 no_empty_passwords_etc_shadow
 no_files_unowned_by_user
@@ -216,6 +217,7 @@ package_vsftpd_removed
 partition_for_dev_shm
 partition_for_tmp
 postfix_network_listening_disabled
+root_path_all_dirs
 root_path_no_dot
 rsyslog_files_groupownership
 rsyslog_files_ownership
