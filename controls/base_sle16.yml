@@ -7,16 +7,16 @@ source: not_publicly_available
 reference_type: suse-base-sle16
 
 levels:
-    - id: high
-    - id: medium
-    - id: low
+    - id: pcidss4
+    - id: anssi_minimal
 
 product: sle16
 
 controls:
     - id: SLES-16-16016015
       levels:
-          - high
+          - pcidss4
+          - anssi_minimal
       title: SLES 16 must be a vendor-supported release.
       rules:
           - installed_OS_is_vendor_supported
@@ -25,7 +25,7 @@ controls:
     - id: SLES-16-16016020
       title: Enable NX/XD Support
       levels:
-          - medium
+          - pcidss4
       automated: partially
       rules:
           - bios_enable_execution_restrictions
@@ -34,7 +34,7 @@ controls:
     - id: SLES-16-16016025
       title: Ensure All Files Are Owned by a Group
       levels:
-          - medium
+          - anssi_minimal
       rules:
           - file_permissions_ungroupowned
       status: automated
@@ -42,7 +42,7 @@ controls:
     - id: SLES-16-16016030
       title: Ensure All Files Are Owned by a Use
       levels:
-          - medium
+          - anssi_minimal
       rules:
           - no_files_unowned_by_user
       status: automated
