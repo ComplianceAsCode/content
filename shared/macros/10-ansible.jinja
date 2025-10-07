@@ -1479,9 +1479,11 @@ Part of the grub2_bootloader_argument template.
 :type arg_name: str
 :param arg_name_value: Kernel command line argument concatenated with the value of this argument using an equal sign, eg. "noexec=off".
 :type arg_name_value: str
+:param arg_variable: Name of the XCCDF Value parametrizing the rule (can be None)
+:type arg_variable: str
 
 #}}
-{{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value) -%}}
+{{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value, arg_variable) -%}}
 {{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'slmicro5'] %}}
 - name: Check {{{ arg_name }}} argument exists
   ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
@@ -1541,7 +1543,11 @@ Part of the grub2_bootloader_argument template.
 
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /sbin/grubby --update-kernel=ALL --args="{{{ arg_name_value }}}"
+{{%- if arg_variable %}}
+  when: (grubby_info.stdout is not search('{{{ arg_name }}}=' ~ {{{ arg_variable }}})) or ((etc_default_grub['content'] | b64decode) is not search('{{{ arg_name }}}=' ~ {{{ arg_variable }}}))
+{{% else %}}
   when: (grubby_info.stdout is not search('{{{ arg_name_value }}}')) or ((etc_default_grub['content'] | b64decode) is not search('{{{ arg_name_value }}}'))
+{{% endif %}}
 {{% endif -%}}
 {{%- endmacro -%}}
 
