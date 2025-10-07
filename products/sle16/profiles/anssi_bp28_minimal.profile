@@ -25,4 +25,4 @@ description: |-
     Manual review is required to assess if the installed services are minimal.
 
 selections:
-    - anssi_sle16:all:minimal
+    - base_sle16:all:anssi_minimal
