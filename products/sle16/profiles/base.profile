@@ -9,7 +9,7 @@ metadata:
 
 reference: not_publicly_available
 
-title: 'General System Security Profile for SUSE Linux Enterprise (SLES) 16'
+title: 'DRAFT General System Security Profile for SUSE Linux Enterprise (SLES) 16'
 
 description: |-
     This profile contains configuration checks that align to the
