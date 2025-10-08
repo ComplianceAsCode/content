@@ -3,6 +3,25 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
-- name: "Run dconf update"
+
+{{% macro check_db_is_up_to_date(db_name) %}}
+- name: "{{{ rule_title }}} - Get database modification time for {{{ db_name }}}"
+  ansible.builtin.stat:
+    path: '/etc/dconf/db/{{{ db_name }}}'
+  register: '{{{ db_name }}}_db'
+
+- name: "{{{ rule_title }}} - Get keyfiles for {{{ db_name }}}"
+  ansible.builtin.find:
+    paths: '/etc/dconf/db/{{{ db_name }}}.d/'
+  register: '{{{ db_name }}}_keyfiles'
+
+- name: "{{{ rule_title }}} - Run dconf update for {{{ db_name }}}"
   ansible.builtin.command:
     cmd: dconf update
+  when: "not {{{ db_name }}}_db.stat.exists or {{{ db_name }}}_keyfiles.files | length > 0 and {{{ db_name }}}_keyfiles.files | map(attribute='mtime') | max > {{{ db_name }}}_db.stat.mtime"
+{{% endmacro %}}
+
+{{{ check_db_is_up_to_date(dconf_gdm_dir.split(".")[0]) }}}
+{{% if dconf_gdm_dir.split(".")[0] != "local" %}}
+  {{{ check_db_is_up_to_date("local") }}}
+{{% endif %}}
