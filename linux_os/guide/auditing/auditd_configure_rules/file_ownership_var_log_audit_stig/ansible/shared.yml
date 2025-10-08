@@ -8,6 +8,7 @@
   ansible.builtin.command: grep -iw ^log_file /etc/audit/auditd.conf
   check_mode: False
   failed_when: false
+  changed_when: false
   register: log_file_exists
 
 - name: "{{{ rule_title }}} - Set audit log file fact"

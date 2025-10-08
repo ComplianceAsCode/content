@@ -19,6 +19,7 @@
   register: device_name
   failed_when: device_name.rc > 1
   changed_when: False
+  check_mode: False
 
 - name: "{{{ rule_title }}}: Create mount_info dictionary variable"
   set_fact:

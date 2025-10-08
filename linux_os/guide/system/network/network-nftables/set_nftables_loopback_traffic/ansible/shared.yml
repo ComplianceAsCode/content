@@ -14,6 +14,8 @@
   ansible.builtin.shell: |
     [ -z "$(grep "^\s*linux" /boot/grub2/grub.cfg | grep -v ipv6.disabled=1)" ]
   register: ipv6_status
+  changed_when: false
+  check_mode: false
 
 - name: Check sysctl value of net.ipv6.conf.all.disable_ipv6
   ansible.posix.sysctl:
