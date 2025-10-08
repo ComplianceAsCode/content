@@ -7,7 +7,7 @@ metadata:
         - rumch-se
         - teacup-on-rockingchair
 
-title: 'ANSSI-BP-028 (minimal)'
+title: 'DRAFT ANSSI-BP-028 (minimal)'
 
 description: |-
     This profile contains configurations that align to ANSSI-BP-028 v2.0 at the minimal hardening level.
