@@ -8,5 +8,4 @@
 {{{ ansible_instantiate_variables(ARG_VARIABLE) }}}
 {{% set ARG_NAME_VALUE = ARG_NAME ~ "={{ " ~ ARG_VARIABLE ~ " }}" %}}
 {{% endif %}}
-
-{{{ ansible_grub2_bootloader_argument(ARG_NAME, ARG_NAME_VALUE) }}}
+{{{ ansible_grub2_bootloader_argument(ARG_NAME, ARG_NAME_VALUE, ARG_VARIABLE) }}}
