@@ -1489,12 +1489,14 @@ Part of the grub2_bootloader_argument template.
   ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
   check_mode: False
   failed_when: False
+  changed_when: False
   register: argcheck
 
 - name: Check {{{ arg_name }}} argument exists
   ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=' /etc/default/grub
   check_mode: False
   failed_when: False
+  changed_when: False
   register: linecheck
 
 - name: Add {{{ arg_name }}} argument
@@ -1566,6 +1568,7 @@ Part of the grub2_bootloader_argument_absent template.
   ansible.builtin.command: grep '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"' /etc/default/grub
   check_mode: False
   failed_when: False
+  changed_when: False
   register: argcheck
 
 - name: Replace existing {{{ arg_name }}} argument

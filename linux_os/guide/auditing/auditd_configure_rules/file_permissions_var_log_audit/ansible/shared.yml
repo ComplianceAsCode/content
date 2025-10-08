@@ -7,11 +7,15 @@
 - name: Get audit log files
   ansible.builtin.command: grep -iw ^log_file /etc/audit/auditd.conf
   failed_when: false
+  changed_when: false
+  check_mode: false
   register: log_file_exists
 
 - name: Parse log file line
   ansible.builtin.command: awk -F '=' '/^log_file/ {print $2}' /etc/audit/auditd.conf
   register: log_file_line
+  changed_when: false
+  check_mode: false
   when: log_file_exists is not skipped and (log_file_exists.stdout | length > 0)
 
 - name: Set default log_file if not set
@@ -28,10 +32,14 @@
 - name: Get log files group
   ansible.builtin.command: grep -m 1 ^log_group /etc/audit/auditd.conf
   failed_when: false
+  changed_when: false
+  check_mode: false
   register: log_group_line
 
 - name: Parse log group line
   ansible.builtin.command: awk -F '=' '/log_group/ {print $2}' /etc/audit/auditd.conf
+  changed_when: false
+  check_mode: false
   register: log_group
   when: (log_group_line is not skipped) and (log_group_line.stdout | length > 0)
 

@@ -8,6 +8,8 @@
   ansible.builtin.shell: |-
     grep -oP '^\s*(?:auth.*pam_faillock.so.*)?dir\s*=\s*(\S+)' "{{ item }}" | sed -r 's/.*=\s*(\S+)/\1/'
   register: faillock_output
+  changed_when: false
+  check_mode: false
   with_items:
     - /etc/security/faillock.conf
     {{% if 'ol' not in families %}}

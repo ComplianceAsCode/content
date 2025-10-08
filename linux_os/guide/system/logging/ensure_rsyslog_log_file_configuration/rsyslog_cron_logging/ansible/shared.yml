@@ -12,6 +12,8 @@
     {{% endif %}}
     register: cron_log_config_exists
     failed_when: false
+    changed_when: false
+    check_mode: false
 
 -   name: "{{{ rule_title }}} - Ensure the /etc/rsyslog.d directory exists"
     ansible.builtin.file:
