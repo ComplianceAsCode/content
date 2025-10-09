@@ -5,3 +5,5 @@
 # complexity = low
 # disruption = low
 {{{ kubernetes_sshd_set() }}}
+---
+{{{ kubernetes_sshd_dropin('ClientAliveCountMax {{.var_sshd_set_keepalive}}', config_basename='00-complianceascode-sshd_set_keepalive.conf') }}}

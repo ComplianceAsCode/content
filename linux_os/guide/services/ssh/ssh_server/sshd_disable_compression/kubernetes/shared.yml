@@ -5,3 +5,5 @@
 # complexity = low
 # disruption = low
 {{{ kubernetes_sshd_set() }}}
+---
+{{{ kubernetes_sshd_dropin('Compression {{.var_sshd_disable_compression}}', config_basename='00-complianceascode-sshd_disable_compression.conf') }}}
