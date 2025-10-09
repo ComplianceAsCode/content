@@ -1,0 +1,1771 @@
+rule_results:
+  account-disable-post-pw-expiration:
+    default_result: FAIL
+  account-passwords-pam-faillock-audit:
+    default_result: FAIL
+  account-unique-id:
+    default_result: PASS
+  account-unique-name:
+    default_result: PASS
+  accounts-logon-fail-delay:
+    default_result: FAIL
+  accounts-max-concurrent-login-sessions:
+    default_result: FAIL
+  accounts-maximum-age-login-defs:
+    default_result: FAIL
+  accounts-minimum-age-login-defs:
+    default_result: FAIL
+  accounts-no-uid-except-zero:
+    default_result: PASS
+  accounts-password-all-shadowed:
+    default_result: PASS
+  accounts-password-last-change-is-in-past:
+    default_result: PASS
+  accounts-password-minlen-login-defs:
+    default_result: FAIL
+  accounts-password-pam-minclass:
+    default_result: FAIL
+  accounts-password-pam-retry:
+    default_result: FAIL
+  accounts-password-set-max-life-root:
+    default_result: PASS
+  accounts-password-warn-age-login-defs:
+    default_result: PASS
+  accounts-passwords-pam-faillock-audit:
+    default_result: FAIL
+  accounts-polyinstantiated-tmp:
+    default_result: FAIL
+  accounts-polyinstantiated-var-tmp:
+    default_result: FAIL
+  accounts-root-gid-zero:
+    default_result: PASS
+  accounts-root-path-dirs-no-write:
+    default_result: PASS
+  accounts-tmout:
+    default_result: FAIL
+  accounts-umask-etc-bashrc:
+    default_result: FAIL
+  accounts-umask-etc-csh-cshrc:
+    default_result: FAIL
+  accounts-umask-etc-login-defs:
+    default_result: FAIL
+  accounts-umask-etc-profile:
+    default_result: FAIL
+  accounts-user-dot-group-ownership:
+    default_result: PASS
+  accounts-user-dot-user-ownership:
+    default_result: PASS
+  accounts-users-home-files-groupownership:
+    default_result: PASS
+  accounts-users-home-files-ownership:
+    default_result: PASS
+  accounts-users-home-files-permissions:
+    default_result: PASS
+  aide-build-database:
+    default_result: FAIL
+  apparmor-configured:
+    default_result: FAIL
+  audit-access-failed:
+    default_result: FAIL
+  audit-access-success:
+    default_result: FAIL
+  audit-basic-configuration:
+    default_result: FAIL
+  audit-create-failed:
+    default_result: FAIL
+  audit-create-success:
+    default_result: FAIL
+  audit-delete-failed:
+    default_result: FAIL
+  audit-delete-success:
+    default_result: FAIL
+  audit-immutable-login-uids:
+    default_result: FAIL
+  audit-modify-failed:
+    default_result: FAIL
+  audit-modify-success:
+    default_result: FAIL
+  audit-module-load:
+    default_result: FAIL
+  audit-ospp-general:
+    default_result: FAIL
+  audit-owner-change-failed:
+    default_result: FAIL
+  audit-owner-change-success:
+    default_result: FAIL
+  audit-perm-change-failed:
+    default_result: FAIL
+  audit-perm-change-success:
+    default_result: FAIL
+  audit-privileged-commands-init:
+    default_result: FAIL
+  audit-privileged-commands-poweroff:
+    default_result: FAIL
+  audit-privileged-commands-reboot:
+    default_result: FAIL
+  audit-privileged-commands-shutdown:
+    default_result: FAIL
+  audit-rules-dac-modification-chmod:
+    default_result: FAIL
+  audit-rules-dac-modification-chown:
+    default_result: FAIL
+  audit-rules-dac-modification-fchmod:
+    default_result: FAIL
+  audit-rules-dac-modification-fchmodat:
+    default_result: FAIL
+  audit-rules-dac-modification-fchown:
+    default_result: FAIL
+  audit-rules-dac-modification-fchownat:
+    default_result: FAIL
+  audit-rules-dac-modification-fremovexattr:
+    default_result: FAIL
+  audit-rules-dac-modification-fsetxattr:
+    default_result: FAIL
+  audit-rules-dac-modification-lchown:
+    default_result: FAIL
+  audit-rules-dac-modification-lremovexattr:
+    default_result: FAIL
+  audit-rules-dac-modification-lsetxattr:
+    default_result: FAIL
+  audit-rules-dac-modification-removexattr:
+    default_result: FAIL
+  audit-rules-dac-modification-setxattr:
+    default_result: FAIL
+  audit-rules-dac-modification-umount:
+    default_result: FAIL
+  audit-rules-dac-modification-umount2:
+    default_result: FAIL
+  audit-rules-etc-group-open:
+    default_result: FAIL
+  audit-rules-etc-group-open-by-handle-at:
+    default_result: FAIL
+  audit-rules-etc-group-openat:
+    default_result: FAIL
+  audit-rules-etc-gshadow-open:
+    default_result: FAIL
+  audit-rules-etc-gshadow-open-by-handle-at:
+    default_result: FAIL
+  audit-rules-etc-gshadow-openat:
+    default_result: FAIL
+  audit-rules-etc-passwd-open:
+    default_result: FAIL
+  audit-rules-etc-passwd-open-by-handle-at:
+    default_result: FAIL
+  audit-rules-etc-passwd-openat:
+    default_result: FAIL
+  audit-rules-etc-shadow-open:
+    default_result: FAIL
+  audit-rules-etc-shadow-open-by-handle-at:
+    default_result: FAIL
+  audit-rules-etc-shadow-openat:
+    default_result: FAIL
+  audit-rules-execution-chacl:
+    default_result: FAIL
+  audit-rules-execution-chcon:
+    default_result: FAIL
+  audit-rules-execution-restorecon:
+    default_result: FAIL
+  audit-rules-execution-semanage:
+    default_result: FAIL
+  audit-rules-execution-setfacl:
+    default_result: FAIL
+  audit-rules-execution-setfiles:
+    default_result: FAIL
+  audit-rules-execution-setsebool:
+    default_result: FAIL
+  audit-rules-execution-seunshare:
+    default_result: FAIL
+  audit-rules-file-deletion-events:
+    default_result: FAIL
+  audit-rules-file-deletion-events-rename:
+    default_result: FAIL
+  audit-rules-file-deletion-events-renameat:
+    default_result: FAIL
+  audit-rules-file-deletion-events-rmdir:
+    default_result: FAIL
+  audit-rules-file-deletion-events-unlink:
+    default_result: FAIL
+  audit-rules-file-deletion-events-unlinkat:
+    default_result: FAIL
+  audit-rules-for-ospp:
+    default_result: FAIL
+  audit-rules-immutable:
+    default_result: FAIL
+  audit-rules-kernel-module-loading:
+    default_result: FAIL
+  audit-rules-kernel-module-loading-delete:
+    default_result: FAIL
+  audit-rules-kernel-module-loading-finit:
+    default_result: FAIL
+  audit-rules-kernel-module-loading-init:
+    default_result: FAIL
+  audit-rules-login-events:
+    default_result: FAIL
+  audit-rules-login-events-faillock:
+    default_result: FAIL
+  audit-rules-login-events-lastlog:
+    default_result: FAIL
+  audit-rules-login-events-tallylog:
+    default_result: FAIL
+  audit-rules-mac-modification:
+    default_result: FAIL
+  audit-rules-mac-modification-usr-share:
+    default_result: FAIL
+  audit-rules-media-export:
+    default_result: FAIL
+  audit-rules-networkconfig-modification:
+    default_result: FAIL
+  audit-rules-privileged-commands:
+    default_result: FAIL
+  audit-rules-privileged-commands-at:
+    default_result: FAIL
+  audit-rules-privileged-commands-chage:
+    default_result: FAIL
+  audit-rules-privileged-commands-chsh:
+    default_result: FAIL
+  audit-rules-privileged-commands-crontab:
+    default_result: FAIL
+  audit-rules-privileged-commands-dbus-daemon-launch-helper:
+    default_result: FAIL
+  audit-rules-privileged-commands-fusermount:
+    default_result: FAIL
+  audit-rules-privileged-commands-fusermount3:
+    default_result: FAIL
+  audit-rules-privileged-commands-gpasswd:
+    default_result: FAIL
+  audit-rules-privileged-commands-grub2-set-bootflag:
+    default_result: FAIL
+  audit-rules-privileged-commands-kmod:
+    default_result: FAIL
+  audit-rules-privileged-commands-mount:
+    default_result: FAIL
+  audit-rules-privileged-commands-mount-nfs:
+    default_result: FAIL
+  audit-rules-privileged-commands-newgidmap:
+    default_result: FAIL
+  audit-rules-privileged-commands-newgrp:
+    default_result: FAIL
+  audit-rules-privileged-commands-newuidmap:
+    default_result: FAIL
+  audit-rules-privileged-commands-pam-timestamp-check:
+    default_result: FAIL
+  audit-rules-privileged-commands-passwd:
+    default_result: FAIL
+  audit-rules-privileged-commands-pkexec:
+    default_result: FAIL
+  audit-rules-privileged-commands-polkit-helper:
+    default_result: FAIL
+  audit-rules-privileged-commands-postdrop:
+    default_result: FAIL
+  audit-rules-privileged-commands-postqueue:
+    default_result: FAIL
+  audit-rules-privileged-commands-pt-chown:
+    default_result: FAIL
+  audit-rules-privileged-commands-ssh-agent:
+    default_result: FAIL
+  audit-rules-privileged-commands-ssh-keysign:
+    default_result: FAIL
+  audit-rules-privileged-commands-sssd-krb5-child:
+    default_result: FAIL
+  audit-rules-privileged-commands-sssd-ldap-child:
+    default_result: FAIL
+  audit-rules-privileged-commands-sssd-proxy-child:
+    default_result: FAIL
+  audit-rules-privileged-commands-sssd-selinux-child:
+    default_result: FAIL
+  audit-rules-privileged-commands-su:
+    default_result: FAIL
+  audit-rules-privileged-commands-sudo:
+    default_result: FAIL
+  audit-rules-privileged-commands-sudoedit:
+    default_result: FAIL
+  audit-rules-privileged-commands-umount:
+    default_result: FAIL
+  audit-rules-privileged-commands-unix-chkpwd:
+    default_result: FAIL
+  audit-rules-privileged-commands-unix-update:
+    default_result: FAIL
+  audit-rules-privileged-commands-userhelper:
+    default_result: FAIL
+  audit-rules-privileged-commands-usermod:
+    default_result: FAIL
+  audit-rules-privileged-commands-usernetctl:
+    default_result: FAIL
+  audit-rules-privileged-commands-utempter:
+    default_result: FAIL
+  audit-rules-privileged-commands-write:
+    default_result: FAIL
+  audit-rules-session-events:
+    default_result: FAIL
+  audit-rules-session-events-btmp:
+    default_result: FAIL
+  audit-rules-session-events-utmp:
+    default_result: FAIL
+  audit-rules-session-events-wtmp:
+    default_result: FAIL
+  audit-rules-sudoers:
+    default_result: FAIL
+  audit-rules-sudoers-d:
+    default_result: FAIL
+  audit-rules-suid-auid-privilege-function:
+    default_result: FAIL
+  audit-rules-suid-privilege-function:
+    default_result: FAIL
+  audit-rules-sysadmin-actions:
+    default_result: FAIL
+  audit-rules-time-adjtimex:
+    default_result: FAIL
+  audit-rules-time-clock-settime:
+    default_result: FAIL
+  audit-rules-time-settimeofday:
+    default_result: FAIL
+  audit-rules-time-stime:
+    default_result: FAIL
+  audit-rules-time-watch-localtime:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-chmod:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-chown:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-creat:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-fchmod:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-fchmodat:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-fchown:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-fchownat:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-fremovexattr:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-fsetxattr:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-ftruncate:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-lchown:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-lremovexattr:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-lsetxattr:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-open:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-open-by-handle-at:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-open-by-handle-at-o-creat:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-open-by-handle-at-o-trunc-write:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-open-by-handle-at-rule-order:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-open-o-creat:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-open-o-trunc-write:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-open-rule-order:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-openat:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-openat-o-creat:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-openat-o-trunc-write:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-openat-rule-order:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-removexattr:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-rename:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-renameat:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-setxattr:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-truncate:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-unlink:
+    default_result: FAIL
+  audit-rules-unsuccessful-file-modification-unlinkat:
+    default_result: FAIL
+  audit-rules-usergroup-modification:
+    default_result: FAIL
+  audit-rules-usergroup-modification-group:
+    default_result: FAIL
+  audit-rules-usergroup-modification-gshadow:
+    default_result: FAIL
+  audit-rules-usergroup-modification-opasswd:
+    default_result: FAIL
+  audit-rules-usergroup-modification-passwd:
+    default_result: FAIL
+  audit-rules-usergroup-modification-shadow:
+    default_result: FAIL
+  audit-sudo-log-events:
+    default_result: FAIL
+  auditd-audispd-configure-remote-server:
+    default_result: FAIL
+  auditd-audispd-disk-full-action:
+    default_result: FAIL
+  auditd-audispd-encrypt-sent-records:
+    default_result: FAIL
+  auditd-audispd-network-failure-action:
+    default_result: FAIL
+  auditd-audispd-syslog-plugin-activated:
+    default_result: FAIL
+  auditd-data-disk-error-action:
+    default_result: FAIL
+  auditd-data-disk-error-action-stig:
+    default_result: FAIL
+  auditd-data-disk-full-action:
+    default_result: FAIL
+  auditd-data-disk-full-action-stig:
+    default_result: FAIL
+  auditd-data-retention-action-mail-acct:
+    default_result: PASS
+  auditd-data-retention-admin-space-left-action:
+    default_result: FAIL
+  auditd-data-retention-flush:
+    default_result: FAIL
+  auditd-data-retention-max-log-file:
+    default_result: PASS
+  auditd-data-retention-max-log-file-action:
+    default_result: PASS
+  auditd-data-retention-max-log-file-action-stig:
+    default_result: PASS
+  auditd-data-retention-num-logs:
+    default_result: PASS
+  auditd-data-retention-space-left:
+    default_result: FAIL
+  auditd-data-retention-space-left-action:
+    default_result: FAIL
+  auditd-freq:
+    default_result: PASS
+  auditd-local-events:
+    default_result: PASS
+  auditd-log-format:
+    default_result: PASS
+  auditd-name-format:
+    default_result: FAIL
+  auditd-overflow-action:
+    default_result: PASS
+  auditd-write-logs:
+    default_result: PASS
+  banner-etc-issue:
+    default_result: FAIL
+  banner-etc-issue-net:
+    default_result: FAIL
+  bios-enable-execution-restrictions:
+    default_result: PASS
+  chronyd-client-only:
+    default_result: FAIL
+  chronyd-no-chronyc-network:
+    default_result: FAIL
+  chronyd-or-ntpd-set-maxpoll:
+    default_result: FAIL
+  chronyd-or-ntpd-specify-multiple-servers:
+    default_result: FAIL
+  chronyd-or-ntpd-specify-remote-server:
+    default_result: PASS
+  chronyd-server-directive:
+    default_result: FAIL
+  chronyd-specify-remote-server:
+    default_result: PASS
+  configure-bashrc-exec-tmux:
+    default_result: FAIL
+  configure-bind-crypto-policy:
+    default_result: NOT-APPLICABLE
+  configure-crypto-policy:
+    default_result: PASS
+  configure-kerberos-crypto-policy:
+    default_result: PASS
+  configure-libreswan-crypto-policy:
+    default_result: PASS
+  configure-openssl-crypto-policy:
+    default_result: PASS
+  configure-ssh-crypto-policy:
+    default_result: PASS
+  configure-tmux-lock-after-time:
+    default_result: FAIL
+  configure-tmux-lock-command:
+    default_result: FAIL
+  configure-usbguard-auditbackend:
+    default_result: NOT-APPLICABLE
+  coredump-disable-backtraces:
+    default_result: FAIL
+  coredump-disable-storage:
+    default_result: FAIL
+  coreos-audit-backlog-limit-kernel-argument:
+    default_result: FAIL
+  coreos-audit-option:
+    default_result: FAIL
+  coreos-disable-interactive-boot:
+    default_result: PASS
+  coreos-enable-selinux-kernel-argument:
+    default_result: PASS
+  coreos-nousb-kernel-argument:
+    default_result: FAIL
+  coreos-page-poison-kernel-argument:
+    default_result: FAIL
+  coreos-pti-kernel-argument:
+    default_result: FAIL
+  coreos-slub-debug-kernel-argument:
+    default_result: FAIL
+  coreos-vsyscall-kernel-argument:
+    default_result: FAIL
+  dir-ownership-binary-dirs:
+    default_result: PASS
+  dir-ownership-library-dirs:
+    default_result: PASS
+  dir-permissions-binary-dirs:
+    default_result: PASS
+  dir-permissions-library-dirs:
+    default_result: PASS
+  dir-perms-world-writable-sticky-bits:
+    default_result: PASS
+  dir-system-commands-group-root-owned:
+    default_result: PASS
+  dir-system-commands-root-owned:
+    default_result: PASS
+  directory-access-var-log-audit:
+    default_result: FAIL
+  directory-access-var-log-kube-audit:
+    default_result: NOT-APPLICABLE
+  directory-access-var-log-oauth-audit:
+    default_result: NOT-APPLICABLE
+  directory-access-var-log-ocp-audit:
+    default_result: NOT-APPLICABLE
+  directory-groupowner-etc-ipsecd:
+    default_result: NOT-APPLICABLE
+  directory-groupowner-etc-iptables:
+    default_result: NOT-APPLICABLE
+  directory-groupowner-etc-nftables:
+    default_result: PASS
+  directory-groupowner-etc-selinux:
+    default_result: PASS
+  directory-groupowner-etc-sudoersd:
+    default_result: PASS
+  directory-groupowner-etc-sysctld:
+    default_result: PASS
+  directory-owner-etc-ipsecd:
+    default_result: NOT-APPLICABLE
+  directory-owner-etc-iptables:
+    default_result: NOT-APPLICABLE
+  directory-owner-etc-nftables:
+    default_result: PASS
+  directory-owner-etc-selinux:
+    default_result: PASS
+  directory-owner-etc-sudoersd:
+    default_result: PASS
+  directory-owner-etc-sysctld:
+    default_result: PASS
+  directory-permissions-etc-ipsecd:
+    default_result: NOT-APPLICABLE
+  directory-permissions-etc-iptables:
+    default_result: NOT-APPLICABLE
+  directory-permissions-etc-nftables:
+    default_result: PASS
+  directory-permissions-etc-selinux:
+    default_result: PASS
+  directory-permissions-etc-sudoersd:
+    default_result: PASS
+  directory-permissions-etc-sysctld:
+    default_result: PASS
+  directory-permissions-var-log-audit:
+    default_result: PASS
+  directory-permissions-var-log-kube-audit:
+    default_result: NOT-APPLICABLE
+  directory-permissions-var-log-oauth-audit:
+    default_result: NOT-APPLICABLE
+  directory-permissions-var-log-ocp-audit:
+    default_result: NOT-APPLICABLE
+  disable-ctrlaltdel-burstaction:
+    default_result: FAIL
+  disable-ctrlaltdel-reboot:
+    default_result: FAIL
+  disable-host-auth:
+    default_result: FAIL
+  disable-prelink:
+    default_result: PASS
+  disable-users-coredumps:
+    default_result: FAIL
+  disallow-bypass-password-sudo:
+    default_result: PASS
+  display-login-attempts:
+    default_result: PASS
+  enable-dracut-fips-module:
+    default_result: FAIL
+  enable-fips-mode:
+    default_result: FAIL
+  ensure-logrotate-activated:
+    default_result: FAIL
+  ensure-redhat-gpgkey-installed:
+    default_result: FAIL
+  etc-system-fips-exists:
+    default_result: FAIL
+  etcd-unique-ca:
+    default_result: NOT-APPLICABLE
+  file-group-ownership-var-log-audit:
+    default_result: PASS
+  file-groupowner-backup-etc-group:
+    default_result: PASS
+  file-groupowner-backup-etc-gshadow:
+    default_result: PASS
+  file-groupowner-backup-etc-passwd:
+    default_result: PASS
+  file-groupowner-backup-etc-shadow:
+    default_result: PASS
+  file-groupowner-cni-conf:
+    default_result: PASS
+  file-groupowner-controller-manager-kubeconfig:
+    default_result: NOT-APPLICABLE
+  file-groupowner-efi-grub2-cfg:
+    default_result: PASS
+  file-groupowner-efi-user-cfg:
+    default_result: PASS
+  file-groupowner-etc-chrony-keys:
+    default_result: PASS
+  file-groupowner-etc-crypttab:
+    default_result: PASS
+  file-groupowner-etc-group:
+    default_result: PASS
+  file-groupowner-etc-gshadow:
+    default_result: PASS
+  file-groupowner-etc-ipsec-conf:
+    default_result: NOT-APPLICABLE
+  file-groupowner-etc-ipsec-secrets:
+    default_result: NOT-APPLICABLE
+  file-groupowner-etc-issue:
+    default_result: PASS
+  file-groupowner-etc-issue-net:
+    default_result: PASS
+  file-groupowner-etc-motd:
+    default_result: PASS
+  file-groupowner-etc-passwd:
+    default_result: PASS
+  file-groupowner-etc-sestatus-conf:
+    default_result: PASS
+  file-groupowner-etc-shadow:
+    default_result: PASS
+  file-groupowner-etc-shells:
+    default_result: PASS
+  file-groupowner-etc-sudoers:
+    default_result: PASS
+  file-groupowner-etcd-data-dir:
+    default_result: NOT-APPLICABLE
+  file-groupowner-etcd-data-files:
+    default_result: NOT-APPLICABLE
+  file-groupowner-etcd-member:
+    default_result: NOT-APPLICABLE
+  file-groupowner-etcd-pki-cert-files:
+    default_result: NOT-APPLICABLE
+  file-groupowner-grub2-cfg:
+    default_result: PASS
+  file-groupowner-ip-allocations:
+    default_result: NOT-APPLICABLE
+  file-groupowner-kube-apiserver:
+    default_result: NOT-APPLICABLE
+  file-groupowner-kube-controller-manager:
+    default_result: NOT-APPLICABLE
+  file-groupowner-kube-scheduler:
+    default_result: NOT-APPLICABLE
+  file-groupowner-kubelet-conf:
+    default_result: PASS
+  file-groupowner-master-admin-kubeconfigs:
+    default_result: NOT-APPLICABLE
+  file-groupowner-multus-conf:
+    default_result: PASS
+  file-groupowner-openshift-pki-cert-files:
+    default_result: NOT-APPLICABLE
+  file-groupowner-openshift-pki-key-files:
+    default_result: NOT-APPLICABLE
+  file-groupowner-openshift-sdn-cniserver-config:
+    default_result: NOT-APPLICABLE
+  file-groupowner-openvswitch:
+    default_result: FAIL
+  file-groupowner-ovn-cni-server-sock:
+    default_result: PASS
+  file-groupowner-ovn-db-files:
+    default_result: PASS
+  file-groupowner-ovs-conf-db-hugetlbfs:
+    default_result: PASS
+  file-groupowner-ovs-conf-db-lock-hugetlbfs:
+    default_result: PASS
+  file-groupowner-ovs-conf-db-lock-openvswitch:
+    default_result: NOT-APPLICABLE
+  file-groupowner-ovs-conf-db-openvswitch:
+    default_result: NOT-APPLICABLE
+  file-groupowner-ovs-pid:
+    default_result: PASS
+  file-groupowner-ovs-sys-id-conf-hugetlbfs:
+    default_result: PASS
+  file-groupowner-ovs-sys-id-conf-openvswitch:
+    default_result: NOT-APPLICABLE
+  file-groupowner-ovs-vswitchd-pid:
+    default_result: PASS
+  file-groupowner-ovsdb-server-pid:
+    default_result: PASS
+  file-groupowner-pod-logs:
+    default_result: PASS
+  file-groupowner-scheduler-kubeconfig:
+    default_result: NOT-APPLICABLE
+  file-groupowner-sshd-config:
+    default_result: PASS
+  file-groupowner-system-journal:
+    default_result: PASS
+  file-groupowner-systemmap:
+    default_result: PASS
+  file-groupowner-user-cfg:
+    default_result: PASS
+  file-groupowner-var-log:
+    default_result: PASS
+  file-groupowner-var-log-messages:
+    default_result: PASS
+  file-groupowner-var-log-syslog:
+    default_result: NOT-APPLICABLE
+  file-groupowner-worker-ca:
+    default_result: PASS
+  file-groupowner-worker-kubeconfig:
+    default_result: PASS
+  file-groupowner-worker-service:
+    default_result: PASS
+  file-groupownership-audit-binaries:
+    default_result: PASS
+  file-groupownership-audit-configuration:
+    default_result: PASS
+  file-groupownership-home-directories:
+    default_result: PASS
+  file-groupownership-sshd-private-key:
+    default_result: PASS
+  file-groupownership-sshd-pub-key:
+    default_result: PASS
+  file-groupownership-system-commands-dirs:
+    default_result: PASS
+  file-owner-backup-etc-group:
+    default_result: PASS
+  file-owner-backup-etc-gshadow:
+    default_result: PASS
+  file-owner-backup-etc-passwd:
+    default_result: PASS
+  file-owner-backup-etc-shadow:
+    default_result: PASS
+  file-owner-cni-conf:
+    default_result: PASS
+  file-owner-controller-manager-kubeconfig:
+    default_result: NOT-APPLICABLE
+  file-owner-efi-grub2-cfg:
+    default_result: PASS
+  file-owner-efi-user-cfg:
+    default_result: PASS
+  file-owner-etc-chrony-keys:
+    default_result: PASS
+  file-owner-etc-crypttab:
+    default_result: PASS
+  file-owner-etc-group:
+    default_result: PASS
+  file-owner-etc-gshadow:
+    default_result: PASS
+  file-owner-etc-ipsec-conf:
+    default_result: NOT-APPLICABLE
+  file-owner-etc-ipsec-secrets:
+    default_result: NOT-APPLICABLE
+  file-owner-etc-issue:
+    default_result: PASS
+  file-owner-etc-issue-net:
+    default_result: PASS
+  file-owner-etc-motd:
+    default_result: PASS
+  file-owner-etc-passwd:
+    default_result: PASS
+  file-owner-etc-sestatus-conf:
+    default_result: PASS
+  file-owner-etc-shadow:
+    default_result: PASS
+  file-owner-etc-shells:
+    default_result: PASS
+  file-owner-etc-sudoers:
+    default_result: PASS
+  file-owner-etcd-data-dir:
+    default_result: NOT-APPLICABLE
+  file-owner-etcd-data-files:
+    default_result: NOT-APPLICABLE
+  file-owner-etcd-member:
+    default_result: NOT-APPLICABLE
+  file-owner-etcd-pki-cert-files:
+    default_result: NOT-APPLICABLE
+  file-owner-groupowner-permissions-pod-logs:
+    default_result: PASS
+  file-owner-grub2-cfg:
+    default_result: PASS
+  file-owner-ip-allocations:
+    default_result: NOT-APPLICABLE
+  file-owner-kube-apiserver:
+    default_result: NOT-APPLICABLE
+  file-owner-kube-controller-manager:
+    default_result: NOT-APPLICABLE
+  file-owner-kube-scheduler:
+    default_result: NOT-APPLICABLE
+  file-owner-kubelet:
+    default_result: PASS
+  file-owner-kubelet-conf:
+    default_result: PASS
+  file-owner-master-admin-kubeconfigs:
+    default_result: NOT-APPLICABLE
+  file-owner-multus-conf:
+    default_result: PASS
+  file-owner-openshift-pki-cert-files:
+    default_result: NOT-APPLICABLE
+  file-owner-openshift-pki-key-files:
+    default_result: NOT-APPLICABLE
+  file-owner-openshift-sdn-cniserver-config:
+    default_result: NOT-APPLICABLE
+  file-owner-openvswitch:
+    default_result: FAIL
+  file-owner-ovn-cni-server-sock:
+    default_result: PASS
+  file-owner-ovn-db-files:
+    default_result: PASS
+  file-owner-ovs-conf-db:
+    default_result: PASS
+  file-owner-ovs-conf-db-lock:
+    default_result: PASS
+  file-owner-ovs-pid:
+    default_result: PASS
+  file-owner-ovs-sys-id-conf:
+    default_result: PASS
+  file-owner-ovs-vswitchd-pid:
+    default_result: PASS
+  file-owner-ovsdb-server-pid:
+    default_result: PASS
+  file-owner-pod-logs:
+    default_result: PASS
+  file-owner-scheduler-kubeconfig:
+    default_result: NOT-APPLICABLE
+  file-owner-sshd-config:
+    default_result: PASS
+  file-owner-system-journal:
+    default_result: PASS
+  file-owner-systemmap:
+    default_result: PASS
+  file-owner-user-cfg:
+    default_result: PASS
+  file-owner-var-lib-etcd:
+    default_result: PASS
+  file-owner-var-log:
+    default_result: PASS
+  file-owner-var-log-messages:
+    default_result: PASS
+  file-owner-var-log-syslog:
+    default_result: NOT-APPLICABLE
+  file-owner-worker-ca:
+    default_result: PASS
+  file-owner-worker-kubeconfig:
+    default_result: PASS
+  file-owner-worker-service:
+    default_result: PASS
+  file-ownership-audit-binaries:
+    default_result: PASS
+  file-ownership-audit-configuration:
+    default_result: PASS
+  file-ownership-binary-dirs:
+    default_result: PASS
+  file-ownership-home-directories:
+    default_result: PASS
+  file-ownership-library-dirs:
+    default_result: PASS
+  file-ownership-sshd-private-key:
+    default_result: PASS
+  file-ownership-sshd-pub-key:
+    default_result: PASS
+  file-ownership-var-log-audit:
+    default_result: PASS
+  file-ownership-var-log-kube-audit:
+    default_result: NOT-APPLICABLE
+  file-ownership-var-log-oauth-audit:
+    default_result: NOT-APPLICABLE
+  file-ownership-var-log-ocp-audit:
+    default_result: NOT-APPLICABLE
+  file-permission-user-init-files:
+    default_result: FAIL
+  file-permissions-audit-binaries:
+    default_result: PASS
+  file-permissions-audit-configuration:
+    default_result: FAIL
+  file-permissions-backup-etc-group:
+    default_result: PASS
+  file-permissions-backup-etc-gshadow:
+    default_result: PASS
+  file-permissions-backup-etc-passwd:
+    default_result: PASS
+  file-permissions-backup-etc-shadow:
+    default_result: PASS
+  file-permissions-binary-dirs:
+    default_result: PASS
+  file-permissions-cni-conf:
+    default_result: PASS
+  file-permissions-controller-manager-kubeconfig:
+    default_result: NOT-APPLICABLE
+  file-permissions-efi-grub2-cfg:
+    default_result: FAIL
+  file-permissions-efi-user-cfg:
+    default_result: PASS
+  file-permissions-etc-chrony-keys:
+    default_result: PASS
+  file-permissions-etc-crypttab:
+    default_result: PASS
+  file-permissions-etc-group:
+    default_result: PASS
+  file-permissions-etc-gshadow:
+    default_result: PASS
+  file-permissions-etc-ipsec-conf:
+    default_result: NOT-APPLICABLE
+  file-permissions-etc-ipsec-secrets:
+    default_result: NOT-APPLICABLE
+  file-permissions-etc-issue:
+    default_result: PASS
+  file-permissions-etc-issue-net:
+    default_result: PASS
+  file-permissions-etc-motd:
+    default_result: PASS
+  file-permissions-etc-passwd:
+    default_result: PASS
+  file-permissions-etc-sestatus-conf:
+    default_result: PASS
+  file-permissions-etc-shadow:
+    default_result: PASS
+  file-permissions-etc-shells:
+    default_result: PASS
+  file-permissions-etc-sudoers:
+    default_result: PASS
+  file-permissions-etcd-data-dir:
+    default_result: NOT-APPLICABLE
+  file-permissions-etcd-data-files:
+    default_result: NOT-APPLICABLE
+  file-permissions-etcd-member:
+    default_result: NOT-APPLICABLE
+  file-permissions-etcd-pki-cert-files:
+    default_result: NOT-APPLICABLE
+  file-permissions-grub2-cfg:
+    default_result: FAIL
+  file-permissions-home-directories:
+    default_result: PASS
+  file-permissions-home-dirs:
+    default_result: PASS
+  file-permissions-ip-allocations:
+    default_result: NOT-APPLICABLE
+  file-permissions-kube-apiserver:
+    default_result: NOT-APPLICABLE
+  file-permissions-kube-controller-manager:
+    default_result: NOT-APPLICABLE
+  file-permissions-kubelet:
+    default_result: PASS
+  file-permissions-kubelet-conf:
+    default_result: PASS
+  file-permissions-library-dirs:
+    default_result: PASS
+  file-permissions-master-admin-kubeconfigs:
+    default_result: NOT-APPLICABLE
+  file-permissions-multus-conf:
+    default_result: PASS
+  file-permissions-openshift-pki-cert-files:
+    default_result: NOT-APPLICABLE
+  file-permissions-openshift-pki-key-files:
+    default_result: NOT-APPLICABLE
+  file-permissions-openvswitch:
+    default_result: PASS
+  file-permissions-ovn-cni-server-sock:
+    default_result: PASS
+  file-permissions-ovn-db-files:
+    default_result: PASS
+  file-permissions-ovs-conf-db:
+    default_result: PASS
+  file-permissions-ovs-conf-db-lock:
+    default_result: PASS
+  file-permissions-ovs-pid:
+    default_result: PASS
+  file-permissions-ovs-sys-id-conf:
+    default_result: PASS
+  file-permissions-ovs-vswitchd-pid:
+    default_result: PASS
+  file-permissions-ovsdb-server-pid:
+    default_result: PASS
+  file-permissions-pod-logs:
+    default_result: PASS
+  file-permissions-scheduler:
+    default_result: NOT-APPLICABLE
+  file-permissions-scheduler-kubeconfig:
+    default_result: NOT-APPLICABLE
+  file-permissions-sshd-config:
+    default_result: PASS
+  file-permissions-sshd-private-key:
+    default_result: PASS
+  file-permissions-sshd-pub-key:
+    default_result: PASS
+  file-permissions-sudo:
+    default_result: FAIL
+  file-permissions-system-journal:
+    default_result: PASS
+  file-permissions-systemmap:
+    default_result: PASS
+  file-permissions-unauthorized-sgid:
+    default_result: PASS
+  file-permissions-unauthorized-suid:
+    default_result: PASS
+  file-permissions-unauthorized-world-writable:
+    default_result: PASS
+  file-permissions-ungroupowned:
+    default_result: PASS
+  file-permissions-user-cfg:
+    default_result: PASS
+  file-permissions-var-lib-etcd:
+    default_result: PASS
+  file-permissions-var-log:
+    default_result: PASS
+  file-permissions-var-log-audit:
+    default_result: PASS
+  file-permissions-var-log-kube-audit:
+    default_result: NOT-APPLICABLE
+  file-permissions-var-log-messages:
+    default_result: PASS
+  file-permissions-var-log-oauth-audit:
+    default_result: NOT-APPLICABLE
+  file-permissions-var-log-ocp-audit:
+    default_result: NOT-APPLICABLE
+  file-permissions-var-log-syslog:
+    default_result: PASS
+  file-permissions-worker-ca:
+    default_result: PASS
+  file-permissions-worker-kubeconfig:
+    default_result: PASS
+  file-permissions-worker-service:
+    default_result: PASS
+  file-perms-openshift-sdn-cniserver-config:
+    default_result: NOT-APPLICABLE
+  gid-passwd-group-same:
+    default_result: PASS
+  gnome-gdm-disable-xdmcp:
+    default_result: NOT-APPLICABLE
+  group-unique-id:
+    default_result: PASS
+  group-unique-name:
+    default_result: PASS
+  grub2-disable-interactive-boot:
+    default_result: FAIL
+  grub2-disable-recovery:
+    default_result: FAIL
+  grub2-enable-apparmor:
+    default_result: FAIL
+  grub2-enable-fips-mode:
+    default_result: FAIL
+  grub2-enable-iommu-force:
+    default_result: FAIL
+  grub2-enable-selinux:
+    default_result: PASS
+  grub2-ipv6-disable-argument:
+    default_result: FAIL
+  grub2-l1tf-argument:
+    default_result: FAIL
+  grub2-mce-argument:
+    default_result: FAIL
+  grub2-nosmap-argument-absent:
+    default_result: FAIL
+  grub2-nosmep-argument-absent:
+    default_result: FAIL
+  grub2-nousb-argument:
+    default_result: FAIL
+  grub2-rng-core-default-quality-argument:
+    default_result: FAIL
+  grub2-slab-nomerge-argument:
+    default_result: FAIL
+  grub2-spec-store-bypass-disable-argument:
+    default_result: FAIL
+  grub2-spectre-v2-argument:
+    default_result: FAIL
+  grub2-systemd-debug-shell-argument-absent:
+    default_result: FAIL
+  grub2-uefi-admin-username:
+    default_result: FAIL
+  grub2-uefi-password:
+    default_result: FAIL
+  harden-openssl-crypto-policy:
+    default_result: FAIL
+  harden-ssh-client-crypto-policy:
+    default_result: FAIL
+  harden-sshd-crypto-policy:
+    default_result: FAIL
+  installed-os-is-fips-certified:
+    default_result: PASS
+  kerberos-disable-no-keytab:
+    default_result: NOT-APPLICABLE
+  kernel-config-acpi-custom-method:
+    default_result: PASS
+  kernel-config-binfmt-misc:
+    default_result: PASS
+  kernel-config-bug:
+    default_result: FAIL
+  kernel-config-compat-brk:
+    default_result: PASS
+  kernel-config-compat-vdso:
+    default_result: PASS
+  kernel-config-debug-credentials:
+    default_result: FAIL
+  kernel-config-debug-fs:
+    default_result: PASS
+  kernel-config-debug-list:
+    default_result: FAIL
+  kernel-config-debug-notifiers:
+    default_result: FAIL
+  kernel-config-debug-sg:
+    default_result: FAIL
+  kernel-config-default-mmap-min-addr:
+    default_result: FAIL
+  kernel-config-devkmem:
+    default_result: PASS
+  kernel-config-hibernation:
+    default_result: PASS
+  kernel-config-ia32-emulation:
+    default_result: PASS
+  kernel-config-ipv6:
+    default_result: PASS
+  kernel-config-kexec:
+    default_result: PASS
+  kernel-config-legacy-ptys:
+    default_result: PASS
+  kernel-config-module-sig:
+    default_result: FAIL
+  kernel-config-module-sig-all:
+    default_result: FAIL
+  kernel-config-module-sig-force:
+    default_result: FAIL
+  kernel-config-module-sig-hash:
+    default_result: FAIL
+  kernel-config-module-sig-key:
+    default_result: FAIL
+  kernel-config-module-sig-sha512:
+    default_result: FAIL
+  kernel-config-page-poisoning-no-sanity:
+    default_result: FAIL
+  kernel-config-page-poisoning-zero:
+    default_result: FAIL
+  kernel-config-page-table-isolation:
+    default_result: FAIL
+  kernel-config-panic-on-oops:
+    default_result: FAIL
+  kernel-config-panic-timeout:
+    default_result: FAIL
+  kernel-config-proc-kcore:
+    default_result: PASS
+  kernel-config-randomize-base:
+    default_result: FAIL
+  kernel-config-randomize-memory:
+    default_result: FAIL
+  kernel-config-retpoline:
+    default_result: FAIL
+  kernel-config-seccomp:
+    default_result: FAIL
+  kernel-config-seccomp-filter:
+    default_result: FAIL
+  kernel-config-security:
+    default_result: FAIL
+  kernel-config-security-dmesg-restrict:
+    default_result: FAIL
+  kernel-config-security-writable-hooks:
+    default_result: PASS
+  kernel-config-security-yama:
+    default_result: FAIL
+  kernel-config-slub-debug:
+    default_result: FAIL
+  kernel-config-syn-cookies:
+    default_result: FAIL
+  kernel-config-unmap-kernel-at-el0:
+    default_result: NOT-APPLICABLE
+  kernel-config-x86-vsyscall-emulation:
+    default_result: PASS
+  kernel-module-atm-disabled:
+    default_result: FAIL
+  kernel-module-bluetooth-disabled:
+    default_result: FAIL
+  kernel-module-can-disabled:
+    default_result: FAIL
+  kernel-module-cfg80211-disabled:
+    default_result: FAIL
+  kernel-module-cramfs-disabled:
+    default_result: FAIL
+  kernel-module-firewire-core-disabled:
+    default_result: FAIL
+  kernel-module-freevxfs-disabled:
+    default_result: FAIL
+  kernel-module-hfs-disabled:
+    default_result: FAIL
+  kernel-module-hfsplus-disabled:
+    default_result: FAIL
+  kernel-module-ipv6-option-disabled:
+    default_result: FAIL
+  kernel-module-iwlmvm-disabled:
+    default_result: FAIL
+  kernel-module-iwlwifi-disabled:
+    default_result: FAIL
+  kernel-module-jffs2-disabled:
+    default_result: FAIL
+  kernel-module-mac80211-disabled:
+    default_result: FAIL
+  kernel-module-rds-disabled:
+    default_result: FAIL
+  kernel-module-sctp-disabled:
+    default_result: FAIL
+  kernel-module-squashfs-disabled:
+    default_result: FAIL
+  kernel-module-tipc-disabled:
+    default_result: FAIL
+  kernel-module-udf-disabled:
+    default_result: FAIL
+  kernel-module-usb-storage-disabled:
+    default_result: FAIL
+  kernel-module-uvcvideo-disabled:
+    default_result: FAIL
+  kernel-module-vfat-disabled:
+    default_result: FAIL
+  kubelet-anonymous-auth:
+    default_result: PASS
+  kubelet-authorization-mode:
+    default_result: PASS
+  kubelet-configure-client-ca:
+    default_result: PASS
+  kubelet-configure-event-creation:
+    default_result: PASS
+  kubelet-configure-tls-cipher-suites:
+    default_result: PASS
+  kubelet-configure-tls-min-version:
+    default_result: PASS
+  kubelet-enable-cert-rotation:
+    default_result: PASS
+  kubelet-enable-client-cert-rotation:
+    default_result: PASS
+  kubelet-enable-iptables-util-chains:
+    default_result: PASS
+  kubelet-enable-protect-kernel-defaults:
+    default_result: PASS
+  kubelet-enable-protect-kernel-sysctl:
+    default_result: PASS
+  kubelet-enable-server-cert-rotation:
+    default_result: PASS
+  kubelet-enable-streaming-connections:
+    default_result: PASS
+  kubelet-enable-streaming-connections-deprecated:
+    default_result: FAIL
+  kubelet-eviction-thresholds-set-hard-imagefs-available:
+    default_result: PASS
+  kubelet-eviction-thresholds-set-hard-imagefs-inodesfree:
+    default_result: FAIL
+  kubelet-eviction-thresholds-set-hard-memory-available:
+    default_result: PASS
+  kubelet-eviction-thresholds-set-hard-nodefs-available:
+    default_result: PASS
+  kubelet-eviction-thresholds-set-hard-nodefs-inodesfree:
+    default_result: PASS
+  kubelet-eviction-thresholds-set-soft-imagefs-available:
+    default_result: FAIL
+  kubelet-eviction-thresholds-set-soft-imagefs-inodesfree:
+    default_result: FAIL
+  kubelet-eviction-thresholds-set-soft-memory-available:
+    default_result: FAIL
+  kubelet-eviction-thresholds-set-soft-nodefs-available:
+    default_result: FAIL
+  kubelet-eviction-thresholds-set-soft-nodefs-inodesfree:
+    default_result: FAIL
+  kubelet-read-only-port-secured:
+    default_result: FAIL
+  logind-session-timeout:
+    default_result: NOT-APPLICABLE
+  mount-option-boot-nodev:
+    default_result: PASS
+  mount-option-boot-nosuid:
+    default_result: PASS
+  mount-option-dev-shm-nodev:
+    default_result: FAIL
+  mount-option-dev-shm-noexec:
+    default_result: FAIL
+  mount-option-dev-shm-nosuid:
+    default_result: FAIL
+  mount-option-home-nodev:
+    default_result: NOT-APPLICABLE
+  mount-option-home-nosuid:
+    default_result: NOT-APPLICABLE
+  mount-option-nodev-nonroot-local-partitions:
+    default_result: PASS
+  mount-option-nodev-removable-partitions:
+    default_result: PASS
+  mount-option-noexec-removable-partitions:
+    default_result: PASS
+  mount-option-nosuid-removable-partitions:
+    default_result: PASS
+  mount-option-tmp-nodev:
+    default_result: FAIL
+  mount-option-tmp-noexec:
+    default_result: FAIL
+  mount-option-tmp-nosuid:
+    default_result: FAIL
+  mount-option-var-log-audit-nodev:
+    default_result: NOT-APPLICABLE
+  mount-option-var-log-audit-noexec:
+    default_result: NOT-APPLICABLE
+  mount-option-var-log-audit-nosuid:
+    default_result: NOT-APPLICABLE
+  mount-option-var-log-nodev:
+    default_result: NOT-APPLICABLE
+  mount-option-var-log-noexec:
+    default_result: NOT-APPLICABLE
+  mount-option-var-log-nosuid:
+    default_result: NOT-APPLICABLE
+  mount-option-var-nodev:
+    default_result: NOT-APPLICABLE
+  mount-option-var-nosuid:
+    default_result: NOT-APPLICABLE
+  mount-option-var-tmp-nodev:
+    default_result: NOT-APPLICABLE
+  mount-option-var-tmp-noexec:
+    default_result: NOT-APPLICABLE
+  mount-option-var-tmp-nosuid:
+    default_result: NOT-APPLICABLE
+  network-nmcli-permissions:
+    default_result: FAIL
+  no-direct-root-logins:
+    default_result: FAIL
+  no-empty-passwords:
+    default_result: FAIL
+  no-empty-passwords-etc-shadow:
+    default_result: PASS
+  no-legacy-plus-entries-etc-group:
+    default_result: PASS
+  no-legacy-plus-entries-etc-passwd:
+    default_result: PASS
+  no-legacy-plus-entries-etc-shadow:
+    default_result: PASS
+  no-netrc-files:
+    default_result: PASS
+  no-rsh-trust-files:
+    default_result: NOT-APPLICABLE
+  no-shelllogin-for-systemaccounts:
+    default_result: PASS
+  no-tmux-in-shells:
+    default_result: FAIL
+  ntpd-specify-multiple-servers:
+    default_result: FAIL
+  ntpd-specify-remote-server:
+    default_result: NOT-APPLICABLE
+  package-389-ds-base-removed:
+    default_result: PASS
+  package-aide-installed:
+    default_result: FAIL
+  package-apparmor-installed:
+    default_result: FAIL
+  package-audispd-plugins-installed:
+    default_result: FAIL
+  package-audit-installed:
+    default_result: PASS
+  package-audit-libs-installed:
+    default_result: PASS
+  package-bind-removed:
+    default_result: PASS
+  package-chrony-installed:
+    default_result: PASS
+  package-cron-installed:
+    default_result: FAIL
+  package-dracut-fips-aesni-installed:
+    default_result: FAIL
+  package-dracut-fips-installed:
+    default_result: FAIL
+  package-fapolicyd-installed:
+    default_result: FAIL
+  package-firewalld-installed:
+    default_result: FAIL
+  package-gnutls-utils-installed:
+    default_result: FAIL
+  package-inetutils-telnetd-removed:
+    default_result: PASS
+  package-iptables-installed:
+    default_result: NOT-APPLICABLE
+  package-iptables-nft-installed:
+    default_result: NOT-APPLICABLE
+  package-kea-removed:
+    default_result: PASS
+  package-libreswan-installed:
+    default_result: FAIL
+  package-libselinux-installed:
+    default_result: PASS
+  package-logrotate-installed:
+    default_result: PASS
+  package-net-snmp-removed:
+    default_result: PASS
+  package-nis-removed:
+    default_result: PASS
+  package-nss-tools-installed:
+    default_result: FAIL
+  package-ntp-installed:
+    default_result: FAIL
+  package-ntpdate-removed:
+    default_result: PASS
+  package-openldap-clients-removed:
+    default_result: PASS
+  package-openssh-server-installed:
+    default_result: PASS
+  package-openssh-server-removed:
+    default_result: FAIL
+  package-pam-apparmor-installed:
+    default_result: FAIL
+  package-postfix-installed:
+    default_result: FAIL
+  package-rsyslog-installed:
+    default_result: FAIL
+  package-samba-common-installed:
+    default_result: PASS
+  package-sendmail-removed:
+    default_result: PASS
+  package-setroubleshoot-plugins-removed:
+    default_result: PASS
+  package-setroubleshoot-server-removed:
+    default_result: PASS
+  package-sssd-installed:
+    default_result: PASS
+  package-sudo-installed:
+    default_result: PASS
+  package-syslogng-installed:
+    default_result: FAIL
+  package-telnet-removed:
+    default_result: PASS
+  package-telnet-server-removed:
+    default_result: PASS
+  package-telnetd-removed:
+    default_result: PASS
+  package-telnetd-ssl-removed:
+    default_result: PASS
+  package-tmux-installed:
+    default_result: PASS
+  package-usbguard-installed:
+    default_result: FAIL
+  partition-for-dev-shm:
+    default_result: PASS
+  partition-for-home:
+    default_result: FAIL
+  partition-for-srv:
+    default_result: FAIL
+  partition-for-tmp:
+    default_result: PASS
+  partition-for-usr:
+    default_result: FAIL
+  partition-for-var:
+    default_result: FAIL
+  partition-for-var-tmp:
+    default_result: FAIL
+  postfix-client-configure-mail-alias:
+    default_result: FAIL
+  postfix-client-configure-mail-alias-postmaster:
+    default_result: PASS
+  prefer-64bit-os:
+    default_result: PASS
+  reject-unsigned-images-by-default:
+    default_result: FAIL
+  require-singleuser-auth:
+    default_result: PASS
+  restrict-serial-port-logins:
+    default_result: PASS
+  root-path-no-dot:
+    default_result: FAIL
+  rpm-verify-ownership:
+    default_result: FAIL
+  rpm-verify-permissions:
+    default_result: FAIL
+  rsyslog-encrypt-offload-actionsendstreamdriverauthmode:
+    default_result: NOT-APPLICABLE
+  rsyslog-encrypt-offload-actionsendstreamdrivermode:
+    default_result: NOT-APPLICABLE
+  rsyslog-encrypt-offload-defaultnetstreamdriver:
+    default_result: NOT-APPLICABLE
+  rsyslog-files-groupownership:
+    default_result: NOT-APPLICABLE
+  rsyslog-files-ownership:
+    default_result: NOT-APPLICABLE
+  rsyslog-files-permissions:
+    default_result: NOT-APPLICABLE
+  rsyslog-remote-loghost:
+    default_result: FAIL
+  securetty-root-login-console-only:
+    default_result: PASS
+  selinux-confinement-of-daemons:
+    default_result: PASS
+  selinux-not-disabled:
+    default_result: PASS
+  selinux-policytype:
+    default_result: PASS
+  selinux-state:
+    default_result: PASS
+  service-auditd-enabled:
+    default_result: PASS
+  service-autofs-disabled:
+    default_result: NOT-APPLICABLE
+  service-bluetooth-disabled:
+    default_result: PASS
+  service-chronyd-enabled:
+    default_result: PASS
+  service-chronyd-or-ntpd-enabled:
+    default_result: PASS
+  service-cron-enabled:
+    default_result: FAIL
+  service-debug-shell-disabled:
+    default_result: FAIL
+  service-fapolicyd-enabled:
+    default_result: FAIL
+  service-firewalld-enabled:
+    default_result: NOT-APPLICABLE
+  service-ip6tables-enabled:
+    default_result: FAIL
+  service-iptables-enabled:
+    default_result: NOT-APPLICABLE
+  service-netfs-disabled:
+    default_result: PASS
+  service-ntpd-enabled:
+    default_result: NOT-APPLICABLE
+  service-rngd-enabled:
+    default_result: FAIL
+  service-rsyslog-enabled:
+    default_result: FAIL
+  service-sshd-disabled:
+    default_result: FAIL
+  service-sshd-enabled:
+    default_result: PASS
+  service-sssd-enabled:
+    default_result: FAIL
+  service-syslogng-enabled:
+    default_result: FAIL
+  service-systemd-coredump-disabled:
+    default_result: FAIL
+  service-systemd-journald-enabled:
+    default_result: PASS
+  service-ufw-enabled:
+    default_result: NOT-APPLICABLE
+  service-usbguard-enabled:
+    default_result: FAIL
+  ssh-client-rekey-limit:
+    default_result: FAIL
+  sshd-allow-only-protocol2:
+    default_result: FAIL
+  sshd-disable-compression:
+    default_result: FAIL
+  sshd-disable-empty-passwords:
+    default_result: FAIL
+  sshd-disable-gssapi-auth:
+    default_result: FAIL
+  sshd-disable-kerb-auth:
+    default_result: FAIL
+  sshd-disable-pubkey-auth:
+    default_result: FAIL
+  sshd-disable-rhosts:
+    default_result: FAIL
+  sshd-disable-rhosts-rsa:
+    default_result: FAIL
+  sshd-disable-root-login:
+    default_result: FAIL
+  sshd-disable-root-password-login:
+    default_result: FAIL
+  sshd-disable-tcp-forwarding:
+    default_result: FAIL
+  sshd-disable-user-known-hosts:
+    default_result: FAIL
+  sshd-disable-x11-forwarding:
+    default_result: FAIL
+  sshd-do-not-permit-user-env:
+    default_result: FAIL
+  sshd-enable-gssapi-auth:
+    default_result: FAIL
+  sshd-enable-pam:
+    default_result: FAIL
+  sshd-enable-pubkey-auth:
+    default_result: FAIL
+  sshd-enable-strictmodes:
+    default_result: FAIL
+  sshd-enable-warning-banner-net:
+    default_result: FAIL
+  sshd-enable-x11-forwarding:
+    default_result: FAIL
+  sshd-limit-user-access:
+    default_result: FAIL
+  sshd-print-last-log:
+    default_result: FAIL
+  sshd-rekey-limit:
+    default_result: FAIL
+  sshd-set-idle-timeout:
+    default_result: FAIL
+  sshd-set-keepalive:
+    default_result: FAIL
+  sshd-set-login-grace-time:
+    default_result: FAIL
+  sshd-set-loglevel-info:
+    default_result: FAIL
+  sshd-set-loglevel-verbose:
+    default_result: FAIL
+  sshd-set-max-auth-tries:
+    default_result: FAIL
+  sshd-set-max-sessions:
+    default_result: FAIL
+  sshd-set-maxstartups:
+    default_result: FAIL
+  sshd-use-priv-separation:
+    default_result: FAIL
+  sssd-enable-pam-services:
+    default_result: FAIL
+  sssd-enable-smartcards:
+    default_result: FAIL
+  sssd-ldap-configure-tls-reqcert:
+    default_result: NOT-APPLICABLE
+  sssd-ldap-start-tls:
+    default_result: NOT-APPLICABLE
+  sssd-offline-cred-expiration:
+    default_result: FAIL
+  sssd-run-as-sssd-user:
+    default_result: FAIL
+  sudo-add-noexec:
+    default_result: FAIL
+  sudo-add-requiretty:
+    default_result: FAIL
+  sudo-add-use-pty:
+    default_result: FAIL
+  sudo-custom-logfile:
+    default_result: FAIL
+  sudo-remove-no-authenticate:
+    default_result: PASS
+  sudo-remove-nopasswd:
+    default_result: FAIL
+  sudo-require-authentication:
+    default_result: FAIL
+  sudo-vdsm-nopasswd:
+    default_result: FAIL
+  sudoers-explicit-command-args:
+    default_result: FAIL
+  sudoers-no-command-negation:
+    default_result: PASS
+  sudoers-no-root-target:
+    default_result: FAIL
+  sysctl-crypto-fips-enabled:
+    default_result: FAIL
+  sysctl-fs-protected-hardlinks:
+    default_result: PASS
+  sysctl-fs-protected-symlinks:
+    default_result: PASS
+  sysctl-fs-suid-dumpable:
+    default_result: FAIL
+  sysctl-kernel-core-pattern:
+    default_result: FAIL
+  sysctl-kernel-core-uses-pid:
+    default_result: FAIL
+  sysctl-kernel-dmesg-restrict:
+    default_result: FAIL
+  sysctl-kernel-kexec-load-disabled:
+    default_result: FAIL
+  sysctl-kernel-kptr-restrict:
+    default_result: PASS
+  sysctl-kernel-panic-on-oops:
+    default_result: PASS
+  sysctl-kernel-perf-event-paranoid:
+    default_result: FAIL
+  sysctl-kernel-randomize-va-space:
+    default_result: FAIL
+  sysctl-kernel-unprivileged-bpf-disabled:
+    default_result: FAIL
+  sysctl-kernel-yama-ptrace-scope:
+    default_result: FAIL
+  sysctl-net-core-bpf-jit-harden:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-all-accept-local:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-all-accept-redirects:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-all-accept-source-route:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-all-arp-filter:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-all-arp-ignore:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-all-log-martians:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-all-route-localnet:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-all-rp-filter:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-all-secure-redirects:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-all-send-redirects:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-all-shared-media:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-default-accept-redirects:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-default-accept-source-route:
+    default_result: PASS
+  sysctl-net-ipv4-conf-default-log-martians:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-default-rp-filter:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-default-secure-redirects:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-default-send-redirects:
+    default_result: FAIL
+  sysctl-net-ipv4-conf-default-shared-media:
+    default_result: FAIL
+  sysctl-net-ipv4-icmp-echo-ignore-broadcasts:
+    default_result: FAIL
+  sysctl-net-ipv4-icmp-ignore-bogus-error-responses:
+    default_result: FAIL
+  sysctl-net-ipv4-ip-forward:
+    default_result: FAIL
+  sysctl-net-ipv4-tcp-invalid-ratelimit:
+    default_result: FAIL
+  sysctl-net-ipv4-tcp-syncookies:
+    default_result: FAIL
+  sysctl-net-ipv6-conf-all-accept-ra:
+    default_result: FAIL
+  sysctl-net-ipv6-conf-all-accept-redirects:
+    default_result: FAIL
+  sysctl-net-ipv6-conf-all-accept-source-route:
+    default_result: FAIL
+  sysctl-net-ipv6-conf-all-disable-ipv6:
+    default_result: FAIL
+  sysctl-net-ipv6-conf-default-accept-ra:
+    default_result: FAIL
+  sysctl-net-ipv6-conf-default-accept-redirects:
+    default_result: FAIL
+  sysctl-net-ipv6-conf-default-accept-source-route:
+    default_result: FAIL
+  sysctl-net-ipv6-conf-default-disable-ipv6:
+    default_result: FAIL
+  sysctl-user-max-user-namespaces:
+    default_result: FAIL
+  systemd-tmp-mount-enabled:
+    default_result: PASS
+  timer-logrotate-enabled:
+    default_result: PASS
+  tls-version-check-masters-workers:
+    default_result: PASS
+  usbguard-allow-hid:
+    default_result: FAIL
+  usbguard-allow-hid-and-hub:
+    default_result: FAIL
+  usbguard-allow-hub:
+    default_result: FAIL
+  wireless-disable-interfaces:
+    default_result: NOT-APPLICABLE
+  zipl-audit-argument:
+    default_result: NOT-APPLICABLE
+  zipl-audit-backlog-limit-argument:
+    default_result: NOT-APPLICABLE
+  zipl-bls-entries-only:
+    default_result: NOT-APPLICABLE
+  zipl-bootmap-is-up-to-date:
+    default_result: NOT-APPLICABLE
+  zipl-page-poison-argument:
+    default_result: NOT-APPLICABLE
+  zipl-slub-debug-argument:
+    default_result: NOT-APPLICABLE
+  zipl-systemd-debug-shell-argument-absent:
+    default_result: NOT-APPLICABLE
+  zipl-vsyscall-argument:
+    default_result: NOT-APPLICABLE
