@@ -167,7 +167,7 @@ setup_tailoring_profile.__annotations__ = {'profile_id': str, 'profile_root': ET
 
 def _get_datetime():
     return datetime.datetime.fromtimestamp(
-        int(os.environ.get('SOURCE_DATE_EPOCH', time.time()))).isoformat()
+        int(os.environ.get('SOURCE_DATE_EPOCH', time.time())), tz=datetime.timezone.utc).isoformat()
 
 
 def create_tailoring(args):

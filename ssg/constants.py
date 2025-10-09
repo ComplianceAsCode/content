@@ -502,7 +502,6 @@ DERIVATIVES_PRODUCT_MAPPING = {
 }
 
 BENCHMARKS = {
-    "apple_os",
     "applications",
     "linux_os/guide",
     "products/chromium/guide",

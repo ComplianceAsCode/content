@@ -48,9 +48,6 @@ def load_components(product):
 
 
 def _process_all_products_from_controls(components_out, used_rules_of_components_out, products):
-    if PYTHON_2:
-        raise Exception("This feature is not supported for python2.")
-
     for product in products:
         components = load_components(product)
         if components is None:
