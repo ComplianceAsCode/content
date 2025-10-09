@@ -1,25 +1,24 @@
-
-title: Ensure that all OpenShift Routes prefer TLS
+title: Ensure that all edge-terminated OpenShift Routes prefer TLS
 
 description: |-
   OpenShift Container Platform provides methods for communicating from
   outside the cluster with services running in the cluster. TLS must
-  be used to protect these communications. OpenShift
-  Routes provide the ability to configure the needed TLS settings. With
-  these, one is able to configure that any request coming from the outside
-  must use TLS. To verify this, ensure that every Route in the system
-  has a policy of <tt>Disable</tt> or <tt>Redirect</tt> to ensure a
-  secure endpoint is used. The aforementioned policy will be set in
-  a Routes <tt>.spec.tls.insecureEdgeTerminationPolicy</tt> setting.
-  
+  be used to protect these communications. This rule specifically
+  focuses on edge-terminated OpenShift Routes, which require additional
+  TLS configuration. For these routes, ensure that any request coming
+  from the outside must use TLS by setting the <tt>.spec.tls.insecureEdgeTerminationPolicy</tt>
+  to either <tt>None</tt> or <tt>Redirect</tt> to ensure a secure endpoint
+  is used for edge-terminated routes.
+
 rationale: |-
-  Using clear-text in communications coming to or from outside
-  the cluster's network may leak sensitive information.
+  Using clear-text communications for edge-terminated routes may leak
+  sensitive information, compromising the security of the cluster's
+  external communication channels.
 
 identifiers:
   cce@ocp4: CCE-84225-2
 
-{{% set jqfilter = '[.items[] | select(.spec.tls.insecureEdgeTerminationPolicy != null) | select(.spec.tls.insecureEdgeTerminationPolicy | test("^(^$|None|Redirect)$"; "") | not) | .metadata.name]' %}}
+{{% set jqfilter = '[.items[] | select(.spec.tls.termination == "edge") | select(.spec.tls.insecureEdgeTerminationPolicy != null) | select(.spec.tls.insecureEdgeTerminationPolicy | test("^(^$|None|Redirect)$"; "") | not) | .metadata.name]' %}}
 
 references:
   nerc-cip: CIP-003-8 R4,CIP-003-8 R4.2,CIP-003-8 R5,CIP-004-6 R3,CIP-007-3 R5.1,CIP-007-3 R7.1
@@ -27,13 +26,14 @@ references:
   pcidss: Req-6.5.4
   srg: SRG-APP-000441-CTR-001090,SRG-APP-000442-CTR-001095
 
-ocil_clause: 'The proper insecureEdgeTerminationPolicy is not set'
+ocil_clause: 'Edge-terminated routes do not have a secure insecureEdgeTerminationPolicy'
 
 ocil: |-
-    Run the following command to retrieve the compliancesuites in the system:
+    Run the following command to retrieve all routes in the system:
     <pre>$ oc get routes --all-namespaces</pre>
-    Make sure that every route object has either <tt>None</tt> or <tt>Redirect</tt>
-    in the <tt>.spec.tls.insecureEdgeTerminationPolicy</tt> setting.
+    Focus on edge-terminated routes and ensure that each has either <tt>None</tt>
+    or <tt>Redirect</tt> set in the <tt>.spec.tls.insecureEdgeTerminationPolicy</tt>
+    setting to maintain secure external communications.
 
 severity: medium
 
