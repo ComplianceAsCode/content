@@ -188,9 +188,6 @@ find_python_module(prometheus_client)
 find_python_module(requests)
 find_python_module(trestle)
 
-if(NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    message(WARNING "You are targeting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.11 only!")
-endif()
 
 # OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support it.
 # See also: https://github.com/ComplianceAsCode/content/issues/6798
@@ -277,7 +274,6 @@ message(STATUS "source directory: ${CMAKE_SOURCE_DIR}")
 message(STATUS " ")
 message(STATUS "Build options:")
 message(STATUS "SSG vendor string: ${SSG_VENDOR}")
-message(STATUS "Target OVAL version: ${SSG_TARGET_OVAL_VERSION}")
 message(STATUS "Logging: ${SSG_LOG}")
 message(STATUS "Ansible Playbooks: ${SSG_ANSIBLE_PLAYBOOKS_ENABLED}")
 message(STATUS "Ansible Playbooks Per Rule: ${SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED}")
