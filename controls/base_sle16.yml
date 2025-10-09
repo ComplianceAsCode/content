@@ -1,0 +1,48 @@
+---
+policy: Basis System Security Profile for SUSE Linux Enterprise 16
+title: DRAFT Basis System Security Profile SUSE Linux Enterprise 16
+id: base_sle16
+version: '1.0'
+source: not_publicly_available
+reference_type: suse-base-sle16
+
+levels:
+    - id: pcidss4
+    - id: anssi_minimal
+
+product: sle16
+
+controls:
+    - id: SLES-16-16016015
+      levels:
+          - pcidss4
+          - anssi_minimal
+      title: SLES 16 must be a vendor-supported release.
+      rules:
+          - installed_OS_is_vendor_supported
+      status: automated
+
+    - id: SLES-16-16016020
+      title: Enable NX/XD Support
+      levels:
+          - pcidss4
+      automated: partially
+      rules:
+          - bios_enable_execution_restrictions
+          - install_PAE_kernel_on_x86-32
+
+    - id: SLES-16-16016025
+      title: Ensure All Files Are Owned by a Group
+      levels:
+          - anssi_minimal
+      rules:
+          - file_permissions_ungroupowned
+      status: automated
+
+    - id: SLES-16-16016030
+      title: Ensure All Files Are Owned by a User
+      levels:
+          - anssi_minimal
+      rules:
+          - no_files_unowned_by_user
+      status: automated
