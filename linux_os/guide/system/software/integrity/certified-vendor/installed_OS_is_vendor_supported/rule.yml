@@ -5,7 +5,7 @@ title: 'The Installed Operating System Is Vendor Supported'
 
 description: |-
     The installed operating system must be maintained by a vendor.
-{{% if 'ol' in product %}}
+{{% if 'ol' in families %}}
     Oracle Linux is supported by Oracle Corporation. As the Oracle
     Linux vendor, Oracle Corporation is responsible for providing security patches.
 {{% elif product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
@@ -61,7 +61,7 @@ ocil: |-
     the following command:
 {{% if product.startswith("rhel") %}}
     <pre>$ grep -i "red hat" /etc/redhat-release</pre>
-{{% elif 'ol' in product %}}
+{{% elif 'ol' in families %}}
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
 {{% elif product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
     <pre>$ grep -i "suse" /etc/os-release</pre>

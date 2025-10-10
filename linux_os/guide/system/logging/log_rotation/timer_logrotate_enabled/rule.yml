@@ -15,7 +15,7 @@ severity: medium
 
 {{% if 'rhel' in product %}}
 platform: package[logrotate] and os_linux[rhel]>=9
-{{% elif 'ol' in product %}}
+{{% elif 'ol' in families %}}
 platform: package[logrotate] and os_linux[ol]>=9
 {{% else %}}
 platform: package[logrotate]
