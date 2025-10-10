@@ -7,4 +7,13 @@
 
 make_grub_password
 
+{{% if 'ubuntu' in product %}}
+test -n "$GRUB_CFG_ROOT" || GRUB_CFG_ROOT=/boot/grub
+{{% else %}}
+test -n "$GRUB_CFG_ROOT" || GRUB_CFG_ROOT=/boot/grub2
+{{% endif %}}
+
+# replace all occurrences of superusers = root
+sed -i 's/set superusers="root"/set superusers="use r"/g' "$GRUB_CFG_ROOT/grub.cfg"
+
 set_superusers "use r"
