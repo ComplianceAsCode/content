@@ -188,7 +188,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- set suffix_id = suffix_id_default_not_overriden -%}}
 {{%- set prefix_text = prefix_text + " absence of" -%}}
 {{%- elif avoid_conflicting -%}}
-{{%- set suffix_text = "if any" -%}}
+{{%- set suffix_text = " if any" -%}}
 {{%- endif %}}
 {{%- if not comment -%}}
 {{%- set comment = prefix_text ~ " " ~ parameter ~ " in " ~ path ~ suffix_text -%}}
@@ -222,7 +222,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- elif  avoid_conflicting -%}}
 {{%- set check_existence = "any_exist" -%}}
 {{%- set prefix_text = "value" -%}}
-{{%- set suffix_text = "if any" -%}}
+{{%- set suffix_text = " if any" -%}}
 {{%- else %}}
 {{%- set check_existence = "all_exist" -%}}
 {{%- set prefix_text = "value" -%}}
