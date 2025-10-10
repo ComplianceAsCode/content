@@ -14,6 +14,7 @@ echo "-a always,exit -F arch=b64 -S sethostname,setdomainname -F key=audit_rules
 echo "-w /etc/issue -p wa -k audit_rules_networkconfig_modification" >> /etc/audit/audit.rules
 echo "-w /etc/issue.net -p wa -k audit_rules_networkconfig_modification" >> /etc/audit/audit.rules
 echo "-w /etc/hosts -p wa -k audit_rules_networkconfig_modification" >> /etc/audit/audit.rules
+echo "-w /etc/hostname -p wa -k audit_rules_networkconfig_modification" >> /etc/audit/audit.rules
 {{% if 'ubuntu' in product -%}}
 echo "-w /etc/networks -p wa -k audit_rules_networkconfig_modification" >> /etc/audit/audit.rules
 echo "-w /etc/network/ -p wa -k audit_rules_networkconfig_modification" >> /etc/audit/audit.rules
@@ -23,3 +24,10 @@ echo "-w /etc/sysconfig/network -p wa -k audit_rules_networkconfig_modification"
 {{% if product in ['ubuntu2404'] %}}
 echo "-w /etc/netplan/ -p wa -k audit_rules_networkconfig_modification" >> /etc/audit/audit.rules
 {{% endif %}}
+
+if {{{ bash_package_installed("NetworkManager") }}} ; then
+    echo "-w /etc/NetworkManager/NetworkManager.conf -p wa -k audit_rules_networkconfig_modification" >> /etc/audit/audit.rules
+    echo "-w /etc/NetworkManager/conf.d/ -p wa -k audit_rules_networkconfig_modification" >> /etc/audit/audit.rules
+    echo "-w /etc/NetworkManager/dnsmasq.d/ -p wa -k audit_rules_networkconfig_modification" >> /etc/audit/audit.rules
+    echo "-w /etc/NetworkManager/dispatcher.d/ -p wa -k audit_rules_networkconfig_modification" >> /etc/audit/audit.rules
+fi
