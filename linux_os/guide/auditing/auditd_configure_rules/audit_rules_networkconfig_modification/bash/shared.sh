@@ -25,6 +25,8 @@ done
 {{{ bash_fix_audit_watch_rule("augenrules", "/etc/issue.net", "wa", "audit_rules_networkconfig_modification") }}}
 {{{ bash_fix_audit_watch_rule("auditctl", "/etc/hosts", "wa", "audit_rules_networkconfig_modification") }}}
 {{{ bash_fix_audit_watch_rule("augenrules", "/etc/hosts", "wa", "audit_rules_networkconfig_modification") }}}
+{{{ bash_fix_audit_watch_rule("auditctl", "/etc/hostname", "wa", "audit_rules_networkconfig_modification") }}}
+{{{ bash_fix_audit_watch_rule("augenrules", "/etc/hostname", "wa", "audit_rules_networkconfig_modification") }}}
 
 {{% if 'ubuntu' in product -%}}
 {{{ bash_fix_audit_watch_rule("auditctl", "/etc/networks", "wa", "audit_rules_networkconfig_modification") }}}
@@ -37,3 +39,15 @@ done
 {{{ bash_fix_audit_watch_rule("auditctl", "/etc/sysconfig/network", "wa", "audit_rules_networkconfig_modification") }}}
 {{{ bash_fix_audit_watch_rule("augenrules", "/etc/sysconfig/network", "wa", "audit_rules_networkconfig_modification") }}}
 {{% endif %}}
+
+# Monitor some of the /etc/NetworkManager/ files and directories
+if {{{ bash_package_installed("NetworkManager") }}} ; then
+    {{{ bash_fix_audit_watch_rule("auditctl", "/etc/NetworkManager/NetworkManager.conf", "wa", "audit_rules_networkconfig_modification") }}}
+	{{{ bash_fix_audit_watch_rule("augenrules", "/etc/NetworkManager/NetworkManager.conf", "wa", "audit_rules_networkconfig_modification") }}}
+	{{{ bash_fix_audit_watch_rule("auditctl", "/etc/NetworkManager/conf.d/", "wa", "audit_rules_networkconfig_modification") }}}
+	{{{ bash_fix_audit_watch_rule("augenrules", "/etc/NetworkManager/conf.d/", "wa", "audit_rules_networkconfig_modification") }}}
+	{{{ bash_fix_audit_watch_rule("auditctl", "/etc/NetworkManager/dnsmasq.d/", "wa", "audit_rules_networkconfig_modification") }}}
+	{{{ bash_fix_audit_watch_rule("augenrules", "/etc/NetworkManager/dnsmasq.d/", "wa", "audit_rules_networkconfig_modification") }}}
+	{{{ bash_fix_audit_watch_rule("auditctl", "/etc/NetworkManager/dispatcher.d/", "wa", "audit_rules_networkconfig_modification") }}}
+	{{{ bash_fix_audit_watch_rule("augenrules", "/etc/NetworkManager/dispatcher.d/", "wa", "audit_rules_networkconfig_modification") }}}
+fi
