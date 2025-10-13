@@ -674,7 +674,7 @@ class Checker(object):
         self.remediate_using = ""
         self.benchmark_cpes = set()
 
-        now = datetime.datetime.now()
+        now = datetime.datetime.now(tz=datetime.timezone.utc)
         self.test_timestamp_str = now.strftime("%Y-%m-%d %H:%M")
 
     def test_target(self):

@@ -15,7 +15,7 @@ from .shims import subprocess_check_output
 
 MANUAL_EDIT_WARNING = """This file is generated using the %s script. DO NOT MANUALLY EDIT!!!!
 Last Modified: %s UTC
-""" % (os.path.basename(__file__), datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M"))
+""" % (os.path.basename(__file__), datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y-%m-%d %H:%M"))
 
 ignored_emails = (
     # No idea / ignore

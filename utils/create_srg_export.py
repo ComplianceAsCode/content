@@ -33,7 +33,7 @@ SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
 BUILD_CONFIG = os.path.join(SSG_ROOT, "build", "build_config.yml")
 OUTPUT = os.path.join(SSG_ROOT, 'build',
-                      f'{datetime.datetime.now().strftime("%s")}_stig_export.csv')
+                      f'{datetime.datetime.now(tz=datetime.timezone.utc).strftime("%s")}_stig_export.csv')
 SRG_PATH = os.path.join(SSG_ROOT, 'shared', 'references', 'disa-os-srg-v3r2.xml')
 NS = {'scap': ssg.constants.datastream_namespace,
       'xccdf-1.2': ssg.constants.XCCDF12_NS,
