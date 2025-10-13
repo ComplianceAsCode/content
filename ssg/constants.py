@@ -59,7 +59,7 @@ product_directories = [
     'openembedded',
     'rhel8', 'rhel9', 'rhel10',
     'rhv4',
-    'sle12', 'sle15', 'slmicro5', 'slmicro6',
+    'sle12', 'sle15', 'sle16', 'slmicro5', 'slmicro6',
     'tencentos4',
     'ubuntu2204', 'ubuntu2404'
 ]
@@ -238,6 +238,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Red Hat Virtualization 4": "rhv4",
     "SUSE Linux Enterprise 12": "sle12",
     "SUSE Linux Enterprise 15": "sle15",
+    "SUSE Linux Enterprise 16": "sle16",
     "SUSE Linux Enterprise Micro 5": "slmicro5",
     "SUSE Linux Enterprise Micro 6": "slmicro6",
     "TencentOS Server 4": "tencentos4",
@@ -315,7 +316,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_rhcos": ["rhcos4"],
     "multi_platform_rhel": ["rhel8", "rhel9", "rhel10"],
     "multi_platform_rhv": ["rhv4"],
-    "multi_platform_sle": ["sle12", "sle15"],
+    "multi_platform_sle": ["sle12", "sle15", "sle16"],
     "multi_platform_slmicro": ["slmicro5", "slmicro6"],
     "multi_platform_tencentos": ["tencentos4"],
     "multi_platform_ubuntu": ["ubuntu2204", "ubuntu2404"],
