@@ -62,6 +62,9 @@
         line: "{{ '\n' ~ updated_crypto_policy }}"
         create: yes
         insertafter: EOF
+    register: local_config
+    when: not cipher_is_correct
 
 -   name: "{{{ rule_title }}}: Apply updated crypto policies"
     ansible.builtin.command: update-crypto-policies --no-reload
+    when: not cipher_is_correct and local_config is changed

@@ -4,20 +4,45 @@
 # complexity = low
 # disruption = low
 
-- name: "Remove configuration from backend file /etc/crypto-policies/back-ends/opensslcnf.config"
+- name: "{{{ rule_title }}} - Set fact - correct list of ciphersuites"
+  ansible.builtin.set_fact:
+    correct_ciphersuites: "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256"
+
+- name: "{{{ rule_title }}} - Check if /etc/crypto-policies/back-ends/opensslcnf.config exists"
+  ansible.builtin.stat:
+    path: /etc/crypto-policies/back-ends/opensslcnf.config
+  register: opensslcnf_config_stat
+  failed_when: false
+
+- name: "{{{ rule_title }}} - Retrieve configuration from /etc/crypto-policies/back-ends/opensslcnf.config"
+  ansible.builtin.slurp:
+    path: /etc/crypto-policies/back-ends/opensslcnf.config
+  register: opensslcnf_config
+  failed_when: false
+  when: opensslcnf_config_stat.stat.exists
+
+- name: "{{{ rule_title }}} - Get ciphersuites from configuration"
+  ansible.builtin.set_fact:
+    opensslcnf_config_ciphersuites: "{{ opensslcnf_config['content'] | b64decode | regex_findall('^Ciphersuites\\s*=\\s*(.*)$',  multiline=True) }}"
+  when: opensslcnf_config_stat.stat.exists
+
+- name: "{{{ rule_title }}} - Remove configuration from backend file /etc/crypto-policies/back-ends/opensslcnf.config"
   ansible.builtin.lineinfile:
     path: "/etc/crypto-policies/back-ends/opensslcnf.config"
     regexp: "Ciphersuites\\s*=\\s*.*"
     state: absent
+  when: opensslcnf_config_stat.stat.exists and (opensslcnf_config_ciphersuites | length == 0 or opensslcnf_config_ciphersuites | last != correct_ciphersuites)
 
-- name: "Ensure that the correct crypto policy configuration exists in /etc/crypto-policies/local.d/opensslcnf-ospp.config"
+- name: "{{{ rule_title }}} - Ensure that the correct crypto policy configuration exists in /etc/crypto-policies/local.d/opensslcnf-ospp.config"
   ansible.builtin.copy:
     dest: "/etc/crypto-policies/local.d/opensslcnf-ospp.config"
     # The newline at the beginning of the content is important
     content: |
       
       Ciphersuites = TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
+  when: not opensslcnf_config_stat.stat.exists or opensslcnf_config_ciphersuites | length == 0 or opensslcnf_config_ciphersuites | last != correct_ciphersuites
 
-- name: "Update system crypto policy for changes to take effect"
+- name: "{{{ rule_title }}} - Update system crypto policy for changes to take effect"
   ansible.builtin.command:
     cmd: "update-crypto-policies"
+  when: not opensslcnf_config_stat.stat.exists or opensslcnf_config_ciphersuites | length == 0 or opensslcnf_config_ciphersuites | last != correct_ciphersuites
