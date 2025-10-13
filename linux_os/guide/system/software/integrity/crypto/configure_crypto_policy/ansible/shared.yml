@@ -13,12 +13,40 @@
     state: present
 {{% endif %}}
 
-- name: "{{{ rule_title }}}"
-  ansible.builtin.lineinfile:
-    path: /etc/crypto-policies/config
-    regexp: '^(?!#)(\S+)$'
-    line: "{{ var_system_crypto_policy }}"
-    create: yes
+- name: "{{{ rule_title }}} - Check current crypto policy (runtime)"
+  ansible.builtin.command: /usr/bin/update-crypto-policies --show
+  register: current_crypto_policy
+  changed_when: false
+  failed_when: false
+  check_mode: false
 
-- name: Verify that Crypto Policy is Set (runtime)
+- name: "{{{ rule_title }}} - Get mtime of /etc/crypto-policies/config"
+  ansible.builtin.stat:
+    path: /etc/crypto-policies/config
+  register: config_file_stat
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: "{{{ rule_title }}} - Get mtime of /etc/crypto-policies/state/current"
+  ansible.builtin.stat:
+    path: /etc/crypto-policies/state/current
+  register: current_file_stat
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: "{{{ rule_title }}} - Check existence of /etc/crypto-policies/back-ends/nss.config"
+  ansible.builtin.stat:
+    path: /etc/crypto-policies/back-ends/nss.config
+  register: nss_config_stat
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: "{{{ rule_title }}} - Verify that Crypto Policy is Set (runtime)"
   ansible.builtin.command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
+  when: >
+    (current_crypto_policy.stdout.strip() != var_system_crypto_policy) or
+    (config_file_stat.stat.exists and current_file_stat.stat.exists and config_file_stat.stat.mtime > current_file_stat.stat.mtime) or
+    (not nss_config_stat.stat.exists)
