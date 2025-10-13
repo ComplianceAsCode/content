@@ -8,8 +8,10 @@
   ansible.builtin.lineinfile:
     create: yes
     dest: "/etc/logrotate.conf"
-    regexp: "^daily$"
+    regexp: '^\s*(weekly|monthly|yearly)$'
     line: "daily"
+    state: present
+    insertbefore: BOF
 
 - name: Make sure daily log rotation setting is not overridden in /etc/logrotate.conf
   ansible.builtin.lineinfile:
