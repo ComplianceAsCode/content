@@ -356,7 +356,7 @@ Describe allowing access to a service in firewalld.
     If you would like to omit a non-zero return value and an error message, you may want to add a different line instead
     (both <code>/bin/true</code> and <code>/bin/false</code> are allowed by OVAL and will be accepted by the scan):
     <pre>install {{{ module }}} /bin/true</pre>
-    {{% if "ol" in product or product in ["rhel8"] %}}
+    {{% if "ol" in families or product in ["rhel8"] %}}
     To configure the system to prevent the <code>{{{ module }}}</code> from being used,
     add the following line to file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
     <pre>blacklist {{{ module }}}</pre>
@@ -1243,7 +1243,7 @@ p+i+n+u+g+s+b+acl+xattrs+sha512
     /usr/sbin/aureport {{{ aide_string() }}}
     /usr/sbin/autrace {{{ aide_string() }}}
     {{% if 'rhel' not in product and 'ol' not in product %}}/usr/sbin/audispd {{{ aide_string() }}}{{% endif %}}
-    {{% if 'ol' in product %}}/usr/sbin/rsyslogd {{{ aide_string() }}}{{% endif %}}
+    {{% if 'ol' in families %}}/usr/sbin/rsyslogd {{{ aide_string() }}}{{% endif %}}
     /usr/sbin/augenrules {{{ aide_string() }}}
 {{% endmacro %}}
 

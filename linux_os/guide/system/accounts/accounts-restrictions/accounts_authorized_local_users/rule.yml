@@ -43,7 +43,7 @@ references:
 
 ocil_clause: 'there are unauthorized local user accounts on the system'
 
-{{% if 'rhel' in product or 'ol' in product or 'slmicro5' in product %}}
+{{% if 'rhel' in product or 'ol' in families or 'slmicro5' in product %}}
 warnings:
     - general: |-
         Automatic remediation of this control is not available due to the unique

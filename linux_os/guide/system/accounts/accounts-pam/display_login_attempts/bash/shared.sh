@@ -17,7 +17,7 @@
 {{%- set after_match = "^\s*session\s+.*pam_succeed_if\.so.*" %}}
 {{%- endif %}}
 
-{{%- if "ol" in product or "slmicro" in product or "ubuntu" in product %}}
+{{%- if "ol" in families or "slmicro" in product or "ubuntu" in product %}}
 {{%- set control = "required" %}}
 {{%- elif "sle" in product %}}
 {{%- set control = "optional" %}}

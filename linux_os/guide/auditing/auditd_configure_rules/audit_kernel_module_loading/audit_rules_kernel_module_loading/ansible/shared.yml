@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-{{% if 'ol' in product or 'rhel' in product or 'almalinux' in product %}}
+{{% if 'ol' in families or 'rhel' in product or 'almalinux' in product %}}
 {{% set auid_filters = "-F auid>=" ~ auid ~ " -F auid!=unset" %}}
 {{% else %}}
 {{% set auid_filters = "" %}}

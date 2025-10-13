@@ -4,7 +4,7 @@ documentation_complete: true
 title: 'Configure Multiple DNS Servers in /etc/resolv.conf'
 
 description: |-
-    {{% if "ol" in product or "rhel" in product %}}
+    {{% if "ol" in families or "rhel" in product %}}
     Determine whether the system is using local or DNS name resolution with the
     following command:
     <pre>$ sudo grep hosts /etc/nsswitch.conf

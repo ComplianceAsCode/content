@@ -42,7 +42,7 @@
           comment="system cryptography policy is configured"/>
         <criterion test_ref="test_system_crypto_policy_value"
           comment="check if var_system_crypto_policy variable selection is set to FIPS"/>
-        {{% if "ol" in product or "rhel" in product %}}
+        {{% if "ol" in families or "rhel" in product %}}
         <criteria operator="OR">
           <criteria operator="AND">
             <extend_definition definition_ref="system_info_architecture_s390_64"
