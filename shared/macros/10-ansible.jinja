@@ -166,6 +166,20 @@ value: :code:`Setting={{ varname1 }}`
 {{%- set lineinfile_items = "{{ " + dir_parameter + ".files }}" -%}}
 {{%- set lineinfile_when = dir_parameter + ".matched" -%}}
 {{%- set new_line = parameter + separator + value -%}}
+- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured
+  ansible.builtin.find:
+    paths:
+    - {{{ config_file }}}
+    - {{{ config_dir }}}
+    contains: {{{ line_regex }}}
+  register: _sshd_config_has_parameter
+- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured correctly
+  ansible.builtin.find:
+    paths:
+    - {{{ config_file }}}
+    - {{{ config_dir }}}
+    contains: {{{ line_regex ~ value ~ "$" }}}
+  register: _sshd_config_correctly
 - name: '{{{ msg or rule_title }}}'
   block:
     {{{ ansible_lineinfile("Deduplicate values from " + config_file, config_file, regex=line_regex, insensitive=insensitive, create='no', state='absent')|indent }}}
@@ -173,6 +187,7 @@ value: :code:`Setting={{ varname1 }}`
     {{{ ansible_find("Check if the parameter " + parameter + " is present in " + config_dir, paths=config_dir, contains=line_regex, register=dir_parameter, when=find_when)|indent }}}
     {{{ ansible_lineinfile("Remove parameter from files in " + config_dir, path="{{ item.path }}", regex=line_regex, insensitive=insensitive, state="absent", with_items=lineinfile_items, when=lineinfile_when)|indent }}}
     {{{ ansible_lineinfile("Insert correct line to " + set_file, set_file, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
+  when: _sshd_config_correctly.matched == 0 or _sshd_config_has_parameter.matched != 1
 {{%- endmacro %}}
 
 
@@ -222,6 +237,8 @@ value: :code:`Setting={{ varname1 }}`
     path: {{{ config_file }}}
     mode: '0600'
     state: touch
+    modification_time: preserve
+    access_time: preserve
 {{%- else %}}
 {{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="BOF", rule_title=rule_title) }}}
 {{%- endif %}}
