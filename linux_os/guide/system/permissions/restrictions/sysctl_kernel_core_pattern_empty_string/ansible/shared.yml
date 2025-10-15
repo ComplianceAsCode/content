@@ -3,33 +3,35 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
-- name: List /etc/sysctl.d/*.conf files
-  ansible.builtin.find:
-    paths:
-    - /etc/sysctl.d/
-    - /run/sysctl.d/
-    contains: ^[\s]*kernel.core_pattern.*$
-    patterns: '*.conf'
-    file_type: any
-  register: find_sysctl_d
 
-- name: Comment out any occurrences of kernel.core_pattern from /etc/sysctl.d/*.conf
-    files
+- name: "{{{ rule_title }}} - Find all files that contain kernel.core_pattern"
+  ansible.builtin.shell:
+    cmd: find -L /etc/sysctl.conf /etc/sysctl.d/ /run/sysctl.d/ -type f -name '*.conf' | xargs grep -HP '^\s*kernel.core_pattern\s*=\s*.*$'
+  register: find_all_values
+  check_mode: false
+  changed_when: false
+  failed_when: false
+
+- name: "{{{ rule_title }}} - Find all files that set kernel.core_pattern to correct value"
+  ansible.builtin.shell:
+    cmd: find -L /etc/sysctl.conf /etc/sysctl.d/ /run/sysctl.d/ -type f -name '*.conf' | xargs grep -HP '^\s*kernel.core_pattern\s*=\s*$'
+  register: find_correct_value
+  check_mode: false
+  changed_when: false
+  failed_when: false
+
+- name: "{{{ rule_title }}} - Comment out any occurrences of kernel.core_pattern from config files"
   ansible.builtin.replace:
-    path: '{{ item.path }}'
+    path: '{{ item | split(":") | first }}'
     regexp: ^[\s]*kernel.core_pattern
     replace: '#kernel.core_pattern'
-  loop: '{{ find_sysctl_d.files }}'
+  loop: '{{ find_all_values.stdout_lines }}'
+  when: find_correct_value.stdout_lines | length == 0 or find_all_values.stdout_lines | length > find_correct_value.stdout_lines | length
 
-- name: Comment out any occurrences of kernel.core_pattern with value from /etc/sysctl.conf files
-  ansible.builtin.replace:
-    path: /etc/sysctl.conf
-    regexp: '^[\s]*kernel.core_pattern([ \t]*=[ \t]*\S+)'
-    replace: '#kernel.core_pattern\1'
-
-- name: Ensure sysctl kernel.core_pattern is set to empty
+- name: "{{{ rule_title }}} - Ensure sysctl kernel.core_pattern is set to empty"
   ansible.posix.sysctl:
     name: kernel.core_pattern
     value: ' ' # ansible sysctl module doesn't allow empty string, a space string is allowed and has the same semantics as sysctl will ignore spaces
+    sysctl_file: "/etc/sysctl.conf"
     state: present
     reload: true
