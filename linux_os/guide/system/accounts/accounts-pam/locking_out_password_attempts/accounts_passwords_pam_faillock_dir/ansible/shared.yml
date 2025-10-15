@@ -23,10 +23,12 @@
     setype: 'faillog_t'
 
 - name: '{{{ rule_title }}} - Get SELinux context for faillock directory'
-  ansible.builtin.command: "ls -dZ {{ var_accounts_passwords_pam_faillock_dir }}"
+  ansible.builtin.command:
+    cmd: "ls -dZ {{ var_accounts_passwords_pam_faillock_dir }}"
   register: faillock_selinux_context
   changed_when: false
   check_mode: false
+  failed_when: false
 
 - name: '{{{ rule_title }}} - Ensure SELinux file context is permanently set'
   ansible.builtin.command:
