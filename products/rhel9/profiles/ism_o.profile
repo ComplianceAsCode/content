@@ -75,3 +75,7 @@ selections:
     - '!secure_boot_enabled'
     - '!audit_rules_unsuccessful_file_modification_open_by_handle_at'
     - '!accounts_password_minlen_login_defs'
+    - '!package_ypbind_removed'
+    - '!package_ypbind_removed'
+    - '!package_xinetd_removed'
+    - '!service_xinetd_disabled'

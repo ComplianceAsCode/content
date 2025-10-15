@@ -76,4 +76,13 @@ selections:
     - '!usbguard_allow_hid_and_hub'
     - '!sshd_allow_only_protocol2'
 
+    # Older rules, no longer needed
+    - '!security_patches_up_to_date'
+    - '!package_rear_installed'
+    - '!package_ypbind_removed'
+    - '!package_xinetd_removed'
+    - '!ensure_redhat_gpgkey_installed'
+    - '!enable_authselect'
+    - '!service_xinetd_disabled'
+
     - var_authselect_profile=local

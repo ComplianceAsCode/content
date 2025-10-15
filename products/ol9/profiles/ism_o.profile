@@ -71,5 +71,16 @@ selections:
     - '!usbguard_allow_hid_and_hub'
     - '!sshd_allow_only_protocol2'
 
+    - '!package_ypbind_removed'
+    - '!package_ypbind_removed'
+    - '!package_xinetd_removed'
+    - '!ensure_redhat_gpgkey_installed'
+    - '!audit_rules_usergroup_modification_opasswd'
+    - '!audit_rules_usergroup_modification_gshadow'
+    - '!audit_rules_usergroup_modification_passwd'
+    - '!audit_rules_usergroup_modification_group'
+    - '!audit_rules_usergroup_modification_shadow'
+    - '!service_xinetd_disabled'
+
     - "var_password_hashing_algorithm_pam=sha512"
     - "enable_dracut_fips_module"
