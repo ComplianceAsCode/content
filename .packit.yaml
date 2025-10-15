@@ -45,6 +45,11 @@ jobs:
   identifier: /hardening/host-os/ansible/anssi_bp28_high
   tmt_plan: /plans/contest/hardening/host-os/ansible/anssi_bp28_high$
 - <<: *test-static-checks
+  identifier: /hardening/host-os/ansible/bsi
+  tmt_plan: /plans/contest/hardening/host-os/ansible/bsi$
+  targets:
+    centos-stream-9: {}
+- <<: *test-static-checks
   identifier: /hardening/host-os/ansible/ccn_advanced
   tmt_plan: /plans/contest/hardening/host-os/ansible/ccn_advanced$
   targets:
@@ -77,6 +82,11 @@ jobs:
   identifier: /hardening/host-os/ansible/ism_o
   tmt_plan: /plans/contest/hardening/host-os/ansible/ism_o$
 - <<: *test-static-checks
+  identifier: /hardening/host-os/ansible/ism_o_top_secret
+  tmt_plan: /plans/contest/hardening/host-os/ansible/ism_o_top_secret$
+  targets:
+    centos-stream-10: {}
+- <<: *test-static-checks
   identifier: /hardening/host-os/ansible/ospp
   tmt_plan: /plans/contest/hardening/host-os/ansible/ospp$
 - <<: *test-static-checks
@@ -89,6 +99,11 @@ jobs:
 - <<: *test-static-checks
   identifier: /hardening/host-os/oscap/anssi_bp28_high
   tmt_plan: /plans/contest/hardening/host-os/oscap/anssi_bp28_high$
+- <<: *test-static-checks
+  identifier: /hardening/host-os/oscap/bsi
+  tmt_plan: /plans/contest/hardening/host-os/oscap/bsi$
+  targets:
+    centos-stream-9: {}
 - <<: *test-static-checks
   identifier: /hardening/host-os/oscap/ccn_advanced
   tmt_plan: /plans/contest/hardening/host-os/oscap/ccn_advanced$
@@ -121,6 +136,11 @@ jobs:
 - <<: *test-static-checks
   identifier: /hardening/host-os/oscap/ism_o
   tmt_plan: /plans/contest/hardening/host-os/oscap/ism_o$
+- <<: *test-static-checks
+  identifier: /hardening/host-os/oscap/ism_o_top_secret
+  tmt_plan: /plans/contest/hardening/host-os/oscap/ism_o_top_secret$
+  targets:
+    centos-stream-10: {}
 - <<: *test-static-checks
   identifier: /hardening/host-os/oscap/ospp
   tmt_plan: /plans/contest/hardening/host-os/oscap/ospp$
