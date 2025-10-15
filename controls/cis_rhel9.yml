@@ -2611,11 +2611,11 @@ controls:
           - l2_server
           - l2_workstation
       status: partial
-      notes: |-
-          These rules are not covering "/etc/hostname" and "/etc/NetworkManager/".
       rules:
           - audit_rules_networkconfig_modification
           - audit_rules_networkconfig_modification_network_scripts
+          - audit_rules_networkconfig_modification_networkmanager
+          - audit_rules_networkconfig_modification_hostname
 
     - id: 6.3.3.6
       title: Ensure use of privileged commands are collected (Automated)
