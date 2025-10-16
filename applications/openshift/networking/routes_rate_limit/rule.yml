@@ -3,10 +3,10 @@ title: Ensure that all Routes has rate limit enabled
 
 description: |-
   OpenShift has an option to set the rate limit for Routes [1] when creating new Routes.
-  All routes outside the openshift namespaces and the kube namespaces should use the
-  rate-limiting annotations.
+  All routes outside the excluded namespaces (as defined by the variable
+  <tt>ocp4-var-routes-excluded-namespaces-regex</tt>) should use the rate-limiting annotations.
 
-  [1] https://docs.openshift.com/container-platform/4.9/networking/routes/route-configuration.html#nw-route-specific-annotations_route-configuration
+  [1] https://docs.openshift.com/container-platform/latest/networking/routes/route-configuration.html#nw-route-specific-annotations_route-configuration
   
 rationale: |-
   The usage of rate limit for Routes provides basic protection against distributed denial-of-service (DDoS) attacks.
@@ -19,14 +19,17 @@ references:
   nist: SC-5,SC-5(1),SC-5(2)
   srg: SRG-APP-000246-CTR-000605,SRG-APP-000435-CTR-001070
 
-{{% set jqfilter = '[.items[] | select(.metadata.namespace | startswith("kube-") or startswith("openshift-") | not) | select(.metadata.annotations["haproxy.router.openshift.io/rate-limit-connections"] == "true" | not) | .metadata.name]' %}}
+{{% set jqfilter = '[.items[] | select(.metadata.namespace | startswith("kube-") or startswith("openshift-") | not) | select(.metadata.namespace | test("{{.var_routes_excluded_namespaces_regex}}"; "") | not) | select(.metadata.annotations["haproxy.router.openshift.io/rate-limit-connections"] == "true" | not) | .metadata.name]' %}}
 
-ocil_clause: 'Rate limit is not enabled for all routes outside the openshift namespaces'
+ocil_clause: 'Rate limit is not enabled for all routes outside the excluded namespaces'
 
 ocil: |-
-    Run the following command to retrieve a list routes that does not have rate limit enabled:
-    <pre>$  oc get routes --all-namespaces -o json | jq '{{{ jqfilter }}}'</pre>
-    Make sure that there is output nothing in the result.
+    This rule checks routes that do not have rate limiting enabled and fails if there are
+    routes outside the excluded namespaces (as defined by the variable
+    <tt>ocp4-var-routes-excluded-namespaces-regex</tt>) without rate limiting annotations.
+    Use following command to list the routes that would fail the test:
+    <tt>{{{ ocil_oc_pipe_jq_filter('routes', jqfilter) }}}</tt>
+
 
 severity: medium
 
