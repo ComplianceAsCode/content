@@ -1,0 +1,62 @@
+# platform = multi_platform_all
+# reboot = false
+# complexity = low
+# disruption = low
+# strategy = configure
+
+{{% if "ol" in families or 'rhel' in product or 'ubuntu' in product or 'debian' in product or 'almalinux' in product %}}
+{{% set auid_filters = "-F auid>=" ~ auid ~ " -F auid!=unset" %}}
+{{% else %}}
+{{% set auid_filters = "" %}}
+{{% endif %}}
+
+# What architecture are we on?
+
+- name: {{{ rule_title }}} - Set architecture for audit {{{ NAME }}} tasks
+  ansible.builtin.set_fact:
+    audit_arch: "b64"
+  when:
+  - ansible_architecture == "aarch64" or
+    ansible_architecture == "ppc64" or
+    ansible_architecture == "ppc64le" or
+    ansible_architecture == "s390x" or
+    ansible_architecture == "x86_64"
+
+- name: {{{ rule_title }}} - Perform remediation of Audit rules for {{{ NAME }}} for 32bit platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters=auid_filters,
+      syscalls=[NAME],
+      key="modules",
+      syscall_grouping=[],
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters=auid_filters,
+      syscalls=[NAME],
+      key="modules",
+      syscall_grouping=[],
+      )|indent(4) }}}
+
+- name: {{{ rule_title }}} - Perform remediation of Audit rules for {{{ NAME }}} for 64bit platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters=auid_filters,
+      syscalls=[NAME],
+      key="modules",
+      syscall_grouping=[],
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters=auid_filters,
+      syscalls=[NAME],
+      key="modules",
+      syscall_grouping=[],
+      )|indent(4) }}}
+  when: audit_arch == "b64"
