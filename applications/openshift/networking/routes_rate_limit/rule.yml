@@ -3,8 +3,33 @@ title: Ensure that all Routes has rate limit enabled
 
 description: |-
   OpenShift has an option to set the rate limit for Routes [1] when creating new Routes.
-  All routes outside the openshift namespaces and the kube namespaces should use the
-  rate-limiting annotations.
+  All routes outside the excluded namespaces (as defined by the variable
+  <tt>var-routes-excluded-namespaces-regex</tt>) should use the rate-limiting annotations.
+  
+  In case additional namespaces need to be excluded from this check (e.g., operator-managed
+  namespaces where direct route modifications are not recommended), create a
+  <tt>TailoredProfile</tt> and add the additional namespaces to the regular expression
+  in the variable <tt>var-routes-excluded-namespaces-regex</tt>.
+  An example allowing additional namespaces follows:
+  <pre>
+  apiVersion: compliance.openshift.io/v1alpha1
+  kind: TailoredProfile
+  metadata:
+    name: custom-routes-rate-limit
+  spec:
+    description: Custom routes rate limit with additional excluded namespaces
+    setValues:
+    - name: ocp4-var-routes-excluded-namespaces-regex
+      rationale: Exclude additional operator-managed namespaces
+      value: ^istio-system$|^grafana$|^my-custom-namespace$
+    extends: ocp4-cis
+    title: Modified CIS with custom route exclusions
+  </pre>
+  
+  Finally, reference this <tt>TailoredProfile</tt> in a <tt>ScanSettingBinding</tt>.
+  For more information on Tailoring the Compliance Operator, please consult the
+  OpenShift documentation:
+    {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/compliance_operator/co-scans/compliance-operator-tailor.html") }}}
 
   [1] https://docs.openshift.com/container-platform/4.9/networking/routes/route-configuration.html#nw-route-specific-annotations_route-configuration
   
@@ -19,14 +44,17 @@ references:
   nist: SC-5,SC-5(1),SC-5(2)
   srg: SRG-APP-000246-CTR-000605,SRG-APP-000435-CTR-001070
 
-{{% set jqfilter = '[.items[] | select(.metadata.namespace | startswith("kube-") or startswith("openshift-") | not) | select(.metadata.annotations["haproxy.router.openshift.io/rate-limit-connections"] == "true" | not) | .metadata.name]' %}}
+{{% set jqfilter = '[.items[] | select(.metadata.namespace | test("{{.var_routes_excluded_namespaces_regex}}"; "") | not) | select(.metadata.annotations["haproxy.router.openshift.io/rate-limit-connections"] == "true" | not) | .metadata.name]' %}}
 
-ocil_clause: 'Rate limit is not enabled for all routes outside the openshift namespaces'
+ocil_clause: 'Rate limit is not enabled for all routes outside the excluded namespaces'
 
 ocil: |-
-    Run the following command to retrieve a list routes that does not have rate limit enabled:
-    <pre>$  oc get routes --all-namespaces -o json | jq '{{{ jqfilter }}}'</pre>
-    Make sure that there is output nothing in the result.
+    This rule checks routes that do not have rate limiting enabled and fails if there are
+    routes outside the excluded namespaces (as defined by the variable
+    <tt>ocp4-var-routes-excluded-namespaces-regex</tt>) without rate limiting annotations.
+    Use following command to list the routes that would fail the test:
+    <tt>{{{ ocil_oc_pipe_jq_filter('routes', jqfilter) }}}</tt>
+
 
 severity: medium
 
