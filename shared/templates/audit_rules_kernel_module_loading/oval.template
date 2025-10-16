@@ -7,24 +7,24 @@
       <!-- Test the augenrules case -->
       <criteria operator="AND">
         <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
-        <criterion comment="audit augenrules 32-bit {{{ NAME }}}" test_ref="test_32bit_ardm_{{{ NAME }}}_augenrules" />
+        <criterion comment="audit augenrules 32-bit {{{ NAME }}}" test_ref="test_32bit_arkml_{{{ NAME }}}_augenrules" />
         <criteria operator="OR">
-          <!-- System either isn't 64-bit => we just check presence of 32-bit version of {{{ NAME }}} audit DAC rule -->
+          <!-- System either isn't 64-bit => we just check presence of 32-bit version of {{{ NAME }}} audit ARKML rule -->
           <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
-          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of {{{ NAME }}} audit DAC rule -->
-          <criterion comment="audit augenrules 64-bit {{{ NAME }}}" test_ref="test_64bit_ardm_{{{ NAME }}}_augenrules" />
+          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of {{{ NAME }}} audit ARKML rule -->
+          <criterion comment="audit augenrules 64-bit {{{ NAME }}}" test_ref="test_64bit_arkml_{{{ NAME }}}_augenrules" />
         </criteria>
       </criteria>
 
       <!-- OR test the auditctl case -->
       <criteria operator="AND">
         <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
-        <criterion comment="audit auditctl 32-bit {{{ NAME }}}" test_ref="test_32bit_ardm_{{{ NAME }}}_auditctl" />
+        <criterion comment="audit auditctl 32-bit {{{ NAME }}}" test_ref="test_32bit_arkml_{{{ NAME }}}_auditctl" />
         <criteria operator="OR">
-          <!-- System either isn't 64-bit => we just check presence of 32-bit version of the {{{ NAME }}} audit DAC rule -->
+          <!-- System either isn't 64-bit => we just check presence of 32-bit version of the {{{ NAME }}} audit ARKML rule -->
           <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
-          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of {{{ NAME }}} audit DAC rule -->
-          <criterion comment="audit auditctl 64-bit {{{ NAME }}}" test_ref="test_64bit_ardm_{{{ NAME }}}_auditctl" />
+          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of {{{ NAME }}} audit ARKML rule -->
+          <criterion comment="audit auditctl 64-bit {{{ NAME }}}" test_ref="test_64bit_arkml_{{{ NAME }}}_auditctl" />
         </criteria>
       </criteria>
 
@@ -32,10 +32,10 @@
   </definition>
 
 {{% macro arkml_oval(audit_type, bits, name) %}}
-  <ind:textfilecontent54_test check="all" comment="audit {{{ audit_type }}} {{{ bits }}}-bit {{{ name }}}" id="test_{{{ bits }}}bit_ardm_{{{ name }}}_{{{ audit_type }}}" version="1">
-    <ind:object object_ref="object_{{{ bits }}}bit_ardm_{{{ name }}}_{{{ audit_type }}}" />
+  <ind:textfilecontent54_test check="all" comment="audit {{{ audit_type }}} {{{ bits }}}-bit {{{ name }}}" id="test_{{{ bits }}}bit_arkml_{{{ name }}}_{{{ audit_type }}}" version="1">
+    <ind:object object_ref="object_{{{ bits }}}bit_arkml_{{{ name }}}_{{{ audit_type }}}" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_{{{ bits }}}bit_ardm_{{{ name }}}_{{{ audit_type }}}" version="1">
+  <ind:textfilecontent54_object id="object_{{{ bits }}}bit_arkml_{{{ name }}}_{{{ audit_type }}}" version="1">
     {{% if audit_type == "augenrules" %}}
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     {{% elif audit_type == "auditctl" %}}
