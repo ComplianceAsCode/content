@@ -61,3 +61,8 @@ fixtext: |-
     {{{ fixtext_audit_rules("init_module", "module_chng") | indent(4) }}}
 
 srg_requirement: '{{{ srg_requirement_audit_command("init_module") }}}'
+
+template:
+    name: audit_rules_kernel_module_loading
+    vars:
+        name: init_module
