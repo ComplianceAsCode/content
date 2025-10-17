@@ -1,8 +1,10 @@
 #!/bin/bash
 set -xe
 
-echo "installing cluster-logging-operator"
-oc apply -f ${ROOT_DIR}/ocp-resources/e2e/cluster-logging-install.yaml
+export CLO_CHANNEL=$(oc get packagemanifest -o jsonpath='{range .status.channels[*]}{.name}{"\n"}{end}' -n openshift-marketplace cluster-logging | sort | tail -1)
+
+echo "installing cluster-logging-operator from channel ${CLO_CHANNEL}"
+envsusbst < <(cat ${ROOT_DIR}/ocp-resources/e2e/cluster-logging-install.yaml) | oc apply -f
 
 sleep 30
 
