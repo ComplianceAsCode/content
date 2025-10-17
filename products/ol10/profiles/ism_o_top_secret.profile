@@ -76,3 +76,11 @@ selections:
     - "!usbguard_allow_hid_and_hub"
     - "!sshd_allow_only_protocol2"
     - var_authselect_profile=local
+
+    # Needed for references in other products
+    - '!security_patches_up_to_date'
+    - '!rpm_verify_ownership'
+    - '!rpm_verify_permissions'
+    - '!package_rear_installed'
+    - '!package_ypbind_removed'
+    - '!package_xinetd_removed'

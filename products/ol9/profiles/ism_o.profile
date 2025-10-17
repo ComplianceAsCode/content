@@ -70,6 +70,20 @@ selections:
     - '!accounts_password_all_shadowed'
     - '!usbguard_allow_hid_and_hub'
     - '!sshd_allow_only_protocol2'
+    - '!package_ypbind_removed'
+    - '!package_ypbind_removed'
+    - '!package_xinetd_removed'
+    - '!ensure_redhat_gpgkey_installed'
+    - '!audit_rules_usergroup_modification_opasswd'
+    - '!audit_rules_usergroup_modification_gshadow'
+    - '!audit_rules_usergroup_modification_passwd'
+    - '!audit_rules_usergroup_modification_group'
+    - '!audit_rules_usergroup_modification_shadow'
+    - '!service_xinetd_disabled'
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
+    - '!package_rsh-server_removed'
+    - '!package_rsh_removed'
 
     - "var_password_hashing_algorithm_pam=sha512"
     - "enable_dracut_fips_module"
