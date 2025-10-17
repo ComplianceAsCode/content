@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'Record Events that Modify the System''s Network Environment - /etc/sysconfig/network-scripts'
+title: 'Record Events that Modify the System''s Network Environment - /etc/NetworkManager/'
 
 description: |-
-    {{{ describe_audit_rules_watch("/etc/sysconfig/network-scripts", "audit_rules_networkconfig_modification_network_scripts") }}}
+    {{{ describe_audit_rules_watch("/etc/NetworkManager", "audit_rules_networkconfig_modification_networkmanager") }}}
 
 rationale: |-
     The network environment should not be modified by anything other
@@ -13,20 +13,18 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel8: CCE-86939-6
-    cce@rhel9: CCE-86940-4
-    cce@rhel10: CCE-90731-1
+    cce@rhel9: CCE-86481-9
 
 ocil_clause: 'the system is not configured to audit changes of the network configuration'
 
 ocil: |-
     To determine if the system is configured to audit changes to its network configuration,
     run the following command:
-    <pre>auditctl -l | grep -E '/etc/sysconfig/network-scripts'</pre>
+    <pre>auditctl -l | grep -E '/etc/NetworkManager'</pre>
     If the system is configured to watch for network configuration changes, a line should
     be returned and <tt>perm=wa</tt> should be indicated.
 
 template:
     name: audit_rules_watch
     vars:
-        path: /etc/sysconfig/network-scripts
+        path: /etc/NetworkManager
