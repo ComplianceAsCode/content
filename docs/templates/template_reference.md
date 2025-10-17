@@ -68,6 +68,15 @@
 
 -   Languages: Ansible, Bash, OVAL
 
+#### audit_rules_kernel_module_loading
+-   Ensure auditd collects information on kernel module loading
+
+-   Parameters:
+
+    -   **name** - value of `-S` argument in Audit rule, eg. `create_module`
+
+-   Languages: Ansible, Bash, Kubernetes, OVAL
+
 #### audit_rules_path_syscall
 -   Check if there are Audit rules to record events that modify
     user/group information via a syscall on a specific file.

@@ -4,23 +4,7 @@ documentation_complete: true
 title: 'Ensure auditd Collects Information on Kernel Module Loading and Unloading - finit_module'
 
 description: |-
-    If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
-    to read audit rules during daemon startup (the default), add the following lines to a file
-    with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> to capture kernel module
-    loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
-    {{% if "ol" in families or 'rhel' in product or 'ubuntu' in product %}}
-    <pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F auid>={{{ uid_min }}} -F auid!=unset -F key=modules</pre>
-    {{% else %}}
-    <pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F key=modules</pre>
-    {{% endif %}}    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to read audit
-    rules during daemon startup, add the following lines to <tt>/etc/audit/audit.rules</tt> file
-    in order to capture kernel module loading and unloading events, setting ARCH to either b32 or
-    b64 as appropriate for your system:
-    {{% if "ol" in families or 'rhel' in product or 'ubuntu' in product %}}
-    <pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F auid>={{{ uid_min }}} -F auid!=unset -F key=modules</pre>
-    {{% else %}}
-    <pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F key=modules</pre>
-    {{% endif %}}
+    {{{ describe_audit_rules_kernel_module_loading("finit_module") }}}
 
 rationale: |-
     The addition/removal of kernel modules can be used to alter the behavior of
@@ -63,3 +47,8 @@ fixtext: |-
     {{{ fixtext_audit_rules("finit_module", "module_chng") | indent(4) }}}
 
 srg_requirement: '{{{ srg_requirement_audit_command("finit_module") }}}'
+
+template:
+    name: audit_rules_kernel_module_loading
+    vars:
+        name: finit_module

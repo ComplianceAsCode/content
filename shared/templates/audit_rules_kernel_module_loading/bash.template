@@ -12,11 +12,16 @@ for ARCH in "${RULE_ARCHS[@]}"
 do
 	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
 	OTHER_FILTERS=""
+	{{% if "ol" in families or 'rhel' in product or 'ubuntu' in product %}}
 	AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
-	SYSCALL="query_module"
+	{{% else %}}
+	AUID_FILTERS=""
+	{{% endif %}}
+	SYSCALL="{{{ NAME }}}"
 	KEY="modules"
-	SYSCALL_GROUPING="init_module query_module"
+	SYSCALL_GROUPING="{{{ NAME }}}"
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 	{{{ bash_fix_audit_syscall_rule("augenrules", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
 	{{{ bash_fix_audit_syscall_rule("auditctl", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
 done
+
