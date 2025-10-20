@@ -253,6 +253,27 @@
 
 -   Languages: OVAL, Kubernetes
 
+#### crypto_sub_policies
+-   Configures a sub policy for system wide crypto policies. Creates a module
+    file `module_name.pmod` in `/etc/crypto-policies/policies/modules/` that
+    contains `key = value`. Then, it applies this module. The template allows
+    to specify multiple crypto policy sub modules at once, which is convenient
+    for use in benchmarks that require multiple custom crypto settings.
+
+-   Parameters:
+
+    -   **base_policy** - The base system wide crypto policy, eg. `DEFAULT`
+
+    -   **sub_policies** - A list of dictionaries. Each dictionary represents one custom crypto sub policy module. The dictionary has the following members:
+
+        -   **module_name** - crypto sub policy name, eg. `NO-SSHWEAKCIPHERS`
+
+        -   **key** - entry key, eg. `cipher@SSH`
+
+        -   **value** - entry value, eg. `-3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305`
+
+-   Languages: Ansible, Bash, OVAL
+
 #### dconf_ini_file
 -   Checks for `dconf` configuration. Additionally checks if the
     configuration is locked so it cannot be overridden by the user.

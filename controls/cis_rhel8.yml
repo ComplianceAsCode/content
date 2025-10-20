@@ -537,8 +537,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - configure_crypto_policy
-          - var_system_crypto_policy=default_nosha1
+          - crypto_sub_policies_cis_rhel8
 
     - id: 1.6.2
       title: Ensure system wide crypto policy disables sha1 hash and signature support (Automated)
@@ -549,31 +548,25 @@ controls:
       notes: |-
           This requirement is already satisfied by 1.6.1.
       related_rules:
-          - configure_crypto_policy
+          - crypto_sub_policies_cis_rhel8
 
     - id: 1.6.3
       title: Ensure system wide crypto policy disables cbc for ssh (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          It is necessary a new rule to ensure a module disabling CBC in
-          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
-      related_rules:
-          - configure_crypto_policy
+      status: automated
+      rules:
+          - crypto_sub_policies_cis_rhel8
 
     - id: 1.6.4
       title: Ensure system wide crypto policy disables macs less than 128 bits (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          It is necessary a new rule to ensure a module disabling weak MACs in
-          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
-      related_rules:
-          - configure_crypto_policy
+      status: automated
+      rules:
+          - crypto_sub_policies_cis_rhel8
 
     - id: 1.7.1
       title: Ensure message of the day is configured properly (Automated)
@@ -1504,8 +1497,7 @@ controls:
       notes: |-
           Introduced in CIS RHEL8 v3.0.0
       rules:
-          - sshd_use_approved_ciphers
-          - sshd_approved_ciphers=cis_rhel8
+          - crypto_sub_policies_cis_rhel8
 
     - id: 4.2.7
       title: Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured (Automated)
@@ -1594,8 +1586,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - sshd_use_strong_macs
-          - sshd_strong_macs=cis_rhel8
+          - crypto_sub_policies_cis_rhel8
 
     - id: 4.2.15
       title: Ensure sshd MaxAuthTries is configured (Automated)

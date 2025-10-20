@@ -1,0 +1,67 @@
+documentation_complete: true
+
+title: Implement Custom Crypto Policy Modules for CIS Benchmark for Red Hat Enterprise Linux 8
+
+{{% set sub_policies = [
+    {
+        "module_name": "NO-SSHCBC",
+        "key": "cipher@SSH",
+        "value": "-*-CBC"
+    },
+    {
+        "module_name": "NO-SSHWEAKCIPHERS",
+        "key": "cipher@SSH",
+        "value": "-3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305"
+    },
+    {
+        "module_name": "NO-SSHWEAKMACS",
+        "key": "mac@SSH",
+        "value": "-HMAC-MD5* -UMAC-64* -UMAC-128*"
+    },
+    {
+        "module_name": "NO-WEAKMAC",
+        "key": "mac",
+        "value": "-*-128*"
+    },
+] %}}
+
+description: |-
+    Create a custom crypto policy module to enforce the use of strong ciphers and MACs in SSHD, disable CBC mode ciphers in SSHD and disable the use of weak MACs globally.
+    {{% for sub_policy in sub_policies %}}
+    {{{ describe_crypto_sub_policy(sub_policy.module_name, sub_policy.key, sub_policy.value) }}}
+    {{% endfor %}}
+    Then, set the system wide crypto policy to use the custom policy.
+    <pre>
+    $ sudo update-crypto-policies --set DEFAULT:NO-SHA1:NO-SSHCBC:NO-SSHWEAKCIPHERS:NO-SSHWEAKMACS:NO-WEAKMAC
+    </pre>
+
+rationale: |-
+    CBC mode ciphers are vulnerable to certain attacks, such as the BEAST attack.
+    Disabling CBC mode ciphers helps protect against these attacks and ensures that only
+    strong, proven cryptographic algorithms are used to protect SSH communications.
+    Weak ciphers that are used for authentication to the cryptographic module cannot be
+    relied upon to provide confidentiality or integrity, and system data may be compromised.
+    Message Authentication Codes (MACs) are cryptographic mechanisms used to verify the
+    integrity and authenticity of data transmitted over SSH connections. Weak MACs that
+    are used for authentication to the cryptographic module cannot be relied upon to
+    provide integrity, and system data may be compromised. Implementing a custom crypto
+    policy that disables weak MAC algorithms helps ensure that only strong, proven
+    cryptographic algorithms are used to protect SSH communications.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86707-7
+
+ocil_clause: 'the custom crypto policy modules do not exist'
+
+ocil: |-
+    {{% for sub_policy in sub_policies %}}
+    {{{ ocil_crypto_sub_policy(sub_policy.module_name, sub_policy.key, sub_policy.value) }}}
+    {{% endfor %}}
+
+template:
+    name: crypto_sub_policies
+    vars:
+        base_policy: "DEFAULT:NO-SHA1"
+        sub_policies: {{{ sub_policies }}}
