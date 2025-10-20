@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: Implement Custom Crypto Policy for SSHD Ciphers
+
+description: |-
+    Create a custom crypto policy module for SSHD to enforce the use of strong ciphers.
+    Add the following line to the file <tt>/etc/crypto-policies/policies/modules/NO-SSHWEAKCIPHERS.pmod</tt>:
+    <pre>
+    cipher@SSH = -3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305
+    </pre>
+
+rationale: |-
+    Weak ciphers that are used for authentication to the cryptographic module cannot be
+    relied upon to provide confidentiality or integrity, and system data may be compromised.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86707-7
+
+references:
+
+ocil_clause: 'the custom crypto policy module for SSH does not exist'
+
+ocil: |-
+    Verify that <tt>/etc/crypto-policies/policies/modules/NO-SSHWEAKCIPHERS.pmod</tt> exists and has the following content:
+    <pre>
+    cipher@SSH = -3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305
+    </pre>

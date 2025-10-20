@@ -1,0 +1,26 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = configure
+# complexity = low
+# disruption = low
+
+-   name: "{{{ rule_title }}} - Create custom crypto policy - cipher"
+    ansible.builtin.lineinfile:
+        path: /etc/crypto-policies/policies/modules/NO-SSHWEAKCIPHERS.pmod
+        owner: root
+        group: root
+        mode: '0644'
+        line: cipher@SSH = -3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305
+        create: true
+        regexp: "cipher@SSH"
+
+-   name: "{{{ rule_title }}} - Check current crypto policy"
+    ansible.builtin.command: update-crypto-policies --show
+    register: current_crypto_policy
+    changed_when: false
+    failed_when: false
+    check_mode: false
+
+-   name: "{{{ rule_title }}} - Update crypto-policies"
+    ansible.builtin.command: update-crypto-policies --set DEFAULT:NO-SSHWEAKCIPHERS
+    when: current_crypto_policy.stdout.strip() != "DEFAULT:NO-SSHWEAKCIPHERS"

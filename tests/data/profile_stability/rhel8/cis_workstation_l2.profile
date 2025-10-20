@@ -109,6 +109,7 @@ configure_crypto_policy
 configure_ssh_crypto_policy
 coredump_disable_backtraces
 coredump_disable_storage
+crypto_sub_policy_sshd_ciphers
 dconf_db_up_to_date
 dconf_gnome_banner_enabled
 dconf_gnome_disable_automount
@@ -345,7 +346,6 @@ set_password_hashing_algorithm_logindefs
 set_password_hashing_algorithm_passwordauth
 set_password_hashing_algorithm_systemauth
 socket_systemd-journal-remote_disabled
-sshd_approved_ciphers=cis_rhel8
 sshd_disable_empty_passwords
 sshd_disable_rhosts
 sshd_disable_root_login
@@ -364,7 +364,6 @@ sshd_set_max_sessions
 sshd_set_maxstartups
 sshd_strong_kex=cis_rhel8
 sshd_strong_macs=cis_rhel8
-sshd_use_approved_ciphers
 sshd_use_strong_kex
 sshd_use_strong_macs
 sudo_add_use_pty
