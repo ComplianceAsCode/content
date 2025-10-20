@@ -1,0 +1,11 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = configure
+# complexity = low
+# disruption = low
+
+{{% for sub_policy in SUB_POLICIES %}}
+{{{ bash_file_contents("/etc/crypto-policies/policies/modules/" ~ sub_policy.module_name ~ ".pmod", sub_policy.key ~ " = " ~ sub_policy.value) }}}
+{{% endfor %}}
+
+update-crypto-policies --set {{{ BASE_POLICY }}}:{{{ CONFIGURE_CRYPTO_POLICY_MODULES }}}

@@ -584,3 +584,4 @@ selections:
     - package_ypserv_removed
     - package_quagga_removed
     - package_rsh-server_removed
+    - sshd_use_strong_macs

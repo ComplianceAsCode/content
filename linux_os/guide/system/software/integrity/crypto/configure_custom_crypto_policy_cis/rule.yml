@@ -1,0 +1,129 @@
+documentation_complete: true
+
+title: Implement Custom Crypto Policy Modules for CIS Benchmark
+
+{{% if product == "rhel8" %}}
+{{% set base_policy = "DEFAULT:NO-SHA1" %}}
+{{% set sub_policies = [
+    {
+        "module_name": "NO-SSHCBC",
+        "key": "cipher@SSH",
+        "value": "-*-CBC"
+    },
+    {
+        "module_name": "NO-SSHWEAKCIPHERS",
+        "key": "cipher@SSH",
+        "value": "-3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305"
+    },
+    {
+        "module_name": "NO-SSHWEAKMACS",
+        "key": "mac@SSH",
+        "value": "-HMAC-MD5* -UMAC-64* -UMAC-128*"
+    },
+    {
+        "module_name": "NO-WEAKMAC",
+        "key": "mac",
+        "value": "-*-128*"
+    },
+] %}}
+{{% elif product == "rhel9" %}}
+{{% set base_policy = "DEFAULT:NO-SHA1" %}}
+{{% set sub_policies = [
+    {
+        "module_name": "NO-SSHCBC",
+        "key": "cipher@SSH",
+        "value": "-*-CBC"
+    },
+    {
+        "module_name": "NO-SSHWEAKCIPHERS",
+        "key": "cipher@SSH",
+        "value": "-3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305"
+    },
+    {
+        "module_name": "NO-SSHWEAKMACS",
+        "key": "mac@SSH",
+        "value": "-HMAC-MD5* -UMAC-64* -UMAC-128*"
+    },
+    {
+        "module_name": "NO-WEAKMAC",
+        "key": "mac",
+        "value": "-*-64*"
+    },
+] %}}
+{{% elif product == "rhel10" %}}
+{{% set base_policy = "DEFAULT" %}}
+{{% set sub_policies = [
+    {
+        "module_name": "NO-SSHCBC",
+        "key": "cipher@SSH",
+        "value": "-*-CBC"
+    },
+    {
+        "module_name": "NO-SSHWEAKCIPHERS",
+        "key": "cipher@SSH",
+        "value": "-3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC"
+    },
+    {
+        "module_name": "NO-SSHWEAKMACS",
+        "key": "mac@SSH",
+        "value": "-HMAC-MD5* -UMAC-64* -UMAC-128* -HMAC-SHA1*"
+    },
+    {
+        "module_name": "NO-WEAKMAC",
+        "key": "mac",
+        "value": "-*-128*"
+    },
+] %}}
+{{% else %}}
+{{% set base_policy = "DEFAULT:NO-SHA1" %}}
+{{% set sub_policies = [
+    {
+        "module_name": "NO-SSHCBC",
+        "key": "cipher@SSH",
+        "value": "-*-CBC"
+    },
+] %}}
+{{% endif %}}
+
+description: |-
+    Create a custom crypto policy module to enforce the use of strong ciphers and MACs in SSHD, disable CBC mode ciphers in SSHD and disable the use of weak MACs globally.
+    {{% for sub_policy in sub_policies %}}
+    {{{ describe_crypto_sub_policy(sub_policy.module_name, sub_policy.key, sub_policy.value) }}}
+    {{% endfor %}}
+    Then, set the system wide crypto policy to use the custom policy.
+    <pre>
+    $ sudo update-crypto-policies --set {{{ base_policy }}}:{{{ sub_policies | map(attribute='module_name') | join(":") }}}
+    </pre>
+
+rationale: |-
+    CBC mode ciphers are vulnerable to certain attacks, such as the BEAST attack.
+    Disabling CBC mode ciphers helps protect against these attacks and ensures that only
+    strong, proven cryptographic algorithms are used to protect SSH communications.
+    Weak ciphers that are used for authentication to the cryptographic module cannot be
+    relied upon to provide confidentiality or integrity, and system data may be compromised.
+    Message Authentication Codes (MACs) are cryptographic mechanisms used to verify the
+    integrity and authenticity of data transmitted over SSH connections. Weak MACs that
+    are used for authentication to the cryptographic module cannot be relied upon to
+    provide integrity, and system data may be compromised. Implementing a custom crypto
+    policy that disables weak MAC algorithms helps ensure that only strong, proven
+    cryptographic algorithms are used to protect SSH communications.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86707-7
+    cce@rhel9: CCE-88900-6
+    cce@rhel10: CCE-88902-2
+
+ocil_clause: 'the custom crypto policy modules do not exist'
+
+ocil: |-
+    {{% for sub_policy in sub_policies %}}
+    {{{ ocil_crypto_sub_policy(sub_policy.module_name, sub_policy.key, sub_policy.value) }}}
+    {{% endfor %}}
+
+template:
+    name: crypto_sub_policies
+    vars:
+        base_policy: {{{ base_policy }}}
+        sub_policies: {{{ sub_policies }}}
