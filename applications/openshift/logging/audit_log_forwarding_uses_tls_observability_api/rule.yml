@@ -52,6 +52,7 @@ template:
     # By using the objects filter we ensure we are getting the object to query for its url.
     filepath: "{{{ openshift_filtered_path('/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders', 'try [.items[].spec.outputs[][]|objects|select(.url != null).url] catch []') }}}"
     yamlpath: "[:]"
+    check_existence: any_exist
     entity_check: "all"
     values:
     - value: "^(https|tls)://.*$"
