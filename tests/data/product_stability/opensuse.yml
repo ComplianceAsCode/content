@@ -22,8 +22,16 @@ chrony_d_path: /etc/chrony.d/
 cpes:
   - opensuse-15:
       check_id: installed_OS_is_opensuse_leap15
-      name: cpe:/o:opensuse:leap:15.0
-      title: openSUSE Leap 15.0
+      name: cpe:/o:opensuse:leap:15
+      title: openSUSE Leap 15
+  - opensuse-16:
+      check_id: installed_OS_is_opensuse_leap16
+      name: cpe:/o:opensuse:leap:16
+      title: openSUSE Leap 16
+  - opensuse-tumbleweed:
+      check_id: installed_OS_is_opensuse
+      name: cpe:/o:opensuse:tumbleweed
+      title: openSUSE Tumbleweed
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 dynamic_uid_max: 65519

@@ -5,11 +5,11 @@
       <affected family="unix">
         <platform>multi_platform_all</platform>
       </affected>
-      <reference ref_id="cpe:/o:opensuse:leap:15.0" source="CPE" />
+      <reference ref_id="cpe:/o:opensuse:leap:15" source="CPE" />
       <description>The operating system installed on the system is openSUSE Leap 15.</description>
     </metadata>
     <criteria operator="AND">
-      <extend_definition comment="openSUSE is installed" definition_ref="installed_OS_is_opensuse" />
+      <extend_definition comment="Installed OS is part of the Unix family" definition_ref="installed_OS_is_part_of_Unix_family" />
       <criterion comment="openSUSE Leap 15 is installed" test_ref="test_opensuse_leap15_installed" />
     </criteria>
   </definition>
