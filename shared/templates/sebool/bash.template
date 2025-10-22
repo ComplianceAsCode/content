@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_almalinux,multi_platform_rhv,SUSE Linux Enterprise 15
+# platform = multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,SUSE Linux Enterprise 15,SUSE Linux Enterprise 16
 # reboot = false
 # strategy = enable
 # complexity = low
@@ -6,7 +6,7 @@
 
 {{% if product in ['ol8', 'ol9', 'rhel8', 'rhel9', 'rhel10'] %}}
 {{{ bash_package_install("python3-libsemanage") }}}
-{{% elif product == "sle15" %}}
+{{% elif product in [ "sle15", "sle16" ] %}}
 {{{ bash_package_install("policycoreutils") }}}
 {{{ bash_package_install("policycoreutils-python-utils") }}}
 {{{ bash_package_install("selinux-tools") }}}
