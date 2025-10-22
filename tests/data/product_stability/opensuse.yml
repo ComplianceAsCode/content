@@ -1,5 +1,5 @@
-aide_also_checks_audispd: 'yes'
-aide_also_checks_rsyslog: 'no'
+aide_also_checks_audispd: "yes"
+aide_also_checks_rsyslog: "no"
 aide_bin_path: /usr/sbin/aide
 aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
@@ -16,26 +16,14 @@ auid: 1000
 basic_properties_derived: true
 benchmark_id: OPENSUSE
 benchmark_root: ../../linux_os/guide
-bootable_containers_supported: 'false'
+bootable_containers_supported: "false"
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 cpes:
-- opensuse-42.1:
-    check_id: installed_OS_is_opensuse_leap42
-    name: cpe:/o:opensuse:leap:42.1
-    title: openSUSE Leap 42.1
-- opensuse-42.2:
-    check_id: installed_OS_is_opensuse_leap42
-    name: cpe:/o:opensuse:leap:42.2
-    title: openSUSE Leap 42.2
-- opensuse-42.3:
-    check_id: installed_OS_is_opensuse_leap42
-    name: cpe:/o:opensuse:leap:42.3
-    title: openSUSE Leap 42.3
-- opensuse-15:
-    check_id: installed_OS_is_opensuse_leap15
-    name: cpe:/o:opensuse:leap:15.0
-    title: openSUSE Leap 15.0
+  - opensuse-15:
+      check_id: installed_OS_is_opensuse_leap15
+      name: cpe:/o:opensuse:leap:15.0
+      title: openSUSE Leap 15.0
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 dynamic_uid_max: 65519
@@ -96,16 +84,16 @@ reference_uris:
   stigid: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://www.cyber.mil/stigs/srg-stig-tools/
 rsyslog_cafile: /etc/pki/tls/cert.pem
-sshd_distributed_config: 'false'
-sysctl_remediate_drop_in_file: 'false'
+sshd_distributed_config: "false"
+sysctl_remediate_drop_in_file: "false"
 target_oval_version:
-- 5
-- 11
-target_oval_version_str: '5.11'
+  - 5
+  - 11
+target_oval_version_str: "5.11"
 type: platform
 uid_min: 1000
 xwindows_packages:
-- xorg-x11-server-Xorg
-- xorg-x11-server-common
-- xorg-x11-server-utils
-- xorg-x11-server-Xwayland
+  - xorg-x11-server-Xorg
+  - xorg-x11-server-common
+  - xorg-x11-server-utils
+  - xorg-x11-server-Xwayland
