@@ -30,7 +30,11 @@ based on <a href="{{{ policy.source }}}">{{{ policy.source }}}</a>
     {{%- endif -%}}
     {{%- else %}}
     {{%- if selection in rules %}}
-    <li><a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ rules[selection].relative_definition_location }}}">{{{ selection }}}</a>: {{{ rules[selection].title }}}</li>
+    <li><a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ rules[selection].relative_definition_location }}}"> {{{ selection }}}</a>: {{{ rules[selection].title }}}
+      {{%- if rules[selection].identifiers and rules[selection].identifiers.get('cce') %}}
+      <ul><li>{{{ rules[selection].identifiers['cce'] }}}</li></ul>
+      {{%- endif %}}
+    </li>
     {{%- else %}}
     <li>{{{ selection }}} - not available for this product</li>
     {{%- endif -%}}
