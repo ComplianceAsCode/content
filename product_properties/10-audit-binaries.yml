@@ -7,7 +7,7 @@ default:
     - /sbin/autrace
     {{% endif %}}
     - /sbin/auditd
-    {{% if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in product %}}
+    {{% if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in families %}}
     - /sbin/audispd
     {{% endif %}}
     - /sbin/augenrules
