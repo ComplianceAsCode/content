@@ -44,7 +44,6 @@ product_directories = [
     'anolis8',
     'anolis23',
     'al2023',
-    'chromium',
     'debian11', 'debian12', 'debian13',
     'example',
     'eks',
@@ -215,7 +214,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Anolis OS 8": "anolis8",
     "Anolis OS 23": "anolis23",
     "Amazon Linux 2023": "al2023",
-    "Chromium": "chromium",
     "Debian 11": "debian11",
     "Debian 12": "debian12",
     "Debian 13": "debian13",
@@ -430,7 +428,6 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'alinux': 'Alibaba Cloud Linux',
     'almalinux': 'AlmaLinux OS',
     'anolis': 'Anolis OS',
-    'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
     'kylinserver': 'Kylin Server',
@@ -505,7 +502,6 @@ DERIVATIVES_PRODUCT_MAPPING = {
 BENCHMARKS = {
     "applications",
     "linux_os/guide",
-    "products/chromium/guide",
     "products/firefox/guide",
 }
 

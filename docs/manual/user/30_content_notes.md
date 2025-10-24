@@ -6,6 +6,7 @@ Below is list of products that have been removed from the project.
 | Product                                      | EOL Date           | Last Release                                                                       |
 |----------------------------------------------|--------------------|------------------------------------------------------------------------------------|
 | Apple macOS 10.15                            | -                  | [content 0.1.76](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.76) |
+| Google Chromium                              | -                  | [content 0.1.78](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.78) |
 | Debian 8                                     | June 30, 2020      | [content 0.1.52](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.52) |
 | Debian 9                                     | June 30, 2022      | [content 0.1.65](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.65) |
 | Debian 10                                    | June 30, 2024      | [content 0.1.73](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.73) |
