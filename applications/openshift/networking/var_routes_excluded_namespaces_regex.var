@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Excluded Namespaces for Routes Rate Limit Check'
+
+description: |-
+    A regular expression that lists all namespaces that should be excluded
+    from the routes rate limit compliance check. This is particularly useful
+    for namespaces managed by operators where direct route modifications
+    are not recommended.
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+  default: "^kube-.*|openshift-.*"
