@@ -151,10 +151,6 @@ multiple benchmarks in our project:
 <td><p>Firefox</p></td>
 <td><p><code>/products/firefox/guide</code></p></td>
 </tr>
-<tr class="odd">
-<td><p>Chromium</p></td>
-<td><p><code>/products/chromium/guide</code></p></td>
-</tr>
 </tbody>
 </table>
 
@@ -353,7 +349,6 @@ endif()
 <pre>
 ...
 all_cmake_products=(
-	CHROMIUM
 	DEBIAN11
  <b>CUSTOM6</b>
 	EAP6
@@ -366,14 +361,13 @@ all_cmake_products=(
 product_directories = ['debian11', 'fedora', 'ol7', 'ol8', 'opensuse',
                        'rhel8', 'rhel9', 'sle12',
                        'ubuntu2404', 'rhosp13',
-                       'chromium', 'eap6', 'firefox',
+                       'eap6', 'firefox',
                        'example'<b>, 'custom6'</b>]
 ...
 </pre>
 <pre>
 ...
 FULL_NAME_TO_PRODUCT_MAPPING = {
-    "Chromium": "chromium",
     "Debian 11": "debian11",
     "Custom 6": "custom6",
     "JBoss EAP 6": "eap6",
@@ -400,7 +394,6 @@ MULTI_PLATFORM_MAPPING = {
 <pre>
 ...
 MAKEFILE_ID_TO_PRODUCT_MAP = {
-    'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
     'rhosp': 'Red Hat OpenStack Platform',

@@ -2196,40 +2196,6 @@ dpkg-query --show --showformat='${db:Status-Status}' '{{{ package }}}' 2>/dev/nu
 {{%- endif -%}}
 {{%- endmacro -%}}
 
-
-{{#
-Macro to replace configuration setting(s) in the Chromium stig policy (.json) file or add the
-preference if it does not exist.
-
-Example macro invocation::
-
-    {{{ bash_chromium_pol_setting("chrome_stig_policy.json", "/etc/chromium/policies/managed/", "ExtensionInstallBlacklist", "\[\"*\"\]") }}}
-
-:param chrome_pol_file:      Policy file to that will be modified
-:type chrome_pol_file: str
-:param chrome_pol_dir:       Directory where the policy file is located
-:type chrome_pol_dir: str
-:param pol_setting:          The setting that will be modified
-:type pol_setting: str
-:param pol_setting_val:      Value of the setting to replace the current value with
-:type pol_setting_val: str
-:param pol_setting_val_edit: Value of the setting to be inserted if setting and value not present
-:type pol_setting_val_edit: str
-
-#}}
-{{%- macro bash_chromium_pol_setting(chrome_pol_file, chrome_pol_dir, pol_setting, pol_setting_val, pol_setting_val_edit=None) %}}
-{{% if not pol_setting_val_edit %}}
-{{% set pol_setting_val_edit = pol_setting_val %}}
-{{% endif %}}
-
-if ! grep -q {{{ pol_setting }}} {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}; then
-   sed -i -e '/{/a \  "'{{{ pol_setting }}}'": '{{{ pol_setting_val_edit }}}',' {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
-else
-   sed -i -e 's/\"'{{{ pol_setting }}}'.*/\"'{{{ pol_setting }}}'\": '{{{ pol_setting_val }}}',/g' {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
-fi
-{{%- endmacro -%}}
-
-
 {{#
     Macro that lets you define the body of a loop that iterates over the output of the find command
     Use with the call block syntax {{% call iterate_over_find_output("fname", "mydir -name *.conf") %}} ...
@@ -2285,11 +2251,11 @@ for f in $(echo -n "{{{ files }}}"); do
     # find key in section and change value
     if grep -qzosP "[[:space:]]*\[{{{ section }}}\]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}" "$f"; then
         if ! grep -qPz "{{{ key }}}={{{ value }}}" "$f"; then
-{{% if no_quotes %}}    
+{{% if no_quotes %}}
             sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value | replace("/", "\/") }}}/" "$f"
 {{% else %}}
             sed -i 's/{{{ key }}}[^(\n)]*/{{{ key }}}="{{{ value | replace("/", "\/") }}}"/' "$f"
-{{% endif %}}    
+{{% endif %}}
         fi
 
         found=true

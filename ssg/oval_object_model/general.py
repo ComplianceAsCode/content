@@ -19,7 +19,7 @@ def required_attribute(_xml_el, _key):
 def get_product_name(product, product_version=None):
     # Current SSG checks aren't unified which element of '<platform>'
     # and '<product>' to use as OVAL AffectedType metadata element,
-    # e.g. Chromium content uses both of them across the various checks
+    # e.g. Chromium (historically) content uses both of them across the various checks
     # Thus for now check both of them when checking concrete platform / product
 
     # Get official name for product (prefixed with content of afftype)
