@@ -3,8 +3,11 @@
     {{{ oval_metadata("Preventing direct root login to serial port interfaces helps
       ensure accountability for actions taken on the system using the root
       account.", rule_title=rule_title) }}}
-    <criteria>
+    <criteria operator="AND">
       <criterion comment="serial ports /etc/securetty" test_ref="test_serial_ports_etc_securetty" negate="true" />
+      {{% if product == "sle16" %}}
+      <criterion comment="pam_securetty is enabled with noconsole" test_ref="test_pam_securetty_noconsole"/>
+      {{% endif %}}
     </criteria>
   </definition>
 
@@ -16,5 +19,15 @@
     <ind:filepath>/etc/securetty</ind:filepath>
     <ind:pattern operation="pattern match">^ttyS[0-9]+$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="pam_securetty is enabled" id="test_pam_securetty_noconsole" version="1">
+    <ind:object object_ref="object_pam_securetty_noconsole" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_pam_securetty_noconsole" comment="Check pam_securetty" version="1">
+    <ind:filepath>/etc/pam.d/login</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*auth(?:(?!\n)\s)+required(?:(?!\n)\s)+pam_securetty.so\s+noconsole</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
