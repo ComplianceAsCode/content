@@ -71,4 +71,8 @@ ocil: |-
 
     If the account option is missing, or commented out, this is a finding.
 
+{{% if product == "sle15" %}}
+platform: os_linux[sles]<15.7 and package[pam]
+{{% else %}}
 platform: package[pam]
+{{% endif %}}
