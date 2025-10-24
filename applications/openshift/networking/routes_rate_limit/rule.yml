@@ -28,7 +28,7 @@ ocil: |-
     routes outside the excluded namespaces (as defined by the variable
     <tt>ocp4-var-routes-excluded-namespaces-regex</tt>) without rate limiting annotations.
     Use following command to list the routes that would fail the test:
-    <tt>{{{ ocil_oc_pipe_jq_filter('routes', jqfilter) }}}</tt>
+    <tt>{{{ ocil_oc_pipe_jq_filter('routes --all-namespaces', jqfilter) }}}</tt>
 
 
 severity: medium
