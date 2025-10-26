@@ -26,3 +26,10 @@ controls:
       rules:
           - rsyslog_remote_loghost
       status: automated
+    - id: SLES-16-16016515
+      levels:
+          - pcidss4
+      title: SLE16 system should capture invalid login access attempts
+      status: automated
+      rules:
+          - display_login_attempts

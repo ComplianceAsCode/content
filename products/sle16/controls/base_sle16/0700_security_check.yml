@@ -1,0 +1,15 @@
+#
+# A group of rules regarding verifying operating system security
+#
+# SLES-16 ids allocated for this group from SLES-16-16016700 till SLES-16-16016799
+#
+
+controls:
+    - id: SLES-16-16016700
+      levels:
+          - pcidss4
+      title: SLE16 system should have system for checking its integrity
+      status: automated
+      rules:
+          - aide_build_database
+	  - aide_periodic_checking_systemd_timer
