@@ -15,9 +15,9 @@
   <!-- OVAL object to collect filename for Aide build database -->
   <ind:textfilecontent54_object id="object_aide_operational_database_filename" version="1">
     <ind:filepath>/etc/aide.conf</ind:filepath>
-    {{% if 'sle' in product or product == 'slmicro5' %}}
+    {{% if product in ['sle12', 'sle15', 'slmicro5'] %}}
       <ind:pattern operation="pattern match">^database=file:/([/a-z.]+)$</ind:pattern>
-    {{% elif product == 'slmicro6' %}}
+    {{% elif product in ['sle16', 'slmicro6'] %}}
       <ind:pattern operation="pattern match">^database_in=file:/([/a-z.]+)$</ind:pattern>
     {{% elif product == "rhel9" %}}
       <!-- RHEL 9.8 (aide-0.19.2-2.el9 and newer) uses _in suffix for database_in line -->
