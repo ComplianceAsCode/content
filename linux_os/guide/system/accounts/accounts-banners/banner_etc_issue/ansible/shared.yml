@@ -22,7 +22,7 @@
     content: '{{{ ansible_deregexify_banner_etc_issue("login_banner_text") }}}'
 
 - name: "{{{ rule_title }}} - Restart issue-generator Service on Issue Configuration Change"
-  ansible.builtin.systemd_service:
+  ansible.builtin.systemd:
     name: "issue-generator"
     enabled: "yes"
     state: "restarted"
