@@ -109,6 +109,7 @@ configure_crypto_policy
 configure_ssh_crypto_policy
 coredump_disable_backtraces
 coredump_disable_storage
+crypto_sub_policy_sshd_cbc
 crypto_sub_policy_sshd_ciphers
 crypto_sub_policy_sshd_macs
 dconf_db_up_to_date

@@ -556,12 +556,9 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          It is necessary a new rule to ensure a module disabling CBC in
-          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
-      related_rules:
-          - configure_crypto_policy
+      status: automated
+      rules:
+          - crypto_sub_policy_sshd_cbc
 
     - id: 1.6.4
       title: Ensure system wide crypto policy disables macs less than 128 bits (Automated)

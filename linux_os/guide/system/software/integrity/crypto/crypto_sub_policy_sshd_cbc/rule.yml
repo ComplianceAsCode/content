@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: Implement Custom Crypto Policy to disable CBC mode ciphers
+
+{{% set module_name = "NO-SSHCBC" %}}
+{{% set key = "cipher@SSH" %}}
+{{% set value = "-*-CBC" %}}
+
+description: |-
+    Create a custom crypto policy module for SSHD to disable CBC mode ciphers.
+    {{{ describe_crypto_sub_policy(module_name, key, value) }}}
+
+rationale: |-
+    CBC mode ciphers are vulnerable to certain attacks, such as the BEAST attack.
+    Disabling CBC mode ciphers helps protect against these attacks and ensures that only
+    strong, proven cryptographic algorithms are used to protect SSH communications.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86956-0
+
+references:
+
+ocil_clause: 'the custom crypto policy module for SSHD to disable CBC mode ciphers does not exist'
+
+ocil: |-
+    {{{ ocil_crypto_sub_policy(module_name, key, value) }}}
+
+template:
+    name: crypto_sub_policy
+    vars:
+        module_name: {{{ module_name }}}
+        key: {{{ key }}}
+        value: {{{ value }}}
