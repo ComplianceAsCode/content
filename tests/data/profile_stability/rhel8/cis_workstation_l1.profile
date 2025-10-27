@@ -45,6 +45,7 @@ configure_ssh_crypto_policy
 coredump_disable_backtraces
 coredump_disable_storage
 crypto_sub_policy_sshd_ciphers
+crypto_sub_policy_sshd_macs
 dconf_db_up_to_date
 dconf_gnome_banner_enabled
 dconf_gnome_disable_automount
@@ -263,9 +264,7 @@ sshd_set_max_auth_tries
 sshd_set_max_sessions
 sshd_set_maxstartups
 sshd_strong_kex=cis_rhel8
-sshd_strong_macs=cis_rhel8
 sshd_use_strong_kex
-sshd_use_strong_macs
 sudo_add_use_pty
 sudo_custom_logfile
 sudo_require_authentication

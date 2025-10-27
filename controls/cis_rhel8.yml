@@ -1593,8 +1593,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - sshd_use_strong_macs
-          - sshd_strong_macs=cis_rhel8
+          - crypto_sub_policy_sshd_macs
 
     - id: 4.2.15
       title: Ensure sshd MaxAuthTries is configured (Automated)
