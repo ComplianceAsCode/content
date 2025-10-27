@@ -565,12 +565,9 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          It is necessary a new rule to ensure a module disabling weak MACs in
-          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
-      related_rules:
-          - configure_crypto_policy
+      status: automated
+      rules:
+          - crypto_sub_policy_weak_macs
 
     - id: 1.7.1
       title: Ensure message of the day is configured properly (Automated)

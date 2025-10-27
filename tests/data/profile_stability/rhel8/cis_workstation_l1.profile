@@ -47,6 +47,7 @@ coredump_disable_storage
 crypto_sub_policy_sshd_cbc
 crypto_sub_policy_sshd_ciphers
 crypto_sub_policy_sshd_macs
+crypto_sub_policy_weak_macs
 dconf_db_up_to_date
 dconf_gnome_banner_enabled
 dconf_gnome_disable_automount

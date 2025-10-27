@@ -12,6 +12,10 @@ rules:
 - configure_openssl_crypto_policy
 - configure_openssl_tls_crypto_policy
 - configure_ssh_crypto_policy
+- crypto_sub_policy_sshd_ciphers
+- crypto_sub_policy_sshd_macs
+- crypto_sub_policy_sshd_cbc
+- crypto_sub_policy_weak_macs
 - harden_openssl_crypto_policy
 - harden_ssh_client_crypto_policy
 - harden_sshd_ciphers_openssh_conf_crypto_policy

@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: Implement Custom Crypto Policy to Disable Weak MAC Algorithms
+
+{{% set module_name = "NO-WEAKMAC" %}}
+{{% set key = "mac" %}}
+{{% set value = "-*-128*" %}}
+
+description: |-
+    Create a custom crypto policy module to disable weak MACs.
+    {{{ describe_crypto_sub_policy(module_name, key, value) }}}
+
+rationale: |-
+    Message Authentication Codes (MACs) are cryptographic mechanisms used to verify the
+    integrity and authenticity of data transmitted over SSH connections. Weak MACs
+    that are used for authentication to the cryptographic module cannot be relied upon to
+    provide integrity, and system data may be compromised. Implementing a custom crypto
+    policy that disables weak MAC algorithms helps ensure that only strong, proven
+    cryptographic algorithms are used to protect system data.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86958-6
+
+references:
+
+ocil_clause: 'the custom crypto policy module to disable weak MACs does not exist'
+
+ocil: |-
+    {{{ ocil_crypto_sub_policy(module_name, key, value) }}}
+
+template:
+    name: crypto_sub_policy
+    vars:
+        module_name: {{{ module_name }}}
+        key: {{{ key }}}
+        value: {{{ value }}}
