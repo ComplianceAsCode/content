@@ -1224,7 +1224,7 @@ For more details on configuring kernel arguments in bootable container images, p
 
 #}}
 {{%- macro aide_string() -%}}
-{{%- if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in product and product not in ['fedora'] -%}}
+{{%- if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in families and product not in ['fedora'] -%}}
 p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
 {{%- else -%}}
 p+i+n+u+g+s+b+acl+xattrs+sha512
@@ -1242,7 +1242,7 @@ p+i+n+u+g+s+b+acl+xattrs+sha512
     /usr/sbin/ausearch {{{ aide_string() }}}
     /usr/sbin/aureport {{{ aide_string() }}}
     /usr/sbin/autrace {{{ aide_string() }}}
-    {{% if 'rhel' not in product and 'ol' not in product %}}/usr/sbin/audispd {{{ aide_string() }}}{{% endif %}}
+    {{% if 'rhel' not in product and 'ol' not in families %}}/usr/sbin/audispd {{{ aide_string() }}}{{% endif %}}
     {{% if 'ol' in families %}}/usr/sbin/rsyslogd {{{ aide_string() }}}{{% endif %}}
     /usr/sbin/augenrules {{{ aide_string() }}}
 {{% endmacro %}}
