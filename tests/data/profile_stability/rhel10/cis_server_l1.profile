@@ -196,6 +196,7 @@ no_files_unowned_by_user
 no_forward_files
 no_netrc_files
 no_password_auth_for_systemaccounts
+no_rhost_files
 no_shelllogin_for_systemaccounts
 package_aide_installed
 package_bind_removed

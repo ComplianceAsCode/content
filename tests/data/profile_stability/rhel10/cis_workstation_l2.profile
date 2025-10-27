@@ -280,6 +280,7 @@ no_forward_files
 no_netrc_files
 no_nologin_in_shells
 no_password_auth_for_systemaccounts
+no_rhost_files
 no_shelllogin_for_systemaccounts
 package_aide_installed
 package_audit-libs_installed
