@@ -1,21 +1,21 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("Ensure that the custom crypto policy module for SSH is configured", rule_title=rule_title) }}}
+        {{{ oval_metadata("Ensure that the custom crypto policy module " ~ MODULE_NAME ~ " is configured", rule_title=rule_title) }}}
         <criteria operator="AND" comment="Ensure that all of the correct lines are in the file.">
-            <criterion comment="Check that cipher@SSH is configured"
+            <criterion comment="Check that {{{ KEY }}} is configured"
                        test_ref="test_{{{ rule_id }}}"/>
         </criteria>
     </definition>
         <ind:textfilecontent54_test check="all"
-                                    comment="Tests that cipher@SSH is configured correctly."
+                                    comment="Tests that {{{ KEY }}} is configured correctly."
                                     id="test_{{{ rule_id }}}" version="1">
 
             <ind:object object_ref="obj_{{{ rule_id }}}"/>
         </ind:textfilecontent54_test>
         <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
             <ind:path>/etc/crypto-policies/policies/modules/</ind:path>
-            <ind:filename>NO-SSHWEAKCIPHERS.pmod</ind:filename>
-            <ind:pattern operation="pattern match">^cipher@SSH = -3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305$</ind:pattern>
+            <ind:filename>{{{ MODULE_NAME }}}.pmod</ind:filename>
+            <ind:pattern operation="pattern match">^{{{ KEY }}} = {{{ VALUE }}}$</ind:pattern>
             <ind:instance datatype="int">1</ind:instance>
         </ind:textfilecontent54_object>
 </def-group>

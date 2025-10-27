@@ -27,3 +27,10 @@ ocil: |-
     <pre>
     cipher@SSH = -3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305
     </pre>
+
+template:
+    name: crypto_sub_policy
+    vars:
+        module_name: NO-SSHWEAKCIPHERS
+        key: cipher@SSH
+        value: -3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305
