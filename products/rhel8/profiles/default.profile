@@ -726,3 +726,4 @@ selections:
     - service_rlogin_disabled
     - service_zebra_disabled
     - package_rsh-server_removed
+    - sshd_use_strong_macs
