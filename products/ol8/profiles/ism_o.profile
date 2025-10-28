@@ -67,11 +67,8 @@ selections:
     - '!sshd_allow_only_protocol2'
     - '!sshd_use_directory_configuration'
     - '!ensure_redhat_gpgkey_installed'
-    - '!audit_rules_usergroup_modification_opasswd'
-    - '!audit_rules_usergroup_modification_gshadow'
-    - '!audit_rules_usergroup_modification_passwd'
     - '!sysctl_kernel_exec_shield'
-    - '!audit_rules_usergroup_modification_group'
-    - '!audit_rules_usergroup_modification_shadow'
+    - '!secure_boot_enabled'
+
     - "var_password_hashing_algorithm_pam=sha512"
     - "enable_fips_mode"
