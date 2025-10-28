@@ -7,7 +7,7 @@ metadata:
 
 reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
-title: 'Red Hat STIG for Red Hat Enterprise Linux 10'
+title: 'Red Hat STIG with GUI for Red Hat Enterprise Linux 10'
 
 description: |-
     This is a profile based on what is expected in the RHEL 10 STIG.:
