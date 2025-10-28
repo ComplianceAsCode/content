@@ -74,7 +74,7 @@
                 ExecStart=/usr/sbin/in.tftpd -s {{ var_tftpd_secure_directory }}
 
     -   name: "Reload systemd and restart tftp service"
-        ansible.builtin.systemd_service:
+        ansible.builtin.systemd:
             daemon_reload: true
             name: tftp
             state: restarted
