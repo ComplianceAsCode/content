@@ -1551,10 +1551,11 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: supported
+      status: automated
+      notes: |-
+            Firewalld in Red Hat Enterprise Linux 10 accepts loopback traffic by default.
       rules:
           - firewalld_loopback_traffic_trusted
-          - firewalld_loopback_traffic_restricted
 
     - id: 4.1.6
       title: Ensure firewalld loopback source address traffic is configured (Manual)
