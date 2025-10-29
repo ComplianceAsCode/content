@@ -5,7 +5,6 @@ Common functions for processing YAML in SSG
 from __future__ import absolute_import
 from __future__ import print_function
 
-import codecs
 import re
 import sys
 import yaml
@@ -234,7 +233,7 @@ def open_raw(yaml_file):
     See also:
         _open_yaml: The function used to parse the YAML contents.
     """
-    with codecs.open(yaml_file, "r", "utf8") as stream:
+    with open(yaml_file, "r", encoding="utf8") as stream:
         yaml_contents = _open_yaml(stream, original_file=yaml_file)
     return yaml_contents
 
