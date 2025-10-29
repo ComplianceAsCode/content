@@ -213,11 +213,15 @@ def main():
     load_benchmark_source_data_from_directory_tree(loader, env_yaml, product_yaml)
 
     controls_dir = os.path.join(project_root_abspath, "controls")
+    product_controls_dir = os.path.join(product_yaml['product_dir'], 'controls')
+    controls_dirs = [controls_dir]
+    if os.path.exists(product_controls_dir):
+        controls_dirs.append(product_controls_dir)
 
     existing_rules = find_existing_rules(project_root_abspath)
 
     controls_manager = ssg.controls.ControlsManager(
-        controls_dir, env_yaml, existing_rules)
+        controls_dirs, env_yaml, existing_rules)
     controls_manager.load()
     controls_manager.remove_selections_not_known(loader.all_rules)
     controls_manager.add_references(loader.all_rules)
