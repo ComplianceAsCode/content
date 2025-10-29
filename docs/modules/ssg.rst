@@ -9,6 +9,14 @@ ssg.ansible module
    :undoc-members:
    :show-inheritance:
 
+ssg.boolean_expression module
+------------------
+
+.. automodule:: ssg.boolean_expression
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 ssg.build\_cpe module
 ---------------------
 
@@ -65,6 +73,14 @@ ssg.build\_renumber module
    :undoc-members:
    :show-inheritance:
 
+ssg.build\_sce module
+---------------------
+
+.. automodule:: ssg.build_sce
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 ssg.build\_stig module
 ----------------------
 
@@ -81,6 +97,14 @@ ssg.build\_yaml module
    :undoc-members:
    :show-inheritance:
 
+ssg.cce module
+-----------------
+
+.. automodule:: ssg.cce
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 ssg.checks module
 -----------------
 
@@ -88,6 +112,33 @@ ssg.checks module
    :members:
    :undoc-members:
    :show-inheritance:
+
+ssg.components module
+-----------------
+
+.. automodule:: ssg.components
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ssg.content_diff module
+-----------------
+
+.. automodule:: ssg.content_diff
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+
+ssg.controls module
+--------------------
+
+.. automodule:: ssg.controls
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 ssg.constants module
 --------------------
@@ -104,6 +155,15 @@ ssg.contributors module
    :members:
    :undoc-members:
    :show-inheritance:
+
+ssg.environment module
+----------------
+
+.. automodule:: ssg.environment
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 ssg.fixes module
 ----------------
@@ -161,6 +221,14 @@ ssg.products module
    :undoc-members:
    :show-inheritance:
 
+ssg.profiles module
+-------------------
+
+.. automodule:: ssg.profiles
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 ssg.rule\_dir\_stats module
 ---------------------------
 
@@ -185,6 +253,14 @@ ssg.rules module
    :undoc-members:
    :show-inheritance:
 
+ssg.requirement_specs module
+----------------
+
+.. automodule:: ssg.requirement_specs
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 ssg.shims module
 ----------------
 
@@ -205,6 +281,14 @@ ssg.utils module
 ----------------
 
 .. automodule:: ssg.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ssg.variables module
+----------------
+
+.. automodule:: ssg.variables
    :members:
    :undoc-members:
    :show-inheritance:
