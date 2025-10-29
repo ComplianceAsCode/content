@@ -8,12 +8,21 @@
   ansible.builtin.getent:
     database: passwd
 
-- name: '{{{ rule_title }}} - Fix Bash History Files Permissions'
-  ansible.builtin.file:
+- name: '{{{ rule_title }}} - Check Bash History Files Existence'
+  ansible.builtin.stat:
     path: "{{ item.value[4] }}/.bash_history"
-    mode: u-sx,go=
+  register: bash_history_files
   with_dict: "{{ ansible_facts.getent_passwd }}"
   when:
     - item.value[4] != "/sbin/nologin"
     - item.key not in ["nobody", "nfsnobody"]
     - item.value[1] | int >= {{{ uid_min }}}
+
+- name: '{{{ rule_title }}} - Fix Bash History Files Permissions'
+  ansible.builtin.file:
+    path: "{{ item.stat.path }}"
+    mode: u-sx,go=
+  with_items: "{{ bash_history_files.results }}"
+  when:
+    - item.stat is defined
+    - item.stat.exists
