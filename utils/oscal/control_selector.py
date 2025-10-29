@@ -37,7 +37,7 @@ class PolicyControlSelector(ControlSelector):
             filter_by_level: Optional level to filter by.
         """
         controls_dir = os.path.join(ssg_root, "controls")
-        controls_manager = ControlsManager(controls_dir=controls_dir, env_yaml=env_yaml)
+        controls_manager = ControlsManager(controls_dirs=[controls_dir], env_yaml=env_yaml)
         controls_manager.load()
         if control not in controls_manager.policies:
             raise ValueError(f"Policy {control} not found in controls")

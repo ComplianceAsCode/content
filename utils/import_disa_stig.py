@@ -48,7 +48,7 @@ def _get_env_yaml(ssg_root: str, product: str, build_config_yaml: str) -> dict:
 
 
 def _get_controls(control_name, ssg_root, env_yaml):
-    control_manager = ssg.controls.ControlsManager(os.path.join(ssg_root, "controls"), env_yaml)
+    control_manager = ssg.controls.ControlsManager([os.path.join(ssg_root, "controls")], env_yaml)
     control_manager.load()
     controls = control_manager.get_all_controls_dict(control_name)
     return controls

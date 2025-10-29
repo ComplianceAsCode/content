@@ -74,7 +74,9 @@ def get_controls_env(args):
     product_yaml = os.path.join(product_base, "product.yml")
     env_yaml = ssg.environment.open_environment(
         args.build_config_yaml, product_yaml, os.path.join(SSG_ROOT, "product_properties"))
-    controls_manager = ssg.controls.ControlsManager(args.controls, env_yaml)
+    controls_dir = [os.path.join(SSG_ROOT, "controls", args.control),
+                    os.path.join(product_base, "controls")]
+    controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
     return controls_manager, env_yaml
 
