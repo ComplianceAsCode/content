@@ -57,6 +57,8 @@
 
     -   **key** - audit key. If this isn't specified then the default value `perm_mod` is used.
 
+    -   **syscall_grouping** - a list of syscalls that can be grouped together in a single audit rule
+
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
 #### audit_rules_file_deletion_events
@@ -66,6 +68,8 @@
 
     -   **name** - value of `-S` argument in Audit rule, eg. `unlink`
 
+    -   **syscall_grouping** - a list of syscalls that can be grouped together in a single audit rule
+
 -   Languages: Ansible, Bash, OVAL
 
 #### audit_rules_kernel_module_loading
@@ -74,6 +78,8 @@
 -   Parameters:
 
     -   **name** - value of `-S` argument in Audit rule, eg. `create_module`
+
+    -   **syscall_grouping** - a list of syscalls that can be grouped together in a single audit rule
 
 -   Languages: Ansible, Bash, Kubernetes, OVAL
 
@@ -133,6 +139,8 @@
 -   Parameters:
 
     -   **name** - name of the unsuccessful system call, eg. `creat`
+
+    -   **syscall_grouping** - a list of syscalls that can be grouped together in a single audit rule
 
 -   Languages: Ansible, Bash, OVAL
 
