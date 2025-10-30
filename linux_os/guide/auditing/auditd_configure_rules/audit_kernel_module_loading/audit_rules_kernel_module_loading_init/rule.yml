@@ -53,3 +53,9 @@ template:
     name: audit_rules_kernel_module_loading
     vars:
         name: init_module
+        syscall_grouping:
+          - create_module
+          - delete_module
+          - finit_module
+          - init_module
+          - query_module
