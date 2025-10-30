@@ -365,7 +365,8 @@ sshd_use_strong_kex
 sshd_use_strong_macs
 sudo_add_use_pty
 sudo_custom_logfile
-sudo_require_authentication
+sudo_remove_no_authenticate
+sudo_remove_nopasswd
 sudo_require_reauthentication
 sysctl_fs_protected_hardlinks
 sysctl_fs_protected_symlinks
@@ -457,6 +458,7 @@ var_sshd_max_sessions=10
 var_sshd_set_keepalive=1
 var_sshd_set_login_grace_time=60
 var_sshd_set_maxstartups=10:30:60
+var_sudo_timestamp_timeout=15_minutes
 var_system_crypto_policy=default_policy
 var_user_initialization_files_regex=all_dotfiles
 wireless_disable_interfaces
