@@ -65,6 +65,7 @@ selections:
     - var_multiple_time_servers=stig
 
     ### Enable / Configure FIPS
+    # OL08-00-010293, OL08-00-010020
     - enable_fips_mode
     - var_system_crypto_policy=fips
     - configure_crypto_policy
@@ -72,6 +73,7 @@ selections:
     - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
+    - sysctl_crypto_fips_enabled
 
     # Other needed rules
     - enable_authselect
@@ -85,9 +87,6 @@ selections:
 
     # OL08-00-010019
     - ensure_oracle_gpgkey_installed
-
-    # OL08-00-010020
-    - sysctl_crypto_fips_enabled
 
     # OL08-00-010030
     - encrypt_partitions
@@ -202,9 +201,6 @@ selections:
 
     # OL08-00-010292
     - sshd_use_strong_rng
-
-    # OL08-00-010293
-    - configure_openssl_crypto_policy
 
     # OL08-00-010294
     - configure_openssl_tls_crypto_policy
@@ -965,7 +961,7 @@ selections:
     - grub2_pti_argument
 
     # OL08-00-040010
-    - package_rsh-server_removed
+    - ensure_epel_repos_disabled
 
     # OL08-00-040020
     - kernel_module_uvcvideo_disabled
