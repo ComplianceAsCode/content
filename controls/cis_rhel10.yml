@@ -2428,8 +2428,9 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: New templated rule is necessary.
+      status: automated
+      rules:
+          - service_systemd-journal-upload_enabled
 
     - id: 6.2.2.1.4
       title: Ensure systemd-journal-remote service is not in use (Automated)

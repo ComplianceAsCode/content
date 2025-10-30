@@ -230,6 +230,7 @@ service_crond_enabled
 service_firewalld_enabled
 service_nfs_disabled
 service_rpcbind_disabled
+service_systemd-journal-upload_enabled
 service_systemd-journald_enabled
 set_password_hashing_algorithm_libuserconf
 set_password_hashing_algorithm_logindefs
