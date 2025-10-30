@@ -3166,7 +3166,12 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - file_etc_security_opasswd
+          - file_groupowner_etc_security_opasswd
+          - file_owner_etc_security_opasswd
+          - file_permissions_etc_security_opasswd
+          - file_groupowner_etc_security_opasswd_old
+          - file_owner_etc_security_opasswd_old
+          - file_permissions_etc_security_opasswd_old
 
     - id: 7.1.11
       title: Ensure world writable files and directories are secured (Automated)
