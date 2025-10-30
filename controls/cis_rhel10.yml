@@ -1844,7 +1844,7 @@ controls:
           - l2_workstation
       status: automated
       rules:
-          - sudo_require_authentication
+          - sudo_remove_nopasswd
 
     - id: 5.2.5
       title: Ensure re-authentication for privilege escalation is not disabled globally (Automated)
@@ -1853,7 +1853,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - sudo_require_authentication
+          - sudo_remove_no_authenticate
 
     - id: 5.2.6
       title: Ensure sudo timestamp_timeout is configured (Automated)
@@ -1863,6 +1863,7 @@ controls:
       status: automated
       rules:
           - sudo_require_reauthentication
+          - var_sudo_timestamp_timeout=15_minutes
 
     - id: 5.2.7
       title: Ensure access to the su command is restricted (Automated)
