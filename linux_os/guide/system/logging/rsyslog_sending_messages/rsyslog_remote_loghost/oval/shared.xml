@@ -10,7 +10,7 @@
   </definition>
 
 {{% set rsyslog_remote_loghost_old_regex="^\*\.\*[\s]+(?:@|\:omrelp\:)" %}}
-{{% set rsyslog_remote_loghost_rainer_regex="(?m)^\\s*\\*\\.\\*\\s+action\\(\\s*.*(?i)\\btype\\b(?-i)=\"omfwd\"\\s*.*(?i)\\btarget\\b(?-i)=\"\\S+\"\\s*.*\\)\\s*$" %}}
+{{% set rsyslog_remote_loghost_rainer_regex="(?ms)^\\s*\\*\\.\\*\\s+action\\(\\s*.*(?i)\\btype\\b(?-i)=\"omfwd\"\\s*.*(?i)\\btarget\\b(?-i)=\"\\S+\"\\s*.*\\)\\s*$" %}}
 
   <!-- NIST scapval validation tool complains that a variable passed to
   rsyslog_remote_loghost OVAL check from the XCCDF Rule doesn't have
