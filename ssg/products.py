@@ -353,7 +353,7 @@ class Product(object):
             self.expand_by_acquired_data(new_symbols)
 
 
-def load_product_yaml(product_yaml_path):
+def load_product_yaml(product_yaml_path: str) -> Product:
     """
     Reads a product data from disk and returns it.
 
