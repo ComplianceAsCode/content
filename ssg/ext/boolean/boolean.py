@@ -30,6 +30,7 @@ from operator import and_ as and_operator
 from operator import or_ as or_operator
 
 from functools import reduce
+from typing import Optional, Type, Callable, Any
 
 # Set to True to enable tracing for parsing
 TRACE_PARSE = False
@@ -544,17 +545,17 @@ class Expression(object):
     variable symbols.
     """
     # Defines sort and comparison order between expressions arguments
-    sort_order = None
+    sort_order: Optional[int] = None
 
     # Store arguments aka. subterms of this expressions.
     # subterms are either literals or expressions.
-    args = tuple()
+    args: Any = tuple()
 
     # True is this is a literal expression such as a Symbol, TRUE or FALSE
-    isliteral = False
+    isliteral: bool = False
 
     # True if this expression has been simplified to in canonical form.
-    iscanonical = False
+    iscanonical: bool = False
 
     # these class attributes are configured when a new BooleanAlgebra is created
     TRUE = None
