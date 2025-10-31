@@ -119,6 +119,10 @@ class JinjaEnvironment(jinja2.Environment):
         )
 
 
+# Module-level cached environment for jinja environment
+_jinja_env = None
+
+
 def _get_jinja_environment(substitutions_dict):
     """
     Initializes and returns a Jinja2 Environment with custom settings and filters.
@@ -138,7 +142,8 @@ def _get_jinja_environment(substitutions_dict):
     Returns:
         jinja2.Environment: The configured Jinja2 Environment instance.
     """
-    if _get_jinja_environment.env is None:
+    global _jinja_env
+    if _jinja_env is None:
         bytecode_cache = None
         if substitutions_dict.get("jinja2_cache_enabled") == "true":
             bytecode_cache = jinja2.FileSystemBytecodeCache(
@@ -146,22 +151,19 @@ def _get_jinja_environment(substitutions_dict):
             )
 
         # TODO: Choose better syntax?
-        _get_jinja_environment.env = JinjaEnvironment(bytecode_cache=bytecode_cache)
+        _jinja_env = JinjaEnvironment(bytecode_cache=bytecode_cache)
         add_python_functions(substitutions_dict)
-        _get_jinja_environment.env.filters['banner_anchor_wrap'] = banner_anchor_wrap
-        _get_jinja_environment.env.filters['banner_regexify'] = banner_regexify
-        _get_jinja_environment.env.filters['escape_id'] = escape_id
-        _get_jinja_environment.env.filters['escape_regex'] = escape_regex
-        _get_jinja_environment.env.filters['escape_yaml_key'] = escape_yaml_key
-        _get_jinja_environment.env.filters['quote'] = shell_quote
-        _get_jinja_environment.env.filters['sha256'] = sha256
-        _get_jinja_environment.env.globals.update(substitutions_dict)
-        preload_macros(_get_jinja_environment.env)
+        _jinja_env.filters['banner_anchor_wrap'] = banner_anchor_wrap
+        _jinja_env.filters['banner_regexify'] = banner_regexify
+        _jinja_env.filters['escape_id'] = escape_id
+        _jinja_env.filters['escape_regex'] = escape_regex
+        _jinja_env.filters['escape_yaml_key'] = escape_yaml_key
+        _jinja_env.filters['quote'] = shell_quote
+        _jinja_env.filters['sha256'] = sha256
+        _jinja_env.globals.update(substitutions_dict)
+        preload_macros(_jinja_env)
 
-    return _get_jinja_environment.env
-
-
-_get_jinja_environment.env = None
+    return _jinja_env
 
 
 def initialize(substitutions_dict):
