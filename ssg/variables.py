@@ -12,7 +12,7 @@ from .profiles import get_profiles_from_products
 from .yaml import open_and_macro_expand_from_dir
 
 # Cache variable files and respective content to avoid multiple reads
-_var_files_cache: Dict[str, list[str]] = {}
+_var_files_cache: Dict[str, List[str]] = {}
 _vars_content_cache: Dict[str, Any] = {}
 
 
