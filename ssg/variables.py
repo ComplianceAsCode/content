@@ -3,28 +3,20 @@ from __future__ import print_function
 
 import glob
 import os
-import sys
 
 from collections import defaultdict
+from typing import Optional, List, Dict, Any, DefaultDict
+
 from .constants import BENCHMARKS
 from .profiles import get_profiles_from_products
 from .yaml import open_and_macro_expand_from_dir
 
-
-if sys.version_info >= (3, 9):
-    list_type = list  # Python 3.9+ supports built-in generics
-    dict_type = dict
-else:
-    from typing import List as list_type  # Fallback for older versions
-    from typing import Dict as dict_type
-
-
 # Cache variable files and respective content to avoid multiple reads
-_var_files_cache = {}
-_vars_content_cache = {}
+_var_files_cache: Dict[str, list[str]] = {}
+_vars_content_cache: Dict[str, Any] = {}
 
 
-def get_variable_files_in_folder(content_dir: str, subfolder: str) -> list_type[str]:
+def get_variable_files_in_folder(content_dir: str, subfolder: str) -> List[str]:
     """
     Retrieve a list of variable files within a specified folder in the project.
 
@@ -41,7 +33,7 @@ def get_variable_files_in_folder(content_dir: str, subfolder: str) -> list_type[
     return glob.glob(pattern, recursive=True)
 
 
-def get_variable_files(content_dir: str) -> list_type[str]:
+def get_variable_files(content_dir: str) -> List[str]:
     """
     Retrieves all variable files from the specified content root directory.
 
@@ -64,7 +56,7 @@ def get_variable_files(content_dir: str) -> list_type[str]:
     return variable_files
 
 
-def _get_variables_content(content_dir: str) -> dict_type:
+def _get_variables_content(content_dir: str) -> Dict[str, Any]:
     """
     Retrieve the content of all variable files from the specified content root directory.
 
@@ -107,11 +99,11 @@ def get_variable_property(content_dir: str, variable_id: str, property_name: str
         str: The value of the specified property for the variable.
     """
     variables_content = _get_variables_content(content_dir)
-    variable_content = variables_content.get(variable_id, {})
+    variable_content: Dict[str, str] = variables_content.get(variable_id, {})
     return variable_content.get(property_name, '')
 
 
-def get_variable_options(content_dir: str, variable_id: str = None) -> dict_type:
+def get_variable_options(content_dir: str, variable_id: Optional[str] = None) -> Dict[str, Dict[str, str]]:
     """
     Retrieve the options for specific or all variables from the content root directory.
 
@@ -146,7 +138,7 @@ def get_variable_options(content_dir: str, variable_id: str = None) -> dict_type
     return all_options
 
 
-def get_variables_from_profiles(profiles: list) -> dict_type:
+def get_variables_from_profiles(profiles: list) -> Dict[str, Dict[str, str]]:
     """
     Extracts variables from a list of profiles and organizes them into a nested dictionary.
 
@@ -158,14 +150,14 @@ def get_variables_from_profiles(profiles: list) -> dict_type:
               keys are product names, and the third level keys are profile IDs, with the
               corresponding values being the variable values.
     """
-    variables = defaultdict(lambda: defaultdict(dict))
+    variables: DefaultDict[str, DefaultDict[str, Dict[str, str]]] = defaultdict(lambda: defaultdict(dict))
     for profile in profiles:
         for variable, value in profile.variables.items():
             variables[variable][profile.product_id][profile.profile_id] = value
     return _convert_defaultdict_to_dict(variables)
 
 
-def _convert_defaultdict_to_dict(dictionary: defaultdict) -> dict_type:
+def _convert_defaultdict_to_dict(dictionary: defaultdict) -> dict:
     """
     Recursively converts a defaultdict to a regular dictionary.
 
@@ -176,11 +168,11 @@ def _convert_defaultdict_to_dict(dictionary: defaultdict) -> dict_type:
         dict: The converted dictionary.
     """
     if isinstance(dictionary, defaultdict):
-        dictionary = {k: _convert_defaultdict_to_dict(v) for k, v in dictionary.items()}
+        dictionary = {k: _convert_defaultdict_to_dict(v) for k, v in dictionary.items()}  # type: ignore[assignment]
     return dictionary
 
 
-def get_variables_by_products(content_dir: str, products: list) -> dict_type[str, dict]:
+def get_variables_by_products(content_dir: str, products: list) -> Dict[str, dict]:
     """
     Retrieve variables by products from the specified content root directory.
 
@@ -197,11 +189,10 @@ def get_variables_by_products(content_dir: str, products: list) -> dict_type[str
               product-profile pairs.
     """
     profiles = get_profiles_from_products(content_dir, products)
-    profiles_variables = get_variables_from_profiles(profiles)
-    return _convert_defaultdict_to_dict(profiles_variables)
+    return get_variables_from_profiles(profiles)
 
 
-def get_variable_values(content_dir: str, profiles_variables: dict) -> dict_type:
+def get_variable_values(content_dir: str, profiles_variables: dict) -> dict:
     """
     Update the variables dictionary with actual values for each variable option.
 
@@ -211,7 +202,7 @@ def get_variable_values(content_dir: str, profiles_variables: dict) -> dict_type
 
     Args:
         content_dir (str): The root directory of the content.
-        variables (dict): A dictionary where keys are variable names and values are dictionaries
+        profiles_variables (dict): A dictionary where keys are variable names and values are dictionaries
                           of product-profile pairs.
 
     Returns:
@@ -220,7 +211,7 @@ def get_variable_values(content_dir: str, profiles_variables: dict) -> dict_type
     all_variables_options = get_variable_options(content_dir)
 
     for variable in profiles_variables:
-        variable_options = all_variables_options.get(variable, {})
+        variable_options: Dict[str, str] = all_variables_options.get(variable, {})
         for product, profiles in profiles_variables[variable].items():
             for profile in profiles:
                 profile_option = profiles.get(profile, None)
