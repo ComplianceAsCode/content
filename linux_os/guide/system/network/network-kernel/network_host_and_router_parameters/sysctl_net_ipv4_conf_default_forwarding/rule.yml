@@ -1,0 +1,44 @@
+documentation_complete: true
+
+title: Disable Kernel Parameter for IPv4 Forwarding By Default
+
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.default.forwarding", value="0") }}}'
+
+rationale: |-
+    IP forwarding permits the kernel to forward packets from one network
+    interface to another. The ability to forward packets between two networks is
+    only appropriate for systems acting as routers.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-88797-6
+
+ocil_clause: 'IP forwarding value is "1" and the system is not router'
+
+ocil: |-
+    {{{ ocil_sysctl_option_value(sysctl="net.ipv4.conf.default.forwarding", value="0") }}}
+    The ability to forward packets is only appropriate for routers.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not allow packet forwarding unless the system is a router with the following commands:
+    {{{ fixtext_sysctl(sysctl="net.ipv4.conf.default.forwarding", value="0") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must not perform packet forwarding unless the system is a router.'
+
+platform: system_with_kernel
+
+
+warnings:
+    - general: |-
+        There might be cases when certain applications can systematically override this option.
+        One such case is {{{ weblink("https://libvirt.org/", "Libvirt") }}}; a toolkit for managing of virtualization platforms.
+        By default, Libvirt requires IP forwarding to be enabled to facilitate
+        network communication between the virtualization host and guest
+        machines. It enables IP forwarding after every reboot.
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv4.conf.default.forwarding
+        datatype: int

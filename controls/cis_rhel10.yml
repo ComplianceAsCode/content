@@ -1284,7 +1284,10 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      status: automated
+      rules:
+          - sysctl_net_ipv4_conf_default_forwarding
+          - sysctl_net_ipv4_conf_default_forwarding_value=disabled
 
     - id: 3.3.1.4
       title: Ensure net.ipv4.conf.all.send_redirects is configured (Automated)
