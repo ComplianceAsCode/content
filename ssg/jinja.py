@@ -9,11 +9,7 @@ import os.path
 import sys
 import jinja2
 
-try:
-    from urllib.parse import quote
-except ImportError:
-    from urllib import quote
-
+from urllib.parse import quote
 try:
     from shlex import quote as shell_quote
 except ImportError:
