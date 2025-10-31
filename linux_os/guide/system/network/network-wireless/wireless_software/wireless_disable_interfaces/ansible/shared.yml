@@ -1,3 +1,9 @@
+{{% if platform_package_overrides.NetworkManager %}}
+{{% set network_manager_package_name = platform_package_overrides.NetworkManager %}}
+{{% else %}}
+{{% set network_manager_package_name = "NetworkManager" %}}
+{{% endif %}}
+
 # platform = multi_platform_all
 # reboot = false
 # strategy = unknown
@@ -32,12 +38,12 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - NetworkManager
+    - {{{ network_manager_package_name }}}
 
 {{%- endif %}}
 
 - name: NetworkManager Deactivate Wireless Network Interfaces
   ansible.builtin.command: nmcli radio wifi off
   when:
-    - "'NetworkManager' in ansible_facts.packages"
+    - "'{{{ network_manager_package_name }}}' in ansible_facts.packages"
     - ansible_facts.services['NetworkManager.service'].state == 'running'
