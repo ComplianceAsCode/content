@@ -7,7 +7,7 @@ import os
 import copy
 import sys
 from glob import glob
-from typing import List, Dict
+from typing import Dict, List
 
 import ssg.entities.common
 import ssg.yaml
