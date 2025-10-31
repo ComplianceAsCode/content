@@ -61,10 +61,10 @@ def load_module(module_name: str, module_path: str):
     """
     # https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly
     import importlib
-    spec = importlib.util.spec_from_file_location(module_name, module_path)
+    spec = importlib.util.spec_from_file_location(module_name, module_path) # type: ignore
     if not spec:
         raise ValueError("Error loading '%s' module" % module_path)
-    module = importlib.util.module_from_spec(spec)
+    module = importlib.util.module_from_spec(spec) # type: ignore
     if not spec.loader:
         raise ValueError("Error loading '%s' module" % module_path)
     spec.loader.exec_module(module)
