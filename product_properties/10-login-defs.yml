@@ -2,6 +2,6 @@ default:
   login_defs_path: "/etc/login.defs"
 
 overrides:
-{{% if product == 'slmicro6' %}}
+{{% if product in [ 'slmicro6', 'sle16' ] %}}
   login_defs_path: "/usr/etc/login.defs"
 {{% endif %}}

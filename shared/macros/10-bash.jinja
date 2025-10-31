@@ -1969,7 +1969,7 @@ Part of the grub2_bootloader_argument template.
 
 #}}
 {{% macro grub2_bootloader_argument_remediation(arg_name, arg_name_value) %}}
-{{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'slmicro5'] %}}
+{{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'sle16', 'slmicro5'] %}}
 {{{ update_etc_default_grub_manually(arg_name, arg_name_value) }}}
 {{% endif -%}}
 {{{ grub_command("add", arg_name_value) }}}
@@ -1985,7 +1985,7 @@ Part of the grub2_bootloader_argument template.
 #}}
 {{%- macro update_etc_default_grub_manually_absent(arg_name) -%}}
 # Correct the form of default kernel command line in GRUB
-if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"'  '/etc/default/grub' ; then
+if grep -q -E '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=?.*"'  '/etc/default/grub' ; then
        sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ arg_name }}}=\?[^[:space:]]*\(.*"\)/\1 \2/' '/etc/default/grub'
 fi
 {{%- endmacro %}}
@@ -2000,7 +2000,7 @@ Part of the grub2_bootloader_argument_absent template.
 
 #}}
 {{% macro grub2_bootloader_argument_absent_remediation(arg_name) %}}
-{{% if 'ubuntu' in product or product in ['ol7', 'sle12', 'sle15', 'slmicro5'] %}}
+{{% if 'ubuntu' in product or product in ['ol7', 'sle12', 'sle15', 'sle16', 'slmicro5'] %}}
 {{{ update_etc_default_grub_manually_absent(arg_name) }}}
 {{% endif -%}}
 {{{ grub_command("remove", arg_name) }}}
