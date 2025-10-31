@@ -1,0 +1,28 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = configure
+# complexity = low
+# disruption = low
+
+{{% for sub_policy in SUB_POLICIES %}}
+-   name: "{{{ rule_title }}} - Create custom crypto policy module {{{ sub_policy.module_name }}}"
+    ansible.builtin.lineinfile:
+        path: /etc/crypto-policies/policies/modules/{{{ sub_policy.module_name }}}.pmod
+        owner: root
+        group: root
+        mode: '0644'
+        line: {{{ sub_policy.key }}} = {{{ sub_policy.value }}}
+        create: true
+        regexp: "{{{ sub_policy.key }}}"
+{{% endfor %}}
+
+-   name: "{{{ rule_title }}} - Check current crypto policy"
+    ansible.builtin.command: update-crypto-policies --show
+    register: current_crypto_policy
+    changed_when: false
+    failed_when: false
+    check_mode: false
+
+-   name: "{{{ rule_title }}} - Update crypto-policies"
+    ansible.builtin.command: update-crypto-policies --set {{{ BASE_POLICY }}}:{{{ CONFIGURE_CRYPTO_POLICY_MODULES }}}
+    when: current_crypto_policy.stdout.strip() != "{{{ BASE_POLICY }}}:{{{ CONFIGURE_CRYPTO_POLICY_MODULES }}}"
