@@ -42,3 +42,6 @@ git_describe_command = ["sh", "-c", "tag=$(git tag | grep -v '-' | sort | tail -
 
 [tool.setuptools.packages.find]
 include = ["ssg*"]
+
+[mypy-pkg_resources]
+ignore_errors = True
