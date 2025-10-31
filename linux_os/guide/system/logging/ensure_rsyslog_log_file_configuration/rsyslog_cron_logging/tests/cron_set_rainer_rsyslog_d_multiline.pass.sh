@@ -4,21 +4,22 @@
 
 RSYSLOG_CONF='/etc/rsyslog.conf'
 RSYSLOG_D_FOLDER='/etc/rsyslog.d'
+RSYSLOG_D_FILE=$RSYSLOG_D_FOLDER'/test.conf'
 
-# Ensure that rsyslog.conf exists and rsyslog.d folder doesn't contain any file with legacy or multilined cron.* entry
 touch $RSYSLOG_CONF
+# Ensure that rsyslog.d folder exists and contains our 'test.conf' file
 mkdir -p $RSYSLOG_D_FOLDER
+touch $RSYSLOG_D_FILE
 
 remove_cron_logging
 
-# Add cron.* that logs into wrong file
-cat << EOF >> "$RSYSLOG_CONF"
+cat << EOF >> "$RSYSLOG_D_FILE"
 cron.* action(
     name="local-cron"
     type="omfile"
     fileCreateMode="0600"
     fileOwner="root"
     fileGroup="root"
-    file="/tmp/log/cron"
+    file="/var/log/cron"
 )
 EOF

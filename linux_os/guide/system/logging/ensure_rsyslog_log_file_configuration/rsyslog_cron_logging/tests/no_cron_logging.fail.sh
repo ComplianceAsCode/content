@@ -1,15 +1,12 @@
 #!/bin/bash
 # packages = rsyslog
+. remove_cron_logging.sh
 
 RSYSLOG_CONF='/etc/rsyslog.conf'
-RSYSLOG_D_FILES='/etc/rsyslog.d/*'
+RSYSLOG_D_FOLDER='/etc/rsyslog.d'
 
-# At least ensure that rsyslog.conf exist
+# Ensure that rsyslog.conf exists and rsyslog.d folder doesn't contain any file with legacy or multilined cron.* entry
 touch $RSYSLOG_CONF
+mkdir -p $RSYSLOG_D_FOLDER
 
-sed -i '/^[[:space:]]*cron\.\*/d' $RSYSLOG_CONF
-for rsyslog_d_file in $RSYSLOG_D_FILES
-do
-	[ -e "$rsyslog_d_file" ] || continue
-	sed -i '/^[[:space:]]*cron\.\*/d' $rsyslog_d_file
-done
+remove_cron_logging
