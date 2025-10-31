@@ -3,10 +3,7 @@ from __future__ import print_function
 
 import subprocess
 
-try:
-    import queue as Queue
-except ImportError:
-    import Queue
+import queue as Queue
 
 
 def subprocess_check_output(*popenargs, **kwargs):
