@@ -105,10 +105,10 @@ banner_etc_motd_cis
 chronyd_run_as_chrony_user
 chronyd_specify_remote_server
 cis_banner_text=cis
+configure_custom_crypto_policy_cis
 configure_ssh_crypto_policy
 coredump_disable_backtraces
 coredump_disable_storage
-crypto_sub_policies_cis_rhel8
 dconf_db_up_to_date
 dconf_gnome_banner_enabled
 dconf_gnome_disable_automount
