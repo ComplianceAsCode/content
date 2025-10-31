@@ -1446,3 +1446,20 @@ Create a rule description for rules using the `audit_rules_kernel_module_loading
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility,
     add the line to file <tt>/etc/audit/audit.rules</tt>.
 {{% endmacro %}}
+
+{{#
+Create a description text for rules that use the crypto_sub_policy template.
+
+:param module_name: crypto sub policy name, eg. `NO-SSHWEAKCIPHERS`
+:type module_name: str
+:param key: The entry key, eg. cipher@SSH
+:type key: str
+:param value: The entry value, eg. -3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305
+:type value: str
+#}}
+{{% macro describe_crypto_sub_policy(module_name, key, value) %}}
+    Add the following line to the file <tt>/etc/crypto-policies/policies/modules/{{{ module_name }}}.pmod</tt>:
+    <pre>
+    {{{ key }}} = {{{ value }}}
+    </pre>
+{{%- endmacro %}}

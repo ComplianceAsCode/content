@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: Implement Custom Crypto Policy for SSHD Ciphers
+
+{{% set module_name = "NO-SSHWEAKCIPHERS" %}}
+{{% set key = "cipher@SSH" %}}
+{{% set value = "-3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305" %}}
+
+description: |-
+    Create a custom crypto policy module for SSHD to enforce the use of strong ciphers.
+    {{{ describe_crypto_sub_policy(module_name, key, value) }}}
+
+rationale: |-
+    Weak ciphers that are used for authentication to the cryptographic module cannot be
+    relied upon to provide confidentiality or integrity, and system data may be compromised.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86707-7
+
+ocil_clause: 'the custom crypto policy module for SSH does not exist'
+
+ocil: |-
+    {{{ ocil_crypto_sub_policy(module_name, key, value) }}}
+
+template:
+    name: crypto_sub_policy
+    vars:
+        module_name: {{{ module_name }}}
+        key: {{{ key }}}
+        value: {{{ value }}}
