@@ -57,9 +57,3 @@ def input_func(prompt=None):
     except NameError:
         return input(prompt)
 
-
-unicode_func = str
-try:
-    unicode_func = unicode
-except NameError:
-    pass

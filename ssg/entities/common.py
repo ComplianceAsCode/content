@@ -11,7 +11,6 @@ from ssg.yaml import yaml_Dumper
 
 from ..xml import ElementTree as ET, add_xhtml_namespace
 from ..yaml import DocumentationNotComplete, open_and_expand
-from ..shims import unicode_func
 
 from ..constants import (
     xhtml_namespace,
@@ -112,7 +111,7 @@ def add_sub_element(parent, tag, ns, data):
     # and therefore it does not add child elements
     # we need to do a hack instead
     # TODO: Remove this function after we move to Markdown everywhere in SSG
-    ustr = unicode_func('<{0} xmlns="{3}" xmlns:xhtml="{2}">{1}</{0}>').format(
+    ustr = str('<{0} xmlns="{3}" xmlns:xhtml="{2}">{1}</{0}>').format(
         tag, namespaced_data, xhtml_namespace, ns)
 
     try:
