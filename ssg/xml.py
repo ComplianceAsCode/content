@@ -21,11 +21,7 @@ from .constants import (
     cpe_language_namespace,
 )
 
-
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    from xml.etree import ElementTree as ElementTree
+from xml.etree import ElementTree as ElementTree
 
 
 def oval_generated_header(product_name, schema_version, ssg_version):
