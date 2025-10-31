@@ -6,8 +6,9 @@ from __future__ import absolute_import
 from __future__ import print_function
 import os
 import sys
-import ssg.id_translate
+from typing import List
 
+import ssg.id_translate
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
 from .utils import required_key, apply_formatting_on_dict_values
@@ -207,9 +208,9 @@ class CPEItem(XCCDFEntity, Templatable):
     )
     KEYS.update(**Templatable.KEYS)
 
-    MANDATORY_KEYS = [
+    MANDATORY_KEYS = {
         "name",
-    ]
+    }
 
     prefix = "cpe-dict"
     ns = PREFIX_TO_NS[prefix]
