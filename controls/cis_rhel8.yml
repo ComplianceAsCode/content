@@ -537,7 +537,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - crypto_sub_policies_cis_rhel8
+          - configure_custom_crypto_policy_cis
 
     - id: 1.6.2
       title: Ensure system wide crypto policy disables sha1 hash and signature support (Automated)
@@ -548,7 +548,7 @@ controls:
       notes: |-
           This requirement is already satisfied by 1.6.1.
       related_rules:
-          - crypto_sub_policies_cis_rhel8
+          - configure_custom_crypto_policy_cis
 
     - id: 1.6.3
       title: Ensure system wide crypto policy disables cbc for ssh (Automated)
@@ -557,7 +557,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - crypto_sub_policies_cis_rhel8
+          - configure_custom_crypto_policy_cis
 
     - id: 1.6.4
       title: Ensure system wide crypto policy disables macs less than 128 bits (Automated)
@@ -566,7 +566,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - crypto_sub_policies_cis_rhel8
+          - configure_custom_crypto_policy_cis
 
     - id: 1.7.1
       title: Ensure message of the day is configured properly (Automated)
@@ -1497,7 +1497,7 @@ controls:
       notes: |-
           Introduced in CIS RHEL8 v3.0.0
       rules:
-          - crypto_sub_policies_cis_rhel8
+          - configure_custom_crypto_policy_cis
 
     - id: 4.2.7
       title: Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured (Automated)
@@ -1586,7 +1586,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - crypto_sub_policies_cis_rhel8
+          - configure_custom_crypto_policy_cis
 
     - id: 4.2.15
       title: Ensure sshd MaxAuthTries is configured (Automated)
