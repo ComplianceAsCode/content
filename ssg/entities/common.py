@@ -6,6 +6,7 @@ import os
 import yaml
 from collections import defaultdict
 from copy import deepcopy
+from typing import Set, Dict, Callable, Any, Optional
 
 from ssg.yaml import yaml_Dumper
 
@@ -155,15 +156,15 @@ class XCCDFEntity(object):
     when entities are defined in the benchmark tree,
     and they are compiled into flat YAMLs to the build directory.
     """
-    KEYS = dict(
+    KEYS: Dict[str, Callable[[], Optional[Any]]] = dict(
             id_=lambda: "",
             title=lambda: "",
             definition_location=lambda: "",
     )
 
-    MANDATORY_KEYS = set()
+    MANDATORY_KEYS: Set[str] = set()
 
-    ALTERNATIVE_KEYS = dict()
+    ALTERNATIVE_KEYS: Dict[str, str] = dict()
 
     GENERIC_FILENAME = ""
     ID_LABEL = "id"
