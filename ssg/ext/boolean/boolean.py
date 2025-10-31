@@ -798,7 +798,7 @@ class BaseElement(Expression):
             return self == self.FALSE
         return NotImplemented
 
-    __nonzero__ = __bool__ = lambda s: None
+    __nonzero__ = __bool__ = lambda s: None # type: ignore
 
     def pretty(self, indent=0, debug=False):
         """
@@ -832,7 +832,7 @@ class _TRUE(BaseElement):
     def __call__(self):
         return self
 
-    __nonzero__ = __bool__ = lambda s: True
+    __nonzero__ = __bool__ = lambda s: True # type: ignore
 
 
 class _FALSE(BaseElement):
@@ -860,7 +860,7 @@ class _FALSE(BaseElement):
     def __call__(self):
         return self
 
-    __nonzero__ = __bool__ = lambda s: False
+    __nonzero__ = __bool__ = lambda s: False # type: ignore
 
 
 class Symbol(Expression):
@@ -1459,7 +1459,7 @@ class AND(DualBase):
     """
 
     sort_order = 10
-    _pyoperator = and_operator
+    _pyoperator = and_operator # type: ignore
 
     def __init__(self, arg1, arg2, *args):
         super(AND, self).__init__(arg1, arg2, *args)
@@ -1485,7 +1485,7 @@ class OR(DualBase):
     """
 
     sort_order = 25
-    _pyoperator = or_operator
+    _pyoperator = or_operator # type: ignore
 
     def __init__(self, arg1, arg2, *args):
         super(OR, self).__init__(arg1, arg2, *args)
