@@ -17,3 +17,6 @@ description: |-
 
 selections:
     - base_sle16:all
+    - aide_build_database
+    - aide_periodic_checking_systemd_timer
+    - display_login_attempts
