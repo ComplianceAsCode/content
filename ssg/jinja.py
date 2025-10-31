@@ -10,10 +10,7 @@ import sys
 import jinja2
 
 from urllib.parse import quote
-try:
-    from shlex import quote as shell_quote
-except ImportError:
-    from pipes import quote as shell_quote
+from shlex import quote as shell_quote
 
 from .constants import JINJA_MACROS_DIRECTORY
 from .utils import (required_key,
