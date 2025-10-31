@@ -19,7 +19,7 @@ import ssg.build_yaml
 from ssg.build_cpe import ProductCPEs
 
 TemplatingLang = namedtuple(
-    "templating_language_attributes",
+    "TemplatingLang",
     ["name", "file_extension", "template_type", "lang_specific_dir"])
 
 TemplateType = ssg.utils.enum("REMEDIATION", "CHECK")
@@ -43,12 +43,11 @@ PREPROCESSING_FILE_NAME = "template.py"
 TEMPLATE_YAML_FILE_NAME = "template.yml"
 
 
-def load_module(module_name, module_path):
+def load_module(module_name: str, module_path: str):
     """
     Loads a Python module from a given file path.
 
-    This function attempts to load a module using the `imp` module for Python 2.7 and falls back
-    to using `importlib` for Python 3.x.
+    This function attempts to load a module using `importlib`.
 
     Args:
         module_name (str): The name to assign to the loaded module.
@@ -60,21 +59,16 @@ def load_module(module_name, module_path):
     Raises:
         ValueError: If the module cannot be loaded due to an invalid spec or loader.
     """
-    try:
-        # Python 2.7
-        from imp import load_source
-        return load_source(module_name, module_path)
-    except ImportError:
-        # https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly
-        import importlib
-        spec = importlib.util.spec_from_file_location(module_name, module_path)
-        if not spec:
-            raise ValueError("Error loading '%s' module" % module_path)
-        module = importlib.util.module_from_spec(spec)
-        if not spec.loader:
-            raise ValueError("Error loading '%s' module" % module_path)
-        spec.loader.exec_module(module)
-        return module
+    # https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly
+    import importlib
+    spec = importlib.util.spec_from_file_location(module_name, module_path) # type: ignore
+    if not spec:
+        raise ValueError("Error loading '%s' module" % module_path)
+    module = importlib.util.module_from_spec(spec) # type: ignore
+    if not spec.loader:
+        raise ValueError("Error loading '%s' module" % module_path)
+    spec.loader.exec_module(module)
+    return module
 
 
 class Template:

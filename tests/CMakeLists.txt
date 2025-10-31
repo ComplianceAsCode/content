@@ -109,6 +109,7 @@ mypy_test("utils/import_disa_stig.py" "skip")
 mypy_test("tests/cces-removed.py" "normal")
 mypy_test("utils/build_control_from_reference.py" "skip")
 mypy_test("tests/rule_removal.py" "skip")
+mypy_test("ssg" "skip")
 
 if(Python_VERSION_MAJOR GREATER 2 AND Python_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
     mypy_test("utils/oscal/" "skip")

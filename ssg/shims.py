@@ -3,10 +3,7 @@ from __future__ import print_function
 
 import subprocess
 
-try:
-    import queue as Queue
-except ImportError:
-    import Queue
+import queue as Queue
 
 
 def subprocess_check_output(*popenargs, **kwargs):
@@ -57,9 +54,3 @@ def input_func(prompt=None):
     except NameError:
         return input(prompt)
 
-
-unicode_func = str
-try:
-    unicode_func = unicode
-except NameError:
-    pass
