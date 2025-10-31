@@ -121,6 +121,7 @@ file_owner_user_cfg
 file_ownership_home_directories
 file_ownership_sshd_private_key
 file_ownership_sshd_pub_key
+file_permission_user_bash_history
 file_permission_user_init_files
 file_permissions_at_allow
 file_permissions_backup_etc_group
@@ -201,6 +202,7 @@ no_files_unowned_by_user
 no_forward_files
 no_netrc_files
 no_password_auth_for_systemaccounts
+no_rhost_files
 no_shelllogin_for_systemaccounts
 package_aide_installed
 package_bind_removed

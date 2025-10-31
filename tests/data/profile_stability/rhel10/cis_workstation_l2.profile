@@ -196,6 +196,7 @@ file_ownership_home_directories
 file_ownership_sshd_private_key
 file_ownership_sshd_pub_key
 file_ownership_var_log_audit_stig
+file_permission_user_bash_history
 file_permission_user_init_files
 file_permissions_at_allow
 file_permissions_audit_binaries
@@ -285,6 +286,7 @@ no_forward_files
 no_netrc_files
 no_nologin_in_shells
 no_password_auth_for_systemaccounts
+no_rhost_files
 no_shelllogin_for_systemaccounts
 package_aide_installed
 package_audit-libs_installed

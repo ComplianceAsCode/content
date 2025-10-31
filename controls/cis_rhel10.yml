@@ -3289,8 +3289,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: partial
-      notes: Missing a rule to check that .bash_history is mode 0600 or more restrictive.
+      status: automated
       rules:
           - accounts_user_dot_group_ownership
           - accounts_user_dot_user_ownership
@@ -3299,5 +3298,7 @@ controls:
           - var_user_initialization_files_regex=all_dotfiles
           - no_forward_files
           - no_netrc_files
+          - no_rhost_files
+          - file_permission_user_bash_history
       related_rules:
           - accounts_users_netrc_file_permissions
