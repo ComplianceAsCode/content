@@ -23,7 +23,7 @@
 {{% set legacy_regex = "^[\\s]*cron\\.\\*[\\s]+/var/log/cron\\s*(?:#.*)?$" %}}
 {{# RainerScript keys are case-insensitive #}}
 {{% set rainer_cron_regex = "(?ms)^\\s*cron\\.\\*\\s+action\\(\\s*.*(?i)\\btype\\b(?-i)=\"omfile\"\\s*.*(?i)\\bfile\\b(?-i)=\"/var/log/cron\"\\s*.*\\)\\s*$" %}}
-{{% set rainer_loging_regex = "(?ms)^[\s]*\*\.\*[\s]+(/var/log/messages|action\(\s*.*(?i:\btype\b)="omfile"\s*.*(?i:\bfile\b)="/var/log/messages"\s*\))\s*(?:#.*)?$" %}}
+{{% set rainer_loging_regex = "(?ms)^[\\s]*\*\.\*[\s]+(/var/log/messages|action\(\s*.*(?i:\btype\b)=\"omfile\"\s*.*(?i:\bfile\b)=\"/var/log/messages\"\s*\))\s*(?:#.*)?$" %}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="cron is configured in /etc/rsyslog.conf"
