@@ -2393,10 +2393,9 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: This rule conflicts with 6.2.3.3. More investigation is needed to properly solve this.
-      related_rules:
-          - journald_forward_to_syslog
+      status: automated
+      rules:
+          - journald_disable_forward_to_syslog
 
     - id: 6.2.2.3
       title: Ensure journald Compress is configured (Automated)
