@@ -19,17 +19,17 @@ from .jinja import (
 try:
     from yaml import CSafeLoader as yaml_SafeLoader
 except ImportError:
-    from yaml import SafeLoader as yaml_SafeLoader
+    from yaml import SafeLoader as yaml_SafeLoader  # type: ignore[assignment]
 
 try:
     from yaml import CLoader as yaml_Loader
 except ImportError:
-    from yaml import Loader as yaml_Loader
+    from yaml import Loader as yaml_Loader  # type: ignore[assignment]
 
 try:
     from yaml import CDumper as yaml_Dumper
 except ImportError:
-    from yaml import Dumper as yaml_Dumper
+    from yaml import Dumper as yaml_Dumper  # type: ignore[assignment]
 
 def _bool_constructor(self, node):
     """
