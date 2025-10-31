@@ -37,7 +37,7 @@ REMEDIATION_CONFIG_KEYS = ['complexity', 'disruption', 'platform', 'reboot',
                            'strategy']
 REMEDIATION_ELM_KEYS = ['complexity', 'disruption', 'reboot', 'strategy']
 
-RemediationObject = namedtuple('remediation', ['contents', 'config'])
+RemediationObject = namedtuple('RemediationObject', ['contents', 'config'])
 
 
 def is_supported_filename(remediation_type, filename):

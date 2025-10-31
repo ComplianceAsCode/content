@@ -19,7 +19,7 @@ import ssg.build_yaml
 from ssg.build_cpe import ProductCPEs
 
 TemplatingLang = namedtuple(
-    "templating_language_attributes",
+    "TemplatingLang",
     ["name", "file_extension", "template_type", "lang_specific_dir"])
 
 TemplateType = ssg.utils.enum("REMEDIATION", "CHECK")
