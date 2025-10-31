@@ -98,8 +98,7 @@ def get_namespaces_from(file):
         # Probably an old version of Python
         # Doesn't matter, as this is non-essential.
         pass
-    finally:
-        return result
+    return result
 
 
 def open_xml(filename):
