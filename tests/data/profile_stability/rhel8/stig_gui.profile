@@ -411,6 +411,7 @@ var_accounts_passwords_pam_faillock_deny=3
 var_accounts_passwords_pam_faillock_fail_interval=900
 var_accounts_passwords_pam_faillock_unlock_time=never
 var_accounts_user_umask=077
+var_audit_backlog_limit=8192
 var_auditd_action_mail_acct=root
 var_auditd_disk_error_action=rhel8
 var_auditd_disk_full_action=rhel8

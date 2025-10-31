@@ -5,9 +5,9 @@ title: 'Extend Audit Backlog Limit for the Audit Daemon'
 
 description: |-
     To improve the kernel capacity to queue all log events, even those which occurred
-    prior to the audit daemon, add the argument <tt>audit_backlog_limit=8192</tt> to the default
+    prior to the audit daemon, add the argument <tt>audit_backlog_limit={{{ xccdf_value("var_audit_backlog_limit") }}}</tt> to the default
     GRUB 2 command line for the Linux operating system.
-    {{{ describe_grub2_argument("audit_backlog_limit=8192") | indent(4) }}}
+    {{{ describe_grub2_argument("audit_backlog_limit=" ~ xccdf_value("var_audit_backlog_limit")) | indent(4) }}}
 
 rationale: |-
     audit_backlog_limit sets the queue length for audit events awaiting transfer
@@ -36,10 +36,10 @@ references:
 ocil_clause: 'audit backlog limit is not configured'
 
 ocil: |-
-    {{{ ocil_grub2_argument("audit_backlog_limit=8192") | indent(4) }}}
+    {{{ ocil_grub2_argument("audit_backlog_limit=" ~ xccdf_value("var_audit_backlog_limit")) | indent(4) }}}
 
 fixtext: |-
-    {{{ fixtext_grub2_bootloader_argument("audit_backlog_limit", "8192") | indent(4) }}}
+    {{{ fixtext_grub2_bootloader_argument("audit_backlog_limit", xccdf_value("var_audit_backlog_limit")) | indent(4) }}}
 
 srg_requirement: '{{{ full_name }}} must allocate an audit_backlog_limit of sufficient size to capture processes that start prior to the audit daemon.'
 
@@ -49,4 +49,4 @@ template:
     name: grub2_bootloader_argument
     vars:
         arg_name: audit_backlog_limit
-        arg_value: '8192'
+        arg_variable: var_audit_backlog_limit

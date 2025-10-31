@@ -518,6 +518,7 @@ var_accounts_passwords_pam_faillock_fail_interval=900
 var_accounts_passwords_pam_faillock_unlock_time=never
 var_accounts_tmout=15_min
 var_accounts_user_umask=077
+var_audit_backlog_limit=8192
 var_audit_failure_mode=panic
 var_auditd_action_mail_acct=root
 var_auditd_admin_space_left_action=single

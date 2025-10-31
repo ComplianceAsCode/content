@@ -214,6 +214,7 @@ var_accounts_passwords_pam_faillock_deny=3
 var_accounts_passwords_pam_faillock_fail_interval=900
 var_accounts_passwords_pam_faillock_unlock_time=never
 var_accounts_user_umask=027
+var_audit_backlog_limit=8192
 var_auditd_flush=incremental_async
 var_authselect_profile=minimal
 var_logind_session_timeout=5_minutes
