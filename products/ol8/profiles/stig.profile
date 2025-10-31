@@ -885,6 +885,7 @@ selections:
 
     # OL08-00-030602
     - grub2_audit_backlog_limit_argument
+    - var_audit_backlog_limit=8192
 
     # OL08-00-030603
     - configure_usbguard_auditbackend

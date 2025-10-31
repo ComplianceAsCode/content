@@ -61,6 +61,7 @@ selections:
     ## Boot prompt
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
+    - var_audit_backlog_limit=8192
     - grub2_vsyscall_argument
     - grub2_init_on_alloc_argument
     - grub2_page_alloc_shuffle_argument
