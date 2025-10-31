@@ -138,7 +138,9 @@ def load_product_yaml(product: str) -> yaml:
 
 def load_controls_manager(controls_dir: str, product: str) -> object:
     product_yaml = load_product_yaml(product)
-    ctrls_mgr = controls.ControlsManager(controls_dir, dict(product_yaml))
+    product_controls_dir = os.path.join(product_yaml['product_dir'], 'controls')
+    ctrls_mgr = controls.ControlsManager([controls_dir, product_controls_dir],
+                                         dict(product_yaml))
     ctrls_mgr.load()
     return ctrls_mgr
 

@@ -294,16 +294,21 @@ def _load_controls_manager(controls_dir: str, product_yaml: dict) -> object:
 
     Args:
         controls_dir (str): The directory containing control files.
+        product_yaml (dict): The YAML content of the product.
 
     Returns:
         object: An instance of ControlsManager with loaded controls.
     """
-    control_mgr = ControlsManager(controls_dir, product_yaml)
+    product_controls_dir = os.path.join(product_yaml['product_dir'], 'controls')
+    control_dirs = [controls_dir]
+    if os.path.exists(product_controls_dir):
+        control_dirs.append(product_controls_dir)
+    control_mgr = ControlsManager(control_dirs, product_yaml)
     control_mgr.load()
     return control_mgr
 
 
-def _sort_profiles_selections(profiles: list) -> ProfileSelections:
+def _sort_profiles_selections(profiles: list) -> list_type[ProfileSelections]:
     """
     Sorts profiles selections (rules and variables) by selections ids.
 
