@@ -41,3 +41,5 @@ selections:
     - package_systemd-journal-remote_installed
     - journald_storage
     - partition_for_dev_shm
+    - file_etc_security_opasswd
+
