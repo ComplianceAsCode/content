@@ -6,6 +6,7 @@ import collections
 import os
 import copy
 from glob import glob
+from typing import Dict, List
 
 import ssg.entities.common
 import ssg.yaml
@@ -948,7 +949,7 @@ class ControlsManager():
         control = policy.get_control(control_id)
         return control
 
-    def get_all_controls_dict(self, policy_id):
+    def get_all_controls_dict(self, policy_id: str) -> Dict[str, List]:
         """
         Retrieve all controls for a given policy as a dictionary.
 
@@ -959,7 +960,6 @@ class ControlsManager():
             Dict[str, list]: A dictionary where the keys are control IDs and the values are lists
                              of controls.
         """
-        # type: (str) -> typing.Dict[str, list]
         policy = self._get_policy(policy_id)
         return policy.controls_by_id
 
