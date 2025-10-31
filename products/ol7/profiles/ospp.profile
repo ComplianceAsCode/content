@@ -104,6 +104,7 @@ selections:
     - package_dracut-fips_installed
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
+    - var_audit_backlog_limit=8192
     - grub2_slub_debug_argument
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
