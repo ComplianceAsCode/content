@@ -40,7 +40,7 @@ banner_etc_motd_cis
 chronyd_run_as_chrony_user
 chronyd_specify_remote_server
 cis_banner_text=cis
-configure_crypto_policy
+configure_custom_crypto_policy_cis
 configure_ssh_crypto_policy
 coredump_disable_backtraces
 coredump_disable_storage
@@ -260,9 +260,7 @@ sshd_set_max_auth_tries
 sshd_set_max_sessions
 sshd_set_maxstartups
 sshd_strong_kex=cis_rhel9
-sshd_strong_macs=cis_rhel9
 sshd_use_strong_kex
-sshd_use_strong_macs
 sudo_add_use_pty
 sudo_custom_logfile
 sudo_require_reauthentication
@@ -338,6 +336,5 @@ var_sshd_max_sessions=10
 var_sshd_set_keepalive=1
 var_sshd_set_login_grace_time=60
 var_sshd_set_maxstartups=10:30:60
-var_system_crypto_policy=default_nosha1
 var_user_initialization_files_regex=all_dotfiles
 wireless_disable_interfaces

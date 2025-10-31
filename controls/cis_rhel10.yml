@@ -606,44 +606,34 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - configure_crypto_policy
-          - var_system_crypto_policy=default_policy
+          - configure_custom_crypto_policy_cis
 
     - id: 1.6.2
       title: Ensure system wide crypto policy disables sha1 hash and signature support (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: manual
-      notes: |-
-          It is necessary a new rule to ensure a module disabling sha1 in
-          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
-      related_rules:
-          - configure_crypto_policy
+      status: automated
+      rules:
+          - configure_custom_crypto_policy_cis
 
     - id: 1.6.3
       title: Ensure system wide crypto policy macs are configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: manual
-      notes: |-
-          It is necessary a new rule to ensure a module disabling weak MACs in
-          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
-      related_rules:
-          - configure_crypto_policy
+      status: automated
+      rules:
+          - configure_custom_crypto_policy_cis
 
     - id: 1.6.4
       title: Ensure system wide crypto policy disables cbc for ssh (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: manual
-      notes: |-
-          It is necessary a new rule to ensure a module disabling CBC in
-          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
-      related_rules:
-          - configure_crypto_policy
+      status: automated
+      rules:
+          - configure_custom_crypto_policy_cis
 
     - id: 1.7.1
       title: Ensure /etc/motd is configured (Automated)
@@ -1637,12 +1627,8 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
-      notes: |-
-          The status was automated but we need to double check the approach used in this rule.
-          Therefore I moved it to pending until deeper investigation.
-      related_rules:
-          - sshd_use_approved_ciphers
-          - sshd_approved_ciphers=cis_rhel10
+      rules:
+          - configure_custom_crypto_policy_cis
 
     - id: 5.1.7
       title: Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured (Automated)
@@ -1741,13 +1727,9 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          The status was automated but we need to double check the approach used in this rule.
-          Therefore I moved it to pending until deeper investigation.
+      status: automated
       rules:
-          - sshd_use_strong_macs
-          - sshd_strong_macs=cis_rhel10
+          - configure_custom_crypto_policy_cis
 
     - id: 5.1.16
       title: Ensure sshd MaxAuthTries is configured (Automated)
