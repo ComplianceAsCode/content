@@ -980,12 +980,8 @@ controls:
       levels:
           - l2_server
       status: automated
-      notes: |-
-          Review the availability of xorg-x11-server-common package when the product is out.
-          The rule also configures correct run level to prevent unbootable system.
       rules:
-          - package_gdm_removed
-          - xwindows_runlevel_target
+          - package_xorg-x11-server-Xwayland_removed
 
     - id: 2.1.21
       title: Ensure mail transfer agents are configured for local-only mode (Automated)
