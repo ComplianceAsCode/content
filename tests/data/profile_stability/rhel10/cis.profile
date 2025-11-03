@@ -319,6 +319,7 @@ package_telnet_removed
 package_tftp-server_removed
 package_tftp_removed
 package_vsftpd_removed
+package_xorg-x11-server-Xwayland_removed
 partition_for_dev_shm
 partition_for_home
 partition_for_tmp
@@ -473,4 +474,3 @@ var_sudo_timestamp_timeout=15_minutes
 var_system_crypto_policy=default_policy
 var_user_initialization_files_regex=all_dotfiles
 wireless_disable_interfaces
-xwindows_runlevel_target
