@@ -7,4 +7,11 @@ RSYSLOG_CONF='/etc/rsyslog.conf'
 
 remove_encrypt_offload_configs
 
-echo 'action(type="omfwd" Target="some.example.com" StreamDriverAuthMode="0" StreamDriverMode="42")' >> "$RSYSLOG_CONF"
+cat << EOF >> "$RSYSLOG_CONF"
+action(
+    type="omfwd" 
+    Target="some.example.com"
+    StreamDriverAuthMode="0"
+    StreamDriverMode="42"
+)
+EOF

@@ -17,7 +17,7 @@
     </definition>
 
 {{% set legacy_regex = "^\\$ActionSendStreamDriverMode 1$" %}}
-{{% set rainer_script_regex = "^\\s*action\\(.*(?i)\\btype\\b(?-i)=\"omfwd\".*(?i)\\bStreamDriverMode\\b(?-i)=\"1\".*\\)\\s*$" %}}
+{{% set rainer_script_regex = "(?m)^\\s*action\\(.*(?i)\\btype\\b(?-i)=\"omfwd\".*(?i)\\bStreamDriverMode\\b(?-i)=\"1\".*\\)\\s*$" %}}
 
     <ind:textfilecontent54_test check="all" check_existence="all_exist"
                                 comment="Check if $ActionSendStreamDriverMode 1 is set in /etc/rsyslog.conf"
