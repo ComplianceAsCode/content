@@ -157,7 +157,7 @@ def get_variables_from_profiles(profiles: list) -> Dict[str, Dict[str, str]]:
     return _convert_defaultdict_to_dict(variables)
 
 
-def _convert_defaultdict_to_dict(dictionary: defaultdict) -> dict:
+def _convert_defaultdict_to_dict(dictionary: defaultdict) -> Dict[Any, Any]:
     """
     Recursively converts a defaultdict to a regular dictionary.
 
