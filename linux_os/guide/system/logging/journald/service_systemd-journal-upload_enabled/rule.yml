@@ -46,3 +46,8 @@ template:
     vars:
         servicename: systemd-journal-upload
         packagename: systemd-journal-remote
+
+warnings:
+    - general: |-
+        The <tt>systemd-journal-upload</tt> service will fail to start if the remote server URL is not configured.
+        Edit <tt>/etc/systemd/journal-upload.conf</tt> to configure the remote server URL.
