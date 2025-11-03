@@ -1,0 +1,16 @@
+#
+# A group of rules regarding general operating system functionality
+# and system software installed
+#
+# SLES-16 ids allocated for this group from SLES-16-16016000 till SLES-16-16016099
+#
+
+controls:
+    - id: SLES-16-16016005
+      levels:
+          - pcidss4
+          - anssi_minimal
+      title: SLES 16 must be a vendor-supported release.
+      rules:
+          - installed_OS_is_vendor_supported
+      status: automated
