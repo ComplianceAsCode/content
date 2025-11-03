@@ -7,4 +7,9 @@ RSYSLOG_CONF="/etc/rsyslog.conf"
 
 remove_encrypt_offload_configs
 
-echo 'global(DefaultNetstreamDriver="tftp" DefaultNetstreamDriverKeyFile="/path/to/contrib/gnutls/key.pem")' > $RSYSLOG_CONF
+cat << EOF >> "$RSYSLOG_CONF"
+global(
+    DefaultNetstreamDriver="tftp"
+    DefaultNetstreamDriverKeyFile="/path/to/contrib/gnutls/key.pem"
+)
+EOF
