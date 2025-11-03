@@ -30,7 +30,7 @@ from operator import and_ as and_operator
 from operator import or_ as or_operator
 
 from functools import reduce
-from typing import Optional, Type, Callable, Any
+from typing import Optional, Any
 
 # Set to True to enable tracing for parsing
 TRACE_PARSE = False
