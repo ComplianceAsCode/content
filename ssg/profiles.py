@@ -84,7 +84,7 @@ def _get_extended_profile_path(profiles_files: list, profile_name: str) -> Optio
         profile_name (str): The name of the profile to search for.
 
     Returns:
-        str: The full path of the profile file if found, otherwise None.
+        Optional[str]: The full path of the profile file if found, otherwise None.
     """
     profile_file = f"{profile_name}.profile"
     profile_path: Optional[str] = next((path for path in profiles_files if profile_file in path),
