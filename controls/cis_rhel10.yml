@@ -2679,9 +2679,9 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
-      notes: This requirement is partially covered by 6.3.3.6.
-      related_rules:
-          - audit_rules_networkconfig_modification
+      rules:
+          - audit_rules_networkconfig_modification_etc_hosts
+          - audit_rules_networkconfig_modification_hostname_file
 
     - id: 6.3.3.8
       title: Ensure events that modify /etc/sysconfig/network and /etc/sysconfig/network-scripts/ are collected (Automated)
