@@ -2669,9 +2669,9 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
-      # TODO: The rule covering this requirement needs to be split into multiple rules.
       rules:
-          - audit_rules_networkconfig_modification
+          - audit_rules_networkconfig_modification_etc_issue
+          - audit_rules_networkconfig_modification_etc_issue_net
 
     - id: 6.3.3.7
       title: Ensure events that modify /etc/hosts and /etc/hostname are collected (Automated)
