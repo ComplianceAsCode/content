@@ -549,7 +549,7 @@ class Expression(object):
 
     # Store arguments aka. subterms of this expressions.
     # subterms are either literals or expressions.
-    args: Any = tuple()
+    args: Any = ()
 
     # True is this is a literal expression such as a Symbol, TRUE or FALSE
     isliteral: bool = False

@@ -164,7 +164,7 @@ class XCCDFEntity(object):
 
     MANDATORY_KEYS: Set[str] = set()
 
-    ALTERNATIVE_KEYS: Dict[str, str] = dict()
+    ALTERNATIVE_KEYS: Dict[str, str] = {}
 
     GENERIC_FILENAME = ""
     ID_LABEL = "id"
