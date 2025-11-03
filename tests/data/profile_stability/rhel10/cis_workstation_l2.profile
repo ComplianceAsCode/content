@@ -136,7 +136,6 @@ ensure_root_password_configured
 file_at_deny_not_exist
 file_cron_allow_exists
 file_cron_deny_not_exist
-file_etc_security_opasswd
 file_group_ownership_var_log_audit
 file_groupowner_at_allow
 file_groupowner_backup_etc_group
@@ -156,6 +155,8 @@ file_groupowner_etc_issue
 file_groupowner_etc_issue_net
 file_groupowner_etc_motd
 file_groupowner_etc_passwd
+file_groupowner_etc_security_opasswd
+file_groupowner_etc_security_opasswd_old
 file_groupowner_etc_shadow
 file_groupowner_etc_shells
 file_groupowner_grub2_cfg
@@ -184,6 +185,8 @@ file_owner_etc_issue
 file_owner_etc_issue_net
 file_owner_etc_motd
 file_owner_etc_passwd
+file_owner_etc_security_opasswd
+file_owner_etc_security_opasswd_old
 file_owner_etc_shadow
 file_owner_etc_shells
 file_owner_grub2_cfg
@@ -218,6 +221,8 @@ file_permissions_etc_issue
 file_permissions_etc_issue_net
 file_permissions_etc_motd
 file_permissions_etc_passwd
+file_permissions_etc_security_opasswd
+file_permissions_etc_security_opasswd_old
 file_permissions_etc_shadow
 file_permissions_etc_shells
 file_permissions_grub2_cfg
