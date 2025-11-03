@@ -2659,9 +2659,9 @@ controls:
           - l2_server
           - l2_workstation
       status: automated
-      notes: This requirement is covered by 6.3.3.6.
-      related_rules:
-          - audit_rules_networkconfig_modification
+      rules:
+          - audit_rules_networkconfig_modification_setdomainname
+          - audit_rules_networkconfig_modification_sethostname
 
     - id: 6.3.3.6
       title: Ensure events that modify /etc/issue and /etc/issue.net are collected (Automated)
