@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: Ensure the Audit Configuration is Loaded Regardless of Errors
+
+description: |-
+  Set <tt>-c</tt> flag so that auditctl will continue loading rules in spite of an error. The exit
+  code will not be success if any rule fails to load.
+
+rationale: |-
+  The default behaviour of <tt>auditctl</tt> is to stop loading any further rules if it encounters an
+  error in the rules (for example a file watcher referencing a non-existent file). This can
+  lead to auditd running without valid rules being present. It is best to have all valid rules
+  loaded and active rather than a subset
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-90697-4
+
+ocil_clause: "the option '-c' is not set in the '/etc/audit/audit.rules' file"
+
+ocil: |-
+  Verify that the '-c' option is set in the '/etc/audit/audit.rules' file with the following command:
+  <pre>
+  $ sudo grep -Ph -- '^\h*-c\b' /etc/audit/rules.d/*.rules | tail -1
+  </pre>
+  The output should be:
+  <pre>
+  -c
+  </pre>
+
+fixtext: |-
+  Set the '-c' option in the '/etc/audit/audit.rules' file with the following command:
+  <pre>
+  $ sudo printf '%s\n' "" "-c" >> /etc/audit/rules.d/01-initialize.rules
+  </pre>

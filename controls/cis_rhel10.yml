@@ -2957,7 +2957,9 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      status: pending
+      status: automated
+      rules:
+          - audit_rules_continue_loading
 
     - id: 6.3.3.36
       title: Ensure the audit configuration is immutable (Automated)
