@@ -837,6 +837,8 @@ controls:
        - systemd_target_multi_user
 ```
 
+Control files that apply to multiple products should be stored in `controls` folder in the root of the project.
+If the control file is only applicable to one product it should be store in the `controls` directory under the products folder.
 
 ### Defining levels
 
