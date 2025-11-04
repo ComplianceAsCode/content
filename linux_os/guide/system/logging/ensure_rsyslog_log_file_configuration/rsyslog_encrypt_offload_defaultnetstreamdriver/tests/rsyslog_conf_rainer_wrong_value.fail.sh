@@ -1,10 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
-bash -x setup.sh
-bash -x remove_encrypt_offload_configs.sh
-
-RSYSLOG_CONF="/etc/rsyslog.conf"
-
-remove_encrypt_offload_configs
+source setup.sh
 
 echo 'global(DefaultNetstreamDriver="tftp" DefaultNetstreamDriverKeyFile="/path/to/contrib/gnutls/key.pem")' > $RSYSLOG_CONF
