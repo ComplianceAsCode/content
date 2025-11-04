@@ -43,8 +43,8 @@
   </ind:yamlfilecontent_object>
 
 
-  <ind:yamlfilecontent_test id="test_audit_log_forwarding_uses_tls_observability_api" check="all" check_existence="any_exist"
-     comment="In the file {{{ clf_path }}}; find only one object at path &#39;[:]&#39;." version="1">
+  <ind:yamlfilecontent_test id="test_audit_log_forwarding_uses_tls_observability_api" check="all" check_existence="all_exist"
+     comment="In the file {{{ clf_path }}}; ensure no insecure protocols are used at path &#39;[:]&#39;." version="1">
     <ind:object object_ref="object_audit_log_forwarding_uses_tls_observability_api"/>
     <ind:state state_ref="state_audit_log_forwarding_uses_tls_observability_api"/>
   </ind:yamlfilecontent_test>
@@ -56,7 +56,7 @@
 
   <ind:yamlfilecontent_state id="state_audit_log_forwarding_uses_tls_observability_api" version="1">
     <ind:value datatype="record" entity_check="all">
-      <field  name="#" operation="pattern match" entity_check="all">^(https|tls)://.*$</field>
+      <field  name="#" operation="pattern match" datatype="string" entity_check="none satisfy">^(http|tcp|udp)://.*$</field>
     </ind:value>
   </ind:yamlfilecontent_state>
 
