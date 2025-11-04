@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
-bash -x setup.sh
+source setup.sh
 
-echo "\$ActionSendStreamDriverAuthMode x509/name" >> /etc/rsyslog.conf
+echo "\$ActionSendStreamDriverAuthMode x509/name" >> $RSYSLOG_CONF

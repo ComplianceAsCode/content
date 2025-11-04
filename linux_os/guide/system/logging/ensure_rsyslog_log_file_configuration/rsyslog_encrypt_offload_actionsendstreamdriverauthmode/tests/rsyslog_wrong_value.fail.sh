@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
-bash -x setup.sh
+source setup.sh
 
-echo "\$ActionSendStreamDriverAuthMode 0" >> /etc/rsyslog.conf
+echo "\$ActionSendStreamDriverAuthMode 0" >> $RSYSLOG_CONF

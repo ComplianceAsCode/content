@@ -1,7 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
-bash -x setup.sh
-
-RSYSLOG_CONF='/etc/rsyslog.conf'
+source setup.sh
 
 echo 'action(type="omfwd" Target="some.example.com" StreamDriverAuthMode="0")' >> "$RSYSLOG_CONF"

@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
-bash -x setup.sh
+source setup.sh
 
-echo "\$ActionSendStreamDriverAuthMode x509/certvalid" >> /etc/rsyslog.d/encrypt.conf
+echo "\$ActionSendStreamDriverAuthMode x509/certvalid" >> $RSYSLOG_D_CONF
