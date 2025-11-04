@@ -20,5 +20,5 @@ check_id: bootc
 {{% else %}}
 {{% set kernel_package = "kernel" %}}
 {{% endif %}}
-bash_conditional: "{ rpm --quiet -q {{{ kernel_package }}} ;} && { rpm --quiet -q rpm-ostree ;} && { rpm --quiet -q bootc ;} && { ! rpm --quiet -q openshift-kubelet ;}"
+bash_conditional: "{ rpm --quiet -q {{{ kernel_package }}} ;} && { rpm --quiet -q rpm-ostree ;} && { rpm --quiet -q bootc ;} && { ! rpm --quiet -q openshift-kubelet ;} && [ -f /run/ostree-booted ]"
 ansible_conditional: '"{{{ kernel_package }}}" in ansible_facts.packages and "rpm-ostree" in ansible_facts.packages and "bootc" in ansible_facts.packages and not "openshift-kubelet" in ansible_facts.packages'
