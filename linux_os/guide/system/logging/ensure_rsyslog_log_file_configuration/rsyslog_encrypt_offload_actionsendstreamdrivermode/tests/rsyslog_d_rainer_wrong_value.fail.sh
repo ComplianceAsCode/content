@@ -1,10 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
-bash -x setup.sh
-bash -x remove_encrypt_offload_configs.sh
+source setup.sh
 
-RSYSLOG_D_TEST_CONF='/etc/rsyslog.d/test.conf'
-
-remove_encrypt_offload_configs
-
-echo 'action(type="omfwd" Target="some.example.com" StreamDriverAuthMode="0" StreamDriverMode="42")' >> "$RSYSLOG_D_TEST_CONF"
+echo 'action(type="omfwd" Target="some.example.com" StreamDriverAuthMode="0" StreamDriverMode="42")' >> "$RSYSLOG_D_CONF"

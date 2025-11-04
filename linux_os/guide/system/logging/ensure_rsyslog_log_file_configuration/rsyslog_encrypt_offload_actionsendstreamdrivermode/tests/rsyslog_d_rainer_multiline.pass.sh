@@ -1,16 +1,8 @@
 #!/bin/bash
 # packages = rsyslog
-bash -x setup.sh
-bash -x remove_encrypt_offload_configs.sh
+source setup.sh
 
-RSYSLOG_D_FOLDER='/etc/rsyslog.d'
-RSYSLOG_D_TEST_CONF=$RSYSLOG_D_FOLDER'/test.conf'
-
-touch $RSYSLOG_D_TEST_CONF
-
-remove_encrypt_offload_configs
-
-cat << EOF >> "$RSYSLOG_D_TEST_CONF"
+cat << EOF >> "$RSYSLOG_D_CONF"
 action(
     type="omfwd"
     Target="some.example.com"
