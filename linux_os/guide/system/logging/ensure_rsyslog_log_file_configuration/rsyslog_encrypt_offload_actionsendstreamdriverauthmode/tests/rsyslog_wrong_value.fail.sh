@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
-source setup.sh
+{{{ setup_rsyslog_encrypt_offload_actionsendstreamdriverauthmode() }}}
 
 echo "\$ActionSendStreamDriverAuthMode 0" >> $RSYSLOG_CONF

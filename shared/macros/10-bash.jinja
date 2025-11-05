@@ -2740,3 +2740,78 @@ This macro creates a Bash conditional which checks the system architecture in /p
 {{%- macro bash_arch_conditional(arch) -%}}
 ( grep -sqE "^.*\.{{{ arch }}}$" /proc/sys/kernel/osrelease || grep -sqE "^{{{ arch }}}$" /proc/sys/kernel/arch; )
 {{%- endmacro -%}}
+
+
+{{#
+This macro sets up the rsyslog environment for testing rsyslog_encrypt_offload_actionsendstreamdriverauthmode rule.
+It ensures the rsyslog directory structure and rsyslog conf file exist
+#}}
+{{%- macro setup_rsyslog_common() -%}}
+RSYSLOG_CONF='/etc/rsyslog.conf'
+RSYSLOG_D_FOLDER='/etc/rsyslog.d'
+RSYSLOG_D_CONF='/etc/rsyslog.d/encrypt.conf'
+# Ensure directory structure exists (useful for container based testing)
+test -f $RSYSLOG_CONF || touch $RSYSLOG_CONF
+mkdir -p $RSYSLOG_D_FOLDER
+{{%- endmacro -%}}
+
+
+{{%- macro setup_rsyslog_encrypt_offload_actionsendstreamdriverauthmode() -%}}
+{{{ setup_rsyslog_common() }}}
+# remove legacy entries
+sed -i '/^[[:space:]]*\$ActionSendStreamDriverAuthMode/d' $RSYSLOG_CONF
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*\$ActionSendStreamDriverAuthMode/d' {} +
+# remove all multilined and onelined RainerScript entries
+sed -i '/^[[:space:]]*action(/ { :a; N; /)/!ba; /StreamDriverAuthMode/d }' $RSYSLOG_CONF
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i "/^[[:space:]]*action(/ { :a; N; /)/!ba; /StreamDriverAuthMode/d }" {} +
+{{%- endmacro -%}}
+
+
+{{#
+This macro sets up the rsyslog environment for testing rsyslog_cron_logging rule.
+It ensures the rsyslog directory structure and rsyslog conf file exist, then removes any existing
+multilined and legacy format entries.
+#}}
+{{%- macro setup_rsyslog_cron_logging () -%}}
+{{{ setup_rsyslog_common() }}}
+# remove all multilined cron.* entries
+sed -i '/^[[:space:]]*cron\.\*.*action(/,/)/d' $RSYSLOG_CONF
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*cron\.\*.*action(/,/)/d' {} +
+# remove all legacy format and one line cron.* entries
+sed -i '\|^\s*\*\.\*\s+/var/log/cron\s*$|d' $RSYSLOG_CONF
+sed -i '/^[[:space:]]*cron\.\*/d' $RSYSLOG_CONF
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '\|^\s*\*\.\*\s+/var/log/cron\s*$' {} +
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*cron\.\*/d' {} +
+{{%- endmacro -%}}
+
+
+{{#
+This macro sets up the rsyslog environment for testing rsyslog_encrypt_offload_actionsendstreamdrivermode rule.
+It ensures the rsyslog directory structure and rsyslog conf file exist, then removes any existing
+multilined and legacy format entries.
+#}}
+{{%- macro setup_rsyslog_encrypt_offload_actionsendstreamdrivermode() -%}}
+{{{ setup_rsyslog_common() }}}
+# remove ActionSendStreamDriverMode entries
+sed -i '/^[[:space:]]*\$ActionSendStreamDriverMode/d' $RSYSLOG_CONF
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*\$ActionSendStreamDriverMode/d' {} +
+# remove all multilined and onelined RainerScript entries
+sed -i '/^[[:space:]]*action\(/ { :a; N; /\)/!ba; /StreamDriverMode/d }' $RSYSLOG_CONF
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*action\(/ { :a; N; /\)/!ba; /StreamDriverMode/d' {} +
+{{%- endmacro -%}}
+
+
+{{#
+This macro sets up the rsyslog environment for testing rsyslog_encrypt_offload_defaultnetstreamdriver rule.
+It ensures the rsyslog directory structure and rsyslog conf file exist, then removes any existing
+any existing multilined and legacy format entries.
+#}}
+{{%- macro setup_rsyslog_encrypt_offload_defaultnetstreamdriver() -%}}
+{{{ setup_rsyslog_common() }}}
+# remove DefaultNetstreamDriver entries
+sed -i '/^[[:space:]]*\$DefaultNetstreamDriver/d' $RSYSLOG_CONF
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*\$DefaultNetstreamDriver/d' {} +
+# remove all multilined and onelined RainerScript entries
+sed -i '/^[[:space:]]*global\(/ { :a; N; /\)/!ba; /DefaultNetstreamDriver/d }' $RSYSLOG_CONF
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*global\(/ { :a; N; /\)/!ba; /DefaultNetstreamDriver/d }' {} +
+{{%- endmacro -%}}

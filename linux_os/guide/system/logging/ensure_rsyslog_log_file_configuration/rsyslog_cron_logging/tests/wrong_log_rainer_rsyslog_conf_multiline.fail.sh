@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = rsyslog
-source setup.sh
+{{{ setup_rsyslog_cron_logging() }}}
 
 # Add cron.* that logs into wrong file
 cat << EOF >> "$RSYSLOG_CONF"

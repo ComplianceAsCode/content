@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = rsyslog
-source setup.sh
+{{{ setup_rsyslog_encrypt_offload_actionsendstreamdrivermode() }}}
 
 cat << EOF >> "$RSYSLOG_D_CONF"
 action(

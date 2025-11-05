@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = rsyslog
-source setup.sh
+{{{ setup_rsyslog_encrypt_offload_defaultnetstreamdriver() }}}
 
 cat << EOF >> "$RSYSLOG_CONF"
 global(

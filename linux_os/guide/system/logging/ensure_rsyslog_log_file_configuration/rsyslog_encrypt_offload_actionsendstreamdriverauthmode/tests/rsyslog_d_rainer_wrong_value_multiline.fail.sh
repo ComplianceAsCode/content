@@ -6,7 +6,6 @@ cat << EOF >> "$RSYSLOG_D_CONF"
 action(
     type="omfwd"
     Target="some.example.com"
-    StreamDriverAuthMode="x509/name"
-    StreamDriverMode="1"
+    StreamDriverAuthMode="0"
 )
 EOF

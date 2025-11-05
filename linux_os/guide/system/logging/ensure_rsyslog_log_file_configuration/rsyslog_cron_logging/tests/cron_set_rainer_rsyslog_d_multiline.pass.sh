@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = rsyslog
-source setup.sh
+{{{ setup_rsyslog_cron_logging() }}}
 
 cat << EOF >> "$RSYSLOG_D_CONF"
 cron.* action(

@@ -1,7 +1,7 @@
 #!/bin/bash
 # packages = rsyslog
 # platform = multi_platform_ol
-source setup.sh
+{{{ setup_rsyslog_cron_logging() }}}
 
 rm -rf "$RSYSLOG_D_FOLDER/*.conf"
 truncate -s 0 "${RSYSLOG_CONF}"

@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
-source setup.sh
+{{{ setup_rsyslog_cron_logging() }}}
 
 echo 'cron.*    /var/log/cron' >> $RSYSLOG_CONF

@@ -1,3 +1,3 @@
 #!/bin/bash
 # packages = rsyslog
-source setup.sh
+{{{ setup_rsyslog_cron_logging() }}}
