@@ -2944,13 +2944,12 @@ controls:
           - audit_rules_kernel_module_loading_delete
 
     - id: 6.3.3.34
-      title: Ensure kernel "create_module" and "query_module" loading unloading and modification is collected (Automated)
+      title: Ensure kernel "query_module" loading unloading and modification is collected (Automated)
       levels:
           - l2_server
           - l2_workstation
       status: automated
       rules:
-          - audit_rules_kernel_module_loading_create
           - audit_rules_kernel_module_loading_query
 
     - id: 6.3.3.35
