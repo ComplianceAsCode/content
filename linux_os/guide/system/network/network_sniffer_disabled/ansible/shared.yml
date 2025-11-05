@@ -11,7 +11,7 @@
 
 - name: "{{{ rule_title }}} - Disable promiscuous mode"
   ansible.builtin.command:
-    cmd: ip link set dev {{ item.split(':')[1] }} multicast off promisc off
+    cmd: ip link set dev {{ (item.split(':')[1] | trim).split('@')[0] }} multicast off promisc off
   loop: "{{ network_interfaces.stdout_lines }}"
-  when: network_interfaces.stdout_lines is defined and "item.split(':') | length == 3"
+  when: network_interfaces.stdout_lines is defined and item.split(':') | length == 3
 
