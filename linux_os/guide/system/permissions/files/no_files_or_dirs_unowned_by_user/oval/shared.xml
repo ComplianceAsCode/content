@@ -1,0 +1,66 @@
+{{% if 'ubuntu' not in product %}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("All files should be owned by a user", rule_title=rule_title) }}}
+    <criteria>
+      <criterion test_ref="test_{{{ rule_id }}}"
+        comment="Check all files and make sure they are owned by a user"/>
+    </criteria>
+  </definition>
+
+  <!-- Create a file_state to filter out files owned by known users. -->
+  <unix:password_object id="object_{{{ rule_id }}}_all_users" version="2">
+    <unix:username datatype="string" operation="pattern match">.*</unix:username>
+  </unix:password_object>
+
+  <local_variable id="var_{{{ rule_id }}}_uids_list" version="1"
+    datatype="int" comment="List of valid user ids">
+    <object_component item_field="user_id"
+      object_ref="object_{{{ rule_id }}}_all_users"/>
+  </local_variable>
+
+  <unix:file_state id="state_{{{ rule_id }}}_uids_list" version="1">
+    <unix:user_id var_check="at least one" datatype="int"
+      var_ref="var_{{{ rule_id }}}_uids_list"/>
+  </unix:file_state>
+
+  {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
+  {{{ create_local_mount_points_list(var_local_mount_points, rule_id=rule_id) }}}
+
+  <!-- This file_object will only find files located in local and not special file systems. The
+       recurse_file_system parameter is set to defined in order to make sure the probe doesn't
+       leave the scope of that mount point. For example, when probing "/", the probe will ignore
+       any child directory which is a mount point for any other partition. This will ensure
+       considerable performance improvement. -->
+  <unix:file_object id="object_{{{ rule_id }}}_all" version="2" comment="all local files and directories without a known owner">
+    <set>
+      <object_reference>object_{{{ rule_id }}}_files</object_reference>
+      <object_reference>object_{{{ rule_id }}}_directories</object_reference>
+    </set>
+  </unix:file_object>
+  <unix:file_object id="object_{{{ rule_id }}}_files" version="2"
+    comment="all local files without a known owner">
+    <unix:behaviors recurse="directories" recurse_direction="down"
+      recurse_file_system="defined" max_depth="-1"/>
+    <unix:path operation="equals" var_check="at least one"
+      var_ref="{{{ var_local_mount_points }}}"/>
+    <unix:filename operation="pattern match">.*</unix:filename>
+    <filter action="exclude">state_{{{ rule_id }}}_uids_list</filter>
+  </unix:file_object>
+  <unix:file_object id="object_{{{ rule_id }}}_directories" version="2"
+    comment="all local directories without a known owner">
+    <unix:behaviors recurse="directories" recurse_direction="down"
+      recurse_file_system="defined" max_depth="-1"/>
+    <unix:path operation="equals" var_check="at least one"
+      var_ref="{{{ var_local_mount_points }}}"/>
+    <unix:filename xsi:nil="true" />
+    <filter action="exclude">state_{{{ rule_id }}}_uids_list</filter>
+  </unix:file_object>
+
+  <unix:file_test id="test_{{{ rule_id }}}" version="2"
+    check="all" check_existence="none_exist"
+    comment="there are no files without a known owner">
+    <unix:object object_ref="object_{{{ rule_id }}}_all"/>
+  </unix:file_test>
+</def-group>
+{{% endif %}}

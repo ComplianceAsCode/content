@@ -1,0 +1,59 @@
+documentation_complete: true
+
+title: 'Ensure All Files And Directories Are Owned by a Group'
+
+description: |-
+    If any files or directories are not group-owned by a valid defined group, the cause of the lack of
+    group-ownership must be investigated. Following this, those files should be deleted or
+    assigned to an appropriate group. The groups need to be defined in <tt>/etc/group</tt>
+    or in <tt>/usr/lib/group</tt> if <tt>nss-altfiles</tt> are configured to be used
+    in <tt>/etc/nsswitch.conf</tt>.
+
+    Locate the mount points related to local devices by the following command:
+    <pre>$ findmnt -n -l -k -it $(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,)</pre>
+
+    For all mount points listed by the previous command, it is necessary to search for files and directories which
+    do not belong to a valid group using the following command:
+    <pre>$ sudo find <i>MOUNTPOINT</i> -xdev -nogroup 2&gt;/dev/null</pre>
+
+rationale: |-
+    Unowned files and directories do not directly imply a security problem, but they are generally a sign that
+    something is amiss. They may be caused by an intruder, by incorrect software installation or
+    draft software removal, or by failure to remove all files belonging to a deleted account, or
+    other similar cases. The files and directories should be repaired so they will not cause problems when
+    accounts are created in the future, and the cause should be discovered and addressed.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-86647-5
+
+ocil_clause: 'files and directories exist that are not owned by a valid group'
+
+ocil: |-
+    The following command will locate the mount points related to local devices:
+    <pre>$ findmnt -n -l -k -it $(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,)</pre>
+
+    The following command will show files and directories which do not belong to a valid group:
+    <pre>$ sudo find <i>MOUNTPOINT</i> -xdev -nogroup 2&gt;/dev/null</pre>
+
+    Replace <i>MOUNTPOINT</i> by the mount points listed by the fist command.
+
+    No files and directories without a valid group should be located.
+
+fixtext: |-
+    Either remove all files and directories from {{{ full_name }}} that do not have a valid group, or assign a valid group to all files and directories on the system with the "chgrp" command:
+
+    $ sudo chgrp
+
+srg_requirement: 'All {{{ full_name }}} local files and directories must have a valid group owner.'
+
+warnings:
+    - general: |-
+        This rule only considers local groups as valid groups.
+        If you have your groups defined outside <code>/etc/group</code> or <code>/usr/lib/group</code>, the rule won't consider those.
+    - general: |-
+        This rule can take a long time to perform the check and might consume a considerable
+        amount of resources depending on the number of files present on the system. It is not a
+        problem in most cases, but especially systems with a large number of files can be affected.
+        See <code>https://access.redhat.com/articles/6999111</code>.

@@ -157,7 +157,6 @@ file_permissions_sshd_drop_in_config
 file_permissions_sshd_private_key
 file_permissions_sshd_pub_key
 file_permissions_unauthorized_world_writable
-file_permissions_ungroupowned
 file_permissions_user_cfg
 firewalld_loopback_traffic_trusted
 gid_passwd_group_same
@@ -206,7 +205,8 @@ mount_option_var_tmp_noexec
 mount_option_var_tmp_nosuid
 no_empty_passwords
 no_empty_passwords_etc_shadow
-no_files_unowned_by_user
+no_files_or_dirs_ungroupowned
+no_files_or_dirs_unowned_by_user
 no_forward_files
 no_netrc_files
 no_password_auth_for_systemaccounts
