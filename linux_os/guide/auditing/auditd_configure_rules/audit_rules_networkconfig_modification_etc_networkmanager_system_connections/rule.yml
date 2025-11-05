@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'Record Events that Modify the System''s Network Environment - /etc/hostname'
+title: 'Record Events that Modify the System''s Network Environment - /etc/NetworkManager/system-connections/'
 
 description: |-
-    {{{ describe_audit_rules_watch("/etc/hostname", "audit_rules_networkconfig_modification_hostname_file") }}}
+    {{{ describe_audit_rules_watch("/etc/NetworkManager/system-connections/") }}}
 
 rationale: |-
     The network environment should not be modified by anything other
@@ -13,19 +13,18 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel9: CCE-86603-8
-    cce@rhel10: CCE-89921-1
+    cce@rhel10: CCE-89923-7
 
 ocil_clause: 'the system is not configured to audit changes of the network configuration'
 
 ocil: |-
     To determine if the system is configured to audit changes to its network configuration,
     run the following command:
-    <pre>auditctl -l | grep -E '/etc/hostname'</pre>
+    <pre>auditctl -l | grep -E '/etc/NetworkManager/system-connections/'</pre>
     If the system is configured to watch for network configuration changes, a line should
     be returned and <tt>perm=wa</tt> should be indicated.
 
 template:
     name: audit_rules_watch
     vars:
-        path: /etc/hostname
+        path: /etc/NetworkManager/system-connections/
