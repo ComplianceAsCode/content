@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: Ensure Password History Is Enforced for the Root User
+
+description: |-
+    The <tt>enforce_for_root</tt> option enforces password history for the root user.
+    Enable the <tt>enforce_for_root</tt> setting in <tt>/etc/security/pwhistory.conf</tt>
+    to require the <tt>root</tt> user to use a password that has not been used recently.
+
+rationale: |-
+    Requiring users not to reuse their passwords make it less likely that an attacker will be
+    able to guess the password or use a compromised password.
+
+identifiers:
+    cce@rhel10: CCE-87591-4
+
+severity: medium
+
+platform: package[pam]
+
+template:
+    name: lineinfile
+    vars:
+        text: "enforce_for_root"
+        path: "/etc/security/pwhistory.conf"
