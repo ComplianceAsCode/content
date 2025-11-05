@@ -2816,6 +2816,17 @@ sed -i '/^[[:space:]]*global\(/ { :a; N; /\)/!ba; /DefaultNetstreamDriver/d }' $
 find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*global\(/ { :a; N; /\)/!ba; /DefaultNetstreamDriver/d }' {} +
 {{%- endmacro -%}}
 
+{{#
+This macro sets up the rsyslog environment for testing rsyslog_remote_tls rule.
+It ensures the rsyslog directory structure and rsyslog conf file exist, then removes any existing
+multilined and onelined RainerScript entries.
+#}}
+{{%- macro setup_rsyslog_remote_tls() -%}}
+{{{ setup_rsyslog_common() }}}
+# remove all multilined and onelined RainerScript entries
+sed -i '/^[[:space:]]*action\(/ { :a; N; /\)/!ba; /type="omfwd"/d }' $RSYSLOG_CONF
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*action\(/ { :a; N; /\)/!ba; /type="omfwd"/d' {} +
+{{%- endmacro -%}}
 
 {{#
 This macro sets up remote loghost configuration in rsyslog.conf.
