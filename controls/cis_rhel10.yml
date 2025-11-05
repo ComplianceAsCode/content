@@ -2038,7 +2038,9 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
-      notes: A new templated rule and variable are necessary for the maxsequence option.
+      rules:
+          - accounts_password_pam_maxsequence
+          - var_password_pam_maxsequence=3
 
     - id: 5.3.2.2.6
       title: Ensure password dictionary check is enabled (Automated)
