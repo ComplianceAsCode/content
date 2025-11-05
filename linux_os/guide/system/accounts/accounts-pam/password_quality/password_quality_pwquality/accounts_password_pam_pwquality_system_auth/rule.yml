@@ -42,7 +42,7 @@ fixtext: |-
 
     Add the following line to the "/etc/pam.d/system-auth" file(or modify the line to have the required value):
 
-    password required pam_pwquality.so
+    password requisite pam_pwquality.so
 
 srg_requirement: '{{{ full_name }}} must ensure the password complexity module is enabled in the system-auth file.'
 

@@ -1921,6 +1921,8 @@ controls:
       notes: This requirement is also indirectly satisfied by the requirement 5.3.2.2.
       rules:
           - package_pam_pwquality_installed
+          - accounts_password_pam_pwquality_password_auth
+          - accounts_password_pam_pwquality_system_auth
 
     - id: 5.3.1.4
       title: Ensure pam_pwhistory module is enabled (Automated)
