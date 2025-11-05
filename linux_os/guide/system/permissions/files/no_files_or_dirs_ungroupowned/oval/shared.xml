@@ -1,0 +1,151 @@
+{{% if product not in ['ubuntu2404'] %}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    {{{ oval_metadata("All files should be owned by a group", rule_title=rule_title) }}}
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <criteria operator="AND" negate="true">
+          <criterion test_ref="test_{{{ rule_id }}}_nsswitch_uses_altfiles"
+            comment="The /etc/nsswitch.conf uses nss-altfiles"/>
+          <criterion test_ref="test_{{{ rule_id }}}_package_nss-altfiles_installed"
+            comment="Check if nss-altfiles package is installed"/>
+        </criteria>
+        <criterion test_ref="test_{{{ rule_id }}}"
+          comment="Check all local files and make sure they are owned by a group"/>
+      </criteria>
+      <criteria operator="AND">
+        <criteria operator="AND">
+          <criterion test_ref="test_{{{ rule_id }}}_nsswitch_uses_altfiles"
+            comment="The /etc/nsswitch.conf uses nss-altfiles"/>
+          <criterion test_ref="test_{{{ rule_id }}}_package_nss-altfiles_installed"
+            comment="Check if nss-altfiles package is installed"/>
+        </criteria>
+        <criterion test_ref="test_{{{ rule_id }}}_with_usrlib"
+          comment="Check all local files and make sure they are owned by a group"/>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <!-- Create a file_state to filter out files group-owned by known groups. -->
+  <ind:textfilecontent54_object id="object_etc_group" version="1">
+    <ind:filepath>/etc/group</ind:filepath>
+    <ind:pattern operation="pattern match">^[^:]+:[^:]*:([\d]+):[^:]*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_usr_lib_group" version="1">
+    <ind:filepath>/usr/lib/group</ind:filepath>
+    <ind:pattern operation="pattern match">^[^:]+:[^:]*:([\d]+):[^:]*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_all_gids_with_usrlib" version="1">
+    <set>
+      <object_reference>object_etc_group</object_reference>
+      <object_reference>object_usr_lib_group</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_all_local_gids" version="1"
+    datatype="int" comment="all GIDs extracted from /etc/group on the target system">
+    <object_component object_ref="object_etc_group" item_field="subexpression"/>
+  </local_variable>
+
+  <local_variable id="var_all_local_gids_with_usrlib" version="1"
+    datatype="int" comment="all GIDs extracted from /etc/group on the target system">
+    <object_component object_ref="object_all_gids_with_usrlib" item_field="subexpression"/>
+  </local_variable>
+
+  <unix:file_state id="state_{{{ rule_id }}}_local_group_owner" version="1"
+    comment="Used to filter out all files group-owned by a group defined in /etc/group">
+    <unix:group_id datatype="int" var_check="at least one" var_ref="var_all_local_gids"/>
+  </unix:file_state>
+
+  <unix:file_state id="state_{{{ rule_id }}}_local_group_owner_with_usrlib" version="1"
+    comment="Used to filter out all files group-owned by a group defined in /etc/group">
+    <unix:group_id datatype="int" var_check="at least one" var_ref="var_all_local_gids_with_usrlib"/>
+  </unix:file_state>
+
+  <unix:file_state id="state_{{{ rule_id }}}_sysroot" version="1"
+    comment="Used to filter out all files in the /sysroot directory">
+    <unix:filepath operation="pattern match">^/sysroot/.*$</unix:filepath>
+  </unix:file_state>
+
+  {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
+  {{{ create_local_mount_points_list(var_local_mount_points, rule_id=rule_id) }}}
+
+  <!-- This file_object will only find files located in local and not special file systems. The
+       recurse_file_system parameter is set to defined in order to make sure the probe doesn't
+       leave the scope of that mount point. For example, when probing "/", the probe will ignore
+       any child directory which is a mount point for any other partition. This will ensure
+       considerable performance improvement. -->
+  <unix:file_object id="object_{{{ rule_id }}}_all" version="2" comment="all local files and directories without a known group owner">
+    <set>
+      <object_reference>object_{{{ rule_id }}}_files</object_reference>
+      <object_reference>object_{{{ rule_id }}}_directories</object_reference>
+    </set>
+  </unix:file_object>
+  <unix:file_object id="object_{{{ rule_id }}}_files" version="2" comment="all local files without a known group owner">
+  <unix:behaviors recurse="directories" recurse_direction="down"
+      recurse_file_system="defined" max_depth="-1"/>
+    <unix:path operation="equals" var_check="at least one"
+      var_ref="{{{ var_local_mount_points }}}"/>
+    <unix:filename operation="pattern match">.*</unix:filename>
+    <filter action="exclude">state_{{{ rule_id }}}_local_group_owner</filter>
+    <filter action="exclude">state_{{{ rule_id }}}_sysroot</filter>
+  </unix:file_object>
+  <unix:file_object id="object_{{{ rule_id }}}_directories" version="2"
+    comment="all local directories without a known group owner">
+    <unix:behaviors recurse="directories" recurse_direction="down"
+      recurse_file_system="defined" max_depth="-1"/>
+    <unix:path operation="equals" var_check="at least one"
+      var_ref="{{{ var_local_mount_points }}}"/>
+    <unix:filename xsi:nil="true" />
+    <filter action="exclude">state_{{{ rule_id }}}_local_group_owner</filter>
+    <filter action="exclude">state_{{{ rule_id }}}_sysroot</filter>
+  </unix:file_object>
+
+  <unix:file_object id="object_{{{ rule_id }}}_all_with_usrlib" version="2" comment="all local files and directories without a known group owner">
+    <set>
+      <object_reference>object_{{{ rule_id }}}_files_with_usrlib</object_reference>
+      <object_reference>object_{{{ rule_id }}}_directories_with_usrlib</object_reference>
+    </set>
+  </unix:file_object>
+  <unix:file_object id="object_{{{ rule_id }}}_files_with_usrlib" version="2"
+    comment="all local files without a known group owner">
+    <unix:behaviors recurse="directories" recurse_direction="down"
+      recurse_file_system="defined" max_depth="-1"/>
+    <unix:path operation="equals" var_check="at least one"
+      var_ref="{{{ var_local_mount_points }}}"/>
+    <unix:filename operation="pattern match">.*</unix:filename>
+    <filter action="exclude">state_{{{ rule_id }}}_local_group_owner_with_usrlib</filter>
+    <filter action="exclude">state_{{{ rule_id }}}_sysroot</filter>
+  </unix:file_object>
+
+  <unix:file_object id="object_{{{ rule_id }}}_directories_with_usrlib" version="2"
+    comment="all local directories without a known group owner">
+    <unix:behaviors recurse="directories" recurse_direction="down"
+      recurse_file_system="defined" max_depth="-1"/>
+    <unix:path operation="equals" var_check="at least one"
+      var_ref="{{{ var_local_mount_points }}}"/>
+    <unix:filename xsi:nil="true" />
+    <filter action="exclude">state_{{{ rule_id }}}_local_group_owner_with_usrlib</filter>
+    <filter action="exclude">state_{{{ rule_id }}}_sysroot</filter>
+  </unix:file_object>
+
+{{{ oval_test_nsswitch_uses_altfiles(rule_id=rule_id) }}}
+{{{ oval_test_package_installed("nss-altfiles", test_id="test_" ~ rule_id ~ "_package_nss-altfiles_installed") }}}
+
+  <unix:file_test id="test_{{{ rule_id }}}" version="1"
+    check="all" check_existence="none_exist"
+    comment="there are no files with group owner different than local groups">
+    <unix:object object_ref="object_{{{ rule_id }}}_all"/>
+  </unix:file_test>
+
+  <unix:file_test id="test_{{{ rule_id }}}_with_usrlib" version="1"
+    check="all" check_existence="none_exist"
+    comment="there are no files with group owner different than local groups">
+    <unix:object object_ref="object_{{{ rule_id }}}_all_with_usrlib"/>
+  </unix:file_test>
+</def-group>
+{{% endif %}}

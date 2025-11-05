@@ -3194,11 +3194,10 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: partial
-    # TODO: add rules for unowned/ungrouped directories
+      status: automated
       rules:
-          - no_files_unowned_by_user
-          - file_permissions_ungroupowned
+          - no_files_or_dirs_unowned_by_user
+          - no_files_or_dirs_ungroupowned
 
     - id: 7.1.13
       title: Ensure SUID and SGID files are reviewed (Manual)
