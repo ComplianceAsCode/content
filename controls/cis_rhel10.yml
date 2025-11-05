@@ -2768,14 +2768,19 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      status: pending
+      status: automated
+      rules:
+          - audit_rules_usergroup_modification_nsswitch_conf
 
     - id: 6.3.3.17
       title: Ensure events that modify /etc/pam.conf and /etc/pam.d/ information are collected (Automated)
       levels:
           - l2_server
           - l2_workstation
-      status: pending
+      status: automated
+      rules:
+          - audit_rules_usergroup_modification_pam_conf
+          - audit_rules_usergroup_modification_pamd
 
     - id: 6.3.3.18
       title: Ensure discretionary access control permission modification events chmod,fchmod,fchmodat,fchmodat2 are collected (Automated)
