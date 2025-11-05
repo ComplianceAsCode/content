@@ -2815,3 +2815,23 @@ find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*\$Defa
 sed -i '/^[[:space:]]*global\(/ { :a; N; /\)/!ba; /DefaultNetstreamDriver/d }' $RSYSLOG_CONF
 find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*global\(/ { :a; N; /\)/!ba; /DefaultNetstreamDriver/d }' {} +
 {{%- endmacro -%}}
+
+
+{{#
+This macro sets up remote loghost configuration in rsyslog.conf.
+It checks if a line starting with *.* exists and replaces it with a configuration line,
+or appends configuration line if no such line exists.
+
+:param loghost_line: contains rsyslog configuration
+:type loghost_line: str
+
+#}}
+{{%- macro setup_rsyslog_remote_loghost(loghost_line) -%}}
+{{{ setup_rsyslog_common() }}}
+
+if grep -q "^\*\.\*" "$RSYSLOG_CONF"; then
+	sed -i 's|^\*\.\*.*|{{{ loghost_line }}}|' "$RSYSLOG_CONF"
+else
+	echo '{{{ loghost_line }}}' >> "$RSYSLOG_CONF"
+fi
+{{%- endmacro -%}}
