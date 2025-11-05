@@ -429,6 +429,7 @@ var_accounts_passwords_pam_faillock_dir=run
 var_accounts_passwords_pam_faillock_unlock_time=900
 var_accounts_tmout=15_min
 var_accounts_user_umask=027
+var_audit_backlog_limit=8192
 var_auditd_action_mail_acct=root
 var_auditd_admin_space_left_action=cis_rhel8
 var_auditd_disk_error_action=cis_rhel8

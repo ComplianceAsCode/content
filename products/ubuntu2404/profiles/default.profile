@@ -380,6 +380,7 @@ selections:
     - group_unique_name
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
+    - var_audit_backlog_limit=8192
     - grub2_enable_apparmor
     - grub2_password
     - grub2_uefi_password
