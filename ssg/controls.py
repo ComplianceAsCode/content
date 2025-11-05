@@ -5,6 +5,7 @@ Common functions for processing Controls in SSG
 import collections
 import os
 import copy
+import sys
 from glob import glob
 from typing import List, Dict
 
@@ -820,8 +821,12 @@ class ControlsManager:
             for filepath in sorted(glob(os.path.join(controls_dir, "*." + format))):
                 policy = Policy(filepath, self.env_yaml)
                 policy.load()
-                if policy in self.policies:
-                    raise ValueError("Policy %s already exists" % policy)
+                if policy.id in self.policies:
+                    print(f"Policy {policy.id} was defined first at "
+                                     f"{self.policies[policy.id].filepath} and now another policy "
+                                     f"with the same ID is being loaded from {policy.filepath}."
+                                     f"Overriding with later.",
+                                     file=sys.stderr)
                 self.policies[policy.id] = policy
         self.check_all_rules_exist()
         self.resolve_controls()
