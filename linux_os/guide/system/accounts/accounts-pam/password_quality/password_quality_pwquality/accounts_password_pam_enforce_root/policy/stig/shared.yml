@@ -13,17 +13,15 @@ checktext: |-
 
     Check if root user is required to use complex passwords with the following command:
 
-    $ grep enforce_for_root /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf
+    $ grep enforce_for_root {{{ pwquality_path }}} /etc/security/pwquality.conf.d/*.conf
 
-    /etc/security/pwquality.conf:enforce_for_root
+    {{{ pwquality_path }}}:enforce_for_root
 
     If "enforce_for_root" is commented or missing, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce password complexity on the root account.
 
-    Add or update the following line in the "/etc/security/pwquality.conf" file or a configuration file in the "/etc/security/pwquality.conf.d/" directory to contain the "enforce_for_root" parameter:
+    Add or update the following line in the "{{{ pwquality_path }}}" file or a configuration file in the "/etc/security/pwquality.conf.d/" directory to contain the "enforce_for_root" parameter:
 
     enforce_for_root
-
-

@@ -11,9 +11,9 @@ vuldiscussion: |-
     password is compromised.
 
 checktext: |-
-    Verify the value of the "minclass" option in "/etc/security/pwquality.conf" with the following command:
+    Verify the value of the "minclass" option in "{{{ pwquality_path }}}" with the following command:
 
-    $ grep minclass /etc/security/pwquality.conf
+    $ grep minclass {{{ pwquality_path }}}
 
     minclass = 4
 
@@ -22,6 +22,6 @@ checktext: |-
 fixtext: |-
     Configure {{{ full_name }}} to require the change of at least 4 character classes when passwords are changed by setting the "minclass" option.
 
-    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+    Add the following line to "{{{ pwquality_path }}}" (or modify the line to have the required value):
 
     minclass = 4

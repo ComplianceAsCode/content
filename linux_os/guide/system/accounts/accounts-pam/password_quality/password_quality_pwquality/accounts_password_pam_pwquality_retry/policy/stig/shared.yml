@@ -24,7 +24,7 @@ checktext: |-
 
     Check for the use of the retry option in the security directory with the following command:
 
-    <pre>$ grep -w retry /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf</pre>
+    <pre>$ grep -w retry {{{ pwquality_path }}} /etc/security/pwquality.conf.d/*.conf</pre>
 
     <pre>retry = 3</pre>
 
@@ -33,7 +33,7 @@ checktext: |-
 
 
 fixtext: |-
-    Add or update the following line in the "/etc/security/pwquality.conf" file
+    Add or update the following line in the "{{{ pwquality_path }}}" file
     or a file in the "/etc/security/pwquality.conf.d/" directory to contain the
     "retry" parameter:
 

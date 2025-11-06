@@ -1,9 +1,9 @@
-# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
+# platform = Red Hat Virtualization 4,multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
 # reboot = false
 # strategy = configure
 # complexity = low
 # disruption = medium
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or product in ['sle15', 'sle16'] %}}
 {{% set configuration_files = ["common-password"] %}}
 {{% elif 'ol' in families or 'rhel' in product or 'almalinux' in product %}}
 {{% set configuration_files = ["password-auth","system-auth"] %}}
@@ -13,11 +13,11 @@
 
 {{{ ansible_instantiate_variables("var_password_pam_retry") }}}
 
-{{% if product in ['rhel8', 'rhel9', 'almalinux'] -%}}
+{{% if product in ['rhel8', 'rhel9', 'almalinux', 'sle15', 'sle16'] -%}}
 - name: Ensure PAM variable retry is set accordingly
   ansible.builtin.lineinfile:
     create: yes
-    dest: "/etc/security/pwquality.conf"
+    dest: "{{{ pwquality_path }}}"
     regexp: '^\s*retry'
     line: "retry = {{ var_password_pam_retry }}"
 {{% for cfile in configuration_files %}}

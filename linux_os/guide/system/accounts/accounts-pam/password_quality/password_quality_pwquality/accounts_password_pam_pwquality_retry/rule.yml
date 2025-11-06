@@ -1,11 +1,11 @@
 documentation_complete: true
 
 
-title: 'Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session in /etc/security/pwquality.conf'
+title: 'Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session in {{{ pwquality_path }}}'
 
 description: |-
     To configure the number of retry prompts that are permitted per-session:
-    Edit the <tt>/etc/security/pwquality.conf</tt> to include
+    Edit the <tt>{{{ pwquality_path }}}</tt> to include
     <tt>retry={{{xccdf_value("var_password_pam_retry") }}}</tt>, or a lower value if site
     policy is more restrictive. The profile requirement is a maximum of <tt>retry={{{xccdf_value("var_password_pam_retry") }}}</tt> prompts
     per session.
@@ -35,7 +35,7 @@ ocil: |-
     Verify {{{ full_name }}} is configured to limit the "pwquality" retry option to {{{ xccdf_value("var_password_pam_retry") }}}.
 
     Check for the use of the "pwquality" retry option in the pwquality.conf file with the following command:
-    <pre>$ grep retry /etc/security/pwquality.conf</pre>
+    <pre>$ grep retry {{{ pwquality_path }}}</pre>
 
 template:
     name: accounts_password
