@@ -41,7 +41,7 @@
 - name: {{{ rule_title }}} - Remove any existing -c option from all Audit config files
   ansible.builtin.lineinfile:
     path: "{{ item }}"
-    regexp: '^\s*-c\s+.*$'
+    regexp: '^\s*-c\s*.*$'
     state: absent
   loop: "{{ find_rules_d.files | map(attribute='path') | list + ['/etc/audit/audit.rules'] }}"
   when: not continue_loading_correctly_set
@@ -61,7 +61,8 @@
     path: "{{ item }}"
     create: True
     line: "-c"
-    regexp: '^\s*-c\s+.*$'
+    regexp: '^\s*-c\s*.*$'
+    insertbefore: BOF
     mode: g-rwx,o-rwx
   loop:
     - "/etc/audit/audit.rules"
