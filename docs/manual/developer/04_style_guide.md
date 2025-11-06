@@ -317,7 +317,8 @@ Benchmark sections must be in the following order, if they are present.
 
 ### Controls
 
-These rules apply to the files in `controls/`.
+These rules apply to the files in `controls/` and `products/*/controls`.
+Product specific controls should be stored under the respective controls directory.
 All the above [YAML](#yaml) rules apply.
 
 #### Control Sections
