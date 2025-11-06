@@ -812,7 +812,7 @@ class ControlsManager:
         self.controls_dirs = [os.path.abspath(controls_dir) for controls_dir in controls_dirs]
         self.env_yaml = env_yaml
         self.existing_rules = existing_rules
-        self.policies = {}
+        self.policies: Dict = {}
 
     def _load(self, format):
         for controls_dir in self.controls_dirs:
