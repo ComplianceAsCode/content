@@ -46,7 +46,11 @@ fixtext: |-
     Modify the content of both <tt>/etc/pam.d/login</tt>, like this:
     <pre>auth required pam_tally2.so deny={{{ xccdf_value("var_accounts_passwords_pam_tally2_deny") }}} <tt>unlock_time={{{ xccdf_value("var_accounts_passwords_pam_tally2_unlock_time") }}}</tt> </pre>
 
+{{% if product == "sle15" %}}
+platform: os_linux[sles]<15.7 and package[pam]
+{{% else %}}
 platform: package[pam]
+{{% endif %}}
 
 srg_requirement: |-
         {{{ full_name }}} must automatically lock an account until the locked account is released by an administrator.

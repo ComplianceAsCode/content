@@ -53,7 +53,11 @@ fixtext: |-
     <pre>account required pam_tally2.so</pre></li>
     </ul>
 
+{{% if product == "sle15" %}}
+platform: os_linux[sles]<15.7 and package[pam]
+{{% else %}}
 platform: package[pam]
+{{% endif %}}
 
 srg_requirement: |-
     {{{ full_name }}} must automatically lock the root account until the root account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period.
