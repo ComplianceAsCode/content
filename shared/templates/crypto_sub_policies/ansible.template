@@ -4,10 +4,10 @@
 # complexity = low
 # disruption = low
 
-{{% for sub_policy in SUB_POLICIES %}}
--   name: "{{{ rule_title }}} - Create custom crypto policy module {{{ sub_policy.module_name }}}"
+{{% for module_name, sub_policy in SUB_POLICIES.items() %}}
+-   name: "{{{ rule_title }}} - Create custom crypto policy module {{{ module_name }}}"
     ansible.builtin.lineinfile:
-        path: /etc/crypto-policies/policies/modules/{{{ sub_policy.module_name }}}.pmod
+        path: /etc/crypto-policies/policies/modules/{{{ module_name }}}.pmod
         owner: root
         group: root
         mode: '0644'

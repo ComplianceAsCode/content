@@ -4,12 +4,12 @@ title: Implement Custom Crypto Policy Modules for CIS Benchmark
 
 description: |-
     Create a custom crypto policy module to enforce the use of strong ciphers and MACs in SSHD, disable CBC mode ciphers in SSHD and disable the use of weak MACs globally.
-    {{% for sub_policy in sub_policies %}}
-    {{{ describe_crypto_sub_policy(sub_policy.module_name, sub_policy.key, sub_policy.value) }}}
+    {{% for module_name, sub_policy in sub_policies.items() %}}
+    {{{ describe_crypto_sub_policy(module_name, sub_policy.key, sub_policy.value) }}}
     {{% endfor %}}
     Then, set the system wide crypto policy to use the custom policy.
     <pre>
-    $ sudo update-crypto-policies --set {{{ base_policy }}}:{{{ sub_policies | map(attribute="module_name") | join(":") }}}
+    $ sudo update-crypto-policies --set {{{ base_policy }}}:{{{ sub_policies.keys() | join(":") }}}
     </pre>
 
 rationale: |-
@@ -35,8 +35,8 @@ identifiers:
 ocil_clause: 'the custom crypto policy modules do not exist'
 
 ocil: |-
-    {{% for sub_policy in sub_policies %}}
-    {{{ ocil_crypto_sub_policy(sub_policy.module_name, sub_policy.key, sub_policy.value) }}}
+    {{% for module_name, sub_policy in sub_policies.items() %}}
+    {{{ ocil_crypto_sub_policy(module_name, sub_policy.key, sub_policy.value) }}}
     {{% endfor %}}
 
 template:

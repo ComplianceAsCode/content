@@ -264,13 +264,13 @@
 
     -   **base_policy** - The base system wide crypto policy, eg. `DEFAULT`
 
-    -   **sub_policies** - A list of dictionaries. Each dictionary represents one custom crypto sub policy module. The dictionary has the following members:
-
-        -   **module_name** - crypto sub policy name, eg. `NO-SSHWEAKCIPHERS`
+    -   **sub_policies** - A dictionary of dictionaries. Keys are crypto sub policy name, eg. `NO-SSHWEAKCIPHERS`. Each child dictionary represents one custom crypto sub policy module. The dictionary has the following members:
 
         -   **key** - entry key, eg. `cipher@SSH`
 
         -   **value** - entry value, eg. `-3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305`
+
+    -   **specific_module** - This parameter affects only OVAL. It specifies a specific crypto sub policy name from the sub_policies dictionary,  eg. `NO-SSHWEAKCIPHERS`.
 
 -   Languages: Ansible, Bash, OVAL
 

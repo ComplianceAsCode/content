@@ -1,4 +1,4 @@
 #!/bin/bash
-{{% for sub_policy in SUB_POLICIES %}}
-touch /etc/crypto-policies/policies/modules/{{{ sub_policy.module_name }}}.pmod
+{{% for module_name, sub_policy in SUB_POLICIES.items() %}}
+touch /etc/crypto-policies/policies/modules/{{{ module_name }}}.pmod
 {{% endfor %}}

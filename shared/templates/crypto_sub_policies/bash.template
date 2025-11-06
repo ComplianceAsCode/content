@@ -4,8 +4,8 @@
 # complexity = low
 # disruption = low
 
-{{% for sub_policy in SUB_POLICIES %}}
-{{{ bash_file_contents("/etc/crypto-policies/policies/modules/" ~ sub_policy.module_name ~ ".pmod", sub_policy.key ~ " = " ~ sub_policy.value) }}}
+{{% for module_name, sub_policy in SUB_POLICIES.items() %}}
+{{{ bash_file_contents("/etc/crypto-policies/policies/modules/" ~ module_name ~ ".pmod", sub_policy.key ~ " = " ~ sub_policy.value) }}}
 {{% endfor %}}
 
 sudo update-crypto-policies --set {{{ BASE_POLICY }}}:{{{ CONFIGURE_CRYPTO_POLICY_MODULES }}}

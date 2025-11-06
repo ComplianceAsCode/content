@@ -2,24 +2,28 @@
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
         {{{ oval_metadata("Ensure that the custom crypto policy module is configured", rule_title=rule_title) }}}
         <criteria operator="AND" comment="Ensure that all of the correct lines are in the file.">
-        {{% for sub_policy in SUB_POLICIES %}}
-            <criterion comment="Check that {{{ sub_policy.key }}} is configured in {{{ sub_policy.name }}}"
-                       test_ref="test_{{{ rule_id }}}_{{{ sub_policy.module_name }}}"/>
+        {{% for module_name, sub_policy in SUB_POLICIES.items() %}}
+            {{% if not SPECIFIC_MODULE or module_name == SPECIFIC_MODULE %}}
+            <criterion comment="Check that {{{ sub_policy.key }}} is configured in /etc/crypto-policies/policies/modules/{{{ module_name }}}.pmod"
+                       test_ref="test_{{{ rule_id }}}_{{{ module_name }}}"/>
+            {{% endif %}}
         {{% endfor %}}
         </criteria>
     </definition>
-        {{% for sub_policy in SUB_POLICIES %}}
+        {{% for module_name, sub_policy in SUB_POLICIES.items() %}}
+        {{% if not SPECIFIC_MODULE or module_name == SPECIFIC_MODULE %}}
         <ind:textfilecontent54_test check="all"
                                     comment="Tests that {{{ sub_policy.key }}} is configured correctly."
-                                    id="test_{{{ rule_id }}}_{{{ sub_policy.module_name }}}" version="1">
+                                    id="test_{{{ rule_id }}}_{{{ module_name }}}" version="1">
 
-            <ind:object object_ref="obj_{{{ rule_id }}}_{{{ sub_policy.module_name }}}"/>
+            <ind:object object_ref="obj_{{{ rule_id }}}_{{{ module_name }}}"/>
         </ind:textfilecontent54_test>
-        <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_{{{ sub_policy.module_name }}}" version="1">
+        <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_{{{ module_name }}}" version="1">
             <ind:path>/etc/crypto-policies/policies/modules/</ind:path>
-            <ind:filename>{{{ sub_policy.module_name }}}.pmod</ind:filename>
+            <ind:filename>{{{ module_name }}}.pmod</ind:filename>
             <ind:pattern operation="pattern match">^{{{ sub_policy.key }}} = {{{ sub_policy.value | escape_regex }}}$</ind:pattern>
             <ind:instance datatype="int">1</ind:instance>
         </ind:textfilecontent54_object>
+        {{% endif %}}
         {{% endfor %}}
 </def-group>
