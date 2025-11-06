@@ -2,85 +2,6 @@ documentation_complete: true
 
 title: Implement Custom Crypto Policy Modules for CIS Benchmark
 
-{{% if product == "rhel8" %}}
-{{% set sub_policies = [
-    {
-        "module_name": "NO-SSHCBC",
-        "key": "cipher@SSH",
-        "value": "-*-CBC"
-    },
-    {
-        "module_name": "NO-SSHWEAKCIPHERS",
-        "key": "cipher@SSH",
-        "value": "-3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305"
-    },
-    {
-        "module_name": "NO-SSHWEAKMACS",
-        "key": "mac@SSH",
-        "value": "-HMAC-MD5* -UMAC-64* -UMAC-128*"
-    },
-    {
-        "module_name": "NO-WEAKMAC",
-        "key": "mac",
-        "value": "-*-128*"
-    },
-] %}}
-{{% elif product == "rhel9" %}}
-{{% set sub_policies = [
-    {
-        "module_name": "NO-SSHCBC",
-        "key": "cipher@SSH",
-        "value": "-*-CBC"
-    },
-    {
-        "module_name": "NO-SSHWEAKCIPHERS",
-        "key": "cipher@SSH",
-        "value": "-3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305"
-    },
-    {
-        "module_name": "NO-SSHWEAKMACS",
-        "key": "mac@SSH",
-        "value": "-HMAC-MD5* -UMAC-64* -UMAC-128*"
-    },
-    {
-        "module_name": "NO-WEAKMAC",
-        "key": "mac",
-        "value": "-*-64*"
-    },
-] %}}
-{{% elif product == "rhel10" %}}
-{{% set sub_policies = [
-    {
-        "module_name": "NO-SSHCBC",
-        "key": "cipher@SSH",
-        "value": "-*-CBC"
-    },
-    {
-        "module_name": "NO-SSHWEAKCIPHERS",
-        "key": "cipher@SSH",
-        "value": "-3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC"
-    },
-    {
-        "module_name": "NO-SSHWEAKMACS",
-        "key": "mac@SSH",
-        "value": "-HMAC-MD5* -UMAC-64* -UMAC-128* -HMAC-SHA1*"
-    },
-    {
-        "module_name": "NO-WEAKMAC",
-        "key": "mac",
-        "value": "-*-128*"
-    },
-] %}}
-{{% else %}}
-{{% set sub_policies = [
-    {
-        "module_name": "NO-SSHCBC",
-        "key": "cipher@SSH",
-        "value": "-*-CBC"
-    },
-] %}}
-{{% endif %}}
-
 description: |-
     Create a custom crypto policy module to enforce the use of strong ciphers and MACs in SSHD, disable CBC mode ciphers in SSHD and disable the use of weak MACs globally.
     {{% for sub_policy in sub_policies %}}
@@ -88,7 +9,7 @@ description: |-
     {{% endfor %}}
     Then, set the system wide crypto policy to use the custom policy.
     <pre>
-    $ sudo update-crypto-policies --set DEFAULT:NO-SHA1:NO-SSHCBC:NO-SSHWEAKCIPHERS:NO-SSHWEAKMACS:NO-WEAKMAC
+    $ sudo update-crypto-policies --set {{{ base_policy }}}:{{{ sub_policies | map(attribute="module_name") | join(":") }}}
     </pre>
 
 rationale: |-
@@ -121,5 +42,5 @@ ocil: |-
 template:
     name: crypto_sub_policies
     vars:
-        base_policy: "DEFAULT:NO-SHA1"
+        base_policy: {{{ base_policy }}}
         sub_policies: {{{ sub_policies }}}

@@ -1,0 +1,50 @@
+default:
+  base_policy: "DEFAULT:NO-SHA1"
+  sub_policies:
+  - module_name: NO-SSHCBC
+    key: cipher@SSH
+    value: -*-CBC
+  overrides:
+{{% if product == "rhel8" %}}
+  sub_policies:
+    - module_name: NO-SSHCBC
+      key: cipher@SSH
+      value: -*-CBC
+    - module_name: NO-SSHWEAKCIPHERS
+      key: cipher@SSH
+      value: -3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305
+    - module_name: NO-SSHWEAKMACS
+      key: mac@SSH
+      value: -HMAC-MD5* -UMAC-64* -UMAC-128*
+    - module_name: NO-WEAKMAC
+      key: mac
+      value: -*-128*
+{{% elif product == "rhel9" %}}
+  sub_policies:
+    - module_name: NO-SSHCBC
+      key: cipher@SSH
+      value: -*-CBC
+    - module_name: NO-SSHWEAKCIPHERS
+      key: cipher@SSH
+      value: -3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305
+    - module_name: NO-SSHWEAKMACS
+      key: mac@SSH
+      value: -HMAC-MD5* -UMAC-64* -UMAC-128*
+    - module_name: NO-WEAKMAC
+      key: mac
+      value: -*-64*
+{{% elif product == "rhel10" %}}
+  sub_policies:
+    - module_name: NO-SSHCBC
+      key: cipher@SSH
+      value: -*-CBC
+    - module_name: NO-SSHWEAKCIPHERS
+      key: cipher@SSH
+      value: -3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC
+    - module_name: NO-SSHWEAKMACS
+      key: mac@SSH
+      value: -HMAC-MD5* -UMAC-64* -UMAC-128* -HMAC-SHA1*
+    - module_name: NO-WEAKMAC
+      key: mac
+      value: -*-128*
+{{% endif %}}
