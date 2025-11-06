@@ -4,9 +4,9 @@
 # platform = multi_platform_ol
 # variables = var_password_pam_{{{ VARIABLE }}}={{{ TEST_VAR_VALUE }}}
 
-truncate -s 0 /etc/security/pwquality.conf
+truncate -s 0 "{{{ pwquality_path }}}"
 
-echo "{{{ VARIABLE }}} = {{{ TEST_CORRECT_VALUE }}}" >> /etc/security/pwquality.conf
+echo "{{{ VARIABLE }}} = {{{ TEST_CORRECT_VALUE }}}" >> "{{{ pwquality_path }}}"
 
 {{{
     bash_ensure_pam_module_configuration('/etc/pam.d/password-auth',

@@ -1,0 +1,9 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+{{% if product in ['sle15', 'sle16'] %}}
+{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/common-password', 'password', 'requisite', 'pam_pwquality.so', '', '', 'BOF', rule_id=rule_id, rule_title=rule_title) }}}
+{{% endif %}}
