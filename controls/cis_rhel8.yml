@@ -557,7 +557,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - configure_custom_crypto_policy_cis
+          - configure_custom_crypto_policy_cis_ssh_cbc
 
     - id: 1.6.4
       title: Ensure system wide crypto policy disables macs less than 128 bits (Automated)
@@ -566,7 +566,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - configure_custom_crypto_policy_cis
+          - configure_custom_crypto_policy_cis_mac
 
     - id: 1.7.1
       title: Ensure message of the day is configured properly (Automated)
@@ -1497,7 +1497,7 @@ controls:
       notes: |-
           Introduced in CIS RHEL8 v3.0.0
       rules:
-          - configure_custom_crypto_policy_cis
+          - configure_custom_crypto_policy_cis_ssh_ciphers
 
     - id: 4.2.7
       title: Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured (Automated)
@@ -1586,7 +1586,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - configure_custom_crypto_policy_cis
+          - configure_custom_crypto_policy_cis_ssh_macs
 
     - id: 4.2.15
       title: Ensure sshd MaxAuthTries is configured (Automated)

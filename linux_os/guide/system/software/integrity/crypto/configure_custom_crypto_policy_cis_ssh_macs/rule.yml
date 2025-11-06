@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: Use Only Strong MACs in SSHD for CIS Benchmark
+
+description: |-
+    Create a custom crypto policy module to enforce the use of strong MACs in SSHD.
+    {{{ describe_crypto_sub_policy("NO-SSHWEAKMACS", sub_policies["NO-SSHWEAKMACS"].key, sub_policies["NO-SSHWEAKMACS"].value) }}}
+    Then, set the system wide crypto policy to use the custom policy.
+    <pre>
+    $ sudo update-crypto-policies --set {{{ base_policy }}}:{{{ sub_policies.keys() | join(":") }}}
+    </pre>
+
+rationale: |-
+    Message Authentication Codes (MACs) are cryptographic mechanisms used to verify the
+    integrity and authenticity of data transmitted over SSH connections. Weak MACs that
+    are used for authentication to the cryptographic module cannot be relied upon to
+    provide integrity, and system data may be compromised. Implementing a custom crypto
+    policy that disables weak MAC algorithms helps ensure that only strong, proven
+    cryptographic algorithms are used to protect SSH communications.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86726-7
+    cce@rhel9: CCE-86728-3
+    cce@rhel10: CCE-86730-9
+
+ocil_clause: 'the custom crypto policy modules do not exist'
+
+ocil: |-
+    {{{ ocil_crypto_sub_policy("NO-SSHWEAKMACS", sub_policies["NO-SSHWEAKMACS"].key, sub_policies["NO-SSHWEAKMACS"].value) }}}
+
+template:
+    name: crypto_sub_policies
+    vars:
+        base_policy: {{{ base_policy }}}
+        sub_policies: {{{ sub_policies }}}
+        specific_module: "NO-SSHWEAKMACS"

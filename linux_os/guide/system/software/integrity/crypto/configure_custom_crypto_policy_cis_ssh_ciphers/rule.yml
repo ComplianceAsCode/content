@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: Use Only Strong Ciphers in SSHD for CIS Benchmark
+
+description: |-
+    Create a custom crypto policy module to enforce the use of strong ciphers in SSHD.
+    {{{ describe_crypto_sub_policy("NO-SSHWEAKCIPHERS", sub_policies["NO-SSHWEAKCIPHERS"].key, sub_policies["NO-SSHWEAKCIPHERS"].value) }}}
+    Then, set the system wide crypto policy to use the custom policy.
+    <pre>
+    $ sudo update-crypto-policies --set {{{ base_policy }}}:{{{ sub_policies.keys() | join(":") }}}
+    </pre>
+
+rationale: |-
+    Weak ciphers that are used for authentication to the cryptographic module cannot be
+    relied upon to provide confidentiality or integrity, and system data may be compromised.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86701-0
+    cce@rhel9: CCE-86702-8
+    cce@rhel10: CCE-86703-6
+
+ocil_clause: 'the custom crypto policy modules do not exist'
+
+ocil: |-
+    {{{ ocil_crypto_sub_policy("NO-SSHWEAKCIPHERS", sub_policies["NO-SSHWEAKCIPHERS"].key, sub_policies["NO-SSHWEAKCIPHERS"].value) }}}
+
+template:
+    name: crypto_sub_policies
+    vars:
+        base_policy: {{{ base_policy }}}
+        sub_policies: {{{ sub_policies }}}
+        specific_module: "NO-SSHWEAKCIPHERS"

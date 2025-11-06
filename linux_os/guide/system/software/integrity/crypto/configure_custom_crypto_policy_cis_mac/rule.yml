@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: Use Only Strong MACs Globally for CIS Benchmark
+
+description: |-
+    Create a custom crypto policy module to enforce the use of strong MACs globally.
+    {{{ describe_crypto_sub_policy("NO-WEAKMAC", sub_policies["NO-WEAKMAC"].key, sub_policies["NO-WEAKMAC"].value) }}}
+    Then, set the system wide crypto policy to use the custom policy.
+    <pre>
+    $ sudo update-crypto-policies --set {{{ base_policy }}}:{{{ sub_policies.keys() | join(":") }}}
+    </pre>
+
+rationale: |-
+    Implementing a custom crypto policy that disables weak MAC algorithms helps ensure that only strong, proven
+    cryptographic algorithms are used globally.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86661-6
+    cce@rhel9: CCE-86662-4
+    cce@rhel10: CCE-86663-2
+
+ocil_clause: 'the custom crypto policy modules do not exist'
+
+ocil: |-
+    {{{ ocil_crypto_sub_policy("NO-WEAKMAC", sub_policies["NO-WEAKMAC"].key, sub_policies["NO-WEAKMAC"].value) }}}
+
+template:
+    name: crypto_sub_policies
+    vars:
+        base_policy: {{{ base_policy }}}
+        sub_policies: {{{ sub_policies }}}
+        specific_module: "NO-WEAKMAC"

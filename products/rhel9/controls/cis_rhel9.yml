@@ -580,7 +580,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - configure_custom_crypto_policy_cis
+          - configure_custom_crypto_policy_cis_mac
 
     - id: 1.6.5
       title: Ensure system wide crypto policy disables cbc for ssh (Automated)
@@ -589,7 +589,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - configure_custom_crypto_policy_cis
+          - configure_custom_crypto_policy_cis_ssh_cbc
 
     - id: 1.6.6
       title: Ensure system wide crypto policy disables chacha20-poly1305 for ssh (Automated)
@@ -1515,7 +1515,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - configure_custom_crypto_policy_cis
+          - configure_custom_crypto_policy_cis_ssh_ciphers
 
     - id: 5.1.5
       title: Ensure sshd KexAlgorithms is configured (Automated)
@@ -1537,7 +1537,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - configure_custom_crypto_policy_cis
+          - configure_custom_crypto_policy_cis_ssh_macs
 
     - id: 5.1.7
       title: Ensure sshd access is configured (Automated)
