@@ -345,6 +345,7 @@ set_password_hashing_algorithm_passwordauth
 set_password_hashing_algorithm_systemauth
 socket_systemd-journal-remote_disabled
 sshd_disable_empty_passwords
+sshd_disable_forwarding
 sshd_disable_gssapi_auth
 sshd_disable_rhosts
 sshd_disable_root_login

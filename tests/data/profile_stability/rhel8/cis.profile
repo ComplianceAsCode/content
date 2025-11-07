@@ -351,6 +351,7 @@ set_password_hashing_algorithm_systemauth
 socket_systemd-journal-remote_disabled
 sshd_approved_ciphers=cis_rhel8
 sshd_disable_empty_passwords
+sshd_disable_forwarding
 sshd_disable_rhosts
 sshd_disable_root_login
 sshd_do_not_permit_user_env
